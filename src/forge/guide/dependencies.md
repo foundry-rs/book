@@ -1,6 +1,6 @@
 ## Dependencies
 
-Forge by default manages dependencies using [git submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules), which means that it works with any GitHub repository that contains smart contracts.
+Forge manages dependencies using [git submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules) by default, which means that it works with any GitHub repository that contains smart contracts.
 
 ### Adding a dependency
 
