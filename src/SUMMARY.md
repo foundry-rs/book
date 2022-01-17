@@ -11,6 +11,8 @@
   - [Project Layout](./forge/guide/project-layout.md)
   - [forge.toml](./forge/guide/config.md)
   - [Tests](./forge/guide/tests.md)
+    - [Cheatcodes](./forge/guides/cheatcodes.md)
+    - [Understanding Traces](./forge/guides/traces.md)
   - [Continous Integration](./forge/guide/continous-integration.md)
   - [Debugger](./forge/guide/debugger.md)
   - [Cache](./forge/guide/cache.md)
