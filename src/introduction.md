@@ -18,3 +18,4 @@ More guides on various topics.
 
 - [Incremental Adoption](guides/incremental-adoption.md)
 - [Integrating with VSCode](guides/vscode.md)
+- [Shell Autocompletion](guides/shell-autocompletion.md)
