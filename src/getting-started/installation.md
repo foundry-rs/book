@@ -1,26 +1,26 @@
 ## Installation
 
-### Using `forgeup`
+### Using `foundryup`
 
-The easiest way to get Foundry is to install the latest release by using `forgeup`.
+The easiest way to get Foundry is to install the latest release by using `foundryup`.
 
 On Linux and macOS systems, this is done as follows:
 
 ```
-curl https://raw.githubusercontent.com/gakonst/foundry/master/forgeup/install | bash
+curl https://raw.githubusercontent.com/gakonst/foundry/master/foundryup/install | bash
 ```
 
-This will download `forgeup`. To start install Foundry, run:
+This will download `foundryup`. To start install Foundry, run:
 
 ```
-forgeup
+foundryup
 ```
 
 If everything goes well, you will now have two binaries at your disposal: `forge` and `cast`.
 
 On Windows, build from source.
 
-Running `forgeup` again will update to the latest Foundry release. You can also revert to a specific version of Foundry with `forgeup -v $VERSION`.
+Running `foundryup` again will update to the latest Foundry release. You can also revert to a specific version of Foundry with `foundryup -v $VERSION`.
 
 ### Building from source
 
