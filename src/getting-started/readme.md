@@ -1,4 +1,4 @@
-# Getting Started
+## Getting Started
 
 To get started with Foundry, install the toolchain and set up your first project.
 

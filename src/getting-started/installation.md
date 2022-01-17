@@ -1,6 +1,6 @@
-# Installation
+## Installation
 
-## Using `forgeup`
+### Using `forgeup`
 
 The easiest way to get Foundry is to install the latest release by using `forgeup`.
 
@@ -20,7 +20,7 @@ On Windows, build from source.
 
 Running `forgeup` again will update to the latest Foundry release. You can also revert to a specific version of Foundry with `forgeup -v $VERSION`.
 
-## Building from source
+### Building from source
 
 To build from source, you need to get [Rust](https://rust-lang.org) and Cargo. The easiest way to get both is by using `rustup`.
 
