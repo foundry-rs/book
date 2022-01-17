@@ -16,6 +16,8 @@ This will download `forgeup`. To start install Foundry, run:
 forgeup
 ```
 
+If everything goes well, you will now have two binaries at your disposal: `forge` and `cast`.
+
 On Windows, build from source.
 
 Running `forgeup` again will update to the latest Foundry release. You can also revert to a specific version of Foundry with `forgeup -v $VERSION`.
