@@ -1,5 +1,3 @@
-# The Foundry Book
-
 ![Foundry Banner](images/foundry-banner.png)
 
 Foundry is a smart contract development toolchain. Foundry manages your dependencies, compiles your project, runs tests and deploys. You can contribute to this book on [GitHub](https://github.com/onbjerg/foundry-book).
