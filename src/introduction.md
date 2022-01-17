@@ -6,15 +6,15 @@ Foundry is a smart contract development toolchain. Foundry manages your dependen
 
 ### Sections
 
-**[Getting Started](getting-started/readme.md)**
+**[Getting Started](getting-started)**
 
 To get started with Foundry, install Foundry and set up your first project.
 
-**[Forge Guide](forge/guide/readme.md)**
+**[Forge Guide](forge/guide)**
 
 The guide will give you all you need to know about how to use `forge` to develop, tests, and deploy smart contracts.
 
-**[Additional Guides](guides/readme.md)**
+**[Additional Guides](guides)**
 
 More guides on various topics.
 
