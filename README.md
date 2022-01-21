@@ -4,7 +4,7 @@ A book on all things Foundry.
 
 ### Contributing
 
-Feel free to contribute wording, sentences, chapters and guides!
+Feel free to contribute wording, sentences, chapters, and guides!
 
 The book is build with [mdbook](https://github.com/rust-lang/mdBook), which you can get by running `cargo install mdbook`.
 

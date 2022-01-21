@@ -1,6 +1,6 @@
 ## First Steps with Foundry
 
-This section provides an overview of the `forge` command line tool. We demonstrate how to create a new project, compile and test it.
+This section provides an overview of the `forge` command line tool. We demonstrate how to create a new project, compile, and test it.
 
 To start a new project with Foundry, use `forge init`:
 
