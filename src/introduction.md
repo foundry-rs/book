@@ -1,6 +1,6 @@
 ![Foundry Banner](images/foundry-banner.png)
 
-Foundry is a smart contract development toolchain. Foundry manages your dependencies, compiles your project, runs tests and deploys.
+Foundry is a smart contract development toolchain. Foundry manages your dependencies, compiles your project, runs tests, deploys, and lets you interact with the chain from the command line.
 
 > 📖 Contributing
 >
@@ -14,7 +14,7 @@ To get started with Foundry, install Foundry and set up your first project.
 
 **[Forge Guide](forge/guide)**
 
-The guide will give you all you need to know about how to use `forge` to develop, tests, and deploy smart contracts.
+The guide will give you all you need to know about how to use `forge` to develop, test, and deploy smart contracts.
 
 **[Additional Guides](guides)**
 
