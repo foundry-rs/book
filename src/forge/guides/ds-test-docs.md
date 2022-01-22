@@ -3,14 +3,14 @@
 `ds-test` provides basic logging and assertion functionality, and other test helpers.
 
 To use it in your testing contract, import the `test.sol` and inherit from `DSTest`, like so:
-```sol
+```solidity
 import "ds-test/src/test.sol"
 contract ContractTest is DSTest {}
 ```
 
 ### Hevm Address
 You can get the address of Hevm by accessing the `HEVM_ADDRESS` constant:
-```sol
+```solidity
 Vm vm = Vm(HEVM_ADDRESS);
 ```
 
@@ -18,14 +18,14 @@ Vm vm = Vm(HEVM_ADDRESS);
 `DSTest` contains the following events for logging:
 > log (string)
 
-```sol
+```solidity
 emit log("here");
 ```
 <br>
 
 > logs (bytes)
 
-```sol
+```solidity
 emit logs(bytes("abcd"));
 ```
 <br>
@@ -33,7 +33,7 @@ emit logs(bytes("abcd"));
 > log\_\<type\> (\<type\>)
 
 Where `<type>` can be `address`, `bytes32`, `int`, `uint`, `bytes`, `string`
-```sol
+```solidity
 uint256 amount = 1 ether;
 emit log_uint(amount);
 ```
@@ -42,7 +42,7 @@ emit log_uint(amount);
 > log\_named\_\<type\> (string key, \<type\> val)
 
 Where `<type>` can be `address`, `bytes32`, `int`, `uint`, `bytes`, `string`
-```sol
+```solidity
 uint256 amount = 1 ether;
 emit log_named_uint("amount", amount);
 ```
@@ -51,7 +51,7 @@ emit log_named_uint("amount", amount);
 > log\_named\_decimal\_\<type\> (string key, \<type\> val, uint decimals)
 
 Where `<type>` can be `int`, `uint`
-```sol
+```solidity
 uint256 amount = 1 ether;
 emit log_named_decimal_uint("amount", amount, 18);
 ```
@@ -62,7 +62,7 @@ emit log_named_decimal_uint("amount", amount, 18);
 > assertTrue (bool condition)
 
 Asserts the `condition` is true.
-```sol
+```solidity
 (bool sent, bytes memory data) = _to.call{value: msg.value}("");
 assertTrue(sent);
 ```
@@ -73,7 +73,7 @@ assertTrue(sent);
 Where `<type>` can be `address`, `bytes32`, `int`, `uint`
 
 Asserts `a` is equal to `b`.
-```sol
+```solidity
 uint256 amount = 1 ether;
 assertEq(amount, 1e18);
 ```
@@ -84,7 +84,7 @@ assertEq(amount, 1e18);
 Where `<type>` can be `int`, `uint`
 
 Asserts `a` is equal to `b`.
-```sol
+```solidity
 uint256 amount = 1 ether;
 assertEqDecimal(amount, 1e18, 18);
 ```
@@ -93,7 +93,7 @@ assertEqDecimal(amount, 1e18, 18);
 > assertEq32 (bytes32 a, bytes32 b)
 
 Asserts `a` is equal to `b`.
-```sol
+```solidity
 assertEq(bytes32("abcd"), 0x6162636400000000000000000000000000000000000000000000000000000000);
 ```
 <br>
@@ -101,7 +101,7 @@ assertEq(bytes32("abcd"), 0x6162636400000000000000000000000000000000000000000000
 > assertEq0 (bytes a, bytes b)
 
 Asserts `a` is equal to `b`.
-```sol
+```solidity
 string memory name1 = "Alice";
 string memory name2 = "Bob";
 assertEq0(bytes(name1), bytes(name2));
@@ -113,7 +113,7 @@ assertEq0(bytes(name1), bytes(name2));
 Where `<type>` can be `int`, `uint`
 
 Asserts  `a` is greater than or equal to `b`.
-```sol
+```solidity
 assertGt(1, 1);
 ```
 <br>
@@ -123,7 +123,7 @@ assertGt(1, 1);
 Where `<type>` can be `int`, `uint`
 
 Asserts  `a` is greater than or equal to `b`.
-```sol
+```solidity
 assertGt(1, 1, 0);
 ```
 <br>
@@ -133,7 +133,7 @@ assertGt(1, 1, 0);
 Where `<type>` can be `int`, `uint`
 
 Asserts  `a` is greater than `b`.
-```sol
+```solidity
 assertGt(1, 0);
 ```
 <br>
@@ -143,7 +143,7 @@ assertGt(1, 0);
 Where `<type>` can be `int`, `uint`
 
 Asserts  `a` is greater than `b`.
-```sol
+```solidity
 assertGt(1, 0, 0);
 ```
 <br>
@@ -153,7 +153,7 @@ assertGt(1, 0, 0);
 Where `<type>` can be `int`, `uint`
 
 Asserts  `a` is less than or equal to `b`.
-```sol
+```solidity
 assertGt(1, 1);
 ```
 <br>
@@ -163,7 +163,7 @@ assertGt(1, 1);
 Where `<type>` can be `int`, `uint`
 
 Asserts  `a` is less than or equal to `b`.
-```sol
+```solidity
 assertGt(1, 1, 0);
 ```
 <br>
@@ -173,7 +173,7 @@ assertGt(1, 1, 0);
 Where `<type>` can be `int`, `uint`
 
 Asserts  `a` is less than `b`.
-```sol
+```solidity
 assertGt(0, 1);
 ```
 <br>
@@ -183,7 +183,7 @@ assertGt(0, 1);
 Where `<type>` can be `int`, `uint`
 
 Asserts  `a` is less than `b`.
-```sol
+```solidity
 assertGt(0, 1, 0);
 ```
 <br>

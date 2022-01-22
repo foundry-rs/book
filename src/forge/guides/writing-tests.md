@@ -9,20 +9,20 @@ Let's go over the default way of writing tests, using the [`ds-test`](https://gi
 `ds-test` provides basic logging and assertion functionality, and other test helpers.
 
 To use it in your testing contract, import the `test.sol` and inherit from `DSTest`, like so:
-```sol
+```solidity
 import "ds-test/src/test.sol"
 contract ContractTest is DSTest {}
 ```
 
 You should also import the contract you wish to test, example:
-```sol
+```solidity
 import "src/contract.sol"
 ```
 <br>
 
 Forge uses the following keyboards in names of testing functions:
 - `setUp` - the function called before each test
-    ```sol
+    ```solidity
     Contract contract;
 
     function setUp() public {
@@ -30,14 +30,14 @@ Forge uses the following keyboards in names of testing functions:
     }
     ```
 - `test` - precedes the function name to mark it as a test
-    ```sol
+    ```solidity
     function testIncrement() public {
         contract.increment();
         assertEq(contract.counter(), 1);
     }
     ```
 - `testFail` - the same as `test`, but is expected to fail (which will result in `[PASS]`)
-    ```sol
+    ```solidity
     function testFailDecrement() public {
         contract.decrement(); // expected to fail
     }
@@ -47,7 +47,7 @@ Forge uses the following keyboards in names of testing functions:
 Fuzzing is supported.
 
 Instead of hard coding function parameters, define argument types for your tests, like so:
-```sol
+```solidity
 function testSetCounter(uint number) public {
     contract.setCounter(number);
 }
