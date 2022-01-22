@@ -12,6 +12,7 @@
   - [forge.toml](./forge/guide/config.md)
   - [Tests](./forge/guide/tests.md)
     - [Writing Tests](./forge/guides/writing-tests.md)
+    - [`ds-test` Docs](forge/guides/ds-test-docs.md)
     - [Cheatcodes](./forge/guides/cheatcodes.md)
     - [Fuzz Testing](./forge/guides/fuzz-testing.md)
     - [Understanding Traces](./forge/guides/traces.md)
