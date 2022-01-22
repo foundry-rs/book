@@ -52,6 +52,6 @@ function testSetCounter(uint number) public {
     contract.setCounter(number);
 }
 ```
-Forge will populate those values at runtime and might uncover edge cases that cause your test to fail. It returns such an input if one is found.
+Forge will populate those values at runtime and might uncover edge cases that cause your test to fail. It returns such an input to you if one is found.
 
 We go more in dept on the topic in [Fuzz Testing](fuzz-testing.md).
