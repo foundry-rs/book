@@ -13,3 +13,5 @@ To see the book change live run:
 ```sh
 mdbook serve
 ```
+
+To add a new section (file) to the book, add it to [`SUMMARY.md`](src/SUMMARY.md).
