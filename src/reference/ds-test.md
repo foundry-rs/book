@@ -68,8 +68,8 @@ emit log_named_decimal_uint("amount", amount, 18);
 
 Asserts the `condition` is true.
 ```solidity
-(bool sent, bytes memory data) = _to.call{value: msg.value}("");
-assertTrue(sent);
+bool success = contract.fun();
+assertTrue(success);
 ```
 <br>
 
@@ -79,8 +79,7 @@ Where `<type>` can be `address`, `bytes32`, `int`, `uint`
 
 Asserts `a` is equal to `b`.
 ```solidity
-uint256 amount = 1 ether;
-assertEq(amount, 1e18);
+assertEq(1 ether, 1e18 wei);
 ```
 <br>
 
@@ -90,8 +89,7 @@ Where `<type>` can be `int`, `uint`
 
 Asserts `a` is equal to `b`.
 ```solidity
-uint256 amount = 1 ether;
-assertEqDecimal(amount, 1e18, 18);
+assertEqDecimal(1 ether, 1e18 wei, 18);
 ```
 <br>
 
@@ -119,7 +117,7 @@ Where `<type>` can be `int`, `uint`
 
 Asserts  `a` is greater than or equal to `b`.
 ```solidity
-assertGt(1, 1);
+assertGt(1 ether, 1e18 wei);
 ```
 <br>
 
@@ -129,7 +127,7 @@ Where `<type>` can be `int`, `uint`
 
 Asserts  `a` is greater than or equal to `b`.
 ```solidity
-assertGtDecimal(1, 1, 0);
+assertGtDecimal(1 ether, 1e18 wei, 18);
 ```
 <br>
 
@@ -139,7 +137,7 @@ Where `<type>` can be `int`, `uint`
 
 Asserts  `a` is greater than `b`.
 ```solidity
-assertGe(1, 0);
+assertGe(2 ether, 1e18 wei);
 ```
 <br>
 
@@ -149,7 +147,7 @@ Where `<type>` can be `int`, `uint`
 
 Asserts  `a` is greater than `b`.
 ```solidity
-assertGeDecimal(1, 0, 0);
+assertGeDecimal(2 ether, 1e18 wei, 18);
 ```
 <br>
 
@@ -159,7 +157,7 @@ Where `<type>` can be `int`, `uint`
 
 Asserts  `a` is less than or equal to `b`.
 ```solidity
-assertLt(1, 1);
+assertLt(1e18 wei, 1 ether);
 ```
 <br>
 
@@ -169,7 +167,7 @@ Where `<type>` can be `int`, `uint`
 
 Asserts  `a` is less than or equal to `b`.
 ```solidity
-assertLtDecimal(1, 1, 0);
+assertLtDecimal(1e18 wei, 1 ether, 18);
 ```
 <br>
 
@@ -179,7 +177,7 @@ Where `<type>` can be `int`, `uint`
 
 Asserts  `a` is less than `b`.
 ```solidity
-assertLe(0, 1);
+assertLe(1e18 wei, 2 ether);
 ```
 <br>
 
@@ -189,7 +187,7 @@ Where `<type>` can be `int`, `uint`
 
 Asserts  `a` is less than `b`.
 ```solidity
-assertLeDecimal(0, 1, 0);
+assertLeDecimal(1e18 wei, 2 ether, 18);
 ```
 <br>
 
