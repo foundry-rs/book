@@ -6,6 +6,7 @@ Forge comes with a number of advanced testing methods:
 
 In the future, Forge will also support these:
 
+- [Invariant Testing](#)
 - [Symbolic Execution](#)
 - [Mutation Testing](#)
 
