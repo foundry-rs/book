@@ -9,3 +9,4 @@ title = "The Foundry Book"
 git-repository-url = "https://github.com/onbjerg/foundry-book"
 edit-url-template = "https://github.com/onbjerg/foundry-book/edit/master/src/doc/{path}"
 default-theme = "ayu"
+additional-js = ["src/static/solidity.min.js"]

@@ -56,7 +56,7 @@ solmate-utils/=lib/solmate/src/utils/
 
 Now we can import any of the contracts in `src/utils` of the solmate repository like so:
 
-```javascript=
+```solidity
 import "solmate-utils/Contract.sol";
 ```
 
