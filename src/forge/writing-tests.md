@@ -1,27 +1,42 @@
 ## Writing Tests
 
-Let's go over the default way of writing tests, using the [`ds-test`](https://github.com/dapphub/ds-test) library.
+Tests are written in Solidity. If the test function reverts, the test fails, otherwise it passes.
 
-> 👋 Gm
->
-> See our [`ds-test` Reference](./reference/ds-test.md) if you're unfamiliar with the library.
+Let's go over the most common way of writing tests, using the [`ds-test`](https://github.com/dapphub/ds-test) library.
 
-`ds-test` provides basic logging and assertion functionality, and other test helpers.
+`ds-test` provides basic logging and assertion functionality.
 
-To use it in your testing contract, import the `test.sol` and inherit from `DSTest`, like so:
+To use it in your testing contract, import `ds-test/test.sol` and inherit from `DSTest`, like so:
+
 ```solidity
-import "ds-test/src/test.sol"
-contract ContractTest is DSTest {}
+import "ds-test/test.sol";
+
+contract ContractTest is DSTest {
+    // ... tests ...
+}
 ```
 
-You should also import the contract you wish to test, example:
-```solidity
-import "src/contract.sol"
-```
-<br>
+Let's examine a basic test using `ds-test`:
 
-Forge uses the following keyboards in names of testing functions:
-- `setUp` - the function called before each test
+```solidity
+import "ds-test/test.sol";
+
+contract BasicTest is DSTest {
+    uint256 testNumber;
+
+    function setUp() {
+        testNumber = 42;
+    }
+
+    function testNumberIs42() {
+        assertEq(testNumber, 42);
+    }
+}
+```
+
+Forge uses the following keywords in tests:
+
+- `setUp`: An optional function invoked before each test case is run
     ```solidity
     Contract contract;
 
@@ -29,14 +44,14 @@ Forge uses the following keyboards in names of testing functions:
         contract = new Contract();
     }
     ```
-- `test` - precedes the function name to mark it as a test
+- `test`: Functions prefixed with `test` are run as a test case
     ```solidity
     function testIncrement() public {
         contract.increment();
         assertEq(contract.counter(), 1);
     }
     ```
-- `testFail` - the same as `test`, but is expected to fail (which will result in `[PASS]`)
+- `testFail`: The inverse of the `test` prefix - if the function does not revert, the test fails.
     ```solidity
     function testFailDecrement() public {
         contract.decrement(); // expected to fail
@@ -44,14 +59,8 @@ Forge uses the following keyboards in names of testing functions:
     ```
 <br>
 
-Fuzzing is supported.
+It is possible to use other testing libraries or roll your own. For example, if you find yourself lacking a special type of assertion, you could extend `ds-test`.
 
-Instead of hard coding function parameters, define argument types for your tests, like so:
-```solidity
-function testSetCounter(uint number) public {
-    contract.setCounter(number);
-}
-```
-Forge will populate those values at runtime and might uncover edge cases that cause your test to fail. It returns such an input to you if one is found.
-
-We go more in dept on the topic in [Fuzz Testing](fuzz-testing.md).
+> 👋 **No experience with `ds-test`?**
+>
+> See our [`ds-test` Reference](/reference/ds-test.md) if you're unfamiliar with the library.
