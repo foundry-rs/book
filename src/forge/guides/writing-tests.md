@@ -4,7 +4,7 @@ Let's go over the default way of writing tests, using the [`ds-test`](https://gi
 
 > 👋 Gm
 >
-> See our [`ds-test` Docs](./ds-test-docs.md) if you're unfamiliar with the library.
+> See our [`ds-test` Reference](./reference/ds-test.md) if you're unfamiliar with the library.
 
 `ds-test` provides basic logging and assertion functionality, and other test helpers.
 

@@ -1,21 +1,26 @@
-## `ds-test` Documentation
+## `ds-test` Reference
 
-`ds-test` provides basic logging and assertion functionality, and other test helpers.
+`ds-test` provides basic logging and assertion functionality. 
 
 To use it in your testing contract, import the `test.sol` and inherit from `DSTest`, like so:
+
 ```solidity
 import "ds-test/src/test.sol"
+
 contract ContractTest is DSTest {}
 ```
 
-### Hevm Address
-You can get the address of Hevm by accessing the `HEVM_ADDRESS` constant:
+### Cheatcodes Address
+You can get the address of the cheatcodes account by accessing the `HEVM_ADDRESS` constant:
+
 ```solidity
 Vm vm = Vm(HEVM_ADDRESS);
 ```
 
 ### Logging
+
 `DSTest` contains the following events for logging:
+
 > log (string)
 
 ```solidity
@@ -56,7 +61,7 @@ uint256 amount = 1 ether;
 emit log_named_decimal_uint("amount", amount, 18);
 ```
 
-### Asserting
+### Assertions
 
 `DSTest` contains the following assertion functions:
 > assertTrue (bool condition)
@@ -190,4 +195,4 @@ assertGt(0, 1, 0);
 
 > ℹ️ Information
 >
-> You can pass an optional  `string err` parameter to any of the above functions to log Error `err` if the assertion fails.
+> You can pass a custom error message to the above functions by providing an additional parameter `string err`.
