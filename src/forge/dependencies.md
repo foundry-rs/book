@@ -29,6 +29,12 @@ lib
 
 We can see that Forge installed `solmate`!
 
+By default, `forge install` installs the latest master branch version. If you want to install a specific tag or commit,you can do it like so:
+
+```sh
+$ forge install Rari-Capital/solmate@v6
+```
+
 ### Remapping dependencies
 
 Forge can remap dependencies to make them easier to import. Forge will automatically try to deduce some remappings for you:
@@ -58,6 +64,26 @@ Now we can import any of the contracts in `src/utils` of the solmate repository 
 
 ```solidity
 import "solmate-utils/Contract.sol";
+```
+
+### Updating dependencies
+
+You can update a specific dependency to the latest commit on the version you have specified using `forge update <dep>`. For example, if we wanted to pull the latest commit from our previously installed master-version of `solmate`, we would run:
+
+```sh
+$ forge update lib/solmate
+```
+
+Alternatively, you can do this for all dependencies at once by just running `forge update`.
+
+### Removing dependencies
+
+You can remove dependencies using `forge remove <deps>...`, where `<deps>` is either the full path to the dependency or just the name. For example, to remove `ds-test` both of these commands are equivalent:
+
+```ignore
+forge remove ds-test
+# ... is equivalent to ...
+forge remove lib/ds-test
 ```
 
 ### Hardhat compatibility
