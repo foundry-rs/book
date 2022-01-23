@@ -17,7 +17,7 @@ contract OwnerUpOnly {
     owner = msg.sender;
   }
 
-  function increment() {
+  function increment() external {
     require(
       msg.sender == owner,
       "only the owner can increment the count"
@@ -47,6 +47,10 @@ If we run `forge test` now, we will see that the test passes, since `OwnerUpOnly
 
 ```ignore
 $ forge test
+compiling...
+success.
+Running 1 test for OwnerUpOnlyTest.json:OwnerUpOnlyTest
+[PASS] testIncrementAsOwner() (gas: 24810)
 ```
 
 Let's make sure that someone who is definitely not the owner can't increment the count:
@@ -74,6 +78,11 @@ If we run `forge test` now, we will see that all the test pass.
 
 ```ignore
 $ forge test
+compiling...
+success.
+Running 2 tests for OwnerUpOnlyTest.json:OwnerUpOnlyTest
+[PASS] testFailIncrementAsNotOwner() (gas: 4030)
+[PASS] testIncrementAsOwner() (gas: 24639)
 ```
 
 The test passed because the `prank` cheatcode changed our identity to the zero address for the next call (`upOnly.increment()`). The test case passed since we used the `testFail` prefix, however, using `testFail` is considered an anti-pattern since it does not tell us anything about *why* `upOnly.increment()` reverted.
@@ -81,7 +90,18 @@ The test passed because the `prank` cheatcode changed our identity to the zero a
 If we run the tests again with traces turned on, we can see that we reverted with the correct error message.
 
 ```ignore
-$ forge test -vvv
+$ forge test -vvvv
+compiling...
+no files changed, compilation skipped.
+Running 2 tests for OwnerUpOnlyTest.json:OwnerUpOnlyTest
+[PASS] testFailIncrementAsNotOwner() (gas: 4030)
+Traces:
+  [4030] OwnerUpOnlyTest::testFailIncrementAsNotOwner()
+    ├─ [0] VM::prank(0x0000000000000000000000000000000000000000)
+    │   └─ ← ()
+    ├─ [325] OwnerUpOnly::increment()
+    │   └─ ← "only the owner can increment the count"
+    └─ ← "only the owner can increment the count"
 ```
 
 To be sure in the future, let's make sure that we reverted because we are not the owner using the `expectRevert` cheatcode:
@@ -99,6 +119,7 @@ contract OwnerUpOnlyTest is DSTest {
   // setUp
   // testIncrementAsOwner
 
+  // Notice that we replaced `testFail` with `test`
   function testIncrementAsNotOwner() public {
     cheats.expectRevert(
       bytes("only the owner can increment the count")
@@ -111,8 +132,13 @@ contract OwnerUpOnlyTest is DSTest {
 
 If we run `forge test` one last time, we see that the test still passes, but this time we are sure that it will always fail if we revert for any other reason.
 
-```
+```ignore
 $ forge test
+compiling...
+success.
+Running 2 tests for OwnerUpOnlyTest.json:OwnerUpOnlyTest
+[PASS] testIncrementAsNotOwner() (gas: 4917)
+[PASS] testIncrementAsOwner() (gas: 24661)
 ```
 
 > 📚 See the [Cheatcodes Reference](/reference/cheatcodes.md) for a complete overview of all the cheatcodes.
