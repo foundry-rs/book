@@ -19,5 +19,5 @@ verbosity = 4
 
 When running `forge`, you can specify the profile to use using the `FOUNDRY_PROFILE` environment variable.
 
-> 📚 See the [`foundry.toml` Reference](/reference/config.md) for a complete overview
+> 📚 See the [`foundry.toml` Reference](../reference/config.md) for a complete overview
 > of what you can configure.
