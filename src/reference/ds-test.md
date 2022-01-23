@@ -21,21 +21,21 @@ Vm vm = Vm(HEVM_ADDRESS);
 
 `DSTest` contains the following events for logging:
 
-> log (string)
+> log(string)
 
 ```solidity
 emit log("here");
 ```
 <br>
 
-> logs (bytes)
+> logs(bytes)
 
 ```solidity
 emit logs(bytes("abcd"));
 ```
 <br>
 
-> log\_\<type\> (\<type\>)
+> log\_\<type\>(\<type\>)
 
 Where `<type>` can be `address`, `bytes32`, `int`, `uint`, `bytes`, `string`
 ```solidity
@@ -44,7 +44,7 @@ emit log_uint(amount);
 ```
 <br>
 
-> log\_named\_\<type\> (string key, \<type\> val)
+> log\_named\_\<type\>(string key, \<type\> val)
 
 Where `<type>` can be `address`, `bytes32`, `int`, `uint`, `bytes`, `string`
 ```solidity
@@ -53,7 +53,7 @@ emit log_named_uint("amount", amount);
 ```
 <br>
 
-> log\_named\_decimal\_\<type\> (string key, \<type\> val, uint decimals)
+> log\_named\_decimal\_\<type\>(string key, \<type\> val, uint decimals)
 
 Where `<type>` can be `int`, `uint`
 ```solidity
@@ -64,7 +64,7 @@ emit log_named_decimal_uint("amount", amount, 18);
 ### Assertions
 
 `DSTest` contains the following assertion functions:
-> assertTrue (bool condition)
+> assertTrue(bool condition)
 
 Asserts the `condition` is true.
 ```solidity
@@ -73,7 +73,7 @@ assertTrue(sent);
 ```
 <br>
 
-> assertEq (\<type\> a, \<type\> b)
+> assertEq(\<type\> a, \<type\> b)
 
 Where `<type>` can be `address`, `bytes32`, `int`, `uint`
 
@@ -84,7 +84,7 @@ assertEq(amount, 1e18);
 ```
 <br>
 
-> assertEqDecimal (\<type\> a, \<type\> b, uint decimals)
+> assertEqDecimal(\<type\> a, \<type\> b, uint decimals)
 
 Where `<type>` can be `int`, `uint`
 
@@ -95,7 +95,7 @@ assertEqDecimal(amount, 1e18, 18);
 ```
 <br>
 
-> assertEq32 (bytes32 a, bytes32 b)
+> assertEq32(bytes32 a, bytes32 b)
 
 Asserts `a` is equal to `b`.
 ```solidity
@@ -103,7 +103,7 @@ assertEq(bytes32("abcd"), 0x6162636400000000000000000000000000000000000000000000
 ```
 <br>
 
-> assertEq0 (bytes a, bytes b)
+> assertEq0(bytes a, bytes b)
 
 Asserts `a` is equal to `b`.
 ```solidity
@@ -113,7 +113,7 @@ assertEq0(bytes(name1), bytes(name2));
 ```
 <br>
 
-> assertGt (\<type\> a, \<type\> b)
+> assertGt(\<type\> a, \<type\> b)
 
 Where `<type>` can be `int`, `uint`
 
