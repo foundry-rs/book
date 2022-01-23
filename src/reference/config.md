@@ -122,7 +122,7 @@ An array of remappings in the following format: `<name>=<target>`.
 
 A remapping _remaps_ Solidity imports to different directories. For example, the following remapping
 
-```
+```ignore
 @openzeppelin/=node_modules/@openzeppelin/openzeppelin-contracts/
 ```
 

@@ -50,7 +50,7 @@ You can customize these remappings by creating a `remappings.txt` file in the ro
 
 Let's create a remapping called `solmate-utils` that points to the `utils` folder in the solmate repository!
 
-```
+```sh
 solmate-utils/=lib/solmate/src/utils/
 ```
 

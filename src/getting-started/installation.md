@@ -6,13 +6,13 @@ The easiest way to get Foundry is to install the latest release by using `foundr
 
 On Linux and macOS systems, this is done as follows:
 
-```
+```sh
 curl -L https://foundry.paradigm.xyz | bash
 ```
 
 This will download `foundryup`. To start install Foundry, run:
 
-```
+```sh
 foundryup
 ```
 
@@ -28,7 +28,7 @@ To build from source, you need to get [Rust](https://rust-lang.org) and Cargo. T
 
 On Linux and macOS systems, this is done as follows:
 
-```
+```sh
 curl https://sh.rustup.rs -sSf | sh
 ```
 
@@ -38,6 +38,6 @@ On Windows, download and run `rustup-init` from [rustup.rs](https://rustup.rs). 
 
 After this, run the following to build Foundry from source:
 
-```
+```sh
 cargo install --git https://github.com/gakonst/foundry --bins --locked
 ```

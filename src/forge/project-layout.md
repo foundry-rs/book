@@ -2,7 +2,7 @@
 
 Forge is flexible on how you structure your project. By default, the structure is:
 
-```
+```ignore
 .
 ├── remappings.txt
 ├── foundry.toml
