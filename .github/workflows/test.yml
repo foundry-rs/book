@@ -22,5 +22,5 @@ jobs:
         run: mdbook test
 
       - name: Deploy
-        if: ${{ github.event.name == 'push' }}
+        if: ${{ github.event_name == 'push' }}
         uses: ./.github/workflows/deploy.yml@master
