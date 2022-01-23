@@ -61,6 +61,5 @@ Forge uses the following keywords in tests:
 
 It is possible to use other testing libraries or roll your own. For example, if you find yourself lacking a special type of assertion, you could extend `ds-test`.
 
-> 👋 **No experience with `ds-test`?**
->
-> See our [`ds-test` Reference](/reference/ds-test.md) if you're unfamiliar with the library.
+> 📚 See the [`ds-test` Reference](/reference/ds-test.md) for a complete overview of
+> the logging functionality and assertions in `ds-test`.
