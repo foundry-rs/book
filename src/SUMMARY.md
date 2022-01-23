@@ -25,3 +25,4 @@
 - [Reference](./reference/index.md)
   - [`foundry.toml` Reference](./reference/config.md)
   - [`ds-test` Reference](./reference/ds-test.md)
+  - [Cheatcodes Reference](./reference/cheatcodes.md)
