@@ -123,73 +123,73 @@ assertGt(1, 1);
 ```
 <br>
 
-> assertGtDecimal (\<type\> a, \<type\> b, uint decimals)
+> assertGtDecimal(\<type\> a, \<type\> b, uint decimals)
 
 Where `<type>` can be `int`, `uint`
 
 Asserts  `a` is greater than or equal to `b`.
 ```solidity
-assertGt(1, 1, 0);
+assertGtDecimal(1, 1, 0);
 ```
 <br>
 
-> assertGe (\<type\> a, \<type\> b)
+> assertGe(\<type\> a, \<type\> b)
 
 Where `<type>` can be `int`, `uint`
 
 Asserts  `a` is greater than `b`.
 ```solidity
-assertGt(1, 0);
+assertGe(1, 0);
 ```
 <br>
 
-> assertGeDecimal (\<type\> a, \<type\> b, uint decimals)
+> assertGeDecimal(\<type\> a, \<type\> b, uint decimals)
 
 Where `<type>` can be `int`, `uint`
 
 Asserts  `a` is greater than `b`.
 ```solidity
-assertGt(1, 0, 0);
+assertGeDecimal(1, 0, 0);
 ```
 <br>
 
-> assertLt (\<type\> a, \<type\> b)
+> assertLt(\<type\> a, \<type\> b)
 
 Where `<type>` can be `int`, `uint`
 
 Asserts  `a` is less than or equal to `b`.
 ```solidity
-assertGt(1, 1);
+assertLt(1, 1);
 ```
 <br>
 
-> assertLtDecimal (\<type\> a, \<type\> b, uint decimals)
+> assertLtDecimal(\<type\> a, \<type\> b, uint decimals)
 
 Where `<type>` can be `int`, `uint`
 
 Asserts  `a` is less than or equal to `b`.
 ```solidity
-assertGt(1, 1, 0);
+assertLtDecimal(1, 1, 0);
 ```
 <br>
 
-> assertLe (\<type\> a, \<type\> b)
+> assertLe(\<type\> a, \<type\> b)
 
 Where `<type>` can be `int`, `uint`
 
 Asserts  `a` is less than `b`.
 ```solidity
-assertGt(0, 1);
+assertLe(0, 1);
 ```
 <br>
 
-> assertLeDecimal (\<type\> a, \<type\> b, uint decimals)
+> assertLeDecimal(\<type\> a, \<type\> b, uint decimals)
 
 Where `<type>` can be `int`, `uint`
 
 Asserts  `a` is less than `b`.
 ```solidity
-assertGt(0, 1, 0);
+assertLeDecimal(0, 1, 0);
 ```
 <br>
 
