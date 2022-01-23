@@ -7,7 +7,7 @@ The easiest way to get Foundry is to install the latest release by using `foundr
 On Linux and macOS systems, this is done as follows:
 
 ```
-curl https://raw.githubusercontent.com/gakonst/foundry/master/foundryup/install | bash
+curl -L https://foundry.paradigm.xyz | bash
 ```
 
 This will download `foundryup`. To start install Foundry, run:
