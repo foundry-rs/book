@@ -21,6 +21,7 @@ jobs:
       - name: Run tests
         run: mdbook test
 
-      - name: Deploy
-        if: ${{ github.event_name == 'push' }}
-        uses: ./.github/workflows/deploy.yml@master
+  deploy:
+    needs: [test]
+    if: ${{ github.event_name == 'push' }}
+    uses: onbjerg/foundry-book/.github/workflows/deploy.yml@master
