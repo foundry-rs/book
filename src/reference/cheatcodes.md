@@ -76,6 +76,10 @@ function warp(uint256) external;
 ```
 
 Sets `block.timestamp`.
+```solidity
+vm.warp(1641070800);
+emit log_uint(block.timestamp); // 1641070800
+```
 
 #### `roll`
 
@@ -84,6 +88,10 @@ function roll(uint256) external;
 ```
 
 Sets `block.number`.
+```solidity
+vm.roll(100);
+emit log_uint(block.number); // 100
+```
 
 #### `fee`
 
@@ -92,6 +100,10 @@ function fee(uint256) external;
 ```
 
 Sets `block.basefee`.
+```solidity
+vm.fee(25 gwei);
+emit log_uint(block.basefee); // 25000000000
+```
 
 #### `load`
 
@@ -100,7 +112,14 @@ function load(address account, bytes32 slot) external returns (bytes32);
 ```
 
 Loads the value from storage slot `slot` on account `account`.
+```solidity
+/// contract LeetContract {
+///     uint256 private leet = 1337; // slot 0
+/// }
 
+bytes32 leet = vm.load(address(leetContract), bytes32(uint256(0)));
+emit log_uint(uint256(leet)); // 1337
+```
 
 #### `store`
 
@@ -109,6 +128,15 @@ function store(address account, bytes32 slot, bytes32 value) external;
 ```
 
 Stores the value `value` in storage slot `slot` on account `account`.
+```solidity
+/// contract LeetContract {
+///     uint256 private leet = 1337; // slot 0
+/// }
+
+vm.store(address(leetContract), bytes32(uint256(0)), bytes32(uint256(31337)));
+bytes32 leet = vm.load(address(leetContract), bytes32(uint256(0)));
+emit log_uint(uint256(leet)); // 31337
+```
 
 #### `sign`
 
@@ -119,6 +147,13 @@ function sign(uint256 privateKey, bytes32 digest) external returns (uint8 v, byt
 Signs a digest `digest` with private key `privateKey`, returning `(v, r, s)`.
 
 This is useful for testing functions that take signed data and performs an `ecrecover` to verify the signer.
+```solidity
+address alice = vm.addr(1);
+bytes32 hash = keccak256("Signed by Alice");
+(uint8 v, bytes32 r, bytes32 s) = vm.sign(1, hash);
+address signer = ecrecover(hash, v, r, s);
+assertEq(alice, signer); // [PASS]
+```
 
 #### `addr`
 
@@ -127,7 +162,10 @@ function addr(uint256 privateKey) external returns (address);
 ```
 
 Computes the address for a given private key.
-
+```solidity
+address alice = vm.addr(1);
+emit log_address(alice); // 0x7e5f4552091a69125d5dfcb7b8c2659029395bdf
+```
 
 #### `ffi`
 
@@ -146,6 +184,12 @@ function prank(address) external;
 ```
 
 Sets `msg.sender` to the specified address **for the next call**. "The next call" includes static calls as well, but not calls to the cheat code address.
+```solidity
+/// function withdraw() public onlyOwner {...}
+
+vm.prank(ownersAddress);
+myContract.withdraw(); // [PASS]
+```
 
 ##### Alternative Signature
 
@@ -187,6 +231,11 @@ function deal(address who, uint256 newBalance) external;
 ```
 
 Sets the balance of an address `who` to `newBalance`.
+```solidity
+address alice = address(1);
+vm.deal(alice, 1 ether);
+log_uint256(alice.balance); // 1000000000000000000
+```
 
 #### `etch`
 
@@ -195,6 +244,12 @@ function etch(address who, bytes calldata code) external;
 ```
 
 Sets the bytecode of an address `who` to `code`.
+```solidity
+address code = address(awesomeContract).code;
+address targetAddr = address(1);
+vm.etch(targetAddr, code);
+log_bytes(address(targetAddr).code); // 0x6080604052348015610010...
+```
 
 #### `expectRevert`
 
@@ -247,6 +302,19 @@ function accesses(address) external returns (bytes32[] memory reads, bytes32[] m
 Gets all storage slots that have been read (`reads`) or written to (`writes`) on an address.
 
 Note that [`record`](#record) must be called first.
+```solidity
+/// contract NumsContract {
+///     uint256 public num1 = 100; // slot 0
+///     uint256 public num2 = 200; // slot 1
+/// }
+
+vm.record();
+numsContract.num2();
+(bytes32[] memory reads, bytes32[] memory writes) = vm.accesses(
+  address(myContract)
+);
+emit log_uint(uint256(reads[0])); // 1
+```
 
 #### `expectEmit`
 
@@ -338,6 +406,13 @@ Expects at least one call to address `where` where the call data either strictly
 When a call is made to `where` the call data is first checked to see if it matches in its entirety with `data`. If not, the call data is checked to see if there is a partial match, with the match starting at the first byte of the call data.
 
 If the test terminates without the call being made, the test fails.
+```solidity
+bytes4 selector = bytes4(keccak256("fulfillRandomness(bytes32,uint256)"));
+bytes memory expectedData = abi.encodeWithSelector(selector, 999, 5647236456456);
+vm.expectCall(address(awesomeContract), expectedData);
+vrfCoordinatorMock.callBackWithRandomness(bytes32(uint256(999)), 5647236456456, address(awesomeContract));
+// [PASS]
+```
 
 #### `getCode`
 
