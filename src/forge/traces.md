@@ -18,6 +18,8 @@ If your terminal supports color, the traces will also come with a variety of col
 - **Green**: For calls that do not revert
 - **Red**: For reverting calls
 - **Blue**: For calls to cheat codes
+- **Cyan**: For emitted logs
+- **Yellow**: For contract deployments
 
 The gas usage (marked in square brackets) is for the entirety of the function call. You may notice, however, that sometimes the gas usage of one trace does not exactly match the gas usage of all its subtraces:
 
