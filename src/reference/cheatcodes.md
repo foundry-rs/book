@@ -70,48 +70,95 @@ interface CheatCodes {
 This section documents all cheat codes, gotchas, and provides usage examples.
 
 #### `warp`
-
 ```solidity
 function warp(uint256) external;
 ```
 
 Sets `block.timestamp`.
+##### Example
+```solidity
+cheats.warp(1641070800);
+emit log_uint(block.timestamp); // 1641070800
+```
+
+<br>
+
+---
 
 #### `roll`
-
 ```solidity
 function roll(uint256) external;
 ```
 
 Sets `block.number`.
+##### Example
+```solidity
+cheats.roll(100);
+emit log_uint(block.number); // 100
+```
+
+<br>
+
+---
 
 #### `fee`
-
 ```solidity
 function fee(uint256) external;
 ```
 
 Sets `block.basefee`.
+##### Example
+```solidity
+cheats.fee(25 gwei);
+emit log_uint(block.basefee); // 25000000000
+```
+
+<br>
+
+---
 
 #### `load`
-
 ```solidity
 function load(address account, bytes32 slot) external returns (bytes32);
 ```
 
 Loads the value from storage slot `slot` on account `account`.
+##### Example
+```solidity
+/// contract LeetContract {
+///     uint256 private leet = 1337; // slot 0
+/// }
 
+bytes32 leet = cheats.load(address(leetContract), bytes32(uint256(0)));
+emit log_uint(uint256(leet)); // 1337
+```
+
+<br>
+
+---
 
 #### `store`
-
 ```solidity
 function store(address account, bytes32 slot, bytes32 value) external;
 ```
 
 Stores the value `value` in storage slot `slot` on account `account`.
+##### Example
+```solidity
+/// contract LeetContract {
+///     uint256 private leet = 1337; // slot 0
+/// }
+
+cheats.store(address(leetContract), bytes32(uint256(0)), bytes32(uint256(31337)));
+bytes32 leet = cheats.load(address(leetContract), bytes32(uint256(0)));
+emit log_uint(uint256(leet)); // 31337
+```
+
+<br>
+
+---
 
 #### `sign`
-
 ```solidity
 function sign(uint256 privateKey, bytes32 digest) external returns (uint8 v, bytes32 r, bytes32 s);
 ```
@@ -119,18 +166,36 @@ function sign(uint256 privateKey, bytes32 digest) external returns (uint8 v, byt
 Signs a digest `digest` with private key `privateKey`, returning `(v, r, s)`.
 
 This is useful for testing functions that take signed data and performs an `ecrecover` to verify the signer.
+##### Example
+```solidity
+address alice = cheats.addr(1);
+bytes32 hash = keccak256("Signed by Alice");
+(uint8 v, bytes32 r, bytes32 s) = cheats.sign(1, hash);
+address signer = ecrecover(hash, v, r, s);
+assertEq(alice, signer); // [PASS]
+```
+
+<br>
+
+---
 
 #### `addr`
-
 ```solidity
 function addr(uint256 privateKey) external returns (address);
 ```
 
 Computes the address for a given private key.
+##### Example
+```solidity
+address alice = cheats.addr(1);
+emit log_address(alice); // 0x7e5f4552091a69125d5dfcb7b8c2659029395bdf
+```
 
+<br>
+
+---
 
 #### `ffi`
-
 ```solidity
 function ffi(string[] calldata) external returns (bytes memory);
 ```
@@ -139,6 +204,10 @@ Calls an arbitrary command if [`ffi`](./config.md#ffi) is enabled.
 
 It is generally advised to use this cheat code as a last resort, and to not enable it by default, as anyone who can change the tests of a project will be able to execute arbitrary commands on devices that run the tests.
 
+<br>
+
+---
+
 #### `prank`
 
 ```solidity
@@ -146,6 +215,12 @@ function prank(address) external;
 ```
 
 Sets `msg.sender` to the specified address **for the next call**. "The next call" includes static calls as well, but not calls to the cheat code address.
+```solidity
+/// function withdraw() public onlyOwner {...}
+
+cheats.prank(ownersAddress);
+myContract.withdraw(); // [PASS]
+```
 
 ##### Alternative Signature
 
@@ -179,25 +254,46 @@ function stopPrank() external;
 
 Resets `msg.sender` to [`FOUNDRY_SENDER`](./config.md#sender). Always used in conjunction with [`startPrank`](#startprank).
 
+<br>
+
+---
 
 #### `deal`
-
 ```solidity
 function deal(address who, uint256 newBalance) external;
 ```
 
 Sets the balance of an address `who` to `newBalance`.
+##### Example
+```solidity
+address alice = address(1);
+cheats.deal(alice, 1 ether);
+log_uint256(alice.balance); // 1000000000000000000
+```
+
+<br>
+
+---
 
 #### `etch`
-
 ```solidity
 function etch(address who, bytes calldata code) external;
 ```
 
 Sets the bytecode of an address `who` to `code`.
+##### Example
+```solidity
+address code = address(awesomeContract).code;
+address targetAddr = address(1);
+cheats.etch(targetAddr, code);
+log_bytes(address(targetAddr).code); // 0x6080604052348015610010...
+```
+
+<br>
+
+---
 
 #### `expectRevert`
-
 ```solidity
 function expectRevert(bytes calldata msg) external;
 ```
@@ -215,7 +311,7 @@ To use `expectRevert` with a custom [error type](https://docs.soliditylang.org/e
 ```solidity
 cheats.expectRevert(
   abi.encodeWithSelector(MyContract.CustomError.selector, 1, 2)
-)
+);
 ```
 
 ##### Alternative Signature
@@ -230,8 +326,11 @@ An alternative version of [`expectRevert`](#expectrevert) that only takes an err
 cheats.expectRevert(MyContract.CustomError.selector)
 ```
 
-#### `record`
+<br>
 
+---
+
+#### `record`
 ```solidity
 function record() external;
 ```
@@ -239,7 +338,6 @@ function record() external;
 Tell the VM to start recording all storage reads and writes. To access the reads and writes, use [`accesses`](#accesses).
 
 #### `accesses`
-
 ```solidity
 function accesses(address) external returns (bytes32[] memory reads, bytes32[] memory writes);
 ```
@@ -247,9 +345,26 @@ function accesses(address) external returns (bytes32[] memory reads, bytes32[] m
 Gets all storage slots that have been read (`reads`) or written to (`writes`) on an address.
 
 Note that [`record`](#record) must be called first.
+##### Example
+```solidity
+/// contract NumsContract {
+///     uint256 public num1 = 100; // slot 0
+///     uint256 public num2 = 200; // slot 1
+/// }
+
+cheats.record();
+numsContract.num2();
+(bytes32[] memory reads, bytes32[] memory writes) = cheats.accesses(
+  address(numsContract)
+);
+emit log_uint(uint256(reads[0])); // 1
+```
+
+<br>
+
+---
 
 #### `expectEmit`
-
 ```solidity
 function expectEmit(bool checkTopic1, bool checkTopic2, bool checkTopic3, bool checkData) external;
 ```
@@ -276,8 +391,11 @@ function testERC20EmitsTransfer() public {
 }
 ```
 
-#### `mockCall`
+<br>
 
+---
+
+#### `mockCall`
 ```solidity
 function mockCall(address where, bytes calldata data, bytes calldata retdata) external;
 ```
@@ -299,7 +417,7 @@ Mocked calls are in effect until [`clearMockedCalls`](#clearmockedcalls) is call
 
 ```solidity
 function testMockCall() public {
-  vm.mockCall(
+  cheats.mockCall(
     address(0),
     abi.encodeWithSelector(MyToken.balanceOf.selector, address(1)),
     abi.encode(10)
@@ -312,7 +430,7 @@ function testMockCall() public {
 
 ```solidity
 function testMockCall() public {
-  vm.mockCall(
+  cheats.mockCall(
     address(0),
     abi.encodeWithSelector(MyToken.balanceOf.selector),
     abi.encode(10)
@@ -325,15 +443,17 @@ function testMockCall() public {
 ```
 
 #### `clearMockedCalls`
-
 ```solidity
 function clearMockedCalls() external;
 ```
 
 Clears all mocked calls.
 
-#### `expectCall`
+<br>
 
+---
+
+#### `expectCall`
 ```solidity
 function expectCall(address where, bytes calldata data) external;
 ```
@@ -343,6 +463,18 @@ Expects at least one call to address `where` where the call data either strictly
 When a call is made to `where` the call data is first checked to see if it matches in its entirety with `data`. If not, the call data is checked to see if there is a partial match, with the match starting at the first byte of the call data.
 
 If the test terminates without the call being made, the test fails.
+##### Example
+```solidity
+bytes4 selector = bytes4(keccak256("fulfillRandomness(bytes32,uint256)"));
+bytes memory expectedData = abi.encodeWithSelector(selector, requestId, 5647236456456);
+cheats.expectCall(address(awesomeContract), expectedData);
+vrfCoordinatorMock.callBackWithRandomness(requestId, 5647236456456, address(awesomeContract));
+// [PASS]
+```
+
+<br>
+
+---
 
 #### `getCode`
 

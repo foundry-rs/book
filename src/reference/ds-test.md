@@ -14,7 +14,7 @@ contract ContractTest is DSTest {}
 You can get the address of the cheatcodes account by accessing the `HEVM_ADDRESS` constant:
 
 ```solidity
-Vm vm = Vm(HEVM_ADDRESS);
+Cheats cheats = Cheats(HEVM_ADDRESS);
 ```
 
 ### Logging
@@ -25,6 +25,7 @@ Vm vm = Vm(HEVM_ADDRESS);
 
 ```solidity
 emit log("here");
+// here
 ```
 <br>
 
@@ -32,6 +33,7 @@ emit log("here");
 
 ```solidity
 emit logs(bytes("abcd"));
+// 0x6162636400000000000000000000000000000000000000000000000000000000
 ```
 <br>
 
@@ -41,6 +43,7 @@ Where `<type>` can be `address`, `bytes32`, `int`, `uint`, `bytes`, `string`
 ```solidity
 uint256 amount = 1 ether;
 emit log_uint(amount);
+// 1000000000000000000
 ```
 <br>
 
@@ -50,6 +53,7 @@ Where `<type>` can be `address`, `bytes32`, `int`, `uint`, `bytes`, `string`
 ```solidity
 uint256 amount = 1 ether;
 emit log_named_uint("amount", amount);
+// amount: 1000000000000000000
 ```
 <br>
 
@@ -59,6 +63,7 @@ Where `<type>` can be `int`, `uint`
 ```solidity
 uint256 amount = 1 ether;
 emit log_named_decimal_uint("amount", amount, 18);
+// amount: 1.000000000000000000
 ```
 
 ### Assertions
@@ -107,7 +112,7 @@ Asserts `a` is equal to `b`.
 ```solidity
 string memory name1 = "Alice";
 string memory name2 = "Bob";
-assertEq0(bytes(name1), bytes(name2));
+assertEq0(bytes(name1), bytes(name2)); // [FAIL]
 ```
 <br>
 
