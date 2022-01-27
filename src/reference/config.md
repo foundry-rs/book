@@ -43,7 +43,7 @@ sender = '0x00a329c0648769a73afac7f9381e08fb43dbea72'         # the address of `
 tx_origin = '0x00a329c0648769a73afac7f9381e08fb43dbea72'      # the address of `tx.origin` in tests
 initial_balance = '0xffffffffffffffffffffffff'                # the initial balance of the test contract
 block_number = 0                                              # the block number we are at in tests
-chain_id = 1                                                  # the chain id we are on in tests
+chain_id = 99                                                 # the chain id we are on in tests
 gas_limit = 9223372036854775807                               # the gas limit in tests
 gas_price = 0                                                 # the gas price (in wei) in tests
 block_base_fee_per_gas = 0                                    # the base fee (in wei) in tests
@@ -269,7 +269,7 @@ The value of `block.number` in tests.
 ##### `chain_id`
 
 - Type: integer
-- Default: 1
+- Default: 99
 - Environment: `FOUNDRY_CHAIN_ID` or `DAPP_CHAIN_ID`
 
 The value of the `chainid` opcode in tests.
