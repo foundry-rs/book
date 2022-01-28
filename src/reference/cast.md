@@ -6,7 +6,7 @@
 
 This is a complete overview of all the available `cast` subcommands. For detailed descriptions and example usage, see below.
 
-```
+```text
 --abi-decode             Decode ABI-encoded hex output data. Pass --input to decode as input, or use
                             `--calldata-decode`
 --calldata-decode        Decode ABI-encoded hex input data. Use `--abi-decode` to decode output data
