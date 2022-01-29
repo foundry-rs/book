@@ -25,4 +25,6 @@ $ cast 4byte-decode 0x1F1F897F676d0000000000000000000000000000000000000000000000
 ```
 <br>
 
-> 📚 See the [`cast` Reference](../reference/cast.md) for a complete overview of all the available subcommands.
+> 📚 Reference
+> 
+> See the [`cast` Reference](../reference/cast.md) for a complete overview of all the available subcommands.

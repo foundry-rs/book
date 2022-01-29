@@ -314,7 +314,6 @@ $ cast basefee --rpc-url <your_rpc_url>
 Where:
 - `[OPTIONS]` are `--full` and `--json`
 - `<BLOCK>` is the block you want to query, can also be `earliest`,`latest`,`pending`
-- `[FIELD]` is the field to print the value of
 
 Print information about a block or only one of its fields.
 

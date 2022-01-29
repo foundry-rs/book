@@ -16,6 +16,10 @@ To get started with Foundry, install Foundry and set up your first project.
 
 The guide will give you all you need to know about how to use `forge` to develop, test, and deploy smart contracts.
 
+**[Cast Guide](cast)**
+
+Learn how to use `cast` to interact with smart contracts, send transactions, and get chain data from the command-line.
+
 **[Additional Guides](guides)**
 
 More guides on various topics.
