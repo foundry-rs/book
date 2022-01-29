@@ -319,7 +319,7 @@ Where:
 Print information about a block or only one of its fields.
 
 ```bash
-$ cast block --rpc-url $RPCURL latest
+$ cast block --rpc-url <your_rpc_url> latest
 baseFeePerGas        "0x1823d83b1f"
 difficulty           "0x2d3af62284c2ab"
 extraData            "0x466c6578706f6f6c2f53312f55532d57657374202d204d656c626f75726e65"
