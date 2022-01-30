@@ -140,5 +140,8 @@ Running 2 tests for OwnerUpOnlyTest.json:OwnerUpOnlyTest
 [PASS] testIncrementAsNotOwner() (gas: 4917)
 [PASS] testIncrementAsOwner() (gas: 24661)
 ```
+<br>
 
-> 📚 See the [Cheatcodes Reference](../reference/cheatcodes.md) for a complete overview of all the available cheatcodes.
+> 📚 Reference
+> 
+> See the [Cheatcodes Reference](../reference/cheatcodes.md) for a complete overview of all the available cheatcodes.
