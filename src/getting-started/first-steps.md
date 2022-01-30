@@ -41,3 +41,8 @@ no files changed, compilation skipped.
 Running 1 test for ContractTest.json:ContractTest
 [PASS] testExample() (gas: 254)
 ```
+<br>
+
+> 💡 Tip
+> 
+> You can always print help for any command (or their subcommands) by adding `--help` at the end.

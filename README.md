@@ -1,4 +1,4 @@
-## Foundry Book
+## 📖 Foundry Book
 
 A book on all things Foundry.
 

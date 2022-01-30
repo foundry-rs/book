@@ -19,6 +19,8 @@
   - [Continous Integration](./forge/continous-integration.md)
   - [Debugger](./forge/debugger.md)
   - [Cache](./forge/cache.md)
+- [Cast Guide](./cast/index.md)
+  - [Overview of `cast`](./cast/cast-overview.md)
 - [Additional Guides](./guides/index.md)
   - [Incremental Adoption](./guides/incremental-adoption.md)
   - [Integrating with VSCode](./guides/vscode.md)
@@ -27,3 +29,4 @@
   - [`foundry.toml` Reference](./reference/config.md)
   - [`ds-test` Reference](./reference/ds-test.md)
   - [Cheatcodes Reference](./reference/cheatcodes.md)
+  - [`cast` Reference](./reference/cast.md)
