@@ -314,6 +314,9 @@ cheats.expectRevert(
 );
 ```
 
+After calling `cheats.expectRevert()`, calls to other cheat codes before the reverting call are ignored.
+This means, for example, we can call `cheats.prank(user)` immediately before the reverting call.
+
 ##### Alternative Signature
 
 ```solidity
@@ -388,6 +391,47 @@ function testERC20EmitsTransfer() public {
 
   // We perform the call.
   myToken.transfer(address(1), 10);
+}
+```
+
+<br>
+
+Calls to other cheat codes before the final call are ignored, meaning we can also do something like this:
+
+```solidity
+function testERC20EmitsTransfer() public {
+  // The first two lines are the same as above.
+  cheats.expectEmit(true, true, false, true);
+  emit MyToken.Transfer(address(alice), address(1), 10);
+
+  // Use the `prank` cheat code to impersonate a user.
+  cheats.prank(address(alice));
+
+  // We perform the call.
+  myToken.transfer(address(1), 10);
+}
+```
+
+<br>
+
+We can also assert that multiple events are emitted in a single call. However this currently requires that we only test event emission and not topics or data. For example:
+
+```solidity
+function testERC20EmitsBatchTransfer() public {
+  // We declare multiple expected transfer events
+  for (uint256 i = 0; i < users.length; i++) {
+    // Each parameter must be set to false for batch event emission tests to work.
+    vm.expectEmit(false, false, false, false);
+    emit Transfer(address(this), users[i], 10);
+  }
+
+  // We also expect a custom `BatchTransfer(uint256 numberOfTransfers)` event.
+  // Again, each expectEmit parameter must be false.
+  vm.expectEmit(false, false, false, false);
+  emit BatchTransfer(users.length);
+
+  // We perform the call.
+  myToken.batchTransfer(users, 10);
 }
 ```
 
