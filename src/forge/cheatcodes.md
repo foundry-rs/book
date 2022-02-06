@@ -142,6 +142,6 @@ Running 2 tests for OwnerUpOnlyTest.json:OwnerUpOnlyTest
 ```
 <br>
 
-> 📚 Reference
+> 📚 **Reference**
 > 
 > See the [Cheatcodes Reference](../reference/cheatcodes.md) for a complete overview of all the available cheatcodes.

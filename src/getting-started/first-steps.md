@@ -43,6 +43,6 @@ Running 1 test for ContractTest.json:ContractTest
 ```
 <br>
 
-> 💡 Tip
+> 💡 **Tip**
 > 
-> You can always print help for any command (or their subcommands) by adding `--help` at the end.
+> You can always print help for any subcommand (or their subcommands) by adding `--help` at the end.
