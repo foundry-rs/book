@@ -215,10 +215,13 @@ function prank(address) external;
 ```
 
 Sets `msg.sender` to the specified address **for the next call**. "The next call" includes static calls as well, but not calls to the cheat code address.
-```solidity
-/// function withdraw() public onlyOwner {...}
 
-cheats.prank(ownersAddress);
+##### Example
+```solidity
+/// function withdraw() public {
+///     require(msg.sender == owner);
+
+cheats.prank(owner);
 myContract.withdraw(); // [PASS]
 ```
 
@@ -421,13 +424,13 @@ function testERC20EmitsBatchTransfer() public {
   // We declare multiple expected transfer events
   for (uint256 i = 0; i < users.length; i++) {
     // Each parameter must be set to false for batch event emission tests to work.
-    vm.expectEmit(false, false, false, false);
+    cheats.expectEmit(false, false, false, false);
     emit Transfer(address(this), users[i], 10);
   }
 
   // We also expect a custom `BatchTransfer(uint256 numberOfTransfers)` event.
   // Again, each expectEmit parameter must be false.
-  vm.expectEmit(false, false, false, false);
+  cheats.expectEmit(false, false, false, false);
   emit BatchTransfer(users.length);
 
   // We perform the call.
@@ -452,7 +455,9 @@ If a match is found, then `retdata` is returned from the call.
 
 Mocked calls are in effect until [`clearMockedCalls`](#clearmockedcalls) is called.
 
-> **Note:** Calls to mocked addresses may revert if there is no code on the address.
+> 💬 **Note**
+> 
+> Calls to mocked addresses may revert if there is no code on the address.
 > This is because Solidity inserts an `extcodesize` check before some contract calls.
 >
 > To circumvent this, use the [`etch`](#etch) cheatcode if the mocked address has no code.

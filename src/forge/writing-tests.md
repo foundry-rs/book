@@ -31,6 +31,10 @@ contract BasicTest is DSTest {
     function testNumberIs42() public {
         assertEq(testNumber, 42);
     }
+
+    function testFailUnderflow() public {
+        testNumber -= 43;
+    }
 }
 ```
 
@@ -38,29 +42,28 @@ Forge uses the following keywords in tests:
 
 - `setUp`: An optional function invoked before each test case is run
     ```solidity
-    Contract contract;
+    uint256 testNumber;
 
     function setUp() public {
-        contract = new Contract();
+        testNumber = 42;
     }
     ```
 - `test`: Functions prefixed with `test` are run as a test case
     ```solidity
-    function testIncrement() public {
-        contract.increment();
-        assertEq(contract.counter(), 1);
+    function testNumberIs42() public {
+        assertEq(testNumber, 42);
     }
     ```
 - `testFail`: The inverse of the `test` prefix - if the function does not revert, the test fails.
     ```solidity
-    function testFailDecrement() public {
-        contract.decrement(); // expected to fail
+    function testFailUnderflow() public {
+        testNumber -= 43;
     }
     ```
 <br>
 
 It is possible to use other testing libraries or roll your own. For example, if you find yourself lacking a special type of assertion, you could extend `ds-test`.
 
-> 📚 Reference
+> 📚 **Reference**
 > 
 > See the [`ds-test` Reference](../reference/ds-test.md) for a complete overview of the logging functionality and assertions in `ds-test`.

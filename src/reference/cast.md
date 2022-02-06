@@ -265,7 +265,7 @@ $ cast 4byte-decode 0x1F1F897F676d0000000000000000000000000000000000000000000000
 ```
 <br>
 
-> abi-encode \<SIG\> \<PARAMS\>
+> abi-encode \<SIG\> \<ARGS\>
 
 Endcode the arguments with the function signature using ABI, exculding the selector.
 
@@ -337,7 +337,7 @@ $ cast block-number --rpc-url <your_rpc_url>
 ```
 <br>
 
-> call \[OPTIONS\] \<ADDRESS\> \<SIG\> \[PARAMS\] --rpc-url \<RPC_URL\>
+> call \[OPTIONS\] \<ADDRESS\> \<SIG\> \[ARGS\] --rpc-url \<RPC_URL\>
 
 Where `[OPTIONS]` are:
 - `--chain <CHAIN>` (default: mainnet)
@@ -362,9 +362,9 @@ $ cast call 0x6b175474e89094c44da98b954eedeac495271d0f "totalSupply()(uint256)" 
 ```
 <br>
 
-> calldata \<SIG\> \[PARAMS\]...
+> calldata \<SIG\> \[ARGS\]
 
-Pack a function signature and parameters into hexadecimal calldata.
+Pack a function signature and arguments into hexadecimal calldata.
 
 ```bash
 $ cast calldata "fulfillRandomness(bytes32,uint256)" 0x676d000000000000000000000000000000000000000000000000000000000000 999
@@ -416,7 +416,7 @@ prints the bash completions script here...
 ```
 <br>
 
-> estimate \[OPTIONS\] \<ADDRESS\> \<SIG\> \[PARAMS\] --rpc-url \<RPC_URL\>
+> estimate \[OPTIONS\] \<ADDRESS\> \<SIG\> \[ARGS\] --rpc-url \<RPC_URL\>
 
 Where `[OPTIONS]` are:
 - `--chain <CHAIN>` (default: mainnet)
@@ -505,7 +505,7 @@ $ cast resolve-name --rpc-url <your_rpc_url> "vitalik.eth"
 ```
 <br>
 
-> send \[OPTIONS\] \<ADDRESS\> \<SIG\> \[PARAMS\] --rpc-url \<RPC_URL\>
+> send \[OPTIONS\] \<ADDRESS\> \<SIG\> \[ARGS\] --rpc-url \<RPC_URL\>
 
 Where `[OPTIONS]` are:
 - `--chain <CHAIN>` (default: mainnet)
@@ -580,6 +580,6 @@ Signature: 0x533b4950d21c9701021abe78bab597759cb975f41d21c3583b8c910c7f66692949e
 
 <br><br>
 
-> ℹ️ Information
+> ℹ️ **Information**
 >
 > You can print help for any subcommand (or their subcommands) by adding `--help` at the end.
