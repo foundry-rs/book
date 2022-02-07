@@ -90,4 +90,4 @@ forge remove lib/ds-test
 
 Forge also supports Hardhat-style projects where dependencies are npm packages (stored in `node_modules`) and contracts are stored in `contracts` as opposed to source.
 
-To enable Hardhat compatability mode pass the `--hh` flag.
+To enable Hardhat compatibility mode pass the `--hh` flag.
