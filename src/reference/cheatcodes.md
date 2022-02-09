@@ -62,6 +62,8 @@ interface CheatCodes {
     // Calldata can either be strict or a partial match
     function expectCall(address, bytes calldata) external;
     function getCode(string calldata) external returns (bytes memory);
+    // Label an address in test traces
+    function label(address addr, string label) external;
 }
 ```
 
@@ -532,3 +534,16 @@ function getCode(string calldata) external returns (bytes memory);
 ```
 
 Returns the bytecode for a contract in the project given the path to the contract.
+
+<br>
+
+---
+
+#### `label`
+
+```solidity
+function label(address addr, string label) external;
+```
+
+Sets a label `label` for `addr` in test traces. If an address is labelled, the label will show up in test traces instead of the address.
+
