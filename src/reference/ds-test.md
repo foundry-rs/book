@@ -124,7 +124,7 @@ function assertEq32(bytes32 a, bytes32 b, string memory err) internal;
 function assertEq0(bytes memory a, bytes memory b) internal;
 function assertEq0(bytes memory a, bytes memory b, string memory err) internal;
 
-// Assert  `a` is greater than or equal to `b`
+// Assert  `a` is greater than `b`
 function assertGt(uint a, uint b) internal;
 function assertGt(uint a, uint b, string memory err) internal;
 function assertGt(int a, int b) internal;
@@ -134,7 +134,7 @@ function assertGtDecimal(int a, int b, uint decimals, string memory err) interna
 function assertGtDecimal(uint a, uint b, uint decimals) internal;
 function assertGtDecimal(uint a, uint b, uint decimals, string memory err) internal;
 
-// Assert  `a` is greater than `b`
+// Assert  `a` is greater than or equal to `b`
 function assertGe(uint a, uint b) internal;
 function assertGe(uint a, uint b, string memory err) internal;
 function assertGe(int a, int b) internal;
@@ -144,7 +144,7 @@ function assertGeDecimal(int a, int b, uint decimals, string memory err) interna
 function assertGeDecimal(uint a, uint b, uint decimals) internal;
 function assertGeDecimal(uint a, uint b, uint decimals, string memory err) internal;
 
-// Assert  `a` is less than or equal to `b`
+// Assert  `a` is lesser than `b`
 function assertLt(uint a, uint b) internal;
 function assertLt(uint a, uint b, string memory err) internal;
 function assertLt(int a, int b) internal;
@@ -154,7 +154,7 @@ function assertLtDecimal(int a, int b, uint decimals, string memory err) interna
 function assertLtDecimal(uint a, uint b, uint decimals) internal;
 function assertLtDecimal(uint a, uint b, uint decimals, string memory err) internal;
 
-// Assert  `a` is less than `b`
+// Assert  `a` is lesser than or equal to `b`
 function assertLe(uint a, uint b) internal;
 function assertLe(uint a, uint b, string memory err) internal;
 function assertLe(int a, int b) internal;
@@ -222,9 +222,9 @@ assertEq0(bytes(name1), bytes(name2)); // [FAIL]
 
 Where `<type>` can be `int`, `uint`
 
-Asserts  `a` is greater than or equal to `b`.
+Asserts  `a` is greater than `b`.
 ```solidity
-assertGt(1 ether, 1e18 wei);
+assertGt(2 ether, 1e18 wei);
 ```
 <br>
 
@@ -232,9 +232,9 @@ assertGt(1 ether, 1e18 wei);
 
 Where `<type>` can be `int`, `uint`
 
-Asserts  `a` is greater than or equal to `b`.
+Asserts  `a` is greater than `b`.
 ```solidity
-assertGtDecimal(1 ether, 1e18 wei, 18);
+assertGtDecimal(2 ether, 1e18 wei, 18);
 ```
 <br>
 
@@ -242,9 +242,9 @@ assertGtDecimal(1 ether, 1e18 wei, 18);
 
 Where `<type>` can be `int`, `uint`
 
-Asserts  `a` is greater than `b`.
+Asserts  `a` is greater than or equal to `b`.
 ```solidity
-assertGe(2 ether, 1e18 wei);
+assertGe(1 ether, 1e18 wei);
 ```
 <br>
 
@@ -252,9 +252,9 @@ assertGe(2 ether, 1e18 wei);
 
 Where `<type>` can be `int`, `uint`
 
-Asserts  `a` is greater than `b`.
+Asserts  `a` is greater than or equal to `b`.
 ```solidity
-assertGeDecimal(2 ether, 1e18 wei, 18);
+assertGeDecimal(1 ether, 1e18 wei, 18);
 ```
 <br>
 
@@ -262,9 +262,9 @@ assertGeDecimal(2 ether, 1e18 wei, 18);
 
 Where `<type>` can be `int`, `uint`
 
-Asserts  `a` is less than or equal to `b`.
+Asserts  `a` is lesser than `b`.
 ```solidity
-assertLt(1e18 wei, 1 ether);
+assertLt(1e18 wei, 2 ether);
 ```
 <br>
 
@@ -272,9 +272,9 @@ assertLt(1e18 wei, 1 ether);
 
 Where `<type>` can be `int`, `uint`
 
-Asserts  `a` is less than or equal to `b`.
+Asserts  `a` is lesser than `b`.
 ```solidity
-assertLtDecimal(1e18 wei, 1 ether, 18);
+assertLtDecimal(1e18 wei, 2 ether, 18);
 ```
 <br>
 
@@ -282,7 +282,7 @@ assertLtDecimal(1e18 wei, 1 ether, 18);
 
 Where `<type>` can be `int`, `uint`
 
-Asserts  `a` is less than `b`.
+Asserts  `a` is lesser than or equal to `b`.
 ```solidity
 assertLe(1e18 wei, 2 ether);
 ```
@@ -292,7 +292,7 @@ assertLe(1e18 wei, 2 ether);
 
 Where `<type>` can be `int`, `uint`
 
-Asserts  `a` is less than `b`.
+Asserts  `a` is lesser than or equal to `b`.
 ```solidity
 assertLeDecimal(1e18 wei, 2 ether, 18);
 ```
