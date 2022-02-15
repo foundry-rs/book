@@ -52,7 +52,7 @@ Deployed to: 0x73511669fd4de447fed18bb79bafeac93ab7f31f
  > When you write your private key you should delete `0x` in the beginning. Instead of writing `--private-key 0xac0974b...ff80` write `--private-key ac0974b...ff80`
 
 #### Error message: The method eth_feeHistory does not exist/is not available.
- > It means RPC doesn't support `eth_feeHistory` method. As a sample truffle/Ganache doesn't support this method. With `--legacy` flag you can use legacy transactions instead of `EIP1559` ones. If you do development in local environment you can also use `hardhat` instead of `ganache`
+ > It means EIP-1559 is not activated on the RPC server. With `--legacy` flag you can use legacy transactions instead of the `EIP1559` ones. If you do development in a local environment, you can also use `hardhat` instead of `ganache`
 
 #### Error message: Failed to parse tokens
  > Check your arguements which sent with `--constructor-args` make sure their types are matching contract constructor function.
