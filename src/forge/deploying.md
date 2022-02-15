@@ -5,30 +5,43 @@ Forge can deploy your conracts to given network with `forge create` command. To 
 To deploy `MyContract` to local development instance:
 ```sh
 forge create  --rpc-url http://127.0.0.1:8545 --private-key ac0974b...ff80 src/MyContract.sol:MyContract
+compiling...
+success.
+Deployer: 0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266
+Deployed to: 0x9fe46736679d2d9a65f0992f2272de9f3c7fa6e0
 ```  
 
 Alternatively you can set `ETH_RPC_URL` environment value instead of providing `--rpc-url` option if env value and command line option both provided command line will be used.
 ```sh
->export ETH_RPC_URL="http://127.0.0.1:8545/"
->forge create --private-key ac0974b...ff80 MyContract.sol:MyContract
+$ export ETH_RPC_URL="http://127.0.0.1:8545/"
+$ forge create --private-key ac0974b...ff80 MyContract.sol:MyContract
 ```
 
-When you need to send arguements to `constructor` of your smart contract you need to pass `--constructor-args` there can be multiple args. 
+Use the `--constructor-args` flag to pass arguments to the constructor.
 
 ```solidity
-contract Hello is ERC20 {
-  constructor(
+pragma solidity ^0.8.0;
+import "openz/token/ERC20/ERC20.sol";
+
+contract MyToken is ERC20 {
+    constructor(
     string memory name_,
-    string memory ticker_,
-    uint256 totalSupply_
-  ) {
-    //...
-  }
+    string memory symbol_,
+    uint256 initialSupply_
+    ) ERC20(name_, symbol_) {
+        _mint(msg.sender, initialSupply_);
+    }
 }
+
 ```
 
 ```sh
->forge create --rpc-url http://127.0.0.1:8545 --constructor-args ForgeUSD  --constructor-args FUSD  --constructor-args 1000000000 Hello.sol:Hello
+$ forge create --rpc-url http://127.0.0.1:8545 --constructor-args ForgeUSD  --constructor-args FUSD  --constructor-args 1000000000000000000000 --private-key df57...3656e MyToken.sol:MyToken
+:MyToken
+compiling...
+no files changed, compilation skipped.
+Deployer: 0x8626f6940e2eb28930efb4cef49b2d1f2c9c1199
+Deployed to: 0x73511669fd4de447fed18bb79bafeac93ab7f31f
 ```
 
 
