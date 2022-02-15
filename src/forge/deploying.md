@@ -4,7 +4,7 @@ Forge can deploy your conracts to given network with `forge create` command. To 
 
 To deploy `MyContract` to local development instance:
 ```sh
-forge create  --rpc-url http://127.0.0.1:8545 --private-key ac0974b...ff80 src/MyContract.sol:MyContract
+$ forge create  --rpc-url http://127.0.0.1:8545 --private-key ac0974b...ff80 src/MyContract.sol:MyContract
 compiling...
 success.
 Deployer: 0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266
@@ -15,6 +15,7 @@ Alternatively you can set `ETH_RPC_URL` environment value instead of providing `
 ```sh
 $ export ETH_RPC_URL="http://127.0.0.1:8545/"
 $ forge create --private-key ac0974b...ff80 MyContract.sol:MyContract
+compiling...
 ```
 
 Use the `--constructor-args` flag to pass arguments to the constructor.
