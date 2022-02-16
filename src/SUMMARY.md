@@ -16,6 +16,7 @@
     - [Understanding Traces](./forge/traces.md)
   - [Advanced Testing](./forge/advanced-testing.md)
     - [Fuzz Testing](./forge/fuzz-testing.md)
+  - [Deploying](./forge/deploying.md)
   - [Continous Integration](./forge/continous-integration.md)
   - [Debugger](./forge/debugger.md)
   - [Cache](./forge/cache.md)
