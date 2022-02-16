@@ -35,16 +35,21 @@ contract MyToken is ERC20 {
 ```sh
 $ forge create --rpc-url <your_rpc_url> --constructor-args "ForgeUSD" "FUSD" 18 1000000000000000000000 --private-key <your_private_key> src/MyToken.sol:MyToken
 ```
+
 <br>
 
-> ❓ **Troubleshoot**
-> 
-> **`Invalid character 'x' at position 1`:** Make sure the private key string does not begin with `0x`.
-> 
-> **`EIP-1559 not activated`:** EIP-1559 is not supported or not activated on the RPC server. Pass the `--legacy` flag to use legacy transactions instead of the EIP-1559 ones. If you do development in a local environment, you can also use Hardhat instead of Ganache.
->
-> **`Failed to parse tokens`**: Make sure the passed arguments are of correct type.
->
-> **`Signature error`:** Make sure the private key is correct.
+---
 
-*There is an [ongoing effort](https://github.com/gakonst/foundry/issues/402) to develop the `forge build` command to make deployment experience better.*
+#### ❓ Troubleshoot
+
+##### `Invalid character 'x' at position 1`
+Make sure the private key string does not begin with `0x`.
+
+##### `EIP-1559 not activated`
+EIP-1559 is not supported or not activated on the RPC server. Pass the `--legacy` flag to use legacy transactions instead of the EIP-1559 ones. If you do development in a local environment, you can also use Hardhat instead of Ganache.
+
+##### `Failed to parse tokens`
+Make sure the passed arguments are of correct type.
+
+##### `Signature error`
+Make sure the private key is correct.
