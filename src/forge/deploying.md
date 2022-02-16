@@ -1,66 +1,53 @@
 ## Deploying
 
-Forge can deploy your conracts to given network with `forge create` command. To deploy your contract you need to provide rpc url and private key of the address which going to deploy the contract to network.
+Forge can deploy smart contracts to a given network with the `forge create` command.
 
-To deploy `MyContract` to local development instance:
+To deploy a contract, you must provide a RPC URL (env: `ETH_RPC_URL`) and the private key of the account that will deploy the contract.
+
+To deploy `MyContract` to a network:
 ```sh
-$ forge create  --rpc-url http://127.0.0.1:8545 --private-key ac0974b...ff80 src/MyContract.sol:MyContract
+$ forge create --rpc-url <your_rpc_url> --private-key <your_private_key> src/MyContract.sol:MyContract
 compiling...
 success.
-Deployer: 0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266
-Deployed to: 0x9fe46736679d2d9a65f0992f2272de9f3c7fa6e0
-```  
-
-Alternatively you can set `ETH_RPC_URL` environment value instead of providing `--rpc-url` option if env value and command line option both provided command line will be used.
-```sh
-$ export ETH_RPC_URL="http://127.0.0.1:8545/"
-$ forge create --private-key ac0974b...ff80 MyContract.sol:MyContract
-compiling...
+Deployer: 0xa735b3c25f...
+Deployed to: 0x4054415432...
+Transaction hash: 0x6b4e0ff93a...
 ```
 
-Use the `--constructor-args` flag to pass arguments to the constructor.
+Use the `--constructor-args` flag to pass arguments to the constructor:
 
 ```solidity
 pragma solidity ^0.8.0;
-import "openz/token/ERC20/ERC20.sol";
+import {ERC20} from "solmate/tokens/ERC20.sol";
 
 contract MyToken is ERC20 {
     constructor(
-    string memory name_,
-    string memory symbol_,
-    uint256 initialSupply_
-    ) ERC20(name_, symbol_) {
-        _mint(msg.sender, initialSupply_);
+        string memory name,
+        string memory symbol,
+        uint8 decimals,
+        uint256 initialSupply
+    ) ERC20(name, symbol, decimals) {
+        _mint(msg.sender, initialSupply);
     }
 }
-
 ```
 
 ```sh
-$ forge create --rpc-url http://127.0.0.1:8545 --constructor-args ForgeUSD  --constructor-args FUSD  --constructor-args 1000000000000000000000 --private-key df57...3656e MyToken.sol:MyToken
-:MyToken
-compiling...
-no files changed, compilation skipped.
-Deployer: 0x8626f6940e2eb28930efb4cef49b2d1f2c9c1199
-Deployed to: 0x73511669fd4de447fed18bb79bafeac93ab7f31f
+$ forge create --rpc-url <your_rpc_url> --constructor-args "ForgeUSD" "FUSD" 18 1000000000000000000000 --private-key <your_private_key> src/MyToken.sol:MyToken
 ```
 
+<br>
 
+### Troubleshooting
 
-### Quick troubleshot
-#### Error message: Invalid character 'x' at position 1
- > When you write your private key you should delete `0x` in the beginning. Instead of writing `--private-key 0xac0974b...ff80` write `--private-key ac0974b...ff80`
+##### `Invalid character 'x' at position 1`
+Make sure the private key string does not begin with `0x`.
 
-#### Error message: The method eth_feeHistory does not exist/is not available.
- > It means EIP-1559 is not activated on the RPC server. With `--legacy` flag you can use legacy transactions instead of the `EIP1559` ones. If you do development in a local environment, you can also use `hardhat` instead of `ganache`
+##### `EIP-1559 not activated`
+EIP-1559 is not supported or not activated on the RPC server. Pass the `--legacy` flag to use legacy transactions instead of the EIP-1559 ones. If you do development in a local environment, you can use Hardhat instead of Ganache.
 
-#### Error message: Failed to parse tokens
- > Check your arguements which sent with `--constructor-args` make sure their types are matching contract constructor function.
+##### `Failed to parse tokens`
+Make sure the passed arguments are of correct type.
 
-#### Error message: Signature error
- > Make sure your private key is correct.
-
-
-
-
-Currently there is an ongoing effort to develop `forge build` command to make deployment experience better. Process can be seen here: https://github.com/gakonst/foundry/issues/402 
+##### `Signature error`
+Make sure the private key is correct.
