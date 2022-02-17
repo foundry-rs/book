@@ -13,7 +13,7 @@ This chapter will walk you through using `forge`, the command-line tool that tes
   - [Understanding Traces](./traces.md)
 - [Advanced Testing](./advanced-testing.md)
   - [Fuzz Testing](./fuzz-testing.md)
-- [Deploying](./deploying.md)
+- [Deploying and Verifying](./deploying.md)
 - [Continous Integration](./continous-integration.md)
 - [Debugger](./debugger.md)
 - [Cache](./cache.md)
