@@ -571,13 +571,50 @@ Where `<SUBCOMMAND>` can be:
 
 Set of wallet management utilities.
 
+Convert a private key to an address.
+
+```bash
+cast wallet address --interactive
+Insert private key: <PRIVATE_KEY>
+
+Address: 0xBC084F73B100b50057a5175816a8ce8CfaF43b1C
+```
+
+Create a new public / private keypair.
+
+```bash
+$ cast wallet new
+Successfully created new keypair.
+Address: 0x19F4aB0c5ae1245F1E06798856815D82018AFE93
+Private Key: <PRIVATE_KEY>
+```
+
+Sign a message.
+
 ```bash
 $ cast wallet sign --interactive "gm"
 Insert private key:
 
-Signature: 0x533b4950d21c9701021abe78bab597759cb975f41d21c3583b8c910c7f66692949e83dbf94968671f82ba930c284e639778ee15beefec5072697f3cab3d2cff61c
+Signature: 0x22e3ad614cf53211b2ab164b4b46a39f878606f0c9e7b412c3ceb525f039fd1d50e72bdabaef42c295be0914d8c2b720001227d8c9f8d5e13103be65a0392acd1c
 ```
 
+Create a new public / private keypair with a specific prefix.
+
+```bash
+$ cast wallet vanity --starts-with beef
+Starting to generate vanity address...
+Successfully created new keypair in 3 seconds.
+Address: 0xBEEf111188257c2008271dBD193999FD1516d787
+Private Key: <PRIVATE_KEY>
+```
+
+Verify the signature on a message.
+
+```bash
+$ cast wallet verify --address 0xBEEf111188257c2008271dBD193999FD1516d787 "gm" 0x22e3ad614cf53211b2ab164b4b46a39f878606f0c9e7b412c3ceb525f0
+39fd1d50e72bdabaef42c295be0914d8c2b720001227d8c9f8d5e13103be65a0392acd1c
+Validation success. Address 0xBEEf111188257c2008271dBD193999FD1516d787 signed this message.
+```
 <br><br>
 
 > ℹ️ **Information**
