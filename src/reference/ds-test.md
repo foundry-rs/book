@@ -81,7 +81,7 @@ emit log_uint(amount);
 Where `<type>` can be `address`, `bytes32`, `int`, `uint`, `bytes`, `string`
 ```solidity
 uint256 amount = 1 ether;
-emit log_named_uint("amount", amount);
+emit log_named_uint("Amount: ", amount);
 // amount: 1000000000000000000
 ```
 <br>
@@ -91,7 +91,7 @@ emit log_named_uint("amount", amount);
 Where `<type>` can be `int`, `uint`
 ```solidity
 uint256 amount = 1 ether;
-emit log_named_decimal_uint("amount", amount, 18);
+emit log_named_decimal_uint("Amount: ", amount, 18);
 // amount: 1.000000000000000000
 ```
 
@@ -186,7 +186,9 @@ Where `<type>` can be `address`, `bytes32`, `int`, `uint`
 
 Asserts `a` is equal to `b`.
 ```solidity
-assertEq(1 ether, 1e18 wei);
+uint256 a = 1 ether;
+uint256 b = 1e18 wei;
+assertEq(a, b);
 ```
 <br>
 
@@ -196,7 +198,9 @@ Where `<type>` can be `int`, `uint`
 
 Asserts `a` is equal to `b`.
 ```solidity
-assertEqDecimal(1 ether, 1e18 wei, 18);
+uint256 a = 1 ether;
+uint256 b = 1e18 wei;
+assertEqDecimal(a, b, 18);
 ```
 <br>
 
@@ -224,7 +228,9 @@ Where `<type>` can be `int`, `uint`
 
 Asserts  `a` is greater than `b`.
 ```solidity
-assertGt(2 ether, 1e18 wei);
+uint256 a = 2 ether;
+uint256 b = 1e18 wei;
+assertGt(a, b);
 ```
 <br>
 
@@ -234,7 +240,9 @@ Where `<type>` can be `int`, `uint`
 
 Asserts  `a` is greater than `b`.
 ```solidity
-assertGtDecimal(2 ether, 1e18 wei, 18);
+uint256 a = 2 ether;
+uint256 b = 1e18 wei;
+assertGtDecimal(a, b, 18);
 ```
 <br>
 
@@ -244,7 +252,9 @@ Where `<type>` can be `int`, `uint`
 
 Asserts  `a` is greater than or equal to `b`.
 ```solidity
-assertGe(1 ether, 1e18 wei);
+uint256 a = 1 ether;
+uint256 b = 1e18 wei;
+assertGe(a, b);
 ```
 <br>
 
@@ -254,7 +264,9 @@ Where `<type>` can be `int`, `uint`
 
 Asserts  `a` is greater than or equal to `b`.
 ```solidity
-assertGeDecimal(1 ether, 1e18 wei, 18);
+uint256 a = 1 ether;
+uint256 b = 1e18 wei;
+assertGeDecimal(a, b, 18);
 ```
 <br>
 
@@ -264,7 +276,9 @@ Where `<type>` can be `int`, `uint`
 
 Asserts  `a` is lesser than `b`.
 ```solidity
-assertLt(1e18 wei, 2 ether);
+uint256 a = 1 ether;
+uint256 b = 2e18 wei;
+assertLt(a, b);
 ```
 <br>
 
@@ -274,7 +288,9 @@ Where `<type>` can be `int`, `uint`
 
 Asserts  `a` is lesser than `b`.
 ```solidity
-assertLtDecimal(1e18 wei, 2 ether, 18);
+uint256 a = 1 ether;
+uint256 b = 2e18 wei;
+assertLtDecimal(a, b, 18);
 ```
 <br>
 
@@ -284,7 +300,9 @@ Where `<type>` can be `int`, `uint`
 
 Asserts  `a` is lesser than or equal to `b`.
 ```solidity
-assertLe(1e18 wei, 2 ether);
+uint256 a = 1 ether;
+uint256 b = 1e18 wei;
+assertLe(a, b);
 ```
 <br>
 
@@ -294,7 +312,9 @@ Where `<type>` can be `int`, `uint`
 
 Asserts  `a` is lesser than or equal to `b`.
 ```solidity
-assertLeDecimal(1e18 wei, 2 ether, 18);
+uint256 a = 1 ether;
+uint256 b = 1e18 wei;
+assertLeDecimal(a, b, 18);
 ```
 <br>
 
