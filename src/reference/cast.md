@@ -572,6 +572,7 @@ Where `<SUBCOMMAND>` can be:
 Set of wallet management utilities.
 
 Convert a private key to an address.
+
 ```bash
 cast wallet address --interactive
 Insert private key: <PRIVATE_KEY>
