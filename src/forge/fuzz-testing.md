@@ -85,8 +85,6 @@ Running 1 test for SafeTest.json:SafeTest
 
 Failed tests:
 [FAIL. Counterexample: calldata=0x215a2f200000000000000000000000000000000000000001000000000000000000000000, args=[79228162514264337593543950336]] testWithdraw(uint256) (runs: 44, μ: 15073, ~: 15073)
-
-Encountered a total of 1 failing tests, 1 tests succeeded
 ```
 
 The default amount of ether that the test contract is given is `2**96` wei (as in DappTools), so let's make sure we do not send more than we have:
