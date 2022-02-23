@@ -76,12 +76,15 @@ If we run the test now, we can see that Forge runs the property-based test, but 
 ```ignore
 $ forge test
 compiling...
-no files changed, compilation skipped.
+Compiling 1 files with 0.8.10
+Compilation finished successfully
+success.
+
 Running 1 test for SafeTest.json:SafeTest
-[FAIL. Counterexample: calldata=0x215a2f200000000000000000000000000000000000000001000000000000000000000000, args=[79228162514264337593543950336]] testWithdraw(uint256) (runs: 1, μ: 14993, ~: 14993)
+[FAIL. Counterexample: calldata=0x215a2f200000000000000000000000000000000000000001000000000000000000000000, args=[79228162514264337593543950336]] testWithdraw(uint256) (runs: 44, μ: 15073, ~: 15073)
 
 Failed tests:
-[FAIL. Counterexample: calldata=0x215a2f200000000000000000000000000000000000000001000000000000000000000000, args=[79228162514264337593543950336]] testWithdraw(uint256) (runs: 1, μ: 14993, ~: 14993)
+[FAIL. Counterexample: calldata=0x215a2f200000000000000000000000000000000000000001000000000000000000000000, args=[79228162514264337593543950336]] testWithdraw(uint256) (runs: 44, μ: 15073, ~: 15073)
 ```
 
 The default amount of ether that the test contract is given is `2**96` wei (as in DappTools), so let's make sure we do not send more than we have:
@@ -105,7 +108,7 @@ $ forge test
 compiling...
 success.
 Running 1 test for SafeTest.json:SafeTest
-[PASS] testWithdraw(uint96) (runs: 256, μ: 15086, ~: 15087)
+[PASS] testWithdraw(uint96) (runs: 256, μ: 14591, ~: 15167)
 ```
 
 There are different ways to run property-based tests, notably parametric testing and fuzzing. Forge only supports fuzzing.
