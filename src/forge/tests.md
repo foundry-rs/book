@@ -11,7 +11,7 @@ $ forge test
 compiling...
 success.
 Running 1 test for ContractTest.json:ContractTest
-[PASS] testExample() (gas: 254)
+[PASS] testExample() (gas: 120)
 ```
 
 You can also run specific tests by passing a filter:
