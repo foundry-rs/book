@@ -33,6 +33,7 @@ force = false                                                 # whether to ignor
 evm_version = 'london'                                        # the evm version (by hardfork name)
 #solc_version = '0.8.10'                                      # override for the solc version (setting this ignores `auto_detect_solc`)
 auto_detect_solc = true                                       # enable auto-detection of the appropriate solc version to use
+offline = false                                               # disable downloading of missing solc version(s)
 optimizer = true                                              # enable or disable the solc optimizer
 optimizer_runs = 200                                          # the number of optimizer runs
 verbosity = 0                                                 # the verbosity of tests
@@ -166,6 +167,16 @@ Only strict versions are supported (i.e. `0.8.11` is valid, but `^0.8.0` is not)
 If enabled, Foundry will automatically try to resolve appropriate Solidity compiler versions to compile your project.
 
 This key is ignored if `solc_version` is set.
+
+##### `offline`
+
+- Type: boolean
+- Default: false
+- Environment: `FOUNDRY_OFFLINE` or `DAPP_OFFLINE`
+
+If enabled, Foundry will not attempt to download any missing solc versions.
+
+If both `offline` and `auto-detect-solc` are set to `true`, the required version(s) of solc will be auto detected but any missing versions will *not* be installed.  
 
 ##### `optimizer`
 
