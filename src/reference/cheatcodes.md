@@ -64,6 +64,8 @@ interface CheatCodes {
     function getCode(string calldata) external returns (bytes memory);
     // Label an address in test traces
     function label(address addr, string label) external;
+    // When fuzzing, generate new inputs if conditional not met
+    function assume(bool) external;
 }
 ```
 
@@ -547,3 +549,14 @@ function label(address addr, string label) external;
 
 Sets a label `label` for `addr` in test traces. If an address is labelled, the label will show up in test traces instead of the address.
 
+<br>
+
+---
+
+#### `assume`
+
+```solidity
+function assume(bool) external;
+```
+
+If the boolean expression evaluates to false, discard the current fuzz inputs and start a new fuzz run.
