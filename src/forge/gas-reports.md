@@ -14,7 +14,7 @@ To produce reports for all contracts:
 gas_reports = ["*"]
 ```
 
-To generate gas reports, run `forge test --gas-reports`. Example output:
+To generate gas reports, run `forge test --gas-report`. Example output:
 
 
 ```ignore
