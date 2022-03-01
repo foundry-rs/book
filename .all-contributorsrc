@@ -51,6 +51,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "hjubb",
+      "name": "Harris",
+      "avatar_url": "https://avatars.githubusercontent.com/u/9816161?v=4",
+      "profile": "https://github.com/hjubb",
+      "contributions": [
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7,
