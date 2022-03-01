@@ -42,6 +42,16 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "metehan",
+      "name": "metehan",
+      "avatar_url": "https://avatars.githubusercontent.com/u/747125?v=4",
+      "profile": "https://github.com/metehan",
+      "contributions": [
+        "doc"
+      ]
+    }
   ],
   "contributorsPerLine": 7,
   "projectName": "foundry-book",
