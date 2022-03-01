@@ -14,6 +14,7 @@
     - [Writing Tests](./forge/writing-tests.md)
     - [Cheatcodes](./forge/cheatcodes.md)
     - [Understanding Traces](./forge/traces.md)
+    - [Gas reports](./forge/gas-reports.md)
   - [Advanced Testing](./forge/advanced-testing.md)
     - [Fuzz Testing](./forge/fuzz-testing.md)
   - [Deploying and Verifying](./forge/deploying.md)

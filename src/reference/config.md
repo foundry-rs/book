@@ -51,6 +51,7 @@ block_base_fee_per_gas = 0                                    # the base fee (in
 block_coinbase = '0x0000000000000000000000000000000000000000' # the address of `block.coinbase` in tests
 block_timestamp = 0                                           # the value of `block.timestamp` in tests
 block_difficulty = 0                                          # the value of `block.difficulty` in tests
+gas_reports = ["*"]                                           # a list of contracts to output gas reports for
 ```
 
 ### Configuration keys
@@ -176,7 +177,7 @@ This key is ignored if `solc_version` is set.
 
 If enabled, Foundry will not attempt to download any missing solc versions.
 
-If both `offline` and `auto-detect-solc` are set to `true`, the required version(s) of solc will be auto detected but any missing versions will *not* be installed.  
+If both `offline` and `auto-detect-solc` are set to `true`, the required version(s) of solc will be auto detected but any missing versions will *not* be installed.
 
 ##### `optimizer`
 
@@ -332,3 +333,11 @@ The value of `block.timestamp` in tests.
 - Environment: `FOUNDRY_BLOCK_DIFFICULTY` or `DAPP_BLOCK_DIFFICULTY`
 
 The value of `block.difficulty` in tests.
+
+##### `gas_reports`
+
+- Type: array of strings (contract names)
+- Default: ["*"]
+- Environment: `FOUNDRY_GAS_REPORTS` or `DAPP_GAS_REPORTS`
+
+The contracts to print gas reports for.
