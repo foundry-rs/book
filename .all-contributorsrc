@@ -1,0 +1,25 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "ZeroEkkusu",
+      "name": "Zero Ekkusu",
+      "avatar_url": "https://avatars.githubusercontent.com/u/94782988?v=4",
+      "profile": "https://github.com/ZeroEkkusu",
+      "contributions": [
+        "doc",
+        "review"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "foundry-book",
+  "projectOwner": "onbjerg",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
