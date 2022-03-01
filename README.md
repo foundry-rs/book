@@ -28,6 +28,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <table>
   <tr>
     <td align="center"><a href="https://github.com/ZeroEkkusu"><img src="https://avatars.githubusercontent.com/u/94782988?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Zero Ekkusu</b></sub></a><br /><a href="https://github.com/onbjerg/foundry-book/commits?author=ZeroEkkusu" title="Documentation">📖</a> <a href="https://github.com/onbjerg/foundry-book/pulls?q=is%3Apr+reviewed-by%3AZeroEkkusu" title="Reviewed Pull Requests">👀</a></td>
+    <td align="center"><a href="https://github.com/zk-tarts"><img src="https://avatars.githubusercontent.com/u/78189066?v=4?s=100" width="100px;" alt=""/><br /><sub><b>zk-tarts</b></sub></a><br /><a href="https://github.com/onbjerg/foundry-book/commits?author=zk-tarts" title="Documentation">📖</a></td>
     <td align="center"><a href="https://rootulp.xyz"><img src="https://avatars.githubusercontent.com/u/3699047?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Rootul Patel</b></sub></a><br /><a href="https://github.com/onbjerg/foundry-book/commits?author=rootulp" title="Documentation">📖</a> <a href="#maintenance-rootulp" title="Maintenance">🚧</a></td>
   </tr>
 </table>

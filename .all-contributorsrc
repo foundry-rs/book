@@ -24,6 +24,15 @@
         "doc",
         "maintenance"
       ]
+    },
+    {
+      "login": "zk-tarts",
+      "name": "zk-tarts",
+      "avatar_url": "https://avatars.githubusercontent.com/u/78189066?v=4",
+      "profile": "https://github.com/zk-tarts",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
