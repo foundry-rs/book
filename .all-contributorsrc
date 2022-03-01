@@ -78,6 +78,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "ruvaag",
+      "name": "Ruvaag",
+      "avatar_url": "https://avatars.githubusercontent.com/u/81832128?v=4",
+      "profile": "https://github.com/ruvaag",
+      "contributions": [
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7,

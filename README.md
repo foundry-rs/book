@@ -1,6 +1,6 @@
 ## 📖 Foundry Book
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-9-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 A book on all things Foundry.
@@ -37,6 +37,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   </tr>
   <tr>
     <td align="center"><a href="https://mattsolomon.dev"><img src="https://avatars.githubusercontent.com/u/17163988?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Matt Solomon</b></sub></a><br /><a href="https://github.com/onbjerg/foundry-book/commits?author=mds1" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/ruvaag"><img src="https://avatars.githubusercontent.com/u/81832128?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Ruvaag</b></sub></a><br /><a href="#maintenance-ruvaag" title="Maintenance">🚧</a></td>
   </tr>
 </table>
 
