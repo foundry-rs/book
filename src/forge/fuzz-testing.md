@@ -87,7 +87,7 @@ Failed tests:
 [FAIL. Counterexample: calldata=0x215a2f200000000000000000000000000000000000000001000000000000000000000000, args=[79228162514264337593543950336]] testWithdraw(uint256) (runs: 44, μ: 15073, ~: 15073)
 ```
 
-The default amount of ether that the test contract is given is `2**96` wei (as in DappTools), so let's make sure we do not send more than we have:
+The default amount of ether that the test contract is given is `2**96 wei` (as in DappTools), so we have to restrict the type of amount to `uint96` to make sure we don't try to send more than we have:
 
 ```solidity
 contract SafeTest is DSTest {
