@@ -69,6 +69,15 @@
       "contributions": [
         "maintenance"
       ]
+    },
+    {
+      "login": "mds1",
+      "name": "Matt Solomon",
+      "avatar_url": "https://avatars.githubusercontent.com/u/17163988?v=4",
+      "profile": "https://mattsolomon.dev",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
