@@ -14,6 +14,16 @@
         "doc",
         "review"
       ]
+    },
+    {
+      "login": "rootulp",
+      "name": "Rootul Patel",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3699047?v=4",
+      "profile": "https://rootulp.xyz",
+      "contributions": [
+        "doc",
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7,
