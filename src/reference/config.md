@@ -338,6 +338,6 @@ The value of `block.difficulty` in tests.
 
 - Type: array of strings (contract names)
 - Default: ["*"]
-- Environment: `FOUNDRY_GAS_REPORTS` or `DAPP_GAS_REPORTS` // TODO confirm if these exist
+- Environment: `FOUNDRY_GAS_REPORTS` or `DAPP_GAS_REPORTS`
 
 The contracts to print gas reports for.
