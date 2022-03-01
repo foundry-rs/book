@@ -33,7 +33,15 @@
       "contributions": [
         "doc"
       ]
-    }
+    },
+    {
+      "login": "nnnnicholas",
+      "name": "Nicholas",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1418561?v=4",
+      "profile": "https://github.com/nnnnicholas",
+      "contributions": [
+        "doc"
+      ]
   ],
   "contributorsPerLine": 7,
   "projectName": "foundry-book",
