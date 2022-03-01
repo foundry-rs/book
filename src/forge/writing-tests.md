@@ -62,6 +62,8 @@ Forge uses the following keywords in tests:
     ```
 <br>
 
+Tests are deployed to `0xb4c79dab8f259c7aee6e5b2aa729821864227e84`. If you deploy a contract within your test, then `0xb4c...7e84` will be its deployer. If the contract deployed within a test gives special permissions to its deployer, such as `Ownable.sol`'s `onlyOwner` modifier, then the test contract `0xb4c...7e84` will have those permissions.
+
 It is possible to use other testing libraries or roll your own. For example, if you find yourself lacking a special type of assertion, you could extend `ds-test`.
 
 > 📚 **Reference**
