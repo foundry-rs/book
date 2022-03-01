@@ -1,6 +1,6 @@
 ## 📖 Foundry Book
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-10-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-11-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 A book on all things Foundry.
@@ -28,17 +28,18 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <table>
   <tr>
     <td align="center"><a href="https://github.com/ZeroEkkusu"><img src="https://avatars.githubusercontent.com/u/94782988?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Zero Ekkusu</b></sub></a><br /><a href="https://github.com/onbjerg/foundry-book/commits?author=ZeroEkkusu" title="Documentation">📖</a> <a href="https://github.com/onbjerg/foundry-book/pulls?q=is%3Apr+reviewed-by%3AZeroEkkusu" title="Reviewed Pull Requests">👀</a></td>
-    <td align="center"><a href="https://github.com/codingnirvana"><img src="https://avatars.githubusercontent.com/u/1348422?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Rajesh Muppalla</b></sub></a><br /><a href="#maintenance-codingnirvana" title="Maintenance">🚧</a></td>
-    <td align="center"><a href="https://github.com/hjubb"><img src="https://avatars.githubusercontent.com/u/9816161?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Harris</b></sub></a><br /><a href="#maintenance-hjubb" title="Maintenance">🚧</a></td>
-    <td align="center"><a href="https://github.com/metehan"><img src="https://avatars.githubusercontent.com/u/747125?v=4?s=100" width="100px;" alt=""/><br /><sub><b>metehan</b></sub></a><br /><a href="https://github.com/onbjerg/foundry-book/commits?author=metehan" title="Documentation">📖</a></td>
-    <td align="center"><a href="https://github.com/nnnnicholas"><img src="https://avatars.githubusercontent.com/u/1418561?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Nicholas</b></sub></a><br /><a href="https://github.com/onbjerg/foundry-book/commits?author=nnnnicholas" title="Documentation">📖</a></td>
-    <td align="center"><a href="https://github.com/zk-tarts"><img src="https://avatars.githubusercontent.com/u/78189066?v=4?s=100" width="100px;" alt=""/><br /><sub><b>zk-tarts</b></sub></a><br /><a href="https://github.com/onbjerg/foundry-book/commits?author=zk-tarts" title="Documentation">📖</a></td>
     <td align="center"><a href="https://rootulp.xyz"><img src="https://avatars.githubusercontent.com/u/3699047?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Rootul Patel</b></sub></a><br /><a href="https://github.com/onbjerg/foundry-book/commits?author=rootulp" title="Documentation">📖</a> <a href="#maintenance-rootulp" title="Maintenance">🚧</a></td>
+    <td align="center"><a href="https://github.com/zk-tarts"><img src="https://avatars.githubusercontent.com/u/78189066?v=4?s=100" width="100px;" alt=""/><br /><sub><b>zk-tarts</b></sub></a><br /><a href="https://github.com/onbjerg/foundry-book/commits?author=zk-tarts" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/nnnnicholas"><img src="https://avatars.githubusercontent.com/u/1418561?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Nicholas</b></sub></a><br /><a href="https://github.com/onbjerg/foundry-book/commits?author=nnnnicholas" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/metehan"><img src="https://avatars.githubusercontent.com/u/747125?v=4?s=100" width="100px;" alt=""/><br /><sub><b>metehan</b></sub></a><br /><a href="https://github.com/onbjerg/foundry-book/commits?author=metehan" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/hjubb"><img src="https://avatars.githubusercontent.com/u/9816161?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Harris</b></sub></a><br /><a href="#maintenance-hjubb" title="Maintenance">🚧</a></td>
+    <td align="center"><a href="https://github.com/codingnirvana"><img src="https://avatars.githubusercontent.com/u/1348422?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Rajesh Muppalla</b></sub></a><br /><a href="#maintenance-codingnirvana" title="Maintenance">🚧</a></td>
   </tr>
   <tr>
     <td align="center"><a href="https://mattsolomon.dev"><img src="https://avatars.githubusercontent.com/u/17163988?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Matt Solomon</b></sub></a><br /><a href="https://github.com/onbjerg/foundry-book/commits?author=mds1" title="Documentation">📖</a></td>
     <td align="center"><a href="https://github.com/ruvaag"><img src="https://avatars.githubusercontent.com/u/81832128?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Ruvaag</b></sub></a><br /><a href="#maintenance-ruvaag" title="Maintenance">🚧</a></td>
     <td align="center"><a href="http://linkedin.com/in/alexandre-wolff/"><img src="https://avatars.githubusercontent.com/u/55669233?v=4?s=100" width="100px;" alt=""/><br /><sub><b>awolff</b></sub></a><br /><a href="#maintenance-alexandrewolff" title="Maintenance">🚧</a></td>
+    <td align="center"><a href="https://www.kayaba-attribution.dev/"><img src="https://avatars.githubusercontent.com/u/63566185?v=4?s=100" width="100px;" alt=""/><br /><sub><b>kayaba-attribution</b></sub></a><br /><a href="https://github.com/onbjerg/foundry-book/commits?author=Kayaba-Attribution" title="Documentation">📖</a></td>
   </tr>
 </table>
 
