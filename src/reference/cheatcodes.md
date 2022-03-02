@@ -460,7 +460,7 @@ If a match is found, then `retdata` is returned from the call.
 Mocked calls are in effect until [`clearMockedCalls`](#clearmockedcalls) is called.
 
 > 💬 **Note**
-> 
+>
 > Calls to mocked addresses may revert if there is no code on the address.
 > This is because Solidity inserts an `extcodesize` check before some contract calls.
 >
@@ -536,6 +536,18 @@ function getCode(string calldata) external returns (bytes memory);
 ```
 
 Returns the bytecode for a contract in the project given the path to the contract.
+
+If you'd like to use getCode to deploy a contract's bytecode, you can use [forge-std](https://github.com/brockelmore/forge-std)'s `deployCode` helper. In your test file:
+
+```solidity
+    function testDeployCode() public {
+        // deployCode takes a string argument for the contract to deploy
+        // and optionally a bytes argument for any arguments that should
+        // be passed to your contract's constructor
+        address deployed = deployCode("StdCheats.t.sol:StdCheatsTest", bytes(""));
+        ...
+    }
+```
 
 <br>
 
