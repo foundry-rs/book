@@ -19,6 +19,8 @@ mdbook serve
 
 To add a new section (file) to the book, add it to [`SUMMARY.md`](src/SUMMARY.md).
 
+For a more structured overview of the current issues, see [the GitHub project](https://github.com/users/onbjerg/projects/7).
+
 ### Contributors ✨
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
