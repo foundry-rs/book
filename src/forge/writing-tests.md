@@ -65,5 +65,9 @@ Forge uses the following keywords in tests:
 It is possible to use other testing libraries or roll your own. For example, if you find yourself lacking a special type of assertion, you could extend `ds-test`.
 
 > 📚 **Reference**
-> 
+>
 > See the [`ds-test` Reference](../reference/ds-test.md) for a complete overview of the logging functionality and assertions in `ds-test`.
+
+> 💡 **Tip**
+>
+> Use the [`getCode`](../reference/cheatcodes.md#getcode) cheatcode to deploy contracts with incompatible Solidity versions.

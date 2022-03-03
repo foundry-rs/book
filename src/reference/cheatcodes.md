@@ -537,7 +537,25 @@ function getCode(string calldata) external returns (bytes memory);
 
 Returns the bytecode for a contract in the project given the path to the contract.
 
-If you'd like to use getCode to deploy a contract's bytecode, you can use [forge-std](https://github.com/brockelmore/forge-std)'s `deployCode` helper. In your test file:
+The calldata parameter can either be in the form `ContractFile.sol` (if the filename and contract name are the same), `ContractFile.sol:ContractName`, or `./path/to/artifact.json`
+
+#### Example
+
+```solidity
+MyContract myContract = new MyContract(arg1, arg2);
+
+// Let's do the same thing with `getCode`
+bytes memory args = abi.encode(arg1, arg2);
+bytes memory bytecode = abi.encodePacked(cheats.getCode("MyContract.sol:MyContract"), args);
+address anotherAddress;
+assembly {
+    anotherAddress := create(0, add(bytecode, 0x20), mload(bytecode))
+}
+
+assertEq0(address(myContract).code, anotherAddress.code); // [PASS]
+```
+
+If you'd like to use getCode to deploy a contract's bytecode, you can also use [forge-std](https://github.com/brockelmore/forge-std)'s `deployCode` helper. In your test file:
 
 ```solidity
     function testDeployCode() public {
