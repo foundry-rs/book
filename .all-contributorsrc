@@ -106,6 +106,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "ncitron",
+      "name": "Noah Citron",
+      "avatar_url": "https://avatars.githubusercontent.com/u/16858330?v=4",
+      "profile": "https://github.com/ncitron",
+      "contributions": [
+        "review"
+      ]
     }
   ],
   "contributorsPerLine": 7,
