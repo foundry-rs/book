@@ -1,6 +1,6 @@
 ## 📖 Foundry Book
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-11-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-12-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 A book on all things Foundry.
@@ -43,6 +43,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/ruvaag"><img src="https://avatars.githubusercontent.com/u/81832128?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Ruvaag</b></sub></a><br /><a href="#maintenance-ruvaag" title="Maintenance">🚧</a></td>
     <td align="center"><a href="http://linkedin.com/in/alexandre-wolff/"><img src="https://avatars.githubusercontent.com/u/55669233?v=4?s=100" width="100px;" alt=""/><br /><sub><b>awolff</b></sub></a><br /><a href="#maintenance-alexandrewolff" title="Maintenance">🚧</a></td>
     <td align="center"><a href="https://www.kayaba-attribution.dev/"><img src="https://avatars.githubusercontent.com/u/63566185?v=4?s=100" width="100px;" alt=""/><br /><sub><b>kayaba-attribution</b></sub></a><br /><a href="https://github.com/onbjerg/foundry-book/commits?author=Kayaba-Attribution" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/ncitron"><img src="https://avatars.githubusercontent.com/u/16858330?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Noah Citron</b></sub></a><br /><a href="https://github.com/onbjerg/foundry-book/pulls?q=is%3Apr+reviewed-by%3Ancitron" title="Reviewed Pull Requests">👀</a></td>
   </tr>
 </table>
 
