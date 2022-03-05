@@ -115,6 +115,15 @@
       "contributions": [
         "review"
       ]
+    },
+    {
+      "login": "Sabnock01",
+      "name": "Sabnock",
+      "avatar_url": "https://avatars.githubusercontent.com/u/24715302?v=4",
+      "profile": "https://github.com/Sabnock01",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
