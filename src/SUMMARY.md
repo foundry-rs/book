@@ -18,7 +18,7 @@
   - [Advanced Testing](./forge/advanced-testing.md)
     - [Fuzz Testing](./forge/fuzz-testing.md)
   - [Deploying and Verifying](./forge/deploying.md)
-  - [Continous Integration](./forge/continous-integration.md)
+  - [Continuous Integration](./forge/continous-integration.md)
   - [Debugger](./forge/debugger.md)
   - [Cache](./forge/cache.md)
 - [Cast Guide](./cast/index.md)
