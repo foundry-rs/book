@@ -25,7 +25,7 @@ Running 2 tests for ComplicatedContractTest.json:ComplicatedContractTest
 [PASS] testDepositETH() (gas: 12254)
 ```
 
-This will run the tests starting with `testDeposit` in the `ComplicatedContractTest` test contract.
+This will run the tests in the `ComplicatedContractTest` test contract with `testDeposit` in the name.
 Inverse versions of these flags also exist (`--no-match-contract` and `--no-match-test`).
 
 You can run tests in filenames that match a regex with `--match-path`. Note: an absolute file path must be provided.
@@ -45,6 +45,12 @@ Running 1 test for ContractC.json:ContractC
 ```
 
 The inverse of the `--match-path` flag is `--no-match-path`.
+
+You can run tests on a forked chain - such as the Ethereum mainnet - by passing a RPC URL via the `--fork-url` flag:
+
+```bash
+$ forge test --fork-url <your_rpc_url>
+```
 
 ### Logs and traces
 

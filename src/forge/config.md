@@ -2,7 +2,7 @@
 
 Forge can be configured using a configuration file called `foundry.toml`, which is placed in the root of your project.
 
-Configuration can be namespaced by profiles. The default profile is named `default`, from which all other profiles inherit.
+Configuration can be namespaced by profiles. The default profile is named `default`, from which all other profiles inherit. You are free to customize the `default` profile, and add as many new profiles as you need.
 
 Additionally, you can create a global `foundry.toml` in your home directory.
 
