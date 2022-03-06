@@ -48,7 +48,7 @@ You must provide:
 Moreover, you may need to provide:
 - the contructor arguments in the ABI-encoded format, if there are any
 - the number of optimizations, if the Solidity optimizer was activated
-- the [chain ID](https://chainlist.org/), if the contract is not on Ethereum Mainnet
+- the [chain ID](https://evm-chainlist.netlify.app/), if the contract is not on Ethereum Mainnet
 
 Let's say you want to verify `MyToken` (see above). You set the [number of optimizations](../reference/config.md#optimizer_runs) to 1 million, compiled it with v0.8.10, and deployed it, as shown above, to the Kovan testnet (chain ID: 42).
 
@@ -73,7 +73,7 @@ Contract successfully verified.
 
 > 💡 **Tip**
 > 
-> You can use [Cast's](../cast/index.md) `abi-encode` command to ABI-encode arguments.
+> Use Cast's [`abi-encode`](../reference/cast.md#abi-encode) to ABI-encode arguments.
 >
 > In this example, we ran `cast abi-encode "constructor(string,string,uint8,uint256)" "ForgeUSD" "FUSD" 18 1000000000000000000000` to ABI-encode the arguments.
 
