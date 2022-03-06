@@ -27,6 +27,7 @@
   - [Incremental Adoption](./guides/incremental-adoption.md)
   - [Integrating with VSCode](./guides/vscode.md)
   - [Shell Autocompletion](./guides/shell-autocompletion.md)
+  - [Off Topic Guides](./guides/other.md)
 - [Reference](./reference/index.md)
   - [`foundry.toml` Reference](./reference/config.md)
   - [`ds-test` Reference](./reference/ds-test.md)
