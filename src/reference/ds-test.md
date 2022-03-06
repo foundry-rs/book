@@ -48,47 +48,90 @@ event log_named_string       (string key, string val);
 
 This section documents all events for logging and provides usage examples. 
 
-<br>
+#### `log`
 
-> log(string)
+```solidity
+event log(string);
+```
+
+##### Example
 
 ```solidity
 emit log("here");
 // here
 ```
+
 <br>
 
-> logs(bytes)
+---
+
+#### logs
+
+```solidity
+event logs(bytes);
+```
+
+##### Example
 
 ```solidity
 emit logs(bytes("abcd"));
 // 0x6162636400000000000000000000000000000000000000000000000000000000
 ```
+
 <br>
 
-> log\_\<type\>(\<type\>)
+---
+
+#### log\_\<type\>
+
+```solidity
+event log_<type>(<type>);
+```
 
 Where `<type>` can be `address`, `bytes32`, `int`, `uint`, `bytes`, `string`
+
+##### Example
+
 ```solidity
 uint256 amount = 1 ether;
 emit log_uint(amount);
 // 1000000000000000000
 ```
+
 <br>
 
-> log\_named\_\<type\>(string key, \<type\> val)
+---
+
+#### log\_named\_\<type\>
+
+```solidity
+event log_named_<type>(string key, <type> val);
+```
 
 Where `<type>` can be `address`, `bytes32`, `int`, `uint`, `bytes`, `string`
+
+##### Example
+
 ```solidity
 uint256 amount = 1 ether;
 emit log_named_uint("Amount: ", amount);
 // amount: 1000000000000000000
 ```
+
 <br>
 
-> log\_named\_decimal\_\<type\>(string key, \<type\> val, uint decimals)
+---
+
+#### log\_named\_decimal\_\<type\>
+
+```solidity
+event log_named_decimal_<type>(string key, <type> val, uint decimals);
+```
 
 Where `<type>` can be `int`, `uint`
+
+##### Example
+
 ```solidity
 uint256 amount = 1 ether;
 emit log_named_decimal_uint("Amount: ", amount, 18);
@@ -169,148 +212,273 @@ function assertLeDecimal(uint a, uint b, uint decimals, string memory err) inter
 
 This section documents all functions for asserting and provides usage examples. 
 
-<br>
+#### `assertTrue`
 
-> assertTrue(bool condition)
+```solidity
+function assertTrue(bool condition) internal;
+```
 
 Asserts the `condition` is true.
+
+##### Example
+
 ```solidity
 bool success = contract.fun();
 assertTrue(success);
 ```
+
 <br>
 
-> assertEq(\<type\> a, \<type\> b)
+---
+
+#### `assertEq`
+
+```solidity
+function assertEq(<type> a, <type> b) internal;
+```
 
 Where `<type>` can be `address`, `bytes32`, `int`, `uint`
 
 Asserts `a` is equal to `b`.
+
+##### Example
+
 ```solidity
 uint256 a = 1 ether;
 uint256 b = 1e18 wei;
 assertEq(a, b);
 ```
+
 <br>
 
-> assertEqDecimal(\<type\> a, \<type\> b, uint decimals)
+---
+
+#### `assertEqDecimal`
+
+```solidity
+function assertEqDecimal(<type> a, <type> b, uint decimals) internal;
+```
 
 Where `<type>` can be `int`, `uint`
 
 Asserts `a` is equal to `b`.
+
+##### Example
+
 ```solidity
 uint256 a = 1 ether;
 uint256 b = 1e18 wei;
 assertEqDecimal(a, b, 18);
 ```
+
 <br>
 
-> assertEq32(bytes32 a, bytes32 b)
+---
+
+#### `assertEq32`
+
+```solidity
+function assertEq32(bytes32 a, bytes32 b) internal;
+```
 
 Asserts `a` is equal to `b`.
+
+##### Example
+
 ```solidity
 assertEq(bytes32("abcd"), 0x6162636400000000000000000000000000000000000000000000000000000000);
 ```
+
 <br>
 
-> assertEq0(bytes a, bytes b)
+---
+
+#### `assertEq0`
+
+```solidity
+function assertEq0(bytes a, bytes b) internal;
+```
 
 Asserts `a` is equal to `b`.
+
+##### Example
+
 ```solidity
 string memory name1 = "Alice";
 string memory name2 = "Bob";
 assertEq0(bytes(name1), bytes(name2)); // [FAIL]
 ```
+
 <br>
 
-> assertGt(\<type\> a, \<type\> b)
+---
+
+#### `assertGt`
+
+```solidity
+function assertGt(<type> a, <type> b) internal;
+```
 
 Where `<type>` can be `int`, `uint`
 
 Asserts  `a` is greater than `b`.
+
+##### Example
+
 ```solidity
 uint256 a = 2 ether;
 uint256 b = 1e18 wei;
 assertGt(a, b);
 ```
+
 <br>
 
-> assertGtDecimal(\<type\> a, \<type\> b, uint decimals)
+---
+
+#### `assertGtDecimal`
+
+```solidity
+function assertGtDecimal(<type> a, <type> b, uint decimals) internal;
+```
 
 Where `<type>` can be `int`, `uint`
 
 Asserts  `a` is greater than `b`.
+
+##### Example
+
 ```solidity
 uint256 a = 2 ether;
 uint256 b = 1e18 wei;
 assertGtDecimal(a, b, 18);
 ```
+
 <br>
 
-> assertGe(\<type\> a, \<type\> b)
+---
+
+#### `assertGe`
+
+```solidity
+function assertGe(<type> a, <type> b) internal;
+```
 
 Where `<type>` can be `int`, `uint`
 
 Asserts  `a` is greater than or equal to `b`.
+
+##### Example
+
 ```solidity
 uint256 a = 1 ether;
 uint256 b = 1e18 wei;
 assertGe(a, b);
 ```
+
 <br>
 
-> assertGeDecimal(\<type\> a, \<type\> b, uint decimals)
+---
+
+#### `assertGeDecimal`
+
+```solidity
+function assertGeDecimal(<type> a, <type> b, uint decimals) internal;
+```
 
 Where `<type>` can be `int`, `uint`
 
 Asserts  `a` is greater than or equal to `b`.
+
+##### Example
+
 ```solidity
 uint256 a = 1 ether;
 uint256 b = 1e18 wei;
 assertGeDecimal(a, b, 18);
 ```
+
 <br>
 
-> assertLt(\<type\> a, \<type\> b)
+---
+
+#### `assertLt`
+
+```solidity
+function assertLt(<type> a, <type> b) internal;
+```
 
 Where `<type>` can be `int`, `uint`
 
 Asserts  `a` is lesser than `b`.
+
+##### Example
+
 ```solidity
 uint256 a = 1 ether;
 uint256 b = 2e18 wei;
 assertLt(a, b);
 ```
+
 <br>
 
-> assertLtDecimal(\<type\> a, \<type\> b, uint decimals)
+---
+
+#### `assertLtDecimal`
+
+```solidity
+function assertLtDecimal(<type> a, <type> b, uint decimals) internal;
+```
 
 Where `<type>` can be `int`, `uint`
 
 Asserts  `a` is lesser than `b`.
+
+##### Example
+
 ```solidity
 uint256 a = 1 ether;
 uint256 b = 2e18 wei;
 assertLtDecimal(a, b, 18);
 ```
+
 <br>
 
-> assertLe(\<type\> a, \<type\> b)
+---
+
+#### `assertLe`
+
+```solidity
+function assertLe(<type> a, <type> b) internal;
+```
 
 Where `<type>` can be `int`, `uint`
 
 Asserts  `a` is lesser than or equal to `b`.
+
+##### Example
+
 ```solidity
 uint256 a = 1 ether;
 uint256 b = 1e18 wei;
 assertLe(a, b);
 ```
+
 <br>
 
-> assertLeDecimal(\<type\> a, \<type\> b, uint decimals)
+---
+
+#### `assertLeDecimal`
+
+```solidity
+function assertLeDecimal(<type> a, <type> b, uint decimals) internal;
+```
 
 Where `<type>` can be `int`, `uint`
 
 Asserts  `a` is lesser than or equal to `b`.
+
+##### Example
+
 ```solidity
 uint256 a = 1 ether;
 uint256 b = 1e18 wei;

@@ -518,10 +518,9 @@ When a call is made to `where` the call data is first checked to see if it match
 If the test terminates without the call being made, the test fails.
 ##### Example
 ```solidity
-bytes4 selector = bytes4(keccak256("fulfillRandomness(bytes32,uint256)"));
-bytes memory expectedData = abi.encodeWithSelector(selector, requestId, 5647236456456);
+bytes memory expectedData = abi.encodeWithSignature("fulfillRandomness(bytes32,uint256)", requestId, randomness);
 cheats.expectCall(address(awesomeContract), expectedData);
-vrfCoordinatorMock.callBackWithRandomness(requestId, 5647236456456, address(awesomeContract));
+vrfCoordinatorMock.callBackWithRandomness(requestId, randomness, address(awesomeContract));
 // [PASS]
 ```
 
@@ -539,7 +538,7 @@ Returns the bytecode for a contract in the project given the path to the contrac
 
 The calldata parameter can either be in the form `ContractFile.sol` (if the filename and contract name are the same), `ContractFile.sol:ContractName`, or `./path/to/artifact.json`
 
-#### Example
+##### Example
 
 ```solidity
 MyContract myContract = new MyContract(arg1, arg2);

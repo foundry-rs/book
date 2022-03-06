@@ -3,7 +3,7 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-14-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
-A book on all things Foundry.
+A book on all things Foundry. [Read now](https://onbjerg.github.io/foundry-book/index.html).
 
 ### Contributing
 
