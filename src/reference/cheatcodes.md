@@ -208,6 +208,20 @@ Calls an arbitrary command if [`ffi`](./config.md#ffi) is enabled.
 
 It is generally advised to use this cheat code as a last resort, and to not enable it by default, as anyone who can change the tests of a project will be able to execute arbitrary commands on devices that run the tests.
 
+##### Example
+
+```solidity
+string[] memory inputs = new string[](3);
+inputs[0] = "echo";
+inputs[1] = "-n";
+// ABI encoded "gm", as a string
+inputs[2] = "0x00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000002676d000000000000000000000000000000000000000000000000000000000000";
+
+bytes memory res = cheats.ffi(inputs);
+string memory output = abi.decode(res, (string));
+assertEq(output, "gm");
+```
+
 <br>
 
 ---
@@ -235,7 +249,7 @@ myContract.withdraw(); // [PASS]
 function prank(address sender, address origin) external;
 ```
 
-Sets `msg.sender` to `sender` and `tx.origin` to `origin` for the next call.
+Sets `msg.sender` to `sender` and `tx.origin` to `origin` **for the next call**.
 
 #### `startPrank`
 
@@ -243,7 +257,7 @@ Sets `msg.sender` to `sender` and `tx.origin` to `origin` for the next call.
 function startPrank(address) external;
 ```
 
-Sets `msg.sender` for all subsequent calls until [`stopPrank`](#stopprank) is called.
+Sets `msg.sender` **for all subsequent calls** until [`stopPrank`](#stopprank) is called.
 
 ##### Alternative Signature
 
@@ -251,7 +265,7 @@ Sets `msg.sender` for all subsequent calls until [`stopPrank`](#stopprank) is ca
 function startPrank(address sender, address origin) external;
 ```
 
-Sets `msg.sender` to `sender` and `tx.origin` to `origin` for all subsequent calls until [`stopPrank`](#stopprank) is called.
+Sets `msg.sender` to `sender` and `tx.origin` to `origin` **for all subsequent calls** until [`stopPrank`](#stopprank) is called.
 
 #### `stopPrank`
 
@@ -520,7 +534,7 @@ If the test terminates without the call being made, the test fails.
 ```solidity
 bytes memory expectedData = abi.encodeWithSignature("fulfillRandomness(bytes32,uint256)", requestId, randomness);
 cheats.expectCall(address(awesomeContract), expectedData);
-vrfCoordinatorMock.callBackWithRandomness(requestId, randomness, address(awesomeContract));
+vrfCoordinator.callBackWithRandomness(requestId, randomness, address(awesomeContract));
 // [PASS]
 ```
 
@@ -554,7 +568,7 @@ assembly {
 assertEq0(address(myContract).code, anotherAddress.code); // [PASS]
 ```
 
-If you'd like to use getCode to deploy a contract's bytecode, you can also use [forge-std](https://github.com/brockelmore/forge-std)'s `deployCode` helper. In your test file:
+If you'd like to use getCode to deploy a contract's bytecode, you can also use [Forge Std](https://github.com/brockelmore/forge-std)'s `deployCode` helper. In your test file:
 
 ```solidity
     function testDeployCode() public {
@@ -576,7 +590,9 @@ If you'd like to use getCode to deploy a contract's bytecode, you can also use [
 function label(address addr, string label) external;
 ```
 
-Sets a label `label` for `addr` in test traces. If an address is labelled, the label will show up in test traces instead of the address.
+Sets a label `label` for `addr` in test traces.
+
+If an address is labelled, the label will show up in test traces instead of the address.
 
 <br>
 
@@ -589,3 +605,13 @@ function assume(bool) external;
 ```
 
 If the boolean expression evaluates to false, discard the current fuzz inputs and start a new fuzz run.
+
+##### Example
+
+```solidity
+function testX(uint256 a) public {
+    cheats.assume(a != 1);
+    require(a != 1);
+    // [PASS]
+}
+```

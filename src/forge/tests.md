@@ -46,12 +46,6 @@ Running 1 test for ContractC.json:ContractC
 
 The inverse of the `--match-path` flag is `--no-match-path`.
 
-You can run tests on a forked chain - such as the Ethereum mainnet - by passing a RPC URL via the `--fork-url` flag:
-
-```bash
-$ forge test --fork-url <your_rpc_url>
-```
-
 ### Logs and traces
 
 The default behavior for `forge test` is to only display a summary of passing and failing tests. You can control this behavior by increasing the verbosity (using the `-v` flag). Each level of verbosity adds more information:

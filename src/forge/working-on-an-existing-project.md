@@ -9,7 +9,7 @@ $ git clone --recursive https://github.com/brockelmore/forge-std
 $ cd forge-std
 ```
 
-Notice that we clone with the `--recursive` flag. This automatically pulls git submodules (which we use as dependencies) as well in case there are any. Alternatively, run `forge update` after cloning to fetch dependencies.
+Notice that we clone with the `--recursive` flag. This automatically pulls git submodules (which we use as dependencies) as well in case there are any. Alternatively, run `forge install` after cloning to install dependencies.
 
 To build, use `forge build`:
 

@@ -111,6 +111,15 @@ Running 1 test for SafeTest.json:SafeTest
 [PASS] testWithdraw(uint96) (runs: 256, μ: 14591, ~: 15167)
 ```
 
+You may want to exclude certain cases using the [`assume`](../reference/cheatcodes.md#assume) cheatcode. In those cases, fuzzer will discard the inputs and start a new fuzz run:
+
+```solidity
+function testWithdraw(uint96 amount) public {
+  cheats.assume(amount > 0.1 ether)
+  // snip
+}
+```
+
 There are different ways to run property-based tests, notably parametric testing and fuzzing. Forge only supports fuzzing.
 
 When running a property-based test, the fuzzer will try to generate as many test cases as possible to uncover edge cases. You can configure the amount of scenarios the fuzzer will generate by setting [`FOUNDRY_FUZZ_RUNS`](../reference/config.md#fuzz_runs).
