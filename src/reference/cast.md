@@ -65,7 +65,7 @@ This section documents all `cast` subcommands and provides usage examples.
 #### `--abi-decode`
 
 ```ignore
---abi-decode [OPTIONS] <SIG> <CALLDATA>
+cast --abi-decode [OPTIONS] <SIG> <CALLDATA>
 ```
 
 Where `[OPTIONS]` is `--input`
@@ -87,7 +87,7 @@ $ cast --abi-decode --input "fulfillRandomness(bytes32,uint256)" 0x1F1F897F676d0
 #### `--calldata-decode`
 
 ```ignore
---calldata-decode <SIG> <CALLDATA>
+cast --calldata-decode <SIG> <CALLDATA>
 ```
 
 Decode ABI-encoded hexadecimal input. Use `--abi-decode` to decode output data.
@@ -107,7 +107,7 @@ $ cast --calldata-decode "fulfillRandomness(bytes32,uint256)" 0x1F1F897F676d0000
 #### `--from-utf8`
 
 ```ignore
---from-utf8 [TEXT]
+cast --from-utf8 [TEXT]
 ```
 
 Convert from UTF8 to hexadecimal.
@@ -126,7 +126,7 @@ $ cast --from-utf8 "gm"
 #### `--from-wei`
 
 ```ignore
---from-wei [ARGS]
+cast --from-wei [ARGS]
 ```
 
 Where `[ARGS]` are `<VALUE>` and `<UNIT>`
@@ -147,7 +147,7 @@ $ cast --from-wei 100000000000000000
 #### `--max-int`
 
 ```ignore
---max-int
+cast --max-int
 ```
 
 Maximum `int256` value.
@@ -166,7 +166,7 @@ $ cast --max-int
 #### `--max-uint`
 
 ```ignore
---max-uint
+cast --max-uint
 ```
 
 Maximum `uint256` value.
@@ -185,7 +185,7 @@ $ cast --max-uint
 #### `--min-int`
 
 ```ignore
---min-int
+cast --min-int
 ```
 
 Minimum `int256` value.
@@ -204,7 +204,7 @@ $ cast --min-int
 #### `--to-ascii`
 
 ```ignore
---to-ascii [HEXDATA]
+cast --to-ascii [HEXDATA]
 ```
 
 Convert from hexadecimal to ASCII.
@@ -223,7 +223,7 @@ gm
 #### `--to-bytes32`
 
 ```ignore
---to-bytes32 [BYTES]
+cast --to-bytes32 [BYTES]
 ```
 
 Left pad hexadecimal to `bytes32`.
@@ -242,7 +242,7 @@ $ cast --to-bytes32 0x676d
 #### `--to-checksum-address`
 
 ```ignore
---to-checksum-address [ADDRESS]
+cast --to-checksum-address [ADDRESS]
 ```
 
 Convert an address to a checksummed format (EIP-55)
@@ -261,7 +261,7 @@ $ cast --to-checksum-address 0x6b175474e89094c44da98b954eedeac495271d0f
 #### `--to-dec`
 
 ```ignore
---to-dec [HEXVALUE]
+cast --to-dec [HEXVALUE]
 ```
 
 Convert from hexadecimal to decimal.
@@ -280,7 +280,7 @@ $ cast --to-dec 0xf
 #### `--to-fix`
 
 ```ignore
---to-fix [ARGS]
+cast --to-fix [ARGS]
 ```
 
 Where `[ARGS]` are `<DECIMALS>` and `<VALUE>`
@@ -301,7 +301,7 @@ cast --to-fix 18 1
 #### `--to-hex`
 
 ```ignore
---to-hex [DECIMAL]
+cast --to-hex [DECIMAL]
 ```
 
 Convert from decimal to hexadecimal.
@@ -320,7 +320,7 @@ $ cast --to-hex 15
 #### `--to-hexdata`
 
 ```ignore
---to-hexdata [INPUT]
+cast --to-hexdata [INPUT]
 ```
 
 Where `[INPUT]` can be:
@@ -346,7 +346,7 @@ $ cast --to-hexdata @EXAMPLE_INPUT
 #### `--to-uint256`
 
 ```ignore
---to-uint256 [VALUE]
+cast --to-uint256 [VALUE]
 ```
 
 Convert a number into `uint256` hexadecimal.
@@ -365,7 +365,7 @@ $ cast --to-uint256 15
 #### `--to-wei`
 
 ```ignore
---to-wei [ARGS]
+cast --to-wei [ARGS]
 ```
 
 Where `[ARGS]` are `<VALUE>` and `<UNIT>`
@@ -386,7 +386,7 @@ $ cast --to-wei 1
 #### `4byte`
 
 ```ignore
-4byte <SELECTOR>
+cast 4byte <SELECTOR>
 ```
 
 Fetch function signature using the selector.
@@ -405,7 +405,7 @@ fulfillRandomness(bytes32,uint256)
 #### `4byte-decode`
 
 ```ignore
-4byte-decode [OPTIONS] <CALLDATA>
+cast 4byte-decode [OPTIONS] <CALLDATA>
 ```
 
 Where `[OPTIONS]` is `--id <ID>` (the 4byte selector id to use, can also be `earliest` or `latest`)
@@ -428,7 +428,7 @@ $ cast 4byte-decode 0x1F1F897F676d0000000000000000000000000000000000000000000000
 #### `abi-encode`
 
 ```ignore
-abi-encode <SIG> <ARGS>
+cast abi-encode <SIG> <ARGS>
 ```
 
 Endcode the arguments with the function signature using ABI, exculding the selector.
@@ -447,8 +447,10 @@ $ cast abi-encode "fulfillRandomness(bytes32,uint256)" 0x676d0000000000000000000
 #### `age`
 
 ```ignore
-age --rpc-url <RPC_URL> [BLOCK]
+cast age --rpc-url <RPC_URL> [BLOCK]
 ```
+
+env: `ETH_RPC_URL`
 
 Print the timestamp of a block.
 
@@ -466,8 +468,10 @@ Thu Jul 30 15:26:28 2015
 #### `balance`
 
 ```ignore
-balance [OPTIONS] --rpc-url <RPC_URL> <WHO>
+cast balance [OPTIONS] --rpc-url <RPC_URL> <WHO>
 ```
+
+env: `ETH_RPC_URL`
 
 Where `[OPTIONS]` is `--block <BLOCK>` (the block you want to query, can also be `earliest`,`latest`,`pending`)
 
@@ -487,8 +491,10 @@ $ cast balance --rpc-url <your_rpc_url> 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA960
 #### `basefee`
 
 ```ignore
-basefee --rpc-url <RPC_URL> [BLOCK]
+cast basefee --rpc-url <RPC_URL> [BLOCK]
 ```
+
+env: `ETH_RPC_URL`
 
 Where `[BLOCK]` is the block you want to query, can also be `earliest`,`latest`,`pending`
 
@@ -508,8 +514,10 @@ $ cast basefee --rpc-url <your_rpc_url>
 #### `block`
 
 ```ignore
-block [OPTIONS] --rpc-url <RPC_URL> <BLOCK> [FIELD]
+cast block [OPTIONS] --rpc-url <RPC_URL> <BLOCK> [FIELD]
 ```
+
+env: `ETH_RPC_URL`
 
 Where:
 - `[OPTIONS]` are `--full` and `--json`
@@ -535,8 +543,10 @@ gasLimit             "0x...
 #### `block-number`
 
 ```ignore
-block-number --rpc-url <RPC_URL>
+cast block-number --rpc-url <RPC_URL>
 ```
+
+env: `ETH_RPC_URL`
 
 Print latest block number.
 
@@ -554,17 +564,19 @@ $ cast block-number --rpc-url <your_rpc_url>
 #### `call`
 
 ```ignore
-call [OPTIONS] <ADDRESS> <SIG> [ARGS] --rpc-url <RPC_URL>
+cast call [OPTIONS] <ADDRESS> <SIG> [ARGS] --rpc-url <RPC_URL>
 ```
 
+env: `ETH_RPC_URL`
+
 Where `[OPTIONS]` are:
-- `--chain <CHAIN>` (default: mainnet)
-- `--etherscan-api-key <ETHERSCAN_API_KEY>`
-- `--from <FROM>` (the sender account)
+- `--chain <CHAIN>` (default: mainnet) env: `CHAIN`
+- `--etherscan-api-key <ETHERSCAN_API_KEY>` env: `ETHERSCAN_API_KEY`
+- `--from <FROM>` (the sender account) env: `ETH_FROM`
 - `--flashbots` (to use a flashbots RPC URL: https://rpc.flashbots.net)
 - `--hd-path <HD_PATH>` (derivation path for your hardware wallet, trezor or ledger)
 - `--interactive` (interactive prompt to insert your private key)
-- `--keystore <KEYSTORE_PATH>` (path to your keystore folder / file)
+- `--keystore <KEYSTORE_PATH>` (path to your keystore folder / file) env: `ETH_KEYSTORE`
 - `--ledger` (use your Ledger hardware wallet)
 - `--mnemonic-path <MNEMONIC_PATH>` (path to your mnemonic file)
 - `--mnemonic_index <MNEMONIC_INDEX>` (your index in the standard hd path, default: 0)
@@ -588,7 +600,7 @@ $ cast call 0x6b175474e89094c44da98b954eedeac495271d0f "totalSupply()(uint256)" 
 #### `calldata`
 
 ```ignore
-calldata <SIG> [ARGS]
+cast calldata <SIG> [ARGS]
 ```
 
 Pack a function signature and arguments into hexadecimal calldata.
@@ -607,8 +619,10 @@ $ cast calldata "fulfillRandomness(bytes32,uint256)" 0x676d000000000000000000000
 #### `chain`
 
 ```ignore
-chain --rpc-url <RPC_URL>
+cast chain --rpc-url <RPC_URL>
 ```
+
+env: `ETH_RPC_URL`
 
 Print symbolic name of current blockchain by checking genesis hash.
 
@@ -626,8 +640,10 @@ ethlive
 #### `chain-id`
 
 ```ignore
-chain-id --rpc-url <RPC_URL>
+cast chain-id --rpc-url <RPC_URL>
 ```
+
+env: `ETH_RPC_URL`
 
 Return chain ID.
 
@@ -645,8 +661,10 @@ $ cast chain-id --rpc-url <your_rpc_url>
 #### `code`
 
 ```ignore
-code [OPTIONS] --rpc-url <RPC_URL> <WHO>
+cast code [OPTIONS] --rpc-url <RPC_URL> <WHO>
 ```
+
+env: `ETH_RPC_URL`
 
 Where `[OPTIONS]` is `--block <BLOCK>` (the block you want to query, can also be `earliest`,`latest`,`pending`)
 
@@ -666,7 +684,7 @@ $ cast code --rpc-url <your_rpc_url> 0x1f9840a85d5af5bf1d1762f925bdaddc4201f984
 #### `completions`
 
 ```ignore
-completions <SHELL>
+cast completions <SHELL>
 ```
 
 Where `<SHELL>` can be `bash`, `elvish`, `fish`, `powershell`, `zsh`
@@ -687,17 +705,19 @@ prints the bash completions script here...
 #### `estimate`
 
 ```ignore
-estimate [OPTIONS] <ADDRESS> <SIG> [ARGS] --rpc-url <RPC_URL>
+cast estimate [OPTIONS] <ADDRESS> <SIG> [ARGS] --rpc-url <RPC_URL>
 ```
 
+env: `ETH_RPC_URL`
+
 Where `[OPTIONS]` are:
-- `--chain <CHAIN>` (default: mainnet)
-- `--etherscan-api-key <ETHERSCAN_API_KEY>`
-- `--from <FROM>` (the sender account)
+- `--chain <CHAIN>` (default: mainnet) env: `CHAIN`
+- `--etherscan-api-key <ETHERSCAN_API_KEY>` env: `ETHERSCAN_API_KEY`
+- `--from <FROM>` (the sender account) env: `ETH_FROM`
 - `--flashbots` (to use a flashbots RPC URL: https://rpc.flashbots.net)
 - `--hd-path <HD_PATH>` (derivation path for your hardware wallet, trezor or ledger)
 - `--interactive` (interactive prompt to insert your private key)
-- `--keystore <KEYSTORE_PATH>` (path to your keystore folder / file)
+- `--keystore <KEYSTORE_PATH>` (path to your keystore folder / file) env: `ETH_KEYSTORE`
 - `--ledger` (use your Ledger hardware wallet)
 - `--mnemonic-path <MNEMONIC_PATH>` (path to your mnemonic file)
 - `--mnemonic_index <MNEMONIC_INDEX>` (your index in the standard hd path, default: 0)
@@ -721,8 +741,10 @@ $ cast estimate --from 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045 0xc18360217d8f
 #### `gas-price`
 
 ```ignore
-gas-price --rpc-url <RPC_URL>
+cast gas-price --rpc-url <RPC_URL>
 ```
+
+env: `ETH_RPC_URL`
 
 Print current gas price of target chain.
 
@@ -740,7 +762,7 @@ $ cast gas-price --rpc-url <your_rpc_url>
 #### `keccak`
 
 ```ignore
-keccak <DATA>
+cast keccak <DATA>
 ```
 
 Keccak-256-hash arbitrary data.
@@ -759,8 +781,10 @@ $ cast keccak gm
 #### `lookup-address`
 
 ```ignore
-lookup-address [OPTIONS] --rpc-url <RPC_URL> <WHO>
+cast lookup-address [OPTIONS] --rpc-url <RPC_URL> <WHO>
 ```
+
+env: `ETH_RPC_URL`
 
 Where `[OPTIONS]` is `--verify` (do a forward resolution to ensure the address is correct)
 
@@ -780,7 +804,7 @@ vitalik.eth
 #### `namehash`
 
 ```ignore
-namehash <NAME>
+cast namehash <NAME>
 ```
 
 Print ENS namehash of a ENS name.
@@ -799,8 +823,10 @@ $ cast namehash "vitalik.eth"
 #### `nonce`
 
 ```ignore
-nonce [OPTIONS] --rpc-url <RPC_URL> <WHO>
+cast nonce [OPTIONS] --rpc-url <RPC_URL> <WHO>
 ```
+
+env: `ETH_RPC_URL`
 
 Where `[OPTIONS]` is `--block <BLOCK>` (the block you want to query, can also be `earliest`,`latest`,`pending`)
 
@@ -820,8 +846,10 @@ $ cast nonce --rpc-url <your_rpc_url> 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045
 #### `resolve-name`
 
 ```ignore
-resolve-name [OPTIONS] --rpc-url <RPC_URL> [WHO]
+cast resolve-name [OPTIONS] --rpc-url <RPC_URL> [WHO]
 ```
+
+env: `ETH_RPC_URL`
 
 Get the address an ENS name resolves to.
 
@@ -839,17 +867,19 @@ $ cast resolve-name --rpc-url <your_rpc_url> "vitalik.eth"
 #### `send`
 
 ```ignore
-send [OPTIONS] <ADDRESS> <SIG> [ARGS] --rpc-url <RPC_URL>
+cast send [OPTIONS] <ADDRESS> <SIG> [ARGS] --rpc-url <RPC_URL>
 ```
 
+env: `ETH_RPC_URL`
+
 Where `[OPTIONS]` are:
-- `--chain <CHAIN>` (default: mainnet)
-- `--etherscan-api-key <ETHERSCAN_API_KEY>`
-- `--from <FROM>` (the sender account)
+- `--chain <CHAIN>` (default: mainnet) env: `CHAIN`
+- `--etherscan-api-key <ETHERSCAN_API_KEY>` env: `ETHERSCAN_API_KEY`
+- `--from <FROM>` (the sender account) env: `ETH_FROM`
 - `--flashbots` (to use a flashbots RPC URL: https://rpc.flashbots.net)
 - `--hd-path <HD_PATH>` (derivation path for your hardware wallet, trezor or ledger)
 - `--interactive` (interactive prompt to insert your private key)
-- `--keystore <KEYSTORE_PATH>` (path to your keystore folder / file)
+- `--keystore <KEYSTORE_PATH>` (path to your keystore folder / file) env: `ETH_KEYSTORE`
 - `--ledger` (use your Ledger hardware wallet)
 - `--mnemonic-path <MNEMONIC_PATH>` (path to your mnemonic file)
 - `--mnemonic_index <MNEMONIC_INDEX>` (your index in the standard hd path, default: 0)
@@ -875,8 +905,10 @@ prints the transaction receipt...
 #### `storage`
 
 ```ignore
-storage [OPTIONS] --rpc-url <RPC_URL> <ADDRESS> <SLOT>
+cast storage [OPTIONS] --rpc-url <RPC_URL> <ADDRESS> <SLOT>
 ```
+
+env: `ETH_RPC_URL`
 
 Where `[OPTIONS]` is `--block <BLOCK>` (the block you want to query, can also be `earliest`,`latest`,`pending`)
 
@@ -896,8 +928,10 @@ $ cast storage --rpc-url <your_rpc_url> 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756C
 #### `tx`
 
 ```ignore
-tx [OPTIONS] --rpc-url <RPC_URL> <HASH> [FIELD]
+cast tx [OPTIONS] --rpc-url <RPC_URL> <HASH> [FIELD]
 ```
+
+env: `ETH_RPC_URL`
 
 Where `[OPTIONS]` are `--json`
 
@@ -921,7 +955,7 @@ chainId              "0x...
 #### `wallet`
 
 ```ignore
-wallet <SUBCOMMAND>
+cast wallet <SUBCOMMAND>
 ```
 
 Where `<SUBCOMMAND>` can be:
@@ -934,6 +968,21 @@ Where `<SUBCOMMAND>` can be:
 Set of wallet management utilities.
 
 Convert a private key to an address with `address`.
+
+```ignore
+cast wallet address [OPTIONS]
+```
+
+Where `[OPTIONS]` are:
+- `--hd-path <HD_PATH>` (derivation path for your hardware wallet, trezor or ledger)
+- `--interactive` (interactive prompt to insert your private key)
+- `--keystore <KEYSTORE_PATH>` (path to your keystore folder / file) env: `ETH_KEYSTORE`
+- `--ledger` (use your Ledger hardware wallet)
+- `--mnemonic-path <MNEMONIC_PATH>` (path to your mnemonic file)
+- `--mnemonic_index <MNEMONIC_INDEX>` (your index in the standard hd path, default: 0)
+- `--password <KEYSTORE_PASSWORD>` (your keystore password)
+- `--private-key <PRIVATE_KEY>` (your private key string)
+- `--trezor` (use your Trezor hardware wallet)
 
 ##### Example
 
