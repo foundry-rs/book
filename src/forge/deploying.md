@@ -40,7 +40,7 @@ $ forge create --rpc-url <your_rpc_url> --constructor-args "ForgeUSD" "FUSD" 18 
 You can verify a contract on Etherscan with the `forge verify-contract` command.
 
 You must provide:
-- the [compiler version](https://etherscan.io/solcversions) used during the build
+- the [compiler version](https://etherscan.io/solcversions) used during the build, with 8 hex digits from the commit version prefix
 - the contract address
 - the path to the contract `<path>:<contractname>`
 - your Etherscan API key (env: `ETHERSCAN_API_KEY`).
@@ -50,7 +50,7 @@ Moreover, you may need to provide:
 - the number of optimizations, if the Solidity optimizer was activated
 - the [chain ID](https://evm-chainlist.netlify.app/), if the contract is not on Ethereum Mainnet
 
-Let's say you want to verify `MyToken` (see above). You set the [number of optimizations](../reference/config.md#optimizer_runs) to 1 million, compiled it with v0.8.10, and deployed it, as shown above, to the Kovan testnet (chain ID: 42).
+Let's say you want to verify `MyToken` (see above). You set the [number of optimizations](../reference/config.md#optimizer_runs) to 1 million, compiled it with v0.8.10, and deployed it, as shown above, to the Kovan testnet (chain ID: 42). Note that `--num-of-optimizations` will default to 0 if not set on verification, while it defaults to 200 if not set on deployment, so make sure you pass `--num-of-optimizations 200` if you left the default compilation settings. 
 
 Here's how to verify it:
 
