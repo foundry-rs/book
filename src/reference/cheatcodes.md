@@ -195,7 +195,7 @@ function sign(uint256 privateKey, bytes32 digest) external returns (uint8 v, byt
 
 Signs a digest `digest` with private key `privateKey`, returning `(v, r, s)`.
 
-This is useful for testing functions that take signed data and performs an `ecrecover` to verify the signer.
+This is useful for testing functions that take signed data and perform an `ecrecover` to verify the signer.
 ##### Example
 ```solidity
 address alice = cheats.addr(1);
