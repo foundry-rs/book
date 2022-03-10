@@ -2,7 +2,7 @@
 
 Cheatcodes give you the ability to alter the state of the EVM, mock data, assert on reverts, and more.
 
-To enable a cheatcode you call designated functions on the cheatcode address: `0x7109709ECfa91a80626fF3989D68f67F5b1DD12D`. This address can be accessed through the `HEVM_ADDRESS` constant in `DSTest`
+To enable a cheatcode you call designated functions on the cheatcode address: `0x7109709ECfa91a80626fF3989D68f67F5b1DD12D`. This address can be accessed through the `HEVM_ADDRESS` constant in `DSTest`.
 
 ### Cheatcodes Interface
 
@@ -606,7 +606,7 @@ function assume(bool) external;
 
 If the boolean expression evaluates to false, discard the current fuzz inputs and start a new fuzz run.
 
-The `assume` cheatcode should mainly be used for very narrow checks. Broad checks will slow down tests as it will take a while to find valid values, and the test may fail if you hit the max number of rejects. You can also [configure](https://github.com/gakonst/foundry/blob/a00c1939becf3b40f1453e330d3d9507a756d610/config/src/lib.rs#L181-L188) `fuzz-max-local-rejects` and `fuzz-max-global-rejects` in your `foundry.toml` file.
+The `assume` cheatcode should mainly be used for very narrow checks. Broad checks will slow down tests as it will take a while to find valid values, and the test may fail if you hit the max number of rejects. You can configure the rejection thresholds by setting [`fuzz_max_local_rejects`](./config.md#fuzz_max_local_rejects) and [`fuzz_max_global_rejects`](./config.md#fuzz_max_global_rejects) in your `foundry.toml` file. More information on filtering via `assume` can be found [here](https://altsysrq.github.io/proptest-book/proptest/tutorial/filtering.html#filtering).
 
 For broad checks, such as ensuring a `uint256` falls within a certain range, you can bound your input with the modulo operator or Solmate's [`bound`](https://github.com/Rari-Capital/solmate/blob/a9e3ea26a2dc73bfa87f0cb189687d029028e0c5/src/test/utils/DSTestPlus.sol#L114-L133) method.
 

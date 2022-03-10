@@ -39,6 +39,8 @@ optimizer_runs = 200                                          # the number of op
 verbosity = 0                                                 # the verbosity of tests
 ignored_error_codes = []                                      # a list of ignored solc error codes
 fuzz_runs = 256                                               # the number of fuzz runs for tests
+fuzz_max_local_rejects = 65536                                # max number of individual inputs that may be rejected before the test aborts
+fuzz_max_global_rejects = 1024                                # max number of combined inputs that may be rejected before the test aborts
 ffi = false                                                   # whether to enable ffi or not
 sender = '0x00a329c0648769a73afac7f9381e08fb43dbea72'         # the address of `msg.sender` in tests
 tx_origin = '0x00a329c0648769a73afac7f9381e08fb43dbea72'      # the address of `tx.origin` in tests
@@ -235,6 +237,24 @@ The EVM version to use during tests. The value **must** be an EVM hardfork name,
 - Environment: `FOUNDRY_FUZZ_RUNS` or `DAPP_FUZZ_RUNS`
 
 The amount of fuzz runs to perform for each fuzz test case. Higher values gives more confidence in results at the cost of testing speed.
+
+##### `fuzz_max_local_rejects`
+
+- Type: integer
+- Default: 65536
+- Environment: `FOUNDRY_FUZZ_RUNS`
+
+The maximum number of individual inputs that may be rejected before the test as a whole aborts.
+"Local" filters apply to a single strategy. If a value is rejected, a new value is drawn from that strategy only.
+
+##### `fuzz_max_global_rejects`
+
+- Type: integer
+- Default: 10234
+- Environment: `FOUNDRY_FUZZ_RUNS`
+
+The maximum number of combined inputs that may be rejected before the test as a whole aborts.
+"Global" filters apply to the whole test case. If the test case is rejected, the whole thing is regenerated.
 
 ##### `ffi`
 
