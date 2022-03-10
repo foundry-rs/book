@@ -40,7 +40,7 @@ $ forge create --rpc-url <your_rpc_url> --constructor-args "ForgeUSD" "FUSD" 18 
 You can verify a contract on Etherscan with the `forge verify-contract` command.
 
 You must provide:
-- the [compiler version](https://etherscan.io/solcversions) used during the build
+- the [compiler version](https://etherscan.io/solcversions) used during the build, with 8 hex digits from the commit version prefix
 - the contract address
 - the path to the contract `<path>:<contractname>`
 - your Etherscan API key (env: `ETHERSCAN_API_KEY`).
@@ -50,12 +50,12 @@ Moreover, you may need to provide:
 - the number of optimizations, if the Solidity optimizer was activated
 - the [chain ID](https://evm-chainlist.netlify.app/), if the contract is not on Ethereum Mainnet
 
-Let's say you want to verify `MyToken` (see above). You set the [number of optimizations](../reference/config.md#optimizer_runs) to 1 million, compiled it with v0.8.10, and deployed it, as shown above, to the Kovan testnet (chain ID: 42).
+Let's say you want to verify `MyToken` (see above). You set the [number of optimizations](../reference/config.md#optimizer_runs) to 1 million, compiled it with v0.8.10, and deployed it, as shown above, to the Kovan testnet (chain ID: 42). Note that `--num-of-optimizations` will default to 0 if not set on verification, while it defaults to 200 if not set on deployment, so make sure you pass `--num-of-optimizations 200` if you left the default compilation settings. 
 
 Here's how to verify it:
 
 ```bash
-$ forge verify-contract --chain-id 42 --num-of-optimizations 1000000 --constructor-args 000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000c0000000000000000000000000000000000000000000000000000000000000001200000000000000000000000000000000000000000000003635c9adc5dea000000000000000000000000000000000000000000000000000000000000000000008466f72676555534400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000044655534400000000000000000000000000000000000000000000000000000000 --compiler-version v0.8.10+commit.fc4108 <the_contract_address> src/MyToken.sol:MyToken <your_etherscan_api_key>
+$ forge verify-contract --chain-id 42 --num-of-optimizations 1000000 --constructor-args 000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000c0000000000000000000000000000000000000000000000000000000000000001200000000000000000000000000000000000000000000003635c9adc5dea000000000000000000000000000000000000000000000000000000000000000000008466f72676555534400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000044655534400000000000000000000000000000000000000000000000000000000 --compiler-version v0.8.10+commit.fc410830 <the_contract_address> src/MyToken.sol:MyToken <your_etherscan_api_key>
 Submitted contract for verification:
                 Response: `OK`
                 GUID: `a6yrbjp5prvakia6bqp5qdacczyfhkyi5j1r6qbds1js41ak1a`
