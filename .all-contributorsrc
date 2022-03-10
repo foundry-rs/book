@@ -133,6 +133,15 @@
       "contributions": [
         "maintenance"
       ]
+    },
+    {
+      "login": "wildmolasses",
+      "name": "Ed Mazurek",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5423313?v=4",
+      "profile": "https://github.com/wildmolasses",
+      "contributions": [
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7,
