@@ -87,7 +87,7 @@ interface CheatCodes {
     function getCode(string calldata) external returns (bytes memory);
     // Gets the bytecode for a contract in the project given the path to the contract.
 
-    function label(address addr, string label) external;
+    function label(address addr, string calldata label) external;
     // Label an address in test traces
 
     function assume(bool) external;
