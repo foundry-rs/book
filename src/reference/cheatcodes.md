@@ -473,13 +473,11 @@ We can also assert that multiple events are emitted in a single call. For exampl
 function testERC20EmitsBatchTransfer() public {
   // We declare multiple expected transfer events
   for (uint256 i = 0; i < users.length; i++) {
-    // Each parameter must be set to false for batch event emission tests to work.
     cheats.expectEmit(true, true, true, true);
     emit Transfer(address(this), users[i], 10);
   }
 
   // We also expect a custom `BatchTransfer(uint256 numberOfTransfers)` event.
-  // Again, each expectEmit parameter must be false.
   cheats.expectEmit(false, false, false, false);
   emit BatchTransfer(users.length);
 
