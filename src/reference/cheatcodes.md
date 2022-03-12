@@ -467,8 +467,7 @@ function testERC20EmitsTransfer() public {
 
 <br>
 
-We can also assert that multiple events are emitted in a single call. 
-For example:
+We can also assert that multiple events are emitted in a single call. For example:
 
 ```solidity
 function testERC20EmitsBatchTransfer() public {
