@@ -24,7 +24,7 @@
 - [Cast Guide](./cast/index.md)
   - [Overview of `cast`](./cast/cast-overview.md)
 - [Additional Guides](./guides/index.md)
-  - [Incremental Adoption](./guides/incremental-adoption.md)
+  - [Incremental Adoption]()
   - [Integrating with VSCode](./guides/vscode.md)
   - [Shell Autocompletion](./guides/shell-autocompletion.md)
 - [Reference](./reference/index.md)
