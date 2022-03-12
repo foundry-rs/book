@@ -427,6 +427,7 @@ This cheat code is used to assert that certain logs are emitted on the next call
 
 If the event is not available in the scope (e.g because we use some Interface or external smart contract), we can define the event ourselves with an identical event signature. 
 
+Currently, the cheatcode does not check the origin contract of the event, but simply that it was emitted during that call.
 
 For example:
 
