@@ -425,9 +425,15 @@ This cheat code is used to assert that certain logs are emitted on the next call
 2. Emit the event we are supposed to see after the next call.
 3. Perform the call.
 
+If the event is not available in the current scope (e.g because we are using an interface, or an external smart contract), we can define the event ourselves with an identical event signature. 
+
+The cheatcode does not check the origin of the event, but simply that it was emitted during that call.
+
 For example:
 
 ```solidity
+event Transfer(address indexed from, address indexed to, uint256 amount);
+
 function testERC20EmitsTransfer() public {
   // Only `src` and `dst` are indexed in ERC20's `Transfer` event,
   // so we only check topic 0 and 1, as well as the data (`amount`).
@@ -461,19 +467,17 @@ function testERC20EmitsTransfer() public {
 
 <br>
 
-We can also assert that multiple events are emitted in a single call. However this currently requires that we only test event emission and not topics or data. For example:
+We can also assert that multiple events are emitted in a single call. For example:
 
 ```solidity
 function testERC20EmitsBatchTransfer() public {
   // We declare multiple expected transfer events
   for (uint256 i = 0; i < users.length; i++) {
-    // Each parameter must be set to false for batch event emission tests to work.
-    cheats.expectEmit(false, false, false, false);
+    cheats.expectEmit(true, true, true, true);
     emit Transfer(address(this), users[i], 10);
   }
 
   // We also expect a custom `BatchTransfer(uint256 numberOfTransfers)` event.
-  // Again, each expectEmit parameter must be false.
   cheats.expectEmit(false, false, false, false);
   emit BatchTransfer(users.length);
 
