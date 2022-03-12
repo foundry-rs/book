@@ -11,6 +11,8 @@ This chapter will walk you through using `forge`, the command-line tool that tes
   - [Writing Tests](./writing-tests.md)
   - [Cheatcodes](./cheatcodes.md)
   - [Understanding Traces](./traces.md)
+  - [Gas Reports](./gas-reports.md)
+  - [Forking Mode](./forking-mode.md)
 - [Advanced Testing](./advanced-testing.md)
   - [Fuzz Testing](./fuzz-testing.md)
 - [Deploying and Verifying](./deploying.md)
