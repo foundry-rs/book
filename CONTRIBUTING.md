@@ -101,3 +101,9 @@ Output goes here
 >
 > When it is perfect time to inform a reader about something, but it's only loosely related to the section, use this callout at the bottom of the page.
 ```
+
+- Add new sections (files) to [`SUMMARY.md`](src/SUMMARY.md) and to the corresponding local summary:
+  - Forge Guide [`README.md`](src/forge/README.md)
+  - Cast Guide [`README.md`](src/cast/README.md)
+  - Additional Guides [`README.md`](src/guides/README.md)
+  - Reference [`README.md`](src/reference/README.md)
