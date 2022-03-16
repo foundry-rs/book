@@ -436,7 +436,8 @@ event Transfer(address indexed from, address indexed to, uint256 amount);
 
 function testERC20EmitsTransfer() public {
   // Only `src` and `dst` are indexed in ERC20's `Transfer` event,
-  // so we only check topic 1 and 2, as well as the data (`amount`).
+  // so we specifically check topics 1 and 2 (topic 0 is always checked by default),
+  // as well as the data (`amount`).
   cheats.expectEmit(true, true, false, true);
 
   // We emit the event we expect to see.
