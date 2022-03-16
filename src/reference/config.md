@@ -33,11 +33,14 @@ force = false                                                 # whether to ignor
 evm_version = 'london'                                        # the evm version (by hardfork name)
 #solc_version = '0.8.10'                                      # override for the solc version (setting this ignores `auto_detect_solc`)
 auto_detect_solc = true                                       # enable auto-detection of the appropriate solc version to use
+offline = false                                               # disable downloading of missing solc version(s)
 optimizer = true                                              # enable or disable the solc optimizer
 optimizer_runs = 200                                          # the number of optimizer runs
 verbosity = 0                                                 # the verbosity of tests
 ignored_error_codes = []                                      # a list of ignored solc error codes
 fuzz_runs = 256                                               # the number of fuzz runs for tests
+fuzz_max_local_rejects = 65536                                # max number of individual inputs that may be rejected before the test aborts
+fuzz_max_global_rejects = 1024                                # max number of combined inputs that may be rejected before the test aborts
 ffi = false                                                   # whether to enable ffi or not
 sender = '0x00a329c0648769a73afac7f9381e08fb43dbea72'         # the address of `msg.sender` in tests
 tx_origin = '0x00a329c0648769a73afac7f9381e08fb43dbea72'      # the address of `tx.origin` in tests
@@ -50,6 +53,7 @@ block_base_fee_per_gas = 0                                    # the base fee (in
 block_coinbase = '0x0000000000000000000000000000000000000000' # the address of `block.coinbase` in tests
 block_timestamp = 0                                           # the value of `block.timestamp` in tests
 block_difficulty = 0                                          # the value of `block.difficulty` in tests
+gas_reports = ["*"]                                           # a list of contracts to output gas reports for
 ```
 
 ### Configuration keys
@@ -167,6 +171,16 @@ If enabled, Foundry will automatically try to resolve appropriate Solidity compi
 
 This key is ignored if `solc_version` is set.
 
+##### `offline`
+
+- Type: boolean
+- Default: false
+- Environment: `FOUNDRY_OFFLINE` or `DAPP_OFFLINE`
+
+If enabled, Foundry will not attempt to download any missing solc versions.
+
+If both `offline` and `auto-detect-solc` are set to `true`, the required version(s) of solc will be auto detected but any missing versions will *not* be installed.
+
 ##### `optimizer`
 
 - Type: boolean
@@ -223,6 +237,24 @@ The EVM version to use during tests. The value **must** be an EVM hardfork name,
 - Environment: `FOUNDRY_FUZZ_RUNS` or `DAPP_FUZZ_RUNS`
 
 The amount of fuzz runs to perform for each fuzz test case. Higher values gives more confidence in results at the cost of testing speed.
+
+##### `fuzz_max_local_rejects`
+
+- Type: integer
+- Default: 65536
+- Environment: `FOUNDRY_FUZZ_RUNS`
+
+The maximum number of individual inputs that may be rejected before the test as a whole aborts.
+"Local" filters apply to a single strategy. If a value is rejected, a new value is drawn from that strategy only.
+
+##### `fuzz_max_global_rejects`
+
+- Type: integer
+- Default: 10234
+- Environment: `FOUNDRY_FUZZ_RUNS`
+
+The maximum number of combined inputs that may be rejected before the test as a whole aborts.
+"Global" filters apply to the whole test case. If the test case is rejected, the whole thing is regenerated.
 
 ##### `ffi`
 
@@ -321,3 +353,11 @@ The value of `block.timestamp` in tests.
 - Environment: `FOUNDRY_BLOCK_DIFFICULTY` or `DAPP_BLOCK_DIFFICULTY`
 
 The value of `block.difficulty` in tests.
+
+##### `gas_reports`
+
+- Type: array of strings (contract names)
+- Default: ["*"]
+- Environment: `FOUNDRY_GAS_REPORTS` or `DAPP_GAS_REPORTS`
+
+The contracts to print gas reports for.

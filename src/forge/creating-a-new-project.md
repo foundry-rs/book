@@ -47,7 +47,7 @@ $ forge test
 compiling...
 no files changed, compilation skipped.
 Running 1 test for ContractTest.json:ContractTest
-[PASS] testExample() (gas: 254)
+[PASS] testExample() (gas: 120)
 ```
 
 You'll notice that two new directories have popped up: `out` and `cache`.
