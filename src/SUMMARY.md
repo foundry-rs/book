@@ -25,6 +25,9 @@
   - [Incremental Adoption](./guides/incremental-adoption.md)
   - [Integrating with VSCode](./guides/vscode.md)
   - [Shell Autocompletion](./guides/shell-autocompletion.md)
+- [Tutorials](./tutorials/index.md)
+  - [Creating an NFT with solmate and forge](./tutorials/creating-an-NFT-with-solmate-and-forge.md)
+  
 - [Reference](./reference/index.md)
   - [`foundry.toml` Reference](./reference/config.md)
   - [`ds-test` Reference](./reference/ds-test.md)
