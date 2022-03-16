@@ -148,6 +148,8 @@ contract NFT is ERC721, PullPayment, Ownable {
 }
 ```
 
+Among others we have added metadata that can be queried from any front end application like Opensea by calling the tokenURI method on our Nft contract. **Note**: If you actually want to provide a real url to the consructor at deployment and host the metadata of this NFT contract please follow the steps outlined [here](https://docs.opensea.io/docs/part-3-adding-metadata-and-payments-to-your-contract#intro-to-nft-metadata).
+
 Let's test some of this added functionality to make sure it works as intended. Foundry offers an extremely fast EVM native testing framework through forge.
 
 Within your test folder rename the current Contract.t.sol test file to to MintTo.t.sol. This file will contain all tests regarding the NFT's mintTo method. Next, replace the existing boilerplate code with the below:
@@ -254,4 +256,26 @@ contract Receiver is ERC721TokenReceiver {
 ```
 
 The test suite is set up as a contract with a setUp method which runs before every individual test. As you can see forge offers a number of [cheatcodes](https://onbjerg.github.io/foundry-book/forge/cheatcodes.html) to manipulate your state to accomondate to your testing scenario. For example, our testFailMaxSupplyReached test  checks that an attempt to mint fails when the max supply of NFT is reached. Thus the currentTokenId of the NFT contract needs to be set to the max supply by using the store cheatcode which allows you to write data to your contracts storage slots. The storage slots you wish to write to can easily be found using the 
-forge-std helper library. If you want to put your forge skills to practice, write tests for the remaining methods of our NFT contract. Feel free to PR them [nft-tutorial]((https://github.com/FredCoen/nft-tutorial) where you will find the full implemenation of this tutorial.
+forge-std helper library. You can run the test with the following command:
+
+```bash
+forge test
+```
+
+If you want to put your forge skills to practice, write tests for the remaining methods of our NFT contract. Feel free to PR them [nft-tutorial]((https://github.com/FredCoen/nft-tutorial) where you will find the full implemenation of this tutorial.
+
+#### Gas reports for your function calls
+
+Foundry provides comprehensive gas report about your contracts. For every function called within your tests tt returns the min, average, median and, max gas cost. To print the gas report simply run:
+
+```bash
+forge test --gas-report 
+```
+
+This comes in handy when looking at various gas optimizations within your contracts. Since we used Solmate gas optimized ERC721 library instead of Open Zappelin's ERC721 library, let's have a look at the gas savings we made. You can find the NFT implementation using both libraries [here](https://github.com/FredCoen/nft-tutorial). Below are the resulting gas reports when running ```forge test --gas-report``` on that repository. As you can see our implemtation using solmate library saves around 1000 gas on a succesful mint (the max gas cost of the mintTo function calls).
+
+![Gas report solmate NFT](../images/gas-report-solmate-nft.png)
+
+![Gas report OZ NFT](../images/gas-report-oz-nft.png)
+
+That's it, I hope this will give you a good practical basis of how to get started with foundry. In my opinion there is no better way to deeply understand solidity than writing your tests in solidity. You will also experience less context switching between javascript and solidity. Happy coding!
