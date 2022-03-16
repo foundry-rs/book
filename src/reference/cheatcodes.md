@@ -67,7 +67,7 @@ interface CheatCodes {
     // Gets all accessed reads and write slot from a recording session, for a given address
 
     function expectEmit(bool, bool, bool, bool) external;
-    // Prepare an expected log with (bool checkTopic1, bool checkTopic2, bool checkTopic3, bool checkData).
+    // Prepare an expected log with (bool checkTopic0, bool checkTopic1, bool checkTopic2, bool checkData).
     // Call this function, then emit an event, then call a function. Internally after the call, we check if
     // logs were emitted in the expected order with the expected topics and data (as specified by the booleans)
 
@@ -416,7 +416,7 @@ emit log_uint(uint256(reads[0])); // 1
 
 #### `expectEmit`
 ```solidity
-function expectEmit(bool checkTopic1, bool checkTopic2, bool checkTopic3, bool checkData) external;
+function expectEmit(bool checkTopic0, bool checkTopic1, bool checkTopic2, bool checkData) external;
 ```
 
 This cheat code is used to assert that certain logs are emitted on the next call.
