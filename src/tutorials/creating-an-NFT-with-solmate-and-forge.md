@@ -111,9 +111,10 @@ contract Nft is ERC721, PullPayment, Ownable {
             msg.value == MINT_PRICE,
             "Transaction value did not equal the mint price"
         );
-        require(currentTokenId++ < TOTAL_SUPPLY, "Max supply reached");
-        _safeMint(recipient, currentTokenId);
-        return currentTokenId;
+        uint256 newTokenId = ++currentTokenId;
+        require(newTokenId <= TOTAL_SUPPLY, "Max supply reached");
+        _safeMint(recipient, newTokenId);
+        return newTokenId;
     }
 
     function tokenURI(uint256 tokenId)
