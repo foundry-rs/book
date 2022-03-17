@@ -96,6 +96,7 @@ no files changed, compilation skipped.
 Running 2 tests for OwnerUpOnlyTest.json:OwnerUpOnlyTest
 [PASS] testFailIncrementAsNotOwner() (gas: 4030)
 Traces:
+
   [4030] OwnerUpOnlyTest::testFailIncrementAsNotOwner()
     ├─ [0] VM::prank(0x0000000000000000000000000000000000000000)
     │   └─ ← ()
@@ -143,5 +144,5 @@ Running 2 tests for OwnerUpOnlyTest.json:OwnerUpOnlyTest
 <br>
 
 > 📚 **Reference**
-> 
+>
 > See the [Cheatcodes Reference](../reference/cheatcodes.md) for a complete overview of all the available cheatcodes.

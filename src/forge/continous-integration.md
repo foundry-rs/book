@@ -1,4 +1,4 @@
-## Continous Integration
+## Continuous Integration
 
 ### GitHub Actions
 

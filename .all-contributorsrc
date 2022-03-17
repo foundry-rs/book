@@ -1,0 +1,180 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "ZeroEkkusu",
+      "name": "Zero Ekkusu",
+      "avatar_url": "https://avatars.githubusercontent.com/u/94782988?v=4",
+      "profile": "https://github.com/ZeroEkkusu",
+      "contributions": [
+        "doc",
+        "review",
+        "maintenance"
+      ]
+    },
+    {
+      "login": "rootulp",
+      "name": "Rootul Patel",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3699047?v=4",
+      "profile": "https://rootulp.xyz",
+      "contributions": [
+        "doc",
+        "maintenance"
+      ]
+    },
+    {
+      "login": "zk-tarts",
+      "name": "zk-tarts",
+      "avatar_url": "https://avatars.githubusercontent.com/u/78189066?v=4",
+      "profile": "https://github.com/zk-tarts",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "nnnnicholas",
+      "name": "Nicholas",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1418561?v=4",
+      "profile": "https://github.com/nnnnicholas",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "metehan",
+      "name": "metehan",
+      "avatar_url": "https://avatars.githubusercontent.com/u/747125?v=4",
+      "profile": "https://github.com/metehan",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "hjubb",
+      "name": "Harris",
+      "avatar_url": "https://avatars.githubusercontent.com/u/9816161?v=4",
+      "profile": "https://github.com/hjubb",
+      "contributions": [
+        "maintenance"
+      ]
+    },
+    {
+      "login": "codingnirvana",
+      "name": "Rajesh Muppalla",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1348422?v=4",
+      "profile": "https://github.com/codingnirvana",
+      "contributions": [
+        "maintenance"
+      ]
+    },
+    {
+      "login": "mds1",
+      "name": "Matt Solomon",
+      "avatar_url": "https://avatars.githubusercontent.com/u/17163988?v=4",
+      "profile": "https://mattsolomon.dev",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "ruvaag",
+      "name": "Ruvaag",
+      "avatar_url": "https://avatars.githubusercontent.com/u/81832128?v=4",
+      "profile": "https://github.com/ruvaag",
+      "contributions": [
+        "maintenance"
+      ]
+    },
+    {
+      "login": "alexandrewolff",
+      "name": "awolff",
+      "avatar_url": "https://avatars.githubusercontent.com/u/55669233?v=4",
+      "profile": "http://linkedin.com/in/alexandre-wolff/",
+      "contributions": [
+        "maintenance"
+      ]
+    },
+    {
+      "login": "Kayaba-Attribution",
+      "name": "kayaba-attribution",
+      "avatar_url": "https://avatars.githubusercontent.com/u/63566185?v=4",
+      "profile": "https://www.kayaba-attribution.dev/",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "ncitron",
+      "name": "Noah Citron",
+      "avatar_url": "https://avatars.githubusercontent.com/u/16858330?v=4",
+      "profile": "https://github.com/ncitron",
+      "contributions": [
+        "review"
+      ]
+    },
+    {
+      "login": "Sabnock01",
+      "name": "Sabnock",
+      "avatar_url": "https://avatars.githubusercontent.com/u/24715302?v=4",
+      "profile": "https://github.com/Sabnock01",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "eltociear",
+      "name": "Ikko Ashimine",
+      "avatar_url": "https://avatars.githubusercontent.com/u/22633385?v=4",
+      "profile": "https://bandism.net/",
+      "contributions": [
+        "maintenance"
+      ]
+    },
+    {
+      "login": "wildmolasses",
+      "name": "Ed Mazurek",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5423313?v=4",
+      "profile": "https://github.com/wildmolasses",
+      "contributions": [
+        "maintenance"
+      ]
+    },
+    {
+      "login": "devtooligan",
+      "name": "devtooligan",
+      "avatar_url": "https://avatars.githubusercontent.com/u/71567643?v=4",
+      "profile": "https://github.com/devtooligan",
+      "contributions": [
+        "maintenance"
+      ]
+    },
+    {
+      "login": "0xfoobar",
+      "name": "0xfoobar",
+      "avatar_url": "https://avatars.githubusercontent.com/u/83792390?v=4",
+      "profile": "https://github.com/0xfoobar",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "odyslam",
+      "name": "odyslam.eth",
+      "avatar_url": "https://avatars.githubusercontent.com/u/13405632?v=4",
+      "profile": "https://odyslam.com",
+      "contributions": [
+        "maintenance"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "foundry-book",
+  "projectOwner": "onbjerg",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}

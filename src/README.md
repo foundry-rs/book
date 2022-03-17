@@ -32,3 +32,4 @@ More guides on various topics.
 
 References on Foundry and Foundry-related tools.
 
+> You can also check out [Awesome Foundry](https://github.com/crisgarner/awesome-foundry), a curated list of awesome Foundry resources, tutorials, tools and libraries!

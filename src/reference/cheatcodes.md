@@ -2,7 +2,7 @@
 
 Cheatcodes give you the ability to alter the state of the EVM, mock data, assert on reverts, and more.
 
-To enable a cheatcode you call designated functions on the cheatcode address: `0x7109709ECfa91a80626fF3989D68f67F5b1DD12D`.
+To enable a cheatcode you call designated functions on the cheatcode address: `0x7109709ECfa91a80626fF3989D68f67F5b1DD12D`. This address can be accessed through the `HEVM_ADDRESS` constant in `DSTest`.
 
 ### Cheatcodes Interface
 
@@ -10,58 +10,88 @@ This is a complete overview of all the available cheatcodes. For detailed descri
 
 ```solidity
 interface CheatCodes {
-    // Set block.timestamp
+
     function warp(uint256) external;
-    // Set block.number
+    // Set block.timestamp
+
     function roll(uint256) external;
-    // Set block.basefee
+    // Set block.number
+
     function fee(uint256) external;
-    // Loads a storage slot from an address
+    // Set block.basefee
+
     function load(address account, bytes32 slot) external returns (bytes32);
-    // Stores a value to an address' storage slot
+    // Loads a storage slot from an address
+
     function store(address account, bytes32 slot, bytes32 value) external;
-    // Signs data
+    // Stores a value to an address' storage slot
+
     function sign(uint256 privateKey, bytes32 digest) external returns (uint8 v, bytes32 r, bytes32 s);
-    // Computes address for a given private key
+    // Signs data
+
     function addr(uint256 privateKey) external returns (address);
-    // Performs a foreign function call via terminal
+    // Computes address for a given private key
+
     function ffi(string[] calldata) external returns (bytes memory);
-    // Sets the *next* call's msg.sender to be the input address
+    // Performs a foreign function call via terminal
+
     function prank(address) external;
-    // Sets all subsequent calls' msg.sender to be the input address until `stopPrank` is called
+    // Sets the *next* call's msg.sender to be the input address
+
     function startPrank(address) external;
-    // Sets the *next* call's msg.sender to be the input address, and the tx.origin to be the second input
+    // Sets all subsequent calls' msg.sender to be the input address until `stopPrank` is called
+
     function prank(address, address) external;
-    // Sets all subsequent calls' msg.sender to be the input address until `stopPrank` is called, and the tx.origin to be the second input
+    // Sets the *next* call's msg.sender to be the input address, and the tx.origin to be the second input
+
     function startPrank(address, address) external;
-    // Resets subsequent calls' msg.sender to be `address(this)`
+    // Sets all subsequent calls' msg.sender to be the input address until `stopPrank` is called, and the tx.origin to be the second input
+
     function stopPrank() external;
-    // Sets an address' balance
+    // Resets subsequent calls' msg.sender to be `address(this)`
+
     function deal(address who, uint256 newBalance) external;
-    // Sets an address' code
+    // Sets an address' balance
+
     function etch(address who, bytes calldata code) external;
-    // Expects an error on next call
+    // Sets an address' code
+
     function expectRevert(bytes calldata) external;
     function expectRevert(bytes4) external;
-    // Record all storage reads and writes
+    // Expects an error on next call
+
     function record() external;
-    // Gets all accessed reads and write slot from a recording session, for a given address
+    // Record all storage reads and writes
+
     function accesses(address) external returns (bytes32[] memory reads, bytes32[] memory writes);
+    // Gets all accessed reads and write slot from a recording session, for a given address
+
+    function expectEmit(bool, bool, bool, bool) external;
     // Prepare an expected log with (bool checkTopic1, bool checkTopic2, bool checkTopic3, bool checkData).
     // Call this function, then emit an event, then call a function. Internally after the call, we check if
     // logs were emitted in the expected order with the expected topics and data (as specified by the booleans)
-    function expectEmit(bool, bool, bool, bool) external;
+
+    function mockCall(address, bytes calldata, bytes calldata) external;
     // Mocks a call to an address, returning specified data.
     // Calldata can either be strict or a partial match, e.g. if you only
     // pass a Solidity selector to the expected calldata, then the entire Solidity
     // function will be mocked.
-    function mockCall(address, bytes calldata, bytes calldata) external;
-    // Clears all mocked calls
+
     function clearMockedCalls() external;
+    // Clears all mocked calls
+
+    function expectCall(address, bytes calldata) external;
     // Expect a call to an address with the specified calldata.
     // Calldata can either be strict or a partial match
-    function expectCall(address, bytes calldata) external;
+
     function getCode(string calldata) external returns (bytes memory);
+    // Gets the bytecode for a contract in the project given the path to the contract.
+
+    function label(address addr, string calldata label) external;
+    // Label an address in test traces
+
+    function assume(bool) external;
+    // When fuzzing, generate new inputs if conditional not met
 }
 ```
 
@@ -165,7 +195,7 @@ function sign(uint256 privateKey, bytes32 digest) external returns (uint8 v, byt
 
 Signs a digest `digest` with private key `privateKey`, returning `(v, r, s)`.
 
-This is useful for testing functions that take signed data and performs an `ecrecover` to verify the signer.
+This is useful for testing functions that take signed data and perform an `ecrecover` to verify the signer.
 ##### Example
 ```solidity
 address alice = cheats.addr(1);
@@ -204,6 +234,20 @@ Calls an arbitrary command if [`ffi`](./config.md#ffi) is enabled.
 
 It is generally advised to use this cheat code as a last resort, and to not enable it by default, as anyone who can change the tests of a project will be able to execute arbitrary commands on devices that run the tests.
 
+##### Example
+
+```solidity
+string[] memory inputs = new string[](3);
+inputs[0] = "echo";
+inputs[1] = "-n";
+// ABI encoded "gm", as a string
+inputs[2] = "0x00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000002676d000000000000000000000000000000000000000000000000000000000000";
+
+bytes memory res = cheats.ffi(inputs);
+string memory output = abi.decode(res, (string));
+assertEq(output, "gm");
+```
+
 <br>
 
 ---
@@ -231,7 +275,7 @@ myContract.withdraw(); // [PASS]
 function prank(address sender, address origin) external;
 ```
 
-Sets `msg.sender` to `sender` and `tx.origin` to `origin` for the next call.
+Sets `msg.sender` to `sender` and `tx.origin` to `origin` **for the next call**.
 
 #### `startPrank`
 
@@ -239,7 +283,7 @@ Sets `msg.sender` to `sender` and `tx.origin` to `origin` for the next call.
 function startPrank(address) external;
 ```
 
-Sets `msg.sender` for all subsequent calls until [`stopPrank`](#stopprank) is called.
+Sets `msg.sender` **for all subsequent calls** until [`stopPrank`](#stopprank) is called.
 
 ##### Alternative Signature
 
@@ -247,7 +291,7 @@ Sets `msg.sender` for all subsequent calls until [`stopPrank`](#stopprank) is ca
 function startPrank(address sender, address origin) external;
 ```
 
-Sets `msg.sender` to `sender` and `tx.origin` to `origin` for all subsequent calls until [`stopPrank`](#stopprank) is called.
+Sets `msg.sender` to `sender` and `tx.origin` to `origin` **for all subsequent calls** until [`stopPrank`](#stopprank) is called.
 
 #### `stopPrank`
 
@@ -381,9 +425,15 @@ This cheat code is used to assert that certain logs are emitted on the next call
 2. Emit the event we are supposed to see after the next call.
 3. Perform the call.
 
+If the event is not available in the current scope (e.g because we are using an interface, or an external smart contract), we can define the event ourselves with an identical event signature. 
+
+The cheatcode does not check the origin of the event, but simply that it was emitted during that call.
+
 For example:
 
 ```solidity
+event Transfer(address indexed from, address indexed to, uint256 amount);
+
 function testERC20EmitsTransfer() public {
   // Only `src` and `dst` are indexed in ERC20's `Transfer` event,
   // so we only check topic 0 and 1, as well as the data (`amount`).
@@ -417,19 +467,17 @@ function testERC20EmitsTransfer() public {
 
 <br>
 
-We can also assert that multiple events are emitted in a single call. However this currently requires that we only test event emission and not topics or data. For example:
+We can also assert that multiple events are emitted in a single call. For example:
 
 ```solidity
 function testERC20EmitsBatchTransfer() public {
   // We declare multiple expected transfer events
   for (uint256 i = 0; i < users.length; i++) {
-    // Each parameter must be set to false for batch event emission tests to work.
-    cheats.expectEmit(false, false, false, false);
+    cheats.expectEmit(true, true, true, true);
     emit Transfer(address(this), users[i], 10);
   }
 
   // We also expect a custom `BatchTransfer(uint256 numberOfTransfers)` event.
-  // Again, each expectEmit parameter must be false.
   cheats.expectEmit(false, false, false, false);
   emit BatchTransfer(users.length);
 
@@ -456,7 +504,7 @@ If a match is found, then `retdata` is returned from the call.
 Mocked calls are in effect until [`clearMockedCalls`](#clearmockedcalls) is called.
 
 > 💬 **Note**
-> 
+>
 > Calls to mocked addresses may revert if there is no code on the address.
 > This is because Solidity inserts an `extcodesize` check before some contract calls.
 >
@@ -514,10 +562,9 @@ When a call is made to `where` the call data is first checked to see if it match
 If the test terminates without the call being made, the test fails.
 ##### Example
 ```solidity
-bytes4 selector = bytes4(keccak256("fulfillRandomness(bytes32,uint256)"));
-bytes memory expectedData = abi.encodeWithSelector(selector, requestId, 5647236456456);
+bytes memory expectedData = abi.encodeWithSignature("fulfillRandomness(bytes32,uint256)", requestId, randomness);
 cheats.expectCall(address(awesomeContract), expectedData);
-vrfCoordinatorMock.callBackWithRandomness(requestId, 5647236456456, address(awesomeContract));
+vrfCoordinator.callBackWithRandomness(requestId, randomness, address(awesomeContract));
 // [PASS]
 ```
 
@@ -532,3 +579,81 @@ function getCode(string calldata) external returns (bytes memory);
 ```
 
 Returns the bytecode for a contract in the project given the path to the contract.
+
+The calldata parameter can either be in the form `ContractFile.sol` (if the filename and contract name are the same), `ContractFile.sol:ContractName`, or `./path/to/artifact.json`
+
+##### Example
+
+```solidity
+MyContract myContract = new MyContract(arg1, arg2);
+
+// Let's do the same thing with `getCode`
+bytes memory args = abi.encode(arg1, arg2);
+bytes memory bytecode = abi.encodePacked(cheats.getCode("MyContract.sol:MyContract"), args);
+address anotherAddress;
+assembly {
+    anotherAddress := create(0, add(bytecode, 0x20), mload(bytecode))
+}
+
+assertEq0(address(myContract).code, anotherAddress.code); // [PASS]
+```
+
+If you'd like to use getCode to deploy a contract's bytecode, you can also use [Forge Std](https://github.com/brockelmore/forge-std)'s `deployCode` helper. In your test file:
+
+```solidity
+    function testDeployCode() public {
+        // deployCode takes a string argument for the contract to deploy
+        // and optionally a bytes argument for any arguments that should
+        // be passed to your contract's constructor
+        address deployed = deployCode("StdCheats.t.sol:StdCheatsTest", bytes(""));
+        ...
+    }
+```
+
+<br>
+
+---
+
+#### `label`
+
+```solidity
+function label(address addr, string label) external;
+```
+
+Sets a label `label` for `addr` in test traces.
+
+If an address is labelled, the label will show up in test traces instead of the address.
+
+<br>
+
+---
+
+#### `assume`
+
+```solidity
+function assume(bool) external;
+```
+
+If the boolean expression evaluates to false, discard the current fuzz inputs and start a new fuzz run.
+
+The `assume` cheatcode should mainly be used for very narrow checks. Broad checks will slow down tests as it will take a while to find valid values, and the test may fail if you hit the max number of rejects. You can configure the rejection thresholds by setting [`fuzz_max_local_rejects`](./config.md#fuzz_max_local_rejects) and [`fuzz_max_global_rejects`](./config.md#fuzz_max_global_rejects) in your `foundry.toml` file. More information on filtering via `assume` can be found [here](https://altsysrq.github.io/proptest-book/proptest/tutorial/filtering.html#filtering).
+
+For broad checks, such as ensuring a `uint256` falls within a certain range, you can bound your input with the modulo operator or Solmate's [`bound`](https://github.com/Rari-Capital/solmate/blob/a9e3ea26a2dc73bfa87f0cb189687d029028e0c5/src/test/utils/DSTestPlus.sol#L114-L133) method.
+
+##### Example
+
+```solidity
+// Good example of using assume
+function testX(uint256 a) public {
+    cheats.assume(a != 1);
+    require(a != 1);
+    // [PASS]
+}
+
+// In this case assume is not a great fit, so you should bound inputs manually
+function testY(uint256 a) public {
+    a = bound(a, 100, 1e36);
+    require(a >= 100 && a <= 1e36);
+    // [PASS]
+}
+```
