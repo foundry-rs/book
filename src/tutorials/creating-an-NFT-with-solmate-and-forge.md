@@ -265,7 +265,7 @@ Foundry provides a comprehensive gas report about your contracts. For every func
 forge test --gas-report
 ```
 
-This comes in handy when looking at various gas optimizations within your contracts. Since we used Solmate gas optimised ERC721 library instead of OpenZeppelin's ERC721 library, let's have a look at the gas savings we made. You can find the NFT implementation using both libraries [here](https://github.com/FredCoen/nft-tutorial). Below are the resulting gas reports when running ```forge test --gas-report``` on that repository. As you can see our implementation using solmate library saves around 1000 gas on a successful mint (the max gas cost of the mintTo function calls).
+This comes in handy when looking at various gas optimizations within your contracts. Since we used Solmate gas optimised ERC721 library instead of OpenZeppelin's ERC721 library, let's have a look at the gas savings we made. You can find the NFT implementation using both libraries [here](https://github.com/FredCoen/nft-tutorial). Below are the resulting gas reports when running ```forge test --gas-report``` on that repository. As you can see our implementation using solmate library saves around 500 gas on a successful mint (the max gas cost of the mintTo function calls).
 
 ![Gas report solmate NFT](../images/nft-tutorial/gas-report-solmate-nft.png)
 
