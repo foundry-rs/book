@@ -90,7 +90,7 @@ import "openzeppelin-contracts/contracts/utils/Strings.sol";
 import "openzeppelin-contracts/contracts/security/PullPayment.sol";
 import "openzeppelin-contracts/contracts/access/Ownable.sol";
 
-contract NftSolmate is ERC721, PullPayment, Ownable {
+contract Nft is ERC721, PullPayment, Ownable {
 
     using Strings for uint256;
     string public baseURI;
@@ -152,19 +152,19 @@ pragma solidity 0.8.10;
 
 import "ds-test/test.sol";
 import "forge-std/stdlib.sol";
-import "../NftSolmate.sol";
+import "../NFT.sol";
 import "./interfaces/HEVM.sol";
 
-contract NftSolmateTests is DSTest {
+contract Nft is DSTest {
     using stdStorage for StdStorage;
 
     Hevm private vm = Hevm(HEVM_ADDRESS);
-    NftSolmate private nft;
+    NFT private nft;
     StdStorage private stdstore;
 
     function setUp() public {
         // Deploy NFT contract
-        nft = new NftSolmate("NFT_tutorial", "TUT", "baseUri");
+        nft = new NFT("NFT_tutorial", "TUT", "baseUri");
     }
 
     function testFailNoMintPricePaid() public {
