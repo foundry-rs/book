@@ -161,6 +161,8 @@ contract EmitContractTest is DSTest {
     function testExpectEmit() public {
         ExpectEmit emitter = new ExpectEmit();
         // check topic 1, topic 2, and data are the same as the following emitted event
+        // checking topic 3 here doesn't matter if it's set to true or false, because `Transfer`
+        // only has 2 indexed topics, `from` and `to`
         cheats.expectEmit(true, true, false, true);
         emit Transfer(address(this), address(1337), 1337); // expected event 1
         emitter.t(); // returned event 1
@@ -168,7 +170,7 @@ contract EmitContractTest is DSTest {
 
     function testExpectEmitDoNotCheckData() public {
         ExpectEmit emitter = new ExpectEmit();
-        // check topic 1, topic 2, and data are the same as the following emitted event
+        // check topic 1, topic 2, do not check data
         cheats.expectEmit(true, true, false, false);
         emit Transfer(address(this), address(1337), 1338); // expected event 2
         emitter.t(); // returned event 2
