@@ -40,7 +40,7 @@ $ forge create --rpc-url <your_rpc_url> --constructor-args "ForgeUSD" "FUSD" 18 
 You can verify a contract on Etherscan with the `forge verify-contract` command.
 
 You must provide:
-- the [compiler version](https://etherscan.io/solcversions) used during the build, with 8 hex digits from the commit version prefix
+- [compiler version](https://etherscan.io/solcversions) used for build, with 8 hex digits from the commit version prefix (the commit will usually not be a nightly build)
 - the contract address
 - the path to the contract `<path>:<contractname>`
 - your Etherscan API key (env: `ETHERSCAN_API_KEY`).
@@ -92,3 +92,12 @@ Make sure the passed arguments are of correct type.
 
 ##### `Signature error`
 Make sure the private key is correct.
+
+##### `Compiler version commit for verify`
+If you want to check the exact commit you are running locally, try: ` ~/.svm/0.x.y/solc-0.x.y --version` where `x` and `y` are major and minor version numbers respectively.  The output of this will be something like:
+```ignore
+solc, the solidity compiler commandline interface
+Version: 0.8.12+commit.f00d7308.Darwin.appleclang
+```
+Note: You cannot just paste the entire string "0.8.12+commit.f00d7308.Darwin.appleclang" as the argument for the compiler-version.  But you can use the 8 hex digits of the commit to look up exactly what you should copy and paste from [compiler version](https://etherscan.io/solcversions).
+
