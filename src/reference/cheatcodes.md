@@ -421,7 +421,7 @@ function expectEmit(bool checkTopic1, bool checkTopic2, bool checkTopic3, bool c
 
 This cheat code is used to assert that certain logs are emitted on the next call.
 
-1. Call the cheat code, specifying whether we should check the first, second or third topic, and the log data.
+1. Call the cheat code, specifying whether we should check the first, second or third topic, and the log data. Topic 0 is always checked.
 2. Emit the event we are supposed to see after the next call.
 3. Perform the call.
 
@@ -436,7 +436,8 @@ event Transfer(address indexed from, address indexed to, uint256 amount);
 
 function testERC20EmitsTransfer() public {
   // Only `src` and `dst` are indexed in ERC20's `Transfer` event,
-  // so we only check topic 0 and 1, as well as the data (`amount`).
+  // so we specifically check topics 1 and 2 (topic 0 is always checked by default),
+  // as well as the data (`amount`).
   cheats.expectEmit(true, true, false, true);
 
   // We emit the event we expect to see.
