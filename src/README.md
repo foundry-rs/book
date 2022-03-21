@@ -24,7 +24,7 @@ Learn how to use `cast` to interact with smart contracts, send transactions, and
 
 More guides on various topics.
 
-- [Incremental Adoption](guides/incremental-adoption.md)
+- [Incremental Adoption]()
 - [Integrating with VSCode](guides/vscode.md)
 - [Shell Autocompletion](guides/shell-autocompletion.md)
 
