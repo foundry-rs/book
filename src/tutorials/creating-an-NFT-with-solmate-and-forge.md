@@ -55,7 +55,7 @@ export RPC_URL=<Your RPC endpoint>
 export PRIVATE_KEY=<Your wallets private key>
 ```
 
-Once set you can deploy your NFT with forge running the below command while adding the relevant constructor arguments to the NFT contract:
+Once set, you can deploy your NFT with Forge by running the below command while adding the relevant constructor arguments to the NFT contract:
 ```bash
 forge create NFT --rpc-url=$RPC_URL --constructor-args <name> <symbol>
 ```
