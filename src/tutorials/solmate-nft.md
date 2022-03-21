@@ -1,10 +1,10 @@
 # Creating an NFT with solmate and foundry
 
-This tutorial will run you through the steps create an Opensea compatible NFT and essentially rewrites this [guide](https://docs.opensea.io/docs/getting-started-1), while swapping hardhat  for foundry to deploy, call and test your NFT contract. Furthermore we will replace [OpenZeppelin](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC721/ERC721.sol)'s ERC721 library with [Solmate](https://github.com/Rari-Capital/solmate/blob/main/src/tokens/ERC721.sol)'s gas optimised version to implement our NFT contract. A full implementation of this tutorial can be found [here](https://github.com/FredCoen/nft-tutorial).
+This tutorial walk you through creating an OpenSea compatible NFT with Foundry and [Solmate](https://github.com/Rari-Capital/solmate/blob/main/src/tokens/ERC721.sol). A full implementation of this tutorial can be found [here](https://github.com/FredCoen/nft-tutorial).
 
 #### Create project and install dependencies
 
-Start by setting up a foundry project following the steps outlined in the [Getting started section](https://onbjerg.github.io/foundry-book/getting-started/index.html). Furthermore we will install required dependencies to implement our NFT, namely solmate ERC721 implementation as well as some OpenZeppelin utility libraries. Install the dependencies by running the below from the root of your project:
+Start by setting up a Foundry project following the steps outlined in the [Getting started section](../getting-started). We will also install Solmate for their ERC721 implementation, as well as some OpenZeppelin utility libraries. Install the dependencies by running the following commands from the root of your project:
 
 ```bash
 forge install Rari-Capital/solmate
@@ -71,7 +71,7 @@ Given that you already set your RPC and private key env variables during deploym
 cast send --rpc-url=$RPC_URL <contractAddress> "mintTo(address)" <arg>
 ```
 
-Well done, you just minted your first NFT from your contract. You can sanity check the owner of the NFT with currentTokenId equal to **0** by running the below ```cast call``` command. The address you provided above should be returned as the owner and printed to your console.
+Well done! You just minted your first NFT from your contract. You can sanity check the owner of the NFT with `currentTokenId` equal to **0** by running the below ``cast call`` command. The address you provided above should be returned as the owner.
 
 ```bash
 cast call --rpc-url=$RPC_URL --private-key=$PRIVATE_KEY <contractAddress> "ownerOf(uint256)" 0
@@ -79,7 +79,7 @@ cast call --rpc-url=$RPC_URL --private-key=$PRIVATE_KEY <contractAddress> "owner
 
 #### Extending our NFT contract functionality and testing
 
-Next, we will extend our NFT by adding metadata to represent the content of our NFTs, as well as set a minting price, a maximum supply and the possibility to withdraw the collected proceeds from minting. To follow along you can replace your current NFT contract with the code snippet below:
+Let's extend our NFT by adding metadata to represent the content of our NFTs, as well as set a minting price, a maximum supply and the possibility to withdraw the collected proceeds from minting. To follow along you can replace your current NFT contract with the code snippet below:
 
 ```
 // SPDX-License-Identifier: UNLICENSED
@@ -141,11 +141,13 @@ contract Nft is ERC721, PullPayment, Ownable {
 }
 ```
 
-Among others we have added metadata that can be queried from any front end application like Opensea by calling the tokenURI method on our Nft contract. **Note**: If you actually want to provide a real url to the constructor at deployment and host the metadata of this NFT contract please follow the steps outlined [here](https://docs.opensea.io/docs/part-3-adding-metadata-and-payments-to-your-contract#intro-to-nft-metadata).
+Among other things, we have added metadata that can be queried from any front-end application like OpenSea, by calling the `tokenURI` method on our NFT contract.
 
-Let's test some of this added functionality to make sure it works as intended. Foundry offers an extremely fast EVM native testing framework through forge.
+>**Note**: If you want to provide a real URL to the constructor at deployment, and host the metadata of this NFT contract please follow the steps outlined [here](https://docs.opensea.io/docs/part-3-adding-metadata-and-payments-to-your-contract#intro-to-nft-metadata).
 
-Within your test folder rename the current Contract.t.sol test file to NFT.t.sol. This file will contain all tests regarding the NFT's mintTo method. Next, replace the existing boilerplate code with the below:
+Let's test some of this added functionality to make sure it works as intended. Foundry offers an extremely fast EVM native testing framework through Forge.
+
+Within your test folder rename the current `Contract.t.sol` test file to `NFT.t.sol`. This file will contain all tests regarding the NFT's `mintTo` method. Next, replace the existing boilerplate code with the below:
 
 ```
 // SPDX-License-Identifier: UNLICENSED
@@ -235,7 +237,6 @@ contract Nft is DSTest {
     }
 }
 
-
 contract Receiver is ERC721TokenReceiver {
     function onERC721Received(
         address operator,
@@ -263,7 +264,7 @@ If you want to put your Forge skills to practice, write tests for the remaining 
 
 #### Gas reports for your function calls
 
-Foundry provides a comprehensive gas report about your contracts. For every function called within your tests it returns the min, average, median and max gas cost. To print the gas report simply run:
+Foundry provides comprehensive gas reports about your contracts. For every function called within your tests, it returns the minimum, average, median and max gas cost. To print the gas report simply run:
 
 ```bash
 forge test --gas-report
