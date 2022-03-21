@@ -249,7 +249,7 @@ contract Receiver is ERC721TokenReceiver {
 ```
 
 The test suite is set up as a contract with a setUp method which runs before every individual test. As you can see forge offers a number of [cheatcodes](https://onbjerg.github.io/foundry-book/forge/cheatcodes.html) to manipulate your state to accommodate to your testing scenario. For example, our testFailMaxSupplyReached test  checks that an attempt to mint fails when the max supply of NFT is reached. Thus the currentTokenId of the NFT contract needs to be set to the max supply by using the store cheat code which allows you to write data to your contracts storage slots. The storage slots you wish to write to can easily be found using the
-forge-std helper library. You can run the test with the following command:
+[`forge-std`](https://github.com/brockelmore/forge-std/) helper library. You can run the test with the following command:
 
 ```bash
 forge test
