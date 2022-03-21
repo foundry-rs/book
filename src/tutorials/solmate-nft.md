@@ -20,7 +20,7 @@ If you have followed the instructions correctly your project should be structure
 
 We are then going to rename the boilerplate contract in `src/Contract.sol` to `src/NFT.sol` and replace the code:
 
-```
+```solidity
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.8.10;
 
@@ -81,7 +81,7 @@ cast call --rpc-url=$RPC_URL --private-key=$PRIVATE_KEY <contractAddress> "owner
 
 Let's extend our NFT by adding metadata to represent the content of our NFTs, as well as set a minting price, a maximum supply and the possibility to withdraw the collected proceeds from minting. To follow along you can replace your current NFT contract with the code snippet below:
 
-```
+```solidity
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.8.10;
 
@@ -149,7 +149,7 @@ Let's test some of this added functionality to make sure it works as intended. F
 
 Within your test folder rename the current `Contract.t.sol` test file to `NFT.t.sol`. This file will contain all tests regarding the NFT's `mintTo` method. Next, replace the existing boilerplate code with the below:
 
-```
+```solidity
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.8.10;
 
