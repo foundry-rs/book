@@ -142,7 +142,9 @@ Running 2 tests for OwnerUpOnlyTest.json:OwnerUpOnlyTest
 [PASS] testIncrementAsOwner() (gas: 24661)
 ```
 
-Another function from cheatcode that is not so intuitive is the `expectEmit` function. Before looking at `expectEmit`, we need to understand what is an event. Events are inheritable members of contracts. When you emit an event, the arguments are stored on the blockchain. The `indexed` attribute can be added to a maximum of three parameters of an event to form a data structure known as a “topic.” Topics allow users to search for events on the blockchain.
+Another cheatcode that is perhaps not so intuitive is the `expectEmit` function. Before looking at `expectEmit`, we need to understand what an event is.
+
+Events are inheritable members of contracts. When you emit an event, the arguments are stored on the blockchain. The `indexed` attribute can be added to a maximum of three parameters of an event to form a data structure known as a "topic." Topics allow users to search for events on the blockchain.
 
 ```solidity
 interface CheatCodes {
