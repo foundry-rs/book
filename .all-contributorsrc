@@ -170,6 +170,15 @@
       "contributions": [
         "maintenance"
       ]
+    },
+    {
+      "login": "FredCoen",
+      "name": "FredCoen",
+      "avatar_url": "https://avatars.githubusercontent.com/u/43670554?v=4",
+      "profile": "http://git.live",
+      "contributions": [
+        "tutorial"
+      ]
     }
   ],
   "contributorsPerLine": 7,
