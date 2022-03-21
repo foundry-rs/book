@@ -18,7 +18,7 @@ If you have followed the instructions correctly your project should be structure
 
 #### Implement a basic NFT
 
-Let's rename the boilerplate src/Contract.sol to src/NFT.sol and copy the following code into your renamed file.
+We are then going to rename the boilerplate contract in `src/Contract.sol` to `src/NFT.sol` and replace the code:
 
 ```
 // SPDX-License-Identifier: UNLICENSED
