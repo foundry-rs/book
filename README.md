@@ -49,7 +49,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   </tr>
   <tr>
     <td align="center"><a href="https://github.com/wildmolasses"><img src="https://avatars.githubusercontent.com/u/5423313?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Ed Mazurek</b></sub></a><br /><a href="#maintenance-wildmolasses" title="Maintenance">🚧</a></td>
-    <td align="center"><a href="https://github.com/devtooligan"><img src="https://avatars.githubusercontent.com/u/71567643?v=4?s=100" width="100px;" alt=""/><br /><sub><b>devtooligan</b></sub></a><br /><a href="#maintenance-devtooligan" title="Maintenance">🚧</a></td>
+    <td align="center"><a href="https://github.com/devtooligan"><img src="https://avatars.githubusercontent.com/u/71567643?v=4?s=100" width="100px;" alt=""/><br /><sub><b>devtooligan</b></sub></a><br /><a href="#maintenance-devtooligan" title="Maintenance">🚧</a> <a href="https://github.com/onbjerg/foundry-book/commits?author=devtooligan" title="Documentation">📖</a></td>
     <td align="center"><a href="https://github.com/0xfoobar"><img src="https://avatars.githubusercontent.com/u/83792390?v=4?s=100" width="100px;" alt=""/><br /><sub><b>0xfoobar</b></sub></a><br /><a href="https://github.com/onbjerg/foundry-book/commits?author=0xfoobar" title="Documentation">📖</a></td>
     <td align="center"><a href="https://odyslam.com"><img src="https://avatars.githubusercontent.com/u/13405632?v=4?s=100" width="100px;" alt=""/><br /><sub><b>odyslam.eth</b></sub></a><br /><a href="#maintenance-odyslam" title="Maintenance">🚧</a></td>
   </tr>
