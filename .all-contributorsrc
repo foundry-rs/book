@@ -179,6 +179,15 @@
       "contributions": [
         "tutorial"
       ]
+    },
+    {
+      "login": "bblanc42",
+      "name": "bblanc42",
+      "avatar_url": "https://avatars.githubusercontent.com/u/100454995?v=4",
+      "profile": "https://github.com/bblanc42",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
