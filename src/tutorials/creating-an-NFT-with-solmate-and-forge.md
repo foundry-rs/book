@@ -255,7 +255,7 @@ forge-std helper library. You can run the test with the following command:
 forge test
 ```
 
-If you want to put your forge skills to practice, write tests for the remaining methods of our NFT contract. Feel free to PR them [nft-tutorial]((https://github.com/FredCoen/nft-tutorial) where you will find the full implemenation of this tutorial.
+If you want to put your Forge skills to practice, write tests for the remaining methods of our NFT contract. Feel free to PR them to [nft-tutorial]((https://github.com/FredCoen/nft-tutorial), where you will find the full implemenation of this tutorial.
 
 #### Gas reports for your function calls
 
