@@ -64,7 +64,7 @@ If successfully deployed, you will see the deploying wallet's address, the contr
 
 #### Minting NFTs from your contract
 
-Calling functions on your NFT contract is made simple with foundry's cast, a command-line tool for interacting with EVM smart contracts, sending transactions, and getting chain data. Let's have a look at how we can use it to mint NFTs from our NFT contract.
+Calling functions on your NFT contract is made simple with Cast, Foundry's command-line tool for interacting with smart contracts, sending transactions, and getting chain data. Let's have a look at how we can use it to mint NFTs from our NFT contract.
 
 Given that you already set your RPC and private key env variables during deployment, mint an NFT from your contract by running:
 ```bash
