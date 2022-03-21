@@ -47,7 +47,7 @@ Let's take a look at this very basic implementation of an NFT. We start by impor
 
 #### Compile & deploy with forge
 
-To compile the NFT contract run ```forge build```. By default the compiler output will reside in the out directory. To deploy our compiled contract with forge we have to set environment variables for the RPC endpoint and the private key we want to deploy from.
+To compile the NFT contract run ``forge build``. By default the compiler output will be in the `out` directory. To deploy our compiled contract with Forge we have to set environment variables for the RPC endpoint and the private key we want to use to deploy.
 
 Set your environment variables by running:
 ```bash
