@@ -60,7 +60,7 @@ Once set, you can deploy your NFT with Forge by running the below command while 
 forge create NFT --rpc-url=$RPC_URL --constructor-args <name> <symbol>
 ```
 
-If successfully deployed, you will see the deploying wallet's address, the contract's address as well as the transaction hash printed to your console.
+If successfully deployed, you will see the deploying wallet's address, the contract's address as well as the transaction hash printed to your terminal.
 
 #### Minting NFTs from your contract
 
