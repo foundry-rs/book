@@ -1,8 +1,8 @@
-# Creating an NFT with solmate and foundry
+## Creating an NFT with Solmate
 
 This tutorial walk you through creating an OpenSea compatible NFT with Foundry and [Solmate](https://github.com/Rari-Capital/solmate/blob/main/src/tokens/ERC721.sol). A full implementation of this tutorial can be found [here](https://github.com/FredCoen/nft-tutorial).
 
-#### Create project and install dependencies
+### Create project and install dependencies
 
 Start by setting up a Foundry project following the steps outlined in the [Getting started section](../getting-started). We will also install Solmate for their ERC721 implementation, as well as some OpenZeppelin utility libraries. Install the dependencies by running the following commands from the root of your project:
 
@@ -16,7 +16,7 @@ If you have followed the instructions correctly your project should be structure
 
 ![Project structure](../images/nft-tutorial/nft-tutorial-project-structure.png)
 
-#### Implement a basic NFT
+### Implement a basic NFT
 
 We are then going to rename the boilerplate contract in `src/Contract.sol` to `src/NFT.sol` and replace the code:
 
@@ -45,7 +45,7 @@ contract NFT is ERC721 {
 
 Let's take a look at this very basic implementation of an NFT. We start by importing to contracts from our git submodules. We import solmate's gas optimised implementation of the ERC721 standard which our NFT contract will inherit from. Our constructor takes the `_name` and `_symbol` arguments for our NFT and passes them on to the constructor of the parent ERC721 implementation. Lastly we implement the `mintTo` function which allows anyone to mint an NFT. This function increments the `currentTokenId` and makes use of the `_safeMint` function of our parent contract.
 
-#### Compile & deploy with forge
+### Compile & deploy with forge
 
 To compile the NFT contract run ``forge build``. By default the compiler output will be in the `out` directory. To deploy our compiled contract with Forge we have to set environment variables for the RPC endpoint and the private key we want to use to deploy.
 
@@ -62,7 +62,7 @@ forge create NFT --rpc-url=$RPC_URL --constructor-args <name> <symbol>
 
 If successfully deployed, you will see the deploying wallet's address, the contract's address as well as the transaction hash printed to your terminal.
 
-#### Minting NFTs from your contract
+### Minting NFTs from your contract
 
 Calling functions on your NFT contract is made simple with Cast, Foundry's command-line tool for interacting with smart contracts, sending transactions, and getting chain data. Let's have a look at how we can use it to mint NFTs from our NFT contract.
 
@@ -77,7 +77,7 @@ Well done! You just minted your first NFT from your contract. You can sanity che
 cast call --rpc-url=$RPC_URL --private-key=$PRIVATE_KEY <contractAddress> "ownerOf(uint256)" 0
 ```
 
-#### Extending our NFT contract functionality and testing
+### Extending our NFT contract functionality and testing
 
 Let's extend our NFT by adding metadata to represent the content of our NFTs, as well as set a minting price, a maximum supply and the possibility to withdraw the collected proceeds from minting. To follow along you can replace your current NFT contract with the code snippet below:
 
@@ -262,7 +262,7 @@ forge test
 
 If you want to put your Forge skills to practice, write tests for the remaining methods of our NFT contract. Feel free to PR them to [nft-tutorial]((https://github.com/FredCoen/nft-tutorial), where you will find the full implemenation of this tutorial.
 
-#### Gas reports for your function calls
+### Gas reports for your function calls
 
 Foundry provides comprehensive gas reports about your contracts. For every function called within your tests, it returns the minimum, average, median and max gas cost. To print the gas report simply run:
 

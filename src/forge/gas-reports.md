@@ -1,6 +1,4 @@
-## Gas Tracking
-
-### Gas Reports
+## Gas Reports
 
 Forge can produce gas reports for your contracts. You can configure which contracts output gas reports via the `gas_reports` field in `foundry.toml`.
 

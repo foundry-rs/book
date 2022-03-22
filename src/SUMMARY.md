@@ -1,37 +1,62 @@
 # Summary
 
 [Introduction](./README.md)
-- [Getting Started](./getting-started/README.md)
-  - [Installation](./getting-started/installation.md)
-  - [First Steps with Foundry](./getting-started/first-steps.md)
-- [Forge Guide](./forge/README.md)
-  - [Creating a New Project](./forge/creating-a-new-project.md)
-  - [Working on an Existing Project](./forge/working-on-an-existing-project.md)
-  - [Dependencies](./forge/dependencies.md)
-  - [Project Layout](./forge/project-layout.md)
-  - [Configuring with `foundry.toml`](./forge/config.md)
-  - [Tests](./forge/tests.md)
-    - [Writing Tests](./forge/writing-tests.md)
-    - [Cheatcodes](./forge/cheatcodes.md)
-    - [Understanding Traces](./forge/traces.md)
-    - [Forking Mode](./forge/forking-mode.md)
-  - [Advanced Testing](./forge/advanced-testing.md)
-    - [Fuzz Testing](./forge/fuzz-testing.md)
-  - [Deploying and Verifying](./forge/deploying.md)
-  - [Gas Tracking](./forge/gas-tracking.md)
-  - [Continuous Integration](./forge/continous-integration.md)
-  - [Debugger](./forge/debugger.md)
-  - [Cache](./forge/cache.md)
-- [Cast Guide](./cast/README.md)
-  - [Overview of `cast`](./cast/cast-overview.md)
-- [Additional Guides](./guides/README.md)
-  - [Incremental Adoption]()
-  - [Integrating with VSCode](./guides/vscode.md)
-  - [Shell Autocompletion](./guides/shell-autocompletion.md)
-- [Tutorials](./tutorials/index.md)
-  - [Creating an NFT with solmate and forge](./tutorials/solmate-nft.md)
-- [Reference](./reference/README.md)
-  - [`foundry.toml` Reference](./reference/config.md)
-  - [`ds-test` Reference](./reference/ds-test.md)
-  - [Cheatcodes Reference](./reference/cheatcodes.md)
-  - [`cast` Reference](./reference/cast.md)
+
+# Getting Started
+
+- [Installation](./getting-started/installation.md)
+- [First Steps with Foundry](./getting-started/first-steps.md)
+
+# Projects
+
+- [Creating a New Project](./projects/creating-a-new-project.md)
+- [Working on an Existing Project](./projects/working-on-an-existing-project.md)
+- [Dependencies](./projects/dependencies.md)
+- [Project Layout](./projects/project-layout.md)
+
+# Forge Overview
+
+- [Overview of `forge`](./forge/README.md)
+- [Tests](./forge/tests.md)
+  - [Writing Tests](./forge/writing-tests.md)
+  - [Cheatcodes](./forge/cheatcodes.md)
+  - [Understanding Traces](./forge/traces.md)
+  - [Forking Mode](./forge/forking-mode.md)
+  - [Coverage Reports]()
+- [Advanced Testing](./forge/advanced-testing.md)
+  - [Fuzz Testing](./forge/fuzz-testing.md)
+  - [Invariant Testing]()
+  - [Symbolic Testing]()
+  - [Table Testing]()
+  - [Mutation Testing]()
+- [Linting and Formatting]()
+- [Generating Documentation]()
+- [Deploying and Verifying](./forge/deploying.md)
+- [Gas Tracking]()
+  - [Gas Reports](./forge/gas-reports.md)
+  - [Gas Snapshots]()
+- [Debugger](./forge/debugger.md)
+
+# Cast Overview
+
+- [Overview of `cast`](./cast/README.md)
+
+# Configuration
+
+- [Configuring with `foundry.toml`](./config/README.md)
+- [Continuous Integration](./config/continous-integration.md)
+- [Integrating with VSCode](./config/vscode.md)
+- [Shell Autocompletion](./config/shell-autocompletion.md)
+
+# Tutorials
+
+- [Creating an NFT with Solmate](./tutorials/solmate-nft.md)
+- [Incremental Adoption]()
+
+# References
+
+- [`forge` Reference]()
+- [`cast` Reference](./reference/cast.md)
+- [`foundry.toml` Reference](./reference/config.md)
+- [`ds-test` Reference](./reference/ds-test.md)
+- [Cheatcodes Reference](./reference/cheatcodes.md)

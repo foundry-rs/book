@@ -8,28 +8,46 @@ Foundry is a smart contract development toolchain. Foundry manages your dependen
 
 ### Sections
 
-**[Getting Started](getting-started)**
+**[Getting Started](getting-started/installation.md)**
 
 To get started with Foundry, install Foundry and set up your first project.
 
-**[Forge Guide](forge)**
+**[Projects](projects/creating-a-new-project.md)**
 
-The guide will give you all you need to know about how to use `forge` to develop, test, and deploy smart contracts.
+This section will give you an overview of how to create and work with existing projects.
 
-**[Cast Guide](cast)**
+**[Forge Overview](forge)**
+
+The overview will give you all you need to know about how to use `forge` to develop, test, and deploy smart contracts.
+
+**[Cast Overview](cast)**
 
 Learn how to use `cast` to interact with smart contracts, send transactions, and get chain data from the command-line.
 
-**[Additional Guides](guides)**
+**[Configuration](config)**
 
-More guides on various topics.
+Guides on configuring Foundry.
 
+- [Configuring with `foundry.toml`](./config/README.md)
+- [Continuous Integration](./config/continous-integration.md)
+- [Integrating with VSCode](./config/vscode.md)
+- [Shell Autocompletion](./config/shell-autocompletion.md)
+
+**Tutorials**
+
+Tutorials on building smart contracts with Foundry.
+
+- [Creating an NFT with Solmate](./tutorials/solmate-nft.md)
 - [Incremental Adoption]()
-- [Integrating with VSCode](guides/vscode.md)
-- [Shell Autocompletion](guides/shell-autocompletion.md)
 
-**[Reference](reference)**
+**Reference**
 
 References on Foundry and Foundry-related tools.
+
+- [`forge` Reference]()
+- [`cast` Reference](./reference/cast.md)
+- [`foundry.toml` Reference](./reference/config.md)
+- [`ds-test` Reference](./reference/ds-test.md)
+- [Cheatcodes Reference](./reference/cheatcodes.md)
 
 > You can also check out [Awesome Foundry](https://github.com/crisgarner/awesome-foundry), a curated list of awesome Foundry resources, tutorials, tools and libraries!
