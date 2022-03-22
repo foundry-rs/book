@@ -1,6 +1,6 @@
 ## 📖 Foundry Book
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-22-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-23-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 A book on all things Foundry. [Read now](https://onbjerg.github.io/foundry-book/index.html).
@@ -58,6 +58,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   </tr>
   <tr>
     <td align="center"><a href="https://github.com/onbjerg"><img src="https://avatars.githubusercontent.com/u/8862627?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Bjerg</b></sub></a><br /><a href="#maintenance-onbjerg" title="Maintenance">🚧</a> <a href="https://github.com/onbjerg/foundry-book/commits?author=onbjerg" title="Documentation">📖</a> <a href="https://github.com/onbjerg/foundry-book/pulls?q=is%3Apr+reviewed-by%3Aonbjerg" title="Reviewed Pull Requests">👀</a></td>
+    <td align="center"><a href="https://gakonst.com"><img src="https://avatars.githubusercontent.com/u/17802178?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Georgios Konstantopoulos</b></sub></a><br /><a href="https://github.com/onbjerg/foundry-book/pulls?q=is%3Apr+reviewed-by%3Agakonst" title="Reviewed Pull Requests">👀</a></td>
   </tr>
 </table>
 
