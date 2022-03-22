@@ -425,7 +425,7 @@ This cheat code is used to assert that certain logs are emitted on the next call
 2. Emit the event we are supposed to see after the next call.
 3. Perform the call.
 
-If the event is not available in the current scope (e.g because we are using an interface, or an external smart contract), we can define the event ourselves with an identical event signature. 
+If the event is not available in the current scope (e.g because we are using an interface, or an external smart contract), we can define the event ourselves with an identical event signature.
 
 The cheatcode does not check the origin of the event, but simply that it was emitted during that call.
 
@@ -618,7 +618,7 @@ If you'd like to use getCode to deploy a contract's bytecode, you can also use [
 #### `label`
 
 ```solidity
-function label(address addr, string label) external;
+function label(address addr, string calldata label) external;
 ```
 
 Sets a label `label` for `addr` in test traces.
