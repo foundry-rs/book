@@ -69,8 +69,6 @@ Forge uses the following keywords in tests:
     ```
 <br>
 
-You may choose to use `constructor` for certain logic instead of `setUp`. Since `setUp` is invoked before each test case is run, it is most suitable for "resetting" the arrangement part of your tests. If you do not want certain things to be reset every time a test is ran, use `constructor` instead for those.
-
 Tests are deployed to `0xb4c79daB8f259C7Aee6E5b2Aa729821864227e84`. If you deploy a contract within your test, then `0xb4c...7e84` will be its deployer. If the contract deployed within a test gives special permissions to its deployer, such as `Ownable.sol`'s `onlyOwner` modifier, then the test contract `0xb4c...7e84` will have those permissions.
 
 It is possible to use other testing libraries or roll your own. For example, if you find yourself lacking a special type of assertion, you could extend `ds-test`.
