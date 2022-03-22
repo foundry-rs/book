@@ -56,6 +56,7 @@ interface CheatCodes {
     function etch(address who, bytes calldata code) external;
     // Sets an address' code
 
+    function expectRevert() external;
     function expectRevert(bytes calldata) external;
     function expectRevert(bytes4) external;
     // Expects an error on next call
@@ -376,6 +377,24 @@ An alternative version of [`expectRevert`](#expectrevert) that only takes an err
 cheats.expectRevert(MyContract.CustomError.selector)
 ```
 
+##### Alternative Signature without error message
+
+```solidity
+function expectRevert() external;
+```
+
+If you need to test that a function reverts _without_ a message, you can do so with `expectRevert()`.
+
+###### Example
+
+```solidity
+function testExpectRevertNoReason() public {
+    Reverter reverter = new Reverter();
+    cheats.expectRevert();
+    reverter.revertWithoutReason();
+}
+```
+
 <br>
 
 ---
@@ -425,7 +444,7 @@ This cheat code is used to assert that certain logs are emitted on the next call
 2. Emit the event we are supposed to see after the next call.
 3. Perform the call.
 
-If the event is not available in the current scope (e.g because we are using an interface, or an external smart contract), we can define the event ourselves with an identical event signature. 
+If the event is not available in the current scope (e.g because we are using an interface, or an external smart contract), we can define the event ourselves with an identical event signature.
 
 The cheatcode does not check the origin of the event, but simply that it was emitted during that call.
 
