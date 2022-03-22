@@ -2,6 +2,8 @@
 
 Forge can deploy smart contracts to a given network with the `forge create` command.
 
+Forge can deploy only one contract at a time.
+
 To deploy a contract, you must provide a RPC URL (env: `ETH_RPC_URL`) and the private key of the account that will deploy the contract.
 
 To deploy `MyContract` to a network:
@@ -13,6 +15,8 @@ Deployer: 0xa735b3c25f...
 Deployed to: 0x4054415432...
 Transaction hash: 0x6b4e0ff93a...
 ```
+
+Solidity files may contain multiple contracts. `:MyContract` above specifies which contract to deploy from the `src/MyContract.sol` file.
 
 Use the `--constructor-args` flag to pass arguments to the constructor:
 
