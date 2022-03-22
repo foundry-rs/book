@@ -208,6 +208,15 @@
         "doc",
         "review"
       ]
+    },
+    {
+      "login": "gakonst",
+      "name": "Georgios Konstantopoulos",
+      "avatar_url": "https://avatars.githubusercontent.com/u/17802178?v=4",
+      "profile": "https://gakonst.com",
+      "contributions": [
+        "review"
+      ]
     }
   ],
   "contributorsPerLine": 7,
