@@ -217,6 +217,15 @@
       "contributions": [
         "review"
       ]
+    },
+    {
+      "login": "devanonon",
+      "name": "Devan Non",
+      "avatar_url": "https://avatars.githubusercontent.com/u/89424366?v=4",
+      "profile": "https://github.com/devanonon",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
