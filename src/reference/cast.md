@@ -46,7 +46,7 @@ chain-id                 Returns ethereum chain id
 code                     Prints the bytecode at <address>
 completions              Generate shell completions script
 estimate                 Estimate the gas cost of a transaction from <from> to <to> with <data>
-find-block               Prints the block number closes to the provided timestamp
+find-block               Prints the block number closest to the provided timestamp
 gas-price                Prints current gas price of target chain
 help                     Print this message or the help of the given subcommand(s)
 keccak                   Keccak-256 hashes arbitrary data
