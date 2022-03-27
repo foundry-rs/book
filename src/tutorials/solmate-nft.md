@@ -4,7 +4,7 @@ This tutorial walk you through creating an OpenSea compatible NFT with Foundry a
 
 ### Create project and install dependencies
 
-Start by setting up a Foundry project following the steps outlined in the [Getting started section](../getting-started). We will also install Solmate for their ERC721 implementation, as well as some OpenZeppelin utility libraries. Install the dependencies by running the following commands from the root of your project:
+Start by setting up a Foundry project following the steps outlined in the [Getting started section](../getting-started/installation). We will also install Solmate for their ERC721 implementation, as well as some OpenZeppelin utility libraries. Install the dependencies by running the following commands from the root of your project:
 
 ```bash
 forge install Rari-Capital/solmate
