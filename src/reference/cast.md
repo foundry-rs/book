@@ -42,15 +42,16 @@ block-number             Prints latest block number
 call                     Perform a local call to <to> without publishing a transaction.
 calldata                 Pack a signature and an argument list into hexadecimal calldata.
 chain                    Prints symbolic name of current blockchain by checking genesis hash
-chain-id                 returns ethereum chain id
+chain-id                 Returns ethereum chain id
 code                     Prints the bytecode at <address>
-completions              generate shell completions script
+completions              Generate shell completions script
 estimate                 Estimate the gas cost of a transaction from <from> to <to> with <data>
+find-block               Prints the block number closest to the provided timestamp
 gas-price                Prints current gas price of target chain
 help                     Print this message or the help of the given subcommand(s)
 keccak                   Keccak-256 hashes arbitrary data
 lookup-address           Returns the name the provided address resolves to
-namehash                 returns ENS namehash of provided name
+namehash                 Returns ENS namehash of provided name
 nonce                    Prints the number of transactions sent from <address>
 resolve-name             Returns the address the provided ENS name resolves to
 send                     Publish a transaction signed by <from> to call <to> with <data>
@@ -732,6 +733,27 @@ Estimate the gas cost of a transaction.
 ```bash
 $ cast estimate --from 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045 0xc18360217d8f7ab5e7c516566761ea12ce7f9d72 "transfer(address,uint)(bool)" 0x15322B546e31F5Bfe144C4ae133A9Db6F0059fe3 1000000000000000000 --rpc-url <your_rpc_url>
 90677
+```
+
+<br>
+
+---
+
+#### `find-block`
+
+```ignore
+cast find-block --rpc-url <RPC_URL> <TIMESTAMP>
+```
+
+env: `ETH_RPC_URL`
+
+Prints the block number closest to the provided timestamp
+
+##### Example
+
+```bash
+$ cast find-block --rpc-url <RPC_URL> <TIMESTAMP>
+13917761
 ```
 
 <br>
