@@ -226,6 +226,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "jtardioli",
+      "name": "josht",
+      "avatar_url": "https://avatars.githubusercontent.com/u/85530348?v=4",
+      "profile": "https://github.com/jtardioli",
+      "contributions": [
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7,
