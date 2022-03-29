@@ -2,12 +2,16 @@
 
 This tutorial walk you through creating an OpenSea compatible NFT with Foundry and [Solmate](https://github.com/Rari-Capital/solmate/blob/main/src/tokens/ERC721.sol). A full implementation of this tutorial can be found [here](https://github.com/FredCoen/nft-tutorial).
 
+#####  This tutorial is for illustrative purposes only and provided on an as-is basis. The tutorial is not audited nor fully tested. No code in this tutorial should be used in a production environment.
+
+
+
 ### Create project and install dependencies
 
-Start by setting up a Foundry project following the steps outlined in the [Getting started section](../getting-started/installation). We will also install Solmate for their ERC721 implementation, as well as some OpenZeppelin utility libraries. Install the dependencies by running the following commands from the root of your project:
+Start by setting up a Foundry project following the steps outlined in the [Getting started section](../getting-started/installation.html). We will also install Solmate for their ERC721 implementation, as well as some OpenZeppelin utility libraries. Install the dependencies by running the following commands from the root of your project:
 
 ```bash
-forge install Rari-Capital/solmate
+forge install Rari-Capital/solmate Openzeppelin/openzeppelin-contracts brockelmore/forge-std
 ```
 
 These dependencies will be added as git submodules to your project.
@@ -25,6 +29,7 @@ We are then going to rename the boilerplate contract in `src/Contract.sol` to `s
 pragma solidity 0.8.10;
 
 import "solmate/tokens/ERC721.sol";
+import "openzeppelin-contracts/contracts/utils/Strings.sol";
 
 contract NFT is ERC721 {
    uint256 public currentTokenId;
@@ -39,6 +44,10 @@ contract NFT is ERC721 {
        uint256 newItemId = ++currentTokenId;
        _safeMint(recipient, newItemId);
        return newItemId;
+   }
+
+   function tokenURI(uint256 id) public view virtual override returns (string memory) {
+       return Strings.toString(id);
    }
 }
 ```
@@ -82,15 +91,13 @@ cast call --rpc-url=$RPC_URL --private-key=$PRIVATE_KEY <contractAddress> "owner
 Let's extend our NFT by adding metadata to represent the content of our NFTs, as well as set a minting price, a maximum supply and the possibility to withdraw the collected proceeds from minting. To follow along you can replace your current NFT contract with the code snippet below:
 
 ```solidity
-// SPDX-License-Identifier: UNLICENSED
-pragma solidity 0.8.10;
+pragma solidity >=0.8.10;
 
 import "solmate/tokens/ERC721.sol";
 import "openzeppelin-contracts/contracts/utils/Strings.sol";
-import "openzeppelin-contracts/contracts/security/PullPayment.sol";
 import "openzeppelin-contracts/contracts/access/Ownable.sol";
 
-contract Nft is ERC721, PullPayment, Ownable {
+contract NFT is ERC721, Ownable {
 
     using Strings for uint256;
     string public baseURI;
@@ -134,9 +141,10 @@ contract Nft is ERC721, PullPayment, Ownable {
                 : "";
     }
 
-    /// @dev Overridden in order to make it an onlyOwner function
-    function withdrawPayments(address payable payee) public override onlyOwner {
-        super.withdrawPayments(payee);
+    function withdrawPayments(address payable payee) external onlyOwner {
+        uint256 balance = address(this).balance;
+        (bool transferTx, ) = payee.call{value: balance}("");
+        require(transferTx);
     }
 }
 ```
@@ -155,13 +163,13 @@ pragma solidity 0.8.10;
 
 import "ds-test/test.sol";
 import "forge-std/stdlib.sol";
+import "forge-std/Vm.sol";
 import "../NFT.sol";
-import "./interfaces/HEVM.sol";
 
-contract Nft is DSTest {
+contract NFTTest is DSTest {
     using stdStorage for StdStorage;
 
-    Hevm private vm = Hevm(HEVM_ADDRESS);
+    Vm private vm = Vm(HEVM_ADDRESS);
     NFT private nft;
     StdStorage private stdstore;
 
@@ -235,6 +243,33 @@ contract Nft is DSTest {
         vm.etch(address(1), bytes("mock code"));
         nft.mintTo{value: 0.08 ether}(address(1));
     }
+
+    function testWithdrawalWorksAsOwner() public {
+        // Mint an NFT, sending eth to the contract
+        Receiver receiver = new Receiver();
+        address payable payee = payable(address(0x1337));
+        uint256 priorPayeeBalance = payee.balance;
+        nft.mintTo{value: nft.MINT_PRICE()}(address(receiver));
+        // Check that the balance of the contract is correct
+        assertEq(address(nft).balance, nft.MINT_PRICE());
+        uint256 nftBalance = address(nft).balance;
+        // Withdraw the balance and assert it was transferred
+        nft.withdrawPayments(payee);
+        assertEq(payee.balance, priorPayeeBalance + nftBalance);
+    }
+
+    function testFailWithdrawalAsNotOwner() public {
+        vm.expectRevert("Ownable: caller is not the owner");
+        // Mint an NFT, sending eth to the contract
+        Receiver receiver = new Receiver();
+        nft.mintTo{value: nft.MINT_PRICE()}(address(receiver));
+        // Check that the balance of the contract is correct
+        assertEq(address(nft).balance, nft.MINT_PRICE());
+        // Confirm that a non-owner cannot withdraw
+        vm.startPrank(address(0xd3ad));
+        nft.withdrawPayments(payable(address(0xd3ad)));
+        vm.stopPrank();
+    }   
 }
 
 contract Receiver is ERC721TokenReceiver {
@@ -247,6 +282,7 @@ contract Receiver is ERC721TokenReceiver {
         return this.onERC721Received.selector;
     }
 }
+
 ```
 
 The test suite is set up as a contract with a `setUp` method which runs before every individual test.
