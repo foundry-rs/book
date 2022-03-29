@@ -2,6 +2,10 @@
 
 This tutorial walk you through creating an OpenSea compatible NFT with Foundry and [Solmate](https://github.com/Rari-Capital/solmate/blob/main/src/tokens/ERC721.sol). A full implementation of this tutorial can be found [here](https://github.com/FredCoen/nft-tutorial).
 
+#####  This tutorial is for illustrative purposes only and provided on an as-is basis. The tutorial is not audited nor fully tested. No code in this tutorial should be used in a production environment.
+
+
+
 ### Create project and install dependencies
 
 Start by setting up a Foundry project following the steps outlined in the [Getting started section](../getting-started/installation.html). We will also install Solmate for their ERC721 implementation, as well as some OpenZeppelin utility libraries. Install the dependencies by running the following commands from the root of your project:
@@ -161,7 +165,6 @@ import "ds-test/test.sol";
 import "forge-std/stdlib.sol";
 import "forge-std/Vm.sol";
 import "../NFT.sol";
-import "forge-std/console.sol";
 
 contract NFTTest is DSTest {
     using stdStorage for StdStorage;
@@ -257,16 +260,13 @@ contract NFTTest is DSTest {
 
     function testFailWithdrawalAsNotOwner() public {
         vm.expectRevert("Ownable: caller is not the owner");
-        // Mint an NFT, sending eht to the contract
+        // Mint an NFT, sending eth to the contract
         Receiver receiver = new Receiver();
         nft.mintTo{value: nft.MINT_PRICE()}(address(receiver));
         // Check that the balance of the contract is correct
         assertEq(address(nft).balance, nft.MINT_PRICE());
         // Confirm that a non-owner cannot withdraw
-        emit log_address(address(this));
-        emit log_address(nft.owner());
         vm.startPrank(address(0xd3ad));
-        emit log_address(address(this));
         nft.withdrawPayments(payable(address(0xd3ad)));
         vm.stopPrank();
     }   
