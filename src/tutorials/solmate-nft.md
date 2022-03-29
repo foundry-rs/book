@@ -87,15 +87,13 @@ cast call --rpc-url=$RPC_URL --private-key=$PRIVATE_KEY <contractAddress> "owner
 Let's extend our NFT by adding metadata to represent the content of our NFTs, as well as set a minting price, a maximum supply and the possibility to withdraw the collected proceeds from minting. To follow along you can replace your current NFT contract with the code snippet below:
 
 ```solidity
-// SPDX-License-Identifier: UNLICENSED
-pragma solidity 0.8.10;
+pragma solidity >=0.8.10;
 
 import "solmate/tokens/ERC721.sol";
 import "openzeppelin-contracts/contracts/utils/Strings.sol";
-import "openzeppelin-contracts/contracts/security/PullPayment.sol";
 import "openzeppelin-contracts/contracts/access/Ownable.sol";
 
-contract Nft is ERC721, PullPayment, Ownable {
+contract NFT is ERC721, Ownable {
 
     using Strings for uint256;
     string public baseURI;
@@ -139,9 +137,10 @@ contract Nft is ERC721, PullPayment, Ownable {
                 : "";
     }
 
-    /// @dev Overridden in order to make it an onlyOwner function
-    function withdrawPayments(address payable payee) public override onlyOwner {
-        super.withdrawPayments(payee);
+    function withdrawPayments(address payable payee) external onlyOwner {
+        uint256 balance = address(this).balance;
+        (bool transferTx, ) = payee.call{value: balance}("");
+        require(transferTx);
     }
 }
 ```
@@ -162,6 +161,7 @@ import "ds-test/test.sol";
 import "forge-std/stdlib.sol";
 import "forge-std/Vm.sol";
 import "../NFT.sol";
+import "forge-std/console.sol";
 
 contract NFTTest is DSTest {
     using stdStorage for StdStorage;
@@ -240,6 +240,36 @@ contract NFTTest is DSTest {
         vm.etch(address(1), bytes("mock code"));
         nft.mintTo{value: 0.08 ether}(address(1));
     }
+
+    function testWithdrawalWorksAsOwner() public {
+        // Mint an NFT, sending eth to the contract
+        Receiver receiver = new Receiver();
+        address payable payee = payable(address(0x1337));
+        uint256 priorPayeeBalance = payee.balance;
+        nft.mintTo{value: nft.MINT_PRICE()}(address(receiver));
+        // Check that the balance of the contract is correct
+        assertEq(address(nft).balance, nft.MINT_PRICE());
+        uint256 nftBalance = address(nft).balance;
+        // Withdraw the balance and assert it was transferred
+        nft.withdrawPayments(payee);
+        assertEq(payee.balance, priorPayeeBalance + nftBalance);
+    }
+
+    function testFailWithdrawalAsNotOwner() public {
+        vm.expectRevert("Ownable: caller is not the owner");
+        // Mint an NFT, sending eht to the contract
+        Receiver receiver = new Receiver();
+        nft.mintTo{value: nft.MINT_PRICE()}(address(receiver));
+        // Check that the balance of the contract is correct
+        assertEq(address(nft).balance, nft.MINT_PRICE());
+        // Confirm that a non-owner cannot withdraw
+        emit log_address(address(this));
+        emit log_address(nft.owner());
+        vm.startPrank(address(0xd3ad));
+        emit log_address(address(this));
+        nft.withdrawPayments(payable(address(0xd3ad)));
+        vm.stopPrank();
+    }   
 }
 
 contract Receiver is ERC721TokenReceiver {
@@ -251,6 +281,7 @@ contract Receiver is ERC721TokenReceiver {
     ) external returns (bytes4){
         return this.onERC721Received.selector;
     }
+}
 
 ```
 
