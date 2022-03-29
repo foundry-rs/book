@@ -7,7 +7,7 @@ This tutorial walk you through creating an OpenSea compatible NFT with Foundry a
 Start by setting up a Foundry project following the steps outlined in the [Getting started section](../getting-started/installation.html). We will also install Solmate for their ERC721 implementation, as well as some OpenZeppelin utility libraries. Install the dependencies by running the following commands from the root of your project:
 
 ```bash
-forge install Rari-Capital/solmate Openzeppelin/openzeppelin-contracts
+forge install Rari-Capital/solmate Openzeppelin/openzeppelin-contracts brockelmore/forge-std
 ```
 
 These dependencies will be added as git submodules to your project.
@@ -160,13 +160,13 @@ pragma solidity 0.8.10;
 
 import "ds-test/test.sol";
 import "forge-std/stdlib.sol";
+import "forge-std/Vm.sol";
 import "../NFT.sol";
-import "./interfaces/HEVM.sol";
 
-contract Nft is DSTest {
+contract NFTTest is DSTest {
     using stdStorage for StdStorage;
 
-    Hevm private vm = Hevm(HEVM_ADDRESS);
+    Vm private vm = Vm(HEVM_ADDRESS);
     NFT private nft;
     StdStorage private stdstore;
 
@@ -251,7 +251,7 @@ contract Receiver is ERC721TokenReceiver {
     ) external returns (bytes4){
         return this.onERC721Received.selector;
     }
-}
+
 ```
 
 The test suite is set up as a contract with a `setUp` method which runs before every individual test.
