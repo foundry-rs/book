@@ -51,6 +51,7 @@
 # Tutorials
 
 - [Creating an NFT with Solmate](./tutorials/solmate-nft.md)
+- [Dockerizing a Foundry project](./tutorials/dockerize-solmate-nft.md)
 - [Incremental Adoption]()
 
 # References
