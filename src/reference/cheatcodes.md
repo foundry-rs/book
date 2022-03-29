@@ -365,6 +365,22 @@ cheats.expectRevert(
 After calling `cheats.expectRevert()`, calls to other cheat codes before the reverting call are ignored.
 This means, for example, we can call `cheats.prank(user)` immediately before the reverting call.
 
+##### Usage with low-level calls
+
+Normally, a call that succeeds returns a status of `true` (along with any return data) and a call that reverts returns `false`.
+Standard Solidity calls check the return status of each call, and revert if it returned `false`.
+The `expectRevert` cheatcode works by inverting this, so the next call after this cheatcode returns `true` if it reverts.
+The implication here is that to use this cheatcode with low-level calls, you must manually assert on the call's status since Solidity is not doing it for you. For example:
+
+```solidity
+function testLowLevelCallRevert() public {
+    cheats.expectRevert(bytes("error message"));
+    (bool status, ) = address(myContract).call(myCalldata);
+    assertTrue(status, "expectRevert: call did not revert");
+
+}
+```
+
 ##### Alternative Signature
 
 ```solidity
