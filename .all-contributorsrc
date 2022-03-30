@@ -244,6 +244,15 @@
       "contributions": [
         "maintenance"
       ]
+    },
+    {
+      "login": "DrakeEvans",
+      "name": "Drake Evans",
+      "avatar_url": "https://avatars.githubusercontent.com/u/31104161?v=4",
+      "profile": "https://github.com/DrakeEvans",
+      "contributions": [
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7,
