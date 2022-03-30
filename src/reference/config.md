@@ -250,7 +250,7 @@ The maximum number of individual inputs that may be rejected before the test as 
 ##### `fuzz_max_global_rejects`
 
 - Type: integer
-- Default: 10234
+- Default: 1024
 - Environment: `FOUNDRY_FUZZ_RUNS`
 
 The maximum number of combined inputs that may be rejected before the test as a whole aborts.
