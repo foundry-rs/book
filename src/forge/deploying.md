@@ -51,7 +51,7 @@ You must provide:
 - your Etherscan API key (env: `ETHERSCAN_API_KEY`).
 
 Moreover, you may need to provide:
-- the contructor arguments in the ABI-encoded format, if there are any
+- the constructor arguments in the ABI-encoded format, if there are any
 - the number of optimizations, if the Solidity optimizer was activated
 - the [chain ID](https://evm-chainlist.netlify.app/), if the contract is not on Ethereum Mainnet
 
