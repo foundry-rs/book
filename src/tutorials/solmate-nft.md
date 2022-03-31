@@ -77,7 +77,7 @@ Calling functions on your NFT contract is made simple with Cast, Foundry's comma
 
 Given that you already set your RPC and private key env variables during deployment, mint an NFT from your contract by running:
 ```bash
-cast send --rpc-url=$RPC_URL <contractAddress> "mintTo(address)" <arg>
+cast send --rpc-url=$RPC_URL <contractAddress>  "mintTo(address)" <arg> --private-key=$PRIVATE_KEY
 ```
 
 Well done! You just minted your first NFT from your contract. You can sanity check the owner of the NFT with `currentTokenId` equal to **1** by running the below ``cast call`` command. The address you provided above should be returned as the owner.
