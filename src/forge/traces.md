@@ -34,9 +34,9 @@ The gas usage (marked in square brackets) is for the entirety of the function ca
     └─ ← ()
 ```
 
-The gas unaccounted for are extra operations happening between calls, such as arithmetic and store reads/writes.
+The gas unaccounted for is due to some extra operations happening between calls, such as arithmetic and store reads/writes.
 
-Forge will try to decode as many signatures and values as possible, but sometimes it is not. In those cases, the traces will appear like so:
+Forge will try to decode as many signatures and values as possible, but sometimes this is not possible. In these cases, the traces will appear like so:
 
 ```ignore
   [<Gas Usage>] <Address>::<Calldata>
