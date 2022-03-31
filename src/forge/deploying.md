@@ -21,6 +21,7 @@ Solidity files may contain multiple contracts. `:MyContract` above specifies whi
 Use the `--constructor-args` flag to pass arguments to the constructor:
 
 ```solidity
+// SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.0;
 import {ERC20} from "solmate/tokens/ERC20.sol";
 

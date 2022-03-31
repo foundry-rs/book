@@ -91,6 +91,7 @@ cast call --rpc-url=$RPC_URL --private-key=$PRIVATE_KEY <contractAddress> "owner
 Let's extend our NFT by adding metadata to represent the content of our NFTs, as well as set a minting price, a maximum supply and the possibility to withdraw the collected proceeds from minting. To follow along you can replace your current NFT contract with the code snippet below:
 
 ```solidity
+// SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.8.10;
 
 import "solmate/tokens/ERC721.sol";
