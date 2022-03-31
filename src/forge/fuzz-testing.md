@@ -7,6 +7,7 @@ Property-based testing is a way of testing general behaviors as opposed to isola
 Let's examine what that means by writing a unit test, finding the general property we are testing for, and converting it to a property-based test instead:
 
 ```solidity
+// SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.0;
 
 contract Safe {

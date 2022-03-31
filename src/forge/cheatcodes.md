@@ -7,6 +7,7 @@ Cheatcodes allow you to change the block number, your identity, and more. They a
 Let's write a test for a smart contract that is only callable by its owner.
 
 ```solidity
+// SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.0;
 
 contract OwnerUpOnly {
