@@ -255,6 +255,15 @@
       "contributions": [
         "maintenance"
       ]
+    },
+    {
+      "login": "paulrberg",
+      "name": "Paul Razvan Berg",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8782666?v=4",
+      "profile": "https://paulrberg.com",
+      "contributions": [
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7,
