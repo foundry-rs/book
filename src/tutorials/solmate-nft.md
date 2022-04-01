@@ -75,7 +75,9 @@ If successfully deployed, you will see the deploying wallet's address, the contr
 
 Calling functions on your NFT contract is made simple with Cast, Foundry's command-line tool for interacting with smart contracts, sending transactions, and getting chain data. Let's have a look at how we can use it to mint NFTs from our NFT contract.
 
-Given that you already set your RPC and private key env variables during deployment, mint an NFT from your contract by running:
+Given that you already set your RPC and private key env variables during deployment, mint an NFT from your contract by
+running:
+
 ```bash
 cast send --rpc-url=$RPC_URL <contractAddress>  "mintTo(address)" <arg> --private-key=$PRIVATE_KEY
 ```
@@ -259,18 +261,18 @@ contract NFTTest is DSTest {
         assertEq(payee.balance, priorPayeeBalance + nftBalance);
     }
 
-    function testFailWithdrawalAsNotOwner() public {
-        vm.expectRevert("Ownable: caller is not the owner");
-        // Mint an NFT, sending eth to the contract
+    function testWithdrawalFailsAsNotOwner() public {
+        // Mint an NFT, sending eht to the contract
         Receiver receiver = new Receiver();
         nft.mintTo{value: nft.MINT_PRICE()}(address(receiver));
         // Check that the balance of the contract is correct
         assertEq(address(nft).balance, nft.MINT_PRICE());
         // Confirm that a non-owner cannot withdraw
+        vm.expectRevert("Ownable: caller is not the owner");
         vm.startPrank(address(0xd3ad));
         nft.withdrawPayments(payable(address(0xd3ad)));
         vm.stopPrank();
-    }   
+    }
 }
 
 contract Receiver is ERC721TokenReceiver {
@@ -288,7 +290,7 @@ contract Receiver is ERC721TokenReceiver {
 
 The test suite is set up as a contract with a `setUp` method which runs before every individual test.
 
-As you can see, Forge offers a number of [cheatcodes](../forge/cheatcodes) to manipulate state to accomodate your testing scenario.
+As you can see, Forge offers a number of [cheatcodes](../forge/cheatcodes) to manipulate state to accommodate your testing scenario.
 
 For example, our `testFailMaxSupplyReached` test checks that an attempt to mint fails when the max supply of NFT is reached. Thus, the `currentTokenId` of the NFT contract needs to be set to the max supply by using the store cheatcode which allows you to write data to your contracts storage slots. The storage slots you wish to write to can easily be found using the
 [`forge-std`](https://github.com/brockelmore/forge-std/) helper library. You can run the test with the following command:
@@ -297,7 +299,7 @@ For example, our `testFailMaxSupplyReached` test checks that an attempt to mint 
 forge test
 ```
 
-If you want to put your Forge skills to practice, write tests for the remaining methods of our NFT contract. Feel free to PR them to [nft-tutorial]((https://github.com/FredCoen/nft-tutorial), where you will find the full implemenation of this tutorial.
+If you want to put your Forge skills to practice, write tests for the remaining methods of our NFT contract. Feel free to PR them to [nft-tutorial](https://github.com/FredCoen/nft-tutorial), where you will find the full implementation of this tutorial.
 
 ### Gas reports for your function calls
 
