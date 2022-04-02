@@ -8,7 +8,9 @@ Let's write a test for a smart contract that is only callable by its owner.
 
 ```solidity
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.4;
+
+error Unauthorized();
 
 contract OwnerUpOnly {
     address public immutable owner;
@@ -19,11 +21,10 @@ contract OwnerUpOnly {
     }
 
     function increment() external {
-        require(
-            msg.sender == owner,
-            "only the owner can increment the count"
-        );
-      count++;
+        if (msg.sender != owner) {
+            revert Unauthorized();
+        }
+        count++;
     }
 }
 

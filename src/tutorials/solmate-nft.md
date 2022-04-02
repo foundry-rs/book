@@ -99,6 +99,11 @@ import "solmate/tokens/ERC721.sol";
 import "openzeppelin-contracts/contracts/utils/Strings.sol";
 import "openzeppelin-contracts/contracts/access/Ownable.sol";
 
+error MintPriceNotPaid();
+error MaxSupply();
+error NonExistentTokenURI();
+error WithdrawTransfer();
+
 contract NFT is ERC721, Ownable {
 
     using Strings for uint256;
@@ -116,12 +121,13 @@ contract NFT is ERC721, Ownable {
     }
 
     function mintTo(address recipient) public payable returns (uint256) {
-        require(
-            msg.value == MINT_PRICE,
-            "Transaction value did not equal the mint price"
-        );
+        if (msg.value != MINT_PRICE) {
+            revert MintPriceNotPaid();
+        }
         uint256 newTokenId = ++currentTokenId;
-        require(newTokenId <= TOTAL_SUPPLY, "Max supply reached");
+        if (newTokenId > TOTAL_SUPPLY) {
+            revert MaxSupply();
+        }
         _safeMint(recipient, newTokenId);
         return newTokenId;
     }
@@ -133,10 +139,9 @@ contract NFT is ERC721, Ownable {
         override
         returns (string memory)
     {
-        require(
-            ownerOf[tokenId] != address(0),
-            "ERC721Metadata: URI query for nonexistent token"
-        );
+        if (ownerOf[tokenId] == address(0)) {
+            revert NonExistentTokenURI();
+        }
         return
             bytes(baseURI).length > 0
                 ? string(abi.encodePacked(baseURI, tokenId.toString()))
@@ -146,7 +151,9 @@ contract NFT is ERC721, Ownable {
     function withdrawPayments(address payable payee) external onlyOwner {
         uint256 balance = address(this).balance;
         (bool transferTx, ) = payee.call{value: balance}("");
-        require(transferTx);
+        if (!transferTx) {
+            revert WithdrawTransfer();
+        }
     }
 }
 ```
