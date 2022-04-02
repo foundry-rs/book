@@ -16,6 +16,12 @@ $ forge run --debug src/MyContract.sol --sig "someFunction()"
 
 If your source file contains more than one contract, specify the contract you want to debug using the `--target-contract` flag.
 
+To debug a more complex funciton, for instance one that requires additional parameters or uses a variable set in the constructor, you can simply write a test for it and debug that
+
+```sh
+$ forge run --debug src/test/MyContract.t.sol --sig "testSomeFunction()"
+```
+
 ### Debugger layout
 
 ![An image of the debugger UI](../images/debugger.png)
