@@ -53,6 +53,7 @@ keccak                   Keccak-256 hashes arbitrary data
 lookup-address           Returns the name the provided address resolves to
 namehash                 Returns ENS namehash of provided name
 nonce                    Prints the number of transactions sent from <address>
+proof                    Generate a storage proof for a given slot
 resolve-name             Returns the address the provided ENS name resolves to
 send                     Publish a transaction signed by <from> to call <to> with <data>
 storage                  Show the raw value of a contract's storage slot
@@ -860,6 +861,29 @@ Get the number of transactions sent from an address.
 $ cast nonce --rpc-url <your_rpc_url> 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045
 750
 ```
+
+<br>
+
+---
+
+#### `proof`
+
+````ignore
+cast proof [OPTIONS] --rpc-url <RPC_URL> <ADDRESS> [SLOTS]...
+````
+env: `ETH_RPC_URL`
+
+Where `[OPTIONS]` is `--block <BLOCK>` (the block you want to query, can also be `earliest`,`latest`,`pending`)
+
+Generate a storage proof for a given slot
+
+##### Example 
+
+```bash
+$ cast proof --rpc-url <rpc-url> 0xED5AF388653567Af2F388E6224dC7C4b3241C544 1
+```
+
+This will output a JSON object of the storage proof (inluding the `key`, `proof`, and `value`) as well as other information such as the `address`, `balance`, and `nonce`.
 
 <br>
 
