@@ -42,27 +42,16 @@ After this, run the following to build Foundry from source:
 cargo install --git https://github.com/gakonst/foundry --bins --locked
 ```
 
-### Using within Docker
+### Using with Docker
 
 Foundry can also be used entirely within a Docker container. If you don't have it, Docker can be installed directly from [Docker's website](https://docs.docker.com/get-docker/)
 
-Once Docker is downloaded and running, you can start an interactive container using the latest image published by Foundry:
+Once installed, you can download the latest release by running:  
 ```sh
-docker run -it --entrypoint /bin/sh ghcr.io/gakonst/foundry:latest
-/ $> forge --help
-forge 0.2.0 (c000ace 2022-03-27T19:44:10.774333400+00:00)
-Build, test, fuzz, formally verify, debug & deploy solidity contracts.
-
-USAGE:
-    forge <SUBCOMMAND>
-
-OPTIONS:
-    -h, --help       Print help information
-    -V, --version    Print version information
-...
+docker pull ghcr.io/gakonst/foundry:latest
 ```
 It is also possible to build the docker image locally. From the Foundry repository, run:
 ```sh
 docker build -t foundry .
 ```
-##### Note: Some machines (including those with M1 chips) may be unable to build the docker image locally. This is a known issue.
+> Note: Some machines (including those with M1 chips) may be unable to build the docker image locally. This is a known issue.
