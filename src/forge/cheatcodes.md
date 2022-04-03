@@ -96,7 +96,7 @@ $ forge test -vvvv
 compiling...
 no files changed, compilation skipped.
 Running 2 tests for OwnerUpOnlyTest.json:OwnerUpOnlyTest
-[P[PASS] testFailIncrementAsNotOwner() (gas: 10406)
+[PASS] testFailIncrementAsNotOwner() (gas: 10406)
 Traces:
   [10406] OwnerUpOnlyTest::testFailIncrementAsNotOwner()
     ├─ [0] VM::prank(0x0000000000000000000000000000000000000000)
