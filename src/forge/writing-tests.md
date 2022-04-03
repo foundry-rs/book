@@ -60,7 +60,7 @@ Forge uses the following keywords in tests:
         testNumber -= 43;
     }
     ```
-    A good practice is to use something like `testCannot` in combination with the [`expectRevert`](../reference/cheatcodes.md#expectrevert) cheatcode, instead of `testFail`, so you know what reverted:
+    A good practice is to use something like `testCannot` in combination with the [`expectRevert`](../reference/cheatcodes.md#expectrevert) cheatcode (cheatcodes are explained in greater detail in the following [section](./cheatcodes.md)). Now instead of using `testFail`, you know exactly what reverted:
     ```solidity
     function testCannotSubtract43() public {
         cheats.expectRevert(abi.encodeWithSignature("Panic(uint256)", 0x11));
