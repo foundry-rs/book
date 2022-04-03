@@ -11,32 +11,32 @@ Let's examine what that means by writing a unit test, finding the general proper
 pragma solidity ^0.8.0;
 
 contract Safe {
-  receive() external payable {}
+    receive() external payable {}
 
-  function withdraw() external {
-    payable(msg.sender).transfer(address(this).balance);
-  }
+    function withdraw() external {
+        payable(msg.sender).transfer(address(this).balance);
+    }
 }
 
 import "ds-test/test.sol";
 
 contract SafeTest is DSTest {
-  Safe safe;
+    Safe safe;
 
-  // Needed so the test contract itself can receive ether
-  receive() external payable {}
+    // Needed so the test contract itself can receive ether
+    receive() external payable {}
 
-  function setUp() public {
-    safe = new Safe();
-  }
+    function setUp() public {
+        safe = new Safe();
+    }
 
-  function testWithdraw() public {
-    payable(address(safe)).transfer(1 ether);
-    uint256 preBalance = address(this).balance;
-    safe.withdraw();
-    uint256 postBalance = address(this).balance;
-    assertEq(preBalance + 1 ether, postBalance);
-  }
+    function testWithdraw() public {
+        payable(address(safe)).transfer(1 ether);
+        uint256 preBalance = address(this).balance;
+        safe.withdraw();
+        uint256 postBalance = address(this).balance;
+        assertEq(preBalance + 1 ether, postBalance);
+    }
 }
 ```
 
@@ -58,17 +58,17 @@ Forge will run any test that takes at least one parameter as a property-based te
 
 ```solidity
 contract SafeTest is DSTest {
-  // safe
-  // receive
-  // setUp
+    // safe
+    // receive
+    // setUp
 
-  function testWithdraw(uint256 amount) public {
-    payable(address(safe)).transfer(amount);
-    uint256 preBalance = address(this).balance;
-    safe.withdraw();
-    uint256 postBalance = address(this).balance;
-    assertEq(preBalance + amount, postBalance);
-  }
+    function testWithdraw(uint256 amount) public {
+        payable(address(safe)).transfer(amount);
+        uint256 preBalance = address(this).balance;
+        safe.withdraw();
+        uint256 postBalance = address(this).balance;
+        assertEq(preBalance + amount, postBalance);
+    }
 }
 ```
 
@@ -92,13 +92,13 @@ The default amount of ether that the test contract is given is `2**96 wei` (as i
 
 ```solidity
 contract SafeTest is DSTest {
-  // safe
-  // receive
-  // setUp
+    // safe
+    // receive
+    // setUp
 
-  function testWithdraw(uint96 amount) public {
-    // snip
-  }
+    function testWithdraw(uint96 amount) public {
+        // snip
+    }
 }
 ```
 
@@ -116,8 +116,8 @@ You may want to exclude certain cases using the [`assume`](../reference/cheatcod
 
 ```solidity
 function testWithdraw(uint96 amount) public {
-  cheats.assume(amount > 0.1 ether)
-  // snip
+    cheats.assume(amount > 0.1 ether)
+    // snip
 }
 ```
 

@@ -7,6 +7,7 @@ Forge can deploy only one contract at a time.
 To deploy a contract, you must provide a RPC URL (env: `ETH_RPC_URL`) and the private key of the account that will deploy the contract.
 
 To deploy `MyContract` to a network:
+
 ```sh
 $ forge create --rpc-url <your_rpc_url> --private-key <your_private_key> src/MyContract.sol:MyContract
 compiling...
@@ -23,6 +24,7 @@ Use the `--constructor-args` flag to pass arguments to the constructor:
 ```solidity
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.0;
+
 import {ERC20} from "solmate/tokens/ERC20.sol";
 
 contract MyToken is ERC20 {
@@ -42,6 +44,7 @@ $ forge create --rpc-url <your_rpc_url> --constructor-args "ForgeUSD" "FUSD" 18 
 ```
 
 ## Verifying
+
 You can verify a contract on Etherscan with the `forge verify-contract` command.
 
 You must provide:
@@ -87,6 +90,7 @@ Contract successfully verified.
 ### Troubleshooting
 
 ##### `Invalid character 'x' at position 1`
+
 Make sure the private key string does not begin with `0x`.
 
 ##### `EIP-1559 not activated`
@@ -99,10 +103,13 @@ Make sure the passed arguments are of correct type.
 Make sure the private key is correct.
 
 ##### `Compiler version commit for verify`
-If you want to check the exact commit you are running locally, try: ` ~/.svm/0.x.y/solc-0.x.y --version` where `x` and `y` are major and minor version numbers respectively.  The output of this will be something like:
+If you want to check the exact commit you are running locally, try: ` ~/.svm/0.x.y/solc-0.x.y --version` where `x` and
+`y` are major and minor version numbers respectively.  The output of this will be something like:
+
 ```ignore
 solc, the solidity compiler commandline interface
 Version: 0.8.12+commit.f00d7308.Darwin.appleclang
 ```
+
 Note: You cannot just paste the entire string "0.8.12+commit.f00d7308.Darwin.appleclang" as the argument for the compiler-version.  But you can use the 8 hex digits of the commit to look up exactly what you should copy and paste from [compiler version](https://etherscan.io/solcversions).
 

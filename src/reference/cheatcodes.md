@@ -358,7 +358,7 @@ To use `expectRevert` with a custom [error type](https://docs.soliditylang.org/e
 
 ```solidity
 cheats.expectRevert(
-  abi.encodeWithSelector(MyContract.CustomError.selector, 1, 2)
+    abi.encodeWithSelector(MyContract.CustomError.selector, 1, 2)
 );
 ```
 
@@ -377,7 +377,6 @@ function testLowLevelCallRevert() public {
     cheats.expectRevert(bytes("error message"));
     (bool status, ) = address(myContract).call(myCalldata);
     assertTrue(status, "expectRevert: call did not revert");
-
 }
 ```
 
@@ -470,16 +469,16 @@ For example:
 event Transfer(address indexed from, address indexed to, uint256 amount);
 
 function testERC20EmitsTransfer() public {
-  // Only `src` and `dst` are indexed in ERC20's `Transfer` event,
-  // so we specifically check topics 1 and 2 (topic 0 is always checked by default),
-  // as well as the data (`amount`).
-  cheats.expectEmit(true, true, false, true);
+    // Only `src` and `dst` are indexed in ERC20's `Transfer` event,
+    // so we specifically check topics 1 and 2 (topic 0 is always checked by default),
+    // as well as the data (`amount`).
+    cheats.expectEmit(true, true, false, true);
 
-  // We emit the event we expect to see.
-  emit MyToken.Transfer(address(this), address(1), 10);
+    // We emit the event we expect to see.
+    emit MyToken.Transfer(address(this), address(1), 10);
 
-  // We perform the call.
-  myToken.transfer(address(1), 10);
+    // We perform the call.
+    myToken.transfer(address(1), 10);
 }
 ```
 
@@ -489,15 +488,15 @@ Calls to other cheat codes before the final call are ignored, meaning we can als
 
 ```solidity
 function testERC20EmitsTransfer() public {
-  // The first two lines are the same as above.
-  cheats.expectEmit(true, true, false, true);
-  emit MyToken.Transfer(address(alice), address(1), 10);
+    // The first two lines are the same as above.
+    cheats.expectEmit(true, true, false, true);
+    emit MyToken.Transfer(address(alice), address(1), 10);
 
-  // Use the `prank` cheat code to impersonate a user.
-  cheats.prank(address(alice));
+    // Use the `prank` cheat code to impersonate a user.
+    cheats.prank(address(alice));
 
-  // We perform the call.
-  myToken.transfer(address(1), 10);
+    // We perform the call.
+    myToken.transfer(address(1), 10);
 }
 ```
 
@@ -507,18 +506,18 @@ We can also assert that multiple events are emitted in a single call. For exampl
 
 ```solidity
 function testERC20EmitsBatchTransfer() public {
-  // We declare multiple expected transfer events
-  for (uint256 i = 0; i < users.length; i++) {
-    cheats.expectEmit(true, true, true, true);
-    emit Transfer(address(this), users[i], 10);
-  }
+    // We declare multiple expected transfer events
+    for (uint256 i = 0; i < users.length; i++) {
+        cheats.expectEmit(true, true, true, true);
+        emit Transfer(address(this), users[i], 10);
+    }
 
-  // We also expect a custom `BatchTransfer(uint256 numberOfTransfers)` event.
-  cheats.expectEmit(false, false, false, false);
-  emit BatchTransfer(users.length);
+    // We also expect a custom `BatchTransfer(uint256 numberOfTransfers)` event.
+    cheats.expectEmit(false, false, false, false);
+    emit BatchTransfer(users.length);
 
-  // We perform the call.
-  myToken.batchTransfer(users, 10);
+    // We perform the call.
+    myToken.batchTransfer(users, 10);
 }
 ```
 
@@ -550,12 +549,12 @@ Mocked calls are in effect until [`clearMockedCalls`](#clearmockedcalls) is call
 
 ```solidity
 function testMockCall() public {
-  cheats.mockCall(
-    address(0),
-    abi.encodeWithSelector(MyToken.balanceOf.selector, address(1)),
-    abi.encode(10)
-  );
-  assertEq(IERC20(address(0)).balanceOf(address(1)), 10);
+    cheats.mockCall(
+        address(0),
+        abi.encodeWithSelector(MyToken.balanceOf.selector, address(1)),
+        abi.encode(10)
+    );
+    assertEq(IERC20(address(0)).balanceOf(address(1)), 10);
 }
 ```
 
@@ -563,15 +562,15 @@ function testMockCall() public {
 
 ```solidity
 function testMockCall() public {
-  cheats.mockCall(
-    address(0),
-    abi.encodeWithSelector(MyToken.balanceOf.selector),
-    abi.encode(10)
-  );
-  assertEq(IERC20(address(0)).balanceOf(address(1)), 10);
-  assertEq(IERC20(address(0)).balanceOf(address(2)), 10);
+    cheats.mockCall(
+        address(0),
+        abi.encodeWithSelector(MyToken.balanceOf.selector),
+        abi.encode(10)
+    );
+    assertEq(IERC20(address(0)).balanceOf(address(1)), 10);
+    assertEq(IERC20(address(0)).balanceOf(address(2)), 10);
 
-  // and so on..
+    // and so on..
 }
 ```
 
