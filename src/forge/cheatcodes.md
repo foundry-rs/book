@@ -8,7 +8,9 @@ Let's write a test for a smart contract that is only callable by its owner.
 
 ```solidity
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.4;
+
+error Unauthorized();
 
 contract OwnerUpOnly {
     address public immutable owner;
@@ -19,11 +21,10 @@ contract OwnerUpOnly {
     }
 
     function increment() external {
-        require(
-            msg.sender == owner,
-            "only the owner can increment the count"
-        );
-      count++;
+        if (msg.sender != owner) {
+            revert Unauthorized();
+        }
+        count++;
     }
 }
 
@@ -95,15 +96,14 @@ $ forge test -vvvv
 compiling...
 no files changed, compilation skipped.
 Running 2 tests for OwnerUpOnlyTest.json:OwnerUpOnlyTest
-[PASS] testFailIncrementAsNotOwner() (gas: 4030)
+[PASS] testFailIncrementAsNotOwner() (gas: 10406)
 Traces:
-
-  [4030] OwnerUpOnlyTest::testFailIncrementAsNotOwner()
+  [10406] OwnerUpOnlyTest::testFailIncrementAsNotOwner()
     ├─ [0] VM::prank(0x0000000000000000000000000000000000000000)
     │   └─ ← ()
-    ├─ [325] OwnerUpOnly::increment()
-    │   └─ ← "only the owner can increment the count"
-    └─ ← "only the owner can increment the count"
+    ├─ [235] 0xce71…c246::d09de08a()
+    │   └─ ← 0x82b42900
+    └─ ← 0x82b42900
 ```
 
 To be sure in the future, let's make sure that we reverted because we are not the owner using the `expectRevert` cheatcode:
@@ -123,9 +123,7 @@ contract OwnerUpOnlyTest is DSTest {
 
   // Notice that we replaced `testFail` with `test`
   function testIncrementAsNotOwner() public {
-    cheats.expectRevert(
-      bytes("only the owner can increment the count")
-    );
+    cheats.expectRevert(abi.encodeWithSignature("Unauthorized()"));
     cheats.prank(address(0));
     upOnly.increment();
   }
@@ -139,7 +137,7 @@ $ forge test
 compiling...
 success.
 Running 2 tests for OwnerUpOnlyTest.json:OwnerUpOnlyTest
-[PASS] testIncrementAsNotOwner() (gas: 4917)
+[PASS] testIncrementAsNotOwner() (gas: 11200)
 [PASS] testIncrementAsOwner() (gas: 24661)
 ```
 
