@@ -354,6 +354,17 @@ To use `expectRevert` with a `string`, convert it to `bytes`.
 cheats.expectRevert(bytes("error message"));
 ```
 
+After calling `cheats.expectRevert()`, calls to other cheat codes before the reverting call are ignored.
+This means, for example, we can call `cheats.prank(user)` immediately before the reverting call.
+
+##### Usage with custom errors
+
+`expectRevert`can also be used with the custom [error type](https://docs.soliditylang.org/en/v0.8.11/contracts.html#errors). If the error doesn't take any parameters, just use the error's selector as you would for any function.
+
+```solidity
+cheats.expectRevert(MyContract.CustomError.selector);
+```
+
 To use `expectRevert` with a custom [error type](https://docs.soliditylang.org/en/v0.8.11/contracts.html#errors) with parameters, ABI encode the error type.
 
 ```solidity
@@ -361,9 +372,6 @@ cheats.expectRevert(
     abi.encodeWithSelector(MyContract.CustomError.selector, 1, 2)
 );
 ```
-
-After calling `cheats.expectRevert()`, calls to other cheat codes before the reverting call are ignored.
-This means, for example, we can call `cheats.prank(user)` immediately before the reverting call.
 
 ##### Usage with low-level calls
 
