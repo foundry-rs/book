@@ -11,36 +11,36 @@ Let's write a test for a smart contract that is only callable by its owner.
 pragma solidity ^0.8.0;
 
 contract OwnerUpOnly {
-  address public immutable owner;
-  uint256 public count;
+    address public immutable owner;
+    uint256 public count;
 
-  constructor() {
-    owner = msg.sender;
-  }
+    constructor() {
+        owner = msg.sender;
+    }
 
-  function increment() external {
-    require(
-      msg.sender == owner,
-      "only the owner can increment the count"
-    );
-    count++;
-  }
+    function increment() external {
+        require(
+            msg.sender == owner,
+            "only the owner can increment the count"
+        );
+      count++;
+    }
 }
 
 import "ds-test/test.sol";
 
 contract OwnerUpOnlyTest is DSTest {
-  OwnerUpOnly upOnly;
+    OwnerUpOnly upOnly;
 
-  function setUp() public {
-    upOnly = new OwnerUpOnly();
-  }
+    function setUp() public {
+        upOnly = new OwnerUpOnly();
+    }
 
-  function testIncrementAsOwner() public {
-    assertEq(upOnly.count(), 0);
-    upOnly.increment();
-    assertEq(upOnly.count(), 1);
-  }
+    function testIncrementAsOwner() public {
+        assertEq(upOnly.count(), 0);
+        upOnly.increment();
+        assertEq(upOnly.count(), 1);
+    }
 }
 ```
 
@@ -58,20 +58,20 @@ Let's make sure that someone who is definitely not the owner can't increment the
 
 ```solidity
 interface CheatCodes {
-  function prank(address) external;
+    function prank(address) external;
 }
 
 contract OwnerUpOnlyTest is DSTest {
-  CheatCodes cheats = CheatCodes(HEVM_ADDRESS);
-  OwnerUpOnly upOnly;
+    CheatCodes cheats = CheatCodes(HEVM_ADDRESS);
+    OwnerUpOnly upOnly;
 
-  // setUp
-  // testIncrementAsOwner
+    // setUp
+    // testIncrementAsOwner
 
-  function testFailIncrementAsNotOwner() public {
-    cheats.prank(address(0));
-    upOnly.increment();
-  }
+    function testFailIncrementAsNotOwner() public {
+        cheats.prank(address(0));
+        upOnly.increment();
+    }
 }
 ```
 
@@ -110,8 +110,8 @@ To be sure in the future, let's make sure that we reverted because we are not th
 
 ```solidity
 interface CheatCodes {
-  function prank(address) external;
-  function expectRevert(bytes calldata) external;
+    function prank(address) external;
+    function expectRevert(bytes calldata) external;
 }
 
 contract OwnerUpOnlyTest is DSTest {
