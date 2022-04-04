@@ -123,7 +123,7 @@ contract OwnerUpOnlyTest is DSTest {
 
   // Notice that we replaced `testFail` with `test`
   function testIncrementAsNotOwner() public {
-    cheats.expectRevert(abi.encodeWithSignature("Unauthorized()"));
+    cheats.expectRevert(Unauthorized.selector);
     cheats.prank(address(0));
     upOnly.increment();
   }
