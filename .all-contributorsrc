@@ -273,6 +273,15 @@
       "contributions": [
         "maintenance"
       ]
+    },
+    {
+      "login": "nuhhtyy",
+      "name": "N",
+      "avatar_url": "https://avatars.githubusercontent.com/u/15225385?v=4",
+      "profile": "https://github.com/nuhhtyy",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
