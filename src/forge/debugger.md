@@ -11,8 +11,10 @@ $ forge run --debug $FILE --sig $FUNC
 Where `$FILE` is the path to the contract you want to debug, and `$FUNC` is the signature of the function you want to debug. For example:
 
 ```sh
-$ forge run --debug src/MyContract.sol --sig "someFunction()"
+$ forge run --debug src/SomeContract.sol --sig "myFunc(uint256,string)" 123 "hello"
 ```
+
+Additionally, test files can also be debugged in the same way.
 
 If your source file contains more than one contract, specify the contract you want to debug using the `--target-contract` flag.
 

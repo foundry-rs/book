@@ -1,6 +1,6 @@
 ## 📖 Foundry Book
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-29-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-30-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 A book on all things Foundry. [Read now](https://book.getfoundry.sh).
@@ -61,12 +61,13 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://gakonst.com"><img src="https://avatars.githubusercontent.com/u/17802178?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Georgios Konstantopoulos</b></sub></a><br /><a href="https://github.com/onbjerg/foundry-book/pulls?q=is%3Apr+reviewed-by%3Agakonst" title="Reviewed Pull Requests">👀</a></td>
     <td align="center"><a href="https://github.com/devanonon"><img src="https://avatars.githubusercontent.com/u/89424366?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Devan Non</b></sub></a><br /><a href="https://github.com/onbjerg/foundry-book/commits?author=devanonon" title="Documentation">📖</a></td>
     <td align="center"><a href="https://github.com/jtardioli"><img src="https://avatars.githubusercontent.com/u/85530348?v=4?s=100" width="100px;" alt=""/><br /><sub><b>josht</b></sub></a><br /><a href="#maintenance-jtardioli" title="Maintenance">🚧</a></td>
-    <td align="center"><a href="http://dmf.xyz"><img src="https://avatars.githubusercontent.com/u/100147743?v=4?s=100" width="100px;" alt=""/><br /><sub><b>dmfxyz</b></sub></a><br /><a href="#maintenance-dmfxyz" title="Maintenance">🚧</a> <a href="https://github.com/onbjerg/foundry-book/pulls?q=is%3Apr+reviewed-by%3Admfxyz" title="Reviewed Pull Requests">👀</a></td>
+    <td align="center"><a href="http://dmf.xyz"><img src="https://avatars.githubusercontent.com/u/100147743?v=4?s=100" width="100px;" alt=""/><br /><sub><b>dmfxyz</b></sub></a><br /><a href="#maintenance-dmfxyz" title="Maintenance">🚧</a> <a href="https://github.com/onbjerg/foundry-book/pulls?q=is%3Apr+reviewed-by%3Admfxyz" title="Reviewed Pull Requests">👀</a> <a href="https://github.com/onbjerg/foundry-book/commits?author=dmfxyz" title="Documentation">📖</a></td>
     <td align="center"><a href="https://github.com/DrakeEvans"><img src="https://avatars.githubusercontent.com/u/31104161?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Drake Evans</b></sub></a><br /><a href="#maintenance-DrakeEvans" title="Maintenance">🚧</a></td>
     <td align="center"><a href="https://paulrberg.com"><img src="https://avatars.githubusercontent.com/u/8782666?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Paul Razvan Berg</b></sub></a><br /><a href="#maintenance-paulrberg" title="Maintenance">🚧</a></td>
   </tr>
   <tr>
     <td align="center"><a href="https://github.com/Perelyn-sama"><img src="https://avatars.githubusercontent.com/u/64838956?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Perelyn Sama</b></sub></a><br /><a href="#maintenance-Perelyn-sama" title="Maintenance">🚧</a></td>
+    <td align="center"><a href="https://github.com/nuhhtyy"><img src="https://avatars.githubusercontent.com/u/15225385?v=4?s=100" width="100px;" alt=""/><br /><sub><b>N</b></sub></a><br /><a href="https://github.com/onbjerg/foundry-book/commits?author=nuhhtyy" title="Documentation">📖</a></td>
   </tr>
 </table>
 
