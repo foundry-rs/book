@@ -12,3 +12,6 @@ edit-url-template = "https://github.com/onbjerg/foundry-book/edit/master/src/doc
 default-theme = "ayu"
 additional-js = ["src/static/solidity.min.js"]
 cname = "book.getfoundry.sh"
+
+[output.html.fold]
+enable = true
