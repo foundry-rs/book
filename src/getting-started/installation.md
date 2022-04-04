@@ -41,3 +41,17 @@ After this, run the following to build Foundry from source:
 ```sh
 cargo install --git https://github.com/gakonst/foundry --bins --locked
 ```
+
+### Using with Docker
+
+Foundry can also be used entirely within a Docker container. If you don't have it, Docker can be installed directly from [Docker's website](https://docs.docker.com/get-docker/)
+
+Once installed, you can download the latest release by running:  
+```sh
+docker pull ghcr.io/gakonst/foundry:latest
+```
+It is also possible to build the docker image locally. From the Foundry repository, run:
+```sh
+docker build -t foundry .
+```
+> Note: Some machines (including those with M1 chips) may be unable to build the docker image locally. This is a known issue.
