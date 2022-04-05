@@ -1,6 +1,6 @@
 ## 📖 Foundry Book
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-31-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-32-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 A book on all things Foundry. [Read now](https://book.getfoundry.sh).
@@ -69,6 +69,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/Perelyn-sama"><img src="https://avatars.githubusercontent.com/u/64838956?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Perelyn Sama</b></sub></a><br /><a href="#maintenance-Perelyn-sama" title="Maintenance">🚧</a></td>
     <td align="center"><a href="https://github.com/nuhhtyy"><img src="https://avatars.githubusercontent.com/u/15225385?v=4?s=100" width="100px;" alt=""/><br /><sub><b>N</b></sub></a><br /><a href="https://github.com/onbjerg/foundry-book/commits?author=nuhhtyy" title="Documentation">📖</a></td>
     <td align="center"><a href="https://github.com/adlerjohn"><img src="https://avatars.githubusercontent.com/u/3290375?v=4?s=100" width="100px;" alt=""/><br /><sub><b>John Adler</b></sub></a><br /><a href="#maintenance-adlerjohn" title="Maintenance">🚧</a></td>
+    <td align="center"><a href="https://github.com/x676f64"><img src="https://avatars.githubusercontent.com/u/53136615?v=4?s=100" width="100px;" alt=""/><br /><sub><b>0xTaylor</b></sub></a><br /><a href="#maintenance-x676f64" title="Maintenance">🚧</a></td>
   </tr>
 </table>
 
