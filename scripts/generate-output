@@ -16,10 +16,13 @@ run_command() {
 }
 
 in_project() {
+  echo "... $1"
   cd projects/$1
   mkdir -p output
   forge clean
 }
+
+echo Generating output...
 
 (
   in_project hello_foundry
@@ -28,3 +31,5 @@ in_project() {
   (run_command forge build) > output/forge-build
   (run_command forge test) > output/forge-test
 )
+
+echo OK.
