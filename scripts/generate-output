@@ -38,9 +38,12 @@ in_project() {
   forge clean
 }
 
-# Moves to a new temporary directory
+# Moves to a new temporary directory for a specific project,
+# and ensures src/output/<PROJECT> exists.
 in_temp() {
+  echo "... $1"
   cd $(mktemp -d)
+  mkdir -p $OUTPUT_DIR/$1
 }
 
 echo Generating output...
@@ -53,13 +56,13 @@ echo Generating output...
   (run_command forge test) > $OUTPUT_DIR/hello_foundry/forge-test
 )
 
-#(
-#  echo ... forge-std
-#  in_temp
-#  (run_command git clone https://github.com/brockelmore/forge-std) > output/git-clone
-#  (run_command forge install) > output/forge-install
-#  (run_command forge build) > output/forge-build
-#  (run_command forge test) > output/forge-test
-#)
+(
+  in_temp forge-std
+  git clone https://github.com/brockelmore/forge-std
+  cd forge-std
+  (run_command forge install) > $OUTPUT_DIR/forge-std/forge-install
+  (run_command forge build) > $OUTPUT_DIR/forge-std/forge-build
+  (run_command forge test) > $OUTPUT_DIR/forge-std/forge-test
+)
 
 echo OK.
