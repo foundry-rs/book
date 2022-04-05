@@ -283,6 +283,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "adlerjohn",
+      "name": "John Adler",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3290375?v=4",
+      "profile": "https://github.com/adlerjohn",
+      "contributions": [
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7,
