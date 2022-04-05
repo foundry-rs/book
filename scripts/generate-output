@@ -49,7 +49,9 @@ in_temp() {
 echo Generating output...
 
 (
-  in_project hello_foundry
+  in_temp hello_foundry
+  (run_command forge init hello_foundry) > $OUTPUT_DIR/hello_foundry/forge-init
+  cd hello_foundry
   (run_command tree . -d -L 1) > $OUTPUT_DIR/hello_foundry/tree
   (run_command tree . -L 3 -I output) > $OUTPUT_DIR/hello_foundry/tree-with-files
   (run_command forge build) > $OUTPUT_DIR/hello_foundry/forge-build

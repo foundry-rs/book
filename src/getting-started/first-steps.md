@@ -5,7 +5,7 @@ This section provides an overview of the `forge` command line tool. We demonstra
 To start a new project with Foundry, use `forge init`:
 
 ```sh
-$ forge init hello_foundry
+{{#include ../output/hello_foundry/forge-init:command}}
 ```
 
 Let's check out what `forge` generated for us:

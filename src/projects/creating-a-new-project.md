@@ -3,7 +3,7 @@
 To start a new project with Foundry, use `forge init`:
 
 ```sh
-$ forge init hello_foundry
+{{#include ../output/hello_foundry/forge-init:command}}
 ```
 
 This creates a new directory `hello_foundry` from the default template. This also initializes a new `git` repository.
