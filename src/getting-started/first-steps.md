@@ -12,19 +12,19 @@ Let's check out what `forge` generated for us:
 
 ```sh
 $ cd hello_foundry
-{{#include ../../projects/hello_foundry/output/tree:all}}
+{{#include ../output/hello_foundry/tree:all}}
 ```
 
 We can build the project:
 
 ```sh
-{{#include ../../projects/hello_foundry/output/forge-build:all}}
+{{#include ../output/hello_foundry/forge-build:all}}
 ```
 
 And run the tests:
 
 ```sh
-{{#include ../../projects/hello_foundry/output/forge-test:all}}
+{{#include ../output/hello_foundry/forge-test:all}}
 ```
 <br>
 

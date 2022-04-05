@@ -18,7 +18,7 @@ For now, let's check what the default template looks like:
 
 ```sh
 $ cd hello_foundry
-{{#include ../../projects/hello_foundry/output/tree:all}}
+{{#include ../output/hello_foundry/tree:all}}
 ```
 
 The default template comes with one dependency installed: `ds-test`. This is the preferred assertion library used for Foundry projects. Additionally, the template also comes with an empty starter contract and a simple test.
@@ -26,13 +26,13 @@ The default template comes with one dependency installed: `ds-test`. This is the
 Let's build the project:
 
 ```sh
-{{#include ../../projects/hello_foundry/output/forge-build:all}}
+{{#include ../output/hello_foundry/forge-build:all}}
 ```
 
 And run the tests:
 
 ```sh
-{{#include ../../projects/hello_foundry/output/forge-test:all}}
+{{#include ../output/hello_foundry/forge-test:all}}
 ```
 
 You'll notice that two new directories have popped up: `out` and `cache`.

@@ -5,9 +5,8 @@ $ tree . -d -L 1
 // ANCHOR: output
 .
 ├── lib
-├── output
 └── src
 
-3 directories
+2 directories
 // ANCHOR_END: output
 // ANCHOR_END: all

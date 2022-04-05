@@ -4,6 +4,19 @@ set -e
 # the commands and outputs into files that are easily
 # includeable in the book.
 
+# TODO: Write to a standard folder
+# TODO: Ensure git is installed
+# TODO: Ensure forge is installed
+# TODO: Ensure utils are installed (sed, mktemp)
+
+rm -rf src/output
+OUTPUT_DIR=$(realpath src/output)
+
+# Runs a command and outputs text with anchors.
+# The anchors are:
+# - all: The command and output
+# - command: Only the command
+# - output: Only the output
 run_command() {
   echo "// ANCHOR: all"
   echo "// ANCHOR: command"
@@ -15,21 +28,38 @@ run_command() {
   echo "// ANCHOR_END: all"
 }
 
+# Moves to a project directory and does some initial preparations.
+#
+# The project must live in ./projects
 in_project() {
   echo "... $1"
+  mkdir -p $OUTPUT_DIR/$1
   cd projects/$1
-  mkdir -p output
   forge clean
+}
+
+# Moves to a new temporary directory
+in_temp() {
+  cd $(mktemp -d)
 }
 
 echo Generating output...
 
 (
   in_project hello_foundry
-  (run_command tree . -d -L 1) > output/tree
-  (run_command tree . -L 3 -I output) > output/tree-with-files
-  (run_command forge build) > output/forge-build
-  (run_command forge test) > output/forge-test
+  (run_command tree . -d -L 1) > $OUTPUT_DIR/hello_foundry/tree
+  (run_command tree . -L 3 -I output) > $OUTPUT_DIR/hello_foundry/tree-with-files
+  (run_command forge build) > $OUTPUT_DIR/hello_foundry/forge-build
+  (run_command forge test) > $OUTPUT_DIR/hello_foundry/forge-test
 )
+
+#(
+#  echo ... forge-std
+#  in_temp
+#  (run_command git clone https://github.com/brockelmore/forge-std) > output/git-clone
+#  (run_command forge install) > output/forge-install
+#  (run_command forge build) > output/forge-build
+#  (run_command forge test) > output/forge-test
+#)
 
 echo OK.
