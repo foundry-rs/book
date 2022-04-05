@@ -241,8 +241,8 @@ The amount of fuzz runs to perform for each fuzz test case. Higher values gives 
 ##### `fuzz_max_local_rejects`
 
 - Type: integer
-- Default: 65536
-- Environment: `FOUNDRY_FUZZ_RUNS`
+- Default: 1024
+- Environment: `FOUNDRY_FUZZ_MAX_LOCAL_REJECTS`
 
 The maximum number of individual inputs that may be rejected before the test as a whole aborts.
 "Local" filters apply to a single strategy. If a value is rejected, a new value is drawn from that strategy only.
@@ -250,8 +250,8 @@ The maximum number of individual inputs that may be rejected before the test as 
 ##### `fuzz_max_global_rejects`
 
 - Type: integer
-- Default: 1024
-- Environment: `FOUNDRY_FUZZ_RUNS`
+- Default: 65536
+- Environment: `FOUNDRY_FUZZ_MAX_GLOBAL_REJECTS`
 
 The maximum number of combined inputs that may be rejected before the test as a whole aborts.
 "Global" filters apply to the whole test case. If the test case is rejected, the whole thing is regenerated.
