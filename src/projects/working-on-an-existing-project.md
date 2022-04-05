@@ -5,74 +5,82 @@ If you download an existing project that uses Foundry, it is really easy to get 
 First, get the project from somewhere. In this example, we will clone the `forge-std` repository from GitHub:
 
 ```sh
-$ git clone --recursive https://github.com/brockelmore/forge-std
-$ cd forge-std
+$ git clone https://github.com/brockelmore/forge-std
+$ forge install
 ```
 
-Notice that we clone with the `--recursive` flag. This automatically pulls git submodules (which we use as dependencies) as well in case there are any. Alternatively, run `forge install` after cloning to install dependencies.
+We run `forge install` to install the submodule dependencies that are in the project.
 
 To build, use `forge build`:
 
 ```sh
 $ forge build
-compiling...
-success.
+[⠊] Compiling...
+[⠊] Compiling 7 files with 0.8.10
+[⠢] Solc finished in 961.71ms
 ```
 
 And to test, use `forge test`:
 
 ```sh
 $ forge test
-compiling...
-no files changed, compilation skipped.
-Running 9 tests for StdCheatsTest.json:StdCheatsTest
-[PASS] testDeployCode() (gas: 1420013)
-[PASS] testDeployCodeNoArgs() (gas: 1404320)
-[PASS] testHoax() (gas: 11140)
-[PASS] testHoaxDifferentAddresses() (gas: 11303)
-[PASS] testHoaxOrigin() (gas: 11151)
+[⠒] Compiling...
+No files changed, compilation skipped
+
+Running 11 tests for src/test/StdError.t.sol:StdErrorsTest
+[PASS] testExpectArithmetic() (gas: 8957)
+[PASS] testExpectAssertion() (gas: 8794)
+[PASS] testExpectDiv() (gas: 8893)
+[PASS] testExpectEncodeStg() (gas: 31050)
+[PASS] testExpectEnum() (gas: 8835)
+[PASS] testExpectIntern() (gas: 8808)
+[PASS] testExpectLowLvl() (gas: 10582)
+[PASS] testExpectMem() (gas: 8851)
+[PASS] testExpectMod() (gas: 8903)
+[PASS] testExpectOOB() (gas: 8848)
+[PASS] testExpectPop() (gas: 10851)
+Test result: ok. 11 passed; 0 failed; finished in 2.26ms
+
+Running 27 tests for src/test/StdStorage.t.sol:StdStorageTest
+[PASS] testFailStorageCheckedWriteMapPacked() (gas: 122431)
+[PASS] testFailStorageConst() (gas: 74053)
+[PASS] testFailStorageNativePack() (gas: 295893)
+[PASS] testStorageCheckedWriteDeepMap() (gas: 166648)
+[PASS] testStorageCheckedWriteDeepMapStructA() (gas: 180590)
+[PASS] testStorageCheckedWriteDeepMapStructB() (gas: 209856)
+[PASS] testStorageCheckedWriteHidden() (gas: 110775)
+[PASS] testStorageCheckedWriteMapAddr() (gas: 146848)
+[PASS] testStorageCheckedWriteMapBool() (gas: 146991)
+[PASS] testStorageCheckedWriteMapPackedSuccess() (gas: 146514)
+[PASS] testStorageCheckedWriteMapStructA() (gas: 160635)
+[PASS] testStorageCheckedWriteMapStructB() (gas: 189702)
+[PASS] testStorageCheckedWriteMapUint() (gas: 146621)
+[PASS] testStorageCheckedWriteObvious() (gas: 93735)
+[PASS] testStorageCheckedWriteStructA() (gas: 123086)
+[PASS] testStorageCheckedWriteStructB() (gas: 150764)
+[PASS] testStorageDeepMap() (gas: 150884)
+[PASS] testStorageDeepMapStructA() (gas: 164604)
+[PASS] testStorageDeepMapStructB() (gas: 193834)
+[PASS] testStorageHidden() (gas: 96539)
+[PASS] testStorageMapAddrFound() (gas: 131685)
+[PASS] testStorageMapStructA() (gas: 145148)
+[PASS] testStorageMapStructB() (gas: 174264)
+[PASS] testStorageMapUintFound() (gas: 131548)
+[PASS] testStorageObvious() (gas: 79439)
+[PASS] testStorageStructA() (gas: 108537)
+[PASS] testStorageStructB() (gas: 136197)
+Test result: ok. 27 passed; 0 failed; finished in 2.26ms
+
+Running 10 tests for src/test/StdCheats.t.sol:StdCheatsTest
+[PASS] testDeployCode() (gas: 2547409)
+[PASS] testDeployCodeNoArgs() (gas: 2517592)
+[PASS] testHoax() (gas: 15633)
+[PASS] testHoaxDifferentAddresses() (gas: 15818)
+[PASS] testHoaxOrigin() (gas: 15644)
 [PASS] testRewind() (gas: 3703)
-[PASS] testSkip() (gas: 3617)
-[PASS] testStartHoax() (gas: 19791)
-[PASS] testStartHoaxOrigin() (gas: 19819)
-
-Running 9 tests for StdErrorsTest.json:StdErrorsTest
-[PASS] testExpectArithmetic() (gas: 4457)
-[PASS] testExpectAssertion() (gas: 4272)
-[PASS] testExpectDiv() (gas: 4348)
-[PASS] testExpectEnum() (gas: 4357)
-[PASS] testExpectIntern() (gas: 4308)
-[PASS] testExpectMem() (gas: 4306)
-[PASS] testExpectMod() (gas: 4381)
-[PASS] testExpectOOB() (gas: 4326)
-[PASS] testExpectPop() (gas: 6440)
-
-Running 27 tests for StdStorageTest.json:StdStorageTest
-[PASS] testFailStorageCheckedWriteMapPacked() (gas: 115875)
-[PASS] testFailStorageConst() (gas: 69497)
-[PASS] testFailStorageNativePack() (gas: 289225)
-[PASS] testStorageCheckedWriteDeepMap() (gas: 109464)
-[PASS] testStorageCheckedWriteDeepMapStructA() (gas: 126800)
-[PASS] testStorageCheckedWriteDeepMapStructB() (gas: 143407)
-[PASS] testStorageCheckedWriteHidden() (gas: 99322)
-[PASS] testStorageCheckedWriteMapAddr() (gas: 104614)
-[PASS] testStorageCheckedWriteMapBool() (gas: 104792)
-[PASS] testStorageCheckedWriteMapPackedSuccess() (gas: 102196)
-[PASS] testStorageCheckedWriteMapStructA() (gas: 121756)
-[PASS] testStorageCheckedWriteMapStructB() (gas: 138114)
-[PASS] testStorageCheckedWriteMapUint() (gas: 104330)
-[PASS] testStorageCheckedWriteObvious() (gas: 76022)
-[PASS] testStorageCheckedWriteStructA() (gas: 110620)
-[PASS] testStorageCheckedWriteStructB() (gas: 125241)
-[PASS] testStorageDeepMap() (gas: 89814)
-[PASS] testStorageDeepMapStructA() (gas: 106860)
-[PASS] testStorageDeepMapStructB() (gas: 123422)
-[PASS] testStorageHidden() (gas: 81583)
-[PASS] testStorageMapAddrFound() (gas: 85716)
-[PASS] testStorageMapStructA() (gas: 102441)
-[PASS] testStorageMapStructB() (gas: 118860)
-[PASS] testStorageMapUintFound() (gas: 85544)
-[PASS] testStorageObvious() (gas: 58208)
-[PASS] testStorageStructA() (gas: 92477)
-[PASS] testStorageStructB() (gas: 107076)
+[PASS] testSkip() (gas: 3618)
+[PASS] testStartHoax() (gas: 24268)
+[PASS] testStartHoaxOrigin() (gas: 24318)
+[PASS] testTip() (gas: 265667)
+Test result: ok. 10 passed; 0 failed; finished in 3.36ms
 ```

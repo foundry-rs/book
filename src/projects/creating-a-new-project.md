@@ -36,18 +36,21 @@ Let's build the project:
 
 ```sh
 $ forge build
-compiling...
-success.
+[⠊] Compiling...
+[⠢] Compiling 3 files with 0.8.10
+[⠆] Solc finished in 70.23ms
 ```
 
 And run the tests:
 
 ```sh
 $ forge test
-compiling...
-no files changed, compilation skipped.
-Running 1 test for ContractTest.json:ContractTest
+[⠊] Compiling...
+No files changed, compilation skipped
+
+Running 1 test for src/test/Contract.t.sol:ContractTest
 [PASS] testExample() (gas: 120)
+Test result: ok. 1 passed; 0 failed; finished in 725.84µs
 ```
 
 You'll notice that two new directories have popped up: `out` and `cache`.

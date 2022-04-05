@@ -8,21 +8,29 @@ Here's an example of running `forge test` in a freshly created project, that onl
 
 ```sh
 $ forge test
-compiling...
-success.
-Running 1 test for ContractTest.json:ContractTest
+[⠊] Compiling...
+[⠒] Compiling 3 files with 0.8.10
+[⠢] Solc finished in 57.34ms
+Compiler run successful
+
+Running 1 test for src/test/Contract.t.sol:ContractTest
 [PASS] testExample() (gas: 120)
+Test result: ok. 1 passed; 0 failed; finished in 147.61µs
 ```
 
 You can also run specific tests by passing a filter:
 
 ```sh
 $ forge test --match-contract ComplicatedContractTest --match-test testDeposit
-compiling...
-success.
-Running 2 tests for ComplicatedContractTest.json:ComplicatedContractTest
+[⠊] Compiling...
+[⠒] Compiling 5 files with 0.8.10
+[⠢] Solc finished in 63.12ms
+Compiler run successful
+
+Running 2 tests for src/test/ComplicatedContract.t.sol:ComplicatedContractTest
 [PASS] testDepositERC20() (gas: 27502)
 [PASS] testDepositETH() (gas: 12254)
+Test result: ok. 2 passed; 0 failed; finished in 241.61µs
 ```
 
 This will run the tests in the `ComplicatedContractTest` test contract with `testDeposit` in the name.
@@ -32,16 +40,22 @@ You can run tests in filenames that match a regex with `--match-path`. Note: an 
 
 ```sh
 $ forge test --match-path /path/to/hello_foundry/src/test/*
-compiling...
-no files changed, compilation skipped.
-Running 1 test for ContractA.json:ContractA
+[⠊] Compiling...
+[⠒] Compiling 5 files with 0.8.10
+[⠢] Solc finished in 60.78ms
+Compiler run successful
+
+Running 1 test for src/test/ContractA.t.sol:ContractA
 [PASS] testA() (gas: 120)
+Test result: ok. 1 passed; 0 failed; finished in 49.29µs
 
-Running 1 test for ContractB.json:ContractB
+Running 1 test for src/test/ContractB.t.sol:ContractB
 [PASS] testB() (gas: 120)
+Test result: ok. 1 passed; 0 failed; finished in 49.33µs
 
-Running 1 test for ContractC.json:ContractC
+Running 1 test for src/test/ContractC.t.sol:ContractC
 [PASS] testC() (gas: 142)
+Test result: ok. 1 passed; 0 failed; finished in 52.61µs
 ```
 
 The inverse of the `--match-path` flag is `--no-match-path`.

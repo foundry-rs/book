@@ -81,9 +81,9 @@ Alternatively, you can do this for all dependencies at once by just running `for
 You can remove dependencies using `forge remove <deps>...`, where `<deps>` is either the full path to the dependency or just the name. For example, to remove `ds-test` both of these commands are equivalent:
 
 ```ignore
-forge remove ds-test
+$ forge remove ds-test
 # ... is equivalent to ...
-forge remove lib/ds-test
+$ forge remove lib/ds-test
 ```
 
 ### Hardhat compatibility
