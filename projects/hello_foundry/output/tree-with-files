@@ -1,0 +1,22 @@
+// ANCHOR: all
+// ANCHOR: command
+$ tree . -L 3 -I output
+// ANCHOR_END: command
+// ANCHOR: output
+.
+├── foundry.toml
+├── lib
+│   └── ds-test
+│       ├── default.nix
+│       ├── demo
+│       ├── LICENSE
+│       ├── Makefile
+│       └── src
+└── src
+    ├── Contract.sol
+    └── test
+        └── Contract.t.sol
+
+6 directories, 6 files
+// ANCHOR_END: output
+// ANCHOR_END: all

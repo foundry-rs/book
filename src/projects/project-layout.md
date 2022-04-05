@@ -3,15 +3,7 @@
 Forge is flexible on how you structure your project. By default, the structure is:
 
 ```ignore
-.
-├── remappings.txt
-├── foundry.toml
-├── src/
-│   ├── Contract.sol
-│   └── test/
-│       └── Contract.t.sol
-└── lib/
-    └── ds-test/
+{{#include ../../projects/hello_foundry/output/tree-with-files:output}}
 ```
 
 - You can configure Foundry's behavior using `foundry.toml`.

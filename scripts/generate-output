@@ -1,0 +1,30 @@
+#!/bin/bash
+set -e
+# Runs commands on Forge projects used in the book, and records
+# the commands and outputs into files that are easily
+# includeable in the book.
+
+run_command() {
+  echo "// ANCHOR: all"
+  echo "// ANCHOR: command"
+  echo "$ $@"
+  echo "// ANCHOR_END: command"
+  echo "// ANCHOR: output"
+  $@ | sed "s,\x1B\[[0-9;]*[a-zA-Z],,g"
+  echo "// ANCHOR_END: output"
+  echo "// ANCHOR_END: all"
+}
+
+in_project() {
+  cd projects/$1
+  mkdir -p output
+  forge clean
+}
+
+(
+  in_project hello_foundry
+  (run_command tree . -d -L 1) > output/tree
+  (run_command tree . -L 3 -I output) > output/tree-with-files
+  (run_command forge build) > output/forge-build
+  (run_command forge test) > output/forge-test
+)

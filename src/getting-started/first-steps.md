@@ -12,38 +12,19 @@ Let's check out what `forge` generated for us:
 
 ```sh
 $ cd hello_foundry
-$ tree .
-.
-├── lib
-│   └── ds-test
-└── src
-    ├── Contract.sol
-    └── test
-        └── Contract.t.sol
-
-6 directories, 7 files
+{{#include ../../projects/hello_foundry/output/tree:all}}
 ```
 
 We can build the project:
 
 ```sh
-$ forge build
-[⠊] Compiling...
-[⠢] Compiling 3 files with 0.8.10
-[⠆] Solc finished in 70.23ms
-Compiler run successful
+{{#include ../../projects/hello_foundry/output/forge-build:all}}
 ```
 
 And run the tests:
 
 ```sh
-$ forge test
-[⠊] Compiling...
-No files changed, compilation skipped
-
-Running 1 test for src/test/Contract.t.sol:ContractTest
-[PASS] testExample() (gas: 120)
-Test result: ok. 1 passed; 0 failed; finished in 725.84µs
+{{#include ../../projects/hello_foundry/output/forge-test:all}}
 ```
 <br>
 

@@ -18,16 +18,7 @@ For now, let's check what the default template looks like:
 
 ```sh
 $ cd hello_foundry
-$ tree .
-.
-├── lib
-│   └── ds-test
-└── src
-    ├── Contract.sol
-    └── test
-        └── Contract.t.sol
-
-6 directories, 7 files
+{{#include ../../projects/hello_foundry/output/tree:all}}
 ```
 
 The default template comes with one dependency installed: `ds-test`. This is the preferred assertion library used for Foundry projects. Additionally, the template also comes with an empty starter contract and a simple test.
@@ -35,22 +26,13 @@ The default template comes with one dependency installed: `ds-test`. This is the
 Let's build the project:
 
 ```sh
-$ forge build
-[⠊] Compiling...
-[⠢] Compiling 3 files with 0.8.10
-[⠆] Solc finished in 70.23ms
+{{#include ../../projects/hello_foundry/output/forge-build:all}}
 ```
 
 And run the tests:
 
 ```sh
-$ forge test
-[⠊] Compiling...
-No files changed, compilation skipped
-
-Running 1 test for src/test/Contract.t.sol:ContractTest
-[PASS] testExample() (gas: 120)
-Test result: ok. 1 passed; 0 failed; finished in 725.84µs
+{{#include ../../projects/hello_foundry/output/forge-test:all}}
 ```
 
 You'll notice that two new directories have popped up: `out` and `cache`.
