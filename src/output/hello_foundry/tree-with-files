@@ -7,13 +7,16 @@ $ tree . -L 3 -I output
 ├── foundry.toml
 ├── lib
 │   └── ds-test
+│       ├── default.nix
+│       ├── demo
 │       ├── LICENSE
+│       ├── Makefile
 │       └── src
 └── src
     ├── Contract.sol
     └── test
         └── Contract.t.sol
 
-5 directories, 4 files
+6 directories, 6 files
 // ANCHOR_END: output
 // ANCHOR_END: all

@@ -4,7 +4,6 @@ set -e
 # the commands and outputs into files that are easily
 # includeable in the book.
 
-# TODO: Write to a standard folder
 # TODO: Ensure git is installed
 # TODO: Ensure forge is installed
 # TODO: Ensure utils are installed (sed, mktemp)
@@ -65,6 +64,24 @@ echo Generating output...
   (run_command forge install) > $OUTPUT_DIR/forge-std/forge-install
   (run_command forge build) > $OUTPUT_DIR/forge-std/forge-build
   (run_command forge test) > $OUTPUT_DIR/forge-std/forge-test
+)
+
+(
+  in_temp deps
+  forge init deps
+  cd deps
+  (run_command forge install Rari-Capital/solmate) > $OUTPUT_DIR/deps/forge-install
+  forge install d-xo/weird-erc20
+  (run_command tree lib -L 1) > $OUTPUT_DIR/deps/tree
+  (run_command forge remappings) > $OUTPUT_DIR/deps/forge-remappings
+)
+
+(
+  in_project test_filters
+  (
+    run_command forge test --match-contract ComplicatedContractTest --match-test testDeposit
+  ) > $OUTPUT_DIR/test_filters/forge-test-match-contract-and-test
+  (run_command forge test --match-path src/test/ContractB.t.sol) > $OUTPUT_DIR/test_filters/forge-test-match-path
 )
 
 echo OK.
