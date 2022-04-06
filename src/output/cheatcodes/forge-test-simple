@@ -8,6 +8,6 @@ Compiler run successful
 
 Running 1 test for src/test/OwnerUpOnly.t.sol:OwnerUpOnlyTest
 [PASS] testIncrementAsOwner() (gas: 29332)
-Test result: ok. 1 passed; 0 failed; finished in 238.77µs
+Test result: ok. 1 passed; 0 failed; finished in 233.70µs
 // ANCHOR_END: output
 // ANCHOR_END: all

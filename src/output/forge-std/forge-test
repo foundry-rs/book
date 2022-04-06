@@ -5,20 +5,6 @@ $ forge test
 // ANCHOR: output
 No files changed, compilation skipped
 
-Running 11 tests for src/test/StdError.t.sol:StdErrorsTest
-[PASS] testExpectArithmetic() (gas: 8957)
-[PASS] testExpectAssertion() (gas: 8794)
-[PASS] testExpectDiv() (gas: 8893)
-[PASS] testExpectEncodeStg() (gas: 31050)
-[PASS] testExpectEnum() (gas: 8835)
-[PASS] testExpectIntern() (gas: 8808)
-[PASS] testExpectLowLvl() (gas: 10582)
-[PASS] testExpectMem() (gas: 8851)
-[PASS] testExpectMod() (gas: 8903)
-[PASS] testExpectOOB() (gas: 8848)
-[PASS] testExpectPop() (gas: 10851)
-Test result: ok. 11 passed; 0 failed; finished in 3.59ms
-
 Running 27 tests for src/test/StdStorage.t.sol:StdStorageTest
 [PASS] testFailStorageCheckedWriteMapPacked() (gas: 122431)
 [PASS] testFailStorageConst() (gas: 74053)
@@ -47,7 +33,21 @@ Running 27 tests for src/test/StdStorage.t.sol:StdStorageTest
 [PASS] testStorageObvious() (gas: 79439)
 [PASS] testStorageStructA() (gas: 108537)
 [PASS] testStorageStructB() (gas: 136197)
-Test result: ok. 27 passed; 0 failed; finished in 3.58ms
+Test result: ok. 27 passed; 0 failed; finished in 3.23ms
+
+Running 11 tests for src/test/StdError.t.sol:StdErrorsTest
+[PASS] testExpectArithmetic() (gas: 8957)
+[PASS] testExpectAssertion() (gas: 8794)
+[PASS] testExpectDiv() (gas: 8893)
+[PASS] testExpectEncodeStg() (gas: 31050)
+[PASS] testExpectEnum() (gas: 8835)
+[PASS] testExpectIntern() (gas: 8808)
+[PASS] testExpectLowLvl() (gas: 10582)
+[PASS] testExpectMem() (gas: 8851)
+[PASS] testExpectMod() (gas: 8903)
+[PASS] testExpectOOB() (gas: 8848)
+[PASS] testExpectPop() (gas: 10851)
+Test result: ok. 11 passed; 0 failed; finished in 3.94ms
 
 Running 10 tests for src/test/StdCheats.t.sol:StdCheatsTest
 [PASS] testDeployCode() (gas: 2530021)
@@ -60,6 +60,6 @@ Running 10 tests for src/test/StdCheats.t.sol:StdCheatsTest
 [PASS] testStartHoax() (gas: 24268)
 [PASS] testStartHoaxOrigin() (gas: 24318)
 [PASS] testTip() (gas: 259100)
-Test result: ok. 10 passed; 0 failed; finished in 4.68ms
+Test result: ok. 10 passed; 0 failed; finished in 4.69ms
 // ANCHOR_END: output
 // ANCHOR_END: all

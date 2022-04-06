@@ -4,22 +4,6 @@ $ forge build
 // ANCHOR_END: command
 // ANCHOR: output
 Compiling 7 files with 0.8.10
-Compiler run successful (with warnings)
-Warning: Visibility for constructor is ignored. If you want the contract to be non-deployable, making it "abstract" is sufficient.
-   --> /tmp/tmp.MZmut0jNhv/forge-std/src/test/StdStorage.t.sol:252:5:
-    |
-252 |     constructor() public {
-    |     ^ (Relevant source part starts here and spans across multiple lines).
-
-
-
-Warning: Unused local variable.
-   --> /tmp/tmp.MZmut0jNhv/forge-std/src/test/StdError.t.sol:106:9:
-    |
-106 |         bytes memory b = someBytes;
-    |         ^^^^^^^^^^^^^^
-
-
-
+Compiler run successful
 // ANCHOR_END: output
 // ANCHOR_END: all
