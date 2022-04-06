@@ -22,38 +22,77 @@ Configuration files are written in the [TOML format](https://toml.io), with simp
 
 ```toml
 [default]
-src = 'src'                                                   # the source directory
-test = 'test'                                                 # the test directory
-out = 'out'                                                   # the output directory (for artifacts)
-libs = ['lib']                                                # a list of library directories
-remappings = []                                               # a list of remappings
-libraries = []                                                # a list of deployed libraries to link against
-cache = true                                                  # whether to cache builds or not
-force = false                                                 # whether to ignore the cache (clean build)
-evm_version = 'london'                                        # the evm version (by hardfork name)
-#solc_version = '0.8.10'                                      # override for the solc version (setting this ignores `auto_detect_solc`)
-auto_detect_solc = true                                       # enable auto-detection of the appropriate solc version to use
-offline = false                                               # disable downloading of missing solc version(s)
-optimizer = true                                              # enable or disable the solc optimizer
-optimizer_runs = 200                                          # the number of optimizer runs
-verbosity = 0                                                 # the verbosity of tests
-ignored_error_codes = []                                      # a list of ignored solc error codes
-fuzz_runs = 256                                               # the number of fuzz runs for tests
-fuzz_max_local_rejects = 65536                                # max number of individual inputs that may be rejected before the test aborts
-fuzz_max_global_rejects = 1024                                # max number of combined inputs that may be rejected before the test aborts
-ffi = false                                                   # whether to enable ffi or not
-sender = '0x00a329c0648769a73afac7f9381e08fb43dbea72'         # the address of `msg.sender` in tests
-tx_origin = '0x00a329c0648769a73afac7f9381e08fb43dbea72'      # the address of `tx.origin` in tests
-initial_balance = '0xffffffffffffffffffffffff'                # the initial balance of the test contract
-block_number = 0                                              # the block number we are at in tests
-chain_id = 99                                                 # the chain id we are on in tests
-gas_limit = 9223372036854775807                               # the gas limit in tests
-gas_price = 0                                                 # the gas price (in wei) in tests
-block_base_fee_per_gas = 0                                    # the base fee (in wei) in tests
-block_coinbase = '0x0000000000000000000000000000000000000000' # the address of `block.coinbase` in tests
-block_timestamp = 0                                           # the value of `block.timestamp` in tests
-block_difficulty = 0                                          # the value of `block.difficulty` in tests
-gas_reports = ["*"]                                           # a list of contracts to output gas reports for
+# The source directory
+src = 'src'
+# The test directory
+test = 'test'
+# The artifact directory
+out = 'out'
+# A list of paths to look for libraries in
+libs = ['lib']
+# A list of remappings
+remappings = []
+# A list of deployed libraries to link against
+libraries = []
+# Whether to cache builds or not
+cache = true
+# Whether to ignore the cache
+force = false
+# The EVM version by hardfork name
+evm_version = 'london'
+# Override the Solidity version (this overrides `auto_detect_solc`)
+#solc_version = '0.8.10'
+# Whether or not Forge should auto-detect the solc version to use
+auto_detect_solc = true
+# Disables downloading missing solc versions
+offline = false
+# Enables or disables the optimizer
+optimizer = true
+# The number of optimizer runs
+optimizer_runs = 200
+# The verbosity of tests
+verbosity = 0
+# A list of ignored solc error codes
+ignored_error_codes = []
+# The number of fuzz runs for fuzz tests
+fuzz_runs = 256
+# The max number of individual inputs that may be rejected before a fuzz test aborts
+fuzz_max_local_rejects = 65536
+# The max number of combined inputs that may be rejected before a fuzz test aborts
+fuzz_max_global_rejects = 1024
+# Whether or not to enable `cheats.ffi`
+ffi = false
+# The address of `msg.sender` in tests
+sender = '0x00a329c0648769a73afac7f9381e08fb43dbea72'
+# The address of `tx.origin` in tests
+tx_origin = '0x00a329c0648769a73afac7f9381e08fb43dbea72'
+# The initial balance of the test contract
+initial_balance = '0xffffffffffffffffffffffff'
+# The block number we are at in tests
+block_number = 0
+# The chain ID we are on in tests
+chain_id = 99
+# The gas limit in tests
+gas_limit = 9223372036854775807
+# The gas price in tests (in wei)
+gas_price = 0
+# The block basefee in tests (in wei)
+block_base_fee_per_gas = 0
+# The address of `block.coinbase` in tests
+block_coinbase = '0x0000000000000000000000000000000000000000'
+# The block timestamp in tests
+block_timestamp = 0
+# The block difficulty in tests
+block_difficulty = 0
+# A list of contracts to output gas reports for
+gas_reports = ["*"]
+# Enables or disables RPC caching when forking
+no_storage_caching = false
+# Caches storage retrieved locally for certain chains and endpoints
+# Can also be restricted to multiple chains
+# By default only remote endpoints will be cached
+# To disable storage caching, set `no_storage_caching = true`
+rpc_storage_caching = { chains = "all", endpoints = "remote" }
 ```
 
 ### Configuration keys
@@ -361,3 +400,42 @@ The value of `block.difficulty` in tests.
 - Environment: `FOUNDRY_GAS_REPORTS` or `DAPP_GAS_REPORTS`
 
 The contracts to print gas reports for.
+
+##### `no_storage_caching`
+
+- Type: boolean
+- Default: false
+- Environment: `FOUNDRY_NO_STORAGE_CACHING` or `DAPP_NO_STORAGE_CACHING`
+
+If set to `true`, then block data from RPC endpoints in tests will not be cached. Otherwise, the data is cached to `$HOME/.foundry/cache/<chain id>/<block number>`.
+
+##### `[rpc_storage_caching]`
+
+The `[rpc_storage_caching]` block determines what RPC endpoints are cached.
+
+###### `rpc_storage_caching.chains`
+
+- Type: string or array of strings (chain names)
+- Default: all
+- Environment: N/A
+
+Determines what chains are cached. By default, all chains are cached.
+
+Valid values are:
+
+- "all"
+- A list of chain names, e.g. `["optimism", "mainnet"]`
+
+###### `rpc_storage_caching.endpoints`
+
+- Type: string or array of regex patterns (to match URLs)
+- Default: remote
+- Environment: N/A
+
+Determines what RPC endpoints are cached. By default, only remote endpoints are cached.
+
+Valid values are:
+
+- "all"
+- "remote"
+- A list of regex patterns, e.g. `["localhost"]`
