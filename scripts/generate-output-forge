@@ -53,10 +53,20 @@ echo "Generating output (forge)..."
   ) > $OUTPUT_DIR/cheatcodes/forge-test-cheatcodes-expectrevert
 )
 (
+  in_project fuzz_testing
+  step src/test/Safe.t.sol 1
+  (run_command forge test) > $OUTPUT_DIR/fuzz_testing/forge-test-no-fuzz
+  step src/test/Safe.t.sol 2
+  (run_command forge test --allow-failure) > $OUTPUT_DIR/fuzz_testing/forge-test-fail-fuzz
+  step src/test/Safe.t.sol 3
+  (run_command forge test) > $OUTPUT_DIR/fuzz_testing/forge-test-success-fuzz
+)
+(
   in_temp nft_tutorial
   git clone https://github.com/FredCoen/nft-tutorial
   cd nft-tutorial
   forge install
+  forge build
   (run_command forge test) > $OUTPUT_DIR/nft_tutorial/forge-test
 )
 echo OK.
