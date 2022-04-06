@@ -193,6 +193,21 @@ When we call `cheats.expectEmit(true, true, false, true);`, we want to check the
 
 The 4th argument in `expectEmit` is set to `true` means that we want to check that "non-indexed topics", also known as data. For example, we want the data from the expected event 1, which is `amount` to equal to the data in returned event 1. In other words, we are asserting that `amount` emitted by `emitter.t()` is equal to `1337` from expected event 1. If the fourth argument in `expectEmit` were set to false, it means we do not want to check the `amount`. In other words, `testExpectEmitDoNotCheckData` is a valid test case since the `amount` from expected event 2 is different from the returned event 2 from `emitter.t()`.
 
+Finally, note that you should mind the order of calls when testing events. `expectEmit` works by eavesdropping on the
+next VM call. If your event depends on some data that you need to obtain from your contract, you should perform the
+reads before calling `expectEmit`. Here's an example:
+
+```solidity
+function testExpectEmit() public {
+    uint256 myVar = emitter.myVar(); // run before `expectEmit`
+    cheats.expectEmit(true, true, false, true);
+    emit Transfer(address(this), address(1337), myVar);
+    emitter.t();
+}
+```
+
+If you instead called `myVar` after `expectEmit`, the test would fail with a `Log != expected log` error, because `expectEmit` would expect the constant call to `myVar` to emit the event.
+
 <br>
 
 > 📚 **Reference**
