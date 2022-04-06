@@ -5,6 +5,7 @@
 ### How to use `cast`
 
 To use `cast`, use the `cast` keyword followed by a subcommand:
+
 ```bash
 $ cast <subcommand>
 ```
@@ -12,16 +13,15 @@ $ cast <subcommand>
 #### Examples
 
 Let's use `cast` to retrieve the total supply of the DAI token:
+
 ```bash
-$ cast call 0x6b175474e89094c44da98b954eedeac495271d0f "totalSupply()(uint256)" --rpc-url <your_rpc_url>
-9086622410684231497979028744
+{{#include ../output/cast/cast-call:all}}
 ```
-`cast` also provides many convenience functionalities, such as decoding calldata:
+
+`cast` also provides many convenient subcommands, such as for decoding calldata:
+
 ```bash
-$ cast 4byte-decode 0x1F1F897F676d00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003e7
-1) "fulfillRandomness(bytes32,uint256)"
-0x676d000000000000000000000000000000000000000000000000000000000000
-999
+{{#include ../output/cast/cast-4byte-decode:all}}
 ```
 <br>
 

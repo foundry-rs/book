@@ -22,19 +22,19 @@
   - [Cheatcodes](./forge/cheatcodes.md)
   - [Understanding Traces](./forge/traces.md)
   - [Forking Mode](./forge/forking-mode.md)
-  - [Coverage Reports]()
+<!--  - [Coverage Reports]() !-->
 - [Advanced Testing](./forge/advanced-testing.md)
   - [Fuzz Testing](./forge/fuzz-testing.md)
-  - [Invariant Testing]()
-  - [Symbolic Testing]()
-  - [Table Testing]()
-  - [Mutation Testing]()
-- [Linting and Formatting]()
-- [Generating Documentation]()
+<!--  - [Invariant Testing]() !-->
+<!--  - [Symbolic Testing]() !-->
+<!--  - [Table Testing]() !-->
+<!--  - [Mutation Testing]() !-->
+<!-- - [Linting and Formatting]() !-->
+<!-- - [Generating Documentation]() !-->
 - [Deploying and Verifying](./forge/deploying.md)
 - [Gas Tracking]()
   - [Gas Reports](./forge/gas-reports.md)
-  - [Gas Snapshots]()
+<!--  - [Gas Snapshots]() !-->
 - [Debugger](./forge/debugger.md)
 
 # Cast Overview
@@ -52,11 +52,11 @@
 
 - [Creating an NFT with Solmate](./tutorials/solmate-nft.md)
 - [Docker and Foundry](./tutorials/foundry-docker.md)
-- [Incremental Adoption]()
+<!-- - [Incremental Adoption]() !-->
 
 # References
 
-- [`forge` Reference]()
+<!-- - [`forge` Reference]() !-->
 - [`cast` Reference](./reference/cast.md)
 - [`foundry.toml` Reference](./reference/config.md)
 - [`ds-test` Reference](./reference/ds-test.md)

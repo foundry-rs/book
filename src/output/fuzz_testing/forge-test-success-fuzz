@@ -1,0 +1,13 @@
+// ANCHOR: all
+// ANCHOR: command
+$ forge test
+// ANCHOR_END: command
+// ANCHOR: output
+Compiling 1 files with 0.8.10
+Compiler run successful
+
+Running 1 test for src/test/Safe.t.sol:SafeTest
+[PASS] testWithdraw(uint96) (runs: 256, μ: 14642, ~: 19667)
+Test result: ok. 1 passed; 0 failed; finished in 10.16ms
+// ANCHOR_END: output
+// ANCHOR_END: all

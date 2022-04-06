@@ -7,41 +7,13 @@ Cheatcodes allow you to change the block number, your identity, and more. They a
 Let's write a test for a smart contract that is only callable by its owner.
 
 ```solidity
-// SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.4;
+{{#include ../../projects/cheatcodes/src/test/OwnerUpOnly.t.sol:prelude}}
 
-error Unauthorized();
+{{#include ../../projects/cheatcodes/src/test/OwnerUpOnly.t.sol:contract}}
 
-contract OwnerUpOnly {
-    address public immutable owner;
-    uint256 public count;
+{{#include ../../projects/cheatcodes/src/test/OwnerUpOnly.t.sol:contract_prelude}}
 
-    constructor() {
-        owner = msg.sender;
-    }
-
-    function increment() external {
-        if (msg.sender != owner) {
-            revert Unauthorized();
-        }
-        count++;
-    }
-}
-
-import "ds-test/test.sol";
-
-contract OwnerUpOnlyTest is DSTest {
-    OwnerUpOnly upOnly;
-
-    function setUp() public {
-        upOnly = new OwnerUpOnly();
-    }
-
-    function testIncrementAsOwner() public {
-        assertEq(upOnly.count(), 0);
-        upOnly.increment();
-        assertEq(upOnly.count(), 1);
-    }
+{{#include ../../projects/cheatcodes/src/test/OwnerUpOnly.t.sol:simple_test}}
 }
 ```
 
@@ -49,30 +21,21 @@ If we run `forge test` now, we will see that the test passes, since `OwnerUpOnly
 
 ```ignore
 $ forge test
-compiling...
-success.
-Running 1 test for OwnerUpOnlyTest.json:OwnerUpOnlyTest
-[PASS] testIncrementAsOwner() (gas: 24810)
+{{#include ../output/cheatcodes/forge-test-simple:output}}
 ```
 
 Let's make sure that someone who is definitely not the owner can't increment the count:
 
 ```solidity
 interface CheatCodes {
-    function prank(address) external;
+{{#include ../../projects/cheatcodes/src/test/OwnerUpOnly.t.sol:cheat_prank}}
 }
 
-contract OwnerUpOnlyTest is DSTest {
-    CheatCodes cheats = CheatCodes(HEVM_ADDRESS);
-    OwnerUpOnly upOnly;
+{{#include ../../projects/cheatcodes/src/test/OwnerUpOnly.t.sol:contract_prelude}}
 
-    // setUp
-    // testIncrementAsOwner
+    // ...
 
-    function testFailIncrementAsNotOwner() public {
-        cheats.prank(address(0));
-        upOnly.increment();
-    }
+{{#include ../../projects/cheatcodes/src/test/OwnerUpOnly.t.sol:test_fail}}
 }
 ```
 
@@ -80,11 +43,7 @@ If we run `forge test` now, we will see that all the test pass.
 
 ```ignore
 $ forge test
-compiling...
-success.
-Running 2 tests for OwnerUpOnlyTest.json:OwnerUpOnlyTest
-[PASS] testFailIncrementAsNotOwner() (gas: 4030)
-[PASS] testIncrementAsOwner() (gas: 24639)
+{{#include ../output/cheatcodes/forge-test-cheatcodes:output}}
 ```
 
 The test passed because the `prank` cheatcode changed our identity to the zero address for the next call (`upOnly.increment()`). The test case passed since we used the `testFail` prefix, however, using `testFail` is considered an anti-pattern since it does not tell us anything about *why* `upOnly.increment()` reverted.
@@ -92,41 +51,23 @@ The test passed because the `prank` cheatcode changed our identity to the zero a
 If we run the tests again with traces turned on, we can see that we reverted with the correct error message.
 
 ```ignore
-$ forge test -vvvv
-compiling...
-no files changed, compilation skipped.
-Running 2 tests for OwnerUpOnlyTest.json:OwnerUpOnlyTest
-[PASS] testFailIncrementAsNotOwner() (gas: 10406)
-Traces:
-  [10406] OwnerUpOnlyTest::testFailIncrementAsNotOwner()
-    ├─ [0] VM::prank(0x0000000000000000000000000000000000000000)
-    │   └─ ← ()
-    ├─ [235] 0xce71…c246::d09de08a()
-    │   └─ ← 0x82b42900
-    └─ ← 0x82b42900
+$ forge test -vvvv --match-test testFailIncrementAsNotOwner
+{{#include ../output/cheatcodes/forge-test-cheatcodes-tracing:output}}
 ```
 
 To be sure in the future, let's make sure that we reverted because we are not the owner using the `expectRevert` cheatcode:
 
 ```solidity
 interface CheatCodes {
-    function prank(address) external;
-    function expectRevert(bytes calldata) external;
+{{#include ../../projects/cheatcodes/src/test/OwnerUpOnly.t.sol:cheat_prank}}
+{{#include ../../projects/cheatcodes/src/test/OwnerUpOnly.t.sol:cheat_expectrevert}}
 }
 
-contract OwnerUpOnlyTest is DSTest {
-  CheatCodes cheats = CheatCodes(HEVM_ADDRESS);
-  OwnerUpOnly upOnly;
+{{#include ../../projects/cheatcodes/src/test/OwnerUpOnly.t.sol:contract_prelude}}
 
-  // setUp
-  // testIncrementAsOwner
+    // ...
 
-  // Notice that we replaced `testFail` with `test`
-  function testIncrementAsNotOwner() public {
-    cheats.expectRevert(Unauthorized.selector);
-    cheats.prank(address(0));
-    upOnly.increment();
-  }
+{{#include ../../projects/cheatcodes/src/test/OwnerUpOnly.t.sol:test_expectrevert}}
 }
 ```
 
@@ -134,11 +75,7 @@ If we run `forge test` one last time, we see that the test still passes, but thi
 
 ```ignore
 $ forge test
-compiling...
-success.
-Running 2 tests for OwnerUpOnlyTest.json:OwnerUpOnlyTest
-[PASS] testIncrementAsNotOwner() (gas: 11200)
-[PASS] testIncrementAsOwner() (gas: 24661)
+{{#include ../output/cheatcodes/forge-test-cheatcodes-expectrevert:output}}
 ```
 
 Another cheatcode that is perhaps not so intuitive is the `expectEmit` function. Before looking at `expectEmit`, we need to understand what an event is.
@@ -146,50 +83,20 @@ Another cheatcode that is perhaps not so intuitive is the `expectEmit` function.
 Events are inheritable members of contracts. When you emit an event, the arguments are stored on the blockchain. The `indexed` attribute can be added to a maximum of three parameters of an event to form a data structure known as a "topic." Topics allow users to search for events on the blockchain.
 
 ```solidity
-interface CheatCodes {
-    function expectEmit(
-        bool,
-        bool,
-        bool,
-        bool
-    ) external;
-}
-
-contract EmitContractTest is DSTest {
-    event Transfer(address indexed from, address indexed to, uint256 amount);
-    CheatCodes constant cheats = CheatCodes(HEVM_ADDRESS);
-
-    function testExpectEmit() public {
-        ExpectEmit emitter = new ExpectEmit();
-        // check topic 1, topic 2, and data are the same as the following emitted event
-        // checking topic 3 here doesn't matter if it's set to true or false, because `Transfer`
-        // only has 2 indexed topics, `from` and `to`
-        cheats.expectEmit(true, true, false, true);
-        emit Transfer(address(this), address(1337), 1337); // expected event 1
-        emitter.t(); // returned event 1
-    }
-
-    function testExpectEmitDoNotCheckData() public {
-        ExpectEmit emitter = new ExpectEmit();
-        // check topic 1, topic 2, do not check data
-        cheats.expectEmit(true, true, false, false);
-        emit Transfer(address(this), address(1337), 1338); // expected event 2
-        emitter.t(); // returned event 2
-    }
-}
-
-contract ExpectEmit {
-    event Transfer(address indexed from, address indexed to, uint256 amount);
-
-    function t() public {
-        emit Transfer(msg.sender, address(1337), 1337);
-    }
-}
+{{#include ../../projects/cheatcodes/src/test/EmitContract.t.sol:all}}
 ```
 
-When we call `cheats.expectEmit(true, true, false, true);`, we want to check the 1st and 2nd `indexed` topic for the next event. The expected `Transfer` event (annotated as expected event 1) in `testExpectEmit()` means we are expecting `from = address(this)` and `to = address(1337)`. This is compared against the event emitted from `emitter.t()` (annotated as returned event 1). In other words, we are checking that the first topic from `emitter.t()` is equal to `address(this)`. The 3rd argument in `expectEmit` is set to `false` because there is no need to check for the 3rd `indexed` topic in `Transfer` event. It does not matter even if we set to `true`.
+When we call `cheats.expectEmit(true, true, false, true);`, we want to check the 1st and 2nd `indexed` topic for the next event.
 
-The 4th argument in `expectEmit` is set to `true` means that we want to check that "non-indexed topics", also known as data. For example, we want the data from the expected event 1, which is `amount` to equal to the data in returned event 1. In other words, we are asserting that `amount` emitted by `emitter.t()` is equal to `1337` from expected event 1. If the fourth argument in `expectEmit` were set to false, it means we do not want to check the `amount`. In other words, `testExpectEmitDoNotCheckData` is a valid test case since the `amount` from expected event 2 is different from the returned event 2 from `emitter.t()`.
+The expected `Transfer` event in `testExpectEmit()` means we are expecting that `from` is  `address(this)`, and `to` is `address(1337)`. This is compared against the event emitted from `emitter.t()`.
+
+In other words, we are checking that the first topic from `emitter.t()` is equal to `address(this)`. The 3rd argument in `expectEmit` is set to `false` because there is no need to check the third topic in the `Transfer` event, since there are only two. It does not matter even if we set to `true`.
+
+The 4th argument in `expectEmit` is set to `true`, which means that we want to check "non-indexed topics", also known as data.
+
+For example, we want the data from the expected event in `testExpectEmit` - which is `amount` - to equal to the data in the actual emitted event. In other words, we are asserting that `amount` emitted by `emitter.t()` is equal to `1337`. If the fourth argument in `expectEmit` was set to `false`, we would not check `amount`.
+
+In other words, `testExpectEmitDoNotCheckData` is a valid test case, even though the amounts differ, since we do not check the data.
 
 <br>
 

@@ -1,0 +1,72 @@
+#!/bin/bash
+set -e
+source $(dirname $0)/common
+
+need_cmd git
+need_cmd forge
+
+echo "Generating output (forge)..."
+(
+  in_temp hello_foundry
+  (run_command forge init hello_foundry) > $OUTPUT_DIR/hello_foundry/forge-init
+  cd hello_foundry
+  (run_command tree . -d -L 1) > $OUTPUT_DIR/hello_foundry/tree
+  (run_command tree . -L 3 -I output) > $OUTPUT_DIR/hello_foundry/tree-with-files
+  (run_command forge build) > $OUTPUT_DIR/hello_foundry/forge-build
+  (run_command forge test) > $OUTPUT_DIR/hello_foundry/forge-test
+)
+(
+  in_temp forge-std
+  git clone https://github.com/brockelmore/forge-std
+  cd forge-std
+  (run_command forge install) > $OUTPUT_DIR/forge-std/forge-install
+  (run_command forge build) > $OUTPUT_DIR/forge-std/forge-build
+  (run_command forge test) > $OUTPUT_DIR/forge-std/forge-test
+)
+(
+  in_temp deps
+  forge init deps
+  cd deps
+  (run_command forge install Rari-Capital/solmate) > $OUTPUT_DIR/deps/forge-install
+  forge install d-xo/weird-erc20
+  (run_command tree lib -L 1) > $OUTPUT_DIR/deps/tree
+  (run_command forge remappings) > $OUTPUT_DIR/deps/forge-remappings
+)
+(
+  in_project test_filters
+  (
+    run_command forge test --match-contract ComplicatedContractTest --match-test testDeposit
+  ) > $OUTPUT_DIR/test_filters/forge-test-match-contract-and-test
+  (run_command forge test --match-path src/test/ContractB.t.sol) > $OUTPUT_DIR/test_filters/forge-test-match-path
+)
+(
+  in_project cheatcodes
+  (run_command forge test --match-test testIncrementAsOwner) > $OUTPUT_DIR/cheatcodes/forge-test-simple
+  (
+    run_command forge test --match-test "testIncrementAsOwner|testFailIncrementAsNotOwner" --match-path src/test/OwnerUpOnly.t.sol
+  ) > $OUTPUT_DIR/cheatcodes/forge-test-cheatcodes
+  (
+    run_command forge test -vvvv --match-test testFailIncrementAsNotOwner --match-path src/test/OwnerUpOnly.t.sol
+  ) > $OUTPUT_DIR/cheatcodes/forge-test-cheatcodes-tracing
+  (
+    run_command forge test --match-test "testIncrementAsOwner|testIncrementAsNotOwner" --match-path src/test/OwnerUpOnly.t.sol
+  ) > $OUTPUT_DIR/cheatcodes/forge-test-cheatcodes-expectrevert
+)
+(
+  in_project fuzz_testing
+  step src/test/Safe.t.sol 1
+  (run_command forge test) > $OUTPUT_DIR/fuzz_testing/forge-test-no-fuzz
+  step src/test/Safe.t.sol 2
+  (run_command forge test --allow-failure) > $OUTPUT_DIR/fuzz_testing/forge-test-fail-fuzz
+  step src/test/Safe.t.sol 3
+  (run_command forge test) > $OUTPUT_DIR/fuzz_testing/forge-test-success-fuzz
+)
+(
+  in_temp nft_tutorial
+  git clone https://github.com/FredCoen/nft-tutorial
+  cd nft-tutorial
+  forge install
+  forge build
+  (run_command forge test) > $OUTPUT_DIR/nft_tutorial/forge-test
+)
+echo OK.

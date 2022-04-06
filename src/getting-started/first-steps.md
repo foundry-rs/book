@@ -5,41 +5,26 @@ This section provides an overview of the `forge` command line tool. We demonstra
 To start a new project with Foundry, use `forge init`:
 
 ```sh
-$ forge init hello_foundry
+{{#include ../output/hello_foundry/forge-init:command}}
 ```
 
 Let's check out what `forge` generated for us:
 
 ```sh
 $ cd hello_foundry
-$ tree .
-.
-├── lib
-│   └── ds-test
-└── src
-    ├── Contract.sol
-    └── test
-        └── Contract.t.sol
-
-6 directories, 7 files
+{{#include ../output/hello_foundry/tree:all}}
 ```
 
 We can build the project:
 
 ```sh
-$ forge build
-compiling...
-success.
+{{#include ../output/hello_foundry/forge-build:all}}
 ```
 
 And run the tests:
 
 ```sh
-$ forge test
-compiling...
-no files changed, compilation skipped.
-Running 1 test for ContractTest.json:ContractTest
-[PASS] testExample() (gas: 254)
+{{#include ../output/hello_foundry/forge-test:all}}
 ```
 <br>
 

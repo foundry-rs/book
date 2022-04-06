@@ -7,41 +7,22 @@ Forge will look for the tests anywhere in your source directory. Any contract wi
 Here's an example of running `forge test` in a freshly created project, that only has the default test:
 
 ```sh
-$ forge test
-compiling...
-success.
-Running 1 test for ContractTest.json:ContractTest
-[PASS] testExample() (gas: 120)
+{{#include ../output/hello_foundry/forge-test:all}}
 ```
 
 You can also run specific tests by passing a filter:
 
 ```sh
-$ forge test --match-contract ComplicatedContractTest --match-test testDeposit
-compiling...
-success.
-Running 2 tests for ComplicatedContractTest.json:ComplicatedContractTest
-[PASS] testDepositERC20() (gas: 27502)
-[PASS] testDepositETH() (gas: 12254)
+{{#include ../output/test_filters/forge-test-match-contract-and-test:all}}
 ```
 
 This will run the tests in the `ComplicatedContractTest` test contract with `testDeposit` in the name.
 Inverse versions of these flags also exist (`--no-match-contract` and `--no-match-test`).
 
-You can run tests in filenames that match a regex with `--match-path`. Note: an absolute file path must be provided.
+You can run tests in filenames that match a regex with `--match-path`.
 
 ```sh
-$ forge test --match-path /path/to/hello_foundry/src/test/*
-compiling...
-no files changed, compilation skipped.
-Running 1 test for ContractA.json:ContractA
-[PASS] testA() (gas: 120)
-
-Running 1 test for ContractB.json:ContractB
-[PASS] testB() (gas: 120)
-
-Running 1 test for ContractC.json:ContractC
-[PASS] testC() (gas: 142)
+{{#include ../output/test_filters/forge-test-match-path:all}}
 ```
 
 The inverse of the `--match-path` flag is `--no-match-path`.

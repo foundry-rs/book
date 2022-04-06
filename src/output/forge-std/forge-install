@@ -1,0 +1,8 @@
+// ANCHOR: all
+// ANCHOR: command
+$ forge install
+// ANCHOR_END: command
+// ANCHOR: output
+Submodule path 'lib/ds-test': checked out '0a5da56b0d65960e6a994d2ec8245e6edd38c248'
+// ANCHOR_END: output
+// ANCHOR_END: all

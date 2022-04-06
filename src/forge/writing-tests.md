@@ -4,68 +4,35 @@ Tests are written in Solidity. If the test function reverts, the test fails, oth
 
 Let's go over the most common way of writing tests, using the [`ds-test`](https://github.com/dapphub/ds-test) library.
 
-`ds-test` provides basic logging and assertion functionality.
-
-To use it in your testing contract, import `ds-test/test.sol` and inherit from `DSTest`, like so:
+`ds-test` provides basic logging and assertion functionality. To use it in your testing contract, import `ds-test/test.sol` and inherit from `DSTest`, like so:
 
 ```solidity
-import "ds-test/test.sol";
-
-contract ContractTest is DSTest {
-    // ... tests ...
-}
+{{#include ../../projects/writing_tests/src/test/Basic.t.sol:import}}
 ```
 
 Let's examine a basic test using `ds-test`:
 
 ```solidity
-import "ds-test/test.sol";
-
-contract BasicTest is DSTest {
-    uint256 testNumber;
-
-    function setUp() public {
-        testNumber = 42;
-    }
-
-    function testNumberIs42() public {
-        assertEq(testNumber, 42);
-    }
-
-    function testFailUnderflow() public {
-        testNumber -= 43;
-    }
-}
+{{#include ../../projects/writing_tests/src/test/Basic.t.sol:all}}
 ```
 
 Forge uses the following keywords in tests:
 
 - `setUp`: An optional function invoked before each test case is run
     ```solidity
-    uint256 testNumber;
-
-    function setUp() public {
-        testNumber = 42;
-    }
+    {{#include ../../projects/writing_tests/src/test/Basic.t.sol:setUp}}
     ```
 - `test`: Functions prefixed with `test` are run as a test case
     ```solidity
-    function testNumberIs42() public {
-        assertEq(testNumber, 42);
-    }
+    {{#include ../../projects/writing_tests/src/test/Basic.t.sol:testNumberIs42}}
     ```
 - `testFail`: The inverse of the `test` prefix - if the function does not revert, the test fails
     ```solidity
-    function testFailSubtract43() public {
-        testNumber -= 43;
-    }
+    {{#include ../../projects/writing_tests/src/test/Basic.t.sol:testFailSubtract43}}
     ```
     A good practice is to use something like `testCannot` in combination with the [`expectRevert`](../reference/cheatcodes.md#expectrevert) cheatcode (cheatcodes are explained in greater detail in the following [section](./cheatcodes.md)). Now instead of using `testFail`, you know exactly what reverted:
     ```solidity
-    function testCannotSubtract43() public {
-        cheats.expectRevert(abi.encodeWithSignature("Panic(uint256)", 0x11));
-        testNumber -= 43;
-    }
+    {{#include ../../projects/writing_tests/src/test/Basic2.t.sol:testCannotSubtract43}}
     ```
 <br>
 
