@@ -84,4 +84,18 @@ echo Generating output...
   (run_command forge test --match-path src/test/ContractB.t.sol) > $OUTPUT_DIR/test_filters/forge-test-match-path
 )
 
+(
+  in_project cheatcodes
+  (run_command forge test --match-test testIncrementAsOwner) > $OUTPUT_DIR/cheatcodes/forge-test-simple
+  (
+    run_command forge test --match-test "testIncrementAsOwner|testFailIncrementAsNotOwner" --match-path src/test/OwnerUpOnly.t.sol
+  ) > $OUTPUT_DIR/cheatcodes/forge-test-cheatcodes
+  (
+    run_command forge test -vvvv --match-test testFailIncrementAsNotOwner --match-path src/test/OwnerUpOnly.t.sol
+  ) > $OUTPUT_DIR/cheatcodes/forge-test-cheatcodes-tracing
+  (
+    run_command forge test --match-test "testIncrementAsOwner|testIncrementAsNotOwner" --match-path src/test/OwnerUpOnly.t.sol
+  ) > $OUTPUT_DIR/cheatcodes/forge-test-cheatcodes-expectrevert
+)
+
 echo OK.
