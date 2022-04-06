@@ -60,4 +60,10 @@ function testWithdraw(uint96 amount) public {
 
 There are different ways to run property-based tests, notably parametric testing and fuzzing. Forge only supports fuzzing.
 
-When running a property-based test, the fuzzer will try to generate as many test cases as possible to uncover edge cases. You can configure the amount of scenarios the fuzzer will generate by setting [`FOUNDRY_FUZZ_RUNS`](../reference/config.md#fuzz_runs).
+### Interpreting results
+
+You might have noticed that fuzz tests are summarized a bit differently compared to unit tests:
+
+- "runs" refers to the amount of scenarios the fuzzer tested. By default, the fuzzer will generate 256 scenarios, however, this can be configured using the [`FOUNDRY_FUZZ_RUNS`](../reference/config.md#fuzz_runs) environment variable.
+- "μ" (Greek letter mu) is the mean gas used across all fuzz runs
+- "~" (tilde) is the median gas used across all fuzz runs
