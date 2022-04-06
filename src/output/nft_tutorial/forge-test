@@ -1,0 +1,116 @@
+// ANCHOR: all
+// ANCHOR: command
+$ forge test
+// ANCHOR_END: command
+// ANCHOR: output
+Compiling 21 files with 0.8.10
+Compiler run successful (with warnings)
+Warning: Source file does not specify required compiler version! Consider adding "pragma solidity ^0.8.10;"
+--> /tmp/tmp.EoRqGDONUm/nft-tutorial/src/test/interfaces/HEVM.sol
+
+
+
+Warning: Unused function parameter. Remove or comment out the variable name to silence this warning.
+  --> /tmp/tmp.EoRqGDONUm/nft-tutorial/src/test/OpenZeppelinNft.t.sol:93:9:
+   |
+93 |         address operator,
+   |         ^^^^^^^^^^^^^^^^
+
+
+
+Warning: Unused function parameter. Remove or comment out the variable name to silence this warning.
+  --> /tmp/tmp.EoRqGDONUm/nft-tutorial/src/test/OpenZeppelinNft.t.sol:94:9:
+   |
+94 |         address from,
+   |         ^^^^^^^^^^^^
+
+
+
+Warning: Unused function parameter. Remove or comment out the variable name to silence this warning.
+  --> /tmp/tmp.EoRqGDONUm/nft-tutorial/src/test/OpenZeppelinNft.t.sol:95:9:
+   |
+95 |         uint256 id,
+   |         ^^^^^^^^^^
+
+
+
+Warning: Unused function parameter. Remove or comment out the variable name to silence this warning.
+  --> /tmp/tmp.EoRqGDONUm/nft-tutorial/src/test/OpenZeppelinNft.t.sol:96:9:
+   |
+96 |         bytes calldata data
+   |         ^^^^^^^^^^^^^^^^^^^
+
+
+
+Warning: Unused function parameter. Remove or comment out the variable name to silence this warning.
+  --> /tmp/tmp.EoRqGDONUm/nft-tutorial/src/test/SolmateNft.sol:91:9:
+   |
+91 |         address operator,
+   |         ^^^^^^^^^^^^^^^^
+
+
+
+Warning: Unused function parameter. Remove or comment out the variable name to silence this warning.
+  --> /tmp/tmp.EoRqGDONUm/nft-tutorial/src/test/SolmateNft.sol:92:9:
+   |
+92 |         address from,
+   |         ^^^^^^^^^^^^
+
+
+
+Warning: Unused function parameter. Remove or comment out the variable name to silence this warning.
+  --> /tmp/tmp.EoRqGDONUm/nft-tutorial/src/test/SolmateNft.sol:93:9:
+   |
+93 |         uint256 id,
+   |         ^^^^^^^^^^
+
+
+
+Warning: Unused function parameter. Remove or comment out the variable name to silence this warning.
+  --> /tmp/tmp.EoRqGDONUm/nft-tutorial/src/test/SolmateNft.sol:94:9:
+   |
+94 |         bytes calldata data
+   |         ^^^^^^^^^^^^^^^^^^^
+
+
+
+Warning: Function state mutability can be restricted to pure
+  --> /tmp/tmp.EoRqGDONUm/nft-tutorial/src/test/OpenZeppelinNft.t.sol:92:5:
+   |
+92 |     function onERC721Received(
+   |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+
+Warning: Function state mutability can be restricted to pure
+  --> /tmp/tmp.EoRqGDONUm/nft-tutorial/src/test/SolmateNft.sol:90:5:
+   |
+90 |     function onERC721Received(
+   |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+
+
+Running 8 tests for src/test/SolmateNft.sol:SolmateNftTests
+[PASS] testBalanceIncremented() (gas: 218897)
+[PASS] testFailMaxSupplyReached() (gas: 136426)
+[PASS] testFailMintToZeroAddress() (gas: 34564)
+[PASS] testFailNoMintPricePaid() (gas: 5503)
+[PASS] testFailUnSafeContractReceiver() (gas: 89813)
+[PASS] testMintPricePaid() (gas: 81279)
+[PASS] testNewMintOwnerRegistered() (gas: 192272)
+[PASS] testSafeContractReceiver() (gas: 267525)
+Test result: ok. 8 passed; 0 failed; finished in 2.00ms
+
+Running 8 tests for src/test/OpenZeppelinNft.t.sol:OpenZeppelinNftTests
+[PASS] testBalanceIncremented() (gas: 219326)
+[PASS] testFailMaxSupplyReached() (gas: 136426)
+[PASS] testFailMintToZeroAddress() (gas: 34620)
+[PASS] testFailNoMintPricePaid() (gas: 5503)
+[PASS] testFailUnSafeContractReceiver() (gas: 90282)
+[PASS] testMintPricePaid() (gas: 81512)
+[PASS] testNewMintOwnerRegistered() (gas: 192487)
+[PASS] testSafeContractReceiver() (gas: 268021)
+Test result: ok. 8 passed; 0 failed; finished in 2.02ms
+// ANCHOR_END: output
+// ANCHOR_END: all
