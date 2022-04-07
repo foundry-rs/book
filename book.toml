@@ -13,6 +13,7 @@ default-theme = "ayu"
 additional-js = ["src/static/solidity.min.js"]
 cname = "book.getfoundry.sh"
 no-section-label = true
+additional-css = ["src/static/custom.css"]
 
 [output.html.fold]
 enable = true

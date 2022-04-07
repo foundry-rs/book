@@ -1,0 +1,27 @@
+kbd {
+  --kbd-color-background: rgb(247, 247, 247);
+  --kbd-color-border:     #cbcccd;
+  --kbd-color-text:       rgb(34, 35, 37);
+
+  background-color: var(--kbd-color-background);
+  color: var(--kbd-color-text);
+
+  border-radius: 0.25rem;
+
+  border: 1px solid var(--kbd-color-border);
+
+  box-shadow: 0 2px 0 1px var(--kbd-color-border);
+
+  cursor: default;
+
+  font-size: 0.75em;
+
+  line-height: 1;
+
+  text-align: center;
+
+  padding: 2px 5px;
+
+  position: relative;
+  top: -1px;
+}
