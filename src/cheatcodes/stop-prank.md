@@ -2,7 +2,6 @@
 
 ### Signature
 
-
 ```solidity
 function stopPrank() external;
 ```
