@@ -24,6 +24,10 @@ Mocked calls are in effect until [`clearMockedCalls`](./clear-mocked-calls.md) i
 >
 > To circumvent this, use the [`etch`](./etch.md) cheatcode if the mocked address has no code.
 
+> ℹ️ **Internal calls**
+>
+> This cheatcode does not currently work on internal calls. See issue [#432](https://github.com/gakonst/foundry/issues/432).
+
 ### Examples
 
 Mocking an exact call:

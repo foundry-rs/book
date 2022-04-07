@@ -12,7 +12,13 @@ When a call is made to `where` the call data is first checked to see if it match
 
 If the test terminates without the call being made, the test fails.
 
+> ℹ️ **Internal calls**
+>
+> This cheatcode does not currently work on internal calls. See issue [#432](https://github.com/gakonst/foundry/issues/432).
+
 ### Examples
+
+Expect a call
 
 ```solidity
 bytes memory expectedData = abi.encodeWithSignature("fulfillRandomness(bytes32,uint256)", requestId, randomness);
