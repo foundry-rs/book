@@ -30,7 +30,7 @@ Forge uses the following keywords in tests:
     ```solidity
     {{#include ../../projects/writing_tests/src/test/Basic.t.sol:testFailSubtract43}}
     ```
-    A good practice is to use something like `testCannot` in combination with the [`expectRevert`](../reference/cheatcodes.md#expectrevert) cheatcode (cheatcodes are explained in greater detail in the following [section](./cheatcodes.md)). Now instead of using `testFail`, you know exactly what reverted:
+    A good practice is to use something like `testCannot` in combination with the [`expectRevert`](../cheatcodes/expect-revert.md) cheatcode (cheatcodes are explained in greater detail in the following [section](./cheatcodes.md)). Now instead of using `testFail`, you know exactly what reverted:
     ```solidity
     {{#include ../../projects/writing_tests/src/test/Basic2.t.sol:testCannotSubtract43}}
     ```
@@ -68,4 +68,4 @@ contract MyContractTest is HelperContract {
 
 > 💡 **Tip**
 >
-> Use the [`getCode`](../reference/cheatcodes.md#getcode) cheatcode to deploy contracts with incompatible Solidity versions.
+> Use the [`getCode`](../cheatcodes/get-code.md) cheatcode to deploy contracts with incompatible Solidity versions.

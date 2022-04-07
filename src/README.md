@@ -40,14 +40,14 @@ Tutorials on building smart contracts with Foundry.
 - [Creating an NFT with Solmate](./tutorials/solmate-nft.md)
 - [Incremental Adoption]()
 
-**Reference**
+**Appendix**
 
-References on Foundry and Foundry-related tools.
+References, troubleshooting and more.
 
 - [`forge` Reference]()
 - [`cast` Reference](./reference/cast.md)
 - [`foundry.toml` Reference](./reference/config.md)
 - [`ds-test` Reference](./reference/ds-test.md)
-- [Cheatcodes Reference](./reference/cheatcodes.md)
+- [Cheatcodes Reference](./cheatcodes/README.md)
 
 > You can also check out [Awesome Foundry](https://github.com/crisgarner/awesome-foundry), a curated list of awesome Foundry resources, tutorials, tools and libraries!

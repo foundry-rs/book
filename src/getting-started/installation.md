@@ -54,4 +54,6 @@ It is also possible to build the docker image locally. From the Foundry reposito
 ```sh
 docker build -t foundry .
 ```
-> Note: Some machines (including those with M1 chips) may be unable to build the docker image locally. This is a known issue.
+> ℹ️ **Note**
+>
+> Some machines (including those with M1 chips) may be unable to build the docker image locally. This is a known issue.
