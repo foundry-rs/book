@@ -29,6 +29,16 @@ When the debugger is run, you are presented with a terminal divided into four qu
 - **Quadrant 3**: The source view
 - **Quadrant 4**: The current memory of the EVM
 
+As you step through your code, you will notice that the words in the stack and memory sometimes change color.
+
+For the memory:
+
+- **Red words** are about to be written to by the current opcode
+- **Green words** were written to by the previous opcode
+- **Cyan words** are being read by the current opcode
+
+For the stack, **cyan words** are either being read or popped by the current opcode.
+
 ### Navigating
 
 ### General
