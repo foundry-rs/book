@@ -32,8 +32,8 @@ When the debugger is run, you are presented with a terminal divided into four qu
 ### Navigating
 
 - <kbd>q</kbd>: Quit the debugger
-- <kbd>n + k</kbd>: Step `n` times backwards (alternatively scroll up with your mouse)
-- <kbd>n + j</kbd>: Step `n` times forwards (alternatively scroll down with your mouse)
+- <kbd>n</kbd> + <kbd>k</kbd>: Step `n` times backwards (alternatively scroll up with your mouse)
+- <kbd>n</kbd> + <kbd>j</kbd>: Step `n` times forwards (alternatively scroll down with your mouse)
 - <kbd>g</kbd>: Move to the beginning of the transaction
 - <kbd>G</kbd>: Move to the end of the transaction
 - <kbd>c</kbd>: Move to the previous call-type instruction (i.e. [`CALL`][op-call], [`STATICCALL`][op-staticcall], [`DELEGATECALL`][op-delegatecall], and [`CALLCODE`][op-callcode]).
