@@ -18,11 +18,13 @@ If the test terminates without the call being made, the test fails.
 
 ### Examples
 
-Expect a call
+Expect that `transfer` is called on a token `MyToken`:
 
 ```solidity
-bytes memory expectedData = abi.encodeWithSignature("fulfillRandomness(bytes32,uint256)", requestId, randomness);
-cheats.expectCall(address(awesomeContract), expectedData);
-vrfCoordinator.callBackWithRandomness(requestId, randomness, address(awesomeContract));
+address alice = address(10);
+cheats.expectCall(
+  address(token), abi.encodeCall(token.transfer, (alice, 10))
+);
+token.transfer(alice, 10);
 // [PASS]
 ```
