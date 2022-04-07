@@ -31,15 +31,32 @@ When the debugger is run, you are presented with a terminal divided into four qu
 
 ### Navigating
 
+### General
+
 - <kbd>q</kbd>: Quit the debugger
-- <kbd>n</kbd> + <kbd>k</kbd>: Step `n` times backwards (alternatively scroll up with your mouse)
-- <kbd>n</kbd> + <kbd>j</kbd>: Step `n` times forwards (alternatively scroll down with your mouse)
+
+### Navigating calls
+
+- <kbd>0-9</kbd> + <kbd>k</kbd>: Step a number of times backwards (alternatively scroll up with your mouse)
+- <kbd>0-9</kbd> + <kbd>j</kbd>: Step a number of times forwards (alternatively scroll down with your mouse)
 - <kbd>g</kbd>: Move to the beginning of the transaction
 - <kbd>G</kbd>: Move to the end of the transaction
 - <kbd>c</kbd>: Move to the previous call-type instruction (i.e. [`CALL`][op-call], [`STATICCALL`][op-staticcall], [`DELEGATECALL`][op-delegatecall], and [`CALLCODE`][op-callcode]).
 - <kbd>C</kbd>: Move to the next call-type instruction
 - <kbd>a</kbd>: Move to the previous [`JUMP`][op-jump] or [`JUMPI`][op-jumpi] instruction
 - <kbd>s</kbd>: Move to the next [`JUMPDEST`][op-jumpdest] instruction
+
+### Navigating memory
+
+- <kbd>Ctrl</kbd> + <kbd>j</kbd>: Scroll the memory view down
+- <kbd>Ctrl</kbd> + <kbd>k</kbd>: Scroll the memory view up
+- <kbd>t</kbd>: Show labels on the stack to see what items the current op will consume
+
+### Navigating the stack
+
+- <kbd>J</kbd>: Scroll the stack view down
+- <kbd>K</kbd>: Scroll the stack view up
+- <kbd>m</kbd>: Show memory as UTF8
 
 [op-call]: https://www.evm.codes/#f1
 [op-staticcall]: https://www.evm.codes/#fa
