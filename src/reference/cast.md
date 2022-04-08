@@ -1068,6 +1068,25 @@ prints the transaction receipt...
 
 ---
 
+#### `sig`
+
+```ignore
+cast sig <SIG>
+```
+
+Prints the 4 byte function selector of the given human readable function signature.
+
+##### Example
+
+```bash
+$ cast sig "transfer(address,uint)"
+0xa9059cbb
+```
+
+<br>
+
+---
+
 #### `storage`
 
 ```ignore
