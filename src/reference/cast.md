@@ -1108,6 +1108,31 @@ $ cast nonce --rpc-url <your_rpc_url> 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045
 
 ---
 
+#### `pretty-calldata`
+
+```ignore
+cast pretty-calldata [OPTIONS] <CALLDATA>
+```
+
+Where `[OPTIONS]` is `-o, --offline` (Skips the 4byte directory lookup)
+
+Pretty prints calldata and gets the function signature from 4byte.directoy
+
+##### Example
+
+```bash
+$ cast pretty-calldata 0xa9059cbb0000000000000000000000000cfb686e114d478b055ce8614621f8bb62f70360000000000000000000000000000000000000000000000002b5e3af16b1880000 -o
+
+ Method: a9059cbb
+ ------------
+ [0]:  0000000000000000000000000cfb686e114d478b055ce8614621f8bb62f70360
+ [1]:  000000000000000000000000000000000000000000000002b5e3af16b1880000
+```
+
+<br>
+
+---
+
 #### `proof`
 
 ````ignore
