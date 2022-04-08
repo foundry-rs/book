@@ -59,6 +59,7 @@ code                     Prints the bytecode at <address>
 completions              Generate shell completions script
 compute-address          Returns the computed address from a given address and nonce pair
 estimate                 Estimate the gas cost of a transaction from <from> to <to> with <data>
+etherscan-source         Prints the source code of a contract from Etherscan
 find-block               Prints the block number closest to the provided timestamp
 gas-price                Prints current gas price of target chain
 help                     Print this message or the help of the given subcommand(s)
