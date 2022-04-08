@@ -988,6 +988,37 @@ $ cast gas-price --rpc-url <your_rpc_url>
 
 ---
 
+#### `help`
+
+```ignore
+cast help <SUBCOMMAND>
+```
+
+Print the `cast` help message or the help message of `<SUBCOMMAND>` if provided.  
+`cast help` is also also available with the `--help` flag
+
+##### Examples
+
+```
+$ cast help --max-uint
+cast---max-uint 
+Maximum u256 value
+
+USAGE:
+    cast --max-uint
+
+OPTIONS:
+    -h, --help    Print help information
+```
+```
+$ cast --max-uint --help
+# same as above
+```
+
+<br>
+
+---
+
 #### `index`
 
 ```ignore
