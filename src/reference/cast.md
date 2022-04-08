@@ -1016,7 +1016,7 @@ Print the `cast` help message or the help message of `<SUBCOMMAND>` if provided.
 
 ##### Examples
 
-```
+```ignore
 $ cast help --max-uint
 cast---max-uint 
 Maximum u256 value
@@ -1027,7 +1027,7 @@ USAGE:
 OPTIONS:
     -h, --help    Print help information
 ```
-```
+```ignore
 $ cast --max-uint --help
 # same as above
 ```
@@ -1039,7 +1039,7 @@ $ cast --max-uint --help
 #### `index`
 
 ```ignore
-$ cast index <FROM_TYPE> <TO_TYPE> <FROM_VALUE> <SLOT_NUMBER>
+cast index <FROM_TYPE> <TO_TYPE> <FROM_VALUE> <SLOT_NUMBER>
 ```
 
 Get the storage slot value for a solidity-style mapping.
