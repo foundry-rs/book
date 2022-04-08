@@ -574,14 +574,14 @@ $ cast abi-encode "fulfillRandomness(bytes32,uint256)" 0x676d0000000000000000000
 cast access-list [OPTIONS] <ADDRESS> <SIG> [ARGS]...
 ```
 
-Create an access list for a transaction. 
+Create an access list for a transaction.  
 The node must support the `eth_createAccesList` json-RPC method.
 
 ##### Example
 
 ```bash
 $ cast access-list --rpc-url <your_rpc_url> 0x6b175474e89094c44da98b954eedeac495271d0f "totalSupply()(uint256)"
-# returns the access list
+prints the access list here...
 ```
 
 <br>
@@ -873,8 +873,11 @@ prints the bash completions script here...
 cast compute-address [OPTIONS] --rpc-url <RPC_URL> <ADDRESS>
 ```
 
+Where `[OPTIONS]` is `--nonce`.  
+ (If a nonce is given, calculates from that nonce instead of fetching `<ADDRESS>`'s nonce from the node. )
+
 Computes the resulting address if `<ADDRESS>` were to create a new contract.    
-If a `--nonce` is given, calculates from that nonce instead of fetching `<ADDRESS>`'s nonce from the node. 
+
 
 ##### Example
 
@@ -957,12 +960,13 @@ Prints the source code of the contract, fetched from Etherscan.
 
 ```bash
 $ cast etherscan-source --etherscan-api-key  <your_api_key> 0x6b175474e89094c44da98b954eedeac495271d0f
-# the DAI token source code is output here
+prints the DAI token code here...
 ```
 
 <br>
 
 ---
+
 #### `find-block`
 
 ```ignore
@@ -1029,7 +1033,7 @@ OPTIONS:
 ```
 ```ignore
 $ cast --max-uint --help
-# same as above
+same as above ...
 ```
 
 <br>
@@ -1045,10 +1049,10 @@ cast index <FROM_TYPE> <TO_TYPE> <FROM_VALUE> <SLOT_NUMBER>
 Get the storage slot value for a solidity-style mapping.
 
 Where:   
-`<FROM_TYPE>`      is the mapping key type,  
-`<TO_TYPE>`        is the mapping value type,  
-`<FROM_VALUE>`     is the value,  
-`<SLOT_NUMBER>`    is the storage slot of the mapping  
+- `<FROM_TYPE>`      is the mapping key type,  
+- `<TO_TYPE>`        is the mapping value type,  
+- `<FROM_VALUE>`     is the value,  
+- `<SLOT_NUMBER>`    is the storage slot of the mapping  
 
 ##### Example
 
@@ -1104,7 +1108,7 @@ interface WETH9 {
     event Approval(address indexed src, address indexed guy, uint256 wad);
     event Deposit(address indexed dst, uint256 wad);
     event Transfer(address indexed src, address indexed dst, 
-# ... rest of the the WETH interface
+prints the rest of the WETH interface ...
 ```
 
 <br>
@@ -1272,18 +1276,27 @@ Publish a pre-signed transaction to the network.
 ##### Example 
 
 ```bash
-$ cast publish --rpc-url <rpc-url> # tx
-# whatever the output looks like 
+$ cast publish --from <your_address> $(cast call <address> <sig> <args> --rpc-url <your_rpc_url>) --rpc-url <your_rpc_url> 
+
+prints the transaction receipt...
 ```
 
 <br>
 
 ---
+
 #### `receipt`
 
 ```ignore
 cast receipt [OPTIONS] --rpc-url <RPC_URL> <HASH> [FIELD]
 ```
+
+Where `[OPTIONS]` are:
+- -c, --confirmations <CONFIRMATIONS>  (the number of confirmations until the receipt is fetched [default: 1])
+- --cast-async env: [CAST_ASYNC]
+- -h, --help  (Print help information)
+- -j, --json   
+- --rpc-url <RPC_URL> env: [ETH_RPC_URL]
 
 env: `ETH_RPC_URL`, `CAST_ASYNC`
 
