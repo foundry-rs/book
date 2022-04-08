@@ -907,25 +907,8 @@ $ cast estimate --from 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045 0xc18360217d8f
 cast etherscan-source [OPTIONS] --etherscan-api-key <ETHERSCAN_API_KEY> <ADDRESS>
 ```
 
-Where `[OPTIONS]` are:
-- `-c, --chain <INNER>` env: `CHAIN`   
-    Possible values: 
-    - `mainnet`
-    - `ropsten`
-    - `rinkeby`
-    - `goerli`
-    - `kovan`
-    - `xdai`
-    - `polygon`
-    - `polygon_mumbai`
-    - `avalanche`
-    - `avalanche_fuji`
-    - `sepolia`
-    - `moonbeam`
-    - `moonbeam_dev`
-    - `moonriver`
-    - `optimism`
-    - `optimism-kovan`
+Where `[OPTIONS]` are:  
+{{#include chains.md}}
 - `-d <DIRECTORY>` (output directory to expand source tree)
 - `--etherscan-api-key <ETHERSCAN_API_KEY>` env: `ETHERSCAN_API_KEY`
 
@@ -1011,18 +994,30 @@ $ cast index uint uint 1 1
 #### `interface`
 
 ```ignore
-cast gas-price --rpc-url <RPC_URL>
+cast interface [OPTIONS] <PATH_OR_ADDRESS>
 ```
 
-env: `ETH_RPC_URL`
+Where `[OPTIONS]` are:  
+{{#include chains.md}}
+- `-e <ETHERSCAN_API_KEY>` (etherscan API key) env:` ETHERSCAN_API_KEY`
+- `-h, --help` (Print help information)
+- -`o <OUTPUT_LOCATION>` (Path to output file. Defaults to stdout)
+- `-p, --pragma <PRAGMA>` (pragma version [default: ^0.8.10])  
 
-Print current gas price of target chain.
+
+Generate a contract's interface from ABI.
 
 ##### Example
 
 ```bash
-$ cast gas-price --rpc-url <your_rpc_url>
-89367836498
+$ cast interface -e <your_etherscan_api_key> 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
+pragma solidity ^0.8.10;
+
+interface WETH9 {
+    event Approval(address indexed src, address indexed guy, uint256 wad);
+    event Deposit(address indexed dst, uint256 wad);
+    event Transfer(address indexed src, address indexed dst, 
+# ... rest of the the WETH interface
 ```
 
 <br>

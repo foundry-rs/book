@@ -1,0 +1,18 @@
+- `-c, --chain <INNER>` env: `CHAIN`   
+    Possible values: 
+    - `mainnet`
+    - `ropsten`
+    - `rinkeby`
+    - `goerli`
+    - `kovan`
+    - `xdai`
+    - `polygon`
+    - `polygon_mumbai`
+    - `avalanche`
+    - `avalanche_fuji`
+    - `sepolia`
+    - `moonbeam`
+    - `moonbeam_dev`
+    - `moonriver`
+    - `optimism`
+    - `optimism-kovan`
