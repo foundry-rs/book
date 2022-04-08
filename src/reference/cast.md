@@ -930,7 +930,24 @@ cast etherscan-source [OPTIONS] --etherscan-api-key <ETHERSCAN_API_KEY> <ADDRESS
 ```
 
 Where `[OPTIONS]` are:  
-{{#include chains.md}}
+- `-c, --chain <INNER>` env: `CHAIN`   
+    Possible values: 
+    - `mainnet`
+    - `ropsten`
+    - `rinkeby`
+    - `goerli`
+    - `kovan`
+    - `xdai`
+    - `polygon`
+    - `polygon_mumbai`
+    - `avalanche`
+    - `avalanche_fuji`
+    - `sepolia`
+    - `moonbeam`
+    - `moonbeam_dev`
+    - `moonriver`
+    - `optimism`
+    - `optimism-kovan`
 - `-d <DIRECTORY>` (output directory to expand source tree)
 - `--etherscan-api-key <ETHERSCAN_API_KEY>` env: `ETHERSCAN_API_KEY`
 
@@ -1051,7 +1068,24 @@ cast interface [OPTIONS] <PATH_OR_ADDRESS>
 ```
 
 Where `[OPTIONS]` are:  
-{{#include chains.md}}
+- `-c, --chain <INNER>` env: `CHAIN`   
+    Possible values: 
+    - `mainnet`
+    - `ropsten`
+    - `rinkeby`
+    - `goerli`
+    - `kovan`
+    - `xdai`
+    - `polygon`
+    - `polygon_mumbai`
+    - `avalanche`
+    - `avalanche_fuji`
+    - `sepolia`
+    - `moonbeam`
+    - `moonbeam_dev`
+    - `moonriver`
+    - `optimism`
+    - `optimism-kovan`
 - `-e <ETHERSCAN_API_KEY>` (etherscan API key) env:` ETHERSCAN_API_KEY`
 - `-h, --help` (Print help information)
 - -`o <OUTPUT_LOCATION>` (Path to output file. Defaults to stdout)
@@ -1209,6 +1243,42 @@ This will output a JSON object of the storage proof (inluding the `key`, `proof`
 
 ---
 
+#### `publish`
+
+````ignore
+cast publish [OPTIONS] <RAW_TX>
+````
+env: `ETH_RPC_URL`
+
+Where `[OPTIONS]` are:
+- `--cast-async` env: `CAST_ASYNC`
+- `--chain <CHAIN>` (default: mainnet) env: `CHAIN`
+- `--etherscan-api-key <ETHERSCAN_API_KEY>` env: `ETHERSCAN_API_KEY`
+- `--from <FROM>` (the sender account) env: `ETH_FROM`
+- `--flashbots` (to use a flashbots RPC URL: https://rpc.flashbots.net)
+- `--hd-path <HD_PATH>` (derivation path for your hardware wallet, trezor or ledger)
+- `--interactive` (interactive prompt to insert your private key)
+- `--keystore <KEYSTORE_PATH>` (path to your keystore folder / file) env: `ETH_KEYSTORE`
+- `--ledger` (use your Ledger hardware wallet)
+- `--mnemonic_index <MNEMONIC_INDEX>` (your index in the standard hd path, default: 0)
+- `--mnemonic-path <MNEMONIC_PATH>` (path to your mnemonic file)
+- `--password <KEYSTORE_PASSWORD>` (your keystore password)
+- `--private-key <PRIVATE_KEY>` (your private key string)
+- `--rpc-url <RPC_URL>` (The tracing / archival node's URL) env: `ETH_RPC_URL`
+- `--trezor` (use your Trezor hardware wallet)
+
+Publish a pre-signed transaction to the network.
+
+##### Example 
+
+```bash
+$ cast publish --rpc-url <rpc-url> # tx
+# whatever the output looks like 
+```
+
+<br>
+
+---
 #### `receipt`
 
 ```ignore
