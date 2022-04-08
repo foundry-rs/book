@@ -943,6 +943,52 @@ $ cast gas-price --rpc-url <your_rpc_url>
 
 ---
 
+#### `index`
+
+```ignore
+$ cast index <FROM_TYPE> <TO_TYPE> <FROM_VALUE> <SLOT_NUMBER>
+```
+
+Get the storage slot value for a solidity-style mapping.
+
+Where:   
+`<FROM_TYPE>`      is the mapping key type,  
+`<TO_TYPE>`        is the mapping value type,  
+`<FROM_VALUE>`     is the value,  
+`<SLOT_NUMBER>`    is the storage slot of the mapping  
+
+##### Example
+
+```bash
+$ cast index uint uint 1 1
+0xcc69885fda6bcc1a4ace058b4a62bf5e179ea78fd58a1ccd71c22cc9b688792f
+```
+
+<br>
+
+---
+
+#### `interface`
+
+```ignore
+cast gas-price --rpc-url <RPC_URL>
+```
+
+env: `ETH_RPC_URL`
+
+Print current gas price of target chain.
+
+##### Example
+
+```bash
+$ cast gas-price --rpc-url <your_rpc_url>
+89367836498
+```
+
+<br>
+
+---
+
 #### `keccak`
 
 ```ignore
