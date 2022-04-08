@@ -2,7 +2,7 @@
 
 This tutorial walk you through creating an OpenSea compatible NFT with Foundry and [Solmate](https://github.com/Rari-Capital/solmate/blob/main/src/tokens/ERC721.sol). A full implementation of this tutorial can be found [here](https://github.com/FredCoen/nft-tutorial).
 
-#####  This tutorial is for illustrative purposes only and provided on an as-is basis. The tutorial is not audited nor fully tested. No code in this tutorial should be used in a production environment.
+##### This tutorial is for illustrative purposes only and provided on an as-is basis. The tutorial is not audited nor fully tested. No code in this tutorial should be used in a production environment.
 
 
 
@@ -65,7 +65,7 @@ export PRIVATE_KEY=<Your wallets private key>
 
 Once set, you can deploy your NFT with Forge by running the below command while adding the relevant constructor arguments to the NFT contract:
 ```bash
-forge create NFT --rpc-url=$RPC_URL --constructor-args <name> <symbol>
+forge create NFT --rpc-url=$RPC_URL --private-key=$PRIVATE_KEY --constructor-args <name> <symbol>
 ```
 
 If successfully deployed, you will see the deploying wallet's address, the contract's address as well as the transaction hash printed to your terminal.
