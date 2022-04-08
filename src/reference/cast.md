@@ -405,6 +405,25 @@ $ cast --to-hexdata @EXAMPLE_INPUT
 
 ---
 
+#### `--to-int256`
+
+```ignore
+cast --to-int256 [VALUE]
+```
+
+Convert a number into `int256` hexadecimal.
+
+##### Example
+
+```bash
+$ cast --to-int256 -- -15
+0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff1
+```
+
+<br>
+
+---
+
 #### `--to-uint256`
 
 ```ignore
@@ -418,6 +437,27 @@ Convert a number into `uint256` hexadecimal.
 ```bash
 $ cast --to-uint256 15
 0x000000000000000000000000000000000000000000000000000000000000000f
+```
+
+<br>
+
+---
+
+#### `--to-unit`
+
+```ignore
+cast --to-uint256 [ARGS]
+```
+
+Where `[ARGS]` are `<VALUE>` `<UNIT>`
+
+Convert a number into a specified unit: ether, gwei or wei (default: wei).
+
+##### Example
+
+```bash
+$ cast --to-unit 1gwei ether
+0.000000001000000000
 ```
 
 <br>
@@ -481,6 +521,26 @@ $ cast 4byte-decode 0x1F1F897F676d0000000000000000000000000000000000000000000000
 1) "fulfillRandomness(bytes32,uint256)"
 0x676d000000000000000000000000000000000000000000000000000000000000
 999
+```
+
+<br>
+
+---
+
+#### `4byte-event`
+
+```ignore
+cast 4byte-event <TOPIC>
+```
+
+Queries https://4byte.directory for the provided event topic
+
+##### Example
+
+```bash
+$ cast 4byte-event 0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef
+Transfer(address,address,uint256)
+
 ```
 
 <br>
