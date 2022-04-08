@@ -901,6 +901,46 @@ $ cast estimate --from 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045 0xc18360217d8f
 
 ---
 
+#### `etherscan-source`
+
+```ignore
+cast etherscan-source [OPTIONS] --etherscan-api-key <ETHERSCAN_API_KEY> <ADDRESS>
+```
+
+Where `[OPTIONS]` are:
+- `-c, --chain <INNER>` env: `CHAIN`   
+    Possible values: 
+    - `mainnet`
+    - `ropsten`
+    - `rinkeby`
+    - `goerli`
+    - `kovan`
+    - `xdai`
+    - `polygon`
+    - `polygon_mumbai`
+    - `avalanche`
+    - `avalanche_fuji`
+    - `sepolia`
+    - `moonbeam`
+    - `moonbeam_dev`
+    - `moonriver`
+    - `optimism`
+    - `optimism-kovan`
+- `-d <DIRECTORY>` (output directory to expand source tree)
+- `--etherscan-api-key <ETHERSCAN_API_KEY>` env: `ETHERSCAN_API_KEY`
+
+Prints the source code of the contract, fetched from Etherscan.
+
+##### Example
+
+```bash
+$ cast etherscan-source --etherscan-api-key  <your_api_key> 0x6b175474e89094c44da98b954eedeac495271d0f
+# the DAI token source code is output here
+```
+
+<br>
+
+---
 #### `find-block`
 
 ```ignore
