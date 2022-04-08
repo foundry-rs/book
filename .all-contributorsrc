@@ -301,6 +301,15 @@
       "contributions": [
         "maintenance"
       ]
+    },
+    {
+      "login": "0xCookedRice",
+      "name": "0xCookedRice",
+      "avatar_url": "https://avatars.githubusercontent.com/u/86559662?v=4",
+      "profile": "https://github.com/0xCookedRice",
+      "contributions": [
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7,
