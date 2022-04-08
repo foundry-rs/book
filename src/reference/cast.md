@@ -9,7 +9,9 @@ This is a complete overview of all the available `cast` subcommands. For detaile
 ```text
 --abi-decode             Decode ABI-encoded hex output data. Pass --input to decode as input, or use
                             `--calldata-decode`
---calldata-decode        Decode ABI-encoded hex input data. Use `--abi-decode` to decode output data
+--calldata-decode        Decode ABI-encoded hex input data. Use `--abi-decode` to decode output data 
+--from-bin               Convert binary data into hex data
+--from-fix               Convert fixed point into specified number of decimals
 --from-utf8              convert text data into hexdata
 --from-wei               convert wei into an ETH amount
 --max-int                maximum i256 value
@@ -28,11 +30,21 @@ This is a complete overview of all the available `cast` subcommands. For detaile
                                 - 0x prefixed hex, concatenated with a ':'
                                 - absolute path to file
                                 - @tag, where $TAG is defined in environment variables
+--to-int256              Convert a number into int256 hex string with 0x prefix
 --to-uint256             convert a number into uint256 hex string with 0x prefix
+--to-unit                Convert an ETH amount into a specified unit: ether, gwei or wei (default: wei).
+                                Usage:
+                                - 1ether wei     | converts 1 ether to wei
+                                - "1 ether" wei  | converts 1 ether to wei
+                                - 1ether         | converts 1 ether to wei
+                                - 1 gwei         | converts 1 wei to gwei
+                                - 1gwei ether    | converts 1 gwei to ether
 --to-wei                 convert an ETH amount into wei
 4byte                    Fetches function signatures given the selector from 4byte.directory
 4byte-decode             Decodes transaction calldata by fetching the signature using 4byte.directory
-abi-encode
+4byte-event              Takes a 32 byte topic and prints the response from querying 4byte.directory for that topic
+abi-encode               ABI encodes the given arguments with the function signature, excluding the selector
+access-list              Create an access list for a transaction
 age                      Prints the timestamp of a block
 balance                  Print the balance of <account> in wei
 basefee                  Print the basefee of a block
@@ -45,17 +57,24 @@ chain                    Prints symbolic name of current blockchain by checking 
 chain-id                 Returns ethereum chain id
 code                     Prints the bytecode at <address>
 completions              Generate shell completions script
+compute-address          Returns the computed address from a given address and nonce pair
 estimate                 Estimate the gas cost of a transaction from <from> to <to> with <data>
 find-block               Prints the block number closest to the provided timestamp
 gas-price                Prints current gas price of target chain
 help                     Print this message or the help of the given subcommand(s)
+index                    Get storage slot of value from mapping type, mapping slot number and input value
+interface                Generate contract's interface from ABI. Currently it doesn't support ABI encoder V2
 keccak                   Keccak-256 hashes arbitrary data
 lookup-address           Returns the name the provided address resolves to
 namehash                 Returns ENS namehash of provided name
 nonce                    Prints the number of transactions sent from <address>
+pretty-calldata          Pretty prints calldata, if available gets signature from 4byte.directory
 proof                    Generate a storage proof for a given slot
+publish                  Publish a raw transaction to the network
+receipt                  Print information about the transaction receipt for <tx-hash>
 resolve-name             Returns the address the provided ENS name resolves to
 send                     Publish a transaction signed by <from> to call <to> with <data>
+sig                      Print a function's 4-byte selector
 storage                  Show the raw value of a contract's storage slot
 tx                       Show information about the transaction <tx-hash>
 wallet                   Set of wallet management utilities
@@ -100,6 +119,46 @@ Decode ABI-encoded hexadecimal input. Use `--abi-decode` to decode output data.
 $ cast --calldata-decode "fulfillRandomness(bytes32,uint256)" 0x1F1F897F676d00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003e7
 0x676d000000000000000000000000000000000000000000000000000000000000
 999
+```
+
+<br>
+
+---
+
+#### `--from-bin`
+
+```ignore
+cast --from-bin
+```
+
+Convert binary data into hex data.
+
+##### Example
+
+```bash
+$ echo -n "gm"| cast --from-bin
+0x676d
+```
+
+<br>
+
+---
+
+#### `--from-fix`
+
+```ignore
+cast --from-fix [ARGS]
+```
+
+Where `[ARGS]` are `<DECIMALS>` and `<VALUE>`
+
+Convert fixed point into specified number of decimals.
+
+##### Example
+
+```bash
+$ cast --from-fix 16 8
+80000000000000000
 ```
 
 <br>
