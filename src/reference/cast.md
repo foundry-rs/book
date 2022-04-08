@@ -1009,6 +1009,27 @@ This will output a JSON object of the storage proof (inluding the `key`, `proof`
 
 ---
 
+#### `receipt`
+
+```ignore
+cast receipt [OPTIONS] --rpc-url <RPC_URL> <HASH> [FIELD]
+```
+
+env: `ETH_RPC_URL`, `CAST_ASYNC`
+
+Prints out the transaction receipt information for tx `<HASH>`
+
+##### Example
+
+```bash
+$ cast receipt --rpc-url <your_rpc_url> 0xc31d7e7e85cab1d38ce1b8ac17e821ccd47dbde00f9d57f2bd8613bff9428396 gasUsed
+0x2e8777
+```
+
+<br>
+
+---
+
 #### `resolve-name`
 
 ```ignore
