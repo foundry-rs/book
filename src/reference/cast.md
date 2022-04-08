@@ -845,6 +845,26 @@ prints the bash completions script here...
 
 ---
 
+#### `compute-address`
+
+```ignore
+cast compute-address [OPTIONS] --rpc-url <RPC_URL> <ADDRESS>
+```
+
+Computes the resulting address if `<ADDRESS>` were to create a new contract.    
+If a `--nonce` is given, calculates from that nonce instead of fetching `<ADDRESS>`'s nonce from the node. 
+
+##### Example
+
+```bash
+$ cast compute-address --rpc-url <your_rpc_url>  0xd8da6bf26964af9d7eed9e03e53415d37aa96045 --nonce 3
+Computed Address: 0xa62d8f8b880086bfefc1cef636168c22403726d4
+```
+
+<br>
+
+---
+
 #### `estimate`
 
 ```ignore
