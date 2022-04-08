@@ -780,6 +780,27 @@ $ cast chain-id --rpc-url <your_rpc_url>
 
 ---
 
+#### `client`
+
+```ignore
+cast client --rpc-url <RPC_URL>
+```
+
+env: `ETH_RPC_URL`
+
+Return the node's client version
+
+##### Example
+
+```bash
+$ cast client --rpc-url <your_rpc_url>
+Geth/v1.10.15-omnibus-hotfix-f4decf48/linux-amd64/go1.17.6
+```
+
+<br>
+
+---
+
 #### `code`
 
 ```ignore
