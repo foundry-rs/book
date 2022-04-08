@@ -84,6 +84,8 @@ wallet                   Set of wallet management utilities
 ### `cast` Subcommands
 This section documents all `cast` subcommands and provides usage examples.
 
+---
+
 #### `--abi-decode`
 
 ```ignore
@@ -560,6 +562,26 @@ Endcode the arguments with the function signature using ABI, exculding the selec
 ```bash
 $ cast abi-encode "fulfillRandomness(bytes32,uint256)" 0x676d000000000000000000000000000000000000000000000000000000000000 999
 0x676d00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003e7
+```
+
+<br>
+
+---
+
+#### `access-list`
+
+```ignore
+cast access-list [OPTIONS] <ADDRESS> <SIG> [ARGS]...
+```
+
+Create an access list for a transaction. 
+The node must support the `eth_createAccesList` json-RPC method.
+
+##### Example
+
+```bash
+$ cast access-list --rpc-url <your_rpc_url> 0x6b175474e89094c44da98b954eedeac495271d0f "totalSupply()(uint256)"
+# returns the access list
 ```
 
 <br>
