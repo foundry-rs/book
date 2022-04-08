@@ -1,4 +1,4 @@
-## `foundry.toml` Reference
+## Config Reference
 
 Foundry's configuration system allows you to configure its tools.
 
