@@ -9,7 +9,9 @@ This is a complete overview of all the available `cast` subcommands. For detaile
 ```text
 --abi-decode             Decode ABI-encoded hex output data. Pass --input to decode as input, or use
                             `--calldata-decode`
---calldata-decode        Decode ABI-encoded hex input data. Use `--abi-decode` to decode output data
+--calldata-decode        Decode ABI-encoded hex input data. Use `--abi-decode` to decode output data 
+--from-bin               Convert binary data into hex data
+--from-fix               Convert fixed point into specified number of decimals
 --from-utf8              convert text data into hexdata
 --from-wei               convert wei into an ETH amount
 --max-int                maximum i256 value
@@ -28,11 +30,21 @@ This is a complete overview of all the available `cast` subcommands. For detaile
                                 - 0x prefixed hex, concatenated with a ':'
                                 - absolute path to file
                                 - @tag, where $TAG is defined in environment variables
+--to-int256              Convert a number into int256 hex string with 0x prefix
 --to-uint256             convert a number into uint256 hex string with 0x prefix
+--to-unit                Convert an ETH amount into a specified unit: ether, gwei or wei (default: wei).
+                                Usage:
+                                - 1ether wei     | converts 1 ether to wei
+                                - "1 ether" wei  | converts 1 ether to wei
+                                - 1ether         | converts 1 ether to wei
+                                - 1 gwei         | converts 1 wei to gwei
+                                - 1gwei ether    | converts 1 gwei to ether
 --to-wei                 convert an ETH amount into wei
 4byte                    Fetches function signatures given the selector from 4byte.directory
 4byte-decode             Decodes transaction calldata by fetching the signature using 4byte.directory
-abi-encode
+4byte-event              Takes a 32 byte topic and prints the response from querying 4byte.directory for that topic
+abi-encode               ABI encodes the given arguments with the function signature, excluding the selector
+access-list              Create an access list for a transaction
 age                      Prints the timestamp of a block
 balance                  Print the balance of <account> in wei
 basefee                  Print the basefee of a block
@@ -45,17 +57,25 @@ chain                    Prints symbolic name of current blockchain by checking 
 chain-id                 Returns ethereum chain id
 code                     Prints the bytecode at <address>
 completions              Generate shell completions script
+compute-address          Returns the computed address from a given address and nonce pair
 estimate                 Estimate the gas cost of a transaction from <from> to <to> with <data>
+etherscan-source         Prints the source code of a contract from Etherscan
 find-block               Prints the block number closest to the provided timestamp
 gas-price                Prints current gas price of target chain
 help                     Print this message or the help of the given subcommand(s)
+index                    Get storage slot of value from mapping type, mapping slot number and input value
+interface                Generate contract's interface from ABI. Currently it doesn't support ABI encoder V2
 keccak                   Keccak-256 hashes arbitrary data
 lookup-address           Returns the name the provided address resolves to
 namehash                 Returns ENS namehash of provided name
 nonce                    Prints the number of transactions sent from <address>
+pretty-calldata          Pretty prints calldata, if available gets signature from 4byte.directory
 proof                    Generate a storage proof for a given slot
+publish                  Publish a raw transaction to the network
+receipt                  Print information about the transaction receipt for <tx-hash>
 resolve-name             Returns the address the provided ENS name resolves to
 send                     Publish a transaction signed by <from> to call <to> with <data>
+sig                      Print a function's 4-byte selector
 storage                  Show the raw value of a contract's storage slot
 tx                       Show information about the transaction <tx-hash>
 wallet                   Set of wallet management utilities
@@ -63,6 +83,8 @@ wallet                   Set of wallet management utilities
 
 ### `cast` Subcommands
 This section documents all `cast` subcommands and provides usage examples.
+
+---
 
 #### `--abi-decode`
 
@@ -100,6 +122,46 @@ Decode ABI-encoded hexadecimal input. Use `--abi-decode` to decode output data.
 $ cast --calldata-decode "fulfillRandomness(bytes32,uint256)" 0x1F1F897F676d00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003e7
 0x676d000000000000000000000000000000000000000000000000000000000000
 999
+```
+
+<br>
+
+---
+
+#### `--from-bin`
+
+```ignore
+cast --from-bin
+```
+
+Convert binary data into hex data.
+
+##### Example
+
+```bash
+$ echo -n "gm"| cast --from-bin
+0x676d
+```
+
+<br>
+
+---
+
+#### `--from-fix`
+
+```ignore
+cast --from-fix [ARGS]
+```
+
+Where `[ARGS]` are `<DECIMALS>` and `<VALUE>`
+
+Convert fixed point into specified number of decimals.
+
+##### Example
+
+```bash
+$ cast --from-fix 16 8
+80000000000000000
 ```
 
 <br>
@@ -345,6 +407,25 @@ $ cast --to-hexdata @EXAMPLE_INPUT
 
 ---
 
+#### `--to-int256`
+
+```ignore
+cast --to-int256 [VALUE]
+```
+
+Convert a number into `int256` hexadecimal.
+
+##### Example
+
+```bash
+$ cast --to-int256 -- -15
+0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff1
+```
+
+<br>
+
+---
+
 #### `--to-uint256`
 
 ```ignore
@@ -358,6 +439,27 @@ Convert a number into `uint256` hexadecimal.
 ```bash
 $ cast --to-uint256 15
 0x000000000000000000000000000000000000000000000000000000000000000f
+```
+
+<br>
+
+---
+
+#### `--to-unit`
+
+```ignore
+cast --to-uint256 [ARGS]
+```
+
+Where `[ARGS]` are `<VALUE>` `<UNIT>`
+
+Convert a number into a specified unit: ether, gwei or wei (default: wei).
+
+##### Example
+
+```bash
+$ cast --to-unit 1gwei ether
+0.000000001000000000
 ```
 
 <br>
@@ -427,6 +529,26 @@ $ cast 4byte-decode 0x1F1F897F676d0000000000000000000000000000000000000000000000
 
 ---
 
+#### `4byte-event`
+
+```ignore
+cast 4byte-event <TOPIC>
+```
+
+Queries https://4byte.directory for the provided event topic
+
+##### Example
+
+```bash
+$ cast 4byte-event 0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef
+Transfer(address,address,uint256)
+
+```
+
+<br>
+
+---
+
 #### `abi-encode`
 
 ```ignore
@@ -440,6 +562,26 @@ Endcode the arguments with the function signature using ABI, exculding the selec
 ```bash
 $ cast abi-encode "fulfillRandomness(bytes32,uint256)" 0x676d000000000000000000000000000000000000000000000000000000000000 999
 0x676d00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003e7
+```
+
+<br>
+
+---
+
+#### `access-list`
+
+```ignore
+cast access-list [OPTIONS] <ADDRESS> <SIG> [ARGS]...
+```
+
+Create an access list for a transaction.  
+The node must support the `eth_createAccesList` json-RPC method.
+
+##### Example
+
+```bash
+$ cast access-list --rpc-url <your_rpc_url> 0x6b175474e89094c44da98b954eedeac495271d0f "totalSupply()(uint256)"
+prints the access list here...
 ```
 
 <br>
@@ -660,6 +802,27 @@ $ cast chain-id --rpc-url <your_rpc_url>
 
 ---
 
+#### `client`
+
+```ignore
+cast client --rpc-url <RPC_URL>
+```
+
+env: `ETH_RPC_URL`
+
+Return the node's client version
+
+##### Example
+
+```bash
+$ cast client --rpc-url <your_rpc_url>
+Geth/v1.10.15-omnibus-hotfix-f4decf48/linux-amd64/go1.17.6
+```
+
+<br>
+
+---
+
 #### `code`
 
 ```ignore
@@ -704,6 +867,29 @@ prints the bash completions script here...
 
 ---
 
+#### `compute-address`
+
+```ignore
+cast compute-address [OPTIONS] --rpc-url <RPC_URL> <ADDRESS>
+```
+
+Where `[OPTIONS]` is `--nonce`.  
+ (If a nonce is given, calculates from that nonce instead of fetching `<ADDRESS>`'s nonce from the node. )
+
+Computes the resulting address if `<ADDRESS>` were to create a new contract.    
+
+
+##### Example
+
+```bash
+$ cast compute-address --rpc-url <your_rpc_url>  0xd8da6bf26964af9d7eed9e03e53415d37aa96045 --nonce 3
+Computed Address: 0xa62d8f8b880086bfefc1cef636168c22403726d4
+```
+
+<br>
+
+---
+
 #### `estimate`
 
 ```ignore
@@ -734,6 +920,47 @@ Estimate the gas cost of a transaction.
 ```bash
 $ cast estimate --from 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045 0xc18360217d8f7ab5e7c516566761ea12ce7f9d72 "transfer(address,uint)(bool)" 0x15322B546e31F5Bfe144C4ae133A9Db6F0059fe3 1000000000000000000 --rpc-url <your_rpc_url>
 90677
+```
+
+<br>
+
+---
+
+#### `etherscan-source`
+
+```ignore
+cast etherscan-source [OPTIONS] --etherscan-api-key <ETHERSCAN_API_KEY> <ADDRESS>
+```
+
+Where `[OPTIONS]` are:  
+- `-c, --chain <INNER>` env: `CHAIN`   
+    Possible values: 
+    - `mainnet`
+    - `ropsten`
+    - `rinkeby`
+    - `goerli`
+    - `kovan`
+    - `xdai`
+    - `polygon`
+    - `polygon_mumbai`
+    - `avalanche`
+    - `avalanche_fuji`
+    - `sepolia`
+    - `moonbeam`
+    - `moonbeam_dev`
+    - `moonriver`
+    - `optimism`
+    - `optimism-kovan`
+- `-d <DIRECTORY>` (output directory to expand source tree)
+- `--etherscan-api-key <ETHERSCAN_API_KEY>` env: `ETHERSCAN_API_KEY`
+
+Prints the source code of the contract, fetched from Etherscan.
+
+##### Example
+
+```bash
+$ cast etherscan-source --etherscan-api-key  <your_api_key> 0x6b175474e89094c44da98b954eedeac495271d0f
+prints the DAI token code here...
 ```
 
 <br>
@@ -776,6 +1003,112 @@ Print current gas price of target chain.
 ```bash
 $ cast gas-price --rpc-url <your_rpc_url>
 89367836498
+```
+
+<br>
+
+---
+
+#### `help`
+
+```ignore
+cast help <SUBCOMMAND>
+```
+
+Print the `cast` help message or the help message of `<SUBCOMMAND>` if provided.  
+`cast help` is also also available with the `--help` flag
+
+##### Examples
+
+```ignore
+$ cast help --max-uint
+cast---max-uint 
+Maximum u256 value
+
+USAGE:
+    cast --max-uint
+
+OPTIONS:
+    -h, --help    Print help information
+```
+```ignore
+$ cast --max-uint --help
+same as above ...
+```
+
+<br>
+
+---
+
+#### `index`
+
+```ignore
+cast index <FROM_TYPE> <TO_TYPE> <FROM_VALUE> <SLOT_NUMBER>
+```
+
+Get the storage slot value for a solidity-style mapping.
+
+Where:   
+- `<FROM_TYPE>`      is the mapping key type,  
+- `<TO_TYPE>`        is the mapping value type,  
+- `<FROM_VALUE>`     is the value,  
+- `<SLOT_NUMBER>`    is the storage slot of the mapping  
+
+##### Example
+
+```bash
+$ cast index uint uint 1 1
+0xcc69885fda6bcc1a4ace058b4a62bf5e179ea78fd58a1ccd71c22cc9b688792f
+```
+
+<br>
+
+---
+
+#### `interface`
+
+```ignore
+cast interface [OPTIONS] <PATH_OR_ADDRESS>
+```
+
+Where `[OPTIONS]` are:  
+- `-c, --chain <INNER>` env: `CHAIN`   
+    Possible values: 
+    - `mainnet`
+    - `ropsten`
+    - `rinkeby`
+    - `goerli`
+    - `kovan`
+    - `xdai`
+    - `polygon`
+    - `polygon_mumbai`
+    - `avalanche`
+    - `avalanche_fuji`
+    - `sepolia`
+    - `moonbeam`
+    - `moonbeam_dev`
+    - `moonriver`
+    - `optimism`
+    - `optimism-kovan`
+- `-e <ETHERSCAN_API_KEY>` (etherscan API key) env:` ETHERSCAN_API_KEY`
+- `-h, --help` (Print help information)
+- -`o <OUTPUT_LOCATION>` (Path to output file. Defaults to stdout)
+- `-p, --pragma <PRAGMA>` (pragma version [default: ^0.8.10])  
+
+
+Generate a contract's interface from ABI.
+
+##### Example
+
+```bash
+$ cast interface -e <your_etherscan_api_key> 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
+pragma solidity ^0.8.10;
+
+interface WETH9 {
+    event Approval(address indexed src, address indexed guy, uint256 wad);
+    event Deposit(address indexed dst, uint256 wad);
+    event Transfer(address indexed src, address indexed dst, 
+prints the rest of the WETH interface ...
 ```
 
 <br>
@@ -866,6 +1199,31 @@ $ cast nonce --rpc-url <your_rpc_url> 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045
 
 ---
 
+#### `pretty-calldata`
+
+```ignore
+cast pretty-calldata [OPTIONS] <CALLDATA>
+```
+
+Where `[OPTIONS]` is `-o, --offline` (Skips the 4byte directory lookup)
+
+Pretty prints calldata and gets the function signature from 4byte.directoy
+
+##### Example
+
+```bash
+$ cast pretty-calldata 0xa9059cbb0000000000000000000000000cfb686e114d478b055ce8614621f8bb62f70360000000000000000000000000000000000000000000000002b5e3af16b1880000 -o
+
+ Method: a9059cbb
+ ------------
+ [0]:  0000000000000000000000000cfb686e114d478b055ce8614621f8bb62f70360
+ [1]:  000000000000000000000000000000000000000000000002b5e3af16b1880000
+```
+
+<br>
+
+---
+
 #### `proof`
 
 ````ignore
@@ -884,6 +1242,72 @@ $ cast proof --rpc-url <rpc-url> 0xED5AF388653567Af2F388E6224dC7C4b3241C544 1
 ```
 
 This will output a JSON object of the storage proof (inluding the `key`, `proof`, and `value`) as well as other information such as the `address`, `balance`, and `nonce`.
+
+<br>
+
+---
+
+#### `publish`
+
+````ignore
+cast publish [OPTIONS] <RAW_TX>
+````
+env: `ETH_RPC_URL`
+
+Where `[OPTIONS]` are:
+- `--cast-async` env: `CAST_ASYNC`
+- `--chain <CHAIN>` (default: mainnet) env: `CHAIN`
+- `--etherscan-api-key <ETHERSCAN_API_KEY>` env: `ETHERSCAN_API_KEY`
+- `--from <FROM>` (the sender account) env: `ETH_FROM`
+- `--flashbots` (to use a flashbots RPC URL: https://rpc.flashbots.net)
+- `--hd-path <HD_PATH>` (derivation path for your hardware wallet, trezor or ledger)
+- `--interactive` (interactive prompt to insert your private key)
+- `--keystore <KEYSTORE_PATH>` (path to your keystore folder / file) env: `ETH_KEYSTORE`
+- `--ledger` (use your Ledger hardware wallet)
+- `--mnemonic_index <MNEMONIC_INDEX>` (your index in the standard hd path, default: 0)
+- `--mnemonic-path <MNEMONIC_PATH>` (path to your mnemonic file)
+- `--password <KEYSTORE_PASSWORD>` (your keystore password)
+- `--private-key <PRIVATE_KEY>` (your private key string)
+- `--rpc-url <RPC_URL>` (The tracing / archival node's URL) env: `ETH_RPC_URL`
+- `--trezor` (use your Trezor hardware wallet)
+
+Publish a pre-signed transaction to the network.
+
+##### Example 
+
+```bash
+$ cast publish --from <your_address> $(cast call <address> <sig> <args> --rpc-url <your_rpc_url>) --rpc-url <your_rpc_url> 
+
+prints the transaction receipt...
+```
+
+<br>
+
+---
+
+#### `receipt`
+
+```ignore
+cast receipt [OPTIONS] --rpc-url <RPC_URL> <HASH> [FIELD]
+```
+
+Where `[OPTIONS]` are:
+- -c, --confirmations <CONFIRMATIONS>  (the number of confirmations until the receipt is fetched [default: 1])
+- --cast-async env: [CAST_ASYNC]
+- -h, --help  (Print help information)
+- -j, --json   
+- --rpc-url <RPC_URL> env: [ETH_RPC_URL]
+
+env: `ETH_RPC_URL`, `CAST_ASYNC`
+
+Prints out the transaction receipt information for tx `<HASH>`
+
+##### Example
+
+```bash
+$ cast receipt --rpc-url <your_rpc_url> 0xc31d7e7e85cab1d38ce1b8ac17e821ccd47dbde00f9d57f2bd8613bff9428396 gasUsed
+0x2e8777
+```
 
 <br>
 
@@ -942,6 +1366,25 @@ $ cast send --chain kovan --from <your_address> --interactive 0xd0A1E359811322d9
 Insert private key:
 
 prints the transaction receipt...
+```
+
+<br>
+
+---
+
+#### `sig`
+
+```ignore
+cast sig <SIG>
+```
+
+Prints the 4 byte function selector of the given human readable function signature.
+
+##### Example
+
+```bash
+$ cast sig "transfer(address,uint)"
+0xa9059cbb
 ```
 
 <br>
