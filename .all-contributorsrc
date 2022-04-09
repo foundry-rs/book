@@ -310,6 +310,15 @@
       "contributions": [
         "maintenance"
       ]
+    },
+    {
+      "login": "djh58",
+      "name": "Dan Hepworth",
+      "avatar_url": "https://avatars.githubusercontent.com/u/77956106?v=4",
+      "profile": "https://github.com/djh58",
+      "contributions": [
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7,
