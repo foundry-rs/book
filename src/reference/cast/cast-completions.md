@@ -20,6 +20,10 @@ Supported shells are:
 - powershell
 - zsh
 
+### OPTIONS
+
+{{#include common-options.md}}
+
 ### EXAMPLES
 
 1. Generate shell completions script for zsh:

@@ -232,12 +232,7 @@ This program is a set of tools to interact with Ethereum and perform conversions
 `--version`  
 &nbsp;&nbsp;&nbsp;&nbsp;Print version info and exit.
 
-#### Common Options
-
-`-h`  
-`--help`  
-&nbsp;&nbsp;&nbsp;&nbsp;Prints help information.
-
+{{#include common-options.md}}
 
 ### EXAMPLES
 
