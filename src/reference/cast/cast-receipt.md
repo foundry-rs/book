@@ -6,7 +6,7 @@ cast-receipt - Get the transaction receipt for a transaction.
 
 ### SYNOPSIS
 
-``cast receipt`` [*options*] *tx hash* [*field*]
+``cast receipt`` [*options*] *tx_hash* [*field*]
 
 ### DESCRIPTION
 
