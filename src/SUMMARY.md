@@ -148,6 +148,7 @@
       - [cast access-list](./reference/cast/cast-access-list.md)
       - [cast compute-address](./reference/cast/cast-compute-address.md)
       - [cast interface](./reference/cast/cast-interface.md)
+      - [cast --concat-hex](./reference/cast/cast--concat-hex.md)
       - [cast --max-int](./reference/cast/cast--max-int.md)
       - [cast --min-uint](./reference/cast/cast--min-uint.md)
       - [cast --max-uint](./reference/cast/cast--max-uint.md)
