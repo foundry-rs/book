@@ -16,7 +16,7 @@ The argument *who* can be an ENS name or an address.
 
 ### OPTIONS
 
-#### Receipt Options
+#### Query Options
 
 `-B` *block*  
 `--block` *block*  
