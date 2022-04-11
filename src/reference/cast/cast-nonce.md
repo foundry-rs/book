@@ -38,4 +38,4 @@ The argument *who* can be an ENS name or an address.
 
 ### SEE ALSO
 
-[cast](./cast.md)
+[cast](./cast.md), [cast balance](./cast-balance.md)
