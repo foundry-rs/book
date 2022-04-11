@@ -6,5 +6,5 @@
 - [cast 4byte-event](./cast-4byte-event.md)
 - [cast calldata](./cast-calldata.md)
 - [cast pretty-calldata](./cast-pretty-calldata.md)
-- [cast --abi-encode](./cast--abi-encode.md)
+- [cast --abi-decode](./cast--abi-decode.md)
 - [cast --calldata-decode](./cast--calldata-decode.md)
