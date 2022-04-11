@@ -122,7 +122,7 @@
     - [Etherscan Commands](./reference/cast/etherscan-commands.md)
       - [cast etherscan-source](./reference/cast/cast-etherscan-source.md)
     - [ABI Commands](./reference/cast/abi-commands.md)
-      - [cast abi-encode](./reference/cast/abi-encode.md)
+      - [cast abi-encode](./reference/cast/cast-abi-encode.md)
       - [cast 4byte](./reference/cast/cast-4byte.md)
       - [cast 4byte-decode](./reference/cast/cast-4byte-decode.md)
       - [cast 4byte-event](./reference/cast/cast-4byte-event.md)

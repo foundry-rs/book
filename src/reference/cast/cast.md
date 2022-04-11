@@ -110,7 +110,7 @@ This program is a set of tools to interact with Ethereum and perform conversions
 
 #### ABI Commands
 
-[cast abi-encode](./abi-encode.md)  
+[cast abi-encode](./cast-abi-encode.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;ABI encode the given function arguments, excluding the selector.
 
 [cast 4byte](./cast-4byte.md)  
