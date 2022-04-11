@@ -14,8 +14,6 @@ Get the block number closest to the provided timestamp.
 
 ### OPTIONS
 
-#### Query Options
-
 #### RPC Options
 
 {{#include rpc-url-option.md}}
