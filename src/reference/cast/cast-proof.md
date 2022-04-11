@@ -12,6 +12,8 @@ cast-proof - Generate a storage proof for a given storage slot.
 
 Generate a storage proof for a given storage slot.
 
+The address (*address*) can be an ENS name or an address.
+
 The displayed output is a JSON object with the following keys:
 
 - `accountProof`: Proof for the account itself
