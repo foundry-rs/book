@@ -22,6 +22,10 @@ If *field* is specified, then only the given field of the receipt is displayed.
 &nbsp;&nbsp;&nbsp;&nbsp;Do not wait for the transaction receipt if it does not exist yet.  
 &nbsp;&nbsp;&nbsp;&nbsp;Environment: `CAST_ASYNC`
 
+`-c` *confirmations*  
+`--confirmations` *confirmations*  
+&nbsp;&nbsp;&nbsp;&nbsp;Wait a number of confirmations before exiting. Default: `1`.
+
 #### RPC Options
 
 {{#include rpc-url-option.md}}
