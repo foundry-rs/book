@@ -40,4 +40,4 @@ Get the timestamp of a block.
 
 ### SEE ALSO
 
-[cast](./cast.md), [cast block](./cast-block.md)
+[cast](./cast.md), [cast block](./cast-block.md), [cast basefee](./cast-basefee.md)
