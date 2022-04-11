@@ -17,7 +17,6 @@
 - [cast find-block](./cast-find-block.md)
 - [cast gas-price](./cast-gas-price.md)
 - [cast estimate](./cast-estimate.md)
-- [cast index](./cast-index.md)
 - [cast client](./cast-client.md)
 - [cast code](./cast-code.md)
 - [cast chain](./cast-chain.md)
