@@ -36,4 +36,4 @@ Get the raw value of a contract's storage slot.
 
 ### SEE ALSO
 
-[cast](./cast.md)
+[cast](./cast.md), [cast proof](./cast-proof.md)
