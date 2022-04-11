@@ -6,7 +6,7 @@ cast-basefee - Get the basefee of a block.
 
 ### SYNOPSIS
 
-``cast age`` [*options*]
+``cast basefee`` [*options*] *block*
 
 ### DESCRIPTION
 
