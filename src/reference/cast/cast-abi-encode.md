@@ -12,7 +12,7 @@ cast-abi-encode - ABI encode the given function arguments, excluding the selecto
 
 ABI encode the given function, excluding the selector.
 
-{{#include sig-description.md}}
+The signature (*sig*) is a fragment in the form `<function name>(<types...>)`.
 
 ### OPTIONS
 
@@ -26,4 +26,4 @@ ABI encode the given function, excluding the selector.
 
 ### SEE ALSO
 
-[cast](./cast.md)
+[cast](./cast.md), [cast calldata](./cast-calldata.md)
