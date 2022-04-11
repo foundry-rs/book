@@ -32,6 +32,11 @@ This program is a set of tools to interact with Ethereum and perform conversions
 [cast chain](./cast-chain.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Get the symbolic name of the current chain.
 
+[cast client](./cast-client.md)  
+&nbsp;&nbsp;&nbsp;&nbsp;Get the current client version.
+
+#### Transaction Commands
+
 [cast publish](./cast-publish.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Publish a raw transaction to the network.
 
@@ -41,35 +46,16 @@ This program is a set of tools to interact with Ethereum and perform conversions
 [cast send](./cast-send.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Sign and publish a transaction.
 
-[cast nonce](./cast-nonce.md)  
-&nbsp;&nbsp;&nbsp;&nbsp;Get the nonce for an account.
-
-[cast age](./cast-age.md)  
-&nbsp;&nbsp;&nbsp;&nbsp;Get the timestamp of a block.
-
-[cast balance](./cast-balance.md)  
-&nbsp;&nbsp;&nbsp;&nbsp;Get the balance of an account in wei.
-
-[cast basefee](./cast-basefee.md)  
-&nbsp;&nbsp;&nbsp;&nbsp;Get the basefee of a block.
-
-[cast block](./cast-block.md)  
-&nbsp;&nbsp;&nbsp;&nbsp;Get information about a block.
-
-[cast block-number](./cast-block-number.md)  
-&nbsp;&nbsp;&nbsp;&nbsp;Get the latest block number.
-
 [cast call](./cast-call.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Perform a call on an account without publishing a transaction.
-
-[cast storage](./cast-storage.md)  
-&nbsp;&nbsp;&nbsp;&nbsp;Get the raw value of a contract's storage slot.
 
 [cast tx](./cast-tx.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Get information about a transaction.
 
-[cast proof](./cast-proof.md)  
-&nbsp;&nbsp;&nbsp;&nbsp;Generate a storage proof for a given storage slot.
+[cast estimate](./cast-estimate.md)  
+&nbsp;&nbsp;&nbsp;&nbsp;Estimate the gas cost of a transaction.
+
+#### Block Commands
 
 [cast find-block](./cast-find-block.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Get the block number closest to the provided timestamp.
@@ -77,11 +63,31 @@ This program is a set of tools to interact with Ethereum and perform conversions
 [cast gas-price](./cast-gas-price.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Get the current gas price.
 
-[cast estimate](./cast-estimate.md)  
-&nbsp;&nbsp;&nbsp;&nbsp;Estimate the gas cost of a transaction.
+[cast block-number](./cast-block-number.md)  
+&nbsp;&nbsp;&nbsp;&nbsp;Get the latest block number.
 
-[cast client](./cast-client.md)  
-&nbsp;&nbsp;&nbsp;&nbsp;Get the current client version.
+[cast basefee](./cast-basefee.md)  
+&nbsp;&nbsp;&nbsp;&nbsp;Get the basefee of a block.
+
+[cast block](./cast-block.md)  
+&nbsp;&nbsp;&nbsp;&nbsp;Get information about a block.
+
+[cast age](./cast-age.md)  
+&nbsp;&nbsp;&nbsp;&nbsp;Get the timestamp of a block.
+
+#### Account Commands
+
+[cast balance](./cast-balance.md)  
+&nbsp;&nbsp;&nbsp;&nbsp;Get the balance of an account in wei.
+
+[cast storage](./cast-storage.md)  
+&nbsp;&nbsp;&nbsp;&nbsp;Get the raw value of a contract's storage slot.
+
+[cast proof](./cast-proof.md)  
+&nbsp;&nbsp;&nbsp;&nbsp;Generate a storage proof for a given storage slot.
+
+[cast nonce](./cast-nonce.md)  
+&nbsp;&nbsp;&nbsp;&nbsp;Get the nonce for an account.
 
 [cast code](./cast-code.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Get the bytecode of a contract.
