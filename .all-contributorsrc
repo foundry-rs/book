@@ -319,6 +319,15 @@
       "contributions": [
         "maintenance"
       ]
+    },
+    {
+      "login": "TobiasBK",
+      "name": "tobias",
+      "avatar_url": "https://avatars.githubusercontent.com/u/61471326?v=4",
+      "profile": "https://tobiasbk.github.io",
+      "contributions": [
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7,
