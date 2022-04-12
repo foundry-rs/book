@@ -26,13 +26,9 @@ Convert a private key to an address.
 
 ### EXAMPLES
 
-1. Create a new keypair without saving it to a keystore:
+1. Get the address of the keypair in `keystore.json`:
 
-       cast wallet new
-
-2. Create a new keypair and save it in `keystore.json`:
-
-       cast wallet new keystore.json
+       cast wallet address --keystore keystore.json
 
 ### SEE ALSO
 
