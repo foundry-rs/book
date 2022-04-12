@@ -24,6 +24,13 @@ Get the automatically inferred remappings for the project.
 
 {{#include common-options.md}}
 
+### EXAMPLES
+
+1. Create a `remappings.txt` file from the inferred remappings:
+    ```sh
+    forge remappings > remappings.txt
+    ```
+
 ### SEE ALSO
 
 [forge](./forge.md)
