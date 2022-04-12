@@ -26,7 +26,7 @@ The docker image can be used in two primary ways:
 
 We will cover both, but let's start by taking a look at interfacing with foundry using docker. This is also a good test that your local installation worked!
 
-We can run any of the `cast` [commands](/reference/cast.html) against our docker image. Let's fetch the latest block information:
+We can run any of the `cast` [commands](/reference/cast/) against our docker image. Let's fetch the latest block information:
 ```sh
 $ docker run foundry "cast block --rpc-url $RPC_URL latest"
 baseFeePerGas        "0xb634241e3"

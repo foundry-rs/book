@@ -28,7 +28,7 @@ Learn how to use `cast` to interact with smart contracts, send transactions, and
 
 Guides on configuring Foundry.
 
-- [Configuring with `foundry.toml`](./config)
+- [Configuring with `foundry.toml`](./config/)
 - [Continuous Integration](./config/continous-integration.md)
 - [Integrating with VSCode](./config/vscode.md)
 - [Shell Autocompletion](./config/shell-autocompletion.md)
@@ -44,10 +44,10 @@ Tutorials on building smart contracts with Foundry.
 
 References, troubleshooting and more.
 
-- [`forge` Reference]()
-- [`cast` Reference](./reference/cast.md)
+- [`forge` Reference](./reference/forge/)
+- [`cast` Reference](./reference/cast/)
 - [`foundry.toml` Reference](./reference/config.md)
 - [`ds-test` Reference](./reference/ds-test.md)
-- [Cheatcodes Reference](./cheatcodes)
+- [Cheatcodes Reference](./cheatcodes/)
 
 > You can also check out [Awesome Foundry](https://github.com/crisgarner/awesome-foundry), a curated list of awesome Foundry resources, tutorials, tools and libraries!

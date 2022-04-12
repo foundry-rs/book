@@ -27,4 +27,4 @@ Let's use `cast` to retrieve the total supply of the DAI token:
 
 > 📚 **Reference**
 > 
-> See the [`cast` Reference](../reference/cast.md) for a complete overview of all the available subcommands.
+> See the [`cast` Reference](../reference/cast/) for a complete overview of all the available subcommands.
