@@ -1,6 +1,6 @@
 ## 📖 Foundry Book
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-34-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-35-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 A book on all things Foundry. [Read now](https://book.getfoundry.sh).
@@ -72,6 +72,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/x676f64"><img src="https://avatars.githubusercontent.com/u/53136615?v=4?s=100" width="100px;" alt=""/><br /><sub><b>0xTaylor</b></sub></a><br /><a href="#maintenance-x676f64" title="Maintenance">🚧</a></td>
     <td align="center"><a href="https://github.com/0xCookedRice"><img src="https://avatars.githubusercontent.com/u/86559662?v=4?s=100" width="100px;" alt=""/><br /><sub><b>0xCookedRice</b></sub></a><br /><a href="#maintenance-0xCookedRice" title="Maintenance">🚧</a></td>
     <td align="center"><a href="https://github.com/djh58"><img src="https://avatars.githubusercontent.com/u/77956106?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Dan Hepworth</b></sub></a><br /><a href="#maintenance-djh58" title="Maintenance">🚧</a></td>
+    <td align="center"><a href="https://tobiasbk.github.io"><img src="https://avatars.githubusercontent.com/u/61471326?v=4?s=100" width="100px;" alt=""/><br /><sub><b>tobias</b></sub></a><br /><a href="#maintenance-TobiasBK" title="Maintenance">🚧</a></td>
   </tr>
 </table>
 
