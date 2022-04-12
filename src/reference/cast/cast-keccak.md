@@ -6,7 +6,7 @@ cast-keccak - Hash arbitrary data using keccak-256.
 
 ### SYNOPSIS
 
-``cast hash`` [*options*] *data*
+``cast keccak`` [*options*] *data*
 
 ### DESCRIPTION
 
