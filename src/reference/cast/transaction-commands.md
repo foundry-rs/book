@@ -6,3 +6,4 @@
 - [cast call](./cast-call.md)
 - [cast tx](./cast-tx.md)
 - [cast estimate](./cast-estimate.md)
+- [cast access-list](./cast-access-list.md)

@@ -2,7 +2,6 @@
 
 - [cast sig](./cast-sig.md)
 - [cast keccak](./cast-keccak.md)
-- [cast access-list](./cast-access-list.md)
 - [cast compute-address](./cast-compute-address.md)
 - [cast interface](./cast-interface.md)
 - [cast index](./cast-index.md)

@@ -55,6 +55,9 @@ This program is a set of tools to interact with Ethereum and perform conversions
 [cast estimate](./cast-estimate.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Estimate the gas cost of a transaction.
 
+[cast access-list](./cast-access-list.md)  
+&nbsp;&nbsp;&nbsp;&nbsp;Create an access list for a transaction.
+
 #### Block Commands
 
 [cast find-block](./cast-find-block.md)  
@@ -182,9 +185,6 @@ This program is a set of tools to interact with Ethereum and perform conversions
 
 [cast keccak](./cast-keccak.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Hash arbitrary data using keccak-256.
-
-[cast access-list](./cast-access-list.md)  
-&nbsp;&nbsp;&nbsp;&nbsp;Create an access list for a transaction.
 
 [cast compute-address](./cast-compute-address.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Compute the contract address from a given nonce and deployer address.
