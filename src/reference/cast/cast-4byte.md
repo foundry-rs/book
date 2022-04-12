@@ -19,8 +19,9 @@ Get the function signatures for the given selector from <https://4byte.directory
 ### EXAMPLES
 
 1. Get the function signature for the selector `0x8cc5ce99`:
-
-       cast 4byte 0x8cc5ce99
+    ```sh
+    cast 4byte 0x8cc5ce99
+    ```
 
 ### SEE ALSO
 

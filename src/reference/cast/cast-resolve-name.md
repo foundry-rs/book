@@ -31,12 +31,14 @@ If `--verify` is passed, then a reverse lookup is performed after the normal loo
 ### EXAMPLES
 
 1. Get the address for an ENS name.
-
-       cast resolve-name vitalik.eth
+    ```sh
+    cast resolve-name vitalik.eth
+    ```
 
 2. Perform both a normal and a reverse lookup:
-
-       cast resolve-name --verify vitalik.eth
+    ```sh
+    cast resolve-name --verify vitalik.eth
+    ```
 
 ### SEE ALSO
 

@@ -23,12 +23,14 @@ Get the Ethereum [chain ID][chain-id] from the RPC endpoint we are connected to.
 ### EXAMPLES
 
 1. Get the chain ID when talking to `$RPC`:
-
-       cast chain-id --rpc-url $RPC
+    ```sh
+    cast chain-id --rpc-url $RPC
+    ```
 
 2. Get the chain ID when `$ETH_RPC_URL` is set:
-
-       cast chain-id
+    ```sh
+    cast chain-id
+    ```
 
 ### SEE ALSO
 

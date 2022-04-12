@@ -23,8 +23,9 @@ Get the latest block number.
 ### EXAMPLES
 
 1. Get the latest block number:
-
-       cast block-number
+    ```sh
+    cast block-number
+    ```
 
 ### SEE ALSO
 

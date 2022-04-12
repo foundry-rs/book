@@ -15,12 +15,14 @@ Prints a help message for the given command.
 ### EXAMPLES
 
 1. Get help for a command:
-
-       cast help call
+    ```sh
+    cast help call
+    ```
 
 2. Help is also available with the `--help` flag:
-
-       cast call --help
+    ```sh
+    cast call --help
+    ```
 
 ### SEE ALSO
 

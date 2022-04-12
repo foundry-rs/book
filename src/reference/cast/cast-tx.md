@@ -27,12 +27,14 @@ If *field* is specified, then only the given field of the transaction is display
 ### EXAMPLES
 
 1. Get information about a transaction:
-
-       cast tx $TX_HASH
+    ```sh
+    cast tx $TX_HASH
+    ```
 
 2. Get the sender of a transaction:
-
-       cast tx $TX_HASH from
+    ```sh
+    cast tx $TX_HASH from
+    ```
 
 ### SEE ALSO
 

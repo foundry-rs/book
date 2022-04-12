@@ -33,8 +33,9 @@ The argument *who* can be an ENS name or an address.
 ### EXAMPLES
 
 1. Get the nonce of beer.eth
-
-       cast nonce beer.eth
+    ```sh
+    cast nonce beer.eth
+    ```
 
 ### SEE ALSO
 

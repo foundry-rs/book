@@ -38,12 +38,14 @@ If an address is provided, then the interface is generated from the ABI of the a
 ### EXAMPLES
 
 1. Generate an interface from a file:
-
-       cast interface ./path/to/abi.json
+    ```sh
+    cast interface ./path/to/abi.json
+    ```
 
 2. Generate an interface using Etherscan:
-
-       cast interface -o IWETH.sol 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
+    ```sh
+    cast interface -o IWETH.sol 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
+    ```
 
 ### SEE ALSO
 

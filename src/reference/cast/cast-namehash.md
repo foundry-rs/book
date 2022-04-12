@@ -19,8 +19,9 @@ Calculate the ENS namehash of a name.
 ### EXAMPLES
 
 1. Calculate the namehash of an ENS name.
-
-       cast namehash vitalik.eth
+    ```sh
+    cast namehash vitalik.eth
+    ```
 
 ### SEE ALSO
 

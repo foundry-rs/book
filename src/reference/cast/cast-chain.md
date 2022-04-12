@@ -23,12 +23,14 @@ Get the symbolic chain name from the RPC endpoint we are connected to.
 ### EXAMPLES
 
 1. Get the chain name when talking to `$RPC`:
-
-       cast chain --rpc-url $RPC
+    ```sh
+    cast chain --rpc-url $RPC
+    ```
 
 2. Get the chain name when `$ETH_RPC_URL` is set:
-
-       cast chain
+    ```sh
+    cast chain
+    ```
 
 ### SEE ALSO
 

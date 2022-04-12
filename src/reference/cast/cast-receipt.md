@@ -37,12 +37,14 @@ If *field* is specified, then only the given field of the receipt is displayed.
 ### EXAMPLES
 
 1. Get a transaction receipt:
-
-       cast receipt $TX_HASH
+    ```sh
+    cast receipt $TX_HASH
+    ```
 
 2. Get the block number the transaction was included in:
-
-       cast receipt $TX_HASH blockNumber
+    ```sh
+    cast receipt $TX_HASH blockNumber
+    ```
 
 ### SEE ALSO
 

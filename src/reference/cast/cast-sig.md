@@ -21,8 +21,9 @@ The signature (*sig*) is a fragment in the form `<function name>(<types...>)`.
 ### EXAMPLES
 
 1. Get the selector for the function `transfer(address,uint256)`:
-
-       cast sig "transfer(address,uint256)"
+    ```sh
+    cast sig "transfer(address,uint256)"
+    ```
 
 ### SEE ALSO
 

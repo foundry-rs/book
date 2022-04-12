@@ -33,8 +33,9 @@ The address (*address*) can be an ENS name or an address.
 ### EXAMPLES
 
 1. Get the value of slot 0 on the WETH contract.
-
-       cast storage 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2 0
+    ```sh
+    cast storage 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2 0
+    ```
 
 ### SEE ALSO
 

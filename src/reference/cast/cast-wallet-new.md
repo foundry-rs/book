@@ -33,12 +33,14 @@ If *path* is specified, then the new keypair will be written to a JSON keystore 
 ### EXAMPLES
 
 1. Create a new keypair without saving it to a keystore:
-
-       cast wallet new
+    ```sh
+    cast wallet new
+    ```
 
 2. Create a new keypair and save it in `keystore.json`:
-
-       cast wallet new keystore.json
+    ```sh
+    cast wallet new keystore.json
+    ```
 
 ### SEE ALSO
 

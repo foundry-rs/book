@@ -29,14 +29,16 @@ The signature (*sig*) is a fragment in the form `<function name>(<types...>)(<ty
 ### EXAMPLES
 
 1. Decode output data for a `balanceOf` call:
-
-       cast --abi-decode "balanceOf(address)(uint256)" \
-        0x000000000000000000000000000000000000000000000000000000000000000a
+    ```sh
+    cast --abi-decode "balanceOf(address)(uint256)" \
+      0x000000000000000000000000000000000000000000000000000000000000000a
+    ```
 
 2. Decode input data for a `transfer` call:
-
-       cast --abi-decode --input "transfer(address,uint256)" \
-        0xa9059cbb000000000000000000000000e78388b4ce79068e89bf8aa7f218ef6b9ab0e9d0000000000000000000000000000000000000000000000000008a8e4b1a3d8000
+    ```sh
+    cast --abi-decode --input "transfer(address,uint256)" \
+      0xa9059cbb000000000000000000000000e78388b4ce79068e89bf8aa7f218ef6b9ab0e9d0000000000000000000000000000000000000000000000000008a8e4b1a3d8000
+    ```
 
 ### SEE ALSO
 

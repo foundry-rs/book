@@ -43,12 +43,14 @@ The destination (*to*) can be an ENS name or an address.
 ### EXAMPLES
 
 1. Send some ether to Vitalik using your Ledger:
-
-       cast send --ledger vitalik.eth --value 0.1ether
+    ```sh
+    cast send --ledger vitalik.eth --value 0.1ether
+    ```
 
 2. Call `deposit(address token, uint256 amount)` on a contract:
-
-       cast send --ledger 0x... "deposit(address,uint256)" 0x... 1
+    ```sh
+    cast send --ledger 0x... "deposit(address,uint256)" 0x... 1
+    ```
 
 ### SEE ALSO
 

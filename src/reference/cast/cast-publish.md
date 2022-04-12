@@ -27,12 +27,14 @@ Publish a raw pre-signed transaction to the network.
 ### EXAMPLES
 
 1. Publish a pre-signed transaction:
-
-       cast publish --rpc-url $RPC $TX
+    ```sh
+    cast publish --rpc-url $RPC $TX
+    ```
 
 2. Publish a pre-signed transaction with flashbots.
-
-       cast publish --flashbots $TX
+    ```sh
+    cast publish --flashbots $TX
+    ```
 
 ### SEE ALSO
 

@@ -21,8 +21,9 @@ The signature (*sig*) is a fragment in the form `<function name>(<types...>)`.
 ### EXAMPLES
 
 1. ABI-encode the arguments for a call to `someFunc(address,uint256)`:
-
-       cast calldata "someFunc(address,uint256)" 0x... 1
+    ```sh
+    cast calldata "someFunc(address,uint256)" 0x... 1
+    ```
 
 ### SEE ALSO
 

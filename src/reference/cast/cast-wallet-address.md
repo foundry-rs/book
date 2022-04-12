@@ -27,8 +27,9 @@ Convert a private key to an address.
 ### EXAMPLES
 
 1. Get the address of the keypair in `keystore.json`:
-
-       cast wallet address --keystore keystore.json
+    ```sh
+    cast wallet address --keystore keystore.json
+    ```
 
 ### SEE ALSO
 

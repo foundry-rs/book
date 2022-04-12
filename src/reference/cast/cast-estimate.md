@@ -31,8 +31,10 @@ The destination (*to*) can be an ENS name or an address.
 ### EXAMPLES
 
 1. Estimate the gas cost of calling `deposit()` on the WETH contract:
-
-       cast estimate 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2 --value 0.1ether "deposit()"
+    ```sh
+    cast estimate 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2 \
+      --value 0.1ether "deposit()"
+    ```
 
 ### SEE ALSO
 

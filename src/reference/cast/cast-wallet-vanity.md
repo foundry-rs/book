@@ -32,12 +32,14 @@ If `--nonce` is specified, then the command will try to generate a vanity contra
 ### EXAMPLES
 
 1. Create a new keypair that starts with `dead`:
-
-       cast wallet vanity --starts-with dead
+    ```sh
+    cast wallet vanity --starts-with dead
+    ```
 
 2. Create a new keypair ends with `beef`:
-
-       cast wallet vanity --ends-with beef
+    ```sh
+    cast wallet vanity --ends-with beef
+    ```
 
 ### SEE ALSO
 

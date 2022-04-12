@@ -19,8 +19,9 @@ Convert an integer to hex.
 ### EXAMPLES
 
 1. Convert 10 to hex:
-
-       cast --to-hex 10
+    ```sh
+    cast --to-hex 10
+    ```
 
 ### SEE ALSO
 

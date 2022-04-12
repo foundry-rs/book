@@ -31,12 +31,14 @@ Get the basefee of a block.
 ### EXAMPLES
 
 1. Get the basefee of the latest block:
-
-       cast basefee latest
+    ```sh
+    cast basefee latest
+    ```
 
 2. Get the basefee of the genesis block:
-
-       cast basefee 1
+    ```sh
+    cast basefee 1
+    ```
 
 ### SEE ALSO
 

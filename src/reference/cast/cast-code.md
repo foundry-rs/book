@@ -33,8 +33,9 @@ The contract (*address*) can be an ENS name or an address.
 ### EXAMPLES
 
 1. Get the bytecode of the WETH contract.
-
-       cast code 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
+    ```sh
+    cast code 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
+    ```
 
 ### SEE ALSO
 

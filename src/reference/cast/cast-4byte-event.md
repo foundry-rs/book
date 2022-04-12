@@ -19,8 +19,9 @@ Get the event signature for a given topic 0 from <https://4byte.directory>.
 ### EXAMPLES
 
 1. Get the event signature for a topic 0 of `0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef`:
-
-       cast 4byte-event 0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef
+    ```sh
+    cast 4byte-event 0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef
+    ```
 
 ### SEE ALSO
 

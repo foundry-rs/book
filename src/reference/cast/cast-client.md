@@ -23,9 +23,9 @@ Get the current client version.
 ### EXAMPLES
 
 1. Get the current client version:
-
-       cast client
-
+    ```sh
+    cast client
+    ```
 ### SEE ALSO
 
 [cast](./cast.md)

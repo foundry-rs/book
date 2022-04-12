@@ -27,12 +27,14 @@ Valid units are:
 ### EXAMPLES
 
 1. Convert 1000 wei to gwei
-
-       cast --to-unit 1000 gwei
+    ```sh
+    cast --to-unit 1000 gwei
+    ```
 
 2. Convert 1 eth to gwei
-
-       cast --to-unit 1ether gwei
+    ```sh
+    cast --to-unit 1ether gwei
+    ```
 
 ### SEE ALSO
 

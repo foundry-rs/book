@@ -40,10 +40,3 @@ This program is a set of tools to use, create and manage wallets.
 &nbsp;&nbsp;&nbsp;&nbsp;Print version info and exit.
 
 {{#include common-options.md}}
-
-### EXAMPLES
-
-1. Call a function on a contract:
-2. Decode raw calldata:
-3. Encode calldata:
-4. Learn about a command's options and usage:

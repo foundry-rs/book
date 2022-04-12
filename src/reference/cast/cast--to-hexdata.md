@@ -26,16 +26,19 @@ The input data (*input*) can either be:
 ### EXAMPLES
 
 1. Add 0x prefix:
-
-       cast --to-hexdata deadbeef
+    ```sh
+    cast --to-hexdata deadbeef
+    ```
 
 2. Concatenate hex values:
-
-       cast --to-hexdata "deadbeef:0xbeef"
+    ```sh
+    cast --to-hexdata "deadbeef:0xbeef"
+    ```
 
 3. Normalize hex value in `MY_VAR`:
-
-       cast --to-hexdata "@MY_VAR"
+    ```sh
+    cast --to-hexdata "@MY_VAR"
+    ```
 
 ### SEE ALSO
 

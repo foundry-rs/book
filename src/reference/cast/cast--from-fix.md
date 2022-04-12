@@ -19,8 +19,9 @@ Convert a fixed point number into an integer.
 ### EXAMPLES
 
 1. Convert 10.55 to an integer:
-
-       cast --from-fix 2 10.55
+    ```sh
+    cast --from-fix 2 10.55
+    ```
 
 ### SEE ALSO
 

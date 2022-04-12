@@ -19,8 +19,9 @@ Concatenate hex strings.
 ### EXAMPLES
 
 1. Concatenate hex strings:
-
-       cast --concat-hex 0xa 0xb 0xc
+    ```sh
+    cast --concat-hex 0xa 0xb 0xc
+    ```
 
 ### SEE ALSO
 

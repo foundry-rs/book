@@ -23,8 +23,9 @@ Get the block number closest to the provided timestamp.
 ### EXAMPLES
 
 1. Get the block number closest to New Years 2021
-
-       cast find-block 1609459200
+    ```sh
+    cast find-block 1609459200
+    ```
 
 ### SEE ALSO
 

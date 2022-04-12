@@ -243,9 +243,21 @@ This program is a set of tools to interact with Ethereum and perform conversions
 ### EXAMPLES
 
 1. Call a function on a contract:
+    ```sh
+    cast call 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2 \
+      "balanceOf(address)(uint256)" 0x...
+    ```
+
 2. Decode raw calldata:
+    ```sh
+    cast --calldata-decode "transfer(address,uint256)" \
+      0xa9059cbb000000000000000000000000e78388b4ce79068e89bf8aa7f218ef6b9ab0e9d0000000000000000000000000000000000000000000000000008a8e4b1a3d8000
+    ```
+
 3. Encode calldata:
-4. Learn about a command's options and usage:
+    ```sh
+    cast calldata "someFunc(address,uint256)" 0x... 1
+    ```
 
 ### BUGS
 

@@ -39,12 +39,14 @@ If *field* is specified, then only the given field of the block is displayed.
 ### EXAMPLES
 
 1. Get the latest block:
-
-       cast block --block latest
+    ```sh
+    cast block --block latest
+    ```
 
 2. Get the hash of the latest block:
-
-       cast block --block latest --field hash
+    ```sh
+    cast block --block latest --field hash
+    ```
 
 ### SEE ALSO
 

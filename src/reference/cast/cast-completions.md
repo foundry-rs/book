@@ -27,8 +27,9 @@ Supported shells are:
 ### EXAMPLES
 
 1. Generate shell completions script for zsh:
-
-       cast completions zsh > $HOME/.oh-my-zsh/completions/_cast
+    ```sh
+    cast completions zsh > $HOME/.oh-my-zsh/completions/_cast
+    ```
 
 ### SEE ALSO
 

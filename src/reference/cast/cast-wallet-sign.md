@@ -27,12 +27,14 @@ Sign a message.
 ### EXAMPLES
 
 1. Sign a message using a keystore:
-
-       cast wallet sign --keystore keystore.json --interactive "hello"
+    ```sh
+    cast wallet sign --keystore keystore.json --interactive "hello"
+    ```
 
 2. Sign a message using a raw private key:
-
-       cast wallet sign --private-key $PRIV_KEY "hello"
+    ```sh
+    cast wallet sign --private-key $PRIV_KEY "hello"
+    ```
 
 ### SEE ALSO
 

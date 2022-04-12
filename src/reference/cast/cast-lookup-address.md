@@ -31,12 +31,14 @@ If `--verify` is passed, then a normal lookup is performed after the reverse loo
 ### EXAMPLES
 
 1. Get the ENS name for an address.
-
-       cast lookup-address $ADDRESS
+    ```sh
+    cast lookup-address $ADDRESS
+    ```
 
 2. Perform both a reverse and a normal lookup:
-
-       cast lookup-address --verify $ADDRESS
+    ```sh
+    cast lookup-address --verify $ADDRESS
+    ```
 
 ### SEE ALSO
 

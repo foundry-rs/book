@@ -23,8 +23,9 @@ Get the current gas price.
 ### EXAMPLES
 
 1. Get the current gas price:
-
-       cast gas-price
+    ```sh
+    cast gas-price
+    ```
 
 ### SEE ALSO
 

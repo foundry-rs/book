@@ -19,8 +19,9 @@ Convert UTF8 text to hex.
 ### EXAMPLES
 
 1. Convert UTF8 text to hex:
-
-       cast --from-utf8 "hello"
+    ```sh
+    cast --from-utf8 "hello"
+    ```
 
 ### SEE ALSO
 

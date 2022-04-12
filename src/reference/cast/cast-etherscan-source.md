@@ -29,12 +29,14 @@ The destination (*to*) can be an ENS name or an address.
 ### EXAMPLES
 
 1. Get the source code of the WETH contract:
-
-       cast etherscan-source 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
+    ```sh
+    cast etherscan-source 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
+    ```
 
 2. Expand the source code of the WETH contract into a directory named `weth`
-
-       cast etherscan-source -d weth 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
+    ```sh
+    cast etherscan-source -d weth 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
+    ```
 
 ### SEE ALSO
 

@@ -31,12 +31,14 @@ Get the timestamp of a block.
 ### EXAMPLES
 
 1. Get the timestamp of the latest block:
-
-       cast age latest
+    ```sh
+    cast age latest
+    ```
 
 2. Get the timestamp of the genesis block:
-
-       cast age 1
+    ```sh
+    cast age 1
+    ```
 
 ### SEE ALSO
 
