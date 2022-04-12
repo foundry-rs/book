@@ -34,7 +34,7 @@
 - [Deploying and Verifying](./forge/deploying.md)
 - [Gas Tracking]()
   - [Gas Reports](./forge/gas-reports.md)
-<!--  - [Gas Snapshots]() !-->
+  - [Gas Snapshots](./forge/gas-snapshots.md)
 - [Debugger](./forge/debugger.md)
 
 # Cast Overview
