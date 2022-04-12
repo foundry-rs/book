@@ -6,7 +6,7 @@ cast---concat-hex - Concatenate hex strings.
 
 ### SYNOPSIS
 
-``cast --to-int256`` *data...*
+``cast --concat-hex`` *data...*
 
 ### DESCRIPTION
 
