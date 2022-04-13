@@ -44,9 +44,9 @@ Tutorials on building smart contracts with Foundry.
 
 References, troubleshooting and more.
 
-- [`forge` Reference](./reference/forge/)
-- [`cast` Reference](./reference/cast/)
-- [`foundry.toml` Reference](./reference/config.md)
+- [forge Commands](./reference/forge/)
+- [cast Commands](./reference/cast/)
+- [Config Reference](./reference/config.md)
 - [`ds-test` Reference](./reference/ds-test.md)
 - [Cheatcodes Reference](./cheatcodes/)
 
