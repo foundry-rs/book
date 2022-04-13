@@ -81,8 +81,7 @@ Overall gas change: -8 (-0.000%)
 ```
 
 `--check` will compare a snapshot with an existing snapshot file and display all the 
-differences, if any. You can change the the file it will be comparing the
-snapshot against by providing a different file name: `--check <FILE_NAME>`.
+differences, if any. You can change the file to compare against by providing a different file name: `--check <FILE_NAME>`.
 
 For example:
 
