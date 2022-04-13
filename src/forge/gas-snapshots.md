@@ -28,7 +28,7 @@ ERC20Test:testTransferFrom() (gas: 84152)
 ### Output file
 
 If you would like to specify a different output file, run `forge snapshot --snap <FILE_NAME>`.
-You can also sort the results by gas usage, use the `--asc` option to sort the results in
+You can also sort the results by gas usage. Use the `--asc` option to sort the results in
 ascending order and `--desc` to sort the results in descending order.
 
 You can also specify a min/max gas threshold for all your tests. To only include results
