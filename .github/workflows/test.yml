@@ -1,4 +1,4 @@
-name: Tests
+name: test
 on:
   push:
     branches: [master]
@@ -8,6 +8,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    name: mdbook test
 
     steps:
       - uses: actions/checkout@v2
