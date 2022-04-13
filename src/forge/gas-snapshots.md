@@ -44,7 +44,7 @@ If you would like to compare the current `.gas-snapshot` file with your
 latest changes, you can use the `--diff` or `--check` options, which will
 compare the gas usage of your changes with the current `.gas-snapshot` file.
 
-`-diff` will compare against a snapshot and display changes from the snapshot. 
+`--diff` will compare against a snapshot and display changes from the snapshot. 
 It can also take an optional snapshot file `--diff <FILE_NAME>` with the default
 being `.gas-snapshot`.
 
