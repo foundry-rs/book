@@ -78,7 +78,7 @@ testApprove() (gas: -8 (-0.000%))
 Overall gas change: -8 (-0.000%)
 ```
 
-`-check` will compare a snapshot with an existing snapshot file and display all the 
+`--check` will compare a snapshot with an existing snapshot file and display all the 
 differences, if any. You can change the the file it will be comparing the
 snapshot to by providing a different file name `--check <FILE_NAME>`.
 
