@@ -2,7 +2,7 @@
 
 Forge can generate gas snapshots for all your test functions. This could
 be useful if you are trying to gas-optimize your contracts and want to
-compare the gas-usage from before and after the optimizations.
+compare the gas usage from before and after the optimizations.
 
 To generate the gas snapshot, run `forge snapshot`.
 
