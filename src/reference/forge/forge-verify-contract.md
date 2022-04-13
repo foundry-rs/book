@@ -43,7 +43,7 @@ This command will try to compile the source code of the flattened contract if `-
 &nbsp;&nbsp;&nbsp;&nbsp;The ABI-encoded constructor arguments.
 
 `--chain-id` *chain*  
-&nbsp;&nbsp;&nbsp;&nbsp;The chain ID of the contract is deployed to (either a number or a chain name).  
+&nbsp;&nbsp;&nbsp;&nbsp;The chain ID the contract is deployed to (either a number or a chain name).  
 &nbsp;&nbsp;&nbsp;&nbsp;Default: mainnet
 
 `--flatten`  
