@@ -46,7 +46,7 @@ interface CheatCodes {
 
     // Sets the nonce of an account
     // The new nonce must be higher than the current nonce of the account
-    function getNonce(address account, uint256 nonce) external;
+    function setNonce(address account, uint256 nonce) external;
 
     // Performs a foreign function call via terminal
     function ffi(string[] calldata) external returns (bytes memory);
