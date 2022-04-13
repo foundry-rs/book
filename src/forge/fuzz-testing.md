@@ -49,7 +49,7 @@ And now it passes:
 {{#include ../output/fuzz_testing/forge-test-success-fuzz:all}}
 ```
 
-You may want to exclude certain cases using the [`assume`](../reference/cheatcodes.md#assume) cheatcode. In those cases, fuzzer will discard the inputs and start a new fuzz run:
+You may want to exclude certain cases using the [`assume`](../cheatcodes/assume.md) cheatcode. In those cases, fuzzer will discard the inputs and start a new fuzz run:
 
 ```solidity
 function testWithdraw(uint96 amount) public {
