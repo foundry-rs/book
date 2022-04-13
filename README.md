@@ -1,6 +1,6 @@
 ## 📖 Foundry Book
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-36-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-37-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 A book on all things Foundry. [Read now](https://book.getfoundry.sh).
@@ -76,6 +76,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   </tr>
   <tr>
     <td align="center"><a href="https://github.com/anticlimactic"><img src="https://avatars.githubusercontent.com/u/9568756?v=4?s=100" width="100px;" alt=""/><br /><sub><b>anticlimactic</b></sub></a><br /><a href="#maintenance-anticlimactic" title="Maintenance">🚧</a></td>
+    <td align="center"><a href="http://pedrommaiaa.github.io"><img src="https://avatars.githubusercontent.com/u/100535780?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Pedro Maia</b></sub></a><br /><a href="https://github.com/onbjerg/foundry-book/commits?author=pedrommaiaa" title="Documentation">📖</a></td>
   </tr>
 </table>
 
