@@ -1,17 +1,17 @@
 ## Gas Snapshots
 
-Forge can generate gas snapshots for all your test functions. This could
-be useful if you are trying to gas-optimize your contracts and want to
-compare the gas usage from before and after the optimizations.
+Forge can generate gas snapshots for all your test functions. This can
+be useful to get a general feel for how much gas your contract will consume,
+or to compare gas usage before and after various optimizations.
 
 To generate the gas snapshot, run `forge snapshot`.
 
 This will generate a file called `.gas-snapshot` by default with all your
-tests (not including fuzz tests) and their respective gas-usage.
+tests (not including fuzz tests) and their respective gas usage.
 
 ```ignore
-> forge snapshot
-> cat .gas-snapshot
+$ forge snapshot
+$ cat .gas-snapshot
 
 ERC20Test:testApprove() (gas: 31162)
 ERC20Test:testBurn() (gas: 59875)
@@ -25,33 +25,35 @@ ERC20Test:testTransfer() (gas: 60473)
 ERC20Test:testTransferFrom() (gas: 84152)
 ```
 
-### Output file
+### Filtering
 
 If you would like to specify a different output file, run `forge snapshot --snap <FILE_NAME>`.
+
 You can also sort the results by gas usage. Use the `--asc` option to sort the results in
 ascending order and `--desc` to sort the results in descending order.
 
-You can also specify a min/max gas threshold for all your tests. To only include results
-above a threshold, you can use the `--min <VALUE>` option. In the same way, to only
-include results under a threshold, you can use the `--max <VALUE>` option. Keep in mind
-that the changes will be made in the `.gas-snapshot` file and not in the snapshot being
-displayed in your screen.
+Finally, you can also specify a min/max gas threshold for all your tests.
+To only include results above a threshold, you can use the `--min <VALUE>` option.
+In the same way, to only include results under a threshold,
+you can use the `--max <VALUE>` option.
 
+Keep in mind that the changes will be made in the snapshot file, and not in the snapshot being
+displayed on your screen.
 
-### Gas Comparison
+### Comparing gas usage
 
-If you would like to compare the current `.gas-snapshot` file with your 
-latest changes, you can use the `--diff` or `--check` options, which will
-compare the gas usage of your changes with the current `.gas-snapshot` file.
+If you would like to compare the current snapshot file with your 
+latest changes, you can use the `--diff` or `--check` options.
 
-`--diff` will compare against a snapshot and display changes from the snapshot. 
-It can also take an optional snapshot file `--diff <FILE_NAME>` with the default
+`--diff` will compare against the snapshot and display changes from the snapshot.
+
+It can also optionally take a file name (`--diff <FILE_NAME>`), with the default
 being `.gas-snapshot`.
 
-Example:
+For example:
 
 ```ignore
-> forge snapshot --diff .gas-snapshot2
+$ forge snapshot --diff .gas-snapshot2
 
 Running 10 tests for src/test/ERC20.t.sol:ERC20Test
 [PASS] testApprove() (gas: 31162)
@@ -80,12 +82,12 @@ Overall gas change: -8 (-0.000%)
 
 `--check` will compare a snapshot with an existing snapshot file and display all the 
 differences, if any. You can change the the file it will be comparing the
-snapshot to by providing a different file name `--check <FILE_NAME>`.
+snapshot against by providing a different file name: `--check <FILE_NAME>`.
 
-Example:
+For example:
 
 ```ignore
-> forge snapshot --check .gas-snapshot2
+$ forge snapshot --check .gas-snapshot2
 
 Running 10 tests for src/test/ERC20.t.sol:ERC20Test
 [PASS] testApprove() (gas: 31162)
@@ -101,7 +103,3 @@ Running 10 tests for src/test/ERC20.t.sol:ERC20Test
 Test result: ok. 10 passed; 0 failed; finished in 2.47ms
 Diff in "ERC20Test::testApprove()": consumed "(gas: 31162)" gas, expected "(gas: 31170)" gas 
 ```
-
-
-If this wasn't what you were looking for, try looking through the official documentation
-by running `forge snapshot --help`.
