@@ -337,6 +337,15 @@
       "contributions": [
         "maintenance"
       ]
+    },
+    {
+      "login": "pedrommaiaa",
+      "name": "Pedro Maia",
+      "avatar_url": "https://avatars.githubusercontent.com/u/100535780?v=4",
+      "profile": "http://pedrommaiaa.github.io",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
