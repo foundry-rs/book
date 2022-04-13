@@ -29,12 +29,9 @@ If you would like to specify a different output file, run `forge snapshot --snap
 
 ### Gas Comparison
 
-Lets say that you are trying to optimize your contracts, and after changing
-it a little bit you want to see if there are any improvements in gas-usage.
-
-If you would like to compare the corrent `.gas-snapshot` file with your 
-latest commit, you can use the command `git diff`, which will compare all the
-files with your latest commit.
+If you would like to compare the current `.gas-snapshot` file with your 
+latest changes, you can use the `--diff` or `--check` options, which will
+compare the gas usage of your changes with the current `.gas-snapshot` file.
 
 Example:
 
