@@ -112,6 +112,8 @@ This program is a set of tools to build, test, fuzz, debug and deploy Solidity s
 `~/.foundry/foundry.toml`  
 &nbsp;&nbsp;&nbsp;&nbsp;The global [Foundry config](../config.md).
 
+`~/.svm`  
+&nbsp;&nbsp;&nbsp;&nbsp;The location of the Forge-managed solc binaries.
 
 ### EXAMPLES
 

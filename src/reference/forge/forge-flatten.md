@@ -22,28 +22,7 @@ If `--output <FILE>` is not set, then the flattened contract will be output to s
 `--output` *file*  
 &nbsp;&nbsp;&nbsp;&nbsp;The path to output the flattened contract. If not specified, the flattened contract will be output to stdout.
 
-#### Project Options
-
-`--root` *path*  
-&nbsp;&nbsp;&nbsp;&nbsp;The project's root path. By default, this is the root directory of the current git repository, or the current working directory.
-
-`-c` *path*  
-`--contracts` *path*  
-&nbsp;&nbsp;&nbsp;&nbsp;The contract's source directory, relative to the project root.  
-&nbsp;&nbsp;&nbsp;&nbsp;Environment: `DAPP_SRC`
-
-`--lib-paths` *path*  
-&nbsp;&nbsp;&nbsp;&nbsp;The path to the library folder.
-
-`-r` *remappings*  
-`--remappings` *remappings*  
-&nbsp;&nbsp;&nbsp;&nbsp;The project's remappings.
-
-`--cache-path` *path*  
-&nbsp;&nbsp;&nbsp;&nbsp;The path to the compiler cache.
-
-`--hardhat`  
-&nbsp;&nbsp;&nbsp;&nbsp;Use the Hardhat-style project layout.
+{{#include project-options.md}}
 
 {{#include common-options.md}}
 
