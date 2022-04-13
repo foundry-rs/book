@@ -32,7 +32,7 @@
 <!-- - [Linting and Formatting]() !-->
 <!-- - [Generating Documentation]() !-->
 - [Deploying and Verifying](./forge/deploying.md)
-- [Gas Tracking]()
+- [Gas Tracking](./forge/gas-tracking.md)
   - [Gas Reports](./forge/gas-reports.md)
   - [Gas Snapshots](./forge/gas-snapshots.md)
 - [Debugger](./forge/debugger.md)
