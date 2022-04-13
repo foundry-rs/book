@@ -25,7 +25,7 @@ ERC20Test:testTransfer() (gas: 60473)
 ERC20Test:testTransferFrom() (gas: 84152)
 ```
 
-If you would like to speficy a different output file, run `forge snapshot --snap <FILE_NAME>`.
+If you would like to specify a different output file, run `forge snapshot --snap <FILE_NAME>`.
 
 ### Gas Comparison
 
