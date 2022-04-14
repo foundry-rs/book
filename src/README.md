@@ -4,7 +4,7 @@ Foundry is a smart contract development toolchain. Foundry manages your dependen
 
 > 📖 **Contributing**
 >
-> You can contribute to this book on [GitHub](https://github.com/foundry-rs/foundry-book).
+> You can contribute to this book on [GitHub](https://github.com/foundry-rs/book).
 
 ### Sections
 
