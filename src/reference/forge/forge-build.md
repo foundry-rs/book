@@ -68,6 +68,28 @@ watched file or directory is changed. The source directory is watched by default
 
 {{#include common-options.md}}
 
+### EXAMPLES
+
+1. Build the project:
+    ```sh
+    forge build
+    ```
+
+2. Build the project with solc 0.6.0:
+    ```sh
+    forge build --use solc:0.6.0
+    ```
+
+3. Build the project with additional artifact output:
+    ```sh
+    forge build --extra-output evm.assembly
+    ```
+
+4. Build the project in watch mode:
+    ```sh
+    forge build --watch
+    ```
+
 ### SEE ALSO
 
 [forge](./forge.md), [forge clean](./forge-clean.md), [forge inspect](./forge-inspect.md)
