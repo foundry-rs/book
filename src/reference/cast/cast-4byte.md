@@ -1,0 +1,28 @@
+## cast 4byte
+
+### NAME
+
+cast-4byte - Get the function signatures for the given selector from <https://4byte.directory>.
+
+### SYNOPSIS
+
+``cast abi-encode`` [*options*] *sig*
+
+### DESCRIPTION
+
+Get the function signatures for the given selector from <https://4byte.directory>.
+
+### OPTIONS
+
+{{#include common-options.md}}
+
+### EXAMPLES
+
+1. Get the function signature for the selector `0x8cc5ce99`:
+    ```sh
+    cast 4byte 0x8cc5ce99
+    ```
+
+### SEE ALSO
+
+[cast](./cast.md), [cast 4byte-decode](./cast-4byte-decode.md), [cast 4byte-event](./cast-4byte-event.md)

@@ -69,4 +69,12 @@ echo "Generating output (forge)..."
   forge build
   (run_command forge test) > $OUTPUT_DIR/nft_tutorial/forge-test
 )
+(
+  in_temp forge_tree
+  git clone https://github.com/FredCoen/nft-tutorial
+  cd nft-tutorial 
+  forge install
+  (run_command forge tree) > $OUTPUT_DIR/forge_tree/forge-tree
+  (run_command forge tree --no-dedupe) > $OUTPUT_DIR/forge_tree/forge-tree-no-dedupe
+)
 echo OK.

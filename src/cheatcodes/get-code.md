@@ -8,7 +8,7 @@ function getCode(string calldata) external returns (bytes memory);
 
 ### Description
 
-Returns the bytecode for a contract in the project given the path to the contract.
+Returns the **deployment** bytecode for a contract in the project given the path to the contract.
 
 The calldata parameter can either be in the form `ContractFile.sol` (if the filename and contract name are the same), `ContractFile.sol:ContractName`, or the path to an artifact, relative to the root of your project.
 

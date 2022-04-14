@@ -102,4 +102,4 @@ In other words, `testExpectEmitDoNotCheckData` is a valid test case, even though
 
 > 📚 **Reference**
 >
-> See the [Cheatcodes Reference](../cheatcodes) for a complete overview of all the available cheatcodes.
+> See the [Cheatcodes Reference](../cheatcodes/) for a complete overview of all the available cheatcodes.
