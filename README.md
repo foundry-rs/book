@@ -19,7 +19,7 @@ mdbook serve
 
 To add a new section (file) to the book, add it to [`SUMMARY.md`](src/SUMMARY.md).
 
-For a more structured overview of the current issues, see [the GitHub project](https://github.com/users/onbjerg/projects/7).
+For a more structured overview of the current issues, see [the GitHub project](https://github.com/orgs/foundry-rs/projects/1).
 
 ### Contributors ✨
 
