@@ -43,10 +43,9 @@ It is possible to run the script in an interactive debugger. To start the debugg
 
 More information on the debugger can be found in the [debugger chapter][debugger].
 
-add evm opts
-add executor opts
-
 ### OPTIONS
+
+#### Run Options
 
 `-t` *contract_name*  
 `--target-contract` *contract_name*  
