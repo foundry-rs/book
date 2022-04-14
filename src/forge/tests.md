@@ -35,3 +35,9 @@ The default behavior for `forge test` is to only display a summary of passing an
 - **Level 3 (`-vvv`)**: Stack traces for failing tests are also displayed.
 - **Level 4 (`-vvvv`)**: Stack traces for all tests are displayed, and setup traces for failing tests are displayed.
 - **Level 5 (`-vvvvv`)**: Stack traces and setup traces are always displayed.
+
+### Watch mode
+
+Forge can re-run your tests when you make changes to your files using `forge test --watch`.
+
+By default, only changed test files are re-run. If you want to re-run all tests on a change, you can use `forge test --watch --run-all`.
