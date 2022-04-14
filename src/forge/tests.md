@@ -19,7 +19,7 @@ You can also run specific tests by passing a filter:
 This will run the tests in the `ComplicatedContractTest` test contract with `testDeposit` in the name.
 Inverse versions of these flags also exist (`--no-match-contract` and `--no-match-test`).
 
-You can run tests in filenames that match a regex with `--match-path`.
+You can run tests in filenames that match a glob pattern with `--match-path`.
 
 ```sh
 {{#include ../output/test_filters/forge-test-match-path:all}}
