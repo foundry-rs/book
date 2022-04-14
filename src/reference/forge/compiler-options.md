@@ -38,4 +38,4 @@
 `--evm-version` *version*  
 &nbsp;&nbsp;&nbsp;&nbsp;The target EVM version.
 
-[output-desc]: https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#output-description
+[output-desc]: https://docs.soliditylang.org/en/latest/using-the-compiler.html#compiler-api

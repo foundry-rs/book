@@ -102,5 +102,5 @@ watched file or directory is changed. The source directory is watched by default
 
 [forge](./forge.md), [forge clean](./forge-clean.md), [forge inspect](./forge-inspect.md)
 
-[ir-pipeline]: https://docs.soliditylang.org/en/v0.8.13/ir-breaking-changes.html
-[output-desc]: https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#output-description
+[ir-pipeline]: https://docs.soliditylang.org/en/latest/ir-breaking-changes.html
+[output-desc]: https://docs.soliditylang.org/en/latest/using-the-compiler.html#compiler-api

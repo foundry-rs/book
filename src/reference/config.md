@@ -93,6 +93,10 @@ no_storage_caching = false
 # By default only remote endpoints will be cached
 # To disable storage caching, set `no_storage_caching = true`
 rpc_storage_caching = { chains = "all", endpoints = "remote" }
+# Extra output to include in the contract's artifact.
+extra_output = []
+# Extra output to write to separate files.
+extra_output_files = []
 # Use the given hash method for the metadata hash that is appended
 # to the bytecode.
 # The metadata hash can be removed from the bytecode by setting "none"
@@ -443,6 +447,43 @@ Valid values are:
 - all
 - remote (default)
 - A list of regex patterns, e.g. `["localhost"]`
+
+##### `extra_output`
+
+- Type: array of strings
+- Default: see below
+- Environment: N/A
+
+Extra output to include in the contract's artifact.
+
+The following values are always set, since they're required by Forge:
+
+```toml
+extra_output = [
+  "abi",
+  "evm.bytecode",
+  "evm.deployedBytecode",
+  "evm.methodIdentifiers",
+]
+```
+
+For a list of valid values, see the [Solidity docs][output-desc].
+
+##### `extra_output_files`
+
+- Type: array of strings
+- Default: none
+- Environment: N/A
+
+Extra output from the Solidity compiler that should be written to files in the artifacts directory.
+
+Valid values are:
+
+- `metadata`: Written as a `metadata.json` file in the artifacts directory
+- `ir`: Written as a `.ir` file in the artifacts directory
+- `irOptimized`: Written as a `.iropt` file in the artifacts directory
+- `ewasm`: Written as a `.ewasm` file in the artifacts directory
+- `evm.assembly`: Written as a `.asm` file in the artifacts directory
 
 ##### `bytecode_hash`
 
