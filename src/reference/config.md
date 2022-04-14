@@ -355,11 +355,13 @@ The value of the `chainid` opcode in tests.
 
 ##### `gas_limit`
 
-- Type: integer
+- Type: integer or string
 - Default: 9223372036854775807
 - Environment: `FOUNDRY_GAS_LIMIT` or `DAPP_GAS_LIMIT`
 
 The gas limit for each test case.
+
+Due to a bug in a dependency of Forge, you **cannot raise the gas limit** beyond the default without changing the value to a string.
 
 ##### `gas_price`
 
