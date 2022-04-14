@@ -15,6 +15,8 @@
 `--remappings` *remappings*  
 &nbsp;&nbsp;&nbsp;&nbsp;The project's remappings.
 
+&nbsp;&nbsp;&nbsp;&nbsp;The parameter is a comma-separated list of remappings in the format `<source>=<dest>`.
+
 `--cache-path` *path*  
 &nbsp;&nbsp;&nbsp;&nbsp;The path to the compiler cache.
 

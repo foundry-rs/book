@@ -20,8 +20,8 @@
 `--no-auto-detect`  
 &nbsp;&nbsp;&nbsp;&nbsp;Do not auto-detect solc.
 
-`--ignored-error-codes` *error_code*  
-&nbsp;&nbsp;&nbsp;&nbsp;Ignore solc warnings by error code.
+`--ignored-error-codes` *error_codes*  
+&nbsp;&nbsp;&nbsp;&nbsp;Ignore solc warnings by error code. The parameter is a comma-separated list of error codes.
 
 `--extra-output` *selector*  
 &nbsp;&nbsp;&nbsp;&nbsp;Extra output to include in the contract's artifact.
