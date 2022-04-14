@@ -10,7 +10,7 @@ The only installation required to run this tutorial is Docker, and optionally, a
 Follow the [Docker installation instructions](/getting-started/installation.html#using-with-docker).
 
  To keep future commands succinct, let's re-tag the image:  
- `docker tag ghcr.io/gakonst/foundry:latest foundry:latest`
+ `docker tag ghcr.io/foundry-rs/foundry:latest foundry:latest`
 
 Having Foundry installed locally is not strictly required, but it may be helpful for debugging. You can install it using [foundryup](/getting-started/installation.html#using-foundryup).
 
@@ -68,7 +68,7 @@ Let's use the Foundry docker image as a base for using our own Docker image. We'
 A simple `Dockerfile` can accomplish these two goals:
 ```docker
 # Use the latest foundry image
-FROM ghcr.io/gakonst/foundry
+FROM ghcr.io/foundry-rs/foundry
 
 # Copy our source code into the container
 WORKDIR /app
@@ -106,7 +106,7 @@ Now, we'll move on to a bit more of an advanced Dockerfile. Let's add an entrypo
 
 ```docker
 # Use the latest foundry image
-FROM ghcr.io/gakonst/foundry
+FROM ghcr.io/foundry-rs/foundry
 
 # Copy our source code into the container
 WORKDIR /app

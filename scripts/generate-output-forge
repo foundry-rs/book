@@ -17,7 +17,7 @@ echo "Generating output (forge)..."
 )
 (
   in_temp forge-std
-  git clone https://github.com/brockelmore/forge-std
+  git clone https://github.com/foundry-rs/forge-std
   cd forge-std
   (run_command forge install) > $OUTPUT_DIR/forge-std/forge-install
   (run_command forge build) > $OUTPUT_DIR/forge-std/forge-build

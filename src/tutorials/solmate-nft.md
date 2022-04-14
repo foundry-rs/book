@@ -11,7 +11,7 @@ This tutorial walk you through creating an OpenSea compatible NFT with Foundry a
 Start by setting up a Foundry project following the steps outlined in the [Getting started section](../getting-started/installation.html). We will also install Solmate for their ERC721 implementation, as well as some OpenZeppelin utility libraries. Install the dependencies by running the following commands from the root of your project:
 
 ```bash
-forge install Rari-Capital/solmate Openzeppelin/openzeppelin-contracts brockelmore/forge-std
+forge install Rari-Capital/solmate Openzeppelin/openzeppelin-contracts foundry-rs/forge-std
 ```
 
 These dependencies will be added as git submodules to your project.
@@ -299,7 +299,7 @@ The test suite is set up as a contract with a `setUp` method which runs before e
 As you can see, Forge offers a number of [cheatcodes](../forge/cheatcodes) to manipulate state to accommodate your testing scenario.
 
 For example, our `testFailMaxSupplyReached` test checks that an attempt to mint fails when the max supply of NFT is reached. Thus, the `currentTokenId` of the NFT contract needs to be set to the max supply by using the store cheatcode which allows you to write data to your contracts storage slots. The storage slots you wish to write to can easily be found using the
-[`forge-std`](https://github.com/brockelmore/forge-std/) helper library. You can run the test with the following command:
+[`forge-std`](https://github.com/foundry-rs/forge-std/) helper library. You can run the test with the following command:
 
 ```bash
 forge test

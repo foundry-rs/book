@@ -5,7 +5,7 @@ If you download an existing project that uses Foundry, it is really easy to get 
 First, get the project from somewhere. In this example, we will clone the `forge-std` repository from GitHub:
 
 ```sh
-$ git clone https://github.com/brockelmore/forge-std
+$ git clone https://github.com/foundry-rs/forge-std
 $ forge install
 ```
 

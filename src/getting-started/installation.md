@@ -47,7 +47,7 @@ Download and run `rustup-init` from [rustup.rs](https://rustup.rs). It will star
 After this, run the following to build Foundry from source:
 
 ```sh
-cargo install --git https://github.com/gakonst/foundry --bins --locked
+cargo install --git https://github.com/foundry-rs/foundry --bins --locked
 ```
 
 ### Using with Docker
@@ -57,7 +57,7 @@ Foundry can also be used entirely within a Docker container. If you don't have i
 Once installed, you can download the latest release by running:  
 
 ```sh
-docker pull ghcr.io/gakonst/foundry:latest
+docker pull ghcr.io/foundry-rs/foundry:latest
 ```
 
 It is also possible to build the docker image locally. From the Foundry repository, run:

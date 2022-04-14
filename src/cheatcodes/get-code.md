@@ -40,4 +40,4 @@ function testDeployCode() public {
 }
 ```
 
-[forge-std]: https://github.com/brockelmore/forge-std
+[forge-std]: https://github.com/foundry-rs/forge-std
