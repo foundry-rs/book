@@ -4,7 +4,7 @@ Forge manages dependencies using [git submodules](https://git-scm.com/book/en/v2
 
 ### Adding a dependency
 
-To add a dependency, run `forge install`:
+To add a dependency, run [`forge install`](../reference/forge/forge-install.md):
 
 ```sh
 {{#include ../output/deps/forge-install:all}}
@@ -54,7 +54,7 @@ import "solmate-utils/Contract.sol";
 
 ### Updating dependencies
 
-You can update a specific dependency to the latest commit on the version you have specified using `forge update <dep>`. For example, if we wanted to pull the latest commit from our previously installed master-version of `solmate`, we would run:
+You can update a specific dependency to the latest commit on the version you have specified using [`forge update <dep>`](../reference/forge/forge-update.md). For example, if we wanted to pull the latest commit from our previously installed master-version of `solmate`, we would run:
 
 ```sh
 $ forge update lib/solmate
@@ -64,7 +64,7 @@ Alternatively, you can do this for all dependencies at once by just running `for
 
 ### Removing dependencies
 
-You can remove dependencies using `forge remove <deps>...`, where `<deps>` is either the full path to the dependency or just the name. For example, to remove `ds-test` both of these commands are equivalent:
+You can remove dependencies using [`forge remove <deps>...`](../reference/forge/forge-remove.md), where `<deps>` is either the full path to the dependency or just the name. For example, to remove `ds-test` both of these commands are equivalent:
 
 ```ignore
 $ forge remove ds-test

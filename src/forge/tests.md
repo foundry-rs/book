@@ -1,6 +1,6 @@
 ## Tests
 
-Forge can run your tests with the `forge test` command. All tests are written in Solidity.
+Forge can run your tests with the [`forge test`](../reference/forge/forge-test.md) command. All tests are written in Solidity.
 
 Forge will look for the tests anywhere in your source directory. Any contract with a function that starts with `test` is considered to be a test. Usually, tests will be placed in `src/test` by convention and end with `.t.sol`.
 

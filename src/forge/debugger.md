@@ -2,7 +2,7 @@
 
 Forge ships with an interactive debugger.
 
-The debugger is accessible on `forge run` and on `forge test`.
+The debugger is accessible on [`forge run`](../reference/forge/forge-run.md) and on [`forge test`](../reference/forge/forge-test.md).
 
 Using `forge test`:
 

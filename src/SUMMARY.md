@@ -16,7 +16,7 @@
 
 # Forge Overview
 
-- [Overview of `forge`](./forge/README.md)
+- [Overview of Forge](forge/README.md)
 - [Tests](./forge/tests.md)
   - [Writing Tests](./forge/writing-tests.md)
   - [Cheatcodes](./forge/cheatcodes.md)
@@ -39,7 +39,7 @@
 
 # Cast Overview
 
-- [Overview of `cast`](./cast/README.md)
+- [Overview of Cast](./cast/README.md)
 
 # Configuration
 

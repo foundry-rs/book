@@ -9,15 +9,15 @@ $ git clone https://github.com/brockelmore/forge-std
 $ forge install
 ```
 
-We run `forge install` to install the submodule dependencies that are in the project.
+We run [`forge install`](../reference/forge/forge-install.md) to install the submodule dependencies that are in the project.
 
-To build, use `forge build`:
+To build, use [`forge build`](../reference/forge/forge-build.md):
 
 ```sh
 {{#include ../output/forge-std/forge-build:all}}
 ```
 
-And to test, use `forge test`:
+And to test, use [`forge test`](../reference/forge/forge-test.md):
 
 ```sh
 {{#include ../output/forge-std/forge-test:all}}

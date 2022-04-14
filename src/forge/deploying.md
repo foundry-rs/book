@@ -1,6 +1,6 @@
 ## Deploying
 
-Forge can deploy smart contracts to a given network with the `forge create` command.
+Forge can deploy smart contracts to a given network with the [`forge create`](../reference/forge/forge-create.md) command.
 
 Forge can deploy only one contract at a time.
 
@@ -45,7 +45,7 @@ $ forge create --rpc-url <your_rpc_url> --constructor-args "ForgeUSD" "FUSD" 18 
 
 ## Verifying
 
-You can verify a contract on Etherscan with the `forge verify-contract` command.
+You can verify a contract on Etherscan with the [`forge verify-contract`](../reference/forge/forge-verify-contract.md) command.
 
 You must provide:
 - [compiler version](https://etherscan.io/solcversions) used for build, with 8 hex digits from the commit version prefix (the commit will usually not be a nightly build)
@@ -70,7 +70,7 @@ Submitted contract for verification:
                 url: https://kovan.etherscan.io//address/0x6a54…3a4c#code
 ```
 
-You can check verification status with the `forge verify-check` command:
+You can check verification status with the [`forge verify-check`](../reference/forge/forge-verify-check.md) command:
 
 ```bash
 $ forge verify-check --chain-id 42 <GUID> <your_etherscan_api_key>

@@ -4,7 +4,7 @@ Forge can generate gas snapshots for all your test functions. This can
 be useful to get a general feel for how much gas your contract will consume,
 or to compare gas usage before and after various optimizations.
 
-To generate the gas snapshot, run `forge snapshot`.
+To generate the gas snapshot, run [`forge snapshot`](../reference/forge/forge-snapshot.md).
 
 This will generate a file called `.gas-snapshot` by default with all your
 tests (not including fuzz tests) and their respective gas usage.
