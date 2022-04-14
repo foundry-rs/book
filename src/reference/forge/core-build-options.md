@@ -1,12 +1,14 @@
 #### Cache Options
 
 `--force`  
-&nbsp;&nbsp;&nbsp;&nbsp;Do not de-duplicate (repeats all shared dependencies)
+&nbsp;&nbsp;&nbsp;&nbsp;Clear the cache and artifacts folder and recompile.
 
 #### Linker Options
 
 `--libraries` *libraries*  
-&nbsp;&nbsp;&nbsp;&nbsp;Character set to use in output: utf8, ascii. Default: utf8
+&nbsp;&nbsp;&nbsp;&nbsp;Set pre-linked libraries.
+
+&nbsp;&nbsp;&nbsp;&nbsp;The parameter must be in the format `<file>:<library name>:<address>`, e.g. `src/Contract.sol:Library:0x...`.
 
 {{#include compiler-options.md}}
 
