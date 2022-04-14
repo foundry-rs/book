@@ -346,6 +346,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "edag94",
+      "name": "Erick",
+      "avatar_url": "https://avatars.githubusercontent.com/u/22627847?v=4",
+      "profile": "https://github.com/edag94",
+      "contributions": [
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7,
