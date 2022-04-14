@@ -1,16 +1,12 @@
-#### Build Options
-
-`--libraries` *libraries*  
-&nbsp;&nbsp;&nbsp;&nbsp;Character set to use in output: utf8, ascii. Default: utf8
+#### Cache Options
 
 `--force`  
 &nbsp;&nbsp;&nbsp;&nbsp;Do not de-duplicate (repeats all shared dependencies)
 
-`--names`  
-&nbsp;&nbsp;&nbsp;&nbsp;Do not de-duplicate (repeats all shared dependencies)
+#### Linker Options
 
-`--sizes`  
-&nbsp;&nbsp;&nbsp;&nbsp;Do not de-duplicate (repeats all shared dependencies)
+`--libraries` *libraries*  
+&nbsp;&nbsp;&nbsp;&nbsp;Character set to use in output: utf8, ascii. Default: utf8
 
 {{#include compiler-options.md}}
 

@@ -62,6 +62,14 @@ watched file or directory is changed. The source directory is watched by default
 
 ### OPTIONS
 
+#### Build Options
+
+`--names`  
+&nbsp;&nbsp;&nbsp;&nbsp;Do not de-duplicate (repeats all shared dependencies)
+
+`--sizes`  
+&nbsp;&nbsp;&nbsp;&nbsp;Do not de-duplicate (repeats all shared dependencies)
+
 {{#include core-build-options.md}}
 
 {{#include watch-options.md}}
