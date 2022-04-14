@@ -37,7 +37,7 @@ You can enable the optimizer by passing `--optimize`, and you can adjust the num
 
 You can also opt-in to the Solidity IR compilation pipeline by passing `--via-ir`. Read more about the IR pipeline in the [Solidity docs][ir-pipeline].
 
-TODO: Defaults and disabling the optimizer?
+By default, the optimizer is enabled and runs for 200 cycles.
 
 #### Artifacts
 
