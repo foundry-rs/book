@@ -93,6 +93,10 @@ no_storage_caching = false
 # By default only remote endpoints will be cached
 # To disable storage caching, set `no_storage_caching = true`
 rpc_storage_caching = { chains = "all", endpoints = "remote" }
+# Use the given hash method for the metadata hash that is appended
+# to the bytecode.
+# The metadata hash can be removed from the bytecode by setting "none"
+bytecode_hash = "ipfs"
 ```
 
 ### Configuration keys
@@ -436,6 +440,20 @@ Determines what RPC endpoints are cached. By default, only remote endpoints are 
 
 Valid values are:
 
-- "all"
-- "remote"
+- all
+- remote (default)
 - A list of regex patterns, e.g. `["localhost"]`
+
+##### `bytecode_hash`
+
+- Type: string
+- Default: ipfs
+- Environment: `FOUNDRY_BYTECODE_HASH` or `DAPP_BYTECODE_HASH`
+
+Determines the hash method for the metadata hash that is appended to the bytecode.
+
+Valid values are:
+
+- ipfs (default)
+- bzzr1
+- none
