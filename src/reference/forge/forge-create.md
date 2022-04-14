@@ -35,6 +35,9 @@ Dynamic linking is not supported: you should predeploy your libraries and manual
 
 #### Transaction Options
 
+`--gas-limit` *gas_limit*  
+&nbsp;&nbsp;&nbsp;&nbsp;Gas limit for the transaction.
+
 `--gas-price` *price*  
 &nbsp;&nbsp;&nbsp;&nbsp;Gas price for the transaction, or max fee per gas for EIP1559 transactions.
 
