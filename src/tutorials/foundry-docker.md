@@ -100,7 +100,7 @@ error: failed to solve: executor failed running [/bin/sh -c forge test]: exit co
 Our image failed to build because our tests failed! This is actually a nice property, because it means if we have a Docker image that successfully built (and therefore is available for use), we know the code inside the image passed the tests.*
 > *Of course, chain of custody of your docker images is very important. Docker layer hashes can be very useful for verification. In a production environment, consider [signing your docker images](https://docs.docker.com/engine/security/trust/#:~:text=To%20sign%20a%20Docker%20Image,the%20local%20Docker%20trust%20repository).
 
-### Creating a deployer iamge
+### Creating a deployer image
 
 Now, we'll move on to a bit more of an advanced Dockerfile. Let's add an entrypoint that allows us to deploy our code by using the built (and tested!) image. We can target the Rinkeby testnet first.
 
