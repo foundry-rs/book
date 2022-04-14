@@ -68,29 +68,34 @@ More information on the debugger can be found in the [debugger chapter][debugger
 
 ### EXAMPLES
 
-1. Build the project:
+1. Execute the `run()` function in a contract:
     ```sh
-    forge build
+    forge run src/Contract.sol
     ```
 
-2. Build the project with solc 0.6.0:
+2. Open a script in the debugger:
     ```sh
-    forge build --use solc:0.6.0
+    forge run src/Contract.sol --debug
     ```
 
-3. Build the project with additional artifact output:
+3. Execute the `foo()` function in a contract:
     ```sh
-    forge build --extra-output evm.assembly
+    forge run src/Contract.sol --sig "foo()"
     ```
 
-4. Build the project in watch mode:
+4. Execute a contract with a function that takes parameters:
     ```sh
-    forge build --watch
+    forge run src/Contract.sol --sig "foo(string,uint256)" "hello" 100
+    ```
+
+5. Execute a contract with raw calldata:
+    ```sh
+    forge run src/Contract.sol --sig "0x..."
     ```
 
 ### SEE ALSO
 
-[forge](./forge.md), [forge clean](./forge-clean.md), [forge inspect](./forge-inspect.md)
+[forge](./forge.md), [forge test](./forge-test.md)
 
 [debugger]: ../../forge/debugger.md
 [cheatcodes]: ../../cheatcodes/
