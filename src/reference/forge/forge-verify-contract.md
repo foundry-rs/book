@@ -67,4 +67,4 @@ This command will try to compile the source code of the flattened contract if `-
 
 ### SEE ALSO
 
-[forge](./forge.md), [forge flatten](./forge-flatten.md), [forge verify-check](./forge-verify-check.md)
+[forge](./forge.md), [forge create](./forge-create.md), [forge flatten](./forge-flatten.md), [forge verify-check](./forge-verify-check.md)

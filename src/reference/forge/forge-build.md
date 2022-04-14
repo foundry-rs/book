@@ -65,10 +65,10 @@ watched file or directory is changed. The source directory is watched by default
 #### Build Options
 
 `--names`  
-&nbsp;&nbsp;&nbsp;&nbsp;Do not de-duplicate (repeats all shared dependencies)
+&nbsp;&nbsp;&nbsp;&nbsp;Print compiled contract names.
 
 `--sizes`  
-&nbsp;&nbsp;&nbsp;&nbsp;Do not de-duplicate (repeats all shared dependencies)
+&nbsp;&nbsp;&nbsp;&nbsp;Print compiled contract sizes.
 
 {{#include core-build-options.md}}
 

@@ -22,7 +22,7 @@ The destination (*to*) can be an ENS name or an address.
 &nbsp;&nbsp;&nbsp;&nbsp;The output directory to expand the source tree into.
 &nbsp;&nbsp;&nbsp;&nbsp;If not provided, the source will be outputted to stdout.
 
-{{#include etherscan-options.md}}
+{{#include ../common/etherscan-options.md}}
 
 {{#include common-options.md}}
 

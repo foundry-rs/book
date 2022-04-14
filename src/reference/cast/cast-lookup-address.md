@@ -24,7 +24,7 @@ If `--verify` is passed, then a normal lookup is performed after the reverse loo
 
 #### RPC Options
 
-{{#include rpc-url-option.md}}
+{{#include ../common/rpc-url-option.md}}
 
 {{#include common-options.md}}
 

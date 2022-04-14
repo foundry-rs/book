@@ -16,7 +16,7 @@ Get the symbolic chain name from the RPC endpoint we are connected to.
 
 #### RPC Options
 
-{{#include rpc-url-option.md}}
+{{#include ../common/rpc-url-option.md}}
 
 {{#include common-options.md}}
 

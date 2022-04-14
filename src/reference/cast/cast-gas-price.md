@@ -16,7 +16,7 @@ Get the current gas price.
 
 #### RPC Options
 
-{{#include rpc-url-option.md}}
+{{#include ../common/rpc-url-option.md}}
 
 {{#include common-options.md}}
 

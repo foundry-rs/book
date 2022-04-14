@@ -24,7 +24,7 @@ Get the basefee of a block.
 
 #### RPC Options
 
-{{#include rpc-url-option.md}}
+{{#include ../common/rpc-url-option.md}}
 
 {{#include common-options.md}}
 

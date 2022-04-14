@@ -26,7 +26,7 @@ The contract (*address*) can be an ENS name or an address.
 
 #### RPC Options
 
-{{#include rpc-url-option.md}}
+{{#include ../common/rpc-url-option.md}}
 
 {{#include common-options.md}}
 

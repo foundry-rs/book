@@ -28,9 +28,9 @@ If *field* is specified, then only the given field of the receipt is displayed.
 
 #### RPC Options
 
-{{#include rpc-url-option.md}}
+{{#include ../common/rpc-url-option.md}}
 
-{{#include display-options.md}}
+{{#include ../common/display-options.md}}
 
 {{#include common-options.md}}
 

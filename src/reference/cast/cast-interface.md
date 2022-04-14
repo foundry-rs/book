@@ -31,7 +31,7 @@ If an address is provided, then the interface is generated from the ABI of the a
 `--pragma` *version*  
 &nbsp;&nbsp;&nbsp;&nbsp;The Solidity pragma version to use in the interface. Default: `^0.8.10`.
 
-{{#include etherscan-options.md}}
+{{#include ../common/etherscan-options.md}}
 
 {{#include common-options.md}}
 

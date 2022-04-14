@@ -20,7 +20,7 @@ Publish a raw pre-signed transaction to the network.
 &nbsp;&nbsp;&nbsp;&nbsp;Do not wait for a transaction receipt.  
 &nbsp;&nbsp;&nbsp;&nbsp;Environment: `CAST_ASYNC`
 
-{{#include rpc-options.md}}
+{{#include ../common/rpc-options.md}}
 
 {{#include common-options.md}}
 

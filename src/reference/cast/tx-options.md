@@ -4,9 +4,9 @@
 &nbsp;&nbsp;&nbsp;&nbsp;Gas limit for the transaction.
 
 `--gas-price` *price*  
-&nbsp;&nbsp;&nbsp;&nbsp;Gas price for the transaction.
+&nbsp;&nbsp;&nbsp;&nbsp;Gas price for the transaction, or max fee per gas for EIP1559 transactions.
 
-{{#include tx-value-option.md}}
+{{#include ../common/tx-value-option.md}}
 
 `--nonce` *nonce*  
 &nbsp;&nbsp;&nbsp;&nbsp;Nonce for the transaction.

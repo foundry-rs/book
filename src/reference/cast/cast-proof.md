@@ -39,9 +39,9 @@ The displayed output is a JSON object with the following keys:
 
 #### RPC Options
 
-{{#include rpc-url-option.md}}
+{{#include ../common/rpc-url-option.md}}
 
-{{#include display-options.md}}
+{{#include ../common/display-options.md}}
 
 {{#include common-options.md}}
 

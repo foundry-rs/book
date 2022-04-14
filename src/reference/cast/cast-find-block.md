@@ -16,7 +16,7 @@ Get the block number closest to the provided timestamp.
 
 #### RPC Options
 
-{{#include rpc-url-option.md}}
+{{#include ../common/rpc-url-option.md}}
 
 {{#include common-options.md}}
 

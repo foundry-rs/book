@@ -20,11 +20,11 @@ The destination (*to*) can be an ENS name or an address.
 
 #### Transaction Options
 
-{{#include tx-value-option.md}}
+{{#include ../common/tx-value-option.md}}
 
-{{#include rpc-options.md}}
+{{#include ../common/rpc-options.md}}
 
-{{#include etherscan-options.md}}
+{{#include ../common/etherscan-options.md}}
 
 {{#include common-options.md}}
 

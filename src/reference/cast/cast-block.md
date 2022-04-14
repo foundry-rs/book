@@ -28,11 +28,11 @@ If *field* is specified, then only the given field of the block is displayed.
 `--field` *field*  
 &nbsp;&nbsp;&nbsp;&nbsp;If specified, only get the given field of the block.
 
-{{#include display-options.md}}
+{{#include ../common/display-options.md}}
 
 #### RPC Options
 
-{{#include rpc-url-option.md}}
+{{#include ../common/rpc-url-option.md}}
 
 {{#include common-options.md}}
 

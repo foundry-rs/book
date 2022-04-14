@@ -30,13 +30,13 @@ The destination (*to*) can be an ENS name or an address.
 `--confirmations` *confirmations*  
 &nbsp;&nbsp;&nbsp;&nbsp;Wait a number of confirmations before exiting. Default: `1`.
 
-{{#include wallet-options.md}}
+{{#include ../common/wallet-options.md}}
 
-{{#include rpc-options.md}}
+{{#include ../common/rpc-options.md}}
 
-{{#include etherscan-options.md}}
+{{#include ../common/etherscan-options.md}}
 
-{{#include display-options.md}}
+{{#include ../common/display-options.md}}
 
 {{#include common-options.md}}
 

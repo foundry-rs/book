@@ -26,11 +26,11 @@ The destination (*to*) can be an ENS name or an address.
 
 &nbsp;&nbsp;&nbsp;&nbsp;Can be a block number, or any of the tags: `earliest`, `latest` or `pending`.
 
-{{#include wallet-options.md}}
+{{#include ../common/wallet-options.md}}
 
-{{#include rpc-options.md}}
+{{#include ../common/rpc-options.md}}
 
-{{#include etherscan-options.md}}
+{{#include ../common/etherscan-options.md}}
 
 {{#include common-options.md}}
 

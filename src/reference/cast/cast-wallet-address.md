@@ -16,11 +16,11 @@ Convert a private key to an address.
 
 #### Keystore Options
 
-{{#include wallet-options-raw.md}}
+{{#include ../common/wallet-options-raw.md}}
 
-{{#include wallet-options-keystore.md}}
+{{#include ../common/wallet-options-keystore.md}}
 
-{{#include wallet-options-hardware.md}}
+{{#include ../common/wallet-options-hardware.md}}
 
 {{#include common-options.md}}
 

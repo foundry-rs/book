@@ -21,7 +21,7 @@ Compute the contract address from a given nonce and deployer address.
 
 #### RPC Options
 
-{{#include rpc-url-option.md}}
+{{#include ../common/rpc-url-option.md}}
 
 {{#include common-options.md}}
 

@@ -4,7 +4,7 @@
 `--interactive`  
 &nbsp;&nbsp;&nbsp;&nbsp;Open an interactive prompt to enter your private key.
 
-`--private-key` *private key*  
+`--private-key` *raw_private_key*  
 &nbsp;&nbsp;&nbsp;&nbsp;Use the provided private key.
 
 `--mnemnic-path` *path*  

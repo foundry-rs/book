@@ -20,7 +20,7 @@
 `--no-auto-detect`  
 &nbsp;&nbsp;&nbsp;&nbsp;Do not auto-detect solc.
 
-`--ignored-error-codes` [*error_codes...*]  
+`--ignored-error-codes` *error_code*  
 &nbsp;&nbsp;&nbsp;&nbsp;Ignore solc warnings by error code.
 
 `--extra-output` *selector*  

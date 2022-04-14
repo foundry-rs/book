@@ -26,4 +26,4 @@ You must provide an Etherscan API key, either by passing it as an argument or se
 
 ### SEE ALSO
 
-[forge](./forge.md), [forge verify-check](./forge-verify-check.md)
+[forge](./forge.md), [forge create](./forge-create.md), [forge verify-contract](./forge-verify-contract.md)
