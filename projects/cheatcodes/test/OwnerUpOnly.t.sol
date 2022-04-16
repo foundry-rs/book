@@ -3,7 +3,7 @@
 // ANCHOR: prelude
 pragma solidity 0.8.10;
 
-import "ds-test/test.sol";
+import "forge-std/Test.sol";
 
 error Unauthorized();
 // ANCHOR_END: prelude
@@ -26,25 +26,11 @@ contract OwnerUpOnly {
 }
 // ANCHOR_END: contract
 
-// ANCHOR: cheatcodes
-interface CheatCodes {
-    // ANCHOR: cheat_prank
-    function prank(address) external;
-    // ANCHOR_END: cheat_prank
-    // ANCHOR: cheat_expectrevert
-    function expectRevert(bytes4) external;
-    // ANCHOR_END: cheat_expectrevert
-}
-// ANCHOR_END: cheatcodes
-
 // ANCHOR: test
 // ANCHOR: contract_prelude
-contract OwnerUpOnlyTest is DSTest {
+contract OwnerUpOnlyTest is Test {
     OwnerUpOnly upOnly;
 // ANCHOR_END: contract_prelude
-    // ANCHOR: cheats
-    CheatCodes cheats = CheatCodes(HEVM_ADDRESS);
-    // ANCHOR_END: cheats
 
     // ANCHOR: simple_test
     function setUp() public {
@@ -60,16 +46,16 @@ contract OwnerUpOnlyTest is DSTest {
 
     // ANCHOR: test_fail
     function testFailIncrementAsNotOwner() public {
-        cheats.prank(address(0));
+        vm.prank(address(0));
         upOnly.increment();
     }
     // ANCHOR_END: test_fail
 
     // ANCHOR: test_expectrevert
-    // Notice that we replaced `testFail` with `test`
-    function testIncrementAsNotOwner() public {
-        cheats.expectRevert(Unauthorized.selector);
-        cheats.prank(address(0));
+    // Notice that we are not using `testFail` anymore
+    function testCannotIncrementAsNotOwner() public {
+        vm.expectRevert(Unauthorized.selector);
+        vm.prank(address(0));
         upOnly.increment();
     }
     // ANCHOR_END: test_expectrevert

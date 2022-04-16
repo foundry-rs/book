@@ -17,7 +17,7 @@ contract ContractBTest is DSTest {
 
     // ANCHOR: testCannotSubtract43
     function testCannotSubtract43() public {
-        cheats.expectRevert(abi.encodeWithSignature("Panic(uint256)", 0x11));
+        vm.expectRevert(stdError.arithmeticError);
         testNumber -= 43;
     }
     // ANCHOR_END: testCannotSubtract43

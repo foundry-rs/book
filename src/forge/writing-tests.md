@@ -2,15 +2,19 @@
 
 Tests are written in Solidity. If the test function reverts, the test fails, otherwise it passes.
 
-Let's go over the most common way of writing tests, using the [`ds-test`](https://github.com/dapphub/ds-test) library.
+Using the [Forge Standard Library](https://github.com/foundry-rs/forge-std) is the prefered way of writing tests with Foundry.
 
-`ds-test` provides basic logging and assertion functionality. To use it in your testing contract, import `ds-test/test.sol` and inherit from `DSTest`, like so:
+In this section, we'll go over the basics using the functions from the [Dappsys Test](https://github.com/dapphub/ds-test) library, which is included in the Forge Standard Library. You will learn how to use more advanced stuff from the Forge Standard Library [soon](./forge-std.md). 
+
+Dappsys Test provides basic logging and assertion functionality. To get access to the functions, import `forge-std/Test.sol` and inherit from `Test`, like so:
 
 ```solidity
 {{#include ../../projects/writing_tests/test/Basic.t.sol:import}}
 ```
 
-Let's examine a basic test using `ds-test`:
+This will import the other functionality from the Forge Standard Library as well.
+
+Let's examine a basic test:
 
 ```solidity
 {{#include ../../projects/writing_tests/test/Basic.t.sol:all}}
@@ -30,7 +34,9 @@ Forge uses the following keywords in tests:
     ```solidity
     {{#include ../../projects/writing_tests/test/Basic.t.sol:testFailSubtract43}}
     ```
-    A good practice is to use something like `testCannot` in combination with the [`expectRevert`](../cheatcodes/expect-revert.md) cheatcode (cheatcodes are explained in greater detail in the following [section](./cheatcodes.md)). Now instead of using `testFail`, you know exactly what reverted:
+    A good practice is to use something like `testCannot` in combination with the [`expectRevert`](../cheatcodes/expect-revert.md) cheatcode (cheatcodes are explained in greater detail in the following [section](./cheatcodes.md)).
+    <br>
+    Now, instead of using `testFail`, you know exactly what reverted:
     ```solidity
     {{#include ../../projects/writing_tests/test/Basic2.t.sol:testCannotSubtract43}}
     ```
@@ -49,12 +55,18 @@ abstract contract HelperContract {
     address constant IMPORTANT_ADDRESS = 0x543d...;
     SomeContract someContract;
     constructor() {...}
-    function testSomething() public {...}
 }
 
 contract MyContractTest is HelperContract {
     function setUp() public {
         someContract = new SomeContract(0, IMPORTANT_ADDRESS);
+        ...
+    }
+}
+
+contract MyOtherContractTest is HelperContract {
+    function setUp() public {
+        someContract = new SomeContract(1000, IMPORTANT_ADDRESS);
         ...
     }
 }
