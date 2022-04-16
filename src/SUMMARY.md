@@ -56,7 +56,7 @@
 
 # Appendix
 
-- [FAQ]()
+- [FAQ](./faq.md)
 - [References](./reference/README.md)
   - [`forge` Commands](./reference/forge/README.md)
     - [General Commands](./reference/forge/general-commands.md)
