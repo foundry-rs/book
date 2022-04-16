@@ -60,6 +60,16 @@ Valid selectors for `--extra-output-files` are:
 The command can be run in watch mode by passing `--watch [PATH...]`, which will rebuild every time a
 watched file or directory is changed. The source directory is watched by default.
 
+#### Sparse Mode (experimental)
+
+Sparse mode only compiles files that match certain criteria.
+
+By default, this filter applies to files that have not been changed since the last build, but for commands that
+take file filters (e.g. [forge test](./forge-test.md)), sparse mode will only recompile files that match the filter.
+
+Sparse mode is opt-in until the feature is stabilized. To opt-in to sparse mode and try it out, set [`sparse_mode`][sparse-mode]
+in your configuration file.
+
 ### OPTIONS
 
 #### Build Options
@@ -102,5 +112,6 @@ watched file or directory is changed. The source directory is watched by default
 
 [forge](./forge.md), [forge clean](./forge-clean.md), [forge inspect](./forge-inspect.md)
 
+[sparse-mode]: ../config.md#sparse_mode
 [ir-pipeline]: https://docs.soliditylang.org/en/latest/ir-breaking-changes.html
 [output-desc]: https://docs.soliditylang.org/en/latest/using-the-compiler.html#compiler-api

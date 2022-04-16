@@ -101,6 +101,10 @@ extra_output_files = []
 # to the bytecode.
 # The metadata hash can be removed from the bytecode by setting "none"
 bytecode_hash = "ipfs"
+# If enabled, the Solidity compiler is instructed to generate bytecode
+# only for the required contracts. This can reduce compile time
+# for `forge test`, but is experimental.
+sparse_mode = false
 ```
 
 ### Configuration keys
@@ -500,3 +504,11 @@ Valid values are:
 - ipfs (default)
 - bzzr1
 - none
+
+##### `sparse_mode`
+
+- Type: boolean
+- Default: false
+- Environment: `FOUNDRY_SPARSE_MODE` or `DAPP_SPARSE_MODE`
+
+Enables [sparse mode](./forge/forge-build.md#sparse-mode-experimental) for builds.
