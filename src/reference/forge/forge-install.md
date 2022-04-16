@@ -16,7 +16,7 @@ Dependencies are installed as git submodules. If you do not want this behavior, 
 
 If no arguments are provided, then existing dependencies are installed.
 
-Dependencies can be a raw URL (`https://foo.com/dep`), or the path to a GitHub repository (`owner/repo`).
+Dependencies can be a raw URL (`https://foo.com/dep`), an SSH URL (`git@github.com:owner/repo`), or the path to a GitHub repository (`owner/repo`).
 Additionally, a ref can be added to the dependency path to install a specific version of a dependency.
 
 A ref can be:
@@ -26,6 +26,9 @@ A ref can be:
 - A commit: `owner/repo@8e8128`
 
 The ref defaults to `master`.
+
+You can also choose the name of the folder the dependency will be in. By default, the folder name is the name of
+the repository. If you want to change the name of the folder, prepend `<folder>=` to the dependency.
 
 ### OPTIONS
 
@@ -70,6 +73,11 @@ The ref defaults to `master`.
 4. Install a dependency without creating a submodule:
     ```sh
     forge install --no-git Rari-Capital/solmate
+    ```
+
+5. Install a dependency in a specific folder:
+    ```sh
+    forge install soulmate=Rari-Capital/solmate
     ```
 
 ### SEE ALSO
