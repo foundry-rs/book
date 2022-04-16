@@ -40,7 +40,9 @@ contract MyToken is ERC20 {
 ```
 
 ```sh
-$ forge create --rpc-url <your_rpc_url> --constructor-args "ForgeUSD" "FUSD" 18 1000000000000000000000 --private-key <your_private_key> src/MyToken.sol:MyToken
+$ forge create --rpc-url <your_rpc_url> \
+    --constructor-args "ForgeUSD" "FUSD" 18 1000000000000000000000 \
+    --private-key <your_private_key> src/MyToken.sol:MyToken
 ```
 
 ## Verifying
@@ -63,7 +65,10 @@ Let's say you want to verify `MyToken` (see above). You set the [number of optim
 Here's how to verify it:
 
 ```bash
-$ forge verify-contract --chain-id 42 --num-of-optimizations 1000000 --constructor-args 000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000c0000000000000000000000000000000000000000000000000000000000000001200000000000000000000000000000000000000000000003635c9adc5dea000000000000000000000000000000000000000000000000000000000000000000008466f72676555534400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000044655534400000000000000000000000000000000000000000000000000000000 --compiler-version v0.8.10+commit.fc410830 <the_contract_address> src/MyToken.sol:MyToken <your_etherscan_api_key>
+$ forge verify-contract --chain-id 42 --num-of-optimizations 1000000 --constructor-args \ 
+    (cast abi-encode "constructor(string,string,uint256,uint256)" "ForgeUSD" "FUSD" 18 1000000000000000000000) \
+    --compiler-version v0.8.10+commit.fc410830 <the_contract_address> src/MyToken.sol:MyToken <your_etherscan_api_key>
+
 Submitted contract for verification:
                 Response: `OK`
                 GUID: `a6yrbjp5prvakia6bqp5qdacczyfhkyi5j1r6qbds1js41ak1a`

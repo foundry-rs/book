@@ -33,7 +33,7 @@ This command will try to compile the source code of the flattened contract if `-
 `--compiler-version` *version*  
 &nbsp;&nbsp;&nbsp;&nbsp;The compiler version used to build the smart contract.
 
-&nbsp;&nbsp;&nbsp;&nbsp;To find the exact compiler version, run `~/.svm/x.y.z/solc-x.y.z --version`
+&nbsp;&nbsp;&nbsp;&nbsp;To find the exact compiler version, run `~/.svm/x.y.z/solc-x.y.z --version`  
 &nbsp;&nbsp;&nbsp;&nbsp;and search for the 8 hex digits in the version string [here](https://etherscan.io/solcversions).
 
 `--num-of-optimizations` *num*  
@@ -59,9 +59,9 @@ This command will try to compile the source code of the flattened contract if `-
 
 ### EXAMPLES
 
-1. Verify a contract built with solc 0.8.11+commit.d7f03943:
+1. Verify a contract built with solc v0.8.11+commit.d7f03943:
     ```sh
-    forge verify-contract --compiler-version "0.8.11+commit.d7f03943" \
+    forge verify-contract --compiler-version "v0.8.11+commit.d7f03943" \
       0x.. src/Token.sol:MyToken
     ```
 
