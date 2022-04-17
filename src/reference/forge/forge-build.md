@@ -28,7 +28,7 @@ want to clear the cache, pass `--force`, and if you want to change the cache dir
 There are three build modes:
 
 - Just compilation (default): Builds the project and saves the contract artifacts in `out/` (or the path specified by `--out <PATH>`).
-- Size mode (`--sizes`): Builds the project, displays the size of the contracts and exits.
+- Size mode (`--sizes`): Builds the project, displays the size of non-test contracts and exits with code 1 if any of them are above the size limit.
 - Name mode (`--names`): Builds the project, displays the names of the contracts and exits.
 
 #### The Optimizer
@@ -78,7 +78,7 @@ in your configuration file.
 &nbsp;&nbsp;&nbsp;&nbsp;Print compiled contract names.
 
 `--sizes`  
-&nbsp;&nbsp;&nbsp;&nbsp;Print compiled contract sizes.
+&nbsp;&nbsp;&nbsp;&nbsp;Print compiled non-test contract sizes, exiting with code 1 if any of them are above the size limit.
 
 {{#include core-build-options.md}}
 
