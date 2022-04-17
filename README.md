@@ -75,7 +75,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://tobiasbk.github.io"><img src="https://avatars.githubusercontent.com/u/61471326?v=4?s=100" width="100px;" alt=""/><br /><sub><b>tobias</b></sub></a><br /><a href="#maintenance-TobiasBK" title="Maintenance">🚧</a></td>
   </tr>
   <tr>
-    <td align="center"><a href="https://github.com/anticlimactic"><img src="https://avatars.githubusercontent.com/u/9568756?v=4?s=100" width="100px;" alt=""/><br /><sub><b>anticlimactic</b></sub></a><br /><a href="#maintenance-anticlimactic" title="Maintenance">🚧</a></td>
+    <td align="center"><a href="https://github.com/anticlimactic"><img src="https://avatars.githubusercontent.com/u/9568756?v=4?s=100" width="100px;" alt=""/><br /><sub><b>anticlimactic</b></sub></a><br /><a href="#maintenance-anticlimactic" title="Maintenance">🚧</a> <a href="https://github.com/foundry-rs/book/commits?author=anticlimactic" title="Documentation">📖</a></td>
     <td align="center"><a href="http://pedrommaiaa.github.io"><img src="https://avatars.githubusercontent.com/u/100535780?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Pedro Maia</b></sub></a><br /><a href="https://github.com/foundry-rs/book/commits?author=pedrommaiaa" title="Documentation">📖</a></td>
     <td align="center"><a href="https://github.com/edag94"><img src="https://avatars.githubusercontent.com/u/22627847?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Erick</b></sub></a><br /><a href="#maintenance-edag94" title="Maintenance">🚧</a></td>
   </tr>
