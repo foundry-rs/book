@@ -7,13 +7,13 @@ Cheatcodes allow you to change the block number, your identity, and more. They a
 Let's write a test for a smart contract that is only callable by its owner.
 
 ```solidity
-{{#include ../../projects/cheatcodes/src/test/OwnerUpOnly.t.sol:prelude}}
+{{#include ../../projects/cheatcodes/test/OwnerUpOnly.t.sol:prelude}}
 
-{{#include ../../projects/cheatcodes/src/test/OwnerUpOnly.t.sol:contract}}
+{{#include ../../projects/cheatcodes/test/OwnerUpOnly.t.sol:contract}}
 
-{{#include ../../projects/cheatcodes/src/test/OwnerUpOnly.t.sol:contract_prelude}}
+{{#include ../../projects/cheatcodes/test/OwnerUpOnly.t.sol:contract_prelude}}
 
-{{#include ../../projects/cheatcodes/src/test/OwnerUpOnly.t.sol:simple_test}}
+{{#include ../../projects/cheatcodes/test/OwnerUpOnly.t.sol:simple_test}}
 }
 ```
 
@@ -28,14 +28,14 @@ Let's make sure that someone who is definitely not the owner can't increment the
 
 ```solidity
 interface CheatCodes {
-{{#include ../../projects/cheatcodes/src/test/OwnerUpOnly.t.sol:cheat_prank}}
+{{#include ../../projects/cheatcodes/test/OwnerUpOnly.t.sol:cheat_prank}}
 }
 
-{{#include ../../projects/cheatcodes/src/test/OwnerUpOnly.t.sol:contract_prelude}}
+{{#include ../../projects/cheatcodes/test/OwnerUpOnly.t.sol:contract_prelude}}
 
     // ...
 
-{{#include ../../projects/cheatcodes/src/test/OwnerUpOnly.t.sol:test_fail}}
+{{#include ../../projects/cheatcodes/test/OwnerUpOnly.t.sol:test_fail}}
 }
 ```
 
@@ -59,15 +59,15 @@ To be sure in the future, let's make sure that we reverted because we are not th
 
 ```solidity
 interface CheatCodes {
-{{#include ../../projects/cheatcodes/src/test/OwnerUpOnly.t.sol:cheat_prank}}
-{{#include ../../projects/cheatcodes/src/test/OwnerUpOnly.t.sol:cheat_expectrevert}}
+{{#include ../../projects/cheatcodes/test/OwnerUpOnly.t.sol:cheat_prank}}
+{{#include ../../projects/cheatcodes/test/OwnerUpOnly.t.sol:cheat_expectrevert}}
 }
 
-{{#include ../../projects/cheatcodes/src/test/OwnerUpOnly.t.sol:contract_prelude}}
+{{#include ../../projects/cheatcodes/test/OwnerUpOnly.t.sol:contract_prelude}}
 
     // ...
 
-{{#include ../../projects/cheatcodes/src/test/OwnerUpOnly.t.sol:test_expectrevert}}
+{{#include ../../projects/cheatcodes/test/OwnerUpOnly.t.sol:test_expectrevert}}
 }
 ```
 
@@ -83,7 +83,7 @@ Another cheatcode that is perhaps not so intuitive is the `expectEmit` function.
 Events are inheritable members of contracts. When you emit an event, the arguments are stored on the blockchain. The `indexed` attribute can be added to a maximum of three parameters of an event to form a data structure known as a "topic." Topics allow users to search for events on the blockchain.
 
 ```solidity
-{{#include ../../projects/cheatcodes/src/test/EmitContract.t.sol:all}}
+{{#include ../../projects/cheatcodes/test/EmitContract.t.sol:all}}
 ```
 
 When we call `cheats.expectEmit(true, true, false, true);`, we want to check the 1st and 2nd `indexed` topic for the next event.
