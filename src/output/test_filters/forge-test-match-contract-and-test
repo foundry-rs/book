@@ -6,9 +6,9 @@ $ forge test --match-contract ComplicatedContractTest --match-test testDeposit
 Compiling 3 files with 0.8.10
 Compiler run successful
 
-Running 2 tests for src/test/ComplicatedContract.t.sol:ComplicatedContractTest
+Running 2 tests for test/ComplicatedContract.t.sol:ComplicatedContractTest
 [PASS] testDepositERC20() (gas: 102148)
 [PASS] testDepositETH() (gas: 61392)
-Test result: ok. 2 passed; 0 failed; finished in 337.42µs
+Test result: ok. 2 passed; 0 failed; finished in 316.39µs
 // ANCHOR_END: output
 // ANCHOR_END: all

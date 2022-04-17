@@ -1,13 +1,13 @@
 // ANCHOR: all
 // ANCHOR: command
-$ forge test --match-test testIncrementAsOwner|testFailIncrementAsNotOwner --match-path src/test/OwnerUpOnly.t.sol
+$ forge test --match-test testIncrementAsOwner|testFailIncrementAsNotOwner --match-path test/OwnerUpOnly.t.sol
 // ANCHOR_END: command
 // ANCHOR: output
 No files changed, compilation skipped
 
-Running 2 tests for src/test/OwnerUpOnly.t.sol:OwnerUpOnlyTest
+Running 2 tests for test/OwnerUpOnly.t.sol:OwnerUpOnlyTest
 [PASS] testFailIncrementAsNotOwner() (gas: 10510)
 [PASS] testIncrementAsOwner() (gas: 29332)
-Test result: ok. 2 passed; 0 failed; finished in 247.79µs
+Test result: ok. 2 passed; 0 failed; finished in 298.26µs
 // ANCHOR_END: output
 // ANCHOR_END: all

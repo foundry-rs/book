@@ -37,28 +37,28 @@ echo "Generating output (forge)..."
   (
     run_command forge test --match-contract ComplicatedContractTest --match-test testDeposit
   ) > $OUTPUT_DIR/test_filters/forge-test-match-contract-and-test
-  (run_command forge test --match-path src/test/ContractB.t.sol) > $OUTPUT_DIR/test_filters/forge-test-match-path
+  (run_command forge test --match-path test/ContractB.t.sol) > $OUTPUT_DIR/test_filters/forge-test-match-path
 )
 (
   in_project cheatcodes
   (run_command forge test --match-test testIncrementAsOwner) > $OUTPUT_DIR/cheatcodes/forge-test-simple
   (
-    run_command forge test --match-test "testIncrementAsOwner|testFailIncrementAsNotOwner" --match-path src/test/OwnerUpOnly.t.sol
+    run_command forge test --match-test "testIncrementAsOwner|testFailIncrementAsNotOwner" --match-path test/OwnerUpOnly.t.sol
   ) > $OUTPUT_DIR/cheatcodes/forge-test-cheatcodes
   (
-    run_command forge test -vvvv --match-test testFailIncrementAsNotOwner --match-path src/test/OwnerUpOnly.t.sol
+    run_command forge test -vvvv --match-test testFailIncrementAsNotOwner --match-path test/OwnerUpOnly.t.sol
   ) > $OUTPUT_DIR/cheatcodes/forge-test-cheatcodes-tracing
   (
-    run_command forge test --match-test "testIncrementAsOwner|testIncrementAsNotOwner" --match-path src/test/OwnerUpOnly.t.sol
+    run_command forge test --match-test "testIncrementAsOwner|testIncrementAsNotOwner" --match-path test/OwnerUpOnly.t.sol
   ) > $OUTPUT_DIR/cheatcodes/forge-test-cheatcodes-expectrevert
 )
 (
   in_project fuzz_testing
-  step src/test/Safe.t.sol 1
+  step test/Safe.t.sol 1
   (run_command forge test) > $OUTPUT_DIR/fuzz_testing/forge-test-no-fuzz
-  step src/test/Safe.t.sol 2
+  step test/Safe.t.sol 2
   (run_command forge test --allow-failure) > $OUTPUT_DIR/fuzz_testing/forge-test-fail-fuzz
-  step src/test/Safe.t.sol 3
+  step test/Safe.t.sol 3
   (run_command forge test) > $OUTPUT_DIR/fuzz_testing/forge-test-success-fuzz
 )
 (

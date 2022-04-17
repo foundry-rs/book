@@ -1,11 +1,11 @@
 // ANCHOR: all
 // ANCHOR: command
-$ forge test -vvvv --match-test testFailIncrementAsNotOwner --match-path src/test/OwnerUpOnly.t.sol
+$ forge test -vvvv --match-test testFailIncrementAsNotOwner --match-path test/OwnerUpOnly.t.sol
 // ANCHOR_END: command
 // ANCHOR: output
 No files changed, compilation skipped
 
-Running 1 test for src/test/OwnerUpOnly.t.sol:OwnerUpOnlyTest
+Running 1 test for test/OwnerUpOnly.t.sol:OwnerUpOnlyTest
 [PASS] testFailIncrementAsNotOwner() (gas: 10510)
 Traces:
   [10510] OwnerUpOnlyTest::testFailIncrementAsNotOwner() 
@@ -15,6 +15,6 @@ Traces:
     │   └─ ← 0x82b42900
     └─ ← 0x82b42900
 
-Test result: ok. 1 passed; 0 failed; finished in 204.44µs
+Test result: ok. 1 passed; 0 failed; finished in 233.93µs
 // ANCHOR_END: output
 // ANCHOR_END: all
