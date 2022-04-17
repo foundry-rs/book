@@ -34,3 +34,7 @@ If both `--fork-url` and `--fork-block-number` are specified, then data for that
 The data is cached in `~/.foundry/cache/<chain id>/<block number>`. To clear the cache, simply remove the directory.
 
 It is also possible to ignore the cache entirely by passing `--no-storage-caching`, or with `foundry.toml` by configuring [`no_storage_caching`](../reference/config.md#no_storage_caching) and [`rpc_storage_caching`](../reference/config.md#rpc_storage_caching).
+
+> 💡 **Tip**
+>
+> Set the `ETHERSCAN_API_KEY` environment variable to get access to better traces while running tests in a forked environment.
