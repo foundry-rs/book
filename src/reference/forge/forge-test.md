@@ -23,6 +23,10 @@ You can also specify a block number to fork from by passing `--fork-block-number
 specific block, the chain data is cached to `~/.foundry/cache`. If you do not want to cache the chain data,
 pass `--no-storage-caching`.
 
+Traces that cannot be decoded by local contracts when running in a forked environment (e.g. calls to
+contracts that live on mainnet, like tokens) can optionally be decoded using Etherscan. To use Etherscan
+for trace decoding, set `ETHERSCAN_API_KEY` or pass `--etherscan-api-key <KEY>`.
+
 #### Debugging
 
 It is possible to run a test in an interactive debugger. To start the debugger, pass `--debug <TEST>`.
