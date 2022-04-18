@@ -28,16 +28,10 @@ assembly {
 assertEq0(address(myContract).code, anotherAddress.code); // [PASS]
 ```
 
-If you'd like to use getCode to deploy a contract's bytecode, you can also use [Forge Std][forge-std]'s `deployCode` helper.
+### Related
 
-```solidity
-function testDeployCode() public {
-    // deployCode takes a string argument for the contract to deploy
-    // and optionally a bytes argument for any arguments that should
-    // be passed to your contract's constructor
-    address deployed = deployCode("StdCheats.t.sol:StdCheatsTest", bytes(""));
-    // ...
-}
-```
+Forge Standard Library:
+
+- [`deployCode`](../reference/forge-std/deployCode.md)
 
 [forge-std]: https://github.com/foundry-rs/forge-std

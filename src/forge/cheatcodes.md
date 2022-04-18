@@ -4,7 +4,7 @@ Most of the time, simply testing your smart contracts outputs isn't enough. To m
 
 Cheatcodes allow you to change the block number, your identity, and more. They are invoked by calling specific functions on a specially designated address: `0x7109709ECfa91a80626fF3989D68f67F5b1DD12D`, often refered to as 'Hevm'.
 
-You can access Hevm easily via the `vm` instance available in Forge Standard Library's `Test`.
+You can access Hevm easily via the `vm` instance available in Forge Standard Library's `Test` (Forge Standard Library is explained in greater detail in the following [section](./forge-std.md)).
 
 Let's write a test for a smart contract that is only callable by its owner.
 

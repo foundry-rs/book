@@ -21,3 +21,9 @@ vm.store(address(leetContract), bytes32(uint256(0)), bytes32(uint256(31337)));
 bytes32 leet = vm.load(address(leetContract), bytes32(uint256(0)));
 emit log_uint(uint256(leet)); // 31337
 ```
+
+### Related
+
+Forge Standard Library:
+
+- [Std-storage](../reference/forge-std/std-storage.md)

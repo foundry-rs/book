@@ -12,8 +12,6 @@ Dappsys Test provides basic logging and assertion functionality. To get access t
 {{#include ../../projects/writing_tests/test/Basic.t.sol:import}}
 ```
 
-This will import the other functionality from the Forge Standard Library as well.
-
 Let's examine a basic test:
 
 ```solidity

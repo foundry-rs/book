@@ -29,3 +29,9 @@ numsContract.num2();
 );
 emit log_uint(uint256(reads[0])); // 1
 ```
+
+### Related
+
+Forge Standard Library:
+
+- [Std-storage](../reference/forge-std/std-storage.md)

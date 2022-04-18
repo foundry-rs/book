@@ -21,12 +21,6 @@ contract ContractBTest is Test {
     }
     // ANCHOR_END: testNumberIs42
 
-    // ANCHOR: testFailUnderflow
-    function testFailUnderflow() public {
-        testNumber -= 43;
-    }
-    // ANCHOR_END: testFailUnderflow
-
     // ANCHOR: testFailSubtract43
     function testFailSubtract43() public {
         testNumber -= 43;

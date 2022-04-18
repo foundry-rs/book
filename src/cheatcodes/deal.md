@@ -17,3 +17,11 @@ address alice = address(1);
 vm.deal(alice, 1 ether);
 log_uint256(alice.balance); // 1000000000000000000
 ```
+
+### Related
+
+Forge Standard Library:
+
+- [`deal`](../reference/forge-std/deal.md)
+- [`hoax`](../reference/forge-std/hoax.md)
+- [`startHoax`](../reference/forge-std/startHoax.md)

@@ -25,3 +25,9 @@ If the alternative signature of `prank` is used, then `tx.origin` is set as well
 vm.prank(owner);
 myContract.withdraw(); // [PASS]
 ```
+
+### Related
+
+Forge Standard Library:
+
+- [`hoax`](../reference/forge-std/hoax.md)

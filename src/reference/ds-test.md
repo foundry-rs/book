@@ -1,22 +1,15 @@
-## `ds-test` Reference
+## Dappsys Test Reference
 
-`ds-test` provides basic logging and assertion functionality.
+`DSTest` provides basic logging and assertion functionality.
 
-To use it in your testing contract, import `ds-test/test.sol` and inherit from `DSTest`, like so:
+`DSTest` is included in the Forge Standard Library. To use it, import `forge-std/Test.sol` and inherit from `Test`, like so:
 
 ```solidity
-import "ds-test/test.sol";
+import "forge-std/Test.sol";
 
-contract ContractTest is DSTest {
+contract ContractTest is Test {
     // ... tests ...
 }
-```
-
-### Cheatcodes Address
-You can get the address of the cheatcodes account by accessing the `HEVM_ADDRESS` constant:
-
-```solidity
-Cheats cheats = Cheats(HEVM_ADDRESS);
 ```
 
 ### Logging

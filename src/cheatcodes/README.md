@@ -4,8 +4,7 @@ Cheatcodes give you powerful assertions, the ability to alter the state of the E
 
 To enable a cheatcode you call designated functions on the cheatcode address: `0x7109709ECfa91a80626fF3989D68f67F5b1DD12D`.
 
-You can access cheatcodes easily via `vm` available in Forge Standard Library's `Test`.
-This address can also be accessed through the `HEVM_ADDRESS` constant in `DSTest`.
+You can access cheatcodes easily via `vm` available in Forge Standard Library's [`Test`](../reference/forge-std/#forge-stds-test).
 
 Below are some subsections for the different cheatcodes in Forge.
 

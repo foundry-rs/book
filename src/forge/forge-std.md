@@ -58,7 +58,7 @@ You can access std-cheats by simply calling them inside your test contract, as y
 hoax(alice, 100 ether);
 ```
 
-#### `stdError` library
+#### Std-errors
 
 Std-errors are common Solidity errors and reverts.
 
@@ -69,7 +69,7 @@ Std-errors are most useful in combination with the [`expectRevert`](../cheatcode
 vm.expectRevert(stdError.arithmeticError);
 ```
 
-#### `stdStorage` library
+#### Std-storage
 
 Std-storage makes manipulating contract storage easy. It can always find and write to the storage slot(s) associated with a particular variable.
 
@@ -87,4 +87,4 @@ stdstore
 
 > 📚 **Reference**
 >
-> See the [Forge Standard Library Reference]() for a complete overview of Forge Standard Library.
+> See the [Forge Standard Library Reference](../reference/forge-std/) for a complete overview of Forge Standard Library.
