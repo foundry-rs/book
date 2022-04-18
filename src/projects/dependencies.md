@@ -34,6 +34,7 @@ Forge can remap dependencies to make them easier to import. Forge will automatic
 
 These remappings mean:
 
+- To import from `forge-std` we would write: `import "forge-std/Contract.sol";`
 - To import from `solmate` we would write: `import "solmate/Contract.sol";`
 - To import from `weird-erc20` we would write: `import "weird-erc20/Contract.sol";`
 - To import from `ds-test` we would write: `import "ds-test/Contract.sol";`
@@ -64,12 +65,12 @@ Alternatively, you can do this for all dependencies at once by just running `for
 
 ### Removing dependencies
 
-You can remove dependencies using [`forge remove <deps>...`](../reference/forge/forge-remove.md), where `<deps>` is either the full path to the dependency or just the name. For example, to remove `ds-test` both of these commands are equivalent:
+You can remove dependencies using [`forge remove <deps>...`](../reference/forge/forge-remove.md), where `<deps>` is either the full path to the dependency or just the name. For example, to remove `solmate` both of these commands are equivalent:
 
 ```ignore
-$ forge remove ds-test
+$ forge remove solmate
 # ... is equivalent to ...
-$ forge remove lib/ds-test
+$ forge remove lib/solmate
 ```
 
 ### Hardhat compatibility

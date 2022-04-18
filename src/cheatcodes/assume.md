@@ -23,8 +23,8 @@ More information on filtering via `assume` can be found [here][filtering-guide].
 
 ```solidity
 // Good example of using assume
-function testX(uint256 a) public {
-    cheats.assume(a != 1);
+function testSomething(uint256 a) public {
+    vm.assume(a != 1);
     require(a != 1);
     // [PASS]
 }
@@ -32,7 +32,7 @@ function testX(uint256 a) public {
 
 ```solidity
 // In this case assume is not a great fit, so you should bound inputs manually
-function testY(uint256 a) public {
+function testSomethingElse(uint256 a) public {
     a = bound(a, 100, 1e36);
     require(a >= 100 && a <= 1e36);
     // [PASS]

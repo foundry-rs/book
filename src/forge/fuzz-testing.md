@@ -53,7 +53,7 @@ You may want to exclude certain cases using the [`assume`](../cheatcodes/assume.
 
 ```solidity
 function testWithdraw(uint96 amount) public {
-    cheats.assume(amount > 0.1 ether)
+    vm.assume(amount > 0.1 ether)
     // snip
 }
 ```

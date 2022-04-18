@@ -19,7 +19,7 @@ MyContract myContract = new MyContract(arg1, arg2);
 
 // Let's do the same thing with `getCode`
 bytes memory args = abi.encode(arg1, arg2);
-bytes memory bytecode = abi.encodePacked(cheats.getCode("MyContract.sol:MyContract"), args);
+bytes memory bytecode = abi.encodePacked(vm.getCode("MyContract.sol:MyContract"), args);
 address anotherAddress;
 assembly {
     anotherAddress := create(0, add(bytecode, 0x20), mload(bytecode))

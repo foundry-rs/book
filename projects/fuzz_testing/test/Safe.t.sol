@@ -2,7 +2,7 @@
 // ANCHOR: all
 pragma solidity 0.8.10;
 
-import "ds-test/test.sol";
+import "forge-std/Test.sol";
 
 contract Safe {
     receive() external payable {}
@@ -12,7 +12,7 @@ contract Safe {
     }
 }
 
-contract SafeTest is DSTest {
+contract SafeTest is Test {
     Safe safe;
 
     // Needed so the test contract itself can receive ether

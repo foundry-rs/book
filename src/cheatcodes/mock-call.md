@@ -34,7 +34,7 @@ Mocking an exact call:
 
 ```solidity
 function testMockCall() public {
-    cheats.mockCall(
+    vm.mockCall(
         address(0),
         abi.encodeWithSelector(MyToken.balanceOf.selector, address(1)),
         abi.encode(10)
@@ -47,7 +47,7 @@ Mocking an entire function:
 
 ```solidity
 function testMockCall() public {
-    cheats.mockCall(
+    vm.mockCall(
         address(0),
         abi.encodeWithSelector(MyToken.balanceOf.selector),
         abi.encode(10)

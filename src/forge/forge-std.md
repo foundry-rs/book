@@ -2,7 +2,7 @@
 
 Forge Standard Library (Forge Std) is a collection of helpful contracts that make writing tests easier, faster, and more user-friendly.
 
-Using Forge Std is the prefered way of writing tests with Foundry.
+Using Forge Std is the preferred way of writing tests with Foundry.
 
 It provides all the essential functionality you'd need:
 

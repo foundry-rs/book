@@ -3,11 +3,5 @@
 $ forge test
 // ANCHOR_END: command
 // ANCHOR: output
-Compiling 2 files with 0.8.10
-Compiler run successful
-
-Running 1 test for test/Safe.t.sol:SafeTest
-[PASS] testWithdraw() (gas: 19505)
-Test result: ok. 1 passed; 0 failed; finished in 147.46µs
 // ANCHOR_END: output
 // ANCHOR_END: all

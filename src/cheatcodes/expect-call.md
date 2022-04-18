@@ -22,7 +22,7 @@ Expect that `transfer` is called on a token `MyToken`:
 
 ```solidity
 address alice = address(10);
-cheats.expectCall(
+vm.expectCall(
   address(token), abi.encodeCall(token.transfer, (alice, 10))
 );
 token.transfer(alice, 10);

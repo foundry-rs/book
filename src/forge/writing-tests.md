@@ -2,7 +2,7 @@
 
 Tests are written in Solidity. If the test function reverts, the test fails, otherwise it passes.
 
-Using the [Forge Standard Library](https://github.com/foundry-rs/forge-std) is the prefered way of writing tests with Foundry.
+Using the [Forge Standard Library](https://github.com/foundry-rs/forge-std) is the preferred way of writing tests with Foundry.
 
 In this section, we'll go over the basics using the functions from the [Dappsys Test](https://github.com/dapphub/ds-test) library, which is included in the Forge Standard Library. You will learn how to use more advanced stuff from the Forge Standard Library [soon](./forge-std.md). 
 
@@ -44,8 +44,6 @@ Forge uses the following keywords in tests:
 
 Tests are deployed to `0xb4c79daB8f259C7Aee6E5b2Aa729821864227e84`. If you deploy a contract within your test, then `0xb4c...7e84` will be its deployer. If the contract deployed within a test gives special permissions to its deployer, such as `Ownable.sol`'s `onlyOwner` modifier, then the test contract `0xb4c...7e84` will have those permissions.
 
-It is possible to use other testing libraries or roll your own. For example, if you find yourself lacking a special type of assertion, you could extend `ds-test`.
-
 ### Shared setups
 
 It is possible to use shared setups by creating helper abstract contracts and inheriting them in your test contracts:
@@ -57,14 +55,14 @@ abstract contract HelperContract {
     constructor() {...}
 }
 
-contract MyContractTest is HelperContract {
+contract MyContractTest is Test, HelperContract {
     function setUp() public {
         someContract = new SomeContract(0, IMPORTANT_ADDRESS);
         ...
     }
 }
 
-contract MyOtherContractTest is HelperContract {
+contract MyOtherContractTest is Test, HelperContract {
     function setUp() public {
         someContract = new SomeContract(1000, IMPORTANT_ADDRESS);
         ...
@@ -73,10 +71,6 @@ contract MyOtherContractTest is HelperContract {
 ```
 
 <br>
-
-> 📚 **Reference**
->
-> See the [`ds-test` Reference](../reference/ds-test.md) for a complete overview of the logging functionality and assertions in `ds-test`.
 
 > 💡 **Tip**
 >

@@ -36,7 +36,7 @@ function testERC20EmitsTransfer() public {
     // Only `src` and `dst` are indexed in ERC20's `Transfer` event,
     // so we specifically check topics 1 and 2 (topic 0 is always checked by default),
     // as well as the data (`amount`).
-    cheats.expectEmit(true, true, false, true);
+    vm.expectEmit(true, true, false, true);
 
     // We emit the event we expect to see.
     emit MyToken.Transfer(address(this), address(1), 10);
@@ -52,12 +52,12 @@ We can also assert that multiple events are emitted in a single call.
 function testERC20EmitsBatchTransfer() public {
     // We declare multiple expected transfer events
     for (uint256 i = 0; i < users.length; i++) {
-        cheats.expectEmit(true, true, true, true);
+        vm.expectEmit(true, true, true, true);
         emit Transfer(address(this), users[i], 10);
     }
 
     // We also expect a custom `BatchTransfer(uint256 numberOfTransfers)` event.
-    cheats.expectEmit(false, false, false, false);
+    vm.expectEmit(false, false, false, false);
     emit BatchTransfer(users.length);
 
     // We perform the call.

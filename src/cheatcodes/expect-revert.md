@@ -42,7 +42,7 @@ There are 3 signatures:
 >
 > ```solidity
 > function testLowLevelCallRevert() public {
->     cheats.expectRevert(bytes("error message"));
+>     vm.expectRevert(bytes("error message"));
 >     (bool status, ) = address(myContract).call(myCalldata);
 >     assertTrue(status, "expectRevert: call did not revert");
 > }
@@ -53,19 +53,19 @@ There are 3 signatures:
 To use `expectRevert` with a `string`, convert it to `bytes`.
 
 ```solidity
-cheats.expectRevert(bytes("error message"));
+vm.expectRevert(bytes("error message"));
 ```
 
 To use `expectRevert` with a custom [error type][error-type] without parameters, use its selector.
 
 ```solidity
-cheats.expectRevert(MyContract.CustomError.selector);
+vm.expectRevert(MyContract.CustomError.selector);
 ```
 
 To use `expectRevert` with a custom [error type][error-type] with parameters, ABI encode the error type.
 
 ```solidity
-cheats.expectRevert(
+vm.expectRevert(
     abi.encodeWithSelector(MyContract.CustomError.selector, 1, 2)
 );
 ```
@@ -75,7 +75,7 @@ If you need to assert that a function reverts _without_ a message, you can do so
 ```solidity
 function testExpectRevertNoReason() public {
     Reverter reverter = new Reverter();
-    cheats.expectRevert();
+    vm.expectRevert();
     reverter.revertWithoutReason();
 }
 ```

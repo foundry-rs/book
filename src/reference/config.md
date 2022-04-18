@@ -60,7 +60,7 @@ fuzz_runs = 256
 fuzz_max_local_rejects = 65536
 # The max number of combined inputs that may be rejected before a fuzz test aborts
 fuzz_max_global_rejects = 1024
-# Whether or not to enable `cheats.ffi`
+# Whether or not to enable `vm.ffi`
 ffi = false
 # The address of `msg.sender` in tests
 sender = '0x00a329c0648769a73afac7f9381e08fb43dbea72'

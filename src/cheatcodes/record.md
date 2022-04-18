@@ -22,9 +22,9 @@ Tell the VM to start recording all storage reads and writes. To access the reads
 ///     uint256 public num2 = 200; // slot 1
 /// }
 
-cheats.record();
+vm.record();
 numsContract.num2();
-(bytes32[] memory reads, bytes32[] memory writes) = cheats.accesses(
+(bytes32[] memory reads, bytes32[] memory writes) = vm.accesses(
   address(numsContract)
 );
 emit log_uint(uint256(reads[0])); // 1

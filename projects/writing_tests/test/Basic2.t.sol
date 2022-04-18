@@ -3,10 +3,10 @@
 pragma solidity 0.8.10;
 
 // ANCHOR: import
-import "ds-test/test.sol";
+import "forge-std/Test.sol";
 // ANCHOR_END: import
 
-contract ContractBTest is DSTest {
+contract ContractBTest is Test {
     uint256 testNumber;
 
     // ANCHOR: setUp

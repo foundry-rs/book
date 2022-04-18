@@ -3,8 +3,8 @@
 $ forge remappings
 // ANCHOR_END: command
 // ANCHOR: output
-solmate/=lib/solmate/src/
 ds-test/=lib/ds-test/src/
+solmate/=lib/solmate/src/
 weird-erc20/=lib/weird-erc20/src/
 // ANCHOR_END: output
 // ANCHOR_END: all
