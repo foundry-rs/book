@@ -356,6 +356,15 @@
       "contributions": [
         "maintenance"
       ]
+    },
+    {
+      "login": "wminshew",
+      "name": "Will Minshew",
+      "avatar_url": "https://avatars.githubusercontent.com/u/9845502?v=4",
+      "profile": "https://www.willminshew.com",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,

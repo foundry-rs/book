@@ -1,6 +1,6 @@
 ## 📖 Foundry Book
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-38-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-39-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 A book on all things Foundry. [Read now](https://book.getfoundry.sh).
@@ -78,6 +78,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/anticlimactic"><img src="https://avatars.githubusercontent.com/u/9568756?v=4?s=100" width="100px;" alt=""/><br /><sub><b>anticlimactic</b></sub></a><br /><a href="#maintenance-anticlimactic" title="Maintenance">🚧</a> <a href="https://github.com/foundry-rs/book/commits?author=anticlimactic" title="Documentation">📖</a></td>
     <td align="center"><a href="http://pedrommaiaa.github.io"><img src="https://avatars.githubusercontent.com/u/100535780?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Pedro Maia</b></sub></a><br /><a href="https://github.com/foundry-rs/book/commits?author=pedrommaiaa" title="Documentation">📖</a></td>
     <td align="center"><a href="https://github.com/edag94"><img src="https://avatars.githubusercontent.com/u/22627847?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Erick</b></sub></a><br /><a href="#maintenance-edag94" title="Maintenance">🚧</a></td>
+    <td align="center"><a href="https://www.willminshew.com"><img src="https://avatars.githubusercontent.com/u/9845502?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Will Minshew</b></sub></a><br /><a href="https://github.com/foundry-rs/book/commits?author=wminshew" title="Documentation">📖</a></td>
   </tr>
 </table>
 
