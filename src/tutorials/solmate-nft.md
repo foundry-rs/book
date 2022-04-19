@@ -268,7 +268,7 @@ contract NFTTest is DSTest {
     }
 
     function testWithdrawalFailsAsNotOwner() public {
-        // Mint an NFT, sending eht to the contract
+        // Mint an NFT, sending eth to the contract
         Receiver receiver = new Receiver();
         nft.mintTo{value: nft.MINT_PRICE()}(address(receiver));
         // Check that the balance of the contract is correct
