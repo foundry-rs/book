@@ -1,6 +1,6 @@
 ## Dappsys Test Reference
 
-`DSTest` provides basic logging and assertion functionality.
+The Dappsys Test library provides basic logging and assertion functionality.
 
 `DSTest` is included in the Forge Standard Library. To use it, import `forge-std/Test.sol` and inherit from `Test`, like so:
 
