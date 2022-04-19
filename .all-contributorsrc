@@ -365,6 +365,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "dbelv",
+      "name": "Dave Belvedere",
+      "avatar_url": "https://avatars.githubusercontent.com/u/90095005?v=4",
+      "profile": "https://github.com/dbelv",
+      "contributions": [
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7,
