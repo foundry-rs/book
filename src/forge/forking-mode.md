@@ -35,6 +35,14 @@ The data is cached in `~/.foundry/cache/<chain id>/<block number>`. To clear the
 
 It is also possible to ignore the cache entirely by passing `--no-storage-caching`, or with `foundry.toml` by configuring [`no_storage_caching`](../reference/config.md#no_storage_caching) and [`rpc_storage_caching`](../reference/config.md#rpc_storage_caching).
 
-> 💡 **Tip**
->
-> Set the `ETHERSCAN_API_KEY` environment variable to get access to better traces while running tests in a forked environment.
+### Improved traces
+
+Forge supports identifying contracts in a forked environment with Etherscan.
+
+To use this feature, pass the Etherscan API key via the `--etherscan-api-key` flag:
+
+```bash
+forge test --fork-url <your_rpc_url> --etherscan-api-key <your_etherscan_api_key>
+```
+
+Alternatively, you can set the `ETHERSCAN_API_KEY` environment variable.
