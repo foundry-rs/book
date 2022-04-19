@@ -1,12 +1,13 @@
 ## Deploying
 
-Forge can deploy smart contracts to a given network with the `forge create` command.
+Forge can deploy smart contracts to a given network with the [`forge create`](../reference/forge/forge-create.md) command.
 
 Forge can deploy only one contract at a time.
 
 To deploy a contract, you must provide a RPC URL (env: `ETH_RPC_URL`) and the private key of the account that will deploy the contract.
 
 To deploy `MyContract` to a network:
+
 ```sh
 $ forge create --rpc-url <your_rpc_url> --private-key <your_private_key> src/MyContract.sol:MyContract
 compiling...
@@ -23,6 +24,7 @@ Use the `--constructor-args` flag to pass arguments to the constructor:
 ```solidity
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.0;
+
 import {ERC20} from "solmate/tokens/ERC20.sol";
 
 contract MyToken is ERC20 {
@@ -38,11 +40,14 @@ contract MyToken is ERC20 {
 ```
 
 ```sh
-$ forge create --rpc-url <your_rpc_url> --constructor-args "ForgeUSD" "FUSD" 18 1000000000000000000000 --private-key <your_private_key> src/MyToken.sol:MyToken
+$ forge create --rpc-url <your_rpc_url> \
+    --constructor-args "ForgeUSD" "FUSD" 18 1000000000000000000000 \
+    --private-key <your_private_key> src/MyToken.sol:MyToken
 ```
 
 ## Verifying
-You can verify a contract on Etherscan with the `forge verify-contract` command.
+
+You can verify a contract on Etherscan with the [`forge verify-contract`](../reference/forge/forge-verify-contract.md) command.
 
 You must provide:
 - [compiler version](https://etherscan.io/solcversions) used for build, with 8 hex digits from the commit version prefix (the commit will usually not be a nightly build)
@@ -51,7 +56,7 @@ You must provide:
 - your Etherscan API key (env: `ETHERSCAN_API_KEY`).
 
 Moreover, you may need to provide:
-- the contructor arguments in the ABI-encoded format, if there are any
+- the constructor arguments in the ABI-encoded format, if there are any
 - the number of optimizations, if the Solidity optimizer was activated
 - the [chain ID](https://evm-chainlist.netlify.app/), if the contract is not on Ethereum Mainnet
 
@@ -60,14 +65,17 @@ Let's say you want to verify `MyToken` (see above). You set the [number of optim
 Here's how to verify it:
 
 ```bash
-$ forge verify-contract --chain-id 42 --num-of-optimizations 1000000 --constructor-args 000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000c0000000000000000000000000000000000000000000000000000000000000001200000000000000000000000000000000000000000000003635c9adc5dea000000000000000000000000000000000000000000000000000000000000000000008466f72676555534400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000044655534400000000000000000000000000000000000000000000000000000000 --compiler-version v0.8.10+commit.fc410830 <the_contract_address> src/MyToken.sol:MyToken <your_etherscan_api_key>
+$ forge verify-contract --chain-id 42 --num-of-optimizations 1000000 --constructor-args \ 
+    (cast abi-encode "constructor(string,string,uint256,uint256)" "ForgeUSD" "FUSD" 18 1000000000000000000000) \
+    --compiler-version v0.8.10+commit.fc410830 <the_contract_address> src/MyToken.sol:MyToken <your_etherscan_api_key>
+
 Submitted contract for verification:
                 Response: `OK`
                 GUID: `a6yrbjp5prvakia6bqp5qdacczyfhkyi5j1r6qbds1js41ak1a`
                 url: https://kovan.etherscan.io//address/0x6a54…3a4c#code
 ```
 
-You can check verification status with the `forge verify-check` command:
+You can check verification status with the [`forge verify-check`](../reference/forge/forge-verify-check.md) command:
 
 ```bash
 $ forge verify-check --chain-id 42 <GUID> <your_etherscan_api_key>
@@ -78,7 +86,7 @@ Contract successfully verified.
 
 > 💡 **Tip**
 > 
-> Use Cast's [`abi-encode`](../reference/cast.md#abi-encode) to ABI-encode arguments.
+> Use Cast's [`abi-encode`](../reference/cast/cast-abi-encode.md) to ABI-encode arguments.
 >
 > In this example, we ran `cast abi-encode "constructor(string,string,uint8,uint256)" "ForgeUSD" "FUSD" 18 1000000000000000000000` to ABI-encode the arguments.
 
@@ -87,6 +95,7 @@ Contract successfully verified.
 ### Troubleshooting
 
 ##### `Invalid character 'x' at position 1`
+
 Make sure the private key string does not begin with `0x`.
 
 ##### `EIP-1559 not activated`
@@ -99,10 +108,13 @@ Make sure the passed arguments are of correct type.
 Make sure the private key is correct.
 
 ##### `Compiler version commit for verify`
-If you want to check the exact commit you are running locally, try: ` ~/.svm/0.x.y/solc-0.x.y --version` where `x` and `y` are major and minor version numbers respectively.  The output of this will be something like:
+If you want to check the exact commit you are running locally, try: ` ~/.svm/0.x.y/solc-0.x.y --version` where `x` and
+`y` are major and minor version numbers respectively.  The output of this will be something like:
+
 ```ignore
 solc, the solidity compiler commandline interface
 Version: 0.8.12+commit.f00d7308.Darwin.appleclang
 ```
+
 Note: You cannot just paste the entire string "0.8.12+commit.f00d7308.Darwin.appleclang" as the argument for the compiler-version.  But you can use the 8 hex digits of the commit to look up exactly what you should copy and paste from [compiler version](https://etherscan.io/solcversions).
 

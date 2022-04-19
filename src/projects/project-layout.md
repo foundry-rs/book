@@ -3,21 +3,13 @@
 Forge is flexible on how you structure your project. By default, the structure is:
 
 ```ignore
-.
-├── remappings.txt
-├── foundry.toml
-├── src/
-│   ├── Contract.sol
-│   └── test/
-│       └── Contract.t.sol
-└── lib/
-    └── ds-test/
+{{#include ../output/hello_foundry/tree-with-files:output}}
 ```
 
 - You can configure Foundry's behavior using `foundry.toml`.
 - Remappings are specified in `remappings.txt`.
 - The default directory for contracts is `src/`.
-- The default directory for tests is `src/test/`, where any contract with a function that starts with `test` is considered to be a test.
+- The default directory for tests is `test/`, where any contract with a function that starts with `test` is considered to be a test.
 - Dependencies are stored as git submodules in `lib/`.
 
 You can configure where Forge looks for both dependencies and contracts using the `--lib-paths` and `--contracts` flags respectively. Alternatively you can configure it in `foundry.toml`.

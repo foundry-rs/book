@@ -4,7 +4,7 @@ Foundry is a smart contract development toolchain. Foundry manages your dependen
 
 > 📖 **Contributing**
 >
-> You can contribute to this book on [GitHub](https://github.com/onbjerg/foundry-book).
+> You can contribute to this book on [GitHub](https://github.com/foundry-rs/book).
 
 ### Sections
 
@@ -28,7 +28,7 @@ Learn how to use `cast` to interact with smart contracts, send transactions, and
 
 Guides on configuring Foundry.
 
-- [Configuring with `foundry.toml`](./config/README.md)
+- [Configuring with `foundry.toml`](./config/)
 - [Continuous Integration](./config/continous-integration.md)
 - [Integrating with VSCode](./config/vscode.md)
 - [Shell Autocompletion](./config/shell-autocompletion.md)
@@ -38,16 +38,17 @@ Guides on configuring Foundry.
 Tutorials on building smart contracts with Foundry.
 
 - [Creating an NFT with Solmate](./tutorials/solmate-nft.md)
+- [Docker and Foundry](./tutorials/foundry-docker.md)
 - [Incremental Adoption]()
 
-**Reference**
+**Appendix**
 
-References on Foundry and Foundry-related tools.
+References, troubleshooting and more.
 
-- [`forge` Reference]()
-- [`cast` Reference](./reference/cast.md)
-- [`foundry.toml` Reference](./reference/config.md)
+- [forge Commands](./reference/forge/)
+- [cast Commands](./reference/cast/)
+- [Config Reference](./reference/config.md)
 - [`ds-test` Reference](./reference/ds-test.md)
-- [Cheatcodes Reference](./reference/cheatcodes.md)
+- [Cheatcodes Reference](./cheatcodes/)
 
 > You can also check out [Awesome Foundry](https://github.com/crisgarner/awesome-foundry), a curated list of awesome Foundry resources, tutorials, tools and libraries!

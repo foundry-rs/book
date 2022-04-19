@@ -42,12 +42,60 @@ When your pull request is open, other contributors will take a look and may requ
 
 If your pull request is merged, or your issue was addressed, feel free to ping @all-contributors to be added to the README. More information here: https://allcontributors.org/docs/en/bot/overview
 
-### Writing Style
+### Writing style
+
 This section documents a few standards for writing used throughout the book.
 
-- Provide console output along with commands, in this format:
+#### Chapters start with a second level heading
 
-```bash
-$ command --goes "here"
-Output goes here
+We use:
+
+```md
+## Some Page
 ```
+
+We do not use:
+
+```md
+# Some Page
+```
+
+This is largely a stylistic choice.
+
+#### Always use "we" and not "I"
+
+Pretend like you are explaining Foundry to a friend!
+
+#### Where possible, use auto-generated CLI output
+
+As a small change in the Foundry CLIs can have a large impact on the book, most of the CLI output is auto-generated.
+
+Each output file has three anchors you can use:
+
+**Display the command *and* the output**
+
+```handlebars
+{{#include ../output/abc/xyz:all}}
+```
+
+**Display just the command**
+
+```handlebars
+{{#include ../output/abc/xyz:command}}
+```
+
+**Display just the output**
+
+```handlebars
+{{#include ../output/abc/xyz:output}}
+```
+
+You can learn more about auto-generated CLI output in the [output folder](./src/output).
+
+#### Where possible, do NOT in-line Solidity code
+
+In the same vein as the previous style guideline, opt to include source files, or parts of source files, from the [projects folder](./projects).
+
+This allows us to quickly iterate and improve on our examples without having to change multiple pages.
+
+You can learn more about including files in the [mdbook documentation](https://rust-lang.github.io/mdBook/format/mdbook.html).

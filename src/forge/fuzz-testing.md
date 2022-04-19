@@ -7,47 +7,13 @@ Property-based testing is a way of testing general behaviors as opposed to isola
 Let's examine what that means by writing a unit test, finding the general property we are testing for, and converting it to a property-based test instead:
 
 ```solidity
-// SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.0;
-
-contract Safe {
-  receive() external payable {}
-
-  function withdraw() external {
-    payable(msg.sender).transfer(address(this).balance);
-  }
-}
-
-import "ds-test/test.sol";
-
-contract SafeTest is DSTest {
-  Safe safe;
-
-  // Needed so the test contract itself can receive ether
-  receive() external payable {}
-
-  function setUp() public {
-    safe = new Safe();
-  }
-
-  function testWithdraw() public {
-    payable(address(safe)).transfer(1 ether);
-    uint256 preBalance = address(this).balance;
-    safe.withdraw();
-    uint256 postBalance = address(this).balance;
-    assertEq(preBalance + 1 ether, postBalance);
-  }
-}
+{{#include ../../projects/fuzz_testing/test/Safe.t.sol.1:all}}
 ```
 
 Running the test, we see it passes:
 
-```ignore
-$ forge test
-compiling...
-no files changed, compilation skipped.
-Running 1 test for SafeTest.json:SafeTest
-[PASS] testWithdraw() (gas: 15005)
+```sh
+{{#include ../output/fuzz_testing/forge-test-no-fuzz:all}}
 ```
 
 This unit test *does test* that we can withdraw ether from our safe. However, who is to say that it works for all amounts, not just 1 ether?
@@ -57,70 +23,47 @@ The general property here is: given a safe balance, when we withdraw, we should 
 Forge will run any test that takes at least one parameter as a property-based test, so let's rewrite:
 
 ```solidity
-contract SafeTest is DSTest {
-  // safe
-  // receive
-  // setUp
+{{#include ../../projects/fuzz_testing/test/Safe.t.sol.2:contract_prelude}}
+    // ...
 
-  function testWithdraw(uint256 amount) public {
-    payable(address(safe)).transfer(amount);
-    uint256 preBalance = address(this).balance;
-    safe.withdraw();
-    uint256 postBalance = address(this).balance;
-    assertEq(preBalance + amount, postBalance);
-  }
+{{#include ../../projects/fuzz_testing/test/Safe.t.sol.2:test}}
 }
 ```
 
 If we run the test now, we can see that Forge runs the property-based test, but it fails for high values of `amount`:
 
-```ignore
+```sh
 $ forge test
-compiling...
-Compiling 1 files with 0.8.10
-Compilation finished successfully
-success.
-
-Running 1 test for SafeTest.json:SafeTest
-[FAIL. Counterexample: calldata=0x215a2f200000000000000000000000000000000000000001000000000000000000000000, args=[79228162514264337593543950336]] testWithdraw(uint256) (runs: 44, μ: 15073, ~: 15073)
-
-Failed tests:
-[FAIL. Counterexample: calldata=0x215a2f200000000000000000000000000000000000000001000000000000000000000000, args=[79228162514264337593543950336]] testWithdraw(uint256) (runs: 44, μ: 15073, ~: 15073)
+{{#include ../output/fuzz_testing/forge-test-fail-fuzz:output}}
 ```
 
 The default amount of ether that the test contract is given is `2**96 wei` (as in DappTools), so we have to restrict the type of amount to `uint96` to make sure we don't try to send more than we have:
 
 ```solidity
-contract SafeTest is DSTest {
-  // safe
-  // receive
-  // setUp
-
-  function testWithdraw(uint96 amount) public {
-    // snip
-  }
-}
+{{#include ../../projects/fuzz_testing/test/Safe.t.sol.3:signature}}
 ```
 
 And now it passes:
 
-```ignore
-$ forge test
-compiling...
-success.
-Running 1 test for SafeTest.json:SafeTest
-[PASS] testWithdraw(uint96) (runs: 256, μ: 14591, ~: 15167)
+```sh
+{{#include ../output/fuzz_testing/forge-test-success-fuzz:all}}
 ```
 
-You may want to exclude certain cases using the [`assume`](../reference/cheatcodes.md#assume) cheatcode. In those cases, fuzzer will discard the inputs and start a new fuzz run:
+You may want to exclude certain cases using the [`assume`](../cheatcodes/assume.md) cheatcode. In those cases, fuzzer will discard the inputs and start a new fuzz run:
 
 ```solidity
 function testWithdraw(uint96 amount) public {
-  cheats.assume(amount > 0.1 ether)
-  // snip
+    cheats.assume(amount > 0.1 ether)
+    // snip
 }
 ```
 
 There are different ways to run property-based tests, notably parametric testing and fuzzing. Forge only supports fuzzing.
 
-When running a property-based test, the fuzzer will try to generate as many test cases as possible to uncover edge cases. You can configure the amount of scenarios the fuzzer will generate by setting [`FOUNDRY_FUZZ_RUNS`](../reference/config.md#fuzz_runs).
+### Interpreting results
+
+You might have noticed that fuzz tests are summarized a bit differently compared to unit tests:
+
+- "runs" refers to the amount of scenarios the fuzzer tested. By default, the fuzzer will generate 256 scenarios, however, this can be configured using the [`FOUNDRY_FUZZ_RUNS`](../reference/config.md#fuzz_runs) environment variable.
+- "μ" (Greek letter mu) is the mean gas used across all fuzz runs
+- "~" (tilde) is the median gas used across all fuzz runs

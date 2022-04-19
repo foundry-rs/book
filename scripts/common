@@ -1,0 +1,71 @@
+#!/bin/bash
+set -e
+# Runs commands on Forge projects used in the book, and records
+# the commands and outputs into files that are easily
+# includeable in the book.
+
+export ETH_RPC_URL="${ETH_RPC_URL:=https://eth-mainnet.alchemyapi.io/v2/Lc7oIGYeL_QvInzI0Wiu_pOZZDEKBrdf}"
+export OUTPUT_DIR=$(realpath src/output)
+
+# Runs a command and outputs text with anchors.
+# The anchors are:
+# - all: The command and output
+# - command: Only the command
+# - output: Only the output
+run_command() {
+  echo "// ANCHOR: all"
+  echo "// ANCHOR: command"
+  echo "$ $@"
+  echo "// ANCHOR_END: command"
+  echo "// ANCHOR: output"
+  $@ | sed "s,\x1B\[[0-9;]*[a-zA-Z],,g"
+  echo "// ANCHOR_END: output"
+  echo "// ANCHOR_END: all"
+}
+
+# Moves to a project directory and does some initial preparations.
+#
+# The project must live in ./projects
+in_project() {
+  echo "... $1"
+  mkdir -p $OUTPUT_DIR/$1
+  cd projects/$1
+  forge clean
+}
+
+# Moves to a new temporary directory for a specific project,
+# and ensures src/output/<PROJECT> exists.
+in_temp() {
+  echo "... $1"
+  cd $(mktemp -d)
+  mkdir -p $OUTPUT_DIR/$1
+}
+
+# A helper to "step" in a project. For example, suppose you have
+# a set of contracts, each with clashing signatures/definitions:
+#
+# - src/test/SomeTest.t.sol.1
+# - src/test/SomeTest.t.sol.2
+# - src/test/SomeTest.t.sol.3
+#
+# Calling `step src/test/SomeTest.t.sol 1` would delete src/test/SomeTest.t.sol,
+# and then copy the contents of SomeTest.t.sol.1 into its destination.
+step() {
+  rm -f "$1"
+  cp "${1}.${2}" "$1"
+}
+
+err() {
+  echo "$1" >&2
+  exit 1
+}
+
+need_cmd() {
+  if ! check_cmd "$1"; then
+    err "need '$1' (command not found)"
+  fi
+}
+
+check_cmd() {
+  command -v "$1" > /dev/null 2>&1
+}

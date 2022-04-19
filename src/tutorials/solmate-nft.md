@@ -11,7 +11,7 @@ This tutorial walk you through creating an OpenSea compatible NFT with Foundry a
 Start by setting up a Foundry project following the steps outlined in the [Getting started section](../getting-started/installation.html). We will also install Solmate for their ERC721 implementation, as well as some OpenZeppelin utility libraries. Install the dependencies by running the following commands from the root of your project:
 
 ```bash
-forge install Rari-Capital/solmate Openzeppelin/openzeppelin-contracts brockelmore/forge-std
+forge install Rari-Capital/solmate Openzeppelin/openzeppelin-contracts foundry-rs/forge-std
 ```
 
 These dependencies will be added as git submodules to your project.
@@ -32,23 +32,22 @@ import "solmate/tokens/ERC721.sol";
 import "openzeppelin-contracts/contracts/utils/Strings.sol";
 
 contract NFT is ERC721 {
-   uint256 public currentTokenId;
+    uint256 public currentTokenId;
 
-   constructor(
-       string memory _name,
-       string memory _symbol
-   ) ERC721(_name, _symbol) {
-   }
+    constructor(
+        string memory _name,
+        string memory _symbol
+    ) ERC721(_name, _symbol) {}
 
-   function mintTo(address recipient) public payable returns (uint256) {
-       uint256 newItemId = ++currentTokenId;
-       _safeMint(recipient, newItemId);
-       return newItemId;
-   }
+    function mintTo(address recipient) public payable returns (uint256) {
+        uint256 newItemId = ++currentTokenId;
+        _safeMint(recipient, newItemId);
+        return newItemId;
+    }
 
-   function tokenURI(uint256 id) public view virtual override returns (string memory) {
-       return Strings.toString(id);
-   }
+    function tokenURI(uint256 id) public view virtual override returns (string memory) {
+        return Strings.toString(id);
+    }
 }
 ```
 
@@ -66,7 +65,7 @@ export PRIVATE_KEY=<Your wallets private key>
 
 Once set, you can deploy your NFT with Forge by running the below command while adding the relevant constructor arguments to the NFT contract:
 ```bash
-forge create NFT --rpc-url=$RPC_URL --constructor-args <name> <symbol>
+forge create NFT --rpc-url=$RPC_URL --private-key=$PRIVATE_KEY --constructor-args <name> <symbol> 
 ```
 
 If successfully deployed, you will see the deploying wallet's address, the contract's address as well as the transaction hash printed to your terminal.
@@ -75,15 +74,17 @@ If successfully deployed, you will see the deploying wallet's address, the contr
 
 Calling functions on your NFT contract is made simple with Cast, Foundry's command-line tool for interacting with smart contracts, sending transactions, and getting chain data. Let's have a look at how we can use it to mint NFTs from our NFT contract.
 
-Given that you already set your RPC and private key env variables during deployment, mint an NFT from your contract by running:
+Given that you already set your RPC and private key env variables during deployment, mint an NFT from your contract by
+running:
+
 ```bash
 cast send --rpc-url=$RPC_URL <contractAddress>  "mintTo(address)" <arg> --private-key=$PRIVATE_KEY
 ```
 
-Well done! You just minted your first NFT from your contract. You can sanity check the owner of the NFT with `currentTokenId` equal to **0** by running the below ``cast call`` command. The address you provided above should be returned as the owner.
+Well done! You just minted your first NFT from your contract. You can sanity check the owner of the NFT with `currentTokenId` equal to **1** by running the below ``cast call`` command. The address you provided above should be returned as the owner.
 
 ```bash
-cast call --rpc-url=$RPC_URL --private-key=$PRIVATE_KEY <contractAddress> "ownerOf(uint256)" 0
+cast call --rpc-url=$RPC_URL --private-key=$PRIVATE_KEY <contractAddress> "ownerOf(uint256)" 1
 ```
 
 ### Extending our NFT contract functionality and testing
@@ -97,6 +98,11 @@ pragma solidity >=0.8.10;
 import "solmate/tokens/ERC721.sol";
 import "openzeppelin-contracts/contracts/utils/Strings.sol";
 import "openzeppelin-contracts/contracts/access/Ownable.sol";
+
+error MintPriceNotPaid();
+error MaxSupply();
+error NonExistentTokenURI();
+error WithdrawTransfer();
 
 contract NFT is ERC721, Ownable {
 
@@ -115,12 +121,13 @@ contract NFT is ERC721, Ownable {
     }
 
     function mintTo(address recipient) public payable returns (uint256) {
-        require(
-            msg.value == MINT_PRICE,
-            "Transaction value did not equal the mint price"
-        );
+        if (msg.value != MINT_PRICE) {
+            revert MintPriceNotPaid();
+        }
         uint256 newTokenId = ++currentTokenId;
-        require(newTokenId <= TOTAL_SUPPLY, "Max supply reached");
+        if (newTokenId > TOTAL_SUPPLY) {
+            revert MaxSupply();
+        }
         _safeMint(recipient, newTokenId);
         return newTokenId;
     }
@@ -132,10 +139,9 @@ contract NFT is ERC721, Ownable {
         override
         returns (string memory)
     {
-        require(
-            ownerOf[tokenId] != address(0),
-            "ERC721Metadata: URI query for nonexistent token"
-        );
+        if (ownerOf(tokenId) == address(0)) {
+            revert NonExistentTokenURI();
+        }
         return
             bytes(baseURI).length > 0
                 ? string(abi.encodePacked(baseURI, tokenId.toString()))
@@ -145,7 +151,9 @@ contract NFT is ERC721, Ownable {
     function withdrawPayments(address payable payee) external onlyOwner {
         uint256 balance = address(this).balance;
         (bool transferTx, ) = payee.call{value: balance}("");
-        require(transferTx);
+        if (!transferTx) {
+            revert WithdrawTransfer();
+        }
     }
 }
 ```
@@ -163,7 +171,7 @@ Within your test folder rename the current `Contract.t.sol` test file to `NFT.t.
 pragma solidity 0.8.10;
 
 import "ds-test/test.sol";
-import "forge-std/stdlib.sol";
+import "forge-std/Test.sol";
 import "forge-std/Vm.sol";
 import "../NFT.sol";
 
@@ -259,18 +267,18 @@ contract NFTTest is DSTest {
         assertEq(payee.balance, priorPayeeBalance + nftBalance);
     }
 
-    function testFailWithdrawalAsNotOwner() public {
-        vm.expectRevert("Ownable: caller is not the owner");
-        // Mint an NFT, sending eth to the contract
+    function testWithdrawalFailsAsNotOwner() public {
+        // Mint an NFT, sending eht to the contract
         Receiver receiver = new Receiver();
         nft.mintTo{value: nft.MINT_PRICE()}(address(receiver));
         // Check that the balance of the contract is correct
         assertEq(address(nft).balance, nft.MINT_PRICE());
         // Confirm that a non-owner cannot withdraw
+        vm.expectRevert("Ownable: caller is not the owner");
         vm.startPrank(address(0xd3ad));
         nft.withdrawPayments(payable(address(0xd3ad)));
         vm.stopPrank();
-    }   
+    }
 }
 
 contract Receiver is ERC721TokenReceiver {
@@ -279,7 +287,7 @@ contract Receiver is ERC721TokenReceiver {
         address from,
         uint256 id,
         bytes calldata data
-    ) external returns (bytes4){
+    ) override external returns (bytes4){
         return this.onERC721Received.selector;
     }
 }
@@ -288,16 +296,16 @@ contract Receiver is ERC721TokenReceiver {
 
 The test suite is set up as a contract with a `setUp` method which runs before every individual test.
 
-As you can see, Forge offers a number of [cheatcodes](../forge/cheatcodes) to manipulate state to accomodate your testing scenario.
+As you can see, Forge offers a number of [cheatcodes](../forge/cheatcodes) to manipulate state to accommodate your testing scenario.
 
 For example, our `testFailMaxSupplyReached` test checks that an attempt to mint fails when the max supply of NFT is reached. Thus, the `currentTokenId` of the NFT contract needs to be set to the max supply by using the store cheatcode which allows you to write data to your contracts storage slots. The storage slots you wish to write to can easily be found using the
-[`forge-std`](https://github.com/brockelmore/forge-std/) helper library. You can run the test with the following command:
+[`forge-std`](https://github.com/foundry-rs/forge-std/) helper library. You can run the test with the following command:
 
 ```bash
 forge test
 ```
 
-If you want to put your Forge skills to practice, write tests for the remaining methods of our NFT contract. Feel free to PR them to [nft-tutorial]((https://github.com/FredCoen/nft-tutorial), where you will find the full implemenation of this tutorial.
+If you want to put your Forge skills to practice, write tests for the remaining methods of our NFT contract. Feel free to PR them to [nft-tutorial](https://github.com/FredCoen/nft-tutorial), where you will find the full implementation of this tutorial.
 
 ### Gas reports for your function calls
 

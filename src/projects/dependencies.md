@@ -4,27 +4,16 @@ Forge manages dependencies using [git submodules](https://git-scm.com/book/en/v2
 
 ### Adding a dependency
 
-To add a dependency, run `forge install`:
+To add a dependency, run [`forge install`](../reference/forge/forge-install.md):
 
 ```sh
-$ forge install Rari-Capital/solmate
-Installing solmate in "lib/solmate", (url: https://github.com/rari-capital/solmate, tag: None)
-Cloning into 'lib/solmate'...
-# Snip...
-[master a492c5d] forge install: solmate
- 2 files changed, 4 insertions(+)
- create mode 160000 lib/solmate
+{{#include ../output/deps/forge-install:all}}
 ```
 
 If we now check the `lib` folder:
 
 ```sh
-$ tree lib -L 1
-lib
-├── ds-test
-└── solmate
-
-2 directories, 0 files
+{{#include ../output/deps/tree:all}}
 ```
 
 We can see that Forge installed `solmate`!
@@ -40,10 +29,7 @@ $ forge install Rari-Capital/solmate@v6
 Forge can remap dependencies to make them easier to import. Forge will automatically try to deduce some remappings for you:
 
 ```sh
-$ forge remappings
-solmate/=lib/solmate/src/
-weird-erc20/=lib/solmate/lib/weird-erc20/src/
-ds-test/=lib/ds-test/src/
+{{#include ../output/deps/forge-remappings:all}}
 ```
 
 These remappings mean:
@@ -68,7 +54,7 @@ import "solmate-utils/Contract.sol";
 
 ### Updating dependencies
 
-You can update a specific dependency to the latest commit on the version you have specified using `forge update <dep>`. For example, if we wanted to pull the latest commit from our previously installed master-version of `solmate`, we would run:
+You can update a specific dependency to the latest commit on the version you have specified using [`forge update <dep>`](../reference/forge/forge-update.md). For example, if we wanted to pull the latest commit from our previously installed master-version of `solmate`, we would run:
 
 ```sh
 $ forge update lib/solmate
@@ -78,12 +64,12 @@ Alternatively, you can do this for all dependencies at once by just running `for
 
 ### Removing dependencies
 
-You can remove dependencies using `forge remove <deps>...`, where `<deps>` is either the full path to the dependency or just the name. For example, to remove `ds-test` both of these commands are equivalent:
+You can remove dependencies using [`forge remove <deps>...`](../reference/forge/forge-remove.md), where `<deps>` is either the full path to the dependency or just the name. For example, to remove `ds-test` both of these commands are equivalent:
 
 ```ignore
-forge remove ds-test
+$ forge remove ds-test
 # ... is equivalent to ...
-forge remove lib/ds-test
+$ forge remove lib/ds-test
 ```
 
 ### Hardhat compatibility
