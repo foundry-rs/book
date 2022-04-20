@@ -1,14 +1,14 @@
-## Forge Standard Library
+## Forge Standard Library Overview
 
 Forge Standard Library (Forge Std) is a collection of helpful contracts that make writing tests easier, faster, and more user-friendly.
 
 Using Forge Std is the preferred way of writing tests with Foundry.
 
-It provides all the essential functionality you'd need:
+It provides all the essential functionality you need to get started writing tests:
 
 - `Vm.sol`: Up-to-date cheatcodes interface
 - `console.sol`: Hardhat-style logging functionality
-- `Test.sol`: Forge Std helpful contracts, `DSTest`, `Vm` instance, and Hardhat [`console`](https://hardhat.org/hardhat-network/reference/#console-log)
+- `Test.sol`: Std-libraries, Dappsys Test, Hevm instance, and Hardhat console
 
 Simply import `Test.sol` and inherit from `Test` in your test contract:
 
@@ -21,17 +21,17 @@ contract ContractTest is Test { ...
 Now, you can:
 
 ```solidity
-// Access Hevm via `vm` instance
+// Access Hevm via the `vm` instance
 vm.startPrank(alice);
 
-// Log with Hardhat `console`
+// Assert and log using Dappsys Test
+assertEq(dai.balanceOf(alice), 10000e18);
+
+// Log with the Hardhat `console`
 console.log(alice.balance);
 
-// Use anything from Forge Std
+// Use anything from the Forge Std std-libraries
 deal(address(dai), alice, 10000e18);
-
-// Assert and log with `DSTest`
-assertEq(dai.balanceOf(alice), 10000e18);
 ```
 
 To import the `Vm` interface or the `console` library individually:
@@ -43,7 +43,7 @@ import "forge-std/Vm.sol";
 import "forge-std/console.sol";
 ```
 
-### The helpful contracts
+### Std-libraries
 
 Forge Std currently consists of three main libraries.
 
@@ -76,7 +76,8 @@ Std-storage makes manipulating contract storage easy. It can always find and wri
 The `Test` contract already provides a `StdStorage` instance `stdstore` through which you can access any std-storage functionality. Note that you must add `using stdStorage for StdStorage` in your test contract first.
 
 ```solidity
-// find the variable `score` in the contract `game` and change its value to `10`
+// find the variable `score` in the contract `game`
+// and change its value to 10
 stdstore
     .target(address(game))
     .sig(game.score.selector)

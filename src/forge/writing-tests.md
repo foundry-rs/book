@@ -4,9 +4,15 @@ Tests are written in Solidity. If the test function reverts, the test fails, oth
 
 Using the [Forge Standard Library](https://github.com/foundry-rs/forge-std) is the preferred way of writing tests with Foundry.
 
+Install it by running:
+
+```bash
+forge install foundry-rs/forge-std
+```
+
 In this section, we'll go over the basics using the functions from the [Dappsys Test](https://github.com/dapphub/ds-test) library, which is included in the Forge Standard Library. You will learn how to use more advanced stuff from the Forge Standard Library [soon](./forge-std.md). 
 
-Dappsys Test provides basic logging and assertion functionality. To get access to the functions, import `forge-std/Test.sol` and inherit from `Test`, like so:
+Dappsys Test provides basic logging and assertion functionality. To get access to the functions, import `forge-std/Test.sol` and inherit from `Test` in your test contract:
 
 ```solidity
 {{#include ../../projects/writing_tests/test/Basic.t.sol:import}}

@@ -38,12 +38,12 @@ contract ContractTest is Test { ...
 
 What's included:
 
-- Forge Std helpful contracts
+- Std-libraries
   - [Std-cheats](./std-cheats.md): Wrappers around Forge cheatcodes for improved safety and UX.
   - [Std-errors](./std-errors.md): Common Solidity errors and reverts.
   - [Std-storage](./std-storage.md): Contract storage manipulation helpers.
 
-- A `Vm` instance `vm`, via which you can access Forge cheatcodes (see [Cheatcodes Reference](../../cheatcodes/))
+- A Hevm instance `vm`, via which you invoke Forge cheatcodes (see [Cheatcodes Reference](../../cheatcodes/))
 
     ```solidity
     vm.startPrank(alice);

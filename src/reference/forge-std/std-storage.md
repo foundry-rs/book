@@ -26,7 +26,7 @@ Then, access std-storage via the `stdstore` instance.
 
 struct Character {
     Class class;
-    uint256 lvl;
+    uint256 level;
     uint256 xp;
 }
 

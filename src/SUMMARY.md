@@ -20,7 +20,7 @@
 - [Tests](./forge/tests.md)
   - [Writing Tests](./forge/writing-tests.md)
   - [Cheatcodes](./forge/cheatcodes.md)
-  - [Forge Standard Library](./forge/forge-std.md)
+  - [Forge Standard Library Overview](./forge/forge-std.md)
   - [Understanding Traces](./forge/traces.md)
   - [Forking Mode](./forge/forking-mode.md)
 <!--  - [Coverage Reports]() !-->

@@ -2,11 +2,11 @@
 
 Cheatcodes give you powerful assertions, the ability to alter the state of the EVM, mock data, and more.
 
-To enable a cheatcode you call designated functions on the cheatcode address: `0x7109709ECfa91a80626fF3989D68f67F5b1DD12D`.
+To enable a cheatcode you call designated functions on the cheatcode address: `0x7109709ECfa91a80626fF3989D68f67F5b1DD12D`, often refered to as 'Hevm'.
 
-You can access cheatcodes easily via `vm` available in Forge Standard Library's [`Test`](../reference/forge-std/#forge-stds-test).
+You can access Hevm easily via `vm` available in Forge Standard Library's [`Test`](../reference/forge-std/#forge-stds-test).
 
-Below are some subsections for the different cheatcodes in Forge.
+Below are some subsections for the different Forge cheatcodes.
 
 - [Environment](./environment.md): Cheatcodes that alter the state of the EVM.
 - [Assertions](./assertions.md): Cheatcodes that are powerful assertions

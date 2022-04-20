@@ -1,6 +1,8 @@
 <img src="images/foundry-banner.png" style="border-radius: 20px">
 
-Foundry is a smart contract development toolchain. Foundry manages your dependencies, compiles your project, runs tests, deploys, and lets you interact with the chain from the command-line.
+Foundry is a smart contract development toolchain.
+
+Foundry manages your dependencies, compiles your project, runs tests, deploys, and lets you interact with the chain from the command-line.
 
 > 📖 **Contributing**
 >
@@ -48,7 +50,8 @@ References, troubleshooting and more.
 - [forge Commands](./reference/forge/)
 - [cast Commands](./reference/cast/)
 - [Config Reference](./reference/config.md)
-- [`ds-test` Reference](./reference/ds-test.md)
+- [Forge Standard Library Reference](./reference/forge-std/)
+- [Dappsys Test Reference](./reference/ds-test.md)
 - [Cheatcodes Reference](./cheatcodes/)
 
 > You can also check out [Awesome Foundry](https://github.com/crisgarner/awesome-foundry), a curated list of awesome Foundry resources, tutorials, tools and libraries!
