@@ -9,4 +9,3 @@
 - [`indexOOBError`](./indexOOBError.md)
 - [`memOverflowError`](./memOverflowError.md)
 - [`zeroVarError`](./zeroVarError.md)
-- [`lowLevelError`](./lowLevelError.md)
