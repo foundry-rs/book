@@ -21,7 +21,7 @@ source $HOME/.zshrc
 
 ```sh
 mkdir -p $HOME/.config/fish/completions
-forge completions fish > $HOME/.config/fish/completions/_forge.fish
-cast completions fish > $HOME/.config/fish/completions/_cast.fish
+forge completions fish > $HOME/.config/fish/completions/forge.fish
+cast completions fish > $HOME/.config/fish/completions/cast.fish
 source $HOME/.config/fish/config.fish
 ```

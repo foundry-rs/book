@@ -29,6 +29,9 @@ interface CheatCodes {
     // Set block.basefee
     function fee(uint256) external;
 
+    // Set block.chainid
+    function chainId(uint256) external;
+
     // Loads a storage slot from an address
     function load(address account, bytes32 slot) external returns (bytes32);
 

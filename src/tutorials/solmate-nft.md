@@ -139,7 +139,7 @@ contract NFT is ERC721, Ownable {
         override
         returns (string memory)
     {
-        if (ownerOf[tokenId] == address(0)) {
+        if (ownerOf(tokenId) == address(0)) {
             revert NonExistentTokenURI();
         }
         return
@@ -171,7 +171,7 @@ Within your test folder rename the current `Contract.t.sol` test file to `NFT.t.
 pragma solidity 0.8.10;
 
 import "ds-test/test.sol";
-import "forge-std/stdlib.sol";
+import "forge-std/Test.sol";
 import "forge-std/Vm.sol";
 import "../NFT.sol";
 
@@ -268,7 +268,7 @@ contract NFTTest is DSTest {
     }
 
     function testWithdrawalFailsAsNotOwner() public {
-        // Mint an NFT, sending eht to the contract
+        // Mint an NFT, sending eth to the contract
         Receiver receiver = new Receiver();
         nft.mintTo{value: nft.MINT_PRICE()}(address(receiver));
         // Check that the balance of the contract is correct
@@ -287,7 +287,7 @@ contract Receiver is ERC721TokenReceiver {
         address from,
         uint256 id,
         bytes calldata data
-    ) external returns (bytes4){
+    ) override external returns (bytes4){
         return this.onERC721Received.selector;
     }
 }

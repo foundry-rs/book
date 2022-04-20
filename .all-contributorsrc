@@ -356,6 +356,33 @@
       "contributions": [
         "maintenance"
       ]
+    },
+    {
+      "login": "wminshew",
+      "name": "Will Minshew",
+      "avatar_url": "https://avatars.githubusercontent.com/u/9845502?v=4",
+      "profile": "https://www.willminshew.com",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "dbelv",
+      "name": "Dave Belvedere",
+      "avatar_url": "https://avatars.githubusercontent.com/u/90095005?v=4",
+      "profile": "https://github.com/dbelv",
+      "contributions": [
+        "maintenance"
+      ]
+    },
+    {
+      "login": "xenide",
+      "name": "A.L.",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5846427?v=4",
+      "profile": "https://github.com/xenide",
+      "contributions": [
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7,
