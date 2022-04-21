@@ -12,10 +12,16 @@ What's included:
     import "forge-std/Vm.sol";
     ```
 
-- [`console.sol`](https://hardhat.org/hardhat-network/reference/#console-log): Hardhat-style logging functionality
+- [`console.sol`](https://hardhat.org/hardhat-network/reference/#console-log) and `console2.sol`: Hardhat-style logging functionality
 
     ```solidity
     import "forge-std/console.sol";
+    ```
+
+    **Note:** `console2.sol` decodes logs with `int256` and `uint256` values correctly, but is not compatible with Hardhat.
+
+    ```solidity
+    import "forge-std/console2.sol";
     ```
 
 - `Test.sol`: Complete Forge Std experience (more details [below](#forge-stds-test))
@@ -52,7 +58,7 @@ What's included:
 - All Hardhat `console` functions for logging (see [Hardhat docs](https://hardhat.org/hardhat-network/reference/#console-log))
 
     ```solidity
-    console.log(alice.balance);
+    console.log(alice.balance); // or `console2`
     ```
 
 - All Dappsys Test functions for asserting and logging (see [Dappsys Test reference](../ds-test.md))

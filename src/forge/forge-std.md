@@ -7,7 +7,7 @@ Using Forge Std is the preferred way of writing tests with Foundry.
 It provides all the essential functionality you need to get started writing tests:
 
 - `Vm.sol`: Up-to-date cheatcodes interface
-- `console.sol`: Hardhat-style logging functionality
+- `console.sol` and `console2.sol`: Hardhat-style logging functionality
 - `Test.sol`: Std-libraries, Dappsys Test, Hevm instance, and Hardhat console
 
 Simply import `Test.sol` and inherit from `Test` in your test contract:
@@ -27,7 +27,7 @@ vm.startPrank(alice);
 // Assert and log using Dappsys Test
 assertEq(dai.balanceOf(alice), 10000e18);
 
-// Log with the Hardhat `console`
+// Log with the Hardhat `console` (`console2`)
 console.log(alice.balance);
 
 // Use anything from the Forge Std std-libraries
@@ -39,8 +39,15 @@ To import the `Vm` interface or the `console` library individually:
 ```solidity
 import "forge-std/Vm.sol";
 ```
+
 ```solidity
 import "forge-std/console.sol";
+```
+
+**Note:** `console2.sol` decodes logs with `int256` and `uint256` values correctly, but is not compatible with Hardhat.
+
+```solidity
+import "forge-std/console2.sol";
 ```
 
 ### Std-libraries
