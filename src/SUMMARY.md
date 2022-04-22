@@ -102,6 +102,7 @@
       - [cast send](./reference/cast/cast-send.md)
       - [cast call](./reference/cast/cast-call.md)
       - [cast tx](./reference/cast/cast-tx.md)
+      - [cast run](./reference/cast/cast-run.md)
       - [cast estimate](./reference/cast/cast-estimate.md)
       - [cast access-list](./reference/cast/cast-access-list.md)
     - [Block Commands](./reference/cast/block-commands.md)
