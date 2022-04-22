@@ -25,6 +25,7 @@
 <!--  - [Coverage Reports]() !-->
 - [Advanced Testing](./forge/advanced-testing.md)
   - [Fuzz Testing](./forge/fuzz-testing.md)
+  - [Differential Testing](./forge/differential-ffi-testing.md)
 <!--  - [Invariant Testing]() !-->
 <!--  - [Symbolic Testing]() !-->
 <!--  - [Table Testing]() !-->
