@@ -1,4 +1,4 @@
-## Std-cheats
+## Std Cheats
 
 - [`skip`](./skip.md)
 - [`rewind`](./rewind.md)

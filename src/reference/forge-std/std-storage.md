@@ -1,21 +1,28 @@
-## Std-storage
+## Std Storage
 
-To use std-storage, add the following line to your test contract:
+Std Storage is a library that makes manipulating contract storage easy.
+
+To use Std Storage, add the following line to your test contract:
 
 ```solidity
 using stdStorage for StdStorage;
 ```
 
-Then, access std-storage via the `stdstore` instance.
+Then, access Std Storage via the `stdstore` instance.
 
 ### Functions
 
-- `target`: Set contract address.
-- `sig`: Set function signature.
-- `with_key`: Set key, if variable is of type `mapping`.
-- `depth`: Set depth, if variable is of type `struct`.
-- `checked_write`: Set data to be written.
-- `find`: Return slot number.
+Query functions:
+
+- `target`: Set the address of the contract (required)
+- `sig`: Set the signature of the function to call (required)
+- `with_key`: Set the mapping key, if the variable is of type `mapping`
+- `depth`: Set the index of the struct member, if the variable is of type `struct`
+
+Terminator functions:
+
+- `checked_write`: Set the data to be written to the storage slot(s)
+- `find`: Return the slot number
 
 ### Example
 

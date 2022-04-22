@@ -1,4 +1,4 @@
-## Std-errors
+## Std Errors
 
 - [`assertionError`](./assertionError.md)
 - [`arithmeticError`](./arithmeticError.md)

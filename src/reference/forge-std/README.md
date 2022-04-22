@@ -1,6 +1,6 @@
 ## Forge Standard Library Reference
 
-Forge Standard Library (Forge Std) is a collection of helpful contracts that make writing tests easier, faster, and more user-friendly.
+Forge Standard Library (Forge Std for short) is a collection of helpful contracts that make writing tests easier, faster, and more user-friendly.
 
 Using Forge Std is the preferred way of writing tests with Foundry.
 
@@ -18,7 +18,7 @@ What's included:
     import "forge-std/console.sol";
     ```
 
-    **Note:** `console2.sol` decodes logs with `int256` and `uint256` values correctly, but is not compatible with Hardhat.
+    **Note:** `console2.sol` contains patches to `console.sol` that allow Forge to decode traces for calls to the console, but it is not compatible with Hardhat.
 
     ```solidity
     import "forge-std/console2.sol";
@@ -32,7 +32,7 @@ What's included:
 
 ### Forge Std's `Test`
 
-`Test` in `Test.sol` provides all the essential functionality you need to get started writing tests.
+The `Test` contract in `Test.sol` provides all the essential functionality you need to get started writing tests.
 
 Simply import `Test.sol` and inherit from `Test` in your test contract:
 
@@ -44,12 +44,12 @@ contract ContractTest is Test { ...
 
 What's included:
 
-- Std-libraries
-  - [Std-cheats](./std-cheats.md): Wrappers around Forge cheatcodes for improved safety and UX.
-  - [Std-errors](./std-errors.md): Common Solidity errors and reverts.
-  - [Std-storage](./std-storage.md): Contract storage manipulation helpers.
+- Std Libraries
+  - [Std Cheats](./std-cheats.md): Wrappers around Forge cheatcodes for improved safety and UX.
+  - [Std Errors](./std-errors.md): Wrappers around common internal Solidity errors and reverts.
+  - [Std Storage](./std-storage.md): Contract storage manipulation helpers.
 
-- A Hevm instance `vm`, via which you invoke Forge cheatcodes (see [Cheatcodes Reference](../../cheatcodes/))
+- A cheatcodes instance `vm`, from which you invoke Forge cheatcodes (see [Cheatcodes Reference](../../cheatcodes/))
 
     ```solidity
     vm.startPrank(alice);

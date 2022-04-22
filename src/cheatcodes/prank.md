@@ -26,7 +26,7 @@ vm.prank(owner);
 myContract.withdraw(); // [PASS]
 ```
 
-### Related
+### See also
 
 Forge Standard Library:
 

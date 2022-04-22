@@ -16,7 +16,7 @@ function deal(address token, address to, uint256 give, bool adjust) public;
 
 ### Description
 
-The same as [`deal`](../../cheatcodes/deal.md) cheatcode, but works for any ERC-20 token as well.
+A wrapper around the [`deal`](../../cheatcodes/deal.md) cheatcode that also works for most ERC-20 tokens.
 
 If the alternative signature of `deal` is used, adjusts the token's total supply after setting the balance.
 

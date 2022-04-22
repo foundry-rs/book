@@ -8,4 +8,4 @@ stdError.arithmeticError
 
 ### Description
 
-The error when an arithmetic operation fails, e.g. underflow, overflow.
+The internal Solidity error when an arithmetic operation fails, e.g. underflow and overflow.

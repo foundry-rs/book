@@ -17,7 +17,7 @@ vm.warp(1641070800);
 emit log_uint(block.timestamp); // 1641070800
 ```
 
-### Related
+### See also
 
 Forge Standard Library:
 

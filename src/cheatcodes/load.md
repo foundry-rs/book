@@ -21,8 +21,8 @@ bytes32 leet = cheats.load(address(leetContract), bytes32(uint256(0)));
 emit log_uint(uint256(leet)); // 1337
 ```
 
-### Related
+### See also
 
 Forge Standard Library:
 
-- [Std-storage](../reference/forge-std/std-storage.md)
+- [Std Storage](../reference/forge-std/std-storage.md)

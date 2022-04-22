@@ -51,7 +51,7 @@ References, troubleshooting and more.
 - [cast Commands](./reference/cast/)
 - [Config Reference](./reference/config.md)
 - [Forge Standard Library Reference](./reference/forge-std/)
-- [Dappsys Test Reference](./reference/ds-test.md)
+- [DSTest Reference](./reference/ds-test.md)
 - [Cheatcodes Reference](./cheatcodes/)
 
 > You can also check out [Awesome Foundry](https://github.com/crisgarner/awesome-foundry), a curated list of awesome Foundry resources, tutorials, tools and libraries!

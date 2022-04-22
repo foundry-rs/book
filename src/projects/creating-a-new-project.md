@@ -21,7 +21,7 @@ $ cd hello_foundry
 {{#include ../output/hello_foundry/tree:all}}
 ```
 
-The default template comes with one dependency installed: Dappsys Test. This is the preferred assertion library used for Foundry projects. Additionally, the template also comes with an empty starter contract and a simple test.
+The default template comes with one dependency installed: DSTest. This is the preferred assertion library used for Foundry projects. Additionally, the template also comes with an empty starter contract and a simple test.
 
 Let's build the project:
 

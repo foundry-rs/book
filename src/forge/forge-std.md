@@ -1,6 +1,6 @@
 ## Forge Standard Library Overview
 
-Forge Standard Library (Forge Std) is a collection of helpful contracts that make writing tests easier, faster, and more user-friendly.
+Forge Standard Library (Forge Std for short) is a collection of helpful contracts that make writing tests easier, faster, and more user-friendly.
 
 Using Forge Std is the preferred way of writing tests with Foundry.
 
@@ -8,7 +8,7 @@ It provides all the essential functionality you need to get started writing test
 
 - `Vm.sol`: Up-to-date cheatcodes interface
 - `console.sol` and `console2.sol`: Hardhat-style logging functionality
-- `Test.sol`: Std-libraries, Dappsys Test, Hevm instance, and Hardhat console
+- `Test.sol`: A superset of DSTest containing standard libraries, a cheatcodes instance (`vm`), and Hardhat console
 
 Simply import `Test.sol` and inherit from `Test` in your test contract:
 
@@ -44,41 +44,41 @@ import "forge-std/Vm.sol";
 import "forge-std/console.sol";
 ```
 
-**Note:** `console2.sol` decodes logs with `int256` and `uint256` values correctly, but is not compatible with Hardhat.
+**Note:** `console2.sol` contains patches to `console.sol` that allows Forge to decode traces for calls to the console, but it is not compatible with Hardhat.
 
 ```solidity
 import "forge-std/console2.sol";
 ```
 
-### Std-libraries
+### Standard libraries
 
 Forge Std currently consists of three main libraries.
 
-#### Std-cheats
+#### Std Cheats
 
-Std-cheats are wrappers around the Forge cheatcodes, to make them safer to use and improve the UX.
+Std Cheats are wrappers around Forge cheatcodes that make them safer to use and improve the UX.
 
-You can access std-cheats by simply calling them inside your test contract, as you would any other internal function:
+You can access Std Cheats by simply calling them inside your test contract, as you would any other internal function:
 
 ```solidity
-// set up a prank as Alice, with 100 ETH balance
+// set up a prank as Alice with 100 ETH balance
 hoax(alice, 100 ether);
 ```
 
-#### Std-errors
+#### Std Errors
 
-Std-errors are common Solidity errors and reverts.
+Std Errors provide wrappers around common internal Solidity errors and reverts.
 
-Std-errors are most useful in combination with the [`expectRevert`](../cheatcodes/expect-revert.md#expectrevert) cheatcode, as you do not need to remember the panic codes. Note that you have to access them through `stdError`, as this is a library.
+Std Errors are most useful in combination with the [`expectRevert`](../cheatcodes/expect-revert.md) cheatcode, as you do not need to remember the internal Solidity panic codes yourself. Note that you have to access them through `stdError`, as this is a library.
 
 ```solidity
 // expect an arithmetic error on the next call (e.g. underflow)
 vm.expectRevert(stdError.arithmeticError);
 ```
 
-#### Std-storage
+#### Std Storage
 
-Std-storage makes manipulating contract storage easy. It can always find and write to the storage slot(s) associated with a particular variable.
+Std Storage makes manipulating contract storage easy. It can find and write to the storage slot(s) associated with a particular variable.
 
 The `Test` contract already provides a `StdStorage` instance `stdstore` through which you can access any std-storage functionality. Note that you must add `using stdStorage for StdStorage` in your test contract first.
 

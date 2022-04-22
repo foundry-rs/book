@@ -8,4 +8,4 @@ stdError.assertionError
 
 ### Description
 
-The error when an assertion fails.
+The internal Solidity error when an `assert` fails.

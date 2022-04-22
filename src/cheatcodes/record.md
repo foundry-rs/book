@@ -30,8 +30,8 @@ numsContract.num2();
 emit log_uint(uint256(reads[0])); // 1
 ```
 
-### Related
+### See also
 
 Forge Standard Library:
 
-- [Std-storage](../reference/forge-std/std-storage.md)
+- [Std Storage](../reference/forge-std/std-storage.md)

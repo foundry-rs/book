@@ -2,17 +2,17 @@
 
 Tests are written in Solidity. If the test function reverts, the test fails, otherwise it passes.
 
-Using the [Forge Standard Library](https://github.com/foundry-rs/forge-std) is the preferred way of writing tests with Foundry.
+Let's go over the most common way of writing tests, using the [Forge Standard Library](https://github.com/foundry-rs/forge-std)'s `Test` contract, which is the preferred way of writing tests with Forge.
 
-Install it by running:
+Install the Forge Standard Library by running:
 
 ```bash
 forge install foundry-rs/forge-std
 ```
 
-In this section, we'll go over the basics using the functions from the [Dappsys Test](https://github.com/dapphub/ds-test) library, which is included in the Forge Standard Library. You will learn how to use more advanced stuff from the Forge Standard Library [soon](./forge-std.md). 
+In this section, we'll go over the basics using the functions from the Forge Std's `Test` contract, which is itself a superset of [DSTest](https://github.com/dapphub/ds-test). You will learn how to use more advanced stuff from the Forge Standard Library [soon](./forge-std.md). 
 
-Dappsys Test provides basic logging and assertion functionality. To get access to the functions, import `forge-std/Test.sol` and inherit from `Test` in your test contract:
+DSTest provides basic logging and assertion functionality. To get access to the functions, import `forge-std/Test.sol` and inherit from `Test` in your test contract:
 
 ```solidity
 {{#include ../../projects/writing_tests/test/Basic.t.sol:import}}
@@ -38,8 +38,7 @@ Forge uses the following keywords in tests:
     ```solidity
     {{#include ../../projects/writing_tests/test/Basic.t.sol:testFailSubtract43}}
     ```
-    A good practice is to use something like `testCannot` in combination with the [`expectRevert`](../cheatcodes/expect-revert.md) cheatcode (cheatcodes are explained in greater detail in the following [section](./cheatcodes.md)).
-    <br>
+    A good practice is to use something like `testCannot` in combination with the [`expectRevert`](../cheatcodes/expect-revert.md) cheatcode (cheatcodes are explained in greater detail in the following [section](./cheatcodes.md)).  
     Now, instead of using `testFail`, you know exactly what reverted:
     ```solidity
     {{#include ../../projects/writing_tests/test/Basic2.t.sol:testCannotSubtract43}}
