@@ -78,13 +78,13 @@ For the stack, **cyan words** are either being read or popped by the current opc
 
 - <kbd>Ctrl</kbd> + <kbd>j</kbd>: Scroll the memory view down
 - <kbd>Ctrl</kbd> + <kbd>k</kbd>: Scroll the memory view up
-- <kbd>t</kbd>: Show labels on the stack to see what items the current op will consume
+- <kbd>m</kbd>: Show memory as UTF8
 
 ### Navigating the stack
 
 - <kbd>J</kbd>: Scroll the stack view down
 - <kbd>K</kbd>: Scroll the stack view up
-- <kbd>m</kbd>: Show memory as UTF8
+- <kbd>t</kbd>: Show labels on the stack to see what items the current op will consume
 
 [op-call]: https://www.evm.codes/#f1
 [op-staticcall]: https://www.evm.codes/#fa
