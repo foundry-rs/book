@@ -22,6 +22,12 @@ If the alternative signature of `prank` is used, then `tx.origin` is set as well
 /// function withdraw() public {
 ///     require(msg.sender == owner);
 
-cheats.prank(owner);
+vm.prank(owner);
 myContract.withdraw(); // [PASS]
 ```
+
+### See also
+
+Forge Standard Library:
+
+- [`hoax`](../reference/forge-std/hoax.md)

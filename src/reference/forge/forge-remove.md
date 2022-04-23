@@ -22,12 +22,12 @@ Dependencies can be a raw URL (`https://foo.com/dep`), the path to a GitHub repo
 
 1. Remove a dependency by path:
     ```sh
-    forge remove lib/ds-test
+    forge remove lib/solmate
     ```
 
 2. Remove a dependency by GitHub repository name:
     ```sh
-    forge remove dapphub/ds-test
+    forge remove dapphub/solmate
     ```
 
 ### SEE ALSO

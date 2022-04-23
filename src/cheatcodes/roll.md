@@ -13,6 +13,6 @@ Sets `block.number`.
 ### Examples
 
 ```solidity
-cheats.roll(100);
+vm.roll(100);
 emit log_uint(block.number); // 100
 ```

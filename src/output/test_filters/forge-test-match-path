@@ -6,7 +6,7 @@ $ forge test --match-path test/ContractB.t.sol
 No files changed, compilation skipped
 
 Running 1 test for test/ContractB.t.sol:ContractBTest
-[PASS] testExample() (gas: 168)
-Test result: ok. 1 passed; 0 failed; finished in 71.01µs
+[PASS] testExample() (gas: 257)
+Test result: ok. 1 passed; 0 failed; finished in 432.21µs
 // ANCHOR_END: output
 // ANCHOR_END: all

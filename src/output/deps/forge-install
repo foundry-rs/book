@@ -3,7 +3,7 @@
 $ forge install Rari-Capital/solmate
 // ANCHOR_END: command
 // ANCHOR: output
-Installing solmate in "/tmp/tmp.G8ToHLU6t8/deps/lib/solmate", (url: https://github.com/Rari-Capital/solmate, tag: None)
+Installing solmate in "/tmp/tmp.k5x2vFTdRy/deps/lib/solmate", (url: https://github.com/Rari-Capital/solmate, tag: None)
     Installed solmate
 // ANCHOR_END: output
 // ANCHOR_END: all

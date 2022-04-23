@@ -6,15 +6,15 @@ $ forge test -vvvv --match-test testFailIncrementAsNotOwner --match-path test/Ow
 No files changed, compilation skipped
 
 Running 1 test for test/OwnerUpOnly.t.sol:OwnerUpOnlyTest
-[PASS] testFailIncrementAsNotOwner() (gas: 10510)
+[PASS] testFailIncrementAsNotOwner() (gas: 8413)
 Traces:
-  [10510] OwnerUpOnlyTest::testFailIncrementAsNotOwner() 
+  [8413] OwnerUpOnlyTest::testFailIncrementAsNotOwner() 
     ├─ [0] VM::prank(0x0000000000000000000000000000000000000000) 
     │   └─ ← ()
     ├─ [247] 0xce71…c246::d09de08a() 
     │   └─ ← 0x82b42900
     └─ ← 0x82b42900
 
-Test result: ok. 1 passed; 0 failed; finished in 233.93µs
+Test result: ok. 1 passed; 0 failed; finished in 678.54µs
 // ANCHOR_END: output
 // ANCHOR_END: all

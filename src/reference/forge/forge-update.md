@@ -25,7 +25,7 @@ If no argument is provided, then all dependencies are updated.
 
 1. Update a dependency:
     ```sh
-    forge update lib/ds-test
+    forge update lib/solmate
     ```
 
 2. Update all dependencies:

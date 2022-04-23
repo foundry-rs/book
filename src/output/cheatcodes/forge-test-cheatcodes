@@ -6,8 +6,8 @@ $ forge test --match-test testIncrementAsOwner|testFailIncrementAsNotOwner --mat
 No files changed, compilation skipped
 
 Running 2 tests for test/OwnerUpOnly.t.sol:OwnerUpOnlyTest
-[PASS] testFailIncrementAsNotOwner() (gas: 10510)
-[PASS] testIncrementAsOwner() (gas: 29332)
-Test result: ok. 2 passed; 0 failed; finished in 298.26µs
+[PASS] testFailIncrementAsNotOwner() (gas: 8413)
+[PASS] testIncrementAsOwner() (gas: 29162)
+Test result: ok. 2 passed; 0 failed; finished in 745.33µs
 // ANCHOR_END: output
 // ANCHOR_END: all

@@ -7,7 +7,7 @@ Compiling 1 files with 0.8.10
 Compiler run successful
 
 Running 1 test for test/Safe.t.sol:SafeTest
-[PASS] testWithdraw(uint96) (runs: 256, μ: 13385, ~: 19667)
-Test result: ok. 1 passed; 0 failed; finished in 9.93ms
+[PASS] testWithdraw(uint96) (runs: 256, μ: 13425, ~: 19654)
+Test result: ok. 1 passed; 0 failed; finished in 87.69ms
 // ANCHOR_END: output
 // ANCHOR_END: all

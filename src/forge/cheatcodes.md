@@ -2,7 +2,9 @@
 
 Most of the time, simply testing your smart contracts outputs isn't enough. To manipulate the state of the blockchain, as well as test for specific reverts and events, Foundry is shipped with a set of cheatcodes.
 
-Cheatcodes allow you to change the block number, your identity, and more. They are invoked by calling specific functions on a specially designated address: `0x7109709ECfa91a80626fF3989D68f67F5b1DD12D`. If you are using `ds-test`, then this address is assigned in a constant named `HEVM_ADDRESS`.
+Cheatcodes allow you to change the block number, your identity, and more. They are invoked by calling specific functions on a specially designated address: `0x7109709ECfa91a80626fF3989D68f67F5b1DD12D`.
+
+You can access cheatcodes easily via the `vm` instance available in Forge Standard Library's `Test` contract. Forge Standard Library is explained in greater detail in the following [section](./forge-std.md).
 
 Let's write a test for a smart contract that is only callable by its owner.
 
@@ -27,10 +29,6 @@ $ forge test
 Let's make sure that someone who is definitely not the owner can't increment the count:
 
 ```solidity
-interface CheatCodes {
-{{#include ../../projects/cheatcodes/test/OwnerUpOnly.t.sol:cheat_prank}}
-}
-
 {{#include ../../projects/cheatcodes/test/OwnerUpOnly.t.sol:contract_prelude}}
 
     // ...
@@ -58,11 +56,6 @@ $ forge test -vvvv --match-test testFailIncrementAsNotOwner
 To be sure in the future, let's make sure that we reverted because we are not the owner using the `expectRevert` cheatcode:
 
 ```solidity
-interface CheatCodes {
-{{#include ../../projects/cheatcodes/test/OwnerUpOnly.t.sol:cheat_prank}}
-{{#include ../../projects/cheatcodes/test/OwnerUpOnly.t.sol:cheat_expectrevert}}
-}
-
 {{#include ../../projects/cheatcodes/test/OwnerUpOnly.t.sol:contract_prelude}}
 
     // ...
@@ -86,7 +79,7 @@ Events are inheritable members of contracts. When you emit an event, the argumen
 {{#include ../../projects/cheatcodes/test/EmitContract.t.sol:all}}
 ```
 
-When we call `cheats.expectEmit(true, true, false, true);`, we want to check the 1st and 2nd `indexed` topic for the next event.
+When we call `vm.expectEmit(true, true, false, true);`, we want to check the 1st and 2nd `indexed` topic for the next event.
 
 The expected `Transfer` event in `testExpectEmit()` means we are expecting that `from` is  `address(this)`, and `to` is `address(1337)`. This is compared against the event emitted from `emitter.t()`.
 

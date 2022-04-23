@@ -13,5 +13,5 @@ Computes the address for a given private key.
 ### Examples
 
 ```solidity
-cheats.setNonce(address(100), 1234);
+vm.setNonce(address(100), 1234);
 ```

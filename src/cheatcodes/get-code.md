@@ -19,7 +19,7 @@ MyContract myContract = new MyContract(arg1, arg2);
 
 // Let's do the same thing with `getCode`
 bytes memory args = abi.encode(arg1, arg2);
-bytes memory bytecode = abi.encodePacked(cheats.getCode("MyContract.sol:MyContract"), args);
+bytes memory bytecode = abi.encodePacked(vm.getCode("MyContract.sol:MyContract"), args);
 address anotherAddress;
 assembly {
     anotherAddress := create(0, add(bytecode, 0x20), mload(bytecode))
@@ -28,16 +28,10 @@ assembly {
 assertEq0(address(myContract).code, anotherAddress.code); // [PASS]
 ```
 
-If you'd like to use getCode to deploy a contract's bytecode, you can also use [Forge Std][forge-std]'s `deployCode` helper.
+### See also
 
-```solidity
-function testDeployCode() public {
-    // deployCode takes a string argument for the contract to deploy
-    // and optionally a bytes argument for any arguments that should
-    // be passed to your contract's constructor
-    address deployed = deployCode("StdCheats.t.sol:StdCheatsTest", bytes(""));
-    // ...
-}
-```
+Forge Standard Library:
 
-[forge-std]: https://github.com/foundry-rs/forge-std
+- [`deployCode`](../reference/forge-std/deployCode.md)
+
+[forge-std]: ../reference/forge-std

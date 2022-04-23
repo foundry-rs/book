@@ -2,26 +2,16 @@
 // ANCHOR: all
 pragma solidity 0.8.10;
 
-import "ds-test/test.sol";
+import "forge-std/Test.sol";
 
-interface CheatCodes {
-    function expectEmit(
-        bool,
-        bool,
-        bool,
-        bool
-    ) external;
-}
-
-contract EmitContractTest is DSTest {
+contract EmitContractTest is Test {
     event Transfer(address indexed from, address indexed to, uint256 amount);
-    CheatCodes constant cheats = CheatCodes(HEVM_ADDRESS);
 
     function testExpectEmit() public {
         ExpectEmit emitter = new ExpectEmit();
         // Check that topic 1, topic 2, and data are the same as the following emitted event.
         // Checking topic 3 here doesn't matter, because `Transfer` only has 2 indexed topics.
-        cheats.expectEmit(true, true, false, true);
+        vm.expectEmit(true, true, false, true);
         // The event we expect
         emit Transfer(address(this), address(1337), 1337);
         // The event we get
@@ -31,7 +21,7 @@ contract EmitContractTest is DSTest {
     function testExpectEmitDoNotCheckData() public {
         ExpectEmit emitter = new ExpectEmit();
         // Check topic 1 and topic 2, but do not check data
-        cheats.expectEmit(true, true, false, false);
+        vm.expectEmit(true, true, false, false);
         // The event we expect
         emit Transfer(address(this), address(1337), 1338);
         // The event we get

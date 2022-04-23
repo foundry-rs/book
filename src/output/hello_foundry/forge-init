@@ -3,8 +3,8 @@
 $ forge init hello_foundry
 // ANCHOR_END: command
 // ANCHOR: output
-Initializing /tmp/tmp.KDpwBEqj2S/hello_foundry...
-Installing ds-test in "/tmp/tmp.KDpwBEqj2S/hello_foundry/lib/ds-test", (url: https://github.com/dapphub/ds-test, tag: None)
+Initializing /tmp/tmp.VjOehXncPN/hello_foundry...
+Installing ds-test in "/tmp/tmp.VjOehXncPN/hello_foundry/lib/ds-test", (url: https://github.com/dapphub/ds-test, tag: None)
     Installed ds-test
     Initialized forge project.
 // ANCHOR_END: output

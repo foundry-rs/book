@@ -3,10 +3,10 @@
 pragma solidity 0.8.10;
 
 // ANCHOR: import
-import "ds-test/test.sol";
+import "forge-std/Test.sol";
 // ANCHOR_END: import
 
-contract ContractBTest is DSTest {
+contract ContractBTest is Test {
     uint256 testNumber;
 
     // ANCHOR: setUp
@@ -17,7 +17,7 @@ contract ContractBTest is DSTest {
 
     // ANCHOR: testCannotSubtract43
     function testCannotSubtract43() public {
-        cheats.expectRevert(abi.encodeWithSignature("Panic(uint256)", 0x11));
+        vm.expectRevert(stdError.arithmeticError);
         testNumber -= 43;
     }
     // ANCHOR_END: testCannotSubtract43
