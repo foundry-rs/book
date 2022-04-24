@@ -383,6 +383,15 @@
       "contributions": [
         "maintenance"
       ]
+    },
+    {
+      "login": "p0n1",
+      "name": "p0n1",
+      "avatar_url": "https://avatars.githubusercontent.com/u/36690236?v=4",
+      "profile": "https://github.com/p0n1",
+      "contributions": [
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7,
