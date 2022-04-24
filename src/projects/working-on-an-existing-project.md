@@ -6,6 +6,7 @@ First, get the project from somewhere. In this example, we will clone the `forge
 
 ```sh
 $ git clone https://github.com/foundry-rs/forge-std
+$ cd forge-std
 $ forge install
 ```
 
