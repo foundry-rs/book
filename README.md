@@ -1,6 +1,6 @@
 ## 📖 Foundry Book
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-41-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-42-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 A book on all things Foundry. [Read now](https://book.getfoundry.sh).
@@ -81,6 +81,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://www.willminshew.com"><img src="https://avatars.githubusercontent.com/u/9845502?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Will Minshew</b></sub></a><br /><a href="https://github.com/foundry-rs/book/commits?author=wminshew" title="Documentation">📖</a></td>
     <td align="center"><a href="https://github.com/dbelv"><img src="https://avatars.githubusercontent.com/u/90095005?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Dave Belvedere</b></sub></a><br /><a href="#maintenance-dbelv" title="Maintenance">🚧</a></td>
     <td align="center"><a href="https://github.com/xenide"><img src="https://avatars.githubusercontent.com/u/5846427?v=4?s=100" width="100px;" alt=""/><br /><sub><b>A.L.</b></sub></a><br /><a href="#maintenance-xenide" title="Maintenance">🚧</a></td>
+    <td align="center"><a href="https://github.com/p0n1"><img src="https://avatars.githubusercontent.com/u/36690236?v=4?s=100" width="100px;" alt=""/><br /><sub><b>p0n1</b></sub></a><br /><a href="#maintenance-p0n1" title="Maintenance">🚧</a></td>
   </tr>
 </table>
 
