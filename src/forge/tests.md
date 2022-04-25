@@ -31,7 +31,7 @@ The inverse of the `--match-path` flag is `--no-match-path`.
 
 The default behavior for `forge test` is to only display a summary of passing and failing tests. You can control this behavior by increasing the verbosity (using the `-v` flag). Each level of verbosity adds more information:
 
-- **Level 2 (`-vv`)**: Logs emitted during tests are also displayed.
+- **Level 2 (`-vv`)**: Logs emitted during tests are also displayed. That includes assertion errors from tests, showing information such as expected vs actual.
 - **Level 3 (`-vvv`)**: Stack traces for failing tests are also displayed.
 - **Level 4 (`-vvvv`)**: Stack traces for all tests are displayed, and setup traces for failing tests are displayed.
 - **Level 5 (`-vvvvv`)**: Stack traces and setup traces are always displayed.
