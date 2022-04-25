@@ -47,7 +47,7 @@ Using the `ffi` cheatcode, Murky tests its own Merkle root implementation agains
 
 ```solidity
 function testMerkleRootMatchesJSImplementationFuzzed(bytes32[] memory leaves) public {
-    vm.assume(leafs.length > 1);
+    vm.assume(leaves.length > 1);
     bytes memory packed = abi.encodePacked(leaves);
     string[] memory runJsInputs = new string[](8);
 
@@ -57,7 +57,7 @@ function testMerkleRootMatchesJSImplementationFuzzed(bytes32[] memory leaves) pu
     runJsInputs[2] = 'differential_testing/scripts/';
     runJsInputs[3] = '--silent';
     runJsInputs[4] = 'run';
-    runJsInputs[5] = 'generate-root-stdin';
+    runJsInputs[5] = 'generate-root-cli';
     runJsInputs[6] = leaves.length.toString();
     runJsInputs[7] = packed.toHexString();
 
@@ -71,7 +71,7 @@ function testMerkleRootMatchesJSImplementationFuzzed(bytes32[] memory leaves) pu
 }
 ```
 
-forge runs `npm --prefix differential_testing/scripts/ --silent run generate-root-stdin {numLeaves} {hexEncodedLeaves}`. This calculates the Merkle root for the input data using the reference JavaScript implementation. The script prints the root to stdout, and that printout is captured as `bytes` in the return value of `vm.ffi()`.
+forge runs `npm --prefix differential_testing/scripts/ --silent run generate-root-cli {numLeaves} {hexEncodedLeaves}`. This calculates the Merkle root for the input data using the reference JavaScript implementation. The script prints the root to stdout, and that printout is captured as `bytes` in the return value of `vm.ffi()`.
 
 The test then calculates the root using the solidity implementation.
 Finally, the test asserts that the both roots are exactly equal. If not, the test fails.
