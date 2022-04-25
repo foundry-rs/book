@@ -1,7 +1,6 @@
-## Differential Testing 
-// TODO: !DMFXYZ! not exclusively focused on FFI testing, can broaden language.
+## Differential Testing
 
-Forge can enable differential testing across languages and implementations using the `ffi` [cheatcode](../cheatcodes/ffi.md).
+Forge can enable differential fuzz testing between different implementations, and even against non-EVM executables using the `ffi` [cheatcode](../cheatcodes/ffi.md).
 
 [Differential testing](https://en.wikipedia.org/wiki/Differential_testing) cross references multiple implementations of the same function by comparing each one's output. Imagine we have a function specification `F(X)`, and two implementations of that specification: `f1(X)` and `f2(X)`. We expect `EQ(f1(x), f2(x))` for all x that exist in an appropriate input space and some equality function EQ. If `!EQ(f1(x), f2(x))`, we know that at least one function is incorrectly implementing `F(X)`. This process of testing for equality and identifying discrepancies is the core of differential testing.
 
@@ -10,14 +9,13 @@ Some real life uses include:
 * Testing code against known reference implementations
 * Confirming compatability with third party tools and dependencies
 
-Goal #1 can already be easily implemented using forge's [fuzz testing](./fuzz-testing.md). You simply need to write a test that calls both contracts with the fuzzed input and ensure the results match.
-
-Let's see how Foundry tackles some more complex differential testing.
+Below are some examples on how you can use Foundry for differential testing.
 
 ### Primer: The `ffi` cheatcode
 
 `ffi` allows you to execute an arbitrary shell command and capture the output. Here's a mock example:
-```soldity
+
+```solidity
 import "forge-std/Test.sol";
 
 contract TestContract is Test {
@@ -34,16 +32,14 @@ contract TestContract is Test {
 }
 ```
 An address has previously been written to `address.txt`, and we read it in using the cheatcode.
-FFI makes differential testing against other implementations possible within a Foundry test.
 
-
-### Case Study: Differential Testing Merkle Tree Implementations
-[Merkle Trees](https://en.wikipedia.org/wiki/Merkle_tree) are a cryptographic commitmentment scheme frequently used in blockchain applications. Their popularity means there are a number of different implementations of Merkle Tree generators, provers, and verifiers. Often, Merkle roots and proofs are generated uisng a language like Javascript or Python, and proofs are verified on-chain in solidity.
+### Example: Differential Testing Merkle Tree Implementations
+[Merkle Trees](https://en.wikipedia.org/wiki/Merkle_tree) are a cryptographic commitmentment scheme frequently used in blockchain applications. Their popularity means that there are a number of different implementations of Merkle Tree generators, provers, and verifiers. Often, Merkle roots and proofs are generated uisng a language like Javascript or Python, and proofs are verified on-chain in solidity.
 
 [Murky](https://github.com/dmfxyz/murky) is a complete implementation of Merkle roots, proofs, and verification in solidity. Its test suite includes differential tests against OpenZeppelin's Merkle proof verification implementation, as well as root generation tests against a reference Javascript implementation. These tests are powered by Foundry's fuzzing and `ffi` capabilities.
 
 #### Differential Testing against reference TypeScript implementation
-Using the `ffi` cheatcode, Murky tests its own Merkle root implementation against a TypeScript implementation using fuzzed data, provided by forge's fuzzer:
+Using the `ffi` cheatcode, Murky tests its own Merkle root implementation against a TypeScript implementation using data provided by forge's fuzzer:
 
 ```solidity
 function testMerkleRootMatchesJSImplementationFuzzed(bytes32[] memory leaves) public {
@@ -76,6 +72,24 @@ forge runs `npm --prefix differential_testing/scripts/ --silent run generate-roo
 The test then calculates the root using the solidity implementation.
 Finally, the test asserts that the both roots are exactly equal. If not, the test fails.
 
+#### Differential testing against OpenZeppelin's Merkle Proof Library
+You may want to use differential testing against another solidity implementation. In that case, `ffi` is not needed. In this example, the reference implementation is imported directly into the test.
+
+```solidity
+import "openzeppelin-contracts/contracts/utils/cryptography/MerkleProof.sol";
+//...
+function testCompatabilityOpenZeppelinProver(bytes32[] memory _data, uint256 node) public {
+    vm.assume(_data.length > 1);
+    vm.assume(node < _data.length);
+    bytes32 root = m.getRoot(_data);
+    bytes32[] memory proof = m.getProof(_data, node);
+    bytes32 valueToProve = _data[node];
+    bool murkyVerified = m.verifyProof(root, proof, valueToProve);
+    bool ozVerified = MerkleProof.verify(proof, root, valueToProve);
+    assertTrue(murkyVerified == ozVerified);
+}
+```
+
 #### Standardized Testing against reference data
 FFI is also useful for injecting reproducible, standardized data into the testing environment. In the Murky library, this is used as a benchmark for gas snapshotting (see: [forge snapshot](./gas-snapshots.md)).
 
@@ -102,16 +116,11 @@ function testMerkleGenerateProofStandard() public view {
 `src/test/standard_data/StandardInput.txt` is a text file that contains an encoded bytes32[100] array. It's generated outside of the test and can be used in any language's web3 sdk. It looks something like:
 
 ```
-f910ccaa307836354233316666386231414464306335333243453944383735313...
+0xf910ccaa307836354233316666386231414464306335333243453944383735313..423532
 ```
 
 The standardized testing contract reads in the file using `ffi`. It decodes the data into an array and then, in this example, generates proofs for 8 different leaves. Because the data is constant and standard, we can meaningfully measure gas and performance improvements using this test. 
 
 > Of course, one could just hardcode the array into the test! But that makes it much harder to do consistent testing across contracts, implementations, etc.
 
-
-
-
-
-
-
+All source code for the above examples is availabe in [this repo](https://github.com/dmfxyz/murky).
