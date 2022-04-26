@@ -39,7 +39,7 @@ contract TestContract is Test {
 An address has previously been written to `address.txt`, and we read it in using the FFI cheatcode. This data can now be used throughout your test contract.
 
 ### Example: Differential Testing Merkle Tree Implementations
-[Merkle Trees](https://en.wikipedia.org/wiki/Merkle_tree) are a cryptographic commitment scheme frequently used in blockchain applications. Their popularity has led to a number of different implementations of Merkle Tree generators, provers, and verifiers. Merkle roots and proofs are often generated using a language like Javascript or Python, while proof verification usually occurs on-chain in Solidity.
+[Merkle Trees](https://en.wikipedia.org/wiki/Merkle_tree) are a cryptographic commitment scheme frequently used in blockchain applications. Their popularity has led to a number of different implementations of Merkle Tree generators, provers, and verifiers. Merkle roots and proofs are often generated using a language like JavaScript or Python, while proof verification usually occurs on-chain in Solidity.
 
 [Murky](https://github.com/dmfxyz/murky) is a complete implementation of Merkle roots, proofs, and verification in Solidity. Its test suite includes differential tests against OpenZeppelin's Merkle proof library, as well as root generation tests against a reference JavaScript implementation. These tests are powered by Foundry's fuzzing and `ffi` capabilities.
 
@@ -71,6 +71,7 @@ function testMerkleRootMatchesJSImplementationFuzzed(bytes32[] memory leaves) pu
     assertEq(murkyGeneratedRoot, jsGeneratedRoot);
 }
 ```
+> Note: see [`Strings2.sol`](https://github.com/dmfxyz/murky/blob/main/differential_testing/test/utils/Strings2.sol) in the Murky Repo for the library that enables `(bytes memory).toHexString()`
 
 Forge runs `npm --prefix differential_testing/scripts/ --silent run generate-root-cli {numLeaves} {hexEncodedLeaves}`. This calculates the Merkle root for the input data using the reference JavaScript implementation. The script prints the root to stdout, and that printout is captured as `bytes` in the return value of `vm.ffi()`.
 
