@@ -12,7 +12,7 @@ Differential fuzzing is an extension of differential testing. Differential fuzzi
 Some real life uses of uses of this type of testing include:
 * Comparing upgraded implementations to their predecessors
 * Testing code against known reference implementations
-* Confirming compatability with third party tools and dependencies
+* Confirming compatibility with third party tools and dependencies
 
 Below are some examples of how Forge is used for differential testing.
 
