@@ -137,9 +137,7 @@ The standardized testing contract reads in the file using `ffi`. It decodes the 
 The reference implementation for Paradigm's [Gradual Dutch Auction](https://www.paradigm.xyz/2022/04/gda) mechanism contains a number of differential, fuzzed tests. It is an excellent repository to further explore differential testing using `ffi`.
 
 * Differential tests for [Discrete GDAs](https://github.com/FrankieIsLost/gradual-dutch-auction/blob/master/src/test/DiscreteGDA.t.sol#L78)
-  
 * Differential tests for [Continuous GDAs](https://github.com/FrankieIsLost/gradual-dutch-auction/blob/master/src/test/ContinuousGDA.t.sol#L89)
-
 * Reference [Python implementation](https://github.com/FrankieIsLost/gradual-dutch-auction/blob/master/analysis/compute_price.py)
 
 
