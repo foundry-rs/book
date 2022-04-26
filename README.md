@@ -1,6 +1,6 @@
 ## 📖 Foundry Book
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-43-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-44-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 A book on all things Foundry. [Read now](https://book.getfoundry.sh).
@@ -85,6 +85,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   </tr>
   <tr>
     <td align="center"><a href="http://kulk.xyz"><img src="https://avatars.githubusercontent.com/u/53792428?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Rohan Kulkarni</b></sub></a><br /><a href="#maintenance-kulkarohan" title="Maintenance">🚧</a></td>
+    <td align="center"><a href="http://beefy.finance"><img src="https://avatars.githubusercontent.com/u/26322060?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Galmoli</b></sub></a><br /><a href="#maintenance-Galmoli" title="Maintenance">🚧</a></td>
   </tr>
 </table>
 
