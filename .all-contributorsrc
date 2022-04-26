@@ -392,6 +392,15 @@
       "contributions": [
         "maintenance"
       ]
+    },
+    {
+      "login": "kulkarohan",
+      "name": "Rohan Kulkarni",
+      "avatar_url": "https://avatars.githubusercontent.com/u/53792428?v=4",
+      "profile": "http://kulk.xyz",
+      "contributions": [
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7,
