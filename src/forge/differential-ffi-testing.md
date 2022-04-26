@@ -1,19 +1,20 @@
 ## Differential Testing
 
-Forge can be used for differential testing between implementations, and even against non-EVM executables using the `ffi` [cheatcode](../cheatcodes/ffi.md).
+Forge can be used for differential testing and differential fuzzing. You can even test against non-EVM executables using the `ffi` [cheatcode](../cheatcodes/ffi.md).
 
+### Background
 [Differential testing](https://en.wikipedia.org/wiki/Differential_testing) cross references multiple implementations of the same function by comparing each one's output. Imagine we have a function specification `F(X)`, and two implementations of that specification: `f1(X)` and `f2(X)`. We expect `f1(x) == f2(x)` for all x that exist in an appropriate input space. If `f1(x) != f2(x)`, we know that at least one function is incorrectly implementing `F(X)`. This process of testing for equality and identifying discrepancies is the core of differential testing.
 
-Differential fuzzing is an extension of differential testing. Differential fuzzing progrmatically generates many values of `x` to find discrepencies and edge cases that manually chosen inputs might not reveal. 
+Differential fuzzing is an extension of differential testing. Differential fuzzing programatically generates many values of `x` to find discrepencies and edge cases that manually chosen inputs might not reveal. 
 
 > Note: the `==` operator in this case can be a custom definition of equality. For example, if testing floating point implementations, you might use approximate equality with a certain tolerance.
 
-Some real life uses include:
+Some real life uses of uses of this type of testing include:
 * Comparing upgraded implementations to their predecessors
 * Testing code against known reference implementations
 * Confirming compatability with third party tools and dependencies
 
-Below are some examples on how you can use Foundry for differential testing.
+Below are some examples of how Forge is used for differential testing.
 
 ### Primer: The `ffi` cheatcode
 
@@ -35,12 +36,12 @@ contract TestContract is Test {
     }
 }
 ```
-An address has previously been written to `address.txt`, and we read it in using the cheatcode.
+An address has previously been written to `address.txt`, and we read it in using the FFI cheatcode. This data can now be used throughout your test contract.
 
 ### Example: Differential Testing Merkle Tree Implementations
-[Merkle Trees](https://en.wikipedia.org/wiki/Merkle_tree) are a cryptographic commitmentment scheme frequently used in blockchain applications. Their popularity means that there are a number of different implementations of Merkle Tree generators, provers, and verifiers. Often, Merkle roots and proofs are generated using a language like Javascript or Python, while proofs are verified on-chain in Solidity.
+[Merkle Trees](https://en.wikipedia.org/wiki/Merkle_tree) are a cryptographic commitment scheme frequently used in blockchain applications. Their popularity has led to a number of different implementations of Merkle Tree generators, provers, and verifiers. Merkle roots and proofs are often generated using a language like Javascript or Python, while proof verification usually occurs on-chain in Solidity.
 
-[Murky](https://github.com/dmfxyz/murky) is a complete implementation of Merkle roots, proofs, and verification in Solidity. Its test suite includes differential tests against OpenZeppelin's Merkle proof verification implementation, as well as root generation tests against a reference JavaScript implementation. These tests are powered by Foundry's fuzzing and `ffi` capabilities.
+[Murky](https://github.com/dmfxyz/murky) is a complete implementation of Merkle roots, proofs, and verification in Solidity. Its test suite includes differential tests against OpenZeppelin's Merkle proof library, as well as root generation tests against a reference JavaScript implementation. These tests are powered by Foundry's fuzzing and `ffi` capabilities.
 
 #### Differential fuzzing against a reference TypeScript implementation
 Using the `ffi` cheatcode, Murky tests its own Merkle root implementation against a TypeScript implementation using data provided by Forge's fuzzer:
@@ -73,8 +74,9 @@ function testMerkleRootMatchesJSImplementationFuzzed(bytes32[] memory leaves) pu
 
 Forge runs `npm --prefix differential_testing/scripts/ --silent run generate-root-cli {numLeaves} {hexEncodedLeaves}`. This calculates the Merkle root for the input data using the reference JavaScript implementation. The script prints the root to stdout, and that printout is captured as `bytes` in the return value of `vm.ffi()`.
 
-The test then calculates the root using the Solidity implementation.
-Finally, the test asserts that the both roots are exactly equal. If not, the test fails.
+The test then calculates the root using the Solidity implementation. 
+
+Finally, the test asserts that the both roots are exactly equal. If they are not equal, the test fails.
 
 #### Differential fuzzing against OpenZeppelin's Merkle Proof Library
 You may want to use differential testing against another Solidity implementation. In that case, `ffi` is not needed. Instead, the reference implementation is imported directly into the test.
@@ -95,7 +97,7 @@ function testCompatabilityOpenZeppelinProver(bytes32[] memory _data, uint256 nod
 ```
 
 #### Differential testing against a known edge case
-Differential tests are not always fuzzed -- they are also useful for testing knowj edge cases. In the case of this Merkle repository, the initial implementation of the `log2ceil` function did not work for certain arrays whose lengths were close to a power of 2 (like 129). As a safety check, a test is always run against an array of this length. You can see the full test [here](https://github.com/dmfxyz/murky/blob/main/differential_testing/test/DifferentialTests.t.sol#L21).
+Differential tests are not always fuzzed -- they are also useful for testing known edge cases. In the case of the Murky codebase, the initial implementation of the `log2ceil` function did not work for certain arrays whose lengths were close to a power of 2 (like 129). As a safety check, a test is always run against an array of this length and compared to the TypeScript implementation. You can see the full test [here](https://github.com/dmfxyz/murky/blob/main/differential_testing/test/DifferentialTests.t.sol#L21).
 
 
 #### Standardized Testing against reference data
@@ -132,7 +134,7 @@ The standardized testing contract reads in the file using `ffi`. It decodes the 
 > Of course, one could just hardcode the array into the test! But that makes it much harder to do consistent testing across contracts, implementations, etc.
 
 ### Example: Differential Testing Gradual Dutch Auctions
-The reference implementation for Paradigm's [Gradual Dutch Auction](https://www.paradigm.xyz/2022/04/gda) mechanism contains a number of differential, fuzzed tests against a Python implementation. It is an excellent repository to further explore differential testing using `ffi`.
+The reference implementation for Paradigm's [Gradual Dutch Auction](https://www.paradigm.xyz/2022/04/gda) mechanism contains a number of differential, fuzzed tests. It is an excellent repository to further explore differential testing using `ffi`.
 
 * Differential tests for [Discrete GDAs](https://github.com/FrankieIsLost/gradual-dutch-auction/blob/master/src/test/DiscreteGDA.t.sol#L78)
   
