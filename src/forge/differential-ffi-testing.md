@@ -1,8 +1,10 @@
 ## Differential Testing
 
-Forge can enable differential fuzz testing between different implementations, and even against non-EVM executables using the `ffi` [cheatcode](../cheatcodes/ffi.md).
+Forge can be used for differential testing between implementations, and even against non-EVM executables using the `ffi` [cheatcode](../cheatcodes/ffi.md).
 
 [Differential testing](https://en.wikipedia.org/wiki/Differential_testing) cross references multiple implementations of the same function by comparing each one's output. Imagine we have a function specification `F(X)`, and two implementations of that specification: `f1(X)` and `f2(X)`. We expect `f1(x) == f2(x)` for all x that exist in an appropriate input space. If `f1(x) != f2(x)`, we know that at least one function is incorrectly implementing `F(X)`. This process of testing for equality and identifying discrepancies is the core of differential testing.
+
+Differential fuzzing is an extension of differential testing. Differential fuzzing progrmatically generates many values of `x` to find discrepencies and edge cases that manually chosen inputs might not reveal. 
 
 > Note: the `==` operator in this case can be a custom definition of equality. For example, if testing floating point implementations, you might use approximate equality with a certain tolerance.
 
@@ -40,7 +42,7 @@ An address has previously been written to `address.txt`, and we read it in using
 
 [Murky](https://github.com/dmfxyz/murky) is a complete implementation of Merkle roots, proofs, and verification in Solidity. Its test suite includes differential tests against OpenZeppelin's Merkle proof verification implementation, as well as root generation tests against a reference JavaScript implementation. These tests are powered by Foundry's fuzzing and `ffi` capabilities.
 
-#### Differential Testing against reference TypeScript implementation
+#### Differential fuzzing against a reference TypeScript implementation
 Using the `ffi` cheatcode, Murky tests its own Merkle root implementation against a TypeScript implementation using data provided by Forge's fuzzer:
 
 ```solidity
@@ -74,7 +76,7 @@ Forge runs `npm --prefix differential_testing/scripts/ --silent run generate-roo
 The test then calculates the root using the Solidity implementation.
 Finally, the test asserts that the both roots are exactly equal. If not, the test fails.
 
-#### Differential testing against OpenZeppelin's Merkle Proof Library
+#### Differential fuzzing against OpenZeppelin's Merkle Proof Library
 You may want to use differential testing against another Solidity implementation. In that case, `ffi` is not needed. Instead, the reference implementation is imported directly into the test.
 
 ```solidity
@@ -91,6 +93,10 @@ function testCompatabilityOpenZeppelinProver(bytes32[] memory _data, uint256 nod
     assertTrue(murkyVerified == ozVerified);
 }
 ```
+
+#### Differential testing against a known edge case
+Differential tests are not always fuzzed -- they are also useful for testing knowj edge cases. In the case of this Merkle repository, the initial implementation of the `log2ceil` function did not work for certain arrays whose lengths were close to a power of 2 (like 129). As a safety check, a test is always run against an array of this length. You can see the full test [here](https://github.com/dmfxyz/murky/blob/main/differential_testing/test/DifferentialTests.t.sol#L21).
+
 
 #### Standardized Testing against reference data
 FFI is also useful for injecting reproducible, standardized data into the testing environment. In the Murky library, this is used as a benchmark for gas snapshotting (see [forge snapshot](./gas-snapshots.md)).
@@ -125,4 +131,19 @@ The standardized testing contract reads in the file using `ffi`. It decodes the 
 
 > Of course, one could just hardcode the array into the test! But that makes it much harder to do consistent testing across contracts, implementations, etc.
 
-All source code for the above examples is availabe in [this repo](https://github.com/dmfxyz/murky).
+### Example: Differential Testing Gradual Dutch Auctions
+The reference implementation for Paradigm's [Gradual Dutch Auction](https://www.paradigm.xyz/2022/04/gda) mechanism contains a number of differential, fuzzed tests against a Python implementation. It is an excellent repository to further explore differential testing using `ffi`.
+
+* Differential tests for [Discrete GDAs](https://github.com/FrankieIsLost/gradual-dutch-auction/blob/master/src/test/DiscreteGDA.t.sol#L78)
+  
+* Differential tests for [Continuous GDAs](https://github.com/FrankieIsLost/gradual-dutch-auction/blob/master/src/test/ContinuousGDA.t.sol#L89)
+
+* Reference [Python implementation](https://github.com/FrankieIsLost/gradual-dutch-auction/blob/master/analysis/compute_price.py)
+
+
+### Referenced Repositories
+The examples above contain code from the following repositories:
+* [Gradual Dutch Auctions](https://github.com/FrankieIsLost/gradual-dutch-auction)
+* [Murky](https://www.github.com/dmfxyz/murky)
+  
+If you have another repository that would serve as a reference, please contribute it!
