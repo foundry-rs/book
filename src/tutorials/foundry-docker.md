@@ -60,6 +60,8 @@ $ docker run -v $PWD:/app foundry "forge test --root /app --watch"
 ```
 You can see our code was compiled and tested entirely within the container. Also, since we passed the `--watch` option, the container will recompile the code whenever a change is detected.
 
+> Note: The Foundry docker image is built on alpine and designed to be as slim as possible. For this reason, it does not currently include development resources like `git`. If you are planning to manage your entire development lifecycle within the container, you should build a custom development image on top of Foundry's image.
+
 ### Creating a "build and test" image
 Let's use the Foundry docker image as a base for using our own Docker image. We'll use the image to:
 1. Build our solidity code
