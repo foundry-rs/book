@@ -16,8 +16,8 @@ Sets `msg.sender` **for all subsequent calls** until [`stopPrank`](./stop-prank.
 
 If the alternative signature of `startPrank` is used, then `tx.origin` is set as well for all subsequent calls.
 
-### See also
+### SEE ALSO
 
-Forge Standard Library:
+Forge Standard Library
 
-- [`startHoax`](../reference/forge-std/startHoax.md)
+[`startHoax`](../reference/forge-std/startHoax.md)

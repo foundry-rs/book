@@ -7,7 +7,7 @@ Compiling 1 files with 0.8.10
 Compiler run successful
 
 Running 1 test for test/Safe.t.sol:SafeTest
-[FAIL. Counterexample: calldata=0x215a2f2011d9000000000000000000000000000000000000000000000000000000000000, args=[8072724238972438001866086280894394698815773924824703019657618733705979756544]] testWithdraw(uint256) (runs: 2, μ: 19554, ~: 19554)
-Test result: FAILED. 0 passed; 1 failed; finished in 1.39ms
+[FAIL. Counterexample: calldata=0x215a2f200000000000000000000000000000000000000001000000000000000000000000, args=[79228162514264337593543950336]] testWithdraw(uint256) (runs: 45, μ: 19554, ~: 19554)
+Test result: FAILED. 0 passed; 1 failed; finished in 23.75ms
 // ANCHOR_END: output
 // ANCHOR_END: all

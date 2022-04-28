@@ -15,6 +15,6 @@ Traces:
     │   └─ ← 0x82b42900
     └─ ← 0x82b42900
 
-Test result: ok. 1 passed; 0 failed; finished in 678.54µs
+Test result: ok. 1 passed; 0 failed; finished in 677.31µs
 // ANCHOR_END: output
 // ANCHOR_END: all

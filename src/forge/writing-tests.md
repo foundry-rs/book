@@ -4,12 +4,6 @@ Tests are written in Solidity. If the test function reverts, the test fails, oth
 
 Let's go over the most common way of writing tests, using the [Forge Standard Library](https://github.com/foundry-rs/forge-std)'s `Test` contract, which is the preferred way of writing tests with Forge.
 
-Install the Forge Standard Library by running:
-
-```bash
-forge install foundry-rs/forge-std
-```
-
 In this section, we'll go over the basics using the functions from the Forge Std's `Test` contract, which is itself a superset of [DSTest](https://github.com/dapphub/ds-test). You will learn how to use more advanced stuff from the Forge Standard Library [soon](./forge-std.md). 
 
 DSTest provides basic logging and assertion functionality. To get access to the functions, import `forge-std/Test.sol` and inherit from `Test` in your test contract:

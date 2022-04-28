@@ -34,8 +34,9 @@ Forge can remap dependencies to make them easier to import. Forge will automatic
 
 These remappings mean:
 
-- To import from `solmate` we would write: `import "solmate/Contract.sol";`
+- To import from `forge-std` we would write: `import "forge-std/Contract.sol";`
 - To import from `ds-test` we would write: `import "ds-test/Contract.sol";`
+- To import from `solmate` we would write: `import "solmate/Contract.sol";`
 - To import from `weird-erc20` we would write: `import "weird-erc20/Contract.sol";`
 
 You can customize these remappings by creating a `remappings.txt` file in the root of your project.

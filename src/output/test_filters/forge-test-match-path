@@ -7,6 +7,6 @@ No files changed, compilation skipped
 
 Running 1 test for test/ContractB.t.sol:ContractBTest
 [PASS] testExample() (gas: 257)
-Test result: ok. 1 passed; 0 failed; finished in 432.21µs
+Test result: ok. 1 passed; 0 failed; finished in 492.35µs
 // ANCHOR_END: output
 // ANCHOR_END: all

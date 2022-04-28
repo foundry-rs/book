@@ -14,7 +14,7 @@ Running 8 tests for src/test/SolmateNft.sol:SolmateNftTests
 [PASS] testMintPricePaid() (gas: 81279)
 [PASS] testNewMintOwnerRegistered() (gas: 192272)
 [PASS] testSafeContractReceiver() (gas: 274092)
-Test result: ok. 8 passed; 0 failed; finished in 2.68ms
+Test result: ok. 8 passed; 0 failed; finished in 2.50ms
 
 Running 8 tests for src/test/OpenZeppelinNft.t.sol:OpenZeppelinNftTests
 [PASS] testBalanceIncremented() (gas: 219326)
@@ -25,6 +25,6 @@ Running 8 tests for src/test/OpenZeppelinNft.t.sol:OpenZeppelinNftTests
 [PASS] testMintPricePaid() (gas: 81512)
 [PASS] testNewMintOwnerRegistered() (gas: 192487)
 [PASS] testSafeContractReceiver() (gas: 274588)
-Test result: ok. 8 passed; 0 failed; finished in 2.68ms
+Test result: ok. 8 passed; 0 failed; finished in 2.71ms
 // ANCHOR_END: output
 // ANCHOR_END: all

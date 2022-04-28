@@ -6,7 +6,7 @@ $ forge test
 No files changed, compilation skipped
 
 Running 1 test for test/Contract.t.sol:ContractTest
-[PASS] testExample() (gas: 190)
-Test result: ok. 1 passed; 0 failed; finished in 223.74µs
+[PASS] testExample() (gas: 279)
+Test result: ok. 1 passed; 0 failed; finished in 599.09µs
 // ANCHOR_END: output
 // ANCHOR_END: all
