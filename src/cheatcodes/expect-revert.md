@@ -80,10 +80,10 @@ function testExpectRevertNoReason() public {
 }
 ```
 
-### See also
+### SEE ALSO
 
-Forge Standard Library:
+Forge Standard Library
 
-- [Std Errors](../reference/forge-std/std-errors.md)
+[Std Errors](../reference/forge-std/std-errors.md)
 
 [error-type]: https://docs.soliditylang.org/en/v0.8.11/contracts.html#errors

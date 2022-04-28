@@ -17,9 +17,8 @@ vm.warp(1641070800);
 emit log_uint(block.timestamp); // 1641070800
 ```
 
-### See also
+### SEE ALSO
 
-Forge Standard Library:
+Forge Standard Library
 
-- [`skip`](../reference/forge-std/skip.md)
-- [`rewind`](../reference/forge-std/rewind.md)
+[`skip`](../reference/forge-std/skip.md), [`rewind`](../reference/forge-std/rewind.md)

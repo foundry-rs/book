@@ -19,8 +19,8 @@ vm.etch(targetAddr, code);
 log_bytes(address(targetAddr).code); // 0x6080604052348015610010...
 ```
 
-### See also
+### SEE ALSO
 
-Forge Standard Library:
+Forge Standard Library
 
-- [`deployCode`](../reference/forge-std/deployCode.md)
+[`deployCode`](../reference/forge-std/deployCode.md)

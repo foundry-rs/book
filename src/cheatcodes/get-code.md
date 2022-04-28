@@ -28,10 +28,10 @@ assembly {
 assertEq0(address(myContract).code, anotherAddress.code); // [PASS]
 ```
 
-### See also
+### SEE ALSO
 
-Forge Standard Library:
+Forge Standard Library
 
-- [`deployCode`](../reference/forge-std/deployCode.md)
+[`deployCode`](../reference/forge-std/deployCode.md)
 
 [forge-std]: ../reference/forge-std

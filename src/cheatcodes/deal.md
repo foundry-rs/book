@@ -18,10 +18,8 @@ vm.deal(alice, 1 ether);
 log_uint256(alice.balance); // 1000000000000000000
 ```
 
-### See also
+### SEE ALSO
 
-Forge Standard Library:
+Forge Standard Library
 
-- [`deal`](../reference/forge-std/deal.md)
-- [`hoax`](../reference/forge-std/hoax.md)
-- [`startHoax`](../reference/forge-std/startHoax.md)
+[`deal`](../reference/forge-std/deal.md), [`hoax`](../reference/forge-std/hoax.md), [`startHoax`](../reference/forge-std/startHoax.md)

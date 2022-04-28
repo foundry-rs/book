@@ -26,8 +26,8 @@ vm.prank(owner);
 myContract.withdraw(); // [PASS]
 ```
 
-### See also
+### SEE ALSO
 
-Forge Standard Library:
+Forge Standard Library
 
-- [`hoax`](../reference/forge-std/hoax.md)
+[`hoax`](../reference/forge-std/hoax.md)
