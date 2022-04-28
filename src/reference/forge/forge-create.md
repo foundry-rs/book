@@ -33,6 +33,11 @@ Dynamic linking is not supported: you should predeploy your libraries and manual
 `--constructor-args-path` *file*  
 &nbsp;&nbsp;&nbsp;&nbsp;The path to a file containing the constructor arguments.
 
+`--libraries` *libraries...*  
+&nbsp;&nbsp;&nbsp;&nbsp;Set pre-linked libraries, accepts a list of  `<remapped path to lib>:<lib name>:<address>` triples like: `"src/MyLib.sol:MyLib:0x8De6DDbCd5053d32292AAA0D2105A32d108484a6"`. 
+
+&nbsp;&nbsp;&nbsp;&nbsp;Can also be set in the `foundry.toml` as `libraries = ["src/MyLib.sol:MyLib:0x8De6DDbCd5053d32292AAA0D2105A32d108484a6"]`
+
 #### Transaction Options
 
 `--gas-limit` *gas_limit*  
