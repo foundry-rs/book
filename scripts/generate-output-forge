@@ -16,12 +16,12 @@ echo "Generating output (forge)..."
   (run_command forge test) > $OUTPUT_DIR/hello_foundry/forge-test
 )
 (
-  in_temp forge-std
-  git clone https://github.com/foundry-rs/forge-std
-  cd forge-std
-  (run_command forge install) > $OUTPUT_DIR/forge-std/forge-install
-  (run_command forge build) > $OUTPUT_DIR/forge-std/forge-build
-  (run_command forge test) > $OUTPUT_DIR/forge-std/forge-test
+  in_temp femplate
+  git clone https://github.com/abigger87/femplate
+  cd femplate
+  (run_command forge install) > $OUTPUT_DIR/femplate/forge-install
+  (run_command forge build) > $OUTPUT_DIR/femplate/forge-build
+  (run_command forge test) > $OUTPUT_DIR/femplate/forge-test
 )
 (
   in_temp deps
