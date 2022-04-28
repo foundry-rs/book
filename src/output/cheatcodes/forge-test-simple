@@ -3,11 +3,11 @@
 $ forge test --match-test testIncrementAsOwner
 // ANCHOR_END: command
 // ANCHOR: output
-Compiling 6 files with 0.8.10
+Compiling 7 files with 0.8.10
 Compiler run successful
 
 Running 1 test for test/OwnerUpOnly.t.sol:OwnerUpOnlyTest
 [PASS] testIncrementAsOwner() (gas: 29162)
-Test result: ok. 1 passed; 0 failed; finished in 675.26µs
+Test result: ok. 1 passed; 0 failed; finished in 723.90µs
 // ANCHOR_END: output
 // ANCHOR_END: all
