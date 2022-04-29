@@ -3,6 +3,7 @@
 Forge comes with a number of advanced testing methods:
 
 - [Fuzz Testing](./fuzz-testing.md)
+- [Differential Testing](./differential-ffi-testing.md)
 
 In the future, Forge will also support these:
 
