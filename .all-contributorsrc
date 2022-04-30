@@ -446,6 +446,16 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "mattsse",
+      "name": "Matthias Seitz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19890894?v=4",
+      "profile": "http://keybase.io/mattsse",
+      "contributions": [
+        "maintenance",
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
