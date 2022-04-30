@@ -428,6 +428,15 @@
       "contributions": [
         "maintenance"
       ]
+    },
+    {
+      "login": "JoshuaTrujillo15",
+      "name": "Joshua Trujillo",
+      "avatar_url": "https://avatars.githubusercontent.com/u/41972979?v=4",
+      "profile": "https://github.com/JoshuaTrujillo15",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
