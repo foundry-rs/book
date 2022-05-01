@@ -91,6 +91,17 @@ stdstore
     .checked_write(10);
 ```
 
+#### Std Math
+
+Std Math is a library that simplifies the process of some mathematical calculations.
+
+The `Test` contract also provides access to Std Math. You can use the Std Math functions by typing `stdMath.` before the name of the function, just like in the next example:
+
+```solidity
+// Expected result is 10
+stdMath.abs(-10)
+```
+
 <br>
 
 > 📚 **Reference**
