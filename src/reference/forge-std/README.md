@@ -48,6 +48,7 @@ What's included:
   - [Std Cheats](./std-cheats.md): Wrappers around Forge cheatcodes for improved safety and UX.
   - [Std Errors](./std-errors.md): Wrappers around common internal Solidity errors and reverts.
   - [Std Storage](./std-storage.md): Contract storage manipulation helpers.
+  - [Std Math](./std-math.md): Covers some mathematical calculations.
 
 - A cheatcodes instance `vm`, from which you invoke Forge cheatcodes (see [Cheatcodes Reference](../../cheatcodes/))
 
