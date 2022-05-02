@@ -457,6 +457,15 @@
         "maintenance",
         "doc"
       ]
+    },
+    {
+      "login": "xaaru",
+      "name": "xaaru",
+      "avatar_url": "https://avatars.githubusercontent.com/u/84188047?v=4",
+      "profile": "https://github.com/xaaru",
+      "contributions": [
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7,
