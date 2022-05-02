@@ -5,16 +5,17 @@ You can generate autocompletion shell scripts for `bash`, `elvish`, `fish`, `pow
 ### zsh (`oh-my-zsh`)
 
 First, ensure that the following is present somewhere in your `~/.zshrc` file (if not, add it):
+
 ```sh
 autoload -U compinit
 compinit -i
 ```
+
 Then run:
+
 ```sh
-mkdir -p $HOME/.oh-my-zsh/completions
-forge completions zsh > $HOME/.oh-my-zsh/completions/_forge
-cast completions zsh > $HOME/.oh-my-zsh/completions/_cast
-source $HOME/.zshrc
+forge completions zsh > /usr/local/share/zsh/site-functions/_forge
+cast completions zsh > /usr/local/share/zsh/site-functions/_cast
 ```
 
 ### fish
