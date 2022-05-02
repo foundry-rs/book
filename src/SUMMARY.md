@@ -187,6 +187,7 @@
       - [`memOverflowError`](./reference/forge-std/memOverflowError.md)
       - [`zeroVarError`](./reference/forge-std/zeroVarError.md)
     - [Std Storage](./reference/forge-std/std-storage.md)
+    - [Std Math](./reference/forge-std/std-math.md)
   - [DSTest Reference](./reference/ds-test.md)
   - [Cheatcodes Reference](./cheatcodes/README.md)
     - [Environment](./cheatcodes/environment.md)
