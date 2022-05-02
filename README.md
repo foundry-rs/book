@@ -1,6 +1,6 @@
 ## 📖 Foundry Book
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-49-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-50-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 A book on all things Foundry. [Read now](https://book.getfoundry.sh).
@@ -91,6 +91,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/JoshuaTrujillo15"><img src="https://avatars.githubusercontent.com/u/41972979?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Joshua Trujillo</b></sub></a><br /><a href="https://github.com/foundry-rs/book/commits?author=JoshuaTrujillo15" title="Documentation">📖</a></td>
     <td align="center"><a href="https://github.com/calnix"><img src="https://avatars.githubusercontent.com/u/22549197?v=4?s=100" width="100px;" alt=""/><br /><sub><b>calnix</b></sub></a><br /><a href="https://github.com/foundry-rs/book/commits?author=calnix" title="Documentation">📖</a></td>
     <td align="center"><a href="http://keybase.io/mattsse"><img src="https://avatars.githubusercontent.com/u/19890894?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Matthias Seitz</b></sub></a><br /><a href="#maintenance-mattsse" title="Maintenance">🚧</a> <a href="https://github.com/foundry-rs/book/commits?author=mattsse" title="Documentation">📖</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/xaaru"><img src="https://avatars.githubusercontent.com/u/84188047?v=4?s=100" width="100px;" alt=""/><br /><sub><b>xaaru</b></sub></a><br /><a href="#maintenance-xaaru" title="Maintenance">🚧</a></td>
   </tr>
 </table>
 
