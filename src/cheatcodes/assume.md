@@ -41,5 +41,5 @@ function testSomethingElse(uint256 a) public {
 
 [max-local-rejects]: ./config.md#fuzz_max_local_rejects
 [max-global-rejects]: ./config.md#fuzz_max_global_rejects
-[forge-std-bound]: https://github.com/foundry-rs/forge-std/blob/e26ae2954bb6d883643b92760d443dd07f413647/src/Test.sol#L125-L146
+[forge-std-bound]: ../reference/forge-std/bound.md
 [filtering-guide]: https://altsysrq.github.io/proptest-book/proptest/tutorial/filtering.html#filtering
