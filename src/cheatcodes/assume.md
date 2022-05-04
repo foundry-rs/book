@@ -15,7 +15,7 @@ Broad checks will slow down tests as it will take a while to find valid values, 
 
 You can configure the rejection thresholds by setting [`fuzz_max_local_rejects`][max-local-rejects] and [`fuzz_max_global_rejects`][max-global-rejects] in your `foundry.toml` file.
 
-For broad checks, such as ensuring a `uint256` falls within a certain range, you can bound your input with the modulo operator or Solmate's [`bound`][solmate-bound] method.
+For broad checks, such as ensuring a `uint256` falls within a certain range, you can bound your input with the modulo operator or Forge Standard's [`bound`][forge-std-bound] method.
 
 More information on filtering via `assume` can be found [here][filtering-guide].
 
@@ -41,5 +41,5 @@ function testSomethingElse(uint256 a) public {
 
 [max-local-rejects]: ./config.md#fuzz_max_local_rejects
 [max-global-rejects]: ./config.md#fuzz_max_global_rejects
-[solmate-bound]: https://github.com/Rari-Capital/solmate/blob/a9e3ea26a2dc73bfa87f0cb189687d029028e0c5/src/test/utils/DSTestPlus.sol#L114-L133
+[forge-std-bound]: https://github.com/foundry-rs/forge-std/blob/e26ae2954bb6d883643b92760d443dd07f413647/src/Test.sol#L125-L146
 [filtering-guide]: https://altsysrq.github.io/proptest-book/proptest/tutorial/filtering.html#filtering
