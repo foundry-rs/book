@@ -95,7 +95,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tr>
     <td align="center"><a href="https://github.com/xaaru"><img src="https://avatars.githubusercontent.com/u/84188047?v=4?s=100" width="100px;" alt=""/><br /><sub><b>xaaru</b></sub></a><br /><a href="#maintenance-xaaru" title="Maintenance">🚧</a></td>
     <td align="center"><a href="https://github.com/wiasliaw"><img src="https://avatars.githubusercontent.com/u/37038019?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Wias Liaw</b></sub></a><br /><a href="#maintenance-wiasliaw" title="Maintenance">🚧</a></td>
-    <td align="center"><a href="https://github.com/shawnharmsen"><img src="https://avatars.githubusercontent.com/u/5439924?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Shawn Harmsen</b></sub></a><br /><a href="https://github.com/foundry-rs/book/commits?author=shawnharmsen" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/shawnharmsen"><img src="https://avatars.githubusercontent.com/u/5439924?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Shawn Harmsen</b></sub></a><br /><a href="https://github.com/foundry-rs/book/commits?author=shawnharmsen" title="Documentation">📖</a> <a href="#maintenance-shawnharmsen" title="Maintenance">🚧</a></td>
   </tr>
 </table>
 
