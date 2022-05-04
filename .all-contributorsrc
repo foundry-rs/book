@@ -475,6 +475,15 @@
       "contributions": [
         "maintenance"
       ]
+    },
+    {
+      "login": "shawnharmsen",
+      "name": "Shawn Harmsen",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5439924?v=4",
+      "profile": "https://github.com/shawnharmsen",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
