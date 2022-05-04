@@ -485,6 +485,15 @@
         "doc",
         "maintenance"
       ]
+    },
+    {
+      "login": "wardbradt",
+      "name": "Ward Bradt",
+      "avatar_url": "https://avatars.githubusercontent.com/u/26584797?v=4",
+      "profile": "https://www.linkedin.com/in/wardbradt/",
+      "contributions": [
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7,
