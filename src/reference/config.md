@@ -71,7 +71,7 @@ initial_balance = '0xffffffffffffffffffffffff'
 # The block number we are at in tests
 block_number = 0
 # The chain ID we are on in tests
-chain_id = 99
+chain_id = 31337
 # The gas limit in tests
 gas_limit = 9223372036854775807
 # The gas price in tests (in wei)
@@ -352,7 +352,7 @@ The value of `block.number` in tests.
 ##### `chain_id`
 
 - Type: integer
-- Default: 99
+- Default: 31337
 - Environment: `FOUNDRY_CHAIN_ID` or `DAPP_CHAIN_ID`
 
 The value of the `chainid` opcode in tests.
