@@ -26,3 +26,12 @@ forge completions fish > $HOME/.config/fish/completions/forge.fish
 cast completions fish > $HOME/.config/fish/completions/cast.fish
 source $HOME/.config/fish/config.fish
 ```
+
+### bash
+
+```sh
+mkdir -p $HOME/.local/share/bash-completion/completions
+forge completions bash > $HOME/.local/share/bash-completion/completions/forge
+cast completions bash > $HOME/.local/share/bash-completion/completions/cast
+exec bash
+```
