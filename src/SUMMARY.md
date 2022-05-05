@@ -78,6 +78,8 @@
       - [forge build](./reference/forge/forge-build.md)
       - [forge clean](./reference/forge/forge-clean.md)
       - [forge inspect](./reference/forge/forge-inspect.md)
+      - [forge cache](./reference/forge/forge-cache.md)
+      - [forge cache clean](./reference/forge/forge-cache-clean.md)
     - [Test Commands](./reference/forge/test-commands.md)
       - [forge test](./reference/forge/forge-test.md)
       - [forge snapshot](./reference/forge/forge-snapshot.md)

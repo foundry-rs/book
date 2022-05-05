@@ -58,6 +58,9 @@ This program is a set of tools to build, test, fuzz, debug and deploy Solidity s
 [forge inspect](./forge-inspect.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Get specialized information about a smart contract.
 
+[forge cache](./forge-cache.md)  
+&nbsp;&nbsp;&nbsp;&nbsp;Manage the Foundry cache.
+
 #### Test Commands
 
 [forge test](./forge-test.md)  
