@@ -503,6 +503,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "jamesbachini",
+      "name": "James Bachini",
+      "avatar_url": "https://avatars.githubusercontent.com/u/20736739?v=4",
+      "profile": "https://jamesbachini.com",
+      "contributions": [
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7,
