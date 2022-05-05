@@ -1,6 +1,6 @@
 ## 📖 Foundry Book
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-53-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-54-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 A book on all things Foundry. [Read now](https://book.getfoundry.sh).
@@ -97,6 +97,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/wiasliaw"><img src="https://avatars.githubusercontent.com/u/37038019?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Wias Liaw</b></sub></a><br /><a href="#maintenance-wiasliaw" title="Maintenance">🚧</a></td>
     <td align="center"><a href="https://github.com/shawnharmsen"><img src="https://avatars.githubusercontent.com/u/5439924?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Shawn Harmsen</b></sub></a><br /><a href="https://github.com/foundry-rs/book/commits?author=shawnharmsen" title="Documentation">📖</a> <a href="#maintenance-shawnharmsen" title="Maintenance">🚧</a></td>
     <td align="center"><a href="https://www.linkedin.com/in/wardbradt/"><img src="https://avatars.githubusercontent.com/u/26584797?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Ward Bradt</b></sub></a><br /><a href="#maintenance-wardbradt" title="Maintenance">🚧</a></td>
+    <td align="center"><a href="https://github.com/24-2"><img src="https://avatars.githubusercontent.com/u/10823589?v=4?s=100" width="100px;" alt=""/><br /><sub><b>ｓｉｇｈ</b></sub></a><br /><a href="https://github.com/foundry-rs/book/commits?author=24-2" title="Documentation">📖</a></td>
   </tr>
 </table>
 
