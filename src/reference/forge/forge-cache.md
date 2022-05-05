@@ -6,9 +6,9 @@ forge-cache - Manage the Foundry cache.
 
 ### SYNOPSIS
 
-`forge cache` [*options*] *command* [*args*]
+`forge cache` [*options*] *command* [*args*]  
 `forge cache` [*options*] `--version`  
-`forge cache` [*options*] `--help`
+`forge cache` [*options*] `--help`  
 
 ### DESCRIPTION
 
@@ -16,7 +16,7 @@ This program is a set of tools to manage the Foundry cache.
 
 ### COMMANDS
 
-[forge cache clean](./forge-cache-clean.md)
+[forge cache clean](./forge-cache-clean.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Cleans cached data from ~/.foundry.
 
 ### OPTIONS

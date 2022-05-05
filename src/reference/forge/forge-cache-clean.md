@@ -14,7 +14,9 @@ Removes files in the `~/.foundry/cache` folder which is used to cache Etherscan 
 
 ### OPTIONS
 
-``
+`-b`  
+`--blocks`  
+&nbsp;&nbsp;&nbsp;&nbsp;One or more block numbers separated by comma with no spaces
 
 ### EXAMPLES
 
@@ -25,22 +27,22 @@ Removes files in the `~/.foundry/cache` folder which is used to cache Etherscan 
 
 2. Remove cache data for a specific chain, by name
     ```sh
-    forge cache clean <chain>
+    forge cache clean rinkeby
     ```
 
 3. Remove cache data for a specific block number on a specific chain. Does not work if `chain` is `all`
     ```sh
-    forge cache clean <chain> <block number>
+    forge cache clean rinkeby -b 150000
     ```
 
 4. Specify multiple chains
     ```sh
-    forge cache clean <chain 1> [<chain n...>]
+    forge cache clean rinkeby mainnet
     ```
 
 5. Specify multiple blocks
     ```sh
-    forge cache clean <chain...> --blocks <block 1>,<block 2>,<block 3>
+    forge cache clean rinkeby --blocks 530000,9000000,9200000
     ```
 
 ### SEE ALSO
