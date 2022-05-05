@@ -512,6 +512,15 @@
       "contributions": [
         "maintenance"
       ]
+    },
+    {
+      "login": "zobront",
+      "name": "Zach Obront",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5749292?v=4",
+      "profile": "https://github.com/zobront",
+      "contributions": [
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7,
