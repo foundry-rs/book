@@ -14,7 +14,7 @@ To test your project using [slither](https://github.com/crytic/slither), here is
 }
 ```
 
-Note. Update solc to the required version with solc select:-
+Note, you need to update `solc` used by Slither to the same version used by Forge with `solc-select`:
 ```ignore
 pip3 install slither-analyzer
 pip3 install solc-select
