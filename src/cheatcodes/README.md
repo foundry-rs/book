@@ -114,5 +114,8 @@ interface CheatCodes {
 
     // When fuzzing, generate new inputs if conditional not met
     function assume(bool) external;
+    
+    // Set block.coinbase (who)
+    function coinbase(address) external;
 }
 ```
