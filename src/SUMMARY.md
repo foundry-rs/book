@@ -89,6 +89,8 @@
     - [Utility Commands](./reference/forge/utility-commands.md)
       - [forge run](./reference/forge/forge-run.md)
       - [forge bind](./reference/forge/forge-bind.md)
+      - [forge cache](./reference/forge/forge-cache.md)
+      - [forge cache clean](./reference/forge/forge-cache-clean.md)
   - [`cast` Commands](./reference/cast/README.md)
     - [General Commands](./reference/cast/general-commands.md)
       - [cast](./reference/cast/cast.md)
