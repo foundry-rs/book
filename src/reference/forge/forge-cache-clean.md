@@ -6,7 +6,7 @@ forge-cache-clean - Cleans cached data from `~/.foundry`.
 
 ### SYNOPSIS
 
-`forge cache clean` [*options*] [*--*] [*CHAINS*]
+`forge cache clean` [*options*] [*--*] [*chains..*]
 
 ### DESCRIPTION
 
@@ -18,9 +18,11 @@ Removes files in the `~/.foundry/cache` folder which is used to cache Etherscan 
 `--blocks`  
 &nbsp;&nbsp;&nbsp;&nbsp;One or more block numbers separated by comma with no spaces
 
+{{#include common-options.md}}
+
 ### EXAMPLES
 
-1. Remove the entire cache (also, forge cache clean is an alias for this)
+1. Remove the entire cache (also, ``forge cache clean`` is an alias for this)
     ```sh
     forge cache clean all
     ```

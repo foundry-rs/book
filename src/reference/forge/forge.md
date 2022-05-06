@@ -58,12 +58,6 @@ This program is a set of tools to build, test, fuzz, debug and deploy Solidity s
 [forge inspect](./forge-inspect.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Get specialized information about a smart contract.
 
-[forge cache](./forge-cache.md)  
-&nbsp;&nbsp;&nbsp;&nbsp;Manage the Foundry cache.
-
-[forge cache clean](./forge-cache-clean.md)  
-&nbsp;&nbsp;&nbsp;&nbsp;Cleans cached data from ~/.foundry.
-
 #### Test Commands
 
 [forge test](./forge-test.md)  
@@ -93,6 +87,12 @@ This program is a set of tools to build, test, fuzz, debug and deploy Solidity s
 
 [forge bind](./forge-bind.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Generate Rust bindings for smart contracts.
+
+[forge cache](./forge-cache.md)  
+&nbsp;&nbsp;&nbsp;&nbsp;Manage the Foundry cache.
+
+[forge cache clean](./forge-cache-clean.md)  
+&nbsp;&nbsp;&nbsp;&nbsp;Cleans cached data from ``~/.foundry``.
 
 ### OPTIONS
 

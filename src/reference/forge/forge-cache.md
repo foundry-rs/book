@@ -17,7 +17,7 @@ This program is a set of tools to manage the Foundry cache.
 ### COMMANDS
 
 [forge cache clean](./forge-cache-clean.md)  
-&nbsp;&nbsp;&nbsp;&nbsp;Cleans cached data from ~/.foundry.
+&nbsp;&nbsp;&nbsp;&nbsp;Cleans cached data from ``~/.foundry``.
 
 ### OPTIONS
 
