@@ -211,6 +211,7 @@
       - [`getNonce`](./cheatcodes/get-nonce.md)
       - [`mockCall`](./cheatcodes/mock-call.md)
       - [`clearMockedCalls`](./cheatcodes/clear-mocked-calls.md)
+      - [`coinbase`](./cheatcodes/coinbase.md)
     - [Assertions](./cheatcodes/assertions.md)
       - [`expectRevert`](./cheatcodes/expect-revert.md)
       - [`expectEmit`](./cheatcodes/expect-emit.md)

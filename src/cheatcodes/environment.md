@@ -17,3 +17,4 @@
 - [`getNonce`](./get-nonce.md)
 - [`mockCall`](./mock-call.md)
 - [`clearMockedCalls`](./clear-mocked-calls.md)
+- [`coinbase`](./coinbase.md)
