@@ -92,6 +92,72 @@ Contract successfully verified.
 
 <br>
 
+# Semi-automated deployment approach
+
+Running the above three commands manually each time can be bothersome and can lead to input errors. To relieve oneself of such frustation, one can utlise a Makefile.
+
+Create a file in your project root called 'Makefile'. There is no file extension.
+
+Populate the file with your forge deployment commands, like so:
+
+```bash
+# include .env file and export its env vars (-include to ignore error if it does not exist)
+-include .env
+
+deploy-wmd:
+	forge create src/WMDToken.sol:WMDToken --private-key ${PRIVATE_KEY_EDGE} --rpc-url ${RINKEBY_RPC_URL}
+
+verify-wmd:
+	forge verify-contract --chain-id ${RINKEBY_CHAINID} --compiler-version v0.8.13+commit.abaa5c0e ${WMD_CONTRACT_ADDRESS} src/WMDToken.sol:WMDToken ${ETHERSCAN_API_KEY} --num-of-optimizations 200 --flatten
+	
+verify-check-wmd:
+	forge verify-check --chain-id ${RINKEBY_CHAINID} ${WMD_GUID} ${ETHERSCAN_API_KEY}
+```
+
+Makefile will reference the .env file, that should exist in the project root, for env variables, e.g. ${RINKEBY_RPC_URL}.
+
+
+### Application
+To deploy the WMDToken.sol contract, run `make deploy-wmd` in terminal.
+
+Output:
+```bash
+ $ make deploy
+ > forge create src/WMDToken.sol:WMDToken --private-key 0x122...56789 --rpc-url https://rinkeby.infura.io/v3/8f4d69691d4a4636acb00ec3c933291b
+```
+Now you will only need to run:
+1. make deploy
+2. make verify
+3. make verify-check
+
+**User is freed from repeatedly crafting long statements - particularly for multiple deployments consisting of multiple contracts!**
+
+
+### Updating the .env file
+```bash
+export PRIVATE_KEY_EDGE = 0x57979d527794c1adbe2dc140d0aad4f1adada194aba46b5175a395fe71887c25
+export ETHERSCAN_API_KEY = I5CK8CJ7FZ6BWQ6YGFD4U3E7CFTNWQJ3A3
+
+//Chain info
+export RINKEBY_CHAINID = 4
+export RINKEBY_RPC_URL = https://rinkeby.infura.io/v3/8f4d69691d4a4636acb00ec3c933291b
+
+// Token Deployment
+export WMD_CONTRACT = src/WMDToken.sol:WMDToken
+export WMD_CONTRACT_ADDRESS = 0x944403ee436a6dff974983a2fa84ff37c587bad1
+export WMD_GUID = 62h8tg2r61vcusbzcva8q53bus2ixmyr7apkt24hk3uzwai7nz
+```
+Please note that as part of the deployment-verification flow, you will have to manually update the following in the .env file:
+1. Deployment address
+2. GUID
+ 
+> Be sure to update the contract address and GUID values in .env for each sepereate deployment, as they would change. 
+
+#### Installing make on Windows:
+https://stackoverflow.com/questions/32127524/how-to-install-and-use-make-in-windows
+
+---
+
 ### Troubleshooting
 
 ##### `Invalid character 'x' at position 1`
