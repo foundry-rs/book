@@ -142,9 +142,9 @@ The reference implementation for Paradigm's [Gradual Dutch Auction](https://www.
 * Reference [Python implementation](https://github.com/FrankieIsLost/gradual-dutch-auction/blob/master/analysis/compute_price.py)
 
 
-### Referenced Repositories
-The examples above contain code from the following repositories:
+### Reference Repositories
 * [Gradual Dutch Auctions](https://github.com/FrankieIsLost/gradual-dutch-auction)
 * [Murky](https://www.github.com/dmfxyz/murky)
+* [Solidity Fuzzing Template](https://github.com/patrickd-/solidity-fuzzing-boilerplate)
   
 If you have another repository that would serve as a reference, please contribute it!
