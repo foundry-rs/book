@@ -9,7 +9,7 @@ Differential fuzzing is an extension of differential testing. Differential fuzzi
 
 > Note: the `==` operator in this case can be a custom definition of equality. For example, if testing floating point implementations, you might use approximate equality with a certain tolerance.
 
-Some real life uses of uses of this type of testing include:
+Some real life uses of this type of testing include:
 * Comparing upgraded implementations to their predecessors
 * Testing code against known reference implementations
 * Confirming compatibility with third party tools and dependencies
