@@ -521,6 +521,15 @@
       "contributions": [
         "maintenance"
       ]
+    },
+    {
+      "login": "scottt",
+      "name": "Scott Tsai",
+      "avatar_url": "https://avatars.githubusercontent.com/u/110957?v=4",
+      "profile": "http://scottt.tw",
+      "contributions": [
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7,
