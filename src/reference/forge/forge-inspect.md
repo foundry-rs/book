@@ -32,7 +32,7 @@ The field to inspect (*field*) can be any of:
 ### OPTIONS
 
 `--pretty`  
-&nbsp;&nbsp;&nbsp;&nbsp;Pretty print the field.
+&nbsp;&nbsp;&nbsp;&nbsp;Pretty print the selected field, if supported.
 
 {{#include core-build-options.md}}
 
