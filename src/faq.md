@@ -38,9 +38,11 @@ If you want to run only a few tests, you can use `--match-test` to filter test f
 
 Forge will try to auto-detect what Solidity compiler works for your project.
 
-To use a specific Solidity compiler, you can set [`solc_version`][config-solc] in your [config file][config],
+To use a specific Solidity compiler, you can set [`solc`][config-solc] in your [config file][config],
 or pass `--use solc:<version>` to a Forge command that supports it (e.g. [`forge build`][forge-build]
-or [`forge test`][forge-test]).
+or [`forge test`][forge-test]). 
+Paths to a solc binary are also accepted. To use a specific local solc binary, you can set `solc = "<path to solc>"` in your config file, or pass `--use "<path to solc>"`. 
+The solc version/path can also be set via the env variable `FOUNDRY_SOLC=<version/path>`, but the cli arg `--use` has priority.
 
 For example, if you have a project that supports all 0.7.x Solidity versions, but you want to compile with solc 0.7.0, you could use `forge build --use solc:0.7.0`.
 

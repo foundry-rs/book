@@ -6,11 +6,11 @@ $ tree . -L 3 -I output
 .
 ├── foundry.toml
 ├── lib
-│   └── ds-test
-│       ├── default.nix
-│       ├── demo
-│       ├── LICENSE
-│       ├── Makefile
+│   └── forge-std
+│       ├── lib
+│       ├── LICENSE-APACHE
+│       ├── LICENSE-MIT
+│       ├── README.md
 │       └── src
 ├── src
 │   └── Contract.sol

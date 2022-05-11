@@ -4,9 +4,9 @@ Cheatcodes give you powerful assertions, the ability to alter the state of the E
 
 To enable a cheatcode you call designated functions on the cheatcode address: `0x7109709ECfa91a80626fF3989D68f67F5b1DD12D`.
 
-This address can be accessed through the `HEVM_ADDRESS` constant in `DSTest`.
+You can access cheatcodes easily via `vm` available in Forge Standard Library's [`Test`](../reference/forge-std/#forge-stds-test) contract.
 
-Below are some subsections for the different cheatcodes in Forge.
+Below are some subsections for the different Forge cheatcodes.
 
 - [Environment](./environment.md): Cheatcodes that alter the state of the EVM.
 - [Assertions](./assertions.md): Cheatcodes that are powerful assertions
@@ -49,7 +49,7 @@ interface CheatCodes {
 
     // Sets the nonce of an account
     // The new nonce must be higher than the current nonce of the account
-    function setNonce(address account, uint256 nonce) external;
+    function setNonce(address account, uint64 nonce) external;
 
     // Performs a foreign function call via terminal
     function ffi(string[] calldata) external returns (bytes memory);
@@ -89,7 +89,9 @@ interface CheatCodes {
     // Prepare an expected log with (bool checkTopic1, bool checkTopic2, bool checkTopic3, bool checkData).
     // Call this function, then emit an event, then call a function. Internally after the call, we check if
     // logs were emitted in the expected order with the expected topics and data (as specified by the booleans)
+    // Second form also checks supplied address against emitting contract.
     function expectEmit(bool, bool, bool, bool) external;
+    function expectEmit(bool, bool, bool, bool, address) external;
 
     // Mocks a call to an address, returning specified data.
     // Calldata can either be strict or a partial match, e.g. if you only
@@ -112,5 +114,8 @@ interface CheatCodes {
 
     // When fuzzing, generate new inputs if conditional not met
     function assume(bool) external;
+    
+    // Set block.coinbase (who)
+    function coinbase(address) external;
 }
 ```

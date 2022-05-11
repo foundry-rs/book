@@ -52,6 +52,9 @@ This program is a set of tools to interact with Ethereum and perform conversions
 [cast tx](./cast-tx.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Get information about a transaction.
 
+[cast run](./cast-run.md)  
+&nbsp;&nbsp;&nbsp;&nbsp;Runs a published transaction in a local environment and prints the trace.
+
 [cast estimate](./cast-estimate.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Estimate the gas cost of a transaction.
 

@@ -3,7 +3,7 @@
 `--optimize`  
 &nbsp;&nbsp;&nbsp;&nbsp;Active the Solidity optimizer.
 
-`--optimize-runs` *runs*  
+`--optimizer-runs` *runs*  
 &nbsp;&nbsp;&nbsp;&nbsp;The number of optimizer runs.
 
 `--via-ir`  

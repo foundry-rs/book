@@ -47,8 +47,10 @@ Download and run `rustup-init` from [rustup.rs](https://rustup.rs). It will star
 After this, run the following to build Foundry from source:
 
 ```sh
-cargo install --git https://github.com/foundry-rs/foundry --bins --locked
+cargo install --git https://github.com/foundry-rs/foundry foundry-cli anvil --bins --locked
 ```
+
+To update from source, run the same command again.
 
 ### Using with Docker
 

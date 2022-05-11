@@ -60,7 +60,7 @@ fuzz_runs = 256
 fuzz_max_local_rejects = 65536
 # The max number of combined inputs that may be rejected before a fuzz test aborts
 fuzz_max_global_rejects = 1024
-# Whether or not to enable `cheats.ffi`
+# Whether or not to enable `vm.ffi`
 ffi = false
 # The address of `msg.sender` in tests
 sender = '0x00a329c0648769a73afac7f9381e08fb43dbea72'
@@ -69,9 +69,9 @@ tx_origin = '0x00a329c0648769a73afac7f9381e08fb43dbea72'
 # The initial balance of the test contract
 initial_balance = '0xffffffffffffffffffffffff'
 # The block number we are at in tests
-block_number = 0
+block_number = 1
 # The chain ID we are on in tests
-chain_id = 99
+chain_id = 31337
 # The gas limit in tests
 gas_limit = 9223372036854775807
 # The gas price in tests (in wei)
@@ -81,7 +81,7 @@ block_base_fee_per_gas = 0
 # The address of `block.coinbase` in tests
 block_coinbase = '0x0000000000000000000000000000000000000000'
 # The block timestamp in tests
-block_timestamp = 0
+block_timestamp = 1
 # The block difficulty in tests
 block_difficulty = 0
 # A list of contracts to output gas reports for
@@ -344,7 +344,7 @@ The initial balance of the test contracts in wei, written in hexadecimal.
 ##### `block_number`
 
 - Type: integer
-- Default: 0
+- Default: 1
 - Environment: `FOUNDRY_BLOCK_NUMBER` or `DAPP_BLOCK_NUMBER`
 
 The value of `block.number` in tests.
@@ -352,7 +352,7 @@ The value of `block.number` in tests.
 ##### `chain_id`
 
 - Type: integer
-- Default: 99
+- Default: 31337
 - Environment: `FOUNDRY_CHAIN_ID` or `DAPP_CHAIN_ID`
 
 The value of the `chainid` opcode in tests.
@@ -394,7 +394,7 @@ The value of `block.coinbase` in tests.
 ##### `block_timestamp`
 
 - Type: integer
-- Default: 0
+- Default: 1
 - Environment: `FOUNDRY_BLOCK_TIMESTAMP` or `DAPP_BLOCK_TIMESTAMP`
 
 The value of `block.timestamp` in tests.

@@ -33,7 +33,7 @@ There are three build modes:
 
 #### The Optimizer
 
-You can enable the optimizer by passing `--optimize`, and you can adjust the number of optimizer runs by passing `--optimize-runs <RUNS>`.
+You can enable the optimizer by passing `--optimize`, and you can adjust the number of optimizer runs by passing `--optimizer-runs <RUNS>`.
 
 You can also opt-in to the Solidity IR compilation pipeline by passing `--via-ir`. Read more about the IR pipeline in the [Solidity docs][ir-pipeline].
 

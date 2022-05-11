@@ -4,6 +4,8 @@
 
 If the CLI output of either `forge` or `cast` has changed substantially, or you made changes to the projects, then you should run ``./scripts/generate-output`` from the root of the repository.
 
+Make sure that you have all of the submodules pulled by running `git submodule update --init --recursive`.
+
 To use the output in here, refer to existing places that include CLI output from this folder, or [mdbook's documentation](https://rust-lang.github.io/mdBook/format/mdbook.html) for more info.
 
 ### Why?

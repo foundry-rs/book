@@ -3,15 +3,17 @@
 ### Signature
 
 ```solidity
-function getNonce(address account, uint256 nonce) external;
+function setNonce(address account, uint64 nonce) external;
 ```
 
 ### Description
 
-Computes the address for a given private key.
+Sets the nonce of the given account.
+
+The new nonce must be higher than the current nonce of the account.
 
 ### Examples
 
 ```solidity
-cheats.setNonce(address(100), 1234);
+vm.setNonce(address(100), 1234);
 ```

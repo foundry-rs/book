@@ -14,6 +14,12 @@ Sets the balance of an address `who` to `newBalance`.
 
 ```solidity
 address alice = address(1);
-cheats.deal(alice, 1 ether);
+vm.deal(alice, 1 ether);
 log_uint256(alice.balance); // 1000000000000000000
 ```
+
+### SEE ALSO
+
+Forge Standard Library
+
+[`deal`](../reference/forge-std/deal.md), [`hoax`](../reference/forge-std/hoax.md), [`startHoax`](../reference/forge-std/startHoax.md)

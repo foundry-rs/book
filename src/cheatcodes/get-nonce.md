@@ -13,6 +13,6 @@ Gets the nonce of the given account.
 ### Examples
 
 ```solidity
-uint256 nonce = cheats.getNonce(address(100));
+uint256 nonce = vm.getNonce(address(100));
 emit log_uint(nonce); // 0
 ```

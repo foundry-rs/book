@@ -13,6 +13,12 @@ Sets `block.timestamp`.
 ### Examples
 
 ```solidity
-cheats.warp(1641070800);
+vm.warp(1641070800);
 emit log_uint(block.timestamp); // 1641070800
 ```
+
+### SEE ALSO
+
+Forge Standard Library
+
+[`skip`](../reference/forge-std/skip.md), [`rewind`](../reference/forge-std/rewind.md)

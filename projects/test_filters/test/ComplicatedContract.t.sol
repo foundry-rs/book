@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.8.10;
 
-import "ds-test/test.sol";
+import "forge-std/Test.sol";
 
-contract ComplicatedContractTest is DSTest {
+contract ComplicatedContractTest is Test {
     function testDepositERC20() public pure {
         // waste some gas for display purposes
         for (uint256 i = 1000; i > 0; i--) {}
