@@ -43,6 +43,10 @@
 
 - [Overview of Cast](./cast/README.md)
 
+# Anvil Overview 
+
+- [Overview of Anvil](./anvil/README.md)
+
 # Configuration
 
 - [Configuring with `foundry.toml`](./config/README.md)
