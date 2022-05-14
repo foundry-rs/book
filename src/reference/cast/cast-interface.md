@@ -24,6 +24,10 @@ If an address is provided, then the interface is generated from the ABI of the a
 
 #### Interface Options
 
+`-n` *name*  
+`--name` *name*  
+&nbsp;&nbsp;&nbsp;&nbsp;The name to use for the generated interface. The default name is `Interface`.
+
 `-o` *path*  
 &nbsp;&nbsp;&nbsp;&nbsp;The path to the output file. If not specified, the interface will be output to stdout.
 
@@ -47,6 +51,10 @@ If an address is provided, then the interface is generated from the ABI of the a
     cast interface -o IWETH.sol 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
     ```
 
+3. Generate and name an interface from a file:
+    ```sh
+    cast interface -n LilENS ./path/to/abi.json
+    ```
 ### SEE ALSO
 
 [cast](./cast.md), [cast proof](./cast-proof.md)
