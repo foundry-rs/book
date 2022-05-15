@@ -184,6 +184,7 @@
       - [`deal`](./reference/forge-std/deal.md)
       - [`deployCode`](./reference/forge-std/deployCode.md)
       - [`bound`](./reference/forge-std/bound.md)
+      - [`changePrank`](./reference/forge-std/change-prank.md)
     - [Std Errors](./reference/forge-std/std-errors.md)
       - [`assertionError`](./reference/forge-std/assertionError.md)
       - [`arithmeticError`](./reference/forge-std/arithmeticError.md)
