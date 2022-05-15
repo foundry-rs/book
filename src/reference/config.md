@@ -36,6 +36,8 @@ remappings = []
 libraries = []
 # Whether to cache builds or not
 cache = true
+# The cache directory if enabled
+cache_path = 'cache'
 # Whether to ignore the cache
 force = false
 # The EVM version by hardfork name
@@ -154,6 +156,14 @@ An array of paths that contain libraries, relative to the root of the project.
 - Environment: `FOUNDRY_CACHE` or `DAPP_CACHE`
 
 Whether or not to enable caching. If enabled, the result of compiling sources, tests, and dependencies, are cached in `cache`.
+
+##### `cache_path`
+
+- Type: string
+- Default: cache
+- Environment: `FOUNDRY_CACHE` or `DAPP_CACHE`
+
+The path to the cache, relative to the root of the project.
 
 ##### `force`
 
