@@ -20,4 +20,4 @@ If the alternative signature of `startPrank` is used, then `tx.origin` is set as
 
 Forge Standard Library
 
-[`startHoax`](../reference/forge-std/startHoax.md)
+[`startHoax`](../reference/forge-std/startHoax.md), [`changePrank`](../reference/forge-std/change-prank.md)

@@ -7,3 +7,4 @@
 - [`deal`](./deal.md)
 - [`deployCode`](./deployCode.md)
 - [`bound`](./bound.md)
+- [`changePrank`](./change-prank.md)
