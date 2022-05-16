@@ -70,24 +70,22 @@ take file filters (e.g. [forge test](./forge-test.md)), sparse mode will only re
 Sparse mode is opt-in until the feature is stabilized. To opt-in to sparse mode and try it out, set [`sparse_mode`][sparse-mode]
 in your configuration file.
 
-#### Additional Optimizer settings
+#### Additional Optimizer Settings
 
-Optimizer components can be tweaked with the `OptimizerDetails` object:
-
-See [Compiler Input Description `settings.optimizer.details`](https://docs.soliditylang.org/en/latest/using-the-compiler.html#compiler-input-and-output-json-description)
-
-The `optimizer_details` (`optimizerDetails` also works) settings must be prefixed with the profile they correspond to: `[default.optimizer_details]` belongs to the `[default]` profile
+The optimizer can be fine-tuned with additional settings. Simply set the `optimizer_details` table in your configuration file. For example:
 
 ```toml
-## foundry.toml
 [default.optimizer_details]
 constantOptimizer = true
 yul = true
-# this sets the `yulDetails` of the `optimizer_details` for the `default` profile
+
 [default.optimizer_details.yulDetails]
 stackAllocation = true
 optimizerSteps = 'dhfoDgvulfnTUtnIf'
 ```
+
+See the [compiler input description documentation](https://docs.soliditylang.org/en/latest/using-the-compiler.html#compiler-input-and-output-json-description)
+for more information on available settings (specifically `settings.optimizer.details`).
 
 #### Additional Model Checker settings
 
