@@ -107,6 +107,10 @@ bytecode_hash = "ipfs"
 # only for the required contracts. This can reduce compile time
 # for `forge test`, but is experimental.
 sparse_mode = false
+# Whether or not to use the Yul intermediate representation compilation pipeline
+via_ir = false
+# How to treat revert (and require) reason strings.
+revert_strings = "default"
 ```
 
 ### Configuration keys
@@ -161,7 +165,7 @@ Whether or not to enable caching. If enabled, the result of compiling sources, t
 
 - Type: string
 - Default: cache
-- Environment: `FOUNDRY_CACHE` or `DAPP_CACHE`
+- Environment: `FOUNDRY_CACHE_PATH` or `DAPP_CACHE_PATH`
 
 The path to the cache, relative to the root of the project.
 
@@ -273,6 +277,26 @@ An array of Solidity compiler error codes to ignore during build, such as warnin
 - Environment: `FOUNDRY_EVM_VERSION` or `DAPP_EVM_VERSION`
 
 The EVM version to use during tests. The value **must** be an EVM hardfork name, such as `london`, `byzantium`, etc.
+
+##### `via_ir`
+
+- Type: boolean
+- Default: false
+- Environment: `FOUNDRY_VIA_IR` or `DAPP_VIA_IR`
+
+If set to true, changes compilation pipeline to go through the Yul intermediate representation.
+
+##### `revert_strings`
+
+- Type: string
+- Default: default
+- Environment: `FOUNDRY_REVERT_STRINGS` or `DAPP_REVERT_STRINGS`
+
+Possible values are `default`, `strip`, `debug` and `verboseDebug`.  
+- `default` does not inject compiler-generated revert strings and keeps user-supplied ones.  
+- `strip` removes all revert strings (if possible, i.e. if literals are used) keeping side-effects.  
+- `debug` injects strings for compiler-generated internal reverts, implemented for ABI encoders V1 and V2 for now.  
+- `verboseDebug` even appends further information to user-supplied revert strings (not yet implemented).
 
 #### Tests
 
