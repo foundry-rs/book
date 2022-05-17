@@ -66,7 +66,7 @@ Here's how to verify it:
 
 ```bash
 $ forge verify-contract --chain-id 42 --num-of-optimizations 1000000 --constructor-args \ 
-    (cast abi-encode "constructor(string,string,uint256,uint256)" "ForgeUSD" "FUSD" 18 1000000000000000000000) \
+    $(cast abi-encode "constructor(string,string,uint256,uint256)" "ForgeUSD" "FUSD" 18 1000000000000000000000) \
     --compiler-version v0.8.10+commit.fc410830 <the_contract_address> src/MyToken.sol:MyToken <your_etherscan_api_key>
 
 Submitted contract for verification:

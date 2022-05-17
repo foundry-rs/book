@@ -36,6 +36,8 @@ remappings = []
 libraries = []
 # Whether to cache builds or not
 cache = true
+# The cache directory if enabled
+cache_path = 'cache'
 # Whether to ignore the cache
 force = false
 # The EVM version by hardfork name
@@ -155,6 +157,14 @@ An array of paths that contain libraries, relative to the root of the project.
 
 Whether or not to enable caching. If enabled, the result of compiling sources, tests, and dependencies, are cached in `cache`.
 
+##### `cache_path`
+
+- Type: string
+- Default: cache
+- Environment: `FOUNDRY_CACHE` or `DAPP_CACHE`
+
+The path to the cache, relative to the root of the project.
+
 ##### `force`
 
 - Type: boolean
@@ -256,6 +266,14 @@ The amount of optimizer runs to perform.
 
 An array of Solidity compiler error codes to ignore during build, such as warnings.
 
+##### `evm_version`
+
+- Type: string
+- Default: london
+- Environment: `FOUNDRY_EVM_VERSION` or `DAPP_EVM_VERSION`
+
+The EVM version to use during tests. The value **must** be an EVM hardfork name, such as `london`, `byzantium`, etc.
+
 #### Tests
 
 Configuration related to the behavior of `forge test`.
@@ -272,14 +290,6 @@ The verbosity level to use during tests.
 - **Level 3 (`-vvv`)**: Stack traces for failing tests are also displayed.
 - **Level 4 (`-vvvv`)**: Stack traces for all tests are displayed, and setup traces for failing tests are displayed.
 - **Level 5 (`-vvvvv`)**: Stack traces and setup traces are always displayed.
-
-##### `evm_version`
-
-- Type: string
-- Default: london
-- Environment: `FOUNDRY_EVM_VERSION` or `DAPP_EVM_VERSION`
-
-The EVM version to use during tests. The value **must** be an EVM hardfork name, such as `london`, `byzantium`, etc.
 
 ##### `fuzz_runs`
 

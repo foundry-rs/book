@@ -94,6 +94,9 @@ This program is a set of tools to build, test, fuzz, debug and deploy Solidity s
 [forge cache clean](./forge-cache-clean.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Cleans cached data from ``~/.foundry``.
 
+[forge cache ls](./forge-cache-ls.md)  
+&nbsp;&nbsp;&nbsp;&nbsp;Shows cached data from ``~/.foundry``.
+
 ### OPTIONS
 
 #### Special Options

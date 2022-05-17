@@ -47,6 +47,11 @@ You can generate a gas report by passing `--gas-report`.
 
 More information on gas reports can be found in the [gas reports chapter][gas-reports].
 
+#### List
+
+It is possible to list the tests without running them.
+You can pass `--json` to make it easier for outside extensions to parse structured content.
+
 ### OPTIONS
 
 {{#include test-options.md}}
@@ -58,6 +63,9 @@ More information on gas reports can be found in the [gas reports chapter][gas-re
 {{#include core-build-options.md}}
 
 {{#include ../common/display-options.md}}
+
+`--list`  
+&nbsp;&nbsp;&nbsp;&nbsp;List tests instead of running them.
 
 {{#include common-options.md}}
 
@@ -82,6 +90,13 @@ More information on gas reports can be found in the [gas reports chapter][gas-re
     ```sh
     forge test --match-path test/Contract.t.sol --match-contract BigTest \
       --match-test "testFail*"
+    ```
+
+5. List tests in desired format
+    ```sh
+    forge test --list
+    forge test --list --json
+    forge test --list --json --match-test "testFail*" | tail -n 1 | json_pp
     ```
 
 ### SEE ALSO
