@@ -6,6 +6,15 @@
 function mockCall(address where, bytes calldata data, bytes calldata retdata) external;
 ```
 
+```solidity
+function mockCall(
+    address where,
+    uint256 value,
+    bytes calldata data,
+    bytes calldata retdata
+) external;
+```
+
 ### Description
 
 Mocks all calls to an address `where` if the call data either strictly or loosely matches `data` and returns `retdata`.
@@ -14,6 +23,9 @@ When a call is made to `where` the call data is first checked to see if it match
 If not, the call data is checked to see if there is a partial match, with the match starting at the first byte of the call data.
 
 If a match is found, then `retdata` is returned from the call.
+
+
+**Using the second signature** we can mock the calls with a specific `msg.value`. `Calldata` match takes precedence over `msg.value` in case of ambiguity.
 
 Mocked calls are in effect until [`clearMockedCalls`](./clear-mocked-calls.md) is called.
 
@@ -54,5 +66,23 @@ function testMockCall() public {
     );
     assertEq(IERC20(address(0)).balanceOf(address(1)), 10);
     assertEq(IERC20(address(0)).balanceOf(address(2)), 10);
+}
+```
+
+Mocking a call with a given `msg.value`:
+
+
+```solidity
+function testMockCall() public {
+    assertEq(example.pay{value: 10}(1), 1);
+    assertEq(example.pay{value: 1}(2), 2);
+    vm.mockCall(
+        address(example),
+        10,
+        abi.encodeWithSelector(example.pay.selector),
+        abi.encode(99)
+    );
+    assertEq(example.pay{value: 10}(1), 99);
+    assertEq(example.pay{value: 1}(2), 2);
 }
 ```
