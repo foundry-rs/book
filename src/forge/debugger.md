@@ -16,7 +16,7 @@ Where `$FUNC` is the signature of the function you want to debug. For example:
 $ forge test --debug "testSomething"
 ```
 
-If you have multiple contracts with the same function name, you need to limit the matching functions down to only one case using `--match-patch` and `--match-contract`.
+If you have multiple contracts with the same function name, you need to limit the matching functions down to only one case using `--match-path` and `--match-contract`.
 
 If the matching test is a fuzz test, the debugger will open the first failing fuzz scenario, or the last successful one, whichever comes first.
 
