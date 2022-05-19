@@ -52,7 +52,11 @@ import "forge-std/console2.sol";
 
 ### Standard libraries
 
-Forge Std currently consists of three main libraries.
+Forge Std currently consists of five main libraries.
+
+#### Std Assertions
+
+Std Assertions expand upon the assertion functions from the [`DSTest`](../reference/ds-test.md) library.
 
 #### Std Cheats
 
