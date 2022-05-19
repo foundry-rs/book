@@ -33,8 +33,8 @@ This command will try to compile the source code of the flattened contract if `-
 `--compiler-version` *version*  
 &nbsp;&nbsp;&nbsp;&nbsp;The compiler version used to build the smart contract.
 
-&nbsp;&nbsp;&nbsp;&nbsp;To find the exact compiler version, run `~/.svm/x.y.z/solc-x.y.z --version`  
-&nbsp;&nbsp;&nbsp;&nbsp;and search for the 8 hex digits in the version string [here](https://etherscan.io/solcversions).
+&nbsp;&nbsp;&nbsp;&nbsp;To find the exact compiler version, run `~/.svm/x.y.z/solc-x.y.z --version` where `x` and
+`y` are major and minor version numbers respectively, then search for the 8 hex digits in the version string [here](https://etherscan.io/solcversions).
 
 `--num-of-optimizations` *num*  
 &nbsp;&nbsp;&nbsp;&nbsp;The number of optimization runs used to build the smart contract.
