@@ -28,7 +28,7 @@ Asserts `a` is approximately equal to `b` with delta in percentage (An 18 decima
 uint256 a = 100;
 uint256 b = 200;
 function testFail () external {
-    assertApproxEqRel(a, b, 400000000000000000);
+    assertApproxEqRel(a, b, 0.4e18);
 }
 //[PASS] testFail() (gas: 23884)
 //Logs:
