@@ -14,7 +14,10 @@ Provides a clean and readable way to fail tests if a certain branch or execution
 
 ```solidity
 function test() external {
-    fail("failed");
+    for(uint256 place; place < 10; ++i){
+        if(game.leaderboard(place) == address(this)) return;
+    }
+    fail("Not in the top 10.");
 }
 
 //[FAIL] test() (gas: 12116)
