@@ -530,6 +530,15 @@
       "contributions": [
         "maintenance"
       ]
+    },
+    {
+      "login": "kquirapas",
+      "name": "Kristian Quirapas",
+      "avatar_url": "https://avatars.githubusercontent.com/u/85150796?v=4",
+      "profile": "https://www.youtube.com/channel/UCaU88FuhkVKO0PJViRjvTLw",
+      "contributions": [
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7,
