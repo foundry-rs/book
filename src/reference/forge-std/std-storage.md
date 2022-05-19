@@ -23,6 +23,7 @@ Terminator functions:
 
 - `checked_write`: Set the data to be written to the storage slot(s)
 - `find`: Return the slot number
+- [`read`](./read.md): Access a value from the storage slot
 
 ### Example
 
