@@ -19,8 +19,4 @@ function test() external {
     }
     fail("Not in the top 10.");
 }
-
-//[FAIL] test() (gas: 12116)
-//Logs:
-//  Error: failed
 ```

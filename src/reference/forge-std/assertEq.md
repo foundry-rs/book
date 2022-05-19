@@ -21,4 +21,4 @@ function assertEq(bytes memory a, bytes memory b, string memory err) internal;
 
 ### Description
 
-Assert `a` is equal to `b`.
+Asserts `a` is equal to `b`.
