@@ -15,7 +15,7 @@ Then, access Std Storage via the `stdstore` instance.
 Query functions:
 
 - [`target`](./target.md): Set the address of the contract (required)
-- `sig`: Set the signature of the function to call (required)
+- [`sig`](./sig.md): Set the signature of the function to call (required)
 - `with_key`: Set the mapping key, if the variable is of type `mapping`
 - `depth`: Set the index of the struct member, if the variable is of type `struct`
 

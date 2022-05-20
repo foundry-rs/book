@@ -8,7 +8,7 @@ function target(StdStorage storage self, address _target) internal returns (StdS
 
 ### Description
 
-Set the address of the contract (required).
+Sets the address of the contract (required).
 
 ### Examples
 

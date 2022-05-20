@@ -3,10 +3,6 @@
 ### Signature
 
 ```solidity
-function read(StdStorage storage self) private returns (bytes memory);
-```
-
-```solidity
 function read_bytes32(StdStorage storage self) internal returns (bytes32);
 ```
 
@@ -28,7 +24,7 @@ function read_int(StdStorage storage self) internal returns (int256);
 
 ### Description
 
-Access a value from the storage slot.
+Accesses a value from the storage slot.
 
 ### Examples
 
