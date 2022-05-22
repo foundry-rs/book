@@ -17,10 +17,10 @@ Sets the signature of the function to call (required).
 ### Examples
 
 ```solidity
+// function playerCount() public view returns (uint256) {
+
 uint256 slot = stdstore
-    .target(address(test))
-    .sig(test.map_struct.selector)
-    .with_key(address(this))
-    .depth(1)
+    .target(address(game))
+    .sig(game.playerCount.selector)
     .find();
 ```
