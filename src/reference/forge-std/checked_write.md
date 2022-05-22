@@ -26,9 +26,10 @@ Sets the data to be written to the storage slot(s)
 
 ```solidity
 stdstore
-    .target(address(test))
-    .sig(test.deep_map.selector)
-    .with_key(address(this))
-    .with_key(address(this))
-    .checked_write(100);
+// uint256 public season;
+
+uint256 slot = stdstore
+    .target(address(game))
+    .sig(game.season.selector)
+    .checked_write(7);
 ```
