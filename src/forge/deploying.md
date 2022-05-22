@@ -47,6 +47,11 @@ $ forge create --rpc-url <your_rpc_url> \
 
 ## Verifying
 
+It is recommended to use the `--verify` flag with `forge create` to automatically verify the contract on Etherscan after a deployment.
+Note that [`ETHERSCAN_API_KEY`](../reference/config.md#etherscan_api_key) must be set.
+
+If you are verifying an already deployed contract, read on.
+
 You can verify a contract on Etherscan with the [`forge verify-contract`](../reference/forge/forge-verify-contract.md) command.
 
 You must provide:
