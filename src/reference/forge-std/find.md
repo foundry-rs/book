@@ -13,11 +13,10 @@ Finds an arbitrary storage slot given a function sig, input data, address of the
 ### Examples
 
 ```solidity
+// uint256 public season;
+
 uint256 slot = stdstore
-    .target(address(test))
-    .sig(test.deep_map_struct.selector)
-    .with_key(address(this))
-    .with_key(address(this))
-    .depth(1)
+    .target(address(game))
+    .sig(game.season.selector)
     .find();
 ```
