@@ -21,10 +21,12 @@ Sets the mapping key, if the variable is of type `mapping`.
 ### Examples
 
 ```solidity
+// mapping(uint256 => mapping(address => uint256)) public itemToPlayerToQuantity;
+
 uint256 slot = stdstore
-    .target(address(test))
-    .sig(test.deep_map.selector)
-    .with_key(address(this))
+    .target(address(game))
+    .sig(game.itemToOwnerToQuantity.selector)
+    .with_key(1337)
     .with_key(address(this))
     .find();
 ```
