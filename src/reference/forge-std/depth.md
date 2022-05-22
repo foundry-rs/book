@@ -13,11 +13,18 @@ Sets the index of the struct member, if the variable is of type `struct`.
 ### Examples
 
 ```solidity
-uint256 slot = stdstore
-    .target(address(test))
-    .sig(test.deep_map_struct.selector)
+// struct Character {
+//     Class class;
+//     uint256 level;
+//     uint256 xp;
+// }
+//
+// mapping (address => Character) public playerToCharacter;
+
+stdstore
+    .target(game)
+    .sig(game.playerToCharacter.selector)
     .with_key(address(this))
-    .with_key(address(this))
-    .depth(0)
-    .find();
+    .depth(1)
+    .checked_write(120);
 ```
