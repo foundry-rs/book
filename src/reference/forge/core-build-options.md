@@ -16,9 +16,6 @@
 
 {{#include project-options.md}}
 
-`--config-path` *file*  
-&nbsp;&nbsp;&nbsp;&nbsp;Path to the config file.
-
 `-o` *path*  
 `--out` *path*  
 &nbsp;&nbsp;&nbsp;&nbsp;The project's artifacts directory.
