@@ -13,10 +13,10 @@ Sets the address of the contract (required).
 ### Examples
 
 ```solidity
+// function playerCount() public view returns (uint256) {
+
 uint256 slot = stdstore
-    .target(address(test))
-    .sig(test.map_struct.selector)
-    .with_key(address(this))
-    .depth(0)
+    .target(address(game))
+    .sig(game.playerCount.selector)
     .find();
 ```
