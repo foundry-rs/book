@@ -18,7 +18,6 @@
 &nbsp;&nbsp;&nbsp;&nbsp;The parameter is a comma-separated list of remappings in the format `<source>=<dest>`.
 
 `--remappings-env` *env*  
-&nbsp;&nbsp;&nbsp;&nbsp;The project's remappings from the environment. Returns `None` if the env var is not set, otherwise all remappings.
 
 `--cache-path` *path*  
 &nbsp;&nbsp;&nbsp;&nbsp;The path to the compiler cache.
