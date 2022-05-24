@@ -34,6 +34,7 @@ Guides on configuring Foundry.
 - [Continuous Integration](./config/continous-integration.md)
 - [Integrating with VSCode](./config/vscode.md)
 - [Shell Autocompletion](./config/shell-autocompletion.md)
+- [Integrating with Hardhat](./config/hardhat.md)
 
 **Tutorials**
 
