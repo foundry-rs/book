@@ -45,7 +45,7 @@ $ forge create --rpc-url <your_rpc_url> \
     --private-key <your_private_key> src/MyToken.sol:MyToken
 ```
 
-## Verifying
+## Verifying a pre-existing contract
 
 It is recommended to use the `--verify` flag with `forge create` to automatically verify the contract on Etherscan after a deployment.
 Note that [`ETHERSCAN_API_KEY`](../reference/config.md#etherscan_api_key) must be set.
