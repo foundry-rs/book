@@ -1,307 +1,622 @@
 ## Testing EIP-712 Signatures
 
-This is a guide to creating, signing, and verifying EIP-712 signatures using Foundry [cheatcodes](https://book.getfoundry.sh/cheatcodes/) `addr` and `sign`.
+### Intro
 
-### EIP-712 Refresher 
+[EIP-712](https://eips.ethereum.org/EIPS/eip-712) introduced the ability to sign transactions off-chain which other users can later execute on-chain. A common example is [EIP-2612](https://eips.ethereum.org/EIPS/eip-2612) gasless token approvals.
 
-- A standard allowing complex data to be signed off-chain and verified on-chain
-- Improves upon [EIP-191](https://eips.ethereum.org/EIPS/eip-191), the legacy signed data standard, which only allowed for signing bytestrings
-- Full spec can be read [here](https://eips.ethereum.org/EIPS/eip-712)
+Traditionally, setting a user or contract allowance to transfer ERC-20 tokens from an owner's balance required the owner to submit an approval on-chain. As this proved to be poor UX, DAI introduced ERC-20 `permit` (later standardized as EIP-2612) allowing the owner to sign the approval _off-chain_ which the spender (or anyone else!) can submit on-chain prior to the `transferFrom`.
 
+This guide will cover testing this pattern in Solidity using Foundry.
 
-### Diving Into An Example
+### Diving In
 
-Say we have a simple contract that allows sellers to transfer tickets to buyers. 
+First we'll cover a basic token transfer:
 
-Traditionally, this interaction would include two transactions:
-- Seller tells contract they want to list a ticket they own for sale
-    - *contract reflects the listing in updated state*
-- Buyer tells contract they want to purchase a listed ticket
-    - *contract processes the transfer and reflects the sale in updated state*
+- Owner signs approval off-chain
+- Spender calls `permit` and `transferFrom` on-chain
 
-While this represents decentralization in its purest form, EIP-712 eliminates the need for a seller transaction (and associated gas cost) to list, yet still allowing the purchase and ticket transfer.
+We'll use [Solmate's ERC-20](https://github.com/Rari-Capital/solmate/blob/main/src/tokens/ERC20.sol), as EIP-712 and EIP-2612 batteries come included. Take a glance over the full contract if you haven't already - here is `permit` implemented:
 
-Here's an example:
+```solidity
+    /*//////////////////////////////////////////////////////////////
+                             EIP-2612 LOGIC
+    //////////////////////////////////////////////////////////////*/
+
+    function permit(
+        address owner,
+        address spender,
+        uint256 value,
+        uint256 deadline,
+        uint8 v,
+        bytes32 r,
+        bytes32 s
+    ) public virtual {
+        require(deadline >= block.timestamp, "PERMIT_DEADLINE_EXPIRED");
+
+        // Unchecked because the only math done is incrementing
+        // the owner's nonce which cannot realistically overflow.
+        unchecked {
+            address recoveredAddress = ecrecover(
+                keccak256(
+                    abi.encodePacked(
+                        "\x19\x01",
+                        DOMAIN_SEPARATOR(),
+                        keccak256(
+                            abi.encode(
+                                keccak256(
+                                    "Permit(address owner,address spender,uint256 value,uint256 nonce,uint256 deadline)"
+                                ),
+                                owner,
+                                spender,
+                                value,
+                                nonces[owner]++,
+                                deadline
+                            )
+                        )
+                    )
+                ),
+                v,
+                r,
+                s
+            );
+
+            require(recoveredAddress != address(0) && recoveredAddress == owner, "INVALID_SIGNER");
+
+            allowance[recoveredAddress][spender] = value;
+        }
+
+        emit Approval(owner, spender, value);
+    }
+```
+
+We'll also be using a custom `SigUtils` contract to help create, hash, and sign the approvals off-chain.
 
 ```solidity
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity 0.8.10;
+pragma solidity 0.8.13;
 
-/// @title Ticket Transfer
-/// @author kulkarohan
-/// @notice A (useless) contract for testing EIP-712 signatures using Foundry
-contract TicketTransfer {
-    ///                                                          ///
-    ///                       DOMAIN SEPARATOR                   ///
-    ///                                                          ///
+contract SigUtils {
+    bytes32 internal DOMAIN_SEPARATOR;
 
-    /// @notice The EIP-712 domain separator
-    bytes32 public immutable EIP_712_DOMAIN_SEPARATOR =
-        keccak256(
-            abi.encode(
-                keccak256("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)"),
-                keccak256(bytes("TicketTransfer")),
-                keccak256(bytes("1")),
-                _chainId(),
-                address(this)
-            )
-        );
-
-    /// @notice The EIP-155 chain id
-    function _chainId() private view returns (uint256 id) {
-        assembly {
-            id := chainid()
-        }
+    constructor(bytes32 _DOMAIN_SEPARATOR) {
+        DOMAIN_SEPARATOR = _DOMAIN_SEPARATOR;
     }
 
-    ///                                                          ///
-    ///                         TICKET DATA                      ///
-    ///                                                          ///
+    // keccak256("Permit(address owner,address spender,uint256 value,uint256 nonce,uint256 deadline)");
+    bytes32 public constant PERMIT_TYPEHASH =
+        0x6e71edae12b1b97f4d1f60370fef10105fa2faae0126114a169c64845d6126c9;
 
-    /// @notice The EIP-712 typehash for a signed ticket
-    /// @dev keccak256("SignedTicket(uint256 id,uint256 expiry)");
-    bytes32 public constant SIGNED_TICKET_TYPEHASH = 0x787f061deb861898126b36ccffa91598e7cdfe9951957c10f40a593d381075ce;
-
-    /// @notice The metadata of a ticket
-    /// @param seller The seller address
-    /// @param id The ticket id
-    /// @param expiry The ticket expiration
-    struct Ticket {
-        address seller;
-        uint256 id;
-        uint256 expiry;
+    struct Permit {
+        address owner;
+        address spender;
+        uint256 value;
+        uint256 nonce;
+        uint256 deadline;
     }
 
-    /// @notice If a given ticket has been transferred
-    /// @dev Ticket id => Transferred
-    mapping(uint256 => bool) public isTransferred;
-
-    ///                                                          ///
-    ///                       SIGNER RECOVERY                    ///
-    ///                                                          ///
-
-    /// @notice Recovers the signer of a given ticket
-    /// @param _ticket The signed ticket
-    /// @param _v The 129th byte and chain id of the signature
-    /// @param _r The first 64 bytes of the signature
-    /// @param _s Bytes 64-128 of the signature
-    function _recoverSigner(
-        Ticket calldata _ticket,
-        uint8 _v,
-        bytes32 _r,
-        bytes32 _s
-    ) private view returns (address) {
-        bytes32 digest = keccak256(
-            abi.encodePacked("\x19\x01", EIP_712_DOMAIN_SEPARATOR, keccak256(abi.encode(SIGNED_TICKET_TYPEHASH, _ticket.id, _ticket.expiry)))
-        );
-
-        return ecrecover(digest, _v, _r, _s);
+    // computes the hash of a permit
+    function getStructHash(Permit memory _permit)
+        internal
+        pure
+        returns (bytes32)
+    {
+        return
+            keccak256(
+                abi.encode(
+                    PERMIT_TYPEHASH,
+                    _permit.owner,
+                    _permit.spender,
+                    _permit.value,
+                    _permit.nonce,
+                    _permit.deadline
+                )
+            );
     }
 
-    ///                                                          ///
-    ///                        TICKET TRANSFER                   ///
-    ///                                                          ///
-
-    /// @notice Emitted upon a successful transfer
-    /// @param id The ticket id
-    /// @param seller The seller address
-    /// @param buyer The buyer address
-    event Transfer(uint256 id, address seller, address buyer);
-
-    /// @notice Transfers a given signed ticket
-    /// @param _ticket The signed ticket to transfer
-    /// @param _v The 129th byte and chain id of the signature
-    /// @param _r The first 64 bytes of the signature
-    /// @param _s Bytes 64-128 of the signature
-    function transfer(
-        Ticket calldata _ticket,
-        uint8 _v,
-        bytes32 _r,
-        bytes32 _s
-    ) external {
-        // Ensure the ticket has not expired
-        require(_ticket.expiry == 0 || _ticket.expiry >= block.timestamp, "EXPIRED_TICKET");
-
-        // Ensure the ticket has not been previously transferred
-        require(!isTransferred[_ticket.id], "INVALID_TRANSFER");
-
-        // Recover the ticket signer
-        address recoveredSigner = _recoverSigner(_ticket, _v, _r, _s);
-
-        // Ensure the recovered signer matches the ticket seller
-        require(recoveredSigner == _ticket.seller, "INVALID_SIG");
-
-        // Mark the ticket as transferred
-        isTransferred[_ticket.id] = true;
-
-        emit Transfer(_ticket.id, _ticket.seller, msg.sender);
+    // computes the hash of the fully encoded EIP-712 message for the domain, which can be used to recover the signer
+    function getTypedDataHash(Permit memory _permit)
+        public
+        view
+        returns (bytes32)
+    {
+        return
+            keccak256(
+                abi.encodePacked(
+                    "\x19\x01",
+                    DOMAIN_SEPARATOR,
+                    getStructHash(_permit)
+                )
+            );
     }
 }
 ```
 
-With EIP-712, the interaction can instead be:
-- Seller fills and signs a `Ticket` *off-chain* to list
-- Buyer calls `transfer()` *on-chain* with the `Ticket` to purchase and seller's signature
+**Setup**
 
-Keeping this implementation minimal outside of core EIP-712 logic -- tickets are free (other than buyer gas) and `transfer()` just stores the ticket id as `true` in `isTransferred`.
-
-### Testing With Foundry
-
-**Part 1: Setup**
-
-- Set a private key for a mock seller who will sign the `Ticket` off-chain
-- Get the seller address from the private key using the `addr` [cheatcode](https://book.getfoundry.sh/cheatcodes/addr.html)
+- Deploy a mock ERC-20 token and `SigUtils` helper with the token's EIP-712 domain separator
+- Create private keys to mock the owner and spender
+- Derive their addresses using the `vm.addr` [cheatcode](https://book.getfoundry.sh/cheatcodes/addr.html)
+- Mint the owner a test token
 
 ```solidity
-contract TicketTransferTest is DSTest {
-    // Used to access the `addr` and `sign` cheatcodes
-    VM internal vm;
+contract ERC20Test is Test {
+    MockERC20 internal token;
+    SigUtils internal sigUtils;
 
-    // Used to store a `TicketTransfer` instance
-    TicketTransfer internal ticketTransfer;
+    uint256 internal ownerPrivateKey;
+    uint256 internal spenderPrivateKey;
 
-    // Store the private key for a mock seller
-    uint256 internal sellerPrivateKey = 0xB0B;
-
-    // Used to store the mock seller address
-    address internal seller;
+    address internal owner;
+    address internal spender;
 
     function setUp() public {
-        // Access cheatcodes
-        vm = VM(HEVM_ADDRESS);
+        token = new MockERC20();
+        sigUtils = new SigUtils(token.DOMAIN_SEPARATOR());
 
-        // Derive the seller address using the `addr` cheatcode
-        seller = vm.addr(sellerPrivateKey);
+        ownerPrivateKey = 0xA11CE;
+        spenderPrivateKey = 0xB0B;
 
-        // Deploy `TicketTransfer`
-        ticketTransfer = new TicketTransfer();
+        owner = vm.addr(ownerPrivateKey);
+        spender = vm.addr(spenderPrivateKey);
+
+        token.mint(owner, 1e18);
     }
 ```
 
-**Part 2: Utils**
+**Testing: `permit`**
 
-- Copy the `SIGNED_TICKET_TYPEHASH` and `EIP_712_DOMAIN_SEPARATOR` from the `TicketTransfer` contract; but update the domain separator's chain id and verifying contract
-- Fill and sign a `Ticket` using the `sign` [cheatcode](https://book.getfoundry.sh/cheatcodes/sign.html)
-- Return the `Ticket` and signature to a test function
+- Create an approval for the spender
+- Compute its digest using `sigUtils.getTypedDataHash`
+- Sign the digest using the `vm.sign` [cheatcode](https://book.getfoundry.sh/cheatcodes/sign.html) with the owner's private key
+- Store the `uint8 v, bytes32 r, bytes32 s` of the signature
+- Call `permit` with the signed permit and signature to execute the approval on-chain
 
 ```solidity
-    /// @notice Utility function to sign a ticket
-    /// @param _privateKey The private key of the signer
-    /// @param _ticketId The ticket id to sign
-    /// @param _ticketExpiry The ticket expiration to sign
-    /// @return ticket The signed ticket object
-    /// @return v r s The generated signature
-    function signTicket(
-        uint256 _privateKey,
-        uint256 _ticketId,
-        uint256 _ticketExpiry
-    )
-        public
-        returns (
-            TicketTransfer.Ticket memory ticket,
-            uint8 v,
-            bytes32 r,
-            bytes32 s
-        )
-    {
-        // The domain separator from the `TicketTransfer` contract
-        // Note: update the chain id and verifying contract accordingly
-        bytes32 EIP_712_DOMAIN_SEPARATOR = keccak256(
-            abi.encode(
-                keccak256("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)"),
-                keccak256(bytes("TicketTransfer")),
-                keccak256(bytes("1")),
-                99, // Forge chain id
-                address(ticketTransfer) // Change from `address(this)`
-            )
+    function test_Permit() public {
+        SigUtils.Permit memory permit = SigUtils.Permit({
+            owner: owner,
+            spender: spender,
+            value: 1e18,
+            nonce: 0,
+            deadline: 1 days
+        });
+
+        bytes32 digest = sigUtils.getTypedDataHash(permit);
+
+        (uint8 v, bytes32 r, bytes32 s) = vm.sign(ownerPrivateKey, digest);
+
+        token.permit(
+            permit.owner,
+            permit.spender,
+            permit.value,
+            permit.deadline,
+            v,
+            r,
+            s
         );
 
-        // The signed ticket typehash from the `TicketTransfer` contract
-        // keccak256("SignedTicket(uint256 id,uint256 expiry)");
-        bytes32 SIGNED_TICKET_TYPEHASH = 0x787f061deb861898126b36ccffa91598e7cdfe9951957c10f40a593d381075ce;
-
-        // Create a ticket with the mock seller and given arguments
-        ticket = TicketTransfer.Ticket({seller: seller, id: _ticketId, expiry: _ticketExpiry});
-
-        // Use the `sign` cheatcode to sign the ticket with the given private key
-        (v, r, s) = vm.sign(
-            _privateKey,
-            keccak256(abi.encodePacked("\x19\x01", EIP_712_DOMAIN_SEPARATOR, keccak256(abi.encode(SIGNED_TICKET_TYPEHASH, _ticketId, _ticketExpiry))))
-        );
+        assertEq(token.allowance(owner, spender), 1e18);
+        assertEq(token.nonces(owner), 1);
     }
 ```
 
-**Part 3: Tests**
-
-- Ensure the recovered signer from the given signature matches the `Ticket` seller
-- Ensure invalid tickets and mismatching signatures revert accordingly 
+- Ensure failure for calls with an expired deadline, invalid signer, invalid nonce, and signature replay
 
 ```solidity
-    function test_TransferTicket() public {
-        // Create ticket data
-        uint256 ticketId = 1;
-        uint256 ticketExpiry = 0;
+    function testRevert_ExpiredPermit() public {
+        SigUtils.Permit memory permit = SigUtils.Permit({
+            owner: owner,
+            spender: spender,
+            value: 1e18,
+            nonce: token.nonces(owner),
+            deadline: 1 days
+        });
 
-        // Get a ticket signed by the seller and the associated signature
-        (TicketTransfer.Ticket memory ticket, uint8 v, bytes32 r, bytes32 s) = signTicket(sellerPrivateKey, ticketId, ticketExpiry);
+        bytes32 digest = sigUtils.getTypedDataHash(permit);
 
-        // Call `transfer()` with the ticket and seller signature
-        ticketTransfer.transfer(ticket, v, r, s);
+        (uint8 v, bytes32 r, bytes32 s) = vm.sign(ownerPrivateKey, digest);
 
-        // Ensure the ticket is marked as transferred
-        require(ticketTransfer.isTransferred(1));
+        vm.warp(1 days + 1 seconds); // fast forward one second past the deadline
+
+        vm.expectRevert("PERMIT_DEADLINE_EXPIRED");
+        token.permit(
+            permit.owner,
+            permit.spender,
+            permit.value,
+            permit.deadline,
+            v,
+            r,
+            s
+        );
     }
 
-    function testRevert_ExpiredTicket() public {
-        // Create ticket data
-        uint256 ticketId = 1;
-        uint256 ticketExpiry = 23 hours;
+    function testRevert_InvalidSigner() public {
+        SigUtils.Permit memory permit = SigUtils.Permit({
+            owner: owner,
+            spender: spender,
+            value: 1e18,
+            nonce: token.nonces(owner),
+            deadline: 1 days
+        });
 
-        // Get a ticket signed by the seller and the associated signature
-        (TicketTransfer.Ticket memory ticket, uint8 v, bytes32 r, bytes32 s) = signTicket(sellerPrivateKey, ticketId, ticketExpiry);
+        bytes32 digest = sigUtils.getTypedDataHash(permit);
 
-        // Fast forward the block timestamp one hour past ticket expiration
-        vm.warp(1 days);
+        (uint8 v, bytes32 r, bytes32 s) = vm.sign(spenderPrivateKey, digest); // spender signs owner's approval
 
-        // Expect the call to revert, as the ticket has expired
-        vm.expectRevert("EXPIRED_TICKET");
-        ticketTransfer.transfer(ticket, v, r, s);
+        vm.expectRevert("INVALID_SIGNER");
+        token.permit(
+            permit.owner,
+            permit.spender,
+            permit.value,
+            permit.deadline,
+            v,
+            r,
+            s
+        );
     }
 
-    function testRevert_InvalidTransfer() public {
-        // Create ticket data
-        uint256 ticketId = 1;
-        uint256 ticketExpiry = 0;
+    function testRevert_InvalidNonce() public {
+        SigUtils.Permit memory permit = SigUtils.Permit({
+            owner: owner,
+            spender: spender,
+            value: 1e18,
+            nonce: 1, // owner nonce stored on-chain is 0
+            deadline: 1 days
+        });
 
-        // Get a ticket signed by the seller and the associated signature
-        (TicketTransfer.Ticket memory ticket, uint8 v, bytes32 r, bytes32 s) = signTicket(sellerPrivateKey, ticketId, ticketExpiry);
+        bytes32 digest = sigUtils.getTypedDataHash(permit);
 
-        // Call `transfer()` with the ticket and seller signature
-        ticketTransfer.transfer(ticket, v, r, s);
+        (uint8 v, bytes32 r, bytes32 s) = vm.sign(ownerPrivateKey, digest);
 
-        // Expect a subsequent call to revert, as the ticket has already been transferred
-        vm.expectRevert("INVALID_TRANSFER");
-        ticketTransfer.transfer(ticket, v, r, s);
+        vm.expectRevert("INVALID_SIGNER");
+        token.permit(
+            permit.owner,
+            permit.spender,
+            permit.value,
+            permit.deadline,
+            v,
+            r,
+            s
+        );
     }
 
-    function testRevert_InvalidSig() public {
-        // Create ticket data
-        uint256 ticketId = 1;
-        uint256 ticketExpiry = 0;
+    function testRevert_SignatureReplay() public {
+        SigUtils.Permit memory permit = SigUtils.Permit({
+            owner: owner,
+            spender: spender,
+            value: 1e18,
+            nonce: 0,
+            deadline: 1 days
+        });
 
-         // Get a ticket signed by a user other than the mock seller
-        (TicketTransfer.Ticket memory ticket, uint8 v, bytes32 r, bytes32 s) = signTicket(0xB0B, ticketId, ticketExpiry);
+        bytes32 digest = sigUtils.getTypedDataHash(permit);
 
-        // Expect the call to revert, as the given signature is not from the mock seller
-        vm.expectRevert("INVALID_SIG");
-        ticketTransfer.transfer(ticket, v, r, s);
+        (uint8 v, bytes32 r, bytes32 s) = vm.sign(ownerPrivateKey, digest);
+
+        token.permit(
+            permit.owner,
+            permit.spender,
+            permit.value,
+            permit.deadline,
+            v,
+            r,
+            s
+        );
+
+        vm.expectRevert("INVALID_SIGNER");
+        token.permit(
+            permit.owner,
+            permit.spender,
+            permit.value,
+            permit.deadline,
+            v,
+            r,
+            s
+        );
     }
 ```
 
-### Summary
+**Testing: `transferFrom`**
 
-Use the `addr` and `sign` cheatcodes to test EIP-712 signatures in Foundry.
+- Create, sign, and execute an approval for the spender
+- Call `tokenTransfer` as the spender using the `vm.prank` [cheatcode](https://book.getfoundry.sh/cheatcodes/prank.html) to execute the transfer
 
-The full reference implementation can be found [here](https://github.com/kulkarohan/ticket-transfer).
+```solidity
+    function test_TransferFromLimitedPermit() public {
+        SigUtils.Permit memory permit = SigUtils.Permit({
+            owner: owner,
+            spender: spender,
+            value: 1e18,
+            nonce: 0,
+            deadline: 1 days
+        });
 
+        bytes32 digest = sigUtils.getTypedDataHash(permit);
 
+        (uint8 v, bytes32 r, bytes32 s) = vm.sign(ownerPrivateKey, digest);
+
+        token.permit(
+            permit.owner,
+            permit.spender,
+            permit.value,
+            permit.deadline,
+            v,
+            r,
+            s
+        );
+
+        vm.prank(spender);
+        token.transferFrom(owner, spender, 1e18);
+
+        assertEq(token.balanceOf(owner), 0);
+        assertEq(token.balanceOf(spender), 1e18);
+        assertEq(token.allowance(owner, spender), 0);
+    }
+
+    function test_TransferFromMaxPermit() public {
+        SigUtils.Permit memory permit = SigUtils.Permit({
+            owner: owner,
+            spender: spender,
+            value: type(uint256).max,
+            nonce: 0,
+            deadline: 1 days
+        });
+
+        bytes32 digest = sigUtils.getTypedDataHash(permit);
+
+        (uint8 v, bytes32 r, bytes32 s) = vm.sign(ownerPrivateKey, digest);
+
+        token.permit(
+            permit.owner,
+            permit.spender,
+            permit.value,
+            permit.deadline,
+            v,
+            r,
+            s
+        );
+
+        vm.prank(spender);
+        token.transferFrom(owner, spender, 1e18);
+
+        assertEq(token.balanceOf(owner), 0);
+        assertEq(token.balanceOf(spender), 1e18);
+        assertEq(token.allowance(owner, spender), type(uint256).max);
+    }
+```
+
+- Ensure failure for calls with an invalid allowance and invalid balance
+
+```solidity
+    function testFail_InvalidAllowance() public {
+        SigUtils.Permit memory permit = SigUtils.Permit({
+            owner: owner,
+            spender: spender,
+            value: 5e17, // approve only 0.5 tokens
+            nonce: 0,
+            deadline: 1 days
+        });
+
+        bytes32 digest = sigUtils.getTypedDataHash(permit);
+
+        (uint8 v, bytes32 r, bytes32 s) = vm.sign(ownerPrivateKey, digest);
+
+        token.permit(
+            permit.owner,
+            permit.spender,
+            permit.value,
+            permit.deadline,
+            v,
+            r,
+            s
+        );
+
+        vm.prank(spender);
+        token.transferFrom(owner, spender, 1e18); // attempt to transfer 1 token
+    }
+
+    function testFail_InvalidBalance() public {
+        SigUtils.Permit memory permit = SigUtils.Permit({
+            owner: owner,
+            spender: spender,
+            value: 2e18, // approve 2 tokens
+            nonce: 0,
+            deadline: 1 days
+        });
+
+        bytes32 digest = sigUtils.getTypedDataHash(permit);
+
+        (uint8 v, bytes32 r, bytes32 s) = vm.sign(ownerPrivateKey, digest);
+
+        token.permit(
+            permit.owner,
+            permit.spender,
+            permit.value,
+            permit.deadline,
+            v,
+            r,
+            s
+        );
+
+        vm.prank(spender);
+        token.transferFrom(owner, spender, 2e18); // attempt to transfer 2 tokens (owner only owns 1)
+    }
+```
+
+### Bundled Example
+
+Here is a section of a [mock contract]() that just deposits ERC-20 tokens. Note how `deposit` requires a preliminary `approve` or `permit` tx in order to transfer tokens, while `depositWithPermit` sets the allowance _and_ transfers the tokens in a single tx.
+
+```solidity
+    ///                                                          ///
+    ///                           DEPOSIT                        ///
+    ///                                                          ///
+
+    /// @notice Deposits ERC-20 tokens (requires pre-approval)
+    /// @param _tokenContract The ERC-20 token address
+    /// @param _amount The number of tokens
+    function deposit(address _tokenContract, uint256 _amount) external {
+        ERC20(_tokenContract).transferFrom(msg.sender, address(this), _amount);
+
+        userDeposits[msg.sender][_tokenContract] += _amount;
+
+        emit TokenDeposit(msg.sender, _tokenContract, _amount);
+    }
+
+    ///                                                          ///
+    ///                      DEPOSIT w/ PERMIT                   ///
+    ///                                                          ///
+
+    /// @notice Deposits ERC-20 tokens with a signed approval
+    /// @param _tokenContract The ERC-20 token address
+    /// @param _amount The number of tokens to transfer
+    /// @param _owner The user signing the approval
+    /// @param _spender The user to transfer the tokens (ie this contract)
+    /// @param _value The number of tokens to appprove the spender
+    /// @param _deadline The timestamp the permit expires
+    /// @param _v The 129th byte and chain id of the signature
+    /// @param _r The first 64 bytes of the signature
+    /// @param _s Bytes 64-128 of the signature
+    function depositWithPermit(
+        address _tokenContract,
+        uint256 _amount,
+        address _owner,
+        address _spender,
+        uint256 _value,
+        uint256 _deadline,
+        uint8 _v,
+        bytes32 _r,
+        bytes32 _s
+    ) external {
+        ERC20(_tokenContract).permit(
+            _owner,
+            _spender,
+            _value,
+            _deadline,
+            _v,
+            _r,
+            _s
+        );
+
+        ERC20(_tokenContract).transferFrom(_owner, address(this), _amount);
+
+        userDeposits[_owner][_tokenContract] += _amount;
+
+        emit TokenDeposit(_owner, _tokenContract, _amount);
+    }
+```
+
+**Setup**
+
+- Deploy the `Deposit` contract, a mock ERC-20 token, and `SigUtils` helper with the token's EIP-712 domain separator
+- Create a private key to mock the owner (the spender is now the `Deposit` address)
+- Derive the owner address using the `vm.addr` [cheatcode](https://book.getfoundry.sh/cheatcodes/addr.html)
+- Mint the owner a test token
+
+```solidity
+contract DepositTest is Test {
+    Deposit internal deposit;
+    MockERC20 internal token;
+    SigUtils internal sigUtils;
+
+    uint256 internal ownerPrivateKey;
+    address internal owner;
+
+    function setUp() public {
+        deposit = new Deposit();
+        token = new MockERC20();
+        sigUtils = new SigUtils(token.DOMAIN_SEPARATOR());
+
+        ownerPrivateKey = 0xA11CE;
+        owner = vm.addr(ownerPrivateKey);
+
+        token.mint(owner, 1e18);
+    }
+```
+
+**Testing: `depositWithPermit`**
+
+- Create an approval for the `Deposit` contract
+- Compute its digest using `sigUtils.getTypedDataHash`
+- Sign the digest using the `vm.sign` [cheatcode](https://book.getfoundry.sh/cheatcodes/sign.html) with the owner's private key
+- Store the `uint8 v, bytes32 r, bytes32 s` of the signature
+  - _Note:_ can convert to bytes via `bytes signature = abi.encodePacked(r, s, v)`
+- Call `depositWithPermit` with the signed approval and signature to transfer the tokens into the contract
+
+```solidity
+    function test_DepositWithLimitedPermit() public {
+        SigUtils.Permit memory permit = SigUtils.Permit({
+            owner: owner,
+            spender: address(deposit),
+            value: 1e18,
+            nonce: token.nonces(owner),
+            deadline: 1 days
+        });
+
+        bytes32 digest = sigUtils.getTypedDataHash(permit);
+
+        (uint8 v, bytes32 r, bytes32 s) = vm.sign(ownerPrivateKey, digest);
+
+        deposit.depositWithPermit(
+            address(token),
+            1e18,
+            permit.owner,
+            permit.spender,
+            permit.value,
+            permit.deadline,
+            v,
+            r,
+            s
+        );
+
+        assertEq(token.balanceOf(owner), 0);
+        assertEq(token.balanceOf(address(deposit)), 1e18);
+
+        assertEq(token.allowance(owner, address(deposit)), 0);
+        assertEq(token.nonces(owner), 1);
+
+        assertEq(deposit.userDeposits(owner, address(token)), 1e18);
+    }
+
+    function test_DepositWithMaxPermit() public {
+        SigUtils.Permit memory permit = SigUtils.Permit({
+            owner: owner,
+            spender: address(deposit),
+            value: type(uint256).max,
+            nonce: token.nonces(owner),
+            deadline: 1 days
+        });
+
+        bytes32 digest = sigUtils.getTypedDataHash(permit);
+
+        (uint8 v, bytes32 r, bytes32 s) = vm.sign(ownerPrivateKey, digest);
+
+        deposit.depositWithPermit(
+            address(token),
+            1e18,
+            permit.owner,
+            permit.spender,
+            permit.value,
+            permit.deadline,
+            v,
+            r,
+            s
+        );
+
+        assertEq(token.balanceOf(owner), 0);
+        assertEq(token.balanceOf(address(deposit)), 1e18);
+
+        assertEq(token.allowance(owner, address(deposit)), type(uint256).max);
+        assertEq(token.nonces(owner), 1);
+
+        assertEq(deposit.userDeposits(owner, address(token)), 1e18);
+    }
+```
+
+- Ensure failure for invalid `permit` and `transferFrom` calls as previously shown
+
+### TLDR
+
+Use Foundry cheatcodes `addr`, `sign`, and `prank` to test EIP-712 signatures in Foundry.
+
+All contract and test code can be found [here](https://github.com/kulkarohan/deposit).
