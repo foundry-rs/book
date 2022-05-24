@@ -57,7 +57,7 @@ This command will try to compile the source code of the flattened contract if `-
 &nbsp;&nbsp;&nbsp;&nbsp;Optional timeout to apply in between attempts in seconds.
 
 `--retries` *retries*  
-&nbsp;&nbsp;&nbsp;&nbsp;Number of attempts for retrying [default: 1].
+&nbsp;&nbsp;&nbsp;&nbsp;Number of attempts for retrying. Defaults to 1.
 
 `--watch`  
 &nbsp;&nbsp;&nbsp;&nbsp;Wait for verification result after submission.
