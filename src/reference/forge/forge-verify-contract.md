@@ -60,8 +60,8 @@ This command will try to compile the source code of the flattened contract if `-
 &nbsp;&nbsp;&nbsp;&nbsp;Number of attempts for retrying. Defaults to 1.
 
 `--watch`  
-&nbsp;&nbsp;&nbsp;&nbsp;Wait for verification result after submission.
-Automatically runs `forge verify-check` until the verification either fails or succeeds.
+&nbsp;&nbsp;&nbsp;&nbsp;Wait for verification result after submission.  
+&nbsp;&nbsp;&nbsp;&nbsp;Automatically runs `forge verify-check` until the verification either fails or succeeds.
 
 {{#include project-options.md}}
 
