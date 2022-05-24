@@ -619,4 +619,4 @@ contract DepositTest is Test {
 
 Use Foundry cheatcodes `addr`, `sign`, and `prank` to test EIP-712 signatures in Foundry.
 
-All contract and test code can be found [here](https://github.com/kulkarohan/deposit).
+All source code can be found [here](https://github.com/kulkarohan/deposit).
