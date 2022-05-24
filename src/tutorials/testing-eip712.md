@@ -445,7 +445,7 @@ contract ERC20Test is Test {
 
 ### Bundled Example
 
-Here is a section of a [mock contract]() that just deposits ERC-20 tokens. Note how `deposit` requires a preliminary `approve` or `permit` tx in order to transfer tokens, while `depositWithPermit` sets the allowance _and_ transfers the tokens in a single tx.
+Here is a section of a [mock contract](https://github.com/kulkarohan/deposit/blob/main/src/Deposit.sol) that just deposits ERC-20 tokens. Note how `deposit` requires a preliminary `approve` or `permit` tx in order to transfer tokens, while `depositWithPermit` sets the allowance _and_ transfers the tokens in a single tx.
 
 ```solidity
     ///                                                          ///
