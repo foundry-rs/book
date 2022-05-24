@@ -14,15 +14,16 @@ Then, access Std Storage via the `stdstore` instance.
 
 Query functions:
 
-- `target`: Set the address of the contract (required)
-- `sig`: Set the signature of the function to call (required)
-- `with_key`: Set the mapping key, if the variable is of type `mapping`
-- `depth`: Set the index of the struct member, if the variable is of type `struct`
+- [`target`](./target.md): Set the address of the contract (required)
+- [`sig`](./sig.md): Set the signature of the function to call (required)
+- [`with_key`](./with_key.md): Set the mapping key, if the variable is of type `mapping`
+- [`depth`](./depth.md): Set the index of the struct member, if the variable is of type `struct`
 
 Terminator functions:
 
-- `checked_write`: Set the data to be written to the storage slot(s)
-- `find`: Return the slot number
+- [`checked_write`](./checked_write.md): Set the data to be written to the storage slot(s)
+- [`find`](./find.md): Return the slot number
+- [`read`](./read.md): Access a value from the storage slot
 
 ### Example
 

@@ -2,19 +2,20 @@
 
 You can generate autocompletion shell scripts for `bash`, `elvish`, `fish`, `powershell`, and `zsh`.
 
-### zsh (`oh-my-zsh`)
+### zsh
 
 First, ensure that the following is present somewhere in your `~/.zshrc` file (if not, add it):
+
 ```sh
 autoload -U compinit
 compinit -i
 ```
+
 Then run:
+
 ```sh
-mkdir -p $HOME/.oh-my-zsh/completions
-forge completions zsh > $HOME/.oh-my-zsh/completions/_forge
-cast completions zsh > $HOME/.oh-my-zsh/completions/_cast
-source $HOME/.zshrc
+forge completions zsh > /usr/local/share/zsh/site-functions/_forge
+cast completions zsh > /usr/local/share/zsh/site-functions/_cast
 ```
 
 ### fish
@@ -24,4 +25,13 @@ mkdir -p $HOME/.config/fish/completions
 forge completions fish > $HOME/.config/fish/completions/forge.fish
 cast completions fish > $HOME/.config/fish/completions/cast.fish
 source $HOME/.config/fish/config.fish
+```
+
+### bash
+
+```sh
+mkdir -p $HOME/.local/share/bash-completion/completions
+forge completions bash > $HOME/.local/share/bash-completion/completions/forge
+cast completions bash > $HOME/.local/share/bash-completion/completions/cast
+exec bash
 ```

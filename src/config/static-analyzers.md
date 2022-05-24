@@ -9,9 +9,18 @@ To test your project using [slither](https://github.com/crytic/slither), here is
   "filter_paths": "lib",
   "solc_remaps": [
     "ds-test/=lib/ds-test/src/",
-    "forge-std/=lib/forge-std/src/",
+    "forge-std/=lib/forge-std/src/"
   ]
 }
+```
+
+Note, you need to update `solc` used by Slither to the same version used by Forge with `solc-select`:
+```ignore
+pip3 install slither-analyzer
+pip3 install solc-select
+solc-select install 0.8.13
+solc-select use 0.8.13
+slither src/Contract.sol
 ```
 
 See the [slither wiki](https://github.com/crytic/slither/wiki/Usage) for more information.
@@ -24,7 +33,7 @@ To test your project using [mythril](https://github.com/ConsenSys/mythril), here
 {
   "remappings": [
     "ds-test/=lib/ds-test/src/",
-    "forge-std/=lib/forge-std/src/",
+    "forge-std/=lib/forge-std/src/"
   ],
   "optimizer": {
     "enabled": true,

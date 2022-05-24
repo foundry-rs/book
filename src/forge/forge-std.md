@@ -52,7 +52,11 @@ import "forge-std/console2.sol";
 
 ### Standard libraries
 
-Forge Std currently consists of three main libraries.
+Forge Std currently consists of five main libraries.
+
+#### Std Assertions
+
+Std Assertions expand upon the assertion functions from the [`DSTest`](../reference/ds-test.md) library.
 
 #### Std Cheats
 
@@ -89,6 +93,17 @@ stdstore
     .target(address(game))
     .sig(game.score.selector)
     .checked_write(10);
+```
+
+#### Std Math
+
+Std Math is a library that simplifies the process of some mathematical calculations.
+
+The `Test` contract also provides access to Std Math. You can use the Std Math functions by typing `stdMath.` before the name of the function, just like in the next example:
+
+```solidity
+// Expected result is 10
+stdMath.abs(-10)
 ```
 
 <br>

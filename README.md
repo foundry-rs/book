@@ -1,6 +1,6 @@
 ## 📖 Foundry Book
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-45-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-58-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 A book on all things Foundry. [Read now](https://book.getfoundry.sh).
@@ -87,6 +87,23 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="http://kulk.xyz"><img src="https://avatars.githubusercontent.com/u/53792428?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Rohan Kulkarni</b></sub></a><br /><a href="#maintenance-kulkarohan" title="Maintenance">🚧</a></td>
     <td align="center"><a href="http://beefy.finance"><img src="https://avatars.githubusercontent.com/u/26322060?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Galmoli</b></sub></a><br /><a href="#maintenance-Galmoli" title="Maintenance">🚧</a></td>
     <td align="center"><a href="https://github.com/tidley"><img src="https://avatars.githubusercontent.com/u/25683238?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Tom</b></sub></a><br /><a href="#maintenance-tidley" title="Maintenance">🚧</a></td>
+    <td align="center"><a href="https://github.com/Leutwiler"><img src="https://avatars.githubusercontent.com/u/93873392?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Andrey Leutwiler Gomes</b></sub></a><br /><a href="#maintenance-Leutwiler" title="Maintenance">🚧</a> <a href="https://github.com/foundry-rs/book/commits?author=Leutwiler" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/JoshuaTrujillo15"><img src="https://avatars.githubusercontent.com/u/41972979?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Joshua Trujillo</b></sub></a><br /><a href="https://github.com/foundry-rs/book/commits?author=JoshuaTrujillo15" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/calnix"><img src="https://avatars.githubusercontent.com/u/22549197?v=4?s=100" width="100px;" alt=""/><br /><sub><b>calnix</b></sub></a><br /><a href="https://github.com/foundry-rs/book/commits?author=calnix" title="Documentation">📖</a></td>
+    <td align="center"><a href="http://keybase.io/mattsse"><img src="https://avatars.githubusercontent.com/u/19890894?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Matthias Seitz</b></sub></a><br /><a href="#maintenance-mattsse" title="Maintenance">🚧</a> <a href="https://github.com/foundry-rs/book/commits?author=mattsse" title="Documentation">📖</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/xaaru"><img src="https://avatars.githubusercontent.com/u/84188047?v=4?s=100" width="100px;" alt=""/><br /><sub><b>xaaru</b></sub></a><br /><a href="#maintenance-xaaru" title="Maintenance">🚧</a></td>
+    <td align="center"><a href="https://github.com/wiasliaw"><img src="https://avatars.githubusercontent.com/u/37038019?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Wias Liaw</b></sub></a><br /><a href="#maintenance-wiasliaw" title="Maintenance">🚧</a></td>
+    <td align="center"><a href="https://github.com/shawnharmsen"><img src="https://avatars.githubusercontent.com/u/5439924?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Shawn Harmsen</b></sub></a><br /><a href="https://github.com/foundry-rs/book/commits?author=shawnharmsen" title="Documentation">📖</a> <a href="#maintenance-shawnharmsen" title="Maintenance">🚧</a></td>
+    <td align="center"><a href="https://www.linkedin.com/in/wardbradt/"><img src="https://avatars.githubusercontent.com/u/26584797?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Ward Bradt</b></sub></a><br /><a href="#maintenance-wardbradt" title="Maintenance">🚧</a></td>
+    <td align="center"><a href="https://github.com/24-2"><img src="https://avatars.githubusercontent.com/u/10823589?v=4?s=100" width="100px;" alt=""/><br /><sub><b>ｓｉｇｈ</b></sub></a><br /><a href="https://github.com/foundry-rs/book/commits?author=24-2" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://jamesbachini.com"><img src="https://avatars.githubusercontent.com/u/20736739?v=4?s=100" width="100px;" alt=""/><br /><sub><b>James Bachini</b></sub></a><br /><a href="#maintenance-jamesbachini" title="Maintenance">🚧</a></td>
+    <td align="center"><a href="https://github.com/zobront"><img src="https://avatars.githubusercontent.com/u/5749292?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Zach Obront</b></sub></a><br /><a href="#maintenance-zobront" title="Maintenance">🚧</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="http://scottt.tw"><img src="https://avatars.githubusercontent.com/u/110957?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Scott Tsai</b></sub></a><br /><a href="#maintenance-scottt" title="Maintenance">🚧</a></td>
+    <td align="center"><a href="https://www.youtube.com/channel/UCaU88FuhkVKO0PJViRjvTLw"><img src="https://avatars.githubusercontent.com/u/85150796?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Kristian Quirapas</b></sub></a><br /><a href="#maintenance-kquirapas" title="Maintenance">🚧</a></td>
   </tr>
 </table>
 

@@ -419,6 +419,126 @@
       "contributions": [
         "maintenance"
       ]
+    },
+    {
+      "login": "Leutwiler",
+      "name": "Andrey Leutwiler Gomes",
+      "avatar_url": "https://avatars.githubusercontent.com/u/93873392?v=4",
+      "profile": "https://github.com/Leutwiler",
+      "contributions": [
+        "maintenance",
+        "doc"
+      ]
+    },
+    {
+      "login": "JoshuaTrujillo15",
+      "name": "Joshua Trujillo",
+      "avatar_url": "https://avatars.githubusercontent.com/u/41972979?v=4",
+      "profile": "https://github.com/JoshuaTrujillo15",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "calnix",
+      "name": "calnix",
+      "avatar_url": "https://avatars.githubusercontent.com/u/22549197?v=4",
+      "profile": "https://github.com/calnix",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "mattsse",
+      "name": "Matthias Seitz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19890894?v=4",
+      "profile": "http://keybase.io/mattsse",
+      "contributions": [
+        "maintenance",
+        "doc"
+      ]
+    },
+    {
+      "login": "xaaru",
+      "name": "xaaru",
+      "avatar_url": "https://avatars.githubusercontent.com/u/84188047?v=4",
+      "profile": "https://github.com/xaaru",
+      "contributions": [
+        "maintenance"
+      ]
+    },
+    {
+      "login": "wiasliaw",
+      "name": "Wias Liaw",
+      "avatar_url": "https://avatars.githubusercontent.com/u/37038019?v=4",
+      "profile": "https://github.com/wiasliaw",
+      "contributions": [
+        "maintenance"
+      ]
+    },
+    {
+      "login": "shawnharmsen",
+      "name": "Shawn Harmsen",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5439924?v=4",
+      "profile": "https://github.com/shawnharmsen",
+      "contributions": [
+        "doc",
+        "maintenance"
+      ]
+    },
+    {
+      "login": "wardbradt",
+      "name": "Ward Bradt",
+      "avatar_url": "https://avatars.githubusercontent.com/u/26584797?v=4",
+      "profile": "https://www.linkedin.com/in/wardbradt/",
+      "contributions": [
+        "maintenance"
+      ]
+    },
+    {
+      "login": "24-2",
+      "name": "ｓｉｇｈ",
+      "avatar_url": "https://avatars.githubusercontent.com/u/10823589?v=4",
+      "profile": "https://github.com/24-2",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "jamesbachini",
+      "name": "James Bachini",
+      "avatar_url": "https://avatars.githubusercontent.com/u/20736739?v=4",
+      "profile": "https://jamesbachini.com",
+      "contributions": [
+        "maintenance"
+      ]
+    },
+    {
+      "login": "zobront",
+      "name": "Zach Obront",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5749292?v=4",
+      "profile": "https://github.com/zobront",
+      "contributions": [
+        "maintenance"
+      ]
+    },
+    {
+      "login": "scottt",
+      "name": "Scott Tsai",
+      "avatar_url": "https://avatars.githubusercontent.com/u/110957?v=4",
+      "profile": "http://scottt.tw",
+      "contributions": [
+        "maintenance"
+      ]
+    },
+    {
+      "login": "kquirapas",
+      "name": "Kristian Quirapas",
+      "avatar_url": "https://avatars.githubusercontent.com/u/85150796?v=4",
+      "profile": "https://www.youtube.com/channel/UCaU88FuhkVKO0PJViRjvTLw",
+      "contributions": [
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7,

@@ -13,6 +13,6 @@ Sets `block.chainid`.
 ### Examples
 
 ```solidity
-vm.chainId(12345);
-emit log_uint(block.chainid); // 12345
+vm.chainId(31337);
+emit log_uint(block.chainid); // 31337
 ```

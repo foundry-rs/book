@@ -6,7 +6,7 @@ cast-4byte - Get the function signatures for the given selector from <https://4b
 
 ### SYNOPSIS
 
-``cast abi-encode`` [*options*] *sig*
+``cast 4byte`` [*options*] *sig*
 
 ### DESCRIPTION
 

@@ -43,6 +43,10 @@
 
 - [Overview of Cast](./cast/README.md)
 
+# Anvil Overview 
+
+- [Overview of Anvil](./anvil/README.md)
+
 # Configuration
 
 - [Configuring with `foundry.toml`](./config/README.md)
@@ -90,6 +94,9 @@
     - [Utility Commands](./reference/forge/utility-commands.md)
       - [forge run](./reference/forge/forge-run.md)
       - [forge bind](./reference/forge/forge-bind.md)
+      - [forge cache](./reference/forge/forge-cache.md)
+      - [forge cache clean](./reference/forge/forge-cache-clean.md)
+      - [forge cache ls](./reference/forge/forge-cache-ls.md)
   - [`cast` Commands](./reference/cast/README.md)
     - [General Commands](./reference/cast/general-commands.md)
       - [cast](./reference/cast/cast.md)
@@ -170,6 +177,12 @@
       - [cast wallet verify](./reference/cast/cast-wallet-verify.md)
   - [Config Reference](./reference/config.md)
   - [Forge Standard Library Reference](./reference/forge-std/README.md)
+    - [Std Assertions](./reference/forge-std/std-assertions.md)
+      - [`fail`](./reference/forge-std/fail.md)
+      - [`assertFalse`](./reference/forge-std/assertFalse.md)
+      - [`assertEq`](./reference/forge-std/assertEq.md)
+      - [`assertApproxEqAbs`](./reference/forge-std/assertApproxEqAbs.md)
+      - [`assertApproxEqRel`](./reference/forge-std/assertApproxEqRel.md)
     - [Std Cheats](./reference/forge-std/std-cheats.md)
       - [`skip`](./reference/forge-std/skip.md)
       - [`rewind`](./reference/forge-std/rewind.md)
@@ -177,6 +190,8 @@
       - [`startHoax`](./reference/forge-std/startHoax.md)
       - [`deal`](./reference/forge-std/deal.md)
       - [`deployCode`](./reference/forge-std/deployCode.md)
+      - [`bound`](./reference/forge-std/bound.md)
+      - [`changePrank`](./reference/forge-std/change-prank.md)
     - [Std Errors](./reference/forge-std/std-errors.md)
       - [`assertionError`](./reference/forge-std/assertionError.md)
       - [`arithmeticError`](./reference/forge-std/arithmeticError.md)
@@ -188,6 +203,14 @@
       - [`memOverflowError`](./reference/forge-std/memOverflowError.md)
       - [`zeroVarError`](./reference/forge-std/zeroVarError.md)
     - [Std Storage](./reference/forge-std/std-storage.md)
+      - [`target`](./reference/forge-std/target.md)
+      - [`sig`](./reference/forge-std/sig.md)
+      - [`with_key`](./reference/forge-std/with_key.md)
+      - [`depth`](./reference/forge-std/depth.md)
+      - [`checked_write`](./reference/forge-std/checked_write.md)
+      - [`find`](./reference/forge-std/find.md)
+      - [`read`](./reference/forge-std/read.md)
+    - [Std Math](./reference/forge-std/std-math.md)
   - [DSTest Reference](./reference/ds-test.md)
   - [Cheatcodes Reference](./cheatcodes/README.md)
     - [Environment](./cheatcodes/environment.md)
@@ -208,6 +231,7 @@
       - [`getNonce`](./cheatcodes/get-nonce.md)
       - [`mockCall`](./cheatcodes/mock-call.md)
       - [`clearMockedCalls`](./cheatcodes/clear-mocked-calls.md)
+      - [`coinbase`](./cheatcodes/coinbase.md)
     - [Assertions](./cheatcodes/assertions.md)
       - [`expectRevert`](./cheatcodes/expect-revert.md)
       - [`expectEmit`](./cheatcodes/expect-emit.md)

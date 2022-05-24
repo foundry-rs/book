@@ -9,7 +9,7 @@ Differential fuzzing is an extension of differential testing. Differential fuzzi
 
 > Note: the `==` operator in this case can be a custom definition of equality. For example, if testing floating point implementations, you might use approximate equality with a certain tolerance.
 
-Some real life uses of uses of this type of testing include:
+Some real life uses of this type of testing include:
 * Comparing upgraded implementations to their predecessors
 * Testing code against known reference implementations
 * Confirming compatibility with third party tools and dependencies
@@ -142,9 +142,9 @@ The reference implementation for Paradigm's [Gradual Dutch Auction](https://www.
 * Reference [Python implementation](https://github.com/FrankieIsLost/gradual-dutch-auction/blob/master/analysis/compute_price.py)
 
 
-### Referenced Repositories
-The examples above contain code from the following repositories:
+### Reference Repositories
 * [Gradual Dutch Auctions](https://github.com/FrankieIsLost/gradual-dutch-auction)
 * [Murky](https://www.github.com/dmfxyz/murky)
+* [Solidity Fuzzing Template](https://github.com/patrickd-/solidity-fuzzing-boilerplate)
   
 If you have another repository that would serve as a reference, please contribute it!

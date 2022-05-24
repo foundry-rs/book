@@ -10,6 +10,8 @@ To add a dependency, run [`forge install`](../reference/forge/forge-install.md):
 {{#include ../output/deps/forge-install:all}}
 ```
 
+This pulls the `solmate` library, stages the `.gitmodules` file in git and makes a commit with the message "Installed solmate".
+
 If we now check the `lib` folder:
 
 ```sh
