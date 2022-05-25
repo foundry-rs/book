@@ -54,6 +54,7 @@
 - [Integrating with VSCode](./config/vscode.md)
 - [Shell Autocompletion](./config/shell-autocompletion.md)
 - [Static Analyzers](./config/static-analyzers.md)
+- [Integrating with Hardhat](./config/hardhat.md)
 
 # Tutorials
 
