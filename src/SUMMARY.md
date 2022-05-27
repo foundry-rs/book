@@ -60,6 +60,7 @@
 
 - [Creating an NFT with Solmate](./tutorials/solmate-nft.md)
 - [Docker and Foundry](./tutorials/foundry-docker.md)
+- [Testing EIP-712 Signatures](./tutorials/testing-eip712.md)
 <!-- - [Incremental Adoption]() !-->
 
 # Appendix
