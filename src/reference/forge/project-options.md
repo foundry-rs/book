@@ -20,6 +20,10 @@
 `--cache-path` *path*  
 &nbsp;&nbsp;&nbsp;&nbsp;The path to the compiler cache.
 
+`--config-path` *file*  
+&nbsp;&nbsp;&nbsp;&nbsp;Path to the config file.
+
 `--hh`  
 `--hardhat`  
 &nbsp;&nbsp;&nbsp;&nbsp;This is a convenience flag, and is the same as passing `--contracts contracts --lib-paths node-modules`.
+
