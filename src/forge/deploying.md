@@ -39,10 +39,13 @@ contract MyToken is ERC20 {
 }
 ```
 
+Additionally, we can tell Forge to verify our contract on Etherscan, if the network is supported, by passing `--verify`.
+
 ```sh
 $ forge create --rpc-url <your_rpc_url> \
     --constructor-args "ForgeUSD" "FUSD" 18 1000000000000000000000 \
-    --private-key <your_private_key> src/MyToken.sol:MyToken
+    --private-key <your_private_key> src/MyToken.sol:MyToken \
+    --verify
 ```
 
 ## Verifying a pre-existing contract
