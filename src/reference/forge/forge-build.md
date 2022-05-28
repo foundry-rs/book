@@ -87,6 +87,15 @@ optimizerSteps = 'dhfoDgvulfnTUtnIf'
 See the [compiler input description documentation](https://docs.soliditylang.org/en/latest/using-the-compiler.html#compiler-input-and-output-json-description)
 for more information on available settings (specifically `settings.optimizer.details`).
 
+#### Revert Strings
+
+The revert strings is set to default, which means it does not inject compiler-generated revert strings and keeps user-supplied ones.
+
+There are three other options: 
+- Strip: It removes all revert strings (if possible, i.e. if literals are used) keeping side-effects.
+- Debug:  It injects strings for compiler-generated internal reverts, implemented for ABI encoders V1 and V2 for now.
+- verboseDebug: It even appends further information to user-supplied revert strings (not yet implemented).
+
 #### Additional Model Checker settings
 
 [Solidity's built-in model checker](https://docs.soliditylang.org/en/latest/smtchecker.html#tutorial) is an opt-in module that can be enabled via the `ModelChecker` object.
