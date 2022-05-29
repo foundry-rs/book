@@ -10,7 +10,7 @@
 &nbsp;&nbsp;&nbsp;&nbsp;Use the Yul intermediate representation compilation pipeline.
 
 `--revert-strings
-&nbsp;&nbsp;&nbsp;&nbsp;How to treat revert (and require) reason strings.
+&nbsp;&nbsp;&nbsp;&nbsp;How to treat revert and require reason strings.
 
 `--use` *solc_version*  
 &nbsp;&nbsp;&nbsp;&nbsp;Specify the solc version, or a path to a local solc, to build with.
