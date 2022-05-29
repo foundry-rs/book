@@ -92,9 +92,9 @@ for more information on available settings (specifically `settings.optimizer.det
 The revert strings is set to default, which means it does not inject compiler-generated revert strings and keeps user-supplied ones.
 
 There are three other options: 
-- Strip: It removes all revert strings (if possible, i.e. if literals are used) keeping side-effects.
-- Debug:  It injects strings for compiler-generated internal reverts, implemented for ABI encoders V1 and V2 for now.
-- verboseDebug: It even appends further information to user-supplied revert strings (not yet implemented).
+- Strip: Removes all revert strings (if possible, i.e. if literals are used) keeping side-effects.
+- Debug:  Injects strings for compiler-generated internal reverts, implemented for ABI encoders V1 and V2 for now.
+- verboseDebug: Appends further information to user-supplied revert strings (not yet implemented).
 
 #### Additional Model Checker settings
 
