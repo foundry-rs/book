@@ -18,7 +18,7 @@ You must provide an Etherscan API key, either by passing it as an argument or se
 
 #### Verify Contract Options
 
-`--chain` *chain*  
+`--chain-id` *chain_id*  
 &nbsp;&nbsp;&nbsp;&nbsp;The chain ID the contract is deployed to (either a number or a chain name).  
 &nbsp;&nbsp;&nbsp;&nbsp;Default: mainnet
 
