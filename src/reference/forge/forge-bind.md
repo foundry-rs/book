@@ -58,9 +58,9 @@ You can overwrite the existing bindings by passing `--overwrite`.
 &nbsp;&nbsp;&nbsp;&nbsp;The project's root path. By default, this is the root directory of the current git repository, or the current working directory.
 
 `--skip-cargo-toml`  
-&nbsp;&nbsp;&nbsp;&nbsp;Skip Cargo.toml consistency checks. 
-This allows you to manage the [ethers](https://github.com/gakonst/ethers-rs) version without giving up on consistency checks.
-An example would be if you use additional features of ethers like `ws`, `ipc`, or `rustls` and get an `ethers-providers` version mismatch.
+&nbsp;&nbsp;&nbsp;&nbsp;Skip Cargo.toml consistency checks.  
+&nbsp;&nbsp;&nbsp;&nbsp;This allows you to manage the [ethers](https://github.com/gakonst/ethers-rs) version without giving up on consistency checks.  
+&nbsp;&nbsp;&nbsp;&nbsp;An example would be if you use additional features of ethers like `ws`, `ipc`, or `rustls` and get an `ethers-providers` version mismatch.
 
 {{#include common-options.md}}
 
