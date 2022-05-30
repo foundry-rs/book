@@ -539,6 +539,15 @@
       "contributions": [
         "maintenance"
       ]
+    },
+    {
+      "login": "Sweng0d",
+      "name": "Bruno Filetti",
+      "avatar_url": "https://avatars.githubusercontent.com/u/101097089?v=4",
+      "profile": "https://github.com/Sweng0d",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,

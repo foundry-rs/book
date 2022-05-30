@@ -1,6 +1,6 @@
 ## 📖 Foundry Book
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-58-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-59-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 A book on all things Foundry. [Read now](https://book.getfoundry.sh).
@@ -104,6 +104,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tr>
     <td align="center"><a href="http://scottt.tw"><img src="https://avatars.githubusercontent.com/u/110957?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Scott Tsai</b></sub></a><br /><a href="#maintenance-scottt" title="Maintenance">🚧</a></td>
     <td align="center"><a href="https://www.youtube.com/channel/UCaU88FuhkVKO0PJViRjvTLw"><img src="https://avatars.githubusercontent.com/u/85150796?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Kristian Quirapas</b></sub></a><br /><a href="#maintenance-kquirapas" title="Maintenance">🚧</a></td>
+    <td align="center"><a href="https://github.com/Sweng0d"><img src="https://avatars.githubusercontent.com/u/101097089?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Bruno Filetti</b></sub></a><br /><a href="https://github.com/foundry-rs/book/commits?author=Sweng0d" title="Documentation">📖</a></td>
   </tr>
 </table>
 
