@@ -92,6 +92,7 @@
       - [forge verify-contract](./reference/forge/forge-verify-contract.md)
       - [forge verify-check](./reference/forge/forge-verify-check.md)
       - [forge flatten](./reference/forge/forge-flatten.md)
+      - [forge script](./reference/forge/forge-script.md)
     - [Utility Commands](./reference/forge/utility-commands.md)
       - [forge run](./reference/forge/forge-run.md)
       - [forge bind](./reference/forge/forge-bind.md)
