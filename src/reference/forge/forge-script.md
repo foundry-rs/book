@@ -59,3 +59,9 @@ Adds the ability for forge to use a solidity file to create a contract on mainne
 
 ### EXAMPLES
 
+1. Generate transactions
+    ```sh
+    forge script ./test/Broadcast.t.sol --tc BroadcastTest --sig "deploy()" \
+                 -vvv --fork-url $GOERLI_RPC_URL
+    ```
+   
