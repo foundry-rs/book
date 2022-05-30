@@ -49,7 +49,7 @@ Adds the ability for forge to use a solidity file to create a contract on mainne
 
 {{#include watch-options.md}}
 
-{{#include ../common/wallet-options.md}}
+{{#include ../common/multi-wallet-options.md}}
 
 {{#include evm-options.md}}
 
