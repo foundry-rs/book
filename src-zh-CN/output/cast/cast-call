@@ -1,0 +1,8 @@
+// ANCHOR: all
+// ANCHOR: command
+$ cast call 0x6b175474e89094c44da98b954eedeac495271d0f "totalSupply()(uint256)" --rpc-url https://eth-mainnet.alchemyapi.io/v2/Lc7oIGYeL_QvInzI0Wiu_pOZZDEKBrdf
+// ANCHOR_END: command
+// ANCHOR: output
+8603853182003814300330472690
+// ANCHOR_END: output
+// ANCHOR_END: all

@@ -1,0 +1,13 @@
+// ANCHOR: all
+// ANCHOR: command
+$ tree . -d -L 1
+// ANCHOR_END: command
+// ANCHOR: output
+.
+├── lib
+├── src
+└── test
+
+3 directories
+// ANCHOR_END: output
+// ANCHOR_END: all

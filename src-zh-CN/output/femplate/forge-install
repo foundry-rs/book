@@ -1,0 +1,13 @@
+// ANCHOR: all
+// ANCHOR: command
+$ forge install
+// ANCHOR_END: command
+// ANCHOR: output
+Submodule path 'lib/forge-std': checked out '26f69449e12371fa6db0a720b0866fc1a6a16d4f'
+Submodule path 'lib/forge-std/lib/ds-test': checked out '2c7dbcc8586b33f358e3307a443e524490c17666'
+Submodule path 'lib/solmate': checked out '46c5ce1480a358f0b9f02be648e533f9ad1bbd2f'
+Submodule path 'lib/solmate/lib/ds-test': checked out '0a5da56b0d65960e6a994d2ec8245e6edd38c248'
+Submodule path 'lib/solmate/lib/weird-erc20': checked out '438a180eb073fa451a8a9fc734942d6ad1874120'
+Submodule path 'lib/solmate/lib/weird-erc20/lib/ds-test': checked out '0a5da56b0d65960e6a994d2ec8245e6edd38c248'
+// ANCHOR_END: output
+// ANCHOR_END: all

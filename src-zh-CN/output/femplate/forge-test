@@ -1,0 +1,13 @@
+// ANCHOR: all
+// ANCHOR: command
+$ forge test
+// ANCHOR_END: command
+// ANCHOR: output
+No files changed, compilation skipped
+
+Running 2 tests for src/test/Greeter.t.sol:GreeterTest
+[PASS] testExpectArithmetic() (gas: 8802)
+[PASS] testSetGm() (gas: 112032)
+Test result: ok. 2 passed; 0 failed; finished in 1.42ms
+// ANCHOR_END: output
+// ANCHOR_END: all

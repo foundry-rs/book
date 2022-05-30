@@ -1,8 +1,8 @@
 [book]
 authors = ["Oliver Nordbjerg"]
-language = "en"
+language = "zh-CN"
 multilingual = false
-src = "src"
+src = "src-zh-CN"
 title = "Foundry Book"
 description = "A book on all things Foundry"
 

@@ -1,0 +1,13 @@
+// ANCHOR: all
+// ANCHOR: command
+$ tree lib -L 1
+// ANCHOR_END: command
+// ANCHOR: output
+lib
+├── forge-std
+├── solmate
+└── weird-erc20
+
+3 directories, 0 files
+// ANCHOR_END: output
+// ANCHOR_END: all
