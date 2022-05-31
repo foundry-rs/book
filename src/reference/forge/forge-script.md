@@ -11,7 +11,8 @@ forge-script - Run a smart contract as a script, building transactions that can 
 ### DESCRIPTION
 
 Run a smart contract as a script, building transactions that can be sent onchain.
-Adds the ability for forge to use a solidity file to create a contract on mainnet and arbitrary deploy scripts by adding a cheatcode.
+
+Scripts can be used to apply state transitions on live contracts, or deploy and initialize a complex set of smart contracts using Solidity.
 
 ### OPTIONS
 
