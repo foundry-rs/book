@@ -97,6 +97,9 @@ This program is a set of tools to build, test, fuzz, debug and deploy Solidity s
 [forge cache ls](./forge-cache-ls.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Shows cached data from ``~/.foundry``.
 
+[forge script](./forge-script.md)  
+&nbsp;&nbsp;&nbsp;&nbsp;Run a smart contract as a script, building transactions that can be sent onchain.
+
 ### OPTIONS
 
 #### Special Options
