@@ -33,7 +33,7 @@ assertEq(output, expected);
 With environment variable `BYTES_VALUE=0x7109709ECfa91a80626fF3989D68f67F5b1DD12D,0x00`;
 ```solidity
 bytes memory key = "BYTES_VALUES";
-bytes memory delimiter = "|";
+bytes memory delimiter = ",";
 bytes[] memory expected = new bytes[](2);
 expected[0] = hex"7109709ECfa91a80626fF3989D68f67F5b1DD12D";
 expected[1] = hex"00";
