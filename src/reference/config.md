@@ -107,6 +107,36 @@ bytecode_hash = "ipfs"
 # only for the required contracts. This can reduce compile time
 # for `forge test`, but is experimental.
 sparse_mode = false
+# Whether or not to use the Yul intermediate representation compilation pipeline
+via_ir = false
+# How to treat revert (and require) reason strings
+revert_strings = "default"
+# Switch optimizer components on or off in detail
+#optimizer_details = None
+# Url of the rpc server that should be used for any rpc calls
+#eth_rpc_url = None
+# Etherscan API key
+#etherscan_api_key = None
+# Only run test functions matching the specified regex pattern
+#test_pattern= None
+# Only run test functions that do not match the specified regex pattern
+#test_pattern_inverse = None
+# Only run tests in contracts matching the specified regex pattern
+#contract_pattern = None
+# Only run tests in contracts that do not match the specified regex pattern
+#contract_pattern_inverse = None
+# Only run tests in source files matching the specified glob pattern
+#path_pattern = None
+# Only run tests in source files that do not match the specified glob pattern
+#path_pattern_inverse = None
+# The block gas limit
+#block_gas_limit = None
+# The memory limit of the EVM (32 MB by default)
+memory_limit = 33554432
+# Print the names of the compiled contracts
+names = false
+# Print the sizes of the compiled contracts
+sizes = false
 ```
 
 ### Configuration keys
@@ -161,7 +191,7 @@ Whether or not to enable caching. If enabled, the result of compiling sources, t
 
 - Type: string
 - Default: cache
-- Environment: `FOUNDRY_CACHE` or `DAPP_CACHE`
+- Environment: `FOUNDRY_CACHE_PATH` or `DAPP_CACHE_PATH`
 
 The path to the cache, relative to the root of the project.
 
@@ -273,6 +303,61 @@ An array of Solidity compiler error codes to ignore during build, such as warnin
 - Environment: `FOUNDRY_EVM_VERSION` or `DAPP_EVM_VERSION`
 
 The EVM version to use during tests. The value **must** be an EVM hardfork name, such as `london`, `byzantium`, etc.
+
+##### `via_ir`
+
+- Type: boolean
+- Default: false
+- Environment: `FOUNDRY_VIA_IR` or `DAPP_VIA_IR`
+
+If set to true, changes compilation pipeline to go through the Yul intermediate representation.
+
+##### `revert_strings`
+
+- Type: string
+- Default: default
+- Environment: `FOUNDRY_REVERT_STRINGS` or `DAPP_REVERT_STRINGS`
+
+Possible values are: 
+- `default` does not inject compiler-generated revert strings and keeps user-supplied ones.  
+- `strip` removes all revert strings (if possible, i.e. if literals are used) keeping side-effects.  
+- `debug` injects strings for compiler-generated internal reverts, implemented for ABI encoders V1 and V2 for now.  
+- `verboseDebug` even appends further information to user-supplied revert strings (not yet implemented).
+
+##### `optimizer_details`
+
+- Type: option
+- Default: none
+- Environment: `FOUNDRY_OPTIMIZER_DETAILS` or `DAPP_OPTIMIZER_DETAILS`
+
+If the `optimizer` is enabled, there are two defaults provided which can be tweaked here.  
+
+Possible values are:
+- peephole
+- inliner
+- jumpdest_remover
+- order_literals
+- deduplicate
+- cse
+- constant_optimizer
+- yul
+- yul_details
+
+##### `eth_rpc_url`
+
+- Type: string
+- Default: none
+- Environment: `FOUNDRY_ETH_RPC_URL` or `DAPP_ETH_RPC_URL`
+
+The url of the rpc server that should be used for any rpc calls.
+
+##### `etherscan_api_key`
+
+- Type: string
+- Default: none
+- Environment: `FOUNDRY_ETHERSCAN_API_KEY` or `DAPP_ETHERSCAN_API_KEY`
+
+The etherscan API key for RPC calls.
 
 #### Tests
 
@@ -522,3 +607,87 @@ Valid values are:
 - Environment: `FOUNDRY_SPARSE_MODE` or `DAPP_SPARSE_MODE`
 
 Enables [sparse mode](./forge/forge-build.md#sparse-mode-experimental) for builds.
+
+##### `test_pattern`
+
+- Type: regex
+- Default: none
+- Environment: `FOUNDRY_TEST_PATTERN` or `DAPP_TEST_PATTERN`
+
+Only run test methods matching regex.  
+Equivalent to `forge test --match-test <TEST_PATTERN>`
+
+##### `test_pattern_inverse`
+
+- Type: regex
+- Default: none
+- Environment: `FOUNDRY_TEST_PATTERN_INVERSE` or `DAPP_TEST_PATTERN_INVERSE`
+
+Only run test methods not matching regex.  
+Equivalent to `forge test --no-match-test <TEST_PATTERN_INVERSE>`
+
+##### `contract_pattern`
+
+- Type: regex
+- Default: none
+- Environment: `FOUNDRY_CONTRACT_PATTERN` or `DAPP_CONTRACT_PATTERN`
+
+Only run test methods in contracts matching regex.  
+Equivalent to `forge test --match-contract <CONTRACT_PATTERN>`
+
+##### `contract_pattern_inverse`
+
+- Type: regex
+- Default: none
+- Environment: `FOUNDRY_CONTRACT_PATTERN_INVERSE` or `DAPP_CONTRACT_PATTERN_INVERSE`
+
+Only run test methods in contracts not matching regex.  
+Equivalent to `forge test --no-match-contract <CONTRACT_PATTERN_INVERSE>`
+
+##### `path_pattern`
+
+- Type: regex
+- Default: none
+- Environment: `FOUNDRY_PATH_PATTERN` or `DAPP_PATH_PATTERN`
+
+Only runs test methods on files matching the path.
+
+##### `path_pattern_inverse`
+
+- Type: regex
+- Default: none
+- Environment: `FOUNDRY_PATH_PATTERN_INVERSE` or `DAPP_PATH_PATTERN_INVERSE`
+
+Only runs test methods on files not matching the path.
+
+##### `block_gas_limit`
+
+- Type: integer
+- Default: none
+- Environment: `FOUNDRY_BLOCK_GAS_LIMIT` or `DAPP_BLOCK_GAS_LIMIT`
+
+The block.gaslimit value during EVM execution.
+
+##### `memory_limit`
+
+- Type: integer
+- Default: 33554432
+- Environment: `FOUNDRY_MEMORY_LIMIT` or `DAPP_MEMORY_LIMIT`
+
+The memory limit of the EVM in bytes.
+
+##### `names`
+
+- Type: boolean
+- Default: false
+- Environment: `FOUNDRY_NAMES` or `DAPP_NAMES`
+
+Print compiled contract names.
+
+##### `sizes`
+
+- Type: boolean
+- Default: false
+- Environment: `FOUNDRY_SIZES` or `DAPP_SIZES`
+
+Print compiled contract sizes.

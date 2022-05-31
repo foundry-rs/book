@@ -33,8 +33,8 @@ This command will try to compile the source code of the flattened contract if `-
 `--compiler-version` *version*  
 &nbsp;&nbsp;&nbsp;&nbsp;The compiler version used to build the smart contract.
 
-&nbsp;&nbsp;&nbsp;&nbsp;To find the exact compiler version, run `~/.svm/x.y.z/solc-x.y.z --version`  
-&nbsp;&nbsp;&nbsp;&nbsp;and search for the 8 hex digits in the version string [here](https://etherscan.io/solcversions).
+&nbsp;&nbsp;&nbsp;&nbsp;To find the exact compiler version, run `~/.svm/x.y.z/solc-x.y.z --version` where `x` and
+`y` are major and minor version numbers respectively, then search for the 8 hex digits in the version string [here](https://etherscan.io/solcversions).
 
 `--num-of-optimizations` *num*  
 &nbsp;&nbsp;&nbsp;&nbsp;The number of optimization runs used to build the smart contract.
@@ -42,7 +42,7 @@ This command will try to compile the source code of the flattened contract if `-
 `--constructor-args` *args...*  
 &nbsp;&nbsp;&nbsp;&nbsp;The ABI-encoded constructor arguments.
 
-`--chain` *chain*  
+`--chain-id` *chain_id*  
 &nbsp;&nbsp;&nbsp;&nbsp;The chain ID the contract is deployed to (either a number or a chain name).  
 &nbsp;&nbsp;&nbsp;&nbsp;Default: mainnet
 
@@ -52,6 +52,16 @@ This command will try to compile the source code of the flattened contract if `-
 `-f`  
 `--force`  
 &nbsp;&nbsp;&nbsp;&nbsp;Do not compile the flattened smart contract before verifying.
+
+`--delay` *delay*  
+&nbsp;&nbsp;&nbsp;&nbsp;Optional timeout to apply in between attempts in seconds.
+
+`--retries` *retries*  
+&nbsp;&nbsp;&nbsp;&nbsp;Number of attempts for retrying. Defaults to 1.
+
+`--watch`  
+&nbsp;&nbsp;&nbsp;&nbsp;Wait for verification result after submission.  
+&nbsp;&nbsp;&nbsp;&nbsp;Automatically runs `forge verify-check` until the verification either fails or succeeds.
 
 {{#include project-options.md}}
 

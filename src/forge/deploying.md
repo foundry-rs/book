@@ -39,25 +39,33 @@ contract MyToken is ERC20 {
 }
 ```
 
+Additionally, we can tell Forge to verify our contract on Etherscan, if the network is supported, by passing `--verify`.
+
 ```sh
 $ forge create --rpc-url <your_rpc_url> \
     --constructor-args "ForgeUSD" "FUSD" 18 1000000000000000000000 \
-    --private-key <your_private_key> src/MyToken.sol:MyToken
+    --private-key <your_private_key> src/MyToken.sol:MyToken \
+    --verify
 ```
 
-## Verifying
+## Verifying a pre-existing contract
+
+It is recommended to use the `--verify` flag with `forge create` to automatically verify the contract on Etherscan after a deployment.
+Note that [`ETHERSCAN_API_KEY`](../reference/config.md#etherscan_api_key) must be set.
+
+If you are verifying an already deployed contract, read on.
 
 You can verify a contract on Etherscan with the [`forge verify-contract`](../reference/forge/forge-verify-contract.md) command.
 
 You must provide:
-- [compiler version](https://etherscan.io/solcversions) used for build, with 8 hex digits from the commit version prefix (the commit will usually not be a nightly build)
 - the contract address
 - the path to the contract `<path>:<contractname>`
 - your Etherscan API key (env: `ETHERSCAN_API_KEY`).
 
 Moreover, you may need to provide:
+- [compiler version](https://etherscan.io/solcversions) used for build, with 8 hex digits from the commit version prefix (the commit will usually not be a nightly build).  It is auto-detected if not specified.
 - the constructor arguments in the ABI-encoded format, if there are any
-- the number of optimizations, if the Solidity optimizer was activated
+- the number of optimizations, if the Solidity optimizer was activated.  It is auto-detected if not specified.
 - the [chain ID](https://evm-chainlist.netlify.app/), if the contract is not on Ethereum Mainnet
 
 Let's say you want to verify `MyToken` (see above). You set the [number of optimizations](../reference/config.md#optimizer_runs) to 1 million, compiled it with v0.8.10, and deployed it, as shown above, to the Kovan testnet (chain ID: 42). Note that `--num-of-optimizations` will default to 0 if not set on verification, while it defaults to 200 if not set on deployment, so make sure you pass `--num-of-optimizations 200` if you left the default compilation settings. 

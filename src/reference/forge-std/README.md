@@ -45,6 +45,7 @@ contract ContractTest is Test { ...
 What's included:
 
 - Std Libraries
+  - [Std Assertions](./std-assertions.md): Expand upon the assertion functions from the DSTest library.
   - [Std Cheats](./std-cheats.md): Wrappers around Forge cheatcodes for improved safety and UX.
   - [Std Errors](./std-errors.md): Wrappers around common internal Solidity errors and reverts.
   - [Std Storage](./std-storage.md): Contract storage manipulation helpers.

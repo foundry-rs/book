@@ -33,6 +33,9 @@ Dynamic linking is not supported: you should predeploy your libraries and manual
 `--constructor-args-path` *file*  
 &nbsp;&nbsp;&nbsp;&nbsp;The path to a file containing the constructor arguments.
 
+`--verify`  
+&nbsp;&nbsp;&nbsp;&nbsp;Verify contract after creation. Runs `forge verify-contract` with the appropriate parameters.
+
 #### Transaction Options
 
 `--gas-limit` *gas_limit*  

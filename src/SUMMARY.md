@@ -54,11 +54,13 @@
 - [Integrating with VSCode](./config/vscode.md)
 - [Shell Autocompletion](./config/shell-autocompletion.md)
 - [Static Analyzers](./config/static-analyzers.md)
+- [Integrating with Hardhat](./config/hardhat.md)
 
 # Tutorials
 
 - [Creating an NFT with Solmate](./tutorials/solmate-nft.md)
 - [Docker and Foundry](./tutorials/foundry-docker.md)
+- [Testing EIP-712 Signatures](./tutorials/testing-eip712.md)
 <!-- - [Incremental Adoption]() !-->
 
 # Appendix
@@ -176,6 +178,12 @@
       - [cast wallet verify](./reference/cast/cast-wallet-verify.md)
   - [Config Reference](./reference/config.md)
   - [Forge Standard Library Reference](./reference/forge-std/README.md)
+    - [Std Assertions](./reference/forge-std/std-assertions.md)
+      - [`fail`](./reference/forge-std/fail.md)
+      - [`assertFalse`](./reference/forge-std/assertFalse.md)
+      - [`assertEq`](./reference/forge-std/assertEq.md)
+      - [`assertApproxEqAbs`](./reference/forge-std/assertApproxEqAbs.md)
+      - [`assertApproxEqRel`](./reference/forge-std/assertApproxEqRel.md)
     - [Std Cheats](./reference/forge-std/std-cheats.md)
       - [`skip`](./reference/forge-std/skip.md)
       - [`rewind`](./reference/forge-std/rewind.md)
@@ -196,6 +204,13 @@
       - [`memOverflowError`](./reference/forge-std/memOverflowError.md)
       - [`zeroVarError`](./reference/forge-std/zeroVarError.md)
     - [Std Storage](./reference/forge-std/std-storage.md)
+      - [`target`](./reference/forge-std/target.md)
+      - [`sig`](./reference/forge-std/sig.md)
+      - [`with_key`](./reference/forge-std/with_key.md)
+      - [`depth`](./reference/forge-std/depth.md)
+      - [`checked_write`](./reference/forge-std/checked_write.md)
+      - [`find`](./reference/forge-std/find.md)
+      - [`read`](./reference/forge-std/read.md)
     - [Std Math](./reference/forge-std/std-math.md)
   - [DSTest Reference](./reference/ds-test.md)
   - [Cheatcodes Reference](./cheatcodes/README.md)

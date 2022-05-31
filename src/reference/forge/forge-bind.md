@@ -39,7 +39,7 @@ You can overwrite the existing bindings by passing `--overwrite`.
 &nbsp;&nbsp;&nbsp;&nbsp;Default: foundry-contracts
 
 `--crate-version` *semver*  
-&nbsp;&nbsp;&nbsp;&nbsp;The version of the Rust crate to generate, if you are generatign a crate (default).  
+&nbsp;&nbsp;&nbsp;&nbsp;The version of the Rust crate to generate, if you are generating a crate (default).  
 &nbsp;&nbsp;&nbsp;&nbsp;This should be a standard semver version string.
 
 &nbsp;&nbsp;&nbsp;&nbsp;Default: 0.0.1
@@ -56,6 +56,11 @@ You can overwrite the existing bindings by passing `--overwrite`.
 
 `--root` *path*  
 &nbsp;&nbsp;&nbsp;&nbsp;The project's root path. By default, this is the root directory of the current git repository, or the current working directory.
+
+`--skip-cargo-toml`  
+&nbsp;&nbsp;&nbsp;&nbsp;Skip Cargo.toml consistency checks.  
+&nbsp;&nbsp;&nbsp;&nbsp;This allows you to manage the [ethers](https://github.com/gakonst/ethers-rs) version without giving up on consistency checks.  
+&nbsp;&nbsp;&nbsp;&nbsp;An example would be if you use additional features of ethers like `ws`, `ipc`, or `rustls` and get an `ethers-providers` version mismatch.
 
 {{#include common-options.md}}
 
