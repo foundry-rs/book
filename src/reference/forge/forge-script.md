@@ -20,7 +20,7 @@ Scripts can be used to apply state transitions on live contracts, or deploy and 
 &nbsp;&nbsp;&nbsp;&nbsp;Broadcasts the transactions.
 
 `--debug`  
-&nbsp;&nbsp;&nbsp;&nbsp;Open the script in the debugger. Takes precedence over broadcast.
+&nbsp;&nbsp;&nbsp;&nbsp;Open the script in the [debugger][debugger]. Takes precedence over broadcast.
 
 `--legacy`  
 &nbsp;&nbsp;&nbsp;&nbsp;Use legacy transactions instead of EIP1559 ones. This is auto-enabled for common networks without EIP1559.
@@ -65,4 +65,5 @@ Scripts can be used to apply state transitions on live contracts, or deploy and 
     forge script ./test/Broadcast.t.sol --tc BroadcastTest --sig "deploy()" \
                  -vvv --fork-url $GOERLI_RPC_URL
     ```
-   
+
+[debugger]: ../../forge/debugger.md
