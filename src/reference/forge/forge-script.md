@@ -35,7 +35,7 @@ Adds the ability for forge to use a solidity file to create a contract on mainne
 &nbsp;&nbsp;&nbsp;&nbsp;Makes sure a transaction is sent, only after its previous one has been confirmed and succeeded.
 
 `--target-contract` *contract_name*  
-&nbsp;&nbsp;&nbsp;&nbsp;The name of the contract you want to run
+&nbsp;&nbsp;&nbsp;&nbsp;The name of the contract you want to run.
 
 {{#include core-build-options.md}}
 
