@@ -82,8 +82,8 @@ This program is a set of tools to build, test, fuzz, debug and deploy Solidity s
 
 #### Utility Commands
 
-[forge run](./forge-run.md)  
-&nbsp;&nbsp;&nbsp;&nbsp;Run a single smart contract as a script.
+[forge debug](./forge-debug.md)  
+&nbsp;&nbsp;&nbsp;&nbsp;Debug a single smart contract as a script.
 
 [forge bind](./forge-bind.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Generate Rust bindings for smart contracts.
@@ -96,6 +96,9 @@ This program is a set of tools to build, test, fuzz, debug and deploy Solidity s
 
 [forge cache ls](./forge-cache-ls.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Shows cached data from ``~/.foundry``.
+
+[forge script](./forge-script.md)  
+&nbsp;&nbsp;&nbsp;&nbsp;Run a smart contract as a script, building transactions that can be sent onchain.
 
 ### OPTIONS
 
