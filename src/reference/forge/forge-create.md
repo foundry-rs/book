@@ -49,6 +49,9 @@ Dynamic linking is not supported: you should predeploy your libraries and manual
 
 {{#include ../common/tx-value-option.md}}
 
+`--nonce` *nonce*  
+&nbsp;&nbsp;&nbsp;&nbsp;Nonce for the transaction.
+
 `--legacy`  
 &nbsp;&nbsp;&nbsp;&nbsp;Send a legacy transaction instead of an [EIP1559][eip1559] transaction.
 
