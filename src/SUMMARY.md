@@ -46,6 +46,10 @@
 # Anvil Overview 
 
 - [Overview of Anvil](./anvil/README.md)
+- [Anvil Flags](./anvil/AnvilFlags.md)
+- [Mining Modes](./anvil/MiningModes.md)
+- [Supported Transport Layers](./anvil/transportLayers.md)
+- [Supported RPC Methods](./anvil/rpcMethods.md)
 
 # Configuration
 
