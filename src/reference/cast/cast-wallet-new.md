@@ -13,6 +13,7 @@ cast-wallet-new - Create a new random keypair.
 Create a new random keypair.
 
 If *path* is specified, then the new keypair will be written to a JSON keystore encrypted with a password.
+(*path* should be an existing directory.)
 
 ### OPTIONS
 
@@ -20,7 +21,8 @@ If *path* is specified, then the new keypair will be written to a JSON keystore 
 
 `-p`  
 `--password`  
-&nbsp;&nbsp;&nbsp;&nbsp;Triggers a hidden password prompt for the JSON keystore.
+&nbsp;&nbsp;&nbsp;&nbsp;Triggers a hidden password prompt for the JSON keystore.  
+&nbsp;&nbsp;&nbsp;&nbsp;**Depreacted: prompting for a hidden password is now the default.**
 
 `--unsafe-password` *password*  
 &nbsp;&nbsp;&nbsp;&nbsp;Password for the JSON keystore in cleartext.
@@ -37,9 +39,9 @@ If *path* is specified, then the new keypair will be written to a JSON keystore 
     cast wallet new
     ```
 
-2. Create a new keypair and save it in `keystore.json`:
+2. Create a new keypair and save it in the `keystore` directory:
     ```sh
-    cast wallet new keystore.json
+    cast wallet new keystore
     ```
 
 ### SEE ALSO
