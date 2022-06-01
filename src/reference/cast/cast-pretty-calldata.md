@@ -12,7 +12,7 @@ cast-pretty-calldata - Pretty print calldata.
 
 Pretty print calldata.
 
-Tries to decode the calldata using <https://4byte.directory> unless `--offline` is passed.
+Tries to decode the calldata using <https://sig.eth.samczsun.com> unless `--offline` is passed.
 
 ### OPTIONS
 
@@ -20,7 +20,7 @@ Tries to decode the calldata using <https://4byte.directory> unless `--offline` 
 
 `-o`  
 `--offline`  
-&nbsp;&nbsp;&nbsp;&nbsp;Skip the <https://4byte.directory> lookup.
+&nbsp;&nbsp;&nbsp;&nbsp;Skip the <https://sig.eth.samczsun.com> lookup.
 
 {{#include common-options.md}}
 

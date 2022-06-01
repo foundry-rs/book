@@ -2,7 +2,7 @@
 
 ### NAME
 
-cast-4byte-decode - Decode ABI-encoded calldata using <https://4byte.directory>.
+cast-4byte-decode - Decode ABI-encoded calldata using <https://sig.eth.samczsun.com>.
 
 ### SYNOPSIS
 
@@ -10,7 +10,7 @@ cast-4byte-decode - Decode ABI-encoded calldata using <https://4byte.directory>.
 
 ### DESCRIPTION
 
-Decode ABI-encoded calldata using <https://4byte.directory>.
+Decode ABI-encoded calldata using <https://sig.eth.samczsun.com>.
 
 ### OPTIONS
 
@@ -18,8 +18,8 @@ Decode ABI-encoded calldata using <https://4byte.directory>.
 
 `--id` *id*  
 &nbsp;&nbsp;&nbsp;&nbsp;The index of the resolved signature to use.
-&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;<https://4byte.directory> can have multiple possible signatures for a given selector.
+&nbsp;&nbsp;&nbsp;&nbsp;  
+&nbsp;&nbsp;&nbsp;&nbsp;<https://sig.eth.samczsun.com> can have multiple possible signatures for a given selector.  
 &nbsp;&nbsp;&nbsp;&nbsp;The index can be an integer, or the tags "earliest" and "latest".
 
 {{#include common-options.md}}
