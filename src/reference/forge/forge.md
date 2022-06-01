@@ -100,6 +100,9 @@ This program is a set of tools to build, test, fuzz, debug and deploy Solidity s
 [forge script](./forge-script.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Run a smart contract as a script, building transactions that can be sent onchain.
 
+[forge upload-selectors](./forge-upload-selectors.md)  
+&nbsp;&nbsp;&nbsp;&nbsp;Uploads abi of given contract to https://sig.eth.samczsun.com function selector database.
+
 ### OPTIONS
 
 #### Special Options
