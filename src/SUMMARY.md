@@ -99,6 +99,7 @@
       - [forge cache clean](./reference/forge/forge-cache-clean.md)
       - [forge cache ls](./reference/forge/forge-cache-ls.md)
       - [forge script](./reference/forge/forge-script.md)
+      - [forge upload-selectors](./reference/forge/forge-upload-selectors.md)
   - [`cast` Commands](./reference/cast/README.md)
     - [General Commands](./reference/cast/general-commands.md)
       - [cast](./reference/cast/cast.md)
