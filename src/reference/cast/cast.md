@@ -120,13 +120,13 @@ This program is a set of tools to interact with Ethereum and perform conversions
 &nbsp;&nbsp;&nbsp;&nbsp;ABI encode the given function arguments, excluding the selector.
 
 [cast 4byte](./cast-4byte.md)  
-&nbsp;&nbsp;&nbsp;&nbsp;Get the function signatures for the given selector from <https://4byte.directory>.
+&nbsp;&nbsp;&nbsp;&nbsp;Get the function signatures for the given selector from <https://sig.eth.samczsun.com>.
 
 [cast 4byte-decode](./cast-4byte-decode.md)  
-&nbsp;&nbsp;&nbsp;&nbsp;Decode ABI-encoded calldata using <https://4byte.directory>.
+&nbsp;&nbsp;&nbsp;&nbsp;Decode ABI-encoded calldata using <https://sig.eth.samczsun.com>.
 
 [cast 4byte-event](./cast-4byte-event.md)  
-&nbsp;&nbsp;&nbsp;&nbsp;Get the event signature for a given topic 0 from <https://4byte.directory>.
+&nbsp;&nbsp;&nbsp;&nbsp;Get the event signature for a given topic 0 from <https://sig.eth.samczsun.com>.
 
 [cast calldata](./cast-calldata.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;ABI-encode a function with arguments.
