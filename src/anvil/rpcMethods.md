@@ -166,7 +166,7 @@ Turn on call traces for transactions that are returned to the user when they exe
 `eth_sendUnsignedTransaction`  
 Execute a transaction regardless of signature status
 
-For the next three methods, make sure to read [Geth documentation](https://geth.ethereum.org/docs/rpc/ns-txpool).
+For the next three methods, make sure to read [Geth's documentation](https://geth.ethereum.org/docs/rpc/ns-txpool).
 
 `txpool_status`  
 Returns the number of transactions currently pending for inclusion in the next block(s), as well as the ones that are being scheduled for future execution only  
