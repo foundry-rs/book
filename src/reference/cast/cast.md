@@ -140,6 +140,9 @@ This program is a set of tools to interact with Ethereum and perform conversions
 [cast --calldata-decode](./cast--calldata-decode.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Decode ABI-encoded input data.
 
+[cast upload-signature](./cast-upload-signature.md)  
+&nbsp;&nbsp;&nbsp;&nbsp;Upload the given signatures to https://sig.eth.samczsun.com.
+
 #### Conversion Commands
 
 [cast --from-bin](./cast--from-bin.md)  

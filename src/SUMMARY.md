@@ -146,6 +146,7 @@
       - [cast pretty-calldata](./reference/cast/cast-pretty-calldata.md)
       - [cast --abi-decode](./reference/cast/cast--abi-decode.md)
       - [cast --calldata-decode](./reference/cast/cast--calldata-decode.md)
+      - [cast upload-signature](./reference/cast/cast-upload-signature.md)
     - [Conversion Commands](./reference/cast/conversion-commands.md)
       - [cast --from-bin](./reference/cast/cast--from-bin.md)
       - [cast --from-fix](./reference/cast/cast--from-fix.md)
