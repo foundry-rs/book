@@ -1,5 +1,7 @@
 ## Supported RPC Methods
 ### Standard Methods
+The standard methods are based on [this](https://eth.wiki/json-rpc/API) reference.
+
 `web3_clientVersion`  
 
 `web3_sha3`  
