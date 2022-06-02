@@ -22,7 +22,7 @@ If *path* is specified, then the new keypair will be written to a JSON keystore 
 `-p`  
 `--password`  
 &nbsp;&nbsp;&nbsp;&nbsp;Triggers a hidden password prompt for the JSON keystore.  
-&nbsp;&nbsp;&nbsp;&nbsp;**Depreacted: prompting for a hidden password is now the default.**
+&nbsp;&nbsp;&nbsp;&nbsp;**Deprecated: prompting for a hidden password is now the default.**
 
 `--unsafe-password` *password*  
 &nbsp;&nbsp;&nbsp;&nbsp;Password for the JSON keystore in cleartext.
