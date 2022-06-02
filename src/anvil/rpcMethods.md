@@ -89,6 +89,8 @@ The standard methods are based on [this](https://eth.wiki/json-rpc/API) referenc
 `trace_block`
 
 ### Custom Methods
+`Anvil` namespace is an alias for `hardhat`, just like in [this](https://hardhat.org/hardhat-network/reference#hardhat-network-methods) Hardhat documentation.
+
 `anvil_impersonateAccount`   
 Send transactions impersonating specific account and contract addresses
 
@@ -135,6 +137,8 @@ Set the minimum gas price for the node
 Sets the base fee of the next block
 
 ### Special Methods
+The special methods come from Ganache. You can take a look at the documentation [here](https://github.com/trufflesuite/ganache-cli-archive/blob/master/README.md).
+
 `evm_setAutomine`  
 Enables or disables, based on the single boolean argument, the automatic mining of new blocks with each new transaction submitted to the network.
   
@@ -161,6 +165,8 @@ Turn on call traces for transactions that are returned to the user when they exe
   
 `eth_sendUnsignedTransaction`  
 Execute a transaction regardless of signature status
+
+For the next three methods, make sure to read [Geth documentation](https://geth.ethereum.org/docs/rpc/ns-txpool).
 
 `txpool_status`  
 Returns the number of transactions currently pending for inclusion in the next block(s), as well as the ones that are being scheduled for future execution only  
