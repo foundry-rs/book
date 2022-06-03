@@ -114,16 +114,16 @@ This section shows an extensive list of Anvil flags and their usages. You can ru
 ### Examples
 
 1. Set the number of accounts to 15 and their balance to 300 ETH
-```
-anvil --accounts 15 --balance 300
-```
+  ```sh
+  anvil --accounts 15 --balance 300
+  ```
 
 2. Choose the address which will execute the tests
-```
-anvil --sender 0xC8479C45EE87E0B437c09d3b8FE8ED14ccDa825E
-```
+  ```sh
+  anvil --sender 0xC8479C45EE87E0B437c09d3b8FE8ED14ccDa825E
+  ```
 
 3. Change how transactions are sorted in the mempool to FIFO
-```
-anvil --order fifo
-```
+  ```sh
+  anvil --order fifo
+  ```
