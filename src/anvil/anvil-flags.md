@@ -65,10 +65,10 @@ This section shows an extensive list of Anvil flags and their usages. You can ru
 `-v, --verbosity`  
 &nbsp;&nbsp;&nbsp;&nbsp; Verbosity of the EVM. Pass multiple times to increase the verbosity (e.g. -v, -vv, -vvv)  
  &nbsp;&nbsp;&nbsp;&nbsp; Verbosity levels:  
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - 2: Print logs for all tests  
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - 3: Print execution traces for failing tests  
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - 4: Print execution traces for all tests, and setup traces for failing tests  
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - 5: Print execution and setup traces for all tests
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - 2: Print logs for all tests  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - 3: Print execution traces for failing tests  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - 4: Print execution traces for all tests, and setup traces for failing tests  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - 5: Print execution and setup traces for all tests
 
 
 ### Executor Environment Config
