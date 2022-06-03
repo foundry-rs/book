@@ -46,7 +46,6 @@
 # Anvil Overview 
 
 - [Overview of Anvil](./anvil/README.md)
-- [Anvil Flags](./anvil/anvil-flags.md)
 - [Mining Modes](./anvil/mining-modes.md)
 - [Supported Transport Layers](./anvil/transport-layers.md)
 - [Supported RPC Methods](./anvil/rpc-methods.md)
@@ -182,6 +181,11 @@
       - [cast wallet sign](./reference/cast/cast-wallet-sign.md)
       - [cast wallet vanity](./reference/cast/cast-wallet-vanity.md)
       - [cast wallet verify](./reference/cast/cast-wallet-verify.md)
+  - [`anvil` Flags](./reference/forge/README.md)
+    - [Option Flags](./reference/anvil/anvil-options.md)
+    - [EVM Options Flags](./reference/anvil/anvil-evm-options.md)
+    - [Executor Environment Config Flags](./reference/anvil/anvil-environment.md)
+    - [Server Options Flags](./reference/anvil/anvil-server.md)
   - [Config Reference](./reference/config.md)
   - [Forge Standard Library Reference](./reference/forge-std/README.md)
     - [Std Assertions](./reference/forge-std/std-assertions.md)
