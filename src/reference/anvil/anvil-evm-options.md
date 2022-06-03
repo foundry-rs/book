@@ -30,3 +30,8 @@
   ```sh
   anvil --sender 0xC8479C45EE87E0B437c09d3b8FE8ED14ccDa825E
   ```
+  
+2. Change how transactions are sorted in the mempool to FIFO
+  ```sh
+  anvil --order fifo
+  ```
