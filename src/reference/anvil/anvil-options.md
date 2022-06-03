@@ -37,3 +37,10 @@
 
 `-V, --version`  
 &nbsp;&nbsp;&nbsp;&nbsp; Print version information
+
+### Examples
+
+1. Set the number of accounts to 15 and their balance to 300 ETH
+  ```sh
+  anvil --accounts 15 --balance 300
+  ```
