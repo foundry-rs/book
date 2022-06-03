@@ -10,6 +10,8 @@ forge-script - Run a smart contract as a script, building transactions that can 
 
 ### DESCRIPTION
 
+> Note: The output is under development and prone to change.
+
 Run a smart contract as a script, building transactions that can be sent onchain.
 
 Scripts can be used to apply state transitions on live contracts, or deploy and initialize a complex set of smart contracts using Solidity.
@@ -37,6 +39,16 @@ Scripts can be used to apply state transitions on live contracts, or deploy and 
 
 `--target-contract` *contract_name*  
 &nbsp;&nbsp;&nbsp;&nbsp;The name of the contract you want to run.
+
+`--etherscan-api-key` *key*  
+&nbsp;&nbsp;&nbsp;&nbsp;Etherscan API key.  
+&nbsp;&nbsp;&nbsp;&nbsp;Environment: `ETHERSCAN_API_KEY`
+
+`--json`  
+&nbsp;&nbsp;&nbsp;&nbsp;Output results in JSON format.
+
+`--verify`
+&nbsp;&nbsp;&nbsp;&nbsp;If it finds a matching broadcast log, it tries to verify every contract found in the receipts.
 
 {{#include core-build-options.md}}
 
