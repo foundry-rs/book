@@ -89,7 +89,7 @@ The standard methods are based on [this](https://eth.wiki/json-rpc/API) referenc
 `trace_block`
 
 ### Custom Methods
-`Anvil` namespace is an alias for `hardhat`, just like in [this](https://hardhat.org/hardhat-network/reference#hardhat-network-methods) Hardhat documentation.
+The `anvil_*` namespace is an alias for `hardhat`. For more info, refer to the [Hardhat documentation](https://hardhat.org/hardhat-network/reference#hardhat-network-methods).
 
 `anvil_impersonateAccount`   
 Send transactions impersonating specific account and contract addresses
