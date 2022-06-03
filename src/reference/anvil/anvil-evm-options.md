@@ -24,3 +24,9 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - 3: Print execution traces for failing tests  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - 4: Print execution traces for all tests, and setup traces for failing tests  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - 5: Print execution and setup traces for all tests
+
+### Examples
+1. Choose the address which will execute the tests
+  ```sh
+  anvil --sender 0xC8479C45EE87E0B437c09d3b8FE8ED14ccDa825E
+  ```
