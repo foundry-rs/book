@@ -2,91 +2,91 @@
 ### Standard Methods
 The standard methods are based on [this](https://eth.wiki/json-rpc/API) reference.
 
-`web3_clientVersion`  
+* `web3_clientVersion`  
 
-`web3_sha3`  
+* `web3_sha3`  
   
-`eth_chainId`  
+* `eth_chainId`  
   
-`eth_networkId`  
+* `eth_networkId`  
   
-`eth_gasPrice`  
+* `eth_gasPrice`  
   
-`eth_accounts`  
+* `eth_accounts`  
   
-`eth_blockNumber`  
+* `eth_blockNumber`  
   
-`eth_getBalance`  
+* `eth_getBalance`  
   
-`eth_getStorageAt`  
+* `eth_getStorageAt`  
   
-`eth_getBlockByHash`  
+* `eth_getBlockByHash`  
   
-`eth_getBlockByNumber`  
+* `eth_getBlockByNumber`  
   
-`eth_getTransactionCount`  
+* `eth_getTransactionCount`  
   
-`eth_getBlockTransactionCountByHash`  
+* `eth_getBlockTransactionCountByHash`  
   
-`eth_getBlockTransactionCountByNumber`  
+* `eth_getBlockTransactionCountByNumber`  
   
-`eth_getUncleCountByBlockHash`  
+* `eth_getUncleCountByBlockHash`  
   
-`eth_getUncleCountByBlockNumber`  
+* `eth_getUncleCountByBlockNumber`  
   
-`eth_getCode`  
+* `eth_getCode`  
   
-`eth_sign`  
+* `eth_sign`  
   
-`eth_sendTransaction`  
+* `eth_sendTransaction`  
   
-`eth_sendRawTransaction`  
+* `eth_sendRawTransaction`  
    
-`eth_call`  
+* `eth_call`  
   
-`eth_createAccessList`  
+* `eth_createAccessList`  
   
-`eth_estimateGas`  
+* `eth_estimateGas`  
    
-`eth_getTransactionByHash`  
+* `eth_getTransactionByHash`  
   
-`eth_getTransactionByBlockHashAndIndex`  
+* `eth_getTransactionByBlockHashAndIndex`  
   
-`eth_getTransactionByBlockNumberAndIndex`  
+* `eth_getTransactionByBlockNumberAndIndex`  
   
-`eth_getTransactionReceipt`  
+* `eth_getTransactionReceipt`  
   
-`eth_getUncleByBlockHashAndIndex`  
+* `eth_getUncleByBlockHashAndIndex`  
   
-`eth_getUncleByBlockNumberAndIndex`  
+* `eth_getUncleByBlockNumberAndIndex`  
   
-`eth_getLogs`  
+* `eth_getLogs`  
   
-`eth_newFilter`  
+* `eth_newFilter`  
   
-`eth_getFilterChanges`  
+* `eth_getFilterChanges`  
   
-`eth_newBlockFilter`  
+* `eth_newBlockFilter`  
   
-`eth_newPendingTransactionFilter`  
+* `eth_newPendingTransactionFilter`  
   
-`eth_getFilterLogs`  
+* `eth_getFilterLogs`  
   
-`eth_uninstallFilter`  
+* `eth_uninstallFilter`  
   
-`eth_getWork`  
+* `eth_getWork`  
   
-`eth_submitWork`  
+* `eth_submitWork`  
   
-`eth_submitHashrate`  
+* `eth_submitHashrate`  
   
-`eth_feeHistory`  
+* `eth_feeHistory`  
 
-`debug_traceTransaction`  
+* `debug_traceTransaction`  
   
-`trace_transaction`
+* `trace_transaction`
   
-`trace_block`
+* `trace_block`
 
 ### Custom Methods
 The `anvil_*` namespace is an alias for `hardhat`. For more info, refer to the [Hardhat documentation](https://hardhat.org/hardhat-network/reference#hardhat-network-methods).
