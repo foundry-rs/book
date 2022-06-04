@@ -2,7 +2,7 @@
 
 ### NAME
 
-cast-4byte-event - Get the event signature for a given topic 0 from <https://4byte.directory>.
+cast-4byte-event - Get the event signature for a given topic 0 from <https://sig.eth.samczsun.com>.
 
 ### SYNOPSIS
 
@@ -10,7 +10,7 @@ cast-4byte-event - Get the event signature for a given topic 0 from <https://4by
 
 ### DESCRIPTION
 
-Get the event signature for a given topic 0 from <https://4byte.directory>.
+Get the event signature for a given topic 0 from <https://sig.eth.samczsun.com>.
 
 ### OPTIONS
 
