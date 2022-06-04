@@ -23,16 +23,16 @@
   - [Forge Standard Library Overview](./forge/forge-std.md)
   - [Understanding Traces](./forge/traces.md)
   - [Forking Mode](./forge/forking-mode.md)
-<!--  - [Coverage Reports]() !-->
+  <!--  - [Coverage Reports]() !-->
 - [Advanced Testing](./forge/advanced-testing.md)
   - [Fuzz Testing](./forge/fuzz-testing.md)
   - [Differential Testing](./forge/differential-ffi-testing.md)
-<!--  - [Invariant Testing]() !-->
-<!--  - [Symbolic Testing]() !-->
-<!--  - [Table Testing]() !-->
-<!--  - [Mutation Testing]() !-->
-<!-- - [Linting and Formatting]() !-->
-<!-- - [Generating Documentation]() !-->
+    <!--  - [Invariant Testing]() !-->
+    <!--  - [Symbolic Testing]() !-->
+    <!--  - [Table Testing]() !-->
+    <!--  - [Mutation Testing]() !-->
+    <!-- - [Linting and Formatting]() !-->
+    <!-- - [Generating Documentation]() !-->
 - [Deploying and Verifying](./forge/deploying.md)
 - [Gas Tracking](./forge/gas-tracking.md)
   - [Gas Reports](./forge/gas-reports.md)
@@ -43,7 +43,7 @@
 
 - [Overview of Cast](./cast/README.md)
 
-# Anvil Overview 
+# Anvil Overview
 
 - [Overview of Anvil](./anvil/README.md)
 
@@ -179,6 +179,7 @@
       - [cast wallet sign](./reference/cast/cast-wallet-sign.md)
       - [cast wallet vanity](./reference/cast/cast-wallet-vanity.md)
       - [cast wallet verify](./reference/cast/cast-wallet-verify.md)
+  - [anvil Reference](./reference/anvil.md)
   - [Config Reference](./reference/config.md)
   - [Forge Standard Library Reference](./reference/forge-std/README.md)
     - [Std Assertions](./reference/forge-std/std-assertions.md)
