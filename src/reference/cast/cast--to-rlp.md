@@ -10,7 +10,7 @@ cast---to-rlp - Encodes hex data to RLP.
 
 ### DESCRIPTION
 
-RLP encodes a hex string or a json array of hex strings.
+RLP encodes a hex string or a JSON array of hex strings.
 
 ### OPTIONS
 
