@@ -46,7 +46,6 @@
 # Anvil Overview 
 
 - [Overview of Anvil](./anvil/README.md)
-- [Mining Modes and RPC Methods](./anvil/mining-modes-rpc-methods.md)
 
 # Configuration
 
