@@ -44,7 +44,8 @@ Scripts can be used to apply state transitions on live contracts, or deploy and 
 &nbsp;&nbsp;&nbsp;&nbsp;Environment: `ETHERSCAN_API_KEY`
 
 `--json`  
-&nbsp;&nbsp;&nbsp;&nbsp;Output results in JSON format.
+&nbsp;&nbsp;&nbsp;&nbsp;Output results in JSON format.  
+&nbsp;&nbsp;&nbsp;&nbsp;Note: The output is under development and prone to change.
 
 `--verify`
 &nbsp;&nbsp;&nbsp;&nbsp;If it finds a matching broadcast log, it tries to verify every contract found in the receipts.
