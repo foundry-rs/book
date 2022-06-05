@@ -10,7 +10,6 @@ forge-script - Run a smart contract as a script, building transactions that can 
 
 ### DESCRIPTION
 
-> Note: The output is under development and prone to change.
 
 Run a smart contract as a script, building transactions that can be sent onchain.
 
