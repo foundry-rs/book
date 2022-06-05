@@ -1,4 +1,4 @@
-## anvil Flags
+## anvil Reference
 
 - [Option Flags](./anvil-options.md)
 - [EVM Options Flags](./anvil-evm-options.md)
