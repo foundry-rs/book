@@ -52,8 +52,8 @@ preprocess: {
     transform: (line: string) => {
       if (line.match(/^\s*import /i)) {
         getRemappings().forEach(([find, replace]) => {
-          if (line.match('"' + find)) {
-            line = line.replace('"' + find, '"' + replace);
+          if (line.match(find)) {
+            line = line.replace(find, replace);
           }
         });
       }
