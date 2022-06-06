@@ -181,6 +181,7 @@
       - [cast wallet sign](./reference/cast/cast-wallet-sign.md)
       - [cast wallet vanity](./reference/cast/cast-wallet-vanity.md)
       - [cast wallet verify](./reference/cast/cast-wallet-verify.md)
+  - [`anvil` Reference](./reference/anvil/README.md)
   - [Config Reference](./reference/config.md)
   - [Forge Standard Library Reference](./reference/forge-std/README.md)
     - [Std Assertions](./reference/forge-std/std-assertions.md)
