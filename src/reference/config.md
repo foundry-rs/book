@@ -32,6 +32,8 @@ out = 'out'
 libs = ['lib']
 # A list of remappings
 remappings = []
+# additional solc allow paths
+allow_paths = []
 # A list of deployed libraries to link against
 libraries = []
 # Whether to cache builds or not
@@ -232,6 +234,12 @@ becomes
 ```solidity
 import "node_modules/@openzeppelin/openzeppelin-contracts/contracts/utils/Context.sol";
 ```
+
+##### `allow_paths`
+
+- Type: array of strings (paths)
+- Default: none
+- Environment: `FOUNDRY_ALLOW_PATHS` or `DAPP_ALLOW_PATHS`
 
 ##### `libraries`
 

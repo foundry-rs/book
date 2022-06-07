@@ -1,16 +1,16 @@
-## forge run
+## forge debug
 
 ### NAME
 
-forge-run - Run a single smart contract as a script.
+forge-debug - Debug a single smart contract as a script.
 
 ### SYNOPSIS
 
-``forge run`` [*options*] *path* [*args...*]
+``forge debug`` [*options*] *path* [*args...*]
 
 ### DESCRIPTION
 
-Runs a single smart contract located in the source file (*path*) as a script.
+Debugs a single smart contract located in the source file (*path*) as a script.
 
 If multiple contracts are in the specified source file, you must pass `--target-contract` to specify
 what contract you want to run.
@@ -45,14 +45,13 @@ More information on the debugger can be found in the [debugger chapter][debugger
 
 ### OPTIONS
 
-#### Run Options
+#### Debug Options
 
-`-t` *contract_name*  
 `--target-contract` *contract_name*  
 &nbsp;&nbsp;&nbsp;&nbsp;The name of the contract you want to run
 
 `-s` *signature*  
-`--signature` *signature*  
+`--sig` *signature*  
 &nbsp;&nbsp;&nbsp;&nbsp;The signature of the function you want to call in the contract, or raw calldata. Default: `run()`
 
 `--debug`  
@@ -70,27 +69,27 @@ More information on the debugger can be found in the [debugger chapter][debugger
 
 1. Execute the `run()` function in a contract:
     ```sh
-    forge run src/Contract.sol
+    forge debug src/Contract.sol
     ```
 
 2. Open a script in the debugger:
     ```sh
-    forge run src/Contract.sol --debug
+    forge debug src/Contract.sol --debug
     ```
 
 3. Execute the `foo()` function in a contract:
     ```sh
-    forge run src/Contract.sol --sig "foo()"
+    forge debug src/Contract.sol --sig "foo()"
     ```
 
 4. Execute a contract with a function that takes parameters:
     ```sh
-    forge run src/Contract.sol --sig "foo(string,uint256)" "hello" 100
+    forge debug src/Contract.sol --sig "foo(string,uint256)" "hello" 100
     ```
 
 5. Execute a contract with raw calldata:
     ```sh
-    forge run src/Contract.sol --sig "0x..."
+    forge debug src/Contract.sol --sig "0x..."
     ```
 
 ### SEE ALSO

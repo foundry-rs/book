@@ -539,6 +539,33 @@
       "contributions": [
         "maintenance"
       ]
+    },
+    {
+      "login": "Sweng0d",
+      "name": "Bruno Filetti",
+      "avatar_url": "https://avatars.githubusercontent.com/u/101097089?v=4",
+      "profile": "https://github.com/Sweng0d",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "PraneshASP",
+      "name": "Pranesh A S",
+      "avatar_url": "https://avatars.githubusercontent.com/u/42379522?v=4",
+      "profile": "https://github.com/PraneshASP",
+      "contributions": [
+        "maintenance"
+      ]
+    },
+    {
+      "login": "0xYYY",
+      "name": "0xYYY",
+      "avatar_url": "https://avatars.githubusercontent.com/u/86655648?v=4",
+      "profile": "https://github.com/0xYYY",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,

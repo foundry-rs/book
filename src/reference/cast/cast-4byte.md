@@ -2,7 +2,7 @@
 
 ### NAME
 
-cast-4byte - Get the function signatures for the given selector from <https://4byte.directory>.
+cast-4byte - Get the function signatures for the given selector from <https://sig.eth.samczsun.com>.
 
 ### SYNOPSIS
 
@@ -10,7 +10,7 @@ cast-4byte - Get the function signatures for the given selector from <https://4b
 
 ### DESCRIPTION
 
-Get the function signatures for the given selector from <https://4byte.directory>.
+Get the function signatures for the given selector from <https://sig.eth.samczsun.com>.
 
 ### OPTIONS
 
