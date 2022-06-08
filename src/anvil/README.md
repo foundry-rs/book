@@ -8,10 +8,10 @@ Anvil is a part of Foundry, so as long as you have the updated version of Foudry
 
 To use Anvil, run `anvil`.
 
-You should see a list of accounts and private keys available for use,like this:
+You should see a list of accounts and private keys available for use, like this:
 
 ![anvil](./anvil.png)
 
 > 📚 **Reference**
->
-> See the [`anvil` Reference](../reference/anvil.md) for a complete overview of all the available options.
+
+> See the [`anvil` Reference](../reference/anvil/) for a complete overview of all the available options.
