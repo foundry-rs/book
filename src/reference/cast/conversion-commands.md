@@ -2,6 +2,7 @@
 
 - [cast --from-bin](./cast--from-bin.md)
 - [cast --from-fix](./cast--from-fix.md)
+- [cast --from-rlp](./cast--from-rlp.md)
 - [cast --from-utf8](./cast--from-utf8.md)
 - [cast --to-ascii](./cast--to-ascii.md)
 - [cast --to-bytes32](./cast--to-bytes32.md)
@@ -10,6 +11,7 @@
 - [cast --to-hex](./cast--to-hex.md)
 - [cast --to-hexdata](./cast--to-hexdata.md)
 - [cast --to-int256](./cast--to-int256.md)
+- [cast --to-rlp](./cast--to-rlp.md)
 - [cast --to-uint256](./cast--to-uint256.md)
 - [cast --to-unit](./cast--to-unit.md)
 - [cast --to-wei](./cast--to-wei.md)
