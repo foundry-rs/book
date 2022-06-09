@@ -13,5 +13,5 @@ You should see a list of accounts and private keys available for use, like this:
 ![anvil](./anvil.png)
 
 > 📚 **Reference**
-
+>
 > See the [`anvil` Reference](../reference/anvil/) for a complete overview of all the available options.
