@@ -80,6 +80,18 @@ function testExpectRevertNoReason() public {
 }
 ```
 
+You can also have multiple `expectRevert()` checks in a single test. 
+
+```solidity
+function testMultipleExpectReverts() public {
+    vm.expectRevert(abi.encodePacked("INVALID_AMOUNT"));
+    vault.send(user, 0);
+
+    vm.expectRevert(abi.encodePacked("INVALID_ADDRESS"));
+    vault.send(address(0), 200);
+}
+```
+
 ### SEE ALSO
 
 Forge Standard Library
