@@ -178,7 +178,7 @@ We create a contract called `MyScript` and it inherits `Script` which is from th
  function run() external {
 ```
 
-For script smart contracts we only need one function and that’s the run function, think about it like the main function in a Hardhat script written in JavaScript. We deploy our contracts in this function.
+By default, scripts are executed by calling the function named `run`, our entrypoint.
 
 ```solidity
 vm.startBroadcast();
