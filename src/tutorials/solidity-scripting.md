@@ -206,7 +206,7 @@ source .env
 forge script script/NFT.s.sol:MyScript --rpc-url $RINKEBY_RPC_URL  --private-key $PRIVATE_KEY --broadcast --verify --etherscan-api-key $ETHERSCAN_KEY -vvvv
 ```
 
-It’s going to take some time not up to a minute, at the bottom of your terminal you should see something like this:
+Forge is going to run our script and broadcast the transactions for us - this can take a little while, since Forge will also wait for the transaction receipts. You should see something like this after a minute or so:
 
 ![Untitled](../images/solidity-scripting%20/contract-verified.png)
 
