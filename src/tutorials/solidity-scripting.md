@@ -119,11 +119,6 @@ We’re going to deploy the `NFT` contract to the Rinkeby testnet, but to do thi
 
 Once you have all that create a `.env` file and add the variables.
 
-You can create the `.env` file by running:
-
-```bash
-touch .env
-```
 
 The .env file should follow this format:
 
