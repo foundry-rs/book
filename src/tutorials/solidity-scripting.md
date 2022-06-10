@@ -4,7 +4,7 @@
 
 Solidity scripting is a way to declaratively deploy contracts using Solidity, instead of using the more limiting and less user friendly [`forge create`](../reference/forge/forge-create.md).
 
-Solidity scripting is just like the regular scripts you write when working with tools like Hardhat, what makes solidity scripting different is the fact that instead of writing scripts in for instance JavaScript like you would in Hardhat, you write them in solidity instead. Like everything else in Foundry, it's crazy fast, efficient and more reliable.
+Solidity scripts are like the scripts you write when working with tools like Hardhat; what makes Solidity scripting different is that they are written in Solidity instead of JavaScript, and they are run on the fast Foundry EVM backend, which provides dry-run capabilities.
 
 ### Set Up
 
