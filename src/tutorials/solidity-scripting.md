@@ -164,7 +164,7 @@ import "forge-std/Script.sol";
 import "../src/NFT.sol";
 ```
 
-Just like how in Foundry tests we import `forge-std/Test.sol` to get utilities we’ll in our tests, that’s how we import `forge-std/Script.sol` in our scripts to get utilities we’ll need while writing scripts.
+Just like we may import Forge Std to get testing utilities when writing tests, Forge Std also provides some scripting utilities that we import here.
 
 The next line just imports the `NFT` contract.
 
