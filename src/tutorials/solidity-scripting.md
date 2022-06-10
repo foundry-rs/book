@@ -109,7 +109,7 @@ forge build
 
 ![Untitled](../images/solidity-scripting%20/compile-successful.png)
 
-If you get this, it's the contract compiled successfully.
+If your output looks like this, the contracts successfully compiled.
 
 ### Deploying our contract
 
