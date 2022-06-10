@@ -113,7 +113,7 @@ If you get this, it's the contract compiled successfully.
 
 ### Deploying our contract
 
-We’re going to deploy the `NFT` contract to the rinkeby testnet but to do this we’ll need some variables like a Rinkeby Rpc Url, the private key of an account that’s funded with Rinkeby Eth and an Etherscan key for the verification of the NFT contract.
+We’re going to deploy the `NFT` contract to the Rinkeby testnet, but to do this we’ll need to configure Foundry a bit, by setting things like a Rinkeby RPC URL, the private key of an account that’s funded with Rinkeby Eth, and an Etherscan key for the verification of the NFT contract.
 
 > 💡 Note: You can get some Rinkeby testnet ETH [here](https://faucet.paradigm.xyz/) .
 
