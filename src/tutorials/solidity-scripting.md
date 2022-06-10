@@ -128,7 +128,9 @@ PRIVATE_KEY=
 ETHERSCAN_KEY=
 ```
 
-Next, we have to create a folder and name it `script` then create a file in it called `NFT.s.sol`, the contents of NFT.s.sol should look like this:
+Next, we have to create a folder and name it `script` and create a file in it called `NFT.s.sol`. This is where we will create the deployment script itself.
+
+The contents of `NFT.s.sol` should look like this:
 
 ```solidity
 // SPDX-License-Identifier: UNLICENSED
