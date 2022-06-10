@@ -172,7 +172,7 @@ The next line just imports the `NFT` contract.
 contract MyScript is Script {
 ```
 
-We create a contract called `MyScript` and it inherits `Script` which is from the file we imported earlier.
+We create a contract called `MyScript` and it inherits `Script` from Forge Std.
 
 ```solidity
  function run() external {
