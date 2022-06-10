@@ -30,7 +30,7 @@ Next, we have to delete the `Contract.sol` file in the `src` folder and create a
 rm src/Contract.sol && touch src/NFT.sol && ls src
 ```
 
-![Untitled](../images/solidity-scripting%20/set-up-commands.png)
+![set up commands](../images/solidity-scripting%20/set-up-commands.png)
 
 Once that’s done, you should open up your preferred code editor and copy the code below into the `NFT.sol` file.
 
@@ -107,9 +107,8 @@ Now, let’s try compiling our contract to make sure everything is in order.
 forge build
 ```
 
-![Untitled](../images/solidity-scripting%20/compile-successful.png)
-
 If your output looks like this, the contracts successfully compiled.
+![compile successful](../images/solidity-scripting%20/compile-successful.png)
 
 ### Deploying our contract
 
@@ -208,7 +207,7 @@ forge script script/NFT.s.sol:MyScript --rpc-url $RINKEBY_RPC_URL  --private-key
 
 Forge is going to run our script and broadcast the transactions for us - this can take a little while, since Forge will also wait for the transaction receipts. You should see something like this after a minute or so:
 
-![Untitled](../images/solidity-scripting%20/contract-verified.png)
+![contract verified](../images/solidity-scripting%20/contract-verified.png)
 
 This confirms that you have successfully deployed the `NFT` contract to the Rinkeby testnet and have also verified it on Etherscan, all with one command.
 
