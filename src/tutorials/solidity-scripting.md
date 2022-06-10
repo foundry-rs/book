@@ -184,7 +184,7 @@ For script smart contracts we only need one function and that’s the run functi
 vm.startBroadcast();
 ```
 
-This Foundry cheat code is uses the address that calls the `Script` contract to create a transaction that can later be signed and sent on chain. In other words we’ll use it create the deployment transaction for the NFT contract.
+This is a special cheatcode that records calls and contract creations made by our main script contract. Later, we will broadcast these transactions to deploy our NFT contract.
 
 ```solidity
  NFT nft = new NFT("NFT_tutorial", "TUT", "baseUri");
