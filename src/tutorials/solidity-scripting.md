@@ -190,7 +190,7 @@ This Foundry cheat code is uses the address that calls the `Script` contract to 
  NFT nft = new NFT("NFT_tutorial", "TUT", "baseUri");
 ```
 
-You should be familiar with this part, all it does is create an instance of our NFT contract which will be deployed once we run the script.
+Here we just create our NFT contract. Because we called `vm.startBroadcast()` before this line, the contract creation will be recorded by Forge, and as mentioned previously, we can broadcast the transaction to deploy the contract on-chain.
 
 Now that you’re up to speed about what the script smart contract does, let’s run it.
 
