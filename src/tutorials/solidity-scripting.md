@@ -150,7 +150,7 @@ contract MyScript is Script {
 }
 ```
 
-This is what a script in Foundry looks like, now let’s take a walkthrough of the code and what it actually means and does.
+Now let’s read through the code and figure out what it actually means and does.
 
 ```solidity
 // SPDX-License-Identifier: UNLICENSED
