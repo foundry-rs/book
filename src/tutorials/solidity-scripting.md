@@ -157,7 +157,7 @@ Now let’s read through the code and figure out what it actually means and does
 pragma solidity ^0.8.13;
 ```
 
-Remember even if it’s a script it still works like a smart contract but is never deployed, so just like any other smart contract written in solidity the `pragma version` has to be specified.
+Remember even if it’s a script it still works like a smart contract, but is never deployed, so just like any other smart contract written in Solidity the `pragma version` has to be specified.
 
 ```solidity
 import "forge-std/Script.sol";
