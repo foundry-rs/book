@@ -23,3 +23,6 @@ anvil --hardfork <HARDFORK>
 anvil  -p, --port <PORT>
 ```
 
+> 📚 **Reference**
+>
+> See the [`anvil` Reference](../reference/anvil/) for a complete overview of all the available options.

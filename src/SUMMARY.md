@@ -23,7 +23,7 @@
   - [Forge Standard Library Overview](./forge/forge-std.md)
   - [Understanding Traces](./forge/traces.md)
   - [Forking Mode](./forge/forking-mode.md)
-<!--  - [Coverage Reports]() !-->
+  <!--  - [Coverage Reports]() !-->
 - [Advanced Testing](./forge/advanced-testing.md)
   - [Fuzz Testing](./forge/fuzz-testing.md)
   - [Differential Testing](./forge/differential-ffi-testing.md)
@@ -43,7 +43,7 @@
 
 - [Overview of Cast](./cast/README.md)
 
-# Anvil Overview 
+# Anvil Overview
 
 - [Overview of Anvil](./anvil/README.md)
 
@@ -61,6 +61,7 @@
 - [Creating an NFT with Solmate](./tutorials/solmate-nft.md)
 - [Docker and Foundry](./tutorials/foundry-docker.md)
 - [Testing EIP-712 Signatures](./tutorials/testing-eip712.md)
+- [Solidity Scripting](./tutorials/solidity-scripting.md)
 <!-- - [Incremental Adoption]() !-->
 
 # Appendix

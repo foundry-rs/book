@@ -16,7 +16,7 @@ Running the test, we see it passes:
 {{#include ../output/fuzz_testing/forge-test-no-fuzz:all}}
 ```
 
-This unit test *does test* that we can withdraw ether from our safe. However, who is to say that it works for all amounts, not just 1 ether?
+This unit test _does test_ that we can withdraw ether from our safe. However, who is to say that it works for all amounts, not just 1 ether?
 
 The general property here is: given a safe balance, when we withdraw, we should get whatever is in the safe.
 
@@ -53,7 +53,7 @@ You may want to exclude certain cases using the [`assume`](../cheatcodes/assume.
 
 ```solidity
 function testWithdraw(uint96 amount) public {
-    vm.assume(amount > 0.1 ether)
+    vm.assume(amount > 0.1 ether);
     // snip
 }
 ```
