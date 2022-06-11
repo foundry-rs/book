@@ -27,12 +27,12 @@
 - [Advanced Testing](./forge/advanced-testing.md)
   - [Fuzz Testing](./forge/fuzz-testing.md)
   - [Differential Testing](./forge/differential-ffi-testing.md)
-    <!--  - [Invariant Testing]() !-->
-    <!--  - [Symbolic Testing]() !-->
-    <!--  - [Table Testing]() !-->
-    <!--  - [Mutation Testing]() !-->
-    <!-- - [Linting and Formatting]() !-->
-    <!-- - [Generating Documentation]() !-->
+<!--  - [Invariant Testing]() !-->
+<!--  - [Symbolic Testing]() !-->
+<!--  - [Table Testing]() !-->
+<!--  - [Mutation Testing]() !-->
+<!-- - [Linting and Formatting]() !-->
+<!-- - [Generating Documentation]() !-->
 - [Deploying and Verifying](./forge/deploying.md)
 - [Gas Tracking](./forge/gas-tracking.md)
   - [Gas Reports](./forge/gas-reports.md)
