@@ -44,5 +44,5 @@ Where `<type>` can be `int256` or `uint256`.
 
 ```solidity
 int256[] data = [10, 20, 30, 40, 50]; 
-emit log_named_array("Data :", data);
+emit log_named_array("Data", data);
 ```
