@@ -28,7 +28,8 @@ Where `<type>` can be `int256` or `uint256`.
 #### Example
 
 ```solidity
-uint256[] data = [10, 20, 30, 40, 50]; 
+// Assuming storage
+// uint256[] data = [10, 20, 30, 40, 50]; 
 emit log_array(data);
 ```
 
