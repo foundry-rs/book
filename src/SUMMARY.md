@@ -219,6 +219,7 @@
       - [`find`](./reference/forge-std/find.md)
       - [`read`](./reference/forge-std/read.md)
     - [Std Math](./reference/forge-std/std-math.md)
+    - [Std Logs](./reference/forge-std/std-logs.md)
   - [DSTest Reference](./reference/ds-test.md)
   - [Cheatcodes Reference](./cheatcodes/README.md)
     - [Environment](./cheatcodes/environment.md)
