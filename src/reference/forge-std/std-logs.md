@@ -17,7 +17,7 @@ event log_named_array(string key, int256[] val);
 
 This section provides usage examples.
 
-### log\_array\<type\>
+### log\_array
 
 ```solidity
 event log_array_<type>(<type>[]);
