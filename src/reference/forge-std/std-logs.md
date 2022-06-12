@@ -20,7 +20,7 @@ This section provides usage examples.
 ### log\_array
 
 ```solidity
-event log_array_<type>(<type>[]);
+event log_array(<type>[] val);
 ```
 
 Where `<type>` can be `int256` or `uint256`.
