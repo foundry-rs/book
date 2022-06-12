@@ -32,7 +32,7 @@ uint256[] data = [10, 20, 30, 40, 50];
 emit log_array(data);
 ```
 
-### log\_named\_array\<type\>
+### log\_named\_array
 
 ```solidity
 event log_named_array_<type>(string key, <type>[] val);
