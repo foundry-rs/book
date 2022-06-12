@@ -1,0 +1,48 @@
+# Std Logs
+
+Std Logs adds additional logging events for forge.
+
+## Events
+
+Std Logs has 4 events to log arrays.
+
+```solidity
+event log_array(uint256[] val);
+event log_array(int256[] val);
+event log_named_array(string key, uint256[] val);
+event log_named_array(string key, int256[] val);
+```
+
+## Usage
+
+This section provides usage examples.
+
+### log\_array\<type\>
+
+```solidity
+event log_array_<type>(<type>[]);
+```
+
+Where `<type>` can be `int256` or `uint256`.
+
+#### Example
+
+```solidity
+uint256[] data = [10, 20, 30, 40, 50]; 
+emit log_array(data);
+```
+
+### log\_named\_array\<type\>
+
+```solidity
+event log_named_array_<type>(string key, <type>[] val);
+```
+
+Where `<type>` can be `int256` or `uint256`.
+
+#### Example
+
+```solidity
+int256[] data = [10, 20, 30, 40, 50]; 
+emit log_named_array("Data :", data);
+```
