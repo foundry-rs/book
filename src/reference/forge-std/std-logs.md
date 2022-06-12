@@ -36,7 +36,7 @@ emit log_array(data);
 ### log\_named\_array
 
 ```solidity
-event log_named_array_<type>(string key, <type>[] val);
+event log_named_array(string key, <type>[] val);
 ```
 
 Where `<type>` can be `int256` or `uint256`.
