@@ -13,7 +13,7 @@ function broadcast(address who) external;
 ### Description
 
 Using the address that calls the test contract or the address provided
-as the sender, has the next call (at this call depth only) create a
+as the sender, have the next call (at this call depth only) create a
 transaction that can later be signed and sent onchain.
 
 ### Examples
