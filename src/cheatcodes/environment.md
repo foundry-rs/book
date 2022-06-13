@@ -18,3 +18,6 @@
 - [`mockCall`](./mock-call.md)
 - [`clearMockedCalls`](./clear-mocked-calls.md)
 - [`coinbase`](./coinbase.md)
+- [`broadcast`](./broadcast.md)
+- [`startBroadcast`](./start-broadcast.md)
+- [`stopBroadcast`](./stop-broadcast.md)
