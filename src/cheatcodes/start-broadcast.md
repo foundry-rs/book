@@ -13,7 +13,7 @@ function startBroadcast(address who) external;
 ### Description
 
 Using the address that calls the test contract or the address provided
-as the sender, has all subsequent calls (at this call depth only) create
+as the sender, have all subsequent calls (at this call depth only) create
 transactions that can later be signed and sent onchain.
 
 ### Examples
