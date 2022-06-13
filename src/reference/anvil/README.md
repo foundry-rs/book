@@ -136,7 +136,7 @@ Send transactions impersonating specific account and contract addresses
 Stops impersonating an account if previously set with `anvil_impersonateAccount`
 
 `anvil_getAutomine`  
-Returns true if automatic mining is enabled, and false.
+Returns true if automatic mining is enabled, and false
 
 `anvil_mine`  
 Mines a series of blocks
@@ -178,7 +178,7 @@ Sets the base fee of the next block
 The special methods come from Ganache. You can take a look at the documentation [here](https://github.com/trufflesuite/ganache-cli-archive/blob/master/README.md).
 
 `evm_setAutomine`  
-Enables or disables, based on the single boolean argument, the automatic mining of new blocks with each new transaction submitted to the network.
+Enables or disables, based on the single boolean argument, the automatic mining of new blocks with each new transaction submitted to the network
   
 `evm_setIntervalMining`  
 Sets the mining behavior to interval with the given interval (seconds)
@@ -190,10 +190,16 @@ Snapshot the state of the blockchain at the current block
 Revert the state of the blockchain to a previous snapshot. Takes a single parameter, which is the snapshot id to revert to
 
 `evm_increaseTime`  
-Jump forward in time by the given amount of time, in seconds.
+Jump forward in time by the given amount of time, in seconds
 
 `evm_setNextBlockTimestamp`  
 Similar to `evm_increaseTime` but takes the exact timestamp that you want in the next block
+
+`anvil_setBlockTimestampInterval`  
+Similar to `evm_increaseTime` but sets a block timestamp `interval`. The timestamp of the next block will be computed as `lastBlock_timestamp + interval`
+
+`anvil_removeBlockTimestampInterval`  
+Removes an `anvil_setBlockTimestampInterval` if it exists
 
 `evm_mine`  
 Mine a single block
