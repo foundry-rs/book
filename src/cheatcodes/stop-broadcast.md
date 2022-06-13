@@ -7,7 +7,7 @@ function stopBroadcast() external;
 
 ### Description
 
-Stops collecting onchain transactions.
+Stops collecting transactions for later on-chain broadcasting.
 
 ### Examples
 
