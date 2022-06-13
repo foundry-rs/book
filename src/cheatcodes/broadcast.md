@@ -23,7 +23,7 @@ function deploy() public {
     cheats.broadcast(ACCOUNT_A);
     Test test = new Test();
 
-    // this wont generate tx to sign
+    // this won't generate tx to sign
     uint256 b = test.t(4);
 
     // this will
