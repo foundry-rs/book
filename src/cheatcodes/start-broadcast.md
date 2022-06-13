@@ -19,29 +19,19 @@ transactions that can later be signed and sent onchain.
 ### Examples
 
 ```solidity
-contract NoLink is DSTest {
-    function t(uint256 a) public returns (uint256) {
-        uint256 b = 0;
-        for (uint256 i; i < a; i++) {
-            b += i;
-        }
-        emit log_string("here");
-        return b;
-    }
-    function view_me() public pure returns (uint256) {
-        return 1337;
-    }
+function t(uint256 a) public returns (uint256) {
+    uint256 b = 0;
+    emit log_string("here");
+    return b;
 }
 
-contract BroadcastTestNoLinking is DSTest {
-    function deployMany() public {
-        cheats.startBroadcast();
-
-        for(uint i; i< 100; i++) {
-            NoLink test9 = new NoLink();
-        }
-
-        cheats.stopBroadcast();
-    }
+function deployOther() public {
+    cheats.startBroadcast(ACCOUNT_A);
+    Test test = new Test();
+    
+    // will trigger a transaction
+    test.t(1);
+    
+    cheats.stopBroadcast();
 }
 ```
