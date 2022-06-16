@@ -566,6 +566,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "Julian-dev28",
+      "name": "Julian Martinez",
+      "avatar_url": "https://avatars.githubusercontent.com/u/73849597?v=4",
+      "profile": "https://www.linkedin.com/in/julian-martinez-b29b0b13b/",
+      "contributions": [
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7,

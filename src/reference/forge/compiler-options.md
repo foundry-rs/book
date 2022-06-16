@@ -29,14 +29,16 @@
 `--extra-output` *selector*  
 &nbsp;&nbsp;&nbsp;&nbsp;Extra output to include in the contract's artifact.
 
-&nbsp;&nbsp;&nbsp;&nbsp;Example keys: `evm.assembly`, `ewasm`, `ir`, `ir-optimized`, `metadata`.
+&nbsp;&nbsp;&nbsp;&nbsp;Example keys: `abi`, `storageLayout`, `evm.assembly`, `ewasm`, `ir`, `ir-optimized`, `metadata`.
 
 &nbsp;&nbsp;&nbsp;&nbsp;For a full description, see the [Solidity docs][output-desc].
 
 `---extra-output-files` *selector*  
 &nbsp;&nbsp;&nbsp;&nbsp;Extra output to write to separate files.
 
-&nbsp;&nbsp;&nbsp;&nbsp;Valid values: `metadata`, `ir`, `ir-optimized`, `ewasm`, `evm.assembly`.
+&nbsp;&nbsp;&nbsp;&nbsp;Example keys: `abi`, `storageLayout`, `evm.assembly`, `ewasm`, `ir`, `ir-optimized`, `metadata`.
+
+&nbsp;&nbsp;&nbsp;&nbsp;For a full description, see the [Solidity docs][output-desc].
 
 `--evm-version` *version*  
 &nbsp;&nbsp;&nbsp;&nbsp;The target EVM version.
