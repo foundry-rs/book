@@ -19,3 +19,6 @@
 `-o` *path*  
 `--out` *path*  
 &nbsp;&nbsp;&nbsp;&nbsp;The project's artifacts directory.
+
+`--silent`   
+&nbsp;&nbsp;&nbsp;&nbsp;Suppress all output
