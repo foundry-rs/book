@@ -211,4 +211,4 @@ Forge is going to run our script and broadcast the transactions for us - this ca
 
 This confirms that you have successfully deployed the `NFT` contract to the Rinkeby testnet and have also verified it on Etherscan, all with one command.
 
-> 💡 Note: For further reading about solidity scripting, you check out the `forge script` [reference](../reference/forge/forge-script.md).
+>💡 Note: A full implementation of this tutorial can be found [here](https://github.com/Perelyn-sama/solidity-scripting) and for further reading about solidity scripting, you can check out the `forge script` [reference](../reference/forge/forge-script.md).
