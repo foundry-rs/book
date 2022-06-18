@@ -228,4 +228,4 @@ forge script script/NFT.s.sol:MyScript --fork-url http://localhost:8545 \
  --private-key $PRIVATE_KEY0 --broadcast
 ```
 
-> 💡 Note: For further reading about solidity scripting, you check out the `forge script` [reference](../reference/forge/forge-script.md).
+>💡 Note: A full implementation of this tutorial can be found [here](https://github.com/Perelyn-sama/solidity-scripting) and for further reading about solidity scripting, you can check out the `forge script` [reference](../reference/forge/forge-script.md).
