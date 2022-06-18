@@ -1,6 +1,6 @@
 ## 📖 Foundry Book
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-62-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-63-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 A book on all things Foundry. [Read now](https://book.getfoundry.sh).
@@ -108,6 +108,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/PraneshASP"><img src="https://avatars.githubusercontent.com/u/42379522?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Pranesh A S</b></sub></a><br /><a href="#maintenance-PraneshASP" title="Maintenance">🚧</a></td>
     <td align="center"><a href="https://github.com/0xYYY"><img src="https://avatars.githubusercontent.com/u/86655648?v=4?s=100" width="100px;" alt=""/><br /><sub><b>0xYYY</b></sub></a><br /><a href="https://github.com/foundry-rs/book/commits?author=0xYYY" title="Documentation">📖</a></td>
     <td align="center"><a href="https://www.linkedin.com/in/julian-martinez-b29b0b13b/"><img src="https://avatars.githubusercontent.com/u/73849597?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Julian Martinez</b></sub></a><br /><a href="#maintenance-Julian-dev28" title="Maintenance">🚧</a></td>
+    <td align="center"><a href="https://tirthnp.github.io/"><img src="https://avatars.githubusercontent.com/u/19911354?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Tirth Patel</b></sub></a><br /><a href="#maintenance-Tirthnp" title="Maintenance">🚧</a></td>
   </tr>
 </table>
 
