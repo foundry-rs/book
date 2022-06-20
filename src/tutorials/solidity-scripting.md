@@ -211,4 +211,21 @@ Forge is going to run our script and broadcast the transactions for us - this ca
 
 This confirms that you have successfully deployed the `NFT` contract to the Rinkeby testnet and have also verified it on Etherscan, all with one command.
 
+### Deploying locally
+
+You can deploy to Anvil, the local testnet, by configuring the port as the `fork-url`.
+
+First, start Anvil:
+
+```sh
+anvil
+```
+
+Then run the following script with one of the private keys given to you by Anvil:
+
+```sh
+forge script script/NFT.s.sol:MyScript --fork-url http://localhost:8545 \
+ --private-key $PRIVATE_KEY0 --broadcast
+```
+
 >💡 Note: A full implementation of this tutorial can be found [here](https://github.com/Perelyn-sama/solidity-scripting) and for further reading about solidity scripting, you can check out the `forge script` [reference](../reference/forge/forge-script.md).
