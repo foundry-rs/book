@@ -585,6 +585,15 @@
       "contributions": [
         "maintenance"
       ]
+    },
+    {
+      "login": "dabit3",
+      "name": "Nader Dabit",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1857282?v=4",
+      "profile": "https://github.com/dabit3",
+      "contributions": [
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7,
