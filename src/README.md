@@ -42,7 +42,9 @@ Tutorials on building smart contracts with Foundry.
 
 - [Creating an NFT with Solmate](./tutorials/solmate-nft.md)
 - [Docker and Foundry](./tutorials/foundry-docker.md)
-- [Incremental Adoption]()
+- [Testing EIP-712 Signatures](./tutorials/testing-eip712.md)
+- [Solidity Scripting](./tutorials//solidity-scripting.md)
+<!-- - [Incremental Adoption]() -->
 
 **Appendix**
 
@@ -50,6 +52,7 @@ References, troubleshooting and more.
 
 - [forge Commands](./reference/forge/)
 - [cast Commands](./reference/cast/)
+- [anvil commands](./reference/anvil/)
 - [Config Reference](./reference/config.md)
 - [Forge Standard Library Reference](./reference/forge-std/)
 - [DSTest Reference](./reference/ds-test.md)
