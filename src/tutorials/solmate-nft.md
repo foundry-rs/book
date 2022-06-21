@@ -18,8 +18,7 @@ These dependencies will be added as git submodules to your project.
 
 If you have followed the instructions correctly your project should be structured like this:
 
-<!-- ![Project structure](../images/nft-tutorial/nft-tutorial-project-structure.png) -->
-![Project structure](../images/nft-tutorial/new-nft-tutorial-project-structure.png)
+![Project structure](../images/nft-tutorial/nft-tutorial-project-structure.png)
 
 ### Implement a basic NFT
 
