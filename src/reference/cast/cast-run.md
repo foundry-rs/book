@@ -30,6 +30,10 @@ You can also open the transaction in a debugger by passing `--debug`.
 &nbsp;&nbsp;&nbsp;&nbsp;Executes the transaction only with the state from the previous block.  
 &nbsp;&nbsp;&nbsp;&nbsp;May result in different results than the live execution!
 
+`-v`  
+`--verbose`  
+&nbsp;&nbsp;&nbsp;&nbsp;Addresses are fully displayed instead of being truncated.
+
 `-d`  
 `--debug`  
 &nbsp;&nbsp;&nbsp;&nbsp;Open the script in the [debugger][debugger].
