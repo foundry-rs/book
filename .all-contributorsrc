@@ -594,6 +594,15 @@
       "contributions": [
         "maintenance"
       ]
+    },
+    {
+      "login": "h00p30",
+      "name": "h00p30",
+      "avatar_url": "https://avatars.githubusercontent.com/u/105890602?v=4",
+      "profile": "https://github.com/h00p30",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
