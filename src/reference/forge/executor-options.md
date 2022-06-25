@@ -1,6 +1,7 @@
 #### Executor Options
 
-`--base-fee, --block-base-fee-per-gas` *fee*  
+`--base-fee <FEE>`  
+`--block-base-fee-per-gas <FEE>`  
 &nbsp;&nbsp;&nbsp;&nbsp;The base fee in a block (in wei)
 
 `--block-coinbase` *address*  
