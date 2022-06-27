@@ -6,6 +6,9 @@
 `--gas-price` *price*  
 &nbsp;&nbsp;&nbsp;&nbsp;Gas price for the transaction, or max fee per gas for EIP1559 transactions.
 
+`--priority-gas-price` *price*  
+&nbsp;&nbsp;&nbsp;&nbsp;Max priority fee per gas for EIP1559 transactions.
+
 {{#include ../common/tx-value-option.md}}
 
 `--nonce` *nonce*  
