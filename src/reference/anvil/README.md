@@ -293,6 +293,7 @@ Returns the details of all transactions currently pending for inclusion in the n
 
 
 #### Executor Environment Config
+`--base-fee <FEE>`  
 `--block-base-fee-per-gas <FEE>`  
 &nbsp;&nbsp;&nbsp;&nbsp; The base fee in a block
 
