@@ -265,3 +265,4 @@
       - [`addr`](./cheatcodes/addr.md)
       - [`sign`](./cheatcodes/sign.md)
       - [`label`](./cheatcodes/label.md)
+- [Misc](./misc/README.md)

@@ -44,4 +44,4 @@ Structs are encoded as tuples, See [struct encoding](./reference/common/struct-e
     ```
 ### SEE ALSO
 
-[cast](./cast.md), [struct encoding](./reference/common/struct-encoding.md)
+[cast](./cast.md), [struct encoding](./misc/struct-encoding.md)

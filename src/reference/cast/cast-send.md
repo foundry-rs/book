@@ -71,4 +71,4 @@ Structs are encoded as tuples, See [struct encoding](./reference/common/struct-e
     ```
 ### SEE ALSO
 
-[cast](./cast.md), [cast call](./cast-call.md), [cast publish](./cast-publish.md), [cast receipt](./cast-receipt.md), [struct encoding](./reference/common/struct-encoding.md)
+[cast](./cast.md), [cast call](./cast-call.md), [cast publish](./cast-publish.md), [cast receipt](./cast-receipt.md), [struct encoding](./misc/struct-encoding.md)
