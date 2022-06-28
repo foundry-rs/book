@@ -118,9 +118,7 @@ The standard methods are based on [this](https://eth.wiki/json-rpc/API) referenc
   
 * `eth_submitHashrate`  
   
-* `eth_feeHistory`  
-
-* `debug_traceTransaction`  
+* `eth_feeHistory`
   
 * `trace_transaction`
   
