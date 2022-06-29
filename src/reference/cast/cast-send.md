@@ -67,7 +67,7 @@ The destination (*to*) can be an ENS name or an address.
     Structs are encoded as tuples (see [struct encoding](./reference/common/struct-encoding.md))
 
     ```sh
-    cast send --ledger 0x... "myfunction((address,uint256))" 0x... 1
+    cast send "myfunction((address,uint256))" 0x... "(0x...,1)"
     ```
 ### SEE ALSO
 
