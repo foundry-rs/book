@@ -1,3 +1,3 @@
 ## Misc
 
-- [struct encoding](./struct-encoding.md)
+- [Struct encoding](./struct-encoding.md)

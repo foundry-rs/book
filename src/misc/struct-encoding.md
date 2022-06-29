@@ -1,6 +1,6 @@
-#### Struct Encoding
+## Struct Encoding
 
-Structs are custom defined types that can group several variables:
+Structs are user defined types that can group several variables:
 
 ```solidity
 struct MyStruct {
@@ -11,11 +11,11 @@ struct MyStruct {
 
 Only the new [ABI coder v2](https://docs.soliditylang.org/en/latest/layout-of-source-files.html#abi-coder-pragma) can encode and decode arbitrarily nested arrays and structs. Since Solidity 0.8.0 it is activated by default, prior to that it needs to be activated via `pragma experimental ABIEncoderV2`.
 
-Structs map to the ABI type "tuple", See also [Mapping Solidity to ABI types](https://docs.soliditylang.org/en/latest/abi-spec.html#mapping-solidity-to-abi-types)
+Solidity structs map to the ABI type "tuple". For more information on how Solidity types map to ABI types see [Mapping Solidity to ABI types](https://docs.soliditylang.org/en/latest/abi-spec.html#mapping-solidity-to-abi-types) in the Solidity documentation.
 
-Structs are therefor encoded and decodes as tuples. So `MyStruct` is a `(address,uint256)` tuple when it comes to the ABI spec.
+Structs are therefore encoded and decodes as tuples. So the struct we defined above, `MyStruct`, maps to the tuple `(address,uint256)` in terms of the ABI.
 
-For example the ABI of
+Let's see how this works in a contract:
 
 ```solidity
 pragma solidity =0.8.15;
@@ -30,7 +30,7 @@ contract Test {
 }
 ```
 
-results in the following ABI json object:
+The ABI of the `f` function in this contract is:
 
 ```json
 {
@@ -60,5 +60,4 @@ results in the following ABI json object:
 }
 ```
 
-which reads:
-The function `f` takes 1 input of type `tuple` with two components of type `address` and `uint256`.
+which reads: The function `f` takes 1 input of type `tuple` with two components of type `address` and `uint256`.
