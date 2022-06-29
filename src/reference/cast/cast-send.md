@@ -52,6 +52,23 @@ The destination (*to*) can be an ENS name or an address.
     cast send --ledger 0x... "deposit(address,uint256)" 0x... 1
     ```
 
+3. Call a function that expects a `struct`:
+
+    ```solidity
+    contract Test {
+        struct MyStruct {
+            address addr;
+            uint256 amount;
+        }
+        function myfunction(MyStruct memory t) public pure {}
+    }
+    ```
+
+    Structs are encoded as tuples (see [struct encoding](./reference/common/struct-encoding.md))
+
+    ```sh
+    cast send "myfunction((address,uint256))" 0x... "(0x...,1)"
+    ```
 ### SEE ALSO
 
-[cast](./cast.md), [cast call](./cast-call.md), [cast publish](./cast-publish.md), [cast receipt](./cast-receipt.md)
+[cast](./cast.md), [cast call](./cast-call.md), [cast publish](./cast-publish.md), [cast receipt](./cast-receipt.md), [struct encoding](./misc/struct-encoding.md)
