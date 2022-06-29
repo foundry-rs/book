@@ -17,6 +17,12 @@ To see the book change live run:
 mdbook serve
 ```
 
+To run the book with docker, run:
+
+```sh
+docker run -p 3000:3000 -v `pwd`:/book peaceiris/mdbook serve
+```
+
 To add a new section (file) to the book, add it to [`SUMMARY.md`](src/SUMMARY.md).
 
 For a more structured overview of the current issues, see [the GitHub project](https://github.com/orgs/foundry-rs/projects/1).
