@@ -1,0 +1,61 @@
+## Testing on a forked network
+
+### Introduction
+
+Combining `anvil` and `cast`, you can fork and test by interacting with real contracts on a network. The goal of this tutorial is to show you how to transfer $DAI tokens from someone who holds $DAI to an account created by `anvil`. 
+
+### Set Up
+Let's start by forking mainnet.
+```
+anvil --fork-url https://mainnet.infura.io/v3/$INFURA_KEY
+```
+You will see 10 accounts are created with their public and private keys. We will work with `0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266` (Let's call this user Alice).
+
+### Transferring $DAI
+Go to Etherscan and search for holders of $DAI tokens [here](https://etherscan.io/token/0x6b175474e89094c44da98b954eedeac495271d0f#balances). Let's pick a random user, `0xad0135af20fa82e106607257143d0060a7eb5cbf`. Let's export our contracts and users,
+```
+export ALICE=0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266
+export DAI=0x6b175474e89094c44da98b954eedeac495271d0f
+export LUCKY_USER=0xad0135af20fa82e106607257143d0060a7eb5cbf
+```
+
+Check Alice's balance by doing,
+```
+$ cast call $DAI \
+  "balanceOf(address)(uint256)" \
+  $ALICE
+> 0
+```
+
+Check our lucky $DAI user's balance by doing,
+```
+$ cast call $DAI \
+  "balanceOf(address)(uint256)" \
+  $LUCKY_USER
+> 71686045944718512103110072
+```
+
+Time to transfer some tokens from the lucky user to Alice,
+```
+cast rpc anvil_impersonateAccount $LUCKY_USER
+cast send $DAI \
+--from $LUCKY_USER \
+  "transfer(address,uint256)(bool)" \
+  $ALICE \
+  1686045944718512103110072
+> blockHash               0xbf31c45f6935a0714bb4f709b5e3850ab0cc2f8bffe895fefb653d154e0aa062
+  blockNumber             15052891
+  ...
+```
+
+Let's check their balances,
+```
+cast call $DAI \
+  "balanceOf(address)(uint256)" \
+  $ALICE
+> 1686045944718512103110072
+$ cast call $DAI \
+  "balanceOf(address)(uint256)" \
+  $LUCKY_USER
+> 70000000000000000000000000
+```
