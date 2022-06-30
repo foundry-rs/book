@@ -240,9 +240,6 @@ Returns the details of all transactions currently pending for inclusion in the n
 `--hardfork <HARDFORK>`  
 &nbsp;&nbsp;&nbsp;&nbsp; Choose the EVM hardfork to use [default: latest]
 
-`--host <HOST>`  
-&nbsp;&nbsp;&nbsp;&nbsp; The IP address the server will listen on
-
 `-m, --mnemonic <MNEMONIC>`  
 &nbsp;&nbsp;&nbsp;&nbsp; BIP39 mnemonic phrase used for generating accounts
 
@@ -266,28 +263,11 @@ Returns the details of all transactions currently pending for inclusion in the n
 `-f, --fork-url <URL>`  
 &nbsp;&nbsp;&nbsp;&nbsp; Fetch state over a remote endpoint instead of starting from an empty state
 
-`--ffi`  
-&nbsp;&nbsp;&nbsp;&nbsp; Enables the FFI cheatcode
-
 `--fork-block-number <BLOCK>`  
 &nbsp;&nbsp;&nbsp;&nbsp; Fetch state from a specific block number over a remote endpoint (Must pass --fork-url in the same command-line)
 
-`--initial-balance <BALANCE>`  
-&nbsp;&nbsp;&nbsp;&nbsp; The initial balance of deployed test contracts
-
 `--no-storage-caching>`  
 &nbsp;&nbsp;&nbsp;&nbsp; Explicitly disables the use of RPC caching. All storage slots are read entirely from the endpoint. This flag overrides the project's configuration file (Must pass --fork-url in the same command-line)
-
-`--sender <ADDRESS> `  
-&nbsp;&nbsp;&nbsp;&nbsp; The address which will be executing tests
-
-`-v, --verbosity`  
-&nbsp;&nbsp;&nbsp;&nbsp; Verbosity of the EVM. Pass multiple times to increase the verbosity (e.g. -v, -vv, -vvv)  
- &nbsp;&nbsp;&nbsp;&nbsp; Verbosity levels:  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - 2: Print logs for all tests  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - 3: Print execution traces for failing tests  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - 4: Print execution traces for all tests, and setup traces for failing tests  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - 5: Print execution and setup traces for all tests
 
 
 #### Executor Environment Config
@@ -295,20 +275,8 @@ Returns the details of all transactions currently pending for inclusion in the n
 `--block-base-fee-per-gas <FEE>`  
 &nbsp;&nbsp;&nbsp;&nbsp; The base fee in a block
 
-`--block-coinbase <ADDRESS>`  
-&nbsp;&nbsp;&nbsp;&nbsp; The coinbase of the block
-
-`--block-difficulty <DIFFICULTY>`  
-&nbsp;&nbsp;&nbsp;&nbsp; The block difficulty
-
 `--block-gas-limit <GAS_LIMIT>`  
 &nbsp;&nbsp;&nbsp;&nbsp; The block gas limit
-
-`--block-number <BLOCK>`  
-&nbsp;&nbsp;&nbsp;&nbsp; The block number
-
-`--block-timestamp <TIMESTAMP>`  
-&nbsp;&nbsp;&nbsp;&nbsp; The timestamp of the block
 
 `--chain-id <CHAIN_ID>`  
 &nbsp;&nbsp;&nbsp;&nbsp; The chain ID
@@ -319,10 +287,6 @@ Returns the details of all transactions currently pending for inclusion in the n
 `--gas-price <GAS_PRICE>`  
 &nbsp;&nbsp;&nbsp;&nbsp; The gas price
 
-`--tx-origin <ADDRESS>`  
-&nbsp;&nbsp;&nbsp;&nbsp; The transaction origin
-
-
 #### Server Options
 `--allow-origin <allow-origin>`  
 &nbsp;&nbsp;&nbsp;&nbsp; Set the CORS allow_origin [default: *]
@@ -330,6 +294,8 @@ Returns the details of all transactions currently pending for inclusion in the n
 `--no-cors`  
 &nbsp;&nbsp;&nbsp;&nbsp; Disable CORS
 
+`--host <HOST>`  
+&nbsp;&nbsp;&nbsp;&nbsp; The IP address the server will listen on
 
 ### EXAMPLES
 1. Set the number of accounts to 15 and their balance to 300 ETH
