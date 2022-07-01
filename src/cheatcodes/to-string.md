@@ -32,7 +32,7 @@ assertEq("0x7109709ecfa91a80626ff3989d68f67f5b1dd12d", stringBytes);
 ```
 
 ```solidity
-address testAddress =  0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266;
+address testAddress =  0x7109709ECfa91a80626fF3989D68f67F5b1DD12D;
 string memory stringAddress = cheats.toString(testAddress);
-assertEq("0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266", stringAddress);
+assertEq("0x7109709ECfa91a80626fF3989D68f67F5b1DD12D", stringAddress);
 ```
