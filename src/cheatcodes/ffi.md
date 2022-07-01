@@ -18,6 +18,7 @@ It is generally advised to use this cheat code as a last resort, and to not enab
 - Make sure that the output does not include a `\n` newline character. (e.g in Rust use `print!` vs `println!`)
 - Remember that the script will be executed from the top-level directory of your project, not inside `test`
 - Make sure that the inputs array does not have empty elements. They will be handled as inputs by the script, instead of space
+- Use the cheatcode `toString` to easily convert arbitrary data to strings, so that you can pass them as command-line arguments
 
 ### Examples
 
