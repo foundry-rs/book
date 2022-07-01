@@ -62,6 +62,7 @@
 - [Docker and Foundry](./tutorials/foundry-docker.md)
 - [Testing EIP-712 Signatures](./tutorials/testing-eip712.md)
 - [Solidity Scripting](./tutorials/solidity-scripting.md)
+- [Testing on a Forked Network](./tutorials/testing-on-a-forked-network.md)
 <!-- - [Incremental Adoption]() !-->
 
 # Appendix
