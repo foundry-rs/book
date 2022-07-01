@@ -1,6 +1,6 @@
 #### Transaction Options
 
-`--gas` *gas*  
+`--gas-limit` *gas_limit*  
 &nbsp;&nbsp;&nbsp;&nbsp;Gas limit for the transaction.
 
 `--gas-price` *price*  
@@ -13,9 +13,6 @@
 
 `--nonce` *nonce*  
 &nbsp;&nbsp;&nbsp;&nbsp;Nonce for the transaction.
-
-`--resend`  
-&nbsp;&nbsp;&nbsp;&nbsp;Reuse the latest nonce of the sending account.
 
 `--legacy`  
 &nbsp;&nbsp;&nbsp;&nbsp;Send a legacy transaction instead of an [EIP1559][eip1559] transaction.

@@ -18,7 +18,11 @@ The destination (*to*) can be an ENS name or an address.
 
 ### OPTIONS
 
-{{#include tx-options.md}}
+{{#include ../common/transaction-options.md}}
+
+`--resend`  
+&nbsp;&nbsp;&nbsp;&nbsp;Reuse the latest nonce of the sending account.
+
 
 #### Receipt Options
 
