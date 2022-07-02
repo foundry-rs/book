@@ -45,6 +45,7 @@ Additionally, we can tell Forge to verify our contract on Etherscan, if the netw
 $ forge create --rpc-url <your_rpc_url> \
     --constructor-args "ForgeUSD" "FUSD" 18 1000000000000000000000 \
     --private-key <your_private_key> src/MyToken.sol:MyToken \
+    --etherscan-api-key <your_etherscan_api_key> \
     --verify
 ```
 
