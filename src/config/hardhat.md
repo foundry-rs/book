@@ -82,9 +82,9 @@ Before we start, let's take a look at the directories:
 - Hardhat unit test is in `test`, and we will put Foundry test files in `test/foundry`
 - Hardhat puts its cache in `cache`, ann we will put Foundry cache in `forge-cache`
 
-### 4-step Instruction
+### 4 steps to add foundry
 
-1. Copy `lib/forge-std` from a newly-created empty Foundry project to this Hardhat project directory.
+1. Copy `lib/forge-std` from a newly-created empty Foundry project to this Hardhat project directory. A note: you can also run `forge init --force` to init a Foundry project in this non-empty directory and remove unneeded directories created by Foundry init.
 2. Copy `foundry.toml` configuration to this Hardhat project directory and change `src`, `out`, `test`, `cache_path` in it:
 
 ```toml
@@ -105,11 +105,11 @@ ds-test/=lib/forge-std/lib/ds-test/src/
 forge-std/=lib/forge-std/src/
 ```
 
-See more on `remappings.txt` and VS Code Solidity at: [Remapping dependencies](projects/dependencies.html?highlight=remap#remapping-dependencies), [Integrating with VSCode](/config/vscode.html)
+See more on `remappings.txt` and VS Code Solidity extension: [Remapping dependencies](projects/dependencies.html?highlight=remap#remapping-dependencies), [Integrating with VSCode](/config/vscode.html)
 
 4. Make a sub-directory `test/foundry` and write Foundry tests in it. 
 
-Let's put the sample test file `Contract.t.sol` in it and run Foundry test
+Let's put the sample test file `Contract.t.sol` in this directory and run Foundry test
 ```
 forge test
 ```
