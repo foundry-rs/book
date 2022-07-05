@@ -82,7 +82,7 @@ Before we start, let's take a look at the directories:
 - Hardhat unit test is in `test`, and we will put Foundry test files in `test/foundry`
 - Hardhat puts its cache in `cache`, ann we will put Foundry cache in `forge-cache`
 
-### 4 steps to add foundry
+### 4 steps to add Foundry test
 
 1. Copy `lib/forge-std` from a newly-created empty Foundry project to this Hardhat project directory. A note: you can also run `forge init --force` to init a Foundry project in this non-empty directory and remove unneeded directories created by Foundry init.
 2. Copy `foundry.toml` configuration to this Hardhat project directory and change `src`, `out`, `test`, `cache_path` in it:
