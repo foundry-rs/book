@@ -313,6 +313,6 @@ Returns the details of all transactions currently pending for inclusion in the n
   anvil --order fifo
   ```
 
-### Usage within docker
+### Usage within Docker
 
-In order to run anvil as a service in Github Actions with the [docker container](./tutorials/foundry-docker.md), where passing arguments to the entrypoint command is not possible, use the `ANVIL_IP_ADDR` env var to set the host's ip. `ANVIL_IP_ADDR=0.0.0.0` is equivalent to providing the `--host <ip>` argument.
+In order to run anvil as a service in Github Actions with the [Docker container](./tutorials/foundry-docker.md), where passing arguments to the entrypoint command is not possible, use the `ANVIL_IP_ADDR` environment variable to set the host's IP. `ANVIL_IP_ADDR=0.0.0.0` is equivalent to providing the `--host <ip>` option.
