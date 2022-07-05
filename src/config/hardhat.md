@@ -69,3 +69,49 @@ paths: {
 ```
 
 Now, Hardhat should work well with Foundry. You can run Foundry tests or Hardhat tests / scripts and have access to your contracts.
+
+### Use Foundry in an existing Hardhat project
+
+Suppose that you already have a Hardhat project with some dependencies such as `@OpenZeppelin/contracts` in directory `node_modules/`. 
+
+You can use Foundry test in this project in 4 steps.
+
+Before we start, let's take a look at the directories: 
+
+- Contracts are in `contracts`
+- Hardhat unit test is in `test`, and we will put Foundry test files in `test/foundry`
+- Hardhat puts its cache in `cache`, ann we will put Foundry cache in `forge-cache`
+
+### 4 steps to add Foundry test
+
+1. Copy `lib/forge-std` from a newly-created empty Foundry project to this Hardhat project directory. A note: you can also run `forge init --force` to init a Foundry project in this non-empty directory and remove unneeded directories created by Foundry init.
+2. Copy `foundry.toml` configuration to this Hardhat project directory and change `src`, `out`, `test`, `cache_path` in it:
+
+```toml
+[default]
+src = 'contracts'
+out = 'out'
+libs = ['node_modules', 'lib']
+test = 'test/foundry'
+cache_path  = 'forge-cache'
+
+# See more config options https://book.getfoundry.sh/reference/config.html
+```
+
+3. Create a `remappings.txt` to make Foundry project work well with VS Code Solidity extension:
+
+```ignore
+ds-test/=lib/forge-std/lib/ds-test/src/
+forge-std/=lib/forge-std/src/
+```
+
+See more on `remappings.txt` and VS Code Solidity extension: [Remapping dependencies](projects/dependencies.html?highlight=remap#remapping-dependencies), [Integrating with VSCode](/config/vscode.html)
+
+4. Make a sub-directory `test/foundry` and write Foundry tests in it. 
+
+Let's put the sample test file `Contract.t.sol` in this directory and run Foundry test
+```bash
+forge test
+```
+
+Now, Foundry test works in this existing Hardhat project. As the Hardhat project is not touched and it can work as before.
