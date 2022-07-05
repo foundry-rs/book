@@ -100,7 +100,7 @@ cache_path  = 'forge-cache'
 
 3. Create a `remappings.txt` to make Foundry project work well with VS Code Solidity extension:
 
-```
+```ignore
 ds-test/=lib/forge-std/lib/ds-test/src/
 forge-std/=lib/forge-std/src/
 ```
@@ -110,7 +110,7 @@ See more on `remappings.txt` and VS Code Solidity extension: [Remapping dependen
 4. Make a sub-directory `test/foundry` and write Foundry tests in it. 
 
 Let's put the sample test file `Contract.t.sol` in this directory and run Foundry test
-```
+```bash
 forge test
 ```
 
