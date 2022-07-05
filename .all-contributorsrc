@@ -612,6 +612,15 @@
       "contributions": [
         "maintenance"
       ]
+    },
+    {
+      "login": "fjun99",
+      "name": "fangjun",
+      "avatar_url": "https://avatars.githubusercontent.com/u/943418?v=4",
+      "profile": "https://github.com/fjun99",
+      "contributions": [
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7,
