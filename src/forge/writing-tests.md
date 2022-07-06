@@ -22,24 +22,31 @@ Forge uses the following keywords in tests:
 
 - `setUp`: An optional function invoked before each test case is run
     ```solidity
-    {{#include ../../projects/writing_tests/test/Basic.t.sol:setUp}}
+{{#include ../../projects/writing_tests/test/Basic.t.sol:setUp}}
     ```
 - `test`: Functions prefixed with `test` are run as a test case
     ```solidity
-    {{#include ../../projects/writing_tests/test/Basic.t.sol:testNumberIs42}}
+{{#include ../../projects/writing_tests/test/Basic.t.sol:testNumberIs42}}
     ```
 - `testFail`: The inverse of the `test` prefix - if the function does not revert, the test fails
     ```solidity
-    {{#include ../../projects/writing_tests/test/Basic.t.sol:testFailSubtract43}}
+{{#include ../../projects/writing_tests/test/Basic.t.sol:testFailSubtract43}}
     ```
     A good practice is to use something like `testCannot` in combination with the [`expectRevert`](../cheatcodes/expect-revert.md) cheatcode (cheatcodes are explained in greater detail in the following [section](./cheatcodes.md)).  
     Now, instead of using `testFail`, you know exactly what reverted:
     ```solidity
-    {{#include ../../projects/writing_tests/test/Basic2.t.sol:testCannotSubtract43}}
+{{#include ../../projects/writing_tests/test/Basic2.t.sol:testCannotSubtract43}}
     ```
 <br>
 
-Tests are deployed to `0xb4c79daB8f259C7Aee6E5b2Aa729821864227e84`. If you deploy a contract within your test, then `0xb4c...7e84` will be its deployer. If the contract deployed within a test gives special permissions to its deployer, such as `Ownable.sol`'s `onlyOwner` modifier, then the test contract `0xb4c...7e84` will have those permissions.
+Tests are deployed to `0xb4c79daB8f259C7Aee6E5b2Aa729821864227e84`. If you deploy a contract within your test, then
+`0xb4c...7e84` will be its deployer. If the contract deployed within a test gives special permissions to its deployer,
+such as `Ownable.sol`'s `onlyOwner` modifier, then the test contract `0xb4c...7e84` will have those permissions.
+
+> ⚠️ **Note**
+>
+> Test functions must have either `external` or `public` visibility. Functions declared as `internal` or
+> `private` won't be picked up by Forge, even if they are prefixed with `test`.
 
 ### Shared setups
 
