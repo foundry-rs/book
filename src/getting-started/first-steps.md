@@ -15,6 +15,13 @@ $ cd hello_foundry
 {{#include ../output/hello_foundry/tree:all}}
 ```
 
+Let's install the [Forge standard library](https://github.com/foundry-rs/forge-std) which our tests need to run:
+
+```sh
+$ forge install foundry-rs/forge-std --no-commit
+```
+
+
 We can build the project with [`forge build`](../reference/forge/forge-build.md):
 
 ```sh
