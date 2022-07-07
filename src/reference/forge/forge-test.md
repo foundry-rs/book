@@ -62,6 +62,8 @@ You can pass `--json` to make it easier for outside extensions to parse structur
 
 {{#include core-build-options.md}}
 
+{{#include watch-options.md}}
+
 {{#include ../common/display-options.md}}
 
 `--list`  
