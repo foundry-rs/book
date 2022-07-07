@@ -32,7 +32,7 @@ function testFail () external {
 }
 ```
 
-```
+```ignore
 [PASS] testFail() (gas: 23884)
 Logs:
   Error: a ~= b not satisfied [uint]
