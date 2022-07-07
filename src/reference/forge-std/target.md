@@ -8,15 +8,6 @@ function target(StdStorage storage self, address _target) internal returns (StdS
 
 ### Description
 
-Sets the address of the contract (required).
+Sets the address of the contract.
 
-### Examples
-
-```solidity
-// function playerCount() public view returns (uint256) {
-
-uint256 slot = stdstore
-    .target(address(game))
-    .sig(game.playerCount.selector)
-    .find();
-```
+Default value: `address(0)`

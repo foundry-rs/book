@@ -1,6 +1,6 @@
 ## Std Storage
 
-Std Storage is a library that makes manipulating contract storage easy.
+Std Storage is a library that makes manipulating storage easy.
 
 To use Std Storage, add the following line to your test contract:
 
@@ -14,28 +14,27 @@ Then, access Std Storage via the `stdstore` instance.
 
 Query functions:
 
-- [`target`](./target.md): Set the address of the contract (required)
-- [`sig`](./sig.md): Set the signature of the function to call (required)
-- [`with_key`](./with_key.md): Set the mapping key, if the variable is of type `mapping`
-- [`depth`](./depth.md): Set the index of the struct member, if the variable is of type `struct`
+- [`target`](./target.md): Set the address of the target contract
+- [`sig`](./sig.md): Set the 4-byte selector of the function to static call
+- [`with_key`](./with_key.md): Pass an argument to the function (can be used multiple times)
+- [`depth`](./depth.md): Set the position of the value in the `tuple` (e.g. inside a `struct`)
 
 Terminator functions:
 
-- [`checked_write`](./checked_write.md): Set the data to be written to the storage slot(s)
 - [`find`](./find.md): Return the slot number
-- [`read`](./read.md): Access a value from the storage slot
+- [`checked_write`](./checked_write.md): Set the data to be written to the storage slot(s)
+- [`read_<type>`](./read.md): Read the value from the storage slot as `<type>`
 
 ### Example
 
-`playerToCharacter` tracks each player's character's stats.
+`playerToCharacter` tracks info about players' characters.
 
 ```solidity
 // MetaRPG.sol
 
 struct Character {
-    Class class;
+    string name;
     uint256 level;
-    uint256 xp;
 }
 
 mapping (address => Character) public playerToCharacter;
@@ -48,8 +47,16 @@ Let's say we want to set the level of our character to 120.
 
 stdstore
     .target(address(metaRpg))
-    .sig(metaRpg.playerToCharacter.selector)
+    .sig("playerToCharacter(address)")
     .with_key(address(this))
     .depth(1)
     .checked_write(120);
 ```
+
+### Limitations
+
+- Accessing packed slots is not supported
+
+### Known issues
+
+- Slot(s) may not be found if the `tuple` contains types shorter than 32 bytes

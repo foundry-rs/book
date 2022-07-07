@@ -8,15 +8,6 @@ function find(StdStorage storage self) internal returns (uint256);
 
 ### Description
 
-Finds an arbitrary storage slot given a function sig, input data, address of the contract and a value to check against slot complexity.  
+Finds an arbitrary storage slot given [`target`](../forge-std/target.md), [`sig`](../forge-std/sig.md), [`with_key`](../forge-std/with_key.md)(s), and [`depth`](../forge-std/depth.md).
 
-### Examples
-
-```solidity
-// uint256 public season;
-
-uint256 slot = stdstore
-    .target(address(game))
-    .sig(game.season.selector)
-    .find();
-```
+Reverts with a message if unsuccessful.

@@ -24,13 +24,6 @@ function read_int(StdStorage storage self) internal returns (int256);
 
 ### Description
 
-Accesses a value from the storage slot.
+Reads the value from the storage slot as `bytes32`, `bool`, `address`, `uint256`, or `int256`.
 
-### Examples
-
-```solidity
-address a = stdstore
-    .target(address(c))
-    .sig(c.a.selector)
-    .read_address();
-```
+Reverts with a message if unsuccessful.

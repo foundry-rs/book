@@ -16,17 +16,17 @@ function with_key(StdStorage storage self, bytes32 key) internal returns (StdSto
 
 ### Description
 
-Sets the mapping key, if the variable is of type `mapping`.
+Passes an argument to the function.
+
+Can be used multiple times to pass multiple arguments. The order matters.
 
 ### Examples
 
 ```solidity
-// mapping(uint256 => mapping(address => uint256)) public itemToPlayerToQuantity;
-
 uint256 slot = stdstore
-    .target(address(game))
-    .sig(game.itemToOwnerToQuantity.selector)
-    .with_key(1337)
+    .target(addr)
+    .sig("fun(uint256,address)")
+    .with_key(1)
     .with_key(address(this))
     .find();
 ```
