@@ -8,15 +8,22 @@ function bound(uint256 x, uint256 min, uint256 max) public returns (uint256 resu
 
 ### Description
 
-Useful for wrapping inputs of a fuzz test into a certain range
+A mathematical function for wrapping inputs of fuzz tests into a certain range.
+
+You can use it instead of the `assume` cheatcode to get better performance in some cases. Read more [here](../../cheatcodes/assume.md).
 
 ### Examples
 
 ```solidity
-assertEq(bound(5, 0, 4), 0);
-assertEq(bound(0, 69, 69), 69);
-assertEq(bound(0, 68, 69), 68);
-assertEq(bound(10, 150, 190), 160);
-assertEq(bound(300, 2800, 3200), 3100);
-assertEq(bound(9999, 1337, 6666), 6006);
+input = bound(input, 99, 101);
 ```
+
+Returns `99` for input `0`.
+<br>
+Returns `100` for input `1`.
+<br>
+Returns `101` for input `2`.
+<br>
+Returns `99` for input `3`.
+<br>
+And so on.
