@@ -1,10 +1,8 @@
 # Std Logs
 
-Std Logs adds additional logging events for forge.
+Std Logs expand upon the logging events from the [`DSTest`](../ds-test.md#logging) library.
 
 ## Events
-
-Std Logs has 4 events to log arrays.
 
 ```solidity
 event log_array(uint256[] val);
@@ -30,6 +28,7 @@ Where `<type>` can be `int256` or `uint256`.
 ```solidity
 // Assuming storage
 // uint256[] data = [10, 20, 30, 40, 50]; 
+
 emit log_array(data);
 ```
 
@@ -46,5 +45,6 @@ Where `<type>` can be `int256` or `uint256`.
 ```solidity
 // Assuming storage
 // uint256[] data = [10, 20, 30, 40, 50]; 
+
 emit log_named_array("Data", data);
 ```
