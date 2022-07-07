@@ -38,4 +38,4 @@ function assertEq(int256[] memory a, int256[] memory b, string memory err) inter
 
 Asserts `a` is equal to `b`.
 
-Works with booleans, bytes and arrays of int and uint.
+Works with `bool`, `bytes`, and `int256` and `uint256` arrays.
