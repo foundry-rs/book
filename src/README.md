@@ -28,7 +28,7 @@ Learn how to use `cast` to interact with smart contracts, send transactions, and
 
 **[Anvil Overview](anvil)**
 
-Learn about `anvil`, the Foundry's local node.
+Learn about `anvil`, Foundry's local node.
 
 **Configuration**
 
