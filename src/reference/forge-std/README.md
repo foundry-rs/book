@@ -24,7 +24,13 @@ What's included:
     import "forge-std/console2.sol";
     ```
 
-- `Test.sol`: Complete Forge Std experience (more details [below](#forge-stds-test))
+- `Script.sol`: Basic utilities for [Solidity scripting](../../tutorials/solidity-scripting.md)
+
+    ```solidity
+    import "forge-std/Script.sol";
+    ```
+
+- `Test.sol`: The complete Forge Std experience (more details [below](#forge-stds-test))
 
     ```solidity
     import "forge-std/Test.sol";
@@ -45,12 +51,12 @@ contract ContractTest is Test { ...
 What's included:
 
 - Std Libraries
+  - [Std Logs](./std-logs.md): Expand upon the logging events from the DSTest library.
   - [Std Assertions](./std-assertions.md): Expand upon the assertion functions from the DSTest library.
-  - [Std Cheats](./std-cheats.md): Wrappers around Forge cheatcodes for improved safety and UX.
+  - [Std Cheats](./std-cheats.md): Wrappers around Forge cheatcodes for improved safety and DX.
   - [Std Errors](./std-errors.md): Wrappers around common internal Solidity errors and reverts.
-  - [Std Storage](./std-storage.md): Contract storage manipulation helpers.
-  - [Std Math](./std-math.md): Covers some mathematical calculations.
-  - [Std Logs](./std-logs.md): Additional logging utilities.
+  - [Std Storage](./std-storage.md): Utilities for storage manipulation.
+  - [Std Math](./std-math.md): Useful mathematical functions.
 
 - A cheatcodes instance `vm`, from which you invoke Forge cheatcodes (see [Cheatcodes Reference](../../cheatcodes/))
 

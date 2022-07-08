@@ -39,6 +39,12 @@ function testSomethingElse(uint256 a) public {
 }
 ```
 
+### SEE ALSO
+
+Forge Standard Library
+
+[`bound`](../reference/forge-std/bound.md)
+
 [max-local-rejects]: ./config.md#fuzz_max_local_rejects
 [max-global-rejects]: ./config.md#fuzz_max_global_rejects
 [forge-std-bound]: ../reference/forge-std/bound.md

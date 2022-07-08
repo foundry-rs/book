@@ -8,6 +8,7 @@ It provides all the essential functionality you need to get started writing test
 
 - `Vm.sol`: Up-to-date cheatcodes interface
 - `console.sol` and `console2.sol`: Hardhat-style logging functionality
+- `Script.sol`: Basic utilities for [Solidity scripting](../tutorials/solidity-scripting.md)
 - `Test.sol`: A superset of DSTest containing standard libraries, a cheatcodes instance (`vm`), and Hardhat console
 
 Simply import `Test.sol` and inherit from `Test` in your test contract:
@@ -52,15 +53,19 @@ import "forge-std/console2.sol";
 
 ### Standard libraries
 
-Forge Std currently consists of five main libraries.
+Forge Std currently consists of six standard libraries.
+
+#### Std Logs
+
+Std Logs expand upon the logging events from the [`DSTest`](../reference/ds-test.md#logging) library.
 
 #### Std Assertions
 
-Std Assertions expand upon the assertion functions from the [`DSTest`](../reference/ds-test.md) library.
+Std Assertions expand upon the assertion functions from the [`DSTest`](../reference/ds-test.md#asserting) library.
 
 #### Std Cheats
 
-Std Cheats are wrappers around Forge cheatcodes that make them safer to use and improve the UX.
+Std Cheats are wrappers around Forge cheatcodes that make them safer to use and improve the DX.
 
 You can access Std Cheats by simply calling them inside your test contract, as you would any other internal function:
 
@@ -97,13 +102,13 @@ stdstore
 
 #### Std Math
 
-Std Math is a library that simplifies the process of some mathematical calculations.
+Std Math is a library with useful mathematical functions that are not provided in Solidity.
 
-The `Test` contract also provides access to Std Math. You can use the Std Math functions by typing `stdMath.` before the name of the function, just like in the next example:
+Note that you have to access them through `stdMath`, as this is a library.
 
 ```solidity
-// Expected result is 10
-stdMath.abs(-10)
+// get the absolute value of -10
+uint256 ten = stdMath.abs(-10)
 ```
 
 <br>
