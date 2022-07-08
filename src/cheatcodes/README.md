@@ -20,6 +20,9 @@ This is a Solidity interface for all of the cheatcodes present in Forge.
 
 ```solidity
 interface CheatCodes {
+    // This allows us to getRecordedLogs()
+    struct Log {bytes32[] topics; bytes data;}
+
     // Set block.timestamp
     function warp(uint256) external;
 
@@ -106,6 +109,12 @@ interface CheatCodes {
 
     // Gets all accessed reads and write slot from a recording session, for a given address
     function accesses(address) external returns (bytes32[] memory reads, bytes32[] memory writes);
+
+    // Record all the transaction logs
+    function recordLogs() external;
+
+    // Gets all the recorded logs
+    function getRecordedLogs() external returns (Log[] memory);
 
     // Prepare an expected log with (bool checkTopic1, bool checkTopic2, bool checkTopic3, bool checkData).
     // Call this function, then emit an event, then call a function. Internally after the call, we check if

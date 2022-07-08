@@ -13,6 +13,8 @@
 - [`stopPrank`](./stop-prank.md)
 - [`record`](./record.md)
 - [`accesses`](./accesses.md)
+- [`recordLogs`](./record-logs.md)
+- [`getRecordedLogs`](./get-recorded-logs.md)
 - [`setNonce`](./set-nonce.md)
 - [`getNonce`](./get-nonce.md)
 - [`mockCall`](./mock-call.md)

@@ -200,6 +200,8 @@
       - [`stopPrank`](./cheatcodes/stop-prank.md)
       - [`record`](./cheatcodes/record.md)
       - [`accesses`](./cheatcodes/accesses.md)
+      - [`recordLogs`](./cheatcodes/record-logs.md)
+      - [`getRecordedLogs`](./cheatcodes/get-recorded-logs.md)
       - [`setNonce`](./cheatcodes/set-nonce.md)
       - [`getNonce`](./cheatcodes/get-nonce.md)
       - [`mockCall`](./cheatcodes/mock-call.md)
