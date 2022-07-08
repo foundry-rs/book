@@ -621,6 +621,15 @@
       "contributions": [
         "maintenance"
       ]
+    },
+    {
+      "login": "bentobox19",
+      "name": "Bento Box",
+      "avatar_url": "https://avatars.githubusercontent.com/u/85324266?v=4",
+      "profile": "https://github.com/bentobox19",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
