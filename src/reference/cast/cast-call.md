@@ -42,6 +42,12 @@ The destination (*to*) can be an ENS name or an address.
       "balanceOf(address)(uint256)" 0x...
     ```
 
+2. Call `getAmountsOut(uint,address[])` on the Uniswap v2 router contract:
+    ```sh
+   cast call 0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D \
+     "getAmountsOut(uint,address[])" 1 [0x6b...0f,0xc0...c2]
+    ```
+
 ### SEE ALSO
 
 [cast](./cast.md), [cast send](./cast-send.md), [cast publish](./cast-publish.md), [cast receipt](./cast-receipt.md)
