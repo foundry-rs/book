@@ -1,11 +1,9 @@
 #### Project Options
 
-`--build-info` 
-
+`--build-info`  
 &nbsp;&nbsp;&nbsp;&nbsp;Generate build info files.
 
-`--build-info-path` *path* 
-
+`--build-info-path` *path*  
 &nbsp;&nbsp;&nbsp;&nbsp;Output path to directory that build info files will be written to.
 
 `--root` *path*  
