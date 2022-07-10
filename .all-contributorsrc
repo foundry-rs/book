@@ -639,6 +639,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "sbvegan",
+      "name": "soyboy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/85043086?v=4",
+      "profile": "http://sbvegan.org",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
