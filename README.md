@@ -1,6 +1,6 @@
 ## 📖 Foundry Book
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-68-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-69-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 A book on all things Foundry. [Read now](https://book.getfoundry.sh).
@@ -122,6 +122,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/beskay"><img src="https://avatars.githubusercontent.com/u/89798300?v=4?s=100" width="100px;" alt=""/><br /><sub><b>beskay</b></sub></a><br /><a href="#maintenance-beskay" title="Maintenance">🚧</a></td>
     <td align="center"><a href="https://github.com/fjun99"><img src="https://avatars.githubusercontent.com/u/943418?v=4?s=100" width="100px;" alt=""/><br /><sub><b>fangjun</b></sub></a><br /><a href="#maintenance-fjun99" title="Maintenance">🚧</a></td>
     <td align="center"><a href="https://github.com/bentobox19"><img src="https://avatars.githubusercontent.com/u/85324266?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Bento Box</b></sub></a><br /><a href="https://github.com/foundry-rs/book/commits?author=bentobox19" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/appleseed-iii"><img src="https://avatars.githubusercontent.com/u/80423742?v=4?s=100" width="100px;" alt=""/><br /><sub><b>appleseed-iii</b></sub></a><br /><a href="https://github.com/foundry-rs/book/commits?author=appleseed-iii" title="Documentation">📖</a></td>
   </tr>
 </table>
 
