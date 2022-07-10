@@ -46,9 +46,9 @@ The destination (*to*) can be an ENS name or an address.
 2. Call `tokenURI(uint256)(string)` on the Tubby Cats NFT contract:
 
     ```sh
-    contract=0xca7ca7bcc765f77339be2d648ba53ce9c8a262bd
-    id=19938
-    cast call $contract "tokenURI(uint256)(string)" $id
+    export CONTRACT=0xca7ca7bcc765f77339be2d648ba53ce9c8a262bd
+    export TOKEN_ID=19938
+    cast call $CONTRACT "tokenURI(uint256)(string)" $TOKEN_ID
     ```
 
 ### SEE ALSO
