@@ -1,5 +1,11 @@
 #### Project Options
 
+`--build-info`  
+&nbsp;&nbsp;&nbsp;&nbsp;Generate build info files.
+
+`--build-info-path` *path*  
+&nbsp;&nbsp;&nbsp;&nbsp;Output path to directory that build info files will be written to.
+
 `--root` *path*  
 &nbsp;&nbsp;&nbsp;&nbsp;The project's root path. By default, this is the root directory of the current git repository, or the current working directory.
 
