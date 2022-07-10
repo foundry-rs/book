@@ -1,6 +1,6 @@
 ## 📖 Foundry Book
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-70-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-71-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 A book on all things Foundry. [Read now](https://book.getfoundry.sh).
@@ -124,6 +124,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/bentobox19"><img src="https://avatars.githubusercontent.com/u/85324266?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Bento Box</b></sub></a><br /><a href="https://github.com/foundry-rs/book/commits?author=bentobox19" title="Documentation">📖</a></td>
     <td align="center"><a href="https://github.com/appleseed-iii"><img src="https://avatars.githubusercontent.com/u/80423742?v=4?s=100" width="100px;" alt=""/><br /><sub><b>appleseed-iii</b></sub></a><br /><a href="https://github.com/foundry-rs/book/commits?author=appleseed-iii" title="Documentation">📖</a></td>
     <td align="center"><a href="http://sbvegan.org"><img src="https://avatars.githubusercontent.com/u/85043086?v=4?s=100" width="100px;" alt=""/><br /><sub><b>soyboy</b></sub></a><br /><a href="https://github.com/foundry-rs/book/commits?author=sbvegan" title="Documentation">📖</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/0xvv"><img src="https://avatars.githubusercontent.com/u/104269768?v=4?s=100" width="100px;" alt=""/><br /><sub><b>double v</b></sub></a><br /><a href="https://github.com/foundry-rs/book/pulls?q=is%3Apr+reviewed-by%3A0xvv" title="Reviewed Pull Requests">👀</a></td>
   </tr>
 </table>
 
