@@ -648,6 +648,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "0xvv",
+      "name": "double v",
+      "avatar_url": "https://avatars.githubusercontent.com/u/104269768?v=4",
+      "profile": "https://github.com/0xvv",
+      "contributions": [
+        "review"
+      ]
     }
   ],
   "contributorsPerLine": 7,
