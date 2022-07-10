@@ -271,4 +271,5 @@
       - [`delta`](./reference/forge-std/delta.md)
       - [`percentDelta`](./reference/forge-std/percentDelta.md)
   - [DSTest Reference](./reference/ds-test.md)
-- [Misc](./misc/README.md)
+- [Miscellaneous](./misc/README.md)
+  - [Struct encoding](./misc/struct-encoding.md)

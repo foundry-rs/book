@@ -2,7 +2,7 @@
 
 Foundry is a smart contract development toolchain.
 
-Foundry manages your dependencies, compiles your project, runs tests, deploys, and lets you interact with the chain from the command-line.
+Foundry manages your dependencies, compiles your project, runs tests, deploys, and lets you interact with the chain from the command-line and via Solidity scripts.
 
 > 📖 **Contributing**
 >
@@ -26,6 +26,10 @@ The overview will give you all you need to know about how to use `forge` to deve
 
 Learn how to use `cast` to interact with smart contracts, send transactions, and get chain data from the command-line.
 
+**[Anvil Overview](anvil)**
+
+Learn about `anvil`, Foundry's local node.
+
 **Configuration**
 
 Guides on configuring Foundry.
@@ -34,6 +38,7 @@ Guides on configuring Foundry.
 - [Continuous Integration](./config/continous-integration.md)
 - [Integrating with VSCode](./config/vscode.md)
 - [Shell Autocompletion](./config/shell-autocompletion.md)
+- [Static Analyzers](./config/static-analyzers.md)
 - [Integrating with Hardhat](./config/hardhat.md)
 
 **Tutorials**
@@ -43,19 +48,24 @@ Tutorials on building smart contracts with Foundry.
 - [Creating an NFT with Solmate](./tutorials/solmate-nft.md)
 - [Docker and Foundry](./tutorials/foundry-docker.md)
 - [Testing EIP-712 Signatures](./tutorials/testing-eip712.md)
-- [Solidity Scripting](./tutorials//solidity-scripting.md)
+- [Solidity Scripting](./tutorials/solidity-scripting.md)
+- [Testing on a Forked Network](./tutorials/testing-on-a-forked-network.md)
 <!-- - [Incremental Adoption]() -->
 
 **Appendix**
 
-References, troubleshooting and more.
+References, troubleshooting, and more.
 
+- [FAQ](./faq.md)
 - [forge Commands](./reference/forge/)
 - [cast Commands](./reference/cast/)
 - [anvil commands](./reference/anvil/)
 - [Config Reference](./reference/config.md)
+- [Cheatcodes Reference](./cheatcodes/)
 - [Forge Standard Library Reference](./reference/forge-std/)
 - [DSTest Reference](./reference/ds-test.md)
-- [Cheatcodes Reference](./cheatcodes/)
+- [Miscellaneous](misc)
 
-> You can also check out [Awesome Foundry](https://github.com/crisgarner/awesome-foundry), a curated list of awesome Foundry resources, tutorials, tools and libraries!
+<br>
+
+> You can also check out [Awesome Foundry](https://github.com/crisgarner/awesome-foundry), a curated list of awesome Foundry resources, tutorials, tools, and libraries!

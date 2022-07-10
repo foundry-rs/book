@@ -1,3 +1,3 @@
-## Misc
+## Miscellaneous
 
 - [Struct encoding](./struct-encoding.md)

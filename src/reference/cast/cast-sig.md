@@ -37,11 +37,11 @@ The signature (*sig*) is a fragment in the form `<function name>(<types...>)`.
     }
     ```
 
-    Structs are encoded as tuples (see [struct encoding](./reference/common/struct-encoding.md)).
+    Structs are encoded as tuples (see [struct encoding](../../misc/struct-encoding.md)).
 
     ```sh
     cast sig "myfunction((address,uint256))"
     ```
 ### SEE ALSO
 
-[cast](./cast.md), [struct encoding](./misc/struct-encoding.md)
+[cast](./cast.md), [struct encoding](../../misc/struct-encoding.md)
