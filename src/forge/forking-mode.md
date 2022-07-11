@@ -2,7 +2,7 @@
 
 Forge supports testing in a forked environment.
 
-To run tests in a forked environment - such as a forked Ethereum mainnet - pass a RPC URL via the `--fork-url` flag:
+To run all tests in a forked environment - such as a forked Ethereum mainnet - pass a RPC URL via the `--fork-url` flag:
 
 ```bash
 forge test --fork-url <your_rpc_url>

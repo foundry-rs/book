@@ -139,6 +139,8 @@ memory_limit = 33554432
 names = false
 # Print the sizes of the compiled contracts
 sizes = false
+# Contains alias -> URL|Env pairs for RPC endpoints that can be accessed during testing
+rpc_endpoints = { optimism = "https://optimism.alchemyapi.io/v2/...", mainnet = "${RPC_MAINNET}" }
 ```
 
 ### Configuration keys
@@ -699,3 +701,19 @@ Print compiled contract names.
 - Environment: `FOUNDRY_SIZES` or `DAPP_SIZES`
 
 Print compiled contract sizes.
+
+##### `rpc_endpoints`
+
+- Type: table or list of alias -> URL|Env pairs
+
+Container type for RPC endpoints that can be accessed during testing via cheatcodes.
+
+Environment variables need to be wrapped in `${}`
+
+```toml
+rpc_endpoints = { optimism = "https://optimism.alchemyapi.io/v2/...", mainnet = "${RPC_MAINNET}" }
+```
+
+ See also
+
+ [`RPC`](./cheatcodes/rpc.md)
