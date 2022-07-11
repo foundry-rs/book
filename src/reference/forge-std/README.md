@@ -75,3 +75,10 @@ What's included:
     ```solidity
     assertEq(dai.balanceOf(alice), 10000e18);
     ```
+
+- Utility functions (also included in `Script.sol`)
+
+    ```solidity
+    // Compute the address a contract will be deployed at for a given deployer address and nonce
+    address futureContract = computeCreateAddress(alice, 1);
+    ```
