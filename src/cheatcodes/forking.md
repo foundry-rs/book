@@ -58,7 +58,7 @@ What `selectFork` does is to set the _remote_ section with the fork's data sourc
 
 
 ```solidity
-contract ForkTest is DSTest {
+contract ForkTest is Test {
     Cheats constant cheats = Cheats(HEVM_ADDRESS);
 
     // the identifiers of the forks

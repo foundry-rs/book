@@ -28,7 +28,7 @@ struct Storage {
     uint slot1;
 }
 
-contract SnapshotTest is DSTest {
+contract SnapshotTest is Test {
     Cheats constant cheats = Cheats(HEVM_ADDRESS);
 
     Storage store;
