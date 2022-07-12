@@ -11,7 +11,7 @@ Let's take a look at a configuration file that contains two profiles: the defaul
 ```toml
 [default]
 optimizer = true
-optimizer_runs = 20000
+optimizer_runs = 20_000
 
 [ci]
 verbosity = 4
