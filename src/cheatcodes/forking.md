@@ -40,7 +40,7 @@ Therefore forks created during `setUp` are available in tests.
 
 The following creates two forks, but does _not_ select them yet.
 
-Enabling a specifc fork is donw via `selectFork(uint256 forkId)`.
+Enabling a specific fork is done via `selectFork(uint256 forkId)`.
 
 There can only be one fork active at a time, the currently active fork id can be retrieved via `activeFork()(uint256)`.
 
@@ -54,7 +54,7 @@ so when the evm does:
 
 What `selectFork` does is to set the _remote_ section with the fork's data source, however the _local_ memory remains persistent across fork swaps. This also means the `selectFork` can be called at all times with any fork, to set the _remote_ data source. However, it is important that the above rules for `read/write` access always apply, meaning _writes_ are persistent across fork swaps.
 
-`createSelectFork` is a onliner for `createFork()` + `selectFork()`
+`createSelectFork` is a one-liner for `createFork()` + `selectFork()`
 
 
 ```solidity
