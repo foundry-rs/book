@@ -20,6 +20,8 @@ Configuration can be overriden with `FOUNDRY_` and `DAPP_` prefixed environment 
 
 Configuration files are written in the [TOML format](https://toml.io), with simple key-value pairs inside of sections. The following gives a quick overview of all settings (and their default values), with detailed descriptions found below.
 
+#### Configuration Default
+
 ```toml
 [default]
 # The source directory
@@ -141,6 +143,108 @@ names = false
 sizes = false
 # Contains alias -> URL|Env pairs for RPC endpoints that can be accessed during testing
 rpc_endpoints = { optimism = "https://optimism.alchemyapi.io/v2/...", mainnet = "${RPC_MAINNET}" }
+```
+
+#### Configuration Advanced
+
+
+##### Additional Optimizer settings
+
+Optimizer components can be tweaked with the `OptimizerDetails` object:
+
+See [Compiler Input Description `settings.optimizer.details`](https://docs.soliditylang.org/en/latest/using-the-compiler.html#compiler-input-and-output-json-description)
+
+The `optimizer_details` (`optimizerDetails` also works) settings must be prefixed with the profile they correspond
+to: `[default.optimizer_details]`
+belongs to the `[default]` profile
+
+```toml
+[default.optimizer_details]
+constantOptimizer = true
+yul = true
+# this sets the `yulDetails` of the `optimizer_details` for the `default` profile
+[default.optimizer_details.yulDetails]
+stackAllocation = true
+optimizerSteps = 'dhfoDgvulfnTUtnIf'
+```
+
+>**Note**    
+> If you encounter compiler errors when using `via_ir`, explicitly enable the legacy `optimizer` and leave `optimizerSteps` as an empty string
+
+```toml
+via_ir = true
+optimizerSteps = ''
+optimizer = true
+```
+
+##### RPC-Endpoints settings
+
+The `rpc_endpoints` value accepts a list of `alias = "<url|env var>"` pairs.
+
+The following example declares two pairs:
+The alias `optimism` references the endpoint URL directly.
+The alias `mainnet` references the environment variable `RPC_MAINNET` which holds the actual URL.
+
+Environment variables need to be wrapped in `${}`
+
+```toml
+[default.rpc_endpoints]
+optimism = "https://optimism.alchemyapi.io/v2/..."
+mainnet = "${RPC_MAINNET}"
+```
+
+##### Additional Model Checker settings
+
+[Solidity's built-in model checker](https://docs.soliditylang.org/en/latest/smtchecker.html#tutorial)
+is an opt-in module that can be enabled via the `ModelChecker` object.
+
+See [Compiler Input Description `settings.modelChecker`](https://docs.soliditylang.org/en/latest/using-the-compiler.html#compiler-input-and-output-json-description)
+and [the model checker's options](https://docs.soliditylang.org/en/latest/smtchecker.html#smtchecker-options-and-tuning).
+
+The module is available in `solc` release binaries for OSX and Linux.
+The latter requires the z3 library version [4.8.8, 4.8.14] to be installed
+in the system (SO version 4.8).
+
+Similarly to the optimizer settings above, the `model_checker` settings must be
+prefixed with the profile they correspond to: `[default.model_checker]` belongs
+to the `[default]` profile.
+
+```toml
+[default.model_checker]
+contracts = { '/path/to/project/src/Contract.sol' = [ 'Contract' ] }
+engine = 'chc'
+timeout = 10000
+targets = [ 'assert' ]
+```
+
+The fields above are recommended when using the model checker.
+Setting which contract should be verified is extremely important, otherwise all
+available contracts will be verified which can consume a lot of time.
+The recommended engine is `chc`, but `bmc` and `all` (runs both) are also
+accepted.
+
+It is also important to set a proper timeout (given in milliseconds), since the
+default time given to the underlying solvers may not be enough.
+If no verification targets are given, only assertions will be checked.
+
+The model checker will run when `forge build` is invoked, and will show
+findings as warnings if any.
+
+
+```toml
+[default.model_checker]
+contracts = { '/path/to/project/src/Contract.sol' = [ 'Contract' ] }
+engine = 'chc'
+timeout = 10000
+targets = [ 'assert' ]
+
+[default.optimizer_details]
+constantOptimizer = true
+yul = true
+# this sets the `yulDetails` of the `optimizer_details` for the `default` profile
+[default.optimizer_details.yulDetails]
+stackAllocation = true
+optimizerSteps = 'gTVnfClhnfncITgcraonvcgMtjmCumgUmdgdxVeiOlvdOvarhngxiUaxVhOdjTTDODDdUMrTthUVrrnhrjsvcjVuDmletlOThul'
 ```
 
 ### Configuration keys
@@ -717,3 +821,10 @@ rpc_endpoints = { optimism = "https://optimism.alchemyapi.io/v2/...", mainnet = 
  See also
 
  [`RPC`](./cheatcodes/rpc.md)
+
+
+### TOML Formatting
+
+If you wish to 'pretty print' your `.toml` configuration file, you can try out `dprint` which has support for formatting `.toml` files.
+
+[See an example in their playground with a foundry.toml file already loaded](https://dprint.dev/playground/#code/FAbQJgpgZghgrgGwC4F1gwQg9gdwPoAOMSAFgM4AEAvBSGvElnpEhAMZJ5lYJvUVIATnAjAARnACWCMHkkA7KFn6wEZUWOxsA1njEx1eKBAiEIgvAHMD-AAzitutlgX71-AOS2AHrb-+AwKDgkICPBywdZkkoKEk2RCQATzsIqPk4AFsxc34ARjTdJElMiDIkGEyCfPEk1mdIPBIDEk95LHkIcLYYNhIIfiERYB6+0yJST1H+8IgAN0y8OfMySQ7PbHkwDtnvIRg8LDgkAmP+OmAIPcEDo5Pjo2ky87RYyRUMdWAlQTYBmlUXygcAAXiC8JkYN4rNh9Ag8IIIAArdhISg0ABsAFYsQBmDHfUHgyHQrQYBHI1Hoih5AAsAE4AEyEsEIuDyal5WyM2nAaxkPAIEqSJD8JmM3G4gDsjNs+IAHFjaVKpVj5bYpXyDIRBPF-hR7PyKQQsII0ecPAAqDxoADEFEklnaiNk5kEprwDTKwHtsry8ooADF2Rw1vIKOViANMscYGJpCKUj1wzkKIjyrqOBAwAJlKdET6KLjabKKABlI6-AZxBADbbPdqisgEdgxFKIgCOUhdFGcVSeggoy0Eqw6AEJgI7ndm8G6PV7qSBgP6pfKADTAP3r4DF2VrijAHFS2kbtAKEWSclwmDyP6eHyxR9P58vp-hIViG66540C4fxceB+NrAKUmSmkkgrCqKNCSjitK0rizLyJUP4CMIojtFwjA3JYpjTAolgfGoohYLEQqdERXxYAQxSZJIIK5DQQwkTRwoMRYwgcvkeD+MAdyeHc4SIpCBAEARi5oOoWyMRQXjeDAUCBgAojAgbKQAgoGxjqYpSk6cYqlQHpukKQZikQJpRnhKsDHUoCojNjAI6mGBkCUQ5vyeGQvzhKw5SeH5SC+dCpqOgo97eOpMDRVF6lRTFsWxdFCVxUlMUwPFcW2OEw5iFgqzJPwuLAHMl5yIOTHocAkY6OpmCRMQYaDFV1G0fR5hlqwBDUh44TAKAkCwIkAB0ggEGwWGmjAuGer0JAEWgfQwAoPUYAgsxbCaCjmjQHhrX1IBsJIaCtWxMn2Sy4KcdStK2Bi9LfKad6VcMuX5Ym-C8gN0DwMgw2uRA8JjDo5iLR0+wcNSADeskAPQTCQsOMPD7oohwsPeWwsMAMLgzcHDDdw63nLJuPyBDQUUCgFAAL6XPIlgKPqHh9GwvklBA-E0FyvEVIIuE7bQskGOoZoeFT-XgD9I2nXR7HMBAFTSGQYMchU5MAPKsXLMnMcASSIM1wz2qQkiUOo5qkAMAAGBsIAAIory1qNbFCkQI-QUNbsvtRYLDO2Qrs-B7NuDb9SCuwQ7o1qIUtDX9Pvy-7yvDXbjtK2okkVLV9U9MU6wvSxbXsZ1EDdZ4lgACoAGqKNjCAkIot4AJKV5YbA3B0cxsJYACySBIpk2NZJYACqmRgJYYDeNXECSBrCBzGAGtzE5jeWN4kij1C1ckBrYBIpXlf2xr9v22Ao+94IlekKP1eCII8gkIISJkN3SLV3A9uZLWSAIBrlcSCIA8EAA/config/N4KABGBEA2CWB2BTA6rAJgFwBaQFxgA4AGAGnCgTUXg1Ux3wBYyJIBXAZ0QBUBDAIw54wGAE5tELKEgDuAGQSIA0pWEwAZpCmQAxgHsAtgeoYAdOr2idiOYl5oEAcwDKAB17XhYidp29RjnqmvK6u0ACeAMJ68ABuJrAxQvjeiCAAviBAA/language/toml)
