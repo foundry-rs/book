@@ -23,7 +23,7 @@ We can see that Forge installed `solmate`!
 By default, `forge install` installs the latest master branch version. If you want to install a specific tag or commit,you can do it like so:
 
 ```sh
-$ forge install Rari-Capital/solmate@v6
+$ forge install Rari-Capital/solmate@v7
 ```
 
 ### Remapping dependencies
