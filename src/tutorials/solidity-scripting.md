@@ -14,7 +14,7 @@ Let’s try to deploy the NFT contract made in the solmate tutorial with solidit
 forge init solidity-scripting
 ```
 
-Since the NFT contract from the solmate tutorial inherits both `solmate` and `OpenZepplin` contracts, we’ll have to install them as dependencies by running:
+Since the NFT contract from the solmate tutorial inherits both `solmate` and `OpenZeppelin` contracts, we’ll have to install them as dependencies by running:
 
 ```bash
 # Enter the project
