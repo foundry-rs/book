@@ -63,7 +63,7 @@ This program is a set of tools to build, test, fuzz, debug and deploy Solidity s
 [forge test](./forge-test.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Run the project's tests.
 
-[forge snapshot](./forge-install.md)  
+[forge snapshot](./forge-snapshot.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Create a snapshot of each test's gas usage.
 
 #### Deploy Commands
