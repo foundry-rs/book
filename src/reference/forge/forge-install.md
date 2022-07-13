@@ -62,12 +62,12 @@ the repository. If you want to change the name of the folder, prepend `<folder>=
 
 2. Install a specific version of a dependency:
     ```sh
-    forge install Rari-Capital/solmate@v6
+    forge install Rari-Capital/solmate@v7
     ```
 
 3. Install multiple dependencies:
     ```sh
-    forge install Rari-Capital/solmate@v6 OpenZeppelin/openzeppelin-contracts
+    forge install Rari-Capital/solmate@v7 OpenZeppelin/openzeppelin-contracts
     ```
 
 4. Install a dependency without creating a submodule:
