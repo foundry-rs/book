@@ -4,7 +4,13 @@ Foundry's configuration system allows you to configure its tools.
 
 ### Profiles
 
-Configuration can be arbitrarily namespaced into profiles. The default profile is named `default`, and all other profiles inherit values from this profile.
+Configuration can be arbitrarily namespaced into profiles. The default profile is named `default`, and all other profiles inherit values from this profile. Profiles are defined in the `profile` map.
+
+To add a profile named `local`, you would add:
+
+```toml
+[profile.local]
+```
 
 You can select the profile to use by setting the `FOUNDRY_PROFILE` environment variable.
 
@@ -18,238 +24,22 @@ Configuration can be overriden with `FOUNDRY_` and `DAPP_` prefixed environment 
 
 ### Configuration format
 
-Configuration files are written in the [TOML format](https://toml.io), with simple key-value pairs inside of sections. The following gives a quick overview of all settings (and their default values), with detailed descriptions found below.
+Configuration files are written in the [TOML format](https://toml.io), with simple key-value pairs inside of sections.
 
-#### Configuration Default
-
-```toml
-[default]
-# The source directory
-src = 'src'
-# The test directory
-test = 'test'
-# The artifact directory
-out = 'out'
-# A list of paths to look for libraries in
-libs = ['lib']
-# A list of remappings
-remappings = []
-# additional solc allow paths
-allow_paths = []
-# A list of deployed libraries to link against
-libraries = []
-# Whether to cache builds or not
-cache = true
-# The cache directory if enabled
-cache_path = 'cache'
-# Whether to ignore the cache
-force = false
-# The EVM version by hardfork name
-evm_version = 'london'
-# Override the Solidity version (this overrides `auto_detect_solc`)
-#solc_version = '0.8.10'
-# Whether or not Forge should auto-detect the solc version to use
-auto_detect_solc = true
-# Disables downloading missing solc versions
-offline = false
-# Enables or disables the optimizer
-optimizer = true
-# The number of optimizer runs
-optimizer_runs = 200
-# The verbosity of tests
-verbosity = 0
-# A list of ignored solc error codes
-ignored_error_codes = []
-# The number of fuzz runs for fuzz tests
-fuzz_runs = 256
-# The max number of individual inputs that may be rejected before a fuzz test aborts
-fuzz_max_local_rejects = 65536
-# The max number of combined inputs that may be rejected before a fuzz test aborts
-fuzz_max_global_rejects = 1024
-# Whether or not to enable `vm.ffi`
-ffi = false
-# The address of `msg.sender` in tests
-sender = '0x00a329c0648769a73afac7f9381e08fb43dbea72'
-# The address of `tx.origin` in tests
-tx_origin = '0x00a329c0648769a73afac7f9381e08fb43dbea72'
-# The initial balance of the test contract
-initial_balance = '0xffffffffffffffffffffffff'
-# The block number we are at in tests
-block_number = 1
-# The chain ID we are on in tests
-chain_id = 31337
-# The gas limit in tests
-gas_limit = 9223372036854775807
-# The gas price in tests (in wei)
-gas_price = 0
-# The block basefee in tests (in wei)
-block_base_fee_per_gas = 0
-# The address of `block.coinbase` in tests
-block_coinbase = '0x0000000000000000000000000000000000000000'
-# The block timestamp in tests
-block_timestamp = 1
-# The block difficulty in tests
-block_difficulty = 0
-# A list of contracts to output gas reports for
-gas_reports = ["*"]
-# Enables or disables RPC caching when forking
-no_storage_caching = false
-# Caches storage retrieved locally for certain chains and endpoints
-# Can also be restricted to multiple chains
-# By default only remote endpoints will be cached
-# To disable storage caching, set `no_storage_caching = true`
-rpc_storage_caching = { chains = "all", endpoints = "remote" }
-# Extra output to include in the contract's artifact.
-extra_output = []
-# Extra output to write to separate files.
-extra_output_files = []
-# Use the given hash method for the metadata hash that is appended
-# to the bytecode.
-# The metadata hash can be removed from the bytecode by setting "none"
-bytecode_hash = "ipfs"
-# If enabled, the Solidity compiler is instructed to generate bytecode
-# only for the required contracts. This can reduce compile time
-# for `forge test`, but is experimental.
-sparse_mode = false
-# Whether or not to use the Yul intermediate representation compilation pipeline
-via_ir = false
-# How to treat revert (and require) reason strings
-revert_strings = "default"
-# Switch optimizer components on or off in detail
-#optimizer_details = None
-# Url of the rpc server that should be used for any rpc calls
-#eth_rpc_url = None
-# Etherscan API key
-#etherscan_api_key = None
-# Only run test functions matching the specified regex pattern
-#test_pattern= None
-# Only run test functions that do not match the specified regex pattern
-#test_pattern_inverse = None
-# Only run tests in contracts matching the specified regex pattern
-#contract_pattern = None
-# Only run tests in contracts that do not match the specified regex pattern
-#contract_pattern_inverse = None
-# Only run tests in source files matching the specified glob pattern
-#path_pattern = None
-# Only run tests in source files that do not match the specified glob pattern
-#path_pattern_inverse = None
-# The block gas limit
-#block_gas_limit = None
-# The memory limit of the EVM (32 MB by default)
-memory_limit = 33554432
-# Print the names of the compiled contracts
-names = false
-# Print the sizes of the compiled contracts
-sizes = false
-# Contains alias -> URL|Env pairs for RPC endpoints that can be accessed during testing
-rpc_endpoints = { optimism = "https://optimism.alchemyapi.io/v2/...", mainnet = "${RPC_MAINNET}" }
-```
-
-#### Configuration Advanced
-
-
-##### Additional Optimizer settings
-
-Optimizer components can be tweaked with the `OptimizerDetails` object:
-
-See [Compiler Input Description `settings.optimizer.details`](https://docs.soliditylang.org/en/latest/using-the-compiler.html#compiler-input-and-output-json-description)
-
-The `optimizer_details` (`optimizerDetails` also works) settings must be prefixed with the profile they correspond
-to: `[default.optimizer_details]`
-belongs to the `[default]` profile
-
-```toml
-[default.optimizer_details]
-constantOptimizer = true
-yul = true
-# this sets the `yulDetails` of the `optimizer_details` for the `default` profile
-[default.optimizer_details.yulDetails]
-stackAllocation = true
-optimizerSteps = 'dhfoDgvulfnTUtnIf'
-```
-
->**Note**    
-> If you encounter compiler errors when using `via_ir`, explicitly enable the legacy `optimizer` and leave `optimizerSteps` as an empty string
-
-```toml
-via_ir = true
-optimizerSteps = ''
-optimizer = true
-```
-
-##### RPC-Endpoints settings
-
-The `rpc_endpoints` value accepts a list of `alias = "<url|env var>"` pairs.
-
-The following example declares two pairs:
-The alias `optimism` references the endpoint URL directly.
-The alias `mainnet` references the environment variable `RPC_MAINNET` which holds the actual URL.
-
-Environment variables need to be wrapped in `${}`
-
-```toml
-[default.rpc_endpoints]
-optimism = "https://optimism.alchemyapi.io/v2/..."
-mainnet = "${RPC_MAINNET}"
-```
-
-##### Additional Model Checker settings
-
-[Solidity's built-in model checker](https://docs.soliditylang.org/en/latest/smtchecker.html#tutorial)
-is an opt-in module that can be enabled via the `ModelChecker` object.
-
-See [Compiler Input Description `settings.modelChecker`](https://docs.soliditylang.org/en/latest/using-the-compiler.html#compiler-input-and-output-json-description)
-and [the model checker's options](https://docs.soliditylang.org/en/latest/smtchecker.html#smtchecker-options-and-tuning).
-
-The module is available in `solc` release binaries for OSX and Linux.
-The latter requires the z3 library version [4.8.8, 4.8.14] to be installed
-in the system (SO version 4.8).
-
-Similarly to the optimizer settings above, the `model_checker` settings must be
-prefixed with the profile they correspond to: `[default.model_checker]` belongs
-to the `[default]` profile.
-
-```toml
-[default.model_checker]
-contracts = { '/path/to/project/src/Contract.sol' = [ 'Contract' ] }
-engine = 'chc'
-timeout = 10000
-targets = [ 'assert' ]
-```
-
-The fields above are recommended when using the model checker.
-Setting which contract should be verified is extremely important, otherwise all
-available contracts will be verified which can consume a lot of time.
-The recommended engine is `chc`, but `bmc` and `all` (runs both) are also
-accepted.
-
-It is also important to set a proper timeout (given in milliseconds), since the
-default time given to the underlying solvers may not be enough.
-If no verification targets are given, only assertions will be checked.
-
-The model checker will run when `forge build` is invoked, and will show
-findings as warnings if any.
-
-
-```toml
-[default.model_checker]
-contracts = { '/path/to/project/src/Contract.sol' = [ 'Contract' ] }
-engine = 'chc'
-timeout = 10000
-targets = [ 'assert' ]
-
-[default.optimizer_details]
-constantOptimizer = true
-yul = true
-# this sets the `yulDetails` of the `optimizer_details` for the `default` profile
-[default.optimizer_details.yulDetails]
-stackAllocation = true
-optimizerSteps = 'gTVnfClhnfncITgcraonvcgMtjmCumgUmdgdxVeiOlvdOvarhngxiUaxVhOdjTTDODDdUMrTthUVrrnhrjsvcjVuDmletlOThul'
-```
+This page describes each configuration key in detail. To see the default values, either refer to the specific key in this document, or see the [default config](/static/config.default.toml).
 
 ### Configuration keys
 
 This section documents all configuration keys. All configuration keys must live under a profile, such as `default`.
+
+**Sections**
+
+- [Project](#project)
+- [Solidity compiler](#solidity-compiler)
+  - [Solidity optimizer](#solidity-optimizer)
+  - [Solidity model checker](#solidity-model-checker)
+- [Tests](#tests)
+- [Formatter](#formatter)
 
 #### Project
 
@@ -386,22 +176,6 @@ If enabled, Foundry will not attempt to download any missing solc versions.
 
 If both `offline` and `auto-detect-solc` are set to `true`, the required version(s) of solc will be auto detected but any missing versions will *not* be installed.
 
-##### `optimizer`
-
-- Type: boolean
-- Default: true
-- Environment: `FOUNDRY_OPTIMIZER` or `DAPP_OPTIMIZER`
-
-Whether or not to enable the Solidity compiler optimizer.
-
-##### `optimizer_runs`
-
-- Type: integer
-- Default: 200
-- Environment: `FOUNDRY_OPTIMIZER_RUNS` or `DAPP_OPTIMIZER_RUNS`
-
-The amount of optimizer runs to perform.
-
 ##### `ignored_error_codes`
 
 - Type: array of integers
@@ -418,14 +192,6 @@ An array of Solidity compiler error codes to ignore during build, such as warnin
 
 The EVM version to use during tests. The value **must** be an EVM hardfork name, such as `london`, `byzantium`, etc.
 
-##### `via_ir`
-
-- Type: boolean
-- Default: false
-- Environment: `FOUNDRY_VIA_IR` or `DAPP_VIA_IR`
-
-If set to true, changes compilation pipeline to go through the Yul intermediate representation.
-
 ##### `revert_strings`
 
 - Type: string
@@ -438,40 +204,209 @@ Possible values are:
 - `debug` injects strings for compiler-generated internal reverts, implemented for ABI encoders V1 and V2 for now.  
 - `verboseDebug` even appends further information to user-supplied revert strings (not yet implemented).
 
-##### `optimizer_details`
+##### `extra_output_files`
 
-- Type: option
+- Type: array of strings
 - Default: none
-- Environment: `FOUNDRY_OPTIMIZER_DETAILS` or `DAPP_OPTIMIZER_DETAILS`
+- Environment: N/A
 
-If the `optimizer` is enabled, there are two defaults provided which can be tweaked here.  
+Extra output from the Solidity compiler that should be written to files in the artifacts directory.
 
-Possible values are:
-- peephole
-- inliner
-- jumpdest_remover
-- order_literals
-- deduplicate
-- cse
-- constant_optimizer
-- yul
-- yul_details
+Valid values are:
 
-##### `eth_rpc_url`
+- `metadata`: Written as a `metadata.json` file in the artifacts directory
+- `ir`: Written as a `.ir` file in the artifacts directory
+- `irOptimized`: Written as a `.iropt` file in the artifacts directory
+- `ewasm`: Written as a `.ewasm` file in the artifacts directory
+- `evm.assembly`: Written as a `.asm` file in the artifacts directory
+
+##### `extra_output`
+
+- Type: array of strings
+- Default: see below
+- Environment: N/A
+
+Extra output to include in the contract's artifact.
+
+The following values are always set, since they're required by Forge:
+
+```toml
+extra_output = [
+  "abi",
+  "evm.bytecode",
+  "evm.deployedBytecode",
+  "evm.methodIdentifiers",
+]
+```
+
+For a list of valid values, see the [Solidity docs][output-desc].
+
+##### `bytecode_hash`
 
 - Type: string
-- Default: none
-- Environment: `FOUNDRY_ETH_RPC_URL` or `DAPP_ETH_RPC_URL`
+- Default: ipfs
+- Environment: `FOUNDRY_BYTECODE_HASH` or `DAPP_BYTECODE_HASH`
 
-The url of the rpc server that should be used for any rpc calls.
+Determines the hash method for the metadata hash that is appended to the bytecode.
 
-##### `etherscan_api_key`
+Valid values are:
 
-- Type: string
-- Default: none
-- Environment: `FOUNDRY_ETHERSCAN_API_KEY` or `DAPP_ETHERSCAN_API_KEY`
+- ipfs (default)
+- bzzr1
+- none
 
-The etherscan API key for RPC calls.
+##### `sparse_mode`
+
+- Type: boolean
+- Default: false
+- Environment: `FOUNDRY_SPARSE_MODE` or `DAPP_SPARSE_MODE`
+
+Enables [sparse mode](./forge/forge-build.md#sparse-mode-experimental) for builds.
+
+#### Solidity optimizer
+
+Configuration related to the Solidity optimizer.
+
+##### `optimizer`
+
+- Type: boolean
+- Default: true
+- Environment: `FOUNDRY_OPTIMIZER` or `DAPP_OPTIMIZER`
+
+Whether or not to enable the Solidity optimizer.
+
+##### `optimizer_runs`
+
+- Type: integer
+- Default: 200
+- Environment: `FOUNDRY_OPTIMIZER_RUNS` or `DAPP_OPTIMIZER_RUNS`
+
+The amount of optimizer runs to perform.
+
+##### `via_ir`
+
+- Type: boolean
+- Default: false
+- Environment: `FOUNDRY_VIA_IR` or `DAPP_VIA_IR`
+
+If set to true, changes compilation pipeline to go through the new IR optimizer.
+
+##### `[optimizer_details]`
+
+The optimizer details section is used to tweak how the Solidity optimizer behaves. There are several configurable values in this section (each of them are booleans):
+
+- `peephole`
+- `inliner`
+- `jumpdest_remover`
+- `order_literals`
+- `deduplicate`
+- `cse`
+- `constant_optimizer`
+- `yul`
+
+Refer to the Solidity [compiler input description](https://docs.soliditylang.org/en/latest/using-the-compiler.html#compiler-input-and-output-json-description) for the default values.
+
+##### `[optimizer_details.yul_details]`
+
+The Yul details subsection of the optimizer details section is used to tweak how the new IR optimizer behaves. There are two configuration values:
+
+- `stack_allocation`: Tries to improve the allocation of stack slots by freeing them up earlier.
+- `optimizer_steps`: Selects the optimizer steps to be applied.
+
+Refer to the Solidity [compiler input description](https://docs.soliditylang.org/en/latest/using-the-compiler.html#compiler-input-and-output-json-description) for the default values.
+
+> ℹ️ **Note**  
+> If you encounter compiler errors when using `via_ir`, explicitly enable the legacy `optimizer` and leave `optimizer_steps` as an empty string
+
+#### Solidity model checker
+
+The Solidity model checker is a built-in opt-in module that is available in Solidity compilers for OSX and Linux. Learn more about the model checker in the [Solidity compiler documentation](https://docs.soliditylang.org/en/latest/smtchecker.html#tutorial)
+
+
+> ℹ️ **Note**  
+> The model checker requires `z3` version 4.8.8 or 4.8.14 on Linux.
+
+The model checker settings are configured in the `[model_checker]` section of the configuration.
+
+The model checker will run when `forge build` is invoked, and any findings will show up as warnings.
+
+These are the recommended settings when using the model checker:
+
+```toml
+[profile.default.model_checker]
+contracts = {'/path/to/project/src/Contract.sol' = ['Contract']}
+engine = 'chc'
+timeout = 10000
+targets = ['assert']
+```
+
+Setting which contract should be verified is extremely important, otherwise all available contracts will be verified which may take a long time.
+
+The recommended engine is `chc`, but `bmc` and `all` (which runs both) are also accepted.
+
+It is also important to set a proper timeout (given in milliseconds), since the default time given to the underlying solver may not be enough.
+
+If no verification targets are given, only assertions will be checked.
+
+##### `[model_checker]`
+
+The following keys are available in the model checker section.
+
+###### `model_checker.contracts`
+
+- Type: table
+- Default: all
+- Environment: N/A
+
+Specifies what contracts the model checker will analyze.
+
+The key of the table is the path to a source file, and the value is an array of contract names to check.
+
+For example:
+
+```toml
+[profile.default.model_checker]
+contracts = { "src/MyContracts.sol" = ["ContractA", "ContractB"] }
+```
+
+###### `model_checker.engine`
+
+- Type: string (see below)
+- Default: all
+- Environment: N/A
+
+Specifies the model checker engine to run. Valid values are:
+
+- `chc`: The constrained horn clauses engine
+- `bmc`: The bounded model checker engine
+- `all`: Runs both engines
+
+Refer to the [Solidity documentation](https://docs.soliditylang.org/en/latest/smtchecker.html#model-checking-engines) for more information on the engines.
+
+###### `model_checker.timeout`
+
+- Type: number (milliseconds)
+- Default: N/A
+- Environment: N/A
+
+Sets the timeout for the underlying model checker engines (in milliseconds).
+
+###### `model_checker.targets`
+
+- Type: array of strings
+- Default: assert
+- Environment: N/A
+
+Sets the model checker targets. Valid values are:
+
+- `assert`: Assertions
+- `underflow`: Arithmetic underflow
+- `overflow`: Arithmetic overflow
+- `divByZero`: Division by zero
+- `constantCondition`: Trivial conditions and unreachable code
+- `popEmptyArray`: Popping an empty array
+- `outOfBounds`: Out of bounds array/fixed bytes index access
+- `default`: All of the above (note: not the default for Forge)
 
 #### Tests
 
@@ -663,64 +598,21 @@ Valid values are:
 - remote (default)
 - A list of regex patterns, e.g. `["localhost"]`
 
-##### `extra_output`
-
-- Type: array of strings
-- Default: see below
-- Environment: N/A
-
-Extra output to include in the contract's artifact.
-
-The following values are always set, since they're required by Forge:
-
-```toml
-extra_output = [
-  "abi",
-  "evm.bytecode",
-  "evm.deployedBytecode",
-  "evm.methodIdentifiers",
-]
-```
-
-For a list of valid values, see the [Solidity docs][output-desc].
-
-##### `extra_output_files`
-
-- Type: array of strings
-- Default: none
-- Environment: N/A
-
-Extra output from the Solidity compiler that should be written to files in the artifacts directory.
-
-Valid values are:
-
-- `metadata`: Written as a `metadata.json` file in the artifacts directory
-- `ir`: Written as a `.ir` file in the artifacts directory
-- `irOptimized`: Written as a `.iropt` file in the artifacts directory
-- `ewasm`: Written as a `.ewasm` file in the artifacts directory
-- `evm.assembly`: Written as a `.asm` file in the artifacts directory
-
-##### `bytecode_hash`
+##### `eth_rpc_url`
 
 - Type: string
-- Default: ipfs
-- Environment: `FOUNDRY_BYTECODE_HASH` or `DAPP_BYTECODE_HASH`
+- Default: none
+- Environment: `FOUNDRY_ETH_RPC_URL` or `DAPP_ETH_RPC_URL`
 
-Determines the hash method for the metadata hash that is appended to the bytecode.
+The url of the rpc server that should be used for any rpc calls.
 
-Valid values are:
+##### `etherscan_api_key`
 
-- ipfs (default)
-- bzzr1
-- none
+- Type: string
+- Default: none
+- Environment: `FOUNDRY_ETHERSCAN_API_KEY` or `DAPP_ETHERSCAN_API_KEY`
 
-##### `sparse_mode`
-
-- Type: boolean
-- Default: false
-- Environment: `FOUNDRY_SPARSE_MODE` or `DAPP_SPARSE_MODE`
-
-Enables [sparse mode](./forge/forge-build.md#sparse-mode-experimental) for builds.
+The etherscan API key for RPC calls.
 
 ##### `test_pattern`
 
@@ -808,23 +700,20 @@ Print compiled contract sizes.
 
 ##### `rpc_endpoints`
 
-- Type: table or list of alias -> URL|Env pairs
+- Type: table of RPC endpoints
+- Default: none
+- Environment: none
 
-Container type for RPC endpoints that can be accessed during testing via cheatcodes.
+This section lives outside of profiles and defines a table of RPC endpoints, where the key specifies the RPC endpoints's name and the value is the RPC endpoint itself.
 
-Environment variables need to be wrapped in `${}`
+The value can either be a valid RPC endpoint or a reference to an environment variable (wrapped with in `${}`).
+
+These RPC endpoints can be used in tests and Solidity scripts (see [`vm.rpc`](./cheatcodes/rpc.md)).
+
+The following example defines an endpoint named `optimism` and an endpoint named `mainnet` that references an environment variable `RPC_MAINNET`:
 
 ```toml
-rpc_endpoints = { optimism = "https://optimism.alchemyapi.io/v2/...", mainnet = "${RPC_MAINNET}" }
+[rpc_endpoints]
+optimism = "https://optimism.alchemyapi.io/v2/..."
+mainnet = "${RPC_MAINNET}"
 ```
-
- See also
-
- [`RPC`](./cheatcodes/rpc.md)
-
-
-### TOML Formatting
-
-If you wish to 'pretty print' your `.toml` configuration file, you can try out `dprint` which has support for formatting `.toml` files.
-
-[See an example in their playground with a foundry.toml file already loaded](https://dprint.dev/playground/#code/FAbQJgpgZghgrgGwC4F1gwQg9gdwPoAOMSAFgM4AEAvBSGvElnpEhAMZJ5lYJvUVIATnAjAARnACWCMHkkA7KFn6wEZUWOxsA1njEx1eKBAiEIgvAHMD-AAzitutlgX71-AOS2AHrb-+AwKDgkICPBywdZkkoKEk2RCQATzsIqPk4AFsxc34ARjTdJElMiDIkGEyCfPEk1mdIPBIDEk95LHkIcLYYNhIIfiERYB6+0yJST1H+8IgAN0y8OfMySQ7PbHkwDtnvIRg8LDgkAmP+OmAIPcEDo5Pjo2ky87RYyRUMdWAlQTYBmlUXygcAAXiC8JkYN4rNh9Ag8IIIAArdhISg0ABsAFYsQBmDHfUHgyHQrQYBHI1Hoih5AAsAE4AEyEsEIuDyal5WyM2nAaxkPAIEqSJD8JmM3G4gDsjNs+IAHFjaVKpVj5bYpXyDIRBPF-hR7PyKQQsII0ecPAAqDxoADEFEklnaiNk5kEprwDTKwHtsry8ooADF2Rw1vIKOViANMscYGJpCKUj1wzkKIjyrqOBAwAJlKdET6KLjabKKABlI6-AZxBADbbPdqisgEdgxFKIgCOUhdFGcVSeggoy0Eqw6AEJgI7ndm8G6PV7qSBgP6pfKADTAP3r4DF2VrijAHFS2kbtAKEWSclwmDyP6eHyxR9P58vp-hIViG66540C4fxceB+NrAKUmSmkkgrCqKNCSjitK0rizLyJUP4CMIojtFwjA3JYpjTAolgfGoohYLEQqdERXxYAQxSZJIIK5DQQwkTRwoMRYwgcvkeD+MAdyeHc4SIpCBAEARi5oOoWyMRQXjeDAUCBgAojAgbKQAgoGxjqYpSk6cYqlQHpukKQZikQJpRnhKsDHUoCojNjAI6mGBkCUQ5vyeGQvzhKw5SeH5SC+dCpqOgo97eOpMDRVF6lRTFsWxdFCVxUlMUwPFcW2OEw5iFgqzJPwuLAHMl5yIOTHocAkY6OpmCRMQYaDFV1G0fR5hlqwBDUh44TAKAkCwIkAB0ggEGwWGmjAuGer0JAEWgfQwAoPUYAgsxbCaCjmjQHhrX1IBsJIaCtWxMn2Sy4KcdStK2Bi9LfKad6VcMuX5Ym-C8gN0DwMgw2uRA8JjDo5iLR0+wcNSADeskAPQTCQsOMPD7oohwsPeWwsMAMLgzcHDDdw63nLJuPyBDQUUCgFAAL6XPIlgKPqHh9GwvklBA-E0FyvEVIIuE7bQskGOoZoeFT-XgD9I2nXR7HMBAFTSGQYMchU5MAPKsXLMnMcASSIM1wz2qQkiUOo5qkAMAAGBsIAAIory1qNbFCkQI-QUNbsvtRYLDO2Qrs-B7NuDb9SCuwQ7o1qIUtDX9Pvy-7yvDXbjtK2okkVLV9U9MU6wvSxbXsZ1EDdZ4lgACoAGqKNjCAkIot4AJKV5YbA3B0cxsJYACySBIpk2NZJYACqmRgJYYDeNXECSBrCBzGAGtzE5jeWN4kij1C1ckBrYBIpXlf2xr9v22Ao+94IlekKP1eCII8gkIISJkN3SLV3A9uZLWSAIBrlcSCIA8EAA/config/N4KABGBEA2CWB2BTA6rAJgFwBaQFxgA4AGAGnCgTUXg1Ux3wBYyJIBXAZ0QBUBDAIw54wGAE5tELKEgDuAGQSIA0pWEwAZpCmQAxgHsAtgeoYAdOr2idiOYl5oEAcwDKAB17XhYidp29RjnqmvK6u0ACeAMJ68ABuJrAxQvjeiCAAviBAA/language/toml)
