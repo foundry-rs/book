@@ -717,3 +717,31 @@ The following example defines an endpoint named `optimism` and an endpoint named
 optimism = "https://optimism.alchemyapi.io/v2/..."
 mainnet = "${RPC_MAINNET}"
 ```
+
+#### Formatter
+
+Configuration related to the behavior of the Forge formatter. Each of these keys live under the `[fmt]` section.
+
+##### `line_length`
+
+- Type: number
+- Default: 80
+- Environment: `FOUNDRY_FMT_LINE_LENGTH` or `DAPP_FMT_LINE_LENGTH`
+
+Specifies the maximum line length where the formatter will try to wrap the line.
+
+##### `tab_width`
+
+- Type: number
+- Default: 4
+- Environment: `FOUNDRY_FMT_TAB_WIDTH` or `DAPP_FMT_TAB_WIDTH`
+
+Number of spaces per indentation level.
+
+##### `bracket_spacing`
+
+- Type: bool
+- Default: true
+- Environment: `FOUNDRY_FMT_BRACKET_SPACING` or `DAPP_FMT_BRACKET_SPACING`
+
+Whether or not to print spaces between brackets.
