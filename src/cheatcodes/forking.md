@@ -1,6 +1,15 @@
-## forking cheatcodes
+## Forking
 
+- [`createFork`](./cheatcodes/createFork.md)
+- [`selectFork`](./cheatcodes/selectFork.md)
+- [`createSelectFork`](./cheatcodes/createSelectFork.md)
+- [`activeFork`](./cheatcodes/activeFork.md)
+- [`rollFork`](./cheatcodes/rollFork.md)
 - [`RPC cheatcodes`](./rpc.md)
+
+---
+
+xyz
 
 ### Signature
 
@@ -9,15 +18,19 @@
 function createFork(string calldata urlOrAlias,uint256 block) external returns(uint256);
 // Creates a new fork with the given endpoint and the _latest_ block and returns the identifier of the fork
 function createFork(string calldata urlOrAlias) external returns(uint256);
+
 // Creates _and_ also selects a new fork with the given endpoint and block and returns the identifier of the fork
 function createSelectFork(string calldata urlOrAlias,uint256 block) external returns(uint256);
 // Creates _and_ also selects a new fork with the given endpoint and the latest block and returns the identifier of the fork
 function createSelectFork(string calldata urlOrAlias) external returns(uint256);
+
 // Takes a fork identifier created by `createFork` and sets the corresponding forked state as active.
 function selectFork(uint256 forkId) external;
+
 /// Returns the currently active fork
 /// Reverts if no fork is currently active
 function activeFork() external returns(uint256);
+
 // Updates the currently active fork to given block number
 // This is similar to `roll` but for the currently active fork
 function rollFork(uint256) external;
@@ -55,7 +68,6 @@ so when the evm does:
 What `selectFork` does is to set the _remote_ section with the fork's data source, however the _local_ memory remains persistent across fork swaps. This also means the `selectFork` can be called at all times with any fork, to set the _remote_ data source. However, it is important that the above rules for `read/write` access always apply, meaning _writes_ are persistent across fork swaps.
 
 `createSelectFork` is a one-liner for `createFork()` + `selectFork()`
-
 
 ```solidity
 contract ForkTest is Test {
