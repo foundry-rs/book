@@ -12,7 +12,7 @@ function createSelectFork(string calldata urlOrAlias, uint256 block) external re
 
 ### Description
 
-description xyz
+Creates _and_ selects a new fork from the given endpoint and returns the identifier of the fork. If a block number is passed as an argument, the fork will begin on that block, otherwise it will begin on the _latest_ block.
 
 > ℹ️ **Important Note xyz**
 >
@@ -35,3 +35,8 @@ Something something xyz `pay` is called on a `Contract` with a specific `msg.val
 ```solidity
 example xyz
 ```
+
+### SEE ALSO
+
+- [createFork](./createFork.md)
+- [selectFork](./selectFork.md)

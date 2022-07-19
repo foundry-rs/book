@@ -3,7 +3,7 @@
 ### Signature
 
 ```solidity
-function rollFork(uint256) external;
+function rollFork(uint256 blockNumber) external;
 ```
 
 ```solidity
@@ -12,7 +12,7 @@ function rollFork(uint256 forkId, uint256 blockNumber) external;
 
 ### Description
 
-description xyz
+Sets `block.number` for the given fork if a fork identifier is passed as an argument, otherwise it updates the currently active fork.
 
 > ℹ️ **Important Note xyz**
 >
@@ -35,3 +35,7 @@ Something something xyz `pay` is called on a `Contract` with a specific `msg.val
 ```solidity
 example xyz
 ```
+
+### SEE ALSO
+
+- [roll](./roll.md)

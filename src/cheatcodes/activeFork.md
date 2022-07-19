@@ -8,7 +8,7 @@ function activeFork() external returns(uint256);
 
 ### Description
 
-description xyz
+Returns the currently active fork. Reverts if no fork is currently active.
 
 > ℹ️ **Important Note xyz**
 >

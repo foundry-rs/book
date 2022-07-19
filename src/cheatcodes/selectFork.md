@@ -8,7 +8,7 @@ function selectFork(uint256 forkId) external;
 
 ### Description
 
-description xyz
+Takes a fork identifier created by `createFork` and sets the corresponding forked state as active.
 
 > ℹ️ **Important Note xyz**
 >
