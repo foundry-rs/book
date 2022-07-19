@@ -666,6 +666,15 @@
       "contributions": [
         "maintenance"
       ]
+    },
+    {
+      "login": "transmissions11",
+      "name": "t11s",
+      "avatar_url": "https://avatars.githubusercontent.com/u/26209401?v=4",
+      "profile": "http://2λ.com",
+      "contributions": [
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7,
