@@ -40,8 +40,8 @@ Forge will try to auto-detect what Solidity compiler works for your project.
 
 To use a specific Solidity compiler, you can set [`solc`][config-solc] in your [config file][config],
 or pass `--use solc:<version>` to a Forge command that supports it (e.g. [`forge build`][forge-build]
-or [`forge test`][forge-test]). 
-Paths to a solc binary are also accepted. To use a specific local solc binary, you can set `solc = "<path to solc>"` in your config file, or pass `--use "<path to solc>"`. 
+or [`forge test`][forge-test]).
+Paths to a solc binary are also accepted. To use a specific local solc binary, you can set `solc = "<path to solc>"` in your config file, or pass `--use "<path to solc>"`.
 The solc version/path can also be set via the env variable `FOUNDRY_SOLC=<version/path>`, but the cli arg `--use` has priority.
 
 For example, if you have a project that supports all 0.7.x Solidity versions, but you want to compile with solc 0.7.0, you could use `forge build --use solc:0.7.0`.
@@ -97,4 +97,4 @@ Forge will sometimes check for newer Solidity versions that fit your project. To
 [forge-build]: ./reference/forge/forge-build.md
 [console-log]: https://github.com/NomicFoundation/hardhat/blob/master/packages/hardhat-core/console.sol
 [forge-std]: https://github.com/foundry-rs/forge-std
-[dstestplus]: https://github.com/Rari-Capital/solmate/blob/19a4f345970ed39ee6369f343d145e0d4071c18a/src/test/utils/DSTestPlus.sol#L10
+[dstestplus]: https://github.com/transmissions11/solmate/blob/19a4f345970ed39ee6369f343d145e0d4071c18a/src/test/utils/DSTestPlus.sol#L10

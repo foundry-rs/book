@@ -21,7 +21,7 @@ Since the NFT contract from the solmate tutorial inherits both `solmate` and `Op
 cd solidity-scripting
 
 # Install Solmate and OpenZepplin contracts as dependencies
-forge install Rari-Capital/solmate Openzeppelin/openzeppelin-contracts
+forge install transmissions11/solmate Openzeppelin/openzeppelin-contracts
 ```
 
 Next, we have to delete the `Contract.sol` file in the `src` folder and create another file called `NFT.sol`. You can do this by running:
@@ -117,7 +117,6 @@ We’re going to deploy the `NFT` contract to the Rinkeby testnet, but to do thi
 > 💡 Note: You can get some Rinkeby testnet ETH [here](https://faucet.paradigm.xyz/) .
 
 Once you have all that create a `.env` file and add the variables.
-
 
 The .env file should follow this format:
 
@@ -228,4 +227,4 @@ forge script script/NFT.s.sol:MyScript --fork-url http://localhost:8545 \
  --private-key $PRIVATE_KEY0 --broadcast
 ```
 
->💡 Note: A full implementation of this tutorial can be found [here](https://github.com/Perelyn-sama/solidity-scripting) and for further reading about solidity scripting, you can check out the `forge script` [reference](../reference/forge/forge-script.md).
+> 💡 Note: A full implementation of this tutorial can be found [here](https://github.com/Perelyn-sama/solidity-scripting) and for further reading about solidity scripting, you can check out the `forge script` [reference](../reference/forge/forge-script.md).
