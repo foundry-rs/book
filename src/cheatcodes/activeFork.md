@@ -3,7 +3,7 @@
 ### Signature
 
 ```solidity
-function activeFork() external returns(uint256);
+function activeFork() external returns (uint256);
 ```
 
 ### Description
@@ -20,14 +20,22 @@ Returns the currently active fork. Reverts if no fork is currently active.
 
 ### Examples
 
-Something something xyz `transfer` is called on a token `MyToken`:
+Return the currently active fork:
 
 ```solidity
-example xyz
+uint256 mainnetForkId = vm.createFork(MAINNET_RPC_URL);
+uint256 optimismForkId = vm.createFork(OPTIMISM_RPC_URL);
+
+assert(mainnetForkId != optimismForkId);
+
+vm.selectFork(mainnetForkId);
+assertEq(vm.activeFork(), mainnetForkId);
+
+vm.selectFork(optimismForkId);
+assertEq(vm.activeFork(), optimismForkId);
 ```
 
-Something something xyz `pay` is called on a `Contract` with a specific `msg.value` and `calldata`:
+### SEE ALSO
 
-```solidity
-example xyz
-```
+- [createFork](./createFork.md)
+- [selectFork](./selectFork.md)

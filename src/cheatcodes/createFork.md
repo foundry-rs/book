@@ -3,11 +3,11 @@
 ### Signature
 
 ```solidity
-function createFork(string calldata urlOrAlias) external returns(uint256)
+function createFork(string calldata urlOrAlias) external returns (uint256)
 ```
 
 ```solidity
-function createFork(string calldata urlOrAlias, uint256 block) external returns(uint256);
+function createFork(string calldata urlOrAlias, uint256 block) external returns (uint256);
 ```
 
 ### Description
@@ -24,14 +24,25 @@ Creates a new fork from the given endpoint and returns the identifier of the for
 
 ### Examples
 
-Something something xyz `transfer` is called on a token `MyToken`:
+Create a new mainnet fork with the latest block number:
 
 ```solidity
-example xyz
+uint256 forkId = vm.createFork(MAINNET_RPC_URL);
+vm.selectFork(forkId);
+
+assertEq(block.number, 15_171_037); // as of time of writing, 2022-07-19 04:55:27 UTC
 ```
 
-Something something xyz `pay` is called on a `Contract` with a specific `msg.value` and `calldata`:
+Create a new mainnet fork with a given block number:
 
 ```solidity
-example xyz
+uint256 forkId = vm.createFork(MAINNET_RPC_URL, 1_337_000);
+vm.selectFork(forkId);
+
+assertEq(block.number, 1_337_000);
 ```
+
+### SEE ALSO
+
+- [createFork](./createFork.md)
+- [activeFork](./activeFork.md)

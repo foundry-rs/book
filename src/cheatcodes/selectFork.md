@@ -20,14 +20,17 @@ Takes a fork identifier created by `createFork` and sets the corresponding forke
 
 ### Examples
 
-Something something xyz `transfer` is called on a token `MyToken`:
+Select a previously created fork:
 
 ```solidity
-example xyz
+uint256 forkId = vm.createFork(MAINNET_RPC_URL);
+
+vm.selectFork(forkId);
+
+assertEq(vm.activeFork(), forkId);
 ```
 
-Something something xyz `pay` is called on a `Contract` with a specific `msg.value` and `calldata`:
+### SEE ALSO
 
-```solidity
-example xyz
-```
+- [createFork](./createFork.md)
+- [activeFork](./activeFork.md)
