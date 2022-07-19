@@ -1,6 +1,6 @@
 ## 📖 Foundry Book
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-72-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-73-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 A book on all things Foundry. [Read now](https://book.getfoundry.sh).
@@ -128,6 +128,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tr>
     <td align="center"><a href="https://github.com/0xvv"><img src="https://avatars.githubusercontent.com/u/104269768?v=4?s=100" width="100px;" alt=""/><br /><sub><b>double v</b></sub></a><br /><a href="https://github.com/foundry-rs/book/pulls?q=is%3Apr+reviewed-by%3A0xvv" title="Reviewed Pull Requests">👀</a></td>
     <td align="center"><a href="https://github.com/skaunov"><img src="https://avatars.githubusercontent.com/u/65976143?v=4?s=100" width="100px;" alt=""/><br /><sub><b>skaunov</b></sub></a><br /><a href="#maintenance-skaunov" title="Maintenance">🚧</a></td>
+    <td align="center"><a href="http://2λ.com"><img src="https://avatars.githubusercontent.com/u/26209401?v=4?s=100" width="100px;" alt=""/><br /><sub><b>t11s</b></sub></a><br /><a href="#maintenance-transmissions11" title="Maintenance">🚧</a></td>
   </tr>
 </table>
 
