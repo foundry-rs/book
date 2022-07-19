@@ -113,6 +113,8 @@ The standard methods are based on [this](https://eth.wiki/json-rpc/API) referenc
 * `eth_uninstallFilter`  
   
 * `eth_getWork`  
+
+* `eth_syncing`  
   
 * `eth_submitWork`  
   
