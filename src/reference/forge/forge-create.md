@@ -36,6 +36,9 @@ Dynamic linking is not supported: you should predeploy your libraries and manual
 `--verify`  
 &nbsp;&nbsp;&nbsp;&nbsp;Verify contract after creation. Runs `forge verify-contract` with the appropriate parameters.
 
+`--unlocked`  
+&nbsp;&nbsp;&nbsp;&nbsp;Send via `eth_sendTransaction` using the `--from` argument or `$ETH_FROM` as sender.
+
 {{#include ../common/transaction-options.md}}
 
 {{#include ../common/wallet-options.md}}
