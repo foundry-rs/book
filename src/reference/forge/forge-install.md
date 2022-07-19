@@ -57,27 +57,27 @@ the repository. If you want to change the name of the folder, prepend `<folder>=
 
 1. Install a dependency:
     ```sh
-    forge install Rari-Capital/solmate
+    forge install transmissions11/solmate
     ```
 
 2. Install a specific version of a dependency:
     ```sh
-    forge install Rari-Capital/solmate@v7
+    forge install transmissions11/solmate@v7
     ```
 
 3. Install multiple dependencies:
     ```sh
-    forge install Rari-Capital/solmate@v7 OpenZeppelin/openzeppelin-contracts
+    forge install transmissions11/solmate@v7 OpenZeppelin/openzeppelin-contracts
     ```
 
 4. Install a dependency without creating a submodule:
     ```sh
-    forge install --no-git Rari-Capital/solmate
+    forge install --no-git transmissions11/solmate
     ```
 
 5. Install a dependency in a specific folder:
     ```sh
-    forge install soulmate=Rari-Capital/solmate
+    forge install soulmate=transmissions11/solmate
     ```
 
 ### SEE ALSO
