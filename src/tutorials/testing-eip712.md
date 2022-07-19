@@ -15,7 +15,7 @@ First we'll cover a basic token transfer:
 - Owner signs approval off-chain
 - Spender calls `permit` and `transferFrom` on-chain
 
-We'll use [Solmate's ERC-20](https://github.com/Rari-Capital/solmate/blob/main/src/tokens/ERC20.sol), as EIP-712 and EIP-2612 batteries come included. Take a glance over the full contract if you haven't already - here is `permit` implemented:
+We'll use [Solmate's ERC-20](https://github.com/transmissions11/solmate/blob/main/src/tokens/ERC20.sol), as EIP-712 and EIP-2612 batteries come included. Take a glance over the full contract if you haven't already - here is `permit` implemented:
 
 ```solidity
     /*//////////////////////////////////////////////////////////////

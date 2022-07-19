@@ -27,7 +27,7 @@ echo "Generating output (forge)..."
   in_temp deps
   forge init deps
   cd deps
-  (run_command forge install Rari-Capital/solmate) > $OUTPUT_DIR/deps/forge-install
+  (run_command forge install transmissions11/solmate) > $OUTPUT_DIR/deps/forge-install
   forge install d-xo/weird-erc20
   (run_command tree lib -L 1) > $OUTPUT_DIR/deps/tree
   (run_command forge remappings) > $OUTPUT_DIR/deps/forge-remappings
@@ -72,7 +72,7 @@ echo "Generating output (forge)..."
 (
   in_temp forge_tree
   git clone https://github.com/FredCoen/nft-tutorial
-  cd nft-tutorial 
+  cd nft-tutorial
   forge install
   (run_command forge tree) > $OUTPUT_DIR/forge_tree/forge-tree
   (run_command forge tree --no-dedupe) > $OUTPUT_DIR/forge_tree/forge-tree-no-dedupe
