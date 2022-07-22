@@ -29,6 +29,7 @@ Scripts can be used to apply state transitions on live contracts, or deploy and 
 `--resume`  
 &nbsp;&nbsp;&nbsp;&nbsp;Resumes submitting transactions that failed or timed-out previously.
 
+`-s`  
 `--sig` *signature*  
 &nbsp;&nbsp;&nbsp;&nbsp;The signature of the function you want to call in the contract, or raw calldata.  
 &nbsp;&nbsp;&nbsp;&nbsp;Default: `run()`  
@@ -43,12 +44,25 @@ Scripts can be used to apply state transitions on live contracts, or deploy and 
 &nbsp;&nbsp;&nbsp;&nbsp;Etherscan API key.  
 &nbsp;&nbsp;&nbsp;&nbsp;Environment: `ETHERSCAN_API_KEY`
 
+`--with-gas-price` *price*  
+&nbsp;&nbsp;&nbsp;&nbsp;Sets the gas price for **broadcasted** legacy transactions, or the max fee for broadcasted EIP1559 transactions.  
+&nbsp;&nbsp;&nbsp;&nbsp;Note: To set the gas price in the execution environment of the script use `--gas-price` instead (see below).
+
 `--json`  
 &nbsp;&nbsp;&nbsp;&nbsp;Output results in JSON format.  
 &nbsp;&nbsp;&nbsp;&nbsp;Note: The output is under development and prone to change.
 
+#### Verification Options
+
 `--verify`  
 &nbsp;&nbsp;&nbsp;&nbsp;If it finds a matching broadcast log, it tries to verify every contract found in the receipts.
+
+`--delay` *seconds*  
+&nbsp;&nbsp;&nbsp;&nbsp;An optional delay to apply in between verification attempts (in seconds)
+
+`--retries` *count*  
+&nbsp;&nbsp;&nbsp;&nbsp;Number of attempts to retry verifying the contracts.  
+&nbsp;&nbsp;&nbsp;&nbsp;Default: 1.
 
 {{#include core-build-options.md}}
 
