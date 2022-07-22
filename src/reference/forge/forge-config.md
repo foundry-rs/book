@@ -26,6 +26,9 @@ overriding values in the displayed configuration.
 `--basic`  
 &nbsp;&nbsp;&nbsp;&nbsp;Prints a basic configuration file.
 
+`--fix`  
+&nbsp;&nbsp;&nbsp;&nbsp;Attempts to fix any configuration warnings.
+
 {{#include common-options.md}}
 
 ### EXAMPLES
