@@ -16,6 +16,7 @@ Publish a raw pre-signed transaction to the network.
 
 #### Publish Options
 
+`--async`  
 `--cast-async`  
 &nbsp;&nbsp;&nbsp;&nbsp;Do not wait for a transaction receipt.  
 &nbsp;&nbsp;&nbsp;&nbsp;Environment: `CAST_ASYNC`

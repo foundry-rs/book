@@ -18,6 +18,7 @@ If *field* is specified, then only the given field of the receipt is displayed.
 
 #### Receipt Options
 
+`--async`  
 `--cast-async`  
 &nbsp;&nbsp;&nbsp;&nbsp;Do not wait for the transaction receipt if it does not exist yet.  
 &nbsp;&nbsp;&nbsp;&nbsp;Environment: `CAST_ASYNC`
