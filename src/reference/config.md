@@ -745,3 +745,15 @@ Number of spaces per indentation level.
 - Environment: `FOUNDRY_FMT_BRACKET_SPACING` or `DAPP_FMT_BRACKET_SPACING`
 
 Whether or not to print spaces between brackets.
+
+##### `quote_style`
+
+- Type: string
+- Default: double
+- Environment: `FOUNDRY_FMT_QUOTE_STYLE` or `DAPP_FMT_QUOTE_STYLE`
+
+Defines the quotation mark style. Valid values are:
+
+- `double` (default): Use double quotes where possible (`"`)
+- `single`: Use single quotes where possible (`'`)
+- `preserve`: Use quotation mark defined in the source code
