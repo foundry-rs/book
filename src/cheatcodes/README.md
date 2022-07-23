@@ -1,10 +1,25 @@
 ## Cheatcodes Reference
 
-Cheatcodes give you powerful assertions, the ability to alter the state of the EVM, mock data, and more.
+Cheatcodes give you powerful assertions, the ability to alter the state of the EVM, mock data, and more. 
 
-To enable a cheatcode you call designated functions on the cheatcode address: `0x7109709ECfa91a80626fF3989D68f67F5b1DD12D`.
+Cheatcodes are made available through use of the cheatcode address (`0x7109709ECfa91a80626fF3989D68f67F5b1DD12D`). If you encounter errors for this address when using fuzzed addresses in your tests, you may wish to exclude it from your fuzz tests by using the following line:
 
-You can access cheatcodes easily via `vm` available in Forge Standard Library's [`Test`](../reference/forge-std/#forge-stds-test) contract.
+```solidity
+vm.assume(address_ != 0x7109709ECfa91a80626fF3989D68f67F5b1DD12D);
+```
+
+You can also access cheatcodes easily via `vm` available in Forge Standard Library's [`Test`](../reference/forge-std/#forge-stds-test) contract. For example, using the `prank` cheatcode to send the next call from the zero address can be done as follows:
+
+```solidity
+vm.prank(address(0));
+```
+### Forge Standard Library Cheatcodes
+
+Forge-std implements 'cheatcodes' through a wrapper which combines multiple standard cheatcodes to improve development experience. These are not technically cheatcodes, but rather a composition of Forge's cheatcodes.
+
+You can view the list of Forge Standard Library's 'cheatcodes' [in the references section](../../reference/forge-std/std-cheats.md) and see how each of them uses the Forge cheatcodes in the [Forge-std source code](https://github.com/foundry-rs/forge-std/blob/master/src/Test.sol).
+
+### Cheatcode Types
 
 Below are some subsections for the different Forge cheatcodes.
 
@@ -203,3 +218,4 @@ interface CheatCodes {
     function rpcUrls() external returns(string[2][] memory);
 }
 ```
+
