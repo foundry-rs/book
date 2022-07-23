@@ -10,14 +10,6 @@ function selectFork(uint256 forkId) external;
 
 Takes a fork identifier created by `createFork` and sets the corresponding forked state as active.
 
-> ℹ️ **Important Note xyz**
->
-> note xyz
-
-### Tips
-
-- tip xyz
-
 ### Examples
 
 Select a previously created fork:

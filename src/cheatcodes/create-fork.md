@@ -14,10 +14,6 @@ function createFork(string calldata urlOrAlias, uint256 block) external returns 
 
 Creates a new fork from the given endpoint and returns the identifier of the fork. If a block number is passed as an argument, the fork will begin on that block, otherwise it will begin on the _latest_ block.
 
-### Tips
-
-- tip xyz
-
 ### Examples
 
 Create a new mainnet fork with the latest block number:

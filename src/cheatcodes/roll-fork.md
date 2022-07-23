@@ -14,14 +14,6 @@ function rollFork(uint256 forkId, uint256 blockNumber) external;
 
 Sets `block.number`. If a fork identifier is passed as an argument, it will update that fork, otherwise it will update the currently active fork.
 
-> ℹ️ **Important Note xyz**
->
-> note xyz
-
-### Tips
-
-- tip xyz
-
 ### Examples
 
 Set `block.number` for the currently active fork:

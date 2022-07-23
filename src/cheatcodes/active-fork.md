@@ -10,14 +10,6 @@ function activeFork() external returns (uint256);
 
 Returns the currently active fork. Reverts if no fork is currently active.
 
-> ℹ️ **Important Note xyz**
->
-> note xyz
-
-### Tips
-
-- tip xyz
-
 ### Examples
 
 Return the currently active fork:
