@@ -32,5 +32,5 @@ assertEq(vm.activeFork(), forkId);
 
 ### SEE ALSO
 
-- [createFork](./createFork.md)
-- [activeFork](./activeFork.md)
+- [createFork](./create-fork.md)
+- [activeFork](./active-fork.md)

@@ -13,7 +13,7 @@ Below are some subsections for the different Forge cheatcodes.
 - [Fuzzer](./fuzzer.md): Cheatcodes that configure the fuzzer
 - [External](./external.md): Cheatcodes that interact with external state (files, commands, ...)
 - [Utilities](./utilities.md): Smaller utility cheatcodes
-- [Forking](./forking.md): Forking mode cheatcodes
+- [Fork Testing](./fork-testing.md): Forking cheatcodes (also covers fork mode testing via CLI)
 - [Snapshots](./snapshots.md): Snapshot cheatcodes
 
 ### Cheatcodes Interface
@@ -146,22 +146,22 @@ interface CheatCodes {
 
     // When fuzzing, generate new inputs if conditional not met
     function assume(bool) external;
-    
+
     // Set block.coinbase (who)
     function coinbase(address) external;
 
-    // Using the address that calls the test contract or the address provided 
-    // as the sender, has the next call (at this call depth only) create a 
+    // Using the address that calls the test contract or the address provided
+    // as the sender, has the next call (at this call depth only) create a
     // transaction that can later be signed and sent onchain
     function broadcast() external;
     function broadcast(address) external;
-    
+
     // Using the address that calls the test contract or the address provided
     // as the sender, has all subsequent calls (at this call depth only) create
     // transactions that can later be signed and sent onchain
     function startBroadcast() external;
     function startBroadcast(address) external;
-    
+
     // Stops collecting onchain transactions
     function stopBroadcast() external;
 

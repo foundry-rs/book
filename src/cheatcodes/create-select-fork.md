@@ -42,5 +42,5 @@ assertEq(block.number, 1_337_000);
 
 ### SEE ALSO
 
-- [createFork](./createFork.md)
-- [selectFork](./selectFork.md)
+- [createFork](./create-fork.md)
+- [selectFork](./select-fork.md)

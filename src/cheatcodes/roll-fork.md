@@ -12,7 +12,7 @@ function rollFork(uint256 forkId, uint256 blockNumber) external;
 
 ### Description
 
-Sets `block.number` for the given fork if a fork identifier is passed as an argument, otherwise it updates the currently active fork.
+Sets `block.number`. If a fork identifier is passed as an argument, it will update that fork, otherwise it will update the currently active fork.
 
 > ℹ️ **Important Note xyz**
 >
@@ -52,6 +52,6 @@ assertEq(block.number, 1_337_000);
 ### SEE ALSO
 
 - [roll](./roll.md)
-- [createFork](./createFork.md)
-- [selectFork](./selectFork.md)
-- [activeFork](./activeFork.md)
+- [createFork](./create-fork.md)
+- [selectFork](./select-fork.md)
+- [activeFork](./active-fork.md)

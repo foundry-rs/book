@@ -37,5 +37,5 @@ assertEq(vm.activeFork(), optimismForkId);
 
 ### SEE ALSO
 
-- [createFork](./createFork.md)
-- [selectFork](./selectFork.md)
+- [createFork](./create-fork.md)
+- [selectFork](./select-fork.md)
