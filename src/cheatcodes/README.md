@@ -13,7 +13,7 @@ Below are some subsections for the different Forge cheatcodes.
 - [Fuzzer](./fuzzer.md): Cheatcodes that configure the fuzzer
 - [External](./external.md): Cheatcodes that interact with external state (files, commands, ...)
 - [Utilities](./utilities.md): Smaller utility cheatcodes
-- [Fork Testing](./fork-testing.md): Forking cheatcodes (also covers fork mode testing via CLI)
+- [Forking](./forking.md): Forking mode cheatcodes
 - [Snapshots](./snapshots.md): Snapshot cheatcodes
 
 ### Cheatcodes Interface
