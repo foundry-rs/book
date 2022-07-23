@@ -22,9 +22,9 @@
   - [Cheatcodes](./forge/cheatcodes.md)
   - [Forge Standard Library Overview](./forge/forge-std.md)
   - [Understanding Traces](./forge/traces.md)
-  - [Forking Mode](./forge/forking-mode.md)
   <!--  - [Coverage Reports]() !-->
 - [Advanced Testing](./forge/advanced-testing.md)
+  - [Fork Testing](./forge/fork-testing.md)
   - [Fuzz Testing](./forge/fuzz-testing.md)
   - [Differential Testing](./forge/differential-ffi-testing.md)
     <!--  - [Invariant Testing]() !-->

@@ -2,7 +2,11 @@
 
 ### Introduction
 
-By combining [Anvil][anvil] and [Cast][cast], you can fork and test by interacting with contracts on a real network. The goal of this tutorial is to show you how to transfer Dai tokens from someone who holds Dai to an account created by Anvil. 
+By combining [Anvil][anvil] and [Cast][cast], you can fork and test by interacting with contracts on a real network. The goal of this tutorial is to show you how to transfer Dai tokens from someone who holds Dai to an account created by Anvil.
+
+ℹ️ **Alternative Cheatcode Approach**
+
+> Note that it is now possible to create, select, and manage multiple forks inside your Solidity test code with [`forking cheatcodes`](../cheatcodes/forking.md). More info [here](../forge/fork-testing.md) on the trade-offs between approaches.
 
 ### Set Up
 

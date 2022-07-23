@@ -8,11 +8,11 @@ function activeFork() external returns (uint256);
 
 ### Description
 
-Returns the currently active fork. Reverts if no fork is currently active.
+Returns the identifier for the currently active fork. Reverts if no fork is currently active.
 
 ### Examples
 
-Return the currently active fork:
+Get the currently active fork id:
 
 ```solidity
 uint256 mainnetForkId = vm.createFork(MAINNET_RPC_URL);
