@@ -8,11 +8,7 @@ Cheatcodes are made available through use of the cheatcode address (`0x7109709EC
 vm.assume(address_ != 0x7109709ECfa91a80626fF3989D68f67F5b1DD12D);
 ```
 
-You can also access cheatcodes easily via `vm` available in Forge Standard Library's [`Test`](../reference/forge-std/#forge-stds-test) contract. For example, using the `prank` cheatcode to send the next call from the zero address can be done as follows:
-
-```solidity
-vm.prank(address(0));
-```
+You can also access cheatcodes easily via `vm` available in Forge Standard Library's [`Test`](../reference/forge-std/#forge-stds-test) contract.
 ### Forge Standard Library Cheatcodes
 
 Forge Std implements wrappers around cheatcodes, which combine multiple standard cheatcodes to improve development experience. These are not technically cheatcodes, but rather compositions of Forge's cheatcodes.
