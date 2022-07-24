@@ -2,8 +2,8 @@
 
 Forge supports testing in a forked environment with two different approaches:
 
-- **Forking Mode** — use a single fork for all your tests via the `forge test --fork-url` flag
-- **Forking Cheatcodes** — create, select, and manage multiple forks directly in Solidity test code via [forking cheatcodes](../cheatcodes/forking.md)
+- [**Forking Mode**](#forking-mode) — use a single fork for all your tests via the `forge test --fork-url` flag
+- [**Forking Cheatcodes**](#forking-cheatcodes) — create, select, and manage multiple forks directly in Solidity test code via [forking cheatcodes](../cheatcodes/forking.md)
 
 Which approach to use? Forking mode affords running an entire test suite against a specific forked environment, while forking cheatcodes provide more flexibility and expressiveness to work with multiple forks in your tests. Your particular use case and testing strategy will help inform which approach to use.
 
@@ -82,8 +82,8 @@ so when the evm does:
 
 The `selectFork` cheatcode sets the _remote_ section with the fork's data source, however the _local_ memory remains persistent across fork swaps. This also means `selectFork` can be called at all times with any fork, to set the _remote_ data source. However, it is important to keep in mind the above rules for `read/write` access always apply, meaning _writes_ are persistent across fork swaps.
 
-ℹ️ **Important Note**
-
+> ℹ️ **Important Note**
+>
 > The current read/write behavior will change soon, with completely separated storage sections for each fork. The docs will be updated to reflect this change and illustrate usage.
 
 #### Examples
