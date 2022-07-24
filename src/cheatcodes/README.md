@@ -15,7 +15,7 @@ vm.prank(address(0));
 ```
 ### Forge Standard Library Cheatcodes
 
-Forge-std implements 'cheatcodes' through a wrapper which combines multiple standard cheatcodes to improve development experience. These are not technically cheatcodes, but rather a composition of Forge's cheatcodes.
+Forge Std implements wrappers around cheatcodes, which combine multiple standard cheatcodes to improve development experience. These are not technically cheatcodes, but rather compositions of Forge's cheatcodes.
 
 You can view the list of Forge Standard Library's 'cheatcodes' [in the references section](../reference/forge-std/std-cheats.md) and see how each of them uses the Forge cheatcodes in the [Forge-std source code](https://github.com/foundry-rs/forge-std/blob/master/src/Test.sol).
 
