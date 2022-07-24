@@ -17,7 +17,7 @@ vm.prank(address(0));
 
 Forge Std implements wrappers around cheatcodes, which combine multiple standard cheatcodes to improve development experience. These are not technically cheatcodes, but rather compositions of Forge's cheatcodes.
 
-You can view the list of Forge Standard Library's 'cheatcodes' [in the references section](../reference/forge-std/std-cheats.md) and see how each of them uses the Forge cheatcodes in the [Forge-std source code](https://github.com/foundry-rs/forge-std/blob/master/src/Test.sol).
+You can view the list of Forge Standard Library's cheatcode wrappers [in the references section](../reference/forge-std/std-cheats.md). You can reference the [Forge Std source code](https://github.com/foundry-rs/forge-std/blob/master/src/Test.sol) to learn more about how the wrappers work under the hood.
 
 ### Cheatcode Types
 
