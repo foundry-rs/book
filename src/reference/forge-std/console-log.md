@@ -27,7 +27,7 @@
 
 
 ### `console.log(format[,...args])`
-The `console.log()` method returns a formatted string using the first argument as a printf-like format string which can contain zero or more format specifiers. Each specifier is replaced with the converted value from the corresponding argument. Supported specifiers are:
+The `console.log()` method prints a formatted string using the first argument as a printf-like format string which can contain zero or more format specifiers. Each specifier is replaced with the converted value from the corresponding argument. Supported specifiers are:
 
 - `%s`: String will be used to convert all values to a human-readable string. `uint256`, `int256` and `bytes` values are converted to their `0x` hex encoded values.
 - `%d`: Number will be used to convert all values to a human-readable string. This is identical to `%s`.
