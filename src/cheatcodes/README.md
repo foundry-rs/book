@@ -2,9 +2,12 @@
 
 Cheatcodes give you powerful assertions, the ability to alter the state of the EVM, mock data, and more.
 
-Cheatcodes are made available through use of the cheatcode address (`0x7109709ECfa91a80626fF3989D68f67F5b1DD12D`). If you encounter errors for this address when using fuzzed addresses in your tests, you may wish to exclude it from your fuzz tests by using the following line:
+Cheatcodes are made available through use of the cheatcode address (`0x7109709ECfa91a80626fF3989D68f67F5b1DD12D`). 
 
 > ℹ️ **Note**
+>
+> If you encounter errors for this address when using fuzzed addresses in your tests, you may wish to 
+> exclude it from your fuzz tests by using the following line:
 >
 > ```solidity
 > vm.assume(address_ != 0x7109709ECfa91a80626fF3989D68f67F5b1DD12D);
