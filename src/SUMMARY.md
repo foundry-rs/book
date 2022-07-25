@@ -273,6 +273,7 @@
       - [`abs`](./reference/forge-std/abs.md)
       - [`delta`](./reference/forge-std/delta.md)
       - [`percentDelta`](./reference/forge-std/percentDelta.md)
+    - [Console Logging](./reference/forge-std/console-log.md)
   - [DSTest Reference](./reference/ds-test.md)
 - [Miscellaneous](./misc/README.md)
   - [Struct encoding](./misc/struct-encoding.md)

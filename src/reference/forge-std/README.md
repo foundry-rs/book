@@ -12,7 +12,7 @@ What's included:
     import "forge-std/Vm.sol";
     ```
 
-- [`console.sol`](https://hardhat.org/hardhat-network/reference/#console-log) and `console2.sol`: Hardhat-style logging functionality
+- [`console.sol`](./console-log.md) and `console2.sol`: Hardhat-style logging functionality
 
     ```solidity
     import "forge-std/console.sol";
@@ -57,6 +57,7 @@ What's included:
   - [Std Errors](./std-errors.md): Wrappers around common internal Solidity errors and reverts.
   - [Std Storage](./std-storage.md): Utilities for storage manipulation.
   - [Std Math](./std-math.md): Useful mathematical functions.
+  - [Console Logging](./console-log.md): Console logging functions.
 
 - A cheatcodes instance `vm`, from which you invoke Forge cheatcodes (see [Cheatcodes Reference](../../cheatcodes/))
 
@@ -64,7 +65,7 @@ What's included:
     vm.startPrank(alice);
     ```
 
-- All Hardhat `console` functions for logging (see [Hardhat docs](https://hardhat.org/hardhat-network/reference/#console-log))
+- All Hardhat `console` functions for logging (see [Console Logging](./console-log.md))
 
     ```solidity
     console.log(alice.balance); // or `console2`
