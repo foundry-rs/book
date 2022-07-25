@@ -702,6 +702,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "minaminao",
+      "name": "minaminao",
+      "avatar_url": "https://avatars.githubusercontent.com/u/20497787?v=4",
+      "profile": "https://github.com/minaminao",
+      "contributions": [
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7,
