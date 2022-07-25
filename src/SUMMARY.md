@@ -22,17 +22,17 @@
   - [Cheatcodes](./forge/cheatcodes.md)
   - [Forge Standard Library Overview](./forge/forge-std.md)
   - [Understanding Traces](./forge/traces.md)
-  - [Forking Mode](./forge/forking-mode.md)
+  - [Fork Testing](./forge/fork-testing.md)
   <!--  - [Coverage Reports]() !-->
 - [Advanced Testing](./forge/advanced-testing.md)
   - [Fuzz Testing](./forge/fuzz-testing.md)
   - [Differential Testing](./forge/differential-ffi-testing.md)
-<!--  - [Invariant Testing]() !-->
-<!--  - [Symbolic Testing]() !-->
-<!--  - [Table Testing]() !-->
-<!--  - [Mutation Testing]() !-->
-<!-- - [Linting and Formatting]() !-->
-<!-- - [Generating Documentation]() !-->
+    <!--  - [Invariant Testing]() !-->
+    <!--  - [Symbolic Testing]() !-->
+    <!--  - [Table Testing]() !-->
+    <!--  - [Mutation Testing]() !-->
+    <!-- - [Linting and Formatting]() !-->
+    <!-- - [Generating Documentation]() !-->
 - [Deploying and Verifying](./forge/deploying.md)
 - [Gas Tracking](./forge/gas-tracking.md)
   - [Gas Reports](./forge/gas-reports.md)
@@ -62,7 +62,7 @@
 - [Docker and Foundry](./tutorials/foundry-docker.md)
 - [Testing EIP-712 Signatures](./tutorials/testing-eip712.md)
 - [Solidity Scripting](./tutorials/solidity-scripting.md)
-- [Testing on a Forked Network](./tutorials/testing-on-a-forked-network.md)
+- [Forking Mainnet with Cast and Anvil](./tutorials/forking-mainnet-with-cast-anvil.md)
 <!-- - [Incremental Adoption]() !-->
 
 # Appendix
@@ -216,6 +216,12 @@
       - [`expectCall`](./cheatcodes/expect-call.md)
     - [Fuzzer](./cheatcodes/fuzzer.md)
       - [`assume`](./cheatcodes/assume.md)
+    - [Forking](./cheatcodes/forking.md)
+      - [`createFork`](./cheatcodes/create-fork.md)
+      - [`selectFork`](./cheatcodes/select-fork.md)
+      - [`createSelectFork`](./cheatcodes/create-select-fork.md)
+      - [`activeFork`](./cheatcodes/active-fork.md)
+      - [`rollFork`](./cheatcodes/roll-fork.md)
     - [External](./cheatcodes/external.md)
       - [`ffi`](./cheatcodes/ffi.md)
       - [`getCode`](./cheatcodes/get-code.md)
@@ -231,7 +237,6 @@
       - [`addr`](./cheatcodes/addr.md)
       - [`sign`](./cheatcodes/sign.md)
       - [`label`](./cheatcodes/label.md)
-    - [Forking](./cheatcodes/forking.md)
     - [Snapshots](./cheatcodes/snapshots.md)
     - [RPC](./cheatcodes/rpc.md)
   - [Forge Standard Library Reference](./reference/forge-std/README.md)

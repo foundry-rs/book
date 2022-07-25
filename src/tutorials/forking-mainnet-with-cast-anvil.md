@@ -1,8 +1,8 @@
-## Testing on a Forked Network
+## Forking Mainnet with Cast and Anvil
 
 ### Introduction
 
-By combining [Anvil][anvil] and [Cast][cast], you can fork and test by interacting with contracts on a real network. The goal of this tutorial is to show you how to transfer Dai tokens from someone who holds Dai to an account created by Anvil. 
+By combining [Anvil][anvil] and [Cast][cast], you can fork and test by interacting with contracts on a real network. The goal of this tutorial is to show you how to transfer Dai tokens from someone who holds Dai to an account created by Anvil.
 
 ### Set Up
 
