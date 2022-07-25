@@ -95,6 +95,6 @@ Forge will sometimes check for newer Solidity versions that fit your project. To
 [config-solc]: ./reference/config.md#solc_version
 [config]: ./config/
 [forge-build]: ./reference/forge/forge-build.md
-[console-log]: https://github.com/NomicFoundation/hardhat/blob/master/packages/hardhat-core/console.sol
+[console-log]: ./reference/forge-std/console-log.md
 [forge-std]: https://github.com/foundry-rs/forge-std
 [dstestplus]: https://github.com/transmissions11/solmate/blob/19a4f345970ed39ee6369f343d145e0d4071c18a/src/test/utils/DSTestPlus.sol#L10
