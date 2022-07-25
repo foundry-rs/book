@@ -37,7 +37,7 @@ The `console.log()` method prints a formatted string using the first argument as
 - Returns: `<string>` The formatted string
 
 If a specifier does not have a corresponding argument, it is not replaced:
-```
+```solidity
 console.log("%s:%s", "foo");
 // Returns: "foo:%s"
 ```
@@ -45,13 +45,13 @@ console.log("%s:%s", "foo");
 Values that are not part of the format string are formatted using as a human-readable string representation.
 
 If there are more arguments passed to the console.log() method than the number of specifiers, the extra arguments are concatenated to the returned string, separated by spaces:
-```
+```solidity
 console.log("%s:%s", "foo", "bar", "baz");
 // Returns: "foo:bar baz"
 ```
 
 If only one argument is passed to console.log(), it is returned as it is without any formatting:
-```
+```solidity
 console.log("%% %s");
 // Returns: "%% %s"
 ```
