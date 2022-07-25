@@ -675,6 +675,15 @@
       "contributions": [
         "maintenance"
       ]
+    },
+    {
+      "login": "Inphi",
+      "name": "Murphy Law",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3516807?v=4",
+      "profile": "https://github.com/Inphi",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
