@@ -10,6 +10,14 @@ function deployCode(string memory what) public returns (address);
 function deployCode(string memory what, bytes memory args) public returns (address);
 ```
 
+```solidity
+function deployCode(string memory what, uint256 val) public returns (address);
+```
+
+```solidity
+function deployCode(string memory what, bytes memory args, uint256 val) public returns (address);
+```
+
 ### Description
 
 Deploys a contract by fetching the contract bytecode from the artifacts directory.
