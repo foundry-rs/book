@@ -29,7 +29,7 @@ rpc_endpoints = { optimism = "https://optimism.alchemyapi.io/v2/...", mainnet = 
 
 ```solidity
 string memory url = cheats.rpcUrl("optimism");
-assertEq(url, ""https://optimism.alchemyapi.io/v2/...");
+assertEq(url, "https://optimism.alchemyapi.io/v2/...");
 ```
 
 If a ENV var is missing, `rpcUrl()` will revert:
