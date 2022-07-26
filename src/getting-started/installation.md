@@ -20,7 +20,7 @@ This will download `foundryup`. Then install Foundry by running:
 foundryup
 ```
 
-If everything goes well, you will now have two binaries at your disposal: `forge` and `cast`.
+If everything goes well, you will now have three binaries at your disposal: `forge`, `cast`, and `anvil`.
 
 > 💡 **Tip**
 >
