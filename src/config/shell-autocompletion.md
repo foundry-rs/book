@@ -16,6 +16,7 @@ Then run:
 ```sh
 forge completions zsh > /usr/local/share/zsh/site-functions/_forge
 cast completions zsh > /usr/local/share/zsh/site-functions/_cast
+anvil completions zsh > /usr/local/share/zsh/site-functions/_anvil
 ```
 
 ### fish
@@ -24,6 +25,7 @@ cast completions zsh > /usr/local/share/zsh/site-functions/_cast
 mkdir -p $HOME/.config/fish/completions
 forge completions fish > $HOME/.config/fish/completions/forge.fish
 cast completions fish > $HOME/.config/fish/completions/cast.fish
+anvil completions fish > $HOME/.config/fish/completions/anvil.fish
 source $HOME/.config/fish/config.fish
 ```
 
@@ -33,5 +35,6 @@ source $HOME/.config/fish/config.fish
 mkdir -p $HOME/.local/share/bash-completion/completions
 forge completions bash > $HOME/.local/share/bash-completion/completions/forge
 cast completions bash > $HOME/.local/share/bash-completion/completions/cast
+anvil completions bash > $HOME/.local/share/bash-completion/completions/anvil
 exec bash
 ```
