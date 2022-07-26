@@ -12,11 +12,13 @@ $ tree . -L 3 -I output
 │       ├── LICENSE-MIT
 │       ├── README.md
 │       └── src
+├── script
+│   └── Contract.s.sol
 ├── src
 │   └── Contract.sol
 └── test
     └── Contract.t.sol
 
-6 directories, 6 files
+7 directories, 7 files
 // ANCHOR_END: output
 // ANCHOR_END: all
