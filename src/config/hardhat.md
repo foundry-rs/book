@@ -105,7 +105,7 @@ ds-test/=lib/forge-std/lib/ds-test/src/
 forge-std/=lib/forge-std/src/
 ```
 
-See more on `remappings.txt` and VS Code Solidity extension: [Remapping dependencies](projects/dependencies.html?highlight=remap#remapping-dependencies), [Integrating with VSCode](/config/vscode.html)
+See more on `remappings.txt` and VS Code Solidity extension: [Remapping dependencies](../projects/dependencies.md?#remapping-dependencies), [Integrating with VSCode](vscode.md)
 
 4. Make a sub-directory `test/foundry` and write Foundry tests in it. 
 
