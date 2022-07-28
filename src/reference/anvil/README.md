@@ -75,6 +75,8 @@ The standard methods are based on [this](https://eth.wiki/json-rpc/API) referenc
 * `eth_getCode`  
   
 * `eth_sign`  
+
+* `eth_signTypedData_v4`  
   
 * `eth_sendTransaction`  
   
