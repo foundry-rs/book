@@ -60,11 +60,11 @@ Forking cheatcodes allow you to enter forking mode programatically in your Solid
 
 #### Usage
 
-Important to keep in mind that _all_ test functions are isolated, meaning each test function is executed with a _copy_ of the state after `setUp` and is executed in its own stand-alone EVM.
+Important to keep in mind that _all_ test functions are isolated, meaning each test function is executed with a _copy_ of the state _after_ `setUp` and is executed in its own stand-alone EVM.
 
-Therefore forks created during `setUp` are available in tests. The code example below uses [`createFork`](../cheatcodes/create-fork.md) to create two forks, but does _not_ select one initially.
+Therefore forks created during `setUp` are available in tests. The code example below uses [`createFork`](../cheatcodes/create-fork.md) to create two forks, but does _not_ select one initially. Each fork is identified with a unique identifier (`uint256 forkId`), which is assigned when it is first created.
 
-Enabling a specific fork is done via passing a forkId to [`selectFork`](../cheatcodes/select-fork.md).
+Enabling a specific fork is done via passing that `forkId` to [`selectFork`](../cheatcodes/select-fork.md).
 
 [`createSelectFork`](../cheatcodes/create-select-fork.md) is a one-liner for `createFork` plus `selectFork`.
 
@@ -74,19 +74,16 @@ Similar to [`roll`](../cheatcodes/roll.md), you can set `block.timestamp` of a f
 
 To understand what happens when a fork is selected, it is important to know how the forking mode works in general:
 
-In fork mode, there are two memory sections in the EVM, a _local_ and a _remote_. The local one contains all modified storage slots, while the remote one contains storage slots fetched via rpc that are _not_ modified.
-so when the evm does:
+Each fork is a standalone EVM, i.e. all forks use completely independent storage. The only exception is the state of the `msg.sender` and the test contract itself, which are persistent across fork swaps. 
+In other words all changes that are made while fork `A` is active (`selectFork(A)`) are only recorded in fork `A`'s storage and are not available if another fork is selected. However, changes recorded in the test contract itself (variables) are still available because the test contract is a _persistent_ account.
 
-- _read_: return from local if present, otherwise fetch from remote
-- _write_: always write into local
 
 The `selectFork` cheatcode sets the _remote_ section with the fork's data source, however the _local_ memory remains persistent across fork swaps. This also means `selectFork` can be called at all times with any fork, to set the _remote_ data source. However, it is important to keep in mind the above rules for `read/write` access always apply, meaning _writes_ are persistent across fork swaps.
 
-> ℹ️ **Important Note**
->
-> The current read/write behavior will change soon, with completely separated storage sections for each fork. The docs will be updated to reflect this change and illustrate usage.
 
 #### Examples
+
+##### Create and Select Forks
 
 ```solidity
 contract ForkTest is Test {
@@ -111,7 +108,7 @@ contract ForkTest is Test {
         vm.selectFork(mainnetFork);
         assertEq(vm.activeFork(), mainnetFork);
 
-        // from here on data is fetched from the `mainnetFork` if the EVM requests it
+        // from here on data is fetched from the `mainnetFork` if the EVM requests it and written to the storage of `mainnetFork`
     }
 
     // manage multiple forks in the same test
@@ -127,6 +124,7 @@ contract ForkTest is Test {
     function testCanCreateAndSelectForkInOneStep() public {
         // creates a new fork and also selects it
         uint256 anotherFork = cheats.createSelectFork(MAINNET_RPC_URL);
+        assertEq(vm.activeFork(), anotherFork);
     }
 
     // set `block.timestamp` of a fork
@@ -138,5 +136,78 @@ contract ForkTest is Test {
     }
 }
 ```
+
+##### Separated and persistent storage
+
+As mentioned each fork is essentially an independent EVM with separated storage.
+
+Only the accounts of `msg.sender` and the test contract (`ForkTest`) are persistent when forks are selected. But any account can be turned into a persistent account: [`makePersistent`](../cheatcodes/make-persistent.md).
+
+An account that is _persistent_ is unique, i.e. it exists on all forks
+
+```solidity
+contract ForkTest is Test {
+    // the identifiers of the forks
+    uint256 mainnetFork;
+    uint256 optimismFork;
+
+    // create two _different_ forks during setup
+    function setUp() public {
+        mainnetFork = vm.createFork(MAINNET_RPC_URL);
+        optimismFork = vm.createFork(OPTIMISM_RPC_URL);
+    }
+
+    // creates a new contract while a fork is active
+    function testCreateContract() public {
+        cheats.selectFork(mainnetFork);
+        assertEq(vm.activeFork(), mainnetFork);
+        
+        // the new contract is written to `mainnetFork`'s storage
+        SimpleStorageContract simple = new SimpleStorageContract();
+        
+        // and can be used as normal
+        simple.set(100);
+        assertEq(simple.value(), 100);
+        
+        // after switching to another contract we still know `address(simple)` but the contract only lifes in `mainnetFork` 
+        cheats.selectFork(optimismFork);
+        
+        /* this call will therefor revert because `simple` now points to a contract that does not exist on the active fork
+        * it will produce following revert message:
+        * 
+        * "Contract 0xCe71065D4017F316EC606Fe4422e11eB2c47c246 does not exists on active fork with id `1`
+        *       But exists on non active forks: `[0]`"
+        */
+        simple.value()
+    }
+    
+     // creates a new _persitent_ contract while a fork is active
+     function testCreatePersistentContract() public {
+        cheats.selectFork(mainnetFork);
+        SimpleStorageContract simple = new SimpleStorageContract();
+        simple.set(100);
+        assertEq(simple.value(), 100);
+        
+        // mark the contract as persistent so it is also available when other forks are active
+        cheats.makePersistent(address(simple));
+        assert(cheats.isPersistent(address(simple))); 
+        
+        cheats.selectFork(optimismFork);
+        assert(cheats.isPersistent(address(simple))); 
+        
+        // This will succeed because the contract is now also available on the `optimismFork`
+        assertEq(simple.value(), 100);
+     }
+}
+
+contract SimpleStorageContract {
+    string public value;
+
+    function set(uint256 _value) public {
+        value = _value;
+    }
+}
+```
+
 
 For more details and examples, see the [forking cheatcodes](../cheatcodes/forking.md) reference.
