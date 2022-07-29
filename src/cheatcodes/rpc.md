@@ -24,7 +24,9 @@ The following `rpc_endpoints` in `foundry.toml` registers two RPC aliases:
 
 ```toml
 # --snip--
-rpc_endpoints = { optimism = "https://optimism.alchemyapi.io/v2/...", mainnet = "${RPC_MAINNET}" }
+[rpc_endpoints]
+optimism = "https://optimism.alchemyapi.io/v2/..."
+mainnet = "${RPC_MAINNET}" 
 ```
 
 ```solidity
