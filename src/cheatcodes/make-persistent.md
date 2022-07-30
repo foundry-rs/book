@@ -1,0 +1,70 @@
+## `makePersistent`
+
+### Signature
+
+```solidity
+function makePersistent(address) external;
+function makePersistent(address, address) external;
+function makePersistent(address, address, address) external;
+function makePersistent(address[] calldata) external;
+```
+
+### Description
+
+Each fork ([`createFork`](./create-fork.md)) has its own independent storage, which is also replaced when another fork is selected ([`selectFork`](./select-fork.md)).
+By default, only the test contract account and the caller are persistent across forks, which means that changes to the state of the test contract (variables) are preserved when different forks are selected. This way data can be shared by storing it in the contract's variables. 
+
+However, with this cheatcode, it is possible to mark the specified accounts as persistent, which means that their state is available regardless of which fork is currently active.
+
+### Examples
+
+Mark a new contract as persistent
+
+```solidity
+contract SimpleStorageContract {
+    string public value;
+
+    function set(uint256 _value) public {
+        value = _value;
+    }
+}
+
+function testMarkPersistent() public {
+    // by default the `sender` and the contract itself are persistent
+    assert(cheats.isPersistent(msg.sender));
+    assert(cheats.isPersistent(address(this)));
+
+    // select a specific fork
+    cheats.selectFork(mainnetFork);
+    
+    // create a new contract that's stored in the `mainnetFork` storage
+    SimpleStorageContract simple = new SimpleStorageContract();
+    
+    // `simple` is not marked as persistent
+    assert(!cheats.isPersistent(address(simple)));
+    
+    // contract can be used
+    uint256 expectedValue = 99;
+    simple.set(expectedValue);
+    assertEq(simple.value(), expectedValue);
+    
+    // mark as persistent
+    cheats.makePersistent(address(simple));
+    
+    // select a different fork
+    cheats.selectFork(optimismFork);
+    
+    // ensure contract is still persistent   
+    assert(cheats.isPersistent(address(simple)));
+    
+    // value is set as expected
+    assertEq(simple.value(), expectedValue);
+}
+```
+
+### SEE ALSO
+
+- [isPersistent](./is-persistent.md)
+- [revokePersistent](./revoke-persistent.md)
+- [createFork](./create-fork.md)
+- [selectFork](./select-fork.md)
