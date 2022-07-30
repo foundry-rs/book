@@ -9,14 +9,13 @@
 
 ### Description
 
-The counterpart of (`makePersistent`)[./make-persistent.md], that makes the given contract not persistent across fork swaps
+The counterpart of [`makePersistent`](./make-persistent.md), that makes the given contract not persistent across fork swaps
 
 ### Examples
 
 Revoke a persistent status of a contract
 
 ```solidity
-
 contract SimpleStorageContract {
     string public value;
 

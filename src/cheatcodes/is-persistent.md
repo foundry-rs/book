@@ -8,14 +8,14 @@
 
 ### Description
 
-Returns whether an account is marked as persistent (`makePersistent`)[./make-persistent.md]. 
+Returns whether an account is marked as persistent ([`makePersistent`](./make-persistent.md)). 
 
 ### Examples
 
 Check default status of `msg.sender` and the current test account
 
 ```solidity
-// by default the `sender` and the contract itself are persistent
+// By default the `sender` and the test contract itself are persistent
 assert(cheats.isPersistent(msg.sender));
 assert(cheats.isPersistent(address(this)));
 ```

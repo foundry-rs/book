@@ -11,17 +11,16 @@ function makePersistent(address[] calldata) external;
 
 ### Description
 
-Each fork (`createFork`)[./create-fork.md] has its own independent storage, which is also replaced when another fork is selected (`selectFork`)[../select-fork.md].
+Each fork ([`createFork`](./create-fork.md)) has its own independent storage, which is also replaced when another fork is selected ([`selectFork`](./select-fork.md)).
 By default, only the test contract account and the caller are persistent across forks, which means that changes to the state of the test contract (variables) are preserved when different forks are selected. This way data can be shared by storing it in the contract's variables. 
 
-However, with the cheatcode `makePersistent(address)` the specified accounts are marked as persistent, which means that their state is available regardless of which fork is currently active.
+However, with this cheatcode, it is possible to mark the specified accounts as persistent, which means that their state is available regardless of which fork is currently active.
 
 ### Examples
 
 Mark a new contract as persistent
 
 ```solidity
-
 contract SimpleStorageContract {
     string public value;
 
