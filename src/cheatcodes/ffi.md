@@ -14,7 +14,7 @@ It is generally advised to use this cheat code as a last resort, and to not enab
 
 ### Tips
 
-- By default the `ffi` cheatcode assumes a hex encoded value (e.g. hex string of an abi encoded string), if hex decoding fails it will return the output as utf8 bytes.
+- By default the `ffi` cheatcode assumes the output of the command is a hex encoded value (e.g. a hex string of an ABI encoded value). If hex decoding fails, it will return the output as UTF8 bytes that you can cast to a string.
 - Make sure that the output does not include a `\n` newline character. (e.g in Rust use `print!` vs `println!`)
 - Remember that the script will be executed from the top-level directory of your project, not inside `test`
 - Make sure that the inputs array does not have empty elements. They will be handled as inputs by the script, instead of space
@@ -22,7 +22,7 @@ It is generally advised to use this cheat code as a last resort, and to not enab
 
 ### Examples
 
-Abi encoded output
+ABI encoded output
 
 ```solidity
 string[] memory inputs = new string[](3);
@@ -36,7 +36,7 @@ string memory output = abi.decode(res, (string));
 assertEq(output, "gm");
 ```
 
-string output
+UTF8 string output
 
 ```solidity
 string[] memory inputs = new string[](3);
