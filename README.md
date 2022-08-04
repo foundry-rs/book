@@ -1,6 +1,6 @@
 ## 📖 Foundry Book
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-77-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-78-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 A book on all things Foundry. [Read now](https://book.getfoundry.sh).
@@ -133,6 +133,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="http://www.noface.dev"><img src="https://avatars.githubusercontent.com/u/103920908?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Arbiter</b></sub></a><br /><a href="https://github.com/foundry-rs/book/commits?author=The-Arbiter" title="Documentation">📖</a></td>
     <td align="center"><a href="http://neodaoist.xyz"><img src="https://avatars.githubusercontent.com/u/3170590?v=4?s=100" width="100px;" alt=""/><br /><sub><b>neodaoist</b></sub></a><br /><a href="https://github.com/foundry-rs/book/commits?author=neodaoist" title="Documentation">📖</a></td>
     <td align="center"><a href="https://github.com/minaminao"><img src="https://avatars.githubusercontent.com/u/20497787?v=4?s=100" width="100px;" alt=""/><br /><sub><b>minaminao</b></sub></a><br /><a href="#maintenance-minaminao" title="Maintenance">🚧</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://fidelramos.net"><img src="https://avatars.githubusercontent.com/u/71658?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Fidel Ramos</b></sub></a><br /><a href="#maintenance-haplo" title="Maintenance">🚧</a></td>
   </tr>
 </table>
 
