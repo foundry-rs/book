@@ -7,7 +7,7 @@ or to compare gas usage before and after various optimizations.
 To generate the gas snapshot, run [`forge snapshot`](../reference/forge/forge-snapshot.md).
 
 This will generate a file called `.gas-snapshot` by default with all your
-tests (not including fuzz tests) and their respective gas usage.
+tests and their respective gas usage.
 
 ```ignore
 $ forge snapshot
