@@ -711,6 +711,15 @@
       "contributions": [
         "maintenance"
       ]
+    },
+    {
+      "login": "haplo",
+      "name": "Fidel Ramos",
+      "avatar_url": "https://avatars.githubusercontent.com/u/71658?v=4",
+      "profile": "https://fidelramos.net",
+      "contributions": [
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7,
