@@ -123,6 +123,8 @@ The standard methods are based on [this](https://eth.wiki/json-rpc/API) referenc
 * `eth_submitHashrate`  
   
 * `eth_feeHistory`
+
+* `eth_getProof`
   
 * `trace_transaction`
   
