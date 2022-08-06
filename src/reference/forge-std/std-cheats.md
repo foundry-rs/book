@@ -8,3 +8,5 @@
 - [`deployCode`](./deployCode.md)
 - [`bound`](./bound.md)
 - [`changePrank`](./change-prank.md)
+- [`makeAddr`](./make-addr.md)
+- [`makeAddrAndKey`](./make-addr-and-key.md)

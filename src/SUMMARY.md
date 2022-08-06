@@ -259,6 +259,8 @@
       - [`deployCode`](./reference/forge-std/deployCode.md)
       - [`bound`](./reference/forge-std/bound.md)
       - [`changePrank`](./reference/forge-std/change-prank.md)
+      - [`makeAddr`](./reference/forge-std/make-addr.md)
+      - [`makeAddrAndKey`](./reference/forge-std/make-addr-and-key.md)
     - [Std Errors](./reference/forge-std/std-errors.md)
       - [`assertionError`](./reference/forge-std/assertionError.md)
       - [`arithmeticError`](./reference/forge-std/arithmeticError.md)
