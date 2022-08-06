@@ -720,6 +720,15 @@
       "contributions": [
         "maintenance"
       ]
+    },
+    {
+      "login": "elijahsullivan",
+      "name": "Elijah Sullivan",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6895934?v=4",
+      "profile": "https://elisullivan.com",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
