@@ -145,6 +145,9 @@ This program is a set of tools to interact with Ethereum and perform conversions
 
 #### Conversion Commands
 
+[cast --format-bytes32-string](./cast--format-bytes32-string.md)  
+&nbsp;&nbsp;&nbsp;&nbsp;Formats a string into bytes32 encoding.
+
 [cast --from-bin](./cast--from-bin.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Convert binary data into hex data.
 
@@ -153,6 +156,9 @@ This program is a set of tools to interact with Ethereum and perform conversions
 
 [cast --from-utf8](./cast--from-utf8.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Convert UTF8 to hex.
+
+[cast --parse-bytes32-string](./cast--parse-bytes32-string.md)  
+&nbsp;&nbsp;&nbsp;&nbsp;Parses a string from bytes32 encoding.
 
 [cast --to-ascii](./cast--to-ascii.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Convert hex data to an ASCII string.

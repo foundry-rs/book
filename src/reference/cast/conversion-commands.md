@@ -1,9 +1,11 @@
 ## Conversion Commands
 
+- [cast --format-bytes32-string](./cast--format-bytes32-string.md)
 - [cast --from-bin](./cast--from-bin.md)
 - [cast --from-fix](./cast--from-fix.md)
 - [cast --from-rlp](./cast--from-rlp.md)
 - [cast --from-utf8](./cast--from-utf8.md)
+- [cast --parse-bytes32-string](./cast--parse-bytes32-string.md)
 - [cast --to-ascii](./cast--to-ascii.md)
 - [cast --to-bytes32](./cast--to-bytes32.md)
 - [cast --to-dec](./cast--to-dec.md)
