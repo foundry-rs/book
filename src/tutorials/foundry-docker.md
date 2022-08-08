@@ -28,7 +28,7 @@ We will cover both, but let's start by taking a look at interfacing with foundry
 
 We can run any of the `cast` [commands](/reference/cast/) against our docker image. Let's fetch the latest block information:
 ```sh
-$ docker run foundry "cast block --rpc-url $RPC_URL latest"
+$ docker run foundry "cast block --rpc-url $RPC_URL --block latest"
 baseFeePerGas        "0xb634241e3"
 difficulty           "0x2e482bdf51572b"
 extraData            "0x486976656f6e20686b"
