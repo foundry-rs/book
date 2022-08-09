@@ -23,6 +23,11 @@ Scripts can be used to apply state transitions on live contracts, or deploy and 
 `--debug`  
 &nbsp;&nbsp;&nbsp;&nbsp;Open the script in the [debugger][debugger]. Takes precedence over broadcast.
 
+`-g`  
+`--gas-estimate-multiplier` *multiplier*  
+&nbsp;&nbsp;&nbsp;&nbsp;Relative percentage by which to multiply all gas estimates. (i.e. set to 200 to double them)
+&nbsp;&nbsp;&nbsp;&nbsp;Default: 130
+
 `--legacy`  
 &nbsp;&nbsp;&nbsp;&nbsp;Use legacy transactions instead of EIP1559 ones. This is auto-enabled for common networks without EIP1559.
 
@@ -36,6 +41,9 @@ Scripts can be used to apply state transitions on live contracts, or deploy and 
 
 `--slow`  
 &nbsp;&nbsp;&nbsp;&nbsp;Makes sure a transaction is sent, only after its previous one has been confirmed and succeeded.
+
+`--skip-simulation`  
+&nbsp;&nbsp;&nbsp;&nbsp;Skips on-chain simulation
 
 `--target-contract` *contract_name*  
 &nbsp;&nbsp;&nbsp;&nbsp;The name of the contract you want to run.
