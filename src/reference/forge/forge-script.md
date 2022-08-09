@@ -23,6 +23,19 @@ Scripts can be used to apply state transitions on live contracts, or deploy and 
 `--debug`  
 &nbsp;&nbsp;&nbsp;&nbsp;Open the script in the [debugger][debugger]. Takes precedence over broadcast.
 
+`--etherscan-api-key` *key*  
+&nbsp;&nbsp;&nbsp;&nbsp;Etherscan API key.  
+&nbsp;&nbsp;&nbsp;&nbsp;Environment: `ETHERSCAN_API_KEY`
+
+`-g`  
+`--gas-estimate-multiplier` *multiplier*  
+&nbsp;&nbsp;&nbsp;&nbsp;Relative percentage by which to multiply all gas estimates. (i.e. set to 200 to double them)
+&nbsp;&nbsp;&nbsp;&nbsp;Default: 130
+
+`--json`  
+&nbsp;&nbsp;&nbsp;&nbsp;Output results in JSON format.  
+&nbsp;&nbsp;&nbsp;&nbsp;Note: The output is under development and prone to change.
+
 `--legacy`  
 &nbsp;&nbsp;&nbsp;&nbsp;Use legacy transactions instead of EIP1559 ones. This is auto-enabled for common networks without EIP1559.
 
@@ -34,23 +47,18 @@ Scripts can be used to apply state transitions on live contracts, or deploy and 
 &nbsp;&nbsp;&nbsp;&nbsp;The signature of the function you want to call in the contract, or raw calldata.  
 &nbsp;&nbsp;&nbsp;&nbsp;Default: `run()`  
 
+`--skip-simulation`  
+&nbsp;&nbsp;&nbsp;&nbsp;Skips on-chain simulation
+
 `--slow`  
 &nbsp;&nbsp;&nbsp;&nbsp;Makes sure a transaction is sent, only after its previous one has been confirmed and succeeded.
 
 `--target-contract` *contract_name*  
 &nbsp;&nbsp;&nbsp;&nbsp;The name of the contract you want to run.
 
-`--etherscan-api-key` *key*  
-&nbsp;&nbsp;&nbsp;&nbsp;Etherscan API key.  
-&nbsp;&nbsp;&nbsp;&nbsp;Environment: `ETHERSCAN_API_KEY`
-
 `--with-gas-price` *price*  
 &nbsp;&nbsp;&nbsp;&nbsp;Sets the gas price for **broadcasted** legacy transactions, or the max fee for broadcasted EIP1559 transactions.  
 &nbsp;&nbsp;&nbsp;&nbsp;Note: To set the gas price in the execution environment of the script use `--gas-price` instead (see below).
-
-`--json`  
-&nbsp;&nbsp;&nbsp;&nbsp;Output results in JSON format.  
-&nbsp;&nbsp;&nbsp;&nbsp;Note: The output is under development and prone to change.
 
 #### Verification Options
 
