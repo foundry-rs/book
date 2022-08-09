@@ -30,21 +30,21 @@ mainnet = "${RPC_MAINNET}"
 ```
 
 ```solidity
-string memory url = cheats.rpcUrl("optimism");
+string memory url = vm.rpcUrl("optimism");
 assertEq(url, "https://optimism.alchemyapi.io/v2/...");
 ```
 
 If a ENV var is missing, `rpcUrl()` will revert:
 
 ```solidity
-cheats.expectRevert("Failed to resolve env var `RPC_MAINNET`: environment variable not found");
-string memory url = cheats.rpcUrl("mainnet");
+vm.expectRevert("Failed to resolve env var `${RPC_MAINNET}` in `RPC_MAINNET`: environment variable not found");
+string memory url = vm.rpcUrl("mainnet");
 ```
 
 Retrieve all available alias -> URL pairs
 
 ```solidity
-string[2][] memory allUrls = cheats.rpcUrls();
+string[2][] memory allUrls = vm.rpcUrls();
 assertEq(allUrls.length, 2);
 
 string[2] memory val = allUrls[0];
