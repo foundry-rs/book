@@ -347,7 +347,7 @@ Supported shells are:
 1. Generate shell completions script for zsh:
     ```sh
     anvil completions zsh > $HOME/.oh-my-zsh/completions/_anvil
-    ``
+    ```
 
 
 ### Usage within Docker
