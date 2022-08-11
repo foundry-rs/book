@@ -270,6 +270,9 @@ Returns the details of all transactions currently pending for inclusion in the n
 `--silent`  
 &nbsp;&nbsp;&nbsp;&nbsp; Don't print anything on startup
 
+`--timestamp <TIMESTAMP>`
+&nbsp;&nbsp;&nbsp;&nbsp; Set the timestamp of the genesis block 
+
 `-V, --version`  
 &nbsp;&nbsp;&nbsp;&nbsp; Print version information
 
