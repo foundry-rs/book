@@ -729,6 +729,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "m0ham3dx",
+      "name": "m0ham3dx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/82266083?v=4",
+      "profile": "https://github.com/m0ham3dx",
+      "contributions": [
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7,
