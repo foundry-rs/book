@@ -208,6 +208,9 @@ Similar to `evm_increaseTime` but takes the exact timestamp that you want in the
 `anvil_setBlockTimestampInterval`  
 Similar to `evm_increaseTime` but sets a block timestamp `interval`. The timestamp of the next block will be computed as `lastBlock_timestamp + interval`
 
+`evm_setBlockGasLimit`  
+Sets the block gas limit for the following blocks
+
 `anvil_removeBlockTimestampInterval`  
 Removes an `anvil_setBlockTimestampInterval` if it exists
 
