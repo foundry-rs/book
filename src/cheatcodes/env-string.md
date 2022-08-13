@@ -16,7 +16,7 @@ Read an environment variable as `string` or `string[]`.
 
 ### Tips
 
-- For arrays, you can specify the delimiter used to seperate the values with the `delimiter` parameter.
+- For arrays, you can specify the delimiter used to separate the values with the `delimiter` parameter.
 - Choose a delimiter that doesn't appear in the string values, so that they can be correctly separated. 
 
 ### Examples
@@ -25,7 +25,7 @@ Read an environment variable as `string` or `string[]`.
 With environment variable `STRING_VALUE=hello, world!`,
 ```solidity
 string memory key = "STRING_VALUE";
-string expected = "hellow, world!";
+string expected = "hello, world!";
 string output = cheats.envString(key);
 assertEq(output, expected);
 ```
