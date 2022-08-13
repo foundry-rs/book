@@ -229,6 +229,7 @@
       - [`isPersistent`](./cheatcodes/is-persistent.md)
     - [External](./cheatcodes/external.md)
       - [`ffi`](./cheatcodes/ffi.md)
+      - [`projectRoot`](./cheatcodes/project-root.md)
       - [`getCode`](./cheatcodes/get-code.md)
       - [`setEnv`](./cheatcodes/set-env.md)
       - [`envBool`](./cheatcodes/env-bool.md)
