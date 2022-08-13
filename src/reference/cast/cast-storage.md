@@ -10,7 +10,7 @@ cast-storage - Get the raw value of a contract's storage slot.
 
 ### DESCRIPTION
 
-Get the raw value of a contract's storage slot.
+Get the raw value of a contract's storage slot given as hex.
 
 The address (*address*) can be an ENS name or an address.
 
