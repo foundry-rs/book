@@ -32,7 +32,7 @@ jobs:
 To test your project using Travis CI, here is a sample workflow:
 
 ```yml
-lanaguage: rust
+language: rust
 cache:
   cargo: true
   directories:
