@@ -1,6 +1,7 @@
 #### EVM Options
 
 `-f` *url*  
+`--rpc-url` *url*  
 `--fork-url` *url*  
 &nbsp;&nbsp;&nbsp;&nbsp;Fetch state over a remote endpoint instead of starting from an empty state.
 
