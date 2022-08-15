@@ -725,7 +725,7 @@ Configuration related to the behavior of the Forge formatter. Each of these keys
 ##### `line_length`
 
 - Type: number
-- Default: 80
+- Default: 120
 - Environment: `FOUNDRY_FMT_LINE_LENGTH` or `DAPP_FMT_LINE_LENGTH`
 
 Specifies the maximum line length where the formatter will try to wrap the line.
