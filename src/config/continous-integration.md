@@ -26,3 +26,23 @@ jobs:
       - name: Run tests
         run: forge test -vvv
 ```
+
+### Travis CI
+
+To test your project using Travis CI, here is a sample workflow:
+
+```yml
+language: rust
+cache:
+  cargo: true
+  directories:
+    - $HOME/.foundry
+
+install:
+  - curl -L https://foundry.paradigm.xyz | bash
+  - export PATH=$PATH:$HOME/.foundry/bin
+  - foundryup -b master
+
+script:
+  - forge test -vvv
+```
