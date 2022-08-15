@@ -244,6 +244,7 @@
       - [`sign`](./cheatcodes/sign.md)
       - [`label`](./cheatcodes/label.md)
       - [`deriveKey`](./cheatcodes/derive-key.md)
+      - [`toString`](./cheatcodes/to-string.md)
     - [Snapshots](./cheatcodes/snapshots.md)
     - [RPC](./cheatcodes/rpc.md)
   - [Forge Standard Library Reference](./reference/forge-std/README.md)

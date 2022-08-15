@@ -122,6 +122,14 @@ interface CheatCodes {
         external
         returns (bytes[] memory);
 
+    // Convert Solidity types to strings
+    function toString(address) external returns(string memory);
+    function toString(bytes calldata) external returns(string memory);
+    function toString(bytes32) external returns(string memory);
+    function toString(bool) external returns(string memory);
+    function toString(uint256) external returns(string memory);
+    function toString(int256) external returns(string memory);
+
     // Sets the *next* call's msg.sender to be the input address
     function prank(address) external;
 

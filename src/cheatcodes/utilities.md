@@ -4,3 +4,4 @@
 - [`sign`](./sign.md)
 - [`label`](./label.md)
 - [`deriveKey`](./derive-key.md)
+- [`toString`](./to-string.md)
