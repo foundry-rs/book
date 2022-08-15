@@ -230,6 +230,9 @@ interface CheatCodes {
     // Stops collecting onchain transactions
     function stopBroadcast() external;
 
+    // Get the path of the current project root
+    function projectRoot() external returns (string memory);
+
     // Snapshot the current state of the evm.
     // Returns the id of the snapshot that was created.
     // To revert a snapshot use `revertTo`
