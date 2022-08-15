@@ -39,7 +39,10 @@ This is a Solidity interface for all of the cheatcodes present in Forge.
 ```solidity
 interface CheatCodes {
     // This allows us to getRecordedLogs()
-    struct Log {bytes32[] topics; bytes data;}
+    struct Log {
+        bytes32[] topics;
+        bytes data;
+    }
 
     // Set block.timestamp
     function warp(uint256) external;
@@ -60,7 +63,9 @@ interface CheatCodes {
     function store(address account, bytes32 slot, bytes32 value) external;
 
     // Signs data
-    function sign(uint256 privateKey, bytes32 digest) external returns (uint8 v, bytes32 r, bytes32 s);
+    function sign(uint256 privateKey, bytes32 digest)
+        external
+        returns (uint8 v, bytes32 r, bytes32 s);
 
     // Computes address for a given private key
     function addr(uint256 privateKey) external returns (address);
@@ -88,24 +93,41 @@ interface CheatCodes {
     function envBytes(string calldata) external returns (bytes memory);
 
     // Read environment variables as arrays, (name, delim) => (value[])
-    function envBool(string calldata, string calldata) external returns (bool[] memory);
-    function envUint(string calldata, string calldata) external returns (uint256[] memory);
-    function envInt(string calldata, string calldata) external returns (int256[] memory);
-    function envAddress(string calldata, string calldata) external returns (address[] memory);
-    function envBytes32(string calldata, string calldata) external returns (bytes32[] memory);
-    function envString(string calldata, string calldata) external returns (string[] memory);
-    function envBytes(string calldata, string calldata) external returns (bytes[] memory);
+    function envBool(string calldata, string calldata)
+        external
+        returns (bool[] memory);
+    function envUint(string calldata, string calldata)
+        external
+        returns (uint256[] memory);
+    function envInt(string calldata, string calldata)
+        external
+        returns (int256[] memory);
+    function envAddress(string calldata, string calldata)
+        external
+        returns (address[] memory);
+    function envBytes32(string calldata, string calldata)
+        external
+        returns (bytes32[] memory);
+    function envString(string calldata, string calldata)
+        external
+        returns (string[] memory);
+    function envBytes(string calldata, string calldata)
+        external
+        returns (bytes[] memory);
 
     // Sets the *next* call's msg.sender to be the input address
     function prank(address) external;
 
-    // Sets all subsequent calls' msg.sender to be the input address until `stopPrank` is called
+    // Sets all subsequent calls' msg.sender to be the input address
+    // until `stopPrank` is called
     function startPrank(address) external;
 
-    // Sets the *next* call's msg.sender to be the input address, and the tx.origin to be the second input
+    // Sets the *next* call's msg.sender to be the input address,
+    // and the tx.origin to be the second input
     function prank(address, address) external;
 
-    // Sets all subsequent calls' msg.sender to be the input address until `stopPrank` is called, and the tx.origin to be the second input
+    // Sets all subsequent calls' msg.sender to be the input address until
+    // `stopPrank` is called, and the tx.origin to be the second input
     function startPrank(address, address) external;
 
     // Resets subsequent calls' msg.sender to be `address(this)`
@@ -125,8 +147,11 @@ interface CheatCodes {
     // Record all storage reads and writes
     function record() external;
 
-    // Gets all accessed reads and write slot from a recording session, for a given address
-    function accesses(address) external returns (bytes32[] memory reads, bytes32[] memory writes);
+    // Gets all accessed reads and write slot from a recording session,
+    // for a given address
+    function accesses(address)
+        external
+        returns (bytes32[] memory reads, bytes32[] memory writes);
 
     // Record all the transaction logs
     function recordLogs() external;
@@ -134,14 +159,19 @@ interface CheatCodes {
     // Gets all the recorded logs
     function getRecordedLogs() external returns (Log[] memory);
 
-    // Prepare an expected log with (bool checkTopic1, bool checkTopic2, bool checkTopic3, bool checkData).
-    // Call this function, then emit an event, then call a function. Internally after the call, we check if
-    // logs were emitted in the expected order with the expected topics and data (as specified by the booleans)
-    // Second form also checks supplied address against emitting contract.
+    // Prepare an expected log with the signature:
+    //   (bool checkTopic1, bool checkTopic2, bool checkTopic3, bool checkData).
+    //
+    // Call this function, then emit an event, then call a function.
+    // Internally after the call, we check if logs were emitted in the expected order
+    // with the expected topics and data (as specified by the booleans)
+    //
+    // The second form also checks supplied address against emitting contract.
     function expectEmit(bool, bool, bool, bool) external;
     function expectEmit(bool, bool, bool, bool, address) external;
 
     // Mocks a call to an address, returning specified data.
+    //
     // Calldata can either be strict or a partial match, e.g. if you only
     // pass a Solidity selector to the expected calldata, then the entire Solidity
     // function will be mocked.
@@ -184,28 +214,35 @@ interface CheatCodes {
     // Snapshot the current state of the evm.
     // Returns the id of the snapshot that was created.
     // To revert a snapshot use `revertTo`
-    function snapshot() external returns(uint256);
+    function snapshot() external returns (uint256);
     // Revert the state of the evm to a previous snapshot
     // Takes the snapshot id to revert to.
     // This deletes the snapshot and all snapshots taken after the given snapshot id.
-    function revertTo(uint256) external returns(bool);
+    function revertTo(uint256) external returns (bool);
 
-    // Creates a new fork with the given endpoint and block and returns the identifier of the fork
-    function createFork(string calldata,uint256) external returns(uint256);
-    // Creates a new fork with the given endpoint and the _latest_ block and returns the identifier of the fork
-    function createFork(string calldata) external returns(uint256);
+    // Creates a new fork with the given endpoint and block,
+    // and returns the identifier of the fork
+    function createFork(string calldata, uint256) external returns (uint256);
+    // Creates a new fork with the given endpoint and the _latest_ block,
+    // and returns the identifier of the fork
+    function createFork(string calldata) external returns (uint256);
 
-    // Creates _and_ also selects a new fork with the given endpoint and block and returns the identifier of the fork
-    function createSelectFork(string calldata,uint256) external returns(uint256);
-    // Creates _and_ also selects a new fork with the given endpoint and the latest block and returns the identifier of the fork
-    function createSelectFork(string calldata) external returns(uint256);
+    // Creates _and_ also selects a new fork with the given endpoint and block,
+    // and returns the identifier of the fork
+    function createSelectFork(string calldata, uint256)
+        external
+        returns (uint256);
+    // Creates _and_ also selects a new fork with the given endpoint and the
+    // latest block and returns the identifier of the fork
+    function createSelectFork(string calldata) external returns (uint256);
 
-    // Takes a fork identifier created by `createFork` and sets the corresponding forked state as active.
+    // Takes a fork identifier created by `createFork` and
+    // sets the corresponding forked state as active.
     function selectFork(uint256) external;
 
     // Returns the currently active fork
     // Reverts if no fork is currently active
-    function activeFork() external returns(uint256);
+    function activeFork() external returns (uint256);
 
     // Updates the currently active fork to given block number
     // This is similar to `roll` but for the currently active fork
@@ -213,8 +250,9 @@ interface CheatCodes {
     // Updates the given fork to given block number
     function rollFork(uint256 forkId, uint256 blockNumber) external;
 
-    // Marks that the account(s) should use persistent storage across fork swaps in a multifork setup
-    // Meaning, changes made to the state of this account will be kept when switching forks
+    // Marks that the account(s) should use persistent storage across
+    // fork swaps in a multifork setup, meaning, changes made to the state
+    // of this account will be kept when switching forks
     function makePersistent(address) external;
     function makePersistent(address, address) external;
     function makePersistent(address, address, address) external;
@@ -226,8 +264,8 @@ interface CheatCodes {
     function isPersistent(address) external returns (bool);
 
     /// Returns the RPC url for the given alias
-    function rpcUrl(string calldata) external returns(string memory);
+    function rpcUrl(string calldata) external returns (string memory);
     /// Returns all rpc urls and their aliases `[alias, url][]`
-    function rpcUrls() external returns(string[2][] memory);
+    function rpcUrls() external returns (string[2][] memory);
 }
 ```
