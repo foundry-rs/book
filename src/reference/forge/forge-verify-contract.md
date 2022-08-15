@@ -42,8 +42,9 @@ This command will try to compile the source code of the flattened contract if `-
 `--constructor-args` *args...*  
 &nbsp;&nbsp;&nbsp;&nbsp;The ABI-encoded constructor arguments.
 
-`--chain-id` *chain_id*  
-&nbsp;&nbsp;&nbsp;&nbsp;The chain ID the contract is deployed to (either a number or a chain name).  
+`--chain-id` *chain*  
+`--chain` *chain*  
+&nbsp;&nbsp;&nbsp;&nbsp;The ID or name of the chain the contract is deployed to.  
 &nbsp;&nbsp;&nbsp;&nbsp;Default: mainnet
 
 `--flatten`  
@@ -53,11 +54,7 @@ This command will try to compile the source code of the flattened contract if `-
 `--force`  
 &nbsp;&nbsp;&nbsp;&nbsp;Do not compile the flattened smart contract before verifying.
 
-`--delay` *delay*  
-&nbsp;&nbsp;&nbsp;&nbsp;Optional timeout to apply in between attempts in seconds.
-
-`--retries` *retries*  
-&nbsp;&nbsp;&nbsp;&nbsp;Number of attempts for retrying. Defaults to 1.
+{{#include ../common/retry-options.md}}
 
 `--watch`  
 &nbsp;&nbsp;&nbsp;&nbsp;Wait for verification result after submission.  

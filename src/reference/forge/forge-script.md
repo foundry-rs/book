@@ -63,12 +63,7 @@ Scripts can be used to apply state transitions on live contracts, or deploy and 
 `--verify`  
 &nbsp;&nbsp;&nbsp;&nbsp;If it finds a matching broadcast log, it tries to verify every contract found in the receipts.
 
-`--delay` *seconds*  
-&nbsp;&nbsp;&nbsp;&nbsp;An optional delay to apply in between verification attempts (in seconds)
-
-`--retries` *count*  
-&nbsp;&nbsp;&nbsp;&nbsp;Number of attempts to retry verifying the contracts.  
-&nbsp;&nbsp;&nbsp;&nbsp;Default: 1.
+{{#include ../common/retry-options.md}}
 
 {{#include core-build-options.md}}
 
