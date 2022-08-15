@@ -23,10 +23,6 @@ Scripts can be used to apply state transitions on live contracts, or deploy and 
 `--debug`  
 &nbsp;&nbsp;&nbsp;&nbsp;Open the script in the [debugger][debugger]. Takes precedence over broadcast.
 
-`--etherscan-api-key` *key*  
-&nbsp;&nbsp;&nbsp;&nbsp;Etherscan API key.  
-&nbsp;&nbsp;&nbsp;&nbsp;Environment: `ETHERSCAN_API_KEY`
-
 `-g`  
 `--gas-estimate-multiplier` *multiplier*  
 &nbsp;&nbsp;&nbsp;&nbsp;Relative percentage by which to multiply all gas estimates. (i.e. set to 200 to double them)
@@ -59,6 +55,8 @@ Scripts can be used to apply state transitions on live contracts, or deploy and 
 `--with-gas-price` *price*  
 &nbsp;&nbsp;&nbsp;&nbsp;Sets the gas price for **broadcasted** legacy transactions, or the max fee for broadcasted EIP1559 transactions.  
 &nbsp;&nbsp;&nbsp;&nbsp;Note: To set the gas price in the execution environment of the script use `--gas-price` instead (see below).
+
+{{#include ../common/etherscan-options.md}}
 
 #### Verification Options
 
