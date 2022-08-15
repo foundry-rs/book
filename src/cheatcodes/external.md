@@ -1,6 +1,7 @@
 ## External
 
 - [`ffi`](./ffi.md)
+- [`projectRoot`](./project-root.md)
 - [`getCode`](./get-code.md)
 - [`setEnv`](./set-env.md)
 - [`envBool`](./env-bool.md)
