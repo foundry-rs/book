@@ -183,6 +183,10 @@ interface CheatCodes {
     // Expect a call to an address with the specified calldata.
     // Calldata can either be strict or a partial match
     function expectCall(address, bytes calldata) external;
+    // Expect a call to an address with the specified
+    // calldata and message value.
+    // Calldata can either be strict or a partial match
+    function expectCall(address, uint256, bytes calldata) external;
 
     // Gets the bytecode for a contract in the project given the path to the contract.
     function getCode(string calldata) external returns (bytes memory);
