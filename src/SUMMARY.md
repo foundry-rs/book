@@ -243,6 +243,7 @@
       - [`addr`](./cheatcodes/addr.md)
       - [`sign`](./cheatcodes/sign.md)
       - [`label`](./cheatcodes/label.md)
+      - [`deriveKey`](./cheatcodes/derive-key.md)
     - [Snapshots](./cheatcodes/snapshots.md)
     - [RPC](./cheatcodes/rpc.md)
   - [Forge Standard Library Reference](./reference/forge-std/README.md)

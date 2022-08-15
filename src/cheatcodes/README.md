@@ -70,6 +70,13 @@ interface CheatCodes {
     // Computes address for a given private key
     function addr(uint256 privateKey) external returns (address);
 
+    // Derive a private key from a provided mnenomic string,
+    // or mnenomic file path, at the derivation path m/44'/60'/0'/0/{index}.
+    function deriveKey(string calldata, uint32) external returns (uint256);
+    // Derive a private key from a provided mnenomic string, or mnenomic file path,
+    // at the derivation path {path}{index}
+    function deriveKey(string calldata, string calldata, uint32) external returns (uint256);
+
     // Gets the nonce of an account
     function getNonce(address account) external returns (uint64);
 
