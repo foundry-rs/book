@@ -90,6 +90,10 @@ contract ForkTest is Test {
     // the identifiers of the forks
     uint256 mainnetFork;
     uint256 optimismFork;
+    
+    //Replace ALCHEMY_KEY by your alchemy key or Etherscan key , change RPC url if need
+    //string MAINNET_RPC_URL = 'https://eth-mainnet.g.alchemy.com//v2/ALCHEMY_KEY';
+    //string OPTIMISM_RPC_URL = 'https://xxxxxxxx.alchemyapi.io/v2/ALCHEMY_KEY';
 
     // create two _different_ forks during setup
     function setUp() public {
@@ -113,17 +117,17 @@ contract ForkTest is Test {
 
     // manage multiple forks in the same test
     function testCanSwitchForks() public {
-        cheats.selectFork(mainnetFork);
+        vm.selectFork(mainnetFork);
         assertEq(vm.activeFork(), mainnetFork);
 
-        cheats.selectFork(optimismFork);
+        vm.selectFork(optimismFork);
         assertEq(vm.activeFork(), optimismFork);
     }
 
     // forks can be created at all times
     function testCanCreateAndSelectForkInOneStep() public {
         // creates a new fork and also selects it
-        uint256 anotherFork = cheats.createSelectFork(MAINNET_RPC_URL);
+        uint256 anotherFork = vm.createSelectFork(MAINNET_RPC_URL);
         assertEq(vm.activeFork(), anotherFork);
     }
 
@@ -150,6 +154,10 @@ contract ForkTest is Test {
     // the identifiers of the forks
     uint256 mainnetFork;
     uint256 optimismFork;
+    
+    //Replace ALCHEMY_KEY by your alchemy key or Etherscan key , change RPC url if need
+    //string MAINNET_RPC_URL = 'https://eth-mainnet.g.alchemy.com//v2/ALCHEMY_KEY';
+    //string OPTIMISM_RPC_URL = 'https://xxxxxxxx.alchemyapi.io/v2/ALCHEMY_KEY';
 
     // create two _different_ forks during setup
     function setUp() public {
@@ -159,7 +167,7 @@ contract ForkTest is Test {
 
     // creates a new contract while a fork is active
     function testCreateContract() public {
-        cheats.selectFork(mainnetFork);
+        vm.selectFork(mainnetFork);
         assertEq(vm.activeFork(), mainnetFork);
         
         // the new contract is written to `mainnetFork`'s storage
@@ -170,7 +178,7 @@ contract ForkTest is Test {
         assertEq(simple.value(), 100);
         
         // after switching to another contract we still know `address(simple)` but the contract only lifes in `mainnetFork` 
-        cheats.selectFork(optimismFork);
+        vm.selectFork(optimismFork);
         
         /* this call will therefor revert because `simple` now points to a contract that does not exist on the active fork
         * it will produce following revert message:
@@ -183,17 +191,17 @@ contract ForkTest is Test {
     
      // creates a new _persitent_ contract while a fork is active
      function testCreatePersistentContract() public {
-        cheats.selectFork(mainnetFork);
+        vm.selectFork(mainnetFork);
         SimpleStorageContract simple = new SimpleStorageContract();
         simple.set(100);
         assertEq(simple.value(), 100);
         
         // mark the contract as persistent so it is also available when other forks are active
-        cheats.makePersistent(address(simple));
-        assert(cheats.isPersistent(address(simple))); 
+        vm.makePersistent(address(simple));
+        assert(vm.isPersistent(address(simple))); 
         
-        cheats.selectFork(optimismFork);
-        assert(cheats.isPersistent(address(simple))); 
+        vm.selectFork(optimismFork);
+        assert(vm.isPersistent(address(simple))); 
         
         // This will succeed because the contract is now also available on the `optimismFork`
         assertEq(simple.value(), 100);
@@ -201,7 +209,7 @@ contract ForkTest is Test {
 }
 
 contract SimpleStorageContract {
-    string public value;
+    uint256 public value;
 
     function set(uint256 _value) public {
         value = _value;
