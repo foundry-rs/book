@@ -94,6 +94,13 @@ Whether or not to enable caching. If enabled, the result of compiling sources, t
 
 The path to the cache, relative to the root of the project.
 
+##### `broadcast`
+
+- Type: string
+- Default: broadcast
+
+The path to the broadcast transaction logs, relative to the root of the project.
+
 ##### `force`
 
 - Type: boolean
@@ -146,7 +153,6 @@ import "node_modules/@openzeppelin/openzeppelin-contracts/contracts/utils/Contex
 
 An array of libraries to link against in the following format: `<file>:<lib>:<address>`, for example: `src/MyLibrary.sol:MyLibrary:0xfD88CeE74f7D78697775aBDAE53f9Da1559728E4`.
 
-
 ##### `solc_version`
 
 - Type: string (semver)
@@ -175,7 +181,7 @@ This key is ignored if `solc_version` is set.
 
 If enabled, Foundry will not attempt to download any missing solc versions.
 
-If both `offline` and `auto-detect-solc` are set to `true`, the required version(s) of solc will be auto detected but any missing versions will *not* be installed.
+If both `offline` and `auto-detect-solc` are set to `true`, the required version(s) of solc will be auto detected but any missing versions will _not_ be installed.
 
 ##### `ignored_error_codes`
 
@@ -199,10 +205,11 @@ The EVM version to use during tests. The value **must** be an EVM hardfork name,
 - Default: default
 - Environment: `FOUNDRY_REVERT_STRINGS` or `DAPP_REVERT_STRINGS`
 
-Possible values are: 
-- `default` does not inject compiler-generated revert strings and keeps user-supplied ones.  
-- `strip` removes all revert strings (if possible, i.e. if literals are used) keeping side-effects.  
-- `debug` injects strings for compiler-generated internal reverts, implemented for ABI encoders V1 and V2 for now.  
+Possible values are:
+
+- `default` does not inject compiler-generated revert strings and keeps user-supplied ones.
+- `strip` removes all revert strings (if possible, i.e. if literals are used) keeping side-effects.
+- `debug` injects strings for compiler-generated internal reverts, implemented for ABI encoders V1 and V2 for now.
 - `verboseDebug` even appends further information to user-supplied revert strings (not yet implemented).
 
 ##### `extra_output_files`
@@ -322,7 +329,6 @@ Refer to the Solidity [compiler input description](https://docs.soliditylang.org
 #### Solidity model checker
 
 The Solidity model checker is a built-in opt-in module that is available in Solidity compilers for OSX and Linux. Learn more about the model checker in the [Solidity compiler documentation](https://docs.soliditylang.org/en/latest/smtchecker.html#tutorial)
-
 
 > ℹ️ **Note**  
 > The model checker requires `z3` version 4.8.8 or 4.8.14 on Linux.
