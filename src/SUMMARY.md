@@ -192,6 +192,7 @@
       - [`warp`](./cheatcodes/warp.md)
       - [`roll`](./cheatcodes/roll.md)
       - [`fee`](./cheatcodes/fee.md)
+      - [`difficulty`](./cheatcodes/difficulty.md)
       - [`chainId`](./cheatcodes/chain-id.md)
       - [`store`](./cheatcodes/store.md)
       - [`load`](./cheatcodes/load.md)

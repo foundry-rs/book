@@ -53,6 +53,9 @@ interface CheatCodes {
     // Set block.basefee
     function fee(uint256) external;
 
+    // Set block.difficulty
+    function difficulty(uint256) external;
+
     // Set block.chainid
     function chainId(uint256) external;
 

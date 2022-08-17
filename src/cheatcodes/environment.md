@@ -3,6 +3,7 @@
 - [`warp`](./warp.md)
 - [`roll`](./roll.md)
 - [`fee`](./fee.md)
+- [`difficulty`](./difficulty.md)
 - [`chainId`](./chain-id.md)
 - [`store`](./store.md)
 - [`load`](./load.md)
