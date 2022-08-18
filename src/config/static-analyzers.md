@@ -25,6 +25,27 @@ slither src/Contract.sol
 
 See the [slither wiki](https://github.com/crytic/slither/wiki/Usage) for more information.
 
+In order to use a custom configuration, such as the sample `slither.config.json` mentioned above, the following command is used as mentioned in the [slither-wiki](https://github.com/crytic/slither/wiki/Usage#configuration-file). By default slither looks for the `slither-config.json` but you can define the path and any other `json` file of your choice:
+
+```sh 
+slither --config-file <path>/file.config.json Counter.sol
+```
+Example output (Raw):
+
+```bash 
+Pragma version^0.8.13 (Counter.sol#2) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6/0.8.7
+solc-0.8.13 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+setNumber(uint256) should be declared external:
+        - Counter.setNumber(uint256) (Counter.sol#7-9)
+increment() should be declared external:
+        - Counter.increment() (Counter.sol#11-13)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+Counter.sol analyzed (1 contracts with 78 detectors), 4 result(s) found
+```
+
+
 ### Mythril
 
 To test your project using [mythril](https://github.com/ConsenSys/mythril), here is a sample `mythril.config.json`:
