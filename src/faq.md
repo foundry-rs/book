@@ -89,7 +89,7 @@ For a good example of a base test contract that has helper methods and custom as
 
 Forge will sometimes check for newer Solidity versions that fit your project. To use Forge offline, use the `--offline` flag.
 
-### forge fails in javascript monorepos (`pnpm`)
+### Forge fails in JavaScript monorepos (`pnpm`)
 
 Managers like `pnpm` use symlinks to manage `node_modules` folders.
 
@@ -109,7 +109,7 @@ A common layout may look like:
 ├── pnpm-workspace.yaml
 ```
 
-where the foundry workspace is `./contracts` but packages in `./contracts/node_modules` are symlinked to `./node_modules`.
+Where the Foundry workspace is in `./contracts`, but packages in `./contracts/node_modules` are symlinked to `./node_modules`.
 
 When running `forge build` in `./contracts/node_modules`, this can lead to an error like:
 
@@ -120,12 +120,16 @@ error[6275]: ParserError: Source "node_modules/@openzeppelin/contracts/utils/cry
 8 | import "../../../utils/cryptography/draft-EIP712.sol";
 ```
 
-This `solc` error happens when `solc` was able to resolve symlinked files, but they're included outside the foundry workspace (`./contracts`).
-By adding the `node_modules` path to `allow_paths` in `foundry.toml`, solc is granted access to that directory and it will be able to read it:
+This error happens when `solc` was able to resolve symlinked files, but they're outside of the Foundry workspace (`./contracts`).
 
-`foundry.toml`:
-# this translates to `solc --allow-paths ../node_modules`
-`allow_paths = ["../node_modules"]`
+Adding `node_modules` to `allow_paths` in `foundry.toml` grants solc access to that directory and it will be able to read it:
+
+```toml
+# This translates to `solc --allow-paths ../node_modules`
+allow_paths = ["../node_modules"]
+```
+
+Note that the path is relative to the Foundry workspace.
 
 [tg-support]: https://t.me/foundry_support
 [forge-test]: ./reference/forge/forge-test.md
