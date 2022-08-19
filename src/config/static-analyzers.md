@@ -45,6 +45,7 @@ Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-
 Counter.sol analyzed (1 contracts with 78 detectors), 4 result(s) found
 ```
 
+Slither also has a [github action](https://github.com/marketplace/actions/slither-action) for CI/CD.
 
 ### Mythril
 
