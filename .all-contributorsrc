@@ -738,6 +738,15 @@
       "contributions": [
         "maintenance"
       ]
+    },
+    {
+      "login": "oneforalone",
+      "name": "Yuqi Liu",
+      "avatar_url": "https://avatars.githubusercontent.com/u/41844215?v=4",
+      "profile": "https://oneforalone.github.io",
+      "contributions": [
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7,
