@@ -65,6 +65,7 @@ To test your project using [mythril](https://github.com/ConsenSys/mythril), here
 ```
 
 Note, you need switch `rustc` to nightly to install `mythril`:
+
 ```ignore
 rustup default nightly
 pip3 install mythril
@@ -73,24 +74,10 @@ myth analyze src/Contract.sol --solc-json mythril.config.json
 
 See the [mythril docs](https://mythril-classic.readthedocs.io/en/develop/) for more information.
 
-The syntax for using a custom `json` with `mythril` is described in the command help which can be seen as follows:
+You can pass custom Solc compiler output to Mythril using the `--solc-json` flag. For example:
 
-Mythril help, and grepping the line which describes how to use the custom `json`.
-```bash 
-myth analyze --help | grep "solc"
-```
-Output:
-```bash 
- [--solc-json SOLC_JSON] [--solv SOLV] [-c BYTECODE]
-  --solc-json SOLC_JSON
-                        Json for the optional 'settings' parameter of solc's standard-json input
-```
-Command usage with custom `json`, and for illustration purposes adding some more verbosity via `-v 4`. The verbosity level illustrates all the tests which are being done by `mythx` as described [here](https://mythril-classic.readthedocs.io/en/master/analysis-modules.html).
-```bash 
-myth -v 4 analyze src/Counter.sol --solc-json <path>/mythril.config.json
-```
-Example Output (with process output lines removed for conciseness):
-```bash 
+```bash
+$ myth analyze src/Counter.sol --solc-json mythril.config.json
 .
 .
 mythril.laser.plugin.loader [INFO]: Loading laser plugin: coverage
@@ -112,4 +99,5 @@ Query count: 61
 Solver time: 3.6820807456970215
 The analysis was completed successfully. No issues were detected.
 ```
-- The findings will be listed at the end of this output if any. Since the default `Counter.sol` does't have any logic, `mythx` reports `no issues were found`.
+
+The findings will be listed at the end of this output if any. Since the default `Counter.sol` does't have any logic, `mythx` reports that no issues were found.
