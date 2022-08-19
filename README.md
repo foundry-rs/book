@@ -1,6 +1,6 @@
 ## 📖 Foundry Book
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-82-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-83-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 A book on all things Foundry. [Read now](https://book.getfoundry.sh).
@@ -140,6 +140,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/m0ham3dx"><img src="https://avatars.githubusercontent.com/u/82266083?v=4?s=100" width="100px;" alt=""/><br /><sub><b>m0ham3dx</b></sub></a><br /><a href="#maintenance-m0ham3dx" title="Maintenance">🚧</a></td>
     <td align="center"><a href="https://oneforalone.github.io"><img src="https://avatars.githubusercontent.com/u/41844215?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Yuqi Liu</b></sub></a><br /><a href="#maintenance-oneforalone" title="Maintenance">🚧</a></td>
     <td align="center"><a href="https://github.com/ControlCplusControlV"><img src="https://avatars.githubusercontent.com/u/44706811?v=4?s=100" width="100px;" alt=""/><br /><sub><b>ControlCplusControlV</b></sub></a><br /><a href="#maintenance-ControlCplusControlV" title="Maintenance">🚧</a></td>
+    <td align="center"><a href="http://www.grydl.com"><img src="https://avatars.githubusercontent.com/u/7221893?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Charles Azanlekor</b></sub></a><br /><a href="#maintenance-azanux" title="Maintenance">🚧</a></td>
   </tr>
 </table>
 
