@@ -44,7 +44,7 @@ Scripts can be used to apply state transitions on live contracts, or deploy and 
 &nbsp;&nbsp;&nbsp;&nbsp;Default: `run()`  
 
 `--skip-simulation`  
-&nbsp;&nbsp;&nbsp;&nbsp;Skips on-chain simulation
+&nbsp;&nbsp;&nbsp;&nbsp;Skips on-chain simulation.
 
 `--slow`  
 &nbsp;&nbsp;&nbsp;&nbsp;Makes sure a transaction is sent, only after its previous one has been confirmed and succeeded.
