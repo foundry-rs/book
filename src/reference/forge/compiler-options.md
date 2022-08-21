@@ -1,7 +1,7 @@
 #### Compiler Options
 
 `--optimize`  
-&nbsp;&nbsp;&nbsp;&nbsp;Active the Solidity optimizer.
+&nbsp;&nbsp;&nbsp;&nbsp;Activate the Solidity optimizer.
 
 `--optimizer-runs` *runs*  
 &nbsp;&nbsp;&nbsp;&nbsp;The number of optimizer runs.
