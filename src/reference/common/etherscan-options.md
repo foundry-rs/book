@@ -1,6 +1,5 @@
 #### Etherscan Options
 
-`-c`  *chain_name*  
 `--chain` *chain_name*  
 &nbsp;&nbsp;&nbsp;&nbsp;The Etherscan chain.
 
