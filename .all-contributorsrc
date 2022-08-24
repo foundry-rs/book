@@ -774,6 +774,15 @@
       "contributions": [
         "maintenance"
       ]
+    },
+    {
+      "login": "khelmy",
+      "name": "Karim Helmy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/18076039?v=4",
+      "profile": "https://github.com/khelmy",
+      "contributions": [
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7,
