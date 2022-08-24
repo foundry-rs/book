@@ -293,9 +293,6 @@ Returns the details of all transactions currently pending for inclusion in the n
 `--block-base-fee-per-gas <FEE>`  
 &nbsp;&nbsp;&nbsp;&nbsp; The base fee in a block
 
-`--block-gas-limit <GAS_LIMIT>`  
-&nbsp;&nbsp;&nbsp;&nbsp; The block gas limit
-
 `--chain-id <CHAIN_ID>`  
 &nbsp;&nbsp;&nbsp;&nbsp; The chain ID
 
