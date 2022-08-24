@@ -255,6 +255,9 @@ Returns the details of all transactions currently pending for inclusion in the n
 `--hardfork <HARDFORK>`  
 &nbsp;&nbsp;&nbsp;&nbsp; Choose the EVM hardfork to use [default: latest]
 
+`--init <PATH>`  
+&nbsp;&nbsp;&nbsp;&nbsp; Initialize the genesis block with the given `genesis.json` file.
+
 `-m, --mnemonic <MNEMONIC>`  
 &nbsp;&nbsp;&nbsp;&nbsp; BIP39 mnemonic phrase used for generating accounts
 
