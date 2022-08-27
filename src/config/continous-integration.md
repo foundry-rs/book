@@ -46,3 +46,19 @@ install:
 script:
   - forge test -vvv
 ```
+
+## GitLab CI
+
+To test your project using GitLab CI, here is a sample workflow:
+Note: check out [Policy](https://docs.gitlab.com/runner/executors/docker.html#how-pull-policies-work) to fetch the remote image
+
+```yml
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+
+jobs:
+  image: ghcr.io/foundry-rs/foundry
+  script:
+    - forge install
+    - forge test -vvv
+```
