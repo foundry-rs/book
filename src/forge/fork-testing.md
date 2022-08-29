@@ -183,19 +183,19 @@ contract ForkTest is Test {
         simple.set(100);
         assertEq(simple.value(), 100);
         
-        // after switching to another contract we still know `address(simple)` but the contract only lifes in `mainnetFork` 
+        // after switching to another contract we still know `address(simple)` but the contract only lives in `mainnetFork` 
         vm.selectFork(optimismFork);
         
-        /* this call will therefor revert because `simple` now points to a contract that does not exist on the active fork
+        /* this call will therefore revert because `simple` now points to a contract that does not exist on the active fork
         * it will produce following revert message:
         * 
-        * "Contract 0xCe71065D4017F316EC606Fe4422e11eB2c47c246 does not exists on active fork with id `1`
+        * "Contract 0xCe71065D4017F316EC606Fe4422e11eB2c47c246 does not exist on active fork with id `1`
         *       But exists on non active forks: `[0]`"
         */
-        simple.value()
+        simple.value();
     }
     
-     // creates a new _persitent_ contract while a fork is active
+     // creates a new _persistent_ contract while a fork is active
      function testCreatePersistentContract() public {
         vm.selectFork(mainnetFork);
         SimpleStorageContract simple = new SimpleStorageContract();
