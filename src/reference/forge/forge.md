@@ -125,7 +125,7 @@ This program is a set of tools to build, test, fuzz, debug and deploy Solidity s
 &nbsp;&nbsp;&nbsp;&nbsp;Forge's cache directory, where it stores cached block data and more.
 
 `~/.foundry/foundry.toml`  
-&nbsp;&nbsp;&nbsp;&nbsp;The global [Foundry config](../config.md).
+&nbsp;&nbsp;&nbsp;&nbsp;The global [Foundry config](../config/overview.md).
 
 `~/.svm`  
 &nbsp;&nbsp;&nbsp;&nbsp;The location of the Forge-managed solc binaries.

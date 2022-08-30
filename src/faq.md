@@ -134,7 +134,7 @@ Note that the path is relative to the Foundry workspace.
 [tg-support]: https://t.me/foundry_support
 [forge-test]: ./reference/forge/forge-test.md
 [traces]: ./forge/traces.md
-[config-solc]: ./reference/config.md#solc_version
+[config-solc]: ./reference/config/solidity-compiler.md#solc_version
 [config]: ./config/
 [forge-build]: ./reference/forge/forge-build.md
 [console-log]: ./reference/forge-std/console-log.md

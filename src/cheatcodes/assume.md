@@ -45,7 +45,7 @@ Forge Standard Library
 
 [`bound`](../reference/forge-std/bound.md)
 
-[max-local-rejects]: ./config.md#fuzz_max_local_rejects
-[max-global-rejects]: ./config.md#fuzz_max_global_rejects
+[max-local-rejects]: ../reference/config/testing.md#max_local_rejects
+[max-global-rejects]: ../reference/config/testing.md#max_global_rejects
 [forge-std-bound]: ../reference/forge-std/bound.md
 [filtering-guide]: https://altsysrq.github.io/proptest-book/proptest/tutorial/filtering.html#filtering

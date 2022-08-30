@@ -23,4 +23,4 @@ When running `forge`, you can specify the profile to use using the `FOUNDRY_PROF
 
 > 📚 **Reference**
 > 
-> See the [`foundry.toml` Reference](../reference/config.md) for a complete overview of what you can configure.
+> See the [`foundry.toml` Reference](../reference/config/) for a complete overview of what you can configure.

@@ -60,7 +60,7 @@ References, troubleshooting, and more.
 - [forge Commands](./reference/forge/)
 - [cast Commands](./reference/cast/)
 - [anvil commands](./reference/anvil/)
-- [Config Reference](./reference/config.md)
+- [Config Reference](./reference/config/)
 - [Cheatcodes Reference](./cheatcodes/)
 - [Forge Standard Library Reference](./reference/forge-std/)
 - [DSTest Reference](./reference/ds-test.md)
