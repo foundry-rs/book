@@ -164,6 +164,6 @@ The model checker will run when `forge build` is invoked, and will show findings
 
 [forge](./forge.md), [forge clean](./forge-clean.md), [forge inspect](./forge-inspect.md)
 
-[sparse-mode]: ../config.md#sparse_mode
+[sparse-mode]: ../config/solidity-compiler.md#sparse_mode
 [ir-pipeline]: https://docs.soliditylang.org/en/latest/ir-breaking-changes.html
 [output-desc]: https://docs.soliditylang.org/en/latest/using-the-compiler.html#compiler-api

@@ -17,14 +17,14 @@ forge test --fork-url <your_rpc_url>
 
 The following values are changed to reflect those of the chain at the moment of forking:
 
-- [`block_number`](../reference/config.md#block_number)
-- [`chain_id`](../reference/config.md#chain_id)
-- [`gas_limit`](../reference/config.md#gas_limit)
-- [`gas_price`](../reference/config.md#gas_price)
-- [`block_base_fee_per_gas`](../reference/config.md#block_base_fee_per_gas)
-- [`block_coinbase`](../reference/config.md#block_coinbase)
-- [`block_timestamp`](../reference/config.md#block_timestamp)
-- [`block_difficulty`](../reference/config.md#block_difficulty)
+- [`block_number`](../reference/config/testing.md#block_number)
+- [`chain_id`](../reference/config/testing.md#chain_id)
+- [`gas_limit`](../reference/config/testing.md#gas_limit)
+- [`gas_price`](../reference/config/testing.md#gas_price)
+- [`block_base_fee_per_gas`](../reference/config/testing.md#block_base_fee_per_gas)
+- [`block_coinbase`](../reference/config/testing.md#block_coinbase)
+- [`block_timestamp`](../reference/config/testing.md#block_timestamp)
+- [`block_difficulty`](../reference/config/testing.md#block_difficulty)
 
 It is possible to specify a block from which to fork with `--fork-block-number`:
 
@@ -40,7 +40,7 @@ If both `--fork-url` and `--fork-block-number` are specified, then data for that
 
 The data is cached in `~/.foundry/cache/<chain id>/<block number>`. To clear the cache, simply remove the directory or run [`forge clean`](../reference/forge/forge-clean.md) (removes all build artifacts and cache directories).
 
-It is also possible to ignore the cache entirely by passing `--no-storage-caching`, or with `foundry.toml` by configuring [`no_storage_caching`](../reference/config.md#no_storage_caching) and [`rpc_storage_caching`](../reference/config.md#rpc_storage_caching).
+It is also possible to ignore the cache entirely by passing `--no-storage-caching`, or with `foundry.toml` by configuring [`no_storage_caching`](../reference/config/testing.md#no_storage_caching) and [`rpc_storage_caching`](../reference/config/testing.md#rpc_storage_caching).
 
 #### Improved traces
 

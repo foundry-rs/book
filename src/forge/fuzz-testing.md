@@ -64,6 +64,6 @@ There are different ways to run property-based tests, notably parametric testing
 
 You might have noticed that fuzz tests are summarized a bit differently compared to unit tests:
 
-- "runs" refers to the amount of scenarios the fuzzer tested. By default, the fuzzer will generate 256 scenarios, however, this can be configured using the [`FOUNDRY_FUZZ_RUNS`](../reference/config.md#fuzz_runs) environment variable.
+- "runs" refers to the amount of scenarios the fuzzer tested. By default, the fuzzer will generate 256 scenarios, however, this can be configured using the [`FOUNDRY_FUZZ_RUNS`](../reference/config/testing.md#runs) environment variable.
 - "μ" (Greek letter mu) is the mean gas used across all fuzz runs
 - "~" (tilde) is the median gas used across all fuzz runs

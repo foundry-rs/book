@@ -4,7 +4,7 @@ It's possible to have your Foundry project work alongside [Hardhat](https://hard
 
 ### Why does this not work out of the box?
 
-Hardhat by default expects libraries to be installed in `node_modules`, the default folder for all NodeJS dependencies. Foundry expects them to be in `lib`. Of course [we can configure Foundry](../reference/config.md) but not easily to the directory structure of `node_modules`.
+Hardhat by default expects libraries to be installed in `node_modules`, the default folder for all NodeJS dependencies. Foundry expects them to be in `lib`. Of course [we can configure Foundry](../reference/config/overview.md) but not easily to the directory structure of `node_modules`.
 
 For this reason, the recommended setup is to use [hardhat-preprocessor](https://www.npmjs.com/package/hardhat-preprocessor). Hardhat-preprocessor is, as the name suggests, a Hardhat plugin which allows us to preprocess our contracts before they are run through the Solidity compiler.
 

@@ -58,4 +58,4 @@ assertEq(env[0], "mainnet");
 
 Forge Config
 
-[Config Reference](../reference/config.md)
+[Config Reference](../reference/config/testing.md#rpc_endpoints)
