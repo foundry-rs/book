@@ -24,10 +24,10 @@ cd solidity-scripting
 forge install transmissions11/solmate Openzeppelin/openzeppelin-contracts
 ```
 
-Next, we have to delete the `Contract.sol` file in the `src` folder and create another file called `NFT.sol`. You can do this by running:
+Next, we have to delete the `Counter.sol` file in the `src` folder and create another file called `NFT.sol`. You can do this by running:
 
 ```bash
-rm src/Contract.sol && touch src/NFT.sol && ls src
+rm src/Counter.sol test/Counter.t.sol && touch src/NFT.sol && ls src
 ```
 
 ![set up commands](../images/solidity-scripting%20/set-up-commands.png)
