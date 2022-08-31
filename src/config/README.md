@@ -13,11 +13,19 @@ Let's take a look at a configuration file that contains two profiles: the defaul
 optimizer = true
 optimizer_runs = 20_000
 
-[ci]
+[profile.ci]
 verbosity = 4
 ```
 
 When running `forge`, you can specify the profile to use using the `FOUNDRY_PROFILE` environment variable.
+
+### Standalone sections
+
+Besides the profile sections, the configuration file can also contain standalone sections (`[fmt]`, `[fuzz]`, `[invariant]` etc). By default, each standalone section belongs to the `default` profile.
+i.e. `[fmt]` is equivalent to `[profile.default.fmt]`.
+
+To configure the standalone section for different profiles other than `default`, use syntax `[profile.<profile name>.<standalone>]`.
+i.e. `[profile.ci.fuzz]`.
 
 <br>
 

@@ -88,7 +88,7 @@ Before we start, let's take a look at the directories:
 2. Copy `foundry.toml` configuration to this Hardhat project directory and change `src`, `out`, `test`, `cache_path` in it:
 
 ```toml
-[default]
+[profile.default]
 src = 'contracts'
 out = 'out'
 libs = ['node_modules', 'lib']
