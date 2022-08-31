@@ -22,6 +22,10 @@ You can create a `foundry.toml` file in your home folder to configure Foundry gl
 
 Configuration can be overriden with `FOUNDRY_` and `DAPP_` prefixed environment variables.
 
+Exceptions are:
+
+- `FOUNDRY_FFI`, `DAPP_FFI`
+
 ### Configuration format
 
 Configuration files are written in the [TOML format](https://toml.io), with simple key-value pairs inside of sections.
