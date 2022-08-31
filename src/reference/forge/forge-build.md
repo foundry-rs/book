@@ -75,11 +75,11 @@ in your configuration file.
 The optimizer can be fine-tuned with additional settings. Simply set the `optimizer_details` table in your configuration file. For example:
 
 ```toml
-[default.optimizer_details]
+[profile.default.optimizer_details]
 constantOptimizer = true
 yul = true
 
-[default.optimizer_details.yulDetails]
+[profile.default.optimizer_details.yulDetails]
 stackAllocation = true
 optimizerSteps = 'dhfoDgvulfnTUtnIf'
 ```
@@ -103,11 +103,11 @@ See [Compiler Input Description `settings.modelChecker`](https://docs.solidityla
 
 The module is available in `solc` release binaries for OSX and Linux. The latter requires the z3 library version [4.8.8, 4.8.14] to be installed in the system (SO version 4.8).
 
-Similarly to the optimizer settings above, the `model_checker` settings must be prefixed with the profile they correspond to: `[default.model_checker]` belongs to the `[default]` profile.
+Similarly to the optimizer settings above, the `model_checker` settings must be prefixed with the profile they correspond to: `[profile.default.model_checker]` belongs to the `[profile.default]`.
 
 ```toml
 ## foundry.toml
-[default.model_checker]
+[profile.default.model_checker]
 contracts = { '/path/to/project/src/Contract.sol' = [ 'Contract' ] }
 engine = 'chc'
 timeout = 10000
