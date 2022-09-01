@@ -1,6 +1,6 @@
 ## 📖 Foundry Book
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-85-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-86-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 A book on all things Foundry. [Read now](https://book.getfoundry.sh).
@@ -145,6 +145,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   </tr>
   <tr>
     <td align="center"><a href="https://github.com/khelmy"><img src="https://avatars.githubusercontent.com/u/18076039?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Karim Helmy</b></sub></a><br /><a href="#maintenance-khelmy" title="Maintenance">🚧</a></td>
+    <td align="center"><a href="https://github.com/HashHaran"><img src="https://avatars.githubusercontent.com/u/106789241?v=4?s=100" width="100px;" alt=""/><br /><sub><b>HashHaran</b></sub></a><br /><a href="https://github.com/foundry-rs/book/commits?author=HashHaran" title="Documentation">📖</a></td>
   </tr>
 </table>
 
