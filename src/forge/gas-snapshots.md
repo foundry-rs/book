@@ -40,6 +40,8 @@ you can use the `--max <VALUE>` option.
 Keep in mind that the changes will be made in the snapshot file, and not in the snapshot being
 displayed on your screen.
 
+You can also use it in combination with the filters for `forge test`, such as `forge snapshot --match-path contracts/test/ERC721.t.sol` to generate a gas snapshot relevant to this test contract.
+
 ### Comparing gas usage
 
 If you would like to compare the current snapshot file with your 
