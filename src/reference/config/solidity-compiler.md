@@ -38,6 +38,16 @@ becomes
 import "node_modules/@openzeppelin/openzeppelin-contracts/contracts/utils/Context.sol";
 ```
 
+##### `auto_detect_remappings`
+
+- Type: boolean
+- Default: true
+- Environment: `FOUNDRY_AUTO_DETECT_REMAPPINGS` or `DAPP_AUTO_DETECT_REMAPPINGS`
+
+If enabled, Foundry will automatically try auto-detect remappings by scanning the `libs` folder(s).
+
+If set to `false`, only the remappings in `foundry.toml` and `remappings.txt` are used.
+
 ##### `allow_paths`
 
 - Type: array of strings (paths)
