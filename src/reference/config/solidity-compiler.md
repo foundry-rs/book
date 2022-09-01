@@ -48,8 +48,6 @@ If enabled, Foundry will automatically try auto-detect remappings by scanning th
 
 If set to `false`, only the remappings in `foundry.toml` and `remappings.txt` are used.
 
-This key is ignored if `solc_version` is set.
-
 ##### `allow_paths`
 
 - Type: array of strings (paths)
