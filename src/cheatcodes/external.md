@@ -11,3 +11,4 @@
 - [`envBytes32`](./env-bytes32.md)
 - [`envString`](./env-string.md)
 - [`envBytes`](./env-bytes.md)
+- [`parseJson`](./parse-json.md)

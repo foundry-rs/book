@@ -1,0 +1,150 @@
+## `parseJson`
+
+### Signature
+
+```solidity
+// Return the value(s) that correspond to 'key'
+vm.parseJson(string memory json, string memory key)
+// Return the entire json file
+vm.parseJson(string memory json);
+```
+
+### Description
+
+These cheatcodes are used to parse JSON files in the form of strings. Usually, it's coupled with `vm.readFile()` which returns an entire file in the form of a string.
+
+You can use `stdJson` from `forge-std`, as a helper library for better UX.
+
+The cheatcode accepts either a `key` to search for a specific value in the JSON, or no key to return the entire JSON. It returns the value as an abi-encoded `bytes` array. That means that you will have to `abi.decode()` to the appropriate type for it to function properly, else it will `revert`.
+
+### JSON Encoding Rules
+
+**Encoding Rules**
+
+- Numbers >= 0 are encoded as `uint256`
+- Negative numbers are encoded as `int256`
+- A string that can be decoded into a type of `H160` and starts with `0x` is encoded as an `address`.In other words, if it can be decoded into an address, it's probably an address
+- A string that starts with `0x` is encoded as `bytes32` if it has a length of `66` or else to `bytes`
+- A string that is neither an `address`, a `bytes32` or `bytes`, is encoded as a `string`
+- An array is encoded as a dynamic array of the type of it's first element
+- An object (`{}`) is encoded as a `tuple`
+
+### Decoding JSON objects into Solidity structs
+
+JSON objects are encoded as tuples, and can be decoded via tuples or structs. That means that you can define a `struct` in Solidity and it will decode the entire JSON object into that `struct`.
+
+For example:
+
+```
+// The following JSON
+{
+    a: 43,
+    b: "sigma"
+}
+
+will be decoded into:
+
+struct Json {
+    uint256 a;
+    string b;
+}
+```
+
+As the values are returned as an abi-encoded tuple, the exact name of the attributes of the struct don't need to match the names of the keys in the JSON. The above json file could also be decoded as:
+
+```
+struct Json {
+    uint256 apple;
+    string pineapple;
+}
+```
+
+What matters is the alphabetical order. As the JSON object is an unordered data structure but the tuple is an ordered one, we had to somehow give order to the JSON. The easiest way was to order the keys by alphabetical order. That means that in order to decode the JSON object correctly, you will need to define attributes of the struct with **types** that correspond to the values of the alphabetical order of the keys of the JSON.
+
+- The struct is interpreted serially. That means that the tuple's first item will be decoded based on the first item of the struct definition (no alphabetical order).
+- The JSON will parsed alphabetically, not serially.
+
+Thus, the first (in alphabetical order) value of the JSON, will be abi-encoded and then tried to be abi-decoded, based on the type of the first attribute of the `struct`.
+
+The above JSON would not be able to be decoded with the struct below:
+
+```
+    struct Json {
+        uint256 b;
+        uint256 a;
+    }
+```
+
+The reason is that it would try to decode the string `"sigma"` as a uint. To be exact, it would be decoded, but it would result to a wrong number, since it would interpret the bytes incorrectly.
+
+### Decoding JSON Objects, a tip
+
+If your JSON object has `hex numbers`, they will be encoded as bytes. The way to decode them as `uint` for better UX, is to define two `struct`, one intermediary with the definition of these values as `bytes` and then a final `struct` that will be consumed by the user.
+
+1. Decode the JSON into the intermediary `struct`
+2. Convert the intermediary struct to the final one, by converting the `bytes` to `uint`. We have a helper function in `forge-std` to do this
+3. Give the final `struct` to the user for consumption
+
+### Instructions
+
+1. Import the library `import "../StdJson.sol";`
+2. Define it's usage with `string`: `using stdJson for string;`
+3. If you want to parse simple values (numbers, address, etc.) use the helper functions
+4. If you want to parse entire JSON objects:
+   1. Define the `struct` in Solidity. Make sure to follow the alphabetical order -- it's hard to debug
+   2. Use the `parseRaw()` helper function to return abi-encoded `bytes` and then decode them to your struct
+
+```solidity
+    string memory root = vm.projectRoot();
+    string memory path = string.concat(root, "/src/test/fixtures/broadcast.log.json");
+    string memory json = vm.readFile(path);
+    bytes memory transactionDetails = json.parseRaw(".transactions[0].tx");
+    RawTx1559Detail memory rawTxDetail = abi.decode(transactionDetails, (RawTx1559Detail));
+```
+
+### Forge script artifacts
+
+We have gone ahead and created a handful of helper struct and functions to read the artifacts from broadcasting a forge script.
+
+Currently, we only support artifacts produced by EIP1559-compatible chains and we **don't** support yet the parsing of the entire `broadcast.json` artifact. You will need to parse for individual values such as the `transactions`, the `receipts`, etc.
+
+To read the transactions, it's as easy as doing:
+
+```solidity
+    function testReadEIP1559Transactions() public {
+        string memory root = vm.projectRoot();
+        string memory path = string.concat(root, "/src/test/fixtures/broadcast.log.json");
+        Tx1559[] memory transactions = readTx1559s(path);
+    }
+```
+
+and then you can access their various fields in these structs:
+
+```solidity
+struct Tx1559 {
+    string[] arguments;
+    address contractAddress;
+    string contractName;
+    string functionSig;
+    bytes32 hash;
+    Tx1559Detail txDetail;
+    string opcode;
+}
+
+struct Tx1559Detail {
+    AccessList[] accessList;
+    bytes data;
+    address from;
+    uint256 gas;
+    uint256 nonce;
+    address to;
+    uint256 txType;
+    uint256 value;
+}
+```
+
+### References
+
+- Helper Library: [stdJson.sol](https://github.com/foundry-rs/forge-std/blob/master/src/StdJson.sol)
+- Usage examples: [stdCheats.t.sol](https://github.com/foundry-rs/forge-std/blob/ca8d6e00ea9cb035f6856ff732203c9a3c48b966/src/test/StdCheats.t.sol#L206)
+- [File Cheatcodes](./fs.md): cheatcodes for working with files
