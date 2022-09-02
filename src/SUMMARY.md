@@ -254,6 +254,7 @@
       - [`toString`](./cheatcodes/to-string.md)
     - [Snapshots](./cheatcodes/snapshots.md)
     - [RPC](./cheatcodes/rpc.md)
+    - [Files](./cheatcodes/fs.md)
   - [Forge Standard Library Reference](./reference/forge-std/README.md)
     - [Std Logs](./reference/forge-std/std-logs.md)
     - [Std Assertions](./reference/forge-std/std-assertions.md)
