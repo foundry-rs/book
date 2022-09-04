@@ -35,15 +35,18 @@ JSON objects are encoded as tuples, and can be decoded via tuples or structs. Th
 
 For example:
 
-```
-// The following JSON
+The following JSON
+
+```js
 {
     a: 43,
     b: "sigma"
 }
+```
 
 will be decoded into:
 
+```solidity
 struct Json {
     uint256 a;
     string b;
@@ -52,7 +55,7 @@ struct Json {
 
 As the values are returned as an abi-encoded tuple, the exact name of the attributes of the struct don't need to match the names of the keys in the JSON. The above json file could also be decoded as:
 
-```
+```solidity
 struct Json {
     uint256 apple;
     string pineapple;
@@ -68,7 +71,7 @@ Thus, the first (in alphabetical order) value of the JSON, will be abi-encoded a
 
 The above JSON would not be able to be decoded with the struct below:
 
-```
+```solidity
     struct Json {
         uint256 b;
         uint256 a;
