@@ -31,7 +31,7 @@ Below are some subsections for the different Forge cheatcodes.
 - [Utilities](./utilities.md): Smaller utility cheatcodes
 - [Forking](./forking.md): Forking mode cheatcodes
 - [Snapshots](./snapshots.md): Snapshot cheatcodes
-- [File](./fs.md): cheatcodes for working with files
+- [File](./fs.md): Cheatcodes for working with files
 
 ### Cheatcodes Interface
 

@@ -246,6 +246,7 @@
       - [`envBytes32`](./cheatcodes/env-bytes32.md)
       - [`envString`](./cheatcodes/env-string.md)
       - [`envBytes`](./cheatcodes/env-bytes.md)
+      - [`parseJson`](./cheatcodes/parse-json.md)
     - [Utilities](./cheatcodes/utilities.md)
       - [`addr`](./cheatcodes/addr.md)
       - [`sign`](./cheatcodes/sign.md)
