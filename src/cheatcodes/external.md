@@ -12,3 +12,4 @@
 - [`envString`](./env-string.md)
 - [`envBytes`](./env-bytes.md)
 - [`parseJson`](./parse-json.md)
+- [Files](./fs.md)
