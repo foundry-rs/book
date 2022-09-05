@@ -86,7 +86,7 @@ you can specify a file containing **space-separated** constructor arguments with
       --constructor-args constructor-args.txt src/Token.sol:MyToken
     ```
     where `constructor-args.txt` contains the following content:
-    ```
+    ```text
     ForgeUSD FUSD 18 1000000000000000000000
     ```
 
