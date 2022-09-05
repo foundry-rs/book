@@ -15,7 +15,7 @@ Deploy a smart contract.
 The path to the contract is in the format `<path>:<contract>`, e.g. `src/Contract.sol:Contract`.
 
 You can specify constructor arguments with `--constructor-args`. Alternatively, you can specify a file
-containing the constructor arguments separated by a space with `--constructor-args-path`.
+containing space-separated constructor arguments with `--constructor-args-path`.
 
 Dynamic linking is not supported: you should predeploy your libraries and manually specify their addresses (see `--libraries`).
 
