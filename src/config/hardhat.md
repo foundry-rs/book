@@ -1,6 +1,6 @@
 ## Integrating with Hardhat
 
-It's possible to have your Foundry project work alongside [Hardhat](https://hardhat.org/). This assume that you have a working Foundry project and want to add Hardhat. It also assumes familiarity with Hardhat.
+It's possible to have your Foundry project work alongside [Hardhat](https://hardhat.org/). This assumes that you have a working Foundry project and want to add Hardhat. It also assumes familiarity with Hardhat.
 
 ### Why does this not work out of the box?
 
@@ -23,7 +23,7 @@ Inside your Foundry project working directory:
 1. `npm init` - Setup your project details as usual.
 2. `npm install --save-dev hardhat` - Install Hardhat.
 3. `npx hardhat` - Setup your Hardhat project as you see fit in the same directory.
-4. `forge remappings > remappings.txt` - You will need to re-run this everytime you modify libraries in Foundry.
+4. `forge remappings > remappings.txt` - You will need to re-run this every time you modify libraries in Foundry.
 
 Now you need to make the following changes to your Hardhat project. The following assumes a TypeScript setup:
 

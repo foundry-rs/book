@@ -86,7 +86,7 @@ You can build this docker image and watch forge build/run the tests within the c
 $ docker build --no-cache --progress=plain .
 ```
 
-Now, what happens if one of our tests fail? Modify `src/test/NFT.t.sol` as you please to make one of the tests fail. Try to build image again.
+Now, what happens if one of our tests fails? Modify `src/test/NFT.t.sol` as you please to make one of the tests fails. Try to build image again.
 
 ```sh
 $ docker build --no-cache --progress=plain .
@@ -141,7 +141,7 @@ We've just built, tested, and deployed our contract entirely within a docker con
 
 ### Why is this useful?
 
-Docker is about portability, re-producibility, and environment invariance. This means you can be less concerned about unexpected changes when you switch between environments, networks, developers, etc. Here are a few basic examples of why **I** like to use Docker images for smart contract deployment:
+Docker is about portability, reproducibility, and environment invariance. This means you can be less concerned about unexpected changes when you switch between environments, networks, developers, etc. Here are a few basic examples of why **I** like to use Docker images for smart contract deployment:
 
 * Reduces overhead of ensuring system level dependencies match between deployment environments (e.g. does your production runner always have the same version of `forge` as your dev runner?)
 * Increases confidence that code has been tested prior to deployment and has not been altered (e.g. if, in the above image, your code re-compiles on deployment, that's a major red flag).
