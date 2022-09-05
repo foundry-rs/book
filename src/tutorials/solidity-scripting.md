@@ -20,7 +20,7 @@ Since the NFT contract from the solmate tutorial inherits both `solmate` and `Op
 # Enter the project
 cd solidity-scripting
 
-# Install Solmate and OpenZepplin contracts as dependencies
+# Install Solmate and OpenZeppelin contracts as dependencies
 forge install transmissions11/solmate Openzeppelin/openzeppelin-contracts
 ```
 
