@@ -26,6 +26,10 @@ By default, smart contracts are verified in a multi-file fashion. If you want to
 
 This command will try to compile the source code of the flattened contract if `--flatten` is passed before verifying. If you do not want that, pass `--force`.
 
+You can specify **ABI-encoded** constructor arguments with `--constructor-args`. Alternatively,
+you can specify a file containing **space-separated** constructor arguments with `--constructor-args-path`.
+(Note that [cache](../config/project.html#cache) must be enabled in the config for the latter to work.)
+
 ### OPTIONS
 
 #### Verify Contract Options
@@ -39,8 +43,11 @@ This command will try to compile the source code of the flattened contract if `-
 `--num-of-optimizations` *num*  
 &nbsp;&nbsp;&nbsp;&nbsp;The number of optimization runs used to build the smart contract.
 
-`--constructor-args` *args...*  
+`--constructor-args` *args*  
 &nbsp;&nbsp;&nbsp;&nbsp;The ABI-encoded constructor arguments.
+
+`--constructor-args-path` *file*  
+&nbsp;&nbsp;&nbsp;&nbsp;The path to a file containing the constructor arguments.
 
 `--chain-id` *chain*  
 `--chain` *chain*  
@@ -69,8 +76,20 @@ This command will try to compile the source code of the flattened contract if `-
 1. Verify a contract built with solc v0.8.11+commit.d7f03943:
     ```sh
     forge verify-contract --compiler-version "v0.8.11+commit.d7f03943" \
-      0x.. src/Token.sol:MyToken
+      --constructor-args $(cast abi-encode "constructor(string,string,uint256,uint256)" "ForgeUSD" "FUSD" 18 1000000000000000000000) \
+      src/Token.sol:MyToken
     ```
+
+2. Verify a contract by specifying constructor arguments in a file:
+    ```sh
+    forge verify-contract --compiler-version "v0.8.11+commit.d7f03943" \
+      --constructor-args constructor-args.txt src/Token.sol:MyToken
+    ```
+    where `constructor-args.txt` contains the following content:
+    ```text
+    ForgeUSD FUSD 18 1000000000000000000000
+    ```
+
 
 ### SEE ALSO
 
