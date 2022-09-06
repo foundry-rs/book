@@ -57,6 +57,7 @@ What's included:
   - [Std Errors](./std-errors.md): Wrappers around common internal Solidity errors and reverts.
   - [Std Storage](./std-storage.md): Utilities for storage manipulation.
   - [Std Math](./std-math.md): Useful mathematical functions.
+  - [Script Utils](./script-utils.md): Utility functions which can be accessed in tests and scripts.
   - [Console Logging](./console-log.md): Console logging functions.
 
 - A cheatcodes instance `vm`, from which you invoke Forge cheatcodes (see [Cheatcodes Reference](../../cheatcodes/))
@@ -77,7 +78,7 @@ What's included:
     assertEq(dai.balanceOf(alice), 10000e18);
     ```
 
-- Utility functions (also included in `Script.sol`)
+- Utility functions also included in `Script.sol` (see [Script Utils](./script-utils.md))
 
     ```solidity
     // Compute the address a contract will be deployed at for a given deployer address and nonce
