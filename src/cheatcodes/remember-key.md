@@ -6,14 +6,13 @@
 function rememberKey(uint256 privateKey) external returns (address);
 ```
 
-
 ### Description
 
 Stores a private key in forge's local wallet and returns the corresponding address which can later be used for [broadcasting](./broadcast.md).
 
 ### Examples
 
-Derive the private key from the test mnemonic at path `m/44'/60'/0'/0/0` and use it to start broadcasting transactions:
+Derive the private key from the test mnemonic at path `m/44'/60'/0'/0/0`, remember it in forge's wallet and use it to start broadcasting transactions:
 
 ```solidity
 string memory mnemonic = "test test test test test test test test test test test junk";
