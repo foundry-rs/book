@@ -116,7 +116,9 @@ We’re going to deploy the `NFT` contract to the Rinkeby testnet, but to do thi
 
 > 💡 Note: You can get some Rinkeby testnet ETH [here](https://faucet.paradigm.xyz/) .
 
-Once you have all that create a `.env` file and add the variables.
+#### Environment Configuration
+
+Once you have all that create a `.env` file and add the variables. Foundry automatically loads in a `.env` file present in your project directory.
 
 The .env file should follow this format:
 
@@ -125,6 +127,22 @@ RINKEBY_RPC_URL=
 PRIVATE_KEY=
 ETHERSCAN_KEY=
 ```
+
+We now need to edit the `foundry.toml` file. There should already be one in the root of the project.
+
+Add the following lines to the end of the file:
+
+```toml
+[rpc_endpoints]
+rinkeby = "${RINKEBY_RPC_URL}"
+
+[etherscan]
+rinkeby = { key = "${ETHERSCAN_KEY}" }
+```
+
+This creates a [RPC alias](../cheatcodes/rpc.md) for Rinkeby and loads the Etherscan API key.
+
+#### Writing the Script
 
 Next, we have to create a folder and name it `script` and create a file in it called `NFT.s.sol`. This is where we will create the deployment script itself.
 
@@ -139,7 +157,8 @@ import "../src/NFT.sol";
 
 contract MyScript is Script {
     function run() external {
-        vm.startBroadcast();
+        uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
+        vm.startBroadcast(deployerPrivateKey);
 
         NFT nft = new NFT("NFT_tutorial", "TUT", "baseUri");
 
@@ -179,10 +198,17 @@ We create a contract called `MyScript` and it inherits `Script` from Forge Std.
 By default, scripts are executed by calling the function named `run`, our entrypoint.
 
 ```solidity
-vm.startBroadcast();
+uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
 ```
 
-This is a special cheatcode that records calls and contract creations made by our main script contract. Later, we will broadcast these transactions to deploy our NFT contract.
+This loads in the private key from our `.env` file. **Note:** you must be careful when exposing private keys in a `.env` file and loading them into programs. This is only recommend for use with non-priviliged deployers or for local / test setups. For production setups please review the various [wallet options](../reference/forge/forge-script.md#wallet-options---raw) that Foundry supports.
+
+
+```solidity
+vm.startBroadcast(deployerPrivateKey);
+```
+
+This is a special cheatcode that records calls and contract creations made by our main script contract. We pass the `deployerPrivateKey` in order to instruct it to use that key for signing the transactions. Later, we will broadcast these transactions to deploy our NFT contract.
 
 ```solidity
  NFT nft = new NFT("NFT_tutorial", "TUT", "baseUri");
@@ -201,7 +227,7 @@ At the root of the project run:
 source .env
 
 # To deploy and verify our contract
-forge script script/NFT.s.sol:MyScript --rpc-url $RINKEBY_RPC_URL  --private-key $PRIVATE_KEY --broadcast --verify --etherscan-api-key $ETHERSCAN_KEY -vvvv
+forge script script/NFT.s.sol:MyScript --rpc-url $RINKEBY_RPC_URL --broadcast --verify -vvvv
 ```
 
 Forge is going to run our script and broadcast the transactions for us - this can take a little while, since Forge will also wait for the transaction receipts. You should see something like this after a minute or so:
@@ -214,17 +240,45 @@ This confirms that you have successfully deployed the `NFT` contract to the Rink
 
 You can deploy to Anvil, the local testnet, by configuring the port as the `fork-url`.
 
+Here, we have two options in terms of accounts. We can either start anvil without any flags and use one of the private keys provided. Or, we can pass a mnemonic to anvil to use.
+
+#### Using Anvil's Default Accounts
+
 First, start Anvil:
 
 ```sh
 anvil
 ```
 
-Then run the following script with one of the private keys given to you by Anvil:
+Update your `.env` file with a private key given to you by Anvil.
+
+Then run the following script:
 
 ```sh
-forge script script/NFT.s.sol:MyScript --fork-url http://localhost:8545 \
- --private-key $PRIVATE_KEY0 --broadcast
+forge script script/NFT.s.sol:MyScript --fork-url http://localhost:8545 --broadcast
+```
+
+#### Using a Custom Mnemonic
+
+Add the following line to your `.env` file and complete it with your mnemonic:
+```bash
+MNEMONIC=
+```
+
+It is expected that the `PRIVATE_KEY` environment variable we set earlier is one of the first 10 accounts in this mnemonic.
+
+Start Anvil with the custom mnemonic:
+
+```sh
+source .env
+
+anvil --m $MNEMONIC
+```
+
+Then run the following script:
+
+```sh
+forge script script/NFT.s.sol:MyScript --fork-url http://localhost:8545 --broadcast
 ```
 
 > 💡 Note: A full implementation of this tutorial can be found [here](https://github.com/Perelyn-sama/solidity-scripting) and for further reading about solidity scripting, you can check out the `forge script` [reference](../reference/forge/forge-script.md).
