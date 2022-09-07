@@ -137,7 +137,7 @@ Note: You cannot just paste the entire string "0.8.12+commit.f00d7308.Darwin.app
 
 Forge passes source directories (`src`, `lib`, `test` etc) as `--include-path` arguments to the compiler.
 This means that given the following project tree
-```
+```text
 |- src
 |-- folder
 |--- Contract.sol
