@@ -34,7 +34,7 @@ function deploy() public {
     cheats.broadcast(ACCOUNT_B);
     test.t(2);
 
-    // this also will
+    // this also will, using a private key from your environment variables
     cheats.broadcast(vm.envUint("PRIVATE_KEY"));
     test.t(3);
 } 

@@ -38,7 +38,7 @@ function deployOther() public {
     
     cheats.stopBroadcast();
 
-    // broadcast again, this time using a private key from environment variables
+    // broadcast again, this time using a private key from your environment variables
     cheats.startBroadcast(vm.envUint("PRIVATE_KEY"));
     test.t(3);
     cheats.stopBroadcast();
