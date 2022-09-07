@@ -60,12 +60,12 @@ You can verify a contract on Etherscan with the [`forge verify-contract`](../ref
 
 You must provide:
 - the contract address
-- the path to the contract `<path>:<contractname>`
-- your Etherscan API key (env: `ETHERSCAN_API_KEY`).
+- the contract name or the path to the contract `<path>:<contractname>`
+- your Etherscan API key (env: `ETHERSCAN_API_KEY`) (if verifying on Etherscan).
 
 Moreover, you may need to provide:
-- [compiler version](https://etherscan.io/solcversions) used for build, with 8 hex digits from the commit version prefix (the commit will usually not be a nightly build).  It is auto-detected if not specified.
 - the constructor arguments in the ABI-encoded format, if there are any
+- [compiler version](https://etherscan.io/solcversions) used for build, with 8 hex digits from the commit version prefix (the commit will usually not be a nightly build). It is auto-detected if not specified.
 - the number of optimizations, if the Solidity optimizer was activated.  It is auto-detected if not specified.
 - the [chain ID](https://evm-chainlist.netlify.app/), if the contract is not on Ethereum Mainnet
 
@@ -74,7 +74,7 @@ Let's say you want to verify `MyToken` (see above). You set the [number of optim
 Here's how to verify it:
 
 ```bash
-$ forge verify-contract --chain-id 42 --num-of-optimizations 1000000 --constructor-args \ 
+$ forge verify-contract --chain-id 42 --num-of-optimizations 1000000 --watch --constructor-args \ 
     $(cast abi-encode "constructor(string,string,uint256,uint256)" "ForgeUSD" "FUSD" 18 1000000000000000000000) \
     --compiler-version v0.8.10+commit.fc410830 <the_contract_address> src/MyToken.sol:MyToken <your_etherscan_api_key>
 
@@ -84,7 +84,11 @@ Submitted contract for verification:
                 url: https://kovan.etherscan.io//address/0x6a54…3a4c#code
 ```
 
-You can check verification status with the [`forge verify-check`](../reference/forge/forge-verify-check.md) command:
+It is recommended to use the [`--watch`](../reference/forge/forge-verify-contract.md#verify-contract-options) flag along
+with `verify-contract` command in order to poll for the verification result.
+
+If the `--watch` flag was not supplied, you can check
+the verification status with the [`forge verify-check`](../reference/forge/forge-verify-check.md) command:
 
 ```bash
 $ forge verify-check --chain-id 42 <GUID> <your_etherscan_api_key>
@@ -127,3 +131,25 @@ Version: 0.8.12+commit.f00d7308.Darwin.appleclang
 
 Note: You cannot just paste the entire string "0.8.12+commit.f00d7308.Darwin.appleclang" as the argument for the compiler-version.  But you can use the 8 hex digits of the commit to look up exactly what you should copy and paste from [compiler version](https://etherscan.io/solcversions).
 
+### Known Issues
+
+#### Verifying Contracts With Ambiguous Import Paths
+
+Forge passes source directories (`src`, `lib`, `test` etc) as `--include-path` arguments to the compiler.
+This means that given the following project tree
+```text
+|- src
+|-- folder
+|--- Contract.sol
+|--- IContract.sol
+```
+it is possible to import `IContract` inside the `Contract.sol` using `folder/IContract.sol` import path.
+
+Etherscan is not able to recompile such sources. Consider changing the imports to use relative import path.
+
+#### Verifying Contracts With No Bytecode Hash
+
+Currently, it's not possible to verify contracts on Etherscan with [`bytecode_hash`](../reference/config/solidity-compiler.md#bytecode_hash)
+set to `none`.
+Click [here](https://docs.soliditylang.org/en/v0.8.13/metadata.html#usage-for-source-code-verification) to learn more about
+how metadata hash is used for source code verification. 
