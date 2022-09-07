@@ -10,9 +10,13 @@ function startBroadcast() external;
 function startBroadcast(address who) external;
 ```
 
+```solidity
+function startBroadcast(uint256 privateKey) external;
+```
+
 ### Description
 
-Using the address that calls the test contract or the address provided
+Using the address that calls the test contract or the address / private key provided
 as the sender, have all subsequent calls (at this call depth only) create
 transactions that can later be signed and sent onchain.
 
@@ -32,6 +36,11 @@ function deployOther() public {
     // will trigger a transaction
     test.t(1);
     
+    cheats.stopBroadcast();
+
+    // broadcast again, this time using a private key from your environment variables
+    cheats.startBroadcast(vm.envUint("PRIVATE_KEY"));
+    test.t(3);
     cheats.stopBroadcast();
 }
 ```
