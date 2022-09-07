@@ -42,7 +42,7 @@ There are 3 signatures:
 >
 > ```solidity
 > function testLowLevelCallRevert() public {
->     vm.expectRevert(bytes("error message"));
+>     vm.expectRevert(abi.encode("error message"));
 >     (bool status, ) = address(myContract).call(myCalldata);
 >     assertTrue(status, "expectRevert: call did not revert");
 > }
@@ -50,10 +50,10 @@ There are 3 signatures:
 
 ### Examples
 
-To use `expectRevert` with a `string`, convert it to `bytes`.
+To use `expectRevert` with a `string`, encode it to `bytes`.
 
 ```solidity
-vm.expectRevert(bytes("error message"));
+vm.expectRevert(abi.encode("error message"));
 ```
 
 To use `expectRevert` with a custom [error type][error-type] without parameters, use its selector.
