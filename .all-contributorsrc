@@ -801,6 +801,15 @@
       "contributions": [
         "maintenance"
       ]
+    },
+    {
+      "login": "iFrostizz",
+      "name": "Franfran",
+      "avatar_url": "https://avatars.githubusercontent.com/u/51274081?v=4",
+      "profile": "http://franfran.dev",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
