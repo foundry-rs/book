@@ -167,6 +167,8 @@
       - [cast --to-uint256](./reference/cast/cast--to-uint256.md)
       - [cast --to-unit](./reference/cast/cast--to-unit.md)
       - [cast --to-wei](./reference/cast/cast--to-wei.md)
+      - [cast shl](./reference/cast/cast-shl.md)
+      - [cast shr](./reference/cast/cast-shr.md)
     - [Utility Commands](./reference/cast/utility-commands.md)
       - [cast sig](./reference/cast/cast-sig.md)
       - [cast keccak](./reference/cast/cast-keccak.md)

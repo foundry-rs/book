@@ -17,3 +17,5 @@
 - [cast --to-uint256](./cast--to-uint256.md)
 - [cast --to-unit](./cast--to-unit.md)
 - [cast --to-wei](./cast--to-wei.md)
+- [cast shl](./cast-shl.md)
+- [cast shr](./cast-shr.md)

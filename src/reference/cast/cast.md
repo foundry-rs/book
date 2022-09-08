@@ -190,6 +190,12 @@ This program is a set of tools to interact with Ethereum and perform conversions
 [cast --to-wei](./cast--to-wei.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Convert an ETH amount to wei.
 
+[cast shl](./cast-shl.md)  
+&nbsp;&nbsp;&nbsp;&nbsp;Perform a left shifting operation.
+
+[cast shr](./cast-shr.md)  
+&nbsp;&nbsp;&nbsp;&nbsp;Perform a right shifting operation.
+
 #### Utility Commands
 
 [cast sig](./cast-sig.md)  
