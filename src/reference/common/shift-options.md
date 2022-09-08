@@ -1,9 +1,7 @@
-#### Base option
+#### Base Options
 
-`--base-in` *dec* / *hex*
+`--base-in` *dec* / *hex*  
+&nbsp;&nbsp;&nbsp;&nbsp;The base of the input number (10, 16, dec, or hex)
 
-&nbsp;&nbsp;&nbsp;&nbsp;The base of the number that is in.
-
-`--base-out` *dec* / *hex*
-
-&nbsp;&nbsp;&nbsp;&nbsp;The base of the number that is out.
+`--base-out` *dec* / *hex*  
+&nbsp;&nbsp;&nbsp;&nbsp;The desired base of the output (10, 16, dec, or hex)
