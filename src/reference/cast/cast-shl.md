@@ -20,4 +20,3 @@ Perform a left shifting operation.
 
 ### SEE ALSO
 
-[cast](./cast.md), [cast wallet](./cast-wallet.md)
