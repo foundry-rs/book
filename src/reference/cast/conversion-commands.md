@@ -18,4 +18,4 @@
 - [cast --to-unit](./cast--to-unit.md)
 - [cast --to-wei](./cast--to-wei.md)
 - [cast shl](./cast-shl.md)
-- [cast rhl](./cast-rhl.md)
+- [cast shr](./cast-shr.md)

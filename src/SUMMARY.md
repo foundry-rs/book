@@ -168,7 +168,7 @@
       - [cast --to-unit](./reference/cast/cast--to-unit.md)
       - [cast --to-wei](./reference/cast/cast--to-wei.md)
       - [cast shl](./reference/cast/cast-shl.md)
-      - [cast rhl](./reference/cast/cast-rhl.md)
+      - [cast shr](./reference/cast/cast-shr.md)
     - [Utility Commands](./reference/cast/utility-commands.md)
       - [cast sig](./reference/cast/cast-sig.md)
       - [cast keccak](./reference/cast/cast-keccak.md)

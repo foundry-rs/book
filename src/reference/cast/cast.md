@@ -193,7 +193,7 @@ This program is a set of tools to interact with Ethereum and perform conversions
 [cast shl](./cast-shl.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Perform a left shifting operation.
 
-[cast rhl](./cast-rhl.md)  
+[cast shr](./cast-shr.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Perform a right shifting operation.
 
 #### Utility Commands
