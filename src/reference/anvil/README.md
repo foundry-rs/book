@@ -287,6 +287,19 @@ Returns the details of all transactions currently pending for inclusion in the n
 `--fork-block-number <BLOCK>`  
 &nbsp;&nbsp;&nbsp;&nbsp; Fetch state from a specific block number over a remote endpoint (Must pass --fork-url in the same command-line)
 
+`--fork-retry-backoff <BACKOFF>`  
+&nbsp;&nbsp;&nbsp;&nbsp; Initial retry backoff on encountering errors.
+
+`--retries <retries>`  
+&nbsp;&nbsp;&nbsp;&nbsp; Number of retry requests for spurious networks (timed out requests). [default value= 5]
+
+`--timeout <timeout>`  
+&nbsp;&nbsp;&nbsp;&nbsp; Timeout in ms for requests sent to remote JSON-RPC server in forking mode. [default value= 45000]
+
+`--compute-units-per-second <CUPS>`  
+&nbsp;&nbsp;&nbsp;&nbsp; Sets the number of assumed available compute units per second for this provider [default value=330]
+&nbsp;&nbsp;&nbsp;&nbsp; See also, [Alchemy Ratelimits](https://github.com/alchemyplatform/alchemy-docs/blob/master/documentation/compute-units.md#rate-limits-cups)
+
 `--no-storage-caching>`  
 &nbsp;&nbsp;&nbsp;&nbsp; Explicitly disables the use of RPC caching. All storage slots are read entirely from the endpoint. This flag overrides the project's configuration file (Must pass --fork-url in the same command-line)
 
