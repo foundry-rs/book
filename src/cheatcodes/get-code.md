@@ -12,6 +12,10 @@ Returns the **deployment** bytecode for a contract in the project given the path
 
 The calldata parameter can either be in the form `ContractFile.sol` (if the filename and contract name are the same), `ContractFile.sol:ContractName`, or the path to an artifact, relative to the root of your project.
 
+> **_NOTE:_**  `getCode` requires read permission for the output directory, See also [file cheatcodes](./fs.md).
+> 
+> To grant read access set `fs_permissions = [{ access = "read", path = "./out"}]` in your `foundry.toml`.
+
 ### Examples
 
 ```solidity
