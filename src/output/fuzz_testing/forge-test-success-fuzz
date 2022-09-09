@@ -4,10 +4,11 @@ $ forge test
 // ANCHOR_END: command
 // ANCHOR: output
 Compiling 1 files with 0.8.10
+Solc 0.8.10 finished in 1.67s
 Compiler run successful
 
 Running 1 test for test/Safe.t.sol:SafeTest
-[PASS] testWithdraw(uint96) (runs: 256, μ: 13268, ~: 19654)
-Test result: ok. 1 passed; 0 failed; finished in 88.82ms
+[PASS] testWithdraw(uint96) (runs: 256, μ: 19078, ~: 19654)
+Test result: ok. 1 passed; 0 failed; finished in 19.56ms
 // ANCHOR_END: output
 // ANCHOR_END: all
