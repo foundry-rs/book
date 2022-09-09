@@ -201,7 +201,7 @@ By default, scripts are executed by calling the function named `run`, our entryp
 uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
 ```
 
-This loads in the private key from our `.env` file. **Note:** you must be careful when exposing private keys in a `.env` file and loading them into programs. This is only recommend for use with non-priviliged deployers or for local / test setups. For production setups please review the various [wallet options](../reference/forge/forge-script.md#wallet-options---raw) that Foundry supports.
+This loads in the private key from our `.env` file. **Note:** you must be careful when exposing private keys in a `.env` file and loading them into programs. This is only recommended for use with non-priviliged deployers or for local / test setups. For production setups please review the various [wallet options](../reference/forge/forge-script.md#wallet-options---raw) that Foundry supports.
 
 
 ```solidity
