@@ -5,9 +5,8 @@ $ forge test
 // ANCHOR: output
 No files changed, compilation skipped
 
-Running 2 tests for src/test/Greeter.t.sol:GreeterTest
-[PASS] testExpectArithmetic() (gas: 8802)
-[PASS] testSetGm() (gas: 112032)
-Test result: ok. 2 passed; 0 failed; finished in 1.42ms
+Running 1 test for test/Greeter.t.sol:GreeterTest
+[PASS] testSetGm() (gas: 107402)
+Test result: ok. 1 passed; 0 failed; finished in 4.77ms
 // ANCHOR_END: output
 // ANCHOR_END: all
