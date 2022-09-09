@@ -3,7 +3,8 @@
 $ forge build
 // ANCHOR_END: command
 // ANCHOR: output
-Compiling 7 files with 0.8.13
+Compiling 10 files with 0.8.16
+Solc 0.8.16 finished in 3.97s
 Compiler run successful
 // ANCHOR_END: output
 // ANCHOR_END: all
