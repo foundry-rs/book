@@ -11,10 +11,10 @@ Traces:
   [8413] OwnerUpOnlyTest::testFailIncrementAsNotOwner() 
     ├─ [0] VM::prank(0x0000000000000000000000000000000000000000) 
     │   └─ ← ()
-    ├─ [247] 0xce71…c246::d09de08a() 
+    ├─ [247] 0xce71…c246::increment() 
     │   └─ ← 0x82b42900
     └─ ← 0x82b42900
 
-Test result: ok. 1 passed; 0 failed; finished in 677.31µs
+Test result: ok. 1 passed; 0 failed; finished in 2.01ms
 // ANCHOR_END: output
 // ANCHOR_END: all
