@@ -5,8 +5,9 @@ $ forge test
 // ANCHOR: output
 No files changed, compilation skipped
 
-Running 1 test for test/Contract.t.sol:ContractTest
-[PASS] testExample() (gas: 279)
-Test result: ok. 1 passed; 0 failed; finished in 599.09µs
+Running 2 tests for test/Counter.t.sol:CounterTest
+[PASS] testIncrement() (gas: 28312)
+[PASS] testSetNumber(uint256) (runs: 256, μ: 27376, ~: 28387)
+Test result: ok. 2 passed; 0 failed; finished in 24.43ms
 // ANCHOR_END: output
 // ANCHOR_END: all

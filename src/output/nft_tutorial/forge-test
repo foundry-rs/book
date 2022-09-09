@@ -5,26 +5,26 @@ $ forge test
 // ANCHOR: output
 No files changed, compilation skipped
 
-Running 8 tests for src/test/SolmateNft.sol:SolmateNftTests
-[PASS] testBalanceIncremented() (gas: 218897)
-[PASS] testFailMaxSupplyReached() (gas: 136426)
-[PASS] testFailMintToZeroAddress() (gas: 34564)
-[PASS] testFailNoMintPricePaid() (gas: 5503)
-[PASS] testFailUnSafeContractReceiver() (gas: 89813)
-[PASS] testMintPricePaid() (gas: 81279)
-[PASS] testNewMintOwnerRegistered() (gas: 192272)
-[PASS] testSafeContractReceiver() (gas: 274092)
-Test result: ok. 8 passed; 0 failed; finished in 2.50ms
+Running 8 tests for test/OpenZeppelinNft.t.sol:OpenZeppelinNftTests
+[PASS] testBalanceIncremented() (gas: 217829)
+[PASS] testFailMaxSupplyReached() (gas: 134524)
+[PASS] testFailMintToZeroAddress() (gas: 34577)
+[PASS] testFailNoMintPricePaid() (gas: 5568)
+[PASS] testFailUnSafeContractReceiver() (gas: 88276)
+[PASS] testMintPricePaid() (gas: 81554)
+[PASS] testNewMintOwnerRegistered() (gas: 190956)
+[PASS] testSafeContractReceiver() (gas: 273132)
+Test result: ok. 8 passed; 0 failed; finished in 2.68ms
 
-Running 8 tests for src/test/OpenZeppelinNft.t.sol:OpenZeppelinNftTests
-[PASS] testBalanceIncremented() (gas: 219326)
-[PASS] testFailMaxSupplyReached() (gas: 136426)
-[PASS] testFailMintToZeroAddress() (gas: 34620)
-[PASS] testFailNoMintPricePaid() (gas: 5503)
-[PASS] testFailUnSafeContractReceiver() (gas: 90282)
-[PASS] testMintPricePaid() (gas: 81512)
-[PASS] testNewMintOwnerRegistered() (gas: 192487)
-[PASS] testSafeContractReceiver() (gas: 274588)
-Test result: ok. 8 passed; 0 failed; finished in 2.71ms
+Running 8 tests for test/SolmateNft.sol:SolmateNftTests
+[PASS] testBalanceIncremented() (gas: 217400)
+[PASS] testFailMaxSupplyReached() (gas: 134524)
+[PASS] testFailMintToZeroAddress() (gas: 34521)
+[PASS] testFailNoMintPricePaid() (gas: 5568)
+[PASS] testFailUnSafeContractReceiver() (gas: 87807)
+[PASS] testMintPricePaid() (gas: 81321)
+[PASS] testNewMintOwnerRegistered() (gas: 190741)
+[PASS] testSafeContractReceiver() (gas: 272636)
+Test result: ok. 8 passed; 0 failed; finished in 2.79ms
 // ANCHOR_END: output
 // ANCHOR_END: all

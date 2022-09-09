@@ -7,18 +7,19 @@ $ tree . -L 3 -I output
 ├── foundry.toml
 ├── lib
 │   └── forge-std
-│       ├── lib
 │       ├── LICENSE-APACHE
 │       ├── LICENSE-MIT
 │       ├── README.md
+│       ├── foundry.toml
+│       ├── lib
 │       └── src
 ├── script
-│   └── Contract.s.sol
+│   └── Counter.s.sol
 ├── src
-│   └── Contract.sol
+│   └── Counter.sol
 └── test
-    └── Contract.t.sol
+    └── Counter.t.sol
 
-7 directories, 7 files
+7 directories, 8 files
 // ANCHOR_END: output
 // ANCHOR_END: all

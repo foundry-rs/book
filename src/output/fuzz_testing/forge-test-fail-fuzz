@@ -4,10 +4,11 @@ $ forge test --allow-failure
 // ANCHOR_END: command
 // ANCHOR: output
 Compiling 1 files with 0.8.10
+Solc 0.8.10 finished in 1.69s
 Compiler run successful
 
 Running 1 test for test/Safe.t.sol:SafeTest
-[FAIL. Counterexample: calldata=0x215a2f200000000000000000000000000000000000000001000000000000000000000000, args=[79228162514264337593543950336]] testWithdraw(uint256) (runs: 45, μ: 19554, ~: 19554)
-Test result: FAILED. 0 passed; 1 failed; finished in 23.75ms
+[FAIL. Reason: EvmError: Revert Counterexample: calldata=0x215a2f200000000000000000000000000000000000000001000000000000000000000000, args=[79228162514264337593543950336]] testWithdraw(uint256) (runs: 47, μ: 19554, ~: 19554)
+Test result: FAILED. 0 passed; 1 failed; finished in 8.75ms
 // ANCHOR_END: output
 // ANCHOR_END: all
