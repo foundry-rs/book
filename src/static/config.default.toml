@@ -3,24 +3,36 @@
 src = 'src'
 # The test directory
 test = 'test'
+# The script directory
+script = 'script'
 # The artifact directory
 out = 'out'
 # A list of paths to look for libraries in
 libs = ['lib']
 # A list of remappings
 remappings = []
-# additional solc allow paths
-allow_paths = []
+# Whether to autodetect remappings by scanning the `libs` folders recursively
+auto_detect_remappings = true
 # A list of deployed libraries to link against
 libraries = []
 # Whether to cache builds or not
 cache = true
 # The cache directory if enabled
 cache_path = 'cache'
+# Where the broadcast logs are stored
+broadcast = 'boradcast'
+# additional solc allow paths
+allow_paths = []
+# additional solc include paths
+include_paths = []
 # Whether to ignore the cache
 force = false
 # The EVM version by hardfork name
 evm_version = 'london'
+# A list of contracts to output gas reports for
+gas_reports = ['*']
+# A list of contracts to ignore for gas reports
+gas_reports_ignore = []
 # Override the Solidity version (this overrides `auto_detect_solc`)
 #solc_version = '0.8.10'
 # Whether or not Forge should auto-detect the solc version to use
@@ -34,13 +46,11 @@ optimizer_runs = 200
 # The verbosity of tests
 verbosity = 0
 # A list of ignored solc error codes
-ignored_error_codes = []
-# The number of fuzz runs for fuzz tests
-fuzz_runs = 256
-# The max number of individual inputs that may be rejected before a fuzz test aborts
-fuzz_max_local_rejects = 65536
-# The max number of combined inputs that may be rejected before a fuzz test aborts
-fuzz_max_global_rejects = 1024
+ignored_error_codes = [1878, 5574]
+# Configures the permissions of cheat codes that touch the file system
+fs_permissions = []
+# Whether to emit additional build info files
+build_info = false
 # Whether or not to enable `vm.ffi`
 ffi = false
 # The address of `msg.sender` in tests
@@ -49,10 +59,10 @@ sender = '0x00a329c0648769a73afac7f9381e08fb43dbea72'
 tx_origin = '0x00a329c0648769a73afac7f9381e08fb43dbea72'
 # The initial balance of the test contract
 initial_balance = '0xffffffffffffffffffffffff'
-# The block number we are at in tests
-block_number = 1
 # The chain ID we are on in tests
 chain_id = 31337
+# The `block.number` value during EVM execution
+block_number = 1
 # The gas limit in tests
 gas_limit = 9223372036854775807
 # The gas price in tests (in wei)
@@ -65,39 +75,45 @@ block_coinbase = '0x0000000000000000000000000000000000000000'
 block_timestamp = 1
 # The block difficulty in tests
 block_difficulty = 0
-# A list of contracts to output gas reports for
-gas_reports = ["*"]
-# Enables or disables RPC caching when forking
-no_storage_caching = false
-# Caches storage retrieved locally for certain chains and endpoints
-# Can also be restricted to multiple chains
-# By default only remote endpoints will be cached
-# To disable storage caching, set `no_storage_caching = true`
-rpc_storage_caching = { chains = "all", endpoints = "remote" }
+# The memory limit of the EVM (32 MB by default)
+memory_limit = 33554432
 # Extra output to include in the contract's artifact.
 extra_output = []
 # Extra output to write to separate files.
 extra_output_files = []
+# Print the names of the compiled contracts
+names = false
+# Print the sizes of the compiled contracts
+sizes = false
+# Whether or not to use the Yul intermediate representation compilation pipeline
+via_ir = false
+# Enables or disables RPC caching when forking
+no_storage_caching = false
 # Use the given hash method for the metadata hash that is appended
 # to the bytecode.
 # The metadata hash can be removed from the bytecode by setting "none"
 bytecode_hash = "ipfs"
+# How to treat revert (and require) reason strings
+revert_strings = "default"
 # If enabled, the Solidity compiler is instructed to generate bytecode
 # only for the required contracts. This can reduce compile time
 # for `forge test`, but is experimental.
 sparse_mode = false
-# Whether or not to use the Yul intermediate representation compilation pipeline
-via_ir = false
-# How to treat revert (and require) reason strings
-revert_strings = "default"
+# Contains alias -> URL|Env pairs for RPC endpoints that can be accessed during testing
+rpc_endpoints = { optimism = "https://optimism.alchemyapi.io/v2/...", mainnet = "${RPC_MAINNET}" }
+# The Solc instance to use if any.
+# This takes precedence over `auto_detect_solc`, if a version is set then this overrides auto-detection.
+#solc = None
 # Switch optimizer components on or off in detail
 #optimizer_details = None
+# Model checker settings.
+#model_checker = None,
 # Url of the rpc server that should be used for any rpc calls
 #eth_rpc_url = None
 # Etherscan API key
 #etherscan_api_key = None
 # Only run test functions matching the specified regex pattern
-#test_pattern= None
+#test_pattern = None
 # Only run test functions that do not match the specified regex pattern
 #test_pattern_inverse = None
 # Only run tests in contracts matching the specified regex pattern
@@ -108,13 +124,59 @@ revert_strings = "default"
 #path_pattern = None
 # Only run tests in source files that do not match the specified glob pattern
 #path_pattern_inverse = None
+# Pins the block number for the state fork
+#fork_block_number = None
 # The block gas limit
 #block_gas_limit = None
-# The memory limit of the EVM (32 MB by default)
-memory_limit = 33554432
-# Print the names of the compiled contracts
-names = false
-# Print the sizes of the compiled contracts
-sizes = false
-# Contains alias -> URL|Env pairs for RPC endpoints that can be accessed during testing
-rpc_endpoints = { optimism = "https://optimism.alchemyapi.io/v2/...", mainnet = "${RPC_MAINNET}" }
+# The path to the `build-info` directory that contains the build info json files
+#build_info_path = None
+
+[fmt]
+# Maximum line length where formatter will try to wrap the line
+line_length = 120
+# Number of spaces per indentation level
+tab_width = 4
+# Print spaces between brackets
+bracket_spacing = false
+# Style of uint/int256 types
+int_types = "long"
+# If function parameters are multiline then always put the function attributes on separate lines
+func_attrs_with_params_multiline = true
+# Style of quotation marks
+quote_style = "double"
+# Style of underscores in number literals
+number_underscore = "preserve"
+
+[fuzz]
+# The number of fuzz runs for fuzz tests
+runs = 256
+# The maximum number of test case rejections allowed by proptest, to be
+# encountered during usage of `vm.assume` cheatcode. This will be used
+# to set the `max_global_rejects` value in proptest test runner config.
+# `max_local_rejects` option isn't exposed here since we're not using
+# `prop_filter`.
+max_test_rejects = 65536
+# Being deprecated in favor of `max_test_rejects`. Will be removed in future versions.
+max_global_rejects = 65536
+# The weight of the dictionary
+dictionary_weight = 40
+# The flag indicating whether to include values from storage
+include_storage = true
+# The flag indicating whether to include push bytes values
+include_push_bytes = true
+
+[invariant]
+# The number of runs that must execute for each invariant test group
+runs = 256
+# The number of calls executed to attempt to break invariants in one run
+depth = 15
+# Fails the invariant fuzzing if a revert occurs
+fail_on_revert = false
+# Allows overriding an unsafe external call when running invariant tests. eg. reentrancy checks
+call_override = false
+# The weight of the dictionary
+dictionary_weight = 80
+# The flag indicating whether to include values from storage
+include_storage = true
+# The flag indicating whether to include push bytes values
+include_push_bytes = true

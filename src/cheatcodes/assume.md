@@ -13,7 +13,7 @@ If the boolean expression evaluates to false, the fuzzer will discard the curren
 The `assume` cheatcode should mainly be used for very narrow checks.
 Broad checks will slow down tests as it will take a while to find valid values, and the test may fail if you hit the max number of rejects.
 
-You can configure the rejection thresholds by setting [`fuzz_max_local_rejects`][max-local-rejects] and [`fuzz_max_global_rejects`][max-global-rejects] in your `foundry.toml` file.
+You can configure the rejection thresholds by setting [`fuzz.max_test_rejects`][max-test-rejects] in your `foundry.toml` file.
 
 For broad checks, such as ensuring a `uint256` falls within a certain range, you can bound your input with the modulo operator or Forge Standard's [`bound`][forge-std-bound] method.
 
@@ -45,7 +45,6 @@ Forge Standard Library
 
 [`bound`](../reference/forge-std/bound.md)
 
-[max-local-rejects]: ../reference/config/testing.md#max_local_rejects
-[max-global-rejects]: ../reference/config/testing.md#max_global_rejects
+[max-test-rejects]: ../reference/config/testing.md#max_test_rejects
 [forge-std-bound]: ../reference/forge-std/bound.md
 [filtering-guide]: https://altsysrq.github.io/proptest-book/proptest/tutorial/filtering.html#filtering
