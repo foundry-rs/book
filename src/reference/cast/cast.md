@@ -6,7 +6,7 @@ cast - Perform Ethereum RPC calls from the comfort of your command line.
 
 ### SYNOPSIS
 
-`cast` [*options*] *command* [*args*]  
+`cast` [*options*] _command_ [*args*]  
 `cast` [*options*] `--version`  
 `cast` [*options*] `--help`
 
@@ -163,17 +163,14 @@ This program is a set of tools to interact with Ethereum and perform conversions
 [cast --to-ascii](./cast--to-ascii.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Convert hex data to an ASCII string.
 
+[cast --to-base](./cast--to-base.md)  
+&nbsp;&nbsp;&nbsp;&nbsp;Convert a number of one base to another.
+
 [cast --to-bytes32](./cast--to-bytes32.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Right-pads hex data to 32 bytes.
 
-[cast --to-dec](./cast--to-dec.md)  
-&nbsp;&nbsp;&nbsp;&nbsp;Convert a hex value into a decimal number.
-
 [cast --to-fix](./cast--to-fix.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Convert an integer into a fixed point number.
-
-[cast --to-hex](./cast--to-hex.md)  
-&nbsp;&nbsp;&nbsp;&nbsp;Convert an integer to hex.
 
 [cast --to-hexdata](./cast--to-hexdata.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Normalize the input to lowercase, 0x-prefixed hex.
@@ -261,12 +258,14 @@ This program is a set of tools to interact with Ethereum and perform conversions
 ### EXAMPLES
 
 1. Call a function on a contract:
+
     ```sh
     cast call 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2 \
       "balanceOf(address)(uint256)" 0x...
     ```
 
 2. Decode raw calldata:
+
     ```sh
     cast --calldata-decode "transfer(address,uint256)" \
       0xa9059cbb000000000000000000000000e78388b4ce79068e89bf8aa7f218ef6b9ab0e9d0000000000000000000000000000000000000000000000000008a8e4b1a3d8000
