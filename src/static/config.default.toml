@@ -101,6 +101,35 @@ revert_strings = "default"
 sparse_mode = false
 # Contains alias -> URL|Env pairs for RPC endpoints that can be accessed during testing
 rpc_endpoints = { optimism = "https://optimism.alchemyapi.io/v2/...", mainnet = "${RPC_MAINNET}" }
+# The Solc instance to use if any.
+# This takes precedence over `auto_detect_solc`, if a version is set then this overrides auto-detection.
+#solc = None
+# Switch optimizer components on or off in detail
+#optimizer_details = None
+# Model checker settings.
+#model_checker = None,
+# Url of the rpc server that should be used for any rpc calls
+#eth_rpc_url = None
+# Etherscan API key
+#etherscan_api_key = None
+# Only run test functions matching the specified regex pattern
+#test_pattern = None
+# Only run test functions that do not match the specified regex pattern
+#test_pattern_inverse = None
+# Only run tests in contracts matching the specified regex pattern
+#contract_pattern = None
+# Only run tests in contracts that do not match the specified regex pattern
+#contract_pattern_inverse = None
+# Only run tests in source files matching the specified glob pattern
+#path_pattern = None
+# Only run tests in source files that do not match the specified glob pattern
+#path_pattern_inverse = None
+# Pins the block number for the state fork
+#fork_block_number = None
+# The block gas limit
+#block_gas_limit = None
+# The path to the `build-info` directory that contains the build info json files
+#build_info_path = None
 
 [fmt]
 # Maximum line length where formatter will try to wrap the line
