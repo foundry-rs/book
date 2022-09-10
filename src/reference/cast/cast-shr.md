@@ -14,7 +14,7 @@ Perform a left shifting operation.
 
 ### OPTIONS
 
-{{#include ../common/shift-options.md}}
+{{#include ../common/base-options.md}}
 
 {{#include common-options.md}}
 
@@ -30,4 +30,3 @@ Perform a left shifting operation.
 ### SEE ALSO
 
 [cast](./cast.md), [cast shl](./cast-shl.md)
-

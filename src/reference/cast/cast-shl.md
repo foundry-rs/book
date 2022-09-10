@@ -14,7 +14,7 @@ Perform a left shifting operation.
 
 ### OPTIONS
 
-{{#include ../common/shift-options.md}}
+{{#include ../common/base-options.md}}
 
 {{#include common-options.md}}
 
@@ -26,7 +26,7 @@ Perform a left shifting operation.
     ```
 
 > Note: The --base-in parameter is not enforced but will be needed if the input is ambiguous.
-   
+
 ### SEE ALSO
 
 [cast](./cast.md), [cast shr](./cast-shr.md)
