@@ -10,14 +10,6 @@ function assertApproxEqRel(uint256 a, uint256 b, uint256 maxPercentDelta) intern
 function assertApproxEqRel(uint256 a, uint256 b, uint256 maxPercentDelta, string memory err) internal virtual;
 ```
 
-```solidity
-function assertApproxEqRel(int256 a, int256 b, uint256 maxPercentDelta) internal virtual;
-```
-
-```solidity
-function assertApproxEqRel( int256 a, int256 b, uint256 maxPercentDelta, string memory err) internal virtual;
-```
-
 ### Description
 
 Asserts `a` is approximately equal to `b` with delta in percentage, where `1e18` is 100%.
