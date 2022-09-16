@@ -19,7 +19,7 @@ cast completions zsh > /usr/local/share/zsh/site-functions/_cast
 anvil completions zsh > /usr/local/share/zsh/site-functions/_anvil
 ```
 
-For M1 machines:
+For ARM-based systems:
 
 ```sh
 forge completions zsh > /opt/homebrew/completions/zsh/_forge
