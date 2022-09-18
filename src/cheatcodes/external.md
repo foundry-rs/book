@@ -3,6 +3,7 @@
 - [`ffi`](./ffi.md)
 - [`projectRoot`](./project-root.md)
 - [`getCode`](./get-code.md)
+- [`getDeployedCode`](./get-deployed-code.md)
 - [`setEnv`](./set-env.md)
 - [`envBool`](./env-bool.md)
 - [`envUint`](./env-uint.md)
