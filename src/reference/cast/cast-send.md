@@ -23,6 +23,8 @@ The destination (*to*) can be an ENS name or an address.
 `--resend`  
 &nbsp;&nbsp;&nbsp;&nbsp;Reuse the latest nonce of the sending account.
 
+`--create` *code* [*sig* *args...*]  
+&nbsp;&nbsp;&nbsp;&nbsp;Deploy a contract by specifying raw bytecode, in place of specifying a *to* address.
 
 #### Receipt Options
 
