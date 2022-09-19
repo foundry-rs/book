@@ -239,6 +239,7 @@
       - [`ffi`](./cheatcodes/ffi.md)
       - [`projectRoot`](./cheatcodes/project-root.md)
       - [`getCode`](./cheatcodes/get-code.md)
+      - [`getDeployedCode`](./cheatcodes/get-deployed-code.md)
       - [`setEnv`](./cheatcodes/set-env.md)
       - [`envBool`](./cheatcodes/env-bool.md)
       - [`envUint`](./cheatcodes/env-uint.md)

@@ -207,8 +207,10 @@ interface CheatCodes {
     // Calldata can either be strict or a partial match
     function expectCall(address, uint256, bytes calldata) external;
 
-    // Gets the bytecode for a contract in the project given the path to the contract.
+    // Gets the _creation_ bytecode from an artifact file. Takes in the relative path to the json file
     function getCode(string calldata) external returns (bytes memory);
+    // Gets the _deployed_ bytecode from an artifact file. Takes in the relative path to the json file
+    function getDeployedCode(string calldata) external returns (bytes memory);
 
     // Label an address in test traces
     function label(address addr, string calldata label) external;
