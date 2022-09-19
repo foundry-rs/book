@@ -25,7 +25,7 @@ slither src/Contract.sol
 
 See the [slither wiki](https://github.com/crytic/slither/wiki/Usage) for more information.
 
-In order to use a custom configuration, such as the sample `slither.config.json` mentioned above, the following command is used as mentioned in the [slither-wiki](https://github.com/crytic/slither/wiki/Usage#configuration-file). By default slither looks for the `slither-config.json` but you can define the path and any other `json` file of your choice:
+In order to use a custom configuration, such as the sample `slither.config.json` mentioned above, the following command is used as mentioned in the [slither-wiki](https://github.com/crytic/slither/wiki/Usage#configuration-file). By default slither looks for the `slither.config.json` but you can define the path and any other `json` file of your choice:
 
 ```sh 
 slither --config-file <path>/file.config.json Counter.sol
