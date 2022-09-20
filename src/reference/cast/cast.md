@@ -49,6 +49,9 @@ This program is a set of tools to interact with Ethereum and perform conversions
 [cast call](./cast-call.md)
 &nbsp;&nbsp;&nbsp;&nbsp;Perform a call on an account without publishing a transaction.
 
+[cast rpc](./cast-rpc.md)
+&nbsp;&nbsp;&nbsp;&nbsp; Perform a raw JSON-RPC request [aliases: rp]
+
 [cast tx](./cast-tx.md)
 &nbsp;&nbsp;&nbsp;&nbsp;Get information about a transaction.
 
