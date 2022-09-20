@@ -89,6 +89,18 @@ For a good example of a base test contract that has helper methods and custom as
 
 Forge will sometimes check for newer Solidity versions that fit your project. To use Forge offline, use the `--offline` flag.
 
+### I'm getting Solc errors
+
+[solc-bin](https://binaries.soliditylang.org/) doesn't offer static builds for apple silicon. Foundry relies on [svm](https://github.com/roynalnaruto/svm-rs) to install native builds for apple silicon.
+
+All solc versions are installed under `~/.svm/`. If you encounter solc related errors, such as `SolcError: ...` please to nuke `~/.svm/` and try again, this will trigger a fresh install and usually resolves the issue.
+
+If you're on apple silion, please ensure the [`z3` thereom prover](https://github.com/Z3Prover/z3
+) is installed: `brew install z3`
+
+> **Note**: native apple silicon builds are only available from `0.8.5` upwards. If you need older versions, you must enable apple silicon rosetta to run them.
+
+
 ### Forge fails in JavaScript monorepos (`pnpm`)
 
 Managers like `pnpm` use symlinks to manage `node_modules` folders.
