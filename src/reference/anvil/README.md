@@ -134,7 +134,7 @@ The standard methods are based on [this](https://eth.wiki/json-rpc/API) referenc
 The `anvil_*` namespace is an alias for `hardhat`. For more info, refer to the [Hardhat documentation](https://hardhat.org/hardhat-network/reference#hardhat-network-methods).
 
 `anvil_impersonateAccount`   
-Send transactions impersonating an externally owned account or contract. While impersonating a contract, the contract functions can not be called. `anvil_stopImpersonatingAccount` must be used if the contract's functions are to be called again
+Send transactions impersonating an externally owned account or contract. While impersonating a contract, the contract functions can not be called. `anvil_stopImpersonatingAccount` must be used if the contract's functions are to be called again. See also [EIP-3607](https://eips.ethereum.org/EIPS/eip-3607).
 
 `anvil_stopImpersonatingAccount`  
 Stops impersonating an account or contract if previously set with `anvil_impersonateAccount`
