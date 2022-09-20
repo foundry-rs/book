@@ -82,7 +82,14 @@ The value of the `chainid` opcode in tests.
 
 The gas limit for each test case.
 
-Due to a bug in a dependency of Forge, you **cannot raise the gas limit** beyond the default without changing the value to a string.
+> ℹ️ **Note**
+>
+> Due to a limitation in a dependency of Forge, you **cannot raise the gas limit** beyond the default without changing the value to a string.
+> 
+> In order to use higher gas limits use a string:
+ ```toml
+gas_limit = "18446744073709551615" # u64::MAX
+```
 
 ##### `gas_price`
 
