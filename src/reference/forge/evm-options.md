@@ -11,6 +11,9 @@
 `--fork-block-number` *block*  
 &nbsp;&nbsp;&nbsp;&nbsp;Fetch state from a specific block number over a remote endpoint. See `--fork-url`.
 
+`--fork-retry-backoff <BACKOFF>`  
+&nbsp;&nbsp;&nbsp;&nbsp; Initial retry backoff on encountering errors.
+
 `--no-storage-caching`  
 &nbsp;&nbsp;&nbsp;&nbsp;Explicitly disables the use of RPC caching.
 
