@@ -116,6 +116,7 @@
       - [cast receipt](./reference/cast/cast-receipt.md)
       - [cast send](./reference/cast/cast-send.md)
       - [cast call](./reference/cast/cast-call.md)
+      - [cast rpc](./reference/cast/cast-rpc.md)
       - [cast tx](./reference/cast/cast-tx.md)
       - [cast run](./reference/cast/cast-run.md)
       - [cast estimate](./reference/cast/cast-estimate.md)
