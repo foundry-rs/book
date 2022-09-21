@@ -132,16 +132,18 @@ error[6275]: ParserError: Source "node_modules/@openzeppelin/contracts/utils/cry
 8 | import "../../../utils/cryptography/draft-EIP712.sol";
 ```
 
-This error happens when `solc` was able to resolve symlinked files, but they're outside of the Foundry workspace (`./contracts`).
+This error happens when `solc` was able to resolve symlinked files, but they're outside the Foundry workspace (`./contracts`).
 
-Adding `node_modules` to `allow_paths` in `foundry.toml` grants solc access to that directory and it will be able to read it:
+Adding `node_modules` to `allow_paths` in `foundry.toml` grants solc access to that directory, and it will be able to read it:
 
 ```toml
 # This translates to `solc --allow-paths ../node_modules`
 allow_paths = ["../node_modules"]
 ```
 
-Note that the path is relative to the Foundry workspace.
+Note that the path is relative to the Foundry workspace. See also [solc allowed-paths](https://docs.soliditylang.org/en/latest/path-resolution.html#allowed-paths)
+
+
 
 ### How to install from source?
 

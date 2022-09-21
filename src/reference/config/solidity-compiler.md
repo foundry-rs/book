@@ -54,6 +54,20 @@ If set to `false`, only the remappings in `foundry.toml` and `remappings.txt` ar
 - Default: none
 - Environment: `FOUNDRY_ALLOW_PATHS` or `DAPP_ALLOW_PATHS`
 
+Tells solc to allow reading source files from additional directories. This is mainly relevant for complex workspaces managed by `pnmp` or similar.
+
+See also [solc allowed-paths](https://docs.soliditylang.org/en/latest/path-resolution.html#allowed-paths)
+
+##### `include_paths`
+
+- Type: array of strings (paths)
+- Default: none
+- Environment: `FOUNDRY_INCLUDE_PATHS` or `DAPP_INCLUDE_PATHS`
+
+Make an additional source directory available to the  default import callback. Use this option if you want to  import contracts whose location is not fixed in relation  to your main source tree, e.g. third-party libraries  installed using a package manager. Can be used multiple  times. Can only be used if base path has a non-empty  value.
+
+See also [solc path resolution](https://docs.soliditylang.org/en/latest/path-resolution.html)
+
 ##### `libraries`
 
 - Type: array of strings (libraries)
