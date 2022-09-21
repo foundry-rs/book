@@ -235,6 +235,7 @@
       - [`makePersistent`](./cheatcodes/make-persistent.md)
       - [`revokePersistent`](./cheatcodes/revoke-persistent.md)
       - [`isPersistent`](./cheatcodes/is-persistent.md)
+      - [`allowCheatcodes`](./cheatcodes/allow-cheatcodes.md)
     - [External](./cheatcodes/external.md)
       - [`ffi`](./cheatcodes/ffi.md)
       - [`projectRoot`](./cheatcodes/project-root.md)
