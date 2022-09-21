@@ -2,7 +2,7 @@
 
 ### NAME
 
-cast-rp -  Perform a raw JSON-RPC request
+cast-rpc -  Perform a raw JSON-RPC request
 
 ### SYNOPSIS
 
