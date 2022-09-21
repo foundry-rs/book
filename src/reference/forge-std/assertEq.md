@@ -35,7 +35,7 @@ function assertEq(int256[] memory a, int256[] memory b, string memory err) inter
 ```
 
 ```solidity
-// helper for asserting two uints that are shorter than 256 bits: `assertUint128Eq(uint128(1), uint128(1));`
+// legacy helper for asserting two uints shorter than 256 bits: `assertEqUint(uint8(1), uint128(1));`
 function assertEqUint(uint256 a, uint256 b) internal;
 ```
 
