@@ -257,6 +257,11 @@ interface CheatCodes {
     // - The user lacks permissions to remove the file.
     // (path) => ()
     function removeFile(string calldata) external;
+    
+    // Return the value(s) that correspond to 'key'
+    vm.parseJson(string memory json, string memory key)
+    // Return the entire json file
+    vm.parseJson(string memory json);
 
     // Snapshot the current state of the evm.
     // Returns the id of the snapshot that was created.
