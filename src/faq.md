@@ -131,6 +131,21 @@ allow_paths = ["../node_modules"]
 
 Note that the path is relative to the Foundry workspace.
 
+### How to install from source?
+
+> **NOTE:** please ensure your rust version is up-to-date: `rustup update`. Current msrv = "1.62"
+
+```sh
+git clone https://github.com/foundry-rs/foundry
+cd foundry
+# install cast + forge
+cargo install --path ./cli --profile local --bins --locked --force
+# install anvil
+cargo install --path ./anvil --profile local --locked --force
+```
+
+Or via `cargo install --git https://github.com/foundry-rs/foundry --profile local --locked foundry-cli anvil`.
+
 [tg-support]: https://t.me/foundry_support
 [forge-test]: ./reference/forge/forge-test.md
 [traces]: ./forge/traces.md
