@@ -270,6 +270,9 @@ Returns the details of all transactions currently pending for inclusion in the n
 `-p, --port <PORT>`  
 &nbsp;&nbsp;&nbsp;&nbsp; Port number to listen on [default: 8545]
 
+`--ipc [<PATH>]`  
+&nbsp;&nbsp;&nbsp;&nbsp; Starts an IPC endpoint at the given `PATH` argument or the default path: unix: `tmp/anvil.ipc`, windows: `\\.\pipe\anvil.ipc` 
+
 `--silent`  
 &nbsp;&nbsp;&nbsp;&nbsp; Don't print anything on startup
 
