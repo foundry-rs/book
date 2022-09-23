@@ -85,7 +85,7 @@ The gas limit for each test case.
 > ℹ️ **Note**
 >
 > Due to a limitation in a dependency of Forge, you **cannot raise the gas limit** beyond the default without changing the value to a string.
-> 
+>
 > In order to use higher gas limits use a string:
  ```toml
 gas_limit = "18446744073709551615" # u64::MAX
@@ -200,7 +200,7 @@ The etherscan API key for RPC calls.
 - Default: none
 - Environment: `FOUNDRY_TEST_PATTERN` or `DAPP_TEST_PATTERN`
 
-Only run test methods matching regex.  
+Only run test methods matching regex.
 Equivalent to `forge test --match-test <TEST_PATTERN>`
 
 ##### `test_pattern_inverse`
@@ -209,7 +209,7 @@ Equivalent to `forge test --match-test <TEST_PATTERN>`
 - Default: none
 - Environment: `FOUNDRY_TEST_PATTERN_INVERSE` or `DAPP_TEST_PATTERN_INVERSE`
 
-Only run test methods not matching regex.  
+Only run test methods not matching regex.
 Equivalent to `forge test --no-match-test <TEST_PATTERN_INVERSE>`
 
 ##### `contract_pattern`
@@ -218,7 +218,7 @@ Equivalent to `forge test --no-match-test <TEST_PATTERN_INVERSE>`
 - Default: none
 - Environment: `FOUNDRY_CONTRACT_PATTERN` or `DAPP_CONTRACT_PATTERN`
 
-Only run test methods in contracts matching regex.  
+Only run test methods in contracts matching regex.
 Equivalent to `forge test --match-contract <CONTRACT_PATTERN>`
 
 ##### `contract_pattern_inverse`
@@ -227,7 +227,7 @@ Equivalent to `forge test --match-contract <CONTRACT_PATTERN>`
 - Default: none
 - Environment: `FOUNDRY_CONTRACT_PATTERN_INVERSE` or `DAPP_CONTRACT_PATTERN_INVERSE`
 
-Only run test methods in contracts not matching regex.  
+Only run test methods in contracts not matching regex.
 Equivalent to `forge test --no-match-contract <CONTRACT_PATTERN_INVERSE>`
 
 ##### `path_pattern`
@@ -288,7 +288,7 @@ This section lives outside of profiles and defines a table of RPC endpoints, whe
 
 The value can either be a valid RPC endpoint or a reference to an environment variable (wrapped with in `${}`).
 
-These RPC endpoints can be used in tests and Solidity scripts (see [`vm.rpc`](./cheatcodes/rpc.md)).
+These RPC endpoints can be used in tests and Solidity scripts (see [`vm.rpc`](../../cheatcodes/rpc.md)).
 
 The following example defines an endpoint named `optimism` and an endpoint named `mainnet` that references an environment variable `RPC_MAINNET`:
 
@@ -323,7 +323,7 @@ The maximum number of combined inputs that may be rejected before the test as a 
 
 - Type: string (hexadecimal)
 - Default: none
-- Environment: `FOUNDRY_FUZZ_SEED` 
+- Environment: `FOUNDRY_FUZZ_SEED`
 
 Optional seed for the fuzzing RNG algorithm.
 
@@ -360,7 +360,7 @@ Configuration values for `[invariant]` section.
 > Configuration for `[invariant]` section has the fallback logic
 > for common config entries (`runs`, `seed`, `dictionary_weight` etc).
 >
-> * If the entries are not set in either section, then the defaults will be used. 
+> * If the entries are not set in either section, then the defaults will be used.
 > * If the entries are set in the `[fuzz]` section, but are not set in the `[invariant]`
 >   section, these values will automatically be set to the values specified in
 >   the `[fuzz]` section.
@@ -372,7 +372,7 @@ Configuration values for `[invariant]` section.
 >       but are set in the `[fuzz]` (same as `[profile.default.fuzz]`) section,
 >       then the values from the `[fuzz]` section will be used.
 >     * If it's none of the cases described above, then the defaults
->       will be used. 
+>       will be used.
 
 ##### `runs`
 
