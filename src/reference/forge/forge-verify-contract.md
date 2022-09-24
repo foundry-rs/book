@@ -98,7 +98,7 @@ you can specify a file containing **space-separated** constructor arguments with
 4. Verify a flattened contract by specifying constructor arguments in a file:
     ```sh
     forge verify-contract --flatten --watch --compiler-version "v0.8.11+commit.d7f03943" \
-      --constructor-args constructor-args.txt <address> src/Token.sol:MyToken
+      --constructor-args-path constructor-args.txt <address> src/Token.sol:MyToken
     ```
     where `constructor-args.txt` contains the following content:
     ```text
