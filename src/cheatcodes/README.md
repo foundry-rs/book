@@ -302,6 +302,11 @@ interface CheatCodes {
     // Updates the given fork to given block number
     function rollFork(uint256 forkId, uint256 blockNumber) external;
 
+    // Fetches the given transaction from the active fork and executes it on the current state
+    function transact(bytes32) external;
+    // Fetches the given transaction from the given fork and executes it on the current state
+    function transact(uint256, bytes32) external;
+
     // Marks that the account(s) should use persistent storage across
     // fork swaps in a multifork setup, meaning, changes made to the state
     // of this account will be kept when switching forks
