@@ -2,4 +2,4 @@
 
 `-j`  
 `--json`  
-&nbsp;&nbsp;&nbsp;&nbsp;Output in JSON format.
+&nbsp;&nbsp;&nbsp;&nbsp; Print the deployment information as JSON.

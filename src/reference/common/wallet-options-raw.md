@@ -1,15 +1,24 @@
-#### Wallet Options - Raw
-
+#### WALLET OPTIONS - RAW:
 `-i`  
-`--interactive`  
-&nbsp;&nbsp;&nbsp;&nbsp;Open an interactive prompt to enter your private key.
+`--interactives <NUM>`  
+&nbsp;&nbsp;&nbsp;&nbsp; Open an interactive prompt to enter your private key. Takes a value for the number of keys to enter.  
+&nbsp;&nbsp;&nbsp;&nbsp; Defaults to `0`.  
 
-`--private-key` *raw_private_key*  
-&nbsp;&nbsp;&nbsp;&nbsp;Use the provided private key.
+`--mnemonic-derivation-paths <PATHS>`  
+&nbsp;&nbsp;&nbsp;&nbsp; The wallet derivation path. Works with both `--mnemonic-path` and hardware wallets.  
 
-`--mnemonic-path` *path*  
-&nbsp;&nbsp;&nbsp;&nbsp;Use the mnemonic file at the specified path.
+`--mnemonic-indexes <INDEXES>`  
+&nbsp;&nbsp;&nbsp;&nbsp; Use the private key from the given mnemonic index. Used with --mnemonic-paths.  
+&nbsp;&nbsp;&nbsp;&nbsp; Defaults to `0`.
 
-`--mnemonic-index` *index*  
-&nbsp;&nbsp;&nbsp;&nbsp;Use the private key from the given mnemonic index. Used with `--mnemonic-path`.  
-&nbsp;&nbsp;&nbsp;&nbsp;Defaults to `0`.
+`--mnemonic-passphrases <PASSPHRASE>`  
+&nbsp;&nbsp;&nbsp;&nbsp; Use a BIP39 passphrases for the mnemonic.  
+
+`--mnemonics <PATHS>`  
+&nbsp;&nbsp;&nbsp;&nbsp; Use the mnemonic phrases or mnemonic files at the specified paths.  
+
+`--private-key <RAW_PRIVATE_KEY>`  
+&nbsp;&nbsp;&nbsp;&nbsp; Use the provided private key.
+
+`--private-keys <RAW_PRIVATE_KEYS>`  
+&nbsp;&nbsp;&nbsp;&nbsp; Use the provided private keys.  
