@@ -144,7 +144,6 @@ allow_paths = ["../node_modules"]
 Note that the path is relative to the Foundry workspace. See also [solc allowed-paths](https://docs.soliditylang.org/en/latest/path-resolution.html#allowed-paths)
 
 
-
 ### How to install from source?
 
 > **NOTE:** please ensure your rust version is up-to-date: `rustup update`. Current msrv = "1.62"
@@ -159,6 +158,18 @@ cargo install --path ./anvil --profile local --locked --force
 ```
 
 Or via `cargo install --git https://github.com/foundry-rs/foundry --profile local --locked foundry-cli anvil`.
+
+### I'm getting `Permission denied (os error 13)`
+
+If you see an error like 
+
+```console
+Failed to create artifact parent folder "/.../MyProject/out/IsolationModeMagic.sol": Permission denied (os error 13)
+```
+
+Then there's likely a folder permission issue. Ensure `user` has write access in the project root's folder.
+
+It has been [reported](https://github.com/foundry-rs/foundry/issues/3268) that on linux, canonicalizing paths can result in weird paths (`/_1/...`). This can be resolved by nuking the entire project folder and initializing again.
 
 [tg-support]: https://t.me/foundry_support
 [forge-test]: ./reference/forge/forge-test.md
