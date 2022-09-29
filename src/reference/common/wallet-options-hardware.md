@@ -7,6 +7,3 @@
 `-l`  
 `--ledger`  
 &nbsp;&nbsp;&nbsp;&nbsp;Use a Ledger hardware wallet.
-
-`--hd-path` *path*  
-&nbsp;&nbsp;&nbsp;&nbsp;The derivation path to use with hardware wallets.

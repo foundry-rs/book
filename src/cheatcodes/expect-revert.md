@@ -24,7 +24,7 @@ This means, for example, we can call [`prank`](./prank.md) immediately before th
 
 There are 3 signatures:
 
-- **Without parameters**: Asserts that the next call reverts **without** a message.
+- **Without parameters**: Asserts that the next call reverts, regardless of the message.
 - **With `bytes4`**: Asserts that the next call reverts with the specified 4 bytes.
 - **With `bytes`**: Asserts that the next call reverts with the specified bytes.
 
@@ -70,17 +70,17 @@ vm.expectRevert(
 );
 ```
 
-If you need to assert that a function reverts _without_ a message, you can do so with `expectRevert()`.
+If you need to assert that a function reverts _without_ a message, you can do so with `expectRevert(bytes(""))`.
 
 ```solidity
 function testExpectRevertNoReason() public {
     Reverter reverter = new Reverter();
-    vm.expectRevert();
+    vm.expectRevert(bytes(""));
     reverter.revertWithoutReason();
 }
 ```
 
-You can also have multiple `expectRevert()` checks in a single test. 
+You can also have multiple `expectRevert()` checks in a single test.
 
 ```solidity
 function testMultipleExpectReverts() public {

@@ -116,6 +116,10 @@ The standard methods are based on [this](https://eth.wiki/json-rpc/API) referenc
   
 * `eth_getWork`  
 
+* `eth_subscribe`
+
+* `eth_unsubscribe`  
+
 * `eth_syncing`  
   
 * `eth_submitWork`  

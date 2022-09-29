@@ -810,6 +810,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "DaniPopes",
+      "name": "DaniPopes",
+      "avatar_url": "https://avatars.githubusercontent.com/u/57450786?v=4",
+      "profile": "https://github.com/DaniPopes",
+      "contributions": [
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7,

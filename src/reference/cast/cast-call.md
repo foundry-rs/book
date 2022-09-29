@@ -49,6 +49,7 @@ The destination (*to*) can be an ENS name or an address.
     export CONTRACT=0xca7ca7bcc765f77339be2d648ba53ce9c8a262bd
     export TOKEN_ID=19938
     cast call $CONTRACT "tokenURI(uint256)(string)" $TOKEN_ID
+   ```
 
 3. Call ``getAmountsOut(uint,address[])`` on the Uniswap v2 router contract:
 
