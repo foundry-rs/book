@@ -81,7 +81,7 @@ Before we start, let's take a look at the directories:
 
 - Contracts are in `contracts`
 - Hardhat unit test is in `test`, and we will put Foundry test files in `test/foundry`
-- Hardhat puts its cache in `cache`, ann we will put Foundry cache in `forge-cache`
+- Hardhat puts its cache in `cache`, and we will put Foundry cache in `forge-cache`
 
 ### 4 steps to add Foundry test
 
