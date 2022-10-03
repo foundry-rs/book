@@ -20,7 +20,7 @@ Compute the storage slot for an entry in a mapping.
 
 1. Compute the storage slot of an entry (`hello`) in a mapping of type `mapping(string => uint256)`, located at slot 2:
     ```sh
-    cast index string uint256 "hello" 2
+    cast index string "hello" 2
     ```
 
 ### SEE ALSO
