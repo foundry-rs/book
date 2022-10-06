@@ -39,8 +39,8 @@ Once that’s done, you should open up your preferred code editor and copy the c
 pragma solidity >=0.8.10;
 
 import "solmate/tokens/ERC721.sol";
-import "openzeppelin-contracts/contracts/utils/Strings.sol";
-import "openzeppelin-contracts/contracts/access/Ownable.sol";
+import "openzeppelin-contracts/utils/Strings.sol";
+import "openzeppelin-contracts/access/Ownable.sol";
 
 error MintPriceNotPaid();
 error MaxSupply();
