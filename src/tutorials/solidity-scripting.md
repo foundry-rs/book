@@ -158,7 +158,8 @@ import "../src/NFT.sol";
 contract MyScript is Script {
     function run() external {
         uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
-        vm.startBroadcast(deployerPrivateKey);
+        address deployerPublicKey = vm.addr(deployerPrivateKey);
+        vm.startBroadcast(deployerPublicKey);
 
         NFT nft = new NFT("NFT_tutorial", "TUT", "baseUri");
 
@@ -199,13 +200,14 @@ By default, scripts are executed by calling the function named `run`, our entryp
 
 ```solidity
 uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
+address deployerPublicKey = vm.addr(deployerPrivateKey);
 ```
 
 This loads in the private key from our `.env` file. **Note:** you must be careful when exposing private keys in a `.env` file and loading them into programs. This is only recommended for use with non-priviliged deployers or for local / test setups. For production setups please review the various [wallet options](../reference/forge/forge-script.md#wallet-options---raw) that Foundry supports.
 
 
 ```solidity
-vm.startBroadcast(deployerPrivateKey);
+vm.startBroadcast(deployerPublicKey);
 ```
 
 This is a special cheatcode that records calls and contract creations made by our main script contract. We pass the `deployerPrivateKey` in order to instruct it to use that key for signing the transactions. Later, we will broadcast these transactions to deploy our NFT contract.
