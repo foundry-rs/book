@@ -2,7 +2,7 @@
 
 ### NAME
 
-cast-balance - Get the nonce of an account in wei.
+cast-balance - Get the balance of an account in wei.
 
 ### SYNOPSIS
 
