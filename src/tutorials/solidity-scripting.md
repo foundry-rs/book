@@ -10,13 +10,13 @@ Solidity scripts are like the scripts you write when working with tools like Har
 
 Let’s try to deploy the NFT contract made in the solmate tutorial with solidity scripting. First of all, we would need to create a new Foundry project via:
 
-```bash
+```sh
 forge init solidity-scripting
 ```
 
 Since the NFT contract from the solmate tutorial inherits both `solmate` and `OpenZeppelin` contracts, we’ll have to install them as dependencies by running:
 
-```bash
+```sh
 # Enter the project
 cd solidity-scripting
 
@@ -26,7 +26,7 @@ forge install transmissions11/solmate Openzeppelin/openzeppelin-contracts
 
 Next, we have to delete the `Counter.sol` file in the `src` folder and create another file called `NFT.sol`. You can do this by running:
 
-```bash
+```sh
 rm src/Counter.sol test/Counter.t.sol && touch src/NFT.sol && ls src
 ```
 
@@ -103,7 +103,7 @@ contract NFT is ERC721, Ownable {
 
 Now, let’s try compiling our contract to make sure everything is in order.
 
-```bash
+```sh
 forge build
 ```
 
@@ -112,9 +112,9 @@ If your output looks like this, the contracts successfully compiled.
 
 ### Deploying our contract
 
-We’re going to deploy the `NFT` contract to the Rinkeby testnet, but to do this we’ll need to configure Foundry a bit, by setting things like a Rinkeby RPC URL, the private key of an account that’s funded with Rinkeby Eth, and an Etherscan key for the verification of the NFT contract.
+We’re going to deploy the `NFT` contract to the Goerli testnet, but to do this we’ll need to configure Foundry a bit, by setting things like a Goerli RPC URL, the private key of an account that’s funded with Goerli Eth, and an Etherscan key for the verification of the NFT contract.
 
-> 💡 Note: You can get some Rinkeby testnet ETH [here](https://faucet.paradigm.xyz/) .
+> 💡 Note: You can get some Goerli testnet ETH [here](https://faucet.paradigm.xyz/) .
 
 #### Environment Configuration
 
@@ -122,10 +122,10 @@ Once you have all that create a `.env` file and add the variables. Foundry autom
 
 The .env file should follow this format:
 
-```bash
-RINKEBY_RPC_URL=
+```sh
+GOERLI_RPC_URL=
 PRIVATE_KEY=
-ETHERSCAN_KEY=
+ETHERSCAN_API_KEY=
 ```
 
 We now need to edit the `foundry.toml` file. There should already be one in the root of the project.
@@ -134,13 +134,13 @@ Add the following lines to the end of the file:
 
 ```toml
 [rpc_endpoints]
-rinkeby = "${RINKEBY_RPC_URL}"
+goerli = "${GOERLI_RPC_URL}"
 
 [etherscan]
-rinkeby = { key = "${ETHERSCAN_KEY}" }
+goerli = { key = "${ETHERSCAN_KEY}" }
 ```
 
-This creates a [RPC alias](../cheatcodes/rpc.md) for Rinkeby and loads the Etherscan API key.
+This creates a [RPC alias](../cheatcodes/rpc.md) for Goerli and loads the Etherscan API key.
 
 #### Writing the Script
 
@@ -222,12 +222,12 @@ You should have added the variables we mentioned earlier to the `.env` for this 
 
 At the root of the project run:
 
-```bash
+```sh
 # To load the variables in the .env file
 source .env
 
 # To deploy and verify our contract
-forge script script/NFT.s.sol:MyScript --rpc-url $RINKEBY_RPC_URL --broadcast --verify -vvvv
+forge script script/NFT.s.sol:MyScript --rpc-url $GOERLI_RPC_URL --broadcast --verify -vvvv
 ```
 
 Forge is going to run our script and broadcast the transactions for us - this can take a little while, since Forge will also wait for the transaction receipts. You should see something like this after a minute or so:
@@ -261,7 +261,8 @@ forge script script/NFT.s.sol:MyScript --fork-url http://localhost:8545 --broadc
 #### Using a Custom Mnemonic
 
 Add the following line to your `.env` file and complete it with your mnemonic:
-```bash
+
+```sh
 MNEMONIC=
 ```
 
