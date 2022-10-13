@@ -29,7 +29,7 @@ Now you need to make the following changes to your Hardhat project. The followin
 
 1. `npm install --save-dev hardhat-preprocessor` - [Details on hardhat-preprocessor](https://www.npmjs.com/package/hardhat-preprocessor)
 2. Add `import "hardhat-preprocessor";` to your `hardhat.config.ts` file.
-3. Ensure the following function is present (you can add it to your `hardhat.config.ts` file or somewhere else and import it):
+3. Ensure the following function is present (you can add it to your `hardhat.config.ts` file or somewhere else and import it - also ensure `import fs from "fs";` is present in the file it is added):
 
 ```typescript
 function getRemappings() {
