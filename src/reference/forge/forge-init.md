@@ -71,7 +71,7 @@ If you do not want this behavior, pass `--no-git`.
 
 3. Forcibly create a new project in a non-empty directory:
     ```sh
-    forge init --force .
+    forge init --force 
     ```
 
 ### SEE ALSO
