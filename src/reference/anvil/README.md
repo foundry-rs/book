@@ -274,6 +274,9 @@ Returns the details of all transactions currently pending for inclusion in the n
 `-p, --port <PORT>`  
 &nbsp;&nbsp;&nbsp;&nbsp; Port number to listen on [default: 8545]
 
+`--steps-tracing`  
+&nbsp;&nbsp;&nbsp;&nbsp; Enable steps tracing used for debug calls returning geth-style traces [aliases: tracing]
+
 `--ipc [<PATH>]`  
 &nbsp;&nbsp;&nbsp;&nbsp; Starts an IPC endpoint at the given `PATH` argument or the default path: unix: `tmp/anvil.ipc`, windows: `\\.\pipe\anvil.ipc` 
 
@@ -319,6 +322,10 @@ Returns the details of all transactions currently pending for inclusion in the n
 `--chain-id <CHAIN_ID>`  
 &nbsp;&nbsp;&nbsp;&nbsp; The chain ID
 
+`--code-size-limit <CODE_SIZE>`  
+&nbsp;&nbsp;&nbsp;&nbsp; EIP-170: Contract code size limit in bytes. Useful to increase this because of tests.
+By default, it is 0x6000 (~25kb)
+
 `--gas-limit <GAS_LIMIT>`  
 &nbsp;&nbsp;&nbsp;&nbsp; The block gas limit
 
@@ -334,6 +341,12 @@ Returns the details of all transactions currently pending for inclusion in the n
 
 `--host <HOST>`  
 &nbsp;&nbsp;&nbsp;&nbsp; The IP address the server will listen on
+
+`--config-out <OUT_FILE>`  
+&nbsp;&nbsp;&nbsp;&nbsp; Writes output of `anvil` as json to user-specified file
+
+`--prune-history`  
+&nbsp;&nbsp;&nbsp;&nbsp; Don't keep full chain history
 
 ### EXAMPLES
 1. Set the number of accounts to 15 and their balance to 300 ETH
