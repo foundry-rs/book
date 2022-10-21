@@ -4,7 +4,7 @@
 &nbsp;&nbsp;&nbsp;&nbsp; Open an interactive prompt to enter your private key. Takes a value for the number of keys to enter.  
 &nbsp;&nbsp;&nbsp;&nbsp; Defaults to `0`.  
 
-`--mnemonic-derivation-paths <PATHS>`  
+`--mnemonic-derivation-path <PATHS>`  
 &nbsp;&nbsp;&nbsp;&nbsp; The wallet derivation path. Works with both `--mnemonic-path` and hardware wallets.  
 
 `--mnemonic-indexes <INDEXES>`  
