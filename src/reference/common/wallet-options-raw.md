@@ -11,10 +11,10 @@
 &nbsp;&nbsp;&nbsp;&nbsp; Use the private key from the given mnemonic index. Used with --mnemonic-paths.  
 &nbsp;&nbsp;&nbsp;&nbsp; Defaults to `0`.
 
-`--mnemonic-passphrases <PASSPHRASE>`  
+`--mnemonic-passphrase <PASSPHRASE>`  
 &nbsp;&nbsp;&nbsp;&nbsp; Use a BIP39 passphrases for the mnemonic.  
 
-`--mnemonics <PATHS>`  
+`--mnemonic <PATHS>`  
 &nbsp;&nbsp;&nbsp;&nbsp; Use the mnemonic phrases or mnemonic files at the specified paths.  
 
 `--private-key <RAW_PRIVATE_KEY>`  
