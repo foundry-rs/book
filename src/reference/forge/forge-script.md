@@ -63,6 +63,8 @@ Scripts can be used to apply state transitions on live contracts, or deploy and 
 `--verify`  
 &nbsp;&nbsp;&nbsp;&nbsp;If it finds a matching broadcast log, it tries to verify every contract found in the receipts.
 
+{{#include ../common/verifier-options.md}}
+
 {{#include ../common/retry-options.md}}
 
 {{#include core-build-options.md}}
