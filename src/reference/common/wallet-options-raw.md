@@ -1,6 +1,6 @@
 #### WALLET OPTIONS - RAW:
 `-i`  
-`--interactives <NUM>`  
+`--interactive <NUM>`  
 &nbsp;&nbsp;&nbsp;&nbsp; Open an interactive prompt to enter your private key. Takes a value for the number of keys to enter.  
 &nbsp;&nbsp;&nbsp;&nbsp; Defaults to `0`.  
 
