@@ -10,7 +10,7 @@ cast-storage - Get the raw value of a contract's storage slot.
 
 ### DESCRIPTION
 
-Get the raw value of a contract's storage slot. (Slot numbers greater than 18446744073709551615 (u64::MAX) should be given as hex.)
+Get the raw value of a contract's storage slot. (Slot locations greater than 18446744073709551615 (u64::MAX) should be given as hex. Use `cast index` to compute mapping slots.)
 
 The address (*address*) can be an ENS name or an address.
 
