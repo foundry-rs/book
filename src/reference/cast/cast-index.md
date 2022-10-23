@@ -6,7 +6,7 @@ cast-index - Compute the storage slot for an entry in a mapping.
 
 ### SYNOPSIS
 
-``cast index`` *key_type* *value_type* *key* *slot*
+``cast index`` *key_type* *key* *slot*
 
 ### DESCRIPTION
 
