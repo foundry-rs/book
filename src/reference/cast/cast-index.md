@@ -2,7 +2,7 @@
 
 ### NAME
 
-cast-index - Compute the storage slot for an entry in a mapping.
+cast-index - Compute the storage slot location for an entry in a mapping.
 
 ### SYNOPSIS
 
@@ -10,17 +10,28 @@ cast-index - Compute the storage slot for an entry in a mapping.
 
 ### DESCRIPTION
 
-Compute the storage slot for an entry in a mapping.
+Compute the storage slot location for an entry in a mapping.
+
+Use `cast storage` to get the value.
 
 ### OPTIONS
 
 {{#include common-options.md}}
 
 ### EXAMPLES
+```solidity
+// World.sol
 
-1. Compute the storage slot of an entry (`hello`) in a mapping of type `mapping(string => uint256)`, located at slot 2:
+mapping (address => uint256) public mapping1;
+mapping (string => string) public mapping2;
+```
+
+1. Compute the storage slot of an entry (`hello`) in a mapping of type `mapping(string => string)`, located at slot 1:
     ```sh
-    cast index string "hello" 2
+    >> cast index string "hello" 1
+    0x3556fc8e3c702d4479a1ab7928dd05d87508462a12f53307b5407c969223d1f8
+    >> cast storage [address] 0x3556fc8e3c702d4479a1ab7928dd05d87508462a12f53307b5407c969223d1f8
+    world
     ```
 
 ### SEE ALSO
