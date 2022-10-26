@@ -137,7 +137,7 @@ Add the following lines to the end of the file:
 goerli = "${GOERLI_RPC_URL}"
 
 [etherscan]
-goerli = { key = "${ETHERSCAN_KEY}" }
+goerli = { key = "${ETHERSCAN_API_KEY}" }
 ```
 
 This creates a [RPC alias](../cheatcodes/rpc.md) for Goerli and loads the Etherscan API key.
