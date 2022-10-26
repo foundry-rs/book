@@ -22,7 +22,4 @@ function startHoax(address who, address origin, uint256 give) public;
 
 Start a [perpetual `prank`](../../cheatcodes/start-prank.md) from an address that has some ether.
 
-Note that startPrank(addr) will make further actions be executed as if from addr while hoax(addr) will generate a random address.
-
-
 If the balance is not specified, it will be set to 2^128 wei.
