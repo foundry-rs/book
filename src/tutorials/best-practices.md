@@ -129,8 +129,10 @@ Another use case for this is tracking data that you would not track in productio
 Thanks to [@samsczun](https://twitter.com/samczsun)'s [How Do You Even Write Secure Code Anyways](https://www.youtube.com/watch?v=Wm3t8Fuiy1E) talk for the tips in this section and the following section.
 
 - Don't optimize for coverage, optimize for well thought-out tests.
-- Write _positive_ unit tests for things that the code should handle. Validate _all_ state that changes from these tests.
-- Write _negative_ unit tests for things that the code should _not_ handle. It's helpful to follow up (as an adjacent test) with the positive test and make the change that it needs to pass.
+- Write positive and negative unit tests.
+    - Write _positive_ unit tests for things that the code should handle. Validate _all_ state that changes from these tests.
+    - Write _negative_ unit tests for things that the code should _not_ handle. It's helpful to follow up (as an adjacent test) with the positive test and make the change that it needs to pass.
+    - Each code path should have it's own unit test.
 - Write integration tests to test entire features.
 - Write fork tests to verify the correct behavior with existing deployed contract.
 
