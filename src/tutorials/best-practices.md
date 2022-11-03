@@ -5,6 +5,8 @@ In general, it's recommended to handle as much as possible with [`forge fmt`](..
 
 - [General Contract Guidance](#general-contract-guidance)
 - [Tests](#tests)
+  - [General Test Guidance](#general-test-guidance)
+  - [Fork Tests](#fork-tests)
   - [Test Harnesses](#test-harnesses)
     - [Internal Functions](#internal-functions)
     - [Private Functions](#private-functions)
@@ -17,26 +19,32 @@ In general, it's recommended to handle as much as possible with [`forge fmt`](..
 
 ## General Contract Guidance
 
-1. Always use "absolute" paths for imports, i.e. paths relative to the repo root. This makes it easier to see where files are from and reduces churn when moving files around.
-
-   - Good: `import "script/Deploy.s.sol"`
-   - Bad: `import "../script/Deploy.s.sol"`
-
 1. Always use named import syntax, don't import full files. This restricts what is being imported to just the named items, not everything in the file. Importing full files can result in solc complaining about duplicate definitions and slither erroring, especially as repos grow and have more dependencies with overlapping names.
 
    - Good: `import {MyContract} from "src/MyContract.sol"` to only import `MyContract`.
    - Bad: `import "src/MyContract.sol"` imports everything in `MyContract.sol`. (Importing `forge-std/Test` or `Script` can be an exception here, so you get the console library, etc).
 
-1. Sort imports by `forge-std/` first, then dependencies, `test/`, `script/`, and finally `src/`. Within each, sort alphabetically by path (not by the explicit named items being imported). _(Note: This can be removed once [Foundry#3396](https://github.com/foundry-rs/foundry/issues/3396) is merged)._
+1. Sort imports by `forge-std/` first, then dependencies, `test/`, `script/`, and finally `src/`. Within each, sort alphabetically by path (not by the explicit named items being imported). _(Note: This may be removed once [foundry-rs/foundry#3396](https://github.com/foundry-rs/foundry/issues/3396) is merged)._
 
-1. Similarly, sort named imports. _(Note: This can be removed once [Foundry#3396](https://github.com/foundry-rs/foundry/issues/3396) is merged)._
+1. Similarly, sort named imports. _(Note: This may be removed once [foundry-rs/foundry#3396](https://github.com/foundry-rs/foundry/issues/3396) is resolved)._
 
    - Good: `import {bar, foo} from "src/MyContract.sol"`
    - Bad: `import {foo, bar} from "src/MyContract.sol"`
 
+1. Note the tradeoffs between absolute and relative paths for imports (where absolute paths are relative to the repo root, e.g. `"src/interfaces/IERC20.sol"`), and choose the best approach for your project:
+
+   - Absolute paths make it easier to see where files are from and reduces churn when moving files around.
+   - Relative paths make it more likely your editor can provide features like linting and autocomplete, since editors/extensions may not understand your remappings.
+
 1. If copying a library from a dependency (instead of importing it), use the `ignore = []` option in the config file to avoid formatting that file. This makes diffing it against the original simpler for reviewers and auditors.
 
-1. Similarly, feel free to use the `disable-next-item`, `disable-next-line`, `disable-start`, `disable-end` code comment flags to ignore lines/sections of code that look better with manual formatting.
+1. Similarly, feel free to use the `// forgefmt: disable-*` comment directives to ignore lines/sections of code that look better with manual formatting. Supported values for `*` are:
+
+   - `disable-line`
+   - `disable-next-line`
+   - `disable-next-item`
+   - `disable-start`
+   - `disable-end`
 
 Additional best practices from [samsczun](https://twitter.com/samczsun)'s [How Do You Even Write Secure Code Anyways](https://www.youtube.com/watch?v=Wm3t8Fuiy1E) talk:
 
@@ -49,11 +57,13 @@ Additional best practices from [samsczun](https://twitter.com/samczsun)'s [How D
 
 ## Tests
 
+### General Test Guidance
+
 1. For testing `MyContract.sol`, the test file should be `MyContract.t.sol`. For testing `MyScript.s.sol`, the test file should be `MyScript.t.sol`.
 
-   - If the contract is big and you want to split it over multiple files, just group them logically like `MyContract.owner.t.sol`, `MyContract.deposits.t.sol`, etc.
+   - If the contract is big and you want to split it over multiple files, group them logically like `MyContract.owner.t.sol`, `MyContract.deposits.t.sol`, etc.
 
-1. Never make assertions in the `setUp` function, instead use a dedicated test like `test_SetUpState()` if you need to ensure your `setUp` function does what you expected. More info on why in [Foundry#1291](https://github.com/foundry-rs/foundry/issues/1291)
+1. Never make assertions in the `setUp` function, instead use a dedicated test like `test_SetUpState()` if you need to ensure your `setUp` function does what you expected. More info on why in [foundry-rs/foundry#1291](https://github.com/foundry-rs/foundry/issues/1291)
 
 1. For unit tests, treat contracts as `describe` blocks:
 
@@ -72,17 +82,31 @@ Additional best practices from [samsczun](https://twitter.com/samczsun)'s [How D
    - `testFork_Description` for tests that fork from a network.
    - `testForkFuzz_Revert[If|When]_Condition` for a fuzz test that forks and expects a revert.
 
+1. When using assertions like `assertEq`, consider leveraging the last string param to make it easier to identify failures. These can be kept brief, or even just be numbers&mdash;they basically serve as a replacement for showing line numbers of the revert, e.g. `assertEq(x, y, "1")` or `assertEq(x, y, "sum1")`. _(Note: [foundry-rs/foundry#2328](https://github.com/foundry-rs/foundry/issues/2328) tracks integrating this natively)._
+
+1. When testing events, prefer setting all `expectEmit` arguments to `true`, i.e. `vm.expectEmit(true, true, true, true)`. Benefits:
+
+   - This ensures you test everything in your event.
+   - If you add a topic (i.e. a new indexed parameter), it's now tested by default.
+   - Even if you only have 1 topic, the extra `true` arguments don't hurt.
+
+1. Remember to write invariant tests! For the assertion string, use a verbose english description of the invariant: `assertEq(x + y, z, "Invariant violated: the sum of x and y must always equal z")`. More info on best practices coming soon.
+
+### Fork Tests
+
+1. Don't feel like you need to give forks tests special treatment, and use them liberally:
+
+   - Mocks are _required_ in closed-source web2 development—you have to mock API responses because the code for that API isn't open source so you cannot just run it locally. But for blockchains that's not true: any code you're interacting with that's already deployed can be locally executed and even modified for free. So why introduce the risk of a wrong mock if you don't need to?
+   - A common reason to avoid fork tests and prefer mocks is that fork tests are slow. But this is not always true. By pinning to a block number, forge caches RPC responses so only the first run is slower, and subsequent runs are significantly faster. See [this benchmark](https://github.com/mds1/convex-shutdown-simulation/), where it took forge 7 minutes for the first run with a remote RPC, but only half a second once data was cached results. Alchemy and Infura both offer free archive data, so pinning to a block shouldn't be problematic. (Note that you may need to configure your CI to cache the RPC responses between runs).
+
 1. Be careful with with fuzz tests on a fork to avoid burning through RPC requests with non-deterministic fuzzing.
 
-1. When using assertions like `assertEq`, consider leveraging the last string param to make it easier to identify failures. These can be kept brief, or even just be numbers&mdash;they basically serve as a replacement for showing line numbers of the revert, e.g. `assertEq(x, y, "1")` or `assertEq(x, y, "sum1")`. _(Note: [Foundry#2328](https://github.com/foundry-rs/foundry/issues/2328) tracks integrating this natively)._
+1. When writing fork tests, do not use the `--fork-url` flag. Instead, prefer the following approach for it's improved flexibility:
 
-1. Don't forget invariant tests! For the assertion string, use a verbose english description of the invariant: `assertEq(x + y, z, "Invariant violated: the sum of x and y must always equal z")`.
-
-1. When writing fork tests, do not use the `--fork-url` flag. Instead:
-
-   - Define `[rpc_endpoints]` in the config file and use the `createSelectFork` family of cheatcodes.
+   - Define `[rpc_endpoints]` in the `foundry.toml` config file and use the [forking cheatcodes](../forge/fork-testing.md#forking-cheatcodes).
+   - Access the RPC URL endpoint in your test with forge-std's `stdChains.ChainName.rpcUrl`. See the list of supported chains and expected config file aliases [here](https://github.com/foundry-rs/forge-std/blob/ff4bf7db008d096ea5a657f2c20516182252a3ed/src/StdCheats.sol#L255-L271).
    - Always pin to a block so tests are deterministic and RPC responses are cached.
-   - More info on this fork test approach [here](https://twitter.com/msolomon44/status/1564742781129502722).
+   - More info on this fork test approach can be found [here](https://twitter.com/msolomon44/status/1564742781129502722) (this predates `StdChains` so that aspect is a bit out of date).
 
 ### Test Harnesses
 
@@ -130,9 +154,9 @@ Thanks to [@samsczun](https://twitter.com/samczsun)'s [How Do You Even Write Sec
 
 - Don't optimize for coverage, optimize for well thought-out tests.
 - Write positive and negative unit tests.
-    - Write _positive_ unit tests for things that the code should handle. Validate _all_ state that changes from these tests.
-    - Write _negative_ unit tests for things that the code should _not_ handle. It's helpful to follow up (as an adjacent test) with the positive test and make the change that it needs to pass.
-    - Each code path should have it's own unit test.
+  - Write _positive_ unit tests for things that the code should handle. Validate _all_ state that changes from these tests.
+  - Write _negative_ unit tests for things that the code should _not_ handle. It's helpful to follow up (as an adjacent test) with the positive test and make the change that it needs to pass.
+  - Each code path should have it's own unit test.
 - Write integration tests to test entire features.
 - Write fork tests to verify the correct behavior with existing deployed contract.
 
