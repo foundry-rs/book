@@ -259,9 +259,9 @@ interface CheatCodes {
     function removeFile(string calldata) external;
     
     // Return the value(s) that correspond to 'key'
-    vm.parseJson(string memory json, string memory key)
+    function parseJson(string memory json, string memory key) external returns (bytes memory);
     // Return the entire json file
-    vm.parseJson(string memory json);
+    function parseJson(string memory json) external returns (bytes memory);
 
     // Snapshot the current state of the evm.
     // Returns the id of the snapshot that was created.
