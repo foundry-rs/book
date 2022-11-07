@@ -13,9 +13,9 @@ Returns the **creation** bytecode for a contract in the project given the path t
 The calldata parameter can either be in the form `ContractFile.sol` (if the filename and contract name are the same), `ContractFile.sol:ContractName`, or the path to an artifact, relative to the root of your project.
 
 > ℹ️ **Note**
-> 
+>
 > `getCode` requires read permission for the output directory, see [file cheatcodes](./fs.md).
-> 
+>
 > To grant read access set `fs_permissions = [{ access = "read", path = "./out"}]` in your `foundry.toml`.
 
 ### Examples
@@ -34,7 +34,7 @@ assembly {
 assertEq0(address(myContract).code, anotherAddress.code); // [PASS]
 ```
 
-Deploy a contract to an arbitrary address by combinidng `getCode` and [`etch`](./etch.md)
+Deploy a contract to an arbitrary address by combining `getCode` and [`etch`](./etch.md)
 
 ```solidity
 
@@ -46,7 +46,7 @@ assembly {
 deployed := create(0, add(bytecode, 0x20), mload(bytecode))
 }
 
-// Set the bytecode of an arbitrary address 
+// Set the bytecode of an arbitrary address
 vm.etch(targetAddr, deployed.code);
 ```
 
