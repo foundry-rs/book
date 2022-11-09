@@ -80,6 +80,15 @@ function testExpectRevertNoReason() public {
 }
 ```
 
+If you need to assert that a function reverts a four character message, e.g. `AAAA`, you can do so with:
+```solidity
+function testFourLetterMessage() public {
+    
+    vm.expectRevert(bytes("AAAA"));
+}
+```
+If used `expectRevert("AAAA")` the overload `expectRevert(bytes4 msg)` is used, resulting in a different behaviour.
+
 You can also have multiple `expectRevert()` checks in a single test.
 
 ```solidity
