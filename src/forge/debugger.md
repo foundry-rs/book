@@ -13,7 +13,7 @@ $ forge test --debug $FUNC
 Where `$FUNC` is the signature of the function you want to debug. For example:
 
 ```sh
-$ forge test --debug "testSomething"
+$ forge test --debug "testSomething()"
 ```
 
 If you have multiple contracts with the same function name, you need to limit the matching functions down to only one case using `--match-path` and `--match-contract`.
