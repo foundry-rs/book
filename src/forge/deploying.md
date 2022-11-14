@@ -39,7 +39,7 @@ contract MyToken is ERC20 {
 }
 ```
 
-Additionally, we can tell Forge to verify our contract on Etherscan, if the network is supported, by passing `--verify`.
+Additionally, we can tell Forge to verify our contract on Etherscan, Sourcify or Blockscout, if the network is supported, by passing `--verify`.
 
 ```sh
 $ forge create --rpc-url <your_rpc_url> \
@@ -51,12 +51,12 @@ $ forge create --rpc-url <your_rpc_url> \
 
 ## Verifying a pre-existing contract
 
-It is recommended to use the `--verify` flag with `forge create` to automatically verify the contract on Etherscan after a deployment.
-Note that [`ETHERSCAN_API_KEY`](../reference/config/etherscan.md#etherscan_api_key) must be set.
+It is recommended to use the `--verify` flag with `forge create` to automatically verify the contract on explorer after a deployment.
+Note that for Etherscan [`ETHERSCAN_API_KEY`](../reference/config/etherscan.md#etherscan_api_key) must be set.
 
 If you are verifying an already deployed contract, read on.
 
-You can verify a contract on Etherscan with the [`forge verify-contract`](../reference/forge/forge-verify-contract.md) command.
+You can verify a contract on Etherscan, Sourcify or Blockscout with the [`forge verify-contract`](../reference/forge/forge-verify-contract.md) command.
 
 You must provide:
 - the contract address
