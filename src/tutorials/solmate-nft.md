@@ -27,7 +27,7 @@ We are then going to rename the boilerplate contract in `src/Contract.sol` to `s
 pragma solidity 0.8.10;
 
 import "solmate/tokens/ERC721.sol";
-import "openzeppelin-contracts/contracts/utils/Strings.sol";
+import "openzeppelin-contracts/utils/Strings.sol";
 
 contract NFT is ERC721 {
     uint256 public currentTokenId;
