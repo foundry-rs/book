@@ -25,6 +25,12 @@ The signature (*sig*) is a fragment in the form `<function name>(<types...>)`.
     cast abi-encode "someFunc(address,uint256)" 0x... 1
     ```
 
+2. For encoding a type with components (as a tuple, or custom struct):
+
+    ```sh
+    cast abi-encode "someFunc((string,uint256))" "(myString,1)"
+    ```
+
 ### SEE ALSO
 
 [cast](./cast.md), [cast calldata](./cast-calldata.md)
