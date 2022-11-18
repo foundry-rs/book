@@ -234,7 +234,7 @@ Forge is going to run our script and broadcast the transactions for us - this ca
 
 ![contract verified](../images/solidity-scripting%20/contract-verified.png)
 
-This confirms that you have successfully deployed the `NFT` contract to the Rinkeby testnet and have also verified it on Etherscan, all with one command.
+This confirms that you have successfully deployed the `NFT` contract to the Goerli testnet and have also verified it on Etherscan, all with one command.
 
 ### Deploying locally
 
