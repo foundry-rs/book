@@ -1,6 +1,6 @@
 ## 📖 Foundry Book
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-91-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-92-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 A book on all things Foundry. [Read now](https://book.getfoundry.sh).
@@ -152,6 +152,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center"><a href="https://github.com/DaniPopes"><img src="https://avatars.githubusercontent.com/u/57450786?v=4?s=100" width="100px;" alt="DaniPopes"/><br /><sub><b>DaniPopes</b></sub></a><br /><a href="#maintenance-DaniPopes" title="Maintenance">🚧</a></td>
       <td align="center"><a href="https://github.com/sbalk"><img src="https://avatars.githubusercontent.com/u/6737811?v=4?s=100" width="100px;" alt="Stijn Balk"/><br /><sub><b>Stijn Balk</b></sub></a><br /><a href="https://github.com/foundry-rs/book/commits?author=sbalk" title="Documentation">📖</a></td>
       <td align="center"><a href="https://salieflewis.com/"><img src="https://avatars.githubusercontent.com/u/37086973?v=4?s=100" width="100px;" alt="Salief Lewis"/><br /><sub><b>Salief Lewis</b></sub></a><br /><a href="https://github.com/foundry-rs/book/commits?author=salieflewis" title="Documentation">📖</a></td>
+    </tr>
+    <tr>
+      <td align="center"><a href="https://www.ryzhak.com/"><img src="https://avatars.githubusercontent.com/u/6339689?v=4?s=100" width="100px;" alt="ryzhak"/><br /><sub><b>ryzhak</b></sub></a><br /><a href="https://github.com/foundry-rs/book/commits?author=ryzhak" title="Documentation">📖</a></td>
     </tr>
   </tbody>
 </table>
