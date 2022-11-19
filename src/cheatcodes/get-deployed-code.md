@@ -3,7 +3,7 @@
 ### Signature
 
 ```solidity
-function getCode(string calldata) external returns (bytes memory);
+function getDeployedCode(string calldata) external returns (bytes memory);
 ```
 
 ### Description
