@@ -108,4 +108,4 @@ This would change the output to:
 ╰───────────────────────┴─────────────────┴────────┴────────┴────────┴─────────╯
 ```
 
-For more details on how the ignore-list works, see: https://github.com/foundry-rs/foundry/pull/2528#issue-1323359692
+For more details on how the ignore-list works, see: [https://github.com/foundry-rs/foundry/pull/2528#issue-1323359692](https://github.com/foundry-rs/foundry/pull/2528#issue-1323359692)

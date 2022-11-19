@@ -70,7 +70,7 @@ Enabling a specific fork is done via passing that `forkId` to [`selectFork`](../
 
 There can only be one fork active at a time, and the identifier for the currently active fork can be retrieved via [`activeFork`](../cheatcodes/active-fork.md).
 
-Similar to [`roll`](../cheatcodes/roll.md), you can set `block.timestamp` of a fork with [`rollFork`](../cheatcodes/roll-fork.md).
+Similar to [`roll`](../cheatcodes/roll.md), you can set `block.number` of a fork with [`rollFork`](../cheatcodes/roll-fork.md).
 
 To understand what happens when a fork is selected, it is important to know how the forking mode works in general:
 
@@ -134,8 +134,8 @@ contract ForkTest is Test {
         assertEq(vm.activeFork(), anotherFork);
     }
 
-    // set `block.timestamp` of a fork
-    function testCanSetForkBlockTimestamp() public {
+    // set `block.number` of a fork
+    function testCanSetForkBlockNumber() public {
         vm.selectFork(mainnetFork);
         vm.rollFork(1_337_000);
 

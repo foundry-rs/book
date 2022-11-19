@@ -10,7 +10,7 @@ cast-upload-signature
 
 ### DESCRIPTION
 
-Upload the given signatures to https://sig.eth.samczsun.com.
+Upload the given signatures to [https://sig.eth.samczsun.com](https://sig.eth.samczsun.com).
 
 ### OPTIONS
 
