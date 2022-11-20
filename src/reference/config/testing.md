@@ -37,7 +37,7 @@ Whether or not to enable the `ffi` cheatcode.
 ##### `sender`
 
 - Type: string (address)
-- Default: 0x00a329c0648769a73afac7f9381e08fb43dbea72
+- Default: 0x1804c8AB1F12E6bbf3894d4083f33e07309d1f38
 - Environment: `FOUNDRY_SENDER` or `DAPP_SENDER`
 
 The value of `msg.sender` in tests.
@@ -45,7 +45,7 @@ The value of `msg.sender` in tests.
 ##### `tx_origin`
 
 - Type: string (address)
-- Default: 0x00a329c0648769a73afac7f9381e08fb43dbea72
+- Default: 0x1804c8AB1F12E6bbf3894d4083f33e07309d1f38
 - Environment: `FOUNDRY_TX_ORIGIN` or `DAPP_TX_ORIGIN`
 
 The value of `tx.origin` in tests.
