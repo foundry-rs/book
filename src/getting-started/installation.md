@@ -22,6 +22,12 @@ foundryup
 
 If everything goes well, you will now have three binaries at your disposal: `forge`, `cast`, and `anvil`.
 
+If you use macOS and display below error, you need type `brew install libusb` to install Library
+
+```sh
+dyld[32719]: Library not loaded: /usr/local/opt/libusb/lib/libusb-1.0.0.dylib
+```
+
 > 💡 **Tip**
 >
 >To update `foundryup` after installation, simply run `foundryup` again, and it will update to the latest Foundry release. You can also revert to a specific version of Foundry with `foundryup -v $VERSION`.
