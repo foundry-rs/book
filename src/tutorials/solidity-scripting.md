@@ -158,7 +158,9 @@ import "../src/NFT.sol";
 contract MyScript is Script {
     function run() external {
         uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
-        vm.startBroadcast(deployerPrivateKey);
+        address deployerAddress = vm.addr(deployerPrivateKey);
+        
+        vm.startBroadcast(deployerAddress);
 
         NFT nft = new NFT("NFT_tutorial", "TUT", "baseUri");
 
