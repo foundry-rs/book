@@ -22,6 +22,11 @@ foundryup
 
 If everything goes well, you will now have three binaries at your disposal: `forge`, `cast`, and `anvil`.
 
+
+> ⚠️ **Note**
+>
+> You may have to run the command `source ~/.bashrc` in order to use `foundryup`.
+
 If you use macOS and display below error, you need type `brew install libusb` to install Library
 
 ```sh
