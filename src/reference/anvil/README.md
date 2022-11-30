@@ -188,6 +188,9 @@ Returns a hex string representing the complete state of the chain. Can be re-imp
 `anvil_loadState`
 When given a hex string previously returned by `anvil_dumpState`, merges the contents into the current chain state. Will overwrite any colliding accounts/storage slots.
 
+`anvil_nodeInfo`
+Retrieves the configuration params for the currently running Anvil node.
+
 ##### Special Methods
 The special methods come from Ganache. You can take a look at the documentation [here](https://github.com/trufflesuite/ganache-cli-archive/blob/master/README.md).
 
