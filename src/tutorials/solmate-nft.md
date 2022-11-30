@@ -55,7 +55,7 @@ Let's take a look at this very basic implementation of an NFT. We start by impor
 
 To compile the NFT contract run `forge build`. You might experience a build failure due to wrong mapping:
 
-```
+```text
 Error:
 Compiler run failed
 error[6275]: ParserError: Source "lib/openzeppelin-contracts/contracts/contracts/utils/Strings.sol" not found: File not found. Searched the following locations: "/PATH/TO/REPO".
@@ -67,7 +67,7 @@ error[6275]: ParserError: Source "lib/openzeppelin-contracts/contracts/contracts
 
 this can be fixed by setting up the correct remapping. Create a file `remappings.txt` in your project and add the line
 
-```
+```text
 openzeppelin-contracts/=lib/openzeppelin-contracts/
 ```
 
