@@ -53,7 +53,27 @@ Let's take a look at this very basic implementation of an NFT. We start by impor
 
 ### Compile & deploy with forge
 
-To compile the NFT contract run `forge build`. By default the compiler output will be in the `out` directory. To deploy our compiled contract with Forge we have to set environment variables for the RPC endpoint and the private key we want to use to deploy.
+To compile the NFT contract run `forge build`. You might experience a build failure due to wrong mapping:
+
+```
+Error:
+Compiler run failed
+error[6275]: ParserError: Source "lib/openzeppelin-contracts/contracts/contracts/utils/Strings.sol" not found: File not found. Searched the following locations: "/PATH/TO/REPO".
+ --> src/NFT.sol:5:1:
+  |
+5 | import "openzeppelin-contracts/contracts/utils/Strings.sol";
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+```
+
+this can be fixed by setting up the correct remapping. Create a file `remappings.txt` in your project and add the line
+
+```
+openzeppelin-contracts/=lib/openzeppelin-contracts/
+```
+
+(You can find out more on remappings in [the dependecies documentation](../projects/dependencies.md).
+
+By default the compiler output will be in the `out` directory. To deploy our compiled contract with Forge we have to set environment variables for the RPC endpoint and the private key we want to use to deploy.
 
 Set your environment variables by running:
 
