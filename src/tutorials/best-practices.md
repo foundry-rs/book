@@ -65,13 +65,16 @@ Additional best practices from [samsczun](https://twitter.com/samczsun)'s [How D
 
 1. Never make assertions in the `setUp` function, instead use a dedicated test like `test_SetUpState()` if you need to ensure your `setUp` function does what you expected. More info on why in [foundry-rs/foundry#1291](https://github.com/foundry-rs/foundry/issues/1291)
 
-1. For unit tests, treat contracts as `describe` blocks:
-
-   - `contract Add` holds all unit tests for the `add` method.
-   - `contract Supply` holds all tests for the `supply` method.
-   - `contract Constructor` hold all tests for the constructor.
-   - One benefit of this approach is that smaller contracts should compile faster than large ones, so this approach of many small contracts should save time as test suites get large.
-
+1. For unit tests, there are two major ways to organize the tests:
+   1. Treat contracts as describe blocks:
+      - `contract Add` holds all unit tests for the `add` method.
+      - `contract Supply` holds all tests for the `supply` method.
+      - `contract Constructor` hold all tests for the constructor.
+      - One benefit of this approach is that smaller contracts should compile faster than large ones, so this approach of many small contracts should save time as test suites get large.
+   2. Have a Test contract per contract-under-test, with as many utilities and fixtures as you want:
+      - `contract VaultTest` tests `contract Vault`, but also it inherits from `contract BaseTestFixture` and `contract TestUtilities`.
+      - Test functions should be written in the same order as the original functions exist in the contract-under-test.
+      - All test functions that test the same function should live serially in the test file.
 1. Integration tests should live in the same `test` directory, with a clear naming convention. These may be in dedicated files, or they may live next to related unit tests in existing test files.
 
 1. Be consistent with test naming, as it's helpful for filtering tests (e.g. for gas reports you might want to filter out revert tests). When combining naming conventions, keep them alphabetical.
