@@ -24,3 +24,5 @@
 - [`broadcast`](./broadcast.md)
 - [`startBroadcast`](./start-broadcast.md)
 - [`stopBroadcast`](./stop-broadcast.md)
+- [`pauseGasMetering`](./pause-gas-metering.md)
+- [`resumeGasMetering`](./resume-gas-metering.md)
