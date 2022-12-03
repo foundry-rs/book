@@ -245,6 +245,7 @@
       - [`getCode`](./cheatcodes/get-code.md)
       - [`getDeployedCode`](./cheatcodes/get-deployed-code.md)
       - [`setEnv`](./cheatcodes/set-env.md)
+      - [`envOr`](./cheatcodes/env-or.md)
       - [`envBool`](./cheatcodes/env-bool.md)
       - [`envUint`](./cheatcodes/env-uint.md)
       - [`envInt`](./cheatcodes/env-int.md)

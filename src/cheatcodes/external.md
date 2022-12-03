@@ -5,6 +5,7 @@
 - [`getCode`](./get-code.md)
 - [`getDeployedCode`](./get-deployed-code.md)
 - [`setEnv`](./set-env.md)
+- [`envOr`](./env-or.md)
 - [`envBool`](./env-bool.md)
 - [`envUint`](./env-uint.md)
 - [`envInt`](./env-int.md)
