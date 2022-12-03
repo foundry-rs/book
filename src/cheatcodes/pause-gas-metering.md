@@ -10,7 +10,7 @@ function pauseGasMetering() external;
 
 Pauses gas metering (i.e. `gasleft()` does not decrease as operations are executed).
 
-This can be useful for getting a better sense of gas costs, by turning off gas metering for unnecessary code), as well as long-running scripts that would otherwise run out of gas.
+This can be useful for getting a better sense of gas costs, by turning off gas metering for unnecessary code, as well as long-running scripts that would otherwise run out of gas.
 
 > ℹ️ **Note**
 >
