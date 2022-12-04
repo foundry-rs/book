@@ -102,8 +102,12 @@ Additional best practices from [samsczun](https://twitter.com/samczsun)'s [How D
    - Mocks are _required_ in closed-source web2 development—you have to mock API responses because the code for that API isn't open source so you cannot just run it locally. But for blockchains that's not true: any code you're interacting with that's already deployed can be locally executed and even modified for free. So why introduce the risk of a wrong mock if you don't need to?
    - A common reason to avoid fork tests and prefer mocks is that fork tests are slow. But this is not always true. By pinning to a block number, forge caches RPC responses so only the first run is slower, and subsequent runs are significantly faster. See [this benchmark](https://github.com/mds1/convex-shutdown-simulation/), where it took forge 7 minutes for the first run with a remote RPC, but only half a second once data was cached results. Alchemy and Infura both offer free archive data, so pinning to a block shouldn't be problematic. (Note that you may need to configure your CI to cache the RPC responses between runs).
 
-1. Be careful with with fuzz tests on a fork to avoid burning through RPC requests with non-deterministic fuzzing.
+1. Be careful with with fuzz tests on a fork to avoid burning through RPC requests with non-deterministic fuzzing. If the input to your fork fuzz test is some parameter which is used in an RPC call to fetch data (e.g. querying the token balance of an address), each run of a fuzz test uses at least 1 RPC request, so you'll quickly hit rate limits or usage limits. Solutions to consider:
 
+    - Replace multiple RPC calls with a single [multicall](https://github.com/mds1/multicall).
+    - Specify a fuzz/invariant [seed](/src/reference/config/testing.md#seed): this makes sure each `forge test` invocation uses the same fuzz inputs. RPC results are cached locally, so you'll only query the node the first time.
+    - Structure your tests so the data you are fuzzing over is computed locally by your contract, and not data that is used in an RPC call (may or may not be feasible based on what you're doing).
+    - Lastly, you can of course always run a local node or bump your RPC plan.
 1. When writing fork tests, do not use the `--fork-url` flag. Instead, prefer the following approach for it's improved flexibility:
 
    - Define `[rpc_endpoints]` in the `foundry.toml` config file and use the [forking cheatcodes](../forge/fork-testing.md#forking-cheatcodes).
