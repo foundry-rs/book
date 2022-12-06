@@ -38,7 +38,7 @@ Forking is especially useful when you need to interact with existing contracts. 
 
 If both `--fork-url` and `--fork-block-number` are specified, then data for that block is cached for future test runs.
 
-The data is cached in `~/.foundry/cache/<chain id>/<block number>`. To clear the cache, simply remove the directory or run [`forge clean`](../reference/forge/forge-clean.md) (removes all build artifacts and cache directories).
+The data is cached in `~/.foundry/cache/rpc/<chain name>/<block number>`. To clear the cache, simply remove the directory or run [`forge clean`](../reference/forge/forge-clean.md) (removes all build artifacts and cache directories).
 
 It is also possible to ignore the cache entirely by passing `--no-storage-caching`, or with `foundry.toml` by configuring [`no_storage_caching`](../reference/config/testing.md#no_storage_caching) and [`rpc_storage_caching`](../reference/config/testing.md#rpc_storage_caching).
 
