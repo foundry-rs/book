@@ -115,10 +115,11 @@ Additional best practices from [samsczun](https://twitter.com/samczsun)'s [How D
 
 1. Be careful with with fuzz tests on a fork to avoid burning through RPC requests with non-deterministic fuzzing. If the input to your fork fuzz test is some parameter which is used in an RPC call to fetch data (e.g. querying the token balance of an address), each run of a fuzz test uses at least 1 RPC request, so you'll quickly hit rate limits or usage limits. Solutions to consider:
 
-    - Replace multiple RPC calls with a single [multicall](https://github.com/mds1/multicall).
-    - Specify a fuzz/invariant [seed](/src/reference/config/testing.md#seed): this makes sure each `forge test` invocation uses the same fuzz inputs. RPC results are cached locally, so you'll only query the node the first time.
-    - Structure your tests so the data you are fuzzing over is computed locally by your contract, and not data that is used in an RPC call (may or may not be feasible based on what you're doing).
-    - Lastly, you can of course always run a local node or bump your RPC plan.
+   - Replace multiple RPC calls with a single [multicall](https://github.com/mds1/multicall).
+   - Specify a fuzz/invariant [seed](/src/reference/config/testing.md#seed): this makes sure each `forge test` invocation uses the same fuzz inputs. RPC results are cached locally, so you'll only query the node the first time.
+   - Structure your tests so the data you are fuzzing over is computed locally by your contract, and not data that is used in an RPC call (may or may not be feasible based on what you're doing).
+   - Lastly, you can of course always run a local node or bump your RPC plan.
+
 1. When writing fork tests, do not use the `--fork-url` flag. Instead, prefer the following approach for it's improved flexibility:
 
    - Define `[rpc_endpoints]` in the `foundry.toml` config file and use the [forking cheatcodes](../forge/fork-testing.md#forking-cheatcodes).
