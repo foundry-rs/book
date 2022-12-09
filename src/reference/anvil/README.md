@@ -129,7 +129,10 @@ The standard methods are based on [this](https://eth.wiki/json-rpc/API) referenc
 * `eth_feeHistory`
 
 * `eth_getProof`
-  
+
+* `debug_traceTransaction`  
+Use `anvil --steps-tracing` to get `structLogs`  
+
 * `trace_transaction`
   
 * `trace_block`
