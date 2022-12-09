@@ -64,7 +64,7 @@ See also [solc allowed-paths](https://docs.soliditylang.org/en/latest/path-resol
 - Default: none
 - Environment: `FOUNDRY_INCLUDE_PATHS` or `DAPP_INCLUDE_PATHS`
 
-Make an additional source directory available to the  default import callback. Use this option if you want to  import contracts whose location is not fixed in relation  to your main source tree, e.g. third-party libraries  installed using a package manager. Can be used multiple  times. Can only be used if base path has a non-empty  value.
+Make an additional source directory available to the default import callback. Use this option if you want to import contracts whose location is not fixed in relation to your main source tree, e.g. third-party libraries installed using a package manager. Can be used multiple times. Can only be used if base path has a non-empty value.
 
 See also [solc path resolution](https://docs.soliditylang.org/en/latest/path-resolution.html)
 
@@ -113,6 +113,14 @@ If both `offline` and `auto-detect-solc` are set to `true`, the required version
 - Environment: `FOUNDRY_IGNORED_ERROR_CODES` or `DAPP_IGNORED_ERROR_CODES`
 
 An array of Solidity compiler error codes to ignore during build, such as warnings.
+
+##### `deny_warnings`
+
+- Type: boolean
+- Default: false
+- Environment: `FOUNDRY_DENY_WARNINGS` or `DAPP_DENY_WARNINGS`
+
+If enabled, Foundry will treat Solidity compiler warnings as errors, stopping artifacts from being written to disk.
 
 ##### `evm_version`
 

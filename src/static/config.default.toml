@@ -47,6 +47,8 @@ optimizer_runs = 200
 verbosity = 0
 # A list of ignored solc error codes
 ignored_error_codes = [1878, 5574]
+# Whether contract build warnings will cause compilation to fail
+deny_warnings = false
 # Configures the permissions of cheat codes that touch the file system
 fs_permissions = []
 # Whether to emit additional build info files
