@@ -108,11 +108,27 @@ If both `offline` and `auto-detect-solc` are set to `true`, the required version
 
 ##### `ignored_error_codes`
 
-- Type: array of integers
+- Type: array of integers/strings
 - Default: none for source, SPDX license identifiers and contract size for tests
 - Environment: `FOUNDRY_IGNORED_ERROR_CODES` or `DAPP_IGNORED_ERROR_CODES`
 
 An array of Solidity compiler error codes to ignore during build, such as warnings.
+
+Valid values are:
+
+- `license`: 1878
+- `code-size`: 5574
+- `func-mutability`: 2018
+- `unused-var`: 2072
+- `unused-param`: 5667
+- `unused-return`: 9302
+- `virtual-interfaces`: 5815
+- `missing-receive-ether`: 3628
+- `shadowing`: 2519
+- `same-varname`: 8760
+- `unnamed-return`: 6321
+- `unreachable`: 5740
+- `pragma-solidity`: 3420
 
 ##### `deny_warnings`
 
