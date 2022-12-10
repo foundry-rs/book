@@ -66,15 +66,26 @@ Additional best practices from [samsczun](https://twitter.com/samczsun)'s [How D
 1. Never make assertions in the `setUp` function, instead use a dedicated test like `test_SetUpState()` if you need to ensure your `setUp` function does what you expected. More info on why in [foundry-rs/foundry#1291](https://github.com/foundry-rs/foundry/issues/1291)
 
 1. For unit tests, there are two major ways to organize the tests:
+
    1. Treat contracts as describe blocks:
-      - `contract Add` holds all unit tests for the `add` method.
+
+      - `contract Add` holds all unit tests for the `add` method of `MyContract`.
       - `contract Supply` holds all tests for the `supply` method.
       - `contract Constructor` hold all tests for the constructor.
-      - One benefit of this approach is that smaller contracts should compile faster than large ones, so this approach of many small contracts should save time as test suites get large.
+      - A benefit of this approach is that smaller contracts should compile faster than large ones, so this approach of many small contracts should save time as test suites get large.
+
    2. Have a Test contract per contract-under-test, with as many utilities and fixtures as you want:
-      - `contract VaultTest` tests `contract Vault`, but also it inherits from `contract BaseTestFixture` and `contract TestUtilities`.
-      - Test functions should be written in the same order as the original functions exist in the contract-under-test.
-      - All test functions that test the same function should live serially in the test file.
+      - `contract MyContractTest` holds all unit tests for `MyContract`.
+      - `function test_add_AddsTwoNumbers()` lives within `MyContractTest` to test the `add` method.
+      - `function test_supply_UsersCanSupplyTokens()` also lives within `MyContractTest` to test the `supply` method.
+      - A benefit of this approach is that test output is grouped by contract-under-test, which makes it easier to quickly see where failures are.
+
+1. Some general guidance for all tests:
+
+   - Test contracts/functions should be written in the same order as the original functions in the contract-under-test.
+   - All unit tests that test the same function should live serially in the test file.
+   - Test contracts can inherit from any helper contracts you want. For example `contract MyContractTest` tests `MyContract`, but may inherit from forge-std's `Test`, as well as e.g. your own `TestUtilities` helper contract.
+
 1. Integration tests should live in the same `test` directory, with a clear naming convention. These may be in dedicated files, or they may live next to related unit tests in existing test files.
 
 1. Be consistent with test naming, as it's helpful for filtering tests (e.g. for gas reports you might want to filter out revert tests). When combining naming conventions, keep them alphabetical.
@@ -104,10 +115,11 @@ Additional best practices from [samsczun](https://twitter.com/samczsun)'s [How D
 
 1. Be careful with with fuzz tests on a fork to avoid burning through RPC requests with non-deterministic fuzzing. If the input to your fork fuzz test is some parameter which is used in an RPC call to fetch data (e.g. querying the token balance of an address), each run of a fuzz test uses at least 1 RPC request, so you'll quickly hit rate limits or usage limits. Solutions to consider:
 
-    - Replace multiple RPC calls with a single [multicall](https://github.com/mds1/multicall).
-    - Specify a fuzz/invariant [seed](/src/reference/config/testing.md#seed): this makes sure each `forge test` invocation uses the same fuzz inputs. RPC results are cached locally, so you'll only query the node the first time.
-    - Structure your tests so the data you are fuzzing over is computed locally by your contract, and not data that is used in an RPC call (may or may not be feasible based on what you're doing).
-    - Lastly, you can of course always run a local node or bump your RPC plan.
+   - Replace multiple RPC calls with a single [multicall](https://github.com/mds1/multicall).
+   - Specify a fuzz/invariant [seed](/src/reference/config/testing.md#seed): this makes sure each `forge test` invocation uses the same fuzz inputs. RPC results are cached locally, so you'll only query the node the first time.
+   - Structure your tests so the data you are fuzzing over is computed locally by your contract, and not data that is used in an RPC call (may or may not be feasible based on what you're doing).
+   - Lastly, you can of course always run a local node or bump your RPC plan.
+
 1. When writing fork tests, do not use the `--fork-url` flag. Instead, prefer the following approach for it's improved flexibility:
 
    - Define `[rpc_endpoints]` in the `foundry.toml` config file and use the [forking cheatcodes](../forge/fork-testing.md#forking-cheatcodes).
