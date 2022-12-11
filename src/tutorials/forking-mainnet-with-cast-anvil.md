@@ -71,7 +71,7 @@ $ cast call $DAI \
 70000000000000000000000000
 ```
 
-[anvil]: ../reference/anvil/README.md
-[cast]: ../reference/cast/README.md
+[anvil]: ../reference/anvil/
+[cast]: ../reference/cast/
 [cast-call]: ../reference/cast/cast-call.md
 [cast-send]: ../reference/cast/cast-send.md
