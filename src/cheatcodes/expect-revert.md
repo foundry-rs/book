@@ -7,16 +7,16 @@ function expectRevert() external;
 ```
 
 ```solidity
-function expectRevert(bytes4 msg) external;
+function expectRevert(bytes4 message) external;
 ```
 
 ```solidity
-function expectRevert(bytes calldata msg) external;
+function expectRevert(bytes calldata message) external;
 ```
 
 ### Description
 
-If the **next call** does not revert with the expected message `msg`, then `expectRevert` will.
+If the **next call** does not revert with the expected data `message`, then `expectRevert` will.
 
 After calling `expectRevert`, calls to other cheatcodes before the reverting call are ignored.
 
@@ -50,10 +50,10 @@ There are 3 signatures:
 
 ### Examples
 
-To use `expectRevert` with a `string`, convert it to `bytes`.
+To use `expectRevert` with a `string`, pass it as a string literal.
 
 ```solidity
-vm.expectRevert(bytes("error message"));
+vm.expectRevert("error message");
 ```
 
 To use `expectRevert` with a custom [error type][error-type] without parameters, use its selector.
@@ -80,23 +80,26 @@ function testExpectRevertNoReason() public {
 }
 ```
 
+Message-less reverts happen when there is an EVM error, such as when the transaction consumes more than the block's gas limit.
+
 If you need to assert that a function reverts a four character message, e.g. `AAAA`, you can do so with:
+
 ```solidity
 function testFourLetterMessage() public {
-    
     vm.expectRevert(bytes("AAAA"));
 }
 ```
-If used `expectRevert("AAAA")` the overload `expectRevert(bytes4 msg)` is used, resulting in a different behaviour.
 
-You can also have multiple `expectRevert()` checks in a single test.
+If used `expectRevert("AAAA")`, the compiler would throw an error because it wouldn't know which overload to use.
+
+Finally, you can also have multiple `expectRevert()` checks in a single test.
 
 ```solidity
 function testMultipleExpectReverts() public {
-    vm.expectRevert(abi.encodePacked("INVALID_AMOUNT"));
+    vm.expectRevert("INVALID_AMOUNT");
     vault.send(user, 0);
 
-    vm.expectRevert(abi.encodePacked("INVALID_ADDRESS"));
+    vm.expectRevert("INVALID_ADDRESS");
     vault.send(address(0), 200);
 }
 ```
