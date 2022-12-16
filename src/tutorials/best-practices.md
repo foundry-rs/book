@@ -238,7 +238,7 @@ function readInput(string memory input) internal returns (string memory) {
   string memory inputDir = string.concat(vm.projectRoot(), "/script/input/");
   string memory chainDir = string.concat(vm.toString(block.chainid), "/");
   string memory file = string.concat(input, ".json");
-  return vm.readFile(string.concat(root, chainInputFolder, input));
+  return vm.readFile(string.concat(inputDir, chainDir, file));
 }
 ```
 
