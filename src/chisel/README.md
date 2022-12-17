@@ -1,4 +1,4 @@
-# Overview of Chisel
+## Overview of Chisel
 
 Chisel is an advanced Solidity REPL shipped with Foundry. It can be used to quickly test the behavior of Solidity snippets
 on a local or forked network.
@@ -8,7 +8,7 @@ yet, see [Foundry installation](../getting-started/installation.md).
 
 > Note: If you have an older version of Foundry installed, you'll need to re-install `foundryup` in order for Chisel to be downloaded.
 
-## How to use Chisel
+### How to use Chisel
 
 To use Chisel, simply type `chisel`. From there, start writing Solidity code! Chisel will offer verbose feedback on each input.
 
