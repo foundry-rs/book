@@ -79,6 +79,7 @@ From there, input valid Solidity code. There are two kinds of inputs to the chis
 =============
 General
         !help | !h - Display all commands
+        !quit | !q - Quit Chisel
         !exec <command> [args] | !e <command> [args] - Execute a shell command and print the output
 
 Session
@@ -104,7 +105,11 @@ Debug
 
 `!help` | `!h`
 
-Display all commands
+Display all commands.
+
+`!quit` | `!q`
+
+Quit Chisel.
 
 `!exec <command> [args]` | `!e <command> [args]`
 
