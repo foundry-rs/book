@@ -201,6 +201,9 @@ This program is a set of tools to interact with Ethereum and perform conversions
 [cast sig](./cast-sig.md)
 &nbsp;&nbsp;&nbsp;&nbsp;Get the selector for a function.
 
+[cast sig-event](./cast-sig-event.md)
+&nbsp;&nbsp;&nbsp;&nbsp;Generate event signatures from event string.
+
 [cast keccak](./cast-keccak.md)
 &nbsp;&nbsp;&nbsp;&nbsp;Hash arbitrary data using keccak-256.
 

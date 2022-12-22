@@ -1,6 +1,7 @@
 ## Utility Commands
 
 - [cast sig](./cast-sig.md)
+- [cast sig-event](./cast-sig-event.md)
 - [cast keccak](./cast-keccak.md)
 - [cast compute-address](./cast-compute-address.md)
 - [cast interface](./cast-interface.md)

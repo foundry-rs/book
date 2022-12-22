@@ -172,6 +172,7 @@
       - [cast shr](./reference/cast/cast-shr.md)
     - [Utility Commands](./reference/cast/utility-commands.md)
       - [cast sig](./reference/cast/cast-sig.md)
+      - [cast sig-event](./reference/cast/cast-sig-event.md)
       - [cast keccak](./reference/cast/cast-keccak.md)
       - [cast compute-address](./reference/cast/cast-compute-address.md)
       - [cast interface](./reference/cast/cast-interface.md)
