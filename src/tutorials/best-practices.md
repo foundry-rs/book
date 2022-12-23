@@ -270,3 +270,4 @@ Foundry in Action:
 - [Nomad Monorepo](https://github.com/nomad-xyz/monorepo): All the `contracts-*` packages. Good example of using many Foundry features including fuzzing, `ffi` and various cheatcodes.
 - [Uniswap Periphery](https://github.com/gakonst/v3-periphery-foundry): Good example of using inheritance to isolate test fixtures.
 - [awesome-foundry](https://github.com/crisgarner/awesome-foundry): A curated list of awesome of the Foundry development framework.
+- [PRBMath](https://github.com/paulrberg/prb-math): A library for fixed-point arithmetic in Solidity, with many parameterized tests that harness Foundry.
