@@ -92,9 +92,9 @@ Additional best practices from [samsczun](https://twitter.com/samczsun)'s [How D
 
    - `test_Description` for standard tests.
    - `testFuzz_Description` for fuzz tests.
-   - `test_Revert[If|When]_Condition` for tests expecting a revert.
+   - `testCannot_Description` for tests expecting a revert.
    - `testFork_Description` for tests that fork from a network.
-   - `testForkFuzz_Revert[If|When]_Condition` for a fuzz test that forks and expects a revert.
+   - `testForkCannot_Condition` for a fuzz test that forks and expects a revert.
 
 1. When using assertions like `assertEq`, consider leveraging the last string param to make it easier to identify failures. These can be kept brief, or even just be numbers&mdash;they basically serve as a replacement for showing line numbers of the revert, e.g. `assertEq(x, y, "1")` or `assertEq(x, y, "sum1")`. _(Note: [foundry-rs/foundry#2328](https://github.com/foundry-rs/foundry/issues/2328) tracks integrating this natively)._
 
