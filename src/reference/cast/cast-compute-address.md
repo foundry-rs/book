@@ -27,4 +27,4 @@ Compute the contract address from a given nonce and deployer address.
 
 ### SEE ALSO
 
-[cast](./cast.md), [cast proof](./cast-proof.md)
+[cast](./cast.md), [cast proof](./cast-proof.md), [cast create2](./cast-create2.md)
