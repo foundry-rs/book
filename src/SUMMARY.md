@@ -83,6 +83,7 @@
       - [forge config](./reference/forge/forge-config.md)
       - [forge remappings](./reference/forge/forge-remappings.md)
       - [forge tree](./reference/forge/forge-tree.md)
+      - [forge geiger](./reference/forge/forge-geiger.md)
     - [Build Commands](./reference/forge/build-commands.md)
       - [forge build](./reference/forge/forge-build.md)
       - [forge clean](./reference/forge/forge-clean.md)
