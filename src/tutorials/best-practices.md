@@ -165,7 +165,7 @@ Unfortunately there is currently no good way to unit test `private` methods sinc
 
 Harnesses can also be used to expose functionality or information otherwise unavailable in the original smart contract. The most straightforward example is when we want to test the length of a public array. The functions should follow the pattern: `workaround_<function_name>`, such as `workaround_queueLength()`.
 
-Another use case for this is tracking data that you would not track in production to help test invariants. For example, you might store a list of all token holders to simplify validation of the invariant "sum of all balances must equal total supply". These are often known as "ghost variables". You can learn more about this in [Rikard Hjort](https://twitter.com/rikardhjort)'s [Formal Methods for the Working DeFi Dev](https://youtu.be/TiuEWMo6w8U?t=3142) talk.
+Another use case for this is tracking data that you would not track in production to help test invariants. For example, you might store a list of all token holders to simplify validation of the invariant "sum of all balances must equal total supply". These are often known as "ghost variables". You can learn more about this in [Rikard Hjort](https://twitter.com/rikardhjort)'s [Formal Methods for the Working DeFi Dev](https://youtu.be/ETlNhV9jYJw) talk.
 
 ### Best practices
 
