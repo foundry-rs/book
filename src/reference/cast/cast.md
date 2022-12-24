@@ -210,6 +210,9 @@ This program is a set of tools to interact with Ethereum and perform conversions
 [cast compute-address](./cast-compute-address.md)
 &nbsp;&nbsp;&nbsp;&nbsp;Compute the contract address from a given nonce and deployer address.
 
+[cast create2](./cast-create2.md)
+&nbsp;&nbsp;&nbsp;&nbsp; Generate a deterministic contract address using CREATE2
+
 [cast interface](./cast-interface.md)
 &nbsp;&nbsp;&nbsp;&nbsp;Generate a Solidity interface from a given ABI.
 

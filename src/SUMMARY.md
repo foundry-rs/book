@@ -175,6 +175,7 @@
       - [cast sig-event](./reference/cast/cast-sig-event.md)
       - [cast keccak](./reference/cast/cast-keccak.md)
       - [cast compute-address](./reference/cast/cast-compute-address.md)
+      - [cast create2](./reference/cast/cast-create2.md)
       - [cast interface](./reference/cast/cast-interface.md)
       - [cast index](./reference/cast/cast-index.md)
       - [cast --concat-hex](./reference/cast/cast--concat-hex.md)
