@@ -47,6 +47,9 @@ This program is a set of tools to build, test, fuzz, debug and deploy Solidity s
 [forge tree](./forge-tree.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Display a tree visualization of the project's dependency graph.
 
+[forge geiger](./forge-geiger.md)
+&nbsp;&nbsp;&nbsp;&nbsp;Detects usage of unsafe cheat codes in a foundry project and its dependencies.
+
 #### Build Commands
 
 [forge build](./forge-build.md)  

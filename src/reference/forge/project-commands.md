@@ -7,3 +7,4 @@
 - [forge config](./forge-config.md)
 - [forge remappings](./forge-remappings.md)
 - [forge tree](./forge-tree.md)
+- [forge geiger](./forge-geiger.md)
