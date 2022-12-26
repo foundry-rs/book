@@ -30,7 +30,7 @@ Next, we have to delete the `Counter.sol` file in the `src` folder and create an
 rm src/Counter.sol test/Counter.t.sol && touch src/NFT.sol && ls src
 ```
 
-![set up commands](../images/solidity-scripting%20/set-up-commands.png)
+![set up commands](../images/solidity-scripting/set-up-commands.png)
 
 Once that’s done, you should open up your preferred code editor and copy the code below into the `NFT.sol` file.
 
@@ -108,7 +108,7 @@ forge build
 ```
 
 If your output looks like this, the contracts successfully compiled.
-![compile successful](../images/solidity-scripting%20/compile-successful.png)
+![compile successful](../images/solidity-scripting/compile-successful.png)
 
 ### Deploying our contract
 
@@ -203,7 +203,6 @@ uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
 
 This loads in the private key from our `.env` file. **Note:** you must be careful when exposing private keys in a `.env` file and loading them into programs. This is only recommended for use with non-priviliged deployers or for local / test setups. For production setups please review the various [wallet options](../reference/forge/forge-script.md#wallet-options---raw) that Foundry supports.
 
-
 ```solidity
 vm.startBroadcast(deployerPrivateKey);
 ```
@@ -232,7 +231,7 @@ forge script script/NFT.s.sol:MyScript --rpc-url $GOERLI_RPC_URL --broadcast --v
 
 Forge is going to run our script and broadcast the transactions for us - this can take a little while, since Forge will also wait for the transaction receipts. You should see something like this after a minute or so:
 
-![contract verified](../images/solidity-scripting%20/contract-verified.png)
+![contract verified](../images/solidity-scripting/contract-verified.png)
 
 This confirms that you have successfully deployed the `NFT` contract to the Goerli testnet and have also verified it on Etherscan, all with one command.
 
