@@ -8,7 +8,7 @@ Configuration related to the behavior of the Forge formatter. Each of these keys
 - Default: 120
 - Environment: `FOUNDRY_FMT_LINE_LENGTH` or `DAPP_FMT_LINE_LENGTH`
 
-Specifies the maximum line length where the formatter will try to wrap the line.
+Maximum line length where formatter will try to wrap the line.
 
 ##### `tab_width`
 
@@ -29,7 +29,7 @@ Whether or not to print spaces between brackets.
 ##### `int_types`
 
 - Type: string
-- Default: long
+- Default: `long`
 - Environment: `FOUNDRY_FMT_INT_TYPES` or `DAPP_FMT_INT_TYPES`
 
 Style of uint/int256 types. Valid values are:
@@ -38,18 +38,22 @@ Style of uint/int256 types. Valid values are:
 - `short`: Use the implicit `uint` or `int`
 - `preserve`: Use the type defined in the source code
 
-##### `func_attrs_with_params_multiline`
+##### `multiline_func_header`
 
-- Type: bool
-- Default: true
-- Environment: `FOUNDRY_FMT_FUNC_ATTRS_WITH_PARAMS_MULTILINE` or `DAPP_FMT_FUNC_ATTRS_WITH_PARAMS_MULTILINE`
+- Type: string
+- Default: `attributes_first`
+- Environment: `FOUNDRY_FMT_MULTILINE_FUNC_HEADER` or `DAPP_FMT_MULTILINE_FUNC_HEADER`
 
-If function parameters are multiline then always put the function attributes on separate lines.
+Style of multiline function header in case it doesn't fit in one line. Valid values are:
+
+- `attributes_first` (default): Write function attributes multiline first
+- `params_first`: Write function parameters multiline first
+- `all`: If function parameters or attributes are multiline, multiline everything
 
 ##### `quote_style`
 
 - Type: string
-- Default: double
+- Default: `double`
 - Environment: `FOUNDRY_FMT_QUOTE_STYLE` or `DAPP_FMT_QUOTE_STYLE`
 
 Defines the quotation mark style. Valid values are:
@@ -61,7 +65,7 @@ Defines the quotation mark style. Valid values are:
 ##### `number_underscore`
 
 - Type: string
-- Default: preserve
+- Default: `preserve`
 - Environment: `FOUNDRY_FMT_NUMBER_UNDERSCORE` or `DAPP_FMT_NUMBER_UNDERSCORE`
 
 Style of underscores in number literals. Valid values are:
@@ -69,3 +73,27 @@ Style of underscores in number literals. Valid values are:
 - `preserve` (default): Use the underscores defined in the source code
 - `thousands`: Add an underscore every thousand, if greater than 9999. i.e. `1000` is formatted as `1000` and `10000` as `10_000`
 - `remove`: Remove all underscores
+
+##### `variable_override_spacing`
+
+- Type: bool
+- Default: true
+- Environment: `FOUNDRY_FMT_VARIABLE_OVERRIDE_SPACING` or `DAPP_FMT_VARIABLE_OVERRIDE_SPACING`
+
+Whether or not to print space in variable `override` definition.
+
+##### `wrap_comments`
+
+- Type: bool
+- Default: false
+- Environment: `FOUNDRY_FMT_WRAP_COMMENTS` or `DAPP_FMT_WRAP_COMMENTS`
+
+Whether or not to wrap comments on `line_length` reached.
+
+##### `ignore`
+
+- Type: string
+- Default: `""`
+- Environment: `FOUNDRY_FMT_IGNORE` or `DAPP_FMT_IGNORE`
+
+List of files to ignore when formatting. This is a comma separated list of glob patterns.
