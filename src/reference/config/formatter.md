@@ -74,13 +74,13 @@ Style of underscores in number literals. Valid values are:
 - `thousands`: Add an underscore every thousand, if greater than 9999. i.e. `1000` is formatted as `1000` and `10000` as `10_000`
 - `remove`: Remove all underscores
 
-##### `variable_override_spacing`
+##### `override_spacing`
 
 - Type: bool
 - Default: true
-- Environment: `FOUNDRY_FMT_VARIABLE_OVERRIDE_SPACING` or `DAPP_FMT_VARIABLE_OVERRIDE_SPACING`
+- Environment: `FOUNDRY_FMT_OVERRIDE_SPACING` or `DAPP_FMT_OVERRIDE_SPACING`
 
-Whether or not to print space in variable `override` definition.
+Whether or not to print a space in `override` attributes for contract state variables, functions, and modifiers.
 
 ##### `wrap_comments`
 
