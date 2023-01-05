@@ -59,14 +59,14 @@ vm.expectRevert("error message");
 To use `expectRevert` with a custom [error type][error-type] without parameters, use its selector.
 
 ```solidity
-vm.expectRevert(MyContract.CustomError.selector);
+vm.expectRevert(CustomError.selector);
 ```
 
 To use `expectRevert` with a custom [error type][error-type] with parameters, ABI encode the error type.
 
 ```solidity
 vm.expectRevert(
-    abi.encodeWithSelector(MyContract.CustomError.selector, 1, 2)
+    abi.encodeWithSelector(CustomError.selector, 1, 2)
 );
 ```
 
