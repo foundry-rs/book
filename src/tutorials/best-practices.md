@@ -147,7 +147,7 @@ contract MyContract {
 import {MyContract} from "src/MyContract.sol";
 
 contract MyContractHarness is MyContract {
-  // Deploy this contract then cll this method to test `myInternalMethod`.
+  // Deploy this contract then call this method to test `myInternalMethod`.
   function exposed_myInternalMethod() external returns (uint) {
     return myInternalMethod();
   }
