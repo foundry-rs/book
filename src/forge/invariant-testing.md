@@ -42,6 +42,7 @@ Invariants are mathematical expressions that should always hold true over the co
 <td>Direct assertions</td>
 <td>Directly query a protocol smart contracts and assert values are expected.</td>
 <td>
+
 ```solidity
 assertTrue(token.totalAssets() >= token.totalSupply()))
 ```
@@ -54,6 +55,7 @@ assertTrue(token.totalAssets() >= token.totalSupply()))
 <td>Ghost variable assertions</td>
 <td>Query a protocol smart contract and compare it against a value that has been persisted in the test environment (ghost variable).</td>
 <td>
+
 ```solidity
 assertEq(token.totalSupply(), sumBalanceOf)
 ```
@@ -66,6 +68,7 @@ assertEq(token.totalSupply(), sumBalanceOf)
 <td>Naive implementation assertions</td>
 <td>Query the a protocol smart contract function and compare it against a naive and typically highly gas-inefficient implementation of the same desired logic.</td>
 <td>
+
 ```solidity
 assertEq(pool.outstandingInterest(), testContract.naiveOutstandingInterest()
 ```
@@ -74,18 +77,17 @@ assertEq(pool.outstandingInterest(), testContract.naiveOutstandingInterest()
 </tr>
 </table>
 
+### Conditional Invariants
+
+Invariants must hold for the course over the course of a given fuzzing campaign, but that doesn't mean they must hold true in every situation. There is the possibility for certain invariants to be introduced/removed in a given scenario (e.g., during a liquidation). For this a dedicated testing contract must be used.
+
 ## Target Contract Patterns
 
 When running invariant testing, especially against contracts with more complex logic, it is important to consider how the target contracts are used.
 
 There are three main patterns to use in invariant testing.
 
-### Bounded Wrapped Testing
 
-
-
-## Naive Implementations
-### Ghost Variables
 ### Bounded
 ## Exclude Contracts
 ## Defining Invariants
