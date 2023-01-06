@@ -171,6 +171,19 @@ Then there's likely a folder permission issue. Ensure `user` has write access in
 
 It has been [reported](https://github.com/foundry-rs/foundry/issues/3268) that on linux, canonicalizing paths can result in weird paths (`/_1/...`). This can be resolved by nuking the entire project folder and initializing again.
 
+### Connection refused when run `forge build` .
+
+If you're unable to access github URLs called by `forge build` , you will see an error like
+
+```console
+Error: 
+error sending request for url (https://raw.githubusercontent.com/roynalnaruto/solc-builds/ff4ea8a7bbde4488428de69f2c40a7fc56184f5e/macosx/aarch64/list.json): error trying to connect: tcp connect error: Connection refused (os error 61)
+```
+
+Connection failed because access to the URL from your location may be restricted. To solve this, you should set proxy. 
+
+You could run `export http_proxy=http://127.0.0.1:7890 https_proxy=http://127.0.0.1:7890` first in the terminal then you will `forge build` successfully.
+
 [tg-support]: https://t.me/foundry_support
 [forge-test]: ./reference/forge/forge-test.md
 [traces]: ./forge/traces.md
