@@ -3,9 +3,19 @@
 
 Invariant testing allows for a set of mathematical invariants to be tested against randomized sequences of pre-defined function calls from pre-defined contracts. After each function call is performed, all defined invariants are asserted.
 
+Invariant testing is a powerful tool to expose incorrect logic in protocols. Due to the fact that function call sequences are randomized and have fuzzed inputs, invariant testing can expose false assumptions and incorrect logic in edge cases and highly complex protocol states.
+
+Invariant testing campaigns have two dimensions, `runs` and `depth`.
+- `runs`: Number of times that a sequence of function calls is generated and run.
+- `depth`: Number of function calls made in a given `run`. All defined invariants are asserted after each function call is made.
+
 ## Target Contracts
 
-Target contracts are the set of contracts that will be called over the course of a given invariant test fuzzing campaign. Functions from these contracts will be called at random with fuzzed inputs. The probability of a function being called is broken down by contract and then by function.
+Target contracts are the set of contracts that will be called over the course of a given invariant test fuzzing campaign.
+
+### Function Call Probability Distribution
+
+Functions from these contracts will be called at random with fuzzed inputs. The probability of a function being called is broken down by contract and then by function.
 
 For example:
 
@@ -44,7 +54,10 @@ Invariants are mathematical expressions that should always hold true over the co
 <td>
 
 ```solidity
-assertTrue(token.totalAssets() >= token.totalSupply()))
+assertGe(
+    token.totalAssets(),
+    token.totalSupply())
+)
 ```
 </td>
 
@@ -57,7 +70,10 @@ assertTrue(token.totalAssets() >= token.totalSupply()))
 <td>
 
 ```solidity
-assertEq(token.totalSupply(), sumBalanceOf)
+assertEq(
+    token.totalSupply(),
+    sumBalanceOf
+)
 ```
 </td>
 
@@ -70,7 +86,10 @@ assertEq(token.totalSupply(), sumBalanceOf)
 <td>
 
 ```solidity
-assertEq(pool.outstandingInterest(), testContract.naiveOutstandingInterest()
+assertEq(
+    pool.outstandingInterest(),
+    test.naiveInterest()
+)
 ```
 </td>
 
@@ -79,15 +98,12 @@ assertEq(pool.outstandingInterest(), testContract.naiveOutstandingInterest()
 
 ### Conditional Invariants
 
-Invariants must hold for the course over the course of a given fuzzing campaign, but that doesn't mean they must hold true in every situation. There is the possibility for certain invariants to be introduced/removed in a given scenario (e.g., during a liquidation). For this a dedicated testing contract must be used.
+Invariants must hold for the course over the course of a given fuzzing campaign, but that doesn't mean they must hold true in every situation. There is the possibility for certain invariants to be introduced/removed in a given scenario (e.g., during a liquidation). For this a dedicated testing contract should be used.
+
+It is not recommended to introduce conditional logic into invariant assertions because they have the possibility of introducing false positives because of an incorrect code path.
 
 ## Target Contract Patterns
 
 When running invariant testing, especially against contracts with more complex logic, it is important to consider how the target contracts are used.
 
 There are three main patterns to use in invariant testing.
-
-
-### Bounded
-## Exclude Contracts
-## Defining Invariants
