@@ -27,7 +27,7 @@
 - [Advanced Testing](./forge/advanced-testing.md)
   - [Fuzz Testing](./forge/fuzz-testing.md)
   - [Differential Testing](./forge/differential-ffi-testing.md)
-    <!--  - [Invariant Testing]() !-->
+  - [Invariant Testing](./forge/invariant-testing.md)
     <!--  - [Symbolic Testing]() !-->
     <!--  - [Table Testing]() !-->
     <!--  - [Mutation Testing]() !-->
