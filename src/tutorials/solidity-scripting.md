@@ -283,7 +283,7 @@ Start Anvil with the custom mnemonic:
 ```sh
 source .env
 
-anvil --m $MNEMONIC
+anvil -m $MNEMONIC
 ```
 
 Then run the following script:
