@@ -15,21 +15,23 @@ To test your project using [slither](https://github.com/crytic/slither), here is
 ```
 
 Note, you need to update `solc` used by Slither to the same version used by Forge with `solc-select`:
-```ignore
+
+```sh
 pip3 install slither-analyzer
 pip3 install solc-select
 solc-select install 0.8.13
 solc-select use 0.8.13
-slither src/Contract.sol
+slither .
 ```
 
 See the [slither wiki](https://github.com/crytic/slither/wiki/Usage) for more information.
 
 In order to use a custom configuration, such as the sample `slither.config.json` mentioned above, the following command is used as mentioned in the [slither-wiki](https://github.com/crytic/slither/wiki/Usage#configuration-file). By default slither looks for the `slither.config.json` but you can define the path and any other `json` file of your choice:
 
-```sh 
-slither --config-file <path>/file.config.json Counter.sol
+```sh
+slither --config-file <path>/file.config.json .
 ```
+
 Example output (Raw):
 
 ```bash 
