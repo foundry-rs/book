@@ -131,6 +131,10 @@ contract SigUtils {
 }
 ```
 
+### Handling Dynamic Values
+
+While the Permit struct passed in the getStructHash() function above doesn't contain any dynamic value types, if you're using them it's important to remember that 'bytes' and 'string' types must be encoded as a 'keccak256' hash of their contents. More on this aspect of the [EIP 712 Spec here](https://github.com/ethereum/EIPs/blob/8061f8e2243eaae829d1fa91f7a763c889aca371/EIPS/eip-712.md?plain=1#L135).
+
 **Setup**
 
 - Deploy a mock ERC-20 token and `SigUtils` helper with the token's EIP-712 domain separator
