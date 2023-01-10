@@ -19,11 +19,13 @@ The cheatcode accepts either a `key` to search for a specific value in the JSON,
 
 ### JSONpath Key
 
-`parseJson` uses a syntax called JSONpath to form arbitrary keys for arbitrary json files. The same syntax (or rather a dialect) is used by the tool [`jq`](https://stedolan.github.io/jq/). 
+`parseJson` uses a syntax called JSONpath to form arbitrary keys for arbitrary json files. The same syntax (or rather a dialect) is used by the tool [`jq`](https://stedolan.github.io/jq/).
 
 To read more about the syntax, you can visit the [README](https://crates.io/crates/jsonpath-rust) of the rust library that we use under the hood to implement the feature. That way you can be certain that you are using the correct dialect of jsonPath.
 
 ### JSON Encoding Rules
+
+We use the terms `number`, `string`, `object`, `array`, `boolean` as they are defined in the [JSON spec](https://www.w3schools.com/js/js_json_datatypes.asp).
 
 **Encoding Rules**
 
@@ -34,6 +36,23 @@ To read more about the syntax, you can visit the [README](https://crates.io/crat
 - A string that is neither an `address`, a `bytes32` or `bytes`, is encoded as a `string`
 - An array is encoded as a dynamic array of the type of it's first element
 - An object (`{}`) is encoded as a `tuple`
+
+### Type Coercion
+
+As described above, parseJSON needs to deduce the type of JSON value and that has some inherent limitations. For that reason, there is a sub-family of `parseJson*` cheatcodes that coerce the type of the returned value.
+
+For example `vm.parseJsonUint(json, key)` will coerce the value to a `uint256`. That means that it can parse all the following values and return them as a `uint256`. That includes a number as type `number`, a stringified number as a `string` and of course it's hex representation.
+
+````js
+{
+  "hexUint": "0x12C980",
+  "stringUint": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+  "numberUint": 115792089237316195423570985008687907853269984665640564039457584007913129639935,
+
+}
+```
+
+Similarly, there are cheatcodes for all types (including `bytes` and `bytes32`) and their arrays (`vm.parseJsonUintArray`).
 
 ### Decoding JSON objects into Solidity structs
 
@@ -48,7 +67,7 @@ The following JSON
     a: 43,
     b: "sigma"
 }
-```
+````
 
 will be decoded into:
 
@@ -94,7 +113,7 @@ If your JSON object has `hex numbers`, they will be encoded as bytes. The way to
 2. Convert the intermediary struct to the final one, by converting the `bytes` to `uint`. We have a helper function in `forge-std` to do this
 3. Give the final `struct` to the user for consumption
 
-### Instructions
+### How to use StdJson
 
 1. Import the library `import "../StdJson.sol";`
 2. Define it's usage with `string`: `using stdJson for string;`
