@@ -6,7 +6,7 @@ forge-build - Build the project's smart contracts.
 
 ### SYNOPSIS
 
-``forge build`` [*options*]
+``forge build`` or ``forge b`` [*options*]
 
 ### DESCRIPTION
 
@@ -179,6 +179,9 @@ The model checker will run when `forge build` is invoked, and will show findings
 
 `--sizes`
 &nbsp;&nbsp;&nbsp;&nbsp;Print compiled non-test contract sizes, exiting with code 1 if any of them are above the size limit.
+
+`--skip`
+&nbsp;&nbsp;&nbsp;&nbsp;Skip compilation of non-essential contract directories like test or script (usage `--skip test`).
 
 {{#include core-build-options.md}}
 
