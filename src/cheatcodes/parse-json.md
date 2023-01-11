@@ -43,12 +43,11 @@ As described above, parseJSON needs to deduce the type of JSON value and that ha
 
 For example `vm.parseJsonUint(json, key)` will coerce the value to a `uint256`. That means that it can parse all the following values and return them as a `uint256`. That includes a number as type `number`, a stringified number as a `string` and of course it's hex representation.
 
-````js
+```js
 {
   "hexUint": "0x12C980",
   "stringUint": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
   "numberUint": 115792089237316195423570985008687907853269984665640564039457584007913129639935,
-
 }
 ```
 
@@ -67,7 +66,7 @@ The following JSON
     a: 43,
     b: "sigma"
 }
-````
+```
 
 will be decoded into:
 
