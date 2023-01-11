@@ -174,4 +174,4 @@ struct Tx1559Detail {
 
 - Helper Library: [stdJson.sol](https://github.com/foundry-rs/forge-std/blob/master/src/StdJson.sol)
 - Usage examples: [stdCheats.t.sol](https://github.com/foundry-rs/forge-std/blob/ca8d6e00ea9cb035f6856ff732203c9a3c48b966/src/test/StdCheats.t.sol#L206)
-- [ ] [File Cheatcodes](./fs.md): cheatcodes for working with files
+- [File Cheatcodes](./fs.md): cheatcodes for working with files
