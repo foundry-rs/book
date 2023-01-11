@@ -91,6 +91,7 @@ Session
         !clearcache | !cc - Clear the chisel cache of all stored sessions
         !export | !ex - Export the current session source to a script file
         !fetch <addr> <name> | !fe <addr> <name> - Fetch the interface of a verified contract on Etherscan
+        !edit - Open the current session in an editor
 
 Environment
         !fork <url> | !f <url> - Fork an RPC for the current session. Supply 0 arguments to return to a local network
@@ -99,6 +100,7 @@ Environment
 Debug
         !memdump | !md - Dump the raw memory of the current state
         !stackdump | !sd - Dump the raw stack of the current state
+        !rawstack <var> | !rs <var> - Display the raw value of a variable's stack allocation. For variables that are > 32 bytes in length, this will display their memory pointer.
 ```
 
 **General**
@@ -203,6 +205,12 @@ This command will attempt to parse the interface of a verified contract @ `<addr
 
 At the moment, only interfaces of verified contracts on Ethereum mainnet can be fetched. In the future, Chisel will support fetching interfaces from multiple Etherscan-supported chains.
 
+`!edit`
+
+Open the current session's `run()` function in an editor.
+
+chisel will use the editor defined in the `$EDITOR` environment variable.
+
 **Environment**
 
 `!fork <url>` | `!f <url>`
@@ -230,3 +238,25 @@ Attempts to dump the raw memory of the machine state after the last instruction 
 Dump the raw stack of the current state.
 
 Attempts to dump the raw stack of the machine state after the last instruction of the REPL contract's `run` function has finished executing.
+
+`!rawstack <var>` | `!rs <var>`
+
+Display the raw value of a variable's stack allocation. For variables that are > 32 bytes in length, this will display their memory pointer.
+
+This command is useful when you want to view the full raw stack allocation for a variable that is less than 32 bytes in length.
+
+Example:
+
+```
+➜ address addr
+➜ assembly {
+    addr := not(0)
+}
+➜ addr
+Type: address
+└ Data: 0xffffffffffffffffffffffffffffffffffffffff
+➜ !rs addr
+Type: bytes32
+└ Data: 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+➜ 
+```
