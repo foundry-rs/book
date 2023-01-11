@@ -96,7 +96,7 @@ Let's assume we want to write the following JSON to a file:
 ```solidity
 string memory json1 = "some key";
 vm.serializeBool(json1, "boolean", true);
-vm.serializeBool(json1, "number", uint256(342));
+vm.serializeUint(json1, "number", uint256(342));
 json2 = "some other key";
 string memory output = vm.serializeString(json2, "title", "finally json serialization");
 string memory finalJson = vm.serialize(json1, "object", output);

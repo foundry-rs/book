@@ -43,12 +43,11 @@ As described above, parseJSON needs to deduce the type of JSON value and that ha
 
 For example `vm.parseJsonUint(json, key)` will coerce the value to a `uint256`. That means that it can parse all the following values and return them as a `uint256`. That includes a number as type `number`, a stringified number as a `string` and of course it's hex representation.
 
-````js
+```json
 {
   "hexUint": "0x12C980",
   "stringUint": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
-  "numberUint": 115792089237316195423570985008687907853269984665640564039457584007913129639935,
-
+  "numberUint": 115792089237316195423570985008687907853269984665640564039457584007913129639935
 }
 ```
 
@@ -62,12 +61,12 @@ For example:
 
 The following JSON
 
-```js
+```json
 {
-    a: 43,
-    b: "sigma"
+  "a": 43,
+  "b": "sigma"
 }
-````
+```
 
 will be decoded into:
 
@@ -175,4 +174,4 @@ struct Tx1559Detail {
 
 - Helper Library: [stdJson.sol](https://github.com/foundry-rs/forge-std/blob/master/src/StdJson.sol)
 - Usage examples: [stdCheats.t.sol](https://github.com/foundry-rs/forge-std/blob/ca8d6e00ea9cb035f6856ff732203c9a3c48b966/src/test/StdCheats.t.sol#L206)
-- [File Cheatcodes](./fs.md): cheatcodes for working with files
+- [ ] [File Cheatcodes](./fs.md): cheatcodes for working with files
