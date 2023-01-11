@@ -111,7 +111,8 @@ Additional best practices from [samsczun](https://twitter.com/samczsun)'s [How D
 1. Don't feel like you need to give forks tests special treatment, and use them liberally:
 
    - Mocks are _required_ in closed-source web2 development—you have to mock API responses because the code for that API isn't open source so you cannot just run it locally. But for blockchains that's not true: any code you're interacting with that's already deployed can be locally executed and even modified for free. So why introduce the risk of a wrong mock if you don't need to?
-   - A common reason to avoid fork tests and prefer mocks is that fork tests are slow. But this is not always true. By pinning to a block number, forge caches RPC responses so only the first run is slower, and subsequent runs are significantly faster. See [this benchmark](https://github.com/mds1/convex-shutdown-simulation/), where it took forge 7 minutes for the first run with a remote RPC, but only half a second once data was cached results. Alchemy and Infura both offer free archive data, so pinning to a block shouldn't be problematic. (Note that you may need to configure your CI to cache the RPC responses between runs).
+   - A common reason to avoid fork tests and prefer mocks is that fork tests are slow. But this is not always true. By pinning to a block number, forge caches RPC responses so only the first run is slower, and subsequent runs are significantly faster. See [this benchmark](https://github.com/mds1/convex-shutdown-simulation/), where it took forge 7 minutes for the first run with a remote RPC, but only half a second once data was cached. Alchemy and Infura both offer free archive data, so pinning to a block shouldn't be problematic.
+   - Note that the [foundry-toolchain](https://github.com/foundry-rs/foundry-toolchain) GitHub Action will cache RPC responses in CI by default, and it will also update the cache when you update your fork tests..
 
 1. Be careful with fuzz tests on a fork to avoid burning through RPC requests with non-deterministic fuzzing. If the input to your fork fuzz test is some parameter which is used in an RPC call to fetch data (e.g. querying the token balance of an address), each run of a fuzz test uses at least 1 RPC request, so you'll quickly hit rate limits or usage limits. Solutions to consider:
 
@@ -202,7 +203,7 @@ You should _ensure_ that no _tainted_ data ever reaches a _sink_. That means tha
    - Unit test them by writing tests that assert on the state changes made from running the script.
    - Write your deploy script and scaffold tests by running that script. Then, run all tests against the state resulting from your production deployment script. This is a great way to gain confidence in a deploy script.
 
-1. **Carefully audit which transactions are broadcasted**. Transactions not broadcasted are still executed in the context of a test, so missing broadcasts or extra broadcasts are easy sources of error in the previous step.
+1. **Carefully audit which transactions are broadcast**. Transactions not broadcast are still executed in the context of a test, so missing broadcasts or extra broadcasts are easy sources of error in the previous step.
 
 1. **Watch out for frontrunning**. Forge simulates your script, generates transaction data from the simulation results, then broadcasts the transactions. Make sure your script is robust against chain-state changing between the simulation and broadcast. A sample script vulnerable to this is below:
 

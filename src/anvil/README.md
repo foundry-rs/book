@@ -2,7 +2,7 @@
 
 Anvil is a local testnet node shipped with Foundry. You can use it for testing your contracts from frontends or for interacting over RPC.
 
-Anvil is part of the Foundry suite and is installed alongside `forge` and `cast`. If you haven't installed Foundry yet, see [Foundry installation](../getting-started/installation.md). 
+Anvil is part of the Foundry suite and is installed alongside `forge`, `cast`, and `chisel`. If you haven't installed Foundry yet, see [Foundry installation](../getting-started/installation.md). 
 
 > Note: If you have an older version of Foundry installed, you'll need to re-install `foundryup` in order for Anvil to be downloaded.
 
