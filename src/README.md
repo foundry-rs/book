@@ -30,6 +30,10 @@ Learn how to use `cast` to interact with smart contracts, send transactions, and
 
 Learn about `anvil`, Foundry's local node.
 
+**[Chisel Overview](chisel)**
+
+Learn how to use `chisel`, Foundry's integrated Solidity REPL.
+
 **Configuration**
 
 Guides on configuring Foundry.

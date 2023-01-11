@@ -47,6 +47,10 @@
 
 - [Overview of Anvil](./anvil/README.md)
 
+# Chisel Overview
+
+- [Overview of Chisel](./chisel/README.md)
+
 # Configuration
 
 - [Configuring with `foundry.toml`](./config/README.md)
@@ -192,6 +196,7 @@
       - [cast wallet vanity](./reference/cast/cast-wallet-vanity.md)
       - [cast wallet verify](./reference/cast/cast-wallet-verify.md)
   - [`anvil` Reference](./reference/anvil/README.md)
+  - [`chisel` Reference](./reference/chisel/README.md)
   - [Config Reference](./reference/config/README.md)
     - [Overview](./reference/config/overview.md)
     - [Project](./reference/config/project.md)

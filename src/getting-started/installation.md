@@ -20,7 +20,7 @@ This will download `foundryup`. Then install Foundry by running:
 foundryup
 ```
 
-If everything goes well, you will now have three binaries at your disposal: `forge`, `cast`, and `anvil`.
+If everything goes well, you will now have four binaries at your disposal: `forge`, `cast`, `anvil`, and `chisel`.
 
 If you use macOS and display below error, you need type `brew install libusb` to install Library
 
@@ -55,7 +55,7 @@ If you encouner an error, it is most likely the case that you do not have the VS
 After this, run the following to build Foundry from source:
 
 ```sh
-cargo install --git https://github.com/foundry-rs/foundry foundry-cli anvil --bins --locked
+cargo install --git https://github.com/foundry-rs/foundry foundry-cli anvil chisel --bins --locked
 ```
 
 To update from source, run the same command again.
