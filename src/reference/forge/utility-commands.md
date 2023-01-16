@@ -7,3 +7,4 @@
 - [forge cache ls](./forge-cache-ls.md)  
 - [forge script](./forge-script.md)  
 - [forge upload-selectors](./forge-upload-selectors.md)
+- [forge doc](./forge-doc.md)
