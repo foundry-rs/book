@@ -6,14 +6,14 @@ Configuration related to the behavior of the Forge documentation generator. Thes
 
 - Type: string
 - Default: `docs`
-- Environment: `FOUNDRY_DOC_OUT` or `DAPP_DOC_OUT`
+- Environment: `FOUNDRY_DOC_OUT`
 
 An output path for generated documentation.
 
 ##### `title`
 
 - Type: string
-- Environment: `FOUNDRY_DOC_TITLE` or `DAPP_DOC_TITLE`
+- Environment: `FOUNDRY_DOC_TITLE`
 
 Title for the generated documentation.
 
@@ -21,14 +21,14 @@ Title for the generated documentation.
 
 - Type: string
 - Default: `./book.toml`
-- Environment: `FOUNDRY_DOC_BOOK` or `DAPP_DOC_BOOK`
+- Environment: `FOUNDRY_DOC_BOOK`
 
 Path to user provided `book.toml`. It will be merged with default settings during doc generation.
 
 ##### `repository`
 
 - Type: string
-- Environment: `FOUNDRY_DOC_REPOSITORY` or `DAPP_DOC_REPOSITORY`
+- Environment: `FOUNDRY_DOC_REPOSITORY`
 
 The git repository URL. Used to provide links to git source files.
 If missing, `forge` will attempt to look up the current origin url and use its value. 
