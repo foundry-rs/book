@@ -53,7 +53,7 @@ From there, input valid Solidity code. There are two kinds of inputs to the chis
     * Examples:
         * `uint256 a = 0xa57b`
         * `myStateMutatingFunc(128)` || `myViewFunc(128);` <- Notice the `;`
-        * ```
+        * ```solidity
           function hash64(
             bytes32 _a,
             bytes32 _b
@@ -74,7 +74,7 @@ From there, input valid Solidity code. There are two kinds of inputs to the chis
         * ...
 #### Available Commands
 
-```
+```text
 ⚒️ Chisel help
 =============
 General
@@ -119,7 +119,7 @@ Execute a shell command and print the output.
 
 Example:
 
-```
+```sh
 ➜ !e ls
 CHANGELOG.md
 LICENSE
@@ -247,7 +247,7 @@ This command is useful when you want to view the full raw stack allocation for a
 
 Example:
 
-```
+```sh
 ➜ address addr
 ➜ assembly {
     addr := not(0)
