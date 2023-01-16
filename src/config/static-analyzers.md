@@ -6,13 +6,11 @@ To test your project using [slither](https://github.com/crytic/slither), here is
 
 ```json
 {
-  "filter_paths": "lib",
-  "solc_remaps": [
-    "ds-test/=lib/ds-test/src/",
-    "forge-std/=lib/forge-std/src/"
-  ]
+  "filter_paths": "lib"
 }
 ```
+
+You do not need to provide remappings via the `solc_remaps` option as Slither will automatically detect remappings in a Foundry project.
 
 Note, you need to update `solc` used by Slither to the same version used by Forge with `solc-select`:
 
