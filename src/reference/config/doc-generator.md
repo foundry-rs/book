@@ -31,4 +31,12 @@ Path to user provided `book.toml`. It will be merged with default settings durin
 - Environment: `FOUNDRY_DOC_REPOSITORY`
 
 The git repository URL. Used to provide links to git source files.
-If missing, `forge` will attempt to look up the current origin url and use its value. 
+If missing, `forge` will attempt to look up the current origin url and use its value.
+
+##### `ignore`
+
+- Type: array of strings (patterns)
+- Default: `[]`
+- Environment: `FOUNDRY_DOC_IGNORE`
+
+List of files to ignore when generating documentation. This is a comma separated list of glob patterns.

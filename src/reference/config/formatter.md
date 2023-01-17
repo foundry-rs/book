@@ -92,8 +92,8 @@ Whether or not to wrap comments on `line_length` reached.
 
 ##### `ignore`
 
-- Type: string
-- Default: `""`
+- Type: array of strings (patterns)
+- Default: `[]`
 - Environment: `FOUNDRY_FMT_IGNORE` or `DAPP_FMT_IGNORE`
 
 List of files to ignore when formatting. This is a comma separated list of glob patterns.
