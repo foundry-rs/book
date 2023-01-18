@@ -85,7 +85,7 @@ Finally, the user writes the JSON object to a file. There are two cheatcodes to 
 - `vm.writeJson(string calldata json, string calldata path)` where the user passes the stringified JSON object and a `path`. This will create a file or overwrite an existing one.
 - `vm.writeJson(string calldata json, string calldata path, string calldata key)` where the user passes the `key` of a JSON file that exists in `path`. The JSON object will be placed under ther `key`, overwriting the existing one. This is very useful when the user wants to replace some value in a rather large JSON file and they don't want to serialize the entire JSON.
 
-**Remember:** The path needs to be in the allowed paths. Read more in [File cheatcodes](../fs.md)
+**Remember:** The path needs to be in the allowed paths. Read more in [File cheatcodes](./fs.md)
 
 ### Example
 
