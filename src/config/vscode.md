@@ -31,7 +31,7 @@ To enable the built-in formatter that comes with Foundry to automatically format
 {
   "editor.formatOnSave": true,
   "[solidity]": {
-    "editor.defaultFormatter": "JuanBlanco.vscode-solidity" 
+    "editor.defaultFormatter": "JuanBlanco.solidity" 
   },
   "solidity.formatter": "forge",
 }
