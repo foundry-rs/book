@@ -3,10 +3,10 @@
 ### Signature
 
 ```solidity
-function makePersistent(address) external;
-function makePersistent(address, address) external;
-function makePersistent(address, address, address) external;
-function makePersistent(address[] calldata) external;
+function makePersistent(address account) external;
+function makePersistent(address account0, address account1) external;
+function makePersistent(address account0, address account1, address account2) external;
+function makePersistent(address[] calldata accounts) external;
 ```
 
 ### Description
