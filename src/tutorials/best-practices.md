@@ -96,7 +96,10 @@ Additional best practices from [samsczun](https://twitter.com/samczsun)'s [How D
    - `testFork_Description` for tests that fork from a network.
    - `testForkFuzz_Revert[If|When]_Condition` for a fuzz test that forks and expects a revert.
 
-1. When using assertions like `assertEq`, consider leveraging the last string param to make it easier to identify failures. These can be kept brief, or even just be numbers&mdash;they basically serve as a replacement for showing line numbers of the revert, e.g. `assertEq(x, y, "1")` or `assertEq(x, y, "sum1")`. _(Note: [foundry-rs/foundry#2328](https://github.com/foundry-rs/foundry/issues/2328) tracks integrating this natively)._
+1. When using assertions like `assertEq`:
+
+   - Consider leveraging the last string param to make it easier to identify failures. These can be kept brief, or even just be numbers&mdash;they basically serve as a replacement for showing line numbers of the revert, e.g. `assertEq(x, y, "1")` or `assertEq(x, y, "sum1")`. _(Note: [foundry-rs/foundry#2328](https://github.com/foundry-rs/foundry/issues/2328) tracks integrating this natively)._
+   - Forge expects the order of `assertEq` arguments to be `assertEq(actual, expected)`, and will use those terms in logs when there's an assertion failure. You can remember this order because it's alphabetical: "**a**ctual" comes before "**e**xpected".
 
 1. When testing events, prefer setting all `expectEmit` arguments to `true`, i.e. `vm.expectEmit(true, true, true, true)`. Benefits:
 
@@ -200,8 +203,9 @@ You should _ensure_ that no _tainted_ data ever reaches a _sink_. That means tha
 
 1. Test your scripts.
 
-   - Unit test them by writing tests that assert on the state changes made from running the script.
+   - Unit test them like you would test normal contracts, by writing tests that assert on the state changes made from running the script.
    - Write your deploy script and scaffold tests by running that script. Then, run all tests against the state resulting from your production deployment script. This is a great way to gain confidence in a deploy script.
+   - Within your script itself, use `require` statements (or the `if (condition) revert()` pattern if you prefer) to stop execution of your script if something is wrong. For example, `require(computedAddress == deployedAddress, "address mismatch")`. Using the `assertEq` helpers instead will not stop execution.
 
 1. **Carefully audit which transactions are broadcast**. Transactions not broadcast are still executed in the context of a test, so missing broadcasts or extra broadcasts are easy sources of error in the previous step.
 
