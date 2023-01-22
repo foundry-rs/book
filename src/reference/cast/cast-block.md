@@ -6,27 +6,17 @@ cast-block - Get information about a block.
 
 ### SYNOPSIS
 
-``cast block`` [*options*] `--block` *block*
+``cast block`` [*options*] *block* [*field*]
 
 ### DESCRIPTION
 
 Get information about a block.
 
+The specified *block* can be a block number, or any of the tags: `earliest`, `latest` or `pending`.
+
 If *field* is specified, then only the given field of the block is displayed.
 
 ### OPTIONS
-
-#### Query Options
-
-`-B` *block*  
-`--block` *block*  
-&nbsp;&nbsp;&nbsp;&nbsp;The block height you want to query at.
-
-&nbsp;&nbsp;&nbsp;&nbsp;Can be a block number, or any of the tags: `earliest`, `latest` or `pending`.
-
-`-f` *field*  
-`--field` *field*  
-&nbsp;&nbsp;&nbsp;&nbsp;If specified, only get the given field of the block.
 
 {{#include ../common/display-options.md}}
 
@@ -40,12 +30,12 @@ If *field* is specified, then only the given field of the block is displayed.
 
 1. Get the latest block:
     ```sh
-    cast block --block latest
+    cast block latest
     ```
 
 2. Get the hash of the latest block:
     ```sh
-    cast block --block latest --field hash
+    cast block latest hash
     ```
 
 ### SEE ALSO
