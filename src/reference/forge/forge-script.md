@@ -97,12 +97,16 @@ Scripts can be used to apply state transitions on live contracts, or deploy and 
 
 2. Deploy a contract on Polygon [(see scripting tutorial for an example script)](../../tutorials/solidity-scripting.md). *The verifier url is different for every network.*
     ```sh
-    forge script script/NFT.s.sol:MyScript --chain-id 137 --rpc-url $RPC_URL --etherscan-api-key $POLYGONSCAN_API_KEY --verifier-url https://api.polygonscan.com/api --broadcast --verify -vvvv
+    forge script script/NFT.s.sol:MyScript --chain-id 137 --rpc-url $RPC_URL \
+    --etherscan-api-key $POLYGONSCAN_API_KEY --verifier-url https://api.polygonscan.com/api \
+    --broadcast --verify -vvvv
     ```
 
 3. Resume a failed script. Using the above as an example, remove `--broadcast` add `--resume`
     ```sh
-    forge script script/NFT.s.sol:MyScript --chain-id 137 --rpc-url $RPC_URL --etherscan-api-key $POLYGONSCAN_API_KEY --verifier-url https://api.polygonscan.com/api --verify -vvvv --resume
+    forge script script/NFT.s.sol:MyScript --chain-id 137 --rpc-url $RPC_URL \
+    --etherscan-api-key $POLYGONSCAN_API_KEY --verifier-url https://api.polygonscan.com/api \
+    --verify -vvvv --resume
     ```
 
 [debugger]: ../../forge/debugger.md
