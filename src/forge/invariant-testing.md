@@ -290,7 +290,7 @@ contract Basic4626Deposit {
 
 ```
 
-This contract's `deposit` function requires that the caller has a non-zero balance of the ERC-20 `asset`. In the open invariant testing approach, `deposit()` and `transfer()` would be called with a 50-50% distribution, but they would revert on every call. This would cause the invariant tests to "pass", but in reality no state was manipulated in the desired contract at all. This is where target contracts can be leveraged. When a contract requires some additional logic in order to function properly, it can be added in a dedicated contract called a `Handler`.
+This contract's `deposit` function requires that the caller has a non-zero balance of the ERC-20 `asset`. In the Open invariant testing approach, `deposit()` and `transfer()` would be called with a 50-50% distribution, but they would revert on every call. This would cause the invariant tests to "pass", but in reality no state was manipulated in the desired contract at all. This is where target contracts can be leveraged. When a contract requires some additional logic in order to function properly, it can be added in a dedicated contract called a `Handler`.
 
 ```solidity
     function deposit(uint256 assets) public virtual {
@@ -304,4 +304,18 @@ This contract's `deposit` function requires that the caller has a non-zero balan
 
 This contract will provide the necessary setup before a function call is made in order to ensure it is successful.
 
-Building on this concept, handlers can be used to develop more sophisticated invariant tests.
+Building on this concept, handlers can be used to develop more sophisticated invariant tests. With Open invariant testing, the tests run as shown in the diagram below, with random sequences of function calls being made to the protocol contracts directly with fuzzed parameters. This will cause reverts for more complex systems as outlined above.
+
+![Blank diagram](https://user-images.githubusercontent.com/44272939/214752968-5f0e7653-d52e-43e6-b453-cac935f5d97d.svg)
+
+By using Handler contracts and **excluding** all protocol contracts from the `targetContracts` array by using the `excludeContracts` function, all function calls made to protocol contracts can be made in a way that is governed by the Handler to ensure successful calls. This is outlined in the diagram below.
+
+![Invariant Diagrams - Page 2](https://user-images.githubusercontent.com/44272939/214752977-053f60e6-c644-42a9-8cff-4fd85a2517ac.svg)
+
+With this layer between the fuzzer and the protocol, more powerful testing can be achieved. 
+
+Within Handlers, "ghost variables" can be tracked across multiple function calls to add additional info for invariant tests. A good example of this is summing all of the `shares` that each LP owns after depositing into the ERC-4626 token as shown above, and using that in the invariant (`totalSupply == sumBalanceOf`). 
+
+Another benefit is the ability to perform assertions on function calls as they are happening. An example is asserting the ERC-20 balance of the LP has decremented by `assets` during the `deposit` function call. In this way, handler functions are similar to fuzz tests because they can take in fuzzed inputs, perform state changes, and assert before/after state.
+
+In addition, with Handlers, input parameters can be bounded to reasonable expected values such that `fail_on_revert` can be set to `true`. This ensures that every function call that is being made by the fuzzer must be successful against the protocol in order to get tests to pass. This is very useful for visibility and confidence that the protocol is being tested in the desired way.
