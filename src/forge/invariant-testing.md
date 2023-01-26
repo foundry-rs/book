@@ -9,6 +9,8 @@ Invariant testing campaigns have two dimensions, `runs` and `depth`.
 - `runs`: Number of times that a sequence of function calls is generated and run.
 - `depth`: Number of function calls made in a given `run`. All defined invariants are asserted after each function call is made.
 
+Similar to how standard tests are run in Foundry by prefixing a function name with `test`, invariant tests are denoted by prefixing the function name with `invariant` (e.g., `function invariant_A()`).
+
 ## Defining Invariants
 
 Invariants are mathematical expressions that should always hold true over the course of a fuzzing campaign. A good invariant testing suite should have as many invariants as possible, and can have different testing suites for different protocol states.
@@ -69,7 +71,7 @@ assertEq(
 
 ### Conditional Invariants
 
-Invariants must hold for the course over the course of a given fuzzing campaign, but that doesn't mean they must hold true in every situation. There is the possibility for certain invariants to be introduced/removed in a given scenario (e.g., during a liquidation). For this a dedicated testing contract should be used.
+Invariants must hold over the course of a given fuzzing campaign, but that doesn't mean they must hold true in every situation. There is the possibility for certain invariants to be introduced/removed in a given scenario (e.g., during a liquidation). For this a dedicated testing contract should be used.
 
 It is not recommended to introduce conditional logic into invariant assertions because they have the possibility of introducing false positives because of an incorrect code path. For example:
 
@@ -129,7 +131,7 @@ Target contracts can be set up using the following three methods:
 
 ## Target Contract Patterns
 
-When running invariant testing, especially against contracts with more complex logic, it is important to consider how the target contracts are used.
+This section will outline different approaches that can be used for invariant testing, as well as their pros and cons.
 
 ### Open Testing
 
@@ -184,7 +186,7 @@ This setup will call `foo.addToA()` and `foo.addToB()` with a 50%-50% probabilit
 [PASS] invariant_B() (runs: 50, calls: 10000, reverts: 5533)
 ```
 
-### Bounded Testing
+### Invariant Handlers
 
 For more complex and integrated protocols, more sophisticated target contract usage is required to achieve the desired results. For example, a ERC-4626 based contract that accepts deposits of another ERC-20 token:
 
@@ -301,3 +303,5 @@ This contract's `deposit` function requires that the caller has a non-zero balan
 ```
 
 This contract will provide the necessary setup before a function call is made in order to ensure it is successful.
+
+Building on this concept, handlers can be used to develop more sophisticated invariant tests.
