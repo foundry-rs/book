@@ -7,7 +7,7 @@ Invariant testing is a powerful tool to expose incorrect logic in protocols. Due
 
 Invariant testing campaigns have two dimensions, `runs` and `depth`.
 - `runs`: Number of times that a sequence of function calls is generated and run.
-- `depth`: Number of function calls made in a given `run`. All defined invariants are asserted after each function call is made.
+- `depth`: Number of function calls made in a given `run`. All defined invariants are asserted after each function call is made. If a function call reverts, the `depth` counter still increments.
 
 Similar to how standard tests are run in Foundry by prefixing a function name with `test`, invariant tests are denoted by prefixing the function name with `invariant` (e.g., `function invariant_A()`).
 
@@ -126,7 +126,7 @@ This is something to be mindful of when designing target contracts, as target co
 
 Target contracts can be set up using the following three methods:
 1. Contracts that are deployed in the `setUp` function are automatically added to the set of target contracts.
-2. Contracts that are added to the the `targetContracts` array are added to the set of target contracts. (TODO: check if this is possible during invariant campaigns yet)
+2. Contracts that are added to the the `targetContracts` array are added to the set of target contracts and used instead of the contract deployed in the `setUp`.
 3. Contracts that are deployed in the `setUp` can be **removed** from the target contracts if they are added to the `excludeContracts` array.
 
 ## Target Contract Patterns
@@ -304,7 +304,7 @@ This contract's `deposit` function requires that the caller has a non-zero balan
 
 This contract will provide the necessary setup before a function call is made in order to ensure it is successful.
 
-Building on this concept, handlers can be used to develop more sophisticated invariant tests. With Open invariant testing, the tests run as shown in the diagram below, with random sequences of function calls being made to the protocol contracts directly with fuzzed parameters. This will cause reverts for more complex systems as outlined above.
+Building on this concept, Handlers can be used to develop more sophisticated invariant tests. With Open invariant testing, the tests run as shown in the diagram below, with random sequences of function calls being made to the protocol contracts directly with fuzzed parameters. This will cause reverts for more complex systems as outlined above.
 
 ![Blank diagram](https://user-images.githubusercontent.com/44272939/214752968-5f0e7653-d52e-43e6-b453-cac935f5d97d.svg)
 
@@ -312,9 +312,9 @@ By using Handler contracts and **excluding** all protocol contracts from the `ta
 
 ![Invariant Diagrams - Page 2](https://user-images.githubusercontent.com/44272939/214752977-053f60e6-c644-42a9-8cff-4fd85a2517ac.svg)
 
-With this layer between the fuzzer and the protocol, more powerful testing can be achieved. 
+With this layer between the fuzzer and the protocol, more powerful testing can be achieved.
 
-Within Handlers, "ghost variables" can be tracked across multiple function calls to add additional info for invariant tests. A good example of this is summing all of the `shares` that each LP owns after depositing into the ERC-4626 token as shown above, and using that in the invariant (`totalSupply == sumBalanceOf`). 
+Within Handlers, "ghost variables" can be tracked across multiple function calls to add additional info for invariant tests. A good example of this is summing all of the `shares` that each LP owns after depositing into the ERC-4626 token as shown above, and using that in the invariant (`totalSupply == sumBalanceOf`).
 
 Another benefit is the ability to perform assertions on function calls as they are happening. An example is asserting the ERC-20 balance of the LP has decremented by `assets` during the `deposit` function call. In this way, handler functions are similar to fuzz tests because they can take in fuzzed inputs, perform state changes, and assert before/after state.
 
