@@ -71,7 +71,7 @@ this can be fixed by setting up the correct remapping. Create a file `remappings
 openzeppelin-contracts/=lib/openzeppelin-contracts/
 ```
 
-(You can find out more on remappings in [the dependecies documentation](../projects/dependencies.md).
+(You can find out more on remappings in [the dependencies documentation](../projects/dependencies.md).
 
 By default the compiler output will be in the `out` directory. To deploy our compiled contract with Forge we have to set environment variables for the RPC endpoint and the private key we want to use to deploy.
 

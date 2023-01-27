@@ -50,7 +50,7 @@ If you use Windows, you need to build from source to get Foundry.
 
 Download and run `rustup-init` from [rustup.rs](https://win.rustup.rs/x86_64). It will start the installation in a console.
 
-If you encouner an error, it is most likely the case that you do not have the VS Code Installer which you can [download here](https://visualstudio.microsoft.com/downloads/) and install.
+If you encounter an error, it is most likely the case that you do not have the VS Code Installer which you can [download here](https://visualstudio.microsoft.com/downloads/) and install.
 
 After this, run the following to build Foundry from source:
 

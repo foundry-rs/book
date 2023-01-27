@@ -95,7 +95,7 @@ Forge will sometimes check for newer Solidity versions that fit your project. To
 
 All solc versions are installed under `~/.svm/`. If you encounter solc related errors, such as `SolcError: ...` please to nuke `~/.svm/` and try again, this will trigger a fresh install and usually resolves the issue.
 
-If you're on apple silion, please ensure the [`z3` thereom prover](https://github.com/Z3Prover/z3
+If you're on apple silicon, please ensure the [`z3` thereom prover](https://github.com/Z3Prover/z3
 ) is installed: `brew install z3`
 
 > **Note**: native apple silicon builds are only available from `0.8.5` upwards. If you need older versions, you must enable apple silicon rosetta to run them.
@@ -173,7 +173,7 @@ It has been [reported](https://github.com/foundry-rs/foundry/issues/3268) that o
 
 ### Connection refused when run `forge build` .
 
-If you're unable to access github URLs called by `forge build` , you will see an error like
+If you're unable to access github URLs called by `forge build`, you will see an error like
 
 ```console
 Error: 

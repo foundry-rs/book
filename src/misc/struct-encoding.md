@@ -13,7 +13,7 @@ Only the new [ABI coder v2](https://docs.soliditylang.org/en/latest/layout-of-so
 
 Solidity structs map to the ABI type "tuple". For more information on how Solidity types map to ABI types see [Mapping Solidity to ABI types](https://docs.soliditylang.org/en/latest/abi-spec.html#mapping-solidity-to-abi-types) in the Solidity documentation.
 
-Structs are therefore encoded and decodes as tuples. So the struct we defined above, `MyStruct`, maps to the tuple `(address,uint256)` in terms of the ABI.
+Structs are therefore encoded and decoded as tuples. So the struct we defined above, `MyStruct`, maps to the tuple `(address,uint256)` in terms of the ABI.
 
 Let's see how this works in a contract:
 
