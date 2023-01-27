@@ -137,7 +137,7 @@ Deployed to: 0x23d465eaa80ad2e5cdb1a2345e4b54edd12560d3
 Transaction hash: 0xf88c68c4a03a86b0e7ecb05cae8dea36f2896cd342a6af978cab11101c6224a9
 ```
 
-We've just built, tested, and deployed our contract entirely within a docker container! This tutorial was intended to for testnet, but you can run the exact same Docker image targeting mainnet and be confident that the same code is being deployed by the same tooling.
+We've just built, tested, and deployed our contract entirely within a docker container! This tutorial was intended for testnet, but you can run the exact same Docker image targeting mainnet and be confident that the same code is being deployed by the same tooling.
 
 ### Why is this useful?
 
