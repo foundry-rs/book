@@ -33,7 +33,7 @@ In general, it's recommended to handle as much as possible with [`forge fmt`](..
 
 1. Note the tradeoffs between absolute and relative paths for imports (where absolute paths are relative to the repo root, e.g. `"src/interfaces/IERC20.sol"`), and choose the best approach for your project:
 
-   - Absolute paths make it easier to see where files are from and reduces churn when moving files around.
+   - Absolute paths make it easier to see where files are from and reduce churn when moving files around.
    - Relative paths make it more likely your editor can provide features like linting and autocomplete, since editors/extensions may not understand your remappings.
 
 1. If copying a library from a dependency (instead of importing it), use the `ignore = []` option in the config file to avoid formatting that file. This makes diffing it against the original simpler for reviewers and auditors.
@@ -124,7 +124,7 @@ Additional best practices from [samsczun](https://twitter.com/samczsun)'s [How D
    - Structure your tests so the data you are fuzzing over is computed locally by your contract, and not data that is used in an RPC call (may or may not be feasible based on what you're doing).
    - Lastly, you can of course always run a local node or bump your RPC plan.
 
-1. When writing fork tests, do not use the `--fork-url` flag. Instead, prefer the following approach for it's improved flexibility:
+1. When writing fork tests, do not use the `--fork-url` flag. Instead, prefer the following approach for its improved flexibility:
 
    - Define `[rpc_endpoints]` in the `foundry.toml` config file and use the [forking cheatcodes](../forge/fork-testing.md#forking-cheatcodes).
    - Access the RPC URL endpoint in your test with forge-std's `stdChains.ChainName.rpcUrl`. See the list of supported chains and expected config file aliases [here](https://github.com/foundry-rs/forge-std/blob/ff4bf7db008d096ea5a657f2c20516182252a3ed/src/StdCheats.sol#L255-L271).
@@ -179,7 +179,7 @@ Thanks to [@samsczun](https://twitter.com/samczsun)'s [How Do You Even Write Sec
 - Write positive and negative unit tests.
   - Write _positive_ unit tests for things that the code should handle. Validate _all_ state that changes from these tests.
   - Write _negative_ unit tests for things that the code should _not_ handle. It's helpful to follow up (as an adjacent test) with the positive test and make the change that it needs to pass.
-  - Each code path should have it's own unit test.
+  - Each code path should have its own unit test.
 - Write integration tests to test entire features.
 - Write fork tests to verify the correct behavior with existing deployed contract.
 
