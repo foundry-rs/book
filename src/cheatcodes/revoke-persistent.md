@@ -3,8 +3,8 @@
 ### Signature
 
 ```solidity
-    function revokePersistent(address) external;
-    function revokePersistent(address[] calldata) external;
+function revokePersistent(address) external;
+function revokePersistent(address[] calldata) external;
 ```
 
 ### Description
