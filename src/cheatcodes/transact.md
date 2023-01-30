@@ -31,7 +31,7 @@ address recipient = address(0x0C124046Fa7202f98E4e251B50488e34416Fc306);
 assertEq(sender.balance, 5764124000000000);
 assertEq(recipient.balance, 3936000000000000);
 
-// transfer amount: 0.000336 Ether
+// transfer amount: 0.003936 Ether
 uint256 transferAmount = 3936000000000000;
 
 // expected balance changes once the transaction is executed
