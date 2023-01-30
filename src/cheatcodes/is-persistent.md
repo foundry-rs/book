@@ -3,7 +3,7 @@
 ### Signature
 
 ```solidity
- function isPersistent(address) external returns (bool);
+function isPersistent(address) external returns (bool);
 ```
 
 ### Description
