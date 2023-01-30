@@ -10,9 +10,15 @@ function createSelectFork(string calldata urlOrAlias) external returns (uint256)
 function createSelectFork(string calldata urlOrAlias, uint256 block) external returns (uint256);
 ```
 
+```solidity
+function createSelectFork(string calldata urlOrAlias, bytes32 transaction) external returns (uint256);
+```
+
 ### Description
 
 Creates _and_ selects a new fork from the given endpoint and returns the identifier of the fork. If a block number is passed as an argument, the fork will begin on that block, otherwise it will begin on the _latest_ block.
+
+If a transaction hash is provided, it will roll the fork to the block the transaction was mined in and replays all previously executed transactions.
 
 ### Examples
 
