@@ -8,7 +8,7 @@ function createFork(string calldata urlOrAlias) external returns (uint256)
 ```
 
 ```solidity
-// Creates _and_ also selects a new fork with the given endpoint and block and returns the identifier of the fork
+// Creates a new fork with the given endpoint and block and returns the identifier of the fork
 function createFork(string calldata urlOrAlias, uint256 block) external returns (uint256);
 ```
 
@@ -45,5 +45,6 @@ assertEq(block.number, 1_337_000);
 
 ### SEE ALSO
 
-- [createFork](./create-fork.md)
 - [activeFork](./active-fork.md)
+- [selectFork](./select-fork.md)
+- [createSelectFork](./create-select-fork.md)
