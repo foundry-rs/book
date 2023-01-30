@@ -16,4 +16,4 @@ This will prevent cheatcode access from accounts already deployed on the forked 
 
 > ℹ️ **Note**
 >
-> This is only useful for complexer test setup in forking mode.
+> This is only useful for more complex test setups in forking mode.
