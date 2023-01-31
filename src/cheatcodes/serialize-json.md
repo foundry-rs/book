@@ -78,6 +78,8 @@ The cheatcodes return the JSON object that is being serialized **up to that poin
 
 Finally, the user writes the JSON object to a file by using [writeJson](./write-json.md).
 
+**Remember:** The file path needs to be in the allowed paths. Read more in [File cheatcodes](./fs.md).
+
 ### Example
 
 Let's assume we want to write the following JSON to a file:
