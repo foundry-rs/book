@@ -17,7 +17,7 @@ function startBroadcast(uint256 privateKey) external;
 ### Description
 
 Using the address that calls the test contract or the address / private key provided
-as the sender, have all subsequent calls (at this call depth only) create
+as the sender, has all subsequent calls (at this call depth only and excluding cheatcode calls) create
 transactions that can later be signed and sent onchain.
 
 ### Examples
@@ -44,3 +44,8 @@ function deployOther() public {
     vm.stopBroadcast();
 }
 ```
+
+### SEE ALSO
+
+- [broadcast](./broadcast.md)
+- [stopBroadcast](./stop-broadcast.md)

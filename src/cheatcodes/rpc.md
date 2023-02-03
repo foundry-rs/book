@@ -3,10 +3,10 @@
 ### Signature
 
 ```solidity
-    // Returns the URL for a configured alias
-    function rpcUrl(string calldata alias) external returns(string memory);
-    // Returns all configured (alias, URL) pairs
-    function rpcUrls() external returns(string[2][] memory);
+// Returns the URL for a configured alias
+function rpcUrl(string calldata alias) external returns(string memory);
+// Returns all configured (alias, URL) pairs
+function rpcUrls() external returns(string[2][] memory);
 ```
 
 ### Description

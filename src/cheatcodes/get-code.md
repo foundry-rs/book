@@ -37,13 +37,12 @@ assertEq0(address(myContract).code, anotherAddress.code); // [PASS]
 Deploy a contract to an arbitrary address by combining `getCode` and [`etch`](./etch.md)
 
 ```solidity
-
 // Deploy
 bytes memory args = abi.encode(arg1, arg2);
 bytes memory bytecode = abi.encodePacked(vm.getCode("MyContract.sol:MyContract"), args);
 address deployed;
 assembly {
-deployed := create(0, add(bytecode, 0x20), mload(bytecode))
+    deployed := create(0, add(bytecode, 0x20), mload(bytecode))
 }
 
 // Set the bytecode of an arbitrary address

@@ -46,11 +46,11 @@ contract BasicVault {
 We have a test function to ensure that a user is unable to withdraw tokens in excess of his deposit, like so:
 
 ```solidity
-    function testUserCannotWithdrawExcessOfDeposit() public {
-        vm.prank(user);
-        vm.expectRevert(stdError.arithmeticError);
-        vault.withdraw(userTokens + 100*10**18);
-    }
+function testUserCannotWithdrawExcessOfDeposit() public {
+    vm.prank(user);
+    vm.expectRevert(stdError.arithmeticError);
+    vault.withdraw(userTokens + 100*10**18);
+}
 ```
 
 1. User has tokens of amount `userTokens` deposited in a Vault contract.

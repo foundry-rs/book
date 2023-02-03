@@ -13,7 +13,7 @@ function toString(bytes) external returns (string memory);
 
 ### Description
 
-Convert any type to it's string version. Very useful for operations that demand strings, such as the cheatcode `ffi`.
+Convert any type to its string version. Very useful for operations that demand strings, such as the cheatcode `ffi`.
 
 Bytes are converted to a string of their hex representation with `0x` at the start, signifying that they are encoded in hex.
 
