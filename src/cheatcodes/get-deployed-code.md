@@ -31,7 +31,9 @@ Deploy a stateless contract at an arbitrary address using `getDeployedCode` and 
 contract Override {
     event Payload(address sender, address target, bytes data);
 
-    function emitPayload(address target, bytes calldata message) external payable returns (uint256) {
+    function emitPayload(
+        address target, bytes calldata message
+    ) external payable returns (uint256) {
         emit Payload(msg.sender, target, message);
         return 0;
     }
@@ -43,10 +45,7 @@ bytes memory code = vm.getDeployedCode("Override.sol:Override");
 // set the code of an arbitrary address
 address overrideAddress = address(64);
 vm.etch(overrideAddress, code);
-assertEq(
-    overrideAddress.code,
-    code
-)
+assertEq(overrideAddress.code, code);
 ```
 
 ### SEE ALSO

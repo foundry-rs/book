@@ -31,10 +31,10 @@ We use the terms `number`, `string`, `object`, `array`, `boolean` as they are de
 
 - Numbers >= 0 are encoded as `uint256`
 - Negative numbers are encoded as `int256`
-- A string that can be decoded into a type of `H160` and starts with `0x` is encoded as an `address`.In other words, if it can be decoded into an address, it's probably an address
+- A string that can be decoded into a type of `H160` and starts with `0x` is encoded as an `address`. In other words, if it can be decoded into an address, it's probably an address
 - A string that starts with `0x` is encoded as `bytes32` if it has a length of `66` or else to `bytes`
 - A string that is neither an `address`, a `bytes32` or `bytes`, is encoded as a `string`
-- An array is encoded as a dynamic array of the type of it's first element
+- An array is encoded as a dynamic array of the type of its first element
 - An object (`{}`) is encoded as a `tuple`
 
 ### Type Coercion
@@ -96,10 +96,10 @@ Thus, the first (in alphabetical order) value of the JSON, will be abi-encoded a
 The above JSON would not be able to be decoded with the struct below:
 
 ```solidity
-    struct Json {
-        uint256 b;
-        uint256 a;
-    }
+struct Json {
+    uint256 b;
+    uint256 a;
+}
 ```
 
 The reason is that it would try to decode the string `"sigma"` as a uint. To be exact, it would be decoded, but it would result to a wrong number, since it would interpret the bytes incorrectly.
@@ -115,18 +115,18 @@ If your JSON object has `hex numbers`, they will be encoded as bytes. The way to
 ### How to use StdJson
 
 1. Import the library `import "../StdJson.sol";`
-2. Define it's usage with `string`: `using stdJson for string;`
+2. Define its usage with `string`: `using stdJson for string;`
 3. If you want to parse simple values (numbers, address, etc.) use the helper functions
 4. If you want to parse entire JSON objects:
    1. Define the `struct` in Solidity. Make sure to follow the alphabetical order -- it's hard to debug
    2. Use the `parseRaw()` helper function to return abi-encoded `bytes` and then decode them to your struct
 
 ```solidity
-    string memory root = vm.projectRoot();
-    string memory path = string.concat(root, "/src/test/fixtures/broadcast.log.json");
-    string memory json = vm.readFile(path);
-    bytes memory transactionDetails = json.parseRaw(".transactions[0].tx");
-    RawTx1559Detail memory rawTxDetail = abi.decode(transactionDetails, (RawTx1559Detail));
+string memory root = vm.projectRoot();
+string memory path = string.concat(root, "/src/test/fixtures/broadcast.log.json");
+string memory json = vm.readFile(path);
+bytes memory transactionDetails = json.parseRaw(".transactions[0].tx");
+RawTx1559Detail memory rawTxDetail = abi.decode(transactionDetails, (RawTx1559Detail));
 ```
 
 ### Forge script artifacts
@@ -138,11 +138,11 @@ Currently, we only support artifacts produced by EIP1559-compatible chains and w
 To read the transactions, it's as easy as doing:
 
 ```solidity
-    function testReadEIP1559Transactions() public {
-        string memory root = vm.projectRoot();
-        string memory path = string.concat(root, "/src/test/fixtures/broadcast.log.json");
-        Tx1559[] memory transactions = readTx1559s(path);
-    }
+function testReadEIP1559Transactions() public {
+    string memory root = vm.projectRoot();
+    string memory path = string.concat(root, "/src/test/fixtures/broadcast.log.json");
+    Tx1559[] memory transactions = readTx1559s(path);
+}
 ```
 
 and then you can access their various fields in these structs:

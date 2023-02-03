@@ -15,5 +15,4 @@ Parses the value of `string` into `address`
 ```solidity
 string memory addressAsString = "0x0000000000000000000000000000000000000000";
 address stringToAddress = vm.parseAddress(addressAsString); // 0x0000000000000000000000000000000000000000
-
 ```

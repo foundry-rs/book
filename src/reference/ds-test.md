@@ -107,7 +107,7 @@ Where `<type>` can be `address`, `bytes32`, `int`, `uint`, `bytes`, `string`
 
 ```solidity
 uint256 amount = 1 ether;
-emit log_named_uint("Amount: ", amount);
+emit log_named_uint("Amount", amount);
 // amount: 1000000000000000000
 ```
 
@@ -127,7 +127,7 @@ Where `<type>` can be `int`, `uint`
 
 ```solidity
 uint256 amount = 1 ether;
-emit log_named_decimal_uint("Amount: ", amount, 18);
+emit log_named_decimal_uint("Amount", amount, 18);
 // amount: 1.000000000000000000
 ```
 

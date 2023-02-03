@@ -203,7 +203,7 @@ contract MyScript is Script {
 We create a contract called `MyScript` and it inherits `Script` from Forge Std.
 
 ```solidity
- function run() external {
+function run() external {
 ```
 
 By default, scripts are executed by calling the function named `run`, our entrypoint.
@@ -221,7 +221,7 @@ vm.startBroadcast(deployerPrivateKey);
 This is a special cheatcode that records calls and contract creations made by our main script contract. We pass the `deployerPrivateKey` in order to instruct it to use that key for signing the transactions. Later, we will broadcast these transactions to deploy our NFT contract.
 
 ```solidity
- NFT nft = new NFT("NFT_tutorial", "TUT", "baseUri");
+NFT nft = new NFT("NFT_tutorial", "TUT", "baseUri");
 ```
 
 Here we just create our NFT contract. Because we called `vm.startBroadcast()` before this line, the contract creation will be recorded by Forge, and as mentioned previously, we can broadcast the transaction to deploy the contract on-chain. The broadcast transaction logs will be stored in the `broadcast` directory by default. You can change the logs location by setting [`broadcast`](../reference/config/project.md#broadcast) in your `foundry.toml` file.

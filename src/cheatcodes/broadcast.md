@@ -17,7 +17,7 @@ function broadcast(uint256 privateKey) external;
 ### Description
 
 Using the address that calls the test contract or the address / private key provided
-as the sender, have the next call (at this call depth only) create a
+as the sender, has the next call (at this call depth only and excluding cheatcode calls) create a
 transaction that can later be signed and sent onchain.
 
 ### Examples
@@ -39,3 +39,8 @@ function deploy() public {
     test.t(3);
 } 
 ```
+
+### SEE ALSO
+
+- [startBroadcast](./start-broadcast.md)
+- [stopBroadcast](./stop-broadcast.md)
