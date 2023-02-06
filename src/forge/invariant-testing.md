@@ -1,7 +1,7 @@
 # Invariant Testing
 ## Overview
 
-Invariant testing allows for a set of mathematical invariants to be tested against randomized sequences of pre-defined function calls from pre-defined contracts. After each function call is performed, all defined invariants are asserted.
+Invariant testing allows for a set of invariant expressions to be tested against randomized sequences of pre-defined function calls from pre-defined contracts. After each function call is performed, all defined invariants are asserted.
 
 Invariant testing is a powerful tool to expose incorrect logic in protocols. Due to the fact that function call sequences are randomized and have fuzzed inputs, invariant testing can expose false assumptions and incorrect logic in edge cases and highly complex protocol states.
 
@@ -13,9 +13,13 @@ Similar to how standard tests are run in Foundry by prefixing a function name wi
 
 ## Defining Invariants
 
-Invariants are mathematical expressions that should always hold true over the course of a fuzzing campaign. A good invariant testing suite should have as many invariants as possible, and can have different testing suites for different protocol states.
+Invariants are conditions expressions that should always hold true over the course of a fuzzing campaign. A good invariant testing suite should have as many invariants as possible, and can have different testing suites for different protocol states.
 
-There are different ways to assert invariants:
+Examples of invariants are:
+- *"The xy=k formula always holds"* for Uniswap
+- *"The sum of all owner balances is equal to the total supply"* for an ERC-20 token.
+
+There are different ways to assert invariants, as outlined in the table below:
 
 <table>
 <tr><th>Type</th><th>Explanation</th><th>Example</th></tr>
@@ -23,7 +27,7 @@ There are different ways to assert invariants:
 <tr>
 
 <td>Direct assertions</td>
-<td>Directly query a protocol smart contracts and assert values are expected.</td>
+<td>Query a protocol smart contract and assert values are as expected.</td>
 <td>
 
 ```solidity
@@ -54,8 +58,8 @@ assertEq(
 
 <tr>
 
-<td>Naive implementation assertions</td>
-<td>Query a protocol smart contract function and compare it against a naive and typically highly gas-inefficient implementation of the same desired logic.</td>
+<td>Deoptimizing (Naive implementation assertions)</td>
+<td>Query a protocol smart contract and compare it against a naive and typically highly gas-inefficient implementation of the same desired logic.</td>
 <td>
 
 ```solidity
@@ -71,7 +75,7 @@ assertEq(
 
 ### Conditional Invariants
 
-Invariants must hold over the course of a given fuzzing campaign, but that doesn't mean they must hold true in every situation. There is the possibility for certain invariants to be introduced/removed in a given scenario (e.g., during a liquidation). For this a dedicated testing contract should be used.
+Invariants must hold over the course of a given fuzzing campaign, but that doesn't mean they must hold true in every situation. There is the possibility for certain invariants to be introduced/removed in a given scenario (e.g., during a liquidation).
 
 It is not recommended to introduce conditional logic into invariant assertions because they have the possibility of introducing false positives because of an incorrect code path. For example:
 
@@ -96,11 +100,23 @@ function invariant_example() external {
 }
 ```
 
-Another approach to handle different invariants across protocol states is to utilize dedicated invariant testing contracts for different scenarios. These scenarios can be bootstrapped using the `setUp` function, but it is more powerful to leverage target contracts, which are outlined in the next section.
+Another approach to handle different invariants across protocol states is to utilize dedicated invariant testing contracts for different scenarios. These scenarios can be bootstrapped using the `setUp` function, but it is more powerful to leverage *invariant targets* to govern the fuzzer to behave in a way that will only yield certain results (e.g., avoid liquidations).
 
-## Target Contracts
+## Invariant Targets
 
-Target contracts are the set of contracts that will be called over the course of a given invariant test fuzzing campaign. This set of contracts defaults to all contracts that were deployed in the `setUp` function, but can be customized to allow for more advanced invariant testing.
+**Target Contracts**: The set of contracts that will be called over the course of a given invariant test fuzzing campaign. This set of contracts defaults to all contracts that were deployed in the `setUp` function, but can be customized to allow for more advanced invariant testing.
+
+**Target Senders**: The invariant test fuzzer picks values for `msg.sender` at random when performing fuzz campaigns to simulate multiple actors in a system by default. If desired, the set of senders can be customized in the `setUp` function.
+
+**Target Selectors**: The set of function selectors that are used by the fuzzer for invariant testing. These can be used to use a subset of functions within a given target contract.
+
+**Target Artifacts**: The desired ABI to be used for a given contract. These can be used for proxy contract configurations.
+
+**Target Artifact Selectors**: The desired subset of function selectors to be used within a given ABI to be used for a given contract. These can be used for proxy contract configurations.
+
+Priorities for the invariant fuzzer in the cases of target clashes are:
+
+`targetSelectors | targetArtifactSelectors > excludeContracts | excludeArtifacts > targetContracts | targetArtifacts`
 
 ### Function Call Probability Distribution
 
@@ -122,18 +138,30 @@ targetContract2: 50%
 
 This is something to be mindful of when designing target contracts, as target contracts with less functions will have each function called more often due to this probability distribution.
 
+### Invariant Test Helper Functions
+Invariant test helper functions are included in [`forge-std`](https://github.com/foundry-rs/forge-std/blob/master/src/StdInvariant.sol) to allow for configurable invariant test setup. The helper functions are outlined below:
+
+| Function | Description |
+|-|-|
+| `excludeContract(address newExcludedContract_)` | Adds a given address to the `_excludedContracts` array. This set of contracts is explicitly excluded from the target contracts.|
+| `excludeSender(address newExcludedSender_)` | Adds a given address to the to the `_excludedSenders` array. This set of addresses is explictly excluded from the target senders. |
+| `excludeArtifact(string memory newExcludedArtifact_)` | Adds a given string to the to the `_excludedArtifacts` array. This set of strings is explictly excluded from the target artifacts. |
+| `targetArtifact(string memory newTargetedArtifact_)` | Adds a given string to the to the `_targetedArtifacts` array. This set of strings is used for the target artifacts.  |
+| `targetArtifactSelector(FuzzSelector memory newTargetedArtifactSelector_)` | Adds a given `FuzzSelector` to the to `_targetedArtifactSelectors` array. This set of `FuzzSelector`s is used for the target artifact selectors. |
+| `targetContract(address newTargetedContract_)` | Adds a given address to the to `_targetedContracts` array. This set of addresses is used for the target contracts. This array overwrites the set of contracts that was deployed during the `setUp`. |
+| `targetSelector(FuzzSelector memory newTargetedSelector_)` | Adds a given `FuzzSelector` to the to `_targetedSelectors` array. This set of `FuzzSelector`s is used for the target contract selectors. |
+| `targetSender(address newTargetedSender_)` | Adds a given address to the to `_targetedSenders` array. This set of addresses is used for the target senders. |
+
+
 ### Target Contract Setup
 
 Target contracts can be set up using the following three methods:
-1. Contracts that are deployed in the `setUp` function are automatically added to the set of target contracts.
-2. Contracts that are added to the the `targetContracts` array are added to the set of target contracts and used instead of the contract deployed in the `setUp`.
+1. Contracts that are manually added to the the `targetContracts` array are added to the set of target contracts.
+2. Contracts that are deployed in the `setUp` function are automatically added to the set of target contracts (only works if no contracts have been manually added using option 1).
 3. Contracts that are deployed in the `setUp` can be **removed** from the target contracts if they are added to the `excludeContracts` array.
 
-## Target Contract Patterns
 
-This section will outline different approaches that can be used for invariant testing, as well as their pros and cons.
-
-### Open Testing
+## Open Testing
 
 The default configuration for target contracts is set to all contracts that are deployed during the setup. For smaller modules and more arithmetic contracts, this works well. For example:
 
@@ -160,7 +188,7 @@ contract ExampleContract1 {
 This contract could be deployed and tested using the default target contract pattern:
 
 ```solidity
-contract InvariantExample1 {
+contract InvariantExample1 is Test {
 
     ExampleContract1 foo;
 
@@ -186,13 +214,13 @@ This setup will call `foo.addToA()` and `foo.addToB()` with a 50%-50% probabilit
 [PASS] invariant_B() (runs: 50, calls: 10000, reverts: 5533)
 ```
 
-### Invariant Handlers
+## Handler-Based Testing
 
-For more complex and integrated protocols, more sophisticated target contract usage is required to achieve the desired results. For example, a ERC-4626 based contract that accepts deposits of another ERC-20 token:
+For more complex and integrated protocols, more sophisticated target contract usage is required to achieve the desired results. To illustrate how Handlers can be leveraged, the following contract will be used (an ERC-4626 based contract that accepts deposits of another ERC-20 token):
 
 ```solidity
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.7;
+pragma solidity ^0.8.17;
 
 interface IERC20Like {
 
@@ -270,12 +298,6 @@ contract Basic4626Deposit {
     /*** Public View Functions                                                                  ***/
     /**********************************************************************************************/
 
-    function convertToAssets(uint256 shares_) public view returns (uint256 assets_) {
-        uint256 supply_ = totalSupply;  // Cache to stack.
-
-        assets_ = supply_ == 0 ? shares_ : (shares_ * totalAssets()) / supply_;
-    }
-
     function convertToShares(uint256 assets_) public view returns (uint256 shares_) {
         uint256 supply_ = totalSupply;  // Cache to stack.
 
@@ -290,16 +312,18 @@ contract Basic4626Deposit {
 
 ```
 
+### Handler Functions
+
 This contract's `deposit` function requires that the caller has a non-zero balance of the ERC-20 `asset`. In the Open invariant testing approach, `deposit()` and `transfer()` would be called with a 50-50% distribution, but they would revert on every call. This would cause the invariant tests to "pass", but in reality no state was manipulated in the desired contract at all. This is where target contracts can be leveraged. When a contract requires some additional logic in order to function properly, it can be added in a dedicated contract called a `Handler`.
 
 ```solidity
-    function deposit(uint256 assets) public virtual {
-        asset.mint(address(this), assets);
+function deposit(uint256 assets) public virtual {
+    asset.mint(address(this), assets);
 
-        asset.approve(address(token), assets);
+    asset.approve(address(token), assets);
 
-        uint256 shares = token.deposit(assets, address(this));
-    }
+    uint256 shares = token.deposit(assets, address(this));
+}
 ```
 
 This contract will provide the necessary setup before a function call is made in order to ensure it is successful.
@@ -308,14 +332,144 @@ Building on this concept, Handlers can be used to develop more sophisticated inv
 
 ![Blank diagram](https://user-images.githubusercontent.com/44272939/214752968-5f0e7653-d52e-43e6-b453-cac935f5d97d.svg)
 
-By using Handler contracts and **excluding** all protocol contracts from the `targetContracts` array by using the `excludeContracts` function, all function calls made to protocol contracts can be made in a way that is governed by the Handler to ensure successful calls. This is outlined in the diagram below.
+By manually adding all Handler contracts to the `targetContracts` array, all function calls made to protocol contracts can be made in a way that is governed by the Handler to ensure successful calls. This is outlined in the diagram below.
 
-![Invariant Diagrams - Page 2](https://user-images.githubusercontent.com/44272939/214752977-053f60e6-c644-42a9-8cff-4fd85a2517ac.svg)
+![Invariant Diagrams - Page 2](https://user-images.githubusercontent.com/44272939/216420091-8a5c2bcc-d586-458f-be1e-a9ea0ef5961f.svg)
 
 With this layer between the fuzzer and the protocol, more powerful testing can be achieved.
 
-Within Handlers, "ghost variables" can be tracked across multiple function calls to add additional info for invariant tests. A good example of this is summing all of the `shares` that each LP owns after depositing into the ERC-4626 token as shown above, and using that in the invariant (`totalSupply == sumBalanceOf`).
+### Handler Ghost Variables
 
-Another benefit is the ability to perform assertions on function calls as they are happening. An example is asserting the ERC-20 balance of the LP has decremented by `assets` during the `deposit` function call. In this way, handler functions are similar to fuzz tests because they can take in fuzzed inputs, perform state changes, and assert before/after state.
+Within Handlers, "ghost variables" can be tracked across multiple function calls to add additional information for invariant tests. A good example of this is summing all of the `shares` that each LP owns after depositing into the ERC-4626 token as shown above, and using that in the invariant (`totalSupply == sumBalanceOf`).
 
-In addition, with Handlers, input parameters can be bounded to reasonable expected values such that `fail_on_revert` can be set to `true`. This ensures that every function call that is being made by the fuzzer must be successful against the protocol in order to get tests to pass. This is very useful for visibility and confidence that the protocol is being tested in the desired way.
+```solidity
+function deposit(uint256 assets) public virtual {
+    asset.mint(address(this), assets);
+
+    asset.approve(address(token), assets);
+
+    uint256 shares = token.deposit(assets, address(this));
+
+    sumBalanceOf += shares;
+}
+```
+
+### Function-Level Assertions
+
+Another benefit is the ability to perform assertions on function calls as they are happening. An example is asserting the ERC-20 balance of the LP has decremented by `assets` during the `deposit` function call, as well as their LP token balance incrementing by `shares`. In this way, handler functions are similar to fuzz tests because they can take in fuzzed inputs, perform state changes, and assert before/after state.
+
+```solidity
+function deposit(uint256 assets) public virtual {
+    asset.mint(address(this), assets);
+
+    asset.approve(address(token), assets);
+
+    uint256 beforeBalance = asset.balanceOf(address(this));
+
+    uint256 shares = token.deposit(assets, address(this));
+
+    assertEq(asset.balanceOf(address(this)), beforeBalance - assets);
+
+    sumBalanceOf += shares;
+}
+```
+
+### Bounded/Unbounded Functions
+
+In addition, with Handlers, input parameters can be bounded to reasonable expected values such that `fail_on_revert` in `foundry.toml` can be set to `true`. This can be accomplished using the `bound()` helper function from `forge-std`. This ensures that every function call that is being made by the fuzzer must be successful against the protocol in order to get tests to pass. This is very useful for visibility and confidence that the protocol is being tested in the desired way.
+
+```solidity
+function deposit(uint256 assets) external {
+    assets = bound(assets, 0, 1e30);
+
+    asset.mint(address(this), assets);
+
+    asset.approve(address(token), assets);
+
+    uint256 beforeBalance = asset.balanceOf(address(this));
+
+    uint256 shares = token.deposit(assets, address(this));
+
+    assertEq(asset.balanceOf(address(this)), beforeBalance - assets);
+
+    sumBalanceOf += shares;
+}
+```
+
+This can also be accomplished by inheriting non-bounded functions from dedicated "unbounded" Handler contracts that can be used for `fail_on_revert = false` testing. This type of testing is also useful since it can expose issues in assumptions made with `bound` function usage.
+
+```solidity
+// Unbounded
+function deposit(uint256 assets) public virtual {
+    asset.mint(address(this), assets);
+
+    asset.approve(address(token), assets);
+
+    uint256 beforeBalance = asset.balanceOf(address(this));
+
+    uint256 shares = token.deposit(assets, address(this));
+
+    assertEq(asset.balanceOf(address(this)), beforeBalance - assets);
+
+    sumBalanceOf += shares;
+}
+```
+
+```solidity
+// Bounded
+function deposit(uint256 assets) external {
+    assets = bound(assets, 0, 1e30);
+
+    super.deposit(assets);
+}
+```
+
+### Actor Management
+
+In the function calls above, it can be seen that `address(this)` is the sole depositor in the ERC-4626 contract, which is not a realistic representation of its intended use. By leveraging the `prank` cheatcodes in `forge-std`, each Handler can manage a set of actors and use them to perform the same function call from different `msg.sender` addresses. This can be accomplished using the following modifier:
+
+```solidity
+address[] public actors;
+
+address internal currentActor;
+
+modifier useActor(uint256 actorIndexSeed) {
+    currentActor = actors[bound(actorIndexSeed, 0, actors.length - 1)];
+    vm.startPrank(currentActor);
+    _;
+    vm.stopPrank();
+}
+```
+
+Using multiple actors allows for more granular ghost variable usage as well. This is demonstrated in the functions below:
+
+```solidity
+// Unbounded
+function deposit(
+    uint256 assets,
+    uint256 actorIndexSeed
+) public virtual useActor(actorIndexSeed) {
+    asset.mint(currentActor, assets);
+
+    asset.approve(address(token), assets);
+
+    uint256 beforeBalance = asset.balanceOf(address(this));
+
+    uint256 shares = token.deposit(assets, address(this));
+
+    assertEq(asset.balanceOf(address(this)), beforeBalance - assets);
+
+    sumBalanceOf += shares;
+
+    sumDeposits[currentActor] += assets
+}
+```
+
+```solidity
+// Bounded
+function deposit(uint256 assets, uint256 actorIndexSeed) external {
+    assets = bound(assets, 0, 1e30);
+
+    super.deposit(assets, actorIndexSeed);
+}
+```
