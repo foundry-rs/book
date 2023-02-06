@@ -17,7 +17,7 @@ Invariants are conditions expressions that should always hold true over the cour
 
 Examples of invariants are:
 - *"The xy=k formula always holds"* for Uniswap
-- *"The sum of all owner balances is equal to the total supply"* for an ERC-20 token.
+- *"The sum of all user balances is equal to the total supply"* for an ERC-20 token.
 
 There are different ways to assert invariants, as outlined in the table below:
 
