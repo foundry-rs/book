@@ -12,7 +12,7 @@ In general, it's recommended to handle as much as possible with [`forge fmt`](..
     - [Private Functions](#private-functions)
     - [Workaround Functions](#workaround-functions)
   - [Best practices](#best-practices)
-  - [Taint Analysis](#taint-analysis)
+  - [Input Analysis](#taint-analysis)
 - [Scripts](#scripts)
 - [Comments](#comments)
 - [Resources](#resources)
@@ -183,7 +183,7 @@ Thanks to [@samsczun](https://twitter.com/samczsun)'s [How Do You Even Write Sec
 - Write integration tests to test entire features.
 - Write fork tests to verify the correct behavior with existing deployed contract.
 
-### Taint Analysis
+### Input Analysis
 
 When testing, you should prioritize functions that an attacker can affect, that means functions that accept some kind of user input. These are called _sources_.
 
