@@ -1,6 +1,6 @@
 ## 📖 Foundry Book
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-94-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-95-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 A book on all things Foundry. [Read now](https://book.getfoundry.sh).
@@ -157,6 +157,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://www.ryzhak.com/"><img src="https://avatars.githubusercontent.com/u/6339689?v=4?s=100" width="100px;" alt="ryzhak"/><br /><sub><b>ryzhak</b></sub></a><br /><a href="https://github.com/foundry-rs/book/commits?author=ryzhak" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Evalir"><img src="https://avatars.githubusercontent.com/u/26014927?v=4?s=100" width="100px;" alt="Enrique Ortiz"/><br /><sub><b>Enrique Ortiz</b></sub></a><br /><a href="https://github.com/foundry-rs/book/commits?author=Evalir" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/mtomassoli"><img src="https://avatars.githubusercontent.com/u/7474741?v=4?s=100" width="100px;" alt="Massimiliano Tomassoli"/><br /><sub><b>Massimiliano Tomassoli</b></sub></a><br /><a href="https://github.com/foundry-rs/book/commits?author=mtomassoli" title="Documentation">📖</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://rohitgoswami.in"><img src="https://avatars.githubusercontent.com/u/15854015?v=4?s=100" width="100px;" alt="mr-roh"/><br /><sub><b>mr-roh</b></sub></a><br /><a href="https://github.com/foundry-rs/book/commits?author=rohit-goswami" title="Documentation">📖</a></td>
     </tr>
   </tbody>
 </table>
