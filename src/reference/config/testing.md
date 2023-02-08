@@ -404,7 +404,7 @@ Fails the invariant fuzzing if a revert occurs.
 - Default: false
 - Environment: `FOUNDRY_INVARIANT_CALL_OVERRIDE`
 
-Allows overriding an unsafe external call when running invariant tests. eg. reentrancy checks.
+Overrides unsafe external calls when running invariant tests, useful for e.g. performing reentrancy checks.
 
 ##### `dictionary_weight`
 
