@@ -24,6 +24,10 @@ The argument *who* can be an ENS name or an address.
 
 &nbsp;&nbsp;&nbsp;&nbsp;Can be a block number, or any of the tags: `earliest`, `latest` or `pending`.
 
+`-e` *ether*  
+`--ether` *ether*  
+&nbsp;&nbsp;&nbsp;&nbsp; If this flag is used then balance will be shown in ether
+
 #### RPC Options
 
 {{#include ../common/rpc-url-option.md}}
