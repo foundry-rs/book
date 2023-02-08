@@ -365,11 +365,11 @@ Configuration values for `[invariant]` section.
 >   section, these values will automatically be set to the values specified in
 >   the `[fuzz]` section.
 > * For any profile other than `default`:
->     * If the common entries are set in the `[invariant]` (same
->       as `[profile.default.invariant]`) section, then the values from
->       `[invariant]` section will be used.
->     * If the common entries are not set in the `[invariant]` section,
->       but are set in the `[fuzz]` (same as `[profile.default.fuzz]`) section,
+>     * If at least one entry is set in the `[invariant]` (same as
+>       `[profile.default.invariant]`) section, then the values from
+>       `[invariant]` section will be used, including defaults.
+>     * If no entry is set in the `[invariant]` section, but there are
+>       entries in the `[fuzz]` (same as `[profile.default.fuzz]`) section,
 >       then the values from the `[fuzz]` section will be used.
 >     * If it's none of the cases described above, then the defaults
 >       will be used.
