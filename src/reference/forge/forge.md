@@ -106,6 +106,9 @@ This program is a set of tools to build, test, fuzz, debug and deploy Solidity s
 [forge upload-selectors](./forge-upload-selectors.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Uploads abi of given contract to https://sig.eth.samczsun.com function selector database.
 
+[forge doc](./forge-doc.md)  
+&nbsp;&nbsp;&nbsp;&nbsp;Generate documentation for Solidity source files.
+
 ### OPTIONS
 
 #### Special Options
