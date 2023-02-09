@@ -5,7 +5,7 @@ Invariant testing allows for a set of invariant expressions to be tested against
 
 Invariant testing is a powerful tool to expose incorrect logic in protocols. Due to the fact that function call sequences are randomized and have fuzzed inputs, invariant testing can expose false assumptions and incorrect logic in edge cases and highly complex protocol states.
 
-Invariant testing campaigns have two dimensions, `runs` and `depth`.
+Invariant testing campaigns have two dimensions, `runs` and `depth`:
 - `runs`: Number of times that a sequence of function calls is generated and run.
 - `depth`: Number of function calls made in a given `run`. All defined invariants are asserted after each function call is made. If a function call reverts, the `depth` counter still increments.
 
@@ -144,9 +144,9 @@ Invariant test helper functions are included in [`forge-std`](https://github.com
 | Function | Description |
 |-|-|
 | `excludeContract(address newExcludedContract_)` | Adds a given address to the `_excludedContracts` array. This set of contracts is explicitly excluded from the target contracts.|
-| `excludeSender(address newExcludedSender_)` | Adds a given address to the to the `_excludedSenders` array. This set of addresses is explictly excluded from the target senders. |
-| `excludeArtifact(string memory newExcludedArtifact_)` | Adds a given string to the to the `_excludedArtifacts` array. This set of strings is explictly excluded from the target artifacts. |
-| `targetArtifact(string memory newTargetedArtifact_)` | Adds a given string to the to the `_targetedArtifacts` array. This set of strings is used for the target artifacts.  |
+| `excludeSender(address newExcludedSender_)` | Adds a given address to the `_excludedSenders` array. This set of addresses is explicitly excluded from the target senders. |
+| `excludeArtifact(string memory newExcludedArtifact_)` | Adds a given string to the `_excludedArtifacts` array. This set of strings is explicitly excluded from the target artifacts. |
+| `targetArtifact(string memory newTargetedArtifact_)` | Adds a given string to the `_targetedArtifacts` array. This set of strings is used for the target artifacts.  |
 | `targetArtifactSelector(FuzzSelector memory newTargetedArtifactSelector_)` | Adds a given `FuzzSelector` to the to `_targetedArtifactSelectors` array. This set of `FuzzSelector`s is used for the target artifact selectors. |
 | `targetContract(address newTargetedContract_)` | Adds a given address to the to `_targetedContracts` array. This set of addresses is used for the target contracts. This array overwrites the set of contracts that was deployed during the `setUp`. |
 | `targetSelector(FuzzSelector memory newTargetedSelector_)` | Adds a given `FuzzSelector` to the to `_targetedSelectors` array. This set of `FuzzSelector`s is used for the target contract selectors. |
@@ -156,7 +156,7 @@ Invariant test helper functions are included in [`forge-std`](https://github.com
 ### Target Contract Setup
 
 Target contracts can be set up using the following three methods:
-1. Contracts that are manually added to the the `targetContracts` array are added to the set of target contracts.
+1. Contracts that are manually added to the `targetContracts` array are added to the set of target contracts.
 2. Contracts that are deployed in the `setUp` function are automatically added to the set of target contracts (only works if no contracts have been manually added using option 1).
 3. Contracts that are deployed in the `setUp` can be **removed** from the target contracts if they are added to the `excludeContracts` array.
 
