@@ -453,11 +453,11 @@ function deposit(
 
     asset.approve(address(token), assets);
 
-    uint256 beforeBalance = asset.balanceOf(address(this));
+    uint256 beforeBalance = asset.balanceOf(currentActor);
 
     uint256 shares = token.deposit(assets, address(this));
 
-    assertEq(asset.balanceOf(address(this)), beforeBalance - assets);
+    assertEq(asset.balanceOf(currentActor), beforeBalance - assets);
 
     sumBalanceOf += shares;
 
