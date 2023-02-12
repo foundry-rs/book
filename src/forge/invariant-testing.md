@@ -371,6 +371,12 @@ function deposit(uint256 assets) public virtual {
     assertEq(asset.balanceOf(address(this)), beforeBalance - assets);
 
     sumBalanceOf += shares;
+
+    // We can also check the previously mentioned `totalSupply == sumBalanceOf` invariant here
+    assertEq(token.totalSupply(), sumBalanceOf);
+
+    // Another invariant: the shares and deposited assets should remain in 1:1 ratio
+    assertEq(sumBalanceOf, asset.balanceOf(address(token)));
 }
 ```
 
