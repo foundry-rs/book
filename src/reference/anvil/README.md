@@ -133,6 +133,9 @@ The standard methods are based on [this](https://eth.wiki/json-rpc/API) referenc
 * `debug_traceTransaction`  
 Use `anvil --steps-tracing` to get `structLogs`  
 
+* `debug_traceCall`
+Note that non-standard traces are not yet support.  This means you can't pass any arguments to the `trace` parameter.
+
 * `trace_transaction`
   
 * `trace_block`
