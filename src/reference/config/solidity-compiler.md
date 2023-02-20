@@ -323,6 +323,16 @@ For example:
 contracts = { "src/MyContracts.sol" = ["ContractA", "ContractB"] }
 ```
 
+###### `model_checker.div_mod_with_slacks`
+
+- Type: boolean
+- Default: false
+- Environment: N/A
+
+Sets how division and modulo operations should be encoded.
+
+Refer to the [Solidity documentation](https://docs.soliditylang.org/en/latest/smtchecker.html#division-and-modulo-with-slack-variables) for more information.
+
 ###### `model_checker.engine`
 
 - Type: string (see below)
@@ -336,6 +346,44 @@ Specifies the model checker engine to run. Valid values are:
 - `all`: Runs both engines
 
 Refer to the [Solidity documentation](https://docs.soliditylang.org/en/latest/smtchecker.html#model-checking-engines) for more information on the engines.
+
+###### `model_checker.invariants`
+
+- Type: array of strings
+- Default: N/A
+- Environment: N/A
+
+Sets the model checker invariants. Valid values are:
+
+- `contract`: Contract Invariants
+- `reentrancy`: Reentrancy Properties
+
+Refer to the [Solidity documentation](https://docs.soliditylang.org/en/latest/smtchecker.html#reported-inferred-inductive-invariants) for more information on the invariants.
+
+###### `model_checker.show_unproved`
+
+- Type: boolean
+- Default: false
+- Environment: N/A
+
+Whether or not to output all unproved targets.
+
+Refer to the [Solidity documentation](https://docs.soliditylang.org/en/latest/smtchecker.html#unproved-targets) for more information.
+
+###### `model_checker.solvers`
+
+- Type: array of strings
+- Default: N/A
+- Environment: N/A
+
+Sets the model checker solvers. Valid values are:
+
+- `cvc4`
+- `eld`: introduced in v0.8.18
+- `smtlib2`
+- `z3`
+
+Refer to the [Solidity documentation](https://docs.soliditylang.org/en/latest/smtchecker.html#smt-and-horn-solvers) for more information.
 
 ###### `model_checker.timeout`
 
