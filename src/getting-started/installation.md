@@ -22,7 +22,7 @@ foundryup
 
 If everything goes well, you will now have four binaries at your disposal: `forge`, `cast`, `anvil`, and `chisel`.
 
-If you use macOS and display below error, you need type `brew install libusb` to install Library
+If you use macOS and face the error below, you need to type `brew install libusb` to install the Library
 
 ```sh
 dyld[32719]: Library not loaded: /usr/local/opt/libusb/lib/libusb-1.0.0.dylib
@@ -44,23 +44,23 @@ curl https://sh.rustup.rs -sSf | sh
 
 It will download a script and start the installation.
 
-### On Windows, build from source
+### On Windows, build from the source
 
-If you use Windows, you need to build from source to get Foundry.
+If you use Windows, you need to build from the source to get Foundry.
 
 Download and run `rustup-init` from [rustup.rs](https://win.rustup.rs/x86_64). It will start the installation in a console.
 
 If you encounter an error, it is most likely the case that you do not have the VS Code Installer which you can [download here](https://visualstudio.microsoft.com/downloads/) and install.
 
-After this, run the following to build Foundry from source:
+After this, run the following to build Foundry from the source:
 
 ```sh
 cargo install --git https://github.com/foundry-rs/foundry foundry-cli anvil chisel --bins --locked
 ```
 
-To update from source, run the same command again.
+To update from the source, run the same command again.
 
-### Using with Docker
+### Using Foundry with Docker
 
 Foundry can also be used entirely within a Docker container. If you don't have it, Docker can be installed directly from [Docker's website](https://docs.docker.com/get-docker/).
 
