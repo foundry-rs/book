@@ -6,7 +6,7 @@ forge-test - Run the project's tests.
 
 ### SYNOPSIS
 
-`forge test` [*options*]
+``forge test`` [*options*]
 
 ### DESCRIPTION
 
@@ -74,36 +74,32 @@ You can pass `--json` to make it easier for outside extensions to parse structur
 ### EXAMPLES
 
 1. Run the tests:
-
-   ```sh
-   forge test
-   ```
+    ```sh
+    forge test
+    ```
 
 2. Open a test in the debugger:
-
-   ```sh
-   forge test --debug testSomething
-   ```
+    ```sh
+    forge test --debug testSomething
+    ```
 
 3. Generate a gas report:
-
-   ```sh
-   forge test --gas-report
-   ```
+    ```sh
+    forge test --gas-report
+    ```
 
 4. Only run tests in `test/Contract.t.sol` in the `BigTest` contract that start with `testFail`:
+    ```sh
+    forge test --match-path test/Contract.t.sol --match-contract BigTest \
+      --match-test "testFail*"
+    ```
 
-   ```sh
-   forge test --match-path test/Contract.t.sol --match-contract BigTest \
-     --match-test "testFail*"
-   ```
-
-5. List tests in desired format:
-   ```sh
-   forge test --list
-   forge test --list --json
-   forge test --list --json --match-test "testFail*" | tail -n 1 | json_pp
-   ```
+5. List tests in desired format
+    ```sh
+    forge test --list
+    forge test --list --json
+    forge test --list --json --match-test "testFail*" | tail -n 1 | json_pp
+    ```
 
 ### SEE ALSO
 
