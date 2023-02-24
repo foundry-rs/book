@@ -124,7 +124,7 @@ Functions from these contracts will be called at random with fuzzed inputs. The 
 
 For example:
 
-```
+```text
 targetContract1: 50%
 ├─ function1: 50% (25%)
 └─ function2: 50% (25%)
@@ -209,7 +209,7 @@ contract InvariantExample1 is Test {
 
 This setup will call `foo.addToA()` and `foo.addToB()` with a 50%-50% probability distribution with fuzzed inputs. Inevitably, the inputs will start to cause overflows and the function calls will start reverting. Since the default configuration in invariant testing is `fail_on_revert = false`, this will not cause the tests to fail. The invariants will hold throughout the rest of the fuzzing campaign and the result is that the test will pass. The output will look something like this:
 
-```
+```text
 [PASS] invariant_A() (runs: 50, calls: 10000, reverts: 5533)
 [PASS] invariant_B() (runs: 50, calls: 10000, reverts: 5533)
 ```
