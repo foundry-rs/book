@@ -87,7 +87,7 @@ function testERC20EmitsBatchTransfer() public {
     }
 
     // We also expect a custom `BatchTransfer(uint256 numberOfTransfers)` event.
-    vm.expectEmit(false, false, false, false);
+    vm.expectEmit(false, false, false, true);
     emit BatchTransfer(users.length);
 
     // We perform the call.
