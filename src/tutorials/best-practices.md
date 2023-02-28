@@ -88,7 +88,7 @@ Additional best practices from [samsczun](https://twitter.com/samczsun)'s [How D
 
 1. Integration tests should live in the same `test` directory, with a clear naming convention. These may be in dedicated files, or they may live next to related unit tests in existing test files.
 
-1. Be consistent with test naming, as it's helpful for filtering tests (e.g. for gas reports you might want to filter out revert tests). When combining naming conventions, keep them alphabetical.
+1. Be consistent with test naming, as it's helpful for filtering tests (e.g. for gas reports you might want to filter out revert tests). When combining naming conventions, keep them alphabetical. Below is a sample of valid names. A comprehensive list of valid and invalid examples can be found [here](https://github.com/ScopeLift/scopelint/blob/1857e3940bfe92ac5a136827374f4b27ff083971/src/check/validators/test_names.rs#L106-L143).
 
    - `test_Description` for standard tests.
    - `testFuzz_Description` for fuzz tests.
