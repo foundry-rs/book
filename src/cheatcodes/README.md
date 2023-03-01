@@ -174,6 +174,12 @@ interface CheatCodes {
     // Sets an address' balance
     function deal(address who, uint256 newBalance) external;
 
+    // Set the balance of an account for any ERC20 token
+    function deal(address token, address to, uint256 give) external;
+    
+    // Alternative signature to update `totalSupply`
+    function deal(address token, address to, uint256 give, bool adjust) external;
+    
     // Sets an address' code
     function etch(address who, bytes calldata code) external;
 
