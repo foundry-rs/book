@@ -30,8 +30,8 @@ log_uint256(alice.balance); // 1000000000000000000
 
 ```solidity
 address alice = address(1);
-vm.deal(DAI, alice, 1 ether);
-log_uint256(DAI.balanceOf(alice); // 1000000000000000000
+vm.deal(address(DAI), alice, 1 ether);
+log_uint256(address(DAI).balanceOf(alice); // 1000000000000000000
 ```
 
 ### SEE ALSO
