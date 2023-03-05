@@ -17,7 +17,7 @@ Perform a simple JSON-RPC POST request for the given method and with the params
 #### Query Options
 
 `-r` *url*  
-`--rpc-rul` *url*  
+`--rpc-url` *url*  
 &nbsp;&nbsp;&nbsp;&nbsp;The URL of the provider
 
 `-w`  
