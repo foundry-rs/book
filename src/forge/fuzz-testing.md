@@ -52,7 +52,7 @@ And now it passes:
 You may want to exclude certain cases using the [`assume`](../cheatcodes/assume.md) cheatcode. In those cases, fuzzer will discard the inputs and start a new fuzz run:
 
 ```solidity
-function testWithdraw(uint96 amount) public {
+function testFuzz_Withdraw(uint96 amount) public {
     vm.assume(amount > 0.1 ether);
     // snip
 }
