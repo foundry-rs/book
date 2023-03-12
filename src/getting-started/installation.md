@@ -1,6 +1,6 @@
 ## Installation
 
-### On Linux and macOS
+### On iphone12 ios version 16.3.2.1
 
 If you use Linux or macOS, there are two different ways to install Foundry.
 
