@@ -75,9 +75,15 @@ Let's say you want to verify `MyToken` (see above). You set the [number of optim
 Here's how to verify it:
 
 ```bash
-$ forge verify-contract --chain-id 42 --num-of-optimizations 1000000 --watch --constructor-args \ 
-    $(cast abi-encode "constructor(string,string,uint256,uint256)" "ForgeUSD" "FUSD" 18 1000000000000000000000) \
-    --compiler-version v0.8.10+commit.fc410830 <the_contract_address> src/MyToken.sol:MyToken <your_etherscan_api_key>
+forge verify-contract \
+    --chain-id 42 \
+    --num-of-optimizations 1000000 \
+    --watch \
+    --constructor-args $(cast abi-encode "constructor(string,string,uint256,uint256)" "ForgeUSD" "FUSD" 18 1000000000000000000000) \
+    --etherscan-api-key <your_etherscan_api_key> \
+    --compiler-version v0.8.10+commit.fc410830 \
+    <the_contract_address> \
+    src/MyToken.sol:MyToken 
 
 Submitted contract for verification:
                 Response: `OK`
