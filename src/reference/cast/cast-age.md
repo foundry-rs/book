@@ -32,12 +32,13 @@ Get the timestamp of a block.
 
 1. Get the timestamp of the latest block:
     ```sh
-    cast age latest
+    cast age # or
+    cast age --block latest
     ```
 
 2. Get the timestamp of the genesis block:
     ```sh
-    cast age 1
+    cast age --block 1
     ```
 
 ### SEE ALSO
