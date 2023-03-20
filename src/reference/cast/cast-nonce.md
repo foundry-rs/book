@@ -22,7 +22,7 @@ The argument *who* can be an ENS name or an address.
 `--block` *block*  
 &nbsp;&nbsp;&nbsp;&nbsp;The block height you want to query at.
 
-&nbsp;&nbsp;&nbsp;&nbsp;Can be a block number, or any of the tags: `earliest`, `latest` or `pending`.
+&nbsp;&nbsp;&nbsp;&nbsp;Can be a block number, or any of the tags: `earliest`, `finalized`, `safe`, `latest` or `pending`.
 
 #### RPC Options
 
