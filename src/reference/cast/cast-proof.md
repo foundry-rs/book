@@ -35,7 +35,7 @@ The displayed output is a JSON object with the following keys:
 `--block` *block*  
 &nbsp;&nbsp;&nbsp;&nbsp;The block height you want to query at.
 
-&nbsp;&nbsp;&nbsp;&nbsp;Can be a block number, or any of the tags: `earliest`, `latest` or `pending`.
+&nbsp;&nbsp;&nbsp;&nbsp;Can be a block number, or any of the tags: `earliest`, `finalized`, `safe`, `latest` or `pending`.
 
 #### RPC Options
 
