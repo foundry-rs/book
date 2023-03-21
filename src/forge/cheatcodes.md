@@ -49,7 +49,7 @@ The test passed because the `prank` cheatcode changed our identity to the zero a
 If we run the tests again with traces turned on, we can see that we reverted with the correct error message.
 
 ```ignore
-$ forge test -vvvv --match-test testFailIncrementAsNotOwner
+$ forge test -vvvv --match-test testFail_IncrementAsNotOwner
 {{#include ../output/cheatcodes/forge-test-cheatcodes-tracing:output}}
 ```
 
@@ -81,15 +81,15 @@ Events are inheritable members of contracts. When you emit an event, the argumen
 
 When we call `vm.expectEmit(true, true, false, true);`, we want to check the 1st and 2nd `indexed` topic for the next event.
 
-The expected `Transfer` event in `testExpectEmit()` means we are expecting that `from` is  `address(this)`, and `to` is `address(1337)`. This is compared against the event emitted from `emitter.t()`.
+The expected `Transfer` event in `test_ExpectEmit()` means we are expecting that `from` is  `address(this)`, and `to` is `address(1337)`. This is compared against the event emitted from `emitter.t()`.
 
 In other words, we are checking that the first topic from `emitter.t()` is equal to `address(this)`. The 3rd argument in `expectEmit` is set to `false` because there is no need to check the third topic in the `Transfer` event, since there are only two. It does not matter even if we set to `true`.
 
 The 4th argument in `expectEmit` is set to `true`, which means that we want to check "non-indexed topics", also known as data.
 
-For example, we want the data from the expected event in `testExpectEmit` - which is `amount` - to equal to the data in the actual emitted event. In other words, we are asserting that `amount` emitted by `emitter.t()` is equal to `1337`. If the fourth argument in `expectEmit` was set to `false`, we would not check `amount`.
+For example, we want the data from the expected event in `test_ExpectEmit` - which is `amount` - to equal to the data in the actual emitted event. In other words, we are asserting that `amount` emitted by `emitter.t()` is equal to `1337`. If the fourth argument in `expectEmit` was set to `false`, we would not check `amount`.
 
-In other words, `testExpectEmitDoNotCheckData` is a valid test case, even though the amounts differ, since we do not check the data.
+In other words, `test_ExpectEmit_DoNotCheckData` is a valid test case, even though the amounts differ, since we do not check the data.
 
 <br>
 

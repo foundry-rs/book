@@ -158,8 +158,6 @@ runs = 256
 # `max_local_rejects` option isn't exposed here since we're not using
 # `prop_filter`.
 max_test_rejects = 65536
-# Being deprecated in favor of `max_test_rejects`. Will be removed in future versions.
-max_global_rejects = 65536
 # The weight of the dictionary
 dictionary_weight = 40
 # The flag indicating whether to include values from storage

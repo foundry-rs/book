@@ -194,57 +194,59 @@ The url of the rpc server that should be used for any rpc calls.
 
 The etherscan API key for RPC calls.
 
-##### `test_pattern`
+##### `match-test`
 
 - Type: regex
 - Default: none
-- Environment: `FOUNDRY_TEST_PATTERN` or `DAPP_TEST_PATTERN`
+- Environment: `FOUNDRY_MATCH_TEST` or `DAPP_MATCH_TEST`
 
 Only run test methods matching regex.
 Equivalent to `forge test --match-test <TEST_PATTERN>`
 
-##### `test_pattern_inverse`
+##### `no-match-test`
 
 - Type: regex
 - Default: none
-- Environment: `FOUNDRY_TEST_PATTERN_INVERSE` or `DAPP_TEST_PATTERN_INVERSE`
+- Environment: `FOUNDRY_NO_MATCH_TEST` or `DAPP_NO_MATCH_TEST`
 
 Only run test methods not matching regex.
 Equivalent to `forge test --no-match-test <TEST_PATTERN_INVERSE>`
 
-##### `contract_pattern`
+##### `match-contract`
 
 - Type: regex
 - Default: none
-- Environment: `FOUNDRY_CONTRACT_PATTERN` or `DAPP_CONTRACT_PATTERN`
+- Environment: `FOUNDRY_MATCH_CONTRACT` or `DAPP_MATCH_CONTRACT`
 
 Only run test methods in contracts matching regex.
 Equivalent to `forge test --match-contract <CONTRACT_PATTERN>`
 
-##### `contract_pattern_inverse`
+##### `no-match-contract`
 
 - Type: regex
 - Default: none
-- Environment: `FOUNDRY_CONTRACT_PATTERN_INVERSE` or `DAPP_CONTRACT_PATTERN_INVERSE`
+- Environment: `FOUNDRY_NO_MATCH_CONTRACT` or `DAPP_NO_MATCH_CONTRACT`
 
 Only run test methods in contracts not matching regex.
 Equivalent to `forge test --no-match-contract <CONTRACT_PATTERN_INVERSE>`
 
-##### `path_pattern`
+##### `match-path`
 
 - Type: regex
 - Default: none
-- Environment: `FOUNDRY_PATH_PATTERN` or `DAPP_PATH_PATTERN`
+- Environment: `FOUNDRY_MATCH_PATH` or `DAPP_MATCH_PATH`
 
 Only runs test methods on files matching the path.
+Equivalent to `forge test --match-path <PATH_PATTERN>`
 
-##### `path_pattern_inverse`
+##### `no-match-path`
 
 - Type: regex
 - Default: none
-- Environment: `FOUNDRY_PATH_PATTERN_INVERSE` or `DAPP_PATH_PATTERN_INVERSE`
+- Environment: `FOUNDRY_NO_MATCH_PATH` or `DAPP_NO_MATCH_PATH`
 
 Only runs test methods on files not matching the path.
+Equivalent to `forge test --no-match-path <PATH_PATTERN_INVERSE>`
 
 ##### `block_gas_limit`
 

@@ -16,7 +16,7 @@ contract ContractBTest is Test {
     // ANCHOR_END: setUp
 
     // ANCHOR: testCannotSubtract43
-    function testCannotSubtract43() public {
+    function test_CannotSubtract43() public {
         vm.expectRevert(stdError.arithmeticError);
         testNumber -= 43;
     }

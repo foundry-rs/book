@@ -88,7 +88,7 @@ Additional best practices from [samsczun](https://twitter.com/samczsun)'s [How D
 
 1. Integration tests should live in the same `test` directory, with a clear naming convention. These may be in dedicated files, or they may live next to related unit tests in existing test files.
 
-1. Be consistent with test naming, as it's helpful for filtering tests (e.g. for gas reports you might want to filter out revert tests). When combining naming conventions, keep them alphabetical.
+1. Be consistent with test naming, as it's helpful for filtering tests (e.g. for gas reports you might want to filter out revert tests). When combining naming conventions, keep them alphabetical. Below is a sample of valid names. A comprehensive list of valid and invalid examples can be found [here](https://github.com/ScopeLift/scopelint/blob/1857e3940bfe92ac5a136827374f4b27ff083971/src/check/validators/test_names.rs#L106-L143).
 
    - `test_Description` for standard tests.
    - `testFuzz_Description` for fuzz tests.
@@ -96,10 +96,7 @@ Additional best practices from [samsczun](https://twitter.com/samczsun)'s [How D
    - `testFork_Description` for tests that fork from a network.
    - `testForkFuzz_Revert[If|When]_Condition` for a fuzz test that forks and expects a revert.
 
-1. When using assertions like `assertEq`:
-
-   - Consider leveraging the last string param to make it easier to identify failures. These can be kept brief, or even just be numbers&mdash;they basically serve as a replacement for showing line numbers of the revert, e.g. `assertEq(x, y, "1")` or `assertEq(x, y, "sum1")`. _(Note: [foundry-rs/foundry#2328](https://github.com/foundry-rs/foundry/issues/2328) tracks integrating this natively)._
-   - Forge expects the order of `assertEq` arguments to be `assertEq(actual, expected)`, and will use those terms in logs when there's an assertion failure. You can remember this order because it's alphabetical: "**a**ctual" comes before "**e**xpected".
+1. When using assertions like `assertEq`, consider leveraging the last string param to make it easier to identify failures. These can be kept brief, or even just be numbers&mdash;they basically serve as a replacement for showing line numbers of the revert, e.g. `assertEq(x, y, "1")` or `assertEq(x, y, "sum1")`. _(Note: [foundry-rs/foundry#2328](https://github.com/foundry-rs/foundry/issues/2328) tracks integrating this natively)._
 
 1. When testing events, prefer setting all `expectEmit` arguments to `true`, i.e. `vm.expectEmit(true, true, true, true)`. Benefits:
 
@@ -107,7 +104,7 @@ Additional best practices from [samsczun](https://twitter.com/samczsun)'s [How D
    - If you add a topic (i.e. a new indexed parameter), it's now tested by default.
    - Even if you only have 1 topic, the extra `true` arguments don't hurt.
 
-1. Remember to write invariant tests! For the assertion string, use a verbose english description of the invariant: `assertEq(x + y, z, "Invariant violated: the sum of x and y must always equal z")`. More info on best practices coming soon.
+1. Remember to write invariant tests! For the assertion string, use a verbose english description of the invariant: `assertEq(x + y, z, "Invariant violated: the sum of x and y must always equal z")`. For more info on this, check out the [Invariant Testing](../forge/invariant-testing) tutorial.
 
 ### Fork Tests
 
