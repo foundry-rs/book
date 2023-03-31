@@ -168,9 +168,9 @@ The default configuration for target contracts is set to all contracts that are 
 ```solidity
 contract ExampleContract1 {
 
-    uint256 val1;
-    uint256 val2;
-    uint256 val3;
+    uint256 public val1;
+    uint256 public val2;
+    uint256 public val3;
 
     function addToA(uint256 amount) external {
         val1 += amount;
