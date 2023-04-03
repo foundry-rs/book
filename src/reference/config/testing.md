@@ -387,7 +387,7 @@ The number of runs that must execute for each invariant test group. See also [fu
 ##### `depth`
 
 - Type: integer
-- Default: 256
+- Default: 15
 - Environment: `FOUNDRY_INVARIANT_DEPTH`
 
 The number of calls executed to attempt to break invariants in one run.
