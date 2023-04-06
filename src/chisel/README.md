@@ -3,7 +3,7 @@
 Chisel is an advanced Solidity REPL shipped with Foundry. It can be used to quickly test the behavior of Solidity snippets
 on a local or forked network.
 
-Chisel is part of the Foundry suite and is installed alongside `forge`, `cast`, and `anvil`. If you havent installed Foundry
+Chisel is part of the Foundry suite and is installed alongside `forge`, `cast`, and `anvil`. If you haven't installed Foundry
 yet, see [Foundry installation](../getting-started/installation.md). 
 
 > Note: If you have an older version of Foundry installed, you'll need to re-install `foundryup` in order for Chisel to be downloaded.
