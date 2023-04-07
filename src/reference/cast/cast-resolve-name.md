@@ -6,7 +6,7 @@ cast-resolve-name - Perform an ENS lookup.
 
 ### SYNOPSIS
 
-``cast lookup-address`` [*options*] *who*
+``cast resolve-name`` [*options*] *who*
 
 ### DESCRIPTION
 
