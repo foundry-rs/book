@@ -16,7 +16,7 @@ You can select the profile to use by setting the `FOUNDRY_PROFILE` environment v
 
 ### Global configuration
 
-You can create a `foundry.toml` file in your home folder to configure Foundry globally.
+You can create a `foundry.toml` file in `~/.foundry` folder to configure Foundry globally.
 
 ### Environment variables
 
