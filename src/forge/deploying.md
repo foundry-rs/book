@@ -70,13 +70,13 @@ Moreover, you may need to provide:
 - the number of optimizations, if the Solidity optimizer was activated.  It is auto-detected if not specified.
 - the [chain ID](https://evm-chainlist.netlify.app/), if the contract is not on Ethereum Mainnet
 
-Let's say you want to verify `MyToken` (see above). You set the [number of optimizations](../reference/config/solidity-compiler.md#optimizer_runs) to 1 million, compiled it with v0.8.10, and deployed it, as shown above, to the Kovan testnet (chain ID: 42). Note that `--num-of-optimizations` will default to 0 if not set on verification, while it defaults to 200 if not set on deployment, so make sure you pass `--num-of-optimizations 200` if you left the default compilation settings. 
+Let's say you want to verify `MyToken` (see above). You set the [number of optimizations](../reference/config/solidity-compiler.md#optimizer_runs) to 1 million, compiled it with v0.8.10, and deployed it, as shown above, to the Sepolia testnet (chain ID: 11155111). Note that `--num-of-optimizations` will default to 0 if not set on verification, while it defaults to 200 if not set on deployment, so make sure you pass `--num-of-optimizations 200` if you left the default compilation settings. 
 
 Here's how to verify it:
 
 ```bash
 forge verify-contract \
-    --chain-id 42 \
+    --chain-id 11155111 \
     --num-of-optimizations 1000000 \
     --watch \
     --constructor-args $(cast abi-encode "constructor(string,string,uint256,uint256)" "ForgeUSD" "FUSD" 18 1000000000000000000000) \
@@ -88,7 +88,7 @@ forge verify-contract \
 Submitted contract for verification:
                 Response: `OK`
                 GUID: `a6yrbjp5prvakia6bqp5qdacczyfhkyi5j1r6qbds1js41ak1a`
-                url: https://kovan.etherscan.io//address/0x6a54…3a4c#code
+                url: https://sepolia.etherscan.io//address/0x6a54…3a4c#code
 ```
 
 It is recommended to use the [`--watch`](../reference/forge/forge-verify-contract.md#verify-contract-options) flag along
@@ -98,7 +98,7 @@ If the `--watch` flag was not supplied, you can check
 the verification status with the [`forge verify-check`](../reference/forge/forge-verify-check.md) command:
 
 ```bash
-$ forge verify-check --chain-id 42 <GUID> <your_etherscan_api_key>
+$ forge verify-check --chain-id 11155111 <GUID> <your_etherscan_api_key>
 Contract successfully verified.
 ```
 
