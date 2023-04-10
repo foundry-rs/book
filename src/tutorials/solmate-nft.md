@@ -203,7 +203,8 @@ contract NFTTest is Test {
         nft = new NFT("NFT_tutorial", "TUT", "baseUri");
     }
 
-    function testFailNoMintPricePaid() public {
+    function testRevertMintWithoutValue() public {
+        vm.expectRevert(MintPriceNotPaid.selector);
         nft.mintTo(address(1));
     }
 
@@ -211,7 +212,7 @@ contract NFTTest is Test {
         nft.mintTo{value: 0.08 ether}(address(1));
     }
 
-    function testFailMaxSupplyReached() public {
+    function testRevertMintMaxSupplyReached() public {
         uint256 slot = stdstore
             .target(address(nft))
             .sig("currentTokenId()")
@@ -219,10 +220,12 @@ contract NFTTest is Test {
         bytes32 loc = bytes32(slot);
         bytes32 mockedCurrentTokenId = bytes32(abi.encode(10000));
         vm.store(address(nft), loc, mockedCurrentTokenId);
+        vm.expectRevert(MaxSupply.selector);
         nft.mintTo{value: 0.08 ether}(address(1));
     }
 
-    function testFailMintToZeroAddress() public {
+    function testRevertMintToZeroAddress() public {
+        vm.expectRevert("INVALID_RECIPIENT");
         nft.mintTo{value: 0.08 ether}(address(0));
     }
 
@@ -275,8 +278,9 @@ contract NFTTest is Test {
         assertEq(balance, 1);
     }
 
-    function testFailUnSafeContractReceiver() public {
+    function testRevertUnSafeContractReceiver() public {
         vm.etch(address(1), bytes("mock code"));
+        vm.expectRevert(bytes(""));
         nft.mintTo{value: 0.08 ether}(address(1));
     }
 
