@@ -144,7 +144,7 @@ Note that non-standard traces are not yet support.  This means you can't pass an
 The `anvil_*` namespace is an alias for `hardhat`. For more info, refer to the [Hardhat documentation](https://hardhat.org/hardhat-network/reference#hardhat-network-methods).
 
 `anvil_impersonateAccount`   
-Send transactions impersonating an externally owned account or contract. While impersonating a contract, the contract functions can not be called. `anvil_stopImpersonatingAccount` must be used if the contract's functions are to be called again. See also [EIP-3607](https://eips.ethereum.org/EIPS/eip-3607).
+Send transactions impersonating an externally owned account or contract.
 
 `anvil_stopImpersonatingAccount`  
 Stops impersonating an account or contract if previously set with `anvil_impersonateAccount`
