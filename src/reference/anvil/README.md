@@ -149,6 +149,9 @@ Send transactions impersonating an externally owned account or contract.
 `anvil_stopImpersonatingAccount`  
 Stops impersonating an account or contract if previously set with `anvil_impersonateAccount`
 
+`anvil_autoImpersonateAccount`  
+Accepts `true` to enable auto impersonation of accounts, and `false` to disable it. When enabled, any transaction's sender will be automatically impersonated. Same as `anvil_impersonateAccount`.
+
 `anvil_getAutomine`  
 Returns true if automatic mining is enabled, and false if it is not
 
