@@ -14,6 +14,12 @@ Open your terminal and type in the following command:
 curl -L https://foundry.paradigm.xyz | bash
 ```
 
+**For linux and macos users**
+
+```sh
+source ~/.bashrc
+``
+
 This will download `foundryup`. Then install Foundry by running:
 
 ```sh
