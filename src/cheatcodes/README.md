@@ -34,6 +34,10 @@ Below are some subsections for the different Forge cheatcodes.
 - [RPC](./rpc.md): RPC related cheatcodes
 - [File](./fs.md): Cheatcodes for working with files
 
+### Add a new cheatcode
+
+If you need a new feature, consider [contributing to the Foundry's codebase](../contributing.md) to add the cheatcode.
+
 ### Cheatcodes Interface
 
 This is a Solidity interface for all of the cheatcodes present in Forge.

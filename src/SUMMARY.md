@@ -73,6 +73,7 @@
 # Appendix
 
 - [FAQ](./faq.md)
+- [Help us improve Foundry](./contributing.md)
 - [References](./reference/README.md)
   - [`forge` Commands](./reference/forge/README.md)
     - [General Commands](./reference/forge/general-commands.md)

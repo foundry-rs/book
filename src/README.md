@@ -56,6 +56,10 @@ Tutorials on building smart contracts with Foundry.
 - [Forking Mainnet with Cast and Anvil](./tutorials/forking-mainnet-with-cast-anvil.md)
 <!-- - [Incremental Adoption]() -->
 
+**Contributing**
+
+Help us improve Foundry: [Contributing](./contributing.md)
+
 **Appendix**
 
 References, troubleshooting, and more.
