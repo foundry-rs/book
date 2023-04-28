@@ -44,7 +44,7 @@ You can either use the different [Foundryup](#using-foundryup) flags:
 
 ```sh
 foundryup --branch master
-foundryup --local path/to/foundry
+foundryup --path path/to/foundry
 ```
 
 Or, by using a single Cargo command:
