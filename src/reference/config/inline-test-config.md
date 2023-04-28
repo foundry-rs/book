@@ -15,7 +15,7 @@ contract MyTest is Test {
 }
 ```
 
-What we are asking here is to run our fuzzer `100` and `500` times for the `default` and `ci` profiles respectively. The interesting fact is that this would override any fuzz `runs` setup existing at a broader context. Such a context would still provide configs for parameters not explicitely reported in in-line statements, acting then as a fallback.
+What we are asking here is to run our fuzzer `100` and `500` times for the `default` and `ci` profiles respectively. The interesting fact is that this would override any fuzz `runs` setup existing at a global level. All other configs would be inherited from the global context, making this acting as a fallback for all possible configurations.
 
 
 ### In-line fuzz configs
