@@ -2,7 +2,7 @@
 
 If you face any issues while installing, check out the [FAQ](../faq.md).
 
-### Pre-built binaries
+### Precompiled binaries
 
 Precompiled binaries are available from the [GitHub releases page](https://github.com/foundry-rs/foundry/releases).
 These are better managed by using [Foundryup](#using-foundryup).
@@ -20,7 +20,7 @@ curl -L https://foundry.paradigm.xyz | bash
 This will install Foundryup, then simply follow the instructions on-screen,
 which will make the `foundryup` command available in your CLI.
 
-Running `foundryup` by itself will install the latest (nightly) [pre-built binaries](#pre-built-binaries): `forge`, `cast`, `anvil`, and `chisel`.
+Running `foundryup` by itself will install the latest (nightly) [prePrecompiled binaries](#precompiled-binaries): `forge`, `cast`, `anvil`, and `chisel`.
 See `foundryup --help` for more options, like installing from a specific version or commit.
 
 > ℹ️ **Note**
