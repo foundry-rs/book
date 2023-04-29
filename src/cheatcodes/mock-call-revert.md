@@ -72,7 +72,7 @@ Mocking a call with a given `msg.value`:
 function testMockCallRevertWithValue() public {
     assertEq(example.pay{value: 10}(1), 1);
     assertEq(example.pay{value: 1}(2), 2);
-    vm.mockCall(
+    vm.mockCallRevert(
         address(example),
         10,
         abi.encodeWithSelector(example.pay.selector),
