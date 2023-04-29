@@ -20,7 +20,7 @@ curl -L https://foundry.paradigm.xyz | bash
 This will install Foundryup, then simply follow the instructions on-screen,
 which will make the `foundryup` command available in your CLI.
 
-Running `foundryup` by itself will install the latest (nightly) [prePrecompiled binaries](#precompiled-binaries): `forge`, `cast`, `anvil`, and `chisel`.
+Running `foundryup` by itself will install the latest (nightly) [precompiled binaries](#precompiled-binaries): `forge`, `cast`, `anvil`, and `chisel`.
 See `foundryup --help` for more options, like installing from a specific version or commit.
 
 > ℹ️ **Note**
