@@ -17,6 +17,20 @@ contract MyTest is Test {
 
 What we are asking here is to run our fuzzer `100` and `500` times for the `default` and `ci` profiles respectively. The interesting fact is that this would override any fuzz `runs` setup existing at a global level. All other configs would be inherited from the global context, making this acting as a fallback for all possible configurations.
 
+### Block comments
+In-line test configurations can also be expressed in block comments, as illustrated in the example.
+
+```solidity
+contract MyTest is Test {
+  /**
+   * forge-config: default.fuzz.runs = 1024
+   * forge-config: default.fuzz.max-test-rejects = 500
+   */
+  function test_SimpleFuzzTest(uint256 x) public {
+    // --- snip ---
+  }
+}
+```
 
 ### In-line fuzz configs
 Users can specify the configs described in the table. Each statement must have a prefix of the form `forge-config: ${PROFILE}.fuzz.`
