@@ -3,6 +3,33 @@
 This is a collection of common questions and answers. If you do not find your question listed here, hop in the [Telegram support channel][tg-support]
 and let us help you!
 
+### `libusb` Error When Running `forge`/`cast`
+
+If you are using the binaries as released, you may see the following error on MacOS:
+
+```sh
+dyld: Library not loaded: /usr/local/opt/libusb/lib/libusb-1.0.0.dylib
+```
+
+In order to fix this, you must install the `libusb` library:
+
+```sh
+brew install libusb
+```
+
+### Out of Date `GLIBC` Error:
+
+If you run into an error resembling the following after using `foundryup`:
+
+```sh
+forge: /lib/x86_64-linux-gnu/libc.so.6: version 'GLIBC_2.29' not found (required by forge)
+```
+
+There are 2 workarounds:
+
+1. [Building from source](./getting-started/installation.md#building-from-source)
+2. [Using Docker](./getting-started/installation.md#using-foundry-with-docker)
+
 ### Help! I can't see my logs
 
 Forge does not display logs by default. If you want to see logs from Hardhat's `console.log` or from DSTest-style `log_*` events,
@@ -95,11 +122,9 @@ Forge will sometimes check for newer Solidity versions that fit your project. To
 
 All solc versions are installed under `~/.svm/`. If you encounter solc related errors, such as `SolcError: ...` please to nuke `~/.svm/` and try again, this will trigger a fresh install and usually resolves the issue.
 
-If you're on apple silicon, please ensure the [`z3` theorem prover](https://github.com/Z3Prover/z3
-) is installed: `brew install z3`
+If you're on apple silicon, please ensure the [`z3` theorem prover](https://github.com/Z3Prover/z3) is installed: `brew install z3`
 
 > **Note**: native apple silicon builds are only available from `0.8.5` upwards. If you need older versions, you must enable apple silicon rosetta to run them.
-
 
 ### Forge fails in JavaScript monorepos (`pnpm`)
 
@@ -143,25 +168,9 @@ allow_paths = ["../node_modules"]
 
 Note that the path is relative to the Foundry workspace. See also [solc allowed-paths](https://docs.soliditylang.org/en/latest/path-resolution.html#allowed-paths)
 
-
-### How to install from source?
-
-> **NOTE:** please ensure your rust version is up-to-date: `rustup update`. Current msrv = "1.62"
-
-```sh
-git clone https://github.com/foundry-rs/foundry
-cd foundry
-# install cast + forge
-cargo install --path ./cli --profile local --bins --locked --force
-# install anvil
-cargo install --path ./anvil --profile local --locked --force
-```
-
-Or via `cargo install --git https://github.com/foundry-rs/foundry --profile local --locked foundry-cli anvil`.
-
 ### I'm getting `Permission denied (os error 13)`
 
-If you see an error like 
+If you see an error like
 
 ```console
 Failed to create artifact parent folder "/.../MyProject/out/IsolationModeMagic.sol": Permission denied (os error 13)
@@ -176,11 +185,11 @@ It has been [reported](https://github.com/foundry-rs/foundry/issues/3268) that o
 If you're unable to access github URLs called by `forge build`, you will see an error like
 
 ```console
-Error: 
+Error:
 error sending request for url (https://raw.githubusercontent.com/roynalnaruto/solc-builds/ff4ea8a7bbde4488428de69f2c40a7fc56184f5e/macosx/aarch64/list.json): error trying to connect: tcp connect error: Connection refused (os error 61)
 ```
 
-Connection failed because access to the URL from your location may be restricted. To solve this, you should set proxy. 
+Connection failed because access to the URL from your location may be restricted. To solve this, you should set proxy.
 
 You could run `export http_proxy=http://127.0.0.1:7890 https_proxy=http://127.0.0.1:7890` first in the terminal then you will `forge build` successfully.
 

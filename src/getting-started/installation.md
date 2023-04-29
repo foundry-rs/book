@@ -1,76 +1,81 @@
 ## Installation
 
-### On Linux and macOS
+If you face any issues while installing, check out the [FAQ](../faq.md).
 
-If you use Linux or macOS, there are two different ways to install Foundry.
+### Precompiled binaries
 
-#### Install the latest release by using `foundryup`
+Precompiled binaries are available from the [GitHub releases page](https://github.com/foundry-rs/foundry/releases).
+These are better managed by using [Foundryup](#using-foundryup).
 
-This is the easiest option for Linux and macOS users.
+### Using Foundryup
 
-Open your terminal and type in the following command:
+Foundryup is the Foundry toolchain installer. You can find more about it [here](https://github.com/foundry-rs/foundry/blob/master/foundryup/README.md).
+
+Open your terminal and run the following command:
 
 ```sh
 curl -L https://foundry.paradigm.xyz | bash
 ```
 
-**For linux and macos users**
+This will install Foundryup, then simply follow the instructions on-screen,
+which will make the `foundryup` command available in your CLI.
 
-```sh
-source ~/.bashrc
-```
+Running `foundryup` by itself will install the latest (nightly) [precompiled binaries](#precompiled-binaries): `forge`, `cast`, `anvil`, and `chisel`.
+See `foundryup --help` for more options, like installing from a specific version or commit.
 
-This will download `foundryup`. Then install Foundry by running:
-
-```sh
-foundryup
-```
-
-If everything goes well, you will now have four binaries at your disposal: `forge`, `cast`, `anvil`, and `chisel`.
-
-If you use macOS and face the error below, you need to type `brew install libusb` to install the Library
-
-```sh
-dyld[32719]: Library not loaded: /usr/local/opt/libusb/lib/libusb-1.0.0.dylib
-```
-
-> 💡 **Tip**
+> ℹ️ **Note**
 >
->To update `foundryup` after installation, simply run `foundryup` again, and it will update to the latest Foundry release. You can also revert to a specific version of Foundry with `foundryup -v $VERSION`.
+> If you're on Windows, you will need to install and use [Git BASH](https://gitforwindows.org/) or [WSL](https://learn.microsoft.com/en-us/windows/wsl/install),
+> as your terminal, since Foundryup currently does not support Powershell or Cmd.
 
-#### Building from source
+### Building from source
 
-To build from source, you need to get [Rust](https://rust-lang.org) and Cargo. The easiest way to get both is by using `rustup`.
+#### Prerequisites
 
-On Linux and macOS, this is done as follows:
+You will need the [Rust](https://rust-lang.org) compiler and Cargo, the Rust package manager.
+The easiest way to install both is with [`rustup.rs`](https://rustup.rs/).
 
-```sh
-curl https://sh.rustup.rs -sSf | sh
-```
+On Windows, you will also need a recent version of [Visual Studio](https://visualstudio.microsoft.com/downloads/),
+installed with the "Desktop Development With C++" Workloads option.
 
-It will download a script and start the installation.
+#### Building
 
-### On Windows, build from the source
-
-If you use Windows, you need to build from the source to get Foundry.
-
-Download and run `rustup-init` from [rustup.rs](https://win.rustup.rs/x86_64). It will start the installation in a console.
-
-If you encounter an error, it is most likely the case that you do not have the VS Code Installer which you can [download here](https://visualstudio.microsoft.com/downloads/) and install.
-
-After this, run the following to build Foundry from the source:
+You can either use the different [Foundryup](#using-foundryup) flags:
 
 ```sh
-cargo install --git https://github.com/foundry-rs/foundry foundry-cli anvil chisel --bins --locked
+foundryup --branch master
+foundryup --path path/to/foundry
 ```
 
-To update from the source, run the same command again.
+Or, by using a single Cargo command:
+
+```sh
+cargo install --git https://github.com/foundry-rs/foundry --profile local --force foundry-cli anvil chisel
+```
+
+Or, by manually building from a local copy of the [Foundry repository](https://github.com/foundry-rs/foundry):
+
+```sh
+# clone the repository
+git clone https://github.com/foundry-rs/foundry.git
+cd foundry
+# install Forge + Cast
+cargo install --path ./cli --profile local --bins --force
+# install Anvil
+cargo install --path ./anvil --profile local --force
+# install Chisel
+cargo install --path ./chisel --profile local --force
+```
+
+### Installing for CI in Github Action
+
+See the [foundry-rs/foundry-toolchain](https://github.com/foundry-rs/foundry-toolchain) GitHub Action.
 
 ### Using Foundry with Docker
 
 Foundry can also be used entirely within a Docker container. If you don't have it, Docker can be installed directly from [Docker's website](https://docs.docker.com/get-docker/).
 
-Once installed, you can download the latest release by running:  
+Once installed, you can download the latest release by running:
 
 ```sh
 docker pull ghcr.io/foundry-rs/foundry:latest
@@ -81,6 +86,8 @@ It is also possible to build the docker image locally. From the Foundry reposito
 ```sh
 docker build -t foundry .
 ```
+
+For examples and guides on using this image, see the [Docker tutorial section](../tutorials/foundry-docker).
 
 > ℹ️ **Note**
 >
