@@ -225,7 +225,14 @@ interface CheatCodes {
     // function will be mocked.
     function mockCall(address, bytes calldata, bytes calldata) external;
 
-    // Clears all mocked calls
+    // Reverts a call to an address, returning the specified error
+    //
+    // Calldata can either be strict or a partial match, e.g. if you only
+    // pass a Solidity selector to the expected calldata, then the entire Solidity
+    // function will be mocked.
+    function mockCallRevert(address where, bytes calldata data, bytes calldata retdata) external;
+
+    // Clears all mocked and reverted mocked calls
     function clearMockedCalls() external;
 
     // Expect a call to an address with the specified calldata.

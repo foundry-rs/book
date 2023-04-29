@@ -228,6 +228,7 @@
       - [`setNonce`](./cheatcodes/set-nonce.md)
       - [`getNonce`](./cheatcodes/get-nonce.md)
       - [`mockCall`](./cheatcodes/mock-call.md)
+      - [`mockCallRevert`](./cheatcodes/mock-call-revert.md)
       - [`clearMockedCalls`](./cheatcodes/clear-mocked-calls.md)
       - [`coinbase`](./cheatcodes/coinbase.md)
       - [`broadcast`](./cheatcodes/broadcast.md)
