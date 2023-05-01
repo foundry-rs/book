@@ -284,6 +284,7 @@
       - [`parseBool`](./cheatcodes/parse-bool.md)
       - [`rememberKey`](./cheatcodes/remember-key.md)
       - [`toString`](./cheatcodes/to-string.md)
+      - [`breakpoint`](./cheatcodes/breakpoint.md)
     - [Snapshots](./cheatcodes/snapshots.md)
     - [RPC](./cheatcodes/rpc.md)
     - [Files](./cheatcodes/fs.md)
