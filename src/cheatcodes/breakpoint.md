@@ -18,7 +18,7 @@ If the char is overwritten, only the last one that was visited in the execution 
 ### Examples
 
 ```solidity
-function foundry() public {
+function testBreakpoint() public {
     vm.breakpoint("a");
 }
 ```
@@ -29,4 +29,4 @@ Opening up the debugger in a test environment and pressing `'a` will then place 
 
 ### SEE ALSO
 
-[forge debug](../forge/debugger.md)
+[debugger](../forge/debugger.md)

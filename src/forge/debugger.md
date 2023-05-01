@@ -62,6 +62,7 @@ For the stack, **cyan words** are either being read or popped by the current opc
 ### General
 
 - <kbd>q</kbd>: Quit the debugger
+- <kbd>h</kbd>: Show help
 
 ### Navigating calls
 
