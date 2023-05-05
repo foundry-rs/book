@@ -71,11 +71,11 @@ The destination (*to*) can be an ENS name or an address.
     }
     ```
 
-    Structs are encoded as tuples (see [struct encoding](./misc/struct-encoding.md))
+    Structs are encoded as tuples (see [struct encoding](../../misc/struct-encoding.md))
 
     ```sh
     cast send 0x... "myfunction((address,uint256))" "(0x...,1)"
     ```
 ### SEE ALSO
 
-[cast](./cast.md), [cast call](./cast-call.md), [cast publish](./cast-publish.md), [cast receipt](./cast-receipt.md), [struct encoding](./misc/struct-encoding.md)
+[cast](./cast.md), [cast call](./cast-call.md), [cast publish](./cast-publish.md), [cast receipt](./cast-receipt.md), [struct encoding](../../misc/struct-encoding.md)
