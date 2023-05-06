@@ -61,6 +61,9 @@ interface CheatCodes {
 
     // Set block.difficulty
     function difficulty(uint256) external;
+    
+    // Set block.prevrandao
+    function prevrandao(bytes32) external;
 
     // Set block.chainid
     function chainId(uint256) external;
@@ -250,6 +253,9 @@ interface CheatCodes {
 
     // Label an address in test traces
     function label(address addr, string calldata label) external;
+    
+    // Retrieve the label of an address
+    function getLabel(address addr) external returns (string memory);
 
     // When fuzzing, generate new inputs if conditional not met
     function assume(bool) external;
