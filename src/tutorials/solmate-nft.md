@@ -203,16 +203,16 @@ contract NFTTest is Test {
         nft = new NFT("NFT_tutorial", "TUT", "baseUri");
     }
 
-    function testRevertMintWithoutValue() public {
+    function test_RevertMintWithoutValue() public {
         vm.expectRevert(MintPriceNotPaid.selector);
         nft.mintTo(address(1));
     }
 
-    function testMintPricePaid() public {
+    function test_MintPricePaid() public {
         nft.mintTo{value: 0.08 ether}(address(1));
     }
 
-    function testRevertMintMaxSupplyReached() public {
+    function test_RevertMintMaxSupplyReached() public {
         uint256 slot = stdstore
             .target(address(nft))
             .sig("currentTokenId()")
@@ -224,12 +224,12 @@ contract NFTTest is Test {
         nft.mintTo{value: 0.08 ether}(address(1));
     }
 
-    function testRevertMintToZeroAddress() public {
+    function test_RevertMintToZeroAddress() public {
         vm.expectRevert("INVALID_RECIPIENT");
         nft.mintTo{value: 0.08 ether}(address(0));
     }
 
-    function testNewMintOwnerRegistered() public {
+    function test_NewMintOwnerRegistered() public {
         nft.mintTo{value: 0.08 ether}(address(1));
         uint256 slotOfNewOwner = stdstore
             .target(address(nft))
@@ -245,7 +245,7 @@ contract NFTTest is Test {
         assertEq(address(ownerOfTokenIdOne), address(1));
     }
 
-    function testBalanceIncremented() public {
+    function test_BalanceIncremented() public {
         nft.mintTo{value: 0.08 ether}(address(1));
         uint256 slotBalance = stdstore
             .target(address(nft))
@@ -265,7 +265,7 @@ contract NFTTest is Test {
         assertEq(balanceSecondMint, 2);
     }
 
-    function testSafeContractReceiver() public {
+    function test_SafeContractReceiver() public {
         Receiver receiver = new Receiver();
         nft.mintTo{value: 0.08 ether}(address(receiver));
         uint256 slotBalance = stdstore
@@ -278,13 +278,13 @@ contract NFTTest is Test {
         assertEq(balance, 1);
     }
 
-    function testRevertUnSafeContractReceiver() public {
+    function test_RevertUnSafeContractReceiver() public {
         vm.etch(address(1), bytes("mock code"));
         vm.expectRevert(bytes(""));
         nft.mintTo{value: 0.08 ether}(address(1));
     }
 
-    function testWithdrawalWorksAsOwner() public {
+    function test_WithdrawalWorksAsOwner() public {
         // Mint an NFT, sending eth to the contract
         Receiver receiver = new Receiver();
         address payable payee = payable(address(0x1337));
@@ -298,7 +298,7 @@ contract NFTTest is Test {
         assertEq(payee.balance, priorPayeeBalance + nftBalance);
     }
 
-    function testWithdrawalFailsAsNotOwner() public {
+    function test_WithdrawalFailsAsNotOwner() public {
         // Mint an NFT, sending eth to the contract
         Receiver receiver = new Receiver();
         nft.mintTo{value: nft.MINT_PRICE()}(address(receiver));
