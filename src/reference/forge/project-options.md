@@ -17,7 +17,7 @@
 `--lib-paths` *path*  
 &nbsp;&nbsp;&nbsp;&nbsp;The path to the library folder.
 
-`-r` *remappings*  
+`-R` *remappings*  
 `--remappings` *remappings*  
 &nbsp;&nbsp;&nbsp;&nbsp;The project's remappings.
 
