@@ -7,3 +7,4 @@
 - [`deriveKey`](./derive-key.md)
 - [`rememberKey`](./remember-key.md)
 - [`toString`](./to-string.md)
+- [`breakpoint`](./breakpoint.md)
