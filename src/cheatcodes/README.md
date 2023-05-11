@@ -60,7 +60,12 @@ interface CheatCodes {
     function fee(uint256) external;
 
     // Set block.difficulty
+    // Does not work from the Paris hard fork and onwards, and will revert instead.
     function difficulty(uint256) external;
+    
+    // Set block.prevrandao
+    // Does not work before the Paris hard fork, and will revert instead.
+    function prevrandao(bytes32) external;
 
     // Set block.chainid
     function chainId(uint256) external;
@@ -250,6 +255,9 @@ interface CheatCodes {
 
     // Label an address in test traces
     function label(address addr, string calldata label) external;
+    
+    // Retrieve the label of an address
+    function getLabel(address addr) external returns (string memory);
 
     // When fuzzing, generate new inputs if conditional not met
     function assume(bool) external;
