@@ -60,9 +60,11 @@ interface CheatCodes {
     function fee(uint256) external;
 
     // Set block.difficulty
+    // Does not work from the Paris hard fork and onwards, and will revert instead.
     function difficulty(uint256) external;
     
     // Set block.prevrandao
+    // Does not work before the Paris hard fork, and will revert instead.
     function prevrandao(bytes32) external;
 
     // Set block.chainid
