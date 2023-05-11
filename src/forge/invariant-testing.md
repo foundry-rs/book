@@ -9,7 +9,14 @@ Invariant testing campaigns have two dimensions, `runs` and `depth`:
 - `runs`: Number of times that a sequence of function calls is generated and run.
 - `depth`: Number of function calls made in a given `run`. All defined invariants are asserted after each function call is made. If a function call reverts, the `depth` counter still increments.
 
+These and other invariant configuration aspects are explained [`here`](#configuring-invariant-test-execution).
+
 Similar to how standard tests are run in Foundry by prefixing a function name with `test`, invariant tests are denoted by prefixing the function name with `invariant` (e.g., `function invariant_A()`).
+
+### Configuring invariant test execution
+
+Invariant tests execution is governed by parameters that can be controlled by users via Forge configuration primitives. Configs can be applied globally or on a per-test basis. For details on this topic please refer to
+ 📚 [Global config](../reference/config/testing.md) and 📚 [In-line config](../reference/config/inline-test-config.md).
 
 ## Defining Invariants
 
