@@ -57,6 +57,22 @@ token.transfer(alice, 10);
 // [PASS]
 ```
 
+Expect that `transfer` is called on a token `MyToken` *at least* two times:
+
+```solidity
+address alice = address(10);
+vm.expectCall(
+  address(token), abi.encodeCall(token.transfer, (alice, 10))
+);
+vm.expectCall(
+  address(token), abi.encodeCall(token.transfer, (alice, 10))
+);
+token.transfer(alice, 10);
+token.transfer(alice, 10);
+token.transfer(alice, 10);
+// [PASS]
+```
+
 Expect that `transfer` is not called on a token `MyToken`:
 
 ```solidity
