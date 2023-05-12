@@ -40,7 +40,8 @@ Users can specify the configs described in the table. Each statement must have a
 |`runs`|integer|The amount of fuzz runs to perform for this specific test case [📚 ref](./testing#runs).|
 |`max-test-rejects`|integer|The maximum number of combined inputs that may be rejected before the test as a whole aborts [📚 ref](./testing#max_test_rejects).|
 
-Fuzz config example
+Fuzz config example:
+
 ```solidity
 contract MyFuzzTest is Test {
   /// forge-config: default.fuzz.runs = 100
@@ -61,7 +62,8 @@ Users can specify the configs described in the table. Each statement must have a
 |`fail-on-revert`|boolean|Fails the invariant fuzzing if a revert occurs [📚 ref](./testing#fail_on_revert).
 |`call-override`|boolean|Overrides unsafe external calls when running invariant test [📚 ref](./testing#call_override).
 
-Invariant config example
+Invariant config example:
+
 ```solidity
 contract MyInvariantTest is Test {
   /// forge-config: default.invariant.runs = 100
