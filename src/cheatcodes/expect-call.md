@@ -27,9 +27,10 @@ function expectCall(
 
 ### Description
 
-Expects `count` number of calls to address `where`, where the call data either strictly or loosely matches `data`.
+Expects that a call to a specified address `where`, where the call data either strictly or loosely matches `data`. The cheatcode can be called in two ways:
 
-If `count` is not specified, it expects the call to be made atleast once. 
+- If no `count` parameter is specified, the call will be expected to be made at least the amount of times the cheatcode was called. For the same calldata, you cannot call the cheatcode with no `count` and then pass in a `count` parameter.
+- If `count` is specified, the call will be expected to be made strictly `count` times. For the same calldata, the `count` value cannot be overwritten with another cheatcode call, nor it can be increment by calling the cheatcode without a `count` parameter.
 
 `count` can also be set to 0 to assert that a call is not made.
 
@@ -52,6 +53,22 @@ address alice = address(10);
 vm.expectCall(
   address(token), abi.encodeCall(token.transfer, (alice, 10))
 );
+token.transfer(alice, 10);
+// [PASS]
+```
+
+Expect that `transfer` is called on a token `MyToken` *at least* two times:
+
+```solidity
+address alice = address(10);
+vm.expectCall(
+  address(token), abi.encodeCall(token.transfer, (alice, 10))
+);
+vm.expectCall(
+  address(token), abi.encodeCall(token.transfer, (alice, 10))
+);
+token.transfer(alice, 10);
+token.transfer(alice, 10);
 token.transfer(alice, 10);
 // [PASS]
 ```
