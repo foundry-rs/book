@@ -10,7 +10,7 @@ function prevrandao(bytes32) external;
 
 Sets `block.prevrandao`.
 
-If used with an EVM version previous to the Paris hard fork, it will revert. In that case, use [`vm.difficulty`](./difficulty.md) instead.
+If used with an EVM version previous to the Paris hard fork, it will revert. In that case, use [`vm.difficulty`][prevrandao] instead.
 
 ### Examples
 
@@ -18,3 +18,6 @@ If used with an EVM version previous to the Paris hard fork, it will revert. In 
 vm.prevrandao(bytes32(uint256(42)));
 emit log_uint(block.prevrandao); // 42
 ```
+
+
+[prevrandao]: ./difficulty.md

@@ -4,6 +4,7 @@
 - [`roll`](./roll.md)
 - [`fee`](./fee.md)
 - [`difficulty`](./difficulty.md)
+- [`prevrandao`](./prevrandao.md)
 - [`chainId`](./chain-id.md)
 - [`store`](./store.md)
 - [`load`](./load.md)
