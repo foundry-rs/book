@@ -1,5 +1,5 @@
 ## In-line test configuration
-Foundry users are enabled to specify overall test configurations, using a combination of ENV variables and config statements in the `foundry.toml`. Checkout the [📚 Testing reference](./testing) for a detailed description.
+Foundry users are enabled to specify overall test configurations, using a combination of ENV variables and config statements in the `foundry.toml`. Checkout the [📚 Testing reference](./testing.md) for a detailed description.
 
 Despite this may work in the general case, some tests may need finer control over their configuration. For such reason Forge provides a way to specify per-test configs for invariant and fuzz testing scenarios. 
 
@@ -37,8 +37,8 @@ Users can specify the configs described in the table. Each statement must have a
 
 | Parameter | Type | Description |
 |-|-|-|
-|`runs`|integer|The amount of fuzz runs to perform for this specific test case [📚 ref](./testing#runs).|
-|`max-test-rejects`|integer|The maximum number of combined inputs that may be rejected before the test as a whole aborts [📚 ref](./testing#max_test_rejects).|
+|`runs`|integer|The amount of fuzz runs to perform for this specific test case [📚 ref](./testing.md#runs).|
+|`max-test-rejects`|integer|The maximum number of combined inputs that may be rejected before the test as a whole aborts [📚 ref](./testing.md#max_test_rejects).|
 
 Fuzz config example:
 
@@ -57,10 +57,10 @@ Users can specify the configs described in the table. Each statement must have a
 
 | Parameter | Type | Description |
 |-|-|-|
-|`runs`|integer|The amount of invariant runs to perform for this specific test case [📚 ref](./testing#runs-1).
-|`depth`|integer|The number of calls executed to attempt to break invariant in one run [📚 ref](./testing#depth).
-|`fail-on-revert`|boolean|Fails the invariant fuzzing if a revert occurs [📚 ref](./testing#fail_on_revert).
-|`call-override`|boolean|Overrides unsafe external calls when running invariant test [📚 ref](./testing#call_override).
+|`runs`|integer|The amount of invariant runs to perform for this specific test case [📚 ref](./testing.md#runs-1).
+|`depth`|integer|The number of calls executed to attempt to break invariant in one run [📚 ref](./testing.md#depth).
+|`fail-on-revert`|boolean|Fails the invariant fuzzing if a revert occurs [📚 ref](./testing.md#fail_on_revert).
+|`call-override`|boolean|Overrides unsafe external calls when running invariant test [📚 ref](./testing.md#call_override).
 
 Invariant config example:
 
