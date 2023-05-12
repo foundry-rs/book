@@ -37,8 +37,8 @@ Users can specify the configs described in the table. Each statement must have a
 
 | Parameter | Type | Description |
 |-|-|-|
-|`runs`|integer|The amount of fuzz runs to perform for this specific test case [`ref`][testing].|
-|`max-test-rejects`|integer|The maximum number of combined inputs that may be rejected before the test as a whole aborts [`ref`][Max test rejects].|
+|`runs`|integer|The amount of fuzz runs to perform for this specific test case. [`Reference`][testing].|
+|`max-test-rejects`|integer|The maximum number of combined inputs that may be rejected before the test as a whole aborts. [`Reference`][Max test rejects].|
 
 Fuzz config example
 ```solidity
@@ -56,10 +56,10 @@ Users can specify the configs described in the table. Each statement must have a
 
 | Parameter | Type | Description |
 |-|-|-|
-|`runs`|integer|The amount of invariant runs to perform for this specific test case [`ref`][Invariant runs].
-|`depth`|integer|The number of calls executed to attempt to break invariant in one run [`ref`][Invariant depth].
-|`fail-on-revert`|boolean|Fails the invariant fuzzing if a revert occurs [`ref`][Fail on revert].
-|`call-override`|boolean|Overrides unsafe external calls when running invariant test [`ref`][Invariant call override].
+|`runs`|integer|The amount of invariant runs to perform for this specific test case. [`Reference`][Invariant runs].
+|`depth`|integer|The number of calls executed to attempt to break invariant in one run. [`Reference`][Invariant depth].
+|`fail-on-revert`|boolean|Fails the invariant fuzzing if a revert occurs. [`Reference`][Fail on revert].
+|`call-override`|boolean|Overrides unsafe external calls when running invariant test. [`Reference`][Invariant call override].
 
 Invariant config example
 ```solidity
