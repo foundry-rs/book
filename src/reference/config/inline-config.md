@@ -1,5 +1,8 @@
-## In-line test configuration
-Foundry users are enabled to specify overall test configurations, using a combination of ENV variables and config statements in the `foundry.toml`. Checkout the [testing reference](./testing.md) for a detailed description.
+# Inline Test Configuration
+
+## Overview
+
+Foundry users are enabled to specify overall test configurations, using a combination of ENV variables and config statements in the `foundry.toml`. Checkout the testing reference for a detailed description.
 
 Despite this may work in the general case, some tests may need finer control over their configuration. For such reason Forge provides a way to specify per-test configs for invariant and fuzz testing scenarios. 
 
@@ -18,6 +21,7 @@ contract MyTest is Test {
 What we are asking here is to run our fuzzer `100` and `500` times for the `default` and `ci` profiles respectively. The interesting fact is that this would override any fuzz `runs` setup existing at a global level. All other configs would be inherited from the global context, making this acting as a fallback for all possible configurations.
 
 ### Block comments
+
 In-line test configurations can also be expressed in block comments, as illustrated in the example.
 
 ```solidity
@@ -33,6 +37,7 @@ contract MyTest is Test {
 ```
 
 ### In-line fuzz configs
+
 Users can specify the configs described in the table. Each statement must have a prefix of the form `forge-config: ${PROFILE}.fuzz.`
 
 | Parameter | Type | Description |
@@ -53,6 +58,7 @@ contract MyFuzzTest is Test {
 ```
 
 ### In-line invariant configs
+
 Users can specify the configs described in the table. Each statement must have a prefix of the form `forge-config: ${PROFILE}.invariant.`
 
 | Parameter | Type | Description |
