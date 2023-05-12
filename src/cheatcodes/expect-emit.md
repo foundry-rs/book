@@ -41,9 +41,9 @@ There are 2 signatures:
 > ℹ️ **Matching sequences**
 >
 > In functions that emit a lot of events, it's possible to "skip" events and only match a specific sequence,
-> but this sequence must always be in order. As an example:
+> but this sequence must always be in order. As an example:\n
 > A function emits events: `A, B, C, D, E, F, F, G`.
-
+>
 > `expectEmit` will be able to match ranges with and without skipping events in between:
 > - `[A, B, C]` is valid.
 > - `[B, D, F]` is valid.
