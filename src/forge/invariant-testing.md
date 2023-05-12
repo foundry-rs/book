@@ -16,7 +16,7 @@ Similar to how standard tests are run in Foundry by prefixing a function name wi
 ### Configuring invariant test execution
 
 Invariant tests execution is governed by parameters that can be controlled by users via Forge configuration primitives. Configs can be applied globally or on a per-test basis. For details on this topic please refer to
- 📚 [Global config](../reference/config/testing.md) and 📚 [In-line config](../reference/config/inline-test-config.md).
+ 📚 [`Global config`](../reference/config/testing.md) and 📚 [`In-line config`](../reference/config/inline-test-config.md).
 
 ## Defining Invariants
 
