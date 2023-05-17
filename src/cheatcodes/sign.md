@@ -62,19 +62,19 @@ contract SigningExample is Ownable {
 contract SigningExampleTest is Test {
     using ECDSA for bytes32;
 
-    SigningExample public contract;
+    SigningExample public signingExample;
 
     uint256 internal userPrivateKey;
     uint256 internal signerPrivateKey;
 
     function setUp() public {
-        contract = new SigningExample();
+        signingExample = new SigningExample();
 
         userPrivateKey = 0xa11ce;
         signerPrivateKey = 0xabc123;
 
         address signer = vm.addr(signerPrivateKey);
-        bigdata.setSystemAddress(signer);
+        signingExample.setSystemAddress(signer);
     }
 
     function testPurchase() public {
@@ -87,14 +87,14 @@ contract SigningExampleTest is Test {
         vm.startPrank(signer);
         bytes32 digest = keccak256(abi.encodePacked(user, amount, nonce)).toEthSignedMessageHash();
         (uint8 v, bytes32 r, bytes32 s) = vm.sign(signerPrivateKey, digest);
-        bytes memory signature = abi.encodePacked(r, s, v);
+        bytes memory signature = abi.encodePacked(r, s, v); // note the order here is different from line above.
         vm.stopPrank();
 
         vm.startPrank(user);
         // Give the user some ETH, just for good measure
         vm.deal(user, 1 ether);
 
-        bigdata.purchase(
+        signingExample.purchase(
             amount,
             nonce
             signature,
