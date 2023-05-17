@@ -90,7 +90,6 @@ contract SigningExampleTest is Test {
         bytes memory signature = abi.encodePacked(r, s, v);
         vm.stopPrank();
 
-
         vm.startPrank(user);
         // Give the user some ETH, just for good measure
         vm.deal(user, 1 ether);
