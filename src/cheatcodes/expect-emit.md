@@ -99,7 +99,8 @@ We can also assert that multiple events are emitted in a single call.
 function testERC20EmitsBatchTransfer() public {
     // We declare multiple expected transfer events
     for (uint256 i = 0; i < users.length; i++) {
-        // Here we use the longer signature for demonstration purposes.
+        // Here we use the longer signature for demonstration purposes. This call checks
+        // topic0 (always checked), topic1 (true), topic2 (true), NOT topic3 (false), and data (true).
         vm.expectEmit(true, true, false, true);
         emit Transfer(address(this), users[i], 10);
     }
