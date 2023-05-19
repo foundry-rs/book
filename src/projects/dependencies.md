@@ -49,6 +49,14 @@ Let's create a remapping called `solmate-utils` that points to the `utils` folde
 solmate-utils/=lib/solmate/src/utils/
 ```
 
+You can also set remappings in `foundry.toml`.
+
+```toml
+remappings = [
+    "@solmate-utils/=lib/solmate/src/utils/",
+]
+```
+
 Now we can import any of the contracts in `src/utils` of the solmate repository like so:
 
 ```solidity
