@@ -27,7 +27,7 @@ vm.startBroadcast(deployer);
 vm.stopBroadcast();
 ```
 
-Get an address from the test mnemonic at path `m/44'/60'/0'/0/0` to start broadcasting transcations:
+Get an address from the test mnemonic at path `m/44'/60'/0'/0/0` to start broadcasting transactions:
 
 ```solidity
 string memory mnemonic = "test test test test test test test test test test test junk";

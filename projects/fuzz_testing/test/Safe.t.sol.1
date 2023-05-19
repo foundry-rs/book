@@ -23,7 +23,7 @@ contract SafeTest is Test {
         safe = new Safe();
     }
 
-    function testWithdraw() public {
+    function test_Withdraw() public {
         payable(address(safe)).transfer(1 ether);
         uint256 preBalance = address(this).balance;
         safe.withdraw();

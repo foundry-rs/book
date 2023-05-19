@@ -50,7 +50,7 @@ Let's consider the following JSON object:
 }
 ```
 
-The root object is always assumed, so we can refer to one of its chilren by starting the path with a dot (`.`). For instance, `.boolean`, `.number`, and `.obj1`.
+The root object is always assumed, so we can refer to one of its children by starting the path with a dot (`.`). For instance, `.boolean`, `.number`, and `.obj1`.
 We can go as deep as we want: `.obj1.aNumber`, or `.obj1.obj2.aNumber`.
 We can even search for a key in a subtree: `.obj1..veryDeep`, or just `..veryDeep` since there's no ambiguity.
 

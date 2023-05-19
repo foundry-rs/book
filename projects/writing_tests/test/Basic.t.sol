@@ -16,13 +16,13 @@ contract ContractBTest is Test {
     // ANCHOR_END: setUp
 
     // ANCHOR: testNumberIs42
-    function testNumberIs42() public {
+    function test_NumberIs42() public {
         assertEq(testNumber, 42);
     }
     // ANCHOR_END: testNumberIs42
 
     // ANCHOR: testFailSubtract43
-    function testFailSubtract43() public {
+    function testFail_Subtract43() public {
         testNumber -= 43;
     }
     // ANCHOR_END: testFailSubtract43

@@ -9,7 +9,7 @@
 `--root` *path*  
 &nbsp;&nbsp;&nbsp;&nbsp;The project's root path. By default, this is the root directory of the current git repository, or the current working directory.
 
-`-c` *path*  
+`-C` *path*  
 `--contracts` *path*  
 &nbsp;&nbsp;&nbsp;&nbsp;The contracts source directory.  
 &nbsp;&nbsp;&nbsp;&nbsp;Environment: `DAPP_SRC`
@@ -17,7 +17,7 @@
 `--lib-paths` *path*  
 &nbsp;&nbsp;&nbsp;&nbsp;The path to the library folder.
 
-`-r` *remappings*  
+`-R` *remappings*  
 `--remappings` *remappings*  
 &nbsp;&nbsp;&nbsp;&nbsp;The project's remappings.
 

@@ -17,7 +17,7 @@ Perform a simple JSON-RPC POST request for the given method and with the params
 #### Query Options
 
 `-r` *url*  
-`--rpc-rul` *url*  
+`--rpc-url` *url*  
 &nbsp;&nbsp;&nbsp;&nbsp;The URL of the provider
 
 `-w`  
@@ -40,3 +40,9 @@ Perform a simple JSON-RPC POST request for the given method and with the params
     ```sh
     cast rpc eth_getTransactionByHash 0x2642e960d3150244e298d52b5b0f024782253e6d0b2c9a01dd4858f7b4665a3f
     ```
+    
+3. Get latest `eth_getBlockByNumber` on etherum mainnet:
+
+   ```sh
+   cast rpc --rpc-url https://mainnet.infura.io/v3/ eth_getBlockByNumber "latest" "false"
+   ```

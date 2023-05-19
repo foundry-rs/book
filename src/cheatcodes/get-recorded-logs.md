@@ -6,6 +6,7 @@
 struct Log {
   bytes32[] topics;
   bytes data;
+  address emitter;
 }
 
 function getRecordedLogs()
