@@ -96,6 +96,7 @@
     - [Test Commands](./reference/forge/test-commands.md)
       - [forge test](./reference/forge/forge-test.md)
       - [forge snapshot](./reference/forge/forge-snapshot.md)
+      - [forge coverage](./reference/forge/forge-coverage.md)
     - [Deploy Commands](./reference/forge/deploy-commands.md)
       - [forge create](./reference/forge/forge-create.md)
       - [forge verify-contract](./reference/forge/forge-verify-contract.md)
