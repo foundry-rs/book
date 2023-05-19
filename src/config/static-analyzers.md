@@ -117,4 +117,4 @@ Solver time: 3.6820807456970215
 The analysis was completed successfully. No issues were detected.
 ```
 
-The findings will be listed at the end of this output if any. Since the default `Counter.sol` does't have any logic, `mythx` reports that no issues were found.
+The findings will be listed at the end of this output if any. Since the default `Counter.sol` doesn't have any logic, `mythx` reports that no issues were found.

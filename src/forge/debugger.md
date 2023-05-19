@@ -62,6 +62,7 @@ For the stack, **cyan words** are either being read or popped by the current opc
 ### General
 
 - <kbd>q</kbd>: Quit the debugger
+- <kbd>h</kbd>: Show help
 
 ### Navigating calls
 
@@ -73,6 +74,7 @@ For the stack, **cyan words** are either being read or popped by the current opc
 - <kbd>C</kbd>: Move to the next call-type instruction
 - <kbd>a</kbd>: Move to the previous [`JUMP`][op-jump] or [`JUMPI`][op-jumpi] instruction
 - <kbd>s</kbd>: Move to the next [`JUMPDEST`][op-jumpdest] instruction
+- <kbd>'</kbd> + <kbd>a-z</kbd>: Move to `<char>` breakpoint set by a [`vm.breakpoint`][cheat-breakpoint] cheatcode
 
 ### Navigating memory
 
@@ -93,3 +95,4 @@ For the stack, **cyan words** are either being read or popped by the current opc
 [op-jumpdest]: https://www.evm.codes/#5b
 [op-jump]: https://www.evm.codes/#f1
 [op-jumpi]: https://www.evm.codes/#57
+[cheat-breakpoint]: ../cheatcodes/breakpoint.md

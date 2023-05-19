@@ -21,7 +21,7 @@ We can build the project with [`forge build`](../reference/forge/forge-build.md)
 {{#include ../output/hello_foundry/forge-build:all}}
 ```
 
-And run the tests with [`forge test`](../reference/forge/forge-init.md):
+And run the tests with [`forge test`](../reference/forge/forge-test.md):
 
 ```sh
 {{#include ../output/hello_foundry/forge-test:all}}

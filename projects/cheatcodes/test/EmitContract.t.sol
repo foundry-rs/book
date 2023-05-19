@@ -7,7 +7,7 @@ import "forge-std/Test.sol";
 contract EmitContractTest is Test {
     event Transfer(address indexed from, address indexed to, uint256 amount);
 
-    function testExpectEmit() public {
+    function test_ExpectEmit() public {
         ExpectEmit emitter = new ExpectEmit();
         // Check that topic 1, topic 2, and data are the same as the following emitted event.
         // Checking topic 3 here doesn't matter, because `Transfer` only has 2 indexed topics.
@@ -18,7 +18,7 @@ contract EmitContractTest is Test {
         emitter.t();
     }
 
-    function testExpectEmitDoNotCheckData() public {
+    function test_ExpectEmit_DoNotCheckData() public {
         ExpectEmit emitter = new ExpectEmit();
         // Check topic 1 and topic 2, but do not check data
         vm.expectEmit(true, true, false, false);

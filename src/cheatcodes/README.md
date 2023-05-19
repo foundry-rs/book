@@ -34,6 +34,10 @@ Below are some subsections for the different Forge cheatcodes.
 - [RPC](./rpc.md): RPC related cheatcodes
 - [File](./fs.md): Cheatcodes for working with files
 
+### Add a new cheatcode
+
+If you need a new feature, consider [contributing to the Foundry's codebase](../contributing.md) to add the cheatcode.
+
 ### Cheatcodes Interface
 
 This is a Solidity interface for all of the cheatcodes present in Forge.
@@ -56,7 +60,12 @@ interface CheatCodes {
     function fee(uint256) external;
 
     // Set block.difficulty
+    // Does not work from the Paris hard fork and onwards, and will revert instead.
     function difficulty(uint256) external;
+    
+    // Set block.prevrandao
+    // Does not work before the Paris hard fork, and will revert instead.
+    function prevrandao(bytes32) external;
 
     // Set block.chainid
     function chainId(uint256) external;
@@ -174,6 +183,12 @@ interface CheatCodes {
     // Sets an address' balance
     function deal(address who, uint256 newBalance) external;
 
+    // Set the balance of an account for any ERC20 token
+    function deal(address token, address to, uint256 give) external;
+    
+    // Alternative signature to update `totalSupply`
+    function deal(address token, address to, uint256 give, bool adjust) external;
+    
     // Sets an address' code
     function etch(address who, bytes calldata code) external;
 
@@ -215,7 +230,14 @@ interface CheatCodes {
     // function will be mocked.
     function mockCall(address, bytes calldata, bytes calldata) external;
 
-    // Clears all mocked calls
+    // Reverts a call to an address, returning the specified error
+    //
+    // Calldata can either be strict or a partial match, e.g. if you only
+    // pass a Solidity selector to the expected calldata, then the entire Solidity
+    // function will be mocked.
+    function mockCallRevert(address where, bytes calldata data, bytes calldata retdata) external;
+
+    // Clears all mocked and reverted mocked calls
     function clearMockedCalls() external;
 
     // Expect a call to an address with the specified calldata.
@@ -233,6 +255,9 @@ interface CheatCodes {
 
     // Label an address in test traces
     function label(address addr, string calldata label) external;
+    
+    // Retrieve the label of an address
+    function getLabel(address addr) external returns (string memory);
 
     // When fuzzing, generate new inputs if conditional not met
     function assume(bool) external;

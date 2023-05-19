@@ -133,6 +133,9 @@ The standard methods are based on [this](https://eth.wiki/json-rpc/API) referenc
 * `debug_traceTransaction`  
 Use `anvil --steps-tracing` to get `structLogs`  
 
+* `debug_traceCall`
+Note that non-standard traces are not yet support.  This means you can't pass any arguments to the `trace` parameter.
+
 * `trace_transaction`
   
 * `trace_block`
@@ -141,10 +144,13 @@ Use `anvil --steps-tracing` to get `structLogs`
 The `anvil_*` namespace is an alias for `hardhat`. For more info, refer to the [Hardhat documentation](https://hardhat.org/hardhat-network/reference#hardhat-network-methods).
 
 `anvil_impersonateAccount`   
-Send transactions impersonating an externally owned account or contract. While impersonating a contract, the contract functions can not be called. `anvil_stopImpersonatingAccount` must be used if the contract's functions are to be called again. See also [EIP-3607](https://eips.ethereum.org/EIPS/eip-3607).
+Send transactions impersonating an externally owned account or contract.
 
 `anvil_stopImpersonatingAccount`  
 Stops impersonating an account or contract if previously set with `anvil_impersonateAccount`
+
+`anvil_autoImpersonateAccount`  
+Accepts `true` to enable auto impersonation of accounts, and `false` to disable it. When enabled, any transaction's sender will be automatically impersonated. Same as `anvil_impersonateAccount`.
 
 `anvil_getAutomine`  
 Returns true if automatic mining is enabled, and false if it is not

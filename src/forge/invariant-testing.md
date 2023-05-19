@@ -9,7 +9,14 @@ Invariant testing campaigns have two dimensions, `runs` and `depth`:
 - `runs`: Number of times that a sequence of function calls is generated and run.
 - `depth`: Number of function calls made in a given `run`. All defined invariants are asserted after each function call is made. If a function call reverts, the `depth` counter still increments.
 
+These and other invariant configuration aspects are explained [`here`](#configuring-invariant-test-execution).
+
 Similar to how standard tests are run in Foundry by prefixing a function name with `test`, invariant tests are denoted by prefixing the function name with `invariant` (e.g., `function invariant_A()`).
+
+### Configuring invariant test execution
+
+Invariant tests execution is governed by parameters that can be controlled by users via Forge configuration primitives. Configs can be applied globally or on a per-test basis. For details on this topic please refer to
+ 📚 [`Global config`](../reference/config/testing.md) and 📚 [`In-line config`](../reference/config/inline-test-config.md).
 
 ## Defining Invariants
 
@@ -124,7 +131,7 @@ Functions from these contracts will be called at random with fuzzed inputs. The 
 
 For example:
 
-```
+```text
 targetContract1: 50%
 ├─ function1: 50% (25%)
 └─ function2: 50% (25%)
@@ -168,9 +175,9 @@ The default configuration for target contracts is set to all contracts that are 
 ```solidity
 contract ExampleContract1 {
 
-    uint256 val1;
-    uint256 val2;
-    uint256 val3;
+    uint256 public val1;
+    uint256 public val2;
+    uint256 public val3;
 
     function addToA(uint256 amount) external {
         val1 += amount;
@@ -209,7 +216,7 @@ contract InvariantExample1 is Test {
 
 This setup will call `foo.addToA()` and `foo.addToB()` with a 50%-50% probability distribution with fuzzed inputs. Inevitably, the inputs will start to cause overflows and the function calls will start reverting. Since the default configuration in invariant testing is `fail_on_revert = false`, this will not cause the tests to fail. The invariants will hold throughout the rest of the fuzzing campaign and the result is that the test will pass. The output will look something like this:
 
-```
+```text
 [PASS] invariant_A() (runs: 50, calls: 10000, reverts: 5533)
 [PASS] invariant_B() (runs: 50, calls: 10000, reverts: 5533)
 ```

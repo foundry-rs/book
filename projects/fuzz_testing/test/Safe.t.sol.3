@@ -24,7 +24,7 @@ contract SafeTest is Test {
     }
 
     // ANCHOR: signature
-    function testWithdraw(uint96 amount) public {
+    function testFuzz_Withdraw(uint96 amount) public {
     // ANCHOR_END: signature
         payable(address(safe)).transfer(amount);
         uint256 preBalance = address(this).balance;

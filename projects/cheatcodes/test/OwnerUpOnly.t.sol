@@ -37,7 +37,7 @@ contract OwnerUpOnlyTest is Test {
         upOnly = new OwnerUpOnly();
     }
 
-    function testIncrementAsOwner() public {
+    function test_IncrementAsOwner() public {
         assertEq(upOnly.count(), 0);
         upOnly.increment();
         assertEq(upOnly.count(), 1);
@@ -45,7 +45,7 @@ contract OwnerUpOnlyTest is Test {
     // ANCHOR_END: simple_test
 
     // ANCHOR: test_fail
-    function testFailIncrementAsNotOwner() public {
+    function testFail_IncrementAsNotOwner() public {
         vm.prank(address(0));
         upOnly.increment();
     }
@@ -53,7 +53,7 @@ contract OwnerUpOnlyTest is Test {
 
     // ANCHOR: test_expectrevert
     // Notice that we replaced `testFail` with `test`
-    function testIncrementAsNotOwner() public {
+    function test_RevertWhen_CallerIsNotOwner() public {
         vm.expectRevert(Unauthorized.selector);
         vm.prank(address(0));
         upOnly.increment();
