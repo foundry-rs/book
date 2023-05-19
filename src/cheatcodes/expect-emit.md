@@ -3,12 +3,20 @@
 ### Signature
 
 ```solidity
+function expectEmit() external;
+```
+
+```solidity
 function expectEmit(
     bool checkTopic1,
     bool checkTopic2,
     bool checkTopic3,
     bool checkData
 ) external;
+```
+
+```solidity
+function expectEmit(address emitter) external;
 ```
 
 ```solidity
@@ -25,7 +33,7 @@ function expectEmit(
 
 Assert a specific log is emitted during the next call.
 
-1. Call the cheat code, specifying whether we should check the first, second or third topic, and the log data. Topic 0 is always checked.
+1. Call the cheat code, specifying whether we should check the first, second or third topic, and the log data (`expectEmit()` checks them all). Topic 0 is always checked.
 2. Emit the event we are supposed to see during the next call.
 3. Perform the call.
 
@@ -33,7 +41,7 @@ You can perform steps 1 and 2 multiple times to match a _sequence_ of events in 
 
 If the event is not available in the current scope (e.g. if we are using an interface, or an external smart contract), we can define the event ourselves with an identical event signature.
 
-There are 2 signatures:
+There are 2 varieties of `expectEmit`:
 
 - **Without checking the emitter address**: Asserts the topics match **without** checking the emitting address.
 - **With `address`**: Asserts the topics match and that the emitting address matches.
@@ -60,10 +68,7 @@ This does not check the emitting address.
 event Transfer(address indexed from, address indexed to, uint256 amount);
 
 function testERC20EmitsTransfer() public {
-    // Only `from` and `to` are indexed in ERC20's `Transfer` event,
-    // so we specifically check topics 1 and 2 (topic 0 is always checked by default),
-    // as well as the data (`amount`).
-    vm.expectEmit(true, true, false, true);
+    vm.expectEmit();
 
     // We emit the event we expect to see.
     emit MyToken.Transfer(address(this), address(1), 10);
@@ -79,8 +84,8 @@ This does check the emitting address.
 event Transfer(address indexed from, address indexed to, uint256 amount);
 
 function testERC20EmitsTransfer() public {
-    // We check that the token is the event emitter by passing the address as the fifth argument.
-    vm.expectEmit(true, true, false, true, address(myToken));
+    // We check that the token is the event emitter by passing the address.
+    vm.expectEmit(address(myToken));
     emit MyToken.Transfer(address(this), address(1), 10);
 
     // We perform the call.
@@ -94,7 +99,9 @@ We can also assert that multiple events are emitted in a single call.
 function testERC20EmitsBatchTransfer() public {
     // We declare multiple expected transfer events
     for (uint256 i = 0; i < users.length; i++) {
-        vm.expectEmit(true, true, true, true);
+        // Here we use the longer signature for demonstration purposes. This call checks
+        // topic0 (always checked), topic1 (true), topic2 (true), NOT topic3 (false), and data (true).
+        vm.expectEmit(true, true, false, true);
         emit Transfer(address(this), users[i], 10);
     }
 
