@@ -39,6 +39,9 @@ The destination (*to*) can be an ENS name or an address.
 
 {{#include ../common/wallet-options.md}}
 
+`--unlocked`  
+&nbsp;&nbsp;&nbsp;&nbsp;Send via `eth_sendTransaction` using the `--from` argument or `$ETH_FROM` as sender.
+
 {{#include ../common/rpc-options.md}}
 
 {{#include ../common/etherscan-options.md}}
