@@ -17,7 +17,7 @@ Loads the value from storage slot `slot` on account `account`.
 ///     uint256 private leet = 1337; // slot 0
 /// }
 
-bytes32 leet = cheats.load(address(leetContract), bytes32(uint256(0)));
+bytes32 leet = vm.load(address(leetContract), bytes32(uint256(0)));
 emit log_uint(uint256(leet)); // 1337
 ```
 
