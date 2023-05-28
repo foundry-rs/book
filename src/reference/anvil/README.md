@@ -269,7 +269,9 @@ Returns the details of all transactions currently pending for inclusion in the n
 &nbsp;&nbsp;&nbsp;&nbsp; Print help information
 
 `--hardfork <HARDFORK>`  
-&nbsp;&nbsp;&nbsp;&nbsp; Choose the EVM hardfork to use [default: latest]
+&nbsp;&nbsp;&nbsp;&nbsp; Choose the EVM hardfork to use 
+&nbsp;&nbsp;&nbsp;&nbsp; Choose the hardfork by name, e.g. `shanghai`, `paris`, `london`, etc...
+&nbsp;&nbsp;&nbsp;&nbsp; [default: latest]
 
 `--init <PATH>`  
 &nbsp;&nbsp;&nbsp;&nbsp; Initialize the genesis block with the given `genesis.json` file.
