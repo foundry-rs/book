@@ -311,6 +311,8 @@
       - [`makeAddr`](./reference/forge-std/make-addr.md)
       - [`makeAddrAndKey`](./reference/forge-std/make-addr-and-key.md)
       - [`noGasMetering`](./reference/forge-std/noGasMetering.md)
+      - [`assumeNoPrecompiles`](./reference/forge-std/assume-no-precompiles.md)
+      - [`assumePayable`](./reference/forge-std/assume-payable.md)
     - [Std Errors](./reference/forge-std/std-errors.md)
       - [`assertionError`](./reference/forge-std/assertionError.md)
       - [`arithmeticError`](./reference/forge-std/arithmeticError.md)
@@ -340,3 +342,4 @@
   - [DSTest Reference](./reference/ds-test.md)
 - [Miscellaneous](./misc/README.md)
   - [Struct encoding](./misc/struct-encoding.md)
+  - [Precompile Registry](./misc/precompile-registry.md)
