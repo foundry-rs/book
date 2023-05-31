@@ -96,8 +96,8 @@ contract SigningExampleTest is Test {
 
         signingExample.purchase(
             amount,
-            nonce
-            signature,
+            nonce,
+            signature
         );
         vm.stopPrank();
     }
