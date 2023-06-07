@@ -1,6 +1,6 @@
 ## Foundry Tutorials (Unofficial) Videos
 
-Unofficial *youtube playlists* of Foundry tutorials from famousblockchain tutorial makers.
+Unofficial *youtube playlists* of Foundry tutorials from Blockchain educators.
 
 URL | Description | Author
 |:--:|:--:|:--:|
