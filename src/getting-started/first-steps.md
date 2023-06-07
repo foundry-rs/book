@@ -31,3 +31,5 @@ And run the tests with [`forge test`](../reference/forge/forge-test.md):
 > 💡 **Tip**
 > 
 > You can always print help for any subcommand (or their subcommands) by adding `--help` at the end.
+
+You watch [these](../tutorials/learn-foundry.md) beginner tutorials if you are a visual learner.
