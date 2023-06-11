@@ -50,6 +50,15 @@ interface CheatCodes {
         bytes data;
     }
 
+    // Possible caller modes for readCallers()
+    enum CallerMode {
+        None,
+        Broadcast,
+        RecurrentBroadcast,
+        Prank,
+        RecurrentPrank
+    }
+
     // Set block.timestamp
     function warp(uint256) external;
 
@@ -179,6 +188,9 @@ interface CheatCodes {
 
     // Resets subsequent calls' msg.sender to be `address(this)`
     function stopPrank() external;
+
+    // Reads the current `msg.sender` and `tx.origin` from state and reports if there is any active caller modification
+    function readCallers() external returns (CallerMode callerMode, address msgSender, address txOrigin);
 
     // Sets an address' balance
     function deal(address who, uint256 newBalance) external;

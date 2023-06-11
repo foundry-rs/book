@@ -13,6 +13,7 @@
 - [`prank`](./prank.md)
 - [`startPrank`](./start-prank.md)
 - [`stopPrank`](./stop-prank.md)
+- [`readCallers`](./read-callers.md)
 - [`record`](./record.md)
 - [`accesses`](./accesses.md)
 - [`recordLogs`](./record-logs.md)
