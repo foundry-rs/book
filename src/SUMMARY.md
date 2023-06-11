@@ -225,6 +225,7 @@
       - [`prank`](./cheatcodes/prank.md)
       - [`startPrank`](./cheatcodes/start-prank.md)
       - [`stopPrank`](./cheatcodes/stop-prank.md)
+      - [`readCallers`](./cheatcodes/read-callers.md)
       - [`record`](./cheatcodes/record.md)
       - [`accesses`](./cheatcodes/accesses.md)
       - [`recordLogs`](./cheatcodes/record-logs.md)
