@@ -42,6 +42,9 @@
 `--allow-failure`  
 &nbsp;&nbsp;&nbsp;&nbsp;Exit with code 0 even if a test fails.
 
+`--fail-fast`  
+&nbsp;&nbsp;&nbsp;&nbsp;Stop running tests after the first failure.
+
 `--etherscan-api-key` *key*  
 &nbsp;&nbsp;&nbsp;&nbsp;Etherscan API key. If set, traces are decoded using Etherscan if `--fork-url` is also set.  
 &nbsp;&nbsp;&nbsp;&nbsp;Environment: `ETHERSCAN_API_KEY`
