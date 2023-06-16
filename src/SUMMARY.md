@@ -6,6 +6,7 @@
 
 - [Installation](./getting-started/installation.md)
 - [First Steps with Foundry](./getting-started/first-steps.md)
+- [Migrating to V1](./getting-started/migrating-to-v1.md)
 
 # Projects
 
