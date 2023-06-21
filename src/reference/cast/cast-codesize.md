@@ -33,9 +33,8 @@ The contract (*address*) can be an ENS name or an address.
 ### EXAMPLES
 
 1. Get the runtime bytecode size of the WETH contract.
-    ```sh
-    cast codesize 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
-    ```
+```sh
+cast codesize 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
 
 ### SEE ALSO
 
