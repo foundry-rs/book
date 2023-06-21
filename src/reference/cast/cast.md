@@ -101,6 +101,9 @@ This program is a set of tools to interact with Ethereum and perform conversions
 [cast code](./cast-code.md)
 &nbsp;&nbsp;&nbsp;&nbsp;Get the bytecode of a contract.
 
+[cast codesize](./cast-codesize.md)
+&nbsp;&nbsp;&nbsp;&nbsp;Get the runtime bytecode size of a contract.
+
 #### ENS Commands
 
 [cast lookup-address](./cast-lookup-address.md)

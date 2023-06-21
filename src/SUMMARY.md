@@ -144,6 +144,7 @@
       - [cast proof](./reference/cast/cast-proof.md)
       - [cast nonce](./reference/cast/cast-nonce.md)
       - [cast code](./reference/cast/cast-code.md)
+      - [cast codesize](./reference/cast/cast-codesize.md)
     - [ENS Commands](./reference/cast/ens-commands.md)
       - [cast lookup-address](./reference/cast/cast-lookup-address.md)
       - [cast resolve-name](./reference/cast/cast-resolve-name.md)
