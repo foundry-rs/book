@@ -338,7 +338,7 @@ Returns the details of all transactions currently pending for inclusion in the n
 &nbsp;&nbsp;&nbsp;&nbsp; The base fee in a block
 
 `--chain-id <CHAIN_ID>`  
-&nbsp;&nbsp;&nbsp;&nbsp; The chain ID
+&nbsp;&nbsp;&nbsp;&nbsp; The chain ID [default: 31337]
 
 `--code-size-limit <CODE_SIZE>`  
 &nbsp;&nbsp;&nbsp;&nbsp; EIP-170: Contract code size limit in bytes. Useful to increase this because of tests.
