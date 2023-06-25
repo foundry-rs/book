@@ -51,10 +51,12 @@ vm.etch(targetAddr, deployed.code);
 
 ### SEE ALSO
 
+[`getDeployedCode`](./get-deployed-code.md)
+[`eth`](./etch.md)
+
 Forge Standard Library
 
 [`deployCode`](../reference/forge-std/deployCode.md)
-[`getDeployedCode`](./get-deployed-code.md)
-[`eth`](./etch.md)
+[`deployCodeTo`](../reference/forge-std/deployCodeTo.md)
 
 [forge-std]: ../reference/forge-std
