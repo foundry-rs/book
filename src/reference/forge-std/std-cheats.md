@@ -6,6 +6,7 @@
 - [`startHoax`](./startHoax.md)
 - [`deal`](./deal.md)
 - [`deployCode`](./deployCode.md)
+- [`deployCodeTo`](./deployCodeTo.md)
 - [`bound`](./bound.md)
 - [`changePrank`](./change-prank.md)
 - [`makeAddr`](./make-addr.md)

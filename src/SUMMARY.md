@@ -309,6 +309,7 @@
       - [`startHoax`](./reference/forge-std/startHoax.md)
       - [`deal`](./reference/forge-std/deal.md)
       - [`deployCode`](./reference/forge-std/deployCode.md)
+      - [`deployCodeTo`](./reference/forge-std/deployCodeTo.md)
       - [`bound`](./reference/forge-std/bound.md)
       - [`changePrank`](./reference/forge-std/change-prank.md)
       - [`makeAddr`](./reference/forge-std/make-addr.md)
