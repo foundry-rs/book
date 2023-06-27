@@ -47,7 +47,7 @@ Note that, while some chains like Optimism have bytecode deployed at a predeterm
 | 433114, 43113 | `0x0200000000000000000000000000000000000001` | ContractNativeMinterAddress      |
 | 433114, 43113 | `0x0200000000000000000000000000000000000002` | TxAllowListAddress               |
 | 433114, 43113 | `0x0200000000000000000000000000000000000003` | FeeConfigManagerAddress          |
-| ALL           | `0x04E59B44847b37957858892cA78fBf26C0b4956C` | (Foundry) Create2Deployer        |
+| ALL           | `0x4e59b44847b379578588920cA78FbF26c0B4956C` | (Foundry) Create2Deployer        |
 | ALL           | `0x7109709ECfa91a80626fF3989D68f67F5b1DD12D` | (Foundry) VM                     |
 | ALL           | `0x000000000000000000636F6e736F6c652e6c6f67` | (Foundry) Console                |
 
