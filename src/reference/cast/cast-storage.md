@@ -2,7 +2,7 @@
 
 ### NAME
 
-cast-storage - Get the raw value of a contract's storage slot or full storage layout.
+cast-storage - Get the raw value of a contract's storage slot or its full storage layout.
 
 ### SYNOPSIS
 
