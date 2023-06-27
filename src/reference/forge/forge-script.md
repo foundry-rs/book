@@ -109,7 +109,7 @@ Scripts can be used to apply state transitions on live contracts, or deploy and 
         --verify -vvvv --resume
     ```
 
-4. Verify contracts that were previously deployed with a script
+4. Verify contracts that were just deployed with a script
     ```sh
     forge script script/NFT.s.sol --rpc-url $RPC_URL --verify --resume
     ```
