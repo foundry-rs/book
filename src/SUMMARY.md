@@ -6,7 +6,14 @@
 
 - [Installation](./getting-started/installation.md)
 - [First Steps with Foundry](./getting-started/first-steps.md)
-- [Migrating to V1](./getting-started/migrating-to-v1.md)
+
+# Migrating to V1
+
+- [Upgrading to V1](./migrating-to-v1/migrating-to-v1.md)
+- [Deprecated Features](./migrating-to-v1/migrating-to-v1.md)
+- [V1 Changes](./migrating-to-v1/migrating-to-v1.md)
+  - [Non-breaking Changes](./migrating-to-v1/migrating-to-v1.md)
+  - [Breaking Changes](./migrating-to-v1/migrating-to-v1.md)
 
 # Projects
 
