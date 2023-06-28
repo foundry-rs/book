@@ -280,6 +280,7 @@
     - [Utilities](./cheatcodes/utilities.md)
       - [`addr`](./cheatcodes/addr.md)
       - [`sign`](./cheatcodes/sign.md)
+      - [`skip`](./cheatcodes/skip.md)
       - [`label`](./cheatcodes/label.md)
       - [`deriveKey`](./cheatcodes/derive-key.md)
       - [`parseBytes`](./cheatcodes/parse-bytes.md)

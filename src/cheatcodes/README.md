@@ -204,6 +204,9 @@ interface CheatCodes {
     // Sets an address' code
     function etch(address who, bytes calldata code) external;
 
+    // Marks a test as skipped. Must be called at the top of the test.
+    function skip(bool skip) external;
+
     // Expects an error on next call
     function expectRevert() external;
     function expectRevert(bytes calldata) external;
