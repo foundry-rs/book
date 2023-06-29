@@ -20,7 +20,7 @@ function statefulFuzzTestEq() public  {
 
 ### Deprecating testFail
 
-Using `testFail` to write failing tests is now discouraged. While it's usage is extremely common, we've decided to remove it because it can introduce footguns in a test. A warning will be thrown if it's used.
+Using `testFail` to write failing tests is now discouraged. While it's usage is extremely common, we've decided to deprecate it because it can introduce footguns in a test.
 
 The now-recommended pattern is to refactor the actions that will make your test revert and subsequently fail in an utility function, and use `expectRevert` to ensure that this function call failed. This way, the test failure is expected explicitly, instead of introducing the possibility that the test fails in an unintended way silently.
 
@@ -51,7 +51,7 @@ contract TestFailDeprecated is Test {
     /// with expectRevert()
     function testReverterReverts() public {
         vm.expectRevert();
-        // Call using this to increase depth
+        // Call using `this` to increase depth
         this.exposed_call_Reverter();
     }
 
@@ -62,6 +62,6 @@ contract TestFailDeprecated is Test {
 }
 ```
 
-### Removing cheatcode support on some precompiles
+### Removing cheatcodes support on some precompiles
 
 It is now impossible to use the following cheatcodes on precompiles: `etch`, `load`, `store`, `deal`.

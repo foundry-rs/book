@@ -2,13 +2,13 @@
 
 When it comes to breaking changes, there has been a slight rework for the assertion (`expect*`) cheatcodes that removes previously allowed unintended or confusing behavior.
 
-The biggest change to expect, is that these cheatcodes will now work only for the next call, not at the "test" level anymore. The philosophy behind this is that by making these cheatcodes more strict through this requirement, tests will be more accurate as the cheatcodes will now succeed under more strict conditions.
+The biggest change is that these cheatcodes will now work only for the next call, not at the "test" level anymore. The philosophy behind this is that by making these cheatcodes more strict through this requirement, tests will be more accurate as the cheatcodes will now only succeed under more strict conditions.
 
 #### `expectEmit`
 
 `expectEmit` previously allowed you to assert that a log was emitted during the execution of the test. With V1, the following changes have been made:
 
-- it now only works for the _next call_. This means if you used to declare all your expected emits at the top of the test, you may now have to move them to just before the next call you perform. Cheatcode calls do not count. As long as the events are emitted during the next call's context, they will be matched.
+- it now only works for the _next call_. This means if you used to declare all your expected emits at the top of the test, you may now have to move them to just before the next call you perform. Cheatcode calls are ignored. As long as the events are emitted during the next call's context, they will be matched.
 - The events have to be _ordered_. That means, if you're trying to match events [A, B, C], you must declare them in this order.
     - Skipping events is possible. Therefore, if a function emits events [A, B, C, D, E] and you want to match [B, D, E], you just need to declare them in that order.
 
@@ -196,10 +196,10 @@ contract ExpectCallTest is Test {
 
 #### `expectRevert`
 
-`expectRevert` currently allows to expect for reverts at the test level. This means that a revert can be declared at the top of the test and as long as a function in the test reverts, the test will be pass. The new behavior is the following:
+`expectRevert` currently allows to expect for reverts at the test level. This means that a revert can be declared at the top of the test, and as long as a function in the test reverts, the test will pass. The new behavior is the following:
 
 - `expectRevert` CANNOT be used with other `expect` cheatcodes. It will fail if it detects they're being used at the same time.
-    - The reasoning for this is that calls that revert are rolled back, and events and calls therefore never happen. This restrictions helps model real-world behavior.
+    - The reasoning for this is that calls that revert are rolled back, and events and calls therefore never happen. This restrictions helps model real execution behavior.
 - `expectRevert` now works only for the next call. If the next call does not revert, the cheatcode will fail and therefore the test will also fail. The depth of the revert does not matter: as long as the next call reverts, either inmediately or deeper into its call subtree, the cheatcode will succeed.
 
 To illustrate, see the following examples:
