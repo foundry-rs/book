@@ -64,6 +64,9 @@ This program is a set of tools to interact with Ethereum and perform conversions
 [cast access-list](./cast-access-list.md)
 &nbsp;&nbsp;&nbsp;&nbsp;Create an access list for a transaction.
 
+[cast logs](./cast-logs.md)
+&nbsp;&nbsp;&nbsp;&nbsp;Get logs by signature or topic
+
 #### Block Commands
 
 [cast find-block](./cast-find-block.md)
