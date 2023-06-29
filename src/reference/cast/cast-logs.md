@@ -6,7 +6,7 @@ cast logs - Get logs by signature or topic.
 
 ### SYNOPSIS
 
-```cast logs``` [*options*] *sig_or_topic* [*topics_or_args...*]
+``cast logs`` [*options*] *sig_or_topic* [*topics_or_args...*]
 
 
 ### DESCRIPTION
@@ -18,6 +18,9 @@ The (*sig_or_topic*) may either be the event signature or its hashed topic (loca
 If using a signature, remaining arguments must be in their ordinary form. If using a topic, the arguments must be as they themselves appear as topics.
 
 ### OPTIONS
+
+### Query Options
+
 `--from-block` *from_block*
 &nbsp;&nbsp;&nbsp;&nbsp;The block height to start query at.
     
