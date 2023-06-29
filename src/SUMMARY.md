@@ -131,6 +131,7 @@
       - [cast run](./reference/cast/cast-run.md)
       - [cast estimate](./reference/cast/cast-estimate.md)
       - [cast access-list](./reference/cast/cast-access-list.md)
+      - [cast logs](./reference/cast/cast-logs.md)
     - [Block Commands](./reference/cast/block-commands.md)
       - [cast find-block](./reference/cast/cast-find-block.md)
       - [cast gas-price](./reference/cast/cast-gas-price.md)
