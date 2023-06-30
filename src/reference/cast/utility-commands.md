@@ -4,6 +4,7 @@
 - [cast sig-event](./cast-sig-event.md)
 - [cast keccak](./cast-keccak.md)
 - [cast compute-address](./cast-compute-address.md)
+- [cast create2](./cast-create2.md)
 - [cast interface](./cast-interface.md)
 - [cast index](./cast-index.md)
 - [cast --concat-hex](./cast--concat-hex.md)
