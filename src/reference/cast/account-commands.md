@@ -5,3 +5,4 @@
 - [cast proof](./cast-proof.md)
 - [cast nonce](./cast-nonce.md)
 - [cast code](./cast-code.md)
+- [cast codesize](./cast-codesize.md)

@@ -14,7 +14,7 @@ function assumeNoPrecompiles(address addr, uint256 chainid) public;
 
 Uses [`assume`](../../cheatcodes/assume.md) to filter precompile addresses from the fuzz tests.
 
-Optionally, a `chainid` may be specified to filter known precompiles on the repsective chain.
+Optionally, a `chainid` may be specified to filter known precompiles on the respective chain.
 
 ### SEE ALSO
 

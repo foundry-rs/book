@@ -2,11 +2,11 @@
 
 ### NAME
 
-cast-basefee - Get the basefee of a block.
+cast-base-fee - Get the basefee of a block.
 
 ### SYNOPSIS
 
-``cast basefee`` [*options*] [*block*]
+``cast base-fee`` [*options*] [*block*]
 
 ### DESCRIPTION
 
@@ -26,12 +26,12 @@ The specified *block* can be a block number, or any of the tags: `earliest`, `fi
 
 1. Get the basefee of the latest block:
     ```sh
-    cast basefee
+    cast base-fee
     ```
 
 2. Get the basefee of the genesis block:
     ```sh
-    cast basefee 1
+    cast base-fee 1
     ```
 
 ### SEE ALSO
