@@ -142,6 +142,10 @@ contract Protocol {
 contract Caller {
     Protocol public protocol;
 
+    function setUp() public {
+        protocol = new Protocol();
+    }
+
     function foo() public {
         // do something...
     }
