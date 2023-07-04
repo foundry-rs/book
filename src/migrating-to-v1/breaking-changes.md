@@ -8,7 +8,7 @@ The biggest change is that these cheatcodes will now work only for the next call
 
 `expectEmit` previously allowed you to assert that a log was emitted during the execution of the test. With V1, the following changes have been made:
 
-- it now only works for the _next call_. This means if you used to declare all your expected emits at the top of the test, you may now have to move them to just before the next call you perform. Cheatcode calls are ignored. As long as the events are emitted during the next call's context, they will be matched.
+- It now only works for the _next call_. This means if you used to declare all your expected emits at the top of the test, you may now have to move them to just before the next call you perform. Cheatcode calls are ignored. As long as the events are emitted during the next call's execution, they will be matched.
 - The events have to be _ordered_. That means, if you're trying to match events [A, B, C], you must declare them in this order.
     - Skipping events is possible. Therefore, if a function emits events [A, B, C, D, E] and you want to match [B, D, E], you just need to declare them in that order.
 
