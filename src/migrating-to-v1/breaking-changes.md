@@ -172,7 +172,7 @@ contract ExpectCallTest is Test {
     /// call `protocol.doSomething()` internally.
     /// `doSomething()` is nested inside `bar`, so this passes.
     function testExpectCall() public {
-        vm.expectCall(address(caller.protocol), abi.encodeCall(caller.protocol.doSomething));
+        vm.expectCall(address(caller.protocol), abi.encodeCall(caller.protocol.doSomething, ()));
         // This will call bar internally, so this is valid.
         caller.bar();
     }
