@@ -18,18 +18,18 @@ To illustrate, see the following examples:
 
 contract Emitter {
     event A(uint256 indexed a);
-    event B(uint256 indexed b);
-    event C(uint256 indexed c);
-    event D(uint256 indexed d);
+    event B(uint256 b);
+    event C(uint256 c1, uint256 c2);
+    event D(bytes32 d1, uint256 f2, address indexed d3);
     event E(uint256 indexed e);
 
     /// emit() emits events [A, B, C, D, E]
     function emit() external {
         emit A(1);
         emit B(2);
-        emit C(3);
-        emit D(4);
-        emit E(1);
+        emit C(3, 3);
+        emit D(bytes32("gm"), 4, address(0xc4f3));
+        emit E(5);
     }
 }
 
@@ -37,76 +37,77 @@ contract EmitTest is Test {
     Emitter public emitter;
 
     event A(uint256 indexed a);
-    event B(uint256 indexed b);
-    event C(uint256 indexed c);
-    event D(uint256 indexed d);
+    event B(uint256 b);
+    event C(uint256 c1, uint256 c2);
+    event D(bytes32 d1, uint256 f2, address indexed d3);
     event E(uint256 indexed e);
 
     function setUp() public {
         emitter = new Emitter();
     }
 
-    /// CORRECT BEHAVIOR: Declare all your expectEmits just before the next call,
-    /// on the test.
-    /// emit() emits [A, B, C, D, E], and we're expecting [A, B, C, D, E].
-    /// this passes.
+    // CORRECT BEHAVIOR: Declare all your expectEmits just before the next call,
+    // on the test.
+    // emit() emits [A, B, C, D, E], and we're expecting [A, B, C, D, E].
+    // This passes.
     function testExpectEmit() public {
-        cheats.expectEmit(true, false, false, true);
+        vm.expectEmit(true, false, false, true);
         emit A(1);
-        cheats.expectEmit(true, false, false, true);
+        vm.expectEmit(false, false, false, true);
         emit B(2);
-        cheats.expectEmit(true, false, false, true);
-        emit C(3);
-        cheats.expectEmit(true, false, false, true);
-        emit D(4);
-        cheats.expectEmit(true, false, false, true);
+        vm.expectEmit(false, false, false, true);
+        emit C(3, 3);
+        // It's also possible to skip all parameters entirely and just call the cheatcode.
+        vm.expectEmit();
+        emit D(bytes32("gm"), 4, address(0xc4f3));
+        vm.expectEmit();
         emit E(5);
         emitter.emit();
     }
 
-    /// CORRECT BEHAVIOR: Declare all your expectEmits just before the next call,
-    /// on the test.
-    /// emit() emits [A, B, C, D, E], and we're expecting [B, D, E].
-    /// this passes.
+    // CORRECT BEHAVIOR: Declare all your expectEmits just before the next call,
+    // on the test.
+    // emit() emits [A, B, C, D, E], and we're expecting [B, D, E].
+    // This passes.
     function testExpectEmitWindow() public {
-        cheats.expectEmit(true, false, false, true);
+        vm.expectEmit();
         emit B(2);
-        cheats.expectEmit(true, false, false, true);
-        emit D(4);
-        cheats.expectEmit(true, false, false, true);
+        vm.expectEmit();
+        emit D(bytes32("gm"), 4, address(0xc4f3));
+        vm.expectEmit();
         emit E(5);
         emitter.emit();
     }
 
     /// INCORRECT BEHAVIOR: Declare all your expectEmits in the wrong order.
     /// emit() emits [A, B, C, D, E], and we're expecting [D, B, E].
-    /// this fails, as D is emitted after B, not before.
+    /// This fails, as D is emitted after B, not before.
     function testExpectEmitWindowFailure() public {
-        cheats.expectEmit(true, false, false, true);
-        emit D(4);
-        cheats.expectEmit(true, false, false, true);
+        vm.expectEmit();
+        emit D(bytes32("gm"), 4, address(0xc4f3));
+        vm.expectEmit();
         emit B(2);
-        cheats.expectEmit(true, false, false, true);
+        vm.expectEmit();
         emit E(5);
         emitter.emit();
     }
 
     /// CORRECT BEHAVIOR: Declare all your expectEmits in an internal function.
-    /// Calling a contract function internally is a JUMPI, not a call,
+    /// Calling a contract function internally is a JUMP, not a call,
     /// therefore it's a valid pattern, useful if you have a lot of events to expect.
     /// emit() emits [A, B, C, D, E], and we're expecting [B, D, E].
-    /// this passes.
+    /// This passes.
     function testExpectEmitWithInternalFunction() public {
         declareExpectedEvents();
         emitter.emit();
     }
 
     function declareExpectedEvents() internal {
-        cheats.expectEmit(true, false, false, true);
+        vm.expectEmit(true, false, false, true);
         emit B(2);
-        cheats.expectEmit(true, false, false, true);
+        vm.expectEmit(true, false, false, true);
         emit D(4);
-        cheats.expectEmit(true, false, false, true);
+        vm.expectEmit(true, false, false, true);
         emit E(5);
     }
 }
