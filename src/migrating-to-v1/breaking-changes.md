@@ -1,5 +1,13 @@
 ## Breaking changes
 
+### Table of contents
+1. [Introduction](#introduction)
+2. [`expectEmit`](#expectemit)
+3. [`expectCall`](#expectcall)
+4. [`expectRevert`](#expectrevert)
+
+### Introduction
+
 When it comes to breaking changes, there has been a slight rework for the assertion (`expect*`) cheatcodes that removes previously allowed unintended or confusing behavior.
 
 The biggest change is that these cheatcodes will now work only for the next call, not at the "test" level anymore. The philosophy behind this is that by making these cheatcodes more strict through this requirement, tests will be more accurate as the cheatcodes will now only succeed under more strict conditions.
