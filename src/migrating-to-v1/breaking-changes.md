@@ -209,11 +209,11 @@ contract ExpectCallTest is Test {
 
 #### `expectRevert`
 
-`expectRevert` currently allows to expect for reverts at the test level. This means that a revert can be declared at the top of the test, and as long as a function in the test reverts, the test will pass. The new behavior is the following:
+`expectRevert` currently allows to expect for reverts at the test-depth level. This means that a revert can be declared at the top of the test, and as long as a function in the test reverts, the test will pass. The new behavior is the following:
 
 - `expectRevert` CANNOT be used with other `expect` cheatcodes. It will fail if it detects they're being used at the same time.
-    - The reasoning for this is that calls that revert are rolled back, and events and calls therefore never happen. This restrictions helps model real execution behavior.
-- `expectRevert` now works only for the next call. If the next call does not revert, the cheatcode will fail and therefore the test will also fail. The depth of the revert does not matter: as long as the next call reverts, either inmediately or deeper into its call subtree, the cheatcode will succeed.
+    - The reasoning for this is that calls that revert are rolled back, and events and calls therefore never happen. This restriction helps model real execution behavior.
+- `expectRevert` now works only for the next call. If the next call does not revert, the cheatcode will fail and therefore the test will also fail. The depth of the revert does not matter: as long as the next call reverts, either immediately or deeper into its call subtree, the cheatcode will succeed.
 
 To illustrate, see the following examples:
 
@@ -239,7 +239,7 @@ contract ExpectRevertTest is Test {
     /// CORRECT BEHAVIOR: We expect `revertWithMessage` to revert,
     /// so we declare a expectRevert and then call the function.
     function testExpectRevertString() public {
-        vm.expectRevert("revert");
+        vm.expectRevert(bytes("revert"));
         reverter.revertWithMessage("revert");
     }
 
@@ -248,8 +248,7 @@ contract ExpectRevertTest is Test {
     /// `doNotRevert()`, which does not revert. The cheatcode therefore fails.
     function testFailRevertNotOnImmediateNextCall() public {
         // expectRevert should only work for the next call. However,
-        // we do not inmediately revert, so,
-        // we fail.
+        // we do not immediately revert, so this test fails.
         vm.expectRevert("revert");
         reverter.doNotRevert();
         reverter.revertWithMessage("revert");
@@ -292,7 +291,7 @@ contract MathLibTest is Test {
     /// "dangling" expectRevert.
     function testRevertOnMathLibWithNoMock() public {
         vm.expectRevert();
-        MathLib.add(2 ** 128 - 1, 2 ** 255 - 1);
+        MathLib.add(type(uint256).max, 1);
     }
 
     /// CORRECT BEHAVIOR: mock.add will revert due to arithmetic errors,

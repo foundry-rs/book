@@ -1,10 +1,10 @@
-## Deprecated features:
+## Deprecated features
 
-With foundry V1, we've decided to go ahead and start deprecating features that are considered anti-practices or might be misleading for developers. Deprecated means that while you can continue using these features, it is now a discouraged practice and you should plan on incrementally migrating away from using these.
+With foundry V1, we've started deprecating features that are considered anti-patterns or might be misleading and confusing for developers. Deprecated means that while you can continue using these features, it is now a discouraged practice and you should plan on migrating away from using these.
 
 ### Removing the Invariant keyword
 
-The invariant keyword has now been deprecated, and the new keyword is now `statefulFuzz`. This means that now writing tests in this manner is valid:
+The `invariant` test prefix has now been deprecated, and the new expected prefix `statefulFuzz`. This means that now writing tests in this manner is valid:
 
 ```solidity
 /// Old, deprecated way of declaring an invariant test
@@ -14,15 +14,15 @@ function invariantTestEq() public {
 
 /// New
 function statefulFuzzTestEq() public  {
-    // Assert your invariants
+    // Assert your invariants...
 }
 ```
 
-### Deprecating testFail
+### `testFail`
 
-Using `testFail` to write failing tests is now discouraged. While it's usage is extremely common, we've decided to deprecate it because it can introduce footguns in a test.
+Using `testFail` to write failing tests is now discouraged, because it can introduce footguns in a test. Specifically, it cannot distinguish between revert reasons, and therefore tests may inadvertently pass and this is hard to detect.
 
-The now-recommended pattern is to refactor the actions that will make your test revert and subsequently fail in an utility function, and use `expectRevert` to ensure that this function call failed. This way, the test failure is expected explicitly, instead of introducing the possibility that the test fails in an unintended way silently.
+A better pattern is to use `expectRevert` to ensure that a function call reverted in a specific way. This way, the test failure is expected explicitly, removing the possibility that the test fails in an unintended, undetectable way.
 
 An example:
 
@@ -46,10 +46,10 @@ contract TestFailDeprecated is Test {
         mock.revert_();
     }
 
-    /// New way, without using testFail.
+    // Better way, without using testFail.
     /// The call to revert_ has been refactored and is now expected to fail
     /// with expectRevert()
-    function testReverterReverts() public {
+    function test_RevertIf_AlwaysReverts() public {
         vm.expectRevert();
         // Call using `this` to increase depth
         this.exposed_call_Reverter();
