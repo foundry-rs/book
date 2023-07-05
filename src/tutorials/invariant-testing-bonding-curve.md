@@ -27,15 +27,7 @@ The key consderation is to define these:
 
 2. **Actions**  (a set of things that can happen during each run)
 
-To get started, we are going to focus on the following directories in this [repository](https://github.com/Ratimon/bonding-curves):
-
-```
-- foundry.toml
-- invariant.sol
-- Makefile
-```
-
-In this guide, we can run the fuzzing campagin by running the following command:
+To get started, make sure to clone the repository. All commands will be available in the `Makefile`. We can run the fuzzing campagin by running the following command:
 
 ```sh
 make invariant-LinearBondingCurve
