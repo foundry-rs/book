@@ -87,9 +87,9 @@ contract EmitTest is Test {
         emitter.emit();
     }
 
-    /// INCORRECT BEHAVIOR: Declare all your expectEmits in the wrong order.
-    /// emit() emits [A, B, C, D, E], and we're expecting [D, B, E].
-    /// This fails, as D is emitted after B, not before.
+    // INCORRECT BEHAVIOR: Declare all your expectEmits in the wrong order.
+    // emit() emits [A, B, C, D, E], and we're expecting [D, B, E].
+    // This fails, as D is emitted after B, not before.
     function testExpectEmitWindowFailure() public {
         vm.expectEmit();
         emit D(bytes32("gm"), 4, address(0xc4f3));
@@ -100,11 +100,11 @@ contract EmitTest is Test {
         emitter.emit();
     }
 
-    /// CORRECT BEHAVIOR: Declare all your expectEmits in an internal function.
-    /// Calling a contract function internally is a JUMP, not a call,
-    /// therefore it's a valid pattern, useful if you have a lot of events to expect.
-    /// emit() emits [A, B, C, D, E], and we're expecting [B, D, E].
-    /// This passes.
+    // CORRECT BEHAVIOR: Declare all your expectEmits in an internal function.
+    // Calling a contract function internally is a JUMP, not a call,
+    // therefore it's a valid pattern, useful if you have a lot of events to expect.
+    // emit() emits [A, B, C, D, E], and we're expecting [B, D, E].
+    // This passes.
     function testExpectEmitWithInternalFunction() public {
         declareExpectedEvents();
         emitter.emit();
@@ -167,35 +167,37 @@ contract ExpectCallTest is Test {
         caller = new Caller();
     }
 
-    /// CORRECT BEHAVIOR: We expect a call to `doSomething()` in the next call,
-    /// So we declare our expected call, and then call `caller.bar()`, which will
-    /// call `protocol.doSomething()` internally.
-    /// `doSomething()` is nested inside `bar`, so this passes.
+    // CORRECT BEHAVIOR: We expect a call to `doSomething()` in the next call,
+    // So we declare our expected call, and then call `caller.bar()`, which will
+    // call `protocol.doSomething()` internally.
+    // `doSomething()` is nested inside `bar`, so this passes.
     function testExpectCall() public {
         vm.expectCall(address(caller.protocol), abi.encodeCall(caller.protocol.doSomething, ()));
         // This will call bar internally, so this is valid.
         caller.bar();
     }
 
-    /// INCORRECT BEHAVIOR: We expect a call to `doSomething()` in the next call,
-    /// So we declare our expected call, and then call `protocol.doSomething()` directly.
-    /// `doSomething()` is not nested, but rather called at the test level.
-    /// This doesn't satisfy the depth requirement described above,
-    /// so this fails.
+    // INCORRECT BEHAVIOR: We expect a call to `doSomething()` in the next call,
+    // So we declare our expected call, and then call `protocol.doSomething()` directly.
+    // `doSomething()` is not nested, but rather called at the test level.
+    // This doesn't satisfy the depth requirement described above,
+    // so this fails.
     function testExpectCallFailure() public {
-        vm.expectCall(address(caller.protocol), abi.encodeCall(caller.protocol.doSomething));
+        vm.expectCall(address(caller.protocol), abi.encodeCall(caller.protocol.doSomething, ()));
         // We're calling doSomething() directly here.
         // This is not inside the next call's subcall tree, but rather a test-level
         // call. This fails.
         caller.protocol.doSomething();
     }
 
-    /// CORRECT BEHAVIOR: Sometimes, we want to directly expect the call we're gonna
-    /// call next, but we need to satisfy the depth requirement. In those cases,
-    /// this pattern can be used.
-    /// Calling exposed_callFoo using `this` will create a new call context which
-    /// will increase depth. In its subcall tree, we'll detect `exposed_callFoo`,
-    /// which will make the test pass.
+    // CORRECT BEHAVIOR: Sometimes, we want to directly expect the call we're gonna
+    // call next, but we need to satisfy the depth requirement. In those cases,
+    // this pattern can be used.
+    // Calling exposed_callFoo using `this` will create a new call context which
+    // will increase depth. In its subcall tree, we'll detect `exposed_callFoo`,
+    // which will make the test pass.
+    // See more info on the best practices section:
+    // https://book.getfoundry.sh/tutorials/best-practices#internal-functions
     function testExpectCallWithNest() public {
         vm.expectCall(address(caller), abi.encodeWithSelector(caller.foo.selector));
         this.exposed_callFoo();
@@ -243,9 +245,9 @@ contract ExpectRevertTest is Test {
         reverter.revertWithMessage("revert");
     }
 
-    /// INCORRECT BEHAVIOR: We correctly expect that a function will revert in this
-    /// test, but we declare the expected revert before the wrong function,
-    /// `doNotRevert()`, which does not revert. The cheatcode therefore fails.
+    // INCORRECT BEHAVIOR: We correctly expect that a function will revert in this
+    // test, but we declare the expected revert before the wrong function,
+    // `doNotRevert()`, which does not revert. The cheatcode therefore fails.
     function testFailRevertNotOnImmediateNextCall() public {
         // expectRevert should only work for the next call. However,
         // we do not immediately revert, so this test fails.
@@ -284,18 +286,18 @@ contract MathLibTest is Test {
         mock = new MathLibMock();
     }
 
-    /// INCORRECT BEHAVIOR: MathLib.add will revert due to arithmetic errors,
-    /// but as the function is marked as internal, it'll be a test level revert
-    /// instead of a call revert that expectRevert is supposed to catch.
-    /// The test will fail, and the error will let you know that you have a
-    /// "dangling" expectRevert.
+    // INCORRECT BEHAVIOR: MathLib.add will revert due to arithmetic errors,
+    // but as the function is marked as internal, it'll be a test level revert
+    // instead of a call revert that expectRevert is supposed to catch.
+    // The test will fail, and the error will let you know that you have a
+    // "dangling" expectRevert.
     function testRevertOnMathLibWithNoMock() public {
         vm.expectRevert();
         MathLib.add(type(uint256).max, 1);
     }
 
-    /// CORRECT BEHAVIOR: mock.add will revert due to arithmetic errors,
-    /// and it will be successfully detected by the `expectRevert` cheatcode.
+    // CORRECT BEHAVIOR: mock.add will revert due to arithmetic errors,
+    // and it will be successfully detected by the `expectRevert` cheatcode.
     function testRevertOnMathLibWithMock() public {
         vm.expectRevert();
         mock.add(2 ** 128 - 1, 2 ** 255 - 1);
