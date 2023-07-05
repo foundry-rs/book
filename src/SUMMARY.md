@@ -328,15 +328,6 @@
     - [Console Logging](./reference/forge-std/console-log.md)
   - [DSTest Reference](./reference/ds-test.md)
 
-# Configuration
-
-- [Configuring with `foundry.toml`](./config/README.md)
-- [Continuous Integration](./config/continous-integration.md)
-- [Integrating with VSCode](./config/vscode.md)
-- [Shell Autocompletion](./config/shell-autocompletion.md)
-- [Static Analyzers](./config/static-analyzers.md)
-- [Integrating with Hardhat](./config/hardhat.md)
-
 # Tutorials
 
 - [Best Practices](./tutorials/best-practices.md)
@@ -347,6 +338,15 @@
 - [Forking Mainnet with Cast and Anvil](./tutorials/forking-mainnet-with-cast-anvil.md)
 - [Learning Foundry Videos](./tutorials/learn-foundry.md)
 <!-- - [Incremental Adoption]() !-->
+
+# Configuration
+
+- [Configuring with `foundry.toml`](./config/README.md)
+- [Continuous Integration](./config/continous-integration.md)
+- [Integrating with VSCode](./config/vscode.md)
+- [Shell Autocompletion](./config/shell-autocompletion.md)
+- [Static Analyzers](./config/static-analyzers.md)
+- [Integrating with Hardhat](./config/hardhat.md)
 
 # Appendix
 
