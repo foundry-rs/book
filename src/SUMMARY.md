@@ -11,6 +11,49 @@
 - [Dependencies](./projects/dependencies.md)
 - [Project Layout](./projects/project-layout.md)
 
+# Testing
+
+- [Tests](./forge/tests.md)
+  - [Writing Tests](./forge/writing-tests.md)
+  - [Cheatcodes](./forge/cheatcodes.md)
+  - [Forge Standard Library Overview](./forge/forge-std.md)
+  - [Understanding Traces](./forge/traces.md)
+  - [Fork Testing](./forge/fork-testing.md)
+- [Advanced Testing](./forge/advanced-testing.md)
+  - [Fuzz Testing](./forge/fuzz-testing.md)
+  - [Invariant Testing](./forge/invariant-testing.md)
+  - [Differential Testing](./forge/differential-ffi-testing.md)
+
+
+
+# Forge Overview
+
+- [Overview of Forge](forge/README.md)
+  <!-- - [Testing Overview]() !-->
+  <!--  - [Coverage Reports]() !-->
+    <!--  - [Symbolic Testing]() !-->
+    <!--  - [Table Testing]() !-->
+    <!--  - [Mutation Testing]() !-->
+    <!-- - [Linting and Formatting]() !-->
+    <!-- - [Generating Documentation]() !-->
+- [Deploying and Verifying](./forge/deploying.md)
+- [Gas Tracking](./forge/gas-tracking.md)
+  - [Gas Reports](./forge/gas-reports.md)
+  - [Gas Snapshots](./forge/gas-snapshots.md)
+- [Debugger](./forge/debugger.md)
+
+# Cast Overview
+
+- [Overview of Cast](./cast/README.md)
+
+# Anvil Overview
+
+- [Overview of Anvil](./anvil/README.md)
+
+# Chisel Overview
+
+- [Overview of Chisel](./chisel/README.md)
+
 # References
 
 - [References by tool](./reference/README.md)
@@ -284,47 +327,6 @@
       - [`deriveRememberKey`](./reference/forge-std/derive-remember-key.md)
     - [Console Logging](./reference/forge-std/console-log.md)
   - [DSTest Reference](./reference/ds-test.md)
-
-# Testing
-
-- [Tests](./forge/tests.md)
-  - [Writing Tests](./forge/writing-tests.md)
-  - [Cheatcodes](./forge/cheatcodes.md)
-  - [Forge Standard Library Overview](./forge/forge-std.md)
-  - [Understanding Traces](./forge/traces.md)
-  - [Fork Testing](./forge/fork-testing.md)
-- [Advanced Testing](./forge/advanced-testing.md)
-  - [Fuzz Testing](./forge/fuzz-testing.md)
-  - [Invariant Testing](./forge/invariant-testing.md)
-  - [Differential Testing](./forge/differential-ffi-testing.md)
-
-# Forge Overview
-
-- [Overview of Forge](forge/README.md)
-  <!-- - [Testing Overview]() !-->
-  <!--  - [Coverage Reports]() !-->
-    <!--  - [Symbolic Testing]() !-->
-    <!--  - [Table Testing]() !-->
-    <!--  - [Mutation Testing]() !-->
-    <!-- - [Linting and Formatting]() !-->
-    <!-- - [Generating Documentation]() !-->
-- [Deploying and Verifying](./forge/deploying.md)
-- [Gas Tracking](./forge/gas-tracking.md)
-  - [Gas Reports](./forge/gas-reports.md)
-  - [Gas Snapshots](./forge/gas-snapshots.md)
-- [Debugger](./forge/debugger.md)
-
-# Cast Overview
-
-- [Overview of Cast](./cast/README.md)
-
-# Anvil Overview
-
-- [Overview of Anvil](./anvil/README.md)
-
-# Chisel Overview
-
-- [Overview of Chisel](./chisel/README.md)
 
 # Configuration
 
