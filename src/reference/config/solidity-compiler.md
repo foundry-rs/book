@@ -216,7 +216,7 @@ Valid values are:
 - Default: false
 - Environment: `FOUNDRY_SPARSE_MODE` or `DAPP_SPARSE_MODE`
 
-Enables [sparse mode](./forge/forge-build.md#sparse-mode-experimental) for builds.
+Enables [sparse mode](../forge/forge-build.md#sparse-mode-experimental) for builds.
 
 ### Optimizer
 

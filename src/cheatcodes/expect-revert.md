@@ -34,17 +34,17 @@ There are 3 signatures:
 >
 > The Solidity compiler will insert checks that ensures that the call succeeded, and revert if it did not.
 >
-> The `expectRevert` cheatcode works by inverting this, so the next call after this cheatcode returns `true` if it reverts, and `false` otherwise.
+> On low level calls, the `expectRevert` cheatcode works by making the `status` boolean returned by the low level call correspond to whether the `expectRevert` succeeded or not, NOT whether or not the low-level call succeeds. Therefore, `status` being false corresponds to the cheatcode failing.
 >
-> The implication here is that to use this cheatcode with low-level calls, you must manually assert on the call's status since Solidity is not doing it for you.
+> Apart from this, `expectRevert` also mangles return data on low level calls, and is not usable.
 >
-> For example:
+> See the following example. For clarity, `status` has been renamed to `revertsAsExpected`:
 >
 > ```solidity
 > function testLowLevelCallRevert() public {
 >     vm.expectRevert(bytes("error message"));
->     (bool status, ) = address(myContract).call(myCalldata);
->     assertTrue(status, "expectRevert: call did not revert");
+>     (bool revertsAsExpected, ) = address(myContract).call(myCalldata);
+>     assertTrue(revertsAsExpected, "expectRevert: call did not revert");
 > }
 > ```
 

@@ -60,7 +60,7 @@ remappings = [
 Now we can import any of the contracts in `src/utils` of the solmate repository like so:
 
 ```solidity
-import "solmate-utils/Contract.sol";
+import "solmate-utils/LibString.sol";
 ```
 
 ### Updating dependencies
