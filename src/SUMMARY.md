@@ -14,67 +14,8 @@
 - [Dependencies](./projects/dependencies.md)
 - [Project Layout](./projects/project-layout.md)
 
-# Forge Overview
+# References
 
-- [Overview of Forge](forge/README.md)
-- [Tests](./forge/tests.md)
-  - [Writing Tests](./forge/writing-tests.md)
-  - [Cheatcodes](./forge/cheatcodes.md)
-  - [Forge Standard Library Overview](./forge/forge-std.md)
-  - [Understanding Traces](./forge/traces.md)
-  - [Fork Testing](./forge/fork-testing.md)
-  <!--  - [Coverage Reports]() !-->
-- [Advanced Testing](./forge/advanced-testing.md)
-  - [Fuzz Testing](./forge/fuzz-testing.md)
-  - [Invariant Testing](./forge/invariant-testing.md)
-  - [Differential Testing](./forge/differential-ffi-testing.md)
-    <!--  - [Symbolic Testing]() !-->
-    <!--  - [Table Testing]() !-->
-    <!--  - [Mutation Testing]() !-->
-    <!-- - [Linting and Formatting]() !-->
-    <!-- - [Generating Documentation]() !-->
-- [Deploying and Verifying](./forge/deploying.md)
-- [Gas Tracking](./forge/gas-tracking.md)
-  - [Gas Reports](./forge/gas-reports.md)
-  - [Gas Snapshots](./forge/gas-snapshots.md)
-- [Debugger](./forge/debugger.md)
-
-# Cast Overview
-
-- [Overview of Cast](./cast/README.md)
-
-# Anvil Overview
-
-- [Overview of Anvil](./anvil/README.md)
-
-# Chisel Overview
-
-- [Overview of Chisel](./chisel/README.md)
-
-# Configuration
-
-- [Configuring with `foundry.toml`](./config/README.md)
-- [Continuous Integration](./config/continous-integration.md)
-- [Integrating with VSCode](./config/vscode.md)
-- [Shell Autocompletion](./config/shell-autocompletion.md)
-- [Static Analyzers](./config/static-analyzers.md)
-- [Integrating with Hardhat](./config/hardhat.md)
-
-# Tutorials
-
-- [Best Practices](./tutorials/best-practices.md)
-- [Creating an NFT with Solmate](./tutorials/solmate-nft.md)
-- [Docker and Foundry](./tutorials/foundry-docker.md)
-- [Testing EIP-712 Signatures](./tutorials/testing-eip712.md)
-- [Solidity Scripting](./tutorials/solidity-scripting.md)
-- [Forking Mainnet with Cast and Anvil](./tutorials/forking-mainnet-with-cast-anvil.md)
-- [Learning Foundry Videos](./tutorials/learn-foundry.md)
-<!-- - [Incremental Adoption]() !-->
-
-# Appendix
-
-- [FAQ](./faq.md)
-- [Help us improve Foundry](./contributing.md)
 - [References](./reference/README.md)
   - [`forge` Commands](./reference/forge/README.md)
     - [General Commands](./reference/forge/general-commands.md)
@@ -346,6 +287,68 @@
       - [`deriveRememberKey`](./reference/forge-std/derive-remember-key.md)
     - [Console Logging](./reference/forge-std/console-log.md)
   - [DSTest Reference](./reference/ds-test.md)
+
+# Forge Overview
+
+- [Overview of Forge](forge/README.md)
+- [Tests](./forge/tests.md)
+  - [Writing Tests](./forge/writing-tests.md)
+  - [Cheatcodes](./forge/cheatcodes.md)
+  - [Forge Standard Library Overview](./forge/forge-std.md)
+  - [Understanding Traces](./forge/traces.md)
+  - [Fork Testing](./forge/fork-testing.md)
+  <!--  - [Coverage Reports]() !-->
+- [Advanced Testing](./forge/advanced-testing.md)
+  - [Fuzz Testing](./forge/fuzz-testing.md)
+  - [Invariant Testing](./forge/invariant-testing.md)
+  - [Differential Testing](./forge/differential-ffi-testing.md)
+    <!--  - [Symbolic Testing]() !-->
+    <!--  - [Table Testing]() !-->
+    <!--  - [Mutation Testing]() !-->
+    <!-- - [Linting and Formatting]() !-->
+    <!-- - [Generating Documentation]() !-->
+- [Deploying and Verifying](./forge/deploying.md)
+- [Gas Tracking](./forge/gas-tracking.md)
+  - [Gas Reports](./forge/gas-reports.md)
+  - [Gas Snapshots](./forge/gas-snapshots.md)
+- [Debugger](./forge/debugger.md)
+
+# Cast Overview
+
+- [Overview of Cast](./cast/README.md)
+
+# Anvil Overview
+
+- [Overview of Anvil](./anvil/README.md)
+
+# Chisel Overview
+
+- [Overview of Chisel](./chisel/README.md)
+
+# Configuration
+
+- [Configuring with `foundry.toml`](./config/README.md)
+- [Continuous Integration](./config/continous-integration.md)
+- [Integrating with VSCode](./config/vscode.md)
+- [Shell Autocompletion](./config/shell-autocompletion.md)
+- [Static Analyzers](./config/static-analyzers.md)
+- [Integrating with Hardhat](./config/hardhat.md)
+
+# Tutorials
+
+- [Best Practices](./tutorials/best-practices.md)
+- [Creating an NFT with Solmate](./tutorials/solmate-nft.md)
+- [Docker and Foundry](./tutorials/foundry-docker.md)
+- [Testing EIP-712 Signatures](./tutorials/testing-eip712.md)
+- [Solidity Scripting](./tutorials/solidity-scripting.md)
+- [Forking Mainnet with Cast and Anvil](./tutorials/forking-mainnet-with-cast-anvil.md)
+- [Learning Foundry Videos](./tutorials/learn-foundry.md)
+<!-- - [Incremental Adoption]() !-->
+
+# Appendix
+
+- [FAQ](./faq.md)
+- [Help us improve Foundry](./contributing.md)
 - [Miscellaneous](./misc/README.md)
   - [Struct encoding](./misc/struct-encoding.md)
   - [Precompile Registry](./misc/precompile-registry.md)
