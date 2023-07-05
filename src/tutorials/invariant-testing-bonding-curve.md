@@ -30,11 +30,7 @@ The key consderation is to define these:
 To get started, we are going to focus on the following directories in this [repository](https://github.com/Ratimon/bonding-curves):
 
 ```
-.
-├── Makefile
-├── foundry.toml
-└── test
-    ├── invariant
+{{#include ../output/invariant_tut/directories:all}}
 ```
 
 In this guide, we can run the fuzzing campagin by running the following command:
