@@ -3,7 +3,7 @@
 
 ### Introduction
 
-This tutorial will cover invariant testing, using **Bonding Curve Implementation** as a target example. All invariant tests are written in Solidity using the `Foundry Invaraint Testing` feature.
+This tutorial will cover invariant testing, using **Bonding Curve Implementation** as a target example. All invariant tests are written in Solidity using the `Foundry Invariant Testing` feature.
 
 However, this guide is for educational purposes only. The code is not audited. Please do not use it in production.
 
@@ -30,7 +30,9 @@ The key consderation is to define these:
 To get started, we are going to focus on the following directories in this [repository](https://github.com/Ratimon/bonding-curves):
 
 ```
-{{#include ../output/invariant_tut/directories:all}}
+- foundry.toml
+- invariant.sol
+- Makefile
 ```
 
 In this guide, we can run the fuzzing campagin by running the following command:
