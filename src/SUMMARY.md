@@ -13,7 +13,7 @@
 
 # Testing
 
-- [Tests](./forge/tests.md)
+- [Basics of Testing With Foundry](./forge/tests.md)
   - [Writing Tests](./forge/writing-tests.md)
   - [Cheatcodes](./forge/cheatcodes.md)
   - [Forge Standard Library Overview](./forge/forge-std.md)
