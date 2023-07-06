@@ -33,7 +33,7 @@ contract Emitter {
     event E(uint256 indexed e);
 
     /// emit() emits events [A, B, C, D, E]
-    function emit() external {
+    function emitEvent() external {
         emit A(1);
         emit B(2);
         emit C(3, 3);
@@ -57,7 +57,7 @@ contract EmitTest is Test {
 
     // CORRECT BEHAVIOR: Declare all your expectEmits just before the next call,
     // on the test.
-    // emit() emits [A, B, C, D, E], and we're expecting [A, B, C, D, E].
+    // emitEvent() emits [A, B, C, D, E], and we're expecting [A, B, C, D, E].
     // This passes.
     function testExpectEmit() public {
         vm.expectEmit(true, false, false, true);
@@ -71,12 +71,12 @@ contract EmitTest is Test {
         emit D(bytes32("gm"), 4, address(0xc4f3));
         vm.expectEmit();
         emit E(5);
-        emitter.emit();
+        emitter.emitEvent();
     }
 
     // CORRECT BEHAVIOR: Declare all your expectEmits just before the next call,
     // on the test.
-    // emit() emits [A, B, C, D, E], and we're expecting [B, D, E].
+    // emitEvent() emits [A, B, C, D, E], and we're expecting [B, D, E].
     // This passes.
     function testExpectEmitWindow() public {
         vm.expectEmit();
@@ -85,11 +85,11 @@ contract EmitTest is Test {
         emit D(bytes32("gm"), 4, address(0xc4f3));
         vm.expectEmit();
         emit E(5);
-        emitter.emit();
+        emitter.emitEvent();
     }
 
     // INCORRECT BEHAVIOR: Declare all your expectEmits in the wrong order.
-    // emit() emits [A, B, C, D, E], and we're expecting [D, B, E].
+    // emitEvent() emits [A, B, C, D, E], and we're expecting [D, B, E].
     // This fails, as D is emitted after B, not before.
     function testExpectEmitWindowFailure() public {
         vm.expectEmit();
@@ -98,24 +98,24 @@ contract EmitTest is Test {
         emit B(2);
         vm.expectEmit();
         emit E(5);
-        emitter.emit();
+        emitter.emitEvent();
     }
 
     // CORRECT BEHAVIOR: Declare all your expectEmits in an internal function.
     // Calling a contract function internally is a JUMP, not a call,
     // therefore it's a valid pattern, useful if you have a lot of events to expect.
-    // emit() emits [A, B, C, D, E], and we're expecting [B, D, E].
+    // emitEvent() emits [A, B, C, D, E], and we're expecting [B, D, E].
     // This passes.
     function testExpectEmitWithInternalFunction() public {
         declareExpectedEvents();
-        emitter.emit();
+        emitter.emitEvent();
     }
 
     function declareExpectedEvents() internal {
         vm.expectEmit(true, false, false, true);
         emit B(2);
         vm.expectEmit(true, false, false, true);
-        emit D(4);
+        emit D(bytes32("gm"), 4, address(0xc4f3));
         vm.expectEmit(true, false, false, true);
         emit E(5);
     }
@@ -173,7 +173,7 @@ contract ExpectCallTest is Test {
     // call `protocol.doSomething()` internally.
     // `doSomething()` is nested inside `bar`, so this passes.
     function testExpectCall() public {
-        vm.expectCall(address(caller.protocol), abi.encodeCall(caller.protocol.doSomething, ()));
+        vm.expectCall(caller.protocol.address, abi.encodeCall(Protocol.doSomething, ()));
         // This will call bar internally, so this is valid.
         caller.bar();
     }
@@ -184,11 +184,11 @@ contract ExpectCallTest is Test {
     // This doesn't satisfy the depth requirement described above,
     // so this fails.
     function testExpectCallFailure() public {
-        vm.expectCall(address(caller.protocol), abi.encodeCall(caller.protocol.doSomething, ()));
+        vm.expectCall(caller.protocol.address, abi.encodeCall(Protocol.doSomething, ()));
         // We're calling doSomething() directly here.
         // This is not inside the next call's subcall tree, but rather a test-level
         // call. This fails.
-        caller.protocol.doSomething();
+        caller.protocol().doSomething();
     }
 
     // CORRECT BEHAVIOR: Sometimes, we want to directly expect the call we're gonna
