@@ -5,6 +5,7 @@
 2. [`expectEmit`](#expectemit)
 3. [`expectCall`](#expectcall)
 4. [`expectRevert`](#expectrevert)
+5. [Testing internal or library calls with the new changes](#testing-internal-calls-or-libraries-with-expectcall-expectrevert-and-expectemit)
 
 ### Introduction
 
