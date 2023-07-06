@@ -14,4 +14,4 @@ Aside from this, V1 is still the same Foundry you know.
 
 ### I need support. Where do I go?
 
-The [dev Telegram](https://t.me/foundry_rs) is available for any concerns you may have that are not covered in this guide.
+The [dev Telegram](https://t.me/foundry_rs) is available for general conversation around Foundry and its features, while the [support Telegram](https://t.me/foundry_support) is available for any concerns you may have that are not covered in this guide.
