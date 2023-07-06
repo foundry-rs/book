@@ -72,8 +72,8 @@ We'll use [Solmate's ERC-20](https://github.com/transmissions11/solmate/blob/mai
 We'll also be using a custom `SigUtils` contract to help create, hash, and sign the approvals off-chain.
 
 ```solidity
-// SPDX-License-Identifier: UNLICENSED
-pragma solidity 0.8.13;
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.20;
 
 contract SigUtils {
     bytes32 internal DOMAIN_SEPARATOR;
