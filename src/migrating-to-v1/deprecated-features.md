@@ -64,4 +64,4 @@ contract TestFailDeprecated is Test {
 
 ### Removing cheatcodes support on some precompiles
 
-It is now impossible to use the following cheatcodes on precompiles: `etch`, `load`, `store`, `deal`.
+It is now impossible to use the following cheatcodes on precompiles: `etch`, `load`, `store`, `deal`. The rationale is that utilizing cheatcodes on precompile addresses (0 < n < 9) can cause unexpected behavior and test failures. Prefer using the `makeAddr` cheatcode for creating addresses to use in tests.
