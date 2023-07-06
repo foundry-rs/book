@@ -4,17 +4,17 @@ With foundry v1, we've started deprecating features that are considered anti-pat
 
 ### Removing the Invariant keyword
 
-The `invariant` test prefix has now been deprecated, and the new expected prefix `statefulFuzz`. This means that now writing tests in this manner is valid:
+The `invariant` test prefix has now been deprecated, and the new expected prefix is `statefulFuzz`. This is mainly to have more correctness on naming: Invariants can be tested with regular fuzz tests. The difference between Foundry's fuzz and invariant tests is that fuzz tests are *stateless* while invariant tests are *stateful*. This means that now writing tests in this manner is valid:
 
 ```solidity
 /// Old, deprecated way of declaring an invariant test
 function invariantTestEq() public {
-    // Assert your invariants...
+    // Assert your invariants
 }
 
 /// New
 function statefulFuzzTestEq() public  {
-    // Assert your invariants...
+    // Assert your invariants
 }
 ```
 
@@ -50,7 +50,7 @@ contract TestFailDeprecated is Test {
     /// The call to revert_ has been refactored and is now expected to fail
     /// with expectRevert()
     function test_RevertIf_AlwaysReverts() public {
-        vm.expectRevert();
+        vm.expectRevert("This reverts);
         // Call using `this` to increase depth
         this.exposed_call_Reverter();
     }
