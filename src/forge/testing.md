@@ -10,7 +10,7 @@ Unit tests make up the most basic form of testing supported by Forge.
 {{#include ../output/hello_foundry/forge-test:all}}
 ```
 
-For more information on property based tests, go [to the corresponding section on the Testing section](../testing/tests.md).
+For more information on unit tests, go [to the Testing section](../testing/tests.md).
 
 ## Property Based Tests
 
@@ -44,13 +44,13 @@ contract ContractBTest is Test {
 }
 ```
 
-For more information on property based tests, go [to the corresponding section on the Testing section](../testing/fuzz-testing.md).
+For more information on property based tests, go [to the fuzz testing page on the Testing section](../testing/fuzz-testing.md).
 
 ## Stateful Fuzz Tests
 
 Stateful fuzz tests (also commonly called Invariant Tests in the community) are a really useful form of advanced testing available on Foundry. They allow for a set of invariant expressions to be tested against randomized sequences of pre-defined function calls from pre-defined contracts. After each function call is performed, all defined invariants are asserted.
 
-For more information on stateful fuzz tests, go [to the corresponding section on the Testing section](../testing/invariant-testing.md).
+For more information on stateful fuzz tests, go [to the stateful fuzz testing page on the Testing section](../testing/invariant-testing.md).
 
 ## Cheatcodes
 
