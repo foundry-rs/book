@@ -320,6 +320,12 @@ contract MathLibTest is Test {
         mathMock.add(type(uint256).max, 1);
     }
 
+    // CORRECT BEHAVIOR: Use the mock contract to expect a call on a lib
+    function testCanCallMathLib() public {
+        vm.expectCall(address(mathMock), abi.encodeWithSelector(mathMock.add.selector, 1, 2));
+        mathMock.add(1, 2);
+    }
+
     // CORRECT BEHAVIOR: The same pattern applies to `expectRevert`.
     function testLibraryEmitWithMock() public {
         vm.expectEmit();
