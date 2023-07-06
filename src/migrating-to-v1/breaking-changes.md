@@ -292,14 +292,14 @@ contract MathLibTest is Test {
     // The test will fail, and the error will let you know that you have a
     // "dangling" expectRevert.
     function testRevertOnMathLibWithNoMock() public {
-        vm.expectRevert();
+        vm.expectRevert(stdError.arithmeticError);
         MathLib.add(type(uint256).max, 1);
     }
 
     // CORRECT BEHAVIOR: mock.add will revert due to arithmetic errors,
     // and it will be successfully detected by the `expectRevert` cheatcode.
     function testRevertOnMathLibWithMock() public {
-        vm.expectRevert();
+        vm.expectRevert(stdError.arithmeticError);
         mock.add(type(uint256).max, 1);
     }
 }
