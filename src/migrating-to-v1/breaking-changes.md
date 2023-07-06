@@ -14,7 +14,7 @@ The biggest change is that these cheatcodes will now work only for the next call
 
 #### `expectEmit`
 
-`expectEmit` previously allowed you to assert that a log was emitted during the execution of the test. With V1, the following changes have been made:
+`expectEmit` previously allowed you to assert that a log was emitted during the execution of the test. With v1, the following changes have been made:
 
 - It now only works for the _next call_. This means if you used to declare all your expected emits at the top of the test, you may now have to move them to just before the next call you perform. Cheatcode calls are ignored. As long as the events are emitted during the next call's execution, they will be matched.
 - The events have to be _ordered_. That means, if you're trying to match events [A, B, C], you must declare them in this order.
@@ -266,7 +266,7 @@ See the following example for testing a revert on a library.
 
 ```solidity
 library MathLib {
-    function add(uint a, uint b) internal pure {
+    function add(uint a, uint b) internal pure returns (uint256) {
         return a + b;
     }
 }
@@ -274,7 +274,7 @@ library MathLib {
 // intermediate "mock" contract that calls the library function
 // and returns the result.
 contract MathLibMock {
-    function add(uint a, uint b) external {
+    function add(uint a, uint b) external returns (uint256) {
         return MathLib.add(a, b);
     }
 }
@@ -300,7 +300,7 @@ contract MathLibTest is Test {
     // and it will be successfully detected by the `expectRevert` cheatcode.
     function testRevertOnMathLibWithMock() public {
         vm.expectRevert();
-        mock.add(2 ** 128 - 1, 2 ** 255 - 1);
+        mock.add(type(uint256).max, 1);
     }
 }
 ```

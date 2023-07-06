@@ -1,6 +1,6 @@
 ## Deprecated features
 
-With foundry V1, we've started deprecating features that are considered anti-patterns or might be misleading and confusing for developers. Deprecated means that while you can continue using these features, it is now a discouraged practice and you should plan on migrating away from using these.
+With foundry v1, we've started deprecating features that are considered anti-patterns or might be misleading and confusing for developers. Deprecated means that while you can continue using these features, it is now a discouraged practice and you should plan on migrating away from using these.
 
 ### Removing the Invariant keyword
 
