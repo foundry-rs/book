@@ -258,7 +258,7 @@ contract ExpectRevertTest is Test {
 }
 ```
 
-### Testing internal calls or libraries with `expectCall` and `expectRevert`
+### Testing internal calls or libraries with `expectCall`, `expectRevert` and `expectEmit`
 
 With the changes to `expectCall` and `expectRevert`, library maintainers might need to modify tests that expect calls or reverts on library functions that might be marked as internal. As an external call needs to be forced to satisfy the depth requirement, an intermediate contract that exposes an identical API to the function that needs to be called can be used.
 
@@ -271,6 +271,13 @@ library MathLib {
     }
 }
 
+library EmitLib {
+    event Log();
+    function emit() internal {
+        emit Log();
+    }
+}
+
 // intermediate "mock" contract that calls the library function
 // and returns the result.
 contract MathLibMock {
@@ -279,11 +286,21 @@ contract MathLibMock {
     }
 }
 
+contract EmitLibMock {
+    function log() external {
+        EmitLib.emit();
+    }
+}
+
 contract MathLibTest is Test {
-    MathLibMock public mock;
+    MathLibMock public mathMock;
+    EmitLibMock public emitMock;
+
+    event Log();
 
     function setUp() public {
-        mock = new MathLibMock();
+        mathMock = new MathLibMock();
+        emitMock = new EmitLibMock();
     }
 
     // INCORRECT BEHAVIOR: MathLib.add will revert due to arithmetic errors,
@@ -300,7 +317,14 @@ contract MathLibTest is Test {
     // and it will be successfully detected by the `expectRevert` cheatcode.
     function testRevertOnMathLibWithMock() public {
         vm.expectRevert(stdError.arithmeticError);
-        mock.add(type(uint256).max, 1);
+        mathMock.add(type(uint256).max, 1);
+    }
+
+    // CORRECT BEHAVIOR: The same pattern applies to `expectRevert`.
+    function testLibraryEmitWithMock() public {
+        vm.expectEmit();
+        emit Log();
+        emitMock.log();
     }
 }
 ```
