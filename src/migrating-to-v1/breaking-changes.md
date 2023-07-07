@@ -279,7 +279,7 @@ library EmitLib {
     }
 }
 
-// intermediate "mock" contract that calls the library function
+// Intermediate "mock" contract that calls the library function
 // and returns the result.
 contract MathLibMock {
     function add(uint a, uint b) external returns (uint256) {

@@ -1,8 +1,8 @@
 ## Deprecated features
 
-With foundry v1, we've started deprecating features that are considered anti-patterns or might be misleading and confusing for developers. Deprecated means that while you can continue using these features, it is now a discouraged practice and you should plan on migrating away from using these.
+With Foundry v1, we've started deprecating features that are considered anti-patterns or might be misleading and confusing for developers. Deprecated means that while you can continue using these features, it is now a discouraged practice and you should plan on migrating away from using these.
 
-### Removing the Invariant keyword
+### Removing the `invariant` prefix
 
 The `invariant` test prefix has now been deprecated, and the new expected prefix is `statefulFuzz`. This is mainly to have more correctness on naming: Invariants can be tested with regular fuzz tests. The difference between Foundry's fuzz and invariant tests is that fuzz tests are *stateless* while invariant tests are *stateful*. This means that now writing tests in this manner is valid:
 
@@ -49,8 +49,8 @@ contract TestFailDeprecated is Test {
     // Better way, without using testFail.
     /// The call to revert_ has been refactored and is now expected to fail
     /// with expectRevert()
-    function test_RevertIf_AlwaysReverts() public {
-        vm.expectRevert("This reverts);
+    function test_revertIf_alwaysReverts() public {
+        vm.expectRevert("This reverts");
         // Call using `this` to increase depth
         this.exposed_call_Reverter();
     }

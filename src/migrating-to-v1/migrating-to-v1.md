@@ -10,7 +10,7 @@ v1 mainly increases the strictness of several cheatcodes, and accommodating this
 
 If migration is time consuming, you can consider upgrading your local foundry installation while migrating tests, but maintaining nightly usage on CI to avoid any failures that might disrupt your workflow.
 
-Aside from this, V1 is still the same Foundry you know.
+Aside from this, v1 is still the same Foundry you know.
 
 ### I need support. Where do I go?
 
