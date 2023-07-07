@@ -60,6 +60,11 @@ contract EmitTest is Test {
     // emitEvent() emits [A, B, C, D, E], and we're expecting [A, B, C, D, E].
     // This passes.
     function testExpectEmit() public {
+        // A quick refresher on `vm.expectEmit` params:
+        // The first three booleans indicate if you want to check `topic1`, `topic2` and `topic3`.
+        // `topic0` is always checked.
+        // The last boolean indicates if you want to check the data.
+        // If you want to read further, you can go to the `vm.expectEmit` reference: https://book.getfoundry.sh/cheatcodes/expect-emit?highlight=expectEmit#expectemit
         vm.expectEmit(true, false, false, true);
         emit A(1);
         vm.expectEmit(false, false, false, true);
