@@ -50,6 +50,11 @@ The field to inspect (*field*) can be any of:
     forge inspect MyContract storage
     ```
 
+3. Inspect the abi of a contract in a pretty format:
+   ```sh 
+   forge inspect --pretty MyContract abi
+   ```
+
 ### SEE ALSO
 
 [forge](./forge.md), [forge build](./forge-build.md)
