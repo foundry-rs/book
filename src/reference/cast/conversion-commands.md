@@ -12,7 +12,7 @@
 - [cast to-base](./cast-to-base.md)
 - [cast to-bytes32](./cast-to-bytes32.md)
 - [cast to-dec](./cast-to-dec.md)
-- [cast to-fixed-point](./cast-to-fix.md)
+- [cast to-fixed-point](./cast-to-fixed-point.md)
 - [cast to-hex](./cast-to-hex.md)
 - [cast to-hexdata](./cast-to-hexdata.md)
 - [cast to-int256](./cast-to-int256.md)
