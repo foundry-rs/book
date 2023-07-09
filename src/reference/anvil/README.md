@@ -256,6 +256,9 @@ Returns the details of all transactions currently pending for inclusion in the n
 `-a, --accounts <ACCOUNTS>`  
 &nbsp;&nbsp;&nbsp;&nbsp; Set the number of accounts [default: 10]
 
+`--auto-impersonate`
+&nbsp;&nbsp;&nbsp;&nbsp; Enable autoImpersonate on startup
+
 `-b, --block-time <block-time>`  
 &nbsp;&nbsp;&nbsp;&nbsp; Block time in seconds for interval mining
 
