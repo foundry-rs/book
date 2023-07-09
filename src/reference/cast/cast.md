@@ -125,6 +125,9 @@ This program is a set of tools to interact with Ethereum and perform conversions
 
 #### ABI Commands
 
+[cast abi-decode](./cast-abi-decode.md)
+&nbsp;&nbsp;&nbsp;&nbsp;Decode ABI-encoded input or output data.
+
 [cast abi-encode](./cast-abi-encode.md)
 &nbsp;&nbsp;&nbsp;&nbsp;ABI encode the given function arguments, excluding the selector.
 
@@ -140,60 +143,60 @@ This program is a set of tools to interact with Ethereum and perform conversions
 [cast calldata](./cast-calldata.md)
 &nbsp;&nbsp;&nbsp;&nbsp;ABI-encode a function with arguments.
 
+[cast calldata-decode](./cast-calldata-decode.md)
+&nbsp;&nbsp;&nbsp;&nbsp;Decode ABI-encoded input data.
+
 [cast pretty-calldata](./cast-pretty-calldata.md)
 &nbsp;&nbsp;&nbsp;&nbsp;Pretty print calldata.
-
-[cast --abi-decode](./cast--abi-decode.md)
-&nbsp;&nbsp;&nbsp;&nbsp;Decode ABI-encoded input or output data.
-
-[cast --calldata-decode](./cast--calldata-decode.md)
-&nbsp;&nbsp;&nbsp;&nbsp;Decode ABI-encoded input data.
 
 [cast upload-signature](./cast-upload-signature.md)
 &nbsp;&nbsp;&nbsp;&nbsp;Upload the given signatures to https://sig.eth.samczsun.com.
 
 #### Conversion Commands
 
-[cast --format-bytes32-string](./cast--format-bytes32-string.md)
+[cast format-bytes32-string](./cast-format-bytes32-string.md)
 &nbsp;&nbsp;&nbsp;&nbsp;Formats a string into bytes32 encoding.
 
-[cast --from-bin](./cast--from-bin.md)
+[cast from-bin](./cast-from-bin.md)
 &nbsp;&nbsp;&nbsp;&nbsp;Convert binary data into hex data.
 
-[cast --from-fix](./cast--from-fix.md)
+[cast from-fixed-point](./cast-from-fixed-point.md)
 &nbsp;&nbsp;&nbsp;&nbsp;Convert a fixed point number into an integer.
 
-[cast --from-utf8](./cast--from-utf8.md)
+[cast from-utf8](./cast-from-utf8.md)
 &nbsp;&nbsp;&nbsp;&nbsp;Convert UTF8 to hex.
 
-[cast --parse-bytes32-string](./cast--parse-bytes32-string.md)
+[cast parse-bytes32-string](./cast-parse-bytes32-string.md)
 &nbsp;&nbsp;&nbsp;&nbsp;Parses a string from bytes32 encoding.
 
-[cast --to-ascii](./cast--to-ascii.md)
+[cast to-ascii](./cast-to-ascii.md)
 &nbsp;&nbsp;&nbsp;&nbsp;Convert hex data to an ASCII string.
 
-[cast --to-base](./cast--to-base.md)
+[cast to-base](./cast-to-base.md)
 &nbsp;&nbsp;&nbsp;&nbsp;Convert a number of one base to another.
 
-[cast --to-bytes32](./cast--to-bytes32.md)
+[cast to-bytes32](./cast-to-bytes32.md)
 &nbsp;&nbsp;&nbsp;&nbsp;Right-pads hex data to 32 bytes.
 
-[cast --to-fix](./cast--to-fix.md)
+[cast to-fixed-point](./cast-to-fixed-point.md)
 &nbsp;&nbsp;&nbsp;&nbsp;Convert an integer into a fixed point number.
 
-[cast --to-hexdata](./cast--to-hexdata.md)
+[cast to-hexdata](./cast-to-hexdata.md)
 &nbsp;&nbsp;&nbsp;&nbsp;Normalize the input to lowercase, 0x-prefixed hex.
 
-[cast --to-int256](./cast--to-int256.md)
+[cast to-int256](./cast-to-int256.md)
 &nbsp;&nbsp;&nbsp;&nbsp;Convert a number to a hex-encoded int256.
 
-[cast --to-uint256](./cast--to-uint256.md)
+[cast to-rlp](./cast-to-rlp.md)
+&nbsp;&nbsp;&nbsp;&nbsp;RLP encodes hex data, or an array of hex data
+
+[cast to-uint256](./cast-to-uint256.md)
 &nbsp;&nbsp;&nbsp;&nbsp;Convert a number to a hex-encoded uint256.
 
-[cast --to-unit](./cast--to-unit.md)
+[cast to-unit](./cast-to-unit.md)
 &nbsp;&nbsp;&nbsp;&nbsp;Convert an ETH amount into another unit (ether, gwei, wei).
 
-[cast --to-wei](./cast--to-wei.md)
+[cast to-wei](./cast-to-wei.md)
 &nbsp;&nbsp;&nbsp;&nbsp;Convert an ETH amount to wei.
 
 [cast shl](./cast-shl.md)
@@ -225,19 +228,19 @@ This program is a set of tools to interact with Ethereum and perform conversions
 [cast index](./cast-index.md)
 &nbsp;&nbsp;&nbsp;&nbsp;Compute the storage slot for an entry in a mapping.
 
-[cast --concat-hex](./cast--concat-hex.md)
+[cast concat-hex](./cast-concat-hex.md)
 &nbsp;&nbsp;&nbsp;&nbsp;Concatenate hex strings.
 
-[cast --max-int](./cast--max-int.md)
+[cast max-int](./cast-max-int.md)
 &nbsp;&nbsp;&nbsp;&nbsp;Get the maximum i256 value.
 
-[cast --min-int](./cast--min-int.md)
+[cast min-int](./cast-min-int.md)
 &nbsp;&nbsp;&nbsp;&nbsp;Get the minimum i256 value.
 
-[cast --max-uint](./cast--max-uint.md)
+[cast max-uint](./cast-max-uint.md)
 &nbsp;&nbsp;&nbsp;&nbsp;Get the maximum u256 value.
 
-[cast --to-checksum-address](./cast--to-checksum-address.md)
+[cast to-check-sum-address](./cast-to-check-sum-address.md)
 &nbsp;&nbsp;&nbsp;&nbsp;Convert an address to a checksummed format (EIP-55).
 
 #### Wallet Commands
@@ -282,7 +285,7 @@ This program is a set of tools to interact with Ethereum and perform conversions
 2. Decode raw calldata:
 
     ```sh
-    cast --calldata-decode "transfer(address,uint256)" \
+    cast calldata-decode "transfer(address,uint256)" \
       0xa9059cbb000000000000000000000000e78388b4ce79068e89bf8aa7f218ef6b9ab0e9d0000000000000000000000000000000000000000000000000008a8e4b1a3d8000
     ```
 

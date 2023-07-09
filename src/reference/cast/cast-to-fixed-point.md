@@ -1,12 +1,12 @@
-## cast --to-fix
+## cast to-fixed-point
 
 ### NAME
 
-cast---to-fix - Convert an integer into a fixed point number.
+cast-to-fixed-point - Convert an integer into a fixed point number.
 
 ### SYNOPSIS
 
-``cast --to-fix`` [*options*] *decimals* *value*
+``cast to-fixed-point`` [*options*] *decimals* *value*
 
 ### DESCRIPTION
 
@@ -20,7 +20,7 @@ Convert an integer into a fixed point number.
 
 1. Convert 250 to a fixed point number with 2 decimals:
     ```sh
-    cast --to-fix 2 250
+    cast to-fixed-point 2 250
     ```
 
 ### SEE ALSO

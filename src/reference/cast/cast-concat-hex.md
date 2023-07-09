@@ -1,12 +1,12 @@
-## cast --concat-hex
+## cast concat-hex
 
 ### NAME
 
-cast---concat-hex - Concatenate hex strings.
+cast-concat-hex - Concatenate hex strings.
 
 ### SYNOPSIS
 
-``cast --concat-hex`` *data...*
+``cast concat-hex`` *data...*
 
 ### DESCRIPTION
 
@@ -20,7 +20,7 @@ Concatenate hex strings.
 
 1. Concatenate hex strings:
     ```sh
-    cast --concat-hex 0xa 0xb 0xc
+    cast concat-hex 0xa 0xb 0xc
     ```
 
 ### SEE ALSO

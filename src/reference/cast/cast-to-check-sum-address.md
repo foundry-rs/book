@@ -1,12 +1,12 @@
-## cast --to-checksum-address
+## cast to-check-sum-address
 
 ### NAME
 
-cast---to-checksum-address - Convert an addresss to a checksummed format ([EIP-55][eip55]).
+cast-to-checksum-address - Convert an addresss to a checksummed format ([EIP-55][eip55]).
 
 ### SYNOPSIS
 
-``cast --to-checksum-address`` *address*
+``cast to-check-sum-address`` *address*
 
 ### DESCRIPTION
 
