@@ -1,12 +1,12 @@
-## cast --from-bin
+## cast from-bin
 
 ### NAME
 
-cast---from-bin - Convert binary data into hex data.
+cast-from-bin - Convert binary data into hex data.
 
 ### SYNOPSIS
 
-``cast --from-bin`` [*options*]
+``cast from-bin`` [*options*]
 
 ### DESCRIPTION
 

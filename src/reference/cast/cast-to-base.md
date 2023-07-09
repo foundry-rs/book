@@ -1,12 +1,12 @@
-## cast --to-base
+## cast to-base
 
 ### NAME
 
-cast---to-base - Convert a number of one base to another.
+cast-to-base - Convert a number of one base to another.
 
 ### SYNOPSIS
 
-``cast --to-base`` [*options*] *value* *base*
+``cast to-base`` [*options*] *value* *base*
 
 ### DESCRIPTION
 
@@ -29,12 +29,12 @@ Convert a number of one base to another.
 
 1. Convert the decimal number 64 to hexadecimal
     ```sh
-    cast --to-base 64 hex
+    cast to-base 64 hex
     ```
 
 2. Convert the hexadecimal number 100 to binary
     ```sh
-    cast --to-base 0x100 2
+    cast to-base 0x100 2
     ```
 
 > Note: The --base-in parameter is not enforced but will be needed if the input is ambiguous.

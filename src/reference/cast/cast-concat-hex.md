@@ -1,12 +1,12 @@
-## cast --concat-hex
+## cast concat-hex
 
 ### NAME
 
-cast---concat-hex - Concatenate hex strings.
+cast-concat-hex - Concatenate hex strings.
 
 ### SYNOPSIS
 
-``cast --concat-hex`` *data...*
+``cast concat-hex`` *data...*
 
 ### DESCRIPTION
 

@@ -1,12 +1,12 @@
-## cast --from-fix
+## cast from-fixed-point
 
 ### NAME
 
-cast---from-fix - Convert a fixed point number into an integer.
+cast-from-fix - Convert a fixed point number into an integer.
 
 ### SYNOPSIS
 
-``cast --from-fix`` [*options*] *decimals* *value*
+``cast from-fix`` [*options*] *decimals* *value*
 
 ### DESCRIPTION
 
@@ -20,7 +20,7 @@ Convert a fixed point number into an integer.
 
 1. Convert 10.55 to an integer:
     ```sh
-    cast --from-fix 2 10.55
+    cast from-fixed-point 2 10.55
     ```
 
 ### SEE ALSO
