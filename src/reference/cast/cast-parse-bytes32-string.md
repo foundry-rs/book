@@ -6,7 +6,7 @@ cast-parse-bytes32-string - Parses a string from bytes32 encoding.
 
 ### SYNOPSIS
 
-``cast --parse-bytes32-string`` [*options*] *bytes*
+``cast parse-bytes32-string`` [*options*] *bytes*
 
 ### DESCRIPTION
 

@@ -282,7 +282,7 @@ This program is a set of tools to interact with Ethereum and perform conversions
 2. Decode raw calldata:
 
     ```sh
-    cast --calldata-decode "transfer(address,uint256)" \
+    cast calldata-decode "transfer(address,uint256)" \
       0xa9059cbb000000000000000000000000e78388b4ce79068e89bf8aa7f218ef6b9ab0e9d0000000000000000000000000000000000000000000000000008a8e4b1a3d8000
     ```
 

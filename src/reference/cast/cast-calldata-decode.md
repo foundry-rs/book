@@ -28,4 +28,4 @@ The signature (*sig*) is a fragment in the form `<function name>(<types...>)`.
 
 ### SEE ALSO
 
-[cast](./cast.md), [cast --abi-decode](./cast-abi-decode.md)
+[cast](./cast.md), [cast abi-decode](./cast-abi-decode.md)

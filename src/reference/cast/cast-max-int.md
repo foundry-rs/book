@@ -18,4 +18,4 @@ Get the maximum i256 value.
 
 ### SEE ALSO
 
-[cast](./cast.md), [cast --min-int](./cast-min-int.md), [cast --max-uint](./cast-max-uint.md)
+[cast](./cast.md), [cast min-int](./cast-min-int.md), [cast max-uint](./cast-max-uint.md)

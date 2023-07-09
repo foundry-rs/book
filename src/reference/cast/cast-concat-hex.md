@@ -20,7 +20,7 @@ Concatenate hex strings.
 
 1. Concatenate hex strings:
     ```sh
-    cast --concat-hex 0xa 0xb 0xc
+    cast concat-hex 0xa 0xb 0xc
     ```
 
 ### SEE ALSO

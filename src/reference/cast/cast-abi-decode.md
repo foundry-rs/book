@@ -42,4 +42,4 @@ The signature (*sig*) is a fragment in the form `<function name>(<types...>)(<ty
 
 ### SEE ALSO
 
-[cast](./cast.md), [cast --calldata-decode](./cast-calldata-decode.md)
+[cast](./cast.md), [cast calldata-decode](./cast-calldata-decode.md)
