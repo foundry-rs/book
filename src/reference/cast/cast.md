@@ -166,6 +166,12 @@ This program is a set of tools to interact with Ethereum and perform conversions
 [cast from-utf8](./cast-from-utf8.md)
 &nbsp;&nbsp;&nbsp;&nbsp;Convert UTF8 to hex.
 
+[cast from-wei](./cast-from-wei.md)
+&nbsp;&nbsp;&nbsp;&nbsp;Convert wei into an ETH amount
+
+[cast parse-bytes32-address](./cast-parse-bytes32-address.md)
+&nbsp;&nbsp;&nbsp;&nbsp;Parses a checksummed address from bytes32 encoding.
+
 [cast parse-bytes32-string](./cast-parse-bytes32-string.md)
 &nbsp;&nbsp;&nbsp;&nbsp;Parses a string from bytes32 encoding.
 
@@ -178,8 +184,14 @@ This program is a set of tools to interact with Ethereum and perform conversions
 [cast to-bytes32](./cast-to-bytes32.md)
 &nbsp;&nbsp;&nbsp;&nbsp;Right-pads hex data to 32 bytes.
 
+[cast to-dec](./cast-to-dec.md)
+&nbsp;&nbsp;&nbsp;&nbsp;Converts a number of one base to decimal
+
 [cast to-fixed-point](./cast-to-fixed-point.md)
 &nbsp;&nbsp;&nbsp;&nbsp;Convert an integer into a fixed point number.
+
+[cast to-hex](./cast-to-hex.md)
+&nbsp;&nbsp;&nbsp;&nbsp;Converts a number of one base to another
 
 [cast to-hexdata](./cast-to-hexdata.md)
 &nbsp;&nbsp;&nbsp;&nbsp;Normalize the input to lowercase, 0x-prefixed hex.
