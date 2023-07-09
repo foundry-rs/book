@@ -2,11 +2,11 @@
 
 ### NAME
 
-cast-from-fix - Convert a fixed point number into an integer.
+cast-from-fixed-point - Convert a fixed point number into an integer.
 
 ### SYNOPSIS
 
-``cast from-fix`` [*options*] *decimals* *value*
+``cast from-fixed-point`` [*options*] *decimals* *value*
 
 ### DESCRIPTION
 

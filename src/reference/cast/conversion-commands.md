@@ -9,7 +9,7 @@
 - [cast to-ascii](./cast-to-ascii.md)
 - [cast to-base](./cast-to-base.md)
 - [cast to-bytes32](./cast-to-bytes32.md)
-- [cast to-fixed-point](./cast-to-fix.md)
+- [cast to-fixed-point](./cast-to-fixed-point.md)
 - [cast to-hexdata](./cast-to-hexdata.md)
 - [cast to-int256](./cast-to-int256.md)
 - [cast to-rlp](./cast-to-rlp.md)
