@@ -68,6 +68,9 @@ you can specify a file containing **space-separated** constructor arguments with
 
 {{#include ../common/retry-options.md}}
 
+`--show-standard-json-input`  
+&nbsp;&nbsp;&nbsp;&nbsp;Command outputs JSON suitable for saving to a file and uploading to block explorers for verification.
+
 `--watch`  
 &nbsp;&nbsp;&nbsp;&nbsp;Wait for verification result after submission.  
 &nbsp;&nbsp;&nbsp;&nbsp;Automatically runs `forge verify-check` until the verification either fails or succeeds.
