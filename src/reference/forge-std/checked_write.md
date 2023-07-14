@@ -18,6 +18,10 @@ function checked_write(StdStorage storage self, bool write) internal;
 function checked_write(StdStorage storage self, bytes32 set) internal;
 ```
 
+```solidity
+function checked_write_int(StdStorage storage self, int256 val) internal;
+```
+
 ### Description
 
 Sets the data to be written to the storage slot(s).
