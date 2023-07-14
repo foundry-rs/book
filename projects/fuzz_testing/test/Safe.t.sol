@@ -1,36 +1,38 @@
 // SPDX-License-Identifier: UNLICENSED
 // ANCHOR: all
-pragma solidity 0.8.10;
+pragma solidity ^0.8.10;
 
-import "forge-std/Test.sol";
+import { Test } from "forge-std/Test.sol";
 
 contract Safe {
-    receive() external payable {}
+  receive() external payable {}
 
-    function withdraw() external {
-        payable(msg.sender).transfer(address(this).balance);
-    }
+  function withdraw() external {
+    payable(msg.sender).transfer(address(this).balance);
+  }
 }
 
 contract SafeTest is Test {
-    Safe safe;
+  Safe safe;
 
-    // Needed so the test contract itself can receive ether
-    // when withdrawing
-    receive() external payable {}
+  // Needed so the test contract itself can receive ether
+  // when withdrawing
+  receive() external payable {}
 
-    function setUp() public {
-        safe = new Safe();
-    }
+  function setUp() public {
+    safe = new Safe();
+  }
 
-    // ANCHOR: signature
-    function testFuzz_Withdraw(uint96 amount) public {
+  // ANCHOR: signature
+  function testFuzz_Withdraw(uint256 amount) public {
     // ANCHOR_END: signature
-        payable(address(safe)).transfer(amount);
-        uint256 preBalance = address(this).balance;
-        safe.withdraw();
-        uint256 postBalance = address(this).balance;
-        assertEq(preBalance + amount, postBalance);
-    }
+    payable(address(safe)).transfer(amount);
+    uint256 preBalance = address(this).balance;
+
+    safe.withdraw();
+    uint256 postBalance = address(this).balance;
+
+    assertEq(preBalance + amount, postBalance);
+  }
 }
 // ANCHOR_END: all

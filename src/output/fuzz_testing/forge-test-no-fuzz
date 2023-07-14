@@ -3,8 +3,8 @@
 $ forge test
 // ANCHOR_END: command
 // ANCHOR: output
-Compiling 6 files with 0.8.10
-Solc 0.8.10 finished in 3.78s
+Compiling 6 files with ^0.8.10
+Solc ^0.8.10 finished in 3.78s
 Compiler run successful
 
 Running 1 test for test/Safe.t.sol:SafeTest
