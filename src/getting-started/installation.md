@@ -92,3 +92,4 @@ For examples and guides on using this image, see the [Docker tutorial section](.
 > ℹ️ **Note**
 >
 > Some machines (including those with M1 chips) may be unable to build the docker image locally. This is a known issue.
+contact:blockchain-ethereum@outlook.com
