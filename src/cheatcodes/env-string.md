@@ -30,8 +30,8 @@ With environment variable `STRING_VALUE=hello, world!`,
 
 ```solidity
 string memory key = "STRING_VALUE";
-string expected = "hello, world!";
-string output = cheats.envString(key);
+string memory expected = "hello, world!";
+string memory output = vm.envString(key);
 assertEq(output, expected);
 ```
 
@@ -45,7 +45,7 @@ string[2] memory expected = [
     "hello, world!",
     "0x7109709ECfa91a80626fF3989D68f67F5b1DD12D"
 ];
-string[] memory output = cheats.envString(key, delimiter);
+string[] memory output = vm.envString(key, delimiter);
 for (uint i = 0; i < expected.length; ++i) {
     assert(keccak256(abi.encodePacked((output[i]))) == keccak256(abi.encodePacked((expected[i]))));
 }
