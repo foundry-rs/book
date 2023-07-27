@@ -125,11 +125,11 @@ In our case, our state variables (found in [`BondingCurve.sol`](https://github.c
 
 Then, we could specify and write assertions in [`LinearBondingCurve.invariants.t.sol`](https://github.com/Ratimon/bonding-curves/blob/master/test/invariant/LinearBondingCurve.invariants.t.sol) as follows:
 
-1.  Invariant 1: totalPurchased + avalableToSell = cap
+1.  Invariant 1: totalPurchased + availableToSell = cap
 
 ```solidity
 
-    function invariant_totalPurchasedPlusAvalableToSell_eq_cap() public {
+    function invariant_totalPurchasedPlusAvailableToSell_eq_cap() public {
         assertEq(
             unwrap(linearBondingCurve.totalPurchased().add(linearBondingCurve.availableToSell())),
             unwrap(linearBondingCurve.cap())
@@ -138,11 +138,11 @@ Then, we could specify and write assertions in [`LinearBondingCurve.invariants.t
 
 ```
 
-2.  Invariant 2: avalableToSell >= 0
+2.  Invariant 2: availableToSell >= 0
 
 ```solidity
 
-    function invariant_AvalableToSell_gt_zero() public {
+    function invariant_AvailableToSell_gt_zero() public {
         assertGt(unwrap(linearBondingCurve.availableToSell()), 0);
     }
 
@@ -152,7 +152,7 @@ Then, we could specify and write assertions in [`LinearBondingCurve.invariants.t
 3.  Invariant 3: availableToSell = amount of ERC20 token amount in bonding curve contract
 
 ```solidity
-    function invariant_AvalableToSell_eq_saleTokenBalance() public {
+    function invariant_AvailableToSell_eq_saleTokenBalance() public {
         assertEq(unwrap(linearBondingCurve.availableToSell()), IERC20(saleToken).balanceOf(address(linearBondingCurve)));
     }
 ```

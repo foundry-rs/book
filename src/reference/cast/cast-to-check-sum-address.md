@@ -2,7 +2,7 @@
 
 ### NAME
 
-cast-to-check-sum-address - Convert an addresss to a checksummed format ([EIP-55][eip55]).
+cast-to-check-sum-address - Convert an address to a checksummed format ([EIP-55][eip55]).
 
 ### SYNOPSIS
 
@@ -10,7 +10,7 @@ cast-to-check-sum-address - Convert an addresss to a checksummed format ([EIP-55
 
 ### DESCRIPTION
 
-Convert an addresss to a checksummed format ([EIP-55][eip55]).
+Convert an address to a checksummed format ([EIP-55][eip55]).
 
 ### OPTIONS
 
