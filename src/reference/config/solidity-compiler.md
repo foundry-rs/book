@@ -270,14 +270,14 @@ The Yul details subsection of the optimizer details section is used to tweak how
 
 Refer to the Solidity [compiler input description](https://docs.soliditylang.org/en/latest/using-the-compiler.html#compiler-input-and-output-json-description) for the default values.
 
-> ℹ️ **Note**  
+> ℹ️ **Note**
 > If you encounter compiler errors when using `via_ir`, explicitly enable the legacy `optimizer` and leave `optimizer_steps` as an empty string
 
 ### Model checker
 
 The Solidity model checker is a built-in opt-in module that is available in Solidity compilers for OSX and Linux. Learn more about the model checker in the [Solidity compiler documentation](https://docs.soliditylang.org/en/latest/smtchecker.html#tutorial)
 
-> ℹ️ **Note**  
+> ℹ️ **Note**
 > The model checker requires `z3` version 4.8.8 or 4.8.14 on Linux.
 
 The model checker settings are configured in the `[model_checker]` section of the configuration.
