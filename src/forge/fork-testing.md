@@ -56,7 +56,7 @@ Alternatively, you can set the `ETHERSCAN_API_KEY` environment variable.
 
 ### Forking Cheatcodes
 
-Forking cheatcodes allow you to enter forking mode programatically in your Solidity test code. Instead of configuring forking mode via `forge` CLI arguments, these cheatcodes allow you to use forking mode on a test-by-test basis and work with multiple forks in your tests. Each fork is identified via its own unique `uint256` identifier.
+Forking cheatcodes allow you to enter forking mode programmatically in your Solidity test code. Instead of configuring forking mode via `forge` CLI arguments, these cheatcodes allow you to use forking mode on a test-by-test basis and work with multiple forks in your tests. Each fork is identified via its own unique `uint256` identifier.
 
 #### Usage
 
