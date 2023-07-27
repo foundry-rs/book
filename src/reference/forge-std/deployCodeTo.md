@@ -20,7 +20,7 @@ Pseudo-deploys a contract to an arbitrary address by fetching the contract bytec
 
 The calldata parameter can either be in the form `ContractFile.sol` (if the filename and contract name are the same), `ContractFile.sol:ContractName`, or the path to an artifact, relative to the root of your project.
 
-Values can also be passed by using the `vaue` parameter. This is necessary if you need to send ETH on construction.
+Values can also be passed by using the `value` parameter. This is necessary if you need to send ETH on construction.
 
 ### Examples
 

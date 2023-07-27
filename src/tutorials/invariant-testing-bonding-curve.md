@@ -37,7 +37,7 @@ To get started, we are going to focus on the following directories in this [repo
     ├── invariant
 ```
 
-In this guide, we can run the fuzzing campagin by running the following command:
+In this guide, we can run the fuzzing campaign by running the following command:
 
 ```sh
 make invariant-LinearBondingCurve

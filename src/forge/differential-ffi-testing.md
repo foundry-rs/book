@@ -92,7 +92,7 @@ You may want to use differential testing against another Solidity implementation
 ```solidity
 import "openzeppelin-contracts/contracts/utils/cryptography/MerkleProof.sol";
 //...
-function testCompatabilityOpenZeppelinProver(bytes32[] memory _data, uint256 node) public {
+function testCompatibilityOpenZeppelinProver(bytes32[] memory _data, uint256 node) public {
     vm.assume(_data.length > 1);
     vm.assume(node < _data.length);
     bytes32 root = m.getRoot(_data);

@@ -54,7 +54,7 @@ If set to `false`, only the remappings in `foundry.toml` and `remappings.txt` ar
 - Default: none
 - Environment: `FOUNDRY_ALLOW_PATHS` or `DAPP_ALLOW_PATHS`
 
-Tells solc to allow reading source files from additional directories. This is mainly relevant for complex workspaces managed by `pnmp` or similar.
+Tells solc to allow reading source files from additional directories. This is mainly relevant for complex workspaces managed by `pnpm` or similar.
 
 See also [solc allowed-paths](https://docs.soliditylang.org/en/latest/path-resolution.html#allowed-paths)
 
