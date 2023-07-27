@@ -18,7 +18,7 @@ Read an environment variable as `int256` or `int256[]`.
 
 - If the value starts with `0x`, `-0x` or `+0x`, it will be interpreted as a hex value, otherwise,
 it will be treated as a decimal number.
-- For arrays, you can specify the delimiter used to seperate the values with the `delimiter` parameter.
+- For arrays, you can specify the delimiter used to separate the values with the `delimiter` parameter.
 
 ### Examples
 
