@@ -39,7 +39,7 @@ Learn how to use `chisel`, Foundry's integrated Solidity REPL.
 Guides on configuring Foundry.
 
 - [Configuring with `foundry.toml`](./config/)
-- [Continuous Integration](./config/continous-integration.md)
+- [Continuous Integration](./config/continuous-integration.md)
 - [Integrating with VSCode](./config/vscode.md)
 - [Shell Autocompletion](./config/shell-autocompletion.md)
 - [Static Analyzers](./config/static-analyzers.md)

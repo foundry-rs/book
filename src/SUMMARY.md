@@ -54,7 +54,7 @@
 # Configuration
 
 - [Configuring with `foundry.toml`](./config/README.md)
-- [Continuous Integration](./config/continous-integration.md)
+- [Continuous Integration](./config/continuous-integration.md)
 - [Integrating with VSCode](./config/vscode.md)
 - [Shell Autocompletion](./config/shell-autocompletion.md)
 - [Static Analyzers](./config/static-analyzers.md)
