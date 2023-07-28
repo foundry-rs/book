@@ -18,7 +18,7 @@ Read an environment variable as `bool` or `bool[]`.
 
 - For `true`, use either "true" or "True" for the environment variable value.
 - For `false`, use either "false" or "False" for the environment variable value.
-- For arrays, you can specify the delimiter used to seperate the values with the `delimiter` parameter.
+- For arrays, you can specify the delimiter used to separate the values with the `delimiter` parameter.
 
 ### Examples
 

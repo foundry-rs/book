@@ -37,7 +37,7 @@ To get started, we are going to focus on the following directories in this [repo
     ├── invariant
 ```
 
-In this guide, we can run the fuzzing campagin by running the following command:
+In this guide, we can run the fuzzing campaign by running the following command:
 
 ```sh
 make invariant-LinearBondingCurve
@@ -125,11 +125,11 @@ In our case, our state variables (found in [`BondingCurve.sol`](https://github.c
 
 Then, we could specify and write assertions in [`LinearBondingCurve.invariants.t.sol`](https://github.com/Ratimon/bonding-curves/blob/master/test/invariant/LinearBondingCurve.invariants.t.sol) as follows:
 
-1.  Invariant 1: totalPurchased + avalableToSell = cap
+1.  Invariant 1: totalPurchased + availableToSell = cap
 
 ```solidity
 
-    function invariant_totalPurchasedPlusAvalableToSell_eq_cap() public {
+    function invariant_totalPurchasedPlusAvailableToSell_eq_cap() public {
         assertEq(
             unwrap(linearBondingCurve.totalPurchased().add(linearBondingCurve.availableToSell())),
             unwrap(linearBondingCurve.cap())
@@ -138,11 +138,11 @@ Then, we could specify and write assertions in [`LinearBondingCurve.invariants.t
 
 ```
 
-2.  Invariant 2: avalableToSell >= 0
+2.  Invariant 2: availableToSell >= 0
 
 ```solidity
 
-    function invariant_AvalableToSell_gt_zero() public {
+    function invariant_AvailableToSell_gt_zero() public {
         assertGt(unwrap(linearBondingCurve.availableToSell()), 0);
     }
 
@@ -152,7 +152,7 @@ Then, we could specify and write assertions in [`LinearBondingCurve.invariants.t
 3.  Invariant 3: availableToSell = amount of ERC20 token amount in bonding curve contract
 
 ```solidity
-    function invariant_AvalableToSell_eq_saleTokenBalance() public {
+    function invariant_AvailableToSell_eq_saleTokenBalance() public {
         assertEq(unwrap(linearBondingCurve.availableToSell()), IERC20(saleToken).balanceOf(address(linearBondingCurve)));
     }
 ```
@@ -173,7 +173,7 @@ Then, we could specify and write assertions in [`LinearBondingCurve.invariants.t
 
 ### Defining Action Logics and Function-level Invariants
 
-Ok !! We have defined some system-level invariants. The next step is then to specify how the action and the sequence of relevant transactions should be performed to break the defined invariants. 
+Ok !! We have defined some system-level invariants. The next step is then to specify how the action and the sequence of relevant transactions should be performed to break the defined invariants.
 
 The high-level contents to explore is in [`LinearBondingCurve.invariants.t.sol`](https://github.com/Ratimon/bonding-curves/blob/master/test/invariant/LinearBondingCurve.invariants.t.sol), and the configuration is at `setup()` as follows:
 
@@ -227,7 +227,7 @@ contract LinearBondingCurveInvariants is StdInvariant, Test, ConstantsFixture, D
         }
     /** ... */
     }
-    
+
 ```
 
 To sum up, we perform random `purchase()` calls, random `warps` forward in time, and  random `allocate()` calls.
@@ -266,7 +266,7 @@ contract InvariantBuyerManager is Test {
 }
 ```
 
-Then, those generated buyers (**InvariantBuyer**) are supposed to purchase the token from the bonding curve. Now, we are going to write the **function-level invariants**. 
+Then, those generated buyers (**InvariantBuyer**) are supposed to purchase the token from the bonding curve. Now, we are going to write the **function-level invariants**.
 
 In particular, we want to ensure that both balance states of external smart contracts (ERC20 tokens in our case) are correctly updated after each purchase. The implement is as follows:
 

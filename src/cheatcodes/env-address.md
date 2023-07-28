@@ -16,7 +16,7 @@ Read an environment variable as `address` or `address[]`.
 
 ### Tips
 
-- For arrays, you can specify the delimiter used to seperate the values with the `delimiter` parameter.
+- For arrays, you can specify the delimiter used to separate the values with the `delimiter` parameter.
 
 ### Examples
 

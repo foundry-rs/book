@@ -20,7 +20,7 @@ You can create a `foundry.toml` file in `~/.foundry` folder to configure Foundry
 
 ### Environment variables
 
-Configuration can be overriden with `FOUNDRY_` and `DAPP_` prefixed environment variables.
+Configuration can be overridden with `FOUNDRY_` and `DAPP_` prefixed environment variables.
 
 Exceptions are:
 
