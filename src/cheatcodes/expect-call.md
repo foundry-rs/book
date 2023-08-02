@@ -49,7 +49,8 @@ If the test terminates without the call being made, the test fails.
 Expect that `transfer` is called on a token `MyToken` one time:
 
 ```solidity
-address alice = address(10);
+address alice = makeAddr("alice");
+emit log_address(alice);
 vm.expectCall(
   address(token), abi.encodeCall(token.transfer, (alice, 10))
 );
@@ -60,7 +61,8 @@ token.transfer(alice, 10);
 Expect that `transfer` is called on a token `MyToken` *at least* two times:
 
 ```solidity
-address alice = address(10);
+address alice = makeAddr("alice");
+emit log_address(alice);
 vm.expectCall(
   address(token), abi.encodeCall(token.transfer, (alice, 10))
 );
@@ -76,7 +78,8 @@ token.transfer(alice, 10);
 Expect that `transfer` is not called on a token `MyToken`:
 
 ```solidity
-address alice = address(10);
+address alice = makeAddr("alice");
+emit log_address(alice);
 vm.expectCall(
   address(token), abi.encodeCall(token.transfer, (alice, 10)), 0
 );
@@ -87,7 +90,8 @@ token.transferFrom(alice, address(0), 10);
 Expect that `transfer` with any calldata is called on a token `MyToken` 2 times:
 
 ```solidity
-address alice = address(10);
+address alice = makeAddr("alice");
+emit log_address(alice);
 vm.expectCall(
   address(token), abi.encodeWithSelector(token.transfer), 2
 );
