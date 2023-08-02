@@ -18,7 +18,7 @@ function deal(address token, address to, uint256 give, bool adjust) external;
 
 Sets the balance of an address `who` to `newBalance`.
 
-If the alternative signature of `deal` is used, then we can additionaly specify ERC20 token address, as well as an option to update `totalSupply`.
+If the alternative signature of `deal` is used, then we can additionally specify ERC20 token address, as well as an option to update `totalSupply`.
 
 ### Examples
 

@@ -54,7 +54,7 @@
 # Configuration
 
 - [Configuring with `foundry.toml`](./config/README.md)
-- [Continuous Integration](./config/continous-integration.md)
+- [Continuous Integration](./config/continuous-integration.md)
 - [Integrating with VSCode](./config/vscode.md)
 - [Shell Autocompletion](./config/shell-autocompletion.md)
 - [Static Analyzers](./config/static-analyzers.md)
@@ -280,6 +280,7 @@
       - [`envString`](./cheatcodes/env-string.md)
       - [`envBytes`](./cheatcodes/env-bytes.md)
       - [`parseJson`](./cheatcodes/parse-json.md)
+      - [`keyExists`](./cheatcodes/key-exists.md)
       - [`serializeJson`](./cheatcodes/serialize-json.md)
       - [`writeJson`](./cheatcodes/write-json.md)
     - [Utilities](./cheatcodes/utilities.md)

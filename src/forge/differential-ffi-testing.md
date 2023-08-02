@@ -6,7 +6,7 @@ Forge can be used for differential testing and differential fuzzing. You can eve
 
 [Differential testing](https://en.wikipedia.org/wiki/Differential_testing) cross references multiple implementations of the same function by comparing each one's output. Imagine we have a function specification `F(X)`, and two implementations of that specification: `f1(X)` and `f2(X)`. We expect `f1(x) == f2(x)` for all x that exist in an appropriate input space. If `f1(x) != f2(x)`, we know that at least one function is incorrectly implementing `F(X)`. This process of testing for equality and identifying discrepancies is the core of differential testing.
 
-Differential fuzzing is an extension of differential testing. Differential fuzzing programatically generates many values of `x` to find discrepancies and edge cases that manually chosen inputs might not reveal.
+Differential fuzzing is an extension of differential testing. Differential fuzzing programmatically generates many values of `x` to find discrepancies and edge cases that manually chosen inputs might not reveal.
 
 > Note: the `==` operator in this case can be a custom definition of equality. For example, if testing floating point implementations, you might use approximate equality with a certain tolerance.
 
@@ -92,7 +92,7 @@ You may want to use differential testing against another Solidity implementation
 ```solidity
 import "openzeppelin-contracts/contracts/utils/cryptography/MerkleProof.sol";
 //...
-function testCompatabilityOpenZeppelinProver(bytes32[] memory _data, uint256 node) public {
+function testCompatibilityOpenZeppelinProver(bytes32[] memory _data, uint256 node) public {
     vm.assume(_data.length > 1);
     vm.assume(node < _data.length);
     bytes32 root = m.getRoot(_data);

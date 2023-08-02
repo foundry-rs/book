@@ -56,7 +56,7 @@ Alternatively, you can set the `ETHERSCAN_API_KEY` environment variable.
 
 ### Forking Cheatcodes
 
-Forking cheatcodes allow you to enter forking mode programatically in your Solidity test code. Instead of configuring forking mode via `forge` CLI arguments, these cheatcodes allow you to use forking mode on a test-by-test basis and work with multiple forks in your tests. Each fork is identified via its own unique `uint256` identifier.
+Forking cheatcodes allow you to enter forking mode programmatically in your Solidity test code. Instead of configuring forking mode via `forge` CLI arguments, these cheatcodes allow you to use forking mode on a test-by-test basis and work with multiple forks in your tests. Each fork is identified via its own unique `uint256` identifier.
 
 #### Usage
 
@@ -74,7 +74,7 @@ Similar to [`roll`](../cheatcodes/roll.md), you can set `block.number` of a fork
 
 To understand what happens when a fork is selected, it is important to know how the forking mode works in general:
 
-Each fork is a standalone EVM, i.e. all forks use completely independent storage. The only exception is the state of the `msg.sender` and the test contract itself, which are persistent across fork swaps. 
+Each fork is a standalone EVM, i.e. all forks use completely independent storage. The only exception is the state of the `msg.sender` and the test contract itself, which are persistent across fork swaps.
 In other words all changes that are made while fork `A` is active (`selectFork(A)`) are only recorded in fork `A`'s storage and are not available if another fork is selected. However, changes recorded in the test contract itself (variables) are still available because the test contract is a _persistent_ account.
 
 
@@ -90,10 +90,10 @@ contract ForkTest is Test {
     // the identifiers of the forks
     uint256 mainnetFork;
     uint256 optimismFork;
-    
+
     //Access variables from .env file via vm.envString("varname")
     //Replace ALCHEMY_KEY by your alchemy key or Etherscan key, change RPC url if need
-    //inside your .env file e.g: 
+    //inside your .env file e.g:
     //MAINNET_RPC_URL = 'https://eth-mainnet.g.alchemy.com/v2/ALCHEMY_KEY'
     //string MAINNET_RPC_URL = vm.envString("MAINNET_RPC_URL");
     //string OPTIMISM_RPC_URL = vm.envString("OPTIMISM_RPC_URL");
@@ -157,10 +157,10 @@ contract ForkTest is Test {
     // the identifiers of the forks
     uint256 mainnetFork;
     uint256 optimismFork;
-    
+
     //Access variables from .env file via vm.envString("varname")
     //Replace ALCHEMY_KEY by your alchemy key or Etherscan key, change RPC url if need
-    //inside your .env file e.g: 
+    //inside your .env file e.g:
     //MAINNET_RPC_URL = 'https://eth-mainnet.g.alchemy.com/v2/ALCHEMY_KEY'
     //string MAINNET_RPC_URL = vm.envString("MAINNET_RPC_URL");
     //string OPTIMISM_RPC_URL = vm.envString("OPTIMISM_RPC_URL");
@@ -175,40 +175,40 @@ contract ForkTest is Test {
     function testCreateContract() public {
         vm.selectFork(mainnetFork);
         assertEq(vm.activeFork(), mainnetFork);
-        
+
         // the new contract is written to `mainnetFork`'s storage
         SimpleStorageContract simple = new SimpleStorageContract();
-        
+
         // and can be used as normal
         simple.set(100);
         assertEq(simple.value(), 100);
-        
-        // after switching to another contract we still know `address(simple)` but the contract only lives in `mainnetFork` 
+
+        // after switching to another contract we still know `address(simple)` but the contract only lives in `mainnetFork`
         vm.selectFork(optimismFork);
-        
+
         /* this call will therefore revert because `simple` now points to a contract that does not exist on the active fork
         * it will produce following revert message:
-        * 
+        *
         * "Contract 0xCe71065D4017F316EC606Fe4422e11eB2c47c246 does not exist on active fork with id `1`
         *       But exists on non active forks: `[0]`"
         */
         simple.value();
     }
-    
+
      // creates a new _persistent_ contract while a fork is active
      function testCreatePersistentContract() public {
         vm.selectFork(mainnetFork);
         SimpleStorageContract simple = new SimpleStorageContract();
         simple.set(100);
         assertEq(simple.value(), 100);
-        
+
         // mark the contract as persistent so it is also available when other forks are active
         vm.makePersistent(address(simple));
-        assert(vm.isPersistent(address(simple))); 
-        
+        assert(vm.isPersistent(address(simple)));
+
         vm.selectFork(optimismFork);
-        assert(vm.isPersistent(address(simple))); 
-        
+        assert(vm.isPersistent(address(simple)));
+
         // This will succeed because the contract is now also available on the `optimismFork`
         assertEq(simple.value(), 100);
      }

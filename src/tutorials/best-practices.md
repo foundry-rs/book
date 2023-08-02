@@ -114,7 +114,7 @@ Additional best practices from [samsczun](https://twitter.com/samczsun)'s [How D
 
    - Mocks are _required_ in closed-source web2 development—you have to mock API responses because the code for that API isn't open source so you cannot just run it locally. But for blockchains that's not true: any code you're interacting with that's already deployed can be locally executed and even modified for free. So why introduce the risk of a wrong mock if you don't need to?
    - A common reason to avoid fork tests and prefer mocks is that fork tests are slow. But this is not always true. By pinning to a block number, forge caches RPC responses so only the first run is slower, and subsequent runs are significantly faster. See [this benchmark](https://github.com/mds1/convex-shutdown-simulation/), where it took forge 7 minutes for the first run with a remote RPC, but only half a second once data was cached. [Alchemy](https://alchemy.com), [Infura](https://infura.io) and [Tenderly](https://tenderly.co) offer free archive data, so pinning to a block shouldn't be problematic.
-   - Note that the [foundry-toolchain](https://github.com/foundry-rs/foundry-toolchain) GitHub Action will cache RPC responses in CI by default, and it will also update the cache when you update your fork tests..
+   - Note that the [foundry-toolchain](https://github.com/foundry-rs/foundry-toolchain) GitHub Action will cache RPC responses in CI by default, and it will also update the cache when you update your fork tests.
 
 1. Be careful with fuzz tests on a fork to avoid burning through RPC requests with non-deterministic fuzzing. If the input to your fork fuzz test is some parameter which is used in an RPC call to fetch data (e.g. querying the token balance of an address), each run of a fuzz test uses at least 1 RPC request, so you'll quickly hit rate limits or usage limits. Solutions to consider:
 
@@ -271,7 +271,8 @@ Write more secure code and better tests:
 
 Foundry in Action:
 
-- [Nomad Monorepo](https://github.com/nomad-xyz/monorepo): All the `contracts-*` packages. Good example of using many Foundry features including fuzzing, `ffi` and various cheatcodes.
-- [Uniswap Periphery](https://github.com/gakonst/v3-periphery-foundry): Good example of using inheritance to isolate test fixtures.
 - [awesome-foundry](https://github.com/crisgarner/awesome-foundry): A curated list of awesome of the Foundry development framework.
-- [PRBMath](https://github.com/paulrberg/prb-math): A library for fixed-point arithmetic in Solidity, with many parameterized tests that harness Foundry.
+- [Nomad Monorepo](https://github.com/nomad-xyz/monorepo): All the `contracts-*` packages. Good example of using many Foundry features including fuzzing, `ffi` and various cheatcodes.
+- [Sablier V2 Core](https://github.com/sablier-labs/v2-core): Another good example of many Foundry features. Also a pioneer of the state tree testing approach, see the `*.tree` files.
+- [Uniswap Periphery](https://github.com/gakonst/v3-periphery-foundry): Good example of using inheritance to isolate test fixtures.
+- [PRBMath](https://github.com/PaulRBerg/prb-math): A library for fixed-point arithmetic in Solidity, with many parameterized tests that harness Foundry.

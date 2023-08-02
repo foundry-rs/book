@@ -20,7 +20,7 @@ cache = true
 # The cache directory if enabled
 cache_path = 'cache'
 # Where the broadcast logs are stored
-broadcast = 'boradcast'
+broadcast = 'broadcast'
 # additional solc allow paths
 allow_paths = []
 # additional solc include paths
