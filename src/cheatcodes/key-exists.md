@@ -5,7 +5,7 @@
 ```solidity
 // Check if a key exists in a JSON string.
 vm.keyExists(string memory json, string memory key) returns (bool)
-``
+```
 
 ### Description
 
