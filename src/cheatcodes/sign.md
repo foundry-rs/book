@@ -15,7 +15,8 @@ This is useful for testing functions that take signed data and perform an `ecrec
 ### Examples
 
 ```solidity
-address alice = vm.addr(1);
+address alice = makeAddr("alice");
+emit log_address(alice);
 bytes32 hash = keccak256("Signed by Alice");
 (uint8 v, bytes32 r, bytes32 s) = vm.sign(1, hash);
 address signer = ecrecover(hash, v, r, s);
