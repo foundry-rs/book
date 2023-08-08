@@ -1,13 +1,13 @@
-## `assumeNoPrecompiles`
+## `assumeNotPrecompile`
 
 ### Signature
 
 ```solidity
-function assumeNoPrecompiles(address addr) public;
+function assumeNotPrecompile(address addr) public;
 ```
 
 ```solidity
-function assumeNoPrecompiles(address addr, uint256 chainid) public;
+function assumeNotPrecompile(address addr, uint256 chainid) public;
 ```
 
 ### Description
