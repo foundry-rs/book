@@ -250,6 +250,42 @@ Returns a summary of all the transactions currently pending for inclusion in the
 `txpool_content`  
 Returns the details of all transactions currently pending for inclusion in the next block(s), as well as the ones that are being scheduled for future execution only
 
+##### Otterscan Methods
+The `ots_*` namespace implements the [Otterscan specification](https://github.com/otterscan/otterscan/blob/develop/docs/custom-jsonrpc.md)
+
+`ots_getApiLevel`
+Used by Otterscan to check if it\'s connecting to a compatible node and display a friendly message if it is not.
+
+`ots_getInternalOperations`
+Returns the internal ETH transfers inside a transaction.
+
+`ots_hasCode`
+Check if a certain address contains a deployed code.
+
+`ots_getTransactionError`
+Extract the transaction raw error output.
+
+`ots_traceTransaction`
+Extract all variations of calls, contract creation and self-destructs and returns a call tree.
+
+`ots_getBlockDetails`
+Tailor-made and expanded version of eth_getBlock* for block details page in Otterscan.
+
+`ots_getBlockTransactions`
+Get paginated transactions for a certain block, And removes some verbose fields such logs.
+
+`ots_searchTransactionsBefore`
+Gets paginated inbound/outbound transaction calls for a certain address, and before a given target block
+
+`ots_searchTransactionsAfter`
+Gets paginated inbound/outbound transaction calls for a certain address, and after a given target block
+
+`ots_getTransactionBySenderAndNonce`
+Gets the transaction hash for a certain sender address, given its nonce.
+
+`ots_getContractCreator`
+Gets the transaction hash and the address which created a contract.
+
 
 ### OPTIONS
 #### General Options
