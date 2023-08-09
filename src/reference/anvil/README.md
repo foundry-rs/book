@@ -287,7 +287,6 @@ Gets the transaction hash for a certain sender address, given its nonce.
 Gets the transaction hash and the address which created a contract.
 
 
-
 ### OPTIONS
 #### General Options
 `-a, --accounts <ACCOUNTS>`  
