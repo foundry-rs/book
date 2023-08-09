@@ -36,6 +36,9 @@ Sort results by gas used (ascending).
 `--max` *max_gas*  
 &nbsp;&nbsp;&nbsp;&nbsp;Only include tests that used less gas that the given amount.
 
+`--tolerance` *threshold*  
+&nbsp;&nbsp;&nbsp;&nbsp;Tolerates gas deviations up to the specified percentage (0-100).
+
 `--diff` *path*  
 &nbsp;&nbsp;&nbsp;&nbsp;Output a diff against a pre-existing snapshot.
 
