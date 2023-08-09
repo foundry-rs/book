@@ -3,13 +3,13 @@
 ### Signature
 
 ```solidity
-// Get list of keys present in JSON-string
+// Get list of keys present in a JSON string
 function parseJsonKeys(string calldata json, string calldata key) external pure returns (string[] memory keys);
 ```
 
 ### Description
 
-Gets list of keys present in JSON-string
+Gets list of keys present in a JSON string
 
 ### Examples
 
