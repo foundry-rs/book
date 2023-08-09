@@ -69,6 +69,9 @@ This program is a set of tools to build, test, fuzz, debug and deploy Solidity s
 [forge snapshot](./forge-snapshot.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Create a snapshot of each test's gas usage.
 
+[forge coverage](./forge-coverage.md)  
+&nbsp;&nbsp;&nbsp;&nbsp;Generate coverage reports.
+
 #### Deploy Commands
 
 [forge create](./forge-create.md)  
