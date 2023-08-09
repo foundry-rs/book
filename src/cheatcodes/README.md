@@ -323,6 +323,8 @@ interface CheatCodes {
     function parseJson(string memory json) external returns (bytes memory);
     // Check if a key exists in a json string
     function keyExists(string memory json, string memory key) external returns (bytes memory);
+    // Get list of keys in a json string
+    function parseJsonKeys(string memory json, string memry key) external returns (string[] memory);
 
     // Snapshot the current state of the evm.
     // Returns the id of the snapshot that was created.

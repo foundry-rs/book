@@ -281,6 +281,7 @@
       - [`envBytes`](./cheatcodes/env-bytes.md)
       - [`parseJson`](./cheatcodes/parse-json.md)
       - [`keyExists`](./cheatcodes/key-exists.md)
+      - [`parseJsonKeys`](./cheatcodes/parse-json-keys.md)
       - [`serializeJson`](./cheatcodes/serialize-json.md)
       - [`writeJson`](./cheatcodes/write-json.md)
     - [Utilities](./cheatcodes/utilities.md)
