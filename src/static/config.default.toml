@@ -34,7 +34,7 @@ gas_reports = ['*']
 # A list of contracts to ignore for gas reports
 gas_reports_ignore = []
 # Override the Solidity version (this overrides `auto_detect_solc`)
-#solc_version = '0.8.10'
+#solc_version = '^0.8.10'
 # Whether or not Forge should auto-detect the solc version to use
 auto_detect_solc = true
 # Disables downloading missing solc versions
