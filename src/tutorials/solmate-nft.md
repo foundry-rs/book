@@ -279,9 +279,10 @@ contract NFTTest is Test {
     }
 
     function test_RevertUnSafeContractReceiver() public {
-        vm.etch(address(1), bytes("mock code"));
+        // Adress set to 11, because first 10 addresses are restricted for precompiles
+        vm.etch(address(11), bytes("mock code"));
         vm.expectRevert(bytes(""));
-        nft.mintTo{value: 0.08 ether}(address(1));
+        nft.mintTo{value: 0.08 ether}(address(11));
     }
 
     function test_WithdrawalWorksAsOwner() public {
