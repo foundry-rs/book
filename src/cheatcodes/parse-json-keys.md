@@ -20,7 +20,7 @@ string[] memory keys = vm.parseJsonKeys(json, ".key"); // ["a", "b"]
 
 ```solidity
 string memory json = '{"key": "something"}';
-string[] memory keys = vm.parseJsonKeys(json, "."); // ["key"]
+string[] memory keys = vm.parseJsonKeys(json, "$"); // ["key"]
 ```
 
 ```solidity
