@@ -52,8 +52,12 @@ Scripts can be used to apply state transitions on live contracts, or deploy and 
 `--slow`  
 &nbsp;&nbsp;&nbsp;&nbsp;Makes sure a transaction is sent, only after its previous one has been confirmed and succeeded.
 
+
 `--target-contract` *contract_name*  
 &nbsp;&nbsp;&nbsp;&nbsp;The name of the contract you want to run.
+
+`--priority-gas-price`  
+&nbsp;&nbsp;&nbsp;&nbsp;Sets the priority gas price for EIP1559 transactions. Useful for when gas prices are volatile and you want to get your transaction included.
 
 `--with-gas-price` *price*  
 &nbsp;&nbsp;&nbsp;&nbsp;Sets the gas price for **broadcasted** legacy transactions, or the max fee for broadcasted EIP1559 transactions.  
