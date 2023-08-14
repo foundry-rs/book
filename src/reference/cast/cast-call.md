@@ -21,16 +21,16 @@ The destination (*to*) can be an ENS name or an address.
 `--trace`
 &nbsp;&nbsp;&nbsp;&nbsp;The block height you want to query at.
 
-`--debug`
+`--debug`  
 &nbsp;&nbsp;&nbsp;&nbsp;Opens an interactive debugger with the transaction. Needs `--trace`.
 
-`--verbose`
+`--verbose`  
 &nbsp;&nbsp;&nbsp;&nbsp;Prints a more verbose trace. Needs `--trace`.
 
-`--labels`
+`--labels <address:label>`  
 &nbsp;&nbsp;&nbsp;&nbsp;Labels to apply to the traces, with the format `address:label`. Needs `--trace`.
 
-`--evm-version`
+`--evm-version`  
 &nbsp;&nbsp;&nbsp;&nbsp;The EVM version to use. Needs `--trace`.
 
 #### Query Options
