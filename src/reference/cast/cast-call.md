@@ -18,7 +18,7 @@ The destination (*to*) can be an ENS name or an address.
 
 ### OPTIONS
 
-`--trace`
+`--trace`  
 &nbsp;&nbsp;&nbsp;&nbsp;The block height you want to query at.
 
 `--debug`  
