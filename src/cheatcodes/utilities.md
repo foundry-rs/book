@@ -8,3 +8,4 @@
 - [`rememberKey`](./remember-key.md)
 - [`toString`](./to-string.md)
 - [`breakpoint`](./breakpoint.md)
+- [`createWallet`](./create-wallet.md)

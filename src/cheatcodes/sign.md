@@ -6,9 +6,13 @@
 function sign(uint256 privateKey, bytes32 digest) external returns (uint8 v, bytes32 r, bytes32 s);
 ```
 
+```solidity
+function sign(Wallet memory wallet, bytes32 digest) external returns (uint8 v, bytes32 r, bytes32 s);
+```
+
 ### Description
 
-Signs a digest `digest` with private key `privateKey`, returning `(v, r, s)`.
+Signs a digest `digest` with private key `privateKey` or [Wallet](./create-wallet.md`) `wallet`, returning `(v, r, s)`.
 
 This is useful for testing functions that take signed data and perform an `ecrecover` to verify the signer.
 
@@ -103,4 +107,16 @@ contract SigningExampleTest is Test {
         vm.stopPrank();
     }
 }
+```
+
+#### `Wallet`
+
+The Wallet overload is a simple wrapper that uses the wallet's private key to sign the digest
+
+```solidity
+Wallet memory alice = vm.createWallet("alice");
+bytes32 hash = keccak256("Signed by Alice");
+(uint8 v, bytes32 r, bytes32 s) = vm.sign(alice, hash);
+address signer = ecrecover(hash, v, r, s);
+assertEq(alice.addr, signer); // [PASS]
 ```

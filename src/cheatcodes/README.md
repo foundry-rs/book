@@ -59,6 +59,28 @@ interface CheatCodes {
         RecurrentPrank
     }
 
+    struct Wallet {
+        address addr;
+        uint256 publicKeyX;
+        uint256 publicKeyY;
+        uint256 privateKey;
+    }
+
+    // Derives a private key from the name, labels the account with that name, and returns the wallet
+    function createWallet(string calldata) external returns (Wallet memory);
+
+    // Generates a wallet from the private key and returns the wallet
+    function createWallet(uint256) external returns (Wallet memory);
+
+    // Generates a wallet from the private key, labels the account with that name, and returns the wallet
+    function createWallet(uint256, string calldata) external returns (Wallet memory);
+
+    // Signs data, (Wallet, digest) => (v, r, s)
+    function sign(Wallet calldata, bytes32) external returns (uint8, bytes32, bytes32);
+
+    // Get nonce for a Wallet
+    function getNonce(Wallet calldata) external returns (uint64);
+
     // Set block.timestamp
     function warp(uint256) external;
 
