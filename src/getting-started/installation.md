@@ -50,7 +50,7 @@ foundryup --path path/to/foundry
 Or, by using a single Cargo command:
 
 ```sh
-cargo install --git https://github.com/foundry-rs/foundry --profile local --force foundry-cli anvil chisel
+cargo install --git https://github.com/foundry-rs/foundry --profile local forge cast chisel anvil
 ```
 
 Or, by manually building from a local copy of the [Foundry repository](https://github.com/foundry-rs/foundry):
@@ -59,12 +59,14 @@ Or, by manually building from a local copy of the [Foundry repository](https://g
 # clone the repository
 git clone https://github.com/foundry-rs/foundry.git
 cd foundry
-# install Forge + Cast
-cargo install --path ./cli --profile local --bins --force
+# install Forge
+cargo install --path ./crates/forge --profile local --force
+# install Cast
+cargo install --path ./crates/cast --profile local --force
 # install Anvil
-cargo install --path ./anvil --profile local --force
+cargo install --path ./crates/anvil --profile local --force
 # install Chisel
-cargo install --path ./chisel --profile local --force
+cargo install --path ./crates/chisel --profile local --force
 ```
 
 ### Installing for CI in Github Action
