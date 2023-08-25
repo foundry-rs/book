@@ -36,6 +36,11 @@ HTTP and Websocket connections are supported. The server listens on port 8545 by
 anvil --port <PORT>
 ```  
 
+#### Default CREATE2 Deployer
+Anvil, when used without forking, includes the [default CREATE2 deployer proxy](https://github.com/Arachnid/deterministic-deployment-proxy) at the address `0x4e59b44847b379578588920ca78fbf26c0b4956c`.
+
+This allows you to test CREATE2 deployments locally without forking.
+
 #### Supported RPC Methods
 ##### Standard Methods
 The standard methods are based on [this](https://eth.wiki/json-rpc/API) reference.
@@ -342,6 +347,8 @@ Gets the transaction hash and the address which created a contract.
 `-V, --version`  
 &nbsp;&nbsp;&nbsp;&nbsp; Print version information
 
+`--disable-default-create2-deployer`  
+&nbsp;&nbsp;&nbsp;&nbsp; Disables deploying the default CREATE2 factory when running Anvil without forking
 
 #### EVM Options
 `-f, --fork-url <URL>`  
