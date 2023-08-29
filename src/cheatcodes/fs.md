@@ -22,6 +22,15 @@ function closeFile(string calldata) external;
 // - The user lacks permissions to remove the file.
 // (path) => ()
 function removeFile(string calldata) external;
+// Returns true if the given path points to an existing entity, else returns false
+// (path) => (bool)
+function exists(string calldata) external returns (bool);
+// Returns true if the path exists on disk and is pointing at a regular file, else returns false
+// (path) => (bool)
+function isFile(string calldata) external returns (bool);
+// Returns true if the path exists on disk and is pointing at a directory, else returns false
+// (path) => (bool)
+function isDir(string calldata) external returns (bool);
 ```
 
 ### Description

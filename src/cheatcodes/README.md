@@ -338,6 +338,15 @@ interface CheatCodes {
     // - The user lacks permissions to remove the file.
     // (path) => ()
     function removeFile(string calldata) external;
+    // Returns true if the given path points to an existing entity, else returns false
+    // (path) => (bool)
+    function exists(string calldata) external returns (bool);
+    // Returns true if the path exists on disk and is pointing at a regular file, else returns false
+    // (path) => (bool)
+    function isFile(string calldata) external returns (bool);
+    // Returns true if the path exists on disk and is pointing at a directory, else returns false
+    // (path) => (bool)
+    function isDir(string calldata) external returns (bool);
     
     // Return the value(s) that correspond to 'key'
     function parseJson(string memory json, string memory key) external returns (bytes memory);
