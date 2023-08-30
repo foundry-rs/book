@@ -29,3 +29,4 @@
 - [`stopBroadcast`](./stop-broadcast.md)
 - [`pauseGasMetering`](./pause-gas-metering.md)
 - [`resumeGasMetering`](./resume-gas-metering.md)
+- [`txGasPrice`](./tx-gas-price.md)
