@@ -35,6 +35,10 @@ If an address is provided, then the interface is generated from the ABI of the a
 `--pragma` *version*  
 &nbsp;&nbsp;&nbsp;&nbsp;The Solidity pragma version to use in the interface. Default: `^0.8.10`.
 
+`-j`  
+`--json`  
+&nbsp;&nbsp;&nbsp;&nbsp;Output the contract's JSON ABI.
+
 {{#include ../common/etherscan-options.md}}
 
 {{#include common-options.md}}
@@ -55,6 +59,12 @@ If an address is provided, then the interface is generated from the ABI of the a
     ```sh
     cast interface -n LilENS ./path/to/abi.json
     ```
+
+4. Fetch the JSON ABI of a contract on Etherscan:
+    ```sh
+    cast interface -o IWETH.sol -j 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
+    ```
+
 ### SEE ALSO
 
 [cast](./cast.md), [cast proof](./cast-proof.md)
