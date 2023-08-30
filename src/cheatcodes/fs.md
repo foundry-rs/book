@@ -22,6 +22,15 @@ function closeFile(string calldata) external;
 // - The user lacks permissions to remove the file.
 // (path) => ()
 function removeFile(string calldata) external;
+// Returns true if the given path points to an existing entity, else returns false
+// (path) => (bool)
+function exists(string calldata) external returns (bool);
+// Returns true if the path exists on disk and is pointing at a regular file, else returns false
+// (path) => (bool)
+function isFile(string calldata) external returns (bool);
+// Returns true if the path exists on disk and is pointing at a directory, else returns false
+// (path) => (bool)
+function isDir(string calldata) external returns (bool);
 ```
 
 ### Description
@@ -94,4 +103,24 @@ string memory data = "hello world";
 vm.writeFile(path, data);
 
 assertEq(vm.readFile(path), data);
+```
+
+Verify that a filesystem path is valid
+
+```solidity
+// Verify that path 'foo/files/bar.txt' exists
+string memory validPath = "foo/files/bar.txt";
+assertTrue(vm.exists(validPath));
+```
+
+Verify that a filesystem path points to a file or directory
+
+```solidity
+// Verify that path 'foo/file/bar.txt' points to a file
+string memory validFilePath = "foo/files/bar.txt";
+assertTrue(vm.isFile(validFilePath));
+
+// Verify that 'foo/file' points to a directory
+string memory validDirPath = "foo/files";
+assertTrue(vm.isDir(validDirPath));
 ```
