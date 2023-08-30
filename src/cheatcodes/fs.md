@@ -108,9 +108,9 @@ assertEq(vm.readFile(path), data);
 Verify that a filesystem path is valid
 
 ```solidity
-// Verify that the path 'foo/files/bar.txt' exists
+// Verify that path 'foo/files/bar.txt' exists
 string memory validPath = "foo/files/bar.txt";
-assertTrue(vm.exists(validFilePath));
+assertTrue(vm.exists(validPath));
 ```
 
 Verify that a filesystem path points to a file or directory
