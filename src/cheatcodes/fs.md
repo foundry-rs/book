@@ -104,3 +104,23 @@ vm.writeFile(path, data);
 
 assertEq(vm.readFile(path), data);
 ```
+
+Verify that a filesystem path is valid
+
+```solidity
+// Verify that the path 'foo/files/bar.txt' exists
+string memory validPath = "foo/files/bar.txt";
+assertTrue(vm.isFile(validFilePath));
+```
+
+Verify that a filesystem path points to a file or directory
+
+```solidity
+// Verify that path 'foo/file/bar.txt' points to a file
+string memory validFilePath = "foo/files/bar.txt";
+assertTrue(vm.isFile(validFilePath));
+
+// Verify that 'foo/file' points to a directory
+string memory validDirPath = "foo/files";
+assertTrue(vm.isDir(validDirPath));
+```
