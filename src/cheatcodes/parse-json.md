@@ -170,6 +170,14 @@ struct Tx1559Detail {
 }
 ```
 
+### Troubleshooting
+
+#### Cannot read file
+
+> FAIL. Reason: The path `<file-path>` is not allowed to be accessed for read operations
+
+If you receive this error, make sure that you enable read permissions in `foundry.toml` using the [`fs_permissions` key](./fs.md)
+
 ### References
 
 - Helper Library: [stdJson.sol](https://github.com/foundry-rs/forge-std/blob/master/src/StdJson.sol)
