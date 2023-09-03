@@ -6,19 +6,9 @@
 function deal(address who, uint256 newBalance) external;
 ```
 
-```solidity
-function deal(address token, address to, uint256 give) external;
-```
-
-```solidity
-function deal(address token, address to, uint256 give, bool adjust) external;
-```
-
 ### Description
 
 Sets the balance of an address `who` to `newBalance`.
-
-If the alternative signature of `deal` is used, then we can additionally specify ERC20 token address, as well as an option to update `totalSupply`.
 
 ### Examples
 
@@ -27,13 +17,6 @@ address alice = makeAddr("alice");
 emit log_address(alice);
 vm.deal(alice, 1 ether);
 log_uint256(alice.balance); // 1000000000000000000
-```
-
-```solidity
-address alice = makeAddr("alice");
-emit log_address(alice);
-deal(address(DAI), alice, 1 ether); // import StdUtils.sol first
-log_uint256(address(DAI).balanceOf(alice); // 1000000000000000000
 ```
 
 ### SEE ALSO
