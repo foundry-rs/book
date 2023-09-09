@@ -3,6 +3,10 @@
 ### Signature
 
 ```solidity
+function serializeJson(string calldata objectKey, string calldata value)
+    external
+    returns (string memory json);
+
 function serializeBool(string calldata objectKey, string calldata valueKey, bool value)
     external
     returns (string memory json);
@@ -72,7 +76,9 @@ The idea is that the user serializes the values of the JSON file and finally wri
 - A key for the _value_ which will be its key in the JSON file
 - The value to be serialized
 
-The keys does not need to be of some specific form. They are of type `string` to enable for intuitive human interpretation. Semantically, they are not important other than to be used as keys.
+An exception to this is the `serializeJson` function, which only receives an `objectKey` and a json string `value`. This allows the user to serialize an existing json object and directly assign it to the provided `objectKey`. If the `objectKey` is already in use, the whole serialized json is overwritten.
+
+The keys do not need to be of some specific form. They are of type `string` to enable for intuitive human interpretation. Semantically, they are not important other than to be used as keys.
 
 The cheatcodes return the JSON object that is being serialized **up to that point**. That way the user can serialize inner JSON objects and then serialize them in bigger JSON objects, enabling the user to create arbitrary JSON objects.
 
