@@ -14,9 +14,9 @@ compinit -i
 Then run:
 
 ```sh
-forge completions zsh > /usr/local/share/zsh/site-functions/_forge
-cast completions zsh > /usr/local/share/zsh/site-functions/_cast
-anvil completions zsh > /usr/local/share/zsh/site-functions/_anvil
+forge completions zsh | sudo tee /usr/local/share/zsh/site-functions/_forge
+cast completions zsh | sudo tee /usr/local/share/zsh/site-functions/_cast
+anvil completions zsh | sudo tee /usr/local/share/zsh/site-functions/_anvil
 ```
 
 For ARM-based systems:
