@@ -37,9 +37,35 @@ anvil --port <PORT>
 ```  
 
 #### Default CREATE2 Deployer
-Anvil, when used without forking, includes the [default CREATE2 deployer proxy](https://github.com/Arachnid/deterministic-deployment-proxy) at the address `0x4e59b44847b379578588920ca78fbf26c0b4956c`.
+Anvil, when used without forking, includes the [default CREATE2 deployer proxy](https://github.com/Arachnid/deterministic-deployment-proxy) at the address `0x4e59b44847b379578588920cA78FbF26c0B4956C`.
 
 This allows you to test CREATE2 deployments locally without forking.
+
+```solidity
+address CREATE2_DEPLOYER = address(0x4e59b44847b379578588920cA78FbF26c0B4956C);
+
+uint256 salt = 100;
+
+// Counter accepts uint256 in its constructor
+bytes memory creationCode = abi.encodePacked(type(Counter).creationCode, abi.encode(uint256(200)));
+
+// Precomputing the address of the contract
+address counterAddress = address(
+    uint160(uint256(keccak256(abi.encodePacked(
+        bytes1(0xff),
+        CREATE2_DEPLOYER,
+        salt,
+        keccak256(creationCode)
+    ))))
+);
+
+// deploying `Counter` with CREATE2 and salt
+(bool success, ) = CREATE2_DEPLOYER.call(
+    abi.encodePacked(salt, creationCode)
+);
+require(success, "Deployment failed");
+require(counterAddress.code.length > 0, "Contract not deployed");
+```
 
 #### Supported RPC Methods
 ##### Standard Methods
