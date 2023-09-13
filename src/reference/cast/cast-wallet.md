@@ -31,6 +31,12 @@ This program is a set of tools to use, create and manage wallets.
 [cast wallet verify](./cast-wallet-verify.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Verify the signature of a message.
 
+[cast wallet import](./cast-wallet-import.md)  
+&nbsp;&nbsp;&nbsp;&nbsp;Import a private key into an encrypted keystore.
+
+[cast wallet list](./cast-wallet-list.md)  
+&nbsp;&nbsp;&nbsp;&nbsp;List all the accounts in the keystore default directory.
+
 ### OPTIONS
 
 #### Special Options

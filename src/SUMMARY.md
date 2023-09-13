@@ -205,6 +205,8 @@
       - [cast wallet sign](./reference/cast/cast-wallet-sign.md)
       - [cast wallet vanity](./reference/cast/cast-wallet-vanity.md)
       - [cast wallet verify](./reference/cast/cast-wallet-verify.md)
+      - [cast wallet import](./reference/cast/cast-wallet-import.md)
+      - [cast wallet list](./reference/cast/cast-wallet-list.md)
   - [`anvil` Reference](./reference/anvil/README.md)
   - [`chisel` Reference](./reference/chisel/README.md)
   - [Config Reference](./reference/config/README.md)
