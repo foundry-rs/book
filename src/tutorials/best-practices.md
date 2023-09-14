@@ -3,19 +3,28 @@
 This guide documents the suggested best practices when developing with Foundry.
 In general, it's recommended to handle as much as possible with [`forge fmt`](../reference/config/formatter.md), and anything this doesn't handle is below.
 
-- [General Contract Guidance](#general-contract-guidance)
-- [Tests](#tests)
-  - [General Test Guidance](#general-test-guidance)
-  - [Fork Tests](#fork-tests)
-  - [Test Harnesses](#test-harnesses)
-    - [Internal Functions](#internal-functions)
-    - [Private Functions](#private-functions)
-    - [Workaround Functions](#workaround-functions)
-  - [Best practices](#best-practices)
-  - [Taint Analysis](#taint-analysis)
-- [Scripts](#scripts)
-- [Comments](#comments)
-- [Resources](#resources)
+- [Best Practices](#best-practices)
+  - [General Contract Guidance](#general-contract-guidance)
+  - [Tests](#tests)
+    - [General Test Guidance](#general-test-guidance)
+    - [Fork Tests](#fork-tests)
+    - [Test Harnesses](#test-harnesses)
+      - [Internal Functions](#internal-functions)
+      - [Private Functions](#private-functions)
+      - [Workaround Functions](#workaround-functions)
+    - [Best practices](#best-practices-1)
+    - [Taint Analysis](#taint-analysis)
+  - [Private Key Management](#private-key-management)
+    - [Safeguarding Your Private Keys](#safeguarding-your-private-keys)
+      - [.env File Caution](#env-file-caution)
+      - [Wallet Segregation](#wallet-segregation)
+      - [GitHub and Online Exposure](#github-and-online-exposure)
+      - [Assume the Worst](#assume-the-worst)
+      - [Understand Your Wallets](#understand-your-wallets)
+      - [Leverage Encrypted Keystores](#leverage-encrypted-keystores)
+  - [Scripts](#scripts)
+  - [Comments](#comments)
+  - [Resources](#resources)
 
 ## General Contract Guidance
 
@@ -192,6 +201,42 @@ Consider that input data as _tainted_ until it has been checked by the code, at 
 A _sink_ is a part of the code where some important operation is happening. For example, in MakerDAO that would be `vat.sol`.
 
 You should _ensure_ that no _tainted_ data ever reaches a _sink_. That means that all data that find themselves in the sink, should, at some point, have been checked by you. So, you need to define what the data _should_ be and then make sure your checks _ensure_ that the data will be how you expect it to be.
+
+## Private Key Management
+
+Your keys are the gateway to your funds, and even a momentary exposure can lead to a potential loss. Here's a distilled guide inspired by [The Pledge](https://github.com/smartcontractkit/full-blockchain-solidity-course-js/discussions/5) from Patrick Collins
+
+### Safeguarding Your Private Keys
+
+#### .env File Caution
+
+Avoid storing a private key, secret phrase, or mnemonic in a `.env` file if it's associated with real funds. It's fine for testnet cryptocurrencies, but never for mainnet.
+
+#### Wallet Segregation
+
+Always use different wallets for testing and development than those linked with your real funds. Diversifying minimizes the risk.
+
+#### GitHub and Online Exposure
+
+Should you accidentally push your key/phrase to GitHub or expose it online, even momentarily, treat it as compromised. Act immediately to transfer your funds to a safer destination.
+
+#### Assume the Worst
+
+When in doubt about whether a wallet contains real funds or not, assume it does. Never use such uncertain wallets for development purposes.
+
+#### Understand Your Wallets
+
+Remember that adding an account in wallets like Metamask gives a new private key. However, it often shares the same mnemonic as the other accounts generated in that wallet. Awareness is the key to safety.
+
+#### Leverage Encrypted Keystores
+
+Use [cast wallet import](../../src/reference/cast/cast-wallet-import.md), designed to help users securely import their wallets using encrypted keystores. It turns your raw keys into an encrypted format, providing an added layer of security.
+
+1. Import your private key
+2. Encrypt it into a keystore
+3. Access it via password ONLY
+
+And you'll NEVER have to put a private key with real funds into a plain text .env file.
 
 ## Scripts
 
