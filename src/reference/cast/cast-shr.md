@@ -10,7 +10,7 @@ cast-shr - Perform a right shifting operation.
 
 ### DESCRIPTION
 
-Perform a left shifting operation.
+Perform a right shifting operation.
 
 ### OPTIONS
 
