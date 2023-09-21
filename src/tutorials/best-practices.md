@@ -14,15 +14,8 @@ In general, it's recommended to handle as much as possible with [`forge fmt`](..
       - [Workaround Functions](#workaround-functions)
     - [Best practices](#best-practices-1)
     - [Taint Analysis](#taint-analysis)
-  - [Private Key Management](#private-key-management)
-    - [Safeguarding Your Private Keys](#safeguarding-your-private-keys)
-      - [.env File Caution](#env-file-caution)
-      - [Wallet Segregation](#wallet-segregation)
-      - [GitHub and Online Exposure](#github-and-online-exposure)
-      - [Assume the Worst](#assume-the-worst)
-      - [Understand Your Wallets](#understand-your-wallets)
-      - [Leverage Encrypted Keystores](#leverage-encrypted-keystores)
   - [Scripts](#scripts)
+    - [Private Key Management](#private-key-management)
   - [Comments](#comments)
   - [Resources](#resources)
 
@@ -202,42 +195,6 @@ A _sink_ is a part of the code where some important operation is happening. For 
 
 You should _ensure_ that no _tainted_ data ever reaches a _sink_. That means that all data that find themselves in the sink, should, at some point, have been checked by you. So, you need to define what the data _should_ be and then make sure your checks _ensure_ that the data will be how you expect it to be.
 
-## Private Key Management
-
-Your keys are the gateway to your funds, and even a momentary exposure can lead to a potential loss. Here's a distilled guide inspired by [The Pledge](https://github.com/smartcontractkit/full-blockchain-solidity-course-js/discussions/5) from Patrick Collins
-
-### Safeguarding Your Private Keys
-
-#### .env File Caution
-
-Avoid storing a private key, secret phrase, or mnemonic in a `.env` file if it's associated with real funds. It's fine for testnet cryptocurrencies, but never for mainnet.
-
-#### Wallet Segregation
-
-Always use different wallets for testing and development than those linked with your real funds. Diversifying minimizes the risk.
-
-#### GitHub and Online Exposure
-
-Should you accidentally push your key/phrase to GitHub or expose it online, even momentarily, treat it as compromised. Act immediately to transfer your funds to a safer destination.
-
-#### Assume the Worst
-
-When in doubt about whether a wallet contains real funds or not, assume it does. Never use such uncertain wallets for development purposes.
-
-#### Understand Your Wallets
-
-Remember that adding an account in wallets like Metamask gives a new private key. However, it often shares the same mnemonic as the other accounts generated in that wallet. Awareness is the key to safety.
-
-#### Leverage Encrypted Keystores
-
-Use [cast wallet import](../../src/reference/cast/cast-wallet-import.md), designed to help users securely import their wallets using encrypted keystores. It turns your raw keys into an encrypted format, providing an added layer of security.
-
-1. Import your private key
-2. Encrypt it into a keystore
-3. Access it via password ONLY
-
-And you'll NEVER have to put a private key with real funds into a plain text .env file.
-
 ## Scripts
 
 1. Stick with `run` as the default function name for clarity.
@@ -291,6 +248,28 @@ function readInput(string memory input) internal returns (string memory) {
   return vm.readFile(string.concat(inputDir, chainDir, file));
 }
 ```
+
+### Private Key Management
+
+Script execution requires a private key to send transactions. This key controls all funds in the account, so it must be protected carefully. There are a few options for securely broadcasting transactions through a script:
+
+1. **Use a hardware wallet.** Hardware wallets such as Ledger and Trezor store seed phrases in a secure enclave. Forge can send a raw transaction to the wallet, and the wallet will sign the transaction. The signed transaction is returned to forge and broadcaster. This way, private keys never leave the hardware wallet, making this a very secure approach. To use a hardware wallet with scripts, see the `--ledger` and `--trezor` [flags](../reference/forge/forge-script.md).
+
+2. **Use a private key directly.** With this approach you expose a private key on your machine, making it riskier than the above option. Therefore the suggested way to directly use a private key is to generate a new wallet for executing the script, and only send that wallet enough funds to run the script. Then, stop using the key after the script is complete. This way, if the key is compromised, only the funds on this throwaway key are lost, as opposed to losing everything in your wallet.
+
+   1. With this approach, it's very important that your scripts or contracts don't rely on `msg.sender` since the sender will not be an account that's meant to be used again. For example, if a deploy script configures a contract owner, ensure the owner a constructor argument and not set to `msg.sender`.
+   2. To use this approach, you can either store the private key in an environment variable and use cheat codes to read it in, or use the `--private-key` flag to directly provide the key.
+
+3. **Use a keystore.** This can be thought of as a middle ground between the above two approaches. With [`cast wallet import`](../reference/cast/cast-wallet-import.md) you import a private key and encrypt it with a password. This still temporarily exposes your private key on your machine, but it becomes encrypted and you'll provide the password to decrypt it to run a script.
+
+Additional security precautions when using scripts:
+
+1. Use a separate wallet for testing and development, instead of using your main wallet with real funds. Diversifying minimizes the risk of losing funds if your development wallet is compromised.
+2. If you accidentally push a private key or seed phrase to GitHub, or expose it online via other means—even momentarily—treat it as compromised. Act immediately to transfer your funds to a safer destination.
+3. When in doubt about whether a wallet contains real funds or not, assume it does. Always be certain about a wallet's balances and status when using it for development purposes. Use [blockscan](https://blockscan.com/) to easily check many chains to see where the address has been used.
+4. Remember that adding an account in wallets like Metamask generates a new private key. However, that private key is derived from the same mnemonic as the other accounts generated in that wallet. Therefore, never expose the mnemonic as it may compromise all of your accounts.
+
+*This was section was inspired by [The Pledge](https://github.com/smartcontractkit/full-blockchain-solidity-course-js/discussions/5) from [Patrick Collins](https://twitter.com/PatrickAlphaC).*
 
 ## Comments
 
