@@ -253,7 +253,7 @@ function readInput(string memory input) internal returns (string memory) {
 
 Script execution requires a private key to send transactions. This key controls all funds in the account, so it must be protected carefully. There are a few options for securely broadcasting transactions through a script:
 
-1. **Use a hardware wallet.** Hardware wallets such as Ledger and Trezor store seed phrases in a secure enclave. Forge can send a raw transaction to the wallet, and the wallet will sign the transaction. The signed transaction is returned to forge and broadcaster. This way, private keys never leave the hardware wallet, making this a very secure approach. To use a hardware wallet with scripts, see the `--ledger` and `--trezor` [flags](../reference/common/wallet-options-hardware.md).
+1. **Use a hardware wallet.** Hardware wallets such as Ledger and Trezor store seed phrases in a secure enclave. Forge can send a raw transaction to the wallet, and the wallet will sign the transaction. The signed transaction is returned to forge and broadcaster. This way, private keys never leave the hardware wallet, making this a very secure approach. To use a hardware wallet with scripts, see the `--ledger` and `--trezor` [flags](../reference/forge/forge-script.md).
 
 2. **Use a private key directly.** With this approach you expose a private key on your machine, making it riskier than the above option. Therefore the suggested way to directly use a private key is to generate a new wallet for executing the script, and only send that wallet enough funds to run the script. Then, stop using the key after the script is complete. This way, if the key is compromised, only the funds on this throwaway key are lost, as opposed to losing everything in your wallet.
 
