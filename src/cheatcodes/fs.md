@@ -99,10 +99,9 @@ fs_permissions = [{ access = "write", path = "./"}]
 
 ```solidity
 string memory path = "file.txt";
-string memory data = "hello world";
-vm.writeFile(path, data);
+vm.removeFile(path);
 
-assertEq(vm.readFile(path), data);
+assertFalse(vm.exists(validPath));
 ```
 
 Verify that a filesystem path is valid
