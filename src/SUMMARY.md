@@ -272,6 +272,7 @@
       - [`projectRoot`](./cheatcodes/project-root.md)
       - [`getCode`](./cheatcodes/get-code.md)
       - [`getDeployedCode`](./cheatcodes/get-deployed-code.md)
+      - [`sleep`](./cheatcodes/sleep.md)
       - [`setEnv`](./cheatcodes/set-env.md)
       - [`envOr`](./cheatcodes/env-or.md)
       - [`envBool`](./cheatcodes/env-bool.md)
