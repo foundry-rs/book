@@ -19,10 +19,10 @@ This is useful for testing functions that take signed data and perform an `ecrec
 ### Examples
 
 ```solidity
-address alice = makeAddr("alice");
+(address alice, uint256 alicePk) = makeAddrAndKey("alice");
 emit log_address(alice);
 bytes32 hash = keccak256("Signed by Alice");
-(uint8 v, bytes32 r, bytes32 s) = vm.sign(1, hash);
+(uint8 v, bytes32 r, bytes32 s) = vm.sign(alicePk, hash);
 address signer = ecrecover(hash, v, r, s);
 assertEq(alice, signer); // [PASS]
 ```
