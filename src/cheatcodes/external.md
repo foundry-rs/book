@@ -4,6 +4,8 @@
 - [`projectRoot`](./project-root.md)
 - [`getCode`](./get-code.md)
 - [`getDeployedCode`](./get-deployed-code.md)
+- [`sleep`](./sleep.md)
+- [`unixTime`](./unix-time.md)
 - [`setEnv`](./set-env.md)
 - [`envOr`](./env-or.md)
 - [`envBool`](./env-bool.md)
