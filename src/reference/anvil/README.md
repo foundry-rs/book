@@ -196,6 +196,9 @@ Set the minimum gas price for the node
 `anvil_setNextBlockBaseFeePerGas`  
 Sets the base fee of the next block
 
+`anvil_setChainId`
+Sets the chain ID of the current EVM instance
+
 `anvil_dumpState`
 Returns a hex string representing the complete state of the chain. Can be re-imported into a fresh/restarted instance of Anvil to reattain the same state.
 
