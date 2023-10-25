@@ -10,6 +10,8 @@ function deal(address who, uint256 newBalance) external;
 
 Sets the balance of an address `who` to `newBalance`.
 
+If the alternative signature of `deal` is used (defined in `StdCheats.sol`), then we can additionally specify ERC20 token address, as well as an option to update `totalSupply`.
+
 ### Examples
 
 ```solidity
