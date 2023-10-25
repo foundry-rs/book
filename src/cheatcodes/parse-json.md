@@ -90,6 +90,7 @@ What matters is the alphabetical order. As the JSON object is an unordered data 
 
 - The struct is interpreted serially. That means that the tuple's first item will be decoded based on the first item of the struct definition (no alphabetical order).
 - The JSON will parsed alphabetically, not serially.
+- Note that this parsing uses Rust's BTreeMap crate under the hood, meaning that uppercase and lowercase strings are treated differently. Uppercase characters *precede* lowercase in this lexicographical ordering, ie "Zebra" would precede "apple".
 
 Thus, the first (in alphabetical order) value of the JSON, will be abi-encoded and then tried to be abi-decoded, based on the type of the first attribute of the `struct`.
 
