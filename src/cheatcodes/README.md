@@ -307,6 +307,7 @@ interface CheatCodes {
     // transactions that can later be signed and sent onchain
     function startBroadcast() external;
     function startBroadcast(address) external;
+    function startBroadcast(uint256 privateKey) external;
 
     // Stops collecting onchain transactions
     function stopBroadcast() external;
