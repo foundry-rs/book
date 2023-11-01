@@ -19,13 +19,13 @@ Tests marked as skipped will appear with a `[SKIPPED]` label on the test runner 
 ```solidity
 
 function testSkip() public {
-    cheats.skip(true);
+    vm.skip(true);
     /// This revert will not be reached as this test will be skipped.
     revert("Should not reach this revert");
 }
 
 function testNotSkip() public {
-    cheats.skip(false);
+    vm.skip(false);
     /// This revert will be reached as this test will not be skipped, and the test will fail.
     revert("Should reach this revert");
 }
