@@ -198,6 +198,7 @@
       - [cast min-int](./reference/cast/cast-min-int.md)
       - [cast max-uint](./reference/cast/cast-max-uint.md)
       - [cast to-check-sum-address](./reference/cast/cast-to-check-sum-address.md)
+      - [cast new-mnemonic](./reference/cast/cast-new-mnemonic.md)
     - [Wallet Commands](./reference/cast/wallet-commands.md)
       - [cast wallet](./reference/cast/cast-wallet.md)
       - [cast wallet new](./reference/cast/cast-wallet-new.md)
