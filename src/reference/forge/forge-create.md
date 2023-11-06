@@ -4,6 +4,10 @@
 
 forge-create - Deploy a smart contract.
 
+> ℹ️ **Note**
+>
+> This command is deprecated and *will* be removed in V1. Please use [`forge script`](./forge-script.md) instead.
+
 ### SYNOPSIS
 
 ``forge create`` [*options*] *contract*
