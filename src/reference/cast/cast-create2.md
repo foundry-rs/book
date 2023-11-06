@@ -30,7 +30,7 @@ Generate a deterministic contract address using CREATE2
 &nbsp;&nbsp;&nbsp;&nbsp;Address of the contract deployer [default: `0x4e59b44847b379578588920ca78fbf26c0b4956c`]
 
 `--init-code` *hex*
-&nbsp;&nbsp;&nbsp;&nbsp;Init code of the contract to be deployed [default: ]
+&nbsp;&nbsp;&nbsp;&nbsp;Init code of the contract to be deployed
 
 `--init-code-hash` *hash*
 &nbsp;&nbsp;&nbsp;&nbsp;Init code hash of the contract to be deployed
