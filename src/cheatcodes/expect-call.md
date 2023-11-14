@@ -93,7 +93,7 @@ Expect that `transfer` with any calldata is called on a token `MyToken` 2 times:
 address alice = makeAddr("alice");
 emit log_address(alice);
 vm.expectCall(
-  address(token), abi.encodeWithSelector(token.transfer), 2
+  address(token), abi.encodeWithSelector(token.transfer.selector), 2
 );
 token.transfer(alice, 10);
 token.transfer(alice, 10);
