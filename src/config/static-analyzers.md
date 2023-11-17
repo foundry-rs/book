@@ -10,34 +10,23 @@ To test your project using [slither](https://github.com/crytic/slither), here is
 }
 ```
 
-To run Slither on the entire project, you can use this command:
+To run Slither on the entire project, use this command in the root of the project:
 
 ```sh
 slither .
 ```
+
+By default (as of version 0.10.0), this will skip tests and scripts. To force inclusion of the tests and scripts, add the `--foundry-compile-all` flag.
+
+To run Slither on a single file, use this command:
+
+```sh
+slither src/Contract.sol
+```
+
+Note, this requires configuring the [solc version in the foundry config file](https://book.getfoundry.sh/reference/config/solidity-compiler#solc_version).
 
 You do not need to provide remappings via the `solc_remaps` option as Slither will automatically detect remappings in a Foundry project. Slither will invoke `forge` to perform the build.
-
-However, if you want to analyze a specific `.sol` file, then you do need to provide remappings:
-
-```json
-{
-  "solc_remaps": [
-    "ds-test/=lib/ds-test/src/",
-    "forge-std/=lib/forge-std/src/"
-  ]
-}
-```
-
-And you also need to update the `solc` compiler used by Slither to the same version used by Forge with `solc-select`:
-
-```sh
-pip3 install slither-analyzer
-pip3 install solc-select
-solc-select install 0.8.13
-solc-select use 0.8.13
-slither .
-```
 
 See the [Slither wiki](https://github.com/crytic/slither/wiki/Usage) for more information.
 
