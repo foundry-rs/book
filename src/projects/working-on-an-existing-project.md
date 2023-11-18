@@ -4,8 +4,6 @@ Foundry makes developing with existing projects have no overhead.
 
 For this example, we will use [PaulRBerg][paul]'s [`foundry-template`][template].
 
-If you download an existing project that uses Foundry, it is really easy to get going.
-
 First, clone the project and run [`forge install`][install] inside the project directory.
 
 ```sh
