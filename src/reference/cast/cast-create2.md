@@ -35,6 +35,9 @@ Generate a deterministic contract address using CREATE2
 `--init-code-hash` *hash*
 &nbsp;&nbsp;&nbsp;&nbsp;Init code hash of the contract to be deployed
 
+`--jobs` *jobs*
+&nbsp;&nbsp;&nbsp;&nbsp;Number of threads to use. Defaults to and caps at the number of logical cores
+
 {{#include common-options.md}}
 
 ### EXAMPLES
