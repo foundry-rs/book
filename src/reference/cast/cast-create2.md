@@ -38,6 +38,9 @@ Generate a deterministic contract address using CREATE2
 `--jobs` *jobs*
 &nbsp;&nbsp;&nbsp;&nbsp;Number of threads to use. Defaults to and caps at the number of logical cores
 
+`--caller` *address*
+&nbsp;&nbsp;&nbsp;&nbsp;Address of the caller. Used for the first 20 bytes of the salt
+
 {{#include common-options.md}}
 
 ### EXAMPLES
