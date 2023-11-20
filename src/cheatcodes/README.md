@@ -59,11 +59,50 @@ interface CheatCodes {
         RecurrentPrank
     }
 
+    enum AccountAccessKind {
+        Call,
+        DelegateCall,
+        CallCode,
+        StaticCall,
+        Create,
+        SelfDestruct,
+        Resume
+    }
+
     struct Wallet {
         address addr;
         uint256 publicKeyX;
         uint256 publicKeyY;
         uint256 privateKey;
+    }
+
+    struct ChainInfo {
+        uint256 forkId;
+        uint256 chainId;
+    }
+
+    struct AccountAccess {
+        ChainInfo chainInfo;
+        AccountAccessKind kind;
+        address account;
+        address accessor;
+        bool initialized;
+        uint256 oldBalance;
+        uint256 newBalance;
+        bytes deployedCode;
+        uint256 value;
+        bytes data;
+        bool reverted;
+        StorageAccess[] storageAccesses;
+    }
+
+    struct StorageAccess {
+        address account;
+        bytes32 slot;
+        bool isWrite;
+        bytes32 previousValue;
+        bytes32 newValue;
+        bool reverted;
     }
 
     // Derives a private key from the name, labels the account with that name, and returns the wallet
@@ -236,6 +275,13 @@ interface CheatCodes {
     function accesses(address)
         external
         returns (bytes32[] memory reads, bytes32[] memory writes);
+    
+    // Record all account accesses as part of CREATE, CALL or SELFDESTRUCT opcodes in order,
+    // along with the context of the calls.
+    function startStateDiffRecording() external;
+
+    // Returns an ordered array of all account accesses from a `startStateDiffRecording` session.
+    function stopAndReturnStateDiff() external returns (AccountAccess[] memory accesses);
 
     // Record all the transaction logs
     function recordLogs() external;
