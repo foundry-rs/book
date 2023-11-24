@@ -6,7 +6,7 @@ It's possible to have your Foundry project work alongside [Hardhat](https://hard
 
 Hardhat by default expects libraries to be installed in `node_modules`, the default folder for all NodeJS dependencies. Foundry expects them to be in `lib`. Of course [we can configure Foundry](../reference/config/overview.md) but not easily to the directory structure of `node_modules`.
 
-For this reason, the recommended setup is to use [hardhat-foundry](https://www.npmjs.com/package/@nomicfoundation/hardhat-foundry). When Hardhat-foundry is installed and used correctly, Hardhat will use the same contracts directory that is used by Foundry, and it will be able to use dependencies installed with forge install.
+For this reason, the recommended setup is to use [hardhat-foundry](https://www.npmjs.com/package/@nomicfoundation/hardhat-foundry). When hardhat-foundry is installed and used correctly, Hardhat will use the same contracts directory that is used by Foundry, and it will be able to use dependencies installed with forge install.
 
 In this article we will cover both scenarios:
 
@@ -26,15 +26,14 @@ Inside your Foundry project working directory:
 1. `npm init -y` - This will set up a `package.json` file.
 2. `npm i --save-dev hardhat` - Install Hardhat into the same directory.
 3. `npx hardhat init` - Initialize your Hardhat project inside the same directory and choose the  "**Create an empty hardhat.config.js**" option. This will create a basic `hardhat.config.js` file.
-4. `npm i --save-dev @nomicfoundation/hardhat-foundry @nomicfoundation/hardhat-toolbox` - This will install the Hardhat-foundry plugin and the Hardhat toolbox plugin which is a combination of all the basic dependencies you need to run Hardhat tests.
+4. `npm i --save-dev @nomicfoundation/hardhat-foundry @nomicfoundation/hardhat-toolbox` - This will install the hardhat-foundry plugin and the Hardhat toolbox plugin which is a combination of all the basic dependencies you need to run Hardhat tests.
 
 Your hardhat.config.js file should look like this to make the plugins work:
 
 ```javascript
-/** @type import('hardhat/config').HardhatUserConfig */
 require("@nomicfoundation/hardhat-toolbox");
 require("@nomicfoundation/hardhat-foundry");
-
+/** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
   solidity: "0.8.19",
 };
@@ -46,31 +45,28 @@ module.exports = {
 ```javascript
 const { expect } = require("chai");
 const hre = require("hardhat");
-const {loadFixture} = require("@nomicfoundation/hardhat-toolbox/network-helpers");
+const { loadFixture } = require("@nomicfoundation/hardhat-toolbox/network-helpers");
 
 describe("Counter contract", function () {
+  async function CounterLockFixture() {
+    const counter = await ethers.deployContract("Counter");
+    await counter.setNumber(0);
 
-    async function CounterLockFixture() {
-        const counter = await ethers.deployContract("Counter");
-        await counter.setNumber(0);
+    return { counter };
+  }
 
-        return {counter};
-    };
+  it("Should increment the number correctly", async function () {
+    const { counter } = await loadFixture(CounterLockFixture);
+    await counter.increment();
+    expect(await counter.number()).to.equal(1);
+  });
 
-    it("Should increment the number correctly", async function () {
-
-        const {counter} = await loadFixture(CounterLockFixture);
-        await counter.increment();
-        expect(await counter.number()).to.equal(1);
-    });
-
-    // This is not a fuzz test because Hardhat does not support fuzzing yet.
-    it("Should set the number correctly", async function () {
-
-        const {counter} = await loadFixture(CounterLockFixture);
-        await counter.setNumber(100);
-        expect(await counter.number()).to.equal(100);
-    });
+  // This is not a fuzz test because Hardhat does not support fuzzing yet.
+  it("Should set the number correctly", async function () {
+    const { counter } = await loadFixture(CounterLockFixture);
+    await counter.setNumber(100);
+    expect(await counter.number()).to.equal(100);
+  });
 });
 ```
 
@@ -84,7 +80,7 @@ Check out [Hardhat's documentation](https://hardhat.org/docs) to learn more.
 
 Inside your Hardhat project working directory:
 
-1. `npm i --save-dev @nomicfoundation/hardhat-foundry`- Install the Hardhat-foundry plugin.
+1. `npm i --save-dev @nomicfoundation/hardhat-foundry`- Install the hardhat-foundry plugin.
 2. Add `require("@nomicfoundation/hardhat-foundry");` to the top of your `hardhat.config.js` file.
 
 > ℹ️ **Note**
