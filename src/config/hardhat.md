@@ -15,7 +15,7 @@ In this article we will cover both scenarios:
 
 ### Just show me the example repo!
 
-[Enjoy!](https://github.com/Genesis3800/HardhatInFoundry)
+[Enjoy!](https://github.com/foundry-rs/HardhatInFoundry)
 
 If you want to adapt this to a Foundry project you already have or learn how it works, read below:
 
@@ -24,7 +24,7 @@ If you want to adapt this to a Foundry project you already have or learn how it 
 Inside your Foundry project working directory:
 
 1. `npm init -y` - This will set up a `package.json` file.
-2. `npm i --save-dev hardhat` - Install Hardhat into the same directory.
+2. `npm i --save-dev hardhat` - Install Hardhat as a dev dependency into your project.
 3. `npx hardhat init` - Initialize your Hardhat project inside the same directory and choose the  "**Create an empty hardhat.config.js**" option. This will create a basic `hardhat.config.js` file.
 4. `npm i --save-dev @nomicfoundation/hardhat-foundry @nomicfoundation/hardhat-toolbox` - This will install the hardhat-foundry plugin and the Hardhat toolbox plugin which is a combination of all the basic dependencies you need to run Hardhat tests.
 
