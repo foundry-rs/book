@@ -3,7 +3,15 @@
 This is a collection of common questions and answers. If you do not find your question listed here, hop in the [Telegram support channel][tg-support]
 and let us help you!
 
-### `libusb` Error When Running `forge`/`cast`
+### I can't build from source!
+
+Make sure you're on the latest stable Rust toolchain:
+```sh
+rustup default stable
+rustup update stable
+```
+
+### `libusb` error when running `forge`/`cast`
 
 If you are using the binaries as released, you may see the following error on MacOS:
 
@@ -17,7 +25,7 @@ In order to fix this, you must install the `libusb` library:
 brew install libusb
 ```
 
-### Out of Date `GLIBC` Error:
+### Out of date `GLIBC`
 
 If you run into an error resembling the following after using `foundryup`:
 
@@ -30,7 +38,7 @@ There are 2 workarounds:
 1. [Building from source](./getting-started/installation.md#building-from-source)
 2. [Using Docker](./getting-started/installation.md#using-foundry-with-docker)
 
-### Help! I can't see my logs
+### Help! I can't see my logs!
 
 Forge does not display logs by default. If you want to see logs from Hardhat's `console.log` or from DSTest-style `log_*` events,
 you need to run [`forge test`][forge-test] with verbosity 2 (`-vv`).
@@ -38,7 +46,7 @@ you need to run [`forge test`][forge-test] with verbosity 2 (`-vv`).
 If you want to see other events your contracts emit, you need to run with traces enabled.
 To do that, set the verbosity to 3 (`-vvv`) to see traces for failing tests, or 4 (`-vvvv`) to see traces for all tests.
 
-### My tests are failing and I don't know why
+### My tests are failing and I don't know why!
 
 To gain better insight into why your tests are failing, try using traces. To enable traces, you need to increase the verbosity
 on [forge test][forge-test] to at least 3 (`-vvv`) but you can go as high as 5 (`-vvvvv`) for even more traces.
@@ -180,7 +188,7 @@ Then there's likely a folder permission issue. Ensure `user` has write access in
 
 It has been [reported](https://github.com/foundry-rs/foundry/issues/3268) that on linux, canonicalizing paths can result in weird paths (`/_1/...`). This can be resolved by nuking the entire project folder and initializing again.
 
-### Connection refused when run `forge build` .
+### Connection refused when running `forge build`
 
 If you're unable to access github URLs called by `forge build`, you will see an error like
 

@@ -35,6 +35,13 @@ See `foundryup --help` for more options, like installing from a specific version
 You will need the [Rust](https://rust-lang.org) compiler and Cargo, the Rust package manager.
 The easiest way to install both is with [`rustup.rs`](https://rustup.rs/).
 
+Foundry generally only supports building on the latest stable Rust version.
+If you have an older Rust version, you can update with `rustup`:
+
+```sh
+rustup update stable
+```
+
 On Windows, you will also need a recent version of [Visual Studio](https://visualstudio.microsoft.com/downloads/),
 installed with the "Desktop Development With C++" Workloads option.
 
