@@ -12,7 +12,7 @@ cast-wallet-vanity - Generate a vanity address.
 
 Generate a vanity address.
 
-If `--nonce` is specified, then the command will try to generate a vanity contract address.
+If `--nonce` is specified, then the command will try to generate a vanity contract address. The `--save-path` option allows specifying a custom file path to save the generated wallet details.
 
 ### OPTIONS
 
@@ -27,6 +27,9 @@ If `--nonce` is specified, then the command will try to generate a vanity contra
 `--nonce` *nonce*  
 &nbsp;&nbsp;&nbsp;&nbsp;Generate a vanity contract address created by the generated keypair with the specified nonce.
 
+`--save-path` *path*  
+&nbsp;&nbsp;&nbsp;&nbsp;Path to save the generated vanity wallet. If provided, the wallet details will be saved in a JSON file at this location.
+
 {{#include common-options.md}}
 
 ### EXAMPLES
@@ -39,6 +42,11 @@ If `--nonce` is specified, then the command will try to generate a vanity contra
 2. Create a new keypair ends with `beef`:
     ```sh
     cast wallet vanity --ends-with beef
+    ```
+
+3. Create a new keypair that starts with `dead` and save the details to a specific path:
+    ```sh
+    cast wallet vanity --starts-with dead --save-path /path/to/save
     ```
 
 ### SEE ALSO
