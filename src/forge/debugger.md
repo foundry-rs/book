@@ -57,6 +57,11 @@ For the memory:
 
 For the stack, **cyan words** are either being read or popped by the current opcode.
 
+> ⚠️ **Note**
+>
+> In most test frameworks, the first test assertion to fail is the one reported.
+> In foundry, the last test assertion to fail (that comes from DSTest or cheatcodes) is the one to be reported.
+
 ### Navigating
 
 ### General
