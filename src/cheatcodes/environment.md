@@ -30,3 +30,5 @@
 - [`pauseGasMetering`](./pause-gas-metering.md)
 - [`resumeGasMetering`](./resume-gas-metering.md)
 - [`txGasPrice`](./tx-gas-price.md)
+- [`startStateDiffRecording`](./start-state-diff-recording.md)
+- [`stopAndReturnStateDiff`](./stop-and-return-state-diff.md)

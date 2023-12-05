@@ -252,6 +252,8 @@
       - [`pauseGasMetering`](./cheatcodes/pause-gas-metering.md)
       - [`resumeGasMetering`](./cheatcodes/resume-gas-metering.md)
       - [`txGasPrice`](./cheatcodes/tx-gas-price.md)
+      - [`startStateDiffRecording`](./cheatcodes/start-state-diff-recording.md)
+      - [`stopAndReturnStateDiff`](./cheatcodes/stop-and-return-state-diff.md)
     - [Assertions](./cheatcodes/assertions.md)
       - [`expectRevert`](./cheatcodes/expect-revert.md)
       - [`expectEmit`](./cheatcodes/expect-emit.md)
