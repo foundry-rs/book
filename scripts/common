@@ -8,6 +8,10 @@ set -eo pipefail
 ETH_RPC_URL="${ETH_RPC_URL:=https://eth-mainnet.alchemyapi.io/v2/Lc7oIGYeL_QvInzI0Wiu_pOZZDEKBrdf}"
 OUTPUT_DIR="$(realpath src/output)"
 ROOT="$(dirname "$(dirname "$(realpath "$0")")")"
+# shellcheck disable=SC2034
+SCRIPTS="$ROOT/scripts"
+
+export NO_COLOR=1
 
 # Runs a command and outputs text with anchors.
 # The anchors are:
@@ -28,17 +32,23 @@ run_command() {
     fi
   done
 
-  echo "Running $" "${escaped_cmd[@]}" >&2
+  echo "Running $" "${escaped_cmd[*]}" >&2
+  cmd_output=$("${cmd[@]}" | escape_colors)
+  print_anchored "${escaped_cmd[*]}" "$cmd_output" > "$output"
+}
 
-  cmd_output=$("${cmd[@]}" | sed "s,\x1B\[[0-9;]*[a-zA-Z],,g")
+escape_colors() {
+  sed "s,\x1B\[[0-9;]*[a-zA-Z],,g"
+}
 
-  cat > "$output" <<EOF
+print_anchored() {
+  cat > /dev/stdout <<EOF
 // ANCHOR: all
 // ANCHOR: command
-\$ ${escaped_cmd[@]}
+\$ $1
 // ANCHOR_END: command
 // ANCHOR: output
-$cmd_output
+$2
 // ANCHOR_END: output
 // ANCHOR_END: all
 EOF

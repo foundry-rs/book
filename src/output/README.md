@@ -1,8 +1,8 @@
 ## CLI Output
 
-**This is auto-generated content** by [`scripts/generate-output`](../../scripts/generate-output), which uses the [projects](../../projects) in the repository root.
+**This is auto-generated content** by [`scripts/gen_output.sh`](../../scripts/gen_output.sh), which uses the [projects](../../projects) in the repository root.
 
-If the CLI output of either `forge` or `cast` has changed substantially, or you made changes to the projects, then you should run ``./scripts/generate-output`` from the root of the repository.
+If the CLI output of either `forge` or `cast` has changed substantially, or you made changes to the projects, then you should run `./scripts/gen_output.sh` from the root of the repository.
 
 Make sure that you have all of the submodules pulled by running `git submodule update --init --recursive`.
 
