@@ -2,11 +2,15 @@
 
 import argparse
 import os
+import re
 import subprocess
 import sys
 from os import makedirs, path
 
 HELP_KEY = "help"
+SECTION_START = "<!-- CLI_REFERENCE START -->"
+SECTION_END = "<!-- CLI_REFERENCE END -->"
+SECTION_RE = rf"\s*{SECTION_START}.*?{SECTION_START}"
 
 
 def main():
@@ -44,20 +48,40 @@ def main():
     summary = ""
     root_summary = ""
     for cmd, obj in output.items():
-        file_path = path.join(args.out_dir, f"{cmd}.md")
-        with open(file_path, "w") as f:
-            f.write(cmd_markdown(cmd, obj))
+        cmd_markdown(args.out_dir, cmd, obj)
 
-        rel_root_file_path = path.relpath(file_path, args.root_dir)
-        summary += cmd_summary(rel_root_file_path, cmd, obj, 0)
+        root_path = path.relpath(args.out_dir, args.root_dir)
+        summary += cmd_summary("", cmd, obj, 0)
         summary += "\n"
 
-        root_summary += cmd_summary(rel_root_file_path, cmd, obj, args.root_indentation)
+        root_summary += cmd_summary(root_path, cmd, obj, args.root_indentation)
         root_summary += "\n"
     with open(path.join(args.out_dir, "SUMMARY.md"), "w") as f:
         f.write(summary)
-    with open(path.join(args.out_dir, "SUMMARY.root.md"), "w") as f:
-        f.write(root_summary)
+
+    # Replace the CLI_REFERENCE section in the root SUMMARY.md file.
+    summary_file = path.join(args.root_dir, "SUMMARY.md")
+
+    with open(summary_file, "r") as f:
+        real_root_summary = f.read()
+
+    if not re.search(SECTION_RE, real_root_summary, flags=re.DOTALL):
+        raise Exception(
+            f"Could not find CLI_REFERENCE section in {summary_file}. "
+            "Please add the following section to the file:\n"
+            f"{SECTION_START}\n{SECTION_END}"
+        )
+
+    last_line = re.findall(f".*{SECTION_END}", real_root_summary)[0]
+    root_summary_s = root_summary.rstrip().replace("\n\n", "\n")
+    replace_with = f" {SECTION_START}\n{root_summary_s}\n{last_line}"
+
+    real_root_summary = re.sub(
+        SECTION_RE, replace_with, real_root_summary, flags=re.DOTALL
+    )
+    root_summary_file = path.join(args.root_dir, "SUMMARY.md")
+    with open(root_summary_file, "w") as f:
+        f.write(real_root_summary)
 
 
 def parse_args(args: list[str]):
@@ -124,23 +148,26 @@ def parse_sub_commands(s: str):
     return list(subcmds)
 
 
-def cmd_markdown(cmd: str, obj: object):
-    """Returns the markdown for a command and its subcommands."""
+def cmd_markdown(out_dir: str, cmd: str, obj: object):
+    """Writes the markdown for a command and its subcommands to out_dir."""
 
-    def rec(cmd: list[str], obj: object, hashes: int):
-        nonlocal out
-        out += f"{'#' * hashes} {' '.join(cmd)}\n\n"
+    def rec(cmd: list[str], obj: object):
+        out = ""
+        out += f"# {' '.join(cmd)}\n\n"
         out += help_markdown(cmd, obj[HELP_KEY])
-        out += "\n\n"
+        out_path = out_dir
+        for arg in cmd:
+            out_path = path.join(out_path, arg)
+        makedirs(path.dirname(out_path), exist_ok=True)
+        with open(path.join(out_dir, f"{out_path}.md"), "w") as f:
+            f.write(out)
 
         for k, v in obj.items():
             if k == HELP_KEY:
                 continue
-            rec(cmd + [k], v, hashes + 1)
+            rec(cmd + [k], v)
 
-    out = ""
-    rec([cmd], obj, 1)
-    return out
+    rec([cmd], obj)
 
 
 def help_markdown(cmd: list[str], s: str):
@@ -163,14 +190,16 @@ def parse_description(s: str):
     return s[:idx].strip().splitlines()[0].strip(), s[idx:]
 
 
-def cmd_summary(md_file: str, cmd: str, obj: object, indent: int):
+def cmd_summary(md_root: str, cmd: str, obj: object, indent: int):
     """Returns the summary for a command and its subcommands."""
 
     def rec(cmd: list[str], obj: object, indent: int):
         nonlocal out
         cmd_s = " ".join(cmd)
-        anchor = cmd_s.replace(" ", "-")
-        out += f"{' ' * indent}- [`{cmd_s}`](/{md_file}#{anchor})\n"
+        cmd_path = cmd_s.replace(" ", "/")
+        if md_root != "":
+            cmd_path = f"{md_root}/{cmd_path}"
+        out += f"{' ' * indent}- [`{cmd_s}`](./{cmd_path}.md)\n"
 
         for k, v in obj.items():
             if k == HELP_KEY:

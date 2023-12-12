@@ -1,4 +1,8 @@
-book
-out
-cache
-.idea
+/book
+/.idea
+/.vscode
+
+/cache/
+/projects/**/cache/
+/out/
+/projects/**/out/

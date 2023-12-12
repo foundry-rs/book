@@ -243,31 +243,3 @@ EVM options:
           
           [aliases: tracing]
 ```
-
-## anvil completions
-
-Generate shell completions script
-
-```bash
-$ anvil completions --help
-Usage: anvil completions <SHELL>
-
-Arguments:
-  <SHELL>  [possible values: bash, elvish, fish, powershell, zsh]
-
-Options:
-  -h, --help  Print help
-```
-
-## anvil generate-fig-spec
-
-Generate Fig autocompletion spec
-
-```bash
-$ anvil generate-fig-spec --help
-Usage: anvil generate-fig-spec
-
-Options:
-  -h, --help  Print help
-```
-

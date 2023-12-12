@@ -6,6 +6,9 @@ src = "src"
 title = "Foundry Book"
 description = "A book on all things Foundry"
 
+[build]
+create-missing = false
+
 [output.html]
 git-repository-url = "https://github.com/foundry-rs/book"
 edit-url-template = "https://github.com/foundry-rs/book/edit/master/{path}"
