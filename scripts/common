@@ -5,9 +5,10 @@ set -eo pipefail
 # the commands and outputs into files that are easily
 # includeable in the book.
 
-ETH_RPC_URL="${ETH_RPC_URL:=https://eth-mainnet.alchemyapi.io/v2/Lc7oIGYeL_QvInzI0Wiu_pOZZDEKBrdf}"
-OUTPUT_DIR="$(realpath src/output)"
-ROOT="$(dirname "$(dirname "$(realpath "$0")")")"
+export ETH_RPC_URL="${ETH_RPC_URL:=https://eth-mainnet.alchemyapi.io/v2/Lc7oIGYeL_QvInzI0Wiu_pOZZDEKBrdf}"
+export OUTPUT_DIR="$(realpath src/output)"
+export ROOT="$(dirname "$(dirname "$(realpath "$0")")")"
+export SCRIPTS="$ROOT/scripts"
 
 # Runs a command and outputs text with anchors.
 # The anchors are:
