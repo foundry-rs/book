@@ -74,7 +74,7 @@ From there, input valid Solidity code. There are two kinds of inputs to the chis
         * ...
 #### Available Commands
 
-```output
+```text
 {{#include ../../output/chisel/help:output}}
 ```
 
