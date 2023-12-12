@@ -51,7 +51,6 @@ def main():
 
         # Append subcommands.
         for subcmd in subcmds:
-            eprint(f"Adding subcommand: {' '.join(cmd)} {subcmd}")
             cmd_iter.append(cmd + [subcmd])
 
     # Generate markdown files.
@@ -70,10 +69,12 @@ def main():
         f.write(summary)
 
     # Generate README.md.
-    with open(path.join(args.out_dir, "README.md"), "w") as f:
-        f.write(README)
+    if args.readme:
+        with open(path.join(args.out_dir, "README.md"), "w") as f:
+            f.write(README)
 
-    update_root_summary(args.root_dir, root_summary)
+    if args.root_summary:
+        update_root_summary(args.root_dir, root_summary)
 
 
 def parse_args(args: list[str]):
@@ -89,6 +90,11 @@ def parse_args(args: list[str]):
         help="Indentation for the root SUMMARY.md file",
     )
     parser.add_argument("--out-dir", help="Output directory")
+    parser.add_argument(
+        "--readme",
+        action="store_true",
+        help="Whether to add a README.md file",
+    )
     parser.add_argument(
         "--root-summary",
         action="store_true",
@@ -156,7 +162,7 @@ def cmd_markdown(out_dir: str, cmd: str, obj: object):
         for arg in cmd:
             out_path = path.join(out_path, arg)
         makedirs(path.dirname(out_path), exist_ok=True)
-        with open(path.join(out_dir, f"{out_path}.md"), "w") as f:
+        with open(f"{out_path}.md", "w") as f:
             f.write(out)
 
         for k, v in obj.items():
@@ -164,11 +170,12 @@ def cmd_markdown(out_dir: str, cmd: str, obj: object):
                 continue
             rec(cmd + [k], v)
 
-    rec([cmd], obj)
+    rec([command_name(cmd)], obj)
 
 
 def help_markdown(cmd: list[str], s: str):
     """Returns the markdown for a command's help output."""
+    cmd[0] = command_name(cmd[0])
     description, s = parse_description(s)
     return f"""\
 {description}
@@ -204,7 +211,7 @@ def cmd_summary(md_root: str, cmd: str, obj: object, indent: int):
             rec(cmd + [k], v, indent + 2)
 
     out = ""
-    rec([cmd], obj, indent)
+    rec([command_name(cmd)], obj, indent)
     return out
 
 
@@ -237,6 +244,11 @@ def update_root_summary(root_dir: str, root_summary: str):
 def eprint(*args, **kwargs):
     """Prints to stderr."""
     print(*args, file=sys.stderr, **kwargs)
+
+
+def command_name(cmd: str):
+    """Returns the name of a command."""
+    return cmd.split("/")[-1]
 
 
 if __name__ == "__main__":

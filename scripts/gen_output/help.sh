@@ -11,8 +11,9 @@ gen_help() {
   cmd=(
     "$SCRIPTS/gen_output/help.py"
     --root-dir "$ROOT/src/"
-    --root-indentation 4
     --root-summary
+    --root-indentation 4
+    --readme
     --out-dir "$ROOT/src/reference/cli/"
     "${bins[@]}"
   )
