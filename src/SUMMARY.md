@@ -297,6 +297,7 @@
       - [`sign`](./cheatcodes/sign.md)
       - [`skip`](./cheatcodes/skip.md)
       - [`label`](./cheatcodes/label.md)
+      - [`getLabel`](./cheatcodes/get-label.md)
       - [`deriveKey`](./cheatcodes/derive-key.md)
       - [`parseBytes`](./cheatcodes/parse-bytes.md)
       - [`parseAddress`](./cheatcodes/parse-address.md)
