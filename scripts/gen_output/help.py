@@ -45,6 +45,7 @@ def main():
 
 
 def parse_args(args):
+    """Parses command line arguments."""
     parser = argparse.ArgumentParser(
         description="Generate markdown files from help output of commands"
     )
@@ -61,6 +62,7 @@ def parse_args(args):
 
 
 def get_entry(cmd: list[str]):
+    """Returns the subcommands and help output for a command."""
     output = subprocess.run(cmd + ["--help"], capture_output=True)
     if output.returncode != 0:
         stderr = output.stderr.decode("utf-8")
@@ -72,7 +74,6 @@ def get_entry(cmd: list[str]):
 
 def parse_sub_commands(s: str):
     """Returns a list of subcommands from the help output of a command."""
-
     idx = s.find("Commands:")
     if idx < 0:
         return []
@@ -95,26 +96,26 @@ def parse_sub_commands(s: str):
 
 
 def cmd_markdown(cmd: str, obj: object):
-    out = ""
+    """Returns the markdown for a command and its subcommands."""
 
-    def one_obj(cmd: list[str], help: str, hashes: int):
+    def rec(cmd: list[str], obj: object, hashes: int):
         nonlocal out
         out += f"{'#' * hashes} {' '.join(cmd)}\n\n"
         out += help_markdown(cmd, help)
         out += "\n\n"
 
-    def rec(cmd: list[str], obj: object, hashes: int):
-        one_obj(cmd, obj[HELP_KEY], hashes)
         for k, v in obj.items():
             if k == HELP_KEY:
                 continue
             rec(cmd + [k], v, hashes + 1)
 
+    out = ""
     rec([cmd], obj, 1)
     return out
 
 
 def help_markdown(cmd: list[str], s: str):
+    """Returns the markdown for a command's help output."""
     description, s = parse_description(s)
     return f"""\
 {description}
@@ -126,6 +127,7 @@ $ {' '.join(cmd)} --help
 
 
 def parse_description(s: str):
+    """Splits the help output into a description and the rest."""
     idx = s.find("Usage:")
     if idx < 0:
         return "", s
@@ -133,6 +135,7 @@ def parse_description(s: str):
 
 
 def eprint(*args, **kwargs):
+    """Prints to stderr."""
     print(*args, file=sys.stderr, **kwargs)
 
 
