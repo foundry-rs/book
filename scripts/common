@@ -1,11 +1,13 @@
-#!/bin/bash
-set -e
+#!/usr/bin/env bash
+set -eo pipefail
+
 # Runs commands on Forge projects used in the book, and records
 # the commands and outputs into files that are easily
 # includeable in the book.
 
-export ETH_RPC_URL="${ETH_RPC_URL:=https://eth-mainnet.alchemyapi.io/v2/Lc7oIGYeL_QvInzI0Wiu_pOZZDEKBrdf}"
-export OUTPUT_DIR=$(realpath src/output)
+ETH_RPC_URL="${ETH_RPC_URL:=https://eth-mainnet.alchemyapi.io/v2/Lc7oIGYeL_QvInzI0Wiu_pOZZDEKBrdf}"
+OUTPUT_DIR="$(realpath src/output)"
+ROOT="$(dirname "$(dirname "$(realpath "$0")")")"
 
 # Runs a command and outputs text with anchors.
 # The anchors are:
@@ -13,14 +15,33 @@ export OUTPUT_DIR=$(realpath src/output)
 # - command: Only the command
 # - output: Only the output
 run_command() {
-  echo "// ANCHOR: all"
-  echo "// ANCHOR: command"
-  echo "$ $@"
-  echo "// ANCHOR_END: command"
-  echo "// ANCHOR: output"
-  $@ | sed "s,\x1B\[[0-9;]*[a-zA-Z],,g"
-  echo "// ANCHOR_END: output"
-  echo "// ANCHOR_END: all"
+  output=$1
+  shift
+
+  cmd=("$@")
+  escaped_cmd=("$@")
+
+  # Escape arguments for displaying.
+  for i in "${!cmd[@]}"; do
+    if [[ "${cmd[i]}" == *' '* ]] || [[ "${cmd[i]}" == *'('* ]]; then
+      escaped_cmd[i]="\"${cmd[i]}\""
+    fi
+  done
+
+  echo "Running $" "${escaped_cmd[@]}" >&2
+
+  cmd_output=$("${cmd[@]}" | sed "s,\x1B\[[0-9;]*[a-zA-Z],,g")
+
+  cat > "$output" <<EOF
+// ANCHOR: all
+// ANCHOR: command
+\$ ${escaped_cmd[@]}
+// ANCHOR_END: command
+// ANCHOR: output
+$cmd_output
+// ANCHOR_END: output
+// ANCHOR_END: all
+EOF
 }
 
 # Moves to a project directory and does some initial preparations.
@@ -28,8 +49,8 @@ run_command() {
 # The project must live in ./projects
 in_project() {
   echo "... $1"
-  mkdir -p $OUTPUT_DIR/$1
-  cd projects/$1
+  mkdir -p "$OUTPUT_DIR/$1"
+  cd "$ROOT/projects/$1"
   forge clean
 }
 
@@ -37,8 +58,8 @@ in_project() {
 # and ensures src/output/<PROJECT> exists.
 in_temp() {
   echo "... $1"
-  cd $(mktemp -d)
-  mkdir -p $OUTPUT_DIR/$1
+  cd "$(mktemp -d)"
+  mkdir -p "$OUTPUT_DIR/$1"
 }
 
 # A helper to "step" in a project. For example, suppose you have

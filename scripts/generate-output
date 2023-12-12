@@ -1,9 +1,10 @@
-#!/bin/bash
-set -e
-source $(dirname $0)/common
+#!/usr/bin/env bash
+set -eo pipefail
+
+source "$(dirname "$0")/common"
 
 need_cmd mktemp
 need_cmd sed
 
-$(dirname $0)/generate-output-forge
-$(dirname $0)/generate-output-cast
+"$(dirname "$0")/generate-output-forge"
+"$(dirname "$0")/generate-output-cast"
