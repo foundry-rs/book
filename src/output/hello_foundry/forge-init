@@ -3,9 +3,9 @@
 $ forge init hello_foundry
 // ANCHOR_END: command
 // ANCHOR: output
-Initializing /private/var/folders/p_/xbvs4ns92wj3b9xmkc1zkw2w0000gn/T/tmp.yadmclfP/hello_foundry...
-Installing forge-std in "/private/var/folders/p_/xbvs4ns92wj3b9xmkc1zkw2w0000gn/T/tmp.yadmclfP/hello_foundry/lib/forge-std" (url: Some("https://github.com/foundry-rs/forge-std"), tag: None)
-    Installed forge-std
-    Initialized forge project.
+Initializing /tmp/tmp.TGx5vzEka3/hello_foundry...
+Installing forge-std in /tmp/tmp.TGx5vzEka3/hello_foundry/lib/forge-std (url: Some("https://github.com/foundry-rs/forge-std"), tag: None)
+    Installed forge-std v1.7.3
+    Initialized forge project
 // ANCHOR_END: output
 // ANCHOR_END: all

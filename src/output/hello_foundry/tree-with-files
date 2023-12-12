@@ -7,12 +7,15 @@ $ tree . -L 3 -I output
 ├── foundry.toml
 ├── lib
 │   └── forge-std
-│       ├── LICENSE-APACHE
-│       ├── LICENSE-MIT
-│       ├── README.md
 │       ├── foundry.toml
 │       ├── lib
-│       └── src
+│       ├── LICENSE-APACHE
+│       ├── LICENSE-MIT
+│       ├── package.json
+│       ├── README.md
+│       ├── src
+│       └── test
+├── README.md
 ├── script
 │   └── Counter.s.sol
 ├── src
@@ -20,6 +23,6 @@ $ tree . -L 3 -I output
 └── test
     └── Counter.t.sol
 
-7 directories, 8 files
+9 directories, 10 files
 // ANCHOR_END: output
 // ANCHOR_END: all

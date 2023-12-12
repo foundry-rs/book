@@ -3,7 +3,7 @@
 $ forge remappings
 // ANCHOR_END: command
 // ANCHOR: output
-ds-test/=lib/forge-std/lib/ds-test/src/
+ds-test/=lib/solmate/lib/ds-test/src/
 forge-std/=lib/forge-std/src/
 solmate/=lib/solmate/src/
 weird-erc20/=lib/weird-erc20/src/
