@@ -1,5 +1,6 @@
 ## References
 
+- [CLI Reference](./cli/)
 - [forge Commands](./forge/)
 - [cast Commands](./cast/)
 - [anvil Reference](./anvil/)

@@ -8,5 +8,13 @@ gen_help() {
     echo "Generating help output ($bin)..."
   done
 
-  "$SCRIPTS/gen_output/help.py" --out-dir "$ROOT/src/reference/cli/" "${bins[@]}"
+  cmd=(
+    "$SCRIPTS/gen_output/help.py"
+    --root-dir "$ROOT/src/"
+    --root-indentation 4
+    --out-dir "$ROOT/src/reference/cli/"
+    "${bins[@]}"
+  )
+  echo "Running: $" "${cmd[*]}"
+  "${cmd[@]}"
 }

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse
+import os
 import subprocess
 import sys
 from os import makedirs, path
@@ -36,18 +37,40 @@ def main():
 
         # Append subcommands.
         for subcmd in subcmds:
+            eprint(f"Adding subcommand: {' '.join(cmd)} {subcmd}")
             cmd_iter.append(cmd + [subcmd])
 
+    # Generate markdown files.
+    summary = ""
+    root_summary = ""
     for cmd, obj in output.items():
-        p = path.join(args.out_dir, f"{cmd}.md")
-        with open(p, "w") as f:
+        file_path = path.join(args.out_dir, f"{cmd}.md")
+        with open(file_path, "w") as f:
             f.write(cmd_markdown(cmd, obj))
 
+        rel_root_file_path = path.relpath(file_path, args.root_dir)
+        summary += cmd_summary(rel_root_file_path, cmd, obj, 0)
+        summary += "\n"
 
-def parse_args(args):
+        root_summary += cmd_summary(rel_root_file_path, cmd, obj, args.root_indentation)
+        root_summary += "\n"
+    with open(path.join(args.out_dir, "SUMMARY.md"), "w") as f:
+        f.write(summary)
+    with open(path.join(args.out_dir, "SUMMARY.root.md"), "w") as f:
+        f.write(root_summary)
+
+
+def parse_args(args: list[str]):
     """Parses command line arguments."""
     parser = argparse.ArgumentParser(
         description="Generate markdown files from help output of commands"
+    )
+    parser.add_argument("--root-dir", default=".", help="Root directory")
+    parser.add_argument(
+        "--root-indentation",
+        default=0,
+        type=int,
+        help="Indentation for the root SUMMARY.md file",
     )
     parser.add_argument("--out-dir", default=".", help="Output directory")
     parser.add_argument(
@@ -63,7 +86,11 @@ def parse_args(args):
 
 def get_entry(cmd: list[str]):
     """Returns the subcommands and help output for a command."""
-    output = subprocess.run(cmd + ["--help"], capture_output=True)
+    env = os.environ.copy()
+    env["NO_COLOR"] = "1"
+    env["COLUMNS"] = "100"
+    env["LINES"] = "10000"
+    output = subprocess.run(cmd + ["--help"], capture_output=True, env=env)
     if output.returncode != 0:
         stderr = output.stderr.decode("utf-8")
         raise Exception(f"Command \"{' '.join(cmd)}\" failed:\n{stderr}")
@@ -89,9 +116,11 @@ def parse_sub_commands(s: str):
         s = s[:idx]
 
     subcmds = s.splitlines()[1:]
-    subcmds = map(lambda x: x.strip(), subcmds)
-    subcmds = filter(lambda x: x != "" and not x.startswith("help"), subcmds)
-    subcmds = map(lambda x: x.split(" ")[0], subcmds)
+    subcmds = filter(
+        lambda x: x.strip() != "" and x.startswith("  ") and x[2] != " ", subcmds
+    )
+    subcmds = map(lambda x: x.strip().split(" ")[0], subcmds)
+    subcmds = filter(lambda x: x != "help", subcmds)
     return list(subcmds)
 
 
@@ -101,7 +130,7 @@ def cmd_markdown(cmd: str, obj: object):
     def rec(cmd: list[str], obj: object, hashes: int):
         nonlocal out
         out += f"{'#' * hashes} {' '.join(cmd)}\n\n"
-        out += help_markdown(cmd, help)
+        out += help_markdown(cmd, obj[HELP_KEY])
         out += "\n\n"
 
         for k, v in obj.items():
@@ -132,6 +161,25 @@ def parse_description(s: str):
     if idx < 0:
         return "", s
     return s[:idx].strip().splitlines()[0].strip(), s[idx:]
+
+
+def cmd_summary(md_file: str, cmd: str, obj: object, indent: int):
+    """Returns the summary for a command and its subcommands."""
+
+    def rec(cmd: list[str], obj: object, indent: int):
+        nonlocal out
+        cmd_s = " ".join(cmd)
+        anchor = cmd_s.replace(" ", "-")
+        out += f"{' ' * indent}- [`{cmd_s}`](/{md_file}#{anchor})\n"
+
+        for k, v in obj.items():
+            if k == HELP_KEY:
+                continue
+            rec(cmd + [k], v, indent + 2)
+
+    out = ""
+    rec([cmd], obj, indent)
+    return out
 
 
 def eprint(*args, **kwargs):

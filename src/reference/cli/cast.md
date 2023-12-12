@@ -7,12 +7,19 @@ $ cast --help
 Usage: cast <COMMAND>
 
 Commands:
-  4byte                  Get the function signatures for the given selector from https://openchain.xyz [aliases: 4, 4b]
-  4byte-decode           Decode ABI-encoded calldata using https://openchain.xyz [aliases: 4d, 4bd]
-  4byte-event            Get the event signature for a given topic 0 from https://openchain.xyz [aliases: 4e, 4be, topic0-event, t0e]
-  abi-decode             Decode ABI-encoded input or output data [aliases: ad, --abi-decode]
-  abi-encode             ABI encode the given function argument, excluding the selector [aliases: ae]
-  access-list            Create an access list for a transaction [aliases: ac, acl]
+  4byte                  Get the function signatures for the given selector from
+                             https://openchain.xyz [aliases: 4, 4b]
+  4byte-decode           Decode ABI-encoded calldata using https://openchain.xyz
+                             [aliases: 4d, 4bd]
+  4byte-event            Get the event signature for a given topic 0 from
+                             https://openchain.xyz [aliases: 4e, 4be, topic0-event,
+                             t0e]
+  abi-decode             Decode ABI-encoded input or output data [aliases: ad,
+                             --abi-decode]
+  abi-encode             ABI encode the given function argument, excluding the
+                             selector [aliases: ae]
+  access-list            Create an access list for a transaction [aliases: ac,
+                             acl]
   address-zero           Prints the zero address [aliases: --address-zero, az]
   admin                  Fetch the EIP-1967 admin account [aliases: adm]
   age                    Get the timestamp of a block [aliases: a]
@@ -21,74 +28,115 @@ Commands:
   bind                   Generate a rust binding from a given ABI [aliases: bi]
   block                  Get information about a block [aliases: bl]
   block-number           Get the latest block number [aliases: bn]
-  call                   Perform a call on an account without publishing a transaction [aliases: c]
+  call                   Perform a call on an account without publishing a
+                             transaction [aliases: c]
   calldata               ABI-encode a function with arguments [aliases: cd]
-  calldata-decode        Decode ABI-encoded input data [aliases: --calldata-decode, cdd]
+  calldata-decode        Decode ABI-encoded input data [aliases:
+                             --calldata-decode, cdd]
   chain                  Get the symbolic name of the current chain
   chain-id               Get the Ethereum chain ID [aliases: ci, cid]
   client                 Get the current client version [aliases: cl]
   code                   Get the runtime bytecode of a contract [aliases: co]
-  codesize               Get the runtime bytecode size of a contract [aliases: cs]
+  codesize               Get the runtime bytecode size of a contract [aliases:
+                             cs]
   completions            Generate shell completions script [aliases: com]
-  compute-address        Compute the contract address from a given nonce and deployer address [aliases: ca]
+  compute-address        Compute the contract address from a given nonce and
+                             deployer address [aliases: ca]
   concat-hex             Concatenate hex strings [aliases: --concat-hex, ch]
-  create2                Generate a deterministic contract address using CREATE2 [aliases: c2]
-  decode-transaction     Decodes a raw signed EIP 2718 typed transaction [aliases: dt]
-  disassemble            Disassembles hex encoded bytecode into individual / human readable opcodes [aliases: da]
+  create2                Generate a deterministic contract address using CREATE2
+                             [aliases: c2]
+  decode-transaction     Decodes a raw signed EIP 2718 typed transaction
+                             [aliases: dt]
+  disassemble            Disassembles hex encoded bytecode into individual /
+                             human readable opcodes [aliases: da]
   estimate               Estimate the gas cost of a transaction [aliases: e]
-  etherscan-source       Get the source code of a contract from Etherscan [aliases: et, src]
-  find-block             Get the block number closest to the provided timestamp [aliases: f]
-  format-bytes32-string  Formats a string into bytes32 encoding [aliases: --format-bytes32-string]
-  from-bin               Convert binary data into hex data [aliases: --from-bin, from-binx, fb]
-  from-fixed-point       Convert a fixed point number into an integer [aliases: --from-fix, ff]
+  etherscan-source       Get the source code of a contract from Etherscan
+                             [aliases: et, src]
+  find-block             Get the block number closest to the provided timestamp
+                             [aliases: f]
+  format-bytes32-string  Formats a string into bytes32 encoding [aliases:
+                             --format-bytes32-string]
+  from-bin               Convert binary data into hex data [aliases: --from-bin,
+                             from-binx, fb]
+  from-fixed-point       Convert a fixed point number into an integer [aliases:
+                             --from-fix, ff]
   from-rlp               Decodes RLP encoded data [aliases: --from-rlp]
-  from-utf8              Convert UTF8 text to hex [aliases: --from-ascii, --from-utf8, from-ascii, fu, fa]
+  from-utf8              Convert UTF8 text to hex [aliases: --from-ascii,
+                             --from-utf8, from-ascii, fu, fa]
   from-wei               Convert wei into an ETH amount [aliases: --from-wei, fw]
   gas-price              Get the current gas price [aliases: g]
   generate-fig-spec      Generate Fig autocompletion spec [aliases: fig]
   hash-zero              Prints the zero hash [aliases: --hash-zero, hz]
-  help                   Print this message or the help of the given subcommand(s)
-  implementation         Fetch the EIP-1967 implementation account [aliases: impl]
-  index                  Compute the storage slot for an entry in a mapping [aliases: in]
-  interface              Generate a Solidity interface from a given ABI [aliases: i]
+  help                   Print this message or the help of the given
+                             subcommand(s)
+  implementation         Fetch the EIP-1967 implementation account [aliases:
+                             impl]
+  index                  Compute the storage slot for an entry in a mapping
+                             [aliases: in]
+  interface              Generate a Solidity interface from a given ABI [aliases:
+                             i]
   keccak                 Hash arbitrary data using Keccak-256 [aliases: k]
   logs                   Get logs by signature or topic [aliases: l]
   lookup-address         Perform an ENS reverse lookup [aliases: la]
-  max-int                Prints the maximum value of the given integer type [aliases: --max-int, maxi]
-  max-uint               Prints the maximum value of the given integer type [aliases: --max-uint, maxu]
-  min-int                Prints the minimum value of the given integer type [aliases: --min-int, mini]
+  max-int                Prints the maximum value of the given integer type
+                             [aliases: --max-int, maxi]
+  max-uint               Prints the maximum value of the given integer type
+                             [aliases: --max-uint, maxu]
+  min-int                Prints the minimum value of the given integer type
+                             [aliases: --min-int, mini]
   namehash               Calculate the ENS namehash of a name [aliases: na, nh]
   nonce                  Get the nonce for an account [aliases: n]
-  parse-bytes32-address  Parses a checksummed address from bytes32 encoding. [aliases: --parse-bytes32-address]
-  parse-bytes32-string   Parses a string from bytes32 encoding [aliases: --parse-bytes32-string]
+  parse-bytes32-address  Parses a checksummed address from bytes32 encoding.
+                             [aliases: --parse-bytes32-address]
+  parse-bytes32-string   Parses a string from bytes32 encoding [aliases:
+                             --parse-bytes32-string]
   pretty-calldata        Pretty print calldata [aliases: pc]
-  proof                  Generate a storage proof for a given storage slot [aliases: pr]
+  proof                  Generate a storage proof for a given storage slot
+                             [aliases: pr]
   publish                Publish a raw transaction to the network [aliases: p]
-  receipt                Get the transaction receipt for a transaction [aliases: re]
+  receipt                Get the transaction receipt for a transaction [aliases:
+                             re]
   resolve-name           Perform an ENS lookup [aliases: rn]
   rpc                    Perform a raw JSON-RPC request [aliases: rp]
-  run                    Runs a published transaction in a local environment and prints the trace [aliases: r]
+  run                    Runs a published transaction in a local environment and
+                             prints the trace [aliases: r]
   send                   Sign and publish a transaction [aliases: s]
   shl                    Perform a left shifting operation
   shr                    Perform a right shifting operation
   sig                    Get the selector for a function [aliases: si]
-  sig-event              Generate event signatures from event string [aliases: se]
-  storage                Get the raw value of a contract's storage slot [aliases: st]
-  to-ascii               Convert hex data to an ASCII string [aliases: --to-ascii, tas, 2as]
-  to-base                Converts a number of one base to another [aliases: --to-base, --to-radix, to-radix, tr, 2r]
-  to-bytes32             Right-pads hex data to 32 bytes [aliases: --to-bytes32, tb, 2b]
-  to-check-sum-address   Convert an address to a checksummed format (EIP-55) [aliases: --to-checksum-address, --to-checksum, to-checksum, ta, 2a]
-  to-dec                 Converts a number of one base to decimal [aliases: --to-dec, td, 2d]
-  to-fixed-point         Convert an integer into a fixed point number [aliases: --to-fix, tf, 2f]
-  to-hex                 Converts a number of one base to another [aliases: --to-hex, th, 2h]
-  to-hexdata             Normalize the input to lowercase, 0x-prefixed hex [aliases: --to-hexdata, thd, 2hd]
-  to-int256              Convert a number to a hex-encoded int256 [aliases: --to-int256, ti, 2i]
-  to-rlp                 RLP encodes hex data, or an array of hex data [aliases: --to-rlp]
-  to-uint256             Convert a number to a hex-encoded uint256 [aliases: --to-uint256, tu, 2u]
-  to-unit                Convert an ETH amount into another unit (ether, gwei or wei) [aliases: --to-unit, tun, 2un]
+  sig-event              Generate event signatures from event string [aliases:
+                             se]
+  storage                Get the raw value of a contract's storage slot [aliases:
+                             st]
+  to-ascii               Convert hex data to an ASCII string [aliases:
+                             --to-ascii, tas, 2as]
+  to-base                Converts a number of one base to another [aliases:
+                             --to-base, --to-radix, to-radix, tr, 2r]
+  to-bytes32             Right-pads hex data to 32 bytes [aliases: --to-bytes32,
+                             tb, 2b]
+  to-check-sum-address   Convert an address to a checksummed format (EIP-55)
+                             [aliases: --to-checksum-address, --to-checksum,
+                             to-checksum, ta, 2a]
+  to-dec                 Converts a number of one base to decimal [aliases:
+                             --to-dec, td, 2d]
+  to-fixed-point         Convert an integer into a fixed point number [aliases:
+                             --to-fix, tf, 2f]
+  to-hex                 Converts a number of one base to another [aliases:
+                             --to-hex, th, 2h]
+  to-hexdata             Normalize the input to lowercase, 0x-prefixed hex
+                             [aliases: --to-hexdata, thd, 2hd]
+  to-int256              Convert a number to a hex-encoded int256 [aliases:
+                             --to-int256, ti, 2i]
+  to-rlp                 RLP encodes hex data, or an array of hex data [aliases:
+                             --to-rlp]
+  to-uint256             Convert a number to a hex-encoded uint256 [aliases:
+                             --to-uint256, tu, 2u]
+  to-unit                Convert an ETH amount into another unit (ether, gwei or
+                             wei) [aliases: --to-unit, tun, 2un]
   to-wei                 Convert an ETH amount to wei [aliases: --to-wei, tw, 2w]
   tx                     Get information about a transaction [aliases: t]
-  upload-signature       Upload the given signatures to https://openchain.xyz [aliases: ups]
+  upload-signature       Upload the given signatures to https://openchain.xyz
+                             [aliases: ups]
   wallet                 Wallet management utilities [aliases: w]
 
 Options:
@@ -224,7 +272,8 @@ Transaction options:
           [env: ETH_GAS_LIMIT=]
 
       --gas-price <PRICE>
-          Gas price for legacy transactions, or max fee per gas for EIP1559 transactions
+          Gas price for legacy transactions, or max fee per gas for EIP1559
+          transactions
           
           [env: ETH_GAS_PRICE=]
 
@@ -234,7 +283,8 @@ Transaction options:
           [env: ETH_PRIORITY_GAS_PRICE=]
 
       --value <VALUE>
-          Ether to send in the transaction, either specified in wei, or as a string with a unit type.
+          Ether to send in the transaction, either specified in wei, or as a string
+          with a unit type.
           
           Examples: 1ether, 10gwei, 0.01ether
 
@@ -250,7 +300,7 @@ Ethereum options:
   -r, --rpc-url <URL>
           The RPC endpoint
           
-          [env: ETH_RPC_URL=https://eth-mainnet.alchemyapi.io/v2/Lc7oIGYeL_QvInzI0Wiu_pOZZDEKBrdf]
+          [env: ETH_RPC_URL=]
 
       --flashbots
           Use the Flashbots RPC URL (https://rpc.flashbots.net)
@@ -258,10 +308,13 @@ Ethereum options:
       --jwt-secret <JWT_SECRET>
           JWT Secret for the RPC endpoint.
           
-          The JWT secret will be used to create a JWT for a RPC. For example, the following can be used to simulate a CL `engine_forkchoiceUpdated` call:
+          The JWT secret will be used to create a JWT for a RPC. For example, the
+          following can be used to simulate a CL `engine_forkchoiceUpdated` call:
           
-          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2 '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
-          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc", "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
+          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2
+          '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
           
           [env: ETH_RPC_JWT_SECRET=]
 
@@ -312,7 +365,8 @@ Wallet options - keystore:
           [env: ETH_KEYSTORE=]
 
       --account <ACCOUNT_NAME>
-          Use a keystore from the default keystores folder (~/.foundry/keystores) by its filename
+          Use a keystore from the default keystores folder (~/.foundry/keystores) by
+          its filename
           
           [env: ETH_KEYSTORE_ACCOUNT=]
 
@@ -373,7 +427,7 @@ Options:
   -r, --rpc-url <URL>
           The RPC endpoint
           
-          [env: ETH_RPC_URL=https://eth-mainnet.alchemyapi.io/v2/Lc7oIGYeL_QvInzI0Wiu_pOZZDEKBrdf]
+          [env: ETH_RPC_URL=]
 
       --flashbots
           Use the Flashbots RPC URL (https://rpc.flashbots.net)
@@ -381,10 +435,13 @@ Options:
       --jwt-secret <JWT_SECRET>
           JWT Secret for the RPC endpoint.
           
-          The JWT secret will be used to create a JWT for a RPC. For example, the following can be used to simulate a CL `engine_forkchoiceUpdated` call:
+          The JWT secret will be used to create a JWT for a RPC. For example, the
+          following can be used to simulate a CL `engine_forkchoiceUpdated` call:
           
-          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2 '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
-          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc", "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
+          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2
+          '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
           
           [env: ETH_RPC_JWT_SECRET=]
 
@@ -410,7 +467,7 @@ Options:
   -r, --rpc-url <URL>
           The RPC endpoint
           
-          [env: ETH_RPC_URL=https://eth-mainnet.alchemyapi.io/v2/Lc7oIGYeL_QvInzI0Wiu_pOZZDEKBrdf]
+          [env: ETH_RPC_URL=]
 
       --flashbots
           Use the Flashbots RPC URL (https://rpc.flashbots.net)
@@ -418,10 +475,13 @@ Options:
       --jwt-secret <JWT_SECRET>
           JWT Secret for the RPC endpoint.
           
-          The JWT secret will be used to create a JWT for a RPC. For example, the following can be used to simulate a CL `engine_forkchoiceUpdated` call:
+          The JWT secret will be used to create a JWT for a RPC. For example, the
+          following can be used to simulate a CL `engine_forkchoiceUpdated` call:
           
-          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2 '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
-          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc", "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
+          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2
+          '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
           
           [env: ETH_RPC_JWT_SECRET=]
 
@@ -453,7 +513,7 @@ Options:
   -r, --rpc-url <URL>
           The RPC endpoint
           
-          [env: ETH_RPC_URL=https://eth-mainnet.alchemyapi.io/v2/Lc7oIGYeL_QvInzI0Wiu_pOZZDEKBrdf]
+          [env: ETH_RPC_URL=]
 
       --flashbots
           Use the Flashbots RPC URL (https://rpc.flashbots.net)
@@ -461,10 +521,13 @@ Options:
       --jwt-secret <JWT_SECRET>
           JWT Secret for the RPC endpoint.
           
-          The JWT secret will be used to create a JWT for a RPC. For example, the following can be used to simulate a CL `engine_forkchoiceUpdated` call:
+          The JWT secret will be used to create a JWT for a RPC. For example, the
+          following can be used to simulate a CL `engine_forkchoiceUpdated` call:
           
-          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2 '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
-          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc", "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
+          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2
+          '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
           
           [env: ETH_RPC_JWT_SECRET=]
 
@@ -490,7 +553,7 @@ Options:
   -r, --rpc-url <URL>
           The RPC endpoint
           
-          [env: ETH_RPC_URL=https://eth-mainnet.alchemyapi.io/v2/Lc7oIGYeL_QvInzI0Wiu_pOZZDEKBrdf]
+          [env: ETH_RPC_URL=]
 
       --flashbots
           Use the Flashbots RPC URL (https://rpc.flashbots.net)
@@ -498,10 +561,13 @@ Options:
       --jwt-secret <JWT_SECRET>
           JWT Secret for the RPC endpoint.
           
-          The JWT secret will be used to create a JWT for a RPC. For example, the following can be used to simulate a CL `engine_forkchoiceUpdated` call:
+          The JWT secret will be used to create a JWT for a RPC. For example, the
+          following can be used to simulate a CL `engine_forkchoiceUpdated` call:
           
-          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2 '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
-          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc", "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
+          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2
+          '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
           
           [env: ETH_RPC_JWT_SECRET=]
 
@@ -530,14 +596,16 @@ Options:
       --crate-name <NAME>
           The name of the Rust crate to generate.
           
-          This should be a valid crates.io crate name. However, this is currently not validated by this command.
+          This should be a valid crates.io crate name. However, this is currently not
+          validated by this command.
           
           [default: foundry-contracts]
 
       --crate-version <VERSION>
           The version of the Rust crate to generate.
           
-          This should be a standard semver version string. However, it is not currently validated by this command.
+          This should be a standard semver version string. However, it is not
+          currently validated by this command.
           
           [default: 0.0.1]
 
@@ -582,7 +650,7 @@ Options:
   -r, --rpc-url <URL>
           The RPC endpoint
           
-          [env: ETH_RPC_URL=https://eth-mainnet.alchemyapi.io/v2/Lc7oIGYeL_QvInzI0Wiu_pOZZDEKBrdf]
+          [env: ETH_RPC_URL=]
 
       --flashbots
           Use the Flashbots RPC URL (https://rpc.flashbots.net)
@@ -590,10 +658,13 @@ Options:
       --jwt-secret <JWT_SECRET>
           JWT Secret for the RPC endpoint.
           
-          The JWT secret will be used to create a JWT for a RPC. For example, the following can be used to simulate a CL `engine_forkchoiceUpdated` call:
+          The JWT secret will be used to create a JWT for a RPC. For example, the
+          following can be used to simulate a CL `engine_forkchoiceUpdated` call:
           
-          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2 '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
-          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc", "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
+          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2
+          '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
           
           [env: ETH_RPC_JWT_SECRET=]
 
@@ -617,7 +688,7 @@ Options:
   -r, --rpc-url <URL>
           The RPC endpoint
           
-          [env: ETH_RPC_URL=https://eth-mainnet.alchemyapi.io/v2/Lc7oIGYeL_QvInzI0Wiu_pOZZDEKBrdf]
+          [env: ETH_RPC_URL=]
 
       --flashbots
           Use the Flashbots RPC URL (https://rpc.flashbots.net)
@@ -625,10 +696,13 @@ Options:
       --jwt-secret <JWT_SECRET>
           JWT Secret for the RPC endpoint.
           
-          The JWT secret will be used to create a JWT for a RPC. For example, the following can be used to simulate a CL `engine_forkchoiceUpdated` call:
+          The JWT secret will be used to create a JWT for a RPC. For example, the
+          following can be used to simulate a CL `engine_forkchoiceUpdated` call:
           
-          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2 '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
-          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc", "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
+          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2
+          '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
           
           [env: ETH_RPC_JWT_SECRET=]
 
@@ -700,7 +774,8 @@ Transaction options:
           [env: ETH_GAS_LIMIT=]
 
       --gas-price <PRICE>
-          Gas price for legacy transactions, or max fee per gas for EIP1559 transactions
+          Gas price for legacy transactions, or max fee per gas for EIP1559
+          transactions
           
           [env: ETH_GAS_PRICE=]
 
@@ -710,7 +785,8 @@ Transaction options:
           [env: ETH_PRIORITY_GAS_PRICE=]
 
       --value <VALUE>
-          Ether to send in the transaction, either specified in wei, or as a string with a unit type.
+          Ether to send in the transaction, either specified in wei, or as a string
+          with a unit type.
           
           Examples: 1ether, 10gwei, 0.01ether
 
@@ -726,7 +802,7 @@ Ethereum options:
   -r, --rpc-url <URL>
           The RPC endpoint
           
-          [env: ETH_RPC_URL=https://eth-mainnet.alchemyapi.io/v2/Lc7oIGYeL_QvInzI0Wiu_pOZZDEKBrdf]
+          [env: ETH_RPC_URL=]
 
       --flashbots
           Use the Flashbots RPC URL (https://rpc.flashbots.net)
@@ -734,10 +810,13 @@ Ethereum options:
       --jwt-secret <JWT_SECRET>
           JWT Secret for the RPC endpoint.
           
-          The JWT secret will be used to create a JWT for a RPC. For example, the following can be used to simulate a CL `engine_forkchoiceUpdated` call:
+          The JWT secret will be used to create a JWT for a RPC. For example, the
+          following can be used to simulate a CL `engine_forkchoiceUpdated` call:
           
-          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2 '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
-          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc", "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
+          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2
+          '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
           
           [env: ETH_RPC_JWT_SECRET=]
 
@@ -788,7 +867,8 @@ Wallet options - keystore:
           [env: ETH_KEYSTORE=]
 
       --account <ACCOUNT_NAME>
-          Use a keystore from the default keystores folder (~/.foundry/keystores) by its filename
+          Use a keystore from the default keystores folder (~/.foundry/keystores) by
+          its filename
           
           [env: ETH_KEYSTORE_ACCOUNT=]
 
@@ -894,7 +974,7 @@ Options:
   -r, --rpc-url <URL>
           The RPC endpoint
           
-          [env: ETH_RPC_URL=https://eth-mainnet.alchemyapi.io/v2/Lc7oIGYeL_QvInzI0Wiu_pOZZDEKBrdf]
+          [env: ETH_RPC_URL=]
 
       --flashbots
           Use the Flashbots RPC URL (https://rpc.flashbots.net)
@@ -902,10 +982,13 @@ Options:
       --jwt-secret <JWT_SECRET>
           JWT Secret for the RPC endpoint.
           
-          The JWT secret will be used to create a JWT for a RPC. For example, the following can be used to simulate a CL `engine_forkchoiceUpdated` call:
+          The JWT secret will be used to create a JWT for a RPC. For example, the
+          following can be used to simulate a CL `engine_forkchoiceUpdated` call:
           
-          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2 '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
-          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc", "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
+          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2
+          '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
           
           [env: ETH_RPC_JWT_SECRET=]
 
@@ -925,7 +1008,7 @@ Options:
   -r, --rpc-url <URL>
           The RPC endpoint
           
-          [env: ETH_RPC_URL=https://eth-mainnet.alchemyapi.io/v2/Lc7oIGYeL_QvInzI0Wiu_pOZZDEKBrdf]
+          [env: ETH_RPC_URL=]
 
       --flashbots
           Use the Flashbots RPC URL (https://rpc.flashbots.net)
@@ -933,10 +1016,13 @@ Options:
       --jwt-secret <JWT_SECRET>
           JWT Secret for the RPC endpoint.
           
-          The JWT secret will be used to create a JWT for a RPC. For example, the following can be used to simulate a CL `engine_forkchoiceUpdated` call:
+          The JWT secret will be used to create a JWT for a RPC. For example, the
+          following can be used to simulate a CL `engine_forkchoiceUpdated` call:
           
-          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2 '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
-          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc", "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
+          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2
+          '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
           
           [env: ETH_RPC_JWT_SECRET=]
 
@@ -956,7 +1042,7 @@ Options:
   -r, --rpc-url <URL>
           The RPC endpoint
           
-          [env: ETH_RPC_URL=https://eth-mainnet.alchemyapi.io/v2/Lc7oIGYeL_QvInzI0Wiu_pOZZDEKBrdf]
+          [env: ETH_RPC_URL=]
 
       --flashbots
           Use the Flashbots RPC URL (https://rpc.flashbots.net)
@@ -964,10 +1050,13 @@ Options:
       --jwt-secret <JWT_SECRET>
           JWT Secret for the RPC endpoint.
           
-          The JWT secret will be used to create a JWT for a RPC. For example, the following can be used to simulate a CL `engine_forkchoiceUpdated` call:
+          The JWT secret will be used to create a JWT for a RPC. For example, the
+          following can be used to simulate a CL `engine_forkchoiceUpdated` call:
           
-          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2 '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
-          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc", "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
+          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2
+          '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
           
           [env: ETH_RPC_JWT_SECRET=]
 
@@ -999,7 +1088,7 @@ Options:
   -r, --rpc-url <URL>
           The RPC endpoint
           
-          [env: ETH_RPC_URL=https://eth-mainnet.alchemyapi.io/v2/Lc7oIGYeL_QvInzI0Wiu_pOZZDEKBrdf]
+          [env: ETH_RPC_URL=]
 
       --flashbots
           Use the Flashbots RPC URL (https://rpc.flashbots.net)
@@ -1007,10 +1096,13 @@ Options:
       --jwt-secret <JWT_SECRET>
           JWT Secret for the RPC endpoint.
           
-          The JWT secret will be used to create a JWT for a RPC. For example, the following can be used to simulate a CL `engine_forkchoiceUpdated` call:
+          The JWT secret will be used to create a JWT for a RPC. For example, the
+          following can be used to simulate a CL `engine_forkchoiceUpdated` call:
           
-          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2 '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
-          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc", "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
+          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2
+          '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
           
           [env: ETH_RPC_JWT_SECRET=]
 
@@ -1039,7 +1131,7 @@ Options:
   -r, --rpc-url <URL>
           The RPC endpoint
           
-          [env: ETH_RPC_URL=https://eth-mainnet.alchemyapi.io/v2/Lc7oIGYeL_QvInzI0Wiu_pOZZDEKBrdf]
+          [env: ETH_RPC_URL=]
 
       --flashbots
           Use the Flashbots RPC URL (https://rpc.flashbots.net)
@@ -1047,10 +1139,13 @@ Options:
       --jwt-secret <JWT_SECRET>
           JWT Secret for the RPC endpoint.
           
-          The JWT secret will be used to create a JWT for a RPC. For example, the following can be used to simulate a CL `engine_forkchoiceUpdated` call:
+          The JWT secret will be used to create a JWT for a RPC. For example, the
+          following can be used to simulate a CL `engine_forkchoiceUpdated` call:
           
-          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2 '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
-          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc", "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
+          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2
+          '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
           
           [env: ETH_RPC_JWT_SECRET=]
 
@@ -1092,7 +1187,7 @@ Options:
   -r, --rpc-url <URL>
           The RPC endpoint
           
-          [env: ETH_RPC_URL=https://eth-mainnet.alchemyapi.io/v2/Lc7oIGYeL_QvInzI0Wiu_pOZZDEKBrdf]
+          [env: ETH_RPC_URL=]
 
       --flashbots
           Use the Flashbots RPC URL (https://rpc.flashbots.net)
@@ -1100,10 +1195,13 @@ Options:
       --jwt-secret <JWT_SECRET>
           JWT Secret for the RPC endpoint.
           
-          The JWT secret will be used to create a JWT for a RPC. For example, the following can be used to simulate a CL `engine_forkchoiceUpdated` call:
+          The JWT secret will be used to create a JWT for a RPC. For example, the
+          following can be used to simulate a CL `engine_forkchoiceUpdated` call:
           
-          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2 '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
-          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc", "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
+          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2
+          '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
           
           [env: ETH_RPC_JWT_SECRET=]
 
@@ -1139,13 +1237,18 @@ Options:
   -e, --ends-with <HEX>        Suffix for the contract address
   -m, --matching <HEX>         Sequence that the address has to match
   -c, --case-sensitive         Case sensitive matching
-  -d, --deployer <ADDRESS>     Address of the contract deployer [default: 0x4e59b44847b379578588920ca78fbf26c0b4956c]
+  -d, --deployer <ADDRESS>     Address of the contract deployer [default:
+                               0x4e59b44847b379578588920ca78fbf26c0b4956c]
   -i, --init-code <HEX>        Init code of the contract to be deployed
       --init-code-hash <HASH>  Init code hash of the contract to be deployed
-  -j, --jobs <JOBS>            Number of threads to use. Defaults to and caps at the number of logical cores
-      --caller <ADDRESS>       Address of the caller. Used for the first 20 bytes of the salt
-      --seed <HEX>             The random number generator's seed, used to initialize the salt
-      --no-random              Don't initialize the salt with a random value, and instead use the default value of 0
+  -j, --jobs <JOBS>            Number of threads to use. Defaults to and caps at the
+                               number of logical cores
+      --caller <ADDRESS>       Address of the caller. Used for the first 20 bytes of
+                               the salt
+      --seed <HEX>             The random number generator's seed, used to initialize
+                               the salt
+      --no-random              Don't initialize the salt with a random value, and
+                               instead use the default value of 0
   -h, --help                   Print help
 ```
 
@@ -1218,7 +1321,7 @@ Options:
   -r, --rpc-url <URL>
           The RPC endpoint
           
-          [env: ETH_RPC_URL=https://eth-mainnet.alchemyapi.io/v2/Lc7oIGYeL_QvInzI0Wiu_pOZZDEKBrdf]
+          [env: ETH_RPC_URL=]
 
       --flashbots
           Use the Flashbots RPC URL (https://rpc.flashbots.net)
@@ -1226,10 +1329,13 @@ Options:
       --jwt-secret <JWT_SECRET>
           JWT Secret for the RPC endpoint.
           
-          The JWT secret will be used to create a JWT for a RPC. For example, the following can be used to simulate a CL `engine_forkchoiceUpdated` call:
+          The JWT secret will be used to create a JWT for a RPC. For example, the
+          following can be used to simulate a CL `engine_forkchoiceUpdated` call:
           
-          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2 '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
-          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc", "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
+          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2
+          '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
           
           [env: ETH_RPC_JWT_SECRET=]
 
@@ -1290,7 +1396,8 @@ Arguments:
 
 Options:
   -d <DIRECTORY>                 The output directory to expand source tree into
-  -e, --etherscan-api-key <KEY>  The Etherscan (or equivalent) API key [env: ETHERSCAN_API_KEY=]
+  -e, --etherscan-api-key <KEY>  The Etherscan (or equivalent) API key [env:
+                                 ETHERSCAN_API_KEY=]
   -c, --chain <CHAIN>            The chain name or EIP-155 chain ID [env: CHAIN=]
   -h, --help                     Print help
 ```
@@ -1311,7 +1418,7 @@ Options:
   -r, --rpc-url <URL>
           The RPC endpoint
           
-          [env: ETH_RPC_URL=https://eth-mainnet.alchemyapi.io/v2/Lc7oIGYeL_QvInzI0Wiu_pOZZDEKBrdf]
+          [env: ETH_RPC_URL=]
 
       --flashbots
           Use the Flashbots RPC URL (https://rpc.flashbots.net)
@@ -1319,10 +1426,13 @@ Options:
       --jwt-secret <JWT_SECRET>
           JWT Secret for the RPC endpoint.
           
-          The JWT secret will be used to create a JWT for a RPC. For example, the following can be used to simulate a CL `engine_forkchoiceUpdated` call:
+          The JWT secret will be used to create a JWT for a RPC. For example, the
+          following can be used to simulate a CL `engine_forkchoiceUpdated` call:
           
-          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2 '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
-          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc", "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
+          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2
+          '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
           
           [env: ETH_RPC_JWT_SECRET=]
 
@@ -1439,7 +1549,7 @@ Options:
   -r, --rpc-url <URL>
           The RPC endpoint
           
-          [env: ETH_RPC_URL=https://eth-mainnet.alchemyapi.io/v2/Lc7oIGYeL_QvInzI0Wiu_pOZZDEKBrdf]
+          [env: ETH_RPC_URL=]
 
       --flashbots
           Use the Flashbots RPC URL (https://rpc.flashbots.net)
@@ -1447,10 +1557,13 @@ Options:
       --jwt-secret <JWT_SECRET>
           JWT Secret for the RPC endpoint.
           
-          The JWT secret will be used to create a JWT for a RPC. For example, the following can be used to simulate a CL `engine_forkchoiceUpdated` call:
+          The JWT secret will be used to create a JWT for a RPC. For example, the
+          following can be used to simulate a CL `engine_forkchoiceUpdated` call:
           
-          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2 '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
-          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc", "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
+          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2
+          '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
           
           [env: ETH_RPC_JWT_SECRET=]
 
@@ -1503,7 +1616,7 @@ Options:
   -r, --rpc-url <URL>
           The RPC endpoint
           
-          [env: ETH_RPC_URL=https://eth-mainnet.alchemyapi.io/v2/Lc7oIGYeL_QvInzI0Wiu_pOZZDEKBrdf]
+          [env: ETH_RPC_URL=]
 
       --flashbots
           Use the Flashbots RPC URL (https://rpc.flashbots.net)
@@ -1511,10 +1624,13 @@ Options:
       --jwt-secret <JWT_SECRET>
           JWT Secret for the RPC endpoint.
           
-          The JWT secret will be used to create a JWT for a RPC. For example, the following can be used to simulate a CL `engine_forkchoiceUpdated` call:
+          The JWT secret will be used to create a JWT for a RPC. For example, the
+          following can be used to simulate a CL `engine_forkchoiceUpdated` call:
           
-          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2 '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
-          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc", "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
+          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2
+          '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
           
           [env: ETH_RPC_JWT_SECRET=]
 
@@ -1609,10 +1725,12 @@ Usage: cast logs [OPTIONS] [SIG_OR_TOPIC] [TOPICS_OR_ARGS]...
 
 Arguments:
   [SIG_OR_TOPIC]
-          The signature of the event to filter logs by which will be converted to the first topic or a topic to filter on
+          The signature of the event to filter logs by which will be converted to the
+          first topic or a topic to filter on
 
   [TOPICS_OR_ARGS]...
-          If used with a signature, the indexed fields of the event to filter by. Otherwise, the remaining topics of the filter
+          If used with a signature, the indexed fields of the event to filter by.
+          Otherwise, the remaining topics of the filter
 
 Options:
       --from-block <FROM_BLOCK>
@@ -1629,7 +1747,9 @@ Options:
           The contract address to filter on
 
       --subscribe
-          If the RPC type and endpoints supports `eth_subscribe` stream logs instead of printing and exiting. Will continue until interrupted or TO_BLOCK is reached
+          If the RPC type and endpoints supports `eth_subscribe` stream logs instead
+          of printing and exiting. Will continue until interrupted or TO_BLOCK is
+          reached
 
   -h, --help
           Print help (see a summary with '-h')
@@ -1642,7 +1762,7 @@ Ethereum options:
   -r, --rpc-url <URL>
           The RPC endpoint
           
-          [env: ETH_RPC_URL=https://eth-mainnet.alchemyapi.io/v2/Lc7oIGYeL_QvInzI0Wiu_pOZZDEKBrdf]
+          [env: ETH_RPC_URL=]
 
       --flashbots
           Use the Flashbots RPC URL (https://rpc.flashbots.net)
@@ -1650,10 +1770,13 @@ Ethereum options:
       --jwt-secret <JWT_SECRET>
           JWT Secret for the RPC endpoint.
           
-          The JWT secret will be used to create a JWT for a RPC. For example, the following can be used to simulate a CL `engine_forkchoiceUpdated` call:
+          The JWT secret will be used to create a JWT for a RPC. For example, the
+          following can be used to simulate a CL `engine_forkchoiceUpdated` call:
           
-          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2 '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
-          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc", "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
+          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2
+          '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
           
           [env: ETH_RPC_JWT_SECRET=]
 
@@ -1704,7 +1827,8 @@ Wallet options - keystore:
           [env: ETH_KEYSTORE=]
 
       --account <ACCOUNT_NAME>
-          Use a keystore from the default keystores folder (~/.foundry/keystores) by its filename
+          Use a keystore from the default keystores folder (~/.foundry/keystores) by
+          its filename
           
           [env: ETH_KEYSTORE_ACCOUNT=]
 
@@ -1751,7 +1875,7 @@ Options:
   -r, --rpc-url <URL>
           The RPC endpoint
           
-          [env: ETH_RPC_URL=https://eth-mainnet.alchemyapi.io/v2/Lc7oIGYeL_QvInzI0Wiu_pOZZDEKBrdf]
+          [env: ETH_RPC_URL=]
 
       --flashbots
           Use the Flashbots RPC URL (https://rpc.flashbots.net)
@@ -1759,10 +1883,13 @@ Options:
       --jwt-secret <JWT_SECRET>
           JWT Secret for the RPC endpoint.
           
-          The JWT secret will be used to create a JWT for a RPC. For example, the following can be used to simulate a CL `engine_forkchoiceUpdated` call:
+          The JWT secret will be used to create a JWT for a RPC. For example, the
+          following can be used to simulate a CL `engine_forkchoiceUpdated` call:
           
-          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2 '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
-          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc", "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
+          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2
+          '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
           
           [env: ETH_RPC_JWT_SECRET=]
 
@@ -1851,7 +1978,7 @@ Options:
   -r, --rpc-url <URL>
           The RPC endpoint
           
-          [env: ETH_RPC_URL=https://eth-mainnet.alchemyapi.io/v2/Lc7oIGYeL_QvInzI0Wiu_pOZZDEKBrdf]
+          [env: ETH_RPC_URL=]
 
       --flashbots
           Use the Flashbots RPC URL (https://rpc.flashbots.net)
@@ -1859,10 +1986,13 @@ Options:
       --jwt-secret <JWT_SECRET>
           JWT Secret for the RPC endpoint.
           
-          The JWT secret will be used to create a JWT for a RPC. For example, the following can be used to simulate a CL `engine_forkchoiceUpdated` call:
+          The JWT secret will be used to create a JWT for a RPC. For example, the
+          following can be used to simulate a CL `engine_forkchoiceUpdated` call:
           
-          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2 '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
-          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc", "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
+          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2
+          '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
           
           [env: ETH_RPC_JWT_SECRET=]
 
@@ -1944,7 +2074,7 @@ Options:
   -r, --rpc-url <URL>
           The RPC endpoint
           
-          [env: ETH_RPC_URL=https://eth-mainnet.alchemyapi.io/v2/Lc7oIGYeL_QvInzI0Wiu_pOZZDEKBrdf]
+          [env: ETH_RPC_URL=]
 
       --flashbots
           Use the Flashbots RPC URL (https://rpc.flashbots.net)
@@ -1952,10 +2082,13 @@ Options:
       --jwt-secret <JWT_SECRET>
           JWT Secret for the RPC endpoint.
           
-          The JWT secret will be used to create a JWT for a RPC. For example, the following can be used to simulate a CL `engine_forkchoiceUpdated` call:
+          The JWT secret will be used to create a JWT for a RPC. For example, the
+          following can be used to simulate a CL `engine_forkchoiceUpdated` call:
           
-          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2 '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
-          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc", "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
+          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2
+          '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
           
           [env: ETH_RPC_JWT_SECRET=]
 
@@ -1984,7 +2117,7 @@ Options:
   -r, --rpc-url <URL>
           The RPC endpoint
           
-          [env: ETH_RPC_URL=https://eth-mainnet.alchemyapi.io/v2/Lc7oIGYeL_QvInzI0Wiu_pOZZDEKBrdf]
+          [env: ETH_RPC_URL=]
 
       --flashbots
           Use the Flashbots RPC URL (https://rpc.flashbots.net)
@@ -1992,10 +2125,13 @@ Options:
       --jwt-secret <JWT_SECRET>
           JWT Secret for the RPC endpoint.
           
-          The JWT secret will be used to create a JWT for a RPC. For example, the following can be used to simulate a CL `engine_forkchoiceUpdated` call:
+          The JWT secret will be used to create a JWT for a RPC. For example, the
+          following can be used to simulate a CL `engine_forkchoiceUpdated` call:
           
-          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2 '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
-          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc", "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
+          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2
+          '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
           
           [env: ETH_RPC_JWT_SECRET=]
 
@@ -2032,7 +2168,7 @@ Options:
   -r, --rpc-url <URL>
           The RPC endpoint
           
-          [env: ETH_RPC_URL=https://eth-mainnet.alchemyapi.io/v2/Lc7oIGYeL_QvInzI0Wiu_pOZZDEKBrdf]
+          [env: ETH_RPC_URL=]
 
       --flashbots
           Use the Flashbots RPC URL (https://rpc.flashbots.net)
@@ -2040,10 +2176,13 @@ Options:
       --jwt-secret <JWT_SECRET>
           JWT Secret for the RPC endpoint.
           
-          The JWT secret will be used to create a JWT for a RPC. For example, the following can be used to simulate a CL `engine_forkchoiceUpdated` call:
+          The JWT secret will be used to create a JWT for a RPC. For example, the
+          following can be used to simulate a CL `engine_forkchoiceUpdated` call:
           
-          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2 '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
-          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc", "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
+          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2
+          '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
           
           [env: ETH_RPC_JWT_SECRET=]
 
@@ -2074,7 +2213,7 @@ Options:
   -r, --rpc-url <URL>
           The RPC endpoint
           
-          [env: ETH_RPC_URL=https://eth-mainnet.alchemyapi.io/v2/Lc7oIGYeL_QvInzI0Wiu_pOZZDEKBrdf]
+          [env: ETH_RPC_URL=]
 
       --flashbots
           Use the Flashbots RPC URL (https://rpc.flashbots.net)
@@ -2082,10 +2221,13 @@ Options:
       --jwt-secret <JWT_SECRET>
           JWT Secret for the RPC endpoint.
           
-          The JWT secret will be used to create a JWT for a RPC. For example, the following can be used to simulate a CL `engine_forkchoiceUpdated` call:
+          The JWT secret will be used to create a JWT for a RPC. For example, the
+          following can be used to simulate a CL `engine_forkchoiceUpdated` call:
           
-          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2 '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
-          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc", "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
+          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2
+          '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
           
           [env: ETH_RPC_JWT_SECRET=]
 
@@ -2110,20 +2252,23 @@ Arguments:
           
           Interpreted as JSON:
           
-          cast rpc eth_getBlockByNumber 0x123 false => {"method": "eth_getBlockByNumber", "params": ["0x123", false] ... }
+          cast rpc eth_getBlockByNumber 0x123 false => {"method":
+          "eth_getBlockByNumber", "params": ["0x123", false] ... }
 
 Options:
   -w, --raw
           Send raw JSON parameters
           
-          The first param will be interpreted as a raw JSON array of params. If no params are given, stdin will be used. For example:
+          The first param will be interpreted as a raw JSON array of params. If no
+          params are given, stdin will be used. For example:
           
-          cast rpc eth_getBlockByNumber '["0x123", false]' --raw => {"method": "eth_getBlockByNumber", "params": ["0x123", false] ... }
+          cast rpc eth_getBlockByNumber '["0x123", false]' --raw => {"method":
+          "eth_getBlockByNumber", "params": ["0x123", false] ... }
 
   -r, --rpc-url <URL>
           The RPC endpoint
           
-          [env: ETH_RPC_URL=https://eth-mainnet.alchemyapi.io/v2/Lc7oIGYeL_QvInzI0Wiu_pOZZDEKBrdf]
+          [env: ETH_RPC_URL=]
 
       --flashbots
           Use the Flashbots RPC URL (https://rpc.flashbots.net)
@@ -2131,10 +2276,13 @@ Options:
       --jwt-secret <JWT_SECRET>
           JWT Secret for the RPC endpoint.
           
-          The JWT secret will be used to create a JWT for a RPC. For example, the following can be used to simulate a CL `engine_forkchoiceUpdated` call:
+          The JWT secret will be used to create a JWT for a RPC. For example, the
+          following can be used to simulate a CL `engine_forkchoiceUpdated` call:
           
-          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2 '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
-          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc", "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
+          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2
+          '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
           
           [env: ETH_RPC_JWT_SECRET=]
 
@@ -2177,7 +2325,7 @@ Options:
   -r, --rpc-url <URL>
           The RPC endpoint
           
-          [env: ETH_RPC_URL=https://eth-mainnet.alchemyapi.io/v2/Lc7oIGYeL_QvInzI0Wiu_pOZZDEKBrdf]
+          [env: ETH_RPC_URL=]
 
       --flashbots
           Use the Flashbots RPC URL (https://rpc.flashbots.net)
@@ -2185,10 +2333,13 @@ Options:
       --jwt-secret <JWT_SECRET>
           JWT Secret for the RPC endpoint.
           
-          The JWT secret will be used to create a JWT for a RPC. For example, the following can be used to simulate a CL `engine_forkchoiceUpdated` call:
+          The JWT secret will be used to create a JWT for a RPC. For example, the
+          following can be used to simulate a CL `engine_forkchoiceUpdated` call:
           
-          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2 '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
-          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc", "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
+          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2
+          '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
           
           [env: ETH_RPC_JWT_SECRET=]
 
@@ -2198,18 +2349,21 @@ Options:
           Overrides the version specified in the config.
 
       --compute-units-per-second <CUPS>
-          Sets the number of assumed available compute units per second for this provider
+          Sets the number of assumed available compute units per second for this
+          provider
           
           default value: 330
           
-          See also, https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second
+          See also,
+          https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second
 
       --no-rate-limit
           Disables rate limiting for this node's provider.
           
           default value: false
           
-          See also, https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second
+          See also,
+          https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second
           
           [aliases: no-rpc-rate-limit]
 
@@ -2256,7 +2410,8 @@ Options:
           Reuse the latest nonce for the sender account
 
       --unlocked
-          Send via `eth_sendTransaction using the `--from` argument or $ETH_FROM as sender
+          Send via `eth_sendTransaction using the `--from` argument or $ETH_FROM as
+          sender
 
   -h, --help
           Print help (see a summary with '-h')
@@ -2272,7 +2427,8 @@ Transaction options:
           [env: ETH_GAS_LIMIT=]
 
       --gas-price <PRICE>
-          Gas price for legacy transactions, or max fee per gas for EIP1559 transactions
+          Gas price for legacy transactions, or max fee per gas for EIP1559
+          transactions
           
           [env: ETH_GAS_PRICE=]
 
@@ -2282,7 +2438,8 @@ Transaction options:
           [env: ETH_PRIORITY_GAS_PRICE=]
 
       --value <VALUE>
-          Ether to send in the transaction, either specified in wei, or as a string with a unit type.
+          Ether to send in the transaction, either specified in wei, or as a string
+          with a unit type.
           
           Examples: 1ether, 10gwei, 0.01ether
 
@@ -2298,7 +2455,7 @@ Ethereum options:
   -r, --rpc-url <URL>
           The RPC endpoint
           
-          [env: ETH_RPC_URL=https://eth-mainnet.alchemyapi.io/v2/Lc7oIGYeL_QvInzI0Wiu_pOZZDEKBrdf]
+          [env: ETH_RPC_URL=]
 
       --flashbots
           Use the Flashbots RPC URL (https://rpc.flashbots.net)
@@ -2306,10 +2463,13 @@ Ethereum options:
       --jwt-secret <JWT_SECRET>
           JWT Secret for the RPC endpoint.
           
-          The JWT secret will be used to create a JWT for a RPC. For example, the following can be used to simulate a CL `engine_forkchoiceUpdated` call:
+          The JWT secret will be used to create a JWT for a RPC. For example, the
+          following can be used to simulate a CL `engine_forkchoiceUpdated` call:
           
-          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2 '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
-          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc", "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
+          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2
+          '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
           
           [env: ETH_RPC_JWT_SECRET=]
 
@@ -2360,7 +2520,8 @@ Wallet options - keystore:
           [env: ETH_KEYSTORE=]
 
       --account <ACCOUNT_NAME>
-          Use a keystore from the default keystores folder (~/.foundry/keystores) by its filename
+          Use a keystore from the default keystores folder (~/.foundry/keystores) by
+          its filename
           
           [env: ETH_KEYSTORE_ACCOUNT=]
 
@@ -2451,7 +2612,8 @@ Usage: cast sig [SIG] [OPTIMIZE]
 
 Arguments:
   [SIG]       The function signature, e.g. transfer(address,uint256)
-  [OPTIMIZE]  Optimize signature to contain provided amount of leading zeroes in selector
+  [OPTIMIZE]  Optimize signature to contain provided amount of leading zeroes in
+              selector
 
 Options:
   -h, --help  Print help
@@ -2496,7 +2658,7 @@ Options:
   -r, --rpc-url <URL>
           The RPC endpoint
           
-          [env: ETH_RPC_URL=https://eth-mainnet.alchemyapi.io/v2/Lc7oIGYeL_QvInzI0Wiu_pOZZDEKBrdf]
+          [env: ETH_RPC_URL=]
 
       --flashbots
           Use the Flashbots RPC URL (https://rpc.flashbots.net)
@@ -2504,10 +2666,13 @@ Options:
       --jwt-secret <JWT_SECRET>
           JWT Secret for the RPC endpoint.
           
-          The JWT secret will be used to create a JWT for a RPC. For example, the following can be used to simulate a CL `engine_forkchoiceUpdated` call:
+          The JWT secret will be used to create a JWT for a RPC. For example, the
+          following can be used to simulate a CL `engine_forkchoiceUpdated` call:
           
-          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2 '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
-          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc", "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
+          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2
+          '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
           
           [env: ETH_RPC_JWT_SECRET=]
 
@@ -2578,7 +2743,8 @@ Compiler options:
           
           Example keys: evm.assembly, ewasm, ir, irOptimized, metadata
           
-          For a full description, see https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description
+          For a full description, see
+          https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description
 
       --extra-output-files <SELECTOR>...
           Extra output to write to separate files.
@@ -2592,7 +2758,8 @@ Project options:
       --revert-strings <REVERT>
           Revert string configuration.
           
-          Possible values are "default", "strip" (remove), "debug" (Solidity-generated revert strings) and "verboseDebug"
+          Possible values are "default", "strip" (remove), "debug"
+          (Solidity-generated revert strings) and "verboseDebug"
 
       --build-info
           Generate build info files
@@ -2603,7 +2770,8 @@ Project options:
       --root <PATH>
           The project's root path.
           
-          By default root of the Git repository, if in one, or the current working directory.
+          By default root of the Git repository, if in one, or the current working
+          directory.
 
   -C, --contracts <PATH>
           The contracts source directory
@@ -2623,7 +2791,8 @@ Project options:
       --hardhat
           Use the Hardhat-style project layout.
           
-          This is the same as using: `--contracts contracts --lib-paths node_modules`.
+          This is the same as using: `--contracts contracts --lib-paths
+          node_modules`.
           
           [aliases: hh]
 
@@ -2860,7 +3029,8 @@ Arguments:
           The transaction hash
 
   [FIELD]
-          If specified, only get the given field of the transaction. If "raw", the RLP encoded transaction will be printed
+          If specified, only get the given field of the transaction. If "raw", the
+          RLP encoded transaction will be printed
 
 Options:
       --raw
@@ -2869,7 +3039,7 @@ Options:
   -r, --rpc-url <URL>
           The RPC endpoint
           
-          [env: ETH_RPC_URL=https://eth-mainnet.alchemyapi.io/v2/Lc7oIGYeL_QvInzI0Wiu_pOZZDEKBrdf]
+          [env: ETH_RPC_URL=]
 
       --flashbots
           Use the Flashbots RPC URL (https://rpc.flashbots.net)
@@ -2877,10 +3047,13 @@ Options:
       --jwt-secret <JWT_SECRET>
           JWT Secret for the RPC endpoint.
           
-          The JWT secret will be used to create a JWT for a RPC. For example, the following can be used to simulate a CL `engine_forkchoiceUpdated` call:
+          The JWT secret will be used to create a JWT for a RPC. For example, the
+          following can be used to simulate a CL `engine_forkchoiceUpdated` call:
           
-          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2 '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
-          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc", "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
+          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2
+          '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
           
           [env: ETH_RPC_JWT_SECRET=]
 
@@ -2904,7 +3077,8 @@ Arguments:
   [SIGNATURES]...
           The signatures to upload.
           
-          Prefix with 'function', 'event', or 'error'. Defaults to function if no prefix given. Can also take paths to contract artifact JSON.
+          Prefix with 'function', 'event', or 'error'. Defaults to function if no
+          prefix given. Can also take paths to contract artifact JSON.
 
 Options:
   -h, --help
@@ -2927,7 +3101,8 @@ Commands:
   sign          Sign a message or typed data [aliases: s]
   verify        Verify the signature of a message [aliases: v]
   import        Import a private key into an encrypted keystore [aliases: i]
-  list          List all the accounts in the keystore default directory [aliases: ls]
+  list          List all the accounts in the keystore default directory [aliases:
+                    ls]
   help          Print this message or the help of the given subcommand(s)
 
 Options:
@@ -3001,12 +3176,14 @@ Options:
           Suffix for the vanity address
 
       --nonce <NONCE>
-          Generate a vanity contract address created by the generated keypair with the specified nonce
+          Generate a vanity contract address created by the generated keypair with
+          the specified nonce
 
       --save-path <PATH>
           Path to save the generated vanity contract address to.
           
-          If provided, the generated vanity addresses will appended to a JSON array in the specified file.
+          If provided, the generated vanity addresses will appended to a JSON array
+          in the specified file.
 
   -h, --help
           Print help (see a summary with '-h')
@@ -3065,7 +3242,8 @@ Wallet options - keystore:
           [env: ETH_KEYSTORE=]
 
       --account <ACCOUNT_NAME>
-          Use a keystore from the default keystores folder (~/.foundry/keystores) by its filename
+          Use a keystore from the default keystores folder (~/.foundry/keystores) by
+          its filename
           
           [env: ETH_KEYSTORE_ACCOUNT=]
 
@@ -3105,18 +3283,23 @@ Arguments:
   <MESSAGE>
           The message or typed data to sign.
           
-          Messages starting with 0x are expected to be hex encoded, which get decoded before being signed. The message will be prefixed with the Ethereum Signed Message header and hashed
-          before signing.
+          Messages starting with 0x are expected to be hex encoded, which get decoded
+          before being signed. The message will be prefixed with the Ethereum Signed
+          Message header and hashed before signing.
           
-          Typed data can be provided as a json string or a file name. Use --data flag to denote the message is a string of typed data. Use --data --from-file to denote the message is a file
-          name containing typed data. The data will be combined and hashed using the EIP712 specification before signing. The data should be formatted as JSON.
+          Typed data can be provided as a json string or a file name. Use --data flag
+          to denote the message is a string of typed data. Use --data --from-file to
+          denote the message is a file name containing typed data. The data will be
+          combined and hashed using the EIP712 specification before signing. The data
+          should be formatted as JSON.
 
 Options:
       --data
           If provided, the message will be treated as typed data
 
       --from-file
-          If provided, the message will be treated as a file name containing typed data. Requires --data
+          If provided, the message will be treated as a file name containing typed
+          data. Requires --data
 
   -h, --help
           Print help (see a summary with '-h')
@@ -3158,7 +3341,8 @@ Wallet options - keystore:
           [env: ETH_KEYSTORE=]
 
       --account <ACCOUNT_NAME>
-          Use a keystore from the default keystores folder (~/.foundry/keystores) by its filename
+          Use a keystore from the default keystores folder (~/.foundry/keystores) by
+          its filename
           
           [env: ETH_KEYSTORE_ACCOUNT=]
 
@@ -3217,7 +3401,8 @@ Arguments:
 
 Options:
   -k, --keystore-dir <KEYSTORE_DIR>
-          If provided, keystore will be saved here instead of the default keystores directory (~/.foundry/keystores)
+          If provided, keystore will be saved here instead of the default keystores
+          directory (~/.foundry/keystores)
 
   -h, --help
           Print help (see a summary with '-h')

@@ -66,9 +66,11 @@ Help us improve Foundry: [Contributing](./contributing.md)
 References, troubleshooting, and more.
 
 - [FAQ](./faq.md)
+- [CLI Reference](./reference/cli/)
 - [forge Commands](./reference/forge/)
 - [cast Commands](./reference/cast/)
-- [anvil commands](./reference/anvil/)
+- [anvil Commands](./reference/anvil/)
+- [chisel Commands](./reference/chisel/)
 - [Config Reference](./reference/config/)
 - [Cheatcodes Reference](./cheatcodes/)
 - [Forge Standard Library Reference](./reference/forge-std/)

@@ -77,6 +77,7 @@
 - [FAQ](./faq.md)
 - [Help us improve Foundry](./contributing.md)
 - [References](./reference/README.md)
+  - [CLI Reference](./reference/cli/README.md)
   - [`forge` Commands](./reference/forge/README.md)
     - [General Commands](./reference/forge/general-commands.md)
       - [forge](./reference/forge/forge.md)

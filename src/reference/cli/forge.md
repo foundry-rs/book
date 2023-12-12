@@ -10,29 +10,36 @@ Commands:
   bind               Generate Rust bindings for smart contracts
   build              Build the project's smart contracts [aliases: b, compile]
   cache              Manage the Foundry cache
-  clean              Remove the build artifacts and cache directories [aliases: cl]
+  clean              Remove the build artifacts and cache directories [aliases:
+                         cl]
   completions        Generate shell completions script [aliases: com]
   config             Display the current config [aliases: co]
   coverage           Generate coverage reports
   create             Deploy a smart contract [aliases: c]
   debug              Debugs a single smart contract as a script [aliases: d]
   doc                Generate documentation for the project
-  flatten            Flatten a source file and all of its imports into one file [aliases: f]
+  flatten            Flatten a source file and all of its imports into one file
+                         [aliases: f]
   fmt                Format Solidity source files
-  geiger             Detects usage of unsafe cheat codes in a project and its dependencies
+  geiger             Detects usage of unsafe cheat codes in a project and its
+                         dependencies
   generate           Generate scaffold files
   generate-fig-spec  Generate Fig autocompletion spec [aliases: fig]
   help               Print this message or the help of the given subcommand(s)
   init               Create a new Forge project
-  inspect            Get specialized information about a smart contract [aliases: in]
+  inspect            Get specialized information about a smart contract [aliases:
+                         in]
   install            Install one or multiple dependencies [aliases: i]
-  remappings         Get the automatically inferred remappings for the project [aliases: re]
+  remappings         Get the automatically inferred remappings for the project
+                         [aliases: re]
   remove             Remove one or multiple dependencies [aliases: rm]
-  script             Run a smart contract as a script, building transactions that can be sent onchain
+  script             Run a smart contract as a script, building transactions that
+                         can be sent onchain
   selectors          Function selector utilities [aliases: se]
   snapshot           Create a snapshot of each test's gas usage [aliases: s]
   test               Run the project's tests [aliases: t]
-  tree               Display a tree visualization of the project's dependency graph [aliases: tr]
+  tree               Display a tree visualization of the project's dependency
+                         graph [aliases: tr]
   update             Update one or multiple dependencies [aliases: u]
   verify-check       Check verification status on Etherscan [aliases: vc]
   verify-contract    Verify smart contracts on Etherscan [aliases: v]
@@ -41,7 +48,8 @@ Options:
   -h, --help     Print help
   -V, --version  Print version
 
-Find more information in the book: http://book.getfoundry.sh/reference/forge/forge.html
+Find more information in the book:
+http://book.getfoundry.sh/reference/forge/forge.html
 ```
 
 ## forge bind
@@ -57,10 +65,12 @@ Options:
           Path to where the contract artifacts are stored
 
       --select <SELECT>
-          Create bindings only for contracts whose names match the specified filter(s)
+          Create bindings only for contracts whose names match the specified
+          filter(s)
 
       --skip <SKIP>
-          Create bindings only for contracts whose names do not match the specified filter(s)
+          Create bindings only for contracts whose names do not match the specified
+          filter(s)
 
       --select-all
           Explicitly generate bindings for all contracts
@@ -70,14 +80,16 @@ Options:
       --crate-name <NAME>
           The name of the Rust crate to generate.
           
-          This should be a valid crates.io crate name, however, this is not currently validated by this command.
+          This should be a valid crates.io crate name, however, this is not currently
+          validated by this command.
           
           [default: foundry-contracts]
 
       --crate-version <VERSION>
           The version of the Rust crate to generate.
           
-          This should be a standard semver version string, however, this is not currently validated by this command.
+          This should be a standard semver version string, however, this is not
+          currently validated by this command.
           
           [default: 0.1.0]
 
@@ -87,7 +99,9 @@ Options:
       --overwrite
           Overwrite existing generated bindings.
           
-          By default, the command will check that the bindings are correct, and then exit. If --overwrite is passed, it will instead delete and overwrite the bindings.
+          By default, the command will check that the bindings are correct, and then
+          exit. If --overwrite is passed, it will instead delete and overwrite the
+          bindings.
 
       --single-file
           Generate bindings as a single file
@@ -155,7 +169,8 @@ Compiler options:
           
           Example keys: evm.assembly, ewasm, ir, irOptimized, metadata
           
-          For a full description, see https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description
+          For a full description, see
+          https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description
 
       --extra-output-files <SELECTOR>...
           Extra output to write to separate files.
@@ -169,7 +184,8 @@ Project options:
       --revert-strings <REVERT>
           Revert string configuration.
           
-          Possible values are "default", "strip" (remove), "debug" (Solidity-generated revert strings) and "verboseDebug"
+          Possible values are "default", "strip" (remove), "debug"
+          (Solidity-generated revert strings) and "verboseDebug"
 
       --build-info
           Generate build info files
@@ -180,7 +196,8 @@ Project options:
       --root <PATH>
           The project's root path.
           
-          By default root of the Git repository, if in one, or the current working directory.
+          By default root of the Git repository, if in one, or the current working
+          directory.
 
   -C, --contracts <PATH>
           The contracts source directory
@@ -200,7 +217,8 @@ Project options:
       --hardhat
           Use the Hardhat-style project layout.
           
-          This is the same as using: `--contracts contracts --lib-paths node_modules`.
+          This is the same as using: `--contracts contracts --lib-paths
+          node_modules`.
           
           [aliases: hh]
 
@@ -285,7 +303,8 @@ Compiler options:
           
           Example keys: evm.assembly, ewasm, ir, irOptimized, metadata
           
-          For a full description, see https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description
+          For a full description, see
+          https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description
 
       --extra-output-files <SELECTOR>...
           Extra output to write to separate files.
@@ -299,7 +318,8 @@ Project options:
       --revert-strings <REVERT>
           Revert string configuration.
           
-          Possible values are "default", "strip" (remove), "debug" (Solidity-generated revert strings) and "verboseDebug"
+          Possible values are "default", "strip" (remove), "debug"
+          (Solidity-generated revert strings) and "verboseDebug"
 
       --build-info
           Generate build info files
@@ -310,7 +330,8 @@ Project options:
       --root <PATH>
           The project's root path.
           
-          By default root of the Git repository, if in one, or the current working directory.
+          By default root of the Git repository, if in one, or the current working
+          directory.
 
   -C, --contracts <PATH>
           The contracts source directory
@@ -330,7 +351,8 @@ Project options:
       --hardhat
           Use the Hardhat-style project layout.
           
-          This is the same as using: `--contracts contracts --lib-paths node_modules`.
+          This is the same as using: `--contracts contracts --lib-paths
+          node_modules`.
           
           [aliases: hh]
 
@@ -341,7 +363,8 @@ Watch options:
   -w, --watch [<PATH>...]
           Watch the given files or directories for changes.
           
-          If no paths are provided, the source and test directories of the project are watched.
+          If no paths are provided, the source and test directories of the project
+          are watched.
 
       --no-restart
           Do not restart the command while it's still running
@@ -354,15 +377,20 @@ Watch options:
       --watch-delay <DELAY>
           File update debounce delay.
           
-          During the delay, incoming change events are accumulated and only once the delay has passed, is an action taken. Note that this does not mean a command will be started: if
-          --no-restart is given and a command is already running, the outcome of the action will be to do nothing.
+          During the delay, incoming change events are accumulated and only once the
+          delay has passed, is an action taken. Note that this does not mean a
+          command will be started: if --no-restart is given and a command is already
+          running, the outcome of the action will be to do nothing.
           
-          Defaults to 50ms. Parses as decimal seconds by default, but using an integer with the `ms` suffix may be more convenient.
+          Defaults to 50ms. Parses as decimal seconds by default, but using an
+          integer with the `ms` suffix may be more convenient.
           
-          When using --poll mode, you'll want a larger duration, or risk overloading disk I/O.
+          When using --poll mode, you'll want a larger duration, or risk overloading
+          disk I/O.
 
       --format-json
-          Output the compilation errors in the json format. This is useful when you want to use the output in other tools
+          Output the compilation errors in the json format. This is useful when you
+          want to use the output in other tools
 ```
 
 ## forge cache
@@ -444,7 +472,8 @@ Options:
       --root <PATH>
           The project's root path.
           
-          By default root of the Git repository, if in one, or the current working directory.
+          By default root of the Git repository, if in one, or the current working
+          directory.
 
   -h, --help
           Print help (see a summary with '-h')
@@ -551,7 +580,8 @@ Compiler options:
           
           Example keys: evm.assembly, ewasm, ir, irOptimized, metadata
           
-          For a full description, see https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description
+          For a full description, see
+          https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description
 
       --extra-output-files <SELECTOR>...
           Extra output to write to separate files.
@@ -565,7 +595,8 @@ Project options:
       --revert-strings <REVERT>
           Revert string configuration.
           
-          Possible values are "default", "strip" (remove), "debug" (Solidity-generated revert strings) and "verboseDebug"
+          Possible values are "default", "strip" (remove), "debug"
+          (Solidity-generated revert strings) and "verboseDebug"
 
       --build-info
           Generate build info files
@@ -576,7 +607,8 @@ Project options:
       --root <PATH>
           The project's root path.
           
-          By default root of the Git repository, if in one, or the current working directory.
+          By default root of the Git repository, if in one, or the current working
+          directory.
 
   -C, --contracts <PATH>
           The contracts source directory
@@ -596,7 +628,8 @@ Project options:
       --hardhat
           Use the Hardhat-style project layout.
           
-          This is the same as using: `--contracts contracts --lib-paths node_modules`.
+          This is the same as using: `--contracts contracts --lib-paths
+          node_modules`.
           
           [aliases: hh]
 
@@ -607,7 +640,8 @@ Watch options:
   -w, --watch [<PATH>...]
           Watch the given files or directories for changes.
           
-          If no paths are provided, the source and test directories of the project are watched.
+          If no paths are provided, the source and test directories of the project
+          are watched.
 
       --no-restart
           Do not restart the command while it's still running
@@ -620,21 +654,27 @@ Watch options:
       --watch-delay <DELAY>
           File update debounce delay.
           
-          During the delay, incoming change events are accumulated and only once the delay has passed, is an action taken. Note that this does not mean a command will be started: if
-          --no-restart is given and a command is already running, the outcome of the action will be to do nothing.
+          During the delay, incoming change events are accumulated and only once the
+          delay has passed, is an action taken. Note that this does not mean a
+          command will be started: if --no-restart is given and a command is already
+          running, the outcome of the action will be to do nothing.
           
-          Defaults to 50ms. Parses as decimal seconds by default, but using an integer with the `ms` suffix may be more convenient.
+          Defaults to 50ms. Parses as decimal seconds by default, but using an
+          integer with the `ms` suffix may be more convenient.
           
-          When using --poll mode, you'll want a larger duration, or risk overloading disk I/O.
+          When using --poll mode, you'll want a larger duration, or risk overloading
+          disk I/O.
 
       --format-json
-          Output the compilation errors in the json format. This is useful when you want to use the output in other tools
+          Output the compilation errors in the json format. This is useful when you
+          want to use the output in other tools
 
 EVM options:
   -f, --fork-url <URL>
           Fetch state over a remote endpoint instead of starting from an empty state.
           
-          If you want to fetch state from a specific block number, see --fork-block-number.
+          If you want to fetch state from a specific block number, see
+          --fork-block-number.
           
           [aliases: rpc-url]
 
@@ -679,21 +719,25 @@ EVM options:
           Verbosity levels:
           - 2: Print logs for all tests
           - 3: Print execution traces for failing tests
-          - 4: Print execution traces for all tests, and setup traces for failing tests
+          - 4: Print execution traces for all tests, and setup traces for failing
+          tests
           - 5: Print execution and setup traces for all tests
 
 Fork config:
       --compute-units-per-second <CUPS>
-          Sets the number of assumed available compute units per second for this provider
+          Sets the number of assumed available compute units per second for this
+          provider
           
           default value: 330
           
-          See also --fork-url and https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second
+          See also --fork-url and
+          https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second
 
       --no-rpc-rate-limit
           Disables rate limiting for this node's provider.
           
-          See also --fork-url and https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second
+          See also --fork-url and
+          https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second
           
           [aliases: no-rate-limit]
 
@@ -702,7 +746,8 @@ Executor environment config:
           The block gas limit
 
       --code-size-limit <CODE_SIZE>
-          EIP-170: Contract code size limit in bytes. Useful to increase this because of tests. By default, it is 0x6000 (~25kb)
+          EIP-170: Contract code size limit in bytes. Useful to increase this because
+          of tests. By default, it is 0x6000 (~25kb)
 
       --chain <CHAIN>
           The chain name or EIP-155 chain ID
@@ -739,7 +784,8 @@ Executor environment config:
           The block gas limit
 
       --memory-limit <MEMORY_LIMIT>
-          The memory limit per EVM execution in bytes. If this limit is exceeded, a `MemoryLimitOOG` result is thrown.
+          The memory limit per EVM execution in bytes. If this limit is exceeded, a
+          `MemoryLimitOOG` result is thrown.
           
           The default is 128MiB.
 ```
@@ -764,7 +810,8 @@ Options:
       --ir-minimum
           Enable viaIR with minimum optimization
           
-          This can fix most of the "stack too deep" errors while resulting a relatively accurate source map.
+          This can fix most of the "stack too deep" errors while resulting a
+          relatively accurate source map.
 
   -r, --report-file <PATH>
           The path to output the report.
@@ -809,7 +856,8 @@ EVM options:
   -f, --fork-url <URL>
           Fetch state over a remote endpoint instead of starting from an empty state.
           
-          If you want to fetch state from a specific block number, see --fork-block-number.
+          If you want to fetch state from a specific block number, see
+          --fork-block-number.
           
           [aliases: rpc-url]
 
@@ -854,21 +902,25 @@ EVM options:
           Verbosity levels:
           - 2: Print logs for all tests
           - 3: Print execution traces for failing tests
-          - 4: Print execution traces for all tests, and setup traces for failing tests
+          - 4: Print execution traces for all tests, and setup traces for failing
+          tests
           - 5: Print execution and setup traces for all tests
 
 Fork config:
       --compute-units-per-second <CUPS>
-          Sets the number of assumed available compute units per second for this provider
+          Sets the number of assumed available compute units per second for this
+          provider
           
           default value: 330
           
-          See also --fork-url and https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second
+          See also --fork-url and
+          https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second
 
       --no-rpc-rate-limit
           Disables rate limiting for this node's provider.
           
-          See also --fork-url and https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second
+          See also --fork-url and
+          https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second
           
           [aliases: no-rate-limit]
 
@@ -877,7 +929,8 @@ Executor environment config:
           The block gas limit
 
       --code-size-limit <CODE_SIZE>
-          EIP-170: Contract code size limit in bytes. Useful to increase this because of tests. By default, it is 0x6000 (~25kb)
+          EIP-170: Contract code size limit in bytes. Useful to increase this because
+          of tests. By default, it is 0x6000 (~25kb)
 
       --chain <CHAIN>
           The chain name or EIP-155 chain ID
@@ -914,7 +967,8 @@ Executor environment config:
           The block gas limit
 
       --memory-limit <MEMORY_LIMIT>
-          The memory limit per EVM execution in bytes. If this limit is exceeded, a `MemoryLimitOOG` result is thrown.
+          The memory limit per EVM execution in bytes. If this limit is exceeded, a
+          `MemoryLimitOOG` result is thrown.
           
           The default is 128MiB.
 
@@ -972,7 +1026,8 @@ Compiler options:
           
           Example keys: evm.assembly, ewasm, ir, irOptimized, metadata
           
-          For a full description, see https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description
+          For a full description, see
+          https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description
 
       --extra-output-files <SELECTOR>...
           Extra output to write to separate files.
@@ -986,7 +1041,8 @@ Project options:
       --revert-strings <REVERT>
           Revert string configuration.
           
-          Possible values are "default", "strip" (remove), "debug" (Solidity-generated revert strings) and "verboseDebug"
+          Possible values are "default", "strip" (remove), "debug"
+          (Solidity-generated revert strings) and "verboseDebug"
 
       --build-info
           Generate build info files
@@ -997,7 +1053,8 @@ Project options:
       --root <PATH>
           The project's root path.
           
-          By default root of the Git repository, if in one, or the current working directory.
+          By default root of the Git repository, if in one, or the current working
+          directory.
 
   -C, --contracts <PATH>
           The contracts source directory
@@ -1017,7 +1074,8 @@ Project options:
       --hardhat
           Use the Hardhat-style project layout.
           
-          This is the same as using: `--contracts contracts --lib-paths node_modules`.
+          This is the same as using: `--contracts contracts --lib-paths
+          node_modules`.
           
           [aliases: hh]
 
@@ -1048,12 +1106,14 @@ Options:
           Verify contract after creation
 
       --unlocked
-          Send via `eth_sendTransaction` using the `--from` argument or `$ETH_FROM` as sender
+          Send via `eth_sendTransaction` using the `--from` argument or `$ETH_FROM`
+          as sender
 
       --show-standard-json-input
           Prints the standard json compiler input if `--verify` is provided.
           
-          The standard json compiler input can be used to manually submit contract verification in the browser.
+          The standard json compiler input can be used to manually submit contract
+          verification in the browser.
 
   -h, --help
           Print help (see a summary with '-h')
@@ -1116,7 +1176,8 @@ Compiler options:
           
           Example keys: evm.assembly, ewasm, ir, irOptimized, metadata
           
-          For a full description, see https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description
+          For a full description, see
+          https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description
 
       --extra-output-files <SELECTOR>...
           Extra output to write to separate files.
@@ -1130,7 +1191,8 @@ Project options:
       --revert-strings <REVERT>
           Revert string configuration.
           
-          Possible values are "default", "strip" (remove), "debug" (Solidity-generated revert strings) and "verboseDebug"
+          Possible values are "default", "strip" (remove), "debug"
+          (Solidity-generated revert strings) and "verboseDebug"
 
       --build-info
           Generate build info files
@@ -1141,7 +1203,8 @@ Project options:
       --root <PATH>
           The project's root path.
           
-          By default root of the Git repository, if in one, or the current working directory.
+          By default root of the Git repository, if in one, or the current working
+          directory.
 
   -C, --contracts <PATH>
           The contracts source directory
@@ -1161,7 +1224,8 @@ Project options:
       --hardhat
           Use the Hardhat-style project layout.
           
-          This is the same as using: `--contracts contracts --lib-paths node_modules`.
+          This is the same as using: `--contracts contracts --lib-paths
+          node_modules`.
           
           [aliases: hh]
 
@@ -1175,7 +1239,8 @@ Transaction options:
           [env: ETH_GAS_LIMIT=]
 
       --gas-price <PRICE>
-          Gas price for legacy transactions, or max fee per gas for EIP1559 transactions
+          Gas price for legacy transactions, or max fee per gas for EIP1559
+          transactions
           
           [env: ETH_GAS_PRICE=]
 
@@ -1185,7 +1250,8 @@ Transaction options:
           [env: ETH_PRIORITY_GAS_PRICE=]
 
       --value <VALUE>
-          Ether to send in the transaction, either specified in wei, or as a string with a unit type.
+          Ether to send in the transaction, either specified in wei, or as a string
+          with a unit type.
           
           Examples: 1ether, 10gwei, 0.01ether
 
@@ -1201,7 +1267,7 @@ Ethereum options:
   -r, --rpc-url <URL>
           The RPC endpoint
           
-          [env: ETH_RPC_URL=https://eth-mainnet.alchemyapi.io/v2/Lc7oIGYeL_QvInzI0Wiu_pOZZDEKBrdf]
+          [env: ETH_RPC_URL=]
 
       --flashbots
           Use the Flashbots RPC URL (https://rpc.flashbots.net)
@@ -1209,10 +1275,13 @@ Ethereum options:
       --jwt-secret <JWT_SECRET>
           JWT Secret for the RPC endpoint.
           
-          The JWT secret will be used to create a JWT for a RPC. For example, the following can be used to simulate a CL `engine_forkchoiceUpdated` call:
+          The JWT secret will be used to create a JWT for a RPC. For example, the
+          following can be used to simulate a CL `engine_forkchoiceUpdated` call:
           
-          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2 '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
-          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc", "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
+          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2
+          '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
           
           [env: ETH_RPC_JWT_SECRET=]
 
@@ -1273,7 +1342,8 @@ Wallet options - keystore:
           [env: ETH_KEYSTORE=]
 
       --account <ACCOUNT_NAME>
-          Use a keystore from the default keystores folder (~/.foundry/keystores) by its filename
+          Use a keystore from the default keystores folder (~/.foundry/keystores) by
+          its filename
           
           [env: ETH_KEYSTORE_ACCOUNT=]
 
@@ -1325,7 +1395,8 @@ Arguments:
   <PATH>
           The contract you want to run. Either the file path or contract name.
           
-          If multiple contracts exist in the same file you must specify the target contract with --target-contract.
+          If multiple contracts exist in the same file you must specify the target
+          contract with --target-contract.
 
   [ARGS]...
           Arguments to pass to the script function
@@ -1337,7 +1408,8 @@ Options:
           [aliases: tc]
 
   -s, --sig <SIGNATURE>
-          The signature of the function you want to call in the contract, or raw calldata
+          The signature of the function you want to call in the contract, or raw
+          calldata
           
           [default: run()]
 
@@ -1401,7 +1473,8 @@ Compiler options:
           
           Example keys: evm.assembly, ewasm, ir, irOptimized, metadata
           
-          For a full description, see https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description
+          For a full description, see
+          https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description
 
       --extra-output-files <SELECTOR>...
           Extra output to write to separate files.
@@ -1415,7 +1488,8 @@ Project options:
       --revert-strings <REVERT>
           Revert string configuration.
           
-          Possible values are "default", "strip" (remove), "debug" (Solidity-generated revert strings) and "verboseDebug"
+          Possible values are "default", "strip" (remove), "debug"
+          (Solidity-generated revert strings) and "verboseDebug"
 
       --build-info
           Generate build info files
@@ -1426,7 +1500,8 @@ Project options:
       --root <PATH>
           The project's root path.
           
-          By default root of the Git repository, if in one, or the current working directory.
+          By default root of the Git repository, if in one, or the current working
+          directory.
 
   -C, --contracts <PATH>
           The contracts source directory
@@ -1446,7 +1521,8 @@ Project options:
       --hardhat
           Use the Hardhat-style project layout.
           
-          This is the same as using: `--contracts contracts --lib-paths node_modules`.
+          This is the same as using: `--contracts contracts --lib-paths
+          node_modules`.
           
           [aliases: hh]
 
@@ -1457,7 +1533,8 @@ EVM options:
   -f, --fork-url <URL>
           Fetch state over a remote endpoint instead of starting from an empty state.
           
-          If you want to fetch state from a specific block number, see --fork-block-number.
+          If you want to fetch state from a specific block number, see
+          --fork-block-number.
           
           [aliases: rpc-url]
 
@@ -1502,21 +1579,25 @@ EVM options:
           Verbosity levels:
           - 2: Print logs for all tests
           - 3: Print execution traces for failing tests
-          - 4: Print execution traces for all tests, and setup traces for failing tests
+          - 4: Print execution traces for all tests, and setup traces for failing
+          tests
           - 5: Print execution and setup traces for all tests
 
 Fork config:
       --compute-units-per-second <CUPS>
-          Sets the number of assumed available compute units per second for this provider
+          Sets the number of assumed available compute units per second for this
+          provider
           
           default value: 330
           
-          See also --fork-url and https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second
+          See also --fork-url and
+          https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second
 
       --no-rpc-rate-limit
           Disables rate limiting for this node's provider.
           
-          See also --fork-url and https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second
+          See also --fork-url and
+          https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second
           
           [aliases: no-rate-limit]
 
@@ -1525,7 +1606,8 @@ Executor environment config:
           The block gas limit
 
       --code-size-limit <CODE_SIZE>
-          EIP-170: Contract code size limit in bytes. Useful to increase this because of tests. By default, it is 0x6000 (~25kb)
+          EIP-170: Contract code size limit in bytes. Useful to increase this because
+          of tests. By default, it is 0x6000 (~25kb)
 
       --chain <CHAIN>
           The chain name or EIP-155 chain ID
@@ -1562,7 +1644,8 @@ Executor environment config:
           The block gas limit
 
       --memory-limit <MEMORY_LIMIT>
-          The memory limit per EVM execution in bytes. If this limit is exceeded, a `MemoryLimitOOG` result is thrown.
+          The memory limit per EVM execution in bytes. If this limit is exceeded, a
+          `MemoryLimitOOG` result is thrown.
           
           The default is 128MiB.
 ```
@@ -1579,7 +1662,8 @@ Options:
       --root <PATH>
           The project's root path.
           
-          By default root of the Git repository, if in one, or the current working directory.
+          By default root of the Git repository, if in one, or the current working
+          directory.
 
   -o, --out <PATH>
           The doc's output path.
@@ -1602,7 +1686,8 @@ Options:
           Port for serving documentation
 
       --deployments [<DEPLOYMENTS>]
-          The relative path to the `hardhat-deploy` or `forge-deploy` artifact directory. Leave blank for default
+          The relative path to the `hardhat-deploy` or `forge-deploy` artifact
+          directory. Leave blank for default
 
   -i, --include-libraries
           Whether to create docs for external libraries
@@ -1636,7 +1721,8 @@ Project options:
       --root <PATH>
           The project's root path.
           
-          By default root of the Git repository, if in one, or the current working directory.
+          By default root of the Git repository, if in one, or the current working
+          directory.
 
   -C, --contracts <PATH>
           The contracts source directory
@@ -1656,7 +1742,8 @@ Project options:
       --hardhat
           Use the Hardhat-style project layout.
           
-          This is the same as using: `--contracts contracts --lib-paths node_modules`.
+          This is the same as using: `--contracts contracts --lib-paths
+          node_modules`.
           
           [aliases: hh]
 
@@ -1680,12 +1767,14 @@ Options:
       --root <PATH>
           The project's root path.
           
-          By default root of the Git repository, if in one, or the current working directory.
+          By default root of the Git repository, if in one, or the current working
+          directory.
 
       --check
           Run in 'check' mode.
           
-          Exits with 0 if input is formatted correctly. Exits with 1 if formatting is required.
+          Exits with 0 if input is formatted correctly. Exits with 1 if formatting is
+          required.
 
   -r, --raw
           In 'check' and stdin modes, outputs raw formatted code instead of the diff
@@ -1710,7 +1799,8 @@ Options:
       --root <PATH>
           The project's root path.
           
-          By default root of the Git repository, if in one, or the current working directory.
+          By default root of the Git repository, if in one, or the current working
+          directory.
 
       --check
           Run in "check" mode.
@@ -1787,7 +1877,8 @@ Options:
           The template to start from
 
   -b, --branch <BRANCH>
-          Branch argument that can only be used with template option. If not specified, the default branch is used
+          Branch argument that can only be used with template option. If not
+          specified, the default branch is used
 
       --offline
           Do not install dependencies from the network
@@ -1798,12 +1889,14 @@ Options:
           Create the project even if the specified root directory is not empty
 
       --vscode
-          Create a .vscode/settings.json file with Solidity settings, and generate a remappings.txt file
+          Create a .vscode/settings.json file with Solidity settings, and generate a
+          remappings.txt file
 
       --shallow
           Perform shallow clones instead of deep ones.
           
-          Improves performance and reduces disk usage, but prevents switching branches or tags.
+          Improves performance and reduces disk usage, but prevents switching
+          branches or tags.
 
       --no-git
           Install without adding the dependency as a submodule
@@ -1828,13 +1921,15 @@ Usage: forge inspect [OPTIONS] <CONTRACT> <FIELD>
 
 Arguments:
   <CONTRACT>
-          The identifier of the contract to inspect in the form `(<path>:)?<contractname>`
+          The identifier of the contract to inspect in the form
+          `(<path>:)?<contractname>`
 
   <FIELD>
           The contract artifact field to inspect
           
-          [possible values: abi, bytecode, deployedBytecode, assembly, assemblyOptimized, methodIdentifiers, gasEstimates, storageLayout, devdoc, ir, irOptimized, metadata, userdoc, ewasm,
-          errors, events]
+          [possible values: abi, bytecode, deployedBytecode, assembly,
+          assemblyOptimized, methodIdentifiers, gasEstimates, storageLayout, devdoc,
+          ir, irOptimized, metadata, userdoc, ewasm, errors, events]
 
 Options:
       --pretty
@@ -1897,7 +1992,8 @@ Compiler options:
           
           Example keys: evm.assembly, ewasm, ir, irOptimized, metadata
           
-          For a full description, see https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description
+          For a full description, see
+          https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description
 
       --extra-output-files <SELECTOR>...
           Extra output to write to separate files.
@@ -1911,7 +2007,8 @@ Project options:
       --revert-strings <REVERT>
           Revert string configuration.
           
-          Possible values are "default", "strip" (remove), "debug" (Solidity-generated revert strings) and "verboseDebug"
+          Possible values are "default", "strip" (remove), "debug"
+          (Solidity-generated revert strings) and "verboseDebug"
 
       --build-info
           Generate build info files
@@ -1922,7 +2019,8 @@ Project options:
       --root <PATH>
           The project's root path.
           
-          By default root of the Git repository, if in one, or the current working directory.
+          By default root of the Git repository, if in one, or the current working
+          directory.
 
   -C, --contracts <PATH>
           The contracts source directory
@@ -1942,7 +2040,8 @@ Project options:
       --hardhat
           Use the Hardhat-style project layout.
           
-          This is the same as using: `--contracts contracts --lib-paths node_modules`.
+          This is the same as using: `--contracts contracts --lib-paths
+          node_modules`.
           
           [aliases: hh]
 
@@ -1971,18 +2070,21 @@ Arguments:
           
           A ref can be: - A branch: master - A tag: v1.2.3 - A commit: 8e8128
           
-          Target installation directory can be added via `<alias>=` suffix. The dependency will installed to `lib/<alias>`.
+          Target installation directory can be added via `<alias>=` suffix. The
+          dependency will installed to `lib/<alias>`.
 
 Options:
       --root <PATH>
           The project's root path.
           
-          By default root of the Git repository, if in one, or the current working directory.
+          By default root of the Git repository, if in one, or the current working
+          directory.
 
       --shallow
           Perform shallow clones instead of deep ones.
           
-          Improves performance and reduces disk usage, but prevents switching branches or tags.
+          Improves performance and reduces disk usage, but prevents switching
+          branches or tags.
 
       --no-git
           Install without adding the dependency as a submodule
@@ -2009,7 +2111,8 @@ Options:
       --root <PATH>
           The project's root path.
           
-          By default root of the Git repository, if in one, or the current working directory.
+          By default root of the Git repository, if in one, or the current working
+          directory.
 
       --pretty
           Pretty-print the remappings, grouping each of them by context
@@ -2034,7 +2137,8 @@ Options:
       --root <PATH>
           The project's root path.
           
-          By default root of the Git repository, if in one, or the current working directory.
+          By default root of the Git repository, if in one, or the current working
+          directory.
 
   -f, --force
           Override the up-to-date check
@@ -2055,7 +2159,8 @@ Arguments:
   <PATH>
           The contract you want to run. Either the file path or contract name.
           
-          If multiple contracts exist in the same file you must specify the target contract with --target-contract.
+          If multiple contracts exist in the same file you must specify the target
+          contract with --target-contract.
 
   [ARGS]...
           Arguments to pass to the script function
@@ -2067,7 +2172,8 @@ Options:
           [aliases: tc]
 
   -s, --sig <SIG>
-          The signature of the function you want to call in the contract, or raw calldata
+          The signature of the function you want to call in the contract, or raw
+          calldata
           
           [default: run()]
 
@@ -2093,17 +2199,21 @@ Options:
           [default: 130]
 
       --unlocked
-          Send via `eth_sendTransaction` using the `--from` argument or `$ETH_FROM` as sender
+          Send via `eth_sendTransaction` using the `--from` argument or `$ETH_FROM`
+          as sender
 
       --resume
           Resumes submitting transactions that failed or timed-out previously.
           
-          It DOES NOT simulate the script again and it expects nonces to have remained the same.
+          It DOES NOT simulate the script again and it expects nonces to have
+          remained the same.
           
-          Example: If transaction N has a nonce of 22, then the account should have a nonce of 22, otherwise it fails.
+          Example: If transaction N has a nonce of 22, then the account should have a
+          nonce of 22, otherwise it fails.
 
       --multi
-          If present, --resume or --verify will be assumed to be a multi chain deployment
+          If present, --resume or --verify will be assumed to be a multi chain
+          deployment
 
       --debug
           Open the script in the debugger.
@@ -2111,12 +2221,15 @@ Options:
           Takes precedence over broadcast.
 
       --slow
-          Makes sure a transaction is sent, only after its previous one has been confirmed and succeeded
+          Makes sure a transaction is sent, only after its previous one has been
+          confirmed and succeeded
 
       --non-interactive
-          Disables interactive prompts that might appear when deploying big contracts.
+          Disables interactive prompts that might appear when deploying big
+          contracts.
           
-          For more info on the contract size limit, see EIP-170: <https://eips.ethereum.org/EIPS/eip-170>
+          For more info on the contract size limit, see EIP-170:
+          <https://eips.ethereum.org/EIPS/eip-170>
 
       --etherscan-api-key <KEY>
           The Etherscan (or equivalent) API key
@@ -2130,7 +2243,8 @@ Options:
           Output results in JSON format
 
       --with-gas-price <PRICE>
-          Gas price for legacy transactions, or max fee per gas for EIP1559 transactions
+          Gas price for legacy transactions, or max fee per gas for EIP1559
+          transactions
           
           [env: ETH_GAS_PRICE=]
 
@@ -2202,7 +2316,8 @@ Compiler options:
           
           Example keys: evm.assembly, ewasm, ir, irOptimized, metadata
           
-          For a full description, see https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description
+          For a full description, see
+          https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description
 
       --extra-output-files <SELECTOR>...
           Extra output to write to separate files.
@@ -2216,7 +2331,8 @@ Project options:
       --revert-strings <REVERT>
           Revert string configuration.
           
-          Possible values are "default", "strip" (remove), "debug" (Solidity-generated revert strings) and "verboseDebug"
+          Possible values are "default", "strip" (remove), "debug"
+          (Solidity-generated revert strings) and "verboseDebug"
 
       --build-info
           Generate build info files
@@ -2227,7 +2343,8 @@ Project options:
       --root <PATH>
           The project's root path.
           
-          By default root of the Git repository, if in one, or the current working directory.
+          By default root of the Git repository, if in one, or the current working
+          directory.
 
   -C, --contracts <PATH>
           The contracts source directory
@@ -2247,7 +2364,8 @@ Project options:
       --hardhat
           Use the Hardhat-style project layout.
           
-          This is the same as using: `--contracts contracts --lib-paths node_modules`.
+          This is the same as using: `--contracts contracts --lib-paths
+          node_modules`.
           
           [aliases: hh]
 
@@ -2258,7 +2376,8 @@ Watch options:
   -w, --watch [<PATH>...]
           Watch the given files or directories for changes.
           
-          If no paths are provided, the source and test directories of the project are watched.
+          If no paths are provided, the source and test directories of the project
+          are watched.
 
       --no-restart
           Do not restart the command while it's still running
@@ -2271,15 +2390,20 @@ Watch options:
       --watch-delay <DELAY>
           File update debounce delay.
           
-          During the delay, incoming change events are accumulated and only once the delay has passed, is an action taken. Note that this does not mean a command will be started: if
-          --no-restart is given and a command is already running, the outcome of the action will be to do nothing.
+          During the delay, incoming change events are accumulated and only once the
+          delay has passed, is an action taken. Note that this does not mean a
+          command will be started: if --no-restart is given and a command is already
+          running, the outcome of the action will be to do nothing.
           
-          Defaults to 50ms. Parses as decimal seconds by default, but using an integer with the `ms` suffix may be more convenient.
+          Defaults to 50ms. Parses as decimal seconds by default, but using an
+          integer with the `ms` suffix may be more convenient.
           
-          When using --poll mode, you'll want a larger duration, or risk overloading disk I/O.
+          When using --poll mode, you'll want a larger duration, or risk overloading
+          disk I/O.
 
       --format-json
-          Output the compilation errors in the json format. This is useful when you want to use the output in other tools
+          Output the compilation errors in the json format. This is useful when you
+          want to use the output in other tools
 
 Wallet options - raw:
   -a, --froms [<ADDRESSES>...]
@@ -2326,7 +2450,8 @@ Wallet options - keystore:
           [aliases: keystores]
 
       --account <ACCOUNT_NAMES>
-          Use a keystore from the default keystores folder (~/.foundry/keystores) by its filename
+          Use a keystore from the default keystores folder (~/.foundry/keystores) by
+          its filename
           
           [env: ETH_KEYSTORE_ACCOUNT=]
           [aliases: accounts]
@@ -2358,7 +2483,8 @@ EVM options:
   -f, --fork-url <URL>
           Fetch state over a remote endpoint instead of starting from an empty state.
           
-          If you want to fetch state from a specific block number, see --fork-block-number.
+          If you want to fetch state from a specific block number, see
+          --fork-block-number.
           
           [aliases: rpc-url]
 
@@ -2403,21 +2529,25 @@ EVM options:
           Verbosity levels:
           - 2: Print logs for all tests
           - 3: Print execution traces for failing tests
-          - 4: Print execution traces for all tests, and setup traces for failing tests
+          - 4: Print execution traces for all tests, and setup traces for failing
+          tests
           - 5: Print execution and setup traces for all tests
 
 Fork config:
       --compute-units-per-second <CUPS>
-          Sets the number of assumed available compute units per second for this provider
+          Sets the number of assumed available compute units per second for this
+          provider
           
           default value: 330
           
-          See also --fork-url and https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second
+          See also --fork-url and
+          https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second
 
       --no-rpc-rate-limit
           Disables rate limiting for this node's provider.
           
-          See also --fork-url and https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second
+          See also --fork-url and
+          https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second
           
           [aliases: no-rate-limit]
 
@@ -2426,7 +2556,8 @@ Executor environment config:
           The block gas limit
 
       --code-size-limit <CODE_SIZE>
-          EIP-170: Contract code size limit in bytes. Useful to increase this because of tests. By default, it is 0x6000 (~25kb)
+          EIP-170: Contract code size limit in bytes. Useful to increase this because
+          of tests. By default, it is 0x6000 (~25kb)
 
       --chain <CHAIN>
           The chain name or EIP-155 chain ID
@@ -2463,7 +2594,8 @@ Executor environment config:
           The block gas limit
 
       --memory-limit <MEMORY_LIMIT>
-          The memory limit per EVM execution in bytes. If this limit is exceeded, a `MemoryLimitOOG` result is thrown.
+          The memory limit per EVM execution in bytes. If this limit is exceeded, a
+          `MemoryLimitOOG` result is thrown.
           
           The default is 128MiB.
 
@@ -2518,10 +2650,12 @@ Usage: forge selectors collision [OPTIONS] <FIRST_CONTRACT> <SECOND_CONTRACT>
 
 Arguments:
   <FIRST_CONTRACT>
-          The first of the two contracts for which to look selector collisions for, in the form `(<path>:)?<contractname>`
+          The first of the two contracts for which to look selector collisions for,
+          in the form `(<path>:)?<contractname>`
 
   <SECOND_CONTRACT>
-          The second of the two contracts for which to look selector collisions for, in the form `(<path>:)?<contractname>`
+          The second of the two contracts for which to look selector collisions for,
+          in the form `(<path>:)?<contractname>`
 
 Options:
   -h, --help
@@ -2581,7 +2715,8 @@ Compiler options:
           
           Example keys: evm.assembly, ewasm, ir, irOptimized, metadata
           
-          For a full description, see https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description
+          For a full description, see
+          https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description
 
       --extra-output-files <SELECTOR>...
           Extra output to write to separate files.
@@ -2595,7 +2730,8 @@ Project options:
       --revert-strings <REVERT>
           Revert string configuration.
           
-          Possible values are "default", "strip" (remove), "debug" (Solidity-generated revert strings) and "verboseDebug"
+          Possible values are "default", "strip" (remove), "debug"
+          (Solidity-generated revert strings) and "verboseDebug"
 
       --build-info
           Generate build info files
@@ -2606,7 +2742,8 @@ Project options:
       --root <PATH>
           The project's root path.
           
-          By default root of the Git repository, if in one, or the current working directory.
+          By default root of the Git repository, if in one, or the current working
+          directory.
 
   -C, --contracts <PATH>
           The contracts source directory
@@ -2626,7 +2763,8 @@ Project options:
       --hardhat
           Use the Hardhat-style project layout.
           
-          This is the same as using: `--contracts contracts --lib-paths node_modules`.
+          This is the same as using: `--contracts contracts --lib-paths
+          node_modules`.
           
           [aliases: hh]
 
@@ -2657,7 +2795,8 @@ Project options:
       --root <PATH>
           The project's root path.
           
-          By default root of the Git repository, if in one, or the current working directory.
+          By default root of the Git repository, if in one, or the current working
+          directory.
 
   -C, --contracts <PATH>
           The contracts source directory
@@ -2677,7 +2816,8 @@ Project options:
       --hardhat
           Use the Hardhat-style project layout.
           
-          This is the same as using: `--contracts contracts --lib-paths node_modules`.
+          This is the same as using: `--contracts contracts --lib-paths
+          node_modules`.
           
           [aliases: hh]
 
@@ -2705,7 +2845,8 @@ Project options:
       --root <PATH>
           The project's root path.
           
-          By default root of the Git repository, if in one, or the current working directory.
+          By default root of the Git repository, if in one, or the current working
+          directory.
 
   -C, --contracts <PATH>
           The contracts source directory
@@ -2725,7 +2866,8 @@ Project options:
       --hardhat
           Use the Hardhat-style project layout.
           
-          This is the same as using: `--contracts contracts --lib-paths node_modules`.
+          This is the same as using: `--contracts contracts --lib-paths
+          node_modules`.
           
           [aliases: hh]
 
@@ -2748,7 +2890,8 @@ Options:
           By default, the comparison is done with .gas-snapshot.
 
       --check [<SNAPSHOT_FILE>]
-          Compare against a pre-existing snapshot, exiting with code 1 if they do not match.
+          Compare against a pre-existing snapshot, exiting with code 1 if they do not
+          match.
           
           Outputs a diff if the snapshots do not match.
           
@@ -2769,13 +2912,19 @@ Test options:
       --debug <TEST_FUNCTION>
           Run a test in the debugger.
           
-          The argument passed to this flag is the name of the test function you want to run, and it works the same as --match-test.
+          The argument passed to this flag is the name of the test function you want
+          to run, and it works the same as --match-test.
           
-          If more than one test matches your specified criteria, you must add additional filters until only one test is found (see --match-contract and --match-path).
+          If more than one test matches your specified criteria, you must add
+          additional filters until only one test is found (see --match-contract and
+          --match-path).
           
-          The matching test will be opened in the debugger regardless of the outcome of the test.
+          The matching test will be opened in the debugger regardless of the outcome
+          of the test.
           
-          If the matching test is a fuzz test, then it will open the debugger on the first failure case. If the fuzz test does not fail, it will open the debugger on the last fuzz case.
+          If the matching test is a fuzz test, then it will open the debugger on the
+          first failure case. If the fuzz test does not fail, it will open the
+          debugger on the last fuzz case.
           
           For more fine-grained control of which fuzz case is run, see forge run.
 
@@ -2851,7 +3000,8 @@ EVM options:
   -f, --fork-url <URL>
           Fetch state over a remote endpoint instead of starting from an empty state.
           
-          If you want to fetch state from a specific block number, see --fork-block-number.
+          If you want to fetch state from a specific block number, see
+          --fork-block-number.
           
           [aliases: rpc-url]
 
@@ -2896,21 +3046,25 @@ EVM options:
           Verbosity levels:
           - 2: Print logs for all tests
           - 3: Print execution traces for failing tests
-          - 4: Print execution traces for all tests, and setup traces for failing tests
+          - 4: Print execution traces for all tests, and setup traces for failing
+          tests
           - 5: Print execution and setup traces for all tests
 
 Fork config:
       --compute-units-per-second <CUPS>
-          Sets the number of assumed available compute units per second for this provider
+          Sets the number of assumed available compute units per second for this
+          provider
           
           default value: 330
           
-          See also --fork-url and https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second
+          See also --fork-url and
+          https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second
 
       --no-rpc-rate-limit
           Disables rate limiting for this node's provider.
           
-          See also --fork-url and https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second
+          See also --fork-url and
+          https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second
           
           [aliases: no-rate-limit]
 
@@ -2919,7 +3073,8 @@ Executor environment config:
           The block gas limit
 
       --code-size-limit <CODE_SIZE>
-          EIP-170: Contract code size limit in bytes. Useful to increase this because of tests. By default, it is 0x6000 (~25kb)
+          EIP-170: Contract code size limit in bytes. Useful to increase this because
+          of tests. By default, it is 0x6000 (~25kb)
 
       --chain <CHAIN>
           The chain name or EIP-155 chain ID
@@ -2956,7 +3111,8 @@ Executor environment config:
           The block gas limit
 
       --memory-limit <MEMORY_LIMIT>
-          The memory limit per EVM execution in bytes. If this limit is exceeded, a `MemoryLimitOOG` result is thrown.
+          The memory limit per EVM execution in bytes. If this limit is exceeded, a
+          `MemoryLimitOOG` result is thrown.
           
           The default is 128MiB.
 
@@ -3014,7 +3170,8 @@ Compiler options:
           
           Example keys: evm.assembly, ewasm, ir, irOptimized, metadata
           
-          For a full description, see https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description
+          For a full description, see
+          https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description
 
       --extra-output-files <SELECTOR>...
           Extra output to write to separate files.
@@ -3028,7 +3185,8 @@ Project options:
       --revert-strings <REVERT>
           Revert string configuration.
           
-          Possible values are "default", "strip" (remove), "debug" (Solidity-generated revert strings) and "verboseDebug"
+          Possible values are "default", "strip" (remove), "debug"
+          (Solidity-generated revert strings) and "verboseDebug"
 
       --build-info
           Generate build info files
@@ -3039,7 +3197,8 @@ Project options:
       --root <PATH>
           The project's root path.
           
-          By default root of the Git repository, if in one, or the current working directory.
+          By default root of the Git repository, if in one, or the current working
+          directory.
 
   -C, --contracts <PATH>
           The contracts source directory
@@ -3059,7 +3218,8 @@ Project options:
       --hardhat
           Use the Hardhat-style project layout.
           
-          This is the same as using: `--contracts contracts --lib-paths node_modules`.
+          This is the same as using: `--contracts contracts --lib-paths
+          node_modules`.
           
           [aliases: hh]
 
@@ -3070,7 +3230,8 @@ Watch options:
   -w, --watch [<PATH>...]
           Watch the given files or directories for changes.
           
-          If no paths are provided, the source and test directories of the project are watched.
+          If no paths are provided, the source and test directories of the project
+          are watched.
 
       --no-restart
           Do not restart the command while it's still running
@@ -3083,12 +3244,16 @@ Watch options:
       --watch-delay <DELAY>
           File update debounce delay.
           
-          During the delay, incoming change events are accumulated and only once the delay has passed, is an action taken. Note that this does not mean a command will be started: if
-          --no-restart is given and a command is already running, the outcome of the action will be to do nothing.
+          During the delay, incoming change events are accumulated and only once the
+          delay has passed, is an action taken. Note that this does not mean a
+          command will be started: if --no-restart is given and a command is already
+          running, the outcome of the action will be to do nothing.
           
-          Defaults to 50ms. Parses as decimal seconds by default, but using an integer with the `ms` suffix may be more convenient.
+          Defaults to 50ms. Parses as decimal seconds by default, but using an
+          integer with the `ms` suffix may be more convenient.
           
-          When using --poll mode, you'll want a larger duration, or risk overloading disk I/O.
+          When using --poll mode, you'll want a larger duration, or risk overloading
+          disk I/O.
 
       --asc
           Sort results by gas used (ascending)
@@ -3119,13 +3284,19 @@ Test options:
       --debug <TEST_FUNCTION>
           Run a test in the debugger.
           
-          The argument passed to this flag is the name of the test function you want to run, and it works the same as --match-test.
+          The argument passed to this flag is the name of the test function you want
+          to run, and it works the same as --match-test.
           
-          If more than one test matches your specified criteria, you must add additional filters until only one test is found (see --match-contract and --match-path).
+          If more than one test matches your specified criteria, you must add
+          additional filters until only one test is found (see --match-contract and
+          --match-path).
           
-          The matching test will be opened in the debugger regardless of the outcome of the test.
+          The matching test will be opened in the debugger regardless of the outcome
+          of the test.
           
-          If the matching test is a fuzz test, then it will open the debugger on the first failure case. If the fuzz test does not fail, it will open the debugger on the last fuzz case.
+          If the matching test is a fuzz test, then it will open the debugger on the
+          first failure case. If the fuzz test does not fail, it will open the
+          debugger on the last fuzz case.
           
           For more fine-grained control of which fuzz case is run, see forge run.
 
@@ -3201,7 +3372,8 @@ EVM options:
   -f, --fork-url <URL>
           Fetch state over a remote endpoint instead of starting from an empty state.
           
-          If you want to fetch state from a specific block number, see --fork-block-number.
+          If you want to fetch state from a specific block number, see
+          --fork-block-number.
           
           [aliases: rpc-url]
 
@@ -3246,21 +3418,25 @@ EVM options:
           Verbosity levels:
           - 2: Print logs for all tests
           - 3: Print execution traces for failing tests
-          - 4: Print execution traces for all tests, and setup traces for failing tests
+          - 4: Print execution traces for all tests, and setup traces for failing
+          tests
           - 5: Print execution and setup traces for all tests
 
 Fork config:
       --compute-units-per-second <CUPS>
-          Sets the number of assumed available compute units per second for this provider
+          Sets the number of assumed available compute units per second for this
+          provider
           
           default value: 330
           
-          See also --fork-url and https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second
+          See also --fork-url and
+          https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second
 
       --no-rpc-rate-limit
           Disables rate limiting for this node's provider.
           
-          See also --fork-url and https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second
+          See also --fork-url and
+          https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second
           
           [aliases: no-rate-limit]
 
@@ -3269,7 +3445,8 @@ Executor environment config:
           The block gas limit
 
       --code-size-limit <CODE_SIZE>
-          EIP-170: Contract code size limit in bytes. Useful to increase this because of tests. By default, it is 0x6000 (~25kb)
+          EIP-170: Contract code size limit in bytes. Useful to increase this because
+          of tests. By default, it is 0x6000 (~25kb)
 
       --chain <CHAIN>
           The chain name or EIP-155 chain ID
@@ -3306,7 +3483,8 @@ Executor environment config:
           The block gas limit
 
       --memory-limit <MEMORY_LIMIT>
-          The memory limit per EVM execution in bytes. If this limit is exceeded, a `MemoryLimitOOG` result is thrown.
+          The memory limit per EVM execution in bytes. If this limit is exceeded, a
+          `MemoryLimitOOG` result is thrown.
           
           The default is 128MiB.
 
@@ -3364,7 +3542,8 @@ Compiler options:
           
           Example keys: evm.assembly, ewasm, ir, irOptimized, metadata
           
-          For a full description, see https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description
+          For a full description, see
+          https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description
 
       --extra-output-files <SELECTOR>...
           Extra output to write to separate files.
@@ -3378,7 +3557,8 @@ Project options:
       --revert-strings <REVERT>
           Revert string configuration.
           
-          Possible values are "default", "strip" (remove), "debug" (Solidity-generated revert strings) and "verboseDebug"
+          Possible values are "default", "strip" (remove), "debug"
+          (Solidity-generated revert strings) and "verboseDebug"
 
       --build-info
           Generate build info files
@@ -3389,7 +3569,8 @@ Project options:
       --root <PATH>
           The project's root path.
           
-          By default root of the Git repository, if in one, or the current working directory.
+          By default root of the Git repository, if in one, or the current working
+          directory.
 
   -C, --contracts <PATH>
           The contracts source directory
@@ -3409,7 +3590,8 @@ Project options:
       --hardhat
           Use the Hardhat-style project layout.
           
-          This is the same as using: `--contracts contracts --lib-paths node_modules`.
+          This is the same as using: `--contracts contracts --lib-paths
+          node_modules`.
           
           [aliases: hh]
 
@@ -3420,7 +3602,8 @@ Watch options:
   -w, --watch [<PATH>...]
           Watch the given files or directories for changes.
           
-          If no paths are provided, the source and test directories of the project are watched.
+          If no paths are provided, the source and test directories of the project
+          are watched.
 
       --no-restart
           Do not restart the command while it's still running
@@ -3433,12 +3616,16 @@ Watch options:
       --watch-delay <DELAY>
           File update debounce delay.
           
-          During the delay, incoming change events are accumulated and only once the delay has passed, is an action taken. Note that this does not mean a command will be started: if
-          --no-restart is given and a command is already running, the outcome of the action will be to do nothing.
+          During the delay, incoming change events are accumulated and only once the
+          delay has passed, is an action taken. Note that this does not mean a
+          command will be started: if --no-restart is given and a command is already
+          running, the outcome of the action will be to do nothing.
           
-          Defaults to 50ms. Parses as decimal seconds by default, but using an integer with the `ms` suffix may be more convenient.
+          Defaults to 50ms. Parses as decimal seconds by default, but using an
+          integer with the `ms` suffix may be more convenient.
           
-          When using --poll mode, you'll want a larger duration, or risk overloading disk I/O.
+          When using --poll mode, you'll want a larger duration, or risk overloading
+          disk I/O.
 ```
 
 ## forge tree
@@ -3467,7 +3654,8 @@ Project options:
       --root <PATH>
           The project's root path.
           
-          By default root of the Git repository, if in one, or the current working directory.
+          By default root of the Git repository, if in one, or the current working
+          directory.
 
   -C, --contracts <PATH>
           The contracts source directory
@@ -3487,7 +3675,8 @@ Project options:
       --hardhat
           Use the Hardhat-style project layout.
           
-          This is the same as using: `--contracts contracts --lib-paths node_modules`.
+          This is the same as using: `--contracts contracts --lib-paths
+          node_modules`.
           
           [aliases: hh]
 
@@ -3511,7 +3700,8 @@ Options:
       --root <PATH>
           The project's root path.
           
-          By default root of the Git repository, if in one, or the current working directory.
+          By default root of the Git repository, if in one, or the current working
+          directory.
 
   -f, --force
           Override the up-to-date check
@@ -3610,7 +3800,8 @@ Options:
           Flatten the source code before verifying
 
   -f, --force
-          Do not compile the flattened smart contract before verifying (if --flatten is passed)
+          Do not compile the flattened smart contract before verifying (if --flatten
+          is passed)
 
       --skip-is-verified-check
           Do not check if the contract is already verified before verifying
@@ -3621,12 +3812,14 @@ Options:
       --root <PATH>
           The project's root path.
           
-          By default root of the Git repository, if in one, or the current working directory.
+          By default root of the Git repository, if in one, or the current working
+          directory.
 
       --show-standard-json-input
           Prints the standard json compiler input.
           
-          The standard json compiler input can be used to manually submit contract verification in the browser.
+          The standard json compiler input can be used to manually submit contract
+          verification in the browser.
 
   -e, --etherscan-api-key <KEY>
           The Etherscan (or equivalent) API key

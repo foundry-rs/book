@@ -38,7 +38,8 @@ Options:
       --dump-state <PATH>
           Dump the state of chain on exit to the given file.
           
-          If the value is a directory, the state will be written to `<VALUE>/state.json`.
+          If the value is a directory, the state will be written to
+          `<VALUE>/state.json`.
 
   -h, --help
           Print help (see a summary with '-h')
@@ -46,7 +47,8 @@ Options:
       --hardfork <HARDFORK>
           The EVM hardfork to use.
           
-          Choose the hardfork by name, e.g. `shanghai`, `paris`, `london`, etc... [default: latest]
+          Choose the hardfork by name, e.g. `shanghai`, `paris`, `london`, etc...
+          [default: latest]
 
       --init <PATH>
           Initialize the genesis block with the given `genesis.json` file
@@ -60,16 +62,20 @@ Options:
           Initialize the chain from a previously saved state snapshot
 
   -m, --mnemonic <MNEMONIC>
-          BIP39 mnemonic phrase used for generating accounts. Cannot be used if `mnemonic_random` or `mnemonic_seed` are used
+          BIP39 mnemonic phrase used for generating accounts. Cannot be used if
+          `mnemonic_random` or `mnemonic_seed` are used
 
       --mnemonic-random [<MNEMONIC_RANDOM>]
-          Automatically generates a BIP39 mnemonic phrase, and derives accounts from it. Cannot be used with other `mnemonic` options You can specify the number of words you want in the
-          mnemonic. [default: 12]
+          Automatically generates a BIP39 mnemonic phrase, and derives accounts from
+          it. Cannot be used with other `mnemonic` options You can specify the number
+          of words you want in the mnemonic. [default: 12]
 
       --mnemonic-seed-unsafe <MNEMONIC_SEED>
-          Generates a BIP39 mnemonic phrase from a given seed Cannot be used with other `mnemonic` options
+          Generates a BIP39 mnemonic phrase from a given seed Cannot be used with
+          other `mnemonic` options
           
-          CAREFUL: this is NOT SAFE and should only be used for testing. Never use the private keys generated in production.
+          CAREFUL: this is NOT SAFE and should only be used for testing. Never use
+          the private keys generated in production.
 
       --no-mining
           Disable auto and interval mining, and mine on demand instead
@@ -87,7 +93,8 @@ Options:
           [default: 8545]
 
       --prune-history [<PRUNE_HISTORY>]
-          Don't keep full chain history. If a number argument is specified, at most this number of states is kept in memory
+          Don't keep full chain history. If a number argument is specified, at most
+          this number of states is kept in memory
 
   -s, --state-interval <SECONDS>
           Interval in seconds at which the status is to be dumped to disk.
@@ -100,7 +107,8 @@ Options:
       --state <PATH>
           This is an alias for both --load-state and --dump-state.
           
-          It initializes the chain with the state stored at the file, if it exists, and dumps the chain's state on exit.
+          It initializes the chain with the state stored at the file, if it exists,
+          and dumps the chain's state on exit.
 
       --timestamp <NUM>
           The timestamp of the genesis block
@@ -128,16 +136,20 @@ Server options:
 
 Fork config:
       --compute-units-per-second <CUPS>
-          Sets the number of assumed available compute units per second for this provider
+          Sets the number of assumed available compute units per second for this
+          provider
           
           default value: 330
           
-          See --fork-url. See also, https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second
+          See --fork-url. See also,
+          https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second
 
   -f, --fork-url <URL>
           Fetch state over a remote endpoint instead of starting from an empty state.
           
-          If you want to fetch state from a specific block number, add a block number like `http://localhost:8545@1400000` or use the `--fork-block-number` argument.
+          If you want to fetch state from a specific block number, add a block number
+          like `http://localhost:8545@1400000` or use the `--fork-block-number`
+          argument.
           
           [aliases: rpc-url]
 
@@ -147,9 +159,12 @@ Fork config:
           See --fork-url.
 
       --fork-chain-id <CHAIN>
-          Specify chain id to skip fetching it from remote endpoint. This enables offline-start mode.
+          Specify chain id to skip fetching it from remote endpoint. This enables
+          offline-start mode.
           
-          You still must pass both `--fork-url` and `--fork-block-number`, and already have your required state cached on disk, anything missing locally would be fetched from the remote.
+          You still must pass both `--fork-url` and `--fork-block-number`, and
+          already have your required state cached on disk, anything missing locally
+          would be fetched from the remote.
 
       --fork-header <HEADERS>
           Headers to use for the rpc client, e.g. "User-Agent: test-agent"
@@ -166,7 +181,8 @@ Fork config:
           
           default value: false
           
-          See --fork-url. See also, https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second
+          See --fork-url. See also,
+          https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second
           
           [aliases: no-rpc-rate-limit]
 
@@ -199,7 +215,8 @@ Environment config:
           The chain ID
 
       --code-size-limit <CODE_SIZE>
-          EIP-170: Contract code size limit in bytes. Useful to increase this because of tests. By default, it is 0x6000 (~25kb)
+          EIP-170: Contract code size limit in bytes. Useful to increase this because
+          of tests. By default, it is 0x6000 (~25kb)
 
       --disable-block-gas-limit
           Disable the `call.gas_limit <= block.gas_limit` constraint
