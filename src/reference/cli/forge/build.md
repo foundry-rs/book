@@ -75,8 +75,7 @@ Compiler options:
           
           Example keys: evm.assembly, ewasm, ir, irOptimized, metadata
           
-          For a full description, see
-          https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description
+          For a full description, see https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description
 
       --extra-output-files <SELECTOR>...
           Extra output to write to separate files.
@@ -90,8 +89,7 @@ Project options:
       --revert-strings <REVERT>
           Revert string configuration.
           
-          Possible values are "default", "strip" (remove), "debug"
-          (Solidity-generated revert strings) and "verboseDebug"
+          Possible values are "default", "strip" (remove), "debug" (Solidity-generated revert strings) and "verboseDebug"
 
       --build-info
           Generate build info files
@@ -102,8 +100,7 @@ Project options:
       --root <PATH>
           The project's root path.
           
-          By default root of the Git repository, if in one, or the current working
-          directory.
+          By default root of the Git repository, if in one, or the current working directory.
 
   -C, --contracts <PATH>
           The contracts source directory
@@ -123,8 +120,7 @@ Project options:
       --hardhat
           Use the Hardhat-style project layout.
           
-          This is the same as using: `--contracts contracts --lib-paths
-          node_modules`.
+          This is the same as using: `--contracts contracts --lib-paths node_modules`.
           
           [aliases: hh]
 
@@ -135,8 +131,7 @@ Watch options:
   -w, --watch [<PATH>...]
           Watch the given files or directories for changes.
           
-          If no paths are provided, the source and test directories of the project
-          are watched.
+          If no paths are provided, the source and test directories of the project are watched.
 
       --no-restart
           Do not restart the command while it's still running
@@ -149,18 +144,13 @@ Watch options:
       --watch-delay <DELAY>
           File update debounce delay.
           
-          During the delay, incoming change events are accumulated and only once the
-          delay has passed, is an action taken. Note that this does not mean a
-          command will be started: if --no-restart is given and a command is already
-          running, the outcome of the action will be to do nothing.
+          During the delay, incoming change events are accumulated and only once the delay has passed, is an action taken. Note that this does not mean a command will be started: if --no-restart is given and
+          a command is already running, the outcome of the action will be to do nothing.
           
-          Defaults to 50ms. Parses as decimal seconds by default, but using an
-          integer with the `ms` suffix may be more convenient.
+          Defaults to 50ms. Parses as decimal seconds by default, but using an integer with the `ms` suffix may be more convenient.
           
-          When using --poll mode, you'll want a larger duration, or risk overloading
-          disk I/O.
+          When using --poll mode, you'll want a larger duration, or risk overloading disk I/O.
 
       --format-json
-          Output the compilation errors in the json format. This is useful when you
-          want to use the output in other tools
+          Output the compilation errors in the json format. This is useful when you want to use the output in other tools
 ```

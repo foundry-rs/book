@@ -21,14 +21,12 @@ Options:
           Verify contract after creation
 
       --unlocked
-          Send via `eth_sendTransaction` using the `--from` argument or `$ETH_FROM`
-          as sender
+          Send via `eth_sendTransaction` using the `--from` argument or `$ETH_FROM` as sender
 
       --show-standard-json-input
           Prints the standard json compiler input if `--verify` is provided.
           
-          The standard json compiler input can be used to manually submit contract
-          verification in the browser.
+          The standard json compiler input can be used to manually submit contract verification in the browser.
 
   -h, --help
           Print help (see a summary with '-h')
@@ -91,8 +89,7 @@ Compiler options:
           
           Example keys: evm.assembly, ewasm, ir, irOptimized, metadata
           
-          For a full description, see
-          https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description
+          For a full description, see https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description
 
       --extra-output-files <SELECTOR>...
           Extra output to write to separate files.
@@ -106,8 +103,7 @@ Project options:
       --revert-strings <REVERT>
           Revert string configuration.
           
-          Possible values are "default", "strip" (remove), "debug"
-          (Solidity-generated revert strings) and "verboseDebug"
+          Possible values are "default", "strip" (remove), "debug" (Solidity-generated revert strings) and "verboseDebug"
 
       --build-info
           Generate build info files
@@ -118,8 +114,7 @@ Project options:
       --root <PATH>
           The project's root path.
           
-          By default root of the Git repository, if in one, or the current working
-          directory.
+          By default root of the Git repository, if in one, or the current working directory.
 
   -C, --contracts <PATH>
           The contracts source directory
@@ -139,8 +134,7 @@ Project options:
       --hardhat
           Use the Hardhat-style project layout.
           
-          This is the same as using: `--contracts contracts --lib-paths
-          node_modules`.
+          This is the same as using: `--contracts contracts --lib-paths node_modules`.
           
           [aliases: hh]
 
@@ -154,8 +148,7 @@ Transaction options:
           [env: ETH_GAS_LIMIT=]
 
       --gas-price <PRICE>
-          Gas price for legacy transactions, or max fee per gas for EIP1559
-          transactions
+          Gas price for legacy transactions, or max fee per gas for EIP1559 transactions
           
           [env: ETH_GAS_PRICE=]
 
@@ -165,8 +158,7 @@ Transaction options:
           [env: ETH_PRIORITY_GAS_PRICE=]
 
       --value <VALUE>
-          Ether to send in the transaction, either specified in wei, or as a string
-          with a unit type.
+          Ether to send in the transaction, either specified in wei, or as a string with a unit type.
           
           Examples: 1ether, 10gwei, 0.01ether
 
@@ -190,13 +182,10 @@ Ethereum options:
       --jwt-secret <JWT_SECRET>
           JWT Secret for the RPC endpoint.
           
-          The JWT secret will be used to create a JWT for a RPC. For example, the
-          following can be used to simulate a CL `engine_forkchoiceUpdated` call:
+          The JWT secret will be used to create a JWT for a RPC. For example, the following can be used to simulate a CL `engine_forkchoiceUpdated` call:
           
-          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2
-          '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
-          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
-          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
+          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2 '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc", "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
           
           [env: ETH_RPC_JWT_SECRET=]
 
@@ -257,8 +246,7 @@ Wallet options - keystore:
           [env: ETH_KEYSTORE=]
 
       --account <ACCOUNT_NAME>
-          Use a keystore from the default keystores folder (~/.foundry/keystores) by
-          its filename
+          Use a keystore from the default keystores folder (~/.foundry/keystores) by its filename
           
           [env: ETH_KEYSTORE_ACCOUNT=]
 

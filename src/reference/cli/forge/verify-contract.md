@@ -32,8 +32,7 @@ Options:
           Flatten the source code before verifying
 
   -f, --force
-          Do not compile the flattened smart contract before verifying (if --flatten
-          is passed)
+          Do not compile the flattened smart contract before verifying (if --flatten is passed)
 
       --skip-is-verified-check
           Do not check if the contract is already verified before verifying
@@ -44,14 +43,12 @@ Options:
       --root <PATH>
           The project's root path.
           
-          By default root of the Git repository, if in one, or the current working
-          directory.
+          By default root of the Git repository, if in one, or the current working directory.
 
       --show-standard-json-input
           Prints the standard json compiler input.
           
-          The standard json compiler input can be used to manually submit contract
-          verification in the browser.
+          The standard json compiler input can be used to manually submit contract verification in the browser.
 
   -e, --etherscan-api-key <KEY>
           The Etherscan (or equivalent) API key

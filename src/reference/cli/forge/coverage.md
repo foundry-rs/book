@@ -18,8 +18,7 @@ Options:
       --ir-minimum
           Enable viaIR with minimum optimization
           
-          This can fix most of the "stack too deep" errors while resulting a
-          relatively accurate source map.
+          This can fix most of the "stack too deep" errors while resulting a relatively accurate source map.
 
   -r, --report-file <PATH>
           The path to output the report.
@@ -64,8 +63,7 @@ EVM options:
   -f, --fork-url <URL>
           Fetch state over a remote endpoint instead of starting from an empty state.
           
-          If you want to fetch state from a specific block number, see
-          --fork-block-number.
+          If you want to fetch state from a specific block number, see --fork-block-number.
           
           [aliases: rpc-url]
 
@@ -110,25 +108,21 @@ EVM options:
           Verbosity levels:
           - 2: Print logs for all tests
           - 3: Print execution traces for failing tests
-          - 4: Print execution traces for all tests, and setup traces for failing
-          tests
+          - 4: Print execution traces for all tests, and setup traces for failing tests
           - 5: Print execution and setup traces for all tests
 
 Fork config:
       --compute-units-per-second <CUPS>
-          Sets the number of assumed available compute units per second for this
-          provider
+          Sets the number of assumed available compute units per second for this provider
           
           default value: 330
           
-          See also --fork-url and
-          https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second
+          See also --fork-url and https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second
 
       --no-rpc-rate-limit
           Disables rate limiting for this node's provider.
           
-          See also --fork-url and
-          https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second
+          See also --fork-url and https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second
           
           [aliases: no-rate-limit]
 
@@ -137,8 +131,7 @@ Executor environment config:
           The block gas limit
 
       --code-size-limit <CODE_SIZE>
-          EIP-170: Contract code size limit in bytes. Useful to increase this because
-          of tests. By default, it is 0x6000 (~25kb)
+          EIP-170: Contract code size limit in bytes. Useful to increase this because of tests. By default, it is 0x6000 (~25kb)
 
       --chain <CHAIN>
           The chain name or EIP-155 chain ID
@@ -175,8 +168,7 @@ Executor environment config:
           The block gas limit
 
       --memory-limit <MEMORY_LIMIT>
-          The memory limit per EVM execution in bytes. If this limit is exceeded, a
-          `MemoryLimitOOG` result is thrown.
+          The memory limit per EVM execution in bytes. If this limit is exceeded, a `MemoryLimitOOG` result is thrown.
           
           The default is 128MiB.
 
@@ -234,8 +226,7 @@ Compiler options:
           
           Example keys: evm.assembly, ewasm, ir, irOptimized, metadata
           
-          For a full description, see
-          https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description
+          For a full description, see https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description
 
       --extra-output-files <SELECTOR>...
           Extra output to write to separate files.
@@ -249,8 +240,7 @@ Project options:
       --revert-strings <REVERT>
           Revert string configuration.
           
-          Possible values are "default", "strip" (remove), "debug"
-          (Solidity-generated revert strings) and "verboseDebug"
+          Possible values are "default", "strip" (remove), "debug" (Solidity-generated revert strings) and "verboseDebug"
 
       --build-info
           Generate build info files
@@ -261,8 +251,7 @@ Project options:
       --root <PATH>
           The project's root path.
           
-          By default root of the Git repository, if in one, or the current working
-          directory.
+          By default root of the Git repository, if in one, or the current working directory.
 
   -C, --contracts <PATH>
           The contracts source directory
@@ -282,8 +271,7 @@ Project options:
       --hardhat
           Use the Hardhat-style project layout.
           
-          This is the same as using: `--contracts contracts --lib-paths
-          node_modules`.
+          This is the same as using: `--contracts contracts --lib-paths node_modules`.
           
           [aliases: hh]
 

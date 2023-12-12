@@ -12,8 +12,7 @@ Arguments:
 
 Options:
   -k, --keystore-dir <KEYSTORE_DIR>
-          If provided, keystore will be saved here instead of the default keystores
-          directory (~/.foundry/keystores)
+          If provided, keystore will be saved here instead of the default keystores directory (~/.foundry/keystores)
 
   -h, --help
           Print help (see a summary with '-h')

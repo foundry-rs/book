@@ -14,8 +14,7 @@ Commands:
   sign          Sign a message or typed data [aliases: s]
   verify        Verify the signature of a message [aliases: v]
   import        Import a private key into an encrypted keystore [aliases: i]
-  list          List all the accounts in the keystore default directory [aliases:
-                    ls]
+  list          List all the accounts in the keystore default directory [aliases: ls]
   help          Print this message or the help of the given subcommand(s)
 
 Options:
