@@ -10,7 +10,7 @@ from os import makedirs, path
 HELP_KEY = "help"
 SECTION_START = "<!-- CLI_REFERENCE START -->"
 SECTION_END = "<!-- CLI_REFERENCE END -->"
-SECTION_RE = rf"\s*{SECTION_START}.*?{SECTION_START}"
+SECTION_RE = rf"\s*{SECTION_START}.*?{SECTION_END}"
 
 
 def main():
