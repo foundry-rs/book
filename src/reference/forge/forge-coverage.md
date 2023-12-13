@@ -31,6 +31,10 @@ It has three different options and is set to `summary` by default.
 
 {{#include common-options.md}}
 
+#### Optimization Option
+
+`--ir-minimum` allows you to run the coverage with `via-ir` enabled for the ["minimum amount of optimization"](https://github.com/ethereum/solidity/issues/12533#issuecomment-1013073350) necessary.
+
 ### EXAMPLES
 
 1. View summarized coverage:
