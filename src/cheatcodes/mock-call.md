@@ -86,3 +86,30 @@ function testMockCall() public {
     assertEq(example.pay{value: 1}(2), 2);
 }
 ```
+
+Mocking a public variable:
+
+
+```solidity
+contract Example {
+    uint256 public number = 10;
+}
+
+contract ExampleTest is Test {
+    Example public example;
+
+    function setUp() public {
+        example = new Example();
+    }
+
+    function testMockPublicVariable() public {
+        assertEq(example.number(), 10);
+        vm.mockCall(
+            address(example),
+            abi.encodeWithSelector(bytes4(keccak256("number()"))),
+            abi.encode(5)
+        );
+        assertEq(example.number(), 5);
+    }
+}
+```
