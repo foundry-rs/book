@@ -4,14 +4,16 @@
 
 ```solidity
 // Returns the URL for a configured alias
-function rpcUrl(string calldata alias) external returns(string memory);
+function rpcUrl(string calldata alias) external returns (string memory);
 // Returns all configured (alias, URL) pairs
 function rpcUrls() external returns(string[2][] memory);
+/// Performs an Ethereum JSON-RPC request to the current fork URL.
+function rpc(string calldata method, string calldata params) external returns (bytes memory data);
 ```
 
 ### Description
 
-Provides cheatcodes to access all RPC endpoints configured in the `rpc_endpoints` object of the `foundry.toml`
+Provides cheatcodes to access all RPC endpoints configured in the `rpc_endpoints` object of the `foundry.toml`, and the ability to make `rpc` calls using the configured fork URL.
 
 ### Examples
 
@@ -52,6 +54,14 @@ assertEq(val[0], "optimism");
 
 string[2] memory env = allUrls[1];
 assertEq(env[0], "mainnet");
+```
+
+Make an RPC call to `eth_getBalance`
+
+```solidity
+// balance at block <https://etherscan.io/block/18332681>
+bytes memory result = vm.rpc("eth_getBalance", "[\"0x8D97689C9818892B700e27F316cc3E41e17fBeb9\", \"0x117BC09\"]")
+assertEq(hex"10b7c11bcb51e6", result);
 ```
 
 ### SEE ALSO
