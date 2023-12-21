@@ -363,6 +363,8 @@
       - [`warp`](./cheatcodes/warp.md)
       - [`roll`](./cheatcodes/roll.md)
       - [`fee`](./cheatcodes/fee.md)
+      - [`getBlockTimestamp`](./cheatcodes/get-block-timestamp.md)
+      - [`getBlockNumber`](./cheatcodes/get-block-number.md)
       - [`difficulty`](./cheatcodes/difficulty.md)
       - [`prevrandao`](./cheatcodes/prevrandao.md)
       - [`chainId`](./cheatcodes/chain-id.md)
