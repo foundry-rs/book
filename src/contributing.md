@@ -15,4 +15,4 @@ First check the [Contribution guidelines](https://github.com/foundry-rs/foundry/
 Some articles to walk you through the first steps:
 
 - [Make a first contribution](https://dev.to/teddav/foundry-open-source-contribution-1k2d)
-- [Add a cheatcode](https://dev.to/teddav/foundry-add-a-cheatcode-5hc8)
+- [Add a cheatcode](https://dev.to/teddav/foundry-add-a-cheatcode-5hc8) (outdated, see the [Foundry dev docs](https://github.com/foundry-rs/foundry/blob/master/docs/dev/cheatcodes.md#adding-a-new-cheatcode) for a shorter but up-to-date tutorial)
