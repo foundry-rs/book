@@ -46,6 +46,9 @@ Scripts can be used to apply state transitions on live contracts, or deploy and 
 `--skip-simulation`  
 &nbsp;&nbsp;&nbsp;&nbsp;Skips on-chain simulation.
 
+`--skip`  
+&nbsp;&nbsp;&nbsp;&nbsp;Skip compilation of non-essential contract directories like test or script (usage `--skip test`).
+
 `--non-interactive`  
 &nbsp;&nbsp;&nbsp;&nbsp;Remove interactive prompts which appear if the contract is near the [EIP-170](https://eips.ethereum.org/EIPS/eip-170) size limit.
 
