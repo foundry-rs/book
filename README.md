@@ -1,6 +1,6 @@
 ## 📖 Foundry Book
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-103-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-104-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 A book on all things Foundry. [Read now](https://book.getfoundry.sh).
@@ -168,6 +168,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://il.linkedin.com/in/yotamb"><img src="https://avatars.githubusercontent.com/u/506487?v=4?s=100" width="100px;" alt="Yotam Bar-On"/><br /><sub><b>Yotam Bar-On</b></sub></a><br /><a href="https://github.com/foundry-rs/book/commits?author=Tudmotu" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/RedaOps"><img src="https://avatars.githubusercontent.com/u/32748771?v=4?s=100" width="100px;" alt="Tudor"/><br /><sub><b>Tudor</b></sub></a><br /><a href="https://github.com/foundry-rs/book/commits?author=RedaOps" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/vreff"><img src="https://avatars.githubusercontent.com/u/104409744?v=4?s=100" width="100px;" alt="Chris Cushman"/><br /><sub><b>Chris Cushman</b></sub></a><br /><a href="https://github.com/foundry-rs/book/commits?author=vreff" title="Documentation">📖</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://ernestor.xyz/"><img src="https://avatars.githubusercontent.com/u/78889960?v=4?s=100" width="100px;" alt="ernestor.eth"/><br /><sub><b>ernestor.eth</b></sub></a><br /><a href="https://github.com/foundry-rs/book/commits?author=0xernesto" title="Documentation">📖</a></td>
     </tr>
   </tbody>
 </table>
