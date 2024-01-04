@@ -79,6 +79,12 @@ The destination (*to*) can be an ENS name or an address.
     ```sh
     cast send 0x... "myfunction((address,uint256))" "(0x...,1)"
     ```
+
+4. Send a transaction with hex data in the `input` field of the transaction object:
+    ```sh
+    cast send 0x... 0x68656c6c6f20776f726c64
+    ```
+
 ### SEE ALSO
 
 [cast](./cast.md), [cast call](./cast-call.md), [cast publish](./cast-publish.md), [cast receipt](./cast-receipt.md), [struct encoding](../../misc/struct-encoding.md)
