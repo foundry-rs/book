@@ -945,6 +945,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "0xernesto",
+      "name": "ernestor.eth",
+      "avatar_url": "https://avatars.githubusercontent.com/u/78889960?v=4",
+      "profile": "https://ernestor.xyz/",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
