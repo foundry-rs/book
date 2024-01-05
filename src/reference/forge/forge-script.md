@@ -102,7 +102,7 @@ Scripts can be used to apply state transitions on live contracts, or deploy and 
 1. Run `BroadcastTest` as a script, broadcasting generated transactions on-chain
     ```sh
     forge script ./test/Broadcast.t.sol --tc BroadcastTest --sig "deploy()" \
-        -vvv --fork-url $GOERLI_RPC_URL
+        -vvv --fork-url $SEPOLIA_RPC_URL
     ```
 
 2. Deploy a contract on Polygon [(see scripting tutorial for an example script)](../../tutorials/solidity-scripting.md). *The verifier url is different for every network.*
