@@ -123,9 +123,9 @@ If your output looks like this, the contracts successfully compiled.
 
 ### Deploying our contract
 
-We’re going to deploy the `NFT` contract to the Goerli testnet, but to do this we’ll need to configure Foundry a bit, by setting things like a Goerli RPC URL, the private key of an account that’s funded with Goerli Eth, and an Etherscan key for the verification of the NFT contract.
+We’re going to deploy the `NFT` contract to the Sepolia testnet, but to do this we’ll need to configure Foundry a bit, by setting things like a Sepolia RPC URL, the private key of an account that’s funded with Sepolia Eth, and an Etherscan key for the verification of the NFT contract.
 
-> 💡 Note: You can get some Goerli testnet ETH [here](https://faucet.paradigm.xyz/) .
+> 💡 Note: You can get some Sepolia testnet ETH [here](https://sepoliafaucet.com/) .
 
 #### Environment Configuration
 
@@ -134,7 +134,7 @@ Once you have all that create a `.env` file and add the variables. Foundry autom
 The .env file should follow this format:
 
 ```sh
-GOERLI_RPC_URL=
+SEPOLIA_RPC_URL=
 PRIVATE_KEY=
 ETHERSCAN_API_KEY=
 ```
@@ -145,13 +145,13 @@ Add the following lines to the end of the file:
 
 ```toml
 [rpc_endpoints]
-goerli = "${GOERLI_RPC_URL}"
+sepolia = "${SEPOLIA_RPC_URL}"
 
 [etherscan]
-goerli = { key = "${ETHERSCAN_API_KEY}" }
+sepolia = { key = "${ETHERSCAN_API_KEY}" }
 ```
 
-This creates a [RPC alias](../cheatcodes/rpc.md) for Goerli and loads the Etherscan API key.
+This creates a [RPC alias](../cheatcodes/rpc.md) for Sepolia and loads the Etherscan API key.
 
 #### Writing the Script
 
@@ -237,14 +237,14 @@ At the root of the project run:
 source .env
 
 # To deploy and verify our contract
-forge script script/NFT.s.sol:MyScript --rpc-url $GOERLI_RPC_URL --broadcast --verify -vvvv
+forge script script/NFT.s.sol:MyScript --rpc-url $SEPOLIA_RPC_URL --broadcast --verify -vvvv
 ```
 
 Forge is going to run our script and broadcast the transactions for us - this can take a little while, since Forge will also wait for the transaction receipts. You should see something like this after a minute or so:
 
 ![contract verified](../images/solidity-scripting/contract-verified.png)
 
-This confirms that you have successfully deployed the `NFT` contract to the Goerli testnet and have also verified it on Etherscan, all with one command.
+This confirms that you have successfully deployed the `NFT` contract to the Sepolia testnet and have also verified it on Etherscan, all with one command.
 
 ### Deploying locally
 
