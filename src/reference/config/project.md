@@ -18,6 +18,14 @@ The path to the contract sources relative to the root of the project.
 
 The path to the test contract sources relative to the root of the project.
 
+##### `script`
+
+- Type: string
+- Default: script
+- Environment: `FOUNDRY_SCRIPT` or `DAPP_SCRIPT`
+
+The path to the script contract sources relative to the root of the project.
+
 ##### `out`
 
 - Type: string
