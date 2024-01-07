@@ -1,6 +1,6 @@
 ## Creating a New Project
 
-To start a new project with Foundry, use [`forge init`](../reference/forge/forge-init.md):
+To start a new project with Foundry, use [`forge create`](../reference/forge/forge-init.md):
 
 ```sh
 {{#include ../output/hello_foundry/forge-init:command}}
@@ -11,7 +11,7 @@ This creates a new directory `hello_foundry` from the default template. This als
 If you want to create a new project using a different template, you would pass the `--template` flag, like so:
 
 ```sh
-$ forge init --template https://github.com/foundry-rs/forge-template hello_template
+$ forge create --template https://github.com/foundry-rs/forge-template hello_template
 ```
 
 For now, let's check what the default template looks like:
