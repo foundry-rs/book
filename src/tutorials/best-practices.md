@@ -26,13 +26,6 @@ In general, it's recommended to handle as much as possible with [`forge fmt`](..
    - Good: `import {MyContract} from "src/MyContract.sol"` to only import `MyContract`.
    - Bad: `import "src/MyContract.sol"` imports everything in `MyContract.sol`. (Importing `forge-std/Test` or `Script` can be an exception here, so you get the console library, etc).
 
-1. Sort imports by `forge-std/` first, then dependencies, `test/`, `script/`, and finally `src/`. Within each, sort alphabetically by path (not by the explicit named items being imported). _(Note: This may be removed once [foundry-rs/foundry#3396](https://github.com/foundry-rs/foundry/issues/3396) is merged)._
-
-1. Similarly, sort named imports. _(Note: This may be removed once [foundry-rs/foundry#3396](https://github.com/foundry-rs/foundry/issues/3396) is resolved)._
-
-   - Good: `import {bar, foo} from "src/MyContract.sol"`
-   - Bad: `import {foo, bar} from "src/MyContract.sol"`
-
 1. Note the tradeoffs between absolute and relative paths for imports (where absolute paths are relative to the repo root, e.g. `"src/interfaces/IERC20.sol"`), and choose the best approach for your project:
 
    - Absolute paths make it easier to see where files are from and reduce churn when moving files around.
