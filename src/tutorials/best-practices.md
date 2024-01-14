@@ -212,42 +212,40 @@ You should _ensure_ that no _tainted_ data ever reaches a _sink_. That means tha
 1. **Carefully audit which transactions are broadcast**. Transactions not broadcast are still executed in the context of a test, so missing broadcasts or extra broadcasts are easy sources of error in the previous step.
 
 1. **Watch out for frontrunning**. Forge simulates your script, generates transaction data from the simulation results, then broadcasts the transactions. Make sure your script is robust against chain-state changing between the simulation and broadcast. A sample script vulnerable to this is below:
-
-```solidity
-// Pseudo-code, may not compile.
-contract VulnerableScript is Script {
-   function run() public {
-      vm.startBroadcast();
-
-      // Transaction 1: Deploy a new Gnosis Safe with CREATE.
-      // Because we're using CREATE instead of CREATE2, the address of the new
-      // Safe is a function of the nonce of the gnosisSafeProxyFactory.
-      address mySafe = gnosisSafeProxyFactory.createProxy(singleton, data);
-
-      // Transaction 2: Send tokens to the new Safe.
-      // We know the address of mySafe is a function of the nonce of the
-      // gnosisSafeProxyFactory. If someone else deploys a Gnosis Safe between
-      // the simulation and broadcast, the address of mySafe will be different,
-      // and this script will send 1000 DAI to the other person's Safe. In this
-      // case, we can protect ourselves from this by using CREATE2 instead of
-      // CREATE, but every situation may have different solutions.
-      dai.transfer(mySafe, 1000e18);
-
-      vm.stopBroadcast();
-   }
-}
-```
+    ```solidity
+    // Pseudo-code, may not compile.
+    contract VulnerableScript is Script {
+       function run() public {
+          vm.startBroadcast();
+    
+          // Transaction 1: Deploy a new Gnosis Safe with CREATE.
+          // Because we're using CREATE instead of CREATE2, the address of the new
+          // Safe is a function of the nonce of the gnosisSafeProxyFactory.
+          address mySafe = gnosisSafeProxyFactory.createProxy(singleton, data);
+    
+          // Transaction 2: Send tokens to the new Safe.
+          // We know the address of mySafe is a function of the nonce of the
+          // gnosisSafeProxyFactory. If someone else deploys a Gnosis Safe between
+          // the simulation and broadcast, the address of mySafe will be different,
+          // and this script will send 1000 DAI to the other person's Safe. In this
+          // case, we can protect ourselves from this by using CREATE2 instead of
+          // CREATE, but every situation may have different solutions.
+          dai.transfer(mySafe, 1000e18);
+    
+          vm.stopBroadcast();
+       }
+    }
+    ```
 
 1. For scripts that read from JSON input files, put the input files in `script/input/<chainID>/<description>.json`. Then have `run(string memory input)` (or take multiple string inputs if you need to read from multiple files) as the script's signature, and use the below method to read the JSON file.
-
-```solidity
-function readInput(string memory input) internal returns (string memory) {
-  string memory inputDir = string.concat(vm.projectRoot(), "/script/input/");
-  string memory chainDir = string.concat(vm.toString(block.chainid), "/");
-  string memory file = string.concat(input, ".json");
-  return vm.readFile(string.concat(inputDir, chainDir, file));
-}
-```
+    ```solidity
+    function readInput(string memory input) internal returns (string memory) {
+      string memory inputDir = string.concat(vm.projectRoot(), "/script/input/");
+      string memory chainDir = string.concat(vm.toString(block.chainid), "/");
+      string memory file = string.concat(input, ".json");
+      return vm.readFile(string.concat(inputDir, chainDir, file));
+    }
+    ```
 
 ### Private Key Management
 
