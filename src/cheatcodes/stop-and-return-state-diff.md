@@ -10,7 +10,11 @@ enum AccountAccessKind {
     StaticCall,
     Create,
     SelfDestruct,
-    Resume
+    Resume,
+    Balance,
+    Extcodesize,
+    Extcodehash,
+    Extcodecopy
 }
 
 struct ChainInfo {
@@ -72,6 +76,10 @@ If kind is a Resume, then account represents an execution context that had resum
 - `Create` - The account was created
 - `SelfDestruct` - The account was selfdestructed
 - `Resume` - Indicates that a previously pre-emptyed account access was resumed
+- `Balance` - The account's codesize was read
+- `Extcodesize` - The account's codesize was read
+- `Extcodehash` - The account's codehash was read
+- `Extcodecopy` - The account's code was copied
 
 ### `AccountAccess`
 
