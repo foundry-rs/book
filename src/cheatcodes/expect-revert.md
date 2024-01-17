@@ -42,7 +42,7 @@ There are 3 signatures:
 >
 > ```solidity
 > function testLowLevelCallRevert() public {
->     vm.expectRevert(bytes("error message"));
+>     vm.expectRevert();
 >     (bool revertsAsExpected, ) = address(myContract).call(myCalldata);
 >     assertTrue(revertsAsExpected, "expectRevert: call did not revert");
 > }
