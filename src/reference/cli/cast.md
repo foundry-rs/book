@@ -68,6 +68,7 @@ Commands:
   resolve-name           Perform an ENS lookup [aliases: rn]
   rpc                    Perform a raw JSON-RPC request [aliases: rp]
   run                    Runs a published transaction in a local environment and prints the trace [aliases: r]
+  selectors              Extracts function selectors and arguments from bytecode [aliases: sel]
   send                   Sign and publish a transaction [aliases: s]
   shl                    Perform a left shifting operation
   shr                    Perform a right shifting operation

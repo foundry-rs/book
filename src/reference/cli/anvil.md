@@ -36,7 +36,7 @@ Options:
           [default: m/44'/60'/0'/0/]
 
       --dump-state <PATH>
-          Dump the state of chain on exit to the given file.
+          Dump the state and block environment of chain on exit to the given file.
           
           If the value is a directory, the state will be written to `<VALUE>/state.json`.
 
@@ -63,8 +63,7 @@ Options:
           BIP39 mnemonic phrase used for generating accounts. Cannot be used if `mnemonic_random` or `mnemonic_seed` are used
 
       --mnemonic-random [<MNEMONIC_RANDOM>]
-          Automatically generates a BIP39 mnemonic phrase, and derives accounts from it. Cannot be used with other `mnemonic` options You can specify the number of words you want in the mnemonic. [default:
-          12]
+          Automatically generates a BIP39 mnemonic phrase, and derives accounts from it. Cannot be used with other `mnemonic` options You can specify the number of words you want in the mnemonic. [default: 12]
 
       --mnemonic-seed-unsafe <MNEMONIC_SEED>
           Generates a BIP39 mnemonic phrase from a given seed Cannot be used with other `mnemonic` options
@@ -90,7 +89,7 @@ Options:
           Don't keep full chain history. If a number argument is specified, at most this number of states is kept in memory
 
   -s, --state-interval <SECONDS>
-          Interval in seconds at which the status is to be dumped to disk.
+          Interval in seconds at which the state and block environment is to be dumped to disk.
           
           See --state and --dump-state
 
@@ -100,7 +99,7 @@ Options:
       --state <PATH>
           This is an alias for both --load-state and --dump-state.
           
-          It initializes the chain with the state stored at the file, if it exists, and dumps the chain's state on exit.
+          It initializes the chain with the state and block environment stored at the file, if it exists, and dumps the chain's state on exit.
 
       --timestamp <NUM>
           The timestamp of the genesis block

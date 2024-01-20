@@ -15,7 +15,7 @@ Traces:
     │   └─ ← Unauthorized()
     └─ ← Unauthorized()
 
-Test result: ok. 1 passed; 0 failed; 0 skipped; finished in 494.95µs
+Test result: ok. 1 passed; 0 failed; 0 skipped; finished in 4.68ms
  
 Ran 1 test suites: 1 tests passed, 0 failed, 0 skipped (1 total tests)
 // ANCHOR_END: output

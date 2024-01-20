@@ -4,6 +4,8 @@ set -eo pipefail
 gen_forge() {
   need_cmd git
   need_cmd forge
+  need_cmd tree
+  need_cmd npm
 
   echo "Generating output (forge)..."
 
@@ -23,6 +25,7 @@ gen_forge() {
   in_temp foundry-template
   git clone https://github.com/PaulRBerg/foundry-template
   cd foundry-template
+  npm install
   run_command "$OUTPUT_DIR/foundry-template/forge-install" \
     forge install
   run_command "$OUTPUT_DIR/foundry-template/forge-build" \
@@ -57,7 +60,7 @@ gen_forge() {
 
   run_command "$OUTPUT_DIR/cheatcodes/forge-test-cheatcodes-tracing" \
     forge test -vvvv --match-test testFail_IncrementAsNotOwner --match-path test/OwnerUpOnly.t.sol
-  
+
   run_command "$OUTPUT_DIR/cheatcodes/forge-test-cheatcodes-expectrevert" \
     forge test --match-test "test_IncrementAsOwner|test_IncrementAsNotOwner" --match-path test/OwnerUpOnly.t.sol
 

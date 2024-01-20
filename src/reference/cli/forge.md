@@ -1,6 +1,6 @@
 # forge
 
-Build, test, fuzz, debug and deploy Solidity contracts.
+Build, test, fuzz, debug and deploy Solidity contracts
 
 ```bash
 $ forge --help

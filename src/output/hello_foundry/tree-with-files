@@ -13,6 +13,7 @@ $ tree . -L 3 -I output
 │       ├── LICENSE-MIT
 │       ├── package.json
 │       ├── README.md
+│       ├── scripts
 │       ├── src
 │       └── test
 ├── README.md
@@ -23,6 +24,6 @@ $ tree . -L 3 -I output
 └── test
     └── Counter.t.sol
 
-9 directories, 10 files
+10 directories, 10 files
 // ANCHOR_END: output
 // ANCHOR_END: all
