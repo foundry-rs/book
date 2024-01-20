@@ -191,7 +191,10 @@ def parse_description(s: str):
     idx = s.find("Usage:")
     if idx < 0:
         return "", s
-    return s[:idx].strip().splitlines()[0].strip(), s[idx:]
+    lines = s[:idx].strip().splitlines()
+    if len(lines) == 0:
+        return "", s
+    return lines[0].strip(), s[idx:]
 
 
 def cmd_summary(md_root: str, cmd: str, obj: object, indent: int):
