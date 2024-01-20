@@ -149,6 +149,9 @@ This program is a set of tools to interact with Ethereum and perform conversions
 [cast pretty-calldata](./cast-pretty-calldata.md)
 &nbsp;&nbsp;&nbsp;&nbsp;Pretty print calldata.
 
+[cast selectors](./cast-selectors.md)
+&nbsp;&nbsp;&nbsp;&nbsp;Extracts function selectors and arguments from bytecode
+
 [cast upload-signature](./cast-upload-signature.md)
 &nbsp;&nbsp;&nbsp;&nbsp;Upload the given signatures to https://sig.eth.samczsun.com.
 
