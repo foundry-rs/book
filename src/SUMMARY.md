@@ -302,6 +302,7 @@
       - [cast calldata](./reference/cast/cast-calldata.md)
       - [cast calldata-decode](./reference/cast/cast-calldata-decode.md)
       - [cast pretty-calldata](./reference/cast/cast-pretty-calldata.md)
+      - [cast selectors](./reference/cast/cast-selectors.md)
       - [cast upload-signature](./reference/cast/cast-upload-signature.md)
     - [Conversion Commands](./reference/cast/conversion-commands.md)
       - [cast format-bytes32-string](./reference/cast/cast-format-bytes32-string.md)

@@ -25,4 +25,4 @@ Get the function signatures for the given selector from <https://sig.eth.samczsu
 
 ### SEE ALSO
 
-[cast](./cast.md), [cast 4byte-decode](./cast-4byte-decode.md), [cast 4byte-event](./cast-4byte-event.md)
+[cast](./cast.md), [cast 4byte-decode](./cast-4byte-decode.md), [cast 4byte-event](./cast-4byte-event.md), [cast selectors](./cast-selectors.md)
