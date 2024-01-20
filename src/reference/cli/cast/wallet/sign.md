@@ -12,8 +12,8 @@ Arguments:
           
           Messages starting with 0x are expected to be hex encoded, which get decoded before being signed. The message will be prefixed with the Ethereum Signed Message header and hashed before signing.
           
-          Typed data can be provided as a json string or a file name. Use --data flag to denote the message is a string of typed data. Use --data --from-file to denote the message is a file name containing
-          typed data. The data will be combined and hashed using the EIP712 specification before signing. The data should be formatted as JSON.
+          Typed data can be provided as a json string or a file name. Use --data flag to denote the message is a string of typed data. Use --data --from-file to denote the message is a file name containing typed data. The data will be
+          combined and hashed using the EIP712 specification before signing. The data should be formatted as JSON.
 
 Options:
       --data

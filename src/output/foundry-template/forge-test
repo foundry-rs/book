@@ -9,7 +9,7 @@ Running 3 tests for test/Foo.t.sol:FooTest
 [PASS] testFork_Example() (gas: 3759)
 [PASS] testFuzz_Example(uint256) (runs: 1000, μ: 8402, ~: 8402)
 [PASS] test_Example() (gas: 8676)
-Test result: ok. 3 passed; 0 failed; 0 skipped; finished in 49.60ms
+Test result: ok. 3 passed; 0 failed; 0 skipped; finished in 385.71ms
  
 Ran 1 test suites: 3 tests passed, 0 failed, 0 skipped (3 total tests)
 // ANCHOR_END: output

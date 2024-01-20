@@ -16,6 +16,8 @@ Arguments:
 Options:
       --constructor-args <ARGS>
           The ABI-encoded constructor arguments
+          
+          [aliases: encoded-constructor-args]
 
       --constructor-args-path <PATH>
           The path to a file containing the constructor arguments
@@ -69,6 +71,9 @@ Options:
           Optional delay to apply inbetween verification attempts, in seconds
           
           [default: 5]
+
+      --via-ir
+          Use the Yul intermediate representation compilation pipeline
 
   -h, --help
           Print help (see a summary with '-h')

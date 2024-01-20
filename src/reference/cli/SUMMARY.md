@@ -97,6 +97,7 @@
   - [`cast resolve-name`](./cast/resolve-name.md)
   - [`cast rpc`](./cast/rpc.md)
   - [`cast run`](./cast/run.md)
+  - [`cast selectors`](./cast/selectors.md)
   - [`cast send`](./cast/send.md)
     - [`cast send --create`](./cast/send/--create.md)
   - [`cast shl`](./cast/shl.md)
@@ -128,6 +129,7 @@
     - [`cast wallet verify`](./cast/wallet/verify.md)
     - [`cast wallet import`](./cast/wallet/import.md)
     - [`cast wallet list`](./cast/wallet/list.md)
+    - [`cast wallet derive-private-key`](./cast/wallet/derive-private-key.md)
 
 - [`anvil`](./anvil.md)
   - [`anvil completions`](./anvil/completions.md)

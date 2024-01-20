@@ -26,6 +26,11 @@ REPL options:
           
           These files will be evaluated before the top-level of the REPL, therefore functioning as a prelude
 
+      --no-vm
+          Disable the default `Vm` import.
+          
+          The import is disabled by default if the Solc version is less than 0.6.2.
+
 Cache options:
       --force
           Clear the cache and artifacts folder and recompile

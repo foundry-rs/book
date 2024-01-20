@@ -3,6 +3,6 @@
 $ forge install
 // ANCHOR_END: command
 // ANCHOR: output
-Updating dependencies in /tmp/tmp.D9KQiNypsa/foundry-template/lib
+
 // ANCHOR_END: output
 // ANCHOR_END: all

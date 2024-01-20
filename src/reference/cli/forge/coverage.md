@@ -13,7 +13,7 @@ Options:
           This flag can be used multiple times.
           
           [default: summary]
-          [possible values: summary, lcov, debug]
+          [possible values: summary, lcov, debug, bytecode]
 
       --ir-minimum
           Enable viaIR with minimum optimization
