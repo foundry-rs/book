@@ -9,6 +9,8 @@ description = "A book on all things Foundry"
 [build]
 create-missing = false
 
+[preprocessor.external-links]
+
 [output.html]
 git-repository-url = "https://github.com/foundry-rs/book"
 edit-url-template = "https://github.com/foundry-rs/book/edit/master/{path}"

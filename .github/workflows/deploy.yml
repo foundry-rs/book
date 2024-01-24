@@ -10,8 +10,10 @@ jobs:
     name: Deploy to Cloudflare Pages
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
-
+        uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Install mdbook-external-links
+        run: cargo install mdbook-external-links
       - name: Install mdbook
         run: |
           mkdir mdbook
