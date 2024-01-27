@@ -21,7 +21,7 @@ Go to Etherscan and search for holders of Dai tokens ([here](https://etherscan.i
 ```sh
 export ALICE=0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266
 export DAI=0x6b175474e89094c44da98b954eedeac495271d0f
-export LUCKY_USER=0xad0135af20fa82e106607257143d0060a7eb5cbf
+export LUCKY_USER=0xfc2eE3bD619B7cfb2dE2C797b96DeeCbD7F68e46
 ```
 
 We can check Alice's balance using [`cast call`][cast-call]:
@@ -39,7 +39,7 @@ Similarly, we can also check our lucky user's balance using `cast call`:
 $ cast call $DAI \
   "balanceOf(address)(uint256)" \
   $LUCKY_USER
-71686045944718512103110072
+21840114973524208109322438
 ```
 
 Let's transfer some tokens from the lucky user to Alice using [`cast send`][cast-send]:
@@ -48,11 +48,10 @@ Let's transfer some tokens from the lucky user to Alice using [`cast send`][cast
 # This calls Anvil and lets us impersonate our lucky user
 $ cast rpc anvil_impersonateAccount $LUCKY_USER
 $ cast send $DAI \
---unlocked \
 --from $LUCKY_USER \
   "transfer(address,uint256)(bool)" \
   $ALICE \
-  1686045944718512103110072
+  300000000000000000000000
 blockHash               0xbf31c45f6935a0714bb4f709b5e3850ab0cc2f8bffe895fefb653d154e0aa062
 blockNumber             15052891
 ...
@@ -64,12 +63,12 @@ Let's check that the transfer worked:
 cast call $DAI \
   "balanceOf(address)(uint256)" \
   $ALICE
-1686045944718512103110072
+300000000000000000000000
 
 $ cast call $DAI \
   "balanceOf(address)(uint256)" \
   $LUCKY_USER
-70000000000000000000000000
+21540114973524208109322438
 ```
 
 [anvil]: ../reference/anvil/

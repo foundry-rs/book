@@ -11,6 +11,8 @@ Check our [contributing guidelines](./CONTRIBUTING.md). Feel free to contribute 
 
 The book is build with [mdbook](https://github.com/rust-lang/mdBook), which you can get by running `cargo install mdbook`.
 
+The book also requires [`mdbook-external-links`](https://github.com/jonahgoldwastaken/mdbook-external-links): `cargo install mdbook-external-links`.
+
 To see the book change live run:
 
 ```sh
