@@ -493,8 +493,10 @@ assertLeDecimal(a, b, 18);
 #### `assertApproxEqAbs`
 
 ```solidity
-function assertApproxEqAbs(uint256 a, uint256 b, uint256 maxDelta) internal;
+function assertApproxEqAbs(<type> a, <type> b, uint256 maxDelta) internal;
 ```
+
+Where `<type>` can be `int`, `uint`
 
 Asserts `a` is approximately equal to `b` with delta in absolute value.
 
@@ -516,8 +518,10 @@ function testFail () external {
 #### `assertApproxEqRel`
 
 ```solidity
-function assertApproxEqRel(uint256 a, uint256 b, uint256 maxPercentDelta) internal;
+function assertApproxEqRel(<type> a, <type> b, uint256 maxPercentDelta) internal;
 ```
+
+Where `<type>` can be `int`, `uint`
 
 Asserts `a` is approximately equal to `b` with delta in percentage, where `1e18` is 100%.
 
