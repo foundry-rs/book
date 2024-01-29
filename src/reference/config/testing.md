@@ -335,7 +335,7 @@ Optional seed for the fuzzing RNG algorithm.
 - Default: 40
 - Environment: `FOUNDRY_FUZZ_DICTIONARY_WEIGHT`
 
-The weight of the dictionary.
+The weight of the dictionary. A higher dictionary weight will bias the fuzz inputs towards "interesting" values, e.g. boundary values like `type(uint256).max` or contract addresses from your environment.
 
 ##### `include_storage`
 
