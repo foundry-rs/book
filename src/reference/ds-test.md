@@ -199,6 +199,14 @@ function assertLeDecimal(int a, int b, uint decimals) internal;
 function assertLeDecimal(int a, int b, uint decimals, string memory err) internal;
 function assertLeDecimal(uint a, uint b, uint decimals) internal;
 function assertLeDecimal(uint a, uint b, uint decimals, string memory err) internal;
+
+// Asserts `a` is approximately equal to `b` with delta in absolute value.
+function assertApproxEqAbs(uint256 a, uint256 b, uint256 maxDelta) internal;
+function assertApproxEqAbs(uint256 a, uint256 b, uint256 maxDelta, string memory err) internal;
+
+// Asserts `a` is approximately equal to `b` with delta in percentage, where `1e18` is 100%.
+function assertApproxEqRel(uint256 a, uint256 b, uint256 maxPercentDelta) internal;
+function assertApproxEqRel(uint256 a, uint256 b, uint256 maxPercentDelta, string memory err) internal;
 ```
 
 ### Assertion functions
@@ -476,6 +484,55 @@ Asserts  `a` is lesser than or equal to `b`.
 uint256 a = 1 ether;
 uint256 b = 1e18 wei;
 assertLeDecimal(a, b, 18);
+```
+
+<br>
+
+---
+
+#### `assertApproxEqAbs`
+
+```solidity
+function assertApproxEqAbs(<type> a, <type> b, uint256 maxDelta) internal;
+```
+
+Where `<type>` can be `int`, `uint`
+
+Asserts `a` is approximately equal to `b` with delta in absolute value.
+
+##### Example
+
+```solidity
+function testFail () external {
+    uint256 a = 100;
+    uint256 b = 200;
+
+    assertApproxEqAbs(a, b, 90);
+}
+```
+
+<br>
+
+---
+
+#### `assertApproxEqRel`
+
+```solidity
+function assertApproxEqRel(<type> a, <type> b, uint256 maxPercentDelta) internal;
+```
+
+Where `<type>` can be `int`, `uint`
+
+Asserts `a` is approximately equal to `b` with delta in percentage, where `1e18` is 100%.
+
+##### Example
+
+```solidity
+function testFail () external {
+    uint256 a = 100;
+    uint256 b = 200;
+    assertApproxEqRel(a, b, 0.4e18);
+}
 ```
 <br>
 
