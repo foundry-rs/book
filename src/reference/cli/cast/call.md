@@ -32,11 +32,6 @@ Options:
           
           opens an interactive debugger
 
-      --verbose
-          Can only be used with "--trace"
-          
-          prints a more verbose trace
-
       --labels <LABELS>
           Can only be used with "--trace" Labels to apply to the traces.
           
