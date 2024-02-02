@@ -24,9 +24,6 @@ The destination (*to*) can be an ENS name or an address.
 `--debug`  
 &nbsp;&nbsp;&nbsp;&nbsp;Opens an interactive debugger with the transaction. Needs `--trace`.
 
-`--verbose`  
-&nbsp;&nbsp;&nbsp;&nbsp;Prints a more verbose trace. Needs `--trace`.
-
 `--labels <address:label>`  
 &nbsp;&nbsp;&nbsp;&nbsp;Labels to apply to the traces, with the format `address:label`. Needs `--trace`.
 
