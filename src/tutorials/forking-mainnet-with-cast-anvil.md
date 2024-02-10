@@ -51,7 +51,8 @@ $ cast send $DAI \
 --from $LUCKY_USER \
   "transfer(address,uint256)(bool)" \
   $ALICE \
-  300000000000000000000000
+  300000000000000000000000 \
+  --unlocked
 blockHash               0xbf31c45f6935a0714bb4f709b5e3850ab0cc2f8bffe895fefb653d154e0aa062
 blockNumber             15052891
 ...
