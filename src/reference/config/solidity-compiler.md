@@ -106,6 +106,9 @@ If enabled, Foundry will not attempt to download any missing solc versions.
 
 If both `offline` and `auto-detect-solc` are set to `true`, the required version(s) of solc will be auto detected but any missing versions will _not_ be installed.
 
+##### `ignored_warnings_from`
+
+
 ##### `ignored_error_codes`
 
 - Type: array of integers/strings
