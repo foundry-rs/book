@@ -108,6 +108,13 @@ If both `offline` and `auto-detect-solc` are set to `true`, the required version
 
 ##### `ignored_warnings_from`
 
+- Type: array of strings (file paths)
+- Default: none
+- Environment: `FOUNDRY_IGNORED_WARNINGS_FROM` OR `DAPP_IGNORED_WARNINGS_FROM`
+
+An array of file paths from which warnings should be ignored during the compulation process. This is useful when you have a specific
+directories of files that produce known warning and you wish to suppress these warnings without affecting others.
+
 
 ##### `ignored_error_codes`
 
