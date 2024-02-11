@@ -115,6 +115,11 @@ If both `offline` and `auto-detect-solc` are set to `true`, the required version
 An array of file paths from which warnings should be ignored during the compulation process. This is useful when you have a specific
 directories of files that produce known warning and you wish to suppress these warnings without affecting others.
 
+Each entry in the array should be a path to a directory or a specific file. For Example:
+
+`ignored_warnings_from = ["path/to/warnings/file1.sol", "path/to/warnings/file2.sol"]`
+
+This configuration will cause the compiler to ignore any warnings that originate from the specified paths.
 
 ##### `ignored_error_codes`
 
