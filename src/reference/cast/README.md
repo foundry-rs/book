@@ -1,4 +1,4 @@
-## cast Commands
+## probe Commands
 
 - [General Commands](./general-commands.md)
 - [Chain Commands](./chain-commands.md)

@@ -1,10 +1,10 @@
-# cast index
+# probe index
 
 Compute the storage slot for an entry in a mapping
 
 ```bash
-$ cast index --help
-Usage: cast index <KEY_TYPE> <KEY> <SLOT_NUMBER>
+$ probe index --help
+Usage: probe index <KEY_TYPE> <KEY> <SLOT_NUMBER>
 
 Arguments:
   <KEY_TYPE>     The mapping key type

@@ -1,12 +1,12 @@
-## cast keccak
+## probe keccak
 
 ### NAME
 
-cast-keccak - Hash arbitrary data using keccak-256.
+probe-keccak - Hash arbitrary data using keccak-256.
 
 ### SYNOPSIS
 
-``cast keccak`` [*options*] *data*
+``probe keccak`` [*options*] *data*
 
 ### DESCRIPTION
 
@@ -18,4 +18,4 @@ Hash arbitrary data using keccak-256.
 
 ### SEE ALSO
 
-[cast](./cast.md)
+[probe](./probe.md)

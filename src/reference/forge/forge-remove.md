@@ -1,12 +1,12 @@
-## forge remove
+## spark remove
 
 ### NAME
 
-forge-remove - Remove one or multiple dependencies.
+spark-remove - Remove one or multiple dependencies.
 
 ### SYNOPSIS
 
-``forge remove`` [*options*] [*deps...*]
+``spark remove`` [*options*] [*deps...*]
 
 ### DESCRIPTION
 
@@ -22,14 +22,14 @@ Dependencies can be a raw URL (`https://foo.com/dep`), the path to a GitHub repo
 
 1. Remove a dependency by path:
     ```sh
-    forge remove lib/solmate
+    spark remove lib/solmate
     ```
 
 2. Remove a dependency by GitHub repository name:
     ```sh
-    forge remove dapphub/solmate
+    spark remove dapphub/solmate
     ```
 
 ### SEE ALSO
 
-[forge](./forge.md), [forge install](./forge-install.md), [forge update](./forge-update.md)
+[spark](./spark.md), [spark install](./spark-install.md), [spark update](./spark-update.md)

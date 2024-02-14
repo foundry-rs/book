@@ -1,10 +1,10 @@
 ## Gas Tracking
 
-Forge can help you estimate how much gas your contract will consume.
+Spark can help you estimate how much gas your contract will consume.
 
-Currently, Forge ships with two different tools for this job, but they may be merged in the future:
+Currently, Spark ships with two different tools for this job, but they may be merged in the future:
 
-- [**Gas reports**](./gas-reports.md): Gas reports give you an overview of how much Forge thinks the
+- [**Gas reports**](./gas-reports.md): Gas reports give you an overview of how much Spark thinks the
   individual functions in your contracts will consume in gas.
 - [**Gas snapshots**](./gas-snapshots.md): Gas snapshots give you an overview of how much
   each test consumes in gas.

@@ -4,29 +4,29 @@ If you face any issues while installing, check out the [FAQ](../faq.md).
 
 ### Precompiled binaries
 
-Precompiled binaries are available from the [GitHub releases page](https://github.com/foundry-rs/foundry/releases).
-These are better managed by using [Foundryup](#using-foundryup).
+Precompiled binaries are available from the [GitHub releases page](https://github.com/foxar-rs/foxar/releases).
+These are better managed by using [Foxarup](#using-foxarup).
 
-### Using Foundryup
+### Using Foxarup
 
-Foundryup is the Foundry toolchain installer. You can find more about it [here](https://github.com/foundry-rs/foundry/blob/master/foundryup/README.md).
+Foxarup is the Foxar toolchain installer. You can find more about it [here](https://github.com/foxar-rs/foxar/blob/master/foxarup/README.md).
 
 Open your terminal and run the following command:
 
 ```sh
-curl -L https://foundry.paradigm.xyz | bash
+curl -L https://foxar.paradigm.xyz | bash
 ```
 
-This will install Foundryup, then simply follow the instructions on-screen,
-which will make the `foundryup` command available in your CLI.
+This will install Foxarup, then simply follow the instructions on-screen,
+which will make the `foxarup` command available in your CLI.
 
-Running `foundryup` by itself will install the latest (nightly) [precompiled binaries](#precompiled-binaries): `forge`, `cast`, `anvil`, and `chisel`.
-See `foundryup --help` for more options, like installing from a specific version or commit.
+Running `foxarup` by itself will install the latest (nightly) [precompiled binaries](#precompiled-binaries): `spark`, `probe`, `shuttle`, and `pilot`.
+See `foxarup --help` for more options, like installing from a specific version or commit.
 
 > ℹ️ **Note**
 >
 > If you're on Windows, you will need to install and use [Git BASH](https://gitforwindows.org/) or [WSL](https://learn.microsoft.com/en-us/windows/wsl/install),
-> as your terminal, since Foundryup currently does not support Powershell or Cmd.
+> as your terminal, since Foxarup currently does not support Powershell or Cmd.
 
 ### Building from source
 
@@ -35,7 +35,7 @@ See `foundryup --help` for more options, like installing from a specific version
 You will need the [Rust](https://rust-lang.org) compiler and Cargo, the Rust package manager.
 The easiest way to install both is with [`rustup.rs`](https://rustup.rs/).
 
-Foundry generally only supports building on the latest stable Rust version.
+Foxar generally only supports building on the latest stable Rust version.
 If you have an older Rust version, you can update with `rustup`:
 
 ```sh
@@ -47,56 +47,56 @@ installed with the "Desktop Development With C++" Workloads option.
 
 #### Building
 
-You can either use the different [Foundryup](#using-foundryup) flags:
+You can either use the different [Foxarup](#using-foxarup) flags:
 
 ```sh
-foundryup --branch master
-foundryup --path path/to/foundry
+foxarup --branch master
+foxarup --path path/to/foxar
 ```
 
 Or, by using a single Cargo command:
 
 ```sh
-cargo install --git https://github.com/foundry-rs/foundry --profile local --locked forge cast chisel anvil
+cargo install --git https://github.com/foxar-rs/foxar --profile local --locked spark probe pilot shuttle
 ```
 
-Or, by manually building from a local copy of the [Foundry repository](https://github.com/foundry-rs/foundry):
+Or, by manually building from a local copy of the [Foxar repository](https://github.com/foxar-rs/foxar):
 
 ```sh
 # clone the repository
-git clone https://github.com/foundry-rs/foundry.git
-cd foundry
-# install Forge
-cargo install --path ./crates/forge --profile local --force --locked
-# install Cast
-cargo install --path ./crates/cast --profile local --force --locked
-# install Anvil
-cargo install --path ./crates/anvil --profile local --force --locked
-# install Chisel
-cargo install --path ./crates/chisel --profile local --force --locked
+git clone https://github.com/foxar-rs/foxar.git
+cd foxar
+# install Spark
+cargo install --path ./crates/spark --profile local --force --locked
+# install Probe
+cargo install --path ./crates/probe --profile local --force --locked
+# install Shuttle
+cargo install --path ./crates/shuttle --profile local --force --locked
+# install Pilot
+cargo install --path ./crates/pilot --profile local --force --locked
 ```
 
 ### Installing for CI in Github Action
 
-See the [foundry-rs/foundry-toolchain](https://github.com/foundry-rs/foundry-toolchain) GitHub Action.
+See the [foxar-rs/foxar-toolchain](https://github.com/foxar-rs/foxar-toolchain) GitHub Action.
 
-### Using Foundry with Docker
+### Using Foxar with Docker
 
-Foundry can also be used entirely within a Docker container. If you don't have it, Docker can be installed directly from [Docker's website](https://docs.docker.com/get-docker/).
+Foxar can also be used entirely within a Docker container. If you don't have it, Docker can be installed directly from [Docker's website](https://docs.docker.com/get-docker/).
 
 Once installed, you can download the latest release by running:
 
 ```sh
-docker pull ghcr.io/foundry-rs/foundry:latest
+docker pull ghcr.io/foxar-rs/foxar:latest
 ```
 
-It is also possible to build the docker image locally. From the Foundry repository, run:
+It is also possible to build the docker image locally. From the Foxar repository, run:
 
 ```sh
-docker build -t foundry .
+docker build -t foxar .
 ```
 
-For examples and guides on using this image, see the [Docker tutorial section](../tutorials/foundry-docker).
+For examples and guides on using this image, see the [Docker tutorial section](../tutorials/foxar-docker).
 
 > ℹ️ **Note**
 >

@@ -1,10 +1,10 @@
-# cast create2
+# probe create2
 
 Generate a deterministic contract address using CREATE2
 
 ```bash
-$ cast create2 --help
-Usage: cast create2 [OPTIONS]
+$ probe create2 --help
+Usage: probe create2 [OPTIONS]
 
 Options:
   -s, --starts-with <HEX>      Prefix for the contract address

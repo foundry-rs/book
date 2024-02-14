@@ -1,12 +1,12 @@
-## cast namehash
+## probe namehash
 
 ### NAME
 
-cast-namehash - Calculate the ENS namehash of a name.
+probe-namehash - Calculate the ENS namehash of a name.
 
 ### SYNOPSIS
 
-``cast namehash`` [*options*] *name*
+``probe namehash`` [*options*] *name*
 
 ### DESCRIPTION
 
@@ -20,9 +20,9 @@ Calculate the ENS namehash of a name.
 
 1. Calculate the namehash of an ENS name.
     ```sh
-    cast namehash vitalik.eth
+    probe namehash vitalik.eth
     ```
 
 ### SEE ALSO
 
-[cast](./cast.md), [cast lookup-address](./cast-lookup-address.md), [cast resolve-name](./cast-resolve-name.md)
+[probe](./probe.md), [probe lookup-address](./probe-lookup-address.md), [probe resolve-name](./probe-resolve-name.md)

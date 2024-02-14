@@ -1,10 +1,10 @@
-# forge script
+# spark script
 
 Run a smart contract as a script, building transactions that can be sent onchain
 
 ```bash
-$ forge script --help
-Usage: forge script [OPTIONS] <PATH> [ARGS]...
+$ spark script --help
+Usage: spark script [OPTIONS] <PATH> [ARGS]...
 
 Arguments:
   <PATH>
@@ -36,8 +36,8 @@ Options:
           
           This is auto-enabled for common networks without EIP1559.
 
-      --broadcast
-          Broadcasts the transactions
+      --broadprobe
+          Broadprobes the transactions
 
       --skip-simulation
           Skips on-chain simulation
@@ -63,7 +63,7 @@ Options:
       --debug
           Open the script in the debugger.
           
-          Takes precedence over broadcast.
+          Takes precedence over broadprobe.
 
       --slow
           Makes sure a transaction is sent, only after its previous one has been confirmed and succeeded
@@ -281,7 +281,7 @@ Wallet options - keystore:
           [aliases: keystores]
 
       --account <ACCOUNT_NAMES>
-          Use a keystore from the default keystores folder (~/.foundry/keystores) by its filename
+          Use a keystore from the default keystores folder (~/.foxar/keystores) by its filename
           
           [env: ETH_KEYSTORE_ACCOUNT=]
           [aliases: accounts]

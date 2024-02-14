@@ -1,10 +1,10 @@
-# cast namehash
+# probe namehash
 
 Calculate the ENS namehash of a name
 
 ```bash
-$ cast namehash --help
-Usage: cast namehash [NAME]
+$ probe namehash --help
+Usage: probe namehash [NAME]
 
 Arguments:
   [NAME]  

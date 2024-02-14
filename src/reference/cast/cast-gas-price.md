@@ -1,12 +1,12 @@
-## cast gas-price
+## probe gas-price
 
 ### NAME
 
-cast-gas-price - Get the current gas price.
+probe-gas-price - Get the current gas price.
 
 ### SYNOPSIS
 
-``cast gas-price`` [*options*]
+``probe gas-price`` [*options*]
 
 ### DESCRIPTION
 
@@ -24,9 +24,9 @@ Get the current gas price.
 
 1. Get the current gas price:
     ```sh
-    cast gas-price
+    probe gas-price
     ```
 
 ### SEE ALSO
 
-[cast](./cast.md), [cast basefee](./cast-basefee.md)
+[probe](./probe.md), [probe basefee](./probe-basefee.md)

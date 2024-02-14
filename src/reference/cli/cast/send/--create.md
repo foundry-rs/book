@@ -1,10 +1,10 @@
-# cast send --create
+# probe send --create
 
 Use to deploy raw contract bytecode
 
 ```bash
-$ cast send --create --help
-Usage: cast send --create <CODE> [SIG] [ARGS]...
+$ probe send --create --help
+Usage: probe send --create <CODE> [SIG] [ARGS]...
 
 Arguments:
   <CODE>     The bytecode of the contract to deploy

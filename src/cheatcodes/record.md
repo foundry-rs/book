@@ -32,6 +32,6 @@ emit log_uint(uint256(reads[0])); // 1
 
 ### SEE ALSO
 
-Forge Standard Library
+Spark Standard Library
 
-[Std Storage](../reference/forge-std/std-storage.md)
+[Std Storage](../reference/spark-std/std-storage.md)

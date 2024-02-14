@@ -1,10 +1,10 @@
-# forge build
+# spark build
 
 Build the project's smart contracts
 
 ```bash
-$ forge build --help
-Usage: forge build [OPTIONS]
+$ spark build --help
+Usage: spark build [OPTIONS]
 
 Options:
   -h, --help

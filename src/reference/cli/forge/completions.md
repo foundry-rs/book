@@ -1,10 +1,10 @@
-# forge completions
+# spark completions
 
 Generate shell completions script
 
 ```bash
-$ forge completions --help
-Usage: forge completions <SHELL>
+$ spark completions --help
+Usage: spark completions <SHELL>
 
 Arguments:
   <SHELL>  [possible values: bash, elvish, fish, powershell, zsh]

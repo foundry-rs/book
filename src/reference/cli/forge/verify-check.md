@@ -1,10 +1,10 @@
-# forge verify-check
+# spark verify-check
 
 Check verification status on Etherscan
 
 ```bash
-$ forge verify-check --help
-Usage: forge verify-check [OPTIONS] <ID>
+$ spark verify-check --help
+Usage: spark verify-check [OPTIONS] <ID>
 
 Arguments:
   <ID>

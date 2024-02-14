@@ -1,10 +1,10 @@
-# cast estimate
+# probe estimate
 
 Estimate the gas cost of a transaction
 
 ```bash
-$ cast estimate --help
-Usage: cast estimate [OPTIONS] [TO] [SIG] [ARGS]... [COMMAND]
+$ probe estimate --help
+Usage: probe estimate [OPTIONS] [TO] [SIG] [ARGS]... [COMMAND]
 
 Commands:
   --create  Estimate gas cost to deploy a smart contract
@@ -47,7 +47,7 @@ Options:
           
           The JWT secret will be used to create a JWT for a RPC. For example, the following can be used to simulate a CL `engine_forkchoiceUpdated` call:
           
-          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2 '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc", "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          probe rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2 '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc", "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
           "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
           
           [env: ETH_RPC_JWT_SECRET=]

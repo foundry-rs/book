@@ -12,14 +12,14 @@ function envString(string calldata key, string calldata delimiter) external retu
 
 ### Description
 
-Read an environment variable as `string` or `string[]`. In case the environment variable is not defined, Forge will fail
+Read an environment variable as `string` or `string[]`. In case the environment variable is not defined, Spark will fail
 with the following error message:
 
 > [FAIL. Reason: Failed to get environment variable `FOO` as type `string`: environment variable not found]
 
 ### Tips
 
-- You can put your environment variables in a `.env` file. Forge will automatically load them when running `forge test`.
+- You can put your environment variables in a `.env` file. Spark will automatically load them when running `spark test`.
 - For arrays, you can specify the delimiter used to separate the values with the `delimiter` parameter.
 - Choose a delimiter that doesn't appear in the string values, so that they can be correctly separated.
 

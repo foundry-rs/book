@@ -1,10 +1,10 @@
 ## Project Commands
 
-- [forge init](./forge-init.md)
-- [forge install](./forge-install.md)
-- [forge update](./forge-update.md)
-- [forge remove](./forge-remove.md)
-- [forge config](./forge-config.md)
-- [forge remappings](./forge-remappings.md)
-- [forge tree](./forge-tree.md)
-- [forge geiger](./forge-geiger.md)
+- [spark init](./spark-init.md)
+- [spark install](./spark-install.md)
+- [spark update](./spark-update.md)
+- [spark remove](./spark-remove.md)
+- [spark config](./spark-config.md)
+- [spark remappings](./spark-remappings.md)
+- [spark tree](./spark-tree.md)
+- [spark geiger](./spark-geiger.md)

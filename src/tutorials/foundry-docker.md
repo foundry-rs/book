@@ -1,6 +1,6 @@
-## Dockerizing a Foundry project
+## Dockerizing a Foxar project
 
-This tutorial shows you how to build, test, and deploy a smart contract using Foundry's Docker image. It adapts code from the [solmate nft](./solmate-nft.md) tutorial. If you haven't completed that tutorial yet, and are new to solidity, you may want to start with it first. Alternatively, if you have some familiarity with Docker and Solidity, you can use your own existing project and adjust accordingly. The full source code for both the NFT and the Docker stuff is available [here](https://github.com/dmfxyz/foundry-docker-tutorial).
+This tutorial shows you how to build, test, and deploy a smart contract using Foxar's Docker image. It adapts code from the [solmate nft](./solmate-nft.md) tutorial. If you haven't completed that tutorial yet, and are new to solidity, you may want to start with it first. Alternatively, if you have some familiarity with Docker and Solidity, you can use your own existing project and adjust accordingly. The full source code for both the NFT and the Docker stuff is available [here](https://github.com/dmfxyz/foxar-docker-tutorial).
 
 > This tutorial is for illustrative purposes only and provided on an as-is basis. The tutorial is not audited nor fully tested. No code in this tutorial should be used in a production environment.
 
@@ -10,25 +10,25 @@ The only installation required to run this tutorial is Docker, and optionally, a
 Follow the [Docker installation instructions](/getting-started/installation.html#using-with-docker).
 
  To keep future commands succinct, let's re-tag the image:  
- `docker tag ghcr.io/foundry-rs/foundry:latest foundry:latest`
+ `docker tag ghcr.io/foxar-rs/foxar:latest foxar:latest`
 
-Having Foundry installed locally is not strictly required, but it may be helpful for debugging. You can install it using [foundryup](/getting-started/installation.html#using-foundryup).
+Having Foxar installed locally is not strictly required, but it may be helpful for debugging. You can install it using [foxarup](/getting-started/installation.html#using-foxarup).
 
-Finally, to use any of the `cast` or `forge create` portions of this tutorial, you will need access to an Ethereum node. If you don't have your own node running (likely), you can use a 3rd party node service. We won't recommend a specific provider in this tutorial. A good place to start learning about Nodes-as-a-Service is [Ethereum's article](https://ethereum.org/en/developers/docs/nodes-and-clients/nodes-as-a-service/) on the subject.
+Finally, to use any of the `probe` or `spark create` portions of this tutorial, you will need access to an Ethereum node. If you don't have your own node running (likely), you can use a 3rd party node service. We won't recommend a specific provider in this tutorial. A good place to start learning about Nodes-as-a-Service is [Ethereum's article](https://ethereum.org/en/developers/docs/nodes-and-clients/nodes-as-a-service/) on the subject.
 
 **For the rest of this tutorial, it is assumed that the RPC endpoint of your ethereum node is set like this**: `export RPC_URL=<YOUR_RPC_URL>`
 
-### A tour around the Foundry docker image
+### A tour around the Foxar docker image
 
 The docker image can be used in two primary ways:
-1. As an interface directly to forge and cast
+1. As an interface directly to spark and probe
 2. As a base image for building your own containerized test, build, and deployment tooling
 
-We will cover both, but let's start by taking a look at interfacing with foundry using docker. This is also a good test that your local installation worked!
+We will cover both, but let's start by taking a look at interfacing with foxar using docker. This is also a good test that your local installation worked!
 
-We can run any of the `cast` [commands](/reference/cast/) against our docker image. Let's fetch the latest block information:
+We can run any of the `probe` [commands](/reference/probe/) against our docker image. Let's fetch the latest block information:
 ```sh
-$ docker run foundry "cast block --rpc-url $RPC_URL latest"
+$ docker run foxar "probe block --rpc-url $RPC_URL latest"
 baseFeePerGas        "0xb634241e3"
 difficulty           "0x2e482bdf51572b"
 extraData            "0x486976656f6e20686b"
@@ -52,36 +52,36 @@ transactions         [...]
 uncles               []
 ```
 
-If we're in a directory with some Solidity [source code](https://github.com/dmfxyz/foundry-docker-tutorial), we can mount that directory into docker and use `forge` however we wish. For example:
+If we're in a directory with some Solidity [source code](https://github.com/dmfxyz/foxar-docker-tutorial), we can mount that directory into docker and use `spark` however we wish. For example:
 
 ```sh
-$ docker run -v $PWD:/app foundry "forge test --root /app --watch"
-{{#include ../output/nft_tutorial/forge-test:output}}
+$ docker run -v $PWD:/app foxar "spark test --root /app --watch"
+{{#include ../output/nft_tutorial/spark-test:output}}
 ```
 You can see our code was compiled and tested entirely within the container. Also, since we passed the `--watch` option, the container will recompile the code whenever a change is detected.
 
-> Note: The Foundry docker image is built on alpine and designed to be as slim as possible. For this reason, it does not currently include development resources like `git`. If you are planning to manage your entire development lifecycle within the container, you should build a custom development image on top of Foundry's image.
+> Note: The Foxar docker image is built on alpine and designed to be as slim as possible. For this reason, it does not currently include development resources like `git`. If you are planning to manage your entire development lifecycle within the container, you should build a custom development image on top of Foxar's image.
 
 ### Creating a "build and test" image
-Let's use the Foundry docker image as a base for using our own Docker image. We'll use the image to:
+Let's use the Foxar docker image as a base for using our own Docker image. We'll use the image to:
 1. Build our solidity code
 2. Run our solidity tests
 
 A simple `Dockerfile` can accomplish these two goals:
 ```docker
-# Use the latest foundry image
-FROM ghcr.io/foundry-rs/foundry
+# Use the latest foxar image
+FROM ghcr.io/foxar-rs/foxar
 
 # Copy our source code into the container
 WORKDIR /app
 
 # Build and test the source code
 COPY . .
-RUN forge build
-RUN forge test
+RUN spark build
+RUN spark test
 ```
 
-You can build this docker image and watch forge build/run the tests within the container:
+You can build this docker image and watch spark build/run the tests within the container:
 ```sh
 $ docker build --no-cache --progress=plain .
 ```
@@ -96,7 +96,7 @@ $ docker build --no-cache --progress=plain .
 #9 0.522
 #9 0.522 Encountered a total of 1 failing tests, 9 tests succeeded
 ------
-error: failed to solve: executor failed running [/bin/sh -c forge test]: exit code: 1
+error: failed to solve: executor failed running [/bin/sh -c spark test]: exit code: 1
 ```
 
 Our image failed to build because our tests failed! This is actually a nice property, because it means if we have a Docker image that successfully built (and therefore is available for use), we know the code inside the image passed the tests.*
@@ -107,19 +107,19 @@ Our image failed to build because our tests failed! This is actually a nice prop
 Now, we'll move on to a bit more of an advanced Dockerfile. Let's add an entrypoint that allows us to deploy our code by using the built (and tested!) image. We can target the Rinkeby testnet first.
 
 ```docker
-# Use the latest foundry image
-FROM ghcr.io/foundry-rs/foundry
+# Use the latest foxar image
+FROM ghcr.io/foxar-rs/foxar
 
 # Copy our source code into the container
 WORKDIR /app
 
 # Build and test the source code
 COPY . .
-RUN forge build
-RUN forge test
+RUN spark build
+RUN spark test
 
-# Set the entrypoint to the forge deployment command
-ENTRYPOINT ["forge", "create"]
+# Set the entrypoint to the spark deployment command
+ENTRYPOINT ["spark", "create"]
 ```
 
 Let's build the image, this time giving it a name:
@@ -130,7 +130,7 @@ $ docker build --no-cache --progress=plain -t nft-deployer .
 
 Here's how we can use our docker image to deploy:
 ```sh
-$ docker run nft-deployer --rpc-url $RPC_URL --constructor-args "ForgeNFT" "FNFT" "https://ethereum.org" --private-key $PRIVATE_KEY ./src/NFT.sol:NFT
+$ docker run nft-deployer --rpc-url $RPC_URL --constructor-args "SparkNFT" "FNFT" "https://ethereum.org" --private-key $PRIVATE_KEY ./src/NFT.sol:NFT
 No files changed, compilation skipped
 Deployer: 0x496e09fcb240c33b8fda3b4b74d81697c03b6b3d
 Deployed to: 0x23d465eaa80ad2e5cdb1a2345e4b54edd12560d3
@@ -143,23 +143,23 @@ We've just built, tested, and deployed our contract entirely within a docker con
 
 Docker is about portability, reproducibility, and environment invariance. This means you can be less concerned about unexpected changes when you switch between environments, networks, developers, etc. Here are a few basic examples of why **I** like to use Docker images for smart contract deployment:
 
-* Reduces overhead of ensuring system level dependencies match between deployment environments (e.g. does your production runner always have the same version of `forge` as your dev runner?)
+* Reduces overhead of ensuring system level dependencies match between deployment environments (e.g. does your production runner always have the same version of `spark` as your dev runner?)
 * Increases confidence that code has been tested prior to deployment and has not been altered (e.g. if, in the above image, your code re-compiles on deployment, that's a major red flag).
 * Eases pain points around segregation of duties: people with your mainnet credentials do not need to ensure they have the latest compiler, codebase, etc. It's easy to ensure that the docker deploy image someone ran in testnet is identical to the one targeting mainnet.
 * At the risk of sounding web2, Docker is an accepted standard on virtually all public cloud providers. It makes it easy to schedule jobs, tasks, etc that need to interact with the blockchain.
 
 
 ### Troubleshooting
-As noted above, the Foundry image does not include `git` by default. This can cause certain commands to fail without a clear cause. For example:
+As noted above, the Foxar image does not include `git` by default. This can cause certain commands to fail without a clear cause. For example:
 ```bash
-$ docker run foundry "forge init --no-git /test"
+$ docker run foxar "spark init --no-git /test"
 Initializing /test...
 Installing ds-test in "/test/lib/ds-test", (url: https://github.com/dapphub/ds-test, tag: None)
 Error:
    0: No such file or directory (os error 2)
 
 Location:
-   cli/src/cmd/forge/install.rs:107
+   cli/src/cmd/spark/install.rs:107
 ```
-In this case, the failure is still caused by a missing `git` installation. The recommended fix is to build off the existing Foundry image and install any additional development dependencies you need.
+In this case, the failure is still caused by a missing `git` installation. The recommended fix is to build off the existing Foxar image and install any additional development dependencies you need.
 

@@ -2,7 +2,7 @@
 // ANCHOR: all
 pragma solidity 0.8.10;
 
-import "forge-std/Test.sol";
+import "spark-std/Test.sol";
 
 contract EmitContractTest is Test {
     event Transfer(address indexed from, address indexed to, uint256 amount);

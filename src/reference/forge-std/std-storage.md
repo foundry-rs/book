@@ -5,7 +5,7 @@ Std Storage is a library that makes manipulating storage easy.
 To use Std Storage, import the following in your test contract:
 
 ```solidity
-import {stdStorage, StdStorage} from "forge-std/Test.sol";              
+import {stdStorage, StdStorage} from "spark-std/Test.sol";              
 ```
 
 Add the following line in your test contract:

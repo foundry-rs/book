@@ -1,12 +1,12 @@
-## cast 4byte
+## probe 4byte
 
 ### NAME
 
-cast-4byte - Get the function signatures for the given selector from <https://sig.eth.samczsun.com>.
+probe-4byte - Get the function signatures for the given selector from <https://sig.eth.samczsun.com>.
 
 ### SYNOPSIS
 
-``cast 4byte`` [*options*] *sig*
+``probe 4byte`` [*options*] *sig*
 
 ### DESCRIPTION
 
@@ -20,9 +20,9 @@ Get the function signatures for the given selector from <https://sig.eth.samczsu
 
 1. Get the function signature for the selector `0x8cc5ce99`:
     ```sh
-    cast 4byte 0x8cc5ce99
+    probe 4byte 0x8cc5ce99
     ```
 
 ### SEE ALSO
 
-[cast](./cast.md), [cast 4byte-decode](./cast-4byte-decode.md), [cast 4byte-event](./cast-4byte-event.md), [cast selectors](./cast-selectors.md)
+[probe](./probe.md), [probe 4byte-decode](./probe-4byte-decode.md), [probe 4byte-event](./probe-4byte-event.md), [probe selectors](./probe-selectors.md)

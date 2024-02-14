@@ -1,8 +1,8 @@
 ## Block Commands
 
-- [cast find-block](./cast-find-block.md)
-- [cast gas-price](./cast-gas-price.md)
-- [cast block-number](./cast-block-number.md)
-- [cast basefee](./cast-basefee.md)
-- [cast block](./cast-block.md)
-- [cast age](./cast-age.md)
+- [probe find-block](./probe-find-block.md)
+- [probe gas-price](./probe-gas-price.md)
+- [probe block-number](./probe-block-number.md)
+- [probe basefee](./probe-basefee.md)
+- [probe block](./probe-block.md)
+- [probe age](./probe-age.md)

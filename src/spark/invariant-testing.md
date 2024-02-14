@@ -11,11 +11,11 @@ Invariant testing campaigns have two dimensions, `runs` and `depth`:
 
 These and other invariant configuration aspects are explained [`here`](#configuring-invariant-test-execution).
 
-Similar to how standard tests are run in Foundry by prefixing a function name with `test`, invariant tests are denoted by prefixing the function name with `invariant` (e.g., `function invariant_A()`).
+Similar to how standard tests are run in Foxar by prefixing a function name with `test`, invariant tests are denoted by prefixing the function name with `invariant` (e.g., `function invariant_A()`).
 
 ### Configuring invariant test execution
 
-Invariant tests execution is governed by parameters that can be controlled by users via Forge configuration primitives. Configs can be applied globally or on a per-test basis. For details on this topic please refer to
+Invariant tests execution is governed by parameters that can be controlled by users via Spark configuration primitives. Configs can be applied globally or on a per-test basis. For details on this topic please refer to
  📚 [`Global config`](../reference/config/testing.md) and 📚 [`In-line config`](../reference/config/inline-test-config.md).
 
 ## Defining Invariants
@@ -146,7 +146,7 @@ targetContract2: 50%
 This is something to be mindful of when designing target contracts, as target contracts with less functions will have each function called more often due to this probability distribution.
 
 ### Invariant Test Helper Functions
-Invariant test helper functions are included in [`forge-std`](https://github.com/foundry-rs/forge-std/blob/master/src/StdInvariant.sol) to allow for configurable invariant test setup. The helper functions are outlined below:
+Invariant test helper functions are included in [`spark-std`](https://github.com/foxar-rs/spark-std/blob/master/src/StdInvariant.sol) to allow for configurable invariant test setup. The helper functions are outlined below:
 
 | Function | Description |
 |-|-|
@@ -383,7 +383,7 @@ function deposit(uint256 assets) public virtual {
 
 ### Bounded/Unbounded Functions
 
-In addition, with Handlers, input parameters can be bounded to reasonable expected values such that `fail_on_revert` in `foundry.toml` can be set to `true`. This can be accomplished using the `bound()` helper function from `forge-std`. This ensures that every function call that is being made by the fuzzer must be successful against the protocol in order to get tests to pass. This is very useful for visibility and confidence that the protocol is being tested in the desired way.
+In addition, with Handlers, input parameters can be bounded to reasonable expected values such that `fail_on_revert` in `foxar.toml` can be set to `true`. This can be accomplished using the `bound()` helper function from `spark-std`. This ensures that every function call that is being made by the fuzzer must be successful against the protocol in order to get tests to pass. This is very useful for visibility and confidence that the protocol is being tested in the desired way.
 
 ```solidity
 function deposit(uint256 assets) external {
@@ -433,7 +433,7 @@ function deposit(uint256 assets) external {
 
 ### Actor Management
 
-In the function calls above, it can be seen that `address(this)` is the sole depositor in the ERC-4626 contract, which is not a realistic representation of its intended use. By leveraging the `prank` cheatcodes in `forge-std`, each Handler can manage a set of actors and use them to perform the same function call from different `msg.sender` addresses. This can be accomplished using the following modifier:
+In the function calls above, it can be seen that `address(this)` is the sole depositor in the ERC-4626 contract, which is not a realistic representation of its intended use. By leveraging the `prank` cheatcodes in `spark-std`, each Handler can manage a set of actors and use them to perform the same function call from different `msg.sender` addresses. This can be accomplished using the following modifier:
 
 ```solidity
 address[] public actors;

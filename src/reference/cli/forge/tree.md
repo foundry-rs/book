@@ -1,10 +1,10 @@
-# forge tree
+# spark tree
 
 Display a tree visualization of the project's dependency graph
 
 ```bash
-$ forge tree --help
-Usage: forge tree [OPTIONS]
+$ spark tree --help
+Usage: spark tree [OPTIONS]
 
 Options:
       --no-dedupe

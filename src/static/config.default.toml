@@ -19,8 +19,8 @@ libraries = []
 cache = true
 # The cache directory if enabled
 cache_path = 'cache'
-# Where the broadcast logs are stored
-broadcast = 'broadcast'
+# Where the broadprobe logs are stored
+broadprobe = 'broadprobe'
 # additional solc allow paths
 allow_paths = []
 # additional solc include paths
@@ -35,7 +35,7 @@ gas_reports = ['*']
 gas_reports_ignore = []
 # Override the Solidity version (this overrides `auto_detect_solc`)
 #solc_version = '0.8.10'
-# Whether or not Forge should auto-detect the solc version to use
+# Whether or not Spark should auto-detect the solc version to use
 auto_detect_solc = true
 # Disables downloading missing solc versions
 offline = false
@@ -99,7 +99,7 @@ bytecode_hash = "ipfs"
 revert_strings = "default"
 # If enabled, the Solidity compiler is instructed to generate bytecode
 # only for the required contracts. This can reduce compile time
-# for `forge test`, but is experimental.
+# for `spark test`, but is experimental.
 sparse_mode = false
 # Contains alias -> URL|Env pairs for RPC endpoints that can be accessed during testing
 rpc_endpoints = { optimism = "https://optimism.alchemyapi.io/v2/...", mainnet = "${RPC_MAINNET}" }

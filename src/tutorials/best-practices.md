@@ -1,7 +1,7 @@
 # Best Practices
 
-This guide documents the suggested best practices when developing with Foundry.
-In general, it's recommended to handle as much as possible with [`forge fmt`](../reference/config/formatter.md), and anything this doesn't handle is below.
+This guide documents the suggested best practices when developing with Foxar.
+In general, it's recommended to handle as much as possible with [`spark fmt`](../reference/config/formatter.md), and anything this doesn't handle is below.
 
 - [Best Practices](#best-practices)
   - [General Contract Guidance](#general-contract-guidance)
@@ -24,7 +24,7 @@ In general, it's recommended to handle as much as possible with [`forge fmt`](..
 1. Always use named import syntax, don't import full files. This restricts what is being imported to just the named items, not everything in the file. Importing full files can result in solc complaining about duplicate definitions and slither erroring, especially as repos grow and have more dependencies with overlapping names.
 
    - Good: `import {MyContract} from "src/MyContract.sol"` to only import `MyContract`.
-   - Bad: `import "src/MyContract.sol"` imports everything in `MyContract.sol`. (Importing `forge-std/Test` or `Script` can be an exception here, so you get the console library, etc).
+   - Bad: `import "src/MyContract.sol"` imports everything in `MyContract.sol`. (Importing `spark-std/Test` or `Script` can be an exception here, so you get the console library, etc).
 
 1. Note the tradeoffs between absolute and relative paths for imports (where absolute paths are relative to the repo root, e.g. `"src/interfaces/IERC20.sol"`), and choose the best approach for your project:
 
@@ -33,7 +33,7 @@ In general, it's recommended to handle as much as possible with [`forge fmt`](..
 
 1. If copying a library from a dependency (instead of importing it), use the `ignore = []` option in the config file to avoid formatting that file. This makes diffing it against the original simpler for reviewers and auditors.
 
-1. Similarly, feel free to use the `// forgefmt: disable-*` comment directives to ignore lines/sections of code that look better with manual formatting. Supported values for `*` are:
+1. Similarly, feel free to use the `// sparkfmt: disable-*` comment directives to ignore lines/sections of code that look better with manual formatting. Supported values for `*` are:
 
    - `disable-line`
    - `disable-next-line`
@@ -58,7 +58,7 @@ Additional best practices from [samsczun](https://twitter.com/samczsun)'s [How D
 
    - If the contract is big and you want to split it over multiple files, group them logically like `MyContract.owner.t.sol`, `MyContract.deposits.t.sol`, etc.
 
-1. Never make assertions in the `setUp` function, instead use a dedicated test like `test_SetUpState()` if you need to ensure your `setUp` function does what you expected. More info on why in [foundry-rs/foundry#1291](https://github.com/foundry-rs/foundry/issues/1291)
+1. Never make assertions in the `setUp` function, instead use a dedicated test like `test_SetUpState()` if you need to ensure your `setUp` function does what you expected. More info on why in [foxar-rs/foxar#1291](https://github.com/foxar-rs/foxar/issues/1291)
 
 1. For unit tests, there are two major ways to organize the tests:
 
@@ -79,7 +79,7 @@ Additional best practices from [samsczun](https://twitter.com/samczsun)'s [How D
 
    - Test contracts/functions should be written in the same order as the original functions in the contract-under-test.
    - All unit tests that test the same function should live serially in the test file.
-   - Test contracts can inherit from any helper contracts you want. For example `contract MyContractTest` tests `MyContract`, but may inherit from forge-std's `Test`, as well as e.g. your own `TestUtilities` helper contract.
+   - Test contracts can inherit from any helper contracts you want. For example `contract MyContractTest` tests `MyContract`, but may inherit from spark-std's `Test`, as well as e.g. your own `TestUtilities` helper contract.
 
 1. Integration tests should live in the same `test` directory, with a clear naming convention. These may be in dedicated files, or they may live next to related unit tests in existing test files.
 
@@ -93,7 +93,7 @@ Additional best practices from [samsczun](https://twitter.com/samczsun)'s [How D
 
 1. Name your constants and immutables using `ALL_CAPS_WITH_UNDERSCORES`, to make it easier to distinguish them from variables and functions.
 
-1. When using assertions like `assertEq`, consider leveraging the last string param to make it easier to identify failures. These can be kept brief, or even just be numbers&mdash;they basically serve as a replacement for showing line numbers of the revert, e.g. `assertEq(x, y, "1")` or `assertEq(x, y, "sum1")`. _(Note: [foundry-rs/foundry#2328](https://github.com/foundry-rs/foundry/issues/2328) tracks integrating this natively)._
+1. When using assertions like `assertEq`, consider leveraging the last string param to make it easier to identify failures. These can be kept brief, or even just be numbers&mdash;they basically serve as a replacement for showing line numbers of the revert, e.g. `assertEq(x, y, "1")` or `assertEq(x, y, "sum1")`. _(Note: [foxar-rs/foxar#2328](https://github.com/foxar-rs/foxar/issues/2328) tracks integrating this natively)._
 
 1. When testing events, prefer setting all `expectEmit` arguments to `true`, i.e. `vm.expectEmit(true, true, true, true)` or `vm.expectEmit()`. Benefits:
 
@@ -101,28 +101,28 @@ Additional best practices from [samsczun](https://twitter.com/samczsun)'s [How D
    - If you add a topic (i.e. a new indexed parameter), it's now tested by default.
    - Even if you only have 1 topic, the extra `true` arguments don't hurt.
 
-1. Remember to write invariant tests! For the assertion string, use a verbose english description of the invariant: `assertEq(x + y, z, "Invariant violated: the sum of x and y must always equal z")`. For more info on this, check out the [Invariant Testing](../forge/invariant-testing) tutorial.
+1. Remember to write invariant tests! For the assertion string, use a verbose english description of the invariant: `assertEq(x + y, z, "Invariant violated: the sum of x and y must always equal z")`. For more info on this, check out the [Invariant Testing](../spark/invariant-testing) tutorial.
 
 ### Fork Tests
 
 1. Don't feel like you need to give forks tests special treatment, and use them liberally:
 
    - Mocks are _required_ in closed-source web2 development—you have to mock API responses because the code for that API isn't open source so you cannot just run it locally. But for blockchains that's not true: any code you're interacting with that's already deployed can be locally executed and even modified for free. So why introduce the risk of a wrong mock if you don't need to?
-   - A common reason to avoid fork tests and prefer mocks is that fork tests are slow. But this is not always true. By pinning to a block number, forge caches RPC responses so only the first run is slower, and subsequent runs are significantly faster. See [this benchmark](https://github.com/mds1/convex-shutdown-simulation/), where it took forge 7 minutes for the first run with a remote RPC, but only half a second once data was cached. [Alchemy](https://alchemy.com), [Infura](https://infura.io) and [Tenderly](https://tenderly.co) offer free archive data, so pinning to a block shouldn't be problematic.
-   - Note that the [foundry-toolchain](https://github.com/foundry-rs/foundry-toolchain) GitHub Action will cache RPC responses in CI by default, and it will also update the cache when you update your fork tests.
+   - A common reason to avoid fork tests and prefer mocks is that fork tests are slow. But this is not always true. By pinning to a block number, spark caches RPC responses so only the first run is slower, and subsequent runs are significantly faster. See [this benchmark](https://github.com/mds1/convex-shutdown-simulation/), where it took spark 7 minutes for the first run with a remote RPC, but only half a second once data was cached. [Alchemy](https://alchemy.com), [Infura](https://infura.io) and [Tenderly](https://tenderly.co) offer free archive data, so pinning to a block shouldn't be problematic.
+   - Note that the [foxar-toolchain](https://github.com/foxar-rs/foxar-toolchain) GitHub Action will cache RPC responses in CI by default, and it will also update the cache when you update your fork tests.
 
 1. Be careful with fuzz tests on a fork to avoid burning through RPC requests with non-deterministic fuzzing. If the input to your fork fuzz test is some parameter which is used in an RPC call to fetch data (e.g. querying the token balance of an address), each run of a fuzz test uses at least 1 RPC request, so you'll quickly hit rate limits or usage limits. Solutions to consider:
 
    - Replace multiple RPC calls with a single [multicall](https://github.com/mds1/multicall).
-   - Specify a fuzz/invariant [seed](/src/reference/config/testing.md#seed): this makes sure each `forge test` invocation uses the same fuzz inputs. RPC results are cached locally, so you'll only query the node the first time.
+   - Specify a fuzz/invariant [seed](/src/reference/config/testing.md#seed): this makes sure each `spark test` invocation uses the same fuzz inputs. RPC results are cached locally, so you'll only query the node the first time.
    - In CI, consider setting the fuzz seed using a [computed environment variable](https://github.com/sablier-labs/v2-core/blob/d1157b49ed4bceeff0c4e437c9f723e88c134d3a/.github/workflows/ci.yml#L252-L254) so it changes every day or every week. This gives flexibility on the tradeoff between increasing randomness to find more bugs vs. using a seed to reduce RPC requests.
    - Structure your tests so the data you are fuzzing over is computed locally by your contract, and not data that is used in an RPC call (may or may not be feasible based on what you're doing).
    - Lastly, you can of course always run a local node or bump your RPC plan.
 
 1. When writing fork tests, do not use the `--fork-url` flag. Instead, prefer the following approach for its improved flexibility:
 
-   - Define `[rpc_endpoints]` in the `foundry.toml` config file and use the [forking cheatcodes](../forge/fork-testing.md#forking-cheatcodes).
-   - Access the RPC URL endpoint in your test with forge-std's `stdChains.ChainName.rpcUrl`. See the list of supported chains and expected config file aliases [here](https://github.com/foundry-rs/forge-std/blob/ff4bf7db008d096ea5a657f2c20516182252a3ed/src/StdCheats.sol#L255-L271).
+   - Define `[rpc_endpoints]` in the `foxar.toml` config file and use the [forking cheatcodes](../spark/fork-testing.md#forking-cheatcodes).
+   - Access the RPC URL endpoint in your test with spark-std's `stdChains.ChainName.rpcUrl`. See the list of supported chains and expected config file aliases [here](https://github.com/foxar-rs/spark-std/blob/ff4bf7db008d096ea5a657f2c20516182252a3ed/src/StdCheats.sol#L255-L271).
    - Always pin to a block so tests are deterministic and RPC responses are cached.
    - More info on this fork test approach can be found [here](https://twitter.com/msolomon44/status/1564742781129502722) (this predates `StdChains` so that aspect is a bit out of date).
 
@@ -202,14 +202,14 @@ You should _ensure_ that no _tainted_ data ever reaches a _sink_. That means tha
    - Write your deploy script and scaffold tests by running that script. Then, run all tests against the state resulting from your production deployment script. This is a great way to gain confidence in a deploy script.
    - Within your script itself, use `require` statements (or the `if (condition) revert()` pattern if you prefer) to stop execution of your script if something is wrong. For example, `require(computedAddress == deployedAddress, "address mismatch")`. Using the `assertEq` helpers instead will not stop execution.
 
-1. **Carefully audit which transactions are broadcast**. Transactions not broadcast are still executed in the context of a test, so missing broadcasts or extra broadcasts are easy sources of error in the previous step.
+1. **Carefully audit which transactions are broadprobe**. Transactions not broadprobe are still executed in the context of a test, so missing broadprobes or extra broadprobes are easy sources of error in the previous step.
 
-1. **Watch out for frontrunning**. Forge simulates your script, generates transaction data from the simulation results, then broadcasts the transactions. Make sure your script is robust against chain-state changing between the simulation and broadcast. A sample script vulnerable to this is below:
+1. **Watch out for frontrunning**. Spark simulates your script, generates transaction data from the simulation results, then broadprobes the transactions. Make sure your script is robust against chain-state changing between the simulation and broadprobe. A sample script vulnerable to this is below:
     ```solidity
     // Pseudo-code, may not compile.
     contract VulnerableScript is Script {
        function run() public {
-          vm.startBroadcast();
+          vm.startBroadprobe();
     
           // Transaction 1: Deploy a new Gnosis Safe with CREATE.
           // Because we're using CREATE instead of CREATE2, the address of the new
@@ -219,13 +219,13 @@ You should _ensure_ that no _tainted_ data ever reaches a _sink_. That means tha
           // Transaction 2: Send tokens to the new Safe.
           // We know the address of mySafe is a function of the nonce of the
           // gnosisSafeProxyFactory. If someone else deploys a Gnosis Safe between
-          // the simulation and broadcast, the address of mySafe will be different,
+          // the simulation and broadprobe, the address of mySafe will be different,
           // and this script will send 1000 DAI to the other person's Safe. In this
           // case, we can protect ourselves from this by using CREATE2 instead of
           // CREATE, but every situation may have different solutions.
           dai.transfer(mySafe, 1000e18);
     
-          vm.stopBroadcast();
+          vm.stopBroadprobe();
        }
     }
     ```
@@ -242,16 +242,16 @@ You should _ensure_ that no _tainted_ data ever reaches a _sink_. That means tha
 
 ### Private Key Management
 
-Script execution requires a private key to send transactions. This key controls all funds in the account, so it must be protected carefully. There are a few options for securely broadcasting transactions through a script:
+Script execution requires a private key to send transactions. This key controls all funds in the account, so it must be protected carefully. There are a few options for securely broadprobeing transactions through a script:
 
-1. **Use a hardware wallet.** Hardware wallets such as Ledger and Trezor store seed phrases in a secure enclave. Forge can send a raw transaction to the wallet, and the wallet will sign the transaction. The signed transaction is returned to forge and broadcaster. This way, private keys never leave the hardware wallet, making this a very secure approach. To use a hardware wallet with scripts, see the `--ledger` and `--trezor` [flags](../reference/forge/forge-script.md).
+1. **Use a hardware wallet.** Hardware wallets such as Ledger and Trezor store seed phrases in a secure enclave. Spark can send a raw transaction to the wallet, and the wallet will sign the transaction. The signed transaction is returned to spark and broadprobeer. This way, private keys never leave the hardware wallet, making this a very secure approach. To use a hardware wallet with scripts, see the `--ledger` and `--trezor` [flags](../reference/spark/spark-script.md).
 
 2. **Use a private key directly.** With this approach you expose a private key on your machine, making it riskier than the above option. Therefore the suggested way to directly use a private key is to generate a new wallet for executing the script, and only send that wallet enough funds to run the script. Then, stop using the key after the script is complete. This way, if the key is compromised, only the funds on this throwaway key are lost, as opposed to losing everything in your wallet.
 
    1. With this approach, it's very important that your scripts or contracts don't rely on `msg.sender` since the sender will not be an account that's meant to be used again. For example, if a deploy script configures a contract owner, ensure the owner a constructor argument and not set to `msg.sender`.
    2. To use this approach, you can either store the private key in an environment variable and use cheat codes to read it in, or use the `--private-key` flag to directly provide the key.
 
-3. **Use a keystore.** This can be thought of as a middle ground between the above two approaches. With [`cast wallet import`](../reference/cast/cast-wallet-import.md) you import a private key and encrypt it with a password. This still temporarily exposes your private key on your machine, but it becomes encrypted and you'll provide the password to decrypt it to run a script.
+3. **Use a keystore.** This can be thought of as a middle ground between the above two approaches. With [`probe wallet import`](../reference/probe/probe-wallet-import.md) you import a private key and encrypt it with a password. This still temporarily exposes your private key on your machine, but it becomes encrypted and you'll provide the password to decrypt it to run a script.
 
 Additional security precautions when using scripts:
 
@@ -266,14 +266,14 @@ Additional security precautions when using scripts:
 
 1. For public or external methods and variables, use [NatSpec](https://docs.soliditylang.org/en/latest/natspec-format.html) comments.
 
-   - `forge doc` will parse these to autogenerate documentation.
+   - `spark doc` will parse these to autogenerate documentation.
    - Etherscan will display them in the contract UI.
 
 1. For simple NatSpec comments, consider just documenting params in the docstring, such as `` /// @notice Returns the sum of `x` and `y`. ``, instead of using `@param` tags.
 
 1. For complex NatSpec comments, consider using a tool like [PlantUML](https://plantuml.com/ascii-art) to generate ASCII art diagrams to help explain complex aspects of the codebase.
 
-1. Any markdown in your comments will carry over properly when generating docs with `forge doc`, so structure comments with markdown when useful.
+1. Any markdown in your comments will carry over properly when generating docs with `spark doc`, so structure comments with markdown when useful.
 
    - Good: `` /// @notice Returns the sum of `x` and `y`. ``
    - Bad: `/// @notice Returns the sum of x and y.`
@@ -285,10 +285,10 @@ Write more secure code and better tests:
 - [transmissions11/solcurity](https://github.com/transmissions11/solcurity)
 - [nascentxyz/simple-security-toolkit](https://github.com/nascentxyz/simple-security-toolkit)
 
-Foundry in Action:
+Foxar in Action:
 
-- [awesome-foundry](https://github.com/crisgarner/awesome-foundry): A curated list of awesome of the Foundry development framework.
-- [Nomad Monorepo](https://github.com/nomad-xyz/monorepo): All the `contracts-*` packages. Good example of using many Foundry features including fuzzing, `ffi` and various cheatcodes.
-- [Sablier V2 Core](https://github.com/sablier-labs/v2-core): Another good example of many Foundry features. Also a pioneer of the state tree testing approach, see the `*.tree` files.
-- [Uniswap Periphery](https://github.com/gakonst/v3-periphery-foundry): Good example of using inheritance to isolate test fixtures.
-- [PRBMath](https://github.com/PaulRBerg/prb-math): A library for fixed-point arithmetic in Solidity, with many parameterized tests that harness Foundry.
+- [awesome-foxar](https://github.com/crisgarner/awesome-foxar): A curated list of awesome of the Foxar development framework.
+- [Nomad Monorepo](https://github.com/nomad-xyz/monorepo): All the `contracts-*` packages. Good example of using many Foxar features including fuzzing, `ffi` and various cheatcodes.
+- [Sablier V2 Core](https://github.com/sablier-labs/v2-core): Another good example of many Foxar features. Also a pioneer of the state tree testing approach, see the `*.tree` files.
+- [Uniswap Periphery](https://github.com/gakonst/v3-periphery-foxar): Good example of using inheritance to isolate test fixtures.
+- [PRBMath](https://github.com/PaulRBerg/prb-math): A library for fixed-point arithmetic in Solidity, with many parameterized tests that harness Foxar.

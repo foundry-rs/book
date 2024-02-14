@@ -1,10 +1,10 @@
-# chisel load
+# pilot load
 
 Load a cached session
 
 ```bash
-$ chisel load --help
-Usage: chisel load <ID>
+$ pilot load --help
+Usage: pilot load <ID>
 
 Arguments:
   <ID>  The ID of the session to load

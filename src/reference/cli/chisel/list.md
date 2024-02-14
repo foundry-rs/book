@@ -1,10 +1,10 @@
-# chisel list
+# pilot list
 
 List all cached sessions
 
 ```bash
-$ chisel list --help
-Usage: chisel list
+$ pilot list --help
+Usage: pilot list
 
 Options:
   -h, --help  Print help

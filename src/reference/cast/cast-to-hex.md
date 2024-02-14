@@ -1,12 +1,12 @@
-## cast to-hex
+## probe to-hex
 
 ### NAME
 
-cast-to-hex - Converts a number of one base to another
+probe-to-hex - Converts a number of one base to another
 
 ### SYNOPSIS
 
-``cast to-hex`` [*options*] *value*
+``probe to-hex`` [*options*] *value*
 
 ### DESCRIPTION
 
@@ -21,4 +21,4 @@ Converts a number of one base to another
 
 ### SEE ALSO
 
-[cast](./cast.md)
+[probe](./probe.md)

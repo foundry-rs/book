@@ -1,10 +1,10 @@
-# cast
+# probe
 
 Perform Ethereum RPC calls from the comfort of your command line
 
 ```bash
-$ cast --help
-Usage: cast <COMMAND>
+$ probe --help
+Usage: probe <COMMAND>
 
 Commands:
   4byte                  Get the function signatures for the given selector from https://openchain.xyz [aliases: 4, 4b]
@@ -96,5 +96,5 @@ Options:
   -h, --help     Print help
   -V, --version  Print version
 
-Find more information in the book: http://book.getfoundry.sh/reference/cast/cast.html
+Find more information in the book: http://book.getfoxar.sh/reference/probe/probe.html
 ```

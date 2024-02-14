@@ -1,8 +1,8 @@
 ## Fork Testing
 
-Forge supports testing in a forked environment with two different approaches:
+Spark supports testing in a forked environment with two different approaches:
 
-- [**Forking Mode**](#forking-mode) — use a single fork for all your tests via the `forge test --fork-url` flag
+- [**Forking Mode**](#forking-mode) — use a single fork for all your tests via the `spark test --fork-url` flag
 - [**Forking Cheatcodes**](#forking-cheatcodes) — create, select, and manage multiple forks directly in Solidity test code via [forking cheatcodes](../cheatcodes/forking.md)
 
 Which approach to use? Forking mode affords running an entire test suite against a specific forked environment, while forking cheatcodes provide more flexibility and expressiveness to work with multiple forks in your tests. Your particular use case and testing strategy will help inform which approach to use.
@@ -12,7 +12,7 @@ Which approach to use? Forking mode affords running an entire test suite against
 To run all tests in a forked environment, such as a forked Ethereum mainnet, pass an RPC URL via the `--fork-url` flag:
 
 ```bash
-forge test --fork-url <your_rpc_url>
+spark test --fork-url <your_rpc_url>
 ```
 
 The following values are changed to reflect those of the chain at the moment of forking:
@@ -29,7 +29,7 @@ The following values are changed to reflect those of the chain at the moment of 
 It is possible to specify a block from which to fork with `--fork-block-number`:
 
 ```bash
-forge test --fork-url <your_rpc_url> --fork-block-number 1
+spark test --fork-url <your_rpc_url> --fork-block-number 1
 ```
 
 Forking is especially useful when you need to interact with existing contracts. You may choose to do integration testing this way, as if you were on an actual network.
@@ -38,25 +38,25 @@ Forking is especially useful when you need to interact with existing contracts. 
 
 If both `--fork-url` and `--fork-block-number` are specified, then data for that block is cached for future test runs.
 
-The data is cached in `~/.foundry/cache/rpc/<chain name>/<block number>`. To clear the cache, simply remove the directory or run [`forge clean`](../reference/forge/forge-clean.md) (removes all build artifacts and cache directories).
+The data is cached in `~/.foxar/cache/rpc/<chain name>/<block number>`. To clear the cache, simply remove the directory or run [`spark clean`](../reference/spark/spark-clean.md) (removes all build artifacts and cache directories).
 
-It is also possible to ignore the cache entirely by passing `--no-storage-caching`, or with `foundry.toml` by configuring [`no_storage_caching`](../reference/config/testing.md#no_storage_caching) and [`rpc_storage_caching`](../reference/config/testing.md#rpc_storage_caching).
+It is also possible to ignore the cache entirely by passing `--no-storage-caching`, or with `foxar.toml` by configuring [`no_storage_caching`](../reference/config/testing.md#no_storage_caching) and [`rpc_storage_caching`](../reference/config/testing.md#rpc_storage_caching).
 
 #### Improved traces
 
-Forge supports identifying contracts in a forked environment with Etherscan.
+Spark supports identifying contracts in a forked environment with Etherscan.
 
 To use this feature, pass the Etherscan API key via the `--etherscan-api-key` flag:
 
 ```bash
-forge test --fork-url <your_rpc_url> --etherscan-api-key <your_etherscan_api_key>
+spark test --fork-url <your_rpc_url> --etherscan-api-key <your_etherscan_api_key>
 ```
 
 Alternatively, you can set the `ETHERSCAN_API_KEY` environment variable.
 
 ### Forking Cheatcodes
 
-Forking cheatcodes allow you to enter forking mode programmatically in your Solidity test code. Instead of configuring forking mode via `forge` CLI arguments, these cheatcodes allow you to use forking mode on a test-by-test basis and work with multiple forks in your tests. Each fork is identified via its own unique `uint256` identifier.
+Forking cheatcodes allow you to enter forking mode programmatically in your Solidity test code. Instead of configuring forking mode via `spark` CLI arguments, these cheatcodes allow you to use forking mode on a test-by-test basis and work with multiple forks in your tests. Each fork is identified via its own unique `uint256` identifier.
 
 #### Usage
 

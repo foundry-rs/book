@@ -1,10 +1,10 @@
-# forge selectors list
+# spark selectors list
 
 List selectors from current workspace
 
 ```bash
-$ forge selectors list --help
-Usage: forge selectors list [OPTIONS] [CONTRACT]
+$ spark selectors list --help
+Usage: spark selectors list [OPTIONS] [CONTRACT]
 
 Arguments:
   [CONTRACT]

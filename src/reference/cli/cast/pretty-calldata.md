@@ -1,10 +1,10 @@
-# cast pretty-calldata
+# probe pretty-calldata
 
 Pretty print calldata.
 
 ```bash
-$ cast pretty-calldata --help
-Usage: cast pretty-calldata [OPTIONS] [CALLDATA]
+$ probe pretty-calldata --help
+Usage: probe pretty-calldata [OPTIONS] [CALLDATA]
 
 Arguments:
   [CALLDATA]

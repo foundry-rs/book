@@ -1,26 +1,26 @@
-## forge init
+## spark init
 
 ### NAME
 
-forge-init - Create a new Forge project.
+spark-init - Create a new Spark project.
 
 ### SYNOPSIS
 
-``forge init`` [*options*] [*root*]
+``spark init`` [*options*] [*root*]
 
 ### DESCRIPTION
 
-Create a new Forge project in the directory *root* (by default the current working directory).
+Create a new Spark project in the directory *root* (by default the current working directory).
 
 The default template creates the following project layout:
 
 ```ignore
-{{#include ../../output/hello_foundry/tree-with-files:output}}
+{{#include ../../output/hello_foxar/tree-with-files:output}}
 ```
 
 However, it is possible to create a project from another using `--template`.
 
-By default, `forge init` will also initialize a new git repository, install some submodules and create an initial commit message.
+By default, `spark init` will also initialize a new git repository, install some submodules and create an initial commit message.
 
 If you do not want this behavior, pass `--no-git`.
 
@@ -61,19 +61,19 @@ If you do not want this behavior, pass `--no-git`.
 
 1. Create a new project:
     ```sh
-    forge init hello_foundry
+    spark init hello_foxar
     ```
 
 2. Create a new project, but do not create a git repository:
     ```sh
-    forge init --no-git hello_foundry
+    spark init --no-git hello_foxar
     ```
 
 3. Forcibly create a new project in a non-empty directory:
     ```sh
-    forge init --force 
+    spark init --force 
     ```
 
 ### SEE ALSO
 
-[forge](./forge.md)
+[spark](./spark.md)

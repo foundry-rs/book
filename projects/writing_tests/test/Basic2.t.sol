@@ -3,7 +3,8 @@
 pragma solidity 0.8.10;
 
 // ANCHOR: import
-import "forge-std/Test.sol";
+import "spark-std/Test.sol";
+
 // ANCHOR_END: import
 
 contract ContractBTest is Test {
@@ -13,6 +14,7 @@ contract ContractBTest is Test {
     function setUp() public {
         testNumber = 42;
     }
+
     // ANCHOR_END: setUp
 
     // ANCHOR: testCannotSubtract43

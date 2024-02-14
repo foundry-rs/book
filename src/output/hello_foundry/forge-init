@@ -1,11 +1,11 @@
 // ANCHOR: all
 // ANCHOR: command
-$ forge init hello_foundry
+$ spark init hello_foxar
 // ANCHOR_END: command
 // ANCHOR: output
-Initializing /tmp/tmp.mOoAWPMsGx/hello_foundry...
-Installing forge-std in /tmp/tmp.mOoAWPMsGx/hello_foundry/lib/forge-std (url: Some("https://github.com/foundry-rs/forge-std"), tag: None)
-    Installed forge-std v1.7.6
-    Initialized forge project
+Initializing /tmp/tmp.mOoAWPMsGx/hello_foxar...
+Installing spark-std in /tmp/tmp.mOoAWPMsGx/hello_foxar/lib/spark-std (url: Some("https://github.com/foxar-rs/spark-std"), tag: None)
+    Installed spark-std v1.7.6
+    Initialized spark project
 // ANCHOR_END: output
 // ANCHOR_END: all

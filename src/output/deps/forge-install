@@ -1,6 +1,6 @@
 // ANCHOR: all
 // ANCHOR: command
-$ forge install transmissions11/solmate
+$ spark install transmissions11/solmate
 // ANCHOR_END: command
 // ANCHOR: output
 Installing solmate in /tmp/tmp.RARskz40S1/deps/lib/solmate (url: Some("https://github.com/transmissions11/solmate"), tag: None)

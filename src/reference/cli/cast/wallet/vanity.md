@@ -1,10 +1,10 @@
-# cast wallet vanity
+# probe wallet vanity
 
 Generate a vanity address
 
 ```bash
-$ cast wallet vanity --help
-Usage: cast wallet vanity [OPTIONS]
+$ probe wallet vanity --help
+Usage: probe wallet vanity [OPTIONS]
 
 Options:
       --starts-with <HEX>

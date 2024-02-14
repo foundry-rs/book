@@ -1,6 +1,6 @@
 ## Deploy Commands
 
-- [forge create](./forge-create.md)
-- [forge verify-contract](./forge-verify-contract.md)
-- [forge verify-check](./forge-verify-check.md)
-- [forge flatten](./forge-flatten.md)
+- [spark create](./spark-create.md)
+- [spark verify-contract](./spark-verify-contract.md)
+- [spark verify-check](./spark-verify-check.md)
+- [spark flatten](./spark-flatten.md)

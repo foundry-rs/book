@@ -1,10 +1,10 @@
-# cast wallet sign
+# probe wallet sign
 
 Sign a message or typed data
 
 ```bash
-$ cast wallet sign --help
-Usage: cast wallet sign [OPTIONS] <MESSAGE>
+$ probe wallet sign --help
+Usage: probe wallet sign [OPTIONS] <MESSAGE>
 
 Arguments:
   <MESSAGE>
@@ -62,7 +62,7 @@ Wallet options - keystore:
           [env: ETH_KEYSTORE=]
 
       --account <ACCOUNT_NAME>
-          Use a keystore from the default keystores folder (~/.foundry/keystores) by its filename
+          Use a keystore from the default keystores folder (~/.foxar/keystores) by its filename
           
           [env: ETH_KEYSTORE_ACCOUNT=]
 

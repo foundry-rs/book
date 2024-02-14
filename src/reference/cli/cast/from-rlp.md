@@ -1,10 +1,10 @@
-# cast from-rlp
+# probe from-rlp
 
 Decodes RLP encoded data.
 
 ```bash
-$ cast from-rlp --help
-Usage: cast from-rlp [VALUE]
+$ probe from-rlp --help
+Usage: probe from-rlp [VALUE]
 
 Arguments:
   [VALUE]

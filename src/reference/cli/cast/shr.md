@@ -1,10 +1,10 @@
-# cast shr
+# probe shr
 
 Perform a right shifting operation
 
 ```bash
-$ cast shr --help
-Usage: cast shr [OPTIONS] <VALUE> <BITS>
+$ probe shr --help
+Usage: probe shr [OPTIONS] <VALUE> <BITS>
 
 Arguments:
   <VALUE>  The value to shift

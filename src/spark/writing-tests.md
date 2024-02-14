@@ -2,11 +2,11 @@
 
 Tests are written in Solidity. If the test function reverts, the test fails, otherwise it passes.
 
-Let's go over the most common way of writing tests, using the [Forge Standard Library](https://github.com/foundry-rs/forge-std)'s `Test` contract, which is the preferred way of writing tests with Forge.
+Let's go over the most common way of writing tests, using the [Spark Standard Library](https://github.com/foxar-rs/spark-std)'s `Test` contract, which is the preferred way of writing tests with Spark.
 
-In this section, we'll go over the basics using the functions from the Forge Std's `Test` contract, which is itself a superset of [DSTest](https://github.com/dapphub/ds-test). You will learn how to use more advanced stuff from the Forge Standard Library [soon](./forge-std.md). 
+In this section, we'll go over the basics using the functions from the Spark Std's `Test` contract, which is itself a superset of [DSTest](https://github.com/dapphub/ds-test). You will learn how to use more advanced stuff from the Spark Standard Library [soon](./spark-std.md). 
 
-DSTest provides basic logging and assertion functionality. To get access to the functions, import `forge-std/Test.sol` and inherit from `Test` in your test contract:
+DSTest provides basic logging and assertion functionality. To get access to the functions, import `spark-std/Test.sol` and inherit from `Test` in your test contract:
 
 ```solidity
 {{#include ../../projects/writing_tests/test/Basic.t.sol:import}}
@@ -18,7 +18,7 @@ Let's examine a basic test:
 {{#include ../../projects/writing_tests/test/Basic.t.sol:all}}
 ```
 
-Forge uses the following keywords in tests:
+Spark uses the following keywords in tests:
 
 - `setUp`: An optional function invoked before each test case is run.
     ```solidity
@@ -46,7 +46,7 @@ such as `Ownable.sol`'s `onlyOwner` modifier, then the test contract `0xb4c...7e
 > ⚠️ **Note**
 >
 > Test functions must have either `external` or `public` visibility. Functions declared as `internal` or
-> `private` won't be picked up by Forge, even if they are prefixed with `test`.
+> `private` won't be picked up by Spark, even if they are prefixed with `test`.
 
 ### Shared setups
 

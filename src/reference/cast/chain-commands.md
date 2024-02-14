@@ -1,5 +1,5 @@
 ## Chain Commands
 
-- [cast chain-id](./cast-chain-id.md)
-- [cast chain](./cast-chain.md)
-- [cast client](./cast-client.md)
+- [probe chain-id](./probe-chain-id.md)
+- [probe chain](./probe-chain.md)
+- [probe client](./probe-client.md)

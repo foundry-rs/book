@@ -1,16 +1,16 @@
-## `forge cache ls`
+## `spark cache ls`
 
 ### NAME
 
-forge-cache-ls - Shows cached data from ``~/.foundry``.
+spark-cache-ls - Shows cached data from ``~/.foxar``.
 
 ### SYNOPSIS
 
-`forge cache ls` [*chains..*]
+`spark cache ls` [*chains..*]
 
 ### DESCRIPTION
 
-Lists what is in the `~/.foundry/cache` folder currently.
+Lists what is in the `~/.foxar/cache` folder currently.
 
 ### OPTIONS
 
@@ -18,20 +18,20 @@ Lists what is in the `~/.foundry/cache` folder currently.
 
 ### EXAMPLES
 
-1. Show the entire cache (also, ``forge cache ls`` is an alias for this)
+1. Show the entire cache (also, ``spark cache ls`` is an alias for this)
     ```sh
-    forge cache ls all
+    spark cache ls all
     ```
 
 2. Show cache data for a specific chain, by name
     ```sh
-    forge cache ls rinkeby
+    spark cache ls rinkeby
     ```
    
 3. Specify multiple chains
     ```sh
-    forge cache ls rinkeby mainnet
+    spark cache ls rinkeby mainnet
     ```
 
 ### SEE ALSO
-[forge](./forge.md), [forge cache](./forge-cache.md)
+[spark](./spark.md), [spark cache](./spark-cache.md)

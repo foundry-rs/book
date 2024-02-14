@@ -13,9 +13,9 @@ If the boolean expression evaluates to false, the fuzzer will discard the curren
 The `assume` cheatcode should mainly be used for very narrow checks.
 Broad checks will slow down tests as it will take a while to find valid values, and the test may fail if you hit the max number of rejects.
 
-You can configure the rejection thresholds by setting [`fuzz.max_test_rejects`][max-test-rejects] in your `foundry.toml` file.
+You can configure the rejection thresholds by setting [`fuzz.max_test_rejects`][max-test-rejects] in your `foxar.toml` file.
 
-For broad checks, such as ensuring a `uint256` falls within a certain range, you can bound your input with the modulo operator or Forge Standard's [`bound`][forge-std-bound] method.
+For broad checks, such as ensuring a `uint256` falls within a certain range, you can bound your input with the modulo operator or Spark Standard's [`bound`][spark-std-bound] method.
 
 More information on filtering via `assume` can be found [here][filtering-guide].
 
@@ -41,10 +41,10 @@ function testSomethingElse(uint256 a) public {
 
 ### SEE ALSO
 
-Forge Standard Library
+Spark Standard Library
 
-[`bound`](../reference/forge-std/bound.md)
+[`bound`](../reference/spark-std/bound.md)
 
 [max-test-rejects]: ../reference/config/testing.md#max_test_rejects
-[forge-std-bound]: ../reference/forge-std/bound.md
+[spark-std-bound]: ../reference/spark-std/bound.md
 [filtering-guide]: https://altsysrq.github.io/proptest-book/proptest/tutorial/filtering.html#filtering

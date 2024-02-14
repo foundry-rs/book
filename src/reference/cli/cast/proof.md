@@ -1,10 +1,10 @@
-# cast proof
+# probe proof
 
 Generate a storage proof for a given storage slot
 
 ```bash
-$ cast proof --help
-Usage: cast proof [OPTIONS] <ADDRESS> [SLOTS]...
+$ probe proof --help
+Usage: probe proof [OPTIONS] <ADDRESS> [SLOTS]...
 
 Arguments:
   <ADDRESS>
@@ -32,7 +32,7 @@ Options:
           
           The JWT secret will be used to create a JWT for a RPC. For example, the following can be used to simulate a CL `engine_forkchoiceUpdated` call:
           
-          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2 '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc", "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          probe rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2 '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc", "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
           "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
           
           [env: ETH_RPC_JWT_SECRET=]

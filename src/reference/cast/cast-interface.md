@@ -1,12 +1,12 @@
-## cast interface
+## probe interface
 
 ### NAME
 
-cast-interface - Generate a Solidity interface from a given ABI.
+probe-interface - Generate a Solidity interface from a given ABI.
 
 ### SYNOPSIS
 
-``cast interface`` [*options*] *address_or_path*
+``probe interface`` [*options*] *address_or_path*
 
 ### DESCRIPTION
 
@@ -47,24 +47,24 @@ If an address is provided, then the interface is generated from the ABI of the a
 
 1. Generate an interface from a file:
     ```sh
-    cast interface ./path/to/abi.json
+    probe interface ./path/to/abi.json
     ```
 
 2. Generate an interface using Etherscan:
     ```sh
-    cast interface -o IWETH.sol 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
+    probe interface -o IWETH.sol 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
     ```
 
 3. Generate and name an interface from a file:
     ```sh
-    cast interface -n LilENS ./path/to/abi.json
+    probe interface -n LilENS ./path/to/abi.json
     ```
 
 4. Fetch the JSON ABI of a contract on Etherscan:
     ```sh
-    cast interface -o IWETH.sol -j 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
+    probe interface -o IWETH.sol -j 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
     ```
 
 ### SEE ALSO
 
-[cast](./cast.md), [cast proof](./cast-proof.md)
+[probe](./probe.md), [probe proof](./probe-proof.md)

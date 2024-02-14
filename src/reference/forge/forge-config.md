@@ -1,22 +1,22 @@
-## forge config
+## spark config
 
 ### NAME
 
-forge-config - Display the current config.
+spark-config - Display the current config.
 
 ### SYNOPSIS
 
-``forge config`` [*options*]
+``spark config`` [*options*]
 
 ### DESCRIPTION
 
 Display the current config.
 
-This command can be used to create a new basic `foundry.toml` or to see
+This command can be used to create a new basic `foxar.toml` or to see
 what values are currently set, taking environment variables and the global
 configuration file into account.
 
-The command supports almost all flags of the other commands in Forge to allow
+The command supports almost all flags of the other commands in Spark to allow
 overriding values in the displayed configuration.
 
 ### OPTIONS
@@ -35,14 +35,14 @@ overriding values in the displayed configuration.
 
 1. Create a new basic config:
     ```sh
-    forge config > foundry.toml
+    spark config > foxar.toml
     ```
 
-2. Enable FFI in `foundry.toml`:
+2. Enable FFI in `foxar.toml`:
     ```sh
-    forge config --ffi > foundry.toml
+    spark config --ffi > foxar.toml
     ```
 
 ### SEE ALSO
 
-[forge](./forge.md)
+[spark](./spark.md)

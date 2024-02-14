@@ -1,48 +1,48 @@
-## chisel
+## pilot
 
 ### NAME
 
-`chisel` - Test and receive verbose feedback on Solidity inputs within a REPL environment.
+`pilot` - Test and receive verbose feedback on Solidity inputs within a REPL environment.
 
 ### SYNOPSIS
 
-`chisel` [*options*]
+`pilot` [*options*]
 
 #### Subcommands (bin)
 
-1. `chisel list`
-    * Displays all cached sessions stored in `~/.foundry/cache/chisel`.
-1. `chisel load <id>`
+1. `pilot list`
+    * Displays all cached sessions stored in `~/.foxar/cache/pilot`.
+1. `pilot load <id>`
     * If a cached session with `id = <id>` exists, launches the REPL and loads the corresponding session.
-1. `chisel view <id>`
+1. `pilot view <id>`
     * If a cached session with `id = <id>` exists, displays the source code of the session's REPL contract.
-1. `chisel clear-cache`
-    * Deletes all cache files within the `~/.foundry/cache/chisel` directory. These sessions are unrecoverable, so use this command with care.
+1. `pilot clear-cache`
+    * Deletes all cache files within the `~/.foxar/cache/pilot` directory. These sessions are unrecoverable, so use this command with care.
 
 #### Flags
 
-See `man chisel` or `chisel --help` for all available environment configuration flags.
+See `man pilot` or `pilot --help` for all available environment configuration flags.
 
 ### DESCRIPTION
 
-Chisel is a Solidity REPL (short for "read-eval-print loop") that allows developers to write
+Pilot is a Solidity REPL (short for "read-eval-print loop") that allows developers to write
 and test Solidity code snippets. It provides an interactive environment for writing and executing
 Solidity code, as well as a set of built-in commands for working with and debugging your code. This
 makes it a useful tool for quickly testing and experimenting with Solidity code without having to 
-spin up a sandbox foundry test suite.
+spin up a sandbox foxar test suite.
 
 ### Usage
 
-To open chisel, simply execute the `chisel` binary.
+To open pilot, simply execute the `pilot` binary.
 
-From there, input valid Solidity code. There are two kinds of inputs to the chisel prompt apart from commands:
+From there, input valid Solidity code. There are two kinds of inputs to the pilot prompt apart from commands:
 1. Expressions
     * Expressions are statements that return a value or otherwise can be evaluated on their own. For example,
       `1 << 8` is an expression that will evaluate to a `uint256` with the value `256`. Expressions will be
       evaluated up front, and will not persist in the session state past their evaluation.
     * Examples:
         * `address(0).balance`
-        * `abi.encode(256, bytes32(0), "Chisel!")`
+        * `abi.encode(256, bytes32(0), "Pilot!")`
         * `myViewFunc(128)`
         * ...
 1. Statements
@@ -75,7 +75,7 @@ From there, input valid Solidity code. There are two kinds of inputs to the chis
 #### Available Commands
 
 ```text
-{{#include ../../output/chisel/help:output}}
+{{#include ../../output/pilot/help:output}}
 ```
 
 **General**
@@ -86,7 +86,7 @@ Display all commands.
 
 `!quit` | `!q`
 
-Quit Chisel.
+Quit Pilot.
 
 `!exec <command> [args]` | `!e <command> [args]`
 
@@ -109,8 +109,8 @@ deploy-config
 deployments
 dist
 echidna.yaml
-forge-artifacts
-foundry.toml
+spark-artifacts
+foxar.toml
 hardhat.config.ts
 layout-lock.json
 node_modules
@@ -132,45 +132,45 @@ tsconfig.json
 
 Clear current session source.
 
-Under the hood, each Chisel session has an underlying contract that is altered as you input statements. This command clears this contract and resets your session to the default state.
+Under the hood, each Pilot session has an underlying contract that is altered as you input statements. This command clears this contract and resets your session to the default state.
 
 `!source` | `!so`
 
 Display the source code of the current session.
 
-As mentioned above, each Chisel session has an underlying contract. This command will display the source code of this contract.
+As mentioned above, each Pilot session has an underlying contract. This command will display the source code of this contract.
 
 `!save [id]` | `!s [id]`
 
 Save the current session to cache.
 
-Chisel allows for caching sessions, which can be very useful if you are testing more complex logic in Chisel or if you want to return to a session at a later time. All cached Chisel sessions are stored in `~/.foundry/cache/chisel`.
+Pilot allows for caching sessions, which can be very useful if you are testing more complex logic in Pilot or if you want to return to a session at a later time. All cached Pilot sessions are stored in `~/.foxar/cache/pilot`.
 
-If an `id` argument is not supplied, Chisel will automatically assign a numerical ID to the session you are saving.
+If an `id` argument is not supplied, Pilot will automatically assign a numerical ID to the session you are saving.
 
 `!load <id>` | `!l <id>`
 
 Load a previous session ID from cache.
 
-This command will load a previously cached session from the cache. Along with the session's source, all environment settings will also be loaded. The `id` argument must correspond with an existing cached session in the `~/.foundry/cache/chisel` directory.
+This command will load a previously cached session from the cache. Along with the session's source, all environment settings will also be loaded. The `id` argument must correspond with an existing cached session in the `~/.foxar/cache/pilot` directory.
 
 `!list` | `!ls`
 
 List all cached sessions.
 
-This command will display all cached chisel sessions within the `~/.foundry/cache/chisel` directory.
+This command will display all cached pilot sessions within the `~/.foxar/cache/pilot` directory.
 
 `!clearcache` | `!cc`
 
-Clear the chisel cache of all stored sessions.
+Clear the pilot cache of all stored sessions.
 
-Deletes all cache files within the `~/.foundry/cache/chisel` directory. These sessions are unrecoverable, so use this command with care.
+Deletes all cache files within the `~/.foxar/cache/pilot` directory. These sessions are unrecoverable, so use this command with care.
 
 `!export` | `!ex`
 
 Export the current session source to a script file.
 
-If `chisel` was executed from the root directory of a foundry project, it is possible to export your current session to a foundry script in the `scripts` dir of your project.
+If `pilot` was executed from the root directory of a foxar project, it is possible to export your current session to a foxar script in the `scripts` dir of your project.
 
 `!fetch <addr> <name>` | `!fe <addr> <name>`
 
@@ -178,13 +178,13 @@ Fetch the interface of a verified contract on Etherscan.
 
 This command will attempt to parse the interface of a verified contract @ `<addr>` from the Etherscan API. If successful, the interface will be inserted into the session source with the name `<name>`.
 
-At the moment, only interfaces of verified contracts on Ethereum mainnet can be fetched. In the future, Chisel will support fetching interfaces from multiple Etherscan-supported chains.
+At the moment, only interfaces of verified contracts on Ethereum mainnet can be fetched. In the future, Pilot will support fetching interfaces from multiple Etherscan-supported chains.
 
 `!edit`
 
 Open the current session's `run()` function in an editor.
 
-chisel will use the editor defined in the `$EDITOR` environment variable.
+pilot will use the editor defined in the `$EDITOR` environment variable.
 
 **Environment**
 
@@ -198,7 +198,7 @@ Attempts to fork the state of the provided RPC. If no URL is provided, returns t
 
 Enable / disable traces for the current session.
 
-When tracing is enabled, foundry-style call tracing and logs will be printed after each statement is inserted.
+When tracing is enabled, foxar-style call tracing and logs will be printed after each statement is inserted.
 
 **Debug**
 

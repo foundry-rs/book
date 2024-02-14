@@ -1,10 +1,10 @@
-# cast wallet new
+# probe wallet new
 
 Create a new random keypair
 
 ```bash
-$ cast wallet new --help
-Usage: cast wallet new [OPTIONS] [PATH]
+$ probe wallet new --help
+Usage: probe wallet new [OPTIONS] [PATH]
 
 Arguments:
   [PATH]
@@ -21,7 +21,7 @@ Options:
           
           This is UNSAFE to use and we recommend using the --password.
           
-          [env: CAST_PASSWORD=]
+          [env: PROBE_PASSWORD=]
 
   -n, --number <NUMBER>
           Number of wallets to generate

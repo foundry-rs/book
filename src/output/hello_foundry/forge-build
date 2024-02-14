@@ -1,6 +1,6 @@
 // ANCHOR: all
 // ANCHOR: command
-$ forge build
+$ spark build
 // ANCHOR_END: command
 // ANCHOR: output
 Compiling 24 files with 0.8.23

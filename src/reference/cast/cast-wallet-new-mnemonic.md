@@ -1,12 +1,12 @@
-## cast new-mnemonic
+## probe new-mnemonic
 
 ### NAME
 
-cast-wallet-new-mnemonic - Creates a new mnemonic with a set number of words.
+probe-wallet-new-mnemonic - Creates a new mnemonic with a set number of words.
 
 ### SYNOPSIS
 
-``cast wallet new-mnemonic`` [*options*]
+``probe wallet new-mnemonic`` [*options*]
 
 ### DESCRIPTION
 
@@ -28,7 +28,7 @@ Generates a random BIP39 mnemonic phrase.
 
 1. Create a new mnemonic with 24 words.
     ```sh
-    cast wallet new-mnemonic --words 24
+    probe wallet new-mnemonic --words 24
     ```
    
 ```text
@@ -44,4 +44,4 @@ Private key: 0x832a3784d0a130c8a0ce3cc6dfc336a41ca7801a117eac7a3bfaace52e4d239c
 
 ### SEE ALSO
 
-[cast](./cast.md)
+[probe](./probe.md)

@@ -1,12 +1,12 @@
-## cast wallet new
+## probe wallet new
 
 ### NAME
 
-cast-wallet-new - Create a new random keypair.
+probe-wallet-new - Create a new random keypair.
 
 ### SYNOPSIS
 
-``cast wallet new`` [*options*] [*path*]
+``probe wallet new`` [*options*] [*path*]
 
 ### DESCRIPTION
 
@@ -28,7 +28,7 @@ If *path* is specified, then the new keypair will be written to a JSON keystore 
 &nbsp;&nbsp;&nbsp;&nbsp;Password for the JSON keystore in cleartext.
 
 &nbsp;&nbsp;&nbsp;&nbsp;This is **unsafe** to use and we recommend using `--password` instead.  
-&nbsp;&nbsp;&nbsp;&nbsp;Environment: `CAST_PASSWORD`
+&nbsp;&nbsp;&nbsp;&nbsp;Environment: `PROBE_PASSWORD`
 
 {{#include common-options.md}}
 
@@ -36,14 +36,14 @@ If *path* is specified, then the new keypair will be written to a JSON keystore 
 
 1. Create a new keypair without saving it to a keystore:
     ```sh
-    cast wallet new
+    probe wallet new
     ```
 
 2. Create a new keypair and save it in the `keystore` directory:
     ```sh
-    cast wallet new keystore
+    probe wallet new keystore
     ```
 
 ### SEE ALSO
 
-[cast](./cast.md), [cast wallet](./cast-wallet.md)
+[probe](./probe.md), [probe wallet](./probe-wallet.md)

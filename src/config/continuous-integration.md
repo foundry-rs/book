@@ -11,20 +11,20 @@ name: test
 
 jobs:
   check:
-    name: Foundry project
+    name: Foxar project
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
         with:
           submodules: recursive
 
-      - name: Install Foundry
-        uses: foundry-rs/foundry-toolchain@v1
+      - name: Install Foxar
+        uses: foxar-rs/foxar-toolchain@v1
         with:
           version: nightly
 
       - name: Run tests
-        run: forge test -vvv
+        run: spark test -vvv
 ```
 
 ### Travis CI
@@ -36,15 +36,15 @@ language: rust
 cache:
   cargo: true
   directories:
-    - $HOME/.foundry
+    - $HOME/.foxar
 
 install:
-  - curl -L https://foundry.paradigm.xyz | bash
-  - export PATH=$PATH:$HOME/.foundry/bin
-  - foundryup -b master
+  - curl -L https://foxar.paradigm.xyz | bash
+  - export PATH=$PATH:$HOME/.foxar/bin
+  - foxarup -b master
 
 script:
-  - forge test -vvv
+  - spark test -vvv
 ```
 
 ## GitLab CI
@@ -57,8 +57,8 @@ variables:
   GIT_SUBMODULE_STRATEGY: recursive
 
 jobs:
-  image: ghcr.io/foundry-rs/foundry
+  image: ghcr.io/foxar-rs/foxar
   script:
-    - forge install
-    - forge test -vvv
+    - spark install
+    - spark test -vvv
 ```

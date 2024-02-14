@@ -1,12 +1,12 @@
-## forge verify-contract
+## spark verify-contract
 
 ### NAME
 
-forge-verify-contract - Verify smart contracts on a chosen verification provider.
+spark-verify-contract - Verify smart contracts on a chosen verification provider.
 
 ### SYNOPSIS
 
-``forge verify-contract`` [*options*] *address* *contract*
+``spark verify-contract`` [*options*] *address* *contract*
 
 ### DESCRIPTION
 
@@ -73,7 +73,7 @@ you can specify a file containing **space-separated** constructor arguments with
 
 `--watch`  
 &nbsp;&nbsp;&nbsp;&nbsp;Wait for verification result after submission.  
-&nbsp;&nbsp;&nbsp;&nbsp;Automatically runs `forge verify-check` until the verification either fails or succeeds.
+&nbsp;&nbsp;&nbsp;&nbsp;Automatically runs `spark verify-check` until the verification either fails or succeeds.
 
 {{#include project-options.md}}
 
@@ -83,36 +83,36 @@ you can specify a file containing **space-separated** constructor arguments with
 
 1. Verify a contract with JSON standard input on Etherscan
     ```sh
-    forge verify-contract <address> SomeContract --watch
+    spark verify-contract <address> SomeContract --watch
 
 2. Verify a contract on a custom Sourcify instance
     ```sh
-    forge verify-contract --verifier sourcify \
+    spark verify-contract --verifier sourcify \
       --verifier-url http://localhost:5000 <address> SomeContract
     ```
 
 3. Verify a flattened contract built with solc v0.8.11+commit.d7f03943:
     ```sh
-    forge verify-contract --flatten --watch --compiler-version "v0.8.11+commit.d7f03943" \
-      --constructor-args $(cast abi-encode "constructor(string,string,uint256,uint256)" "ForgeUSD" "FUSD" 18 1000000000000000000000) \
+    spark verify-contract --flatten --watch --compiler-version "v0.8.11+commit.d7f03943" \
+      --constructor-args $(probe abi-encode "constructor(string,string,uint256,uint256)" "SparkUSD" "FUSD" 18 1000000000000000000000) \
       <address> MyToken
     ```
 
 4. Verify a flattened contract by specifying constructor arguments in a file:
     ```sh
-    forge verify-contract --flatten --watch --compiler-version "v0.8.11+commit.d7f03943" \
+    spark verify-contract --flatten --watch --compiler-version "v0.8.11+commit.d7f03943" \
       --constructor-args-path constructor-args.txt <address> src/Token.sol:MyToken
     ```
     where `constructor-args.txt` contains the following content:
     ```text
-    ForgeUSD FUSD 18 1000000000000000000000
+    SparkUSD FUSD 18 1000000000000000000000
     ```
     
 5. Verify a contract with Blockscout right after deployment (make sure you add "/api?" to the end of the Blockscout homepage explorer URL):
     ```sh
-    forge create --rpc-url <rpc_https_endpoint> --private-key $devTestnetPrivateKey src/Contract.sol:SimpleStorage --verify --verifier blockscout --verifier-url <blockscout_homepage_explorer_url>/api? 
+    spark create --rpc-url <rpc_https_endpoint> --private-key $devTestnetPrivateKey src/Contract.sol:SimpleStorage --verify --verifier blockscout --verifier-url <blockscout_homepage_explorer_url>/api? 
     ```
 
 ### SEE ALSO
 
-[forge](./forge.md), [forge create](./forge-create.md), [forge flatten](./forge-flatten.md), [forge verify-check](./forge-verify-check.md)
+[spark](./spark.md), [spark create](./spark-create.md), [spark flatten](./spark-flatten.md), [spark verify-check](./spark-verify-check.md)

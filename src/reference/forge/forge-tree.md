@@ -1,19 +1,19 @@
-## forge tree
+## spark tree
 
 ### NAME
 
-forge-tree - Display a tree visualization of the project's dependency graph.
+spark-tree - Display a tree visualization of the project's dependency graph.
 
 ### SYNOPSIS
 
-``forge tree`` [*options*]
+``spark tree`` [*options*]
 
 ### DESCRIPTION
 
 Display a visualization of the project's dependency graph.
 
 ```ignore
-{{#include ../../output/forge_tree/forge-tree:all}}
+{{#include ../../output/spark_tree/spark-tree:all}}
 ```
 
 ### OPTIONS
@@ -32,4 +32,4 @@ Display a visualization of the project's dependency graph.
 
 ### SEE ALSO
 
-[forge](./forge.md)
+[spark](./spark.md)

@@ -1,12 +1,12 @@
-## cast estimate
+## probe estimate
 
 ### NAME
 
-cast-estimate - Estimate the gas cost of a transaction.
+probe-estimate - Estimate the gas cost of a transaction.
 
 ### SYNOPSIS
 
-``cast estimate`` [*options*] *to* *sig* [*args...*]
+``probe estimate`` [*options*] *to* *sig* [*args...*]
 
 ### DESCRIPTION
 
@@ -32,10 +32,10 @@ The destination (*to*) can be an ENS name or an address.
 
 1. Estimate the gas cost of calling `deposit()` on the WETH contract:
     ```sh
-    cast estimate 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2 \
+    probe estimate 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2 \
       --value 0.1ether "deposit()"
     ```
 
 ### SEE ALSO
 
-[cast](./cast.md), [cast send](./cast-send.md), [cast publish](./cast-publish.md), [cast receipt](./cast-receipt.md)
+[probe](./probe.md), [probe send](./probe-send.md), [probe publish](./probe-publish.md), [probe receipt](./probe-receipt.md)

@@ -33,7 +33,7 @@ The returned type is determined by the type of `defaultValue` parameter passed.
 - Use `envOr(key, defaultValue)` to read a single value
 - Use `envOr(key, delimiter, defaultValue[])` to read an array with delimiter
 - The parsing of the environment variable will be done according to the type of `defaultValue` (e.g. if the default value type is `uint` - the environment variable will be also parsed as `uint`)
-- Use explicit casting for literals to specify type of default variable: `uint(69)` will return an `uint` but `int(69)` will return an `int`
+- Use explicit probeing for literals to specify type of default variable: `uint(69)` will return an `uint` but `int(69)` will return an `int`
 - Same with: `string("")` and `bytes("")` - these will return `string` and `bytes` accordingly
 - Use dynamic arrays (`bool[]`) instead of fixed-size arrays (`bool[4]`) when providing default values (only dynamic arrays are supported)
 

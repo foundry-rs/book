@@ -1,10 +1,10 @@
-# forge init
+# spark init
 
-Create a new Forge project
+Create a new Spark project
 
 ```bash
-$ forge init --help
-Usage: forge init [OPTIONS] [PATH]
+$ spark init --help
+Usage: spark init [OPTIONS] [PATH]
 
 Arguments:
   [PATH]

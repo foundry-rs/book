@@ -1,12 +1,12 @@
-## forge build
+## spark build
 
 ### NAME
 
-forge-build - Build the project's smart contracts.
+spark-build - Build the project's smart contracts.
 
 ### SYNOPSIS
 
-``forge build`` or ``forge b`` [*options*]
+``spark build`` or ``spark b`` [*options*]
 
 ### DESCRIPTION
 
@@ -83,7 +83,7 @@ via_ir = true
 optimizerSteps = ''
 ```
 
-When setup like this, `forge build` (or `forge test` / `forge script`) still uses the standard profile, so by default a `forge script` invocation will deploy your contracts with the production setting. Running `FOUNDRY_PROFILE=lite forge build` (and again, same for the test and script commands) will use the lite profile to reduce compilation times.
+When setup like this, `spark build` (or `spark test` / `spark script`) still uses the standard profile, so by default a `spark script` invocation will deploy your contracts with the production setting. Running `FOXAR_PROFILE=lite spark build` (and again, same for the test and script commands) will use the lite profile to reduce compilation times.
 
 > There are additional optimizer details you can configure, see the [Additional Optimizer Settings](#additional-optimizer-settings) section below for more info.
 
@@ -113,7 +113,7 @@ watched file or directory is changed. The source directory is watched by default
 Sparse mode only compiles files that match certain criteria.
 
 By default, this filter applies to files that have not been changed since the last build, but for commands that
-take file filters (e.g. [forge test](./forge-test.md)), sparse mode will only recompile files that match the filter.
+take file filters (e.g. [spark test](./spark-test.md)), sparse mode will only recompile files that match the filter.
 
 Sparse mode is opt-in until the feature is stabilized. To opt-in to sparse mode and try it out, set [`sparse_mode`][sparse-mode]
 in your configuration file.
@@ -154,7 +154,7 @@ The module is available in `solc` release binaries for OSX and Linux. The latter
 Similarly to the optimizer settings above, the `model_checker` settings must be prefixed with the profile they correspond to: `[profile.default.model_checker]` belongs to the `[profile.default]`.
 
 ```toml
-## foundry.toml
+## foxar.toml
 [profile.default.model_checker]
 contracts = { '/path/to/project/src/Contract.sol' = [ 'Contract' ] }
 engine = 'chc'
@@ -168,7 +168,7 @@ The recommended engine is `chc`, but `bmc` and `all` (runs both) are also accept
 It is also important to set a proper timeout (given in milliseconds), since the default time given to the underlying solvers may not be enough.
 If no verification targets are given, only assertions will be checked.
 
-The model checker will run when `forge build` is invoked, and will show findings as warnings if any.
+The model checker will run when `spark build` is invoked, and will show findings as warnings if any.
 
 ### OPTIONS
 
@@ -193,27 +193,27 @@ The model checker will run when `forge build` is invoked, and will show findings
 
 1. Build the project:
     ```sh
-    forge build
+    spark build
     ```
 
 2. Build the project with solc 0.6.0:
     ```sh
-    forge build --use solc:0.6.0
+    spark build --use solc:0.6.0
     ```
 
 3. Build the project with additional artifact output:
     ```sh
-    forge build --extra-output evm.assembly
+    spark build --extra-output evm.assembly
     ```
 
 4. Build the project in watch mode:
     ```sh
-    forge build --watch
+    spark build --watch
     ```
 
 ### SEE ALSO
 
-[forge](./forge.md), [forge clean](./forge-clean.md), [forge inspect](./forge-inspect.md)
+[spark](./spark.md), [spark clean](./spark-clean.md), [spark inspect](./spark-inspect.md)
 
 [sparse-mode]: ../config/solidity-compiler.md#sparse_mode
 [ir-pipeline]: https://docs.soliditylang.org/en/latest/ir-breaking-changes.html

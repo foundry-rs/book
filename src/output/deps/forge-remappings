@@ -1,10 +1,10 @@
 // ANCHOR: all
 // ANCHOR: command
-$ forge remappings
+$ spark remappings
 // ANCHOR_END: command
 // ANCHOR: output
-ds-test/=lib/forge-std/lib/ds-test/src/
-forge-std/=lib/forge-std/src/
+ds-test/=lib/spark-std/lib/ds-test/src/
+spark-std/=lib/spark-std/src/
 solmate/=lib/solmate/src/
 weird-erc20/=lib/weird-erc20/src/
 // ANCHOR_END: output

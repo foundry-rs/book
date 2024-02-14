@@ -1,10 +1,10 @@
-# cast to-unit
+# probe to-unit
 
 Convert an ETH amount into another unit (ether, gwei or wei).
 
 ```bash
-$ cast to-unit --help
-Usage: cast to-unit [VALUE] [UNIT]
+$ probe to-unit --help
+Usage: probe to-unit [VALUE] [UNIT]
 
 Arguments:
   [VALUE]

@@ -1,10 +1,10 @@
-# cast to-dec
+# probe to-dec
 
 Converts a number of one base to decimal
 
 ```bash
-$ cast to-dec --help
-Usage: cast to-dec [OPTIONS] [VALUE]
+$ probe to-dec --help
+Usage: probe to-dec [OPTIONS] [VALUE]
 
 Arguments:
   [VALUE]  The value to convert

@@ -1,13 +1,13 @@
 ## Dependencies
 
-Forge manages dependencies using [git submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules) by default, which means that it works with any GitHub repository that contains smart contracts.
+Spark manages dependencies using [git submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules) by default, which means that it works with any GitHub repository that contains smart contracts.
 
 ### Adding a dependency
 
-To add a dependency, run [`forge install`](../reference/forge/forge-install.md):
+To add a dependency, run [`spark install`](../reference/spark/spark-install.md):
 
 ```sh
-{{#include ../output/deps/forge-install:all}}
+{{#include ../output/deps/spark-install:all}}
 ```
 
 This pulls the `solmate` library, stages the `.gitmodules` file in git and makes a commit with the message "Installed solmate".
@@ -18,25 +18,25 @@ If we now check the `lib` folder:
 {{#include ../output/deps/tree:all}}
 ```
 
-We can see that Forge installed `solmate`!
+We can see that Spark installed `solmate`!
 
-By default, `forge install` installs the latest master branch version. If you want to install a specific tag or commit, you can do it like so:
+By default, `spark install` installs the latest master branch version. If you want to install a specific tag or commit, you can do it like so:
 
 ```sh
-$ forge install transmissions11/solmate@v7
+$ spark install transmissions11/solmate@v7
 ```
 
 ### Remapping dependencies
 
-Forge can remap dependencies to make them easier to import. Forge will automatically try to deduce some remappings for you:
+Spark can remap dependencies to make them easier to import. Spark will automatically try to deduce some remappings for you:
 
 ```sh
-{{#include ../output/deps/forge-remappings:all}}
+{{#include ../output/deps/spark-remappings:all}}
 ```
 
 These remappings mean:
 
-- To import from `forge-std` we would write: `import "forge-std/Contract.sol";`
+- To import from `spark-std` we would write: `import "spark-std/Contract.sol";`
 - To import from `ds-test` we would write: `import "ds-test/Contract.sol";`
 - To import from `solmate` we would write: `import "solmate/Contract.sol";`
 - To import from `weird-erc20` we would write: `import "weird-erc20/Contract.sol";`
@@ -49,7 +49,7 @@ Let's create a remapping called `solmate-utils` that points to the `utils` folde
 solmate-utils/=lib/solmate/src/utils/
 ```
 
-You can also set remappings in `foundry.toml`.
+You can also set remappings in `foxar.toml`.
 
 ```toml
 remappings = [
@@ -65,26 +65,26 @@ import "@solmate-utils/LibString.sol";
 
 ### Updating dependencies
 
-You can update a specific dependency to the latest commit on the version you have specified using [`forge update <dep>`](../reference/forge/forge-update.md). For example, if we wanted to pull the latest commit from our previously installed master-version of `solmate`, we would run:
+You can update a specific dependency to the latest commit on the version you have specified using [`spark update <dep>`](../reference/spark/spark-update.md). For example, if we wanted to pull the latest commit from our previously installed master-version of `solmate`, we would run:
 
 ```sh
-$ forge update lib/solmate
+$ spark update lib/solmate
 ```
 
-Alternatively, you can do this for all dependencies at once by just running `forge update`.
+Alternatively, you can do this for all dependencies at once by just running `spark update`.
 
 ### Removing dependencies
 
-You can remove dependencies using [`forge remove <deps>...`](../reference/forge/forge-remove.md), where `<deps>` is either the full path to the dependency or just the name. For example, to remove `solmate` both of these commands are equivalent:
+You can remove dependencies using [`spark remove <deps>...`](../reference/spark/spark-remove.md), where `<deps>` is either the full path to the dependency or just the name. For example, to remove `solmate` both of these commands are equivalent:
 
 ```ignore
-$ forge remove solmate
+$ spark remove solmate
 # ... is equivalent to ...
-$ forge remove lib/solmate
+$ spark remove lib/solmate
 ```
 
 ### Hardhat compatibility
 
-Forge also supports Hardhat-style projects where dependencies are npm packages (stored in `node_modules`) and contracts are stored in `contracts` as opposed to `src`.
+Spark also supports Hardhat-style projects where dependencies are npm packages (stored in `node_modules`) and contracts are stored in `contracts` as opposed to `src`.
 
 To enable Hardhat compatibility mode pass the `--hh` flag.

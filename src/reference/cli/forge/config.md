@@ -1,10 +1,10 @@
-# forge config
+# spark config
 
 Display the current config
 
 ```bash
-$ forge config --help
-Usage: forge config [OPTIONS]
+$ spark config --help
+Usage: spark config [OPTIONS]
 
 Options:
       --basic

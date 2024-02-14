@@ -1,12 +1,12 @@
-## cast upload-signature
+## probe upload-signature
 
 ### NAME
 
-cast-upload-signature
+probe-upload-signature
 
 ### SYNOPSIS
 
-`cast upload-signature` [*signatures...*]
+`probe upload-signature` [*signatures...*]
 
 ### DESCRIPTION
 
@@ -20,6 +20,6 @@ Upload the given signatures to [https://sig.eth.samczsun.com](https://sig.eth.sa
 
 1. Upload signatures
     ```sh
-    cast upload-signature 'function approve(address,uint256)' \
+    probe upload-signature 'function approve(address,uint256)' \
    'transfer(uint256)' 'event Transfer(uint256,address)'
     ```

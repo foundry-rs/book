@@ -1,10 +1,10 @@
-# forge selectors upload
+# spark selectors upload
 
 Upload selectors to registry
 
 ```bash
-$ forge selectors upload --help
-Usage: forge selectors upload [OPTIONS] [CONTRACT]
+$ spark selectors upload --help
+Usage: spark selectors upload [OPTIONS] [CONTRACT]
 
 Arguments:
   [CONTRACT]

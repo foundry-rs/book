@@ -1,6 +1,6 @@
 ## Testing
 
-Configuration related to the behavior of `forge test`.
+Configuration related to the behavior of `spark test`.
 
 **Sections**
 
@@ -15,7 +15,7 @@ Configuration related to the behavior of `forge test`.
 
 - Type: integer
 - Default: 0
-- Environment: `FOUNDRY_VERBOSITY` or `DAPP_VERBOSITY`
+- Environment: `FOXAR_VERBOSITY` or `DAPP_VERBOSITY`
 
 The verbosity level to use during tests.
 
@@ -28,7 +28,7 @@ The verbosity level to use during tests.
 
 - Type: boolean
 - Default: false
-- Environment: `FOUNDRY_FFI` or `DAPP_FFI`
+- Environment: `FOXAR_FFI` or `DAPP_FFI`
 
 Whether or not to enable the `ffi` cheatcode.
 
@@ -38,7 +38,7 @@ Whether or not to enable the `ffi` cheatcode.
 
 - Type: string (address)
 - Default: 0x1804c8AB1F12E6bbf3894d4083f33e07309d1f38
-- Environment: `FOUNDRY_SENDER` or `DAPP_SENDER`
+- Environment: `FOXAR_SENDER` or `DAPP_SENDER`
 
 The value of `msg.sender` in tests.
 
@@ -46,7 +46,7 @@ The value of `msg.sender` in tests.
 
 - Type: string (address)
 - Default: 0x1804c8AB1F12E6bbf3894d4083f33e07309d1f38
-- Environment: `FOUNDRY_TX_ORIGIN` or `DAPP_TX_ORIGIN`
+- Environment: `FOXAR_TX_ORIGIN` or `DAPP_TX_ORIGIN`
 
 The value of `tx.origin` in tests.
 
@@ -54,7 +54,7 @@ The value of `tx.origin` in tests.
 
 - Type: string (hexadecimal)
 - Default: 0xffffffffffffffffffffffff
-- Environment: `FOUNDRY_INITIAL_BALANCE` or `DAPP_INITIAL_BALANCE`
+- Environment: `FOXAR_INITIAL_BALANCE` or `DAPP_INITIAL_BALANCE`
 
 The initial balance of the test contracts in wei, written in hexadecimal.
 
@@ -62,7 +62,7 @@ The initial balance of the test contracts in wei, written in hexadecimal.
 
 - Type: integer
 - Default: 1
-- Environment: `FOUNDRY_BLOCK_NUMBER` or `DAPP_BLOCK_NUMBER`
+- Environment: `FOXAR_BLOCK_NUMBER` or `DAPP_BLOCK_NUMBER`
 
 The value of `block.number` in tests.
 
@@ -70,7 +70,7 @@ The value of `block.number` in tests.
 
 - Type: integer
 - Default: 31337
-- Environment: `FOUNDRY_CHAIN_ID` or `DAPP_CHAIN_ID`
+- Environment: `FOXAR_CHAIN_ID` or `DAPP_CHAIN_ID`
 
 The value of the `chainid` opcode in tests.
 
@@ -78,13 +78,13 @@ The value of the `chainid` opcode in tests.
 
 - Type: integer or string
 - Default: 9223372036854775807
-- Environment: `FOUNDRY_GAS_LIMIT` or `DAPP_GAS_LIMIT`
+- Environment: `FOXAR_GAS_LIMIT` or `DAPP_GAS_LIMIT`
 
 The gas limit for each test case.
 
 > ℹ️ **Note**
 >
-> Due to a limitation in a dependency of Forge, you **cannot raise the gas limit** beyond the default without changing the value to a string.
+> Due to a limitation in a dependency of Spark, you **cannot raise the gas limit** beyond the default without changing the value to a string.
 >
 > In order to use higher gas limits use a string:
  ```toml
@@ -95,7 +95,7 @@ gas_limit = "18446744073709551615" # u64::MAX
 
 - Type: integer
 - Default: 0
-- Environment: `FOUNDRY_GAS_PRICE` or `DAPP_GAS_PRICE`
+- Environment: `FOXAR_GAS_PRICE` or `DAPP_GAS_PRICE`
 
 The price of gas (in wei) in tests.
 
@@ -103,7 +103,7 @@ The price of gas (in wei) in tests.
 
 - Type: integer
 - Default: 0
-- Environment: `FOUNDRY_BLOCK_BASE_FEE_PER_GAS` or `DAPP_BLOCK_BASE_FEE_PER_GAS`
+- Environment: `FOXAR_BLOCK_BASE_FEE_PER_GAS` or `DAPP_BLOCK_BASE_FEE_PER_GAS`
 
 The base fee per gas (in wei) in tests.
 
@@ -111,7 +111,7 @@ The base fee per gas (in wei) in tests.
 
 - Type: string (address)
 - Default: 0x0000000000000000000000000000000000000000
-- Environment: `FOUNDRY_BLOCK_COINBASE` or `DAPP_BLOCK_COINBASE`
+- Environment: `FOXAR_BLOCK_COINBASE` or `DAPP_BLOCK_COINBASE`
 
 The value of `block.coinbase` in tests.
 
@@ -119,7 +119,7 @@ The value of `block.coinbase` in tests.
 
 - Type: integer
 - Default: 1
-- Environment: `FOUNDRY_BLOCK_TIMESTAMP` or `DAPP_BLOCK_TIMESTAMP`
+- Environment: `FOXAR_BLOCK_TIMESTAMP` or `DAPP_BLOCK_TIMESTAMP`
 
 The value of `block.timestamp` in tests.
 
@@ -127,7 +127,7 @@ The value of `block.timestamp` in tests.
 
 - Type: integer
 - Default: 0
-- Environment: `FOUNDRY_BLOCK_DIFFICULTY` or `DAPP_BLOCK_DIFFICULTY`
+- Environment: `FOXAR_BLOCK_DIFFICULTY` or `DAPP_BLOCK_DIFFICULTY`
 
 The value of `block.difficulty` in tests.
 
@@ -135,7 +135,7 @@ The value of `block.difficulty` in tests.
 
 - Type: array of strings (contract names)
 - Default: ["*"]
-- Environment: `FOUNDRY_GAS_REPORTS` or `DAPP_GAS_REPORTS`
+- Environment: `FOXAR_GAS_REPORTS` or `DAPP_GAS_REPORTS`
 
 The contracts to print gas reports for.
 
@@ -143,9 +143,9 @@ The contracts to print gas reports for.
 
 - Type: boolean
 - Default: false
-- Environment: `FOUNDRY_NO_STORAGE_CACHING` or `DAPP_NO_STORAGE_CACHING`
+- Environment: `FOXAR_NO_STORAGE_CACHING` or `DAPP_NO_STORAGE_CACHING`
 
-If set to `true`, then block data from RPC endpoints in tests will not be cached. Otherwise, the data is cached to `$HOME/.foundry/cache/<chain id>/<block number>`.
+If set to `true`, then block data from RPC endpoints in tests will not be cached. Otherwise, the data is cached to `$HOME/.foxar/cache/<chain id>/<block number>`.
 
 ##### `[rpc_storage_caching]`
 
@@ -182,7 +182,7 @@ Valid values are:
 
 - Type: string
 - Default: none
-- Environment: `FOUNDRY_ETH_RPC_URL` or `DAPP_ETH_RPC_URL`
+- Environment: `FOXAR_ETH_RPC_URL` or `DAPP_ETH_RPC_URL`
 
 The url of the rpc server that should be used for any rpc calls.
 
@@ -190,7 +190,7 @@ The url of the rpc server that should be used for any rpc calls.
 
 - Type: string
 - Default: none
-- Environment: `FOUNDRY_ETHERSCAN_API_KEY` or `DAPP_ETHERSCAN_API_KEY`
+- Environment: `FOXAR_ETHERSCAN_API_KEY` or `DAPP_ETHERSCAN_API_KEY`
 
 The etherscan API key for RPC calls.
 
@@ -198,61 +198,61 @@ The etherscan API key for RPC calls.
 
 - Type: regex
 - Default: none
-- Environment: `FOUNDRY_MATCH_TEST` or `DAPP_MATCH_TEST`
+- Environment: `FOXAR_MATCH_TEST` or `DAPP_MATCH_TEST`
 
 Only run test methods matching regex.
-Equivalent to `forge test --match-test <TEST_PATTERN>`
+Equivalent to `spark test --match-test <TEST_PATTERN>`
 
 ##### `no-match-test`
 
 - Type: regex
 - Default: none
-- Environment: `FOUNDRY_NO_MATCH_TEST` or `DAPP_NO_MATCH_TEST`
+- Environment: `FOXAR_NO_MATCH_TEST` or `DAPP_NO_MATCH_TEST`
 
 Only run test methods not matching regex.
-Equivalent to `forge test --no-match-test <TEST_PATTERN_INVERSE>`
+Equivalent to `spark test --no-match-test <TEST_PATTERN_INVERSE>`
 
 ##### `match-contract`
 
 - Type: regex
 - Default: none
-- Environment: `FOUNDRY_MATCH_CONTRACT` or `DAPP_MATCH_CONTRACT`
+- Environment: `FOXAR_MATCH_CONTRACT` or `DAPP_MATCH_CONTRACT`
 
 Only run test methods in contracts matching regex.
-Equivalent to `forge test --match-contract <CONTRACT_PATTERN>`
+Equivalent to `spark test --match-contract <CONTRACT_PATTERN>`
 
 ##### `no-match-contract`
 
 - Type: regex
 - Default: none
-- Environment: `FOUNDRY_NO_MATCH_CONTRACT` or `DAPP_NO_MATCH_CONTRACT`
+- Environment: `FOXAR_NO_MATCH_CONTRACT` or `DAPP_NO_MATCH_CONTRACT`
 
 Only run test methods in contracts not matching regex.
-Equivalent to `forge test --no-match-contract <CONTRACT_PATTERN_INVERSE>`
+Equivalent to `spark test --no-match-contract <CONTRACT_PATTERN_INVERSE>`
 
 ##### `match-path`
 
 - Type: regex
 - Default: none
-- Environment: `FOUNDRY_MATCH_PATH` or `DAPP_MATCH_PATH`
+- Environment: `FOXAR_MATCH_PATH` or `DAPP_MATCH_PATH`
 
 Only runs test methods on files matching the path.
-Equivalent to `forge test --match-path <PATH_PATTERN>`
+Equivalent to `spark test --match-path <PATH_PATTERN>`
 
 ##### `no-match-path`
 
 - Type: regex
 - Default: none
-- Environment: `FOUNDRY_NO_MATCH_PATH` or `DAPP_NO_MATCH_PATH`
+- Environment: `FOXAR_NO_MATCH_PATH` or `DAPP_NO_MATCH_PATH`
 
 Only runs test methods on files not matching the path.
-Equivalent to `forge test --no-match-path <PATH_PATTERN_INVERSE>`
+Equivalent to `spark test --no-match-path <PATH_PATTERN_INVERSE>`
 
 ##### `block_gas_limit`
 
 - Type: integer
 - Default: none
-- Environment: `FOUNDRY_BLOCK_GAS_LIMIT` or `DAPP_BLOCK_GAS_LIMIT`
+- Environment: `FOXAR_BLOCK_GAS_LIMIT` or `DAPP_BLOCK_GAS_LIMIT`
 
 The block.gaslimit value during EVM execution.
 
@@ -260,7 +260,7 @@ The block.gaslimit value during EVM execution.
 
 - Type: integer
 - Default: 33554432
-- Environment: `FOUNDRY_MEMORY_LIMIT` or `DAPP_MEMORY_LIMIT`
+- Environment: `FOXAR_MEMORY_LIMIT` or `DAPP_MEMORY_LIMIT`
 
 The memory limit of the EVM in bytes.
 
@@ -268,7 +268,7 @@ The memory limit of the EVM in bytes.
 
 - Type: boolean
 - Default: false
-- Environment: `FOUNDRY_NAMES` or `DAPP_NAMES`
+- Environment: `FOXAR_NAMES` or `DAPP_NAMES`
 
 Print compiled contract names.
 
@@ -276,7 +276,7 @@ Print compiled contract names.
 
 - Type: boolean
 - Default: false
-- Environment: `FOUNDRY_SIZES` or `DAPP_SIZES`
+- Environment: `FOXAR_SIZES` or `DAPP_SIZES`
 
 Print compiled contract sizes.
 
@@ -308,7 +308,7 @@ Configuration values for `[fuzz]` section.
 
 - Type: integer
 - Default: 256
-- Environment: `FOUNDRY_FUZZ_RUNS` or `DAPP_FUZZ_RUNS`
+- Environment: `FOXAR_FUZZ_RUNS` or `DAPP_FUZZ_RUNS`
 
 The amount of fuzz runs to perform for each fuzz test case. Higher values gives more confidence in results at the cost of testing speed.
 
@@ -316,7 +316,7 @@ The amount of fuzz runs to perform for each fuzz test case. Higher values gives 
 
 - Type: integer
 - Default: 65536
-- Environment: `FOUNDRY_FUZZ_MAX_TEST_REJECTS`
+- Environment: `FOXAR_FUZZ_MAX_TEST_REJECTS`
 
 The maximum number of combined inputs that may be rejected before the test as a whole aborts.
 "Global" filters apply to the whole test case. If the test case is rejected, the whole thing is regenerated.
@@ -325,7 +325,7 @@ The maximum number of combined inputs that may be rejected before the test as a 
 
 - Type: string (hexadecimal)
 - Default: none
-- Environment: `FOUNDRY_FUZZ_SEED`
+- Environment: `FOXAR_FUZZ_SEED`
 
 Optional seed for the fuzzing RNG algorithm.
 
@@ -333,7 +333,7 @@ Optional seed for the fuzzing RNG algorithm.
 
 - Type: integer (between 0 and 100)
 - Default: 40
-- Environment: `FOUNDRY_FUZZ_DICTIONARY_WEIGHT`
+- Environment: `FOXAR_FUZZ_DICTIONARY_WEIGHT`
 
 The weight of the dictionary. A higher dictionary weight will bias the fuzz inputs towards "interesting" values, e.g. boundary values like `type(uint256).max` or contract addresses from your environment.
 
@@ -341,7 +341,7 @@ The weight of the dictionary. A higher dictionary weight will bias the fuzz inpu
 
 - Type: boolean
 - Default: true
-- Environment: `FOUNDRY_FUZZ_INCLUDE_STORAGE`
+- Environment: `FOXAR_FUZZ_INCLUDE_STORAGE`
 
 The flag indicating whether to include values from storage.
 
@@ -349,7 +349,7 @@ The flag indicating whether to include values from storage.
 
 - Type: boolean
 - Default: true
-- Environment: `FOUNDRY_FUZZ_INCLUDE_PUSH_BYTES`
+- Environment: `FOXAR_FUZZ_INCLUDE_PUSH_BYTES`
 
 The flag indicating whether to include push bytes values.
 
@@ -380,7 +380,7 @@ Configuration values for `[invariant]` section.
 
 - Type: integer
 - Default: 256
-- Environment: `FOUNDRY_INVARIANT_RUNS`
+- Environment: `FOXAR_INVARIANT_RUNS`
 
 The number of runs that must execute for each invariant test group. See also [fuzz.runs](#runs)
 
@@ -388,7 +388,7 @@ The number of runs that must execute for each invariant test group. See also [fu
 
 - Type: integer
 - Default: 15
-- Environment: `FOUNDRY_INVARIANT_DEPTH`
+- Environment: `FOXAR_INVARIANT_DEPTH`
 
 The number of calls executed to attempt to break invariants in one run.
 
@@ -396,7 +396,7 @@ The number of calls executed to attempt to break invariants in one run.
 
 - Type: boolean
 - Default: false
-- Environment: `FOUNDRY_INVARIANT_FAIL_ON_REVERT`
+- Environment: `FOXAR_INVARIANT_FAIL_ON_REVERT`
 
 Fails the invariant fuzzing if a revert occurs.
 
@@ -404,7 +404,7 @@ Fails the invariant fuzzing if a revert occurs.
 
 - Type: boolean
 - Default: false
-- Environment: `FOUNDRY_INVARIANT_CALL_OVERRIDE`
+- Environment: `FOXAR_INVARIANT_CALL_OVERRIDE`
 
 Overrides unsafe external calls when running invariant tests, useful for e.g. performing reentrancy checks.
 
@@ -412,7 +412,7 @@ Overrides unsafe external calls when running invariant tests, useful for e.g. pe
 
 - Type: integer (between 0 and 100)
 - Default: 80
-- Environment: `FOUNDRY_INVARIANT_DICTIONARY_WEIGHT`
+- Environment: `FOXAR_INVARIANT_DICTIONARY_WEIGHT`
 
 The weight of the dictionary. See also [fuzz.dictionary_weight](#dictionary_weight)
 
@@ -420,7 +420,7 @@ The weight of the dictionary. See also [fuzz.dictionary_weight](#dictionary_weig
 
 - Type: boolean
 - Default: true
-- Environment: `FOUNDRY_FUZZ_INCLUDE_STORAGE`
+- Environment: `FOXAR_FUZZ_INCLUDE_STORAGE`
 
 The flag indicating whether to include values from storage. See also [fuzz.include_storage](#include_storage)
 
@@ -428,6 +428,6 @@ The flag indicating whether to include values from storage. See also [fuzz.inclu
 
 - Type: boolean
 - Default: true
-- Environment: `FOUNDRY_FUZZ_INCLUDE_PUSH_BYTES`
+- Environment: `FOXAR_FUZZ_INCLUDE_PUSH_BYTES`
 
 The flag indicating whether to include push bytes values. See also [fuzz.include_push_bytes](#include_push_bytes)

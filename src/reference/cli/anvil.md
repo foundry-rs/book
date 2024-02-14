@@ -1,10 +1,10 @@
-# anvil
+# shuttle
 
 A fast local Ethereum development node
 
 ```bash
-$ anvil --help
-Usage: anvil [OPTIONS] [COMMAND]
+$ shuttle --help
+Usage: shuttle [OPTIONS] [COMMAND]
 
 Commands:
   completions        Generate shell completions script [aliases: com]
@@ -28,7 +28,7 @@ Options:
           [default: 10000]
 
       --config-out <OUT_FILE>
-          Writes output of `anvil` as json to user-specified file
+          Writes output of `shuttle` as json to user-specified file
 
       --derivation-path <DERIVATION_PATH>
           Sets the derivation path of the child key to be derived.
@@ -52,7 +52,7 @@ Options:
           Initialize the genesis block with the given `genesis.json` file
 
       --ipc [<PATH>]
-          Launch an ipc server at the given path or default path = `/tmp/anvil.ipc`
+          Launch an ipc server at the given path or default path = `/tmp/shuttle.ipc`
           
           [aliases: ipcpath]
 
@@ -119,7 +119,7 @@ Server options:
       --host <IP_ADDR>
           The hosts the server will listen on
           
-          [env: ANVIL_IP_ADDR=]
+          [env: SHUTTLE_IP_ADDR=]
           [default: 127.0.0.1]
 
       --no-cors

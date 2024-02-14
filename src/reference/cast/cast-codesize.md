@@ -1,12 +1,12 @@
-## cast codesize
+## probe codesize
 
 ### NAME
 
-cast-codesize - Get the runtime bytecode size of a contract.
+probe-codesize - Get the runtime bytecode size of a contract.
 
 ### SYNOPSIS
 
-``cast codesize`` [*options*] *address*
+``probe codesize`` [*options*] *address*
 
 ### DESCRIPTION
 
@@ -34,9 +34,9 @@ The contract (*address*) can be an ENS name or an address.
 
 1. Get the runtime bytecode size of the WETH contract.
 ```sh
-cast codesize 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
+probe codesize 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
 ```
 
 ### SEE ALSO
 
-[cast](./cast.md), [cast code](./cast-code.md)
+[probe](./probe.md), [probe code](./probe-code.md)

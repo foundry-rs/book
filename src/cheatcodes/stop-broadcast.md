@@ -1,25 +1,25 @@
-## `stopBroadcast`
+## `stopBroadprobe`
 
 ### Signature
 ```solidity
-function stopBroadcast() external;
+function stopBroadprobe() external;
 ```
 
 ### Description
 
-Stops collecting transactions for later on-chain broadcasting.
+Stops collecting transactions for later on-chain broadprobeing.
 
 ### Examples
 
 ```solidity
 function deployNoArgs() public {
-    // broadcast the next call
-    cheats.broadcast();
+    // broadprobe the next call
+    cheats.broadprobe();
     Test test1 = new Test();
 
-    // broadcast all calls between this line and `stopBroadcast`
-    cheats.startBroadcast();
+    // broadprobe all calls between this line and `stopBroadprobe`
+    cheats.startBroadprobe();
     Test test2 = new Test();
-    cheats.stopBroadcast();
+    cheats.stopBroadprobe();
 }
 ```

@@ -1,10 +1,10 @@
-# chisel view
+# pilot view
 
 View the source of a cached session
 
 ```bash
-$ chisel view --help
-Usage: chisel view <ID>
+$ pilot view --help
+Usage: pilot view <ID>
 
 Arguments:
   <ID>  The ID of the session to load

@@ -1,4 +1,4 @@
-## forge Commands
+## spark Commands
 
 - [General Commands](./general-commands.md)
 - [Project Commands](./project-commands.md)

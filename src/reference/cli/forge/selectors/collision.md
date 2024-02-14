@@ -1,10 +1,10 @@
-# forge selectors collision
+# spark selectors collision
 
 Check for selector collisions between contracts
 
 ```bash
-$ forge selectors collision --help
-Usage: forge selectors collision [OPTIONS] <FIRST_CONTRACT> <SECOND_CONTRACT>
+$ spark selectors collision --help
+Usage: spark selectors collision [OPTIONS] <FIRST_CONTRACT> <SECOND_CONTRACT>
 
 Arguments:
   <FIRST_CONTRACT>

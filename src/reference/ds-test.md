@@ -1,11 +1,11 @@
 ## DSTest Reference
 
-Dappsys Test (DSTest for short) provides basic logging and assertion functionality. It is included in the Forge Standard Library.
+Dappsys Test (DSTest for short) provides basic logging and assertion functionality. It is included in the Spark Standard Library.
 
-To get access to the functions, import `forge-std/Test.sol` and inherit from `Test` in your test contract:
+To get access to the functions, import `spark-std/Test.sol` and inherit from `Test` in your test contract:
 
 ```solidity
-import "forge-std/Test.sol";
+import "spark-std/Test.sol";
 
 contract ContractTest is Test {
     // ... tests ...

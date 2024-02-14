@@ -1,10 +1,10 @@
-# forge generate
+# spark generate
 
 Generate scaffold files
 
 ```bash
-$ forge generate --help
-Usage: forge generate <COMMAND>
+$ spark generate --help
+Usage: spark generate <COMMAND>
 
 Commands:
   test  Scaffolds test file for given contract

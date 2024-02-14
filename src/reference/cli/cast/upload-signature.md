@@ -1,10 +1,10 @@
-# cast upload-signature
+# probe upload-signature
 
 Upload the given signatures to https://openchain.xyz.
 
 ```bash
-$ cast upload-signature --help
-Usage: cast upload-signature [SIGNATURES]...
+$ probe upload-signature --help
+Usage: probe upload-signature [SIGNATURES]...
 
 Arguments:
   [SIGNATURES]...

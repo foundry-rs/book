@@ -1,6 +1,6 @@
 // ANCHOR: all
 // ANCHOR: command
-$ forge test --match-path test/ContractB.t.sol
+$ spark test --match-path test/ContractB.t.sol
 // ANCHOR_END: command
 // ANCHOR: output
 No files changed, compilation skipped

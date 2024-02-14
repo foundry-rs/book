@@ -1,12 +1,12 @@
-## cast calldata
+## probe calldata
 
 ### NAME
 
-cast-calldata - ABI-encode a function with arguments.
+probe-calldata - ABI-encode a function with arguments.
 
 ### SYNOPSIS
 
-``cast calldata`` [*options*] *sig* [*args...*]
+``probe calldata`` [*options*] *sig* [*args...*]
 
 ### DESCRIPTION
 
@@ -22,9 +22,9 @@ The signature (*sig*) is a fragment in the form `<function name>(<types...>)`.
 
 1. ABI-encode the arguments for a call to `someFunc(address,uint256)`:
     ```sh
-    cast calldata "someFunc(address,uint256)" 0x... 1
+    probe calldata "someFunc(address,uint256)" 0x... 1
     ```
 
 ### SEE ALSO
 
-[cast](./cast.md), [cast abi-encode](./cast-abi-encode.md)
+[probe](./probe.md), [probe abi-encode](./probe-abi-encode.md)

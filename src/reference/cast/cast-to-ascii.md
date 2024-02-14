@@ -1,12 +1,12 @@
-## cast to-ascii
+## probe to-ascii
 
 ### NAME
 
-cast-to-ascii - Convert hex data to an ASCII string.
+probe-to-ascii - Convert hex data to an ASCII string.
 
 ### SYNOPSIS
 
-``cast to-ascii`` [*options*] *text*
+``probe to-ascii`` [*options*] *text*
 
 ### DESCRIPTION
 
@@ -20,9 +20,9 @@ Convert hex data to an ASCII string.
 
 1. Convert hex data to an ASCII string:
     ```sh
-    cast to-ascii "0x68656c6c6f"
+    probe to-ascii "0x68656c6c6f"
     ```
 
 ### SEE ALSO
 
-[cast](./cast.md)
+[probe](./probe.md)

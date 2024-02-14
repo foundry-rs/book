@@ -1,10 +1,10 @@
-# cast wallet import
+# probe wallet import
 
 Import a private key into an encrypted keystore
 
 ```bash
-$ cast wallet import --help
-Usage: cast wallet import [OPTIONS] <ACCOUNT_NAME>
+$ probe wallet import --help
+Usage: probe wallet import [OPTIONS] <ACCOUNT_NAME>
 
 Arguments:
   <ACCOUNT_NAME>
@@ -12,7 +12,7 @@ Arguments:
 
 Options:
   -k, --keystore-dir <KEYSTORE_DIR>
-          If provided, keystore will be saved here instead of the default keystores directory (~/.foundry/keystores)
+          If provided, keystore will be saved here instead of the default keystores directory (~/.foxar/keystores)
 
   -h, --help
           Print help (see a summary with '-h')

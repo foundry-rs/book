@@ -8,7 +8,7 @@ function getBlockTimestamp() external view returns (uint256 timestamp);
 
 ### Description
 
-Gets the current `block.timestamp`. This is useful in cases where `vm.warp` along with `--via-ir` compilation is used, as `block.timestamp` is assumed to be a constant during a transaction. This means that on every forge test, multiple calls to `block.timestamp` would get optimized to just returning a constant value, instead of actually accessing the current `block.timestamp`. `vm.getBlockTimestamp()` avoids this optimization and returns the current `block.timestamp`.
+Gets the current `block.timestamp`. This is useful in cases where `vm.warp` along with `--via-ir` compilation is used, as `block.timestamp` is assumed to be a constant during a transaction. This means that on every spark test, multiple calls to `block.timestamp` would get optimized to just returning a constant value, instead of actually accessing the current `block.timestamp`. `vm.getBlockTimestamp()` avoids this optimization and returns the current `block.timestamp`.
 
 ### Examples
 

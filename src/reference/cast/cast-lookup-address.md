@@ -1,12 +1,12 @@
-## cast lookup-address
+## probe lookup-address
 
 ### NAME
 
-cast-lookup-address - Perform an ENS reverse lookup.
+probe-lookup-address - Perform an ENS reverse lookup.
 
 ### SYNOPSIS
 
-``cast lookup-address`` [*options*] *who*
+``probe lookup-address`` [*options*] *who*
 
 ### DESCRIPTION
 
@@ -32,14 +32,14 @@ If `--verify` is passed, then a normal lookup is performed after the reverse loo
 
 1. Get the ENS name for an address.
     ```sh
-    cast lookup-address $ADDRESS
+    probe lookup-address $ADDRESS
     ```
 
 2. Perform both a reverse and a normal lookup:
     ```sh
-    cast lookup-address --verify $ADDRESS
+    probe lookup-address --verify $ADDRESS
     ```
 
 ### SEE ALSO
 
-[cast](./cast.md), [cast resolve-name](./cast-resolve-name.md)
+[probe](./probe.md), [probe resolve-name](./probe-resolve-name.md)

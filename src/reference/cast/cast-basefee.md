@@ -1,12 +1,12 @@
-## cast basefee
+## probe basefee
 
 ### NAME
 
-cast-base-fee - Get the basefee of a block.
+probe-base-fee - Get the basefee of a block.
 
 ### SYNOPSIS
 
-``cast base-fee`` [*options*] [*block*]
+``probe base-fee`` [*options*] [*block*]
 
 ### DESCRIPTION
 
@@ -26,14 +26,14 @@ The specified *block* can be a block number, or any of the tags: `earliest`, `fi
 
 1. Get the basefee of the latest block:
     ```sh
-    cast base-fee
+    probe base-fee
     ```
 
 2. Get the basefee of the genesis block:
     ```sh
-    cast base-fee 1
+    probe base-fee 1
     ```
 
 ### SEE ALSO
 
-[cast](./cast.md), [cast block](./cast-block.md), [cast age](./cast-age.md)
+[probe](./probe.md), [probe block](./probe-block.md), [probe age](./probe-age.md)

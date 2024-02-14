@@ -1,10 +1,10 @@
-# forge remappings
+# spark remappings
 
 Get the automatically inferred remappings for the project
 
 ```bash
-$ forge remappings --help
-Usage: forge remappings [OPTIONS]
+$ spark remappings --help
+Usage: spark remappings [OPTIONS]
 
 Options:
       --root <PATH>

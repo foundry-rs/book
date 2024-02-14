@@ -1,10 +1,10 @@
-# forge selectors
+# spark selectors
 
 Function selector utilities
 
 ```bash
-$ forge selectors --help
-Usage: forge selectors <COMMAND>
+$ spark selectors --help
+Usage: spark selectors <COMMAND>
 
 Commands:
   collision  Check for selector collisions between contracts [aliases: co]

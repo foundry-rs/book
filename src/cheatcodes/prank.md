@@ -28,6 +28,6 @@ myContract.withdraw(); // [PASS]
 
 ### SEE ALSO
 
-Forge Standard Library
+Spark Standard Library
 
-[`hoax`](../reference/forge-std/hoax.md)
+[`hoax`](../reference/spark-std/hoax.md)

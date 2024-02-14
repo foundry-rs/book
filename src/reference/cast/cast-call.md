@@ -1,12 +1,12 @@
-## cast call
+## probe call
 
 ### NAME
 
-cast-call - Perform a call on an account without publishing a transaction.
+probe-call - Perform a call on an account without publishing a transaction.
 
 ### SYNOPSIS
 
-``cast call`` [*options*] *to* *sig* [*args...*]
+``probe call`` [*options*] *to* *sig* [*args...*]
 
 ### DESCRIPTION
 
@@ -51,7 +51,7 @@ The destination (*to*) can be an ENS name or an address.
 1. Call `balanceOf(address)` on the WETH contract:
 
     ```sh
-    cast call 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2 \
+    probe call 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2 \
       "balanceOf(address)(uint256)" 0x...
     ```
 
@@ -60,16 +60,16 @@ The destination (*to*) can be an ENS name or an address.
     ```sh
     export CONTRACT=0xca7ca7bcc765f77339be2d648ba53ce9c8a262bd
     export TOKEN_ID=19938
-    cast call $CONTRACT "tokenURI(uint256)(string)" $TOKEN_ID
+    probe call $CONTRACT "tokenURI(uint256)(string)" $TOKEN_ID
    ```
 
 3. Call ``getAmountsOut(uint,address[])`` on the Uniswap v2 router contract:
 
     ```sh
-   cast call 0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D \
+   probe call 0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D \
      "getAmountsOut(uint,address[])" 1 "[0x6b...0f,0xc0...c2]"
     ```
 
 ### SEE ALSO
 
-[cast](./cast.md), [cast send](./cast-send.md), [cast publish](./cast-publish.md), [cast receipt](./cast-receipt.md)
+[probe](./probe.md), [probe send](./probe-send.md), [probe publish](./probe-publish.md), [probe receipt](./probe-receipt.md)

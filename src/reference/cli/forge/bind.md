@@ -1,10 +1,10 @@
-# forge bind
+# spark bind
 
 Generate Rust bindings for smart contracts
 
 ```bash
-$ forge bind --help
-Usage: forge bind [OPTIONS]
+$ spark bind --help
+Usage: spark bind [OPTIONS]
 
 Options:
   -b, --bindings-path <PATH>
@@ -26,7 +26,7 @@ Options:
           
           This should be a valid crates.io crate name, however, this is not currently validated by this command.
           
-          [default: foundry-contracts]
+          [default: foxar-contracts]
 
       --crate-version <VERSION>
           The version of the Rust crate to generate.
@@ -50,7 +50,7 @@ Options:
           Skip Cargo.toml consistency checks
 
       --skip-build
-          Skips running forge build before generating binding
+          Skips running spark build before generating binding
 
   -h, --help
           Print help (see a summary with '-h')

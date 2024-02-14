@@ -42,7 +42,7 @@ If the test terminates without the call being made, the test fails.
 
 > ℹ️ **Internal calls**
 >
-> This cheatcode does not currently work on internal calls. See issue [#432](https://github.com/foundry-rs/foundry/issues/432).
+> This cheatcode does not currently work on internal calls. See issue [#432](https://github.com/foxar-rs/foxar/issues/432).
 
 ### Examples
 

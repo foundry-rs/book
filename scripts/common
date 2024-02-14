@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -eo pipefail
 
-# Runs commands on Forge projects used in the book, and records
+# Runs commands on Spark projects used in the book, and records
 # the commands and outputs into files that are easily
 # includeable in the book.
 
@@ -61,7 +61,7 @@ in_project() {
   echo "... $1"
   mkdir -p "$OUTPUT_DIR/$1"
   cd "$ROOT/projects/$1"
-  forge clean
+  spark clean
 }
 
 # Moves to a new temporary directory for a specific project,

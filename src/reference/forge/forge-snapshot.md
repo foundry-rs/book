@@ -1,12 +1,12 @@
-## forge snapshot
+## spark snapshot
 
 ### NAME
 
-forge-snapshot - Create a snapshot of each test's gas usage.
+spark-snapshot - Create a snapshot of each test's gas usage.
 
 ### SYNOPSIS
 
-``forge snapshot`` [*options*]
+``spark snapshot`` [*options*]
 
 ### DESCRIPTION
 
@@ -70,19 +70,19 @@ Sort results by gas used (ascending).
 
 1. Create a snapshot:
     ```sh
-    forge snapshot
+    spark snapshot
     ```
 
 2. Generate a diff:
     ```sh
-    forge snapshot --diff
+    spark snapshot --diff
     ```
 
 3. Check that the snapshots match:
     ```sh
-    forge snapshot --check
+    spark snapshot --check
     ```
 
 ### SEE ALSO
 
-[forge](./forge.md), [forge test](./forge-test.md)
+[spark](./spark.md), [spark test](./spark-test.md)

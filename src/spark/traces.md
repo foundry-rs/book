@@ -1,6 +1,6 @@
 ## Understanding Traces
 
-Forge can produce traces either for failing tests (`-vvv`) or all tests (`-vvvv`).
+Spark can produce traces either for failing tests (`-vvv`) or all tests (`-vvvv`).
 
 Traces follow the same general format:
 
@@ -36,7 +36,7 @@ The gas usage (marked in square brackets) is for the entirety of the function ca
 
 The gas unaccounted for is due to some extra operations happening between calls, such as arithmetic and store reads/writes.
 
-Forge will try to decode as many signatures and values as possible, but sometimes this is not possible. In these cases, the traces will appear like so:
+Spark will try to decode as many signatures and values as possible, but sometimes this is not possible. In these cases, the traces will appear like so:
 
 ```ignore
   [<Gas Usage>] <Address>::<Calldata>

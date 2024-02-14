@@ -1,12 +1,12 @@
-## cast wallet verify
+## probe wallet verify
 
 ### NAME
 
-cast-wallet-verify - Verify the signature of a message.
+probe-wallet-verify - Verify the signature of a message.
 
 ### SYNOPSIS
 
-``cast wallet verify`` [*options*] `--address` *address* *message* *signature*
+``probe wallet verify`` [*options*] `--address` *address* *message* *signature*
 
 ### DESCRIPTION
 
@@ -24,4 +24,4 @@ Verify the signature of a message.
 
 ### SEE ALSO
 
-[cast](./cast.md), [cast wallet](./cast-wallet.md)
+[probe](./probe.md), [probe wallet](./probe-wallet.md)

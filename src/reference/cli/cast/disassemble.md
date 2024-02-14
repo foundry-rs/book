@@ -1,10 +1,10 @@
-# cast disassemble
+# probe disassemble
 
 Disassembles hex encoded bytecode into individual / human readable opcodes
 
 ```bash
-$ cast disassemble --help
-Usage: cast disassemble <BYTECODE>
+$ probe disassemble --help
+Usage: probe disassemble <BYTECODE>
 
 Arguments:
   <BYTECODE>  The hex encoded bytecode

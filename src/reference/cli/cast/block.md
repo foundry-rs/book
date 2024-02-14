@@ -1,10 +1,10 @@
-# cast block
+# probe block
 
 Get information about a block
 
 ```bash
-$ cast block --help
-Usage: cast block [OPTIONS] [BLOCK]
+$ probe block --help
+Usage: probe block [OPTIONS] [BLOCK]
 
 Arguments:
   [BLOCK]
@@ -17,7 +17,7 @@ Options:
           If specified, only get the given field of the block
 
       --full
-          [env: CAST_FULL_BLOCK=]
+          [env: PROBE_FULL_BLOCK=]
 
   -r, --rpc-url <URL>
           The RPC endpoint
@@ -32,7 +32,7 @@ Options:
           
           The JWT secret will be used to create a JWT for a RPC. For example, the following can be used to simulate a CL `engine_forkchoiceUpdated` call:
           
-          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2 '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc", "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          probe rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2 '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc", "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
           "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
           
           [env: ETH_RPC_JWT_SECRET=]

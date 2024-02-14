@@ -1,12 +1,12 @@
-## forge install
+## spark install
 
 ### NAME
 
-forge-install - Install one or more dependencies.
+spark-install - Install one or more dependencies.
 
 ### SYNOPSIS
 
-``forge install`` [*options*] [*deps...*]
+``spark install`` [*options*] [*deps...*]
 
 ### DESCRIPTION
 
@@ -57,29 +57,29 @@ the repository. If you want to change the name of the folder, prepend `<folder>=
 
 1. Install a dependency:
     ```sh
-    forge install transmissions11/solmate
+    spark install transmissions11/solmate
     ```
 
 2. Install a specific version of a dependency:
     ```sh
-    forge install transmissions11/solmate@v7
+    spark install transmissions11/solmate@v7
     ```
 
 3. Install multiple dependencies:
     ```sh
-    forge install transmissions11/solmate@v7 OpenZeppelin/openzeppelin-contracts
+    spark install transmissions11/solmate@v7 OpenZeppelin/openzeppelin-contracts
     ```
 
 4. Install a dependency without creating a submodule:
     ```sh
-    forge install --no-git transmissions11/solmate
+    spark install --no-git transmissions11/solmate
     ```
 
 5. Install a dependency in a specific folder:
     ```sh
-    forge install soulmate=transmissions11/solmate
+    spark install soulmate=transmissions11/solmate
     ```
 
 ### SEE ALSO
 
-[forge](./forge.md), [forge update](./forge-update.md), [forge remove](./forge-remove.md)
+[spark](./spark.md), [spark update](./spark-update.md), [spark remove](./spark-remove.md)

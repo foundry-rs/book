@@ -1,10 +1,10 @@
-# cast bind
+# probe bind
 
 Generate a rust binding from a given ABI
 
 ```bash
-$ cast bind --help
-Usage: cast bind [OPTIONS] <PATH_OR_ADDRESS>
+$ probe bind --help
+Usage: probe bind [OPTIONS] <PATH_OR_ADDRESS>
 
 Arguments:
   <PATH_OR_ADDRESS>
@@ -21,7 +21,7 @@ Options:
           
           This should be a valid crates.io crate name. However, this is currently not validated by this command.
           
-          [default: foundry-contracts]
+          [default: foxar-contracts]
 
       --crate-version <VERSION>
           The version of the Rust crate to generate.

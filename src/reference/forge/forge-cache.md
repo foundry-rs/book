@@ -1,26 +1,26 @@
-## `forge cache`
+## `spark cache`
 
 ### NAME
 
-forge-cache - Manage the Foundry cache.
+spark-cache - Manage the Foxar cache.
 
 ### SYNOPSIS
 
-`forge cache` [*options*] *command* [*args*]  
-`forge cache` [*options*] `--version`  
-`forge cache` [*options*] `--help`  
+`spark cache` [*options*] *command* [*args*]  
+`spark cache` [*options*] `--version`  
+`spark cache` [*options*] `--help`  
 
 ### DESCRIPTION
 
-This program is a set of tools to manage the Foundry cache.
+This program is a set of tools to manage the Foxar cache.
 
 ### COMMANDS
 
-[forge cache clean](./forge-cache-clean.md)  
-&nbsp;&nbsp;&nbsp;&nbsp;Cleans cached data from ``~/.foundry``.
+[spark cache clean](./spark-cache-clean.md)  
+&nbsp;&nbsp;&nbsp;&nbsp;Cleans cached data from ``~/.foxar``.
 
-[forge cache ls](./forge-cache-ls.md)  
-&nbsp;&nbsp;&nbsp;&nbsp;Shows cached data from ``~/.foundry``.
+[spark cache ls](./spark-cache-ls.md)  
+&nbsp;&nbsp;&nbsp;&nbsp;Shows cached data from ``~/.foxar``.
 
 ### OPTIONS
 

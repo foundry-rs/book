@@ -1,12 +1,12 @@
-## cast send
+## probe send
 
 ### NAME
 
-cast-send - Sign and publish a transaction.
+probe-send - Sign and publish a transaction.
 
 ### SYNOPSIS
 
-``cast send`` [*options*] *to* [*sig*] [*args...*]
+``probe send`` [*options*] *to* [*sig*] [*args...*]
 
 ### DESCRIPTION
 
@@ -29,9 +29,9 @@ The destination (*to*) can be an ENS name or an address.
 #### Receipt Options
 
 `--async`  
-`--cast-async`  
+`--probe-async`  
 &nbsp;&nbsp;&nbsp;&nbsp;Do not wait for the transaction receipt if it does not exist yet.  
-&nbsp;&nbsp;&nbsp;&nbsp;Environment: `CAST_ASYNC`
+&nbsp;&nbsp;&nbsp;&nbsp;Environment: `PROBE_ASYNC`
 
 `-c` *confirmations*  
 `--confirmations` *confirmations*  
@@ -54,12 +54,12 @@ The destination (*to*) can be an ENS name or an address.
 
 1. Send some ether to Vitalik using your Ledger:
     ```sh
-    cast send --ledger vitalik.eth --value 0.1ether
+    probe send --ledger vitalik.eth --value 0.1ether
     ```
 
 2. Call `deposit(address token, uint256 amount)` on a contract:
     ```sh
-    cast send --ledger 0x... "deposit(address,uint256)" 0x... 1
+    probe send --ledger 0x... "deposit(address,uint256)" 0x... 1
     ```
 
 3. Call a function that expects a `struct`:
@@ -77,14 +77,14 @@ The destination (*to*) can be an ENS name or an address.
     Structs are encoded as tuples (see [struct encoding](../../misc/struct-encoding.md))
 
     ```sh
-    cast send 0x... "myfunction((address,uint256))" "(0x...,1)"
+    probe send 0x... "myfunction((address,uint256))" "(0x...,1)"
     ```
 
 4. Send a transaction with hex data in the `input` field of the transaction object:
     ```sh
-    cast send 0x... 0x68656c6c6f20776f726c64
+    probe send 0x... 0x68656c6c6f20776f726c64
     ```
 
 ### SEE ALSO
 
-[cast](./cast.md), [cast call](./cast-call.md), [cast publish](./cast-publish.md), [cast receipt](./cast-receipt.md), [struct encoding](../../misc/struct-encoding.md)
+[probe](./probe.md), [probe call](./probe-call.md), [probe publish](./probe-publish.md), [probe receipt](./probe-receipt.md), [struct encoding](../../misc/struct-encoding.md)

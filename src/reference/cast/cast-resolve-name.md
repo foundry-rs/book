@@ -1,12 +1,12 @@
-## cast resolve-name
+## probe resolve-name
 
 ### NAME
 
-cast-resolve-name - Perform an ENS lookup.
+probe-resolve-name - Perform an ENS lookup.
 
 ### SYNOPSIS
 
-``cast resolve-name`` [*options*] *who*
+``probe resolve-name`` [*options*] *who*
 
 ### DESCRIPTION
 
@@ -32,14 +32,14 @@ If `--verify` is passed, then a reverse lookup is performed after the normal loo
 
 1. Get the address for an ENS name.
     ```sh
-    cast resolve-name vitalik.eth
+    probe resolve-name vitalik.eth
     ```
 
 2. Perform both a normal and a reverse lookup:
     ```sh
-    cast resolve-name --verify vitalik.eth
+    probe resolve-name --verify vitalik.eth
     ```
 
 ### SEE ALSO
 
-[cast](./cast.md), [cast lookup-address](./cast-lookup-address.md)
+[probe](./probe.md), [probe lookup-address](./probe-lookup-address.md)

@@ -1,10 +1,10 @@
-# forge cache ls
+# spark cache ls
 
-Shows cached data from the global foundry directory
+Shows cached data from the global foxar directory
 
 ```bash
-$ forge cache ls --help
-Usage: forge cache ls [CHAINS]...
+$ spark cache ls --help
+Usage: spark cache ls [CHAINS]...
 
 Arguments:
   [CHAINS]...

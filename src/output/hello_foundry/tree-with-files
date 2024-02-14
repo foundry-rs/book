@@ -4,10 +4,10 @@ $ tree . -L 3 -I output
 // ANCHOR_END: command
 // ANCHOR: output
 .
-├── foundry.toml
+├── foxar.toml
 ├── lib
-│   └── forge-std
-│       ├── foundry.toml
+│   └── spark-std
+│       ├── foxar.toml
 │       ├── lib
 │       ├── LICENSE-APACHE
 │       ├── LICENSE-MIT

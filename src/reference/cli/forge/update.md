@@ -1,10 +1,10 @@
-# forge update
+# spark update
 
 Update one or multiple dependencies.
 
 ```bash
-$ forge update --help
-Usage: forge update [OPTIONS] [DEPENDENCIES]...
+$ spark update --help
+Usage: spark update [OPTIONS] [DEPENDENCIES]...
 
 Arguments:
   [DEPENDENCIES]...

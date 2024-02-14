@@ -1,12 +1,12 @@
-## cast from-bin
+## probe from-bin
 
 ### NAME
 
-cast-from-bin - Convert binary data into hex data.
+probe-from-bin - Convert binary data into hex data.
 
 ### SYNOPSIS
 
-``cast from-bin`` [*options*]
+``probe from-bin`` [*options*]
 
 ### DESCRIPTION
 
@@ -20,4 +20,4 @@ The input is taken from stdin.
 
 ### SEE ALSO
 
-[cast](./cast.md)
+[probe](./probe.md)

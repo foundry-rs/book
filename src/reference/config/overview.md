@@ -1,6 +1,6 @@
 ## Config Overview
 
-Foundry's configuration system allows you to configure its tools.
+Foxar's configuration system allows you to configure its tools.
 
 ### Profiles
 
@@ -12,23 +12,23 @@ To add a profile named `local`, you would add:
 [profile.local]
 ```
 
-You can select the profile to use by setting the `FOUNDRY_PROFILE` environment variable.
+You can select the profile to use by setting the `FOXAR_PROFILE` environment variable.
 
 ### Global configuration
 
-You can create a `foundry.toml` file in `~/.foundry` folder to configure Foundry globally.
+You can create a `foxar.toml` file in `~/.foxar` folder to configure Foxar globally.
 
 ### Environment variables
 
-Configuration can be overridden with `FOUNDRY_` and `DAPP_` prefixed environment variables.
+Configuration can be overridden with `FOXAR_` and `DAPP_` prefixed environment variables.
 
 Exceptions are:
 
-- `FOUNDRY_FFI`, `DAPP_FFI`, `DAPP_TEST_FFI`
-- `FOUNDRY_PROFILE`
-- `FOUNDRY_REMAPPINGS`, `DAPP_REMAPPINGS`
-- `FOUNDRY_LIBRARIES`, `DAPP_LIBRARIES`
-- `FOUNDRY_FS_PERMISSIONS`, `DAPP_FS_PERMISSIONS`, `DAPP_TEST_FS_PERMISSIONS`
+- `FOXAR_FFI`, `DAPP_FFI`, `DAPP_TEST_FFI`
+- `FOXAR_PROFILE`
+- `FOXAR_REMAPPINGS`, `DAPP_REMAPPINGS`
+- `FOXAR_LIBRARIES`, `DAPP_LIBRARIES`
+- `FOXAR_FS_PERMISSIONS`, `DAPP_FS_PERMISSIONS`, `DAPP_TEST_FS_PERMISSIONS`
 - `DAPP_TEST_CACHE`
 - `DAPP_TEST_FUZZ_RUNS`
 - `DAPP_TEST_FUZZ_DEPTH`

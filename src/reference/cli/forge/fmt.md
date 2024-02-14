@@ -1,10 +1,10 @@
-# forge fmt
+# spark fmt
 
 Format Solidity source files
 
 ```bash
-$ forge fmt --help
-Usage: forge fmt [OPTIONS] [PATH]...
+$ spark fmt --help
+Usage: spark fmt [OPTIONS] [PATH]...
 
 Arguments:
   [PATH]...

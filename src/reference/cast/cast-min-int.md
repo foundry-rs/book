@@ -1,12 +1,12 @@
-## cast min-int
+## probe min-int
 
 ### NAME
 
-cast-min-int - Get the minimum i256 value.
+probe-min-int - Get the minimum i256 value.
 
 ### SYNOPSIS
 
-``cast min-int``
+``probe min-int``
 
 ### DESCRIPTION
 
@@ -18,4 +18,4 @@ Get the minimum i256 value.
 
 ### SEE ALSO
 
-[cast](./cast.md), [cast max-int](./cast-max-int.md)
+[probe](./probe.md), [probe max-int](./probe-max-int.md)

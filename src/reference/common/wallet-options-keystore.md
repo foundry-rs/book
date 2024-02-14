@@ -5,7 +5,7 @@
 &nbsp;&nbsp;&nbsp;&nbsp;Environment: `ETH_KEYSTORE`
 
 `--account` _account-name_  
-&nbsp;&nbsp;&nbsp;&nbsp;Use a keystore from the default keystores folder (~/.foundry/keystores) by its filename.  
+&nbsp;&nbsp;&nbsp;&nbsp;Use a keystore from the default keystores folder (~/.foxar/keystores) by its filename.  
 &nbsp;&nbsp;&nbsp;&nbsp;Environment: `ETH_KEYSTORE_ACCOUNT`
 
 `--interactive`

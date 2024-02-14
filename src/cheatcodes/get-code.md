@@ -16,7 +16,7 @@ The calldata parameter can either be in the form `ContractFile.sol` (if the file
 >
 > `getCode` requires read permission for the output directory, see [file cheatcodes](./fs.md).
 >
-> To grant read access set `fs_permissions = [{ access = "read", path = "./out"}]` in your `foundry.toml`.
+> To grant read access set `fs_permissions = [{ access = "read", path = "./out"}]` in your `foxar.toml`.
 
 ### Examples
 
@@ -54,9 +54,9 @@ vm.etch(targetAddr, deployed.code);
 [`getDeployedCode`](./get-deployed-code.md)
 [`eth`](./etch.md)
 
-Forge Standard Library
+Spark Standard Library
 
-[`deployCode`](../reference/forge-std/deployCode.md)
-[`deployCodeTo`](../reference/forge-std/deployCodeTo.md)
+[`deployCode`](../reference/spark-std/deployCode.md)
+[`deployCodeTo`](../reference/spark-std/deployCodeTo.md)
 
-[forge-std]: ../reference/forge-std
+[spark-std]: ../reference/spark-std

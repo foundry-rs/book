@@ -1,6 +1,6 @@
 ## Differential Testing
 
-Forge can be used for differential testing and differential fuzzing. You can even test against non-EVM executables using the `ffi` [cheatcode](../cheatcodes/ffi.md).
+Spark can be used for differential testing and differential fuzzing. You can even test against non-EVM executables using the `ffi` [cheatcode](../cheatcodes/ffi.md).
 
 ### Background
 
@@ -16,14 +16,14 @@ Some real life uses of this type of testing include:
 - Testing code against known reference implementations
 - Confirming compatibility with third party tools and dependencies
 
-Below are some examples of how Forge is used for differential testing.
+Below are some examples of how Spark is used for differential testing.
 
 ### Primer: The `ffi` cheatcode
 
 [`ffi`](../cheatcodes/ffi.md) allows you to execute an arbitrary shell command and capture the output. Here's a mock example:
 
 ```solidity
-import "forge-std/Test.sol";
+import "spark-std/Test.sol";
 
 contract TestContract is Test {
 
@@ -45,11 +45,11 @@ An address has previously been written to `address.txt`, and we read it in using
 
 [Merkle Trees](https://en.wikipedia.org/wiki/Merkle_tree) are a cryptographic commitment scheme frequently used in blockchain applications. Their popularity has led to a number of different implementations of Merkle Tree generators, provers, and verifiers. Merkle roots and proofs are often generated using a language like JavaScript or Python, while proof verification usually occurs on-chain in Solidity.
 
-[Murky](https://github.com/dmfxyz/murky) is a complete implementation of Merkle roots, proofs, and verification in Solidity. Its test suite includes differential tests against OpenZeppelin's Merkle proof library, as well as root generation tests against a reference JavaScript implementation. These tests are powered by Foundry's fuzzing and `ffi` capabilities.
+[Murky](https://github.com/dmfxyz/murky) is a complete implementation of Merkle roots, proofs, and verification in Solidity. Its test suite includes differential tests against OpenZeppelin's Merkle proof library, as well as root generation tests against a reference JavaScript implementation. These tests are powered by Foxar's fuzzing and `ffi` capabilities.
 
 #### Differential fuzzing against a reference TypeScript implementation
 
-Using the `ffi` cheatcode, Murky tests its own Merkle root implementation against a TypeScript implementation using data provided by Forge's fuzzer:
+Using the `ffi` cheatcode, Murky tests its own Merkle root implementation against a TypeScript implementation using data provided by Spark's fuzzer:
 
 ```solidity
 function testMerkleRootMatchesJSImplementationFuzzed(bytes32[] memory leaves) public {
@@ -79,7 +79,7 @@ function testMerkleRootMatchesJSImplementationFuzzed(bytes32[] memory leaves) pu
 
 > Note: see [`Strings2.sol`](https://github.com/dmfxyz/murky/blob/main/differential_testing/test/utils/Strings2.sol) in the Murky Repo for the library that enables `(bytes memory).toHexString()`
 
-Forge runs `npm --prefix differential_testing/scripts/ --silent run generate-root-cli {numLeaves} {hexEncodedLeaves}`. This calculates the Merkle root for the input data using the reference JavaScript implementation. The script prints the root to stdout, and that printout is captured as `bytes` in the return value of `vm.ffi()`.
+Spark runs `npm --prefix differential_testing/scripts/ --silent run generate-root-cli {numLeaves} {hexEncodedLeaves}`. This calculates the Merkle root for the input data using the reference JavaScript implementation. The script prints the root to stdout, and that printout is captured as `bytes` in the return value of `vm.ffi()`.
 
 The test then calculates the root using the Solidity implementation.
 
@@ -110,7 +110,7 @@ Differential tests are not always fuzzed -- they are also useful for testing kno
 
 #### Standardized Testing against reference data
 
-FFI is also useful for injecting reproducible, standardized data into the testing environment. In the Murky library, this is used as a benchmark for gas snapshotting (see [forge snapshot](./gas-snapshots.md)).
+FFI is also useful for injecting reproducible, standardized data into the testing environment. In the Murky library, this is used as a benchmark for gas snapshotting (see [spark snapshot](./gas-snapshots.md)).
 
 ```solidity
 bytes32[100] data;

@@ -1,30 +1,30 @@
-## First Steps with Foundry
+## First Steps with Foxar
 
-This section provides an overview of the `forge` command line tool. We demonstrate how to create a new project, compile, and test it.
+This section provides an overview of the `spark` command line tool. We demonstrate how to create a new project, compile, and test it.
 
-To start a new project with Foundry, use [`forge init`](../reference/forge/forge-init.md):
+To start a new project with Foxar, use [`spark init`](../reference/spark/spark-init.md):
 
 ```sh
-{{#include ../output/hello_foundry/forge-init:command}}
+{{#include ../output/hello_foxar/spark-init:command}}
 ```
 
-Let's check out what `forge` generated for us:
+Let's check out what `spark` generated for us:
 
 ```sh
-$ cd hello_foundry
-{{#include ../output/hello_foundry/tree:all}}
+$ cd hello_foxar
+{{#include ../output/hello_foxar/tree:all}}
 ```
 
-We can build the project with [`forge build`](../reference/forge/forge-build.md):
+We can build the project with [`spark build`](../reference/spark/spark-build.md):
 
 ```sh
-{{#include ../output/hello_foundry/forge-build:all}}
+{{#include ../output/hello_foxar/spark-build:all}}
 ```
 
-And run the tests with [`forge test`](../reference/forge/forge-test.md):
+And run the tests with [`spark test`](../reference/spark/spark-test.md):
 
 ```sh
-{{#include ../output/hello_foundry/forge-test:all}}
+{{#include ../output/hello_foxar/spark-test:all}}
 ```
 <br>
 
@@ -32,4 +32,4 @@ And run the tests with [`forge test`](../reference/forge/forge-test.md):
 > 
 > You can always print help for any subcommand (or their subcommands) by adding `--help` at the end.
 
-You can watch [these](../tutorials/learn-foundry.md) beginner tutorials if you are a visual learner.
+You can watch [these](../tutorials/learn-foxar.md) beginner tutorials if you are a visual learner.

@@ -1,10 +1,10 @@
-# forge flatten
+# spark flatten
 
 Flatten a source file and all of its imports into one file
 
 ```bash
-$ forge flatten --help
-Usage: forge flatten [OPTIONS] <PATH>
+$ spark flatten --help
+Usage: spark flatten [OPTIONS] <PATH>
 
 Arguments:
   <PATH>

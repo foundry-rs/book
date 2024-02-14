@@ -1,35 +1,35 @@
 ## Debugger
 
-Forge ships with an interactive debugger.
+Spark ships with an interactive debugger.
 
-The debugger is accessible on [`forge debug`](../reference/forge/forge-debug.md) and on [`forge test`](../reference/forge/forge-test.md).
+The debugger is accessible on [`spark debug`](../reference/spark/spark-debug.md) and on [`spark test`](../reference/spark/spark-test.md).
 
-Using `forge test`:
+Using `spark test`:
 
 ```sh
-$ forge test --debug $FUNC
+$ spark test --debug $FUNC
 ```
 
 Where `$FUNC` is the signature of the function you want to debug. For example:
 
 ```sh
-$ forge test --debug "testSomething()"
+$ spark test --debug "testSomething()"
 ```
 
 If you have multiple contracts with the same function name, you need to limit the matching functions down to only one case using `--match-path` and `--match-contract`.
 
 If the matching test is a fuzz test, the debugger will open the first failing fuzz scenario, or the last successful one, whichever comes first.
 
-Using `forge debug`:
+Using `spark debug`:
 
 ```sh
-$ forge debug --debug $FILE --sig $FUNC
+$ spark debug --debug $FILE --sig $FUNC
 ```
 
 Where `$FILE` is the path to the contract you want to debug, and `$FUNC` is the signature of the function you want to debug. For example:
 
 ```sh
-$ forge debug --debug src/SomeContract.sol --sig "myFunc(uint256,string)" 123 "hello"
+$ spark debug --debug src/SomeContract.sol --sig "myFunc(uint256,string)" 123 "hello"
 ```
 
 You can also specify raw calldata using `--sig` instead of a function signature.
@@ -60,7 +60,7 @@ For the stack, **cyan words** are either being read or popped by the current opc
 > ⚠️ **Note**
 >
 > In most test frameworks, the first test assertion to fail is the one reported.
-> In foundry, the last test assertion to fail (that comes from DSTest or cheatcodes) is the one to be reported.
+> In foxar, the last test assertion to fail (that comes from DSTest or cheatcodes) is the one to be reported.
 
 ### Navigating
 

@@ -1,12 +1,12 @@
-## cast rpc
+## probe rpc
 
 ### NAME
 
-cast-rpc -  Perform a raw JSON-RPC request
+probe-rpc -  Perform a raw JSON-RPC request
 
 ### SYNOPSIS
 
-``cast rpc`` [*options*] *METHOD* [*PARAMS...*]
+``probe rpc`` [*options*] *METHOD* [*PARAMS...*]
 
 ### DESCRIPTION
 
@@ -32,17 +32,17 @@ Perform a simple JSON-RPC POST request for the given method and with the params
 1. Get latest `eth_getBlockByNumber` on localhost:
 
     ```sh
-    cast rpc eth_getBlockByNumber "latest" "false"
+    probe rpc eth_getBlockByNumber "latest" "false"
     ```
 
 2. Get `eth_getTransactionByHash` on localhost:
 
     ```sh
-    cast rpc eth_getTransactionByHash 0x2642e960d3150244e298d52b5b0f024782253e6d0b2c9a01dd4858f7b4665a3f
+    probe rpc eth_getTransactionByHash 0x2642e960d3150244e298d52b5b0f024782253e6d0b2c9a01dd4858f7b4665a3f
     ```
     
 3. Get latest `eth_getBlockByNumber` on etherum mainnet:
 
    ```sh
-   cast rpc --rpc-url https://mainnet.infura.io/v3/ eth_getBlockByNumber "latest" "false"
+   probe rpc --rpc-url https://mainnet.infura.io/v3/ eth_getBlockByNumber "latest" "false"
    ```

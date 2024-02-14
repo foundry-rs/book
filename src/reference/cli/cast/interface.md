@@ -1,10 +1,10 @@
-# cast interface
+# probe interface
 
 Generate a Solidity interface from a given ABI.
 
 ```bash
-$ cast interface --help
-Usage: cast interface [OPTIONS] <PATH_OR_ADDRESS>
+$ probe interface --help
+Usage: probe interface [OPTIONS] <PATH_OR_ADDRESS>
 
 Arguments:
   <PATH_OR_ADDRESS>

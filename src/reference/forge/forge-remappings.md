@@ -1,12 +1,12 @@
-## forge remappings
+## spark remappings
 
 ### NAME
 
-forge-remappings - Get the automatically inferred remappings for the project.
+spark-remappings - Get the automatically inferred remappings for the project.
 
 ### SYNOPSIS
 
-``forge remappings`` [*options*]
+``spark remappings`` [*options*]
 
 ### DESCRIPTION
 
@@ -28,9 +28,9 @@ Get the automatically inferred remappings for the project.
 
 1. Create a `remappings.txt` file from the inferred remappings:
     ```sh
-    forge remappings > remappings.txt
+    spark remappings > remappings.txt
     ```
 
 ### SEE ALSO
 
-[forge](./forge.md)
+[spark](./spark.md)

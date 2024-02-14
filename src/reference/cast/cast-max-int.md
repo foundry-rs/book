@@ -1,12 +1,12 @@
-## cast max-int
+## probe max-int
 
 ### NAME
 
-cast-max-int - Get the maximum i256 value.
+probe-max-int - Get the maximum i256 value.
 
 ### SYNOPSIS
 
-``cast max-int``
+``probe max-int``
 
 ### DESCRIPTION
 
@@ -18,4 +18,4 @@ Get the maximum i256 value.
 
 ### SEE ALSO
 
-[cast](./cast.md), [cast min-int](./cast-min-int.md), [cast max-uint](./cast-max-uint.md)
+[probe](./probe.md), [probe min-int](./probe-min-int.md), [probe max-uint](./probe-max-uint.md)

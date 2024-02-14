@@ -1,10 +1,10 @@
-## Configuring with `foundry.toml`
+## Configuring with `foxar.toml`
 
-Forge can be configured using a configuration file called `foundry.toml`, which is placed in the root of your project.
+Spark can be configured using a configuration file called `foxar.toml`, which is placed in the root of your project.
 
 Configuration can be namespaced by profiles. The default profile is named `default`, from which all other profiles inherit. You are free to customize the `default` profile, and add as many new profiles as you need.
 
-Additionally, you can create a global `foundry.toml` in your home directory.
+Additionally, you can create a global `foxar.toml` in your home directory.
 
 Let's take a look at a configuration file that contains two profiles: the default profile, which always enables the optimizer, as well as a CI profile, that always displays traces:
 
@@ -17,7 +17,7 @@ optimizer_runs = 20_000
 verbosity = 4
 ```
 
-When running `forge`, you can specify the profile to use using the `FOUNDRY_PROFILE` environment variable.
+When running `spark`, you can specify the profile to use using the `FOXAR_PROFILE` environment variable.
 
 ### Standalone sections
 
@@ -31,4 +31,4 @@ i.e. `[profile.ci.fuzz]`.
 
 > 📚 **Reference**
 > 
-> See the [`foundry.toml` Reference](../reference/config/) for a complete overview of what you can configure.
+> See the [`foxar.toml` Reference](../reference/config/) for a complete overview of what you can configure.

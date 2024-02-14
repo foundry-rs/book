@@ -1,6 +1,6 @@
 // ANCHOR: all
 // ANCHOR: command
-$ forge test
+$ spark test
 // ANCHOR_END: command
 // ANCHOR: output
 Compiling 1 files with 0.8.10

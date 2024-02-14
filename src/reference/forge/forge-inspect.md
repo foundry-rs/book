@@ -1,12 +1,12 @@
-## forge inspect
+## spark inspect
 
 ### NAME
 
-forge-inspect - Get specialized information about a smart contract
+spark-inspect - Get specialized information about a smart contract
 
 ### SYNOPSIS
 
-``forge inspect`` [*options*] *contract_name* *field*
+``spark inspect`` [*options*] *contract_name* *field*
 
 ### DESCRIPTION
 
@@ -42,19 +42,19 @@ The field to inspect (*field*) can be any of:
 
 1. Inspect the bytecode of a contract:
     ```sh
-    forge inspect MyContract bytecode
+    spark inspect MyContract bytecode
     ```
 
 2. Inspect the storage layout of a contract:
     ```sh
-    forge inspect MyContract storage
+    spark inspect MyContract storage
     ```
 
 3. Inspect the abi of a contract in a pretty format:
    ```sh 
-   forge inspect --pretty MyContract abi
+   spark inspect --pretty MyContract abi
    ```
 
 ### SEE ALSO
 
-[forge](./forge.md), [forge build](./forge-build.md)
+[spark](./spark.md), [spark build](./spark-build.md)

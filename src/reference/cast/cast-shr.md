@@ -1,12 +1,12 @@
-## cast shr
+## probe shr
 
 ### NAME
 
-cast-shr - Perform a right shifting operation.
+probe-shr - Perform a right shifting operation.
 
 ### SYNOPSIS
 
-``cast shr`` [*options*] *value* *shift*
+``probe shr`` [*options*] *value* *shift*
 
 ### DESCRIPTION
 
@@ -22,11 +22,11 @@ Perform a right shifting operation.
 
 1. Perform a single right bit shift of 0x12
     ```sh
-    cast shr --base-in 16 0x12 1
+    probe shr --base-in 16 0x12 1
     ```
 
 > Note: The --base-in parameter is not enforced but will be needed if the input is ambiguous.
 
 ### SEE ALSO
 
-[cast](./cast.md), [cast shl](./cast-shl.md)
+[probe](./probe.md), [probe shl](./probe-shl.md)

@@ -1,14 +1,14 @@
 ## In-line test configuration
-Foundry users are enabled to specify overall test configurations, using a combination of ENV variables and config statements in the `foundry.toml`. Checkout the [`Testing reference`][Testing Reference] for a detailed description.
+Foxar users are enabled to specify overall test configurations, using a combination of ENV variables and config statements in the `foxar.toml`. Checkout the [`Testing reference`][Testing Reference] for a detailed description.
 
-Despite this may work in the general case, some tests may need finer control over their configuration. For such reason Forge provides a way to specify per-test configs for invariant and fuzz testing scenarios. 
+Despite this may work in the general case, some tests may need finer control over their configuration. For such reason Spark provides a way to specify per-test configs for invariant and fuzz testing scenarios. 
 
-Users can in-line test config statements directly in Solidity comments. This would affect the behavior of the `forge test` command for a specific test instance, as illustrated in the example below.
+Users can in-line test config statements directly in Solidity comments. This would affect the behavior of the `spark test` command for a specific test instance, as illustrated in the example below.
 
 ```solidity
 contract MyTest is Test {
-  /// forge-config: default.fuzz.runs = 100
-  /// forge-config: ci.fuzz.runs = 500
+  /// spark-config: default.fuzz.runs = 100
+  /// spark-config: ci.fuzz.runs = 500
   function test_SimpleFuzzTest(uint256 x) public {
     // --- snip ---
   }
@@ -23,8 +23,8 @@ In-line test configurations can also be expressed in block comments, as illustra
 ```solidity
 contract MyTest is Test {
   /**
-   * forge-config: default.fuzz.runs = 1024
-   * forge-config: default.fuzz.max-test-rejects = 500
+   * spark-config: default.fuzz.runs = 1024
+   * spark-config: default.fuzz.max-test-rejects = 500
    */
   function test_SimpleFuzzTest(uint256 x) public {
     // --- snip ---
@@ -33,7 +33,7 @@ contract MyTest is Test {
 ```
 
 ### In-line fuzz configs
-Users can specify the configs described in the table. Each statement must have a prefix of the form `forge-config: ${PROFILE}.fuzz.`
+Users can specify the configs described in the table. Each statement must have a prefix of the form `spark-config: ${PROFILE}.fuzz.`
 
 | Parameter | Type | Description |
 |-|-|-|
@@ -43,8 +43,8 @@ Users can specify the configs described in the table. Each statement must have a
 Fuzz config example
 ```solidity
 contract MyFuzzTest is Test {
-  /// forge-config: default.fuzz.runs = 100
-  /// forge-config: default.fuzz.max-test-rejects = 2
+  /// spark-config: default.fuzz.runs = 100
+  /// spark-config: default.fuzz.max-test-rejects = 2
   function test_InlineConfig(uint256 x) public {
     // --- snip ---
   }
@@ -52,7 +52,7 @@ contract MyFuzzTest is Test {
 ```
 
 ### In-line invariant configs
-Users can specify the configs described in the table. Each statement must have a prefix of the form `forge-config: ${PROFILE}.invariant.`
+Users can specify the configs described in the table. Each statement must have a prefix of the form `spark-config: ${PROFILE}.invariant.`
 
 | Parameter | Type | Description |
 |-|-|-|
@@ -64,10 +64,10 @@ Users can specify the configs described in the table. Each statement must have a
 Invariant config example
 ```solidity
 contract MyInvariantTest is Test {
-  /// forge-config: default.invariant.runs = 100
-  /// forge-config: default.invariant.depth = 2
-  /// forge-config: default.invariant.fail-on-revert = false
-  /// forge-config: default.invariant.call-override = true
+  /// spark-config: default.invariant.runs = 100
+  /// spark-config: default.invariant.depth = 2
+  /// spark-config: default.invariant.fail-on-revert = false
+  /// spark-config: default.invariant.call-override = true
   function invariant_InlineConfig() public {
     // --- snip ---
   }

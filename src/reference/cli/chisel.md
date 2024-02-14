@@ -1,16 +1,16 @@
-# chisel
+# pilot
 
 Fast, utilitarian, and verbose Solidity REPL
 
 ```bash
-$ chisel --help
-Usage: chisel [OPTIONS] [COMMAND]
+$ pilot --help
+Usage: pilot [OPTIONS] [COMMAND]
 
 Commands:
   list         List all cached sessions
   load         Load a cached session
   view         View the source of a cached session
-  clear-cache  Clear all cached chisel sessions from the cache directory
+  clear-cache  Clear all cached pilot sessions from the cache directory
   help         Print this message or the help of the given subcommand(s)
 
 Options:

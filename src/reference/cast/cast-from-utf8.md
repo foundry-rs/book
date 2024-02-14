@@ -1,12 +1,12 @@
-## cast from-utf8
+## probe from-utf8
 
 ### NAME
 
-cast-from-utf8 - Convert UTF8 text to hex.
+probe-from-utf8 - Convert UTF8 text to hex.
 
 ### SYNOPSIS
 
-``cast from-utf8`` [*options*] *text*
+``probe from-utf8`` [*options*] *text*
 
 ### DESCRIPTION
 
@@ -20,9 +20,9 @@ Convert UTF8 text to hex.
 
 1. Convert UTF8 text to hex:
     ```sh
-    cast from-utf8 "hello"
+    probe from-utf8 "hello"
     ```
 
 ### SEE ALSO
 
-[cast](./cast.md)
+[probe](./probe.md)

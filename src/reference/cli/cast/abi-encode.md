@@ -1,10 +1,10 @@
-# cast abi-encode
+# probe abi-encode
 
 ABI encode the given function argument, excluding the selector
 
 ```bash
-$ cast abi-encode --help
-Usage: cast abi-encode <SIG> [ARGS]...
+$ probe abi-encode --help
+Usage: probe abi-encode <SIG> [ARGS]...
 
 Arguments:
   <SIG>      The function signature

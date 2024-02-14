@@ -1,6 +1,6 @@
 // ANCHOR: all
 // ANCHOR: command
-$ forge install
+$ spark install
 // ANCHOR_END: command
 // ANCHOR: output
 

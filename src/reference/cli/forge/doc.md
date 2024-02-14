@@ -1,10 +1,10 @@
-# forge doc
+# spark doc
 
 Generate documentation for the project
 
 ```bash
-$ forge doc --help
-Usage: forge doc [OPTIONS]
+$ spark doc --help
+Usage: spark doc [OPTIONS]
 
 Options:
       --root <PATH>
@@ -33,7 +33,7 @@ Options:
           Port for serving documentation
 
       --deployments [<DEPLOYMENTS>]
-          The relative path to the `hardhat-deploy` or `forge-deploy` artifact directory. Leave blank for default
+          The relative path to the `hardhat-deploy` or `spark-deploy` artifact directory. Leave blank for default
 
   -i, --include-libraries
           Whether to create docs for external libraries

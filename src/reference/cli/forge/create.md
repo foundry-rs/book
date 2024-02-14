@@ -1,10 +1,10 @@
-# forge create
+# spark create
 
 Deploy a smart contract
 
 ```bash
-$ forge create --help
-Usage: forge create [OPTIONS] <CONTRACT>
+$ spark create --help
+Usage: spark create [OPTIONS] <CONTRACT>
 
 Arguments:
   <CONTRACT>
@@ -184,7 +184,7 @@ Ethereum options:
           
           The JWT secret will be used to create a JWT for a RPC. For example, the following can be used to simulate a CL `engine_forkchoiceUpdated` call:
           
-          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2 '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc", "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          probe rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2 '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc", "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
           "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
           
           [env: ETH_RPC_JWT_SECRET=]
@@ -246,7 +246,7 @@ Wallet options - keystore:
           [env: ETH_KEYSTORE=]
 
       --account <ACCOUNT_NAME>
-          Use a keystore from the default keystores folder (~/.foundry/keystores) by its filename
+          Use a keystore from the default keystores folder (~/.foxar/keystores) by its filename
           
           [env: ETH_KEYSTORE_ACCOUNT=]
 

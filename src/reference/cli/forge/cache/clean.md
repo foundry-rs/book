@@ -1,10 +1,10 @@
-# forge cache clean
+# spark cache clean
 
-Cleans cached data from the global foundry directory
+Cleans cached data from the global foxar directory
 
 ```bash
-$ forge cache clean --help
-Usage: forge cache clean [OPTIONS] [CHAINS]...
+$ spark cache clean --help
+Usage: spark cache clean [OPTIONS] [CHAINS]...
 
 Arguments:
   [CHAINS]...

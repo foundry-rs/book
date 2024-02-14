@@ -1,14 +1,14 @@
 // ANCHOR: all
 // ANCHOR: command
-$ echo '!help' | chisel
+$ echo '!help' | pilot
 // ANCHOR_END: command
 // ANCHOR: output
-Welcome to Chisel! Type `!help` to show available commands.
-⚒️ Chisel help
+Welcome to Pilot! Type `!help` to show available commands.
+⚒️ Pilot help
 =============
 General
 	!help | !h - Display all commands
-	!quit | !q - Quit Chisel
+	!quit | !q - Quit Pilot
 	!exec <command> [args] | !e <command> [args] - Execute a shell command and print the output
 
 Session
@@ -17,7 +17,7 @@ Session
 	!save [id] | !s [id] - Save the current session to cache
 	!load <id> | !l <id> - Load a previous session ID from cache
 	!list | !ls - List all cached sessions
-	!clearcache | !cc - Clear the chisel cache of all stored sessions
+	!clearcache | !cc - Clear the pilot cache of all stored sessions
 	!export | !ex - Export the current session source to a script file
 	!fetch <addr> <name> | !fe <addr> <name> - Fetch the interface of a verified contract on Etherscan
 	!edit - Open the current session in an editor

@@ -30,6 +30,6 @@ log_uint256(address(DAI).balanceOf(alice)); // 1000000000000000000
 
 ### SEE ALSO
 
-Forge Standard Library
+Spark Standard Library
 
-[`deal`](../reference/forge-std/deal.md), [`hoax`](../reference/forge-std/hoax.md), [`startHoax`](../reference/forge-std/startHoax.md)
+[`deal`](../reference/spark-std/deal.md), [`hoax`](../reference/spark-std/hoax.md), [`startHoax`](../reference/spark-std/startHoax.md)

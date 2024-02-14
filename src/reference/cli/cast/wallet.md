@@ -1,10 +1,10 @@
-# cast wallet
+# probe wallet
 
 Wallet management utilities
 
 ```bash
-$ cast wallet --help
-Usage: cast wallet <COMMAND>
+$ probe wallet --help
+Usage: probe wallet <COMMAND>
 
 Commands:
   new                 Create a new random keypair [aliases: n]

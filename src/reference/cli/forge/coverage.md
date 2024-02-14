@@ -1,10 +1,10 @@
-# forge coverage
+# spark coverage
 
 Generate coverage reports
 
 ```bash
-$ forge coverage --help
-Usage: forge coverage [OPTIONS]
+$ spark coverage --help
+Usage: spark coverage [OPTIONS]
 
 Options:
       --report <REPORT>

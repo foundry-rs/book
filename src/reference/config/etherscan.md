@@ -1,6 +1,6 @@
 ## Etherscan
 
-Configuration related to Etherscan, such as API keys. This configuration is used in various places by Forge.
+Configuration related to Etherscan, such as API keys. This configuration is used in various places by Spark.
 
 The `[etherscan]` section is a mapping of keys to Etherscan configuration tables. The Etherscan configuration tables hold the following keys:
 

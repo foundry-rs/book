@@ -1,8 +1,8 @@
-## Forge Standard Library Overview
+## Spark Standard Library Overview
 
-Forge Standard Library (Forge Std for short) is a collection of helpful contracts that make writing tests easier, faster, and more user-friendly.
+Spark Standard Library (Spark Std for short) is a collection of helpful contracts that make writing tests easier, faster, and more user-friendly.
 
-Using Forge Std is the preferred way of writing tests with Foundry.
+Using Spark Std is the preferred way of writing tests with Foxar.
 
 It provides all the essential functionality you need to get started writing tests:
 
@@ -14,7 +14,7 @@ It provides all the essential functionality you need to get started writing test
 Simply import `Test.sol` and inherit from `Test` in your test contract:
 
 ```solidity
-import "forge-std/Test.sol";
+import "spark-std/Test.sol";
 
 contract ContractTest is Test { ...
 ```
@@ -31,29 +31,29 @@ assertEq(dai.balanceOf(alice), 10000e18);
 // Log with the Hardhat `console` (`console2`)
 console.log(alice.balance);
 
-// Use anything from the Forge Std std-libraries
+// Use anything from the Spark Std std-libraries
 deal(address(dai), alice, 10000e18);
 ```
 
 To import the `Vm` interface or the `console` library individually:
 
 ```solidity
-import "forge-std/Vm.sol";
+import "spark-std/Vm.sol";
 ```
 
 ```solidity
-import "forge-std/console.sol";
+import "spark-std/console.sol";
 ```
 
-**Note:** `console2.sol` contains patches to `console.sol` that allows Forge to decode traces for calls to the console, but it is not compatible with Hardhat.
+**Note:** `console2.sol` contains patches to `console.sol` that allows Spark to decode traces for calls to the console, but it is not compatible with Hardhat.
 
 ```solidity
-import "forge-std/console2.sol";
+import "spark-std/console2.sol";
 ```
 
 ### Standard libraries
 
-Forge Std currently consists of six standard libraries.
+Spark Std currently consists of six standard libraries.
 
 #### Std Logs
 
@@ -65,7 +65,7 @@ Std Assertions expand upon the assertion functions from the [`DSTest`](../refere
 
 #### Std Cheats
 
-Std Cheats are wrappers around Forge cheatcodes that make them safer to use and improve the DX.
+Std Cheats are wrappers around Spark cheatcodes that make them safer to use and improve the DX.
 
 You can access Std Cheats by simply calling them inside your test contract, as you would any other internal function:
 
@@ -115,4 +115,4 @@ uint256 ten = stdMath.abs(-10)
 
 > 📚 **Reference**
 >
-> See the [Forge Standard Library Reference](../reference/forge-std/) for a complete overview of Forge Standard Library.
+> See the [Spark Standard Library Reference](../reference/spark-std/) for a complete overview of Spark Standard Library.

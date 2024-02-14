@@ -1,33 +1,33 @@
 ## Working on an Existing Project
 
-Foundry makes developing with existing projects have no overhead.
+Foxar makes developing with existing projects have no overhead.
 
-For this example, we will use [PaulRBerg][paul]'s [`foundry-template`][template].
+For this example, we will use [PaulRBerg][paul]'s [`foxar-template`][template].
 
-First, clone the project and run [`forge install`][install] inside the project directory.
+First, clone the project and run [`spark install`][install] inside the project directory.
 
 ```sh
-$ git clone https://github.com/PaulRBerg/foundry-template
-$ cd foundry-template 
-$ forge install
+$ git clone https://github.com/PaulRBerg/foxar-template
+$ cd foxar-template 
+$ spark install
 ```
 
-We run [`forge install`][install] to install the submodule dependencies that are in the project.
+We run [`spark install`][install] to install the submodule dependencies that are in the project.
 
-To build, use [`forge build`][build]:
+To build, use [`spark build`][build]:
 
 ```sh
-{{#include ../output/foundry-template/forge-build:all}}
+{{#include ../output/foxar-template/spark-build:all}}
 ```
 
-And to test, use [`forge test`][test]:
+And to test, use [`spark test`][test]:
 
 ```sh
-{{#include ../output/foundry-template/forge-test:all}}
+{{#include ../output/foxar-template/spark-test:all}}
 ```
 
 [paul]: https://github.com/PaulRBerg
-[template]: https://github.com/PaulRBerg/foundry-template
-[install]: ../reference/forge/forge-install.md
-[build]: ../reference/forge/forge-build.md
-[test]: ../reference/forge/forge-test.md
+[template]: https://github.com/PaulRBerg/foxar-template
+[install]: ../reference/spark/spark-install.md
+[build]: ../reference/spark/spark-build.md
+[test]: ../reference/spark/spark-test.md

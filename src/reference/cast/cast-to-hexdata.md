@@ -1,12 +1,12 @@
-## cast to-hexdata
+## probe to-hexdata
 
 ### NAME
 
-cast-to-hexdata - Normalize the input to lowercase, 0x-prefixed hex.
+probe-to-hexdata - Normalize the input to lowercase, 0x-prefixed hex.
 
 ### SYNOPSIS
 
-``cast to-hexdata`` [*options*] *input*
+``probe to-hexdata`` [*options*] *input*
 
 ### DESCRIPTION
 
@@ -27,19 +27,19 @@ The input data (*input*) can either be:
 
 1. Add 0x prefix:
     ```sh
-    cast to-hexdata deadbeef
+    probe to-hexdata deadbeef
     ```
 
 2. Concatenate hex values:
     ```sh
-    cast to-hexdata "deadbeef:0xbeef"
+    probe to-hexdata "deadbeef:0xbeef"
     ```
 
 3. Normalize hex value in `MY_VAR`:
     ```sh
-    cast to-hexdata "@MY_VAR"
+    probe to-hexdata "@MY_VAR"
     ```
 
 ### SEE ALSO
 
-[cast](./cast.md)
+[probe](./probe.md)

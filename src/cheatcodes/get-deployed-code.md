@@ -20,7 +20,7 @@ The calldata parameter can either be in the form `ContractFile.sol` (if the file
 >
 > `getDeployedCode` requires read permission for the output directory, see [file cheatcodes](./fs.md).
 >
-> To grant read access set `fs_permissions = [{ access = "read", path = "./out"}]` in your `foundry.toml`.
+> To grant read access set `fs_permissions = [{ access = "read", path = "./out"}]` in your `foxar.toml`.
 
 ### Examples
 
@@ -50,9 +50,9 @@ assertEq(overrideAddress.code, code);
 
 ### SEE ALSO
 
-Forge Standard Library
+Spark Standard Library
 
 [`getCode`](./get-code.md)
 [`etch`](./etch.md)
 
-[forge-std]: ../reference/forge-std
+[spark-std]: ../reference/spark-std

@@ -1,12 +1,12 @@
-## cast to-dec
+## probe to-dec
 
 ### NAME
 
-cast-to-dec - Converts a number of one base to decimal
+probe-to-dec - Converts a number of one base to decimal
 
 ### SYNOPSIS
 
-``cast to-dec`` [*options*] *value*
+``probe to-dec`` [*options*] *value*
 
 ### DESCRIPTION
 
@@ -23,9 +23,9 @@ Converts a number of one base to decimal
 
 1. Convert ff in hexadecimal to decimal
     ```sh
-    cast to-dec ff
+    probe to-dec ff
     ```
 
 ### SEE ALSO
 
-[cast](./cast.md)
+[probe](./probe.md)

@@ -1,16 +1,16 @@
-## forge geiger
+## spark geiger
 
 ### NAME
 
-forge-geiger - Detects usage of unsafe cheat codes in a foundry project and its dependencies.
+spark-geiger - Detects usage of unsafe cheat codes in a foxar project and its dependencies.
 
 ### SYNOPSIS
 
-``forge geiger`` [*options*] [*path*]
+``spark geiger`` [*options*] [*path*]
 
 ### DESCRIPTION
 
-Detects usage of unsafe cheat codes in a foundry project and its dependencies.
+Detects usage of unsafe cheat codes in a foxar project and its dependencies.
 
 ### OPTIONS
 
@@ -27,6 +27,6 @@ Detects usage of unsafe cheat codes in a foundry project and its dependencies.
 
 ### SEE ALSO
 
-[forge](./forge.md)
+[spark](./spark.md)
 
 

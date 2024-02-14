@@ -1,10 +1,10 @@
-# forge inspect
+# spark inspect
 
 Get specialized information about a smart contract
 
 ```bash
-$ forge inspect --help
-Usage: forge inspect [OPTIONS] <CONTRACT> <FIELD>
+$ spark inspect --help
+Usage: spark inspect [OPTIONS] <CONTRACT> <FIELD>
 
 Arguments:
   <CONTRACT>

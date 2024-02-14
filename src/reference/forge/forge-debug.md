@@ -1,12 +1,12 @@
-## forge debug
+## spark debug
 
 ### NAME
 
-forge-debug - Debug a single smart contract as a script.
+spark-debug - Debug a single smart contract as a script.
 
 ### SYNOPSIS
 
-``forge debug`` [*options*] *path* [*args...*]
+``spark debug`` [*options*] *path* [*args...*]
 
 ### DESCRIPTION
 
@@ -34,7 +34,7 @@ When the script is running in a forked environment, you can access all the state
 if you had deployed the script. [Cheatcodes][cheatcodes] are still available.
 
 You can also specify a block number to fork from by passing `--fork-block-number <BLOCK>`. When forking from a
-specific block, the chain data is cached to `~/.foundry/cache`. If you do not want to cache the chain data,
+specific block, the chain data is cached to `~/.foxar/cache`. If you do not want to cache the chain data,
 pass `--no-storage-caching`.
 
 #### Debugging
@@ -69,32 +69,32 @@ More information on the debugger can be found in the [debugger chapter][debugger
 
 1. Execute the `run()` function in a contract:
     ```sh
-    forge debug src/Contract.sol
+    spark debug src/Contract.sol
     ```
 
 2. Open a script in the debugger:
     ```sh
-    forge debug src/Contract.sol --debug
+    spark debug src/Contract.sol --debug
     ```
 
 3. Execute the `foo()` function in a contract:
     ```sh
-    forge debug src/Contract.sol --sig "foo()"
+    spark debug src/Contract.sol --sig "foo()"
     ```
 
 4. Execute a contract with a function that takes parameters:
     ```sh
-    forge debug src/Contract.sol --sig "foo(string,uint256)" "hello" 100
+    spark debug src/Contract.sol --sig "foo(string,uint256)" "hello" 100
     ```
 
 5. Execute a contract with raw calldata:
     ```sh
-    forge debug src/Contract.sol --sig "0x..."
+    spark debug src/Contract.sol --sig "0x..."
     ```
 
 ### SEE ALSO
 
-[forge](./forge.md), [forge test](./forge-test.md)
+[spark](./spark.md), [spark test](./spark-test.md)
 
-[debugger]: ../../forge/debugger.md
+[debugger]: ../../spark/debugger.md
 [cheatcodes]: ../../cheatcodes/

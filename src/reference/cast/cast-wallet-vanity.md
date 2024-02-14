@@ -1,12 +1,12 @@
-## cast wallet vanity
+## probe wallet vanity
 
 ### NAME
 
-cast-wallet-vanity - Generate a vanity address.
+probe-wallet-vanity - Generate a vanity address.
 
 ### SYNOPSIS
 
-``cast wallet vanity`` [*options*]
+``probe wallet vanity`` [*options*]
 
 ### DESCRIPTION
 
@@ -36,19 +36,19 @@ If `--nonce` is specified, then the command will try to generate a vanity contra
 
 1. Create a new keypair that starts with `dead`:
     ```sh
-    cast wallet vanity --starts-with dead
+    probe wallet vanity --starts-with dead
     ```
 
 2. Create a new keypair ends with `beef`:
     ```sh
-    cast wallet vanity --ends-with beef
+    probe wallet vanity --ends-with beef
     ```
 
 3. Create a new keypair that starts with `dead` and save the details to a specific path:
     ```sh
-    cast wallet vanity --starts-with dead --save-path /path/to/save
+    probe wallet vanity --starts-with dead --save-path /path/to/save
     ```
 
 ### SEE ALSO
 
-[cast](./cast.md), [cast wallet](./cast-wallet.md)
+[probe](./probe.md), [probe wallet](./probe-wallet.md)

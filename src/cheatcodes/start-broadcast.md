@@ -1,17 +1,17 @@
-## `startBroadcast`
+## `startBroadprobe`
 
 ### Signature
 
 ```solidity
-function startBroadcast() external;
+function startBroadprobe() external;
 ```
 
 ```solidity
-function startBroadcast(address who) external;
+function startBroadprobe(address who) external;
 ```
 
 ```solidity
-function startBroadcast(uint256 privateKey) external;
+function startBroadprobe(uint256 privateKey) external;
 ```
 
 ### Description
@@ -30,22 +30,22 @@ function t(uint256 a) public returns (uint256) {
 }
 
 function deployOther() public {
-    vm.startBroadcast(ACCOUNT_A);
+    vm.startBroadprobe(ACCOUNT_A);
     Test test = new Test();
     
     // will trigger a transaction
     test.t(1);
     
-    vm.stopBroadcast();
+    vm.stopBroadprobe();
 
-    // broadcast again, this time using a private key from your environment variables
-    vm.startBroadcast(vm.envUint("PRIVATE_KEY"));
+    // broadprobe again, this time using a private key from your environment variables
+    vm.startBroadprobe(vm.envUint("PRIVATE_KEY"));
     test.t(3);
-    vm.stopBroadcast();
+    vm.stopBroadprobe();
 }
 ```
 
 ### SEE ALSO
 
-- [broadcast](./broadcast.md)
-- [stopBroadcast](./stop-broadcast.md)
+- [broadprobe](./broadprobe.md)
+- [stopBroadprobe](./stop-broadprobe.md)

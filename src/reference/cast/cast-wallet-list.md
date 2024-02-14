@@ -1,16 +1,16 @@
-## cast wallet list
+## probe wallet list
 
 ### NAME
 
-cast-wallet-list - List all the accounts in the keystore default directory.
+probe-wallet-list - List all the accounts in the keystore default directory.
 
 ### SYNOPSIS
 
-`cast wallet list`
+`probe wallet list`
 
 ### DESCRIPTION
 
-List all the accounts in the keystore default directory `~/.foundry/keystores`.
+List all the accounts in the keystore default directory `~/.foxar/keystores`.
 
 ### OPTIONS
 
@@ -18,4 +18,4 @@ List all the accounts in the keystore default directory `~/.foundry/keystores`.
 
 ### SEE ALSO
 
-[cast](./cast.md), [cast wallet](./cast-wallet.md)
+[probe](./probe.md), [probe wallet](./probe-wallet.md)

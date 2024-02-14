@@ -1,10 +1,10 @@
-# forge clean
+# spark clean
 
 Remove the build artifacts and cache directories
 
 ```bash
-$ forge clean --help
-Usage: forge clean [OPTIONS]
+$ spark clean --help
+Usage: spark clean [OPTIONS]
 
 Options:
       --root <PATH>

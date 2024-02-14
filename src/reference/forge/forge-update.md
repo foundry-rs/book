@@ -1,19 +1,19 @@
-## forge update
+## spark update
 
 ### NAME
 
-forge-update - Update one or more dependencies.
+spark-update - Update one or more dependencies.
 
 ### SYNOPSIS
 
-``forge update`` [*options*] [*dep*]
+``spark update`` [*options*] [*dep*]
 
 ### DESCRIPTION
 
 Update one or more dependencies.
 
 The argument *dep* is a path to the dependency you want to update.
-Forge will update to the latest version on the ref you specified for the dependency when you ran [`forge install`](./forge-install.md).
+Spark will update to the latest version on the ref you specified for the dependency when you ran [`spark install`](./spark-install.md).
 
 If no argument is provided, then all dependencies are updated.
 
@@ -25,14 +25,14 @@ If no argument is provided, then all dependencies are updated.
 
 1. Update a dependency:
     ```sh
-    forge update lib/solmate
+    spark update lib/solmate
     ```
 
 2. Update all dependencies:
     ```sh
-    forge update
+    spark update
     ```
 
 ### SEE ALSO
 
-[forge](./forge.md), [forge install](./forge-install.md), [forge remove](./forge-remove.md)
+[spark](./spark.md), [spark install](./spark-install.md), [spark remove](./spark-remove.md)

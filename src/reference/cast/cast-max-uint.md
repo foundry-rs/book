@@ -1,12 +1,12 @@
-## cast max-uint
+## probe max-uint
 
 ### NAME
 
-cast-max-uint - Get the maximum uint256 value.
+probe-max-uint - Get the maximum uint256 value.
 
 ### SYNOPSIS
 
-``cast max-uint``
+``probe max-uint``
 
 ### DESCRIPTION
 
@@ -18,4 +18,4 @@ Get the maximum uint256 value.
 
 ### SEE ALSO
 
-[cast](./cast.md), [cast max-int](./cast-max-int.md)
+[probe](./probe.md), [probe max-int](./probe-max-int.md)

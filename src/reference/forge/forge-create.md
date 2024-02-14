@@ -1,12 +1,12 @@
-## forge create
+## spark create
 
 ### NAME
 
-forge-create - Deploy a smart contract.
+spark-create - Deploy a smart contract.
 
 ### SYNOPSIS
 
-``forge create`` [*options*] *contract*
+``spark create`` [*options*] *contract*
 
 ### DESCRIPTION
 
@@ -34,7 +34,7 @@ Dynamic linking is not supported: you should predeploy your libraries and manual
 &nbsp;&nbsp;&nbsp;&nbsp;The path to a file containing the constructor arguments.
 
 `--verify`  
-&nbsp;&nbsp;&nbsp;&nbsp;Verify contract after creation. Runs `forge verify-contract` with the appropriate parameters.
+&nbsp;&nbsp;&nbsp;&nbsp;Verify contract after creation. Runs `spark verify-contract` with the appropriate parameters.
 
 {{#include ../common/verifier-options.md}}
 
@@ -59,16 +59,16 @@ Dynamic linking is not supported: you should predeploy your libraries and manual
 
 1. Deploy a contract with no constructor arguments:
     ```sh
-    forge create src/Contract.sol:ContractWithNoConstructor
+    spark create src/Contract.sol:ContractWithNoConstructor
     ```
 
 2. Deploy a contract with two constructor arguments:
     ```sh
-    forge create src/Contract.sol:MyToken --constructor-args "My Token" "MT"
+    spark create src/Contract.sol:MyToken --constructor-args "My Token" "MT"
     ```
 
 ### SEE ALSO
 
-[forge](./forge.md), [forge build](./forge-build.md), [forge verify-contract](./forge-verify-contract.md)
+[spark](./spark.md), [spark build](./spark-build.md), [spark verify-contract](./spark-verify-contract.md)
 
 [eip1559]: https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1559.md

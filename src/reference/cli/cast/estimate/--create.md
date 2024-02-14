@@ -1,10 +1,10 @@
-# cast estimate --create
+# probe estimate --create
 
 Estimate gas cost to deploy a smart contract
 
 ```bash
-$ cast estimate --create --help
-Usage: cast estimate --create [OPTIONS] <CODE> [SIG] [ARGS]...
+$ probe estimate --create --help
+Usage: probe estimate --create [OPTIONS] <CODE> [SIG] [ARGS]...
 
 Arguments:
   <CODE>

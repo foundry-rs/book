@@ -1,12 +1,12 @@
-## cast access-list
+## probe access-list
 
 ### NAME
 
-cast-access-list - Create an access list for a transaction.
+probe-access-list - Create an access list for a transaction.
 
 ### SYNOPSIS
 
-``cast access-list`` [*options*] *to* *sig* [*args...*]
+``probe access-list`` [*options*] *to* *sig* [*args...*]
 
 ### DESCRIPTION
 
@@ -36,4 +36,4 @@ The destination (*to*) can be an ENS name or an address.
 
 ### SEE ALSO
 
-[cast](./cast.md), [cast send](./cast-send.md), [cast publish](./cast-publish.md), [cast call](./cast-call.md)
+[probe](./probe.md), [probe send](./probe-send.md), [probe publish](./probe-publish.md), [probe call](./probe-call.md)

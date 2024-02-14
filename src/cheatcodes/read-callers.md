@@ -5,8 +5,8 @@
 ```solidity
 enum CallerMode {
     None,
-    Broadcast,
-    RecurrentBroadcast,
+    Broadprobe,
+    RecurrentBroadprobe,
     Prank,
     RecurrentPrank
 }
@@ -27,10 +27,10 @@ The `CallerMode` enum indicates if there is an active caller modification and th
     - `CallerMode.Prank` if the prank has been set with [`prank`](./prank.md).
     - `CallerMode.RecurrentPrank` if the prank has been set with [`startPrank`](./start-prank.md).
 
-- If there is an active broadcast:
+- If there is an active broadprobe:
   - `callerMode` will be equal to:
-    - `CallerMode.Broadcast` if the broadcast has been set with [`broadcast`](./broadcast.md).
-    - `CallerMode.RecurrentBroadcast` if the broadcast has been set with [`startBroadcast`](./start-broadcast.md).
+    - `CallerMode.Broadprobe` if the broadprobe has been set with [`broadprobe`](./broadprobe.md).
+    - `CallerMode.RecurrentBroadprobe` if the broadprobe has been set with [`startBroadprobe`](./start-broadprobe.md).
 
 - If no caller modification is active:
   - `callerMode` will be equal to `CallerMode.None`.
@@ -63,16 +63,16 @@ assertEq(msgSender, senderPrankAddress);
 assertEq(txOrigin, originPrankAddress);
 
 // Example 4
-vm.broadcast(broadcastAddress);
+vm.broadprobe(broadprobeAddress);
 (callerMode, msgSender, txOrigin) = vm.readCallers();
-assertEq(callerMode, CallerMode.Broadcast);
-assertEq(msgSender, broadcastAddress);
-assertEq(txOrigin, broadcastAddress);
+assertEq(callerMode, CallerMode.Broadprobe);
+assertEq(msgSender, broadprobeAddress);
+assertEq(txOrigin, broadprobeAddress);
 ```
 
 ### SEE ALSO
 
 - [prank](./prank.md)
 - [startPrank](./start-prank.md)
-- [broadcast](./broadcast.md)
-- [startBroadcast](./start-broadcast.md)
+- [broadprobe](./broadprobe.md)
+- [startBroadprobe](./start-broadprobe.md)

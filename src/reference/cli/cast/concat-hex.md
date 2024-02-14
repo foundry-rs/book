@@ -1,10 +1,10 @@
-# cast concat-hex
+# probe concat-hex
 
 Concatenate hex strings
 
 ```bash
-$ cast concat-hex --help
-Usage: cast concat-hex [DATA]...
+$ probe concat-hex --help
+Usage: probe concat-hex [DATA]...
 
 Arguments:
   [DATA]...  The data to concatenate

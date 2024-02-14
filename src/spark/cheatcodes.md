@@ -1,10 +1,10 @@
 ## Cheatcodes
 
-Most of the time, simply testing your smart contracts outputs isn't enough. To manipulate the state of the blockchain, as well as test for specific reverts and events, Foundry is shipped with a set of cheatcodes.
+Most of the time, simply testing your smart contracts outputs isn't enough. To manipulate the state of the blockchain, as well as test for specific reverts and events, Foxar is shipped with a set of cheatcodes.
 
 Cheatcodes allow you to change the block number, your identity, and more. They are invoked by calling specific functions on a specially designated address: `0x7109709ECfa91a80626fF3989D68f67F5b1DD12D`.
 
-You can access cheatcodes easily via the `vm` instance available in Forge Standard Library's `Test` contract. Forge Standard Library is explained in greater detail in the following [section](./forge-std.md).
+You can access cheatcodes easily via the `vm` instance available in Spark Standard Library's `Test` contract. Spark Standard Library is explained in greater detail in the following [section](./spark-std.md).
 
 Let's write a test for a smart contract that is only callable by its owner.
 
@@ -19,11 +19,11 @@ Let's write a test for a smart contract that is only callable by its owner.
 }
 ```
 
-If we run `forge test` now, we will see that the test passes, since `OwnerUpOnlyTest` is the owner of `OwnerUpOnly`.
+If we run `spark test` now, we will see that the test passes, since `OwnerUpOnlyTest` is the owner of `OwnerUpOnly`.
 
 ```ignore
-$ forge test
-{{#include ../output/cheatcodes/forge-test-simple:output}}
+$ spark test
+{{#include ../output/cheatcodes/spark-test-simple:output}}
 ```
 
 Let's make sure that someone who is definitely not the owner can't increment the count:
@@ -37,11 +37,11 @@ Let's make sure that someone who is definitely not the owner can't increment the
 }
 ```
 
-If we run `forge test` now, we will see that all the test pass.
+If we run `spark test` now, we will see that all the test pass.
 
 ```ignore
-$ forge test
-{{#include ../output/cheatcodes/forge-test-cheatcodes:output}}
+$ spark test
+{{#include ../output/cheatcodes/spark-test-cheatcodes:output}}
 ```
 
 The test passed because the `prank` cheatcode changed our identity to the zero address for the next call (`upOnly.increment()`). The test case passed since we used the `testFail` prefix, however, using `testFail` is considered an anti-pattern since it does not tell us anything about *why* `upOnly.increment()` reverted.
@@ -49,8 +49,8 @@ The test passed because the `prank` cheatcode changed our identity to the zero a
 If we run the tests again with traces turned on, we can see that we reverted with the correct error message.
 
 ```ignore
-$ forge test -vvvv --match-test testFail_IncrementAsNotOwner
-{{#include ../output/cheatcodes/forge-test-cheatcodes-tracing:output}}
+$ spark test -vvvv --match-test testFail_IncrementAsNotOwner
+{{#include ../output/cheatcodes/spark-test-cheatcodes-tracing:output}}
 ```
 
 To be sure in the future, let's make sure that we reverted because we are not the owner using the `expectRevert` cheatcode:
@@ -64,11 +64,11 @@ To be sure in the future, let's make sure that we reverted because we are not th
 }
 ```
 
-If we run `forge test` one last time, we see that the test still passes, but this time we are sure that it will always fail if we revert for any other reason.
+If we run `spark test` one last time, we see that the test still passes, but this time we are sure that it will always fail if we revert for any other reason.
 
 ```ignore
-$ forge test
-{{#include ../output/cheatcodes/forge-test-cheatcodes-expectrevert:output}}
+$ spark test
+{{#include ../output/cheatcodes/spark-test-cheatcodes-expectrevert:output}}
 ```
 
 Another cheatcode that is perhaps not so intuitive is the `expectEmit` function. Before looking at `expectEmit`, we need to understand what an event is.

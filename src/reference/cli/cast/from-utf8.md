@@ -1,10 +1,10 @@
-# cast from-utf8
+# probe from-utf8
 
 Convert UTF8 text to hex
 
 ```bash
-$ cast from-utf8 --help
-Usage: cast from-utf8 [TEXT]
+$ probe from-utf8 --help
+Usage: probe from-utf8 [TEXT]
 
 Arguments:
   [TEXT]  The text to convert

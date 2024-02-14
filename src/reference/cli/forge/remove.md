@@ -1,10 +1,10 @@
-# forge remove
+# spark remove
 
 Remove one or multiple dependencies
 
 ```bash
-$ forge remove --help
-Usage: forge remove [OPTIONS] [DEPENDENCIES]...
+$ spark remove --help
+Usage: spark remove [OPTIONS] [DEPENDENCIES]...
 
 Arguments:
   [DEPENDENCIES]...

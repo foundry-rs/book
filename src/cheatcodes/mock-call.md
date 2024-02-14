@@ -38,7 +38,7 @@ Mocked calls are in effect until [`clearMockedCalls`](./clear-mocked-calls.md) i
 
 > ℹ️ **Internal calls**
 >
-> This cheatcode does not currently work on internal calls. See issue [#432](https://github.com/foundry-rs/foundry/issues/432).
+> This cheatcode does not currently work on internal calls. See issue [#432](https://github.com/foxar-rs/foxar/issues/432).
 
 ### Examples
 

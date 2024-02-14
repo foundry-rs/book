@@ -1,5 +1,5 @@
 ## ENS Commands
 
-- [cast lookup-address](./cast-lookup-address.md)
-- [cast resolve-name](./cast-resolve-name.md)
-- [cast namehash](./cast-namehash.md)
+- [probe lookup-address](./probe-lookup-address.md)
+- [probe resolve-name](./probe-resolve-name.md)
+- [probe namehash](./probe-namehash.md)

@@ -1,10 +1,10 @@
-# chisel clear-cache
+# pilot clear-cache
 
-Clear all cached chisel sessions from the cache directory
+Clear all cached pilot sessions from the cache directory
 
 ```bash
-$ chisel clear-cache --help
-Usage: chisel clear-cache
+$ pilot clear-cache --help
+Usage: pilot clear-cache
 
 Options:
   -h, --help  Print help

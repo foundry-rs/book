@@ -1,10 +1,10 @@
-# forge verify-contract
+# spark verify-contract
 
 Verify smart contracts on Etherscan
 
 ```bash
-$ forge verify-contract --help
-Usage: forge verify-contract [OPTIONS] <ADDRESS> <CONTRACT>
+$ spark verify-contract --help
+Usage: spark verify-contract [OPTIONS] <ADDRESS> <CONTRACT>
 
 Arguments:
   <ADDRESS>

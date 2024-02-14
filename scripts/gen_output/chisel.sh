@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 set -eo pipefail
 
-gen_chisel() {
-  need_cmd chisel
+gen_pilot() {
+  need_cmd pilot
 
-  echo "Generating output (chisel)..."
+  echo "Generating output (pilot)..."
 
   print_anchored \
-    "echo '!help' | chisel" \
-    "$(echo '!help' | chisel | escape_colors)" \
-    > "$OUTPUT_DIR/chisel/help"
+    "echo '!help' | pilot" \
+    "$(echo '!help' | pilot | escape_colors)" \
+    > "$OUTPUT_DIR/pilot/help"
 
   echo OK.
 }

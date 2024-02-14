@@ -16,7 +16,7 @@ Configuration related to the behavior of the Solidity compiler.
 
 - Type: array of strings (remappings)
 - Default: none
-- Environment: `FOUNDRY_REMAPPINGS` or `DAPP_REMAPPINGS`
+- Environment: `FOXAR_REMAPPINGS` or `DAPP_REMAPPINGS`
 
 An array of remappings in the following format: `<name>=<target>`.
 
@@ -42,17 +42,17 @@ import "node_modules/@openzeppelin/openzeppelin-contracts/contracts/utils/Contex
 
 - Type: boolean
 - Default: true
-- Environment: `FOUNDRY_AUTO_DETECT_REMAPPINGS` or `DAPP_AUTO_DETECT_REMAPPINGS`
+- Environment: `FOXAR_AUTO_DETECT_REMAPPINGS` or `DAPP_AUTO_DETECT_REMAPPINGS`
 
-If enabled, Foundry will automatically try auto-detect remappings by scanning the `libs` folder(s).
+If enabled, Foxar will automatically try auto-detect remappings by scanning the `libs` folder(s).
 
-If set to `false`, only the remappings in `foundry.toml` and `remappings.txt` are used.
+If set to `false`, only the remappings in `foxar.toml` and `remappings.txt` are used.
 
 ##### `allow_paths`
 
 - Type: array of strings (paths)
 - Default: none
-- Environment: `FOUNDRY_ALLOW_PATHS` or `DAPP_ALLOW_PATHS`
+- Environment: `FOXAR_ALLOW_PATHS` or `DAPP_ALLOW_PATHS`
 
 Tells solc to allow reading source files from additional directories. This is mainly relevant for complex workspaces managed by `pnpm` or similar.
 
@@ -62,7 +62,7 @@ See also [solc allowed-paths](https://docs.soliditylang.org/en/latest/path-resol
 
 - Type: array of strings (paths)
 - Default: none
-- Environment: `FOUNDRY_INCLUDE_PATHS` or `DAPP_INCLUDE_PATHS`
+- Environment: `FOXAR_INCLUDE_PATHS` or `DAPP_INCLUDE_PATHS`
 
 Make an additional source directory available to the default import callback. Use this option if you want to import contracts whose location is not fixed in relation to your main source tree, e.g. third-party libraries installed using a package manager. Can be used multiple times. Can only be used if base path has a non-empty value.
 
@@ -72,7 +72,7 @@ See also [solc path resolution](https://docs.soliditylang.org/en/latest/path-res
 
 - Type: array of strings (libraries)
 - Default: none
-- Environment: `FOUNDRY_LIBRARIES` or `DAPP_LIBRARIES`
+- Environment: `FOXAR_LIBRARIES` or `DAPP_LIBRARIES`
 
 An array of libraries to link against in the following format: `<file>:<lib>:<address>`, for example: `src/MyLibrary.sol:MyLibrary:0xfD88CeE74f7D78697775aBDAE53f9Da1559728E4`.
 
@@ -80,7 +80,7 @@ An array of libraries to link against in the following format: `<file>:<lib>:<ad
 
 - Type: string (semver)
 - Default: none
-- Environment: `FOUNDRY_SOLC_VERSION` or `DAPP_SOLC_VERSION`
+- Environment: `FOXAR_SOLC_VERSION` or `DAPP_SOLC_VERSION`
 
 If specified, overrides the auto-detection system (more below) and uses a single Solidity compiler version for the project.
 
@@ -90,9 +90,9 @@ Only strict versions are supported (i.e. `0.8.11` is valid, but `^0.8.0` is not)
 
 - Type: boolean
 - Default: true
-- Environment: `FOUNDRY_AUTO_DETECT_SOLC` or `DAPP_AUTO_DETECT_SOLC`
+- Environment: `FOXAR_AUTO_DETECT_SOLC` or `DAPP_AUTO_DETECT_SOLC`
 
-If enabled, Foundry will automatically try to resolve appropriate Solidity compiler versions to compile your project.
+If enabled, Foxar will automatically try to resolve appropriate Solidity compiler versions to compile your project.
 
 This key is ignored if `solc_version` is set.
 
@@ -100,9 +100,9 @@ This key is ignored if `solc_version` is set.
 
 - Type: boolean
 - Default: false
-- Environment: `FOUNDRY_OFFLINE` or `DAPP_OFFLINE`
+- Environment: `FOXAR_OFFLINE` or `DAPP_OFFLINE`
 
-If enabled, Foundry will not attempt to download any missing solc versions.
+If enabled, Foxar will not attempt to download any missing solc versions.
 
 If both `offline` and `auto-detect-solc` are set to `true`, the required version(s) of solc will be auto detected but any missing versions will _not_ be installed.
 
@@ -110,7 +110,7 @@ If both `offline` and `auto-detect-solc` are set to `true`, the required version
 
 - Type: array of strings (file paths)
 - Default: none
-- Environment: `FOUNDRY_IGNORED_WARNINGS_FROM` OR `DAPP_IGNORED_WARNINGS_FROM`
+- Environment: `FOXAR_IGNORED_WARNINGS_FROM` OR `DAPP_IGNORED_WARNINGS_FROM`
 
 An array of file paths from which warnings should be ignored during the compulation process. This is useful when you have a specific
 directories of files that produce known warning and you wish to suppress these warnings without affecting others.
@@ -125,7 +125,7 @@ This configuration will cause the compiler to ignore any warnings that originate
 
 - Type: array of integers/strings
 - Default: none for source, SPDX license identifiers and contract size for tests
-- Environment: `FOUNDRY_IGNORED_ERROR_CODES` or `DAPP_IGNORED_ERROR_CODES`
+- Environment: `FOXAR_IGNORED_ERROR_CODES` or `DAPP_IGNORED_ERROR_CODES`
 
 An array of Solidity compiler error codes to ignore during build, such as warnings.
 
@@ -149,15 +149,15 @@ Valid values are:
 
 - Type: boolean
 - Default: false
-- Environment: `FOUNDRY_DENY_WARNINGS` or `DAPP_DENY_WARNINGS`
+- Environment: `FOXAR_DENY_WARNINGS` or `DAPP_DENY_WARNINGS`
 
-If enabled, Foundry will treat Solidity compiler warnings as errors, stopping artifacts from being written to disk.
+If enabled, Foxar will treat Solidity compiler warnings as errors, stopping artifacts from being written to disk.
 
 ##### `evm_version`
 
 - Type: string
 - Default: london
-- Environment: `FOUNDRY_EVM_VERSION` or `DAPP_EVM_VERSION`
+- Environment: `FOXAR_EVM_VERSION` or `DAPP_EVM_VERSION`
 
 The EVM version to use during tests. The value **must** be an EVM hardfork name, such as `london`, `byzantium`, etc.
 
@@ -165,7 +165,7 @@ The EVM version to use during tests. The value **must** be an EVM hardfork name,
 
 - Type: string
 - Default: default
-- Environment: `FOUNDRY_REVERT_STRINGS` or `DAPP_REVERT_STRINGS`
+- Environment: `FOXAR_REVERT_STRINGS` or `DAPP_REVERT_STRINGS`
 
 Possible values are:
 
@@ -198,7 +198,7 @@ Valid values are:
 
 Extra output to include in the contract's artifact.
 
-The following values are always set, since they're required by Forge:
+The following values are always set, since they're required by Spark:
 
 ```toml
 extra_output = [
@@ -215,7 +215,7 @@ For a list of valid values, see the [Solidity docs][output-desc].
 
 - Type: string
 - Default: ipfs
-- Environment: `FOUNDRY_BYTECODE_HASH` or `DAPP_BYTECODE_HASH`
+- Environment: `FOXAR_BYTECODE_HASH` or `DAPP_BYTECODE_HASH`
 
 Determines the hash method for the metadata hash that is appended to the bytecode.
 
@@ -229,9 +229,9 @@ Valid values are:
 
 - Type: boolean
 - Default: false
-- Environment: `FOUNDRY_SPARSE_MODE` or `DAPP_SPARSE_MODE`
+- Environment: `FOXAR_SPARSE_MODE` or `DAPP_SPARSE_MODE`
 
-Enables [sparse mode](../forge/forge-build.md#sparse-mode-experimental) for builds.
+Enables [sparse mode](../spark/spark-build.md#sparse-mode-experimental) for builds.
 
 ### Optimizer
 
@@ -241,7 +241,7 @@ Configuration related to the Solidity optimizer.
 
 - Type: boolean
 - Default: true
-- Environment: `FOUNDRY_OPTIMIZER` or `DAPP_OPTIMIZER`
+- Environment: `FOXAR_OPTIMIZER` or `DAPP_OPTIMIZER`
 
 Whether or not to enable the Solidity optimizer.
 
@@ -249,7 +249,7 @@ Whether or not to enable the Solidity optimizer.
 
 - Type: integer
 - Default: 200
-- Environment: `FOUNDRY_OPTIMIZER_RUNS` or `DAPP_OPTIMIZER_RUNS`
+- Environment: `FOXAR_OPTIMIZER_RUNS` or `DAPP_OPTIMIZER_RUNS`
 
 The amount of optimizer runs to perform.
 
@@ -257,7 +257,7 @@ The amount of optimizer runs to perform.
 
 - Type: boolean
 - Default: false
-- Environment: `FOUNDRY_VIA_IR` or `DAPP_VIA_IR`
+- Environment: `FOXAR_VIA_IR` or `DAPP_VIA_IR`
 
 If set to true, changes compilation pipeline to go through the new IR optimizer.
 
@@ -297,7 +297,7 @@ The Solidity model checker is a built-in opt-in module that is available in Soli
 
 The model checker settings are configured in the `[model_checker]` section of the configuration.
 
-The model checker will run when `forge build` is invoked, and any findings will show up as warnings.
+The model checker will run when `spark build` is invoked, and any findings will show up as warnings.
 
 These are the recommended settings when using the model checker:
 
@@ -423,4 +423,4 @@ Sets the model checker targets. Valid values are:
 - `constantCondition`: Trivial conditions and unreachable code
 - `popEmptyArray`: Popping an empty array
 - `outOfBounds`: Out of bounds array/fixed bytes index access
-- `default`: All of the above (note: not the default for Forge)
+- `default`: All of the above (note: not the default for Spark)

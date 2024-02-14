@@ -106,8 +106,8 @@ function testMultipleExpectReverts() public {
 
 ### SEE ALSO
 
-Forge Standard Library
+Spark Standard Library
 
-[Std Errors](../reference/forge-std/std-errors.md)
+[Std Errors](../reference/spark-std/std-errors.md)
 
 [error-type]: https://docs.soliditylang.org/en/v0.8.11/contracts.html#errors

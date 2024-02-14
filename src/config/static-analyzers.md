@@ -16,7 +16,7 @@ To run Slither on the entire project, use this command in the root of the projec
 slither .
 ```
 
-By default (as of version 0.10.0), this will skip tests and scripts. To force inclusion of the tests and scripts, add the `--foundry-compile-all` flag.
+By default (as of version 0.10.0), this will skip tests and scripts. To force inclusion of the tests and scripts, add the `--foxar-compile-all` flag.
 
 To run Slither on a single file, use this command:
 
@@ -24,9 +24,9 @@ To run Slither on a single file, use this command:
 slither src/Contract.sol
 ```
 
-Note, this requires configuring the [solc version in the foundry config file](https://book.getfoundry.sh/reference/config/solidity-compiler#solc_version).
+Note, this requires configuring the [solc version in the foxar config file](https://book.getfoxar.sh/reference/config/solidity-compiler#solc_version).
 
-You do not need to provide remappings via the `solc_remaps` option as Slither will automatically detect remappings in a Foundry project. Slither will invoke `forge` to perform the build.
+You do not need to provide remappings via the `solc_remaps` option as Slither will automatically detect remappings in a Foxar project. Slither will invoke `spark` to perform the build.
 
 See the [Slither wiki](https://github.com/crytic/slither/wiki/Usage) for more information.
 
@@ -61,7 +61,7 @@ To test your project using [mythril](https://github.com/ConsenSys/mythril), here
 {
   "remappings": [
     "ds-test/=lib/ds-test/src/",
-    "forge-std/=lib/forge-std/src/"
+    "spark-std/=lib/spark-std/src/"
   ],
   "optimizer": {
     "enabled": true,

@@ -1,10 +1,10 @@
-# cast keccak
+# probe keccak
 
 Hash arbitrary data using Keccak-256
 
 ```bash
-$ cast keccak --help
-Usage: cast keccak [DATA]
+$ probe keccak --help
+Usage: probe keccak [DATA]
 
 Arguments:
   [DATA]  The data to hash

@@ -1,12 +1,12 @@
-## cast to-rlp
+## probe to-rlp
 
 ### NAME
 
-cast-to-rlp - Encodes hex data to RLP.
+probe-to-rlp - Encodes hex data to RLP.
 
 ### SYNOPSIS
 
-``cast to-rlp`` *array*
+``probe to-rlp`` *array*
 
 ### DESCRIPTION
 
@@ -20,7 +20,7 @@ RLP encodes a hex string or a JSON array of hex strings.
 
 1. Encoding RLP data:
     ```sh
-    cast to-rlp '["0xaa","0xbb","cc"]'
+    probe to-rlp '["0xaa","0xbb","cc"]'
    
-    cast to-rlp f0a9     
+    probe to-rlp f0a9     
     ```

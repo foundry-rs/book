@@ -1,10 +1,10 @@
-# cast format-bytes32-string
+# probe format-bytes32-string
 
 Formats a string into bytes32 encoding
 
 ```bash
-$ cast format-bytes32-string --help
-Usage: cast format-bytes32-string [STRING]
+$ probe format-bytes32-string --help
+Usage: probe format-bytes32-string [STRING]
 
 Arguments:
   [STRING]  The string to format

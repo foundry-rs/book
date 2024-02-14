@@ -1,12 +1,12 @@
-## forge coverage
+## spark coverage
 
 ### NAME
 
-forge-coverage - Displays which parts of your code are covered by tests.
+spark-coverage - Displays which parts of your code are covered by tests.
 
 ### SYNOPSIS
 
-`forge coverage` [*options*]
+`spark coverage` [*options*]
 
 ### DESCRIPTION
 
@@ -40,20 +40,20 @@ It has three different options and is set to `summary` by default.
 1. View summarized coverage:
 
    ```sh
-   forge coverage
+   spark coverage
    ```
 
 2. Create lcov file with coverage data:
 
    ```sh
-   forge coverage --report lcov
+   spark coverage --report lcov
    ```
 
 3. Output uncovered code locations:
    ```sh
-   forge coverage --report debug
+   spark coverage --report debug
    ```
 
 ### SEE ALSO
 
-[forge](./forge.md), [forge test](./forge-test.md)
+[spark](./spark.md), [spark test](./spark-test.md)

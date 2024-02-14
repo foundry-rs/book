@@ -8,4 +8,4 @@ function projectRoot() external returns (string memory);
 
 ### Description
 
-Returns the root directory of the current Foundry project.
+Returns the root directory of the current Foxar project.

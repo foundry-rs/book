@@ -1,12 +1,12 @@
-## cast parse-bytes32-address
+## probe parse-bytes32-address
 
 ### NAME
 
-cast-parse-bytes32-address - Parses a checksummed address from bytes32 encoding.
+probe-parse-bytes32-address - Parses a checksummed address from bytes32 encoding.
 
 ### SYNOPSIS
 
-``cast parse-bytes32-address`` [*options*] *bytes*
+``probe parse-bytes32-address`` [*options*] *bytes*
 
 ### DESCRIPTION
 
@@ -20,9 +20,9 @@ Parses a checksummed address from its bytes32 encoding representation.
 
 1. Parse the bytes32 encoding of the WETH9 contract address to its address representation:
     ```sh
-    cast parse-bytes32-address 0x000000000000000000000000C02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
+    probe parse-bytes32-address 0x000000000000000000000000C02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
     ```
 
 ### SEE ALSO
 
-[cast](./cast.md)
+[probe](./probe.md)

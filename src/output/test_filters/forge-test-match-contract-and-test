@@ -1,6 +1,6 @@
 // ANCHOR: all
 // ANCHOR: command
-$ forge test --match-contract ComplicatedContractTest --match-test test_Deposit
+$ spark test --match-contract ComplicatedContractTest --match-test test_Deposit
 // ANCHOR_END: command
 // ANCHOR: output
 Compiling 7 files with 0.8.10

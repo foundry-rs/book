@@ -1,10 +1,10 @@
-# cast to-base
+# probe to-base
 
 Converts a number of one base to another
 
 ```bash
-$ cast to-base --help
-Usage: cast to-base [OPTIONS] [VALUE] [BASE]
+$ probe to-base --help
+Usage: probe to-base [OPTIONS] [VALUE] [BASE]
 
 Arguments:
   [VALUE]  The value to convert

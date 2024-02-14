@@ -1,10 +1,10 @@
-# cast abi-decode
+# probe abi-decode
 
 Decode ABI-encoded input or output data.
 
 ```bash
-$ cast abi-decode --help
-Usage: cast abi-decode [OPTIONS] <SIG> <CALLDATA>
+$ probe abi-decode --help
+Usage: probe abi-decode [OPTIONS] <SIG> <CALLDATA>
 
 Arguments:
   <SIG>

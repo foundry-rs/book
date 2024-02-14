@@ -13,11 +13,11 @@ function rpc(string calldata method, string calldata params) external returns (b
 
 ### Description
 
-Provides cheatcodes to access all RPC endpoints configured in the `rpc_endpoints` object of the `foundry.toml`, and the ability to make `rpc` calls using the configured fork URL.
+Provides cheatcodes to access all RPC endpoints configured in the `rpc_endpoints` object of the `foxar.toml`, and the ability to make `rpc` calls using the configured fork URL.
 
 ### Examples
 
-The following `rpc_endpoints` in `foundry.toml` registers two RPC aliases:
+The following `rpc_endpoints` in `foxar.toml` registers two RPC aliases:
 
 - `optimism` references the URL directly
 - `mainnet` references the `RPC_MAINNET` environment value that is expected to contain the actual URL
@@ -66,6 +66,6 @@ assertEq(hex"10b7c11bcb51e6", result);
 
 ### SEE ALSO
 
-Forge Config
+Spark Config
 
 [Config Reference](../reference/config/testing.md#rpc_endpoints)

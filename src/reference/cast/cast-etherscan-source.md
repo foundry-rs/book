@@ -1,12 +1,12 @@
-## cast etherscan-source
+## probe etherscan-source
 
 ### NAME
 
-cast-etherscan-source - Get the source code of a contract from Etherscan.
+probe-etherscan-source - Get the source code of a contract from Etherscan.
 
 ### SYNOPSIS
 
-``cast etherscan-source`` [*options*] *address*
+``probe etherscan-source`` [*options*] *address*
 
 ### DESCRIPTION
 
@@ -30,14 +30,14 @@ The destination (*to*) can be an ENS name or an address.
 
 1. Get the source code of the WETH contract:
     ```sh
-    cast etherscan-source 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
+    probe etherscan-source 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
     ```
 
 2. Expand the source code of the WETH contract into a directory named `weth`
     ```sh
-    cast etherscan-source -d weth 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
+    probe etherscan-source -d weth 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
     ```
 
 ### SEE ALSO
 
-[cast](./cast.md)
+[probe](./probe.md)

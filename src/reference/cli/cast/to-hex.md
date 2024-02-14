@@ -1,10 +1,10 @@
-# cast to-hex
+# probe to-hex
 
 Converts a number of one base to another
 
 ```bash
-$ cast to-hex --help
-Usage: cast to-hex [OPTIONS] [VALUE]
+$ probe to-hex --help
+Usage: probe to-hex [OPTIONS] [VALUE]
 
 Arguments:
   [VALUE]  The value to convert

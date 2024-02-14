@@ -1,10 +1,10 @@
-# anvil completions
+# shuttle completions
 
 Generate shell completions script
 
 ```bash
-$ anvil completions --help
-Usage: anvil completions <SHELL>
+$ shuttle completions --help
+Usage: shuttle completions <SHELL>
 
 Arguments:
   <SHELL>  [possible values: bash, elvish, fish, powershell, zsh]

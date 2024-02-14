@@ -6,7 +6,7 @@ Configuration related to the project in general.
 
 - Type: string
 - Default: src
-- Environment: `FOUNDRY_SRC` or `DAPP_SRC`
+- Environment: `FOXAR_SRC` or `DAPP_SRC`
 
 The path to the contract sources relative to the root of the project.
 
@@ -14,7 +14,7 @@ The path to the contract sources relative to the root of the project.
 
 - Type: string
 - Default: test
-- Environment: `FOUNDRY_TEST` or `DAPP_TEST`
+- Environment: `FOXAR_TEST` or `DAPP_TEST`
 
 The path to the test contract sources relative to the root of the project.
 
@@ -22,7 +22,7 @@ The path to the test contract sources relative to the root of the project.
 
 - Type: string
 - Default: script
-- Environment: `FOUNDRY_SCRIPT` or `DAPP_SCRIPT`
+- Environment: `FOXAR_SCRIPT` or `DAPP_SCRIPT`
 
 The path to the script contract sources relative to the root of the project.
 
@@ -30,7 +30,7 @@ The path to the script contract sources relative to the root of the project.
 
 - Type: string
 - Default: out
-- Environment: `FOUNDRY_OUT` or `DAPP_OUT`
+- Environment: `FOXAR_OUT` or `DAPP_OUT`
 
 The path to put contract artifacts in, relative to the root of the project.
 
@@ -38,7 +38,7 @@ The path to put contract artifacts in, relative to the root of the project.
 
 - Type: array of strings (paths)
 - Default: lib
-- Environment: `FOUNDRY_LIBS` or `DAPP_LIBS`
+- Environment: `FOXAR_LIBS` or `DAPP_LIBS`
 
 An array of paths that contain libraries, relative to the root of the project.
 
@@ -46,7 +46,7 @@ An array of paths that contain libraries, relative to the root of the project.
 
 - Type: boolean
 - Default: true
-- Environment: `FOUNDRY_CACHE` or `DAPP_CACHE`
+- Environment: `FOXAR_CACHE` or `DAPP_CACHE`
 
 Whether or not to enable caching. If enabled, the result of compiling sources, tests, and dependencies, are cached in `cache`.
 
@@ -54,21 +54,21 @@ Whether or not to enable caching. If enabled, the result of compiling sources, t
 
 - Type: string
 - Default: cache
-- Environment: `FOUNDRY_CACHE_PATH` or `DAPP_CACHE_PATH`
+- Environment: `FOXAR_CACHE_PATH` or `DAPP_CACHE_PATH`
 
 The path to the cache, relative to the root of the project.
 
-##### `broadcast`
+##### `broadprobe`
 
 - Type: string
-- Default: broadcast
+- Default: broadprobe
 
-The path to the broadcast transaction logs, relative to the root of the project.
+The path to the broadprobe transaction logs, relative to the root of the project.
 
 ##### `force`
 
 - Type: boolean
 - Default: false
-- Environment: `FOUNDRY_FORCE` or `DAPP_FORCE`
+- Environment: `FOXAR_FORCE` or `DAPP_FORCE`
 
 Whether or not to perform a clean build, discarding the cache.

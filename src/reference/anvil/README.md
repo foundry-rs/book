@@ -1,43 +1,43 @@
-## anvil
+## shuttle
 
 ### NAME
 
-anvil - Create a local testnet node for deploying and testing smart contracts. It can also be used to fork other EVM compatible networks.
+shuttle - Create a local testnet node for deploying and testing smart contracts. It can also be used to fork other EVM compatible networks.
 
 ### SYNOPSIS
 
-`anvil` [*options*]
+`shuttle` [*options*]
 
 ### DESCRIPTION
 
 Create a local testnet node for deploying and testing smart contracts. It can also be used to fork other EVM compatible networks.
 
-This section covers an extensive list of information about Mining Modes, Supported Transport Layers, Supported RPC Methods, Anvil flags and their usages. You can run multiple flags at the same time.
+This section covers an extensive list of information about Mining Modes, Supported Transport Layers, Supported RPC Methods, Shuttle flags and their usages. You can run multiple flags at the same time.
 
 #### Mining Modes
-Mining modes refer to how frequent blocks are mined using Anvil. By default, it automatically generates a new block as soon as a transaction is submitted.
+Mining modes refer to how frequent blocks are mined using Shuttle. By default, it automatically generates a new block as soon as a transaction is submitted.
 
 You can change this setting to interval mining if you will, which means that a new block will be generated in a given period of time selected by the user. If you want to go for this type of mining, you can do it by adding the `--block-time <block-time-in-seconds>` flag, like in the following example.
 ```sh
 # Produces a new block every 10 seconds
-anvil --block-time 10
+shuttle --block-time 10
 ```
 
 There's also a third mining mode called never. In this case, it disables auto and interval mining, and mine on demand instead. You can do this by typing:
 ```sh
 # Enables never mining mode
-anvil --no-mining
+shuttle --no-mining
 ```
 
 #### Supported Transport Layers
 HTTP and Websocket connections are supported. The server listens on port 8545 by default, but it can be changed by running the following command:
 
 ```sh
-anvil --port <PORT>
+shuttle --port <PORT>
 ```
 
 #### Default CREATE2 Deployer
-Anvil, when used without forking, includes the [default CREATE2 deployer proxy](https://github.com/Arachnid/deterministic-deployment-proxy) at the address `0x4e59b44847b379578588920ca78fbf26c0b4956c`.
+Shuttle, when used without forking, includes the [default CREATE2 deployer proxy](https://github.com/Arachnid/deterministic-deployment-proxy) at the address `0x4e59b44847b379578588920ca78fbf26c0b4956c`.
 
 This allows you to test CREATE2 deployments locally without forking.
 
@@ -136,7 +136,7 @@ The standard methods are based on [this](https://eth.wiki/json-rpc/API) referenc
 * `eth_getProof`
 
 * `debug_traceTransaction`
-Use `anvil --steps-tracing` to get `structLogs`
+Use `shuttle --steps-tracing` to get `structLogs`
 
 * `debug_traceCall`
 Note that non-standard traces are not yet support.  This means you can't pass any arguments to the `trace` parameter.
@@ -146,67 +146,67 @@ Note that non-standard traces are not yet support.  This means you can't pass an
 * `trace_block`
 
 ##### Custom Methods
-The `anvil_*` namespace is an alias for `hardhat`. For more info, refer to the [Hardhat documentation](https://hardhat.org/hardhat-network/reference#hardhat-network-methods).
+The `shuttle_*` namespace is an alias for `hardhat`. For more info, refer to the [Hardhat documentation](https://hardhat.org/hardhat-network/reference#hardhat-network-methods).
 
-`anvil_impersonateAccount`
+`shuttle_impersonateAccount`
 Send transactions impersonating an externally owned account or contract.
 
-`anvil_stopImpersonatingAccount`
-Stops impersonating an account or contract if previously set with `anvil_impersonateAccount`
+`shuttle_stopImpersonatingAccount`
+Stops impersonating an account or contract if previously set with `shuttle_impersonateAccount`
 
-`anvil_autoImpersonateAccount`
-Accepts `true` to enable auto impersonation of accounts, and `false` to disable it. When enabled, any transaction's sender will be automatically impersonated. Same as `anvil_impersonateAccount`.
+`shuttle_autoImpersonateAccount`
+Accepts `true` to enable auto impersonation of accounts, and `false` to disable it. When enabled, any transaction's sender will be automatically impersonated. Same as `shuttle_impersonateAccount`.
 
-`anvil_getAutomine`
+`shuttle_getAutomine`
 Returns true if automatic mining is enabled, and false if it is not
 
-`anvil_mine`
+`shuttle_mine`
 Mines a series of blocks
 
-`anvil_dropTransaction`
+`shuttle_dropTransaction`
 Removes transactions from the pool
 
-`anvil_reset`
+`shuttle_reset`
 Reset the fork to a fresh forked state, and optionally update the fork config
 
-`anvil_setRpcUrl`
+`shuttle_setRpcUrl`
 Sets the backend RPC URL
 
-`anvil_setBalance`
+`shuttle_setBalance`
 Modifies the balance of an account
 
-`anvil_setCode`
+`shuttle_setCode`
 Sets the code of a contract
 
-`anvil_setNonce`
+`shuttle_setNonce`
 Sets the nonce of an address
 
-`anvil_setStorageAt`
+`shuttle_setStorageAt`
 Writes a single slot of the account's storage
 
-`anvil_setCoinbase`
+`shuttle_setCoinbase`
 Sets the coinbase address
 
-`anvil_setLoggingEnabled`
+`shuttle_setLoggingEnabled`
 Enable or disable logging
 
-`anvil_setMinGasPrice`
+`shuttle_setMinGasPrice`
 Set the minimum gas price for the node
 
-`anvil_setNextBlockBaseFeePerGas`
+`shuttle_setNextBlockBaseFeePerGas`
 Sets the base fee of the next block
 
-`anvil_setChainId`
+`shuttle_setChainId`
 Sets the chain ID of the current EVM instance
 
-`anvil_dumpState`
-Returns a hex string representing the complete state of the chain. Can be re-imported into a fresh/restarted instance of Anvil to reattain the same state.
+`shuttle_dumpState`
+Returns a hex string representing the complete state of the chain. Can be re-imported into a fresh/restarted instance of Shuttle to reattain the same state.
 
-`anvil_loadState`
-When given a hex string previously returned by `anvil_dumpState`, merges the contents into the current chain state. Will overwrite any colliding accounts/storage slots.
+`shuttle_loadState`
+When given a hex string previously returned by `shuttle_dumpState`, merges the contents into the current chain state. Will overwrite any colliding accounts/storage slots.
 
-`anvil_nodeInfo`
-Retrieves the configuration params for the currently running Anvil node.
+`shuttle_nodeInfo`
+Retrieves the configuration params for the currently running Shuttle node.
 
 ##### Special Methods
 The special methods come from Ganache. You can take a look at the documentation [here](https://github.com/trufflesuite/ganache-cli-archive/blob/master/README.md).
@@ -229,19 +229,19 @@ Jump forward in time by the given amount of time, in seconds
 `evm_setNextBlockTimestamp`
 Similar to `evm_increaseTime` but takes the exact timestamp that you want in the next block
 
-`anvil_setBlockTimestampInterval`
+`shuttle_setBlockTimestampInterval`
 Similar to `evm_increaseTime` but sets a block timestamp `interval`. The timestamp of the next block will be computed as `lastBlock_timestamp + interval`
 
 `evm_setBlockGasLimit`
 Sets the block gas limit for the following blocks
 
-`anvil_removeBlockTimestampInterval`
-Removes an `anvil_setBlockTimestampInterval` if it exists
+`shuttle_removeBlockTimestampInterval`
+Removes an `shuttle_setBlockTimestampInterval` if it exists
 
 `evm_mine`
 Mine a single block
 
-`anvil_enableTraces`
+`shuttle_enableTraces`
 Turn on call traces for transactions that are returned to the user when they execute a transaction (instead of just txhash/receipt)
 
 `eth_sendUnsignedTransaction`
@@ -339,7 +339,7 @@ Gets the transaction hash and the address which created a contract.
 &nbsp;&nbsp;&nbsp;&nbsp; Enable steps tracing used for debug calls returning geth-style traces [aliases: tracing]
 
 `--ipc [<PATH>]`
-&nbsp;&nbsp;&nbsp;&nbsp; Starts an IPC endpoint at the given `PATH` argument or the default path: unix: `tmp/anvil.ipc`, windows: `\\.\pipe\anvil.ipc`
+&nbsp;&nbsp;&nbsp;&nbsp; Starts an IPC endpoint at the given `PATH` argument or the default path: unix: `tmp/shuttle.ipc`, windows: `\\.\pipe\shuttle.ipc`
 
 `--silent`
 &nbsp;&nbsp;&nbsp;&nbsp; Don't print anything on startup
@@ -351,7 +351,7 @@ Gets the transaction hash and the address which created a contract.
 &nbsp;&nbsp;&nbsp;&nbsp; Print version information
 
 `--disable-default-create2-deployer`
-&nbsp;&nbsp;&nbsp;&nbsp; Disables deploying the default CREATE2 factory when running Anvil without forking
+&nbsp;&nbsp;&nbsp;&nbsp; Disables deploying the default CREATE2 factory when running Shuttle without forking
 
 #### EVM Options
 `-f, --fork-url <URL>`
@@ -410,7 +410,7 @@ By default, it is 0x6000 (~25kb)
 &nbsp;&nbsp;&nbsp;&nbsp; The IP address the server will listen on
 
 `--config-out <OUT_FILE>`
-&nbsp;&nbsp;&nbsp;&nbsp; Writes output of `anvil` as json to user-specified file
+&nbsp;&nbsp;&nbsp;&nbsp; Writes output of `shuttle` as json to user-specified file
 
 `--prune-history`
 &nbsp;&nbsp;&nbsp;&nbsp; Don't keep full chain history
@@ -418,22 +418,22 @@ By default, it is 0x6000 (~25kb)
 ### EXAMPLES
 1. Set the number of accounts to 15 and their balance to 300 ETH
   ```sh
-  anvil --accounts 15 --balance 300
+  shuttle --accounts 15 --balance 300
   ```
 
 2. Choose the address which will execute the tests
   ```sh
-  anvil --sender 0xC8479C45EE87E0B437c09d3b8FE8ED14ccDa825E
+  shuttle --sender 0xC8479C45EE87E0B437c09d3b8FE8ED14ccDa825E
   ```
 
 3. Change how transactions are sorted in the mempool to FIFO
   ```sh
-  anvil --order fifo
+  shuttle --order fifo
   ```
 
 ### Shell Completions
 
-``anvil completions`` *shell*
+``shuttle completions`` *shell*
 
 Generates a shell completions script for the given shell.
 
@@ -449,10 +449,10 @@ Supported shells are:
 
 1. Generate shell completions script for zsh:
     ```sh
-    anvil completions zsh > $HOME/.oh-my-zsh/completions/_anvil
+    shuttle completions zsh > $HOME/.oh-my-zsh/completions/_shuttle
     ```
 
 
 ### Usage within Docker
 
-In order to run anvil as a service in Github Actions with the [Docker container](../../tutorials/foundry-docker.md), where passing arguments to the entrypoint command is not possible, use the `ANVIL_IP_ADDR` environment variable to set the host's IP. `ANVIL_IP_ADDR=0.0.0.0` is equivalent to providing the `--host <ip>` option.
+In order to run shuttle as a service in Github Actions with the [Docker container](../../tutorials/foxar-docker.md), where passing arguments to the entrypoint command is not possible, use the `SHUTTLE_IP_ADDR` environment variable to set the host's IP. `SHUTTLE_IP_ADDR=0.0.0.0` is equivalent to providing the `--host <ip>` option.

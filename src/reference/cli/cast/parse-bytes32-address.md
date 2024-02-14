@@ -1,10 +1,10 @@
-# cast parse-bytes32-address
+# probe parse-bytes32-address
 
 Parses a checksummed address from bytes32 encoding.
 
 ```bash
-$ cast parse-bytes32-address --help
-Usage: cast parse-bytes32-address [BYTES]
+$ probe parse-bytes32-address --help
+Usage: probe parse-bytes32-address [BYTES]
 
 Arguments:
   [BYTES]  

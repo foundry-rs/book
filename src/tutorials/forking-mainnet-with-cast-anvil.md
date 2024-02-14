@@ -1,15 +1,15 @@
-## Forking Mainnet with Cast and Anvil
+## Forking Mainnet with Probe and Shuttle
 
 ### Introduction
 
-By combining [Anvil][anvil] and [Cast][cast], you can fork and test by interacting with contracts on a real network. The goal of this tutorial is to show you how to transfer Dai tokens from someone who holds Dai to an account created by Anvil.
+By combining [Shuttle][shuttle] and [Probe][probe], you can fork and test by interacting with contracts on a real network. The goal of this tutorial is to show you how to transfer Dai tokens from someone who holds Dai to an account created by Shuttle.
 
 ### Set Up
 
 Let's start by forking mainnet.
 
 ```sh
-anvil --fork-url https://mainnet.infura.io/v3/$INFURA_KEY
+shuttle --fork-url https://mainnet.infura.io/v3/$INFURA_KEY
 ```
 
 You will see 10 accounts are created with their public and private keys. We will work with `0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266` (Let's call this user Alice).
@@ -24,30 +24,30 @@ export DAI=0x6b175474e89094c44da98b954eedeac495271d0f
 export LUCKY_USER=0xfc2eE3bD619B7cfb2dE2C797b96DeeCbD7F68e46
 ```
 
-We can check Alice's balance using [`cast call`][cast-call]:
+We can check Alice's balance using [`probe call`][probe-call]:
 
 ```sh
-$ cast call $DAI \
+$ probe call $DAI \
   "balanceOf(address)(uint256)" \
   $ALICE
 0
 ```
 
-Similarly, we can also check our lucky user's balance using `cast call`:
+Similarly, we can also check our lucky user's balance using `probe call`:
 
 ```sh
-$ cast call $DAI \
+$ probe call $DAI \
   "balanceOf(address)(uint256)" \
   $LUCKY_USER
 21840114973524208109322438
 ```
 
-Let's transfer some tokens from the lucky user to Alice using [`cast send`][cast-send]:
+Let's transfer some tokens from the lucky user to Alice using [`probe send`][probe-send]:
 
 ```sh
-# This calls Anvil and lets us impersonate our lucky user
-$ cast rpc anvil_impersonateAccount $LUCKY_USER
-$ cast send $DAI \
+# This calls Shuttle and lets us impersonate our lucky user
+$ probe rpc shuttle_impersonateAccount $LUCKY_USER
+$ probe send $DAI \
 --from $LUCKY_USER \
   "transfer(address,uint256)(bool)" \
   $ALICE \
@@ -61,18 +61,18 @@ blockNumber             15052891
 Let's check that the transfer worked:
 
 ```sh
-cast call $DAI \
+probe call $DAI \
   "balanceOf(address)(uint256)" \
   $ALICE
 300000000000000000000000
 
-$ cast call $DAI \
+$ probe call $DAI \
   "balanceOf(address)(uint256)" \
   $LUCKY_USER
 21540114973524208109322438
 ```
 
-[anvil]: ../reference/anvil/
-[cast]: ../reference/cast/
-[cast-call]: ../reference/cast/cast-call.md
-[cast-send]: ../reference/cast/cast-send.md
+[shuttle]: ../reference/shuttle/
+[probe]: ../reference/probe/
+[probe-call]: ../reference/probe/probe-call.md
+[probe-send]: ../reference/probe/probe-send.md

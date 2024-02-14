@@ -1,10 +1,10 @@
-# forge generate test
+# spark generate test
 
 Scaffolds test file for given contract
 
 ```bash
-$ forge generate test --help
-Usage: forge generate test --contract-name <CONTRACT_NAME>
+$ spark generate test --help
+Usage: spark generate test --contract-name <CONTRACT_NAME>
 
 Options:
   -c, --contract-name <CONTRACT_NAME>  Contract name for test generation

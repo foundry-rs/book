@@ -3,8 +3,8 @@ authors = ["Oliver Nordbjerg"]
 language = "en"
 multilingual = false
 src = "src"
-title = "Foundry Book"
-description = "A book on all things Foundry"
+title = "Foxar Book"
+description = "A book on all things Foxar"
 
 [build]
 create-missing = false
@@ -12,11 +12,10 @@ create-missing = false
 [preprocessor.external-links]
 
 [output.html]
-git-repository-url = "https://github.com/foundry-rs/book"
-edit-url-template = "https://github.com/foundry-rs/book/edit/master/{path}"
+git-repository-url = "https://github.com/bchainhub/foundry-book"
 default-theme = "ayu"
 additional-js = ["src/static/solidity.min.js"]
-cname = "book.getfoundry.sh"
+cname = "book.getfoxar.sh"
 additional-css = ["src/static/custom.css"]
 
 [output.html.fold]

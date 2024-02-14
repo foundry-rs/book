@@ -1,10 +1,10 @@
-# forge debug
+# spark debug
 
 Debugs a single smart contract as a script
 
 ```bash
-$ forge debug --help
-Usage: forge debug [OPTIONS] <PATH> [ARGS]...
+$ spark debug --help
+Usage: spark debug [OPTIONS] <PATH> [ARGS]...
 
 Arguments:
   <PATH>

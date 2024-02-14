@@ -1,5 +1,5 @@
 ## General Commands
 
-- [forge](./forge.md)
-- [forge help](./forge-help.md)
-- [forge completions](./forge-completions.md)
+- [spark](./spark.md)
+- [spark help](./spark-help.md)
+- [spark completions](./spark-completions.md)

@@ -1,12 +1,12 @@
-## forge flatten
+## spark flatten
 
 ### NAME
 
-forge-flatten - Flatten a source file and all of its imports into one file.
+spark-flatten - Flatten a source file and all of its imports into one file.
 
 ### SYNOPSIS
 
-``forge flatten`` [*options*] *file*
+``spark flatten`` [*options*] *file*
 
 ### DESCRIPTION
 
@@ -30,15 +30,15 @@ If `--output <FILE>` is not set, then the flattened contract will be output to s
 
 1. Flatten `src/Contract.sol`:
     ```sh
-    forge flatten src/Contract.sol
+    spark flatten src/Contract.sol
     ```
 
 2. Flatten `src/Contract.sol` and write the result to `src/Contract.flattened.sol`:
     ```sh
-    forge flatten --output src/Contract.flattened.sol src/Contract.sol
+    spark flatten --output src/Contract.flattened.sol src/Contract.sol
     ```
 
 
 ### SEE ALSO
 
-[forge](./forge.md), [forge verify-contract](./forge-verify-contract.md)
+[spark](./spark.md), [spark verify-contract](./spark-verify-contract.md)

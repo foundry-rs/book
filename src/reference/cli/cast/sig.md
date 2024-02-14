@@ -1,10 +1,10 @@
-# cast sig
+# probe sig
 
 Get the selector for a function
 
 ```bash
-$ cast sig --help
-Usage: cast sig [SIG] [OPTIMIZE]
+$ probe sig --help
+Usage: probe sig [SIG] [OPTIMIZE]
 
 Arguments:
   [SIG]       The function signature, e.g. transfer(address,uint256)

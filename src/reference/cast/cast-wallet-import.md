@@ -1,18 +1,18 @@
-## cast wallet import
+## probe wallet import
 
 ### NAME
 
-cast-wallet-import - Import a private key into an encrypted keystore
+probe-wallet-import - Import a private key into an encrypted keystore
 
 ### SYNOPSIS
 
-`cast wallet import` [*options*] _account_name_
+`probe wallet import` [*options*] _account_name_
 
 ### DESCRIPTION
 
 Import a private key into an encrypted keystore.
 
-If no _keystore-dir_ is specified, it will be saved in the default `~/.foundry/keystores`, so it can be accessed through the `--account` option in methods like `forge script`, `cast send` or any other that requires a private key.
+If no _keystore-dir_ is specified, it will be saved in the default `~/.foxar/keystores`, so it can be accessed through the `--account` option in methods like `spark script`, `probe send` or any other that requires a private key.
 
 ### OPTIONS
 
@@ -22,7 +22,7 @@ If no _keystore-dir_ is specified, it will be saved in the default `~/.foundry/k
 `--keystore-dir`
 
 &nbsp;&nbsp;&nbsp;&nbsp;The path to store the encrypted keystore.  
-&nbsp;&nbsp;&nbsp;&nbsp;Defaults to `~/.foundry/keystores`.
+&nbsp;&nbsp;&nbsp;&nbsp;Defaults to `~/.foxar/keystores`.
 
 {{#include ../common/wallet-options-raw.md}}
 
@@ -33,20 +33,20 @@ If no _keystore-dir_ is specified, it will be saved in the default `~/.foundry/k
 1. Create a keystore from a private key:
 
    ```sh
-   cast wallet import BOB --interactive
+   probe wallet import BOB --interactive
    ```
 
 2. Create a keystore from a mnemonic:
 
    ```sh
-   cast wallet import ALICE --mnemonic "test test test test test test test test test test test test"
+   probe wallet import ALICE --mnemonic "test test test test test test test test test test test test"
    ```
 
 3. Create a keystore from a mnemonic with a specific mnemonic index:
    ```sh
-   cast wallet import ALICE --mnemonic "test test test test test test test test test test test test" --mnemonic-index 1
+   probe wallet import ALICE --mnemonic "test test test test test test test test test test test test" --mnemonic-index 1
    ```
 
 ### SEE ALSO
 
-[cast](./cast.md), [cast wallet](./cast-wallet.md)
+[probe](./probe.md), [probe wallet](./probe-wallet.md)

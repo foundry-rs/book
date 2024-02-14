@@ -1,10 +1,10 @@
-# cast shl
+# probe shl
 
 Perform a left shifting operation
 
 ```bash
-$ cast shl --help
-Usage: cast shl [OPTIONS] <VALUE> <BITS>
+$ probe shl --help
+Usage: probe shl [OPTIONS] <VALUE> <BITS>
 
 Arguments:
   <VALUE>  The value to shift

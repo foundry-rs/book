@@ -1,10 +1,10 @@
-# cast etherscan-source
+# probe etherscan-source
 
 Get the source code of a contract from Etherscan
 
 ```bash
-$ cast etherscan-source --help
-Usage: cast etherscan-source [OPTIONS] <ADDRESS>
+$ probe etherscan-source --help
+Usage: probe etherscan-source [OPTIONS] <ADDRESS>
 
 Arguments:
   <ADDRESS>  The contract's address

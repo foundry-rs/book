@@ -1,18 +1,18 @@
-## cast from-wei
+## probe from-wei
 
 ### NAME
 
-cast-from-wei - Convert wei into an ETH amount.
+probe-from-wei - Convert wei into an ETH amount.
 
 ### SYNOPSIS
 
-``cast from-wei`` [*options*] *value* [*unit*]
+``probe from-wei`` [*options*] *value* [*unit*]
 
 ### DESCRIPTION
 
 Convert wei into an ETH amount.
 
-Consider using [`cast to-unit`](./cast-to-unit.md).
+Consider using [`probe to-unit`](./probe-to-unit.md).
 
 ### OPTIONS
 
@@ -20,4 +20,4 @@ Consider using [`cast to-unit`](./cast-to-unit.md).
 
 ### SEE ALSO
 
-[cast](./cast.md), [cast calldata](./cast-to-unit.md)
+[probe](./probe.md), [probe calldata](./probe-to-unit.md)

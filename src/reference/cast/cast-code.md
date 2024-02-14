@@ -1,12 +1,12 @@
-## cast code
+## probe code
 
 ### NAME
 
-cast-code - Get the bytecode of a contract.
+probe-code - Get the bytecode of a contract.
 
 ### SYNOPSIS
 
-``cast code`` [*options*] *address*
+``probe code`` [*options*] *address*
 
 ### DESCRIPTION
 
@@ -34,9 +34,9 @@ The contract (*address*) can be an ENS name or an address.
 
 1. Get the bytecode of the WETH contract.
     ```sh
-    cast code 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
+    probe code 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
     ```
 
 ### SEE ALSO
 
-[cast](./cast.md), [cast proof](./cast-proof.md)
+[probe](./probe.md), [probe proof](./probe-proof.md)

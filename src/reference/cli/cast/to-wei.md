@@ -1,10 +1,10 @@
-# cast to-wei
+# probe to-wei
 
 Convert an ETH amount to wei.
 
 ```bash
-$ cast to-wei --help
-Usage: cast to-wei [VALUE] [UNIT]
+$ probe to-wei --help
+Usage: probe to-wei [VALUE] [UNIT]
 
 Arguments:
   [VALUE]

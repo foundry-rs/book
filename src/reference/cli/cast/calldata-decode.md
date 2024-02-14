@@ -1,10 +1,10 @@
-# cast calldata-decode
+# probe calldata-decode
 
 Decode ABI-encoded input data.
 
 ```bash
-$ cast calldata-decode --help
-Usage: cast calldata-decode <SIG> <CALLDATA>
+$ probe calldata-decode --help
+Usage: probe calldata-decode <SIG> <CALLDATA>
 
 Arguments:
   <SIG>

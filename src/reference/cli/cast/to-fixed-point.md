@@ -1,10 +1,10 @@
-# cast to-fixed-point
+# probe to-fixed-point
 
 Convert an integer into a fixed point number
 
 ```bash
-$ cast to-fixed-point --help
-Usage: cast to-fixed-point [DECIMALS] [VALUE]
+$ probe to-fixed-point --help
+Usage: probe to-fixed-point [DECIMALS] [VALUE]
 
 Arguments:
   [DECIMALS]  The number of decimals to use

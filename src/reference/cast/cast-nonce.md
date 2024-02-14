@@ -1,12 +1,12 @@
-## cast nonce
+## probe nonce
 
 ### NAME
 
-cast-nonce - Get the nonce for an account.
+probe-nonce - Get the nonce for an account.
 
 ### SYNOPSIS
 
-``cast nonce`` [*options*] *who*
+``probe nonce`` [*options*] *who*
 
 ### DESCRIPTION
 
@@ -34,9 +34,9 @@ The argument *who* can be an ENS name or an address.
 
 1. Get the nonce of beer.eth
     ```sh
-    cast nonce beer.eth
+    probe nonce beer.eth
     ```
 
 ### SEE ALSO
 
-[cast](./cast.md), [cast balance](./cast-balance.md)
+[probe](./probe.md), [probe balance](./probe-balance.md)

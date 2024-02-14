@@ -1,12 +1,12 @@
-## forge doc
+## spark doc
 
 ### NAME
 
-forge-doc - Generate documentation for Solidity source files.
+spark-doc - Generate documentation for Solidity source files.
 
 ### SYNOPSIS
 
-``forge doc`` [*options*]
+``spark doc`` [*options*]
 
 ### DESCRIPTION
 
@@ -38,15 +38,15 @@ Generates and builds an mdbook from Solidity source files.
 
 1. Generate documentation.
     ```sh
-    forge doc
+    spark doc
     ```
 2. Generate and build documentation with specified output directory.
     ```sh
-    forge doc --build --out ./documentation
+    spark doc --build --out ./documentation
     ```
 3. Generate and serve documentation locally on port 4000.
     ```sh
-    forge doc --serve --port 4000
+    spark doc --serve --port 4000
     ```
 
 ### SEE ALSO

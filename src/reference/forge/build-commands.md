@@ -1,5 +1,5 @@
 ## Build Commands
 
-- [forge build](./forge-build.md)
-- [forge clean](./forge-clean.md)
-- [forge inspect](./forge-inspect.md)
+- [spark build](./spark-build.md)
+- [spark clean](./spark-clean.md)
+- [spark inspect](./spark-inspect.md)

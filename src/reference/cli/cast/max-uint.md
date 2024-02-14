@@ -1,10 +1,10 @@
-# cast max-uint
+# probe max-uint
 
 Prints the maximum value of the given integer type
 
 ```bash
-$ cast max-uint --help
-Usage: cast max-uint [TYPE]
+$ probe max-uint --help
+Usage: probe max-uint [TYPE]
 
 Arguments:
   [TYPE]  The unsigned integer type to get the maximum value of [default: uint256]

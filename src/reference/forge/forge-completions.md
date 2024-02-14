@@ -1,12 +1,12 @@
-## forge completions
+## spark completions
 
 ### NAME
 
-forge-completions - Generate shell completions script
+spark-completions - Generate shell completions script
 
 ### SYNOPSIS
 
-``forge completions`` *shell*
+``spark completions`` *shell*
 
 ### DESCRIPTION
 
@@ -28,9 +28,9 @@ Supported shells are:
 
 1. Generate shell completions script for zsh:
     ```sh
-    forge completions zsh > $HOME/.oh-my-zsh/completions/_forge
+    spark completions zsh > $HOME/.oh-my-zsh/completions/_spark
     ```
 
 ### SEE ALSO
 
-[forge](./forge.md)
+[spark](./spark.md)

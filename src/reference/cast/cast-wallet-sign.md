@@ -1,12 +1,12 @@
-## cast wallet sign
+## probe wallet sign
 
 ### NAME
 
-cast-wallet-sign - Sign a message.
+probe-wallet-sign - Sign a message.
 
 ### SYNOPSIS
 
-``cast wallet sign`` [*options*] *message*
+``probe wallet sign`` [*options*] *message*
 
 ### DESCRIPTION
 
@@ -26,14 +26,14 @@ Sign a message.
 
 1. Sign a message using a keystore:
     ```sh
-    cast wallet sign --keystore keystore.json --interactive "hello"
+    probe wallet sign --keystore keystore.json --interactive "hello"
     ```
 
 2. Sign a message using a raw private key:
     ```sh
-    cast wallet sign --private-key $PRIV_KEY "hello"
+    probe wallet sign --private-key $PRIV_KEY "hello"
     ```
 
 ### SEE ALSO
 
-[cast](./cast.md), [cast wallet](./cast-wallet.md)
+[probe](./probe.md), [probe wallet](./probe-wallet.md)

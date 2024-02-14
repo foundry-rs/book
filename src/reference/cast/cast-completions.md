@@ -1,12 +1,12 @@
-## cast completions
+## probe completions
 
 ### NAME
 
-cast-completions - Generate shell completions script
+probe-completions - Generate shell completions script
 
 ### SYNOPSIS
 
-``cast completions`` *shell*
+``probe completions`` *shell*
 
 ### DESCRIPTION
 
@@ -28,9 +28,9 @@ Supported shells are:
 
 1. Generate shell completions script for zsh:
     ```sh
-    cast completions zsh > $HOME/.oh-my-zsh/completions/_cast
+    probe completions zsh > $HOME/.oh-my-zsh/completions/_probe
     ```
 
 ### SEE ALSO
 
-[cast](./cast.md)
+[probe](./probe.md)

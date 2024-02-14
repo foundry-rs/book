@@ -1,12 +1,12 @@
-## forge clean
+## spark clean
 
 ### NAME
 
-forge-clean - Remove the build artifacts and cache directories.
+spark-clean - Remove the build artifacts and cache directories.
 
 ### SYNOPSIS
 
-``forge clean`` [*options*]
+``spark clean`` [*options*]
 
 ### DESCRIPTION
 
@@ -25,9 +25,9 @@ Remove the build artifacts and cache directories.
 
 1. Clean artifacts and cache in a project:
     ```sh
-    forge clean
+    spark clean
     ```
 
 ### SEE ALSO
 
-[forge](./forge.md)
+[spark](./spark.md)

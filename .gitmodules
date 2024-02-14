@@ -1,12 +1,12 @@
-[submodule "projects/cheatcodes/lib/forge-std"]
-	path = projects/cheatcodes/lib/forge-std
-	url = https://github.com/foundry-rs/forge-std
-[submodule "projects/fuzz_testing/lib/forge-std"]
-	path = projects/fuzz_testing/lib/forge-std
-	url = https://github.com/foundry-rs/forge-std
-[submodule "projects/test_filters/lib/forge-std"]
-	path = projects/test_filters/lib/forge-std
-	url = https://github.com/foundry-rs/forge-std
-[submodule "projects/writing_tests/lib/forge-std"]
-	path = projects/writing_tests/lib/forge-std
-	url = https://github.com/foundry-rs/forge-std
+[submodule "projects/cheatcodes/lib/spark-std"]
+	path = projects/cheatcodes/lib/spark-std
+	url = https://github.com/foxar-rs/spark-std
+[submodule "projects/fuzz_testing/lib/spark-std"]
+	path = projects/fuzz_testing/lib/spark-std
+	url = https://github.com/foxar-rs/spark-std
+[submodule "projects/test_filters/lib/spark-std"]
+	path = projects/test_filters/lib/spark-std
+	url = https://github.com/foxar-rs/spark-std
+[submodule "projects/writing_tests/lib/spark-std"]
+	path = projects/writing_tests/lib/spark-std
+	url = https://github.com/foxar-rs/spark-std

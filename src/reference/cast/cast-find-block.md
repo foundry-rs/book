@@ -1,12 +1,12 @@
-## cast find-block
+## probe find-block
 
 ### NAME
 
-cast-find-block - Get the block number closest to the provided timestamp.
+probe-find-block - Get the block number closest to the provided timestamp.
 
 ### SYNOPSIS
 
-``cast find-block`` [*options*] *timestamp*
+``probe find-block`` [*options*] *timestamp*
 
 ### DESCRIPTION
 
@@ -24,9 +24,9 @@ Get the block number closest to the provided timestamp.
 
 1. Get the block number closest to New Years 2021
     ```sh
-    cast find-block 1609459200
+    probe find-block 1609459200
     ```
 
 ### SEE ALSO
 
-[cast](./cast.md)
+[probe](./probe.md)

@@ -1,12 +1,12 @@
-## cast compute-address
+## probe compute-address
 
 ### NAME
 
-cast-compute-address - Compute the contract address from a given nonce and deployer address.
+probe-compute-address - Compute the contract address from a given nonce and deployer address.
 
 ### SYNOPSIS
 
-``cast compute-address`` [*options*] *address*
+``probe compute-address`` [*options*] *address*
 
 ### DESCRIPTION
 
@@ -27,4 +27,4 @@ Compute the contract address from a given nonce and deployer address.
 
 ### SEE ALSO
 
-[cast](./cast.md), [cast proof](./cast-proof.md), [cast create2](./cast-create2.md)
+[probe](./probe.md), [probe proof](./probe-proof.md), [probe create2](./probe-create2.md)

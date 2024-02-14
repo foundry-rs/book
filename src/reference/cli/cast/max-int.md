@@ -1,10 +1,10 @@
-# cast max-int
+# probe max-int
 
 Prints the maximum value of the given integer type
 
 ```bash
-$ cast max-int --help
-Usage: cast max-int [TYPE]
+$ probe max-int --help
+Usage: probe max-int [TYPE]
 
 Arguments:
   [TYPE]  The integer type to get the maximum value of [default: int256]

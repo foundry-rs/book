@@ -1,15 +1,15 @@
 ## Creating an NFT with Solmate
 
-This tutorial will walk you through creating an OpenSea compatible NFT with Foundry and [Solmate](https://github.com/transmissions11/solmate/blob/main/src/tokens/ERC721.sol). A full implementation of this tutorial can be found [here](https://github.com/FredCoen/nft-tutorial).
+This tutorial will walk you through creating an OpenSea compatible NFT with Foxar and [Solmate](https://github.com/transmissions11/solmate/blob/main/src/tokens/ERC721.sol). A full implementation of this tutorial can be found [here](https://github.com/FredCoen/nft-tutorial).
 
 ##### This tutorial is for illustrative purposes only and provided on an as-is basis. The tutorial is not audited nor fully tested. No code in this tutorial should be used in a production environment.
 
 ### Create project and install dependencies
 
-Start by setting up a Foundry project following the steps outlined in the [Getting started section](../getting-started/installation.html). We will also install Solmate for their ERC721 implementation, as well as some OpenZeppelin utility libraries. Install the dependencies by running the following commands from the root of your project:
+Start by setting up a Foxar project following the steps outlined in the [Getting started section](../getting-started/installation.html). We will also install Solmate for their ERC721 implementation, as well as some OpenZeppelin utility libraries. Install the dependencies by running the following commands from the root of your project:
 
 ```bash
-forge install transmissions11/solmate Openzeppelin/openzeppelin-contracts
+spark install transmissions11/solmate Openzeppelin/openzeppelin-contracts
 ```
 
 These dependencies will be added as git submodules to your project.
@@ -51,9 +51,9 @@ contract NFT is ERC721 {
 
 Let's take a look at this very basic implementation of an NFT. We start by importing two contracts from our git submodules. We import solmate's gas optimized implementation of the ERC721 standard which our NFT contract will inherit from. Our constructor takes the `_name` and `_symbol` arguments for our NFT and passes them on to the constructor of the parent ERC721 implementation. Lastly we implement the `mintTo` function which allows anyone to mint an NFT. This function increments the `currentTokenId` and makes use of the `_safeMint` function of our parent contract.
 
-### Compile & deploy with forge
+### Compile & deploy with spark
 
-To compile the NFT contract run `forge build`. You might experience a build failure due to wrong mapping:
+To compile the NFT contract run `spark build`. You might experience a build failure due to wrong mapping:
 
 ```text
 Error:
@@ -73,7 +73,7 @@ openzeppelin-contracts/=lib/openzeppelin-contracts/
 
 (You can find out more on remappings in [the dependencies documentation](../projects/dependencies.md).
 
-By default the compiler output will be in the `out` directory. To deploy our compiled contract with Forge we have to set environment variables for the RPC endpoint and the private key we want to use to deploy.
+By default the compiler output will be in the `out` directory. To deploy our compiled contract with Spark we have to set environment variables for the RPC endpoint and the private key we want to use to deploy.
 
 Set your environment variables by running:
 
@@ -82,29 +82,29 @@ export RPC_URL=<Your RPC endpoint>
 export PRIVATE_KEY=<Your wallets private key>
 ```
 
-Once set, you can deploy your NFT with Forge by running the below command while adding the relevant constructor arguments to the NFT contract:
+Once set, you can deploy your NFT with Spark by running the below command while adding the relevant constructor arguments to the NFT contract:
 
 ```bash
-forge create NFT --rpc-url=$RPC_URL --private-key=$PRIVATE_KEY --constructor-args <name> <symbol>
+spark create NFT --rpc-url=$RPC_URL --private-key=$PRIVATE_KEY --constructor-args <name> <symbol>
 ```
 
 If successfully deployed, you will see the deploying wallet's address, the contract's address as well as the transaction hash printed to your terminal.
 
 ### Minting NFTs from your contract
 
-Calling functions on your NFT contract is made simple with Cast, Foundry's command-line tool for interacting with smart contracts, sending transactions, and getting chain data. Let's have a look at how we can use it to mint NFTs from our NFT contract.
+Calling functions on your NFT contract is made simple with Probe, Foxar's command-line tool for interacting with smart contracts, sending transactions, and getting chain data. Let's have a look at how we can use it to mint NFTs from our NFT contract.
 
 Given that you already set your RPC and private key env variables during deployment, mint an NFT from your contract by
 running:
 
 ```bash
-cast send --rpc-url=$RPC_URL <contractAddress>  "mintTo(address)" <arg> --private-key=$PRIVATE_KEY
+probe send --rpc-url=$RPC_URL <contractAddress>  "mintTo(address)" <arg> --private-key=$PRIVATE_KEY
 ```
 
-Well done! You just minted your first NFT from your contract. You can sanity check the owner of the NFT with `currentTokenId` equal to **1** by running the below `cast call` command. The address you provided above should be returned as the owner.
+Well done! You just minted your first NFT from your contract. You can sanity check the owner of the NFT with `currentTokenId` equal to **1** by running the below `probe call` command. The address you provided above should be returned as the owner.
 
 ```bash
-cast call --rpc-url=$RPC_URL --private-key=$PRIVATE_KEY <contractAddress> "ownerOf(uint256)" 1
+probe call --rpc-url=$RPC_URL --private-key=$PRIVATE_KEY <contractAddress> "ownerOf(uint256)" 1
 ```
 
 ### Extending our NFT contract functionality and testing
@@ -182,7 +182,7 @@ Among other things, we have added metadata that can be queried from any front-en
 
 > **Note**: If you want to provide a real URL to the constructor at deployment, and host the metadata of this NFT contract please follow the steps outlined [here](https://docs.opensea.io/docs/part-3-adding-metadata-and-payments-to-your-contract#intro-to-nft-metadata).
 
-Let's test some of this added functionality to make sure it works as intended. Foundry offers an extremely fast EVM native testing framework through Forge.
+Let's test some of this added functionality to make sure it works as intended. Foxar offers an extremely fast EVM native testing framework through Spark.
 
 Within your test folder rename the current `Contract.t.sol` test file to `NFT.t.sol`. This file will contain all tests regarding the NFT's `mintTo` method. Next, replace the existing boilerplate code with the below:
 
@@ -190,7 +190,7 @@ Within your test folder rename the current `Contract.t.sol` test file to `NFT.t.
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.8.10;
 
-import "forge-std/Test.sol";
+import "spark-std/Test.sol";
 import "../src/NFT.sol";
 
 contract NFTTest is Test {
@@ -328,28 +328,28 @@ contract Receiver is ERC721TokenReceiver {
 
 The test suite is set up as a contract with a `setUp` method which runs before every individual test.
 
-As you can see, Forge offers a number of [cheatcodes](../cheatcodes/) to manipulate state to accommodate your testing scenario.
+As you can see, Spark offers a number of [cheatcodes](../cheatcodes/) to manipulate state to accommodate your testing scenario.
 
 For example, our `testFailMaxSupplyReached` test checks that an attempt to mint fails when the max supply of NFT is reached. Thus, the `currentTokenId` of the NFT contract needs to be set to the max supply by using the store cheatcode which allows you to write data to your contracts storage slots. The storage slots you wish to write to can easily be found using the
-[`forge-std`](https://github.com/foundry-rs/forge-std/) helper library. You can run the test with the following command:
+[`spark-std`](https://github.com/foxar-rs/spark-std/) helper library. You can run the test with the following command:
 
 ```bash
-forge test
+spark test
 ```
 
-If you want to put your Forge skills to practice, write tests for the remaining methods of our NFT contract. Feel free to PR them to [nft-tutorial](https://github.com/FredCoen/nft-tutorial), where you will find the full implementation of this tutorial.
+If you want to put your Spark skills to practice, write tests for the remaining methods of our NFT contract. Feel free to PR them to [nft-tutorial](https://github.com/FredCoen/nft-tutorial), where you will find the full implementation of this tutorial.
 
 ### Gas reports for your function calls
 
-Foundry provides comprehensive gas reports about your contracts. For every function called within your tests, it returns the minimum, average, median and max gas cost. To print the gas report simply run:
+Foxar provides comprehensive gas reports about your contracts. For every function called within your tests, it returns the minimum, average, median and max gas cost. To print the gas report simply run:
 
 ```bash
-forge test --gas-report
+spark test --gas-report
 ```
 
 This comes in handy when looking at various gas optimizations within your contracts.
 
-Let's have a look at the gas savings we made by substituting OpenZeppelin with Solmate for our ERC721 implementation. You can find the NFT implementation using both libraries [here](https://github.com/FredCoen/nft-tutorial). Below are the resulting gas reports when running `forge test --gas-report` on that repository.
+Let's have a look at the gas savings we made by substituting OpenZeppelin with Solmate for our ERC721 implementation. You can find the NFT implementation using both libraries [here](https://github.com/FredCoen/nft-tutorial). Below are the resulting gas reports when running `spark test --gas-report` on that repository.
 
 As you can see, our implementation using Solmate saves around 500 gas on a successful mint (the max gas cost of the `mintTo` function calls).
 
@@ -357,6 +357,6 @@ As you can see, our implementation using Solmate saves around 500 gas on a succe
 
 ![Gas report OZ NFT](../images/nft-tutorial/gas-report-oz-nft.png)
 
-That's it, I hope this will give you a good practical basis of how to get started with foundry. We think there is no better way to deeply understand solidity than writing your tests in solidity. You will also experience less context switching between javascript and solidity. Happy coding!
+That's it, I hope this will give you a good practical basis of how to get started with foxar. We think there is no better way to deeply understand solidity than writing your tests in solidity. You will also experience less context switching between javascript and solidity. Happy coding!
 
 > Note: Follow [this](./solidity-scripting.md) tutorial to learn how to deploy the NFT contract used here with solidity scripting.

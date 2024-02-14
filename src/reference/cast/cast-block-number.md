@@ -1,12 +1,12 @@
-## cast block-number
+## probe block-number
 
 ### NAME
 
-cast-block-number - Get the latest block number.
+probe-block-number - Get the latest block number.
 
 ### SYNOPSIS
 
-``cast block-number`` [*options*]
+``probe block-number`` [*options*]
 
 ### DESCRIPTION
 
@@ -24,9 +24,9 @@ Get the latest block number.
 
 1. Get the latest block number:
     ```sh
-    cast block-number
+    probe block-number
     ```
 
 ### SEE ALSO
 
-[cast](./cast.md), [cast block](./cast-block.md)
+[probe](./probe.md), [probe block](./probe-block.md)

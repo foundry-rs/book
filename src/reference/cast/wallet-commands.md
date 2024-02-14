@@ -1,9 +1,9 @@
 ## Wallet Commands
 
-- [cast wallet](./cast-wallet.md)
-- [cast wallet address](./cast-wallet-address.md)
-- [cast wallet new](./cast-wallet-new.md)
-- [cast wallet sign](./cast-wallet-sign.md)
-- [cast wallet vanity](./cast-wallet-vanity.md)
-- [cast wallet verify](./cast-wallet-verify.md)
-- [cast wallet import](./cast-wallet-import.md)
+- [probe wallet](./probe-wallet.md)
+- [probe wallet address](./probe-wallet-address.md)
+- [probe wallet new](./probe-wallet-new.md)
+- [probe wallet sign](./probe-wallet-sign.md)
+- [probe wallet vanity](./probe-wallet-vanity.md)
+- [probe wallet verify](./probe-wallet-verify.md)
+- [probe wallet import](./probe-wallet-import.md)

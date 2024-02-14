@@ -13,7 +13,7 @@ vm.parseJson(string memory json);
 
 These cheatcodes are used to parse JSON files in the form of strings. Usually, it's coupled with `vm.readFile()` which returns an entire file in the form of a string.
 
-You can use `stdJson` from `forge-std`, as a helper library for better UX.
+You can use `stdJson` from `spark-std`, as a helper library for better UX.
 
 The cheatcode accepts either a `key` to search for a specific value in the JSON, or no key to return the entire JSON. It returns the value as an abi-encoded `bytes` array. That means that you will have to `abi.decode()` to the appropriate type for it to function properly, else it will `revert`.
 
@@ -110,7 +110,7 @@ The reason is that it would try to decode the string `"sigma"` as a uint. To be 
 If your JSON object has `hex numbers`, they will be encoded as bytes. The way to decode them as `uint` for better UX, is to define two `struct`, one intermediary with the definition of these values as `bytes` and then a final `struct` that will be consumed by the user.
 
 1. Decode the JSON into the intermediary `struct`
-2. Convert the intermediary struct to the final one, by converting the `bytes` to `uint`. We have a helper function in `forge-std` to do this
+2. Convert the intermediary struct to the final one, by converting the `bytes` to `uint`. We have a helper function in `spark-std` to do this
 3. Give the final `struct` to the user for consumption
 
 ### How to use StdJson
@@ -124,24 +124,24 @@ If your JSON object has `hex numbers`, they will be encoded as bytes. The way to
 
 ```solidity
 string memory root = vm.projectRoot();
-string memory path = string.concat(root, "/src/test/fixtures/broadcast.log.json");
+string memory path = string.concat(root, "/src/test/fixtures/broadprobe.log.json");
 string memory json = vm.readFile(path);
 bytes memory transactionDetails = json.parseRaw(".transactions[0].tx");
 RawTx1559Detail memory rawTxDetail = abi.decode(transactionDetails, (RawTx1559Detail));
 ```
 
-### Forge script artifacts
+### Spark script artifacts
 
-We have gone ahead and created a handful of helper struct and functions to read the artifacts from broadcasting a forge script.
+We have gone ahead and created a handful of helper struct and functions to read the artifacts from broadprobeing a spark script.
 
-Currently, we only support artifacts produced by EIP1559-compatible chains and we **don't** support yet the parsing of the entire `broadcast.json` artifact. You will need to parse for individual values such as the `transactions`, the `receipts`, etc.
+Currently, we only support artifacts produced by EIP1559-compatible chains and we **don't** support yet the parsing of the entire `broadprobe.json` artifact. You will need to parse for individual values such as the `transactions`, the `receipts`, etc.
 
 To read the transactions, it's as easy as doing:
 
 ```solidity
 function testReadEIP1559Transactions() public {
     string memory root = vm.projectRoot();
-    string memory path = string.concat(root, "/src/test/fixtures/broadcast.log.json");
+    string memory path = string.concat(root, "/src/test/fixtures/broadprobe.log.json");
     Tx1559[] memory transactions = readTx1559s(path);
 }
 ```
@@ -177,10 +177,10 @@ struct Tx1559Detail {
 
 > FAIL. Reason: The path `<file-path>` is not allowed to be accessed for read operations
 
-If you receive this error, make sure that you enable read permissions in `foundry.toml` using the [`fs_permissions` key](./fs.md)
+If you receive this error, make sure that you enable read permissions in `foxar.toml` using the [`fs_permissions` key](./fs.md)
 
 ### References
 
-- Helper Library: [stdJson.sol](https://github.com/foundry-rs/forge-std/blob/master/src/StdJson.sol)
-- Usage examples: [stdCheats.t.sol](https://github.com/foundry-rs/forge-std/blob/ca8d6e00ea9cb035f6856ff732203c9a3c48b966/src/test/StdCheats.t.sol#L206)
+- Helper Library: [stdJson.sol](https://github.com/foxar-rs/spark-std/blob/master/src/StdJson.sol)
+- Usage examples: [stdCheats.t.sol](https://github.com/foxar-rs/spark-std/blob/ca8d6e00ea9cb035f6856ff732203c9a3c48b966/src/test/StdCheats.t.sol#L206)
 - [File Cheatcodes](./fs.md): cheatcodes for working with files

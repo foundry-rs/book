@@ -1,12 +1,12 @@
-## forge upload-selectors
+## spark upload-selectors
 
 ### NAME
 
-forge-upload-selectors - Uploads abi of given contract to https://sig.eth.samczsun.com function selector database.
+spark-upload-selectors - Uploads abi of given contract to https://sig.eth.samczsun.com function selector database.
 
 ### SYNOPSIS
 
-``forge upload-selectors`` [*options*] *contract*
+``spark upload-selectors`` [*options*] *contract*
 
 ### DESCRIPTION
 
@@ -22,5 +22,5 @@ Uploads abi of given contract to https://sig.eth.samczsun.com function selector 
 
 1. Upload ABI to selector database
     ```sh
-    forge upload-selectors LinearVestingVault
+    spark upload-selectors LinearVestingVault
     ```

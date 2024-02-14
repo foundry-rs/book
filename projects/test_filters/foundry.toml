@@ -3,4 +3,4 @@ src = 'src'
 out = 'out'
 libs = ['lib']
 
-# See more config options https://github.com/gakonst/foundry/tree/master/config
+# See more config options https://github.com/gakonst/foxar/tree/master/config

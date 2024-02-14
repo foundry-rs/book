@@ -1,12 +1,12 @@
-## forge bind
+## spark bind
 
 ### NAME
 
-forge-bind - Generate Rust bindings for smart contracts.
+spark-bind - Generate Rust bindings for smart contracts.
 
 ### SYNOPSIS
 
-``forge bind`` [*options*]
+``spark bind`` [*options*]
 
 ### DESCRIPTION
 
@@ -36,7 +36,7 @@ You can overwrite the existing bindings by passing `--overwrite`.
 &nbsp;&nbsp;&nbsp;&nbsp;The name of the Rust crate to generate, if you are generating a crate (default).  
 &nbsp;&nbsp;&nbsp;&nbsp;This should be a valid crates.io crate name.
 
-&nbsp;&nbsp;&nbsp;&nbsp;Default: foundry-contracts
+&nbsp;&nbsp;&nbsp;&nbsp;Default: foxar-contracts
 
 `--crate-version` *semver*  
 &nbsp;&nbsp;&nbsp;&nbsp;The version of the Rust crate to generate, if you are generating a crate (default).  
@@ -63,8 +63,8 @@ You can overwrite the existing bindings by passing `--overwrite`.
 &nbsp;&nbsp;&nbsp;&nbsp;An example would be if you use additional features of ethers like `ws`, `ipc`, or `rustls` and get an `ethers-providers` version mismatch.
 
 `--skip-build`  
-&nbsp;&nbsp;&nbsp;&nbsp;Skips running forge build before generating binding.  
-&nbsp;&nbsp;&nbsp;&nbsp;This allows you to skip the default `forge build` step that's executed first and instead generate bindings using the already existing artifacts.  
+&nbsp;&nbsp;&nbsp;&nbsp;Skips running spark build before generating binding.  
+&nbsp;&nbsp;&nbsp;&nbsp;This allows you to skip the default `spark build` step that's executed first and instead generate bindings using the already existing artifacts.  
 
 `--select-all`  
 &nbsp;&nbsp;&nbsp;&nbsp;By default all contracts ending with `Test` or `Script` are excluded. This will explicitly generate bindings for all contracts. Conflicts with `--select` and `--skip`.
@@ -81,4 +81,4 @@ You can overwrite the existing bindings by passing `--overwrite`.
 
 ### SEE ALSO
 
-[forge](./forge.md)
+[spark](./spark.md)

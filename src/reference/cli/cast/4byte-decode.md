@@ -1,10 +1,10 @@
-# cast 4byte-decode
+# probe 4byte-decode
 
 Decode ABI-encoded calldata using https://openchain.xyz
 
 ```bash
-$ cast 4byte-decode --help
-Usage: cast 4byte-decode [CALLDATA]
+$ probe 4byte-decode --help
+Usage: probe 4byte-decode [CALLDATA]
 
 Arguments:
   [CALLDATA]  The ABI-encoded calldata

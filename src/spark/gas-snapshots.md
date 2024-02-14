@@ -1,16 +1,16 @@
 ## Gas Snapshots
 
-Forge can generate gas snapshots for all your test functions. This can
+Spark can generate gas snapshots for all your test functions. This can
 be useful to get a general feel for how much gas your contract will consume,
 or to compare gas usage before and after various optimizations.
 
-To generate the gas snapshot, run [`forge snapshot`](../reference/forge/forge-snapshot.md).
+To generate the gas snapshot, run [`spark snapshot`](../reference/spark/spark-snapshot.md).
 
 This will generate a file called `.gas-snapshot` by default with all your
 tests and their respective gas usage.
 
 ```ignore
-$ forge snapshot
+$ spark snapshot
 $ cat .gas-snapshot
 
 ERC20Test:testApprove() (gas: 31162)
@@ -27,7 +27,7 @@ ERC20Test:testTransferFrom() (gas: 84152)
 
 ### Filtering
 
-If you would like to specify a different output file, run `forge snapshot --snap <FILE_NAME>`.
+If you would like to specify a different output file, run `spark snapshot --snap <FILE_NAME>`.
 
 You can also sort the results by gas usage. Use the `--asc` option to sort the results in
 ascending order and `--desc` to sort the results in descending order.
@@ -40,7 +40,7 @@ you can use the `--max <VALUE>` option.
 Keep in mind that the changes will be made in the snapshot file, and not in the snapshot being
 displayed on your screen.
 
-You can also use it in combination with the filters for `forge test`, such as `forge snapshot --match-path contracts/test/ERC721.t.sol` to generate a gas snapshot relevant to this test contract.
+You can also use it in combination with the filters for `spark test`, such as `spark snapshot --match-path contracts/test/ERC721.t.sol` to generate a gas snapshot relevant to this test contract.
 
 ### Comparing gas usage
 
@@ -55,7 +55,7 @@ being `.gas-snapshot`.
 For example:
 
 ```ignore
-$ forge snapshot --diff .gas-snapshot2
+$ spark snapshot --diff .gas-snapshot2
 
 Running 10 tests for src/test/ERC20.t.sol:ERC20Test
 [PASS] testApprove() (gas: 31162)
@@ -88,7 +88,7 @@ differences, if any. You can change the file to compare against by providing a d
 For example:
 
 ```ignore
-$ forge snapshot --check .gas-snapshot2
+$ spark snapshot --check .gas-snapshot2
 
 Running 10 tests for src/test/ERC20.t.sol:ERC20Test
 [PASS] testApprove() (gas: 31162)

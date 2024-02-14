@@ -1,12 +1,12 @@
-## cast to-uint256
+## probe to-uint256
 
 ### NAME
 
-cast-to-uint256 - Convert a number to a hex-encoded uint256.
+probe-to-uint256 - Convert a number to a hex-encoded uint256.
 
 ### SYNOPSIS
 
-``cast to-uint256`` [*options*] *value*
+``probe to-uint256`` [*options*] *value*
 
 ### DESCRIPTION
 
@@ -18,4 +18,4 @@ Convert a number to a hex-encoded uint256.
 
 ### SEE ALSO
 
-[cast](./cast.md)
+[probe](./probe.md)

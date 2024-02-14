@@ -1,12 +1,12 @@
-## cast to-unit
+## probe to-unit
 
 ### NAME
 
-cast-to-unit - Convert an eth amount to another unit.
+probe-to-unit - Convert an eth amount to another unit.
 
 ### SYNOPSIS
 
-``cast to-unit`` [*options*] *value* [*unit*]
+``probe to-unit`` [*options*] *value* [*unit*]
 
 ### DESCRIPTION
 
@@ -28,14 +28,14 @@ Valid units are:
 
 1. Convert 1000 wei to gwei
     ```sh
-    cast to-unit 1000 gwei
+    probe to-unit 1000 gwei
     ```
 
 2. Convert 1 eth to gwei
     ```sh
-    cast to-unit 1ether gwei
+    probe to-unit 1ether gwei
     ```
 
 ### SEE ALSO
 
-[cast](./cast.md)
+[probe](./probe.md)

@@ -4,7 +4,7 @@ $ tree lib -L 1
 // ANCHOR_END: command
 // ANCHOR: output
 lib
-├── forge-std
+├── spark-std
 ├── solmate
 └── weird-erc20
 

@@ -1,10 +1,10 @@
-# forge geiger
+# spark geiger
 
 Detects usage of unsafe cheat codes in a project and its dependencies
 
 ```bash
-$ forge geiger --help
-Usage: forge geiger [OPTIONS] [PATH]...
+$ spark geiger --help
+Usage: spark geiger [OPTIONS] [PATH]...
 
 Arguments:
   [PATH]...

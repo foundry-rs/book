@@ -1,11 +1,11 @@
 ## References
 
 - [CLI Reference](./cli/)
-- [forge Commands](./forge/)
-- [cast Commands](./cast/)
-- [anvil Reference](./anvil/)
-- [chisel Reference](./chisel/)
+- [spark Commands](./spark/)
+- [probe Commands](./probe/)
+- [shuttle Reference](./shuttle/)
+- [pilot Reference](./pilot/)
 - [Config Reference](./config/)
 - [Cheatcodes Reference](../cheatcodes/)
-- [Forge Standard Library Reference](./forge-std)
+- [Spark Standard Library Reference](./spark-std)
 - [ds-test Reference](./ds-test.md)

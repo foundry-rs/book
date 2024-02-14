@@ -1,10 +1,10 @@
-# cast wallet verify
+# probe wallet verify
 
 Verify the signature of a message
 
 ```bash
-$ cast wallet verify --help
-Usage: cast wallet verify --address <ADDRESS> <MESSAGE> <SIGNATURE>
+$ probe wallet verify --help
+Usage: probe wallet verify --address <ADDRESS> <MESSAGE> <SIGNATURE>
 
 Arguments:
   <MESSAGE>    The original message

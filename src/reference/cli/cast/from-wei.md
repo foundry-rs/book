@@ -1,10 +1,10 @@
-# cast from-wei
+# probe from-wei
 
 Convert wei into an ETH amount.
 
 ```bash
-$ cast from-wei --help
-Usage: cast from-wei [VALUE] [UNIT]
+$ probe from-wei --help
+Usage: probe from-wei [VALUE] [UNIT]
 
 Arguments:
   [VALUE]

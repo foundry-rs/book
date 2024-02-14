@@ -4,7 +4,7 @@
 - You can use it in calls and transactions. It works with view functions, but not in pure ones.
 - It always works, regardless of the call or transaction failing or being successful.
 - To use it you need import it:
-    - `import "forge-std/console.sol";`
+    - `import "spark-std/console.sol";`
 - You can call console.log with up to 4 parameters in any order of following types:
     - `uint`
     - `string`
@@ -23,7 +23,7 @@
     - `console.logBytes32(bytes32 b)`
 - console.log implements the same formatting options that can be found in Hardhat's console.log.
     - Example: `console.log("Changing owner from %s to %s", currentOwner, newOwner)`
-- console.log is implemented in standard Solidity and it is compatible Anvil and Hardhat Networks.
+- console.log is implemented in standard Solidity and it is compatible Shuttle and Hardhat Networks.
 - console.log calls can run in other networks, like mainnet, kovan, ropsten, etc. They do nothing in those networks, but do spend a minimal amount of gas.
 
 

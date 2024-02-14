@@ -1,12 +1,12 @@
-## cast shl
+## probe shl
 
 ### NAME
 
-cast-shl - Perform a left shifting operation.
+probe-shl - Perform a left shifting operation.
 
 ### SYNOPSIS
 
-``cast shl`` [*options*] *value* *shift*
+``probe shl`` [*options*] *value* *shift*
 
 ### DESCRIPTION
 
@@ -22,11 +22,11 @@ Perform a left shifting operation.
 
 1. Perform a 3 position left bit shift of the number 61
     ```sh
-    cast shl --base-in 10 61 3
+    probe shl --base-in 10 61 3
     ```
 
 > Note: The --base-in parameter is not enforced but will be needed if the input is ambiguous.
 
 ### SEE ALSO
 
-[cast](./cast.md), [cast shr](./cast-shr.md)
+[probe](./probe.md), [probe shr](./probe-shr.md)

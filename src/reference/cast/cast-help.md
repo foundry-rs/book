@@ -1,12 +1,12 @@
-## cast help
+## probe help
 
 ### NAME
 
-cast-help - Get help for a Cast command
+probe-help - Get help for a Probe command
 
 ### SYNOPSIS
 
-``cast help`` [*subcommand*]
+``probe help`` [*subcommand*]
 
 ### DESCRIPTION
 
@@ -16,14 +16,14 @@ Prints a help message for the given command.
 
 1. Get help for a command:
     ```sh
-    cast help call
+    probe help call
     ```
 
 2. Help is also available with the `--help` flag:
     ```sh
-    cast call --help
+    probe call --help
     ```
 
 ### SEE ALSO
 
-[cast](./cast.md)
+[probe](./probe.md)

@@ -44,5 +44,5 @@ uint256 privateKey = vm.deriveKey(mnemonic, "m/44'/60'/0'/1/", 0);
 
 - [rememberKey](./remember-key.md)
 
-Forge Standard Library:
-- [deriveRememberKey](../reference/forge-std/derive-remember-key.md)
+Spark Standard Library:
+- [deriveRememberKey](../reference/spark-std/derive-remember-key.md)

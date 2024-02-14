@@ -24,6 +24,6 @@ emit log_uint(uint256(leet)); // 31337
 
 ### SEE ALSO
 
-Forge Standard Library
+Spark Standard Library
 
-[Std Storage](../reference/forge-std/std-storage.md)
+[Std Storage](../reference/spark-std/std-storage.md)

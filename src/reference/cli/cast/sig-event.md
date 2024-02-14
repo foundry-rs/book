@@ -1,10 +1,10 @@
-# cast sig-event
+# probe sig-event
 
 Generate event signatures from event string
 
 ```bash
-$ cast sig-event --help
-Usage: cast sig-event [EVENT_STRING]
+$ probe sig-event --help
+Usage: probe sig-event [EVENT_STRING]
 
 Arguments:
   [EVENT_STRING]  The event string

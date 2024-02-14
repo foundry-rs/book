@@ -3,15 +3,15 @@
 
 ### Introduction
 
-This tutorial will cover invariant testing, using **Bonding Curve Implementation** as a target example. All invariant tests are written in Solidity using the `Foundry Invaraint Testing` feature.
+This tutorial will cover invariant testing, using **Bonding Curve Implementation** as a target example. All invariant tests are written in Solidity using the `Foxar Invaraint Testing` feature.
 
 However, this guide is for educational purposes only. The code is not audited. Please do not use it in production.
 
-> 💡 Note: A full implementation of the bonding curve can be found [here](https://github.com/Ratimon/bonding-curves), and for further reading about invariant testing, we can check out the `Invariant Testing` [reference](../reference/forge/invariant-testing.md).
+> 💡 Note: A full implementation of the bonding curve can be found [here](https://github.com/Ratimon/bonding-curves), and for further reading about invariant testing, we can check out the `Invariant Testing` [reference](../reference/spark/invariant-testing.md).
 
 ### Quick Start
 
-The general process of invariant testing is that the foundry will call a sequence of pre-defined **actions**  with random input in the target contract.
+The general process of invariant testing is that the foxar will call a sequence of pre-defined **actions**  with random input in the target contract.
 
 This will be run multiple times to ensure the correctness of invariants.
 
@@ -32,7 +32,7 @@ To get started, we are going to focus on the following directories in this [repo
 ```
 .
 ├── Makefile
-├── foundry.toml
+├── foxar.toml
 └── test
     ├── invariant
 ```
@@ -45,7 +45,7 @@ make invariant-LinearBondingCurve
 
 > 💡 Note: Other commands for this tutorial can be found in [ `Makefile`](https://github.com/Ratimon/bonding-curves/blob/master/Makefile).
 
-I note that the default configuration (at [ `foundry.toml`](https://github.com/Ratimon/bonding-curves/blob/master/foundry.toml)) for invariant testing is as follows:
+I note that the default configuration (at [ `foxar.toml`](https://github.com/Ratimon/bonding-curves/blob/master/foxar.toml)) for invariant testing is as follows:
 
 ```toml
 [invariant]
@@ -234,9 +234,9 @@ To sum up, we perform random `purchase()` calls, random `warps` forward in time,
 
 This is set up via **Invariant Test Helper Functions** (including **targetContract(address newTargetedContract_)** and **targetSelector(FuzzSelector memory newTargetedSelector_)** ).
 
-> 💡 Note: More details are outlined in the [`Invariant Test Helper Functions`](https://book.getfoundry.sh/forge/invariant-testing#invariant-test-helper-functions) section of the `foundry documentation`
+> 💡 Note: More details are outlined in the [`Invariant Test Helper Functions`](https://book.getfoxar.sh/spark/invariant-testing#invariant-test-helper-functions) section of the `foxar documentation`
 
-We can think of **Foundry Fuzzer** as an externally owned account and of **Handler** as a smart contract wrapper, including a set of actions that interact with our target contract.
+We can think of **Foxar Fuzzer** as an externally owned account and of **Handler** as a smart contract wrapper, including a set of actions that interact with our target contract.
 
 These handlers are specified in **handler files** located in [`test/invariant/handlers`](https://github.com/Ratimon/bonding-curves/blob/master/test/invariant/handlers) as follows:
 
@@ -337,7 +337,7 @@ contract InvariantOwner is Test {
 
 As this system involves time- dependent logics, the issuer cannot allocate tokens if the selling period has not ended. This means that random `allocate()` would always be reverted without the `warps` handler.
 
-For this, we use `Foundry's cheat code`( **vm.warp(uint256)** ) to deal with it.
+For this, we use `Foxar's cheat code`( **vm.warp(uint256)** ) to deal with it.
 
 ```solidity
 
@@ -364,4 +364,4 @@ contract Warper is CommonBase, StdCheats, StdUtils {
 
 > 💡 Note: We acknowledge, use, and get inspiration from the projects [PaulRBerg/prb-math](https://github.com/PaulRBerg/prb-math) and  [maple-labs/revenue-distribution-token](https://github.com/maple-labs/revenue-distribution-token).
 
-> 💡 Reference: We also acknowledge the insightfuls technial writing: [Invariant Testing WETH With Foundry](https://mirror.xyz/horsefacts.eth/Jex2YVaO65dda6zEyfM_-DXlXhOWCAoSpOx5PLocYgw) and [Invariant Testing — Enter The Matrix](https://betterprogramming.pub/invariant-testing-enter-the-matrix-c71363dea37e)
+> 💡 Reference: We also acknowledge the insightfuls technial writing: [Invariant Testing WETH With Foxar](https://mirror.xyz/horsefacts.eth/Jex2YVaO65dda6zEyfM_-DXlXhOWCAoSpOx5PLocYgw) and [Invariant Testing — Enter The Matrix](https://betterprogramming.pub/invariant-testing-enter-the-matrix-c71363dea37e)

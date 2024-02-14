@@ -1,12 +1,12 @@
-## cast tx
+## probe tx
 
 ### NAME
 
-cast-tx - Get information about a transaction.
+probe-tx - Get information about a transaction.
 
 ### SYNOPSIS
 
-``cast tx`` [*options*] *tx_hash* [*field*]
+``probe tx`` [*options*] *tx_hash* [*field*]
 
 ### DESCRIPTION
 
@@ -28,14 +28,14 @@ If *field* is specified, then only the given field of the transaction is display
 
 1. Get information about a transaction:
     ```sh
-    cast tx $TX_HASH
+    probe tx $TX_HASH
     ```
 
 2. Get the sender of a transaction:
     ```sh
-    cast tx $TX_HASH from
+    probe tx $TX_HASH from
     ```
 
 ### SEE ALSO
 
-[cast](./cast.md), [cast receipt](./cast-receipt.md)
+[probe](./probe.md), [probe receipt](./probe-receipt.md)

@@ -34,7 +34,7 @@
 
 &nbsp;&nbsp;&nbsp;&nbsp;If the matching test is a fuzz test, then it will open the debugger on the first failure case. If the fuzz test does not fail, it will open the debugger on the last fuzz case.
 
-&nbsp;&nbsp;&nbsp;&nbsp;For more fine-grained control of which fuzz case is run, see [`forge debug`](./forge-debug.md).
+&nbsp;&nbsp;&nbsp;&nbsp;For more fine-grained control of which fuzz case is run, see [`spark debug`](./spark-debug.md).
 
 `--gas-report`  
 &nbsp;&nbsp;&nbsp;&nbsp;Print a gas report.

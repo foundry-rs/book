@@ -14,26 +14,26 @@ compinit -i
 Then run:
 
 ```sh
-forge completions zsh | sudo tee /usr/local/share/zsh/site-functions/_forge
-cast completions zsh | sudo tee /usr/local/share/zsh/site-functions/_cast
-anvil completions zsh | sudo tee /usr/local/share/zsh/site-functions/_anvil
+spark completions zsh | sudo tee /usr/local/share/zsh/site-functions/_spark
+probe completions zsh | sudo tee /usr/local/share/zsh/site-functions/_probe
+shuttle completions zsh | sudo tee /usr/local/share/zsh/site-functions/_shuttle
 ```
 
 For ARM-based systems:
 
 ```sh
-forge completions zsh > /opt/homebrew/completions/zsh/_forge
-cast completions zsh > /opt/homebrew/completions/zsh/_cast
-anvil completions zsh > /opt/homebrew/completions/zsh/_anvil
+spark completions zsh > /opt/homebrew/completions/zsh/_spark
+probe completions zsh > /opt/homebrew/completions/zsh/_probe
+shuttle completions zsh > /opt/homebrew/completions/zsh/_shuttle
 ```
 
 ### fish
 
 ```sh
 mkdir -p $HOME/.config/fish/completions
-forge completions fish > $HOME/.config/fish/completions/forge.fish
-cast completions fish > $HOME/.config/fish/completions/cast.fish
-anvil completions fish > $HOME/.config/fish/completions/anvil.fish
+spark completions fish > $HOME/.config/fish/completions/spark.fish
+probe completions fish > $HOME/.config/fish/completions/probe.fish
+shuttle completions fish > $HOME/.config/fish/completions/shuttle.fish
 source $HOME/.config/fish/config.fish
 ```
 
@@ -41,8 +41,8 @@ source $HOME/.config/fish/config.fish
 
 ```sh
 mkdir -p $HOME/.local/share/bash-completion/completions
-forge completions bash > $HOME/.local/share/bash-completion/completions/forge
-cast completions bash > $HOME/.local/share/bash-completion/completions/cast
-anvil completions bash > $HOME/.local/share/bash-completion/completions/anvil
+spark completions bash > $HOME/.local/share/bash-completion/completions/spark
+probe completions bash > $HOME/.local/share/bash-completion/completions/probe
+shuttle completions bash > $HOME/.local/share/bash-completion/completions/shuttle
 exec bash
 ```

@@ -3,9 +3,10 @@
 // ANCHOR: prelude
 pragma solidity 0.8.10;
 
-import "forge-std/Test.sol";
+import "spark-std/Test.sol";
 
 error Unauthorized();
+
 // ANCHOR_END: prelude
 
 // ANCHOR: contract
@@ -24,13 +25,15 @@ contract OwnerUpOnly {
         count++;
     }
 }
+
 // ANCHOR_END: contract
 
 // ANCHOR: test
 // ANCHOR: contract_prelude
 contract OwnerUpOnlyTest is Test {
     OwnerUpOnly upOnly;
-// ANCHOR_END: contract_prelude
+
+    // ANCHOR_END: contract_prelude
 
     // ANCHOR: simple_test
     function setUp() public {
@@ -42,6 +45,7 @@ contract OwnerUpOnlyTest is Test {
         upOnly.increment();
         assertEq(upOnly.count(), 1);
     }
+
     // ANCHOR_END: simple_test
 
     // ANCHOR: test_fail
@@ -49,6 +53,7 @@ contract OwnerUpOnlyTest is Test {
         vm.prank(address(0));
         upOnly.increment();
     }
+
     // ANCHOR_END: test_fail
 
     // ANCHOR: test_expectrevert

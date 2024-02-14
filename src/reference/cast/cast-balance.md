@@ -1,12 +1,12 @@
-## cast balance
+## probe balance
 
 ### NAME
 
-cast-balance - Get the balance of an account in wei.
+probe-balance - Get the balance of an account in wei.
 
 ### SYNOPSIS
 
-``cast balance`` [*options*] *who*
+``probe balance`` [*options*] *who*
 
 ### DESCRIPTION
 
@@ -38,9 +38,9 @@ The argument *who* can be an ENS name or an address.
 
 1. Get the balance of beer.eth
     ```sh
-    cast balance beer.eth
+    probe balance beer.eth
     ```
 
 ### SEE ALSO
 
-[cast](./cast.md), [cast nonce](./cast-nonce.md)
+[probe](./probe.md), [probe nonce](./probe-nonce.md)

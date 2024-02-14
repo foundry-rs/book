@@ -13,14 +13,14 @@ In this tutorial, we will:
 1. Look at a `CREATE2` factory implementation.
 2. Deploy the factory using the traditional deployment methods.
 3. Use this deployed factory to in turn deploy a simple counter contract at a deterministic address.
-4. Simulate this set of events by writing a simple test in Foundry.
+4. Simulate this set of events by writing a simple test in Foxar.
 
 ### Prerequisites
 
-1. Some familiarity with Solidity and Foundry is required, and some familiarity with the inline assembly is recommended.
+1. Some familiarity with Solidity and Foxar is required, and some familiarity with the inline assembly is recommended.
 Refer to the [official Solidity docs](https://docs.soliditylang.org/en/latest/assembly.html) for a primer on inline assembly.
-2. Make sure you have Foundry [installed](../getting-started/installation.md) on your system.
-3. [Initialize](../projects/creating-a-new-project.md) a new Foundry project.
+2. Make sure you have Foxar [installed](../getting-started/installation.md) on your system.
+3. [Initialize](../projects/creating-a-new-project.md) a new Foxar project.
 
 ### CREATE2 Factory
 
@@ -160,7 +160,7 @@ The entirety of the assembly code in the `computeAddress` function is an attempt
 >
 > You can check out the complete code for this factory implementation [here](https://github.com/Genesis3800/CREATE2Factory/blob/main/src/Create2.sol).
 > Also check out OpenZeppelin's [CREATE2 library implementation](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/793d92a3331538d126033cbacb1ee5b8a7d95adc/contracts/utils/Create2.sol), which has been used as inspiration for this tutorial.
-> Finally, Forge offers some `CREATE2` address computation helper functions out of the box. [Check them out](https://github.com/foundry-rs/forge-std/blob/f73c73d2018eb6a111f35e4dae7b4f27401e9421/src/StdUtils.sol#L122-L134).
+> Finally, Spark offers some `CREATE2` address computation helper functions out of the box. [Check them out](https://github.com/foxar-rs/spark-std/blob/f73c73d2018eb6a111f35e4dae7b4f27401e9421/src/StdUtils.sol#L122-L134).
 
 ### Testing our factory
 
@@ -171,7 +171,7 @@ Initialize a contract named `Create2Test` like this:
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.20;
 
-import "forge-std/Test.sol";
+import "spark-std/Test.sol";
 import {Counter} from "../src/Counter.sol";
 import {Create2} from "../src/Create2.sol";
 
@@ -216,8 +216,8 @@ Create a new function named `testDeterministicDeploy()` that:
     }
 ```
 
-Save all your files, and run the test using `forge test --match-path test/Create2.t.sol -vvvv`.
+Save all your files, and run the test using `spark test --match-path test/Create2.t.sol -vvvv`.
 Your test should pass without any errors.
 
 > ℹ️ **Note**
->This guide is intended to help understand `CREATE2`. In most use cases, you won't need to write and use your own deployer, and can use an existing deterministic deployer. In forge scripts, using `new MyContract{salt: salt}()` will use the deterministic deployer at [0x4e59b44847b379578588920ca78fbf26c0b4956c](https://github.com/Arachnid/deterministic-deployment-proxy).
+>This guide is intended to help understand `CREATE2`. In most use cases, you won't need to write and use your own deployer, and can use an existing deterministic deployer. In spark scripts, using `new MyContract{salt: salt}()` will use the deterministic deployer at [0x4e59b44847b379578588920ca78fbf26c0b4956c](https://github.com/Arachnid/deterministic-deployment-proxy).

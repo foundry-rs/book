@@ -1,15 +1,15 @@
-# forge
+# spark
 
 Build, test, fuzz, debug and deploy Solidity contracts
 
 ```bash
-$ forge --help
-Usage: forge <COMMAND>
+$ spark --help
+Usage: spark <COMMAND>
 
 Commands:
   bind               Generate Rust bindings for smart contracts
   build              Build the project's smart contracts [aliases: b, compile]
-  cache              Manage the Foundry cache
+  cache              Manage the Foxar cache
   clean              Remove the build artifacts and cache directories [aliases: cl]
   completions        Generate shell completions script [aliases: com]
   config             Display the current config [aliases: co]
@@ -23,7 +23,7 @@ Commands:
   generate           Generate scaffold files
   generate-fig-spec  Generate Fig autocompletion spec [aliases: fig]
   help               Print this message or the help of the given subcommand(s)
-  init               Create a new Forge project
+  init               Create a new Spark project
   inspect            Get specialized information about a smart contract [aliases: in]
   install            Install one or multiple dependencies [aliases: i]
   remappings         Get the automatically inferred remappings for the project [aliases: re]
@@ -41,5 +41,5 @@ Options:
   -h, --help     Print help
   -V, --version  Print version
 
-Find more information in the book: http://book.getfoundry.sh/reference/forge/forge.html
+Find more information in the book: http://book.getfoxar.sh/reference/spark/spark.html
 ```

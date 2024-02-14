@@ -1,12 +1,12 @@
-## cast from-rlp
+## probe from-rlp
 
 ### NAME
 
-cast-from-rlp - Decodes RLP-encoded data.
+probe-from-rlp - Decodes RLP-encoded data.
 
 ### SYNOPSIS
 
-``cast from-rlp`` *data*
+``probe from-rlp`` *data*
 
 ### DESCRIPTION
 
@@ -22,7 +22,7 @@ The *data* is a hexadecimal string with optional 0x prefix.
 
 1. Decode RLP data:
     ```sh
-    cast from-rlp 0xc481f181f2
+    probe from-rlp 0xc481f181f2
 
-    cast from-rlp c481f181f2
+    probe from-rlp c481f181f2
     ```

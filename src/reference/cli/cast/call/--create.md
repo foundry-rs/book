@@ -1,10 +1,10 @@
-# cast call --create
+# probe call --create
 
 ignores the address field and simulates creating a contract
 
 ```bash
-$ cast call --create --help
-Usage: cast call --create [OPTIONS] <CODE> [SIG] [ARGS]...
+$ probe call --create --help
+Usage: probe call --create [OPTIONS] <CODE> [SIG] [ARGS]...
 
 Arguments:
   <CODE>

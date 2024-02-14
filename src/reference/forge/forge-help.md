@@ -1,12 +1,12 @@
-## forge help
+## spark help
 
 ### NAME
 
-forge-help - Get help for a Forge command
+spark-help - Get help for a Spark command
 
 ### SYNOPSIS
 
-``forge help`` [*subcommand*]
+``spark help`` [*subcommand*]
 
 ### DESCRIPTION
 
@@ -16,14 +16,14 @@ Prints a help message for the given command.
 
 1. Get help for a command:
     ```sh
-    forge help build
+    spark help build
     ```
 
 2. Help is also available with the `--help` flag:
     ```sh
-    forge build --help
+    spark build --help
     ```
 
 ### SEE ALSO
 
-[forge](./forge.md)
+[spark](./spark.md)

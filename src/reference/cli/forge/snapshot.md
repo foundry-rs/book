@@ -1,10 +1,10 @@
-# forge snapshot
+# spark snapshot
 
 Create a snapshot of each test's gas usage
 
 ```bash
-$ forge snapshot --help
-Usage: forge snapshot [OPTIONS]
+$ spark snapshot --help
+Usage: spark snapshot [OPTIONS]
 
 Options:
       --diff [<SNAPSHOT_FILE>]
@@ -42,17 +42,17 @@ Test options:
           
           If the matching test is a fuzz test, then it will open the debugger on the first failure case. If the fuzz test does not fail, it will open the debugger on the last fuzz case.
           
-          For more fine-grained control of which fuzz case is run, see forge run.
+          For more fine-grained control of which fuzz case is run, see spark run.
 
       --gas-report
           Print a gas report
           
-          [env: FORGE_GAS_REPORT=]
+          [env: SPARK_GAS_REPORT=]
 
       --allow-failure
           Exit with code 0 even if a test fails
           
-          [env: FORGE_ALLOW_FAILURE=]
+          [env: SPARK_ALLOW_FAILURE=]
 
       --fail-fast
           Stop running tests after the first failure
@@ -66,7 +66,7 @@ Test options:
           Set seed used to generate randomness during your fuzz runs
 
       --fuzz-runs <RUNS>
-          [env: FOUNDRY_FUZZ_RUNS=]
+          [env: FOXAR_FUZZ_RUNS=]
 
 Display options:
   -j, --json

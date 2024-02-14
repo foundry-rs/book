@@ -1,10 +1,10 @@
-# cast send
+# probe send
 
 Sign and publish a transaction
 
 ```bash
-$ cast send --help
-Usage: cast send [OPTIONS] [TO] [SIG] [ARGS]... [COMMAND]
+$ probe send --help
+Usage: probe send [OPTIONS] [TO] [SIG] [ARGS]... [COMMAND]
 
 Commands:
   --create  Use to deploy raw contract bytecode
@@ -14,7 +14,7 @@ Arguments:
   [TO]
           The destination of the transaction.
           
-          If not provided, you must use cast send --create.
+          If not provided, you must use probe send --create.
 
   [SIG]
           The signature of the function to call
@@ -26,7 +26,7 @@ Options:
       --async
           Only print the transaction hash and exit immediately
           
-          [env: CAST_ASYNC=]
+          [env: PROBE_ASYNC=]
 
       --confirmations <CONFIRMATIONS>
           The number of confirmations until the receipt is fetched
@@ -89,7 +89,7 @@ Ethereum options:
           
           The JWT secret will be used to create a JWT for a RPC. For example, the following can be used to simulate a CL `engine_forkchoiceUpdated` call:
           
-          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2 '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc", "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          probe rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2 '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc", "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
           "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
           
           [env: ETH_RPC_JWT_SECRET=]
@@ -141,7 +141,7 @@ Wallet options - keystore:
           [env: ETH_KEYSTORE=]
 
       --account <ACCOUNT_NAME>
-          Use a keystore from the default keystores folder (~/.foundry/keystores) by its filename
+          Use a keystore from the default keystores folder (~/.foxar/keystores) by its filename
           
           [env: ETH_KEYSTORE_ACCOUNT=]
 

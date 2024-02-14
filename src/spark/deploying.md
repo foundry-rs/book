@@ -1,15 +1,15 @@
 ## Deploying
 
-Forge can deploy smart contracts to a given network with the [`forge create`](../reference/forge/forge-create.md) command.
+Spark can deploy smart contracts to a given network with the [`spark create`](../reference/spark/spark-create.md) command.
 
-Forge can deploy only one contract at a time.
+Spark can deploy only one contract at a time.
 
 To deploy a contract, you must provide a RPC URL (env: `ETH_RPC_URL`) and the private key of the account that will deploy the contract.
 
 To deploy `MyContract` to a network:
 
 ```sh
-$ forge create --rpc-url <your_rpc_url> --private-key <your_private_key> src/MyContract.sol:MyContract
+$ spark create --rpc-url <your_rpc_url> --private-key <your_private_key> src/MyContract.sol:MyContract
 compiling...
 success.
 Deployer: 0xa735b3c25f...
@@ -39,11 +39,11 @@ contract MyToken is ERC20 {
 }
 ```
 
-Additionally, we can tell Forge to verify our contract on Etherscan, Sourcify or Blockscout, if the network is supported, by passing `--verify`.
+Additionally, we can tell Spark to verify our contract on Etherscan, Sourcify or Blockscout, if the network is supported, by passing `--verify`.
 
 ```sh
-$ forge create --rpc-url <your_rpc_url> \
-    --constructor-args "ForgeUSD" "FUSD" 18 1000000000000000000000 \
+$ spark create --rpc-url <your_rpc_url> \
+    --constructor-args "SparkUSD" "FUSD" 18 1000000000000000000000 \
     --private-key <your_private_key> \
     --etherscan-api-key <your_etherscan_api_key> \
     --verify \
@@ -52,12 +52,12 @@ $ forge create --rpc-url <your_rpc_url> \
 
 ## Verifying a pre-existing contract
 
-It is recommended to use the `--verify` flag with `forge create` to automatically verify the contract on explorer after a deployment.
+It is recommended to use the `--verify` flag with `spark create` to automatically verify the contract on explorer after a deployment.
 Note that for Etherscan [`ETHERSCAN_API_KEY`](../reference/config/etherscan.md#etherscan_api_key) must be set.
 
 If you are verifying an already deployed contract, read on.
 
-You can verify a contract on Etherscan, Sourcify or Blockscout with the [`forge verify-contract`](../reference/forge/forge-verify-contract.md) command.
+You can verify a contract on Etherscan, Sourcify or Blockscout with the [`spark verify-contract`](../reference/spark/spark-verify-contract.md) command.
 
 You must provide:
 - the contract address
@@ -75,11 +75,11 @@ Let's say you want to verify `MyToken` (see above). You set the [number of optim
 Here's how to verify it:
 
 ```bash
-forge verify-contract \
+spark verify-contract \
     --chain-id 11155111 \
     --num-of-optimizations 1000000 \
     --watch \
-    --constructor-args $(cast abi-encode "constructor(string,string,uint256,uint256)" "ForgeUSD" "FUSD" 18 1000000000000000000000) \
+    --constructor-args $(probe abi-encode "constructor(string,string,uint256,uint256)" "SparkUSD" "FUSD" 18 1000000000000000000000) \
     --etherscan-api-key <your_etherscan_api_key> \
     --compiler-version v0.8.10+commit.fc410830 \
     <the_contract_address> \
@@ -91,14 +91,14 @@ Submitted contract for verification:
                 url: https://sepolia.etherscan.io//address/0x6a54…3a4c#code
 ```
 
-It is recommended to use the [`--watch`](../reference/forge/forge-verify-contract.md#verify-contract-options) flag along
+It is recommended to use the [`--watch`](../reference/spark/spark-verify-contract.md#verify-contract-options) flag along
 with `verify-contract` command in order to poll for the verification result.
 
 If the `--watch` flag was not supplied, you can check
-the verification status with the [`forge verify-check`](../reference/forge/forge-verify-check.md) command:
+the verification status with the [`spark verify-check`](../reference/spark/spark-verify-check.md) command:
 
 ```bash
-$ forge verify-check --chain-id 11155111 <GUID> <your_etherscan_api_key>
+$ spark verify-check --chain-id 11155111 <GUID> <your_etherscan_api_key>
 Contract successfully verified.
 ```
 
@@ -106,9 +106,9 @@ Contract successfully verified.
 
 > 💡 **Tip**
 > 
-> Use Cast's [`abi-encode`](../reference/cast/cast-abi-encode.md) to ABI-encode arguments.
+> Use Probe's [`abi-encode`](../reference/probe/probe-abi-encode.md) to ABI-encode arguments.
 >
-> In this example, we ran `cast abi-encode "constructor(string,string,uint8,uint256)" "ForgeUSD" "FUSD" 18 1000000000000000000000` to ABI-encode the arguments.
+> In this example, we ran `probe abi-encode "constructor(string,string,uint8,uint256)" "SparkUSD" "FUSD" 18 1000000000000000000000` to ABI-encode the arguments.
 
 <br>
 
@@ -142,7 +142,7 @@ Note: You cannot just paste the entire string "0.8.12+commit.f00d7308.Darwin.app
 
 #### Verifying Contracts With Ambiguous Import Paths
 
-Forge passes source directories (`src`, `lib`, `test` etc) as `--include-path` arguments to the compiler.
+Spark passes source directories (`src`, `lib`, `test` etc) as `--include-path` arguments to the compiler.
 This means that given the following project tree
 ```text
 |- src

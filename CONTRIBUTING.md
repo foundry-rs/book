@@ -4,15 +4,15 @@ We'd love your help! Thanks for caring about the book.
 
 ### The purpose of the book
 
-The book is intended to serve both as a guide to getting started with Forge and Cast, as well as a quick reference for both of these tools.
+The book is intended to serve both as a guide to getting started with Spark and Probe, as well as a quick reference for both of these tools.
 
 The book is split into some major chapters:
 
-- Getting Started, which is intended to walk people through installing Foundry
-- Forge Guide, which is intended to be a complete-ish tour of Forge
-- Cast Guide, which is similarly intended to be a tour of Cast
+- Getting Started, which is intended to walk people through installing Foxar
+- Spark Guide, which is intended to be a complete-ish tour of Spark
+- Probe Guide, which is similarly intended to be a tour of Probe
 - Additional Guides, which is a collection of other various topics such as CI, shell autocompletions
-- Reference, which is intended to contain complete reference sheets on Forge and Cast, as well as related tools
+- Reference, which is intended to contain complete reference sheets on Spark and Probe, as well as related tools
 
 Within each chapter there are multiple sections and subsections.
 
@@ -64,11 +64,11 @@ This is largely a stylistic choice.
 
 #### Always use "we" and not "I"
 
-Pretend like you are explaining Foundry to a friend!
+Pretend like you are explaining Foxar to a friend!
 
 #### Where possible, use auto-generated CLI output
 
-As a small change in the Foundry CLIs can have a large impact on the book, most of the CLI output is auto-generated.
+As a small change in the Foxar CLIs can have a large impact on the book, most of the CLI output is auto-generated.
 
 Each output file has three anchors you can use:
 

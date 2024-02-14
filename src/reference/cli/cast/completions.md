@@ -1,10 +1,10 @@
-# cast completions
+# probe completions
 
 Generate shell completions script
 
 ```bash
-$ cast completions --help
-Usage: cast completions <SHELL>
+$ probe completions --help
+Usage: probe completions <SHELL>
 
 Arguments:
   <SHELL>  [possible values: bash, elvish, fish, powershell, zsh]

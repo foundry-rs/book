@@ -1,12 +1,12 @@
-## cast proof
+## probe proof
 
 ### NAME
 
-cast-proof - Generate a storage proof for a given storage slot.
+probe-proof - Generate a storage proof for a given storage slot.
 
 ### SYNOPSIS
 
-``cast proof`` [*options*] *address* [*slots...*]
+``probe proof`` [*options*] *address* [*slots...*]
 
 ### DESCRIPTION
 
@@ -49,9 +49,9 @@ The displayed output is a JSON object with the following keys:
 
 1. Get the proof for storage slot 0 on the WETH contract:
     ```sh
-    cast proof 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2 0
+    probe proof 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2 0
     ```
 
 ### SEE ALSO
 
-[cast](./cast.md), [cast storage](./cast-storage.md)
+[probe](./probe.md), [probe storage](./probe-storage.md)

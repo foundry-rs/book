@@ -1,12 +1,12 @@
-## cast age
+## probe age
 
 ### NAME
 
-cast-age - Get the timestamp of a block.
+probe-age - Get the timestamp of a block.
 
 ### SYNOPSIS
 
-``cast age`` [*options*] [*block*]
+``probe age`` [*options*] [*block*]
 
 ### DESCRIPTION
 
@@ -26,14 +26,14 @@ The specified *block* can be a block number, or any of the tags: `earliest`, `fi
 
 1. Get the timestamp of the latest block:
     ```sh
-    cast age
+    probe age
     ```
 
 2. Get the timestamp of the genesis block:
     ```sh
-    cast age 1
+    probe age 1
     ```
 
 ### SEE ALSO
 
-[cast](./cast.md), [cast block](./cast-block.md), [cast basefee](./cast-basefee.md)
+[probe](./probe.md), [probe block](./probe-block.md), [probe basefee](./probe-basefee.md)

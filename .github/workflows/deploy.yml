@@ -28,6 +28,6 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: foundry-book
+          projectName: foxar-book
           directory: book
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}

@@ -1,10 +1,10 @@
-# cast wallet new-mnemonic
+# probe wallet new-mnemonic
 
 Generates a random BIP39 mnemonic phrase
 
 ```bash
-$ cast wallet new-mnemonic --help
-Usage: cast wallet new-mnemonic [OPTIONS]
+$ probe wallet new-mnemonic --help
+Usage: probe wallet new-mnemonic [OPTIONS]
 
 Options:
   -w, --words <WORDS>        Number of words for the mnemonic [default: 12]

@@ -1,6 +1,6 @@
 ## Gas Reports
 
-Forge can produce gas reports for your contracts. You can configure which contracts output gas reports via the `gas_reports` field in `foundry.toml`.
+Spark can produce gas reports for your contracts. You can configure which contracts output gas reports via the `gas_reports` field in `foxar.toml`.
 
 To produce reports for specific contracts:
 
@@ -14,9 +14,9 @@ To produce reports for all contracts:
 gas_reports = ["*"]
 ```
 
-To generate gas reports, run `forge test --gas-report`.
+To generate gas reports, run `spark test --gas-report`.
 
-You can also use it in combination with other subcommands, such as `forge test --match-test testBurn --gas-report`, to generate only a gas report relevant to this test.
+You can also use it in combination with other subcommands, such as `spark test --match-test testBurn --gas-report`, to generate only a gas report relevant to this test.
 
 Example output:
 
@@ -68,7 +68,7 @@ Example output:
 ╰───────────────────────┴─────────────────┴────────┴────────┴────────┴─────────╯
 ```
 
-You can also ignore contracts via the `gas_reports_ignore` field in `foundry.toml`:
+You can also ignore contracts via the `gas_reports_ignore` field in `foxar.toml`:
 
 ```toml
 gas_reports_ignore = ["Example"]

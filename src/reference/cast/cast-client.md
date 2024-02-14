@@ -1,12 +1,12 @@
-## cast client
+## probe client
 
 ### NAME
 
-cast-client - Get the current client version.
+probe-client - Get the current client version.
 
 ### SYNOPSIS
 
-``cast client`` [*options*]
+``probe client`` [*options*]
 
 ### DESCRIPTION
 
@@ -24,8 +24,8 @@ Get the current client version.
 
 1. Get the current client version:
     ```sh
-    cast client
+    probe client
     ```
 ### SEE ALSO
 
-[cast](./cast.md)
+[probe](./probe.md)

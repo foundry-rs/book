@@ -13,16 +13,16 @@ Cheatcodes are made available through use of the cheatcode address (`0x7109709EC
 > vm.assume(address_ != 0x7109709ECfa91a80626fF3989D68f67F5b1DD12D);
 > ```
 
-You can also access cheatcodes easily via `vm` available in Forge Standard Library's [`Test`](../reference/forge-std/#forge-stds-test) contract.
-### Forge Standard Library Cheatcodes
+You can also access cheatcodes easily via `vm` available in Spark Standard Library's [`Test`](../reference/spark-std/#spark-stds-test) contract.
+### Spark Standard Library Cheatcodes
 
-Forge Std implements wrappers around cheatcodes, which combine multiple standard cheatcodes to improve development experience. These are not technically cheatcodes, but rather compositions of Forge's cheatcodes.
+Spark Std implements wrappers around cheatcodes, which combine multiple standard cheatcodes to improve development experience. These are not technically cheatcodes, but rather compositions of Spark's cheatcodes.
 
-You can view the list of Forge Standard Library's cheatcode wrappers [in the references section](../reference/forge-std/std-cheats.md). You can reference the [Forge Std source code](https://github.com/foundry-rs/forge-std/blob/master/src/Test.sol) to learn more about how the wrappers work under the hood.
+You can view the list of Spark Standard Library's cheatcode wrappers [in the references section](../reference/spark-std/std-cheats.md). You can reference the [Spark Std source code](https://github.com/foxar-rs/spark-std/blob/master/src/Test.sol) to learn more about how the wrappers work under the hood.
 
 ### Cheatcode Types
 
-Below are some subsections for the different Forge cheatcodes.
+Below are some subsections for the different Spark cheatcodes.
 
 - [Environment](./environment.md): Cheatcodes that alter the state of the EVM.
 - [Assertions](./assertions.md): Cheatcodes that are powerful assertions
@@ -36,11 +36,11 @@ Below are some subsections for the different Forge cheatcodes.
 
 ### Add a new cheatcode
 
-If you need a new feature, consider [contributing to the Foundry's codebase](../contributing.md) to add the cheatcode.
+If you need a new feature, consider [contributing to the Foxar's codebase](../contributing.md) to add the cheatcode.
 
 ### Cheatcodes Interface
 
-This is a Solidity interface for all of the cheatcodes present in Forge.
+This is a Solidity interface for all of the cheatcodes present in Spark.
 
 ```solidity
 interface CheatCodes {
@@ -53,8 +53,8 @@ interface CheatCodes {
     // Possible caller modes for readCallers()
     enum CallerMode {
         None,
-        Broadcast,
-        RecurrentBroadcast,
+        Broadprobe,
+        RecurrentBroadprobe,
         Prank,
         RecurrentPrank
     }
@@ -345,18 +345,18 @@ interface CheatCodes {
     // Using the address that calls the test contract or the address provided
     // as the sender, has the next call (at this call depth only) create a
     // transaction that can later be signed and sent onchain
-    function broadcast() external;
-    function broadcast(address) external;
+    function broadprobe() external;
+    function broadprobe(address) external;
 
     // Using the address that calls the test contract or the address provided
     // as the sender, has all subsequent calls (at this call depth only) create
     // transactions that can later be signed and sent onchain
-    function startBroadcast() external;
-    function startBroadcast(address) external;
-    function startBroadcast(uint256 privateKey) external;
+    function startBroadprobe() external;
+    function startBroadprobe(address) external;
+    function startBroadprobe(uint256 privateKey) external;
 
     // Stops collecting onchain transactions
-    function stopBroadcast() external;
+    function stopBroadprobe() external;
 
     // Reads the entire content of file to string, (path) => (data)
     function readFile(string calldata) external returns (string memory);

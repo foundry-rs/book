@@ -1,12 +1,12 @@
-## cast wallet address
+## probe wallet address
 
 ### NAME
 
-cast-wallet-address - Convert a private key to an address.
+probe-wallet-address - Convert a private key to an address.
 
 ### SYNOPSIS
 
-``cast wallet address`` [*options*]
+``probe wallet address`` [*options*]
 
 ### DESCRIPTION
 
@@ -28,9 +28,9 @@ Convert a private key to an address.
 
 1. Get the address of the keypair in `keystore.json`:
     ```sh
-    cast wallet address --keystore keystore.json
+    probe wallet address --keystore keystore.json
     ```
 
 ### SEE ALSO
 
-[cast](./cast.md), [cast wallet](./cast-wallet.md)
+[probe](./probe.md), [probe wallet](./probe-wallet.md)

@@ -1,12 +1,12 @@
-## cast create2
+## probe create2
 
 ### NAME
 
-cast-create2 - Generate a deterministic contract address using CREATE2
+probe-create2 - Generate a deterministic contract address using CREATE2
 
 ### SYNOPSIS
 
-``cast create2`` [*options*]
+``probe create2`` [*options*]
 
 ### DESCRIPTION
 
@@ -47,18 +47,18 @@ Generate a deterministic contract address using CREATE2
 
 1. Generate a contract address that starts with `dead`:
     ```sh
-    cast create2 --starts-with dead
+    probe create2 --starts-with dead
     ```
 2. Generate a contract address that ends with `beef`:
     ```sh
-    cast create2 --ends-with beef
+    probe create2 --ends-with beef
     ```
 3. A more complex example:
     ```sh
-    cast create2 --starts-with dead --case-sensitive --deployer 0x0000000000FFe8B47B3e2130213B802212439497 --init-code-hash 0x0c591f26891d6443cf08c5be3584c1e6ae10a4c2f07c5c53218741e9755fb9cd
+    probe create2 --starts-with dead --case-sensitive --deployer 0x0000000000FFe8B47B3e2130213B802212439497 --init-code-hash 0x0c591f26891d6443cf08c5be3584c1e6ae10a4c2f07c5c53218741e9755fb9cd
     ```
 
 ### SEE ALSO
 
-[cast](./cast.md), [cast compute-address](./cast-compute-address.md)
+[probe](./probe.md), [probe compute-address](./probe-compute-address.md)
 

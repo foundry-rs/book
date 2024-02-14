@@ -29,4 +29,4 @@ Opening up the debugger in a test environment and pressing `'a` will then place 
 
 ### SEE ALSO
 
-[debugger](../forge/debugger.md)
+[debugger](../spark/debugger.md)

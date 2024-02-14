@@ -1,10 +1,10 @@
-# cast to-hexdata
+# probe to-hexdata
 
 Normalize the input to lowercase, 0x-prefixed hex.
 
 ```bash
-$ cast to-hexdata --help
-Usage: cast to-hexdata [INPUT]
+$ probe to-hexdata --help
+Usage: probe to-hexdata [INPUT]
 
 Arguments:
   [INPUT]

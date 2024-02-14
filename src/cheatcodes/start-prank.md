@@ -18,6 +18,6 @@ If the alternative signature of `startPrank` is used, then `tx.origin` is set as
 
 ### SEE ALSO
 
-Forge Standard Library
+Spark Standard Library
 
-[`startHoax`](../reference/forge-std/startHoax.md), [`changePrank`](../reference/forge-std/change-prank.md)
+[`startHoax`](../reference/spark-std/startHoax.md), [`changePrank`](../reference/spark-std/change-prank.md)

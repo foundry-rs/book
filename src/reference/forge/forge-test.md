@@ -1,12 +1,12 @@
-## forge test
+## spark test
 
 ### NAME
 
-forge-test - Run the project's tests.
+spark-test - Run the project's tests.
 
 ### SYNOPSIS
 
-``forge test`` [*options*]
+``spark test`` [*options*]
 
 ### DESCRIPTION
 
@@ -20,7 +20,7 @@ When the tests are running in a forked environment, you can access all the state
 if you had deployed the contracts. [Cheatcodes][cheatcodes] are still available.
 
 You can also specify a block number to fork from by passing `--fork-block-number <BLOCK>`. When forking from a
-specific block, the chain data is cached to `~/.foundry/cache`. If you do not want to cache the chain data,
+specific block, the chain data is cached to `~/.foxar/cache`. If you do not want to cache the chain data,
 pass `--no-storage-caching`.
 
 Traces that cannot be decoded by local contracts when running in a forked environment (e.g. calls to
@@ -75,36 +75,36 @@ You can pass `--json` to make it easier for outside extensions to parse structur
 
 1. Run the tests:
     ```sh
-    forge test
+    spark test
     ```
 
 2. Open a test in the debugger:
     ```sh
-    forge test --debug testSomething
+    spark test --debug testSomething
     ```
 
 3. Generate a gas report:
     ```sh
-    forge test --gas-report
+    spark test --gas-report
     ```
 
 4. Only run tests in `test/Contract.t.sol` in the `BigTest` contract that start with `testFail`:
     ```sh
-    forge test --match-path test/Contract.t.sol --match-contract BigTest \
+    spark test --match-path test/Contract.t.sol --match-contract BigTest \
       --match-test "testFail*"
     ```
 
 5. List tests in desired format
     ```sh
-    forge test --list
-    forge test --list --json
-    forge test --list --json --match-test "testFail*" | tail -n 1 | json_pp
+    spark test --list
+    spark test --list --json
+    spark test --list --json --match-test "testFail*" | tail -n 1 | json_pp
     ```
 
 ### SEE ALSO
 
-[forge](./forge.md), [forge build](./forge-build.md), [forge snapshot](./forge-snapshot.md)
+[spark](./spark.md), [spark build](./spark-build.md), [spark snapshot](./spark-snapshot.md)
 
-[debugger]: ../../forge/debugger.md
+[debugger]: ../../spark/debugger.md
 [cheatcodes]: ../../cheatcodes/
-[gas-reports]: ../../forge/gas-reports.md
+[gas-reports]: ../../spark/gas-reports.md

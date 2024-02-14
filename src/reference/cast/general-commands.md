@@ -1,5 +1,5 @@
 ## General Commands
 
-- [cast](./cast.md)
-- [cast help](./cast-help.md)
-- [cast completions](./cast-completions.md)
+- [probe](./probe.md)
+- [probe help](./probe-help.md)
+- [probe completions](./probe-completions.md)

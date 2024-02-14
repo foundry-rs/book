@@ -1,12 +1,12 @@
-## forge verify-check
+## spark verify-check
 
 ### NAME
 
-forge-verify-check - Check verification status on a chosen verification provider.
+spark-verify-check - Check verification status on a chosen verification provider.
 
 ### SYNOPSIS
 
-``forge verify-check`` [*options*] *id* [*etherscan_key*]
+``spark verify-check`` [*options*] *id* [*etherscan_key*]
 
 The *id* is the verification identifier. For Etherscan & Bloxroute - it is the submission GUID, for Sourcify - it's the contract address.
 
@@ -32,4 +32,4 @@ For Etherscan, you must provide an Etherscan API key, either by passing it as an
 
 ### SEE ALSO
 
-[forge](./forge.md), [forge create](./forge-create.md), [forge verify-contract](./forge-verify-contract.md)
+[spark](./spark.md), [spark create](./spark-create.md), [spark verify-contract](./spark-verify-contract.md)

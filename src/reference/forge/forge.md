@@ -1,14 +1,14 @@
-## forge
+## spark
 
 ### NAME
 
-forge - Build, test, fuzz, debug and deploy Solidity contracts.
+spark - Build, test, fuzz, debug and deploy Solidity contracts.
 
 ### SYNOPSIS
 
-`forge` [*options*] *command* [*args*]  
-`forge` [*options*] `--version`  
-`forge` [*options*] `--help`
+`spark` [*options*] *command* [*args*]  
+`spark` [*options*] `--version`  
+`spark` [*options*] `--help`
 
 ### DESCRIPTION
 
@@ -18,98 +18,98 @@ This program is a set of tools to build, test, fuzz, debug and deploy Solidity s
 
 #### General Commands
 
-[forge help](./forge-help.md)  
-&nbsp;&nbsp;&nbsp;&nbsp;Display help information about Forge.
+[spark help](./spark-help.md)  
+&nbsp;&nbsp;&nbsp;&nbsp;Display help information about Spark.
 
-[forge completions](./forge-completions.md)  
-&nbsp;&nbsp;&nbsp;&nbsp;Generate shell autocompletions for Forge.
+[spark completions](./spark-completions.md)  
+&nbsp;&nbsp;&nbsp;&nbsp;Generate shell autocompletions for Spark.
 
 #### Project Commands
 
-[forge init](./forge-init.md)  
-&nbsp;&nbsp;&nbsp;&nbsp;Create a new Forge project.
+[spark init](./spark-init.md)  
+&nbsp;&nbsp;&nbsp;&nbsp;Create a new Spark project.
 
-[forge install](./forge-install.md)  
+[spark install](./spark-install.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Install one or multiple dependencies.
 
-[forge update](./forge-update.md)  
+[spark update](./spark-update.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Update one or multiple dependencies.
 
-[forge remove](./forge-remove.md)  
+[spark remove](./spark-remove.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Remove one or multiple dependencies.
 
-[forge config](./forge-config.md)  
+[spark config](./spark-config.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Display the current config.
 
-[forge remappings](./forge-remappings.md)  
+[spark remappings](./spark-remappings.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Get the automatically inferred remappings for this project.
 
-[forge tree](./forge-tree.md)  
+[spark tree](./spark-tree.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Display a tree visualization of the project's dependency graph.
 
-[forge geiger](./forge-geiger.md)
-&nbsp;&nbsp;&nbsp;&nbsp;Detects usage of unsafe cheat codes in a foundry project and its dependencies.
+[spark geiger](./spark-geiger.md)
+&nbsp;&nbsp;&nbsp;&nbsp;Detects usage of unsafe cheat codes in a foxar project and its dependencies.
 
 #### Build Commands
 
-[forge build](./forge-build.md)  
+[spark build](./spark-build.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Build the project's smart contracts.
 
-[forge clean](./forge-clean.md)  
+[spark clean](./spark-clean.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Remove the build artifacts and cache directories.
 
-[forge inspect](./forge-inspect.md)  
+[spark inspect](./spark-inspect.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Get specialized information about a smart contract.
 
 #### Test Commands
 
-[forge test](./forge-test.md)  
+[spark test](./spark-test.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Run the project's tests.
 
-[forge snapshot](./forge-snapshot.md)  
+[spark snapshot](./spark-snapshot.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Create a snapshot of each test's gas usage.
 
-[forge coverage](./forge-coverage.md)  
+[spark coverage](./spark-coverage.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Generate coverage reports.
 
 #### Deploy Commands
 
-[forge create](./forge-create.md)  
+[spark create](./spark-create.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Deploy a smart contract.
 
-[forge verify-contract](./forge-verify-contract.md)  
+[spark verify-contract](./spark-verify-contract.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Verify smart contracts on Etherscan.
 
-[forge verify-check](./forge-verify-check.md)  
+[spark verify-check](./spark-verify-check.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Check verification status on Etherscan.
 
-[forge flatten](./forge-flatten.md)  
+[spark flatten](./spark-flatten.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Flatten a source file and all of its imports into one file.
 
 #### Utility Commands
 
-[forge debug](./forge-debug.md)  
+[spark debug](./spark-debug.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Debug a single smart contract as a script.
 
-[forge bind](./forge-bind.md)  
+[spark bind](./spark-bind.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Generate Rust bindings for smart contracts.
 
-[forge cache](./forge-cache.md)  
-&nbsp;&nbsp;&nbsp;&nbsp;Manage the Foundry cache.
+[spark cache](./spark-cache.md)  
+&nbsp;&nbsp;&nbsp;&nbsp;Manage the Foxar cache.
 
-[forge cache clean](./forge-cache-clean.md)  
-&nbsp;&nbsp;&nbsp;&nbsp;Cleans cached data from ``~/.foundry``.
+[spark cache clean](./spark-cache-clean.md)  
+&nbsp;&nbsp;&nbsp;&nbsp;Cleans cached data from ``~/.foxar``.
 
-[forge cache ls](./forge-cache-ls.md)  
-&nbsp;&nbsp;&nbsp;&nbsp;Shows cached data from ``~/.foundry``.
+[spark cache ls](./spark-cache-ls.md)  
+&nbsp;&nbsp;&nbsp;&nbsp;Shows cached data from ``~/.foxar``.
 
-[forge script](./forge-script.md)  
+[spark script](./spark-script.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Run a smart contract as a script, building transactions that can be sent onchain.
 
-[forge upload-selectors](./forge-upload-selectors.md)  
+[spark upload-selectors](./spark-upload-selectors.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Uploads abi of given contract to https://sig.eth.samczsun.com function selector database.
 
-[forge doc](./forge-doc.md)  
+[spark doc](./spark-doc.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Generate documentation for Solidity source files.
 
 ### OPTIONS
@@ -124,38 +124,38 @@ This program is a set of tools to build, test, fuzz, debug and deploy Solidity s
 
 ### FILES
 
-`~/.foundry/`  
-&nbsp;&nbsp;&nbsp;&nbsp;Default location for Foundry's "home" directory where it stores various files.
+`~/.foxar/`  
+&nbsp;&nbsp;&nbsp;&nbsp;Default location for Foxar's "home" directory where it stores various files.
 
-`~/.foundry/bin/`  
-&nbsp;&nbsp;&nbsp;&nbsp;Binaries installed using `foundryup` will be located here.
+`~/.foxar/bin/`  
+&nbsp;&nbsp;&nbsp;&nbsp;Binaries installed using `foxarup` will be located here.
 
-`~/.foundry/cache/`  
-&nbsp;&nbsp;&nbsp;&nbsp;Forge's cache directory, where it stores cached block data and more.
+`~/.foxar/cache/`  
+&nbsp;&nbsp;&nbsp;&nbsp;Spark's cache directory, where it stores cached block data and more.
 
-`~/.foundry/foundry.toml`  
-&nbsp;&nbsp;&nbsp;&nbsp;The global [Foundry config](../config/overview.md).
+`~/.foxar/foxar.toml`  
+&nbsp;&nbsp;&nbsp;&nbsp;The global [Foxar config](../config/overview.md).
 
 `~/.svm`  
-&nbsp;&nbsp;&nbsp;&nbsp;The location of the Forge-managed solc binaries.
+&nbsp;&nbsp;&nbsp;&nbsp;The location of the Spark-managed solc binaries.
 
 ### EXAMPLES
 
-1. Create a new Forge project:
+1. Create a new Spark project:
     ```sh
-    forge init hello_foundry
+    spark init hello_foxar
     ```
 
 2. Build a project:
     ```sh
-    forge build
+    spark build
     ```
 
 3. Run a project's tests:
     ```sh
-    forge test
+    spark test
     ```
 
 ### BUGS
 
-See <https://github.com/foundry-rs/foundry/issues> for issues.
+See <https://github.com/foxar-rs/foxar/issues> for issues.

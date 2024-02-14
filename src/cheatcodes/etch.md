@@ -21,7 +21,7 @@ log_bytes(address(targetAddr).code); // 0x6080604052348015610010...
 
 ### SEE ALSO
 
-Forge Standard Library
+Spark Standard Library
 
-- [`deployCode`](../reference/forge-std/deployCode.md)
-- [`deployCodeTo`](../reference/forge-std/deployCodeTo.md) 
+- [`deployCode`](../reference/spark-std/deployCode.md)
+- [`deployCodeTo`](../reference/spark-std/deployCodeTo.md) 
