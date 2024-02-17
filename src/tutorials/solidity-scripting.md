@@ -32,7 +32,7 @@ Since the NFT contract from the solmate tutorial inherits both `solmate` and `Op
 cd solidity-scripting
 
 # Install Solmate and OpenZeppelin contracts as dependencies
-forge install transmissions11/solmate Openzeppelin/openzeppelin-contracts
+forge install transmissions11/solmate Openzeppelin/openzeppelin-contracts@v5.0.1
 ```
 
 Next, we have to delete the `Counter.sol` file in the `src` folder and create another file called `NFT.sol`. You can do this by running:
@@ -70,7 +70,7 @@ contract NFT is ERC721, Ownable {
         string memory _name,
         string memory _symbol,
         string memory _baseURI
-    ) ERC721(_name, _symbol) {
+    ) ERC721(_name, _symbol) Ownable(msg.sender) {
         baseURI = _baseURI;
     }
 

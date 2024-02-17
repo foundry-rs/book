@@ -21,22 +21,27 @@ Let's examine a basic test:
 Forge uses the following keywords in tests:
 
 - `setUp`: An optional function invoked before each test case is run.
-    ```solidity
+
+```solidity
 {{#include ../../projects/writing_tests/test/Basic.t.sol:setUp}}
-    ```
+```
+
 - `test`: Functions prefixed with `test` are run as a test case.
-    ```solidity
+```solidity
 {{#include ../../projects/writing_tests/test/Basic.t.sol:testNumberIs42}}
-    ```
+```
 - `testFail`: The inverse of the `test` prefix - if the function does not revert, the test fails.
-    ```solidity
+```solidity
 {{#include ../../projects/writing_tests/test/Basic.t.sol:testFailSubtract43}}
-    ```
-    A good practice is to use the pattern `test_Revert[If|When]_Condition` in combination with the [`expectRevert`](../cheatcodes/expect-revert.md) cheatcode (cheatcodes are explained in greater detail in the following [section](./cheatcodes.md)). Also, other testing practices can be found in the [Tutorials section](../tutorials/best-practices.md). 
-    Now, instead of using `testFail`, you know exactly what reverted and with which error:
-    ```solidity
+```
+
+A good practice is to use the pattern `test_Revert[If|When]_Condition` in combination with the [`expectRevert`](../cheatcodes/expect-revert.md) cheatcode (cheatcodes are explained in greater detail in the following [section](./cheatcodes.md)). Also, other testing practices can be found in the [Tutorials section](../tutorials/best-practices.md). 
+Now, instead of using `testFail`, you know exactly what reverted and with which error:
+
+```solidity
 {{#include ../../projects/writing_tests/test/Basic2.t.sol:testCannotSubtract43}}
-    ```
+```
+
 <br>
 
 Tests are deployed to `0xb4c79daB8f259C7Aee6E5b2Aa729821864227e84`. If you deploy a contract within your test, then
