@@ -1,16 +1,16 @@
 ## `expectCall`
 
 ```solidity
-function expectCall(address where, bytes calldata data) external;
+function expectCall(address callee, bytes calldata data) external;
 ```
 
 ```solidity
-function expectCall(address where, bytes calldata data, uint64 count) external;
+function expectCall(address callee, bytes calldata data, uint64 count) external;
 ```
 
 ```solidity
 function expectCall(
-    address where,
+    address callee,
     uint256 value,
     bytes calldata data
 ) external;
@@ -18,7 +18,7 @@ function expectCall(
 
 ```solidity
 function expectCall(
-    address where,
+    address callee,
     uint256 value,
     bytes calldata data,
     uint64 count
@@ -27,14 +27,14 @@ function expectCall(
 
 ### Description
 
-Expects that a call to a specified address `where`, where the call data either strictly or loosely matches `data`. The cheatcode can be called in two ways:
+Expects that a call to a specified address `callee`, where the call data either strictly or loosely matches `data`. The cheatcode can be called in two ways:
 
 - If no `count` parameter is specified, the call will be expected to be made at least the amount of times the cheatcode was called. For the same calldata, you cannot call the cheatcode with no `count` and then pass in a `count` parameter.
 - If `count` is specified, the call will be expected to be made strictly `count` times. For the same calldata, the `count` value cannot be overwritten with another cheatcode call, nor it can be increment by calling the cheatcode without a `count` parameter.
 
 `count` can also be set to 0 to assert that a call is not made.
 
-When a call is made to `where` the call data is first checked to see if it matches in its entirety with `data`. If not, the call data is checked to see if there is a partial match, with the match starting at the first byte of the call data.
+When a call is made to `callee` the call data is first checked to see if it matches in its entirety with `data`. If not, the call data is checked to see if there is a partial match, with the match starting at the first byte of the call data.
 
 **Using the second signature** we can also check if the call was made with the expected `msg.value`.
 
