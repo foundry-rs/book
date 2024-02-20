@@ -319,11 +319,11 @@ interface CheatCodes {
 
     // Expect a call to an address with the specified calldata.
     // Calldata can either be strict or a partial match
-    function expectCall(address, bytes calldata) external;
+    function expectCall(address callee, bytes calldata data) external;
     // Expect a call to an address with the specified
     // calldata and message value.
     // Calldata can either be strict or a partial match
-    function expectCall(address, uint256, bytes calldata) external;
+    function expectCall(address callee, uint256, bytes calldata data) external;
 
     // Gets the _creation_ bytecode from an artifact file. Takes in the relative path to the json file
     function getCode(string calldata) external returns (bytes memory);
