@@ -33,7 +33,7 @@ $ cast call $DAI \
 0
 ```
 
-Similarly, we can also check our lucky user's balance using `cast call`:
+Similarly, we can also check our unlucky user's balance using `cast call`:
 
 ```sh
 $ cast call $DAI \
@@ -42,10 +42,10 @@ $ cast call $DAI \
 21840114973524208109322438
 ```
 
-Let's transfer some tokens from the lucky user to Alice using [`cast send`][cast-send]:
+Let's transfer some tokens from the unlucky user to Alice using [`cast send`][cast-send]:
 
 ```sh
-# This calls Anvil and lets us impersonate our lucky user
+# This calls Anvil and lets us impersonate our unlucky user
 $ cast rpc anvil_impersonateAccount $UNLUCKY_USER
 $ cast send $DAI \
 --from $UNLUCKY_USER \
