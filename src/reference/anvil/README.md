@@ -456,3 +456,45 @@ Supported shells are:
 ### Usage within Docker
 
 In order to run anvil as a service in Github Actions with the [Docker container](../../tutorials/foundry-docker.md), where passing arguments to the entrypoint command is not possible, use the `ANVIL_IP_ADDR` environment variable to set the host's IP. `ANVIL_IP_ADDR=0.0.0.0` is equivalent to providing the `--host <ip>` option.
+
+#### Using `genesis.json` 
+
+The `genesis.json` file in Anvil serves a similar purpose as in Geth, defining the network's initial state, consensus rules, and preallocated accounts to ensure all nodes start consistently and maintain network integrity. All values, including balance, gas limit and such, are to be defined as hexadecimals.
+
+- `chainId`: Identifier for the blockchain, unique to each network.
+- `nonce`: A counter used in hashing algorithms to ensure data integrity.
+- `timestamp`: The creation time of the genesis block in Unix time.
+- `extraData`: Additional data that can be included by the creator of the genesis block.
+- `gasLimit`: The maximum amount of gas that can be used in the block.
+- `difficulty`: A measure of how difficult it is to mine a new block.
+- `mixHash`: A unique identifier proving a sufficient amount of computation for the block.
+- `coinbase`: The Ethereum address of the miner who mined this block.
+- `stateRoot`: The root of the state trie, reflecting the final state after all transactions.
+- `alloc`: Allows pre-allocating Ether to a set of addresses with predefined balances.
+- `number`: The block number, with the genesis block being 0.
+- `gasUsed`: The total gas used in the block.
+- `parentHash`: The hash of the parent block, all zeros for the genesis block since there is no parent.
+
+A sample for simulating mainnet via genesis can be found [here](https://github.com/paradigmxyz/reth/blob/8f3e4a15738d8174d41f4aede5570ecead141a77/crates/primitives/res/genesis/mainnet.json).
+
+```json
+{
+  "chainId": "0x2323",
+  "nonce": "0x42",
+  "timestamp": "0x0",
+  "extraData": "0x11bbe8db4e347b4e8c937c1c8370e4b5ed33adb3db69cbdb7a38e1e50b1b82fa",
+  "gasLimit": "0x1388",
+  "difficulty": "0x400000000",
+  "mixHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+  "coinbase": "0x0000000000000000000000000000000000000000",
+  "stateRoot": "0xd7f8974fb5ac78d9ac099b9ad5018bedc2ce0a72dad1827a1709da30580f0544",
+  "alloc": {
+    "000d836201318ec6899a67540690382780743280": {
+      "balance": "0xad78ebc5ac6200000"
+    }
+  },
+  "number": "0x0",
+  "gasUsed": "0x0",
+  "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000"
+}
+```
