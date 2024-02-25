@@ -40,6 +40,14 @@ The argument *who* can be an ENS name or an address.
     ```sh
     cast balance beer.eth
     ```
+2. Get the ERC20 balance of any address using RPC URL
+    ```sh
+    # To load the variables in the .env file
+    source .env
+
+    # To get the USDT balance of Binance
+    cast balance --erc20 0xdAC17F958D2ee523a2206206994597C13D831ec7 0xF977814e90dA44bFA03b6295A0616a897441aceC --rpc-url $MAINNET_RPC_URL
+    ```
 
 ### SEE ALSO
 
