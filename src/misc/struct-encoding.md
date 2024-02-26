@@ -130,3 +130,13 @@ The ABI of the `f` function in this contract is:
 }
 ```
 which reads: The function `f` takes 1 input of type tuple with three components: a string, a uint256, and another tuple representing the nested struct with components addr of type address and amount of type uint256.
+
+To encode `MyStruct` to pass it as a parameter to the function `f`:
+```bash
+cast abi-encode "f((string,uint256,(address,uint256)))" "(example,1,(0x...,1))"
+```
+
+To deploy a contract accepting `MyStruct` as an argument:
+```bash
+forge create src/Test.sol:Test --constructor-args "(example,1,(0x...,1))"
+```
