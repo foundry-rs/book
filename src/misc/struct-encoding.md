@@ -62,7 +62,7 @@ The ABI of the `f` function in this contract is:
 
 which reads: The function `f` takes 1 input of type `tuple` with two components of type `address` and `uint256`.
 
-**Complex/Nested Encoding:**
+**Nested Struct Encoding:**
 Here's a more complex example with nested structs:
 
 ```solidity
