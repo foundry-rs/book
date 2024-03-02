@@ -11,9 +11,7 @@ The `single_line_statement_blocks` configuration option in Foundry controls whet
 It has three possible values:
 
 -   `"single"` - Statement blocks will be formatted to a single line if possible.
-    
 -   `"multi"` - Statement blocks will always be formatted to multiple lines.
-    
 -   `"preserve"` - Keep the existing single/multi line formatting of statement blocks.
     
 
@@ -47,9 +45,7 @@ The `multiline_func_header` configuration option in Foundry controls how functio
 Style of multiline function header in case it doesn't fit in one line. Valid possible values:
 
 -   `"attributes_first"` - (default)  Write function attributes multiline first
-
 -   `"params_first"` - Break the function header into multiple lines, with each parameter on its own line. The function name stays on the first line.
-    
 -   `"all"` - If function parameters or attributes are multiline, multiline everything
     
 
@@ -92,11 +88,8 @@ The `sort_imports` configuration option in Foundry controls whether import state
 From the code snippets provided:
 
 -   In `fmt.rs`, `sort_imports` is a configuration option that can be set to `true` or `false`.
-    
 -   In `formatter.rs`, the `sort_imports()` method is called to sort import statements alphabetically if `sort_imports` is enabled.
-    
 -   It finds import groups separated by blank lines in the source code.
-    
 -   Then sorts the import statements within each group alphabetically.
     
 
