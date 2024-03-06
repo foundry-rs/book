@@ -29,6 +29,9 @@ We use the terms `string`, `integer`, `float`, `boolean`, `datetime`, `array`, `
 
 We use the terms `number`, `string`, `object`, `array`, `boolean`, `null` as they are defined in the [JSON spec](https://www.w3schools.com/js/js_json_datatypes.asp).
 
+Lossless conversion is not guaranteed due to type conversions and edge cases are to be expected.
+We rely on the default conversion of [Serde](https://docs.rs/serde/latest/serde/) for the translation between JSON and TOML.
+
 **TOML Encoding Rules**
 
 - `float` is limited to 32 bits (i.e. `+1.5`). It is not recommended to use floating point values
