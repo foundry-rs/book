@@ -33,7 +33,7 @@ Lossless conversion is not guaranteed due to type conversions and edge cases are
 We rely on the default conversion of [Serde](https://docs.rs/serde/latest/serde/) for the translation between JSON and TOML.
 
 Known edge cases are:
-- The handling of JSON's `null` into TOML. The default behavior is to ignore the key.
+- The handling of JSON's `null` into TOML. The default behavior is to throw as `null` is an invalid type.
 
 **TOML Encoding Rules**
 
