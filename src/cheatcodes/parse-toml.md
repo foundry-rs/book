@@ -32,6 +32,9 @@ We use the terms `number`, `string`, `object`, `array`, `boolean`, `null` as the
 Lossless conversion is not guaranteed due to type conversions and edge cases are to be expected.
 We rely on the default conversion of [Serde](https://docs.rs/serde/latest/serde/) for the translation between JSON and TOML.
 
+Known edge cases are:
+- The handling of JSON's `null` into TOML. The default behavior is to ignore the key.
+
 **TOML Encoding Rules**
 
 - `float` is limited to 32 bits (i.e. `+1.5`). It is not recommended to use floating point values
