@@ -25,29 +25,24 @@ To read more about the syntax, you can visit the [README](https://crates.io/crat
 
 ### Encoding Rules
 
-We use the terms `string`, `integer`, `float`, `boolean`, `datetime`, `array`, `inline-table` as they are defined in the [TOML spec](https://www.w3schools.io/file/toml-datatypes/).
+We use the terms `string`, `integer`, `float`, `boolean`, `array`, `datetime`, `inline-table` as they are defined in the [TOML spec](https://www.w3schools.io/file/toml-datatypes/).
 
 We use the terms `number`, `string`, `object`, `array`, `boolean`, `null` as they are defined in the [JSON spec](https://www.w3schools.com/js/js_json_datatypes.asp).
 
-Lossless conversion is not guaranteed due to type conversions and edge cases are to be expected.
-We rely on the default conversion of [Serde](https://docs.rs/serde/latest/serde/) for the translation between JSON and TOML.
-
-Known edge cases are:
-- The handling of JSON's `null` into TOML. The default behavior is to throw as `null` is an invalid type.
-
 **TOML Encoding Rules**
 
-- `float` is limited to 32 bits (i.e. `+1.5`). It is not recommended to use floating point values
-- `integer` is limited to 64 bits (i.e. `9223372036854775807`). It is therefore recommended to use strings to encode large values
+- `float` is limited to 32 bits (i.e. `+1.5`). It is recommended to use strings to prevent precision loss
+- `integer` is limited to 64 bits (i.e. `9223372036854775807`). It is recommended to use strings to encode large values
 - Array values cannot have mixed types (i.e. `[256, "b"]`, only `[256, 512]` or `["a", "b"]`)
 - `datetime` is encoded as a `string` upon conversion
 - `float` is encoded as a `number` upon conversion
 - `integer` is encoded as a `number` upon conversion
 - `inline-table` (or `table`) is encoded as `object` upon conversion
+- `null` is encoded as a `"null"` string
 
 **JSON Encoding Rules**
 
-- `null` is encoded as `bytes32(0)`
+- `null` is encoded as `bytes32(0)` or `""`
 - Numbers >= 0 are encoded as `uint256`
 - Negative numbers are encoded as `int256`
 - Floating point numbers with decimal digits are not allowed
