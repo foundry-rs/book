@@ -65,8 +65,8 @@ As described above, `parseToml` needs to deduce the type of TOML value and that 
 For example `vm.parseTomlUint(toml, key)` will coerce the value to a `uint256`. That means that it can parse all the following values and return them as a `uint256`. That includes a number as type `number`, a stringified number as a `string` and of course it's hex representation.
 
 ```toml
-hexUint = "0x12C980",
-stringUint = "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+hexUint = "0x12C980"
+stringUint = "115792089237316195423570985008687907853269984665640564039457584007913129639935"
 numberUint = 9223372036854775807 # TOML is limited to 64-bit integers
 ```
 
