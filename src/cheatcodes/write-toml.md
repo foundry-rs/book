@@ -110,7 +110,7 @@ vm.writeToml(jsonObj3, "./output/example2.toml", ".obj1.obj2");
 // Note that the JSON object is just the value 13371337 in this case.
 vm.writeToml("13371337", "./output/example2.toml", "..veryDeep");
 
-// Here's the final example2.json:
+// Here's the final example2.toml:
 //
 // boolean = true
 // number = 342
