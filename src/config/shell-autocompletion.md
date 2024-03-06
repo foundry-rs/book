@@ -19,7 +19,7 @@ cast completions zsh | sudo tee /usr/local/share/zsh/site-functions/_cast
 anvil completions zsh | sudo tee /usr/local/share/zsh/site-functions/_anvil
 ```
 
-For ARM-based systems:
+For macOS:
 
 ```sh
 forge completions zsh > /opt/homebrew/completions/zsh/_forge
