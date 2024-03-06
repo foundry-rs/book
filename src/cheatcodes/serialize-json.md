@@ -82,7 +82,8 @@ The keys do not need to be of some specific form. They are of type `string` to e
 
 The cheatcodes return the JSON object that is being serialized **up to that point**. That way the user can serialize inner JSON objects and then serialize them in bigger JSON objects, enabling the user to create arbitrary JSON objects.
 
-Finally, the user writes the JSON object to a file by using [writeJson](./write-json.md).
+Finally, the user writes the JSON object to a JSON file by using [writeJson](./write-json.md).
+Alternatively, the user can write the JSON object to TOML file by using [writeToml](./write-toml.md).
 
 **Remember:** The file path needs to be in the allowed paths. Read more in [File cheatcodes](./fs.md).
 
