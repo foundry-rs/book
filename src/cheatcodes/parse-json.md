@@ -25,12 +25,15 @@ To read more about the syntax, you can visit the [README](https://crates.io/crat
 
 ### JSON Encoding Rules
 
-We use the terms `number`, `string`, `object`, `array`, `boolean` as they are defined in the [JSON spec](https://www.w3schools.com/js/js_json_datatypes.asp).
+We use the terms `number`, `string`, `object`, `array`, `boolean`, `null` as they are defined in the [JSON spec](https://www.w3schools.com/js/js_json_datatypes.asp).
 
 **Encoding Rules**
 
+- `null` is encoded as `bytes32(0)`
 - Numbers >= 0 are encoded as `uint256`
 - Negative numbers are encoded as `int256`
+- Floating point numbers with decimal digitals are not allowed.
+- Floating point numbers using the scientific notation can be `uint256` or `int256` depending on the value.
 - A string that can be decoded into a type of `H160` and starts with `0x` is encoded as an `address`. In other words, if it can be decoded into an address, it's probably an address
 - A string that starts with `0x` is encoded as `bytes32` if it has a length of `66` or else to `bytes`
 - A string that is neither an `address`, a `bytes32` or `bytes`, is encoded as a `string`

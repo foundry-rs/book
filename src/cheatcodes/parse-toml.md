@@ -23,14 +23,29 @@ The cheatcode accepts either a `key` to search for a specific value in the TOML,
 
 To read more about the syntax, you can visit the [README](https://crates.io/crates/jsonpath-rust) of the rust library that we use under the hood to implement the feature. That way you can be certain that you are using the correct dialect of jsonPath.
 
-### JSON Encoding Rules
+### Encoding Rules
 
-We use the terms `number`, `string`, `object`, `array`, `boolean` as they are defined in the [JSON spec](https://www.w3schools.com/js/js_json_datatypes.asp).
+We use the terms `string`, `integer`, `float`, `boolean`, `datetime`, `array`, `inline-table` as they are defined in the [TOML spec](https://www.w3schools.io/file/toml-datatypes/).
 
-**Encoding Rules**
+We use the terms `number`, `string`, `object`, `array`, `boolean`, `null` as they are defined in the [JSON spec](https://www.w3schools.com/js/js_json_datatypes.asp).
 
+**TOML Encoding Rules**
+
+- `float` is limited to 32 bits (i.e. `+1.5`). It is not recommended to use floating point values
+- `integer` is limited to 64 bits (i.e. `9223372036854775807`). It is therefore recommended to use strings to encode large values
+- Array values cannot have mixed types (i.e. `[256, "b"]`, only `[256, 512]` or `["a", "b"]`)
+- `datetime` is encoded as a `string` upon conversion
+- `float` is encoded as a `number` upon conversion
+- `integer` is encoded as a `number` upon conversion
+- `inline-table` (or `table`) is encoded as `object` upon conversion
+
+**JSON Encoding Rules**
+
+- `null` is encoded as `bytes32(0)`
 - Numbers >= 0 are encoded as `uint256`
 - Negative numbers are encoded as `int256`
+- Floating point numbers with decimal digits are not allowed
+- Floating point numbers using the scientific notation can be `uint256` or `int256` depending on the value
 - A string that can be decoded into a type of `H160` and starts with `0x` is encoded as an `address`. In other words, if it can be decoded into an address, it's probably an address
 - A string that starts with `0x` is encoded as `bytes32` if it has a length of `66` or else to `bytes`
 - A string that is neither an `address`, a `bytes32` or `bytes`, is encoded as a `string`
