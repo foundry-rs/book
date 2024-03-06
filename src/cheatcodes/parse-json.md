@@ -5,7 +5,7 @@
 ```solidity
 // Return the value(s) that correspond to 'key'
 vm.parseJson(string memory json, string memory key)
-// Return the entire json file
+// Return the entire JSON file
 vm.parseJson(string memory json);
 ```
 
@@ -19,7 +19,7 @@ The cheatcode accepts either a `key` to search for a specific value in the JSON,
 
 ### JSONpath Key
 
-`parseJson` uses a syntax called JSONpath to form arbitrary keys for arbitrary json files. The same syntax (or rather a dialect) is used by the tool [`jq`](https://stedolan.github.io/jq/).
+`parseJson` uses a syntax called JSONpath to form arbitrary keys for arbitrary JSON files. The same syntax (or rather a dialect) is used by the tool [`jq`](https://stedolan.github.io/jq/).
 
 To read more about the syntax, you can visit the [README](https://crates.io/crates/jsonpath-rust) of the rust library that we use under the hood to implement the feature. That way you can be certain that you are using the correct dialect of jsonPath.
 
@@ -39,7 +39,7 @@ We use the terms `number`, `string`, `object`, `array`, `boolean` as they are de
 
 ### Type Coercion
 
-As described above, parseJSON needs to deduce the type of JSON value and that has some inherent limitations. For that reason, there is a sub-family of `parseJson*` cheatcodes that coerce the type of the returned value.
+As described above, `parseJson` needs to deduce the type of JSON value and that has some inherent limitations. For that reason, there is a sub-family of `parseJson*` cheatcodes that coerce the type of the returned value.
 
 For example `vm.parseJsonUint(json, key)` will coerce the value to a `uint256`. That means that it can parse all the following values and return them as a `uint256`. That includes a number as type `number`, a stringified number as a `string` and of course it's hex representation.
 
@@ -59,7 +59,7 @@ JSON objects are encoded as tuples, and can be decoded via tuples or structs. Th
 
 For example:
 
-The following JSON
+The following JSON:
 
 ```json
 {
