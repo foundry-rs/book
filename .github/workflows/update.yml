@@ -1,0 +1,59 @@
+name: update
+on:
+  schedule:
+    # Run weekly
+    - cron: "0 0 * * SUN"
+  workflow_dispatch:
+    # Needed so we can run it manually
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  BRANCH: output-update
+  TITLE: "chore(output): weekly `gen_output.sh`"
+  BODY: |
+    Automation to keep output and references current.
+
+    <details><summary><strong>output update log</strong></summary>
+    <p>
+
+    ```log
+    $output_update_log
+    ```
+
+    </p>
+    </details>
+
+jobs:
+  update:
+    name: Update
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@nightly
+
+      - name: Update
+        run: output_update_log=$(scripts/gen_output.sh)
+
+      - name: Create commit
+        run: |
+          export output_update_log="$(cat output_update.log)"
+
+          echo "commit_message<<EOF" >> $GITHUB_OUTPUT
+          printf "$TITLE\n\n$output_update_log\n" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+          echo "body<<EOF" >> $GITHUB_OUTPUT
+          echo "$BODY" | envsubst >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          add-paths: ./Cargo.lock
+          commit-message: ${{ steps.msg.outputs.commit_message }}
+          title: ${{ env.TITLE }}
+          body: ${{ steps.msg.outputs.body }}
+          branch: ${{ env.BRANCH }}
