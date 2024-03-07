@@ -52,7 +52,6 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
         with:
-          add-paths: ./Cargo.lock
           commit-message: ${{ steps.msg.outputs.commit_message }}
           title: ${{ env.TITLE }}
           body: ${{ steps.msg.outputs.body }}
