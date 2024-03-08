@@ -1,5 +1,9 @@
 ## `changePrank`
 
+### Status
+
+`changePrank` is deprecated.
+
 ### Signature
 
 ```solidity
