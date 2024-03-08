@@ -5,7 +5,7 @@
 ```solidity
 // Return the value(s) that correspond to 'key'
 vm.parseJson(string memory json, string memory key)
-// Return the entire json file
+// Return the entire JSON file
 vm.parseJson(string memory json);
 ```
 
@@ -19,18 +19,21 @@ The cheatcode accepts either a `key` to search for a specific value in the JSON,
 
 ### JSONpath Key
 
-`parseJson` uses a syntax called JSONpath to form arbitrary keys for arbitrary json files. The same syntax (or rather a dialect) is used by the tool [`jq`](https://stedolan.github.io/jq/).
+`parseJson` uses a syntax called JSONpath to form arbitrary keys for arbitrary JSON files. The same syntax (or rather a dialect) is used by the tool [`jq`](https://stedolan.github.io/jq/).
 
 To read more about the syntax, you can visit the [README](https://crates.io/crates/jsonpath-rust) of the rust library that we use under the hood to implement the feature. That way you can be certain that you are using the correct dialect of jsonPath.
 
 ### JSON Encoding Rules
 
-We use the terms `number`, `string`, `object`, `array`, `boolean` as they are defined in the [JSON spec](https://www.w3schools.com/js/js_json_datatypes.asp).
+We use the terms `number`, `string`, `object`, `array`, `boolean`, `null` as they are defined in the [JSON spec](https://www.w3schools.com/js/js_json_datatypes.asp).
 
 **Encoding Rules**
 
+- `null` is encoded as `bytes32(0)`
 - Numbers >= 0 are encoded as `uint256`
 - Negative numbers are encoded as `int256`
+- Floating point numbers with decimal digitals are not allowed.
+- Floating point numbers using the scientific notation can be `uint256` or `int256` depending on the value.
 - A string that can be decoded into a type of `H160` and starts with `0x` is encoded as an `address`. In other words, if it can be decoded into an address, it's probably an address
 - A string that starts with `0x` is encoded as `bytes32` if it has a length of `66` or else to `bytes`
 - A string that is neither an `address`, a `bytes32` or `bytes`, is encoded as a `string`
@@ -39,7 +42,7 @@ We use the terms `number`, `string`, `object`, `array`, `boolean` as they are de
 
 ### Type Coercion
 
-As described above, parseJSON needs to deduce the type of JSON value and that has some inherent limitations. For that reason, there is a sub-family of `parseJson*` cheatcodes that coerce the type of the returned value.
+As described above, `parseJson` needs to deduce the type of JSON value and that has some inherent limitations. For that reason, there is a sub-family of `parseJson*` cheatcodes that coerce the type of the returned value.
 
 For example `vm.parseJsonUint(json, key)` will coerce the value to a `uint256`. That means that it can parse all the following values and return them as a `uint256`. That includes a number as type `number`, a stringified number as a `string` and of course it's hex representation.
 
@@ -59,7 +62,7 @@ JSON objects are encoded as tuples, and can be decoded via tuples or structs. Th
 
 For example:
 
-The following JSON
+The following JSON:
 
 ```json
 {
