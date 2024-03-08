@@ -5,8 +5,19 @@
 ```solidity
 // Reads the entire content of file to string, (path) => (data)
 function readFile(string calldata) external returns (string memory);
+/// Reads the entire content of file as binary. `path` is relative to the project root.
+function readFileBinary(string calldata path) external view returns (bytes memory data);
+/// Reads the directory at the given path recursively, up to `maxDepth`.
+/// `maxDepth` defaults to 1, meaning only the direct children of the given directory will be returned.
+/// Follows symbolic links if `followLinks` is true.
+function readDir(string calldata path) external view returns (DirEntry[] memory entries);
 // Reads next line of file to string, (path) => (line)
 function readLine(string calldata) external returns (string memory);
+/// Reads a symbolic link, returning the path that the link points to.
+/// This cheatcode will revert in the following situations, but is not limited to just these cases:
+/// - `path` is not a symbolic link.
+/// - `path` does not exist.
+function readLink(string calldata linkPath) external view returns (string memory targetPath);
 // Writes data to file, creating a file if it does not exist, and entirely replacing its contents if it does.
 // (path, data) => ()
 function writeFile(string calldata, string calldata) external;
