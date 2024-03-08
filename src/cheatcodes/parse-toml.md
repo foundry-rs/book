@@ -138,8 +138,8 @@ The reason is that it would try to decode the string `"sigma"` as a uint. To be 
 ```solidity
 string memory root = vm.projectRoot();
 string memory path = string.concat(root, "/src/test/fixtures/config.toml");
-string memory json = vm.readFile(path);
-bytes memory data = json.parseRaw(".");
+string memory toml = vm.readFile(path);
+bytes memory data = toml.parseRaw(".");
 Config memory config = abi.decode(data, (Config))
 ```
 
