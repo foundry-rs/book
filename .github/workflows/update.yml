@@ -1,0 +1,33 @@
+name: update
+on:
+  schedule:
+    # Run weekly
+    - cron: "0 0 * * SUN"
+  workflow_dispatch:
+    # Needed so we can run it manually
+
+jobs:
+  update:
+    name: Update
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+
+      - name: Update
+        run: |
+          git config --global user.email "update@update.com"
+          git config --global user.name "update"
+          ./scripts/gen_output.sh
+
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          commit-message: "update command output"
+          title: "chore(output): weekly command output update"
+          body: |
+            Automation to keep command output up to date.
+          branch: chore/output-update
