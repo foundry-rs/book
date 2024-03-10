@@ -208,7 +208,7 @@ contract InvariantExample1 is Test {
     }
 
     function invariant_B() external {
-        assertGe(foo.val1() + foo.val2(), foo.val1());
+        assertGe(foo.val1() + foo.val2(), foo.val3());
     }
 
 }
