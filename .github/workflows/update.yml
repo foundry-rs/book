@@ -13,6 +13,7 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
+        submodules: recursive
 
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
