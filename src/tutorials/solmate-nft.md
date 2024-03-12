@@ -169,11 +169,16 @@ contract NFT is ERC721, Ownable {
     }
 
     function withdrawPayments(address payable payee) external onlyOwner {
-        uint256 balance = address(this).balance;
-        (bool transferTx, ) = payee.call{value: balance}("");
-        if (!transferTx) {
+        if (address(this).balance == 0) {
             revert WithdrawTransfer();
         }
+        
+        payable(payee).transfer(address(this).balance);
+    }
+
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Ownable: caller is not the owner");
+        _;
     }
 }
 ```
