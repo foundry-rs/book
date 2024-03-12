@@ -144,10 +144,11 @@ contract NFT is ERC721, Ownable {
         if (msg.value != MINT_PRICE) {
             revert MintPriceNotPaid();
         }
-        uint256 newTokenId = ++currentTokenId;
+        uint256 newTokenId = currentTokenId + 1;
         if (newTokenId > TOTAL_SUPPLY) {
             revert MaxSupply();
         }
+        currentTokenId = newTokenId;
         _safeMint(recipient, newTokenId);
         return newTokenId;
     }
@@ -239,7 +240,7 @@ contract NFTTest is Test {
         uint256 slotOfNewOwner = stdstore
             .target(address(nft))
             .sig(nft.ownerOf.selector)
-            .with_key(1)
+            .with_key(address(1))
             .find();
 
         uint160 ownerOfTokenIdOne = uint160(
