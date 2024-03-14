@@ -3,6 +3,7 @@
 - [cast publish](./cast-publish.md)
 - [cast receipt](./cast-receipt.md)
 - [cast send](./cast-send.md)
+- [cast mktx](./cast-mktx.md)
 - [cast call](./cast-call.md)
 - [cast rpc](./cast-rpc.md)
 - [cast tx](./cast-tx.md)

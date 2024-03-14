@@ -266,6 +266,7 @@
       - [cast publish](./reference/cast/cast-publish.md)
       - [cast receipt](./reference/cast/cast-receipt.md)
       - [cast send](./reference/cast/cast-send.md)
+      - [cast mktx](./reference/cast/cast-mktx.md)
       - [cast call](./reference/cast/cast-call.md)
       - [cast rpc](./reference/cast/cast-rpc.md)
       - [cast tx](./reference/cast/cast-tx.md)

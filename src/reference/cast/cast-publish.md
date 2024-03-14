@@ -39,4 +39,4 @@ Publish a raw pre-signed transaction to the network.
 
 ### SEE ALSO
 
-[cast](./cast.md), [cast call](./cast-call.md), [cast send](./cast-send.md), [cast receipt](./cast-receipt.md)
+[cast](./cast.md), [cast call](./cast-call.md), [cast send](./cast-send.md), [cast receipt](./cast-receipt.md), [cast mktx](./cast-mktx.md)

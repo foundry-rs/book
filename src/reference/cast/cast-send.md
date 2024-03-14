@@ -87,4 +87,4 @@ The destination (*to*) can be an ENS name or an address.
 
 ### SEE ALSO
 
-[cast](./cast.md), [cast call](./cast-call.md), [cast publish](./cast-publish.md), [cast receipt](./cast-receipt.md), [struct encoding](../../misc/struct-encoding.md)
+[cast](./cast.md), [cast call](./cast-call.md), [cast publish](./cast-publish.md), [cast receipt](./cast-receipt.md), [cast mktx](./cast-mktx.md), [struct encoding](../../misc/struct-encoding.md)
