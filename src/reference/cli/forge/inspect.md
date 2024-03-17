@@ -13,7 +13,9 @@ Arguments:
   <FIELD>
           The contract artifact field to inspect
           
-          [possible values: abi, bytecode, deployedBytecode, assembly, assemblyOptimized, methodIdentifiers, gasEstimates, storageLayout, devdoc, ir, irOptimized, metadata, userdoc, ewasm, errors, events]
+          [possible values: abi, bytecode, deployedBytecode, assembly, assemblyOptimized,
+          methodIdentifiers, gasEstimates, storageLayout, devdoc, ir, irOptimized, metadata,
+          userdoc, ewasm, errors, events]
 
 Options:
       --pretty
@@ -62,6 +64,9 @@ Compiler options:
       --silent
           Don't print anything on startup
 
+      --ast
+          Includes the AST as JSON in the compiler output
+
       --evm-version <VERSION>
           The target EVM version
 
@@ -76,7 +81,8 @@ Compiler options:
           
           Example keys: evm.assembly, ewasm, ir, irOptimized, metadata
           
-          For a full description, see https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description
+          For a full description, see
+          https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description
 
       --extra-output-files <SELECTOR>...
           Extra output to write to separate files.
@@ -90,7 +96,8 @@ Project options:
       --revert-strings <REVERT>
           Revert string configuration.
           
-          Possible values are "default", "strip" (remove), "debug" (Solidity-generated revert strings) and "verboseDebug"
+          Possible values are "default", "strip" (remove), "debug" (Solidity-generated revert
+          strings) and "verboseDebug"
 
       --build-info
           Generate build info files

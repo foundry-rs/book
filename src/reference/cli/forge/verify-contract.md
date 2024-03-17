@@ -22,6 +22,9 @@ Options:
       --constructor-args-path <PATH>
           The path to a file containing the constructor arguments
 
+      --guess-constructor-args
+          Try to extract constructor arguments from on-chain creation code
+
       --compiler-version <VERSION>
           The `solc` version to use to build the smart contract
 
@@ -50,7 +53,16 @@ Options:
       --show-standard-json-input
           Prints the standard json compiler input.
           
-          The standard json compiler input can be used to manually submit contract verification in the browser.
+          The standard json compiler input can be used to manually submit contract verification in
+          the browser.
+
+      --via-ir
+          Use the Yul intermediate representation compilation pipeline
+
+      --evm-version <EVM_VERSION>
+          The EVM version to use.
+          
+          Overrides the version specified in the config.
 
   -e, --etherscan-api-key <KEY>
           The Etherscan (or equivalent) API key
@@ -62,6 +74,29 @@ Options:
           
           [env: CHAIN=]
 
+  -r, --rpc-url <URL>
+          The RPC endpoint
+          
+          [env: ETH_RPC_URL=]
+
+      --flashbots
+          Use the Flashbots RPC URL with fast mode (https://rpc.flashbots.net/fast). This shares the
+          transaction privately with all registered builders.
+          https://docs.flashbots.net/flashbots-protect/quick-start#faster-transactions
+
+      --jwt-secret <JWT_SECRET>
+          JWT Secret for the RPC endpoint.
+          
+          The JWT secret will be used to create a JWT for a RPC. For example, the following can be
+          used to simulate a CL `engine_forkchoiceUpdated` call:
+          
+          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2
+          '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
+          
+          [env: ETH_RPC_JWT_SECRET=]
+
       --retries <RETRIES>
           Number of attempts for retrying verification
           
@@ -71,9 +106,6 @@ Options:
           Optional delay to apply inbetween verification attempts, in seconds
           
           [default: 5]
-
-      --via-ir
-          Use the Yul intermediate representation compilation pipeline
 
   -h, --help
           Print help (see a summary with '-h')

@@ -86,6 +86,8 @@
   - [`cast max-int`](./cast/max-int.md)
   - [`cast max-uint`](./cast/max-uint.md)
   - [`cast min-int`](./cast/min-int.md)
+  - [`cast mktx`](./cast/mktx.md)
+    - [`cast mktx --create`](./cast/mktx/--create.md)
   - [`cast namehash`](./cast/namehash.md)
   - [`cast nonce`](./cast/nonce.md)
   - [`cast parse-bytes32-address`](./cast/parse-bytes32-address.md)

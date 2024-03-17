@@ -10,7 +10,8 @@ Arguments:
   [SIGNATURES]...
           The signatures to upload.
           
-          Prefix with 'function', 'event', or 'error'. Defaults to function if no prefix given. Can also take paths to contract artifact JSON.
+          Prefix with 'function', 'event', or 'error'. Defaults to function if no prefix given. Can
+          also take paths to contract artifact JSON.
 
 Options:
   -h, --help

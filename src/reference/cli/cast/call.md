@@ -28,19 +28,13 @@ Options:
           Forks the remote rpc, executes the transaction locally and prints a trace
 
       --debug
-          Can only be used with "--trace"
-          
-          opens an interactive debugger
+          Opens an interactive debugger. Can only be used with `--trace`
 
       --labels <LABELS>
-          Can only be used with "--trace" Labels to apply to the traces.
-          
-          Format: `address:label`
+          Labels to apply to the traces; format: `address:label`. Can only be used with `--trace`
 
       --evm-version <EVM_VERSION>
-          Can only be used with "--trace"
-          
-          The EVM Version to use.
+          The EVM Version to use. Can only be used with `--trace`
 
   -b, --block <BLOCK>
           The block height to query at.
@@ -67,7 +61,8 @@ Transaction options:
           [env: ETH_PRIORITY_GAS_PRICE=]
 
       --value <VALUE>
-          Ether to send in the transaction, either specified in wei, or as a string with a unit type.
+          Ether to send in the transaction, either specified in wei, or as a string with a unit
+          type.
           
           Examples: 1ether, 10gwei, 0.01ether
 
@@ -86,14 +81,19 @@ Ethereum options:
           [env: ETH_RPC_URL=]
 
       --flashbots
-          Use the Flashbots RPC URL with fast mode (https://rpc.flashbots.net/fast). This shares the transaction privately with all registered builders. https://docs.flashbots.net/flashbots-protect/quick-start#faster-transactions
+          Use the Flashbots RPC URL with fast mode (https://rpc.flashbots.net/fast). This shares the
+          transaction privately with all registered builders.
+          https://docs.flashbots.net/flashbots-protect/quick-start#faster-transactions
 
       --jwt-secret <JWT_SECRET>
           JWT Secret for the RPC endpoint.
           
-          The JWT secret will be used to create a JWT for a RPC. For example, the following can be used to simulate a CL `engine_forkchoiceUpdated` call:
+          The JWT secret will be used to create a JWT for a RPC. For example, the following can be
+          used to simulate a CL `engine_forkchoiceUpdated` call:
           
-          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2 '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc", "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2
+          '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
           "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
           
           [env: ETH_RPC_JWT_SECRET=]

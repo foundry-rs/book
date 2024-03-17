@@ -8,19 +8,28 @@ Usage: cast wallet sign [OPTIONS] <MESSAGE>
 
 Arguments:
   <MESSAGE>
-          The message or typed data to sign.
+          The message, typed data, or hash to sign.
           
-          Messages starting with 0x are expected to be hex encoded, which get decoded before being signed. The message will be prefixed with the Ethereum Signed Message header and hashed before signing.
+          Messages starting with 0x are expected to be hex encoded, which get decoded before being
+          signed.
           
-          Typed data can be provided as a json string or a file name. Use --data flag to denote the message is a string of typed data. Use --data --from-file to denote the message is a file name containing typed data. The data will be
-          combined and hashed using the EIP712 specification before signing. The data should be formatted as JSON.
+          The message will be prefixed with the Ethereum Signed Message header and hashed before
+          signing, unless `--no-hash` is provided.
+          
+          Typed data can be provided as a json string or a file name. Use --data flag to denote the
+          message is a string of typed data. Use --data --from-file to denote the message is a file
+          name containing typed data. The data will be combined and hashed using the EIP712
+          specification before signing. The data should be formatted as JSON.
 
 Options:
       --data
-          If provided, the message will be treated as typed data
+          Treat the message as JSON typed data
 
       --from-file
-          If provided, the message will be treated as a file name containing typed data. Requires --data
+          Treat the message as a file containing JSON typed data. Requires `--data`
+
+      --no-hash
+          Treat the message as a raw 32-byte hash and sign it directly without hashing it again
 
   -h, --help
           Print help (see a summary with '-h')

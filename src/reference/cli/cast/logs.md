@@ -8,10 +8,12 @@ Usage: cast logs [OPTIONS] [SIG_OR_TOPIC] [TOPICS_OR_ARGS]...
 
 Arguments:
   [SIG_OR_TOPIC]
-          The signature of the event to filter logs by which will be converted to the first topic or a topic to filter on
+          The signature of the event to filter logs by which will be converted to the first topic or
+          a topic to filter on
 
   [TOPICS_OR_ARGS]...
-          If used with a signature, the indexed fields of the event to filter by. Otherwise, the remaining topics of the filter
+          If used with a signature, the indexed fields of the event to filter by. Otherwise, the
+          remaining topics of the filter
 
 Options:
       --from-block <FROM_BLOCK>
@@ -28,7 +30,8 @@ Options:
           The contract address to filter on
 
       --subscribe
-          If the RPC type and endpoints supports `eth_subscribe` stream logs instead of printing and exiting. Will continue until interrupted or TO_BLOCK is reached
+          If the RPC type and endpoints supports `eth_subscribe` stream logs instead of printing and
+          exiting. Will continue until interrupted or TO_BLOCK is reached
 
   -h, --help
           Print help (see a summary with '-h')
@@ -44,14 +47,19 @@ Ethereum options:
           [env: ETH_RPC_URL=]
 
       --flashbots
-          Use the Flashbots RPC URL with fast mode (https://rpc.flashbots.net/fast). This shares the transaction privately with all registered builders. https://docs.flashbots.net/flashbots-protect/quick-start#faster-transactions
+          Use the Flashbots RPC URL with fast mode (https://rpc.flashbots.net/fast). This shares the
+          transaction privately with all registered builders.
+          https://docs.flashbots.net/flashbots-protect/quick-start#faster-transactions
 
       --jwt-secret <JWT_SECRET>
           JWT Secret for the RPC endpoint.
           
-          The JWT secret will be used to create a JWT for a RPC. For example, the following can be used to simulate a CL `engine_forkchoiceUpdated` call:
+          The JWT secret will be used to create a JWT for a RPC. For example, the following can be
+          used to simulate a CL `engine_forkchoiceUpdated` call:
           
-          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2 '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc", "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2
+          '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
           "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
           
           [env: ETH_RPC_JWT_SECRET=]

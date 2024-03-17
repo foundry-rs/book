@@ -1,10 +1,10 @@
-# cast send
+# cast mktx
 
-Sign and publish a transaction
+Build and sign a transaction
 
 ```bash
-$ cast send --help
-Usage: cast send [OPTIONS] [TO] [SIG] [ARGS]... [COMMAND]
+$ cast mktx --help
+Usage: cast mktx [OPTIONS] [TO] [SIG] [ARGS]... [COMMAND]
 
 Commands:
   --create  Use to deploy raw contract bytecode
@@ -14,7 +14,7 @@ Arguments:
   [TO]
           The destination of the transaction.
           
-          If not provided, you must use cast send --create.
+          If not provided, you must use `cast mktx --create`.
 
   [SIG]
           The signature of the function to call
@@ -23,28 +23,11 @@ Arguments:
           The arguments of the function to call
 
 Options:
-      --async
-          Only print the transaction hash and exit immediately
-          
-          [env: CAST_ASYNC=]
-
-      --confirmations <CONFIRMATIONS>
-          The number of confirmations until the receipt is fetched
-          
-          [default: 1]
-
       --resend
           Reuse the latest nonce for the sender account
 
-      --unlocked
-          Send via `eth_sendTransaction using the `--from` argument or $ETH_FROM as sender
-
   -h, --help
           Print help (see a summary with '-h')
-
-Display options:
-  -j, --json
-          Print the transaction receipt as JSON
 
 Transaction options:
       --gas-limit <GAS_LIMIT>

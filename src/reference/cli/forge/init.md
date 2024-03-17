@@ -17,7 +17,8 @@ Options:
           The template to start from
 
   -b, --branch <BRANCH>
-          Branch argument that can only be used with template option. If not specified, the default branch is used
+          Branch argument that can only be used with template option. If not specified, the default
+          branch is used
 
       --offline
           Do not install dependencies from the network
@@ -28,7 +29,8 @@ Options:
           Create the project even if the specified root directory is not empty
 
       --vscode
-          Create a .vscode/settings.json file with Solidity settings, and generate a remappings.txt file
+          Create a .vscode/settings.json file with Solidity settings, and generate a remappings.txt
+          file
 
       --shallow
           Perform shallow clones instead of deep ones.

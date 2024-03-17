@@ -5,18 +5,18 @@ $ forge test -vvvv --match-test testFail_IncrementAsNotOwner --match-path test/O
 // ANCHOR: output
 No files changed, compilation skipped
 
-Running 1 test for test/OwnerUpOnly.t.sol:OwnerUpOnlyTest
-[PASS] testFail_IncrementAsNotOwner() (gas: 8391)
+Ran 1 test for test/OwnerUpOnly.t.sol:OwnerUpOnlyTest
+[PASS] testFail_IncrementAsNotOwner() (gas: 8314)
 Traces:
-  [8391] OwnerUpOnlyTest::testFail_IncrementAsNotOwner()
+  [8314] OwnerUpOnlyTest::testFail_IncrementAsNotOwner()
     ├─ [0] VM::prank(0x0000000000000000000000000000000000000000)
     │   └─ ← ()
     ├─ [247] OwnerUpOnly::increment()
     │   └─ ← Unauthorized()
     └─ ← Unauthorized()
 
-Test result: ok. 1 passed; 0 failed; 0 skipped; finished in 4.68ms
- 
-Ran 1 test suites: 1 tests passed, 0 failed, 0 skipped (1 total tests)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 382.78µs (41.53µs CPU time)
+
+Ran 1 test suite in 2.81ms (382.78µs CPU time): 1 tests passed, 0 failed, 0 skipped (1 total tests)
 // ANCHOR_END: output
 // ANCHOR_END: all
