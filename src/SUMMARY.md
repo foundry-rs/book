@@ -165,6 +165,8 @@
       - [`cast max-int`](./reference/cli/cast/max-int.md)
       - [`cast max-uint`](./reference/cli/cast/max-uint.md)
       - [`cast min-int`](./reference/cli/cast/min-int.md)
+      - [`cast mktx`](./reference/cli/cast/mktx.md)
+        - [`cast mktx --create`](./reference/cli/cast/mktx/--create.md)
       - [`cast namehash`](./reference/cli/cast/namehash.md)
       - [`cast nonce`](./reference/cli/cast/nonce.md)
       - [`cast parse-bytes32-address`](./reference/cli/cast/parse-bytes32-address.md)

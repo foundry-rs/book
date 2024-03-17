@@ -10,6 +10,7 @@ Arguments:
   <BYTECODE>  The hex encoded bytecode
 
 Options:
-  -r, --resolve  Resolve the function signatures for the extracted selectors using https://openchain.xyz
+  -r, --resolve  Resolve the function signatures for the extracted selectors using
+                 https://openchain.xyz
   -h, --help     Print help
 ```

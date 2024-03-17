@@ -33,7 +33,7 @@ test/OpenZeppelinNft.t.sol 0.8.10
 │   │   ├── lib/forge-std/src/Vm.sol >=0.6.0
 │   │   ├── lib/forge-std/src/console.sol >=0.4.22 <0.9.0
 │   │   └── lib/forge-std/src/console2.sol >=0.4.22 <0.9.0
-│   └── lib/forge-std/lib/ds-test/src/test.sol >=0.5.0
+│   └── lib/solmate/lib/ds-test/src/test.sol >=0.4.23
 ├── src/OpenZeppelinNft.sol 0.8.10 (*)
 └── lib/openzeppelin-contracts/contracts/token/ERC721/IERC721Receiver.sol ^0.8.0
 test/SolmateNft.sol 0.8.10

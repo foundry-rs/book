@@ -3,6 +3,7 @@
 $ echo '!help' | chisel
 // ANCHOR_END: command
 // ANCHOR: output
+No solidity versions installed! Installing solidity version 0.8.19...
 Welcome to Chisel! Type `!help` to show available commands.
 ⚒️ Chisel help
 =============

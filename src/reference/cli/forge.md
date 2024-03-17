@@ -28,11 +28,13 @@ Commands:
   install            Install one or multiple dependencies [aliases: i]
   remappings         Get the automatically inferred remappings for the project [aliases: re]
   remove             Remove one or multiple dependencies [aliases: rm]
-  script             Run a smart contract as a script, building transactions that can be sent onchain
+  script             Run a smart contract as a script, building transactions that can be sent
+                         onchain
   selectors          Function selector utilities [aliases: se]
   snapshot           Create a snapshot of each test's gas usage [aliases: s]
   test               Run the project's tests [aliases: t]
-  tree               Display a tree visualization of the project's dependency graph [aliases: tr]
+  tree               Display a tree visualization of the project's dependency graph [aliases:
+                         tr]
   update             Update one or multiple dependencies [aliases: u]
   verify-check       Check verification status on Etherscan [aliases: vc]
   verify-contract    Verify smart contracts on Etherscan [aliases: v]

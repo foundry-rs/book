@@ -25,14 +25,19 @@ Options:
           [env: ETH_RPC_URL=]
 
       --flashbots
-          Use the Flashbots RPC URL with fast mode (https://rpc.flashbots.net/fast). This shares the transaction privately with all registered builders. https://docs.flashbots.net/flashbots-protect/quick-start#faster-transactions
+          Use the Flashbots RPC URL with fast mode (https://rpc.flashbots.net/fast). This shares the
+          transaction privately with all registered builders.
+          https://docs.flashbots.net/flashbots-protect/quick-start#faster-transactions
 
       --jwt-secret <JWT_SECRET>
           JWT Secret for the RPC endpoint.
           
-          The JWT secret will be used to create a JWT for a RPC. For example, the following can be used to simulate a CL `engine_forkchoiceUpdated` call:
+          The JWT secret will be used to create a JWT for a RPC. For example, the following can be
+          used to simulate a CL `engine_forkchoiceUpdated` call:
           
-          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2 '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc", "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2
+          '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
           "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
           
           [env: ETH_RPC_JWT_SECRET=]
@@ -90,6 +95,9 @@ Compiler options:
       --silent
           Don't print anything on startup
 
+      --ast
+          Includes the AST as JSON in the compiler output
+
       --evm-version <VERSION>
           The target EVM version
 
@@ -104,7 +112,8 @@ Compiler options:
           
           Example keys: evm.assembly, ewasm, ir, irOptimized, metadata
           
-          For a full description, see https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description
+          For a full description, see
+          https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description
 
       --extra-output-files <SELECTOR>...
           Extra output to write to separate files.
@@ -118,7 +127,8 @@ Project options:
       --revert-strings <REVERT>
           Revert string configuration.
           
-          Possible values are "default", "strip" (remove), "debug" (Solidity-generated revert strings) and "verboseDebug"
+          Possible values are "default", "strip" (remove), "debug" (Solidity-generated revert
+          strings) and "verboseDebug"
 
       --build-info
           Generate build info files
