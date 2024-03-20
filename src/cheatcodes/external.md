@@ -1,6 +1,7 @@
 ## External
 
 - [`ffi`](./ffi.md)
+- [`prompt`](./prompt.md)
 - [`projectRoot`](./project-root.md)
 - [`getCode`](./get-code.md)
 - [`getDeployedCode`](./get-deployed-code.md)

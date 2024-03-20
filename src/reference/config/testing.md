@@ -300,6 +300,14 @@ optimism = "https://optimism.alchemyapi.io/v2/..."
 mainnet = "${RPC_MAINNET}"
 ```
 
+##### `prompt_timeout`
+
+- Type: integer
+- Default: 120
+- Environment: `FOUNDRY_PROMPT_TIMEOUT`
+
+The number of seconds to wait before `vm.prompt` reverts with a timeout.
+
 ### Fuzz
 
 Configuration values for `[fuzz]` section.
