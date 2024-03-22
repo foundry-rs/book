@@ -177,9 +177,8 @@ contract NFT is ERC721, Ownable {
         payable(payee).transfer(address(this).balance);
     }
 
-    modifier onlyOwner() {
-        require(msg.sender == owner, "Ownable: caller is not the owner");
-        _;
+    function _checkOwner() internal view override {
+        require(msg.sender == owner(), "Ownable: caller is not the owner");
     }
 }
 ```
