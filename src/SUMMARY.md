@@ -419,6 +419,7 @@
       - [`transact`](./cheatcodes/transact.md)
     - [External](./cheatcodes/external.md)
       - [`ffi`](./cheatcodes/ffi.md)
+      - [`prompt`](./cheatcodes/prompt.md)
       - [`projectRoot`](./cheatcodes/project-root.md)
       - [`getCode`](./cheatcodes/get-code.md)
       - [`getDeployedCode`](./cheatcodes/get-deployed-code.md)
