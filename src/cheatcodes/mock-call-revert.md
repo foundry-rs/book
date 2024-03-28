@@ -44,7 +44,7 @@ function testMockCallRevert() public {
     vm.mockCallRevert(
         address(0),
         abi.encodeWithSelector(MyToken.balanceOf.selector, address(1)),
-        abi.encode("REVERT_MESSAGE")
+        "REVERT_MESSAGE"
     );
     vm.expectRevert("REVERT_MESSAGE");
     IERC20(address(0)).balanceOf(address(1));
