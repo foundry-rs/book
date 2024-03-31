@@ -238,6 +238,9 @@ EVM options:
           
           [aliases: no-create2]
 
+      --memory-limit <MEMORY_LIMIT>
+          The memory limit per EVM execution in bytes
+
       --optimism
           Run an Optimism chain
           
