@@ -36,6 +36,9 @@ you can specify a file containing **space-separated** constructor arguments with
 
 {{#include ../common/verifier-options.md}}
 
+`--skip-is-verified-check`
+&nbsp;&nbsp;&nbsp;&nbsp;Send the verification request even if the contract is already verified.
+
 `--compiler-version` *version*  
 &nbsp;&nbsp;&nbsp;&nbsp;The compiler version used to build the smart contract.
 
