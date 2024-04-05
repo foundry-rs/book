@@ -28,6 +28,8 @@ The field to inspect (*field*) can be any of:
 - `metadata`/`meta`
 - `userdoc`/`userDoc`/`user-doc`
 - `ewasm`/`e-wasm`
+- `errors`
+- `events`
 
 ### OPTIONS
 
@@ -51,7 +53,7 @@ The field to inspect (*field*) can be any of:
     ```
 
 3. Inspect the abi of a contract in a pretty format:
-   ```sh 
+   ```sh
    forge inspect --pretty MyContract abi
    ```
 
