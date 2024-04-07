@@ -3,17 +3,15 @@
 $ forge test --match-contract ComplicatedContractTest --match-test test_Deposit
 // ANCHOR_END: command
 // ANCHOR: output
-installing solc version "0.8.10"
-Successfully installed solc 0.8.10
-Compiling 25 files with 0.8.10
-Solc 0.8.10 finished in 1.24s
+Compiling 24 files with 0.8.10
+Solc 0.8.10 finished in 1.10s
 Compiler run successful!
 
 Ran 2 tests for test/ComplicatedContract.t.sol:ComplicatedContractTest
 [PASS] test_DepositERC20() (gas: 102193)
 [PASS] test_DepositETH() (gas: 61414)
-Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 1.41ms (1.96ms CPU time)
+Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 1.30ms (1.87ms CPU time)
 
-Ran 1 test suite in 2.74ms (1.41ms CPU time): 2 tests passed, 0 failed, 0 skipped (2 total tests)
+Ran 1 test suite in 2.55ms (1.30ms CPU time): 2 tests passed, 0 failed, 0 skipped (2 total tests)
 // ANCHOR_END: output
 // ANCHOR_END: all
