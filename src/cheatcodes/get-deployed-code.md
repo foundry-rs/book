@@ -48,6 +48,17 @@ vm.etch(overrideAddress, code);
 assertEq(overrideAddress.code, code);
 ```
 
+### Supported formats
+
+You can fetch artifacts by either contract path or contract name. Fetching artifacts for a specific version is also supported. If not provided, cheatcode will default to the version of a test being executed or the only version artifact was compiled with.
+```solidity
+vm.getDeployedCode("MyContract.sol:MyContract");
+vm.getDeployedCode("MyContract");
+vm.getDeployedCode("MyContract.sol:0.8.18");
+vm.getDeployedCode("MyContract:0.8.18");
+```
+
+
 ### SEE ALSO
 
 Forge Standard Library
