@@ -49,6 +49,17 @@ assembly {
 vm.etch(targetAddr, deployed.code);
 ```
 
+
+### Supported formats
+
+You can fetch artifacts by either contract path or contract name. Fetching artifacts for a specific version is also supported. If not provided, cheatcode will default to the version of a test being executed or the only version artifact was compiled with.
+```solidity
+vm.getCode("MyContract.sol:MyContract");
+vm.getCode("MyContract");
+vm.getCode("MyContract.sol:0.8.18");
+vm.getCode("MyContract:0.8.18");
+```
+
 ### SEE ALSO
 
 [`getDeployedCode`](./get-deployed-code.md)
