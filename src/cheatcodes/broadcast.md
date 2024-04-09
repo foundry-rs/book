@@ -24,18 +24,18 @@ transaction that can later be signed and sent onchain.
 
 ```solidity
 function deploy() public {
-    cheats.broadcast(ACCOUNT_A);
+    vm.broadcast(ACCOUNT_A);
     Test test = new Test();
 
     // this won't generate tx to sign
     uint256 b = test.t(4);
 
     // this will
-    cheats.broadcast(ACCOUNT_B);
+    vm.broadcast(ACCOUNT_B);
     test.t(2);
 
     // this also will, using a private key from your environment variables
-    cheats.broadcast(vm.envUint("PRIVATE_KEY"));
+    vm.broadcast(vm.envUint("PRIVATE_KEY"));
     test.t(3);
 } 
 ```
