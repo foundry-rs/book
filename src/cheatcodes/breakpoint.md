@@ -11,7 +11,7 @@ function breakpoint(string, bool) external;
 
 Places a breakpoint to jump to in the debugger view.
 
-Calling `vm.breakpoint('<char>, true)` is equivalent to `vm.breakpoint('<char>)`, but calling `vm.breakpoint('<char, false)` will erase the breakpoint at `'<char`.
+Calling `vm.breakpoint('<char>, true)` is equivalent to `vm.breakpoint('<char>)`, but calling `vm.breakpoint('<char>, false)` will erase the breakpoint at `'<char>`.
 
 If the char is overwritten, only the last one that was visited in the execution steps is considered.
 
