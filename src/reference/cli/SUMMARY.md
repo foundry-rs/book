@@ -31,6 +31,7 @@
   - [`forge test`](./forge/test.md)
   - [`forge tree`](./forge/tree.md)
   - [`forge update`](./forge/update.md)
+  - [`forge verify-bytecode`](./forge/verify-bytecode.md)
   - [`forge verify-check`](./forge/verify-check.md)
   - [`forge verify-contract`](./forge/verify-contract.md)
 
