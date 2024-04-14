@@ -111,6 +111,7 @@
       - [`forge test`](./reference/cli/forge/test.md)
       - [`forge tree`](./reference/cli/forge/tree.md)
       - [`forge update`](./reference/cli/forge/update.md)
+      - [`forge verify-bytecode`](./reference/cli/forge/verify-bytecode.md)
       - [`forge verify-check`](./reference/cli/forge/verify-check.md)
       - [`forge verify-contract`](./reference/cli/forge/verify-contract.md)
     - [`cast`](./reference/cli/cast.md)

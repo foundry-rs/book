@@ -40,6 +40,13 @@ Options:
       --broadcast
           Broadcasts the transactions
 
+      --batch-size <BATCH_SIZE>
+          Batch size of transactions.
+          
+          This is ignored and set to 1 if batching is not available or `--slow` is enabled.
+          
+          [default: 100]
+
       --skip-simulation
           Skips on-chain simulation
 
