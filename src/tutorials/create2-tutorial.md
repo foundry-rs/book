@@ -195,7 +195,7 @@ Initialize the following state variables and the `setUp()` function:
 Create a new function named `testDeterministicDeploy()` that:
 
 1. Deploys a new instance of the `Create2` contract.
-2. Deals out a 100 ETH to the a specific address that we will use to impersonate as the caller for all subsequent calls using the `prank` cheatcode.
+2. Deals out a 100 ETH to the specific address that we will use to impersonate as the caller for all subsequent calls using the `prank` cheatcode.
 3. Sets up the `salt` and `bytecode` params
 4. Uses the previously deployed `Create2` contract to deploy the `Counter` contract at a deterministic address.
 5. Checks if the contract was deployed at the correct address, by asserting that the computed address is equal to the deployed address.
