@@ -10,7 +10,7 @@ forge-clone - Clone a on-chain verified contract as a Forge project.
 
 ### DESCRIPTION
 
-Create a new Forge project by cloning the source code of an on-chain verified contract in the directory *root* (by default the current working directory).
+Creates a new Forge project by cloning the source code of an on-chain verified contract in the directory *root* (by default the current working directory).
 
 By default, `forge clone` clones contracts from Ethereum mainnet (via Etherscan), but it is also possible to clone from other EVM-compatible blockchains that foundry supports, e.g., BNB Smart Chain (BSC), by specifying chain ID: `--chain <ChainID>`.
 
@@ -18,7 +18,7 @@ Obtaining data from Etherscan is subject to rate limit. `forge clone` requires t
 
 Specifying Etherscan API key via `--etherscan-api-key <API_KEY>` will increase Etherscan API rate limit and avoid the *5-second* wait time in `forge clone`.
 
-Just as `forge init`, `forge forge` will by default initialize a new git repository, install some submodules and create an initial commit message.
+Just as `forge init`, `forge clone` will by default initialize a new git repository, install some submodules and create an initial commit message.
 
 If you do not want this behavior, pass `--no-git`.
 
@@ -74,7 +74,7 @@ If you do not want this behavior, pass `--no-git`.
 
 The cloned Forge project comes with an additional `.clone.meta` metadata file in the root directory.
 `clone.meta` is a compact JSON data file that contains the information of the on-chain contract instance. 
-The metadata include:
+The metadata includes:
 - `path`: The path to the source file that contains the declaration of contract deployed on chain.
 - `targetContract`: The name of the on-chain contract in the source file.
 - `address`: The address of the contract deployed on chain.

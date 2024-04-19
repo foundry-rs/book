@@ -6,7 +6,7 @@ To clone an on-chain verified contract as a Forge project, use [`forge clone`](.
 {{#include ../output/clone_contract/forge-clone:command}}
 ```
 
-This creates a new directory `WETH9`, configures it as a foundry project and clone all the source code of the contract into it. This also initializes a new `git` repository.
+This creates a new directory `WETH9`, configures it as a foundry project and clones all the source code of the contract into it. This also initializes a new `git` repository.
 
 ```sh
 {{#include ../output/clone_contract/forge-clone:output}}
@@ -14,7 +14,7 @@ This creates a new directory `WETH9`, configures it as a foundry project and clo
 
 The cloned Forge project comes with an additional `.clone.meta` metadata file besides those ordinary files that a normal Forge project has.
 
-Let's check what the `.clone.meta` file looks like:
+Let's see what the `.clone.meta` file looks like:
 
 ```sh
 {{#include ../output/clone_contract/clone-meta:output}}
