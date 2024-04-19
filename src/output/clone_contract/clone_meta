@@ -1,0 +1,20 @@
+// ANCHOR: all
+// ANCHOR: command
+$ cat .clone.meta | jq
+// ANCHOR_END: command
+// ANCHOR: output
+{
+  "path": "src/Contract.sol",
+  "targetContract": "WETH9",
+  "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+  "chainId": 1,
+  "creationTransaction": "0xb95343413e459a0f97461812111254163ae53467855c0d73e0f1e7c5b8442fa3",
+  "deployer": "0x4f26ffbe5f04ed43630fdc30a87638d53d0b0876",
+  "constructorArguments": "0x",
+  "storageLayout": {
+    "storage": [],
+    "types": {}
+  }
+}
+// ANCHOR_END: output
+// ANCHOR_END: all

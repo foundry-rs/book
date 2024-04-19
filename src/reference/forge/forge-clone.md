@@ -70,6 +70,20 @@ If you do not want this behavior, pass `--no-git`.
     forge clone --chain bsc 0x7862D9B4bE2156B15d54F41ee4EDE2d5b0b455e4 UniswapV3Pool 
     ```
 
+### Metadata
+
+The cloned Forge project comes with an additional `.clone.meta` metadata file in the root directory.
+`clone.meta` is a compact JSON data file that contains the information of the on-chain contract instance. 
+The metadata include:
+- `path`: The path to the source file that contains the declaration of contract deployed on chain.
+- `targetContract`: The name of the on-chain contract in the source file.
+- `address`: The address of the contract deployed on chain.
+- `chainId`: EIP-155 ID of the chain where the contract is deployed.
+- `creationTransaction`: The hash of the transaction that deployed the contract.
+- `deployer`: The account address who is the sender of the `creationTransaction`.
+- `constructorArguments`: The constructor arguments that is used when deploying the contract.
+- `storageLayout`: The storage layout of the on-chain contract (if the corresponding contract compiler version supports exporting storage layout).
+
 ### SEE ALSO
 
 [forge](./forge.md)
