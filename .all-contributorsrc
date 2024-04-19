@@ -972,6 +972,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "ZhangZhuoSJTU",
+      "name": "Zhuo Zhang",
+      "avatar_url": "https://avatars.githubusercontent.com/u/14835483?v=4",
+      "profile": "https://zzhang.xyz",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
