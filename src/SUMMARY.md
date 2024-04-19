@@ -11,6 +11,7 @@
 
 - [Creating a New Project](./projects/creating-a-new-project.md)
 - [Working on an Existing Project](./projects/working-on-an-existing-project.md)
+- [Clone a Verified Contract on Chain](./projects/clone-a-verified-contract.md)
 - [Dependencies](./projects/dependencies.md)
 - [Project Layout](./projects/project-layout.md)
 
@@ -85,6 +86,7 @@
         - [`forge cache clean`](./reference/cli/forge/cache/clean.md)
         - [`forge cache ls`](./reference/cli/forge/cache/ls.md)
       - [`forge clean`](./reference/cli/forge/clean.md)
+      - [`forge clone`](./reference/cli/forge/clone.md)
       - [`forge completions`](./reference/cli/forge/completions.md)
       - [`forge config`](./reference/cli/forge/config.md)
       - [`forge coverage`](./reference/cli/forge/coverage.md)
@@ -227,6 +229,7 @@
       - [forge completions](./reference/forge/forge-completions.md)
     - [Project Commands](./reference/forge/project-commands.md)
       - [forge init](./reference/forge/forge-init.md)
+      - [forge clone](./reference/forge/forge-clone.md)
       - [forge install](./reference/forge/forge-install.md)
       - [forge update](./reference/forge/forge-update.md)
       - [forge remove](./reference/forge/forge-remove.md)

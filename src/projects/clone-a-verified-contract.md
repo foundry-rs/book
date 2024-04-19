@@ -17,7 +17,7 @@ The cloned Forge project comes with an additional `.clone.meta` metadata file be
 Let's check what the `.clone.meta` file looks like:
 
 ```sh
-{{#include ../output/clone_contract/tree:output}}
+{{#include ../output/clone_contract/clone-meta:output}}
 ```
 
-`clone.meta` is a compact JSON data file that contains the information of the on-chain contract instance, e.g., contract address, constructor arguments, etc. More details of the metadata can be found in the [reference](../reference/forge/forge-clone.md#Metadata)
+`clone.meta` is a compact JSON data file that contains the information of the on-chain contract instance, e.g., contract address, constructor arguments, etc. More details of the metadata can be found in the [reference](../reference/forge/forge-clone.md#metadata).
