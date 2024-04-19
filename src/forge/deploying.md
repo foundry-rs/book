@@ -4,7 +4,7 @@ Forge can deploy smart contracts to a given network with the [`forge create`](..
 
 Forge CLI can deploy only one contract at a time.
 
-Another way to deploy and verify smart contracts is to use Forge's [Solidity scripting](../tutorials/solidity-scripting.md#deploying-our-contract)
+For deploying and verifying multiple smart contracts in one go, Forge's [Solidity scripting](../tutorials/solidity-scripting.md#deploying-our-contract) would be the more efficient approach.
 
 To deploy a contract, you must provide a RPC URL (env: `ETH_RPC_URL`) and the private key of the account that will deploy the contract.
 
