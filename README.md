@@ -1,6 +1,6 @@
 ## 📖 Foundry Book
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-106-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-107-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 A book on all things Foundry. [Read now](https://book.getfoundry.sh).
@@ -175,6 +175,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     </tr>
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/stitetsati"><img src="https://avatars.githubusercontent.com/u/44837996?v=4?s=100" width="100px;" alt="stitetsati"/><br /><sub><b>stitetsati</b></sub></a><br /><a href="https://github.com/foundry-rs/book/commits?author=stitetsati" title="Documentation">📖</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://troublor.xyz"><img src="https://avatars.githubusercontent.com/u/14846504?v=4?s=100" width="100px;" alt="William Cheung"/><br /><sub><b>William Cheung</b></sub></a><br /><a href="https://github.com/foundry-rs/book/commits?author=Troublor" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
