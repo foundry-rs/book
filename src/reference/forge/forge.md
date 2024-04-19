@@ -29,6 +29,9 @@ This program is a set of tools to build, test, fuzz, debug and deploy Solidity s
 [forge init](./forge-init.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Create a new Forge project.
 
+[forge clone](./forge-clone.md)  
+&nbsp;&nbsp;&nbsp;&nbsp;Clone a on-chain verified contract as a Forge project.
+
 [forge install](./forge-install.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Install one or multiple dependencies.
 

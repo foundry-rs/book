@@ -1,6 +1,7 @@
 ## Project Commands
 
 - [forge init](./forge-init.md)
+- [forge clone](./forge-clone.md)
 - [forge install](./forge-install.md)
 - [forge update](./forge-update.md)
 - [forge remove](./forge-remove.md)

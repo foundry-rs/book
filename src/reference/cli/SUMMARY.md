@@ -5,6 +5,7 @@
     - [`forge cache clean`](./forge/cache/clean.md)
     - [`forge cache ls`](./forge/cache/ls.md)
   - [`forge clean`](./forge/clean.md)
+  - [`forge clone`](./forge/clone.md)
   - [`forge completions`](./forge/completions.md)
   - [`forge config`](./forge/config.md)
   - [`forge coverage`](./forge/coverage.md)
