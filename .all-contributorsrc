@@ -972,6 +972,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "Troublor",
+      "name": "William Cheung",
+      "avatar_url": "https://avatars.githubusercontent.com/u/14846504?v=4",
+      "profile": "https://troublor.xyz",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
