@@ -19,8 +19,7 @@ Arguments:
           
           A ref can be: - A branch: master - A tag: v1.2.3 - A commit: 8e8128
           
-          Target installation directory can be added via `<alias>=` suffix. The dependency will
-          installed to `lib/<alias>`.
+          Target installation directory can be added via `<alias>=` suffix. The dependency will installed to `lib/<alias>`.
 
 Options:
       --root <PATH>
