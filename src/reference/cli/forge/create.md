@@ -26,7 +26,8 @@ Options:
       --show-standard-json-input
           Prints the standard json compiler input if `--verify` is provided.
           
-          The standard json compiler input can be used to manually submit contract verification in the browser.
+          The standard json compiler input can be used to manually submit contract verification in
+          the browser.
 
   -h, --help
           Print help (see a summary with '-h')
@@ -72,11 +73,6 @@ Compiler options:
       --via-ir
           Use the Yul intermediate representation compilation pipeline
 
-      --no-metadata
-          Do not append any metadata to the bytecode.
-          
-          This is equivalent to setting `bytecode_hash` to `none` and `cbor_metadata` to `false`.
-
       --silent
           Don't print anything on startup
 
@@ -97,7 +93,8 @@ Compiler options:
           
           Example keys: evm.assembly, ewasm, ir, irOptimized, metadata
           
-          For a full description, see https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description
+          For a full description, see
+          https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description
 
       --extra-output-files <SELECTOR>...
           Extra output to write to separate files.
@@ -111,7 +108,8 @@ Project options:
       --revert-strings <REVERT>
           Revert string configuration.
           
-          Possible values are "default", "strip" (remove), "debug" (Solidity-generated revert strings) and "verboseDebug"
+          Possible values are "default", "strip" (remove), "debug" (Solidity-generated revert
+          strings) and "verboseDebug"
 
       --build-info
           Generate build info files
@@ -166,7 +164,8 @@ Transaction options:
           [env: ETH_PRIORITY_GAS_PRICE=]
 
       --value <VALUE>
-          Ether to send in the transaction, either specified in wei, or as a string with a unit type.
+          Ether to send in the transaction, either specified in wei, or as a string with a unit
+          type.
           
           Examples: 1ether, 10gwei, 0.01ether
 
@@ -185,16 +184,20 @@ Ethereum options:
           [env: ETH_RPC_URL=]
 
       --flashbots
-          Use the Flashbots RPC URL with fast mode (https://rpc.flashbots.net/fast). This shares the transaction privately with all registered builders.
+          Use the Flashbots RPC URL with fast mode (https://rpc.flashbots.net/fast). This shares the
+          transaction privately with all registered builders.
           https://docs.flashbots.net/flashbots-protect/quick-start#faster-transactions
 
       --jwt-secret <JWT_SECRET>
           JWT Secret for the RPC endpoint.
           
-          The JWT secret will be used to create a JWT for a RPC. For example, the following can be used to simulate a CL `engine_forkchoiceUpdated` call:
+          The JWT secret will be used to create a JWT for a RPC. For example, the following can be
+          used to simulate a CL `engine_forkchoiceUpdated` call:
           
-          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2 '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
-          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc", "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
+          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2
+          '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
           
           [env: ETH_RPC_JWT_SECRET=]
 
