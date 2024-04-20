@@ -10,6 +10,7 @@ First, clone the project and run [`forge install`][install] inside the project d
 $ git clone https://github.com/PaulRBerg/foundry-template
 $ cd foundry-template 
 $ forge install
+$ bun install # install Solhint, Prettier, and other Node.js deps
 ```
 
 We run [`forge install`][install] to install the submodule dependencies that are in the project.
