@@ -265,6 +265,11 @@ Compiler options:
       --via-ir
           Use the Yul intermediate representation compilation pipeline
 
+      --no-metadata
+          Do not append any metadata to the bytecode.
+          
+          This is equivalent to setting `bytecode_hash` to `none` and `cbor_metadata` to `false`.
+
       --silent
           Don't print anything on startup
 

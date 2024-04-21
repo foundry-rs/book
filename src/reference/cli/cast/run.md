@@ -14,6 +14,9 @@ Options:
   -d, --debug
           Opens the transaction in the debugger
 
+  -t, --trace-printer
+          Print out opcode traces
+
   -q, --quick
           Executes the transaction only with the state from the previous block.
           
