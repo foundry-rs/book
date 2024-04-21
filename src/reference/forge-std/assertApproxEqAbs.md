@@ -3,21 +3,31 @@
 ### Signature
 
 ```solidity
-function assertApproxEqAbs(uint256 a, uint256 b, uint256 maxDelta) internal virtual;
+function assertApproxEqAbs(uint256 left, uint256 right, uint256 maxDelta) internal;
 ```
 
 ```solidity
-function assertApproxEqAbs(uint256 a, uint256 b, uint256 maxDelta, string memory err) internal virtual;
+function assertApproxEqAbs(uint256 left, uint256 right, uint256 maxDelta, string memory err) internal;
+```
+
+```solidity
+function assertApproxEqAbs(int256 left, int256 right, uint256 maxDelta) internal;
+```
+
+```solidity
+function assertApproxEqAbs(int256 left, int256 right, uint256 maxDelta, string memory err) internal;
 ```
 
 ### Description
 
-Asserts `a` is approximately equal to `b` with delta in absolute value.
+Asserts `left` is approximately equal to `right` with delta in absolute value.
+
+Optionally includes an error message in the revert string.
 
 ### Examples
 
 ```solidity
-function testFail () external {
+function testFail() external {
     uint256 a = 100;
     uint256 b = 200;
 
@@ -34,3 +44,8 @@ Logs:
    Max Delta: 90
        Delta: 100
 ```
+
+### SEE ALSO
+
+- [`assertApproxEqAbsDecimal`](./assertApproxEqAbsDecimal.md)
+- [`assertApproxEqRel`](./assertApproxEqRel.md)

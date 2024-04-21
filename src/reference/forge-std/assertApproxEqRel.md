@@ -3,16 +3,26 @@
 ### Signature
 
 ```solidity
-function assertApproxEqRel(uint256 a, uint256 b, uint256 maxPercentDelta) internal virtual;
+function assertApproxEqRel(uint256 left, uint256 right, uint256 maxPercentDelta) internal;
 ```
 
 ```solidity
-function assertApproxEqRel(uint256 a, uint256 b, uint256 maxPercentDelta, string memory err) internal virtual;
+function assertApproxEqRel(uint256 left, uint256 right, uint256 maxPercentDelta, string memory err) internal;
+```
+
+```solidity
+function assertApproxEqRel(int256 left, int256 right, uint256 maxPercentDelta) internal;
+```
+
+```solidity
+function assertApproxEqRel(int256 left, int256 right, uint256 maxPercentDelta, string memory err) internal;
 ```
 
 ### Description
 
-Asserts `a` is approximately equal to `b` with delta in percentage, where `1e18` is 100%.
+Asserts `left` is approximately equal to `right` with delta in percentage, where `1e18` is 100%.
+
+Optionally includes an error message in the revert string.
 
 ### Examples
 
@@ -33,3 +43,8 @@ Logs:
    Max % Delta: 0.400000000000000000
        % Delta: 0.500000000000000000
 ```
+
+### SEE ALSO
+
+- [`assertApproxEqRelDecimal`](./assertApproxEqRelDecimal.md)
+- [`assertApproxEqAbs`](./assertApproxEqAbs.md)
