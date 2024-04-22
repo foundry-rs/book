@@ -3,16 +3,18 @@
 ### Signature
 
 ```solidity
-function assertFalse(bool data) internal virtual;
+function assertFalse(bool data) internal;
 ```
 
 ```solidity
-function assertFalse(bool data, string memory err) internal virtual;
+function assertFalse(bool data, string memory err) internal;
 ```
 
 ### Description
 
-Asserts the `condition` is false.
+Asserts `data` is false.
+
+Optionally includes an error message in the revert string.
 
 ### Examples
 
@@ -20,3 +22,7 @@ Asserts the `condition` is false.
 bool failure = contract.fun();
 assertFalse(failure);
 ```
+
+### SEE ALSO
+
+- [`assertTrue`](./assertTrue.md)
