@@ -29,6 +29,8 @@ There's also a third mining mode called never. In this case, it disables auto an
 anvil --no-mining
 ```
 
+To speed up the finalization of blocks you an use the `--slots-in-an-epoch` flag with a value of `1` for example. This will lead to the block at height `N-2` being finalized, where `N` is the latest block.
+
 #### Supported Transport Layers
 HTTP and Websocket connections are supported. The server listens on port 8545 by default, but it can be changed by running the following command:
 
