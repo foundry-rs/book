@@ -25,6 +25,6 @@ emit log_uint(nonce); // 0
 #### `Wallet`
 ```solidity
 Wallet memory alice = vm.createWallet("alice");
-uint256 nonce = vm.getNonce(nonce);
+uint256 nonce = vm.getNonce(alice);
 emit log_uint(nonce); // 0
 ```
