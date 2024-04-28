@@ -6,10 +6,10 @@ $ forge test
 No files changed, compilation skipped
 
 Ran 2 tests for test/Counter.t.sol:CounterTest
-[PASS] testFuzz_SetNumber(uint256) (runs: 256, μ: 30454, ~: 31310)
+[PASS] testFuzz_SetNumber(uint256) (runs: 256, μ: 31154, ~: 31310)
 [PASS] test_Increment() (gas: 31325)
-Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 9.15ms (8.89ms CPU time)
+Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 10.23ms (9.97ms CPU time)
 
-Ran 1 test suite in 13.66ms (9.15ms CPU time): 2 tests passed, 0 failed, 0 skipped (2 total tests)
+Ran 1 test suite in 15.18ms (10.23ms CPU time): 2 tests passed, 0 failed, 0 skipped (2 total tests)
 // ANCHOR_END: output
 // ANCHOR_END: all

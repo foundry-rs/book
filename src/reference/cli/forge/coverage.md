@@ -32,6 +32,63 @@ Options:
   -h, --help
           Print help (see a summary with '-h')
 
+Test options:
+      --debug <TEST_FUNCTION>
+          Run a test in the debugger.
+          
+          The argument passed to this flag is the name of the test function you want to run, and it
+          works the same as --match-test.
+          
+          If more than one test matches your specified criteria, you must add additional filters
+          until only one test is found (see --match-contract and --match-path).
+          
+          The matching test will be opened in the debugger regardless of the outcome of the test.
+          
+          If the matching test is a fuzz test, then it will open the debugger on the first failure
+          case. If the fuzz test does not fail, it will open the debugger on the last fuzz case.
+          
+          For more fine-grained control of which fuzz case is run, see forge run.
+
+      --gas-report
+          Print a gas report
+          
+          [env: FORGE_GAS_REPORT=]
+
+      --allow-failure
+          Exit with code 0 even if a test fails
+          
+          [env: FORGE_ALLOW_FAILURE=]
+
+      --fail-fast
+          Stop running tests after the first failure
+
+      --etherscan-api-key <KEY>
+          The Etherscan (or equivalent) API key
+          
+          [env: ETHERSCAN_API_KEY=]
+
+      --fuzz-seed <FUZZ_SEED>
+          Set seed used to generate randomness during your fuzz runs
+
+      --fuzz-runs <RUNS>
+          [env: FOUNDRY_FUZZ_RUNS=]
+
+      --fuzz-input-file <FUZZ_INPUT_FILE>
+          File to rerun fuzz failures from
+
+Display options:
+  -j, --json
+          Output test results in JSON format
+
+  -l, --list
+          List tests instead of running them
+
+      --summary
+          Print test summary table
+
+      --detailed
+          Print detailed test summary table
+
 Test filtering:
       --match-test <REGEX>
           Only run test functions matching the specified regex pattern
@@ -308,4 +365,31 @@ Project options:
 
       --config-path <FILE>
           Path to the config file
+
+Watch options:
+  -w, --watch [<PATH>...]
+          Watch the given files or directories for changes.
+          
+          If no paths are provided, the source and test directories of the project are watched.
+
+      --no-restart
+          Do not restart the command while it's still running
+
+      --run-all
+          Explicitly re-run all tests when a change is made.
+          
+          By default, only the tests of the last modified test file are executed.
+
+      --watch-delay <DELAY>
+          File update debounce delay.
+          
+          During the delay, incoming change events are accumulated and only once the delay has
+          passed, is an action taken. Note that this does not mean a command will be started: if
+          --no-restart is given and a command is already running, the outcome of the action will be
+          to do nothing.
+          
+          Defaults to 50ms. Parses as decimal seconds by default, but using an integer with the `ms`
+          suffix may be more convenient.
+          
+          When using --poll mode, you'll want a larger duration, or risk overloading disk I/O.
 ```
