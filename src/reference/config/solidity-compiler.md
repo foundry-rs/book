@@ -261,17 +261,24 @@ The amount of optimizer runs to perform.
 
 If set to true, changes compilation pipeline to go through the new IR optimizer.
 
+##### `use_literal_content`
+
+- Type: boolean
+- Default: false
+
+If set to true, changes compilation to only use literal content and not URLs.
+
 ##### `[optimizer_details]`
 
 The optimizer details section is used to tweak how the Solidity optimizer behaves. There are several configurable values in this section (each of them are booleans):
 
 - `peephole`
 - `inliner`
-- `jumpdest_remover`
-- `order_literals`
+- `jumpdestRemover`
+- `orderLiterals`
 - `deduplicate`
 - `cse`
-- `constant_optimizer`
+- `constantOptimizer`
 - `yul`
 
 Refer to the Solidity [compiler input description](https://docs.soliditylang.org/en/latest/using-the-compiler.html#compiler-input-and-output-json-description) for the default values.
