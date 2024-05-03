@@ -115,6 +115,8 @@ Another approach to handle different invariants across protocol states is to uti
 
 **Target Senders**: The invariant test fuzzer picks values for `msg.sender` at random when performing fuzz campaigns to simulate multiple actors in a system by default. If desired, the set of senders can be customized in the `setUp` function.
 
+**Target Interfaces**: The set of addresses and their project identifiers that are not deployed during `setUp` but fuzzed in a forked environment (E.g. `[(0x1, ["IERC20"]), (0x2, ("IOwnable"))]`). This enables targeting of delegate proxies and contracts deployed with `create` or `create2`.
+
 **Target Selectors**: The set of function selectors that are used by the fuzzer for invariant testing. These can be used to use a subset of functions within a given target contract.
 
 **Target Artifacts**: The desired ABI to be used for a given contract. These can be used for proxy contract configurations.
@@ -123,7 +125,7 @@ Another approach to handle different invariants across protocol states is to uti
 
 Priorities for the invariant fuzzer in the cases of target clashes are:
 
-`targetSelectors | targetArtifactSelectors > excludeContracts | excludeArtifacts > targetContracts | targetArtifacts`
+`targetInterfaces | targetSelectors | targetArtifactSelectors > excludeContracts | excludeArtifacts > targetContracts | targetArtifacts`
 
 ### Function Call Probability Distribution
 
@@ -154,11 +156,11 @@ Invariant test helper functions are included in [`forge-std`](https://github.com
 | `excludeSender(address newExcludedSender_)` | Adds a given address to the `_excludedSenders` array. This set of addresses is explicitly excluded from the target senders. |
 | `excludeArtifact(string memory newExcludedArtifact_)` | Adds a given string to the `_excludedArtifacts` array. This set of strings is explicitly excluded from the target artifacts. |
 | `targetArtifact(string memory newTargetedArtifact_)` | Adds a given string to the `_targetedArtifacts` array. This set of strings is used for the target artifacts.  |
-| `targetArtifactSelector(FuzzSelector memory newTargetedArtifactSelector_)` | Adds a given `FuzzSelector` to the to `_targetedArtifactSelectors` array. This set of `FuzzSelector`s is used for the target artifact selectors. |
-| `targetContract(address newTargetedContract_)` | Adds a given address to the to `_targetedContracts` array. This set of addresses is used for the target contracts. This array overwrites the set of contracts that was deployed during the `setUp`. |
-| `targetSelector(FuzzSelector memory newTargetedSelector_)` | Adds a given `FuzzSelector` to the to `_targetedSelectors` array. This set of `FuzzSelector`s is used for the target contract selectors. |
-| `targetSender(address newTargetedSender_)` | Adds a given address to the to `_targetedSenders` array. This set of addresses is used for the target senders. |
-
+| `targetArtifactSelector(FuzzArtifactSelector memory newTargetedArtifactSelector_)` | Adds a given `FuzzArtifactSelector` to the `_targetedArtifactSelectors` array. This set of `FuzzArtifactSelector`s is used for the target artifact selectors. |
+| `targetContract(address newTargetedContract_)` | Adds a given address to the `_targetedContracts` array. This set of addresses is used for the target contracts. This array overwrites the set of contracts that was deployed during the `setUp`. |
+| `targetSelector(FuzzSelector memory newTargetedSelector_)` | Adds a given `FuzzSelector` to the `_targetedSelectors` array. This set of `FuzzSelector`s is used for the target contract selectors. |
+| `targetSender(address newTargetedSender_)` | Adds a given address to the `_targetedSenders` array. This set of addresses is used for the target senders. |
+| `targetInterface(FuzzInterface memory newTargetedInterface_)` | Adds a given `FuzzInterface` to the `_targetedInterfaces` array. This set of `FuzzInterface` extends the contracts and selectors to fuzz and enables targeting of addresses that are not deployed during `setUp` such as when fuzzing in a forked environment. Also enables targeting of delegate proxies and contracts deployed with `create` or `create2`. |
 
 ### Target Contract Setup
 
