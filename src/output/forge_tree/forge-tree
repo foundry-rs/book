@@ -3,7 +3,7 @@
 $ forge tree
 // ANCHOR_END: command
 // ANCHOR: output
-src/OpenZeppelinNft.sol 0.8.10
+src/OpenZeppelinNft.sol =0.8.10
 ├── lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol ^0.8.0
 │   ├── lib/openzeppelin-contracts/contracts/token/ERC721/IERC721.sol ^0.8.0
 │   │   └── lib/openzeppelin-contracts/contracts/utils/introspection/IERC165.sol ^0.8.0
@@ -22,22 +22,22 @@ src/OpenZeppelinNft.sol 0.8.10
 │       │   └── lib/openzeppelin-contracts/contracts/utils/Context.sol ^0.8.0
 │       └── lib/openzeppelin-contracts/contracts/utils/Address.sol ^0.8.1
 └── lib/openzeppelin-contracts/contracts/access/Ownable.sol ^0.8.0 (*)
-src/SolmateNft.sol 0.8.10
+src/SolmateNft.sol =0.8.10
 ├── lib/solmate/src/tokens/ERC721.sol >=0.8.0
 ├── lib/openzeppelin-contracts/contracts/utils/Strings.sol ^0.8.0
 ├── lib/openzeppelin-contracts/contracts/security/PullPayment.sol ^0.8.0 (*)
 └── lib/openzeppelin-contracts/contracts/access/Ownable.sol ^0.8.0 (*)
-test/OpenZeppelinNft.t.sol 0.8.10
-├── lib/forge-std/src/Test.sol >=0.6.0 <0.9.0
-│   ├── lib/forge-std/src/Script.sol >=0.6.0 <0.9.0
+test/OpenZeppelinNft.t.sol =0.8.10
+├── lib/forge-std/src/Test.sol >=0.6.0, <0.9.0
+│   ├── lib/forge-std/src/Script.sol >=0.6.0, <0.9.0
 │   │   ├── lib/forge-std/src/Vm.sol >=0.6.0
-│   │   ├── lib/forge-std/src/console.sol >=0.4.22 <0.9.0
-│   │   └── lib/forge-std/src/console2.sol >=0.4.22 <0.9.0
+│   │   ├── lib/forge-std/src/console.sol >=0.4.22, <0.9.0
+│   │   └── lib/forge-std/src/console2.sol >=0.4.22, <0.9.0
 │   └── lib/forge-std/lib/ds-test/src/test.sol >=0.5.0
-├── src/OpenZeppelinNft.sol 0.8.10 (*)
+├── src/OpenZeppelinNft.sol =0.8.10 (*)
 └── lib/openzeppelin-contracts/contracts/token/ERC721/IERC721Receiver.sol ^0.8.0
-test/SolmateNft.sol 0.8.10
-├── lib/forge-std/src/Test.sol >=0.6.0 <0.9.0 (*)
-└── src/SolmateNft.sol 0.8.10 (*)
+test/SolmateNft.sol =0.8.10
+├── lib/forge-std/src/Test.sol >=0.6.0, <0.9.0 (*)
+└── src/SolmateNft.sol =0.8.10 (*)
 // ANCHOR_END: output
 // ANCHOR_END: all
