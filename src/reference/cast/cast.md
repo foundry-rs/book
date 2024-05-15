@@ -222,6 +222,9 @@ This program is a set of tools to interact with Ethereum and perform conversions
 
 #### Utility Commands
 
+[cast address-zero](./cast-address-zero.md)
+&nbsp;&nbsp;&nbsp;&nbsp;Prints the zero address.
+
 [cast sig](./cast-sig.md)
 &nbsp;&nbsp;&nbsp;&nbsp;Get the selector for a function.
 

@@ -1,5 +1,6 @@
 ## Utility Commands
 
+- [cast address-zero](./cast-address-zero.md)
 - [cast sig](./cast-sig.md)
 - [cast sig-event](./cast-sig-event.md)
 - [cast keccak](./cast-keccak.md)
