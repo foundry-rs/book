@@ -59,7 +59,7 @@ Note that for Etherscan [`ETHERSCAN_API_KEY`](../reference/config/etherscan.md#e
 
 If you are verifying an already deployed contract, read on.
 
-You can verify a contract on Etherscan, Sourcify or Blockscout with the [`forge verify-contract`](../reference/forge/forge-verify-contract.md) command.
+You can verify a contract on Etherscan, Sourcify, oklink or Blockscout with the [`forge verify-contract`](../reference/forge/forge-verify-contract.md) command.
 
 You must provide:
 - the contract address
