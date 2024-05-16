@@ -116,6 +116,11 @@ you can specify a file containing **space-separated** constructor arguments with
     forge create --rpc-url <rpc_https_endpoint> --private-key $devTestnetPrivateKey src/Contract.sol:SimpleStorage --verify --verifier blockscout --verifier-url <blockscout_homepage_explorer_url>/api? 
     ```
 
+6. verify a contract with Oklink
+    ```sh
+    forge verify-contract 0x230885033f14b1F7D8f879f086d2b86656dDB125 Counter --verifier oklink --verifier-url https://www.oklink.com/api/explorer/v1/contract/verify/async/api/ethsepolia  --api-key $API_KEY --chain sepolia --compiler-version 0.8.13
+    ```
+
 ### SEE ALSO
 
 [forge](./forge.md), [forge create](./forge-create.md), [forge flatten](./forge-flatten.md), [forge verify-check](./forge-verify-check.md)
