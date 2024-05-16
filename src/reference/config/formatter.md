@@ -2,154 +2,6 @@
 
 Configuration related to the behavior of the Forge formatter. Each of these keys live under the `[fmt]` section.
 
-## `single_line_statement_blocks`
-
-> This allows configuring the style of statement blocks independently of the line length.
-
-The `single_line_statement_blocks` configuration option in Foundry controls whether statement blocks (code blocks enclosed in `{ }`) will be formatted to a single line or multiple lines.
-
-It has three possible values:
-
--   `"single"` - Statement blocks will be formatted to a single line if possible.
--   `"multi"` - Statement blocks will always be formatted to multiple lines.
--   `"preserve"` - Keep the existing single/multi line formatting of statement blocks.
-    
-
-For example, with `"single"`:
-
-```solidity
-if (true) { return true; }
-```
-
-With `"multi"`:
-
-```solidity
-if (true) {
-  return true;
-}
-```
-
-And with `"preserve"`, it will keep the original formatting of the code.
-
-
-## `multiline_func_header`
-
-> This allows configuring the formatting of long function headers.
-
-- Type: string
-- Default: `attributes_first`
-- Environment: `FOUNDRY_FMT_MULTILINE_FUNC_HEADER` or `DAPP_FMT_MULTILINE_FUNC_HEADER`
-
-The `multiline_func_header` configuration option in Foundry controls how function headers (the line containing the function name, parameters, return values etc.) are formatted when they exceed the max line length.
-
-Style of multiline function header in case it doesn't fit in one line. Valid possible values:
-
--   `"attributes_first"` - (default)  Write function attributes multiline first
--   `"params_first"` - Break the function header into multiple lines, with each parameter on its own line. The function name stays on the first line.
--   `"all"` - If function parameters or attributes are multiline, multiline everything
-    
-
-Style of multiline function header in case it doesn't fit in one line. Valid values are:
-
-For example, with `"params_first"`:
-
-```solidity
-function myFunction(
-    uint256 param1, 
-    uint256 param2,
-    uint256 param3
-) public returns (uint256) {
-  // ...
-}
-
-```
-
-And with `"all"`:
-
-```solidity
-function myFunction(
-    uint256 param1,
-    uint256 param2, 
-    uint256 param3
-) 
-    public 
-    returns (uint256) 
-{
-  // ...  
-}
-```
-
-## `sort_imports`
-
-> helps organize imports and makes it easier to find specific imports quickly.
-
-The `sort_imports` configuration option in Foundry controls whether import statements are sorted alphabetically within their import groups.
-
-From the code snippets provided:
-
--   In `fmt.rs`, `sort_imports` is a configuration option that can be set to `true` or `false`.
--   In `formatter.rs`, the `sort_imports()` method is called to sort import statements alphabetically if `sort_imports` is enabled.
--   It finds import groups separated by blank lines in the source code.
--   Then sorts the import statements within each group alphabetically.
-    
-
-So in summary, enabling `sort_imports` will reorder solidity import statements alphabetically within their section groups, while preserving the relative ordering of the groups.
-
-
-
-## `contract_new_lines`
-
-> Controls the addition of blank lines before and after contract definitions.
-
-The `contract_new_lines` configuration option in Foundry controls whether empty lines are added before and after contract definitions.
-
-When enabled (`contract_new_lines = true`):
-
--   An empty line will be added before the start of a contract definition.
--   An empty line will also be added after the end of a contract definition.
-
-For example, with `contract_new_lines` enabled:
-
-```solidity
-// Empty line before contract contract MyContract { // ... } // Empty line after contract
-```
-
-This helps visually separate contract definitions and improve readability.
-
-When disabled (`contract_new_lines = false`), empty lines will not be added around contracts.
-
-So in summary, the `contract_new_lines` option controls the addition of blank lines before and after contract definitions.
-
-## `override_spacing`
-
-The `override_spacing` configuration option in Foundry controls whether a space is printed between the `override` keyword and the parent contracts when overriding a function or modifier.
-
-When `override_spacing` is enabled:
-
--   A space will be added after the `override` keyword.
-
-For example:
-
-```solidity
-contract Child is Parent {
-  function foo() override (Parent) public { }
-}
-```
-
-When disabled, there will be no space between `override` and the parent contracts:
-
-```solidity
-contract Child is Parent {
-  function foo() override(Parent) public { } 
-}
-```
-
-Enables configuring the styling of override declarations.
-
--   `override_spacing = true` - Print a space after `override`
--   `override_spacing = false` - No space after `override`
-
-
 ##### `line_length`
 
 - Type: number
@@ -186,6 +38,18 @@ Style of uint/int256 types. Valid values are:
 - `short`: Use the implicit `uint` or `int`
 - `preserve`: Use the type defined in the source code
 
+##### `multiline_func_header`
+
+- Type: string
+- Default: `attributes_first`
+- Environment: `FOUNDRY_FMT_MULTILINE_FUNC_HEADER` or `DAPP_FMT_MULTILINE_FUNC_HEADER`
+
+Style of multiline function header in case it doesn't fit in one line. Valid values are:
+
+- `attributes_first` (default): Write function attributes multiline first
+- `params_first`: Write function parameters multiline first
+- `all`: If function parameters or attributes are multiline, multiline everything
+
 ##### `quote_style`
 
 - Type: string
@@ -210,6 +74,13 @@ Style of underscores in number literals. Valid values are:
 - `thousands`: Add an underscore every thousand, if greater than 9999. i.e. `1000` is formatted as `1000` and `10000` as `10_000`
 - `remove`: Remove all underscores
 
+##### `override_spacing`
+
+- Type: bool
+- Default: true
+- Environment: `FOUNDRY_FMT_OVERRIDE_SPACING` or `DAPP_FMT_OVERRIDE_SPACING`
+
+Whether or not to print a space in `override` attributes for contract state variables, functions, and modifiers.
 
 ##### `wrap_comments`
 
