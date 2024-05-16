@@ -335,6 +335,7 @@
       - [cast shl](./reference/cast/cast-shl.md)
       - [cast shr](./reference/cast/cast-shr.md)
     - [Utility Commands](./reference/cast/utility-commands.md)
+      - [cast address-zero](./reference/cast/cast-address-zero.md)
       - [cast sig](./reference/cast/cast-sig.md)
       - [cast sig-event](./reference/cast/cast-sig-event.md)
       - [cast keccak](./reference/cast/cast-keccak.md)
