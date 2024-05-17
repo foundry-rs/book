@@ -17,6 +17,7 @@ Note that, while some chains like Optimism have bytecode deployed at a predeterm
 | ALL           | `0x07`                                       | ECMul                            |
 | ALL           | `0x08`                                       | ECPairing                        |
 | ALL           | `0x09`                                       | Blake2F                          |
+| ALL           | `0x0a`                                       | PointEvaluation                  |
 | 10, 420       | `0x4200000000000000000000000000000000000016` | L2ToL1MessagePasser              |
 | 10, 420       | `0x4200000000000000000000000000000000000002` | DeployerWhitelist                |
 | 10, 420       | `0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000` | LegacyERC20ETH                   |
