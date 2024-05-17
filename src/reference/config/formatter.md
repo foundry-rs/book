@@ -2,7 +2,7 @@
 
 Configuration related to the behavior of the Forge formatter. Each of these keys live under the `[fmt]` section.
 
-## `single_line_statement_blocks`
+### `single_line_statement_blocks`
 
 > This allows configuring the style of statement blocks independently of the line length.
 
@@ -13,7 +13,6 @@ It has three possible values:
 -   `"single"` - Statement blocks will be formatted to a single line if possible.
 -   `"multi"` - Statement blocks will always be formatted to multiple lines.
 -   `"preserve"` - Keep the existing single/multi line formatting of statement blocks.
-    
 
 For example, with `"single"`:
 
@@ -31,8 +30,7 @@ if (true) {
 
 And with `"preserve"`, it will keep the original formatting of the code.
 
-
-## `multiline_func_header`
+### `multiline_func_header`
 
 > This allows configuring the formatting of long function headers.
 
@@ -79,7 +77,7 @@ function myFunction(
 }
 ```
 
-## `sort_imports`
+### `sort_imports`
 
 > helps organize imports and makes it easier to find specific imports quickly.
 
@@ -91,13 +89,10 @@ From the code snippets provided:
 -   In `formatter.rs`, the `sort_imports()` method is called to sort import statements alphabetically if `sort_imports` is enabled.
 -   It finds import groups separated by blank lines in the source code.
 -   Then sorts the import statements within each group alphabetically.
-    
 
 So in summary, enabling `sort_imports` will reorder solidity import statements alphabetically within their section groups, while preserving the relative ordering of the groups.
 
-
-
-## `contract_new_lines`
+### `contract_new_lines`
 
 > Controls the addition of blank lines before and after contract definitions.
 
@@ -120,7 +115,7 @@ When disabled (`contract_new_lines = false`), empty lines will not be added arou
 
 So in summary, the `contract_new_lines` option controls the addition of blank lines before and after contract definitions.
 
-## `override_spacing`
+### `override_spacing`
 
 The `override_spacing` configuration option in Foundry controls whether a space is printed between the `override` keyword and the parent contracts when overriding a function or modifier.
 
@@ -150,7 +145,7 @@ Enables configuring the styling of override declarations.
 -   `override_spacing = false` - No space after `override`
 
 
-##### `line_length`
+### `line_length`
 
 - Type: number
 - Default: 120
@@ -158,7 +153,7 @@ Enables configuring the styling of override declarations.
 
 Maximum line length where formatter will try to wrap the line.
 
-##### `tab_width`
+### `tab_width`
 
 - Type: number
 - Default: 4
@@ -166,7 +161,7 @@ Maximum line length where formatter will try to wrap the line.
 
 Number of spaces per indentation level.
 
-##### `bracket_spacing`
+### `bracket_spacing`
 
 - Type: bool
 - Default: false
@@ -174,7 +169,7 @@ Number of spaces per indentation level.
 
 Whether or not to print spaces between brackets.
 
-##### `int_types`
+### `int_types`
 
 - Type: string
 - Default: `long`
@@ -186,7 +181,7 @@ Style of uint/int256 types. Valid values are:
 - `short`: Use the implicit `uint` or `int`
 - `preserve`: Use the type defined in the source code
 
-##### `quote_style`
+### `quote_style`
 
 - Type: string
 - Default: `double`
@@ -198,7 +193,7 @@ Defines the quotation mark style. Valid values are:
 - `single`: Use single quotes where possible (`'`)
 - `preserve`: Use quotation mark defined in the source code
 
-##### `number_underscore`
+### `number_underscore`
 
 - Type: string
 - Default: `preserve`
@@ -210,8 +205,7 @@ Style of underscores in number literals. Valid values are:
 - `thousands`: Add an underscore every thousand, if greater than 9999. i.e. `1000` is formatted as `1000` and `10000` as `10_000`
 - `remove`: Remove all underscores
 
-
-##### `wrap_comments`
+### `wrap_comments`
 
 - Type: bool
 - Default: false
@@ -219,7 +213,7 @@ Style of underscores in number literals. Valid values are:
 
 Whether or not to wrap comments on `line_length` reached.
 
-##### `ignore`
+### `ignore`
 
 - Type: array of strings (patterns)
 - Default: `[]`
