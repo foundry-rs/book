@@ -108,6 +108,7 @@ Commands:
                              2u]
   to-unit                Convert an ETH amount into another unit (ether, gwei or wei) [aliases:
                              --to-unit, tun, 2un]
+  to-utf8                Convert hex data to a utf-8 string [aliases: --to-utf8, tu8, 2u8]
   to-wei                 Convert an ETH amount to wei [aliases: --to-wei, tw, 2w]
   tx                     Get information about a transaction [aliases: t]
   upload-signature       Upload the given signatures to https://openchain.xyz [aliases: ups]
