@@ -121,6 +121,7 @@
   - [`cast to-rlp`](./cast/to-rlp.md)
   - [`cast to-uint256`](./cast/to-uint256.md)
   - [`cast to-unit`](./cast/to-unit.md)
+  - [`cast to-utf8`](./cast/to-utf8.md)
   - [`cast to-wei`](./cast/to-wei.md)
   - [`cast tx`](./cast/tx.md)
   - [`cast upload-signature`](./cast/upload-signature.md)
@@ -134,6 +135,7 @@
     - [`cast wallet import`](./cast/wallet/import.md)
     - [`cast wallet list`](./cast/wallet/list.md)
     - [`cast wallet derive-private-key`](./cast/wallet/derive-private-key.md)
+    - [`cast wallet decrypt-keystore`](./cast/wallet/decrypt-keystore.md)
 
 - [`anvil`](./anvil.md)
   - [`anvil completions`](./anvil/completions.md)

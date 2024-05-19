@@ -442,7 +442,7 @@ Verifier options:
           The contract verification provider to use
           
           [default: etherscan]
-          [possible values: etherscan, sourcify, blockscout]
+          [possible values: etherscan, sourcify, blockscout, oklink]
 
       --verifier-url <VERIFIER_URL>
           The verifier URL, if using a custom provider

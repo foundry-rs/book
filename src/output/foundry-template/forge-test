@@ -6,11 +6,11 @@ $ forge test
 No files changed, compilation skipped
 
 Ran 3 tests for test/Foo.t.sol:FooTest
-[PASS] testFork_Example() (gas: 3791)
-[PASS] testFuzz_Example(uint256) (runs: 1000, μ: 9122, ~: 9122)
-[PASS] test_Example() (gas: 11875)
-Suite result: ok. 3 passed; 0 failed; 0 skipped; finished in 37.91ms (37.71ms CPU time)
+[PASS] testFork_Example() (gas: 3779)
+[PASS] testFuzz_Example(uint256) (runs: 1000, μ: 9111, ~: 9111)
+[PASS] test_Example() (gas: 11861)
+Suite result: ok. 3 passed; 0 failed; 0 skipped; finished in 37.26ms (37.05ms CPU time)
 
-Ran 1 test suite in 42.15ms (37.91ms CPU time): 3 tests passed, 0 failed, 0 skipped (3 total tests)
+Ran 1 test suite in 41.92ms (37.26ms CPU time): 3 tests passed, 0 failed, 0 skipped (3 total tests)
 // ANCHOR_END: output
 // ANCHOR_END: all
