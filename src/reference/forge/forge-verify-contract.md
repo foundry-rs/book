@@ -118,7 +118,12 @@ you can specify a file containing **space-separated** constructor arguments with
 
 6. verify a contract with Oklink
     ```sh
-    forge verify-contract 0x230885033f14b1F7D8f879f086d2b86656dDB125 Counter --verifier oklink --verifier-url https://www.oklink.com/api/explorer/v1/contract/verify/async/api/ethsepolia  --api-key $API_KEY --chain sepolia --compiler-version 0.8.13
+    forge verify-contract 0x8CDDE82cFB4555D6ca21B5b28F97630265DA94c4 Counter --verifier oklink --verifier-url https://www.oklink.com/api/v5/explorer/contract/verify-source-code-plugin/XLAYER  --api-key $OKLINK_API_KEY
+    ```
+    
+7. verify a contract with Oklink while delployment
+    ```sh
+    forge create Counter --rpc-url https://rpc.xlayer.tech --verify --verifier oklink --verifier-url https://www.oklink.com/api/v5/explorer/contract/verify-source-code-plugin/XLAYER --etherscan-api-key $OKLINK_API_KEY --private-key $PRIVATE_KEY --legacy
     ```
 
 ### SEE ALSO
