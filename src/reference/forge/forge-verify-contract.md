@@ -121,7 +121,7 @@ you can specify a file containing **space-separated** constructor arguments with
     forge verify-contract 0x8CDDE82cFB4555D6ca21B5b28F97630265DA94c4 Counter --verifier oklink --verifier-url https://www.oklink.com/api/v5/explorer/contract/verify-source-code-plugin/XLAYER  --api-key $OKLINK_API_KEY
     ```
     
-7. verify a contract with Oklink while delployment
+7. verify a contract with Oklink while deploying
     ```sh
     forge create Counter --rpc-url https://rpc.xlayer.tech --verify --verifier oklink --verifier-url https://www.oklink.com/api/v5/explorer/contract/verify-source-code-plugin/XLAYER --etherscan-api-key $OKLINK_API_KEY --private-key $PRIVATE_KEY --legacy
     ```
