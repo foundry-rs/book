@@ -123,7 +123,7 @@ you can specify a file containing **space-separated** constructor arguments with
     
 7. verify a contract with Oklink while deploying
     ```sh
-    forge create Counter --rpc-url https://rpc.xlayer.tech --verify --verifier oklink --verifier-url https://www.oklink.com/api/v5/explorer/contract/verify-source-code-plugin/XLAYER --etherscan-api-key $OKLINK_API_KEY --private-key $PRIVATE_KEY --legacy
+    forge create Counter --rpc-url <rpc_https_endpoint> --verify --verifier oklink --verifier-url https://www.oklink.com/api/v5/explorer/contract/verify-source-code-plugin/XLAYER --etherscan-api-key $OKLINK_API_KEY --private-key $PRIVATE_KEY --legacy
     ```
 
 ### SEE ALSO
