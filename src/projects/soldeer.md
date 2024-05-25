@@ -30,7 +30,8 @@ E.g.
 auto_detect_solc = false 
 bytecode_hash = "none" 
 fuzz = { runs = 1_000 } 
-gas_reports = ["*"] # <= This is important to be added
+libs = ["dependencies"] # <= This is important to be added
+gas_reports = ["*"] 
 
 [dependencies] # <= Dependencies will be added under this config
 "@openzeppelin-contracts" = { version = "5.0.2" }
