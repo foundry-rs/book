@@ -133,8 +133,4 @@ Wallet options - hardware wallet:
 
   -t, --trezor
           Use a Trezor hardware wallet
-
-Wallet options - AWS KMS:
-      --aws
-          Use AWS Key Management Service
 ```

@@ -59,6 +59,14 @@ Transaction options:
           
           This is automatically enabled for common networks without EIP1559.
 
+      --blob
+          Send a EIP-4844 blob transaction
+
+      --blob-gas-price <BLOB_PRICE>
+          Gas price for EIP-4844 blob transaction
+          
+          [env: ETH_BLOB_GAS_PRICE=]
+
 Ethereum options:
   -r, --rpc-url <URL>
           The RPC endpoint
@@ -152,8 +160,4 @@ Wallet options - hardware wallet:
 
   -t, --trezor
           Use a Trezor hardware wallet
-
-Wallet options - AWS KMS:
-      --aws
-          Use AWS Key Management Service
 ```
