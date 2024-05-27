@@ -4,13 +4,13 @@ Verify smart contracts on Etherscan
 
 ```bash
 $ forge verify-contract --help
-Usage: forge verify-contract [OPTIONS] <ADDRESS> <CONTRACT>
+Usage: forge verify-contract [OPTIONS] <ADDRESS> [CONTRACT]
 
 Arguments:
   <ADDRESS>
           The address of the contract to verify
 
-  <CONTRACT>
+  [CONTRACT]
           The contract identifier in the form `<path>:<contractname>`
 
 Options:
