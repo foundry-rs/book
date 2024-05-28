@@ -15,7 +15,7 @@ To add a dependency, you can visit [soldeer.xyz](https://soldeer.xyz) and search
 ![image](https://i.postimg.cc/Hm6R8MTs/Unknown-413.png)
 
 Then just run the forge command:
-```
+```bash
 forge soldeer install @openzeppelin-contracts~5.0.2
 ```
 
@@ -45,7 +45,7 @@ forge-std = { version = "1.8.1" }
 If the central repository does not have a certain dependency, you can install it by providing a zip archive link.
 
 E.g.
-```
+```bash
 forge soldeer install @custom-dependency~1.0.0 https://my-website.com/custom-dependency-1-0-0.zip
 ```
 
@@ -62,7 +62,7 @@ E.g.
 The remapping of a dependency is performed automatically, Soldeer is adding the dependency into the `remappings.txt`.
 
 E.g.
-```
+```bash
 @openzeppelin-contracts-5.0.2=dependencies/@openzeppelin-contracts-5.0.2
 @uniswap-universal-router-1.6.0=dependencies/@uniswap-universal-router-1.6.0
 @prb-math-4.0.2=dependencies/@prb-math-4.0.2
