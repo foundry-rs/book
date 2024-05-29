@@ -126,6 +126,95 @@ struct Json {
 
 The reason is that it would try to decode the string `"sigma"` as a uint. To be exact, it would be decoded, but it would result to a wrong number, since it would interpret the bytes incorrectly.
 
+Another example, given the following TOML:
+
+```toml
+name = "Fresh Fruit"
+
+[[apples]]
+sweetness = 7
+sourness = 3
+color = "Red"
+
+[[apples]]
+sweetness = 5
+sourness = 5
+color = "Green"
+
+[[apples]]
+sweetness = 9
+sourness = 1
+color = "Yellow"
+```
+
+will be converted into the following JSON:
+
+```json
+{
+    "apples": [
+        {
+            "sweetness": 7,
+            "sourness": 3,
+            "color": "Red"
+        },
+        {
+            "sweetness": 5,
+            "sourness": 5,
+            "color": "Green"
+        },
+        {
+            "sweetness": 9,
+            "sourness": 1,
+            "color": "Yellow"
+        }
+    ],
+    "name": "Fresh Fruit"
+}
+```
+
+And Solidity structs defined as follows:
+
+```solidity
+struct Apple {
+    string color;
+    uint8 sourness;
+    uint8 sweetness;
+}
+
+struct FruitStall {
+    Apple[] apples;
+    string name;
+}
+```
+
+One would decode the TOML as follows:
+
+```solidity
+string memory root = vm.projectRoot();
+string memory path = string.concat(root, "/src/test/fixtures/fruitstall.toml");
+string memory toml = vm.readFile(path);
+bytes memory data = vm.parseToml(toml);
+FruitStall memory fruitstall = abi.decode(data, (FruitStall));
+
+// Logs: Welcome to Fresh Fruit
+console2.log("Welcome to", fruitstall.name);
+
+for (uint256 i = 0; i < fruitstall.apples.length; i++) {
+    Apple memory apple = fruitstall.apples[i];
+
+    // Logs:
+    // Color: Red, Sourness: 3, Sweetness: 7
+    // Color: Green, Sourness: 5, Sweetness: 5
+    // Color: Yellow, Sourness: 1, Sweetness: 9
+    console2.log(
+        "Color: %s, Sourness: %d, Sweetness: %d",
+        apple.color,
+        apple.sourness,
+        apple.sweetness
+    );
+}
+```
+
 ### How to use StdToml
 
 1. Import the library `import "../StdToml.sol";`
