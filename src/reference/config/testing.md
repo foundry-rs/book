@@ -395,7 +395,7 @@ The number of runs that must execute for each invariant test group. See also [fu
 ##### `depth`
 
 - Type: integer
-- Default: 15
+- Default: 500
 - Environment: `FOUNDRY_INVARIANT_DEPTH`
 
 The number of calls executed to attempt to break invariants in one run.
@@ -439,3 +439,11 @@ The flag indicating whether to include values from storage. See also [fuzz.inclu
 - Environment: `FOUNDRY_FUZZ_INCLUDE_PUSH_BYTES`
 
 The flag indicating whether to include push bytes values. See also [fuzz.include_push_bytes](#include_push_bytes)
+
+##### `shrink_run_limit`
+
+- Type: integer
+- Default: 5000
+- Environment: `FOUNDRY_INVARIANT_SHRINK_RUN_LIMIT`
+
+The maximum number of attempts to shrink a failed the sequence. Shrink process is disabled if set to 0.
