@@ -118,7 +118,7 @@ After the project is created, you can go into your project source and:
 
 If you want to push a specific directory and not the current directory your terminal is in, you can use `forge soldeer push my-project~1.0.0 /path/to/directory`.
 
-#### !!! WARNING !!!
+**Warning** ⚠️
 - Once a project is created, it cannot be deleted.
 - Once a version is pushed, it cannot be deleted.
 - You cannot push the same version twice.
