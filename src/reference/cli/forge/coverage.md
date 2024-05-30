@@ -76,6 +76,9 @@ Test options:
       --fuzz-input-file <FUZZ_INPUT_FILE>
           File to rerun fuzz failures from
 
+      --max-threads <MAX_THREADS>
+          Max concurrent threads to use. Default value is the number of available CPUs
+
 Display options:
   -j, --json
           Output test results in JSON format
