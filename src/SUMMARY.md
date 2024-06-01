@@ -13,6 +13,7 @@
 - [Working on an Existing Project](./projects/working-on-an-existing-project.md)
 - [Clone a Verified Contract on Chain](./projects/clone-a-verified-contract.md)
 - [Dependencies](./projects/dependencies.md)
+- [Soldeer](./projects/soldeer.md)
 - [Project Layout](./projects/project-layout.md)
 
 # Forge Overview
