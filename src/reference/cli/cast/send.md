@@ -33,9 +33,6 @@ Options:
           
           [default: 1]
 
-      --resend
-          Reuse the latest nonce for the sender account
-
       --unlocked
           Send via `eth_sendTransaction using the `--from` argument or $ETH_FROM as sender
 
