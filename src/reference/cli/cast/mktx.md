@@ -23,9 +23,6 @@ Arguments:
           The arguments of the function to call
 
 Options:
-      --resend
-          Reuse the latest nonce for the sender account
-
   -h, --help
           Print help (see a summary with '-h')
 

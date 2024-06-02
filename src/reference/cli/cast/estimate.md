@@ -21,19 +21,53 @@ Arguments:
           The arguments of the function to call
 
 Options:
-  -f, --from <FROM>
-          The sender account
+  -B, --block <BLOCK>
+          The block height to query at.
           
-          [env: ETH_FROM=]
-          [default: 0x0000000000000000000000000000000000000000]
+          Can also be the tags earliest, finalized, safe, latest, or pending.
+
+  -h, --help
+          Print help (see a summary with '-h')
+
+Transaction options:
+      --gas-limit <GAS_LIMIT>
+          Gas limit for the transaction
+          
+          [env: ETH_GAS_LIMIT=]
+
+      --gas-price <PRICE>
+          Gas price for legacy transactions, or max fee per gas for EIP1559 transactions
+          
+          [env: ETH_GAS_PRICE=]
+
+      --priority-gas-price <PRICE>
+          Max priority fee per gas for EIP1559 transactions
+          
+          [env: ETH_PRIORITY_GAS_PRICE=]
 
       --value <VALUE>
-          Ether to send in the transaction.
-          
-          Either specified in wei, or as a string with a unit type:
+          Ether to send in the transaction, either specified in wei, or as a string with a unit
+          type.
           
           Examples: 1ether, 10gwei, 0.01ether
 
+      --nonce <NONCE>
+          Nonce for the transaction
+
+      --legacy
+          Send a legacy transaction instead of an EIP1559 transaction.
+          
+          This is automatically enabled for common networks without EIP1559.
+
+      --blob
+          Send a EIP-4844 blob transaction
+
+      --blob-gas-price <BLOB_PRICE>
+          Gas price for EIP-4844 blob transaction
+          
+          [env: ETH_BLOB_GAS_PRICE=]
+
+Ethereum options:
   -r, --rpc-url <URL>
           The RPC endpoint
           
@@ -67,6 +101,63 @@ Options:
           
           [env: CHAIN=]
 
-  -h, --help
-          Print help (see a summary with '-h')
+Wallet options - raw:
+  -f, --from <ADDRESS>
+          The sender account
+          
+          [env: ETH_FROM=]
+
+  -i, --interactive
+          Open an interactive prompt to enter your private key
+
+      --private-key <RAW_PRIVATE_KEY>
+          Use the provided private key
+
+      --mnemonic <MNEMONIC>
+          Use the mnemonic phrase of mnemonic file at the specified path
+
+      --mnemonic-passphrase <PASSPHRASE>
+          Use a BIP39 passphrase for the mnemonic
+
+      --mnemonic-derivation-path <PATH>
+          The wallet derivation path.
+          
+          Works with both --mnemonic-path and hardware wallets.
+
+      --mnemonic-index <INDEX>
+          Use the private key from the given mnemonic index.
+          
+          Used with --mnemonic-path.
+          
+          [default: 0]
+
+Wallet options - keystore:
+      --keystore <PATH>
+          Use the keystore in the given folder or file
+          
+          [env: ETH_KEYSTORE=]
+
+      --account <ACCOUNT_NAME>
+          Use a keystore from the default keystores folder (~/.foundry/keystores) by its filename
+          
+          [env: ETH_KEYSTORE_ACCOUNT=]
+
+      --password <PASSWORD>
+          The keystore password.
+          
+          Used with --keystore.
+
+      --password-file <PASSWORD_FILE>
+          The keystore password file path.
+          
+          Used with --keystore.
+          
+          [env: ETH_PASSWORD=]
+
+Wallet options - hardware wallet:
+  -l, --ledger
+          Use a Ledger hardware wallet
+
+  -t, --trezor
+          Use a Trezor hardware wallet
 ```

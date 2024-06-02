@@ -17,9 +17,6 @@ Arguments:
           The arguments of the function to call
 
 Options:
-      --data <DATA>
-          The data for the transaction
-
   -B, --block <BLOCK>
           The block height to query at.
           
