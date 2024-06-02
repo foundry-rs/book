@@ -1,5 +1,2 @@
 src/output/**/* linguist-generated
 src/output/README.md -linguist-generated
-
-src/reference/cli/**/* linguist-generated
-src/reference/cli/README.md -linguist-generated
