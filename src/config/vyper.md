@@ -91,7 +91,6 @@ You can write Vyper scripts in the same way as Solidity scripts:
 ```vyper
 interface Vm:
     def startBroadcast(): nonpayable
-    def assertEq(x: uint256, y: uint256): nonpayable
 
 interface ICounter:
     def increment(): nonpayable
@@ -108,7 +107,7 @@ def run(counter: address):
 
     number_after: uint256 = staticcall ICounter(counter).number()
 
-    extcall vm.assertEq(number_after, number_before + 1)
+    assert number_after == number_before + 1
 ```
 
 Such script can be run with the following command:
