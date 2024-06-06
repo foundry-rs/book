@@ -5,13 +5,14 @@
 ```solidity
 function prompt(string calldata promptText) external returns (string memory input);
 function promptSecret(string calldata promptText) external returns (string memory input);
+function promptSecretUint(string calldata promptText) external returns (uint256);
 ```
 
 ### Description
 
 Display an interactive prompt to the user for inserting arbitrary data.
 
-`vm.prompt` displays an interactive input, while `vm.promptSecret` displays a
+`vm.prompt` displays an interactive input, while `vm.promptSecret` & `vm.promptSecretUint` display a
 hidden input, used for passwords and other secret information that should not
 leak to the terminal.
 
@@ -101,7 +102,7 @@ vm.createSelectFork(rpcEndpoint);
 We can use the string parsing cheatcodes to parse the responses from users:
 
 ```solidity
-uint privateKey = uint(vm.parseBytes32(vm.promptSecret("Private key")));
+uint privateKey = vm.promptSecretUint("Private key");
 address to = vm.parseAddress(vm.prompt("Send to"));
 uint amount = vm.parseUint(vm.prompt("Amount (wei)"));
 vm.broadcast(privateKey);
