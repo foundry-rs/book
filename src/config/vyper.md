@@ -32,7 +32,6 @@ def set_number(new_number: uint256):
 @external
 def increment():
     self.number += 1
-
 ```
 
 We can deploy it by using the `deployCode` cheatcode from `forge-std` and test it with the following Solidity test:
