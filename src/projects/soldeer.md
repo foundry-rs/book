@@ -23,6 +23,7 @@ This will download the dependency from the central repository and install it int
 
 Soldeer can manage two types of dependency configuration: using `soldeer.toml` or embedded in the `foundry.toml`. In order to work with Foundry, you have to define the `[dependencies]` config in the `foundry.toml`. This will tell the `soldeer CLI` to define the installed dependencies there.
 E.g.
+
 ```toml
 # Full reference https://github.com/foundry-rs/foundry/tree/master/crates/config
 
@@ -123,10 +124,8 @@ If you want to push a specific directory and not the current directory your term
 > - Once a version is pushed, it cannot be deleted.
 > - You cannot push the same version twice.
 > - The project name in the command that you run in the terminal must match the project name that you created on the Soldeer website.
-> - We encourage everyone to use version pinning when importing them into the contracts, this will help with securying your code by knowing exactly what version of a dependency you are using. Furthermore, it will help security researchers in their work.
-
-    e.g. 
-instead of using
+> - We encourage everyone to use version pinning when importing them into the contracts, this will help with securing your code by knowing exactly what version of a dependency you are using. Furthermore, it will help security researchers in their work.
+e.g. instead of using
 `import '@openzeppelin-contracts/token/ERC20.sol'` you should do
 `import '@openzeppelin-contracts-5.0.2/token/ERC20.sol'`
 
