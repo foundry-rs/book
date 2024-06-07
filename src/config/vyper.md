@@ -117,4 +117,5 @@ forge script script/Increment.s.vy  --sig 'run' '<counter address>' --rpc-url $R
 ### 5. Limitations
 
 - While you can write and run tests and scripts in Vyper, there is no `new` keyword in Vyper allowing you to deploy contracts. This will be addressed in the future with new cheatcodes.
+- Vyper does not allow overloads with the same names but different parameter types. Thus some cheatcode combinations might require workarounds to be used. (e.g. `startBroadcast(address sender))` and `startBroadcast(uint256 pk)`)
 - `forge coverage` currently does not support Vyper contracts.
