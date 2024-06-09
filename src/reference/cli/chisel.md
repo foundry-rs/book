@@ -41,6 +41,11 @@ Build options:
       --no-cache
           Disable the cache
 
+      --skip <SKIP>...
+          Skip building files whose names contain the given filter.
+          
+          `test` and `script` are aliases for `.t.sol` and `.s.sol`.
+
 Linker options:
       --libraries <LIBRARIES>
           Set pre-linked libraries
@@ -96,7 +101,7 @@ Compiler options:
           Example keys: evm.assembly, ewasm, ir, irOptimized, metadata
           
           For a full description, see
-          https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description
+          <https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description>
 
       --extra-output-files <SELECTOR>...
           Extra output to write to separate files.
@@ -211,13 +216,13 @@ Fork config:
           default value: 330
           
           See also --fork-url and
-          https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second
+          <https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second>
 
       --no-rpc-rate-limit
           Disables rate limiting for this node's provider.
           
           See also --fork-url and
-          https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second
+          <https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second>
           
           [aliases: no-rate-limit]
 
