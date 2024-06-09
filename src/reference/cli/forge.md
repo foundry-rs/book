@@ -33,6 +33,7 @@ Commands:
                          onchain
   selectors          Function selector utilities [aliases: se]
   snapshot           Create a snapshot of each test's gas usage [aliases: s]
+  soldeer            Soldeer dependency manager
   test               Run the project's tests [aliases: t]
   tree               Display a tree visualization of the project's dependency graph [aliases:
                          tr]

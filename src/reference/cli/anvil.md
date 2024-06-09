@@ -65,14 +65,14 @@ Options:
 
       --mnemonic-random [<MNEMONIC_RANDOM>]
           Automatically generates a BIP39 mnemonic phrase, and derives accounts from it. Cannot be
-          used with other `mnemonic` options You can specify the number of words you want in the
+          used with other `mnemonic` options. You can specify the number of words you want in the
           mnemonic. [default: 12]
 
       --mnemonic-seed-unsafe <MNEMONIC_SEED>
           Generates a BIP39 mnemonic phrase from a given seed Cannot be used with other `mnemonic`
-          options
+          options.
           
-          CAREFUL: this is NOT SAFE and should only be used for testing. Never use the private keys
+          CAREFUL: This is NOT SAFE and should only be used for testing. Never use the private keys
           generated in production.
 
       --no-mining
@@ -143,8 +143,8 @@ Fork config:
           
           default value: 330
           
-          See --fork-url. See also,
-          https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second
+          See also --fork-url and
+          <https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second>
 
   -f, --fork-url <URL>
           Fetch state over a remote endpoint instead of starting from an empty state.
@@ -181,8 +181,8 @@ Fork config:
           
           default value: false
           
-          See --fork-url. See also,
-          https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second
+          See also --fork-url and
+          <https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second>
           
           [aliases: no-rpc-rate-limit]
 

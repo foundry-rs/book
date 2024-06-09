@@ -35,7 +35,7 @@ Options:
 
       --verification-type <TYPE>
           Verfication Type: `full` or `partial`. Ref:
-          https://docs.sourcify.dev/docs/full-vs-partial-match/
+          <https://docs.sourcify.dev/docs/full-vs-partial-match/>
           
           [default: full]
           [possible values: full, partial]
