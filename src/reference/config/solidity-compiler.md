@@ -144,6 +144,10 @@ Valid values are:
 - `unnamed-return`: 6321
 - `unreachable`: 5740
 - `pragma-solidity`: 3420
+- `constructor-visibility`: 2462
+- `init-code-size`: 3860
+- `transient-storage`: 2394
+- `too-many-warnings`: 4591
 
 ##### `deny_warnings`
 
