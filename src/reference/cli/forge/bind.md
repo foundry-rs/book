@@ -55,6 +55,12 @@ Options:
       --skip-extra-derives
           Don't add any additional derives to generated bindings
 
+      --alloy
+          Generate bindings for the `alloy` library, instead of `ethers`
+
+      --alloy-version <ALLOY_VERSION>
+          Specify the alloy version
+
       --ethers
           Generate bindings for the `ethers` library, instead of `alloy` (default, deprecated)
 
@@ -73,6 +79,9 @@ Build options:
           Skip building files whose names contain the given filter.
           
           `test` and `script` are aliases for `.t.sol` and `.s.sol`.
+
+  -p, --paths [<PATHS>...]
+          Build source files from specified paths
 
 Linker options:
       --libraries <LIBRARIES>

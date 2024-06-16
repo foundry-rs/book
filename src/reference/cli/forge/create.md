@@ -49,6 +49,9 @@ Build options:
           
           `test` and `script` are aliases for `.t.sol` and `.s.sol`.
 
+  -p, --paths [<PATHS>...]
+          Build source files from specified paths
+
 Linker options:
       --libraries <LIBRARIES>
           Set pre-linked libraries
@@ -300,6 +303,10 @@ Wallet options - hardware wallet:
 
   -t, --trezor
           Use a Trezor hardware wallet
+
+Wallet options - remote:
+      --aws
+          Use AWS Key Management Service
 
 Verifier options:
       --verifier <VERIFIER>

@@ -223,7 +223,7 @@
         - [`cast wallet verify`](./reference/cli/cast/wallet/verify.md)
         - [`cast wallet import`](./reference/cli/cast/wallet/import.md)
         - [`cast wallet list`](./reference/cli/cast/wallet/list.md)
-        - [`cast wallet derive-private-key`](./reference/cli/cast/wallet/derive-private-key.md)
+        - [`cast wallet private-key`](./reference/cli/cast/wallet/private-key.md)
         - [`cast wallet decrypt-keystore`](./reference/cli/cast/wallet/decrypt-keystore.md)
     - [`anvil`](./reference/cli/anvil.md)
       - [`anvil completions`](./reference/cli/anvil/completions.md)
