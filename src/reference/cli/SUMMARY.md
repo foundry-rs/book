@@ -141,7 +141,7 @@
     - [`cast wallet verify`](./cast/wallet/verify.md)
     - [`cast wallet import`](./cast/wallet/import.md)
     - [`cast wallet list`](./cast/wallet/list.md)
-    - [`cast wallet derive-private-key`](./cast/wallet/derive-private-key.md)
+    - [`cast wallet private-key`](./cast/wallet/private-key.md)
     - [`cast wallet decrypt-keystore`](./cast/wallet/decrypt-keystore.md)
 
 - [`anvil`](./anvil.md)

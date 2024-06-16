@@ -4,7 +4,11 @@ Get the latest block number
 
 ```bash
 $ cast block-number --help
-Usage: cast block-number [OPTIONS]
+Usage: cast block-number [OPTIONS] [BLOCK]
+
+Arguments:
+  [BLOCK]
+          The hash or tag to query. If not specified, the latest number is returned
 
 Options:
   -r, --rpc-url <URL>
