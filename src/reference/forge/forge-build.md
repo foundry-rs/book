@@ -23,6 +23,8 @@ it will download it and install it in `~/.svm`. You can disable this behavior by
 The build is incremental, and the build cache is saved in `cache/` in the project root by default. If you
 want to clear the cache, pass `--force`, and if you want to change the cache directory, pass `--cache-path <PATH>`.
 
+It is possible to choose sources to build by specifying multiple path options (can be paths to source directories or files).
+
 #### Build Modes
 
 There are three build modes:
@@ -183,6 +185,8 @@ The model checker will run when `forge build` is invoked, and will show findings
 `--skip`
 &nbsp;&nbsp;&nbsp;&nbsp;Skip compilation of non-essential contract directories like test or script (usage `--skip test`).
 
+`[PATHS]...`&nbsp;&nbsp;&nbsp;&nbsp;Build source files from specified paths.
+
 {{#include core-build-options.md}}
 
 {{#include watch-options.md}}
@@ -209,6 +213,11 @@ The model checker will run when `forge build` is invoked, and will show findings
 4. Build the project in watch mode:
     ```sh
     forge build --watch
+    ```
+
+5. Build source files from `test/invariant` directory and `test/RegressionTest.sol`:
+    ```sh
+    forge build test/invariant test/RegressionTest.sol
     ```
 
 ### SEE ALSO
