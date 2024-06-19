@@ -127,24 +127,23 @@ Another approach to handle different invariants across protocol states is to uti
 
 Priorities for the invariant fuzzer in the cases of target clashes are:
 
-`targetInterfaces | targetSelectors | targetArtifactSelectors > excludeContracts | excludeArtifacts > targetContracts | targetArtifacts`
+`targetInterfaces | targetSelectors > excludeSelectors | targetArtifactSelectors > excludeContracts | excludeArtifacts > targetContracts | targetArtifacts`
 
 ### Function Call Probability Distribution
 
-Functions from these contracts will be called at random with fuzzed inputs. The probability of a function being called is broken down by contract and then by function.
+Functions from these contracts will be called at random (with a uniformly distributed probability) with fuzzed inputs.
 
 For example:
 
 ```text
-targetContract1: 50%
-├─ function1: 50% (25%)
-└─ function2: 50% (25%)
+targetContract1:
+├─ function1: 20%
+└─ function2: 20%
 
-targetContract2: 50%
-├─ function1: 25% (12.5%)
-├─ function2: 25% (12.5%)
-├─ function3: 25% (12.5%)
-└─ function4: 25% (12.5%)
+targetContract2:
+├─ function1: 20%
+├─ function2: 20%
+└─ function3: 20%
 ```
 
 This is something to be mindful of when designing target contracts, as target contracts with less functions will have each function called more often due to this probability distribution.
@@ -155,6 +154,7 @@ Invariant test helper functions are included in [`forge-std`](https://github.com
 | Function | Description |
 |-|-|
 | `excludeContract(address newExcludedContract_)` | Adds a given address to the `_excludedContracts` array. This set of contracts is explicitly excluded from the target contracts.|
+| `excludeSelector(FuzzSelector memory newExcludedSelector_)` | Adds a given `FuzzSelector` to the `_excludedSelectors` array. This set of `FuzzSelector`s is explicitly excluded from the target contract selectors. |
 | `excludeSender(address newExcludedSender_)` | Adds a given address to the `_excludedSenders` array. This set of addresses is explicitly excluded from the target senders. |
 | `excludeArtifact(string memory newExcludedArtifact_)` | Adds a given string to the `_excludedArtifacts` array. This set of strings is explicitly excluded from the target artifacts. |
 | `targetArtifact(string memory newTargetedArtifact_)` | Adds a given string to the `_targetedArtifacts` array. This set of strings is used for the target artifacts.  |
