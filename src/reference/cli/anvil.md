@@ -124,7 +124,7 @@ Options:
 
 Server options:
       --allow-origin <ALLOW_ORIGIN>
-          Set the CORS allow_origin
+          The cors `allow_origin` header
           
           [default: *]
 
@@ -136,6 +136,9 @@ Server options:
 
       --no-cors
           Disable CORS
+
+      --no-request-size-limit
+          Disable the default request body size limit. At time of writing the default limit is 2MB
 
 Fork config:
       --compute-units-per-second <CUPS>
