@@ -49,9 +49,6 @@ Build options:
           
           `test` and `script` are aliases for `.t.sol` and `.s.sol`.
 
-  -p, --paths [<PATHS>...]
-          Build source files from specified paths
-
 Linker options:
       --libraries <LIBRARIES>
           Set pre-linked libraries

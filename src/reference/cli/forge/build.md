@@ -4,7 +4,7 @@ Build the project's smart contracts
 
 ```bash
 $ forge build --help
-Usage: forge build [OPTIONS]
+Usage: forge build [OPTIONS] [PATHS]...
 
 Options:
   -h, --help
@@ -25,7 +25,7 @@ Build options:
           
           `test` and `script` are aliases for `.t.sol` and `.s.sol`.
 
-  -p, --paths [<PATHS>...]
+  [PATHS]...
           Build source files from specified paths
 
 Cache options:

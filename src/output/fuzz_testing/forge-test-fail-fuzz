@@ -4,13 +4,13 @@ $ forge test --allow-failure
 // ANCHOR_END: command
 // ANCHOR: output
 Compiling 1 files with Solc 0.8.10
-Solc 0.8.10 finished in 1.10s
+Solc 0.8.10 finished in 1.07s
 Compiler run successful!
 
 Ran 1 test for test/Safe.t.sol:SafeTest
-[FAIL. Reason: EvmError: Revert; counterexample: calldata=0x29facca7000001f1bb03963f1991aacd52942f55576099cd1baecd683add6fed954f64fa args=[13418788367681097161306266991900125150047373388296147227575161180873978 [1.341e70]]] testFuzz_Withdraw(uint256) (runs: 0, μ: 0, ~: 0)
-Suite result: FAILED. 0 passed; 1 failed; 0 skipped; finished in 900.44µs (448.90µs CPU time)
+[FAIL. Reason: EvmError: Revert; counterexample: calldata=0x29facca700316f1fe9cc1157dc539347a2e75ef13fd29805b0efe59269ea5b211c3fa878 args=[87342460398693827054019088747717114953130805716590130677547615387769612408 [8.734e73]]] testFuzz_Withdraw(uint256) (runs: 3, μ: 19531, ~: 19531)
+Suite result: FAILED. 0 passed; 1 failed; 0 skipped; finished in 1.18ms (676.55µs CPU time)
 
-Ran 1 test suite in 3.36ms (900.44µs CPU time): 0 tests passed, 1 failed, 0 skipped (1 total tests)
+Ran 1 test suite in 3.17ms (1.18ms CPU time): 0 tests passed, 1 failed, 0 skipped (1 total tests)
 // ANCHOR_END: output
 // ANCHOR_END: all

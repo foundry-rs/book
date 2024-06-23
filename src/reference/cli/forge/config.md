@@ -4,7 +4,7 @@ Display the current config
 
 ```bash
 $ forge config --help
-Usage: forge config [OPTIONS]
+Usage: forge config [OPTIONS] [PATHS]...
 
 Options:
       --basic
@@ -34,7 +34,7 @@ Build options:
           
           `test` and `script` are aliases for `.t.sol` and `.s.sol`.
 
-  -p, --paths [<PATHS>...]
+  [PATHS]...
           Build source files from specified paths
 
 Cache options:
