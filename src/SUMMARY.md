@@ -546,4 +546,3 @@
   - [DSTest Reference](./reference/ds-test.md)
 - [Miscellaneous](./misc/README.md)
   - [Struct encoding](./misc/struct-encoding.md)
-  - [Precompile Registry](./misc/precompile-registry.md)
