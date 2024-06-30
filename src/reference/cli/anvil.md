@@ -179,6 +179,11 @@ Fork config:
           
           See --fork-url.
 
+      --fork-transaction-hash <TRANSACTION>
+          Fetch state from a specific transaction hash over a remote endpoint.
+          
+          See --fork-url.
+
       --no-rate-limit
           Disables rate limiting for this node's provider.
           
