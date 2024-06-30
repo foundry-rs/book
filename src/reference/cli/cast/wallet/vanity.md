@@ -8,10 +8,10 @@ Usage: cast wallet vanity [OPTIONS]
 
 Options:
       --starts-with <HEX>
-          Prefix for the vanity address
+          Prefix regex pattern or hex string
 
       --ends-with <HEX>
-          Suffix for the vanity address
+          Suffix regex pattern or hex string
 
       --nonce <NONCE>
           Generate a vanity contract address created by the generated keypair with the specified
