@@ -113,11 +113,33 @@ Just add a new project
 ![image](https://i.postimg.cc/rsBRYd3L/s2.png) 
 
 After the project is created, you can go into your project source and:
-- Create a `.soldeerignore` file that acts as a `.gitignore` to exclude files that aren't needed. 
+- Create a `.soldeerignore` file that acts as a `.gitignore` to exclude files that aren't needed. The `.gitignore` file is also respected. 
 - Run `forge soldeer login` to log into your account. 
 - Run `forge soldeer push my-project~1.0.0` in your terminal in the directory that you want to push to the central repository associated with the project `my-project` at version `1.0.0`. 
 
 If you want to push a specific directory and not the current directory your terminal is in, you can use `forge soldeer push my-project~1.0.0 /path/to/directory`.
+
+
+**Warning** ⚠️
+
+You are at risk to push sensitive files to the central repository that then can be seen by everyone. Make sure to exclude sensitive files in the `.soldeerignore` file.
+Furthermore, we've implemented a warning that it will be triggered if you try to push a project that contains any `.dot` files/directories.
+If you want to skip this warning, you can just use
+```bash
+forge soldeer push my-project~1.0.0 --skip-warnings true
+```
+
+
+
+#### Dry-run
+In case you want to simulate what would happen if you push a version, you can use the `--dry-run` flag. This will create a zip file that you can inspect before pushing it to the central repository. 
+
+```bash
+forge soldeer push my-project~1.0.0 --dry-run true
+```
+
+
+
 
 > **Warning** ⚠️
 > - Once a project is created, it cannot be deleted.
@@ -125,8 +147,11 @@ If you want to push a specific directory and not the current directory your term
 > - You cannot push the same version twice.
 > - The project name in the command that you run in the terminal must match the project name that you created on the Soldeer website.
 > - We encourage everyone to use version pinning when importing them into the contracts, this will help with securing your code by knowing exactly what version of a dependency you are using. Furthermore, it will help security researchers in their work.
+> - Make sure you delete this zip file before pushing the version if you run dry-run.
 e.g. instead of using
 `import '@openzeppelin-contracts/token/ERC20.sol'` you should do
 `import '@openzeppelin-contracts-5.0.2/token/ERC20.sol'`
 
+### What happens if a certain package is not present in the central repository?
 - If a certain package is not present in the central repository, you can open an issue in the [Soldeer Repository](https://github.com/mario-eth/soldeer/issues) and the team will look into adding it.
+- If you have a package that you want to use and it is not present in the central repository, you can push it to the central repository by following the steps above.
