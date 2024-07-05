@@ -76,11 +76,16 @@ Test options:
       --fuzz-input-file <FUZZ_INPUT_FILE>
           File to rerun fuzz failures from
 
-      --max-threads <MAX_THREADS>
+  -j, --threads <THREADS>
           Max concurrent threads to use. Default value is the number of available CPUs
 
+          [aliases: jobs]
+
+      --show-progress
+          Show test execution progress
+
 Display options:
-  -j, --json
+      --json
           Output test results in JSON format
 
   -l, --list
@@ -122,6 +127,14 @@ Test filtering:
           Only run tests in source files that do not match the specified glob pattern
           
           [aliases: nmp]
+
+      --no-match-coverage <REGEX>
+          Only show coverage for files that do not match the specified regex pattern
+
+          [aliases: nmco]
+
+      --rerun
+          Re-run recorded test failures from last run. If no failure recorded then regular test run is performed
 
 EVM options:
   -f, --fork-url <URL>
@@ -400,7 +413,4 @@ Watch options:
           suffix may be more convenient.
           
           When using --poll mode, you'll want a larger duration, or risk overloading disk I/O.
-
-      --show-progress
-          Show test execution progress
 ```

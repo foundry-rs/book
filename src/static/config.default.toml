@@ -126,6 +126,10 @@ rpc_endpoints = { optimism = "https://optimism.alchemyapi.io/v2/...", mainnet = 
 #path_pattern = None
 # Only run tests in source files that do not match the specified glob pattern
 #path_pattern_inverse = None
+# Number of threads to use. Not set or zero specifies the number of logical cores.
+#threads = 0
+# Whether to show test execution progress
+#show_progress = false
 # Pins the block number for the state fork
 #fork_block_number = None
 # The block gas limit
