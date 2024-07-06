@@ -248,6 +248,23 @@ Equivalent to `forge test --match-path <PATH_PATTERN>`
 Only runs test methods on files not matching the path.
 Equivalent to `forge test --no-match-path <PATH_PATTERN_INVERSE>`
 
+##### `threads`
+
+- Type: integer
+- Default: none
+- Environment: `FOUNDRY_THREADS`
+
+Number of threads to use.
+Not set or zero specifies the number of logical cores.
+
+##### `show_progress`
+
+- Type: boolean
+- Default: false
+- Environment: `FOUNDRY_SHOW_PROGRESS`
+
+Whether to show test execution progress.
+
 ##### `block_gas_limit`
 
 - Type: integer
