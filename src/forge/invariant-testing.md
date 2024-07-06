@@ -7,7 +7,27 @@ Invariant testing is a powerful tool to expose incorrect logic in protocols. Due
 
 Invariant testing campaigns have two dimensions, `runs` and `depth`:
 - `runs`: Number of times that a sequence of function calls is generated and run.
-- `depth`: Number of function calls made in a given `run`. All defined invariants are asserted after each function call is made. If a function call reverts, the `depth` counter still increments.
+- `depth`: Number of function calls made in a given `run`. Invariants are asserted after each function call is made. If a function call reverts, the `depth` counter still increments.
+
+> ℹ️ **Note**
+>
+> When implementing invariant tests is important to be aware that for each `invariant_*` function a different EVM executor is created, therefore invariants are not asserted against same EVM state. This means that if `invariant_A()` and `invariant_B()` functions are defined then `invariant_B()` won't be asserted against EVM state of `invariant_A()` (and the other way around).
+>
+> If you want to assert all invariants at the same time then they can be grouped and run on multiple jobs. For example, assert all invariants using two jobs can be implemented as:
+> ```Solidity
+>function invariant_job1() public {
+>    assertInvariants();
+>}
+>
+>function invariant_job2() public {
+>    assertInvariants();
+>}
+>
+>function assertInvariants() internal {
+>    assertEq(val1, val2);
+>    assertEq(val3, val4);
+>}
+> ```
 
 These and other invariant configuration aspects are explained [`here`](#configuring-invariant-test-execution).
 
