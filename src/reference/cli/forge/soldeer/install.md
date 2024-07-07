@@ -7,7 +7,7 @@ $ forge soldeer install --help
 Usage: soldeer install <DEPENDENCY>~<VERSION> [URL]
 
 Arguments:
-  <DEPENDENCY>  
+  [DEPENDENCY]  
   [REMOTE_URL]  
 
 Options:

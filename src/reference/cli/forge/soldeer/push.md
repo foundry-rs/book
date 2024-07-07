@@ -11,7 +11,9 @@ Arguments:
   [PATH]        
 
 Options:
-  -h, --help  Print help
+  -d, --dry-run <DRY_RUN>              [possible values: true, false]
+      --skip-warnings <SKIP_WARNINGS>  [possible values: true, false]
+  -h, --help                           Print help
 
 For more information, read the README.md
 ```

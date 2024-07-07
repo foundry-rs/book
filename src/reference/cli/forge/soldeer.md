@@ -29,6 +29,9 @@ Commands:
                        If you want to ignore certain files, you can create a .soldeerignore file in
                        the root of the project and add the files you want to ignore.
                        The .soldeerignore works like .gitignore.
+                       For dry-run please use the --dry-run argument set to true, `soldeer push ...
+                       --dry-run true`. This will create a zip file that you can inspect and see
+                       what it will be pushed to the central repository.
   version-dry-run  
   help             Print this message or the help of the given subcommand(s)
 
