@@ -7,10 +7,10 @@ $ cast wallet vanity --help
 Usage: cast wallet vanity [OPTIONS]
 
 Options:
-      --starts-with <HEX>
+      --starts-with <PATTERN>
           Prefix regex pattern or hex string
 
-      --ends-with <HEX>
+      --ends-with <PATTERN>
           Suffix regex pattern or hex string
 
       --nonce <NONCE>

@@ -241,6 +241,11 @@ EVM options:
           
           [aliases: auto-impersonate]
 
+      --disable-console-log
+          Disable printing of `console.log` invocations to stdout
+          
+          [aliases: no-console-log]
+
       --disable-default-create2-deployer
           Disable the default create2 deployer
           

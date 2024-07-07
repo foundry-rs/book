@@ -78,7 +78,7 @@ Test options:
 
   -j, --threads <THREADS>
           Max concurrent threads to use. Default value is the number of available CPUs
-
+          
           [aliases: jobs]
 
       --show-progress
@@ -130,11 +130,12 @@ Test filtering:
 
       --no-match-coverage <REGEX>
           Only show coverage for files that do not match the specified regex pattern
-
+          
           [aliases: nmco]
 
       --rerun
-          Re-run recorded test failures from last run. If no failure recorded then regular test run is performed
+          Re-run recorded test failures from last run. If no failure recorded then regular test run
+          is performed
 
 EVM options:
   -f, --fork-url <URL>
