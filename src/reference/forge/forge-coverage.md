@@ -12,6 +12,10 @@ forge-coverage - Displays which parts of your code are covered by tests.
 
 Displays which parts of your code are covered by tests.
 
+> **Warning** ⚠️  
+> 
+> The `derive function end line` feature introduced in `lcov` 2.0 version (and enabled by default) is not supported, therefore `lcov` and `genhtml` should be run with `--rc derive_function_end_line=0` option in order to generate coverage report. 
+
 ### Options
 
 #### Report Options
