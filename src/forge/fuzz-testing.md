@@ -92,7 +92,7 @@ function fixtureOwner() public returns (address[] memory)
 
 If the type of value provided as a fixture is not the same type as the named parameter to be fuzzed then it is rejected and an error is raised.
 
-An example where fixture could be use is to reproduce the `DSChief` vulnerability. Consider the 2 functions
+An example where fixture could be used is to reproduce the `DSChief` vulnerability. Consider the 2 functions
 
 ```solidity
     function etch(address yay) public returns (bytes32 slate) {
