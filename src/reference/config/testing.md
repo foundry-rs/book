@@ -378,6 +378,15 @@ The flag indicating whether to include values from storage.
 
 The flag indicating whether to include push bytes values.
 
+##### `show_logs`
+
+- Type: boolean
+- Default: false
+- Environment: `FOUNDRY_FUZZ_SHOW_LOGS`
+
+The flag indicates whether to display console logs in fuzz tests or not. Note that in order to enable displaying console logs, you'll need to set `show_logs = true` and then use `forge test -vv` or set `verbosity >= 2`.
+
+
 ### Invariant
 
 Configuration values for `[invariant]` section.
