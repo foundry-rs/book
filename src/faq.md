@@ -126,13 +126,13 @@ Forge will sometimes check for newer Solidity versions that fit your project. To
 
 ### I'm getting Solc errors
 
-[solc-bin](https://binaries.soliditylang.org/) doesn't offer static builds for apple silicon. Foundry relies on [svm](https://github.com/roynalnaruto/svm-rs) to install native builds for apple silicon.
+[solc-bin](https://binaries.soliditylang.org/) doesn't offer static builds for Apple silicon. Foundry relies on [svm](https://github.com/alloy-rs/svm-rs) to install native builds for Apple silicon.
 
-All solc versions are installed under `~/.svm/`. If you encounter solc related errors, such as `SolcError: ...` please to nuke `~/.svm/` and try again, this will trigger a fresh install and usually resolves the issue.
+All solc versions are installed under `~/.svm/` if the directory already exists, otherwise it uses `$XDG_DATA_HOME/svm`. If you encounter solc related errors, such as `SolcError: ...` please remove the `~/.svm/` directory and try again, this will trigger a fresh install and usually resolves the issue.
 
-If you're on apple silicon, please ensure the [`z3` theorem prover](https://github.com/Z3Prover/z3) is installed: `brew install z3`
+If you're on Apple silicon, please ensure the [`z3` theorem prover](https://github.com/Z3Prover/z3) is installed: `brew install z3`
 
-> **Note**: native apple silicon builds are only available from `0.8.5` upwards. If you need older versions, you must enable apple silicon rosetta to run them.
+> **Note**: native Apple silicon builds are only available from `0.8.5` upwards. If you need older versions, you must enable Apple silicon rosetta to run them.
 
 ### Forge fails in JavaScript monorepos (`pnpm`)
 
