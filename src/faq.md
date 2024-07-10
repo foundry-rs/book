@@ -128,7 +128,7 @@ Forge will sometimes check for newer Solidity versions that fit your project. To
 
 [solc-bin](https://binaries.soliditylang.org/) doesn't offer static builds for Apple silicon. Foundry relies on [svm](https://github.com/alloy-rs/svm-rs) to install native builds for Apple silicon.
 
-All solc versions are installed under `~/.svm/` if the directory already exists, otherwise it uses `$XDG_DATA_HOME/svm`. If you encounter solc related errors, such as `SolcError: ...` please remove the `~/.svm/` directory and try again, this will trigger a fresh install and usually resolves the issue.
+All solc versions are installed under `~/.svm/` if the directory already exists. If not, it uses `$XDG_DATA_HOME/svm/`, commonly mapped to `$HOME/.local/share/svm/`. If you encounter solc related errors, such as `SolcError: ...` please remove the `~/.svm/` directory and try again, this will trigger a fresh install and usually resolves the issue.
 
 If you're on Apple silicon, please ensure the [`z3` theorem prover](https://github.com/Z3Prover/z3) is installed: `brew install z3`
 
