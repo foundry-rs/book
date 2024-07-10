@@ -155,8 +155,8 @@ The entirety of the assembly code in the `computeAddress` function is an attempt
 > an address in Solidity is 20 bytes long, and is stored in memory as a 32 byte value, where the first 12 bytes are replaced by 0s.
 > Therefore, when we need to skip 12 bytes to point to the actual address.
 
-5.`let start := add(ptr, 0x0b)` creates a new variable `start` that points to the memory location `ptr + 0x0b`, i.e. `ptr + 11 bytes`.
-6.Lastly, the mstore8 opcode can be used to store a single byte at a memory location. Here, we are storing the value `0xff` at the memory location pointed to by `start`, which occupies the 12th byte of the memory slot.
+5. `let start := add(ptr, 0x0b)` creates a new variable `start` that points to the memory location `ptr + 0x0b`, i.e. `ptr + 11 bytes`.
+6. Lastly, the mstore8 opcode can be used to store a single byte at a memory location. Here, we are storing the value `0xff` at the memory location pointed to by `start`, which occupies the 12th byte of the memory slot.
 7. With all the values packed into their correct memory locations, we can now call `keccak256` on the memory slot starting at `start`, and pass in the length of the memory slot as the second parameter. This will return a 32 byte hash, which we can truncate to get the final address.
 
 > ℹ️ **Note**
