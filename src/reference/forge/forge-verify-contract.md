@@ -78,6 +78,10 @@ you can specify a file containing **space-separated** constructor arguments with
 &nbsp;&nbsp;&nbsp;&nbsp;Wait for verification result after submission.  
 &nbsp;&nbsp;&nbsp;&nbsp;Automatically runs `forge verify-check` until the verification either fails or succeeds.
 
+`--via-ir`
+&nbsp;&nbsp;&nbsp;&nbsp;Set `viaIR` to true.
+&nbsp;&nbsp;&nbsp;&nbsp;If you compiled using `--via-ir` when deploying, pass it here too in order to prevent a bytecode mismatch.
+
 {{#include project-options.md}}
 
 {{#include common-options.md}}
