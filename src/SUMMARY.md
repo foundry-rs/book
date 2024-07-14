@@ -83,6 +83,7 @@
   - [CLI Reference](./reference/cli/README.md) <!-- CLI_REFERENCE START -->
     - [`forge`](./reference/cli/forge.md)
       - [`forge bind`](./reference/cli/forge/bind.md)
+      - [`forge bind-json`](./reference/cli/forge/bind-json.md)
       - [`forge build`](./reference/cli/forge/build.md)
       - [`forge cache`](./reference/cli/forge/cache.md)
         - [`forge cache clean`](./reference/cli/forge/cache/clean.md)
@@ -95,6 +96,7 @@
       - [`forge create`](./reference/cli/forge/create.md)
       - [`forge debug`](./reference/cli/forge/debug.md)
       - [`forge doc`](./reference/cli/forge/doc.md)
+      - [`forge eip712`](./reference/cli/forge/eip712.md)
       - [`forge flatten`](./reference/cli/forge/flatten.md)
       - [`forge fmt`](./reference/cli/forge/fmt.md)
       - [`forge geiger`](./reference/cli/forge/geiger.md)

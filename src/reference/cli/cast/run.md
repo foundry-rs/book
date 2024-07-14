@@ -14,6 +14,9 @@ Options:
   -d, --debug
           Opens the transaction in the debugger
 
+      --decode-internal
+          Whether to identify internal functions in traces
+
   -t, --trace-printer
           Print out opcode traces
 

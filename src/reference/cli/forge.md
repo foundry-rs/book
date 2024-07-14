@@ -8,6 +8,8 @@ Usage: forge <COMMAND>
 
 Commands:
   bind               Generate Rust bindings for smart contracts
+  bind-json          Generate bindings for serialization/deserialization of project structs via
+                         JSON cheatcodes
   build              Build the project's smart contracts [aliases: b, compile]
   cache              Manage the Foundry cache
   clean              Remove the build artifacts and cache directories [aliases: cl]
@@ -18,6 +20,7 @@ Commands:
   create             Deploy a smart contract [aliases: c]
   debug              Debugs a single smart contract as a script [aliases: d]
   doc                Generate documentation for the project
+  eip712             Generate EIP-712 struct encodings for structs from a given file
   flatten            Flatten a source file and all of its imports into one file [aliases: f]
   fmt                Format Solidity source files
   geiger             Detects usage of unsafe cheat codes in a project and its dependencies
