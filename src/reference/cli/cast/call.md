@@ -30,6 +30,9 @@ Options:
       --debug
           Opens an interactive debugger. Can only be used with `--trace`
 
+      --decode-internal
+          
+
       --labels <LABELS>
           Labels to apply to the traces; format: `address:label`. Can only be used with `--trace`
 

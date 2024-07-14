@@ -49,6 +49,19 @@ Test options:
           
           For more fine-grained control of which fuzz case is run, see forge run.
 
+      --decode-internal [<TEST_FUNCTION>]
+          Whether to identify internal functions in traces.
+          
+          If no argument is passed to this flag, it will trace internal functions scope and decode
+          stack parameters, but parameters stored in memory (such as bytes or arrays) will not be
+          decoded.
+          
+          To decode memory parameters, you should pass an argument with a test function name,
+          similarly to --debug and --match-test.
+          
+          If more than one test matches your specified criteria, you must add additional filters
+          until only one test is found (see --match-contract and --match-path).
+
       --gas-report
           Print a gas report
           
