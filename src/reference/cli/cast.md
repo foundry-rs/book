@@ -49,7 +49,7 @@ Commands:
                              --format-bytes32-string]
   from-bin               Convert binary data into hex data [aliases: --from-bin, from-binx, fb]
   from-fixed-point       Convert a fixed point number into an integer [aliases: --from-fix, ff]
-  from-rlp               Decodes RLP encoded data [aliases: --from-rlp]
+  from-rlp               Decodes RLP hex-encoded data [aliases: --from-rlp]
   from-utf8              Convert UTF8 text to hex [aliases: --from-ascii, --from-utf8,
                              from-ascii, fu, fa]
   from-wei               Convert wei into an ETH amount [aliases: --from-wei, fw]
