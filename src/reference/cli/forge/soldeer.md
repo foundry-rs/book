@@ -5,6 +5,9 @@ Soldeer dependency manager
 ```bash
 $ forge soldeer --help
 Usage: forge soldeer install [DEPENDENCY]~[VERSION] <REMOTE_URL>
+    forge soldeer install [DEPENDENCY]~[VERSION] <GIT_URL>
+    forge soldeer install [DEPENDENCY]~[VERSION] <GIT_URL> --rev <REVISION>
+    forge soldeer install [DEPENDENCY]~[VERSION] <GIT_URL> --rev <TAG>
     forge soldeer push [DEPENDENCY]~[VERSION] <CUSTOM_PATH_OF_FILES>
     forge soldeer login
     forge soldeer update
@@ -12,10 +15,20 @@ Usage: forge soldeer install [DEPENDENCY]~[VERSION] <REMOTE_URL>
 
 Commands:
   install          Install a dependency from soldeer repository or from a custom url that points
-                       to a zip file.
-                       Example: soldeer install @openzeppelin-contracts~2.3.0 the `~` is very
-                       important to differentiate between the name and the version that needs to be
-                       installed.
+                       to a zip file or from git using a git link. 
+                           IMPORTANT!! The `~` when specifying the dependency is very important to
+                           differentiate between the name and the version that needs to be
+                           installed.
+                           Example from remote repository: soldeer install
+                           @openzeppelin-contracts~2.3.0 
+                           Example custom url: soldeer install @openzeppelin-contracts~2.3.0
+                           https://github.com/OpenZeppelin/openzeppelin-contracts/archive/refs/tags/v5.0.2.zip
+                           Example git: soldeer install @openzeppelin-contracts~2.3.0
+                           git@github.com:OpenZeppelin/openzeppelin-contracts.git
+                           Example git with specified commit: soldeer install
+                           @openzeppelin-contracts~2.3.0
+                           git@github.com:OpenZeppelin/openzeppelin-contracts.git --rev
+                           05f218fb6617932e56bf5388c3b389c3028a7b73
   update           Update dependencies by reading the config file.
   login            Login into the central repository to push the dependencies.
   push             Push a dependency to the repository. The PATH_TO_DEPENDENCY is optional and

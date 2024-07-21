@@ -4,13 +4,13 @@ $ forge test
 // ANCHOR_END: command
 // ANCHOR: output
 Compiling 1 files with Solc 0.8.10
-Solc 0.8.10 finished in 1.09s
+Solc 0.8.10 finished in 1.06s
 Compiler run successful!
 
 Ran 1 test for test/Safe.t.sol:SafeTest
 [PASS] testFuzz_Withdraw(uint96) (runs: 257, μ: 19422, ~: 19631)
-Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 4.87ms (4.48ms CPU time)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 4.81ms (4.45ms CPU time)
 
-Ran 1 test suite in 6.35ms (4.87ms CPU time): 1 tests passed, 0 failed, 0 skipped (1 total tests)
+Ran 1 test suite in 6.17ms (4.81ms CPU time): 1 tests passed, 0 failed, 0 skipped (1 total tests)
 // ANCHOR_END: output
 // ANCHOR_END: all
