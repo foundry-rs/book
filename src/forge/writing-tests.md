@@ -53,6 +53,60 @@ such as `Ownable.sol`'s `onlyOwner` modifier, then the test contract `0xb4c...7e
 > Test functions must have either `external` or `public` visibility. Functions declared as `internal` or
 > `private` won't be picked up by Forge, even if they are prefixed with `test`.
 
+### Before test setups
+
+Unit and fuzz tests are stateless and are executed as single transactions, meaning that the state modified by a test won't be available for a different one (instead, they'll use the same state created by `setUp` call).
+It is possible to simulate multiple transactions in a single test, with a dependency tree, by implementing the `beforeTestSetup` function.
+
+- `beforeTestSetup`: Optional function that configures a set of transactions to be executed before test.
+
+```solidity
+function beforeTestSetup(
+    bytes4 testSelector
+public returns (bytes[] memory beforeTestCalldata)
+```
+
+where
+- `bytes4 testSelector` is the selector of the test for which transactions are applied
+- `bytes[] memory beforeTestCalldata` is an array of arbitrary calldata applied before test execution
+
+> 💡 **Tip**
+>
+> This setup can be used for chaining tests or for scenarios when a test needs certain transactions committed before test run (e.g. when using `selfdestruct`).
+> The test fails if any of the configured transaction reverts. 
+
+For example, in contract below, `testC` is configured to use state modified by `testA` and `setB(uint256)` functions:
+```solidity
+contract ContractTest is Test {
+    uint256 a;
+    uint256 b;
+
+    function beforeTestSetup(
+        bytes4 testSelector
+    ) public pure returns (bytes[] memory beforeTestCalldata) {
+        if (testSelector == this.testC.selector) {
+            beforeTestCalldata = new bytes[](2);
+            beforeTestCalldata[0] = abi.encodePacked(this.testA.selector);
+            beforeTestCalldata[1] = abi.encodeWithSignature("setB(uint256)", 1);
+        }
+    }
+
+    function testA() public {
+        require(a == 0);
+        a += 1;
+    }
+
+    function setB(uint256 value) public {
+        b = value;
+    }
+
+    function testC() public {
+        assertEq(a, 1);
+        assertEq(b, 1);
+    }
+}
+```
+
 ### Shared setups
 
 It is possible to use shared setups by creating helper abstract contracts and inheriting them in your test contracts:
