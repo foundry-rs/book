@@ -15,7 +15,7 @@ Arguments:
           
           [possible values: abi, bytecode, deployedBytecode, assembly, assemblyOptimized,
           methodIdentifiers, gasEstimates, storageLayout, devdoc, ir, irOptimized, metadata,
-          userdoc, ewasm, errors, events]
+          userdoc, ewasm, errors, events, eof, eof-init]
 
 Options:
       --pretty
