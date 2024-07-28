@@ -20,4 +20,8 @@ Options:
 Decode input data instead of output data:
   -i, --input
           Whether to decode the input or output data
+
+Display options:
+  -j, --json
+          Print the decoded calldata as JSON
 ```

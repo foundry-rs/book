@@ -39,7 +39,9 @@ Commands:
                              [aliases: ca]
   concat-hex             Concatenate hex strings [aliases: --concat-hex, ch]
   create2                Generate a deterministic contract address using CREATE2 [aliases: c2]
-  decode-transaction     Decodes a raw signed EIP 2718 typed transaction [aliases: dt]
+  decode-eof             Decodes EOF container bytes
+  decode-transaction     Decodes a raw signed EIP 2718 typed transaction [aliases: dt,
+                             decode-tx]
   disassemble            Disassembles hex encoded bytecode into individual / human readable
                              opcodes [aliases: da]
   estimate               Estimate the gas cost of a transaction [aliases: e]

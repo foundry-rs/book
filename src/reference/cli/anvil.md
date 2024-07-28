@@ -63,6 +63,9 @@ Options:
           BIP39 mnemonic phrase used for generating accounts. Cannot be used if `mnemonic_random` or
           `mnemonic_seed` are used
 
+      --mixed-mining
+          [aliases: mixed-mining]
+
       --mnemonic-random [<MNEMONIC_RANDOM>]
           Automatically generates a BIP39 mnemonic phrase, and derives accounts from it. Cannot be
           used with other `mnemonic` options. You can specify the number of words you want in the

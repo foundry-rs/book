@@ -33,7 +33,10 @@ Transaction options:
           [env: ETH_GAS_LIMIT=]
 
       --gas-price <PRICE>
-          Gas price for legacy transactions, or max fee per gas for EIP1559 transactions
+          Gas price for legacy transactions, or max fee per gas for EIP1559 transactions, either
+          specified in wei, or as a string with a unit type.
+          
+          Examples: 1ether, 10gwei, 0.01ether
           
           [env: ETH_GAS_PRICE=]
 
@@ -63,6 +66,9 @@ Transaction options:
           Gas price for EIP-4844 blob transaction
           
           [env: ETH_BLOB_GAS_PRICE=]
+
+      --path <BLOB_DATA_PATH>
+          The path of blob data to be sent
 
 Ethereum options:
   -r, --rpc-url <URL>

@@ -154,6 +154,7 @@
       - [`cast compute-address`](./reference/cli/cast/compute-address.md)
       - [`cast concat-hex`](./reference/cli/cast/concat-hex.md)
       - [`cast create2`](./reference/cli/cast/create2.md)
+      - [`cast decode-eof`](./reference/cli/cast/decode-eof.md)
       - [`cast decode-transaction`](./reference/cli/cast/decode-transaction.md)
       - [`cast disassemble`](./reference/cli/cast/disassemble.md)
       - [`cast estimate`](./reference/cli/cast/estimate.md)

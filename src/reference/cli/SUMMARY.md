@@ -72,6 +72,7 @@
   - [`cast compute-address`](./cast/compute-address.md)
   - [`cast concat-hex`](./cast/concat-hex.md)
   - [`cast create2`](./cast/create2.md)
+  - [`cast decode-eof`](./cast/decode-eof.md)
   - [`cast decode-transaction`](./cast/decode-transaction.md)
   - [`cast disassemble`](./cast/disassemble.md)
   - [`cast estimate`](./cast/estimate.md)
