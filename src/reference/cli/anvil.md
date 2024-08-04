@@ -63,6 +63,11 @@ Options:
           BIP39 mnemonic phrase used for generating accounts. Cannot be used if `mnemonic_random` or
           `mnemonic_seed` are used
 
+      --max-persisted-states <MAX_PERSISTED_STATES>
+          Max number of states to persist on disk.
+          
+          Note that `prune_history` will overwrite `max_persisted_states` to 0.
+
       --mixed-mining
           [aliases: mixed-mining]
 
@@ -95,7 +100,9 @@ Options:
 
       --prune-history [<PRUNE_HISTORY>]
           Don't keep full chain history. If a number argument is specified, at most this number of
-          states is kept in memory
+          states is kept in memory.
+          
+          If enabled, no state will be persisted on disk, so `max_persisted_states` will be 0.
 
   -s, --state-interval <SECONDS>
           Interval in seconds at which the state and block environment is to be dumped to disk.
