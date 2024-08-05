@@ -1008,6 +1008,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "Braqzen",
+      "name": "Braqzen",
+      "avatar_url": "https://avatars.githubusercontent.com/u/103777923?v=4",
+      "profile": "https://github.com/Braqzen",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
