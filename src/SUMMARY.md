@@ -25,6 +25,7 @@
   - [Forge Standard Library Overview](./forge/forge-std.md)
   - [Understanding Traces](./forge/traces.md)
   - [Fork Testing](./forge/fork-testing.md)
+  - [Replaying Failures](./forge/replay-testing.md)
   <!--  - [Coverage Reports]() !-->
 - [Advanced Testing](./forge/advanced-testing.md)
   - [Fuzz Testing](./forge/fuzz-testing.md)
