@@ -47,6 +47,10 @@ Options:
   -h, --help
           Print help (see a summary with '-h')
 
+Display options:
+  -j, --json
+          Print the decoded output as JSON
+
 Transaction options:
       --gas-limit <GAS_LIMIT>
           Gas limit for the transaction

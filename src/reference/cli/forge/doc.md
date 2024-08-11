@@ -29,6 +29,36 @@ Options:
       --hostname <HOSTNAME>
           Hostname for serving documentation
 
+  -h, --help
+          Print help (see a summary with '-h')
+
+Watch options:
+  -w, --watch [<PATH>...]
+          Watch the given files or directories for changes.
+          
+          If no paths are provided, the source and test directories of the project are watched.
+
+      --no-restart
+          Do not restart the command while it's still running
+
+      --run-all
+          Explicitly re-run all tests when a change is made.
+          
+          By default, only the tests of the last modified test file are executed.
+
+      --watch-delay <DELAY>
+          File update debounce delay.
+          
+          During the delay, incoming change events are accumulated and only once the delay has
+          passed, is an action taken. Note that this does not mean a command will be started: if
+          --no-restart is given and a command is already running, the outcome of the action will be
+          to do nothing.
+          
+          Defaults to 50ms. Parses as decimal seconds by default, but using an integer with the `ms`
+          suffix may be more convenient.
+          
+          When using --poll mode, you'll want a larger duration, or risk overloading disk I/O.
+
   -p, --port <PORT>
           Port for serving documentation
 
@@ -38,7 +68,4 @@ Options:
 
   -i, --include-libraries
           Whether to create docs for external libraries
-
-  -h, --help
-          Print help (see a summary with '-h')
 ```
