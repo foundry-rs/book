@@ -3,6 +3,7 @@ on: [push]
 
 jobs:
   deploy:
+    if: github.event.pull_request.head.repo.fork == false
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -28,6 +29,6 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: foundry-book
+          projectName: book
           directory: book
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
