@@ -70,6 +70,11 @@ Transaction options:
           
           [env: ETH_BLOB_GAS_PRICE=]
 
+      --auth <AUTH>
+          EIP-7702 authorization list.
+          
+          Can be either a hex-encoded signed authorization or an address.
+
 Ethereum options:
   -r, --rpc-url <URL>
           The RPC endpoint

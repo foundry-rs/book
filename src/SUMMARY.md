@@ -224,6 +224,7 @@
         - [`cast wallet vanity`](./reference/cli/cast/wallet/vanity.md)
         - [`cast wallet address`](./reference/cli/cast/wallet/address.md)
         - [`cast wallet sign`](./reference/cli/cast/wallet/sign.md)
+        - [`cast wallet sign-auth`](./reference/cli/cast/wallet/sign-auth.md)
         - [`cast wallet verify`](./reference/cli/cast/wallet/verify.md)
         - [`cast wallet import`](./reference/cli/cast/wallet/import.md)
         - [`cast wallet list`](./reference/cli/cast/wallet/list.md)

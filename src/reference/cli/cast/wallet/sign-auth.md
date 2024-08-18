@@ -1,81 +1,16 @@
-# cast mktx
+# cast wallet sign-auth
 
-Build and sign a transaction
+EIP-7702 sign authorization
 
 ```bash
-$ cast mktx --help
-Usage: cast mktx [OPTIONS] [TO] [SIG] [ARGS]... [COMMAND]
-
-Commands:
-  --create  Use to deploy raw contract bytecode
-  help      Print this message or the help of the given subcommand(s)
+$ cast wallet sign-auth --help
+Usage: cast wallet sign-auth [OPTIONS] <ADDRESS>
 
 Arguments:
-  [TO]
-          The destination of the transaction.
-          
-          If not provided, you must use `cast mktx --create`.
-
-  [SIG]
-          The signature of the function to call
-
-  [ARGS]...
-          The arguments of the function to call
+  <ADDRESS>
+          Address to sign authorization for
 
 Options:
-  -h, --help
-          Print help (see a summary with '-h')
-
-Transaction options:
-      --gas-limit <GAS_LIMIT>
-          Gas limit for the transaction
-          
-          [env: ETH_GAS_LIMIT=]
-
-      --gas-price <PRICE>
-          Gas price for legacy transactions, or max fee per gas for EIP1559 transactions, either
-          specified in wei, or as a string with a unit type.
-          
-          Examples: 1ether, 10gwei, 0.01ether
-          
-          [env: ETH_GAS_PRICE=]
-
-      --priority-gas-price <PRICE>
-          Max priority fee per gas for EIP1559 transactions
-          
-          [env: ETH_PRIORITY_GAS_PRICE=]
-
-      --value <VALUE>
-          Ether to send in the transaction, either specified in wei, or as a string with a unit
-          type.
-          
-          Examples: 1ether, 10gwei, 0.01ether
-
-      --nonce <NONCE>
-          Nonce for the transaction
-
-      --legacy
-          Send a legacy transaction instead of an EIP1559 transaction.
-          
-          This is automatically enabled for common networks without EIP1559.
-
-      --blob
-          Send a EIP-4844 blob transaction
-
-      --blob-gas-price <BLOB_PRICE>
-          Gas price for EIP-4844 blob transaction
-          
-          [env: ETH_BLOB_GAS_PRICE=]
-
-      --auth <AUTH>
-          EIP-7702 authorization list.
-          
-          Can be either a hex-encoded signed authorization or an address.
-
-      --path <BLOB_DATA_PATH>
-          The path of blob data to be sent
-
-Ethereum options:
   -r, --rpc-url <URL>
           The RPC endpoint
           
@@ -101,15 +36,14 @@ Ethereum options:
           
           [env: ETH_RPC_JWT_SECRET=]
 
-  -e, --etherscan-api-key <KEY>
-          The Etherscan (or equivalent) API key
+      --nonce <NONCE>
           
-          [env: ETHERSCAN_API_KEY=]
 
-  -c, --chain <CHAIN>
-          The chain name or EIP-155 chain ID
+      --chain <CHAIN>
           
-          [env: CHAIN=]
+
+  -h, --help
+          Print help (see a summary with '-h')
 
 Wallet options - raw:
   -f, --from <ADDRESS>

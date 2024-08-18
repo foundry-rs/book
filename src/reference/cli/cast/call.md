@@ -44,6 +44,9 @@ Options:
           
           Can also be the tags earliest, finalized, safe, latest, or pending.
 
+      --alphanet
+          Enable Alphanet features
+
   -h, --help
           Print help (see a summary with '-h')
 
@@ -91,6 +94,11 @@ Transaction options:
           Gas price for EIP-4844 blob transaction
           
           [env: ETH_BLOB_GAS_PRICE=]
+
+      --auth <AUTH>
+          EIP-7702 authorization list.
+          
+          Can be either a hex-encoded signed authorization or an address.
 
 Ethereum options:
   -r, --rpc-url <URL>
