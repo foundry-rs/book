@@ -84,6 +84,11 @@ Transaction options:
           
           [env: ETH_BLOB_GAS_PRICE=]
 
+      --auth <AUTH>
+          EIP-7702 authorization list.
+          
+          Can be either a hex-encoded signed authorization or an address.
+
       --path <BLOB_DATA_PATH>
           The path of blob data to be sent
 

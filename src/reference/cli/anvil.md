@@ -233,11 +233,14 @@ Environment config:
           The chain ID
 
       --code-size-limit <CODE_SIZE>
-          EIP-170: Contract code size limit in bytes. Useful to increase this because of tests. By
-          default, it is 0x6000 (~25kb)
+          EIP-170: Contract code size limit in bytes. Useful to increase this because of tests. To
+          disable entirely, use `--disable-code-size-limit`. By default, it is 0x6000 (~25kb)
 
       --disable-block-gas-limit
           Disable the `call.gas_limit <= block.gas_limit` constraint
+
+      --disable-code-size-limit
+          Disable EIP-170: Contract code size limit
 
       --gas-limit <GAS_LIMIT>
           The block gas limit
@@ -246,6 +249,11 @@ Environment config:
           The gas price
 
 EVM options:
+      --alphanet
+          Enable Alphanet features
+          
+          [aliases: alphanet]
+
       --auto-impersonate
           Enable autoImpersonate on startup
           

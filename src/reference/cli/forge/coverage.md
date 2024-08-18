@@ -280,6 +280,9 @@ Executor environment config:
           as a separate transaction in a separate EVM context, enabling more precise gas accounting
           and transaction state changes
 
+      --alphanet
+          Whether to enable Alphanet features
+
 Cache options:
       --force
           Clear the cache and artifacts folder and recompile

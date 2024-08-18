@@ -141,6 +141,7 @@
     - [`cast wallet vanity`](./cast/wallet/vanity.md)
     - [`cast wallet address`](./cast/wallet/address.md)
     - [`cast wallet sign`](./cast/wallet/sign.md)
+    - [`cast wallet sign-auth`](./cast/wallet/sign-auth.md)
     - [`cast wallet verify`](./cast/wallet/verify.md)
     - [`cast wallet import`](./cast/wallet/import.md)
     - [`cast wallet list`](./cast/wallet/list.md)

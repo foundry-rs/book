@@ -430,6 +430,9 @@ Executor environment config:
           as a separate transaction in a separate EVM context, enabling more precise gas accounting
           and transaction state changes
 
+      --alphanet
+          Whether to enable Alphanet features
+
       --retries <RETRIES>
           Number of attempts for retrying verification
           
