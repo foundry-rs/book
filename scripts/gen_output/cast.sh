@@ -5,8 +5,6 @@ set -eo pipefail
 export PATH=$PWD/bin:$PATH
 
 gen_cast() {
-  source "$(dirname "$0")/common"
-
   need_cmd cast
 
   echo "Generating output (cast)..."
