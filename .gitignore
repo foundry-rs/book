@@ -6,3 +6,5 @@
 /projects/**/cache/
 /out/
 /projects/**/out/
+
+/bin

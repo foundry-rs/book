@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -eo pipefail
 
+# use foundry-zksync binary path
+export PATH=$PWD/bin:$PATH
+
 gen_forge() {
   need_cmd git
   need_cmd forge

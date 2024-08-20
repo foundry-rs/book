@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 set -eo pipefail
 
+# use foundry-zksync binary path
+export PATH=$PWD/bin:$PATH
+
 gen_help() {
-  bins=(forge cast anvil chisel)
+  bins=(forge cast)
   for bin in "${bins[@]}"; do
     need_cmd "$bin"
     echo "Generating help output ($bin)..."

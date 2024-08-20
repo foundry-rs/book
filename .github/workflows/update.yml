@@ -16,9 +16,6 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Install Foundry
-        uses: foundry-rs/foundry-toolchain@v1
-
       - name: Update
         run: |
           git config --global user.email "update@update.com"
