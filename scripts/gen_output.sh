@@ -3,8 +3,8 @@ set -eo pipefail
 
 source "$(dirname "$0")/common"
 
-# source "$SCRIPTS/gen_output/cast.sh"
-# source "$SCRIPTS/gen_output/chisel.sh"
+source "$SCRIPTS/gen_output/cast.sh"
+source "$SCRIPTS/gen_output/chisel.sh"
 source "$SCRIPTS/gen_output/zksync.sh"
 source "$SCRIPTS/gen_output/forge.sh"
 source "$SCRIPTS/gen_output/help.sh"
