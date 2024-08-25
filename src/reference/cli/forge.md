@@ -40,7 +40,7 @@ Commands:
   test               Run the project's tests [aliases: t]
   tree               Display a tree visualization of the project's dependency graph [aliases: tr]
   update             Update one or multiple dependencies [aliases: u]
-  verify-bytecode    Verify the deployed bytecode against its source [aliases: vb]
+  verify-bytecode    Verify the deployed bytecode against its source on Etherscan [aliases: vb]
   verify-check       Check verification status on Etherscan [aliases: vc]
   verify-contract    Verify smart contracts on Etherscan [aliases: v]
 

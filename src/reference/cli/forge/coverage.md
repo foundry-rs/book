@@ -186,7 +186,7 @@ EVM options:
           The initial balance of deployed test contracts
 
       --sender <ADDRESS>
-          The address which will be executing tests
+          The address which will be executing tests/scripts
 
       --ffi
           Enable the FFI cheatcode

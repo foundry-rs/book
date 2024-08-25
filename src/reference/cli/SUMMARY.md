@@ -87,6 +87,7 @@
   - [`cast from-wei`](./cast/from-wei.md)
   - [`cast gas-price`](./cast/gas-price.md)
   - [`cast generate-fig-spec`](./cast/generate-fig-spec.md)
+  - [`cast hash-message`](./cast/hash-message.md)
   - [`cast hash-zero`](./cast/hash-zero.md)
   - [`cast implementation`](./cast/implementation.md)
   - [`cast index`](./cast/index.md)

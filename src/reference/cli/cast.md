@@ -53,6 +53,7 @@ Commands:
   from-wei               Convert wei into an ETH amount [aliases: --from-wei, fw]
   gas-price              Get the current gas price [aliases: g]
   generate-fig-spec      Generate Fig autocompletion spec [aliases: fig]
+  hash-message           Hash a message according to EIP-191 [aliases: --hash-message, hm]
   hash-zero              Prints the zero hash [aliases: --hash-zero, hz]
   help                   Print this message or the help of the given subcommand(s)
   implementation         Fetch the EIP-1967 implementation account [aliases: impl]
