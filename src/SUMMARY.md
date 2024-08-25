@@ -170,6 +170,7 @@
       - [`cast from-wei`](./reference/cli/cast/from-wei.md)
       - [`cast gas-price`](./reference/cli/cast/gas-price.md)
       - [`cast generate-fig-spec`](./reference/cli/cast/generate-fig-spec.md)
+      - [`cast hash-message`](./reference/cli/cast/hash-message.md)
       - [`cast hash-zero`](./reference/cli/cast/hash-zero.md)
       - [`cast implementation`](./reference/cli/cast/implementation.md)
       - [`cast index`](./reference/cli/cast/index.md)

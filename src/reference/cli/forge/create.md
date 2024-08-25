@@ -29,6 +29,11 @@ Options:
           The standard json compiler input can be used to manually submit contract verification in
           the browser.
 
+      --timeout <TIMEOUT>
+          Timeout to use for broadcasting transactions
+          
+          [env: ETH_TIMEOUT=]
+
   -h, --help
           Print help (see a summary with '-h')
 
