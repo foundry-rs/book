@@ -418,6 +418,7 @@
       - [`startBroadcast`](./cheatcodes/start-broadcast.md)
       - [`stopBroadcast`](./cheatcodes/stop-broadcast.md)
       - [`pauseGasMetering`](./cheatcodes/pause-gas-metering.md)
+      - [`resetGasMetering`](./cheatcodes/reset-gas-metering.md)
       - [`resumeGasMetering`](./cheatcodes/resume-gas-metering.md)
       - [`txGasPrice`](./cheatcodes/tx-gas-price.md)
       - [`startStateDiffRecording`](./cheatcodes/start-state-diff-recording.md)
