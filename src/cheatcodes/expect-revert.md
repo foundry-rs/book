@@ -14,6 +14,10 @@ function expectRevert(bytes4 message) external;
 function expectRevert(bytes calldata message) external;
 ```
 
+```solidity
+function expectPartialRevert(bytes4 message) external;
+```
+
 ### Description
 
 If the **next call** does not revert with the expected data `message`, then `expectRevert` will.
@@ -22,11 +26,33 @@ After calling `expectRevert`, calls to other cheatcodes before the reverting cal
 
 This means, for example, we can call [`prank`](./prank.md) immediately before the reverting call.
 
-There are 3 signatures:
+There are 3 signatures for `expectRevert`:
 
 - **Without parameters**: Asserts that the next call reverts, regardless of the message.
-- **With `bytes4`**: Asserts that the next call reverts with the specified 4 bytes.
+- **With `bytes4`**: Asserts that the next call reverts with the specified 4 bytes and exact match of revert data.
 - **With `bytes`**: Asserts that the next call reverts with the specified bytes.
+
+and one signature for `expectPartialRevert`:
+- **`bytes4`**: Asserts that the next call reverts and the specified 4 bytes match the first 4 bytes of revert data.
+
+> ℹ️  **Note:**
+> 
+> Custom errors can have arguments that sometimes are difficult to calculate in a testing environment or they may be unrelated to the test at hand (e.g. a value computed in the internal function of a third-party contract). In such cases, `expectPartialRevert` can be used to ignore arguments and match only on the selector of custom error. For example, testing a function that reverts with `WrongNumber(uint256 number)` custom error:
+> ```solidity
+> function count() public {
+>     revert WrongNumber(0);
+> }
+> ```
+> should pass when using `expectPartialRevert`:
+> ```solidity
+> vm.expectPartialRevert(Counter.WrongNumber.selector);
+> counter.count();
+> ```
+> but fails if exact match expected:
+> ```solidity
+> vm.expectRevert(Counter.WrongNumber.selector);
+> counter.count();
+> ```
 
 > ⚠️ **Gotcha: Usage with low-level calls**
 >
@@ -102,6 +128,12 @@ function testMultipleExpectReverts() public {
     vm.expectRevert("INVALID_ADDRESS");
     vault.send(address(0), 200);
 }
+```
+
+To use `expectPartialRevert` with a custom [error type][error-type], use its selector.
+
+```solidity
+vm.expectRevert(CustomError.selector);
 ```
 
 ### SEE ALSO

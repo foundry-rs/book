@@ -28,6 +28,7 @@
 - [`startBroadcast`](./start-broadcast.md)
 - [`stopBroadcast`](./stop-broadcast.md)
 - [`pauseGasMetering`](./pause-gas-metering.md)
+- [`resetGasMetering`](./reset-gas-metering.md)
 - [`resumeGasMetering`](./resume-gas-metering.md)
 - [`txGasPrice`](./tx-gas-price.md)
 - [`startStateDiffRecording`](./start-state-diff-recording.md)
