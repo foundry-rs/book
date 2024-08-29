@@ -25,6 +25,7 @@ jobs:
       - name: Create pull request
         uses: peter-evans/create-pull-request@v5
         with:
+          token: ${{ secrets.PAT }}
           commit-message: "update command output"
           title: "chore(output): weekly command output update"
           body: |
