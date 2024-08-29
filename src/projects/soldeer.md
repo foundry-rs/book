@@ -8,7 +8,7 @@ A new approach has been in the making, [soldeer.xyz](https://soldeer.xyz), which
 
 ### Initialize a new project
 If you're using Soldeer for the first time in a new Foundry project, you can use the `init` command to install a fresh instance of Soldeer, complete with the necessary configurations and the latest version of forge-std.
-```toml
+```bash
 forge soldeer init
 ```
 
