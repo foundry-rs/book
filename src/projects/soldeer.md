@@ -6,6 +6,13 @@ The need for a native package manager started to emerge as projects became more 
 
 A new approach has been in the making, [soldeer.xyz](https://soldeer.xyz), which is a Solidity native dependency manager built in Rust and open sourced (check the repository [https://github.com/mario-eth/soldeer](https://github.com/mario-eth/soldeer)).
 
+### Initialize a new project
+If you're using Soldeer for the first time in a new Foundry project, you can use the `init` command to install a fresh instance of Soldeer, complete with the necessary configurations and the latest version of forge-std.
+```toml
+forge soldeer init
+```
+
+
 ### Adding a Dependency
 
 #### Add a Dependency Stored in the Central Repository
