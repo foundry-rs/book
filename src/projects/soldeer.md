@@ -66,7 +66,7 @@ E.g.
 ```
 
 #### Add a Dependency Stored in GIT
-If you choose to use Git as a source for your dependencies—though we generally discourage this since Git isn't designed to be a dependency manager—you can provide the Git repository link as an additional argument. Soldeer will then automatically handle the installation using a Git subprocess.
+If you choose to use Git as a source for your dependencies — though we generally discourage this, since Git isn't designed to be a dependency manager — you can provide the Git repository link as an additional argument. Soldeer will then automatically handle the installation using a Git subprocess.
 For example:
 ```bash
 forge soldeer install forge-std~1.9.2 https://github.com/foundry-rs/forge-std.git
