@@ -253,7 +253,7 @@ interface CheatCodes {
     // Reads the current `msg.sender` and `tx.origin` from state and reports if there is any active caller modification
     function readCallers() external returns (CallerMode callerMode, address msgSender, address txOrigin);
 
-    // Sets an address' balance
+    // Sets an address' eth balance (can also set ERC20 token balance with StdCheats.sol's deal)
     function deal(address who, uint256 newBalance) external;
     
     // Sets an address' code
