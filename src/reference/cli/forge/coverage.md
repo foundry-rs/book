@@ -4,7 +4,7 @@ Generate coverage reports
 
 ```bash
 $ forge coverage --help
-Usage: forge coverage [OPTIONS]
+Usage: forge coverage [OPTIONS] [PATH]
 
 Options:
       --report <REPORT>
@@ -96,6 +96,9 @@ Test options:
 
       --show-progress
           Show test execution progress
+
+  [PATH]
+          The contract file you want to test, it's a shortcut for --match-path
 
 Display options:
       --json
