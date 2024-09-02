@@ -90,7 +90,7 @@ The destination (*to*) can be an ENS name or an address.
     cast send $(cast az) --private-key <sender-pk> --auth $(cast wallet sign-auth <address> --private-key <delegator-pk>)
     ```
 
-6. Send an EIP-7702 transaction authorizing `<address>` to act on your behalf:
+6. Send an EIP-7702 transaction delegating to `<address>`:
     ```sh
     cast send $(cast az) --auth <address>
     ```
