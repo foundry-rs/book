@@ -85,7 +85,7 @@ The destination (*to*) can be an ENS name or an address.
     cast send 0x... 0x68656c6c6f20776f726c64
     ```
 
-5. Sign an EIP-7702 authorization and attach it to a transaction from a different address:
+5. Sign an EIP-7702 authorization and attach it to a transaction from a different sender:
     ```sh
     cast send $(cast az) --private-key <sender-pk> --auth $(cast wallet sign-auth <address> --private-key <delegator-pk>)
     ```
