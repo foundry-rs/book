@@ -4,7 +4,7 @@ Create a snapshot of each test's gas usage
 
 ```bash
 $ forge snapshot --help
-Usage: forge snapshot [OPTIONS]
+Usage: forge snapshot [OPTIONS] [PATH]
 
 Options:
       --diff [<SNAPSHOT_FILE>]
@@ -94,6 +94,9 @@ Test options:
 
       --show-progress
           Show test execution progress
+
+  [PATH]
+          The contract file you want to test, it's a shortcut for --match-path
 
 Display options:
       --json
