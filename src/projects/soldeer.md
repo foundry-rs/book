@@ -187,7 +187,8 @@ In case you want to simulate what would happen if you push a version, you can us
 forge soldeer push my-project~1.0.0 --dry-run true
 ```
 
-
+#### Login Data
+By default, Soldeer saves the login token in the `~/.soldeer/.soldeer_login` file. If you want to save that token to another location, you need to set the environment variable `SOLDEER_LOGIN_FILE`.
 
 
 > **Warning** ⚠️
