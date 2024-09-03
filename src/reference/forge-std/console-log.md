@@ -1,7 +1,7 @@
 ## Console Logging
 
 - Similar to Hardhat's console functions.
-- You can use it in calls and transactions. It works with view functions, but not in pure ones.
+- You can use it in calls and transactions. It also works with view and pure functions.
 - It always works, regardless of the call or transaction failing or being successful.
 - To use it you need import it:
     - `import "forge-std/console.sol";`

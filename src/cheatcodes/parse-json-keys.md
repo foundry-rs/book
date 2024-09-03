@@ -25,5 +25,5 @@ string[] memory keys = vm.parseJsonKeys(json, "$"); // ["key"]
 
 ```solidity
 string memory json = '{"root_key": [{"a": 1, "b": 2}]}';
-string[] memory keys = vm.parseJsonKeys(json, ".root_key.0"); // ["a", "b"]
+string[] memory keys = vm.parseJsonKeys(json, ".root_key[0]"); // ["a", "b"]
 ```

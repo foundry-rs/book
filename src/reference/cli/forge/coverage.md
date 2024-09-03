@@ -4,7 +4,7 @@ Generate coverage reports
 
 ```bash
 $ forge coverage --help
-Usage: forge coverage [OPTIONS]
+Usage: forge coverage [OPTIONS] [PATH]
 
 Options:
       --report <REPORT>
@@ -97,6 +97,9 @@ Test options:
       --show-progress
           Show test execution progress
 
+  [PATH]
+          The contract file you want to test, it's a shortcut for --match-path
+
 Display options:
       --json
           Output test results in JSON format
@@ -186,7 +189,7 @@ EVM options:
           The initial balance of deployed test contracts
 
       --sender <ADDRESS>
-          The address which will be executing tests
+          The address which will be executing tests/scripts
 
       --ffi
           Enable the FFI cheatcode
@@ -279,6 +282,9 @@ Executor environment config:
           Whether to enable isolation of calls. In isolation mode all top-level calls are executed
           as a separate transaction in a separate EVM context, enabling more precise gas accounting
           and transaction state changes
+
+      --alphanet
+          Whether to enable Alphanet features
 
 Cache options:
       --force

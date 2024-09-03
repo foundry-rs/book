@@ -42,3 +42,12 @@ Forge will try to decode as many signatures and values as possible, but sometime
   [<Gas Usage>] <Address>::<Calldata>
     └─ ← <Return Data>
 ```
+
+Some traces might be harder to grasp at first glance. These include:
+
+- The `OOG` shorthand stands for "Out Of Gas".
+- The acronym `EOF` stands for "Ethereum Object Format", which introduces an extensible and versioned container format for EVM bytecode. For more information, read [here](https://evmobjectformat.org/).
+- `NotActivated` means the feature or opcode is not activated. Some versions of the EVM only support certain opcodes. You may need to use a more recent version usign the `--evm_version` flag. For example, the `PUSH0` opcode is only available since the [Shanghai](https://www.evm.codes/?fork=shanghai) hardfork.
+- `InvalidFEOpcode` means that an undefined bytecode value has been encountered during execution. The EVM catches the unknown bytecode and returns the `INVALID` opcode instead, of value `0xFE`. You can find out more [here](https://www.evm.codes/#fe).
+
+For a deeper insight into the various traces, you can explore the [revm source code](https://github.com/bluealloy/revm/blob/main/crates/interpreter/src/instruction_result.rs).

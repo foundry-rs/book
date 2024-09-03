@@ -20,7 +20,7 @@ function assertGt(int256 left, int256 right, string memory err) internal;
 
 ### Description
 
-Asserts `left` is strictly greater than than `right`.
+Asserts `left` is strictly greater than `right`.
 
 Optionally includes an error message in the revert string.
 

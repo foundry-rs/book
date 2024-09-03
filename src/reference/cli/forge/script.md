@@ -103,6 +103,11 @@ Options:
           
           [env: ETH_GAS_PRICE=]
 
+      --timeout <TIMEOUT>
+          Timeout to use for broadcasting transactions
+          
+          [env: ETH_TIMEOUT=]
+
   -h, --help
           Print help (see a summary with '-h')
 
@@ -336,7 +341,7 @@ EVM options:
           The initial balance of deployed test contracts
 
       --sender <ADDRESS>
-          The address which will be executing tests
+          The address which will be executing tests/scripts
 
       --ffi
           Enable the FFI cheatcode
@@ -429,6 +434,9 @@ Executor environment config:
           Whether to enable isolation of calls. In isolation mode all top-level calls are executed
           as a separate transaction in a separate EVM context, enabling more precise gas accounting
           and transaction state changes
+
+      --alphanet
+          Whether to enable Alphanet features
 
       --retries <RETRIES>
           Number of attempts for retrying verification

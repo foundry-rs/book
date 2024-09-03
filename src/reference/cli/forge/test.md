@@ -4,7 +4,7 @@ Run the project's tests
 
 ```bash
 $ forge test --help
-Usage: forge test [OPTIONS]
+Usage: forge test [OPTIONS] [PATH]
 
 Options:
   -h, --help
@@ -74,6 +74,9 @@ Test options:
 
       --show-progress
           Show test execution progress
+
+  [PATH]
+          The contract file you want to test, it's a shortcut for --match-path
 
 Display options:
       --json
@@ -164,7 +167,7 @@ EVM options:
           The initial balance of deployed test contracts
 
       --sender <ADDRESS>
-          The address which will be executing tests
+          The address which will be executing tests/scripts
 
       --ffi
           Enable the FFI cheatcode
@@ -257,6 +260,9 @@ Executor environment config:
           Whether to enable isolation of calls. In isolation mode all top-level calls are executed
           as a separate transaction in a separate EVM context, enabling more precise gas accounting
           and transaction state changes
+
+      --alphanet
+          Whether to enable Alphanet features
 
 Cache options:
       --force

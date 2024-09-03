@@ -30,6 +30,11 @@ The destination (*to*) can be an ENS name or an address.
 `--evm-version`  
 &nbsp;&nbsp;&nbsp;&nbsp;The EVM version to use. Needs `--trace`.
 
+`--data` data\
+&nbsp;&nbsp;&nbsp;&nbsp;Allows setting the data field directly without providing
+sig [args…].\
+&nbsp;&nbsp;&nbsp;&nbsp;Data needs to be in hexadecimal format.
+
 #### Query Options
 
 `-B` *block*  

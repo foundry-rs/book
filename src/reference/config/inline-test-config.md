@@ -9,6 +9,7 @@ Users can in-line test config statements directly in Solidity comments. This wou
 contract MyTest is Test {
   /// forge-config: default.fuzz.runs = 100
   /// forge-config: ci.fuzz.runs = 500
+  /// forge-config: default.fuzz.show-logs = true
   function test_SimpleFuzzTest(uint256 x) public {
     // --- snip ---
   }
@@ -25,6 +26,7 @@ contract MyTest is Test {
   /**
    * forge-config: default.fuzz.runs = 1024
    * forge-config: default.fuzz.max-test-rejects = 500
+   * forge-config: default.fuzz.show-logs = true
    */
   function test_SimpleFuzzTest(uint256 x) public {
     // --- snip ---
@@ -39,12 +41,14 @@ Users can specify the configs described in the table. Each statement must have a
 |-|-|-|
 |`runs`|integer|The amount of fuzz runs to perform for this specific test case. [`Reference`][testing].|
 |`max-test-rejects`|integer|The maximum number of combined inputs that may be rejected before the test as a whole aborts. [`Reference`][Max test rejects].|
+|`show-logs`|boolean| The flag indicates whether to display console logs in fuzz tests or not. Works when `verbosity >= 2`. [`Reference`][Fuzz show logs]. |
 
 Fuzz config example
 ```solidity
 contract MyFuzzTest is Test {
   /// forge-config: default.fuzz.runs = 100
   /// forge-config: default.fuzz.max-test-rejects = 2
+  /// forge-config: default.fuzz.show-logs = true
   function test_InlineConfig(uint256 x) public {
     // --- snip ---
   }
@@ -81,6 +85,7 @@ contract MyInvariantTest is Test {
 [Testing Reference]: ./testing.md
 [testing]: ./testing.md#runs
 [Max test rejects]: ./testing.md#max_test_rejects
+[Fuzz show logs]: ./testing.md#show_logs
 [Invariant runs]: ./testing.md#runs-1
 [Invariant depth]: ./testing.md#depth
 [Fail on revert]: ./testing.md#fail_on_revert

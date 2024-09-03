@@ -13,6 +13,8 @@ Options:
   -c, --case-sensitive         Case sensitive matching
   -d, --deployer <ADDRESS>     Address of the contract deployer [default:
                                0x4e59b44847b379578588920ca78fbf26c0b4956c]
+      --salt <HEX>             Salt to be used for the contract deployment. This option separate
+                               from the default salt mining with filters
   -i, --init-code <HEX>        Init code of the contract to be deployed
       --init-code-hash <HASH>  Init code hash of the contract to be deployed
   -j, --jobs <JOBS>            Number of threads to use. Defaults to and caps at the number of

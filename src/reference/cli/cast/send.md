@@ -36,6 +36,11 @@ Options:
       --unlocked
           Send via `eth_sendTransaction using the `--from` argument or $ETH_FROM as sender
 
+      --timeout <TIMEOUT>
+          Timeout for sending the transaction
+          
+          [env: ETH_TIMEOUT=]
+
   -h, --help
           Print help (see a summary with '-h')
 
@@ -83,6 +88,11 @@ Transaction options:
           Gas price for EIP-4844 blob transaction
           
           [env: ETH_BLOB_GAS_PRICE=]
+
+      --auth <AUTH>
+          EIP-7702 authorization list.
+          
+          Can be either a hex-encoded signed authorization or an address.
 
       --path <BLOB_DATA_PATH>
           The path of blob data to be sent

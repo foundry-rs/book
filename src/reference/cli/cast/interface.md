@@ -4,17 +4,19 @@ Generate a Solidity interface from a given ABI.
 
 ```bash
 $ cast interface --help
-Usage: cast interface [OPTIONS] <PATH_OR_ADDRESS>
+Usage: cast interface [OPTIONS] <CONTRACT>
 
 Arguments:
-  <PATH_OR_ADDRESS>
-          The contract address, or the path to an ABI file.
-          
-          If an address is specified, then the ABI is fetched from Etherscan.
+  <CONTRACT>
+          The target contract, which can be one of: - A file path to an ABI JSON file. - A contract
+          identifier in the form `<path>:<contractname>` or just `<contractname>`. - An Ethereum
+          address, for which the ABI will be fetched from Etherscan
 
 Options:
   -n, --name <NAME>
-          The name to use for the generated interface
+          The name to use for the generated interface.
+          
+          Only relevant when retrieving the ABI from a file.
 
   -p, --pragma <VERSION>
           Solidity pragma version

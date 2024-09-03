@@ -6,11 +6,18 @@ The need for a native package manager started to emerge as projects became more 
 
 A new approach has been in the making, [soldeer.xyz](https://soldeer.xyz), which is a Solidity native dependency manager built in Rust and open sourced (check the repository [https://github.com/mario-eth/soldeer](https://github.com/mario-eth/soldeer)).
 
+### Initialize a new project
+If you're using Soldeer for the first time in a new Foundry project, you can use the `init` command to install a fresh instance of Soldeer, complete with the necessary configurations and the latest version of `forge-std`.
+```bash
+forge soldeer init
+```
+
+
 ### Adding a Dependency
 
 #### Add a Dependency Stored in the Central Repository
 
-To add a dependency, you can visit [soldeer.xyz](https://soldeer.xyz) and search for the dependency you want to add (e.g., openzeppelin 0.5.2).
+To add a dependency, you can visit [soldeer.xyz](https://soldeer.xyz) and search for the dependency you want to add (e.g., openzeppelin 5.0.2).
 
 ![image](https://i.postimg.cc/Hm6R8MTs/Unknown-413.png)
 
@@ -58,21 +65,20 @@ E.g.
 "@custom-dependency" = { version = "1.0.0", path = "https://my-website.com/custom-dependency-1-0-0.zip" }
 ```
 
-### Remapping Dependencies
-
-The remapping of a dependency is performed automatically, Soldeer is adding the dependency into the `remappings.txt`.
-
-E.g.
+#### Add a Dependency Stored in GIT
+If you choose to use Git as a source for your dependencies — though we generally discourage this, since Git isn't designed to be a dependency manager — you can provide the Git repository link as an additional argument. Soldeer will then automatically handle the installation using a Git subprocess.
+For example:
 ```bash
-@openzeppelin-contracts-5.0.2=dependencies/@openzeppelin-contracts-5.0.2
-@uniswap-universal-router-1.6.0=dependencies/@uniswap-universal-router-1.6.0
-@prb-math-4.0.2=dependencies/@prb-math-4.0.2
-@forge-std-1.8.1=dependencies/forge-std-1.8.1
+forge soldeer install forge-std~1.9.2 https://github.com/foundry-rs/forge-std.git
 ```
-These remappings mean:
 
-- To import from `forge-std`, we would write: `import "forge-std-1.8.1/Contract.sol";`
-- To import from `@openzeppelin-contracts`, we would write: `import "@openzeppelin-contracts-5.0.2/Contract.sol";`
+If you want to use a specific revision, branch, or tag, you can do so by appending the following arguments to the command: `--rev/--tag/--branch`
+
+e.g.
+```bash
+forge soldeer install forge-std~1.9.2 https://github.com/foundry-rs/forge-std.git --rev 4695fac44b2934aaa6d7150e2eaf0256fdc566a7
+```
+
 
 ### Updating Dependencies
 
@@ -87,7 +93,8 @@ For example, having this Foundry config file in a git repository, one can pull t
 auto_detect_solc = false 
 bytecode_hash = "none" 
 fuzz = { runs = 1_000 } 
-gas_reports = ["*"] # <= This is important to be added
+libs = ["dependencies"] # <= This is important to be added
+gas_reports = ["*"]
 
 [dependencies] # <= Dependencies will be added under this config
 "@openzeppelin-contracts" = { version = "5.0.2" }
@@ -98,7 +105,49 @@ forge-std = { version = "1.8.1" }
 
 ### Removing Dependencies
 
-To remove a dependency, you have to manually delete it from the `dependencies` directory and from the `[dependencies]` tag.
+You can use `forge soldeer uninstall DEPENDENCY`.
+
+Example: `forge soldeer uninstall @openzeppelin-contracts`. This will action will remove:
+- the config entry
+- the `dependencies` artifacts
+- the `soldeer.lock` entry
+- the `remappings` entry (txt or config remapping)
+
+Additionally you can manually remove a dependency by just removing the artifacts: dependency files, config entry, remappings entry.
+
+### Remappings
+
+The remappings are now fully configurable, the config TOML file (foundry.toml) accepts a
+`[soldeer]` field with the following options
+
+```toml
+[soldeer]
+# whether soldeer manages remappings
+remappings_generate = true
+
+# whether soldeer re-generates all remappings when installing, updating or uninstalling deps
+remappings_regenerate = false
+
+# whether to suffix the remapping with the version: `name-a.b.c`
+remappings_version = true
+
+# a prefix to add to the remappings ("@" would give `@name`)
+remappings_prefix = ""
+
+# where to store the remappings ("txt" for `remappings.txt` or "config" for `foundry.toml`)
+# ignored when `soldeer.toml` is used as config (uses `remappings.txt`)
+remappings_location = "txt"
+```
+
+### Installing dependencies of dependencies aka sub-dependencies
+
+Whenever you install a dependency, that dependency might have other dependencies that need to be installed as well. Currently, you can handle this by either specifying the `recursive_deps` field as a configuration entry in the config file or by passing the `--recursive-deps` argument when running the install or update command. This will ensure that all necessary sub-dependencies are automatically pulled in.
+e.g.
+```toml
+[soldeer]
+recursive_deps = true
+```
+
 
 ### Pushing a New Version to the Central Repository
 
