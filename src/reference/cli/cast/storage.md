@@ -34,12 +34,9 @@ Options:
       --jwt-secret <JWT_SECRET>
           JWT Secret for the RPC endpoint.
           
-          The JWT secret will be used to create a JWT for a RPC. For example, the following can be
-          used to simulate a CL `engine_forkchoiceUpdated` call:
+          The JWT secret will be used to create a JWT for a RPC. For example, the following can be used to simulate a CL `engine_forkchoiceUpdated` call:
           
-          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2
-          '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
-          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2 '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc", "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
           "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
           
           [env: ETH_RPC_JWT_SECRET=]
@@ -124,8 +121,7 @@ Compiler options:
           
           Example keys: evm.assembly, ewasm, ir, irOptimized, metadata
           
-          For a full description, see
-          <https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description>
+          For a full description, see <https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description>
 
       --extra-output-files <SELECTOR>...
           Extra output to write to separate files.
@@ -139,8 +135,7 @@ Project options:
       --revert-strings <REVERT>
           Revert string configuration.
           
-          Possible values are "default", "strip" (remove), "debug" (Solidity-generated revert
-          strings) and "verboseDebug"
+          Possible values are "default", "strip" (remove), "debug" (Solidity-generated revert strings) and "verboseDebug"
 
       --build-info
           Generate build info files
@@ -177,4 +172,58 @@ Project options:
 
       --config-path <FILE>
           Path to the config file
+
+ZKSync configuration:
+      --zk-startup[=<ENABLE_ZKVM_AT_STARTUP>]
+          Enable zkVM at startup
+          
+          [aliases: zksync]
+          [possible values: true, false]
+
+      --zk-compile[=<COMPILE_FOR_ZKVM>]
+          Compile for zkVM
+          
+          [possible values: true, false]
+
+      --zk-solc-path <ZK_SOLC_PATH>
+          Solc compiler path to use when compiling with zksolc
+
+      --zk-enable-eravm-extensions[=<ENABLE_ERAVM_EXTENSIONS>]
+          Enable the system contract compilation mode.
+          
+          [aliases: enable-eravm-extensions, system-mode]
+          [possible values: true, false]
+
+      --zk-force-evmla[=<FORCE_EVMLA>]
+          Forcibly switch to the EVM legacy assembly pipeline.
+          
+          [aliases: force-evmla]
+          [possible values: true, false]
+
+      --zk-llvm-options <LLVM_OPTIONS>
+          ZkSolc extra LLVM options
+
+      --zk-fallback-oz[=<FALLBACK_OZ>]
+          Try to recompile with -Oz if the bytecode is too large
+          
+          [aliases: fallback-oz]
+          [possible values: true, false]
+
+      --zk-detect-missing-libraries
+          Detect missing libraries, instead of erroring
+          
+          Currently unused
+
+  -O, --zk-optimizer-mode <LEVEL>
+          Set the LLVM optimization parameter `-O[0 | 1 | 2 | 3 | s | z]`. Use `3` for best performance and `z` for minimal size
+          
+          [aliases: zk-optimization]
+
+      --zk-optimizer
+          Enables optimizations
+
+      --zk-avoid-contracts <AVOID_CONTRACTS>
+          Contracts to avoid compiling on zkSync
+          
+          [aliases: avoid-contracts]
 ```

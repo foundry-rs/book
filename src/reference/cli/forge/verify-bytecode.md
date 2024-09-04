@@ -20,11 +20,10 @@ Options:
       --block <BLOCK>
           The block at which the bytecode should be verified
 
-      --constructor-args <ARGS>...
+      --constructor-args <ARGS>
           The constructor args to generate the creation code
-
-      --encoded-constructor-args <HEX>
-          The ABI-encoded constructor arguments
+          
+          [aliases: encoded-constructor-args]
 
       --constructor-args-path <PATH>
           The path to a file containing the constructor arguments
@@ -33,6 +32,12 @@ Options:
           The rpc url to use for verification
           
           [env: ETH_RPC_URL=]
+
+      --verification-type <TYPE>
+          Verfication Type: `full` or `partial`. Ref: <https://docs.sourcify.dev/docs/full-vs-partial-match/>
+          
+          [default: full]
+          [possible values: full, partial]
 
   -e, --etherscan-api-key <KEY>
           The Etherscan (or equivalent) API key

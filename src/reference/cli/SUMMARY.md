@@ -147,13 +147,3 @@
     - [`cast wallet private-key`](./cast/wallet/private-key.md)
     - [`cast wallet decrypt-keystore`](./cast/wallet/decrypt-keystore.md)
 
-- [`anvil`](./anvil.md)
-  - [`anvil completions`](./anvil/completions.md)
-  - [`anvil generate-fig-spec`](./anvil/generate-fig-spec.md)
-
-- [`chisel`](./chisel.md)
-  - [`chisel list`](./chisel/list.md)
-  - [`chisel load`](./chisel/load.md)
-  - [`chisel view`](./chisel/view.md)
-  - [`chisel clear-cache`](./chisel/clear-cache.md)
-

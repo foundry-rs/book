@@ -10,8 +10,7 @@ Arguments:
   <PATH>
           The contract you want to run. Either the file path or contract name.
           
-          If multiple contracts exist in the same file you must specify the target contract with
-          --target-contract.
+          If multiple contracts exist in the same file you must specify the target contract with --target-contract.
 
   [ARGS]...
           Arguments to pass to the script function
@@ -63,8 +62,7 @@ Options:
           
           It DOES NOT simulate the script again and it expects nonces to have remained the same.
           
-          Example: If transaction N has a nonce of 22, then the account should have a nonce of 22,
-          otherwise it fails.
+          Example: If transaction N has a nonce of 22, then the account should have a nonce of 22, otherwise it fails.
 
       --multi
           If present, --resume or --verify will be assumed to be a multi chain deployment
@@ -75,14 +73,12 @@ Options:
           Takes precedence over broadcast.
 
       --slow
-          Makes sure a transaction is sent, only after its previous one has been confirmed and
-          succeeded
+          Makes sure a transaction is sent, only after its previous one has been confirmed and succeeded
 
       --non-interactive
           Disables interactive prompts that might appear when deploying big contracts.
           
-          For more info on the contract size limit, see EIP-170:
-          <https://eips.ethereum.org/EIPS/eip-170>
+          For more info on the contract size limit, see EIP-170: <https://eips.ethereum.org/EIPS/eip-170>
 
       --etherscan-api-key <KEY>
           The Etherscan (or equivalent) API key
@@ -96,10 +92,7 @@ Options:
           Output results in JSON format
 
       --with-gas-price <PRICE>
-          Gas price for legacy transactions, or max fee per gas for EIP1559 transactions, either
-          specified in wei, or as a string with a unit type.
-          
-          Examples: 1ether, 10gwei, 0.01ether
+          Gas price for legacy transactions, or max fee per gas for EIP1559 transactions
           
           [env: ETH_GAS_PRICE=]
 
@@ -173,8 +166,7 @@ Compiler options:
           
           Example keys: evm.assembly, ewasm, ir, irOptimized, metadata
           
-          For a full description, see
-          <https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description>
+          For a full description, see <https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description>
 
       --extra-output-files <SELECTOR>...
           Extra output to write to separate files.
@@ -188,8 +180,7 @@ Project options:
       --revert-strings <REVERT>
           Revert string configuration.
           
-          Possible values are "default", "strip" (remove), "debug" (Solidity-generated revert
-          strings) and "verboseDebug"
+          Possible values are "default", "strip" (remove), "debug" (Solidity-generated revert strings) and "verboseDebug"
 
       --build-info
           Generate build info files
@@ -226,6 +217,60 @@ Project options:
 
       --config-path <FILE>
           Path to the config file
+
+ZKSync configuration:
+      --zk-startup[=<ENABLE_ZKVM_AT_STARTUP>]
+          Enable zkVM at startup
+          
+          [aliases: zksync]
+          [possible values: true, false]
+
+      --zk-compile[=<COMPILE_FOR_ZKVM>]
+          Compile for zkVM
+          
+          [possible values: true, false]
+
+      --zk-solc-path <ZK_SOLC_PATH>
+          Solc compiler path to use when compiling with zksolc
+
+      --zk-enable-eravm-extensions[=<ENABLE_ERAVM_EXTENSIONS>]
+          Enable the system contract compilation mode.
+          
+          [aliases: enable-eravm-extensions, system-mode]
+          [possible values: true, false]
+
+      --zk-force-evmla[=<FORCE_EVMLA>]
+          Forcibly switch to the EVM legacy assembly pipeline.
+          
+          [aliases: force-evmla]
+          [possible values: true, false]
+
+      --zk-llvm-options <LLVM_OPTIONS>
+          ZkSolc extra LLVM options
+
+      --zk-fallback-oz[=<FALLBACK_OZ>]
+          Try to recompile with -Oz if the bytecode is too large
+          
+          [aliases: fallback-oz]
+          [possible values: true, false]
+
+      --zk-detect-missing-libraries
+          Detect missing libraries, instead of erroring
+          
+          Currently unused
+
+  -O, --zk-optimizer-mode <LEVEL>
+          Set the LLVM optimization parameter `-O[0 | 1 | 2 | 3 | s | z]`. Use `3` for best performance and `z` for minimal size
+          
+          [aliases: zk-optimization]
+
+      --zk-optimizer
+          Enables optimizations
+
+      --zk-avoid-contracts <AVOID_CONTRACTS>
+          Contracts to avoid compiling on zkSync
+          
+          [aliases: avoid-contracts]
 
 Wallet options - raw:
   -a, --froms [<ADDRESSES>...]
@@ -296,10 +341,6 @@ Wallet options - hardware wallet:
   -t, --trezor
           Use a Trezor hardware wallet
 
-Wallet options - remote:
-      --aws
-          Use AWS Key Management Service
-
 EVM options:
   -f, --fork-url <URL>
           Fetch state over a remote endpoint instead of starting from an empty state.
@@ -361,14 +402,12 @@ Fork config:
           
           default value: 330
           
-          See also --fork-url and
-          <https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second>
+          See also --fork-url and <https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second>
 
       --no-rpc-rate-limit
           Disables rate limiting for this node's provider.
           
-          See also --fork-url and
-          <https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second>
+          See also --fork-url and <https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second>
           
           [aliases: no-rate-limit]
 
@@ -377,8 +416,7 @@ Executor environment config:
           The block gas limit
 
       --code-size-limit <CODE_SIZE>
-          EIP-170: Contract code size limit in bytes. Useful to increase this because of tests. By
-          default, it is 0x6000 (~25kb)
+          EIP-170: Contract code size limit in bytes. Useful to increase this because of tests. By default, it is 0x6000 (~25kb)
 
       --chain <CHAIN>
           The chain name or EIP-155 chain ID
@@ -415,8 +453,7 @@ Executor environment config:
           The block gas limit
 
       --memory-limit <MEMORY_LIMIT>
-          The memory limit per EVM execution in bytes. If this limit is exceeded, a `MemoryLimitOOG`
-          result is thrown.
+          The memory limit per EVM execution in bytes. If this limit is exceeded, a `MemoryLimitOOG` result is thrown.
           
           The default is 128MiB.
 
@@ -426,9 +463,7 @@ Executor environment config:
           [aliases: no-gas-limit]
 
       --isolate
-          Whether to enable isolation of calls. In isolation mode all top-level calls are executed
-          as a separate transaction in a separate EVM context, enabling more precise gas accounting
-          and transaction state changes
+          Whether to enable isolation of calls. In isolation mode all top-level calls are executed as a separate transaction in a separate EVM context, enabling more precise gas accounting and transaction state changes
 
       --retries <RETRIES>
           Number of attempts for retrying verification

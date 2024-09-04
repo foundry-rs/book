@@ -1,6 +1,6 @@
 # forge soldeer push
 
-Push a dependency to the repository. The PATH_TO_DEPENDENCY is optional and if not provided, the
+Push a dependency to the repository. The PATH_TO_DEPENDENCY is optional and if not provided, the current directory will be used.
 
 ```bash
 $ forge soldeer push --help

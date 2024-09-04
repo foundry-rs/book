@@ -4,7 +4,7 @@ Decode ABI-encoded input data.
 
 ```bash
 $ cast calldata-decode --help
-Usage: cast calldata-decode [OPTIONS] <SIG> <CALLDATA>
+Usage: cast calldata-decode <SIG> <CALLDATA>
 
 Arguments:
   <SIG>
@@ -16,8 +16,4 @@ Arguments:
 Options:
   -h, --help
           Print help (see a summary with '-h')
-
-Display options:
-  -j, --json
-          Print the decoded calldata as JSON
 ```

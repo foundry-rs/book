@@ -10,8 +10,7 @@ Arguments:
   [VALUE]
           The value to convert.
           
-          This is a hex-encoded string, or an array of hex-encoded strings. Can be arbitrarily
-          recursive.
+          This is a hex-encoded string, or an array of hex-encoded strings. Can be arbitrarily recursive.
 
 Options:
   -h, --help
