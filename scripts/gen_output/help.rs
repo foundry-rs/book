@@ -5,7 +5,6 @@ edition = "2021"
 
 [dependencies]
 clap = { version = "4", features = ["derive"] }
-indexmap = "2"
 pathdiff = "0.2"
 regex = "1"
 ---
@@ -102,7 +101,7 @@ fn main() -> io::Result<()> {
         .rev() // reverse to keep the order (pop)
         .map(Cmd::new)
         .collect();
-    let mut output = IndexMap::new(); // keep the order in which entries are added
+    let mut output = Vec::new();
 
     // Iterate over all commands and their subcommands.
     while let Some(cmd) = todo_iter.pop() {
@@ -128,7 +127,7 @@ fn main() -> io::Result<()> {
                 subcommands: new_subcmds,
             });
         }
-        output.insert(cmd, stdout);
+        output.push((cmd, stdout));
     }
 
     // Generate markdown files.
@@ -138,8 +137,8 @@ fn main() -> io::Result<()> {
 
     // Generate SUMMARY.md.
     let summary: String = output
-        .keys()
-        .map(|cmd| cmd_summary(None, cmd, 0))
+        .iter()
+        .map(|(cmd, _)| cmd_summary(None, cmd, 0))
         .chain(once("\n".to_string()))
         .collect();
 
@@ -157,8 +156,8 @@ fn main() -> io::Result<()> {
     // Generate root SUMMARY.md.
     if args.root_summary {
         let root_summary: String = output
-            .keys()
-            .map(|cmd| {
+            .iter()
+            .map(|(cmd, _)| {
                 let root_path = pathdiff::diff_paths(&out_dir, &args.root_dir);
                 cmd_summary(root_path, cmd, args.root_indentation)
             })
