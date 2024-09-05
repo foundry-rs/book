@@ -9,11 +9,12 @@ gen_help() {
   done
 
   cmd=(
-    "$SCRIPTS/gen_output/help.py"
+    "$SCRIPTS/gen_output/help.rs"
     --root-dir "$ROOT/src/"
     --root-summary
     --root-indentation 4
     --readme
+    --verbose
     --out-dir "$ROOT/src/reference/cli/"
     "${bins[@]}"
   )
