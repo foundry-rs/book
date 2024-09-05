@@ -18,11 +18,13 @@ jobs:
 
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
+      - uses: dtolnay/rust-toolchain@nightly
 
       - name: Update
         run: |
-          git config --global user.email "update@update.com"
-          git config --global user.name "update"
+          git config --global user.name "GitHub Actions Bot"
+          git config --global user.email "<>"
+          git config --global url."https://github.com/".insteadOf "git@github.com:"
           ./scripts/gen_output.sh
 
       - name: Create pull request
