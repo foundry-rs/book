@@ -9,7 +9,6 @@ pathdiff = "0.2"
 regex = "1"
 ---
 use clap::Parser;
-use indexmap::IndexMap;
 use regex::Regex;
 use std::borrow::Cow;
 use std::fs::{self, File};
