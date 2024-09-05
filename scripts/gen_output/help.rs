@@ -1,20 +1,25 @@
 #!/usr/bin/env -S cargo +nightly -Zscript
 ---
+[package]
+edition = "2021"
+
 [dependencies]
-clap = {version="4", features = ["derive"]}
-indexmap = "2.5.0"
+clap = { version = "4", features = ["derive"] }
+indexmap = "2"
 pathdiff = "0.2"
-regex = "1.10.6"
+regex = "1"
 ---
-use clap::{CommandFactory, Parser};
+use clap::Parser;
 use indexmap::IndexMap;
 use regex::Regex;
+use std::borrow::Cow;
 use std::fs::{self, File};
 use std::io::{self, Write};
 use std::iter::once;
 use std::path::{Path, PathBuf};
 use std::process::{Command, Stdio};
 use std::str;
+use std::sync::LazyLock;
 use std::{fmt, process};
 
 const SECTION_START: &str = "<!-- CLI_REFERENCE START -->";
@@ -28,6 +33,15 @@ Automatically-generated CLI reference from `--help` output.
 {{#include ./SUMMARY.md}}
 "#;
 const TRIM_LINE_END_MARKDOWN: bool = false;
+
+/// Lazy static regex to avoid recompiling the same regex pattern multiple times.
+macro_rules! regex {
+    ($re:expr) => {{
+        static RE: LazyLock<Regex> =
+            LazyLock::new(|| Regex::new($re).expect("Failed to compile regex pattern"));
+        &*RE
+    }};
+}
 
 /// Generate markdown files from help output of commands
 #[derive(Parser, Debug)]
@@ -58,6 +72,7 @@ struct Args {
     verbose: bool,
 
     /// Commands to generate markdown for.
+    #[arg(required = true, num_args = 1..)]
     commands: Vec<PathBuf>,
 }
 
@@ -76,14 +91,7 @@ fn write_file(file_path: &Path, content: &str) -> io::Result<()> {
 
 fn main() -> io::Result<()> {
     let args = Args::parse();
-
-    // Ensure that at least one command is provided
-    if args.commands.is_empty() {
-        Args::command().print_help().expect("Failed to print help");
-        println!(); // Print a newline after the help message
-        eprintln!("Error: You must provide at least one command.");
-        std::process::exit(1); // Exit with a non-zero status code to indicate an error
-    }
+    debug_assert!(args.commands.len() >= 1);
 
     let out_dir = args.out_dir;
     fs::create_dir_all(&out_dir)?;
@@ -96,7 +104,7 @@ fn main() -> io::Result<()> {
         .collect();
     let mut output = IndexMap::new(); // keep the order in which entries are added
 
-    //Iterate over all commands and their subcommands.
+    // Iterate over all commands and their subcommands.
     while let Some(cmd) = todo_iter.pop() {
         let (new_subcmds, stdout) = get_entry(&cmd)?;
         if args.verbose && !new_subcmds.is_empty() {
@@ -128,7 +136,7 @@ fn main() -> io::Result<()> {
         cmd_markdown(&out_dir, cmd, stdout)?;
     }
 
-    // Generate SUMMARY.md
+    // Generate SUMMARY.md.
     let summary: String = output
         .keys()
         .map(|cmd| cmd_summary(None, cmd, 0))
@@ -146,8 +154,8 @@ fn main() -> io::Result<()> {
         write_file(path, README)?;
     }
 
+    // Generate root SUMMARY.md.
     if args.root_summary {
-        // Generate
         let root_summary: String = output
             .keys()
             .map(|cmd| {
@@ -197,7 +205,8 @@ fn get_entry(cmd: &Cmd) -> io::Result<(Vec<String>, String)> {
 
 /// Returns a list of subcommands from the help output of a command.
 fn parse_sub_commands(s: &str) -> Vec<String> {
-    let re = Regex::new(r"^  (\S+)").unwrap(); // This regex matches lines starting with two spaces, followed by the subcommand name
+    // This regex matches lines starting with two spaces, followed by the subcommand name.
+    let re = regex!(r"^  (\S+)");
 
     s.split("Commands:")
         .nth(1) // Get the part after "Commands:"
@@ -266,7 +275,7 @@ fn update_root_summary(root_dir: &Path, root_summary: &str) -> io::Result<()> {
     let summary_file = root_dir.join("SUMMARY.md");
     let original_summary_content = fs::read_to_string(&summary_file)?;
 
-    let section_re = Regex::new(&format!(r"(?s)\s*{}.*?{}", SECTION_START, SECTION_END)).unwrap();
+    let section_re = regex!(&format!(r"(?s)\s*{SECTION_START}.*?{SECTION_END}"));
     if !section_re.is_match(&original_summary_content) {
         eprintln!(
             "Could not find CLI_REFERENCE section in {}. Please add the following section to the file:\n{}\n... CLI Reference goes here ...\n\n{}",
@@ -277,16 +286,14 @@ fn update_root_summary(root_dir: &Path, root_summary: &str) -> io::Result<()> {
         process::exit(1);
     }
 
-    let section_re = Regex::new(&format!(r".*{}", SECTION_END)).unwrap();
-    let last_line = section_re
+    let section_end_re = regex!(&format!(r".*{SECTION_END}"));
+    let last_line = section_end_re
         .find(&original_summary_content)
         .map(|m| m.as_str().to_string())
         .expect("Could not extract last line of CLI_REFERENCE section");
 
     let root_summary_s = root_summary.trim_end().replace("\n\n", "\n");
     let replace_with = format!(" {}\n{}\n{}", SECTION_START, root_summary_s, last_line);
-
-    let section_re = Regex::new(&format!(r"(?s)\s*{}.*?{}", SECTION_START, SECTION_END)).unwrap();
 
     let new_root_summary = section_re
         .replace(&original_summary_content, replace_with.as_str())
@@ -297,35 +304,24 @@ fn update_root_summary(root_dir: &Path, root_summary: &str) -> io::Result<()> {
 }
 
 /// Preprocesses the help output of a command.
-fn preprocess_help(s: &str) -> String {
-    let patterns = [
-        // Remove the user-specific paths.
-        (r"default: /.*/reth", "default: <CACHE_DIR>"),
-        // Remove the commit SHA and target architecture triple or fourth
-        //  rustup available targets:
-        //    aarch64-apple-darwin
-        //    x86_64-unknown-linux-gnu
-        //    x86_64-pc-windows-gnu
-        (
-            r"default: reth/.*-[0-9A-Fa-f]{6,10}/([_\w]+)-(\w+)-(\w+)(-\w+)?",
-            "default: reth/<VERSION>-<SHA>/<ARCH>",
-        ),
-        // Remove the OS
-        (r"default: reth/.*/\w+", "default: reth/<VERSION>/<OS>"),
-        // Remove rpc.max-tracing-requests default value
-        (
-            r"(rpc.max-tracing-requests <COUNT>\n.*\n.*\n.*)\[default: \d+\]",
-            r"$1[default: <NUM CPU CORES-2>]",
-        ),
-    ];
+fn preprocess_help(s: &str) -> Cow<'_, str> {
+    static REPLACEMENTS: LazyLock<Vec<(Regex, &str)>> = LazyLock::new(|| {
+        let patterns: &[(&str, &str)] = &[
+            // No patterns yet
+        ];
+        patterns
+            .iter()
+            .map(|&(re, replace_with)| (Regex::new(re).expect(re), replace_with))
+            .collect()
+    });
 
-    let mut result = s.to_owned();
-    for (pattern, replacement) in &patterns {
-        let re = Regex::new(pattern).expect("Failed to compile regex pattern");
-        result = re.replace_all(&result, *replacement).into_owned();
+    let mut s = Cow::Borrowed(s);
+    for (re, replacement) in REPLACEMENTS.iter() {
+        if let Cow::Owned(result) = re.replace_all(&s, *replacement) {
+            s = Cow::Owned(result);
+        }
     }
-
-    result
+    s
 }
 
 #[derive(Hash, Debug, PartialEq, Eq)]
