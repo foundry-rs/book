@@ -5,17 +5,6 @@ $ forge test
 // ANCHOR: output
 No files changed, compilation skipped
 
-Ran 8 tests for test/OpenZeppelinNft.t.sol:OpenZeppelinNftTests
-[PASS] testBalanceIncremented() (gas: 217829)
-[PASS] testFailMaxSupplyReached() (gas: 134524)
-[PASS] testFailMintToZeroAddress() (gas: 34577)
-[PASS] testFailNoMintPricePaid() (gas: 5568)
-[PASS] testFailUnSafeContractReceiver() (gas: 3524)
-[PASS] testMintPricePaid() (gas: 81554)
-[PASS] testNewMintOwnerRegistered() (gas: 190956)
-[PASS] testSafeContractReceiver() (gas: 273132)
-Suite result: ok. 8 passed; 0 failed; 0 skipped; finished in 1.59ms (1.23ms CPU time)
-
 Ran 8 tests for test/SolmateNft.sol:SolmateNftTests
 [PASS] testBalanceIncremented() (gas: 217400)
 [PASS] testFailMaxSupplyReached() (gas: 134524)
@@ -25,8 +14,19 @@ Ran 8 tests for test/SolmateNft.sol:SolmateNftTests
 [PASS] testMintPricePaid() (gas: 81321)
 [PASS] testNewMintOwnerRegistered() (gas: 190741)
 [PASS] testSafeContractReceiver() (gas: 272636)
-Suite result: ok. 8 passed; 0 failed; 0 skipped; finished in 1.59ms (1.45ms CPU time)
+Suite result: ok. 8 passed; 0 failed; 0 skipped; finished in 1.62ms (1.47ms CPU time)
 
-Ran 2 test suites in 5.40ms (3.18ms CPU time): 16 tests passed, 0 failed, 0 skipped (16 total tests)
+Ran 8 tests for test/OpenZeppelinNft.t.sol:OpenZeppelinNftTests
+[PASS] testBalanceIncremented() (gas: 217829)
+[PASS] testFailMaxSupplyReached() (gas: 134524)
+[PASS] testFailMintToZeroAddress() (gas: 34577)
+[PASS] testFailNoMintPricePaid() (gas: 5568)
+[PASS] testFailUnSafeContractReceiver() (gas: 3524)
+[PASS] testMintPricePaid() (gas: 81554)
+[PASS] testNewMintOwnerRegistered() (gas: 190956)
+[PASS] testSafeContractReceiver() (gas: 273132)
+Suite result: ok. 8 passed; 0 failed; 0 skipped; finished in 1.62ms (1.25ms CPU time)
+
+Ran 2 test suites in 5.75ms (3.24ms CPU time): 16 tests passed, 0 failed, 0 skipped (16 total tests)
 // ANCHOR_END: output
 // ANCHOR_END: all
