@@ -21,9 +21,9 @@ gen_forge() {
   run_command "$OUTPUT_DIR/hello_foundry/tree-with-files" \
     tree . -L 3 -I output
   run_command "$OUTPUT_DIR/hello_foundry/forge-build" \
-    forge build
+    forge build --zksync
   run_command "$OUTPUT_DIR/hello_foundry/forge-test" \
-    forge test
+    forge test --zksync
 
   in_temp foundry-template
   git clone https://github.com/PaulRBerg/foundry-template
@@ -32,9 +32,9 @@ gen_forge() {
   run_command "$OUTPUT_DIR/foundry-template/forge-install" \
     forge install
   run_command "$OUTPUT_DIR/foundry-template/forge-build" \
-    forge build
+    forge build --zksync
   run_command "$OUTPUT_DIR/foundry-template/forge-test" \
-    forge test
+    forge test --zksync
 
   in_temp deps
   forge init deps
@@ -49,42 +49,42 @@ gen_forge() {
 
   in_project test_filters
   run_command "$OUTPUT_DIR/test_filters/forge-test-match-contract-and-test" \
-    forge test --match-contract ComplicatedContractTest --match-test test_Deposit
+    forge test --zksync --match-contract ComplicatedContractTest --match-test test_Deposit
 
   run_command "$OUTPUT_DIR/test_filters/forge-test-match-path" \
-    forge test --match-path test/ContractB.t.sol
+    forge test --zksync --match-path test/ContractB.t.sol
 
   in_project cheatcodes
   run_command "$OUTPUT_DIR/cheatcodes/forge-test-simple" \
-    forge test --match-test test_IncrementAsOwner
+    forge test --zksync --match-test test_IncrementAsOwner
 
   run_command "$OUTPUT_DIR/cheatcodes/forge-test-cheatcodes" \
-    forge test --match-test "test_IncrementAsOwner|testFail_IncrementAsNotOwner" --match-path test/OwnerUpOnly.t.sol
+    forge test --zksync --match-test "test_IncrementAsOwner|testFail_IncrementAsNotOwner" --match-path test/OwnerUpOnly.t.sol
 
   run_command "$OUTPUT_DIR/cheatcodes/forge-test-cheatcodes-tracing" \
-    forge test -vvvv --match-test testFail_IncrementAsNotOwner --match-path test/OwnerUpOnly.t.sol
+    forge test --zksync -vvvv --match-test testFail_IncrementAsNotOwner --match-path test/OwnerUpOnly.t.sol
 
   run_command "$OUTPUT_DIR/cheatcodes/forge-test-cheatcodes-expectrevert" \
-    forge test --match-test "test_IncrementAsOwner|test_IncrementAsNotOwner" --match-path test/OwnerUpOnly.t.sol
+    forge test --zksync --match-test "test_IncrementAsOwner|test_IncrementAsNotOwner" --match-path test/OwnerUpOnly.t.sol
 
   in_project fuzz_testing
   step test/Safe.t.sol 1
   run_command "$OUTPUT_DIR/fuzz_testing/forge-test-no-fuzz" \
-    forge test
+    forge test --zksync
   step test/Safe.t.sol 2
   run_command "$OUTPUT_DIR/fuzz_testing/forge-test-fail-fuzz" \
-    forge test --allow-failure
+    forge test --zksync --allow-failure
   step test/Safe.t.sol 3
   run_command "$OUTPUT_DIR/fuzz_testing/forge-test-success-fuzz" \
-    forge test
+    forge test --zksync
 
   in_temp nft_tutorial
-  git clone https://github.com/FredCoen/nft-tutorial
-  cd nft-tutorial
+  git clone https://github.com/Moonsong-Labs/foundry-zksync-book-nft-tutorial
+  cd foundry-zksync-book-nft-tutorial
   forge install
-  forge build
+  forge build --zksync
   run_command "$OUTPUT_DIR/nft_tutorial/forge-test" \
-    forge test
+    forge test --zksync
 
   in_temp forge_tree
   git clone https://github.com/FredCoen/nft-tutorial

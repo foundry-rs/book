@@ -16,6 +16,19 @@
 - [Soldeer](./projects/soldeer.md)
 - [Project Layout](./projects/project-layout.md)
 
+# ZKsync Specifics
+
+- [Execution Overview](./zksync-specifics/execution-overview.md)
+- [Compilation Overview](./zksync-specifics/compilation-overview.md)
+- [Limitations](./zksync-specifics/limitations/README.md)
+  - [General](./zksync-specifics/limitations/general.md)
+  - [Compilation](./zksync-specifics/limitations/compilation.md)
+  - [Broadcast](./zksync-specifics/limitations/broadcast.md)
+  - [Cheatcodes](./zksync-specifics/limitations/cheatcodes.md)
+- [Additional Cheatcodes](./zksync-specifics/cheatcodes/README.md)
+  - [zkVm](./zksync-specifics/cheatcodes/zkvm.md)
+
+
 # Forge Overview
 
 - [Overview of Forge](forge/README.md)

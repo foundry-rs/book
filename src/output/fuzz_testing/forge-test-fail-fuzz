@@ -1,16 +1,48 @@
 // ANCHOR: all
 // ANCHOR: command
-$ forge test --allow-failure
+$ forge test --zksync --allow-failure
 // ANCHOR_END: command
 // ANCHOR: output
 Compiling 1 files with Solc 0.8.10
-Solc 0.8.10 finished in 1.03s
-Compiler run successful!
+Solc 0.8.10 finished in 803.35ms
+Compiler run successful with warnings:
+Warning (9302): Return value of low-level calls not used.
+  --> test/Safe.t.sol:11:9:
+   |
+11 |         payable(msg.sender).call{value: address(this).balance}("");
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Warning (9302): Return value of low-level calls not used.
+  --> test/Safe.t.sol:30:9:
+   |
+30 |         payable(address(safe)).call{value: amount}("");
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+Compiling 1 files with zksolc and solc 0.8.10
+zksolc and solc 0.8.10 finished in 4.37s
+Compiler run successful with warnings:
+Warning (9302)
+Warning: Return value of low-level calls not used.
+  --> test/Safe.t.sol:11:9:
+   |
+11 |         payable(msg.sender).call{value: address(this).balance}("");
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Warning (9302)
+Warning: Return value of low-level calls not used.
+  --> test/Safe.t.sol:30:9:
+   |
+30 |         payable(address(safe)).call{value: amount}("");
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+2024-09-04T13:36:39.849766Z ERROR foundry_zksync_core::vm::tracer: call may fail or behave unexpectedly due to empty code target=0x7fa9385be102ac3eac297483dd6233d62b3e1496 calldata=""
+2024-09-04T13:36:39.858634Z ERROR foundry_zksync_core::vm::tracer: call may fail or behave unexpectedly due to empty code target=0x7fa9385be102ac3eac297483dd6233d62b3e1496 calldata=""
 
 Ran 1 test for test/Safe.t.sol:SafeTest
-[FAIL. Reason: EvmError: Revert; counterexample: calldata=0x29facca7000000000000000000001a348a64d78d9fe41b8516af935ee79e6a2aee603890 args=[9804543072793924138944464511065920422288481581021328 [9.804e51]]] testFuzz_Withdraw(uint256) (runs: 1, μ: 19531, ~: 19531)
-Suite result: FAILED. 0 passed; 1 failed; 0 skipped; finished in 914.35µs (481.87µs CPU time)
+[FAIL. Reason: assertion failed; counterexample: calldata=0x29facca70000000000000000000000000000000011f88d5007acc7732f5149f83c18544e args=[23887431709642595303355446118883808334 [2.388e37]]] testFuzz_Withdraw(uint256) (runs: 1, μ: 12406, ~: 12406)
+Suite result: FAILED. 0 passed; 1 failed; 0 skipped; finished in 29.56ms (18.29ms CPU time)
 
-Ran 1 test suite in 5.69ms (914.35µs CPU time): 0 tests passed, 1 failed, 0 skipped (1 total tests)
+Ran 1 test suite in 30.50ms (29.56ms CPU time): 0 tests passed, 1 failed, 0 skipped (1 total tests)
 // ANCHOR_END: output
 // ANCHOR_END: all

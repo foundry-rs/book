@@ -1,15 +1,19 @@
 // ANCHOR: all
 // ANCHOR: command
-$ forge test
+$ forge test --zksync
 // ANCHOR_END: command
 // ANCHOR: output
+Compiling 25 files with Solc 0.8.26
+Solc 0.8.26 finished in 643.85ms
+Compiler run successful!
+
 No files changed, compilation skipped
 
 Ran 2 tests for test/Counter.t.sol:CounterTest
-[PASS] testFuzz_SetNumber(uint256) (runs: 256, μ: 30888, ~: 31277)
-[PASS] test_Increment() (gas: 31293)
-Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 4.71ms (4.43ms CPU time)
+[PASS] testFuzz_SetNumber(uint256) (runs: 256, μ: 8709, ~: 8709)
+[PASS] test_Increment() (gas: 8675)
+Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 2.30s (2.30s CPU time)
 
-Ran 1 test suite in 5.49ms (4.71ms CPU time): 2 tests passed, 0 failed, 0 skipped (2 total tests)
+Ran 1 test suite in 2.30s (2.30s CPU time): 2 tests passed, 0 failed, 0 skipped (2 total tests)
 // ANCHOR_END: output
 // ANCHOR_END: all

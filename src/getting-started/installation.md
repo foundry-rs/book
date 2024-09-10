@@ -4,29 +4,35 @@ If you face any issues while installing, check out the [FAQ](../faq.md).
 
 ### Precompiled binaries
 
-Precompiled binaries are available from the [GitHub releases page](https://github.com/foundry-rs/foundry/releases).
-These are better managed by using [Foundryup](#using-foundryup).
+Precompiled binaries are available from the [GitHub releases page](https://github.com/matter-labs/foundry-zksync/releases).
+Currently due to active development it's recommended to use the latest [nightly](https://github.com/matter-labs/foundry-zksync/releases/tag/nightly) from the releases page.
 
-### Using Foundryup
+### Using Foundryup-zksync
 
-Foundryup is the Foundry toolchain installer. You can find more about it [here](https://github.com/foundry-rs/foundry/blob/master/foundryup/README.md).
+Foundryup-zksync is the Foundry-ZKsync toolchain installer. You can find more about it [here](https://github.com/matter-labs/foundry-zksync/tree/main/foundryup-zksync/README.md).
 
-Open your terminal and run the following command:
+Open your terminal and run the following command from the repository:
 
 ```sh
-curl -L https://foundry.paradigm.xyz | bash
+git clone https://github.com/matter-labs/foundry-zksync.git
+cd foundry-zksync/foundryup-zksync
+./install.sh
 ```
 
-This will install Foundryup, then simply follow the instructions on-screen,
-which will make the `foundryup` command available in your CLI.
+This will install Foundryup-zksync, then simply follow the instructions on-screen,
+which will make the `foundryup-zksync` command available in your CLI.
 
-Running `foundryup` by itself will install the latest (nightly) [precompiled binaries](#precompiled-binaries): `forge`, `cast`, `anvil`, and `chisel`.
-See `foundryup --help` for more options, like installing from a specific version or commit.
+Running `foundryup-zksync` by itself will install the latest (nightly) [precompiled binaries](#precompiled-binaries): `forge` and `cast`.
+See `foundryup-zksync --help` for more options, like installing from a specific version or commit.
+
+> ℹ️ **Note**
+>
+> Currently only `forge` and `cast` are supported for ZKsync. Other commands retain their original behavior but may not work as intended.
 
 > ℹ️ **Note**
 >
 > If you're on Windows, you will need to install and use [Git BASH](https://gitforwindows.org/) or [WSL](https://learn.microsoft.com/en-us/windows/wsl/install),
-> as your terminal, since Foundryup currently does not support Powershell or Cmd.
+> as your terminal, since Foundryup-zksync currently does not support Powershell or Cmd. Windows support is currently provided as best-effort.
 
 ### Building from source
 
@@ -35,69 +41,53 @@ See `foundryup --help` for more options, like installing from a specific version
 You will need the [Rust](https://rust-lang.org) compiler and Cargo, the Rust package manager.
 The easiest way to install both is with [`rustup.rs`](https://rustup.rs/).
 
-Foundry generally only supports building on the latest stable Rust version.
-If you have an older Rust version, you can update with `rustup`:
-
-```sh
-rustup update stable
-```
+Foundry-ZKsync generally only supports building on the [configured](https://github.com/matter-labs/foundry-zksync/blob/main/rust-toolchain) nightly Rust version.
+The presence of `rust-toolchain` file automatically downloads the correct nightly rust version when commands are run from the Foundry-ZKsync directory.
 
 On Windows, you will also need a recent version of [Visual Studio](https://visualstudio.microsoft.com/downloads/),
 installed with the "Desktop Development With C++" Workloads option.
 
 #### Building
 
-You can either use the different [Foundryup](#using-foundryup) flags:
+You can either use the different [Foundryup-ZKsync](#using-foundryup) flags:
 
 ```sh
-foundryup --branch master
-foundryup --path path/to/foundry
+foundryup-zksync --branch master
+foundryup-zksync --path path/to/foundry-zksync
 ```
 
 Or, by using a single Cargo command:
 
 ```sh
-cargo install --git https://github.com/foundry-rs/foundry --profile release --locked forge cast chisel anvil
+cargo install --git https://github.com/matter-labs/foundry-zksync --profile release --locked forge cast
 ```
 
-Or, by manually building from a local copy of the [Foundry repository](https://github.com/foundry-rs/foundry):
+Or, by manually building from a local copy of the [Foundry-ZKsync repository](https://github.com/matter-labs/foundry-zksync):
 
 ```sh
 # clone the repository
-git clone https://github.com/foundry-rs/foundry.git
+git clone https://github.com/matter-labs/foundry-zksync.git
 cd foundry
 # install Forge
 cargo install --path ./crates/forge --profile release --force --locked
 # install Cast
 cargo install --path ./crates/cast --profile release --force --locked
-# install Anvil
-cargo install --path ./crates/anvil --profile release --force --locked
-# install Chisel
-cargo install --path ./crates/chisel --profile release --force --locked
 ```
 
 ### Installing for CI in Github Action
 
-See the [foundry-rs/foundry-toolchain](https://github.com/foundry-rs/foundry-toolchain) GitHub Action.
+The latest binaries for the appropriate architecture can be downloaded from the [release](https://github.com/matter-labs/foundry-zksync/releases/tag/nightly) page:
+
+```yaml
+steps:
+  - name: download binaries
+    run: |
+      wget -qc https://github.com/matter-labs/foundry-zksync/releases/download/nightly/foundry_nightly_linux_amd64.tar.gz -O - | tar -xz
+      ./forge -V && ./cast -V
+```
 
 ### Using Foundry with Docker
 
-Foundry can also be used entirely within a Docker container. If you don't have it, Docker can be installed directly from [Docker's website](https://docs.docker.com/get-docker/).
-
-Once installed, you can download the latest release by running:
-
-```sh
-docker pull ghcr.io/foundry-rs/foundry:latest
-```
-
-It is also possible to build the docker image locally. From the Foundry repository, run:
-
-```sh
-docker build -t foundry .
-```
-
-For examples and guides on using this image, see the [Docker tutorial section](../tutorials/foundry-docker).
-
 > ℹ️ **Note**
 >
-> Some machines (including those with M1 chips) may be unable to build the docker image locally. This is a known issue.
+> No prebuilt images are available for docker yet.

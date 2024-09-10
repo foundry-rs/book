@@ -1,32 +1,98 @@
 // ANCHOR: all
 // ANCHOR: command
-$ forge test
+$ forge test --zksync
 // ANCHOR_END: command
 // ANCHOR: output
+Compiling 23 files with Solc 0.8.10
+Solc 0.8.10 finished in 1.29s
+Compiler run successful with warnings:
+Warning (5667): Unused function parameter. Remove or comment out the variable name to silence this warning.
+  --> test/OpenZeppelinNft.t.sol:89:9:
+   |
+89 |         address operator,
+   |         ^^^^^^^^^^^^^^^^
+
+Warning (5667): Unused function parameter. Remove or comment out the variable name to silence this warning.
+  --> test/OpenZeppelinNft.t.sol:90:9:
+   |
+90 |         address from,
+   |         ^^^^^^^^^^^^
+
+Warning (5667): Unused function parameter. Remove or comment out the variable name to silence this warning.
+  --> test/OpenZeppelinNft.t.sol:91:9:
+   |
+91 |         uint256 id,
+   |         ^^^^^^^^^^
+
+Warning (5667): Unused function parameter. Remove or comment out the variable name to silence this warning.
+  --> test/OpenZeppelinNft.t.sol:92:9:
+   |
+92 |         bytes calldata data
+   |         ^^^^^^^^^^^^^^^^^^^
+
+Warning (5667): Unused function parameter. Remove or comment out the variable name to silence this warning.
+  --> test/SolmateNft.sol:88:9:
+   |
+88 |         address operator,
+   |         ^^^^^^^^^^^^^^^^
+
+Warning (5667): Unused function parameter. Remove or comment out the variable name to silence this warning.
+  --> test/SolmateNft.sol:89:9:
+   |
+89 |         address from,
+   |         ^^^^^^^^^^^^
+
+Warning (5667): Unused function parameter. Remove or comment out the variable name to silence this warning.
+  --> test/SolmateNft.sol:90:9:
+   |
+90 |         uint256 id,
+   |         ^^^^^^^^^^
+
+Warning (5667): Unused function parameter. Remove or comment out the variable name to silence this warning.
+  --> test/SolmateNft.sol:91:9:
+   |
+91 |         bytes calldata data
+   |         ^^^^^^^^^^^^^^^^^^^
+
+Warning (2018): Function state mutability can be restricted to pure
+  --> test/OpenZeppelinNft.t.sol:88:5:
+   |
+88 |     function onERC721Received(
+   |     ^ (Relevant source part starts here and spans across multiple lines).
+
+Warning (2018): Function state mutability can be restricted to pure
+  --> test/SolmateNft.sol:87:5:
+   |
+87 |     function onERC721Received(
+   |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
 No files changed, compilation skipped
+2024-09-04T13:37:16.496262Z ERROR foundry_zksync_core::vm::tracer: call may fail or behave unexpectedly due to empty code target=0x0000000000000000000000000000000000010001 calldata="150b7a020000000000000000000000007fa9385be102ac3eac297483dd6233d62b3e14960000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000000"
+2024-09-04T13:37:16.500876Z ERROR foundry_zksync_core::vm::tracer: call may fail or behave unexpectedly due to empty code target=0x0000000000000000000000000000000000010001 calldata="150b7a020000000000000000000000007fa9385be102ac3eac297483dd6233d62b3e14960000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000000"
 
 Ran 8 tests for test/SolmateNft.sol:SolmateNftTests
-[PASS] testBalanceIncremented() (gas: 217400)
-[PASS] testFailMaxSupplyReached() (gas: 134524)
-[PASS] testFailMintToZeroAddress() (gas: 34521)
-[PASS] testFailNoMintPricePaid() (gas: 5568)
-[PASS] testFailUnSafeContractReceiver() (gas: 3524)
-[PASS] testMintPricePaid() (gas: 81321)
-[PASS] testNewMintOwnerRegistered() (gas: 190741)
-[PASS] testSafeContractReceiver() (gas: 272655)
-Suite result: ok. 8 passed; 0 failed; 0 skipped; finished in 1.03ms (1.68ms CPU time)
+[PASS] testBalanceIncremented() (gas: 140894)
+[PASS] testFailMaxSupplyReached() (gas: 131437)
+[PASS] testFailMintToZeroAddress() (gas: 11765)
+[PASS] testFailNoMintPricePaid() (gas: 5095)
+[PASS] testFailUnSafeContractReceiver() (gas: 14690)
+[PASS] testMintPricePaid() (gas: 11922)
+[PASS] testNewMintOwnerRegistered() (gas: 134769)
+[PASS] testSafeContractReceiver() (gas: 160353)
+Suite result: ok. 8 passed; 0 failed; 0 skipped; finished in 68.72ms (110.27ms CPU time)
 
 Ran 8 tests for test/OpenZeppelinNft.t.sol:OpenZeppelinNftTests
-[PASS] testBalanceIncremented() (gas: 217829)
-[PASS] testFailMaxSupplyReached() (gas: 134524)
-[PASS] testFailMintToZeroAddress() (gas: 34577)
-[PASS] testFailNoMintPricePaid() (gas: 5568)
-[PASS] testFailUnSafeContractReceiver() (gas: 3524)
-[PASS] testMintPricePaid() (gas: 81554)
-[PASS] testNewMintOwnerRegistered() (gas: 190956)
-[PASS] testSafeContractReceiver() (gas: 273151)
-Suite result: ok. 8 passed; 0 failed; 0 skipped; finished in 1.12ms (1.69ms CPU time)
+[PASS] testBalanceIncremented() (gas: 140894)
+[PASS] testFailMaxSupplyReached() (gas: 131437)
+[PASS] testFailMintToZeroAddress() (gas: 11765)
+[PASS] testFailNoMintPricePaid() (gas: 5095)
+[PASS] testFailUnSafeContractReceiver() (gas: 14705)
+[PASS] testMintPricePaid() (gas: 11922)
+[PASS] testNewMintOwnerRegistered() (gas: 134769)
+[PASS] testSafeContractReceiver() (gas: 160353)
+Suite result: ok. 8 passed; 0 failed; 0 skipped; finished in 72.44ms (119.77ms CPU time)
 
-Ran 2 test suites in 4.69ms (2.16ms CPU time): 16 tests passed, 0 failed, 0 skipped (16 total tests)
+Ran 2 test suites in 74.23ms (141.16ms CPU time): 16 tests passed, 0 failed, 0 skipped (16 total tests)
 // ANCHOR_END: output
 // ANCHOR_END: all

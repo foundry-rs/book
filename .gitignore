@@ -5,6 +5,8 @@
 /cache/
 /projects/**/cache/
 /out/
+/zkout/
 /projects/**/out/
+/projects/**/zkout/
 
 /bin

@@ -23,6 +23,6 @@ $ tree . -L 3 -I output
 └── test
     └── Counter.t.sol
 
-8 directories, 10 files
+9 directories, 10 files
 // ANCHOR_END: output
 // ANCHOR_END: all

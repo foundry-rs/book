@@ -1,15 +1,17 @@
 // ANCHOR: all
 // ANCHOR: command
-$ forge test --match-test test_IncrementAsOwner|testFail_IncrementAsNotOwner --match-path test/OwnerUpOnly.t.sol
+$ forge test --zksync --match-test test_IncrementAsOwner|testFail_IncrementAsNotOwner --match-path test/OwnerUpOnly.t.sol
 // ANCHOR_END: command
 // ANCHOR: output
 No files changed, compilation skipped
 
-Ran 2 tests for test/OwnerUpOnly.t.sol:OwnerUpOnlyTest
-[PASS] testFail_IncrementAsNotOwner() (gas: 8314)
-[PASS] test_IncrementAsOwner() (gas: 29161)
-Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 524.43µs (222.48µs CPU time)
+No files changed, compilation skipped
 
-Ran 1 test suite in 4.84ms (524.43µs CPU time): 2 tests passed, 0 failed, 0 skipped (2 total tests)
+Ran 2 tests for test/OwnerUpOnly.t.sol:OwnerUpOnlyTest
+[PASS] testFail_IncrementAsNotOwner() (gas: 8067)
+[PASS] test_IncrementAsOwner() (gas: 6239)
+Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 27.72ms (21.18ms CPU time)
+
+Ran 1 test suite in 28.78ms (27.72ms CPU time): 2 tests passed, 0 failed, 0 skipped (2 total tests)
 // ANCHOR_END: output
 // ANCHOR_END: all
