@@ -9,7 +9,6 @@ Foundry-ZKsync manages your dependencies, compiles your project, runs tests, dep
 > ⚠️ **Alpha Stage:** The project is in alpha, so you might encounter issues. For more information or reporting bugs, please visit the [Foundry-ZKsync GitHub repository](https://github.com/matter-labs/foundry-zksync-foundry).
 
 ## Sections
-
 **[Getting Started](getting-started/installation.md)**
 
 To get started with Foundry-ZKsync, install Foundry-ZKsync and set up your first project.

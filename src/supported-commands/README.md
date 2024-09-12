@@ -1,6 +1,6 @@
 ##  Foundry-ZKSync supported commands
 
-This is a comprehensive review of all the Foundry commands actually suppor in the Foundry-zkSync tool. The goal is to identify which commands are supported  on the actual stage of development.
+This is a comprehensive review of all the Foundry commands actually supported in the actual stage of development.
 
 > 🔄 **Last update**: September 12, 2024
 

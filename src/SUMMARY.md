@@ -18,6 +18,7 @@
 
 # ZKsync Specifics
 
+- [Overview](./zksync-specifics/README.md)
 - [Execution Overview](./zksync-specifics/execution-overview.md)
 - [Compilation Overview](./zksync-specifics/compilation-overview.md)
 - [Limitations](./zksync-specifics/limitations/README.md)
@@ -27,6 +28,9 @@
   - [Cheatcodes](./zksync-specifics/limitations/cheatcodes.md)
 - [Additional Cheatcodes](./zksync-specifics/cheatcodes/README.md)
   - [zkVm](./zksync-specifics/cheatcodes/zkvm.md)
+
+# Supported Commands Overview
+- [Command List](./supported-commands/README.md)
 
 <!--
 # Forge Overview
