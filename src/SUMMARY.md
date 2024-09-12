@@ -18,6 +18,7 @@
 
 # ZKsync Specifics
 
+- [Overview](./zksync-specifics/README.md)
 - [Execution Overview](./zksync-specifics/execution-overview.md)
 - [Compilation Overview](./zksync-specifics/compilation-overview.md)
 - [Limitations](./zksync-specifics/limitations/README.md)
@@ -28,7 +29,10 @@
 - [Additional Cheatcodes](./zksync-specifics/cheatcodes/README.md)
   - [zkVm](./zksync-specifics/cheatcodes/zkvm.md)
 
+# Supported Commands Overview
+- [Command List](./supported-commands/README.md)
 
+<!--
 # Forge Overview
 
 - [Overview of Forge](forge/README.md)
@@ -39,17 +43,17 @@
   - [Understanding Traces](./forge/traces.md)
   - [Fork Testing](./forge/fork-testing.md)
   - [Replaying Failures](./forge/replay-testing.md)
-  <!--  - [Coverage Reports]() !-->
-- [Advanced Testing](./forge/advanced-testing.md)
+  <!--  - [Coverage Reports]() 
+ - [Advanced Testing](./forge/advanced-testing.md)
   - [Fuzz Testing](./forge/fuzz-testing.md)
   - [Invariant Testing](./forge/invariant-testing.md)
   - [Differential Testing](./forge/differential-ffi-testing.md)
-    <!--  - [Symbolic Testing]() !-->
-    <!--  - [Table Testing]() !-->
-    <!--  - [Mutation Testing]() !-->
-    <!-- - [Linting and Formatting]() !-->
-    <!-- - [Generating Documentation]() !-->
-- [Deploying and Verifying](./forge/deploying.md)
+    <!--  - [Symbolic Testing]() 
+    <!--  - [Table Testing]() 
+    <!--  - [Mutation Testing]() 
+    <!-- - [Linting and Formatting]() 
+    <!-- - [Generating Documentation]() 
+<!-- - [Deploying and Verifying](./forge/deploying.md)
 - [Gas Tracking](./forge/gas-tracking.md)
   - [Gas Reports](./forge/gas-reports.md)
   - [Gas Snapshots](./forge/gas-snapshots.md)
@@ -87,14 +91,14 @@
 - [Deterministic deployment using CREATE2](./tutorials/create2-tutorial.md)
 - [Forking Mainnet with Cast and Anvil](./tutorials/forking-mainnet-with-cast-anvil.md)
 - [Learning Foundry Videos](./tutorials/learn-foundry.md)
-<!-- - [Incremental Adoption]() !-->
+<!-- - [Incremental Adoption]() 
 
 # Appendix
 
 - [FAQ](./faq.md)
 - [Help us improve Foundry](./contributing.md)
 - [References](./reference/README.md)
-  - [CLI Reference](./reference/cli/README.md) <!-- CLI_REFERENCE START -->
+  - [CLI Reference](./reference/cli/README.md) <!-- CLI_REFERENCE START 
     - [`forge`](./reference/cli/forge.md)
       - [`forge bind`](./reference/cli/forge/bind.md)
       - [`forge bind-json`](./reference/cli/forge/bind-json.md)
@@ -242,7 +246,7 @@
         - [`cast wallet list`](./reference/cli/cast/wallet/list.md)
         - [`cast wallet private-key`](./reference/cli/cast/wallet/private-key.md)
         - [`cast wallet decrypt-keystore`](./reference/cli/cast/wallet/decrypt-keystore.md)
-  - [`forge` Commands](./reference/forge/README.md) <!-- CLI_REFERENCE END -->
+  - [`forge` Commands](./reference/forge/README.md) <!-- CLI_REFERENCE END 
     - [General Commands](./reference/forge/general-commands.md)
       - [forge](./reference/forge/forge.md)
       - [forge help](./reference/forge/forge-help.md)

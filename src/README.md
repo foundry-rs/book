@@ -1,15 +1,14 @@
 <img src="images/foundry-banner.png" style="border-radius: 20px">
 
-Foundry-ZKsync is a smart contract development toolchain for ZKsync, built upon [Foundry](https://book.getfoundry.sh/).
+## Foundry-ZKsync Book
+
+**Foundry-ZKsync is a smart contract development toolchain for ZKsync**, built upon [Foundry](https://book.getfoundry.sh/).
 
 Foundry-ZKsync manages your dependencies, compiles your project, runs tests, deploys, and lets you interact with the chain from the command-line and via Solidity scripts.
 
-> 📖 **Contributing**
->
-> You can contribute to this book on [GitHub](https://github.com/matter-labs/foundry-zksync-book).
+> ⚠️ **Alpha Stage:** The project is in alpha, so you might encounter issues. For more information or reporting bugs, please visit the [Foundry-ZKsync GitHub repository](https://github.com/matter-labs/foundry-zksync-foundry).
 
-### Sections
-
+## Sections
 **[Getting Started](getting-started/installation.md)**
 
 To get started with Foundry-ZKsync, install Foundry-ZKsync and set up your first project.
@@ -22,6 +21,20 @@ This section will give you an overview of how to create and work with existing p
 
 This section will give you an the necessary information to write and run tests for zkEVM.
 
+**[Supported Commands Overview](supported-commands)**
+
+This section has a comprehensive review of all the Foundry commands actually supported in the Foundry-ZKSync tool.
+
+> 📖 **Contributing**
+>
+> This book is actual work in progress as part of the global efforts to support Foundry in ZKSync. More information, sections and pages will be added as we the project progresses.
+>
+> Feedback and contributions are welcome. You can contribute to this book on [Foundry-ZKSync Book GitHub repository](https://github.com/matter-labs/foundry-zksync-book).
+>
+<br>
+
+***For general information about Foundry, see the [Foundry Book](https://book.getfoundry.sh/).***
+<!--  
 **[Forge Overview](forge)**
 
 The overview will give you all you need to know about how to use `forge` to develop, test, and deploy smart contracts.
@@ -58,7 +71,8 @@ Tutorials on building smart contracts with Foundry.
 - [Testing EIP-712 Signatures](./tutorials/testing-eip712.md)
 - [Solidity Scripting](./tutorials/solidity-scripting.md)
 - [Forking Mainnet with Cast and Anvil](./tutorials/forking-mainnet-with-cast-anvil.md)
-<!-- - [Incremental Adoption]() -->
+<!-- - [Incremental Adoption]() 
+
 
 **Contributing**
 
@@ -79,3 +93,4 @@ References, troubleshooting, and more.
 - [Miscellaneous](misc)
 
 <br>
+-->
