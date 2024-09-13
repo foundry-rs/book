@@ -52,3 +52,39 @@ To get Foundry in line with the chosen version, add the following to your `defau
 ```toml
 solc = "0.8.17"
 ```
+
+### Example of using OpenZeppelin contracts and non-standard project layout.
+
+```
+.
+└── project
+    └── contracts
+        ├── lib
+        │   ├── forge-std
+        │   └── openzeppelin-contracts
+        ├── script
+        ├── src
+        └── test
+```
+
+Add line to `remappings.txt` file ([`forge remapping`](../projects/dependencies.md#remapping-dependencies)):
+
+```
+@openzeppelin/=lib/openzeppelin-contracts/
+```
+
+Add line to `.vscode/settings.json` file (solidity extension settings):
+
+```json
+{
+  "solidity.remappings": [
+    "@openzeppelin/=project/contracts/lib/openzeppelin-contracts/"
+  ]
+}
+```
+
+Now all contracts from the OpenZeppelin documentation can be used.
+
+```javascript
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+```
