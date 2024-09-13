@@ -55,7 +55,7 @@ solc = "0.8.17"
 
 ### Example of using OpenZeppelin contracts and non-standard project layout.
 
-```
+```bash
 .
 └── project
     └── contracts
@@ -69,7 +69,7 @@ solc = "0.8.17"
 
 Add line to `remappings.txt` file ([`forge remapping`](../projects/dependencies.md#remapping-dependencies)):
 
-```
+```solidity
 @openzeppelin/=lib/openzeppelin-contracts/
 ```
 
