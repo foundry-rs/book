@@ -9,3 +9,5 @@
 - [`toString`](./to-string.md)
 - [`breakpoint`](./breakpoint.md)
 - [`createWallet`](./create-wallet.md)
+- [`copyStorage`](./copy-storage.md)
+- [`setArbitraryStorage`](./set-arbitrary-storage.md)
