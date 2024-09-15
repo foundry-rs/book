@@ -47,6 +47,12 @@ Test options:
           
           For more fine-grained control of which fuzz case is run, see forge run.
 
+      --flamegraph
+          Generate a flamegraph for a single test. Implies `--decode-internal`
+
+      --flamechart
+          Generate a flamechart for a single test. Implies `--decode-internal`
+
       --decode-internal [<TEST_FUNCTION>]
           Whether to identify internal functions in traces.
           
@@ -101,6 +107,9 @@ Test options:
 Display options:
       --json
           Output test results in JSON format
+
+      --junit
+          Output test results as JUnit XML report
 
   -l, --list
           List tests instead of running them
