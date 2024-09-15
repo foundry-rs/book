@@ -31,6 +31,7 @@ Commands:
   chain-id               Get the Ethereum chain ID [aliases: ci, cid]
   client                 Get the current client version [aliases: cl]
   code                   Get the runtime bytecode of a contract [aliases: co]
+  codehash               Get the codehash for an account
   codesize               Get the runtime bytecode size of a contract [aliases: cs]
   completions            Generate shell completions script [aliases: com]
   compute-address        Compute the contract address from a given nonce and deployer address
@@ -91,6 +92,7 @@ Commands:
   sig                    Get the selector for a function [aliases: si]
   sig-event              Generate event signatures from event string [aliases: se]
   storage                Get the raw value of a contract's storage slot [aliases: st]
+  storage-root           Get the storage root for an account [aliases: sr]
   to-ascii               Convert hex data to an ASCII string [aliases: --to-ascii, tas, 2as]
   to-base                Converts a number of one base to another [aliases: --to-base, --to-radix,
                          to-radix, tr, 2r]
