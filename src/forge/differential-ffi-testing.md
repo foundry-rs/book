@@ -23,7 +23,7 @@ Below are some examples of how Forge is used for differential testing.
 [`ffi`](../cheatcodes/ffi.md) allows you to execute an arbitrary shell command and capture the output. Here's a mock example:
 
 ```solidity
-import "forge-std/Test.sol";
+import {Test} from "forge-std/Test.sol";
 
 contract TestContract is Test {
 

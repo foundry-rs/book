@@ -3,7 +3,7 @@
 // ANCHOR: prelude
 pragma solidity 0.8.10;
 
-import "forge-std/Test.sol";
+import {Test} from "forge-std/Test.sol";
 
 error Unauthorized();
 // ANCHOR_END: prelude
@@ -30,7 +30,7 @@ contract OwnerUpOnly {
 // ANCHOR: contract_prelude
 contract OwnerUpOnlyTest is Test {
     OwnerUpOnly upOnly;
-// ANCHOR_END: contract_prelude
+    // ANCHOR_END: contract_prelude
 
     // ANCHOR: simple_test
     function setUp() public {

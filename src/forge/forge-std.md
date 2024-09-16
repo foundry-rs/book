@@ -14,7 +14,7 @@ It provides all the essential functionality you need to get started writing test
 Simply import `Test.sol` and inherit from `Test` in your test contract:
 
 ```solidity
-import "forge-std/Test.sol";
+import {Test} from "forge-std/Test.sol";
 
 contract ContractTest is Test { ...
 ```
