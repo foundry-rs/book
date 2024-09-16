@@ -4,6 +4,9 @@ Perform Ethereum RPC calls from the comfort of your command line
 
 ```bash
 $ cast --help
+```
+
+```txt
 Usage: cast <COMMAND>
 
 Commands:

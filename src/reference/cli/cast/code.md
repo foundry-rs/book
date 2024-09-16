@@ -4,6 +4,9 @@ Get the runtime bytecode of a contract
 
 ```bash
 $ cast code --help
+```
+
+```txt
 Usage: cast code [OPTIONS] <WHO>
 
 Arguments:

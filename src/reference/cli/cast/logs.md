@@ -4,6 +4,9 @@ Get logs by signature or topic
 
 ```bash
 $ cast logs --help
+```
+
+```txt
 Usage: cast logs [OPTIONS] [SIG_OR_TOPIC] [TOPICS_OR_ARGS]...
 
 Arguments:

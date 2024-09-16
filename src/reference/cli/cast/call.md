@@ -4,6 +4,9 @@ Perform a call on an account without publishing a transaction
 
 ```bash
 $ cast call --help
+```
+
+```txt
 Usage: cast call [OPTIONS] [TO] [SIG] [ARGS]... [COMMAND]
 
 Commands:

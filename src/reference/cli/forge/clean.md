@@ -4,6 +4,9 @@ Remove the build artifacts and cache directories
 
 ```bash
 $ forge clean --help
+```
+
+```txt
 Usage: forge clean [OPTIONS]
 
 Options:

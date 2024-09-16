@@ -4,6 +4,9 @@ Create a new Forge project
 
 ```bash
 $ forge init --help
+```
+
+```txt
 Usage: forge init [OPTIONS] [PATH]
 
 Arguments:

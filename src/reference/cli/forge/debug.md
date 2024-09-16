@@ -4,6 +4,9 @@ Debugs a single smart contract as a script
 
 ```bash
 $ forge debug --help
+```
+
+```txt
 Usage: forge debug [OPTIONS] <PATH> [ARGS]...
 
 Arguments:

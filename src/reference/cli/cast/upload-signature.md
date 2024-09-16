@@ -4,6 +4,9 @@ Upload the given signatures to https://openchain.xyz.
 
 ```bash
 $ cast upload-signature --help
+```
+
+```txt
 Usage: cast upload-signature [SIGNATURES]...
 
 Arguments:

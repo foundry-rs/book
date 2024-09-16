@@ -4,6 +4,9 @@ Generate a deterministic contract address using CREATE2
 
 ```bash
 $ cast create2 --help
+```
+
+```txt
 Usage: cast create2 [OPTIONS]
 
 Options:

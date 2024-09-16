@@ -4,6 +4,9 @@ Run the project's tests
 
 ```bash
 $ forge test --help
+```
+
+```txt
 Usage: forge test [OPTIONS] [PATH]
 
 Options:

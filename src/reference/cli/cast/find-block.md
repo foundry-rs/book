@@ -4,6 +4,9 @@ Get the block number closest to the provided timestamp
 
 ```bash
 $ cast find-block --help
+```
+
+```txt
 Usage: cast find-block [OPTIONS] <TIMESTAMP>
 
 Arguments:

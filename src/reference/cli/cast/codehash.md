@@ -4,6 +4,9 @@ Get the codehash for an account
 
 ```bash
 $ cast codehash --help
+```
+
+```txt
 Usage: cast codehash [OPTIONS] <WHO> [SLOTS]...
 
 Arguments:

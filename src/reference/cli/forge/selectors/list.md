@@ -4,6 +4,9 @@ List selectors from current workspace
 
 ```bash
 $ forge selectors list --help
+```
+
+```txt
 Usage: forge selectors list [OPTIONS] [CONTRACT]
 
 Arguments:

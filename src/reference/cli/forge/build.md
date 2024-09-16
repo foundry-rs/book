@@ -4,6 +4,9 @@ Build the project's smart contracts
 
 ```bash
 $ forge build --help
+```
+
+```txt
 Usage: forge build [OPTIONS] [PATHS]...
 
 Options:

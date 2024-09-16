@@ -4,6 +4,9 @@ Wallet management utilities
 
 ```bash
 $ cast wallet --help
+```
+
+```txt
 Usage: cast wallet <COMMAND>
 
 Commands:

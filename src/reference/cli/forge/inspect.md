@@ -4,6 +4,9 @@ Get specialized information about a smart contract
 
 ```bash
 $ forge inspect --help
+```
+
+```txt
 Usage: forge inspect [OPTIONS] <CONTRACT> <FIELD>
 
 Arguments:

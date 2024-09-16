@@ -4,6 +4,9 @@ Estimate the gas cost of a transaction
 
 ```bash
 $ cast estimate --help
+```
+
+```txt
 Usage: cast estimate [OPTIONS] [TO] [SIG] [ARGS]... [COMMAND]
 
 Commands:

@@ -4,6 +4,9 @@ Check for selector collisions between contracts
 
 ```bash
 $ forge selectors collision --help
+```
+
+```txt
 Usage: forge selectors collision [OPTIONS] <FIRST_CONTRACT> <SECOND_CONTRACT>
 
 Arguments:

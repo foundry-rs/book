@@ -4,6 +4,9 @@ Flatten a source file and all of its imports into one file
 
 ```bash
 $ forge flatten --help
+```
+
+```txt
 Usage: forge flatten [OPTIONS] <PATH>
 
 Arguments:

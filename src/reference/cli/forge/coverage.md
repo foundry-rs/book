@@ -4,6 +4,9 @@ Generate coverage reports
 
 ```bash
 $ forge coverage --help
+```
+
+```txt
 Usage: forge coverage [OPTIONS] [PATH]
 
 Options:

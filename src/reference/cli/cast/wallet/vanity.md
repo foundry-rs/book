@@ -4,6 +4,9 @@ Generate a vanity address
 
 ```bash
 $ cast wallet vanity --help
+```
+
+```txt
 Usage: cast wallet vanity [OPTIONS]
 
 Options:

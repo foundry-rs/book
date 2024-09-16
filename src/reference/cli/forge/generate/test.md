@@ -4,6 +4,9 @@ Scaffolds test file for given contract
 
 ```bash
 $ forge generate test --help
+```
+
+```txt
 Usage: forge generate test --contract-name <CONTRACT_NAME>
 
 Options:

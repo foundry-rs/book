@@ -4,6 +4,9 @@ Get information about a transaction
 
 ```bash
 $ cast tx --help
+```
+
+```txt
 Usage: cast tx [OPTIONS] <TX_HASH> [FIELD]
 
 Arguments:

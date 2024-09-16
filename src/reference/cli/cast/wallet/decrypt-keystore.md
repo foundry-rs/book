@@ -4,6 +4,9 @@ Decrypt a keystore file to get the private key
 
 ```bash
 $ cast wallet decrypt-keystore --help
+```
+
+```txt
 Usage: cast wallet decrypt-keystore [OPTIONS] <ACCOUNT_NAME>
 
 Arguments:

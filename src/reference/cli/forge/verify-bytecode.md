@@ -4,6 +4,9 @@ Verify the deployed bytecode against its source on Etherscan
 
 ```bash
 $ forge verify-bytecode --help
+```
+
+```txt
 Usage: forge verify-bytecode [OPTIONS] <ADDRESS> <CONTRACT>
 
 Arguments:

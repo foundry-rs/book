@@ -4,6 +4,9 @@ Update one or multiple dependencies.
 
 ```bash
 $ forge update --help
+```
+
+```txt
 Usage: forge update [OPTIONS] [DEPENDENCIES]...
 
 Arguments:

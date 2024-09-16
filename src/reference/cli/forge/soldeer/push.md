@@ -4,6 +4,9 @@ Push a Dependency to the Repository
 
 ```bash
 $ forge soldeer push --help
+```
+
+```txt
 Usage: forge soldeer push [OPTIONS] <DEPENDENCY>~<VERSION> [PATH]
 
 Arguments:

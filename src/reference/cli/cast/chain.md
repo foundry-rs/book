@@ -4,6 +4,9 @@ Get the symbolic name of the current chain
 
 ```bash
 $ cast chain --help
+```
+
+```txt
 Usage: cast chain [OPTIONS]
 
 Options:

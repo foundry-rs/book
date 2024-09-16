@@ -4,6 +4,9 @@ Manage the Foundry cache
 
 ```bash
 $ forge cache --help
+```
+
+```txt
 Usage: forge cache <COMMAND>
 
 Commands:

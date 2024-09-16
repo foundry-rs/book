@@ -4,6 +4,9 @@ Get the source code of a contract from Etherscan
 
 ```bash
 $ cast etherscan-source --help
+```
+
+```txt
 Usage: cast etherscan-source [OPTIONS] <ADDRESS>
 
 Arguments:

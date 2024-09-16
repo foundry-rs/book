@@ -4,6 +4,9 @@ Build, test, fuzz, debug and deploy Solidity contracts
 
 ```bash
 $ forge --help
+```
+
+```txt
 Usage: forge <COMMAND>
 
 Commands:

@@ -4,6 +4,9 @@ Compute the contract address from a given nonce and deployer address
 
 ```bash
 $ cast compute-address --help
+```
+
+```txt
 Usage: cast compute-address [OPTIONS] [ADDRESS]
 
 Arguments:

@@ -4,6 +4,9 @@ Install one or multiple dependencies.
 
 ```bash
 $ forge install --help
+```
+
+```txt
 Usage: forge install [OPTIONS] [DEPENDENCIES]...
     forge install [OPTIONS] <github username>/<github project>@<tag>...
     forge install [OPTIONS] <alias>=<github username>/<github project>@<tag>...

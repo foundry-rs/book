@@ -4,6 +4,9 @@ Runs a published transaction in a local environment and prints the trace
 
 ```bash
 $ cast run --help
+```
+
+```txt
 Usage: cast run [OPTIONS] <TX_HASH>
 
 Arguments:

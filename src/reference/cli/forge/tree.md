@@ -4,6 +4,9 @@ Display a tree visualization of the project's dependency graph
 
 ```bash
 $ forge tree --help
+```
+
+```txt
 Usage: forge tree [OPTIONS]
 
 Options:

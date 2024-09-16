@@ -4,6 +4,9 @@ A fast local Ethereum development node
 
 ```bash
 $ anvil --help
+```
+
+```txt
 Usage: anvil [OPTIONS] [COMMAND]
 
 Commands:

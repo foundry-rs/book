@@ -4,6 +4,9 @@ Create an access list for a transaction
 
 ```bash
 $ cast access-list --help
+```
+
+```txt
 Usage: cast access-list [OPTIONS] [TO] [SIG] [ARGS]...
 
 Arguments:

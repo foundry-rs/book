@@ -4,6 +4,9 @@ Derives private key from mnemonic
 
 ```bash
 $ cast wallet private-key --help
+```
+
+```txt
 Usage: cast wallet private-key [OPTIONS] [MNEMONIC] [MNEMONIC_INDEX_OR_DERIVATION_PATH]
 
 Arguments:

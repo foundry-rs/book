@@ -4,6 +4,9 @@ Import a private key into an encrypted keystore
 
 ```bash
 $ cast wallet import --help
+```
+
+```txt
 Usage: cast wallet import [OPTIONS] <ACCOUNT_NAME>
 
 Arguments:

@@ -4,6 +4,9 @@ Get the transaction receipt for a transaction
 
 ```bash
 $ cast receipt --help
+```
+
+```txt
 Usage: cast receipt [OPTIONS] <TX_HASH> [FIELD]
 
 Arguments:

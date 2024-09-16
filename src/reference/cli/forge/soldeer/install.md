@@ -4,6 +4,9 @@ Install a dependency
 
 ```bash
 $ forge soldeer install --help
+```
+
+```txt
 Usage: forge soldeer install [OPTIONS] [DEPENDENCY~VERSION] [URL]
 
 Arguments:

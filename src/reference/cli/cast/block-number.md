@@ -4,6 +4,9 @@ Get the latest block number
 
 ```bash
 $ cast block-number --help
+```
+
+```txt
 Usage: cast block-number [OPTIONS] [BLOCK]
 
 Arguments:

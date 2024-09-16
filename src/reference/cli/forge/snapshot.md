@@ -4,6 +4,9 @@ Create a snapshot of each test's gas usage
 
 ```bash
 $ forge snapshot --help
+```
+
+```txt
 Usage: forge snapshot [OPTIONS] [PATH]
 
 Options:

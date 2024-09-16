@@ -4,6 +4,9 @@ Find if a selector is present in the project
 
 ```bash
 $ forge selectors find --help
+```
+
+```txt
 Usage: forge selectors find [OPTIONS] <SELECTOR>
 
 Arguments:

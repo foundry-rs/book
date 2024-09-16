@@ -4,6 +4,9 @@ Publish a raw transaction to the network
 
 ```bash
 $ cast publish --help
+```
+
+```txt
 Usage: cast publish [OPTIONS] <RAW_TX>
 
 Arguments:

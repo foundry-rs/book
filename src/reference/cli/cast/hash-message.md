@@ -4,6 +4,9 @@ Hash a message according to EIP-191
 
 ```bash
 $ cast hash-message --help
+```
+
+```txt
 Usage: cast hash-message [MESSAGE]
 
 Arguments:

@@ -4,6 +4,9 @@ Prints the maximum value of the given integer type
 
 ```bash
 $ cast max-uint --help
+```
+
+```txt
 Usage: cast max-uint [TYPE]
 
 Arguments:

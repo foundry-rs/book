@@ -4,6 +4,9 @@ Convert a private key to an address
 
 ```bash
 $ cast wallet address --help
+```
+
+```txt
 Usage: cast wallet address [OPTIONS] [PRIVATE_KEY]
 
 Arguments:

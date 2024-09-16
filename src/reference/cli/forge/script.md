@@ -4,6 +4,9 @@ Run a smart contract as a script, building transactions that can be sent onchain
 
 ```bash
 $ forge script --help
+```
+
+```txt
 Usage: forge script [OPTIONS] <PATH> [ARGS]...
 
 Arguments:

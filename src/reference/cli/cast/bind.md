@@ -4,6 +4,9 @@ Generate a rust binding from a given ABI
 
 ```bash
 $ cast bind --help
+```
+
+```txt
 Usage: cast bind [OPTIONS] <PATH_OR_ADDRESS>
 
 Arguments:

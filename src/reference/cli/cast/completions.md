@@ -4,6 +4,9 @@ Generate shell completions script
 
 ```bash
 $ cast completions --help
+```
+
+```txt
 Usage: cast completions <SHELL>
 
 Arguments:

@@ -4,6 +4,9 @@ Initialize a new Soldeer project for use with Foundry
 
 ```bash
 $ forge soldeer init --help
+```
+
+```txt
 Usage: forge soldeer init [OPTIONS]
 
 Options:

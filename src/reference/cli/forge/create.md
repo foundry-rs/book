@@ -4,6 +4,9 @@ Deploy a smart contract
 
 ```bash
 $ forge create --help
+```
+
+```txt
 Usage: forge create [OPTIONS] <CONTRACT>
 
 Arguments:

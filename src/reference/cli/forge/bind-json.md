@@ -4,6 +4,9 @@ Generate bindings for serialization/deserialization of project structs via JSON 
 
 ```bash
 $ forge bind-json --help
+```
+
+```txt
 Usage: forge bind-json [OPTIONS] [PATH]
 
 Arguments:

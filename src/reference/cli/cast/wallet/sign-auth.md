@@ -4,6 +4,9 @@ EIP-7702 sign authorization
 
 ```bash
 $ cast wallet sign-auth --help
+```
+
+```txt
 Usage: cast wallet sign-auth [OPTIONS] <ADDRESS>
 
 Arguments:

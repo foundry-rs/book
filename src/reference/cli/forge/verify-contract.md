@@ -4,6 +4,9 @@ Verify smart contracts on Etherscan
 
 ```bash
 $ forge verify-contract --help
+```
+
+```txt
 Usage: forge verify-contract [OPTIONS] <ADDRESS> [CONTRACT]
 
 Arguments:

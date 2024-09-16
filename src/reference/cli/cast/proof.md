@@ -4,6 +4,9 @@ Generate a storage proof for a given storage slot
 
 ```bash
 $ cast proof --help
+```
+
+```txt
 Usage: cast proof [OPTIONS] <ADDRESS> [SLOTS]...
 
 Arguments:

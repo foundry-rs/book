@@ -11,8 +11,8 @@ regex = "1"
 use clap::Parser;
 use regex::Regex;
 use std::borrow::Cow;
-use std::fs::{self, File};
-use std::io::{self, Write};
+use std::fs;
+use std::io;
 use std::iter::once;
 use std::path::{Path, PathBuf};
 use std::process::{Command, Stdio};
@@ -46,11 +46,11 @@ macro_rules! regex {
 #[command(about, long_about = None)]
 struct Args {
     /// Root directory
-    #[arg(long, default_value_t = String::from("."))]
-    root_dir: String,
+    #[arg(long, default_value = ".")]
+    root_dir: PathBuf,
 
     /// Indentation for the root SUMMARY.md file
-    #[arg(long, default_value_t = 2)]
+    #[arg(long, default_value = "2")]
     root_indentation: usize,
 
     /// Output directory
@@ -98,7 +98,7 @@ fn main() -> io::Result<()> {
         .commands
         .iter()
         .rev() // reverse to keep the order (pop)
-        .map(Cmd::new)
+        .map(|path| Cmd::new(path, vec![]))
         .collect();
     let mut output = Vec::new();
 
@@ -106,11 +106,7 @@ fn main() -> io::Result<()> {
     while let Some(cmd) = todo_iter.pop() {
         let (new_subcmds, stdout) = get_entry(&cmd)?;
         if args.verbose && !new_subcmds.is_empty() {
-            println!(
-                "Found subcommands for \"{}\": {:?}",
-                cmd.command_name(),
-                new_subcmds
-            );
+            println!("Found subcommands for `{cmd}`: {}", new_subcmds.join(", "));
         }
         // Add new subcommands to todo_iter (so that they are processed in the correct order).
         for subcmd in new_subcmds.into_iter().rev() {
@@ -121,10 +117,7 @@ fn main() -> io::Result<()> {
                 .chain(once(subcmd))
                 .collect();
 
-            todo_iter.push(Cmd {
-                cmd: cmd.cmd,
-                subcommands: new_subcmds,
-            });
+            todo_iter.push(Cmd::new(cmd.cmd, new_subcmds));
         }
         output.push((cmd, stdout));
     }
@@ -147,7 +140,7 @@ fn main() -> io::Result<()> {
     if args.readme {
         let path = &out_dir.join("README.md");
         if args.verbose {
-            println!("Writing README.md to \"{}\"", path.to_string_lossy());
+            println!("Writing README.md to {}", path.display());
         }
         write_file(path, README)?;
     }
@@ -162,9 +155,9 @@ fn main() -> io::Result<()> {
             })
             .collect();
 
-        let path = Path::new(args.root_dir.as_str());
+        let path = &args.root_dir;
         if args.verbose {
-            println!("Updating root summary in \"{}\"", path.to_string_lossy());
+            println!("Updating root summary in {}", path.display());
         }
         update_root_summary(path, &root_summary)?;
     }
@@ -227,7 +220,7 @@ fn parse_sub_commands(s: &str) -> Vec<String> {
 fn cmd_markdown(out_dir: &Path, cmd: &Cmd, stdout: &str) -> io::Result<()> {
     let out = format!("# {}\n\n{}", cmd, help_markdown(cmd, stdout));
 
-    let out_path = out_dir.join(cmd.to_string().replace(" ", "/"));
+    let out_path = out_dir.join(cmd.md_path());
     fs::create_dir_all(out_path.parent().unwrap())?;
     write_file(&out_path.with_extension("md"), &out)?;
 
@@ -237,12 +230,8 @@ fn cmd_markdown(out_dir: &Path, cmd: &Cmd, stdout: &str) -> io::Result<()> {
 /// Returns the markdown for a command's help output.
 fn help_markdown(cmd: &Cmd, stdout: &str) -> String {
     let (description, s) = parse_description(stdout);
-    format!(
-        "{}\n\n```bash\n$ {} --help\n{}\n```",
-        description,
-        cmd,
-        preprocess_help(s.trim())
-    )
+    let help = preprocess_help(s.trim());
+    format!("{description}\n\n```bash\n$ {cmd} --help\n```\n\n```txt\n{help}\n```")
 }
 
 /// Splits the help output into a description and the rest.
@@ -258,14 +247,13 @@ fn parse_description(s: &str) -> (&str, &str) {
 
 /// Returns the summary for a command and its subcommands.
 fn cmd_summary(md_root: Option<PathBuf>, cmd: &Cmd, indent: usize) -> String {
-    let cmd_s = cmd.to_string();
-    let cmd_path = cmd_s.replace(" ", "/");
+    let cmd_path = cmd.md_path();
     let full_cmd_path = match md_root {
         None => cmd_path,
         Some(md_root) => format!("{}/{}", md_root.to_string_lossy(), cmd_path),
     };
     let indent_string = " ".repeat(indent + (cmd.subcommands.len() * 2));
-    format!("{}- [`{}`](./{}.md)\n", indent_string, cmd_s, full_cmd_path)
+    format!("{indent_string}- [`{cmd}`](./{full_cmd_path}.md)\n")
 }
 
 /// Replaces the CLI_REFERENCE section in the root SUMMARY.md file.
@@ -297,8 +285,7 @@ fn update_root_summary(root_dir: &Path, root_summary: &str) -> io::Result<()> {
         .replace(&original_summary_content, replace_with.as_str())
         .to_string();
 
-    let mut root_summary_file = File::create(&summary_file)?;
-    root_summary_file.write_all(new_root_summary.as_bytes())
+    fs::write(&summary_file, &new_root_summary)
 }
 
 /// Preprocesses the help output of a command.
@@ -322,15 +309,34 @@ fn preprocess_help(s: &str) -> Cow<'_, str> {
     s
 }
 
+/// Command with subcommands.
 #[derive(Hash, Debug, PartialEq, Eq)]
 struct Cmd<'a> {
-    /// path to binary (e.g. ./target/debug/reth)
+    /// Path to the binary file (e.g. ./target/debug/reth).
     cmd: &'a Path,
-    /// subcommands (e.g. [db, stats])
+    /// Subcommands (e.g. [db, stats]).
     subcommands: Vec<String>,
 }
 
 impl<'a> Cmd<'a> {
+    #[track_caller]
+    fn new(cmd: &'a Path, subcommands: Vec<String>) -> Self {
+        let cmd = Self { cmd, subcommands };
+        cmd.assert();
+        cmd
+    }
+
+    #[track_caller]
+    fn assert(&self) {
+        for subcmd in &self.subcommands {
+            assert!(!subcmd.is_empty(), "subcommand is empty");
+            assert!(
+                subcmd.chars().all(|c| !c.is_whitespace()),
+                "subcommand contains invalid characters: {subcmd}"
+            );
+        }
+    }
+
     fn command_name(&self) -> &str {
         self.cmd
             .file_name()
@@ -338,20 +344,22 @@ impl<'a> Cmd<'a> {
             .expect("Expect valid command")
     }
 
-    fn new(cmd: &'a PathBuf) -> Self {
-        Self {
-            cmd,
-            subcommands: Vec::new(),
+    fn md_path(&self) -> String {
+        self.join_s("/")
+    }
+
+    fn join_s(&self, sep: &str) -> String {
+        let mut joined = self.command_name().to_string();
+        for subcmd in &self.subcommands {
+            joined.push_str(sep);
+            joined.push_str(subcmd);
         }
+        joined
     }
 }
 
 impl<'a> fmt::Display for Cmd<'a> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{}", self.command_name())?;
-        if !self.subcommands.is_empty() {
-            write!(f, " {}", self.subcommands.join(" "))?;
-        }
-        Ok(())
+        self.join_s(" ").fmt(f)
     }
 }

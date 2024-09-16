@@ -4,6 +4,9 @@ Get the current gas price
 
 ```bash
 $ cast gas-price --help
+```
+
+```txt
 Usage: cast gas-price [OPTIONS]
 
 Options:

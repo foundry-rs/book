@@ -4,6 +4,9 @@ Format Solidity source files
 
 ```bash
 $ forge fmt --help
+```
+
+```txt
 Usage: forge fmt [OPTIONS] [PATH]...
 
 Arguments:

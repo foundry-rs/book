@@ -4,6 +4,9 @@ Perform an ENS reverse lookup
 
 ```bash
 $ cast lookup-address --help
+```
+
+```txt
 Usage: cast lookup-address [OPTIONS] [WHO]
 
 Arguments:

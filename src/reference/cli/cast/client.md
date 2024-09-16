@@ -4,6 +4,9 @@ Get the current client version
 
 ```bash
 $ cast client --help
+```
+
+```txt
 Usage: cast client [OPTIONS]
 
 Options:

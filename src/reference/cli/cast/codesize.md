@@ -4,6 +4,9 @@ Get the runtime bytecode size of a contract
 
 ```bash
 $ cast codesize --help
+```
+
+```txt
 Usage: cast codesize [OPTIONS] <WHO>
 
 Arguments:

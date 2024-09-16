@@ -4,6 +4,9 @@ Log into the central repository to push the dependencies
 
 ```bash
 $ forge soldeer login --help
+```
+
+```txt
 Usage: forge soldeer login
 
 Options:

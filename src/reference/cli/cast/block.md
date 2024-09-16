@@ -4,6 +4,9 @@ Get information about a block
 
 ```bash
 $ cast block --help
+```
+
+```txt
 Usage: cast block [OPTIONS] [BLOCK]
 
 Arguments:

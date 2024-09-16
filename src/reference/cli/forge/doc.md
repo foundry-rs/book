@@ -4,6 +4,9 @@ Generate documentation for the project
 
 ```bash
 $ forge doc --help
+```
+
+```txt
 Usage: forge doc [OPTIONS]
 
 Options:

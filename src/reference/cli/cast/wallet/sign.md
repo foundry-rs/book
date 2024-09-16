@@ -4,6 +4,9 @@ Sign a message or typed data
 
 ```bash
 $ cast wallet sign --help
+```
+
+```txt
 Usage: cast wallet sign [OPTIONS] <MESSAGE>
 
 Arguments:

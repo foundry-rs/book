@@ -4,6 +4,9 @@ Sign and publish a transaction
 
 ```bash
 $ cast send --help
+```
+
+```txt
 Usage: cast send [OPTIONS] [TO] [SIG] [ARGS]... [COMMAND]
 
 Commands:

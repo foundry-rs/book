@@ -4,6 +4,9 @@ Generate a Solidity interface from a given ABI.
 
 ```bash
 $ cast interface --help
+```
+
+```txt
 Usage: cast interface [OPTIONS] <CONTRACT>
 
 Arguments:

@@ -4,6 +4,9 @@ ignores the address field and simulates creating a contract
 
 ```bash
 $ cast call --create --help
+```
+
+```txt
 Usage: cast call --create [OPTIONS] <CODE> [SIG] [ARGS]...
 
 Arguments:

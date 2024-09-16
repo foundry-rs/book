@@ -4,6 +4,9 @@ Get the timestamp of a block
 
 ```bash
 $ cast age --help
+```
+
+```txt
 Usage: cast age [OPTIONS] [BLOCK]
 
 Arguments:

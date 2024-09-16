@@ -4,6 +4,9 @@ Build and sign a transaction
 
 ```bash
 $ cast mktx --help
+```
+
+```txt
 Usage: cast mktx [OPTIONS] [TO] [SIG] [ARGS]... [COMMAND]
 
 Commands:

@@ -4,6 +4,9 @@ Fetch the EIP-1967 implementation account
 
 ```bash
 $ cast implementation --help
+```
+
+```txt
 Usage: cast implementation [OPTIONS] <WHO>
 
 Arguments:

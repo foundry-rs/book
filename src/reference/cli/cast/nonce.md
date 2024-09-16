@@ -4,6 +4,9 @@ Get the nonce for an account
 
 ```bash
 $ cast nonce --help
+```
+
+```txt
 Usage: cast nonce [OPTIONS] <WHO>
 
 Arguments:

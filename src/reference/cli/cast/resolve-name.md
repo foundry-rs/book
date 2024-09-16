@@ -4,6 +4,9 @@ Perform an ENS lookup
 
 ```bash
 $ cast resolve-name --help
+```
+
+```txt
 Usage: cast resolve-name [OPTIONS] [WHO]
 
 Arguments:

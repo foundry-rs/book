@@ -4,6 +4,9 @@ Perform a raw JSON-RPC request
 
 ```bash
 $ cast rpc --help
+```
+
+```txt
 Usage: cast rpc [OPTIONS] <METHOD> [PARAMS]...
 
 Arguments:

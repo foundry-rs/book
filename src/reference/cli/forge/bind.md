@@ -4,6 +4,9 @@ Generate Rust bindings for smart contracts
 
 ```bash
 $ forge bind --help
+```
+
+```txt
 Usage: forge bind [OPTIONS]
 
 Options:

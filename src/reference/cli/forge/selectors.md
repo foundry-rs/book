@@ -4,6 +4,9 @@ Function selector utilities
 
 ```bash
 $ forge selectors --help
+```
+
+```txt
 Usage: forge selectors <COMMAND>
 
 Commands:

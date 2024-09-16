@@ -4,6 +4,9 @@ Fast, utilitarian, and verbose Solidity REPL
 
 ```bash
 $ chisel --help
+```
+
+```txt
 Usage: chisel [OPTIONS] [COMMAND]
 
 Commands:

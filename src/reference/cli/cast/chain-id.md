@@ -4,6 +4,9 @@ Get the Ethereum chain ID
 
 ```bash
 $ cast chain-id --help
+```
+
+```txt
 Usage: cast chain-id [OPTIONS]
 
 Options:

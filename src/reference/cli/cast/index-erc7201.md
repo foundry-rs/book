@@ -4,6 +4,9 @@ Compute storage slots as specified by `ERC-7201: Namespaced Storage Layout`
 
 ```bash
 $ cast index-erc7201 --help
+```
+
+```txt
 Usage: cast index-erc7201 [OPTIONS] [ID]
 
 Arguments:

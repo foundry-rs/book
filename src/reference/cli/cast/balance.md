@@ -4,6 +4,9 @@ Get the balance of an account in wei
 
 ```bash
 $ cast balance --help
+```
+
+```txt
 Usage: cast balance [OPTIONS] <WHO>
 
 Arguments:

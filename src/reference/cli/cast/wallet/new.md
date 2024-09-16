@@ -4,6 +4,9 @@ Create a new random keypair
 
 ```bash
 $ cast wallet new --help
+```
+
+```txt
 Usage: cast wallet new [OPTIONS] [PATH]
 
 Arguments:

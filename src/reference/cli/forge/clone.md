@@ -4,6 +4,9 @@ Clone a contract from Etherscan
 
 ```bash
 $ forge clone --help
+```
+
+```txt
 Usage: forge clone [OPTIONS] <ADDRESS> [PATH]
 
 Arguments:

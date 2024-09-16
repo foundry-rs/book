@@ -4,6 +4,9 @@ Remove one or multiple dependencies
 
 ```bash
 $ forge remove --help
+```
+
+```txt
 Usage: forge remove [OPTIONS] <DEPENDENCIES>...
 
 Arguments:

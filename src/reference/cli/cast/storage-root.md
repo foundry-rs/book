@@ -4,6 +4,9 @@ Get the storage root for an account
 
 ```bash
 $ cast storage-root --help
+```
+
+```txt
 Usage: cast storage-root [OPTIONS] <WHO> [SLOTS]...
 
 Arguments:

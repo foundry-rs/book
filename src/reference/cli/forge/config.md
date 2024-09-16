@@ -4,6 +4,9 @@ Display the current config
 
 ```bash
 $ forge config --help
+```
+
+```txt
 Usage: forge config [OPTIONS] [PATHS]...
 
 Options:

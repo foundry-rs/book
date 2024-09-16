@@ -4,6 +4,9 @@ Get the selector for a function
 
 ```bash
 $ cast sig --help
+```
+
+```txt
 Usage: cast sig [SIG] [OPTIMIZE]
 
 Arguments:

@@ -4,6 +4,9 @@ Fetch the EIP-1967 admin account
 
 ```bash
 $ cast admin --help
+```
+
+```txt
 Usage: cast admin [OPTIONS] <WHO>
 
 Arguments:

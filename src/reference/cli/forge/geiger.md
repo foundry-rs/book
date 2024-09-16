@@ -4,6 +4,9 @@ Detects usage of unsafe cheat codes in a project and its dependencies
 
 ```bash
 $ forge geiger --help
+```
+
+```txt
 Usage: forge geiger [OPTIONS] [PATH]...
 
 Arguments:

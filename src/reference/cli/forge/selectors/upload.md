@@ -4,6 +4,9 @@ Upload selectors to registry
 
 ```bash
 $ forge selectors upload --help
+```
+
+```txt
 Usage: forge selectors upload [OPTIONS] [CONTRACT]
 
 Arguments:

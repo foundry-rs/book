@@ -4,6 +4,9 @@ Get the raw value of a contract's storage slot
 
 ```bash
 $ cast storage --help
+```
+
+```txt
 Usage: cast storage [OPTIONS] <ADDRESS> [SLOT]
 
 Arguments:

@@ -4,6 +4,9 @@ Extracts function selectors and arguments from bytecode
 
 ```bash
 $ cast selectors --help
+```
+
+```txt
 Usage: cast selectors [OPTIONS] <BYTECODE>
 
 Arguments:

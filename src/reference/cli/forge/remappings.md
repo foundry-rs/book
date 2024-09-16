@@ -4,6 +4,9 @@ Get the automatically inferred remappings for the project
 
 ```bash
 $ forge remappings --help
+```
+
+```txt
 Usage: forge remappings [OPTIONS]
 
 Options:

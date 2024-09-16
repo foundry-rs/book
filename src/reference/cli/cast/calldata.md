@@ -4,6 +4,9 @@ ABI-encode a function with arguments
 
 ```bash
 $ cast calldata --help
+```
+
+```txt
 Usage: cast calldata <SIG> [ARGS]...
 
 Arguments:

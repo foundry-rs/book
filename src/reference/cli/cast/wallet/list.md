@@ -4,6 +4,9 @@ List all the accounts in the keystore default directory
 
 ```bash
 $ cast wallet list --help
+```
+
+```txt
 Usage: cast wallet list [OPTIONS]
 
 Options:

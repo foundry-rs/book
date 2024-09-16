@@ -4,6 +4,9 @@ Get the basefee of a block
 
 ```bash
 $ cast base-fee --help
+```
+
+```txt
 Usage: cast base-fee [OPTIONS] [BLOCK]
 
 Arguments:
