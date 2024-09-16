@@ -90,7 +90,7 @@ Finally, the test asserts that the both roots are exactly equal. If they are not
 You may want to use differential testing against another Solidity implementation. In that case, `ffi` is not needed. Instead, the reference implementation is imported directly into the test.
 
 ```solidity
-import "openzeppelin-contracts/contracts/utils/cryptography/MerkleProof.sol";
+import {MerkleProof} from "openzeppelin-contracts/contracts/utils/cryptography/MerkleProof.sol";
 //...
 function testCompatibilityOpenZeppelinProver(bytes32[] memory _data, uint256 node) public {
     vm.assume(_data.length > 1);

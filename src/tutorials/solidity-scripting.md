@@ -49,9 +49,9 @@ Once that’s done, you should open up your preferred code editor and copy the c
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.8.10;
 
-import "solmate/tokens/ERC721.sol";
-import "openzeppelin-contracts/contracts/utils/Strings.sol";
-import "openzeppelin-contracts/contracts/access/Ownable.sol";
+import {ERC721} from "solmate/tokens/ERC721.sol";
+import {Ownable} from "openzeppelin-contracts/contracts/access/Ownable.sol";
+import {Strings} from "openzeppelin-contracts/contracts/utils/Strings.sol";
 
 error MintPriceNotPaid();
 error MaxSupply();
@@ -59,8 +59,8 @@ error NonExistentTokenURI();
 error WithdrawTransfer();
 
 contract NFT is ERC721, Ownable {
-
     using Strings for uint256;
+
     string public baseURI;
     uint256 public currentTokenId;
     uint256 public constant TOTAL_SUPPLY = 10_000;
@@ -163,8 +163,8 @@ The contents of `NFT.s.sol` should look like this:
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
 
-import "forge-std/Script.sol";
-import "../src/NFT.sol";
+import {Script} from "forge-std/Script.sol";
+import {NFT} from "../src/NFT.sol";
 
 contract MyScript is Script {
     function run() external {
@@ -188,8 +188,8 @@ pragma solidity ^0.8.13;
 Remember even if it’s a script it still works like a smart contract, but is never deployed, so just like any other smart contract written in Solidity the `pragma version` has to be specified.
 
 ```solidity
-import "forge-std/Script.sol";
-import "../src/NFT.sol";
+import {Script} from "forge-std/Script.sol";
+import {NFT} from "../src/NFT.sol";
 ```
 
 Just like we may import Forge Std to get testing utilities when writing tests, Forge Std also provides some scripting utilities that we import here.

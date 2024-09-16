@@ -29,13 +29,13 @@ A remapping _remaps_ Solidity imports to different directories. For example, the
 with an import like
 
 ```solidity
-import "@openzeppelin/contracts/utils/Context.sol";
+import {Context} from "@openzeppelin/contracts/utils/Context.sol";
 ```
 
 becomes
 
 ```solidity
-import "node_modules/@openzeppelin/openzeppelin-contracts/contracts/utils/Context.sol";
+import {Context} from "node_modules/@openzeppelin/openzeppelin-contracts/contracts/utils/Context.sol";
 ```
 
 ##### `auto_detect_remappings`

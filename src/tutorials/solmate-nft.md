@@ -26,8 +26,8 @@ We are then going to rename the boilerplate contract in `src/Contract.sol` to `s
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.8.10;
 
-import "solmate/tokens/ERC721.sol";
-import "openzeppelin-contracts/contracts/utils/Strings.sol";
+import {ERC721} from "solmate/tokens/ERC721.sol";
+import {Strings} from "openzeppelin-contracts/contracts/utils/Strings.sol";
 
 contract NFT is ERC721 {
     uint256 public currentTokenId;
@@ -61,8 +61,8 @@ Compiler run failed
 error[6275]: ParserError: Source "lib/openzeppelin-contracts/contracts/contracts/utils/Strings.sol" not found: File not found. Searched the following locations: "/PATH/TO/REPO".
  --> src/NFT.sol:5:1:
   |
-5 | import "openzeppelin-contracts/contracts/utils/Strings.sol";
-  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+5 | import {Strings} from "openzeppelin-contracts/contracts/utils/Strings.sol";
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ```
 
 this can be fixed by setting up the correct remapping. Create a file `remappings.txt` in your project and add the line
@@ -115,9 +115,9 @@ Let's extend our NFT by adding metadata to represent the content of our NFTs, as
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.8.10;
 
-import "solmate/tokens/ERC721.sol";
-import "openzeppelin-contracts/contracts/utils/Strings.sol";
-import "openzeppelin-contracts/contracts/access/Ownable.sol";
+import {ERC721} from "solmate/tokens/ERC721.sol";
+import {Ownable} from "openzeppelin-contracts/contracts/access/Ownable.sol";
+import {Strings} from "openzeppelin-contracts/contracts/utils/Strings.sol";
 
 error MintPriceNotPaid();
 error MaxSupply();
@@ -125,8 +125,8 @@ error NonExistentTokenURI();
 error WithdrawTransfer();
 
 contract NFT is ERC721, Ownable {
-
     using Strings for uint256;
+
     string public baseURI;
     uint256 public currentTokenId;
     uint256 public constant TOTAL_SUPPLY = 10_000;
@@ -196,7 +196,7 @@ Within your test folder rename the current `Contract.t.sol` test file to `NFT.t.
 pragma solidity 0.8.10;
 
 import {Test} from "forge-std/Test.sol";
-import "../src/NFT.sol";
+import {NFT} from "../src/NFT.sol";
 
 contract NFTTest is Test {
     using stdStorage for StdStorage;
