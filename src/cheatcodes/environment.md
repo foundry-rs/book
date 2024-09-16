@@ -22,6 +22,7 @@
 - [`getNonce`](./get-nonce.md)
 - [`mockCall`](./mock-call.md)
 - [`mockCallRevert`](./mock-call-revert.md)
+- [`mockFunction`](./mock-function.md)
 - [`clearMockedCalls`](./clear-mocked-calls.md)
 - [`coinbase`](./coinbase.md)
 - [`broadcast`](./broadcast.md)

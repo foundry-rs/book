@@ -5,7 +5,7 @@ Dappsys Test (DSTest for short) provides basic logging and assertion functionali
 To get access to the functions, import `forge-std/Test.sol` and inherit from `Test` in your test contract:
 
 ```solidity
-import "forge-std/Test.sol";
+import {Test} from "forge-std/Test.sol";
 
 contract ContractTest is Test {
     // ... tests ...

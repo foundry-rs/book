@@ -4,6 +4,9 @@ Estimate gas cost to deploy a smart contract
 
 ```bash
 $ cast estimate --create --help
+```
+
+```txt
 Usage: cast estimate --create [OPTIONS] <CODE> [SIG] [ARGS]...
 
 Arguments:

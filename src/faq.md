@@ -61,7 +61,7 @@ Alternatively, you can use [Forge Std][forge-std] which comes bundled with `cons
 you have to import it:
 
 ```solidity
-import "forge-std/console.sol";
+import {console} from "forge-std/console.sol";
 ```
 
 ### How do I run specific tests?

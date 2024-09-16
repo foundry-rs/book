@@ -4,6 +4,9 @@ Converts a number of one base to another
 
 ```bash
 $ cast to-hex --help
+```
+
+```txt
 Usage: cast to-hex [OPTIONS] [VALUE]
 
 Arguments:

@@ -4,6 +4,9 @@ Uninstall a dependency
 
 ```bash
 $ forge soldeer uninstall --help
+```
+
+```txt
 Usage: forge soldeer uninstall <DEPENDENCY>
 
 Arguments:

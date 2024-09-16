@@ -46,7 +46,6 @@
   - [`forge verify-bytecode`](./forge/verify-bytecode.md)
   - [`forge verify-check`](./forge/verify-check.md)
   - [`forge verify-contract`](./forge/verify-contract.md)
-
 - [`cast`](./cast.md)
   - [`cast 4byte`](./cast/4byte.md)
   - [`cast 4byte-decode`](./cast/4byte-decode.md)
@@ -70,6 +69,7 @@
   - [`cast chain-id`](./cast/chain-id.md)
   - [`cast client`](./cast/client.md)
   - [`cast code`](./cast/code.md)
+  - [`cast codehash`](./cast/codehash.md)
   - [`cast codesize`](./cast/codesize.md)
   - [`cast completions`](./cast/completions.md)
   - [`cast compute-address`](./cast/compute-address.md)
@@ -123,6 +123,7 @@
   - [`cast sig`](./cast/sig.md)
   - [`cast sig-event`](./cast/sig-event.md)
   - [`cast storage`](./cast/storage.md)
+  - [`cast storage-root`](./cast/storage-root.md)
   - [`cast to-ascii`](./cast/to-ascii.md)
   - [`cast to-base`](./cast/to-base.md)
   - [`cast to-bytes32`](./cast/to-bytes32.md)
@@ -151,11 +152,9 @@
     - [`cast wallet list`](./cast/wallet/list.md)
     - [`cast wallet private-key`](./cast/wallet/private-key.md)
     - [`cast wallet decrypt-keystore`](./cast/wallet/decrypt-keystore.md)
-
 - [`anvil`](./anvil.md)
   - [`anvil completions`](./anvil/completions.md)
   - [`anvil generate-fig-spec`](./anvil/generate-fig-spec.md)
-
 - [`chisel`](./chisel.md)
   - [`chisel list`](./chisel/list.md)
   - [`chisel load`](./chisel/load.md)

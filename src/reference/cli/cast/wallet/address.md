@@ -4,11 +4,15 @@ Convert a private key to an address
 
 ```bash
 $ cast wallet address --help
+```
+
+```txt
 Usage: cast wallet address [OPTIONS] [PRIVATE_KEY]
 
 Arguments:
   [PRIVATE_KEY]
-          If provided, the address will be derived from the specified private key
+          If provided, the address will be derived from the specified private
+          key
 
 Options:
   -h, --help
@@ -51,7 +55,8 @@ Wallet options - keystore:
           [env: ETH_KEYSTORE=]
 
       --account <ACCOUNT_NAME>
-          Use a keystore from the default keystores folder (~/.foundry/keystores) by its filename
+          Use a keystore from the default keystores folder
+          (~/.foundry/keystores) by its filename
           
           [env: ETH_KEYSTORE_ACCOUNT=]
 

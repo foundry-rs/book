@@ -4,6 +4,9 @@ Generate Fig autocompletion spec
 
 ```bash
 $ cast generate-fig-spec --help
+```
+
+```txt
 Usage: cast generate-fig-spec
 
 Options:
