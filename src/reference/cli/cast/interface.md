@@ -11,9 +11,10 @@ Usage: cast interface [OPTIONS] <CONTRACT>
 
 Arguments:
   <CONTRACT>
-          The target contract, which can be one of: - A file path to an ABI JSON file. - A contract
-          identifier in the form `<path>:<contractname>` or just `<contractname>`. - An Ethereum
-          address, for which the ABI will be fetched from Etherscan
+          The target contract, which can be one of: - A file path to an ABI JSON
+          file. - A contract identifier in the form `<path>:<contractname>` or
+          just `<contractname>`. - An Ethereum address, for which the ABI will
+          be fetched from Etherscan
 
 Options:
   -n, --name <NAME>
@@ -32,7 +33,8 @@ Options:
           If not specified, the interface will be output to stdout.
 
   -j, --json
-          If specified, the interface will be output as JSON rather than Solidity
+          If specified, the interface will be output as JSON rather than
+          Solidity
 
   -e, --etherscan-api-key <KEY>
           The Etherscan (or equivalent) API key

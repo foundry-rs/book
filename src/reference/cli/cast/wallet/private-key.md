@@ -11,11 +11,12 @@ Usage: cast wallet private-key [OPTIONS] [MNEMONIC] [MNEMONIC_INDEX_OR_DERIVATIO
 
 Arguments:
   [MNEMONIC]
-          If provided, the private key will be derived from the specified menomonic phrase
+          If provided, the private key will be derived from the specified
+          menomonic phrase
 
   [MNEMONIC_INDEX_OR_DERIVATION_PATH]
-          If provided, the private key will be derived using the specified mnemonic index (if
-          integer) or derivation path
+          If provided, the private key will be derived using the specified
+          mnemonic index (if integer) or derivation path
 
 Options:
   -v, --verbose
@@ -61,7 +62,8 @@ Wallet options - keystore:
           [env: ETH_KEYSTORE=]
 
       --account <ACCOUNT_NAME>
-          Use a keystore from the default keystores folder (~/.foundry/keystores) by its filename
+          Use a keystore from the default keystores folder
+          (~/.foundry/keystores) by its filename
           
           [env: ETH_KEYSTORE_ACCOUNT=]
 

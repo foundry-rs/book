@@ -11,14 +11,16 @@ Usage: forge inspect [OPTIONS] <CONTRACT> <FIELD>
 
 Arguments:
   <CONTRACT>
-          The identifier of the contract to inspect in the form `(<path>:)?<contractname>`
+          The identifier of the contract to inspect in the form
+          `(<path>:)?<contractname>`
 
   <FIELD>
           The contract artifact field to inspect
           
-          [possible values: abi, bytecode, deployedBytecode, assembly, assemblyOptimized,
-          methodIdentifiers, gasEstimates, storageLayout, devdoc, ir, irOptimized, metadata,
-          userdoc, ewasm, errors, events, eof, eof-init]
+          [possible values: abi, bytecode, deployedBytecode, assembly,
+          assemblyOptimized, methodIdentifiers, gasEstimates, storageLayout,
+          devdoc, ir, irOptimized, metadata, userdoc, ewasm, errors, events,
+          eof, eof-init]
 
 Options:
       --pretty
@@ -59,7 +61,8 @@ Compiler options:
       --use <SOLC_VERSION>
           Specify the solc version, or a path to a local solc, to build with.
           
-          Valid values are in the format `x.y.z`, `solc:x.y.z` or `path/to/solc`.
+          Valid values are in the format `x.y.z`, `solc:x.y.z` or
+          `path/to/solc`.
 
       --offline
           Do not access the network.
@@ -72,7 +75,8 @@ Compiler options:
       --no-metadata
           Do not append any metadata to the bytecode.
           
-          This is equivalent to setting `bytecode_hash` to `none` and `cbor_metadata` to `false`.
+          This is equivalent to setting `bytecode_hash` to `none` and
+          `cbor_metadata` to `false`.
 
       --silent
           Don't print anything on startup
@@ -109,8 +113,8 @@ Project options:
       --revert-strings <REVERT>
           Revert string configuration.
           
-          Possible values are "default", "strip" (remove), "debug" (Solidity-generated revert
-          strings) and "verboseDebug"
+          Possible values are "default", "strip" (remove), "debug"
+          (Solidity-generated revert strings) and "verboseDebug"
 
       --build-info
           Generate build info files
@@ -121,7 +125,8 @@ Project options:
       --root <PATH>
           The project's root path.
           
-          By default root of the Git repository, if in one, or the current working directory.
+          By default root of the Git repository, if in one, or the current
+          working directory.
 
   -C, --contracts <PATH>
           The contracts source directory
@@ -141,7 +146,8 @@ Project options:
       --hardhat
           Use the Hardhat-style project layout.
           
-          This is the same as using: `--contracts contracts --lib-paths node_modules`.
+          This is the same as using: `--contracts contracts --lib-paths
+          node_modules`.
           
           [aliases: hh]
 

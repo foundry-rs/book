@@ -14,7 +14,8 @@ Options:
           Path to where the contract artifacts are stored
 
       --select <SELECT>
-          Create bindings only for contracts whose names match the specified filter(s)
+          Create bindings only for contracts whose names match the specified
+          filter(s)
 
       --select-all
           Explicitly generate bindings for all contracts
@@ -24,16 +25,16 @@ Options:
       --crate-name <NAME>
           The name of the Rust crate to generate.
           
-          This should be a valid crates.io crate name, however, this is not currently validated by
-          this command.
+          This should be a valid crates.io crate name, however, this is not
+          currently validated by this command.
           
           [default: foundry-contracts]
 
       --crate-version <VERSION>
           The version of the Rust crate to generate.
           
-          This should be a standard semver version string, however, this is not currently validated
-          by this command.
+          This should be a standard semver version string, however, this is not
+          currently validated by this command.
           
           [default: 0.1.0]
 
@@ -43,8 +44,9 @@ Options:
       --overwrite
           Overwrite existing generated bindings.
           
-          By default, the command will check that the bindings are correct, and then exit. If
-          --overwrite is passed, it will instead delete and overwrite the bindings.
+          By default, the command will check that the bindings are correct, and
+          then exit. If --overwrite is passed, it will instead delete and
+          overwrite the bindings.
 
       --single-file
           Generate bindings as a single file
@@ -65,7 +67,8 @@ Options:
           Specify the alloy version
 
       --ethers
-          Generate bindings for the `ethers` library, instead of `alloy` (default, deprecated)
+          Generate bindings for the `ethers` library, instead of `alloy`
+          (default, deprecated)
 
   -h, --help
           Print help (see a summary with '-h')
@@ -102,7 +105,8 @@ Compiler options:
       --use <SOLC_VERSION>
           Specify the solc version, or a path to a local solc, to build with.
           
-          Valid values are in the format `x.y.z`, `solc:x.y.z` or `path/to/solc`.
+          Valid values are in the format `x.y.z`, `solc:x.y.z` or
+          `path/to/solc`.
 
       --offline
           Do not access the network.
@@ -115,7 +119,8 @@ Compiler options:
       --no-metadata
           Do not append any metadata to the bytecode.
           
-          This is equivalent to setting `bytecode_hash` to `none` and `cbor_metadata` to `false`.
+          This is equivalent to setting `bytecode_hash` to `none` and
+          `cbor_metadata` to `false`.
 
       --silent
           Don't print anything on startup
@@ -152,8 +157,8 @@ Project options:
       --revert-strings <REVERT>
           Revert string configuration.
           
-          Possible values are "default", "strip" (remove), "debug" (Solidity-generated revert
-          strings) and "verboseDebug"
+          Possible values are "default", "strip" (remove), "debug"
+          (Solidity-generated revert strings) and "verboseDebug"
 
       --build-info
           Generate build info files
@@ -164,7 +169,8 @@ Project options:
       --root <PATH>
           The project's root path.
           
-          By default root of the Git repository, if in one, or the current working directory.
+          By default root of the Git repository, if in one, or the current
+          working directory.
 
   -C, --contracts <PATH>
           The contracts source directory
@@ -184,7 +190,8 @@ Project options:
       --hardhat
           Use the Hardhat-style project layout.
           
-          This is the same as using: `--contracts contracts --lib-paths node_modules`.
+          This is the same as using: `--contracts contracts --lib-paths
+          node_modules`.
           
           [aliases: hh]
 

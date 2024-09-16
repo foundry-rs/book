@@ -63,7 +63,8 @@ Compiler options:
       --use <SOLC_VERSION>
           Specify the solc version, or a path to a local solc, to build with.
           
-          Valid values are in the format `x.y.z`, `solc:x.y.z` or `path/to/solc`.
+          Valid values are in the format `x.y.z`, `solc:x.y.z` or
+          `path/to/solc`.
 
       --offline
           Do not access the network.
@@ -76,7 +77,8 @@ Compiler options:
       --no-metadata
           Do not append any metadata to the bytecode.
           
-          This is equivalent to setting `bytecode_hash` to `none` and `cbor_metadata` to `false`.
+          This is equivalent to setting `bytecode_hash` to `none` and
+          `cbor_metadata` to `false`.
 
       --silent
           Don't print anything on startup
@@ -113,8 +115,8 @@ Project options:
       --revert-strings <REVERT>
           Revert string configuration.
           
-          Possible values are "default", "strip" (remove), "debug" (Solidity-generated revert
-          strings) and "verboseDebug"
+          Possible values are "default", "strip" (remove), "debug"
+          (Solidity-generated revert strings) and "verboseDebug"
 
       --build-info
           Generate build info files
@@ -125,7 +127,8 @@ Project options:
       --root <PATH>
           The project's root path.
           
-          By default root of the Git repository, if in one, or the current working directory.
+          By default root of the Git repository, if in one, or the current
+          working directory.
 
   -C, --contracts <PATH>
           The contracts source directory
@@ -145,7 +148,8 @@ Project options:
       --hardhat
           Use the Hardhat-style project layout.
           
-          This is the same as using: `--contracts contracts --lib-paths node_modules`.
+          This is the same as using: `--contracts contracts --lib-paths
+          node_modules`.
           
           [aliases: hh]
 
@@ -156,7 +160,8 @@ Watch options:
   -w, --watch [<PATH>...]
           Watch the given files or directories for changes.
           
-          If no paths are provided, the source and test directories of the project are watched.
+          If no paths are provided, the source and test directories of the
+          project are watched.
 
       --no-restart
           Do not restart the command while it's still running
@@ -164,30 +169,34 @@ Watch options:
       --run-all
           Explicitly re-run all tests when a change is made.
           
-          By default, only the tests of the last modified test file are executed.
+          By default, only the tests of the last modified test file are
+          executed.
 
       --watch-delay <DELAY>
           File update debounce delay.
           
-          During the delay, incoming change events are accumulated and only once the delay has
-          passed, is an action taken. Note that this does not mean a command will be started: if
-          --no-restart is given and a command is already running, the outcome of the action will be
-          to do nothing.
+          During the delay, incoming change events are accumulated and only once
+          the delay has passed, is an action taken. Note that this does not mean
+          a command will be started: if --no-restart is given and a command is
+          already running, the outcome of the action will be to do nothing.
           
-          Defaults to 50ms. Parses as decimal seconds by default, but using an integer with the `ms`
-          suffix may be more convenient.
+          Defaults to 50ms. Parses as decimal seconds by default, but using an
+          integer with the `ms` suffix may be more convenient.
           
-          When using --poll mode, you'll want a larger duration, or risk overloading disk I/O.
+          When using --poll mode, you'll want a larger duration, or risk
+          overloading disk I/O.
 
       --format-json
-          Output the compilation errors in the json format. This is useful when you want to use the
-          output in other tools
+          Output the compilation errors in the json format. This is useful when
+          you want to use the output in other tools
 
 EVM options:
   -f, --fork-url <URL>
-          Fetch state over a remote endpoint instead of starting from an empty state.
+          Fetch state over a remote endpoint instead of starting from an empty
+          state.
           
-          If you want to fetch state from a specific block number, see --fork-block-number.
+          If you want to fetch state from a specific block number, see
+          --fork-block-number.
           
           [aliases: rpc-url]
 
@@ -225,7 +234,8 @@ EVM options:
           Enable the FFI cheatcode
 
       --always-use-create-2-factory
-          Use the create 2 factory in all cases including tests and non-broadcasting scripts
+          Use the create 2 factory in all cases including tests and
+          non-broadcasting scripts
 
   -v, --verbosity...
           Verbosity of the EVM.
@@ -235,12 +245,14 @@ EVM options:
           Verbosity levels:
           - 2: Print logs for all tests
           - 3: Print execution traces for failing tests
-          - 4: Print execution traces for all tests, and setup traces for failing tests
+          - 4: Print execution traces for all tests, and setup traces for
+          failing tests
           - 5: Print execution and setup traces for all tests
 
 Fork config:
       --compute-units-per-second <CUPS>
-          Sets the number of assumed available compute units per second for this provider
+          Sets the number of assumed available compute units per second for this
+          provider
           
           default value: 330
           
@@ -260,8 +272,8 @@ Executor environment config:
           The block gas limit
 
       --code-size-limit <CODE_SIZE>
-          EIP-170: Contract code size limit in bytes. Useful to increase this because of tests. By
-          default, it is 0x6000 (~25kb)
+          EIP-170: Contract code size limit in bytes. Useful to increase this
+          because of tests. By default, it is 0x6000 (~25kb)
 
       --chain <CHAIN>
           The chain name or EIP-155 chain ID
@@ -298,8 +310,8 @@ Executor environment config:
           The block gas limit
 
       --memory-limit <MEMORY_LIMIT>
-          The memory limit per EVM execution in bytes. If this limit is exceeded, a `MemoryLimitOOG`
-          result is thrown.
+          The memory limit per EVM execution in bytes. If this limit is
+          exceeded, a `MemoryLimitOOG` result is thrown.
           
           The default is 128MiB.
 
@@ -309,9 +321,10 @@ Executor environment config:
           [aliases: no-gas-limit]
 
       --isolate
-          Whether to enable isolation of calls. In isolation mode all top-level calls are executed
-          as a separate transaction in a separate EVM context, enabling more precise gas accounting
-          and transaction state changes
+          Whether to enable isolation of calls. In isolation mode all top-level
+          calls are executed as a separate transaction in a separate EVM
+          context, enabling more precise gas accounting and transaction state
+          changes
 
       --alphanet
           Whether to enable Alphanet features

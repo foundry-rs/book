@@ -40,7 +40,8 @@ Options:
           Flatten the source code before verifying
 
   -f, --force
-          Do not compile the flattened smart contract before verifying (if --flatten is passed)
+          Do not compile the flattened smart contract before verifying (if
+          --flatten is passed)
 
       --skip-is-verified-check
           Do not check if the contract is already verified before verifying
@@ -51,13 +52,14 @@ Options:
       --root <PATH>
           The project's root path.
           
-          By default root of the Git repository, if in one, or the current working directory.
+          By default root of the Git repository, if in one, or the current
+          working directory.
 
       --show-standard-json-input
           Prints the standard json compiler input.
           
-          The standard json compiler input can be used to manually submit contract verification in
-          the browser.
+          The standard json compiler input can be used to manually submit
+          contract verification in the browser.
 
       --via-ir
           Use the Yul intermediate representation compilation pipeline
@@ -83,17 +85,20 @@ Options:
           [env: ETH_RPC_URL=]
 
       --flashbots
-          Use the Flashbots RPC URL with fast mode (<https://rpc.flashbots.net/fast>).
+          Use the Flashbots RPC URL with fast mode
+          (<https://rpc.flashbots.net/fast>).
           
           This shares the transaction privately with all registered builders.
           
-          See: <https://docs.flashbots.net/flashbots-protect/quick-start#faster-transactions>
+          See:
+          <https://docs.flashbots.net/flashbots-protect/quick-start#faster-transactions>
 
       --jwt-secret <JWT_SECRET>
           JWT Secret for the RPC endpoint.
           
-          The JWT secret will be used to create a JWT for a RPC. For example, the following can be
-          used to simulate a CL `engine_forkchoiceUpdated` call:
+          The JWT secret will be used to create a JWT for a RPC. For example,
+          the following can be used to simulate a CL `engine_forkchoiceUpdated`
+          call:
           
           cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2
           '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",

@@ -13,7 +13,9 @@ Arguments:
   [ID]  The arbitrary identifier
 
 Options:
-      --formula-id <FORMULA_ID>  The formula ID. Currently the only supported formula is `erc7201`
-                                 [default: erc7201]
-  -h, --help                     Print help
+      --formula-id <FORMULA_ID>
+          The formula ID. Currently the only supported formula is `erc7201`
+          [default: erc7201]
+  -h, --help
+          Print help
 ```

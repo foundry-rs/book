@@ -13,7 +13,8 @@ Options:
       --root <PATH>
           The project's root path.
           
-          By default root of the Git repository, if in one, or the current working directory.
+          By default root of the Git repository, if in one, or the current
+          working directory.
 
       --pretty
           Pretty-print the remappings, grouping each of them by context

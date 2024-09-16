@@ -171,7 +171,7 @@ fn get_entry(cmd: &Cmd) -> io::Result<(Vec<String>, String)> {
         .args(&cmd.subcommands)
         .arg("--help")
         .env("NO_COLOR", "1")
-        .env("COLUMNS", "100")
+        .env("COLUMNS", "80")
         .env("LINES", "10000")
         .stdout(Stdio::piped())
         .output()?;
