@@ -3,7 +3,7 @@
 pragma solidity 0.8.10;
 
 // ANCHOR: import
-import "forge-std/Test.sol";
+import {Test, stdError} from "forge-std/Test.sol";
 // ANCHOR_END: import
 
 contract ContractBTest is Test {

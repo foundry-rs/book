@@ -174,7 +174,7 @@ Initialize a contract named `Create2Test` like this:
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.20;
 
-import "forge-std/Test.sol";
+import {Test} from "forge-std/Test.sol";
 import {Counter} from "../src/Counter.sol";
 import {Create2} from "../src/Create2.sol";
 

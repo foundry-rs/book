@@ -86,5 +86,5 @@ Add line to `.vscode/settings.json` file (solidity extension settings):
 Now all contracts from the OpenZeppelin documentation can be used.
 
 ```javascript
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 ```
