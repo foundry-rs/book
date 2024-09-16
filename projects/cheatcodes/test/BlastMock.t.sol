@@ -6,15 +6,11 @@ import {Test} from "forge-std/Test.sol";
 
 // Firstly, we implement a mock emulating the actual precompile behavior
 contract YieldMock {
-    address private constant blastContract =
-        0x4300000000000000000000000000000000000002;
+    address private constant blastContract = 0x4300000000000000000000000000000000000002;
 
     mapping(address => uint8) public getConfiguration;
 
-    function configure(
-        address contractAddress,
-        uint8 flags
-    ) external returns (uint256) {
+    function configure(address contractAddress, uint8 flags) external returns (uint256) {
         require(msg.sender == blastContract);
 
         getConfiguration[contractAddress] = flags;
@@ -36,10 +32,7 @@ contract SomeBlastTest is Test {
         // Deploy mock of the precompile
         YieldMock yieldMock = new YieldMock();
         // Set mock bytecode to the expected precompile address
-        vm.etch(
-            0x0000000000000000000000000000000000000100,
-            address(yieldMock).code
-        );
+        vm.etch(0x0000000000000000000000000000000000000100, address(yieldMock).code);
     }
 
     function testSomething() public {

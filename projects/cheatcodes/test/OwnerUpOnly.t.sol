@@ -30,7 +30,7 @@ contract OwnerUpOnly {
 // ANCHOR: contract_prelude
 contract OwnerUpOnlyTest is Test {
     OwnerUpOnly upOnly;
-    // ANCHOR_END: contract_prelude
+// ANCHOR_END: contract_prelude
 
     // ANCHOR: simple_test
     function setUp() public {
