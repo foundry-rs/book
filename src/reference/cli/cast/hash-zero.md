@@ -4,6 +4,9 @@ Prints the zero hash
 
 ```bash
 $ cast hash-zero --help
+```
+
+```txt
 Usage: cast hash-zero
 
 Options:

@@ -4,6 +4,9 @@ Parses a string from bytes32 encoding
 
 ```bash
 $ cast parse-bytes32-string --help
+```
+
+```txt
 Usage: cast parse-bytes32-string [BYTES]
 
 Arguments:

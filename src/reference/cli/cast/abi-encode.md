@@ -4,6 +4,9 @@ ABI encode the given function argument, excluding the selector
 
 ```bash
 $ cast abi-encode --help
+```
+
+```txt
 Usage: cast abi-encode [OPTIONS] <SIG> [ARGS]...
 
 Arguments:

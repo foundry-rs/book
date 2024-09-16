@@ -4,6 +4,9 @@ Perform a left shifting operation
 
 ```bash
 $ cast shl --help
+```
+
+```txt
 Usage: cast shl [OPTIONS] <VALUE> <BITS>
 
 Arguments:

@@ -1,6 +1,6 @@
 // ANCHOR: all
 // ANCHOR: command
-$ tree lib -L 1
+$ tree lib
 // ANCHOR_END: command
 // ANCHOR: output
 lib

@@ -4,6 +4,9 @@ Convert an ETH amount to wei.
 
 ```bash
 $ cast to-wei --help
+```
+
+```txt
 Usage: cast to-wei [VALUE] [UNIT]
 
 Arguments:
