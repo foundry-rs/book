@@ -363,6 +363,9 @@ Gets the transaction hash and the address which created a contract.
 `--fork-retry-backoff <BACKOFF>`
 &nbsp;&nbsp;&nbsp;&nbsp; Initial retry backoff on encountering errors.
 
+`--fork-transaction-hash <TRANSACTION>`
+&nbsp;&nbsp;&nbsp;&nbsp; Fetch state from a specific transaction hash over a remote endpoint (Must pass `--fork-url` in the same command-line).
+
 `--retries <retries>`
 &nbsp;&nbsp;&nbsp;&nbsp; Number of retry requests for spurious networks (timed out requests). [default: 5]
 
