@@ -4,6 +4,9 @@ Import a private key into an encrypted keystore
 
 ```bash
 $ cast wallet import --help
+```
+
+```txt
 Usage: cast wallet import [OPTIONS] <ACCOUNT_NAME>
 
 Arguments:
@@ -12,12 +15,12 @@ Arguments:
 
 Options:
   -k, --keystore-dir <KEYSTORE_DIR>
-          If provided, keystore will be saved here instead of the default keystores directory
-          (~/.foundry/keystores)
+          If provided, keystore will be saved here instead of the default
+          keystores directory (~/.foundry/keystores)
 
       --unsafe-password <PASSWORD>
-          Password for the JSON keystore in cleartext This is unsafe, we recommend using the default
-          hidden password prompt
+          Password for the JSON keystore in cleartext This is unsafe, we
+          recommend using the default hidden password prompt
           
           [env: CAST_UNSAFE_PASSWORD=]
 

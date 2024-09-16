@@ -4,6 +4,9 @@ Converts a number of one base to decimal
 
 ```bash
 $ cast to-dec --help
+```
+
+```txt
 Usage: cast to-dec [OPTIONS] [VALUE]
 
 Arguments:

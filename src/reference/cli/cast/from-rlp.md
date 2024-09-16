@@ -4,6 +4,9 @@ Decodes RLP hex-encoded data
 
 ```bash
 $ cast from-rlp --help
+```
+
+```txt
 Usage: cast from-rlp [VALUE]
 
 Arguments:

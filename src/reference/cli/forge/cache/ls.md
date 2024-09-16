@@ -4,6 +4,9 @@ Shows cached data from the global foundry directory
 
 ```bash
 $ forge cache ls --help
+```
+
+```txt
 Usage: forge cache ls [CHAINS]...
 
 Arguments:

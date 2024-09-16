@@ -4,6 +4,9 @@ Decode ABI-encoded input data.
 
 ```bash
 $ cast calldata-decode --help
+```
+
+```txt
 Usage: cast calldata-decode [OPTIONS] <SIG> <CALLDATA>
 
 Arguments:

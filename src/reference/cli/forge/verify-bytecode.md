@@ -4,6 +4,9 @@ Verify the deployed bytecode against its source on Etherscan
 
 ```bash
 $ forge verify-bytecode --help
+```
+
+```txt
 Usage: forge verify-bytecode [OPTIONS] <ADDRESS> <CONTRACT>
 
 Arguments:
@@ -47,7 +50,8 @@ Options:
       --root <PATH>
           The project's root path.
           
-          By default root of the Git repository, if in one, or the current working directory.
+          By default root of the Git repository, if in one, or the current
+          working directory.
 
       --ignore <BYTECODE_TYPE>
           Ignore verification for creation or runtime bytecode

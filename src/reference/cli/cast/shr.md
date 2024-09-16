@@ -4,6 +4,9 @@ Perform a right shifting operation
 
 ```bash
 $ cast shr --help
+```
+
+```txt
 Usage: cast shr [OPTIONS] <VALUE> <BITS>
 
 Arguments:

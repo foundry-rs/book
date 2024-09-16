@@ -4,6 +4,9 @@ Soldeer dependency manager
 
 ```bash
 $ forge soldeer --help
+```
+
+```txt
 Usage: Native Solidity Package Manager, `run forge soldeer [COMMAND] --help` for more details
 
 Commands:
