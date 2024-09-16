@@ -175,7 +175,7 @@ You are at risk to push sensitive files to the central repository that then can 
 Furthermore, we've implemented a warning that it will be triggered if you try to push a project that contains any `.dot` files/directories.
 If you want to skip this warning, you can just use
 ```bash
-forge soldeer push my-project~1.0.0 --skip-warnings true
+forge soldeer push my-project~1.0.0 --skip-warnings
 ```
 
 
@@ -184,11 +184,11 @@ forge soldeer push my-project~1.0.0 --skip-warnings true
 In case you want to simulate what would happen if you push a version, you can use the `--dry-run` flag. This will create a zip file that you can inspect before pushing it to the central repository. 
 
 ```bash
-forge soldeer push my-project~1.0.0 --dry-run true
+forge soldeer push my-project~1.0.0 --dry-run
 ```
 
 #### Login Data
-By default, Soldeer saves the login token in the `~/.soldeer/.soldeer_login` file. If you want to save that token to another location, you need to set the environment variable `SOLDEER_LOGIN_FILE`.
+By default, Soldeer saves the login token in the `~/.soldeer/.soldeer_login` file, which is used to push files to the central repository. If you prefer to save the token in a different location, you can set the environment variable `SOLDEER_LOGIN_FILE`.
 
 
 > **Warning** ⚠️
