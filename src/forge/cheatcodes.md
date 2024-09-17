@@ -1,5 +1,10 @@
 ## Cheatcodes
 
+
+> 🚨 **Important**
+>
+> See [Cheatcode Limitations](../zksync-specifics/limitations/cheatcodes.md) when using cheatcodes in ZKsync context.
+
 Most of the time, simply testing your smart contracts outputs isn't enough. To manipulate the state of the blockchain, as well as test for specific reverts and events, Foundry is shipped with a set of cheatcodes.
 
 Cheatcodes allow you to change the block number, your identity, and more. They are invoked by calling specific functions on a specially designated address: `0x7109709ECfa91a80626fF3989D68f67F5b1DD12D`.

@@ -7,6 +7,8 @@ Forge supports testing in a forked environment with two different approaches:
 
 Which approach to use? Forking mode affords running an entire test suite against a specific forked environment, while forking cheatcodes provide more flexibility and expressiveness to work with multiple forks in your tests. Your particular use case and testing strategy will help inform which approach to use.
 
+Note that ZKsync context will be set accordingly based on the fork url, so the `--zksync` flag need not be passed.
+
 ### Forking Mode
 
 To run all tests in a forked environment, such as a forked Ethereum mainnet, pass an RPC URL via the `--fork-url` flag:

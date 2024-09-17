@@ -32,4 +32,49 @@ Error: assembly-to-bytecode conversion: assembly parse error Label DEFAULT_UNWIN
 for either PC or constant at offset 65947 that is more than 65535 addressable space
 ```
 
-As an attempt the same contract can be compiled with `--zk-force-evmla=true`, but if it doesn't help then the contract must be split into smaller units.
+#### Solution
+
+There are three possible solutions to address this issue:
+
+1. **Compilation with `--zk-force-evmla=true`:**
+
+    You can attempt to compile the contract using ZKsync's EVM legacy architecture by adding the `--zk-force-evmla=true` flag. This can sometimes bypass the contract size limit by compiling in a different mode.
+
+    Example command:
+    ```bash
+    forge build --zk-force-evmla=true --zksync
+    ```
+
+1. **Compilation with `--zk-fallback-oz=true`:**
+
+    If the contract size still exceeds the limit, try compiling with optimization level `-Oz` by using the `--zk-fallback-oz=true` flag. This tells the compiler to fall back to `-Oz` optimization when the bytecode is too large, potentially reducing the contract size further.
+
+    Example command:
+    ```bash
+    forge build --zk-fallback-oz=true --zksync
+    ```
+
+1. **Split the Contract into Smaller Units**
+
+    If neither of the above flags resolves the issue, the contract must be refactored into smaller, modular contracts. This involves separating your logic into different contracts and using contract inheritance or external contract calls to maintain functionality.
+
+    **Before (single large contract):**
+    ```solidity
+    contract LargeContract {
+        function largeFunction1() public { /* complex logic */ }
+        function largeFunction2() public { /* complex logic */ }
+        // Additional large functions and state variables...
+    }
+    ```
+    **After (multiple smaller contracts):**
+    ```solidity
+    contract ContractPart1 {
+        function part1Function() public { /* logic from largeFunction1 */ }
+    }
+    contract ContractPart2 {
+        function part2Function() public { /* logic from largeFunction2 */ }
+    }
+    contract MainContract is ContractPart1, ContractPart2 {
+        // Logic to combine the functionalities of both parts
+    }
+    ```

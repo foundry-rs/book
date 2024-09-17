@@ -1,5 +1,9 @@
 ## Gas Reports
 
+> 🚨 **Important**
+>
+> Gas reports may not be entirely accurate in the ZKsync context. This is mostly due to the additional overhead to executing each `CREATE` or `CALL` in its own zkEVM which has additional bootloader gas costs.
+
 Forge can produce gas reports for your contracts. You can configure which contracts output gas reports via the `gas_reports` field in `foundry.toml`.
 
 To produce reports for specific contracts:

@@ -1,5 +1,10 @@
 ## Debugger
 
+> 🚨 **Important**
+>
+> Debugger in not officially supported for ZKsync.
+>
+
 Forge ships with an interactive debugger.
 
 The debugger is accessible on [`forge debug`](../reference/forge/forge-debug.md) and on [`forge test`](../reference/forge/forge-test.md).

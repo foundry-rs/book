@@ -1,6 +1,6 @@
 ## Creating a New Project
 
-To start a new project with Foundry, use [`forge init`](../reference/forge/forge-init.md):
+To start a new project with Foundry-ZKsync, use [`forge init`](../reference/forge/forge-init.md):
 
 ```sh
 {{#include ../output/hello_foundry/forge-init:command}}
@@ -35,6 +35,6 @@ And run the tests:
 {{#include ../output/hello_foundry/forge-test:all}}
 ```
 
-You'll notice that two new directories have popped up: `out` and `cache`.
+You'll notice that two new directories have popped up: `out`, `zkout` and `cache`.
 
-The `out` directory contains your contract artifact, such as the ABI, while the `cache` is used by `forge` to only recompile what is necessary.
+The `out` directory contains your EVM contract artifact, such as the ABI, the `zkout` directory contains the zkEVM contract artifacts, while the `cache` is used by `forge` to only recompile what is necessary.

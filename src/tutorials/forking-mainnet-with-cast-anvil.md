@@ -1,4 +1,4 @@
-## Forking Mainnet with Cast and Anvil
+## Forking Mainnet with Cast and Era Test Node
 
 ### Introduction
 

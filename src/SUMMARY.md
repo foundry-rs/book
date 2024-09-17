@@ -25,6 +25,8 @@
   - [General](./zksync-specifics/limitations/general.md)
   - [Compilation](./zksync-specifics/limitations/compilation.md)
   - [Broadcast](./zksync-specifics/limitations/broadcast.md)
+  - [Events](./zksync-specifics/limitations/events.md)
+  - [Traces](./zksync-specifics/limitations/traces.md)
   - [Cheatcodes](./zksync-specifics/limitations/cheatcodes.md)
 - [Additional Cheatcodes](./zksync-specifics/cheatcodes/README.md)
   - [zkVm](./zksync-specifics/cheatcodes/zkvm.md)
@@ -32,7 +34,6 @@
 # Supported Commands Overview
 - [Command List](./supported-commands/README.md)
 
-<!--
 # Forge Overview
 
 - [Overview of Forge](forge/README.md)
@@ -53,7 +54,7 @@
     <!--  - [Mutation Testing]() 
     <!-- - [Linting and Formatting]() 
     <!-- - [Generating Documentation]() 
-<!-- - [Deploying and Verifying](./forge/deploying.md)
+- [Deploying and Verifying](./forge/deploying.md)
 - [Gas Tracking](./forge/gas-tracking.md)
   - [Gas Reports](./forge/gas-reports.md)
   - [Gas Snapshots](./forge/gas-snapshots.md)
@@ -63,13 +64,10 @@
 
 - [Overview of Cast](./cast/README.md)
 
-# Anvil Overview
+# Not Supported
 
-- [Overview of Anvil](./anvil/README.md)
-
-# Chisel Overview
-
-- [Overview of Chisel](./chisel/README.md)
+- [Anvil](./anvil/README.md)
+- [Chisel](./chisel/README.md)
 
 # Configuration
 
@@ -84,14 +82,14 @@
 # Tutorials
 
 - [Best Practices](./tutorials/best-practices.md)
-- [Creating an NFT with Solmate](./tutorials/solmate-nft.md)
-- [Docker and Foundry](./tutorials/foundry-docker.md)
-- [Testing EIP-712 Signatures](./tutorials/testing-eip712.md)
-- [Solidity Scripting](./tutorials/solidity-scripting.md)
-- [Deterministic deployment using CREATE2](./tutorials/create2-tutorial.md)
-- [Forking Mainnet with Cast and Anvil](./tutorials/forking-mainnet-with-cast-anvil.md)
-- [Learning Foundry Videos](./tutorials/learn-foundry.md)
-<!-- - [Incremental Adoption]() 
+<!-- - [Creating an NFT with Solmate](./tutorials/solmate-nft.md) -->
+<!-- - [Docker and Foundry](./tutorials/foundry-docker.md) -->
+<!-- - [Testing EIP-712 Signatures](./tutorials/testing-eip712.md) -->
+<!-- - [Solidity Scripting](./tutorials/solidity-scripting.md) -->
+<!-- - [Deterministic deployment using CREATE2](./tutorials/create2-tutorial.md) -->
+<!-- - [Forking Mainnet with Cast and Era Test Node](./tutorials/forking-mainnet-with-cast-anvil.md) -->
+<!-- - [Learning Foundry Videos](./tutorials/learn-foundry.md) -->
+<!-- - [Incremental Adoption]() !-->
 
 # Appendix
 
@@ -382,8 +380,8 @@
       - [cast wallet verify](./reference/cast/cast-wallet-verify.md)
       - [cast wallet import](./reference/cast/cast-wallet-import.md)
       - [cast wallet list](./reference/cast/cast-wallet-list.md)
-  - [`anvil` Reference](./reference/anvil/README.md)
-  - [`chisel` Reference](./reference/chisel/README.md)
+  <!-- - [`anvil` Reference](./reference/anvil/README.md) -->
+  <!-- - [`chisel` Reference](./reference/chisel/README.md) -->
   - [Config Reference](./reference/config/README.md)
     - [Overview](./reference/config/overview.md)
     - [Project](./reference/config/project.md)
@@ -493,6 +491,8 @@
     - [Snapshots](./cheatcodes/snapshots.md)
     - [RPC](./cheatcodes/rpc.md)
     - [Files](./cheatcodes/fs.md)
+    - [ZKsync](./zksync-specifics/cheatcodes/README.md)
+      - [zkVm](./zksync-specifics/cheatcodes/zkvm.md)
   - [Forge Standard Library Reference](./reference/forge-std/README.md)
     - [Std Logs](./reference/forge-std/std-logs.md)
     - [Std Assertions](./reference/forge-std/std-assertions.md)

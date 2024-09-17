@@ -1,5 +1,9 @@
 ## Gas Snapshots
 
+> 🚨 **Important**
+>
+> Gas snapshots may not be entirely accurate in the ZKsync context. This is mostly due to the > additional overhead to executing each `CREATE` or `CALL` in its own zkEVM which has additional bootloader gas costs.
+
 Forge can generate gas snapshots for all your test functions. This can
 be useful to get a general feel for how much gas your contract will consume,
 or to compare gas usage before and after various optimizations.

@@ -1,5 +1,9 @@
 ## Gas Tracking
 
+> 🚨 **Important**
+>
+> Gas tracking may not be entirely accurate in the ZKsync context. This is mostly due to the additional overhead to executing each `CREATE` or `CALL` in its own zkEVM which has additional bootloader gas costs.
+
 Forge can help you estimate how much gas your contract will consume.
 
 Currently, Forge ships with two different tools for this job, but they may be merged in the future:

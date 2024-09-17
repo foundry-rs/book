@@ -11,7 +11,7 @@ To deploy a contract, you must provide a RPC URL (env: `ETH_RPC_URL`) and the pr
 To deploy `MyContract` to a network:
 
 ```sh
-$ forge create --rpc-url <your_rpc_url> --private-key <your_private_key> src/MyContract.sol:MyContract
+$ forge create --zksync --rpc-url <your_rpc_url> --private-key <your_private_key> src/MyContract.sol:MyContract
 compiling...
 success.
 Deployer: 0xa735b3c25f...
@@ -44,7 +44,8 @@ contract MyToken is ERC20 {
 Additionally, we can tell Forge to verify our contract on Etherscan, Sourcify or Blockscout, if the network is supported, by passing `--verify`.
 
 ```sh
-$ forge create --rpc-url <your_rpc_url> \
+$ forge create --zksync \
+    --rpc-url <your_rpc_url> \
     --constructor-args "ForgeUSD" "FUSD" 18 1000000000000000000000 \
     --private-key <your_private_key> \
     --etherscan-api-key <your_etherscan_api_key> \
@@ -78,6 +79,7 @@ Here's how to verify it:
 
 ```bash
 forge verify-contract \
+    --zksync \
     --chain-id 11155111 \
     --num-of-optimizations 1000000 \
     --watch \
@@ -100,7 +102,7 @@ If the `--watch` flag was not supplied, you can check
 the verification status with the [`forge verify-check`](../reference/forge/forge-verify-check.md) command:
 
 ```bash
-$ forge verify-check --chain-id 11155111 <GUID> <your_etherscan_api_key>
+$ forge verify-check --zksync --chain-id 11155111 <GUID> <your_etherscan_api_key>
 Contract successfully verified.
 ```
 
