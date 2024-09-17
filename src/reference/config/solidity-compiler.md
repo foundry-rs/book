@@ -113,7 +113,7 @@ If both `offline` and `auto-detect-solc` are set to `true`, the required version
 - Environment: `FOUNDRY_IGNORED_WARNINGS_FROM` OR `DAPP_IGNORED_WARNINGS_FROM`
 
 An array of file paths from which warnings should be ignored during the compulation process. This is useful when you have a specific
-directories of files that produce known warning and you wish to suppress these warnings without affecting others.
+directories of files that produce known warnings and you wish to suppress these warnings without affecting others.
 
 Each entry in the array should be a path to a directory or a specific file. For Example:
 
