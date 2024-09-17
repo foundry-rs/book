@@ -129,7 +129,6 @@ Best Practices:
 - Only ignore warnings from versions that are absolutely necessary for your project's compatibility requirements.
 - Regularly review ignored warnings to ensure you're not overlooking important security or functionality improvements.
 - Document why certain warnings are being ignored in your project's README or documentation.
-  [Learn more about Solidity compatibility](https://docs.soliditylang.org/en/latest/how-to-use-solidity.html#compatibility)
 
 ##### `ignored_error_codes`
 
