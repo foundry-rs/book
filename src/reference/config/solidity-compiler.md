@@ -121,6 +121,15 @@ Each entry in the array should be a path to a directory or a specific file. For 
 
 This configuration will cause the compiler to ignore any warnings that originate from the specified paths.
 
+Purpose:
+This setting helps maintain compatibility across different Solidity versions while avoiding unnecessary warnings from older compilers.
+
+Best Practices:
+
+- Only ignore warnings from versions that are absolutely necessary for your project's compatibility requirements.
+- Regularly review ignored warnings to ensure you're not overlooking important security or functionality improvements.
+- Document why certain warnings are being ignored in your project's README or documentation.
+
 ##### `ignored_error_codes`
 
 - Type: array of integers/strings
