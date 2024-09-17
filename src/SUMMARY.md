@@ -69,6 +69,8 @@
 - [Anvil](./anvil/README.md)
 - [Chisel](./chisel/README.md)
 
+<!-- Hide Configuration for now
+
 # Configuration
 
 - [Configuring with `foundry.toml`](./config/README.md)
@@ -78,6 +80,9 @@
 - [Static Analyzers](./config/static-analyzers.md)
 - [Integrating with Hardhat](./config/hardhat.md)
 - [Vyper support](./config/vyper.md)
+
+
+<!-- Hide Tutorials for now
 
 # Tutorials
 
@@ -90,6 +95,9 @@
 <!-- - [Forking Mainnet with Cast and Era Test Node](./tutorials/forking-mainnet-with-cast-anvil.md) -->
 <!-- - [Learning Foundry Videos](./tutorials/learn-foundry.md) -->
 <!-- - [Incremental Adoption]() !-->
+
+
+<!-- Hide Appendix for now
 
 # Appendix
 
@@ -382,6 +390,9 @@
       - [cast wallet list](./reference/cast/cast-wallet-list.md)
   <!-- - [`anvil` Reference](./reference/anvil/README.md) -->
   <!-- - [`chisel` Reference](./reference/chisel/README.md) -->
+
+<!-- Hide References for now
+
   - [Config Reference](./reference/config/README.md)
     - [Overview](./reference/config/overview.md)
     - [Project](./reference/config/project.md)
