@@ -74,8 +74,6 @@ cargo install --path ./crates/forge --profile release --force --locked
 cargo install --path ./crates/cast --profile release --force --locked
 ```
 
-Here's an updated version of the section with the new action details:
-
 ### Installing for CI in Github Action
 
 The latest binaries for the appropriate architecture can be installed directly using the following GitHub Action:
