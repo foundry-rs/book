@@ -117,7 +117,11 @@ Compiler options:
           Activate the Solidity optimizer
 
       --optimizer-runs <RUNS>
-          The number of optimizer runs
+          The number of runs specifies roughly how often each opcode of the deployed code will be
+          executed across the life-time of the contract. This means it is a trade-off parameter
+          between code size (deploy cost) and code execution cost (cost after deployment). An
+          `optimizer_runs` parameter of `1` will produce short but expensive code. In contrast, a
+          larger `optimizer_runs` parameter will produce longer but more gas efficient code
 
       --extra-output <SELECTOR>...
           Extra output to include in the contract's artifact.

@@ -100,6 +100,13 @@ Transaction options:
           
           Can be either a hex-encoded signed authorization or an address.
 
+      --access-list [<ACCESS_LIST>]
+          EIP-2930 access list.
+          
+          Accepts either a JSON-encoded access list or an empty value to create the access list via
+          an RPC call to `eth_createAccessList`. To retrieve only the access list portion, use the
+          `cast access-list` command.
+
 Ethereum options:
   -r, --rpc-url <URL>
           The RPC endpoint

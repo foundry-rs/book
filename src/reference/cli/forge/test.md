@@ -14,8 +14,8 @@ Test options:
       --debug <TEST_FUNCTION>
           Run a test in the debugger.
           
-          The argument passed to this flag is the name of the test function you want to run, and it
-          works the same as --match-test.
+          The argument passed to this flag is the **regex** of the test function signature you want
+          to run, and it works the same as --match-test.
           
           If more than one test matches your specified criteria, you must add additional filters
           until only one test is found (see --match-contract and --match-path).
@@ -26,6 +26,18 @@ Test options:
           case. If the fuzz test does not fail, it will open the debugger on the last fuzz case.
           
           For more fine-grained control of which fuzz case is run, see forge run.
+
+      --flamegraph
+          Generate a flamegraph for a single test. Implies `--decode-internal`.
+          
+          A flame graph is used to visualize which functions or operations within the smart contract
+          are consuming the most gas overall in a sorted manner.
+
+      --flamechart
+          Generate a flamechart for a single test. Implies `--decode-internal`.
+          
+          A flame chart shows the gas usage over time, illustrating when each function is called
+          (execution order) and how much gas it consumes at each point in the timeline.
 
       --decode-internal [<TEST_FUNCTION>]
           Whether to identify internal functions in traces.
@@ -81,6 +93,9 @@ Test options:
 Display options:
       --json
           Output test results in JSON format
+
+      --junit
+          Output test results as JUnit XML report
 
   -l, --list
           List tests instead of running them
@@ -324,7 +339,11 @@ Compiler options:
           Activate the Solidity optimizer
 
       --optimizer-runs <RUNS>
-          The number of optimizer runs
+          The number of runs specifies roughly how often each opcode of the deployed code will be
+          executed across the life-time of the contract. This means it is a trade-off parameter
+          between code size (deploy cost) and code execution cost (cost after deployment). An
+          `optimizer_runs` parameter of `1` will produce short but expensive code. In contrast, a
+          larger `optimizer_runs` parameter will produce longer but more gas efficient code
 
       --extra-output <SELECTOR>...
           Extra output to include in the contract's artifact.

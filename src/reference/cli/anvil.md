@@ -98,6 +98,14 @@ Options:
           
           [default: 8545]
 
+      --preserve-historical-states
+          Preserve historical state snapshots when dumping the state.
+          
+          This will save the in-memory states of the chain at particular block hashes.
+          
+          These historical states will be loaded into the memory when `--load-state` / `--state`,
+          and aids in RPC calls beyond the block at which state was dumped.
+
       --prune-history [<PRUNE_HISTORY>]
           Don't keep full chain history. If a number argument is specified, at most this number of
           states is kept in memory.
