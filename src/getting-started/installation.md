@@ -49,7 +49,7 @@ foundryup --path path/to/foundry
 Alternatively, you can install via Cargo with the following command:
 
 ```sh
-cargo install --git https://github.com/foundry-rs/foundry --profile release --locked forge cast chisel anvil
+cargo install --git https://github.com/foundry-rs/foundry --profile release --locked forge foundry-cast chisel anvil
 ```
 
 You can also manually build from a local copy of the [Foundry repository](https://github.com/foundry-rs/foundry):
