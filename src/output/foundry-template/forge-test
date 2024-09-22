@@ -9,8 +9,8 @@ Ran 3 tests for test/Foo.t.sol:FooTest
 [PASS] testFork_Example() (gas: 3779)
 [PASS] testFuzz_Example(uint256) (runs: 1000, μ: 9111, ~: 9111)
 [PASS] test_Example() (gas: 11861)
-Suite result: ok. 3 passed; 0 failed; 0 skipped; finished in 23.36ms (22.98ms CPU time)
+Suite result: ok. 3 passed; 0 failed; 0 skipped; finished in 19.30ms (19.24ms CPU time)
 
-Ran 1 test suite in 24.49ms (23.36ms CPU time): 3 tests passed, 0 failed, 0 skipped (3 total tests)
+Ran 1 test suite in 20.23ms (19.30ms CPU time): 3 tests passed, 0 failed, 0 skipped (3 total tests)
 // ANCHOR_END: output
 // ANCHOR_END: all
