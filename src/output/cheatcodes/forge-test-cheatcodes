@@ -8,8 +8,8 @@ No files changed, compilation skipped
 Ran 2 tests for test/OwnerUpOnly.t.sol:OwnerUpOnlyTest
 [PASS] testFail_IncrementAsNotOwner() (gas: 8314)
 [PASS] test_IncrementAsOwner() (gas: 29161)
-Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 562.63µs (204.18µs CPU time)
+Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 556.16µs (261.83µs CPU time)
 
-Ran 1 test suite in 5.33ms (562.63µs CPU time): 2 tests passed, 0 failed, 0 skipped (2 total tests)
+Ran 1 test suite in 5.05ms (556.16µs CPU time): 2 tests passed, 0 failed, 0 skipped (2 total tests)
 // ANCHOR_END: output
 // ANCHOR_END: all

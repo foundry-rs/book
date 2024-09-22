@@ -3,7 +3,7 @@
 $ forge install transmissions11/solmate
 // ANCHOR_END: command
 // ANCHOR: output
-Installing solmate in /tmp/tmp.EeHRsNb8sO/deps/lib/solmate (url: Some("https://github.com/transmissions11/solmate"), tag: None)
+Installing solmate in /tmp/tmp.dH3QKReB7L/deps/lib/solmate (url: Some("https://github.com/transmissions11/solmate"), tag: None)
     Installed solmate
 // ANCHOR_END: output
 // ANCHOR_END: all
