@@ -1,4 +1,4 @@
-##  Foundry-ZKSync supported commands
+##  Foundry-ZKSync Supported Commands
 
 This is a comprehensive review of all the Foundry commands actually supported in the actual stage of development.
 

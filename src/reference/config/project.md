@@ -72,3 +72,104 @@ The path to the broadcast transaction logs, relative to the root of the project.
 - Environment: `FOUNDRY_FORCE` or `DAPP_FORCE`
 
 Whether or not to perform a clean build, discarding the cache.
+
+
+### ZKsync Settings
+
+Additional zksync settings can be defined on the profile of choice by specifying `profile.<name>.zksync` section.
+
+For example to define the settings on `profile.default`:
+
+```toml
+[profile.default]
+# ...Normal foundry settings...
+
+[profile.default.zksync]
+# ...ZKSync specific settings...
+```
+
+##### `compile`
+
+- Type: boolean
+- Default: false
+
+Compile contracts for zkEVM.
+
+##### `startup`
+
+- Type: boolean
+- Default: true (will only have effect if `compile = true`)
+
+Requires `compile = true` to have an effect.   
+Enable ZKsync context on startup. This applies to tests, scripts, and any other commands that need to switch immediately to zkEVM on startup.
+
+##### `zksolc`
+
+- Type: string
+- Default: <latest-version>
+
+The zksolc version to use for compilation.
+
+##### `solc_path`
+
+- Type: string
+- Default: <default-zksolc-solc>
+
+The `solc` path to use during `zksolc` compilation.
+
+##### `bytecode_hash`
+
+- Type: boolean
+- Default: "none" 
+
+Whether to include the metadata hash for zksolc compiled bytecode.
+
+##### `fallback_oz`
+
+- Type: boolean
+- Default: false 
+
+Allow compiler to recompile using `optimizer_mode = 'z'` if contracts won't fit in the EraVM bytecode size limitations.
+
+##### `enable_eravm_extensions`
+
+- Type: boolean
+- Default: false
+
+Enable EraVM extensions (e.g. system-mode). This allows compilation of ZKsync-specific simulations.
+
+##### `force_evmla`
+
+- Type: boolean
+- Default: false 
+
+Force compilation via EVMLA instead of Yul codegen pipeline.
+
+##### `avoid_contracts`
+
+- Type: array of strings
+- Default: []
+
+List of glob patterns to avoid compiling with zksolc.
+
+##### `optimizer`
+
+- Type: boolean
+- Default: true 
+
+Enable optimizer on zksolc.
+
+##### `optimizer_mode`
+
+- Type: string
+- Default: '3'
+
+The zksolc optimizer mode (0 | 1 | 2 | 3 | s | z).
+
+##### `optimizer_details`
+
+- Type: object
+- Default: {}
+
+Allows specifying additional zksolc [Optimizer Details](https://github.com/matter-labs/era-compiler-solidity/blob/main/era-compiler-solidity/src/solc/standard_json/input/settings/optimizer/details.rs#L10).
+
