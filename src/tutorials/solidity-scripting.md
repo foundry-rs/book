@@ -226,6 +226,12 @@ NFT nft = new NFT("NFT_tutorial", "TUT", "baseUri");
 
 Here we have just created our NFT contract. Because we called `vm.startBroadcast()` before this line, the contract creation will be recorded by Forge, and as mentioned previously, we can broadcast the transaction to deploy the contract on-chain. The broadcast transaction logs will be stored in the `broadcast` directory by default. You can change the logs location by setting [`broadcast`](../reference/config/project.md#broadcast) in your `foundry.toml` file.
 
+The broadcasting sender is determined by checking the following in order:
+
+1. If `--sender` argument was provided, that address is used.
+2. If exactly one signer (e.g. private key, hardware wallet, keystore) is set, that signer is used.
+3. Otherwise, the default Foundry sender (`0x1804c8AB1F12E6bbf3894d4083f33e07309d1f38`) is attempted to be used.
+
 Now that you’re up to speed about what the script smart contract does, let’s run it.
 
 You should have added the variables we mentioned earlier to the `.env` for this next part to work.
