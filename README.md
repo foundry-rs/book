@@ -5,4 +5,3 @@
 # 📖 Foundry ZKsync Book
 
 A book on all things foundry ZKsync. [Read now](https://foundry-book.zksync.io/).
-
