@@ -1,6 +1,6 @@
 ## Installation
 
-If you face any issues while installing, check out the [FAQ](../faq.md).
+<!-- If you face any issues while installing, check out the [FAQ](../faq.md). -->
 
 ### Precompiled binaries
 

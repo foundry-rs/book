@@ -1,3 +1,8 @@
-## 📖 Foundry-zkSync Book
+<img src="src/images/foundry-banner.png" style="border-radius: 20px">
 
-A book on all things foundry-zksync. [Read now](https://96ba0f25.book-3fk.pages.dev/).
+<br>
+
+# 📖 Foundry ZKsync Book
+
+A book on all things foundry ZKsync. [Read now](https://foundry-book.zksync.io/).
+
