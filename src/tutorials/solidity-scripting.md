@@ -230,7 +230,7 @@ The broadcasting sender is determined by checking the following in order:
 
 1. If `--sender` argument was provided, that address is used.
 2. If exactly one signer (e.g. private key, hardware wallet, keystore) is set, that signer is used.
-3. Otherwise, default foundry sender (1804c8AB1F12E6bbf3894d4083f33e07309d1f38) is used.
+3. Otherwise, the default Foundry sender (`0x1804c8AB1F12E6bbf3894d4083f33e07309d1f38`) is attempted to be used.
 
 Now that you’re up to speed about what the script smart contract does, let’s run it.
 
