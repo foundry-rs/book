@@ -386,6 +386,13 @@ The flag indicating whether to include push bytes values.
 
 The flag indicates whether to display console logs in fuzz tests or not. Note that in order to enable displaying console logs, you'll need to set `show_logs = true` and then use `forge test -vv` or set `verbosity >= 2`.
 
+##### `no_zksync_reserved_addresses`
+
+- Type: boolean
+- Default: false
+
+Avoid generating [reserved](../../zksync-specifics/limitations/general.md#reserved-address-range) ZKsync addresses within the fuzzer. This avoids having to use `vm.assume(addr > 65535)` during fuzzing that can ignore too many inputs causing `max_test_rejects` to trigger.
+
 
 ### Invariant
 
@@ -473,3 +480,11 @@ The flag indicating whether to include push bytes values. See also [fuzz.include
 - Environment: `FOUNDRY_INVARIANT_SHRINK_RUN_LIMIT`
 
 The maximum number of attempts to shrink a failed the sequence. Shrink process is disabled if set to 0.
+
+
+##### `no_zksync_reserved_addresses`
+
+- Type: boolean
+- Default: false
+
+Avoid generating [reserved](../../zksync-specifics/limitations/general.md#reserved-address-range) ZKsync addresses within the invariant test. This avoids having to use `vm.assume(addr > 65535)` during invariant testing that can ignore too many inputs causing `max_test_rejects` to trigger.
