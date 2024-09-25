@@ -26,6 +26,9 @@ interface CheatCodesExt {
     /// All `CREATE`s executed within this skip, will automatically have `CALL`s to their target addresses
     /// executed in the EVM, and need not be marked with this cheatcode at every usage location.
     function zkVmSkip() external pure;
+
+    /// Enables the use of a paymaster for the next transaction.
+    function zkUsePaymaster(address paymaster, bytes calldata paymaster_input) external pure;
 }
 ```
 
