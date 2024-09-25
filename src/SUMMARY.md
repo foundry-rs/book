@@ -21,6 +21,7 @@
 - [Overview](./zksync-specifics/README.md)
 - [Execution Overview](./zksync-specifics/execution-overview.md)
 - [Compilation Overview](./zksync-specifics/compilation-overview.md)
+- [Configuration Overview](./zksync-specifics/configuration-overview.md)
 - [Limitations](./zksync-specifics/limitations/README.md)
   - [General](./zksync-specifics/limitations/general.md)
   - [Compilation](./zksync-specifics/limitations/compilation.md)
@@ -28,10 +29,13 @@
   - [Events](./zksync-specifics/limitations/events.md)
   - [Traces](./zksync-specifics/limitations/traces.md)
   - [Cheatcodes](./zksync-specifics/limitations/cheatcodes.md)
+- [Forge-ZKSync Standard Library](./zksync-specifics/forge-zksync-std.md)
 - [Additional Cheatcodes](./zksync-specifics/cheatcodes/README.md)
-  - [zkVm](./zksync-specifics/cheatcodes/zkvm.md)
+  - [zkRegisterContract](./zksync-specifics/cheatcodes/zk-register-contract.md)
+  - [zkVm](./zksync-specifics/cheatcodes/zk-vm.md)
+  - [zkVmSkip](./zksync-specifics/cheatcodes/zk-vm-skip.md)
 
-# Supported Commands Overview
+# Supported Commands
 - [Command List](./supported-commands/README.md)
 
 # Forge Overview
@@ -40,7 +44,8 @@
 - [Tests](./forge/tests.md)
   - [Writing Tests](./forge/writing-tests.md)
   - [Cheatcodes](./forge/cheatcodes.md)
-  - [Forge Standard Library Overview](./forge/forge-std.md)
+  - [Forge Standard Library](./forge/forge-std.md)
+  - [Forge ZKsync Standard Library](./forge/forge-zksync-std.md)
   - [Understanding Traces](./forge/traces.md)
   - [Fork Testing](./forge/fork-testing.md)
   - [Replaying Failures](./forge/replay-testing.md)
@@ -58,7 +63,7 @@
 - [Gas Tracking](./forge/gas-tracking.md)
   - [Gas Reports](./forge/gas-reports.md)
   - [Gas Snapshots](./forge/gas-snapshots.md)
-- [Debugger](./forge/debugger.md)
+<!-- - [Debugger](./forge/debugger.md) -->
 
 # Cast Overview
 
@@ -69,17 +74,15 @@
 - [Anvil](./anvil/README.md)
 - [Chisel](./chisel/README.md)
 
-<!-- Hide Configuration for now
-
 # Configuration
 
 - [Configuring with `foundry.toml`](./config/README.md)
-- [Continuous Integration](./config/continuous-integration.md)
-- [Integrating with VSCode](./config/vscode.md)
-- [Shell Autocompletion](./config/shell-autocompletion.md)
-- [Static Analyzers](./config/static-analyzers.md)
-- [Integrating with Hardhat](./config/hardhat.md)
-- [Vyper support](./config/vyper.md)
+<!-- - [Continuous Integration](./config/continuous-integration.md) -->
+<!-- - [Integrating with VSCode](./config/vscode.md) -->
+<!-- - [Shell Autocompletion](./config/shell-autocompletion.md) -->
+<!-- - [Static Analyzers](./config/static-analyzers.md) -->
+<!-- - [Integrating with Hardhat](./config/hardhat.md) -->
+<!-- - [Vyper support](./config/vyper.md) -->
 
 -->
 
@@ -96,14 +99,12 @@
 <!-- - [Incremental Adoption]() !-->
 
 
-<!-- Hide Appendix for now
-
 # Appendix
 
-- [FAQ](./faq.md)
-- [Help us improve Foundry](./contributing.md)
+<!-- - [FAQ](./faq.md) -->
+<!-- - [Help us improve Foundry](./contributing.md) -->
 - [References](./reference/README.md)
-  - [CLI Reference](./reference/cli/README.md) <!-- CLI_REFERENCE START 
+  <!-- - [CLI Reference](./reference/cli/README.md)
     - [`forge`](./reference/cli/forge.md)
       - [`forge bind`](./reference/cli/forge/bind.md)
       - [`forge bind-json`](./reference/cli/forge/bind-json.md)
@@ -386,22 +387,20 @@
       - [cast wallet vanity](./reference/cast/cast-wallet-vanity.md)
       - [cast wallet verify](./reference/cast/cast-wallet-verify.md)
       - [cast wallet import](./reference/cast/cast-wallet-import.md)
-      - [cast wallet list](./reference/cast/cast-wallet-list.md)
+      - [cast wallet list](./reference/cast/cast-wallet-list.md) -->
   <!-- - [`anvil` Reference](./reference/anvil/README.md) -->
   <!-- - [`chisel` Reference](./reference/chisel/README.md) -->
-
-<!-- Hide References for now
-
   - [Config Reference](./reference/config/README.md)
     - [Overview](./reference/config/overview.md)
     - [Project](./reference/config/project.md)
     - [Solidity Compiler](./reference/config/solidity-compiler.md)
     - [Testing](./reference/config/testing.md)
-    - [In-line Configuration Testing](./reference/config/inline-test-config.md)
-    - [Formatter](./reference/config/formatter.md)
-    - [Documentation Generator](./reference/config/doc-generator.md)
-    - [Etherscan](./reference/config/etherscan.md)
-  - [Cheatcodes Reference](./cheatcodes/README.md)
+    <!-- - [In-line Configuration Testing](./reference/config/inline-test-config.md) -->
+    <!-- - [Formatter](./reference/config/formatter.md) -->
+    <!-- - [Documentation Generator](./reference/config/doc-generator.md) -->
+    <!-- - [Etherscan](./reference/config/etherscan.md) -->
+  <!-- [Cheatcodes Reference](./cheatcodes/README.md) -->
+    <!--
     - [Environment](./cheatcodes/environment.md)
       - [`warp`](./cheatcodes/warp.md)
       - [`roll`](./cheatcodes/roll.md)
@@ -502,9 +501,10 @@
     - [RPC](./cheatcodes/rpc.md)
     - [Files](./cheatcodes/fs.md)
     - [ZKsync](./zksync-specifics/cheatcodes/README.md)
-      - [zkVm](./zksync-specifics/cheatcodes/zkvm.md)
-  - [Forge Standard Library Reference](./reference/forge-std/README.md)
-    - [Std Logs](./reference/forge-std/std-logs.md)
+      - [zkVm](./zksync-specifics/cheatcodes/zk-vm.md)
+    -->
+  <!-- - [Forge Standard Library Reference](./reference/forge-std/README.md) -->
+    <!-- - [Std Logs](./reference/forge-std/std-logs.md)
     - [Std Assertions](./reference/forge-std/std-assertions.md)
       - [`fail`](./reference/forge-std/fail.md)
       - [`assertTrue`](./reference/forge-std/assertTrue.md)
@@ -565,7 +565,7 @@
     - [Script Utils](./reference/forge-std/script-utils.md)
       - [`computeCreateAddress`](./reference/forge-std/compute-create-address.md)
       - [`deriveRememberKey`](./reference/forge-std/derive-remember-key.md)
-    - [Console Logging](./reference/forge-std/console-log.md)
-  - [DSTest Reference](./reference/ds-test.md)
-- [Miscellaneous](./misc/README.md)
-  - [Struct encoding](./misc/struct-encoding.md)
+    - [Console Logging](./reference/forge-std/console-log.md) -->
+  <!-- - [DSTest Reference](./reference/ds-test.md)  --> -->
+<!-- - [Miscellaneous](./misc/README.md) -->
+  <!-- - [Struct encoding](./misc/struct-encoding.md) -->
