@@ -14,9 +14,7 @@ Foundryup-zksync is the Foundry-ZKsync toolchain installer. You can find more ab
 Open your terminal and run the following command from the repository:
 
 ```sh
-git clone https://github.com/matter-labs/foundry-zksync.git
-cd foundry-zksync/foundryup-zksync
-./install.sh
+curl -L https://raw.githubusercontent.com/matter-labs/foundry-zksync/main/install-foundry-zksync | bash
 ```
 
 This will install Foundryup-zksync, then simply follow the instructions on-screen,
