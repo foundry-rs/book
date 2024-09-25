@@ -84,7 +84,6 @@
 <!-- - [Integrating with Hardhat](./config/hardhat.md) -->
 <!-- - [Vyper support](./config/vyper.md) -->
 
- -->
 
 # Tutorials
 
