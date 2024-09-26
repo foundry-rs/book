@@ -3,7 +3,7 @@
 ### Signature
 
 ```solidity
-function zkUsePaymaster(address paymaster, bytes calldata paymaster_input) external pure;
+function zkUsePaymaster(address paymaster, bytes calldata input) external pure;
 ```
 
 ### Description
@@ -15,8 +15,11 @@ This cheatcode enables the use of a paymaster for the next transaction in the co
 ```solidity
 MyPaymaster paymaster = new MyPaymaster();
 // Encode paymaster input
-bytes memory paymaster_encoded_input = abi.encodeWithSelector(bytes4(keccak256("general(bytes)")), bytes("0x"));
-        vm.zkUsePaymaster(address(paymaster), paymaster_encoded_input);
+bytes memory paymaster_encoded_input = abi.encodeWithSelector(
+    bytes4(keccak256("general(bytes)")),
+    bytes("0x")
+);
+vm.zkUsePaymaster(address(paymaster), paymaster_encoded_input);
 ```
 
 The paymaster flow depends on the type of paymaster used. Here's an example of the simplest usage of a 'general' paymaster in Foundry:
@@ -77,7 +80,12 @@ forge create ./src/MyPaymaster.sol:MyPaymaster --rpc-url {RPC_URL} --private-key
 3. Use the cheatcode to set the paymaster for the next transaction:
 
 ```solidity
-vm.zkUsePaymaster(address(paymaster), abi.encodeWithSelector(bytes4(keccak256("general(bytes)")), bytes("0x")));
+vm.zkUsePaymaster(address(paymaster), abi.encodeWithSelector(
+    bytes4(keccak256("general(bytes)")),
+    bytes("0x")
+));
 ```
 
 For more examples, see the [Foundry ZkSync Paymaster Tests](TBD).
+
+Also, see the [ZKsync Paymaster Documentation](https://docs.zksync.io/build/developer-reference/account-abstraction/paymasters) for more information.
