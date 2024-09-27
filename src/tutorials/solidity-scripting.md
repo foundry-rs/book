@@ -4,16 +4,15 @@
 
 Solidity scripting is a way to declaratively deploy contracts using Solidity, instead of using the more limiting and less user friendly [`forge create`](../reference/forge/forge-create.md).
 
-Solidity scripts are like the scripts you write when working with tools like Hardhat; what makes Solidity scripting different is that they are written in Solidity instead of JavaScript, and they are run on the fast Foundry EVM backend, which provides dry-run capabilities.
+Solidity scripts are like the scripts you write when working with tools like Hardhat; what makes Solidity scripting different is that they are written in Solidity instead of JavaScript, and they are run on the fast Foundry backend, which provides dry-run capabilities.
 
 ### High Level Overview
 
 `forge script` does not work in a sync manner. First, it collects all transactions from the script, and only then does it broadcast them all. It can essentially be split into 4 phases:
 
-1. Local Simulation - The contract script is run in a local evm. If a rpc/fork url has been provided, it will execute the script in that context. Any **external call** (not static, not internal) from a `vm.broadcast` and/or `vm.startBroadcast` will be appended to a list. 
+1. Local Simulation - The contract script is run in a local evm. If a rpc/fork url has been provided, it will execute the script in that context. Any **external call** (not static, not internal) from a `vm.broadcast` and/or `vm.startBroadcast` will be appended to a list.
 2. Onchain Simulation - Optional. If a rpc/fork url has been provided, then it will sequentially execute all the collected transactions from the previous phase here.
 3. Broadcasting - Optional. If the `--broadcast` flag is provided and the previous phases have succeeded, it will broadcast the transactions collected at step `1`. and simulated at step `2`.
-4. Verification - Optional. If the `--verify` flag is provided, there's an API key, and the previous phases have succeeded it will attempt to verify the contract. (eg. etherscan).
 
 Given this flow, it's important to be aware that transactions whose behaviour can be influenced by external state/actors might have a different result than what was simulated on step `2`. Eg. frontrunning.
 
@@ -38,10 +37,8 @@ forge install transmissions11/solmate Openzeppelin/openzeppelin-contracts@v5.0.1
 Next, we have to delete the `Counter.sol` file in the `src` folder and create another file called `NFT.sol`. You can do this by running:
 
 ```sh
-rm src/Counter.sol test/Counter.t.sol && touch src/NFT.sol && ls src
+rm src/Counter.sol script/Counter.s.sol test/Counter.t.sol && touch src/NFT.sol && ls src
 ```
-
-![set up commands](../images/solidity-scripting/set-up-commands.png)
 
 Once that’s done, you should open up your preferred code editor and copy the code below into the `NFT.sol` file.
 
@@ -115,7 +112,7 @@ contract NFT is ERC721, Ownable {
 Now, let’s try compiling our contract to make sure everything is in order.
 
 ```sh
-forge build
+forge build --zksync
 ```
 
 If your output looks like this, the contracts successfully compiled.
@@ -123,9 +120,9 @@ If your output looks like this, the contracts successfully compiled.
 
 ### Deploying our contract
 
-We’re going to deploy the `NFT` contract to the Sepolia testnet, but to do this we’ll need to configure Foundry a bit, by setting things like a Sepolia RPC URL, the private key of an account that’s funded with Sepolia Eth, and an Etherscan key for the verification of the NFT contract.
+We’re going to deploy the `NFT` contract to the ZKsync Sepolia testnet, but to do this we’ll need to configure Foundry ZKsync a bit, by setting things like a ZKsync Sepolia RPC URL, and the private key of an account that’s funded with ZKsync Sepolia Eth.
 
-> 💡 Note: You can get some Sepolia testnet ETH [here](https://sepoliafaucet.com/) .
+> 💡 Note: You can get some ZKsync Sepolia testnet ETH [here](https://thirdweb.com/zksync-sepolia-testnet) .
 
 #### Environment Configuration
 
@@ -134,9 +131,8 @@ Once you have all that create a `.env` file and add the variables. Foundry autom
 The .env file should follow this format:
 
 ```sh
-SEPOLIA_RPC_URL=
+ZKSYNC_SEPOLIA_RPC_URL=
 PRIVATE_KEY=
-ETHERSCAN_API_KEY=
 ```
 
 We now need to edit the `foundry.toml` file. There should already be one in the root of the project.
@@ -145,13 +141,10 @@ Add the following lines to the end of the file:
 
 ```toml
 [rpc_endpoints]
-sepolia = "${SEPOLIA_RPC_URL}"
-
-[etherscan]
-sepolia = { key = "${ETHERSCAN_API_KEY}" }
+zksync-sepolia = "${ZKSYNC_SEPOLIA_RPC_URL}"
 ```
 
-This creates a [RPC alias](../cheatcodes/rpc.md) for Sepolia and loads the Etherscan API key.
+This creates a [RPC alias](../cheatcodes/rpc.md) for ZKsync Sepolia.
 
 #### Writing the Script
 
@@ -236,60 +229,12 @@ At the root of the project run:
 # To load the variables in the .env file
 source .env
 
-# To deploy and verify our contract
-forge script --chain sepolia script/NFT.s.sol:MyScript --rpc-url $SEPOLIA_RPC_URL --broadcast --verify -vvvv
+# To deploy our contract
+forge script --chain zksync-testnet script/NFT.s.sol:MyScript --rpc-url $ZKSYNC_SEPOLIA_RPC_URL --broadcast --zksync -vvvv
 ```
 
-Forge is going to run our script and broadcast the transactions for us - this can take a little while, since Forge will also wait for the transaction receipts. You should see something like this after a minute or so:
+Forge is going to run our script and broadcast the transactions for us - this can take a little while, since Forge will also wait for the transaction receipts.
 
-![contract verified](../images/solidity-scripting/contract-verified.png)
+This confirms that you have successfully deployed the `NFT` contract to the ZKsync Sepolia testnet.
 
-This confirms that you have successfully deployed the `NFT` contract to the Sepolia testnet and have also verified it on Etherscan, all with one command.
-
-### Deploying locally
-
-You can deploy to Anvil, the local testnet, by configuring the port as the `fork-url`.
-
-Here, we have two options in terms of accounts. We can either start anvil without any flags and use one of the private keys provided. Or, we can pass a mnemonic to anvil to use.
-
-#### Using Anvil's Default Accounts
-
-First, start Anvil:
-
-```sh
-anvil
-```
-
-Update your `.env` file with a private key given to you by Anvil.
-
-Then run the following script:
-
-```sh
-forge script script/NFT.s.sol:MyScript --fork-url http://localhost:8545 --broadcast
-```
-
-#### Using a Custom Mnemonic
-
-Add the following line to your `.env` file and complete it with your mnemonic:
-
-```sh
-MNEMONIC=
-```
-
-It is expected that the `PRIVATE_KEY` environment variable we set earlier is one of the first 10 accounts in this mnemonic.
-
-Start Anvil with the custom mnemonic:
-
-```sh
-source .env
-
-anvil -m $MNEMONIC
-```
-
-Then run the following script:
-
-```sh
-forge script script/NFT.s.sol:MyScript --fork-url http://localhost:8545 --broadcast
-```
-
-> 💡 Note: A full implementation of this tutorial can be found [here](https://github.com/Perelyn-sama/solidity-scripting) and for further reading about solidity scripting, you can check out the `forge script` [reference](../reference/forge/forge-script.md).
+> 💡 Note: A full implementation of this tutorial can be found [here](https://github.com/dutterbutter/foundry-zksync-solidity-scripting) and for further reading about solidity scripting, you can check out the `forge script` [reference](../reference/forge/forge-script.md).

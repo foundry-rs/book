@@ -1,6 +1,6 @@
 ## Installation
 
-If you face any issues while installing, check out the [FAQ](../faq.md).
+<!-- If you face any issues while installing, check out the [FAQ](../faq.md). -->
 
 ### Precompiled binaries
 
@@ -14,9 +14,7 @@ Foundryup-zksync is the Foundry-ZKsync toolchain installer. You can find more ab
 Open your terminal and run the following command from the repository:
 
 ```sh
-git clone https://github.com/matter-labs/foundry-zksync.git
-cd foundry-zksync/foundryup-zksync
-./install.sh
+curl -L https://raw.githubusercontent.com/matter-labs/foundry-zksync/main/install-foundry-zksync | bash
 ```
 
 This will install Foundryup-zksync, then simply follow the instructions on-screen,
@@ -76,15 +74,15 @@ cargo install --path ./crates/cast --profile release --force --locked
 
 ### Installing for CI in Github Action
 
-The latest binaries for the appropriate architecture can be downloaded from the [release](https://github.com/matter-labs/foundry-zksync/releases/tag/nightly) page:
+The latest binaries for the appropriate architecture can be installed directly using the following GitHub Action:
 
 ```yaml
 steps:
-  - name: download binaries
-    run: |
-      wget -qc https://github.com/matter-labs/foundry-zksync/releases/download/nightly/foundry_nightly_linux_amd64.tar.gz -O - | tar -xz
-      ./forge -V && ./cast -V
+    - name: Install Foundry-ZKsync
+      uses: dutterbutter/foundry-zksync-toolchain@v1
 ```
+
+For further details, visit the [foundry-zksync-toolchain repository](https://github.com/dutterbutter/foundry-zksync-toolchain).
 
 ### Using Foundry with Docker
 
