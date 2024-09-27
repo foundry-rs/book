@@ -91,8 +91,8 @@
 <!-- - [Creating an NFT with Solmate](./tutorials/solmate-nft.md) -->
 <!-- - [Docker and Foundry](./tutorials/foundry-docker.md) -->
 <!-- - [Testing EIP-712 Signatures](./tutorials/testing-eip712.md) -->
+- [Deterministic deployment using CREATE2](./tutorials/create2-tutorial.md)
 - [Solidity Scripting](./tutorials/solidity-scripting.md)
-<!-- - [Deterministic deployment using CREATE2](./tutorials/create2-tutorial.md) -->
 <!-- - [Forking Mainnet with Cast and Era Test Node](./tutorials/forking-mainnet-with-cast-anvil.md) -->
 <!-- - [Learning Foundry Videos](./tutorials/learn-foundry.md) -->
 <!-- - [Incremental Adoption]() !-->
