@@ -1,6 +1,6 @@
 ## Creating an NFT with Solmate
 
-This tutorial will walk you through creating an OpenSea compatible NFT with Foundry and [Solmate](https://github.com/transmissions11/solmate/blob/main/src/tokens/ERC721.sol). A full implementation of this tutorial can be found [here](https://github.com/FredCoen/nft-tutorial).
+This tutorial will walk you through creating an OpenSea compatible NFT with Foundry ZKsync and [Solmate](https://github.com/transmissions11/solmate/blob/main/src/tokens/ERC721.sol). A full implementation of this tutorial can be found [here](https://github.com/dutterbutter/foundry-zksync-nft-tutorial).
 
 ##### This tutorial is for illustrative purposes only and provided on an as-is basis. The tutorial is not audited nor fully tested. No code in this tutorial should be used in a production environment.
 
@@ -14,17 +14,13 @@ forge install transmissions11/solmate Openzeppelin/openzeppelin-contracts
 
 These dependencies will be added as git submodules to your project.
 
-If you have followed the instructions correctly your project should be structured like this:
-
-![Project structure](../images/nft-tutorial/nft-tutorial-project-structure.png)
-
 ### Implement a basic NFT
 
-We are then going to rename the boilerplate contract in `src/Contract.sol` to `src/NFT.sol` and replace the code:
+Next, we will remove the boilerplate contracts found in `src/Counter.sol`, `test/Counter.t.sol`, and `script/Counter.s.sol`. After that, create a new file in the `src/` directory named `NFT.sol` and replace its content with the following code:
 
 ```solidity
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity 0.8.10;
+pragma solidity ^0.8.10;
 
 import "solmate/tokens/ERC721.sol";
 import "openzeppelin-contracts/contracts/utils/Strings.sol";
@@ -53,7 +49,7 @@ Let's take a look at this very basic implementation of an NFT. We start by impor
 
 ### Compile & deploy with forge
 
-To compile the NFT contract run `forge build`. You might experience a build failure due to wrong mapping:
+To compile the NFT contract run `forge build --zksync`. You might experience a build failure due to wrong mapping:
 
 ```text
 Error:
@@ -73,7 +69,7 @@ openzeppelin-contracts/=lib/openzeppelin-contracts/
 
 (You can find out more on remappings in [the dependencies documentation](../projects/dependencies.md).
 
-By default the compiler output will be in the `out` directory. To deploy our compiled contract with Forge we have to set environment variables for the RPC endpoint and the private key we want to use to deploy.
+By default the compiler output will be in the `zkout` directory. To deploy our compiled contract with Forge we have to set environment variables for the RPC endpoint and the private key we want to use to deploy.
 
 Set your environment variables by running:
 
@@ -85,7 +81,7 @@ export PRIVATE_KEY=<Your wallets private key>
 Once set, you can deploy your NFT with Forge by running the below command while adding the relevant constructor arguments to the NFT contract:
 
 ```bash
-forge create NFT --rpc-url=$RPC_URL --private-key=$PRIVATE_KEY --constructor-args <name> <symbol>
+forge create NFT --rpc-url=$RPC_URL --private-key=$PRIVATE_KEY --constructor-args <name> <symbol> --zksync
 ```
 
 If successfully deployed, you will see the deploying wallet's address, the contract's address as well as the transaction hash printed to your terminal.
@@ -103,6 +99,8 @@ cast send --rpc-url=$RPC_URL <contractAddress>  "mintTo(address)" <arg> --privat
 
 Well done! You just minted your first NFT from your contract. You can sanity check the owner of the NFT with `currentTokenId` equal to **1** by running the below `cast call` command. The address you provided above should be returned as the owner.
 
+<!-- TODO: check response from existing foundry -->
+
 ```bash
 cast call --rpc-url=$RPC_URL --private-key=$PRIVATE_KEY <contractAddress> "ownerOf(uint256)" 1
 ```
@@ -113,7 +111,7 @@ Let's extend our NFT by adding metadata to represent the content of our NFTs, as
 
 ```solidity
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity >=0.8.10;
+pragma solidity ^0.8.10;
 
 import "solmate/tokens/ERC721.sol";
 import "openzeppelin-contracts/contracts/utils/Strings.sol";
@@ -174,7 +172,8 @@ contract NFT is ERC721, Ownable {
             revert WithdrawTransfer();
         }
         
-        payable(payee).transfer(address(this).balance);
+        (bool success, ) = payable(payee).call{value: address(this).balance}("");
+        require(success, "Transfer failed");
     }
 
     function _checkOwner() internal view override {
@@ -189,11 +188,11 @@ Among other things, we have added metadata that can be queried from any front-en
 
 Let's test some of this added functionality to make sure it works as intended. Foundry offers an extremely fast EVM native testing framework through Forge.
 
-Within your test folder rename the current `Contract.t.sol` test file to `NFT.t.sol`. This file will contain all tests regarding the NFT's `mintTo` method. Next, replace the existing boilerplate code with the below:
+Within your test folder create the test file `NFT.t.sol`. This file will contain all tests regarding the NFT's `mintTo` method. Next, replace the existing boilerplate code with the below:
 
 ```solidity
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity 0.8.10;
+pragma solidity ^0.8.10;
 
 import "forge-std/Test.sol";
 import "../src/NFT.sol";
@@ -210,11 +209,13 @@ contract NFTTest is Test {
 
     function test_RevertMintWithoutValue() public {
         vm.expectRevert(MintPriceNotPaid.selector);
-        nft.mintTo(address(1));
+        // Make use of an address outside of the reserved address range
+        nft.mintTo(address(65536));
     }
 
     function test_MintPricePaid() public {
-        nft.mintTo{value: 0.08 ether}(address(1));
+        // Make use of an address outside of the reserved address range
+        nft.mintTo{value: 0.08 ether}(address(68536));
     }
 
     function test_RevertMintMaxSupplyReached() public {
@@ -226,7 +227,8 @@ contract NFTTest is Test {
         bytes32 mockedCurrentTokenId = bytes32(abi.encode(10000));
         vm.store(address(nft), loc, mockedCurrentTokenId);
         vm.expectRevert(MaxSupply.selector);
-        nft.mintTo{value: 0.08 ether}(address(1));
+        // Make use of an address outside of the reserved address range
+        nft.mintTo{value: 0.08 ether}(address(65536));
     }
 
     function test_RevertMintToZeroAddress() public {
@@ -235,7 +237,8 @@ contract NFTTest is Test {
     }
 
     function test_NewMintOwnerRegistered() public {
-        nft.mintTo{value: 0.08 ether}(address(1));
+        // Make use of an address outside of the reserved address range
+        nft.mintTo{value: 0.08 ether}(address(68536));
         uint256 slotOfNewOwner = stdstore
             .target(address(nft))
             .sig(nft.ownerOf.selector)
@@ -247,15 +250,17 @@ contract NFTTest is Test {
                 (vm.load(address(nft), bytes32(abi.encode(slotOfNewOwner))))
             )
         );
-        assertEq(address(ownerOfTokenIdOne), address(1));
+ 
+        assertEq(address(ownerOfTokenIdOne), address(68536));
     }
 
     function test_BalanceIncremented() public {
-        nft.mintTo{value: 0.08 ether}(address(1));
+        // Make use of an address outside of the reserved address range
+        nft.mintTo{value: 0.08 ether}(address(68536));
         uint256 slotBalance = stdstore
             .target(address(nft))
             .sig(nft.balanceOf.selector)
-            .with_key(address(1))
+            .with_key(address(68536))
             .find();
 
         uint256 balanceFirstMint = uint256(
@@ -263,7 +268,7 @@ contract NFTTest is Test {
         );
         assertEq(balanceFirstMint, 1);
 
-        nft.mintTo{value: 0.08 ether}(address(1));
+        nft.mintTo{value: 0.08 ether}(address(68536));
         uint256 balanceSecondMint = uint256(
             vm.load(address(nft), bytes32(slotBalance))
         );
@@ -284,16 +289,17 @@ contract NFTTest is Test {
     }
 
     function test_RevertUnSafeContractReceiver() public {
-        // Adress set to 11, because first 10 addresses are restricted for precompiles
-        vm.etch(address(11), bytes("mock code"));
+        // Make use of an address outside of the reserved address range
+        // Ensure bytecode is divisible by 32
+        vm.etch(address(65538), bytes.concat(bytes("mock code"), new bytes(23)));
         vm.expectRevert(bytes(""));
-        nft.mintTo{value: 0.08 ether}(address(11));
+        nft.mintTo{value: 0.08 ether}(address(65538));
     }
 
     function test_WithdrawalWorksAsOwner() public {
         // Mint an NFT, sending eth to the contract
         Receiver receiver = new Receiver();
-        address payable payee = payable(address(0x1337));
+        address payable payee = payable(address(65539));
         uint256 priorPayeeBalance = payee.balance;
         nft.mintTo{value: nft.MINT_PRICE()}(address(receiver));
         // Check that the balance of the contract is correct
@@ -312,8 +318,8 @@ contract NFTTest is Test {
         assertEq(address(nft).balance, nft.MINT_PRICE());
         // Confirm that a non-owner cannot withdraw
         vm.expectRevert("Ownable: caller is not the owner");
-        vm.startPrank(address(0xd3ad));
-        nft.withdrawPayments(payable(address(0xd3ad)));
+        vm.startPrank(address(65540));
+        nft.withdrawPayments(payable(address(65540)));
         vm.stopPrank();
     }
 }
@@ -328,7 +334,6 @@ contract Receiver is ERC721TokenReceiver {
         return this.onERC721Received.selector;
     }
 }
-
 ```
 
 The test suite is set up as a contract with a `setUp` method which runs before every individual test.
@@ -339,29 +344,9 @@ For example, our `testFailMaxSupplyReached` test checks that an attempt to mint 
 [`forge-std`](https://github.com/foundry-rs/forge-std/) helper library. You can run the test with the following command:
 
 ```bash
-forge test
+forge test --zksync
 ```
 
-If you want to put your Forge skills to practice, write tests for the remaining methods of our NFT contract. Feel free to PR them to [nft-tutorial](https://github.com/FredCoen/nft-tutorial), where you will find the full implementation of this tutorial.
-
-### Gas reports for your function calls
-
-Foundry provides comprehensive gas reports about your contracts. For every function called within your tests, it returns the minimum, average, median and max gas cost. To print the gas report simply run:
-
-```bash
-forge test --gas-report
-```
-
-This comes in handy when looking at various gas optimizations within your contracts.
-
-Let's have a look at the gas savings we made by substituting OpenZeppelin with Solmate for our ERC721 implementation. You can find the NFT implementation using both libraries [here](https://github.com/FredCoen/nft-tutorial). Below are the resulting gas reports when running `forge test --gas-report` on that repository.
-
-As you can see, our implementation using Solmate saves around 500 gas on a successful mint (the max gas cost of the `mintTo` function calls).
-
-![Gas report solmate NFT](../images/nft-tutorial/gas-report-solmate-nft.png)
-
-![Gas report OZ NFT](../images/nft-tutorial/gas-report-oz-nft.png)
+If you want to put your Forge skills to practice, write tests for the remaining methods of our NFT contract. Feel free to PR them to [nft-tutorial](https://github.com/dutterbutter/foundry-zksync-nft-tutorial), where you will find the full implementation of this tutorial.
 
 That's it, I hope this will give you a good practical basis of how to get started with foundry. We think there is no better way to deeply understand solidity than writing your tests in solidity. You will also experience less context switching between javascript and solidity. Happy coding!
-
-> Note: Follow [this](./solidity-scripting.md) tutorial to learn how to deploy the NFT contract used here with solidity scripting.
