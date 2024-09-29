@@ -19,14 +19,16 @@ Options:
       --crate-name <NAME>
           The name of the Rust crate to generate.
           
-          This should be a valid crates.io crate name. However, this is currently not validated by this command.
+          This should be a valid crates.io crate name. However, this is currently not validated by
+          this command.
           
           [default: foundry-contracts]
 
       --crate-version <VERSION>
           The version of the Rust crate to generate.
           
-          This should be a standard semver version string. However, it is not currently validated by this command.
+          This should be a standard semver version string. However, it is not currently validated by
+          this command.
           
           [default: 0.0.1]
 

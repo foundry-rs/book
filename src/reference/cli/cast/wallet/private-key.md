@@ -11,7 +11,8 @@ Arguments:
           If provided, the private key will be derived from the specified menomonic phrase
 
   [MNEMONIC_INDEX_OR_DERIVATION_PATH]
-          If provided, the private key will be derived using the specified mnemonic index (if integer) or derivation path
+          If provided, the private key will be derived using the specified mnemonic index (if
+          integer) or derivation path
 
 Options:
   -v, --verbose

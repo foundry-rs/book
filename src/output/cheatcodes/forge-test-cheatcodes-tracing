@@ -8,17 +8,17 @@ No files changed, compilation skipped
 No files changed, compilation skipped
 
 Ran 1 test for test/OwnerUpOnly.t.sol:OwnerUpOnlyTest
-[PASS] testFail_IncrementAsNotOwner() (gas: 8067)
+[PASS] testFail_IncrementAsNotOwner() (gas: 216319)
 Traces:
-  [8067] 0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496::testFail_IncrementAsNotOwner()
+  [216319] OwnerUpOnlyTest::testFail_IncrementAsNotOwner()
     ├─ [0] VM::prank(0x0000000000000000000000000000000000000000)
     │   └─ ← [Return] 
-    ├─ [0] 0xF9E9ba9Ed9B96AB918c74B21dD0f1D5f2ac38a30::increment()
+    ├─ [208252] OwnerUpOnly::increment()
     │   └─ ← [Revert] Unauthorized()
     └─ ← [Revert] Unauthorized()
 
-Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 16.93ms (4.74ms CPU time)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 22.30ms (6.76ms CPU time)
 
-Ran 1 test suite in 17.86ms (16.93ms CPU time): 1 tests passed, 0 failed, 0 skipped (1 total tests)
+Ran 1 test suite in 23.17ms (22.30ms CPU time): 1 tests passed, 0 failed, 0 skipped (1 total tests)
 // ANCHOR_END: output
 // ANCHOR_END: all

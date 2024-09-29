@@ -4,7 +4,7 @@ $ forge test --zksync
 // ANCHOR_END: command
 // ANCHOR: output
 Compiling 24 files with Solc 0.8.10
-Solc 0.8.10 finished in 882.26ms
+Solc 0.8.10 finished in 1.14s
 Compiler run successful with warnings:
 Warning (9302): Return value of low-level calls not used.
   --> test/Safe.t.sol:11:9:
@@ -19,8 +19,8 @@ Warning (9302): Return value of low-level calls not used.
    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-Compiling 1 files with zksolc and solc 0.8.10
-zksolc and solc 0.8.10 finished in 4.32s
+Compiling 24 files with zksolc and solc 0.8.10
+zksolc and solc 0.8.10 finished in 5.87s
 Compiler run successful with warnings:
 Warning (9302)
 Warning: Return value of low-level calls not used.
@@ -36,12 +36,12 @@ Warning: Return value of low-level calls not used.
 27 |         payable(address(safe)).call{value: 1 ether}("");
    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-2024-09-04T13:36:33.830393Z ERROR foundry_zksync_core::vm::tracer: call may fail or behave unexpectedly due to empty code target=0x7fa9385be102ac3eac297483dd6233d62b3e1496 calldata=""
+2024-09-29T00:06:26.747465Z ERROR foundry_zksync_core::vm::tracers::cheatcode: call may fail or behave unexpectedly due to empty code target=0x7fa9385be102ac3eac297483dd6233d62b3e1496 calldata=""
 
 Ran 1 test for test/Safe.t.sol:SafeTest
-[PASS] test_Withdraw() (gas: 12349)
-Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 22.37ms (9.84ms CPU time)
+[PASS] test_Withdraw() (gas: 1199829)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 30.00ms (14.10ms CPU time)
 
-Ran 1 test suite in 23.53ms (22.37ms CPU time): 1 tests passed, 0 failed, 0 skipped (1 total tests)
+Ran 1 test suite in 30.85ms (30.00ms CPU time): 1 tests passed, 0 failed, 0 skipped (1 total tests)
 // ANCHOR_END: output
 // ANCHOR_END: all
