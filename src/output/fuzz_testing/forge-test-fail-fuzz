@@ -4,7 +4,7 @@ $ forge test --zksync --allow-failure
 // ANCHOR_END: command
 // ANCHOR: output
 Compiling 1 files with Solc 0.8.10
-Solc 0.8.10 finished in 803.35ms
+Solc 0.8.10 finished in 1.07s
 Compiler run successful with warnings:
 Warning (9302): Return value of low-level calls not used.
   --> test/Safe.t.sol:11:9:
@@ -20,7 +20,7 @@ Warning (9302): Return value of low-level calls not used.
 
 
 Compiling 1 files with zksolc and solc 0.8.10
-zksolc and solc 0.8.10 finished in 4.37s
+zksolc and solc 0.8.10 finished in 5.90s
 Compiler run successful with warnings:
 Warning (9302)
 Warning: Return value of low-level calls not used.
@@ -36,13 +36,16 @@ Warning: Return value of low-level calls not used.
 30 |         payable(address(safe)).call{value: amount}("");
    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-2024-09-04T13:36:39.849766Z ERROR foundry_zksync_core::vm::tracer: call may fail or behave unexpectedly due to empty code target=0x7fa9385be102ac3eac297483dd6233d62b3e1496 calldata=""
-2024-09-04T13:36:39.858634Z ERROR foundry_zksync_core::vm::tracer: call may fail or behave unexpectedly due to empty code target=0x7fa9385be102ac3eac297483dd6233d62b3e1496 calldata=""
+2024-09-29T00:06:34.691244Z ERROR foundry_zksync_core::vm::tracers::cheatcode: call may fail or behave unexpectedly due to empty code target=0x7fa9385be102ac3eac297483dd6233d62b3e1496 calldata=""
+2024-09-29T00:06:34.705228Z ERROR foundry_zksync_core::vm::tracers::cheatcode: call may fail or behave unexpectedly due to empty code target=0x7fa9385be102ac3eac297483dd6233d62b3e1496 calldata=""
+2024-09-29T00:06:34.712128Z ERROR foundry_zksync_core::vm::tracers::error: vm error: Not enough gas
+2024-09-29T00:06:34.712331Z ERROR foundry_zksync_core::vm::inspect: tx execution halted: Bootloader out of gas
+2024-09-29T00:06:34.717908Z ERROR foundry_zksync_core::vm::tracers::cheatcode: call may fail or behave unexpectedly due to empty code target=0x7fa9385be102ac3eac297483dd6233d62b3e1496 calldata=""
 
 Ran 1 test for test/Safe.t.sol:SafeTest
-[FAIL. Reason: assertion failed; counterexample: calldata=0x29facca70000000000000000000000000000000011f88d5007acc7732f5149f83c18544e args=[23887431709642595303355446118883808334 [2.388e37]]] testFuzz_Withdraw(uint256) (runs: 1, μ: 12406, ~: 12406)
-Suite result: FAILED. 0 passed; 1 failed; 0 skipped; finished in 29.56ms (18.29ms CPU time)
+[FAIL. Reason: assertion failed; counterexample: calldata=0x29facca70000035d22f986bba875659added6ecebf5517145ca1cf7bc1de727a33055086 args=[23216197347499771600256574235086970945056856950945450772830230264762502 [2.321e70]]] testFuzz_Withdraw(uint256) (runs: 2, μ: 868386, ~: 868386)
+Suite result: FAILED. 0 passed; 1 failed; 0 skipped; finished in 56.40ms (40.84ms CPU time)
 
-Ran 1 test suite in 30.50ms (29.56ms CPU time): 0 tests passed, 1 failed, 0 skipped (1 total tests)
+Ran 1 test suite in 57.36ms (56.40ms CPU time): 0 tests passed, 1 failed, 0 skipped (1 total tests)
 // ANCHOR_END: output
 // ANCHOR_END: all

@@ -4,7 +4,7 @@ $ forge test --zksync
 // ANCHOR_END: command
 // ANCHOR: output
 Compiling 23 files with Solc 0.8.10
-Solc 0.8.10 finished in 1.29s
+Solc 0.8.10 finished in 1.77s
 Compiler run successful with warnings:
 Warning (5667): Unused function parameter. Remove or comment out the variable name to silence this warning.
   --> test/OpenZeppelinNft.t.sol:89:9:
@@ -68,31 +68,33 @@ Warning (2018): Function state mutability can be restricted to pure
 
 
 No files changed, compilation skipped
-2024-09-04T13:37:16.496262Z ERROR foundry_zksync_core::vm::tracer: call may fail or behave unexpectedly due to empty code target=0x0000000000000000000000000000000000010001 calldata="150b7a020000000000000000000000007fa9385be102ac3eac297483dd6233d62b3e14960000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000000"
-2024-09-04T13:37:16.500876Z ERROR foundry_zksync_core::vm::tracer: call may fail or behave unexpectedly due to empty code target=0x0000000000000000000000000000000000010001 calldata="150b7a020000000000000000000000007fa9385be102ac3eac297483dd6233d62b3e14960000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000000"
+2024-09-29T00:07:04.773809Z ERROR foundry_zksync_core::vm::tracers::cheatcode: call may fail or behave unexpectedly due to empty code target=0x0000000000000000000000000000000000010001 calldata="150b7a020000000000000000000000007fa9385be102ac3eac297483dd6233d62b3e14960000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000000"
+2024-09-29T00:07:04.773845Z ERROR foundry_zksync_core::vm::tracers::error: vm error: Invalid opcode, Not enough gas
+2024-09-29T00:07:04.817478Z ERROR foundry_zksync_core::vm::tracers::cheatcode: call may fail or behave unexpectedly due to empty code target=0x0000000000000000000000000000000000010001 calldata="150b7a020000000000000000000000007fa9385be102ac3eac297483dd6233d62b3e14960000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000000"
+2024-09-29T00:07:04.817507Z ERROR foundry_zksync_core::vm::tracers::error: vm error: Invalid opcode, Not enough gas
 
 Ran 8 tests for test/SolmateNft.sol:SolmateNftTests
-[PASS] testBalanceIncremented() (gas: 140894)
-[PASS] testFailMaxSupplyReached() (gas: 131437)
-[PASS] testFailMintToZeroAddress() (gas: 11765)
-[PASS] testFailNoMintPricePaid() (gas: 5095)
-[PASS] testFailUnSafeContractReceiver() (gas: 14690)
-[PASS] testMintPricePaid() (gas: 11922)
-[PASS] testNewMintOwnerRegistered() (gas: 134769)
-[PASS] testSafeContractReceiver() (gas: 160353)
-Suite result: ok. 8 passed; 0 failed; 0 skipped; finished in 68.72ms (110.27ms CPU time)
+[PASS] testBalanceIncremented() (gas: 2363346)
+[PASS] testFailMaxSupplyReached() (gas: 569058)
+[PASS] testFailMintToZeroAddress() (gas: 239857)
+[PASS] testFailNoMintPricePaid() (gas: 212924)
+[PASS] testFailUnSafeContractReceiver() (gas: 75241701)
+[PASS] testMintPricePaid() (gas: 1037658)
+[PASS] testNewMintOwnerRegistered() (gas: 1329918)
+[PASS] testSafeContractReceiver() (gas: 17085868)
+Suite result: ok. 8 passed; 0 failed; 0 skipped; finished in 141.03ms (158.68ms CPU time)
 
 Ran 8 tests for test/OpenZeppelinNft.t.sol:OpenZeppelinNftTests
-[PASS] testBalanceIncremented() (gas: 140894)
-[PASS] testFailMaxSupplyReached() (gas: 131437)
-[PASS] testFailMintToZeroAddress() (gas: 11765)
-[PASS] testFailNoMintPricePaid() (gas: 5095)
-[PASS] testFailUnSafeContractReceiver() (gas: 14705)
-[PASS] testMintPricePaid() (gas: 11922)
-[PASS] testNewMintOwnerRegistered() (gas: 134769)
-[PASS] testSafeContractReceiver() (gas: 160353)
-Suite result: ok. 8 passed; 0 failed; 0 skipped; finished in 72.44ms (119.77ms CPU time)
+[PASS] testBalanceIncremented() (gas: 2364898)
+[PASS] testFailMaxSupplyReached() (gas: 569974)
+[PASS] testFailMintToZeroAddress() (gas: 240402)
+[PASS] testFailNoMintPricePaid() (gas: 213418)
+[PASS] testFailUnSafeContractReceiver() (gas: 75242543)
+[PASS] testMintPricePaid() (gas: 1038211)
+[PASS] testNewMintOwnerRegistered() (gas: 1330941)
+[PASS] testSafeContractReceiver() (gas: 17087001)
+Suite result: ok. 8 passed; 0 failed; 0 skipped; finished in 141.03ms (145.83ms CPU time)
 
-Ran 2 test suites in 74.23ms (141.16ms CPU time): 16 tests passed, 0 failed, 0 skipped (16 total tests)
+Ran 2 test suites in 141.95ms (282.06ms CPU time): 16 tests passed, 0 failed, 0 skipped (16 total tests)
 // ANCHOR_END: output
 // ANCHOR_END: all

@@ -8,7 +8,8 @@ Usage: forge <COMMAND>
 
 Commands:
   bind               Generate Rust bindings for smart contracts
-  bind-json          Generate bindings for serialization/deserialization of project structs via JSON cheatcodes
+  bind-json          Generate bindings for serialization/deserialization of project structs via
+                         JSON cheatcodes
   build              Build the project's smart contracts [aliases: b, compile]
   cache              Manage the Foundry cache
   clean              Remove the build artifacts and cache directories [aliases: cl]
@@ -31,12 +32,14 @@ Commands:
   install            Install one or multiple dependencies [aliases: i]
   remappings         Get the automatically inferred remappings for the project [aliases: re]
   remove             Remove one or multiple dependencies [aliases: rm]
-  script             Run a smart contract as a script, building transactions that can be sent onchain
+  script             Run a smart contract as a script, building transactions that can be sent
+                         onchain
   selectors          Function selector utilities [aliases: se]
   snapshot           Create a snapshot of each test's gas usage [aliases: s]
   soldeer            Soldeer dependency manager
   test               Run the project's tests [aliases: t]
-  tree               Display a tree visualization of the project's dependency graph [aliases: tr]
+  tree               Display a tree visualization of the project's dependency graph [aliases:
+                         tr]
   update             Update one or multiple dependencies [aliases: u]
   verify-bytecode    Verify the deployed bytecode against its source [aliases: vb]
   verify-check       Check verification status on Etherscan [aliases: vc]
