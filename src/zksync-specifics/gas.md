@@ -29,7 +29,7 @@ The gas cost mentioned above is influenced by transaction and network values. Th
 
 From the params above we can get all gas related values used in the transaction:
 
-* `fair_pubdata_price`: `l1_gas_price` multiplied by `L1_GAS_PER_PUBDATA_BYTE`. 
+* `fair_pubdata_price`: `l1_gas_price` * `L1_GAS_PER_PUBDATA_BYTE`. 
 * `baseFee`: Maximum value between `fair_l2_gas_price` and `(fair_pubdata_price / MAX_L2_GAS_PER_PUBDATA)`.
 * `gasPerPubdata`: `fairPubdataPrice / baseFee`.
 
