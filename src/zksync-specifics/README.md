@@ -9,3 +9,4 @@
   - [Cheatcodes](limitations/cheatcodes.md)
 - [Additional Cheatcodes](cheatcodes/README.md)
   - [zkVm](cheatcodes/zkvm.md)
+- [Gas](gas.md)
