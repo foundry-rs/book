@@ -1,4 +1,4 @@
-## Gas
+## Gas Overview
 
 ### Gas reported back to the EVM
 Foundry has an `isolate` mode for the EVM where all `CALL`/`CREATE` operations at the root level of a test (i.e: with depth 1) will be intercepted and treated as independent transactions. This allows for accounting of the actual transaction gas and include for example the fixed 21000 gas cost charged to the user.
