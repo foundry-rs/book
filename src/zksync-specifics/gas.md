@@ -18,7 +18,7 @@ The gas cost mentioned above is influenced by transaction and network values. Th
 1. Transaction Params:
 
 * `max_fee_per_gas`: will be gas price of the root evm transaction (e.g: when running tests, the value of `--gas-price` option is used) with a minimum value of `0.26GWei`, which is the base fee used in some test environments/networks.
-* `gas_limit`: The sender remaining balance capped to a max of `2^31 - 1`.
+* `gas_limit`: The sender remaining balance capped to a max of `2^31 - 1`. Note that, no matter the gas limit, the vm caps how much gas a single transaction can use to `MAX_GAS_PER_TRANSACTION`, currently set to `80_000_000`.
 
 2. Network Params:
 
@@ -33,4 +33,4 @@ From the params above we can get all gas related values used in the transaction:
 * `baseFee`: Maximum value between `fair_l2_gas_price` and `(fair_pubdata_price / MAX_L2_GAS_PER_PUBDATA)`.
 * `gasPerPubdata`: `fairPubdataPrice / baseFee`.
 
-`L1_GAS_PER_PUBDATA_BYTE` and `MAX_L2_GAS_PER_PUBDATA` are system constants currently set to `17` and `50000` respectively.
+`L1_GAS_PER_PUBDATA_BYTE` and `MAX_L2_GAS_PER_PUBDATA` are system constants currently set to `17` and `50_000` respectively.
