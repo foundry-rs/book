@@ -21,14 +21,16 @@ Options:
       --crate-name <NAME>
           The name of the Rust crate to generate.
           
-          This should be a valid crates.io crate name, however, this is not currently validated by this command.
+          This should be a valid crates.io crate name, however, this is not currently validated by
+          this command.
           
           [default: foundry-contracts]
 
       --crate-version <VERSION>
           The version of the Rust crate to generate.
           
-          This should be a standard semver version string, however, this is not currently validated by this command.
+          This should be a standard semver version string, however, this is not currently validated
+          by this command.
           
           [default: 0.1.0]
 
@@ -38,7 +40,8 @@ Options:
       --overwrite
           Overwrite existing generated bindings.
           
-          By default, the command will check that the bindings are correct, and then exit. If --overwrite is passed, it will instead delete and overwrite the bindings.
+          By default, the command will check that the bindings are correct, and then exit. If
+          --overwrite is passed, it will instead delete and overwrite the bindings.
 
       --single-file
           Generate bindings as a single file
@@ -131,7 +134,8 @@ Compiler options:
           
           Example keys: evm.assembly, ewasm, ir, irOptimized, metadata
           
-          For a full description, see <https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description>
+          For a full description, see
+          <https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description>
 
       --extra-output-files <SELECTOR>...
           Extra output to write to separate files.
@@ -145,7 +149,8 @@ Project options:
       --revert-strings <REVERT>
           Revert string configuration.
           
-          Possible values are "default", "strip" (remove), "debug" (Solidity-generated revert strings) and "verboseDebug"
+          Possible values are "default", "strip" (remove), "debug" (Solidity-generated revert
+          strings) and "verboseDebug"
 
       --build-info
           Generate build info files
@@ -225,7 +230,8 @@ ZKSync configuration:
           Currently unused
 
   -O, --zk-optimizer-mode <LEVEL>
-          Set the LLVM optimization parameter `-O[0 | 1 | 2 | 3 | s | z]`. Use `3` for best performance and `z` for minimal size
+          Set the LLVM optimization parameter `-O[0 | 1 | 2 | 3 | s | z]`. Use `3` for best
+          performance and `z` for minimal size
           
           [aliases: zk-optimization]
 

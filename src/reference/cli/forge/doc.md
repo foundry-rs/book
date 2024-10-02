@@ -33,7 +33,8 @@ Options:
           Port for serving documentation
 
       --deployments [<DEPLOYMENTS>]
-          The relative path to the `hardhat-deploy` or `forge-deploy` artifact directory. Leave blank for default
+          The relative path to the `hardhat-deploy` or `forge-deploy` artifact directory. Leave
+          blank for default
 
   -i, --include-libraries
           Whether to create docs for external libraries

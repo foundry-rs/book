@@ -11,10 +11,10 @@ gen_help() {
     echo "Generating help output ($bin)..."
   done
 
+  # Disable --root-summary until we wish to support adding CLI references
   cmd=(
     "$SCRIPTS/gen_output/help.py"
     --root-dir "$ROOT/src/"
-    --root-summary
     --root-indentation 4
     --readme
     --out-dir "$ROOT/src/reference/cli/"
