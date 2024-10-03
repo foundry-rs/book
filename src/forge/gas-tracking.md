@@ -2,7 +2,7 @@
 
 Forge can help you estimate how much gas your contract will consume.
 
-Currently, Forge ships with three different tools for this job, but they may be merged in the future:
+Currently, Forge ships with three different tools for this job:
 
 - [**Gas reports**](./gas-reports.md): Gas reports give you an overview of how much Forge thinks the
   individual functions in your contracts will consume in gas.
