@@ -291,7 +291,7 @@ Wallet options - raw:
 
 Wallet options - keystore:
       --keystore <PATHS>
-          Use the keystore in the given folder or file
+          Use the keystore by its filename in the given folder
           
           [env: ETH_KEYSTORE=]
           [aliases: keystores]
