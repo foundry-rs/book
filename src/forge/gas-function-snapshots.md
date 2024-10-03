@@ -1,4 +1,4 @@
-## Gas Snapshots
+## Gas Function Snapshots
 
 Forge can generate gas snapshots for all your test functions. This can
 be useful to get a general feel for how much gas your contract will consume,
