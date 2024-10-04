@@ -35,6 +35,7 @@
   - [zkVm](./zksync-specifics/cheatcodes/zk-vm.md)
   - [zkVmSkip](./zksync-specifics/cheatcodes/zk-vm-skip.md)
   - [zkUsePaymaster](./zksync-specifics/cheatcodes/zk-use-paymaster.md)
+- [Gas Overview](./zksync-specifics/gas.md)
 
 # Supported Commands
 - [Command List](./supported-commands/README.md)
