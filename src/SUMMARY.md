@@ -417,6 +417,7 @@
       - [`setNonce`](./cheatcodes/set-nonce.md)
       - [`getNonce`](./cheatcodes/get-nonce.md)
       - [`mockCall`](./cheatcodes/mock-call.md)
+      - [`mockCalls`](./cheatcodes/mock-calls.md)
       - [`mockCallRevert`](./cheatcodes/mock-call-revert.md)
       - [`mockFunction`](./cheatcodes/mock-function.md)
       - [`clearMockedCalls`](./cheatcodes/clear-mocked-calls.md)

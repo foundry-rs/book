@@ -307,6 +307,13 @@ interface CheatCodes {
     // function will be mocked.
     function mockCall(address, bytes calldata, bytes calldata) external;
 
+    // Mocks multiple call to an address, returning specified data for each call.
+    //
+    // Calldata can either be strict or a partial match, e.g. if you only
+    // pass a Solidity selector to the expected calldata, then the entire Solidity
+    // function will be mocked.
+    function mockCalls(address, bytes calldata, bytes[] calldata) external;
+
     // Reverts a call to an address, returning the specified error
     //
     // Calldata can either be strict or a partial match, e.g. if you only
