@@ -50,7 +50,7 @@ contract MyPaymaster is IPaymaster {
         require(success, "Failed to transfer tx fee to the bootloader");
     }
 
-    function postTransaction(
+    function postTransaction( 
         bytes calldata _context,
         Transaction calldata _transaction,
         bytes32,
@@ -86,6 +86,6 @@ vm.zkUsePaymaster(address(paymaster), abi.encodeWithSelector(
 ));
 ```
 
-For more examples, see the [Foundry ZkSync Paymaster Tests](TBD).
+For more examples, see the [Foundry ZkSync Paymaster Tests](https://github.com/matter-labs/foundry-zksync/blob/main/crates/forge/tests/fixtures/zk/Paymaster.t.sol).
 
 Also, see the [ZKsync Paymaster Documentation](https://docs.zksync.io/build/developer-reference/account-abstraction/paymasters) for more information.
