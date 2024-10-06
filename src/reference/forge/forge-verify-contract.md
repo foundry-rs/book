@@ -88,24 +88,30 @@ you can specify a file containing **space-separated** constructor arguments with
 
 ### EXAMPLES
 
-1. Verify a contract with JSON standard input on Etherscan
+1. Verify a contract on a ZKsync Block Explorer instance
+    ```sh
+    forge verify-contract --verifier zksync \
+      --verifier-url http://localhost:5000 <address> SomeContract
+    ```
+
+2. Verify a contract with JSON standard input on Etherscan
     ```sh
     forge verify-contract <address> SomeContract --watch
 
-2. Verify a contract on a custom Sourcify instance
+3. Verify a contract on a Sourcify instance
     ```sh
     forge verify-contract --verifier sourcify \
       --verifier-url http://localhost:5000 <address> SomeContract
     ```
 
-3. Verify a flattened contract built with solc v0.8.11+commit.d7f03943:
+4. Verify a flattened contract built with solc v0.8.11+commit.d7f03943:
     ```sh
     forge verify-contract --flatten --watch --compiler-version "v0.8.11+commit.d7f03943" \
       --constructor-args $(cast abi-encode "constructor(string,string,uint256,uint256)" "ForgeUSD" "FUSD" 18 1000000000000000000000) \
       <address> MyToken
     ```
 
-4. Verify a flattened contract by specifying constructor arguments in a file:
+5. Verify a flattened contract by specifying constructor arguments in a file:
     ```sh
     forge verify-contract --flatten --watch --compiler-version "v0.8.11+commit.d7f03943" \
       --constructor-args-path constructor-args.txt <address> src/Token.sol:MyToken
@@ -115,17 +121,17 @@ you can specify a file containing **space-separated** constructor arguments with
     ForgeUSD FUSD 18 1000000000000000000000
     ```
     
-5. Verify a contract with Blockscout right after deployment (make sure you add "/api?" to the end of the Blockscout homepage explorer URL):
+6. Verify a contract with Blockscout right after deployment (make sure you add "/api?" to the end of the Blockscout homepage explorer URL):
     ```sh
     forge create --rpc-url <rpc_https_endpoint> --private-key $devTestnetPrivateKey src/Contract.sol:SimpleStorage --verify --verifier blockscout --verifier-url <blockscout_homepage_explorer_url>/api? 
     ```
 
-6. verify a contract with Oklink
+7. verify a contract with Oklink
     ```sh
     forge verify-contract 0x8CDDE82cFB4555D6ca21B5b28F97630265DA94c4 Counter --verifier oklink --verifier-url https://www.oklink.com/api/v5/explorer/contract/verify-source-code-plugin/XLAYER  --api-key $OKLINK_API_KEY
     ```
     
-7. verify a contract with Oklink while deploying
+8. verify a contract with Oklink while deploying
     ```sh
     forge create Counter --rpc-url <rpc_https_endpoint> --verify --verifier oklink --verifier-url https://www.oklink.com/api/v5/explorer/contract/verify-source-code-plugin/XLAYER --etherscan-api-key $OKLINK_API_KEY --private-key $PRIVATE_KEY --legacy
     ```
