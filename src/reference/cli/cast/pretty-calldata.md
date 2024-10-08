@@ -4,6 +4,9 @@ Pretty print calldata.
 
 ```bash
 $ cast pretty-calldata --help
+```
+
+```txt
 Usage: cast pretty-calldata [OPTIONS] [CALLDATA]
 
 Arguments:

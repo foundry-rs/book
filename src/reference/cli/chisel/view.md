@@ -4,6 +4,9 @@ View the source of a cached session
 
 ```bash
 $ chisel view --help
+```
+
+```txt
 Usage: chisel view <ID>
 
 Arguments:

@@ -4,6 +4,9 @@ Normalize the input to lowercase, 0x-prefixed hex.
 
 ```bash
 $ cast to-hexdata --help
+```
+
+```txt
 Usage: cast to-hexdata [INPUT]
 
 Arguments:

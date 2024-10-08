@@ -4,6 +4,9 @@ Generate Fig autocompletion spec
 
 ```bash
 $ anvil generate-fig-spec --help
+```
+
+```txt
 Usage: anvil generate-fig-spec
 
 Options:

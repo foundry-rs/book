@@ -4,6 +4,9 @@ Generate shell completions script
 
 ```bash
 $ forge completions --help
+```
+
+```txt
 Usage: forge completions <SHELL>
 
 Arguments:

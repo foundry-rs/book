@@ -4,6 +4,9 @@ Decodes a raw signed EIP 2718 typed transaction
 
 ```bash
 $ cast decode-transaction --help
+```
+
+```txt
 Usage: cast decode-transaction [TX]
 
 Arguments:

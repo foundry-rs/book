@@ -4,6 +4,9 @@ Prints the minimum value of the given integer type
 
 ```bash
 $ cast min-int --help
+```
+
+```txt
 Usage: cast min-int [TYPE]
 
 Arguments:

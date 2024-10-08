@@ -5,13 +5,11 @@ $ forge test --zksync --match-test test_IncrementAsOwner|testFail_IncrementAsNot
 // ANCHOR: output
 No files changed, compilation skipped
 
-No files changed, compilation skipped
-
 Ran 2 tests for test/OwnerUpOnly.t.sol:OwnerUpOnlyTest
-[PASS] testFail_IncrementAsNotOwner() (gas: 216319)
-[PASS] test_IncrementAsOwner() (gas: 734680)
-Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 40.02ms (35.28ms CPU time)
+[PASS] testFail_IncrementAsNotOwner() (gas: 8314)
+[PASS] test_IncrementAsOwner() (gas: 29161)
+Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 562.63µs (204.18µs CPU time)
 
-Ran 1 test suite in 40.84ms (40.02ms CPU time): 2 tests passed, 0 failed, 0 skipped (2 total tests)
+Ran 1 test suite in 5.33ms (562.63µs CPU time): 2 tests passed, 0 failed, 0 skipped (2 total tests)
 // ANCHOR_END: output
 // ANCHOR_END: all

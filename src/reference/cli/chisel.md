@@ -4,6 +4,9 @@ Fast, utilitarian, and verbose Solidity REPL
 
 ```bash
 $ chisel --help
+```
+
+```txt
 Usage: chisel [OPTIONS] [COMMAND]
 
 Commands:
@@ -22,16 +25,17 @@ Options:
 
 REPL options:
       --prelude <PRELUDE>
-          Path to a directory containing Solidity files to import, or path to a single Solidity
-          file.
+          Path to a directory containing Solidity files to import, or path to a
+          single Solidity file.
           
-          These files will be evaluated before the top-level of the REPL, therefore functioning as a
-          prelude
+          These files will be evaluated before the top-level of the REPL,
+          therefore functioning as a prelude
 
       --no-vm
           Disable the default `Vm` import.
           
-          The import is disabled by default if the Solc version is less than 0.6.2.
+          The import is disabled by default if the Solc version is less than
+          0.6.2.
 
 Cache options:
       --force
@@ -65,7 +69,8 @@ Compiler options:
       --use <SOLC_VERSION>
           Specify the solc version, or a path to a local solc, to build with.
           
-          Valid values are in the format `x.y.z`, `solc:x.y.z` or `path/to/solc`.
+          Valid values are in the format `x.y.z`, `solc:x.y.z` or
+          `path/to/solc`.
 
       --offline
           Do not access the network.
@@ -78,7 +83,8 @@ Compiler options:
       --no-metadata
           Do not append any metadata to the bytecode.
           
-          This is equivalent to setting `bytecode_hash` to `none` and `cbor_metadata` to `false`.
+          This is equivalent to setting `bytecode_hash` to `none` and
+          `cbor_metadata` to `false`.
 
       --silent
           Don't print anything on startup
@@ -93,7 +99,13 @@ Compiler options:
           Activate the Solidity optimizer
 
       --optimizer-runs <RUNS>
-          The number of optimizer runs
+          The number of runs specifies roughly how often each opcode of the
+          deployed code will be executed across the life-time of the contract.
+          This means it is a trade-off parameter between code size (deploy cost)
+          and code execution cost (cost after deployment). An `optimizer_runs`
+          parameter of `1` will produce short but expensive code. In contrast, a
+          larger `optimizer_runs` parameter will produce longer but more gas
+          efficient code
 
       --extra-output <SELECTOR>...
           Extra output to include in the contract's artifact.
@@ -115,8 +127,8 @@ Project options:
       --revert-strings <REVERT>
           Revert string configuration.
           
-          Possible values are "default", "strip" (remove), "debug" (Solidity-generated revert
-          strings) and "verboseDebug"
+          Possible values are "default", "strip" (remove), "debug"
+          (Solidity-generated revert strings) and "verboseDebug"
 
       --build-info
           Generate build info files
@@ -127,7 +139,8 @@ Project options:
       --root <PATH>
           The project's root path.
           
-          By default root of the Git repository, if in one, or the current working directory.
+          By default root of the Git repository, if in one, or the current
+          working directory.
 
   -C, --contracts <PATH>
           The contracts source directory
@@ -147,7 +160,8 @@ Project options:
       --hardhat
           Use the Hardhat-style project layout.
           
-          This is the same as using: `--contracts contracts --lib-paths node_modules`.
+          This is the same as using: `--contracts contracts --lib-paths
+          node_modules`.
           
           [aliases: hh]
 
@@ -156,9 +170,11 @@ Project options:
 
 EVM options:
   -f, --fork-url <URL>
-          Fetch state over a remote endpoint instead of starting from an empty state.
+          Fetch state over a remote endpoint instead of starting from an empty
+          state.
           
-          If you want to fetch state from a specific block number, see --fork-block-number.
+          If you want to fetch state from a specific block number, see
+          --fork-block-number.
           
           [aliases: rpc-url]
 
@@ -190,13 +206,14 @@ EVM options:
           The initial balance of deployed test contracts
 
       --sender <ADDRESS>
-          The address which will be executing tests
+          The address which will be executing tests/scripts
 
       --ffi
           Enable the FFI cheatcode
 
       --always-use-create-2-factory
-          Use the create 2 factory in all cases including tests and non-broadcasting scripts
+          Use the create 2 factory in all cases including tests and
+          non-broadcasting scripts
 
   -v, --verbosity...
           Verbosity of the EVM.
@@ -206,12 +223,14 @@ EVM options:
           Verbosity levels:
           - 2: Print logs for all tests
           - 3: Print execution traces for failing tests
-          - 4: Print execution traces for all tests, and setup traces for failing tests
+          - 4: Print execution traces for all tests, and setup traces for
+          failing tests
           - 5: Print execution and setup traces for all tests
 
 Fork config:
       --compute-units-per-second <CUPS>
-          Sets the number of assumed available compute units per second for this provider
+          Sets the number of assumed available compute units per second for this
+          provider
           
           default value: 330
           
@@ -231,8 +250,8 @@ Executor environment config:
           The block gas limit
 
       --code-size-limit <CODE_SIZE>
-          EIP-170: Contract code size limit in bytes. Useful to increase this because of tests. By
-          default, it is 0x6000 (~25kb)
+          EIP-170: Contract code size limit in bytes. Useful to increase this
+          because of tests. By default, it is 0x6000 (~25kb)
 
       --chain <CHAIN>
           The chain name or EIP-155 chain ID
@@ -269,8 +288,8 @@ Executor environment config:
           The block gas limit
 
       --memory-limit <MEMORY_LIMIT>
-          The memory limit per EVM execution in bytes. If this limit is exceeded, a `MemoryLimitOOG`
-          result is thrown.
+          The memory limit per EVM execution in bytes. If this limit is
+          exceeded, a `MemoryLimitOOG` result is thrown.
           
           The default is 128MiB.
 
@@ -280,7 +299,11 @@ Executor environment config:
           [aliases: no-gas-limit]
 
       --isolate
-          Whether to enable isolation of calls. In isolation mode all top-level calls are executed
-          as a separate transaction in a separate EVM context, enabling more precise gas accounting
-          and transaction state changes
+          Whether to enable isolation of calls. In isolation mode all top-level
+          calls are executed as a separate transaction in a separate EVM
+          context, enabling more precise gas accounting and transaction state
+          changes
+
+      --alphanet
+          Whether to enable Alphanet features
 ```

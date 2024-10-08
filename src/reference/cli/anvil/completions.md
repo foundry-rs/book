@@ -4,6 +4,9 @@ Generate shell completions script
 
 ```bash
 $ anvil completions --help
+```
+
+```txt
 Usage: anvil completions <SHELL>
 
 Arguments:

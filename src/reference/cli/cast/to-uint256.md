@@ -4,6 +4,9 @@ Convert a number to a hex-encoded uint256
 
 ```bash
 $ cast to-uint256 --help
+```
+
+```txt
 Usage: cast to-uint256 [VALUE]
 
 Arguments:

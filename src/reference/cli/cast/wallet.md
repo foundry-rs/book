@@ -4,6 +4,9 @@ Wallet management utilities
 
 ```bash
 $ cast wallet --help
+```
+
+```txt
 Usage: cast wallet <COMMAND>
 
 Commands:
@@ -12,9 +15,11 @@ Commands:
   vanity            Generate a vanity address [aliases: va]
   address           Convert a private key to an address [aliases: a, addr]
   sign              Sign a message or typed data [aliases: s]
+  sign-auth         EIP-7702 sign authorization [aliases: sa]
   verify            Verify the signature of a message [aliases: v]
   import            Import a private key into an encrypted keystore [aliases: i]
-  list              List all the accounts in the keystore default directory [aliases: ls]
+  list              List all the accounts in the keystore default directory
+                    [aliases: ls]
   private-key       Derives private key from mnemonic [aliases: pk]
   decrypt-keystore  Decrypt a keystore file to get the private key [aliases: dk]
   help              Print this message or the help of the given subcommand(s)

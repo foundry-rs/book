@@ -4,6 +4,9 @@ Get the event signature for a given topic 0 from https://openchain.xyz
 
 ```bash
 $ cast 4byte-event --help
+```
+
+```txt
 Usage: cast 4byte-event [TOPIC_0]
 
 Arguments:

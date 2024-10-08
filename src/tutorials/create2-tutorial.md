@@ -221,7 +221,7 @@ Create a file named `Create2ZK.t.sol` inside the `test` directory. Initialize a 
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.20;
 
-import "forge-std/Test.sol";
+import {Test} from "forge-std/Test.sol";
 import {Counter} from "../src/Counter.sol";
 import {ZKCreate2} from "../src/Create2zk.sol";
 import {ACCOUNT_CODE_STORAGE_SYSTEM_CONTRACT} from "era-contracts/system-contracts/contracts/Constants.sol";
