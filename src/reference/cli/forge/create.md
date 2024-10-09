@@ -4,6 +4,9 @@ Deploy a smart contract
 
 ```bash
 $ forge create --help
+```
+
+```txt
 Usage: forge create [OPTIONS] <CONTRACT>
 
 Arguments:
@@ -21,13 +24,14 @@ Options:
           Verify contract after creation
 
       --unlocked
-          Send via `eth_sendTransaction` using the `--from` argument or `$ETH_FROM` as sender
+          Send via `eth_sendTransaction` using the `--from` argument or
+          `$ETH_FROM` as sender
 
       --show-standard-json-input
           Prints the standard json compiler input if `--verify` is provided.
           
-          The standard json compiler input can be used to manually submit contract verification in
-          the browser.
+          The standard json compiler input can be used to manually submit
+          contract verification in the browser.
 
   -h, --help
           Print help (see a summary with '-h')
@@ -68,7 +72,8 @@ Compiler options:
       --use <SOLC_VERSION>
           Specify the solc version, or a path to a local solc, to build with.
           
-          Valid values are in the format `x.y.z`, `solc:x.y.z` or `path/to/solc`.
+          Valid values are in the format `x.y.z`, `solc:x.y.z` or
+          `path/to/solc`.
 
       --offline
           Do not access the network.
@@ -81,7 +86,8 @@ Compiler options:
       --no-metadata
           Do not append any metadata to the bytecode.
           
-          This is equivalent to setting `bytecode_hash` to `none` and `cbor_metadata` to `false`.
+          This is equivalent to setting `bytecode_hash` to `none` and
+          `cbor_metadata` to `false`.
 
       --silent
           Don't print anything on startup
@@ -118,8 +124,8 @@ Project options:
       --revert-strings <REVERT>
           Revert string configuration.
           
-          Possible values are "default", "strip" (remove), "debug" (Solidity-generated revert
-          strings) and "verboseDebug"
+          Possible values are "default", "strip" (remove), "debug"
+          (Solidity-generated revert strings) and "verboseDebug"
 
       --build-info
           Generate build info files
@@ -130,7 +136,8 @@ Project options:
       --root <PATH>
           The project's root path.
           
-          By default root of the Git repository, if in one, or the current working directory.
+          By default root of the Git repository, if in one, or the current
+          working directory.
 
   -C, --contracts <PATH>
           The contracts source directory
@@ -150,7 +157,8 @@ Project options:
       --hardhat
           Use the Hardhat-style project layout.
           
-          This is the same as using: `--contracts contracts --lib-paths node_modules`.
+          This is the same as using: `--contracts contracts --lib-paths
+          node_modules`.
           
           [aliases: hh]
 
@@ -199,8 +207,8 @@ ZKSync configuration:
           Currently unused
 
   -O, --zk-optimizer-mode <LEVEL>
-          Set the LLVM optimization parameter `-O[0 | 1 | 2 | 3 | s | z]`. Use `3` for best
-          performance and `z` for minimal size
+          Set the LLVM optimization parameter `-O[0 | 1 | 2 | 3 | s | z]`. Use
+          `3` for best performance and `z` for minimal size
           
           [aliases: zk-optimization]
 
@@ -219,7 +227,8 @@ Transaction options:
           [env: ETH_GAS_LIMIT=]
 
       --gas-price <PRICE>
-          Gas price for legacy transactions, or max fee per gas for EIP1559 transactions
+          Gas price for legacy transactions, or max fee per gas for EIP1559
+          transactions
           
           [env: ETH_GAS_PRICE=]
 
@@ -229,8 +238,8 @@ Transaction options:
           [env: ETH_PRIORITY_GAS_PRICE=]
 
       --value <VALUE>
-          Ether to send in the transaction, either specified in wei, or as a string with a unit
-          type.
+          Ether to send in the transaction, either specified in wei, or as a
+          string with a unit type.
           
           Examples: 1ether, 10gwei, 0.01ether
 
@@ -257,17 +266,20 @@ Ethereum options:
           [env: ETH_RPC_URL=]
 
       --flashbots
-          Use the Flashbots RPC URL with fast mode (<https://rpc.flashbots.net/fast>).
+          Use the Flashbots RPC URL with fast mode
+          (<https://rpc.flashbots.net/fast>).
           
           This shares the transaction privately with all registered builders.
           
-          See: <https://docs.flashbots.net/flashbots-protect/quick-start#faster-transactions>
+          See:
+          <https://docs.flashbots.net/flashbots-protect/quick-start#faster-transactions>
 
       --jwt-secret <JWT_SECRET>
           JWT Secret for the RPC endpoint.
           
-          The JWT secret will be used to create a JWT for a RPC. For example, the following can be
-          used to simulate a CL `engine_forkchoiceUpdated` call:
+          The JWT secret will be used to create a JWT for a RPC. For example,
+          the following can be used to simulate a CL `engine_forkchoiceUpdated`
+          call:
           
           cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2
           '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
@@ -333,7 +345,8 @@ Wallet options - keystore:
           [env: ETH_KEYSTORE=]
 
       --account <ACCOUNT_NAME>
-          Use a keystore from the default keystores folder (~/.foundry/keystores) by its filename
+          Use a keystore from the default keystores folder
+          (~/.foundry/keystores) by its filename
           
           [env: ETH_KEYSTORE_ACCOUNT=]
 

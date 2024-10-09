@@ -88,9 +88,6 @@ Options:
           
           [aliases: no-rpc-rate-limit]
 
-      --alphanet
-          Enables Alphanet features
-
   -h, --help
           Print help (see a summary with '-h')
 ```
