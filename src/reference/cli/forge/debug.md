@@ -99,13 +99,7 @@ Compiler options:
           Activate the Solidity optimizer
 
       --optimizer-runs <RUNS>
-          The number of runs specifies roughly how often each opcode of the
-          deployed code will be executed across the life-time of the contract.
-          This means it is a trade-off parameter between code size (deploy cost)
-          and code execution cost (cost after deployment). An `optimizer_runs`
-          parameter of `1` will produce short but expensive code. In contrast, a
-          larger `optimizer_runs` parameter will produce longer but more gas
-          efficient code
+          The number of optimizer runs
 
       --extra-output <SELECTOR>...
           Extra output to include in the contract's artifact.
@@ -210,8 +204,8 @@ ZKSync configuration:
           Currently unused
 
   -O, --zk-optimizer-mode <LEVEL>
-          Set the LLVM optimization parameter `-O[0 | 1 | 2 | 3 | s | z]`. Use `3` for best
-          performance and `z` for minimal size
+          Set the LLVM optimization parameter `-O[0 | 1 | 2 | 3 | s | z]`. Use
+          `3` for best performance and `z` for minimal size
           
           [aliases: zk-optimization]
 
@@ -261,7 +255,7 @@ EVM options:
           The initial balance of deployed test contracts
 
       --sender <ADDRESS>
-          The address which will be executing tests/scripts
+          The address which will be executing tests
 
       --ffi
           Enable the FFI cheatcode
@@ -358,7 +352,4 @@ Executor environment config:
           calls are executed as a separate transaction in a separate EVM
           context, enabling more precise gas accounting and transaction state
           changes
-
-      --alphanet
-          Whether to enable Alphanet features
 ```

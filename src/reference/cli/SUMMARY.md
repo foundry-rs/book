@@ -43,7 +43,6 @@
   - [`forge verify-bytecode`](./forge/verify-bytecode.md)
   - [`forge verify-check`](./forge/verify-check.md)
   - [`forge verify-contract`](./forge/verify-contract.md)
-
 - [`cast`](./cast.md)
   - [`cast 4byte`](./cast/4byte.md)
   - [`cast 4byte-decode`](./cast/4byte-decode.md)

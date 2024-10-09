@@ -7,7 +7,7 @@ $ forge test --help
 ```
 
 ```txt
-Usage: forge test [OPTIONS] [PATH]
+Usage: forge test [OPTIONS]
 
 Options:
   -h, --help
@@ -33,12 +33,6 @@ Test options:
           
           For more fine-grained control of which fuzz case is run, see forge
           run.
-
-      --flamegraph
-          Generate a flamegraph for a single test. Implies `--decode-internal`
-
-      --flamechart
-          Generate a flamechart for a single test. Implies `--decode-internal`
 
       --decode-internal [<TEST_FUNCTION>]
           Whether to identify internal functions in traces.
@@ -90,15 +84,9 @@ Test options:
       --show-progress
           Show test execution progress
 
-  [PATH]
-          The contract file you want to test, it's a shortcut for --match-path
-
 Display options:
       --json
           Output test results in JSON format
-
-      --junit
-          Output test results as JUnit XML report
 
   -l, --list
           List tests instead of running them
@@ -190,7 +178,7 @@ EVM options:
           The initial balance of deployed test contracts
 
       --sender <ADDRESS>
-          The address which will be executing tests/scripts
+          The address which will be executing tests
 
       --ffi
           Enable the FFI cheatcode
@@ -288,9 +276,6 @@ Executor environment config:
           context, enabling more precise gas accounting and transaction state
           changes
 
-      --alphanet
-          Whether to enable Alphanet features
-
 Cache options:
       --force
           Clear the cache and artifacts folder and recompile
@@ -353,13 +338,7 @@ Compiler options:
           Activate the Solidity optimizer
 
       --optimizer-runs <RUNS>
-          The number of runs specifies roughly how often each opcode of the
-          deployed code will be executed across the life-time of the contract.
-          This means it is a trade-off parameter between code size (deploy cost)
-          and code execution cost (cost after deployment). An `optimizer_runs`
-          parameter of `1` will produce short but expensive code. In contrast, a
-          larger `optimizer_runs` parameter will produce longer but more gas
-          efficient code
+          The number of optimizer runs
 
       --extra-output <SELECTOR>...
           Extra output to include in the contract's artifact.
@@ -464,8 +443,8 @@ ZKSync configuration:
           Currently unused
 
   -O, --zk-optimizer-mode <LEVEL>
-          Set the LLVM optimization parameter `-O[0 | 1 | 2 | 3 | s | z]`. Use `3` for best
-          performance and `z` for minimal size
+          Set the LLVM optimization parameter `-O[0 | 1 | 2 | 3 | s | z]`. Use
+          `3` for best performance and `z` for minimal size
           
           [aliases: zk-optimization]
 
