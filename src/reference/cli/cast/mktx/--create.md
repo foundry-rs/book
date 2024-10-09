@@ -4,6 +4,9 @@ Use to deploy raw contract bytecode
 
 ```bash
 $ cast mktx --create --help
+```
+
+```txt
 Usage: cast mktx --create <CODE> [SIG] [ARGS]...
 
 Arguments:

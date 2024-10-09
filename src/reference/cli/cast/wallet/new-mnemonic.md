@@ -4,6 +4,9 @@ Generates a random BIP39 mnemonic phrase
 
 ```bash
 $ cast wallet new-mnemonic --help
+```
+
+```txt
 Usage: cast wallet new-mnemonic [OPTIONS]
 
 Options:

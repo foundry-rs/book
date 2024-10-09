@@ -4,6 +4,9 @@ Converts a number of one base to another
 
 ```bash
 $ cast to-base --help
+```
+
+```txt
 Usage: cast to-base [OPTIONS] [VALUE] [BASE]
 
 Arguments:

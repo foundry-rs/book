@@ -4,6 +4,9 @@ Use to deploy raw contract bytecode
 
 ```bash
 $ cast send --create --help
+```
+
+```txt
 Usage: cast send --create <CODE> [SIG] [ARGS]...
 
 Arguments:

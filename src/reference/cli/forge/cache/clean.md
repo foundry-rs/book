@@ -4,6 +4,9 @@ Cleans cached data from the global foundry directory
 
 ```bash
 $ forge cache clean --help
+```
+
+```txt
 Usage: forge cache clean [OPTIONS] [CHAINS]...
 
 Arguments:

@@ -2,7 +2,7 @@
 // ANCHOR: all
 pragma solidity 0.8.10;
 
-import "forge-std/Test.sol";
+import {Test} from "forge-std/Test.sol";
 
 contract Safe {
     receive() external payable {}

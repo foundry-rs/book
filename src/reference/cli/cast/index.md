@@ -4,6 +4,9 @@ Compute the storage slot for an entry in a mapping
 
 ```bash
 $ cast index --help
+```
+
+```txt
 Usage: cast index <KEY_TYPE> <KEY> <SLOT_NUMBER>
 
 Arguments:

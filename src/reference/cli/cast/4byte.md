@@ -4,6 +4,9 @@ Get the function signatures for the given selector from https://openchain.xyz
 
 ```bash
 $ cast 4byte --help
+```
+
+```txt
 Usage: cast 4byte [SELECTOR]
 
 Arguments:

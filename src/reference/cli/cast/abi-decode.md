@@ -4,6 +4,9 @@ Decode ABI-encoded input or output data.
 
 ```bash
 $ cast abi-decode --help
+```
+
+```txt
 Usage: cast abi-decode [OPTIONS] <SIG> <CALLDATA>
 
 Arguments:

@@ -4,6 +4,9 @@ Generate event signatures from event string
 
 ```bash
 $ cast sig-event --help
+```
+
+```txt
 Usage: cast sig-event [EVENT_STRING]
 
 Arguments:

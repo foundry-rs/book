@@ -29,13 +29,13 @@ A remapping _remaps_ Solidity imports to different directories. For example, the
 with an import like
 
 ```solidity
-import "@openzeppelin/contracts/utils/Context.sol";
+import {Context} from "@openzeppelin/contracts/utils/Context.sol";
 ```
 
 becomes
 
 ```solidity
-import "node_modules/@openzeppelin/openzeppelin-contracts/contracts/utils/Context.sol";
+import {Context} from "node_modules/@openzeppelin/openzeppelin-contracts/contracts/utils/Context.sol";
 ```
 
 ##### `auto_detect_remappings`
@@ -113,7 +113,7 @@ If both `offline` and `auto-detect-solc` are set to `true`, the required version
 - Environment: `FOUNDRY_IGNORED_WARNINGS_FROM` OR `DAPP_IGNORED_WARNINGS_FROM`
 
 An array of file paths from which warnings should be ignored during the compulation process. This is useful when you have a specific
-directories of files that produce known warning and you wish to suppress these warnings without affecting others.
+directories of files that produce known warnings and you wish to suppress these warnings without affecting others.
 
 Each entry in the array should be a path to a directory or a specific file. For Example:
 
@@ -255,7 +255,9 @@ Whether or not to enable the Solidity optimizer.
 - Default: 200
 - Environment: `FOUNDRY_OPTIMIZER_RUNS` or `DAPP_OPTIMIZER_RUNS`
 
-The amount of optimizer runs to perform.
+The number of runs specifies roughly how often each opcode of the deployed code will be executed across the life-time of the contract. This means it is a trade-off parameter between code size (deploy cost) and code execution cost (cost after deployment). A `optimizer_runs` parameter of `1` will produce short but expensive code. In contrast, a larger `optimizer_runs` parameter will produce longer but more gas efficient code. The maximum value of the parameter is `2**32-1`.
+
+A common misconception is that this parameter specifies the number of iterations of the optimizer. This is not true: The optimizer will always run as many times as it can still improve the code.
 
 ##### `via_ir`
 

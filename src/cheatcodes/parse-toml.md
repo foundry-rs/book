@@ -217,7 +217,7 @@ for (uint256 i = 0; i < fruitstall.apples.length; i++) {
 
 ### How to use StdToml
 
-1. Import the library `import "../StdToml.sol";`
+1. Import the library `import {stdToml} from "forge-std/StdToml.sol";`
 2. Define its usage with `string`: `using stdToml for string;`
 3. If you want to parse simple values (numbers, address, etc.) use the helper functions
 4. If you want to parse entire TOML tables:

@@ -4,6 +4,9 @@ Verify the signature of a message
 
 ```bash
 $ cast wallet verify --help
+```
+
+```txt
 Usage: cast wallet verify --address <ADDRESS> <MESSAGE> <SIGNATURE>
 
 Arguments:

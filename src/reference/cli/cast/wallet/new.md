@@ -4,11 +4,15 @@ Create a new random keypair
 
 ```bash
 $ cast wallet new --help
+```
+
+```txt
 Usage: cast wallet new [OPTIONS] [PATH]
 
 Arguments:
   [PATH]
-          If provided, then keypair will be written to an encrypted JSON keystore
+          If provided, then keypair will be written to an encrypted JSON
+          keystore
 
 Options:
   -p, --password
