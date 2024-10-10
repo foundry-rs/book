@@ -14,7 +14,7 @@ It provides all the essential functionality you need to get started writing test
 Simply import `Test.sol` and inherit from `Test` in your test contract:
 
 ```solidity
-import "forge-std/Test.sol";
+import {Test} from "forge-std/Test.sol";
 
 contract ContractTest is Test { ...
 ```
@@ -38,17 +38,17 @@ deal(address(dai), alice, 10000e18);
 To import the `Vm` interface or the `console` library individually:
 
 ```solidity
-import "forge-std/Vm.sol";
+import {Vm} from "forge-std/Vm.sol";
 ```
 
 ```solidity
-import "forge-std/console.sol";
+import {console} from "forge-std/console.sol";
 ```
 
 **Note:** `console2.sol` contains patches to `console.sol` that allows Forge to decode traces for calls to the console, but it is not compatible with Hardhat.
 
 ```solidity
-import "forge-std/console2.sol";
+import {console2} from "forge-std/console2.sol";
 ```
 
 ### Standard libraries

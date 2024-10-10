@@ -4,6 +4,9 @@ Generate scaffold files
 
 ```bash
 $ forge generate --help
+```
+
+```txt
 Usage: forge generate <COMMAND>
 
 Commands:

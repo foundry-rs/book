@@ -4,7 +4,7 @@
 - You can use it in calls and transactions. It also works with view and pure functions.
 - It always works, regardless of the call or transaction failing or being successful.
 - To use it you need import it:
-    - `import "forge-std/console.sol";`
+    - `import {console} from "forge-std/console.sol";`
 - You can call console.log with up to 4 parameters in any order of following types:
     - `uint`
     - `string`

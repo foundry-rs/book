@@ -4,14 +4,17 @@ Run a smart contract as a script, building transactions that can be sent onchain
 
 ```bash
 $ forge script --help
+```
+
+```txt
 Usage: forge script [OPTIONS] <PATH> [ARGS]...
 
 Arguments:
   <PATH>
           The contract you want to run. Either the file path or contract name.
           
-          If multiple contracts exist in the same file you must specify the target contract with
-          --target-contract.
+          If multiple contracts exist in the same file you must specify the
+          target contract with --target-contract.
 
   [ARGS]...
           Arguments to pass to the script function
@@ -23,7 +26,8 @@ Options:
           [aliases: tc]
 
   -s, --sig <SIG>
-          The signature of the function you want to call in the contract, or raw calldata
+          The signature of the function you want to call in the contract, or raw
+          calldata
           
           [default: run()]
 
@@ -43,7 +47,8 @@ Options:
       --batch-size <BATCH_SIZE>
           Batch size of transactions.
           
-          This is ignored and set to 1 if batching is not available or `--slow` is enabled.
+          This is ignored and set to 1 if batching is not available or `--slow`
+          is enabled.
           
           [default: 100]
 
@@ -56,18 +61,21 @@ Options:
           [default: 130]
 
       --unlocked
-          Send via `eth_sendTransaction` using the `--from` argument or `$ETH_FROM` as sender
+          Send via `eth_sendTransaction` using the `--from` argument or
+          `$ETH_FROM` as sender
 
       --resume
           Resumes submitting transactions that failed or timed-out previously.
           
-          It DOES NOT simulate the script again and it expects nonces to have remained the same.
+          It DOES NOT simulate the script again and it expects nonces to have
+          remained the same.
           
-          Example: If transaction N has a nonce of 22, then the account should have a nonce of 22,
-          otherwise it fails.
+          Example: If transaction N has a nonce of 22, then the account should
+          have a nonce of 22, otherwise it fails.
 
       --multi
-          If present, --resume or --verify will be assumed to be a multi chain deployment
+          If present, --resume or --verify will be assumed to be a multi chain
+          deployment
 
       --debug
           Open the script in the debugger.
@@ -75,11 +83,12 @@ Options:
           Takes precedence over broadcast.
 
       --slow
-          Makes sure a transaction is sent, only after its previous one has been confirmed and
-          succeeded
+          Makes sure a transaction is sent, only after its previous one has been
+          confirmed and succeeded
 
       --non-interactive
-          Disables interactive prompts that might appear when deploying big contracts.
+          Disables interactive prompts that might appear when deploying big
+          contracts.
           
           For more info on the contract size limit, see EIP-170:
           <https://eips.ethereum.org/EIPS/eip-170>
@@ -96,7 +105,8 @@ Options:
           Output results in JSON format
 
       --with-gas-price <PRICE>
-          Gas price for legacy transactions, or max fee per gas for EIP1559 transactions
+          Gas price for legacy transactions, or max fee per gas for EIP1559
+          transactions
           
           [env: ETH_GAS_PRICE=]
 
@@ -135,7 +145,8 @@ Compiler options:
       --use <SOLC_VERSION>
           Specify the solc version, or a path to a local solc, to build with.
           
-          Valid values are in the format `x.y.z`, `solc:x.y.z` or `path/to/solc`.
+          Valid values are in the format `x.y.z`, `solc:x.y.z` or
+          `path/to/solc`.
 
       --offline
           Do not access the network.
@@ -148,7 +159,8 @@ Compiler options:
       --no-metadata
           Do not append any metadata to the bytecode.
           
-          This is equivalent to setting `bytecode_hash` to `none` and `cbor_metadata` to `false`.
+          This is equivalent to setting `bytecode_hash` to `none` and
+          `cbor_metadata` to `false`.
 
       --silent
           Don't print anything on startup
@@ -185,8 +197,8 @@ Project options:
       --revert-strings <REVERT>
           Revert string configuration.
           
-          Possible values are "default", "strip" (remove), "debug" (Solidity-generated revert
-          strings) and "verboseDebug"
+          Possible values are "default", "strip" (remove), "debug"
+          (Solidity-generated revert strings) and "verboseDebug"
 
       --build-info
           Generate build info files
@@ -197,7 +209,8 @@ Project options:
       --root <PATH>
           The project's root path.
           
-          By default root of the Git repository, if in one, or the current working directory.
+          By default root of the Git repository, if in one, or the current
+          working directory.
 
   -C, --contracts <PATH>
           The contracts source directory
@@ -217,7 +230,8 @@ Project options:
       --hardhat
           Use the Hardhat-style project layout.
           
-          This is the same as using: `--contracts contracts --lib-paths node_modules`.
+          This is the same as using: `--contracts contracts --lib-paths
+          node_modules`.
           
           [aliases: hh]
 
@@ -266,8 +280,8 @@ ZKSync configuration:
           Currently unused
 
   -O, --zk-optimizer-mode <LEVEL>
-          Set the LLVM optimization parameter `-O[0 | 1 | 2 | 3 | s | z]`. Use `3` for best
-          performance and `z` for minimal size
+          Set the LLVM optimization parameter `-O[0 | 1 | 2 | 3 | s | z]`. Use
+          `3` for best performance and `z` for minimal size
           
           [aliases: zk-optimization]
 
@@ -324,7 +338,8 @@ Wallet options - keystore:
           [aliases: keystores]
 
       --account <ACCOUNT_NAMES>
-          Use a keystore from the default keystores folder (~/.foundry/keystores) by its filename
+          Use a keystore from the default keystores folder
+          (~/.foundry/keystores) by its filename
           
           [env: ETH_KEYSTORE_ACCOUNT=]
           [aliases: accounts]
@@ -350,9 +365,11 @@ Wallet options - hardware wallet:
 
 EVM options:
   -f, --fork-url <URL>
-          Fetch state over a remote endpoint instead of starting from an empty state.
+          Fetch state over a remote endpoint instead of starting from an empty
+          state.
           
-          If you want to fetch state from a specific block number, see --fork-block-number.
+          If you want to fetch state from a specific block number, see
+          --fork-block-number.
           
           [aliases: rpc-url]
 
@@ -390,7 +407,8 @@ EVM options:
           Enable the FFI cheatcode
 
       --always-use-create-2-factory
-          Use the create 2 factory in all cases including tests and non-broadcasting scripts
+          Use the create 2 factory in all cases including tests and
+          non-broadcasting scripts
 
   -v, --verbosity...
           Verbosity of the EVM.
@@ -400,12 +418,14 @@ EVM options:
           Verbosity levels:
           - 2: Print logs for all tests
           - 3: Print execution traces for failing tests
-          - 4: Print execution traces for all tests, and setup traces for failing tests
+          - 4: Print execution traces for all tests, and setup traces for
+          failing tests
           - 5: Print execution and setup traces for all tests
 
 Fork config:
       --compute-units-per-second <CUPS>
-          Sets the number of assumed available compute units per second for this provider
+          Sets the number of assumed available compute units per second for this
+          provider
           
           default value: 330
           
@@ -425,8 +445,8 @@ Executor environment config:
           The block gas limit
 
       --code-size-limit <CODE_SIZE>
-          EIP-170: Contract code size limit in bytes. Useful to increase this because of tests. By
-          default, it is 0x6000 (~25kb)
+          EIP-170: Contract code size limit in bytes. Useful to increase this
+          because of tests. By default, it is 0x6000 (~25kb)
 
       --chain <CHAIN>
           The chain name or EIP-155 chain ID
@@ -463,8 +483,8 @@ Executor environment config:
           The block gas limit
 
       --memory-limit <MEMORY_LIMIT>
-          The memory limit per EVM execution in bytes. If this limit is exceeded, a `MemoryLimitOOG`
-          result is thrown.
+          The memory limit per EVM execution in bytes. If this limit is
+          exceeded, a `MemoryLimitOOG` result is thrown.
           
           The default is 128MiB.
 
@@ -474,9 +494,10 @@ Executor environment config:
           [aliases: no-gas-limit]
 
       --isolate
-          Whether to enable isolation of calls. In isolation mode all top-level calls are executed
-          as a separate transaction in a separate EVM context, enabling more precise gas accounting
-          and transaction state changes
+          Whether to enable isolation of calls. In isolation mode all top-level
+          calls are executed as a separate transaction in a separate EVM
+          context, enabling more precise gas accounting and transaction state
+          changes
 
       --retries <RETRIES>
           Number of attempts for retrying verification

@@ -4,6 +4,9 @@ Update dependencies by reading the config file.
 
 ```bash
 $ forge soldeer update --help
+```
+
+```txt
 Usage: soldeer update
 
 Options:

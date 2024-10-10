@@ -9,31 +9,31 @@ What's included:
 - `Vm.sol`: Up-to-date [cheatcodes interface](../../cheatcodes/#cheatcodes-interface)
 
     ```solidity
-    import "forge-std/Vm.sol";
+    import {Vm} from "forge-std/Vm.sol";
     ```
 
 - [`console.sol`](./console-log.md) and `console2.sol`: Hardhat-style logging functionality
 
     ```solidity
-    import "forge-std/console.sol";
+    import {console} from "forge-std/console.sol";
     ```
 
     **Note:** `console2.sol` contains patches to `console.sol` that allow Forge to decode traces for calls to the console, but it is not compatible with Hardhat.
 
     ```solidity
-    import "forge-std/console2.sol";
+    import {console2} from "forge-std/console2.sol";
     ```
 
 - `Script.sol`: Basic utilities for [Solidity scripting](../../tutorials/solidity-scripting.md)
 
     ```solidity
-    import "forge-std/Script.sol";
+    import {Script} from "forge-std/Script.sol";
     ```
 
 - `Test.sol`: The complete Forge Std experience (more details [below](#forge-stds-test))
 
     ```solidity
-    import "forge-std/Test.sol";
+    import {Test} from "forge-std/Test.sol";
     ```
 
 ### Forge Std's `Test`
@@ -43,7 +43,7 @@ The `Test` contract in `Test.sol` provides all the essential functionality you n
 Simply import `Test.sol` and inherit from `Test` in your test contract:
 
 ```solidity
-import "forge-std/Test.sol";
+import {Test} from "forge-std/Test.sol";
 
 contract ContractTest is Test { ...
 ```

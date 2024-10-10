@@ -4,6 +4,9 @@ Concatenate hex strings
 
 ```bash
 $ cast concat-hex --help
+```
+
+```txt
 Usage: cast concat-hex [DATA]...
 
 Arguments:

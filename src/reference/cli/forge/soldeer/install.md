@@ -1,9 +1,12 @@
 # forge soldeer install
 
-Install a dependency from soldeer repository or from a custom url that points to a zip file or from
+Install a dependency from soldeer repository or from a custom url that points to
 
 ```bash
 $ forge soldeer install --help
+```
+
+```txt
 Usage: soldeer install <DEPENDENCY>~<VERSION> [URL]
 
 Arguments:

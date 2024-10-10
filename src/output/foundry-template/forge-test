@@ -4,7 +4,7 @@ $ forge test --zksync
 // ANCHOR_END: command
 // ANCHOR: output
 Compiling 25 files with Solc 0.8.25
-Solc 0.8.25 finished in 1.25s
+Solc 0.8.25 finished in 925.41ms
 Compiler run successful!
 
 No files changed, compilation skipped
@@ -13,8 +13,8 @@ Ran 3 tests for test/Foo.t.sol:FooTest
 [PASS] testFork_Example() (gas: 3779)
 [PASS] testFuzz_Example(uint256) (runs: 1000, μ: 213166, ~: 213166)
 [PASS] test_Example() (gas: 215916)
-Suite result: ok. 3 passed; 0 failed; 0 skipped; finished in 6.69s (6.69s CPU time)
+Suite result: ok. 3 passed; 0 failed; 0 skipped; finished in 5.69s (5.69s CPU time)
 
-Ran 1 test suite in 6.69s (6.69s CPU time): 3 tests passed, 0 failed, 0 skipped (3 total tests)
+Ran 1 test suite in 5.69s (5.69s CPU time): 3 tests passed, 0 failed, 0 skipped (3 total tests)
 // ANCHOR_END: output
 // ANCHOR_END: all
