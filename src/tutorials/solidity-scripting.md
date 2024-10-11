@@ -38,7 +38,7 @@ forge install transmissions11/solmate Openzeppelin/openzeppelin-contracts@v5.0.1
 Next, we have to delete the `Counter.sol` file in the `src` folder and create another file called `NFT.sol`. You can do this by running:
 
 ```sh
-rm src/Counter.sol test/Counter.t.sol && touch src/NFT.sol && ls src
+rm src/Counter.sol test/Counter.t.sol script/Counter.s.sol && touch src/NFT.sol && ls src
 ```
 
 ![set up commands](../images/solidity-scripting/set-up-commands.png)
