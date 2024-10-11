@@ -50,3 +50,26 @@ function testMockCall() public {
     assertEq(IERC20(address(0)).balanceOf(address(1)), 1 ether);
 }
 ```
+
+Mocking multiple calls with `msg.value`:
+
+```solidity
+function testMockCallsWithMsgValue() public {
+    bytes[] memory mocks = new bytes[](2);
+    mocks[0] = abi.encode(2 ether);
+    mocks[1] = abi.encode(1 ether);
+
+    vm.mockCalls(
+        address(0),
+        1 ether,
+        abi.encodeWithSelector(DexPool.swapETHForToken.selector),
+        mocks
+    );
+
+    uint tokenAmount1 = DexPool(address(0)).swapETHForToken{value: 1 ether}();
+    uint tokenAmount2 = DexPool(address(0)).swapETHForToken{value: 1 ether}();
+
+    assertEq(tokenAmount1, 2 ether);
+    assertEq(tokenAmount2, 1 ether);
+}
+```
