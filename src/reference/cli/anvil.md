@@ -268,6 +268,11 @@ Environment config:
       --disable-code-size-limit
           Disable EIP-170: Contract code size limit
 
+      --disable-min-priority-fee
+          Disable the enforcement of a minimum suggested priority fee
+          
+          [aliases: no-priority-fee]
+
       --gas-limit <GAS_LIMIT>
           The block gas limit
 
@@ -278,7 +283,7 @@ EVM options:
       --alphanet
           Enable Alphanet features
           
-          [aliases: alphanet]
+          [aliases: odyssey]
 
       --auto-impersonate
           Enable autoImpersonate on startup

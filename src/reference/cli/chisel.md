@@ -14,6 +14,7 @@ Commands:
   load         Load a cached session
   view         View the source of a cached session
   clear-cache  Clear all cached chisel sessions from the cache directory
+  eval         Simple evaluation of a command without entering the REPL
   help         Print this message or the help of the given subcommand(s)
 
 Options:
@@ -102,8 +103,10 @@ Compiler options:
       --evm-version <VERSION>
           The target EVM version
 
-      --optimize
+      --optimize [<OPTIMIZE>]
           Activate the Solidity optimizer
+          
+          [possible values: true, false]
 
       --optimizer-runs <RUNS>
           The number of runs specifies roughly how often each opcode of the

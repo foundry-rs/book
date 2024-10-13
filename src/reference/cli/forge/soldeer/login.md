@@ -1,6 +1,6 @@
 # forge soldeer login
 
-Log into the central repository to push the dependencies
+Log into the central repository to push packages
 
 ```bash
 $ forge soldeer login --help

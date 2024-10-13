@@ -82,8 +82,10 @@ Compiler options:
       --evm-version <VERSION>
           The target EVM version
 
-      --optimize
+      --optimize [<OPTIMIZE>]
           Activate the Solidity optimizer
+          
+          [possible values: true, false]
 
       --optimizer-runs <RUNS>
           The number of runs specifies roughly how often each opcode of the
