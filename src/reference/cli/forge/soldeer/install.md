@@ -11,18 +11,23 @@ Usage: forge soldeer install [OPTIONS] [DEPENDENCY~VERSION] [URL]
 
 Arguments:
   [DEPENDENCY~VERSION]
-          The dependency name and version, separated by a tilde.
+          The dependency name and version, separated by a tilde. The version is
+          always required.
           
-          If not present, this command will perform `soldeer update`
+          If not present, this command will install all dependencies which are
+          missing.
 
   [URL]
-          The URL to the dependency zip file, if not from the Soldeer repository
+          The URL to the dependency zip file.
+          
+          If not present, the package will be installed from the Soldeer
+          repository.
           
           Example: https://my-domain/dep.zip
 
 Options:
       --rev <REV>
-          A Git revision
+          A Git commit hash
 
       --tag <TAG>
           A Git tag
@@ -35,8 +40,11 @@ Options:
           them
 
   -d, --recursive-deps
-          If set, this command will install the recursive dependencies (via
+          If set, this command will install dependencies recursively (via git
           submodules or via soldeer)
+
+      --clean
+          Perform a clean install by re-installing all dependencies
 
   -h, --help
           Print help (see a summary with '-h')

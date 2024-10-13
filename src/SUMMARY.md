@@ -245,6 +245,7 @@
       - [`chisel load`](./reference/cli/chisel/load.md)
       - [`chisel view`](./reference/cli/chisel/view.md)
       - [`chisel clear-cache`](./reference/cli/chisel/clear-cache.md)
+      - [`chisel eval`](./reference/cli/chisel/eval.md)
   - [`forge` Commands](./reference/forge/README.md) <!-- CLI_REFERENCE END -->
     - [General Commands](./reference/forge/general-commands.md)
       - [forge](./reference/forge/forge.md)

@@ -17,15 +17,15 @@ Arguments:
           central repository: `<https://soldeer.xyz>`.
 
   [PATH]
-          Use this if the dependency you want to push is not in the current
+          Use this if the package you want to push is not in the current
           directory.
           
           Example: `soldeer push mypkg~0.1.0 /path/to/dep`.
 
 Options:
   -d, --dry-run
-          Use this if you want to run a dry run. If set, this will generate a
-          zip file that you can inspect to see what will be pushed
+          If set, does not publish the package but generates a zip file that can
+          be inspected
 
       --skip-warnings
           Use this if you want to skip the warnings that can be triggered when

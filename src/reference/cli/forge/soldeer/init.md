@@ -1,6 +1,6 @@
 # forge soldeer init
 
-Initialize a new Soldeer project for use with Foundry
+Convert a Foundry project to use Soldeer
 
 ```bash
 $ forge soldeer init --help

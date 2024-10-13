@@ -9,8 +9,8 @@ Compiler run successful!
 
 Ran 1 test for test/ContractB.t.sol:ContractBTest
 [PASS] testExample() (gas: 257)
-Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 310.04µs (56.68µs CPU time)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 330.42µs (45.00µs CPU time)
 
-Ran 1 test suite in 5.38ms (310.04µs CPU time): 1 tests passed, 0 failed, 0 skipped (1 total tests)
+Ran 1 test suite in 5.72ms (330.42µs CPU time): 1 tests passed, 0 failed, 0 skipped (1 total tests)
 // ANCHOR_END: output
 // ANCHOR_END: all
