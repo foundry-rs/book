@@ -21,6 +21,7 @@
 - [Overview](./zksync-specifics/README.md)
 - [Execution Overview](./zksync-specifics/execution-overview.md)
 - [Compilation Overview](./zksync-specifics/compilation-overview.md)
+- [Non Inlinable Libraries](./zksync-specifics/non-inlinable-libraries.md)
 - [Configuration Overview](./zksync-specifics/configuration-overview.md)
 - [Limitations](./zksync-specifics/limitations/README.md)
   - [General](./zksync-specifics/limitations/general.md)
