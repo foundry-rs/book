@@ -2,7 +2,6 @@
 
 - [Execution Overview](execution-overview.md)
 - [Compilation Overview](compilation-overview.md)
-- [Non Inlinable Libraries](non-inlinable-libraries.md)
 - [Limitations](limitations/README.md)
   - [General](limitations/general.md)
   - [Compilation](limitations/compilation.md)
