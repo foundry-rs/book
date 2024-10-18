@@ -3,7 +3,7 @@
 // ANCHOR: prelude
 pragma solidity 0.8.10;
 
-import "forge-std/Test.sol";
+import {Test} from "forge-std/Test.sol";
 
 error Unauthorized();
 // ANCHOR_END: prelude

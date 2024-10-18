@@ -4,6 +4,9 @@ Generate a Solidity interface from a given ABI.
 
 ```bash
 $ cast interface --help
+```
+
+```txt
 Usage: cast interface [OPTIONS] <PATH_OR_ADDRESS>
 
 Arguments:
@@ -27,7 +30,8 @@ Options:
           If not specified, the interface will be output to stdout.
 
   -j, --json
-          If specified, the interface will be output as JSON rather than Solidity
+          If specified, the interface will be output as JSON rather than
+          Solidity
 
   -e, --etherscan-api-key <KEY>
           The Etherscan (or equivalent) API key

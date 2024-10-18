@@ -4,6 +4,9 @@ Check verification status on Etherscan
 
 ```bash
 $ forge verify-check --help
+```
+
+```txt
 Usage: forge verify-check [OPTIONS] <ID>
 
 Arguments:

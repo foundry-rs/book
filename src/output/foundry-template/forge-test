@@ -4,7 +4,7 @@ $ forge test --zksync
 // ANCHOR_END: command
 // ANCHOR: output
 Compiling 25 files with Solc 0.8.25
-Solc 0.8.25 finished in 1.25s
+Solc 0.8.25 finished in 925.41ms
 Compiler run successful!
 
 No files changed, compilation skipped

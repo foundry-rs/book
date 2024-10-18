@@ -4,6 +4,9 @@ Convert an ETH amount into another unit (ether, gwei or wei).
 
 ```bash
 $ cast to-unit --help
+```
+
+```txt
 Usage: cast to-unit [VALUE] [UNIT]
 
 Arguments:

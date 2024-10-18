@@ -4,6 +4,9 @@ Flatten a source file and all of its imports into one file
 
 ```bash
 $ forge flatten --help
+```
+
+```txt
 Usage: forge flatten [OPTIONS] <PATH>
 
 Arguments:
@@ -23,7 +26,8 @@ Project options:
       --root <PATH>
           The project's root path.
           
-          By default root of the Git repository, if in one, or the current working directory.
+          By default root of the Git repository, if in one, or the current
+          working directory.
 
   -C, --contracts <PATH>
           The contracts source directory
@@ -43,7 +47,8 @@ Project options:
       --hardhat
           Use the Hardhat-style project layout.
           
-          This is the same as using: `--contracts contracts --lib-paths node_modules`.
+          This is the same as using: `--contracts contracts --lib-paths
+          node_modules`.
           
           [aliases: hh]
 

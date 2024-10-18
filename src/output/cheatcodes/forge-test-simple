@@ -4,7 +4,7 @@ $ forge test --zksync --match-test test_IncrementAsOwner
 // ANCHOR_END: command
 // ANCHOR: output
 Compiling 24 files with Solc 0.8.10
-Solc 0.8.10 finished in 1.15s
+Solc 0.8.10 finished in 801.67ms
 Compiler run successful!
 
 Compiling 24 files with zksolc and solc 0.8.10

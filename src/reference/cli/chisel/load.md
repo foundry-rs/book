@@ -4,6 +4,9 @@ Load a cached session
 
 ```bash
 $ chisel load --help
+```
+
+```txt
 Usage: chisel load <ID>
 
 Arguments:

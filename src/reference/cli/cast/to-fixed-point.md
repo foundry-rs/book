@@ -4,6 +4,9 @@ Convert an integer into a fixed point number
 
 ```bash
 $ cast to-fixed-point --help
+```
+
+```txt
 Usage: cast to-fixed-point [DECIMALS] [VALUE]
 
 Arguments:

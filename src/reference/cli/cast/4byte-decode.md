@@ -4,6 +4,9 @@ Decode ABI-encoded calldata using https://openchain.xyz
 
 ```bash
 $ cast 4byte-decode --help
+```
+
+```txt
 Usage: cast 4byte-decode [CALLDATA]
 
 Arguments:

@@ -4,6 +4,9 @@ Update one or multiple dependencies.
 
 ```bash
 $ forge update --help
+```
+
+```txt
 Usage: forge update [OPTIONS] [DEPENDENCIES]...
 
 Arguments:
@@ -14,7 +17,8 @@ Options:
       --root <PATH>
           The project's root path.
           
-          By default root of the Git repository, if in one, or the current working directory.
+          By default root of the Git repository, if in one, or the current
+          working directory.
 
   -f, --force
           Override the up-to-date check
