@@ -41,26 +41,28 @@ contract MyToken is ERC20 {
 }
 ```
 
-Additionally, we can tell Forge to verify our contract on Etherscan, Sourcify or Blockscout, if the network is supported, by passing `--verify`.
+Additionally, we can tell Forge to verify our contract on ZKsync Block Explorer, Etherscan, Sourcify or Blockscout, if the network is supported, by passing `--verify`.
+
+It is recommended to make use of ZKsync Block Explorer by specifying `--verifier zksync` and using the verification URL (e.g. ZKsync Sepolia `https://explorer.sepolia.era.zksync.dev/contract_verification`).
 
 ```sh
 $ forge create --zksync \
     --rpc-url <your_rpc_url> \
     --constructor-args "ForgeUSD" "FUSD" 18 1000000000000000000000 \
     --private-key <your_private_key> \
-    --etherscan-api-key <your_etherscan_api_key> \
+    --verifier zksync  \
+    --verifier-url https://explorer.sepolia.era.zksync.dev/contract_verification \
     --verify \
     src/MyToken.sol:MyToken
 ```
 
 ## Verifying a pre-existing contract
 
-It is recommended to use the `--verify` flag with `forge create` to automatically verify the contract on explorer after a deployment.
-Note that for Etherscan [`ETHERSCAN_API_KEY`](../reference/config/etherscan.md#etherscan_api_key) must be set.
+It is recommended to use the `--verify` flag with `forge create` to automatically verify the contract on explorer after a deployment using `--verifier zksync` to target ZKsync Block Explorer instance.
 
 If you are verifying an already deployed contract, read on.
 
-You can verify a contract on Etherscan, Sourcify, oklink or Blockscout with the [`forge verify-contract`](../reference/forge/forge-verify-contract.md) command.
+You can verify a contract on ZKsync Block Explorer, Etherscan, Sourcify, oklink or Blockscout with the [`forge verify-contract`](../reference/forge/forge-verify-contract.md) command.
 
 You must provide:
 - the contract address
@@ -80,19 +82,19 @@ Here's how to verify it:
 ```bash
 forge verify-contract \
     --zksync \
-    --chain-id 11155111 \
+    --chain zksync-testnet \
     --num-of-optimizations 1000000 \
     --watch \
+    --verifier zksync  \
+    --verifier-url https://explorer.sepolia.era.zksync.dev/contract_verification \
     --constructor-args $(cast abi-encode "constructor(string,string,uint256,uint256)" "ForgeUSD" "FUSD" 18 1000000000000000000000) \
-    --etherscan-api-key <your_etherscan_api_key> \
-    --compiler-version v0.8.10+commit.fc410830 \
     <the_contract_address> \
     src/MyToken.sol:MyToken 
 
-Submitted contract for verification:
-                Response: `OK`
-                GUID: `a6yrbjp5prvakia6bqp5qdacczyfhkyi5j1r6qbds1js41ak1a`
-                url: https://sepolia.etherscan.io//address/0x6a54…3a4c#code
+Submitting verification for [src/MyToken.sol:MyToken] at address 0x21d6dffe4B406c59E80CD62b4cB1763363c8a040.
+Verification submitted successfully. Verification ID: 27574
+Checking verification status for ID: 27574 using verifier: ZKsync at URL: https://explorer.sepolia.era.zksync.dev/contract_verification
+Verification was successful.
 ```
 
 It is recommended to use the [`--watch`](../reference/forge/forge-verify-contract.md#verify-contract-options) flag along
@@ -102,7 +104,7 @@ If the `--watch` flag was not supplied, you can check
 the verification status with the [`forge verify-check`](../reference/forge/forge-verify-check.md) command:
 
 ```bash
-$ forge verify-check --zksync --chain-id 11155111 <GUID> <your_etherscan_api_key>
+$ forge verify-check --zksync --chain zksync-testnet <verificationId> --verifier zksync
 Contract successfully verified.
 ```
 
