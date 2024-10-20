@@ -92,6 +92,8 @@
         - [`forge cache ls`](./reference/cli/forge/cache/ls.md)
       - [`forge clean`](./reference/cli/forge/clean.md)
       - [`forge clone`](./reference/cli/forge/clone.md)
+      - [`forge compiler`](./reference/cli/forge/compiler.md)
+        - [`forge compiler resolve`](./reference/cli/forge/compiler/resolve.md)
       - [`forge completions`](./reference/cli/forge/completions.md)
       - [`forge config`](./reference/cli/forge/config.md)
       - [`forge coverage`](./reference/cli/forge/coverage.md)
