@@ -10,8 +10,8 @@ Compiler run successful!
 Ran 2 tests for test/ComplicatedContract.t.sol:ComplicatedContractTest
 [PASS] test_DepositERC20() (gas: 102193)
 [PASS] test_DepositETH() (gas: 61414)
-Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 1.15ms (1.40ms CPU time)
+Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 1.16ms (1.49ms CPU time)
 
-Ran 1 test suite in 5.96ms (1.15ms CPU time): 2 tests passed, 0 failed, 0 skipped (2 total tests)
+Ran 1 test suite in 5.78ms (1.16ms CPU time): 2 tests passed, 0 failed, 0 skipped (2 total tests)
 // ANCHOR_END: output
 // ANCHOR_END: all
