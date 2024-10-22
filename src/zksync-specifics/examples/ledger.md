@@ -41,7 +41,7 @@ Again, proceed to sign the transaction on your device.
 
 We will be deploying a `Counter` contract using the paymaster, from within a script using:
 
-```
+```solidity
 vmExt.zkUsePaymaster(vm.envAddress("PAYMASTER_ADDRESS"),
                   abi.encodeWithSelector(
                        bytes4(keccak256("general(bytes)")),
