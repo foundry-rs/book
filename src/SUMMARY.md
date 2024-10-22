@@ -38,6 +38,7 @@
 - [Gas Overview](./zksync-specifics/gas.md)
 - [Examples](./zksync-specifics/examples/README.md)
   - [Paymaster Approval Based](./zksync-specifics/examples/paymaster-approval-based.md)
+  - [Ledger](./zksync-specifics/examples/ledger.md)
 # Supported Commands
 - [Command List](./supported-commands/README.md)
 
