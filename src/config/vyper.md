@@ -22,7 +22,7 @@ from snekmate.utils import eip712_domain_separator
 
 You can install Vyper the desired library via `forge install` e.g. `forge install pcaversaccio/snekmate`.
 
-You then need to adjust your `foundry.toml` as follows (replacing "snemkate" with the name of your
+You then need to adjust your `foundry.toml` as follows (replacing "snekmate" with the name of your
 desired package):
 
 ```toml
