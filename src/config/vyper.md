@@ -40,6 +40,7 @@ or a virtual environment you can point foundry to it by modifying your `foundry.
 libs = ["lib", ".venv/lib/python3.12/site-packages/"]
 ```
 
+Note that compatible alternative python package managers like `uv` will work too.
 
 ### 2. Solidity tests
 
