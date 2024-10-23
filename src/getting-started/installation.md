@@ -46,7 +46,7 @@ For Windows users, you'll also need a recent version of [Visual Studio](https://
 You can either use the different [Foundryup-ZKsync](#using-foundryup) flags:
 
 ```sh
-foundryup-zksync --branch master
+foundryup-zksync --branch main
 foundryup-zksync --path path/to/foundry-zksync
 ```
 
