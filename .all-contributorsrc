@@ -1026,6 +1026,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "juannyG",
+      "name": "Juan Gutierrez",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7672379?v=4",
+      "profile": "http://juanmgutierrez.com",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
