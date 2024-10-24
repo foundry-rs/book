@@ -19,7 +19,7 @@ This is a comprehensive review of all the Foundry commands actually supported in
 | forge debug                         | ❌ Not Supported | Debugs a transaction on a local fork or a live network, allowing you to step through the execution.                                      |
 | forge cache clean                   | ✅ Supported     | Clears the local cache, removing stored build artifacts and other cached data.                                                           |
 | forge cache ls                      | ✅ Supported     | Lists the contents of the local cache, including build artifacts and other data.                                                         |
-| forge clean                         | ❌ Not Supported | Removes build artifacts and resets the project's build state.                                                                            |
+| forge clean                         | ✅ Supported | Removes build artifacts and resets the project's build state.                                                                            |
 | forge eip712                        | ✅ Supported     | Generates EIP-712 typed data structures for Solidity contracts, used for off-chain signing and verification.                             |
 | forge fmt                           | ✅ Supported     | Formats Solidity source code according to a standard style guide, ensuring consistency.                                                  |
 | forge geiger                        | ✅ Supported     | Analyzes a Solidity project for unsafe or potentially insecure code patterns, helping to improve security.                               |
