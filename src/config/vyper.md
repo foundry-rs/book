@@ -12,6 +12,35 @@ Otherwise, you can set the path to `vyper` in your `foundry.toml` by adding the 
 path = "/path/to/vyper"
 ```
 
+#### Vyper libraries via `forge install`
+
+If you want an import like the following to work in your Vyper contract:
+
+```vyper
+from snekmate.utils import eip712_domain_separator
+```
+
+You can install Vyper the desired library via `forge install` e.g. `forge install pcaversaccio/snekmate`.
+
+You then need to adjust your `foundry.toml` as follows (replacing "snekmate" with the name of your
+desired package):
+
+```toml
+skip = ["**/lib/snekmate/**"]
+libs = ["lib", "lib/snekmate/src"]
+```
+
+#### Vyper libraries via `pip`
+
+Alternatively if you want to install the package via `pip` into your system's python configuration
+or a virtual environment you can point foundry to it by modifying your `foundry.toml` as follows:
+
+```toml
+# Assuming you have a virtual environment in `.venv` and are using Python 3.12
+libs = ["lib", ".venv/lib/python3.12/site-packages/"]
+```
+
+Note that compatible alternative python package managers like `uv` will work too.
 
 ### 2. Solidity tests
 
