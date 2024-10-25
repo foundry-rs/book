@@ -10,3 +10,4 @@
 - [Additional Cheatcodes](cheatcodes/README.md)
   - [zkVm](cheatcodes/zkvm.md)
 - [Gas Overview](gas.md)
+- [Paymaster Overview](paymaster-overview.md)

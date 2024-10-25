@@ -36,9 +36,11 @@
   - [zkVmSkip](./zksync-specifics/cheatcodes/zk-vm-skip.md)
   - [zkUsePaymaster](./zksync-specifics/cheatcodes/zk-use-paymaster.md)
 - [Gas Overview](./zksync-specifics/gas.md)
+- [Paymaster Overview](./zksync-specifics/paymaster-overview.md)
 - [Examples](./zksync-specifics/examples/README.md)
   - [Paymaster Approval Based](./zksync-specifics/examples/paymaster-approval-based.md)
   - [Ledger](./zksync-specifics/examples/ledger.md)
+
 # Supported Commands
 - [Command List](./supported-commands/README.md)
 
