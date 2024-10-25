@@ -29,7 +29,7 @@ The path to the script contract sources relative to the root of the project.
 ##### `out`
 
 - Type: string
-- Default: artifacts
+- Default: out
 - Environment: `FOUNDRY_OUT` or `DAPP_OUT`
 
 The path to put contract artifacts in, relative to the root of the project.
