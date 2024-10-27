@@ -8,6 +8,7 @@ $ tree . -L 3 -I output
 ├── foundry.toml
 ├── lib
 │   └── forge-std
+│       ├── CONTRIBUTING.md
 │       ├── LICENSE-APACHE
 │       ├── LICENSE-MIT
 │       ├── README.md
@@ -23,6 +24,6 @@ $ tree . -L 3 -I output
 └── test
     └── Counter.t.sol
 
-8 directories, 10 files
+8 directories, 11 files
 // ANCHOR_END: output
 // ANCHOR_END: all

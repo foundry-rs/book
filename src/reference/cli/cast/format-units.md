@@ -1,17 +1,22 @@
-# forge completions
+# cast format-units
 
-Generate shell completions script
+Format a number from smallest unit to decimal with arbitrary decimals.
 
 ```bash
-$ forge completions --help
+$ cast format-units --help
 ```
 
 ```txt
-Usage: forge completions [OPTIONS] <SHELL>
+Usage: cast format-units [OPTIONS] [VALUE] [UNIT]
 
 Arguments:
-  <SHELL>
-          [possible values: bash, elvish, fish, powershell, zsh]
+  [VALUE]
+          The value to format
+
+  [UNIT]
+          The unit to format to
+          
+          [default: 18]
 
 Options:
   -h, --help

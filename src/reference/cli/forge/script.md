@@ -82,6 +82,9 @@ Options:
           
           Takes precedence over broadcast.
 
+      --dump <PATH>
+          Dumps all debugger steps to file
+
       --slow
           Makes sure a transaction is sent, only after its previous one has been
           confirmed and succeeded
@@ -176,9 +179,6 @@ Compiler options:
           
           This is equivalent to setting `bytecode_hash` to `none` and
           `cbor_metadata` to `false`.
-
-      --silent
-          Don't print anything on startup
 
       --ast
           Includes the AST as JSON in the compiler output
@@ -495,4 +495,19 @@ Verifier options:
           The verifier URL, if using a custom provider
           
           [env: VERIFIER_URL=]
+
+Display options:
+      --color <COLOR>
+          Log messages coloring
+
+          Possible values:
+          - auto:   Intelligently guess whether to use color output (default)
+          - always: Force color output
+          - never:  Force disable color output
+
+  -q, --quiet
+          Do not print log messages
+
+      --verbose
+          Use verbose output
 ```
