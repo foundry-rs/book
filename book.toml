@@ -12,8 +12,8 @@ create-missing = false
 [preprocessor.external-links]
 
 [output.html]
-git-repository-url = "https://github.com/Moonsong-Labs/foundry-zksync-book"
-edit-url-template = "https://github.com/Moonsong-Labs/foundry-zksync-book/edit/main/{path}"
+git-repository-url = "hhttps://github.com/matter-labs/foundry-zksync-book"
+edit-url-template = "https://github.com/matter-labs/foundry-zksync-book/edit/main/{path}"
 default-theme = "ayu"
 additional-js = ["src/static/solidity.min.js"]
 cname = "96ba0f25.book-3fk.pages.dev"
