@@ -7,7 +7,7 @@ $ forge cache ls --help
 ```
 
 ```txt
-Usage: forge cache ls [CHAINS]...
+Usage: forge cache ls [OPTIONS] [CHAINS]...
 
 Arguments:
   [CHAINS]...
@@ -21,4 +21,19 @@ Arguments:
 Options:
   -h, --help
           Print help (see a summary with '-h')
+
+Display options:
+      --color <COLOR>
+          Log messages coloring
+
+          Possible values:
+          - auto:   Intelligently guess whether to use color output (default)
+          - always: Force color output
+          - never:  Force disable color output
+
+  -q, --quiet
+          Do not print log messages
+
+      --verbose
+          Use verbose output
 ```

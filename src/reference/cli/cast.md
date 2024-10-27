@@ -7,7 +7,7 @@ $ cast --help
 ```
 
 ```txt
-Usage: cast <COMMAND>
+Usage: cast [OPTIONS] <COMMAND>
 
 Commands:
   4byte                  Get the function signatures for the given selector from
@@ -61,6 +61,8 @@ Commands:
                          [aliases: f]
   format-bytes32-string  Formats a string into bytes32 encoding [aliases:
                          --format-bytes32-string]
+  format-units           Format a number from smallest unit to decimal with
+                         arbitrary decimals [aliases: --format-units, fun]
   from-bin               Convert binary data into hex data [aliases: --from-bin,
                          from-binx, fb]
   from-fixed-point       Convert a fixed point number into an integer [aliases:
@@ -102,6 +104,8 @@ Commands:
                          [aliases: --parse-bytes32-address]
   parse-bytes32-string   Parses a string from bytes32 encoding [aliases:
                          --parse-bytes32-string]
+  parse-units            Convert a number from decimal to smallest unit with
+                         arbitrary decimals [aliases: --parse-units, pun]
   pretty-calldata        Pretty print calldata [aliases: pc]
   proof                  Generate a storage proof for a given storage slot
                          [aliases: pr]
@@ -158,8 +162,26 @@ Commands:
   wallet                 Wallet management utilities [aliases: w]
 
 Options:
-  -h, --help     Print help
-  -V, --version  Print version
+  -h, --help
+          Print help (see a summary with '-h')
+
+  -V, --version
+          Print version
+
+Display options:
+      --color <COLOR>
+          Log messages coloring
+
+          Possible values:
+          - auto:   Intelligently guess whether to use color output (default)
+          - always: Force color output
+          - never:  Force disable color output
+
+  -q, --quiet
+          Do not print log messages
+
+      --verbose
+          Use verbose output
 
 Find more information in the book:
 http://book.getfoundry.sh/reference/cast/cast.html

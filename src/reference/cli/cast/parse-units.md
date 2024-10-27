@@ -1,17 +1,22 @@
-# forge completions
+# cast parse-units
 
-Generate shell completions script
+Convert a number from decimal to smallest unit with arbitrary decimals.
 
 ```bash
-$ forge completions --help
+$ cast parse-units --help
 ```
 
 ```txt
-Usage: forge completions [OPTIONS] <SHELL>
+Usage: cast parse-units [OPTIONS] [VALUE] [UNIT]
 
 Arguments:
-  <SHELL>
-          [possible values: bash, elvish, fish, powershell, zsh]
+  [VALUE]
+          The value to convert
+
+  [UNIT]
+          The unit to convert to
+          
+          [default: 18]
 
 Options:
   -h, --help
