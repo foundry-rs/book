@@ -12,7 +12,7 @@ create-missing = false
 [preprocessor.external-links]
 
 [output.html]
-git-repository-url = "hhttps://github.com/matter-labs/foundry-zksync-book"
+git-repository-url = "https://github.com/matter-labs/foundry-zksync-book"
 edit-url-template = "https://github.com/matter-labs/foundry-zksync-book/edit/main/{path}"
 default-theme = "ayu"
 additional-js = ["src/static/solidity.min.js"]
