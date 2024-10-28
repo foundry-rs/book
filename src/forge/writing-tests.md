@@ -63,7 +63,7 @@ It is possible to simulate multiple transactions in a single test, with a depend
 ```solidity
 function beforeTestSetup(
     bytes4 testSelector
-public returns (bytes[] memory beforeTestCalldata)
+) public returns (bytes[] memory beforeTestCalldata)
 ```
 
 where
