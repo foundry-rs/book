@@ -5,7 +5,7 @@ $ forge build --zksync
 // ANCHOR: output
 
 Compiling 28 files with zksolc and solc 0.8.25
-zksolc and solc 0.8.25 finished in 4.68s
+zksolc and solc 0.8.25 finished in 6.15s
 Compiler run successful!
 // ANCHOR_END: output
 // ANCHOR_END: all

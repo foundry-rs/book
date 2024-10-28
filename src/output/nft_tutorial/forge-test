@@ -4,7 +4,7 @@ $ forge test --zksync
 // ANCHOR_END: command
 // ANCHOR: output
 Compiling 23 files with Solc 0.8.10
-Solc 0.8.10 finished in 1.32s
+Solc 0.8.10 finished in 1.76s
 Compiler run successful with warnings:
 Warning (5667): Unused function parameter. Remove or comment out the variable name to silence this warning.
   --> test/OpenZeppelinNft.t.sol:89:9:
@@ -68,10 +68,10 @@ Warning (2018): Function state mutability can be restricted to pure
 
 
 No files changed, compilation skipped
-2024-10-09T21:29:57.408767Z ERROR foundry_zksync_core::vm::tracers::cheatcode: call may fail or behave unexpectedly due to empty code target=0x0000000000000000000000000000000000010001 calldata="150b7a020000000000000000000000007fa9385be102ac3eac297483dd6233d62b3e14960000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000000"
-2024-10-09T21:29:57.408840Z ERROR foundry_zksync_core::vm::tracers::error: vm error: Invalid opcode, Not enough gas
-2024-10-09T21:29:57.409657Z ERROR foundry_zksync_core::vm::tracers::cheatcode: call may fail or behave unexpectedly due to empty code target=0x0000000000000000000000000000000000010001 calldata="150b7a020000000000000000000000007fa9385be102ac3eac297483dd6233d62b3e14960000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000000"
-2024-10-09T21:29:57.409677Z ERROR foundry_zksync_core::vm::tracers::error: vm error: Invalid opcode, Not enough gas
+2024-10-06T00:06:44.795422Z ERROR foundry_zksync_core::vm::tracers::cheatcode: call may fail or behave unexpectedly due to empty code target=0x0000000000000000000000000000000000010001 calldata="150b7a020000000000000000000000007fa9385be102ac3eac297483dd6233d62b3e14960000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000000"
+2024-10-06T00:06:44.795459Z ERROR foundry_zksync_core::vm::tracers::error: vm error: Invalid opcode, Not enough gas
+2024-10-06T00:06:44.818386Z ERROR foundry_zksync_core::vm::tracers::cheatcode: call may fail or behave unexpectedly due to empty code target=0x0000000000000000000000000000000000010001 calldata="150b7a020000000000000000000000007fa9385be102ac3eac297483dd6233d62b3e14960000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000000"
+2024-10-06T00:06:44.818438Z ERROR foundry_zksync_core::vm::tracers::error: vm error: Invalid opcode, Not enough gas
 
 Ran 8 tests for test/OpenZeppelinNft.t.sol:OpenZeppelinNftTests
 [PASS] testBalanceIncremented() (gas: 2364898)
@@ -82,7 +82,7 @@ Ran 8 tests for test/OpenZeppelinNft.t.sol:OpenZeppelinNftTests
 [PASS] testMintPricePaid() (gas: 1038211)
 [PASS] testNewMintOwnerRegistered() (gas: 1330941)
 [PASS] testSafeContractReceiver() (gas: 17087001)
-Suite result: ok. 8 passed; 0 failed; 0 skipped; finished in 62.76ms (145.55ms CPU time)
+Suite result: ok. 8 passed; 0 failed; 0 skipped; finished in 139.80ms (142.21ms CPU time)
 
 Ran 8 tests for test/SolmateNft.sol:SolmateNftTests
 [PASS] testBalanceIncremented() (gas: 2363346)
@@ -93,8 +93,8 @@ Ran 8 tests for test/SolmateNft.sol:SolmateNftTests
 [PASS] testMintPricePaid() (gas: 1037658)
 [PASS] testNewMintOwnerRegistered() (gas: 1329918)
 [PASS] testSafeContractReceiver() (gas: 17085868)
-Suite result: ok. 8 passed; 0 failed; 0 skipped; finished in 63.31ms (149.22ms CPU time)
+Suite result: ok. 8 passed; 0 failed; 0 skipped; finished in 139.82ms (159.69ms CPU time)
 
-Ran 2 test suites in 64.86ms (126.07ms CPU time): 16 tests passed, 0 failed, 0 skipped (16 total tests)
+Ran 2 test suites in 140.71ms (279.62ms CPU time): 16 tests passed, 0 failed, 0 skipped (16 total tests)
 // ANCHOR_END: output
 // ANCHOR_END: all

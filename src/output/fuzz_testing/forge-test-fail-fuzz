@@ -20,7 +20,7 @@ Warning (9302): Return value of low-level calls not used.
 
 
 Compiling 1 files with zksolc and solc 0.8.10
-zksolc and solc 0.8.10 finished in 4.06s
+zksolc and solc 0.8.10 finished in 5.79s
 Compiler run successful with warnings:
 Warning (9302)
 Warning: Return value of low-level calls not used.
@@ -36,14 +36,12 @@ Warning: Return value of low-level calls not used.
 30 |         payable(address(safe)).call{value: amount}("");
    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-2024-10-09T21:29:26.190945Z ERROR foundry_zksync_core::vm::tracers::error: vm error: Not enough gas
-2024-10-09T21:29:26.191102Z ERROR foundry_zksync_core::vm::inspect: tx execution halted: Bootloader out of gas
-2024-10-09T21:29:26.195012Z ERROR foundry_zksync_core::vm::tracers::cheatcode: call may fail or behave unexpectedly due to empty code target=0x7fa9385be102ac3eac297483dd6233d62b3e1496 calldata=""
+2024-10-06T00:06:15.308856Z ERROR foundry_zksync_core::vm::tracers::cheatcode: call may fail or behave unexpectedly due to empty code target=0x7fa9385be102ac3eac297483dd6233d62b3e1496 calldata=""
 
 Ran 1 test for test/Safe.t.sol:SafeTest
-[FAIL. Reason: assertion failed; counterexample: calldata=0x29facca7000000000000000000000000451250ed02c3b5d4ef727250d78e35f4f34ad844 args=[394328826233888621336380253070256380957816444996 [3.943e47]]] testFuzz_Withdraw(uint256) (runs: 0, μ: 0, ~: 0)
-Suite result: FAILED. 0 passed; 1 failed; 0 skipped; finished in 22.14ms (10.29ms CPU time)
+[FAIL. Reason: assertion failed; counterexample: calldata=0x29facca700000000000000000000000000000000000001e35e0786a154ba56aa29228e12 args=[38296303183566758584479465508370 [3.829e31]]] testFuzz_Withdraw(uint256) (runs: 0, μ: 0, ~: 0)
+Suite result: FAILED. 0 passed; 1 failed; 0 skipped; finished in 29.00ms (13.46ms CPU time)
 
-Ran 1 test suite in 22.77ms (22.14ms CPU time): 0 tests passed, 1 failed, 0 skipped (1 total tests)
+Ran 1 test suite in 29.74ms (29.00ms CPU time): 0 tests passed, 1 failed, 0 skipped (1 total tests)
 // ANCHOR_END: output
 // ANCHOR_END: all
