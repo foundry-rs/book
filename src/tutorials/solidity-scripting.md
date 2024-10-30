@@ -290,16 +290,13 @@ forge script --chain sepolia script/NFT.s.sol:MyScript "NFT tutorial" TUT baseUr
 ```
 
 Let's break down the additions to our command:
-```sh
-# we added this to the command:
-"NFT tutorial" TUT baseUri --sig 'run(string,string,string)'
 
-"NFT tutorial"  # is the first argument of the new run command - the name of the collection
-TUT             # is the second argument - the symbol of the collection
-baseUri         # is the third argument - the baseURI of the collection
+`"NFT tutorial" TUT baseUri --sig 'run(string,string,string)'`
 
---sig 'run(string,string,string)' # changes the signature of the function we want to call in the contract
-```
+- `"NFT tutorial"` - is the first argument of the new run command - the name of the collection
+- `TUT` - is the second argument - the symbol of the collection
+- `baseUri` - is the third argument - the baseURI of the collection
+- `--sig 'run(string,string,string)'` - changes the signature of the function we want to call in the contract
 
 Forge is going to run our script and broadcast the transactions using the parameters we specified on the command line. 
 You should see an output similar to the previous section.
