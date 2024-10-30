@@ -35,7 +35,13 @@ Forge uses the following keywords in tests:
 {{#include ../../projects/writing_tests/test/Basic.t.sol:testFailSubtract43}}
 ```
 
-A good practice is to use the pattern `test_Revert[If|When]_Condition` in combination with the [`expectRevert`](../cheatcodes/expect-revert.md) cheatcode (cheatcodes are explained in greater detail in the following [section](./cheatcodes.md)). Also, other testing practices can be found in the [Tutorials section](../tutorials/best-practices.md). 
+A good practice is to use the pattern `test_Revert[If|When]_Condition` in combination with the [`expectRevert`](../cheatcodes/expect-revert.md) cheatcode (cheatcodes are explained in greater detail in the following [section](./cheatcodes.md)). Also, other testing practices can be found in the [Tutorials section](../tutorials/best-practices.md).
+
+> **Note**: To use `stdError` constants (like `arithmeticError` in the example below), make sure to import `StdError.sol`:
+> ```solidity
+> import {stdError} from "forge-std/StdError.sol";
+> ```
+
 Now, instead of using `testFail`, you know exactly what reverted and with which error:
 
 ```solidity
