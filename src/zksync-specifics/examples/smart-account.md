@@ -379,21 +379,6 @@ contract DeployMultisig is Script {
         vmExt.zkUseFactoryDep("TwoUserMultisig");
 
         factory.deployAccount(salt, owner1, owner2);
-        string memory factoryArtifact = vm.readFile(
-            "zkout/AAFactory.sol/AAFactory.json"
-        );
-        bytes32 factoryBytecodeHash = vm.parseJsonBytes32(
-            factoryArtifact,
-            ".hash"
-        );
-        Create2Factory create2Factory = new Create2Factory();
-        address multisigAddress = create2Factory.create2(
-            salt,
-            factoryBytecodeHash,
-            abi.encode(owner1, owner2)
-        );
-        console.log("Multisig deployed at: ", multisigAddress);
-
         vm.stopBroadcast();
     }
 }
@@ -402,7 +387,7 @@ contract DeployMultisig is Script {
 ### Running the script
 
 ```sh
-zkforge script ./script/DeployMultisig.s.sol:DeployMultisig --rpc-url <RPC_URL> --private-key <PRIVATE_KEY> --broadcast --via-ir --system-mode true --zksync
+forge script ./script/DeployMultisig.s.sol:DeployMultisig --rpc-url <RPC_URL> --private-key <PRIVATE_KEY> --broadcast --via-ir --zk-enable-eravm-extensions --zksync
 ```
 
 For the complete source code, visit the [minimal account abstraction multisig repository](https://github.com/dutterbutter/min-aa-multisig-foundry).

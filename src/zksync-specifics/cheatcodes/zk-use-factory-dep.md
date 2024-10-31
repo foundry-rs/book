@@ -8,14 +8,17 @@ function zkUseFactoryDep(string calldata name) external pure;
 
 ### Description
 
-Enables marking a bytecode as a factory dependency for the next CREATE or CALL and cleared after.
+Marks a given contract as a factory dependency only for the next CREATE or CALL, unmarking it afterwards, similar to [`prank`](../../cheatcodes/prank.md).
 
-This cheatcode is useful when deploying contracts through factories, as it allows marking bytecode as a factory dependency and deploying contracts by passing their bytecode hash to the factory.
+This cheatcode is useful when deploying contracts through factories that do not directly depend on a given contract, as it allows explicitly marking this type of contract as a factory dependency, enabling the factory to deploy the contract.
+More information on factory dependencies can be found in the [official ZKsync docs](https://docs.zksync.io/build/developer-reference/ethereum-differences/contract-deployment#note-on-factory_deps).
 
 ### Examples
 
 ```solidity
 contract Deployer {
+    // Factory does not directly depend on TwoUserMultisig, so we need to mark it explicitly
+    // as a factory dependency to allow deployment through the factory
     // Deploy the factory
     Factory factory = new Factory(multisigBytecodeHash);
 
