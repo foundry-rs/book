@@ -47,8 +47,12 @@ Commands:
   compute-address        Compute the contract address from a given nonce and
                          deployer address [aliases: ca]
   concat-hex             Concatenate hex strings [aliases: --concat-hex, ch]
+  constructor-args       Display constructor arguments used for the contract
+                         initialization [aliases: cra]
   create2                Generate a deterministic contract address using CREATE2
                          [aliases: c2]
+  creation-code          Download a contract creation code from Etherscan and
+                         RPC [aliases: cc]
   decode-eof             Decodes EOF container bytes
   decode-transaction     Decodes a raw signed EIP 2718 typed transaction
                          [aliases: dt, decode-tx]
@@ -127,6 +131,8 @@ Commands:
   storage                Get the raw value of a contract's storage slot
                          [aliases: st]
   storage-root           Get the storage root for an account [aliases: sr]
+  string-decode          Decode ABI-encoded string [aliases: --string-decode,
+                         sd]
   to-ascii               Convert hex data to an ASCII string [aliases:
                          --to-ascii, tas, 2as]
   to-base                Converts a number of one base to another [aliases:

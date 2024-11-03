@@ -1,26 +1,26 @@
-# cast from-rlp
+# cast string-decode
 
-Decodes RLP hex-encoded data
+Decode ABI-encoded string.
 
 ```bash
-$ cast from-rlp --help
+$ cast string-decode --help
 ```
 
 ```txt
-Usage: cast from-rlp [OPTIONS] [VALUE]
+Usage: cast string-decode [OPTIONS] <DATA>
 
 Arguments:
-  [VALUE]
-          The RLP hex-encoded data
+  <DATA>
+          The ABI-encoded string
 
 Options:
-      --as-int
-          Decode the RLP data as int
-
   -h, --help
           Print help (see a summary with '-h')
 
 Display options:
+  -j, --json
+          Print the decoded string as JSON
+
       --color <COLOR>
           Log messages coloring
 
