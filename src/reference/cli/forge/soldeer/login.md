@@ -1,13 +1,13 @@
 # forge soldeer login
 
-Login into the central repository to push the dependencies.
+Log into the central repository to push packages
 
 ```bash
 $ forge soldeer login --help
 ```
 
 ```txt
-Usage: soldeer login
+Usage: forge soldeer login
 
 Options:
   -h, --help  Print help

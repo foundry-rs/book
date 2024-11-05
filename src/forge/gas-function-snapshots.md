@@ -1,4 +1,4 @@
-## Gas Snapshots
+## Gas Function Snapshots
 
 > 🚨 **Important**
 >
