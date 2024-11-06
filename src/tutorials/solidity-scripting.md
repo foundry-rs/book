@@ -252,6 +252,55 @@ Forge is going to run our script and broadcast the transactions for us - this ca
 
 This confirms that you have successfully deployed the `NFT` contract to the Sepolia testnet and have also verified it on Etherscan, all with one command.
 
+### Scripting with Arguments
+
+Let's enhance our script to accept arguments, making it more flexible and reusable. This approach allows us to deploy different NFT contracts with varying names, symbols, and base URIs without modifying the script each time. We'll start by modifying the `NFT.s.sol` script:
+
+```solidity
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.13;
+
+import {Script} from "forge-std/Script.sol";
+import {NFT} from "../src/NFT.sol";
+
+contract MyScript is Script {
+    function run(
+        string calldata _name,
+        string calldata _symbol,
+        string calldata _baseUri
+    ) external {
+        uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
+        vm.startBroadcast(deployerPrivateKey);
+
+        NFT nft = new NFT(_name, _symbol, _baseUri);
+
+        vm.stopBroadcast();
+    }
+}
+```
+
+At the root of the project run:
+
+```sh
+# To load the variables in the .env file
+source .env
+
+# To deploy and verify our contract
+forge script --chain sepolia script/NFT.s.sol:MyScript "NFT tutorial" TUT baseUri --sig 'run(string,string,string)' --rpc-url $SEPOLIA_RPC_URL --broadcast --verify -vvvv
+```
+
+Let's break down the additions to our command:
+
+`"NFT tutorial" TUT baseUri --sig 'run(string,string,string)'`
+
+- `"NFT tutorial"` - is the first argument of the new run command - the name of the collection
+- `TUT` - is the second argument - the symbol of the collection
+- `baseUri` - is the third argument - the baseURI of the collection
+- `--sig 'run(string,string,string)'` - changes the signature of the function we want to call in the contract
+
+Forge is going to run our script and broadcast the transactions using the parameters we specified on the command line. 
+You should see an output similar to the previous section.
+
 ### Deploying locally
 
 You can deploy to Anvil, the local testnet, by configuring the port as the `fork-url`.
