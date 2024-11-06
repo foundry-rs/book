@@ -145,4 +145,3 @@
     - [`cast wallet list`](./cast/wallet/list.md)
     - [`cast wallet private-key`](./cast/wallet/private-key.md)
     - [`cast wallet decrypt-keystore`](./cast/wallet/decrypt-keystore.md)
-

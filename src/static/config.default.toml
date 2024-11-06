@@ -115,17 +115,19 @@ rpc_endpoints = { optimism = "https://optimism.alchemyapi.io/v2/...", mainnet = 
 # Etherscan API key
 #etherscan_api_key = None
 # Only run test functions matching the specified regex pattern
-#test_pattern = None
+#match_test = None
 # Only run test functions that do not match the specified regex pattern
-#test_pattern_inverse = None
+#no_match_test = None
 # Only run tests in contracts matching the specified regex pattern
-#contract_pattern = None
+#match_contract = None
 # Only run tests in contracts that do not match the specified regex pattern
-#contract_pattern_inverse = None
+#no_match_contract = None
 # Only run tests in source files matching the specified glob pattern
-#path_pattern = None
+#match_path = None
 # Only run tests in source files that do not match the specified glob pattern
-#path_pattern_inverse = None
+#no_match_path = None
+# Only show coverage for files that do not match the specified regex pattern.
+#no_match_coverage = None
 # Number of threads to use. Not set or zero specifies the number of logical cores.
 #threads = 0
 # Whether to show test execution progress

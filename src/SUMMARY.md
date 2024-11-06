@@ -69,7 +69,8 @@
 - [Deploying and Verifying](./forge/deploying.md)
 - [Gas Tracking](./forge/gas-tracking.md)
   - [Gas Reports](./forge/gas-reports.md)
-  - [Gas Snapshots](./forge/gas-snapshots.md)
+  - [Gas Function Snapshots](./forge/gas-function-snapshots.md)
+  - [Gas Section Snapshots](./forge/gas-section-snapshots.md)
 <!-- - [Debugger](./forge/debugger.md) -->
 
 # Cast Overview
@@ -451,6 +452,8 @@
       - [`txGasPrice`](./cheatcodes/tx-gas-price.md)
       - [`startStateDiffRecording`](./cheatcodes/start-state-diff-recording.md)
       - [`stopAndReturnStateDiff`](./cheatcodes/stop-and-return-state-diff.md)
+      - [`snapshotState`](./cheatcodes/state-snapshots.md)
+      - [`snapshotGas`](./cheatcodes/gas-snapshots.md)
     - [Assertions](./cheatcodes/assertions.md)
       - [`expectRevert`](./cheatcodes/expect-revert.md)
       - [`expectEmit`](./cheatcodes/expect-emit.md)
@@ -515,7 +518,6 @@
       - [`createWallet`](./cheatcodes/create-wallet.md)
       - [`copyStorage`](./cheatcodes/copy-storage.md)
       - [`setArbitraryStorage`](./cheatcodes/set-arbitrary-storage.md)
-    - [Snapshots](./cheatcodes/snapshots.md)
     - [RPC](./cheatcodes/rpc.md)
     - [Files](./cheatcodes/fs.md)
     - [ZKsync](./zksync-specifics/cheatcodes/README.md)
