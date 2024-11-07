@@ -1035,6 +1035,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "TomasCImach",
+      "name": "Tomas C Imach",
+      "avatar_url": "https://avatars.githubusercontent.com/u/43709975?v=4",
+      "profile": "https://github.com/TomasCImach",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
