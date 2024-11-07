@@ -10,10 +10,31 @@ $ cast abi-encode --help
 Usage: cast abi-encode [OPTIONS] <SIG> [ARGS]...
 
 Arguments:
-  <SIG>      The function signature
-  [ARGS]...  The arguments of the function
+  <SIG>
+          The function signature
+
+  [ARGS]...
+          The arguments of the function
 
 Options:
-      --packed  Whether to use packed encoding
-  -h, --help    Print help
+      --packed
+          Whether to use packed encoding
+
+  -h, --help
+          Print help (see a summary with '-h')
+
+Display options:
+      --color <COLOR>
+          Log messages coloring
+
+          Possible values:
+          - auto:   Intelligently guess whether to use color output (default)
+          - always: Force color output
+          - never:  Force disable color output
+
+  -q, --quiet
+          Do not print log messages
+
+      --verbose
+          Use verbose output
 ```

@@ -4,7 +4,7 @@ $ forge test --zksync --match-path test/ContractB.t.sol
 // ANCHOR_END: command
 // ANCHOR: output
 Compiling 1 files with Solc 0.8.10
-Solc 0.8.10 finished in 1.05s
+Solc 0.8.10 finished in 1.08s
 Compiler run successful!
 
 Compiling 1 files with zksolc and solc 0.8.10

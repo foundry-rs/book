@@ -23,4 +23,22 @@ Options:
 Decode input data instead of output data:
   -i, --input
           Whether to decode the input or output data
+
+Display options:
+  -j, --json
+          Print the decoded calldata as JSON
+
+      --color <COLOR>
+          Log messages coloring
+
+          Possible values:
+          - auto:   Intelligently guess whether to use color output (default)
+          - always: Force color output
+          - never:  Force disable color output
+
+  -q, --quiet
+          Do not print log messages
+
+      --verbose
+          Use verbose output
 ```

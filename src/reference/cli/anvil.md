@@ -128,9 +128,6 @@ Options:
           
           See --state and --dump-state
 
-      --silent
-          Don't print anything on startup and don't print logs
-
       --slots-in-an-epoch <SLOTS_IN_AN_EPOCH>
           Slots in an epoch
           
@@ -312,4 +309,19 @@ EVM options:
           Enable steps tracing used for debug calls returning geth-style traces
           
           [aliases: tracing]
+
+Display options:
+      --color <COLOR>
+          Log messages coloring
+
+          Possible values:
+          - auto:   Intelligently guess whether to use color output (default)
+          - always: Force color output
+          - never:  Force disable color output
+
+  -q, --quiet
+          Do not print log messages
+
+      --verbose
+          Use verbose output
 ```

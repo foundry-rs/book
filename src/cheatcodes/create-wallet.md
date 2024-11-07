@@ -36,7 +36,7 @@ Creates a new Wallet struct when given a parameter to derive the private key fro
 #### `uint256`
 
 ```solidity
-Wallet memory wallet = vm.createWallet(uint256(keccak256(bytes("1"))));
+Vm.Wallet memory wallet = vm.createWallet(uint256(keccak256(bytes("1"))));
 
 emit log_uint(wallet.privateKey); // uint256(keccak256(bytes("1")))
 
@@ -58,7 +58,7 @@ emit log_string(vm.getLabel(wallet.addr)); // ""
 #### `string`
 
 ```solidity
-Wallet memory wallet = vm.createWallet("bob's wallet");
+Vm.Wallet memory wallet = vm.createWallet("bob's wallet");
 
 emit log_uint(wallet.privateKey); // uint256(keccak256(bytes("bob's wallet")))
 
@@ -80,7 +80,7 @@ emit log_string(vm.getLabel(wallet.addr)); // "bob's wallet"
 #### `uint256` and `string`
 
 ```solidity
-Wallet memory wallet = vm.createWallet(uint256(keccak256(bytes("1"))), "bob's wallet");
+Vm.Wallet memory wallet = vm.createWallet(uint256(keccak256(bytes("1"))), "bob's wallet");
 
 emit log_uint(wallet.privateKey); // uint256(keccak256(bytes("1")))
 

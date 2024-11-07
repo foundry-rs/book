@@ -7,7 +7,7 @@ $ forge --help
 ```
 
 ```txt
-Usage: forge <COMMAND>
+Usage: forge [OPTIONS] <COMMAND>
 
 Commands:
   bind               Generate Rust bindings for smart contracts
@@ -19,6 +19,7 @@ Commands:
   clean              Remove the build artifacts and cache directories
                          [aliases: cl]
   clone              Clone a contract from Etherscan
+  compiler           Compiler utilities
   completions        Generate shell completions script [aliases: com]
   config             Display the current config [aliases: co]
   coverage           Generate coverage reports
@@ -58,8 +59,26 @@ Commands:
   verify-contract    Verify smart contracts on Etherscan [aliases: v]
 
 Options:
-  -h, --help     Print help
-  -V, --version  Print version
+  -h, --help
+          Print help (see a summary with '-h')
+
+  -V, --version
+          Print version
+
+Display options:
+      --color <COLOR>
+          Log messages coloring
+
+          Possible values:
+          - auto:   Intelligently guess whether to use color output (default)
+          - always: Force color output
+          - never:  Force disable color output
+
+  -q, --quiet
+          Do not print log messages
+
+      --verbose
+          Use verbose output
 
 Find more information in the book:
 http://book.getfoundry.sh/reference/forge/forge.html

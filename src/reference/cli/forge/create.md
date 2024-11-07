@@ -40,6 +40,20 @@ Display options:
       --json
           Print the deployment information as JSON
 
+      --color <COLOR>
+          Log messages coloring
+
+          Possible values:
+          - auto:   Intelligently guess whether to use color output (default)
+          - always: Force color output
+          - never:  Force disable color output
+
+  -q, --quiet
+          Do not print log messages
+
+      --verbose
+          Use verbose output
+
 Cache options:
       --force
           Clear the cache and artifacts folder and recompile
@@ -95,9 +109,6 @@ Compiler options:
           
           This is equivalent to setting `bytecode_hash` to `none` and
           `cbor_metadata` to `false`.
-
-      --silent
-          Don't print anything on startup
 
       --ast
           Includes the AST as JSON in the compiler output
@@ -296,6 +307,16 @@ Ethereum options:
           "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
           
           [env: ETH_RPC_JWT_SECRET=]
+
+      --rpc-timeout <RPC_TIMEOUT>
+          Timeout for the RPC request in seconds.
+          
+          The specified timeout will be used to override the default timeout for
+          RPC requests.
+          
+          Default value: 45
+          
+          [env: ETH_RPC_TIMEOUT=]
 
   -e, --etherscan-api-key <KEY>
           The Etherscan (or equivalent) API key

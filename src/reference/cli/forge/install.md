@@ -23,6 +23,9 @@ Arguments:
           
           A ref can be: - A branch: master - A tag: v1.2.3 - A commit: 8e8128
           
+          For exact match, a ref can be provided with `@tag=`, `@branch=` or
+          `@rev=` prefix.
+          
           Target installation directory can be added via `<alias>=` suffix. The
           dependency will installed to `lib/<alias>`.
 
@@ -53,4 +56,19 @@ Options:
 
   -h, --help
           Print help (see a summary with '-h')
+
+Display options:
+      --color <COLOR>
+          Log messages coloring
+
+          Possible values:
+          - auto:   Intelligently guess whether to use color output (default)
+          - always: Force color output
+          - never:  Force disable color output
+
+  -q, --quiet
+          Do not print log messages
+
+      --verbose
+          Use verbose output
 ```

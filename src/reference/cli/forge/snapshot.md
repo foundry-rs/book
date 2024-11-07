@@ -68,6 +68,9 @@ Test options:
           decoded only when a single function is matched, similarly to
           `--debug`, for performance reasons.
 
+      --dump <PATH>
+          Dumps all debugger steps to file
+
       --gas-report
           Print a gas report
           
@@ -116,6 +119,20 @@ Display options:
 
       --detailed
           Print detailed test summary table
+
+      --color <COLOR>
+          Log messages coloring
+
+          Possible values:
+          - auto:   Intelligently guess whether to use color output (default)
+          - always: Force color output
+          - never:  Force disable color output
+
+  -q, --quiet
+          Do not print log messages
+
+      --verbose
+          Use verbose output
 
 Test filtering:
       --match-test <REGEX>
@@ -351,9 +368,6 @@ Compiler options:
           
           This is equivalent to setting `bytecode_hash` to `none` and
           `cbor_metadata` to `false`.
-
-      --silent
-          Don't print anything on startup
 
       --ast
           Includes the AST as JSON in the compiler output

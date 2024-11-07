@@ -85,9 +85,6 @@ Compiler options:
           This is equivalent to setting `bytecode_hash` to `none` and
           `cbor_metadata` to `false`.
 
-      --silent
-          Don't print anything on startup
-
       --ast
           Includes the AST as JSON in the compiler output
 
@@ -217,4 +214,19 @@ ZKSync configuration:
           Contracts to avoid compiling on zkSync
           
           [aliases: avoid-contracts]
+
+Display options:
+      --color <COLOR>
+          Log messages coloring
+
+          Possible values:
+          - auto:   Intelligently guess whether to use color output (default)
+          - always: Force color output
+          - never:  Force disable color output
+
+  -q, --quiet
+          Do not print log messages
+
+      --verbose
+          Use verbose output
 ```

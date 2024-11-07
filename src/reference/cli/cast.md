@@ -7,7 +7,7 @@ $ cast --help
 ```
 
 ```txt
-Usage: cast <COMMAND>
+Usage: cast [OPTIONS] <COMMAND>
 
 Commands:
   4byte                  Get the function signatures for the given selector
@@ -50,8 +50,12 @@ Commands:
   compute-address        Compute the contract address from a given nonce and
                              deployer address [aliases: ca]
   concat-hex             Concatenate hex strings [aliases: --concat-hex, ch]
-  create2                Generate a deterministic contract address using
-                             CREATE2 [aliases: c2]
+  constructor-args       Display constructor arguments used for the contract
+                         initialization [aliases: cra]
+  create2                Generate a deterministic contract address using CREATE2
+                         [aliases: c2]
+  creation-code          Download a contract creation code from Etherscan and
+                         RPC [aliases: cc]
   decode-eof             Decodes EOF container bytes
   decode-transaction     Decodes a raw signed EIP 2718 typed transaction
                              [aliases: dt, decode-tx]
@@ -63,11 +67,13 @@ Commands:
   find-block             Get the block number closest to the provided
                              timestamp [aliases: f]
   format-bytes32-string  Formats a string into bytes32 encoding [aliases:
-                             --format-bytes32-string]
-  from-bin               Convert binary data into hex data [aliases:
-                             --from-bin, from-binx, fb]
-  from-fixed-point       Convert a fixed point number into an integer
-                             [aliases: --from-fix, ff]
+                         --format-bytes32-string]
+  format-units           Format a number from smallest unit to decimal with
+                         arbitrary decimals [aliases: --format-units, fun]
+  from-bin               Convert binary data into hex data [aliases: --from-bin,
+                         from-binx, fb]
+  from-fixed-point       Convert a fixed point number into an integer [aliases:
+                         --from-fix, ff]
   from-rlp               Decodes RLP hex-encoded data [aliases: --from-rlp]
   from-utf8              Convert UTF8 text to hex [aliases: --from-ascii,
                              --from-utf8, from-ascii, fu, fa]
@@ -104,7 +110,9 @@ Commands:
   parse-bytes32-address  Parses a checksummed address from bytes32 encoding.
                              [aliases: --parse-bytes32-address]
   parse-bytes32-string   Parses a string from bytes32 encoding [aliases:
-                             --parse-bytes32-string]
+                         --parse-bytes32-string]
+  parse-units            Convert a number from decimal to smallest unit with
+                         arbitrary decimals [aliases: --parse-units, pun]
   pretty-calldata        Pretty print calldata [aliases: pc]
   proof                  Generate a storage proof for a given storage slot
                              [aliases: pr]
@@ -125,7 +133,10 @@ Commands:
   sig-event              Generate event signatures from event string
                              [aliases: se]
   storage                Get the raw value of a contract's storage slot
-                             [aliases: st]
+                         [aliases: st]
+  storage-root           Get the storage root for an account [aliases: sr]
+  string-decode          Decode ABI-encoded string [aliases: --string-decode,
+                         sd]
   to-ascii               Convert hex data to an ASCII string [aliases:
                              --to-ascii, tas, 2as]
   to-base                Converts a number of one base to another [aliases:
@@ -161,8 +172,26 @@ Commands:
   wallet                 Wallet management utilities [aliases: w]
 
 Options:
-  -h, --help     Print help
-  -V, --version  Print version
+  -h, --help
+          Print help (see a summary with '-h')
+
+  -V, --version
+          Print version
+
+Display options:
+      --color <COLOR>
+          Log messages coloring
+
+          Possible values:
+          - auto:   Intelligently guess whether to use color output (default)
+          - always: Force color output
+          - never:  Force disable color output
+
+  -q, --quiet
+          Do not print log messages
+
+      --verbose
+          Use verbose output
 
 Find more information in the book:
 http://book.getfoundry.sh/reference/cast/cast.html
