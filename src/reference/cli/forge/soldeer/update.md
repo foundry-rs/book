@@ -18,6 +18,16 @@ Options:
           If set, this command will install the dependencies recursively (via
           submodules or via soldeer)
 
+      --config-location <CONFIG_LOCATION>
+          Specify the config location without prompting.
+          
+          This prevents prompting the user if the automatic detection can't
+          determine the config location.
+
+          Possible values:
+          - foundry: Store config inside the `foundry.toml` file
+          - soldeer: Store config inside the `soldeer.toml` file
+
   -h, --help
           Print help (see a summary with '-h')
 
@@ -29,6 +39,9 @@ Display options:
           - auto:   Intelligently guess whether to use color output (default)
           - always: Force color output
           - never:  Force disable color output
+
+      --json
+          Format log messages as JSON
 
   -q, --quiet
           Do not print log messages

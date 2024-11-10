@@ -55,24 +55,6 @@ Options:
   -h, --help
           Print help (see a summary with '-h')
 
-Display options:
-  -j, --json
-          Print the decoded output as JSON
-
-      --color <COLOR>
-          Log messages coloring
-
-          Possible values:
-          - auto:   Intelligently guess whether to use color output (default)
-          - always: Force color output
-          - never:  Force disable color output
-
-  -q, --quiet
-          Do not print log messages
-
-      --verbose
-          Use verbose output
-
 Transaction options:
       --gas-limit <GAS_LIMIT>
           Gas limit for the transaction
@@ -240,4 +222,22 @@ Wallet options - hardware wallet:
 Wallet options - remote:
       --aws
           Use AWS Key Management Service
+
+Display options:
+      --color <COLOR>
+          Log messages coloring
+
+          Possible values:
+          - auto:   Intelligently guess whether to use color output (default)
+          - always: Force color output
+          - never:  Force disable color output
+
+      --json
+          Format log messages as JSON
+
+  -q, --quiet
+          Do not print log messages
+
+      --verbose
+          Use verbose output
 ```

@@ -193,10 +193,6 @@ Watch options:
           When using --poll mode, you'll want a larger duration, or risk
           overloading disk I/O.
 
-      --format-json
-          Output the compilation errors in the json format. This is useful when
-          you want to use the output in other tools
-
 Display options:
       --color <COLOR>
           Log messages coloring
@@ -205,6 +201,9 @@ Display options:
           - auto:   Intelligently guess whether to use color output (default)
           - always: Force color output
           - never:  Force disable color output
+
+      --json
+          Format log messages as JSON
 
   -q, --quiet
           Do not print log messages

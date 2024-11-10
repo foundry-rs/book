@@ -44,6 +44,9 @@ Display options:
           - always: Force color output
           - never:  Force disable color output
 
+      --json
+          Format log messages as JSON
+
   -q, --quiet
           Do not print log messages
 
