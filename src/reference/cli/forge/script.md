@@ -104,9 +104,6 @@ Options:
       --verify
           Verifies all the contracts found in the receipts of a script, if any
 
-      --json
-          Output results in JSON format
-
       --with-gas-price <PRICE>
           Gas price for legacy transactions, or max fee per gas for EIP1559
           transactions, either specified in wei, or as a string with a unit
@@ -504,6 +501,9 @@ Display options:
           - auto:   Intelligently guess whether to use color output (default)
           - always: Force color output
           - never:  Force disable color output
+
+      --json
+          Format log messages as JSON
 
   -q, --quiet
           Do not print log messages

@@ -283,9 +283,11 @@ EVM options:
           [aliases: odyssey]
 
       --auto-impersonate
-          Enable autoImpersonate on startup
+          Enables automatic impersonation on startup. This allows any
+          transaction sender to be simulated as different accounts, which is
+          useful for testing contract behavior
           
-          [aliases: auto-impersonate]
+          [aliases: auto-unlock]
 
       --disable-console-log
           Disable printing of `console.log` invocations to stdout
@@ -318,6 +320,9 @@ Display options:
           - auto:   Intelligently guess whether to use color output (default)
           - always: Force color output
           - never:  Force disable color output
+
+      --json
+          Format log messages as JSON
 
   -q, --quiet
           Do not print log messages

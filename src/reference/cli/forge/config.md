@@ -202,10 +202,6 @@ Watch options:
           When using --poll mode, you'll want a larger duration, or risk
           overloading disk I/O.
 
-      --format-json
-          Output the compilation errors in the json format. This is useful when
-          you want to use the output in other tools
-
 EVM options:
   -f, --fork-url <URL>
           Fetch state over a remote endpoint instead of starting from an empty

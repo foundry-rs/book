@@ -3,8 +3,8 @@
 $ forge init hello_foundry
 // ANCHOR_END: command
 // ANCHOR: output
-Initializing /tmp/tmp.eoAvuPqnrA/hello_foundry...
-Installing forge-std in /tmp/tmp.eoAvuPqnrA/hello_foundry/lib/forge-std (url: Some("https://github.com/foundry-rs/forge-std"), tag: None)
+Initializing /tmp/tmp.SmIMD69ZlH/hello_foundry...
+Installing forge-std in /tmp/tmp.SmIMD69ZlH/hello_foundry/lib/forge-std (url: Some("https://github.com/foundry-rs/forge-std"), tag: None)
     Installed forge-std v1.9.4
     Initialized forge project
 // ANCHOR_END: output

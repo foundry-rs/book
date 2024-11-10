@@ -32,10 +32,6 @@ Options:
           
           If not specified, the interface will be output to stdout.
 
-  -j, --json
-          If specified, the interface will be output as JSON rather than
-          Solidity
-
   -e, --etherscan-api-key <KEY>
           The Etherscan (or equivalent) API key
           
@@ -57,6 +53,9 @@ Display options:
           - auto:   Intelligently guess whether to use color output (default)
           - always: Force color output
           - never:  Force disable color output
+
+      --json
+          Format log messages as JSON
 
   -q, --quiet
           Do not print log messages

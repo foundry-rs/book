@@ -20,6 +20,9 @@ Display options:
   -q, --quiet
           Do not print log messages
 
+      --json
+          Format log messages as JSON
+
       --color <COLOR>
           Log messages coloring
 
