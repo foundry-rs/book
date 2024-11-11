@@ -100,4 +100,23 @@ Wallet options - hardware wallet:
 
   -t, --trezor
           Use a Trezor hardware wallet
+
+Wallet options - remote:
+      --aws
+          Use AWS Key Management Service
+
+Display options:
+      --color <COLOR>
+          Log messages coloring
+
+          Possible values:
+          - auto:   Intelligently guess whether to use color output (default)
+          - always: Force color output
+          - never:  Force disable color output
+
+  -q, --quiet
+          Do not print log messages
+
+      --verbose
+          Use verbose output
 ```

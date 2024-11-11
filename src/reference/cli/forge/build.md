@@ -18,7 +18,11 @@ Build options:
           Print compiled contract names
 
       --sizes
-          Print compiled contract sizes
+          Print compiled contract sizes. Constructor argument length is not
+          included in the calculation of initcode size
+
+      --ignore-eip-3860
+          Ignore initcode contract bytecode size limit introduced by EIP-3860
 
       --no-cache
           Disable the cache
@@ -77,9 +81,6 @@ Compiler options:
           
           This is equivalent to setting `bytecode_hash` to `none` and
           `cbor_metadata` to `false`.
-
-      --silent
-          Don't print anything on startup
 
       --ast
           Includes the AST as JSON in the compiler output
@@ -244,4 +245,19 @@ Watch options:
       --format-json
           Output the compilation errors in the json format. This is useful when
           you want to use the output in other tools
+
+Display options:
+      --color <COLOR>
+          Log messages coloring
+
+          Possible values:
+          - auto:   Intelligently guess whether to use color output (default)
+          - always: Force color output
+          - never:  Force disable color output
+
+  -q, --quiet
+          Do not print log messages
+
+      --verbose
+          Use verbose output
 ```

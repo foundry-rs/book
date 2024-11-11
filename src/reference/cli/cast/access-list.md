@@ -32,6 +32,20 @@ Display options:
   -j, --json
           Print the access list as JSON
 
+      --color <COLOR>
+          Log messages coloring
+
+          Possible values:
+          - auto:   Intelligently guess whether to use color output (default)
+          - always: Force color output
+          - never:  Force disable color output
+
+  -q, --quiet
+          Do not print log messages
+
+      --verbose
+          Use verbose output
+
 Transaction options:
       --gas-limit <GAS_LIMIT>
           Gas limit for the transaction
@@ -99,6 +113,16 @@ Ethereum options:
           "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
           
           [env: ETH_RPC_JWT_SECRET=]
+
+      --rpc-timeout <RPC_TIMEOUT>
+          Timeout for the RPC request in seconds.
+          
+          The specified timeout will be used to override the default timeout for
+          RPC requests.
+          
+          Default value: 45
+          
+          [env: ETH_RPC_TIMEOUT=]
 
   -e, --etherscan-api-key <KEY>
           The Etherscan (or equivalent) API key

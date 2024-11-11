@@ -181,6 +181,10 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Braqzen"><img src="https://avatars.githubusercontent.com/u/103777923?v=4?s=100" width="100px;" alt="Braqzen"/><br /><sub><b>Braqzen</b></sub></a><br /><a href="https://github.com/foundry-rs/book/commits?author=Braqzen" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/rolandolopez36"><img src="https://avatars.githubusercontent.com/u/140282898?v=4?s=100" width="100px;" alt="rolandolopez36"/><br /><sub><b>rolandolopez36</b></sub></a><br /><a href="https://github.com/foundry-rs/book/commits?author=rolandolopez36" title="Documentation">📖</a></td>
     </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="http://juanmgutierrez.com"><img src="https://avatars.githubusercontent.com/u/7672379?v=4?s=100" width="100px;" alt="Juan Gutierrez"/><br /><sub><b>Juan Gutierrez</b></sub></a><br /><a href="https://github.com/foundry-rs/book/commits?author=juannyG" title="Documentation">📖</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/TomasCImach"><img src="https://avatars.githubusercontent.com/u/43709975?v=4?s=100" width="100px;" alt="Tomas C Imach"/><br /><sub><b>Tomas C Imach</b></sub></a><br /><a href="https://github.com/foundry-rs/book/commits?author=TomasCImach" title="Documentation">📖</a></td>
+    </tr>
   </tbody>
 </table>
 

@@ -7,7 +7,7 @@ $ cast from-wei --help
 ```
 
 ```txt
-Usage: cast from-wei [VALUE] [UNIT]
+Usage: cast from-wei [OPTIONS] [VALUE] [UNIT]
 
 Arguments:
   [VALUE]
@@ -21,4 +21,19 @@ Arguments:
 Options:
   -h, --help
           Print help (see a summary with '-h')
+
+Display options:
+      --color <COLOR>
+          Log messages coloring
+
+          Possible values:
+          - auto:   Intelligently guess whether to use color output (default)
+          - always: Force color output
+          - never:  Force disable color output
+
+  -q, --quiet
+          Do not print log messages
+
+      --verbose
+          Use verbose output
 ```
