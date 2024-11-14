@@ -25,7 +25,7 @@ With environment variable `BYTES32_VALUE=0x00`,
 ```solidity
 string memory key = "BYTES32_VALUE";
 bytes32 expected = bytes32(0x0000000000000000000000000000000000000000000000000000000000000000);
-bytes32 output = cheats.envBytes32(key);
+bytes32 output = vm.envBytes32(key);
 assert(output == expected);
 ```
 
@@ -38,6 +38,6 @@ bytes32[2] memory expected = [
     bytes32(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D000000000000000000000000),
     bytes32(0x0000000000000000000000000000000000000000000000000000000000000000)
 ];
-bytes32[] memory output = cheats.envBytes32(key, delimiter);
+bytes32[] memory output = vm.envBytes32(key, delimiter);
 assert(keccak256(abi.encodePacked((output))) == keccak256(abi.encodePacked((expected))));
 ```
