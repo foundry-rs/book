@@ -143,6 +143,7 @@
       - [`cast address-zero`](./reference/cli/cast/address-zero.md)
       - [`cast admin`](./reference/cli/cast/admin.md)
       - [`cast age`](./reference/cli/cast/age.md)
+      - [`cast artifact`](./reference/cli/cast/artifact.md)
       - [`cast balance`](./reference/cli/cast/balance.md)
       - [`cast base-fee`](./reference/cli/cast/base-fee.md)
       - [`cast bind`](./reference/cli/cast/bind.md)

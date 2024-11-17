@@ -1,20 +1,38 @@
-# cast block-number
+# cast artifact
 
-Get the latest block number
+Generate an artifact file, that can be used to deploy a contract locally
 
 ```bash
-$ cast block-number --help
+$ cast artifact --help
 ```
 
 ```txt
-Usage: cast block-number [OPTIONS] [BLOCK]
+Usage: cast artifact [OPTIONS] <CONTRACT>
 
 Arguments:
-  [BLOCK]
-          The hash or tag to query. If not specified, the latest number is
-          returned
+  <CONTRACT>
+          An Ethereum address, for which the artifact will be produced
 
 Options:
+      --abi-path <ABI_PATH>
+          Path to file containing the contract's JSON ABI. It's necessary if the
+          target contract is not verified on Etherscan
+
+  -o, --output <PATH>
+          The path to the output file.
+          
+          If not specified, the artifact will be output to stdout.
+
+  -e, --etherscan-api-key <KEY>
+          The Etherscan (or equivalent) API key
+          
+          [env: ETHERSCAN_API_KEY=]
+
+  -c, --chain <CHAIN>
+          The chain name or EIP-155 chain ID
+          
+          [env: CHAIN=]
+
   -r, --rpc-url <URL>
           The RPC endpoint
           
