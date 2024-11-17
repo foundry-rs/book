@@ -224,18 +224,6 @@ EVM options:
           Use the create 2 factory in all cases including tests and
           non-broadcasting scripts
 
-  -v, --verbosity...
-          Verbosity of the EVM.
-          
-          Pass multiple times to increase the verbosity (e.g. -v, -vv, -vvv).
-          
-          Verbosity levels:
-          - 2: Print logs for all tests
-          - 3: Print execution traces for failing tests
-          - 4: Print execution traces for all tests, and setup traces for
-          failing tests
-          - 5: Print execution and setup traces for all tests
-
 Fork config:
       --compute-units-per-second <CUPS>
           Sets the number of assumed available compute units per second for this
@@ -318,7 +306,7 @@ Executor environment config:
 
 Display options:
       --color <COLOR>
-          Log messages coloring
+          The color of the log messages
 
           Possible values:
           - auto:   Intelligently guess whether to use color output (default)
@@ -331,6 +319,17 @@ Display options:
   -q, --quiet
           Do not print log messages
 
-      --verbose
-          Use verbose output
+  -v, --verbosity...
+          Verbosity level of the log messages.
+          
+          Pass multiple times to increase the verbosity (e.g. -v, -vv, -vvv).
+          
+          Depending on the context the verbosity levels have different meanings.
+          
+          For example, the verbosity levels of the EVM are:
+          - 2 (-vv): Print logs for all tests.
+          - 3 (-vvv): Print execution traces for failing tests.
+          - 4 (-vvvv): Print execution traces for all tests, and setup traces
+          for failing tests.
+          - 5 (-vvvvv): Print execution and setup traces for all tests.
 ```

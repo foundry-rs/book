@@ -26,6 +26,8 @@ Commands:
   address-zero           Prints the zero address [aliases: --address-zero, az]
   admin                  Fetch the EIP-1967 admin account [aliases: adm]
   age                    Get the timestamp of a block [aliases: a]
+  artifact               Generate an artifact file, that can be used to deploy a
+                         contract locally [aliases: ar]
   balance                Get the balance of an account in wei [aliases: b]
   base-fee               Get the basefee of a block [aliases: ba, fee, basefee]
   bind                   Generate a rust binding from a given ABI [aliases: bi]
@@ -176,7 +178,7 @@ Options:
 
 Display options:
       --color <COLOR>
-          Log messages coloring
+          The color of the log messages
 
           Possible values:
           - auto:   Intelligently guess whether to use color output (default)
@@ -189,8 +191,19 @@ Display options:
   -q, --quiet
           Do not print log messages
 
-      --verbose
-          Use verbose output
+  -v, --verbosity...
+          Verbosity level of the log messages.
+          
+          Pass multiple times to increase the verbosity (e.g. -v, -vv, -vvv).
+          
+          Depending on the context the verbosity levels have different meanings.
+          
+          For example, the verbosity levels of the EVM are:
+          - 2 (-vv): Print logs for all tests.
+          - 3 (-vvv): Print execution traces for failing tests.
+          - 4 (-vvvv): Print execution traces for all tests, and setup traces
+          for failing tests.
+          - 5 (-vvvvv): Print execution and setup traces for all tests.
 
 Find more information in the book:
 http://book.getfoundry.sh/reference/cast/cast.html

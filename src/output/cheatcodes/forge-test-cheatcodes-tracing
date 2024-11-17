@@ -15,8 +15,8 @@ Traces:
     │   └─ ← [Revert] Unauthorized()
     └─ ← [Revert] Unauthorized()
 
-Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 371.30µs (57.31µs CPU time)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 387.30µs (63.36µs CPU time)
 
-Ran 1 test suite in 6.64ms (371.30µs CPU time): 1 tests passed, 0 failed, 0 skipped (1 total tests)
+Ran 1 test suite in 6.21ms (387.30µs CPU time): 1 tests passed, 0 failed, 0 skipped (1 total tests)
 // ANCHOR_END: output
 // ANCHOR_END: all

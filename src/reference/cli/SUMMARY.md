@@ -58,6 +58,7 @@
   - [`cast address-zero`](./cast/address-zero.md)
   - [`cast admin`](./cast/admin.md)
   - [`cast age`](./cast/age.md)
+  - [`cast artifact`](./cast/artifact.md)
   - [`cast balance`](./cast/balance.md)
   - [`cast base-fee`](./cast/base-fee.md)
   - [`cast bind`](./cast/bind.md)

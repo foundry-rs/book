@@ -9,8 +9,8 @@ Compiler run successful!
 
 Ran 1 test for test/OwnerUpOnly.t.sol:OwnerUpOnlyTest
 [PASS] test_IncrementAsOwner() (gas: 29161)
-Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 384.95µs (52.98µs CPU time)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 383.29µs (65.56µs CPU time)
 
-Ran 1 test suite in 5.95ms (384.95µs CPU time): 1 tests passed, 0 failed, 0 skipped (1 total tests)
+Ran 1 test suite in 5.99ms (383.29µs CPU time): 1 tests passed, 0 failed, 0 skipped (1 total tests)
 // ANCHOR_END: output
 // ANCHOR_END: all
