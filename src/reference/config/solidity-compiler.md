@@ -160,10 +160,16 @@ If enabled, Foundry will treat Solidity compiler warnings as errors, stopping ar
 ##### `evm_version`
 
 - Type: string
-- Default: paris
+- Default: cancun
 - Environment: `FOUNDRY_EVM_VERSION` or `DAPP_EVM_VERSION`
 
 The EVM version to use during tests. The value **must** be an EVM hardfork name, such as `london`, `byzantium`, etc.
+
+If you are relying on a specific EVM version for compatibility reasons you are recommended to pin to it in `foundry.toml`:
+
+```toml
+evm_version = "paris"
+```
 
 ##### `revert_strings`
 
