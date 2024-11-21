@@ -10,7 +10,7 @@ cast-upload-signature
 
 ### DESCRIPTION
 
-Upload the given signatures to [https://sig.eth.samczsun.com](https://sig.eth.samczsun.com).
+Upload the given signatures to [https://openchain.xyz/signatures](https://openchain.xyz/signatures).
 
 ### OPTIONS
 
@@ -19,7 +19,7 @@ Upload the given signatures to [https://sig.eth.samczsun.com](https://sig.eth.sa
 ### EXAMPLES
 
 1. Upload signatures
-    ```sh
-    cast upload-signature 'function approve(address,uint256)' \
+   ```sh
+   cast upload-signature 'function approve(address,uint256)' \
    'transfer(uint256)' 'event Transfer(uint256,address)'
-    ```
+   ```
