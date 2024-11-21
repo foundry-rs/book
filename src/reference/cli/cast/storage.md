@@ -14,7 +14,8 @@ Arguments:
           The contract address
 
   [SLOT]
-          The storage slot number
+          The storage slot number. If not provided, it gets the full storage
+          layout
 
 Options:
   -b, --block <BLOCK>
