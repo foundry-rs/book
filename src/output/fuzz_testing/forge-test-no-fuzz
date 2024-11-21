@@ -9,8 +9,8 @@ Compiler run successful!
 
 Ran 1 test for test/Safe.t.sol:SafeTest
 [PASS] test_Withdraw() (gas: 19463)
-Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 381.65µs (41.39µs CPU time)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 400.54µs (52.73µs CPU time)
 
-Ran 1 test suite in 5.86ms (381.65µs CPU time): 1 tests passed, 0 failed, 0 skipped (1 total tests)
+Ran 1 test suite in 5.54ms (400.54µs CPU time): 1 tests passed, 0 failed, 0 skipped (1 total tests)
 // ANCHOR_END: output
 // ANCHOR_END: all

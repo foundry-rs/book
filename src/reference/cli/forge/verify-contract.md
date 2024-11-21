@@ -31,6 +31,9 @@ Options:
       --compiler-version <VERSION>
           The `solc` version to use to build the smart contract
 
+      --compilation-profile <PROFILE_NAME>
+          The compilation profile to use to build the smart contract
+
       --num-of-optimizations <NUM>
           The number of optimization runs used to build the smart contract
           
