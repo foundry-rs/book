@@ -14,11 +14,19 @@ Commands:
   upload     Upload selectors to registry [aliases: up]
   list       List selectors from current workspace [aliases: ls]
   find       Find if a selector is present in the project [aliases: f]
+  cache      Cache project selectors (enables trace with local contracts
+             functions and events) [aliases: c]
   help       Print this message or the help of the given subcommand(s)
 
 Options:
   -h, --help
           Print help (see a summary with '-h')
+
+  -j, --threads <THREADS>
+          Number of threads to use. Specifying 0 defaults to the number of
+          logical cores
+          
+          [aliases: jobs]
 
 Display options:
       --color <COLOR>

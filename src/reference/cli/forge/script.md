@@ -20,6 +20,12 @@ Arguments:
           Arguments to pass to the script function
 
 Options:
+  -j, --threads <THREADS>
+          Number of threads to use. Specifying 0 defaults to the number of
+          logical cores
+          
+          [aliases: jobs]
+
       --target-contract <CONTRACT_NAME>
           The name of the contract you want to run
           

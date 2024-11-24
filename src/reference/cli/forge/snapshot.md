@@ -76,6 +76,12 @@ Display options:
           Print detailed test summary table
 
 Test options:
+  -j, --threads <THREADS>
+          Number of threads to use. Specifying 0 defaults to the number of
+          logical cores
+          
+          [aliases: jobs]
+
       --debug [<DEPRECATED_TEST_FUNCTION_REGEX>]
           Run a single test in the debugger.
           
@@ -138,12 +144,6 @@ Test options:
 
       --fuzz-input-file <FUZZ_INPUT_FILE>
           File to rerun fuzz failures from
-
-  -j, --threads <THREADS>
-          Max concurrent threads to use. Default value is the number of
-          available CPUs
-          
-          [aliases: jobs]
 
       --show-progress
           Show test execution progress

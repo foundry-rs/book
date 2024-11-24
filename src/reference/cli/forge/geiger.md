@@ -20,20 +20,17 @@ Options:
           By default root of the Git repository, if in one, or the current
           working directory.
 
-      --check
-          Run in "check" mode.
-          
-          The exit code of the program will be the number of unsafe cheatcodes
-          found.
-
       --ignore <PATH>...
           Globs to ignore
 
-      --full
-          Print a report of all files, even if no unsafe functions are found
-
   -h, --help
           Print help (see a summary with '-h')
+
+  -j, --threads <THREADS>
+          Number of threads to use. Specifying 0 defaults to the number of
+          logical cores
+          
+          [aliases: jobs]
 
 Display options:
       --color <COLOR>

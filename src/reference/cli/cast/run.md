@@ -108,8 +108,19 @@ Options:
       --alphanet
           Enables Alphanet features
 
+      --with-local-artifacts
+          Use current project artifacts for trace decoding
+          
+          [aliases: la]
+
   -h, --help
           Print help (see a summary with '-h')
+
+  -j, --threads <THREADS>
+          Number of threads to use. Specifying 0 defaults to the number of
+          logical cores
+          
+          [aliases: jobs]
 
 Display options:
       --color <COLOR>
