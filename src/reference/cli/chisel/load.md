@@ -14,6 +14,12 @@ Arguments:
           The ID of the session to load
 
 Options:
+  -j, --threads <THREADS>
+          Number of threads to use. Specifying 0 defaults to the number of
+          logical cores
+          
+          [aliases: jobs]
+
   -h, --help
           Print help (see a summary with '-h')
 

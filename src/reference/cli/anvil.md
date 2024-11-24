@@ -63,6 +63,12 @@ Options:
           
           [aliases: ipcpath]
 
+  -j, --threads <THREADS>
+          Number of threads to use. Specifying 0 defaults to the number of
+          logical cores
+          
+          [aliases: jobs]
+
       --load-state <PATH>
           Initialize the chain from a previously saved state snapshot
 
@@ -182,6 +188,9 @@ Server options:
           The cors `allow_origin` header
           
           [default: *]
+
+      --cache-path <PATH>
+          Path to the cache directory where states are stored
 
       --host <IP_ADDR>
           The hosts the server will listen on

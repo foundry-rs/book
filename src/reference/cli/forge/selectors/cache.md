@@ -1,18 +1,13 @@
-# forge cache
+# forge selectors cache
 
-Manage the Foundry cache
+Cache project selectors (enables trace with local contracts functions and
 
 ```bash
-$ forge cache --help
+$ forge selectors cache --help
 ```
 
 ```txt
-Usage: forge cache [OPTIONS] <COMMAND>
-
-Commands:
-  clean  Cleans cached data from the global foundry directory
-  ls     Shows cached data from the global foundry directory
-  help   Print this message or the help of the given subcommand(s)
+Usage: forge selectors cache [OPTIONS]
 
 Options:
   -h, --help
@@ -23,6 +18,39 @@ Options:
           logical cores
           
           [aliases: jobs]
+
+Project options:
+      --root <PATH>
+          The project's root path.
+          
+          By default root of the Git repository, if in one, or the current
+          working directory.
+
+  -C, --contracts <PATH>
+          The contracts source directory
+
+  -R, --remappings <REMAPPINGS>
+          The project's remappings
+
+      --remappings-env <ENV>
+          The project's remappings from the environment
+
+      --cache-path <PATH>
+          The path to the compiler cache
+
+      --lib-paths <PATH>
+          The path to the library folder
+
+      --hardhat
+          Use the Hardhat-style project layout.
+          
+          This is the same as using: `--contracts contracts --lib-paths
+          node_modules`.
+          
+          [aliases: hh]
+
+      --config-path <FILE>
+          Path to the config file
 
 Display options:
       --color <COLOR>

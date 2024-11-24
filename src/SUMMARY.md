@@ -118,6 +118,7 @@
         - [`forge selectors upload`](./reference/cli/forge/selectors/upload.md)
         - [`forge selectors list`](./reference/cli/forge/selectors/list.md)
         - [`forge selectors find`](./reference/cli/forge/selectors/find.md)
+        - [`forge selectors cache`](./reference/cli/forge/selectors/cache.md)
       - [`forge snapshot`](./reference/cli/forge/snapshot.md)
       - [`forge soldeer`](./reference/cli/forge/soldeer.md)
         - [`forge soldeer init`](./reference/cli/forge/soldeer/init.md)

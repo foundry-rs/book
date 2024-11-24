@@ -33,6 +33,7 @@
     - [`forge selectors upload`](./forge/selectors/upload.md)
     - [`forge selectors list`](./forge/selectors/list.md)
     - [`forge selectors find`](./forge/selectors/find.md)
+    - [`forge selectors cache`](./forge/selectors/cache.md)
   - [`forge snapshot`](./forge/snapshot.md)
   - [`forge soldeer`](./forge/soldeer.md)
     - [`forge soldeer init`](./forge/soldeer/init.md)

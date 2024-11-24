@@ -37,9 +37,11 @@ Options:
       --init-code-hash <HASH>
           Init code hash of the contract to be deployed
 
-  -j, --jobs <JOBS>
-          Number of threads to use. Defaults to and caps at the number of
+  -j, --threads <THREADS>
+          Number of threads to use. Specifying 0 defaults to the number of
           logical cores
+          
+          [aliases: jobs]
 
       --caller <ADDRESS>
           Address of the caller. Used for the first 20 bytes of the salt
