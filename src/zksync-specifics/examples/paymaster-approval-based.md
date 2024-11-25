@@ -35,8 +35,11 @@ Now, in the script we are going to run, we deploy the contract and mint some tok
 ```solidity
 import {Script} from "forge-std/Script.sol";
 import {console2} from "../lib/forge-std/src/console2.sol";
+// We need to import the TestExt to use the zkUsePaymaster cheatcode
+// as this is a ZKsync specific cheatcode
+import {TestExt} from "forge-zksync-std/TestExt.sol";
 
-contract PaymasterApprovalScript is Script {
+contract PaymasterApprovalScript is Script, TestExt {
     function run() external {
         vm.startBroadcast();
 
@@ -65,7 +68,7 @@ With the encoded input prepared, we can now use the zkUsePaymaster cheatcode to 
 
 ```solidity
 // Using zkUsePaymaster with the encoded input
-vm.zkUsePaymaster(address(0x3cB2b87D10Ac01736A65688F3e0Fb1b070B3eeA3), paymaster_encoded_input);
+vmExt.zkUsePaymaster(address(0x3cB2b87D10Ac01736A65688F3e0Fb1b070B3eeA3), paymaster_encoded_input);
 
 Counter counter = new Counter();
 counter.increment();
@@ -82,8 +85,12 @@ pragma solidity ^0.8.0;
 import {Script} from "forge-std/Script.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+// We need to import the TestExt to use the zkUsePaymaster cheatcode
+// as this is a ZKsync specific cheatcode
+import {TestExt} from "forge-zksync-std/TestExt.sol";
 
-contract PaymasterTestScript is Script {
+
+contract PaymasterTestScript is Script, TestExt {
     function run() external {
         vm.startBroadcast();
 

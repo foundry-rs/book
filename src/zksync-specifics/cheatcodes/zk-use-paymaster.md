@@ -13,13 +13,19 @@ This cheatcode enables the use of a paymaster for the next transaction in the co
 ### Examples
 
 ```solidity
-MyPaymaster paymaster = new MyPaymaster();
-// Encode paymaster input
-bytes memory paymaster_encoded_input = abi.encodeWithSelector(
-    bytes4(keccak256("general(bytes)")),
-    bytes("0x")
-);
-vm.zkUsePaymaster(address(paymaster), paymaster_encoded_input);
+import {TestExt} from "forge-zksync-std/TestExt.sol";
+
+contract Test is TestExt {
+    function test_zkUsePaymaster() public {
+        MyPaymaster paymaster = new MyPaymaster();
+        // Encode paymaster input
+        bytes memory paymaster_encoded_input = abi.encodeWithSelector(
+            bytes4(keccak256("general(bytes)")),
+            bytes("0x")
+        );
+        vmExt.zkUsePaymaster(address(paymaster), paymaster_encoded_input);
+    }
+}
 ```
 
 The paymaster flow depends on the type of paymaster used. Here's an example of the simplest usage of a 'general' paymaster in Foundry:
@@ -80,7 +86,7 @@ forge create ./src/MyPaymaster.sol:MyPaymaster --rpc-url {RPC_URL} --private-key
 3. Use the cheatcode to set the paymaster for the next transaction:
 
 ```solidity
-vm.zkUsePaymaster(address(paymaster), abi.encodeWithSelector(
+vmExt.zkUsePaymaster(address(paymaster), abi.encodeWithSelector(
     bytes4(keccak256("general(bytes)")),
     bytes("0x")
 ));
