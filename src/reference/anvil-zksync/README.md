@@ -6,7 +6,7 @@ anvil-zksync - Create a local testnet node for deploying and testing smart contr
 
 ### SYNOPSIS
 
-`anvil-zksync` [*options*]
+`anvil_zksync` [*options*]
 
 ### DESCRIPTION
 
