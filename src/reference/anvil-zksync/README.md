@@ -14,28 +14,26 @@ Create a local testnet node for deploying and testing smart contracts. It can al
 
 This section covers an extensive list of information about Supported Transport Layers, Supported RPC Methods, Anvil-ZKsync flags and their usages. You can run multiple flags at the same time.
 
-<!-- #### Mining Modes
-Mining modes refer to how frequent blocks are mined using Anvil. By default, it automatically generates a new block as soon as a transaction is submitted.
+#### Mining Modes
+Mining modes refer to how frequent blocks are mined using anvil-zksync. By default, it automatically generates a new block as soon as a transaction is submitted.
 
 You can change this setting to interval mining if you will, which means that a new block will be generated in a given period of time selected by the user. If you want to go for this type of mining, you can do it by adding the `--block-time <block-time-in-seconds>` flag, like in the following example.
 ```sh
 # Produces a new block every 10 seconds
-anvil --block-time 10
+anvil-zksync --block-time 10
 ```
 
 There's also a third mining mode called never. In this case, it disables auto and interval mining, and mine on demand instead. You can do this by typing:
 ```sh
 # Enables never mining mode
-anvil --no-mining
+anvil-zksync --no-mining
 ```
-
-To speed up the finalization of blocks, you can use the `--slots-in-an-epoch` flag with a value of `1` for example. This will lead to the block at height `N-2` being finalized, where `N` is the latest block. -->
 
 #### Supported Transport Layers
 HTTP and Websocket connections are supported. The server listens on port 8011 by default, but it can be changed by running the following command:
 
 ```sh
-anvil_zksync --port <PORT>
+anvil-zksync --port <PORT>
 ```
 
 #### Default CREATE2 Deployer
@@ -49,7 +47,7 @@ This allows you to test CREATE2 deployments locally without forking.
 
 The `anvil_*` namespace provides custom methods for advanced node manipulation and testing.
 
-##### **Anvil Namespace**
+---
 
 **`anvil_setMinGasPrice`**  
 **Status:** NOT IMPLEMENTED  
@@ -78,6 +76,26 @@ The `anvil_*` namespace provides custom methods for advanced node manipulation a
 **`anvil_setNextBlockTimestamp`**  
 **Status:** SUPPORTED  
 **Description:** Sets the timestamp of the next block.
+
+**`anvil_setBlockTimestampInterval`**  
+**Status:** SUPPORTED  
+**Description:** Sets a recurring interval for block timestamps in seconds.
+
+**`anvil_removeBlockTimestampInterval`**  
+**Status:** SUPPORTED  
+**Description:** Removes the recurring block timestamp interval, if set.
+
+**`anvil_getAutomine`**  
+**Status:** SUPPORTED  
+**Description:** Retrieves the current status of the automine feature.
+
+**`anvil_setAutomine`**  
+**Status:** SUPPORTED  
+**Description:** Enables or disables the automine feature.
+
+**`anvil_setIntervalMining`**  
+**Status:** SUPPORTED  
+**Description:** Configures the node to mine blocks at regular intervals specified in seconds.
 
 **`anvil_autoImpersonateAccount`**  
 **Status:** SUPPORTED  
@@ -771,23 +789,23 @@ ZkSync-specific methods for enhanced functionality on the zkRollup.
 **Usage Examples:**
 
 - **Start a new empty local network:**
-  ```
-  anvil_zksync run [OPTIONS]
+  ```sh
+  anvil-zksync run [OPTIONS]
   ```
 
 - **Start a forked network:**
-  ```
-  anvil_zksync fork [OPTIONS] --fork-url <FORK_URL>
+  ```sh
+  anvil-zksync fork [OPTIONS] --fork-url <FORK_URL>
   ```
 
 - **Replay a transaction on a forked network:**
-  ```
-  anvil_zksync replay_tx --fork-url <FORK_URL> <TX>
+  ```sh
+  anvil-zksync replay_tx --fork-url <FORK_URL> <TX>
   ```
 
 - **Display help information:**
-  ```
-  anvil_zksync help
+  ```sh
+  anvil-zksync --help
   ```
 
 ### Shell Completions
@@ -816,11 +834,9 @@ Supported shells are:
 
 In order to run anvil as a service in Github Actions with the [Docker container](../../tutorials/foundry-docker.md), where passing arguments to the entrypoint command is not possible, use the `ANVIL_IP_ADDR` environment variable to set the host's IP. `ANVIL_IP_ADDR=0.0.0.0` is equivalent to providing the `--host <ip>` option. -->
 
-#### Using `genesis.json` 
+#### Using `genesis.json`
 
 The `genesis.json` file in Anvil serves a similar purpose as in Geth, defining the network's initial state, consensus rules, and preallocated accounts to ensure all nodes start consistently and maintain network integrity. All values, including balance, gas limit and such, are to be defined as hexadecimals.
-
-Certainly! Here's the updated documentation reflecting the provided JSON file, maintaining the original formatting and including nested fields for clarity.
 
 ---
 
