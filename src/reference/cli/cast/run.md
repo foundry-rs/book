@@ -81,6 +81,11 @@ Options:
           
           [env: ETH_RPC_TIMEOUT=]
 
+      --rpc-headers <RPC_HEADERS>
+          Specify custom headers for RPC requests
+          
+          [env: ETH_RPC_HEADERS=]
+
       --evm-version <EVM_VERSION>
           The EVM version to use.
           
@@ -149,5 +154,6 @@ Display options:
           - 3 (-vvv): Print execution traces for failing tests.
           - 4 (-vvvv): Print execution traces for all tests, and setup traces
           for failing tests.
-          - 5 (-vvvvv): Print execution and setup traces for all tests.
+          - 5 (-vvvvv): Print execution and setup traces for all tests,
+          including storage changes.
 ```

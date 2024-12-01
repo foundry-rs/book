@@ -1,13 +1,20 @@
-# cast hash-zero
+# cast decode-abi
 
-Prints the zero hash
+Decode ABI-encoded input or output data.
 
 ```bash
-$ cast hash-zero --help
+$ cast decode-abi --help
 ```
 
 ```txt
-Usage: cast hash-zero [OPTIONS]
+Usage: cast decode-abi [OPTIONS] <SIG> <CALLDATA>
+
+Arguments:
+  <SIG>
+          The function signature in the format `<name>(<in-types>)(<out-types>)`
+
+  <CALLDATA>
+          The ABI-encoded calldata
 
 Options:
   -h, --help
@@ -18,6 +25,10 @@ Options:
           logical cores
           
           [aliases: jobs]
+
+Decode input data instead of output data:
+  -i, --input
+          Whether to decode the input or output data
 
 Display options:
       --color <COLOR>

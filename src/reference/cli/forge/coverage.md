@@ -49,7 +49,8 @@ Display options:
           - 3 (-vvv): Print execution traces for failing tests.
           - 4 (-vvvv): Print execution traces for all tests, and setup traces
           for failing tests.
-          - 5 (-vvvvv): Print execution and setup traces for all tests.
+          - 5 (-vvvvv): Print execution and setup traces for all tests,
+          including storage changes.
 
   -q, --quiet
           Do not print log messages
@@ -143,6 +144,11 @@ Test options:
 
       --fuzz-runs <RUNS>
           [env: FOUNDRY_FUZZ_RUNS=]
+
+      --fuzz-timeout <TIMEOUT>
+          Timeout for each fuzz run in seconds
+          
+          [env: FOUNDRY_FUZZ_TIMEOUT=]
 
       --fuzz-input-file <FUZZ_INPUT_FILE>
           File to rerun fuzz failures from
@@ -243,6 +249,10 @@ EVM options:
           Use the create 2 factory in all cases including tests and
           non-broadcasting scripts
 
+      --create2-deployer <ADDRESS>
+          The CREATE2 deployer address to use, this will override the one in the
+          config
+
 Fork config:
       --compute-units-per-second <CUPS>
           Sets the number of assumed available compute units per second for this
@@ -262,9 +272,6 @@ Fork config:
           [aliases: no-rate-limit]
 
 Executor environment config:
-      --gas-limit <GAS_LIMIT>
-          The block gas limit
-
       --code-size-limit <CODE_SIZE>
           EIP-170: Contract code size limit in bytes. Useful to increase this
           because of tests. By default, it is 0x6000 (~25kb)
@@ -302,6 +309,8 @@ Executor environment config:
 
       --block-gas-limit <GAS_LIMIT>
           The block gas limit
+          
+          [aliases: gas-limit]
 
       --memory-limit <MEMORY_LIMIT>
           The memory limit per EVM execution in bytes. If this limit is
