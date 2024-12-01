@@ -1,13 +1,17 @@
-# cast hash-zero
+# cast decode-string
 
-Prints the zero hash
+Decode ABI-encoded string.
 
 ```bash
-$ cast hash-zero --help
+$ cast decode-string --help
 ```
 
 ```txt
-Usage: cast hash-zero [OPTIONS]
+Usage: cast decode-string [OPTIONS] <DATA>
+
+Arguments:
+  <DATA>
+          The ABI-encoded string
 
 Options:
   -h, --help

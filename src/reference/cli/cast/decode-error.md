@@ -1,15 +1,25 @@
-# cast hash-zero
+# cast decode-error
 
-Prints the zero hash
+Decode custom error data
 
 ```bash
-$ cast hash-zero --help
+$ cast decode-error --help
 ```
 
 ```txt
-Usage: cast hash-zero [OPTIONS]
+Usage: cast decode-error [OPTIONS] <DATA>
+
+Arguments:
+  <DATA>
+          The error data to decode
 
 Options:
+      --sig <SIG>
+          The error signature. If none provided then tries to decode from local
+          cache or `https://api.openchain.xyz`
+          
+          [aliases: error-sig]
+
   -h, --help
           Print help (see a summary with '-h')
 

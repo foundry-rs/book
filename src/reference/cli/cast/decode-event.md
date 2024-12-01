@@ -1,15 +1,25 @@
-# cast hash-zero
+# cast decode-event
 
-Prints the zero hash
+Decode event data
 
 ```bash
-$ cast hash-zero --help
+$ cast decode-event --help
 ```
 
 ```txt
-Usage: cast hash-zero [OPTIONS]
+Usage: cast decode-event [OPTIONS] <DATA>
+
+Arguments:
+  <DATA>
+          The event data to decode
 
 Options:
+      --sig <SIG>
+          The event signature. If none provided then tries to decode from local
+          cache or `https://api.openchain.xyz`
+          
+          [aliases: event-sig]
+
   -h, --help
           Print help (see a summary with '-h')
 

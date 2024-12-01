@@ -17,8 +17,6 @@ Commands:
   4byte-event            Get the event signature for a given topic 0 from
                          https://openchain.xyz [aliases: 4e, 4be, topic0-event,
                          t0e]
-  abi-decode             Decode ABI-encoded input or output data [aliases: ad,
-                         --abi-decode]
   abi-encode             ABI encode the given function argument, excluding the
                          selector [aliases: ae]
   access-list            Create an access list for a transaction [aliases: ac,
@@ -36,8 +34,6 @@ Commands:
   call                   Perform a call on an account without publishing a
                          transaction [aliases: c]
   calldata               ABI-encode a function with arguments [aliases: cd]
-  calldata-decode        Decode ABI-encoded input data [aliases:
-                         --calldata-decode, cdd]
   chain                  Get the symbolic name of the current chain
   chain-id               Get the Ethereum chain ID [aliases: ci, cid]
   client                 Get the current client version [aliases: cl]
@@ -55,7 +51,17 @@ Commands:
                          [aliases: c2]
   creation-code          Download a contract creation code from Etherscan and
                          RPC [aliases: cc]
+  decode-abi             Decode ABI-encoded input or output data [aliases:
+                         abi-decode, --abi-decode, ad]
+  decode-calldata        Decode ABI-encoded input data [aliases:
+                         calldata-decode, --calldata-decode, cdd]
   decode-eof             Decodes EOF container bytes
+  decode-error           Decode custom error data [aliases: error-decode,
+                         --error-decode, erd]
+  decode-event           Decode event data [aliases: event-decode,
+                         --event-decode, ed]
+  decode-string          Decode ABI-encoded string [aliases: string-decode,
+                         --string-decode, sd]
   decode-transaction     Decodes a raw signed EIP 2718 typed transaction
                          [aliases: dt, decode-tx]
   disassemble            Disassembles hex encoded bytecode into individual /
@@ -133,8 +139,6 @@ Commands:
   storage                Get the raw value of a contract's storage slot
                          [aliases: st]
   storage-root           Get the storage root for an account [aliases: sr]
-  string-decode          Decode ABI-encoded string [aliases: --string-decode,
-                         sd]
   to-ascii               Convert hex data to an ASCII string [aliases:
                          --to-ascii, tas, 2as]
   to-base                Converts a number of one base to another [aliases:
@@ -209,7 +213,8 @@ Display options:
           - 3 (-vvv): Print execution traces for failing tests.
           - 4 (-vvvv): Print execution traces for all tests, and setup traces
           for failing tests.
-          - 5 (-vvvvv): Print execution and setup traces for all tests.
+          - 5 (-vvvvv): Print execution and setup traces for all tests,
+          including storage changes.
 
 Find more information in the book:
 http://book.getfoundry.sh/reference/cast/cast.html

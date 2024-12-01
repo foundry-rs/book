@@ -1,13 +1,20 @@
-# cast hash-zero
+# cast decode-calldata
 
-Prints the zero hash
+Decode ABI-encoded input data.
 
 ```bash
-$ cast hash-zero --help
+$ cast decode-calldata --help
 ```
 
 ```txt
-Usage: cast hash-zero [OPTIONS]
+Usage: cast decode-calldata [OPTIONS] <SIG> <CALLDATA>
+
+Arguments:
+  <SIG>
+          The function signature in the format `<name>(<in-types>)(<out-types>)`
+
+  <CALLDATA>
+          The ABI-encoded calldata
 
 Options:
   -h, --help
