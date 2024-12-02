@@ -3,7 +3,6 @@
 This example covers the use of a general flow paymaster contract. 
 For this example we will use a contract from the paymaster example repository [here](https://github.com/matter-labs/paymaster-examples).
 
-The contract we are going to use is the `GaslessPaymaster` contract.
 
 ```solidity
 // SPDX-License-Identifier: MIT
