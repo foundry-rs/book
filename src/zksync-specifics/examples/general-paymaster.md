@@ -1,7 +1,7 @@
 ## Using the zkUsePaymaster Cheatcode in General Flow Paymaster Contracts
 
 This example covers the use of a general flow paymaster contract. 
-For this example we will use a contract from the paymaster example repository [here](https://github.com/matter-labs/paymaster-examples).
+For this example we will use the `GaslessPaymaster` contract from the paymaster example repository [here](https://github.com/matter-labs/paymaster-examples).
 
 
 ```solidity
