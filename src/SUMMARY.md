@@ -39,6 +39,7 @@
 - [Gas Overview](./zksync-specifics/gas.md)
 - [Paymaster Overview](./zksync-specifics/paymaster-overview.md)
 - [Examples](./zksync-specifics/examples/README.md)
+  - [General Flow Paymaster](./zksync-specifics/examples/general-paymaster.md)
   - [Paymaster Approval Based](./zksync-specifics/examples/paymaster-approval-based.md)
   - [Ledger](./zksync-specifics/examples/ledger.md)
   - [Multisig Smart Account](./zksync-specifics/examples/smart-account.md)
