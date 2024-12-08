@@ -110,8 +110,8 @@ Options:
           
           [aliases: no-rpc-rate-limit]
 
-      --alphanet
-          Enables Alphanet features
+      --odyssey
+          Enables Odyssey features
 
       --with-local-artifacts
           Use current project artifacts for trace decoding

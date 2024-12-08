@@ -20,7 +20,7 @@ Options:
           Can also be the tags earliest, finalized, safe, latest, or pending.
 
   -d, --disassemble
-          Disassemble bytecodes into individual opcodes
+          Disassemble bytecodes
 
   -r, --rpc-url <URL>
           The RPC endpoint

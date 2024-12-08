@@ -310,8 +310,8 @@ Executor environment config:
           context, enabling more precise gas accounting and transaction state
           changes
 
-      --alphanet
-          Whether to enable Alphanet features
+      --odyssey
+          Whether to enable Odyssey features
 
 Display options:
       --color <COLOR>

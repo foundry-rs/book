@@ -1,17 +1,17 @@
 # cast disassemble
 
-Disassembles hex encoded bytecode into individual / human readable opcodes
+Disassembles a hex-encoded bytecode into a human-readable representation
 
 ```bash
 $ cast disassemble --help
 ```
 
 ```txt
-Usage: cast disassemble [OPTIONS] <BYTECODE>
+Usage: cast disassemble [OPTIONS] [BYTECODE]
 
 Arguments:
-  <BYTECODE>
-          The hex encoded bytecode
+  [BYTECODE]
+          The hex-encoded bytecode
 
 Options:
   -h, --help

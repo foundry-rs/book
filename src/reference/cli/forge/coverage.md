@@ -18,6 +18,17 @@ Options:
           [default: summary]
           [possible values: summary, lcov, debug, bytecode]
 
+      --lcov-version <LCOV_VERSION>
+          The version of the LCOV "tracefile" format to use.
+          
+          Format: `MAJOR[.MINOR]`.
+          
+          Main differences: - `1.x`: The original v1 format. - `2.0`: Adds
+          support for "line end" numbers for functions. - `2.2`: Changes the
+          format of functions.
+          
+          [default: 1]
+
       --ir-minimum
           Enable viaIR with minimum optimization
           
@@ -329,8 +340,8 @@ Executor environment config:
           context, enabling more precise gas accounting and transaction state
           changes
 
-      --alphanet
-          Whether to enable Alphanet features
+      --odyssey
+          Whether to enable Odyssey features
 
 Cache options:
       --force
