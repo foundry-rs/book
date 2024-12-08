@@ -7,11 +7,11 @@ $ cast selectors --help
 ```
 
 ```txt
-Usage: cast selectors [OPTIONS] <BYTECODE>
+Usage: cast selectors [OPTIONS] [BYTECODE]
 
 Arguments:
-  <BYTECODE>
-          The hex encoded bytecode
+  [BYTECODE]
+          The hex-encoded bytecode
 
 Options:
   -r, --resolve

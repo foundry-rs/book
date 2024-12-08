@@ -49,8 +49,8 @@ Options:
           
           Can also be the tags earliest, finalized, safe, latest, or pending.
 
-      --alphanet
-          Enable Alphanet features
+      --odyssey
+          Enable Odyssey features
 
   -h, --help
           Print help (see a summary with '-h')

@@ -64,8 +64,8 @@ Commands:
                          --string-decode, sd]
   decode-transaction     Decodes a raw signed EIP 2718 typed transaction
                          [aliases: dt, decode-tx]
-  disassemble            Disassembles hex encoded bytecode into individual /
-                         human readable opcodes [aliases: da]
+  disassemble            Disassembles a hex-encoded bytecode into a
+                         human-readable representation [aliases: da]
   estimate               Estimate the gas cost of a transaction [aliases: e]
   etherscan-source       Get the source code of a contract from Etherscan
                          [aliases: et, src]

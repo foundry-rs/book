@@ -30,7 +30,7 @@ Options:
           
           [default: 10000]
 
-      --config-out <OUT_FILE>
+      --config-out <FILE>
           Writes output of `anvil` as json to user-specified file
 
       --derivation-path <DERIVATION_PATH>
@@ -316,11 +316,6 @@ Environment config:
           The gas price
 
 EVM options:
-      --alphanet
-          Enable Alphanet features
-          
-          [aliases: odyssey]
-
       --auto-impersonate
           Enables automatic impersonation on startup. This allows any
           transaction sender to be simulated as different accounts, which is
@@ -340,6 +335,9 @@ EVM options:
 
       --memory-limit <MEMORY_LIMIT>
           The memory limit per EVM execution in bytes
+
+      --odyssey
+          Enable Odyssey features
 
       --optimism
           Run an Optimism chain
