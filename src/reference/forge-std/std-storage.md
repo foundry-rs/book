@@ -32,7 +32,7 @@ Terminator functions:
 - [`checked_write`](./checked_write.md): Set the data to be written to the storage slot(s)
 - [`read_<type>`](./read.md): Read the value from the storage slot as `<type>`
 
-### Example
+### Simple Example
 
 `playerToCharacter` tracks info about players' characters.
 
@@ -61,7 +61,7 @@ stdstore
 ```
 
 
-### Example
+### Packed-Slot Example
 
 `balanceOf()` returns the balance of a user in a gas-optimized ERC20 implementation.
 `enable_packed_slots()` also works with [ERC7201 Namespaced Storage Slots](https://eips.ethereum.org/EIPS/eip-7201), proxy patterns, and packed slots as shown in the example below:
