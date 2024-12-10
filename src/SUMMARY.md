@@ -39,6 +39,7 @@
 - [Gas Overview](./zksync-specifics/gas.md)
 - [Paymaster Overview](./zksync-specifics/paymaster-overview.md)
 - [Examples](./zksync-specifics/examples/README.md)
+  - [General Flow Paymaster](./zksync-specifics/examples/general-paymaster.md)
   - [Paymaster Approval Based](./zksync-specifics/examples/paymaster-approval-based.md)
   - [Ledger](./zksync-specifics/examples/ledger.md)
   - [Multisig Smart Account](./zksync-specifics/examples/smart-account.md)
@@ -77,9 +78,12 @@
 
 - [Overview of Cast](./cast/README.md)
 
+# Anvil-ZKsync Overview
+
+- [Anvil-ZKsync](./anvil-zksync/README.md)
+
 # Not Supported
 
-- [Anvil](./anvil/README.md)
 - [Chisel](./chisel/README.md)
 
 # Configuration
@@ -409,8 +413,8 @@
       - [cast wallet verify](./reference/cast/cast-wallet-verify.md)
       - [cast wallet import](./reference/cast/cast-wallet-import.md)
       - [cast wallet list](./reference/cast/cast-wallet-list.md) -->
-  <!-- - [`anvil` Reference](./reference/anvil/README.md) -->
-  <!-- - [`chisel` Reference](./reference/chisel/README.md) -->
+  - [`anvil-zksync` Reference](./reference/anvil-zksync/README.md) -->
+  <!-- - [`chisel` Reference](./reference/chisel/README.md)
   - [Config Reference](./reference/config/README.md)
     - [Overview](./reference/config/overview.md)
     - [Project](./reference/config/project.md)
