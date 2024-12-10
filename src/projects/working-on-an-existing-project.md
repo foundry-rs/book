@@ -29,6 +29,6 @@ And to test, use [`forge test`][test]:
 
 [paul]: https://github.com/PaulRBerg
 [template]: https://github.com/PaulRBerg/foundry-template
-[install]: ../reference/cli/forge/install.md
-[build]: ../src/reference/cli/forge/build.md
-[test]: ../reference/cli/forge/test.md
+[install]: ../reference/forge/forge-install.md
+[build]: ../reference/forge/forge-build.md
+[test]: ../reference/forge/forge-test.md
