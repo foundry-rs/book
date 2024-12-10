@@ -11,7 +11,7 @@ This creates a new directory `hello_foundry` from the default template. This als
 If you want to create a new project using a different template, you would pass the `--template` flag, like so:
 
 ```sh
-$ forge init --template https://github.com/foundry-rs/forge-template hello_template
+$ forge init --zksync --template https://github.com/foundry-rs/forge-template hello_template
 ```
 
 For now, let's check what the default template looks like:
@@ -21,7 +21,7 @@ $ cd hello_foundry
 {{#include ../output/hello_foundry/tree:all}}
 ```
 
-The default template comes with one dependency installed: Forge Standard Library. This is the preferred testing library used for Foundry projects. Additionally, the template also comes with an empty starter contract and a simple test.
+The default template comes with two dependencies installed: Forge Standard Library and Forge-ZKsync Standard Library. This is the preferred testing library used for Foundry projects. Additionally, the template also comes with an empty starter contract and a simple test.
 
 Let's build the project:
 
