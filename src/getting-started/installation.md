@@ -19,7 +19,9 @@ curl -L https://raw.githubusercontent.com/matter-labs/foundry-zksync/main/instal
 
 This will install Foundryup-zksync. Simply follow the on-screen instructions, and the `foundryup-zksync` command will become available in your CLI.
 
-Running `foundryup-zksync` will automatically install the latest (nightly) versions of the [precompiled binaries](#precompiled-binaries): `forge` and `cast`. For additional options, such as installing a specific version or commit, run `foundryup-zksync --help`.
+Running `foundryup-zksync` automatically installs the latest nightly versions of the [precompiled binaries](#precompiled-binaries), including `forge` and `cast`. Additionally, it fetches the most recent version of the precompiled binary `anvil-zksync` from the [anvil-zksync releases](https://github.com/matter-labs/anvil-zksync/releases).
+
+For additional options, such as installing a specific version or commit, run `foundryup-zksync --help`.
 
 > ℹ️ **Note**
 >
