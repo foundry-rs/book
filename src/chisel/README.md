@@ -49,6 +49,10 @@ contract REPL {
 
 To see available commands, type `!help` within the REPL.
 
+### Features
+
+TODO: add comprehensive list of features
+
 <br>
 
 > 📚 **Reference**

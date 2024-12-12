@@ -86,20 +86,7 @@ Listening on 127.0.0.1:8545
 
 ### Features
 
-Anvil is highly configurable. You can run `anvil -h` to see all the configuration options.
-
-Some basic options are:
-
-```bash
-#  Number of dev accounts to generate and configure. [default: 10]
-anvil -a, --accounts <ACCOUNTS>
-
-# The EVM hardfork to use. [default: latest]
-anvil --hardfork <HARDFORK>
-
-# Port number to listen on. [default: 8545]
-anvil  -p, --port <PORT>
-```
+TODO: add comprehensive list of features
 
 <br>
 

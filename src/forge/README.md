@@ -63,6 +63,8 @@ If you wish to simulate on-chain transactions pass a RPC URL.
 
 ### Features
 
+TODO: add comprehensive list of features
+
 <br>
 
 > 📚 **Reference**
