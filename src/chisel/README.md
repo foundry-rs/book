@@ -8,7 +8,7 @@ If the binary is executed in a Foundry project root, Chisel will inherit the pro
 Chisel is part of the Foundry suite and is installed alongside `forge`, `cast`, and `anvil`. If you haven't installed Foundry
 yet, see [Foundry installation](../getting-started/installation.md).
 
-### Getting Started
+### Getting started
 
 To use Chisel, simply type `chisel`.
 

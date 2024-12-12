@@ -5,7 +5,7 @@ Forge is a command-line tool that ships with Foundry. Forge tests, builds, and d
 Forge is part of the Foundry suite and is installed alongside `cast`, `chisel`, and `anvil`. If you haven't installed Foundry
 yet, see [Foundry installation](../getting-started/installation.md).
 
-### Getting Started
+### Getting started
 
 The best way to understand Forge is to simply try it (in less than 30 seconds!).
 

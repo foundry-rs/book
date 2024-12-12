@@ -5,7 +5,7 @@ Anvil is a fast local Ethereum development node.
 Anvil is part of the Foundry suite and is installed alongside `forge`, `cast` and `chisel`. If you haven't installed Foundry
 yet, see [Foundry installation](../getting-started/installation.md).
 
-### Getting Started
+### Getting started
 
 To use Anvil, simply type `anvil`. To fork against a live Ethereum network run `anvil --fork-url <RPC_URL>`.
 
