@@ -62,3 +62,9 @@ If you wish to simulate on-chain transactions pass a RPC URL.
 ```
 
 ### Features
+
+<br>
+
+> 📚 **Reference**
+>
+> See the [`forge` Reference](../reference/forge/README.md) for a complete overview of all the available subcommands.

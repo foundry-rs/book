@@ -1,4 +1,4 @@
-## Overview of Cast
+## Cast
 
 Cast is Foundry's command-line tool for performing Ethereum RPC calls. You can make smart contract calls, send transactions, or retrieve any type of chain data - all from your command-line!
 
@@ -39,4 +39,4 @@ $ cast send --private-key <Your Private Key> 0x3c44cdddb6a900fa2b585dd299e03d12f
 
 > 📚 **Reference**
 >
-> See the [`cast` Reference](../reference/cast/) for a complete overview of all the available subcommands.
+> See the [`cast` Reference](../reference/cast/README.md) for a complete overview of all the available subcommands.

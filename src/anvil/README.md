@@ -101,6 +101,8 @@ anvil --hardfork <HARDFORK>
 anvil  -p, --port <PORT>
 ```
 
+<br>
+
 > 📚 **Reference**
 >
-> See the [`anvil` Reference](../reference/anvil/) for in depth information on Anvil and its capabilities.
+> See the [`anvil` Reference](../reference/anvil/README.md) for in depth information on Anvil and its capabilities.

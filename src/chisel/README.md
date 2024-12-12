@@ -1,4 +1,4 @@
-## Overview of Chisel
+## Chisel
 
 Chisel is a fast, utilitarian, and verbose Solidity REPL.
 
@@ -49,8 +49,8 @@ contract REPL {
 
 To see available commands, type `!help` within the REPL.
 
-### Reference
+<br>
 
 > 📚 **Reference**
 >
-> See the [`chisel` Reference](../reference/chisel/) for in depth information on Chisel and its capabilities.
+> See the [`chisel` Reference](../reference/chisel/README.md) for in depth information on Chisel and its capabilities.
