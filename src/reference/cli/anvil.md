@@ -51,8 +51,8 @@ Options:
       --hardfork <HARDFORK>
           The EVM hardfork to use.
           
-          Choose the hardfork by name, e.g. `shanghai`, `paris`, `london`,
-          etc... [default: latest]
+          Choose the hardfork by name, e.g. `cancun`, `shanghai`, `paris`,
+          `london`, etc... [default: latest]
 
       --init <PATH>
           Initialize the genesis block with the given `genesis.json` file
