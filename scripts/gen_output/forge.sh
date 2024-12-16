@@ -14,7 +14,7 @@ gen_forge() {
 
   in_temp hello_foundry
   run_command "$OUTPUT_DIR/hello_foundry/forge-init" \
-    forge init hello_foundry
+    forge init --zksync hello_foundry
   cd hello_foundry
   run_command "$OUTPUT_DIR/hello_foundry/tree" \
     tree . -d -L 1
