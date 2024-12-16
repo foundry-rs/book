@@ -18,7 +18,7 @@
 
 # Forge Overview
 
-- [Overview of Forge](forge/README.md)
+- [Forge](forge/README.md)
 - [Tests](./forge/tests.md)
   - [Writing Tests](./forge/writing-tests.md)
   - [Cheatcodes](./forge/cheatcodes.md)
@@ -45,15 +45,15 @@
 
 # Cast Overview
 
-- [Overview of Cast](./cast/README.md)
+- [Cast](./cast/README.md)
 
 # Anvil Overview
 
-- [Overview of Anvil](./anvil/README.md)
+- [Anvil](./anvil/README.md)
 
 # Chisel Overview
 
-- [Overview of Chisel](./chisel/README.md)
+- [Chisel](./chisel/README.md)
 
 # Configuration
 
