@@ -11,7 +11,7 @@ Usage: cast admin [OPTIONS] <WHO>
 
 Arguments:
   <WHO>
-          The address to get the nonce for
+          The address from which the admin account will be fetched
 
 Options:
   -B, --block <BLOCK>
