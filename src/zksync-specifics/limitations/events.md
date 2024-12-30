@@ -1,6 +1,6 @@
 ## Emitted Events
 
-zkEVM in addition to user events, emits its [own system events](https://github.com/search?q=repo%3Amatter-labs%2Fera-contracts+%2Fevent+%5BA-Za-z%5D%2B%5C%28%2F&type=code), like `Transfer`, `Withdrawl`, `ContractCreated`, etc. These events are not printed as part of traces, as currently it's not trivial to match emitted events with zkEVM traces.
+zkEVM in addition to user events, emits its [own system events](https://github.com/search?q=repo%3Amatter-labs%2Fera-contracts+%2Fevent+%5BA-Za-z%5D%2B%5C%28%2F&type=code), like `Transfer`, `Withdraw`, `ContractCreated`, etc. These events are not printed as part of traces, as currently it's not trivial to match emitted events with zkEVM traces.
 
 These system events can be observed via setting the `RUST_LOG` env variable:
 ```bash

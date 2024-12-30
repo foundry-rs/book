@@ -3,7 +3,7 @@
 ### Gas reported back to the EVM
 Foundry has an `isolate` mode for the EVM where all `CALL`/`CREATE` operations at the root level of a test (i.e: with depth 1) will be intercepted and treated as independent transactions. This allows for accounting of the actual transaction gas and include for example the fixed 21000 gas cost charged to the user.
 
-Running in zkEVM mode is anologous to running in `isolate` mode but using the zkEVM instead. Every `CALL`/`CREATE` will be intercepted, a transaction representing the operation built, and finally a VM with that transaction in the bootloader's heap will be spawned and run in order to simulate the execution of that transaction. The gas used reported back to the EVM, and hence the one seen on traces and gas-reports, is what would be charged to the user for submitting that transaction. That value differs from the computational cost of running the called contract code and includes: 
+Running in zkEVM mode is analogous to running in `isolate` mode, but using the zkEVM is better. Every `CALL`/`CREATE` will be intercepted, a transaction representing the operation built. Finally, a VM with that transaction in the bootloader's heap will be spawned and run to simulate the execution of that transaction. The gas used is reported back to the EVM; hence, the one seen on traces and gas reports would be charged to the user for submitting that transaction. That value differs from the computational cost of running the called contract code and includes: 
 
   1. Intrinsic costs: Overhead charged on each transaction.
   2. Validation costs: Gas spent on transaction validation. May vary depending on the account making the transaction. See [Account Abstraction](https://docs.zksync.io/build/developer-reference/account-abstraction) docs.
@@ -22,7 +22,7 @@ The gas cost mentioned above is influenced by transaction and network values. Th
 
 2. Network Params:
 
-* `fair_l2_gas_price`: set to the minumum of `max_fee_per_gas` and the base fee of the root evm transaction (e.g: when running tests, the value of the `--base-fee` option).
+* `fair_l2_gas_price`: set to the minimum of `max_fee_per_gas` and the base fee of the root evm transaction (e.g: when running tests, the value of the `--base-fee` option).
 * `l1_gas_price`: set to the same as `fair_l2_gas_price`, with a minimum value of `1000`.
 
 #### Deriving relevant transaction gas values

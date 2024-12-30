@@ -4,7 +4,7 @@ These limitations apply to `zksolc` compilation of source contracts.
 
 ### Contract Bytecode Access
 
-Contract bytecode [cannot](https://docs.zksync.io/build/developer-reference/ethereum-differences/evm-instructions#extcodecopy) be accessed on zkEVM architecture, therefore EXTCODECOPY always produces a compile-time error with zksolc. As such using `address(..).code` in a solidity contract will produce a compile-time error.
+Contract bytecode [cannot](https://docs.zksync.io/build/developer-reference/ethereum-differences/evm-instructions#extcodecopy) be accessed on zkEVM architecture, therefore `EXTCODECOPY` always produces a compile-time error with zksolc. As such using `address(..).code` in a solidity contract will produce a compile-time error.
 
 ```solidity
 contract FooBar {
@@ -79,9 +79,9 @@ There are three possible solutions to address this issue:
     }
     ```
 
-### Non inlinable libraries
+### _Non-inlinable_ libraries
 
-Compiling contracts without linking non-inlinable libraries is currently not supported. Libraries need to be deployed before building contracts using them. 
+Compiling contracts without linking _non-inlinable_ libraries is currently not supported. Libraries need to be deployed before building contracts using them. 
 
 When building the contracts, the addresses need to be passed using the `libraries` config which contains a list of `CONTRACT_PATH`:`ADDRESS` mappings.
 

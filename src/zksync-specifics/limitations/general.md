@@ -92,7 +92,7 @@ Any code making assumptions about bytecode hashes around EVM-scope, would need t
 
 ### Address Derivation
 
-zkEVM uses a different CREATE and CREATE2 [address derivation strategy](https://docs.zksync.io/build/developer-reference/ethereum-differences/evm-instructions#address-derivation) compared to EVM. This can lead to issues for tests that have the CREATE2 addresses hard-coded for EVM. These tests would therefore need to be updated to reflect the ZKsync derived addresses.
+zkEVM uses a different `CREATE` and `CREATE2` [address derivation strategy](https://docs.zksync.io/build/developer-reference/ethereum-differences/evm-instructions#address-derivation) compared to EVM. This can lead to issues for tests that have the CREATE2 addresses hard-coded for EVM. These tests would therefore need to be updated to reflect the ZKsync derived addresses.
 
 ```javascript
 function create2Address(sender: Address, bytecodeHash: BytesLike, salt: BytesLike, input: BytesLike) {

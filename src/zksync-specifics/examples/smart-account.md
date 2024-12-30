@@ -208,7 +208,7 @@ contract TwoUserMultisig is IAccount, IERC1271 {
             // in order for the fee estimation to work correctly
             _signature = new bytes(130);
 
-            // Making sure that the signatures look like a valid ECDSA signature and are not rejected rightaway
+            // Making sure that the signatures look like a valid ECDSA signature and are not rejected right away
             // while skipping the main verification process.
             _signature[64] = bytes1(uint8(27));
             _signature[129] = bytes1(uint8(27));
