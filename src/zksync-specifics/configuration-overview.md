@@ -1,6 +1,6 @@
 ## Configuration Overview
 
-Foundry-ZKsync adds additional configuration options that can be specified in the `foundry.toml`. 
+Foundry-ZKsync adds some new configuration options that can be specified in the `foundry.toml`. 
 
 These include the following:
 
