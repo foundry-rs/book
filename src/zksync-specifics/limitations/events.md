@@ -1,6 +1,6 @@
 ## Emitted Events
 
-zkEVM in addition to user events, emits its [own system events](https://github.com/search?q=repo%3Amatter-labs%2Fera-contracts+%2Fevent+%5BA-Za-z%5D%2B%5C%28%2F&type=code), like `Transfer`, `Withdraw`, `ContractCreated`, etc. These events are not printed as part of traces, as currently it's not trivial to match emitted events with zkEVM traces.
+zkEVM, in addition to user events, emits its [own system events](https://github.com/search?q=repo%3Amatter-labs%2Fera-contracts+%2Fevent+%5BA-Za-z%5D%2B%5C%28%2F&type=code), like `Transfer`, `Withdraw`, `ContractCreated`, etc. These events are not printed as part of traces, as currently, it's not trivial to match emitted events with zkEVM traces.
 
 These system events can be observed via setting the `RUST_LOG` env variable:
 ```bash
@@ -20,7 +20,7 @@ EthToken System Contract
 ```
 
 ### Issues with `expectEmit`
-This can often come as a surprise to users, who have the following test structure in place:
+This can often come as a surprise to users who have the following test structure in place:
 
 ```solidity
 contract Number {
@@ -135,7 +135,7 @@ EthToken System Contract
 zk vm decoded result 0000000000000000000000000000000000000000000000000000000000000003
 ```
 
-Here we observe that 3 events were emitted when we called `num.three()` in zkEVM. These correspond to the `Transfer(address indexed from, address indexed to, uint256 value)` event, which denotes change of L2 ETH. As a result the `vm.expectEmit` will register the first event emitted, and try to match the next two events, which will fail and so will the test with:
+Here, we observe that three events were emitted when we called `num.three()` in zkEVM. These correspond to the `Transfer(address indexed from, address indexed to, uint256 value)` event, which denotes a change of L2 ETH. As a result, the `vm.expectEmit` will register the first event emitted and try to match the subsequent two events, which will fail, and so will the test with:
 
 ```ignore
 [FAIL. Reason: log != expected log] testFoo() (gas: 35515)
@@ -151,4 +151,4 @@ Traces:
 ```
 
 
-To avoid such a scenario, it's recommended to explicitly emit the events for `expectEmit`, with hard-coded values.
+To avoid such a scenario, it's recommended that the events for `expectEmit` be explicitly emitted with hard-coded values.
