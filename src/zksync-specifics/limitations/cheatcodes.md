@@ -13,17 +13,17 @@ contract MyContract {
 }
 
 contract FooTest is Test {
-    function testFoo_1() public {
+    function testCheatCodesAccess_1() public {
         vm.roll(10);                    // valid
         vm.assertEq(10, block.number);
     }
 
-    function testFoo_2() public {
+    function testCheatCodesAccess_2() public {
         vm.roll(10);                    // valid
         new MyContract();
     }
 
-    function testFoo_3() public {
+    function testCheatCodesAccess_3() public {
         vm.roll(10);                    // valid
         MyContract testContract = new MyContract();
         testContract.getNumber();
@@ -41,7 +41,7 @@ library MyLibrary {
 }
 
 contract FooTest is Test {
-    function testFoo_1() public {
+    function testCheatCodesLibrary() public {
         vm.roll(10);                    // valid
         vm.assertEq(10, block.number);
         MyLibrary.setBlockNumber(20);
@@ -65,7 +65,7 @@ contract MyContract {
 }
 
 contract FooTest is Test {
-    function testFoo_1() public {
+    function testUnsupportedCheatcode() public {
         vm.roll(10);                    // valid
         MyContract testContract = new MyContract();
         testContract.getNumber();

@@ -9,13 +9,17 @@ Therefore, the user addresses must range from `65536` onwards.
 
 ```solidity
 contract FooTest is Test {
-    function testFoo() public {
+    function testReservedAddress_Invalid() public {
         vm.mockCall(
             address(0),     // invalid
             abi.encodeWithSelector(bytes4(keccak256("number()"))),
             abi.encode(5)
         );
+```
 
+```solidity
+contract FooTest is Test {
+    function testReservedAddress_Valid() public {
         vm.mockCall(
             address(65536),     // valid
             abi.encodeWithSelector(bytes4(keccak256("number()"))),
@@ -39,7 +43,7 @@ library IFooBar {
 }
 
 contract FooTest is Test {
-    function testFoo() public {
+    function testOriginAddress() public {
         address target = tx.origin;
 
         vm.mockCall(
@@ -64,7 +68,7 @@ zkEVM asserts a [bytecode](https://docs.zksync.io/zk-stack/components/zksync-evm
 
 ```solidity
 contract FooTest is Test {
-    function testFoo() public {
+    function testBytecodeContraint() public {
         // invalid, word-size of 1 byte
         vm.etch(address(65536), hex"00");
 
@@ -115,7 +119,7 @@ function createAddress(sender: Address, senderNonce: BigNumberish) {
 
 ### Accessing Contract Bytecode and Hash
 
-zkEVM does not allow obtaining bytecodes from `address.code` or computing their respective hashes, which will be raised as an error during [compilation](./compilation.md#contract-bytecode-access). This is particularly useful when computing CREATE2 addresses.
+zkEVM does not allow obtaining bytecodes from `address.code` or computing their respective hashes, which will be raised as an error during [compilation](./compilation.md#contract-bytecode-access). This is particularly useful when computing `CREATE2` addresses (see `getNewAddressCreate2` below).
 
 To circumvent this limitation, it is recommended to use the FFI functionality of cheatcodes: 
 
@@ -127,7 +131,7 @@ contract Calculator {
 }
 
 contract FooTest is Test {
-    function testFoo() public {
+    function testContractBytecodeHash() public {
         string memory artifact = vm.readFile(
             "zkout/FooTest.sol/Calculator.json"
         );

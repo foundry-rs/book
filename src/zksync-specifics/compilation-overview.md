@@ -6,6 +6,11 @@
 
 To allow switching back and forth between EVM and zkEVM as defined in the [Execution Overview](./execution-overview.md), we compile the same contract with `solc` and `zksolc`. This dual-compiled contract can then be freely translated between both environments as needed. As such, every contract in Foundry ZKsync always has two bytecodes attached - EVM bytecode and zkEVM bytecode, which are not equivalent.
 
+> ℹ️ **Note**
+>
+> If you run the example listed in the [Getting Started](../getting-started/first-steps.md) section at the beginning of the book, you can check them out in the `out` and `zkout` folders
+
+
 ### Limitations
 
 See [Compilation Limitations](./limitations/compilation.md).

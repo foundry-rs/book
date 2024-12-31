@@ -14,7 +14,7 @@ contract FooBar {
 }
 
 contract FooTest is Test {
-    function testFoo() public {
+    function testCompileTimeFailure() public {
         FooBar target = new FooBar();
         address(target).code;   // will fail at compile-time
     }

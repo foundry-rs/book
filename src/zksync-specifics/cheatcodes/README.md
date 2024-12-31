@@ -28,6 +28,10 @@ interface CheatCodesExt {
 
     /// Enables the use of a paymaster for the next transaction.
     function zkUsePaymaster(address paymaster, bytes calldata paymaster_input) external pure;
+
+    /// Sets a flag on a given contract as a factory dependency only for the next `CREATE` or `CALL` operation
+    function zkUseFactoryDep(string calldata name) external pure;
+
 }
 ```
 

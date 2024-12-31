@@ -1,6 +1,6 @@
 ## Execution Overview
 
-A forge test begins its execution on the EVM, hence the need to compile `solc` artifacts.
+A forge test begins its execution on the EVM, hence the need to compile `solc` artifacts (see: [solc](https://github.com/matter-labs/era-solidity)).
 During test execution, the test can switch over to ZKsync context in multiple ways.
 
 The following operations are performed during the switchover:
@@ -45,7 +45,7 @@ contract MyContract {
 }
 
 contract FooTest is Test {
-    function testFoo() public {
+    function testExecutionOverview() public {
         vm.roll(10);                                // EVM
         vm.assertEq(10, block.number);              // EVM
         MyContract testContract = new MyContract(); // zkEVM
@@ -55,7 +55,7 @@ contract FooTest is Test {
 }
 ```
 
-When `testFoo()` is run with `--zksync`, it is initially run in Foundry's EVM context. However, due to the presence of the `--zksync` flag, the storage switchover to the ZKsync context is performed immediately upon its execution.
+When `testExecutionOverview()` is run with `--zksync`, it is initially run in Foundry's EVM context. However, due to the presence of the `--zksync` flag, the storage switchover to the ZKsync context is performed immediately upon its execution.
 
 The cheatcode `vm.roll(10)` is then intercepted within EVM, as are all cheatcodes, but the operation is applied on ZKsync storage. Similarly, the statement `block.number` also returns the ZKsync storage value.
 

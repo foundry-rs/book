@@ -4,30 +4,30 @@
 
 **Foundry-ZKsync is a smart contract development toolchain for ZKsync**, built upon [Foundry](https://book.getfoundry.sh/).
 
-Foundry-ZKsync manages your dependencies, compiles your project, runs tests, deploys, and lets you interact with the chain from the command-line and via Solidity scripts.
+Foundry-ZKsync manages your dependencies, compiles your project, runs tests, deploys, and lets you interact with the chain from the command line and via Solidity scripts.
 
 > ⚠️ **Alpha Stage:** The project is in alpha, so you might encounter issues. For more information or reporting bugs, please visit the [Foundry-ZKsync GitHub repository](https://github.com/matter-labs/foundry-zksync).
 
 ## Sections
 **[Getting Started](getting-started/installation.md)**
 
-To get started with Foundry-ZKsync, install Foundry-ZKsync and set up your first project.
+To start with Foundry-ZKsync, install Foundry-ZKsync and set up your first project.
 
 **[Projects](projects/creating-a-new-project.md)**
 
-This section will give you an overview of how to create and work with existing projects.
+This section will give you an overview of creating and working with existing projects.
 
 **[ZKsync Specific](zksync-specifics)**
 
-This section will give you an the necessary information to write and run tests for zkEVM.
+This section will introduce the necessary information to write and run tests for zkEVM.
 
 **[Supported Commands Overview](supported-commands)**
 
-This section has a comprehensive review of all the Foundry commands actually supported in the Foundry-ZKSync tool.
+This section comprehensively reviews all the Foundry commands supported in the Foundry-ZKSync tool.
 
 > 📖 **Contributing**
 >
-> This book is actual work in progress as part of the global efforts to support Foundry in ZKSync. More information, sections and pages will be added as we the project progresses.
+> This book is actually a work in progress, part of the global effort to support Foundry in ZKSync. More information, sections, and pages will be added as the project progresses.
 >
 > Feedback and contributions are welcome. You can contribute to this book on [Foundry-ZKSync Book GitHub repository](https://github.com/matter-labs/foundry-zksync-book).
 >
@@ -37,11 +37,11 @@ This section has a comprehensive review of all the Foundry commands actually sup
 <!--  
 **[Forge Overview](forge)**
 
-The overview will give you all you need to know about how to use `forge` to develop, test, and deploy smart contracts.
+This overview will cover everything you need to know about how to use `forge` to develop, test, and deploy smart contracts.
 
 **[Cast Overview](cast)**
 
-Learn how to use `cast` to interact with smart contracts, send transactions, and get chain data from the command-line.
+Learn to use `cast` to interact with smart contracts, send transactions, and get chain data from the command line.
 
 **[Anvil Overview](anvil)**
 
