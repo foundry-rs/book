@@ -9,13 +9,14 @@ This example covers the configuration and deployment of a multisig smart account
 
 ### Contracts
 
-For this example, we will use 3 contracts:
+For this example, we will use three contracts:
 
 - `AAFactory` - A factory contract that will be used to deploy the multisig account.
-- `TwoUserMultisig` - A multisig account with 2 owners.
+- `TwoUserMultisig` - A multisig account with two owners.
 - `DeployMultisig` - A script to deploy the multisig account through the factory.
 
 ### `AAFactory`
+
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
@@ -58,6 +59,7 @@ contract AAFactory {
 ```
 
 ### `TwoUserMultisig`
+
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
@@ -107,7 +109,7 @@ contract TwoUserMultisig is IAccount, IERC1271 {
         Transaction calldata _transaction
     ) internal returns (bytes4 magic) {
         // Incrementing the nonce of the account.
-        // Note, that reserved[0] by convention is currently equal to the nonce passed in the transaction
+        // Note that reserved[0] by convention is currently equal to the nonce passed in the transaction
         SystemContractsCaller.systemCallWithPropagatedRevert(
             uint32(gasleft()),
             address(NONCE_HOLDER_SYSTEM_CONTRACT),
@@ -129,7 +131,7 @@ contract TwoUserMultisig is IAccount, IERC1271 {
         }
 
         // The fact there is enough balance for the account
-        // should be checked explicitly to prevent user paying for fee for a
+        // should be checked explicitly to prevent the user from paying a fee for a
         // transaction that wouldn't be included on Ethereum.
         uint256 totalRequiredBalance = _transaction.totalRequiredBalance();
         require(
@@ -163,7 +165,7 @@ contract TwoUserMultisig is IAccount, IERC1271 {
         if (to == address(DEPLOYER_SYSTEM_CONTRACT)) {
             uint32 gas = Utils.safeCastToU32(gasleft());
 
-            // Note, that the deployer contract can only be called
+            // Note that the deployer contract can only be called
             // with a "systemCall" flag.
             SystemContractsCaller.systemCallWithPropagatedRevert(
                 gas,
@@ -205,10 +207,10 @@ contract TwoUserMultisig is IAccount, IERC1271 {
 
         if (_signature.length != 130) {
             // Signature is invalid anyway, but we need to proceed with the signature verification as usual
-            // in order for the fee estimation to work correctly
+            //for the fee estimation to work correctly
             _signature = new bytes(130);
 
-            // Making sure that the signatures look like a valid ECDSA signature and are not rejected right away
+            // Making sure that the signatures look like valid ECDSA signatures and are accepted right away
             // while skipping the main verification process.
             _signature[64] = bytes1(uint8(27));
             _signature[129] = bytes1(uint8(27));
@@ -342,6 +344,7 @@ contract TwoUserMultisig is IAccount, IERC1271 {
 ```
 
 ### `DeployMultisig`
+
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;

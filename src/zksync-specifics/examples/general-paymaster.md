@@ -1,7 +1,7 @@
 ## Using the zkUsePaymaster Cheatcode in General Flow Paymaster Contracts
 
 This example covers the use of a general flow paymaster contract. 
-For this example we will use the `GaslessPaymaster` contract from the paymaster example repository [here](https://github.com/matter-labs/paymaster-examples).
+For this example, we will use the `GaslessPaymaster` contract from the paymaster example repository [here](https://github.com/matter-labs/paymaster-examples).
 
 
 ```solidity
@@ -37,7 +37,7 @@ contract GaslessPaymaster is IPaymaster, Ownable {
         onlyBootloader
         returns (bytes4 magic, bytes memory context)
     {
-        // By default we consider the transaction as accepted.
+        // By default, we consider the transaction accepted.
         magic = PAYMASTER_VALIDATION_SUCCESS_MAGIC;
         require(
             _transaction.paymasterInput.length >= 4,
@@ -48,7 +48,7 @@ contract GaslessPaymaster is IPaymaster, Ownable {
             _transaction.paymasterInput[0:4]
         );
         if (paymasterInputSelector == IPaymasterFlow.general.selector) {
-            // Note, that while the minimal amount of ETH needed is tx.gasPrice * tx.gasLimit,
+            // Note that while the minimal amount of ETH needed is tx.gasPrice * tx.gasLimit,
             // neither paymaster nor account are allowed to access this context variable.
             uint256 requiredETH = _transaction.gasLimit *
                 _transaction.maxFeePerGas;
@@ -77,7 +77,7 @@ contract GaslessPaymaster is IPaymaster, Ownable {
     }
 
     function withdraw(address payable _to) external onlyOwner {
-        // send paymaster funds to the owner
+        // Send paymaster funds to the owner
         uint256 balance = address(this).balance;
         (bool success, ) = _to.call{value: balance}("");
         require(success, "Failed to withdraw funds from paymaster.");
@@ -87,9 +87,9 @@ contract GaslessPaymaster is IPaymaster, Ownable {
 }
 ```
 
-This contract is a general flow paymaster, which means that it can pay for any account. To be able to use this paymaster we need to first deploy it in the intended network.
+This contract is a general-flow paymaster, meaning it can pay for any account. To use it, we must first deploy it in the intended network.
 
-For this example we will deploy it in the era-test-node and then use the `zkUsePaymaster` cheatcode to pay for a transaction using a script.
+We will deploy this example in the era-test-node and then use the `zkUsePaymaster` cheatcode to pay for a transaction using a script.
 
 ```solidity
 pragma solidity ^0.8.0;
@@ -99,7 +99,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "../src/GeneralPaymaster.sol";
 // We need to import the TestExt to use the zkUsePaymaster cheatcode
-// as this is a ZKsync specific cheatcode
+// as this is a ZKsync-specific cheatcode
 import "../src/Counter.sol";
 import {TestExt} from "forge-zksync-std/TestExt.sol";
 
@@ -111,7 +111,7 @@ contract PaymasterUsageScript is Script, TestExt {
 
         GaslessPaymaster paymaster = new GaslessPaymaster();
 
-        // fund the paymaster
+        // Fund the paymaster
         address(paymaster).call{value: 0.05 ether}("");
 
         bytes memory paymaster_encoded_input = abi.encodeWithSelector(
