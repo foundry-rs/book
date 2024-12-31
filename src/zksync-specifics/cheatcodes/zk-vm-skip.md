@@ -9,8 +9,7 @@ function zkVmSkip() external pure;
 ### Description
 
 When running in zkEVM context, skips the next `CREATE` or `CALL`, executing it on the EVM instead.
-All `CREATE`s executed within this skip, will automatically have `CALL`s to their target addresses
-executed in the EVM, and need not be marked with this cheatcode at every usage location.
+All `CREATE`s executed within this skip will automatically have `CALL`s to their target addresses executed in the EVM and need not be marked with this cheatcode at every usage location.
 
 Skipping the next operation in zkEVM does not involve [migrating](../execution-overview.md#execution-overview) storages as is done for [zkVm](./zk-vm.md) cheatcode.
 
