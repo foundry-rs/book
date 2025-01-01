@@ -72,7 +72,7 @@ As a small change in the Foundry CLIs can have a large impact on the book, most 
 
 Each output file has three anchors you can use:
 
-**Display the command *and* the output**
+**Display the command _and_ the output**
 
 ```handlebars
 {{#include ../output/abc/xyz:all}}
