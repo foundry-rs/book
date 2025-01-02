@@ -109,7 +109,7 @@ contract TwoUserMultisig is IAccount, IERC1271 {
         Transaction calldata _transaction
     ) internal returns (bytes4 magic) {
         // Incrementing the nonce of the account.
-        // Note that reserved[0] by convention is currently equal to the nonce passed in the transaction
+        // Note, that reserved[0] by convention is currently equal to the nonce passed in the transaction
         SystemContractsCaller.systemCallWithPropagatedRevert(
             uint32(gasleft()),
             address(NONCE_HOLDER_SYSTEM_CONTRACT),

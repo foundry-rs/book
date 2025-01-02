@@ -7,7 +7,7 @@ Running in zkEVM mode is analogous to running in `isolate` mode, but using the z
 
   1. Intrinsic costs: Overhead charged on each transaction.
   2. Validation costs: Gas spent on transaction validation. It may vary depending on the account making the transaction. See [Account Abstraction](https://docs.zksync.io/build/developer-reference/account-abstraction) docs.
-  3. Execution costs: Gas spent on marking factory dips and executing the transaction.
+  3. Execution costs: Gas spent on marking factory dependencies and executing the transaction.
   4. Pubdata costs: Gas spent on publishing pubdata is influenced by the `gasPerPubdata` network value.
 
 More info about ZKSync Era's fee model can be found [here](https://docs.zksync.io/build/developer-reference/fee-model).

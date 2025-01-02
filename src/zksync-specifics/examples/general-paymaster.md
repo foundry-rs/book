@@ -1,8 +1,7 @@
 ## Using the zkUsePaymaster Cheatcode in General Flow Paymaster Contracts
 
-This example covers the use of a general flow paymaster contract. 
+This example covers the use of a general flow paymaster contract.
 For this example, we will use the `GaslessPaymaster` contract from the paymaster example repository [here](https://github.com/matter-labs/paymaster-examples).
-
 
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -37,7 +36,7 @@ contract GaslessPaymaster is IPaymaster, Ownable {
         onlyBootloader
         returns (bytes4 magic, bytes memory context)
     {
-        // By default, we consider the transaction accepted.
+        // By default we consider the transaction as accepted.
         magic = PAYMASTER_VALIDATION_SUCCESS_MAGIC;
         require(
             _transaction.paymasterInput.length >= 4,
@@ -145,6 +144,5 @@ The key part of this script is encoding the paymaster call with the `general(byt
             paymaster_encoded_input
         );
 ```
+
 After calling the `zkUsePaymaster` cheatcode, the paymaster will pay for the following transaction.
-
-

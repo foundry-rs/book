@@ -34,7 +34,7 @@ cast send 0xdb8bA5F5DfB1636361d2fE851d7D3ed93acfc487 "increment()" --rpc-url htt
 
 `forge create` is a command-line tool for deploying smart contracts using the Foundry framework. The documentation can be found [here](../reference/forge/forge-create.md).
 
-The paymaster contract address must be specified in the command to deploy a paymaster contract using `forge create`.
+The paymaster contract address must be specified in the command to deploy any other contract using `forge create`.
 
 The flags for this are: 
 

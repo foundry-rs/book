@@ -5,7 +5,7 @@
 ### Precompiled Binaries
 
 Precompiled binaries can be downloaded from the [GitHub releases page](https://github.com/matter-labs/foundry-zksync/releases). We recommend using [Foundryup](#using-foundryup-zksync) for easier management.
-We are working on a polished versioning approach that will be released soon. However, we are also in a phase of active development, so it's recommended that you use the latest commit available in the repo.
+We are working on a polished versioning approach that will be released soon. However, we are also in a phase of active development.
 
 ### Using Foundryup-zksync
 
