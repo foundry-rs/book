@@ -165,7 +165,7 @@ contract TwoUserMultisig is IAccount, IERC1271 {
         if (to == address(DEPLOYER_SYSTEM_CONTRACT)) {
             uint32 gas = Utils.safeCastToU32(gasleft());
 
-            // Note that the deployer contract can only be called
+            // Note, that the deployer contract can only be called
             // with a "systemCall" flag.
             SystemContractsCaller.systemCallWithPropagatedRevert(
                 gas,
@@ -207,10 +207,10 @@ contract TwoUserMultisig is IAccount, IERC1271 {
 
         if (_signature.length != 130) {
             // Signature is invalid anyway, but we need to proceed with the signature verification as usual
-            //for the fee estimation to work correctly
+            // in order for the fee estimation to work correctly
             _signature = new bytes(130);
 
-            // Making sure that the signatures look like valid ECDSA signatures and are accepted right away
+            // Making sure that the signatures look like a valid ECDSA signature and are not rejected rightaway
             // while skipping the main verification process.
             _signature[64] = bytes1(uint8(27));
             _signature[129] = bytes1(uint8(27));

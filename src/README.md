@@ -9,6 +9,7 @@ Foundry-ZKsync manages your dependencies, compiles your project, runs tests, dep
 > ⚠️ **Alpha Stage:** The project is in alpha, so you might encounter issues. For more information or reporting bugs, please visit the [Foundry-ZKsync GitHub repository](https://github.com/matter-labs/foundry-zksync).
 
 ## Sections
+
 **[Getting Started](getting-started/installation.md)**
 
 To start with Foundry-ZKsync, install Foundry-ZKsync and set up your first project.
@@ -31,17 +32,18 @@ This section comprehensively reviews all the Foundry commands supported in the F
 >
 > Feedback and contributions are welcome. You can contribute to this book on [Foundry-ZKSync Book GitHub repository](https://github.com/matter-labs/foundry-zksync-book).
 >
-<br>
+> <br>
 
-***For general information about Foundry, see the [Foundry Book](https://book.getfoundry.sh/).***
-<!--  
+**_For general information about Foundry, see the [Foundry Book](https://book.getfoundry.sh/)._**
+
+<!--
 **[Forge Overview](forge)**
 
-This overview will cover everything you need to know about how to use `forge` to develop, test, and deploy smart contracts.
+The overview will give you all you need to know about how to use `forge` to develop, test, and deploy smart contracts.
 
 **[Cast Overview](cast)**
 
-Learn to use `cast` to interact with smart contracts, send transactions, and get chain data from the command line.
+Learn how to use `cast` to interact with smart contracts, send transactions, and get chain data from the command-line.
 
 **[Anvil Overview](anvil)**
 
@@ -71,7 +73,7 @@ Tutorials on building smart contracts with Foundry.
 - [Testing EIP-712 Signatures](./tutorials/testing-eip712.md)
 - [Solidity Scripting](./tutorials/solidity-scripting.md)
 - [Forking Mainnet with Cast and Anvil](./tutorials/forking-mainnet-with-cast-anvil.md)
-<!-- - [Incremental Adoption]() 
+<!-- - [Incremental Adoption]()
 
 
 **Contributing**

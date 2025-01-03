@@ -2,19 +2,18 @@
 
 This section covers the specific parts of ZKSync foundry, how it works, insight into compilation, and custom cheatcodes to help work with contracts specifically in ZKSync.
 
+## Context
 
-## To-start Context
 Foundry-zkSync tests are initially [executed](execution-overview.md) in the EVM context (the traditional execution environment for Ethereum smart contracts). This is done to maintain compatibility with Ethereum tooling and to leverage Foundry features like [Cheatcodes](limitations/cheatcodes.md).
-
 
 ![Features](../images/key-features.png)
 
 ### Lifetime Execution
+
 A forge test begins execution in the EVM context but can switch to the EraVM context during the test for zkSync-specific features. Selecting the EraVM context ensures all calls and deployments are executed within zkSync.
 There are mainly three steps
 
-**Step 1)** Aggregate: [Dual compiling](compilation-overview.md) contracts 
-
+**Step 1)** Aggregate: [Dual compiling](compilation-overview.md) contracts
 
 ![alt text](../images/lifetime/step-1.png)
 
@@ -26,12 +25,11 @@ There are mainly three steps
 
 ![alt text](../images/lifetime/step-3.png)
 
-
 ### Additional Information.
+
 It is essential before deep diving in to the details of how to run the tool. You significantly understand how [ZKsync](https://docs.zksync.io/) works.
 
 Don't hesitate to ask if you have specific questions regarding the tool or feature requests.
-
 
 ### Having issues?
 

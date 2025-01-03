@@ -8,7 +8,7 @@ First, clone the project and run [`forge install`][install] inside the project d
 
 ```sh
 $ git clone https://github.com/PaulRBerg/foundry-template
-$ cd foundry-template 
+$ cd foundry-template
 $ forge install
 $ bun install # install Solhint, Prettier, and other Node.js deps
 ```
@@ -28,8 +28,8 @@ And to test, use [`forge test`][test]:
 ```
 
 > ℹ️ **Note**
+>
 > If you are already familiar with the foundry, you will notice the `—-zksync` flag; we’ll cover it in detail in the following sections.
-
 
 [paul]: https://github.com/PaulRBerg
 [template]: https://github.com/PaulRBerg/foundry-template
