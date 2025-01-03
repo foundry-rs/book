@@ -31,7 +31,6 @@ And to test, use [`forge test`][test]:
 > If you are already familiar with the foundry, you will notice the `—-zksync` flag; we’ll cover it in detail in the following sections.
 
 
-
 [paul]: https://github.com/PaulRBerg
 [template]: https://github.com/PaulRBerg/foundry-template
 [install]: ../reference/forge/forge-install.md
