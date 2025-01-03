@@ -131,7 +131,7 @@ contract TwoUserMultisig is IAccount, IERC1271 {
         }
 
         // The fact there is enough balance for the account
-        // should be checked explicitly to prevent the user from paying a fee for a
+        // should be checked explicitly to prevent user paying for fee for a
         // transaction that wouldn't be included on Ethereum.
         uint256 totalRequiredBalance = _transaction.totalRequiredBalance();
         require(
