@@ -28,7 +28,7 @@ contract Test is TestExt {
 }
 ```
 
-The paymaster flow depends on the type of paymaster used. Here's an example of the simplest usage of a 'general' paymaster in Foundry:
+The paymaster flow depends on the type of paymaster used. Here's an example of the most straightforward usage of a 'general' paymaster in Foundry:
 
 1. Write a custom paymaster:
 

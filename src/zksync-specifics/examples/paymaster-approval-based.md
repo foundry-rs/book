@@ -10,12 +10,12 @@ This example covers the use of an approval-based paymaster contract. The paymast
     - Mint tokens to the address using the paymaster.
 2. Approval and Paymaster Preparation
     - Create a paymaster contract.
-    - Encode the paymaster call with required parameters.
+    - Encode the paymaster call with the required parameters.
     - Use the zkUsePaymaster cheatcode.
 
 ### Step-by-Step
 
-Let's start by deploying the ERC20 contract and minting some tokens to the account that is using the paymaster. The idea behind the approval-based paymaster is that users transfer ERC20 tokens to the paymaster, which in turn pays for the transaction.
+Let's start by deploying the ERC20 contract and minting tokens for the account using the paymaster. The approval-based paymaster allows users to transfer ERC20 tokens to the paymaster, which pays for the transaction.
 
 This is the code for the ERC20 contract:
 ```solidity
@@ -30,7 +30,7 @@ contract MyERC20 is ERC20 {
 }
 ```
 
-Now, in the script we are going to run, we deploy the contract and mint some tokens to the account that is using the paymaster:
+Now, in the script, we are going to run, we deploy the contract and mint some tokens to the account that is using the paymaster:
 
 ```solidity
 import {Script} from "forge-std/Script.sol";
@@ -62,7 +62,7 @@ bytes memory paymaster_encoded_input = abi.encodeWithSelector(
     bytes("0x")       // Additional data (empty in this case)
 );
 ```
-Here, we are encoding the paymaster input with the approvalBased method signature and the required parameters. The second parameter is the address of the recently deployed ERC20 contract, the third parameter is the amount of tokens that the paymaster consumes from the user to pay for the transaction, and the last one is empty bytes in this case. 
+Here, we are encoding the paymaster input with the approvalBased method signature and the required parameters. The second parameter is the address of the recently deployed ERC20 contract, the third parameter is the amount of tokens the paymaster consumes from the user to pay for the transaction, and the last one is empty bytes. 
 
 With the encoded input prepared, we can now use the zkUsePaymaster cheatcode to prepare the next call to be executed using the paymaster:
 
@@ -74,10 +74,10 @@ Counter counter = new Counter();
 counter.increment();
 ```
 
-The `counter.increment()` call will be executed using the paymaster that we set up in the encoded input.
+The `counter.increment()` call will be executed using the paymaster we set up in the encoded input.
 
 ### Complete code
-Below is the full code for the PaymasterTestScript demonstrating all steps:
+Below is the complete code for the PaymasterTestScript demonstrating all the steps:
 
 ```solidity
 pragma solidity ^0.8.0;

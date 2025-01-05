@@ -1,6 +1,6 @@
 ## Forge-ZKsync Standard Library
 
-[`forge-std`](https://github.com/foundry-rs/forge-std) exports the most common constructs that allow users to write tests. However, in Foundry ZKsync, we've added some new additions in the form of cheatcodes (or anything we deem useful in the future). To allow users to access these interfaces, [`forge-zksync-std`](https://github.com/Moonsong-Labs/forge-zksync-std) is provided as an add-on to `forge-std`.
+[`forge-std`](https://github.com/foundry-rs/forge-std) exports the most common constructs that allow users to write tests. However, in Foundry ZKsync, we've added some new cheatcodes (or anything we deem helpful in the future). To allow users to access these interfaces, [`forge-zksync-std`](https://github.com/Moonsong-Labs/forge-zksync-std) is provided as an add-on to `forge-std`.
 
 
 ### Installation
@@ -29,7 +29,7 @@ contract FooTest is Test {
 }
 ```
 
-However with the `TextExt` interface, the new cheatcodes can be accessed via `vmExt` property directly. The usual foundry cheatcodes are still available under the `vm` property.
+However, with the `TextExt` interface, the new cheatcodes can be accessed via `vmExt` property directly. The usual foundry cheatcodes are still available under the `vm` property.
 
 ```solidity
 import {Test} from "forge-std/Test.sol";
@@ -46,4 +46,4 @@ contract FooTest is Test, TestExt {
 }
 ```
 
-This approach ensures that the existing tests need not be modified to use a completely different package than `foundry/forge-std` yet still allow for the additional ZKsync functionality to be included when necessary.
+This approach ensures that the existing tests need not be modified to use a completely different package than `foundry/forge-std`, yet allowing for the additional ZKsync functionality to be included when necessary.

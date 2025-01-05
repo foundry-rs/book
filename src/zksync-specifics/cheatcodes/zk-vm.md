@@ -10,11 +10,11 @@ function zkVm(bool enable) external pure;
 
 Enables/Disables ZKsync context for transact/call and create instructions within a test or script execution.
 
-Switching VMs is a intensive process that translates the entire storage back-and-forth between EVM and zkEVM, and as such must be used sparingly in a test to switch between contexts. 
+Switching VMs is an intensive process that translates the entire storage back and forth between EVM and zkEVM. As such, it must be used sparingly in a test to switch between contexts. 
 
 See [Execution Overview](../execution-overview.md#execution-overview) for further details.
 
-See [zkVmSkip](./zk-vm-skip.md) for a one-off and much simpler operation.
+See [zkVmSkip](./zk-vm-skip.md) for a more straightforward one-off operation.
 
 ### Examples
 

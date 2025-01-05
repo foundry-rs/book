@@ -9,13 +9,14 @@ This example covers the configuration and deployment of a multisig smart account
 
 ### Contracts
 
-For this example, we will use 3 contracts:
+For this example, we will use three contracts:
 
 - `AAFactory` - A factory contract that will be used to deploy the multisig account.
-- `TwoUserMultisig` - A multisig account with 2 owners.
+- `TwoUserMultisig` - A multisig account with two owners.
 - `DeployMultisig` - A script to deploy the multisig account through the factory.
 
 ### `AAFactory`
+
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
@@ -58,6 +59,7 @@ contract AAFactory {
 ```
 
 ### `TwoUserMultisig`
+
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
@@ -342,6 +344,7 @@ contract TwoUserMultisig is IAccount, IERC1271 {
 ```
 
 ### `DeployMultisig`
+
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;

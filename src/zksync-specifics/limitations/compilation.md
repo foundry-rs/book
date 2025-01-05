@@ -4,7 +4,7 @@ These limitations apply to `zksolc` compilation of source contracts.
 
 ### Contract Bytecode Access
 
-Contract bytecode [cannot](https://docs.zksync.io/build/developer-reference/ethereum-differences/evm-instructions#extcodecopy) be accessed on zkEVM architecture, therefore EXTCODECOPY always produces a compile-time error with zksolc. As such using `address(..).code` in a solidity contract will produce a compile-time error.
+Contract bytecode [cannot](https://docs.zksync.io/build/developer-reference/ethereum-differences/evm-instructions#extcodecopy) be accessed on zkEVM architecture, therefore `EXTCODECOPY` always produces a compile-time error with zksolc. Using `address(..).code` in a solidity contract will produce a compile-time error.
 
 ```solidity
 contract FooBar {
@@ -14,18 +14,18 @@ contract FooBar {
 }
 
 contract FooTest is Test {
-    function testFoo() public {
+    function testCompileTimeFailure() public {
         FooBar target = new FooBar();
         address(target).code;   // will fail at compile-time
     }
 }
 ```
 
-See [here](./general.md#accessing-contract-bytecode-and-hash) on how to circumvent this issue.
+See [here](./general.md#accessing-contract-bytecode-and-hash) to circumvent this issue.
 
 ### Contract Size Limit
 
-`zksolc` currently limits the number of instructions to 2^16 that are compiled for a contract. As such for large contracts, the compilation will fail with the error:
+`zksolc` currently limits the number of instructions compiled for a contract to 2^16. As such, for large contracts, the compilation will fail with the error:
 
 ```bash
 Error: assembly-to-bytecode conversion: assembly parse error Label DEFAULT_UNWIND was tried to be used
@@ -38,7 +38,7 @@ There are three possible solutions to address this issue:
 
 1. **Compilation with `--zk-force-evmla=true`:**
 
-    You can attempt to compile the contract using ZKsync's EVM legacy architecture by adding the `--zk-force-evmla=true` flag. This can sometimes bypass the contract size limit by compiling in a different mode.
+    Compiling in a different mode can sometimes bypass the contract size limit. You can attempt to compile the contract using ZKsync's EVM legacy architecture by adding the `--zk-force-evmla=true` flag.
 
     Example command:
     ```bash
@@ -56,7 +56,7 @@ There are three possible solutions to address this issue:
 
 1. **Split the Contract into Smaller Units**
 
-    If neither of the above flags resolves the issue, the contract must be refactored into smaller, modular contracts. This involves separating your logic into different contracts and using contract inheritance or external contract calls to maintain functionality.
+    If neither of the above flags resolves the issue, the contract must be refactored into more minor, modular contracts. This involves separating your logic into different contracts and using contract inheritance or external contract calls to maintain functionality.
 
     **Before (single large contract):**
     ```solidity
@@ -79,13 +79,13 @@ There are three possible solutions to address this issue:
     }
     ```
 
-### Non inlinable libraries
+### _Non-inlinable_ libraries
 
-Compiling contracts without linking non-inlinable libraries is currently not supported. Libraries need to be deployed before building contracts using them. 
+Compiling contracts without linking _non-inlinable_ libraries is currently not supported. Libraries must be deployed before building contracts using them. 
 
-When building the contracts, the addresses need to be passed using the `libraries` config which contains a list of `CONTRACT_PATH`:`ADDRESS` mappings.
+When building the contracts, the addresses must be passed using the `libraries` config, which contains a list of `CONTRACT_PATH`:`ADDRESS` mappings.
 
-on `foundry.toml`:
+On `foundry.toml`:
 
 ```toml
 libraries = [
@@ -93,17 +93,17 @@ libraries = [
 ]
 ```
 
-as a `cli` flag:
+As a `cli` flag:
 
 ```bash
 forge build --zksync --libraries src/MyLibrary.sol:MyLibrary:0xfD88CeE74f7D78697775aBDAE53f9Da1559728E4
 
 ```
 
-For more information please refer to [official docs](https://docs.zksync.io/build/developer-reference/ethereum-differences/libraries).
+Please refer to [official docs](https://docs.zksync.io/build/developer-reference/ethereum-differences/libraries) for more information.
 
 #### Listing missing libraries
 
-To scan missing non-inlinable libraries, you can build the project using the `--zk-detect-missing-libraries` flag. This will give a list of the libraries that need to be deployed and their addresses provided via the `libraries` option for the contracts to compile. Metadata about the libraries will be saved in `.zksolc-libraries-cache/missing_library_dependencies.json`.
+To scan missing non-inlinable libraries, you can build the project using the `--zk-detect-missing-libraries` flag. This will list the libraries that must be deployed and their addresses provided via the `libraries` option for the contracts to compile. Metadata about the libraries will be saved in `.zksolc-libraries-cache/missing_library_dependencies.json`.
 
 

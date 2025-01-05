@@ -4,18 +4,22 @@ These limitations apply at all times when working within the ZKsync context.
 
 ### Reserved Address Range
 
-On zkEVM, address in the range [0..2^16-1] are [reserved](https://docs.zksync.io/zk-stack/components/zksync-evm/bootloader#system-contracts) for kernel space. As such using these addresses, even for mocking, within a test may lead to undefined behavior.
-It is therefor recommended, to start the user address range from `65536` onwards.
+On zkEVM, addresses in the range [0..2^16-1] are [reserved](https://docs.zksync.io/zk-stack/components/zksync-evm/bootloader#system-contracts) for kernel space. Using these addresses within a test, even for mocking, may lead to undefined behavior.
+Therefore, the user addresses must range from `65536` onwards.
 
 ```solidity
 contract FooTest is Test {
-    function testFoo() public {
+    function testReservedAddress_Invalid() public {
         vm.mockCall(
             address(0),     // invalid
             abi.encodeWithSelector(bytes4(keccak256("number()"))),
             abi.encode(5)
         );
+```
 
+```solidity
+contract FooTest is Test {
+    function testReservedAddress_Valid() public {
         vm.mockCall(
             address(65536),     // valid
             abi.encodeWithSelector(bytes4(keccak256("number()"))),
@@ -25,12 +29,12 @@ contract FooTest is Test {
 }
 ```
 
-Additionally during fuzz-testing, these addresses must be ignored. This can be done via either `vm.assume(address(value) >= 65536)` assertion, or by settings `no_zksync_reserved_addresses = true` in fuzz configuration.
+Additionally, during fuzz-testing, these addresses must be ignored. This can be done via either asserting `vm.assume(address(value) >= 65536)` or by setting `no_zksync_reserved_addresses = true` in fuzz configuration.
 
 
 ### Origin Address
 
-While foundry allows mocking the `tx.origin` address as normal, zkEVM will fail all calls to it. As such the following code with not work:
+While foundry allows mocking the `tx.origin` address as normal, zkEVM will fail all calls to it. As such, the following code will not work:
 
 
 ```solidity
@@ -39,7 +43,7 @@ library IFooBar {
 }
 
 contract FooTest is Test {
-    function testFoo() public {
+    function testOriginAddress() public {
         address target = tx.origin;
 
         vm.mockCall(
@@ -58,13 +62,13 @@ contract FooTest is Test {
 
 zkEVM asserts a [bytecode](https://docs.zksync.io/zk-stack/components/zksync-evm/bootloader#bytecode-validity) to be valid if it satisfies the following constraints:
 
-* Has its length in bytes divisible by 32 (i.e. 32-byte words).
+* Its length in bytes is divisible by 32 (i.e. 32-byte words).
 * Has a length of less than 2^16 words.
 * Has an odd length in words.
 
 ```solidity
 contract FooTest is Test {
-    function testFoo() public {
+    function testBytecodeContraint() public {
         // invalid, word-size of 1 byte
         vm.etch(address(65536), hex"00");
 
@@ -86,13 +90,14 @@ contract FooTest is Test {
 
 ### Bytecode Hash
 
-Bytecode hashes output by zksolc are fundamentally [different](https://docs.zksync.io/zk-stack/components/zksync-evm/bootloader#bytecode-hashes) from the hash obtained via solc. The most glaring difference is the first (most-significant) byte denotes the version of the format, which at present is `1`. This leads to all zksolc bytecode hashes to begin with `1`, whereas solc bytecodes are merely the keccak hash of the bytecode.
+Bytecode hashes output by zksolc are fundamentally [different](https://docs.zksync.io/zk-stack/components/zksync-evm/bootloader#bytecode-hashes) from the hash obtained via solc. The most glaring difference is that the first (most significant) byte denotes the version of the format, which is `1` at present. This leads to all zksolc bytecode hashes to begin with `1`, whereas solc bytecodes are merely the keccak hash of the bytecode.
 
-Any code making assumptions about bytecode hashes around EVM-scope, would need to be migrated to accommodate for ZKsync's bytecode hashes.
+Any code-making assumptions about bytecode hashes around EVM-scope must be migrated to accommodate ZKsync's bytecode hashes.
 
 ### Address Derivation
 
-zkEVM uses a different CREATE and CREATE2 [address derivation strategy](https://docs.zksync.io/build/developer-reference/ethereum-differences/evm-instructions#address-derivation) compared to EVM. This can lead to issues for tests that have the CREATE2 addresses hard-coded for EVM. These tests would therefore need to be updated to reflect the ZKsync derived addresses.
+zkEVM uses a different `CREATE` and `CREATE2` [address derivation strategy](https://docs.zksync.io/build/developer-reference/ethereum-differences/evm-instructions#address-derivation) compared to EVM. 
+This can lead to testing issues with the `CREATE2` addresses that are hard-coded for EVM. Therefore, these tests must be updated to reflect the ZKsync-derived addresses.
 
 ```javascript
 function create2Address(sender: Address, bytecodeHash: BytesLike, salt: BytesLike, input: BytesLike) {
@@ -114,7 +119,7 @@ function createAddress(sender: Address, senderNonce: BigNumberish) {
 
 ### Accessing Contract Bytecode and Hash
 
-zkEVM does not allow obtaining bytecodes from `address.code` or computing their respective hashes, which will be raised as an error during [compilation](./compilation.md#contract-bytecode-access). This is particularly useful when computing CREATE2 addresses.
+zkEVM does not allow obtaining bytecodes from `address.code` or computing their respective hashes, which will be raised as an error during [compilation](./compilation.md#contract-bytecode-access). This is particularly useful when computing `CREATE2` addresses (see `getNewAddressCreate2` below).
 
 To circumvent this limitation, it is recommended to use the FFI functionality of cheatcodes: 
 
@@ -126,7 +131,7 @@ contract Calculator {
 }
 
 contract FooTest is Test {
-    function testFoo() public {
+    function testContractBytecodeHash() public {
         string memory artifact = vm.readFile(
             "zkout/FooTest.sol/Calculator.json"
         );
@@ -146,7 +151,7 @@ contract FooTest is Test {
 }
 ```
 
-Note, that this requires adding read permissions in `foundry.toml`:
+Note that this requires adding read permissions in `foundry.toml`:
 
 ```toml
 [profile.default]
