@@ -91,9 +91,6 @@ This program is a set of tools to build, test, fuzz, debug and deploy Solidity s
 
 #### Utility Commands
 
-[forge debug](./forge-debug.md)  
-&nbsp;&nbsp;&nbsp;&nbsp;Debug a single smart contract as a script.
-
 [forge bind](./forge-bind.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Generate Rust bindings for smart contracts.
 
