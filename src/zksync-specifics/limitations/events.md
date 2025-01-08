@@ -151,4 +151,4 @@ Traces:
 ```
 
 
-To avoid such a scenario, it's recommended that the events for `expectEmit` be explicitly emitted with hard-coded values.
+To avoid such a scenario, it's recommended to explicitly emit the events for `expectEmit` with hard-coded values.

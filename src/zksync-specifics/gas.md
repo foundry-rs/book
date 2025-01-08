@@ -3,12 +3,15 @@
 ### Gas reported back to the EVM
 Foundry has an `isolate` mode for the EVM, in which all `CALL`/`CREATE` operations at the root level of a test (i.e., with depth 1) are intercepted and treated as independent transactions. This allows for accounting for the actual transaction gas, including, for example, the fixed 21000 gas cost charged to the user.
 
-Running in zkEVM mode is analogous to running in `isolate` mode, but using the zkEVM is better. Every `CALL`/`CREATE` will be intercepted, a transaction representing the operation built. Finally, a VM with that transaction in the bootloader's heap will be spawned and run to simulate the execution of that transaction. The gas used is reported back to the EVM; hence, the one seen on traces and gas reports would be charged to the user for submitting that transaction. That value differs from the computational cost of running the called contract code and includes: 
+Running in zkEVM mode is analogous to running in `isolate` mode, but using the zkEVM instead. Here's a short summary:
+- Every `CALL`/`CREATE` will be intercepted, a transaction representing the operation built. 
+- A VM with that transaction in the bootloader's heap will be spawned and run to simulate the execution of that transaction.
+- The gas used is reported back to the EVM; hence, the one seen on traces and gas reports would be charged to the user for submitting that transaction. That value differs from the computational cost of running the called contract code and includes: 
 
-  1. Intrinsic costs: Overhead charged on each transaction.
-  2. Validation costs: Gas spent on transaction validation. It may vary depending on the account making the transaction. See [Account Abstraction](https://docs.zksync.io/build/developer-reference/account-abstraction) docs.
-  3. Execution costs: Gas spent on marking factory dependencies and executing the transaction.
-  4. Pubdata costs: Gas spent on publishing pubdata is influenced by the `gasPerPubdata` network value.
+  1. **Intrinsic costs**: Overhead charged on each transaction.
+  2. **Validation costs**: Gas spent on transaction validation. It may vary depending on the account making the transaction. See [Account Abstraction](https://docs.zksync.io/build/developer-reference/account-abstraction) docs.
+  3. **Execution costs**: Gas spent on marking factory dependencies and executing the transaction.
+  4. **Pubdata costs**: Gas spent on publishing pubdata. It is influenced by the `gasPerPubdata` network value.
 
 More info about ZKSync Era's fee model can be found [here](https://docs.zksync.io/build/developer-reference/fee-model).
 
