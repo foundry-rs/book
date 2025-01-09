@@ -4,7 +4,7 @@
 
 ### Example workflow
 
-```
+```yml
 on: [push]
 
 name: test
@@ -14,7 +14,7 @@ jobs:
     name: Foundry project
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
 
@@ -30,12 +30,14 @@ jobs:
 
 ### Inputs
 
-| Name | Required | Default | Description | Type |
-|---|---|---|---|---|
-| cache | No | true | Whether to cache RPC responses or not. | bool |
-| version | No | nightly | Version to install, e.g. nightly or 1.8.8. Note: Foundry only has nightly builds for the time being. | string |
-| cache-key | No | `${{ github.job }}` | The cache key to use for caching. | string |
-| cache-restore-keys | No | `[${{ github.job }}]` | The cache keys to use for restoring the cache. | string[] |
+### Inputs
+
+| **Name**             | **Required** | **Default**                           | **Description**                                          | **Type** |
+| -------------------- | ------------ | ------------------------------------- | -------------------------------------------------------- | -------- |
+| `cache`              | No           | `true`                                | Whether to cache RPC responses or not.                   | bool     |
+| `version`            | No           | `stable`                              | Version to install, e.g. `stable`, `nightly` or `0.3.0`. | string   |
+| `cache-key`          | No           | `${{ github.job }}-${{ github.sha }}` | The cache key to use for caching.                        | string   |
+| `cache-restore-keys` | No           | `[${{ github.job }}-]`                | The cache keys to use for restoring the cache.           | string[] |
 
 ### RPC Caching
 
@@ -49,7 +51,7 @@ The logic of the caching is as follows:
 
 If you would like to disable the caching (e.g. because you want to implement your own caching mechanism), you can set the `cache` input to `false`, like this:
 
-```
+```yml
 - name: Install Foundry
   uses: foundry-rs/foundry-toolchain@v1
   with:
@@ -62,7 +64,7 @@ You have the ability to define custom cache keys by utilizing the `cache-key` an
 
 For instance, if you wish to utilize a shared cache between two distinct jobs, the following configuration can be applied:
 
-```
+```yml
 - name: Install Foundry
   uses: foundry-rs/foundry-toolchain@v1
   with:
