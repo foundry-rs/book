@@ -84,50 +84,8 @@ Genesis Timestamp
 Listening on 127.0.0.1:8545
 ```
 
-### Features
-
-#### Configuration
-
-Anvil is highly configurable, allowing you to:
-
-- **Mining Modes**: Choose automatic mining (default), interval mining (`--block-time <seconds>`), or on-demand mining (`--no-mining`).
-- **Accounts and Balances**: Set the number of accounts (`--accounts`) and their Ether balance (`--balance`).
-- **Genesis Initialization**: Start with a custom genesis file (`--init <genesis.json>`), defining parameters like `chainId`, `gasLimit`, and preallocated accounts.
-- **EVM Hardforks**: Simulate specific Ethereum hardforks (e.g., `shanghai`, `paris`) using `--hardfork`.
-- **Transport Layers**: Supports HTTP and WebSocket connections on port 8545 (customizable via `--port`).
-- **Chain State**: Save/load states with `--state`, `--dump-state`, or `--load-state` for persistence.
-
-#### Forking
-
-Anvil can fork live Ethereum or EVM-compatible networks:
-
-- **State Replication**: Use `--fork-url` to replicate a network’s state at a specific block (`--fork-block-number`) or transaction (`--fork-transaction-hash`).
-- **Offline Testing**: Combine `--fork-chain-id` with cached state for offline scenarios.
-- **Caching and Rate Limits**: Disable caching with `--no-storage-caching` or manage RPC requests using `--compute-units-per-second` or `--no-rate-limit`.
-
-#### State Management
-
-Flexible state management options include:
-
-- **Snapshots**: Save and reload chain states with `--state`, `--dump-state`, and `--load-state`.
-  - `--state` is an alias for both `--load-state` and `--dump-state`, it initializes the chain with the state and block environment stored at the file, if it exists, and dumps the chain's state on exit.
-- **Historical States**: Preserve or prune states with `--preserve-historical-states` or `--prune-history`. Set the number of persisted states using `--max-persisted-states`.
-- **Intervals**: Control state dump intervals with `--state-interval`.
-
-#### RPC Methods
-
-Supports standard Ethereum RPC methods (`eth_getBlockByNumber`, `eth_sendTransaction`, etc.), Anvil-specific methods (`anvil_impersonateAccount`, `anvil_setBalance`, etc.), and tracing/debugging (`debug_traceTransaction`, `evm_snapshot`, etc.).
-
-#### Default CREATE2 Deployer
-
-Includes a CREATE2 deployer proxy (`0x4e59b44847b379578588920ca78fbf26c0b4956c`), allowing CREATE2 testing without forking.
-
-#### Genesis Configuration
-
-Customize network initialization using a `genesis.json` file to set `chainId`, `gasLimit`, preallocated accounts, and other parameters.
-
 <br>
 
 > 📚 **Reference**
 >
-> See the [`anvil` Reference](../reference/anvil/README.md) for in depth information on Anvil and its capabilities.
+> See the [`anvil` Reference](../reference/anvil/) for in depth information on Anvil and its capabilities.
