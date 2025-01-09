@@ -1,13 +1,13 @@
 # forge verify-bytecode
 
-Verify the deployed bytecode against its source
+Verify the deployed bytecode against its source on Etherscan
 
 ```bash
 $ forge verify-bytecode --help
 ```
 
 ```txt
-Usage: forge verify-bytecode [OPTIONS] <ADDRESS> <CONTRACT> [ROOT]
+Usage: forge verify-bytecode [OPTIONS] <ADDRESS> <CONTRACT>
 
 Arguments:
   <ADDRESS>
@@ -16,17 +16,15 @@ Arguments:
   <CONTRACT>
           The contract identifier in the form `<path>:<contractname>`
 
-  [ROOT]
-          The path to the project's root directory
-
 Options:
       --block <BLOCK>
           The block at which the bytecode should be verified
 
-      --constructor-args <ARGS>
+      --constructor-args <ARGS>...
           The constructor args to generate the creation code
-          
-          [aliases: encoded-constructor-args]
+
+      --encoded-constructor-args <HEX>
+          The ABI-encoded constructor arguments
 
       --constructor-args-path <PATH>
           The path to a file containing the constructor arguments
@@ -35,13 +33,6 @@ Options:
           The rpc url to use for verification
           
           [env: ETH_RPC_URL=]
-
-      --verification-type <TYPE>
-          Verfication Type: `full` or `partial`. Ref:
-          <https://docs.sourcify.dev/docs/full-vs-partial-match/>
-          
-          [default: full]
-          [possible values: full, partial]
 
   -e, --etherscan-api-key <KEY>
           The Etherscan (or equivalent) API key
@@ -53,23 +44,45 @@ Options:
           
           [env: CHAIN=]
 
-      --skip <SKIP>...
-          Skip building files whose names contain the given filter.
+      --root <PATH>
+          The project's root path.
           
-          `test` and `script` are aliases for `.t.sol` and `.s.sol`.
+          By default root of the Git repository, if in one, or the current
+          working directory.
 
-      --json
-          Suppress logs and emit json results to stdout
+      --ignore <BYTECODE_TYPE>
+          Ignore verification for creation or runtime bytecode
+          
+          [possible values: creation, runtime]
 
   -h, --help
           Print help (see a summary with '-h')
+
+  -j, --threads <THREADS>
+          Number of threads to use. Specifying 0 defaults to the number of
+          logical cores
+          
+          [aliases: jobs]
 
 Verifier options:
       --verifier <VERIFIER>
           The contract verification provider to use
           
           [default: etherscan]
-          [possible values: etherscan, sourcify, blockscout, oklink]
+
+          Possible values:
+          - etherscan
+          - sourcify
+          - blockscout
+          - oklink
+          - zksync
+          - custom:     Custom verification provider, requires compatibility
+            with the Etherscan API
+
+      --verifier-api-key <VERIFIER_API_KEY>
+          The verifier API KEY, if using a custom provider
+          
+          [env: VERIFIER_API_KEY=]
 
       --verifier-url <VERIFIER_URL>
           The verifier URL, if using a custom provider
@@ -78,16 +91,31 @@ Verifier options:
 
 Display options:
       --color <COLOR>
-          Log messages coloring
+          The color of the log messages
 
           Possible values:
           - auto:   Intelligently guess whether to use color output (default)
           - always: Force color output
           - never:  Force disable color output
 
+      --json
+          Format log messages as JSON
+
   -q, --quiet
           Do not print log messages
 
-      --verbose
-          Use verbose output
+  -v, --verbosity...
+          Verbosity level of the log messages.
+          
+          Pass multiple times to increase the verbosity (e.g. -v, -vv, -vvv).
+          
+          Depending on the context the verbosity levels have different meanings.
+          
+          For example, the verbosity levels of the EVM are:
+          - 2 (-vv): Print logs for all tests.
+          - 3 (-vvv): Print execution traces for failing tests.
+          - 4 (-vvvv): Print execution traces for all tests, and setup traces
+          for failing tests.
+          - 5 (-vvvvv): Print execution and setup traces for all tests,
+          including storage changes.
 ```

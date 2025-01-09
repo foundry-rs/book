@@ -4,18 +4,24 @@ $ tree . -L 3 -I output
 // ANCHOR_END: command
 // ANCHOR: output
 .
+├── README.md
 ├── foundry.toml
 ├── lib
-│   └── forge-std
-│       ├── foundry.toml
-│       ├── LICENSE-APACHE
-│       ├── LICENSE-MIT
-│       ├── package.json
+│   ├── forge-std
+│   │   ├── CONTRIBUTING.md
+│   │   ├── LICENSE-APACHE
+│   │   ├── LICENSE-MIT
+│   │   ├── README.md
+│   │   ├── foundry.toml
+│   │   ├── package.json
+│   │   ├── scripts
+│   │   ├── src
+│   │   └── test
+│   └── forge-zksync-std
+│       ├── LICENSE
 │       ├── README.md
-│       ├── scripts
-│       ├── src
-│       └── test
-├── README.md
+│       ├── foundry.toml
+│       └── src
 ├── script
 │   └── Counter.s.sol
 ├── src
@@ -23,6 +29,6 @@ $ tree . -L 3 -I output
 └── test
     └── Counter.t.sol
 
-8 directories, 11 files
+11 directories, 14 files
 // ANCHOR_END: output
 // ANCHOR_END: all

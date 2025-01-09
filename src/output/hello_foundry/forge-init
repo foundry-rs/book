@@ -1,11 +1,13 @@
 // ANCHOR: all
 // ANCHOR: command
-$ forge init hello_foundry
+$ forge init --zksync hello_foundry
 // ANCHOR_END: command
 // ANCHOR: output
-Initializing /tmp/tmp.v1NmqnC8e5/hello_foundry...
-Installing forge-std in /tmp/tmp.v1NmqnC8e5/hello_foundry/lib/forge-std (url: Some("https://github.com/foundry-rs/forge-std"), tag: None)
-    Installed forge-std v1.9.3
+Initializing /private/var/folders/6j/32rm_n4s37x_wmkgds7r8hqw0000gn/T/tmp.ZDB04pl4A0/hello_foundry...
+Installing forge-std in /private/var/folders/6j/32rm_n4s37x_wmkgds7r8hqw0000gn/T/tmp.ZDB04pl4A0/hello_foundry/lib/forge-std (url: Some("https://github.com/foundry-rs/forge-std"), tag: None)
+    Installed forge-std v1.9.5
+Installing forge-zksync-std in /private/var/folders/6j/32rm_n4s37x_wmkgds7r8hqw0000gn/T/tmp.ZDB04pl4A0/hello_foundry/lib/forge-zksync-std (url: Some("https://github.com/Moonsong-Labs/forge-zksync-std"), tag: None)
+    Installed forge-zksync-std
     Initialized forge project
 // ANCHOR_END: output
 // ANCHOR_END: all
