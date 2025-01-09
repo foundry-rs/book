@@ -49,6 +49,8 @@ contract REPL {
 
 To see available commands, type `!help` within the REPL.
 
+<br>
+
 > 📚 **Reference**
 >
 > See the [`chisel` Reference](../reference/chisel/) for in depth information on Chisel and its capabilities.
