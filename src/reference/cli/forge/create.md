@@ -20,6 +20,9 @@ Options:
       --constructor-args-path <PATH>
           The path to a file containing the constructor arguments
 
+      --broadcast
+          Broadcast the transaction
+
       --verify
           Verify contract after creation
 
@@ -29,30 +32,23 @@ Options:
 
       --show-standard-json-input
           Prints the standard json compiler input if `--verify` is provided.
-
+          
           The standard json compiler input can be used to manually submit
           contract verification in the browser.
+
+      --timeout <TIMEOUT>
+          Timeout to use for broadcasting transactions
+          
+          [env: ETH_TIMEOUT=]
 
   -h, --help
           Print help (see a summary with '-h')
 
-Display options:
-      --json
-          Print the deployment information as JSON
-
-      --color <COLOR>
-          Log messages coloring
-
-          Possible values:
-          - auto:   Intelligently guess whether to use color output (default)
-          - always: Force color output
-          - never:  Force disable color output
-
-  -q, --quiet
-          Do not print log messages
-
-      --verbose
-          Use verbose output
+  -j, --threads <THREADS>
+          Number of threads to use. Specifying 0 defaults to the number of
+          logical cores
+          
+          [aliases: jobs]
 
 Cache options:
       --force
@@ -65,19 +61,19 @@ Build options:
       --eof
           Use EOF-enabled solc binary. Enables via-ir and sets EVM version to
           Prague. Requires Docker to be installed.
-
+          
           Note that this is a temporary solution until the EOF support is merged
           into the main solc release.
 
       --skip <SKIP>...
           Skip building files whose names contain the given filter.
-
+          
           `test` and `script` are aliases for `.t.sol` and `.s.sol`.
 
 Linker options:
       --libraries <LIBRARIES>
           Set pre-linked libraries
-
+          
           [env: DAPP_LIBRARIES=]
 
 Compiler options:
@@ -92,13 +88,13 @@ Compiler options:
 
       --use <SOLC_VERSION>
           Specify the solc version, or a path to a local solc, to build with.
-
+          
           Valid values are in the format `x.y.z`, `solc:x.y.z` or
           `path/to/solc`.
 
       --offline
           Do not access the network.
-
+          
           Missing solc versions will not be installed.
 
       --via-ir
@@ -106,7 +102,7 @@ Compiler options:
 
       --no-metadata
           Do not append any metadata to the bytecode.
-
+          
           This is equivalent to setting `bytecode_hash` to `none` and
           `cbor_metadata` to `false`.
 
@@ -118,23 +114,29 @@ Compiler options:
 
       --optimize [<OPTIMIZE>]
           Activate the Solidity optimizer
-
+          
           [possible values: true, false]
 
       --optimizer-runs <RUNS>
-          The number of optimizer runs
+          The number of runs specifies roughly how often each opcode of the
+          deployed code will be executed across the life-time of the contract.
+          This means it is a trade-off parameter between code size (deploy cost)
+          and code execution cost (cost after deployment). An `optimizer_runs`
+          parameter of `1` will produce short but expensive code. In contrast, a
+          larger `optimizer_runs` parameter will produce longer but more gas
+          efficient code
 
       --extra-output <SELECTOR>...
           Extra output to include in the contract's artifact.
-
+          
           Example keys: evm.assembly, ewasm, ir, irOptimized, metadata
-
+          
           For a full description, see
           <https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description>
 
       --extra-output-files <SELECTOR>...
           Extra output to write to separate files.
-
+          
           Valid values: metadata, ir, irOptimized, ewasm, evm.assembly
 
 Project options:
@@ -143,7 +145,7 @@ Project options:
 
       --revert-strings <REVERT>
           Revert string configuration.
-
+          
           Possible values are "default", "strip" (remove), "debug"
           (Solidity-generated revert strings) and "verboseDebug"
 
@@ -155,7 +157,7 @@ Project options:
 
       --root <PATH>
           The project's root path.
-
+          
           By default root of the Git repository, if in one, or the current
           working directory.
 
@@ -176,10 +178,10 @@ Project options:
 
       --hardhat
           Use the Hardhat-style project layout.
-
+          
           This is the same as using: `--contracts contracts --lib-paths
           node_modules`.
-
+          
           [aliases: hh]
 
       --config-path <FILE>
@@ -188,13 +190,13 @@ Project options:
 ZKSync configuration:
       --zk-startup[=<ENABLE_ZKVM_AT_STARTUP>]
           Enable zkVM at startup
-
+          
           [aliases: zksync]
           [possible values: true, false]
 
       --zk-compile[=<COMPILE_FOR_ZKVM>]
           Compile for zkVM
-
+          
           [possible values: true, false]
 
       --zk-solc-path <ZK_SOLC_PATH>
@@ -202,13 +204,13 @@ ZKSync configuration:
 
       --zk-enable-eravm-extensions[=<ENABLE_ERAVM_EXTENSIONS>]
           Enable the system contract compilation mode.
-
+          
           [aliases: enable-eravm-extensions, system-mode]
           [possible values: true, false]
 
       --zk-force-evmla[=<FORCE_EVMLA>]
           Forcibly switch to the EVM legacy assembly pipeline.
-
+          
           [aliases: force-evmla]
           [possible values: true, false]
 
@@ -217,45 +219,68 @@ ZKSync configuration:
 
       --zk-fallback-oz[=<FALLBACK_OZ>]
           Try to recompile with -Oz if the bytecode is too large
-
+          
           [aliases: fallback-oz]
           [possible values: true, false]
+
+      --zk-detect-missing-libraries
+          Detect missing libraries, instead of erroring
+          
+          Currently unused
 
   -O, --zk-optimizer-mode <LEVEL>
           Set the LLVM optimization parameter `-O[0 | 1 | 2 | 3 | s | z]`. Use
           `3` for best performance and `z` for minimal size
-
+          
           [aliases: zk-optimization]
 
       --zk-optimizer
           Enables optimizations
 
-      --zk-avoid-contracts <AVOID_CONTRACTS>
-          Contracts to avoid compiling on zkSync
+      --zk-paymaster-address <PAYMASTER_ADDRESS>
+          Paymaster address
+          
+          [aliases: paymaster-address]
 
-          [aliases: avoid-contracts]
+      --zk-paymaster-input <PAYMASTER_INPUT>
+          Paymaster input
+          
+          [aliases: paymaster-input]
+
+      --zk-suppressed-warnings <SUPPRESSED_WARNINGS>
+          Set the warnings to suppress for zksolc, possible values: [txorigin]
+          
+          [aliases: suppressed-warnings]
+
+      --zk-suppressed-errors <SUPPRESSED_ERRORS>
+          Set the errors to suppress for zksolc, possible values: [sendtransfer]
+          
+          [aliases: suppressed-errors]
 
 Transaction options:
       --gas-limit <GAS_LIMIT>
           Gas limit for the transaction
-
+          
           [env: ETH_GAS_LIMIT=]
 
       --gas-price <PRICE>
           Gas price for legacy transactions, or max fee per gas for EIP1559
-          transactions
-
+          transactions, either specified in wei, or as a string with a unit
+          type.
+          
+          Examples: 1ether, 10gwei, 0.01ether
+          
           [env: ETH_GAS_PRICE=]
 
       --priority-gas-price <PRICE>
           Max priority fee per gas for EIP1559 transactions
-
+          
           [env: ETH_PRIORITY_GAS_PRICE=]
 
       --value <VALUE>
           Ether to send in the transaction, either specified in wei, or as a
           string with a unit type.
-
+          
           Examples: 1ether, 10gwei, 0.01ether
 
       --nonce <NONCE>
@@ -263,7 +288,7 @@ Transaction options:
 
       --legacy
           Send a legacy transaction instead of an EIP1559 transaction.
-
+          
           This is automatically enabled for common networks without EIP1559.
 
       --blob
@@ -271,62 +296,79 @@ Transaction options:
 
       --blob-gas-price <BLOB_PRICE>
           Gas price for EIP-4844 blob transaction
-
+          
           [env: ETH_BLOB_GAS_PRICE=]
+
+      --auth <AUTH>
+          EIP-7702 authorization list.
+          
+          Can be either a hex-encoded signed authorization or an address.
+
+      --access-list [<ACCESS_LIST>]
+          EIP-2930 access list.
+          
+          Accepts either a JSON-encoded access list or an empty value to create
+          the access list via an RPC call to `eth_createAccessList`. To retrieve
+          only the access list portion, use the `cast access-list` command.
 
 Ethereum options:
   -r, --rpc-url <URL>
           The RPC endpoint
-
+          
           [env: ETH_RPC_URL=]
 
       --flashbots
           Use the Flashbots RPC URL with fast mode
           (<https://rpc.flashbots.net/fast>).
-
+          
           This shares the transaction privately with all registered builders.
-
+          
           See:
           <https://docs.flashbots.net/flashbots-protect/quick-start#faster-transactions>
 
       --jwt-secret <JWT_SECRET>
           JWT Secret for the RPC endpoint.
-
+          
           The JWT secret will be used to create a JWT for a RPC. For example,
           the following can be used to simulate a CL `engine_forkchoiceUpdated`
           call:
-
+          
           cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2
           '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
           "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
           "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
-
+          
           [env: ETH_RPC_JWT_SECRET=]
 
       --rpc-timeout <RPC_TIMEOUT>
           Timeout for the RPC request in seconds.
-
+          
           The specified timeout will be used to override the default timeout for
           RPC requests.
-
+          
           Default value: 45
-
+          
           [env: ETH_RPC_TIMEOUT=]
+
+      --rpc-headers <RPC_HEADERS>
+          Specify custom headers for RPC requests
+          
+          [env: ETH_RPC_HEADERS=]
 
   -e, --etherscan-api-key <KEY>
           The Etherscan (or equivalent) API key
-
+          
           [env: ETHERSCAN_API_KEY=]
 
   -c, --chain <CHAIN>
           The chain name or EIP-155 chain ID
-
+          
           [env: CHAIN=]
 
 Wallet options - raw:
   -f, --from <ADDRESS>
           The sender account
-
+          
           [env: ETH_FROM=]
 
   -i, --interactive
@@ -343,48 +385,48 @@ Wallet options - raw:
 
       --mnemonic-derivation-path <PATH>
           The wallet derivation path.
-
+          
           Works with both --mnemonic-path and hardware wallets.
 
       --mnemonic-index <INDEX>
           Use the private key from the given mnemonic index.
-
+          
           Used with --mnemonic-path.
-
+          
           [default: 0]
 
       --retries <RETRIES>
           Number of attempts for retrying verification
-
+          
           [default: 5]
 
       --delay <DELAY>
           Optional delay to apply in between verification attempts, in seconds
-
+          
           [default: 5]
 
 Wallet options - keystore:
       --keystore <PATH>
           Use the keystore in the given folder or file
-
+          
           [env: ETH_KEYSTORE=]
 
       --account <ACCOUNT_NAME>
           Use a keystore from the default keystores folder
           (~/.foundry/keystores) by its filename
-
+          
           [env: ETH_KEYSTORE_ACCOUNT=]
 
       --password <PASSWORD>
           The keystore password.
-
+          
           Used with --keystore.
 
       --password-file <PASSWORD_FILE>
           The keystore password file path.
-
+          
           Used with --keystore.
-
+          
           [env: ETH_PASSWORD=]
 
 Wallet options - hardware wallet:
@@ -397,12 +439,55 @@ Wallet options - hardware wallet:
 Verifier options:
       --verifier <VERIFIER>
           The contract verification provider to use
-
+          
           [default: etherscan]
-          [possible values: etherscan, sourcify, blockscout, oklink]
+
+          Possible values:
+          - etherscan
+          - sourcify
+          - blockscout
+          - oklink
+          - zksync
+          - custom:     Custom verification provider, requires compatibility
+            with the Etherscan API
+
+      --verifier-api-key <VERIFIER_API_KEY>
+          The verifier API KEY, if using a custom provider
+          
+          [env: VERIFIER_API_KEY=]
 
       --verifier-url <VERIFIER_URL>
           The verifier URL, if using a custom provider
-
+          
           [env: VERIFIER_URL=]
+
+Display options:
+      --color <COLOR>
+          The color of the log messages
+
+          Possible values:
+          - auto:   Intelligently guess whether to use color output (default)
+          - always: Force color output
+          - never:  Force disable color output
+
+      --json
+          Format log messages as JSON
+
+  -q, --quiet
+          Do not print log messages
+
+  -v, --verbosity...
+          Verbosity level of the log messages.
+          
+          Pass multiple times to increase the verbosity (e.g. -v, -vv, -vvv).
+          
+          Depending on the context the verbosity levels have different meanings.
+          
+          For example, the verbosity levels of the EVM are:
+          - 2 (-vv): Print logs for all tests.
+          - 3 (-vvv): Print execution traces for failing tests.
+          - 4 (-vvvv): Print execution traces for all tests, and setup traces
+          for failing tests.
+          - 5 (-vvvvv): Print execution and setup traces for all tests,
+          including storage changes.
 ```

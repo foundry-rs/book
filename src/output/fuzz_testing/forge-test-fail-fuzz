@@ -4,7 +4,7 @@ $ forge test --zksync --allow-failure
 // ANCHOR_END: command
 // ANCHOR: output
 Compiling 1 files with Solc 0.8.10
-Solc 0.8.10 finished in 819.99ms
+Solc 0.8.10 finished in 941.22ms
 Compiler run successful with warnings:
 Warning (9302): Return value of low-level calls not used.
   --> test/Safe.t.sol:11:9:
@@ -20,7 +20,7 @@ Warning (9302): Return value of low-level calls not used.
 
 
 Compiling 1 files with zksolc and solc 0.8.10
-zksolc and solc 0.8.10 finished in 5.79s
+zksolc and solc 0.8.10 finished in 5.14s
 Compiler run successful with warnings:
 Warning (9302)
 Warning: Return value of low-level calls not used.
@@ -36,12 +36,15 @@ Warning: Return value of low-level calls not used.
 30 |         payable(address(safe)).call{value: amount}("");
    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-2024-10-06T00:06:15.308856Z ERROR foundry_zksync_core::vm::tracers::cheatcode: call may fail or behave unexpectedly due to empty code target=0x7fa9385be102ac3eac297483dd6233d62b3e1496 calldata=""
+2025-01-09T13:58:44.187764Z ERROR foundry_zksync_core::vm::tracers::cheatcode: call may fail or behave unexpectedly due to empty code target=0x7fa9385be102ac3eac297483dd6233d62b3e1496 calldata=""
+2025-01-09T13:58:44.200605Z ERROR foundry_zksync_core::vm::tracers::cheatcode: call may fail or behave unexpectedly due to empty code target=0x7fa9385be102ac3eac297483dd6233d62b3e1496 calldata=""
+2025-01-09T13:58:44.206499Z ERROR foundry_zksync_core::vm::inspect: tx execution halted: Account validation error: Error function_selector = 0x4e487b71, data = 0x4e487b710000000000000000000000000000000000000000000000000000000000000011
+2025-01-09T13:58:44.212336Z ERROR foundry_zksync_core::vm::tracers::cheatcode: call may fail or behave unexpectedly due to empty code target=0x7fa9385be102ac3eac297483dd6233d62b3e1496 calldata=""
 
 Ran 1 test for test/Safe.t.sol:SafeTest
-[FAIL. Reason: assertion failed; counterexample: calldata=0x29facca700000000000000000000000000000000000001e35e0786a154ba56aa29228e12 args=[38296303183566758584479465508370 [3.829e31]]] testFuzz_Withdraw(uint256) (runs: 0, μ: 0, ~: 0)
-Suite result: FAILED. 0 passed; 1 failed; 0 skipped; finished in 29.00ms (13.46ms CPU time)
+[FAIL: panic: arithmetic underflow or overflow (0x11); counterexample: calldata=0x29facca7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffd args=[115792089237316195423570985008687907853269984665640564039457584007913129639933 [1.157e77]]] testFuzz_Withdraw(uint256) (runs: 2, μ: 254285, ~: 254285)
+Suite result: FAILED. 0 passed; 1 failed; 0 skipped; finished in 47.57ms (37.50ms CPU time)
 
-Ran 1 test suite in 29.74ms (29.00ms CPU time): 0 tests passed, 1 failed, 0 skipped (1 total tests)
+Ran 1 test suite in 48.20ms (47.57ms CPU time): 0 tests passed, 1 failed, 0 skipped (1 total tests)
 // ANCHOR_END: output
 // ANCHOR_END: all

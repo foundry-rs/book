@@ -13,14 +13,17 @@ Options:
       --basic
           Print only a basic set of the currently set config values
 
-      --json
-          Print currently set config values as JSON
-
       --fix
           Attempt to fix any configuration warnings
 
   -h, --help
           Print help (see a summary with '-h')
+
+  -j, --threads <THREADS>
+          Number of threads to use. Specifying 0 defaults to the number of
+          logical cores
+          
+          [aliases: jobs]
 
 Build options:
       --names
@@ -103,7 +106,13 @@ Compiler options:
           [possible values: true, false]
 
       --optimizer-runs <RUNS>
-          The number of optimizer runs
+          The number of runs specifies roughly how often each opcode of the
+          deployed code will be executed across the life-time of the contract.
+          This means it is a trade-off parameter between code size (deploy cost)
+          and code execution cost (cost after deployment). An `optimizer_runs`
+          parameter of `1` will produce short but expensive code. In contrast, a
+          larger `optimizer_runs` parameter will produce longer but more gas
+          efficient code
 
       --extra-output <SELECTOR>...
           Extra output to include in the contract's artifact.
@@ -202,6 +211,11 @@ ZKSync configuration:
           [aliases: fallback-oz]
           [possible values: true, false]
 
+      --zk-detect-missing-libraries
+          Detect missing libraries, instead of erroring
+          
+          Currently unused
+
   -O, --zk-optimizer-mode <LEVEL>
           Set the LLVM optimization parameter `-O[0 | 1 | 2 | 3 | s | z]`. Use
           `3` for best performance and `z` for minimal size
@@ -211,10 +225,25 @@ ZKSync configuration:
       --zk-optimizer
           Enables optimizations
 
-      --zk-avoid-contracts <AVOID_CONTRACTS>
-          Contracts to avoid compiling on zkSync
+      --zk-paymaster-address <PAYMASTER_ADDRESS>
+          Paymaster address
           
-          [aliases: avoid-contracts]
+          [aliases: paymaster-address]
+
+      --zk-paymaster-input <PAYMASTER_INPUT>
+          Paymaster input
+          
+          [aliases: paymaster-input]
+
+      --zk-suppressed-warnings <SUPPRESSED_WARNINGS>
+          Set the warnings to suppress for zksolc, possible values: [txorigin]
+          
+          [aliases: suppressed-warnings]
+
+      --zk-suppressed-errors <SUPPRESSED_ERRORS>
+          Set the errors to suppress for zksolc, possible values: [sendtransfer]
+          
+          [aliases: suppressed-errors]
 
 Watch options:
   -w, --watch [<PATH>...]
@@ -245,10 +274,6 @@ Watch options:
           
           When using --poll mode, you'll want a larger duration, or risk
           overloading disk I/O.
-
-      --format-json
-          Output the compilation errors in the json format. This is useful when
-          you want to use the output in other tools
 
 EVM options:
   -f, --fork-url <URL>
@@ -288,7 +313,7 @@ EVM options:
           The initial balance of deployed test contracts
 
       --sender <ADDRESS>
-          The address which will be executing tests
+          The address which will be executing tests/scripts
 
       --ffi
           Enable the FFI cheatcode
@@ -297,17 +322,9 @@ EVM options:
           Use the create 2 factory in all cases including tests and
           non-broadcasting scripts
 
-  -v, --verbosity...
-          Verbosity of the EVM.
-          
-          Pass multiple times to increase the verbosity (e.g. -v, -vv, -vvv).
-          
-          Verbosity levels:
-          - 2: Print logs for all tests
-          - 3: Print execution traces for failing tests
-          - 4: Print execution traces for all tests, and setup traces for
-          failing tests
-          - 5: Print execution and setup traces for all tests
+      --create2-deployer <ADDRESS>
+          The CREATE2 deployer address to use, this will override the one in the
+          config
 
 Fork config:
       --compute-units-per-second <CUPS>
@@ -328,9 +345,6 @@ Fork config:
           [aliases: no-rate-limit]
 
 Executor environment config:
-      --gas-limit <GAS_LIMIT>
-          The block gas limit
-
       --code-size-limit <CODE_SIZE>
           EIP-170: Contract code size limit in bytes. Useful to increase this
           because of tests. By default, it is 0x6000 (~25kb)
@@ -368,6 +382,8 @@ Executor environment config:
 
       --block-gas-limit <GAS_LIMIT>
           The block gas limit
+          
+          [aliases: gas-limit]
 
       --memory-limit <MEMORY_LIMIT>
           The memory limit per EVM execution in bytes. If this limit is
@@ -386,21 +402,36 @@ Executor environment config:
           context, enabling more precise gas accounting and transaction state
           changes
 
-      --alphanet
-          Whether to enable Alphanet features
+      --odyssey
+          Whether to enable Odyssey features
 
 Display options:
       --color <COLOR>
-          Log messages coloring
+          The color of the log messages
 
           Possible values:
           - auto:   Intelligently guess whether to use color output (default)
           - always: Force color output
           - never:  Force disable color output
 
+      --json
+          Format log messages as JSON
+
   -q, --quiet
           Do not print log messages
 
-      --verbose
-          Use verbose output
+  -v, --verbosity...
+          Verbosity level of the log messages.
+          
+          Pass multiple times to increase the verbosity (e.g. -v, -vv, -vvv).
+          
+          Depending on the context the verbosity levels have different meanings.
+          
+          For example, the verbosity levels of the EVM are:
+          - 2 (-vv): Print logs for all tests.
+          - 3 (-vvv): Print execution traces for failing tests.
+          - 4 (-vvvv): Print execution traces for all tests, and setup traces
+          for failing tests.
+          - 5 (-vvvvv): Print execution and setup traces for all tests,
+          including storage changes.
 ```

@@ -40,23 +40,11 @@ Options:
   -h, --help
           Print help (see a summary with '-h')
 
-Display options:
-  -j, --json
-          Print the logs as JSON.s
-
-      --color <COLOR>
-          Log messages coloring
-
-          Possible values:
-          - auto:   Intelligently guess whether to use color output (default)
-          - always: Force color output
-          - never:  Force disable color output
-
-  -q, --quiet
-          Do not print log messages
-
-      --verbose
-          Use verbose output
+  -j, --threads <THREADS>
+          Number of threads to use. Specifying 0 defaults to the number of
+          logical cores
+          
+          [aliases: jobs]
 
 Ethereum options:
   -r, --rpc-url <URL>
@@ -96,6 +84,11 @@ Ethereum options:
           Default value: 45
           
           [env: ETH_RPC_TIMEOUT=]
+
+      --rpc-headers <RPC_HEADERS>
+          Specify custom headers for RPC requests
+          
+          [env: ETH_RPC_HEADERS=]
 
   -e, --etherscan-api-key <KEY>
           The Etherscan (or equivalent) API key
@@ -167,4 +160,34 @@ Wallet options - hardware wallet:
 
   -t, --trezor
           Use a Trezor hardware wallet
+
+Display options:
+      --color <COLOR>
+          The color of the log messages
+
+          Possible values:
+          - auto:   Intelligently guess whether to use color output (default)
+          - always: Force color output
+          - never:  Force disable color output
+
+      --json
+          Format log messages as JSON
+
+  -q, --quiet
+          Do not print log messages
+
+  -v, --verbosity...
+          Verbosity level of the log messages.
+          
+          Pass multiple times to increase the verbosity (e.g. -v, -vv, -vvv).
+          
+          Depending on the context the verbosity levels have different meanings.
+          
+          For example, the verbosity levels of the EVM are:
+          - 2 (-vv): Print logs for all tests.
+          - 3 (-vvv): Print execution traces for failing tests.
+          - 4 (-vvvv): Print execution traces for all tests, and setup traces
+          for failing tests.
+          - 5 (-vvvvv): Print execution and setup traces for all tests,
+          including storage changes.
 ```
