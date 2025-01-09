@@ -33,19 +33,19 @@ Build options:
       --eof
           Use EOF-enabled solc binary. Enables via-ir and sets EVM version to
           Prague. Requires Docker to be installed.
-          
+
           Note that this is a temporary solution until the EOF support is merged
           into the main solc release.
 
       --skip <SKIP>...
           Skip building files whose names contain the given filter.
-          
+
           `test` and `script` are aliases for `.t.sol` and `.s.sol`.
 
 Linker options:
       --libraries <LIBRARIES>
           Set pre-linked libraries
-          
+
           [env: DAPP_LIBRARIES=]
 
 Compiler options:
@@ -60,13 +60,13 @@ Compiler options:
 
       --use <SOLC_VERSION>
           Specify the solc version, or a path to a local solc, to build with.
-          
+
           Valid values are in the format `x.y.z`, `solc:x.y.z` or
           `path/to/solc`.
 
       --offline
           Do not access the network.
-          
+
           Missing solc versions will not be installed.
 
       --via-ir
@@ -74,7 +74,7 @@ Compiler options:
 
       --no-metadata
           Do not append any metadata to the bytecode.
-          
+
           This is equivalent to setting `bytecode_hash` to `none` and
           `cbor_metadata` to `false`.
 
@@ -86,7 +86,7 @@ Compiler options:
 
       --optimize [<OPTIMIZE>]
           Activate the Solidity optimizer
-          
+
           [possible values: true, false]
 
       --optimizer-runs <RUNS>
@@ -94,15 +94,15 @@ Compiler options:
 
       --extra-output <SELECTOR>...
           Extra output to include in the contract's artifact.
-          
+
           Example keys: evm.assembly, ewasm, ir, irOptimized, metadata
-          
+
           For a full description, see
           <https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description>
 
       --extra-output-files <SELECTOR>...
           Extra output to write to separate files.
-          
+
           Valid values: metadata, ir, irOptimized, ewasm, evm.assembly
 
 Project options:
@@ -111,7 +111,7 @@ Project options:
 
       --revert-strings <REVERT>
           Revert string configuration.
-          
+
           Possible values are "default", "strip" (remove), "debug"
           (Solidity-generated revert strings) and "verboseDebug"
 
@@ -123,7 +123,7 @@ Project options:
 
       --root <PATH>
           The project's root path.
-          
+
           By default root of the Git repository, if in one, or the current
           working directory.
 
@@ -144,10 +144,10 @@ Project options:
 
       --hardhat
           Use the Hardhat-style project layout.
-          
+
           This is the same as using: `--contracts contracts --lib-paths
           node_modules`.
-          
+
           [aliases: hh]
 
       --config-path <FILE>
@@ -156,13 +156,13 @@ Project options:
 ZKSync configuration:
       --zk-startup[=<ENABLE_ZKVM_AT_STARTUP>]
           Enable zkVM at startup
-          
+
           [aliases: zksync]
           [possible values: true, false]
 
       --zk-compile[=<COMPILE_FOR_ZKVM>]
           Compile for zkVM
-          
+
           [possible values: true, false]
 
       --zk-solc-path <ZK_SOLC_PATH>
@@ -170,13 +170,13 @@ ZKSync configuration:
 
       --zk-enable-eravm-extensions[=<ENABLE_ERAVM_EXTENSIONS>]
           Enable the system contract compilation mode.
-          
+
           [aliases: enable-eravm-extensions, system-mode]
           [possible values: true, false]
 
       --zk-force-evmla[=<FORCE_EVMLA>]
           Forcibly switch to the EVM legacy assembly pipeline.
-          
+
           [aliases: force-evmla]
           [possible values: true, false]
 
@@ -185,19 +185,14 @@ ZKSync configuration:
 
       --zk-fallback-oz[=<FALLBACK_OZ>]
           Try to recompile with -Oz if the bytecode is too large
-          
+
           [aliases: fallback-oz]
           [possible values: true, false]
-
-      --zk-detect-missing-libraries
-          Detect missing libraries, instead of erroring
-          
-          Currently unused
 
   -O, --zk-optimizer-mode <LEVEL>
           Set the LLVM optimization parameter `-O[0 | 1 | 2 | 3 | s | z]`. Use
           `3` for best performance and `z` for minimal size
-          
+
           [aliases: zk-optimization]
 
       --zk-optimizer
@@ -205,7 +200,7 @@ ZKSync configuration:
 
       --zk-avoid-contracts <AVOID_CONTRACTS>
           Contracts to avoid compiling on zkSync
-          
+
           [aliases: avoid-contracts]
 
 Display options:

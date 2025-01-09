@@ -12,21 +12,21 @@ Usage: forge coverage [OPTIONS]
 Options:
       --report <REPORT>
           The report type to use for coverage.
-          
+
           This flag can be used multiple times.
-          
+
           [default: summary]
           [possible values: summary, lcov, debug, bytecode]
 
       --ir-minimum
           Enable viaIR with minimum optimization
-          
+
           This can fix most of the "stack too deep" errors while resulting a
           relatively accurate source map.
 
   -r, --report-file <PATH>
           The path to output the report.
-          
+
           If not specified, the report will be stored in the root of the
           project.
 
@@ -39,33 +39,33 @@ Options:
 Test options:
       --debug [<DEPRECATED_TEST_FUNCTION_REGEX>]
           Run a single test in the debugger.
-          
+
           The matching test will be opened in the debugger regardless of the
           outcome of the test.
-          
+
           If the matching test is a fuzz test, then it will open the debugger on
           the first failure case. If the fuzz test does not fail, it will open
           the debugger on the last fuzz case.
 
       --flamegraph
           Generate a flamegraph for a single test. Implies `--decode-internal`.
-          
+
           A flame graph is used to visualize which functions or operations
           within the smart contract are consuming the most gas overall in a
           sorted manner.
 
       --flamechart
           Generate a flamechart for a single test. Implies `--decode-internal`.
-          
+
           A flame chart shows the gas usage over time, illustrating when each
           function is called (execution order) and how much gas it consumes at
           each point in the timeline.
 
       --decode-internal [<DEPRECATED_TEST_FUNCTION_REGEX>]
           Identify internal functions in traces.
-          
+
           This will trace internal functions and decode stack parameters.
-          
+
           Parameters stored in memory (such as bytes or arrays) are currently
           decoded only when a single function is matched, similarly to
           `--debug`, for performance reasons.
@@ -75,12 +75,12 @@ Test options:
 
       --gas-report
           Print a gas report
-          
+
           [env: FORGE_GAS_REPORT=]
 
       --allow-failure
           Exit with code 0 even if a test fails
-          
+
           [env: FORGE_ALLOW_FAILURE=]
 
       --fail-fast
@@ -88,7 +88,7 @@ Test options:
 
       --etherscan-api-key <KEY>
           The Etherscan (or equivalent) API key
-          
+
           [env: ETHERSCAN_API_KEY=]
 
       --fuzz-seed <FUZZ_SEED>
@@ -103,7 +103,7 @@ Test options:
   -j, --threads <THREADS>
           Max concurrent threads to use. Default value is the number of
           available CPUs
-          
+
           [aliases: jobs]
 
       --show-progress
@@ -139,40 +139,40 @@ Display options:
 Test filtering:
       --match-test <REGEX>
           Only run test functions matching the specified regex pattern
-          
+
           [aliases: mt]
 
       --no-match-test <REGEX>
           Only run test functions that do not match the specified regex pattern
-          
+
           [aliases: nmt]
 
       --match-contract <REGEX>
           Only run tests in contracts matching the specified regex pattern
-          
+
           [aliases: mc]
 
       --no-match-contract <REGEX>
           Only run tests in contracts that do not match the specified regex
           pattern
-          
+
           [aliases: nmc]
 
       --match-path <GLOB>
           Only run tests in source files matching the specified glob pattern
-          
+
           [aliases: mp]
 
       --no-match-path <GLOB>
           Only run tests in source files that do not match the specified glob
           pattern
-          
+
           [aliases: nmp]
 
       --no-match-coverage <REGEX>
           Only show coverage for files that do not match the specified regex
           pattern
-          
+
           [aliases: nmco]
 
       --rerun
@@ -183,34 +183,34 @@ EVM options:
   -f, --fork-url <URL>
           Fetch state over a remote endpoint instead of starting from an empty
           state.
-          
+
           If you want to fetch state from a specific block number, see
           --fork-block-number.
-          
+
           [aliases: rpc-url]
 
       --fork-block-number <BLOCK>
           Fetch state from a specific block number over a remote endpoint.
-          
+
           See --fork-url.
 
       --fork-retries <RETRIES>
           Number of retries.
-          
+
           See --fork-url.
 
       --fork-retry-backoff <BACKOFF>
           Initial retry backoff on encountering errors.
-          
+
           See --fork-url.
 
       --no-storage-caching
           Explicitly disables the use of RPC caching.
-          
+
           All storage slots are read entirely from the endpoint.
-          
+
           This flag overrides the project's configuration file.
-          
+
           See --fork-url.
 
       --initial-balance <BALANCE>
@@ -228,9 +228,9 @@ EVM options:
 
   -v, --verbosity...
           Verbosity of the EVM.
-          
+
           Pass multiple times to increase the verbosity (e.g. -v, -vv, -vvv).
-          
+
           Verbosity levels:
           - 2: Print logs for all tests
           - 3: Print execution traces for failing tests
@@ -242,18 +242,18 @@ Fork config:
       --compute-units-per-second <CUPS>
           Sets the number of assumed available compute units per second for this
           provider
-          
+
           default value: 330
-          
+
           See also --fork-url and
           <https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second>
 
       --no-rpc-rate-limit
           Disables rate limiting for this node's provider.
-          
+
           See also --fork-url and
           <https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second>
-          
+
           [aliases: no-rate-limit]
 
 Executor environment config:
@@ -266,7 +266,7 @@ Executor environment config:
 
       --chain <CHAIN>
           The chain name or EIP-155 chain ID
-          
+
           [aliases: chain-id]
 
       --gas-price <GAS_PRICE>
@@ -274,7 +274,7 @@ Executor environment config:
 
       --block-base-fee-per-gas <FEE>
           The base fee in a block
-          
+
           [aliases: base-fee]
 
       --tx-origin <ADDRESS>
@@ -301,12 +301,12 @@ Executor environment config:
       --memory-limit <MEMORY_LIMIT>
           The memory limit per EVM execution in bytes. If this limit is
           exceeded, a `MemoryLimitOOG` result is thrown.
-          
+
           The default is 128MiB.
 
       --disable-block-gas-limit
           Whether to disable the block gas limit checks
-          
+
           [aliases: no-gas-limit]
 
       --isolate
@@ -326,19 +326,19 @@ Build options:
       --eof
           Use EOF-enabled solc binary. Enables via-ir and sets EVM version to
           Prague. Requires Docker to be installed.
-          
+
           Note that this is a temporary solution until the EOF support is merged
           into the main solc release.
 
       --skip <SKIP>...
           Skip building files whose names contain the given filter.
-          
+
           `test` and `script` are aliases for `.t.sol` and `.s.sol`.
 
 Linker options:
       --libraries <LIBRARIES>
           Set pre-linked libraries
-          
+
           [env: DAPP_LIBRARIES=]
 
 Compiler options:
@@ -353,13 +353,13 @@ Compiler options:
 
       --use <SOLC_VERSION>
           Specify the solc version, or a path to a local solc, to build with.
-          
+
           Valid values are in the format `x.y.z`, `solc:x.y.z` or
           `path/to/solc`.
 
       --offline
           Do not access the network.
-          
+
           Missing solc versions will not be installed.
 
       --via-ir
@@ -367,7 +367,7 @@ Compiler options:
 
       --no-metadata
           Do not append any metadata to the bytecode.
-          
+
           This is equivalent to setting `bytecode_hash` to `none` and
           `cbor_metadata` to `false`.
 
@@ -379,7 +379,7 @@ Compiler options:
 
       --optimize [<OPTIMIZE>]
           Activate the Solidity optimizer
-          
+
           [possible values: true, false]
 
       --optimizer-runs <RUNS>
@@ -387,15 +387,15 @@ Compiler options:
 
       --extra-output <SELECTOR>...
           Extra output to include in the contract's artifact.
-          
+
           Example keys: evm.assembly, ewasm, ir, irOptimized, metadata
-          
+
           For a full description, see
           <https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description>
 
       --extra-output-files <SELECTOR>...
           Extra output to write to separate files.
-          
+
           Valid values: metadata, ir, irOptimized, ewasm, evm.assembly
 
 Project options:
@@ -404,7 +404,7 @@ Project options:
 
       --revert-strings <REVERT>
           Revert string configuration.
-          
+
           Possible values are "default", "strip" (remove), "debug"
           (Solidity-generated revert strings) and "verboseDebug"
 
@@ -416,7 +416,7 @@ Project options:
 
       --root <PATH>
           The project's root path.
-          
+
           By default root of the Git repository, if in one, or the current
           working directory.
 
@@ -437,10 +437,10 @@ Project options:
 
       --hardhat
           Use the Hardhat-style project layout.
-          
+
           This is the same as using: `--contracts contracts --lib-paths
           node_modules`.
-          
+
           [aliases: hh]
 
       --config-path <FILE>
@@ -449,13 +449,13 @@ Project options:
 ZKSync configuration:
       --zk-startup[=<ENABLE_ZKVM_AT_STARTUP>]
           Enable zkVM at startup
-          
+
           [aliases: zksync]
           [possible values: true, false]
 
       --zk-compile[=<COMPILE_FOR_ZKVM>]
           Compile for zkVM
-          
+
           [possible values: true, false]
 
       --zk-solc-path <ZK_SOLC_PATH>
@@ -463,13 +463,13 @@ ZKSync configuration:
 
       --zk-enable-eravm-extensions[=<ENABLE_ERAVM_EXTENSIONS>]
           Enable the system contract compilation mode.
-          
+
           [aliases: enable-eravm-extensions, system-mode]
           [possible values: true, false]
 
       --zk-force-evmla[=<FORCE_EVMLA>]
           Forcibly switch to the EVM legacy assembly pipeline.
-          
+
           [aliases: force-evmla]
           [possible values: true, false]
 
@@ -478,19 +478,14 @@ ZKSync configuration:
 
       --zk-fallback-oz[=<FALLBACK_OZ>]
           Try to recompile with -Oz if the bytecode is too large
-          
+
           [aliases: fallback-oz]
           [possible values: true, false]
-
-      --zk-detect-missing-libraries
-          Detect missing libraries, instead of erroring
-          
-          Currently unused
 
   -O, --zk-optimizer-mode <LEVEL>
           Set the LLVM optimization parameter `-O[0 | 1 | 2 | 3 | s | z]`. Use
           `3` for best performance and `z` for minimal size
-          
+
           [aliases: zk-optimization]
 
       --zk-optimizer
@@ -498,13 +493,13 @@ ZKSync configuration:
 
       --zk-avoid-contracts <AVOID_CONTRACTS>
           Contracts to avoid compiling on zkSync
-          
+
           [aliases: avoid-contracts]
 
 Watch options:
   -w, --watch [<PATH>...]
           Watch the given files or directories for changes.
-          
+
           If no paths are provided, the source and test directories of the
           project are watched.
 
@@ -513,21 +508,21 @@ Watch options:
 
       --run-all
           Explicitly re-run all tests when a change is made.
-          
+
           By default, only the tests of the last modified test file are
           executed.
 
       --watch-delay <DELAY>
           File update debounce delay.
-          
+
           During the delay, incoming change events are accumulated and only once
           the delay has passed, is an action taken. Note that this does not mean
           a command will be started: if --no-restart is given and a command is
           already running, the outcome of the action will be to do nothing.
-          
+
           Defaults to 50ms. Parses as decimal seconds by default, but using an
           integer with the `ms` suffix may be more convenient.
-          
+
           When using --poll mode, you'll want a larger duration, or risk
           overloading disk I/O.
 ```
