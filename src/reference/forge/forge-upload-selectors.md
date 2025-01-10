@@ -2,15 +2,15 @@
 
 ### NAME
 
-forge-upload-selectors - Uploads abi of given contract to https://sig.eth.samczsun.com function selector database.
+forge-upload-selectors - Uploads abi of given contract to https://openchain.xyz/signatures function selector database.
 
 ### SYNOPSIS
 
-``forge upload-selectors`` [*options*] *contract*
+`forge upload-selectors` [*options*] _contract_
 
 ### DESCRIPTION
 
-Uploads abi of given contract to https://sig.eth.samczsun.com function selector database.
+Uploads abi of given contract to https://openchain.xyz/signatures function selector database.
 
 ### OPTIONS
 
@@ -21,6 +21,6 @@ Uploads abi of given contract to https://sig.eth.samczsun.com function selector 
 ### EXAMPLES
 
 1. Upload ABI to selector database
-    ```sh
-    forge upload-selectors LinearVestingVault
-    ```
+   ```sh
+   forge upload-selectors LinearVestingVault
+   ```
