@@ -45,7 +45,7 @@ This allows you to test CREATE2 deployments locally without forking.
 
 #### Supported RPC Methods
 ##### Standard Methods
-The standard methods are based on [this](https://eth.wiki/json-rpc/API) reference.
+The standard methods are based on [this](https://ethereum.org/en/developers/docs/apis/json-rpc/) reference.
 
 * `web3_clientVersion`
 
