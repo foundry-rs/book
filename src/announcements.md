@@ -36,6 +36,8 @@ foundryup --update
 
 by running `foundryup --update`.
 
+The latest version of `foundryup` is `0.3.0`.
+
 #### How do I install multiple versions?
 
 Easily install different versions using:
