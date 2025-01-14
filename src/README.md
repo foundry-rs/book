@@ -4,11 +4,17 @@ Foundry is a smart contract development toolchain.
 
 Foundry manages your dependencies, compiles your project, runs tests, deploys, and lets you interact with the chain from the command-line and via Solidity scripts.
 
+> ✨ **Announcements**
+>
+> [Catch up on the latest changes](./announcements.md) to Foundry.
+
 > 📖 **Contributing**
 >
 > You can contribute to this book on [GitHub](https://github.com/foundry-rs/book).
 
 ### Sections
+
+**[Annoucements](./announcements.md)**
 
 **[Getting Started](getting-started/installation.md)**
 
