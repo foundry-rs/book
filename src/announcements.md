@@ -1,6 +1,6 @@
 ## Announcements
 
-Stay up to date on the latest changes to Foundry.
+Stay up to date with the latest changes to Foundry.
 
 ## 🚨 Actions required
 
