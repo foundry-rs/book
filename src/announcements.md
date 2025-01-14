@@ -26,7 +26,7 @@ Big shoutout to the Foundry community - your bug reports, feature requests and c
 
 The latest version of `foundryup` is `0.3.0`.
 
-If you run `foundryup --version` and it does not return this you are not up to date.
+If you run `foundryup --version` and it does not return this or returns an error you are not up to date.
 
 #### How do I update `foundryup`?
 
