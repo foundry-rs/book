@@ -90,8 +90,30 @@ foundryup --use stable
 foundryup --use 0.3.0
 ```
 
+#### How do I configure `foundry-toolchain`?
+
+The `foundry-toolchain` GitHub Action will use the latest `stable` release by default.
+
+If you would prefer to use a different release you can set the `version` key:
+
+```yml
+- name: Install Foundry
+  uses: foundry-rs/foundry-toolchain@v1
+  with:
+    version: <version>
+```
+
+e.g.
+
+```yml
+- name: Install Foundry
+  uses: foundry-rs/foundry-toolchain@v1
+  with:
+    version: nightly
+```
+
 #### I prefer using nightly builds.
 
-You are still able to receive the latest nightly builds by running `foundryup --install nightly`
+You are still able to receive the latest `nightly` builds by running `foundryup --install nightly`
 
 **Be cautious — nightly builds may include breaking changes that are difficult to debug without context.**
