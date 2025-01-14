@@ -32,13 +32,13 @@ After updating you'll be able to update to the latest version of `foundryup` by 
 
 Easily install different versions using:
 
-```
+```sh
 foundryup --install <version>
 ```
 
 e.g.
 
-```
+```sh
 foundryup --install nightly
 foundryup --install stable
 foundryup --install 0.3.0
@@ -48,13 +48,13 @@ foundryup --install 0.3.0
 
 Run
 
-```
+```sh
 foundryup --list
 ```
 
 This will output a list as follows:
 
-```
+```sh
 foundryup: nightly
 foundryup: - forge 0.3.0 (017c59d 2025-01-14T00:25:28.977200980Z)
 foundryup: - cast 0.3.0 (017c59d 2025-01-14T00:25:28.933986754Z)
@@ -78,13 +78,13 @@ foundryup: - chisel 0.3.0 (5a8bd89 2024-12-19T17:17:10.201917651Z)
 
 Easily manage your installations with:
 
-```
+```sh
 foundryup --use <version>
 ```
 
 e.g.
 
-```
+```sh
 foundryup --use nightly
 foundryup --use stable
 foundryup --use 0.3.0
