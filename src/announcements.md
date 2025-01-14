@@ -34,13 +34,11 @@ Run: `curl -L https://foundry.paradigm.xyz | bash`
 
 As a security best practice it is recommended you manually follow the [redirect](https://foundry.paradigm.xyz), inspect the [installer](https://raw.githubusercontent.com/foundry-rs/foundry/master/foundryup/install) you are about to run and the new version of [`foundryup`](https://raw.githubusercontent.com/foundry-rs/foundry/master/foundryup/foundryup) you are about to install.
 
-After the initial update you'll be able to update to the latest version of `foundryup` using:
+After the initial update you'll be able to update to the latest version of `foundryup` by running:
 
 ```sh
 foundryup --update
 ```
-
-by running `foundryup --update`.
 
 #### How do I install multiple versions?
 
@@ -58,7 +56,7 @@ foundryup --install stable
 foundryup --install 0.3.0
 ```
 
-#### How do I know the versions I have installed?
+#### How do I know which versions I have installed?
 
 Run
 
