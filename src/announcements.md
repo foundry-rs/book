@@ -22,6 +22,12 @@ Big shoutout to the Foundry community - your bug reports, feature requests and c
 
 ## FAQ
 
+#### How do I know which version I have installed?
+
+The latest version of `foundryup` is `0.3.0`.
+
+If you run `foundryup --version` and it does not return this you are not up to date.
+
 #### How do I update `foundryup`?
 
 Run: `curl -L https://foundry.paradigm.xyz | bash`
@@ -35,8 +41,6 @@ foundryup --update
 ```
 
 by running `foundryup --update`.
-
-The latest version of `foundryup` is `0.3.0`.
 
 #### How do I install multiple versions?
 
