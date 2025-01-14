@@ -79,6 +79,7 @@
 
 # Appendix
 
+- [Announcements](./announcements.md)
 - [FAQ](./faq.md)
 - [Help us improve Foundry](./contributing.md)
 - [References](./reference/README.md)
