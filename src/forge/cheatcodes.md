@@ -98,6 +98,6 @@ In other words, `test_ExpectEmit_DoNotCheckData` is a valid test case, even thou
 
 <br>
 
-> 📚 **Reference**
+<!-- > 📚 **Reference**
 >
-> See the [Cheatcodes Reference](../cheatcodes/) for a complete overview of all the available cheatcodes.
+> See the [Cheatcodes Reference](../cheatcodes/) for a complete overview of all the available cheatcodes. -->
