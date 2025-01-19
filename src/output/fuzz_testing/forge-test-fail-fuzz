@@ -8,9 +8,9 @@ Solc 0.8.10 finished in 1.04s
 Compiler run successful!
 
 Ran 1 test for test/Safe.t.sol:SafeTest
-[FAIL: EvmError: Revert; counterexample: calldata=0x29facca70016a2a59cfe1931f961733754455ea78e8b41ac96e2087cbdb620cb1b1958da args=[39993183257752133268668409277917242085964224259029321588274783969663867098 [3.999e73]]] testFuzz_Withdraw(uint256) (runs: 1, μ: 19531, ~: 19531)
-Suite result: FAILED. 0 passed; 1 failed; 0 skipped; finished in 832.61µs (426.90µs CPU time)
+[FAIL: EvmError: Revert; counterexample: calldata=0x29facca700000000000000000008b5a210bf77df16e1e4bfb8406769ffc0307cc53a743d args=[834204769179293694580214976748980775394848113291850813 [8.342e53]]] testFuzz_Withdraw(uint256) (runs: 3, μ: 19531, ~: 19531)
+Suite result: FAILED. 0 passed; 1 failed; 0 skipped; finished in 800.27µs (465.42µs CPU time)
 
-Ran 1 test suite in 6.00ms (832.61µs CPU time): 0 tests passed, 1 failed, 0 skipped (1 total tests)
+Ran 1 test suite in 6.23ms (800.27µs CPU time): 0 tests passed, 1 failed, 0 skipped (1 total tests)
 // ANCHOR_END: output
 // ANCHOR_END: all
