@@ -128,4 +128,4 @@ e.g.
 
 You are still able to receive the latest `nightly` builds by running `foundryup --install nightly`
 
-**Be cautious — nightly builds may include breaking changes that are difficult to debug without context.**
+Be cautious — nightly builds may include breaking changes that are difficult to debug without context.
