@@ -205,6 +205,18 @@ Style of underscores in number literals. Valid values are:
 - `thousands`: Add an underscore every thousand, if greater than 9999. i.e. `1000` is formatted as `1000` and `10000` as `10_000`
 - `remove`: Remove all underscores
 
+### `hex_underscore`
+
+- Type: string
+- Default: `remove`
+- Environment: `FOUNDRY_FMT_HEX_UNDERSCORE` or `DAPP_FMT_HEX_UNDERSCORE`
+
+Style of underscores in bytes literals. Valid values are:
+
+- `preserve`: Use the underscores defined in the source code
+- `remove` (default): Remove all underscores
+- `bytes`: Add underscore as separator between byte boundaries. i.e. `hex"deadbeef"` is formatted as `hex"de_ad_be_ef"`
+
 ### `wrap_comments`
 
 - Type: bool

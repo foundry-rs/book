@@ -2,7 +2,7 @@
 
 Forge ships with an interactive debugger.
 
-The debugger is accessible on [`forge test`](../reference/forge/forge-test.md) and on [`forge script`](../reference/forge/forge-script.md)
+The debugger is accessible on [`forge debug`](../reference/forge/forge-debug.md) and on [`forge test`](../reference/forge/forge-test.md).
 
 Using `forge test`:
 
@@ -19,6 +19,22 @@ $ forge test --debug "testSomething()"
 If you have multiple contracts with the same function name, you need to limit the matching functions down to only one case using `--match-path` and `--match-contract`.
 
 If the matching test is a fuzz test, the debugger will open the first failing fuzz scenario, or the last successful one, whichever comes first.
+
+Using `forge debug`:
+
+```sh
+$ forge debug --debug $FILE --sig $FUNC
+```
+
+Where `$FILE` is the path to the contract you want to debug, and `$FUNC` is the signature of the function you want to debug. For example:
+
+```sh
+$ forge debug --debug src/SomeContract.sol --sig "myFunc(uint256,string)" 123 "hello"
+```
+
+You can also specify raw calldata using `--sig` instead of a function signature.
+
+If your source file contains more than one contract, specify the contract you want to debug using the `--target-contract` flag.
 
 ### Debugger layout
 

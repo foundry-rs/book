@@ -18,7 +18,7 @@
 
 # Forge Overview
 
-- [Overview of Forge](forge/README.md)
+- [Forge](forge/README.md)
 - [Tests](./forge/tests.md)
   - [Writing Tests](./forge/writing-tests.md)
   - [Cheatcodes](./forge/cheatcodes.md)
@@ -45,15 +45,15 @@
 
 # Cast Overview
 
-- [Overview of Cast](./cast/README.md)
+- [Cast](./cast/README.md)
 
 # Anvil Overview
 
-- [Overview of Anvil](./anvil/README.md)
+- [Anvil](./anvil/README.md)
 
 # Chisel Overview
 
-- [Overview of Chisel](./chisel/README.md)
+- [Chisel](./chisel/README.md)
 
 # Configuration
 
@@ -79,6 +79,7 @@
 
 # Appendix
 
+- [Announcements](./announcements.md)
 - [FAQ](./faq.md)
 - [Help us improve Foundry](./contributing.md)
 - [References](./reference/README.md)
@@ -98,6 +99,7 @@
       - [`forge config`](./reference/cli/forge/config.md)
       - [`forge coverage`](./reference/cli/forge/coverage.md)
       - [`forge create`](./reference/cli/forge/create.md)
+      - [`forge debug`](./reference/cli/forge/debug.md)
       - [`forge doc`](./reference/cli/forge/doc.md)
       - [`forge eip712`](./reference/cli/forge/eip712.md)
       - [`forge flatten`](./reference/cli/forge/flatten.md)
@@ -285,6 +287,7 @@
       - [forge verify-check](./reference/forge/forge-verify-check.md)
       - [forge flatten](./reference/forge/forge-flatten.md)
     - [Utility Commands](./reference/forge/utility-commands.md)
+      - [forge debug](./reference/forge/forge-debug.md)
       - [forge bind](./reference/forge/forge-bind.md)
       - [forge cache](./reference/forge/forge-cache.md)
       - [forge cache clean](./reference/forge/forge-cache-clean.md)
