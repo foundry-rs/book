@@ -34,3 +34,15 @@ From the params above, we can get all gas-related values used in the transaction
 * `gasPerPubdata`: `fairPubdataPrice / baseFee`.
 
 `L1_GAS_PER_PUBDATA_BYTE` and `MAX_L2_GAS_PER_PUBDATA` are system constants currently set to `17` and `50_000`, respectively.
+
+#### Customizing gas values
+Some gas parameters can be customized when broadcasting transactions with `forge script` by using the following flags:
+
+* `--with-gas-price-price`: sets `max_fee_per_gas` to be used in the transaction.
+* `--priority-gas-price`: sets `max_priority_fee_per_gas` to be used in the transaction.
+* `--zk-gas-per-pubdata`: sets `gasPerPubdata` to be used in the transaction.
+
+Example: 
+```sh
+forge script script/NFT.s.sol:MyScript --fork-url http://localhost:8545 --broadcast --with-gas-price-price 370000037 --priority-gas-price 10000 --zk-gas-per-pubdata 3241
+```
