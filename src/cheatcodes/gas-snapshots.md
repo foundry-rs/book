@@ -112,8 +112,6 @@ contract SnapshotGasTest is Test {
 }
 ```
 
-```solidity
-
 Capturing an arbitrary numerical value (such as the bytecode size of a contract):
 
 ```solidity
