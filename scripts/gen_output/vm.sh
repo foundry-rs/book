@@ -1,5 +1,3 @@
-# https://raw.githubusercontent.com/foundry-rs/forge-std/refs/heads/master/src/Vm.sol
-
 #!/usr/bin/env bash
 set -eo pipefail
 
