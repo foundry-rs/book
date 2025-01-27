@@ -83,6 +83,7 @@
 - [FAQ](./faq.md)
 - [Help us improve Foundry](./contributing.md)
 - [References](./reference/README.md)
+
   - [CLI Reference](./reference/cli/README.md) <!-- CLI_REFERENCE START -->
     - [`forge`](./reference/cli/forge.md)
       - [`forge bind`](./reference/cli/forge/bind.md)
@@ -406,6 +407,7 @@
     - [Documentation Generator](./reference/config/doc-generator.md)
     - [Etherscan](./reference/config/etherscan.md)
   - [Cheatcodes Reference](./cheatcodes/README.md)
+
     - [Environment](./cheatcodes/environment.md)
       - [`warp`](./cheatcodes/warp.md)
       - [`roll`](./cheatcodes/roll.md)
@@ -491,9 +493,11 @@
       - [`serializeJson`](./cheatcodes/serialize-json.md)
       - [`writeJson`](./cheatcodes/write-json.md)
       - [`writeToml`](./cheatcodes/write-toml.md)
+    - [Signing](./cheatcodes/signing.md)
+      - [`sign`](./cheatcodes/sign.md)
+      - [`signDelegation`](./cheatcodes/sign-delegation.md)
     - [Utilities](./cheatcodes/utilities.md)
       - [`addr`](./cheatcodes/addr.md)
-      - [`sign`](./cheatcodes/sign.md)
       - [`skip`](./cheatcodes/skip.md)
       - [`label`](./cheatcodes/label.md)
       - [`getLabel`](./cheatcodes/get-label.md)
@@ -512,6 +516,7 @@
       - [`setArbitraryStorage`](./cheatcodes/set-arbitrary-storage.md)
     - [RPC](./cheatcodes/rpc.md)
     - [Files](./cheatcodes/fs.md)
+
   - [Forge Standard Library Reference](./reference/forge-std/README.md)
     - [Std Logs](./reference/forge-std/std-logs.md)
     - [Std Assertions](./reference/forge-std/std-assertions.md)
@@ -576,5 +581,6 @@
       - [`deriveRememberKey`](./reference/forge-std/derive-remember-key.md)
     - [Console Logging](./reference/forge-std/console-log.md)
   - [DSTest Reference](./reference/ds-test.md)
+
 - [Miscellaneous](./misc/README.md)
   - [Struct encoding](./misc/struct-encoding.md)

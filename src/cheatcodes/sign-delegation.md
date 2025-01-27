@@ -1,4 +1,4 @@
-## `sign-delegation`
+## `signDelegation`
 
 ### Signature
 
