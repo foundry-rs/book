@@ -29,6 +29,7 @@ Below are some subsections for the different Forge cheatcodes.
 - [Assertions](./assertions.md): Cheatcodes that are powerful assertions
 - [Fuzzer](./fuzzer.md): Cheatcodes that configure the fuzzer
 - [External](./external.md): Cheatcodes that interact with external state (files, commands, ...)
+- [Signing](./signing.md): Cheatcodes for signing
 - [Utilities](./utilities.md): Smaller utility cheatcodes
 - [Forking](./forking.md): Forking mode cheatcodes
 - [Snapshots](./snapshots.md): Snapshot cheatcodes
