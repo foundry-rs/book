@@ -44,5 +44,5 @@ If you need a new feature, consider [contributing to the Foundry's codebase](../
 This is a Solidity interface for all of the cheatcodes present in Forge.
 
 ```solidity
-{{#include ../output/vm/Vm.sol}}
+{{#include ../output/vm/Vm.sol:3:}}
 ```
