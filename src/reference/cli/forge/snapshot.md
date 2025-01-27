@@ -70,6 +70,9 @@ Display options:
   -l, --list
           List tests instead of running them
 
+      --show-progress
+          Show test execution progress
+
       --summary
           Print test summary table
 
@@ -150,9 +153,6 @@ Test options:
 
       --fuzz-input-file <FUZZ_INPUT_FILE>
           File to rerun fuzz failures from
-
-      --show-progress
-          Show test execution progress
 
   [PATH]
           The contract file you want to test, it's a shortcut for --match-path

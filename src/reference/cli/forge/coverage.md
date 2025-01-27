@@ -83,6 +83,9 @@ Display options:
   -l, --list
           List tests instead of running them
 
+      --show-progress
+          Show test execution progress
+
       --summary
           Print test summary table
 
