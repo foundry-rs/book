@@ -34,5 +34,3 @@ To provide clarity and a consistent user experience, Foundry-ZKsync follows a fo
 
 - **Explicitly Specified Versions:** If an unsupported version (e.g., `zksolc = 1.5.5`) is specified, compilation will fail with a clear error message.
 - **Hardcoded Paths:** If an unsupported version is used via a hardcoded path (e.g., `zksolc = "path/to/zksolc-v1.5.5"`), Foundry will emit a warning to inform users without halting compilation.
-
-By defining this policy, Foundry-ZKsync ensures enhanced stability and predictability while accommodating ecosystem advancements. Community feedback is welcome as we continue refining this approach.
