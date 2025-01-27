@@ -63,6 +63,23 @@ Now we can import any of the contracts in `src/utils` of the solmate repository 
 import {LibString} from "@solmate-utils/LibString.sol";
 ```
 
+### Remapping conflicts
+In some cases, you may encounter dependency conflicts when two or more git submodules include different dependencies with the same namespace. For example, suppose you have installed both `org/lib_1` and `org/lib_2`, and they each reference their own versions of `@openzeppelin`. In such scenarios, `forge remappings` generates a single remapping entry for the namespace, which will point to only one of the two `@openzeppelin` libraries. 
+
+```sh
+$ forge remappings  
+@openzeppelin/=lib/lib_1/node_modules/@openzeppelin/ 
+```
+
+This situation can lead to import issues, causing `forge build` to fail or introduce unexpected behavior into your contracts. To resolve this, you can add remapping contexts to your `remappings.txt` file. This instructs the compiler to use different remappings in distinct compilation contexts, resolving the conflict. For example, to address the conflict between `lib_1` and `lib_2`, you would update your remappings.txt as follows:
+
+
+```sh
+lib/lib_1/:@openzeppelin/=lib/lib_1/node_modules/@openzeppelin/
+lib/lib_2/:@openzeppelin/=lib/lib_2/node_modules/@openzeppelin/
+```
+This approach ensures that each dependency is mapped to the appropriate library version, avoiding potential issues. For more information about remapping, please see the [Solidity Lang Docs](https://docs.soliditylang.org/en/latest/path-resolution.html#import-remapping).
+
 ### Updating dependencies
 
 You can update a specific dependency to the latest commit on the version you have specified using [`forge update <dep>`](../reference/forge/forge-update.md). For example, if we wanted to pull the latest commit from our previously installed master-version of `solmate`, we would run:
