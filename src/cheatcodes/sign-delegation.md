@@ -3,34 +3,40 @@
 ### Signature
 
 ```solidity
-    /// Holds a signed EIP-7702 authorization for an authority account to delegate to an implementation.
-    struct SignedDelegation {
-        // The y-parity of the recovered secp256k1 signature (0 or 1).
-        uint8 v;
-        // First 32 bytes of the signature.
-        bytes32 r;
-        // Second 32 bytes of the signature.
-        bytes32 s;
-        // The current nonce of the authority account at signing time.
-        // Used to ensure signature can't be replayed after account nonce changes.
-        uint64 nonce;
-        // Address of the contract implementation that will be delegated to.
-        // Gets encoded into delegation code: 0xef0100 || implementation.
-        address implementation;
-    }
+/// Holds a signed EIP-7702 authorization for an authority account to delegate to an implementation.
+struct SignedDelegation {
+    // The y-parity of the recovered secp256k1 signature (0 or 1).
+    uint8 v;
+    // First 32 bytes of the signature.
+    bytes32 r;
+    // Second 32 bytes of the signature.
+    bytes32 s;
+    // The current nonce of the authority account at signing time.
+    // Used to ensure signature can't be replayed after account nonce changes.
+    uint64 nonce;
+    // Address of the contract implementation that will be delegated to.
+    // Gets encoded into delegation code: 0xef0100 || implementation.
+    address implementation;
+}
+```
 
-    /// Sign an EIP-7702 authorization for delegation.
-    function signDelegation(address implementation, uint256 privateKey)
-        external
-        returns (SignedDelegation memory signedDelegation);
+```solidity
+/// Sign an EIP-7702 authorization for delegation.
+function signDelegation(address implementation, uint256 privateKey)
+    external
+    returns (SignedDelegation memory signedDelegation);
+```
 
-    /// Designate the next call as an EIP-7702 transaction.
-    function attachDelegation(SignedDelegation calldata signedDelegation) external;
+```solidity
+/// Designate the next call as an EIP-7702 transaction.
+function attachDelegation(SignedDelegation calldata signedDelegation) external;
+```
 
-    /// Sign an EIP-7702 authorization and designate the next call as an EIP-7702 transaction.
-    function signAndAttachDelegation(address implementation, uint256 privateKey)
-        external
-        returns (SignedDelegation memory signedDelegation);
+```solidity
+/// Sign an EIP-7702 authorization and designate the next call as an EIP-7702 transaction.
+function signAndAttachDelegation(address implementation, uint256 privateKey)
+    external
+    returns (SignedDelegation memory signedDelegation);
 ```
 
 ### Description
