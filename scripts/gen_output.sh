@@ -7,6 +7,7 @@ source "$SCRIPTS/gen_output/cast.sh"
 source "$SCRIPTS/gen_output/chisel.sh"
 source "$SCRIPTS/gen_output/forge.sh"
 source "$SCRIPTS/gen_output/help.sh"
+source "$SCRIPTS/gen_output/vm.sh"
 
 need_cmd git
 need_cmd mktemp
@@ -21,3 +22,4 @@ gen_help
 gen_cast
 gen_chisel
 gen_forge
+gen_vm
