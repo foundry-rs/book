@@ -11,29 +11,79 @@ function expectRevert(bytes4 message) external;
 ```
 
 ```solidity
+function expectRevert(bytes4 message, address reverter) external;
+```
+
+```solidity
+function expectRevert(bytes4 message, uint64 count) external;
+```
+
+```solidity
+function expectRevert(bytes4 message, address reverter, uint64 count) external;
+```
+
+```solidity
 function expectRevert(bytes calldata message) external;
+```
+
+```solidity
+function expectRevert(bytes calldata message, address reverter) external;
+```
+
+```solidity
+function expectRevert(bytes calldata message, uint64 count) external;
+```
+
+```solidity
+function expectRevert(bytes calldata message, address reverter, uint64 count) external;
+```
+
+```solidity
+function expectRevert(address reverter) external;
+```
+
+```solidity
+function expectRevert(uint64 count) external;
+```
+
+```solidity
+function expectRevert(address reverter, uint64 count) external;
 ```
 
 ```solidity
 function expectPartialRevert(bytes4 message) external;
 ```
 
+```solidity
+function expectPartialRevert(bytes4 message, address reverter) external;
+```
+
 ### Description
 
 If the **next call** does not revert with the expected data `message`, then `expectRevert` will.
+
+> ⚠️ **Usage**
+>
+> - By default, `expectRevert*` cheatcodes work only for calls with greater depth than test depth (see [#3437](https://github.com/foundry-rs/foundry/issues/3437) foundry issue).
+> Expecting reverts at the same depth as test depth can be enabled by setting `allow_internal_expect_revert = true` but is strongly discouraged.
+> 
+> - For a call like `stable.donate(sUSD.balanceOf(user))`, the next call expected to revert is `sUSD.balanceOf(user)` and not `stable.donate()`.
 
 After calling `expectRevert`, calls to other cheatcodes before the reverting call are ignored.
 
 This means, for example, we can call [`prank`](./prank.md) immediately before the reverting call.
 
-There are 3 signatures for `expectRevert`:
+There are several signatures for `expectRevert`:
 
 - **Without parameters**: Asserts that the next call reverts, regardless of the message.
-- **With `bytes4`**: Asserts that the next call reverts with the specified 4 bytes and exact match of revert data.
-- **With `bytes`**: Asserts that the next call reverts with the specified bytes.
+- **With `bytes4` message**: Asserts that the next call reverts with the specified 4 bytes and exact match of revert data.
+- **With `bytes` message**: Asserts that the next call reverts with the specified bytes.
+- **With `address` reverter**: Asserts that the next call is reverted by the specified address.
+- **With `uint64` count**: Expects an exact number of reverts from the upcoming calls. If set to 0, it can be used to assert that a revert is not made.
 
-and one signature for `expectPartialRevert`:
-- **`bytes4`**: Asserts that the next call reverts and the specified 4 bytes match the first 4 bytes of revert data.
+and two signatures for `expectPartialRevert`:
+- **`bytes4` message**: Asserts that the next call reverts and the specified 4 bytes match the first 4 bytes of revert data.
+- **`bytes4` message and reverter `address`**: Asserts that the next call is reverted by specified address and the specified 4 bytes match the first 4 bytes of revert data.
 
 > ℹ️  **Note:**
 > 
@@ -133,7 +183,7 @@ function testMultipleExpectReverts() public {
 To use `expectPartialRevert` with a custom [error type][error-type], use its selector.
 
 ```solidity
-vm.expectRevert(CustomError.selector);
+vm.expectPartialRevert(CustomError.selector);
 ```
 
 ### SEE ALSO

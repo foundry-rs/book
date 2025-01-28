@@ -138,6 +138,8 @@ rpc_endpoints = { optimism = "https://optimism.alchemyapi.io/v2/...", mainnet = 
 #block_gas_limit = None
 # The path to the `build-info` directory that contains the build info json files
 #build_info_path = None
+# Whether to allow `expectRevert` for internal functions.
+allow_internal_expect_revert = false
 
 [fmt]
 # Maximum line length where formatter will try to wrap the line
