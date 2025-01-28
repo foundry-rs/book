@@ -40,7 +40,7 @@ auto_detect_solc = true
 # Disables downloading missing solc versions
 offline = false
 # Enables or disables the optimizer
-optimizer = true
+optimizer = false
 # The number of optimizer runs
 optimizer_runs = 200
 # The verbosity of tests
