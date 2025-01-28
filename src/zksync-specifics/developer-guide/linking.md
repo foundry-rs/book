@@ -1,6 +1,6 @@
 #  Deploy-time linking with zksolc
 
-Contrary to `solc`, unlinked bytecode in `zksolc` contain their link references using the ELF format, thus a simple text search & replace is not sufficient.
+Contrary to `solc`, unlinked bytecode in `zksolc` contains their link references using the ELF format, thus a simple text search & replace is not sufficient.
 
 This document doesn't go into detail on how to perform linking, for that please refer to the official compiler documentation, instead it focuses on _where_ this happens within `foundry-zksync`.
 
@@ -24,7 +24,7 @@ We will now go into the details of each step, explaining the differences between
 
 ### Dependency resolution
 
-The main difference with dependency resolution is with the introduction of factory deps, this means that factory deps may remain unlinked during compilation due to their use of a (missing) library. 
+The main difference in dependency resolution is the introduction of factory dependencies. This means that factory dependencies may remain unlinked during compilation due to their reliance on a (missing) library.
 Unlinked contracts don't have a bytecode hash, thus they are not present in the compiler output's `factoryDependencies`, but instead are present in the new `factoryDependenciesUnlinked` encoded as a set of `<path>:<name>` describing the referenced contracts.
 We thus also traverse the unlinked factory dependencies to collect the library references in use, to be able to fully link all the dependencies of the target contract.
 
