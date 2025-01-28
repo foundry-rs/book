@@ -256,10 +256,13 @@ Configuration related to the Solidity optimizer.
 ##### `optimizer`
 
 - Type: boolean
-- Default: true
+- Default: false
 - Environment: `FOUNDRY_OPTIMIZER` or `DAPP_OPTIMIZER`
 
 Whether or not to enable the Solidity optimizer.
+
+> ℹ️ **Note**
+> Solidity optimizer is automatically enabled if `optimizer_runs` is set to a value greater than 0.
 
 ##### `optimizer_runs`
 
