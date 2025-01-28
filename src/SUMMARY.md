@@ -422,8 +422,8 @@
   - [`anvil-zksync` Reference](./reference/anvil-zksync/README.md)
   <!-- - [`chisel` Reference](./reference/chisel/README.md) -->
   - [Config Reference](./reference/config/README.md)
-    - [Overview](./reference/config/overview.md)
-    - [Project](./reference/config/project.md)
+  - [Overview](./reference/config/overview.md)
+  - [Project](./reference/config/project.md)
     <!-- - [Solidity Compiler](./reference/config/solidity-compiler.md) -->
     - [Testing](./reference/config/testing.md)
     <!-- - [In-line Configuration Testing](./reference/config/inline-test-config.md) -->
