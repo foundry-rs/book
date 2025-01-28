@@ -378,6 +378,30 @@ The flag indicating whether to include values from storage.
 
 The flag indicating whether to include push bytes values.
 
+##### `gas_report_samples`
+
+- Type: integer
+- Default: 256
+- Environment: `FOUNDRY_FUZZ_GAS_REPORT_SAMPLES`
+
+Number of runs to use for generating gas report.
+
+##### `failure_persist_dir`
+
+- Type: string (path)
+- Default: `./cache/fuzz`
+- Environment: `FOUNDRY_FUZZ_FAILURE_PERIST_DIR`
+
+Path where fuzz failures are recorded and replayed.
+
+##### `failure_persist_file`
+
+- Type: string
+- Default: `failures`
+- Environment: `FOUNDRY_FUZZ_FAILURE_PERIST_FILE`
+
+Name of the file to record fuzz failures.
+
 ##### `show_logs`
 
 - Type: boolean
@@ -473,3 +497,35 @@ The flag indicating whether to include push bytes values. See also [fuzz.include
 - Environment: `FOUNDRY_INVARIANT_SHRINK_RUN_LIMIT`
 
 The maximum number of attempts to shrink a failed the sequence. Shrink process is disabled if set to 0.
+
+##### `max_assume_rejects`
+
+- Type: integer
+- Default: 65536
+- Environment: `FOUNDRY_INVARIANT_MAX_ASSUME_REJECTS`
+
+The maximum number of rejects via `vm.assume` which can be encountered during a single invariant run.
+
+##### `gas_report_samples`
+
+- Type: integer
+- Default: 256
+- Environment: `FOUNDRY_INVARIANT_GAS_REPORT_SAMPLES`
+
+Number of runs to use for generating gas report.
+
+##### `failure_persist_dir`
+
+- Type: string (path)
+- Default: `./cache/invariant`
+- Environment: `FOUNDRY_INVARIANT_FAILURE_PERIST_DIR`
+
+Path where invariant failures are recorded and replayed.
+
+##### `show_metrics`
+
+- Type: boolean
+- Default: false
+- Environment: `FOUNDRY_INVARIANT_SHOW_METRICS`
+
+The flag indicating whether to collect and display fuzzed selectors metrics in test report.
