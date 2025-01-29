@@ -24,6 +24,7 @@
 - [Configuration Overview](./zksync-specifics/configuration-overview.md)
 - [Developer Guide](./zksync-specifics/developer-guide/README.md)
   - [Nonces](./zksync-specifics/developer-guide/nonces.md)
+  - [Linking](./zksync-specifics/developer-guide/linking.md)
 - [Limitations](./zksync-specifics/limitations/README.md)
   - [General](./zksync-specifics/limitations/general.md)
   - [Compilation](./zksync-specifics/limitations/compilation.md)
