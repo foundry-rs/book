@@ -446,6 +446,7 @@
       - [`stopAndReturnStateDiff`](./cheatcodes/stop-and-return-state-diff.md)
       - [`snapshotState`](./cheatcodes/state-snapshots.md)
       - [`snapshotGas`](./cheatcodes/gas-snapshots.md)
+      - [`isContext`](./cheatcodes/is-context.md)
     - [Assertions](./cheatcodes/assertions.md)
       - [`expectRevert`](./cheatcodes/expect-revert.md)
       - [`expectEmit`](./cheatcodes/expect-emit.md)
