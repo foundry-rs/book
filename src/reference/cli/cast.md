@@ -91,9 +91,8 @@ Commands:
   hash-zero              Prints the zero hash [aliases: --hash-zero, hz]
   help                   Print this message or the help of the given
                          subcommand(s)
-  implementation         Fetch the EIP-1967 implementation for a contract Can
-                         read from the implementation slot or the beacon slot
-                         [aliases: impl]
+  implementation         Fetch the EIP-1967 implementation account [aliases:
+                         impl]
   index                  Compute the storage slot for an entry in a mapping
                          [aliases: in]
   index-erc7201          Compute storage slots as specified by `ERC-7201:
