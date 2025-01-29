@@ -140,6 +140,12 @@ rpc_endpoints = { optimism = "https://optimism.alchemyapi.io/v2/...", mainnet = 
 #build_info_path = None
 # Whether to allow `expectRevert` for internal functions.
 allow_internal_expect_revert = false
+# Use the create 2 factory in all cases including tests and non-broadcasting scripts.
+always_use_create_2_factory = false
+# The CREATE2 deployer address to use.
+create2_deployer = "0x4e59b44847b379578588920ca78fbf26c0b4956c"
+# CREATE2 salt to use for the library deployment in scripts.
+create2_library_salt = "0x0000000000000000000000000000000000000000000000000000000000000000"
 
 [fmt]
 # Maximum line length where formatter will try to wrap the line

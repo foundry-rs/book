@@ -9,7 +9,9 @@ This is in contrast to the `CREATE` opcode, where the address of the deployed co
  With `CREATE2`, you can use the same deployer account to deploy contracts to the same address across multiple networks, even if the address has varying nonces.
 
 > ℹ️ **Note**
->This guide is intended to help understand `CREATE2`. In most use cases, you won't need to write and use your own deployer, and can use an existing deterministic deployer. In forge scripts, using `new MyContract{salt: salt}()` will use the deterministic deployer at [0x4e59b44847b379578588920ca78fbf26c0b4956c](https://github.com/Arachnid/deterministic-deployment-proxy).
+> 
+> This guide is intended to help understand `CREATE2`. In most use cases, you won't need to write and use your own deployer, and can use an existing deterministic deployer. In forge scripts, using `new MyContract{salt: salt}()` will use by default the deterministic deployer at [0x4e59b44847b379578588920ca78fbf26c0b4956c](https://github.com/Arachnid/deterministic-deployment-proxy).  
+> A different deployer address can be configured by setting `create2_deployer` in `foundry.toml` or by using `--create2-deployer` argument.  
 
 In this tutorial, we will:
 
