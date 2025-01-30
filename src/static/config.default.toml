@@ -40,7 +40,7 @@ auto_detect_solc = true
 # Disables downloading missing solc versions
 offline = false
 # Enables or disables the optimizer
-optimizer = true
+optimizer = false
 # The number of optimizer runs
 optimizer_runs = 200
 # The verbosity of tests
@@ -138,6 +138,14 @@ rpc_endpoints = { optimism = "https://optimism.alchemyapi.io/v2/...", mainnet = 
 #block_gas_limit = None
 # The path to the `build-info` directory that contains the build info json files
 #build_info_path = None
+# Whether to allow `expectRevert` for internal functions.
+allow_internal_expect_revert = false
+# Use the create 2 factory in all cases including tests and non-broadcasting scripts.
+always_use_create_2_factory = false
+# The CREATE2 deployer address to use.
+create2_deployer = "0x4e59b44847b379578588920ca78fbf26c0b4956c"
+# CREATE2 salt to use for the library deployment in scripts.
+create2_library_salt = "0x0000000000000000000000000000000000000000000000000000000000000000"
 
 [fmt]
 # Maximum line length where formatter will try to wrap the line
@@ -170,6 +178,14 @@ dictionary_weight = 40
 include_storage = true
 # The flag indicating whether to include push bytes values
 include_push_bytes = true
+# Number of runs to include in the gas report.
+gas_report_samples = 256
+# Path where fuzz failures are recorded and replayed.
+# failure_persist_dir = /path/to/persist/dir
+# Name of the file to record fuzz failures, defaults to `failures`.
+# failure_persist_file = "failures"
+# Show `console.log` in fuzz test.
+show_logs = false
 
 [invariant]
 # The number of runs that must execute for each invariant test group
@@ -186,3 +202,14 @@ dictionary_weight = 80
 include_storage = true
 # The flag indicating whether to include push bytes values
 include_push_bytes = true
+# The maximum number of attempts to shrink the sequence.
+shrink_run_limit = 5000
+# The maximum number of rejects via `vm.assume` which can be encountered during a single
+# invariant run.
+max_assume_rejects = 65536
+# Number of runs to include in the gas report.
+gas_report_samples = 256
+# Path where invariant failures are recorded and replayed.
+# failure_persist_dir = /path/to/persist/dir
+# Whether to collect and display fuzzed selectors metrics.
+show_metrics = false

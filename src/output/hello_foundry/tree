@@ -9,6 +9,6 @@ $ tree . -d -L 1
 ├── src
 └── test
 
-5 directories
+4 directories
 // ANCHOR_END: output
 // ANCHOR_END: all

@@ -68,6 +68,7 @@ You must provide:
 
 Moreover, you may need to provide:
 - the constructor arguments in the ABI-encoded format, if there are any
+- external linked libraries in `src_file_path:library_name:library_address` format, if there are any
 - [compiler version](https://etherscan.io/solcversions) used for build, with 8 hex digits from the commit version prefix (the commit will usually not be a nightly build). It is auto-detected if not specified.
 - the number of optimizations, if the Solidity optimizer was activated.  It is auto-detected if not specified.
 - the [chain ID](https://evm-chainlist.netlify.app/), if the contract is not on Ethereum Mainnet
@@ -92,6 +93,15 @@ Submitted contract for verification:
                 GUID: `a6yrbjp5prvakia6bqp5qdacczyfhkyi5j1r6qbds1js41ak1a`
                 url: https://sepolia.etherscan.io//address/0x6a54…3a4c#code
 ```
+
+> ℹ️  **Note:**
+> 
+> External libraries can be specified with `--libraries` argument, one for each linked library. For example, to verify a contract with two linked libraries (`Maths` and `Utils`) the `forge verify-command` should be run with 
+> ```bash
+> --libraries src/lib/Maths.sol:Maths:<maths_lib_address> \
+> --libraries src/lib/Utils.sol:Utils:<utils_lib_address>
+> ```
+> arguments.
 
 It is recommended to use the [`--watch`](../reference/forge/forge-verify-contract.md#verify-contract-options) flag along
 with `verify-contract` command in order to poll for the verification result.

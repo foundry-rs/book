@@ -38,11 +38,17 @@ function snapshotGasLastCall(string calldata group, string calldata name) extern
 
 `snapshotGas*` cheatcodes allow you to capture gas usage in your tests. This can be useful to track how much gas your logic is consuming. You can capture the gas usage of the last call by name, capture an arbitrary numerical value by name, or start and stop a snapshot capture of the current gas usage by name.
 
-In order to strictly compare gas usage across test runs, set the `FORGE_SNAPSHOT_CHECK` environment variable to `true` before running your tests. This will compare the gas usage of your tests against the last snapshot and fail if the gas usage has changed. By default the snapshots directory will be newly created and its contents removed before each test run to ensure no stale data is present.
+In order to strictly compare gas usage across test runs you can do one of the following:
+
+- Set the `FORGE_SNAPSHOT_CHECK=true` environment variable
+- Set `gas_snapshot_check = true` in `foundry.toml`
+- Pass `--gas-snapshot-check=true`
+
+By default this is not enabled and passing `--gas-snapshot-check=false` will override all others.
+
+This will compare the gas usage of your tests against the last snapshot and fail if the gas usage has changed.
 
 It is intended that the `snapshots` directory created when using the `snapshotGas*` cheatcodes is checked into version control. This allows you to track changes in gas usage over time and compare gas usage during code reviews.
-
-When running `forge clean` the `snapshots` directory will be deleted.
 
 ### Examples
 
@@ -67,7 +73,6 @@ contract SnapshotGasTest is Test {
 ```
 
 Capturing the gas usage of multiple sections of code that modify the internal state:
-
 
 ```solidity
 contract SnapshotGasTest is Test {
@@ -111,8 +116,6 @@ contract SnapshotGasTest is Test {
     }
 }
 ```
-
-```solidity
 
 Capturing an arbitrary numerical value (such as the bytecode size of a contract):
 
