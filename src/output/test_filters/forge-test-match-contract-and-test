@@ -4,18 +4,18 @@ $ forge test --zksync --match-contract ComplicatedContractTest --match-test test
 // ANCHOR_END: command
 // ANCHOR: output
 Compiling 24 files with Solc 0.8.10
-Solc 0.8.10 finished in 908.20ms
+Solc 0.8.10 finished in 946.51ms
 Compiler run successful!
 
 Compiling 24 files with zksolc and solc 0.8.10
-zksolc and solc 0.8.10 finished in 6.14s
+zksolc and solc 0.8.10 finished in 4.25s
 Compiler run successful!
 
 Ran 2 tests for test/ComplicatedContract.t.sol:ComplicatedContractTest
 [PASS] test_DepositERC20() (gas: 102193)
 [PASS] test_DepositETH() (gas: 61414)
-Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 649.00µs (670.50µs CPU time)
+Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 573.21µs (667.21µs CPU time)
 
-Ran 1 test suite in 2.02ms (649.00µs CPU time): 2 tests passed, 0 failed, 0 skipped (2 total tests)
+Ran 1 test suite in 4.02ms (573.21µs CPU time): 2 tests passed, 0 failed, 0 skipped (2 total tests)
 // ANCHOR_END: output
 // ANCHOR_END: all

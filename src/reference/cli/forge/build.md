@@ -205,11 +205,6 @@ ZKSync configuration:
           [aliases: fallback-oz]
           [possible values: true, false]
 
-      --zk-detect-missing-libraries
-          Detect missing libraries, instead of erroring
-          
-          Currently unused
-
   -O, --zk-optimizer-mode <LEVEL>
           Set the LLVM optimization parameter `-O[0 | 1 | 2 | 3 | s | z]`. Use
           `3` for best performance and `z` for minimal size
