@@ -41,7 +41,7 @@ function snapshotGasLastCall(string calldata group, string calldata name) extern
 In order to strictly compare gas usage across test runs you can do one of the following:
 
 - Set the `FORGE_SNAPSHOT_CHECK=true` environment variable
-- Set `gas_snapshot_check` in `foundry.toml`
+- Set `gas_snapshot_check = true` in `foundry.toml`
 - Pass `--gas-snapshot-check=true`
 
 By default this is not enabled and passing `--gas-snapshot-check=false` will override all others.
