@@ -12,6 +12,16 @@ Upgrading ensures your installation defaults to updating to the **latest stable 
 
 If you do not upgrade you will **continue to receive nightly builds by default** which will start to contain more **significant breaking changes**.
 
+## ⚠️ Notes
+
+If you are running Foundry's **latest nightly build** you may encounter the following error:
+
+```
+[FAIL: call didn't revert at a lower depth than cheatcode call depth]
+```
+
+Please read [here](https://book.getfoundry.sh/cheatcodes/expect-revert#error) for more information.
+
 ## Releases
 
 ### 0.3 (stable)
