@@ -16,7 +16,7 @@ If you do not upgrade you will **continue to receive nightly builds by default**
 
 If you are running Foundry's **latest nightly build** you may encounter the following error:
 
-```
+```sh
 [FAIL: call didn't revert at a lower depth than cheatcode call depth]
 ```
 
