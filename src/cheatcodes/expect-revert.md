@@ -74,13 +74,13 @@ In the following example there are two `vm.expectRevert`'s that exist at the sam
 the test returns a **SUCCESS**. This is likely different behavior from what you may assume.
 
 ```solidity
-// DO NOT IMPLEMENT AS FOLLOWS!
+// DO NOT IMPLEMENT AS FOLLOWS! THIS IS INCORRECT USE.
 function testMultipleReverts() public {
     vm.expectRevert();
     revert();
 
     vm.expectRevert();
-    console2.log("Do not revert");
+    console2.log("Does not revert");
 }
 ```
 
