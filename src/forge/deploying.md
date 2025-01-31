@@ -4,7 +4,7 @@ Forge can deploy smart contracts to a given network with the [`forge create`](..
 
 Forge CLI can deploy only one contract at a time.
 
-For deploying and verifying multiple smart contracts in one go, Forge's [Solidity scripting](../tutorials/solidity-scripting.md#deploying-our-contract) would be the more efficient approach.
+For deploying and verifying multiple smart contracts on multiple chains in one go, Forge's [Solidity scripting](../tutorials/solidity-scripting.md#deploying-our-contract) would be the more efficient approach.
 
 To deploy a contract, you must provide a RPC URL (env: `ETH_RPC_URL`) and the private key of the account that will deploy the contract.
 
@@ -51,6 +51,43 @@ $ forge create --rpc-url <your_rpc_url> \
     --verify \
     src/MyToken.sol:MyToken
 ```
+
+## Multi-chain deployments
+
+Deploying and verifying multiple smart contracts on multiple chains in one go is possible by using forking cheatcodes.
+For example, if you want to deploy a `Counter` contract on sepolia mainnet and base sepolia using a single command, you can configure rpc endpoints and verifiers as:
+```toml
+[rpc_endpoints]
+sepolia = "${SEPOLIA_URL}"
+base-sepolia = "${BASE_SEPOLIA_URL}"
+
+[etherscan]
+sepolia = { key = "${SEPOLIA_KEY}" }
+base-sepolia = { key = "${BASE_SEPOLIA_KEY}" }
+```
+
+and create a `CounterScript` script as:
+```solidity
+contract CounterScript is Script {
+    function run() public {
+        vm.createSelectFork("sepolia");
+        vm.startBroadcast();
+        new Counter();
+        vm.stopBroadcast();
+
+        vm.createSelectFork("base-sepolia");
+        vm.startBroadcast();
+        new Counter();
+        vm.stopBroadcast();
+    }
+}
+```
+When running 
+```sh
+$ forge script script/CounterScript.s.sol --slow --multi --broadcast --private-key <your_private_key> --verify
+```
+the script will create the sepolia mainnet fork (`vm.createSelectFork("sepolia")`), deploy and verify the `Counter` contract, and then move to base sepolia chain deployment (`vm.createSelectFork("base-sepolia")`).  
+For a list of all available forking cheatcodes see [`forking`](../cheatcodes/forking.md) docs.
 
 ## Verifying a pre-existing contract
 
