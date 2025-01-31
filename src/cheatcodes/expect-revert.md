@@ -60,7 +60,7 @@ function expectPartialRevert(bytes4 message, address reverter) external;
 
 ### Error
 
-> ⚠️ **Warning**
+> ❌ **Error**
 >
 > If you see the following error:
 >
@@ -74,7 +74,7 @@ In the following example there are two `vm.expectRevert`'s that exist at the sam
 the test returns a **SUCCESS**. This is likely different behavior from what you may assume.
 
 ```solidity
-// DO NOT IMPLEMENT AS FOLLOWS! THIS IS INCORRECT USE.
+// DO NOT IMPLEMENT AS FOLLOWS! THIS IS AN INCORRECT USE.
 function testMultipleReverts() public {
     vm.expectRevert();
     revert();
@@ -90,13 +90,20 @@ If the **next call** does not revert with the expected data `message`, then `exp
 
 > ⚠️ **Usage**
 >
-> - By default, `expectRevert*` cheatcodes work only for calls with greater depth than test depth (see [#3437](https://github.com/foundry-rs/foundry/issues/3437) foundry issue).
->   Expecting reverts at the same depth as test depth can be enabled by setting `allow_internal_expect_revert` to `true` as follows:
+> By default, `expectRevert*` cheatcodes work only for calls with greater depth than test depth (see [#3437](https://github.com/foundry-rs/foundry/issues/3437) foundry issue).
+> Expecting reverts at the same depth as test depth can be enabled by setting `allow_internal_expect_revert` to `true` as follows:
 >
->   - Selectively by using an inline configuration entry: `/// forge-config: default.allow_internal_expect_revert = true` where it is deemed to be safe.
->   - Or globally by adding `allow_internal_expect_revert = true` to `foundry.toml`. This is **STRONGLY** discouraged.
+> Selectively by using an inline configuration entry where it is **DEEMED SAFE**:
 >
-> - For a call like `stable.donate(sUSD.balanceOf(user))`, the next call expected to revert is `sUSD.balanceOf(user)` and not `stable.donate()`.
+> Add `/// forge-config: default.allow_internal_expect_revert = true` above the test function.
+>
+> Or globally, this is **STRONGLY** discouraged:
+>
+> Add `allow_internal_expect_revert = true` to `foundry.toml`.
+
+> **Note**
+>
+> For a call like `stable.donate(sUSD.balanceOf(user))`, the next call expected to revert is `sUSD.balanceOf(user)` and not `stable.donate()`.
 
 After calling `expectRevert`, calls to other cheatcodes before the reverting call are ignored.
 
