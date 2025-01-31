@@ -34,7 +34,7 @@ Big shoutout to the Foundry community - your bug reports, feature requests and c
 
 #### How do I know which version I have installed?
 
-The latest version of `foundryup` is `0.3.3`.
+The latest version of `foundryup` is `1.0.0`.
 
 If you run `foundryup --version` and it does not return this or returns an error you are not up to date.
 
