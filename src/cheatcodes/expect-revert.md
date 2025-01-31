@@ -58,6 +58,32 @@ function expectPartialRevert(bytes4 message) external;
 function expectPartialRevert(bytes4 message, address reverter) external;
 ```
 
+### Error
+
+> ⚠️ **Warning**
+>
+> If you see the following error:
+>
+> `[FAIL: call didn't revert at a lower depth than cheatcode call depth]`
+>
+> Carefully read the next sections!
+
+When testing **internal** functions with `vm.expectRevert` at the same call depth **ONLY** the **FIRST** `vm.expectRevert` is executed.
+
+In the following example there are two `vm.expectRevert`'s that exist at the same call depth hence only the **FIRST** one is executed and
+the test returns a **SUCCESS**. This is likely different behavior from what you may assume.
+
+```solidity
+// DO NOT IMPLEMENT AS FOLLOWS!
+function testMultipleReverts() public {
+    vm.expectRevert();
+    revert();
+
+    vm.expectRevert();
+    console2.log("Do not revert");
+}
+```
+
 ### Description
 
 If the **next call** does not revert with the expected data `message`, then `expectRevert` will.
@@ -65,8 +91,11 @@ If the **next call** does not revert with the expected data `message`, then `exp
 > ⚠️ **Usage**
 >
 > - By default, `expectRevert*` cheatcodes work only for calls with greater depth than test depth (see [#3437](https://github.com/foundry-rs/foundry/issues/3437) foundry issue).
-> Expecting reverts at the same depth as test depth can be enabled by setting `allow_internal_expect_revert = true` but is strongly discouraged.
-> 
+>   Expecting reverts at the same depth as test depth can be enabled by setting `allow_internal_expect_revert` to `true` as follows:
+>
+>   - Selectively by using an inline configuration entry: `/// forge-config: default.allow_internal_expect_revert = true` where it is deemed to be safe.
+>   - Or globally by adding `allow_internal_expect_revert = true` to `foundry.toml`. This is **STRONGLY** discouraged.
+>
 > - For a call like `stable.donate(sUSD.balanceOf(user))`, the next call expected to revert is `sUSD.balanceOf(user)` and not `stable.donate()`.
 
 After calling `expectRevert`, calls to other cheatcodes before the reverting call are ignored.
@@ -82,23 +111,29 @@ There are several signatures for `expectRevert`:
 - **With `uint64` count**: Expects an exact number of reverts from the upcoming calls. If set to 0, it can be used to assert that a revert is not made.
 
 and two signatures for `expectPartialRevert`:
+
 - **`bytes4` message**: Asserts that the next call reverts and the specified 4 bytes match the first 4 bytes of revert data.
 - **`bytes4` message and reverter `address`**: Asserts that the next call is reverted by specified address and the specified 4 bytes match the first 4 bytes of revert data.
 
-> ℹ️  **Note:**
-> 
+> ℹ️ **Note:**
+>
 > Custom errors can have arguments that sometimes are difficult to calculate in a testing environment or they may be unrelated to the test at hand (e.g. a value computed in the internal function of a third-party contract). In such cases, `expectPartialRevert` can be used to ignore arguments and match only on the selector of custom error. For example, testing a function that reverts with `WrongNumber(uint256 number)` custom error:
+>
 > ```solidity
 > function count() public {
 >     revert WrongNumber(0);
 > }
 > ```
+>
 > should pass when using `expectPartialRevert`:
+>
 > ```solidity
 > vm.expectPartialRevert(Counter.WrongNumber.selector);
 > counter.count();
 > ```
+>
 > but fails if exact match expected:
+>
 > ```solidity
 > vm.expectRevert(Counter.WrongNumber.selector);
 > counter.count();
