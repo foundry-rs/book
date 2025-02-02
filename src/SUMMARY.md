@@ -99,6 +99,7 @@
       - [`forge config`](./reference/cli/forge/config.md)
       - [`forge coverage`](./reference/cli/forge/coverage.md)
       - [`forge create`](./reference/cli/forge/create.md)
+      - [`forge debug`](./reference/cli/forge/debug.md)
       - [`forge doc`](./reference/cli/forge/doc.md)
       - [`forge eip712`](./reference/cli/forge/eip712.md)
       - [`forge flatten`](./reference/cli/forge/flatten.md)
