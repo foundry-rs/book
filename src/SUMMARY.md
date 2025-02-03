@@ -66,6 +66,7 @@
 
 # Tutorials
 
+- [Foundry v1.0 migration guide](./tutorials/v1.0-migration.md)
 - [Best Practices](./tutorials/best-practices.md)
 - [Forking Mainnet with Cast and Anvil](./tutorials/forking-mainnet-with-cast-anvil.md)
 - [Learning Foundry Videos](./tutorials/learn-foundry.md)
