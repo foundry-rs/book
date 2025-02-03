@@ -202,6 +202,11 @@ Connection failed because access to the URL from your location may be restricted
 
 You could run `export http_proxy=http://127.0.0.1:7890 https_proxy=http://127.0.0.1:7890` first in the terminal then you will `forge build` successfully.
 
+### I'm getting `[NotActivated] EvmError: NotActivated` error in my tests.
+
+This error refers to an EVM version mismatch, make sure the `evm_version` configuration is inline with the test (forked chain) you're using (similar for errors like `prevrandao not set`). See [`evm_version` configuration](../reference/config/solidity-compiler.html#evm_version)
+
+
 [tg-support]: https://t.me/foundry_support
 [forge-test]: ./reference/forge/forge-test.md
 [traces]: ./forge/traces.md
