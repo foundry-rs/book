@@ -60,15 +60,8 @@ Options:
       --skip-extra-derives
           Don't add any additional derives to generated bindings
 
-      --alloy
-          Generate bindings for the `alloy` library, instead of `ethers`
-
       --alloy-version <ALLOY_VERSION>
           Specify the alloy version
-
-      --ethers
-          Generate bindings for the `ethers` library, instead of `alloy`
-          (default, deprecated)
 
   -h, --help
           Print help (see a summary with '-h')

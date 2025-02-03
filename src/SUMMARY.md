@@ -10,7 +10,6 @@
 # Projects
 
 - [Creating a New Project](./projects/creating-a-new-project.md)
-- [Working on an Existing Project](./projects/working-on-an-existing-project.md)
 - [Clone a Verified Contract on Chain](./projects/clone-a-verified-contract.md)
 - [Dependencies](./projects/dependencies.md)
 - [Soldeer](./projects/soldeer.md)
@@ -68,11 +67,6 @@
 # Tutorials
 
 - [Best Practices](./tutorials/best-practices.md)
-- [Creating an NFT with Solmate](./tutorials/solmate-nft.md)
-- [Docker and Foundry](./tutorials/foundry-docker.md)
-- [Testing EIP-712 Signatures](./tutorials/testing-eip712.md)
-- [Solidity Scripting](./tutorials/solidity-scripting.md)
-- [Deterministic deployment using CREATE2](./tutorials/create2-tutorial.md)
 - [Forking Mainnet with Cast and Anvil](./tutorials/forking-mainnet-with-cast-anvil.md)
 - [Learning Foundry Videos](./tutorials/learn-foundry.md)
 - [Foundry v1.0 migration guide](./tutorials/v1.0-migration.md)
@@ -100,7 +94,6 @@
       - [`forge config`](./reference/cli/forge/config.md)
       - [`forge coverage`](./reference/cli/forge/coverage.md)
       - [`forge create`](./reference/cli/forge/create.md)
-      - [`forge debug`](./reference/cli/forge/debug.md)
       - [`forge doc`](./reference/cli/forge/doc.md)
       - [`forge eip712`](./reference/cli/forge/eip712.md)
       - [`forge flatten`](./reference/cli/forge/flatten.md)
@@ -176,7 +169,6 @@
       - [`cast disassemble`](./reference/cli/cast/disassemble.md)
       - [`cast estimate`](./reference/cli/cast/estimate.md)
         - [`cast estimate --create`](./reference/cli/cast/estimate/--create.md)
-      - [`cast etherscan-source`](./reference/cli/cast/etherscan-source.md)
       - [`cast find-block`](./reference/cli/cast/find-block.md)
       - [`cast format-bytes32-string`](./reference/cli/cast/format-bytes32-string.md)
       - [`cast format-units`](./reference/cli/cast/format-units.md)
@@ -220,6 +212,7 @@
       - [`cast shr`](./reference/cli/cast/shr.md)
       - [`cast sig`](./reference/cli/cast/sig.md)
       - [`cast sig-event`](./reference/cli/cast/sig-event.md)
+      - [`cast source`](./reference/cli/cast/source.md)
       - [`cast storage`](./reference/cli/cast/storage.md)
       - [`cast storage-root`](./reference/cli/cast/storage-root.md)
       - [`cast to-ascii`](./reference/cli/cast/to-ascii.md)

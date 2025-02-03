@@ -27,7 +27,7 @@ Optionally includes an error message in the revert string.
 ### Examples
 
 ```solidity
-function testFail() external {
+function testRevert() external {
     uint256 a = 100;
     uint256 b = 200;
 
@@ -36,13 +36,7 @@ function testFail() external {
 ```
 
 ```ignore
-[PASS] testFail() (gas: 23169)
-Logs:
-  Error: a ~= b not satisfied [uint]
-    Expected: 200
-      Actual: 100
-   Max Delta: 90
-       Delta: 100
+[FAIL: assertion failed: 100 !~= 200 (max delta: 90, real delta: 100)] testRevert() (gas: 23884)
 ```
 
 ### SEE ALSO

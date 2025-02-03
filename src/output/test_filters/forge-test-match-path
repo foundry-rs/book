@@ -4,13 +4,13 @@ $ forge test --match-path test/ContractB.t.sol
 // ANCHOR_END: command
 // ANCHOR: output
 Compiling 1 files with Solc 0.8.10
-Solc 0.8.10 finished in 1.02s
+Solc 0.8.10 finished in 605.82ms
 Compiler run successful!
 
 Ran 1 test for test/ContractB.t.sol:ContractBTest
 [PASS] testExample() (gas: 257)
-Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 309.91µs (47.65µs CPU time)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 361.93µs (46.38µs CPU time)
 
-Ran 1 test suite in 5.75ms (309.91µs CPU time): 1 tests passed, 0 failed, 0 skipped (1 total tests)
+Ran 1 test suite in 5.44ms (361.93µs CPU time): 1 tests passed, 0 failed, 0 skipped (1 total tests)
 // ANCHOR_END: output
 // ANCHOR_END: all
