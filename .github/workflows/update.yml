@@ -18,6 +18,9 @@ jobs:
 
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: rc
+
       - uses: dtolnay/rust-toolchain@nightly
 
       - name: Update
