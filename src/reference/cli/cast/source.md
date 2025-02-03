@@ -1,32 +1,24 @@
-# forge verify-check
+# cast source
 
-Check verification status on Etherscan
+Get the source code of a contract from a block explorer
 
 ```bash
-$ forge verify-check --help
+$ cast source --help
 ```
 
 ```txt
-Usage: forge verify-check [OPTIONS] <ID>
+Usage: cast source [OPTIONS] <ADDRESS>
 
 Arguments:
-  <ID>
-          The verification ID.
-          
-          For Etherscan - Submission GUID.
-          
-          For Sourcify - Contract Address.
+  <ADDRESS>
+          The contract's address
 
 Options:
-      --retries <RETRIES>
-          Number of attempts for retrying verification
-          
-          [default: 5]
+  -f, --flatten
+          Whether to flatten the source code
 
-      --delay <DELAY>
-          Optional delay to apply in between verification attempts, in seconds
-          
-          [default: 5]
+  -d <DIRECTORY>
+          The output directory/file to expand source tree into
 
   -e, --etherscan-api-key <KEY>
           The Etherscan (or equivalent) API key
@@ -38,6 +30,17 @@ Options:
           
           [env: CHAIN=]
 
+      --explorer-api-url <EXPLORER_API_URL>
+          Alternative explorer API URL to use that adheres to the Etherscan API.
+          If not provided, defaults to Etherscan
+          
+          [env: EXPLORER_API_URL=]
+
+      --explorer-url <EXPLORER_URL>
+          Alternative explorer browser URL
+          
+          [env: EXPLORER_URL=]
+
   -h, --help
           Print help (see a summary with '-h')
 
@@ -46,30 +49,6 @@ Options:
           logical cores
           
           [aliases: jobs]
-
-Verifier options:
-      --verifier <VERIFIER>
-          The contract verification provider to use
-          
-          [default: sourcify]
-
-          Possible values:
-          - etherscan
-          - sourcify
-          - blockscout
-          - oklink
-          - custom:     Custom verification provider, requires compatibility
-            with the Etherscan API
-
-      --verifier-api-key <VERIFIER_API_KEY>
-          The verifier API KEY, if using a custom provider
-          
-          [env: VERIFIER_API_KEY=]
-
-      --verifier-url <VERIFIER_URL>
-          The verifier URL, if using a custom provider
-          
-          [env: VERIFIER_URL=]
 
 Display options:
       --color <COLOR>
