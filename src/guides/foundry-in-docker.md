@@ -1,4 +1,4 @@
-## Dockerizing a Foundry project
+## Running Foundry inside of Docker
 
 This guide shows you how to build, test, and deploy a smart contract using Foundry's Docker image. It adapts code from the [`first steps`] guide. If you haven't completed that guide yet, and are new to solidity, you may want to start with it first. Alternatively, if you have some familiarity with Docker and Solidity, you can use your own existing project and adjust accordingly.
 
@@ -160,3 +160,42 @@ Docker is about portability, reproducibility, and environment invariance. This m
 - Increases confidence that code has been tested prior to deployment and has not been altered (e.g. if, in the above image, your code re-compiles on deployment, that's a major red flag).
 - Eases pain points around segregation of duties: people with your mainnet credentials do not need to ensure they have the latest compiler, codebase, etc. It's easy to ensure that the docker deploy image someone ran in testnet is identical to the one targeting mainnet.
 - Docker is an accepted standard on virtually all public cloud providers. It makes it easy to schedule jobs, tasks, etc that need to interact with the blockchain.
+
+### Using `docker-compose` to launch Anvil
+
+To launch Anvil using [Docker Compose](https://docs.docker.com/compose/) one could use the following `docker-compose.yml` configuration:
+
+```yml
+services:
+  anvil:
+    image: ghcr.io/foundry-rs/foundry:fix-docker
+    container_name: anvil
+    environment:
+      ANVIL_IP_ADDR: "0.0.0.0"
+    working_dir: /anvil
+    ports:
+      - "8545:8545"
+    command: anvil
+```
+
+Finally, run `docker compose up`.
+
+```ignore
+$ docker compose up
+[+] Running 1/1
+ ✔ Container anvil  Created                                                                                                                                                                                                         0.0s
+Attaching to anvil
+anvil  |
+anvil  |
+anvil  |                              _   _
+anvil  |                             (_) | |
+anvil  |       __ _   _ __   __   __  _  | |
+anvil  |      / _` | | '_ \  \ \ / / | | | |
+anvil  |     | (_| | | | | |  \ V /  | | | |
+anvil  |      \__,_| |_| |_|   \_/   |_| |_|
+anvil  |
+anvil  |     0.3.1- (8edde17bd6 2025-01-29T06:46:19.760638618Z)
+anvil  |     https://github.com/foundry-rs/foundry
+anvil  |
+anvil  |     ...
+```
