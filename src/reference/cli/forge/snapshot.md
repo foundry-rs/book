@@ -86,7 +86,7 @@ Test options:
           
           [aliases: jobs]
 
-      --debug [<DEPRECATED_TEST_FUNCTION_REGEX>]
+      --debug
           Run a single test in the debugger.
           
           The matching test will be opened in the debugger regardless of the
@@ -110,7 +110,7 @@ Test options:
           function is called (execution order) and how much gas it consumes at
           each point in the timeline.
 
-      --decode-internal [<DEPRECATED_TEST_FUNCTION_REGEX>]
+      --decode-internal
           Identify internal functions in traces.
           
           This will trace internal functions and decode stack parameters.
@@ -126,6 +126,12 @@ Test options:
           Print a gas report
           
           [env: FORGE_GAS_REPORT=]
+
+      --gas-snapshot-check <GAS_SNAPSHOT_CHECK>
+          Check gas snapshots against previous runs
+          
+          [env: FORGE_SNAPSHOT_CHECK=]
+          [possible values: true, false]
 
       --allow-failure
           Exit with code 0 even if a test fails
@@ -153,6 +159,10 @@ Test options:
 
       --fuzz-input-file <FUZZ_INPUT_FILE>
           File to rerun fuzz failures from
+
+      --rerun
+          Re-run recorded test failures from last run. If no failure recorded
+          then regular test run is performed
 
   [PATH]
           The contract file you want to test, it's a shortcut for --match-path
@@ -195,10 +205,6 @@ Test filtering:
           pattern
           
           [aliases: nmco]
-
-      --rerun
-          Re-run recorded test failures from last run. If no failure recorded
-          then regular test run is performed
 
 EVM options:
   -f, --fork-url <URL>
