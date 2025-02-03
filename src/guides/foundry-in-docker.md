@@ -1,6 +1,6 @@
 ## Dockerizing a Foundry project
 
-This guide shows you how to build, test, and deploy a smart contract using Foundry's Docker image. It adapts code from the [solmate nft](./solmate-nft.md) guide. If you haven't completed that guide yet, and are new to solidity, you may want to start with it first. Alternatively, if you have some familiarity with Docker and Solidity, you can use your own existing project and adjust accordingly. The full source code for both the NFT and the Docker stuff is available [here](https://github.com/dmfxyz/foundry-docker-guide).
+This guide shows you how to build, test, and deploy a smart contract using Foundry's Docker image. It adapts code from the [solmate nft](./solmate-nft.md) guide. If you haven't completed that guide yet, and are new to solidity, you may want to start with it first. Alternatively, if you have some familiarity with Docker and Solidity, you can use your own existing project and adjust accordingly.
 
 > This guide is for illustrative purposes only and provided on an as-is basis. The guide is not audited nor fully tested. No code in this guide should be used in a production environment.
 

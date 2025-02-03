@@ -67,8 +67,10 @@
 # Guides
 
 - [Best Practices](./guides/best-practices.md)
+- [Scripting with Solidity](./guides/scripting-with-solidity.md)
+- [Deterministic deployments using CREATE2](guides/deterministic-deployments-using-create2.md)
 - [Forking Mainnet with Cast and Anvil](./guides/forking-mainnet-with-cast-anvil.md)
-- [Learning Foundry Videos](./guides/learn-foundry.md)
+- [Learning Foundry Videos](guides/video-tutorials.md)
 <!-- - [Incremental Adoption]() !-->
 
 # Appendix

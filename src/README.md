@@ -56,7 +56,7 @@ Guides for building smart contracts with Foundry.
 
 - [Best practices](./guides/best-practices.md)
 - [Forking Mainnet with Cast and Anvil](./guides/forking-mainnet-with-cast-anvil.md)
-- [Learning Foundry Videos](./guides/learn-foundry.md)
+- [Learning Foundry Videos](guides/video-tutorials.md)
 <!-- - [Incremental Adoption]() -->
 
 **Contributing**
