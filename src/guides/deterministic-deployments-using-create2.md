@@ -159,7 +159,7 @@ new_contract_address = keccak256(0xff ++ deployer ++ salt ++ keccak256(init_code
 ```
 
 ```solidity
-// Using the default CREATE opcode
+// Passing the `salt` parameter to the CREATE2 opcode
 Counter counter = new Counter{salt: salt}();
 ```
 

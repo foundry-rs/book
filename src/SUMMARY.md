@@ -70,7 +70,7 @@
 - [Scripting with Solidity](./guides/scripting-with-solidity.md)
 - [Deterministic deployments using CREATE2](guides/deterministic-deployments-using-create2.md)
 - [Forking Mainnet with Cast and Anvil](./guides/forking-mainnet-with-cast-anvil.md)
-- [Running Foundry inside of Docker]()
+- [Running Foundry inside of Docker](./guides/foundry-in-docker.md)
 - [Video tutorials](guides/video-tutorials.md)
 <!-- - [Incremental Adoption]() !-->
 
