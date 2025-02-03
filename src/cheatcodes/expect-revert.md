@@ -68,10 +68,20 @@ function expectPartialRevert(bytes4 message, address reverter) external;
 >
 > Carefully read the next sections!
 
+To understand why you are getting this error you first have to understand what `call depth` means.
+
+You can think of call depth in a similar way to function scoping. When you are entering an **external** call the call depth is increased by `1`.
+When you exit the external call the call depth is decreased by `1`. If you have nested calls it looks as follows:
+
+```ignore
+0 → Contract A (calls B) → 1 → Contract B (calls C) → 2 → Contract C (returns) → 1 → Contract B (returns) → 0
+```
+
+**Internal** functions on the other hand do **NOT** increase the call depth. It is not actually making _calls_ but rather _jumping_ to the target location.
+
 When testing **internal** functions with `vm.expectRevert` at the same call depth **ONLY** the **FIRST** `vm.expectRevert` is executed.
 
-In the following example there are two `vm.expectRevert`'s that exist at the same call depth hence only the **FIRST** one is executed and
-the test returns a **SUCCESS**. This is likely different behavior from what you may assume.
+The following example shows where the footgun occurs. There are two `vm.expectRevert`'s that exist at the same call depth hence only the **FIRST** one is executed and the test returns a **SUCCESS**. This is likely different behavior from what you may assume.
 
 ```solidity
 // DO NOT IMPLEMENT AS FOLLOWS! THIS IS AN INCORRECT USE.
@@ -100,6 +110,10 @@ If the **next call** does not revert with the expected data `message`, then `exp
 > Or globally, this is **STRONGLY** discouraged:
 >
 > Add `allow_internal_expect_revert = true` to `foundry.toml`.
+
+As long as you are not using `vm.expectRevert` on multiple internal functions is a single test function body is it generally considered safe.
+
+You are recommended to apply this rule in a similar manner one would when tagging assembly blocks as `memory-safe`.
 
 > **Note**
 >
