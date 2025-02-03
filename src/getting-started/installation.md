@@ -23,6 +23,24 @@ Running `foundryup` will automatically install the latest stable version of the 
 > ℹ️ **Note**  
 > If you're using Windows, you'll need to install and use [Git BASH](https://gitforwindows.org/) or [WSL](https://learn.microsoft.com/en-us/windows/wsl/install) as your terminal, since Foundryup currently doesn't support Powershell or Command Prompt (Cmd).
 
+#### Verify integrity and provenance of binaries
+
+Foundry binaries are attested by using [GitHub artifact attestations](https://docs.github.com/en/actions/security-for-github-actions/using-artifact-attestations/using-artifact-attestations-to-establish-provenance-for-builds). It is strongly recommended to verify the binaries installed using `foundryup` in order to check that they were built and distributed from Foundry repository.  
+For example, `forge` binary integrity and provenance can be verified by running:
+```shell
+$ gh attestation verify --owner foundry-rs $(which forge)
+
+✓ Verification succeeded!
+
+The following 1 attestation matched the policy criteria
+
+- Attestation #1
+  - Build repo:..... foundry-rs/foundry
+  - Build workflow:. .github/workflows/release.yml@refs/tags/stable
+  - Signer repo:.... foundry-rs/foundry
+  - Signer workflow: .github/workflows/release.yml@refs/tags/stable
+```
+
 ### Building from Source
 
 #### Prerequisites
