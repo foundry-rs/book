@@ -55,12 +55,6 @@ gen_forge() {
   run_command "$OUTPUT_DIR/cheatcodes/forge-test-simple" \
     forge test --match-test test_IncrementAsOwner
 
-  run_command "$OUTPUT_DIR/cheatcodes/forge-test-cheatcodes" \
-    forge test --match-test "test_IncrementAsOwner|testFail_IncrementAsNotOwner" --match-path test/OwnerUpOnly.t.sol
-
-  run_command "$OUTPUT_DIR/cheatcodes/forge-test-cheatcodes-tracing" \
-    forge test -vvvv --match-test testFail_IncrementAsNotOwner --match-path test/OwnerUpOnly.t.sol
-
   run_command "$OUTPUT_DIR/cheatcodes/forge-test-cheatcodes-expectrevert" \
     forge test --match-test "test_IncrementAsOwner|test_IncrementAsNotOwner" --match-path test/OwnerUpOnly.t.sol
 
