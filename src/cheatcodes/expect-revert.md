@@ -111,7 +111,7 @@ If the **next call** does not revert with the expected data `message`, then `exp
 >
 > Add `allow_internal_expect_revert = true` to `foundry.toml`.
 
-As long as you are not using `vm.expectRevert` on multiple internal functions is a single test function body is it generally considered safe.
+As long as you are not using `vm.expectRevert` on multiple internal functions is a single test function body it is generally considered safe.
 
 You are recommended to apply this rule in a similar manner one would when tagging assembly blocks as `memory-safe`.
 
