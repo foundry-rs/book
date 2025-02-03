@@ -225,3 +225,16 @@ contract SimpleStorageContract {
 
 
 For more details and examples, see the [forking cheatcodes](../cheatcodes/forking.md) reference.
+
+### EVM version
+
+Proper configuration is needed to execute forked tests with chains using different EVM versions:
+- if same EVM version applies for all forked chains used, then it can be globally configured in `foundry.toml` file
+```toml
+evm_version = "cancun"
+```
+- if different EVM versions are used, specific EVM test version can be set using inline configuration
+```solidity
+/// forge-config: default.evm_version = "shanghai"
+```
+
