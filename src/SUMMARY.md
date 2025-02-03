@@ -4,8 +4,8 @@
 
 # Getting Started
 
-- [Installation](guides/installation.md)
-- [First Steps with Foundry](guides/first-steps.md)
+- [Installation](getting-started/installation.md)
+- [First Steps with Foundry](getting-started/first-steps.md)
 
 # Projects
 
