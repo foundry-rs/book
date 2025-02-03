@@ -1,10 +1,10 @@
-## Forking Mainnet with Cast and Anvil
+# Forking Mainnet with `Cast` and `Anvil`
 
-### Introduction
+## Introduction
 
-By combining [Anvil][anvil] and [Cast][cast], you can fork and test by interacting with contracts on a real network. The goal of this tutorial is to show you how to transfer Dai tokens from someone who holds Dai to an account created by Anvil.
+By combining [Anvil][anvil] and [Cast][cast], you can fork and test by interacting with contracts on a real network. The goal of this guide is to show you how to transfer DAI tokens from someone who holds DAI to an account created by Anvil.
 
-### Set Up
+## Getting started
 
 Let's start by forking mainnet.
 
@@ -14,9 +14,9 @@ anvil --fork-url https://mainnet.infura.io/v3/$INFURA_KEY
 
 You will see 10 accounts are created with their public and private keys. We will work with `0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266` (Let's call this user Alice).
 
-### Transferring Dai
+## Transferring DAI
 
-Go to Etherscan and search for holders of Dai tokens ([here](https://etherscan.io/token/0x6b175474e89094c44da98b954eedeac495271d0f#balances)). Let's pick a random account. In this example we will be using `0xfc2eE3bD619B7cfb2dE2C797b96DeeCbD7F68e46`. Let's export our contracts and accounts as environment variables:
+Go to Etherscan and search for holders of DAI tokens ([here](https://etherscan.io/token/0x6b175474e89094c44da98b954eedeac495271d0f#balances)). Let's pick a random account. In this example we will be using `0xfc2eE3bD619B7cfb2dE2C797b96DeeCbD7F68e46`. Let's export our contracts and accounts as environment variables:
 
 ```sh
 export ALICE=0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266

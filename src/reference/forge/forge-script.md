@@ -6,10 +6,9 @@ forge-script - Run a smart contract as a script, building transactions that can 
 
 ### SYNOPSIS
 
-``forge script`` [*options*] *path* [*args...*]
+`forge script` [*options*] _path_ [*args...*]
 
 ### DESCRIPTION
-
 
 Run a smart contract as a script, building transactions that can be sent onchain.
 
@@ -24,7 +23,7 @@ Scripts can be used to apply state transitions on live contracts, or deploy and 
 &nbsp;&nbsp;&nbsp;&nbsp;Open the script in the [debugger][debugger]. Takes precedence over broadcast.
 
 `-g`  
-`--gas-estimate-multiplier` *multiplier*  
+`--gas-estimate-multiplier` _multiplier_  
 &nbsp;&nbsp;&nbsp;&nbsp;Relative percentage by which to multiply all gas estimates. (i.e. set to 200 to double them)
 &nbsp;&nbsp;&nbsp;&nbsp;Default: 130
 
@@ -39,9 +38,9 @@ Scripts can be used to apply state transitions on live contracts, or deploy and 
 &nbsp;&nbsp;&nbsp;&nbsp;Resumes submitting transactions that failed or timed-out previously.
 
 `-s`  
-`--sig` *signature*  
+`--sig` _signature_  
 &nbsp;&nbsp;&nbsp;&nbsp;The signature of the function you want to call in the contract, or raw calldata.  
-&nbsp;&nbsp;&nbsp;&nbsp;Default: `run()`  
+&nbsp;&nbsp;&nbsp;&nbsp;Default: `run()`
 
 `--skip-simulation`  
 &nbsp;&nbsp;&nbsp;&nbsp;Skips on-chain simulation.
@@ -55,14 +54,13 @@ Scripts can be used to apply state transitions on live contracts, or deploy and 
 `--slow`  
 &nbsp;&nbsp;&nbsp;&nbsp;Makes sure a transaction is sent, only after its previous one has been confirmed and succeeded.
 
-
-`--target-contract` *contract_name*  
+`--target-contract` _contract_name_  
 &nbsp;&nbsp;&nbsp;&nbsp;The name of the contract you want to run.
 
 `--priority-gas-price`  
 &nbsp;&nbsp;&nbsp;&nbsp;Sets the priority gas price for EIP1559 transactions. Useful for when gas prices are volatile and you want to get your transaction included.
 
-`--with-gas-price` *price*  
+`--with-gas-price` _price_  
 &nbsp;&nbsp;&nbsp;&nbsp;Sets the gas price for **broadcasted** legacy transactions, or the max fee for broadcasted EIP1559 transactions.  
 &nbsp;&nbsp;&nbsp;&nbsp;Note: To set the gas price in the execution environment of the script use `--gas-price` instead (see below).
 
@@ -100,28 +98,31 @@ Scripts can be used to apply state transitions on live contracts, or deploy and 
 ### EXAMPLES
 
 1. Run `BroadcastTest` as a script, broadcasting generated transactions on-chain
-    ```sh
-    forge script ./test/Broadcast.t.sol --tc BroadcastTest --sig "deploy()" \
-        -vvv --fork-url $SEPOLIA_RPC_URL
-    ```
 
-2. Deploy a contract on Polygon [(see scripting tutorial for an example script)](../../tutorials/solidity-scripting.md). *The verifier url is different for every network.*
-    ```sh
-    forge script script/NFT.s.sol:MyScript --chain-id 137 --rpc-url $RPC_URL \
-        --etherscan-api-key $POLYGONSCAN_API_KEY --verifier-url https://api.polygonscan.com/api \
-        --broadcast --verify -vvvv
-    ```
+   ```sh
+   forge script ./test/Broadcast.t.sol --tc BroadcastTest --sig "deploy()" \
+       -vvv --fork-url $SEPOLIA_RPC_URL
+   ```
+
+2. Deploy a contract on Polygon [(see the `Scripting with Solidity` guide for an example script)](../../guides/scripting-with-solidity.md). _The verifier url is different for every network._
+
+   ```sh
+   forge script script/NFT.s.sol:MyScript --chain-id 137 --rpc-url $RPC_URL \
+       --etherscan-api-key $POLYGONSCAN_API_KEY --verifier-url https://api.polygonscan.com/api \
+       --broadcast --verify -vvvv
+   ```
 
 3. Resume a failed script. Using the above as an example, remove `--broadcast` add `--resume`
-    ```sh
-    forge script script/NFT.s.sol:MyScript --chain-id 137 --rpc-url $RPC_URL \
-        --etherscan-api-key $POLYGONSCAN_API_KEY --verifier-url https://api.polygonscan.com/api \
-        --verify -vvvv --resume
-    ```
+
+   ```sh
+   forge script script/NFT.s.sol:MyScript --chain-id 137 --rpc-url $RPC_URL \
+       --etherscan-api-key $POLYGONSCAN_API_KEY --verifier-url https://api.polygonscan.com/api \
+       --verify -vvvv --resume
+   ```
 
 4. Verify contracts that were just deployed with a script
-    ```sh
-    forge script script/NFT.s.sol --rpc-url $RPC_URL --verify --resume
-    ```
+   ```sh
+   forge script script/NFT.s.sol --rpc-url $RPC_URL --verify --resume
+   ```
 
 [debugger]: ../../forge/debugger.md

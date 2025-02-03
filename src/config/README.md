@@ -1,4 +1,4 @@
-## Configuring with `foundry.toml`
+## Configuring your `foundry.toml`
 
 Forge can be configured using a configuration file called `foundry.toml`, which is placed in the root of your project.
 
@@ -30,5 +30,5 @@ i.e. `[profile.ci.fuzz]`.
 <br>
 
 > 📚 **Reference**
-> 
+>
 > See the [`foundry.toml` Reference](../reference/config/) for a complete overview of what you can configure.

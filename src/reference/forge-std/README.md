@@ -8,33 +8,33 @@ What's included:
 
 - `Vm.sol`: Up-to-date [cheatcodes interface](../../cheatcodes/#cheatcodes-interface)
 
-    ```solidity
-    import {Vm} from "forge-std/Vm.sol";
-    ```
+  ```solidity
+  import {Vm} from "forge-std/Vm.sol";
+  ```
 
 - [`console.sol`](./console-log.md) and `console2.sol`: Hardhat-style logging functionality
 
-    ```solidity
-    import {console} from "forge-std/console.sol";
-    ```
+  ```solidity
+  import {console} from "forge-std/console.sol";
+  ```
 
-    **Note:** `console2.sol` contains patches to `console.sol` that allow Forge to decode traces for calls to the console, but it is not compatible with Hardhat.
+  **Note:** `console2.sol` contains patches to `console.sol` that allow Forge to decode traces for calls to the console, but it is not compatible with Hardhat.
 
-    ```solidity
-    import {console2} from "forge-std/console2.sol";
-    ```
+  ```solidity
+  import {console2} from "forge-std/console2.sol";
+  ```
 
-- `Script.sol`: Basic utilities for [Solidity scripting](../../tutorials/solidity-scripting.md)
+- `Script.sol`: Basic utilities for [Solidity scripting](../../guides/scripting-with-solidity.md)
 
-    ```solidity
-    import {Script} from "forge-std/Script.sol";
-    ```
+  ```solidity
+  import {Script} from "forge-std/Script.sol";
+  ```
 
 - `Test.sol`: The complete Forge Std experience (more details [below](#forge-stds-test))
 
-    ```solidity
-    import {Test} from "forge-std/Test.sol";
-    ```
+  ```solidity
+  import {Test} from "forge-std/Test.sol";
+  ```
 
 ### Forge Std's `Test`
 
@@ -51,6 +51,7 @@ contract ContractTest is Test { ...
 What's included:
 
 - Std Libraries
+
   - [Std Logs](./std-logs.md): Expand upon the logging events from the DSTest library.
   - [Std Assertions](./std-assertions.md): Expand upon the assertion functions from the DSTest library.
   - [Std Cheats](./std-cheats.md): Wrappers around Forge cheatcodes for improved safety and DX.
@@ -62,25 +63,25 @@ What's included:
 
 - A cheatcodes instance `vm`, from which you invoke Forge cheatcodes (see [Cheatcodes Reference](../../cheatcodes/))
 
-    ```solidity
-    vm.startPrank(alice);
-    ```
+  ```solidity
+  vm.startPrank(alice);
+  ```
 
 - All Hardhat `console` functions for logging (see [Console Logging](./console-log.md))
 
-    ```solidity
-    console.log(alice.balance); // or `console2`
-    ```
+  ```solidity
+  console.log(alice.balance); // or `console2`
+  ```
 
 - All Dappsys Test functions for asserting and logging (see [Dappsys Test reference](../ds-test.md))
 
-    ```solidity
-    assertEq(dai.balanceOf(alice), 10000e18);
-    ```
+  ```solidity
+  assertEq(dai.balanceOf(alice), 10000e18);
+  ```
 
 - Utility functions also included in `Script.sol` (see [Script Utils](./script-utils.md))
 
-    ```solidity
-    // Compute the address a contract will be deployed at for a given deployer address and nonce
-    address futureContract = computeCreateAddress(alice, 1);
-    ```
+  ```solidity
+  // Compute the address a contract will be deployed at for a given deployer address and nonce
+  address futureContract = computeCreateAddress(alice, 1);
+  ```

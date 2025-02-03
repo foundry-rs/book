@@ -4,8 +4,8 @@
 
 # Getting Started
 
-- [Installation](./getting-started/installation.md)
-- [First Steps with Foundry](./getting-started/first-steps.md)
+- [Installation](getting-started/installation.md)
+- [First Steps with Foundry](getting-started/first-steps.md)
 
 # Projects
 
@@ -64,12 +64,15 @@
 - [Integrating with Hardhat](./config/hardhat.md)
 - [Vyper support](./config/vyper.md)
 
-# Tutorials
+# Guides
 
-- [Foundry v1.0 migration guide](./tutorials/v1.0-migration.md)
-- [Best Practices](./tutorials/best-practices.md)
-- [Forking Mainnet with Cast and Anvil](./tutorials/forking-mainnet-with-cast-anvil.md)
-- [Learning Foundry Videos](./tutorials/learn-foundry.md)
+- [Foundry v1.0 migration guide](./guides/v1.0-migration.md)
+- [Best Practices](./guides/best-practices.md)
+- [Scripting with Solidity](./guides/scripting-with-solidity.md)
+- [Deterministic deployments using CREATE2](guides/deterministic-deployments-using-create2.md)
+- [Forking Mainnet with Cast and Anvil](./guides/forking-mainnet-with-cast-anvil.md)
+- [Running Foundry inside of Docker](./guides/foundry-in-docker.md)
+- [Video tutorials](guides/video-tutorials.md)
 <!-- - [Incremental Adoption]() !-->
 
 # Appendix
