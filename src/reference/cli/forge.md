@@ -23,7 +23,6 @@ Commands:
   config             Display the current config [aliases: co]
   coverage           Generate coverage reports
   create             Deploy a smart contract [aliases: c]
-  debug              Debugs a single smart contract as a script [aliases: d]
   doc                Generate documentation for the project
   eip712             Generate EIP-712 struct encodings for structs from a given
                      file

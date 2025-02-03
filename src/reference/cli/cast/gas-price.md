@@ -11,7 +11,7 @@ Usage: cast gas-price [OPTIONS]
 
 Options:
   -r, --rpc-url <URL>
-          The RPC endpoint
+          The RPC endpoint, default value is http://localhost:8545
           
           [env: ETH_RPC_URL=]
 

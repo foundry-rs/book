@@ -1,10 +1,9 @@
 // ANCHOR: all
 // ANCHOR: command
-$ forge build
+$ forge remappings
 // ANCHOR_END: command
 // ANCHOR: output
-Compiling 22 files with Solc 0.8.19
-Solc 0.8.19 finished in 561.77ms
-Compiler run successful!
+forge-std/=lib/forge-std/src/
+solady/=lib/solady/src/
 // ANCHOR_END: output
 // ANCHOR_END: all

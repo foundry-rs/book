@@ -512,7 +512,7 @@ Verifier options:
       --verifier <VERIFIER>
           The contract verification provider to use
           
-          [default: etherscan]
+          [default: sourcify]
 
           Possible values:
           - etherscan
