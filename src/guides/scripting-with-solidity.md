@@ -301,7 +301,7 @@ Private Keys
 Then run the following script in a different terminal window:
 
 ```sh
-orge script script/Counter.s.sol:CounterScript --fork-url http://localhost:8545 --broadcast --interactives 1
+forge script script/Counter.s.sol:CounterScript --fork-url http://localhost:8545 --broadcast --interactives 1
 ```
 
 Next enter the private key, pick one from the list.
