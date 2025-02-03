@@ -26,11 +26,11 @@ Please read [here](https://book.getfoundry.sh/cheatcodes/expect-revert#error) fo
 
 ### 1.0 (rc)
 
-Several breaking changes were introduced in Foundry `1.0` release candidate (`rc`), which could require updates on projects using older versions.
+Several breaking changes were introduced in Foundry [`1.0` release candidate](https://github.com/foundry-rs/foundry/releases/tag/rc) (`rc`), which could require updates on projects using older versions.
 
-You are recommended to follow the [migration guide](https://book.getfoundry.sh/guides/v1.0-migration) to prepare your codebase for the `1.0` stable release.
+You are recommended to follow the [migration guide](./guides/v1.0-migration.md) to prepare your codebase for the `1.0` stable release.
 
-You can install the release candidate run `foundryup -i rc` and try it out.
+To install the release candidate run `foundryup -i rc` and try it out.
 
 It is important to us we get your feedback as this is the last step before the official `1.0` release after three years.
 
