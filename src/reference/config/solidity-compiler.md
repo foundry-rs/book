@@ -225,7 +225,7 @@ extra_output = [
 ]
 ```
 
-For a list of valid values, see the [Solidity docs][output-desc].
+For a list of valid values, see the [Solidity docs](https://docs.soliditylang.org/en/latest/using-the-compiler.html#input-description) (search for: _The available output types are as follows_).
 
 ##### `bytecode_hash`
 
