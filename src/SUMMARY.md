@@ -75,8 +75,8 @@
 - [Deterministic deployment using CREATE2](./tutorials/create2-tutorial.md)
 - [Forking Mainnet with Cast and Anvil](./tutorials/forking-mainnet-with-cast-anvil.md)
 - [Learning Foundry Videos](./tutorials/learn-foundry.md)
-<!-- - [Incremental Adoption]() !-->
 - [Foundry v1.0 migration guide](./tutorials/v1.0-migration.md)
+<!-- - [Incremental Adoption]() !-->
 
 # Appendix
 
