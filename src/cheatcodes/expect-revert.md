@@ -107,7 +107,7 @@ If the **next call** does not revert with the expected data `message`, then `exp
 >
 > Add `/// forge-config: default.allow_internal_expect_revert = true` above the test function.
 >
-> Or globally, this is **STRONGLY** discouraged:
+> Or globally, this is discouraged:
 >
 > Add `allow_internal_expect_revert = true` to `foundry.toml`.
 
