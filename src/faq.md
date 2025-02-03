@@ -6,6 +6,7 @@ and let us help you!
 ### I can't build from source!
 
 Make sure you're on the latest stable Rust toolchain:
+
 ```sh
 rustup default stable
 rustup update stable
@@ -35,8 +36,8 @@ forge: /lib/x86_64-linux-gnu/libc.so.6: version 'GLIBC_2.29' not found (required
 
 There are 2 workarounds:
 
-1. [Building from source](./getting-started/installation.md#building-from-source)
-2. [Using Docker](./getting-started/installation.md#using-foundry-with-docker)
+1. [Building from source](guides/installation.md#building-from-source)
+2. [Using Docker](guides/installation.md#using-foundry-with-docker)
 
 ### Help! I can't see my logs!
 

@@ -14,7 +14,7 @@ Foundry manages your dependencies, compiles your project, runs tests, deploys, a
 
 ### Sections
 
-**[Getting Started](getting-started/installation.md)**
+**[Getting Started](guides/installation.md)**
 
 To get started with Foundry, install Foundry and set up your first project.
 

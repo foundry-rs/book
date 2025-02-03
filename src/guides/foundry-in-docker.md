@@ -1,18 +1,18 @@
 ## Dockerizing a Foundry project
 
-This guide shows you how to build, test, and deploy a smart contract using Foundry's Docker image. It adapts code from the [solmate nft](./solmate-nft.md) guide. If you haven't completed that guide yet, and are new to solidity, you may want to start with it first. Alternatively, if you have some familiarity with Docker and Solidity, you can use your own existing project and adjust accordingly.
+This guide shows you how to build, test, and deploy a smart contract using Foundry's Docker image. It adapts code from the [`first steps`] guide. If you haven't completed that guide yet, and are new to solidity, you may want to start with it first. Alternatively, if you have some familiarity with Docker and Solidity, you can use your own existing project and adjust accordingly.
 
 > This guide is for illustrative purposes only and provided on an as-is basis. The guide is not audited nor fully tested. No code in this guide should be used in a production environment.
 
 ### Installation and Setup
 
 The only installation required to run this guide is Docker, and optionally, an IDE of your choice.
-Follow the [Docker installation instructions](/getting-started/installation.html#using-with-docker).
+Follow the [Docker installation instructions](./installation.md).
 
 To keep future commands succinct, let's re-tag the image:  
  `docker tag ghcr.io/foundry-rs/foundry:latest foundry:latest`
 
-Having Foundry installed locally is not strictly required, but it may be helpful for debugging. You can install it using [foundryup](/getting-started/installation.html#using-foundryup).
+Having Foundry installed locally is not strictly required, but it may be helpful for debugging. You can install it using [foundryup](./installation.md#using-foundryup).
 
 Finally, to use any of the `cast` or `forge create` portions of this guide, you will need access to an Ethereum node. If you don't have your own node running (likely), you can use a 3rd party node service. We won't recommend a specific provider in this guide. A good place to start learning about Nodes-as-a-Service is [Ethereum's article](https://ethereum.org/en/developers/docs/nodes-and-clients/nodes-as-a-service/) on the subject.
 
@@ -54,11 +54,10 @@ transactions         [...]
 uncles               []
 ```
 
-If we're in a directory with some Solidity [source code](https://github.com/dmfxyz/foundry-docker-guide), we can mount that directory into docker and use `forge` however we wish. For example:
+If we're in a directory with some Solidity [source code](https://github.com/dmfxyz/foundry-docker-guide), we can mount that directory into Docker and use `forge` however we wish. For example:
 
 ```sh
 $ docker run -v $PWD:/app foundry "forge test --root /app --watch"
-{{#include ../output/nft_guide/forge-test:output}}
 ```
 
 You can see our code was compiled and tested entirely within the container. Also, since we passed the `--watch` option, the container will recompile the code whenever a change is detected.
@@ -93,15 +92,22 @@ You can build this docker image and watch forge build/run the tests within the c
 $ docker build --no-cache --progress=plain .
 ```
 
-Now, what happens if one of our tests fails? Modify `src/test/NFT.t.sol` as you please to make one of the tests fails. Try to build image again.
+Now, what happens if one of our tests fails? Modify `src/test/Counter.t.sol` to make a false assertion. Try to build image again.
+
+```solidity
+    function testFuzz_SetNumber(uint256 x) public {
+        counter.setNumber(x);
+        assertEq(counter.number(), 5);
+    }
+```
 
 ```sh
 $ docker build --no-cache --progress=plain .
 <...>
 #9 0.522 Failed tests:
-#9 0.522 [FAIL. Reason: Ownable: caller is not the owner] testWithdrawalFailsAsNotOwner() (gas: 193917)
+#9 0.522 [FAIL: assertion failed: 425 != 5; counterexample: calldata=[...] args=[425]] testFuzz_SetNumber(uint256) (runs: 0, μ: 0, ~: 0)
 #9 0.522
-#9 0.522 Encountered a total of 1 failing tests, 9 tests succeeded
+#9 0.522 Suite result: FAILED. 1 passed; 1 failed; 0 skipped; finished in 686.53µs (407.06µs CPU time)
 ------
 error: failed to solve: executor failed running [/bin/sh -c forge test]: exit code: 1
 ```
@@ -110,9 +116,9 @@ Our image failed to build because our tests failed! This is actually a nice prop
 
 > \*Of course, chain of custody of your docker images is very important. Docker layer hashes can be very useful for verification. In a production environment, consider [signing your docker images](https://docs.docker.com/engine/security/trust/#:~:text=To%20sign%20a%20Docker%20Image,the%20local%20Docker%20trust%20repository).
 
-### Creating a deployer image
+### Creating a "deployer" image
 
-Now, we'll move on to a bit more of an advanced Dockerfile. Let's add an entrypoint that allows us to deploy our code by using the built (and tested!) image. We can target the Rinkeby testnet first.
+Now, we'll move on to a bit more of an advanced Dockerfile. Let's add an entrypoint that allows us to deploy our code by using the built (and tested!) image. We can target the Sepolia testnet first.
 
 ```docker
 # Use the latest foundry image
@@ -133,29 +139,29 @@ ENTRYPOINT ["forge", "create"]
 Let's build the image, this time giving it a name:
 
 ```sh
-$ docker build --no-cache --progress=plain -t nft-deployer .
+$ docker build --no-cache --progress=plain -t counter .
 ```
 
 Here's how we can use our docker image to deploy:
 
 ```sh
-$ docker run nft-deployer --rpc-url $RPC_URL --constructor-args "ForgeNFT" "FNFT" "https://ethereum.org" --private-key $PRIVATE_KEY ./src/NFT.sol:NFT
+$ docker run counter-deployer --rpc-url $RPC_URL --private-key $PRIVATE_KEY ./src/Counter.sol:Counter
 No files changed, compilation skipped
 Deployer: 0x496e09fcb240c33b8fda3b4b74d81697c03b6b3d
 Deployed to: 0x23d465eaa80ad2e5cdb1a2345e4b54edd12560d3
 Transaction hash: 0xf88c68c4a03a86b0e7ecb05cae8dea36f2896cd342a6af978cab11101c6224a9
 ```
 
-We've just built, tested, and deployed our contract entirely within a docker container! This guide was intended for testnet, but you can run the exact same Docker image targeting mainnet and be confident that the same code is being deployed by the same tooling.
+We've just built, tested, and deployed our contract entirely within a Docker container! This guide was intended for testnet, but you can run the exact same Docker image targeting mainnet and be confident that the same code is being deployed by the same tooling.
 
 ### Why is this useful?
 
-Docker is about portability, reproducibility, and environment invariance. This means you can be less concerned about unexpected changes when you switch between environments, networks, developers, etc. Here are a few basic examples of why **I** like to use Docker images for smart contract deployment:
+Docker is about portability, reproducibility, and environment invariance. This means you can be less concerned about unexpected changes when you switch between environments, networks, developers, etc. Here are a few basic examples of why one may like to use Docker images for smart contract deployment:
 
 - Reduces overhead of ensuring system level dependencies match between deployment environments (e.g. does your production runner always have the same version of `forge` as your dev runner?)
 - Increases confidence that code has been tested prior to deployment and has not been altered (e.g. if, in the above image, your code re-compiles on deployment, that's a major red flag).
 - Eases pain points around segregation of duties: people with your mainnet credentials do not need to ensure they have the latest compiler, codebase, etc. It's easy to ensure that the docker deploy image someone ran in testnet is identical to the one targeting mainnet.
-- At the risk of sounding web2, Docker is an accepted standard on virtually all public cloud providers. It makes it easy to schedule jobs, tasks, etc that need to interact with the blockchain.
+- Docker is an accepted standard on virtually all public cloud providers. It makes it easy to schedule jobs, tasks, etc that need to interact with the blockchain.
 
 ### Troubleshooting
 

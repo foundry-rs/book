@@ -4,8 +4,8 @@
 
 # Getting Started
 
-- [Installation](./getting-started/installation.md)
-- [First Steps with Foundry](./getting-started/first-steps.md)
+- [Installation](guides/installation.md)
+- [First Steps with Foundry](guides/first-steps.md)
 
 # Projects
 
@@ -70,7 +70,8 @@
 - [Scripting with Solidity](./guides/scripting-with-solidity.md)
 - [Deterministic deployments using CREATE2](guides/deterministic-deployments-using-create2.md)
 - [Forking Mainnet with Cast and Anvil](./guides/forking-mainnet-with-cast-anvil.md)
-- [Learning Foundry Videos](guides/video-tutorials.md)
+- [Running Foundry inside of Docker]()
+- [Video tutorials](guides/video-tutorials.md)
 <!-- - [Incremental Adoption]() !-->
 
 # Appendix
