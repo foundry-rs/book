@@ -168,7 +168,7 @@ To launch Anvil using [Docker Compose](https://docs.docker.com/compose/) one cou
 ```yml
 services:
   anvil:
-    image: ghcr.io/foundry-rs/foundry:fix-docker
+    image: ghcr.io/foundry-rs/foundry
     container_name: anvil
     environment:
       ANVIL_IP_ADDR: "0.0.0.0"
@@ -183,7 +183,7 @@ Finally, run `docker compose up`.
 ```ignore
 $ docker compose up
 [+] Running 1/1
- ✔ Container anvil  Created                                                                                                                                                                                                         0.0s
+ ✔ Container anvil  Created
 Attaching to anvil
 anvil  |
 anvil  |
@@ -194,8 +194,7 @@ anvil  |      / _` | | '_ \  \ \ / / | | | |
 anvil  |     | (_| | | | | |  \ V /  | | | |
 anvil  |      \__,_| |_| |_|   \_/   |_| |_|
 anvil  |
-anvil  |     0.3.1- (8edde17bd6 2025-01-29T06:46:19.760638618Z)
+anvil  |     0.3.1-dev (fea38858b0 2025-01-21T16:48:49.865302749Z)
 anvil  |     https://github.com/foundry-rs/foundry
-anvil  |
 anvil  |     ...
 ```
