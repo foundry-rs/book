@@ -7,10 +7,10 @@ No files changed, compilation skipped
 
 Ran 8 tests for test/SolmateNft.sol:SolmateNftTests
 [PASS] testBalanceIncremented() (gas: 217400)
-[PASS] testFailMaxSupplyReached() (gas: 134524)
-[PASS] testFailMintToZeroAddress() (gas: 34521)
-[PASS] testFailNoMintPricePaid() (gas: 5568)
-[PASS] testFailUnSafeContractReceiver() (gas: 3524)
+[PASS] testRevertMaxSupplyReached() (gas: 134524)
+[PASS] testRevertMintToZeroAddress() (gas: 34521)
+[PASS] testRevertNoMintPricePaid() (gas: 5568)
+[PASS] testRevertUnSafeContractReceiver() (gas: 3524)
 [PASS] testMintPricePaid() (gas: 81321)
 [PASS] testNewMintOwnerRegistered() (gas: 190741)
 [PASS] testSafeContractReceiver() (gas: 272655)
@@ -18,10 +18,10 @@ Suite result: ok. 8 passed; 0 failed; 0 skipped; finished in 1.51ms (1.34ms CPU 
 
 Ran 8 tests for test/OpenZeppelinNft.t.sol:OpenZeppelinNftTests
 [PASS] testBalanceIncremented() (gas: 217829)
-[PASS] testFailMaxSupplyReached() (gas: 134524)
-[PASS] testFailMintToZeroAddress() (gas: 34577)
-[PASS] testFailNoMintPricePaid() (gas: 5568)
-[PASS] testFailUnSafeContractReceiver() (gas: 3524)
+[PASS] testRevertMaxSupplyReached() (gas: 134524)
+[PASS] testRevertMintToZeroAddress() (gas: 34577)
+[PASS] testRevertNoMintPricePaid() (gas: 5568)
+[PASS] testRevertUnSafeContractReceiver() (gas: 3524)
 [PASS] testMintPricePaid() (gas: 81554)
 [PASS] testNewMintOwnerRegistered() (gas: 190956)
 [PASS] testSafeContractReceiver() (gas: 273151)

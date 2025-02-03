@@ -407,7 +407,7 @@ contract ERC20Test is Test {
 - Ensure failure for calls with an invalid allowance and invalid balance
 
 ```solidity
-    function testFail_InvalidAllowance() public {
+    function testRevert_InvalidAllowance() public {
         SigUtils.Permit memory permit = SigUtils.Permit({
             owner: owner,
             spender: spender,
@@ -431,10 +431,11 @@ contract ERC20Test is Test {
         );
 
         vm.prank(spender);
+        vm.expectRevert();
         token.transferFrom(owner, spender, 1e18); // attempt to transfer 1 token
     }
 
-    function testFail_InvalidBalance() public {
+    function testRevert_InvalidBalance() public {
         SigUtils.Permit memory permit = SigUtils.Permit({
             owner: owner,
             spender: spender,
@@ -458,6 +459,7 @@ contract ERC20Test is Test {
         );
 
         vm.prank(spender);
+        vm.expectRevert();
         token.transferFrom(owner, spender, 2e18); // attempt to transfer 2 tokens (owner only owns 1)
     }
 ```

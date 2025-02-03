@@ -21,8 +21,10 @@ contract ContractBTest is Test {
     }
     // ANCHOR_END: testNumberIs42
 
-    // ANCHOR: testFailSubtract43
-    function testFail_Subtract43() public {
+    // ANCHOR: testRevert_Subtract43
+    /// forge-config: default.allow_internal_expect_revert = true
+    function testRevert_Subtract43() public {
+        vm.expectRevert();
         testNumber -= 43;
     }
     // ANCHOR_END: testFailSubtract43
