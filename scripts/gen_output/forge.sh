@@ -21,7 +21,7 @@ gen_forge() {
     forge build
   run_command "$OUTPUT_DIR/hello_foundry/forge-test" \
     forge test
-  run command "$OUTPUT_DIR/hello_foundry/forge-install" \
+  run_command "$OUTPUT_DIR/hello_foundry/forge-install" \
     forge install vectorized/solady
   run_command "$OUTPUT_DIR/hello_foundry/forge-remappings" \
     forge remappings
