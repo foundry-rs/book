@@ -24,6 +24,16 @@ Please read [here](https://book.getfoundry.sh/cheatcodes/expect-revert#error) fo
 
 ## Releases
 
+### 1.0 (rc)
+
+Several breaking changes were introduced in Foundry `1.0` release candidate (`rc`), which could require updates on projects using older versions.
+
+You are recommended to follow the [migration guide](https://book.getfoundry.sh/guides/v1.0-migration) to prepare your codebase for the `1.0` stable release.
+
+You can install the release candidate run `foundryup -i rc` and try it out.
+
+It is important to us we get your feedback as this is the last step before the official `1.0` release after three years.
+
 ### 0.3 (stable)
 
 The Foundry [`0.3` release](https://github.com/foundry-rs/foundry/releases/tag/v0.3.0) marks an exciting new chapter for Foundry. By moving to [stable releases](https://github.com/foundry-rs/foundry/releases/tag/stable), we aim to provide a reliable development environment for the EVM ecosystem. Our next priority is the `1.0` release in early 2025, polishing Foundry for the long term.
