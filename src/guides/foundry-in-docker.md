@@ -62,8 +62,6 @@ $ docker run -v $PWD:/app foundry "forge test --root /app --watch"
 
 You can see our code was compiled and tested entirely within the container. Also, since we passed the `--watch` option, the container will recompile the code whenever a change is detected.
 
-> Note: The Foundry docker image is built on alpine and designed to be as slim as possible. For this reason, it does not currently include development resources like `git`. If you are planning to manage your entire development lifecycle within the container, you should build a custom development image on top of Foundry's image.
-
 ### Creating a "build and test" image
 
 Let's use the Foundry docker image as a base for using our own Docker image. We'll use the image to:
@@ -162,20 +160,3 @@ Docker is about portability, reproducibility, and environment invariance. This m
 - Increases confidence that code has been tested prior to deployment and has not been altered (e.g. if, in the above image, your code re-compiles on deployment, that's a major red flag).
 - Eases pain points around segregation of duties: people with your mainnet credentials do not need to ensure they have the latest compiler, codebase, etc. It's easy to ensure that the docker deploy image someone ran in testnet is identical to the one targeting mainnet.
 - Docker is an accepted standard on virtually all public cloud providers. It makes it easy to schedule jobs, tasks, etc that need to interact with the blockchain.
-
-### Troubleshooting
-
-As noted above, the Foundry image does not include `git` by default. This can cause certain commands to fail without a clear cause. For example:
-
-```bash
-$ docker run foundry "forge init --no-git /test"
-Initializing /test...
-Installing ds-test in "/test/lib/ds-test", (url: https://github.com/dapphub/ds-test, tag: None)
-Error:
-   0: No such file or directory (os error 2)
-
-Location:
-   cli/src/cmd/forge/install.rs:107
-```
-
-In this case, the failure is still caused by a missing `git` installation. The recommended fix is to build off the existing Foundry image and install any additional development dependencies you need.
