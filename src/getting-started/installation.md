@@ -88,7 +88,7 @@ You can also build the Docker image locally by running the following command fro
 docker build -t foundry .
 ```
 
-For examples and guides on using this image, refer to the [Docker tutorial section](../tutorials/foundry-docker).
+For examples and guides on using this image, refer to the [Docker guide](../guides/foundry-in-docker).
 
 > ℹ️ **Note**  
 > Some systems, including those with M1 chips, may experience issues when building the Docker image locally. This is a known issue.

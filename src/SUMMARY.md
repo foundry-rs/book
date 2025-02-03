@@ -64,11 +64,11 @@
 - [Integrating with Hardhat](./config/hardhat.md)
 - [Vyper support](./config/vyper.md)
 
-# Tutorials
+# Guides
 
-- [Best Practices](./tutorials/best-practices.md)
-- [Forking Mainnet with Cast and Anvil](./tutorials/forking-mainnet-with-cast-anvil.md)
-- [Learning Foundry Videos](./tutorials/learn-foundry.md)
+- [Best Practices](./guides/best-practices.md)
+- [Forking Mainnet with Cast and Anvil](./guides/forking-mainnet-with-cast-anvil.md)
+- [Learning Foundry Videos](./guides/learn-foundry.md)
 <!-- - [Incremental Adoption]() !-->
 
 # Appendix

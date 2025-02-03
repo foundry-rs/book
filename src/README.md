@@ -50,13 +50,13 @@ Guides on configuring Foundry.
 - [Integrating with Hardhat](./config/hardhat.md)
 - [Vyper support](./config/vyper.md)
 
-**Tutorials**
+**Guides**
 
-Tutorials on building smart contracts with Foundry.
+Guides for building smart contracts with Foundry.
 
-- [Best practices](./tutorials/best-practices.md)
-- [Forking Mainnet with Cast and Anvil](./tutorials/forking-mainnet-with-cast-anvil.md)
-- [Learning Foundry Videos](./tutorials/learn-foundry.md)
+- [Best practices](./guides/best-practices.md)
+- [Forking Mainnet with Cast and Anvil](./guides/forking-mainnet-with-cast-anvil.md)
+- [Learning Foundry Videos](./guides/learn-foundry.md)
 <!-- - [Incremental Adoption]() -->
 
 **Contributing**
@@ -82,4 +82,4 @@ References, troubleshooting, and more.
 
 <br>
 
-> You can also check out [Awesome Foundry](https://github.com/crisgarner/awesome-foundry), a curated list of awesome Foundry resources, tutorials, tools, and libraries!
+> You can also check out [Awesome Foundry](https://github.com/crisgarner/awesome-foundry), a curated list of awesome Foundry resources, guides, tools, and libraries!

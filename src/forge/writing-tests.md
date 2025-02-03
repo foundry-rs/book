@@ -4,7 +4,7 @@ Tests are written in Solidity. If the test function reverts, the test fails, oth
 
 Let's go over the most common way of writing tests, using the [Forge Standard Library](https://github.com/foundry-rs/forge-std)'s `Test` contract, which is the preferred way of writing tests with Forge.
 
-In this section, we'll go over the basics using the functions from the Forge Std's `Test` contract, which is itself a superset of [DSTest](https://github.com/dapphub/ds-test). You will learn how to use more advanced stuff from the Forge Standard Library [soon](./forge-std.md). 
+In this section, we'll go over the basics using the functions from the Forge Std's `Test` contract, which is itself a superset of [DSTest](https://github.com/dapphub/ds-test). You will learn how to use more advanced stuff from the Forge Standard Library [soon](./forge-std.md).
 
 DSTest provides basic logging and assertion functionality. To get access to the functions, import `forge-std/Test.sol` and inherit from `Test` in your test contract:
 
@@ -27,13 +27,15 @@ Forge uses the following keywords in tests:
 ```
 
 - `test`: Functions prefixed with `test` are run as a test case.
+
 ```solidity
 {{#include ../../projects/writing_tests/test/Basic.t.sol:testNumberIs42}}
 ```
 
-A good practice is to use the pattern `test_Revert[If|When]_Condition` in combination with the [`expectRevert`](../cheatcodes/expect-revert.md) cheatcode (cheatcodes are explained in greater detail in the following [section](./cheatcodes.md)). Also, other testing practices can be found in the [Tutorials section](../tutorials/best-practices.md).
+A good practice is to use the pattern `test_Revert[If|When]_Condition` in combination with the [`expectRevert`](../cheatcodes/expect-revert.md) cheatcode (cheatcodes are explained in greater detail in the following [section](./cheatcodes.md)). Also, other testing practices can be found in the [Guides section](../guides/best-practices.md).
 
 > **Note**: To use `stdError` constants (like `arithmeticError` in the example below), make sure to import `StdError.sol`:
+>
 > ```solidity
 > import {stdError} from "forge-std/StdError.sol";
 > ```
@@ -69,15 +71,17 @@ function beforeTestSetup(
 ```
 
 where
+
 - `bytes4 testSelector` is the selector of the test for which transactions are applied
 - `bytes[] memory beforeTestCalldata` is an array of arbitrary calldata applied before test execution
 
 > 💡 **Tip**
 >
 > This setup can be used for chaining tests or for scenarios when a test needs certain transactions committed before test run (e.g. when using `selfdestruct`).
-> The test fails if any of the configured transaction reverts. 
+> The test fails if any of the configured transaction reverts.
 
 For example, in contract below, `testC` is configured to use state modified by `testA` and `setB(uint256)` functions:
+
 ```solidity
 contract ContractTest is Test {
     uint256 a;
