@@ -26,34 +26,7 @@ $ forge test
 {{#include ../output/cheatcodes/forge-test-simple:output}}
 ```
 
-Let's make sure that someone who is definitely not the owner can't increment the count:
-
-```solidity
-{{#include ../../projects/cheatcodes/test/OwnerUpOnly.t.sol:contract_prelude}}
-
-    // ...
-
-{{#include ../../projects/cheatcodes/test/OwnerUpOnly.t.sol:test_fail}}
-}
-```
-
-If we run `forge test` now, we will see that all the test pass.
-
-```ignore
-$ forge test
-{{#include ../output/cheatcodes/forge-test-cheatcodes:output}}
-```
-
-The test passed because the `prank` cheatcode changed our identity to the zero address for the next call (`upOnly.increment()`). The test case passed since we used the `testFail` prefix, however, using `testFail` is considered an anti-pattern since it does not tell us anything about *why* `upOnly.increment()` reverted.
-
-If we run the tests again with traces turned on, we can see that we reverted with the correct error message.
-
-```ignore
-$ forge test -vvvv --match-test testFail_IncrementAsNotOwner
-{{#include ../output/cheatcodes/forge-test-cheatcodes-tracing:output}}
-```
-
-To be sure in the future, let's make sure that we reverted because we are not the owner using the `expectRevert` cheatcode:
+Let's make sure that someone who is definitely not the owner can't increment the count, by using the `expectRevert` cheatcode:
 
 ```solidity
 {{#include ../../projects/cheatcodes/test/OwnerUpOnly.t.sol:contract_prelude}}
