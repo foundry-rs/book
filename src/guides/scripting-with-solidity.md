@@ -59,15 +59,15 @@ Private key: <PRIVATE_KEY>
 
 Grab some Sepolia testnet ETH, available in different faucets:
 
-- https://sepoliafaucet.com/
-- https://faucet.quicknode.com/ethereum/sepolia
-- https://sepolia-faucet.pk910.de/
+- [Alchemy](https://sepoliafaucet.com/)
+- [Quicknode](https://faucet.quicknode.com/ethereum/sepolia)
+- [Proof of work faucet](https://sepolia-faucet.pk910.de/)
 
 Some faucets require you to have a balance on Ethereum mainnet.
 
 If so, claim the testnet ETH on a wallet you control and transfer the testnet ETH to your newly created deployer keypair.
 
-4. Get an Etherscan API key.
+4. Get a Sepolia Etherscan API key.
 
 ### Configuring `foundry.toml`
 
@@ -152,17 +152,13 @@ function run() external {
 
 By default, scripts are executed by calling the function named `run`, our entrypoint.
 
-```solidity
-uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
-```
-
 This loads in the private key from our `.env` file. **Note:** you must be careful when exposing private keys in a `.env` file and loading them into programs. This is only recommended for use with non-privileged deployers or for local / test setups. For production setups please review the various [wallet options](../reference/forge/forge-script.md#wallet-options---raw) that Foundry supports.
 
 ```solidity
-vm.startBroadcast(deployerPrivateKey);
+vm.startBroadcast();
 ```
 
-This is a special cheatcode that records calls and contract creations made by our main script contract. We pass the `deployerPrivateKey` in order to instruct it to use that key for signing the transactions. Later, we will broadcast these transactions to deploy our `Counter` contract.
+This is a special cheatcode that records calls and contract creations made by our main script contract. The private key of the sender we will pass in will instruct it to use that key for signing the transactions. Later, we will broadcast these transactions to deploy our `Counter` contract.
 
 ```solidity
 Counter counter = new Counter();
