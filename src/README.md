@@ -54,10 +54,7 @@ Guides on configuring Foundry.
 
 Tutorials on building smart contracts with Foundry.
 
-- [Creating an NFT with Solmate](./tutorials/solmate-nft.md)
-- [Docker and Foundry](./tutorials/foundry-docker.md)
-- [Testing EIP-712 Signatures](./tutorials/testing-eip712.md)
-- [Solidity Scripting](./tutorials/solidity-scripting.md)
+- [Best practices](./tutorials/best-practices.md)
 - [Forking Mainnet with Cast and Anvil](./tutorials/forking-mainnet-with-cast-anvil.md)
 - [Learning Foundry Videos](./tutorials/learn-foundry.md)
 <!-- - [Incremental Adoption]() -->

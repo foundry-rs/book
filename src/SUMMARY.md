@@ -10,7 +10,6 @@
 # Projects
 
 - [Creating a New Project](./projects/creating-a-new-project.md)
-- [Working on an Existing Project](./projects/working-on-an-existing-project.md)
 - [Clone a Verified Contract on Chain](./projects/clone-a-verified-contract.md)
 - [Dependencies](./projects/dependencies.md)
 - [Soldeer](./projects/soldeer.md)
@@ -68,11 +67,6 @@
 # Tutorials
 
 - [Best Practices](./tutorials/best-practices.md)
-- [Creating an NFT with Solmate](./tutorials/solmate-nft.md)
-- [Docker and Foundry](./tutorials/foundry-docker.md)
-- [Testing EIP-712 Signatures](./tutorials/testing-eip712.md)
-- [Solidity Scripting](./tutorials/solidity-scripting.md)
-- [Deterministic deployment using CREATE2](./tutorials/create2-tutorial.md)
 - [Forking Mainnet with Cast and Anvil](./tutorials/forking-mainnet-with-cast-anvil.md)
 - [Learning Foundry Videos](./tutorials/learn-foundry.md)
 <!-- - [Incremental Adoption]() !-->
