@@ -17,7 +17,7 @@ For the best user experience it is recommended to avoid having different address
 > ℹ️ **Note**
 >
 > This guide is intended to help you get started with configuring deterministic deployments using `CREATE2`.
-> By default `new Counter{salt: salt}()` will use by default the deterministic deployer at [0x4e59b44847b379578588920ca78fbf26c0b4956c](https://github.com/Arachnid/deterministic-deployment-proxy).  
+> By default, `new Counter{salt: salt}()` will use the deterministic deployer at [`0x4e59b44847b379578588920ca78fbf26c0b4956c`](https://github.com/Arachnid/deterministic-deployment-proxy). Note that the deployer may not be available on all EVM chains.
 > A different deployer address can be configured by setting `create2_deployer` in `foundry.toml` or by using `--create2-deployer` argument.
 
 ## Configuring your `foundry.toml`
