@@ -97,3 +97,11 @@ However, during a broadcast In zkEVM, the nonce that will be increased during `C
 ### Batching Large Dependencies
 
 If a zkEVM transaction is too large to fit in a block, we must split the factory dependencies into smaller transactions. Here, we then execute empty transactions with just a subset of factory dependencies to mark them as known, and finally, the last transaction contains the actual transaction data. Therefore we need to manually increment the transaction nonce to make the next transaction of the batch to be executed correctly, as we are artificially splitting a single transaction into multiple ones. During the zkEVM execution, the transaction nonce will still be incremented once and then reverted, so the nonce must only increase for the "extra transactions" and not for the last one, as we started with a "good" nonce value.
+
+## Storage Migration
+
+During a forge test/script execution we may switch between EVM and zkEVM; this causes issues for nonces in particular as while EVM uses a single nonce for both transactions and deployments, ZKsync splits them into two distinct nonces.
+
+When a EVM account is translated to ZKsync, we persist its existing deployment nonce and merely overwrite the transaction nonce with that of the EVM's. However, the EVM nonce value consists of deployments as well. Meanwhile when a ZKsync account is translated to EVM account we discard the deployment nonce and only work with transaction nonce in the EVM context.
+
+While these differences are generally unimportant as long as the nonce values are monotonically increasing, they may cause inconsistencies in derived addresses.
