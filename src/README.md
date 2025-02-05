@@ -84,6 +84,7 @@ Help us improve Foundry-ZKsync: [Contributing](./contributing.md)
 
 References, troubleshooting, and more.
 
+- [Announcements](./announcements.md)
 - [FAQ](./faq.md)
 - [CLI Reference](./reference/cli/)
 - [forge Commands](./reference/forge/)

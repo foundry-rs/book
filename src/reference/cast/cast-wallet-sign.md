@@ -10,7 +10,7 @@ cast-wallet-sign - Sign a message.
 
 ### DESCRIPTION
 
-Sign a message.
+Sign a message suitable for [`eth_sign`](https://ethereum.org/en/developers/docs/apis/json-rpc/#eth_sign). Note that signing prefixes the message with the Ethereum Signed Message header [in accordance with EIP-191](https://eips.ethereum.org/EIPS/eip-191) unless `--no-hash` is provided.
 
 ### OPTIONS
 

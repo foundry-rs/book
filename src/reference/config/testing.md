@@ -378,6 +378,30 @@ The flag indicating whether to include values from storage.
 
 The flag indicating whether to include push bytes values.
 
+##### `gas_report_samples`
+
+- Type: integer
+- Default: 256
+- Environment: `FOUNDRY_FUZZ_GAS_REPORT_SAMPLES`
+
+Number of runs to use for generating gas report.
+
+##### `failure_persist_dir`
+
+- Type: string (path)
+- Default: `./cache/fuzz`
+- Environment: `FOUNDRY_FUZZ_FAILURE_PERIST_DIR`
+
+Path where fuzz failures are recorded and replayed.
+
+##### `failure_persist_file`
+
+- Type: string
+- Default: `failures`
+- Environment: `FOUNDRY_FUZZ_FAILURE_PERIST_FILE`
+
+Name of the file to record fuzz failures.
+
 ##### `show_logs`
 
 - Type: boolean
@@ -488,3 +512,35 @@ The maximum number of attempts to shrink a failed the sequence. Shrink process i
 - Default: false
 
 Avoid generating [reserved](../../zksync-specifics/limitations/general.md#reserved-address-range) ZKsync addresses within the invariant test. This avoids having to use `vm.assume(addr > 65535)` during invariant testing that can ignore too many inputs causing `max_test_rejects` to trigger.
+
+##### `max_assume_rejects`
+
+- Type: integer
+- Default: 65536
+- Environment: `FOUNDRY_INVARIANT_MAX_ASSUME_REJECTS`
+
+The maximum number of rejects via `vm.assume` which can be encountered during a single invariant run.
+
+##### `gas_report_samples`
+
+- Type: integer
+- Default: 256
+- Environment: `FOUNDRY_INVARIANT_GAS_REPORT_SAMPLES`
+
+Number of runs to use for generating gas report.
+
+##### `failure_persist_dir`
+
+- Type: string (path)
+- Default: `./cache/invariant`
+- Environment: `FOUNDRY_INVARIANT_FAILURE_PERIST_DIR`
+
+Path where invariant failures are recorded and replayed.
+
+##### `show_metrics`
+
+- Type: boolean
+- Default: false
+- Environment: `FOUNDRY_INVARIANT_SHOW_METRICS`
+
+The flag indicating whether to collect and display fuzzed selectors metrics in test report.

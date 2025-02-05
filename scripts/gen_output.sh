@@ -8,6 +8,7 @@ source "$SCRIPTS/gen_output/chisel.sh"
 source "$SCRIPTS/gen_output/zksync.sh"
 source "$SCRIPTS/gen_output/forge.sh"
 source "$SCRIPTS/gen_output/help.sh"
+source "$SCRIPTS/gen_output/vm.sh"
 
 need_cmd git
 need_cmd mktemp

@@ -14,6 +14,10 @@ Solidity scripts are like the scripts you write when working with tools like Har
 2. Onchain Simulation - Optional. If a rpc/fork url has been provided, then it will sequentially execute all the collected transactions from the previous phase here.
 3. Broadcasting - Optional. If the `--broadcast` flag is provided and the previous phases have succeeded, it will broadcast the transactions collected at step `1`. and simulated at step `2`.
 
+> 💡 Note:
+> 
+> Transactions that previously failed or timed-out can be submitted again by providing `--resume` flag.
+
 Given this flow, it's important to be aware that transactions whose behaviour can be influenced by external state/actors might have a different result than what was simulated on step `2`. Eg. frontrunning.
 
 ### Set Up
@@ -170,6 +174,10 @@ contract MyScript is Script {
     }
 }
 ```
+
+> 💡 Note:
+> 
+> The `vm.isContext` cheatcode can be used to execute logic specific to script phases, by checking if context is one of `ForgeContext.ScriptDryRun`, `ForgeContext.ScriptBroadcast` or `ForgeContext.ScriptResume`.
 
 Now let’s read through the code and figure out what it actually means and does.
 
