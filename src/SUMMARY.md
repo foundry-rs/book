@@ -51,7 +51,7 @@
 
 # Forge Overview
 
-- [Overview of Forge](forge/README.md)
+- [Forge](forge/README.md)
 - [Tests](./forge/tests.md)
   - [Writing Tests](./forge/writing-tests.md)
   - [Cheatcodes](./forge/cheatcodes.md)
@@ -79,7 +79,7 @@
 
 # Cast Overview
 
-- [Overview of Cast](./cast/README.md)
+- [Cast](./cast/README.md)
 
 # Anvil-ZKsync Overview
 
@@ -134,7 +134,6 @@
       - [`forge config`](./reference/cli/forge/config.md)
       - [`forge coverage`](./reference/cli/forge/coverage.md)
       - [`forge create`](./reference/cli/forge/create.md)
-      - [`forge debug`](./reference/cli/forge/debug.md)
       - [`forge doc`](./reference/cli/forge/doc.md)
       - [`forge eip712`](./reference/cli/forge/eip712.md)
       - [`forge flatten`](./reference/cli/forge/flatten.md)
@@ -313,7 +312,6 @@
       - [forge verify-check](./reference/forge/forge-verify-check.md)
       - [forge flatten](./reference/forge/forge-flatten.md)
     - [Utility Commands](./reference/forge/utility-commands.md)
-      - [forge debug](./reference/forge/forge-debug.md)
       - [forge bind](./reference/forge/forge-bind.md)
       - [forge cache](./reference/forge/forge-cache.md)
       - [forge cache clean](./reference/forge/forge-cache-clean.md)
@@ -473,6 +471,7 @@
       - [`stopAndReturnStateDiff`](./cheatcodes/stop-and-return-state-diff.md)
       - [`snapshotState`](./cheatcodes/state-snapshots.md)
       - [`snapshotGas`](./cheatcodes/gas-snapshots.md)
+      - [`isContext`](./cheatcodes/is-context.md)
     - [Assertions](./cheatcodes/assertions.md)
       - [`expectRevert`](./cheatcodes/expect-revert.md)
       - [`expectEmit`](./cheatcodes/expect-emit.md)
@@ -518,9 +517,11 @@
       - [`serializeJson`](./cheatcodes/serialize-json.md)
       - [`writeJson`](./cheatcodes/write-json.md)
       - [`writeToml`](./cheatcodes/write-toml.md)
+    - [Signing](./cheatcodes/signing.md)
+      - [`sign`](./cheatcodes/sign.md)
+      - [`signDelegation`](./cheatcodes/sign-delegation.md)
     - [Utilities](./cheatcodes/utilities.md)
       - [`addr`](./cheatcodes/addr.md)
-      - [`sign`](./cheatcodes/sign.md)
       - [`skip`](./cheatcodes/skip.md)
       - [`label`](./cheatcodes/label.md)
       - [`getLabel`](./cheatcodes/get-label.md)

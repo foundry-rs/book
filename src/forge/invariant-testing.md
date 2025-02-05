@@ -9,6 +9,8 @@ Invariant testing campaigns have two dimensions, `runs` and `depth`:
 - `runs`: Number of times that a sequence of function calls is generated and run.
 - `depth`: Number of function calls made in a given `run`. Invariants are asserted after each function call is made. If a function call reverts, the `depth` counter still increments.
 
+For long invariant campaigns a `timeout` (in seconds) can be set, ensuring test ends after specified time elapsed.
+
 > ℹ️ **Note**
 >
 > When implementing invariant tests is important to be aware that for each `invariant_*` function a different EVM executor is created, therefore invariants are not asserted against same EVM state. This means that if `invariant_A()` and `invariant_B()` functions are defined then `invariant_B()` won't be asserted against EVM state of `invariant_A()` (and the other way around).
@@ -167,6 +169,10 @@ targetContract2:
 ```
 
 This is something to be mindful of when designing target contracts, as target contracts with less functions will have each function called more often due to this probability distribution.
+
+> ℹ️ **Note**
+> 
+> A good practice is to set `show_metrics = true` in order to get a breakdown of all handler function calls and which functions are reverting/getting discarded (through `vm.assume` cheatcode).
 
 ### Invariant Test Helper Functions
 Invariant test helper functions are included in [`forge-std`](https://github.com/foundry-rs/forge-std/blob/master/src/StdInvariant.sol) to allow for configurable invariant test setup. The helper functions are outlined below:
