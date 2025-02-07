@@ -38,17 +38,25 @@ function snapshotGasLastCall(string calldata group, string calldata name) extern
 
 `snapshotGas*` cheatcodes allow you to capture gas usage in your tests. This can be useful to track how much gas your logic is consuming. You can capture the gas usage of the last call by name, capture an arbitrary numerical value by name, or start and stop a snapshot capture of the current gas usage by name.
 
-In order to strictly compare gas usage across test runs you can do one of the following:
+In order to strictly compare gas usage across test runs you can set one of the following:
 
 - Set the `FORGE_SNAPSHOT_CHECK=true` environment variable
 - Set `gas_snapshot_check = true` in `foundry.toml`
 - Pass `--gas-snapshot-check=true`
 
-By default this is not enabled and passing `--gas-snapshot-check=false` will override all others.
+By default this is **not enabled** and passing `--gas-snapshot-check=false` will override all others.
 
 This will compare the gas usage of your tests against the last snapshot and fail if the gas usage has changed.
 
 It is intended that the `snapshots` directory created when using the `snapshotGas*` cheatcodes is checked into version control. This allows you to track changes in gas usage over time and compare gas usage during code reviews.
+
+To disable the emitting of gas snapshots you can set one of the following:
+
+- Set the `FORGE_SNAPSHOT_EMIT=false` environment variable.
+- Set `gas_snapshot_emit = false` in `foundry.toml`.
+- Pass `--gas-snapshot-emit=false`
+
+By default this is **enabled** and gas snapshots are written to disk.
 
 ### Examples
 
@@ -56,8 +64,6 @@ Capturing the gas usage of a section of code that calls an external contract:
 
 ```solidity
 contract SnapshotGasTest is Test {
-    uint256 public slot0;
-
     Flare public flare;
 
     function setUp() public {
@@ -77,7 +83,6 @@ Capturing the gas usage of multiple sections of code that modify the internal st
 ```solidity
 contract SnapshotGasTest is Test {
     uint256 public slot0;
-
 
     /// Writes to `snapshots/SnapshotGasTest.json` group with name `internalA`, `internalB`, and `internalC`.
     function testSnapshotGas() public {
