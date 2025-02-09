@@ -3,7 +3,7 @@
 $ forge install vectorized/solady
 // ANCHOR_END: command
 // ANCHOR: output
-Installing solady in /tmp/tmp.zsoajxRxB4/hello_foundry/lib/solady (url: Some("https://github.com/vectorized/solady"), tag: None)
-    Installed solady v0.1.3
+Installing solady in /tmp/tmp.IR66eHwrEn/hello_foundry/lib/solady (url: Some("https://github.com/vectorized/solady"), tag: None)
+    Installed solady v0.1.7
 // ANCHOR_END: output
 // ANCHOR_END: all
