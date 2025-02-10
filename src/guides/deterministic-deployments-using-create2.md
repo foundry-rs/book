@@ -34,7 +34,7 @@ cbor_metadata = false
 
 It is required to pin your `solc` (Solidity) version. It is generally recommended to use a recent version or, if preferred, the latest version.
 
-Next, configure your `evm_version`. It is generally recommended to use the most recent hardfork but depending on your deployment targets this may need to use an older hardfork due to opcode incompatibilites.
+Next, configure your `evm_version`. It is generally recommended to use the most recent hardfork but depending on your deployment targets this may need to use an older hardfork due to opcode incompatibilities.
 
 By default the Solidity compiler appends the hash of the metadata file at end of the bytecode. This bytecode includes things like the compiler version and the ABI.
 
