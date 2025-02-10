@@ -390,7 +390,7 @@ Number of runs to use for generating gas report.
 
 - Type: string (path)
 - Default: `./cache/fuzz`
-- Environment: `FOUNDRY_FUZZ_FAILURE_PERIST_DIR`
+- Environment: `FOUNDRY_FUZZ_FAILURE_PERSIST_DIR`
 
 Path where fuzz failures are recorded and replayed.
 
@@ -398,7 +398,7 @@ Path where fuzz failures are recorded and replayed.
 
 - Type: string
 - Default: `failures`
-- Environment: `FOUNDRY_FUZZ_FAILURE_PERIST_FILE`
+- Environment: `FOUNDRY_FUZZ_FAILURE_PERSIST_FILE`
 
 Name of the file to record fuzz failures.
 
@@ -518,7 +518,7 @@ Number of runs to use for generating gas report.
 
 - Type: string (path)
 - Default: `./cache/invariant`
-- Environment: `FOUNDRY_INVARIANT_FAILURE_PERIST_DIR`
+- Environment: `FOUNDRY_INVARIANT_FAILURE_PERSIST_DIR`
 
 Path where invariant failures are recorded and replayed.
 
