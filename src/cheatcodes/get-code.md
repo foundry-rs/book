@@ -63,7 +63,7 @@ vm.getCode("MyContract:0.8.18");
 ### SEE ALSO
 
 [`getDeployedCode`](./get-deployed-code.md)
-[`eth`](./etch.md)
+[`etch`](./etch.md)
 
 Forge Standard Library
 
