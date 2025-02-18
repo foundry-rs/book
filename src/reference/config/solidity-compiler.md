@@ -7,6 +7,7 @@ Configuration related to the behavior of the Solidity compiler.
 - [General](#general)
 - [Optimizer](#optimizer)
 - [Model Checker](#model-checker)
+- [Compilation Restrictions](#compilation-restrictions)
 
 ### General
 
@@ -452,3 +453,174 @@ Sets the model checker targets. Valid values are:
 - `popEmptyArray`: Popping an empty array
 - `outOfBounds`: Out of bounds array/fixed bytes index access
 - `default`: All of the above (note: not the default for Forge)
+
+### Compilation Restrictions
+
+Compilation restrictions allows configuration of how individual files or directories within projects are compiled.
+
+> For a complex configuration of compiler profiles and compiler restrictions please refer to Uniswap [contracts monorepo](https://github.com/Uniswap/contracts/blob/4d80a9cfed9b920b83a394b168a95319606a0b73/foundry.toml#L27-L72).
+
+For example, with configuration below, `Counter.sol` contract under `src` is compiled with `via-ir` option enabled while all other contracts (including tests) are compiled with the default profile.
+```toml
+# add via_ir profile
+additional_compiler_profiles = [ { name = "via-ir", via_ir = true } ]
+
+# enforce compiling tests without via_ir and only some heavy contract with via_ir
+# note: it will only work if tests are using vm.deployCode to deploy contract
+compilation_restrictions = [
+    { paths = "test/**", via_ir = false },
+    { paths = "src/Counter.sol", via_ir = true },
+]
+```
+
+We can configure how individual files or directories are compiled by specifying the `compilation_restrictions` configuration (which applies to sources importing the restricted file as well).  
+Once we have a set of restrictions we need to construct settings objects to satisfy them. This is done by adding `additional_compiler_profiles`, which is a mapping from profile name to settings overrides.
+
+In the example above, we added a single profile named `via-ir` which uses default compilation settings but enables `via_ir` option, making it possible to compile the `Counter.sol` contract with `via_ir`, while all other contracts (including tests) with the default profile.  
+When choosing compiler profile, first profile (starting with default one) satisfying restrictions of the source file and all of its imports will be used.
+
+> If the same source file is compiled with several profiles, then an artifact is generated for each profile - if `Counter` is compiled with default and `v1` profile, `Counter.json` and `Counter.v1.json` artifacts are created.
+
+#### Additional compiler settings:
+`[additional_compiler_profiles]`
+
+- Type: array of additional compiler profiles
+
+Configures a mapping from profile name to settings overrides.
+
+For example, an additional `via-ir` compiler profile that changes compilation pipeline to go through the new IR optimizer can be defined as:
+```toml
+additional_compiler_profiles = [ { name = "via-ir", via_ir = true } ]
+```
+
+There are several configurable values for a compiler profile:
+- `name`
+- `via_ir`
+- `evm_version`
+- `optimizer`
+- `optimizer_runs`
+- `bytecode_hash`
+
+##### `additional_compiler_profile.name`
+
+- Type: string
+
+Additional compiler profile name.
+
+##### `additional_compiler_profile.via_ir`
+
+- Type: boolean
+- Default: false
+
+Additional compiler profile [via_ir](#via_ir) setting.
+
+##### `additional_compiler_profile.evm_version`
+
+- Type: string
+- Default: cancun
+
+Additional compiler profile [evm_version](#evm_version) setting.
+
+##### `additional_compiler_profile.optimizer`
+
+- Type: boolean
+- Default: false
+
+Additional compiler profile [optimizer](#optimizer) setting.
+
+##### `additional_compiler_profile.optimizer_runs`
+
+- Type: integer
+- Default: 200
+
+Additional compiler profile [optimizer_runs](#optimizer_runs) setting.
+
+##### `additional_compiler_profile.bytecode_hash`
+
+- Type: string
+- Default: ipfs
+
+Additional compiler profile [bytecode_hash](#bytecode_hash) setting.
+
+#### Compilation restrictions settings:
+#### `[compilation_restrictions]`
+
+- Type: array of compilation restrictions settings
+
+##### `compilation_restriction.paths`
+
+- Type: regex
+
+Only applies compilation restrictions on files matching given paths.
+
+For example:
+- `src/contracts/Counter.sol` - apply restrictions for specific contract
+- `src/contracts/{Counter,CounterFactory}.sol` - apply restrictions for multiple contracts, by name
+- `src/v1/**` or `src/v3/**/libraries/**` - apply restrictions for all contracts in matching source path
+
+There are several configurable values for an compilation restriction:
+- `version`
+- `via_ir`
+- `bytecode_hash`
+- `optimizer_runs`
+- `min_optimizer_runs`
+- `max_optimizer_runs`
+- `evm_version`
+- `min_evm_version`
+- `max_evm_version`
+
+##### `compilation_restriction.version`
+
+- Type: string (semver)
+
+Restrict compilation for specific [solc_version](#solc_version).
+
+##### `compilation_restriction.via_ir`
+
+- Type: boolean
+
+Restrict compilation for specific [via_ir](#via_ir) setting.
+
+##### `compilation_restriction.bytecode_hash`
+
+- Type: string
+
+Restrict compilation matching provided bytecode hash method.
+
+##### `compilation_restriction.optimizer_runs`
+
+- Type: integer
+
+Restrict compilation for specific [optimizer_runs](#optimizer_runs) setting. Conflicts with `min_optimizer_runs` and `max_optimizer_runs` settings.
+
+##### `compilation_restriction.min_optimizer_runs`
+
+- Type: integer
+
+Restrict compilation for min of [optimizer_runs](#optimizer_runs) setting. Conflicts with `optimizer_runs` setting, requires `max_optimizer_runs` setting.
+
+##### `compilation_restriction.max_optimizer_runs`
+
+- Type: integer
+
+Restrict compilation for max of [optimizer_runs](#optimizer_runs) setting. Conflicts with `optimizer_runs` setting, requires `min_optimizer_runs` setting.
+
+##### `compilation_restriction.evm_version`
+
+- Type: string
+
+Restrict compilation for specific [evm_version](#evm_version) setting. Conflicts with `min_evm_version` and `max_evm_version` settings.
+
+##### `compilation_restriction.min_evm_version`
+
+- Type: string
+
+Restrict compilation for a min version of [evm_version](#evm_version) setting. Conflicts with `evm_version` setting, requires `max_evm_version` setting.
+
+##### `compilation_restriction.max_evm_version`
+
+- Type: string
+
+Restrict compilation for a max version of [evm_version](#evm_version) setting. Conflicts with `evm_version` setting, requires `min_evm_version` setting.
+
+
