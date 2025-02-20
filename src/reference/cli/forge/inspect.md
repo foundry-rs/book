@@ -23,6 +23,9 @@ Arguments:
           errors, events, eof, eof-init]
 
 Options:
+      --pretty
+          Pretty print the selected field, if supported
+
   -h, --help
           Print help (see a summary with '-h')
 

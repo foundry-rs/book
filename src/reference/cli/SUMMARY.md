@@ -13,6 +13,7 @@
   - [`forge config`](./forge/config.md)
   - [`forge coverage`](./forge/coverage.md)
   - [`forge create`](./forge/create.md)
+  - [`forge debug`](./forge/debug.md)
   - [`forge doc`](./forge/doc.md)
   - [`forge eip712`](./forge/eip712.md)
   - [`forge flatten`](./forge/flatten.md)
@@ -88,6 +89,7 @@
   - [`cast disassemble`](./cast/disassemble.md)
   - [`cast estimate`](./cast/estimate.md)
     - [`cast estimate --create`](./cast/estimate/--create.md)
+  - [`cast etherscan-source`](./cast/etherscan-source.md)
   - [`cast find-block`](./cast/find-block.md)
   - [`cast format-bytes32-string`](./cast/format-bytes32-string.md)
   - [`cast format-units`](./cast/format-units.md)
@@ -131,7 +133,6 @@
   - [`cast shr`](./cast/shr.md)
   - [`cast sig`](./cast/sig.md)
   - [`cast sig-event`](./cast/sig-event.md)
-  - [`cast source`](./cast/source.md)
   - [`cast storage`](./cast/storage.md)
   - [`cast storage-root`](./cast/storage-root.md)
   - [`cast to-ascii`](./cast/to-ascii.md)
@@ -162,3 +163,4 @@
     - [`cast wallet list`](./cast/wallet/list.md)
     - [`cast wallet private-key`](./cast/wallet/private-key.md)
     - [`cast wallet decrypt-keystore`](./cast/wallet/decrypt-keystore.md)
+

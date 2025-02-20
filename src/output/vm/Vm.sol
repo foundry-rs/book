@@ -305,8 +305,6 @@ interface VmSafe {
         address implementation;
     }
 
-<<<<<<< HEAD
-=======
     /// Represents a "potential" revert reason from a single subsequent call when using `vm.assumeNoReverts`.
     /// Reverts that match will result in a FOUNDRY::ASSUME rejection, whereas unmatched reverts will be surfaced
     /// as normal.
@@ -319,7 +317,6 @@ interface VmSafe {
         bytes revertData;
     }
 
->>>>>>> 67be473
     // ======== Crypto ========
 
     /// Derives a private key from the name, labels the account with that name, and returns the wallet.
@@ -1609,15 +1606,12 @@ interface VmSafe {
     /// Discard this run's fuzz inputs and generate new ones if next call reverted.
     function assumeNoRevert() external pure;
 
-<<<<<<< HEAD
-=======
     /// Discard this run's fuzz inputs and generate new ones if next call reverts with the potential revert parameters.
     function assumeNoRevert(PotentialRevert calldata potentialRevert) external pure;
 
     /// Discard this run's fuzz inputs and generate new ones if next call reverts with the any of the potential revert parameters.
     function assumeNoRevert(PotentialRevert[] calldata potentialReverts) external pure;
 
->>>>>>> 67be473
     /// Writes a breakpoint to jump to in the debugger.
     function breakpoint(string calldata char) external pure;
 
@@ -1625,17 +1619,10 @@ interface VmSafe {
     function breakpoint(string calldata char, bool value) external pure;
 
     /// Returns the Foundry version.
-<<<<<<< HEAD
-    /// Format: <cargo_version>+<git_sha>+<build_timestamp>
-    /// Sample output: 0.2.0+faa94c384+202407110019
-    /// Note: Build timestamps may vary slightly across platforms due to separate CI jobs.
-    /// For reliable version comparisons, use YYYYMMDD0000 format (e.g., >= 202407110000)
-=======
     /// Format: <cargo_version>-<tag>+<git_sha_short>.<unix_build_timestamp>.<profile>
     /// Sample output: 0.3.0-nightly+3cb96bde9b.1737036656.debug
     /// Note: Build timestamps may vary slightly across platforms due to separate CI jobs.
     /// For reliable version comparisons, use UNIX format (e.g., >= 1700000000)
->>>>>>> 67be473
     /// to compare timestamps while ignoring minor time differences.
     function getFoundryVersion() external view returns (string memory version);
 

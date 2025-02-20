@@ -308,7 +308,7 @@ Transaction options:
 
 Ethereum options:
   -r, --rpc-url <URL>
-          The RPC endpoint, default value is http://localhost:8545
+          The RPC endpoint
           
           [env: ETH_RPC_URL=]
 
@@ -435,7 +435,7 @@ Verifier options:
       --verifier <VERIFIER>
           The contract verification provider to use
           
-          [default: sourcify]
+          [default: etherscan]
 
           Possible values:
           - etherscan
