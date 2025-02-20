@@ -4,17 +4,27 @@ $ forge test --zksync --match-path test/ContractB.t.sol
 // ANCHOR_END: command
 // ANCHOR: output
 Compiling 1 files with Solc 0.8.10
+<<<<<<< HEAD
 Solc 0.8.10 finished in 881.33ms
 Compiler run successful!
 
 Compiling 1 files with zksolc and solc 0.8.10
 zksolc and solc 0.8.10 finished in 4.36s
+=======
+Solc 0.8.10 finished in 614.61ms
+>>>>>>> 67be473
 Compiler run successful!
 
 Ran 1 test for test/ContractB.t.sol:ContractBTest
 [PASS] testExample() (gas: 257)
+<<<<<<< HEAD
 Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 199.54µs (48.92µs CPU time)
 
 Ran 1 test suite in 4.24ms (199.54µs CPU time): 1 tests passed, 0 failed, 0 skipped (1 total tests)
+=======
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 344.46µs (38.95µs CPU time)
+
+Ran 1 test suite in 5.54ms (344.46µs CPU time): 1 tests passed, 0 failed, 0 skipped (1 total tests)
+>>>>>>> 67be473
 // ANCHOR_END: output
 // ANCHOR_END: all

@@ -80,10 +80,6 @@
 
 - [Cast](./cast/README.md)
 
-# Anvil-ZKsync Overview
-
-- [Anvil-ZKsync](./anvil-zksync/README.md)
-
 # Not Supported
 
 - [Chisel](./chisel/README.md)

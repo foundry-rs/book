@@ -29,6 +29,10 @@ $ tree . -L 3 -I output
 └── test
     └── Counter.t.sol
 
+<<<<<<< HEAD
 11 directories, 14 files
+=======
+9 directories, 11 files
+>>>>>>> 67be473
 // ANCHOR_END: output
 // ANCHOR_END: all

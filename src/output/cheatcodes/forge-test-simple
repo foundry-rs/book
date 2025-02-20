@@ -4,6 +4,7 @@ $ forge test --zksync --match-test test_IncrementAsOwner
 // ANCHOR_END: command
 // ANCHOR: output
 Compiling 24 files with Solc 0.8.10
+<<<<<<< HEAD
 Solc 0.8.10 finished in 948.31ms
 Compiler run successful!
 
@@ -18,5 +19,15 @@ Ran 1 test for test/OwnerUpOnly.t.sol:OwnerUpOnlyTest
 Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 24.66ms (15.22ms CPU time)
 
 Ran 1 test suite in 25.11ms (24.66ms CPU time): 1 tests passed, 0 failed, 0 skipped (1 total tests)
+=======
+Solc 0.8.10 finished in 669.97ms
+Compiler run successful!
+
+Ran 1 test for test/OwnerUpOnly.t.sol:OwnerUpOnlyTest
+[PASS] test_IncrementAsOwner() (gas: 29808)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 505.33µs (65.17µs CPU time)
+
+Ran 1 test suite in 5.49ms (505.33µs CPU time): 1 tests passed, 0 failed, 0 skipped (1 total tests)
+>>>>>>> 67be473
 // ANCHOR_END: output
 // ANCHOR_END: all

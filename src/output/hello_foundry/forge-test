@@ -269,10 +269,18 @@ No files changed, compilation skipped
 2025-01-29T13:27:56.138205Z ERROR foundry_zksync_core::vm::inspect: reverting initiator tx nonce for CALL address=0x1804c8ab1f12e6bbf3894d4083f33e07309d1f38 from=3 to=2 deploy_nonce=2
 
 Ran 2 tests for test/Counter.t.sol:CounterTest
+<<<<<<< HEAD
 [PASS] testFuzz_SetNumber(uint256) (runs: 256, μ: 245970, ~: 240830)
 [PASS] test_Increment() (gas: 237761)
 Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 2.59s (2.58s CPU time)
 
 Ran 1 test suite in 2.59s (2.59s CPU time): 2 tests passed, 0 failed, 0 skipped (2 total tests)
+=======
+[PASS] testFuzz_SetNumber(uint256) (runs: 256, μ: 32229, ~: 32385)
+[PASS] test_Increment() (gas: 31874)
+Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 9.94ms (9.54ms CPU time)
+
+Ran 1 test suite in 10.94ms (9.94ms CPU time): 2 tests passed, 0 failed, 0 skipped (2 total tests)
+>>>>>>> 67be473
 // ANCHOR_END: output
 // ANCHOR_END: all

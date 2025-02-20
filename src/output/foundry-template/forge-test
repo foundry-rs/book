@@ -12,10 +12,18 @@ No files changed, compilation skipped
 
 Ran 3 tests for tests/Foo.t.sol:FooTest
 [PASS] testFork_Example() (gas: 3755)
+<<<<<<< HEAD
 [PASS] testFuzz_Example(uint256) (runs: 1000, μ: 116733, ~: 116733)
 [PASS] test_Example() (gas: 119483)
 Suite result: ok. 3 passed; 0 failed; 0 skipped; finished in 5.13s (5.12s CPU time)
 
 Ran 1 test suite in 5.13s (5.13s CPU time): 3 tests passed, 0 failed, 0 skipped (3 total tests)
+=======
+[PASS] testFuzz_Example(uint256) (runs: 1000, μ: 9111, ~: 9111)
+[PASS] test_Example() (gas: 11861)
+Suite result: ok. 3 passed; 0 failed; 0 skipped; finished in 21.10ms (20.80ms CPU time)
+
+Ran 1 test suite in 22.01ms (21.10ms CPU time): 3 tests passed, 0 failed, 0 skipped (3 total tests)
+>>>>>>> 67be473
 // ANCHOR_END: output
 // ANCHOR_END: all
