@@ -50,7 +50,7 @@
   - [`forge verify-contract`](./forge/verify-contract.md)
 - [`cast`](./cast.md)
   - [`cast 4byte`](./cast/4byte.md)
-  - [`cast 4byte-decode`](./cast/4byte-decode.md)
+  - [`cast 4byte-calldata`](./cast/4byte-calldata.md)
   - [`cast 4byte-event`](./cast/4byte-event.md)
   - [`cast abi-encode`](./cast/abi-encode.md)
   - [`cast access-list`](./cast/access-list.md)
@@ -171,4 +171,3 @@
   - [`chisel view`](./chisel/view.md)
   - [`chisel clear-cache`](./chisel/clear-cache.md)
   - [`chisel eval`](./chisel/eval.md)
-
