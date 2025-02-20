@@ -24,7 +24,7 @@ Options:
           Can also be the tags earliest, finalized, safe, latest, or pending.
 
   -r, --rpc-url <URL>
-          The RPC endpoint
+          The RPC endpoint, default value is http://localhost:8545
           
           [env: ETH_RPC_URL=]
 

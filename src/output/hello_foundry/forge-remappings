@@ -3,9 +3,11 @@
 $ forge remappings
 // ANCHOR_END: command
 // ANCHOR: output
-ds-test/=lib/solmate/lib/ds-test/src/
-forge-std/=lib/forge-std/src/
-solmate/=lib/solmate/src/
-weird-erc20/=lib/weird-erc20/src/
+lib
+├── forge-std
+├── solmate
+└── weird-erc20
+
+4 directories, 0 files
 // ANCHOR_END: output
 // ANCHOR_END: all

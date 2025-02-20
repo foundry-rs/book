@@ -4,13 +4,12 @@
 
 # Getting Started
 
-- [Installation](./getting-started/installation.md)
-- [First Steps with Foundry](./getting-started/first-steps.md)
+- [Installation](getting-started/installation.md)
+- [First Steps with Foundry](getting-started/first-steps.md)
 
 # Projects
 
 - [Creating a New Project](./projects/creating-a-new-project.md)
-- [Working on an Existing Project](./projects/working-on-an-existing-project.md)
 - [Clone a Verified Contract on Chain](./projects/clone-a-verified-contract.md)
 - [Dependencies](./projects/dependencies.md)
 - [Soldeer](./projects/soldeer.md)
@@ -209,7 +208,6 @@
       - [`cast disassemble`](./reference/cli/cast/disassemble.md)
       - [`cast estimate`](./reference/cli/cast/estimate.md)
         - [`cast estimate --create`](./reference/cli/cast/estimate/--create.md)
-      - [`cast etherscan-source`](./reference/cli/cast/etherscan-source.md)
       - [`cast find-block`](./reference/cli/cast/find-block.md)
       - [`cast format-bytes32-string`](./reference/cli/cast/format-bytes32-string.md)
       - [`cast format-units`](./reference/cli/cast/format-units.md)
@@ -253,6 +251,7 @@
       - [`cast shr`](./reference/cli/cast/shr.md)
       - [`cast sig`](./reference/cli/cast/sig.md)
       - [`cast sig-event`](./reference/cli/cast/sig-event.md)
+      - [`cast source`](./reference/cli/cast/source.md)
       - [`cast storage`](./reference/cli/cast/storage.md)
       - [`cast storage-root`](./reference/cli/cast/storage-root.md)
       - [`cast to-ascii`](./reference/cli/cast/to-ascii.md)
