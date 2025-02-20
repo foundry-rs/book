@@ -33,4 +33,4 @@ Tries to decode the calldata using <https://openchain.xyz/signatures> unless `--
 
 ### SEE ALSO
 
-[cast](./cast.md), [cast 4byte-decode](./cast-4byte-decode.md)
+[cast](./cast.md), [cast 4byte-calldata](./cast-4byte-calldata.md)
