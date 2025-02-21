@@ -77,6 +77,11 @@ Display options:
           - always: Force color output
           - never:  Force disable color output
 
+  -s, --suppress-successful-traces
+          Suppress successful test traces and show only traces for failures
+          
+          [env: FORGE_SUPPRESS_SUCCESSFUL_TRACES=]
+
       --junit
           Output test results as JUnit XML report
 
@@ -144,6 +149,12 @@ Test options:
           Check gas snapshots against previous runs
           
           [env: FORGE_SNAPSHOT_CHECK=]
+          [possible values: true, false]
+
+      --gas-snapshot-emit <GAS_SNAPSHOT_EMIT>
+          Enable/disable recording of gas snapshot results
+          
+          [env: FORGE_SNAPSHOT_EMIT=]
           [possible values: true, false]
 
       --allow-failure

@@ -1,31 +1,28 @@
-# cast wallet
+# cast wallet remove
 
-Wallet management utilities
+Remove a wallet from the keystore.
 
 ```bash
-$ cast wallet --help
+$ cast wallet remove --help
 ```
 
 ```txt
-Usage: cast wallet [OPTIONS] <COMMAND>
-
-Commands:
-  new               Create a new random keypair [aliases: n]
-  new-mnemonic      Generates a random BIP39 mnemonic phrase [aliases: nm]
-  vanity            Generate a vanity address [aliases: va]
-  address           Convert a private key to an address [aliases: a, addr]
-  sign              Sign a message or typed data [aliases: s]
-  sign-auth         EIP-7702 sign authorization [aliases: sa]
-  verify            Verify the signature of a message [aliases: v]
-  import            Import a private key into an encrypted keystore [aliases: i]
-  list              List all the accounts in the keystore default directory
-                    [aliases: ls]
-  remove            Remove a wallet from the keystore [aliases: rm]
-  private-key       Derives private key from mnemonic [aliases: pk]
-  decrypt-keystore  Decrypt a keystore file to get the private key [aliases: dk]
-  help              Print this message or the help of the given subcommand(s)
+Usage: cast wallet remove --name <NAME>
 
 Options:
+      --name <NAME>
+          The alias (or name) of the wallet to remove
+
+      --dir <DIR>
+          Optionally provide the keystore directory if not provided. default
+          directory will be used (~/.foundry/keystores)
+
+      --unsafe-password <PASSWORD>
+          Password for the JSON keystore in cleartext This is unsafe, we
+          recommend using the default hidden password prompt
+          
+          [env: CAST_UNSAFE_PASSWORD=]
+
   -h, --help
           Print help (see a summary with '-h')
 
