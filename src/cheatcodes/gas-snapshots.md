@@ -58,6 +58,15 @@ To disable the emitting of gas snapshots you can set one of the following:
 
 By default this is **enabled** and gas snapshots are written to disk.
 
+> ℹ️ **Isolated tests**
+>
+> These cheatcodss are not accurate if not using isolated test mode.
+>
+> You can enable isolation mode by passing the `--isolate` flag or
+> tag the test function with the inline configuration:
+>
+> `/// forge-config: default.isolate = true`
+
 ### Examples
 
 Capturing the gas usage of a section of code that calls an external contract:
