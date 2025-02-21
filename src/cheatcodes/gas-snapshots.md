@@ -60,10 +60,10 @@ By default this is **enabled** and gas snapshots are written to disk.
 
 > ℹ️ **Isolated tests**
 >
-> These cheatcodss are not accurate if not using isolated test mode.
+> These cheatcodes are not accurate if not using isolated test mode.
 >
 > You can enable isolation mode by passing the `--isolate` flag or
-> tag the test function with the inline configuration:
+> tag the test function with the following inline configuration:
 >
 > `/// forge-config: default.isolate = true`
 
