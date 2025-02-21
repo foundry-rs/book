@@ -160,6 +160,7 @@
     - [`cast wallet verify`](./cast/wallet/verify.md)
     - [`cast wallet import`](./cast/wallet/import.md)
     - [`cast wallet list`](./cast/wallet/list.md)
+    - [`cast wallet remove`](./cast/wallet/remove.md)
     - [`cast wallet private-key`](./cast/wallet/private-key.md)
     - [`cast wallet decrypt-keystore`](./cast/wallet/decrypt-keystore.md)
 - [`anvil`](./anvil.md)
@@ -171,3 +172,4 @@
   - [`chisel view`](./chisel/view.md)
   - [`chisel clear-cache`](./chisel/clear-cache.md)
   - [`chisel eval`](./chisel/eval.md)
+

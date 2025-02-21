@@ -13,7 +13,7 @@ Commands:
   4byte                  Get the function signatures for the given selector from
                          https://openchain.xyz [aliases: 4, 4b]
   4byte-calldata         Decode ABI-encoded calldata using https://openchain.xyz
-                         [aliases: 4d, 4bd]
+                         [aliases: 4c, 4bc]
   4byte-event            Get the event signature for a given topic 0 from
                          https://openchain.xyz [aliases: 4e, 4be, topic0-event,
                          t0e]
@@ -181,7 +181,7 @@ Options:
   -j, --threads <THREADS>
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
-
+          
           [aliases: jobs]
 
   -V, --version
@@ -204,11 +204,11 @@ Display options:
 
   -v, --verbosity...
           Verbosity level of the log messages.
-
+          
           Pass multiple times to increase the verbosity (e.g. -v, -vv, -vvv).
-
+          
           Depending on the context the verbosity levels have different meanings.
-
+          
           For example, the verbosity levels of the EVM are:
           - 2 (-vv): Print logs for all tests.
           - 3 (-vvv): Print execution traces for failing tests.

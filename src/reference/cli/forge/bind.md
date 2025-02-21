@@ -61,7 +61,10 @@ Options:
           Don't add any additional derives to generated bindings
 
       --alloy-version <ALLOY_VERSION>
-          Specify the alloy version
+          Specify the `alloy` version on Crates
+
+      --alloy-rev <ALLOY_REV>
+          Specify the `alloy` revision on GitHub
 
   -h, --help
           Print help (see a summary with '-h')

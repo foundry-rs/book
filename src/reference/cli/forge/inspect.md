@@ -170,6 +170,10 @@ Project options:
           Path to the config file
 
 Display options:
+  -s, --strip-yul-comments
+          Whether to remove comments when inspecting `ir` and `irOptimized`
+          artifact fields
+
       --color <COLOR>
           The color of the log messages
 
