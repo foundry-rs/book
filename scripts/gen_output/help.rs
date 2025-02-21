@@ -223,7 +223,7 @@ fn parse_sub_commands(s: &str) -> Vec<String> {
 
 /// Writes the markdown for a command to out_dir.
 fn cmd_markdown(out_dir: &Path, template_dir: &Path, cmd: &Cmd, stdout: &str) -> io::Result<()> {
-    let mut out = format!("# {}\n\n{}", cmd, help_markdown(cmd, stdout));
+    let mut out = format!("# {}\n\n{}", cmd, description_markdown(stdout));
 
     let template_path = template_dir.join(cmd.md_path()).with_extension("md");
     let template = fs::read_to_string(&template_path).unwrap_or_default();
@@ -232,6 +232,8 @@ fn cmd_markdown(out_dir: &Path, template_dir: &Path, cmd: &Cmd, stdout: &str) ->
         out.push_str(&content_markdown(&template));
     }
 
+    out.push_str(&help_markdown(cmd, stdout));
+
     let out_path = out_dir.join(cmd.md_path());
     fs::create_dir_all(out_path.parent().unwrap())?;
     write_file(&out_path.with_extension("md"), &out)?;
@@ -239,16 +241,22 @@ fn cmd_markdown(out_dir: &Path, template_dir: &Path, cmd: &Cmd, stdout: &str) ->
     Ok(())
 }
 
-/// Returns the markdown for a command's help output.
-fn help_markdown(cmd: &Cmd, stdout: &str) -> String {
-    let (description, s) = parse_description(stdout);
-    let help = preprocess_help(s.trim());
-    format!("{description}\n\n```bash\n$ {cmd} --help\n```\n\n```txt\n{help}\n```")
+/// Returns the markdown for a command's description.
+fn description_markdown(stdout: &str) -> String {
+    let (description, _) = parse_description(stdout);
+    format!("{description}\n\n")
 }
 
-/// Returns the markdown for a content string.
+/// Returns the markdown for a command's help output.
+fn help_markdown(cmd: &Cmd, stdout: &str) -> String {
+    let (_, s) = parse_description(stdout);
+    let help = preprocess_help(s.trim());
+    format!("### CLI\n\n```bash\n$ {cmd} --help\n```\n\n```txt\n{help}\n```")
+}
+
+/// Returns the markdown for the template content.
 fn content_markdown(content: &str) -> String {
-    format!("\n\n{content}\n")
+    format!("{content}\n")
 }
 
 /// Splits the help output into a description and the rest.
