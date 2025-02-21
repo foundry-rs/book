@@ -15,6 +15,7 @@ gen_help() {
     --root-indentation 4
     --readme
     --verbose
+    --template-dir "$SCRIPTS/templates/"
     --out-dir "$ROOT/src/reference/cli/"
     "${bins[@]}"
   )
