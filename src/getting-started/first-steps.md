@@ -33,4 +33,4 @@ To run the tests, use the [`forge test --zksync`](../reference/forge/forge-test.
 >
 > You can always view detailed help for any command or subcommand by appending `--help` to it.
 
-For visual learners, be sure to check out these [beginner tutorials](../tutorials/learn-foundry.md).
+For visual learners, be sure to check out these [beginner guides](../guides/video-tutorials.md).

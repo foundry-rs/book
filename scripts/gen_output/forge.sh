@@ -87,8 +87,8 @@ gen_forge() {
     forge test --zksync
 
   in_temp forge_tree
-  git clone https://github.com/FredCoen/nft-tutorial
-  cd nft-tutorial
+  git clone https://github.com/morpho-org/morpho-blue
+  cd morpho-blue
   forge install
   run_command "$OUTPUT_DIR/forge_tree/forge-tree" \
     forge tree

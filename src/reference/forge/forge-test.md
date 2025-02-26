@@ -88,17 +88,17 @@ You can pass `--json` to make it easier for outside extensions to parse structur
     forge test --gas-report
     ```
 
-4. Only run tests in `test/Contract.t.sol` in the `BigTest` contract that start with `testFail`:
+4. Only run tests in `test/Contract.t.sol` in the `BigTest` contract that start with `testRevert`:
     ```sh
     forge test --match-path test/Contract.t.sol --match-contract BigTest \
-      --match-test "testFail*"
+      --match-test "testRevert*"
     ```
 
 5. List tests in desired format
     ```sh
     forge test --list
     forge test --list --json
-    forge test --list --json --match-test "testFail*" | tail -n 1 | json_pp
+    forge test --list --json --match-test "testRevert*" | tail -n 1 | json_pp
     ```
 
 ### SEE ALSO

@@ -13,6 +13,7 @@
   - [`forge config`](./forge/config.md)
   - [`forge coverage`](./forge/coverage.md)
   - [`forge create`](./forge/create.md)
+  - [`forge debug`](./forge/debug.md)
   - [`forge doc`](./forge/doc.md)
   - [`forge eip712`](./forge/eip712.md)
   - [`forge flatten`](./forge/flatten.md)
@@ -162,3 +163,4 @@
     - [`cast wallet list`](./cast/wallet/list.md)
     - [`cast wallet private-key`](./cast/wallet/private-key.md)
     - [`cast wallet decrypt-keystore`](./cast/wallet/decrypt-keystore.md)
+

@@ -21,5 +21,7 @@ need_cmd bin/forge
 need_cmd bin/cast
 
 gen_help
-gen_forge
 gen_cast
+gen_chisel
+gen_forge
+gen_vm

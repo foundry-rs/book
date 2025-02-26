@@ -6,6 +6,7 @@ and let us help you!
 ### I can't build from source!
 
 Make sure you're on the latest stable Rust toolchain:
+
 ```sh
 rustup default stable
 rustup update stable
@@ -35,8 +36,8 @@ forge: /lib/x86_64-linux-gnu/libc.so.6: version 'GLIBC_2.29' not found (required
 
 There are 2 workarounds:
 
-1. [Building from source](./getting-started/installation.md#building-from-source)
-2. [Using Docker](./getting-started/installation.md#using-foundry-with-docker)
+1. [Building from source](getting-started/installation.md#building-from-source)
+2. [Using Docker](getting-started/installation.md#using-foundry-with-docker)
 
 ### Help! I can't see my logs!
 
@@ -200,6 +201,11 @@ error sending request for url (https://raw.githubusercontent.com/roynalnaruto/so
 Connection failed because access to the URL from your location may be restricted. To solve this, you should set proxy.
 
 You could run `export http_proxy=http://127.0.0.1:7890 https_proxy=http://127.0.0.1:7890` first in the terminal then you will `forge build` successfully.
+
+### I'm getting `[NotActivated] EvmError: NotActivated` error in my tests.
+
+This error refers to an EVM version mismatch, make sure the `evm_version` configuration is inline with the test (forked chain) you're using (similar for errors like `prevrandao not set`). See [`evm_version` configuration](../reference/config/solidity-compiler.html#evm_version)
+
 
 [tg-support]: https://t.me/foundry_support
 [forge-test]: ./reference/forge/forge-test.md
