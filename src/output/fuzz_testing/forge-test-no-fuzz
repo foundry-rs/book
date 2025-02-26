@@ -4,49 +4,6 @@ $ forge test --zksync
 // ANCHOR_END: command
 // ANCHOR: output
 Compiling 24 files with Solc 0.8.10
-<<<<<<< HEAD
-Solc 0.8.10 finished in 934.16ms
-Compiler run successful with warnings:
-Warning (9302): Return value of low-level calls not used.
-  --> test/Safe.t.sol:11:9:
-   |
-11 |         payable(msg.sender).call{value: address(this).balance}("");
-   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Warning (9302): Return value of low-level calls not used.
-  --> test/Safe.t.sol:27:9:
-   |
-27 |         payable(address(safe)).call{value: 1 ether}("");
-   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-
-Compiling 24 files with zksolc and solc 0.8.10
-zksolc and solc 0.8.10 finished in 4.73s
-Compiler run successful with warnings:
-Warning (9302)
-Warning: Return value of low-level calls not used.
-  --> test/Safe.t.sol:11:9:
-   |
-11 |         payable(msg.sender).call{value: address(this).balance}("");
-   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Warning (9302)
-Warning: Return value of low-level calls not used.
-  --> test/Safe.t.sol:27:9:
-   |
-27 |         payable(address(safe)).call{value: 1 ether}("");
-   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-2025-01-29T13:28:45.944600Z ERROR foundry_zksync_core::vm::inspect: reverting initiator tx nonce for CALL address=0x1804c8ab1f12e6bbf3894d4083f33e07309d1f38 from=3 to=2 deploy_nonce=2
-2025-01-29T13:28:45.949992Z ERROR foundry_zksync_core::vm::inspect: reverting initiator tx nonce for CALL address=0x1804c8ab1f12e6bbf3894d4083f33e07309d1f38 from=3 to=2 deploy_nonce=2
-2025-01-29T13:28:45.955143Z ERROR foundry_zksync_core::vm::inspect: reverting initiator tx nonce for CALL address=0x1804c8ab1f12e6bbf3894d4083f33e07309d1f38 from=3 to=2 deploy_nonce=2
-
-Ran 1 test for test/Safe.t.sol:SafeTest
-[PASS] test_Withdraw() (gas: 302901)
-Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 19.97ms (10.51ms CPU time)
-
-Ran 1 test suite in 20.46ms (19.97ms CPU time): 1 tests passed, 0 failed, 0 skipped (1 total tests)
-=======
 Solc 0.8.10 finished in 672.19ms
 Compiler run successful!
 
@@ -55,6 +12,5 @@ Ran 1 test for test/Safe.t.sol:SafeTest
 Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 507.43µs (53.51µs CPU time)
 
 Ran 1 test suite in 5.38ms (507.43µs CPU time): 1 tests passed, 0 failed, 0 skipped (1 total tests)
->>>>>>> 67be473
 // ANCHOR_END: output
 // ANCHOR_END: all

@@ -3,16 +3,7 @@
 $ forge remappings
 // ANCHOR_END: command
 // ANCHOR: output
-<<<<<<< HEAD
-lib
-├── forge-std
-├── solmate
-└── weird-erc20
-
-4 directories, 0 files
-=======
 forge-std/=lib/forge-std/src/
 solady/=lib/solady/src/
->>>>>>> 67be473
 // ANCHOR_END: output
 // ANCHOR_END: all
