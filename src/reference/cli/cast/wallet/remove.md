@@ -1,19 +1,28 @@
-# cast 4byte-decode
+# cast wallet remove
 
-Decode ABI-encoded calldata using https://openchain.xyz
+Remove a wallet from the keystore.
 
 ```bash
-$ cast 4byte-decode --help
+$ cast wallet remove --help
 ```
 
 ```txt
-Usage: cast 4byte-decode [OPTIONS] [CALLDATA]
-
-Arguments:
-  [CALLDATA]
-          The ABI-encoded calldata
+Usage: cast wallet remove --name <NAME>
 
 Options:
+      --name <NAME>
+          The alias (or name) of the wallet to remove
+
+      --dir <DIR>
+          Optionally provide the keystore directory if not provided. default
+          directory will be used (~/.foundry/keystores)
+
+      --unsafe-password <PASSWORD>
+          Password for the JSON keystore in cleartext This is unsafe, we
+          recommend using the default hidden password prompt
+          
+          [env: CAST_UNSAFE_PASSWORD=]
+
   -h, --help
           Print help (see a summary with '-h')
 

@@ -40,7 +40,7 @@ Optionally, pass `--etherscan-api-key <API_KEY>` to decode transaction traces us
 **Decode calldata**
 
 ```sh
-{{#include ../output/cast/cast-4byte-decode:all}}
+{{#include ../output/cast/cast-4byte-calldata:all}}
 ```
 
 **Send messages between two Anvil accounts**

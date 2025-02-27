@@ -1,55 +1,19 @@
-# forge init
+# cast 4byte-calldata
 
-Create a new Forge project
+Decode ABI-encoded calldata using https://openchain.xyz
 
 ```bash
-$ forge init --help
+$ cast 4byte-calldata --help
 ```
 
 ```txt
-Usage: forge init [OPTIONS] [PATH]
+Usage: cast 4byte-calldata [OPTIONS] [CALLDATA]
 
 Arguments:
-  [PATH]
-          The root directory of the new project
-          
-          [default: .]
+  [CALLDATA]
+          The ABI-encoded calldata
 
 Options:
-  -t, --template <TEMPLATE>
-          The template to start from
-
-  -b, --branch <BRANCH>
-          Branch argument that can only be used with template option. If not
-          specified, the default branch is used
-
-      --offline
-          Do not install dependencies from the network
-          
-          [aliases: no-deps]
-
-      --force
-          Create the project even if the specified root directory is not empty
-
-      --vscode
-          Create a .vscode/settings.json file with Solidity settings, and
-          generate a remappings.txt file
-
-      --shallow
-          Perform shallow clones instead of deep ones.
-          
-          Improves performance and reduces disk usage, but prevents switching
-          branches or tags.
-
-      --no-git
-          Install without adding the dependency as a submodule
-
-      --commit
-          Create a commit after installing the dependencies
-
-      --zksync
-          Install ZKsync specific libraries
-
   -h, --help
           Print help (see a summary with '-h')
 
