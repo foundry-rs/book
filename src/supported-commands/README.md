@@ -80,7 +80,7 @@ This is a comprehensive review of all the Foundry commands actually supported in
 | cast disassemble                    | ❌ Not Supported | Disassembles contract bytecode into readable EVM assembly instructions.                                                                  |
 | cast estimate                       | ❌ Not Supported | Estimates the gas cost of executing a transaction on the blockchain.                                                                     |
 | cast estimate --create              | ❌ Not Supported | Estimates the gas cost for deploying a contract with a creation transaction.                                                             |
-| cast etherscan-source               | ✅ Supported     | Fetches and displays the verified source code of a contract from Etherscan.                                                              |
+| cast source                         | ✅ Supported     | Fetches and displays the verified source code of a contract from  a block explorer.                                                              |
 | cast find-block                     | ✅ Supported     | Finds a block based on a given timestamp, returning the block number.                                                                    |
 | cast format-bytes32-string          | ✅ Supported     | Converts a string into a bytes32 format for Solidity.                                                                                    |
 | cast from-bin                       | ✅ Supported     | Decodes binary-encoded data into a human-readable format.                                                                                |
