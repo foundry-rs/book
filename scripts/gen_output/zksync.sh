@@ -41,7 +41,7 @@ download_nightlies() {
   FOUNDRYUP_VERSION=$FOUNDRYUP_TAG
   FOUNDRYUP_REPO=matter-labs/foundry-zksync
   RELEASE_URL="https://github.com/${FOUNDRYUP_REPO}/releases/download/${FOUNDRYUP_TAG}/"
-  BIN_ARCHIVE_URL="${RELEASE_URL}foundry_${FOUNDRYUP_VERSION}_${PLATFORM}_${ARCHITECTURE}.$EXT"
+  BIN_ARCHIVE_URL="${RELEASE_URL}foundry_zksync_${FOUNDRYUP_VERSION}_${PLATFORM}_${ARCHITECTURE}.$EXT"
   FOUNDRY_BIN_DIR=${FOUNDRY_BIN_DIR:-bin}
 
   mkdir -p "${FOUNDRY_BIN_DIR}"
