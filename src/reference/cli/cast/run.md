@@ -118,6 +118,9 @@ Options:
           
           [aliases: la]
 
+      --disable-block-gas-limit
+          Disable block gas limit check
+
   -h, --help
           Print help (see a summary with '-h')
 

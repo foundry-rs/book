@@ -25,7 +25,8 @@ Arguments:
 
 Options:
       --data <DATA>
-          Data for the transaction
+          Raw hex-encoded data for the transaction. Used instead of [SIG] and
+          [ARGS]
 
       --trace
           Forks the remote rpc, executes the transaction locally and prints a
