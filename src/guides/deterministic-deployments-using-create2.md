@@ -32,9 +32,15 @@ bytecode_hash = "none"
 cbor_metadata = false
 ```
 
+### Solc version
+
 It is required to pin your `solc` (Solidity) version. It is generally recommended to use a recent version or, if preferred, the latest version.
 
+### EVM version
+
 Next, configure your `evm_version`. It is generally recommended to use the most recent hardfork but depending on your deployment targets this may need to use an older hardfork due to opcode incompatibilities.
+
+### Metadata and bytecode
 
 By default the Solidity compiler appends the hash of the metadata file at end of the bytecode. This bytecode includes things like the compiler version and the ABI.
 
@@ -133,7 +139,21 @@ cbor_metadata = false
 
 You are not including the metadata hash as part of the bytecode. This means that whilst your bytecode can now be deterministic you won't be able to have a [`full match`](https://docs.sourcify.dev/docs/full-vs-partial-match/#full-perfect-matches), only a [`partial match`](https://docs.sourcify.dev/docs/full-vs-partial-match/#partial-matches) when verifying your contracts. Depending on your requirements this may be acceptable.
 
+### Optimizer
+
 If you are enabling the `optimizer` make sure your `optimizer_runs` stay consistent.
+
+### Create2 factory
+
+By default, your contracts won't use the default (or specified using the `create2_deployer` configuration) create2 factory and will default to executing the create2 opcode from the contract it's executed on. For example, this behavior occurs when running tests or executing scripts without a private key.
+
+You can use the following configuration:
+
+```toml
+always_use_create_2_factory = true
+```
+
+If you wish to always use the create2 factory. This comes handy if you wish to use the create2 factory deployment addresses in your tests for example.
 
 ## Deploying the contract
 
