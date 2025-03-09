@@ -33,8 +33,8 @@ The field to inspect (*field*) can be any of:
 
 ### OPTIONS
 
-`--pretty`  
-&nbsp;&nbsp;&nbsp;&nbsp;Pretty print the selected field, if supported.
+`--json`  
+&nbsp;&nbsp;&nbsp;&nbsp;Format output as JSON.
 
 {{#include core-build-options.md}}
 
@@ -52,9 +52,9 @@ The field to inspect (*field*) can be any of:
     forge inspect MyContract storage
     ```
 
-3. Inspect the abi of a contract in a pretty format:
+3. Inspect the abi of a contract in JSON format:
    ```sh
-   forge inspect --pretty MyContract abi
+   forge inspect --json MyContract abi
    ```
 
 ### SEE ALSO
