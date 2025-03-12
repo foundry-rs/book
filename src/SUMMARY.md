@@ -595,6 +595,7 @@
       - [`sig`](./reference/forge-std/sig.md)
       - [`with_key`](./reference/forge-std/with_key.md)
       - [`depth`](./reference/forge-std/depth.md)
+      - [`enable_packed_slots`](./reference/forge-std/enable_packed_slots.md)
       - [`checked_write`](./reference/forge-std/checked_write.md)
       - [`find`](./reference/forge-std/find.md)
       - [`read`](./reference/forge-std/read.md)

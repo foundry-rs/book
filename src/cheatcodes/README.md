@@ -32,7 +32,7 @@ Below are some subsections for the different Forge cheatcodes.
 - [Signing](./signing.md): Cheatcodes for signing
 - [Utilities](./utilities.md): Smaller utility cheatcodes
 - [Forking](./forking.md): Forking mode cheatcodes
-- [Snapshots](./snapshots.md): Snapshot cheatcodes
+- [State snapshots](./state-snapshots.md): State snapshot cheatcodes
 - [RPC](./rpc.md): RPC related cheatcodes
 - [File](./fs.md): Cheatcodes for working with files
 

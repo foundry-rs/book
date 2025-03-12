@@ -110,7 +110,7 @@ Differential tests are not always fuzzed -- they are also useful for testing kno
 
 #### Standardized Testing against reference data
 
-FFI is also useful for injecting reproducible, standardized data into the testing environment. In the Murky library, this is used as a benchmark for gas snapshotting (see [forge snapshot](./gas-snapshots.md)).
+FFI is also useful for injecting reproducible, standardized data into the testing environment. In the Murky library, it is used as follows:
 
 ```solidity
 bytes32[100] data;
