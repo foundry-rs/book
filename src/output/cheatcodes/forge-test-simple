@@ -1,22 +1,16 @@
 // ANCHOR: all
 // ANCHOR: command
-$ forge test --zksync --match-test test_IncrementAsOwner
+$ forge test --match-test test_IncrementAsOwner
 // ANCHOR_END: command
 // ANCHOR: output
 Compiling 24 files with Solc 0.8.10
-Solc 0.8.10 finished in 928.67ms
+Solc 0.8.10 finished in 700.56ms
 Compiler run successful!
-
-Compiling 24 files with zksolc and solc 0.8.10
-zksolc and solc 0.8.10 finished in 4.92s
-Compiler run successful!
-2025-02-20T18:14:16.347403Z ERROR foundry_zksync_core::vm::inspect: reverting initiator tx nonce for CALL address=0x1804c8ab1f12e6bbf3894d4083f33e07309d1f38 from=3 to=2 deploy_nonce=2
-2025-02-20T18:14:16.357885Z ERROR foundry_zksync_core::vm::inspect: reverting initiator tx nonce for CALL address=0x1804c8ab1f12e6bbf3894d4083f33e07309d1f38 from=3 to=2 deploy_nonce=2
 
 Ran 1 test for test/OwnerUpOnly.t.sol:OwnerUpOnlyTest
-[PASS] test_IncrementAsOwner() (gas: 349321)
-Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 24.96ms (15.54ms CPU time)
+[PASS] test_IncrementAsOwner() (gas: 29808)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 455.31µs (56.33µs CPU time)
 
-Ran 1 test suite in 25.38ms (24.96ms CPU time): 1 tests passed, 0 failed, 0 skipped (1 total tests)
+Ran 1 test suite in 5.64ms (455.31µs CPU time): 1 tests passed, 0 failed, 0 skipped (1 total tests)
 // ANCHOR_END: output
 // ANCHOR_END: all

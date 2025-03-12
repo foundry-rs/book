@@ -27,7 +27,7 @@ This is a comprehensive review of all the Foundry commands actually supported in
 | forge generate test                 | ✅ Supported     | Generates boilerplate test files for Solidity contracts, speeding up the testing process.                                                |
 | forge generate-fig-spec             | ✅ Supported     | Generates a Fig spec for Forge, which can be used to create command-line autocomplete functionality.                                     |
 | forge init                          | ✅ Supported     | Initializes a new Foundry project, creating the necessary directories and configuration files.                                           |
-| forge inspect                       | ❌ Not Supported | Inspects the details of a Solidity contract, such as ABI, bytecode, and other metadata.                                                  |
+| forge inspect                       | ✅ Supported     | Inspects the details of a Solidity contract, such as ABI, bytecode, and other metadata.                                                  |
 | forge install                       | ✅ Supported     | Installs dependencies from the Foundry package manager, adding them to the project.                                                      |
 | forge remappings                    | ✅ Supported     | Manages remappings for Solidity imports, allowing for custom paths or package names.                                                     |
 | forge remove                        | ✅ Supported     | Removes a dependency from the project, cleaning up any related files or configuration.                                                   |
@@ -63,7 +63,7 @@ This is a comprehensive review of all the Foundry commands actually supported in
 | cast block                          | ✅ Supported     | Retrieves detailed information about a specific block on the blockchain.                                                                 |
 | cast block-number                   | ✅ Supported     | Returns the current block number of the Ethereum blockchain.                                                                             |
 | cast call                           | ✅ Supported     | Executes a read-only (constant) call to a smart contract.                                                                                |
-| cast call --create                  | ❌ Not Supported | Calls a contract and creates a new contract in the same transaction.                                                                     |
+| cast call --create                  | ✅ Supported     | Calls a contract and creates a new contract in the same transaction.                                                                     |
 | cast calldata                       | ✅ Supported     | Encodes function call data for a contract, which can be used in transactions.                                                            |
 | cast calldata-decode                | ✅ Supported     | Decodes encoded calldata back into its original arguments.                                                                               |
 | cast chain                          | ❌ Not Supported | Displays information about the current Ethereum chain, including its name and ID.                                                        |
@@ -78,9 +78,9 @@ This is a comprehensive review of all the Foundry commands actually supported in
 | cast decode-eof                     | ✅ Supported     | Decodes Ethereum Object Format (EOF) bytecode, used in Ethereum contracts.                                                               |
 | cast decode-transaction             | ✅ Supported     | Decodes the data and parameters of a raw transaction.                                                                                    |
 | cast disassemble                    | ❌ Not Supported | Disassembles contract bytecode into readable EVM assembly instructions.                                                                  |
-| cast estimate                       | ❌ Not Supported | Estimates the gas cost of executing a transaction on the blockchain.                                                                     |
-| cast estimate --create              | ❌ Not Supported | Estimates the gas cost for deploying a contract with a creation transaction.                                                             |
-| cast etherscan-source               | ✅ Supported     | Fetches and displays the verified source code of a contract from Etherscan.                                                              |
+| cast estimate                       | ✅ Supported     | Estimates the gas cost of executing a transaction on the blockchain.                                                                     |
+| cast estimate --create              | ✅ Supported     | Estimates the gas cost for deploying a contract with a creation transaction.                                                             |
+| cast source                         | ✅ Supported     | Fetches and displays the verified source code of a contract from  a block explorer.                                                              |
 | cast find-block                     | ✅ Supported     | Finds a block based on a given timestamp, returning the block number.                                                                    |
 | cast format-bytes32-string          | ✅ Supported     | Converts a string into a bytes32 format for Solidity.                                                                                    |
 | cast from-bin                       | ✅ Supported     | Decodes binary-encoded data into a human-readable format.                                                                                |
@@ -103,7 +103,7 @@ This is a comprehensive review of all the Foundry commands actually supported in
 | cast max-uint                       | ✅ Supported     | Outputs the maximum value for an unsigned 256-bit integer.                                                                               |
 | cast min-int                        | ✅ Supported     | Outputs the minimum value for a signed 256-bit integer.                                                                                  |
 | cast mktx                           | ✅ Supported     | Creates a transaction object without sending it, useful for offline signing.                                                             |
-| cast mktx --create                  | ❌ Not Supported | Creates a transaction that deploys a contract, without sending it.                                                                       |
+| cast mktx --create                  | ✅ Supported     | Creates a transaction that deploys a contract, without sending it.                                                                       |
 | cast namehash                       | ✅ Supported     | Computes the ENS namehash for a given domain name.                                                                                       |
 | cast nonce                          | ✅ Supported     | Retrieves the nonce of an Ethereum address, useful for determining transaction order.                                                    |
 | cast parse-bytes32-address          | ✅ Supported     | Parses a bytes32 value into an Ethereum address.                                                                                         |
@@ -117,7 +117,7 @@ This is a comprehensive review of all the Foundry commands actually supported in
 | cast run                            | ❌ Not Supported | Runs a script file, such as a .js or .ts file, with access to Cast functions.                                                            |
 | cast selectors                      | ❌ Not Supported | Fetches the function selectors for a given contract or ABI.                                                                              |
 | cast send                           | ✅ Supported     | Sends a transaction to the blockchain, including smart contract interactions.                                                            |
-| cast send --create                  | ❌ Not Supported | Sends a transaction that creates a new contract on the blockchain.                                                                       |
+| cast send --create                  | ✅ Supported     | Sends a transaction that creates a new contract on the blockchain.                                                                       |
 | cast shl                            | ✅ Supported     | Performs a bitwise left shift on the provided input.                                                                                     |
 | cast shr                            | ✅ Supported     | Performs a bitwise right shift on the provided input.                                                                                    |
 | cast sig                            | ✅ Supported     | Outputs the Keccak-256 hash of a function signature.                                                                                     |

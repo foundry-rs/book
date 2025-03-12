@@ -134,7 +134,7 @@ This program is a set of tools to interact with Ethereum and perform conversions
 [cast 4byte](./cast-4byte.md)
 &nbsp;&nbsp;&nbsp;&nbsp;Get the function signatures for the given selector from <https://openchain.xyz/signatures>.
 
-[cast 4byte-decode](./cast-4byte-decode.md)
+[cast 4byte-calldata](./cast-4byte-calldata.md)
 &nbsp;&nbsp;&nbsp;&nbsp;Decode ABI-encoded calldata using <https://openchain.xyz/signatures>.
 
 [cast 4byte-event](./cast-4byte-event.md)

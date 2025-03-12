@@ -64,7 +64,10 @@ Options:
           Generate bindings for the `alloy` library, instead of `ethers`
 
       --alloy-version <ALLOY_VERSION>
-          Specify the alloy version
+          Specify the `alloy` version on Crates
+
+      --alloy-rev <ALLOY_REV>
+          Specify the `alloy` revision on GitHub
 
       --ethers
           Generate bindings for the `ethers` library, instead of `alloy`

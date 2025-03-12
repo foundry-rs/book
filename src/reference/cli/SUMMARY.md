@@ -51,7 +51,7 @@
   - [`forge verify-contract`](./forge/verify-contract.md)
 - [`cast`](./cast.md)
   - [`cast 4byte`](./cast/4byte.md)
-  - [`cast 4byte-decode`](./cast/4byte-decode.md)
+  - [`cast 4byte-calldata`](./cast/4byte-calldata.md)
   - [`cast 4byte-event`](./cast/4byte-event.md)
   - [`cast abi-encode`](./cast/abi-encode.md)
   - [`cast access-list`](./cast/access-list.md)
@@ -161,6 +161,7 @@
     - [`cast wallet verify`](./cast/wallet/verify.md)
     - [`cast wallet import`](./cast/wallet/import.md)
     - [`cast wallet list`](./cast/wallet/list.md)
+    - [`cast wallet remove`](./cast/wallet/remove.md)
     - [`cast wallet private-key`](./cast/wallet/private-key.md)
     - [`cast wallet decrypt-keystore`](./cast/wallet/decrypt-keystore.md)
 

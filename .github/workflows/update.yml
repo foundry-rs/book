@@ -16,6 +16,8 @@ jobs:
         with:
           submodules: recursive
 
+      - uses: dtolnay/rust-toolchain@nightly
+
       - name: Update
         run: |
           git config --global user.name "GitHub Actions Bot"

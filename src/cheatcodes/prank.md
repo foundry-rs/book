@@ -3,18 +3,31 @@
 ### Signature
 
 ```solidity
-function prank(address) external;
+function prank(address msgSender) external;
 ```
 
 ```solidity
-function prank(address sender, address origin) external;
+function prank(address msgSender, bool delegateCall) external;
+```
+
+```solidity
+function prank(address msgSender, address txOrigin) external;
+```
+
+```solidity
+function prank(address msgSender, address txOrigin, bool delegateCall) external;
 ```
 
 ### Description
 
-Sets `msg.sender` to the specified address **for the next call**. "The next call" includes static calls as well, but not calls to the cheat code address.
+- `prank(address msgSender)`: sets `msg.sender` to the specified address **for the next call**. "The next call" includes static calls as well, but not delegate calls or calls to the cheat code address.
+- `prank(address msgSender, address txOrigin)`: sets `msg.sender` and the `tx.origin` addresses **for the next call**.
+- `prank(address msgSender, bool delegateCall)`: if `delegateCall` value is `true` then sets `msg.sender` to the specified address **for the next delegate call**.
+- `prank(address msgSender, address txOrigin, bool delegateCall)`: if `delegateCall` value is `true` then sets `msg.sender` and the `tx.origin` addresses **for the next delegate call**.
 
-If the alternative signature of `prank` is used, then `tx.origin` is set as well for the next call.
+> ℹ️ **Note**
+>
+> The delegate calls cannot be pranked from an EOA.
 
 ### Examples
 

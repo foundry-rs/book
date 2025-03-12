@@ -45,8 +45,8 @@ Options:
       --no-git
           Install without adding the dependency as a submodule
 
-      --no-commit
-          Do not create a commit
+      --commit
+          Create a commit after installing the dependencies
 
       --zksync
           Install ZKsync specific libraries

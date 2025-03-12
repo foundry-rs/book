@@ -20,6 +20,7 @@ Commands:
   import            Import a private key into an encrypted keystore [aliases: i]
   list              List all the accounts in the keystore default directory
                     [aliases: ls]
+  remove            Remove a wallet from the keystore [aliases: rm]
   private-key       Derives private key from mnemonic [aliases: pk]
   decrypt-keystore  Decrypt a keystore file to get the private key [aliases: dk]
   help              Print this message or the help of the given subcommand(s)

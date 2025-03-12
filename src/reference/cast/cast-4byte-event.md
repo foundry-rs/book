@@ -25,4 +25,4 @@ Get the event signature for a given topic 0 from <https://openchain.xyz/signatur
 
 ### SEE ALSO
 
-[cast](./cast.md), [cast 4byte](./cast-4byte.md), [cast 4byte-decode](./cast-4byte-decode.md)
+[cast](./cast.md), [cast 4byte](./cast-4byte.md), [cast 4byte-calldata](./cast-4byte-calldata.md)
