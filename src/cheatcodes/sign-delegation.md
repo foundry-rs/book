@@ -49,7 +49,7 @@ To use the cheatcodes you need to set your `evm_version` to at least the `prague
 evm_version = "prague"
 ```
 
-EIP-7702 sets the account code of an Externally Owned Account (EOA) temporarily during a transaction. This enables EOAs to behave like smart contracts for the duration of a transaction without permanently modifying their code.
+EIP-7702 sets the account code of an Externally Owned Account (EOA) through a delegation transaction, enabling EOAs to behave like smart contracts.
 
 The `signDelegation` cheatcode generates a signed authorization for an implementation contract to be delegated to, ensuring that only authorized implementations can execute transactions on behalf of the authority account. The signature includes the authority account's nonce to prevent replay attacks.
 
@@ -151,11 +151,11 @@ contract SignDelegationTest is Test {
         vm.broadcast(BOB_PK);
         vm.attachDelegation(signedDelegation);
 
-        // Verify that Alice's account now temporarily behaves as a smart contract.
+        // Verify that Alice's account now behaves as a smart contract.
         bytes memory code = address(ALICE_ADDRESS).code;
         require(code.length > 0, "no code written to Alice");
 
-        // As Bob, execute the transaction via Alice's temporarily assigned contract.
+        // As Bob, execute the transaction via Alice's assigned contract.
         SimpleDelegateContract(ALICE_ADDRESS).execute(calls);
 
         // Verify Bob successfully received 100 tokens.
@@ -171,11 +171,11 @@ contract SignDelegationTest is Test {
         // Alice signs and attaches the delegation in one step (eliminating the need for separate signing).
         vm.signAndAttachDelegation(address(implementation), ALICE_PK);
 
-        // Verify that Alice's account now temporarily behaves as a smart contract.
+        // Verify that Alice's account now behaves as a smart contract.
         bytes memory code = address(ALICE_ADDRESS).code;
         require(code.length > 0, "no code written to Alice");
 
-        // As Bob, execute the transaction via Alice's temporarily assigned contract.
+        // As Bob, execute the transaction via Alice's assigned contract.
         vm.broadcast(BOB_PK);
         SimpleDelegateContract(ALICE_ADDRESS).execute(calls);
 
@@ -234,7 +234,7 @@ contract SignDelegationScript is Script {
         vm.broadcast(BOB_PK);
         vm.attachDelegation(signedDelegation);
 
-        // As Bob, execute the transaction via Alice's temporarily assigned contract.
+        // As Bob, execute the transaction via Alice's assigned contract.
         SimpleDelegateContract(ALICE_ADDRESS).execute(calls);
 
         // Verify balance
