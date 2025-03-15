@@ -113,7 +113,7 @@ Transaction options:
 
 Ethereum options:
   -r, --rpc-url <URL>
-          The RPC endpoint, default value is http://localhost:8545
+          The RPC endpoint
           
           [env: ETH_RPC_URL=]
 
@@ -195,6 +195,15 @@ Wallet options - raw:
           
           [default: 0]
 
+      --zksync
+          Use ZKSync
+
+      --zk-paymaster-address <PAYMASTER_ADDRESS>
+          The paymaster address for the ZKSync transaction
+
+      --zk-paymaster-input <PAYMASTER_INPUT>
+          The paymaster input for the ZKSync transaction
+
 Wallet options - keystore:
       --keystore <PATH>
           Use the keystore in the given folder or file
@@ -225,10 +234,6 @@ Wallet options - hardware wallet:
 
   -t, --trezor
           Use a Trezor hardware wallet
-
-Wallet options - remote:
-      --aws
-          Use AWS Key Management Service
 
 Display options:
       --color <COLOR>

@@ -1,6 +1,6 @@
 # cast implementation
 
-Fetch the EIP-1967 implementation for a contract Can read from the
+Fetch the EIP-1967 implementation account
 
 ```bash
 $ cast implementation --help
@@ -11,7 +11,7 @@ Usage: cast implementation [OPTIONS] <WHO>
 
 Arguments:
   <WHO>
-          The address for which the implementation will be fetched
+          The address to get the nonce for
 
 Options:
   -B, --block <BLOCK>
@@ -19,13 +19,8 @@ Options:
           
           Can also be the tags earliest, finalized, safe, latest, or pending.
 
-      --beacon
-          Fetch the implementation from the beacon slot.
-          
-          If not specified, the implementation slot is used.
-
   -r, --rpc-url <URL>
-          The RPC endpoint, default value is http://localhost:8545
+          The RPC endpoint
           
           [env: ETH_RPC_URL=]
 

@@ -1,17 +1,21 @@
 // ANCHOR: all
 // ANCHOR: command
-$ forge test -vvvv --match-test testFail_IncrementAsNotOwner --match-path test/OwnerUpOnly.t.sol
+$ forge test --zksync -vvvv --match-test testFail_IncrementAsNotOwner --match-path test/OwnerUpOnly.t.sol
 // ANCHOR_END: command
 // ANCHOR: output
 No files changed, compilation skipped
 
+No files changed, compilation skipped
+2025-01-29T13:28:38.349649Z ERROR foundry_zksync_core::vm::inspect: reverting initiator tx nonce for CALL address=0x1804c8ab1f12e6bbf3894d4083f33e07309d1f38 from=3 to=2 deploy_nonce=2
+2025-01-29T13:28:38.355238Z ERROR foundry_zksync_core::vm::inspect: reverting initiator tx nonce for CALL address=0x1804c8ab1f12e6bbf3894d4083f33e07309d1f38 from=3 to=2 deploy_nonce=2
+
 Ran 1 test for test/OwnerUpOnly.t.sol:OwnerUpOnlyTest
-[PASS] testFail_IncrementAsNotOwner() (gas: 8314)
+[PASS] testFail_IncrementAsNotOwner() (gas: 119804)
 Traces:
-  [8314] OwnerUpOnlyTest::testFail_IncrementAsNotOwner()
+  [119804] OwnerUpOnlyTest::testFail_IncrementAsNotOwner()
     ├─ [0] VM::prank(0x0000000000000000000000000000000000000000)
     │   └─ ← [Return] 
-    ├─ [247] OwnerUpOnly::increment()
+    ├─ [111737] OwnerUpOnly::increment()
     │   └─ ← [Revert] Unauthorized()
     └─ ← [Revert] Unauthorized()
 

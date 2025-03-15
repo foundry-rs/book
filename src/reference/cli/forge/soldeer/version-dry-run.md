@@ -4,6 +4,9 @@
 
 ```bash
 $ forge soldeer version-dry-run --help
+```
+
+```txt
 Usage: forge soldeer version-dry-run
 
 Options:

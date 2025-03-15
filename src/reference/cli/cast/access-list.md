@@ -90,7 +90,7 @@ Transaction options:
 
 Ethereum options:
   -r, --rpc-url <URL>
-          The RPC endpoint, default value is http://localhost:8545
+          The RPC endpoint
           
           [env: ETH_RPC_URL=]
 
@@ -202,10 +202,6 @@ Wallet options - hardware wallet:
 
   -t, --trezor
           Use a Trezor hardware wallet
-
-Wallet options - remote:
-      --aws
-          Use AWS Key Management Service
 
 Display options:
       --color <COLOR>

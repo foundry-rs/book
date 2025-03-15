@@ -1,14 +1,10 @@
-## 📖 Foundry Book
+<img src="src/images/foundry-banner.png" style="border-radius: 20px">
 
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+<br>
 
-[![All Contributors](https://img.shields.io/badge/all_contributors-114-orange.svg?style=flat-square)](#contributors-)
+# 📖 Foundry ZKsync Book
 
-<!-- ALL-CONTRIBUTORS-BADGE:END -->
-
-A book on all things Foundry. [Read now](https://book.getfoundry.sh).
-
-### Contributing
+A book on all things foundry ZKsync. [Read now](https://foundry-book.zksync.io/).
 
 Check our [contributing guidelines](./CONTRIBUTING.md). Feel free to contribute wording, sentences, chapters, and guides!
 

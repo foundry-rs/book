@@ -20,9 +20,6 @@ Options:
   -t, --trezor
           List accounts from a Trezor hardware wallet
 
-      --aws
-          List accounts from AWS KMS
-
       --all
           List all configured accounts
 

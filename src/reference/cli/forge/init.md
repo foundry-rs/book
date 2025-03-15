@@ -47,6 +47,9 @@ Options:
       --commit
           Create a commit after installing the dependencies
 
+      --zksync
+          Install ZKsync specific libraries
+
   -h, --help
           Print help (see a summary with '-h')
 

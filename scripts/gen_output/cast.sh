@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 set -eo pipefail
 
-gen_cast() {
-  source "$(dirname "$0")/common"
+# use foundry-zksync binary path
+export PATH=$PWD/bin:$PATH
 
+gen_cast() {
   need_cmd cast
 
   echo "Generating output (cast)..."

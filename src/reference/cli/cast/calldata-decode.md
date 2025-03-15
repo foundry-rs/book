@@ -7,7 +7,7 @@ $ cast calldata-decode --help
 ```
 
 ```txt
-Usage: cast calldata-decode [OPTIONS] <SIG> <CALLDATA>
+Usage: cast calldata-decode <SIG> <CALLDATA>
 
 Arguments:
   <SIG>

@@ -15,73 +15,109 @@
 - [Soldeer](./projects/soldeer.md)
 - [Project Layout](./projects/project-layout.md)
 
+# ZKsync Specifics
+
+- [Overview](./zksync-specifics/README.md)
+- [Execution Overview](./zksync-specifics/execution-overview.md)
+- [Compilation Overview](./zksync-specifics/compilation-overview.md)
+- [Configuration Overview](./zksync-specifics/configuration-overview.md)
+- [Developer Guide](./zksync-specifics/developer-guide/README.md)
+  - [Nonces](./zksync-specifics/developer-guide/nonces.md)
+  - [Linking](./zksync-specifics/developer-guide/linking.md)
+- [Limitations](./zksync-specifics/limitations/README.md)
+  - [General](./zksync-specifics/limitations/general.md)
+  - [Compilation](./zksync-specifics/limitations/compilation.md)
+  - [Broadcast](./zksync-specifics/limitations/broadcast.md)
+  - [Events](./zksync-specifics/limitations/events.md)
+  - [Traces](./zksync-specifics/limitations/traces.md)
+  - [Cheatcodes](./zksync-specifics/limitations/cheatcodes.md)
+- [Forge-ZKSync Standard Library](./zksync-specifics/forge-zksync-std.md)
+- [Additional Cheatcodes](./zksync-specifics/cheatcodes/README.md)
+  - [zkRegisterContract](./zksync-specifics/cheatcodes/zk-register-contract.md)
+  - [zkVm](./zksync-specifics/cheatcodes/zk-vm.md)
+  - [zkVmSkip](./zksync-specifics/cheatcodes/zk-vm-skip.md)
+  - [zkUsePaymaster](./zksync-specifics/cheatcodes/zk-use-paymaster.md)
+  - [zkUseFactoryDep](./zksync-specifics/cheatcodes/zk-use-factory-dep.md)
+- [Gas Overview](./zksync-specifics/gas.md)
+- [Paymaster Overview](./zksync-specifics/paymaster-overview.md)
+- [Examples](./zksync-specifics/examples/README.md)
+  - [General Flow Paymaster](./zksync-specifics/examples/general-paymaster.md)
+  - [Paymaster Approval Based](./zksync-specifics/examples/paymaster-approval-based.md)
+  - [Ledger](./zksync-specifics/examples/ledger.md)
+  - [Multisig Smart Account](./zksync-specifics/examples/smart-account.md)
+# Supported Commands
+- [Command List](./supported-commands/README.md)
+
 # Forge Overview
 
 - [Forge](forge/README.md)
 - [Tests](./forge/tests.md)
   - [Writing Tests](./forge/writing-tests.md)
   - [Cheatcodes](./forge/cheatcodes.md)
-  - [Forge Standard Library Overview](./forge/forge-std.md)
+  - [Forge Standard Library](./forge/forge-std.md)
+  - [Forge ZKsync Standard Library](./forge/forge-zksync-std.md)
   - [Understanding Traces](./forge/traces.md)
   - [Fork Testing](./forge/fork-testing.md)
   - [Replaying Failures](./forge/replay-testing.md)
-  <!--  - [Coverage Reports]() !-->
-- [Advanced Testing](./forge/advanced-testing.md)
+  <!--  - [Coverage Reports]() 
+ - [Advanced Testing](./forge/advanced-testing.md)
   - [Fuzz Testing](./forge/fuzz-testing.md)
   - [Invariant Testing](./forge/invariant-testing.md)
   - [Differential Testing](./forge/differential-ffi-testing.md)
-    <!--  - [Symbolic Testing]() !-->
-    <!--  - [Table Testing]() !-->
-    <!--  - [Mutation Testing]() !-->
-    <!-- - [Linting and Formatting]() !-->
-    <!-- - [Generating Documentation]() !-->
+    <!--  - [Symbolic Testing]() 
+    <!--  - [Table Testing]() 
+    <!--  - [Mutation Testing]() 
+    <!-- - [Linting and Formatting]() 
+    <!-- - [Generating Documentation]() 
 - [Deploying and Verifying](./forge/deploying.md)
 - [Gas Tracking](./forge/gas-tracking.md)
   - [Gas Reports](./forge/gas-reports.md)
   - [Gas Function Snapshots](./forge/gas-function-snapshots.md)
   - [Gas Section Snapshots](./forge/gas-section-snapshots.md)
-- [Debugger](./forge/debugger.md)
+<!-- - [Debugger](./forge/debugger.md) -->
 
 # Cast Overview
 
 - [Cast](./cast/README.md)
 
-# Anvil Overview
+# Anvil-ZKsync Overview
 
-- [Anvil](./anvil/README.md)
+- [Anvil-ZKsync](./anvil-zksync/README.md)
 
-# Chisel Overview
+# Not Supported
 
 - [Chisel](./chisel/README.md)
 
 # Configuration
 
 - [Configuring with `foundry.toml`](./config/README.md)
-- [Continuous Integration](./config/continuous-integration.md)
-- [Integrating with VSCode](./config/vscode.md)
-- [Shell Autocompletion](./config/shell-autocompletion.md)
-- [Static Analyzers](./config/static-analyzers.md)
-- [Integrating with Hardhat](./config/hardhat.md)
-- [Vyper support](./config/vyper.md)
+<!-- - [Continuous Integration](./config/continuous-integration.md) -->
+<!-- - [Integrating with VSCode](./config/vscode.md) -->
+<!-- - [Shell Autocompletion](./config/shell-autocompletion.md) -->
+<!-- - [Static Analyzers](./config/static-analyzers.md) -->
+<!-- - [Integrating with Hardhat](./config/hardhat.md) -->
+<!-- - [Vyper support](./config/vyper.md) -->
 
-# Guides
 
-- [Foundry v1.0 migration guide](./guides/v1.0-migration.md)
-- [Best Practices](./guides/best-practices.md)
-- [Scripting with Solidity](./guides/scripting-with-solidity.md)
-- [Deterministic deployments using CREATE2](guides/deterministic-deployments-using-create2.md)
-- [Forking Mainnet with Cast and Anvil](./guides/forking-mainnet-with-cast-anvil.md)
-- [Running Foundry inside of Docker](./guides/foundry-in-docker.md)
-- [Video tutorials](guides/video-tutorials.md)
+# Tutorials
+
+<!-- - [Best Practices](./tutorials/best-practices.md) -->
+- [Creating an NFT with Solmate](./tutorials/solmate-nft.md)
+<!-- - [Docker and Foundry](./tutorials/foundry-docker.md) -->
+<!-- - [Testing EIP-712 Signatures](./tutorials/testing-eip712.md) -->
+- [Deterministic deployment using CREATE2](./tutorials/create2-tutorial.md)
+- [Solidity Scripting](./tutorials/solidity-scripting.md)
+<!-- - [Forking Mainnet with Cast and Era Test Node](./tutorials/forking-mainnet-with-cast-anvil.md) -->
+<!-- - [Learning Foundry Videos](./tutorials/learn-foundry.md) -->
 <!-- - [Incremental Adoption]() !-->
+
 
 # Appendix
 
-- [Announcements](./announcements.md)
-- [FAQ](./faq.md)
-- [Help us improve Foundry](./contributing.md)
+<!-- - [FAQ](./faq.md) -->
+<!-- - [Help us improve Foundry](./contributing.md) -->
 - [References](./reference/README.md)
-  - [CLI Reference](./reference/cli/README.md) <!-- CLI_REFERENCE START -->
+  <!-- - [CLI Reference](./reference/cli/README.md)
     - [`forge`](./reference/cli/forge.md)
       - [`forge bind`](./reference/cli/forge/bind.md)
       - [`forge bind-json`](./reference/cli/forge/bind-json.md)
@@ -247,16 +283,7 @@
         - [`cast wallet remove`](./reference/cli/cast/wallet/remove.md)
         - [`cast wallet private-key`](./reference/cli/cast/wallet/private-key.md)
         - [`cast wallet decrypt-keystore`](./reference/cli/cast/wallet/decrypt-keystore.md)
-    - [`anvil`](./reference/cli/anvil.md)
-      - [`anvil completions`](./reference/cli/anvil/completions.md)
-      - [`anvil generate-fig-spec`](./reference/cli/anvil/generate-fig-spec.md)
-    - [`chisel`](./reference/cli/chisel.md)
-      - [`chisel list`](./reference/cli/chisel/list.md)
-      - [`chisel load`](./reference/cli/chisel/load.md)
-      - [`chisel view`](./reference/cli/chisel/view.md)
-      - [`chisel clear-cache`](./reference/cli/chisel/clear-cache.md)
-      - [`chisel eval`](./reference/cli/chisel/eval.md)
-  - [`forge` Commands](./reference/forge/README.md) <!-- CLI_REFERENCE END -->
+  - [`forge` Commands](./reference/forge/README.md) <!-- CLI_REFERENCE END 
     - [General Commands](./reference/forge/general-commands.md)
       - [forge](./reference/forge/forge.md)
       - [forge help](./reference/forge/forge-help.md)
@@ -390,19 +417,20 @@
       - [cast wallet vanity](./reference/cast/cast-wallet-vanity.md)
       - [cast wallet verify](./reference/cast/cast-wallet-verify.md)
       - [cast wallet import](./reference/cast/cast-wallet-import.md)
-      - [cast wallet list](./reference/cast/cast-wallet-list.md)
-  - [`anvil` Reference](./reference/anvil/README.md)
-  - [`chisel` Reference](./reference/chisel/README.md)
+      - [cast wallet list](./reference/cast/cast-wallet-list.md) -->
+  - [`anvil-zksync` Reference](./reference/anvil-zksync/README.md)
+  <!-- - [`chisel` Reference](./reference/chisel/README.md) -->
   - [Config Reference](./reference/config/README.md)
-    - [Overview](./reference/config/overview.md)
-    - [Project](./reference/config/project.md)
-    - [Solidity Compiler](./reference/config/solidity-compiler.md)
+  - [Overview](./reference/config/overview.md)
+  - [Project](./reference/config/project.md)
+    <!-- - [Solidity Compiler](./reference/config/solidity-compiler.md) -->
     - [Testing](./reference/config/testing.md)
-    - [In-line Configuration Testing](./reference/config/inline-test-config.md)
-    - [Formatter](./reference/config/formatter.md)
-    - [Documentation Generator](./reference/config/doc-generator.md)
-    - [Etherscan](./reference/config/etherscan.md)
-  - [Cheatcodes Reference](./cheatcodes/README.md)
+    <!-- - [In-line Configuration Testing](./reference/config/inline-test-config.md) -->
+    <!-- - [Formatter](./reference/config/formatter.md) -->
+    <!-- - [Documentation Generator](./reference/config/doc-generator.md) -->
+    <!-- - [Etherscan](./reference/config/etherscan.md) -->
+  <!-- [Cheatcodes Reference](./cheatcodes/README.md) -->
+    <!--
     - [Environment](./cheatcodes/environment.md)
       - [`warp`](./cheatcodes/warp.md)
       - [`roll`](./cheatcodes/roll.md)
@@ -512,8 +540,11 @@
       - [`setArbitraryStorage`](./cheatcodes/set-arbitrary-storage.md)
     - [RPC](./cheatcodes/rpc.md)
     - [Files](./cheatcodes/fs.md)
-  - [Forge Standard Library Reference](./reference/forge-std/README.md)
-    - [Std Logs](./reference/forge-std/std-logs.md)
+    - [ZKsync](./zksync-specifics/cheatcodes/README.md)
+      - [zkVm](./zksync-specifics/cheatcodes/zk-vm.md)
+    -->
+  <!-- - [Forge Standard Library Reference](./reference/forge-std/README.md) -->
+    <!-- - [Std Logs](./reference/forge-std/std-logs.md)
     - [Std Assertions](./reference/forge-std/std-assertions.md)
       - [`fail`](./reference/forge-std/fail.md)
       - [`assertTrue`](./reference/forge-std/assertTrue.md)
@@ -575,7 +606,7 @@
     - [Script Utils](./reference/forge-std/script-utils.md)
       - [`computeCreateAddress`](./reference/forge-std/compute-create-address.md)
       - [`deriveRememberKey`](./reference/forge-std/derive-remember-key.md)
-    - [Console Logging](./reference/forge-std/console-log.md)
-  - [DSTest Reference](./reference/ds-test.md)
-- [Miscellaneous](./misc/README.md)
-  - [Struct encoding](./misc/struct-encoding.md)
+    - [Console Logging](./reference/forge-std/console-log.md) -->
+  <!-- - [DSTest Reference](./reference/ds-test.md)  --> -->
+<!-- - [Miscellaneous](./misc/README.md) -->
+  <!-- - [Struct encoding](./misc/struct-encoding.md) -->

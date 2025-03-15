@@ -1,27 +1,42 @@
 <img src="images/foundry-banner.png" style="border-radius: 20px">
 
-Foundry is a smart contract development toolchain.
+## Foundry-ZKsync Book
 
-Foundry manages your dependencies, compiles your project, runs tests, deploys, and lets you interact with the chain from the command-line and via Solidity scripts.
+**Foundry-ZKsync is a smart contract development toolchain for ZKsync**, built upon [Foundry](https://book.getfoundry.sh/).
 
-> ✨ **Announcements**
->
-> [Stay up to date](./announcements.md) with the latest changes to Foundry.
+Foundry-ZKsync manages your dependencies, compiles your project, runs tests, deploys, and lets you interact with the chain from the command line and via Solidity scripts.
 
-> 📖 **Contributing**
->
-> You can contribute to this book on [GitHub](https://github.com/foundry-rs/book).
+> ⚠️ **Alpha Stage:** The project is in alpha, so you might encounter issues. For more information or reporting bugs, please visit the [Foundry-ZKsync GitHub repository](https://github.com/matter-labs/foundry-zksync).
 
-### Sections
+## Sections
 
 **[Getting Started](getting-started/installation.md)**
 
-To get started with Foundry, install Foundry and set up your first project.
+To start with Foundry-ZKsync, install Foundry-ZKsync and set up your first project.
 
 **[Projects](projects/creating-a-new-project.md)**
 
-This section will give you an overview of how to create and work with existing projects.
+This section will give you an overview of creating and working with existing projects.
 
+**[ZKsync Specific](zksync-specifics)**
+
+This section will introduce the necessary information to write and run tests for zkEVM.
+
+**[Supported Commands Overview](supported-commands)**
+
+This section comprehensively reviews all the Foundry commands supported in the Foundry-ZKSync tool.
+
+> 📖 **Contributing**
+>
+> This book is actually a work in progress, part of the global effort to support Foundry in ZKSync. More information, sections, and pages will be added as the project progresses.
+>
+> Feedback and contributions are welcome. You can contribute to this book on [Foundry-ZKSync Book GitHub repository](https://github.com/matter-labs/foundry-zksync-book).
+>
+> <br>
+
+**_For general information about Foundry, see the [Foundry Book](https://book.getfoundry.sh/)._**
+
+<!--
 **[Forge Overview](forge)**
 
 The overview will give you all you need to know about how to use `forge` to develop, test, and deploy smart contracts.
@@ -32,11 +47,11 @@ Learn how to use `cast` to interact with smart contracts, send transactions, and
 
 **[Anvil Overview](anvil)**
 
-Learn about `anvil`, Foundry's local node.
+_Not officially supported_.
 
 **[Chisel Overview](chisel)**
 
-Learn how to use `chisel`, Foundry's integrated Solidity REPL.
+_Not officially supported_.
 
 **Configuration**
 
@@ -54,18 +69,16 @@ Guides on configuring Foundry.
 
 Guides for building smart contracts with Foundry.
 
-- [Foundry v1.0 migration guide](./guides/v1.0-migration.md)
-- [Best Practices](./guides/best-practices.md)
-- [Scripting with Solidity](./guides/scripting-with-solidity.md)
-- [Deterministic deployments using CREATE2](guides/deterministic-deployments-using-create2.md)
-- [Forking Mainnet with Cast and Anvil](./guides/forking-mainnet-with-cast-anvil.md)
-- [Running Foundry inside of Docker](./guides/foundry-in-docker.md)
-- [Video tutorials](guides/video-tutorials.md)
-<!-- - [Incremental Adoption]() -->
+- [Creating an NFT with Solmate](./tutorials/solmate-nft.md)
+- [Testing EIP-712 Signatures](./tutorials/testing-eip712.md)
+- [Solidity Scripting](./tutorials/solidity-scripting.md)
+- [Forking Mainnet with Cast and Anvil](./tutorials/forking-mainnet-with-cast-anvil.md)
+<!-- - [Incremental Adoption]()
+
 
 **Contributing**
 
-Help us improve Foundry: [Contributing](./contributing.md)
+Help us improve Foundry-ZKsync: [Contributing](./contributing.md)
 
 **Appendix**
 
@@ -76,8 +89,6 @@ References, troubleshooting, and more.
 - [CLI Reference](./reference/cli/)
 - [forge Commands](./reference/forge/)
 - [cast Commands](./reference/cast/)
-- [anvil Commands](./reference/anvil/)
-- [chisel Commands](./reference/chisel/)
 - [Config Reference](./reference/config/)
 - [Cheatcodes Reference](./cheatcodes/)
 - [Forge Standard Library Reference](./reference/forge-std/)
@@ -85,5 +96,4 @@ References, troubleshooting, and more.
 - [Miscellaneous](misc)
 
 <br>
-
-> You can also check out [Awesome Foundry](https://github.com/crisgarner/awesome-foundry), a curated list of awesome Foundry resources, guides, tools, and libraries!
+-->

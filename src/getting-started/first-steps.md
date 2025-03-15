@@ -1,8 +1,8 @@
-## First Steps with Foundry
+## First Steps with Foundry-ZKsync
 
 This section introduces the `forge` command-line tool. We will walk through creating a new project, compiling it, and running tests.
 
-To start a new project with Foundry, use the [`forge init`](../reference/forge/forge-init.md) command:
+To start a new project with Foundry-ZKsync, use the [`forge init`](../reference/forge/forge-init.md) command:
 
 ```sh
 {{#include ../output/hello_foundry/forge-init:command}}
@@ -15,13 +15,13 @@ $ cd hello_foundry
 {{#include ../output/hello_foundry/tree:all}}
 ```
 
-You can compile the project using [`forge build`](../reference/forge/forge-build.md):
+You can compile the project using [`forge build --zksync`](../reference/forge/forge-build.md):
 
 ```sh
 {{#include ../output/hello_foundry/forge-build:all}}
 ```
 
-To run the tests, use the [`forge test`](../reference/forge/forge-test.md) command:
+To run the tests, use the [`forge test --zksync`](../reference/forge/forge-test.md) command:
 
 ```sh
 {{#include ../output/hello_foundry/forge-test:all}}

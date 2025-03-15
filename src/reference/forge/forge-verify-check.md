@@ -8,7 +8,10 @@ forge-verify-check - Check verification status on a chosen verification provider
 
 ``forge verify-check`` [*options*] *id* [*etherscan_key*]
 
-The *id* is the verification identifier. For Etherscan & Bloxroute - it is the submission GUID, for Sourcify - it's the contract address.
+The *id* is the verification identifier. For ZKsync Block Explorer it is
+the verificationId.
+
+For Etherscan & Bloxroute - it is the submission GUID, for Sourcify - it's the contract address.
 
 ### DESCRIPTION
 

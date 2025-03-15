@@ -36,6 +36,8 @@ The gas usage (marked in square brackets) is for the entirety of the function ca
 
 The gas unaccounted for is due to some extra operations happening between calls, such as arithmetic and store reads/writes.
 
+
+
 Forge will try to decode as many signatures and values as possible, but sometimes this is not possible. In these cases, the traces will appear like so:
 
 ```ignore
@@ -51,3 +53,12 @@ Some traces might be harder to grasp at first glance. These include:
 - `InvalidFEOpcode` means that an undefined bytecode value has been encountered during execution. The EVM catches the unknown bytecode and returns the `INVALID` opcode instead, of value `0xFE`. You can find out more [here](https://www.evm.codes/#fe).
 
 For a deeper insight into the various traces, you can explore the [revm source code](https://github.com/bluealloy/revm/blob/main/crates/interpreter/src/instruction_result.rs).
+
+### ZKsync Limitations
+
+In addition to the above anomalies of incorrect gas and un-decodable traces, there are additional caveats within the ZKsync context:
+
+* The events emitted from within the zkEVM will not show on traces. See [events](../zksync-specifics/limitations/events.md) in zkEVM.
+* The system call traces from within the zkEVM's bootloader are currently ignored in order to simplify the trace output.
+* Executing each `CREATE` or `CALL` in its own zkEVM has additional bootloader gas costs, which may sometimes not be accounted in the traces. The ignored bootloader system calls, have a heuristic in-place to sum up their gas usage to the nearest non-system parent call, but this may also not add up accurately.
+

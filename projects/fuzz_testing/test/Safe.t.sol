@@ -8,7 +8,7 @@ contract Safe {
     receive() external payable {}
 
     function withdraw() external {
-        payable(msg.sender).transfer(address(this).balance);
+        payable(msg.sender).call{value: address(this).balance}("");
     }
 }
 
@@ -26,7 +26,7 @@ contract SafeTest is Test {
     // ANCHOR: signature
     function testFuzz_Withdraw(uint96 amount) public {
     // ANCHOR_END: signature
-        payable(address(safe)).transfer(amount);
+        payable(address(safe)).call{value: amount}("");
         uint256 preBalance = address(this).balance;
         safe.withdraw();
         uint256 postBalance = address(this).balance;

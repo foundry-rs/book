@@ -1,112 +1,89 @@
 ## Installation
 
-If you encounter any issues during installation, refer to the [FAQ](../faq.md) for assistance.
+<!-- If you encounter any issues during installation, refer to the [FAQ](../faq.md) for assistance. -->
 
 ### Precompiled Binaries
 
-Precompiled binaries can be downloaded from the [GitHub releases page](https://github.com/foundry-rs/foundry/releases). For easier management, we recommend using [Foundryup](#using-foundryup).
+Precompiled binaries can be downloaded from the [GitHub releases page](https://github.com/matter-labs/foundry-zksync/releases). We recommend using [Foundryup](#using-foundryup-zksync) for easier management.
+We are working on a polished versioning approach that will be released soon. However, we are also in a phase of active development.
 
-### Using Foundryup
+### Using Foundryup-zksync
 
-Foundryup is the official installer for the Foundry toolchain. You can learn more about it [here](https://github.com/foundry-rs/foundry/blob/master/foundryup/README.md).
+Foundryup-zksync is the official installer for the Foundry-ZKsync toolchain. You can learn more about it [here](https://github.com/matter-labs/foundry-zksync/blob/main/foundryup-zksync/README.md).
 
-To install Foundryup, open your terminal and run the following command:
+To install Foundryup-zksync, open your terminal and run the following command:
 
 ```sh
-curl -L https://foundry.paradigm.xyz | bash
+curl -L https://raw.githubusercontent.com/matter-labs/foundry-zksync/main/install-foundry-zksync | bash
 ```
 
-This will install Foundryup. Simply follow the on-screen instructions, and the `foundryup` command will become available in your CLI.
+This will install Foundryup-zksync. Follow the on-screen instructions, and the `foundryup-zksync` command will become available in your CLI.
 
-Running `foundryup` will automatically install the latest stable version of the [precompiled binaries](#precompiled-binaries): `forge`, `cast`, `anvil`, and `chisel`. If you wish to use the latest `nightly` build run `foundryup --install nightly`. For additional options, such as installing a specific version or commit, run `foundryup --help`.
+Running `foundryup-zksync` automatically installs the latest nightly versions of the [precompiled binaries](#precompiled-binaries), including `forge` and `cast`. Additionally, it fetches the most recent version of the precompiled binary `anvil-zksync` from the [anvil-zksync releases](https://github.com/matter-labs/anvil-zksync/releases).
 
-> ℹ️ **Note**  
-> If you're using Windows, you'll need to install and use [Git BASH](https://gitforwindows.org/) or [WSL](https://learn.microsoft.com/en-us/windows/wsl/install) as your terminal, since Foundryup currently doesn't support Powershell or Command Prompt (Cmd).
+Run ' foundryup-zksync—- help ' for additional options, such as installing a specific version or commit.
 
-#### Verify integrity and provenance of binaries
+> ℹ️ **Note**
+>
+> Only `forge` and `cast` are currently supported for ZKsync. Other commands retain their original behavior but may not work as intended.
 
-Foundry binaries are attested by using [GitHub artifact attestations](https://docs.github.com/en/actions/security-for-github-actions/using-artifact-attestations/using-artifact-attestations-to-establish-provenance-for-builds). It is strongly recommended to verify the binaries installed using `foundryup` in order to check that they were built and distributed from Foundry repository.  
-For example, `forge` binary integrity and provenance can be verified by running:
-```shell
-$ gh attestation verify --owner foundry-rs $(which forge)
-
-✓ Verification succeeded!
-
-The following 1 attestation matched the policy criteria
-
-- Attestation #1
-  - Build repo:..... foundry-rs/foundry
-  - Build workflow:. .github/workflows/release.yml@refs/tags/stable
-  - Signer repo:.... foundry-rs/foundry
-  - Signer workflow: .github/workflows/release.yml@refs/tags/stable
-```
+> ℹ️ **Note**
+>
+> If you're on Windows, you will need to install and use [Git BASH](https://gitforwindows.org/) or [WSL](https://learn.microsoft.com/en-us/windows/wsl/install)
+> since Foundryup-zksync currently does not support Powershell or Cmd. Windows support is currently provided as best-effort.
 
 ### Building from Source
 
 #### Prerequisites
 
-You’ll need the [Rust](https://rust-lang.org) compiler and Cargo, Rust's package manager. The easiest way to install both is by using [`rustup.rs`](https://rustup.rs/).
+You’ll need the [Rust](https://rust-lang.org) compiler and Cargo, Rust's package manager. The easiest way to install both is using [`rustup.rs`](https://rustup.rs/).
 
-Foundry generally supports building only with the latest stable version of Rust. If you're using an older version of Rust, you can update it with `rustup`:
-
-```sh
-rustup update stable
-```
+Foundry-ZKsync generally supports building only with the [configured](https://github.com/matter-labs/foundry-zksync/blob/main/rust-toolchain) nightly Rust version.
+The presence of `rust-toolchain` file automatically downloads the correct nightly rust version when commands are run from the Foundry-ZKsync directory.
 
 For Windows users, you'll also need a recent version of [Visual Studio](https://visualstudio.microsoft.com/downloads/), with the "Desktop Development With C++" workload installed.
 
 #### Building
 
-You can either use the various flags provided by [Foundryup](#using-foundryup):
+You can either use the different [Foundryup-ZKsync](#using-foundryup) flags:
 
 ```sh
-foundryup --branch master
-foundryup --path path/to/foundry
+foundryup-zksync --branch main
+foundryup-zksync --path path/to/foundry-zksync
 ```
 
-Alternatively, you can install via Cargo with the following command:
+Alternatively, you can install it via Cargo with the following command:
 
 ```sh
-cargo install --git https://github.com/foundry-rs/foundry --profile release --locked forge cast chisel anvil
+cargo install --git https://github.com/matter-labs/foundry-zksync --profile release --locked forge cast
 ```
 
-You can also manually build from a local copy of the [Foundry repository](https://github.com/foundry-rs/foundry):
+Or, by manually building from a local copy of the [Foundry-ZKsync repository](https://github.com/matter-labs/foundry-zksync):
 
 ```sh
 # clone the repository
-git clone https://github.com/foundry-rs/foundry.git
+git clone https://github.com/matter-labs/foundry-zksync.git
 cd foundry
 # install Forge
 cargo install --path ./crates/forge --profile release --force --locked
 # install Cast
 cargo install --path ./crates/cast --profile release --force --locked
-# install Anvil
-cargo install --path ./crates/anvil --profile release --force --locked
-# install Chisel
-cargo install --path ./crates/chisel --profile release --force --locked
 ```
 
 ### CI Installation with GitHub Actions
 
-For instructions on setting up Foundry in a CI pipeline, refer to the [foundry-rs/foundry-toolchain](https://github.com/foundry-rs/foundry-toolchain) GitHub Action.
+The latest binaries for the appropriate architecture can be installed directly using the following GitHub Action:
+
+```yaml
+steps:
+    - name: Install Foundry-ZKsync
+      uses: dutterbutter/foundry-zksync-toolchain@v1
+```
+
+For further details, visit the [foundry-zksync-toolchain repository](https://github.com/dutterbutter/foundry-zksync-toolchain).
 
 ### Using Foundry with Docker
 
-Foundry can also be run inside a Docker container. If you don’t have Docker installed, you can download it from [Docker's website](https://docs.docker.com/get-docker/).
-
-Once Docker is installed, you can pull the latest Foundry release by running:
-
-```sh
-docker pull ghcr.io/foundry-rs/foundry:latest
-```
-
-You can also build the Docker image locally by running the following command from the Foundry repository:
-
-```sh
-docker build -t foundry .
-```
-
-For examples and guides on using this image, refer to the [Docker guide](../guides/foundry-in-docker).
-
-> ℹ️ **Note**  
-> Some systems, including those with M1 chips, may experience issues when building the Docker image locally. This is a known issue.
+> ℹ️ **Note**
+>
+> No prebuilt images are available for docker yet.

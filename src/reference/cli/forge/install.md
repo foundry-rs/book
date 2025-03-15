@@ -10,7 +10,6 @@ $ forge install --help
 Usage: forge install [OPTIONS] [DEPENDENCIES]...
     forge install [OPTIONS] <github username>/<github project>@<tag>...
     forge install [OPTIONS] <alias>=<github username>/<github project>@<tag>...
-    forge install [OPTIONS] <https://<github token>@git url>...)]
     forge install [OPTIONS] <https:// git url>...
 
 Arguments:
@@ -48,6 +47,9 @@ Options:
 
       --commit
           Create a commit after installing the dependencies
+
+      --zksync
+          Install ZKsync specific libraries
 
   -h, --help
           Print help (see a summary with '-h')

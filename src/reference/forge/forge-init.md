@@ -24,9 +24,14 @@ By default, `forge init` will also initialize a new git repository, install some
 
 If you do not want this behavior, pass `--no-git`.
 
+If you want to create a project a ZKsync template, you can use the `--zksync` flag. This will download the [forge-zksync-std](https://github.com/Moonsong-Labs/forge-zksync-std) library and add it to the project and also populate the `.gitignore` file with zksync specific output directories.
+
 ### OPTIONS
 
 #### Init Options
+
+`--zksync`  
+&nbsp;&nbsp;&nbsp;&nbsp;Create the project with zksync template. 
 
 `--force`  
 &nbsp;&nbsp;&nbsp;&nbsp;Create the project even if the specified root directory is not empty.

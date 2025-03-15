@@ -1,6 +1,6 @@
 # cast
 
-A Swiss Army knife for interacting with Ethereum applications from the command
+Perform Ethereum RPC calls from the comfort of your command line
 
 ```bash
 $ cast --help
@@ -67,6 +67,8 @@ Commands:
   disassemble            Disassembles a hex-encoded bytecode into a
                          human-readable representation [aliases: da]
   estimate               Estimate the gas cost of a transaction [aliases: e]
+  etherscan-source       Get the source code of a contract from Etherscan
+                         [aliases: et, src]
   find-block             Get the block number closest to the provided timestamp
                          [aliases: f]
   format-bytes32-string  Formats a string into bytes32 encoding [aliases:
@@ -89,9 +91,8 @@ Commands:
   hash-zero              Prints the zero hash [aliases: --hash-zero, hz]
   help                   Print this message or the help of the given
                          subcommand(s)
-  implementation         Fetch the EIP-1967 implementation for a contract Can
-                         read from the implementation slot or the beacon slot
-                         [aliases: impl]
+  implementation         Fetch the EIP-1967 implementation account [aliases:
+                         impl]
   index                  Compute the storage slot for an entry in a mapping
                          [aliases: in]
   index-erc7201          Compute storage slots as specified by `ERC-7201:
@@ -135,8 +136,6 @@ Commands:
   sig                    Get the selector for a function [aliases: si]
   sig-event              Generate event signatures from event string [aliases:
                          se]
-  source                 Get the source code of a contract from a block explorer
-                         [aliases: et, src]
   storage                Get the raw value of a contract's storage slot
                          [aliases: st]
   storage-root           Get the storage root for an account [aliases: sr]

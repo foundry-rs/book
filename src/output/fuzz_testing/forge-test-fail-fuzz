@@ -1,6 +1,6 @@
 // ANCHOR: all
 // ANCHOR: command
-$ forge test --allow-failure
+$ forge test --zksync --allow-failure
 // ANCHOR_END: command
 // ANCHOR: output
 Compiling 1 files with Solc 0.8.10
