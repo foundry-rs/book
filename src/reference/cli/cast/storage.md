@@ -18,6 +18,10 @@ Arguments:
           layout
 
 Options:
+      --proxy <PROXY>
+          The known proxy address. If provided, the storage layout is retrieved
+          from this address
+
   -b, --block <BLOCK>
           The block height to query at.
           
