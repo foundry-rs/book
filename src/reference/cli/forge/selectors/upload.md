@@ -11,7 +11,8 @@ Usage: forge selectors upload [OPTIONS] [CONTRACT]
 
 Arguments:
   [CONTRACT]
-          The name of the contract to upload selectors for
+          The name of the contract to upload selectors for. Can also be in form
+          of `path:contract name`
 
 Options:
       --all
