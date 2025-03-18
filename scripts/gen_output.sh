@@ -19,7 +19,7 @@ need_cmd anvil
 need_cmd chisel
 
 gen_help
-gen_cast
-gen_chisel
-gen_forge
-gen_vm
+# gen_cast
+# gen_chisel
+# gen_forge
+# gen_vm
