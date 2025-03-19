@@ -3,7 +3,7 @@
 ### Signature
 
 ```solidity
-function getBlockNumber() external view returns (uint256 blockNumber);
+function getBlockNumber() external view returns (uint256 height);
 ```
 
 ### Description
