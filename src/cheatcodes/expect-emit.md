@@ -31,7 +31,7 @@ function expectEmit(
 
 ### Description
 
-Assert a specific log is emitted during the next call.
+Asserts that a specific log is emitted during the next call.
 
 1. Call the cheat code, specifying whether we should check the first, second or third topic, and the log data (`expectEmit()` checks them all). Topic 0 is always checked.
 2. Emit the event we are supposed to see during the next call.
