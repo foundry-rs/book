@@ -16,7 +16,7 @@ Arguments:
 Options:
   -r, --resolve
           Resolve the function signatures for the extracted selectors using
-          https://openchain.xyz
+          <https://openchain.xyz>
 
   -h, --help
           Print help (see a summary with '-h')

@@ -247,6 +247,7 @@
         - [`cast wallet remove`](./reference/cli/cast/wallet/remove.md)
         - [`cast wallet private-key`](./reference/cli/cast/wallet/private-key.md)
         - [`cast wallet decrypt-keystore`](./reference/cli/cast/wallet/decrypt-keystore.md)
+        - [`cast wallet change-password`](./reference/cli/cast/wallet/change-password.md)
     - [`anvil`](./reference/cli/anvil.md)
       - [`anvil completions`](./reference/cli/anvil/completions.md)
       - [`anvil generate-fig-spec`](./reference/cli/anvil/generate-fig-spec.md)

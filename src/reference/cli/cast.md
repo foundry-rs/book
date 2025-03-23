@@ -11,12 +11,12 @@ Usage: cast [OPTIONS] <COMMAND>
 
 Commands:
   4byte                  Get the function signatures for the given selector from
-                         https://openchain.xyz [aliases: 4, 4b]
-  4byte-calldata         Decode ABI-encoded calldata using https://openchain.xyz
-                         [aliases: 4c, 4bc]
+                         <https://openchain.xyz> [aliases: 4, 4b]
+  4byte-calldata         Decode ABI-encoded calldata using
+                         <https://openchain.xyz> [aliases: 4c, 4bc]
   4byte-event            Get the event signature for a given topic 0 from
-                         https://openchain.xyz [aliases: 4e, 4be, topic0-event,
-                         t0e]
+                         <https://openchain.xyz> [aliases: 4e, 4be,
+                         topic0-event, t0e]
   abi-encode             ABI encode the given function argument, excluding the
                          selector [aliases: ae]
   access-list            Create an access list for a transaction [aliases: ac,
@@ -170,7 +170,7 @@ Commands:
   to-wei                 Convert an ETH amount to wei [aliases: --to-wei, tw,
                          2w]
   tx                     Get information about a transaction [aliases: t]
-  upload-signature       Upload the given signatures to https://openchain.xyz
+  upload-signature       Upload the given signatures to <https://openchain.xyz>
                          [aliases: ups]
   wallet                 Wallet management utilities [aliases: w]
 
