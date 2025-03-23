@@ -163,6 +163,7 @@
     - [`cast wallet remove`](./cast/wallet/remove.md)
     - [`cast wallet private-key`](./cast/wallet/private-key.md)
     - [`cast wallet decrypt-keystore`](./cast/wallet/decrypt-keystore.md)
+    - [`cast wallet change-password`](./cast/wallet/change-password.md)
 - [`anvil`](./anvil.md)
   - [`anvil completions`](./anvil/completions.md)
   - [`anvil generate-fig-spec`](./anvil/generate-fig-spec.md)

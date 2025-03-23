@@ -37,8 +37,8 @@ Options:
           [default: 1]
 
       --unlocked
-          Send via `eth_sendTransaction using the `--from` argument or $ETH_FROM
-          as sender
+          Send via `eth_sendTransaction` using the `--from` argument or
+          $ETH_FROM as sender
 
       --timeout <TIMEOUT>
           Timeout for sending the transaction

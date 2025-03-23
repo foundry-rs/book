@@ -1,30 +1,34 @@
-# forge soldeer update
+# cast wallet change-password
 
-Update dependencies by reading the config file
+Change the password of a keystore file
 
 ```bash
-$ forge soldeer update --help
+$ cast wallet change-password --help
 ```
 
 ```txt
-Usage: forge soldeer update [OPTIONS]
+Usage: cast wallet change-password [OPTIONS] <ACCOUNT_NAME>
+
+Arguments:
+  <ACCOUNT_NAME>
+          The name for the account in the keystore
 
 Options:
-  -g, --regenerate-remappings
-          If set, this command will delete the existing remappings and re-create
-          them
+  -k, --keystore-dir <KEYSTORE_DIR>
+          If not provided, keystore will try to be located at the default
+          keystores directory (~/.foundry/keystores)
 
-  -d, --recursive-deps
-          If set, this command will install the dependencies recursively (via
-          submodules or via soldeer)
+      --unsafe-password <PASSWORD>
+          Current password for the JSON keystore in cleartext This is unsafe, we
+          recommend using the default hidden password prompt
+          
+          [env: CAST_UNSAFE_PASSWORD=]
 
-      --config-location <CONFIG_LOCATION>
-          Specify the config location without prompting.
+      --unsafe-new-password <NEW_PASSWORD>
+          New password for the JSON keystore in cleartext This is unsafe, we
+          recommend using the default hidden password prompt
           
-          This prevents prompting the user if the automatic detection can't
-          determine the config location.
-          
-          [possible values: foundry, soldeer]
+          [env: CAST_UNSAFE_NEW_PASSWORD=]
 
   -h, --help
           Print help (see a summary with '-h')
@@ -64,6 +68,4 @@ Display options:
           for failing tests.
           - 5 (-vvvvv): Print execution and setup traces for all tests,
           including storage changes.
-
-For more information, read the README.md
 ```
