@@ -48,7 +48,7 @@ function isDir(string calldata) external returns (bool);
 
 These cheatcodes provided by [forge-std](https://github.com/foundry-rs/forge-std) can be used for filesystem manipulation operations.
 
-By default, filesystem access is disallowed and requires the `fs_permission` setting in `foundry.toml`:
+By default, filesystem access is disallowed and requires the `fs_permissions` setting in `foundry.toml`:
 
 ```toml
 # Configures permissions for cheatcodes that touch the filesystem like `vm.writeFile`
