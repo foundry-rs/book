@@ -16,7 +16,7 @@ Arguments:
 Options:
       --sig <SIG>
           The error signature. If none provided then tries to decode from local
-          cache or `https://api.openchain.xyz`
+          cache or <https://api.openchain.xyz>
           
           [aliases: error-sig]
 

@@ -98,7 +98,7 @@ Options:
           default value: 330
           
           See also,
-          https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second
+          <https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second>
 
       --no-rate-limit
           Disables rate limiting for this node's provider.
@@ -106,7 +106,7 @@ Options:
           default value: false
           
           See also,
-          https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second
+          <https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second>
           
           [aliases: no-rpc-rate-limit]
 

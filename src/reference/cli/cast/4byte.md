@@ -1,6 +1,6 @@
 # cast 4byte
 
-Get the function signatures for the given selector from https://openchain.xyz
+Get the function signatures for the given selector from <https://openchain.xyz>
 
 ```bash
 $ cast 4byte --help

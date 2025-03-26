@@ -1,22 +1,35 @@
-# cast abi-decode
+# cast wallet change-password
 
-Decode ABI-encoded input or output data.
+Change the password of a keystore file
 
 ```bash
-$ cast abi-decode --help
+$ cast wallet change-password --help
 ```
 
 ```txt
-Usage: cast abi-decode [OPTIONS] <SIG> <CALLDATA>
+Usage: cast wallet change-password [OPTIONS] <ACCOUNT_NAME>
 
 Arguments:
-  <SIG>
-          The function signature in the format `<name>(<in-types>)(<out-types>)`
-
-  <CALLDATA>
-          The ABI-encoded calldata
+  <ACCOUNT_NAME>
+          The name for the account in the keystore
 
 Options:
+  -k, --keystore-dir <KEYSTORE_DIR>
+          If not provided, keystore will try to be located at the default
+          keystores directory (~/.foundry/keystores)
+
+      --unsafe-password <PASSWORD>
+          Current password for the JSON keystore in cleartext This is unsafe, we
+          recommend using the default hidden password prompt
+          
+          [env: CAST_UNSAFE_PASSWORD=]
+
+      --unsafe-new-password <NEW_PASSWORD>
+          New password for the JSON keystore in cleartext This is unsafe, we
+          recommend using the default hidden password prompt
+          
+          [env: CAST_UNSAFE_NEW_PASSWORD=]
+
   -h, --help
           Print help (see a summary with '-h')
 
@@ -25,10 +38,6 @@ Options:
           logical cores
           
           [aliases: jobs]
-
-Decode input data instead of output data:
-  -i, --input
-          Whether to decode the input or output data
 
 Display options:
       --color <COLOR>
@@ -57,5 +66,6 @@ Display options:
           - 3 (-vvv): Print execution traces for failing tests.
           - 4 (-vvvv): Print execution traces for all tests, and setup traces
           for failing tests.
-          - 5 (-vvvvv): Print execution and setup traces for all tests.
+          - 5 (-vvvvv): Print execution and setup traces for all tests,
+          including storage changes.
 ```

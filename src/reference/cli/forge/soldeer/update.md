@@ -23,10 +23,8 @@ Options:
           
           This prevents prompting the user if the automatic detection can't
           determine the config location.
-
-          Possible values:
-          - foundry: Store config inside the `foundry.toml` file
-          - soldeer: Store config inside the `soldeer.toml` file
+          
+          [possible values: foundry, soldeer]
 
   -h, --help
           Print help (see a summary with '-h')

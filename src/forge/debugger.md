@@ -7,23 +7,25 @@
 
 Forge ships with an interactive debugger.
 
-The debugger is accessible on [`forge test`](../reference/forge/forge-test.md) and on [`forge script`](../reference/forge/forge-script.md).
+The debugger is accessible on [`forge test`](../reference/forge/forge-test.md) and on [`forge script`](../reference/forge/forge-script.md). You can only select a single function to debug at the time.
 
 Using `forge test` (or `forge script`):
 
 ```sh
-$ forge test --debug $FUNC
+$ forge test --debug --match-test "<REGEX>"
 ```
 
-Where `$FUNC` is the signature of the function you want to debug. For example:
+Where `<REGEX>` is the function signature of the file you want to debug. For example:
 
 ```sh
-$ forge test --debug "testSomething()"
+$ forge test --debug --match-test "test_Increment"
 ```
 
-If you have multiple contracts with the same function name, you need to limit the matching functions down to only one case using `--match-path` and `--match-contract`.
+If the matching test is a fuzz test, the debugger will open the first failing fuzz scenario, or the last successful one, whichever comes first. For example:
 
-If the matching test is a fuzz test, the debugger will open the first failing fuzz scenario, or the last successful one, whichever comes first.
+```sh
+$ forge test --debug --match-test "testFuzz_SetNumber"
+```
 
 ### Debugger layout
 
