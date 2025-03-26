@@ -125,9 +125,6 @@ This program is a set of tools to interact with Ethereum and perform conversions
 
 #### ABI Commands
 
-[cast abi-decode](./cast-abi-decode.md)
-&nbsp;&nbsp;&nbsp;&nbsp;Decode ABI-encoded input or output data.
-
 [cast abi-encode](./cast-abi-encode.md)
 &nbsp;&nbsp;&nbsp;&nbsp;ABI encode the given function arguments, excluding the selector.
 
@@ -143,7 +140,10 @@ This program is a set of tools to interact with Ethereum and perform conversions
 [cast calldata](./cast-calldata.md)
 &nbsp;&nbsp;&nbsp;&nbsp;ABI-encode a function with arguments.
 
-[cast calldata-decode](./cast-calldata-decode.md)
+[cast decode-abi](./cast-decode-abi.md)
+&nbsp;&nbsp;&nbsp;&nbsp;Decode ABI-encoded input or output data.
+
+[cast decode-calldata](./cast-decode-calldata.md)
 &nbsp;&nbsp;&nbsp;&nbsp;Decode ABI-encoded input data.
 
 [cast pretty-calldata](./cast-pretty-calldata.md)
@@ -303,7 +303,7 @@ This program is a set of tools to interact with Ethereum and perform conversions
 2. Decode raw calldata:
 
    ```sh
-   cast calldata-decode "transfer(address,uint256)" \
+   cast decode-calldata "transfer(address,uint256)" \
      0xa9059cbb000000000000000000000000e78388b4ce79068e89bf8aa7f218ef6b9ab0e9d0000000000000000000000000000000000000000000000000008a8e4b1a3d8000
    ```
 

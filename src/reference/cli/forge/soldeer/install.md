@@ -7,7 +7,7 @@ $ forge soldeer install --help
 ```
 
 ```txt
-Usage: forge soldeer install [OPTIONS] [DEPENDENCY~VERSION] [URL]
+Usage: forge soldeer install [OPTIONS] [DEPENDENCY~VERSION]
 
 Arguments:
   [DEPENDENCY~VERSION]
@@ -17,15 +17,17 @@ Arguments:
           If not present, this command will install all dependencies which are
           missing.
 
-  [URL]
+Options:
+      --url <ZIP_URL>
           The URL to the dependency zip file.
-          
-          If not present, the package will be installed from the Soldeer
-          repository.
           
           Example: https://my-domain/dep.zip
 
-Options:
+      --git <GIT_URL>
+          The URL to the dependency repository.
+          
+          Example: git@github.com:foo/bar.git
+
       --rev <REV>
           A Git commit hash
 
@@ -51,10 +53,8 @@ Options:
           
           This prevents prompting the user if the automatic detection can't
           determine the config location.
-
-          Possible values:
-          - foundry: Store config inside the `foundry.toml` file
-          - soldeer: Store config inside the `soldeer.toml` file
+          
+          [possible values: foundry, soldeer]
 
   -h, --help
           Print help (see a summary with '-h')

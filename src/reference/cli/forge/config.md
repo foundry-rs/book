@@ -40,11 +40,7 @@ Build options:
           Disable the cache
 
       --eof
-          Use EOF-enabled solc binary. Enables via-ir and sets EVM version to
-          Prague. Requires Docker to be installed.
-          
-          Note that this is a temporary solution until the EOF support is merged
-          into the main solc release.
+          Whether to compile contracts to EOF bytecode
 
       --skip <SKIP>...
           Skip building files whose names contain the given filter.
@@ -87,6 +83,9 @@ Compiler options:
 
       --via-ir
           Use the Yul intermediate representation compilation pipeline
+
+      --use-literal-content
+          Changes compilation to only use literal content and not URLs
 
       --no-metadata
           Do not append any metadata to the bytecode.

@@ -6,6 +6,8 @@ The need for a native package manager started to emerge as projects became more 
 
 A new approach has been in the making, [soldeer.xyz](https://soldeer.xyz), which is a Solidity native dependency manager built in Rust and open sourced (check the repository [https://github.com/mario-eth/soldeer](https://github.com/mario-eth/soldeer)).
 
+#### If you want to see the full commands and usage of Soldeer, you can visit the [USAGE.md](https://github.com/mario-eth/soldeer/blob/main/USAGE.md).
+
 ### Initialize a new project
 If you're using Soldeer for the first time in a new Foundry project, you can use the `init` command to install a fresh instance of Soldeer, complete with the necessary configurations and the latest version of `forge-std`.
 ```bash
@@ -54,7 +56,7 @@ If the central repository does not have a certain dependency, you can install it
 
 E.g.
 ```bash
-forge soldeer install @custom-dependency~1.0.0 https://my-website.com/custom-dependency-1-0-0.zip
+forge soldeer install @custom-dependency~1.0.0 --url https://my-website.com/custom-dependency-1-0-0.zip
 ```
 
 The above command will try to download the dependency from the provided link and install it as a normal dependency. For this, you will see in the config an additional field called `path`.
@@ -69,14 +71,34 @@ E.g.
 If you choose to use Git as a source for your dependencies — though we generally discourage this, since Git isn't designed to be a dependency manager — you can provide the Git repository link as an additional argument. Soldeer will then automatically handle the installation using a Git subprocess.
 For example:
 ```bash
-forge soldeer install forge-std~1.9.2 https://github.com/foundry-rs/forge-std.git
+forge soldeer install forge-std~1.9.2 --git https://github.com/foundry-rs/forge-std.git
 ```
 
 If you want to use a specific revision, branch, or tag, you can do so by appending the following arguments to the command: `--rev/--tag/--branch`
 
 e.g.
 ```bash
-forge soldeer install forge-std~1.9.2 https://github.com/foundry-rs/forge-std.git --rev 4695fac44b2934aaa6d7150e2eaf0256fdc566a7
+forge soldeer install forge-std~1.9.2 --git https://github.com/foundry-rs/forge-std.git --rev 4695fac44b2934aaa6d7150e2eaf0256fdc566a7
+```
+
+Some git examples:
+
+Some examples:
+
+```bash
+forge soldeer install test-project~v1 --git git@github.com:test/test.git
+forge soldeer install test-project~v1 --git git@gitlab.com:test/test.git
+```
+
+```bash
+forge soldeer install test-project~v1 --git https://github.com/test/test.git
+forge soldeer install test-project~v1 --git https://gitlab.com/test/test.git
+```
+
+```bash
+forge soldeer install test-project~v1 --git git@github.com:test/test.git --rev 345e611cd84bfb4e62c583fa1886c1928bc1a464
+forge soldeer install test-project~v1 --git git@github.com:test/test.git --branch dev
+forge soldeer install test-project~v1 --git git@github.com:test/test.git --tag v1
 ```
 
 
@@ -205,3 +227,29 @@ e.g. instead of using
 ### What happens if a certain package is not present in the central repository?
 - If a certain package is not present in the central repository, you can open an issue in the [Soldeer Repository](https://github.com/mario-eth/soldeer/issues) and the team will look into adding it.
 - If you have a package that you want to use and it is not present in the central repository, you can push it to the central repository by following the steps above.
+
+## Remappings Caveats
+
+If you use other dependency managers, such as git submodules or npm, ensure you don't duplicate dependencies between
+soldeer and the other manager.
+
+Remappings targeting dependencies installed without Soldeer are not modified or removed when using Soldeer commands,
+unless the `--regenerate-remappings` flag is specified or the `remappings_regenerate = true` option is set.
+
+## Dependencies Maintenance
+
+The vision for Soldeer is that major projects such as OpenZeppelin, Solady, Uniswap would start publishing their own
+packages to the Soldeer registry so that the community can easily include them and get timely updates.
+
+Until this happens, the Soldeer maintenance team (currently m4rio.eth) will push the most popular dependencies to the
+repository by relying on their npmjs or GitHub versions. We are using
+[an open-source crawler tool](https://github.com/mario-eth/soldeer-crawler) to crawl and push the dependencies under the
+`soldeer` organization.
+
+For those who want an extra layer of security, the `soldeer.lock` file saves a `SHA-256` hash for each downloaded
+ZIP file and the corresponding unzipped folder (see `soldeer_core::utils::hash_folder` to see how it gets generated).
+These can be compared with the official releases to ensure the files were not manipulated.
+
+**For Project Maintainers**
+If you want to move your project from the Soldeer organization and take care of pushing the versions to Soldeer
+yourself, please open an issue on GitHub or contact m4rio.eth on [X (formerly Twitter)](https://twitter.com/m4rio_eth).
