@@ -45,7 +45,7 @@ This is a comprehensive review of all the Foundry commands actually supported in
 | forge test                          | ✅ Supported     | Runs unit tests for Solidity contracts, with options for gas reporting, fuzzing, and more.                                               |
 | forge tree                          | ✅ Supported     | Displays the dependency tree of the project, showing how contracts and libraries are interconnected.                                     |
 | forge update                        | ✅ Supported     | Updates the project's dependencies to their latest versions, ensuring everything is up-to-date.                                          |
-| forge verify-bytecode               | ❌ Not Supported | Verifies that a deployed contract's bytecode matches the expected source code, ensuring it hasn't been tampered with.                    |
+| forge verify-bytecode               | ✅ Supported     | Verifies that a deployed contract's bytecode matches the expected source code, ensuring it hasn't been tampered with.                    |
 | forge verify-check                  | ✅ Supported     | Checks the contract's verification status on either the ZKsync block explorer (using `--verifier`) or Etherscan, confirming successful verification. |
 | forge verify-contract               | ✅ Supported     | Verifies a deployed contract on Etherscan, ensuring it matches the source code.                                                          |
 | cast 4byte                          | ✅ Supported     | Fetches function signatures from the 4byte.directory by their selector.                                                                  |
