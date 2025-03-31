@@ -62,6 +62,7 @@ To run the tool manually, follow the [Quick Start](https://cyfrin.gitbook.io/cyf
 ```bash
 $ cd path/to/solidity/project/root
 $ aderyn
+```
 
 Explore more CLI options [here](https://cyfrin.gitbook.io/cyfrin-docs/cli-options).
 
