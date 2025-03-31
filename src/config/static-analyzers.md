@@ -59,10 +59,9 @@ To test your project using [aderyn](https://github.com/cyfrin/aderyn), install t
 
 To run the tool manually, follow the [Quick Start](https://cyfrin.gitbook.io/cyfrin-docs/aderyn-cli/quickstart) example with video guide.
 
-```
-cd path/to/solidity/project/root
-aderyn
-```
+```bash
+$ cd path/to/solidity/project/root
+$ aderyn
 
 Explore more CLI options [here](https://cyfrin.gitbook.io/cyfrin-docs/cli-options)
 
