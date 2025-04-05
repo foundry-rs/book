@@ -430,6 +430,9 @@ Gets the transaction hash and the address which created a contract.
 `--prune-history`
 &nbsp;&nbsp;&nbsp;&nbsp; Don't keep full chain history.
 
+`--no-request-size-limit`
+&nbsp;&nbsp;&nbsp;&nbsp; Disable the request size limit. Default is 2MB
+
 ### EXAMPLES
 
 1. Set the number of accounts to 15 and their balance to 300 ETH
