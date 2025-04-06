@@ -3,6 +3,6 @@
 $ cast call 0x6b175474e89094c44da98b954eedeac495271d0f "totalSupply()(uint256)" --rpc-url https://eth-mainnet.alchemyapi.io/v2/Lc7oIGYeL_QvInzI0Wiu_pOZZDEKBrdf
 // ANCHOR_END: command
 // ANCHOR: output
-3214445816849213224303615163 [3.214e27]
+3158704541142402840658622192 [3.158e27]
 // ANCHOR_END: output
 // ANCHOR_END: all
