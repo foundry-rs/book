@@ -170,6 +170,7 @@ Commands:
   to-wei                 Convert an ETH amount to wei [aliases: --to-wei, tw,
                          2w]
   tx                     Get information about a transaction [aliases: t]
+  tx-pool                Inspect the TxPool of a node [aliases: tp]
   upload-signature       Upload the given signatures to <https://openchain.xyz>
                          [aliases: ups]
   wallet                 Wallet management utilities [aliases: w]
