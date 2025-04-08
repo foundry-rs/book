@@ -372,6 +372,11 @@ Gets the transaction hash and the address which created a contract.
 `--fork-block-number <BLOCK>`
 &nbsp;&nbsp;&nbsp;&nbsp; Fetch state from a specific block number over a remote endpoint (Must pass `--fork-url` in the same command-line).
 
+`--fork-chain-id <CHAIN>`
+&nbsp;&nbsp;&nbsp;&nbsp; Specify chain id to skip fetching it from remote endpoint. This enables offline-start mode.
+          You still must pass both `--fork-url` and `--fork-block-number`, and already have your required state cached on disk, anything missing locally
+          would be fetched from the remote.
+
 `--fork-retry-backoff <BACKOFF>`
 &nbsp;&nbsp;&nbsp;&nbsp; Initial retry backoff on encountering errors.
 
