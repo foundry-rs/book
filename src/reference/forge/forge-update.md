@@ -47,14 +47,26 @@ forge update owner/dependency-name@rev=01234abc
    forge update lib/solmate
    ```
 
-````
-
 2. Update all dependencies:
+
    ```sh
+   # Note: Dependencies pinned to tags/revs in `foundry.lock` will not be updated.
+   # They must be overwritten explicitly.
    forge update
+   ```
+
+3. Update the tag/rev of a dependency:
+
+   ```sh
+   # Update the tag of the dependency
+   forge update owner/dependency-name@new-tag
+   forge update owner/dependency-name@tag=some-tag
+
+   # Update the revision of the dependency
+   forge update owner/dependency-name@01234abc
+   forge update owner/dependency-name@rev=01234abc
    ```
 
 ### SEE ALSO
 
 [forge](./forge.md), [forge install](./forge-install.md), [forge remove](./forge-remove.md)
-````
