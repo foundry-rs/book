@@ -150,6 +150,11 @@
   - [`cast to-utf8`](./cast/to-utf8.md)
   - [`cast to-wei`](./cast/to-wei.md)
   - [`cast tx`](./cast/tx.md)
+  - [`cast tx-pool`](./cast/tx-pool.md)
+    - [`cast tx-pool content`](./cast/tx-pool/content.md)
+    - [`cast tx-pool content-from`](./cast/tx-pool/content-from.md)
+    - [`cast tx-pool inspect`](./cast/tx-pool/inspect.md)
+    - [`cast tx-pool status`](./cast/tx-pool/status.md)
   - [`cast upload-signature`](./cast/upload-signature.md)
   - [`cast wallet`](./cast/wallet.md)
     - [`cast wallet new`](./cast/wallet/new.md)
@@ -163,5 +168,6 @@
     - [`cast wallet list`](./cast/wallet/list.md)
     - [`cast wallet remove`](./cast/wallet/remove.md)
     - [`cast wallet private-key`](./cast/wallet/private-key.md)
+    - [`cast wallet public-key`](./cast/wallet/public-key.md)
     - [`cast wallet decrypt-keystore`](./cast/wallet/decrypt-keystore.md)
 
