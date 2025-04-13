@@ -33,72 +33,75 @@ Options:
           [aliases: jobs]
 
 Cache options:
-      --force
+  --force
           Clear the cache and artifacts folder and recompile
 
 Build options:
-      --no-cache
+  --no-cache
           Disable the cache
 
-      --eof
+  --dynamic-test-linking
+          Enable dynamic test linking
+
+  --eof
           Whether to compile contracts to EOF bytecode
 
-      --skip <SKIP>...
+  --skip <SKIP>...
           Skip building files whose names contain the given filter.
           
           `test` and `script` are aliases for `.t.sol` and `.s.sol`.
 
 Linker options:
-      --libraries <LIBRARIES>
+  --libraries <LIBRARIES>
           Set pre-linked libraries
           
           [env: DAPP_LIBRARIES=]
 
 Compiler options:
-      --ignored-error-codes <ERROR_CODES>
+  --ignored-error-codes <ERROR_CODES>
           Ignore solc warnings by error code
 
-      --deny-warnings
+  --deny-warnings
           Warnings will trigger a compiler error
 
-      --no-auto-detect
+  --no-auto-detect
           Do not auto-detect the `solc` version
 
-      --use <SOLC_VERSION>
+  --use <SOLC_VERSION>
           Specify the solc version, or a path to a local solc, to build with.
           
           Valid values are in the format `x.y.z`, `solc:x.y.z` or
           `path/to/solc`.
 
-      --offline
+  --offline
           Do not access the network.
           
           Missing solc versions will not be installed.
 
-      --via-ir
+  --via-ir
           Use the Yul intermediate representation compilation pipeline
 
-      --use-literal-content
+  --use-literal-content
           Changes compilation to only use literal content and not URLs
 
-      --no-metadata
+  --no-metadata
           Do not append any metadata to the bytecode.
           
           This is equivalent to setting `bytecode_hash` to `none` and
           `cbor_metadata` to `false`.
 
-      --ast
+  --ast
           Includes the AST as JSON in the compiler output
 
-      --evm-version <VERSION>
+  --evm-version <VERSION>
           The target EVM version
 
-      --optimize [<OPTIMIZE>]
+  --optimize [<OPTIMIZE>]
           Activate the Solidity optimizer
           
           [possible values: true, false]
 
-      --optimizer-runs <RUNS>
+  --optimizer-runs <RUNS>
           The number of runs specifies roughly how often each opcode of the
           deployed code will be executed across the life-time of the contract.
           This means it is a trade-off parameter between code size (deploy cost)
@@ -107,7 +110,7 @@ Compiler options:
           larger `optimizer_runs` parameter will produce longer but more gas
           efficient code
 
-      --extra-output <SELECTOR>...
+  --extra-output <SELECTOR>...
           Extra output to include in the contract's artifact.
           
           Example keys: evm.assembly, ewasm, ir, irOptimized, metadata
@@ -115,7 +118,7 @@ Compiler options:
           For a full description, see
           <https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description>
 
-      --extra-output-files <SELECTOR>...
+  --extra-output-files <SELECTOR>...
           Extra output to write to separate files.
           
           Valid values: metadata, ir, irOptimized, ewasm, evm.assembly
