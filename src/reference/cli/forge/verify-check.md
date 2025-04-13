@@ -48,7 +48,7 @@ Options:
           [aliases: jobs]
 
 Verifier options:
-      --verifier <VERIFIER>
+  --verifier <VERIFIER>
           The contract verification provider to use
           
           [default: sourcify]
@@ -61,12 +61,12 @@ Verifier options:
           - custom:     Custom verification provider, requires compatibility
             with the Etherscan API
 
-      --verifier-api-key <VERIFIER_API_KEY>
+  --verifier-api-key <VERIFIER_API_KEY>
           The verifier API KEY, if using a custom provider
           
           [env: VERIFIER_API_KEY=]
 
-      --verifier-url <VERIFIER_URL>
+  --verifier-url <VERIFIER_URL>
           The verifier URL, if using a custom provider
           
           [env: VERIFIER_URL=]
