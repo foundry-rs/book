@@ -114,7 +114,7 @@ This is a comprehensive review of all the Foundry commands actually supported in
 | cast receipt                        | ✅ Supported     | Fetches and displays the receipt of a transaction, including gas used and status.                                                        |
 | cast resolve-name                   | ✅ Supported     | Resolves an ENS name to its associated Ethereum address.                                                                                 |
 | cast rpc                            | ✅ Supported     | Sends a raw JSON-RPC request to an Ethereum node, allowing low-level interaction.                                                        |
-| cast run                            | ❌ Not Supported | Runs a script file, such as a .js or .ts file, with access to Cast functions.                                                            |
+| cast run                            | ✅ Supported     | Runs a script file, such as a .js or .ts file, with access to Cast functions.                                                            |
 | cast selectors                      | ❌ Not Supported | Fetches the function selectors for a given contract or ABI.                                                                              |
 | cast send                           | ✅ Supported     | Sends a transaction to the blockchain, including smart contract interactions.                                                            |
 | cast send --create                  | ✅ Supported     | Sends a transaction that creates a new contract on the blockchain.                                                                       |
