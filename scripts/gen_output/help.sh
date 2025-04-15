@@ -6,18 +6,6 @@ gen_help() {
   for bin in "${bins[@]}"; do
     need_cmd "$bin"
     echo "Generating help output ($bin)..."
+    cargo run --manifest-path ../foundry/Cargo.toml --bin $bin markdown-help > "$ROOT/src/reference/cli/$bin.md"
   done
-
-  cmd=(
-    "$SCRIPTS/gen_output/help.rs"
-    --root-dir "$ROOT/src/"
-    --root-summary
-    --root-indentation 4
-    --readme
-    --verbose
-    --out-dir "$ROOT/src/reference/cli/"
-    "${bins[@]}"
-  )
-  echo "Running: $" "${cmd[*]}"
-  "${cmd[@]}"
 }

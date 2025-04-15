@@ -4,19 +4,19 @@ $ tree . -L 3 -I output
 // ANCHOR_END: command
 // ANCHOR: output
 .
-├── README.md
 ├── foundry.toml
 ├── lib
 │   └── forge-std
 │       ├── CONTRIBUTING.md
+│       ├── foundry.toml
 │       ├── LICENSE-APACHE
 │       ├── LICENSE-MIT
-│       ├── README.md
-│       ├── foundry.toml
 │       ├── package.json
+│       ├── README.md
 │       ├── scripts
 │       ├── src
 │       └── test
+├── README.md
 ├── script
 │   └── Counter.s.sol
 ├── src
