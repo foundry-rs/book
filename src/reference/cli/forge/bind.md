@@ -38,6 +38,20 @@ Options:
           
           [default: 0.1.0]
 
+      --crate-description <DESCRIPTION>
+          The description of the Rust crate to generate.
+          
+          This will be added to the package.description field in Cargo.toml.
+          
+          [default: ]
+
+      --crate-license <LICENSE>
+          The license of the Rust crate to generate.
+          
+          This will be added to the package.license field in Cargo.toml.
+          
+          [default: ]
+
       --module
           Generate the bindings as a module instead of a crate
 

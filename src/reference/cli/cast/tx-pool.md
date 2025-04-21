@@ -1,32 +1,21 @@
-# cast wallet
+# cast tx-pool
 
-Wallet management utilities
+Inspect the TxPool of a node
 
 ```bash
-$ cast wallet --help
+$ cast tx-pool --help
 ```
 
 ```txt
-Usage: cast wallet [OPTIONS] <COMMAND>
+Usage: cast tx-pool [OPTIONS] <COMMAND>
 
 Commands:
-  new               Create a new random keypair [aliases: n]
-  new-mnemonic      Generates a random BIP39 mnemonic phrase [aliases: nm]
-  vanity            Generate a vanity address [aliases: va]
-  address           Convert a private key to an address [aliases: a, addr]
-  sign              Sign a message or typed data [aliases: s]
-  sign-auth         EIP-7702 sign authorization [aliases: sa]
-  verify            Verify the signature of a message [aliases: v]
-  import            Import a private key into an encrypted keystore [aliases: i]
-  list              List all the accounts in the keystore default directory
-                    [aliases: ls]
-  remove            Remove a wallet from the keystore [aliases: rm]
-  private-key       Derives private key from mnemonic [aliases: pk]
-  public-key        Get the public key for the given private key [aliases:
-                    pubkey]
-  decrypt-keystore  Decrypt a keystore file to get the private key [aliases: dk]
-  change-password   Change the password of a keystore file [aliases: cp]
-  help              Print this message or the help of the given subcommand(s)
+  content       Fetches the content of the transaction pool
+  content-from  Fetches the content of the transaction pool filtered by a
+                specific address
+  inspect       Fetches a textual summary of each transaction in the pool
+  status        Fetches the current status of the transaction pool
+  help          Print this message or the help of the given subcommand(s)
 
 Options:
   -h, --help
