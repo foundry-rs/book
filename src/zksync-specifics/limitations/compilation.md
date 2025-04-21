@@ -21,7 +21,7 @@ contract FooTest is Test {
 }
 ```
 
-See [here](./general.md#accessing-contract-bytecode-and-hash) to circumvent this issue.
+See [here](./general.md#accessing-contract-bytecode-and-hash) on how to circumvent this issue.
 
 ### Contract Size Limit
 
@@ -38,50 +38,55 @@ There are three possible solutions to address this issue:
 
 1. **Compilation with `--zk-force-evmla=true`:**
 
-    Compiling in a different mode can sometimes bypass the contract size limit. You can attempt to compile the contract using ZKsync's EVM legacy architecture by adding the `--zk-force-evmla=true` flag.
+   Compiling in a different mode can sometimes bypass the contract size limit. You can attempt to compile the contract using ZKsync's EVM legacy architecture by adding the `--zk-force-evmla=true` flag.
 
-    Example command:
-    ```bash
-    forge build --zk-force-evmla=true --zksync
-    ```
+   Example command:
+
+   ```bash
+   forge build --zk-force-evmla=true --zksync
+   ```
 
 1. **Compilation with `--zk-fallback-oz=true`:**
 
-    If the contract size still exceeds the limit, try compiling with optimization level `-Oz` by using the `--zk-fallback-oz=true` flag. This tells the compiler to fall back to `-Oz` optimization when the bytecode is too large, potentially reducing the contract size further.
+   If the contract size still exceeds the limit, try compiling with optimization level `-Oz` by using the `--zk-fallback-oz=true` flag. This tells the compiler to fall back to `-Oz` optimization when the bytecode is too large, potentially reducing the contract size further.
 
-    Example command:
-    ```bash
-    forge build --zk-fallback-oz=true --zksync
-    ```
+   Example command:
+
+   ```bash
+   forge build --zk-fallback-oz=true --zksync
+   ```
 
 1. **Split the Contract into Smaller Units**
 
-    If neither of the above flags resolves the issue, the contract must be refactored into more minor, modular contracts. This involves separating your logic into different contracts and using contract inheritance or external contract calls to maintain functionality.
+   If neither of the above flags resolves the issue, the contract must be refactored into smaller, modular contracts. This involves separating your logic into different contracts and using contract inheritance or external contract calls to maintain functionality.
 
-    **Before (single large contract):**
-    ```solidity
-    contract LargeContract {
-        function largeFunction1() public { /* complex logic */ }
-        function largeFunction2() public { /* complex logic */ }
-        // Additional large functions and state variables...
-    }
-    ```
-    **After (multiple smaller contracts):**
-    ```solidity
-    contract ContractPart1 {
-        function part1Function() public { /* logic from largeFunction1 */ }
-    }
-    contract ContractPart2 {
-        function part2Function() public { /* logic from largeFunction2 */ }
-    }
-    contract MainContract is ContractPart1, ContractPart2 {
-        // Logic to combine the functionalities of both parts
-    }
-    ```
+   **Before (single large contract):**
 
-### _Non-inlinable_ libraries
+   ```solidity
+   contract LargeContract {
+       function largeFunction1() public { /* complex logic */ }
+       function largeFunction2() public { /* complex logic */ }
+       // Additional large functions and state variables...
+   }
+   ```
 
-Compiling contracts without linking _non-inlinable_ libraries is currently not supported. Libraries must be deployed before building contracts using them. 
+   **After (multiple smaller contracts):**
+
+   ```solidity
+   contract ContractPart1 {
+       function part1Function() public { /* logic from largeFunction1 */ }
+   }
+   contract ContractPart2 {
+       function part2Function() public { /* logic from largeFunction2 */ }
+   }
+   contract MainContract is ContractPart1, ContractPart2 {
+       // Logic to combine the functionalities of both parts
+   }
+   ```
+
+### Non-inlinable libraries
+
+Compiling contracts without linking [non-inlinable](https://docs.zksync.io/zksync-era/tooling/hardhat/guides/compiling-libraries) libraries is currently not supported. Libraries must be deployed before building contracts using them.
 
 When building the contracts, the addresses must be passed using the `libraries` config, which contains a list of `CONTRACT_PATH`:`ADDRESS` mappings.
 
@@ -105,5 +110,3 @@ Please refer to [official docs](https://docs.zksync.io/build/developer-reference
 #### Listing missing libraries
 
 To scan missing non-inlinable libraries, you can build the project using the `--json` flag. This will list the libraries that must be deployed and their addresses provided via the `libraries` option for the contracts to compile. 
-
-

@@ -125,7 +125,7 @@ if (!success) {
 }
 ```
 
-### Computing the Contract Address on zkSync
+### Computing the Contract Address on ZKsync
 
 Lastly, we will create a view function named `computeAddress`. This function should take in the `salt`, `bytecodeHash`, and `constructorInput` as parameters and return the address of the contract that would be deployed using the `deploy` function on ZKsync:
 
@@ -174,7 +174,7 @@ The ZKsync-specific address derivation formula differs slightly from Ethereum’
 ```solidity
 bytes32 hash = keccak256(
     bytes.concat(
-        CREATE2_PREFIX,               // zkSync-specific prefix
+        CREATE2_PREFIX,               // ZKsync-specific prefix
         bytes32(uint256(uint160(_sender))),  // Address of the contract deployer
         _salt,                         // Salt for the deployment
         _bytecodeHash,                 // Hash of the bytecode
