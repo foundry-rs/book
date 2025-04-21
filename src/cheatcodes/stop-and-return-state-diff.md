@@ -60,7 +60,7 @@ Account state changes (`AccountAccess`) are recorded at the start of a new EVM c
 An `AccountAccess` record contain storage accesses, represented as `StorageAccess`, that occurred before it was preempted via sub-calls or create operations.
 
 The ordering of `AccountAccess` records reflect the EVM execution order of their associated operations. An `AccountAccess` is created whenever an EVM context is created or resumed.
-If a sub-context is created, a `Resume` `AccountAccess` is recorded to indicate that a previous `AccountAccess` that was pre-empted has been resumed.
+If a sub-context is created, a `Resume` `AccountAccess` is recorded to indicate that a previous `AccountAccess` that was pre-emptied has been resumed.
 
 ### `AccountAccessKind`
 
@@ -76,7 +76,7 @@ If kind is a Resume, then account represents an execution context that had resum
 - `StaticCall` - The account was called via staticcall
 - `Create` - The account was created
 - `SelfDestruct` - The account was selfdestructed
-- `Resume` - Indicates that a previously pre-emptyed account access was resumed
+- `Resume` - Indicates that a previously pre-emptied account access was resumed
 - `Balance` - The account's codesize was read
 - `Extcodesize` - The account's codesize was read
 - `Extcodehash` - The account's codehash was read

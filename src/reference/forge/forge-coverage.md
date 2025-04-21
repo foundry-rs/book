@@ -39,6 +39,10 @@ It has three different options and is set to `summary` by default.
 
 `--ir-minimum` allows you to run the coverage with `via-ir` enabled for the ["minimum amount of optimization"](https://github.com/ethereum/solidity/issues/12533#issuecomment-1013073350) necessary.
 
+#### Contract Exclusion
+
+`--no-match-coverage "(script|Foo|Bar)"` allows you to exclude paths and contracts from the coverage report.
+
 ### EXAMPLES
 
 1. View summarized coverage:
@@ -56,6 +60,11 @@ It has three different options and is set to `summary` by default.
 3. Output uncovered code locations:
    ```sh
    forge coverage --report debug
+   ```
+
+4. Coverage report without including `script` directory:
+   ```sh
+   forge coverage --no-match-coverage script
    ```
 
 ### SEE ALSO

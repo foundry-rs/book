@@ -109,4 +109,4 @@ Please refer to [official docs](https://docs.zksync.io/build/developer-reference
 
 #### Listing missing libraries
 
-To scan missing non-inlinable libraries, you can build the project using the `--zk-detect-missing-libraries` flag. This will list the libraries that must be deployed and their addresses provided via the `libraries` option for the contracts to compile. Metadata about the libraries will be saved in `.zksolc-libraries-cache/missing_library_dependencies.json`.
+To scan missing non-inlinable libraries, you can build the project using the `--json` flag. This will list the libraries that must be deployed and their addresses provided via the `libraries` option for the contracts to compile. 

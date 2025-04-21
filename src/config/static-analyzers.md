@@ -53,6 +53,19 @@ Counter.sol analyzed (1 contracts with 78 detectors), 4 result(s) found
 
 Slither also has a [GitHub Action](https://github.com/marketplace/actions/slither-action) for CI/CD.
 
+### Aderyn
+
+To test your project using [aderyn](https://github.com/cyfrin/aderyn), install the [VS Code extension](https://marketplace.visualstudio.com/items?itemName=Cyfrin.aderyn&ssr=false#overview) supported by Cyfrin.
+
+To run the tool manually, follow the [Quick Start](https://cyfrin.gitbook.io/cyfrin-docs/aderyn-cli/quickstart) example with video guide.
+
+```bash
+$ cd path/to/solidity/project/root
+$ aderyn
+```
+
+Explore more CLI options [here](https://cyfrin.gitbook.io/cyfrin-docs/cli-options).
+
 ### Mythril
 
 To test your project using [mythril](https://github.com/ConsenSys/mythril), here is a sample `mythril.config.json`:

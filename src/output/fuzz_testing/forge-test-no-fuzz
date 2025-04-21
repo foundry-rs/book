@@ -4,44 +4,13 @@ $ forge test --zksync
 // ANCHOR_END: command
 // ANCHOR: output
 Compiling 24 files with Solc 0.8.10
-Solc 0.8.10 finished in 1.11s
-Compiler run successful with warnings:
-Warning (9302): Return value of low-level calls not used.
-  --> test/Safe.t.sol:11:9:
-   |
-11 |         payable(msg.sender).call{value: address(this).balance}("");
-   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Warning (9302): Return value of low-level calls not used.
-  --> test/Safe.t.sol:27:9:
-   |
-27 |         payable(address(safe)).call{value: 1 ether}("");
-   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-
-Compiling 24 files with zksolc and solc 0.8.10
-zksolc and solc 0.8.10 finished in 5.81s
-Compiler run successful with warnings:
-Warning (9302)
-Warning: Return value of low-level calls not used.
-  --> test/Safe.t.sol:11:9:
-   |
-11 |         payable(msg.sender).call{value: address(this).balance}("");
-   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Warning (9302)
-Warning: Return value of low-level calls not used.
-  --> test/Safe.t.sol:27:9:
-   |
-27 |         payable(address(safe)).call{value: 1 ether}("");
-   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-2024-10-06T00:06:07.481112Z ERROR foundry_zksync_core::vm::tracers::cheatcode: call may fail or behave unexpectedly due to empty code target=0x7fa9385be102ac3eac297483dd6233d62b3e1496 calldata=""
+Solc 0.8.10 finished in 655.57ms
+Compiler run successful!
 
 Ran 1 test for test/Safe.t.sol:SafeTest
-[PASS] test_Withdraw() (gas: 1199829)
-Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 28.85ms (13.44ms CPU time)
+[PASS] test_Withdraw() (gas: 19644)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 410.22µs (63.92µs CPU time)
 
-Ran 1 test suite in 29.66ms (28.85ms CPU time): 1 tests passed, 0 failed, 0 skipped (1 total tests)
+Ran 1 test suite in 5.32ms (410.22µs CPU time): 1 tests passed, 0 failed, 0 skipped (1 total tests)
 // ANCHOR_END: output
 // ANCHOR_END: all

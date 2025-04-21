@@ -65,9 +65,9 @@ Guides on configuring Foundry.
 - [Integrating with Hardhat](./config/hardhat.md)
 - [Vyper support](./config/vyper.md)
 
-**Tutorials**
+**Guides**
 
-Tutorials on building smart contracts with Foundry.
+Guides for building smart contracts with Foundry.
 
 - [Creating an NFT with Solmate](./tutorials/solmate-nft.md)
 - [Testing EIP-712 Signatures](./tutorials/testing-eip712.md)
@@ -84,6 +84,7 @@ Help us improve Foundry-ZKsync: [Contributing](./contributing.md)
 
 References, troubleshooting, and more.
 
+- [Announcements](./announcements.md)
 - [FAQ](./faq.md)
 - [CLI Reference](./reference/cli/)
 - [forge Commands](./reference/forge/)

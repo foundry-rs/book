@@ -503,7 +503,7 @@ Asserts `a` is approximately equal to `b` with delta in absolute value.
 ##### Example
 
 ```solidity
-function testFail () external {
+function testRevert () external {
     uint256 a = 100;
     uint256 b = 200;
 
@@ -528,7 +528,7 @@ Asserts `a` is approximately equal to `b` with delta in percentage, where `1e18`
 ##### Example
 
 ```solidity
-function testFail () external {
+function testRevert () external {
     uint256 a = 100;
     uint256 b = 200;
     assertApproxEqRel(a, b, 0.4e18);

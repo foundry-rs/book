@@ -7,23 +7,23 @@ Forge manages dependencies using [git submodules](https://git-scm.com/book/en/v2
 To add a dependency, run [`forge install`](../reference/forge/forge-install.md):
 
 ```sh
-{{#include ../output/deps/forge-install:all}}
+{{#include ../output/hello_foundry/forge-install:all}}
 ```
 
-This pulls the `solmate` library, stages the `.gitmodules` file in git and makes a commit with the message "Installed solmate".
+This pulls the `solady` library, stages the `.gitmodules` file in git and makes a commit with the message `Installed solady`.
 
 If we now check the `lib` folder:
 
 ```sh
-{{#include ../output/deps/tree:all}}
+{{#include ../output/hello_foundry/tree:all}}
 ```
 
-We can see that Forge installed `solmate`!
+We can see that Forge installed `solady`!
 
 By default, `forge install` installs the latest master branch version. If you want to install a specific tag or commit, you can do it like so:
 
 ```sh
-$ forge install transmissions11/solmate@v7
+$ forge install vectorized/solady@v0.1.3
 ```
 
 ### Remapping dependencies
@@ -31,56 +31,71 @@ $ forge install transmissions11/solmate@v7
 Forge can remap dependencies to make them easier to import. Forge will automatically try to deduce some remappings for you:
 
 ```sh
-{{#include ../output/deps/forge-remappings:all}}
+{{#include ../output/hello_foundry/forge-remappings:all}}
 ```
 
 These remappings mean:
 
 - To import from `forge-std` we would write: `import "forge-std/Contract.sol";`
-- To import from `ds-test` we would write: `import "ds-test/Contract.sol";`
-- To import from `solmate` we would write: `import "solmate/Contract.sol";`
-- To import from `weird-erc20` we would write: `import "weird-erc20/Contract.sol";`
+- To import from `solady` we would write: `import "solady/Contract.sol";`
 
 You can customize these remappings by creating a `remappings.txt` file in the root of your project.
 
-Let's create a remapping called `solmate-utils` that points to the `utils` folder in the solmate repository!
+Let's create a remapping called `solady-utils` that points to the `utils` folder in the `solady` repository!
 
 ```sh
-@solmate-utils/=lib/solmate/src/utils/
+@solady-utils/=lib/solady/src/utils/
 ```
 
 You can also set remappings in `foundry.toml`.
 
 ```toml
 remappings = [
-    "@solmate-utils/=lib/solmate/src/utils/",
+    "@solady-utils/=lib/solady/src/utils/",
 ]
 ```
 
-Now we can import any of the contracts in `src/utils` of the solmate repository like so:
+Now we can import any of the contracts in `src/utils` of the `solady` repository like so:
 
 ```solidity
-import {LibString} from "@solmate-utils/LibString.sol";
+import {LibString} from "@solady-utils/LibString.sol";
 ```
+
+### Remapping conflicts
+In some cases, you may encounter dependency conflicts when two or more git submodules include different dependencies with the same namespace. For example, suppose you have installed both `org/lib_1` and `org/lib_2`, and they each reference their own versions of `@openzeppelin`. In such scenarios, `forge remappings` generates a single remapping entry for the namespace, which will point to only one of the two `@openzeppelin` libraries. 
+
+```sh
+$ forge remappings  
+@openzeppelin/=lib/lib_1/node_modules/@openzeppelin/ 
+```
+
+This situation can lead to import issues, causing `forge build` to fail or introduce unexpected behavior into your contracts. To resolve this, you can add remapping contexts to your `remappings.txt` file. This instructs the compiler to use different remappings in distinct compilation contexts, resolving the conflict. For example, to address the conflict between `lib_1` and `lib_2`, you would update your remappings.txt as follows:
+
+
+```sh
+lib/lib_1/:@openzeppelin/=lib/lib_1/node_modules/@openzeppelin/
+lib/lib_2/:@openzeppelin/=lib/lib_2/node_modules/@openzeppelin/
+```
+This approach ensures that each dependency is mapped to the appropriate library version, avoiding potential issues. For more information about remapping, please see the [Solidity Lang Docs](https://docs.soliditylang.org/en/latest/path-resolution.html#import-remapping).
 
 ### Updating dependencies
 
-You can update a specific dependency to the latest commit on the version you have specified using [`forge update <dep>`](../reference/forge/forge-update.md). For example, if we wanted to pull the latest commit from our previously installed master-version of `solmate`, we would run:
+You can update a specific dependency to the latest commit on the version you have specified using [`forge update <dep>`](../reference/forge/forge-update.md). For example, if we wanted to pull the latest commit from our previously installed master-version of `solady`, we would run:
 
 ```sh
-$ forge update lib/solmate
+$ forge update lib/solady
 ```
 
 Alternatively, you can do this for all dependencies at once by just running `forge update`.
 
 ### Removing dependencies
 
-You can remove dependencies using [`forge remove <deps>...`](../reference/forge/forge-remove.md), where `<deps>` is either the full path to the dependency or just the name. For example, to remove `solmate` both of these commands are equivalent:
+You can remove dependencies using [`forge remove <deps>...`](../reference/forge/forge-remove.md), where `<deps>` is either the full path to the dependency or just the name. For example, to remove `solady` both of these commands are equivalent:
 
 ```ignore
-$ forge remove solmate
+$ forge remove solady
 # ... is equivalent to ...
-$ forge remove lib/solmate
+$ forge remove lib/solady
 ```
 
 ### Hardhat compatibility

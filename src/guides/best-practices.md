@@ -101,7 +101,7 @@ Additional best practices from [samsczun](https://twitter.com/samczsun)'s [How D
    - If you add a topic (i.e. a new indexed parameter), it's now tested by default.
    - Even if you only have 1 topic, the extra `true` arguments don't hurt.
 
-1. Remember to write invariant tests! For the assertion string, use a verbose english description of the invariant: `assertEq(x + y, z, "Invariant violated: the sum of x and y must always equal z")`. For more info on this, check out the [Invariant Testing](../forge/invariant-testing) tutorial.
+1. Remember to write invariant tests! For the assertion string, use a verbose english description of the invariant: `assertEq(x + y, z, "Invariant violated: the sum of x and y must always equal z")`.
 
 ### Fork Tests
 
@@ -114,7 +114,7 @@ Additional best practices from [samsczun](https://twitter.com/samczsun)'s [How D
 1. Be careful with fuzz tests on a fork to avoid burning through RPC requests with non-deterministic fuzzing. If the input to your fork fuzz test is some parameter which is used in an RPC call to fetch data (e.g. querying the token balance of an address), each run of a fuzz test uses at least 1 RPC request, so you'll quickly hit rate limits or usage limits. Solutions to consider:
 
    - Replace multiple RPC calls with a single [multicall](https://github.com/mds1/multicall).
-   - Specify a fuzz/invariant [seed](/src/reference/config/testing.md#seed): this makes sure each `forge test` invocation uses the same fuzz inputs. RPC results are cached locally, so you'll only query the node the first time.
+   - Specify a fuzz/invariant [seed](../reference/config/testing.md#seed): this makes sure each `forge test` invocation uses the same fuzz inputs. RPC results are cached locally, so you'll only query the node the first time.
    - In CI, consider setting the fuzz seed using a [computed environment variable](https://github.com/sablier-labs/v2-core/blob/d1157b49ed4bceeff0c4e437c9f723e88c134d3a/.github/workflows/ci.yml#L252-L254) so it changes every day or every week. This gives flexibility on the tradeoff between increasing randomness to find more bugs vs. using a seed to reduce RPC requests.
    - Structure your tests so the data you are fuzzing over is computed locally by your contract, and not data that is used in an RPC call (may or may not be feasible based on what you're doing).
    - Lastly, you can of course always run a local node or bump your RPC plan.
@@ -205,40 +205,41 @@ You should _ensure_ that no _tainted_ data ever reaches a _sink_. That means tha
 1. **Carefully audit which transactions are broadcast**. Transactions not broadcast are still executed in the context of a test, so missing broadcasts or extra broadcasts are easy sources of error in the previous step.
 
 1. **Watch out for frontrunning**. Forge simulates your script, generates transaction data from the simulation results, then broadcasts the transactions. Make sure your script is robust against chain-state changing between the simulation and broadcast. A sample script vulnerable to this is below:
-    ```solidity
-    // Pseudo-code, may not compile.
-    contract VulnerableScript is Script {
-       function run() public {
-          vm.startBroadcast();
-    
-          // Transaction 1: Deploy a new Gnosis Safe with CREATE.
-          // Because we're using CREATE instead of CREATE2, the address of the new
-          // Safe is a function of the nonce of the gnosisSafeProxyFactory.
-          address mySafe = gnosisSafeProxyFactory.createProxy(singleton, data);
-    
-          // Transaction 2: Send tokens to the new Safe.
-          // We know the address of mySafe is a function of the nonce of the
-          // gnosisSafeProxyFactory. If someone else deploys a Gnosis Safe between
-          // the simulation and broadcast, the address of mySafe will be different,
-          // and this script will send 1000 DAI to the other person's Safe. In this
-          // case, we can protect ourselves from this by using CREATE2 instead of
-          // CREATE, but every situation may have different solutions.
-          dai.transfer(mySafe, 1000e18);
-    
-          vm.stopBroadcast();
-       }
-    }
-    ```
+
+   ```solidity
+   // Pseudo-code, may not compile.
+   contract VulnerableScript is Script {
+      function run() public {
+         vm.startBroadcast();
+
+         // Transaction 1: Deploy a new Gnosis Safe with CREATE.
+         // Because we're using CREATE instead of CREATE2, the address of the new
+         // Safe is a function of the nonce of the gnosisSafeProxyFactory.
+         address mySafe = gnosisSafeProxyFactory.createProxy(singleton, data);
+
+         // Transaction 2: Send tokens to the new Safe.
+         // We know the address of mySafe is a function of the nonce of the
+         // gnosisSafeProxyFactory. If someone else deploys a Gnosis Safe between
+         // the simulation and broadcast, the address of mySafe will be different,
+         // and this script will send 1000 DAI to the other person's Safe. In this
+         // case, we can protect ourselves from this by using CREATE2 instead of
+         // CREATE, but every situation may have different solutions.
+         dai.transfer(mySafe, 1000e18);
+
+         vm.stopBroadcast();
+      }
+   }
+   ```
 
 1. For scripts that read from JSON input files, put the input files in `script/input/<chainID>/<description>.json`. Then have `run(string memory input)` (or take multiple string inputs if you need to read from multiple files) as the script's signature, and use the below method to read the JSON file.
-    ```solidity
-    function readInput(string memory input) internal returns (string memory) {
-      string memory inputDir = string.concat(vm.projectRoot(), "/script/input/");
-      string memory chainDir = string.concat(vm.toString(block.chainid), "/");
-      string memory file = string.concat(input, ".json");
-      return vm.readFile(string.concat(inputDir, chainDir, file));
-    }
-    ```
+   ```solidity
+   function readInput(string memory input) internal returns (string memory) {
+     string memory inputDir = string.concat(vm.projectRoot(), "/script/input/");
+     string memory chainDir = string.concat(vm.toString(block.chainid), "/");
+     string memory file = string.concat(input, ".json");
+     return vm.readFile(string.concat(inputDir, chainDir, file));
+   }
+   ```
 
 ### Private Key Management
 
@@ -260,7 +261,7 @@ Additional security precautions when using scripts:
 3. When in doubt about whether a wallet contains real funds or not, assume it does. Always be certain about a wallet's balances and status when using it for development purposes. Use [blockscan](https://blockscan.com/) to easily check many chains to see where the address has been used.
 4. Remember that adding an account in wallets like Metamask generates a new private key. However, that private key is derived from the same mnemonic as the other accounts generated in that wallet. Therefore, never expose the mnemonic as it may compromise all of your accounts.
 
-*This was section was inspired by [The Pledge](https://github.com/smartcontractkit/full-blockchain-solidity-course-js/discussions/5) from [Patrick Collins](https://twitter.com/PatrickAlphaC).*
+_This was section was inspired by [The Pledge](https://github.com/smartcontractkit/full-blockchain-solidity-course-js/discussions/5) from [Patrick Collins](https://twitter.com/PatrickAlphaC)._
 
 ## Comments
 

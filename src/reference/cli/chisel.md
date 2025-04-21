@@ -18,6 +18,12 @@ Commands:
   help         Print this message or the help of the given subcommand(s)
 
 Options:
+  -j, --threads <THREADS>
+          Number of threads to use. Specifying 0 defaults to the number of
+          logical cores
+          
+          [aliases: jobs]
+
   -h, --help
           Print help (see a summary with '-h')
 
@@ -25,14 +31,29 @@ Options:
           Print version
 
 Display options:
-      --verbose
-          Use verbose output
+  -v, --verbosity...
+          Verbosity level of the log messages.
+          
+          Pass multiple times to increase the verbosity (e.g. -v, -vv, -vvv).
+          
+          Depending on the context the verbosity levels have different meanings.
+          
+          For example, the verbosity levels of the EVM are:
+          - 2 (-vv): Print logs for all tests.
+          - 3 (-vvv): Print execution traces for failing tests.
+          - 4 (-vvvv): Print execution traces for all tests, and setup traces
+          for failing tests.
+          - 5 (-vvvvv): Print execution and setup traces for all tests,
+          including storage changes.
 
   -q, --quiet
           Do not print log messages
 
+      --json
+          Format log messages as JSON
+
       --color <COLOR>
-          Log messages coloring
+          The color of the log messages
 
           Possible values:
           - auto:   Intelligently guess whether to use color output (default)
@@ -62,11 +83,7 @@ Build options:
           Disable the cache
 
       --eof
-          Use EOF-enabled solc binary. Enables via-ir and sets EVM version to
-          Prague. Requires Docker to be installed.
-          
-          Note that this is a temporary solution until the EOF support is merged
-          into the main solc release.
+          Whether to compile contracts to EOF bytecode
 
       --skip <SKIP>...
           Skip building files whose names contain the given filter.
@@ -102,6 +119,9 @@ Compiler options:
 
       --via-ir
           Use the Yul intermediate representation compilation pipeline
+
+      --use-literal-content
+          Changes compilation to only use literal content and not URLs
 
       --no-metadata
           Do not append any metadata to the bytecode.
@@ -237,17 +257,9 @@ EVM options:
           Use the create 2 factory in all cases including tests and
           non-broadcasting scripts
 
-  -v, --verbosity...
-          Verbosity of the EVM.
-          
-          Pass multiple times to increase the verbosity (e.g. -v, -vv, -vvv).
-          
-          Verbosity levels:
-          - 2: Print logs for all tests
-          - 3: Print execution traces for failing tests
-          - 4: Print execution traces for all tests, and setup traces for
-          failing tests
-          - 5: Print execution and setup traces for all tests
+      --create2-deployer <ADDRESS>
+          The CREATE2 deployer address to use, this will override the one in the
+          config
 
 Fork config:
       --compute-units-per-second <CUPS>
@@ -268,9 +280,6 @@ Fork config:
           [aliases: no-rate-limit]
 
 Executor environment config:
-      --gas-limit <GAS_LIMIT>
-          The block gas limit
-
       --code-size-limit <CODE_SIZE>
           EIP-170: Contract code size limit in bytes. Useful to increase this
           because of tests. By default, it is 0x6000 (~25kb)
@@ -308,6 +317,8 @@ Executor environment config:
 
       --block-gas-limit <GAS_LIMIT>
           The block gas limit
+          
+          [aliases: gas-limit]
 
       --memory-limit <MEMORY_LIMIT>
           The memory limit per EVM execution in bytes. If this limit is
@@ -326,6 +337,6 @@ Executor environment config:
           context, enabling more precise gas accounting and transaction state
           changes
 
-      --alphanet
-          Whether to enable Alphanet features
+      --odyssey
+          Whether to enable Odyssey features
 ```

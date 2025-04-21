@@ -6,13 +6,13 @@ cast-pretty-calldata - Pretty print calldata.
 
 ### SYNOPSIS
 
-``cast pretty-calldata`` [*options*] *calldata*
+`cast pretty-calldata` [*options*] _calldata_
 
 ### DESCRIPTION
 
 Pretty print calldata.
 
-Tries to decode the calldata using <https://sig.eth.samczsun.com> unless `--offline` is passed.
+Tries to decode the calldata using <https://openchain.xyz/signatures> unless `--offline` is passed.
 
 ### OPTIONS
 
@@ -20,17 +20,17 @@ Tries to decode the calldata using <https://sig.eth.samczsun.com> unless `--offl
 
 `-o`  
 `--offline`  
-&nbsp;&nbsp;&nbsp;&nbsp;Skip the <https://sig.eth.samczsun.com> lookup.
+&nbsp;&nbsp;&nbsp;&nbsp;Skip the <https://openchain.xyz/signatures> lookup.
 
 {{#include common-options.md}}
 
 ### EXAMPLES
 
 1. Decode calldata for a `transfer` call:
-    ```sh
-    cast pretty-calldata 0xa9059cbb000000000000000000000000e78388b4ce79068e89bf8aa7f218ef6b9ab0e9d00000000000000000000000000000000000000000000000000174b37380cea000
-    ```
+   ```sh
+   cast pretty-calldata 0xa9059cbb000000000000000000000000e78388b4ce79068e89bf8aa7f218ef6b9ab0e9d00000000000000000000000000000000000000000000000000174b37380cea000
+   ```
 
 ### SEE ALSO
 
-[cast](./cast.md), [cast 4byte-decode](./cast-4byte-decode.md)
+[cast](./cast.md), [cast 4byte-calldata](./cast-4byte-calldata.md)

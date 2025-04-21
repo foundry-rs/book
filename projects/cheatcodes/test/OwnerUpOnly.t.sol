@@ -44,15 +44,7 @@ contract OwnerUpOnlyTest is Test {
     }
     // ANCHOR_END: simple_test
 
-    // ANCHOR: test_fail
-    function testFail_IncrementAsNotOwner() public {
-        vm.prank(address(0));
-        upOnly.increment();
-    }
-    // ANCHOR_END: test_fail
-
     // ANCHOR: test_expectrevert
-    // Notice that we replaced `testFail` with `test`
     function test_RevertWhen_CallerIsNotOwner() public {
         vm.expectRevert(Unauthorized.selector);
         vm.prank(address(0));

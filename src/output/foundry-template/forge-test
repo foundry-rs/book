@@ -3,18 +3,19 @@
 $ forge test --zksync
 // ANCHOR_END: command
 // ANCHOR: output
-Compiling 25 files with Solc 0.8.25
-Solc 0.8.25 finished in 925.41ms
+Compiling 25 files with Solc 0.8.28
+Solc 0.8.28 finished in 854.35ms
 Compiler run successful!
 
 No files changed, compilation skipped
+2025-02-20T18:13:46.896851Z ERROR foundry_zksync_core::vm::inspect: reverting initiator tx nonce for CALL address=0x1804c8ab1f12e6bbf3894d4083f33e07309d1f38 from=3 to=2 deploy_nonce=2
 
-Ran 3 tests for test/Foo.t.sol:FooTest
-[PASS] testFork_Example() (gas: 3779)
-[PASS] testFuzz_Example(uint256) (runs: 1000, μ: 213166, ~: 213166)
-[PASS] test_Example() (gas: 215916)
-Suite result: ok. 3 passed; 0 failed; 0 skipped; finished in 6.51s (6.51s CPU time)
+Ran 3 tests for tests/Foo.t.sol:FooTest
+[PASS] testFork_Example() (gas: 3755)
+[PASS] testFuzz_Example(uint256) (runs: 1000, μ: 116733, ~: 116733)
+[PASS] test_Example() (gas: 119483)
+Suite result: ok. 3 passed; 0 failed; 0 skipped; finished in 5.06s (5.06s CPU time)
 
-Ran 1 test suite in 6.52s (6.51s CPU time): 3 tests passed, 0 failed, 0 skipped (3 total tests)
+Ran 1 test suite in 5.06s (5.06s CPU time): 3 tests passed, 0 failed, 0 skipped (3 total tests)
 // ANCHOR_END: output
 // ANCHOR_END: all

@@ -1,6 +1,8 @@
-## Overview of Chisel
+## Chisel
 
-Chisel is an advanced Solidity REPL shipped with Foundry. It can be used to quickly test the behavior of Solidity snippets
-on a local or forked network.
+Chisel is a fast, utilitarian, and verbose Solidity REPL.
+
+The `chisel` binary can be used both within and outside of a Foundry project.
+If the binary is executed in a Foundry project root, Chisel will inherit the project's configuration options.
 
 Officially we do not support chisel for ZKsync related operations.

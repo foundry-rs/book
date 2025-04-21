@@ -38,6 +38,20 @@ Options:
           
           [default: 0.1.0]
 
+      --crate-description <DESCRIPTION>
+          The description of the Rust crate to generate.
+          
+          This will be added to the package.description field in Cargo.toml.
+          
+          [default: ]
+
+      --crate-license <LICENSE>
+          The license of the Rust crate to generate.
+          
+          This will be added to the package.license field in Cargo.toml.
+          
+          [default: ]
+
       --module
           Generate the bindings as a module instead of a crate
 
@@ -64,7 +78,10 @@ Options:
           Generate bindings for the `alloy` library, instead of `ethers`
 
       --alloy-version <ALLOY_VERSION>
-          Specify the alloy version
+          Specify the `alloy` version on Crates
+
+      --alloy-rev <ALLOY_REV>
+          Specify the `alloy` revision on GitHub
 
       --ethers
           Generate bindings for the `ethers` library, instead of `alloy`
@@ -72,6 +89,12 @@ Options:
 
   -h, --help
           Print help (see a summary with '-h')
+
+  -j, --threads <THREADS>
+          Number of threads to use. Specifying 0 defaults to the number of
+          logical cores
+          
+          [aliases: jobs]
 
 Cache options:
       --force
@@ -82,11 +105,7 @@ Build options:
           Disable the cache
 
       --eof
-          Use EOF-enabled solc binary. Enables via-ir and sets EVM version to
-          Prague. Requires Docker to be installed.
-          
-          Note that this is a temporary solution until the EOF support is merged
-          into the main solc release.
+          Whether to compile contracts to EOF bytecode
 
       --skip <SKIP>...
           Skip building files whose names contain the given filter.
@@ -123,6 +142,9 @@ Compiler options:
       --via-ir
           Use the Yul intermediate representation compilation pipeline
 
+      --use-literal-content
+          Changes compilation to only use literal content and not URLs
+
       --no-metadata
           Do not append any metadata to the bytecode.
           
@@ -141,7 +163,13 @@ Compiler options:
           [possible values: true, false]
 
       --optimizer-runs <RUNS>
-          The number of optimizer runs
+          The number of runs specifies roughly how often each opcode of the
+          deployed code will be executed across the life-time of the contract.
+          This means it is a trade-off parameter between code size (deploy cost)
+          and code execution cost (cost after deployment). An `optimizer_runs`
+          parameter of `1` will produce short but expensive code. In contrast, a
+          larger `optimizer_runs` parameter will produce longer but more gas
+          efficient code
 
       --extra-output <SELECTOR>...
           Extra output to include in the contract's artifact.
@@ -240,11 +268,6 @@ ZKSync configuration:
           [aliases: fallback-oz]
           [possible values: true, false]
 
-      --zk-detect-missing-libraries
-          Detect missing libraries, instead of erroring
-          
-          Currently unused
-
   -O, --zk-optimizer-mode <LEVEL>
           Set the LLVM optimization parameter `-O[0 | 1 | 2 | 3 | s | z]`. Use
           `3` for best performance and `z` for minimal size
@@ -254,23 +277,53 @@ ZKSync configuration:
       --zk-optimizer
           Enables optimizations
 
-      --zk-avoid-contracts <AVOID_CONTRACTS>
-          Contracts to avoid compiling on zkSync
+      --zk-paymaster-address <PAYMASTER_ADDRESS>
+          Paymaster address
           
-          [aliases: avoid-contracts]
+          [aliases: paymaster-address]
+
+      --zk-paymaster-input <PAYMASTER_INPUT>
+          Paymaster input
+          
+          [aliases: paymaster-input]
+
+      --zk-suppressed-warnings <SUPPRESSED_WARNINGS>
+          Set the warnings to suppress for zksolc, possible values: [txorigin]
+          
+          [aliases: suppressed-warnings]
+
+      --zk-suppressed-errors <SUPPRESSED_ERRORS>
+          Set the errors to suppress for zksolc, possible values: [sendtransfer]
+          
+          [aliases: suppressed-errors]
 
 Display options:
       --color <COLOR>
-          Log messages coloring
+          The color of the log messages
 
           Possible values:
           - auto:   Intelligently guess whether to use color output (default)
           - always: Force color output
           - never:  Force disable color output
 
+      --json
+          Format log messages as JSON
+
   -q, --quiet
           Do not print log messages
 
-      --verbose
-          Use verbose output
+  -v, --verbosity...
+          Verbosity level of the log messages.
+          
+          Pass multiple times to increase the verbosity (e.g. -v, -vv, -vvv).
+          
+          Depending on the context the verbosity levels have different meanings.
+          
+          For example, the verbosity levels of the EVM are:
+          - 2 (-vv): Print logs for all tests.
+          - 3 (-vvv): Print execution traces for failing tests.
+          - 4 (-vvvv): Print execution traces for all tests, and setup traces
+          for failing tests.
+          - 5 (-vvvvv): Print execution and setup traces for all tests,
+          including storage changes.
 ```

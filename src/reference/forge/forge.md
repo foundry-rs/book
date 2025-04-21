@@ -6,7 +6,7 @@ forge - Build, test, fuzz, debug and deploy Solidity contracts.
 
 ### SYNOPSIS
 
-`forge` [*options*] *command* [*args*]  
+`forge` [*options*] _command_ [*args*]  
 `forge` [*options*] `--version`  
 `forge` [*options*] `--help`
 
@@ -91,9 +91,6 @@ This program is a set of tools to build, test, fuzz, debug and deploy Solidity s
 
 #### Utility Commands
 
-[forge debug](./forge-debug.md)  
-&nbsp;&nbsp;&nbsp;&nbsp;Debug a single smart contract as a script.
-
 [forge bind](./forge-bind.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Generate Rust bindings for smart contracts.
 
@@ -101,16 +98,16 @@ This program is a set of tools to build, test, fuzz, debug and deploy Solidity s
 &nbsp;&nbsp;&nbsp;&nbsp;Manage the Foundry cache.
 
 [forge cache clean](./forge-cache-clean.md)  
-&nbsp;&nbsp;&nbsp;&nbsp;Cleans cached data from ``~/.foundry``.
+&nbsp;&nbsp;&nbsp;&nbsp;Cleans cached data from `~/.foundry`.
 
 [forge cache ls](./forge-cache-ls.md)  
-&nbsp;&nbsp;&nbsp;&nbsp;Shows cached data from ``~/.foundry``.
+&nbsp;&nbsp;&nbsp;&nbsp;Shows cached data from `~/.foundry`.
 
 [forge script](./forge-script.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Run a smart contract as a script, building transactions that can be sent onchain.
 
 [forge upload-selectors](./forge-upload-selectors.md)  
-&nbsp;&nbsp;&nbsp;&nbsp;Uploads abi of given contract to https://sig.eth.samczsun.com function selector database.
+&nbsp;&nbsp;&nbsp;&nbsp;Uploads abi of given contract to https://openchain.xyz/signatures function selector database.
 
 [forge doc](./forge-doc.md)  
 &nbsp;&nbsp;&nbsp;&nbsp;Generate documentation for Solidity source files.
@@ -145,19 +142,21 @@ This program is a set of tools to build, test, fuzz, debug and deploy Solidity s
 ### EXAMPLES
 
 1. Create a new Forge project:
-    ```sh
-    forge init hello_foundry
-    ```
+
+   ```sh
+   forge init hello_foundry
+   ```
 
 2. Build a project:
-    ```sh
-    forge build
-    ```
+
+   ```sh
+   forge build
+   ```
 
 3. Run a project's tests:
-    ```sh
-    forge test
-    ```
+   ```sh
+   forge test
+   ```
 
 ### BUGS
 

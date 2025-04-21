@@ -20,6 +20,9 @@ Options:
       --constructor-args-path <PATH>
           The path to a file containing the constructor arguments
 
+      --broadcast
+          Broadcast the transaction
+
       --verify
           Verify contract after creation
 
@@ -33,26 +36,19 @@ Options:
           The standard json compiler input can be used to manually submit
           contract verification in the browser.
 
+      --timeout <TIMEOUT>
+          Timeout to use for broadcasting transactions
+          
+          [env: ETH_TIMEOUT=]
+
   -h, --help
           Print help (see a summary with '-h')
 
-Display options:
-      --json
-          Print the deployment information as JSON
-
-      --color <COLOR>
-          Log messages coloring
-
-          Possible values:
-          - auto:   Intelligently guess whether to use color output (default)
-          - always: Force color output
-          - never:  Force disable color output
-
-  -q, --quiet
-          Do not print log messages
-
-      --verbose
-          Use verbose output
+  -j, --threads <THREADS>
+          Number of threads to use. Specifying 0 defaults to the number of
+          logical cores
+          
+          [aliases: jobs]
 
 Cache options:
       --force
@@ -63,11 +59,7 @@ Build options:
           Disable the cache
 
       --eof
-          Use EOF-enabled solc binary. Enables via-ir and sets EVM version to
-          Prague. Requires Docker to be installed.
-          
-          Note that this is a temporary solution until the EOF support is merged
-          into the main solc release.
+          Whether to compile contracts to EOF bytecode
 
       --skip <SKIP>...
           Skip building files whose names contain the given filter.
@@ -104,6 +96,9 @@ Compiler options:
       --via-ir
           Use the Yul intermediate representation compilation pipeline
 
+      --use-literal-content
+          Changes compilation to only use literal content and not URLs
+
       --no-metadata
           Do not append any metadata to the bytecode.
           
@@ -122,7 +117,13 @@ Compiler options:
           [possible values: true, false]
 
       --optimizer-runs <RUNS>
-          The number of optimizer runs
+          The number of runs specifies roughly how often each opcode of the
+          deployed code will be executed across the life-time of the contract.
+          This means it is a trade-off parameter between code size (deploy cost)
+          and code execution cost (cost after deployment). An `optimizer_runs`
+          parameter of `1` will produce short but expensive code. In contrast, a
+          larger `optimizer_runs` parameter will produce longer but more gas
+          efficient code
 
       --extra-output <SELECTOR>...
           Extra output to include in the contract's artifact.
@@ -221,11 +222,6 @@ ZKSync configuration:
           [aliases: fallback-oz]
           [possible values: true, false]
 
-      --zk-detect-missing-libraries
-          Detect missing libraries, instead of erroring
-          
-          Currently unused
-
   -O, --zk-optimizer-mode <LEVEL>
           Set the LLVM optimization parameter `-O[0 | 1 | 2 | 3 | s | z]`. Use
           `3` for best performance and `z` for minimal size
@@ -235,10 +231,25 @@ ZKSync configuration:
       --zk-optimizer
           Enables optimizations
 
-      --zk-avoid-contracts <AVOID_CONTRACTS>
-          Contracts to avoid compiling on zkSync
+      --zk-paymaster-address <PAYMASTER_ADDRESS>
+          Paymaster address
           
-          [aliases: avoid-contracts]
+          [aliases: paymaster-address]
+
+      --zk-paymaster-input <PAYMASTER_INPUT>
+          Paymaster input
+          
+          [aliases: paymaster-input]
+
+      --zk-suppressed-warnings <SUPPRESSED_WARNINGS>
+          Set the warnings to suppress for zksolc, possible values: [txorigin]
+          
+          [aliases: suppressed-warnings]
+
+      --zk-suppressed-errors <SUPPRESSED_ERRORS>
+          Set the errors to suppress for zksolc, possible values: [sendtransfer]
+          
+          [aliases: suppressed-errors]
 
 Transaction options:
       --gas-limit <GAS_LIMIT>
@@ -248,7 +259,10 @@ Transaction options:
 
       --gas-price <PRICE>
           Gas price for legacy transactions, or max fee per gas for EIP1559
-          transactions
+          transactions, either specified in wei, or as a string with a unit
+          type.
+          
+          Examples: 1ether, 10gwei, 0.01ether
           
           [env: ETH_GAS_PRICE=]
 
@@ -278,6 +292,18 @@ Transaction options:
           Gas price for EIP-4844 blob transaction
           
           [env: ETH_BLOB_GAS_PRICE=]
+
+      --auth <AUTH>
+          EIP-7702 authorization list.
+          
+          Can be either a hex-encoded signed authorization or an address.
+
+      --access-list [<ACCESS_LIST>]
+          EIP-2930 access list.
+          
+          Accepts either a JSON-encoded access list or an empty value to create
+          the access list via an RPC call to `eth_createAccessList`. To retrieve
+          only the access list portion, use the `cast access-list` command.
 
 Ethereum options:
   -r, --rpc-url <URL>
@@ -317,6 +343,11 @@ Ethereum options:
           Default value: 45
           
           [env: ETH_RPC_TIMEOUT=]
+
+      --rpc-headers <RPC_HEADERS>
+          Specify custom headers for RPC requests
+          
+          [env: ETH_RPC_HEADERS=]
 
   -e, --etherscan-api-key <KEY>
           The Etherscan (or equivalent) API key
@@ -404,10 +435,53 @@ Verifier options:
           The contract verification provider to use
           
           [default: etherscan]
-          [possible values: etherscan, sourcify, blockscout, oklink]
+
+          Possible values:
+          - etherscan
+          - sourcify
+          - blockscout
+          - oklink
+          - zksync
+          - custom:     Custom verification provider, requires compatibility
+            with the Etherscan API
+
+      --verifier-api-key <VERIFIER_API_KEY>
+          The verifier API KEY, if using a custom provider
+          
+          [env: VERIFIER_API_KEY=]
 
       --verifier-url <VERIFIER_URL>
           The verifier URL, if using a custom provider
           
           [env: VERIFIER_URL=]
+
+Display options:
+      --color <COLOR>
+          The color of the log messages
+
+          Possible values:
+          - auto:   Intelligently guess whether to use color output (default)
+          - always: Force color output
+          - never:  Force disable color output
+
+      --json
+          Format log messages as JSON
+
+  -q, --quiet
+          Do not print log messages
+
+  -v, --verbosity...
+          Verbosity level of the log messages.
+          
+          Pass multiple times to increase the verbosity (e.g. -v, -vv, -vvv).
+          
+          Depending on the context the verbosity levels have different meanings.
+          
+          For example, the verbosity levels of the EVM are:
+          - 2 (-vv): Print logs for all tests.
+          - 3 (-vvv): Print execution traces for failing tests.
+          - 4 (-vvvv): Print execution traces for all tests, and setup traces
+          for failing tests.
+          - 5 (-vvvvv): Print execution and setup traces for all tests,
+          including storage changes.
 ```

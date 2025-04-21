@@ -29,6 +29,12 @@ Options:
   -h, --help
           Print help (see a summary with '-h')
 
+  -j, --threads <THREADS>
+          Number of threads to use. Specifying 0 defaults to the number of
+          logical cores
+          
+          [aliases: jobs]
+
 Transaction options:
       --gas-limit <GAS_LIMIT>
           Gas limit for the transaction
@@ -37,7 +43,10 @@ Transaction options:
 
       --gas-price <PRICE>
           Gas price for legacy transactions, or max fee per gas for EIP1559
-          transactions
+          transactions, either specified in wei, or as a string with a unit
+          type.
+          
+          Examples: 1ether, 10gwei, 0.01ether
           
           [env: ETH_GAS_PRICE=]
 
@@ -67,6 +76,18 @@ Transaction options:
           Gas price for EIP-4844 blob transaction
           
           [env: ETH_BLOB_GAS_PRICE=]
+
+      --auth <AUTH>
+          EIP-7702 authorization list.
+          
+          Can be either a hex-encoded signed authorization or an address.
+
+      --access-list [<ACCESS_LIST>]
+          EIP-2930 access list.
+          
+          Accepts either a JSON-encoded access list or an empty value to create
+          the access list via an RPC call to `eth_createAccessList`. To retrieve
+          only the access list portion, use the `cast access-list` command.
 
       --path <BLOB_DATA_PATH>
           The path of blob data to be sent
@@ -110,6 +131,11 @@ Ethereum options:
           
           [env: ETH_RPC_TIMEOUT=]
 
+      --rpc-headers <RPC_HEADERS>
+          Specify custom headers for RPC requests
+          
+          [env: ETH_RPC_HEADERS=]
+
   -e, --etherscan-api-key <KEY>
           The Etherscan (or equivalent) API key
           
@@ -150,6 +176,11 @@ Wallet options - raw:
           
           [default: 0]
 
+      --raw-unsigned
+          Generate a raw RLP-encoded unsigned transaction.
+          
+          Relaxes the wallet requirement.
+
 Wallet options - keystore:
       --keystore <PATH>
           Use the keystore in the given folder or file
@@ -181,22 +212,33 @@ Wallet options - hardware wallet:
   -t, --trezor
           Use a Trezor hardware wallet
 
-Wallet options - remote:
-      --aws
-          Use AWS Key Management Service
-
 Display options:
       --color <COLOR>
-          Log messages coloring
+          The color of the log messages
 
           Possible values:
           - auto:   Intelligently guess whether to use color output (default)
           - always: Force color output
           - never:  Force disable color output
 
+      --json
+          Format log messages as JSON
+
   -q, --quiet
           Do not print log messages
 
-      --verbose
-          Use verbose output
+  -v, --verbosity...
+          Verbosity level of the log messages.
+          
+          Pass multiple times to increase the verbosity (e.g. -v, -vv, -vvv).
+          
+          Depending on the context the verbosity levels have different meanings.
+          
+          For example, the verbosity levels of the EVM are:
+          - 2 (-vv): Print logs for all tests.
+          - 3 (-vvv): Print execution traces for failing tests.
+          - 4 (-vvvv): Print execution traces for all tests, and setup traces
+          for failing tests.
+          - 5 (-vvvvv): Print execution and setup traces for all tests,
+          including storage changes.
 ```

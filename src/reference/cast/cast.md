@@ -6,7 +6,7 @@ cast - Perform Ethereum RPC calls from the comfort of your command line.
 
 ### SYNOPSIS
 
-`cast` [*options*] *command* [*args*]
+`cast` [*options*] _command_ [*args*]
 `cast` [*options*] `--version`
 `cast` [*options*] `--help`
 
@@ -125,25 +125,25 @@ This program is a set of tools to interact with Ethereum and perform conversions
 
 #### ABI Commands
 
-[cast abi-decode](./cast-abi-decode.md)
-&nbsp;&nbsp;&nbsp;&nbsp;Decode ABI-encoded input or output data.
-
 [cast abi-encode](./cast-abi-encode.md)
 &nbsp;&nbsp;&nbsp;&nbsp;ABI encode the given function arguments, excluding the selector.
 
 [cast 4byte](./cast-4byte.md)
-&nbsp;&nbsp;&nbsp;&nbsp;Get the function signatures for the given selector from <https://sig.eth.samczsun.com>.
+&nbsp;&nbsp;&nbsp;&nbsp;Get the function signatures for the given selector from <https://openchain.xyz/signatures>.
 
-[cast 4byte-decode](./cast-4byte-decode.md)
-&nbsp;&nbsp;&nbsp;&nbsp;Decode ABI-encoded calldata using <https://sig.eth.samczsun.com>.
+[cast 4byte-calldata](./cast-4byte-calldata.md)
+&nbsp;&nbsp;&nbsp;&nbsp;Decode ABI-encoded calldata using <https://openchain.xyz/signatures>.
 
 [cast 4byte-event](./cast-4byte-event.md)
-&nbsp;&nbsp;&nbsp;&nbsp;Get the event signature for a given topic 0 from <https://sig.eth.samczsun.com>.
+&nbsp;&nbsp;&nbsp;&nbsp;Get the event signature for a given topic 0 from <https://openchain.xyz/signatures>.
 
 [cast calldata](./cast-calldata.md)
 &nbsp;&nbsp;&nbsp;&nbsp;ABI-encode a function with arguments.
 
-[cast calldata-decode](./cast-calldata-decode.md)
+[cast decode-abi](./cast-decode-abi.md)
+&nbsp;&nbsp;&nbsp;&nbsp;Decode ABI-encoded input or output data.
+
+[cast decode-calldata](./cast-decode-calldata.md)
 &nbsp;&nbsp;&nbsp;&nbsp;Decode ABI-encoded input data.
 
 [cast pretty-calldata](./cast-pretty-calldata.md)
@@ -153,7 +153,7 @@ This program is a set of tools to interact with Ethereum and perform conversions
 &nbsp;&nbsp;&nbsp;&nbsp;Extracts function selectors and arguments from bytecode
 
 [cast upload-signature](./cast-upload-signature.md)
-&nbsp;&nbsp;&nbsp;&nbsp;Upload the given signatures to https://sig.eth.samczsun.com.
+&nbsp;&nbsp;&nbsp;&nbsp;Upload the given signatures to https://openchain.xyz/signatures.
 
 #### Conversion Commands
 
@@ -295,22 +295,22 @@ This program is a set of tools to interact with Ethereum and perform conversions
 
 1. Call a function on a contract:
 
-    ```sh
-    cast call 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2 \
-      "balanceOf(address)(uint256)" 0x...
-    ```
+   ```sh
+   cast call 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2 \
+     "balanceOf(address)(uint256)" 0x...
+   ```
 
 2. Decode raw calldata:
 
-    ```sh
-    cast calldata-decode "transfer(address,uint256)" \
-      0xa9059cbb000000000000000000000000e78388b4ce79068e89bf8aa7f218ef6b9ab0e9d0000000000000000000000000000000000000000000000000008a8e4b1a3d8000
-    ```
+   ```sh
+   cast decode-calldata "transfer(address,uint256)" \
+     0xa9059cbb000000000000000000000000e78388b4ce79068e89bf8aa7f218ef6b9ab0e9d0000000000000000000000000000000000000000000000000008a8e4b1a3d8000
+   ```
 
 3. Encode calldata:
-    ```sh
-    cast calldata "someFunc(address,uint256)" 0x... 1
-    ```
+   ```sh
+   cast calldata "someFunc(address,uint256)" 0x... 1
+   ```
 
 ### BUGS
 

@@ -6,19 +6,21 @@ $ forge test --zksync -vvvv --match-test testFail_IncrementAsNotOwner --match-pa
 No files changed, compilation skipped
 
 No files changed, compilation skipped
+2025-01-29T13:28:38.349649Z ERROR foundry_zksync_core::vm::inspect: reverting initiator tx nonce for CALL address=0x1804c8ab1f12e6bbf3894d4083f33e07309d1f38 from=3 to=2 deploy_nonce=2
+2025-01-29T13:28:38.355238Z ERROR foundry_zksync_core::vm::inspect: reverting initiator tx nonce for CALL address=0x1804c8ab1f12e6bbf3894d4083f33e07309d1f38 from=3 to=2 deploy_nonce=2
 
 Ran 1 test for test/OwnerUpOnly.t.sol:OwnerUpOnlyTest
-[PASS] testFail_IncrementAsNotOwner() (gas: 216319)
+[PASS] testFail_IncrementAsNotOwner() (gas: 119804)
 Traces:
-  [216319] OwnerUpOnlyTest::testFail_IncrementAsNotOwner()
+  [119804] OwnerUpOnlyTest::testFail_IncrementAsNotOwner()
     ├─ [0] VM::prank(0x0000000000000000000000000000000000000000)
     │   └─ ← [Return] 
-    ├─ [208252] OwnerUpOnly::increment()
+    ├─ [111737] OwnerUpOnly::increment()
     │   └─ ← [Revert] Unauthorized()
     └─ ← [Revert] Unauthorized()
 
-Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 21.84ms (6.47ms CPU time)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 438.71µs (100.26µs CPU time)
 
-Ran 1 test suite in 22.73ms (21.84ms CPU time): 1 tests passed, 0 failed, 0 skipped (1 total tests)
+Ran 1 test suite in 6.44ms (438.71µs CPU time): 1 tests passed, 0 failed, 0 skipped (1 total tests)
 // ANCHOR_END: output
 // ANCHOR_END: all

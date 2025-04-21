@@ -19,6 +19,7 @@ It is generally advised to use this cheat code as a last resort, and to not enab
 - Remember that the script will be executed from the top-level directory of your project, not inside `test`
 - Make sure that the inputs array does not have empty elements. They will be handled as inputs by the script, instead of space
 - Use the cheatcode `toString` to easily convert arbitrary data to strings, so that you can pass them as command-line arguments
+- On Windows some commands like `npm` or `npx` fail to execute with `program not found` error message. To avoid such make sure the command contains file extension as well, like `npm.cmd` or `npx.cmd`. These commands can be configured and read as environment variables, so tests doesn't need to be changed when running on different operating systems.
 
 ### Examples
 

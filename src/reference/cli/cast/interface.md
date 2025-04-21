@@ -7,17 +7,20 @@ $ cast interface --help
 ```
 
 ```txt
-Usage: cast interface [OPTIONS] <PATH_OR_ADDRESS>
+Usage: cast interface [OPTIONS] <CONTRACT>
 
 Arguments:
-  <PATH_OR_ADDRESS>
-          The contract address, or the path to an ABI file.
-          
-          If an address is specified, then the ABI is fetched from Etherscan.
+  <CONTRACT>
+          The target contract, which can be one of: - A file path to an ABI JSON
+          file. - A contract identifier in the form `<path>:<contractname>` or
+          just `<contractname>`. - An Ethereum address, for which the ABI will
+          be fetched from Etherscan
 
 Options:
   -n, --name <NAME>
-          The name to use for the generated interface
+          The name to use for the generated interface.
+          
+          Only relevant when retrieving the ABI from a file.
 
   -p, --pragma <VERSION>
           Solidity pragma version
@@ -28,10 +31,6 @@ Options:
           The path to the output file.
           
           If not specified, the interface will be output to stdout.
-
-  -j, --json
-          If specified, the interface will be output as JSON rather than
-          Solidity
 
   -e, --etherscan-api-key <KEY>
           The Etherscan (or equivalent) API key
@@ -46,18 +45,39 @@ Options:
   -h, --help
           Print help (see a summary with '-h')
 
+  -j, --threads <THREADS>
+          Number of threads to use. Specifying 0 defaults to the number of
+          logical cores
+          
+          [aliases: jobs]
+
 Display options:
       --color <COLOR>
-          Log messages coloring
+          The color of the log messages
 
           Possible values:
           - auto:   Intelligently guess whether to use color output (default)
           - always: Force color output
           - never:  Force disable color output
 
+      --json
+          Format log messages as JSON
+
   -q, --quiet
           Do not print log messages
 
-      --verbose
-          Use verbose output
+  -v, --verbosity...
+          Verbosity level of the log messages.
+          
+          Pass multiple times to increase the verbosity (e.g. -v, -vv, -vvv).
+          
+          Depending on the context the verbosity levels have different meanings.
+          
+          For example, the verbosity levels of the EVM are:
+          - 2 (-vv): Print logs for all tests.
+          - 3 (-vvv): Print execution traces for failing tests.
+          - 4 (-vvvv): Print execution traces for all tests, and setup traces
+          for failing tests.
+          - 5 (-vvvvv): Print execution and setup traces for all tests,
+          including storage changes.
 ```
