@@ -1,15 +1,6 @@
 import { defineConfig } from 'vocs'
-
+import { sidebar } from './sidebar/sidebar'
 export default defineConfig({
   title: 'Docs',
-  sidebar: [
-    {
-      text: 'Getting Started',
-      link: '/getting-started',
-    },
-    {
-      text: 'Example',
-      link: '/example',
-    },
-  ],
+  sidebar,
 })
