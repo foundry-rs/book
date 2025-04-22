@@ -158,75 +158,75 @@ Display options:
           - never:  Force disable color output
 
 Cache options:
-  --force
+      --force
           Clear the cache and artifacts folder and recompile
 
 Build options:
-  --no-cache
+      --no-cache
           Disable the cache
 
-  --dynamic-test-linking
+      --dynamic-test-linking
           Enable dynamic test linking
 
-  --eof
+      --eof
           Whether to compile contracts to EOF bytecode
 
-  --skip <SKIP>...
+      --skip <SKIP>...
           Skip building files whose names contain the given filter.
           
           `test` and `script` are aliases for `.t.sol` and `.s.sol`.
 
 Linker options:
-  --libraries <LIBRARIES>
+      --libraries <LIBRARIES>
           Set pre-linked libraries
           
           [env: DAPP_LIBRARIES=]
 
 Compiler options:
-  --ignored-error-codes <ERROR_CODES>
+      --ignored-error-codes <ERROR_CODES>
           Ignore solc warnings by error code
 
-  --deny-warnings
+      --deny-warnings
           Warnings will trigger a compiler error
 
-  --no-auto-detect
+      --no-auto-detect
           Do not auto-detect the `solc` version
 
-  --use <SOLC_VERSION>
+      --use <SOLC_VERSION>
           Specify the solc version, or a path to a local solc, to build with.
           
           Valid values are in the format `x.y.z`, `solc:x.y.z` or
           `path/to/solc`.
 
-  --offline
+      --offline
           Do not access the network.
           
           Missing solc versions will not be installed.
 
-  --via-ir
+      --via-ir
           Use the Yul intermediate representation compilation pipeline
 
-  --use-literal-content
+      --use-literal-content
           Changes compilation to only use literal content and not URLs
 
-  --no-metadata
+      --no-metadata
           Do not append any metadata to the bytecode.
           
           This is equivalent to setting `bytecode_hash` to `none` and
           `cbor_metadata` to `false`.
 
-  --ast
+      --ast
           Includes the AST as JSON in the compiler output
 
-  --evm-version <VERSION>
+      --evm-version <VERSION>
           The target EVM version
 
-  --optimize [<OPTIMIZE>]
+      --optimize [<OPTIMIZE>]
           Activate the Solidity optimizer
           
           [possible values: true, false]
 
-  --optimizer-runs <RUNS>
+      --optimizer-runs <RUNS>
           The number of runs specifies roughly how often each opcode of the
           deployed code will be executed across the life-time of the contract.
           This means it is a trade-off parameter between code size (deploy cost)
@@ -235,7 +235,7 @@ Compiler options:
           larger `optimizer_runs` parameter will produce longer but more gas
           efficient code
 
-  --extra-output <SELECTOR>...
+      --extra-output <SELECTOR>...
           Extra output to include in the contract's artifact.
           
           Example keys: evm.assembly, ewasm, ir, irOptimized, metadata
@@ -243,7 +243,7 @@ Compiler options:
           For a full description, see
           <https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description>
 
-  --extra-output-files <SELECTOR>...
+      --extra-output-files <SELECTOR>...
           Extra output to write to separate files.
           
           Valid values: metadata, ir, irOptimized, ewasm, evm.assembly
@@ -334,25 +334,25 @@ Wallet options - raw:
           [default: 0]
 
 Wallet options - keystore:
-  --keystore <PATHS>
+      --keystore <PATHS>
           Use the keystore by its filename in the given folder
           
           [env: ETH_KEYSTORE=]
           [aliases: keystores]
 
-  --account <ACCOUNT_NAMES>
+      --account <ACCOUNT_NAMES>
           Use a keystore from the default keystores folder
           (~/.foundry/keystores) by its filename
           
           [env: ETH_KEYSTORE_ACCOUNT=]
           [aliases: accounts]
 
-  --password <PASSWORDS>
+      --password <PASSWORDS>
           The keystore password.
           
           Used with --keystore.
 
-  --password-file <PATHS>
+      --password-file <PATHS>
           The keystore password file path.
           
           Used with --keystore.
@@ -367,7 +367,7 @@ Wallet options - hardware wallet:
           Use a Trezor hardware wallet
 
 Wallet options - remote:
-  --aws
+      --aws
           Use AWS Key Management Service
 
 EVM options:
@@ -422,7 +422,7 @@ EVM options:
           config
 
 Fork config:
-  --compute-units-per-second <CUPS>
+      --compute-units-per-second <CUPS>
           Sets the number of assumed available compute units per second for this
           provider
           
@@ -431,7 +431,7 @@ Fork config:
           See also --fork-url and
           <https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second>
 
-  --no-rpc-rate-limit
+      --no-rpc-rate-limit
           Disables rate limiting for this node's provider.
           
           See also --fork-url and
@@ -440,78 +440,78 @@ Fork config:
           [aliases: no-rate-limit]
 
 Executor environment config:
-  --code-size-limit <CODE_SIZE>
+      --code-size-limit <CODE_SIZE>
           EIP-170: Contract code size limit in bytes. Useful to increase this
           because of tests. By default, it is 0x6000 (~25kb)
 
-  --chain <CHAIN>
+      --chain <CHAIN>
           The chain name or EIP-155 chain ID
           
           [aliases: chain-id]
 
-  --gas-price <GAS_PRICE>
+      --gas-price <GAS_PRICE>
           The gas price
 
-  --block-base-fee-per-gas <FEE>
+      --block-base-fee-per-gas <FEE>
           The base fee in a block
           
           [aliases: base-fee]
 
-  --tx-origin <ADDRESS>
+      --tx-origin <ADDRESS>
           The transaction origin
 
-  --block-coinbase <ADDRESS>
+      --block-coinbase <ADDRESS>
           The coinbase of the block
 
-  --block-timestamp <TIMESTAMP>
+      --block-timestamp <TIMESTAMP>
           The timestamp of the block
 
-  --block-number <BLOCK>
+      --block-number <BLOCK>
           The block number
 
-  --block-difficulty <DIFFICULTY>
+      --block-difficulty <DIFFICULTY>
           The block difficulty
 
-  --block-prevrandao <PREVRANDAO>
+      --block-prevrandao <PREVRANDAO>
           The block prevrandao value. NOTE: Before merge this field was mix_hash
 
-  --block-gas-limit <GAS_LIMIT>
+      --block-gas-limit <GAS_LIMIT>
           The block gas limit
           
           [aliases: gas-limit]
 
-  --memory-limit <MEMORY_LIMIT>
+      --memory-limit <MEMORY_LIMIT>
           The memory limit per EVM execution in bytes. If this limit is
           exceeded, a `MemoryLimitOOG` result is thrown.
           
           The default is 128MiB.
 
-  --disable-block-gas-limit
+      --disable-block-gas-limit
           Whether to disable the block gas limit checks
           
           [aliases: no-gas-limit]
 
-  --isolate
+      --isolate
           Whether to enable isolation of calls. In isolation mode all top-level
           calls are executed as a separate transaction in a separate EVM
           context, enabling more precise gas accounting and transaction state
           changes
 
-  --odyssey
+      --odyssey
           Whether to enable Odyssey features
 
-  --retries <RETRIES>
+      --retries <RETRIES>
           Number of attempts for retrying verification
           
           [default: 5]
 
-  --delay <DELAY>
+      --delay <DELAY>
           Optional delay to apply in between verification attempts, in seconds
           
           [default: 5]
 
 Verifier options:
-  --verifier <VERIFIER>
+      --verifier <VERIFIER>
           The contract verification provider to use
           
           [default: sourcify]
@@ -524,12 +524,12 @@ Verifier options:
           - custom:     Custom verification provider, requires compatibility
             with the Etherscan API
 
-  --verifier-api-key <VERIFIER_API_KEY>
+      --verifier-api-key <VERIFIER_API_KEY>
           The verifier API KEY, if using a custom provider
           
           [env: VERIFIER_API_KEY=]
 
-  --verifier-url <VERIFIER_URL>
+      --verifier-url <VERIFIER_URL>
           The verifier URL, if using a custom provider
           
           [env: VERIFIER_URL=]
