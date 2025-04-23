@@ -22,7 +22,7 @@ In general, the shorthand `--zksync` flag compiles the sources for `zksolc` and 
 * `--zk-compile` - compiles the sources for `zksolc`
 
 #### Forking
-If during test execution, forking cheatcodes such as `vm.selectFork` or `vm.createSelectFork` are used to fork over to a ZKsync network, the execution switches to ZKsync context. The RPC endpoint is tested for the `zks_L1ChainId` method; if it exists, the RPC URL is deemed to be a ZKsync-compatible endpoint.
+If during test execution, forking cheatcodes such as `vm.selectFork` or `vm.createSelectFork` are used to fork over to a ZKsync network, the execution switches to ZKsync context. The RPC endpoint is tested for the `zks_getBaseTokenL1Address` method; if it exists, the RPC URL is deemed to be a ZKsync-compatible endpoint.
 
 Similarly, if the selected fork URL is not a ZKsync endpoint, the test execution is set to EVM context.
 
