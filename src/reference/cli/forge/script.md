@@ -431,6 +431,10 @@ Wallet options - hardware wallet:
   -t, --trezor
           Use a Trezor hardware wallet
 
+Wallet options - remote:
+  --aws
+          Use AWS Key Management Service
+
 EVM options:
   -f, --fork-url <URL>
           Fetch state over a remote endpoint instead of starting from an empty
