@@ -1,7 +1,6 @@
 [book]
 authors = ["Moonsong-Labs"]
 language = "en"
-multilingual = false
 src = "src"
 title = "foundry-zksync book"
 description = "A book on all things foundry-zksync"

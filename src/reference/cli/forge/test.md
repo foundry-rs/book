@@ -334,6 +334,9 @@ Build options:
       --no-cache
           Disable the cache
 
+      --dynamic-test-linking
+          Enable dynamic test linking
+
       --eof
           Whether to compile contracts to EOF bytecode
 

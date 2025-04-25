@@ -101,6 +101,9 @@ Options:
           
           [aliases: no-mine]
 
+      --number <NUM>
+          The number of the genesis block
+
       --order <ORDER>
           How transactions are sorted in the mempool
           
@@ -229,6 +232,9 @@ Fork config:
       --fork-block-number <BLOCK>
           Fetch state from a specific block number over a remote endpoint.
           
+          If a negative the the given value is subtracted from the `latest`
+          block number.
+          
           See --fork-url.
 
       --fork-chain-id <CHAIN>
@@ -343,6 +349,12 @@ EVM options:
           Run an Optimism chain
           
           [aliases: optimism]
+
+      --print-traces
+          Enable printing of traces for executed transactions and `eth_call` to
+          stdout
+          
+          [aliases: enable-trace-printing]
 
       --steps-tracing
           Enable steps tracing used for debug calls returning geth-style traces
