@@ -372,6 +372,9 @@ Wallet options - remote:
       --aws
           Use AWS Key Management Service
 
+      --gcp
+          Use Google Cloud Key Management Service
+
 Verifier options:
       --verifier <VERIFIER>
           The contract verification provider to use
