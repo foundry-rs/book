@@ -23,6 +23,9 @@ Options:
       --aws
           List accounts from AWS KMS
 
+      --gcp
+          List accounts from Google Cloud KMS
+
       --all
           List all configured accounts
 
