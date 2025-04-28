@@ -54,23 +54,23 @@ Wallet options - raw:
           [default: 0]
 
 Wallet options - keystore:
-  --keystore <PATH>
+      --keystore <PATH>
           Use the keystore in the given folder or file
           
           [env: ETH_KEYSTORE=]
 
-  --account <ACCOUNT_NAME>
+      --account <ACCOUNT_NAME>
           Use a keystore from the default keystores folder
           (~/.foundry/keystores) by its filename
           
           [env: ETH_KEYSTORE_ACCOUNT=]
 
-  --password <PASSWORD>
+      --password <PASSWORD>
           The keystore password.
           
           Used with --keystore.
 
-  --password-file <PASSWORD_FILE>
+      --password-file <PASSWORD_FILE>
           The keystore password file path.
           
           Used with --keystore.
@@ -85,7 +85,7 @@ Wallet options - hardware wallet:
           Use a Trezor hardware wallet
 
 Wallet options - remote:
-  --aws
+      --aws
           Use AWS Key Management Service
 
 Display options:

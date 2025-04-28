@@ -63,12 +63,12 @@ Options:
           [aliases: jobs]
 
 Transaction options:
-  --gas-limit <GAS_LIMIT>
+      --gas-limit <GAS_LIMIT>
           Gas limit for the transaction
           
           [env: ETH_GAS_LIMIT=]
 
-  --gas-price <PRICE>
+      --gas-price <PRICE>
           Gas price for legacy transactions, or max fee per gas for EIP1559
           transactions, either specified in wei, or as a string with a unit
           type.
@@ -77,39 +77,39 @@ Transaction options:
           
           [env: ETH_GAS_PRICE=]
 
-  --priority-gas-price <PRICE>
+      --priority-gas-price <PRICE>
           Max priority fee per gas for EIP1559 transactions
           
           [env: ETH_PRIORITY_GAS_PRICE=]
 
-  --value <VALUE>
+      --value <VALUE>
           Ether to send in the transaction, either specified in wei, or as a
           string with a unit type.
           
           Examples: 1ether, 10gwei, 0.01ether
 
-  --nonce <NONCE>
+      --nonce <NONCE>
           Nonce for the transaction
 
-  --legacy
+      --legacy
           Send a legacy transaction instead of an EIP1559 transaction.
           
           This is automatically enabled for common networks without EIP1559.
 
-  --blob
+      --blob
           Send a EIP-4844 blob transaction
 
-  --blob-gas-price <BLOB_PRICE>
+      --blob-gas-price <BLOB_PRICE>
           Gas price for EIP-4844 blob transaction
           
           [env: ETH_BLOB_GAS_PRICE=]
 
-  --auth <AUTH>
+      --auth <AUTH>
           EIP-7702 authorization list.
           
           Can be either a hex-encoded signed authorization or an address.
 
-  --access-list [<ACCESS_LIST>]
+      --access-list [<ACCESS_LIST>]
           EIP-2930 access list.
           
           Accepts either a JSON-encoded access list or an empty value to create
@@ -206,23 +206,23 @@ Wallet options - raw:
           [aliases: la]
 
 Wallet options - keystore:
-  --keystore <PATH>
+      --keystore <PATH>
           Use the keystore in the given folder or file
           
           [env: ETH_KEYSTORE=]
 
-  --account <ACCOUNT_NAME>
+      --account <ACCOUNT_NAME>
           Use a keystore from the default keystores folder
           (~/.foundry/keystores) by its filename
           
           [env: ETH_KEYSTORE_ACCOUNT=]
 
-  --password <PASSWORD>
+      --password <PASSWORD>
           The keystore password.
           
           Used with --keystore.
 
-  --password-file <PASSWORD_FILE>
+      --password-file <PASSWORD_FILE>
           The keystore password file path.
           
           Used with --keystore.

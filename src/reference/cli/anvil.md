@@ -188,24 +188,24 @@ Display options:
           including storage changes.
 
 Server options:
-  --allow-origin <ALLOW_ORIGIN>
+      --allow-origin <ALLOW_ORIGIN>
           The cors `allow_origin` header
           
           [default: *]
 
-  --cache-path <PATH>
+      --cache-path <PATH>
           Path to the cache directory where states are stored
 
-  --host <IP_ADDR>
+      --host <IP_ADDR>
           The hosts the server will listen on
           
           [env: ANVIL_IP_ADDR=]
           [default: 127.0.0.1]
 
-  --no-cors
+      --no-cors
           Disable CORS
 
-  --no-request-size-limit
+      --no-request-size-limit
           Disable the default request body size limit. At time of writing the
           default limit is 2MB
 
@@ -291,72 +291,72 @@ Fork config:
           Default value 45000
 
 Environment config:
-  --block-base-fee-per-gas <FEE>
+      --block-base-fee-per-gas <FEE>
           The base fee in a block
           
           [aliases: base-fee]
 
-  --chain-id <CHAIN_ID>
+      --chain-id <CHAIN_ID>
           The chain ID
 
-  --code-size-limit <CODE_SIZE>
+      --code-size-limit <CODE_SIZE>
           EIP-170: Contract code size limit in bytes. Useful to increase this
           because of tests. To disable entirely, use
           `--disable-code-size-limit`. By default, it is 0x6000 (~25kb)
 
-  --disable-block-gas-limit
+      --disable-block-gas-limit
           Disable the `call.gas_limit <= block.gas_limit` constraint
 
-  --disable-code-size-limit
+      --disable-code-size-limit
           Disable EIP-170: Contract code size limit
 
-  --disable-min-priority-fee
+      --disable-min-priority-fee
           Disable the enforcement of a minimum suggested priority fee
           
           [aliases: no-priority-fee]
 
-  --gas-limit <GAS_LIMIT>
+      --gas-limit <GAS_LIMIT>
           The block gas limit
 
-  --gas-price <GAS_PRICE>
+      --gas-price <GAS_PRICE>
           The gas price
 
 EVM options:
-  --auto-impersonate
+      --auto-impersonate
           Enables automatic impersonation on startup. This allows any
           transaction sender to be simulated as different accounts, which is
           useful for testing contract behavior
           
           [aliases: auto-unlock]
 
-  --disable-console-log
+      --disable-console-log
           Disable printing of `console.log` invocations to stdout
           
           [aliases: no-console-log]
 
-  --disable-default-create2-deployer
+      --disable-default-create2-deployer
           Disable the default create2 deployer
           
           [aliases: no-create2]
 
-  --memory-limit <MEMORY_LIMIT>
+      --memory-limit <MEMORY_LIMIT>
           The memory limit per EVM execution in bytes
 
-  --odyssey
+      --odyssey
           Enable Odyssey features
 
-  --optimism
+      --optimism
           Run an Optimism chain
           
           [aliases: optimism]
 
-  --print-traces
+      --print-traces
           Enable printing of traces for executed transactions and `eth_call` to
           stdout
           
           [aliases: enable-trace-printing]
 
-  --steps-tracing
+      --steps-tracing
           Enable steps tracing used for debug calls returning geth-style traces
           
           [aliases: tracing]
