@@ -18,7 +18,7 @@ Obtaining data from Etherscan is subject to rate limit. `forge clone` requires t
 
 Specifying Etherscan API key via `--etherscan-api-key <API_KEY>` will increase Etherscan API rate limit and avoid the *5-second* wait time in `forge clone`.
 
-Just as `forge init`, `forge clone` will by default initialize a new git repository, install some submodules and create an initial commit message.
+Just as `forge init`, `forge clone` will by default initialize a new git repository and install some submodules.
 
 If you do not want this behavior, pass `--no-git`.
 
@@ -39,8 +39,8 @@ If you do not want this behavior, pass `--no-git`.
 
 #### VCS Options
 
-`--no-commit`  
-&nbsp;&nbsp;&nbsp;&nbsp;Do not create an initial commit.
+`--commit`  
+&nbsp;&nbsp;&nbsp;&nbsp;Create an initial commit.
 
 `--no-git`  
 &nbsp;&nbsp;&nbsp;&nbsp;Do not create a git repository.
