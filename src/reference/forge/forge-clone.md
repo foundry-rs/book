@@ -2,7 +2,7 @@
 
 ### NAME
 
-forge-clone - Clone a on-chain verified contract as a Forge project.
+forge-clone - Clone an on-chain verified contract as a Forge project.
 
 ### SYNOPSIS
 
