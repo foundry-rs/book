@@ -15,8 +15,10 @@ Verifies a smart contract on a chosen verification provider.
 You must provide:
 - The contract address
 - The contract name or the path to the contract (read below)
-In case of Etherscan verification, you must also provide:
-- Your Etherscan API key, either by passing it as an argument or setting `ETHERSCAN_API_KEY`
+
+In case of Etherscan and similar explorers verification (including BscScan/BaseScan/Polygonscan), you must also provide:
+- Your [Etherscan API key](https://docs.etherscan.io/etherscan-v2), either by passing it as an argument or setting `ETHERSCAN_API_KEY`
+- Legacy keys from specific explorers (eg BscScan/BaseScan/Polygonscan) are no longer suported and will throw an Invalid API key error
 
 To find the exact compiler version, run `~/.svm/x.y.z/solc-x.y.z --version` and search for the 8 hex digits in the version string [here](https://etherscan.io/solcversions).
 
@@ -88,24 +90,28 @@ you can specify a file containing **space-separated** constructor arguments with
 
 ### EXAMPLES
 
-1. Verify a contract with JSON standard input on Etherscan
+1. Verify a contract on Etherscan
     ```sh
-    forge verify-contract <address> SomeContract --watch
+    forge verify-contract --watch --chain sepolia 0x324eca20b358b18e48f2611f7452560ce3b3c1bb src/GmWorld.sol:GmWorld --verifier etherscan --etherscan-api-key YourApiKeyToken
+    
+2. Deploy and verify a contract on Etherscan
+    ```sh
+     forge create --broadcast --rpc-url https://rpc.sepolia.ethpandaops.io --private-key YourPrivateKey src/GmWorld.sol:GmWorld --verify --verifier etherscan --etherscan-api-key YourApiKeyToken
 
-2. Verify a contract on a custom Sourcify instance
+3. Verify a contract on a custom Sourcify instance
     ```sh
     forge verify-contract --verifier sourcify \
       --verifier-url http://localhost:5000 <address> SomeContract
     ```
 
-3. Verify a flattened contract built with solc v0.8.11+commit.d7f03943:
+4. Verify a flattened contract built with solc v0.8.11+commit.d7f03943:
     ```sh
     forge verify-contract --flatten --watch --compiler-version "v0.8.11+commit.d7f03943" \
       --constructor-args $(cast abi-encode "constructor(string,string,uint256,uint256)" "ForgeUSD" "FUSD" 18 1000000000000000000000) \
       <address> MyToken
     ```
 
-4. Verify a flattened contract by specifying constructor arguments in a file:
+5. Verify a flattened contract by specifying constructor arguments in a file:
     ```sh
     forge verify-contract --flatten --watch --compiler-version "v0.8.11+commit.d7f03943" \
       --constructor-args-path constructor-args.txt <address> src/Token.sol:MyToken
@@ -115,17 +121,17 @@ you can specify a file containing **space-separated** constructor arguments with
     ForgeUSD FUSD 18 1000000000000000000000
     ```
     
-5. Verify a contract with Blockscout right after deployment (make sure you add "/api?" to the end of the Blockscout homepage explorer URL):
+6. Verify a contract with Blockscout right after deployment (make sure you add "/api?" to the end of the Blockscout homepage explorer URL):
     ```sh
     forge create --rpc-url <rpc_https_endpoint> --private-key $devTestnetPrivateKey src/Contract.sol:SimpleStorage --verify --verifier blockscout --verifier-url <blockscout_homepage_explorer_url>/api? 
     ```
 
-6. verify a contract with Oklink
+7. verify a contract with Oklink
     ```sh
     forge verify-contract 0x8CDDE82cFB4555D6ca21B5b28F97630265DA94c4 Counter --verifier oklink --verifier-url https://www.oklink.com/api/v5/explorer/contract/verify-source-code-plugin/XLAYER  --api-key $OKLINK_API_KEY
     ```
     
-7. verify a contract with Oklink while deploying
+8. verify a contract with Oklink while deploying
     ```sh
     forge create Counter --rpc-url <rpc_https_endpoint> --verify --verifier oklink --verifier-url https://www.oklink.com/api/v5/explorer/contract/verify-source-code-plugin/XLAYER --etherscan-api-key $OKLINK_API_KEY --private-key $PRIVATE_KEY --legacy
     ```
