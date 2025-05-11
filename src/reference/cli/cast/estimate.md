@@ -141,6 +141,11 @@ Ethereum options:
           
           [env: ETHERSCAN_API_KEY=]
 
+  -a, --etherscan-api-version <API_VERSION>
+          The Etherscan API version
+          
+          [env: ETHERSCAN_API_VERSION=]
+
   -c, --chain <CHAIN>
           The chain name or EIP-155 chain ID
           
