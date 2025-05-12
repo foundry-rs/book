@@ -136,6 +136,11 @@ Test options:
           
           [env: ETHERSCAN_API_KEY=]
 
+      --etherscan-api-version <VERSION>
+          The Etherscan API version
+          
+          [env: ETHERSCAN_API_VERSION=]
+
       --fuzz-seed <FUZZ_SEED>
           Set seed used to generate randomness during your fuzz runs
 
