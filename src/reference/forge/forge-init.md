@@ -20,7 +20,7 @@ The default template creates the following project layout:
 
 However, it is possible to create a project from another using `--template`.
 
-By default, `forge init` will also initialize a new git repository, install some submodules and create an initial commit message.
+By default, `forge init` will also initialize a new git repository and install some submodules.
 
 If you do not want this behavior, pass `--no-git`.
 
@@ -43,8 +43,8 @@ If you do not want this behavior, pass `--no-git`.
 
 #### VCS Options
 
-`--no-commit`  
-&nbsp;&nbsp;&nbsp;&nbsp;Do not create an initial commit.
+`--commit`  
+&nbsp;&nbsp;&nbsp;&nbsp;Create an initial commit.
 
 `--no-git`  
 &nbsp;&nbsp;&nbsp;&nbsp;Do not create a git repository.

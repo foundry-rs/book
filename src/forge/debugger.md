@@ -2,7 +2,7 @@
 
 Forge ships with an interactive debugger.
 
-The debugger is accessible on [`forge test`](../reference/forge/forge-test.md) and on [`forge script`](../reference/forge/forge-script.md). You can only select a single function to debug at the time.
+The debugger is accessible on [`forge test`](../reference/forge/forge-test.md), on [`forge script`](../reference/forge/forge-script.md) and on [`cast run`](../reference/cast/cast-run.md). You can only select a single function or a single transaction to debug at the time.
 
 Using `forge test` (or `forge script`):
 
@@ -20,6 +20,13 @@ If the matching test is a fuzz test, the debugger will open the first failing fu
 
 ```sh
 $ forge test --debug --match-test "testFuzz_SetNumber"
+```
+
+Using `cast run`:
+
+```sh
+cast run --debug \
+  0xd15e0237413d7b824b784e1bbc3926e52f4726e5e5af30418803b8b327b4f8ca
 ```
 
 ### Debugger layout

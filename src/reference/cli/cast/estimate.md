@@ -141,6 +141,11 @@ Ethereum options:
           
           [env: ETHERSCAN_API_KEY=]
 
+  -a, --etherscan-api-version <API_VERSION>
+          The Etherscan API version
+          
+          [env: ETHERSCAN_API_VERSION=]
+
   -c, --chain <CHAIN>
           The chain name or EIP-155 chain ID
           
@@ -210,6 +215,9 @@ Wallet options - hardware wallet:
 Wallet options - remote:
       --aws
           Use AWS Key Management Service
+
+      --gcp
+          Use Google Cloud Key Management Service
 
 Display options:
       --color <COLOR>

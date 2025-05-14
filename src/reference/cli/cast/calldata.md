@@ -17,6 +17,9 @@ Arguments:
           The arguments to encode
 
 Options:
+      --file <PATH>
+          
+
   -h, --help
           Print help (see a summary with '-h')
 

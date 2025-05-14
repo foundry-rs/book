@@ -107,6 +107,11 @@ Options:
           
           [env: ETHERSCAN_API_KEY=]
 
+      --etherscan-api-version <VERSION>
+          The Etherscan API version
+          
+          [env: ETHERSCAN_API_VERSION=]
+
       --verify
           Verifies all the contracts found in the receipts of a script, if any
 
@@ -370,6 +375,9 @@ Wallet options - remote:
       --aws
           Use AWS Key Management Service
 
+      --gcp
+          Use Google Cloud Key Management Service
+
 EVM options:
   -f, --fork-url <URL>
           Fetch state over a remote endpoint instead of starting from an empty
@@ -533,4 +541,9 @@ Verifier options:
           The verifier URL, if using a custom provider
           
           [env: VERIFIER_URL=]
+
+      --verifier-api-version <VERIFIER_API_VERSION>
+          The verifier API version, if using a custom provider
+          
+          [env: VERIFIER_API_VERSION=]
 ```
