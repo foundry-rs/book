@@ -8,3 +8,4 @@
 /projects/**/out/
 
 /vocs/node_modules
+/vocs/docs/dist
