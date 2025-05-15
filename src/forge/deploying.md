@@ -109,7 +109,7 @@ You must provide:
 
 - the contract address
 - the contract name or the path to the contract `<path>:<contractname>`
-- your Etherscan API key (env: `ETHERSCAN_API_KEY`) (if verifying on Etherscan or similar explorers eg BscScan/BaseScan/Polygonscan).
+- your Etherscan API key (env: `ETHERSCAN_API_KEY`) (if verifying on Etherscan or similar explorers e.g. BscScan / BaseScan / Polygonscan).
 
 Moreover, you may need to provide:
 
