@@ -6,7 +6,7 @@ set -eo pipefail
 # includeable in the book.
 
 ETH_RPC_URL="${ETH_RPC_URL:=https://eth-mainnet.alchemyapi.io/v2/Lc7oIGYeL_QvInzI0Wiu_pOZZDEKBrdf}"
-OUTPUT_DIR="$(realpath src/output)"
+OUTPUT_DIR="$(realpath vocs/docs/snippets/output)"
 ROOT="$(dirname "$(dirname "$(realpath "$0")")")"
 # shellcheck disable=SC2034
 SCRIPTS="$ROOT/scripts"
