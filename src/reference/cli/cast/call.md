@@ -25,8 +25,7 @@ Arguments:
 
 Options:
       --data <DATA>
-          Raw hex-encoded data for the transaction. Used instead of \[SIG\] and
-          \[ARGS\]
+          Data for the transaction
 
       --trace
           Forks the remote rpc, executes the transaction locally and prints a
@@ -118,7 +117,7 @@ Transaction options:
 
 Ethereum options:
   -r, --rpc-url <URL>
-          The RPC endpoint, default value is http://localhost:8545
+          The RPC endpoint
           
           [env: ETH_RPC_URL=]
 
@@ -165,11 +164,6 @@ Ethereum options:
           
           [env: ETHERSCAN_API_KEY=]
 
-  -a, --etherscan-api-version <API_VERSION>
-          The Etherscan API version
-          
-          [env: ETHERSCAN_API_VERSION=]
-
   -c, --chain <CHAIN>
           The chain name or EIP-155 chain ID
           
@@ -210,21 +204,6 @@ Wallet options - raw:
           
           [aliases: la]
 
-      --override-balance <ADDRESS:BALANCE>
-          Override the balance of an account. Format: address:balance
-
-      --override-nonce <ADDRESS:NONCE>
-          Override the nonce of an account. Format: address:nonce
-
-      --override-code <ADDRESS:CODE>
-          Override the code of an account. Format: address:code
-
-      --override-state <ADDRESS:SLOT:VALUE>
-          Override the state of an account. Format: address:slot:value
-
-      --override-state-diff <ADDRESS:SLOT:VALUE>
-          Override the state diff of an account. Format: address:slot:value
-
 Wallet options - keystore:
       --keystore <PATH>
           Use the keystore in the given folder or file
@@ -255,13 +234,6 @@ Wallet options - hardware wallet:
 
   -t, --trezor
           Use a Trezor hardware wallet
-
-Wallet options - remote:
-      --aws
-          Use AWS Key Management Service
-
-      --gcp
-          Use Google Cloud Key Management Service
 
 Display options:
       --color <COLOR>

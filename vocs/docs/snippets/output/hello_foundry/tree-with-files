@@ -1,0 +1,29 @@
+// [!region all]
+// [!region command]
+$ tree . -L 3 -I output
+// [!endregion command]
+// [!region output]
+.
+├── README.md
+├── foundry.toml
+├── lib
+│   └── forge-std
+│       ├── CONTRIBUTING.md
+│       ├── LICENSE-APACHE
+│       ├── LICENSE-MIT
+│       ├── README.md
+│       ├── foundry.toml
+│       ├── package.json
+│       ├── scripts
+│       ├── src
+│       └── test
+├── script
+│   └── Counter.s.sol
+├── src
+│   └── Counter.sol
+└── test
+    └── Counter.t.sol
+
+9 directories, 11 files
+// [!endregion output]
+// [!endregion all]

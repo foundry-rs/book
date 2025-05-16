@@ -6,3 +6,6 @@
 /projects/**/cache/
 /out/
 /projects/**/out/
+
+/vocs/node_modules
+/vocs/docs/dist
