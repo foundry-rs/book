@@ -22,8 +22,7 @@ export const sidebar: Sidebar = [
         ]
     },
     {
-        text: 'Forge Overview',
-        link: '/forge/README',
+        text: 'Forge',
         items: forgeOverview,
     },
     {

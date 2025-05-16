@@ -2,6 +2,10 @@ import { SidebarItem } from "vocs";
 
 export const forgeOverview: SidebarItem[] = [
     {
+        text: 'Overview',
+        link: '/forge/overview',
+    },
+    {
         text: 'Tests',
         link: '/forge/tests',
         items: [
