@@ -1,8 +1,8 @@
-// ANCHOR: all
-// ANCHOR: command
+// [!region all]
+// [!region command]
 $ cat .clone.meta | jq
-// ANCHOR_END: command
-// ANCHOR: output
+// [!endregion command]
+// [!region output]
 {
   "path": "src/Contract.sol",
   "targetContract": "WETH9",
@@ -16,5 +16,5 @@ $ cat .clone.meta | jq
     "types": {}
   }
 }
-// ANCHOR_END: output
-// ANCHOR_END: all
+// [!endregion output]
+// [!endregion all]

@@ -4,10 +4,10 @@ Forge manages dependencies using [git submodules](https://git-scm.com/book/en/v2
 
 ### Adding a dependency
 
-To add a dependency, run [`forge install`](../reference/forge/forge-install.md):
+To add a dependency, run [`forge install`](#TODO):
 
 ```sh
-{{#include ../output/hello_foundry/forge-install:all}}
+// [!include ../snippets/output/hello_foundry/forge-install:all]
 ```
 
 This pulls the `solady` library, stages the `.gitmodules` file in git and makes a commit with the message `Installed solady`.
@@ -15,7 +15,7 @@ This pulls the `solady` library, stages the `.gitmodules` file in git and makes 
 If we now check the `lib` folder:
 
 ```sh
-{{#include ../output/hello_foundry/tree:all}}
+// [!include ../snippets/output/hello_foundry/tree:all]
 ```
 
 We can see that Forge installed `solady`!
@@ -31,7 +31,7 @@ $ forge install vectorized/solady@v0.1.3
 Forge can remap dependencies to make them easier to import. Forge will automatically try to deduce some remappings for you:
 
 ```sh
-{{#include ../output/hello_foundry/forge-remappings:all}}
+// [!include ../snippets/output/hello_foundry/forge-remappings:all]
 ```
 
 These remappings mean:
@@ -62,25 +62,26 @@ import {LibString} from "@solady-utils/LibString.sol";
 ```
 
 ### Remapping conflicts
-In some cases, you may encounter dependency conflicts when two or more git submodules include different dependencies with the same namespace. For example, suppose you have installed both `org/lib_1` and `org/lib_2`, and they each reference their own versions of `@openzeppelin`. In such scenarios, `forge remappings` generates a single remapping entry for the namespace, which will point to only one of the two `@openzeppelin` libraries. 
+
+In some cases, you may encounter dependency conflicts when two or more git submodules include different dependencies with the same namespace. For example, suppose you have installed both `org/lib_1` and `org/lib_2`, and they each reference their own versions of `@openzeppelin`. In such scenarios, `forge remappings` generates a single remapping entry for the namespace, which will point to only one of the two `@openzeppelin` libraries.
 
 ```sh
-$ forge remappings  
-@openzeppelin/=lib/lib_1/node_modules/@openzeppelin/ 
+$ forge remappings
+@openzeppelin/=lib/lib_1/node_modules/@openzeppelin/
 ```
 
 This situation can lead to import issues, causing `forge build` to fail or introduce unexpected behavior into your contracts. To resolve this, you can add remapping contexts to your `remappings.txt` file. This instructs the compiler to use different remappings in distinct compilation contexts, resolving the conflict. For example, to address the conflict between `lib_1` and `lib_2`, you would update your remappings.txt as follows:
-
 
 ```sh
 lib/lib_1/:@openzeppelin/=lib/lib_1/node_modules/@openzeppelin/
 lib/lib_2/:@openzeppelin/=lib/lib_2/node_modules/@openzeppelin/
 ```
+
 This approach ensures that each dependency is mapped to the appropriate library version, avoiding potential issues. For more information about remapping, please see the [Solidity Lang Docs](https://docs.soliditylang.org/en/latest/path-resolution.html#import-remapping).
 
 ### Updating dependencies
 
-You can update a specific dependency to the latest commit on the version you have specified using [`forge update <dep>`](../reference/forge/forge-update.md). For example, if we wanted to pull the latest commit from our previously installed master-version of `solady`, we would run:
+You can update a specific dependency to the latest commit on the version you have specified using [`forge update <dep>`](#TODO). For example, if we wanted to pull the latest commit from our previously installed master-version of `solady`, we would run:
 
 ```sh
 $ forge update lib/solady
@@ -90,9 +91,9 @@ Alternatively, you can do this for all dependencies at once by just running `for
 
 ### Removing dependencies
 
-You can remove dependencies using [`forge remove <deps>...`](../reference/forge/forge-remove.md), where `<deps>` is either the full path to the dependency or just the name. For example, to remove `solady` both of these commands are equivalent:
+You can remove dependencies using [`forge remove <deps>...`](#TODO), where `<deps>` is either the full path to the dependency or just the name. For example, to remove `solady` both of these commands are equivalent:
 
-```ignore
+```sh
 $ forge remove solady
 # ... is equivalent to ...
 $ forge remove lib/solady

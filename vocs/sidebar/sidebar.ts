@@ -15,7 +15,7 @@ export const sidebar: Sidebar = [
         link: '/projects',
         items: [
             { text: 'Creating a New Project', link: '/projects/creating-a-new-project' },
-            { text: 'Clone a Verified Contract on Chain', link: '/projects/clone-a-verified-contract' },
+            { text: 'Clone a Verified Contract', link: '/projects/clone-a-verified-contract' },
             { text: 'Dependencies', link: '/projects/dependencies' },
             { text: 'Soldeer', link: '/projects/soldeer' },
             { text: 'Project Layout', link: '/projects/project-layout' }
