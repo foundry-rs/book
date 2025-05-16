@@ -7,33 +7,36 @@ export const forgeOverview: SidebarItem[] = [
     },
     {
         text: 'Tests',
-        link: '/forge/tests',
+        collapsed: false,
         items: [
-            { text: 'Writing Tests', link: '/forge/writing-tests' },
-            { text: 'Cheatcodes', link: '/forge/cheatcodes' },
-            { text: 'Forge Standard Library Overview', link: '/forge/forge-std' },
-            { text: 'Understanding Traces', link: '/forge/traces' },
-            { text: 'Fork Testing', link: '/forge/fork-testing' },
-            { text: 'Replaying Failures', link: '/forge/replay-testing' }
+            { text: 'Overview', link: '/forge/tests/overview' },
+            { text: 'Writing Tests', link: '/forge/tests/writing-tests' },
+            { text: 'Cheatcodes', link: '/forge/tests/cheatcodes' },
+            { text: 'Forge Standard Library Overview', link: '/forge/tests/forge-std' },
+            { text: 'Understanding Traces', link: '/forge/tests/traces' },
+            { text: 'Fork Testing', link: '/forge/tests/fork-testing' },
+            { text: 'Replaying Failures', link: '/forge/tests/replay-testing' }
         ]
     },
     {
         text: 'Advanced Testing',
-        link: '/forge/advanced-testing',
+        collapsed: false,
         items: [
-            { text: 'Fuzz Testing', link: '/forge/fuzz-testing' },
-            { text: 'Invariant Testing', link: '/forge/invariant-testing' },
-            { text: 'Differential Testing', link: '/forge/differential-ffi-testing' }
+            { text: 'Overview', link: '/forge/advanced-testing/overview' },
+            { text: 'Fuzz Testing', link: '/forge/advanced-testing/fuzz-testing' },
+            { text: 'Invariant Testing', link: '/forge/advanced-testing/invariant-testing' },
+            { text: 'Differential Testing', link: '/forge/advanced-testing/differential-ffi-testing' }
         ]
     },
     { text: 'Deploying and Verifying', link: '/forge/deploying' },
     {
         text: 'Gas Tracking',
-        link: '/forge/gas-tracking',
+        collapsed: false,
         items: [
-            { text: 'Gas Reports', link: '/forge/gas-reports' },
-            { text: 'Gas Function Snapshots', link: '/forge/gas-function-snapshots' },
-            { text: 'Gas Section Snapshots', link: '/forge/gas-section-snapshots' }
+            { text: 'Overview', link: '/forge/gas-tracking/overview' },
+            { text: 'Gas Reports', link: '/forge/gas-tracking/gas-reports' },
+            { text: 'Gas Function Snapshots', link: '/forge/gas-tracking/gas-function-snapshots' },
+            { text: 'Gas Section Snapshots', link: '/forge/gas-tracking/gas-section-snapshots' }
         ]
     },
     { text: 'Debugger', link: '/forge/debugger' }
