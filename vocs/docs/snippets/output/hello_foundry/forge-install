@@ -1,9 +1,9 @@
-// ANCHOR: all
-// ANCHOR: command
+// [!region all]
+// [!region command]
 $ forge install vectorized/solady
-// ANCHOR_END: command
-// ANCHOR: output
-Installing solady in /private/var/folders/x4/z46ytl8n5msgkg6dst5hwwhh0000gn/T/tmp.WiBI2UCX24/hello_foundry/lib/solady (url: Some("https://github.com/vectorized/solady"), tag: None)
+// [!endregion command]
+// [!region output]
+Installing solady in /private/var/folders/x4/z46ytl8n5msgkg6dst5hwwhh0000gn/T/tmp.dopeH1U3lb/hello_foundry/lib/solady (url: Some("https://github.com/vectorized/solady"), tag: None)
     Installed solady v0.1.18
-// ANCHOR_END: output
-// ANCHOR_END: all
+// [!endregion output]
+// [!endregion all]

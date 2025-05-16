@@ -1,8 +1,8 @@
-// ANCHOR: all
-// ANCHOR: command
+// [!region all]
+// [!region command]
 $ echo '!help' | chisel
-// ANCHOR_END: command
-// ANCHOR: output
+// [!endregion command]
+// [!region output]
 Welcome to Chisel! Type `!help` to show available commands.
 ⚒️ Chisel help
 =============
@@ -31,5 +31,5 @@ Debug
 	!memdump | !md - Dump the raw memory of the current state
 	!stackdump | !sd - Dump the raw stack of the current state
 	!rawstack <var> | !rs <var> - Display the raw value of a variable's stack allocation. For variables that are > 32 bytes in length, this will display their memory pointer.
-// ANCHOR_END: output
-// ANCHOR_END: all
+// [!endregion output]
+// [!endregion all]

@@ -1,10 +1,10 @@
-// ANCHOR: all
-// ANCHOR: command
+// [!region all]
+// [!region command]
 $ cast 4byte-decode 0x1F1F897F676d00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003e7
-// ANCHOR_END: command
-// ANCHOR: output
+// [!endregion command]
+// [!region output]
 1) "fulfillRandomness(bytes32,uint256)"
 0x676d000000000000000000000000000000000000000000000000000000000000
 999
-// ANCHOR_END: output
-// ANCHOR_END: all
+// [!endregion output]
+// [!endregion all]

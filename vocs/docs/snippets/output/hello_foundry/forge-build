@@ -1,10 +1,10 @@
-// ANCHOR: all
-// ANCHOR: command
+// [!region all]
+// [!region command]
 $ forge build
-// ANCHOR_END: command
-// ANCHOR: output
+// [!endregion command]
+// [!region output]
 Compiling 23 files with Solc 0.8.29
-Solc 0.8.29 finished in 508.06ms
+Solc 0.8.29 finished in 466.94ms
 Compiler run successful!
-// ANCHOR_END: output
-// ANCHOR_END: all
+// [!endregion output]
+// [!endregion all]

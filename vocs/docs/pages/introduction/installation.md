@@ -27,6 +27,7 @@ Running `foundryup` will automatically install the latest stable version of the 
 
 Foundry binaries are attested by using [GitHub artifact attestations](https://docs.github.com/en/actions/security-for-github-actions/using-artifact-attestations/using-artifact-attestations-to-establish-provenance-for-builds). It is strongly recommended to verify the binaries installed using `foundryup` in order to check that they were built and distributed from Foundry repository.  
 For example, `forge` binary integrity and provenance can be verified by running:
+
 ```shell
 $ gh attestation verify --owner foundry-rs $(which forge)
 

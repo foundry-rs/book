@@ -1,15 +1,15 @@
-// ANCHOR: all
-// ANCHOR: command
+// [!region all]
+// [!region command]
 $ forge test
-// ANCHOR_END: command
-// ANCHOR: output
+// [!endregion command]
+// [!region output]
 No files changed, compilation skipped
 
 Ran 2 tests for test/Counter.t.sol:CounterTest
-[PASS] testFuzz_SetNumber(uint256) (runs: 256, μ: 32276, ~: 32354)
+[PASS] testFuzz_SetNumber(uint256) (runs: 256, μ: 32043, ~: 32354)
 [PASS] test_Increment() (gas: 31851)
-Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 38.70ms (32.58ms CPU time)
+Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 39.05ms (33.67ms CPU time)
 
-Ran 1 test suite in 139.25ms (38.70ms CPU time): 2 tests passed, 0 failed, 0 skipped (2 total tests)
-// ANCHOR_END: output
-// ANCHOR_END: all
+Ran 1 test suite in 133.46ms (39.05ms CPU time): 2 tests passed, 0 failed, 0 skipped (2 total tests)
+// [!endregion output]
+// [!endregion all]

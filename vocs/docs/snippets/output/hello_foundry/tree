@@ -1,8 +1,8 @@
-// ANCHOR: all
-// ANCHOR: command
+// [!region all]
+// [!region command]
 $ tree . -d -L 1
-// ANCHOR_END: command
-// ANCHOR: output
+// [!endregion command]
+// [!region output]
 .
 ├── lib
 ├── script
@@ -10,5 +10,5 @@ $ tree . -d -L 1
 └── test
 
 5 directories
-// ANCHOR_END: output
-// ANCHOR_END: all
+// [!endregion output]
+// [!endregion all]

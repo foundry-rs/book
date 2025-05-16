@@ -43,14 +43,14 @@ escape_colors() {
 
 print_anchored() {
   cat > /dev/stdout <<EOF
-// ANCHOR: all
-// ANCHOR: command
+// [!region all]
+// [!region command]
 \$ $1
-// ANCHOR_END: command
-// ANCHOR: output
+// [!endregion command]
+// [!region output]
 $2
-// ANCHOR_END: output
-// ANCHOR_END: all
+// [!endregion output]
+// [!endregion all]
 EOF
 }
 

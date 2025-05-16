@@ -1,8 +1,8 @@
-// ANCHOR: all
-// ANCHOR: command
+// [!region all]
+// [!region command]
 $ forge tree
-// ANCHOR_END: command
-// ANCHOR: output
+// [!endregion command]
+// [!region output]
 src/Morpho.sol =0.8.19
 ├── src/interfaces/IMorpho.sol >=0.5.0
 ├── src/interfaces/IMorphoCallbacks.sol >=0.5.0
@@ -183,5 +183,5 @@ test/halmos/HalmosTest.sol ^0.8.0
 ├── src/Morpho.sol =0.8.19 (*)
 ├── src/libraries/ConstantsLib.sol ^0.8.0
 └── src/libraries/periphery/MorphoLib.sol ^0.8.0 (*)
-// ANCHOR_END: output
-// ANCHOR_END: all
+// [!endregion output]
+// [!endregion all]

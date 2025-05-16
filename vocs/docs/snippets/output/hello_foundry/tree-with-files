@@ -1,8 +1,8 @@
-// ANCHOR: all
-// ANCHOR: command
+// [!region all]
+// [!region command]
 $ tree . -L 3 -I output
-// ANCHOR_END: command
-// ANCHOR: output
+// [!endregion command]
+// [!region output]
 .
 ├── README.md
 ├── foundry.toml
@@ -25,5 +25,5 @@ $ tree . -L 3 -I output
     └── Counter.t.sol
 
 9 directories, 11 files
-// ANCHOR_END: output
-// ANCHOR_END: all
+// [!endregion output]
+// [!endregion all]

@@ -1,9 +1,9 @@
-// ANCHOR: all
-// ANCHOR: command
+// [!region all]
+// [!region command]
 $ forge remappings
-// ANCHOR_END: command
-// ANCHOR: output
+// [!endregion command]
+// [!region output]
 forge-std/=lib/forge-std/src/
 solady/=lib/solady/src/
-// ANCHOR_END: output
-// ANCHOR_END: all
+// [!endregion output]
+// [!endregion all]

@@ -1,17 +1,17 @@
-// ANCHOR: all
-// ANCHOR: command
+// [!region all]
+// [!region command]
 $ forge test --match-contract ComplicatedContractTest --match-test test_Deposit
-// ANCHOR_END: command
-// ANCHOR: output
+// [!endregion command]
+// [!region output]
 Compiling 24 files with Solc 0.8.10
-Solc 0.8.10 finished in 557.22ms
+Solc 0.8.10 finished in 567.82ms
 Compiler run successful!
 
 Ran 2 tests for test/ComplicatedContract.t.sol:ComplicatedContractTest
 [PASS] test_DepositERC20() (gas: 179207)
 [PASS] test_DepositETH() (gas: 107628)
-Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 4.44ms (7.31ms CPU time)
+Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 4.30ms (6.25ms CPU time)
 
-Ran 1 test suite in 124.43ms (4.44ms CPU time): 2 tests passed, 0 failed, 0 skipped (2 total tests)
-// ANCHOR_END: output
-// ANCHOR_END: all
+Ran 1 test suite in 119.51ms (4.30ms CPU time): 2 tests passed, 0 failed, 0 skipped (2 total tests)
+// [!endregion output]
+// [!endregion all]
