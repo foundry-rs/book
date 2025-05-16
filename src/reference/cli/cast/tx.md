@@ -7,10 +7,10 @@ $ cast tx --help
 ```
 
 ```txt
-Usage: cast tx [OPTIONS] [TX_HASH] [FIELD]
+Usage: cast tx [OPTIONS] <TX_HASH> [FIELD]
 
 Arguments:
-  [TX_HASH]
+  <TX_HASH>
           The transaction hash
 
   [FIELD]
@@ -18,17 +18,11 @@ Arguments:
           the RLP encoded transaction will be printed
 
 Options:
-      --from <FROM>
-          The sender of the transaction
-
-      --nonce <NONCE>
-          Nonce of the transaction
-
       --raw
           Print the raw RLP encoded transaction
 
   -r, --rpc-url <URL>
-          The RPC endpoint, default value is http://localhost:8545
+          The RPC endpoint
           
           [env: ETH_RPC_URL=]
 

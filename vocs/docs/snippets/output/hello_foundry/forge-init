@@ -1,0 +1,11 @@
+// ANCHOR: all
+// ANCHOR: command
+$ forge init hello_foundry
+// ANCHOR_END: command
+// ANCHOR: output
+Initializing /private/var/folders/x4/z46ytl8n5msgkg6dst5hwwhh0000gn/T/tmp.WiBI2UCX24/hello_foundry...
+Installing forge-std in /private/var/folders/x4/z46ytl8n5msgkg6dst5hwwhh0000gn/T/tmp.WiBI2UCX24/hello_foundry/lib/forge-std (url: Some("https://github.com/foundry-rs/forge-std"), tag: None)
+    Installed forge-std v1.9.7
+    Initialized forge project
+// ANCHOR_END: output
+// ANCHOR_END: all

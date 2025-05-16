@@ -23,7 +23,7 @@ Options:
           Format the balance in ether
 
   -r, --rpc-url <URL>
-          The RPC endpoint, default value is http://localhost:8545
+          The RPC endpoint
           
           [env: ETH_RPC_URL=]
 

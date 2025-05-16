@@ -15,7 +15,7 @@ Arguments:
 
 Options:
   -o, --offline
-          Skip the <https://openchain.xyz> lookup
+          Skip the https://openchain.xyz lookup
 
   -h, --help
           Print help (see a summary with '-h')

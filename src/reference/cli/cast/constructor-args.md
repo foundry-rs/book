@@ -23,18 +23,13 @@ Options:
           
           [env: ETHERSCAN_API_KEY=]
 
-  -a, --etherscan-api-version <API_VERSION>
-          The Etherscan API version
-          
-          [env: ETHERSCAN_API_VERSION=]
-
   -c, --chain <CHAIN>
           The chain name or EIP-155 chain ID
           
           [env: CHAIN=]
 
   -r, --rpc-url <URL>
-          The RPC endpoint, default value is http://localhost:8545
+          The RPC endpoint
           
           [env: ETH_RPC_URL=]
 

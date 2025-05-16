@@ -16,7 +16,7 @@ Arguments:
 Options:
       --sig <SIG>
           The event signature. If none provided then tries to decode from local
-          cache or <https://api.openchain.xyz>
+          cache or `https://api.openchain.xyz`
           
           [aliases: event-sig]
 

@@ -37,8 +37,8 @@ Options:
           [default: 1]
 
       --unlocked
-          Send via `eth_sendTransaction` using the `--from` argument or
-          $ETH_FROM as sender
+          Send via `eth_sendTransaction using the `--from` argument or $ETH_FROM
+          as sender
 
       --timeout <TIMEOUT>
           Timeout for sending the transaction
@@ -113,7 +113,7 @@ Transaction options:
 
 Ethereum options:
   -r, --rpc-url <URL>
-          The RPC endpoint, default value is http://localhost:8545
+          The RPC endpoint
           
           [env: ETH_RPC_URL=]
 
@@ -159,11 +159,6 @@ Ethereum options:
           The Etherscan (or equivalent) API key
           
           [env: ETHERSCAN_API_KEY=]
-
-  -a, --etherscan-api-version <API_VERSION>
-          The Etherscan API version
-          
-          [env: ETHERSCAN_API_VERSION=]
 
   -c, --chain <CHAIN>
           The chain name or EIP-155 chain ID
@@ -230,13 +225,6 @@ Wallet options - hardware wallet:
 
   -t, --trezor
           Use a Trezor hardware wallet
-
-Wallet options - remote:
-      --aws
-          Use AWS Key Management Service
-
-      --gcp
-          Use Google Cloud Key Management Service
 
 Display options:
       --color <COLOR>

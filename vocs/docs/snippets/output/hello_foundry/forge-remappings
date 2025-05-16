@@ -1,0 +1,9 @@
+// ANCHOR: all
+// ANCHOR: command
+$ forge remappings
+// ANCHOR_END: command
+// ANCHOR: output
+forge-std/=lib/forge-std/src/
+solady/=lib/solady/src/
+// ANCHOR_END: output
+// ANCHOR_END: all

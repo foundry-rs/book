@@ -1,6 +1,6 @@
 # cast
 
-A Swiss Army knife for interacting with Ethereum applications from the command
+Perform Ethereum RPC calls from the comfort of your command line
 
 ```bash
 $ cast --help
@@ -11,12 +11,12 @@ Usage: cast [OPTIONS] <COMMAND>
 
 Commands:
   4byte                  Get the function signatures for the given selector from
-                         <https://openchain.xyz> [aliases: 4, 4b]
-  4byte-calldata         Decode ABI-encoded calldata using
-                         <https://openchain.xyz> [aliases: 4c, 4bc]
+                         https://openchain.xyz [aliases: 4, 4b]
+  4byte-decode           Decode ABI-encoded calldata using https://openchain.xyz
+                         [aliases: 4d, 4bd]
   4byte-event            Get the event signature for a given topic 0 from
-                         <https://openchain.xyz> [aliases: 4e, 4be,
-                         topic0-event, t0e]
+                         https://openchain.xyz [aliases: 4e, 4be, topic0-event,
+                         t0e]
   abi-encode             ABI encode the given function argument, excluding the
                          selector [aliases: ae]
   access-list            Create an access list for a transaction [aliases: ac,
@@ -67,6 +67,8 @@ Commands:
   disassemble            Disassembles a hex-encoded bytecode into a
                          human-readable representation [aliases: da]
   estimate               Estimate the gas cost of a transaction [aliases: e]
+  etherscan-source       Get the source code of a contract from Etherscan
+                         [aliases: et, src]
   find-block             Get the block number closest to the provided timestamp
                          [aliases: f]
   format-bytes32-string  Formats a string into bytes32 encoding [aliases:
@@ -135,8 +137,6 @@ Commands:
   sig                    Get the selector for a function [aliases: si]
   sig-event              Generate event signatures from event string [aliases:
                          se]
-  source                 Get the source code of a contract from a block explorer
-                         [aliases: et, src]
   storage                Get the raw value of a contract's storage slot
                          [aliases: st]
   storage-root           Get the storage root for an account [aliases: sr]
@@ -170,8 +170,7 @@ Commands:
   to-wei                 Convert an ETH amount to wei [aliases: --to-wei, tw,
                          2w]
   tx                     Get information about a transaction [aliases: t]
-  tx-pool                Inspect the TxPool of a node [aliases: tp]
-  upload-signature       Upload the given signatures to <https://openchain.xyz>
+  upload-signature       Upload the given signatures to https://openchain.xyz
                          [aliases: ups]
   wallet                 Wallet management utilities [aliases: w]
 

@@ -38,18 +38,13 @@ Options:
           
           [env: ETHERSCAN_API_KEY=]
 
-  -a, --etherscan-api-version <API_VERSION>
-          The Etherscan API version
-          
-          [env: ETHERSCAN_API_VERSION=]
-
   -c, --chain <CHAIN>
           The chain name or EIP-155 chain ID
           
           [env: CHAIN=]
 
   -r, --rpc-url <URL>
-          The RPC endpoint, default value is http://localhost:8545
+          The RPC endpoint
           
           [env: ETH_RPC_URL=]
 
@@ -103,7 +98,7 @@ Options:
           default value: 330
           
           See also,
-          <https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second>
+          https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second
 
       --no-rate-limit
           Disables rate limiting for this node's provider.
@@ -111,7 +106,7 @@ Options:
           default value: false
           
           See also,
-          <https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second>
+          https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second
           
           [aliases: no-rpc-rate-limit]
 
@@ -122,9 +117,6 @@ Options:
           Use current project artifacts for trace decoding
           
           [aliases: la]
-
-      --disable-block-gas-limit
-          Disable block gas limit check
 
   -h, --help
           Print help (see a summary with '-h')

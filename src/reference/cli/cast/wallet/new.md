@@ -7,16 +7,12 @@ $ cast wallet new --help
 ```
 
 ```txt
-Usage: cast wallet new [OPTIONS] [PATH] [ACCOUNT_NAME]
+Usage: cast wallet new [OPTIONS] [PATH]
 
 Arguments:
   [PATH]
           If provided, then keypair will be written to an encrypted JSON
           keystore
-
-  [ACCOUNT_NAME]
-          Account name for the keystore file. If provided, the keystore file
-          will be named using this account name
 
 Options:
   -p, --password

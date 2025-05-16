@@ -89,13 +89,6 @@ Wallet options - hardware wallet:
   -t, --trezor
           Use a Trezor hardware wallet
 
-Wallet options - remote:
-      --aws
-          Use AWS Key Management Service
-
-      --gcp
-          Use Google Cloud Key Management Service
-
 Display options:
       --color <COLOR>
           The color of the log messages
