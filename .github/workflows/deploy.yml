@@ -1,7 +1,5 @@
 name: deploy
-on:
-  push:
-    branches: [master]
+on: [push]
 
 jobs:
   deploy:
@@ -18,7 +16,7 @@ jobs:
         uses: oven-sh/setup-bun@v2
 
       - name: Build Vocs
-        uses: cd vocs && bun install && bun run build
+        run: cd vocs && bun install && bun run build
 
       - name: Publish
         uses: cloudflare/pages-action@v1.4.0
