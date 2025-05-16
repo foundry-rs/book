@@ -6,8 +6,8 @@ export const sidebar: Sidebar = [
         text: 'Introduction',
         link: '/introduction',
         items: [
-            { text: 'Installation', link: '/installation' },
-            { text: 'Getting Started', link: '/first-steps' },
+            { text: 'Installation', link: '/introduction/installation' },
+            { text: 'Getting Started', link: '/introduction/getting-started' },
         ]
     },
     {
