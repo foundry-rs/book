@@ -80,7 +80,6 @@
   - [`cast creation-code`](./cast/creation-code.md)
   - [`cast decode-abi`](./cast/decode-abi.md)
   - [`cast decode-calldata`](./cast/decode-calldata.md)
-  - [`cast decode-eof`](./cast/decode-eof.md)
   - [`cast decode-error`](./cast/decode-error.md)
   - [`cast decode-event`](./cast/decode-event.md)
   - [`cast decode-string`](./cast/decode-string.md)

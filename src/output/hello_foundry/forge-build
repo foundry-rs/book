@@ -4,7 +4,7 @@ $ forge build
 // ANCHOR_END: command
 // ANCHOR: output
 Compiling 23 files with Solc 0.8.19
-Solc 0.8.19 finished in 572.20ms
+Solc 0.8.19 finished in 589.07ms
 Compiler run successful!
 // ANCHOR_END: output
 // ANCHOR_END: all

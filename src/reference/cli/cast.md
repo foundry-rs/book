@@ -55,7 +55,6 @@ Commands:
                          abi-decode, --abi-decode, ad]
   decode-calldata        Decode ABI-encoded input data [aliases:
                          calldata-decode, --calldata-decode, cdd]
-  decode-eof             Decodes EOF container bytes
   decode-error           Decode custom error data [aliases: error-decode,
                          --error-decode, erd]
   decode-event           Decode event data [aliases: event-decode,

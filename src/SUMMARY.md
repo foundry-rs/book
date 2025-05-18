@@ -164,7 +164,6 @@
       - [`cast creation-code`](./reference/cli/cast/creation-code.md)
       - [`cast decode-abi`](./reference/cli/cast/decode-abi.md)
       - [`cast decode-calldata`](./reference/cli/cast/decode-calldata.md)
-      - [`cast decode-eof`](./reference/cli/cast/decode-eof.md)
       - [`cast decode-error`](./reference/cli/cast/decode-error.md)
       - [`cast decode-event`](./reference/cli/cast/decode-event.md)
       - [`cast decode-string`](./reference/cli/cast/decode-string.md)
