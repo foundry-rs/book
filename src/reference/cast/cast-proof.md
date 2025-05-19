@@ -49,7 +49,7 @@ The displayed output is a JSON object with the following keys:
 
 1. Get the proof for storage slot 0 on the WETH contract:
     ```sh
-    cast proof 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2 0x0000000000000000000000000000000000000000000000000000000000000000
+   cast proof 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2 0
     ```
 
 ### SEE ALSO

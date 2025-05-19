@@ -208,6 +208,9 @@ When given a hex string previously returned by `anvil_dumpState`, merges the con
 `anvil_nodeInfo`
 Retrieves the configuration params for the currently running Anvil node.
 
+`anvil_reorg`
+Forces a reorg on the chain with a given depth, and optionally re-executing transactions.
+
 ##### Special Methods
 The special methods come from Ganache. You can take a look at the documentation [here](https://github.com/trufflesuite/ganache-cli-archive/blob/master/README.md).
 
