@@ -4,4 +4,6 @@ Forge can capture gas snapshots over arbitrary sections inside of your test func
 
 Instead of running a command like `forge snapshot` or `forge test --gas-report`, you use the `snapshotGas` [cheatcodes](#TODO) in your tests to capture gas usage as follows:
 
-{{#include #TODO
+```
+{{#include ../cheatcodes/gas-snapshots.md}}
+```
