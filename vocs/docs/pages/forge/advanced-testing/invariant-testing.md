@@ -1,4 +1,5 @@
 # Invariant Testing
+
 ## Overview
 
 Invariant testing allows for a set of invariant expressions to be tested against randomized sequences of pre-defined function calls from pre-defined contracts. After each function call is performed, all defined invariants are asserted.
@@ -6,6 +7,7 @@ Invariant testing allows for a set of invariant expressions to be tested against
 Invariant testing is a powerful tool to expose incorrect logic in protocols. Due to the fact that function call sequences are randomized and have fuzzed inputs, invariant testing can expose false assumptions and incorrect logic in edge cases and highly complex protocol states.
 
 Invariant testing campaigns have two dimensions, `runs` and `depth`:
+
 - `runs`: Number of times that a sequence of function calls is generated and run.
 - `depth`: Number of function calls made in a given `run`. Invariants are asserted after each function call is made. If a function call reverts, the `depth` counter still increments.
 
@@ -16,19 +18,20 @@ For long invariant campaigns a `timeout` (in seconds) can be set, ensuring test 
 > When implementing invariant tests is important to be aware that for each `invariant_*` function a different EVM executor is created, therefore invariants are not asserted against same EVM state. This means that if `invariant_A()` and `invariant_B()` functions are defined then `invariant_B()` won't be asserted against EVM state of `invariant_A()` (and the other way around).
 >
 > If you want to assert all invariants at the same time then they can be grouped and run on multiple jobs. For example, assert all invariants using two jobs can be implemented as:
+>
 > ```Solidity
->function invariant_job1() public {
+> function invariant_job1() public {
 >    assertInvariants();
->}
+> }
 >
->function invariant_job2() public {
+> function invariant_job2() public {
 >    assertInvariants();
->}
+> }
 >
->function assertInvariants() internal {
+> function assertInvariants() internal {
 >    assertEq(val1, val2);
 >    assertEq(val3, val4);
->}
+> }
 > ```
 
 These and other invariant configuration aspects are explained [`here`](#configuring-invariant-test-execution).
@@ -40,15 +43,16 @@ Similar to how standard tests are run in Foundry by prefixing a function name wi
 ### Configuring invariant test execution
 
 Invariant tests execution is governed by parameters that can be controlled by users via Forge configuration primitives. Configs can be applied globally or on a per-test basis. For details on this topic please refer to
- 📚 [`Global config`](../reference/config/testing.md) and 📚 [`In-line config`](../reference/config/inline-test-config.md).
+📚 [`Global config`](#TODO) and 📚 [`In-line config`](#TODO).
 
 ## Defining Invariants
 
 Invariants are conditions expressions that should always hold true over the course of a fuzzing campaign. A good invariant testing suite should have as many invariants as possible, and can have different testing suites for different protocol states.
 
 Examples of invariants are:
-- *"The xy=k formula always holds"* for Uniswap
-- *"The sum of all user balances is equal to the total supply"* for an ERC-20 token.
+
+- _"The xy=k formula always holds"_ for Uniswap
+- _"The sum of all user balances is equal to the total supply"_ for an ERC-20 token.
 
 There are different ways to assert invariants, as outlined in the table below:
 
@@ -67,6 +71,7 @@ assertGe(
     token.totalSupply()
 )
 ```
+
 </td>
 
 </tr>
@@ -83,6 +88,7 @@ assertEq(
     sumBalanceOf
 )
 ```
+
 </td>
 
 </tr>
@@ -99,6 +105,7 @@ assertEq(
     test.naiveInterest()
 )
 ```
+
 </td>
 
 </tr>
@@ -131,7 +138,7 @@ function invariant_example() external {
 }
 ```
 
-Another approach to handle different invariants across protocol states is to utilize dedicated invariant testing contracts for different scenarios. These scenarios can be bootstrapped using the `setUp` function, but it is more powerful to leverage *invariant targets* to govern the fuzzer to behave in a way that will only yield certain results (e.g., avoid liquidations).
+Another approach to handle different invariants across protocol states is to utilize dedicated invariant testing contracts for different scenarios. These scenarios can be bootstrapped using the `setUp` function, but it is more powerful to leverage _invariant targets_ to govern the fuzzer to behave in a way that will only yield certain results (e.g., avoid liquidations).
 
 ## Invariant Targets
 
@@ -171,32 +178,33 @@ targetContract2:
 This is something to be mindful of when designing target contracts, as target contracts with less functions will have each function called more often due to this probability distribution.
 
 > ℹ️ **Note**
-> 
+>
 > A good practice is to set `show_metrics = true` in order to get a breakdown of all handler function calls and which functions are reverting/getting discarded (through `vm.assume` cheatcode).
 
 ### Invariant Test Helper Functions
+
 Invariant test helper functions are included in [`forge-std`](https://github.com/foundry-rs/forge-std/blob/master/src/StdInvariant.sol) to allow for configurable invariant test setup. The helper functions are outlined below:
 
-| Function | Description |
-|-|-|
-| `excludeContract(address newExcludedContract_)` | Adds a given address to the `_excludedContracts` array. This set of contracts is explicitly excluded from the target contracts.|
-| `excludeSelector(FuzzSelector memory newExcludedSelector_)` | Adds a given `FuzzSelector` to the `_excludedSelectors` array. This set of `FuzzSelector`s is explicitly excluded from the target contract selectors. |
-| `excludeSender(address newExcludedSender_)` | Adds a given address to the `_excludedSenders` array. This set of addresses is explicitly excluded from the target senders. |
-| `excludeArtifact(string memory newExcludedArtifact_)` | Adds a given string to the `_excludedArtifacts` array. This set of strings is explicitly excluded from the target artifacts. |
-| `targetArtifact(string memory newTargetedArtifact_)` | Adds a given string to the `_targetedArtifacts` array. This set of strings is used for the target artifacts.  |
-| `targetArtifactSelector(FuzzArtifactSelector memory newTargetedArtifactSelector_)` | Adds a given `FuzzArtifactSelector` to the `_targetedArtifactSelectors` array. This set of `FuzzArtifactSelector`s is used for the target artifact selectors. |
-| `targetContract(address newTargetedContract_)` | Adds a given address to the `_targetedContracts` array. This set of addresses is used for the target contracts. This array overwrites the set of contracts that was deployed during the `setUp`. |
-| `targetSelector(FuzzSelector memory newTargetedSelector_)` | Adds a given `FuzzSelector` to the `_targetedSelectors` array. This set of `FuzzSelector`s is used for the target contract selectors. |
-| `targetSender(address newTargetedSender_)` | Adds a given address to the `_targetedSenders` array. This set of addresses is used for the target senders. |
-| `targetInterface(FuzzInterface memory newTargetedInterface_)` | Adds a given `FuzzInterface` to the `_targetedInterfaces` array. This set of `FuzzInterface` extends the contracts and selectors to fuzz and enables targeting of addresses that are not deployed during `setUp` such as when fuzzing in a forked environment. Also enables targeting of delegate proxies and contracts deployed with `create` or `create2`. |
+| Function                                                                           | Description                                                                                                                                                                                                                                                                                                                                                  |
+| ---------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `excludeContract(address newExcludedContract_)`                                    | Adds a given address to the `_excludedContracts` array. This set of contracts is explicitly excluded from the target contracts.                                                                                                                                                                                                                              |
+| `excludeSelector(FuzzSelector memory newExcludedSelector_)`                        | Adds a given `FuzzSelector` to the `_excludedSelectors` array. This set of `FuzzSelector`s is explicitly excluded from the target contract selectors.                                                                                                                                                                                                        |
+| `excludeSender(address newExcludedSender_)`                                        | Adds a given address to the `_excludedSenders` array. This set of addresses is explicitly excluded from the target senders.                                                                                                                                                                                                                                  |
+| `excludeArtifact(string memory newExcludedArtifact_)`                              | Adds a given string to the `_excludedArtifacts` array. This set of strings is explicitly excluded from the target artifacts.                                                                                                                                                                                                                                 |
+| `targetArtifact(string memory newTargetedArtifact_)`                               | Adds a given string to the `_targetedArtifacts` array. This set of strings is used for the target artifacts.                                                                                                                                                                                                                                                 |
+| `targetArtifactSelector(FuzzArtifactSelector memory newTargetedArtifactSelector_)` | Adds a given `FuzzArtifactSelector` to the `_targetedArtifactSelectors` array. This set of `FuzzArtifactSelector`s is used for the target artifact selectors.                                                                                                                                                                                                |
+| `targetContract(address newTargetedContract_)`                                     | Adds a given address to the `_targetedContracts` array. This set of addresses is used for the target contracts. This array overwrites the set of contracts that was deployed during the `setUp`.                                                                                                                                                             |
+| `targetSelector(FuzzSelector memory newTargetedSelector_)`                         | Adds a given `FuzzSelector` to the `_targetedSelectors` array. This set of `FuzzSelector`s is used for the target contract selectors.                                                                                                                                                                                                                        |
+| `targetSender(address newTargetedSender_)`                                         | Adds a given address to the `_targetedSenders` array. This set of addresses is used for the target senders.                                                                                                                                                                                                                                                  |
+| `targetInterface(FuzzInterface memory newTargetedInterface_)`                      | Adds a given `FuzzInterface` to the `_targetedInterfaces` array. This set of `FuzzInterface` extends the contracts and selectors to fuzz and enables targeting of addresses that are not deployed during `setUp` such as when fuzzing in a forked environment. Also enables targeting of delegate proxies and contracts deployed with `create` or `create2`. |
 
 ### Target Contract Setup
 
 Target contracts can be set up using the following three methods:
+
 1. Contracts that are manually added to the `targetContracts` array are added to the set of target contracts.
 2. Contracts that are deployed in the `setUp` function are automatically added to the set of target contracts (only works if no contracts have been manually added using option 1).
 3. Contracts that are deployed in the `setUp` can be **removed** from the target contracts if they are added to the `excludeContracts` array.
-
 
 ## Open Testing
 

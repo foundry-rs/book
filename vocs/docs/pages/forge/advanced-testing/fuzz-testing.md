@@ -49,7 +49,7 @@ And now it passes:
 {{#include ../output/fuzz_testing/forge-test-success-fuzz:all}}
 ```
 
-You may want to exclude certain cases using the [`assume`](../cheatcodes/assume.md) cheatcode. In those cases, fuzzer will discard the inputs and start a new fuzz run:
+You may want to exclude certain cases using the [`assume`](#TODO) cheatcode. In those cases, fuzzer will discard the inputs and start a new fuzz run:
 
 ```solidity
 function testFuzz_Withdraw(uint96 amount) public {
@@ -71,7 +71,7 @@ You might have noticed that fuzz tests are summarized a bit differently compared
 ### Configuring fuzz test execution
 
 Fuzz tests execution is governed by parameters that can be controlled by users via Forge configuration primitives. Configs can be applied globally or on a per-test basis. For details on this topic please refer to
- 📚 [`Global config`](../reference/config/testing.md) and 📚 [`In-line config`](../reference/config/inline-test-config.md).
+📚 [`Global config`](#TODO) and 📚 [`In-line config`](#TODO).
 
 #### Fuzz test fixtures
 

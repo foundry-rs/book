@@ -2,9 +2,9 @@
 
 Forge comes with a number of advanced testing methods:
 
-- [Fuzz Testing](./fuzz-testing.md)
-- [Invariant Testing](./invariant-testing.md)
-- [Differential Testing](./differential-ffi-testing.md)
+- [Fuzz Testing](#TODO)
+- [Invariant Testing](#TODO)
+- [Differential Testing](#TODO)
 
 In the future, Forge will also support these:
 
