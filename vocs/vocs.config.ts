@@ -1,6 +1,48 @@
 import { defineConfig } from 'vocs'
 import { sidebar } from './sidebar/sidebar'
 export default defineConfig({
-  title: 'Docs',
+  title: 'foundry',
   sidebar,
+  theme: {
+    accentColor: {
+      dark: '#f9c22f',
+      // light: '#f98a1a', -- darker orange than the one below
+      light: '#f6b128',
+    },
+  },
+  sponsors: [
+    {
+      name: 'Collaborator',
+      height: 120,
+      items: [
+        [
+          {
+            name: 'Paradigm',
+            link: 'https://paradigm.xyz',
+            image:
+              'https://raw.githubusercontent.com/wevm/.github/main/content/sponsors/paradigm-light.svg',
+          },
+          {
+            name: 'Ithaca',
+            link: 'https://ithaca.xyz',
+            image:
+              'https://raw.githubusercontent.com/wevm/.github/main/content/sponsors/ithaca-light.svg',
+          },
+        ],
+      ],
+    }
+  ],
+  logoUrl: '/foundry-logo.png',
+  iconUrl: '/foundry-logo.png',
+  ogImageUrl: '/og-image.png',
+  socials: [
+    {
+      link: 'https://github.com/foundry-rs/foundry',
+      icon: 'github'
+    },
+    {
+      link: 'https://t.me/foundry_support',
+      icon: 'telegram',
+    }
+  ]
 })
