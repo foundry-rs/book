@@ -4,7 +4,7 @@ Tests are written in Solidity. If the test function reverts, the test fails, oth
 
 Let's go over the most common way of writing tests, using the [Forge Standard Library](https://github.com/foundry-rs/forge-std)'s `Test` contract, which is the preferred way of writing tests with Forge.
 
-In this section, we'll go over the basics using the functions from the Forge Std's `Test` contract, which is itself a superset of [DSTest](https://github.com/dapphub/ds-test). You will learn how to use more advanced stuff from the Forge Standard Library [soon](./forge-std.md).
+In this section, we'll go over the basics using the functions from the Forge Std's `Test` contract, which is itself a superset of [DSTest](https://github.com/dapphub/ds-test). You will learn how to use more advanced stuff from the Forge Standard Library [soon](#TODO).
 
 DSTest provides basic logging and assertion functionality. To get access to the functions, import `forge-std/Test.sol` and inherit from `Test` in your test contract:
 
@@ -32,7 +32,7 @@ Forge uses the following keywords in tests:
 {{#include ../../projects/writing_tests/test/Basic.t.sol:testNumberIs42}}
 ```
 
-A good practice is to use the pattern `test_Revert[If|When]_Condition` in combination with the [`expectRevert`](../cheatcodes/expect-revert.md) cheatcode (cheatcodes are explained in greater detail in the following [section](./cheatcodes.md)). Also, other testing practices can be found in the [Guides section](../guides/best-practices.md).
+A good practice is to use the pattern `test_Revert[If|When]_Condition` in combination with the [`expectRevert`](#TODO) cheatcode (cheatcodes are explained in greater detail in the following [section](#TODO)). Also, other testing practices can be found in the [Guides section](#TODO).
 
 > **Note**: To use `stdError` constants (like `arithmeticError` in the example below), make sure to import `StdError.sol`:
 >
@@ -46,7 +46,7 @@ In this way you know exactly what reverted and with which error:
 {{#include ../../projects/writing_tests/test/Basic2.t.sol:testCannotSubtract43}}
 ```
 
-<br>
+<br></br>
 
 Tests are deployed to `0xb4c79daB8f259C7Aee6E5b2Aa729821864227e84`. If you deploy a contract within your test, then
 `0xb4c...7e84` will be its deployer. If the contract deployed within a test gives special permissions to its deployer,
@@ -139,8 +139,8 @@ contract MyOtherContractTest is Test, HelperContract {
 }
 ```
 
-<br>
+<br></br>
 
 > 💡 **Tip**
 >
-> Use the [`getCode`](../cheatcodes/get-code.md) cheatcode to deploy contracts with incompatible Solidity versions.
+> Use the [`getCode`](#TODO) cheatcode to deploy contracts with incompatible Solidity versions.
