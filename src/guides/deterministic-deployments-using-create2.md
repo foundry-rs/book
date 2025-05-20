@@ -22,15 +22,17 @@ For the best user experience it is recommended to avoid having different address
 
 ## Configuring your `foundry.toml`
 
-In order to reliably deploy to deterministic addresses we will need to make sure our bytecode stays the same. To do so configure our `foundry.toml` as follows:
+In order to reliably deploy to deterministic addresses we will need to make sure our bytecode stays the same. To do so configure our `foundry.toml` as follows :
 
 ```toml
 [profile.default]
-solc = "0.8.28"
-evm_version = "cancun"
+solc = "<SOLC_VERSION>"
+evm_version = "<EVM_VERSION>"
 bytecode_hash = "none"
 cbor_metadata = false
 ```
+
+Where `SOLC_VERSION` is a pinned version e.g. `0.8.28` and `EVM_VERSION` is a pinned EVM version e.g. `cancun`.
 
 ### Solc version
 
@@ -111,7 +113,7 @@ The metadata file may look something like this:
     "compilationTarget": {
       "src/Counter.sol": "Counter"
     },
-    "evmVersion": "cancun",
+    "evmVersion": "prague",
     "libraries": {}
   },
   "sources": {
