@@ -4,7 +4,7 @@ Most of the time, simply testing your smart contracts outputs isn't enough. To m
 
 Cheatcodes allow you to change the block number, your identity, and more. They are invoked by calling specific functions on a specially designated address: `0x7109709ECfa91a80626fF3989D68f67F5b1DD12D`.
 
-You can access cheatcodes easily via the `vm` instance available in Forge Standard Library's `Test` contract. Forge Standard Library is explained in greater detail in the following [section](/forge/tests/forge-std).
+You can access cheatcodes easily via the `vm` instance available in Forge Standard Library's `Test` contract. Forge Standard Library is explained in greater detail in the following [section](./forge-std.md).
 
 Let's write a test for a smart contract that is only callable by its owner.
 
@@ -54,7 +54,7 @@ Events are inheritable members of contracts. When you emit an event, the argumen
 
 When we call `vm.expectEmit(true, true, false, true);`, we want to check the 1st and 2nd `indexed` topic for the next event.
 
-The expected `Transfer` event in `test_ExpectEmit()` means we are expecting that `from` is `address(this)`, and `to` is `address(1337)`. This is compared against the event emitted from `emitter.t()`.
+The expected `Transfer` event in `test_ExpectEmit()` means we are expecting that `from` is  `address(this)`, and `to` is `address(1337)`. This is compared against the event emitted from `emitter.t()`.
 
 In other words, we are checking that the first topic from `emitter.t()` is equal to `address(this)`. The 3rd argument in `expectEmit` is set to `false` because there is no need to check the third topic in the `Transfer` event, since there are only two. It does not matter even if we set to `true`.
 
@@ -64,8 +64,8 @@ For example, we want the data from the expected event in `test_ExpectEmit` - whi
 
 In other words, `test_ExpectEmit_DoNotCheckData` is a valid test case, even though the amounts differ, since we do not check the data.
 
-<br></br>
+<br>
 
 > 📚 **Reference**
 >
-> See the [Cheatcodes Reference](#TODO) for a complete overview of all the available cheatcodes.
+> See the [Cheatcodes Reference](../cheatcodes/) for a complete overview of all the available cheatcodes.

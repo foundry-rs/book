@@ -46,7 +46,7 @@ In this way you know exactly what reverted and with which error:
 {{#include ../../projects/writing_tests/test/Basic2.t.sol:testCannotSubtract43}}
 ```
 
-<br></br>
+<br>
 
 Tests are deployed to `0xb4c79daB8f259C7Aee6E5b2Aa729821864227e84`. If you deploy a contract within your test, then
 `0xb4c...7e84` will be its deployer. If the contract deployed within a test gives special permissions to its deployer,
@@ -139,7 +139,7 @@ contract MyOtherContractTest is Test, HelperContract {
 }
 ```
 
-<br></br>
+<br>
 
 > 💡 **Tip**
 >
