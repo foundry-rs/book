@@ -77,9 +77,7 @@ To understand what happens when a fork is selected, it is important to know how 
 Each fork is a standalone EVM, i.e. all forks use completely independent storage. The only exception is the state of the `msg.sender` and the test contract itself, which are persistent across fork swaps.
 In other words all changes that are made while fork `A` is active (`selectFork(A)`) are only recorded in fork `A`'s storage and are not available if another fork is selected. However, changes recorded in the test contract itself (variables) are still available because the test contract is a _persistent_ account.
 
-
 The `selectFork` cheatcode sets the _remote_ section with the fork's data source, however the _local_ memory remains persistent across fork swaps. This also means `selectFork` can be called at all times with any fork, to set the _remote_ data source. However, it is important to keep in mind the above rules for `read/write` access always apply, meaning _writes_ are persistent across fork swaps.
-
 
 #### Examples
 
@@ -223,18 +221,20 @@ contract SimpleStorageContract {
 }
 ```
 
-
 For more details and examples, see the [forking cheatcodes](../cheatcodes/forking.md) reference.
 
 ### EVM version
 
 Proper configuration is needed to execute forked tests with chains using different EVM versions:
+
 - if same EVM version applies for all forked chains used, then it can be globally configured in `foundry.toml` file
+
 ```toml
-evm_version = "cancun"
+evm_version = "prague"
 ```
+
 - if different EVM versions are used, specific EVM test version can be set using inline configuration
+
 ```solidity
 /// forge-config: default.evm_version = "shanghai"
 ```
-
