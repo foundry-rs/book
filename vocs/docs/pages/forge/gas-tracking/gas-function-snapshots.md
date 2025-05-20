@@ -4,7 +4,7 @@ Forge can generate gas snapshots for all your test functions. This can
 be useful to get a general feel for how much gas your contract will consume,
 or to compare gas usage before and after various optimizations.
 
-To generate the gas snapshot, run [`forge snapshot`](../reference/forge/forge-snapshot.md).
+To generate the gas snapshot, run [`forge snapshot`](#TODO).
 
 This will generate a file called `.gas-snapshot` by default with all your
 tests and their respective gas usage.
@@ -44,7 +44,7 @@ You can also use it in combination with the filters for `forge test`, such as `f
 
 ### Comparing gas usage
 
-If you would like to compare the current snapshot file with your 
+If you would like to compare the current snapshot file with your
 latest changes, you can use the `--diff` or `--check` options.
 
 `--diff` will compare against the snapshot and display changes from the snapshot.
@@ -82,7 +82,7 @@ testApprove() (gas: -8 (-0.000%))
 Overall gas change: -8 (-0.000%)
 ```
 
-`--check` will compare a snapshot with an existing snapshot file and display all the 
+`--check` will compare a snapshot with an existing snapshot file and display all the
 differences, if any. You can change the file to compare against by providing a different file name: `--check <FILE_NAME>`.
 
 For example:
@@ -102,5 +102,5 @@ Running 10 tests for src/test/ERC20.t.sol:ERC20Test
 [PASS] testTransfer() (gas: 60473)
 [PASS] testTransferFrom() (gas: 84152)
 Test result: ok. 10 passed; 0 failed; finished in 2.47ms
-Diff in "ERC20Test::testApprove()": consumed "(gas: 31162)" gas, expected "(gas: 31170)" gas 
+Diff in "ERC20Test::testApprove()": consumed "(gas: 31162)" gas, expected "(gas: 31170)" gas
 ```

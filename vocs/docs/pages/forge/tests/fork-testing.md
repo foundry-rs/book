@@ -3,7 +3,7 @@
 Forge supports testing in a forked environment with two different approaches:
 
 - [**Forking Mode**](#forking-mode) — use a single fork for all your tests via the `forge test --fork-url` flag
-- [**Forking Cheatcodes**](#forking-cheatcodes) — create, select, and manage multiple forks directly in Solidity test code via [forking cheatcodes](../cheatcodes/forking.md)
+- [**Forking Cheatcodes**](#forking-cheatcodes) — create, select, and manage multiple forks directly in Solidity test code via [forking cheatcodes](#TODO)
 
 Which approach to use? Forking mode affords running an entire test suite against a specific forked environment, while forking cheatcodes provide more flexibility and expressiveness to work with multiple forks in your tests. Your particular use case and testing strategy will help inform which approach to use.
 
@@ -17,14 +17,14 @@ forge test --fork-url <your_rpc_url>
 
 The following values are changed to reflect those of the chain at the moment of forking:
 
-- [`block_number`](../reference/config/testing.md#block_number)
-- [`chain_id`](../reference/config/testing.md#chain_id)
-- [`gas_limit`](../reference/config/testing.md#gas_limit)
-- [`gas_price`](../reference/config/testing.md#gas_price)
-- [`block_base_fee_per_gas`](../reference/config/testing.md#block_base_fee_per_gas)
-- [`block_coinbase`](../reference/config/testing.md#block_coinbase)
-- [`block_timestamp`](../reference/config/testing.md#block_timestamp)
-- [`block_difficulty`](../reference/config/testing.md#block_difficulty)
+- [`block_number`](#TODO)
+- [`chain_id`](#TODO)
+- [`gas_limit`](#TODO)
+- [`gas_price`](#TODO)
+- [`block_base_fee_per_gas`](#TODO)
+- [`block_coinbase`](#TODO)
+- [`block_timestamp`](#TODO)
+- [`block_difficulty`](#TODO)
 
 It is possible to specify a block from which to fork with `--fork-block-number`:
 
@@ -38,9 +38,9 @@ Forking is especially useful when you need to interact with existing contracts. 
 
 If both `--fork-url` and `--fork-block-number` are specified, then data for that block is cached for future test runs.
 
-The data is cached in `~/.foundry/cache/rpc/<chain name>/<block number>`. To clear the cache, simply remove the directory or run [`forge clean`](../reference/forge/forge-clean.md) (removes all build artifacts and cache directories).
+The data is cached in `~/.foundry/cache/rpc/<chain name>/<block number>`. To clear the cache, simply remove the directory or run [`forge clean`](#TODO) (removes all build artifacts and cache directories).
 
-It is also possible to ignore the cache entirely by passing `--no-storage-caching`, or with `foundry.toml` by configuring [`no_storage_caching`](../reference/config/testing.md#no_storage_caching) and [`rpc_storage_caching`](../reference/config/testing.md#rpc_storage_caching).
+It is also possible to ignore the cache entirely by passing `--no-storage-caching`, or with `foundry.toml` by configuring [`no_storage_caching`](#TODO) and [`rpc_storage_caching`](#TODO).
 
 #### Improved traces
 
@@ -62,24 +62,22 @@ Forking cheatcodes allow you to enter forking mode programmatically in your Soli
 
 Important to keep in mind that _all_ test functions are isolated, meaning each test function is executed with a _copy_ of the state _after_ `setUp` and is executed in its own stand-alone EVM.
 
-Therefore forks created during `setUp` are available in tests. The code example below uses [`createFork`](../cheatcodes/create-fork.md) to create two forks, but does _not_ select one initially. Each fork is identified with a unique identifier (`uint256 forkId`), which is assigned when it is first created.
+Therefore forks created during `setUp` are available in tests. The code example below uses [`createFork`](#TODO) to create two forks, but does _not_ select one initially. Each fork is identified with a unique identifier (`uint256 forkId`), which is assigned when it is first created.
 
-Enabling a specific fork is done via passing that `forkId` to [`selectFork`](../cheatcodes/select-fork.md).
+Enabling a specific fork is done via passing that `forkId` to [`selectFork`](#TODO).
 
-[`createSelectFork`](../cheatcodes/create-select-fork.md) is a one-liner for `createFork` plus `selectFork`.
+[`createSelectFork`](#TODO) is a one-liner for `createFork` plus `selectFork`.
 
-There can only be one fork active at a time, and the identifier for the currently active fork can be retrieved via [`activeFork`](../cheatcodes/active-fork.md).
+There can only be one fork active at a time, and the identifier for the currently active fork can be retrieved via [`activeFork`](#TODO).
 
-Similar to [`roll`](../cheatcodes/roll.md), you can set `block.number` of a fork with [`rollFork`](../cheatcodes/roll-fork.md).
+Similar to [`roll`](#TODO), you can set `block.number` of a fork with [`rollFork`](#TODO).
 
 To understand what happens when a fork is selected, it is important to know how the forking mode works in general:
 
 Each fork is a standalone EVM, i.e. all forks use completely independent storage. The only exception is the state of the `msg.sender` and the test contract itself, which are persistent across fork swaps.
 In other words all changes that are made while fork `A` is active (`selectFork(A)`) are only recorded in fork `A`'s storage and are not available if another fork is selected. However, changes recorded in the test contract itself (variables) are still available because the test contract is a _persistent_ account.
 
-
 The `selectFork` cheatcode sets the _remote_ section with the fork's data source, however the _local_ memory remains persistent across fork swaps. This also means `selectFork` can be called at all times with any fork, to set the _remote_ data source. However, it is important to keep in mind the above rules for `read/write` access always apply, meaning _writes_ are persistent across fork swaps.
-
 
 #### Examples
 
@@ -148,7 +146,7 @@ contract ForkTest is Test {
 
 As mentioned each fork is essentially an independent EVM with separated storage.
 
-Only the accounts of `msg.sender` and the test contract (`ForkTest`) are persistent when forks are selected. But any account can be turned into a persistent account: [`makePersistent`](../cheatcodes/make-persistent.md).
+Only the accounts of `msg.sender` and the test contract (`ForkTest`) are persistent when forks are selected. But any account can be turned into a persistent account: [`makePersistent`](#TODO).
 
 An account that is _persistent_ is unique, i.e. it exists on all forks
 
@@ -223,18 +221,20 @@ contract SimpleStorageContract {
 }
 ```
 
-
-For more details and examples, see the [forking cheatcodes](../cheatcodes/forking.md) reference.
+For more details and examples, see the [forking cheatcodes](#TODO) reference.
 
 ### EVM version
 
 Proper configuration is needed to execute forked tests with chains using different EVM versions:
+
 - if same EVM version applies for all forked chains used, then it can be globally configured in `foundry.toml` file
+
 ```toml
 evm_version = "cancun"
 ```
+
 - if different EVM versions are used, specific EVM test version can be set using inline configuration
+
 ```solidity
 /// forge-config: default.evm_version = "shanghai"
 ```
-
