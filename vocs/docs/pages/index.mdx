@@ -83,6 +83,71 @@ import { HomePage, Sponsors } from "vocs/components";
 </div>
 <article className="vocs_Content max-w-5xl mx-auto">
 
+# Quick Actions
+
+## Forge
+
+:::code-group
+
+```bash [Initialize forge project]
+forge init
+```
+
+```bash [Clone an onchain contract]
+forge clone 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
+```
+
+```bash [forge --help]
+// todo
+```
+
+:::
+
+## Anvil
+
+:::code-group
+
+```bash [Start a local node]
+anvil
+```
+
+```bash [Forking mainnet]
+anvil --fork-url https://reth-ethereum.ithaca.xyz/rpc
+```
+
+```bash [anvil --help]
+anvil --help
+```
+
+:::
+
+## Cast
+
+:::code-group
+
+```bash [Call a contract function]
+cast call 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2 \
+"balanceOf(address)" 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045 \
+--rpc-url https://reth-ethereum.ithaca.xyz/rpc
+```
+
+```bash [Send a transaction]
+# Running `anvil` @ http://localhost:8545
+# Set the private key in the env
+export PRIVATE_KEY="0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80"
+# Send the transaction
+cast send 0x70997970C51812dc3A010C7d01b50e0d17dc79C8 --value 10000000 --private-key $PRIVATE_KEY && \
+# Fetch ETH balances
+echo "\nBalance Of 0x7099:" && cast balance 0x70997970C51812dc3A010C7d01b50e0d17dc79C8 && \
+echo "\nBalance Of 0xf39F:" && cast balance 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+```
+
+```bash [Call any JSON-RPC method]
+cast rpc
+```
+
+:::
+
 # Community
 
 Join the Community
@@ -93,5 +158,5 @@ Join the Community
 # Supporters
 
 <Sponsors />
- 
+
 </article>
