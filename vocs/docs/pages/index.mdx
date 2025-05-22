@@ -98,7 +98,7 @@ forge clone 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
 ```
 
 ```bash [forge --help]
-// todo
+forge --help  // TODO: Sync Output via Script
 ```
 
 :::
@@ -116,7 +116,7 @@ anvil --fork-url https://reth-ethereum.ithaca.xyz/rpc
 ```
 
 ```bash [anvil --help]
-anvil --help
+anvil --help  // TODO: Sync Output via Script
 ```
 
 :::
@@ -143,8 +143,12 @@ echo "\nBalance Of 0xf39F:" && cast balance 0xf39Fd6e51aad88F6F4ce6aB8827279cffF
 ```
 
 ```bash [Call any JSON-RPC method]
-cast rpc
+# cast 2h converts integer to hex
+cast rpc eth_getHeaderByNumber $(cast 2h 22539851) --rpc-url https://reth-ethereum.ithaca.xyz/rpc
 ```
+
+```bash [cast --help]
+cast --help // TODO: Sync Output via Script
 
 :::
 
@@ -160,3 +164,4 @@ Join the Community
 <Sponsors />
 
 </article>
+```
