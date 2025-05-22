@@ -44,5 +44,28 @@ export default defineConfig({
       link: 'https://t.me/foundry_support',
       icon: 'telegram',
     }
+  ],
+  topNav: [
+    {
+      link: '/introduction/getting-started',
+      text: 'Docs',
+    },
+    {
+      link: '#TODO',
+      text: 'Guides',
+    },
+    {
+      text: 'v1.2.0-rc',
+      items: [
+        {
+          text: 'Release notes',
+          link: 'https://github.com/foundry-rs/foundry/releases/tag/v1.2.1-rc',
+        },
+        {
+          text: 'Contributing',
+          link: 'https://github.com/foundry-rs/foundry/blob/master/CONTRIBUTING.md',
+        }
+      ]
+    }
   ]
 })
