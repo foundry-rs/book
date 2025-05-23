@@ -1,0 +1,14 @@
+// [!region all]
+// [!region command]
+$ tree . -d -L 1
+// [!endregion command]
+// [!region output]
+.
+├── lib
+├── script
+├── src
+└── test
+
+5 directories
+// [!endregion output]
+// [!endregion all]

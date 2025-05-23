@@ -162,6 +162,7 @@
       - [`cast constructor-args`](./reference/cli/cast/constructor-args.md)
       - [`cast create2`](./reference/cli/cast/create2.md)
       - [`cast creation-code`](./reference/cli/cast/creation-code.md)
+      - [`cast da-estimate`](./reference/cli/cast/da-estimate.md)
       - [`cast decode-abi`](./reference/cli/cast/decode-abi.md)
       - [`cast decode-calldata`](./reference/cli/cast/decode-calldata.md)
       - [`cast decode-error`](./reference/cli/cast/decode-error.md)

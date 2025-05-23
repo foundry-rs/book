@@ -1,4 +1,4 @@
-name: test
+name: build
 on:
   push:
     branches: [master]
@@ -8,16 +8,14 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    name: mdbook test
+    name: vocs build
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Install mdbook
-        run: |
-          mkdir mdbook
-          curl -sSL https://github.com/rust-lang/mdBook/releases/download/v0.4.36/mdbook-v0.4.36-x86_64-unknown-linux-gnu.tar.gz | tar -xz --directory=./mdbook
-          echo `pwd`/mdbook >> $GITHUB_PATH
+      - name: Install bun
+        uses: oven-sh/setup-bun@v2
 
-      - name: Run tests
-        run: mdbook test
+      - name: Build Vocs
+        run: cd vocs && bun install && bun run build

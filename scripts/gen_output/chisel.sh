@@ -6,6 +6,8 @@ gen_chisel() {
 
   echo "Generating output (chisel)..."
 
+  mkdir -p "$OUTPUT_DIR/chisel"
+
   print_anchored \
     "echo '!help' | chisel" \
     "$(echo '!help' | chisel | escape_colors)" \

@@ -78,6 +78,7 @@
   - [`cast constructor-args`](./cast/constructor-args.md)
   - [`cast create2`](./cast/create2.md)
   - [`cast creation-code`](./cast/creation-code.md)
+  - [`cast da-estimate`](./cast/da-estimate.md)
   - [`cast decode-abi`](./cast/decode-abi.md)
   - [`cast decode-calldata`](./cast/decode-calldata.md)
   - [`cast decode-error`](./cast/decode-error.md)

@@ -3,6 +3,9 @@
 /.vscode
 
 /cache/
-/projects/**/cache/
+/vocs/snippets/projects/**/cache/
 /out/
-/projects/**/out/
+/vocs/snippets/projects/**/out/
+
+/vocs/node_modules
+/vocs/docs/dist

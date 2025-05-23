@@ -113,7 +113,7 @@ Options:
           See also,
           <https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second>
           
-          [aliases: no-rpc-rate-limit]
+          [aliases: --no-rpc-rate-limit]
 
       --odyssey
           Enables Odyssey features
@@ -121,7 +121,7 @@ Options:
       --with-local-artifacts
           Use current project artifacts for trace decoding
           
-          [aliases: la]
+          [aliases: --la]
 
       --disable-block-gas-limit
           Disable block gas limit check
@@ -133,7 +133,7 @@ Options:
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: jobs]
+          [aliases: --jobs]
 
 Display options:
       --color <COLOR>

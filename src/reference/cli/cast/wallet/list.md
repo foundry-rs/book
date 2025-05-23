@@ -20,12 +20,6 @@ Options:
   -t, --trezor
           List accounts from a Trezor hardware wallet
 
-      --aws
-          List accounts from AWS KMS
-
-      --gcp
-          List accounts from Google Cloud KMS
-
       --all
           List all configured accounts
 
@@ -41,7 +35,7 @@ Options:
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: jobs]
+          [aliases: --jobs]
 
 Display options:
       --color <COLOR>

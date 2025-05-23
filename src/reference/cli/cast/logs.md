@@ -44,7 +44,7 @@ Options:
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: jobs]
+          [aliases: --jobs]
 
 Ethereum options:
   -r, --rpc-url <URL>
@@ -165,13 +165,6 @@ Wallet options - hardware wallet:
 
   -t, --trezor
           Use a Trezor hardware wallet
-
-Wallet options - remote:
-      --aws
-          Use AWS Key Management Service
-
-      --gcp
-          Use Google Cloud Key Management Service
 
 Display options:
       --color <COLOR>
