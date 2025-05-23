@@ -20,7 +20,7 @@ You can also use it in combination with other subcommands, such as `forge test -
 
 Example output:
 
-```bash
+```
 ╭───────────────────────┬─────────────────┬────────┬────────┬────────┬─────────╮
 │ MockERC1155 contract  ┆                 ┆        ┆        ┆        ┆         │
 ╞═══════════════════════╪═════════════════╪════════╪════════╪════════╪═════════╡

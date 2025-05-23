@@ -9,7 +9,7 @@ To generate the gas snapshot, run [`forge snapshot`](#TODO).
 This will generate a file called `.gas-snapshot` by default with all your
 tests and their respective gas usage.
 
-```bash
+```
 $ forge snapshot
 $ cat .gas-snapshot
 
