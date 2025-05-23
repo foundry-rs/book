@@ -135,7 +135,7 @@ function testMerkleGenerateProofStandard() public view {
 
 `src/test/standard_data/StandardInput.txt` is a text file that contains an encoded `bytes32[100]` array. It's generated outside of the test and can be used in any language's Web3 SDK. It looks something like:
 
-```ignore
+```bash
 0xf910ccaa307836354233316666386231414464306335333243453944383735313..423532
 ```
 

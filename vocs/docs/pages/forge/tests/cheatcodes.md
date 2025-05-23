@@ -39,7 +39,7 @@ Let's make sure that someone who is definitely not the owner can't increment the
 
 If we run `forge test` one last time, we see that the test still passes, but this time we are sure that it will always fail if we revert for any other reason.
 
-```ignore
+```bash
 $ forge test
 // [!include ~/output/cheatcodes/forge-test-cheatcodes-expectrevert:output}]
 ```

@@ -9,7 +9,7 @@ To generate the gas snapshot, run [`forge snapshot`](#TODO).
 This will generate a file called `.gas-snapshot` by default with all your
 tests and their respective gas usage.
 
-```ignore
+```bash
 $ forge snapshot
 $ cat .gas-snapshot
 
@@ -54,7 +54,7 @@ being `.gas-snapshot`.
 
 For example:
 
-```ignore
+```
 $ forge snapshot --diff .gas-snapshot2
 
 Running 10 tests for src/test/ERC20.t.sol:ERC20Test
@@ -87,7 +87,7 @@ differences, if any. You can change the file to compare against by providing a d
 
 For example:
 
-```ignore
+```
 $ forge snapshot --check .gas-snapshot2
 
 Running 10 tests for src/test/ERC20.t.sol:ERC20Test
