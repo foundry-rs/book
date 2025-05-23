@@ -16,9 +16,9 @@ Arguments:
 Options:
       --sig <SIG>
           The error signature. If none provided then tries to decode from local
-          cache or `https://api.openchain.xyz`
+          cache or <https://api.openchain.xyz>
           
-          [aliases: error-sig]
+          [aliases: --error-sig]
 
   -h, --help
           Print help (see a summary with '-h')
@@ -27,7 +27,7 @@ Options:
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: jobs]
+          [aliases: --jobs]
 
 Display options:
       --color <COLOR>

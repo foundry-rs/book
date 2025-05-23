@@ -1,6 +1,6 @@
 # cast 4byte-event
 
-Get the event signature for a given topic 0 from https://openchain.xyz
+Get the event signature for a given topic 0 from <https://openchain.xyz>
 
 ```bash
 $ cast 4byte-event --help
@@ -21,7 +21,7 @@ Options:
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: jobs]
+          [aliases: --jobs]
 
 Display options:
       --color <COLOR>

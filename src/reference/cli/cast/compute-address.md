@@ -18,7 +18,7 @@ Options:
           The nonce of the deployer address
 
   -r, --rpc-url <URL>
-          The RPC endpoint
+          The RPC endpoint, default value is http://localhost:8545
           
           [env: ETH_RPC_URL=]
 
@@ -67,7 +67,7 @@ Options:
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: jobs]
+          [aliases: --jobs]
 
 Display options:
       --color <COLOR>

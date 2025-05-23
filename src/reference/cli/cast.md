@@ -1,6 +1,6 @@
 # cast
 
-Perform Ethereum RPC calls from the comfort of your command line
+A Swiss Army knife for interacting with Ethereum applications from the command
 
 ```bash
 $ cast --help
@@ -11,12 +11,12 @@ Usage: cast [OPTIONS] <COMMAND>
 
 Commands:
   4byte                  Get the function signatures for the given selector from
-                         https://openchain.xyz [aliases: 4, 4b]
-  4byte-decode           Decode ABI-encoded calldata using https://openchain.xyz
-                         [aliases: 4d, 4bd]
+                         <https://openchain.xyz> [aliases: 4, 4b]
+  4byte-calldata         Decode ABI-encoded calldata using
+                         <https://openchain.xyz> [aliases: 4c, 4bc]
   4byte-event            Get the event signature for a given topic 0 from
-                         https://openchain.xyz [aliases: 4e, 4be, topic0-event,
-                         t0e]
+                         <https://openchain.xyz> [aliases: 4e, 4be,
+                         topic0-event, t0e]
   abi-encode             ABI encode the given function argument, excluding the
                          selector [aliases: ae]
   access-list            Create an access list for a transaction [aliases: ac,
@@ -51,11 +51,12 @@ Commands:
                          [aliases: c2]
   creation-code          Download a contract creation code from Etherscan and
                          RPC [aliases: cc]
+  da-estimate            Estimates the data availability size of a given opstack
+                         block
   decode-abi             Decode ABI-encoded input or output data [aliases:
                          abi-decode, --abi-decode, ad]
   decode-calldata        Decode ABI-encoded input data [aliases:
                          calldata-decode, --calldata-decode, cdd]
-  decode-eof             Decodes EOF container bytes
   decode-error           Decode custom error data [aliases: error-decode,
                          --error-decode, erd]
   decode-event           Decode event data [aliases: event-decode,
@@ -67,8 +68,6 @@ Commands:
   disassemble            Disassembles a hex-encoded bytecode into a
                          human-readable representation [aliases: da]
   estimate               Estimate the gas cost of a transaction [aliases: e]
-  etherscan-source       Get the source code of a contract from Etherscan
-                         [aliases: et, src]
   find-block             Get the block number closest to the provided timestamp
                          [aliases: f]
   format-bytes32-string  Formats a string into bytes32 encoding [aliases:
@@ -137,6 +136,8 @@ Commands:
   sig                    Get the selector for a function [aliases: si]
   sig-event              Generate event signatures from event string [aliases:
                          se]
+  source                 Get the source code of a contract from a block explorer
+                         [aliases: et, src]
   storage                Get the raw value of a contract's storage slot
                          [aliases: st]
   storage-root           Get the storage root for an account [aliases: sr]
@@ -170,7 +171,8 @@ Commands:
   to-wei                 Convert an ETH amount to wei [aliases: --to-wei, tw,
                          2w]
   tx                     Get information about a transaction [aliases: t]
-  upload-signature       Upload the given signatures to https://openchain.xyz
+  tx-pool                Inspect the TxPool of a node [aliases: tp]
+  upload-signature       Upload the given signatures to <https://openchain.xyz>
                          [aliases: ups]
   wallet                 Wallet management utilities [aliases: w]
 
@@ -182,7 +184,7 @@ Options:
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: jobs]
+          [aliases: --jobs]
 
   -V, --version
           Print version

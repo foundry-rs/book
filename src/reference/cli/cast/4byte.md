@@ -1,6 +1,6 @@
 # cast 4byte
 
-Get the function signatures for the given selector from https://openchain.xyz
+Get the function signatures for the given selector from <https://openchain.xyz>
 
 ```bash
 $ cast 4byte --help
@@ -21,7 +21,7 @@ Options:
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: jobs]
+          [aliases: --jobs]
 
 Display options:
       --color <COLOR>

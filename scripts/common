@@ -6,7 +6,8 @@ set -eo pipefail
 # includeable in the book.
 
 ETH_RPC_URL="${ETH_RPC_URL:=https://eth-mainnet.alchemyapi.io/v2/Lc7oIGYeL_QvInzI0Wiu_pOZZDEKBrdf}"
-OUTPUT_DIR="$(realpath vocs/docs/snippets/output)"
+SNIPPETS_DIR="$(realpath vocs/docs/snippets)"
+OUTPUT_DIR="$(realpath $SNIPPETS_DIR/output)"
 ROOT="$(dirname "$(dirname "$(realpath "$0")")")"
 # shellcheck disable=SC2034
 SCRIPTS="$ROOT/scripts"
@@ -59,8 +60,8 @@ EOF
 # The project must live in ./projects
 in_project() {
   echo "... $1"
-  mkdir -p "$OUTPUT_DIR/$1"
-  cd "$ROOT/projects/$1"
+  mkdir -p "$OUTPUT_DIR/projects/$1"
+  cd "$SNIPPETS_DIR/projects/$1"
   forge clean
 }
 

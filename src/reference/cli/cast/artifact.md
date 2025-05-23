@@ -28,13 +28,18 @@ Options:
           
           [env: ETHERSCAN_API_KEY=]
 
+  -a, --etherscan-api-version <API_VERSION>
+          The Etherscan API version
+          
+          [env: ETHERSCAN_API_VERSION=]
+
   -c, --chain <CHAIN>
           The chain name or EIP-155 chain ID
           
           [env: CHAIN=]
 
   -r, --rpc-url <URL>
-          The RPC endpoint
+          The RPC endpoint, default value is http://localhost:8545
           
           [env: ETH_RPC_URL=]
 
@@ -83,7 +88,7 @@ Options:
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: jobs]
+          [aliases: --jobs]
 
 Display options:
       --color <COLOR>

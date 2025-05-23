@@ -18,13 +18,17 @@ Arguments:
           layout
 
 Options:
+      --proxy <PROXY>
+          The known proxy address. If provided, the storage layout is retrieved
+          from this address
+
   -b, --block <BLOCK>
           The block height to query at.
           
           Can also be the tags earliest, finalized, safe, latest, or pending.
 
   -r, --rpc-url <URL>
-          The RPC endpoint
+          The RPC endpoint, default value is http://localhost:8545
           
           [env: ETH_RPC_URL=]
 
@@ -71,6 +75,11 @@ Options:
           
           [env: ETHERSCAN_API_KEY=]
 
+  -a, --etherscan-api-version <API_VERSION>
+          The Etherscan API version
+          
+          [env: ETHERSCAN_API_VERSION=]
+
   -c, --chain <CHAIN>
           The chain name or EIP-155 chain ID
           
@@ -83,7 +92,7 @@ Options:
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: jobs]
+          [aliases: --jobs]
 
 Cache options:
       --force
@@ -93,12 +102,8 @@ Build options:
       --no-cache
           Disable the cache
 
-      --eof
-          Use EOF-enabled solc binary. Enables via-ir and sets EVM version to
-          Prague. Requires Docker to be installed.
-          
-          Note that this is a temporary solution until the EOF support is merged
-          into the main solc release.
+      --dynamic-test-linking
+          Enable dynamic test linking
 
       --skip <SKIP>...
           Skip building files whose names contain the given filter.
@@ -134,6 +139,9 @@ Compiler options:
 
       --via-ir
           Use the Yul intermediate representation compilation pipeline
+
+      --use-literal-content
+          Changes compilation to only use literal content and not URLs
 
       --no-metadata
           Do not append any metadata to the bytecode.
@@ -217,7 +225,7 @@ Project options:
           This is the same as using: `--contracts contracts --lib-paths
           node_modules`.
           
-          [aliases: hh]
+          [aliases: --hh]
 
       --config-path <FILE>
           Path to the config file

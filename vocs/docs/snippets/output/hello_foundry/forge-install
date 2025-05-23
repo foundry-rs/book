@@ -3,7 +3,7 @@
 $ forge install vectorized/solady
 // [!endregion command]
 // [!region output]
-Installing solady in /private/var/folders/x4/z46ytl8n5msgkg6dst5hwwhh0000gn/T/tmp.dopeH1U3lb/hello_foundry/lib/solady (url: Some("https://github.com/vectorized/solady"), tag: None)
-    Installed solady v0.1.18
+Installing solady in /private/var/folders/x4/z46ytl8n5msgkg6dst5hwwhh0000gn/T/tmp.AkOjwj9xvM/hello_foundry/lib/solady (url: Some("https://github.com/vectorized/solady"), tag: None)
+    Installed solady v0.1.19
 // [!endregion output]
 // [!endregion all]
