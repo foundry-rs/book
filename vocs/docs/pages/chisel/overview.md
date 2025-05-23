@@ -6,7 +6,7 @@ The `chisel` binary can be used both within and outside of a Foundry project.
 If the binary is executed in a Foundry project root, Chisel will inherit the project's configuration options.
 
 Chisel is part of the Foundry suite and is installed alongside `forge`, `cast`, and `anvil`. If you haven't installed Foundry
-yet, see [Foundry installation](../getting-started/installation.md).
+yet, see [Foundry installation](/introduction/installation.md).
 
 ### Getting started
 
@@ -49,8 +49,8 @@ contract REPL {
 
 To see available commands, type `!help` within the REPL.
 
-<br>
+<br></br>
 
 > 📚 **Reference**
 >
-> See the [`chisel` Reference](../reference/chisel/) for in depth information on Chisel and its capabilities.
+> See the [`chisel` Reference](#TODO) for in depth information on Chisel and its capabilities.

@@ -26,16 +26,22 @@ export const sidebar: Sidebar = [
         items: forgeOverview,
     },
     {
-        text: 'Cast Overview',
-        link: '/cast/README'
+        text: 'Cast',
+        items: [
+            { text: 'Overview', link: '/cast/overview' },
+        ]
     },
     {
-        text: 'Anvil Overview',
-        link: '/anvil/README'
+        text: 'Anvil',
+        items: [
+            { text: 'Overview', link: '/anvil/overview' },
+        ]
     },
     {
-        text: 'Chisel Overview',
-        link: '/chisel/README'
+        text: 'Chisel',
+        items: [
+            { text: 'Overview', link: '/chisel/overview' },
+        ]
     },
     {
         text: 'Configuration',
