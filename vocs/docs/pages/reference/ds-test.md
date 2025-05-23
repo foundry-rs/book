@@ -39,7 +39,7 @@ event log_named_string       (string key, string val);
 
 ### Logging events
 
-This section documents all events for logging and provides usage examples. 
+This section documents all events for logging and provides usage examples.
 
 #### `log`
 
@@ -54,7 +54,7 @@ emit log("here");
 // here
 ```
 
-<br>
+<br></br>
 
 ---
 
@@ -71,7 +71,7 @@ emit logs(bytes("abcd"));
 // 0x6162636400000000000000000000000000000000000000000000000000000000
 ```
 
-<br>
+<br></br>
 
 ---
 
@@ -91,11 +91,11 @@ emit log_uint(amount);
 // 1000000000000000000
 ```
 
-<br>
+<br></br>
 
 ---
 
-#### log\_named\_\<type\>
+#### log_named\_\<type\>
 
 ```solidity
 event log_named_<type>(string key, <type> val);
@@ -111,11 +111,11 @@ emit log_named_uint("Amount", amount);
 // amount: 1000000000000000000
 ```
 
-<br>
+<br></br>
 
 ---
 
-#### log\_named\_decimal\_\<type\>
+#### log_named_decimal\_\<type\>
 
 ```solidity
 event log_named_decimal_<type>(string key, <type> val, uint decimals);
@@ -211,7 +211,7 @@ function assertApproxEqRel(uint256 a, uint256 b, uint256 maxPercentDelta, string
 
 ### Assertion functions
 
-This section documents all functions for asserting and provides usage examples. 
+This section documents all functions for asserting and provides usage examples.
 
 #### `assertTrue`
 
@@ -228,7 +228,7 @@ bool success = contract.fun();
 assertTrue(success);
 ```
 
-<br>
+<br></br>
 
 ---
 
@@ -250,7 +250,7 @@ uint256 b = 1e18 wei;
 assertEq(a, b);
 ```
 
-<br>
+<br></br>
 
 ---
 
@@ -272,7 +272,7 @@ uint256 b = 1e18 wei;
 assertEqDecimal(a, b, 18);
 ```
 
-<br>
+<br></br>
 
 ---
 
@@ -290,7 +290,7 @@ Asserts `a` is equal to `b`.
 assertEq(bytes32("abcd"), 0x6162636400000000000000000000000000000000000000000000000000000000);
 ```
 
-<br>
+<br></br>
 
 ---
 
@@ -310,7 +310,7 @@ string memory name2 = "Bob";
 assertEq0(bytes(name1), bytes(name2)); // [FAIL]
 ```
 
-<br>
+<br></br>
 
 ---
 
@@ -322,7 +322,7 @@ function assertGt(<type> a, <type> b) internal;
 
 Where `<type>` can be `int`, `uint`
 
-Asserts  `a` is greater than `b`.
+Asserts `a` is greater than `b`.
 
 ##### Example
 
@@ -332,7 +332,7 @@ uint256 b = 1e18 wei;
 assertGt(a, b);
 ```
 
-<br>
+<br></br>
 
 ---
 
@@ -344,7 +344,7 @@ function assertGtDecimal(<type> a, <type> b, uint decimals) internal;
 
 Where `<type>` can be `int`, `uint`
 
-Asserts  `a` is greater than `b`.
+Asserts `a` is greater than `b`.
 
 ##### Example
 
@@ -354,7 +354,7 @@ uint256 b = 1e18 wei;
 assertGtDecimal(a, b, 18);
 ```
 
-<br>
+<br></br>
 
 ---
 
@@ -366,7 +366,7 @@ function assertGe(<type> a, <type> b) internal;
 
 Where `<type>` can be `int`, `uint`
 
-Asserts  `a` is greater than or equal to `b`.
+Asserts `a` is greater than or equal to `b`.
 
 ##### Example
 
@@ -376,7 +376,7 @@ uint256 b = 1e18 wei;
 assertGe(a, b);
 ```
 
-<br>
+<br></br>
 
 ---
 
@@ -388,7 +388,7 @@ function assertGeDecimal(<type> a, <type> b, uint decimals) internal;
 
 Where `<type>` can be `int`, `uint`
 
-Asserts  `a` is greater than or equal to `b`.
+Asserts `a` is greater than or equal to `b`.
 
 ##### Example
 
@@ -398,7 +398,7 @@ uint256 b = 1e18 wei;
 assertGeDecimal(a, b, 18);
 ```
 
-<br>
+<br></br>
 
 ---
 
@@ -410,7 +410,7 @@ function assertLt(<type> a, <type> b) internal;
 
 Where `<type>` can be `int`, `uint`
 
-Asserts  `a` is lesser than `b`.
+Asserts `a` is lesser than `b`.
 
 ##### Example
 
@@ -420,7 +420,7 @@ uint256 b = 2e18 wei;
 assertLt(a, b);
 ```
 
-<br>
+<br></br>
 
 ---
 
@@ -432,7 +432,7 @@ function assertLtDecimal(<type> a, <type> b, uint decimals) internal;
 
 Where `<type>` can be `int`, `uint`
 
-Asserts  `a` is lesser than `b`.
+Asserts `a` is lesser than `b`.
 
 ##### Example
 
@@ -442,7 +442,7 @@ uint256 b = 2e18 wei;
 assertLtDecimal(a, b, 18);
 ```
 
-<br>
+<br></br>
 
 ---
 
@@ -454,7 +454,7 @@ function assertLe(<type> a, <type> b) internal;
 
 Where `<type>` can be `int`, `uint`
 
-Asserts  `a` is lesser than or equal to `b`.
+Asserts `a` is lesser than or equal to `b`.
 
 ##### Example
 
@@ -464,7 +464,7 @@ uint256 b = 1e18 wei;
 assertLe(a, b);
 ```
 
-<br>
+<br></br>
 
 ---
 
@@ -476,7 +476,7 @@ function assertLeDecimal(<type> a, <type> b, uint decimals) internal;
 
 Where `<type>` can be `int`, `uint`
 
-Asserts  `a` is lesser than or equal to `b`.
+Asserts `a` is lesser than or equal to `b`.
 
 ##### Example
 
@@ -486,7 +486,7 @@ uint256 b = 1e18 wei;
 assertLeDecimal(a, b, 18);
 ```
 
-<br>
+<br></br>
 
 ---
 
@@ -511,7 +511,7 @@ function testRevert () external {
 }
 ```
 
-<br>
+<br></br>
 
 ---
 
@@ -534,7 +534,8 @@ function testRevert () external {
     assertApproxEqRel(a, b, 0.4e18);
 }
 ```
-<br>
+
+<br></br>
 
 > ℹ️ **Information**
 >
