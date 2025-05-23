@@ -128,10 +128,12 @@ import { HomePage, Sponsors } from "vocs/components";
 :::code-group
 
 ```bash [Initialize forge project]
-forge init
+# Initiliazes a project called `Counter`
+forge init Counter
 ```
 
 ```bash [Clone an onchain contract]
+# Clones an onchain contract and sets up a forge project
 forge clone 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
 ```
 
@@ -146,10 +148,12 @@ forge --help  // TODO: Sync Output via Script
 :::code-group
 
 ```bash [Start a local node]
+# Start a fresh anvil node with 10 pre-funded accounts
 anvil
 ```
 
 ```bash [Forking mainnet]
+# Fork latest mainnet state
 anvil --fork-url https://reth-ethereum.ithaca.xyz/rpc
 ```
 
@@ -164,6 +168,7 @@ anvil --help  // TODO: Sync Output via Script
 :::code-group
 
 ```bash [Call a contract function]
+# Perform an `eth_call` on a contract to read balances
 cast call 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2 \
 "balanceOf(address)" 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045 \
 --rpc-url https://reth-ethereum.ithaca.xyz/rpc
@@ -180,13 +185,15 @@ echo "\nBalance Of 0x7099:" && cast balance 0x70997970C51812dc3A010C7d01b50e0d17
 echo "\nBalance Of 0xf39F:" && cast balance 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
 ```
 
-```bash [Call any JSON-RPC method]
+```bash [Call JSON-RPC methods]
+# Calls the `eth_getHeaderByNumber` RPC method with the number param in hexadecimal
 # cast 2h converts integer to hex
 cast rpc eth_getHeaderByNumber $(cast 2h 22539851) --rpc-url https://reth-ethereum.ithaca.xyz/rpc
 ```
 
 ```bash [cast --help]
 cast --help // TODO: Sync Output via Script
+```
 
 :::
 
