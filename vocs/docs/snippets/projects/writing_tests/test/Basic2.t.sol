@@ -1,25 +1,25 @@
 // SPDX-License-Identifier: UNLICENSED
-// ANCHOR: all
+// [!region all
 pragma solidity 0.8.10;
 
-// ANCHOR: import
+// [!region import]
 import {Test, stdError} from "forge-std/Test.sol";
-// ANCHOR_END: import
+// [!endregion import]
 
 contract ContractBTest is Test {
     uint256 testNumber;
 
-    // ANCHOR: setUp
+    // [!region setUp]
     function setUp() public {
         testNumber = 42;
     }
-    // ANCHOR_END: setUp
+    // [!endregion setUp]
 
-    // ANCHOR: testCannotSubtract43
+    // [!region testCannotSubtract43]
     function test_CannotSubtract43() public {
         vm.expectRevert(stdError.arithmeticError);
         testNumber -= 43;
     }
-    // ANCHOR_END: testCannotSubtract43
+    // [!endregion testCannotSubtract43]
 }
-// ANCHOR_END: all
+// [!endregion all]

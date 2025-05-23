@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-// ANCHOR: all
+// [!region all]
 pragma solidity 0.8.10;
 
 import {Test} from "forge-std/Test.sol";
@@ -39,3 +39,4 @@ contract SomeBlastTest is Test {
         // Now we can interact with Blast contracts without reverts
     }
 }
+// [!endregion all]

@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: UNLICENSED
-// ANCHOR: all
-// ANCHOR: prelude
+// [!region all]
+// [!region prelude]
 pragma solidity 0.8.10;
 
 import {Test} from "forge-std/Test.sol";
 
 error Unauthorized();
-// ANCHOR_END: prelude
+// [!endregion prelude]
 
-// ANCHOR: contract
+// [!region contract]
 contract OwnerUpOnly {
     address public immutable owner;
     uint256 public count;
@@ -24,15 +24,15 @@ contract OwnerUpOnly {
         count++;
     }
 }
-// ANCHOR_END: contract
+// [!endregion contract]
 
-// ANCHOR: test
-// ANCHOR: contract_prelude
+// [!region test]
+// [!region contract_prelude]
 contract OwnerUpOnlyTest is Test {
     OwnerUpOnly upOnly;
-// ANCHOR_END: contract_prelude
+    // [!endregion contract_prelude]
 
-    // ANCHOR: simple_test
+    // [!region simple_test]
     function setUp() public {
         upOnly = new OwnerUpOnly();
     }
@@ -42,15 +42,15 @@ contract OwnerUpOnlyTest is Test {
         upOnly.increment();
         assertEq(upOnly.count(), 1);
     }
-    // ANCHOR_END: simple_test
+    // [!endregion simple_test]
 
-    // ANCHOR: test_expectrevert
+    // [!region test_expectrevert]
     function test_RevertWhen_CallerIsNotOwner() public {
         vm.expectRevert(Unauthorized.selector);
         vm.prank(address(0));
         upOnly.increment();
     }
-    // ANCHOR_END: test_expectrevert
+    // [!endregion test_expectrevert]
 }
-// ANCHOR_END: test
-// ANCHOR_END: all
+// [!endregion test]
+// [!endregion all]

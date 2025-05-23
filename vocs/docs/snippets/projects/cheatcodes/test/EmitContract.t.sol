@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-// ANCHOR: all
+// [!region all]
 pragma solidity 0.8.10;
 
 import {Test} from "forge-std/Test.sol";
@@ -36,4 +36,4 @@ contract ExpectEmit {
         emit Transfer(msg.sender, address(1337), 1337);
     }
 }
-// ANCHOR_END: all
+// [!endregion all]
