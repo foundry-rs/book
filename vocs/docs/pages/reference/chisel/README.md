@@ -52,7 +52,7 @@ From there, input valid Solidity code. There are two kinds of inputs to the chis
       a semi-colon (`;`) can be appended to the end.
     * Examples:
         * `uint256 a = 0xa57b`
-        * `myStateMutatingFunc(128)` || `myViewFunc(128);` <- Notice the `;`
+        * `myStateMutatingFunc(128)` || `myViewFunc(128);`. Notice the `;`
         * ```solidity
           function hash64(
             bytes32 _a,
