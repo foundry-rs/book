@@ -12,7 +12,7 @@ function sign(Wallet memory wallet, bytes32 digest) external returns (uint8 v, b
 
 ### Description
 
-Signs a digest `digest` with private key `privateKey` or [Wallet](./create-wallet.md`) `wallet`, returning `(v, r, s)`.
+Signs a digest `digest` with private key `privateKey` or [Wallet](/reference/cheatcodes/create-wallet`) `wallet`, returning `(v, r, s)`.
 
 This is useful for testing functions that take signed data and perform an `ecrecover` to verify the signer.
 

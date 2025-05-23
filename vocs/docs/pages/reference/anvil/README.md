@@ -374,8 +374,8 @@ Gets the transaction hash and the address which created a contract.
 
 `--fork-chain-id <CHAIN>`
 &nbsp;&nbsp;&nbsp;&nbsp; Specify chain id to skip fetching it from remote endpoint. This enables offline-start mode.
-          You still must pass both `--fork-url` and `--fork-block-number`, and already have your required state cached on disk, anything missing locally
-          would be fetched from the remote.
+You still must pass both `--fork-url` and `--fork-block-number`, and already have your required state cached on disk, anything missing locally
+would be fetched from the remote.
 
 `--fork-retry-backoff <BACKOFF>`
 &nbsp;&nbsp;&nbsp;&nbsp; Initial retry backoff on encountering errors.
@@ -481,7 +481,7 @@ Supported shells are:
 
 ### Usage within Docker
 
-In order to run anvil as a service in Github Actions with the [Docker container](../../guides/foundry-in-docker.md), where passing arguments to the entrypoint command is not possible, use the `ANVIL_IP_ADDR` environment variable to set the host's IP. `ANVIL_IP_ADDR=0.0.0.0` is equivalent to providing the `--host <ip>` option.
+In order to run anvil as a service in Github Actions with the [Docker container](#TODO), where passing arguments to the entrypoint command is not possible, use the `ANVIL_IP_ADDR` environment variable to set the host's IP. `ANVIL_IP_ADDR=0.0.0.0` is equivalent to providing the `--host <ip>` option.
 
 #### Using `genesis.json`
 

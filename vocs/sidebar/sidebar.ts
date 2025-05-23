@@ -1,5 +1,6 @@
 import { Sidebar } from "vocs";
 import { forgeOverview } from "./forge-overview";
+import { cmdReference } from "./cmd-reference";
 
 export const sidebar: Sidebar = [
     {
@@ -68,6 +69,11 @@ export const sidebar: Sidebar = [
             { text: 'Running Foundry inside of Docker', link: '/guides/foundry-in-docker' },
             { text: 'Video tutorials', link: '/guides/video-tutorials' }
         ]
+    },
+    {
+        text: 'References',
+        collapsed: false,
+        items: cmdReference,
     }
 ]
 

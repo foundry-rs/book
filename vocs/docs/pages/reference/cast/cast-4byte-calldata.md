@@ -33,4 +33,4 @@ Decode ABI-encoded calldata using <https://openchain.xyz/signatures>.
 
 ### SEE ALSO
 
-[cast](./cast.md), [cast 4byte](./cast-4byte.md), [cast 4byte-event](./cast-4byte-event.md)
+[cast](/reference/cast/overview), [cast 4byte](/reference/cast/cast-4byte), [cast 4byte-event](/reference/cast/cast-4byte-event)

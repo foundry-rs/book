@@ -5,7 +5,7 @@ Cast is a Swiss Army knife for interacting with Ethereum applications from the c
 The `cast` binary can be used both within and outside of a Foundry project.
 
 Cast is part of the Foundry suite and is installed alongside `forge`, `chisel`, and `anvil`. If you haven't installed Foundry
-yet, see [Foundry installation](/introduction/installation.md).
+yet, see [Foundry installation](/introduction/installation).
 
 ### Getting started
 
