@@ -7,13 +7,13 @@ Forge will look for the tests anywhere in your source directory. Any contract wi
 Here's an example of running `forge test` in a freshly created project, that only has the default test:
 
 ```sh
-{{#include ../output/hello_foundry/forge-test:all}}
+// [!include ~/snippets/output/hello_foundry/forge-test:all]
 ```
 
 You can also run specific tests by passing a filter:
 
 ```sh
-{{#include ../output/test_filters/forge-test-match-contract-and-test:all}}
+// [!include ~/output/test_filters/forge-test-match-contract-and-test:all]
 ```
 
 This will run the tests in the `ComplicatedContractTest` test contract with `testDeposit` in the name.
@@ -22,7 +22,7 @@ Inverse versions of these flags also exist (`--no-match-contract` and `--no-matc
 You can run tests in filenames that match a glob pattern with `--match-path`.
 
 ```sh
-{{#include ../output/test_filters/forge-test-match-path:all}}
+// [!include ~/snippets/output/test_filters/forge-test-match-path:all]
 ```
 
 The inverse of the `--match-path` flag is `--no-match-path`.

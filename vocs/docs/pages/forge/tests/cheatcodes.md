@@ -9,31 +9,31 @@ You can access cheatcodes easily via the `vm` instance available in Forge Standa
 Let's write a test for a smart contract that is only callable by its owner.
 
 ```solidity
-{{#include ../../projects/cheatcodes/test/OwnerUpOnly.t.sol:prelude}}
+// [!include ~/snippets/projects/cheatcodes/test/OwnerUpOnly.t.sol:prelude]
 
-{{#include ../../projects/cheatcodes/test/OwnerUpOnly.t.sol:contract}}
+// [!include ~/snippets/projects/cheatcodes/test/OwnerUpOnly.t.sol:contract]
 
-{{#include ../../projects/cheatcodes/test/OwnerUpOnly.t.sol:contract_prelude}}
+// [!include ~/snippets/projects/cheatcodes/test/OwnerUpOnly.t.sol:contract_prelude]
 
-{{#include ../../projects/cheatcodes/test/OwnerUpOnly.t.sol:simple_test}}
+// [!include ~/snippets/projects/cheatcodes/test/OwnerUpOnly.t.sol:simple_test]
 }
 ```
 
 If we run `forge test` now, we will see that the test passes, since `OwnerUpOnlyTest` is the owner of `OwnerUpOnly`.
 
-```ignore
+```sh
 $ forge test
-{{#include ../output/cheatcodes/forge-test-simple:output}}
+// [!include ~/output/cheatcodes/forge-test-simple:output}]
 ```
 
 Let's make sure that someone who is definitely not the owner can't increment the count, by using the `expectRevert` cheatcode:
 
 ```solidity
-{{#include ../../projects/cheatcodes/test/OwnerUpOnly.t.sol:contract_prelude}}
+// [!include ~/snippets/projects/cheatcodes/test/OwnerUpOnly.t.sol:contract_prelude]
 
     // ...
 
-{{#include ../../projects/cheatcodes/test/OwnerUpOnly.t.sol:test_expectrevert}}
+// [!include ~/snippets/projects/cheatcodes/test/OwnerUpOnly.t.sol:test_expectrevert]
 }
 ```
 
@@ -41,7 +41,7 @@ If we run `forge test` one last time, we see that the test still passes, but thi
 
 ```ignore
 $ forge test
-{{#include ../output/cheatcodes/forge-test-cheatcodes-expectrevert:output}}
+// [!include ~/output/cheatcodes/forge-test-cheatcodes-expectrevert:output}]
 ```
 
 Another cheatcode that is perhaps not so intuitive is the `expectEmit` function. Before looking at `expectEmit`, we need to understand what an event is.
@@ -49,7 +49,7 @@ Another cheatcode that is perhaps not so intuitive is the `expectEmit` function.
 Events are inheritable members of contracts. When you emit an event, the arguments are stored on the blockchain. The `indexed` attribute can be added to a maximum of three parameters of an event to form a data structure known as a "topic." Topics allow users to search for events on the blockchain.
 
 ```solidity
-{{#include ../../projects/cheatcodes/test/EmitContract.t.sol:all}}
+// [!include ~/snippets/projects/cheatcodes/test/EmitContract.t.sol:all]
 ```
 
 When we call `vm.expectEmit(true, true, false, true);`, we want to check the 1st and 2nd `indexed` topic for the next event.

@@ -9,13 +9,13 @@ In this section, we'll go over the basics using the functions from the Forge Std
 DSTest provides basic logging and assertion functionality. To get access to the functions, import `forge-std/Test.sol` and inherit from `Test` in your test contract:
 
 ```solidity
-{{#include ../../projects/writing_tests/test/Basic.t.sol:import}}
+// [!include ~/snippets/projects/writing_tests/test/Basic.t.sol:import]
 ```
 
 Let's examine a basic test:
 
 ```solidity
-{{#include ../../projects/writing_tests/test/Basic.t.sol:all}}
+// [!include ~/snippets/projects/writing_tests/test/Basic.t.sol:all]
 ```
 
 Forge uses the following keywords in tests:
@@ -23,13 +23,13 @@ Forge uses the following keywords in tests:
 - `setUp`: An optional function invoked before each test case is run.
 
 ```solidity
-{{#include ../../projects/writing_tests/test/Basic.t.sol:setUp}}
+// [!include ~/snippets/projects/writing_tests/test/Basic.t.sol:setUp]
 ```
 
 - `test`: Functions prefixed with `test` are run as a test case.
 
 ```solidity
-{{#include ../../projects/writing_tests/test/Basic.t.sol:testNumberIs42}}
+// [!include ~/snippets/projects/writing_tests/test/Basic.t.sol:testNumberIs42]
 ```
 
 A good practice is to use the pattern `test_Revert[If|When]_Condition` in combination with the [`expectRevert`](#TODO) cheatcode (cheatcodes are explained in greater detail in the following [section](#TODO)). Also, other testing practices can be found in the [Guides section](#TODO).
@@ -43,7 +43,7 @@ A good practice is to use the pattern `test_Revert[If|When]_Condition` in combin
 In this way you know exactly what reverted and with which error:
 
 ```solidity
-{{#include ../../projects/writing_tests/test/Basic2.t.sol:testCannotSubtract43}}
+// [!include ~/snippets/projects/writing_tests/test/Basic2.t.sol:testCannotSubtract43]
 ```
 
 <br></br>
