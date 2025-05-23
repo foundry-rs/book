@@ -4,7 +4,7 @@ It's possible to have your Foundry project work alongside [Hardhat](https://hard
 
 ### Why does this not work out of the box?
 
-Hardhat by default expects libraries to be installed in `node_modules`, the default folder for all NodeJS dependencies. Foundry expects them to be in `lib`. Of course [we can configure Foundry](../reference/config/overview.md) but not easily to the directory structure of `node_modules`.
+Hardhat by default expects libraries to be installed in `node_modules`, the default folder for all NodeJS dependencies. Foundry expects them to be in `lib`. Of course [we can configure Foundry](/config/overview) but not easily to the directory structure of `node_modules`.
 
 For this reason, the recommended setup is to use [hardhat-foundry](https://www.npmjs.com/package/@nomicfoundation/hardhat-foundry). When hardhat-foundry is installed and used correctly, Hardhat will use the same contracts directory that is used by Foundry, and it will be able to use dependencies installed with forge install.
 

@@ -41,7 +41,7 @@ If we run `forge test` one last time, we see that the test still passes, but thi
 
 ```bash
 $ forge test
-// [!include ~snippets/output/cheatcodes/forge-test-cheatcodes-expectrevert:output}]
+// [!include ~/snippets/output/cheatcodes/forge-test-cheatcodes-expectrevert:output]
 ```
 
 Another cheatcode that is perhaps not so intuitive is the `expectEmit` function. Before looking at `expectEmit`, we need to understand what an event is.

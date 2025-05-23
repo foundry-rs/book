@@ -39,9 +39,9 @@ export const sidebar: Sidebar = [
     },
     {
         text: 'Configuration',
-        link: '/config/README',
+        collapsed: false,
         items: [
-            { text: 'Configuring with foundry.toml', link: '/config/README' },
+            { text: 'Overview', link: '/config/overview' },
             { text: 'Continuous Integration', link: '/config/continuous-integration' },
             { text: 'Integrating with VSCode', link: '/config/vscode' },
             { text: 'Shell Autocompletion', link: '/config/shell-autocompletion' },

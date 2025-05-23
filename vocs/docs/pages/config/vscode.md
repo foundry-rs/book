@@ -31,13 +31,13 @@ To enable the built-in formatter that comes with Foundry to automatically format
 {
   "editor.formatOnSave": true,
   "[solidity]": {
-    "editor.defaultFormatter": "JuanBlanco.solidity" 
+    "editor.defaultFormatter": "JuanBlanco.solidity"
   },
-  "solidity.formatter": "forge",
+  "solidity.formatter": "forge"
 }
 ```
 
-To configure the formatter settings, refer to the [Formatter](../reference/config/formatter.md) reference.
+To configure the formatter settings, refer to the [Formatter](#TODO) reference.
 
 ### 4. Solc Version
 
@@ -86,5 +86,5 @@ Add line to `.vscode/settings.json` file (solidity extension settings):
 Now all contracts from the OpenZeppelin documentation can be used.
 
 ```javascript
-import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import { ERC20 } from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 ```
