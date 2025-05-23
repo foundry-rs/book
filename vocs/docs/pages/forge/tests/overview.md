@@ -13,7 +13,7 @@ Here's an example of running `forge test` in a freshly created project, that onl
 You can also run specific tests by passing a filter:
 
 ```sh
-// [!include ~/output/test_filters/forge-test-match-contract-and-test:all]
+// [!include ~/snippets/output/test_filters/forge-test-match-contract-and-test:all]
 ```
 
 This will run the tests in the `ComplicatedContractTest` test contract with `testDeposit` in the name.

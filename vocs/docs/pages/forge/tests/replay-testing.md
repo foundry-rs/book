@@ -26,7 +26,7 @@ failure_persist_file="/tests/failures.txt"
 
 or by using inline config
 
-```Solidity
+```solidity
 /// forge-config: default.fuzz.failure-persist-file = /tests/failures.txt
 ```
 

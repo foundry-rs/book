@@ -141,6 +141,6 @@ contract MyOtherContractTest is Test, HelperContract {
 
 <br></br>
 
-> 💡 **Tip**
->
-> Use the [`getCode`](#TODO) cheatcode to deploy contracts with incompatible Solidity versions.
+:::tip
+Use the [`getCode`](#TODO) cheatcode to deploy contracts with incompatible Solidity versions.
+:::

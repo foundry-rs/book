@@ -23,7 +23,7 @@ If we run `forge test` now, we will see that the test passes, since `OwnerUpOnly
 
 ```sh
 $ forge test
-// [!include ~/output/cheatcodes/forge-test-simple:output}]
+// [!include ~/snippets/output/cheatcodes/forge-test-simple:output}]
 ```
 
 Let's make sure that someone who is definitely not the owner can't increment the count, by using the `expectRevert` cheatcode:

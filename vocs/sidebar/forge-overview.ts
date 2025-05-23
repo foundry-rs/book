@@ -7,8 +7,9 @@ export const forgeOverview: SidebarItem[] = [
     },
     {
         text: 'Tests',
-        link: '/forge/tests',
+        collapsed: false,
         items: [
+            { text: 'Overview', link: '/forge/tests/overview' },
             { text: 'Writing Tests', link: '/forge/tests/writing-tests' },
             { text: 'Cheatcodes', link: '/forge/tests/cheatcodes' },
             { text: 'Forge Standard Library Overview', link: '/forge/tests/forge-std' },
@@ -19,8 +20,9 @@ export const forgeOverview: SidebarItem[] = [
     },
     {
         text: 'Advanced Testing',
-        link: '/forge/advanced-testing',
+        collapsed: false,
         items: [
+            { text: 'Overview', link: '/forge/advanced-testing/overview' },
             { text: 'Fuzz Testing', link: '/forge/advanced-testing/fuzz-testing' },
             { text: 'Invariant Testing', link: '/forge/advanced-testing/invariant-testing' },
             { text: 'Differential Testing', link: '/forge/advanced-testing/differential-ffi-testing' }
@@ -29,8 +31,9 @@ export const forgeOverview: SidebarItem[] = [
     { text: 'Deploying and Verifying', link: '/forge/deploying' },
     {
         text: 'Gas Tracking',
-        link: '/forge/gas-tracking',
+        collapsed: false,
         items: [
+            { text: 'Overview', link: '/forge/gas-tracking/overview' },
             { text: 'Gas Reports', link: '/forge/gas-tracking/gas-reports' },
             { text: 'Gas Function Snapshots', link: '/forge/gas-tracking/gas-function-snapshots' },
             { text: 'Gas Section Snapshots', link: '/forge/gas-tracking/gas-section-snapshots' }
