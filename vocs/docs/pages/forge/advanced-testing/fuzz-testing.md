@@ -7,13 +7,13 @@ Property-based testing is a way of testing general behaviors as opposed to isola
 Let's examine what that means by writing a unit test, finding the general property we are testing for, and converting it to a property-based test instead:
 
 ```solidity
-{{#include ../../projects/fuzz_testing/test/Safe.t.sol.1:all}}
+// [!include ~/snippets/projects/fuzz_testing/test/Safe.t.sol.1:all]
 ```
 
 Running the test, we see it passes:
 
-```sh
-{{#include ../output/fuzz_testing/forge-test-no-fuzz:all}}
+```bash
+// [!include ~/snippets/output/fuzz_testing/forge-test-no-fuzz:all]
 ```
 
 This unit test _does test_ that we can withdraw ether from our safe. However, who is to say that it works for all amounts, not just 1 ether?
@@ -23,10 +23,10 @@ The general property here is: given a safe balance, when we withdraw, we should 
 Forge will run any test that takes at least one parameter as a property-based test, so let's rewrite:
 
 ```solidity
-{{#include ../../projects/fuzz_testing/test/Safe.t.sol.2:contract_prelude}}
+// [!include ~/snippets/projects/fuzz_testing/test/Safe.t.sol.2:contract_prelude]
     // ...
 
-{{#include ../../projects/fuzz_testing/test/Safe.t.sol.2:test}}
+// [!include ~/snippets/projects/fuzz_testing/test/Safe.t.sol.2:test]
 }
 ```
 
@@ -34,19 +34,19 @@ If we run the test now, we can see that Forge runs the property-based test, but 
 
 ```sh
 $ forge test
-{{#include ../output/fuzz_testing/forge-test-fail-fuzz:output}}
+// [!include ~/snippets/output/fuzz_testing/forge-test-fail-fuzz:output]
 ```
 
 The default amount of ether that the test contract is given is `2**96 wei` (as in DappTools), so we have to restrict the type of amount to `uint96` to make sure we don't try to send more than we have:
 
 ```solidity
-{{#include ../../projects/fuzz_testing/test/Safe.t.sol.3:signature}}
+// [!include ~/snippets/projects/fuzz_testing/test/Safe.t.sol.3:signature]
 ```
 
 And now it passes:
 
 ```sh
-{{#include ../output/fuzz_testing/forge-test-success-fuzz:all}}
+// [!include ~/snippets/output/fuzz_testing/forge-test-success-fuzz:all]
 ```
 
 You may want to exclude certain cases using the [`assume`](#TODO) cheatcode. In those cases, fuzzer will discard the inputs and start a new fuzz run:
@@ -129,4 +129,5 @@ To make sure fuzzer includes in the same run a `slate` value derived from a `yay
 ```
 
 Following image shows how fuzzer generates values with and without fixtures being declared:
-![Fuzzer](../images/fuzzer.png)
+
+![Fuzzer](/fuzzer.png)

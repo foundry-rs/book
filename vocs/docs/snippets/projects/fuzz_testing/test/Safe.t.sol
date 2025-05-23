@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-// ANCHOR: all
+// [!region all]
 pragma solidity 0.8.10;
 
 import {Test} from "forge-std/Test.sol";
@@ -23,9 +23,9 @@ contract SafeTest is Test {
         safe = new Safe();
     }
 
-    // ANCHOR: signature
+    // [!region signature]
     function testFuzz_Withdraw(uint96 amount) public {
-    // ANCHOR_END: signature
+        // [!endregion signature]
         payable(address(safe)).transfer(amount);
         uint256 preBalance = address(this).balance;
         safe.withdraw();
@@ -33,4 +33,4 @@ contract SafeTest is Test {
         assertEq(preBalance + amount, postBalance);
     }
 }
-// ANCHOR_END: all
+// [!endregion all]
