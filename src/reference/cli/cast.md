@@ -51,6 +51,8 @@ Commands:
                          [aliases: c2]
   creation-code          Download a contract creation code from Etherscan and
                          RPC [aliases: cc]
+  da-estimate            Estimates the data availability size of a given opstack
+                         block
   decode-abi             Decode ABI-encoded input or output data [aliases:
                          abi-decode, --abi-decode, ad]
   decode-calldata        Decode ABI-encoded input data [aliases:
@@ -182,7 +184,7 @@ Options:
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: jobs]
+          [aliases: --jobs]
 
   -V, --version
           Print version
