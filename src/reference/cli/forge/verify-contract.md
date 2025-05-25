@@ -20,7 +20,7 @@ Options:
       --constructor-args <ARGS>
           The ABI-encoded constructor arguments
           
-          [aliases: encoded-constructor-args]
+          [aliases: --encoded-constructor-args]
 
       --constructor-args-path <PATH>
           The path to a file containing the constructor arguments
@@ -37,7 +37,7 @@ Options:
       --num-of-optimizations <NUM>
           The number of optimization runs used to build the smart contract
           
-          [aliases: optimizer-runs]
+          [aliases: --optimizer-runs]
 
       --flatten
           Flatten the source code before verifying
@@ -147,7 +147,7 @@ Options:
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: jobs]
+          [aliases: --jobs]
 
 Linker options:
       --libraries <LIBRARIES>

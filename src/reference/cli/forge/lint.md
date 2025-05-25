@@ -1,21 +1,39 @@
-# cast to-hex
+# forge lint
 
-Converts a number of one base to another
+Lint Solidity source files
 
 ```bash
-$ cast to-hex --help
+$ forge lint --help
 ```
 
 ```txt
-Usage: cast to-hex [OPTIONS] [VALUE]
+Usage: forge lint [OPTIONS] [PATH]...
 
 Arguments:
-  [VALUE]
-          The value to convert
+  [PATH]...
+          Path to the file to be checked. Overrides the `ignore` project config
 
 Options:
-  -i, --base-in <BASE_IN>
-          The input base
+      --root <PATH>
+          The project's root path.
+          
+          By default root of the Git repository, if in one, or the current
+          working directory.
+
+      --severity <SEVERITY>...
+          Specifies which lints to run based on severity. Overrides the
+          `severity` project config.
+          
+          Supported values: `high`, `med`, `low`, `info`, `gas`.
+          
+          [possible values: high, med, low, info, gas]
+
+      --only-lint <LINT_ID>...
+          Specifies which lints to run based on their ID (e.g.,
+          "incorrect-shift"). Overrides the `exclude_lints` project config
+
+      --json
+          Activates the linter's JSON formatter (rustc-compatible)
 
   -h, --help
           Print help (see a summary with '-h')
@@ -34,9 +52,6 @@ Display options:
           - auto:   Intelligently guess whether to use color output (default)
           - always: Force color output
           - never:  Force disable color output
-
-      --json
-          Format log messages as JSON
 
   -q, --quiet
           Do not print log messages
