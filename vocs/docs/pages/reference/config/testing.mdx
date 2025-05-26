@@ -8,7 +8,6 @@ Configuration related to the behavior of `forge test`.
 - [Fuzz](#fuzz)
 - [Invariant](#invariant)
 
-
 ### General
 
 ##### `verbosity`
@@ -87,7 +86,8 @@ The gas limit for each test case.
 > Due to a limitation in a dependency of Forge, you **cannot raise the gas limit** beyond the default without changing the value to a string.
 >
 > In order to use higher gas limits use a string:
- ```toml
+
+```toml
 gas_limit = "18446744073709551615" # u64::MAX
 ```
 
@@ -307,7 +307,7 @@ This section lives outside of profiles and defines a table of RPC endpoints, whe
 
 The value can either be a valid RPC endpoint or a reference to an environment variable (wrapped with in `${}`).
 
-These RPC endpoints can be used in tests and Solidity scripts (see [`vm.rpc`](../../cheatcodes/rpc.md)).
+These RPC endpoints can be used in tests and Solidity scripts (see [`vm.rpc`](/cheatcodes/rpc)).
 
 The following example defines an endpoint named `optimism` and an endpoint named `mainnet` that references an environment variable `RPC_MAINNET`:
 
@@ -410,7 +410,6 @@ Name of the file to record fuzz failures.
 
 The flag indicates whether to display console logs in fuzz tests or not. Note that in order to enable displaying console logs, you'll need to set `show_logs = true` and then use `forge test -vv` or set `verbosity >= 2`.
 
-
 ### Invariant
 
 Configuration values for `[invariant]` section.
@@ -420,19 +419,19 @@ Configuration values for `[invariant]` section.
 > Configuration for `[invariant]` section has the fallback logic
 > for common config entries (`runs`, `seed`, `dictionary_weight` etc).
 >
-> * If the entries are not set in either section, then the defaults will be used.
-> * If the entries are set in the `[fuzz]` section, but are not set in the `[invariant]`
+> - If the entries are not set in either section, then the defaults will be used.
+> - If the entries are set in the `[fuzz]` section, but are not set in the `[invariant]`
 >   section, these values will automatically be set to the values specified in
 >   the `[fuzz]` section.
-> * For any profile other than `default`:
->     * If at least one entry is set in the `[invariant]` (same as
->       `[profile.default.invariant]`) section, then the values from
->       `[invariant]` section will be used, including defaults.
->     * If no entry is set in the `[invariant]` section, but there are
->       entries in the `[fuzz]` (same as `[profile.default.fuzz]`) section,
->       then the values from the `[fuzz]` section will be used.
->     * If it's none of the cases described above, then the defaults
->       will be used.
+> - For any profile other than `default`:
+>   - If at least one entry is set in the `[invariant]` (same as
+>     `[profile.default.invariant]`) section, then the values from
+>     `[invariant]` section will be used, including defaults.
+>   - If no entry is set in the `[invariant]` section, but there are
+>     entries in the `[fuzz]` (same as `[profile.default.fuzz]`) section,
+>     then the values from the `[fuzz]` section will be used.
+>   - If it's none of the cases described above, then the defaults
+>     will be used.
 
 ##### `runs`
 
