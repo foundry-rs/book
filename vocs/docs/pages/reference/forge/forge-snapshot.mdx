@@ -1,3 +1,10 @@
+import TestOptions from "./test-options.mdx";
+import EvmOptions from "./evm-options.mdx";
+import ExecutorOptions from "./executor-options.mdx";
+import CoreBuildOptions from "./core-build-options.mdx";
+import DisplayOptions from "../common/display-options.mdx";
+import CommonOptions from "./common-options.mdx";
+
 ## forge snapshot
 
 ### NAME
@@ -6,7 +13,7 @@ forge-snapshot - Create a snapshot of each test's gas usage.
 
 ### SYNOPSIS
 
-``forge snapshot`` [*options*]
+`forge snapshot` [*options*]
 
 ### DESCRIPTION
 
@@ -18,7 +25,7 @@ by passing `--snap <PATH>`.
 Fuzz tests are included by default in the snapshot. They use a static seed to achieve deterministic results.
 
 Snapshots can be compared with `--diff` and `--check`. The first flag will output a diff, and the second
-will output a diff *and* exit with code 1 if the snapshots do not match.
+will output a diff _and_ exit with code 1 if the snapshots do not match.
 
 ### OPTIONS
 
@@ -30,58 +37,60 @@ Sort results by gas used (ascending).
 `--desc`  
 &nbsp;&nbsp;&nbsp;&nbsp;Sort results by gas used (descending).
 
-`--min` *min_gas*  
+`--min` _min_gas_  
 &nbsp;&nbsp;&nbsp;&nbsp;Only include tests that used more gas that the given amount.
 
-`--max` *max_gas*  
+`--max` _max_gas_  
 &nbsp;&nbsp;&nbsp;&nbsp;Only include tests that used less gas that the given amount.
 
-`--tolerance` *threshold*  
+`--tolerance` _threshold_  
 &nbsp;&nbsp;&nbsp;&nbsp;Tolerates gas deviations up to the specified percentage (0-100).
 
-`--diff` *path*  
+`--diff` _path_  
 &nbsp;&nbsp;&nbsp;&nbsp;Output a diff against a pre-existing snapshot.
 
 &nbsp;&nbsp;&nbsp;&nbsp;By default the comparison is done with `.gas-snapshot`.
 
-`--check` *path*  
+`--check` _path_  
 &nbsp;&nbsp;&nbsp;&nbsp;Compare against a pre-existing snapshot, exiting with code 1 if they do not match.
 
 &nbsp;&nbsp;&nbsp;&nbsp;Outputs a diff if the snapshots do not match.
 
 &nbsp;&nbsp;&nbsp;&nbsp;By default the comparison is done with `.gas-snapshot`.
 
-`--snap` *path*  
+`--snap` _path_  
 &nbsp;&nbsp;&nbsp;&nbsp;Output file for the snapshot. Default: `.gas-snapshot`.
 
-{{#include test-options.md}}
+<TestOptions />
 
-{{#include evm-options.md}}
+<EvmOptions />
 
-{{#include executor-options.md}}
+<ExecutorOptions />
 
-{{#include core-build-options.md}}
+<CoreBuildOptions />
 
-{{#include ../common/display-options.md}}
+<DisplayOptions />
 
-{{#include common-options.md}}
+<CommonOptions />
 
 ### EXAMPLES
 
 1. Create a snapshot:
-    ```sh
-    forge snapshot
-    ```
+
+   ```sh
+   forge snapshot
+   ```
 
 2. Generate a diff:
-    ```sh
-    forge snapshot --diff
-    ```
+
+   ```sh
+   forge snapshot --diff
+   ```
 
 3. Check that the snapshots match:
-    ```sh
-    forge snapshot --check
-    ```
+   ```sh
+   forge snapshot --check
+   ```
 
 ### SEE ALSO
 

@@ -1,3 +1,6 @@
+import ProjectOptions from "./project-options.mdx";
+import CommonOptions from "./common-options.mdx";
+
 ## forge tree
 
 ### NAME
@@ -6,7 +9,7 @@ forge-tree - Display a tree visualization of the project's dependency graph.
 
 ### SYNOPSIS
 
-``forge tree`` [*options*]
+`forge tree` [*options*]
 
 ### DESCRIPTION
 
@@ -20,15 +23,15 @@ Display a visualization of the project's dependency graph.
 
 #### Flatten Options
 
-`--charset` *charset*  
+`--charset` _charset_  
 &nbsp;&nbsp;&nbsp;&nbsp;Character set to use in output: utf8, ascii. Default: utf8
 
 `--no-dedupe`  
 &nbsp;&nbsp;&nbsp;&nbsp;Do not de-duplicate (repeats all shared dependencies)
 
-{{#include project-options.md}}
+<ProjectOptions />
 
-{{#include common-options.md}}
+<CommonOptions />
 
 ### SEE ALSO
 

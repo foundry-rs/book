@@ -1,3 +1,6 @@
+import ProjectOptions from "./project-options.mdx";
+import CommonOptions from "./common-options.mdx";
+
 ## forge flatten
 
 ### NAME
@@ -6,7 +9,7 @@ forge-flatten - Flatten a source file and all of its imports into one file.
 
 ### SYNOPSIS
 
-``forge flatten`` [*options*] *file*
+`forge flatten` [*options*] _file_
 
 ### DESCRIPTION
 
@@ -18,26 +21,26 @@ If `--output <FILE>` is not set, then the flattened contract will be output to s
 
 #### Flatten Options
 
-`-o` *file*  
-`--output` *file*  
+`-o` _file_  
+`--output` _file_  
 &nbsp;&nbsp;&nbsp;&nbsp;The path to output the flattened contract. If not specified, the flattened contract will be output to stdout.
 
-{{#include project-options.md}}
+<ProjectOptions />
 
-{{#include common-options.md}}
+<CommonOptions />
 
 ### EXAMPLES
 
 1. Flatten `src/Contract.sol`:
-    ```sh
-    forge flatten src/Contract.sol
-    ```
+
+   ```sh
+   forge flatten src/Contract.sol
+   ```
 
 2. Flatten `src/Contract.sol` and write the result to `src/Contract.flattened.sol`:
-    ```sh
-    forge flatten --output src/Contract.flattened.sol src/Contract.sol
-    ```
-
+   ```sh
+   forge flatten --output src/Contract.flattened.sol src/Contract.sol
+   ```
 
 ### SEE ALSO
 

@@ -1,3 +1,6 @@
+import CoreBuildOptions from "./core-build-options.mdx";
+import CommonOptions from "./common-options.mdx";
+
 ## forge inspect
 
 ### NAME
@@ -6,13 +9,13 @@ forge-inspect - Get specialized information about a smart contract
 
 ### SYNOPSIS
 
-``forge inspect`` [*options*] *contract_name* *field*
+`forge inspect` [*options*] _contract_name_ _field_
 
 ### DESCRIPTION
 
 Get specialized information about a smart contract.
 
-The field to inspect (*field*) can be any of:
+The field to inspect (_field_) can be any of:
 
 - `abi`
 - `b`/`bytes`/`bytecode`
@@ -36,21 +39,23 @@ The field to inspect (*field*) can be any of:
 `--json`  
 &nbsp;&nbsp;&nbsp;&nbsp;Format output as JSON.
 
-{{#include core-build-options.md}}
+<CoreBuildOptions />
 
-{{#include common-options.md}}
+<CommonOptions />
 
 ### EXAMPLES
 
 1. Inspect the bytecode of a contract:
-    ```sh
-    forge inspect MyContract bytecode
-    ```
+
+   ```sh
+   forge inspect MyContract bytecode
+   ```
 
 2. Inspect the storage layout of a contract:
-    ```sh
-    forge inspect MyContract storage
-    ```
+
+   ```sh
+   forge inspect MyContract storage
+   ```
 
 3. Inspect the abi of a contract in JSON format:
    ```sh

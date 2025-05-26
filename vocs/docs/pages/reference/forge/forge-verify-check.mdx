@@ -1,3 +1,7 @@
+import VerifierOptions from "../common/verifier-options.mdx";
+import RetryOptions from "../common/retry-options.mdx";
+import CommonOptions from "./common-options.mdx";
+
 ## forge verify-check
 
 ### NAME
@@ -6,9 +10,9 @@ forge-verify-check - Check verification status on a chosen verification provider
 
 ### SYNOPSIS
 
-``forge verify-check`` [*options*] *id* [*etherscan_key*]
+`forge verify-check` [*options*] _id_ [*etherscan_key*]
 
-The *id* is the verification identifier. For Etherscan & Bloxroute - it is the submission GUID, for Sourcify - it's the contract address.
+The _id_ is the verification identifier. For Etherscan & Bloxroute - it is the submission GUID, for Sourcify - it's the contract address.
 
 ### DESCRIPTION
 
@@ -20,15 +24,15 @@ For Etherscan, you must provide an Etherscan API key, either by passing it as an
 
 #### Verify Contract Options
 
-{{#include ../common/verifier-options.md}}
+<VerifierOptions />
 
-`--chain-id` *chain_id*  
+`--chain-id` _chain_id_  
 &nbsp;&nbsp;&nbsp;&nbsp;The chain ID the contract is deployed to (either a number or a chain name).  
 &nbsp;&nbsp;&nbsp;&nbsp;Default: mainnet
 
-{{#include ../common/retry-options.md}}
+<RetryOptions />
 
-{{#include common-options.md}}
+<CommonOptions />
 
 ### SEE ALSO
 

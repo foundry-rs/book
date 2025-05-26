@@ -1,3 +1,5 @@
+import CommonOptions from "./common-options.mdx";
+
 ## forge doc
 
 ### NAME
@@ -6,7 +8,7 @@ forge-doc - Generate documentation for Solidity source files.
 
 ### SYNOPSIS
 
-``forge doc`` [*options*]
+`forge doc` [*options*]
 
 ### DESCRIPTION
 
@@ -14,10 +16,10 @@ Generates and builds an mdbook from Solidity source files.
 
 ### OPTIONS
 
-`--root` *path*  
+`--root` _path_  
 &nbsp;&nbsp;&nbsp;&nbsp;The project's root path. By default, this is the root directory of the current git repository, or the current working directory.
 
-`--out` *path*
+`--out` _path_
 &nbsp;&nbsp;&nbsp;&nbsp;The output path for the generated mdbook. By default, it is the `docs/` in project root.
 
 `--build`
@@ -26,28 +28,28 @@ Generates and builds an mdbook from Solidity source files.
 `--serve`
 &nbsp;&nbsp;&nbsp;&nbsp;Serve the documentation locally.
 
-`--hostname` *hostname*
+`--hostname` _hostname_
 &nbsp;&nbsp;&nbsp;&nbsp;Hostname for serving documentation. Requires `--serve`.
 
-`--port` *port*
+`--port` _port_
 &nbsp;&nbsp;&nbsp;&nbsp;Port for serving documentation. Requires `--serve`.
 
-{{#include common-options.md}}
+<CommonOptions />
 
 ### EXAMPLES
 
 1. Generate documentation.
-    ```sh
-    forge doc
-    ```
+   ```sh
+   forge doc
+   ```
 2. Generate and build documentation with specified output directory.
-    ```sh
-    forge doc --build --out ./documentation
-    ```
+   ```sh
+   forge doc --build --out ./documentation
+   ```
 3. Generate and serve documentation locally on port 4000.
-    ```sh
-    forge doc --serve --port 4000
-    ```
+   ```sh
+   forge doc --serve --port 4000
+   ```
 
 ### SEE ALSO
 

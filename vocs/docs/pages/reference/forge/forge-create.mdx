@@ -1,3 +1,12 @@
+import VerifierOptions from "../common/verifier-options.mdx";
+import TransactionOptions from "../common/transaction-options.mdx";
+import WalletOptions from "../common/wallet-options.mdx";
+import RpcOptions from "../common/rpc-options.mdx";
+import EtherscanOptions from "../common/etherscan-options.mdx";
+import CoreBuildOptions from "./core-build-options.mdx";
+import DisplayOptions from "../common/display-options.mdx";
+import CommonOptions from "./common-options.mdx";
+
 ## forge create
 
 ### NAME
@@ -6,7 +15,7 @@ forge-create - Deploy a smart contract.
 
 ### SYNOPSIS
 
-``forge create`` [*options*] *contract*
+`forge create` [*options*] _contract_
 
 ### DESCRIPTION
 
@@ -27,45 +36,46 @@ Dynamic linking is not supported: you should predeploy your libraries and manual
 
 #### Build Options
 
-`--constructor-args` *args...*  
+`--constructor-args` _args..._  
 &nbsp;&nbsp;&nbsp;&nbsp;The constructor arguments.
 
-`--constructor-args-path` *file*  
+`--constructor-args-path` _file_  
 &nbsp;&nbsp;&nbsp;&nbsp;The path to a file containing the constructor arguments.
 
 `--verify`  
 &nbsp;&nbsp;&nbsp;&nbsp;Verify contract after creation. Runs `forge verify-contract` with the appropriate parameters.
 
-{{#include ../common/verifier-options.md}}
+<VerifierOptions />
 
 `--unlocked`  
 &nbsp;&nbsp;&nbsp;&nbsp;Send via `eth_sendTransaction` using the `--from` argument or `$ETH_FROM` as sender.
 
-{{#include ../common/transaction-options.md}}
+<TransactionOptions />
 
-{{#include ../common/wallet-options.md}}
+<WalletOptions />
 
-{{#include ../common/rpc-options.md}}
+<RpcOptions />
 
-{{#include ../common/etherscan-options.md}}
+<EtherscanOptions />
 
-{{#include core-build-options.md}}
+<CoreBuildOptions />
 
-{{#include ../common/display-options.md}}
+<DisplayOptions />
 
-{{#include common-options.md}}
+<CommonOptions />
 
 ### EXAMPLES
 
 1. Deploy a contract with no constructor arguments:
-    ```sh
-    forge create src/Contract.sol:ContractWithNoConstructor
-    ```
+
+   ```sh
+   forge create src/Contract.sol:ContractWithNoConstructor
+   ```
 
 2. Deploy a contract with two constructor arguments:
-    ```sh
-    forge create src/Contract.sol:MyToken --constructor-args "My Token" "MT"
-    ```
+   ```sh
+   forge create src/Contract.sol:MyToken --constructor-args "My Token" "MT"
+   ```
 
 ### SEE ALSO
 

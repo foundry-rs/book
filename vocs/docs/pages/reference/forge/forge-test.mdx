@@ -1,3 +1,11 @@
+import TestOptions from "./test-options.mdx";
+import EvmOptions from "./evm-options.mdx";
+import ExecutorOptions from "./executor-options.mdx";
+import CoreBuildOptions from "./core-build-options.mdx";
+import WatchOptions from "./watch-options.mdx";
+import DisplayOptions from "../common/display-options.mdx";
+import CommonOptions from "./common-options.mdx";
+
 ## forge test
 
 ### NAME
@@ -6,7 +14,7 @@ forge-test - Run the project's tests.
 
 ### SYNOPSIS
 
-``forge test`` [*options*]
+`forge test` [*options*]
 
 ### DESCRIPTION
 
@@ -54,52 +62,56 @@ You can pass `--json` to make it easier for outside extensions to parse structur
 
 ### OPTIONS
 
-{{#include test-options.md}}
+<TestOptions />
 
-{{#include evm-options.md}}
+<EvmOptions />
 
-{{#include executor-options.md}}
+<ExecutorOptions />
 
-{{#include core-build-options.md}}
+<CoreBuildOptions />
 
-{{#include watch-options.md}}
+<WatchOptions />
 
-{{#include ../common/display-options.md}}
+<DisplayOptions />
 
 `--list`  
 &nbsp;&nbsp;&nbsp;&nbsp;List tests instead of running them.
 
-{{#include common-options.md}}
+<CommonOptions />
 
 ### EXAMPLES
 
 1. Run the tests:
-    ```sh
-    forge test
-    ```
+
+   ```sh
+   forge test
+   ```
 
 2. Open a test in the debugger:
-    ```sh
-    forge test --debug testSomething
-    ```
+
+   ```sh
+   forge test --debug testSomething
+   ```
 
 3. Generate a gas report:
-    ```sh
-    forge test --gas-report
-    ```
+
+   ```sh
+   forge test --gas-report
+   ```
 
 4. Only run tests in `test/Contract.t.sol` in the `BigTest` contract that start with `testRevert`:
-    ```sh
-    forge test --match-path test/Contract.t.sol --match-contract BigTest \
-      --match-test "testRevert*"
-    ```
+
+   ```sh
+   forge test --match-path test/Contract.t.sol --match-contract BigTest \
+     --match-test "testRevert*"
+   ```
 
 5. List tests in desired format
-    ```sh
-    forge test --list
-    forge test --list --json
-    forge test --list --json --match-test "testRevert*" | tail -n 1 | json_pp
-    ```
+   ```sh
+   forge test --list
+   forge test --list --json
+   forge test --list --json --match-test "testRevert*" | tail -n 1 | json_pp
+   ```
 
 ### SEE ALSO
 
