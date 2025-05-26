@@ -119,7 +119,7 @@ watched file or directory is changed. The source directory is watched by default
 Sparse mode only compiles files that match certain criteria.
 
 By default, this filter applies to files that have not been changed since the last build, but for commands that
-take file filters (e.g. [forge test](./forge-test.md)), sparse mode will only recompile files that match the filter.
+take file filters (e.g. [forge test](/reference/forge/forge-test.mdx)), sparse mode will only recompile files that match the filter.
 
 Sparse mode is opt-in until the feature is stabilized. To opt-in to sparse mode and try it out, set [`sparse_mode`][sparse-mode]
 in your configuration file.
@@ -230,8 +230,4 @@ The model checker will run when `forge build` is invoked, and will show findings
 
 ### SEE ALSO
 
-[forge](./forge.md), [forge clean](./forge-clean.md), [forge inspect](./forge-inspect.md)
-
-[sparse-mode]: ../config/solidity-compiler.md#sparse_mode
-[ir-pipeline]: https://docs.soliditylang.org/en/latest/ir-breaking-changes.html
-[output-desc]: https://docs.soliditylang.org/en/latest/using-the-compiler.html#compiler-api
+[forge](/reference/forge/forge.mdx), [forge clean](/reference/forge/forge-clean.mdx), [forge inspect](/reference/forge/forge-inspect.mdx), [sparse-mode](/reference/config/solidity-compiler.mdx#sparse_mode), [ir-pipeline](https://docs.soliditylang.org/en/latest/ir-breaking-changes.html), [output-desc](https://docs.soliditylang.org/en/latest/using-the-compiler.html#compiler-api)
