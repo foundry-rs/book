@@ -131,7 +131,6 @@ To disable this lint for your project, you can add its ID to the `exclude_lints`
 exclude_lints = ["divide-before-multiply"]
 ```
 
-
 #### Informational / Style Guide
 
 ##### `pascal-case-struct`
@@ -167,7 +166,6 @@ To disable this lint for your project, you can add its ID to the `exclude_lints`
 # ... rest of lint config ...
 exclude_lints = ["pascal-case-struct"]
 ```
-
 
 ##### `mixed-case-function`
 
@@ -236,7 +234,6 @@ To disable this lint for your project, you can add its ID to the `exclude_lints`
 exclude_lints = ["mixed-case-variable"]
 ```
 
-
 ##### `screaming-snake-case-const`
 
 Ensures that `constant` variable names adhere to `SCREAMING_SNAKE_CASE` (e.g., `MY_CONSTANT`). This is the standard convention for constants in Solidity, making them easily identifiable.
@@ -265,7 +262,6 @@ To disable this lint for your project, you can add its ID to the `exclude_lints`
 exclude_lints = ["screaming-snake-case-constant"]
 ```
 
-
 ##### `screaming-snake-case-immutable`
 
 Ensures that `immutable` variable names adhere to `SCREAMING_SNAKE_CASE` (e.g., `MY_IMMUTABLE_VAR`). Similar to constants, this convention helps in distinguish immutable variables and maintaining consistency.
@@ -291,7 +287,6 @@ To disable this lint for your project, you can add its ID to the `exclude_lints`
 # ... rest of lint config ...
 exclude_lints = ["screaming-snake-case-immutable"]
 ```
-
 
 #### Gas Optimizations
 
