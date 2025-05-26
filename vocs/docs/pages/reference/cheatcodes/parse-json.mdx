@@ -93,7 +93,7 @@ What matters is the alphabetical order. As the JSON object is an unordered data 
 
 - The struct is interpreted serially. That means that the tuple's first item will be decoded based on the first item of the struct definition (no alphabetical order).
 - The JSON will parsed alphabetically, not serially.
-- Note that this parsing uses Rust's BTreeMap crate under the hood, meaning that uppercase and lowercase strings are treated differently. Uppercase characters *precede* lowercase in this lexicographical ordering, ie "Zebra" would precede "apple".
+- Note that this parsing uses Rust's BTreeMap crate under the hood, meaning that uppercase and lowercase strings are treated differently. Uppercase characters _precede_ lowercase in this lexicographical ordering, ie "Zebra" would precede "apple".
 
 Thus, the first (in alphabetical order) value of the JSON, will be abi-encoded and then tried to be abi-decoded, based on the type of the first attribute of the `struct`.
 
@@ -112,24 +112,24 @@ Another example, given the following JSON:
 
 ```json
 {
-    "apples": [
-        {
-            "sweetness": 7,
-            "sourness": 3,
-            "color": "Red"
-        },
-        {
-            "sweetness": 5,
-            "sourness": 5,
-            "color": "Green"
-        },
-        {
-            "sweetness": 9,
-            "sourness": 1,
-            "color": "Yellow"
-        }
-    ],
-    "name": "Fresh Fruit"
+  "apples": [
+    {
+      "sweetness": 7,
+      "sourness": 3,
+      "color": "Red"
+    },
+    {
+      "sweetness": 5,
+      "sourness": 5,
+      "color": "Green"
+    },
+    {
+      "sweetness": 9,
+      "sourness": 1,
+      "color": "Yellow"
+    }
+  ],
+  "name": "Fresh Fruit"
 }
 ```
 
@@ -248,10 +248,10 @@ struct Tx1559Detail {
 
 > FAIL. Reason: The path `<file-path>` is not allowed to be accessed for read operations
 
-If you receive this error, make sure that you enable read permissions in `foundry.toml` using the [`fs_permissions` key](./fs.md)
+If you receive this error, make sure that you enable read permissions in `foundry.toml` using the [`fs_permissions` key](/reference/cheatcodes/fs.mdx)
 
 ### References
 
 - Helper Library: [stdJson.sol](https://github.com/foundry-rs/forge-std/blob/master/src/StdJson.sol)
 - Usage examples: [stdCheats.t.sol](https://github.com/foundry-rs/forge-std/blob/ca8d6e00ea9cb035f6856ff732203c9a3c48b966/src/test/StdCheats.t.sol#L206)
-- [File Cheatcodes](./fs.md): cheatcodes for working with files
+- [File Cheatcodes](/reference/cheatcodes/fs.mdx): cheatcodes for working with files

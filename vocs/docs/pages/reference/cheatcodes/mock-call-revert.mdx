@@ -26,10 +26,9 @@ If not, the call data is checked to see if there is a partial match, with the ma
 
 If a match is found, then the call is reverted and `retdata` is returned.
 
-
 **Using the second signature** we can mock the calls with a specific `msg.value`. `Calldata` match takes precedence over `msg.value` in case of ambiguity.
 
-Reverted mock calls are in effect until [`clearMockedCalls`](./clear-mocked-calls.md) is called.
+Reverted mock calls are in effect until [`clearMockedCalls`](/reference/cheatcodes/clear-mocked-calls.mdx) is called.
 
 > ℹ️ **Internal calls**
 >

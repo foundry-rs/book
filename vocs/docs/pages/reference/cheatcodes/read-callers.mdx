@@ -11,8 +11,8 @@ enum CallerMode {
     RecurrentPrank
 }
 
-function readCallers() 
-external 
+function readCallers()
+external
 returns (CallerMode callerMode, address msgSender, address txOrigin);
 ```
 
@@ -23,14 +23,16 @@ Reads the current `CallerMode`, `msg.sender`, and `tx.origin`.
 The `CallerMode` enum indicates if there is an active caller modification and the type.
 
 - If there is an active prank:
+
   - `callerMode` will be equal to:
-    - `CallerMode.Prank` if the prank has been set with [`prank`](./prank.md).
-    - `CallerMode.RecurrentPrank` if the prank has been set with [`startPrank`](./start-prank.md).
+    - `CallerMode.Prank` if the prank has been set with [`prank`](/reference/cheatcodes/prank.mdx).
+    - `CallerMode.RecurrentPrank` if the prank has been set with [`startPrank`](/reference/cheatcodes/start-prank.mdx).
 
 - If there is an active broadcast:
+
   - `callerMode` will be equal to:
-    - `CallerMode.Broadcast` if the broadcast has been set with [`broadcast`](./broadcast.md).
-    - `CallerMode.RecurrentBroadcast` if the broadcast has been set with [`startBroadcast`](./start-broadcast.md).
+    - `CallerMode.Broadcast` if the broadcast has been set with [`broadcast`](/reference/cheatcodes/broadcast.mdx).
+    - `CallerMode.RecurrentBroadcast` if the broadcast has been set with [`startBroadcast`](/reference/cheatcodes/start-broadcast.mdx).
 
 - If no caller modification is active:
   - `callerMode` will be equal to `CallerMode.None`.
@@ -72,7 +74,7 @@ assertEq(txOrigin, broadcastAddress);
 
 ### SEE ALSO
 
-- [prank](./prank.md)
-- [startPrank](./start-prank.md)
-- [broadcast](./broadcast.md)
-- [startBroadcast](./start-broadcast.md)
+- [prank](/reference/cheatcodes/prank.mdx)
+- [startPrank](/reference/cheatcodes/start-prank.mdx)
+- [broadcast](/reference/cheatcodes/broadcast.mdx)
+- [startBroadcast](/reference/cheatcodes/start-broadcast.mdx)

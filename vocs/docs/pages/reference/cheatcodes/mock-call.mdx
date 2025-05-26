@@ -24,17 +24,16 @@ If not, the call data is checked to see if there is a partial match, with the ma
 
 If a match is found, then `retdata` is returned from the call.
 
-
 **Using the second signature** we can mock the calls with a specific `msg.value`. `Calldata` match takes precedence over `msg.value` in case of ambiguity.
 
-Mocked calls are in effect until [`clearMockedCalls`](./clear-mocked-calls.md) is called.
+Mocked calls are in effect until [`clearMockedCalls`](/reference/cheatcodes/clear-mocked-calls.mdx) is called.
 
 > ℹ️ **Note**
 >
 > Calls to mocked addresses may revert if there is no code on the address.
 > This is because Solidity inserts an `extcodesize` check before some contract calls.
 >
-> To circumvent this, use the [`etch`](./etch.md) cheatcode if the mocked address has no code.
+> To circumvent this, use the [`etch`](/reference/cheatcodes/etch.mdx) cheatcode if the mocked address has no code.
 
 > ℹ️ **Internal calls**
 >
@@ -71,7 +70,6 @@ function testMockCall() public {
 
 Mocking a call with a given `msg.value`:
 
-
 ```solidity
 function testMockCall() public {
     assertEq(example.pay{value: 10}(1), 1);
@@ -88,7 +86,6 @@ function testMockCall() public {
 ```
 
 Mocking a public variable:
-
 
 ```solidity
 contract Example {

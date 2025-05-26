@@ -32,10 +32,10 @@ function t(uint256 a) public returns (uint256) {
 function deployOther() public {
     vm.startBroadcast(ACCOUNT_A);
     Test test = new Test();
-    
+
     // will trigger a transaction
     test.t(1);
-    
+
     vm.stopBroadcast();
 
     // broadcast again, this time using a private key from your environment variables
@@ -47,5 +47,5 @@ function deployOther() public {
 
 ### SEE ALSO
 
-- [broadcast](./broadcast.md)
-- [stopBroadcast](./stop-broadcast.md)
+- [broadcast](/reference/cheatcodes/broadcast.mdx)
+- [stopBroadcast](/reference/cheatcodes/stop-broadcast.mdx)

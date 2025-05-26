@@ -20,17 +20,19 @@ function startPrank(address msgSender, address txOrigin, bool delegateCall) exte
 
 ### Description
 
-- `startPrank(address msgSender)`: sets `msg.sender` **for all subsequent calls** until [`stopPrank`](./stop-prank.md) is called.
-- `startPrank(address msgSender, address txOrigin)`: sets `msg.sender` and `tx.origin` **for all subsequent calls** until [`stopPrank`](./stop-prank.md) is called.
-- `startPrank(address msgSender, bool delegateCall)`: if `delegateCall` value is `true` then sets `msg.sender` **for all subsequent delegate calls** until [`stopPrank`](./stop-prank.md) is called.
-- `startPrank(address msgSender, address txOrigin, bool delegateCall)`: if `delegateCall` value is `true` then sets `msg.sender` and `tx.origin` **for all subsequent delegate calls** until [`stopPrank`](./stop-prank.md) is called.
+- `startPrank(address msgSender)`: sets `msg.sender` **for all subsequent calls** until [`stopPrank`](/reference/cheatcodes/stop-prank.mdx) is called.
+- `startPrank(address msgSender, address txOrigin)`: sets `msg.sender` and `tx.origin` **for all subsequent calls** until [`stopPrank`](/reference/cheatcodes/stop-prank.mdx) is called.
+- `startPrank(address msgSender, bool delegateCall)`: if `delegateCall` value is `true` then sets `msg.sender` **for all subsequent delegate calls** until [`stopPrank`](/reference/cheatcodes/stop-prank.mdx) is called.
+- `startPrank(address msgSender, address txOrigin, bool delegateCall)`: if `delegateCall` value is `true` then sets `msg.sender` and `tx.origin` **for all subsequent delegate calls** until [`stopPrank`](/reference/cheatcodes/stop-prank.mdx) is called.
 
 > ℹ️ **Note**
 >
 > The delegate calls cannot be pranked from an EOA.
 
 ### Examples
+
 - prank delegate call and record state diffs
+
 ```solidity
 contract ImplementationTest {
     uint public num;
@@ -67,6 +69,7 @@ contract FoundryIssue is Script {
     }
 }
 ```
+
 ```bash
 == Logs ==
   accountAccesses.kind 1
@@ -79,4 +82,4 @@ contract FoundryIssue is Script {
 
 Forge Standard Library
 
-[`startHoax`](../reference/forge-std/startHoax.md), [`changePrank`](../reference/forge-std/change-prank.md)
+[`startHoax`](/reference/forge-std/startHoax.md), [`changePrank`](/reference/forge-std/change-prank.mdx)

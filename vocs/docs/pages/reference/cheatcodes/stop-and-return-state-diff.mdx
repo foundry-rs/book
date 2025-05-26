@@ -52,7 +52,7 @@ function stopAndReturnStateDiff() external returns (AccountAccess[] memory acces
 
 ### Description
 
-Retrieves state changes recorded after a call to [`startStateDiffRecording`](./start-state-diff-recording.md). This function will consume the recorded state diffs when called and disable state diff recording. One may call `startStateDiffRecording` to resume recording.
+Retrieves state changes recorded after a call to [`startStateDiffRecording`](/reference/cheatcodes/start-state-diff-recording.mdx). This function will consume the recorded state diffs when called and disable state diff recording. One may call `startStateDiffRecording` to resume recording.
 
 There are two types of state change records; account accesses and storage accesses represented as `AccountAccess` and `StorageAccess`.
 
@@ -87,15 +87,15 @@ If kind is a Resume, then account represents an execution context that had resum
 - `chainInfo` - The chain and fork the accessed occurred.
 - `kind` - The kind of account access. This determines how to interpret the `AccountAccess`
 - `account` - The account that was accessed. It's the account created for `AccountAccessKind.Create`.
- In the case of an `AccountAccessKind.SelfDestruct`, it's the selfdestruct recipient.
- For all other types of `AccountAccessKind`, it's the account of the current EVM context.
+  In the case of an `AccountAccessKind.SelfDestruct`, it's the selfdestruct recipient.
+  For all other types of `AccountAccessKind`, it's the account of the current EVM context.
 - `accessor` - What accessed `account`. That is either the account creator, caller or the account being selfdestructed.
 - `initialized` - If the account was initialized or empty prior to the access.
-An account is considered initialized if it has code, a
-non-zero nonce, or a non-zero balance.
+  An account is considered initialized if it has code, a
+  non-zero nonce, or a non-zero balance.
 - `oldBalance`: The previous balance of the accessed `account`.
 - `newBalance` - The potential new balance of the accessed account.
-That is, all balance changes are recorded here, even if reverts occurred.
+  That is, all balance changes are recorded here, even if reverts occurred.
 - `deployedCode` - Code of the `account` deployed in the case of `AccountAccessKind.Create`. This field is empty For all other account access kinds.
 - `value` - The value passed along with the account access.
 - `data` - Input data provided (i.e. `msg.data`) in the case of a `CREATE` or `CALL` type access.
@@ -121,22 +121,22 @@ The storage accesses made during an `AccountAccess`. `StorageAccess` cannot exis
 This type of AccountAccess is generated when a sub-context returns to its parent context. It retains the same values as the original context, including `accessor`, `account`, `initialized`, `storageAccesses`, and `reverted`.
 The following control flow table illustrate how Resume AccountAccesses are recorded.
 
-| Step in Contract A's `alpha()` | Step in Contract B's `beta()` | AccountAccess Records State              |
-|--------------------------------|-------------------------------|------------------------------------------|
-| Call A.alpha()                |                               | [A.call]              |
-| Access state                |                               | [A.call[A.access]]              |
-| Call B.beta()               | B.beta() begins               | [A.call[A.access], B.call]                  |
-| (Execution Paused)          | Access state               | [A.call[A.access], B.call[B.access]]                  |
-|                             |   Return                     |                        |
-| Resume execution            | (Return to A.alpha())         | [A.call[A.access], B.call[B.access]]             |
-| Access state                 |                              | [<br>&emsp;A.call[A.access], <br>&emsp;B.call[B.access], <br>&emsp;A.resume[A.access']<br>]       |
-
+| Step in Contract A's `alpha()` | Step in Contract B's `beta()` | AccountAccess Records State                                                                 |
+| ------------------------------ | ----------------------------- | ------------------------------------------------------------------------------------------- |
+| Call A.alpha()                 |                               | [A.call]                                                                                    |
+| Access state                   |                               | [A.call[A.access]]                                                                          |
+| Call B.beta()                  | B.beta() begins               | [A.call[A.access], B.call]                                                                  |
+| (Execution Paused)             | Access state                  | [A.call[A.access], B.call[B.access]]                                                        |
+|                                | Return                        |                                                                                             |
+| Resume execution               | (Return to A.alpha())         | [A.call[A.access], B.call[B.access]]                                                        |
+| Access state                   |                               | [<br>&emsp;A.call[A.access], <br>&emsp;B.call[B.access], <br>&emsp;A.resume[A.access']<br>] |
 
 > ℹ️ **Note**
 >
 > A Resumed AccountAccess is created only if storage accesses occurred after a context was resumed.
 
 ### Example: Recording storage state changes during a CREATE operation
+
 ```solidity
 contract Contract {
     uint256 internal _reserved;
@@ -172,6 +172,7 @@ assertEq(records[0].storageAccesses[0].reverted, false);
 Note that there are no `Resume` account accesses in this example.
 
 ### Example: Resumed Account Access
+
 ```solidity
 contract Foo {
     Bar b;

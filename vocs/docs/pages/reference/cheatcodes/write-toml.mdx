@@ -18,17 +18,17 @@ The argument `json` must be a JSON object in stringified form. For example:
 { "boolean": true, "number": 342, "object": { "title": "finally json serialization" } }
 ```
 
-This is usually built through [serializeJson](./serialize-json.md).
+This is usually built through [serializeJson](/reference/cheatcodes/serialize-json.mdx).
 
 The argument `path` is the path of the TOML file to write to.
 
 If no `valueKey` is provided, then the TOML object will be written to a new file. If the file already exists, it will be overwritten.
 
-If a `valueKey` is provided, then the file must already exist and be a valid TOML file. The object in that file will be updated by replacing the value at the *JSON path* `valueKey` with the JSON object `json` after TOML conversion.
+If a `valueKey` is provided, then the file must already exist and be a valid TOML file. The object in that file will be updated by replacing the value at the _JSON path_ `valueKey` with the JSON object `json` after TOML conversion.
 
 This is useful to replace some values in a TOML file without having to first parse and then reserialize it. Note that the TOML path must indicate an existing key, so it's not possible to add new keys this way.
 
-**Remember:** The file path `path` needs to be in the allowed paths. Read more in [File cheatcodes](./fs.md).
+**Remember:** The file path `path` needs to be in the allowed paths. Read more in [File cheatcodes](/reference/cheatcodes/fs.mdx).
 
 #### JSON Paths
 
@@ -72,7 +72,7 @@ vm.writeToml(newJsonObj, "./output/example.toml", ".myObject");
 vm.writeToml("my new string", "./output/example.toml", ".myObject.aString");
 
 // Here's example.toml:
-// 
+//
 // boolean = true
 // number = 342
 
@@ -127,4 +127,4 @@ vm.writeToml("13371337", "./output/example2.toml", "..veryDeep");
 
 ### SEE ALSO
 
-- [serializeJson](./serialize-json.md)
+- [serializeJson](/reference/cheatcodes/serialize-json.mdx)
