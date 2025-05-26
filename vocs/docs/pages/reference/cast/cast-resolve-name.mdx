@@ -1,3 +1,6 @@
+import RpcUrlOption from "../common/rpc-url-option.mdx";
+import CommonOptions from "./common-options.mdx";
+
 ## cast resolve-name
 
 ### NAME
@@ -6,7 +9,7 @@ cast-resolve-name - Perform an ENS lookup.
 
 ### SYNOPSIS
 
-``cast resolve-name`` [*options*] *who*
+`cast resolve-name` [*options*] _who_
 
 ### DESCRIPTION
 
@@ -24,21 +27,22 @@ If `--verify` is passed, then a reverse lookup is performed after the normal loo
 
 #### RPC Options
 
-{{#include ../common/rpc-url-option.md}}
+<RpcUrlOption />
 
-{{#include common-options.md}}
+<CommonOptions />
 
 ### EXAMPLES
 
 1. Get the address for an ENS name.
-    ```sh
-    cast resolve-name vitalik.eth
-    ```
+
+   ```sh
+   cast resolve-name vitalik.eth
+   ```
 
 2. Perform both a normal and a reverse lookup:
-    ```sh
-    cast resolve-name --verify vitalik.eth
-    ```
+   ```sh
+   cast resolve-name --verify vitalik.eth
+   ```
 
 ### SEE ALSO
 

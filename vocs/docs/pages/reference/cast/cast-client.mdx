@@ -1,3 +1,6 @@
+import RpcUrlOption from "../common/rpc-url-option.mdx";
+import CommonOptions from "./common-options.mdx";
+
 ## cast client
 
 ### NAME
@@ -6,7 +9,7 @@ cast-client - Get the current client version.
 
 ### SYNOPSIS
 
-``cast client`` [*options*]
+`cast client` [*options*]
 
 ### DESCRIPTION
 
@@ -16,16 +19,17 @@ Get the current client version.
 
 #### RPC Options
 
-{{#include ../common/rpc-url-option.md}}
+<RpcUrlOption />
 
-{{#include common-options.md}}
+<CommonOptions />
 
 ### EXAMPLES
 
 1. Get the current client version:
-    ```sh
-    cast client
-    ```
+   ```sh
+   cast client
+   ```
+
 ### SEE ALSO
 
 [cast](./cast.md)

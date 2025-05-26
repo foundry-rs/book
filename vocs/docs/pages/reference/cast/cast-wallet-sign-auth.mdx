@@ -1,3 +1,8 @@
+import WalletOptionsRaw from "../common/wallet-options-raw.mdx";
+import WalletOptionsKeystore from "../common/wallet-options-keystore.mdx";
+import WalletOptionsHardware from "../common/wallet-options-hardware.mdx";
+import CommonOptions from "./common-options.mdx";
+
 ## cast wallet sign-auth
 
 ### NAME
@@ -18,13 +23,10 @@ If you are sending the transaction from the same address you will need to either
 
 ### OPTIONS
 
-{{#include ../common/wallet-options-raw.md}}
-
-{{#include ../common/wallet-options-keystore.md}}
-
-{{#include ../common/wallet-options-hardware.md}}
-
-{{#include common-options.md}}
+<WalletOptionsRaw />
+<WalletOptionsKeystore />
+<WalletOptionsHardware />
+<CommonOptions />
 
 ### EXAMPLES
 

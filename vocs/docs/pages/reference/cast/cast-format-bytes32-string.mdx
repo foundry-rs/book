@@ -1,3 +1,5 @@
+import CommonOptions from "./common-options.mdx";
+
 ## cast format-bytes32-string
 
 ### NAME
@@ -6,7 +8,7 @@ cast-format-bytes32-string - Formats a string into bytes32 encoding.
 
 ### SYNOPSIS
 
-``cast format-bytes32-string`` [*options*] *string*
+`cast format-bytes32-string` [*options*] _string_
 
 ### DESCRIPTION
 
@@ -16,14 +18,14 @@ Note that this command is for formatting a [Solidity string literal](https://doc
 
 ### OPTIONS
 
-{{#include common-options.md}}
+<CommonOptions />
 
 ### EXAMPLES
 
 1. Turn string "hello" into bytes32 hex:
-    ```sh
-    cast format-bytes32-string "hello"
-    ```
+   ```sh
+   cast format-bytes32-string "hello"
+   ```
 
 ### SEE ALSO
 

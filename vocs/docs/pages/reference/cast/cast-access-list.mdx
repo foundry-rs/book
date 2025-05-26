@@ -1,3 +1,9 @@
+import SigDescription from "./sig-description.mdx";
+import WalletOptions from "../common/wallet-options.mdx";
+import RpcOptions from "../common/rpc-options.mdx";
+import EtherscanOptions from "../common/etherscan-options.mdx";
+import CommonOptions from "./common-options.mdx";
+
 ## cast access-list
 
 ### NAME
@@ -6,33 +12,33 @@ cast-access-list - Create an access list for a transaction.
 
 ### SYNOPSIS
 
-``cast access-list`` [*options*] *to* *sig* [*args...*]
+`cast access-list` [*options*] _to_ _sig_ [*args...*]
 
 ### DESCRIPTION
 
 Create an access list for a transaction.
 
-The destination (*to*) can be an ENS name or an address.
+The destination (_to_) can be an ENS name or an address.
 
-{{#include sig-description.md}}
+<SigDescription />
 
 ### OPTIONS
 
 #### Query Options
 
-`-B` *block*  
-`--block` *block*  
+`-B` _block_  
+`--block` _block_  
 &nbsp;&nbsp;&nbsp;&nbsp;The block height you want to query at.
 
 &nbsp;&nbsp;&nbsp;&nbsp;Can be a block number, or any of the tags: `earliest`, `finalized`, `safe`, `latest` or `pending`.
 
-{{#include ../common/wallet-options.md}}
+<WalletOptions />
 
-{{#include ../common/rpc-options.md}}
+<RpcOptions />
 
-{{#include ../common/etherscan-options.md}}
+<EtherscanOptions />
 
-{{#include common-options.md}}
+<CommonOptions />
 
 ### SEE ALSO
 

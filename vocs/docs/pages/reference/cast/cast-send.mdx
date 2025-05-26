@@ -1,3 +1,11 @@
+import SigDescription from "./sig-description.mdx";
+import TransactionOptions from "../common/transaction-options.mdx";
+import WalletOptions from "../common/wallet-options.mdx";
+import RpcOptions from "../common/rpc-options.mdx";
+import EtherscanOptions from "../common/etherscan-options.mdx";
+import DisplayOptions from "../common/display-options.mdx";
+import CommonOptions from "./common-options.mdx";
+
 ## cast send
 
 ### NAME
@@ -14,11 +22,11 @@ Sign and publish a transaction.
 
 The destination (_to_) can be an ENS name or an address.
 
-{{#include sig-description.md}}
+<SigDescription />
 
 ### OPTIONS
 
-{{#include ../common/transaction-options.md}}
+<TransactionOptions />
 
 `--resend`  
 &nbsp;&nbsp;&nbsp;&nbsp;Reuse the latest nonce of the sending account.
@@ -47,18 +55,18 @@ The destination (_to_) can be an ENS name or an address.
 `--confirmations` _confirmations_  
 &nbsp;&nbsp;&nbsp;&nbsp;Wait a number of confirmations before exiting. Default: `1`.
 
-{{#include ../common/wallet-options.md}}
+<WalletOptions />
 
 `--unlocked`  
 &nbsp;&nbsp;&nbsp;&nbsp;Send via `eth_sendTransaction` using the `--from` argument or `$ETH_FROM` as sender.
 
-{{#include ../common/rpc-options.md}}
+<RpcOptions />
 
-{{#include ../common/etherscan-options.md}}
+<EtherscanOptions />
 
-{{#include ../common/display-options.md}}
+<DisplayOptions />
 
-{{#include common-options.md}}
+<CommonOptions />
 
 ### EXAMPLES
 

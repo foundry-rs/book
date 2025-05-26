@@ -1,3 +1,6 @@
+import RpcUrlOption from "../common/rpc-url-option.mdx";
+import CommonOptions from "./common-options.mdx";
+
 ## cast chain-id
 
 ### NAME
@@ -6,7 +9,7 @@ cast-chain-id - Get the Ethereum chain ID.
 
 ### SYNOPSIS
 
-``cast chain-id`` [*options*]
+`cast chain-id` [*options*]
 
 ### DESCRIPTION
 
@@ -16,21 +19,22 @@ Get the Ethereum [chain ID][chain-id] from the RPC endpoint we are connected to.
 
 #### RPC Options
 
-{{#include ../common/rpc-url-option.md}}
+<RpcUrlOption />
 
-{{#include common-options.md}}
+<CommonOptions />
 
 ### EXAMPLES
 
 1. Get the chain ID when talking to `$RPC`:
-    ```sh
-    cast chain-id --rpc-url $RPC
-    ```
+
+   ```sh
+   cast chain-id --rpc-url $RPC
+   ```
 
 2. Get the chain ID when `$ETH_RPC_URL` is set:
-    ```sh
-    cast chain-id
-    ```
+   ```sh
+   cast chain-id
+   ```
 
 ### SEE ALSO
 

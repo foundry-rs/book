@@ -1,3 +1,5 @@
+import CommonOptions from "./common-options.mdx";
+
 ## cast to-fixed-point
 
 ### NAME
@@ -6,7 +8,7 @@ cast-to-fixed-point - Convert an integer into a fixed point number.
 
 ### SYNOPSIS
 
-``cast to-fixed-point`` [*options*] *decimals* *value*
+`cast to-fixed-point` [*options*] _decimals_ _value_
 
 ### DESCRIPTION
 
@@ -14,14 +16,14 @@ Convert an integer into a fixed point number.
 
 ### OPTIONS
 
-{{#include common-options.md}}
+<CommonOptions />
 
 ### EXAMPLES
 
 1. Convert 250 to a fixed point number with 2 decimals:
-    ```sh
-    cast to-fixed-point 2 250
-    ```
+   ```sh
+   cast to-fixed-point 2 250
+   ```
 
 ### SEE ALSO
 

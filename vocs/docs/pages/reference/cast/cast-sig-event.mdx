@@ -1,3 +1,5 @@
+import CommonOptions from "./common-options.mdx";
+
 ## cast sig-event
 
 ### NAME
@@ -6,7 +8,7 @@ cast-sig-event - Generate event signatures from event string.
 
 ### SYNOPSIS
 
-``cast sig-event`` [*options*] *event_string*
+`cast sig-event` [*options*] _event_string_
 
 ### DESCRIPTION
 
@@ -14,14 +16,14 @@ Generate event signatures from event string.
 
 ### OPTIONS
 
-{{#include common-options.md}}
+<CommonOptions />
 
 ### EXAMPLES
 
 1. Get the hash for the log `Transfer(address indexed from, address indexed to, uint256 amount)`:
-    ```sh
-    cast sig-event "Transfer(address indexed from, address indexed to, uint256 amount)"
-    ```
+   ```sh
+   cast sig-event "Transfer(address indexed from, address indexed to, uint256 amount)"
+   ```
 
 ### SEE ALSO
 

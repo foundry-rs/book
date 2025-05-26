@@ -1,3 +1,5 @@
+import CommonOptions from "./common-options.mdx";
+
 ## cast wallet vanity
 
 ### NAME
@@ -6,7 +8,7 @@ cast-wallet-vanity - Generate a vanity address.
 
 ### SYNOPSIS
 
-``cast wallet vanity`` [*options*]
+`cast wallet vanity` [*options*]
 
 ### DESCRIPTION
 
@@ -18,36 +20,38 @@ If `--nonce` is specified, then the command will try to generate a vanity contra
 
 #### Keystore Options
 
-`--starts-with` *hex*  
+`--starts-with` _hex_  
 &nbsp;&nbsp;&nbsp;&nbsp;Prefix for the vanity address.
 
-`--ends-with` *hex*  
+`--ends-with` _hex_  
 &nbsp;&nbsp;&nbsp;&nbsp;Suffix for the vanity address.
 
-`--nonce` *nonce*  
+`--nonce` _nonce_  
 &nbsp;&nbsp;&nbsp;&nbsp;Generate a vanity contract address created by the generated keypair with the specified nonce.
 
-`--save-path` *path*  
+`--save-path` _path_  
 &nbsp;&nbsp;&nbsp;&nbsp;Path to save the generated vanity wallet. If provided, the wallet details will be saved in a JSON file at this location.
 
-{{#include common-options.md}}
+<CommonOptions />
 
 ### EXAMPLES
 
 1. Create a new keypair that starts with `dead`:
-    ```sh
-    cast wallet vanity --starts-with dead
-    ```
+
+   ```sh
+   cast wallet vanity --starts-with dead
+   ```
 
 2. Create a new keypair ends with `beef`:
-    ```sh
-    cast wallet vanity --ends-with beef
-    ```
+
+   ```sh
+   cast wallet vanity --ends-with beef
+   ```
 
 3. Create a new keypair that starts with `dead` and save the details to a specific path:
-    ```sh
-    cast wallet vanity --starts-with dead --save-path /path/to/save
-    ```
+   ```sh
+   cast wallet vanity --starts-with dead --save-path /path/to/save
+   ```
 
 ### SEE ALSO
 

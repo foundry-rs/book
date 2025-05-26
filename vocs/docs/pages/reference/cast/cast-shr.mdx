@@ -1,3 +1,6 @@
+import BaseOptions from "../common/base-options.mdx";
+import CommonOptions from "./common-options.mdx";
+
 ## cast shr
 
 ### NAME
@@ -6,7 +9,7 @@ cast-shr - Perform a right shifting operation.
 
 ### SYNOPSIS
 
-``cast shr`` [*options*] *value* *shift*
+`cast shr` [*options*] _value_ _shift_
 
 ### DESCRIPTION
 
@@ -14,16 +17,15 @@ Perform a right shifting operation.
 
 ### OPTIONS
 
-{{#include ../common/base-options.md}}
-
-{{#include common-options.md}}
+<BaseOptions />
+<CommonOptions />
 
 ### EXAMPLES
 
 1. Perform a single right bit shift of 0x12
-    ```sh
-    cast shr --base-in 16 0x12 1
-    ```
+   ```sh
+   cast shr --base-in 16 0x12 1
+   ```
 
 > Note: The --base-in parameter is not enforced but will be needed if the input is ambiguous.
 

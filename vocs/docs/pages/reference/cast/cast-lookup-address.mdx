@@ -1,3 +1,6 @@
+import RpcUrlOption from "../common/rpc-url-option.mdx";
+import CommonOptions from "./common-options.mdx";
+
 ## cast lookup-address
 
 ### NAME
@@ -6,7 +9,7 @@ cast-lookup-address - Perform an ENS reverse lookup.
 
 ### SYNOPSIS
 
-``cast lookup-address`` [*options*] *who*
+`cast lookup-address` [*options*] _who_
 
 ### DESCRIPTION
 
@@ -24,21 +27,22 @@ If `--verify` is passed, then a normal lookup is performed after the reverse loo
 
 #### RPC Options
 
-{{#include ../common/rpc-url-option.md}}
+<RpcUrlOption />
 
-{{#include common-options.md}}
+<CommonOptions />
 
 ### EXAMPLES
 
 1. Get the ENS name for an address.
-    ```sh
-    cast lookup-address $ADDRESS
-    ```
+
+   ```sh
+   cast lookup-address $ADDRESS
+   ```
 
 2. Perform both a reverse and a normal lookup:
-    ```sh
-    cast lookup-address --verify $ADDRESS
-    ```
+   ```sh
+   cast lookup-address --verify $ADDRESS
+   ```
 
 ### SEE ALSO
 

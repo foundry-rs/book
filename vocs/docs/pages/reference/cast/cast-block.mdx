@@ -1,3 +1,7 @@
+import DisplayOptions from "../common/display-options.mdx";
+import RpcUrlOption from "../common/rpc-url-option.mdx";
+import CommonOptions from "./common-options.mdx";
+
 ## cast block
 
 ### NAME
@@ -6,44 +10,46 @@ cast-block - Get information about a block.
 
 ### SYNOPSIS
 
-``cast block`` [*options*] [*block*]
+`cast block` [*options*] [*block*]
 
 ### DESCRIPTION
 
 Get information about a block.
 
-The specified *block* can be a block number, or any of the tags: `earliest`, `finalized`, `safe`, `latest` or `pending`. Default to `latest`.
+The specified _block_ can be a block number, or any of the tags: `earliest`, `finalized`, `safe`, `latest` or `pending`. Default to `latest`.
 
 ### OPTIONS
 
-`-f` *field*  
-`--field` *field*  
+`-f` _field_  
+`--field` _field_  
 &nbsp;&nbsp;&nbsp;&nbsp; If specified, only get the given field of the block.
 
-{{#include ../common/display-options.md}}
+<DisplayOptions />
 
 #### RPC Options
 
-{{#include ../common/rpc-url-option.md}}
+<RpcUrlOption />
 
-{{#include common-options.md}}
+<CommonOptions />
 
 ### EXAMPLES
 
 1. Get the latest block:
-    ```sh
-    cast block
-    ```
+
+   ```sh
+   cast block
+   ```
 
 2. Get the `finalized` block:
-    ```sh
-    cast block finalized
-    ```
+
+   ```sh
+   cast block finalized
+   ```
 
 3. Get the hash of the latest block:
-    ```sh
-    cast block latest -f hash
-    ```
+   ```sh
+   cast block latest -f hash
+   ```
 
 ### SEE ALSO
 

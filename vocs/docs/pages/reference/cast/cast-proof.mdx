@@ -1,3 +1,7 @@
+import RpcUrlOption from "../common/rpc-url-option.mdx";
+import DisplayOptions from "../common/display-options.mdx";
+import CommonOptions from "./common-options.mdx";
+
 ## cast proof
 
 ### NAME
@@ -6,13 +10,13 @@ cast-proof - Generate a storage proof for a given storage slot.
 
 ### SYNOPSIS
 
-``cast proof`` [*options*] *address* [*slots...*]
+`cast proof` [*options*] _address_ [*slots...*]
 
 ### DESCRIPTION
 
 Generate a storage proof for a given storage slot.
 
-The address (*address*) can be an ENS name or an address.
+The address (_address_) can be an ENS name or an address.
 
 The displayed output is a JSON object with the following keys:
 
@@ -31,26 +35,26 @@ The displayed output is a JSON object with the following keys:
 
 #### Query Options
 
-`-B` *block*  
-`--block` *block*  
+`-B` _block_  
+`--block` _block_  
 &nbsp;&nbsp;&nbsp;&nbsp;The block height you want to query at.
 
 &nbsp;&nbsp;&nbsp;&nbsp;Can be a block number, or any of the tags: `earliest`, `finalized`, `safe`, `latest` or `pending`.
 
 #### RPC Options
 
-{{#include ../common/rpc-url-option.md}}
+<RpcUrlOption />
 
-{{#include ../common/display-options.md}}
+<DisplayOptions />
 
-{{#include common-options.md}}
+<CommonOptions />
 
 ### EXAMPLES
 
 1. Get the proof for storage slot 0 on the WETH contract:
-    ```sh
-    cast proof 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2 0
-    ```
+   ```sh
+   cast proof 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2 0
+   ```
 
 ### SEE ALSO
 

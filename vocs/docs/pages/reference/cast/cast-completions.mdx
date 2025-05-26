@@ -1,3 +1,5 @@
+import CommonOptions from "./common-options.mdx";
+
 ## cast completions
 
 ### NAME
@@ -6,7 +8,7 @@ cast-completions - Generate shell completions script
 
 ### SYNOPSIS
 
-``cast completions`` *shell*
+`cast completions` _shell_
 
 ### DESCRIPTION
 
@@ -22,14 +24,14 @@ Supported shells are:
 
 ### OPTIONS
 
-{{#include common-options.md}}
+<CommonOptions />
 
 ### EXAMPLES
 
 1. Generate shell completions script for zsh:
-    ```sh
-    cast completions zsh > $HOME/.oh-my-zsh/completions/_cast
-    ```
+   ```sh
+   cast completions zsh > $HOME/.oh-my-zsh/completions/_cast
+   ```
 
 ### SEE ALSO
 

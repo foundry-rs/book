@@ -1,3 +1,9 @@
+import SigDescription from "./sig-description.mdx";
+import TxValueOption from "../common/tx-value-option.mdx";
+import RpcOptions from "../common/rpc-options.mdx";
+import EtherscanOptions from "../common/etherscan-options.mdx";
+import CommonOptions from "./common-options.mdx";
+
 ## cast estimate
 
 ### NAME
@@ -6,35 +12,35 @@ cast-estimate - Estimate the gas cost of a transaction.
 
 ### SYNOPSIS
 
-``cast estimate`` [*options*] *to* *sig* [*args...*]
+`cast estimate` [*options*] _to_ _sig_ [*args...*]
 
 ### DESCRIPTION
 
 Estimate the gas cost of a transaction.
 
-The destination (*to*) can be an ENS name or an address.
+The destination (_to_) can be an ENS name or an address.
 
-{{#include sig-description.md}}
+<SigDescription />
 
 ### OPTIONS
 
 #### Transaction Options
 
-{{#include ../common/tx-value-option.md}}
+<TxValueOption />
 
-{{#include ../common/rpc-options.md}}
+<RpcOptions />
 
-{{#include ../common/etherscan-options.md}}
+<EtherscanOptions />
 
-{{#include common-options.md}}
+<CommonOptions />
 
 ### EXAMPLES
 
 1. Estimate the gas cost of calling `deposit()` on the WETH contract:
-    ```sh
-    cast estimate 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2 \
-      --value 0.1ether "deposit()"
-    ```
+   ```sh
+   cast estimate 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2 \
+     --value 0.1ether "deposit()"
+   ```
 
 ### SEE ALSO
 
