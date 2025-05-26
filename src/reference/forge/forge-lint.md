@@ -93,7 +93,7 @@ contract IncorrectShift {
 To disable this lint for your project, you can add its ID to the `exclude_lints` array within the `[lint]` section of the `foundry.toml` configuration file:
 
 ```toml
- [lint]
+[lint]
 # ... rest of lint config ...
 exclude_lints = ["incorrect-shift"]
 ```
@@ -126,7 +126,7 @@ contract DivideBeforeMultiply {
 To disable this lint for your project, you can add its ID to the `exclude_lints` array within the `[lint]` section of the `foundry.toml` configuration file:
 
 ```toml
- [lint]
+[lint]
 # ... rest of lint config ...
 exclude_lints = ["divide-before-multiply"]
 ```
@@ -137,7 +137,8 @@ exclude_lints = ["divide-before-multiply"]
 ##### `pascal-case-struct`
 
 Ensures that struct names adhere to `PascalCase` (e.g., `MyStruct`) convention. This is a common styling guideline in Solidity to improve code readability and maintain consistency.
-See: [Solidity Style Guide - Struct Names](https://docs.soliditylang.org/en/latest/style-guide.html#struct-names)
+
+Useful resources: [Solidity Style Guide - Struct Names](https://docs.soliditylang.org/en/latest/style-guide.html#struct-names)
 
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -162,7 +163,7 @@ contract PascalCaseStruct {
 To disable this lint for your project, you can add its ID to the `exclude_lints` array within the `[lint]` section of the `foundry.toml` configuration file:
 
 ```toml
- [lint]
+[lint]
 # ... rest of lint config ...
 exclude_lints = ["pascal-case-struct"]
 ```
@@ -171,7 +172,8 @@ exclude_lints = ["pascal-case-struct"]
 ##### `mixed-case-function`
 
 Ensures that function names adhere to `mixedCase` (e.g., `myFunction`) convention. This helps in differentiate functions from other identifiers like structs or events and is a standard practice.
-See: [Solidity Style Guide - Function Names](https://docs.soliditylang.org/en/latest/style-guide.html#function-names)
+
+Useful resources: [Solidity Style Guide - Function Names](https://docs.soliditylang.org/en/latest/style-guide.html#function-names)
 
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -196,7 +198,7 @@ contract MixedCaseFunction {
 To disable this lint for your project, you can add its ID to the `exclude_lints` array within the `[lint]` section of the `foundry.toml` configuration file:
 
 ```toml
- [lint]
+[lint]
 # ... rest of lint config ...
 exclude_lints = ["mixed-case-function"]
 ```
@@ -238,7 +240,8 @@ exclude_lints = ["mixed-case-variable"]
 ##### `screaming-snake-case-const`
 
 Ensures that `constant` variable names adhere to `SCREAMING_SNAKE_CASE` (e.g., `MY_CONSTANT`). This is the standard convention for constants in Solidity, making them easily identifiable.
-See: [Solidity Style Guide - Constants](https://docs.soliditylang.org/en/latest/style-guide.html#constants)
+
+Useful resources: [Solidity Style Guide - Constants](https://docs.soliditylang.org/en/latest/style-guide.html#constants)
 
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -257,7 +260,7 @@ contract ScreamingSnakeCaseConstant {
 To disable this lint for your project, you can add its ID to the `exclude_lints` array within the `[lint]` section of the `foundry.toml` configuration file:
 
 ```toml
- [lint]
+[lint]
 # ... rest of lint config ...
 exclude_lints = ["screaming-snake-case-constant"]
 ```
@@ -284,7 +287,7 @@ contract ScreamingSnakeCaseImmutable {
 To disable this lint for your project, you can add its ID to the `exclude_lints` array within the `[lint]` section of the `foundry.toml` configuration file:
 
 ```toml
- [lint]
+[lint]
 # ... rest of lint config ...
 exclude_lints = ["screaming-snake-case-immutable"]
 ```
@@ -320,7 +323,7 @@ contract HashOptimization {
 To disable this lint for your project, you can add its ID to the `exclude_lints` array within the `[lint]` section the `foundry.toml` configuration file:
 
 ```toml
- [lint]
+[lint]
 # ... rest of lint config ...
 exclude_lints = ["asm-keccak256"]
 ```
