@@ -121,15 +121,15 @@ The storage accesses made during an `AccountAccess`. `StorageAccess` cannot exis
 This type of AccountAccess is generated when a sub-context returns to its parent context. It retains the same values as the original context, including `accessor`, `account`, `initialized`, `storageAccesses`, and `reverted`.
 The following control flow table illustrate how Resume AccountAccesses are recorded.
 
-| Step in Contract A's `alpha()` | Step in Contract B's `beta()` | AccountAccess Records State                                                                 |
-| ------------------------------ | ----------------------------- | ------------------------------------------------------------------------------------------- |
-| Call A.alpha()                 |                               | [A.call]                                                                                    |
-| Access state                   |                               | [A.call[A.access]]                                                                          |
-| Call B.beta()                  | B.beta() begins               | [A.call[A.access], B.call]                                                                  |
-| (Execution Paused)             | Access state                  | [A.call[A.access], B.call[B.access]]                                                        |
-|                                | Return                        |                                                                                             |
-| Resume execution               | (Return to A.alpha())         | [A.call[A.access], B.call[B.access]]                                                        |
-| Access state                   |                               | [<br>&emsp;A.call[A.access], <br>&emsp;B.call[B.access], <br>&emsp;A.resume[A.access']<br>] |
+| Step in Contract A's `alpha()` | Step in Contract B's `beta()` | AccountAccess Records State                                                                                     |
+| ------------------------------ | ----------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| Call A.alpha()                 |                               | [A.call]                                                                                                        |
+| Access state                   |                               | [A.call[A.access]]                                                                                              |
+| Call B.beta()                  | B.beta() begins               | [A.call[A.access], B.call]                                                                                      |
+| (Execution Paused)             | Access state                  | [A.call[A.access], B.call[B.access]]                                                                            |
+|                                | Return                        |                                                                                                                 |
+| Resume execution               | (Return to A.alpha())         | [A.call[A.access], B.call[B.access]]                                                                            |
+| Access state                   |                               | [<br></br>&emsp;A.call[A.access], <br></br>&emsp;B.call[B.access], <br></br>&emsp;A.resume[A.access']<br></br>] |
 
 > ℹ️ **Note**
 >

@@ -22,13 +22,13 @@ The following `rpc_endpoints` in `foundry.toml` registers two RPC aliases:
 - `optimism` references the URL directly
 - `mainnet` references the `RPC_MAINNET` environment value that is expected to contain the actual URL
 
-*Env variables need to be wrapped in `${}`*
+_Env variables need to be wrapped in `${}`_
 
 ```toml
 # --snip--
 [rpc_endpoints]
 optimism = "https://optimism.alchemyapi.io/v2/..."
-mainnet = "${RPC_MAINNET}" 
+mainnet = "${RPC_MAINNET}"
 ```
 
 ```solidity
@@ -68,4 +68,4 @@ assertEq(hex"10b7c11bcb51e6", result);
 
 Forge Config
 
-[Config Reference](../reference/config/testing.md#rpc_endpoints)
+[Config Reference](/reference/config/testing#rpc_endpoints)
