@@ -1,7 +1,9 @@
-{{#include wallet-options-raw.md}}
+import WalletOptionsRaw from "./wallet-options-raw.mdx";
+import WalletOptionsKeystore from "./wallet-options-keystore.mdx";
+import WalletOptionsHardware from "./wallet-options-hardware.mdx";
+import WalletOptionsRemote from "./wallet-options-remote.mdx";
 
-{{#include wallet-options-keystore.md}}
-
-{{#include wallet-options-hardware.md}}
-
-{{#include wallet-options-remote.md}}
+<WalletOptionsRaw />
+<WalletOptionsKeystore />
+<WalletOptionsHardware />
+<WalletOptionsRemote />
