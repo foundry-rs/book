@@ -1,23 +1,7 @@
 # Best Practices
 
 This guide documents the suggested best practices when developing with Foundry.
-In general, it's recommended to handle as much as possible with [`forge fmt`](../reference/config/formatter.md), and anything this doesn't handle is below.
-
-- [Best Practices](#best-practices)
-  - [General Contract Guidance](#general-contract-guidance)
-  - [Tests](#tests)
-    - [General Test Guidance](#general-test-guidance)
-    - [Fork Tests](#fork-tests)
-    - [Test Harnesses](#test-harnesses)
-      - [Internal Functions](#internal-functions)
-      - [Private Functions](#private-functions)
-      - [Workaround Functions](#workaround-functions)
-    - [Best practices](#best-practices-1)
-    - [Taint Analysis](#taint-analysis)
-  - [Scripts](#scripts)
-    - [Private Key Management](#private-key-management)
-  - [Comments](#comments)
-  - [Resources](#resources)
+In general, it's recommended to handle as much as possible with [`forge fmt`](/reference/config/formatter), and anything this doesn't handle is below.
 
 ## General Contract Guidance
 
@@ -114,14 +98,14 @@ Additional best practices from [samsczun](https://twitter.com/samczsun)'s [How D
 1. Be careful with fuzz tests on a fork to avoid burning through RPC requests with non-deterministic fuzzing. If the input to your fork fuzz test is some parameter which is used in an RPC call to fetch data (e.g. querying the token balance of an address), each run of a fuzz test uses at least 1 RPC request, so you'll quickly hit rate limits or usage limits. Solutions to consider:
 
    - Replace multiple RPC calls with a single [multicall](https://github.com/mds1/multicall).
-   - Specify a fuzz/invariant [seed](../reference/config/testing.md#seed): this makes sure each `forge test` invocation uses the same fuzz inputs. RPC results are cached locally, so you'll only query the node the first time.
+   - Specify a fuzz/invariant [seed](/reference/config/testing#seed): this makes sure each `forge test` invocation uses the same fuzz inputs. RPC results are cached locally, so you'll only query the node the first time.
    - In CI, consider setting the fuzz seed using a [computed environment variable](https://github.com/sablier-labs/v2-core/blob/d1157b49ed4bceeff0c4e437c9f723e88c134d3a/.github/workflows/ci.yml#L252-L254) so it changes every day or every week. This gives flexibility on the tradeoff between increasing randomness to find more bugs vs. using a seed to reduce RPC requests.
    - Structure your tests so the data you are fuzzing over is computed locally by your contract, and not data that is used in an RPC call (may or may not be feasible based on what you're doing).
    - Lastly, you can of course always run a local node or bump your RPC plan.
 
 1. When writing fork tests, do not use the `--fork-url` flag. Instead, prefer the following approach for its improved flexibility:
 
-   - Define `[rpc_endpoints]` in the `foundry.toml` config file and use the [forking cheatcodes](../forge/fork-testing.md#forking-cheatcodes).
+   - Define `[rpc_endpoints]` in the `foundry.toml` config file and use the [forking cheatcodes](/forge/tests/fork-testing#forking-cheatcodes).
    - Access the RPC URL endpoint in your test with forge-std's `stdChains.ChainName.rpcUrl`. See the list of supported chains and expected config file aliases [here](https://github.com/foundry-rs/forge-std/blob/ff4bf7db008d096ea5a657f2c20516182252a3ed/src/StdCheats.sol#L255-L271).
    - Always pin to a block so tests are deterministic and RPC responses are cached.
    - More info on this fork test approach can be found [here](https://twitter.com/msolomon44/status/1564742781129502722) (this predates `StdChains` so that aspect is a bit out of date).
@@ -245,14 +229,14 @@ You should _ensure_ that no _tainted_ data ever reaches a _sink_. That means tha
 
 Script execution requires a private key to send transactions. This key controls all funds in the account, so it must be protected carefully. There are a few options for securely broadcasting transactions through a script:
 
-1. **Use a hardware wallet.** Hardware wallets such as Ledger and Trezor store seed phrases in a secure enclave. Forge can send a raw transaction to the wallet, and the wallet will sign the transaction. The signed transaction is returned to forge and broadcaster. This way, private keys never leave the hardware wallet, making this a very secure approach. To use a hardware wallet with scripts, see the `--ledger` and `--trezor` [flags](../reference/forge/forge-script.md).
+1. **Use a hardware wallet.** Hardware wallets such as Ledger and Trezor store seed phrases in a secure enclave. Forge can send a raw transaction to the wallet, and the wallet will sign the transaction. The signed transaction is returned to forge and broadcaster. This way, private keys never leave the hardware wallet, making this a very secure approach. To use a hardware wallet with scripts, see the `--ledger` and `--trezor` [flags](/reference/forge/forge-script).
 
 2. **Use a private key directly.** With this approach you expose a private key on your machine, making it riskier than the above option. Therefore the suggested way to directly use a private key is to generate a new wallet for executing the script, and only send that wallet enough funds to run the script. Then, stop using the key after the script is complete. This way, if the key is compromised, only the funds on this throwaway key are lost, as opposed to losing everything in your wallet.
 
    1. With this approach, it's very important that your scripts or contracts don't rely on `msg.sender` since the sender will not be an account that's meant to be used again. For example, if a deploy script configures a contract owner, ensure the owner a constructor argument and not set to `msg.sender`.
    2. To use this approach, you can either store the private key in an environment variable and use cheat codes to read it in, or use the `--private-key` flag to directly provide the key.
 
-3. **Use a keystore.** This can be thought of as a middle ground between the above two approaches. With [`cast wallet import`](../reference/cast/cast-wallet-import.md) you import a private key and encrypt it with a password. This still temporarily exposes your private key on your machine, but it becomes encrypted and you'll provide the password to decrypt it to run a script.
+3. **Use a keystore.** This can be thought of as a middle ground between the above two approaches. With [`cast wallet import`](/reference/cast/cast-wallet-import) you import a private key and encrypt it with a password. This still temporarily exposes your private key on your machine, but it becomes encrypted and you'll provide the password to decrypt it to run a script.
 
 Additional security precautions when using scripts:
 

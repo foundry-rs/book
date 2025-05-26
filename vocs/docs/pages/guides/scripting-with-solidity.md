@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Solidity scripting is a way to declaratively deploy contracts using Solidity, instead of using the more limiting and less user friendly [`forge create`](../reference/forge/forge-create.md).
+Solidity scripting is a way to declaratively deploy contracts using Solidity, instead of using the more limiting and less user friendly [`forge create`](/reference/forge/forge-create).
 
 Solidity scripts are like the scripts you write when working with tools like Hardhat; what makes Solidity scripting different is that they are written in Solidity instead of JavaScript, and they are run on the fast Foundry EVM backend, which provides advanced simulation with dry-run capabilities.
 
@@ -92,7 +92,7 @@ sepolia = "${SEPOLIA_RPC_URL}"
 sepolia = { key = "${ETHERSCAN_API_KEY}" }
 ```
 
-This creates a [RPC alias](../cheatcodes/rpc.md) for Sepolia and loads the Etherscan API key.
+This creates a [RPC alias](/reference/cheatcodes/rpc) for Sepolia and loads the Etherscan API key.
 
 ### Writing the script
 
@@ -152,7 +152,7 @@ function run() external {
 
 By default, scripts are executed by calling the function named `run`, our entrypoint.
 
-This loads in the private key from our `.env` file. **Note:** you must be careful when exposing private keys in a `.env` file and loading them into programs. This is only recommended for use with non-privileged deployers or for local / test setups. For production setups please review the various [wallet options](../reference/forge/forge-script.md#wallet-options---raw) that Foundry supports.
+This loads in the private key from our `.env` file. **Note:** you must be careful when exposing private keys in a `.env` file and loading them into programs. This is only recommended for use with non-privileged deployers or for local / test setups. For production setups please review the various [wallet options](/reference/forge/forge-script#wallet-options---raw) that Foundry supports.
 
 ```solidity
 vm.startBroadcast();
@@ -164,7 +164,7 @@ This is a special cheatcode that records calls and contract creations made by ou
 Counter counter = new Counter();
 ```
 
-Here we have just created our `Counter` contract. Because we called `vm.startBroadcast()` before this line, the contract creation will be recorded by Forge, and as mentioned previously, we can broadcast the transaction to deploy the contract on-chain. The broadcast transaction logs will be stored in the `broadcast` directory by default. You can change the logs location by setting [`broadcast`](../reference/config/project.md#broadcast) in your `foundry.toml` file.
+Here we have just created our `Counter` contract. Because we called `vm.startBroadcast()` before this line, the contract creation will be recorded by Forge, and as mentioned previously, we can broadcast the transaction to deploy the contract on-chain. The broadcast transaction logs will be stored in the `broadcast` directory by default. You can change the logs location by setting [`broadcast`](/reference/config/project#broadcast) in your `foundry.toml` file.
 
 The broadcasting sender is determined by checking the following in order:
 

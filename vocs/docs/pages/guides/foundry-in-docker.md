@@ -7,12 +7,12 @@ This guide shows you how to build, test, and deploy a smart contract using Found
 ### Installation and Setup
 
 The only installation required to run this guide is Docker, and optionally, an IDE of your choice.
-Follow the [Docker installation instructions](../getting-started/installation.md).
+Follow the [Docker installation instructions](/introduction/installation).
 
 To keep future commands succinct, let's re-tag the image:  
  `docker tag ghcr.io/foundry-rs/foundry:latest foundry:latest`
 
-Having Foundry installed locally is not strictly required, but it may be helpful for debugging. You can install it using [foundryup](../getting-started/installation.md#using-foundryup).
+Having Foundry installed locally is not strictly required, but it may be helpful for debugging. You can install it using [foundryup](/introduction/installation#using-foundryup).
 
 Finally, to use any of the `cast` or `forge create` portions of this guide, you will need access to an Ethereum node. If you don't have your own node running (likely), you can use a 3rd party node service. We won't recommend a specific provider in this guide. A good place to start learning about Nodes-as-a-Service is [Ethereum's article](https://ethereum.org/en/developers/docs/nodes-and-clients/nodes-as-a-service/) on the subject.
 
@@ -27,7 +27,7 @@ The docker image can be used in two primary ways:
 
 We will cover both, but let's start by taking a look at interfacing with foundry using docker. This is also a good test that your local installation worked!
 
-We can run any of the `cast` [commands](/reference/cast/) against our docker image. Let's fetch the latest block information:
+We can run any of the `cast` [commands](/reference/cast/overview) against our docker image. Let's fetch the latest block information:
 
 ```sh
 $ docker run foundry "cast block --rpc-url $RPC_URL latest"

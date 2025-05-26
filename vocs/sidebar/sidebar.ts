@@ -61,7 +61,7 @@ export const sidebar: Sidebar = [
         text: 'Guides',
         link: '/guides',
         items: [
-            { text: 'Foundry v1.0 migration guide', link: '/guides/v1.0-migration' },
+            
             { text: 'Best Practices', link: '/guides/best-practices' },
             { text: 'Scripting with Solidity', link: '/guides/scripting-with-solidity' },
             { text: 'Deterministic deployments using CREATE2', link: '/guides/deterministic-deployments-using-create2' },
@@ -74,6 +74,21 @@ export const sidebar: Sidebar = [
         text: 'References',
         collapsed: false,
         items: cmdReference,
+    },
+    {
+        text: 'Miscellaneous',
+        items: [
+            {
+              text: 'Announcements', link: '/misc/announcements'
+            },
+            { text: 'v1.0 migration guide', link: '/misc/v1.0-migration' },
+            {
+              text: 'Struct Encoding', link: '/misc/struct-encoding' 
+            },
+            {
+              text: 'FAQ', link: '/misc/faq',
+            },
+        ]
     }
 ]
 
