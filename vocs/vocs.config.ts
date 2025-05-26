@@ -55,11 +55,11 @@ export default defineConfig({
       text: 'Guides',
     },
     {
-      text: 'v1.2.0-rc',
+      text: 'v1.2.1',
       items: [
         {
           text: 'Release notes',
-          link: 'https://github.com/foundry-rs/foundry/releases/tag/v1.2.1-rc',
+          link: 'https://github.com/foundry-rs/foundry/releases/tag/v1.2.1',
         },
         {
           text: 'Contributing',
