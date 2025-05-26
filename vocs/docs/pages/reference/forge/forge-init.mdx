@@ -1,3 +1,5 @@
+import CommonOptions from "./common-options.mdx";
+
 ## forge init
 
 ### NAME
@@ -6,16 +8,16 @@ forge-init - Create a new Forge project.
 
 ### SYNOPSIS
 
-``forge init`` [*options*] [*root*]
+`forge init` [*options*] [*root*]
 
 ### DESCRIPTION
 
-Create a new Forge project in the directory *root* (by default the current working directory).
+Create a new Forge project in the directory _root_ (by default the current working directory).
 
 The default template creates the following project layout:
 
-```ignore
-{{#include ../../output/hello_foundry/tree-with-files:output}}
+```bash
+// [!include ~/snippets/output/hello_foundry/tree-with-files:output]
 ```
 
 However, it is possible to create a project from another using `--template`.
@@ -31,8 +33,8 @@ If you do not want this behavior, pass `--no-git`.
 `--force`  
 &nbsp;&nbsp;&nbsp;&nbsp;Create the project even if the specified root directory is not empty.
 
-`-t` *template*  
-`--template` *template*  
+`-t` _template_  
+`--template` _template_  
 &nbsp;&nbsp;&nbsp;&nbsp;The template to start from.
 
 `--vscode`  
@@ -55,24 +57,26 @@ If you do not want this behavior, pass `--no-git`.
 `--quiet`  
 &nbsp;&nbsp;&nbsp;&nbsp;Do not print any messages.
 
-{{#include common-options.md}}
+<CommonOptions />
 
 ### EXAMPLES
 
 1. Create a new project:
-    ```sh
-    forge init hello_foundry
-    ```
+
+   ```sh
+   forge init hello_foundry
+   ```
 
 2. Create a new project, but do not create a git repository:
-    ```sh
-    forge init --no-git hello_foundry
-    ```
+
+   ```sh
+   forge init --no-git hello_foundry
+   ```
 
 3. Forcibly create a new project in a non-empty directory:
-    ```sh
-    forge init --force 
-    ```
+   ```sh
+   forge init --force
+   ```
 
 ### SEE ALSO
 

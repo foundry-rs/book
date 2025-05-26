@@ -1,3 +1,5 @@
+import CommonOptions from "./common-options.mdx";
+
 ## forge config
 
 ### NAME
@@ -6,7 +8,7 @@ forge-config - Display the current config.
 
 ### SYNOPSIS
 
-``forge config`` [*options*]
+`forge config` [*options*]
 
 ### DESCRIPTION
 
@@ -29,19 +31,20 @@ overriding values in the displayed configuration.
 `--fix`  
 &nbsp;&nbsp;&nbsp;&nbsp;Attempts to fix any configuration warnings.
 
-{{#include common-options.md}}
+<CommonOptions />
 
 ### EXAMPLES
 
 1. Create a new basic config:
-    ```sh
-    forge config > foundry.toml
-    ```
+
+   ```sh
+   forge config > foundry.toml
+   ```
 
 2. Enable FFI in `foundry.toml`:
-    ```sh
-    forge config --ffi > foundry.toml
-    ```
+   ```sh
+   forge config --ffi > foundry.toml
+   ```
 
 ### SEE ALSO
 
