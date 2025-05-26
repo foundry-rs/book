@@ -6,7 +6,7 @@ Using Forge Std is the preferred way of writing tests with Foundry.
 
 What's included:
 
-- `Vm.sol`: Up-to-date [cheatcodes interface](../../cheatcodes/#cheatcodes-interface)
+- `Vm.sol`: Up-to-date [cheatcodes interface](/reference/cheatcodes/README#cheatcodes-interface)
 
   ```solidity
   import {Vm} from "forge-std/Vm.sol";
@@ -24,7 +24,7 @@ What's included:
   import {console2} from "forge-std/console2.sol";
   ```
 
-- `Script.sol`: Basic utilities for [Solidity scripting](/reference/guides/scripting-with-solidity.mdx)
+- `Script.sol`: Basic utilities for [Solidity scripting](#TODO)
 
   ```solidity
   import {Script} from "forge-std/Script.sol";
@@ -61,7 +61,7 @@ What's included:
   - [Script Utils](/reference/forge-std/script-utils.mdx): Utility functions which can be accessed in tests and scripts.
   - [Console Logging](/reference/forge-std/console-log.mdx): Console logging functions.
 
-- A cheatcodes instance `vm`, from which you invoke Forge cheatcodes (see [Cheatcodes Reference](../../cheatcodes/))
+- A cheatcodes instance `vm`, from which you invoke Forge cheatcodes (see [Cheatcodes Reference](/reference/cheatcodes/README))
 
   ```solidity
   vm.startPrank(alice);
@@ -73,7 +73,7 @@ What's included:
   console.log(alice.balance); // or `console2`
   ```
 
-- All Dappsys Test functions for asserting and logging (see [Dappsys Test reference](/reference/ds-test.mdx))
+- All Dappsys Test functions for asserting and logging (see [Dappsys Test reference](/reference/ds-test.md))
 
   ```solidity
   assertEq(dai.balanceOf(alice), 10000e18);
