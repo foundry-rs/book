@@ -78,7 +78,7 @@ import { HomePage, Sponsors } from "vocs/components";
   <div className="flex justify-between flex-wrap mt-10">
       <div className="pr-2 w-1/4 max-lg:pb-3 max-sm:px-0 max-lg:w-1/2 max-sm:w-full z-0">
         <div className="relative w-full h-[168px] max-lg:h-[142px] overflow-hidden">
-          <a href="#TODO" className="hover:bg-black/2 dark:hover:bg-white/2 border-black/10 dark:border-white/10 border border-solid rounded-lg h-full px-5 py-6 absolute z-10 flex flex-col justify-between w-full vocs_Link vocs_Link_styleless">
+          <a href="/forge/tests/fork-testing" className="hover:bg-black/2 dark:hover:bg-white/2 border-black/10 dark:border-white/10 border border-solid rounded-lg h-full px-5 py-6 absolute z-10 flex flex-col justify-between w-full vocs_Link vocs_Link_styleless">
             <div className="text-xl font-medium text-black dark:text-white">Fork Testing</div>
             <div className="text-[17px] text-[#919193]">Test your contracts against real world chain state</div>
           </a>
@@ -98,7 +98,7 @@ import { HomePage, Sponsors } from "vocs/components";
       </div>
       <div className="pl-2 pr-2 max-lg:pb-3 max-sm:px-0 max-lg:pl-0 w-1/4 max-lg:w-1/2 max-sm:w-full z-0">
         <div className="relative w-full h-[168px] max-lg:h-[142px]">
-          <a href="#TODO" className="hover:bg-black/2 dark:hover:bg-white/2 border-black/10 dark:border-white/10 border border-solid rounded-lg h-full px-5 py-6 absolute z-10 flex flex-col justify-between w-full vocs_Link vocs_Link_styleless">
+          <a href="/anvil/overview" className="hover:bg-black/2 dark:hover:bg-white/2 border-black/10 dark:border-white/10 border border-solid rounded-lg h-full px-5 py-6 absolute z-10 flex flex-col justify-between w-full vocs_Link vocs_Link_styleless">
             <div className="text-xl font-medium text-black dark:text-white">Performant local node</div>
             <div className="text-[17px] text-[#919193]">Run `anvil` to setup local dev nodes instantly</div>
           </a>
@@ -108,7 +108,7 @@ import { HomePage, Sponsors } from "vocs/components";
       </div>
       <div className="pl-2 w-1/4 max-sm:px-0 max-lg:w-1/2 max-sm:w-full z-0">
         <div className="relative w-full h-[168px] max-lg:h-[142px]">
-          <a href="#TODO" className="hover:bg-black/2 dark:hover:bg-white/2 border-black/10 dark:border-white/10 border border-solid rounded-lg h-full px-5 py-6 absolute z-10 flex flex-col justify-between w-full vocs_Link vocs_Link_styleless">
+          <a href="/cast/overview" className="hover:bg-black/2 dark:hover:bg-white/2 border-black/10 dark:border-white/10 border border-solid rounded-lg h-full px-5 py-6 absolute z-10 flex flex-col justify-between w-full vocs_Link vocs_Link_styleless">
             <div className="text-xl font-medium text-black dark:text-white">Interact with applications</div>
             <div className="text-[17px] text-[#919193]">`cast` is your swiss-army knife to interact with any chain</div>
           </a>
@@ -132,13 +132,25 @@ import { HomePage, Sponsors } from "vocs/components";
 forge init Counter
 ```
 
+```bash [Run tests]
+# Run tests for the Counter contract
+forge test
+# You can run tests against chain state by forking
+forge test --fork-url https://reth-ethereum.ithaca.xyz/rpc
+```
+
+```bash [Deploy contract]
+# Use forge scripts to deploy the Counter contract
+# Running `anvil` @ http://localhost:8545
+# Set the private key in the env
+export PRIVATE_KEY="0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80" # Address - 0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266
+# Run the script and broadcast the deploy transaction
+forge script script/Counter.s.sol --rpc-url http://127.0.0.1:8545 --broadcast --private-key $PRIVATE_KEY
+```
+
 ```bash [Clone an onchain contract]
 # Clones an onchain contract and sets up a forge project
 forge clone 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
-```
-
-```bash [forge --help]
-forge --help  // TODO: Sync Output via Script
 ```
 
 :::
@@ -157,8 +169,9 @@ anvil
 anvil --fork-url https://reth-ethereum.ithaca.xyz/rpc
 ```
 
-```bash [anvil --help]
-anvil --help  // TODO: Sync Output via Script
+```bash [Load and Dump State]
+# Load and dump state when initializing and shutting down anvil
+anvil --state ./path/to/state-file
 ```
 
 :::
@@ -191,10 +204,6 @@ echo "\nBalance Of 0xf39F:" && cast balance 0xf39Fd6e51aad88F6F4ce6aB8827279cffF
 cast rpc eth_getHeaderByNumber $(cast 2h 22539851) --rpc-url https://reth-ethereum.ithaca.xyz/rpc
 ```
 
-```bash [cast --help]
-cast --help // TODO: Sync Output via Script
-```
-
 :::
 
 # Community
@@ -209,3 +218,4 @@ Join the Community
 <Sponsors />
 
 </article>
+````
