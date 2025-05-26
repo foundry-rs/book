@@ -129,13 +129,13 @@ This program is a set of tools to interact with Ethereum and perform conversions
 &nbsp;&nbsp;&nbsp;&nbsp;ABI encode the given function arguments, excluding the selector.
 
 [cast 4byte](./cast-4byte.md)
-&nbsp;&nbsp;&nbsp;&nbsp;Get the function signatures for the given selector from <https://openchain.xyz/signatures>.
+&nbsp;&nbsp;&nbsp;&nbsp;Get the function signatures for the given selector from [Openchain Signatures](https://openchain.xyz/signatures).
 
 [cast 4byte-calldata](./cast-4byte-calldata.md)
-&nbsp;&nbsp;&nbsp;&nbsp;Decode ABI-encoded calldata using <https://openchain.xyz/signatures>.
+&nbsp;&nbsp;&nbsp;&nbsp;Decode ABI-encoded calldata using [Openchain Signatures](https://openchain.xyz/signatures).
 
 [cast 4byte-event](./cast-4byte-event.md)
-&nbsp;&nbsp;&nbsp;&nbsp;Get the event signature for a given topic 0 from <https://openchain.xyz/signatures>.
+&nbsp;&nbsp;&nbsp;&nbsp;Get the event signature for a given topic 0 from [Openchain Signatures](https://openchain.xyz/signatures).
 
 [cast calldata](./cast-calldata.md)
 &nbsp;&nbsp;&nbsp;&nbsp;ABI-encode a function with arguments.
@@ -314,4 +314,4 @@ This program is a set of tools to interact with Ethereum and perform conversions
 
 ### BUGS
 
-See <https://github.com/foundry-rs/foundry/issues> for issues.
+See https://github.com/foundry-rs/foundry/issues for issues.

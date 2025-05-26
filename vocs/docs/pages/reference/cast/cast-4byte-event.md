@@ -2,7 +2,7 @@
 
 ### NAME
 
-cast-4byte-event - Get the event signature for a given topic 0 from <https://openchain.xyz/signatures>.
+cast-4byte-event - Get the event signature for a given topic 0 from [Openchain Signatures](https://openchain.xyz/signatures).
 
 ### SYNOPSIS
 
@@ -10,7 +10,7 @@ cast-4byte-event - Get the event signature for a given topic 0 from <https://ope
 
 ### DESCRIPTION
 
-Get the event signature for a given topic 0 from <https://openchain.xyz/signatures>.
+Get the event signature for a given topic 0 from https://openchain.xyz/signatures.
 
 ### OPTIONS
 

@@ -12,7 +12,7 @@ cast-pretty-calldata - Pretty print calldata.
 
 Pretty print calldata.
 
-Tries to decode the calldata using <https://openchain.xyz/signatures> unless `--offline` is passed.
+Tries to decode the calldata using [Openchain Signatures](https://openchain.xyz/signatures) unless `--offline` is passed.
 
 ### OPTIONS
 
@@ -20,7 +20,7 @@ Tries to decode the calldata using <https://openchain.xyz/signatures> unless `--
 
 `-o`  
 `--offline`  
-&nbsp;&nbsp;&nbsp;&nbsp;Skip the <https://openchain.xyz/signatures> lookup.
+&nbsp;&nbsp;&nbsp;&nbsp;Skip the https://openchain.xyz/signatures lookup.
 
 {{#include common-options.md}}
 

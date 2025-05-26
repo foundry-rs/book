@@ -2,7 +2,7 @@
 
 ### NAME
 
-cast-4byte - Get the function signatures for the given selector from <https://openchain.xyz/signatures>.
+cast-4byte - Get the function signatures for the given selector from [Openchain Signatures](https://openchain.xyz/signatures).
 
 ### SYNOPSIS
 
@@ -10,7 +10,7 @@ cast-4byte - Get the function signatures for the given selector from <https://op
 
 ### DESCRIPTION
 
-Get the function signatures for the given selector from <https://openchain.xyz/signatures>.
+Get the function signatures for the given selector from https://openchain.xyz/signatures.
 
 ### OPTIONS
 
