@@ -64,8 +64,8 @@ This section details the lints supported by `forge lint`. Each lint includes an 
 Warns against shift operations where the operands might be in an unconventional or potentially erroneous order, specifically when a literal is shifted by a non-literal.
 
 In Solidity, bitwise shift operations (`<<` for left shift, `>>` for right shift) take the value to be shifted as the left operand and the number of bits to shift as the right operand.
-Shifting a literal by a potentially large or dynamic variable can often be an indication of a logical error where the operands were intended to be reversed.
-If that was intended, instead, it is prefered to replace literals by constants.
+
+This lint rule uses a heuristic to flag potentially incorrect shift oferations. To do so, it identifies expressions where literal is shifted by a variable, which can often be an indication of a logical error where the operands were intended to be reversed. If that was indeed intended, it is recommended to replace literals by constants. Alternatively, the lint rule can be disabled.
 
 ```solidity
 // SPDX-License-Identifier: MIT
