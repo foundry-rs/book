@@ -49,6 +49,7 @@ export const sidebar: Sidebar = [
         collapsed: false,
         items: [
             { text: 'Overview', link: '/config/overview' },
+            { text: 'Dynamic Test Linking', link: '/config/dynamic-test-linking'},
             { text: 'Continuous Integration', link: '/config/continuous-integration' },
             { text: 'Integrating with VSCode', link: '/config/vscode' },
             { text: 'Shell Autocompletion', link: '/config/shell-autocompletion' },
