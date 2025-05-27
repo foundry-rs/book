@@ -161,7 +161,7 @@ If enabled, Foundry will treat Solidity compiler warnings as errors, stopping ar
 ##### `evm_version`
 
 - Type: string
-- Default: cancun
+- Default: prague
 - Environment: `FOUNDRY_EVM_VERSION` or `DAPP_EVM_VERSION`
 
 The EVM version to use during tests. The value **must** be an EVM hardfork name, such as `london`, `byzantium`, etc.
@@ -461,6 +461,7 @@ Compilation restrictions allows configuration of how individual files or directo
 > For a complex configuration of compiler profiles and compiler restrictions please refer to Uniswap [contracts monorepo](https://github.com/Uniswap/contracts/blob/4d80a9cfed9b920b83a394b168a95319606a0b73/foundry.toml#L27-L72).
 
 For example, with configuration below, `Counter.sol` contract under `src` is compiled with `via-ir` option enabled while all other contracts (including tests) are compiled with the default profile.
+
 ```toml
 # add via_ir profile
 additional_compiler_profiles = [ { name = "via-ir", via_ir = true } ]
@@ -482,6 +483,7 @@ When choosing compiler profile, first profile (starting with default one) satisf
 > If the same source file is compiled with several profiles, then an artifact is generated for each profile - if `Counter` is compiled with default and `v1` profile, `Counter.json` and `Counter.v1.json` artifacts are created.
 
 #### Additional compiler settings:
+
 `[additional_compiler_profiles]`
 
 - Type: array of additional compiler profiles
@@ -489,11 +491,13 @@ When choosing compiler profile, first profile (starting with default one) satisf
 Configures a mapping from profile name to settings overrides.
 
 For example, an additional `via-ir` compiler profile that changes compilation pipeline to go through the new IR optimizer can be defined as:
+
 ```toml
 additional_compiler_profiles = [ { name = "via-ir", via_ir = true } ]
 ```
 
 There are several configurable values for a compiler profile:
+
 - `name`
 - `via_ir`
 - `evm_version`
@@ -517,7 +521,7 @@ Additional compiler profile [via_ir](#via_ir) setting.
 ##### `additional_compiler_profile.evm_version`
 
 - Type: string
-- Default: cancun
+- Default: prague
 
 Additional compiler profile [evm_version](#evm_version) setting.
 
@@ -543,6 +547,7 @@ Additional compiler profile [optimizer_runs](#optimizer_runs) setting.
 Additional compiler profile [bytecode_hash](#bytecode_hash) setting.
 
 #### Compilation restrictions settings:
+
 #### `[compilation_restrictions]`
 
 - Type: array of compilation restrictions settings
@@ -554,11 +559,13 @@ Additional compiler profile [bytecode_hash](#bytecode_hash) setting.
 Only applies compilation restrictions on files matching given paths.
 
 For example:
+
 - `src/contracts/Counter.sol` - apply restrictions for specific contract
 - `src/contracts/{Counter,CounterFactory}.sol` - apply restrictions for multiple contracts, by name
 - `src/v1/**` or `src/v3/**/libraries/**` - apply restrictions for all contracts in matching source path
 
 There are several configurable values for an compilation restriction:
+
 - `version`
 - `via_ir`
 - `bytecode_hash`
@@ -622,5 +629,3 @@ Restrict compilation for a min version of [evm_version](#evm_version) setting. C
 - Type: string
 
 Restrict compilation for a max version of [evm_version](#evm_version) setting. Conflicts with `evm_version` setting, requires `min_evm_version` setting.
-
-
