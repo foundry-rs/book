@@ -1,6 +1,6 @@
 ## Differential Testing
 
-Forge can be used for differential testing and differential fuzzing. You can even test against non-EVM executables using the `ffi` [cheatcode](#TODO).
+Forge can be used for differential testing and differential fuzzing. You can even test against non-EVM executables using the `ffi` [cheatcode](/reference/cheatcodes/ffi).
 
 ### Background
 
@@ -20,7 +20,7 @@ Below are some examples of how Forge is used for differential testing.
 
 ### Primer: The `ffi` cheatcode
 
-[`ffi`](#TODO) allows you to execute an arbitrary shell command and capture the output. Here's a mock example:
+[`ffi`](/reference/cheatcodes/ffi) allows you to execute an arbitrary shell command and capture the output. Here's a mock example:
 
 ```solidity
 import {Test} from "forge-std/Test.sol";

@@ -4,10 +4,10 @@ Forge manages dependencies using [git submodules](https://git-scm.com/book/en/v2
 
 ### Adding a dependency
 
-To add a dependency, run [`forge install`](#TODO):
+To add a dependency, run [`forge install`](/reference/forge/forge-update):
 
 ```sh
-// [!include ../snippets/output/hello_foundry/forge-install:all]
+// [!include ~/snippets/output/hello_foundry/forge-install:all]
 ```
 
 This pulls the `solady` library, stages the `.gitmodules` file in git and makes a commit with the message `Installed solady`.
@@ -15,7 +15,7 @@ This pulls the `solady` library, stages the `.gitmodules` file in git and makes 
 If we now check the `lib` folder:
 
 ```sh
-// [!include ../snippets/output/hello_foundry/tree:all]
+// [!include ~/snippets/output/hello_foundry/tree:all]
 ```
 
 We can see that Forge installed `solady`!
@@ -31,7 +31,7 @@ $ forge install vectorized/solady@v0.1.3
 Forge can remap dependencies to make them easier to import. Forge will automatically try to deduce some remappings for you:
 
 ```sh
-// [!include ../snippets/output/hello_foundry/forge-remappings:all]
+// [!include ~/snippets/output/hello_foundry/forge-remappings:all]
 ```
 
 These remappings mean:
@@ -81,7 +81,7 @@ This approach ensures that each dependency is mapped to the appropriate library 
 
 ### Updating dependencies
 
-You can update a specific dependency to the latest commit on the version you have specified using [`forge update <dep>`](#TODO). For example, if we wanted to pull the latest commit from our previously installed master-version of `solady`, we would run:
+You can update a specific dependency to the latest commit on the version you have specified using [`forge update <dep>`](/reference/forge/forge-update). For example, if we wanted to pull the latest commit from our previously installed master-version of `solady`, we would run:
 
 ```sh
 $ forge update lib/solady
@@ -91,7 +91,7 @@ Alternatively, you can do this for all dependencies at once by just running `for
 
 ### Removing dependencies
 
-You can remove dependencies using [`forge remove <deps>...`](#TODO), where `<deps>` is either the full path to the dependency or just the name. For example, to remove `solady` both of these commands are equivalent:
+You can remove dependencies using [`forge remove <deps>...`](/reference/forge/forge-remove), where `<deps>` is either the full path to the dependency or just the name. For example, to remove `solady` both of these commands are equivalent:
 
 ```sh
 $ forge remove solady

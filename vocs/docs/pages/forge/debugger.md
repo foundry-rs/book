@@ -2,7 +2,7 @@
 
 Forge ships with an interactive debugger.
 
-The debugger is accessible on [`forge test`](#TODO), on [`forge script`](#TODO) and on [`cast run`](#TODO). You can only select a single function or a single transaction to debug at the time.
+The debugger is accessible on [`forge test`](/reference/forge/forge-test), on [`forge script`](/reference/forge/forge-script) and on [`cast run`](/reference/cast/cast-run). You can only select a single function or a single transaction to debug at the time.
 
 Using `forge test` (or `forge script`):
 
@@ -31,7 +31,7 @@ cast run --debug \
 
 ### Debugger layout
 
-![An image of the debugger UI](#TODO)
+![An image of the debugger UI](/debugger.png)
 
 When the debugger is run, you are presented with a terminal divided into four quadrants:
 
@@ -93,4 +93,4 @@ For the stack, **cyan words** are either being read or popped by the current opc
 [op-jumpdest]: https://www.evm.codes/#5b
 [op-jump]: https://www.evm.codes/#f1
 [op-jumpi]: https://www.evm.codes/#57
-[cheat-breakpoint]: #TODO
+[cheat-breakpoint]: /reference/cheatcodes/breakpoint

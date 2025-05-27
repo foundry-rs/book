@@ -4,11 +4,11 @@ Forge can help you estimate how much gas your contract will consume.
 
 Currently, Forge ships with three different tools for this job:
 
-- [**Gas reports**](#TODO): Gas reports give you an overview of how much Forge thinks the
+- [**Gas reports**](/forge/gas-tracking/gas-reports): Gas reports give you an overview of how much Forge thinks the
   individual functions in your contracts will consume in gas.
-- [**Gas function snapshots**](#TODO): Gas function snapshots give you an overview of how much
+- [**Gas function snapshots**](/forge/gas-tracking/gas-function-snapshots): Gas function snapshots give you an overview of how much
   each test function consumes in gas.
-- [**Gas section snapshots**](#TODO): Gas section snapshots give you the ability to capture gas usage over arbitrary sections inside of test functions.
+- [**Gas section snapshots**](/forge/gas-tracking/gas-section-snapshots): Gas section snapshots give you the ability to capture gas usage over arbitrary sections inside of test functions.
   This also tracks internal gas usage. You can access this by using the `snapshotGas*` cheatcodes inside your tests.
 
 Gas reports, gas function snapshots and gas section snapshots differ in some ways:

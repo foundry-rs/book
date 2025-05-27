@@ -6,7 +6,7 @@ Using Forge Std is the preferred way of writing tests with Foundry.
 
 What's included:
 
-- `Vm.sol`: Up-to-date [cheatcodes interface](/reference/cheatcodes/README#cheatcodes-interface)
+- `Vm.sol`: Up-to-date [cheatcodes interface](/reference/cheatcodes/overview#cheatcodes-interface)
 
   ```solidity
   import {Vm} from "forge-std/Vm.sol";
@@ -24,7 +24,7 @@ What's included:
   import {console2} from "forge-std/console2.sol";
   ```
 
-- `Script.sol`: Basic utilities for [Solidity scripting](#TODO)
+- `Script.sol`: Basic utilities for [Solidity scripting](/guides/scripting-with-solidity)
 
   ```solidity
   import {Script} from "forge-std/Script.sol";
@@ -61,7 +61,7 @@ What's included:
   - [Script Utils](/reference/forge-std/script-utils.mdx): Utility functions which can be accessed in tests and scripts.
   - [Console Logging](/reference/forge-std/console-log.mdx): Console logging functions.
 
-- A cheatcodes instance `vm`, from which you invoke Forge cheatcodes (see [Cheatcodes Reference](/reference/cheatcodes/README))
+- A cheatcodes instance `vm`, from which you invoke Forge cheatcodes (see [Cheatcodes Reference](/reference/cheatcodes/overview))
 
   ```solidity
   vm.startPrank(alice);

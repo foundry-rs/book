@@ -1,6 +1,6 @@
 ## Installation
 
-If you encounter any issues during installation, refer to the [FAQ](#TODO) for assistance.
+If you encounter any issues during installation, refer to the [FAQ](/misc/faq) for assistance.
 
 ### Precompiled Binaries
 
@@ -107,7 +107,7 @@ You can also build the Docker image locally by running the following command fro
 docker build -t foundry .
 ```
 
-For examples and guides on using this image, refer to the [Docker guide](#TODO).
+For examples and guides on using this image, refer to the [Docker guide](/guides/foundry-in-docker).
 
 > ℹ️ **Note**  
 > Some systems, including those with M1 chips, may experience issues when building the Docker image locally. This is a known issue.

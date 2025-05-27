@@ -29,6 +29,6 @@ i.e. `[profile.ci.fuzz]`.
 
 <br></br>
 
-> 📚 **Reference**
->
-> See the [`foundry.toml` Reference](#TODO) for a complete overview of what you can configure.
+:::info
+See the [`foundry.toml` Reference](/reference/config/default-config) for a complete overview of what you can configure.
+:::

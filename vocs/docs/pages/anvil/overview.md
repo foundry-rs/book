@@ -86,6 +86,6 @@ Listening on 127.0.0.1:8545
 
 <br></br>
 
-> 📚 **Reference**
->
-> See the [`anvil` Reference](#TODO) for in depth information on Anvil and its capabilities.
+:::info
+See the [`anvil` Reference](/reference/anvil/overview) for in depth information on Anvil and its capabilities.
+:::

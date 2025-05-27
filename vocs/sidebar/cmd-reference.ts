@@ -233,11 +233,11 @@ export const cmdReference: SidebarItem[] = [
   },
   {
     text: 'Anvil Reference',
-    link: '/reference/anvil/README',
+    link: '/reference/anvil/overview',
   },
   {
     text: 'Chisel Reference',
-    link: '/reference/chisel/README',
+    link: '/reference/chisel/overview',
   },
   {
     text: 'Config Reference',
@@ -504,9 +504,6 @@ export const cmdReference: SidebarItem[] = [
   },
   {
     text: 'DSTest Reference',
-    collapsed: true,
-    items: [ 
-      { text: 'DSTest', link: '/reference/ds-test' },
-    ],
+    link: '/reference/ds-test',
   },
 ];

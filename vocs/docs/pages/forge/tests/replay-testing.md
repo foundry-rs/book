@@ -49,4 +49,4 @@ or by using inline config
 
 ### Remove persisted failures
 
-To ignore saved failures and start a clean test campaign, simply remove the persisted files or run [`forge clean`](#TODO) (removes all build artifacts and cache directories).
+To ignore saved failures and start a clean test campaign, simply remove the persisted files or run [`forge clean`](/reference/forge/forge-clean) (removes all build artifacts and cache directories).

@@ -61,6 +61,6 @@ Gas used: 109037
 If you wish to simulate on-chain transactions pass a RPC URL.
 ```
 
-> 📚 **Reference**
->
-> See the [`forge` Reference](#TODO) for a complete overview of all the available subcommands.
+:::info
+See the [`forge` Reference](/reference/forge/forge) for a complete overview of all the available subcommands.
+:::

@@ -4,7 +4,7 @@ Tests are written in Solidity. If the test function reverts, the test fails, oth
 
 Let's go over the most common way of writing tests, using the [Forge Standard Library](https://github.com/foundry-rs/forge-std)'s `Test` contract, which is the preferred way of writing tests with Forge.
 
-In this section, we'll go over the basics using the functions from the Forge Std's `Test` contract, which is itself a superset of [DSTest](https://github.com/dapphub/ds-test). You will learn how to use more advanced stuff from the Forge Standard Library [soon](#TODO).
+In this section, we'll go over the basics using the functions from the Forge Std's `Test` contract, which is itself a superset of [DSTest](https://github.com/dapphub/ds-test). You will learn how to use more advanced stuff from the Forge Standard Library [soon](/forge/tests/forge-std).
 
 DSTest provides basic logging and assertion functionality. To get access to the functions, import `forge-std/Test.sol` and inherit from `Test` in your test contract:
 
@@ -32,7 +32,7 @@ Forge uses the following keywords in tests:
 // [!include ~/snippets/projects/writing_tests/test/Basic.t.sol:testNumberIs42]
 ```
 
-A good practice is to use the pattern `test_Revert[If|When]_Condition` in combination with the [`expectRevert`](#TODO) cheatcode (cheatcodes are explained in greater detail in the following [section](#TODO)). Also, other testing practices can be found in the [Guides section](#TODO).
+A good practice is to use the pattern `test_Revert[If|When]_Condition` in combination with the [`expectRevert`](/reference/cheatcodes/expect-revert) cheatcode (cheatcodes are explained in greater detail in the following [section](/forge/tests/cheatcodes)). Also, other testing practices can be found in the [Guides section](/guides/best-practices).
 
 > **Note**: To use `stdError` constants (like `arithmeticError` in the example below), make sure to import `StdError.sol`:
 >
@@ -142,5 +142,5 @@ contract MyOtherContractTest is Test, HelperContract {
 <br></br>
 
 :::tip
-Use the [`getCode`](#TODO) cheatcode to deploy contracts with incompatible Solidity versions.
+Use the [`getCode`](/reference/cheatcodes/get-code) cheatcode to deploy contracts with incompatible Solidity versions.
 :::

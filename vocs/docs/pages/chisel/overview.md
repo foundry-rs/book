@@ -51,6 +51,6 @@ To see available commands, type `!help` within the REPL.
 
 <br></br>
 
-> 📚 **Reference**
->
-> See the [`chisel` Reference](#TODO) for in depth information on Chisel and its capabilities.
+:::info
+See the [`chisel` Reference](/reference/chisel/overview) for in depth information on Chisel and its capabilities.
+:::

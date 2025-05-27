@@ -1,6 +1,6 @@
 ## Creating a New Project
 
-To start a new project with Foundry, use [`forge init`](#TODO):
+To start a new project with Foundry, use [`forge init`](/reference/forge/forge-init):
 
 ```sh [forge init]
 // [!include ~/snippets/output/hello_foundry/forge-init:command]
