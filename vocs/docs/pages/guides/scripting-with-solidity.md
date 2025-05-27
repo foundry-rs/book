@@ -96,6 +96,8 @@ sepolia = { key = "${ETHERSCAN_API_KEY}" }
 
 This creates a [RPC alias](/reference/cheatcodes/rpc) for Sepolia and loads the Etherscan API key.
 
+However this does not effect the `getChain` method.
+
 ### Writing the script
 
 Next, navigate to the `script` folder and locate the `CounterScript`.

@@ -5,6 +5,9 @@
 `--fork-url` *url*  
 &nbsp;&nbsp;&nbsp;&nbsp;Fetch state over a remote endpoint instead of starting from an empty state.
 
+&nbsp;&nbsp;&nbsp;&nbsp;In most cases, --rpc-url is preferred for specifying network connections, including custom chains.
+
+
 &nbsp;&nbsp;&nbsp;&nbsp;If you want to fetch state from a specific block number, see
 `--fork-block-number`.
 
