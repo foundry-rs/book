@@ -450,7 +450,10 @@ Executor environment config:
           because of tests. By default, it is 0x6000 (~25kb)
 
       --chain <CHAIN>
-          The chain name or EIP-155 chain ID
+          The chain name or EIP-155 chain ID. This only 
+          works with built-in chains; does not support 
+          custom aliases from foundry.toml.
+
           
           [aliases: --chain-id]
 
