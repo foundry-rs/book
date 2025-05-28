@@ -55,7 +55,8 @@ export const sidebar: Sidebar = [
             { text: 'Shell Autocompletion', link: '/config/shell-autocompletion' },
             { text: 'Static Analyzers', link: '/config/static-analyzers' },
             { text: 'Integrating with Hardhat', link: '/config/hardhat' },
-            { text: 'Vyper support', link: '/config/vyper' }
+            { text: 'Vyper support', link: '/config/vyper' },
+            { text: 'Forge lint', link: '/config/lint' },
         ]
     },
     {
