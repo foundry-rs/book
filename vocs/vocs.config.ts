@@ -32,8 +32,8 @@ export default defineConfig({
       ],
     }
   ],
-  logoUrl: '/foundry-logo.png',
-  iconUrl: '/foundry-logo.png',
+  logoUrl: '/cropped-ripped-jesus.png',
+  iconUrl: '/cropped-ripped-jesus.png',
   ogImageUrl: '/og-image.png',
   socials: [
     {
@@ -51,7 +51,7 @@ export default defineConfig({
       text: 'Docs',
     },
     {
-      link: '#TODO',
+      link: '/guides/best-practices',
       text: 'Guides',
     },
     {
