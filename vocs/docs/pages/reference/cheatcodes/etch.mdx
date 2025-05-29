@@ -24,7 +24,7 @@ log_bytes(address(targetAddr).code); // 0x6080604052348015610010...
 Some chains, like Blast or Arbitrum, run with custom precompiles. Foundry is operating on vanilla EVM and is not aware of those. If you are encountering reverts due to not available precompile, you can use `vm.etch` cheatcode to inject mock of the missing precompile to the address it is expected to appear at.
 
 ```solidity
-{{#include ../../projects/cheatcodes/test/BlastMock.t.sol:all}}
+// [!include ~/snippets/projects/cheatcodes/test/BlastMock.t.sol::all]
 ```
 
 <div class="warning">

@@ -11,13 +11,13 @@
 #### Subcommands (bin)
 
 1. `chisel list`
-    * Displays all cached sessions stored in `~/.foundry/cache/chisel`.
+   - Displays all cached sessions stored in `~/.foundry/cache/chisel`.
 1. `chisel load <id>`
-    * If a cached session with `id = <id>` exists, launches the REPL and loads the corresponding session.
+   - If a cached session with `id = <id>` exists, launches the REPL and loads the corresponding session.
 1. `chisel view <id>`
-    * If a cached session with `id = <id>` exists, displays the source code of the session's REPL contract.
+   - If a cached session with `id = <id>` exists, displays the source code of the session's REPL contract.
 1. `chisel clear-cache`
-    * Deletes all cache files within the `~/.foundry/cache/chisel` directory. These sessions are unrecoverable, so use this command with care.
+   - Deletes all cache files within the `~/.foundry/cache/chisel` directory. These sessions are unrecoverable, so use this command with care.
 
 #### Flags
 
@@ -28,7 +28,7 @@ See `man chisel` or `chisel --help` for all available environment configuration 
 Chisel is a Solidity REPL (short for "read-eval-print loop") that allows developers to write
 and test Solidity code snippets. It provides an interactive environment for writing and executing
 Solidity code, as well as a set of built-in commands for working with and debugging your code. This
-makes it a useful tool for quickly testing and experimenting with Solidity code without having to 
+makes it a useful tool for quickly testing and experimenting with Solidity code without having to
 spin up a sandbox foundry test suite.
 
 ### Usage
@@ -36,46 +36,51 @@ spin up a sandbox foundry test suite.
 To open chisel, simply execute the `chisel` binary.
 
 From there, input valid Solidity code. There are two kinds of inputs to the chisel prompt apart from commands:
-1. Expressions
-    * Expressions are statements that return a value or otherwise can be evaluated on their own. For example,
-      `1 << 8` is an expression that will evaluate to a `uint256` with the value `256`. Expressions will be
-      evaluated up front, and will not persist in the session state past their evaluation.
-    * Examples:
-        * `address(0).balance`
-        * `abi.encode(256, bytes32(0), "Chisel!")`
-        * `myViewFunc(128)`
-        * ...
-1. Statements
-    * Statements are snippets of code that are meant to persist in the session's state. Statements include
-      variable definitions, calls to non-state-mutating functions that return a value, and contract, function,
-      event, error, mapping, or struct definitions. If you would like an expression to be evaluated as a statement,
-      a semi-colon (`;`) can be appended to the end.
-    * Examples:
-        * `uint256 a = 0xa57b`
-        * `myStateMutatingFunc(128)` || `myViewFunc(128);`. Notice the `;`
-        * ```solidity
-          function hash64(
-            bytes32 _a,
-            bytes32 _b
-          ) internal pure returns (bytes32 _hash) { 
-              assembly {
-                  // Store the 64 bytes we want to hash in scratch space
-                  mstore(0x00, _a)
-                  mstore(0x20, _b)
 
-                  // Hash the memory in scratch space
-                  // and assign the result to `_hash`
-                  _hash := keccak256(0x00, 0x40)
-              }
-          }
-          ```
-        * `event ItHappened(bytes32 indexed hash)`
-        * `struct Complex256 { uint256 re; uint256 im; }`
-        * ...
+1. Expressions
+   - Expressions are statements that return a value or otherwise can be evaluated on their own. For example,
+     `1 << 8` is an expression that will evaluate to a `uint256` with the value `256`. Expressions will be
+     evaluated up front, and will not persist in the session state past their evaluation.
+   - Examples:
+     - `address(0).balance`
+     - `abi.encode(256, bytes32(0), "Chisel!")`
+     - `myViewFunc(128)`
+     - ...
+1. Statements
+
+   - Statements are snippets of code that are meant to persist in the session's state. Statements include
+     variable definitions, calls to non-state-mutating functions that return a value, and contract, function,
+     event, error, mapping, or struct definitions. If you would like an expression to be evaluated as a statement,
+     a semi-colon (`;`) can be appended to the end.
+   - Examples:
+
+     - `uint256 a = 0xa57b`
+     - `myStateMutatingFunc(128)` || `myViewFunc(128);`. Notice the `;`
+     - ```solidity
+       function hash64(
+         bytes32 _a,
+         bytes32 _b
+       ) internal pure returns (bytes32 _hash) {
+           assembly {
+               // Store the 64 bytes we want to hash in scratch space
+               mstore(0x00, _a)
+               mstore(0x20, _b)
+
+               // Hash the memory in scratch space
+               // and assign the result to `_hash`
+               _hash := keccak256(0x00, 0x40)
+           }
+       }
+       ```
+
+     - `event ItHappened(bytes32 indexed hash)`
+     - `struct Complex256 { uint256 re; uint256 im; }`
+     - ...
+
 #### Available Commands
 
 ```text
-{{#include ../../output/chisel/help:output}}
+// [!include ~/snippets/output/chisel/help:output]
 ```
 
 **General**
@@ -233,5 +238,5 @@ Type: address
 ➜ !rs addr
 Type: bytes32
 └ Data: 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
-➜ 
+➜
 ```
