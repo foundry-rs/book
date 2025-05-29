@@ -53,8 +53,8 @@ Guides for building smart contracts with Foundry.
 - [Scripting with Solidity](/guides/scripting-with-solidity)
 - [Deterministic deployments using CREATE2](/guides/deterministic-deployments-using-create2)
 - [Forking Mainnet with Cast and Anvil](/guides/forking-mainnet-with-cast-anvil)
-- [Testing EIP-712 implementations](/guides/eip712.md)
 - [Running Foundry inside of Docker](/guides/foundry-in-docker)
+- [Testing EIP-712 implementations](/guides/eip712.md)
 
 **Contributing**
 
