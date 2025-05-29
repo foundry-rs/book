@@ -1,6 +1,13 @@
 ## Dynamic Test Linking
 
-`dynamic_test_linking` is a configuration that speeds up project compilation (after first compile) by compiling only changed sources in the `src/` directory and linking the test bytecode dynamically, hence avoid compilation of the solidify files in the `test/` directory.
+[v1.1 release](https://github.com/foundry-rs/foundry/releases/tag/v1.1.0) comes with dynamic test linking feature, built on top of [Solar](https://github.com/paradigmxyz/solar), which eliminates redundant test compilation when changing the contract logic, Foundry skips recompiling large test suites, resulting in massive time savings.
+
+How it works:
+
+On the initial build, Foundry preprocesses test contracts by extracting constructor parameters of the contracts under test and replacing direct instantiations with [`deployCode` cheatcodes](http://localhost:5173/reference/cheatcodes/get-deployed-code).
+
+Subsequent compilations reuse pre-built artifacts for deployed contracts instead of recompiling both the source and all associated test contracts.
+Dynamic test linking capability is built on top of [Solar](https://github.com/paradigmxyz/solar), the blazingly fast and modular Solidity compiler.
 
 You can enable this feature by setting the `dynamic_test_linking` configuration option to `true` in your `foundry.toml` file:
 
