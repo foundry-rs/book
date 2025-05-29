@@ -39,6 +39,7 @@ Commands:
   inspect            Get specialized information about a smart contract
                      [aliases: in]
   install            Install one or multiple dependencies [aliases: i]
+  lint               Lint Solidity source files [aliases: l]
   remappings         Get the automatically inferred remappings for the project
                      [aliases: re]
   remove             Remove one or multiple dependencies [aliases: rm]
@@ -64,7 +65,7 @@ Options:
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: jobs]
+          [aliases: --jobs]
 
   -V, --version
           Print version

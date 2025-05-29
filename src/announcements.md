@@ -24,6 +24,24 @@ Please read [here](https://book.getfoundry.sh/cheatcodes/expect-revert#error) fo
 
 ## Releases
 
+### 1.2 (rc)
+
+See release notes [here](https://github.com/foundry-rs/foundry/releases/tag/v1.2.0-rc)
+
+### 1.1 (stable)
+
+See release notes [here](https://github.com/foundry-rs/foundry/releases/tag/v1.1.0)
+
+### 1.0 (stable)
+
+Several breaking changes were introduced in Foundry [`1.0.0`](https://github.com/foundry-rs/foundry/releases/v1.0.0), which requires updates on projects using older versions.
+
+You are recommended to follow the [migration guide](./guides/v1.0-migration.md) to prepare your codebase for the `1.0` stable release.
+
+To install the release candidate run `foundryup -i v1.0.0` and try it out.
+
+It is important to us we get your feedback as this is the last step before the official `1.0` release after three years.
+
 ### 0.3 (stable)
 
 The Foundry [`0.3` release](https://github.com/foundry-rs/foundry/releases/tag/v0.3.0) marks an exciting new chapter for Foundry. By moving to [stable releases](https://github.com/foundry-rs/foundry/releases/tag/stable), we aim to provide a reliable development environment for the EVM ecosystem. Our next priority is the `1.0` release in early 2025, polishing Foundry for the long term.
@@ -63,6 +81,8 @@ e.g.
 ```sh
 foundryup --install nightly
 foundryup --install stable
+foundryup --install rc
+foundryup --install v1.0.0
 foundryup --install 0.3.0
 ```
 
@@ -109,6 +129,8 @@ e.g.
 ```sh
 foundryup --use nightly
 foundryup --use stable
+foundryup --use rc
+foundryup --use v1.0.0
 foundryup --use 0.3.0
 ```
 

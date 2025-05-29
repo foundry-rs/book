@@ -22,7 +22,7 @@ Options:
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: jobs]
+          [aliases: --jobs]
 
 Wallet options - raw:
   -f, --from <ADDRESS>
@@ -88,6 +88,9 @@ Wallet options - hardware wallet:
 Wallet options - remote:
   --aws
           Use AWS Key Management Service
+
+      --gcp
+          Use Google Cloud Key Management Service
 
 Display options:
       --color <COLOR>

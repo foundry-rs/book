@@ -48,7 +48,7 @@ Options:
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: jobs]
+          [aliases: --jobs]
 
 Cache options:
       --force
@@ -60,9 +60,6 @@ Build options:
 
       --dynamic-test-linking
           Enable dynamic test linking
-
-      --eof
-          Whether to compile contracts to EOF bytecode
 
       --skip <SKIP>...
           Skip building files whose names contain the given filter.
@@ -184,7 +181,7 @@ Project options:
           This is the same as using: `--contracts contracts --lib-paths
           node_modules`.
           
-          [aliases: hh]
+          [aliases: --hh]
 
       --config-path <FILE>
           Path to the config file
@@ -357,6 +354,11 @@ Ethereum options:
           
           [env: ETHERSCAN_API_KEY=]
 
+  -a, --etherscan-api-version <API_VERSION>
+          The Etherscan API version
+          
+          [env: ETHERSCAN_API_VERSION=]
+
   -c, --chain <CHAIN>
           The chain name or EIP-155 chain ID
           
@@ -437,6 +439,9 @@ Wallet options - remote:
   --aws
           Use AWS Key Management Service
 
+      --gcp
+          Use Google Cloud Key Management Service
+
 Verifier options:
       --verifier <VERIFIER>
           The contract verification provider to use
@@ -461,6 +466,11 @@ Verifier options:
           The verifier URL, if using a custom provider
           
           [env: VERIFIER_URL=]
+
+      --verifier-api-version <VERIFIER_API_VERSION>
+          The verifier API version, if using a custom provider
+          
+          [env: VERIFIER_API_VERSION=]
 
 Display options:
       --color <COLOR>

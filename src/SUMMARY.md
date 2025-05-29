@@ -144,6 +144,7 @@
       - [`forge init`](./reference/cli/forge/init.md)
       - [`forge inspect`](./reference/cli/forge/inspect.md)
       - [`forge install`](./reference/cli/forge/install.md)
+      - [`forge lint`](./reference/cli/forge/lint.md)
       - [`forge remappings`](./reference/cli/forge/remappings.md)
       - [`forge remove`](./reference/cli/forge/remove.md)
       - [`forge script`](./reference/cli/forge/script.md)
@@ -198,9 +199,9 @@
       - [`cast constructor-args`](./reference/cli/cast/constructor-args.md)
       - [`cast create2`](./reference/cli/cast/create2.md)
       - [`cast creation-code`](./reference/cli/cast/creation-code.md)
+      - [`cast da-estimate`](./reference/cli/cast/da-estimate.md)
       - [`cast decode-abi`](./reference/cli/cast/decode-abi.md)
       - [`cast decode-calldata`](./reference/cli/cast/decode-calldata.md)
-      - [`cast decode-eof`](./reference/cli/cast/decode-eof.md)
       - [`cast decode-error`](./reference/cli/cast/decode-error.md)
       - [`cast decode-event`](./reference/cli/cast/decode-event.md)
       - [`cast decode-string`](./reference/cli/cast/decode-string.md)
@@ -322,6 +323,7 @@
       - [forge cache](./reference/forge/forge-cache.md)
       - [forge cache clean](./reference/forge/forge-cache-clean.md)
       - [forge cache ls](./reference/forge/forge-cache-ls.md)
+      - [forge lint](./reference/forge/forge-lint.md)
       - [forge script](./reference/forge/forge-script.md)
       - [forge upload-selectors](./reference/forge/forge-upload-selectors.md)
       - [forge doc](./reference/forge/forge-doc.md)
@@ -433,6 +435,7 @@
     - [Testing](./reference/config/testing.md)
     <!-- - [In-line Configuration Testing](./reference/config/inline-test-config.md) -->
     <!-- - [Formatter](./reference/config/formatter.md) -->
+    <!-- - [Linter](./reference/config/lint.md) -->
     <!-- - [Documentation Generator](./reference/config/doc-generator.md) -->
     <!-- - [Etherscan](./reference/config/etherscan.md) -->
   <!-- [Cheatcodes Reference](./cheatcodes/README.md) -->

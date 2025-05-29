@@ -1,18 +1,19 @@
-# cast tx-pool content-from
+# cast da-estimate
 
-Fetches the content of the transaction pool filtered by a specific address
+Estimates the data availability size of a given opstack block
 
 ```bash
-$ cast tx-pool content-from --help
+$ cast da-estimate --help
 ```
 
 ```txt
-Usage: cast tx-pool content-from [OPTIONS] --from <FROM>
+Usage: cast da-estimate [OPTIONS] <BLOCK>
+
+Arguments:
+  <BLOCK>
+          The block to estimate the data availability size for
 
 Options:
-  -f, --from <FROM>
-          The Signer to filter the transactions by
-
   -r, --rpc-url <URL>
           The RPC endpoint, default value is http://localhost:8545
           

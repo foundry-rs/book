@@ -7,7 +7,7 @@ $ forge soldeer --help
 ```
 
 ```txt
-Usage: Native Solidity Package Manager, `run forge soldeer [COMMAND] --help` for more details
+Usage: Native Solidity Package Manager, run `forge soldeer [COMMAND] --help` for more details
 
 Commands:
   init       Convert a Foundry project to use Soldeer
@@ -27,7 +27,7 @@ Options:
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: jobs]
+          [aliases: --jobs]
 
 Display options:
       --color <COLOR>

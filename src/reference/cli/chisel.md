@@ -22,7 +22,7 @@ Options:
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: jobs]
+          [aliases: --jobs]
 
   -h, --help
           Print help (see a summary with '-h')
@@ -84,9 +84,6 @@ Build options:
 
       --dynamic-test-linking
           Enable dynamic test linking
-
-      --eof
-          Whether to compile contracts to EOF bytecode
 
       --skip <SKIP>...
           Skip building files whose names contain the given filter.
@@ -208,7 +205,7 @@ Project options:
           This is the same as using: `--contracts contracts --lib-paths
           node_modules`.
           
-          [aliases: hh]
+          [aliases: --hh]
 
       --config-path <FILE>
           Path to the config file
@@ -221,7 +218,7 @@ EVM options:
           If you want to fetch state from a specific block number, see
           --fork-block-number.
           
-          [aliases: rpc-url]
+          [aliases: --rpc-url]
 
       --fork-block-number <BLOCK>
           Fetch state from a specific block number over a remote endpoint.
@@ -280,7 +277,7 @@ Fork config:
           See also --fork-url and
           <https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second>
           
-          [aliases: no-rate-limit]
+          [aliases: --no-rate-limit]
 
 Executor environment config:
       --code-size-limit <CODE_SIZE>
@@ -290,7 +287,7 @@ Executor environment config:
       --chain <CHAIN>
           The chain name or EIP-155 chain ID
           
-          [aliases: chain-id]
+          [aliases: --chain-id]
 
       --gas-price <GAS_PRICE>
           The gas price
@@ -298,7 +295,7 @@ Executor environment config:
       --block-base-fee-per-gas <FEE>
           The base fee in a block
           
-          [aliases: base-fee]
+          [aliases: --base-fee]
 
       --tx-origin <ADDRESS>
           The transaction origin
@@ -321,7 +318,7 @@ Executor environment config:
       --block-gas-limit <GAS_LIMIT>
           The block gas limit
           
-          [aliases: gas-limit]
+          [aliases: --gas-limit]
 
       --memory-limit <MEMORY_LIMIT>
           The memory limit per EVM execution in bytes. If this limit is
@@ -332,7 +329,7 @@ Executor environment config:
       --disable-block-gas-limit
           Whether to disable the block gas limit checks
           
-          [aliases: no-gas-limit]
+          [aliases: --no-gas-limit]
 
       --isolate
           Whether to enable isolation of calls. In isolation mode all top-level

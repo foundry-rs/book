@@ -26,7 +26,7 @@ Options:
       --offline
           Do not install dependencies from the network
           
-          [aliases: no-deps]
+          [aliases: --no-deps]
 
       --force
           Create the project even if the specified root directory is not empty
@@ -57,7 +57,7 @@ Options:
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: jobs]
+          [aliases: --jobs]
 
 Display options:
       --color <COLOR>

@@ -60,7 +60,7 @@ Options:
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: jobs]
+          [aliases: --jobs]
 
 Transaction options:
       --gas-limit <GAS_LIMIT>
@@ -165,6 +165,11 @@ Ethereum options:
           
           [env: ETHERSCAN_API_KEY=]
 
+  -a, --etherscan-api-version <API_VERSION>
+          The Etherscan API version
+          
+          [env: ETHERSCAN_API_VERSION=]
+
   -c, --chain <CHAIN>
           The chain name or EIP-155 chain ID
           
@@ -203,7 +208,22 @@ Wallet options - raw:
       --with-local-artifacts
           Use current project artifacts for trace decoding
           
-          [aliases: la]
+          [aliases: --la]
+
+      --override-balance <ADDRESS:BALANCE>
+          Override the balance of an account. Format: address:balance
+
+      --override-nonce <ADDRESS:NONCE>
+          Override the nonce of an account. Format: address:nonce
+
+      --override-code <ADDRESS:CODE>
+          Override the code of an account. Format: address:code
+
+      --override-state <ADDRESS:SLOT:VALUE>
+          Override the state of an account. Format: address:slot:value
+
+      --override-state-diff <ADDRESS:SLOT:VALUE>
+          Override the state diff of an account. Format: address:slot:value
 
 Wallet options - keystore:
       --keystore <PATH>
@@ -239,6 +259,9 @@ Wallet options - hardware wallet:
 Wallet options - remote:
   --aws
           Use AWS Key Management Service
+
+      --gcp
+          Use Google Cloud Key Management Service
 
 Display options:
       --color <COLOR>
