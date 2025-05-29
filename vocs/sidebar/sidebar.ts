@@ -5,7 +5,6 @@ import { cmdReference } from "./cmd-reference";
 export const sidebar: Sidebar = [
     {
         text: 'Introduction',
-        link: '/introduction',
         items: [
             { text: 'Installation', link: '/introduction/installation' },
             { text: 'Getting Started', link: '/introduction/getting-started' },
@@ -13,7 +12,6 @@ export const sidebar: Sidebar = [
     },
     {
         text: 'Projects',
-        link: '/projects',
         items: [
             { text: 'Creating a New Project', link: '/projects/creating-a-new-project' },
             { text: 'Clone a Verified Contract', link: '/projects/clone-a-verified-contract' },
