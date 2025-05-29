@@ -1,0 +1,29 @@
+import ProjectOptions from "./project-options.mdx";
+import CommonOptions from "./common-options.mdx";
+
+## forge upload-selectors
+
+### NAME
+
+forge-upload-selectors - Uploads abi of given contract to https://openchain.xyz/signatures function selector database.
+
+### SYNOPSIS
+
+`forge upload-selectors` [*options*] _contract_
+
+### DESCRIPTION
+
+Uploads abi of given contract to https://openchain.xyz/signatures function selector database.
+
+### OPTIONS
+
+<ProjectOptions />
+
+<CommonOptions />
+
+### EXAMPLES
+
+1. Upload ABI to selector database
+   ```sh
+   forge upload-selectors LinearVestingVault
+   ```

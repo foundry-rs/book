@@ -1,0 +1,85 @@
+## `startPrank`
+
+### Signature
+
+```solidity
+function startPrank(address msgSender) external;
+```
+
+```solidity
+function startPrank(address msgSender, bool delegateCall) external;
+```
+
+```solidity
+function startPrank(address msgSender, address txOrigin) external;
+```
+
+```solidity
+function startPrank(address msgSender, address txOrigin, bool delegateCall) external;
+```
+
+### Description
+
+- `startPrank(address msgSender)`: sets `msg.sender` **for all subsequent calls** until [`stopPrank`](/reference/cheatcodes/stop-prank.mdx) is called.
+- `startPrank(address msgSender, address txOrigin)`: sets `msg.sender` and `tx.origin` **for all subsequent calls** until [`stopPrank`](/reference/cheatcodes/stop-prank.mdx) is called.
+- `startPrank(address msgSender, bool delegateCall)`: if `delegateCall` value is `true` then sets `msg.sender` **for all subsequent delegate calls** until [`stopPrank`](/reference/cheatcodes/stop-prank.mdx) is called.
+- `startPrank(address msgSender, address txOrigin, bool delegateCall)`: if `delegateCall` value is `true` then sets `msg.sender` and `tx.origin` **for all subsequent delegate calls** until [`stopPrank`](/reference/cheatcodes/stop-prank.mdx) is called.
+
+> ℹ️ **Note**
+>
+> The delegate calls cannot be pranked from an EOA.
+
+### Examples
+
+- prank delegate call and record state diffs
+
+```solidity
+contract ImplementationTest {
+    uint public num;
+    address public sender;
+
+    function setNum(uint _num) public {
+        num = _num;
+    }
+}
+
+contract ProxyTest {
+    uint public num;
+    address public sender;
+}
+
+contract FoundryIssue is Script {
+    function run() public {
+        ProxyTest proxy = new ProxyTest();
+        ImplementationTest impl = new ImplementationTest();
+
+        vm.label(address(proxy), 'proxy');
+        vm.label(address(impl), 'Impl');
+
+        uint num = 42;
+        vm.startPrank(address(proxy), true);
+        vm.startStateDiffRecording();
+        (bool successTwo,) = address(impl).delegatecall(abi.encodeWithSignature('setNum(uint256)', num));
+
+        VmSafe.AccountAccess[] memory accountAccesses = vm.stopAndReturnStateDiff();
+        console.log('accountAccesses.kind', uint8(accountAccesses[0].kind));
+        console.log('accountAccesses.accessor', vm.getLabel(accountAccesses[0].accessor));
+        console.log('accountAccesses.account', vm.getLabel(accountAccesses[0].account));
+        console.logBytes(accountAccesses[0].data);
+    }
+}
+```
+
+```bash
+== Logs ==
+  accountAccesses.kind 1
+  accountAccesses.accessor proxy
+  accountAccesses.account Impl
+  0xcd16ecbf000000000000000000000000000000000000000000000000000000000000002a
+```
+
+### SEE ALSO
+
+Forge Standard Library
+
+[`startHoax`](/reference/forge-std/startHoax.mdx), [`changePrank`](/reference/forge-std/change-prank.mdx)

@@ -1,0 +1,40 @@
+## `accesses`
+
+### Signature
+
+```solidity
+function accesses(
+  address
+)
+external
+returns (
+  bytes32[] memory reads,
+  bytes32[] memory writes
+);
+```
+
+### Description
+
+Gets all storage slots that have been read (`reads`) or written to (`writes`) on an address.
+
+Note that [`record`](/reference/cheatcodes/record.mdx) must be called first.
+
+> ℹ️ **Note**
+>
+> Every write also counts as an additional read.
+
+### Examples
+
+```solidity
+/// contract NumsContract {
+///     uint256 public num1 = 100; // slot 0
+///     uint256 public num2 = 200; // slot 1
+/// }
+
+vm.record();
+numsContract.num2();
+(bytes32[] memory reads, bytes32[] memory writes) = vm.accesses(
+  address(numsContract)
+);
+emit log_uint(uint256(reads[0])); // 1
+```

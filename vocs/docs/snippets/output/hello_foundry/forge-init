@@ -1,0 +1,11 @@
+// [!region all]
+// [!region command]
+$ forge init hello_foundry
+// [!endregion command]
+// [!region output]
+Initializing /private/var/folders/x4/z46ytl8n5msgkg6dst5hwwhh0000gn/T/tmp.AkOjwj9xvM/hello_foundry...
+Installing forge-std in /private/var/folders/x4/z46ytl8n5msgkg6dst5hwwhh0000gn/T/tmp.AkOjwj9xvM/hello_foundry/lib/forge-std (url: Some("https://github.com/foundry-rs/forge-std"), tag: None)
+    Installed forge-std v1.9.7
+    Initialized forge project
+// [!endregion output]
+// [!endregion all]

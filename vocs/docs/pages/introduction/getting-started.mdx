@@ -1,0 +1,38 @@
+## Getting Started
+
+This section introduces the `forge` command-line tool. We will walk through creating a new project, compiling it, and running tests.
+
+### Start a new project
+
+To start a new project with Foundry, use the [`forge init`](/reference/forge/forge-init) command:
+
+```sh [forge init]
+// [!include ~/snippets/output/hello_foundry/forge-init:command]
+```
+
+Now, let’s explore the structure that `forge` has generated for us:
+
+```sh [tree]
+$ cd hello_foundry
+// [!include ~/snippets/output/hello_foundry/tree:all]
+```
+
+### Build the project
+
+You can compile the project using [`forge build`](/reference/forge/forge-build):
+
+```sh [forge build]
+// [!include ~/snippets/output/hello_foundry/forge-build:all]
+```
+
+### Run the tests
+
+To run the tests, use the [`forge test`](/reference/forge/forge-test) command:
+
+```sh [forge test]
+// [!include ~/snippets/output/hello_foundry/forge-test:all]
+```
+
+:::tip
+You can always view detailed help for any command or subcommand by appending `--help` to it.
+:::

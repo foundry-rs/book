@@ -1,0 +1,31 @@
+import CommonOptions from "./common-options.mdx";
+
+## cast from-rlp
+
+### NAME
+
+cast-from-rlp - Decodes RLP-encoded data.
+
+### SYNOPSIS
+
+`cast from-rlp` _data_
+
+### DESCRIPTION
+
+Decodes RLP-encoded data.
+
+The _data_ is a hexadecimal string with optional 0x prefix.
+
+### OPTIONS
+
+<CommonOptions />
+
+### EXAMPLES
+
+1. Decode RLP data:
+
+   ```sh
+   cast from-rlp 0xc481f181f2
+
+   cast from-rlp c481f181f2
+   ```
