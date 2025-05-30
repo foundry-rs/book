@@ -1,2 +1,4 @@
 /getting-started/installation /introduction/installation
 /getting-started/introduction /introduction/overview
+
+/reference/forge/* /forge/reference/*
