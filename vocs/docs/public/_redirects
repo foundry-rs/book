@@ -1,0 +1,9 @@
+/getting-started/installation /introduction/installation
+/getting-started/introduction /introduction/overview
+/getting-started/first-steps  /introduction/getting-started
+
+/reference/forge/:id /forge/reference/:id
+
+/cheatcodes /reference/cheatcodes/overview
+
+/guides/v1.0-migration /misc/v1.0-migration

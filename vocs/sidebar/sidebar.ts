@@ -251,6 +251,7 @@ export const sidebar: Sidebar = [
     {
         text: 'Cheatcode Reference',
         collapsed: false,
+        link: '/reference/cheatcodes/overview',
         items: cmdReference,
     },
     {
