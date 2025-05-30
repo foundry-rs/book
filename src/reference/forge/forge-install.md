@@ -39,8 +39,8 @@ the repository. If you want to change the name of the folder, prepend `<folder>=
 
 #### VCS Options
 
-`--no-commit`  
-&nbsp;&nbsp;&nbsp;&nbsp;Do not create a commit.
+`--commit`  
+&nbsp;&nbsp;&nbsp;&nbsp;Create a commit after installing the dependencies.
 
 `--no-git`  
 &nbsp;&nbsp;&nbsp;&nbsp;Install without adding the dependency as a submodule.

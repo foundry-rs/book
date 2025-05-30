@@ -185,6 +185,18 @@ interface VmSafe {
         uint256 chainId;
     }
 
+    /// Information about a blockchain.
+    struct Chain {
+        // The chain name.
+        string name;
+        // The chain's Chain ID.
+        uint256 chainId;
+        // The chain's alias. (i.e. what gets specified in `foundry.toml`).
+        string chainAlias;
+        // A default RPC endpoint for this chain.
+        string rpcUrl;
+    }
+
     /// The result of a `stopAndReturnStateDiff` call.
     struct AccountAccess {
         // The chain and fork the access occurred.
@@ -656,7 +668,8 @@ interface VmSafe {
     /// Pauses gas metering (i.e. gas usage is not counted). Noop if already paused.
     function pauseGasMetering() external;
 
-    /// Records all storage reads and writes.
+    /// Records all storage reads and writes. Use `accesses` to get the recorded data.
+    /// Subsequent calls to `record` will clear the previous data.
     function record() external;
 
     /// Record all the transaction logs.
@@ -694,6 +707,9 @@ interface VmSafe {
 
     /// Stops recording all map SSTOREs for later retrieval and clears the recorded data.
     function stopMappingRecording() external;
+
+    /// Stops recording storage reads and writes.
+    function stopRecord() external;
 
     // ======== Filesystem ========
 
@@ -1099,8 +1115,14 @@ interface VmSafe {
 
     // ======== Scripting ========
 
+    /// Attach an EIP-4844 blob to the next call
+    function attachBlob(bytes calldata blob) external;
+
     /// Designate the next call as an EIP-7702 transaction
     function attachDelegation(SignedDelegation calldata signedDelegation) external;
+
+    /// Designate the next call as an EIP-7702 transaction, with optional cross-chain validity.
+    function attachDelegation(SignedDelegation calldata signedDelegation, bool crossChain) external;
 
     /// Takes a signed transaction and broadcasts it to the network.
     function broadcastRawTransaction(bytes calldata data) external;
@@ -1133,6 +1155,11 @@ interface VmSafe {
         external
         returns (SignedDelegation memory signedDelegation);
 
+    /// Sign an EIP-7702 authorization and designate the next call as an EIP-7702 transaction, with optional cross-chain validity.
+    function signAndAttachDelegation(address implementation, uint256 privateKey, bool crossChain)
+        external
+        returns (SignedDelegation memory signedDelegation);
+
     /// Sign an EIP-7702 authorization for delegation
     function signDelegation(address implementation, uint256 privateKey)
         external
@@ -1140,6 +1167,11 @@ interface VmSafe {
 
     /// Sign an EIP-7702 authorization for delegation for specific nonce
     function signDelegation(address implementation, uint256 privateKey, uint64 nonce)
+        external
+        returns (SignedDelegation memory signedDelegation);
+
+    /// Sign an EIP-7702 authorization for delegation, with optional cross-chain validity.
+    function signDelegation(address implementation, uint256 privateKey, bool crossChain)
         external
         returns (SignedDelegation memory signedDelegation);
 
@@ -1688,6 +1720,12 @@ interface VmSafe {
     /// For example, to check if the current Foundry version is greater than or equal to `1.0.0`:
     /// `if (foundryVersionCmp("1.0.0") >= 0) { ... }`
     function foundryVersionCmp(string calldata version) external view returns (int256);
+
+    /// Returns a Chain struct for specific alias
+    function getChain(string calldata chainAlias) external view returns (Chain memory chain);
+
+    /// Returns a Chain struct for specific chainId
+    function getChain(uint256 chainId) external view returns (Chain memory chain);
 
     /// Returns the Foundry version.
     /// Format: <cargo_version>-<tag>+<git_sha_short>.<unix_build_timestamp>.<profile>
