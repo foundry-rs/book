@@ -35,12 +35,14 @@ export const sidebar: Sidebar = [
         text: 'Anvil',
         items: [
             { text: 'Overview', link: '/anvil/overview' },
+            { text: 'Reference', link: '/anvil/reference' },
         ]
     },
     {
         text: 'Chisel',
         items: [
             { text: 'Overview', link: '/chisel/overview' },
+            { text: 'Reference', link: '/chisel/reference' },
         ]
     },
     {

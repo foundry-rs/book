@@ -2,8 +2,8 @@
 
 - [forge Commands](/reference/forge/forge)
 - [cast Commands](/reference/cast/overview)
-- [anvil Reference](/reference/anvil/overview)
-- [chisel Reference](/reference/chisel/overview)
+- [anvil Reference](/anvil/reference)
+- [chisel Reference](/chisel/reference)
 - [Config Reference](/reference/config/overview)
 - [Cheatcodes Reference](/reference/cheatcodes/overview)
 - [Forge Standard Library Reference](/reference/forge-std/overview)

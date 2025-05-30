@@ -87,5 +87,5 @@ Listening on 127.0.0.1:8545
 <br></br>
 
 :::info
-See the [`anvil` Reference](/reference/anvil/overview) for in depth information on Anvil and its capabilities.
+See the [`anvil` Reference](/anvil/reference) for in depth information on Anvil and its capabilities.
 :::
