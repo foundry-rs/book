@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Solidity scripting is a way to declaratively deploy contracts using Solidity, instead of using the more limiting and less user friendly [`forge create`](/reference/forge/forge-create).
+Solidity scripting is a way to declaratively deploy contracts using Solidity, instead of using the more limiting and less user friendly [`forge create`](/forge/reference/forge-create).
 
 Solidity scripts are like the scripts you write when working with tools like Hardhat; what makes Solidity scripting different is that they are written in Solidity instead of JavaScript, and they are run on the fast Foundry EVM backend, which provides advanced simulation with dry-run capabilities.
 
@@ -152,7 +152,7 @@ function run() external {
 
 By default, scripts are executed by calling the function named `run`, our entrypoint.
 
-This loads in the private key from our `.env` file. **Note:** you must be careful when exposing private keys in a `.env` file and loading them into programs. This is only recommended for use with non-privileged deployers or for local / test setups. For production setups please review the various [wallet options](/reference/forge/forge-script#wallet-options---raw) that Foundry supports.
+This loads in the private key from our `.env` file. **Note:** you must be careful when exposing private keys in a `.env` file and loading them into programs. This is only recommended for use with non-privileged deployers or for local / test setups. For production setups please review the various [wallet options](/forge/reference/forge-script#wallet-options---raw) that Foundry supports.
 
 ```solidity
 vm.startBroadcast();

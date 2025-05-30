@@ -65,7 +65,7 @@ References, troubleshooting, and more.
 
 - [Announcements](/misc/announcements.md)
 - [FAQ](/misc/faq.md)
-- [forge Commands](/reference/forge/forge)
+- [forge Commands](/forge/reference/forge)
 - [cast Commands](/cast/reference/overview)
 - [anvil Commands](/anvil/reference)
 - [chisel Commands](/chisel/reference)

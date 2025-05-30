@@ -1,6 +1,6 @@
 ## References
 
-- [forge Commands](/reference/forge/forge)
+- [forge Commands](/forge/reference/forge)
 - [cast Commands](/cast/reference/overview)
 - [anvil Reference](/anvil/reference)
 - [chisel Reference](/chisel/reference)
