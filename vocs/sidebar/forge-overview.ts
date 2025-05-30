@@ -43,6 +43,7 @@ export const forgeOverview: SidebarItem[] = [
     { text: 'Reference', collapsed: true, items: [
         {
           text: 'General Commands',
+          collapsed: true,
           link: '/forge/reference/general-commands',
           items: [
             { text: 'forge', link: '/forge/reference/forge' },
@@ -52,6 +53,7 @@ export const forgeOverview: SidebarItem[] = [
         },
         {
           text: 'Project Commands',
+          collapsed: true,
           link: '/forge/reference/project-commands',
           items: [
             { text: 'forge init', link: '/forge/reference/forge-init' },
@@ -67,6 +69,7 @@ export const forgeOverview: SidebarItem[] = [
         },
         {
           text: 'Build Commands',
+          collapsed: true,
           link: '/forge/reference/build-commands',
           items: [
             { text: 'forge build', link: '/forge/reference/forge-build' },
@@ -85,6 +88,7 @@ export const forgeOverview: SidebarItem[] = [
         },
         {
           text: 'Deploy Commands',
+          collapsed: true,
           link: '/forge/reference/deploy-commands',
           items: [
             { text: 'forge create', link: '/forge/reference/forge-create' },
@@ -95,6 +99,7 @@ export const forgeOverview: SidebarItem[] = [
         },
         {
           text: 'Utility Commands',
+          collapsed: true,
           link: '/forge/reference/utility-commands',
           items: [
             { text: 'forge bind', link: '/forge/reference/forge-bind' },

@@ -69,7 +69,7 @@ References, troubleshooting, and more.
 - [cast Commands](/cast/reference/overview)
 - [anvil Commands](/anvil/reference)
 - [chisel Commands](/chisel/reference)
-- [Config Reference](/reference/config/overview)
+- [Config Reference](/config/reference/overview)
 - [Cheatcodes Reference](/reference/cheatcodes/overview)
 - [Forge Standard Library Reference](/reference/forge-std/overview)
 - [DSTest Reference](/reference/ds-test)

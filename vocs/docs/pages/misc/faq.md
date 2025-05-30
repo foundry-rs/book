@@ -204,12 +204,12 @@ You could run `export http_proxy=http://127.0.0.1:7890 https_proxy=http://127.0.
 
 ### I'm getting `[NotActivated] EvmError: NotActivated` error in my tests.
 
-This error refers to an EVM version mismatch, make sure the `evm_version` configuration is inline with the test (forked chain) you're using (similar for errors like `prevrandao not set`). See [`evm_version` configuration](/reference/config/solidity-compiler#evm_version)
+This error refers to an EVM version mismatch, make sure the `evm_version` configuration is inline with the test (forked chain) you're using (similar for errors like `prevrandao not set`). See [`evm_version` configuration](/config/reference/solidity-compiler#evm_version)
 
 [tg-support]: https://t.me/foundry_support
 [forge-test]: ./forge/reference/forge-test.md
 [traces]: ./forge/traces.md
-[config-solc]: ./reference/config/solidity-compiler.md#solc_version
+[config-solc]: ./config/reference/solidity-compiler.md#solc_version
 [config]: ./config/
 [forge-build]: ./forge/reference/forge-build.md
 [console-log]: ./reference/forge-std/console-log.md

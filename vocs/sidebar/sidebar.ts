@@ -224,6 +224,15 @@ export const sidebar: Sidebar = [
             { text: 'Integrating with Hardhat', link: '/config/hardhat' },
             { text: 'Vyper support', link: '/config/vyper' },
             { text: 'Forge lint', link: '/config/lint' },
+            { text: 'Reference', collapsed: true, link: '/config/reference/overview', items: [
+                { text: 'Project', link: '/reference/config/project' },
+                { text: 'Solidity Compiler', link: '/reference/config/solidity-compiler' },
+                { text: 'Testing', link: '/reference/config/testing' },
+                { text: 'In-line Configuration Testing', link: '/reference/config/inline-test-config' },
+                { text: 'Formatter', link: '/reference/config/formatter' },
+                { text: 'Documentation Generator', link: '/reference/config/doc-generator' },
+                { text: 'Etherscan', link: '/reference/config/etherscan' },
+            ]},
         ]
     },
     {

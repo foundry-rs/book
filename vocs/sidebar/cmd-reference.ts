@@ -2,20 +2,6 @@ import { SidebarItem } from "vocs";
 
 export const cmdReference: SidebarItem[] = [
   {
-    text: 'Config Reference',
-    collapsed: true,
-    items: [
-      { text: 'Overview', link: '/reference/config/overview' },
-      { text: 'Project', link: '/reference/config/project' },
-      { text: 'Solidity Compiler', link: '/reference/config/solidity-compiler' },
-      { text: 'Testing', link: '/reference/config/testing' },
-      { text: 'In-line Configuration Testing', link: '/reference/config/inline-test-config' },
-      { text: 'Formatter', link: '/reference/config/formatter' },
-      { text: 'Documentation Generator', link: '/reference/config/doc-generator' },
-      { text: 'Etherscan', link: '/reference/config/etherscan' },
-    ],
-  },
-  {
     text: 'Cheatcodes',
     collapsed: true,
     items: [

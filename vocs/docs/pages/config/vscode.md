@@ -37,7 +37,7 @@ To enable the built-in formatter that comes with Foundry to automatically format
 }
 ```
 
-To configure the formatter settings, refer to the [Formatter](/reference/config/formatter) reference.
+To configure the formatter settings, refer to the [Formatter](/config/reference/formatter) reference.
 
 ### 4. Solc Version
 

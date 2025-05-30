@@ -30,5 +30,5 @@ i.e. `[profile.ci.fuzz]`.
 <br></br>
 
 :::info
-See the [`foundry.toml` Reference](/reference/config/default-config) for a complete overview of what you can configure.
+See the [`foundry.toml` Reference](/config/reference/default-config) for a complete overview of what you can configure.
 :::

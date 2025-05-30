@@ -164,7 +164,7 @@ This is a special cheatcode that records calls and contract creations made by ou
 Counter counter = new Counter();
 ```
 
-Here we have just created our `Counter` contract. Because we called `vm.startBroadcast()` before this line, the contract creation will be recorded by Forge, and as mentioned previously, we can broadcast the transaction to deploy the contract on-chain. The broadcast transaction logs will be stored in the `broadcast` directory by default. You can change the logs location by setting [`broadcast`](/reference/config/project#broadcast) in your `foundry.toml` file.
+Here we have just created our `Counter` contract. Because we called `vm.startBroadcast()` before this line, the contract creation will be recorded by Forge, and as mentioned previously, we can broadcast the transaction to deploy the contract on-chain. The broadcast transaction logs will be stored in the `broadcast` directory by default. You can change the logs location by setting [`broadcast`](/config/reference/project#broadcast) in your `foundry.toml` file.
 
 The broadcasting sender is determined by checking the following in order:
 

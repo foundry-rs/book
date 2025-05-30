@@ -24,7 +24,7 @@ To run Slither on a single file, use this command:
 slither src/Contract.sol
 ```
 
-Note, this requires configuring the [solc version in the foundry config file](https://book.getfoundry.sh/reference/config/solidity-compiler#solc_version).
+Note, this requires configuring the [solc version in the foundry config file](https://book.getfoundry.sh/config/reference/solidity-compiler#solc_version).
 
 You do not need to provide remappings via the `solc_remaps` option as Slither will automatically detect remappings in a Foundry project. Slither will invoke `forge` to perform the build.
 
@@ -38,7 +38,7 @@ slither --config-file <path>/file.config.json .
 
 Example output (Raw):
 
-```bash 
+```bash
 Pragma version^0.8.13 (Counter.sol#2) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6/0.8.7
 solc-0.8.13 is not recommended for deployment
 Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
@@ -72,10 +72,7 @@ To test your project using [mythril](https://github.com/ConsenSys/mythril), here
 
 ```json
 {
-  "remappings": [
-    "ds-test/=lib/ds-test/src/",
-    "forge-std/=lib/forge-std/src/"
-  ],
+  "remappings": ["ds-test/=lib/ds-test/src/", "forge-std/=lib/forge-std/src/"],
   "optimizer": {
     "enabled": true,
     "runs": 200
@@ -113,8 +110,8 @@ mythril.laser.plugin.plugins.instruction_profiler [INFO]: Total: 1.0892839431762
 [SWAP2       ]   0.8858 %,  nr      9,  total   0.0096 s,  avg   0.0011 s,  min   0.0010 s,  max   0.0011 s
 
 mythril.analysis.security [INFO]: Starting analysis
-mythril.mythril.mythril_analyzer [INFO]: Solver statistics: 
-Query count: 61 
+mythril.mythril.mythril_analyzer [INFO]: Solver statistics:
+Query count: 61
 Solver time: 3.6820807456970215
 The analysis was completed successfully. No issues were detected.
 ```
