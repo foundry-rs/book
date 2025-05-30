@@ -249,7 +249,7 @@ export const sidebar: Sidebar = [
         ]
     },
     {
-        text: 'References',
+        text: 'Cheatcode Reference',
         collapsed: false,
         items: cmdReference,
     },

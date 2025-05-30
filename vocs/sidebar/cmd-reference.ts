@@ -1,13 +1,10 @@
 import { SidebarItem } from "vocs";
 
 export const cmdReference: SidebarItem[] = [
-  {
-    text: 'Cheatcodes',
-    collapsed: true,
-    items: [
       {
         text: 'Environment',
         link: '/reference/cheatcodes/environment',
+        collapsed: true,
         items: [
           { text: 'warp', link: '/reference/cheatcodes/warp' },
           { text: 'roll', link: '/reference/cheatcodes/roll' },
@@ -54,6 +51,7 @@ export const cmdReference: SidebarItem[] = [
       {
         text: 'Assertions',
         link: '/reference/cheatcodes/assertions',
+        collapsed: true,
         items: [
           { text: 'expectRevert', link: '/reference/cheatcodes/expect-revert' },
           { text: 'expectEmit', link: '/reference/cheatcodes/expect-emit' },
@@ -63,6 +61,7 @@ export const cmdReference: SidebarItem[] = [
       {
         text: 'Fuzzer',
         link: '/reference/cheatcodes/fuzzer',
+        collapsed: true,
         items: [
           { text: 'assume', link: '/reference/cheatcodes/assume' },
           { text: 'assumeNoRevert', link: '/reference/cheatcodes/assume-no-revert' },
@@ -71,6 +70,7 @@ export const cmdReference: SidebarItem[] = [
       {
         text: 'Forking',
         link: '/reference/cheatcodes/forking',
+        collapsed: true,
         items: [
           { text: 'createFork', link: '/reference/cheatcodes/create-fork' },
           { text: 'selectFork', link: '/reference/cheatcodes/select-fork' },
@@ -87,6 +87,7 @@ export const cmdReference: SidebarItem[] = [
       {
         text: 'External',
         link: '/reference/cheatcodes/external',
+        collapsed: true,
         items: [
           { text: 'ffi', link: '/reference/cheatcodes/ffi' },
           { text: 'prompt', link: '/reference/cheatcodes/prompt' },
@@ -119,6 +120,7 @@ export const cmdReference: SidebarItem[] = [
       {
         text: 'Signing',
         link: '/reference/cheatcodes/signing',
+        collapsed: true,
         items: [
           { text: 'sign', link: '/reference/cheatcodes/sign' },
           { text: 'signDelegation', link: '/reference/cheatcodes/sign-delegation' },
@@ -127,6 +129,7 @@ export const cmdReference: SidebarItem[] = [
       {
         text: 'Utilities',
         link: '/reference/cheatcodes/utilities',
+        collapsed: true,
         items: [
           { text: 'addr', link: '/reference/cheatcodes/addr' },
           { text: 'skip', link: '/reference/cheatcodes/skip' },
@@ -149,10 +152,8 @@ export const cmdReference: SidebarItem[] = [
       },
       { text: 'RPC', link: '/reference/cheatcodes/rpc' },
       { text: 'Files', link: '/reference/cheatcodes/fs' },
-    ],
-  },
   {
-    text: 'Forge Standard Library Reference',
+    text: 'Forge-Std Reference',
     collapsed: true,
     items: [
       { text: 'Std Logs', link: '/reference/forge-std/std-logs' },
