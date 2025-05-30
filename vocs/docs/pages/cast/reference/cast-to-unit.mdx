@@ -1,0 +1,44 @@
+import CommonOptions from "./common-options.mdx";
+
+## cast to-unit
+
+### NAME
+
+cast-to-unit - Convert an eth amount to another unit.
+
+### SYNOPSIS
+
+`cast to-unit` [*options*] _value_ [*unit*]
+
+### DESCRIPTION
+
+Convert an eth amount to another unit.
+
+The value to convert (_value_) can be a quantity of eth (in wei), or a number with a unit attached to it.
+
+Valid units are:
+
+- `ether`
+- `gwei`
+- `wei`
+
+### OPTIONS
+
+<CommonOptions />
+
+### EXAMPLES
+
+1. Convert 1000 wei to gwei
+
+   ```sh
+   cast to-unit 1000 gwei
+   ```
+
+2. Convert 1 eth to gwei
+   ```sh
+   cast to-unit 1ether gwei
+   ```
+
+### SEE ALSO
+
+[cast](/cast/reference/overview)

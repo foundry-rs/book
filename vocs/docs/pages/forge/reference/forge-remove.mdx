@@ -1,0 +1,38 @@
+import CommonOptions from "./common-options.mdx";
+
+## forge remove
+
+### NAME
+
+forge-remove - Remove one or multiple dependencies.
+
+### SYNOPSIS
+
+`forge remove` [*options*] [*deps...*]
+
+### DESCRIPTION
+
+Remove one or multiple dependencies.
+
+Dependencies can be a raw URL (`https://foo.com/dep`), the path to a GitHub repository (`owner/repo`) or the path to the dependency in the project tree.
+
+### OPTIONS
+
+<CommonOptions />
+
+### EXAMPLES
+
+1. Remove a dependency by path:
+
+   ```sh
+   forge remove lib/solmate
+   ```
+
+2. Remove a dependency by GitHub repository name:
+   ```sh
+   forge remove dapphub/solmate
+   ```
+
+### SEE ALSO
+
+[forge](/forge/reference/overview), [forge install](/forge/reference/forge-install.mdx), [forge update](/forge/reference/forge-update.mdx)

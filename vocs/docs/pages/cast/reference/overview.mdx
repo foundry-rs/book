@@ -1,0 +1,319 @@
+import CommonOptions from "./common-options.mdx";
+
+## cast
+
+### NAME
+
+cast - Perform Ethereum RPC calls from the comfort of your command line.
+
+### SYNOPSIS
+
+`cast` [*options*] _command_ [*args*]
+`cast` [*options*] `--version`
+`cast` [*options*] `--help`
+
+### DESCRIPTION
+
+This program is a set of tools to interact with Ethereum and perform conversions.
+
+### COMMANDS
+
+#### General Commands
+
+[cast help](/cast/reference/cast-help.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Display help information about Cast.
+
+[cast completions](/cast/reference/cast-completions.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Generate shell autocompletions for Cast.
+
+#### Chain Commands
+
+[cast chain-id](/cast/reference/cast-chain-id.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Get the Ethereum chain ID.
+
+[cast chain](/cast/reference/cast-chain.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Get the symbolic name of the current chain.
+
+[cast client](/cast/reference/cast-client.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Get the current client version.
+
+#### Transaction Commands
+
+[cast publish](/cast/reference/cast-publish.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Publish a raw transaction to the network.
+
+[cast receipt](/cast/reference/cast-receipt.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Get the transaction receipt for a transaction.
+
+[cast send](/cast/reference/cast-send.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Sign and publish a transaction.
+
+[cast call](/cast/reference/cast-call.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Perform a call on an account without publishing a transaction.
+
+[cast rpc](/cast/reference/cast-rpc.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp; Perform a raw JSON-RPC request [aliases: rp]
+
+[cast tx](/cast/reference/cast-tx.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Get information about a transaction.
+
+[cast run](/cast/reference/cast-run.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Runs a published transaction in a local environment and prints the trace.
+
+[cast estimate](/cast/reference/cast-estimate.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Estimate the gas cost of a transaction.
+
+[cast access-list](/cast/reference/cast-access-list.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Create an access list for a transaction.
+
+[cast logs](/cast/reference/cast-logs.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Get logs by signature or topic
+
+#### Block Commands
+
+[cast find-block](/cast/reference/cast-find-block.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Get the block number closest to the provided timestamp.
+
+[cast gas-price](/cast/reference/cast-gas-price.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Get the current gas price.
+
+[cast block-number](/cast/reference/cast-block-number.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Get the latest block number.
+
+[cast basefee](/cast/reference/cast-basefee.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Get the basefee of a block.
+
+[cast block](/cast/reference/cast-block.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Get information about a block.
+
+[cast age](/cast/reference/cast-age.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Get the timestamp of a block.
+
+#### Account Commands
+
+[cast balance](/cast/reference/cast-balance.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Get the balance of an account in wei.
+
+[cast storage](/cast/reference/cast-storage.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Get the raw value of a contract's storage slot.
+
+[cast proof](/cast/reference/cast-proof.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Generate a storage proof for a given storage slot.
+
+[cast nonce](/cast/reference/cast-nonce.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Get the nonce for an account.
+
+[cast code](/cast/reference/cast-code.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Get the bytecode of a contract.
+
+[cast codesize](/cast/reference/cast-codesize.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Get the runtime bytecode size of a contract.
+
+#### ENS Commands
+
+[cast lookup-address](/cast/reference/cast-lookup-address.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Perform an ENS reverse lookup.
+
+[cast resolve-name](/cast/reference/cast-resolve-name.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Perform an ENS lookup.
+
+[cast namehash](/cast/reference/cast-namehash.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Calculate the ENS namehash of a name.
+
+#### Etherscan Commands
+
+[cast etherscan-source](/cast/reference/cast-etherscan-source.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Get the source code of a contract from Etherscan.
+
+#### ABI Commands
+
+[cast abi-encode](/cast/reference/cast-abi-encode.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;ABI encode the given function arguments, excluding the selector.
+
+[cast 4byte](/cast/reference/cast-4byte.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Get the function signatures for the given selector from [Openchain Signatures](https://openchain.xyz/signatures).
+
+[cast 4byte-calldata](/cast/reference/cast-4byte-calldata.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Decode ABI-encoded calldata using [Openchain Signatures](https://openchain.xyz/signatures).
+
+[cast 4byte-event](/cast/reference/cast-4byte-event.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Get the event signature for a given topic 0 from [Openchain Signatures](https://openchain.xyz/signatures).
+
+[cast calldata](/cast/reference/cast-calldata.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;ABI-encode a function with arguments.
+
+[cast decode-abi](/cast/reference/cast-decode-abi.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Decode ABI-encoded input or output data.
+
+[cast decode-calldata](/cast/reference/cast-decode-calldata.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Decode ABI-encoded input data.
+
+[cast pretty-calldata](/cast/reference/cast-pretty-calldata.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Pretty print calldata.
+
+[cast selectors](/cast/reference/cast-selectors.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Extracts function selectors and arguments from bytecode
+
+[cast upload-signature](/cast/reference/cast-upload-signature.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Upload the given signatures to https://openchain.xyz/signatures.
+
+#### Conversion Commands
+
+[cast format-bytes32-string](/cast/reference/cast-format-bytes32-string.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Formats a string into bytes32 encoding.
+
+[cast from-bin](/cast/reference/cast-from-bin.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Convert binary data into hex data.
+
+[cast from-fixed-point](/cast/reference/cast-from-fixed-point.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Convert a fixed point number into an integer.
+
+[cast from-utf8](/cast/reference/cast-from-utf8.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Convert UTF8 to hex.
+
+[cast from-wei](/cast/reference/cast-from-wei.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Convert wei into an ETH amount
+
+[cast parse-bytes32-address](/cast/reference/cast-parse-bytes32-address.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Parses a checksummed address from bytes32 encoding.
+
+[cast parse-bytes32-string](/cast/reference/cast-parse-bytes32-string.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Parses a string from bytes32 encoding.
+
+[cast to-ascii](/cast/reference/cast-to-ascii.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Convert hex data to an ASCII string.
+
+[cast to-base](/cast/reference/cast-to-base.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Convert a number of one base to another.
+
+[cast to-bytes32](/cast/reference/cast-to-bytes32.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Right-pads hex data to 32 bytes.
+
+[cast to-dec](/cast/reference/cast-to-dec.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Converts a number of one base to decimal
+
+[cast to-fixed-point](/cast/reference/cast-to-fixed-point.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Convert an integer into a fixed point number.
+
+[cast to-hex](/cast/reference/cast-to-hex.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Converts a number of one base to another
+
+[cast to-hexdata](/cast/reference/cast-to-hexdata.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Normalize the input to lowercase, 0x-prefixed hex.
+
+[cast to-int256](/cast/reference/cast-to-int256.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Convert a number to a hex-encoded int256.
+
+[cast to-rlp](/cast/reference/cast-to-rlp.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;RLP encodes hex data, or an array of hex data
+
+[cast to-uint256](/cast/reference/cast-to-uint256.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Convert a number to a hex-encoded uint256.
+
+[cast to-unit](/cast/reference/cast-to-unit.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Convert an ETH amount into another unit (ether, gwei, wei).
+
+[cast to-wei](/cast/reference/cast-to-wei.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Convert an ETH amount to wei.
+
+[cast shl](/cast/reference/cast-shl.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Perform a left shifting operation.
+
+[cast shr](/cast/reference/cast-shr.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Perform a right shifting operation.
+
+#### Utility Commands
+
+[cast address-zero](/cast/reference/cast-address-zero.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Prints the zero address.
+
+[cast sig](/cast/reference/cast-sig.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Get the selector for a function.
+
+[cast sig-event](/cast/reference/cast-sig-event.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Generate event signatures from event string.
+
+[cast keccak](/cast/reference/cast-keccak.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Hash arbitrary data using keccak-256.
+
+[cast compute-address](/cast/reference/cast-compute-address.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Compute the contract address from a given nonce and deployer address.
+
+[cast create2](/cast/reference/cast-create2.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp; Generate a deterministic contract address using CREATE2
+
+[cast interface](/cast/reference/cast-interface.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Generate a Solidity interface from a given ABI.
+
+[cast index](/cast/reference/cast-index.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Compute the storage slot for an entry in a mapping.
+
+[cast concat-hex](/cast/reference/cast-concat-hex.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Concatenate hex strings.
+
+[cast max-int](/cast/reference/cast-max-int.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Get the maximum i256 value.
+
+[cast min-int](/cast/reference/cast-min-int.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Get the minimum i256 value.
+
+[cast max-uint](/cast/reference/cast-max-uint.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Get the maximum u256 value.
+
+[cast to-check-sum-address](/cast/reference/cast-to-check-sum-address.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Convert an address to a checksummed format (EIP-55).
+
+#### Wallet Commands
+
+[cast wallet](/cast/reference/cast-wallet.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Wallet management utilities.
+
+[cast wallet new](/cast/reference/cast-wallet-new.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Create a new random keypair.
+
+[cast wallet address](/cast/reference/cast-wallet-address.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Convert a private key to an address.
+
+[cast wallet sign](/cast/reference/cast-wallet-sign.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Sign a message.
+
+[cast wallet vanity](/cast/reference/cast-wallet-vanity.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Generate a vanity address.
+
+[cast wallet verify](/cast/reference/cast-wallet-verify.mdx)
+&nbsp;&nbsp;&nbsp;&nbsp;Verify the signature of a message.
+
+### OPTIONS
+
+#### Special Options
+
+`-V`
+`--version`
+&nbsp;&nbsp;&nbsp;&nbsp;Print version info and exit.
+
+<CommonOptions />
+
+### EXAMPLES
+
+1. Call a function on a contract:
+
+   ```sh
+   cast call 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2 \
+     "balanceOf(address)(uint256)" 0x...
+   ```
+
+2. Decode raw calldata:
+
+   ```sh
+   cast decode-calldata "transfer(address,uint256)" \
+     0xa9059cbb000000000000000000000000e78388b4ce79068e89bf8aa7f218ef6b9ab0e9d0000000000000000000000000000000000000000000000000008a8e4b1a3d8000
+   ```
+
+3. Encode calldata:
+   ```sh
+   cast calldata "someFunc(address,uint256)" 0x... 1
+   ```
+
+### BUGS
+
+See https://github.com/foundry-rs/foundry/issues for issues.

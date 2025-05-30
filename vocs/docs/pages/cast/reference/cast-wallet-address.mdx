@@ -1,0 +1,39 @@
+import CommonOptions from "./common-options.mdx";
+import WalletOptionsRaw from "../../reference/common/wallet-options-raw.mdx";
+import WalletOptionsKeystore from "../../reference/common/wallet-options-keystore.mdx";
+import WalletOptionsHardware from "../../reference/common/wallet-options-hardware.mdx";
+
+## cast wallet address
+
+### NAME
+
+cast-wallet-address - Convert a private key to an address.
+
+### SYNOPSIS
+
+`cast wallet address` [*options*]
+
+### DESCRIPTION
+
+Convert a private key to an address.
+
+### OPTIONS
+
+#### Keystore Options
+
+<WalletOptionsRaw />
+<WalletOptionsKeystore />
+<WalletOptionsHardware />
+
+<CommonOptions />
+
+### EXAMPLES
+
+1. Get the address of the keypair in `keystore.json`:
+   ```sh
+   cast wallet address --keystore keystore.json
+   ```
+
+### SEE ALSO
+
+[cast](/cast/reference/overview), [cast wallet](/cast/reference/cast-wallet.mdx)

@@ -1,0 +1,122 @@
+import SigDescription from "./sig-description.mdx";
+import TransactionOptions from "../../reference/common/transaction-options.mdx";
+import WalletOptions from "../../reference/common/wallet-options.mdx";
+import RpcOptions from "../../reference/common/rpc-options.mdx";
+import EtherscanOptions from "../../reference/common/etherscan-options.mdx";
+import DisplayOptions from "../../reference/common/display-options.mdx";
+import CommonOptions from "./common-options.mdx";
+
+## cast send
+
+### NAME
+
+cast-send - Sign and publish a transaction.
+
+### SYNOPSIS
+
+`cast send` [*options*] _to_ [*sig*] [*args...*]
+
+### DESCRIPTION
+
+Sign and publish a transaction.
+
+The destination (_to_) can be an ENS name or an address.
+
+<SigDescription />
+
+### OPTIONS
+
+<TransactionOptions />
+
+`--resend`  
+&nbsp;&nbsp;&nbsp;&nbsp;Reuse the latest nonce of the sending account.
+
+`--create` _code_ [*sig* *args...*]  
+&nbsp;&nbsp;&nbsp;&nbsp;Deploy a contract by specifying raw bytecode, in place of specifying a _to_ address.
+
+`--auth` _auth_  
+&nbsp;&nbsp;&nbsp;&nbsp;EIP-7702 authorization list.
+
+&nbsp;&nbsp;&nbsp;&nbsp;Can be either a hex-encoded signed authorization or an address.
+
+`--access-list` _access_list_  
+&nbsp;&nbsp;&nbsp;&nbsp;EIP-2930 access list.
+
+&nbsp;&nbsp;&nbsp;&nbsp;Accepts either a JSON-encoded access list or an empty value to create the access list via an RPC call to `eth_createAccessList`. To retrieve only the access list portion, use the `cast access-list` command.
+
+#### Receipt Options
+
+`--async`  
+`--cast-async`  
+&nbsp;&nbsp;&nbsp;&nbsp;Do not wait for the transaction receipt if it does not exist yet.  
+&nbsp;&nbsp;&nbsp;&nbsp;Environment: `CAST_ASYNC`
+
+`-c` _confirmations_  
+`--confirmations` _confirmations_  
+&nbsp;&nbsp;&nbsp;&nbsp;Wait a number of confirmations before exiting. Default: `1`.
+
+<WalletOptions />
+
+`--unlocked`  
+&nbsp;&nbsp;&nbsp;&nbsp;Send via `eth_sendTransaction` using the `--from` argument or `$ETH_FROM` as sender.
+
+<RpcOptions />
+
+<EtherscanOptions />
+
+<DisplayOptions />
+
+<CommonOptions />
+
+### EXAMPLES
+
+1. Send some ether to Vitalik using your Ledger:
+
+   ```sh
+   cast send --ledger vitalik.eth --value 0.1ether
+   ```
+
+2. Call `deposit(address token, uint256 amount)` on a contract:
+
+   ```sh
+   cast send --ledger 0x... "deposit(address,uint256)" 0x... 1
+   ```
+
+3. Call a function that expects a `struct`:
+
+   ```solidity
+   contract Test {
+       struct MyStruct {
+           address addr;
+           uint256 amount;
+       }
+       function myfunction(MyStruct memory t) public pure {}
+   }
+   ```
+
+   Structs are encoded as tuples (see [struct encoding](/misc/struct-encoding))
+
+   ```sh
+   cast send 0x... "myfunction((address,uint256))" "(0x...,1)"
+   ```
+
+4. Send a transaction with hex data in the `input` field of the transaction object:
+
+   ```sh
+   cast send 0x... 0x68656c6c6f20776f726c64
+   ```
+
+5. Sign an EIP-7702 authorization and attach it to a transaction from a different sender:
+
+   ```sh
+   cast send $(cast az) --private-key <sender-pk> --auth $(cast wallet sign-auth <address> --private-key <delegator-pk>)
+   ```
+
+6. Send an EIP-7702 transaction delegating the sender to `<address>`:
+   ```sh
+   cast send $(cast az) --auth <address>
+   ```
+
+### SEE ALSO
+
+[cast](/cast/reference/overview), [cast call](/cast/reference/cast-call.mdx), [cast publish](/cast/reference/cast-publish.mdx), [cast receipt](/cast/reference/cast-receipt.mdx), [cast mktx](/cast/reference/cast-mktx.mdx), [struct encoding](/misc/struct-encoding)

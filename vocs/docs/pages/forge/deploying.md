@@ -1,6 +1,6 @@
 ## Deploying
 
-Forge can deploy smart contracts to a given network with the [`forge create`](/reference/forge/forge-create) command.
+Forge can deploy smart contracts to a given network with the [`forge create`](/forge/reference/forge-create) command.
 
 Forge CLI can deploy only one contract at a time.
 
@@ -103,7 +103,7 @@ Note that for Etherscan [`ETHERSCAN_API_KEY`](https://docs.etherscan.io/getting-
 
 If you are verifying an already deployed contract, read on.
 
-You can verify a contract on Etherscan, Sourcify, oklink or Blockscout with the [`forge verify-contract`](/reference/forge/forge-verify-contract) command.
+You can verify a contract on Etherscan, Sourcify, oklink or Blockscout with the [`forge verify-contract`](/forge/reference/forge-verify-contract) command.
 
 You must provide:
 
@@ -119,7 +119,7 @@ Moreover, you may need to provide:
 - the number of optimizations, if the Solidity optimizer was activated. It is auto-detected if not specified.
 - the [chain ID](https://evm-chainlist.netlify.app/), if the contract is not on Ethereum Mainnet
 
-Let's say you want to verify `MyToken` (see above). You set the [number of optimizations](/reference/config/solidity-compiler#optimizer_runs) to 1 million, compiled it with v0.8.10, and deployed it, as shown above, to the Sepolia testnet (chain ID: 11155111). Note that `--num-of-optimizations` will default to 0 if not set on verification, while it defaults to 200 if not set on deployment, so make sure you pass `--num-of-optimizations 200` if you left the default compilation settings.
+Let's say you want to verify `MyToken` (see above). You set the [number of optimizations](/config/reference/solidity-compiler#optimizer_runs) to 1 million, compiled it with v0.8.10, and deployed it, as shown above, to the Sepolia testnet (chain ID: 11155111). Note that `--num-of-optimizations` will default to 0 if not set on verification, while it defaults to 200 if not set on deployment, so make sure you pass `--num-of-optimizations 200` if you left the default compilation settings.
 
 Here's how to verify it:
 
@@ -151,11 +151,11 @@ Submitted contract for verification:
 >
 > arguments.
 
-It is recommended to use the [`--watch`](/reference/forge/forge-verify-contract#verify-contract-options) flag along
+It is recommended to use the [`--watch`](/forge/reference/forge-verify-contract#verify-contract-options) flag along
 with `verify-contract` command in order to poll for the verification result.
 
 If the `--watch` flag was not supplied, you can check
-the verification status with the [`forge verify-check`](/reference/forge/forge-verify-check) command:
+the verification status with the [`forge verify-check`](/forge/reference/forge-verify-check) command:
 
 ```bash
 $ forge verify-check --chain-id 11155111 <GUID> <your_etherscan_api_key>
@@ -166,7 +166,7 @@ Contract successfully verified.
 
 > 💡 **Tip**
 >
-> Use Cast's [`abi-encode`](/reference/cast/cast-abi-encode) to ABI-encode arguments.
+> Use Cast's [`abi-encode`](/cast/reference/cast-abi-encode) to ABI-encode arguments.
 >
 > In this example, we ran `cast abi-encode "constructor(string,string,uint8,uint256)" "ForgeUSD" "FUSD" 18 1000000000000000000000` to ABI-encode the arguments.
 
@@ -222,6 +222,6 @@ Etherscan is not able to recompile such sources. Consider changing the imports t
 
 #### Verifying Contracts With No Bytecode Hash
 
-Currently, it's not possible to verify contracts on Etherscan with [`bytecode_hash`](/reference/config/solidity-compiler#bytecode_hash) set to `none`.
+Currently, it's not possible to verify contracts on Etherscan with [`bytecode_hash`](/config/reference/solidity-compiler#bytecode_hash) set to `none`.
 Click [here](https://docs.soliditylang.org/en/v0.8.13/metadata.html#usage-for-source-code-verification) to learn more about
 how metadata hash is used for source code verification.

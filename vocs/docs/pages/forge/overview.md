@@ -62,5 +62,5 @@ If you wish to simulate on-chain transactions pass a RPC URL.
 ```
 
 :::info
-See the [`forge` Reference](/reference/forge/forge) for a complete overview of all the available subcommands.
+See the [`forge` Reference](/forge/reference/overview) for a complete overview of all the available subcommands.
 :::

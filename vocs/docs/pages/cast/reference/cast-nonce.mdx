@@ -1,0 +1,45 @@
+import RpcUrlOption from "../../reference/common/rpc-url-option.mdx";
+import CommonOptions from "./common-options.mdx";
+
+## cast nonce
+
+### NAME
+
+cast-nonce - Get the nonce for an account.
+
+### SYNOPSIS
+
+`cast nonce` [*options*] _who_
+
+### DESCRIPTION
+
+Get the nonce of an account.
+
+The argument _who_ can be an ENS name or an address.
+
+### OPTIONS
+
+#### Query Options
+
+`-B` _block_  
+`--block` _block_  
+&nbsp;&nbsp;&nbsp;&nbsp;The block height you want to query at.
+
+&nbsp;&nbsp;&nbsp;&nbsp;Can be a block number, or any of the tags: `earliest`, `finalized`, `safe`, `latest` or `pending`.
+
+#### RPC Options
+
+<RpcUrlOption />
+
+<CommonOptions />
+
+### EXAMPLES
+
+1. Get the nonce of beer.eth
+   ```sh
+   cast nonce beer.eth
+   ```
+
+### SEE ALSO
+
+[cast](/cast/reference/overview), [cast balance](/cast/reference/cast-balance.mdx)

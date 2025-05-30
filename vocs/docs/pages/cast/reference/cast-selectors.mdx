@@ -1,0 +1,34 @@
+import CommonOptions from "./common-options.mdx";
+
+## cast selectors
+
+### NAME
+
+cast-selectors - Extracts function selectors and arguments from bytecode
+
+### SYNOPSIS
+
+`cast selectors` [*options*] _bytecode_
+
+### DESCRIPTION
+
+Extracts function selectors and arguments from bytecode using the [EVMole library](https://github.com/cdump/evmole)
+
+### OPTIONS
+
+`-r`  
+`--resolve`  
+&nbsp;&nbsp;&nbsp;&nbsp;Resolve the function signatures for the extracted selectors using https://openchain.xyz
+
+<CommonOptions />
+
+### EXAMPLES
+
+1. Get WETH's contract function signatures & arguments:
+   ```sh
+   cast selectors $(cast code 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2)
+   ```
+
+### SEE ALSO
+
+[cast](/cast/reference/overview), [cast 4byte](/cast/reference/cast-4byte.mdx)

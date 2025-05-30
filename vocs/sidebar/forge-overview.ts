@@ -39,5 +39,77 @@ export const forgeOverview: SidebarItem[] = [
             { text: 'Gas Section Snapshots', link: '/forge/gas-tracking/gas-section-snapshots' }
         ]
     },
-    { text: 'Debugger', link: '/forge/debugger' }
+    { text: 'Debugger', link: '/forge/debugger' },
+    { text: 'Reference', collapsed: true, items: [
+        {
+          text: 'General Commands',
+          collapsed: true,
+          link: '/forge/reference/general-commands',
+          items: [
+            { text: 'forge', link: '/forge/reference/forge' },
+            { text: 'forge help', link: '/forge/reference/forge-help' },
+            { text: 'forge completions', link: '/forge/reference/forge-completions' },
+          ],
+        },
+        {
+          text: 'Project Commands',
+          collapsed: true,
+          link: '/forge/reference/project-commands',
+          items: [
+            { text: 'forge init', link: '/forge/reference/forge-init' },
+            { text: 'forge clone', link: '/forge/reference/forge-clone' },
+            { text: 'forge install', link: '/forge/reference/forge-install' },
+            { text: 'forge update', link: '/forge/reference/forge-update' },
+            { text: 'forge remove', link: '/forge/reference/forge-remove' },
+            { text: 'forge config', link: '/forge/reference/forge-config' },
+            { text: 'forge remappings', link: '/forge/reference/forge-remappings' },
+            { text: 'forge tree', link: '/forge/reference/forge-tree' },
+            { text: 'forge geiger', link: '/forge/reference/forge-geiger' },
+          ],
+        },
+        {
+          text: 'Build Commands',
+          collapsed: true,
+          link: '/forge/reference/build-commands',
+          items: [
+            { text: 'forge build', link: '/forge/reference/forge-build' },
+            { text: 'forge clean', link: '/forge/reference/forge-clean' },
+            { text: 'forge inspect', link: '/forge/reference/forge-inspect' },
+          ],
+        },
+        {
+          text: 'Test Commands',
+          link: '/forge/reference/test-commands',
+          items: [
+            { text: 'forge test', link: '/forge/reference/forge-test' },
+            { text: 'forge snapshot', link: '/forge/reference/forge-snapshot' },
+            { text: 'forge coverage', link: '/forge/reference/forge-coverage' },
+          ],
+        },
+        {
+          text: 'Deploy Commands',
+          collapsed: true,
+          link: '/forge/reference/deploy-commands',
+          items: [
+            { text: 'forge create', link: '/forge/reference/forge-create' },
+            { text: 'forge verify-contract', link: '/forge/reference/forge-verify-contract' },
+            { text: 'forge verify-check', link: '/forge/reference/forge-verify-check' },
+            { text: 'forge flatten', link: '/forge/reference/forge-flatten' },
+          ],
+        },
+        {
+          text: 'Utility Commands',
+          collapsed: true,
+          link: '/forge/reference/utility-commands',
+          items: [
+            { text: 'forge bind', link: '/forge/reference/forge-bind' },
+            { text: 'forge cache', link: '/forge/reference/forge-cache' },
+            { text: 'forge cache clean', link: '/forge/reference/forge-cache-clean' },
+            { text: 'forge cache ls', link: '/forge/reference/forge-cache-ls' },
+            { text: 'forge script', link: '/forge/reference/forge-script' },
+            { text: 'forge upload-selectors', link: '/forge/reference/forge-upload-selectors' },
+            { text: 'forge doc', link: '/forge/reference/forge-doc' },
+          ],
+        },
+      ]}
 ]

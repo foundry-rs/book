@@ -1,265 +1,10 @@
 import { SidebarItem } from "vocs";
 
 export const cmdReference: SidebarItem[] = [
-  {
-    text: 'Forge Commands',
-    collapsed: true,
-    items: [
-      {
-        text: 'General Commands',
-        link: '/reference/forge/general-commands',
-        items: [
-          { text: 'forge', link: '/reference/forge/forge' },
-          { text: 'forge help', link: '/reference/forge/forge-help' },
-          { text: 'forge completions', link: '/reference/forge/forge-completions' },
-        ],
-      },
-      {
-        text: 'Project Commands',
-        link: '/reference/forge/project-commands',
-        items: [
-          { text: 'forge init', link: '/reference/forge/forge-init' },
-          { text: 'forge clone', link: '/reference/forge/forge-clone' },
-          { text: 'forge install', link: '/reference/forge/forge-install' },
-          { text: 'forge update', link: '/reference/forge/forge-update' },
-          { text: 'forge remove', link: '/reference/forge/forge-remove' },
-          { text: 'forge config', link: '/reference/forge/forge-config' },
-          { text: 'forge remappings', link: '/reference/forge/forge-remappings' },
-          { text: 'forge tree', link: '/reference/forge/forge-tree' },
-          { text: 'forge geiger', link: '/reference/forge/forge-geiger' },
-        ],
-      },
-      {
-        text: 'Build Commands',
-        link: '/reference/forge/build-commands',
-        items: [
-          { text: 'forge build', link: '/reference/forge/forge-build' },
-          { text: 'forge clean', link: '/reference/forge/forge-clean' },
-          { text: 'forge inspect', link: '/reference/forge/forge-inspect' },
-        ],
-      },
-      {
-        text: 'Test Commands',
-        link: '/reference/forge/test-commands',
-        items: [
-          { text: 'forge test', link: '/reference/forge/forge-test' },
-          { text: 'forge snapshot', link: '/reference/forge/forge-snapshot' },
-          { text: 'forge coverage', link: '/reference/forge/forge-coverage' },
-        ],
-      },
-      {
-        text: 'Deploy Commands',
-        link: '/reference/forge/deploy-commands',
-        items: [
-          { text: 'forge create', link: '/reference/forge/forge-create' },
-          { text: 'forge verify-contract', link: '/reference/forge/forge-verify-contract' },
-          { text: 'forge verify-check', link: '/reference/forge/forge-verify-check' },
-          { text: 'forge flatten', link: '/reference/forge/forge-flatten' },
-        ],
-      },
-      {
-        text: 'Utility Commands',
-        link: '/reference/forge/utility-commands',
-        items: [
-          { text: 'forge bind', link: '/reference/forge/forge-bind' },
-          { text: 'forge cache', link: '/reference/forge/forge-cache' },
-          { text: 'forge cache clean', link: '/reference/forge/forge-cache-clean' },
-          { text: 'forge cache ls', link: '/reference/forge/forge-cache-ls' },
-          { text: 'forge script', link: '/reference/forge/forge-script' },
-          { text: 'forge upload-selectors', link: '/reference/forge/forge-upload-selectors' },
-          { text: 'forge doc', link: '/reference/forge/forge-doc' },
-        ],
-      },
-    ],
-  },
-  {
-    text: 'Cast Commands',
-    collapsed: true,
-    items: [
-      {
-        text: 'General Commands',
-        link: '/reference/cast/general-commands',
-        items: [
-          { text: 'cast', link: '/reference/cast/cast' },
-          { text: 'cast help', link: '/reference/cast/cast-help' },
-          { text: 'cast completions', link: '/reference/cast/cast-completions' },
-        ],
-      },
-      {
-        text: 'Chain Commands',
-        link: '/reference/cast/chain-commands',
-        items: [
-          { text: 'cast chain-id', link: '/reference/cast/cast-chain-id' },
-          { text: 'cast chain', link: '/reference/cast/cast-chain' },
-          { text: 'cast client', link: '/reference/cast/cast-client' },
-        ],
-      },
-      {
-        text: 'Transaction Commands',
-        link: '/reference/cast/transaction-commands',
-        items: [
-          { text: 'cast publish', link: '/reference/cast/cast-publish' },
-          { text: 'cast receipt', link: '/reference/cast/cast-receipt' },
-          { text: 'cast send', link: '/reference/cast/cast-send' },
-          { text: 'cast mktx', link: '/reference/cast/cast-mktx' },
-          { text: 'cast call', link: '/reference/cast/cast-call' },
-          { text: 'cast rpc', link: '/reference/cast/cast-rpc' },
-          { text: 'cast tx', link: '/reference/cast/cast-tx' },
-          { text: 'cast run', link: '/reference/cast/cast-run' },
-          { text: 'cast estimate', link: '/reference/cast/cast-estimate' },
-          { text: 'cast access-list', link: '/reference/cast/cast-access-list' },
-          { text: 'cast logs', link: '/reference/cast/cast-logs' },
-        ],
-      },
-      {
-        text: 'Block Commands',
-        link: '/reference/cast/block-commands',
-        items: [
-          { text: 'cast find-block', link: '/reference/cast/cast-find-block' },
-          { text: 'cast gas-price', link: '/reference/cast/cast-gas-price' },
-          { text: 'cast block-number', link: '/reference/cast/cast-block-number' },
-          { text: 'cast basefee', link: '/reference/cast/cast-basefee' },
-          { text: 'cast block', link: '/reference/cast/cast-block' },
-          { text: 'cast age', link: '/reference/cast/cast-age' },
-        ],
-      },
-      {
-        text: 'Account Commands',
-        link: '/reference/cast/account-commands',
-        items: [
-          { text: 'cast balance', link: '/reference/cast/cast-balance' },
-          { text: 'cast storage', link: '/reference/cast/cast-storage' },
-          { text: 'cast proof', link: '/reference/cast/cast-proof' },
-          { text: 'cast nonce', link: '/reference/cast/cast-nonce' },
-          { text: 'cast code', link: '/reference/cast/cast-code' },
-          { text: 'cast codesize', link: '/reference/cast/cast-codesize' },
-        ],
-      },
-      {
-        text: 'ENS Commands',
-        link: '/reference/cast/ens-commands',
-        items: [
-          { text: 'cast lookup-address', link: '/reference/cast/cast-lookup-address' },
-          { text: 'cast resolve-name', link: '/reference/cast/cast-resolve-name' },
-          { text: 'cast namehash', link: '/reference/cast/cast-namehash' },
-        ],
-      },
-      {
-        text: 'Etherscan Commands',
-        link: '/reference/cast/etherscan-commands',
-        items: [
-          { text: 'cast etherscan-source', link: '/reference/cast/cast-etherscan-source' },
-        ],
-      },
-      {
-        text: 'ABI Commands',
-        link: '/reference/cast/abi-commands',
-        items: [
-          { text: 'cast abi-encode', link: '/reference/cast/cast-abi-encode' },
-          { text: 'cast 4byte', link: '/reference/cast/cast-4byte' },
-          { text: 'cast 4byte-calldata', link: '/reference/cast/cast-4byte-calldata' },
-          { text: 'cast 4byte-event', link: '/reference/cast/cast-4byte-event' },
-          { text: 'cast calldata', link: '/reference/cast/cast-calldata' },
-          { text: 'cast decode-abi', link: '/reference/cast/cast-decode-abi' },
-          { text: 'cast decode-calldata', link: '/reference/cast/cast-decode-calldata' },
-          { text: 'cast pretty-calldata', link: '/reference/cast/cast-pretty-calldata' },
-          { text: 'cast selectors', link: '/reference/cast/cast-selectors' },
-          { text: 'cast upload-signature', link: '/reference/cast/cast-upload-signature' },
-        ],
-      },
-      {
-        text: 'Conversion Commands',
-        link: '/reference/cast/conversion-commands',
-        items: [
-          { text: 'cast format-bytes32-string', link: '/reference/cast/cast-format-bytes32-string' },
-          { text: 'cast from-bin', link: '/reference/cast/cast-from-bin' },
-          { text: 'cast from-fixed-point', link: '/reference/cast/cast-from-fixed-point' },
-          { text: 'cast from-rlp', link: '/reference/cast/cast-from-rlp' },
-          { text: 'cast from-utf8', link: '/reference/cast/cast-from-utf8' },
-          { text: 'cast from-wei', link: '/reference/cast/cast-from-wei' },
-          { text: 'cast parse-bytes32-address', link: '/reference/cast/cast-parse-bytes32-address' },
-          { text: 'cast parse-bytes32-string', link: '/reference/cast/cast-parse-bytes32-string' },
-          { text: 'cast to-ascii', link: '/reference/cast/cast-to-ascii' },
-          { text: 'cast to-base', link: '/reference/cast/cast-to-base' },
-          { text: 'cast to-bytes32', link: '/reference/cast/cast-to-bytes32' },
-          { text: 'cast to-dec', link: '/reference/cast/cast-to-dec' },
-          { text: 'cast to-fixed-point', link: '/reference/cast/cast-to-fixed-point' },
-          { text: 'cast to-hex', link: '/reference/cast/cast-to-hex' },
-          { text: 'cast to-hexdata', link: '/reference/cast/cast-to-hexdata' },
-          { text: 'cast to-int256', link: '/reference/cast/cast-to-int256' },
-          { text: 'cast to-rlp', link: '/reference/cast/cast-to-rlp' },
-          { text: 'cast to-uint256', link: '/reference/cast/cast-to-uint256' },
-          { text: 'cast to-unit', link: '/reference/cast/cast-to-unit' },
-          { text: 'cast to-wei', link: '/reference/cast/cast-to-wei' },
-          { text: 'cast shl', link: '/reference/cast/cast-shl' },
-          { text: 'cast shr', link: '/reference/cast/cast-shr' },
-        ],
-      },
-      {
-        text: 'Utility Commands',
-        link: '/reference/cast/utility-commands',
-        items: [
-          { text: 'cast address-zero', link: '/reference/cast/cast-address-zero' },
-          { text: 'cast sig', link: '/reference/cast/cast-sig' },
-          { text: 'cast sig-event', link: '/reference/cast/cast-sig-event' },
-          { text: 'cast keccak', link: '/reference/cast/cast-keccak' },
-          { text: 'cast compute-address', link: '/reference/cast/cast-compute-address' },
-          { text: 'cast create2', link: '/reference/cast/cast-create2' },
-          { text: 'cast interface', link: '/reference/cast/cast-interface' },
-          { text: 'cast index', link: '/reference/cast/cast-index' },
-          { text: 'cast concat-hex', link: '/reference/cast/cast-concat-hex' },
-          { text: 'cast max-int', link: '/reference/cast/cast-max-int' },
-          { text: 'cast min-int', link: '/reference/cast/cast-min-int' },
-          { text: 'cast max-uint', link: '/reference/cast/cast-max-uint' },
-          { text: 'cast to-check-sum-address', link: '/reference/cast/cast-to-check-sum-address' },
-        ],
-      },
-      {
-        text: 'Wallet Commands',
-        link: '/reference/cast/wallet-commands',
-        items: [
-          { text: 'cast wallet', link: '/reference/cast/cast-wallet' },
-          { text: 'cast wallet new', link: '/reference/cast/cast-wallet-new' },
-          { text: 'cast wallet new-mnemonic', link: '/reference/cast/cast-wallet-new-mnemonic' },
-          { text: 'cast wallet address', link: '/reference/cast/cast-wallet-address' },
-          { text: 'cast wallet sign', link: '/reference/cast/cast-wallet-sign' },
-          { text: 'cast wallet vanity', link: '/reference/cast/cast-wallet-vanity' },
-          { text: 'cast wallet verify', link: '/reference/cast/cast-wallet-verify' },
-          { text: 'cast wallet import', link: '/reference/cast/cast-wallet-import' },
-          { text: 'cast wallet list', link: '/reference/cast/cast-wallet-list' },
-        ],
-      },
-    ],
-  },
-  {
-    text: 'Anvil Reference',
-    link: '/reference/anvil/overview',
-  },
-  {
-    text: 'Chisel Reference',
-    link: '/reference/chisel/overview',
-  },
-  {
-    text: 'Config Reference',
-    collapsed: true,
-    items: [
-      { text: 'Overview', link: '/reference/config/overview' },
-      { text: 'Project', link: '/reference/config/project' },
-      { text: 'Solidity Compiler', link: '/reference/config/solidity-compiler' },
-      { text: 'Testing', link: '/reference/config/testing' },
-      { text: 'In-line Configuration Testing', link: '/reference/config/inline-test-config' },
-      { text: 'Formatter', link: '/reference/config/formatter' },
-      { text: 'Documentation Generator', link: '/reference/config/doc-generator' },
-      { text: 'Etherscan', link: '/reference/config/etherscan' },
-    ],
-  },
-  {
-    text: 'Cheatcodes Reference',
-    collapsed: true,
-    items: [
       {
         text: 'Environment',
         link: '/reference/cheatcodes/environment',
+        collapsed: true,
         items: [
           { text: 'warp', link: '/reference/cheatcodes/warp' },
           { text: 'roll', link: '/reference/cheatcodes/roll' },
@@ -306,6 +51,7 @@ export const cmdReference: SidebarItem[] = [
       {
         text: 'Assertions',
         link: '/reference/cheatcodes/assertions',
+        collapsed: true,
         items: [
           { text: 'expectRevert', link: '/reference/cheatcodes/expect-revert' },
           { text: 'expectEmit', link: '/reference/cheatcodes/expect-emit' },
@@ -315,6 +61,7 @@ export const cmdReference: SidebarItem[] = [
       {
         text: 'Fuzzer',
         link: '/reference/cheatcodes/fuzzer',
+        collapsed: true,
         items: [
           { text: 'assume', link: '/reference/cheatcodes/assume' },
           { text: 'assumeNoRevert', link: '/reference/cheatcodes/assume-no-revert' },
@@ -323,6 +70,7 @@ export const cmdReference: SidebarItem[] = [
       {
         text: 'Forking',
         link: '/reference/cheatcodes/forking',
+        collapsed: true,
         items: [
           { text: 'createFork', link: '/reference/cheatcodes/create-fork' },
           { text: 'selectFork', link: '/reference/cheatcodes/select-fork' },
@@ -339,6 +87,7 @@ export const cmdReference: SidebarItem[] = [
       {
         text: 'External',
         link: '/reference/cheatcodes/external',
+        collapsed: true,
         items: [
           { text: 'ffi', link: '/reference/cheatcodes/ffi' },
           { text: 'prompt', link: '/reference/cheatcodes/prompt' },
@@ -371,6 +120,7 @@ export const cmdReference: SidebarItem[] = [
       {
         text: 'Signing',
         link: '/reference/cheatcodes/signing',
+        collapsed: true,
         items: [
           { text: 'sign', link: '/reference/cheatcodes/sign' },
           { text: 'signDelegation', link: '/reference/cheatcodes/sign-delegation' },
@@ -379,6 +129,7 @@ export const cmdReference: SidebarItem[] = [
       {
         text: 'Utilities',
         link: '/reference/cheatcodes/utilities',
+        collapsed: true,
         items: [
           { text: 'addr', link: '/reference/cheatcodes/addr' },
           { text: 'skip', link: '/reference/cheatcodes/skip' },
@@ -401,10 +152,8 @@ export const cmdReference: SidebarItem[] = [
       },
       { text: 'RPC', link: '/reference/cheatcodes/rpc' },
       { text: 'Files', link: '/reference/cheatcodes/fs' },
-    ],
-  },
   {
-    text: 'Forge Standard Library Reference',
+    text: 'Forge-Std Reference',
     collapsed: true,
     items: [
       { text: 'Std Logs', link: '/reference/forge-std/std-logs' },

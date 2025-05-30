@@ -1,0 +1,39 @@
+import CommonOptions from "./common-options.mdx";
+
+## cast abi-encode
+
+### NAME
+
+cast-abi-encode - ABI encode the given function arguments, excluding the selector.
+
+### SYNOPSIS
+
+`cast abi-encode` [*options*] _sig_ [*args...*]
+
+### DESCRIPTION
+
+ABI encode the given function, excluding the selector.
+
+The signature (_sig_) is a fragment in the form `<function name>(<types...>)`.
+
+### OPTIONS
+
+<CommonOptions />
+
+### EXAMPLES
+
+1. ABI-encode the arguments for a call to `someFunc(address,uint256)`:
+
+   ```sh
+   cast abi-encode "someFunc(address,uint256)" 0x... 1
+   ```
+
+2. For encoding a type with components (as a tuple, or custom struct):
+
+   ```sh
+   cast abi-encode "someFunc((string,uint256))" "(myString,1)"
+   ```
+
+### SEE ALSO
+
+[cast](/cast/reference/overview), [cast calldata](/cast/reference/cast-calldata.mdx)

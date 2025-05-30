@@ -1,0 +1,32 @@
+import CommonOptions from "./common-options.mdx";
+
+## cast calldata
+
+### NAME
+
+cast-calldata - ABI-encode a function with arguments.
+
+### SYNOPSIS
+
+`cast calldata` [*options*] _sig_ [*args...*]
+
+### DESCRIPTION
+
+ABI-encode a function with arguments.
+
+The signature (_sig_) is a fragment in the form `<function name>(<types...>)`.
+
+### OPTIONS
+
+<CommonOptions />
+
+### EXAMPLES
+
+1. ABI-encode the arguments for a call to `someFunc(address,uint256)`:
+   ```sh
+   cast calldata "someFunc(address,uint256)" 0x... 1
+   ```
+
+### SEE ALSO
+
+[cast](/cast/reference/overview), [cast abi-encode](/cast/reference/cast-abi-encode.mdx)
