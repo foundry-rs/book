@@ -2,22 +2,6 @@ import { SidebarItem } from "vocs";
 
 export const cmdReference: SidebarItem[] = [
   {
-    text: 'Forge Reference',
-    link: '/forge/reference/forge',
-  },
-  {
-    text: 'Cast Reference',
-    link: '/cast/reference/overview',
-  },
-  {
-    text: 'Anvil Reference',
-    link: '/anvil/reference',
-  },
-  {
-    text: 'Chisel Reference',
-    link: '/chisel/reference',
-  },
-  {
     text: 'Config Reference',
     collapsed: true,
     items: [
@@ -32,7 +16,7 @@ export const cmdReference: SidebarItem[] = [
     ],
   },
   {
-    text: 'Cheatcodes Reference',
+    text: 'Cheatcodes',
     collapsed: true,
     items: [
       {
