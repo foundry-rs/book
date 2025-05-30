@@ -68,6 +68,7 @@ export const sidebar: Sidebar = [
             { text: 'Deterministic deployments using CREATE2', link: '/guides/deterministic-deployments-using-create2' },
             { text: 'Forking Mainnet with Cast and Anvil', link: '/guides/forking-mainnet-with-cast-anvil' },
             { text: 'Running Foundry inside of Docker', link: '/guides/foundry-in-docker' },
+            { text: 'Implementing and Testing EIP-712 signatures', link: '/guides/eip712' },
             { text: 'Video tutorials', link: '/guides/video-tutorials' }
         ]
     },

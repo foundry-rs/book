@@ -9,7 +9,7 @@ This guide shows you how to build, test, and deploy a smart contract using Found
 The only installation required to run this guide is Docker, and optionally, an IDE of your choice.
 Follow the [Docker installation instructions](/introduction/installation).
 
-To keep future commands succinct, let's re-tag the image:  
+To keep future commands succinct, let's re-tag the image:
  `docker tag ghcr.io/foundry-rs/foundry:latest foundry:latest`
 
 Having Foundry installed locally is not strictly required, but it may be helpful for debugging. You can install it using [foundryup](/introduction/installation#using-foundryup).
@@ -180,7 +180,7 @@ services:
 
 Finally, run `docker compose up`.
 
-```ignore
+```sh
 $ docker compose up
 [+] Running 1/1
  ✔ Container anvil  Created
