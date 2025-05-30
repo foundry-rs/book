@@ -1,7 +1,7 @@
 ## References
 
 - [forge Commands](/reference/forge/forge)
-- [cast Commands](/reference/cast/overview)
+- [cast Commands](/cast/reference/overview)
 - [anvil Reference](/anvil/reference)
 - [chisel Reference](/chisel/reference)
 - [Config Reference](/reference/config/overview)

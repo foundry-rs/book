@@ -236,7 +236,7 @@ Script execution requires a private key to send transactions. This key controls 
    1. With this approach, it's very important that your scripts or contracts don't rely on `msg.sender` since the sender will not be an account that's meant to be used again. For example, if a deploy script configures a contract owner, ensure the owner a constructor argument and not set to `msg.sender`.
    2. To use this approach, you can either store the private key in an environment variable and use cheat codes to read it in, or use the `--private-key` flag to directly provide the key.
 
-3. **Use a keystore.** This can be thought of as a middle ground between the above two approaches. With [`cast wallet import`](/reference/cast/cast-wallet-import) you import a private key and encrypt it with a password. This still temporarily exposes your private key on your machine, but it becomes encrypted and you'll provide the password to decrypt it to run a script.
+3. **Use a keystore.** This can be thought of as a middle ground between the above two approaches. With [`cast wallet import`](/cast/reference/cast-wallet-import) you import a private key and encrypt it with a password. This still temporarily exposes your private key on your machine, but it becomes encrypted and you'll provide the password to decrypt it to run a script.
 
 Additional security precautions when using scripts:
 

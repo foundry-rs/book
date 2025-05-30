@@ -166,7 +166,7 @@ Contract successfully verified.
 
 > 💡 **Tip**
 >
-> Use Cast's [`abi-encode`](/reference/cast/cast-abi-encode) to ABI-encode arguments.
+> Use Cast's [`abi-encode`](/cast/reference/cast-abi-encode) to ABI-encode arguments.
 >
 > In this example, we ran `cast abi-encode "constructor(string,string,uint8,uint256)" "ForgeUSD" "FUSD" 18 1000000000000000000000` to ABI-encode the arguments.
 
