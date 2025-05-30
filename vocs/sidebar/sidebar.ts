@@ -32,6 +32,7 @@ export const sidebar: Sidebar = [
             { text: 'Reference', collapsed: true, link: '/cast/reference/overview', items: [
                 {
                   text: 'General Commands',
+                  collapsed: true,
                   link: '/cast/reference/general-commands',
                   items: [
                     { text: 'cast', link: '/cast/reference/cast' },
@@ -41,6 +42,7 @@ export const sidebar: Sidebar = [
                 },
                 {
                   text: 'Chain Commands',
+                  collapsed: true,
                   link: '/cast/reference/chain-commands',
                   items: [
                     { text: 'cast chain-id', link: '/cast/reference/cast-chain-id' },
@@ -50,6 +52,7 @@ export const sidebar: Sidebar = [
                 },
                 {
                   text: 'Transaction Commands',
+                  collapsed: true,
                   link: '/cast/reference/transaction-commands',
                   items: [
                     { text: 'cast publish', link: '/cast/reference/cast-publish' },
@@ -67,6 +70,7 @@ export const sidebar: Sidebar = [
                 },
                 {
                   text: 'Block Commands',
+                  collapsed: true,
                   link: '/cast/reference/block-commands',
                   items: [
                     { text: 'cast find-block', link: '/cast/reference/cast-find-block' },
@@ -79,6 +83,7 @@ export const sidebar: Sidebar = [
                 },
                 {
                   text: 'Account Commands',
+                  collapsed: true,
                   link: '/cast/reference/account-commands',
                   items: [
                     { text: 'cast balance', link: '/cast/reference/cast-balance' },
@@ -91,6 +96,7 @@ export const sidebar: Sidebar = [
                 },
                 {
                   text: 'ENS Commands',
+                  collapsed: true,
                   link: '/cast/reference/ens-commands',
                   items: [
                     { text: 'cast lookup-address', link: '/cast/reference/cast-lookup-address' },
@@ -100,6 +106,7 @@ export const sidebar: Sidebar = [
                 },
                 {
                   text: 'Etherscan Commands',
+                  collapsed: true,
                   link: '/cast/reference/etherscan-commands',
                   items: [
                     { text: 'cast etherscan-source', link: '/cast/reference/cast-etherscan-source' },
@@ -107,6 +114,7 @@ export const sidebar: Sidebar = [
                 },
                 {
                   text: 'ABI Commands',
+                  collapsed: true,
                   link: '/cast/reference/abi-commands',
                   items: [
                     { text: 'cast abi-encode', link: '/cast/reference/cast-abi-encode' },
@@ -123,6 +131,7 @@ export const sidebar: Sidebar = [
                 },
                 {
                   text: 'Conversion Commands',
+                  collapsed: true,
                   link: '/cast/reference/conversion-commands',
                   items: [
                     { text: 'cast format-bytes32-string', link: '/cast/reference/cast-format-bytes32-string' },
@@ -151,6 +160,7 @@ export const sidebar: Sidebar = [
                 },
                 {
                   text: 'Utility Commands',
+                  collapsed: true,
                   link: '/cast/reference/utility-commands',
                   items: [
                     { text: 'cast address-zero', link: '/cast/reference/cast-address-zero' },
@@ -170,6 +180,7 @@ export const sidebar: Sidebar = [
                 },
                 {
                   text: 'Wallet Commands',
+                  collapsed: true,
                   link: '/cast/reference/wallet-commands',
                   items: [
                     { text: 'cast wallet', link: '/cast/reference/cast-wallet' },
