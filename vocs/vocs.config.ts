@@ -32,8 +32,8 @@ export default defineConfig({
       ],
     }
   ],
-  logoUrl: '/cropped-ripped-jesus.png',
-  iconUrl: '/cropped-ripped-jesus.png',
+  logoUrl: '/foundry-logo.png',
+  iconUrl: '/foundry-logo.png',
   ogImageUrl: '/og-image.png',
   socials: [
     {
