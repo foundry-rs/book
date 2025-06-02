@@ -8,24 +8,71 @@ showLogo: false
 
 import { HomePage, Sponsors } from "vocs/components";
  
-<div className="max-w-[1120px] mx-auto vp-doc relative px-[24px] mb-[64px] mt-[32px] md:px-0 md:mb-[32px]">  
-  <div className="pt-[48px] max-sm:pt-0">
-    <div className="max-sm:px-0 flex justify-between z-0 max-md:justify-center max-md:flex-col max-md:items-center max-md:space-y-6">
-      <div className="space-y-8 max-w-[400px] flex flex-col items-start max-md:items-center">
-        <div className="space-x-4 flex flex-row">
-          <img 
+<div className="max-w-[1120px] mx-auto vp-doc relative px-[24px] mb-[64px] mt-[0px] md:px-0 md:mb-[32px]">  
+  <div className="pt-[0px] max-sm:pt-0">
+    <div className="flex flex-col items-center space-y-8 max-w-[800px] mx-auto">
+      {/* Foundry Banner - Centered at top */}
+      <div className="w-full max-w-[600px]">
+        <img 
           src="/og-image.png" 
           alt="Foundry" 
           className="w-full h-auto rounded-xl shadow-lg"
-          />
-        </div>
-        <div className="font-regular text-[21px] max-sm:text-[18px] text-[#919193] max-md:text-center">Blazing fast smart contract developement toolkit.</div>
-        <div className="flex justify-center space-x-2">
-          <HomePage.Button href="/introduction/getting-started" variant="accent">Get started</HomePage.Button>
-          <HomePage.Button href="https://github.com/foundry-rs/foundry">GitHub</HomePage.Button>
-        </div>
+        />
       </div>
-        <div className="flex flex-col justify-between w-[540px] space-y-10 max-lg:w-[300px]">
+      
+      {/* Tagline */}
+      <div className="font-regular text-[21px] max-sm:text-[18px] text-[#919193] text-center">
+        Blazing fast smart contract developement toolkit.
+      </div>
+      
+      {/* Stats Links - Three in a row */}
+      <div className="flex justify-center space-x-4 max-sm:space-x-2 max-sm:flex-wrap max-sm:gap-2">
+        <a href="https://github.com/foundry-rs/foundry/stargazers" className="cursor-pointer h-[36px] min-w-[120px] flex relative rounded-lg overflow-hidden border border-black/10 dark:border-white/20" style={{ color: 'inherit' }} rel="noreferrer noopener" target="_blank">
+          <div className="absolute flex z-[1] p-[6px] h-full w-full">
+            <div className="flex-1 bg-white/60 dark:bg-black/40 flex items-center w-full h-full rounded-md">
+              <span className="font-medium text-[15px] opacity-80 leading-none w-full text-center">stars</span>
+            </div>
+            <div className="flex items-center h-full px-2">
+              <span className="font-medium text-[15px] text-center leading-none w-full text-black dark:text-white">9k</span>
+            </div>
+          </div>
+          <div className="absolute left-0 right-0 top-0 bottom-0 bg-amber-500 opacity-10 z-[0]" />
+          <div className="absolute left-0 right-0 top-0 bottom-0 backdrop-blur-[2px] backdrop-filter z-0" />
+        </a>
+        <a href="https://github.com/foundry-rs/foundry/contributors" className="cursor-pointer h-[36px] min-w-[160px] flex relative rounded-lg overflow-hidden border border-green-400/50" style={{ color: 'inherit' }} rel="noreferrer noopener" target="_blank">
+          <div className="absolute flex z-[1] p-[6px] h-full w-full">
+            <div className="flex-1 bg-white/60 dark:bg-black/40 flex items-center w-full h-full rounded-md">
+              <span className="font-medium text-[15px] leading-none opacity-80 w-full text-center">contributors</span>
+            </div>
+            <div className="flex items-center h-full px-2">
+              <span className="font-medium text-[15px] leading-none text-center w-full text-green-400">500+</span>
+            </div>
+          </div>
+          <div className="absolute left-0 right-0 top-0 bottom-0 bg-green-400 opacity-10 z-[0]" />
+          <div className="absolute left-0 right-0 top-0 bottom-0 backdrop-blur-[2px] backdrop-filter z-[0]" />
+        </a>
+        <a href="https://github.com/foundry-rs/foundry/blob/master/LICENSE" className="cursor-pointer h-[36px] min-w-[130px] flex relative rounded-lg overflow-hidden border border-black/10 dark:border-white/20" style={{ color: 'inherit' }} rel="noreferrer noopener" target="_blank">
+          <div className="absolute flex z-[1] p-[6px] h-full w-full">
+            <div className="flex-1 bg-white/60 dark:bg-black/40 flex items-center w-full h-full rounded-md">
+              <span className="font-medium text-[15px] leading-none opacity-80 w-full text-center">license</span>
+            </div>
+            <div className="flex items-center h-full px-2">
+              <span className="font-medium text-[15px] leading-none text-center w-full text-black dark:text-white">MIT</span>
+            </div>
+          </div>
+          <div className="absolute left-0 right-0 top-0 bottom-0 bg-black/5 dark:bg-white/5 z-[0]" />
+          <div className="absolute left-0 right-0 top-0 bottom-0 backdrop-blur-[2px] backdrop-filter z-[0]" />
+        </a>
+      </div>
+      
+      {/* Action Buttons */}
+      <div className="flex justify-center space-x-2">
+        <HomePage.Button href="/introduction/getting-started" variant="accent">Get started</HomePage.Button>
+        <HomePage.Button href="https://github.com/foundry-rs/foundry">GitHub</HomePage.Button>
+      </div>
+      
+      {/* Installer Code Block */}
+      <div className="w-full max-w-[600px]">
         <div id="home-install" className="h-full">
         ```bash 
         # Download foundry installer `foundryup` 
@@ -36,46 +83,8 @@ import { HomePage, Sponsors } from "vocs/components";
         foundryup -i nightly
         ```
         </div>
-        <div className="flex justify-between space-x-2">
-    <a href="https://github.com/foundry-rs/foundry/stargazers" className="cursor-pointer h-[36px] max-w-[120px] flex-1 relative rounded-lg overflow-hidden border border-black/10 dark:border-white/20" style={{ color: 'inherit' }} rel="noreferrer noopener" target="_blank">
-      <div className="absolute flex z-[1] p-[6px] h-full w-full">
-        <div className="flex-1 bg-white/60 dark:bg-black/40 flex items-center w-full h-full rounded-md">
-          <span className="font-medium text-[15px] opacity-80 leading-none w-full text-center">stars</span>
-        </div>
-        <div className="flex items-center h-full px-2">
-          <span className="font-medium text-[15px] text-center leading-none w-full text-black dark:text-white">9k</span>
-        </div>
       </div>
-      <div className="absolute left-0 right-0 top-0 bottom-0 bg-amber-500 opacity-10 z-[0]" />
-      <div className="absolute left-0 right-0 top-0 bottom-0 backdrop-blur-[2px] backdrop-filter z-0" />
-    </a>
-    <a href="https://github.com/foundry-rs/foundry/contributors" className="cursor-pointer h-[36px] max-w-[160px] flex-1 relative rounded-lg overflow-hidden border border-green-400/50" style={{ color: 'inherit' }} rel="noreferrer noopener" target="_blank">
-      <div className="absolute flex z-[1] p-[6px] h-full w-full">
-        <div className="flex-1 bg-white/60 dark:bg-black/40 flex items-center w-full h-full rounded-md">
-          <span className="font-medium text-[15px] leading-none opacity-80 w-full text-center">contributors</span>
-        </div>
-        <div className="flex items-center h-full px-2">
-          <span className="font-medium text-[15px] leading-none text-center w-full text-green-400">500+</span>
-        </div>
-      </div>
-      <div className="absolute left-0 right-0 top-0 bottom-0 bg-green-400 opacity-10 z-[0]" />
-      <div className="absolute left-0 right-0 top-0 bottom-0 backdrop-blur-[2px] backdrop-filter z-[0]" />
-    </a>
-    <a href="https://github.com/foundry-rs/foundry/blob/master/LICENSE" className="cursor-pointer h-[36px] max-w-[130px] flex-1 relative rounded-lg overflow-hidden border border-black/10 dark:border-white/20 max-lg:hidden" style={{ color: 'inherit' }} rel="noreferrer noopener" target="_blank">
-      <div className="absolute flex z-[1] p-[6px] h-full w-full">
-        <div className="flex-1 bg-white/60 dark:bg-black/40 flex items-center w-full h-full rounded-md">
-          <span className="font-medium text-[15px] leading-none opacity-80 w-full text-center">license</span>
-        </div>
-        <div className="flex items-center h-full px-2">
-          <span className="font-medium text-[15px] leading-none text-center w-full text-black dark:text-white">MIT</span>
-        </div>
-      </div>
-      <div className="absolute left-0 right-0 top-0 bottom-0 bg-black/5 dark:bg-white/5 z-[0]" />
-      <div className="absolute left-0 right-0 top-0 bottom-0 backdrop-blur-[2px] backdrop-filter z-[0]" />
-    </a>
     </div>
-    </div>
-
   </div>
  
   <div className="flex justify-between flex-wrap mt-10">
@@ -119,7 +128,6 @@ import { HomePage, Sponsors } from "vocs/components";
           <div className="absolute left-0 right-0 top-0 bottom-0 backdrop-filter backdrop-blur-[2px] z-0" />
         </div>
       </div>
-    </div>
     </div>
 </div>
 <article className="vocs_Content max-w-5xl mx-auto">
