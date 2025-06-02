@@ -35,7 +35,7 @@ export const sidebar: Sidebar = [
                   collapsed: true,
                   link: '/cast/reference/general-commands',
                   items: [
-                    { text: 'cast', link: '/cast/reference/cast' },
+                    { text: 'cast', link: '/cast/reference/overview' },
                     { text: 'cast help', link: '/cast/reference/cast-help' },
                     { text: 'cast completions', link: '/cast/reference/cast-completions' },
                   ],
