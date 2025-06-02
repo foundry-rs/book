@@ -161,7 +161,7 @@ If enabled, Foundry will treat Solidity compiler warnings as errors, stopping ar
 ##### `evm_version`
 
 - Type: string
-- Default: cancun
+- Default: prague
 - Environment: `FOUNDRY_EVM_VERSION` or `DAPP_EVM_VERSION`
 
 The EVM version to use during tests. The value **must** be an EVM hardfork name, such as `london`, `byzantium`, etc.
@@ -170,12 +170,6 @@ If you are relying on a specific EVM version for compatibility reasons you are r
 
 ```toml
 evm_version = "paris"
-```
-
-If you are experimenting with future hardforks that Foundry already supports, such as [EIP-7702](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-7702.md) to be added in `Prague`, you should set your `evm_version` as follows:
-
-```toml
-evm_version = "prague"
 ```
 
 ##### `revert_strings`
@@ -521,7 +515,7 @@ Additional compiler profile [via_ir](#via_ir) setting.
 ##### `additional_compiler_profile.evm_version`
 
 - Type: string
-- Default: cancun
+- Default: prague
 
 Additional compiler profile [evm_version](#evm_version) setting.
 
