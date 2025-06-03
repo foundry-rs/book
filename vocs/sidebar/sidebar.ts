@@ -92,6 +92,7 @@ export const sidebar: Sidebar = [
                     { text: 'cast nonce', link: '/cast/reference/cast-nonce' },
                     { text: 'cast code', link: '/cast/reference/cast-code' },
                     { text: 'cast codesize', link: '/cast/reference/cast-codesize' },
+                    { text: 'cast index', link: '/cast/reference/cast-index'},
                   ],
                 },
                 {
@@ -192,6 +193,7 @@ export const sidebar: Sidebar = [
                     { text: 'cast wallet verify', link: '/cast/reference/cast-wallet-verify' },
                     { text: 'cast wallet import', link: '/cast/reference/cast-wallet-import' },
                     { text: 'cast wallet list', link: '/cast/reference/cast-wallet-list' },
+                    { text: 'cast wallet sign-auth', link: '/cast/reference/cast-wallet-sign-auth'},
                   ],
                 },
               ] },

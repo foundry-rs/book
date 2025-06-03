@@ -4,6 +4,8 @@
 
 /reference/forge/:id /forge/reference/:id
 
+/forge /forge/overview
+
 /cheatcodes /reference/cheatcodes/overview
 /cheatcodes/:id /reference/cheatcodes/:id
 
