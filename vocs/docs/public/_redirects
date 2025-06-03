@@ -2,8 +2,15 @@
 /getting-started/introduction /introduction/overview
 /getting-started/first-steps  /introduction/getting-started
 
+/reference/anvil /anvil/reference
+/reference/chisel /chisel/reference
+
+/reference/cast/:id /cast/reference/:id
 /reference/forge/:id /forge/reference/:id
 
+/anvil /anvil/overview
+/cast /cast/overview
+/chisel /chisel/overview
 /forge /forge/overview
 
 /cheatcodes /reference/cheatcodes/overview
