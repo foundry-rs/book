@@ -6,7 +6,7 @@ showLogo: false
 ---
 
 import { HomePage, Sponsors } from "vocs/components";
- 
+
 <div className="max-w-[1120px] mx-auto vp-doc relative px-[24px] mb-[64px] mt-[32px] md:px-0 md:mb-[32px]">
   <div className="pt-[48px] max-sm:pt-0">
     <div className="max-sm:px-0 space-x-2 flex justify-between z-0 max-md:justify-center max-md:flex-col max-md:items-center max-md:space-y-6">
@@ -74,7 +74,7 @@ import { HomePage, Sponsors } from "vocs/components";
     </a>
           </div>
         </div>
- 
+
   </div>
   <div className="flex justify-between flex-wrap mt-10 lg:mt-30">
       <div className="pr-2 w-1/4 max-lg:pb-3 max-sm:px-0 max-lg:w-1/2 max-sm:w-full z-0">
@@ -121,25 +121,25 @@ import { HomePage, Sponsors } from "vocs/components";
     </div>
 </div>
 <article className="vocs_Content max-w-5xl mx-auto">
- 
+
 # Quick Actions
- 
+
 ## Forge
- 
+
 :::code-group
- 
+
 ```bash [Initialize forge project]
-# Initiliazes a project called `Counter`
+# Initializes a project called `Counter`
 forge init Counter
 ```
- 
+
 ```bash [Run tests]
 # Run tests for the Counter contract
 forge test
 # You can run tests against chain state by forking
 forge test --fork-url https://reth-ethereum.ithaca.xyz/rpc
 ```
- 
+
 ```bash [Deploy contract]
 # Use forge scripts to deploy the Counter contract
 # Running `anvil` @ http://localhost:8545
@@ -148,46 +148,46 @@ export PRIVATE_KEY="0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4
 # Run the script and broadcast the deploy transaction
 forge script script/Counter.s.sol --rpc-url http://127.0.0.1:8545 --broadcast --private-key $PRIVATE_KEY
 ```
- 
+
 ```bash [Clone an onchain contract]
 # Clones an onchain contract and sets up a forge project
 forge clone 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
 ```
- 
+
 :::
- 
+
 ## Anvil
- 
+
 :::code-group
- 
+
 ```bash [Start a local node]
 # Start a fresh anvil node with 10 pre-funded accounts
 anvil
 ```
- 
+
 ```bash [Forking mainnet]
 # Fork latest mainnet state
 anvil --fork-url https://reth-ethereum.ithaca.xyz/rpc
 ```
- 
+
 ```bash [Load and Dump State]
 # Load and dump state when initializing and shutting down anvil
 anvil --state ./path/to/state-file
 ```
- 
+
 :::
- 
+
 ## Cast
- 
+
 :::code-group
- 
+
 ```bash [Call a contract function]
 # Perform an `eth_call` on a contract to read balances
 cast call 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2 \
 "balanceOf(address)" 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045 \
 --rpc-url https://reth-ethereum.ithaca.xyz/rpc
 ```
- 
+
 ```bash [Send a transaction]
 # Running `anvil` @ http://localhost:8545
 # Set the private key in the env
@@ -198,24 +198,24 @@ cast send 0x70997970C51812dc3A010C7d01b50e0d17dc79C8 --value 10000000 --private-
 echo "\nBalance Of 0x7099:" && cast balance 0x70997970C51812dc3A010C7d01b50e0d17dc79C8 && \
 echo "\nBalance Of 0xf39F:" && cast balance 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
 ```
- 
+
 ```bash [Call JSON-RPC methods]
 # Calls the `eth_getHeaderByNumber` RPC method with the number param in hexadecimal
 # cast 2h converts integer to hex
 cast rpc eth_getHeaderByNumber $(cast 2h 22539851) --rpc-url https://reth-ethereum.ithaca.xyz/rpc
 ```
- 
+
 :::
- 
+
 # Community
- 
+
 Join the Community
- 
+
 - Ask for support in the [Telegram chat](https://t.me/foundry_support) or create an [issue on Github](https://github.com/foundry-rs/foundry/issues)
 - Join the 500+ developers by [contributing](https://github.com/foundry-rs/foundry/blob/master/CONTRIBUTING.md) to Foundry
- 
+
 # Supporters
- 
+
 <Sponsors />
- 
+
 </article>
