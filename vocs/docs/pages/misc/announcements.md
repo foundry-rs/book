@@ -36,7 +36,7 @@ See release notes [here](https://github.com/foundry-rs/foundry/releases/tag/v1.1
 
 Several breaking changes were introduced in Foundry [`1.0.0`](https://github.com/foundry-rs/foundry/releases/v1.0.0), which requires updates on projects using older versions.
 
-You are recommended to follow the [migration guide](./guides/v1.0-migration.md) to prepare your codebase for the `1.0` stable release.
+You are recommended to follow the [migration guide](/misc/v1.0-migration) to prepare your codebase for the `1.0` stable release.
 
 To install the release candidate run `foundryup -i v1.0.0` and try it out.
 
