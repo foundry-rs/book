@@ -11,7 +11,7 @@ To deploy a contract, you must provide a RPC URL (env: `ETH_RPC_URL`) and the pr
 To deploy `MyContract` to a network:
 
 ```sh
-$ forge create --rpc-url <your_rpc_url> --private-key <your_private_key> src/MyContract.sol:MyContract
+$ forge create src/MyContract.sol:MyContract --rpc-url <YOUR_RPC_URL> --private-key <YOUR_PRIVATE_KEY>
 compiling...
 success.
 Deployer: 0xa735b3c25f...
@@ -44,12 +44,11 @@ contract MyToken is ERC20 {
 Additionally, we can tell Forge to verify our contract on Etherscan, Sourcify or Blockscout, if the network is supported, by passing `--verify`.
 
 ```sh
-$ forge create --rpc-url <your_rpc_url> \
+$ forge create src/MyToken.sol:MyToken --rpc-url <YOUR_RPC_URL> \
     --constructor-args "ForgeUSD" "FUSD" 18 1000000000000000000000 \
-    --private-key <your_private_key> \
-    --etherscan-api-key <your_etherscan_api_key> \
-    --verify \
-    src/MyToken.sol:MyToken
+    --private-key <YOUR_PRIVATE_KEY> \
+    --etherscan-api-key <YOUR_ETHERSCAN_API_KEY> \
+    --verify
 ```
 
 ## Multi-chain deployments
@@ -89,7 +88,7 @@ contract CounterScript is Script {
 When running:
 
 ```sh
-$ forge script script/CounterScript.s.sol --slow --multi --broadcast --private-key <your_private_key> --verify
+$ forge script script/CounterScript.s.sol --slow --multi --broadcast --private-key <YOUR_PRIVATE_KEY> --verify
 ```
 
 The script will create the Sepolia Mainnet fork (`vm.createSelectFork("sepolia")`), deploy and verify the `Counter` contract, and then move to Base Sepolia chain deployment (`vm.createSelectFork("base-sepolia")`).
@@ -124,15 +123,13 @@ Let's say you want to verify `MyToken` (see above). You set the [number of optim
 Here's how to verify it:
 
 ```bash
-forge verify-contract \
+forge verify-contract <CONTRACT_ADDRESS> src/MyToken.sol:MyToken \
     --chain-id 11155111 \
     --num-of-optimizations 1000000 \
     --watch \
     --constructor-args $(cast abi-encode "constructor(string,string,uint256,uint256)" "ForgeUSD" "FUSD" 18 1000000000000000000000) \
-    --etherscan-api-key <your_etherscan_api_key> \
-    --compiler-version v0.8.10+commit.fc410830 \
-    <the_contract_address> \
-    src/MyToken.sol:MyToken
+    --etherscan-api-key <YOUR_ETHERSCAN_API_KEY> \
+    --compiler-version v0.8.10+commit.fc410830
 
 Submitted contract for verification:
                 Response: `OK`
@@ -158,7 +155,7 @@ If the `--watch` flag was not supplied, you can check
 the verification status with the [`forge verify-check`](/forge/reference/forge-verify-check) command:
 
 ```bash
-$ forge verify-check --chain-id 11155111 <GUID> <your_etherscan_api_key>
+$ forge verify-check --chain-id 11155111 <GUID> <YOUR_ETHERSCAN_API_KEY>
 Contract successfully verified.
 ```
 
