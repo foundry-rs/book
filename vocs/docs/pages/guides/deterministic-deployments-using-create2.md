@@ -26,8 +26,8 @@ In order to reliably deploy to deterministic addresses we will need to make sure
 
 ```toml
 [profile.default]
-solc = "0.8.28"
-evm_version = "cancun"
+solc = "<SOLC_VERSION>"
+evm_version = "<EVM_VERSION>"
 bytecode_hash = "none"
 cbor_metadata = false
 ```

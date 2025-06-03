@@ -329,7 +329,7 @@ Gets the transaction hash and the address which created a contract.
 &nbsp;&nbsp;&nbsp;&nbsp; Print help information.
 
 `--hardfork <HARDFORK>`
-&nbsp;&nbsp;&nbsp;&nbsp; Choose the EVM hardfork to use e.g. `shanghai`, `paris`, `london`, etc... [default: latest]
+&nbsp;&nbsp;&nbsp;&nbsp; Choose the EVM hardfork to use e.g. `prague`, `cancun`, `shanghai`, `paris`, `london`, etc... [default: latest]
 
 `--init <PATH>`
 &nbsp;&nbsp;&nbsp;&nbsp; Initialize the genesis block with the given `genesis.json` file.

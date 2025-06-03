@@ -230,7 +230,7 @@ Proper configuration is needed to execute forked tests with chains using differe
 - if same EVM version applies for all forked chains used, then it can be globally configured in `foundry.toml` file
 
 ```toml
-evm_version = "cancun"
+evm_version = "prague"
 ```
 
 - if different EVM versions are used, specific EVM test version can be set using inline configuration
