@@ -48,7 +48,7 @@ $ forge create src/MyToken.sol:MyToken --rpc-url <YOUR_RPC_URL> \
     --constructor-args "ForgeUSD" "FUSD" 18 1000000000000000000000 \
     --private-key <YOUR_PRIVATE_KEY> \
     --etherscan-api-key <YOUR_ETHERSCAN_API_KEY> \
-    --verify \
+    --verify
 ```
 
 ## Multi-chain deployments
@@ -123,15 +123,13 @@ Let's say you want to verify `MyToken` (see above). You set the [number of optim
 Here's how to verify it:
 
 ```bash
-forge verify-contract \
+forge verify-contract <CONTRACT_ADDRESS> src/MyToken.sol:MyToken \
     --chain-id 11155111 \
     --num-of-optimizations 1000000 \
     --watch \
     --constructor-args $(cast abi-encode "constructor(string,string,uint256,uint256)" "ForgeUSD" "FUSD" 18 1000000000000000000000) \
     --etherscan-api-key <YOUR_ETHERSCAN_API_KEY> \
-    --compiler-version v0.8.10+commit.fc410830 \
-    <the_contract_address> \
-    src/MyToken.sol:MyToken
+    --compiler-version v0.8.10+commit.fc410830
 
 Submitted contract for verification:
                 Response: `OK`
