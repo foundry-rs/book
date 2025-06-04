@@ -1,3 +1,4 @@
+#!/usr/bin/env bun
 import { Glob } from "bun";
 import { readFileSync } from "node:fs";
 import { join, dirname, resolve, relative } from "node:path";

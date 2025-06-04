@@ -5,7 +5,6 @@
   "type": "module",
   "scripts": {
     "dev": "vocs dev",
-    "prebuild": "bun check-links.ts",
     "build": "vocs build",
     "preview": "vocs preview",
     "check-links": "bun check-links.ts"
@@ -18,7 +17,6 @@
   "devDependencies": {
     "@types/bun": "^1.2.15",
     "@types/react": "latest",
-    "markdown-link-check": "^3.13.7",
     "typescript": "latest"
   }
 }
