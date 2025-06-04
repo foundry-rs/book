@@ -14,9 +14,25 @@ jobs:
 
       - name: Install bun
         uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        working-directory: vocs
+        run: bun install
+
+      - name: Check links
+        working-directory: vocs
+        run: |
+          bun check-links.ts
+          cat links-report.json | jq
+          if [ $? -ne 0 ]; then
+            exit 1
+          fi
 
       - name: Build Vocs
-        run: cd vocs && bun install && bun run build
+        working-directory: vocs
+        run: bun run build
 
       - name: Publish
         uses: cloudflare/pages-action@v1.4.0
