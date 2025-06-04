@@ -27,6 +27,9 @@ jobs:
         run: |
           bun check-links.ts
           cat links-report.json | jq
+          if [ $? -ne 0 ]; then
+            exit 1
+          fi
 
       - name: Build Vocs
         working-directory: vocs
