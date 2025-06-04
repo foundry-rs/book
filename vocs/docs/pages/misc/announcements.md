@@ -6,53 +6,83 @@ Stay up to date with the latest changes to Foundry.
 
 Upgrade your installation of `foundryup`!
 
+To make sure you are up to date run:
+
+```sh
+foundryup -v
+```
+
+If this does not return `1.1.0` you are not up-to-date.
+
+If you are getting a version number but it is out-of-date run:
+
+```sh
+foundryup --update
+```
+
+If you are not getting any version number you will need to re-install your installer:
+
 Run: `curl -L https://foundry.paradigm.xyz | bash`
 
 Upgrading ensures your installation defaults to updating to the **latest stable release** instead of the **latest nightly build**.
 
-If you do not upgrade you will **continue to receive nightly builds by default** which will start to contain more **significant breaking changes**.
-
-## ⚠️ Notes
-
-If you are running Foundry's **latest nightly build** you may encounter the following error:
-
-```sh
-[FAIL: call didn't revert at a lower depth than cheatcode call depth]
-```
-
-Please read [here](https://book.getfoundry.sh/cheatcodes/expect-revert#error) for more information.
+If you do not upgrade you will **continue to receive nightly builds by default** which contain more **significant breaking changes**.
 
 ## Releases
 
-### 1.2 (stable)
+Prior to the release of a new `stable` version we will make the version available as `rc` (release candidate) for a period of time and give the community the chance to test and share feedback with us.
+
+All our releases are [attested & verified](introduction/installation/#verify-integrity-and-provenance-of-binaries) using Github artifact attestations for you to verify integrity of our binaries.
+
+If you do not need to rely on a `stable` release consider using the `nightly` release. This will help us catch bugs and process your feedback earlier.
+
+### nightly
+
+See release notes [here](https://github.com/foundry-rs/foundry/releases/tag/nightly)
+
+```sh
+foundryup -i nightly
+```
+
+### v1.2.2 (stable)
 
 See release notes [here](https://github.com/foundry-rs/foundry/releases/tag/v1.2.2)
 
-### 1.1 (stable)
+```sh
+foundryup -i v1.2.2
+```
+
+### v1.1.0 (stable)
 
 See release notes [here](https://github.com/foundry-rs/foundry/releases/tag/v1.1.0)
 
-### 1.0 (stable)
+```sh
+foundryup -i v1.1.0
+```
+
+### v1.0.0 (stable)
 
 Several breaking changes were introduced in Foundry [`1.0.0`](https://github.com/foundry-rs/foundry/releases/v1.0.0), which requires updates on projects using older versions.
 
 You are recommended to follow the [migration guide](/misc/v1.0-migration) to prepare your codebase for the `1.0` stable release.
 
-To install the release candidate run `foundryup -i v1.0.0` and try it out.
+```sh
+foundryup -i v1.0.0
+```
 
-It is important to us we get your feedback as this is the last step before the official `1.0` release after three years.
-
-### 0.3 (stable)
+### v0.3.0 (stable)
 
 The Foundry [`0.3` release](https://github.com/foundry-rs/foundry/releases/tag/v0.3.0) marks an exciting new chapter for Foundry. By moving to [stable releases](https://github.com/foundry-rs/foundry/releases/tag/stable), we aim to provide a reliable development environment for the EVM ecosystem. Our next priority is the `1.0` release in early 2025, polishing Foundry for the long term.
 
 Big shoutout to the Foundry community - your bug reports, feature requests and contributions have shaped what Foundry is today.
 
+```sh
+foundryup -i v0.3.0
+```
+
 ## FAQ
 
 #### How do I know which version I have installed?
-
-The latest version of `foundryup` is `1.0.1`.
 
 If you run `foundryup --version` and it does not return this or returns an error you are not up to date.
 
