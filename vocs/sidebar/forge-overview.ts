@@ -46,7 +46,7 @@ export const forgeOverview: SidebarItem[] = [
           collapsed: true,
           link: '/forge/reference/general-commands',
           items: [
-            { text: 'forge', link: '/forge/reference/forge' },
+            { text: 'forge', link: '/forge/reference/overview' },
             { text: 'forge help', link: '/forge/reference/forge-help' },
             { text: 'forge completions', link: '/forge/reference/forge-completions' },
           ],
