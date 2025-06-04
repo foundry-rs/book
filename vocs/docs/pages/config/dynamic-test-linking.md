@@ -4,7 +4,7 @@
 
 How it works:
 
-On the initial build, Foundry preprocesses test contracts by extracting constructor parameters of the contracts under test and replacing direct instantiations with [`deployCode` cheatcodes](http://localhost:5173/reference/cheatcodes/get-deployed-code).
+On the initial build, Foundry preprocesses test contracts by extracting constructor parameters of the contracts under test and replacing direct instantiations with [`deployCode` cheatcodes](/reference/cheatcodes/get-deployed-code).
 
 Subsequent compilations reuse pre-built artifacts for deployed contracts instead of recompiling both the source and all associated test contracts.
 Dynamic test linking capability is built on top of [Solar](https://github.com/paradigmxyz/solar), the blazingly fast and modular Solidity compiler.
