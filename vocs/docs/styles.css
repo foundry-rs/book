@@ -25,3 +25,7 @@
 #home-install .vocs_Code {
   font-size: 18px;
 }
+
+.border-accent {
+  border: 1px solid var(--vocs-color_borderAccent) !important;
+}
