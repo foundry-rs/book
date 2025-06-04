@@ -3,7 +3,6 @@ import { Glob } from "bun";
 import { readFileSync } from "node:fs";
 import { join, dirname, resolve, relative } from "node:path";
 
-// Configuration
 const CONFIG = {
 	DOCS_DIR: "./docs/pages",
 	PUBLIC_DIR: "./docs/public",
@@ -172,13 +171,11 @@ function extractLinksFromMarkdown(
 
 		if (inCodeBlock) continue;
 
-		// Remove inline code before processing
 		const processedLine = line
 			.split("`")
 			.filter((_, index) => index % 2 === 0)
 			.join("");
 
-		// Extract links from processed line
 		links.push(...extractMarkdownLinks(processedLine, lineNumber));
 		links.push(...extractHtmlLinks(processedLine, lineNumber));
 	}
