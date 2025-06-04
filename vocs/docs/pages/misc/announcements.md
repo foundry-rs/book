@@ -32,7 +32,7 @@ If you do not upgrade you will **continue to receive nightly builds by default**
 
 Prior to the release of a new `stable` version we will make the version available as `rc` (release candidate) for a period of time and give the community the chance to test and share feedback with us.
 
-All our releases are [attested & verified](introduction/installation/#verify-integrity-and-provenance-of-binaries) using Github artifact attestations for you to verify integrity of our binaries.
+All our releases are [attested & verified](/introduction/installation/#verify-integrity-and-provenance-of-binaries) using Github artifact attestations for you to verify integrity of our binaries.
 
 If you do not need to rely on a `stable` release consider using the `nightly` release. This will help us catch bugs and process your feedback earlier.
 
