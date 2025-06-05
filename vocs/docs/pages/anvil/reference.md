@@ -391,11 +391,9 @@ would be fetched from the remote.
 
 `--compute-units-per-second <CUPS>`
 &nbsp;&nbsp;&nbsp;&nbsp; Sets the number of assumed available compute units per second for this provider. [default: 330]
-&nbsp;&nbsp;&nbsp;&nbsp; See also, [Alchemy Ratelimits](https://github.com/alchemyplatform/alchemy-docs/blob/master/documentation/compute-units.md#rate-limits-cups).
 
 `--no-rate-limit`
 &nbsp;&nbsp;&nbsp;&nbsp; Disables rate limiting for this node's provider. Will always override `--compute-units-per-second` if present. [default: false]
-&nbsp;&nbsp;&nbsp;&nbsp; See also, [Alchemy Ratelimits](https://github.com/alchemyplatform/alchemy-docs/blob/master/documentation/compute-units.md#rate-limits-cups).
 
 `--no-storage-caching`
 &nbsp;&nbsp;&nbsp;&nbsp; Disables RPC caching; all storage slots are read from the endpoint. This flag overrides the project's configuration file (Must pass --fork-url in the same command-line).

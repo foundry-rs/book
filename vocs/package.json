@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vocs dev",
     "build": "vocs build",
-    "preview": "vocs preview"
+    "preview": "vocs preview",
+    "check-links": "bun check-links.ts"
   },
   "dependencies": {
     "react": "latest",
@@ -14,6 +15,7 @@
     "vocs": "latest"
   },
   "devDependencies": {
+    "@types/bun": "^1.2.15",
     "@types/react": "latest",
     "typescript": "latest"
   }
