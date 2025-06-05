@@ -23,7 +23,7 @@ We can see that Forge installed `solady`!
 By default, `forge install` installs the latest master branch version. If you want to install a specific tag or commit, you can do it like so:
 
 ```sh
-$ forge install vectorized/solady@v0.1.3
+forge install vectorized/solady@v0.1.3
 ```
 
 ### Remapping dependencies
@@ -66,7 +66,7 @@ import {LibString} from "@solady-utils/LibString.sol";
 In some cases, you may encounter dependency conflicts when two or more git submodules include different dependencies with the same namespace. For example, suppose you have installed both `org/lib_1` and `org/lib_2`, and they each reference their own versions of `@openzeppelin`. In such scenarios, `forge remappings` generates a single remapping entry for the namespace, which will point to only one of the two `@openzeppelin` libraries.
 
 ```sh
-$ forge remappings
+forge remappings
 @openzeppelin/=lib/lib_1/node_modules/@openzeppelin/
 ```
 
@@ -84,7 +84,7 @@ This approach ensures that each dependency is mapped to the appropriate library 
 You can update a specific dependency to the latest commit on the version you have specified using [`forge update <dep>`](/forge/reference/forge-update). For example, if we wanted to pull the latest commit from our previously installed master-version of `solady`, we would run:
 
 ```sh
-$ forge update lib/solady
+forge update lib/solady
 ```
 
 Alternatively, you can do this for all dependencies at once by just running `forge update`.
@@ -94,9 +94,9 @@ Alternatively, you can do this for all dependencies at once by just running `for
 You can remove dependencies using [`forge remove <deps>...`](/forge/reference/forge-remove), where `<deps>` is either the full path to the dependency or just the name. For example, to remove `solady` both of these commands are equivalent:
 
 ```sh
-$ forge remove solady
+forge remove solady
 # ... is equivalent to ...
-$ forge remove lib/solady
+forge remove lib/solady
 ```
 
 ### Hardhat compatibility

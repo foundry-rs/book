@@ -1,6 +1,6 @@
 // [!region all]
 // [!region command]
-$ cat .clone.meta | jq
+cat .clone.meta | jq
 // [!endregion command]
 // [!region output]
 {

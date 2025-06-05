@@ -11,13 +11,13 @@ This creates a new directory `hello_foundry` from the default template. This als
 If you want to create a new project using a different template, you would pass the `--template` flag, like so:
 
 ```sh [forge init]
-$ forge init --template https://github.com/foundry-rs/forge-template hello_template
+forge init --template https://github.com/foundry-rs/forge-template hello_template
 ```
 
 For now, let's check what the default template looks like:
 
 ```sh [tree]
-$ cd hello_foundry
+cd hello_foundry
 // [!include ~/snippets/output/hello_foundry/tree:all]
 ```
 

@@ -12,7 +12,7 @@ To use Anvil, simply type `anvil`. To fork against a live Ethereum network run `
 Let's fork Ethereum mainnet at the latest block:
 
 ```bash
-$ anvil --fork-url https://reth-ethereum.ithaca.xyz/rpc
+anvil --fork-url https://reth-ethereum.ithaca.xyz/rpc
 
 
                              _   _

@@ -11,7 +11,7 @@ To deploy a contract, you must provide a RPC URL (env: `ETH_RPC_URL`) and the pr
 To deploy `MyContract` to a network:
 
 ```sh
-$ forge create src/MyContract.sol:MyContract --rpc-url <YOUR_RPC_URL> --private-key <YOUR_PRIVATE_KEY>
+forge create src/MyContract.sol:MyContract --rpc-url <YOUR_RPC_URL> --private-key <YOUR_PRIVATE_KEY>
 compiling...
 success.
 Deployer: 0xa735b3c25f...
@@ -44,7 +44,7 @@ contract MyToken is ERC20 {
 Additionally, we can tell Forge to verify our contract on Etherscan, Sourcify or Blockscout, if the network is supported, by passing `--verify`.
 
 ```sh
-$ forge create src/MyToken.sol:MyToken --rpc-url <YOUR_RPC_URL> \
+forge create src/MyToken.sol:MyToken --rpc-url <YOUR_RPC_URL> \
     --constructor-args "ForgeUSD" "FUSD" 18 1000000000000000000000 \
     --private-key <YOUR_PRIVATE_KEY> \
     --etherscan-api-key <YOUR_ETHERSCAN_API_KEY> \
@@ -88,7 +88,7 @@ contract CounterScript is Script {
 When running:
 
 ```sh
-$ forge script script/CounterScript.s.sol --slow --multi --broadcast --private-key <YOUR_PRIVATE_KEY> --verify
+forge script script/CounterScript.s.sol --slow --multi --broadcast --private-key <YOUR_PRIVATE_KEY> --verify
 ```
 
 The script will create the Sepolia Mainnet fork (`vm.createSelectFork("sepolia")`), deploy and verify the `Counter` contract, and then move to Base Sepolia chain deployment (`vm.createSelectFork("base-sepolia")`).
@@ -155,7 +155,7 @@ If the `--watch` flag was not supplied, you can check
 the verification status with the [`forge verify-check`](/forge/reference/forge-verify-check) command:
 
 ```bash
-$ forge verify-check --chain-id 11155111 <GUID> <YOUR_ETHERSCAN_API_KEY>
+forge verify-check --chain-id 11155111 <GUID> <YOUR_ETHERSCAN_API_KEY>
 Contract successfully verified.
 ```
 

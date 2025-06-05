@@ -33,7 +33,7 @@ Forge will run any test that takes at least one parameter as a property-based te
 If we run the test now, we can see that Forge runs the property-based test, but it fails for high values of `amount`:
 
 ```sh
-$ forge test
+forge test
 // [!include ~/snippets/output/fuzz_testing/forge-test-fail-fuzz:output]
 ```
 

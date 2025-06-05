@@ -1,6 +1,6 @@
 // [!region all]
 // [!region command]
-$ forge test
+forge test
 // [!endregion command]
 // [!region output]
 Compiling 24 files with Solc 0.8.10

@@ -1,6 +1,6 @@
 // [!region all]
 // [!region command]
-$ forge test --match-test test_IncrementAsOwner
+forge test --match-test test_IncrementAsOwner
 // [!endregion command]
 // [!region output]
 Compiling 24 files with Solc 0.8.10
