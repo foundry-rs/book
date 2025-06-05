@@ -93,6 +93,10 @@ For instructions on setting up Foundry in a CI pipeline, refer to the [foundry-r
 
 ### Using Foundry with Docker
 
+:::note
+Some systems, including those with M1 chips, may experience issues when building the Docker image locally. This is a known issue.
+:::
+
 Foundry can also be run inside a Docker container. If you don’t have Docker installed, you can download it from [Docker's website](https://docs.docker.com/get-docker/).
 
 Once Docker is installed, you can pull the latest Foundry release by running:
@@ -108,6 +112,3 @@ docker build -t foundry .
 ```
 
 For examples and guides on using this image, refer to the [Docker guide](/guides/foundry-in-docker).
-
-> ℹ️ **Note**  
-> Some systems, including those with M1 chips, may experience issues when building the Docker image locally. This is a known issue.
