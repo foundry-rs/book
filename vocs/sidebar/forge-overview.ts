@@ -20,7 +20,7 @@ export const forgeOverview: SidebarItem[] = [
     },
     {
         text: 'Advanced Testing',
-        collapsed: false,
+        collapsed: true,
         items: [
             { text: 'Overview', link: '/forge/advanced-testing/overview' },
             { text: 'Fuzz Testing', link: '/forge/advanced-testing/fuzz-testing' },
@@ -31,7 +31,7 @@ export const forgeOverview: SidebarItem[] = [
     { text: 'Deploying and Verifying', link: '/forge/deploying' },
     {
         text: 'Gas Tracking',
-        collapsed: false,
+        collapsed: true,
         items: [
             { text: 'Overview', link: '/forge/gas-tracking/overview' },
             { text: 'Gas Reports', link: '/forge/gas-tracking/gas-reports' },
