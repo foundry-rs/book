@@ -1,42 +1,163 @@
 ## Getting Started
 
-This section introduces the `forge` command-line tool. We will walk through creating a new project, compiling it, and running tests.
+Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust. It consists of four essential tools that suffice all the needs a blockchain app developer will ever have.
 
-### Start a new project
+Here's an overview of the tools available at your disposal after [running foundryup](/introduction/installation#using-foundryup):
 
-To start a new project with Foundry, use the [`forge init`](/forge/reference/forge-init) command:
-
-```sh
-// [!include ~/snippets/output/hello_foundry/forge-init:command]
-```
-
-Now, let’s explore the structure that `forge` has generated for us:
-
-```sh
-cd hello_foundry
-```
-
-```sh
-// [!include ~/snippets/output/hello_foundry/tree:all]
-
-```
-
-### Build the project
-
-You can compile the project using [`forge build`](/forge/reference/forge-build):
-
-```sh
-// [!include ~/snippets/output/hello_foundry/forge-build:all]
-```
-
-### Run the tests
-
-To run the tests, use the [`forge test`](/forge/reference/forge-test) command:
-
-```sh
-// [!include ~/snippets/output/hello_foundry/forge-test:all]
-```
+| Tool                             | What it enables                                                     |
+| -------------------------------- | ------------------------------------------------------------------- |
+| **[`forge`](/forge/overview)**   | Build, test, debug, deploy and verify smart contracts               |
+| **[`anvil`](/anvil/overview)**   | Run a local Ethereum development node with forking capabilities     |
+| **[`cast`](/cast/overview)**     | Interact with contracts, send transactions, and retrieve chain data |
+| **[`chisel`](/chisel/overview)** | Fast Solidity REPL for rapid prototyping and debugging              |
 
 :::tip
 You can always view detailed help for any command or subcommand by appending `--help` to it.
 :::
+
+---
+
+### Forge
+
+Forge is a command-line tool for building, testing, and deploying smart contracts.
+
+#### Initialize a new project
+
+```bash
+# Create a new project called Counter
+forge init Counter
+cd Counter
+```
+
+#### Build and test contracts
+
+```bash
+# Compile your contracts
+forge build
+
+# Run your test suite
+forge test
+
+# Run tests against live chain state by forking
+forge test --fork-url https://reth-ethereum.ithaca.xyz/rpc
+```
+
+#### Deploy contracts
+
+```bash
+# Use forge scripts to deploy contracts
+# Set your private key
+export PRIVATE_KEY="0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80"
+
+# Deploy to local anvil instance
+forge script script/Counter.s.sol --rpc-url http://127.0.0.1:8545 --broadcast --private-key $PRIVATE_KEY
+```
+
+`forge` also enables more advanced workflows such as:
+
+- [Fuzz testing](/forge/advanced-testing/fuzz-testing) - Property-based testing with randomized inputs
+- [Invariant testing](/forge/advanced-testing/invariant-testing) - Test system-wide properties across function call sequences
+- [Gas tracking](/forge/gas-tracking/overview) - Monitor and optimize gas consumption across your contracts
+- [Coverage reports](/forge/reference/forge-coverage) - Generate detailed test coverage analysis with `forge coverage`
+
+Learn more about `forge` [here](/forge/overview).
+
+---
+
+### Anvil
+
+Anvil is a fast local Ethereum development node that is perfect for testing your contracts and other blockchain workflows in a controlled environment.
+
+#### Start a local development node
+
+```bash
+# Start anvil with 10 pre-funded accounts
+anvil
+```
+
+#### Fork mainnet state
+
+```bash
+# Fork latest mainnet state for testing
+anvil --fork-url https://reth-ethereum.ithaca.xyz/rpc
+```
+
+`anvil` comes up with other advanced capabilities such as:
+
+- **Custom `anvil_` methods** - Advanced node control including [account impersonation](/anvil/reference#anvil_impersonateaccount), [state manipulation](/anvil/reference#anvil_setbalance), and [mining control](/anvil/reference#anvil_mine)
+- **Forking capabilities** - Fork anvil off another live chain
+
+All of the above is provided while maintaining full compliance with the Ethereum JSON-RPC spec.
+
+Learn more about `anvil` [here](/anvil/overview).
+
+### Cast
+
+Cast is your Swiss army knife for interacting with Ethereum applications from the command line. You can make smart contract calls, send transactions, or retrieve any type of chain data.
+
+#### Read contract data
+
+```bash
+# Check ETH balance
+cast balance vitalik.eth --ether --rpc-url https://reth-ethereum.ithaca.xyz/rpc
+
+# Call a contract function to read data
+cast call 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2 \
+"balanceOf(address)" 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045 \
+--rpc-url https://reth-ethereum.ithaca.xyz/rpc
+```
+
+#### Send transactions
+
+```bash
+# Set your private key
+export PRIVATE_KEY="0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80"
+
+# Send ETH to an address
+cast send 0x70997970C51812dc3A010C7d01b50e0d17dc79C8 --value 10000000 --private-key $PRIVATE_KEY
+```
+
+#### Interact with JSON-RPC
+
+```bash
+# Call JSON-RPC methods directly
+cast rpc eth_getHeaderByNumber $(cast 2h 22539851) --rpc-url https://reth-ethereum.ithaca.xyz/rpc
+
+# Get latest block number
+cast block-number --rpc-url https://reth-ethereum.ithaca.xyz/rpc
+```
+
+Learn more about `cast` [here](/cast/overview).
+
+---
+
+### Chisel
+
+Chisel is a fast, utilitarian, and verbose Solidity REPL for rapid prototyping and debugging. It's perfect for testing Solidity snippets and exploring contract behavior interactively.
+
+#### Start the REPL
+
+```bash
+# Launch chisel REPL
+chisel
+```
+
+#### Interactive Solidity development
+
+```solidity
+// Create and query variables
+➜ uint256 a = 123;
+➜ a
+Type: uint256
+├ Hex: 0x7b
+├ Hex (full word): 0x000000000000000000000000000000000000000000000000000000000000007b
+└ Decimal: 123
+
+// Test contract functions
+➜ function add(uint256 x, uint256 y) pure returns (uint256) { return x + y; }
+➜ add(5, 10)
+Type: uint256
+└ Decimal: 15
+```
+
+Learn more about `chisel` [here](/chisel/overview).

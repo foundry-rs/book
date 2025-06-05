@@ -6,15 +6,21 @@ Foundry is a smart contract development toolchain.
 
 Foundry manages your dependencies, compiles your project, runs tests, deploys, and lets you interact with the chain from the command-line and via Solidity scripts.
 
-### Sections
+### Navigating the Documentation
 
 **[Getting Started](/introduction/installation.md)**
 
 To get started with Foundry, install Foundry and set up your first project.
 
-**[Projects](/projects/creating-a-new-project.md)**
+[**Guides**]
 
-This section will give you an overview of how to create and work with existing projects.
+Guides for building smart contracts with Foundry.
+
+- [Best Practices](/guides/best-practices)
+- [Scripting with Solidity](/guides/scripting-with-solidity)
+- [Deterministic deployments using CREATE2](/guides/deterministic-deployments-using-create2)
+- [Forking Mainnet with Cast and Anvil](/guides/forking-mainnet-with-cast-anvil)
+- [Running Foundry inside of Docker](/guides/foundry-in-docker)
 
 **[Forge Overview](/forge/overview)**
 
@@ -45,15 +51,9 @@ Guides on configuring Foundry.
 - [Vyper support](/config/vyper)
 - [Forge Lint](/config/lint)
 
-**Guides**
+**[Projects](/projects/creating-a-new-project.md)**
 
-Guides for building smart contracts with Foundry.
-
-- [Best Practices](/guides/best-practices)
-- [Scripting with Solidity](/guides/scripting-with-solidity)
-- [Deterministic deployments using CREATE2](/guides/deterministic-deployments-using-create2)
-- [Forking Mainnet with Cast and Anvil](/guides/forking-mainnet-with-cast-anvil)
-- [Running Foundry inside of Docker](/guides/foundry-in-docker)
+This section will give you an overview of how to create and work with existing projects.
 
 **Contributing**
 
