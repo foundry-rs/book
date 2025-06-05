@@ -1,8 +1,5 @@
 # Best Practices
 
-This guide documents the suggested best practices when developing with Foundry.
-In general, it's recommended to handle as much as possible with [`forge fmt`](/config/reference/formatter), and anything this doesn't handle is below.
-
 ## General Contract Guidance
 
 1. Always use named import syntax, don't import full files. This restricts what is being imported to just the named items, not everything in the file. Importing full files can result in solc complaining about duplicate definitions and slither erroring, especially as repos grow and have more dependencies with overlapping names.
