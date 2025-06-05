@@ -2,7 +2,7 @@
 
 To start a new project with Foundry, use [`forge init`](/forge/reference/forge-init):
 
-```sh [forge init]
+```sh
 // [!include ~/snippets/output/hello_foundry/forge-init:command]
 ```
 
@@ -10,14 +10,17 @@ This creates a new directory `hello_foundry` from the default template. This als
 
 If you want to create a new project using a different template, you would pass the `--template` flag, like so:
 
-```sh [forge init]
+```sh
 forge init --template https://github.com/foundry-rs/forge-template hello_template
 ```
 
 For now, let's check what the default template looks like:
 
-```sh [tree]
+```sh
 cd hello_foundry
+```
+
+```sh
 // [!include ~/snippets/output/hello_foundry/tree:all]
 ```
 
@@ -25,13 +28,13 @@ The default template comes with one dependency installed: Forge Standard Library
 
 Let's build the project:
 
-```sh [forge build]
+```sh
 // [!include ~/snippets/output/hello_foundry/forge-build:all]
 ```
 
 And run the tests:
 
-```sh [forge test]
+```sh
 // [!include ~/snippets/output/hello_foundry/forge-test:all]
 ```
 
