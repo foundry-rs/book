@@ -60,8 +60,8 @@ To test your project using [aderyn](https://github.com/cyfrin/aderyn), install t
 To run the tool manually, follow the [Quick Start](https://cyfrin.gitbook.io/cyfrin-docs/aderyn-cli/quickstart) example with video guide.
 
 ```bash
-$ cd path/to/solidity/project/root
-$ aderyn
+cd path/to/solidity/project/root
+aderyn
 ```
 
 Explore more CLI options [here](https://cyfrin.gitbook.io/cyfrin-docs/cli-options).
@@ -93,7 +93,7 @@ See the [mythril docs](https://mythril-classic.readthedocs.io/en/develop/) for m
 You can pass custom Solc compiler output to Mythril using the `--solc-json` flag. For example:
 
 ```bash
-$ myth analyze src/Counter.sol --solc-json mythril.config.json
+myth analyze src/Counter.sol --solc-json mythril.config.json
 .
 .
 mythril.laser.plugin.loader [INFO]: Loading laser plugin: coverage

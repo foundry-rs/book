@@ -29,7 +29,7 @@ Foundry binaries are attested by using [GitHub artifact attestations](https://do
 For example, `forge` binary integrity and provenance can be verified by running:
 
 ```shell
-$ gh attestation verify --owner foundry-rs $(which forge)
+gh attestation verify --owner foundry-rs $(which forge)
 
 ✓ Verification succeeded!
 

@@ -27,7 +27,7 @@ export UNLUCKY_USER=0xfc2eE3bD619B7cfb2dE2C797b96DeeCbD7F68e46
 We can check Alice's balance using [`cast call`][cast-call]:
 
 ```sh
-$ cast call $DAI \
+cast call $DAI \
   "balanceOf(address)(uint256)" \
   $ALICE
 0
@@ -36,7 +36,7 @@ $ cast call $DAI \
 Similarly, we can also check our unlucky user's balance using `cast call`:
 
 ```sh
-$ cast call $DAI \
+cast call $DAI \
   "balanceOf(address)(uint256)" \
   $UNLUCKY_USER
 21840114973524208109322438
@@ -46,8 +46,8 @@ Let's transfer some tokens from the unlucky user to Alice using [`cast send`][ca
 
 ```sh
 # This calls Anvil and lets us impersonate our unlucky user
-$ cast rpc anvil_impersonateAccount $UNLUCKY_USER
-$ cast send $DAI \
+cast rpc anvil_impersonateAccount $UNLUCKY_USER
+cast send $DAI \
 --from $UNLUCKY_USER \
   "transfer(address,uint256)(bool)" \
   $ALICE \
@@ -66,7 +66,7 @@ cast call $DAI \
   $ALICE
 300000000000000000000000
 
-$ cast call $DAI \
+cast call $DAI \
   "balanceOf(address)(uint256)" \
   $UNLUCKY_USER
 21540114973524208109322438

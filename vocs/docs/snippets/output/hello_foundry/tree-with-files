@@ -1,6 +1,6 @@
 // [!region all]
 // [!region command]
-$ tree . -L 3 -I output
+tree . -L 3 -I output
 // [!endregion command]
 // [!region output]
 .

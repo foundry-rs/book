@@ -22,7 +22,7 @@ Let's write a test for a smart contract that is only callable by its owner.
 If we run `forge test` now, we will see that the test passes, since `OwnerUpOnlyTest` is the owner of `OwnerUpOnly`.
 
 ```sh
-$ forge test
+forge test
 // [!include ~/snippets/output/cheatcodes/forge-test-simple:output}]
 ```
 
@@ -40,7 +40,7 @@ Let's make sure that someone who is definitely not the owner can't increment the
 If we run `forge test` one last time, we see that the test still passes, but this time we are sure that it will always fail if we revert for any other reason.
 
 ```bash
-$ forge test
+forge test
 // [!include ~/snippets/output/cheatcodes/forge-test-cheatcodes-expectrevert:output]
 ```
 

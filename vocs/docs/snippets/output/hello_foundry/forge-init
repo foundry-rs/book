@@ -1,6 +1,6 @@
 // [!region all]
 // [!region command]
-$ forge init hello_foundry
+forge init hello_foundry
 // [!endregion command]
 // [!region output]
 Initializing /private/var/folders/x4/z46ytl8n5msgkg6dst5hwwhh0000gn/T/tmp.AkOjwj9xvM/hello_foundry...

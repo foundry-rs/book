@@ -11,14 +11,14 @@ The best way to understand Forge is to simply try it (in less than 30 seconds!).
 
 First, let's initialize a new `counter` example repository:
 
-```sh [forge init]
-$ forge init counter
+```sh
+forge init counter
 ```
 
 Next `cd` into `counter` and build :
 
-```sh [forge build]
-$ forge build
+```sh
+forge build
 ```
 
 ```console
@@ -30,8 +30,8 @@ Compiler run successful!
 
 Let's [test](https://book.getfoundry.sh/forge/tests#tests) our contracts:
 
-```sh [forge test]
-$ forge test
+```sh
+forge test
 ```
 
 ```console
@@ -48,8 +48,8 @@ Ran 1 test suite in 5.91ms (5.35ms CPU time): 2 tests passed, 0 failed, 0 skippe
 
 Finally, let's run our deployment script:
 
-```sh [forge script]
-$ forge script script/Counter.s.sol
+```sh
+forge script script/Counter.s.sol
 ```
 
 ```

@@ -7,19 +7,19 @@ The debugger is accessible on [`forge test`](/forge/reference/forge-test), on [`
 Using `forge test` (or `forge script`):
 
 ```sh
-$ forge test --debug --match-test "<REGEX>"
+forge test --debug --match-test "<REGEX>"
 ```
 
 Where `<REGEX>` is the function signature of the file you want to debug. For example:
 
 ```sh
-$ forge test --debug --match-test "test_Increment"
+forge test --debug --match-test "test_Increment"
 ```
 
 If the matching test is a fuzz test, the debugger will open the first failing fuzz scenario, or the last successful one, whichever comes first. For example:
 
 ```sh
-$ forge test --debug --match-test "testFuzz_SetNumber"
+forge test --debug --match-test "testFuzz_SetNumber"
 ```
 
 Using `cast run`:
