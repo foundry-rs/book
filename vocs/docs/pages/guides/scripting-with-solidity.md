@@ -24,7 +24,7 @@ Given this flow, it's important to be aware that transactions whose behaviour ca
 Let’s try to deploy the basic `Counter` contract Foundry provides:
 
 ```sh
-forge init counter
+forge init Counter
 ```
 
 Next let’s try compiling our contracts to make sure everything is in order.
