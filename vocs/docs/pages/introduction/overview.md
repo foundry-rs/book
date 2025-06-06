@@ -51,7 +51,7 @@ Guides on configuring Foundry.
 - [Vyper support](/config/vyper)
 - [Forge Lint](/config/lint)
 
-**[Projects](/projects/creating-a-new-project.md)**
+**[Projects](/guides/project-setup/creating-a-new-project)**
 
 This section will give you an overview of how to create and work with existing projects.
 

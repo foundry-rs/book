@@ -67,7 +67,7 @@ solc = "0.8.17"
         └── test
 ```
 
-Add line to `remappings.txt` file ([`forge remapping`](../projects/dependencies.md#remapping-dependencies)):
+Add line to `remappings.txt` file ([`forge remapping`](/guides/project-setup/dependencies#remapping-dependencies)):
 
 ```solidity
 @openzeppelin/=lib/openzeppelin-contracts/

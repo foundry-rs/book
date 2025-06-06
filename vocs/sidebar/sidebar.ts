@@ -20,7 +20,14 @@ export const sidebar: Sidebar = [
           { text: 'Deterministic deployments using CREATE2', link: '/guides/deterministic-deployments-using-create2' },
           { text: 'Forking Mainnet with Cast and Anvil', link: '/guides/forking-mainnet-with-cast-anvil' },
           { text: 'Running Foundry inside of Docker', link: '/guides/foundry-in-docker' },
-          { text: 'Video tutorials', link: '/guides/video-tutorials' }
+          { text: 'Video tutorials', link: '/guides/video-tutorials' },
+          { text: 'Project Setup', collapsed: true, items: [
+            { text: 'Creating a New Project', link: '/guides/project-setup/creating-a-new-project' },
+            { text: 'Clone a Verified Contract', link: '/guides/project-setup/clone-a-verified-contract' },
+            { text: 'Dependencies', link: '/guides/project-setup/dependencies' },
+            { text: 'Soldeer', link: '/guides/project-setup/soldeer' },
+            { text: 'Project Layout', link: '/guides/project-setup/project-layout' }
+          ]},
       ]
     },
     {
@@ -238,16 +245,6 @@ export const sidebar: Sidebar = [
                 { text: 'Etherscan', link: '/config/reference/etherscan' },
             ]},
         ]
-    },
-    {
-      text: 'Project Setup',
-      items: [
-          { text: 'Creating a New Project', link: '/projects/creating-a-new-project' },
-          { text: 'Clone a Verified Contract', link: '/projects/clone-a-verified-contract' },
-          { text: 'Dependencies', link: '/projects/dependencies' },
-          { text: 'Soldeer', link: '/projects/soldeer' },
-          { text: 'Project Layout', link: '/projects/project-layout' }
-      ]
     },
     {
         text: 'Cheatcode Reference',

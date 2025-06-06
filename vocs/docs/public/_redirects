@@ -40,3 +40,5 @@
 /cheatcodes/:id /reference/cheatcodes/:id
 
 /guides/v1.0-migration /misc/v1.0-migration
+
+/projects/:id /guides/project-setup/:id
