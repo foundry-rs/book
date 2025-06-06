@@ -69,7 +69,6 @@ Help improve Foundry by contributing - see the [contribution guidelines](https:/
 
 Complete command references, configuration options, and API documentation for all Foundry tools.
 
-- [Announcements](/misc/announcements) - Latest updates and release notes
 - [FAQ](/misc/faq) - Frequently asked questions and troubleshooting
 - **Command References**
   - [forge Commands](/forge/reference/overview) - Complete forge CLI reference
