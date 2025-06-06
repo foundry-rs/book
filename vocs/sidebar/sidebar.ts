@@ -261,9 +261,6 @@ export const sidebar: Sidebar = [
     {
         text: 'Miscellaneous',
         items: [
-            {
-              text: 'Announcements', link: '/misc/announcements'
-            },
             { text: 'v1.0 migration guide', link: '/misc/v1.0-migration' },
             {
               text: 'Struct Encoding', link: '/misc/struct-encoding' 
