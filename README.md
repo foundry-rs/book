@@ -1,4 +1,4 @@
-## 📖 Foundry Book
+## 📖 Foundry Docs
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 
@@ -6,7 +6,7 @@
 
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
-A book on all things Foundry. [Read now](https://book.getfoundry.sh).
+Documentation on all things Foundry. [Read now](https://getfoundry.sh).
 
 ### Contributing
 
