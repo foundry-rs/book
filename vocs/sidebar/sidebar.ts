@@ -13,7 +13,6 @@ export const sidebar: Sidebar = [
     },
     {
       text: 'Guides',
-      link: '/guides',
       items: [
           
           { text: 'Best Practices', link: '/guides/best-practices' },
