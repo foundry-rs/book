@@ -157,7 +157,7 @@ If you wish to always use the create2 factory. This comes handy if you wish to u
 
 When using Solidity's default `CREATE` where the new address of a contract is determined by taking the `hash` of the `sender`'s address and the `sender`'s `nonce`:
 
-```ignore
+```
 new_contract_address = keccak256(rlp_encode([sender, nonce]))[12:]
 ```
 
@@ -172,7 +172,7 @@ Instead let's use `CREATE2`'s `salt` parameter.
 
 The `salt` parameter in `CREATE2` is a key component that determines the final deployed contract address. It allows for flexibility and uniqueness in deterministic deployments. The address of the deployed contract is derived using the following formula:
 
-```ignore
+```
 new_contract_address = keccak256(0xff ++ deployer ++ salt ++ keccak256(init_code))
 ```
 
