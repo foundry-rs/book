@@ -14,19 +14,6 @@ export const sidebar: Sidebar = [
     {
       text: 'Guides',
       items: [
-          { text: 'Best Practices', collapsed: true, items: [
-            { text: 'Writing Contracts', link: '/guides/best-practices/writing-contracts' },
-            { text: 'Writing Tests', link: '/guides/best-practices/writing-tests' },
-            { text: 'Writing Scripts', link: '/guides/best-practices/writing-scripts' },
-            { text: 'Security', link: '/guides/best-practices/security' },
-            { text: 'Key Management', link: '/guides/best-practices/key-management' },
-            { text: 'Commenting', link: '/guides/best-practices/commenting' },            
-          ]},
-          { text: 'Scripting with Solidity', link: '/guides/scripting-with-solidity' },
-          { text: 'Deterministic deployments using CREATE2', link: '/guides/deterministic-deployments-using-create2' },
-          { text: 'Forking Mainnet with Cast and Anvil', link: '/guides/forking-mainnet-with-cast-anvil' },
-          { text: 'Running Foundry inside of Docker', link: '/guides/foundry-in-docker' },
-          { text: 'Video tutorials', link: '/guides/video-tutorials' },
           { text: 'Project Setup', collapsed: true, items: [
             { text: 'Creating a New Project', link: '/guides/project-setup/creating-a-new-project' },
             { text: 'Clone a Verified Contract', link: '/guides/project-setup/clone-a-verified-contract' },
@@ -34,6 +21,19 @@ export const sidebar: Sidebar = [
             { text: 'Soldeer', link: '/guides/project-setup/soldeer' },
             { text: 'Project Layout', link: '/guides/project-setup/project-layout' }
           ]},
+          { text: 'Scripting with Solidity', link: '/guides/scripting-with-solidity' },
+          { text: 'Deterministic deployments using CREATE2', link: '/guides/deterministic-deployments-using-create2' },
+          { text: 'Forking Mainnet with Cast and Anvil', link: '/guides/forking-mainnet-with-cast-anvil' },
+          { text: 'Running Foundry inside of Docker', link: '/guides/foundry-in-docker' },
+          { text: 'Video tutorials', link: '/guides/video-tutorials' },
+          { text: 'Best Practices', collapsed: true, items: [
+            { text: 'Writing Contracts', link: '/guides/best-practices/writing-contracts' },
+            { text: 'Writing Tests', link: '/guides/best-practices/writing-tests' },
+            { text: 'Writing Scripts', link: '/guides/best-practices/writing-scripts' },
+            { text: 'Security', link: '/guides/best-practices/security' },
+            { text: 'Key Management', link: '/guides/best-practices/key-management' },
+            { text: 'Commenting', link: '/guides/best-practices/commenting' },            
+          ]}
       ]
     },
     {
