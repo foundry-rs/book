@@ -188,7 +188,7 @@ source .env
 forge script --chain sepolia script/Counter.s.sol:CounterScript --rpc-url $SEPOLIA_RPC_URL --broadcast --verify -vvvv --interactives 1
 ```
 
-Note the `--interactives 1`, this will open an interactive prompt to enter your private key. For anything beyond a simple testnet deployment in a development setting you are **STRONGLY** [recommended to use a hardware wallet or a password protected keystore](./best-practices.md#private-key-management).
+Note the `--interactives 1`, this will open an interactive prompt to enter your private key. For anything beyond a simple testnet deployment in a development setting you are **STRONGLY** [recommended to use a hardware wallet or a password protected keystore](/guides/best-practices/key-management).
 
 ```ignore
 Enter private key: <PRIVATE_KEY>

@@ -14,8 +14,14 @@ export const sidebar: Sidebar = [
     {
       text: 'Guides',
       items: [
-          
-          { text: 'Best Practices', link: '/guides/best-practices' },
+          { text: 'Best Practices', collapsed: true, items: [
+            { text: 'Writing Contracts', link: '/guides/best-practices/writing-contracts' },
+            { text: 'Writing Tests', link: '/guides/best-practices/writing-tests' },
+            { text: 'Writing Scripts', link: '/guides/best-practices/writing-scripts' },
+            { text: 'Security', link: '/guides/best-practices/security' },
+            { text: 'Key Management', link: '/guides/best-practices/key-management' },
+            { text: 'Commenting', link: '/guides/best-practices/commenting' },            
+          ]},
           { text: 'Scripting with Solidity', link: '/guides/scripting-with-solidity' },
           { text: 'Deterministic deployments using CREATE2', link: '/guides/deterministic-deployments-using-create2' },
           { text: 'Forking Mainnet with Cast and Anvil', link: '/guides/forking-mainnet-with-cast-anvil' },

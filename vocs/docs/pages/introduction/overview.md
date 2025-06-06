@@ -16,7 +16,13 @@ To get started with Foundry, install Foundry and set up your first project.
 
 Guides for building smart contracts with Foundry.
 
-- [Best Practices](/guides/best-practices)
+- Best Practices
+  - [Writing Contracts](/guides/best-practices/writing-contracts)
+  - [Writing Tests](/guides/best-practices/writing-tests)
+  - [Writing Scripts](/guides/best-practices/writing-scripts)
+  - [Security](/guides/best-practices/security)
+  - [Key Management](/guides/best-practices/key-management)
+  - [Commenting](/guides/best-practices/commenting)
 - [Scripting with Solidity](/guides/scripting-with-solidity)
 - [Deterministic deployments using CREATE2](/guides/deterministic-deployments-using-create2)
 - [Forking Mainnet with Cast and Anvil](/guides/forking-mainnet-with-cast-anvil)

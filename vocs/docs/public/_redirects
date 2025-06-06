@@ -42,3 +42,5 @@
 /guides/v1.0-migration /misc/v1.0-migration
 
 /projects/:id /guides/project-setup/:id
+
+/guides/best-practices /guides/best-practices/writing-contracts
