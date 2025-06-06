@@ -1,6 +1,4 @@
-# Deterministic deployments using `CREATE2`
-
-## Introduction
+## Deterministic deployments using `CREATE2`
 
 Enshrined into the EVM as part of the [Constantinople fork](https://ethereum.org/en/history/#constantinople) of 2019, `CREATE2` is an opcode that started its journey as [EIP-1014](https://eips.ethereum.org/EIPS/eip-1014).
 `CREATE2` allows you to deploy smart contracts to deterministic addresses, based on parameters controlled by the deployer.

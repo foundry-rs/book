@@ -1,6 +1,4 @@
-# Scripting with Solidity
-
-## Introduction
+## Scripting with Solidity
 
 Solidity scripting is a way to declaratively deploy contracts using Solidity, instead of using the more limiting and less user friendly [`forge create`](/forge/reference/forge-create).
 
