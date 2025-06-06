@@ -51,7 +51,7 @@ export default defineConfig({
       text: 'Docs',
     },
     {
-      link: '/guides/best-practices',
+      link: '/guides/best-practices/writing-contracts',
       text: 'Guides',
     },
     {

@@ -82,7 +82,7 @@ To test your project using [mythril](https://github.com/ConsenSys/mythril), here
 
 Note, you need switch `rustc` to nightly to install `mythril`:
 
-```ignore
+```
 rustup default nightly
 pip3 install mythril
 myth analyze src/Contract.sol --solc-json mythril.config.json

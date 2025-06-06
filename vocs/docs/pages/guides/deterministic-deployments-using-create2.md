@@ -1,6 +1,4 @@
-# Deterministic deployments using `CREATE2`
-
-## Introduction
+## Deterministic deployments using `CREATE2`
 
 Enshrined into the EVM as part of the [Constantinople fork](https://ethereum.org/en/history/#constantinople) of 2019, `CREATE2` is an opcode that started its journey as [EIP-1014](https://eips.ethereum.org/EIPS/eip-1014).
 `CREATE2` allows you to deploy smart contracts to deterministic addresses, based on parameters controlled by the deployer.
@@ -159,7 +157,7 @@ If you wish to always use the create2 factory. This comes handy if you wish to u
 
 When using Solidity's default `CREATE` where the new address of a contract is determined by taking the `hash` of the `sender`'s address and the `sender`'s `nonce`:
 
-```ignore
+```
 new_contract_address = keccak256(rlp_encode([sender, nonce]))[12:]
 ```
 
@@ -174,7 +172,7 @@ Instead let's use `CREATE2`'s `salt` parameter.
 
 The `salt` parameter in `CREATE2` is a key component that determines the final deployed contract address. It allows for flexibility and uniqueness in deterministic deployments. The address of the deployed contract is derived using the following formula:
 
-```ignore
+```
 new_contract_address = keccak256(0xff ++ deployer ++ salt ++ keccak256(init_code))
 ```
 

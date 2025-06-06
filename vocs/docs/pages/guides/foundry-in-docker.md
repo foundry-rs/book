@@ -180,7 +180,7 @@ services:
 
 Finally, run `docker compose up`.
 
-```ignore
+```
 docker compose up
 [+] Running 1/1
  ✔ Container anvil  Created

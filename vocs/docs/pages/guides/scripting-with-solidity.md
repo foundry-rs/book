@@ -1,6 +1,4 @@
-# Scripting with Solidity
-
-## Introduction
+## Scripting with Solidity
 
 Solidity scripting is a way to declaratively deploy contracts using Solidity, instead of using the more limiting and less user friendly [`forge create`](/forge/reference/forge-create).
 
@@ -15,9 +13,9 @@ Solidity scripts are like the scripts you write when working with tools like Har
 3. Broadcasting - Optional. If the `--broadcast` flag is provided and the previous phases have succeeded, it will broadcast the transactions collected at step `1`. and simulated at step `2`.
 4. Verification - Optional. If the `--verify` flag is provided, there's an API key, and the previous phases have succeeded it will attempt to verify the contract. (eg. etherscan).
 
-> 💡 Note:
->
-> Transactions that previously failed or timed-out can be submitted again by providing `--resume` flag.
+:::tip
+Transactions that previously failed or timed-out can be submitted again by providing `--resume` flag.
+:::
 
 Given this flow, it's important to be aware that transactions whose behaviour can be influenced by external state/actors might have a different result than what was simulated on step `2`, e.g. front running.
 
@@ -26,7 +24,7 @@ Given this flow, it's important to be aware that transactions whose behaviour ca
 Let’s try to deploy the basic `Counter` contract Foundry provides:
 
 ```sh
-forge init counter
+forge init Counter
 ```
 
 Next let’s try compiling our contracts to make sure everything is in order.
@@ -49,7 +47,7 @@ You can either grab an RPC URL from [Chainlist](https://chainlist.org/chain/1115
 `cast wallet new`
 ```
 
-```ignore
+```
 Successfully created new keypair.
 Address:     <PUBLIC KEY>
 Private key: <PRIVATE_KEY>
@@ -188,15 +186,15 @@ source .env
 forge script --chain sepolia script/Counter.s.sol:CounterScript --rpc-url $SEPOLIA_RPC_URL --broadcast --verify -vvvv --interactives 1
 ```
 
-Note the `--interactives 1`, this will open an interactive prompt to enter your private key. For anything beyond a simple testnet deployment in a development setting you are **STRONGLY** [recommended to use a hardware wallet or a password protected keystore](./best-practices.md#private-key-management).
+Note the `--interactives 1`, this will open an interactive prompt to enter your private key. For anything beyond a simple testnet deployment in a development setting you are **STRONGLY** [recommended to use a hardware wallet or a password protected keystore](/guides/best-practices/key-management).
 
-```ignore
+```
 Enter private key: <PRIVATE_KEY>
 ```
 
 Forge is going to run our script and broadcast the transactions for us - this can take a little while, since Forge will also wait for the transaction receipts. You should see something like this after a minute or so:
 
-```ignore
+```
 [⠊] Compiling...
 No files changed, compilation skipped
 Enter private key:
@@ -284,7 +282,7 @@ anvil
 
 This will show you are list of default accounts.
 
-```ignore
+```
 Available Accounts
 ==================
 
@@ -306,11 +304,11 @@ forge script script/Counter.s.sol:CounterScript --fork-url http://localhost:8545
 
 Next enter the private key, pick one from the list.
 
-```ignore
+```
 Enter private key: <PRIVATE_KEY>
 ```
 
-```ignore
+```
 [⠊] Compiling...
 No files changed, compilation skipped
 Enter private key:

@@ -13,6 +13,9 @@ Let's fork Ethereum mainnet at the latest block:
 
 ```bash
 anvil --fork-url https://reth-ethereum.ithaca.xyz/rpc
+```
+
+```bash
 
 
                              _   _

@@ -73,7 +73,7 @@ To understand why you are getting this error you first have to understand what `
 You can think of call depth in a similar way to function scoping. When you are entering an **external** call the call depth is increased by `1`.
 When you exit the external call the call depth is decreased by `1`. If you have nested calls it looks as follows:
 
-```ignore
+```
 0 → Contract A (calls B) → 1 → Contract B (calls C) → 2 → Contract C (returns) → 1 → Contract B (returns) → 0
 ```
 
