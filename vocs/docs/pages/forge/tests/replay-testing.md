@@ -1,3 +1,7 @@
+---
+description: Replay test failures incrementally using persisted failure data for fuzz tests, invariant tests, and unit tests.
+---
+
 ## Replaying Failures
 
 Forge supports incrementally replaying last test run failures by persisting them on the disk.

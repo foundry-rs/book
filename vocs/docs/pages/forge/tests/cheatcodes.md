@@ -1,3 +1,7 @@
+---
+description: Use cheatcodes to manipulate blockchain state, test reverts, and verify events in your smart contract tests.
+---
+
 ## Cheatcodes
 
 Most of the time, simply testing your smart contracts outputs isn't enough. To manipulate the state of the blockchain, as well as test for specific reverts and events, Foundry is shipped with a set of cheatcodes.

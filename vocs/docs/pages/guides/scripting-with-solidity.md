@@ -1,3 +1,7 @@
+---
+description: Deploy contracts declaratively using Solidity scripts with simulation, broadcasting, and verification capabilities.
+---
+
 ## Scripting with Solidity
 
 Solidity scripting is a way to declaratively deploy contracts using Solidity, instead of using the more limiting and less user friendly [`forge create`](/forge/reference/forge-create).
@@ -21,13 +25,13 @@ Given this flow, it's important to be aware that transactions whose behaviour ca
 
 ## Getting started
 
-Let’s try to deploy the basic `Counter` contract Foundry provides:
+Let's try to deploy the basic `Counter` contract Foundry provides:
 
 ```sh
 forge init Counter
 ```
 
-Next let’s try compiling our contracts to make sure everything is in order.
+Next let's try compiling our contracts to make sure everything is in order.
 
 ```sh
 forge build
@@ -120,14 +124,14 @@ contract CounterScript is Script {
 }
 ```
 
-Now let’s read through the code and figure out what it actually means and does.
+Now let's read through the code and figure out what it actually means and does.
 
 ```solidity
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
 ```
 
-Remember even if it’s a script it still works like a smart contract, but is never deployed, so just like any other smart contract written in Solidity the `pragma version` has to be specified.
+Remember even if it's a script it still works like a smart contract, but is never deployed, so just like any other smart contract written in Solidity the `pragma version` has to be specified.
 
 ```solidity
 import {Script, console} from "forge-std/Script.sol";
@@ -170,7 +174,7 @@ The broadcasting sender is determined by checking the following in order:
 2. If exactly one signer (e.g. private key, hardware wallet, keystore) is set, that signer is used.
 3. Otherwise, the default Foundry sender (`0x1804c8AB1F12E6bbf3894d4083f33e07309d1f38`) is attempted to be used.
 
-Now that you’re up to speed about what the script smart contract does, let’s run it.
+Now that you're up to speed about what the script smart contract does, let's run it.
 
 ### Deploying to a testnet
 

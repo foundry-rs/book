@@ -1,3 +1,7 @@
+---
+description: Track and optimize gas consumption with reports, function snapshots, and section snapshots for performance analysis.
+---
+
 ## Gas Tracking
 
 Forge can help you estimate how much gas your contract will consume.

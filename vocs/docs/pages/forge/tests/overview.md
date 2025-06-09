@@ -1,3 +1,7 @@
+---
+description: Test smart contract using forge test.
+---
+
 ## Tests
 
 Forge can run your tests with the [`forge test`](/forge/reference/forge-test) command. All tests are written in Solidity.

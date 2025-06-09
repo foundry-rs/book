@@ -1,3 +1,7 @@
+---
+description: Test against live blockchain state using fork mode or forking cheatcodes for integration testing with real contracts.
+---
+
 ## Fork Testing
 
 Forge supports testing in a forked environment with two different approaches:

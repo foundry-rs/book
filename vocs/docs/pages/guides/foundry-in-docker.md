@@ -1,3 +1,7 @@
+---
+description: Build, test, and deploy smart contracts using Foundry's Docker image for portable and reproducible development workflows.
+---
+
 ## Running Foundry inside of Docker
 
 This guide shows you how to build, test, and deploy a smart contract using Foundry's Docker image. It adapts code from the [`first steps`] guide. If you haven't completed that guide yet, and are new to solidity, you may want to start with it first. Alternatively, if you have some familiarity with Docker and Solidity, you can use your own existing project and adjust accordingly.

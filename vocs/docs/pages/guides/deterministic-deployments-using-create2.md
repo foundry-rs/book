@@ -1,3 +1,7 @@
+---
+description: Deploy smart contracts to predictable addresses across multiple networks using CREATE2 opcode for counterfactual interactions.
+---
+
 ## Deterministic deployments using `CREATE2`
 
 Enshrined into the EVM as part of the [Constantinople fork](https://ethereum.org/en/history/#constantinople) of 2019, `CREATE2` is an opcode that started its journey as [EIP-1014](https://eips.ethereum.org/EIPS/eip-1014).
@@ -184,7 +188,7 @@ Counter counter = new Counter{salt: salt}();
 - `0xff` is a fixed prefix ensuring uniqueness.
 - `deployer` is the address executing the CREATE2 operation.
 - `salt` is a 32-byte value chosen by the deployer.
-- `keccak256(bytecode)` is the hash of the contract’s creation bytecode.
+- `keccak256(bytecode)` is the hash of the contract's creation bytecode.
 
 Given that `0xff` is fixed, the `deployer` is a deterministic deployer ([0x4e59b44847b379578588920ca78fbf26c0b4956c](https://github.com/Arachnid/deterministic-deployment-proxy)) and our bytecode is fixed we can use the `salt` parameter to fully control our new contract address.
 

@@ -1,3 +1,7 @@
+---
+description: Frequently asked questions and troubleshooting guide for common Foundry installation and usage issues.
+---
+
 ## FAQ
 
 This is a collection of common questions and answers. If you do not find your question listed here, hop in the [Telegram support channel][tg-support]

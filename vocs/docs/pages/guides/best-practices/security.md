@@ -1,3 +1,7 @@
+---
+description: Security best practices for smart contract development including taint analysis and comprehensive testing strategies.
+---
+
 ## Security Practices
 
 Thanks to [@samsczun](https://twitter.com/samczsun)'s [How Do You Even Write Secure Code Anyways](https://www.youtube.com/watch?v=Wm3t8Fuiy1E) talk for the tips in this section and the following section.

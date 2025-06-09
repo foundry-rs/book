@@ -1,3 +1,7 @@
+---
+description: Best practices for writing secure and maintainable deployment scripts with proper testing and frontrunning protection.
+---
+
 ## Scripting Practices
 
 ### Use `run` as the default function
