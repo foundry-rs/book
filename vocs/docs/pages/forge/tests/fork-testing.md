@@ -1,3 +1,7 @@
+---
+description: Test against live blockchain state using fork mode or forking cheatcodes for integration testing with real contracts.
+---
+
 ## Fork Testing
 
 Forge supports testing in a forked environment with two different approaches:
@@ -17,14 +21,14 @@ forge test --fork-url <your_rpc_url>
 
 The following values are changed to reflect those of the chain at the moment of forking:
 
-- [`block_number`](/reference/config/testing#block_number)
-- [`chain_id`](/reference/config/testing#chain_id)
-- [`gas_limit`](/reference/config/testing#gas_limit)
-- [`gas_price`](/reference/config/testing#gas_price)
-- [`block_base_fee_per_gas`](/reference/config/testing#block_base_fee_per_gas)
-- [`block_coinbase`](/reference/config/testing#block_coinbase)
-- [`block_timestamp`](/reference/config/testing#block_timestamp)
-- [`block_difficulty`](/reference/config/testing#block_difficulty)
+- [`block_number`](/config/reference/testing#block_number)
+- [`chain_id`](/config/reference/testing#chain_id)
+- [`gas_limit`](/config/reference/testing#gas_limit)
+- [`gas_price`](/config/reference/testing#gas_price)
+- [`block_base_fee_per_gas`](/config/reference/testing#block_base_fee_per_gas)
+- [`block_coinbase`](/config/reference/testing#block_coinbase)
+- [`block_timestamp`](/config/reference/testing#block_timestamp)
+- [`block_difficulty`](/config/reference/testing#block_difficulty)
 
 It is possible to specify a block from which to fork with `--fork-block-number`:
 
@@ -38,9 +42,9 @@ Forking is especially useful when you need to interact with existing contracts. 
 
 If both `--fork-url` and `--fork-block-number` are specified, then data for that block is cached for future test runs.
 
-The data is cached in `~/.foundry/cache/rpc/<chain name>/<block number>`. To clear the cache, simply remove the directory or run [`forge clean`](/reference/forge/forge-clean) (removes all build artifacts and cache directories).
+The data is cached in `~/.foundry/cache/rpc/<chain name>/<block number>`. To clear the cache, simply remove the directory or run [`forge clean`](/forge/reference/forge-clean) (removes all build artifacts and cache directories).
 
-It is also possible to ignore the cache entirely by passing `--no-storage-caching`, or with `foundry.toml` by configuring [`no_storage_caching`](/reference/config/testing#no_storage_caching) and [`rpc_storage_caching`](/reference/config/testing#rpc_storage_caching).
+It is also possible to ignore the cache entirely by passing `--no-storage-caching`, or with `foundry.toml` by configuring [`no_storage_caching`](/config/reference/testing#no_storage_caching) and [`rpc_storage_caching`](/config/reference/testing#rpc_storage_caching).
 
 #### Improved traces
 
@@ -230,7 +234,7 @@ Proper configuration is needed to execute forked tests with chains using differe
 - if same EVM version applies for all forked chains used, then it can be globally configured in `foundry.toml` file
 
 ```toml
-evm_version = "cancun"
+evm_version = "prague"
 ```
 
 - if different EVM versions are used, specific EVM test version can be set using inline configuration

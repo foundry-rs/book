@@ -1,3 +1,7 @@
+---
+description: Frequently asked questions and troubleshooting guide for common Foundry installation and usage issues.
+---
+
 ## FAQ
 
 This is a collection of common questions and answers. If you do not find your question listed here, hop in the [Telegram support channel][tg-support]
@@ -36,8 +40,8 @@ forge: /lib/x86_64-linux-gnu/libc.so.6: version 'GLIBC_2.29' not found (required
 
 There are 2 workarounds:
 
-1. [Building from source](getting-started/installation.md#building-from-source)
-2. [Using Docker](getting-started/installation.md#using-foundry-with-docker)
+1. [Building from source](/introduction/installation/#building-from-source)
+2. [Using Docker](/introduction/installation/#using-foundry-with-docker)
 
 ### Help! I can't see my logs!
 
@@ -204,14 +208,14 @@ You could run `export http_proxy=http://127.0.0.1:7890 https_proxy=http://127.0.
 
 ### I'm getting `[NotActivated] EvmError: NotActivated` error in my tests.
 
-This error refers to an EVM version mismatch, make sure the `evm_version` configuration is inline with the test (forked chain) you're using (similar for errors like `prevrandao not set`). See [`evm_version` configuration](/reference/config/solidity-compiler#evm_version)
+This error refers to an EVM version mismatch, make sure the `evm_version` configuration is inline with the test (forked chain) you're using (similar for errors like `prevrandao not set`). See [`evm_version` configuration](/config/reference/solidity-compiler#evm_version)
 
 [tg-support]: https://t.me/foundry_support
-[forge-test]: ./reference/forge/forge-test.md
+[forge-test]: ./forge/reference/forge-test.md
 [traces]: ./forge/traces.md
-[config-solc]: ./reference/config/solidity-compiler.md#solc_version
+[config-solc]: ./config/reference/solidity-compiler.md#solc_version
 [config]: ./config/
-[forge-build]: ./reference/forge/forge-build.md
+[forge-build]: ./forge/reference/forge-build.md
 [console-log]: ./reference/forge-std/console-log.md
 [forge-std]: https://github.com/foundry-rs/forge-std
 [dstestplus]: https://github.com/transmissions11/solmate/blob/19a4f345970ed39ee6369f343d145e0d4071c18a/src/test/utils/DSTestPlus.sol#L10

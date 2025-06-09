@@ -1,25 +1,29 @@
+---
+description: Interactive debugger for stepping through smart contract execution with detailed EVM state inspection and navigation controls.
+---
+
 ## Debugger
 
 Forge ships with an interactive debugger.
 
-The debugger is accessible on [`forge test`](/reference/forge/forge-test), on [`forge script`](/reference/forge/forge-script) and on [`cast run`](/reference/cast/cast-run). You can only select a single function or a single transaction to debug at the time.
+The debugger is accessible on [`forge test`](/forge/reference/forge-test), on [`forge script`](/forge/reference/forge-script) and on [`cast run`](/cast/reference/cast-run). You can only select a single function or a single transaction to debug at the time.
 
 Using `forge test` (or `forge script`):
 
 ```sh
-$ forge test --debug --match-test "<REGEX>"
+forge test --debug --match-test "<REGEX>"
 ```
 
 Where `<REGEX>` is the function signature of the file you want to debug. For example:
 
 ```sh
-$ forge test --debug --match-test "test_Increment"
+forge test --debug --match-test "test_Increment"
 ```
 
 If the matching test is a fuzz test, the debugger will open the first failing fuzz scenario, or the last successful one, whichever comes first. For example:
 
 ```sh
-$ forge test --debug --match-test "testFuzz_SetNumber"
+forge test --debug --match-test "testFuzz_SetNumber"
 ```
 
 Using `cast run`:

@@ -1,0 +1,45 @@
+import SigDescription from "./sig-description.mdx";
+import WalletOptions from "../../reference/common/wallet-options.mdx";
+import RpcOptions from "../../reference/common/rpc-options.mdx";
+import EtherscanOptions from "../../reference/common/etherscan-options.mdx";
+import CommonOptions from "./common-options.mdx";
+
+## cast access-list
+
+### NAME
+
+cast-access-list - Create an access list for a transaction.
+
+### SYNOPSIS
+
+`cast access-list` [*options*] _to_ _sig_ [*args...*]
+
+### DESCRIPTION
+
+Create an access list for a transaction.
+
+The destination (_to_) can be an ENS name or an address.
+
+<SigDescription />
+
+### OPTIONS
+
+#### Query Options
+
+`-B` _block_  
+`--block` _block_  
+&nbsp;&nbsp;&nbsp;&nbsp;The block height you want to query at.
+
+&nbsp;&nbsp;&nbsp;&nbsp;Can be a block number, or any of the tags: `earliest`, `finalized`, `safe`, `latest` or `pending`.
+
+<WalletOptions />
+
+<RpcOptions />
+
+<EtherscanOptions />
+
+<CommonOptions />
+
+### SEE ALSO
+
+[cast](/cast/reference/overview), [cast send](/cast/reference/cast-send.mdx), [cast publish](/cast/reference/cast-publish.mdx), [cast call](/cast/reference/cast-call.mdx)

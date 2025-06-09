@@ -1,3 +1,7 @@
+---
+description: Cast is a Swiss Army knife for interacting with Ethereum from the command line - send transactions, call contracts, and retrieve chain data.
+---
+
 ## Cast
 
 Cast is a Swiss Army knife for interacting with Ethereum applications from the command line. You can make smart contract calls, send transactions, or retrieve any type of chain data - all from your command-line!
@@ -52,5 +56,5 @@ cast send --private-key <PRIVATE_KEY> 0x3c44cdddb6a900fa2b585dd299e03d12fa4293bc
 <br></br>
 
 :::info
-See the [`cast` Reference](/reference/cast/overview) for a complete overview of all the available subcommands.
+See the [`cast` Reference](/cast/reference/overview) for a complete overview of all the available subcommands.
 :::

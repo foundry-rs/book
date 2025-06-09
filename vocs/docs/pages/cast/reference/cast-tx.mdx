@@ -1,0 +1,46 @@
+import RpcUrlOption from "../../reference/common/rpc-url-option.mdx";
+import DisplayOptions from "../../reference/common/display-options.mdx";
+import CommonOptions from "./common-options.mdx";
+
+## cast tx
+
+### NAME
+
+cast-tx - Get information about a transaction.
+
+### SYNOPSIS
+
+`cast tx` [*options*] _tx_hash_ [*field*]
+
+### DESCRIPTION
+
+Get information about a transaction.
+
+If _field_ is specified, then only the given field of the transaction is displayed.
+
+### OPTIONS
+
+#### RPC Options
+
+<RpcUrlOption />
+
+<DisplayOptions />
+
+<CommonOptions />
+
+### EXAMPLES
+
+1. Get information about a transaction:
+
+   ```sh
+   cast tx $TX_HASH
+   ```
+
+2. Get the sender of a transaction:
+   ```sh
+   cast tx $TX_HASH from
+   ```
+
+### SEE ALSO
+
+[cast](/cast/reference/overview), [cast receipt](/cast/reference/cast-receipt.mdx)

@@ -1,6 +1,6 @@
 // [!region all]
 // [!region command]
-$ forge clone 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2 WETH9
+forge clone 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2 WETH9 --etherscan-api-key <YOUR_API_KEY>
 // [!endregion command]
 // [!region output]
 Downloading the source code of 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2 from Etherscan...

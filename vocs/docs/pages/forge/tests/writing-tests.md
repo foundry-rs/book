@@ -1,3 +1,7 @@
+---
+description: Learn to write Solidity tests using Forge Standard Library with test functions, setup patterns, and shared contracts.
+---
+
 ## Writing Tests
 
 Tests are written in Solidity. If the test function reverts, the test fails, otherwise it passes.
@@ -32,7 +36,7 @@ Forge uses the following keywords in tests:
 // [!include ~/snippets/projects/writing_tests/test/Basic.t.sol:testNumberIs42]
 ```
 
-A good practice is to use the pattern `test_Revert[If|When]_Condition` in combination with the [`expectRevert`](/reference/cheatcodes/expect-revert) cheatcode (cheatcodes are explained in greater detail in the following [section](/forge/tests/cheatcodes)). Also, other testing practices can be found in the [Guides section](/guides/best-practices).
+A good practice is to use the pattern `test_Revert[If|When]_Condition` in combination with the [`expectRevert`](/reference/cheatcodes/expect-revert) cheatcode (cheatcodes are explained in greater detail in the following [section](/forge/tests/cheatcodes)). Also, other testing practices can be found in the [Guides section](/guides/best-practices/writing-tests).
 
 > **Note**: To use `stdError` constants (like `arithmeticError` in the example below), make sure to import `StdError.sol`:
 >

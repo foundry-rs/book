@@ -1,6 +1,6 @@
 // [!region all]
 // [!region command]
-$ forge test --match-path test/ContractB.t.sol
+forge test --match-path test/ContractB.t.sol
 // [!endregion command]
 // [!region output]
 Compiling 1 files with Solc 0.8.10

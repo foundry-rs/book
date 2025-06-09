@@ -1,0 +1,47 @@
+import RpcUrlOption from "../../reference/common/rpc-url-option.mdx";
+import DisplayOptions from "../../reference/common/display-options.mdx";
+import CommonOptions from "./common-options.mdx";
+
+## cast receipt
+
+### NAME
+
+cast-receipt - Get the transaction receipt for a transaction.
+
+### SYNOPSIS
+
+`cast receipt` [*options*] _tx_hash_ [*field*]
+
+### DESCRIPTION
+
+Get the transaction receipt for a transaction.
+
+If _field_ is specified, then only the given field of the receipt is displayed.
+
+### OPTIONS
+
+#### Receipt Options
+
+`--async`  
+`--cast-async`  
+&nbsp;&nbsp;&nbsp;&nbsp;Do not wait for the transaction receipt if it does not exist yet.  
+&nbsp;&nbsp;&nbsp;&nbsp;Environment: `CAST_ASYNC`
+
+`-c` _confirmations_  
+`--confirmations` _confirmations_  
+&nbsp;&nbsp;&nbsp;&nbsp;Wait a number of confirmations before exiting. Default: `1`.
+
+#### RPC Options
+
+<RpcUrlOption />
+
+<DisplayOptions />
+
+<CommonOptions />
+
+### EXAMPLES
+
+1. Get a transaction receipt:
+   ```sh
+   cast receipt $TX_HASH
+   ```

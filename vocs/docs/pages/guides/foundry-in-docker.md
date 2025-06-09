@@ -1,3 +1,7 @@
+---
+description: Build, test, and deploy smart contracts using Foundry's Docker image for portable and reproducible development workflows.
+---
+
 ## Running Foundry inside of Docker
 
 This guide shows you how to build, test, and deploy a smart contract using Foundry's Docker image. It adapts code from the [`first steps`] guide. If you haven't completed that guide yet, and are new to solidity, you may want to start with it first. Alternatively, if you have some familiarity with Docker and Solidity, you can use your own existing project and adjust accordingly.
@@ -27,10 +31,10 @@ The docker image can be used in two primary ways:
 
 We will cover both, but let's start by taking a look at interfacing with foundry using docker. This is also a good test that your local installation worked!
 
-We can run any of the `cast` [commands](/reference/cast/overview) against our docker image. Let's fetch the latest block information:
+We can run any of the `cast` [commands](/cast/reference/overview) against our docker image. Let's fetch the latest block information:
 
 ```sh
-$ docker run foundry "cast block --rpc-url $RPC_URL latest"
+docker run foundry "cast block --rpc-url $RPC_URL latest"
 baseFeePerGas        "0xb634241e3"
 difficulty           "0x2e482bdf51572b"
 extraData            "0x486976656f6e20686b"
@@ -57,7 +61,7 @@ uncles               []
 If we're in a directory with some Solidity [source code](https://github.com/dmfxyz/foundry-docker-guide), we can mount that directory into Docker and use `forge` however we wish. For example:
 
 ```sh
-$ docker run -v $PWD:/app foundry "forge test --root /app --watch"
+docker run -v $PWD:/app foundry "forge test --root /app --watch"
 ```
 
 You can see our code was compiled and tested entirely within the container. Also, since we passed the `--watch` option, the container will recompile the code whenever a change is detected.
@@ -87,7 +91,7 @@ RUN forge test
 You can build this docker image and watch forge build/run the tests within the container:
 
 ```sh
-$ docker build --no-cache --progress=plain .
+docker build --no-cache --progress=plain .
 ```
 
 Now, what happens if one of our tests fails? Modify `src/test/Counter.t.sol` to make a false assertion. Try to build image again.
@@ -100,7 +104,7 @@ Now, what happens if one of our tests fails? Modify `src/test/Counter.t.sol` to 
 ```
 
 ```sh
-$ docker build --no-cache --progress=plain .
+docker build --no-cache --progress=plain .
 <...>
 #9 0.522 Failed tests:
 #9 0.522 [FAIL: assertion failed: 425 != 5; counterexample: calldata=[...] args=[425]] testFuzz_SetNumber(uint256) (runs: 0, μ: 0, ~: 0)
@@ -137,13 +141,13 @@ ENTRYPOINT ["forge", "create"]
 Let's build the image, this time giving it a name:
 
 ```sh
-$ docker build --no-cache --progress=plain -t counter .
+docker build --no-cache --progress=plain -t counter .
 ```
 
 Here's how we can use our docker image to deploy:
 
 ```sh
-$ docker run counter-deployer --rpc-url $RPC_URL --private-key $PRIVATE_KEY ./src/Counter.sol:Counter
+docker run counter-deployer --rpc-url $RPC_URL --private-key $PRIVATE_KEY ./src/Counter.sol:Counter
 No files changed, compilation skipped
 Deployer: 0x496e09fcb240c33b8fda3b4b74d81697c03b6b3d
 Deployed to: 0x23d465eaa80ad2e5cdb1a2345e4b54edd12560d3
@@ -180,8 +184,8 @@ services:
 
 Finally, run `docker compose up`.
 
-```sh
-$ docker compose up
+```
+docker compose up
 [+] Running 1/1
  ✔ Container anvil  Created
 Attaching to anvil

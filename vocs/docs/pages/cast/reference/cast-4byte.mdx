@@ -1,0 +1,30 @@
+import CommonOptions from "./common-options.mdx";
+
+## cast 4byte
+
+### NAME
+
+cast-4byte - Get the function signatures for the given selector from [Openchain Signatures](https://openchain.xyz/signatures).
+
+### SYNOPSIS
+
+`cast 4byte` [*options*] _sig_
+
+### DESCRIPTION
+
+Get the function signatures for the given selector from https://openchain.xyz/signatures.
+
+### OPTIONS
+
+<CommonOptions />
+
+### EXAMPLES
+
+1. Get the function signature for the selector `0x8cc5ce99`:
+   ```sh
+   cast 4byte 0x8cc5ce99
+   ```
+
+### SEE ALSO
+
+[cast](/cast/reference/overview), [cast 4byte-calldata](/cast/reference/cast-4byte-calldata.mdx), [cast 4byte-event](/cast/reference/cast-4byte-event.mdx), [cast selectors](/cast/reference/cast-selectors.mdx)

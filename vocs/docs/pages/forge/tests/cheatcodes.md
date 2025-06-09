@@ -1,3 +1,7 @@
+---
+description: Use cheatcodes to manipulate blockchain state, test reverts, and verify events in your smart contract tests.
+---
+
 ## Cheatcodes
 
 Most of the time, simply testing your smart contracts outputs isn't enough. To manipulate the state of the blockchain, as well as test for specific reverts and events, Foundry is shipped with a set of cheatcodes.
@@ -22,7 +26,7 @@ Let's write a test for a smart contract that is only callable by its owner.
 If we run `forge test` now, we will see that the test passes, since `OwnerUpOnlyTest` is the owner of `OwnerUpOnly`.
 
 ```sh
-$ forge test
+forge test
 // [!include ~/snippets/output/cheatcodes/forge-test-simple:output}]
 ```
 
@@ -40,7 +44,7 @@ Let's make sure that someone who is definitely not the owner can't increment the
 If we run `forge test` one last time, we see that the test still passes, but this time we are sure that it will always fail if we revert for any other reason.
 
 ```bash
-$ forge test
+forge test
 // [!include ~/snippets/output/cheatcodes/forge-test-cheatcodes-expectrevert:output]
 ```
 

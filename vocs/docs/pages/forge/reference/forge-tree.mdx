@@ -1,0 +1,38 @@
+import ProjectOptions from "./project-options.mdx";
+import CommonOptions from "./common-options.mdx";
+
+## forge tree
+
+### NAME
+
+forge-tree - Display a tree visualization of the project's dependency graph.
+
+### SYNOPSIS
+
+`forge tree` [*options*]
+
+### DESCRIPTION
+
+Display a visualization of the project's dependency graph.
+
+```
+// [!include ~/snippets/output/forge_tree/forge-tree:all]
+```
+
+### OPTIONS
+
+#### Flatten Options
+
+`--charset` _charset_  
+&nbsp;&nbsp;&nbsp;&nbsp;Character set to use in output: utf8, ascii. Default: utf8
+
+`--no-dedupe`  
+&nbsp;&nbsp;&nbsp;&nbsp;Do not de-duplicate (repeats all shared dependencies)
+
+<ProjectOptions />
+
+<CommonOptions />
+
+### SEE ALSO
+
+[forge](/forge/reference/overview)

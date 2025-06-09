@@ -1,0 +1,33 @@
+import RpcUrlOption from "../../reference/common/rpc-url-option.mdx";
+import CommonOptions from "./common-options.mdx";
+
+## cast compute-address
+
+### NAME
+
+cast-compute-address - Compute the contract address from a given nonce and deployer address.
+
+### SYNOPSIS
+
+`cast compute-address` [*options*] _address_
+
+### DESCRIPTION
+
+Compute the contract address from a given nonce and deployer address.
+
+### OPTIONS
+
+#### Compute Options
+
+`--nonce` _nonce_  
+&nbsp;&nbsp;&nbsp;&nbsp;The nonce of the account. Defaults to the latest nonce, fetched from the RPC.
+
+#### RPC Options
+
+<RpcUrlOption />
+
+<CommonOptions />
+
+### SEE ALSO
+
+[cast](/cast/reference/overview), [cast proof](/cast/reference/cast-proof.mdx), [cast create2](/cast/reference/cast-create2.mdx)

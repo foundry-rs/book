@@ -1,3 +1,7 @@
+---
+description: Anvil is a fast local Ethereum development node.
+---
+
 ## Anvil
 
 Anvil is a fast local Ethereum development node.
@@ -12,7 +16,10 @@ To use Anvil, simply type `anvil`. To fork against a live Ethereum network run `
 Let's fork Ethereum mainnet at the latest block:
 
 ```bash
-$ anvil --fork-url https://reth-ethereum.ithaca.xyz/rpc
+anvil --fork-url https://reth-ethereum.ithaca.xyz/rpc
+```
+
+```bash
 
 
                              _   _
@@ -87,5 +94,5 @@ Listening on 127.0.0.1:8545
 <br></br>
 
 :::info
-See the [`anvil` Reference](/reference/anvil/overview) for in depth information on Anvil and its capabilities.
+See the [`anvil` Reference](/anvil/reference) for in depth information on Anvil and its capabilities.
 :::

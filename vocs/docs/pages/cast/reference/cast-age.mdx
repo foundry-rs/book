@@ -1,0 +1,43 @@
+import RpcUrlOption from "../../reference/common/rpc-url-option.mdx";
+import CommonOptions from "./common-options.mdx";
+
+## cast age
+
+### NAME
+
+cast-age - Get the timestamp of a block.
+
+### SYNOPSIS
+
+`cast age` [*options*] [*block*]
+
+### DESCRIPTION
+
+Get the timestamp of a block.
+
+The specified _block_ can be a block number, or any of the tags: `earliest`, `finalized`, `safe`, `latest` or `pending`. Default to `latest`.
+
+### OPTIONS
+
+#### RPC Options
+
+<RpcUrlOption />
+
+<CommonOptions />
+
+### EXAMPLES
+
+1. Get the timestamp of the latest block:
+
+   ```sh
+   cast age
+   ```
+
+2. Get the timestamp of the genesis block:
+   ```sh
+   cast age 1
+   ```
+
+### SEE ALSO
+
+[cast](/cast/reference/overview), [cast block](/cast/reference/cast-block.mdx), [cast basefee](/cast/reference/cast-basefee.mdx)

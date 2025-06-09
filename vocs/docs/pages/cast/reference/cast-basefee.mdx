@@ -1,0 +1,43 @@
+import RpcUrlOption from "../../reference/common/rpc-url-option.mdx";
+import CommonOptions from "./common-options.mdx";
+
+## cast basefee
+
+### NAME
+
+cast-base-fee - Get the basefee of a block.
+
+### SYNOPSIS
+
+`cast base-fee` [*options*] [*block*]
+
+### DESCRIPTION
+
+Get the basefee of a block.
+
+The specified _block_ can be a block number, or any of the tags: `earliest`, `finalized`, `safe`, `latest` or `pending`. Default to `latest`.
+
+### OPTIONS
+
+#### RPC Options
+
+<RpcUrlOption />
+
+<CommonOptions />
+
+### EXAMPLES
+
+1. Get the basefee of the latest block:
+
+   ```sh
+   cast base-fee
+   ```
+
+2. Get the basefee of the genesis block:
+   ```sh
+   cast base-fee 1
+   ```
+
+### SEE ALSO
+
+[cast](/cast/reference/overview), [cast block](/cast/reference/cast-block.mdx), [cast age](/cast/reference/cast-age.mdx)

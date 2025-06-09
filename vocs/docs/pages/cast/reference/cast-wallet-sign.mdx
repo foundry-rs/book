@@ -1,0 +1,42 @@
+import WalletOptionsRaw from "../../reference/common/wallet-options-raw.mdx";
+import WalletOptionsKeystore from "../../reference/common/wallet-options-keystore.mdx";
+import WalletOptionsHardware from "../../reference/common/wallet-options-hardware.mdx";
+import CommonOptions from "./common-options.mdx";
+
+## cast wallet sign
+
+### NAME
+
+cast-wallet-sign - Sign a message.
+
+### SYNOPSIS
+
+`cast wallet sign` [*options*] _message_
+
+### DESCRIPTION
+
+Sign a message suitable for [`eth_sign`](https://ethereum.org/en/developers/docs/apis/json-rpc/#eth_sign). Note that signing prefixes the message with the Ethereum Signed Message header [in accordance with EIP-191](https://eips.ethereum.org/EIPS/eip-191) unless `--no-hash` is provided.
+
+### OPTIONS
+
+<WalletOptionsRaw />
+<WalletOptionsKeystore />
+<WalletOptionsHardware />
+<CommonOptions />
+
+### EXAMPLES
+
+1. Sign a message using a keystore:
+
+   ```sh
+   cast wallet sign --keystore keystore.json --interactive "hello"
+   ```
+
+2. Sign a message using a raw private key:
+   ```sh
+   cast wallet sign --private-key $PRIV_KEY "hello"
+   ```
+
+### SEE ALSO
+
+[cast](/cast/reference/overview), [cast wallet](/cast/reference/cast-wallet.mdx)

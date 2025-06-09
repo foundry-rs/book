@@ -1,0 +1,46 @@
+import WalletOptionsRaw from "../../reference/common/wallet-options-raw.mdx";
+import WalletOptionsKeystore from "../../reference/common/wallet-options-keystore.mdx";
+import WalletOptionsHardware from "../../reference/common/wallet-options-hardware.mdx";
+import CommonOptions from "./common-options.mdx";
+
+## cast wallet sign-auth
+
+### NAME
+
+cast-wallet-sign-auth - Sign an EIP-7702 authorization.
+
+### SYNOPSIS
+
+`cast wallet sign-auth` _address_
+
+### DESCRIPTION
+
+Sign an [EIP-7702](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-7702.md) authorization for an address.
+
+Note that `sign-auth` uses the current nonce as it is not aware of whether you are going to broadcast the authorization from the same or a different sender.
+
+If you are sending the transaction from the same address you will need to either pass the next nonce using the `--nonce` flag or alternatively use `cast send <to> --auth <address>` to sign and send directly.
+
+### OPTIONS
+
+<WalletOptionsRaw />
+<WalletOptionsKeystore />
+<WalletOptionsHardware />
+<CommonOptions />
+
+### EXAMPLES
+
+1. Sign an EIP-7702 authorization using a keystore:
+
+   ```sh
+   cast wallet sign-auth 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 --keystore keystore.json --interactive
+   ```
+
+2. Sign an EIP-7702 authorization using a raw private key:
+   ```sh
+   cast wallet sign-auth 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 --private-key $PRIV_KEY
+   ```
+
+### SEE ALSO
+
+[cast](/cast/reference/overview), [cast wallet](/cast/reference/cast-wallet.mdx)

@@ -1,3 +1,7 @@
+---
+description: Chisel is a fast Solidity REPL for interactive prototyping and debugging with verbose feedback and project integration.
+---
+
 ## Chisel
 
 Chisel is a fast, utilitarian, and verbose Solidity REPL.
@@ -52,5 +56,5 @@ To see available commands, type `!help` within the REPL.
 <br></br>
 
 :::info
-See the [`chisel` Reference](/reference/chisel/overview) for in depth information on Chisel and its capabilities.
+See the [`chisel` Reference](/chisel/reference) for in depth information on Chisel and its capabilities.
 :::

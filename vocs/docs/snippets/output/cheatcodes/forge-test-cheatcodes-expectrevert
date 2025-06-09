@@ -1,6 +1,6 @@
 // [!region all]
 // [!region command]
-$ forge test --match-test test_IncrementAsOwner|test_IncrementAsNotOwner --match-path test/OwnerUpOnly.t.sol
+forge test --match-test test_IncrementAsOwner|test_IncrementAsNotOwner --match-path test/OwnerUpOnly.t.sol
 // [!endregion command]
 // [!region output]
 No files changed, compilation skipped

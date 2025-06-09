@@ -1,3 +1,7 @@
+---
+description: Complete guide to installing Foundry on your system using Foundryup, precompiled binaries, or building from source.
+---
+
 ## Installation
 
 If you encounter any issues during installation, refer to the [FAQ](/misc/faq) for assistance.
@@ -29,7 +33,7 @@ Foundry binaries are attested by using [GitHub artifact attestations](https://do
 For example, `forge` binary integrity and provenance can be verified by running:
 
 ```shell
-$ gh attestation verify --owner foundry-rs $(which forge)
+gh attestation verify --owner foundry-rs $(which forge)
 
 ✓ Verification succeeded!
 
@@ -46,7 +50,7 @@ The following 1 attestation matched the policy criteria
 
 #### Prerequisites
 
-You’ll need the [Rust](https://rust-lang.org) compiler and Cargo, Rust's package manager. The easiest way to install both is by using [`rustup.rs`](https://rustup.rs/).
+You'll need the [Rust](https://rust-lang.org) compiler and Cargo, Rust's package manager. The easiest way to install both is by using [`rustup.rs`](https://rustup.rs/).
 
 Foundry generally supports building only with the latest stable version of Rust. If you're using an older version of Rust, you can update it with `rustup`:
 
@@ -93,7 +97,11 @@ For instructions on setting up Foundry in a CI pipeline, refer to the [foundry-r
 
 ### Using Foundry with Docker
 
-Foundry can also be run inside a Docker container. If you don’t have Docker installed, you can download it from [Docker's website](https://docs.docker.com/get-docker/).
+:::note
+Some systems, including those with M1 chips, may experience issues when building the Docker image locally. This is a known issue.
+:::
+
+Foundry can also be run inside a Docker container. If you don't have Docker installed, you can download it from [Docker's website](https://docs.docker.com/get-docker/).
 
 Once Docker is installed, you can pull the latest Foundry release by running:
 
@@ -108,6 +116,3 @@ docker build -t foundry .
 ```
 
 For examples and guides on using this image, refer to the [Docker guide](/guides/foundry-in-docker).
-
-> ℹ️ **Note**  
-> Some systems, including those with M1 chips, may experience issues when building the Docker image locally. This is a known issue.

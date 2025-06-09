@@ -1,3 +1,7 @@
+---
+description: Debug test execution with detailed call traces showing gas usage, contract interactions, and return values.
+---
+
 ## Understanding Traces
 
 Forge can produce traces either for failing tests (`-vvv`) or all tests (`-vvvv`).

@@ -1,6 +1,6 @@
 // [!region all]
 // [!region command]
-$ forge test
+forge test
 // [!endregion command]
 // [!region output]
 No files changed, compilation skipped

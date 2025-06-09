@@ -1,3 +1,7 @@
+---
+description: Learn how Solidity structs map to ABI tuples and handle encoding for contract interactions with nested structures.
+---
+
 ## Struct Encoding
 
 Structs are user defined types that can group several variables:
@@ -34,29 +38,29 @@ The ABI of the `f` function in this contract is:
 
 ```json
 {
-	"inputs": [
-		{
-			"components": [
-				{
-					"internalType": "address",
-					"name": "addr",
-					"type": "address"
-				},
-				{
-					"internalType": "uint256",
-					"name": "amount",
-					"type": "uint256"
-				}
-			],
-			"internalType": "struct Test.MyStruct",
-			"name": "t",
-			"type": "tuple"
-		}
-	],
-	"name": "f",
-	"outputs": [],
-	"stateMutability": "pure",
-	"type": "function"
+  "inputs": [
+    {
+      "components": [
+        {
+          "internalType": "address",
+          "name": "addr",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "internalType": "struct Test.MyStruct",
+      "name": "t",
+      "type": "tuple"
+    }
+  ],
+  "name": "f",
+  "outputs": [],
+  "stateMutability": "pure",
+  "type": "function"
 }
 ```
 
@@ -83,60 +87,64 @@ contract Test {
     function f(MyStruct memory t) public pure {}
 }
 ```
+
 The ABI of the `f` function in this contract is:
 
 ```json
 {
-    "inputs": [
+  "inputs": [
+    {
+      "name": "t",
+      "type": "tuple",
+      "internalType": "struct Test.MyStruct",
+      "components": [
         {
-            "name": "t",
-            "type": "tuple",
-            "internalType": "struct Test.MyStruct",
-            "components": [
-                {
-                    "name": "nestedStructName",
-                    "type": "string",
-                    "internalType": "string"
-                },
-                {
-                    "name": "nestedStructCount",
-                    "type": "uint256",
-                    "internalType": "uint256"
-                },
-                {
-                    "name": "_nestedStruct",
-                    "type": "tuple",
-                    "internalType": "struct Test.nestedStruct",
-                    "components": [
-                        {
-                            "name": "addr",
-                            "type": "address",
-                            "internalType": "address"
-                        },
-                        {
-                            "name": "amount",
-                            "type": "uint256",
-                            "internalType": "uint256"
-                        }
-                    ]
-                }
-            ]
+          "name": "nestedStructName",
+          "type": "string",
+          "internalType": "string"
+        },
+        {
+          "name": "nestedStructCount",
+          "type": "uint256",
+          "internalType": "uint256"
+        },
+        {
+          "name": "_nestedStruct",
+          "type": "tuple",
+          "internalType": "struct Test.nestedStruct",
+          "components": [
+            {
+              "name": "addr",
+              "type": "address",
+              "internalType": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256",
+              "internalType": "uint256"
+            }
+          ]
         }
-    ],
-    "name": "f",
-    "outputs": [],
-    "stateMutability": "pure",
-    "type": "function"
+      ]
+    }
+  ],
+  "name": "f",
+  "outputs": [],
+  "stateMutability": "pure",
+  "type": "function"
 }
 ```
+
 which reads: The function `f` takes 1 input of type tuple with three components: a string, a uint256, and another tuple representing the nested struct with components addr of type address and amount of type uint256.
 
 To encode `MyStruct` to pass it as a parameter to the function `f`:
+
 ```bash
 cast abi-encode "f((string,uint256,(address,uint256)))" "(example,1,(0x...,1))"
 ```
 
 To deploy a contract accepting `MyStruct` as an argument:
+
 ```bash
 forge create src/Test.sol:Test --constructor-args "(example,1,(0x...,1))"
 ```

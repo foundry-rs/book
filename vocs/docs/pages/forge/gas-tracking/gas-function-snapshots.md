@@ -1,17 +1,21 @@
+---
+description: Capture and compare gas consumption snapshots for functions to track optimization progress over time.
+---
+
 ## Gas Function Snapshots
 
 Forge can generate gas snapshots for all your test functions. This can
 be useful to get a general feel for how much gas your contract will consume,
 or to compare gas usage before and after various optimizations.
 
-To generate the gas snapshot, run [`forge snapshot`](/reference/forge/forge-snapshot).
+To generate the gas snapshot, run [`forge snapshot`](/forge/reference/forge-snapshot).
 
 This will generate a file called `.gas-snapshot` by default with all your
 tests and their respective gas usage.
 
 ```
-$ forge snapshot
-$ cat .gas-snapshot
+forge snapshot
+cat .gas-snapshot
 
 ERC20Test:testApprove() (gas: 31162)
 ERC20Test:testBurn() (gas: 59875)
@@ -55,7 +59,7 @@ being `.gas-snapshot`.
 For example:
 
 ```
-$ forge snapshot --diff .gas-snapshot2
+forge snapshot --diff .gas-snapshot2
 
 Running 10 tests for src/test/ERC20.t.sol:ERC20Test
 [PASS] testApprove() (gas: 31162)
@@ -88,7 +92,7 @@ differences, if any. You can change the file to compare against by providing a d
 For example:
 
 ```
-$ forge snapshot --check .gas-snapshot2
+forge snapshot --check .gas-snapshot2
 
 Running 10 tests for src/test/ERC20.t.sol:ERC20Test
 [PASS] testApprove() (gas: 31162)

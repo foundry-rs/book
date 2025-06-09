@@ -24,7 +24,7 @@ To run Slither on a single file, use this command:
 slither src/Contract.sol
 ```
 
-Note, this requires configuring the [solc version in the foundry config file](https://book.getfoundry.sh/reference/config/solidity-compiler#solc_version).
+Note, this requires configuring the [solc version in the foundry config file](https://book.getfoundry.sh/config/reference/solidity-compiler#solc_version).
 
 You do not need to provide remappings via the `solc_remaps` option as Slither will automatically detect remappings in a Foundry project. Slither will invoke `forge` to perform the build.
 
@@ -38,7 +38,7 @@ slither --config-file <path>/file.config.json .
 
 Example output (Raw):
 
-```bash 
+```bash
 Pragma version^0.8.13 (Counter.sol#2) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6/0.8.7
 solc-0.8.13 is not recommended for deployment
 Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
@@ -60,8 +60,8 @@ To test your project using [aderyn](https://github.com/cyfrin/aderyn), install t
 To run the tool manually, follow the [Quick Start](https://cyfrin.gitbook.io/cyfrin-docs/aderyn-cli/quickstart) example with video guide.
 
 ```bash
-$ cd path/to/solidity/project/root
-$ aderyn
+cd path/to/solidity/project/root
+aderyn
 ```
 
 Explore more CLI options [here](https://cyfrin.gitbook.io/cyfrin-docs/cli-options).
@@ -72,10 +72,7 @@ To test your project using [mythril](https://github.com/ConsenSys/mythril), here
 
 ```json
 {
-  "remappings": [
-    "ds-test/=lib/ds-test/src/",
-    "forge-std/=lib/forge-std/src/"
-  ],
+  "remappings": ["ds-test/=lib/ds-test/src/", "forge-std/=lib/forge-std/src/"],
   "optimizer": {
     "enabled": true,
     "runs": 200
@@ -85,7 +82,7 @@ To test your project using [mythril](https://github.com/ConsenSys/mythril), here
 
 Note, you need switch `rustc` to nightly to install `mythril`:
 
-```ignore
+```
 rustup default nightly
 pip3 install mythril
 myth analyze src/Contract.sol --solc-json mythril.config.json
@@ -96,7 +93,7 @@ See the [mythril docs](https://mythril-classic.readthedocs.io/en/develop/) for m
 You can pass custom Solc compiler output to Mythril using the `--solc-json` flag. For example:
 
 ```bash
-$ myth analyze src/Counter.sol --solc-json mythril.config.json
+myth analyze src/Counter.sol --solc-json mythril.config.json
 .
 .
 mythril.laser.plugin.loader [INFO]: Loading laser plugin: coverage
@@ -113,8 +110,8 @@ mythril.laser.plugin.plugins.instruction_profiler [INFO]: Total: 1.0892839431762
 [SWAP2       ]   0.8858 %,  nr      9,  total   0.0096 s,  avg   0.0011 s,  min   0.0010 s,  max   0.0011 s
 
 mythril.analysis.security [INFO]: Starting analysis
-mythril.mythril.mythril_analyzer [INFO]: Solver statistics: 
-Query count: 61 
+mythril.mythril.mythril_analyzer [INFO]: Solver statistics:
+Query count: 61
 Solver time: 3.6820807456970215
 The analysis was completed successfully. No issues were detected.
 ```

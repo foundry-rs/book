@@ -1,6 +1,8 @@
-# Forking Mainnet with `Cast` and `Anvil`
+---
+description: Fork live Ethereum networks using Anvil and interact with real contracts using Cast for testing and experimentation.
+---
 
-## Introduction
+## Forking Mainnet with `Cast` and `Anvil`
 
 By combining [Anvil][anvil] and [Cast][cast], you can fork and test by interacting with contracts on a real network. The goal of this guide is to show you how to transfer DAI tokens from someone who holds DAI to an account created by Anvil.
 
@@ -27,7 +29,7 @@ export UNLUCKY_USER=0xfc2eE3bD619B7cfb2dE2C797b96DeeCbD7F68e46
 We can check Alice's balance using [`cast call`][cast-call]:
 
 ```sh
-$ cast call $DAI \
+cast call $DAI \
   "balanceOf(address)(uint256)" \
   $ALICE
 0
@@ -36,7 +38,7 @@ $ cast call $DAI \
 Similarly, we can also check our unlucky user's balance using `cast call`:
 
 ```sh
-$ cast call $DAI \
+cast call $DAI \
   "balanceOf(address)(uint256)" \
   $UNLUCKY_USER
 21840114973524208109322438
@@ -46,8 +48,8 @@ Let's transfer some tokens from the unlucky user to Alice using [`cast send`][ca
 
 ```sh
 # This calls Anvil and lets us impersonate our unlucky user
-$ cast rpc anvil_impersonateAccount $UNLUCKY_USER
-$ cast send $DAI \
+cast rpc anvil_impersonateAccount $UNLUCKY_USER
+cast send $DAI \
 --from $UNLUCKY_USER \
   "transfer(address,uint256)(bool)" \
   $ALICE \
@@ -66,13 +68,13 @@ cast call $DAI \
   $ALICE
 300000000000000000000000
 
-$ cast call $DAI \
+cast call $DAI \
   "balanceOf(address)(uint256)" \
   $UNLUCKY_USER
 21540114973524208109322438
 ```
 
 [anvil]: ../reference/anvil/
-[cast]: ../reference/cast/
-[cast-call]: ../reference/cast/cast-call.md
-[cast-send]: ../reference/cast/cast-send.md
+[cast]: ../cast/reference/
+[cast-call]: ../cast/reference/cast-call.md
+[cast-send]: ../cast/reference/cast-send.md

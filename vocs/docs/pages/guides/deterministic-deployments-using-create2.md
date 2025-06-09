@@ -1,6 +1,8 @@
-# Deterministic deployments using `CREATE2`
+---
+description: Deploy smart contracts to predictable addresses across multiple networks using CREATE2 opcode for counterfactual interactions.
+---
 
-## Introduction
+## Deterministic deployments using `CREATE2`
 
 Enshrined into the EVM as part of the [Constantinople fork](https://ethereum.org/en/history/#constantinople) of 2019, `CREATE2` is an opcode that started its journey as [EIP-1014](https://eips.ethereum.org/EIPS/eip-1014).
 `CREATE2` allows you to deploy smart contracts to deterministic addresses, based on parameters controlled by the deployer.
@@ -26,8 +28,8 @@ In order to reliably deploy to deterministic addresses we will need to make sure
 
 ```toml
 [profile.default]
-solc = "0.8.28"
-evm_version = "cancun"
+solc = "<SOLC_VERSION>"
+evm_version = "<EVM_VERSION>"
 bytecode_hash = "none"
 cbor_metadata = false
 ```
@@ -159,7 +161,7 @@ If you wish to always use the create2 factory. This comes handy if you wish to u
 
 When using Solidity's default `CREATE` where the new address of a contract is determined by taking the `hash` of the `sender`'s address and the `sender`'s `nonce`:
 
-```ignore
+```
 new_contract_address = keccak256(rlp_encode([sender, nonce]))[12:]
 ```
 
@@ -174,7 +176,7 @@ Instead let's use `CREATE2`'s `salt` parameter.
 
 The `salt` parameter in `CREATE2` is a key component that determines the final deployed contract address. It allows for flexibility and uniqueness in deterministic deployments. The address of the deployed contract is derived using the following formula:
 
-```ignore
+```
 new_contract_address = keccak256(0xff ++ deployer ++ salt ++ keccak256(init_code))
 ```
 
@@ -186,7 +188,7 @@ Counter counter = new Counter{salt: salt}();
 - `0xff` is a fixed prefix ensuring uniqueness.
 - `deployer` is the address executing the CREATE2 operation.
 - `salt` is a 32-byte value chosen by the deployer.
-- `keccak256(bytecode)` is the hash of the contract’s creation bytecode.
+- `keccak256(bytecode)` is the hash of the contract's creation bytecode.
 
 Given that `0xff` is fixed, the `deployer` is a deterministic deployer ([0x4e59b44847b379578588920ca78fbf26c0b4956c](https://github.com/Arachnid/deterministic-deployment-proxy)) and our bytecode is fixed we can use the `salt` parameter to fully control our new contract address.
 

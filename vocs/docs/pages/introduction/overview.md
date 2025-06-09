@@ -1,3 +1,7 @@
+---
+description: Foundry is a smart contract development toolchain for building, testing, deploying and interacting with Ethereum applications.
+---
+
 ## Foundry Overview
 
 ![Foundry banner](/og-image.png)
@@ -6,79 +10,82 @@ Foundry is a smart contract development toolchain.
 
 Foundry manages your dependencies, compiles your project, runs tests, deploys, and lets you interact with the chain from the command-line and via Solidity scripts.
 
-### Sections
+## Navigating the Documentation
 
-**[Getting Started](/introduction/installation.md)**
+### Getting Started
 
-To get started with Foundry, install Foundry and set up your first project.
+Get up and running with Foundry by [installing the toolkit](/introduction/installation) and [get started](/introduction/getting-started) with the basics of each tool.
 
-**[Projects](/projects/creating-a-new-project.md)**
+### Guides
 
-This section will give you an overview of how to create and work with existing projects.
+Comprehensive tutorials and best practices for building robust smart contracts and development workflows with Foundry.
 
-**[Forge Overview](/forge/overview)**
+- **Best Practices**
+  - [Writing Contracts](/guides/best-practices/writing-contracts) - Guidelines for clean, secure smart contract development
+  - [Writing Tests](/guides/best-practices/writing-tests) - Effective testing strategies and patterns
+  - [Writing Scripts](/guides/best-practices/writing-scripts) - Deployment and automation script best practices
+  - [Security](/guides/best-practices/security) - Security considerations and vulnerability prevention
+  - [Key Management](/guides/best-practices/key-management) - Safe handling of private keys and secrets
+  - [Commenting](/guides/best-practices/commenting) - Documentation and code commenting standards
+- [Scripting with Solidity](/guides/scripting-with-solidity) - Advanced deployment and automation techniques
+- [Deterministic deployments using CREATE2](/guides/deterministic-deployments-using-create2) - Predictable contract addresses
+- [Forking Mainnet with Cast and Anvil](/guides/forking-mainnet-with-cast-anvil) - Test against live chain state
+- [Running Foundry inside of Docker](/guides/foundry-in-docker) - Containerized development environments
+- [Implementing and Testing EIP-712 signatures](/guides/eip712)
 
-The overview will give you all you need to know about how to use `forge` to develop, test, and deploy smart contracts.
+### Project Setup
 
-**[Cast Overview](/cast/overview)**
+Learn how to organize your projects with the [forge project setup guides](/guides/project-setup/creating-a-new-project) for scaling smart contract codebases.
 
-Learn how to use `cast` to interact with smart contracts, send transactions, and get chain data from the command-line.
+### Forge
 
-**[Anvil Overview](/anvil/overview)**
+Master the core smart contract development tool with the [Forge overview](/forge/overview), covering building, testing, deploying, and verifying contracts.
 
-Learn about `anvil`, Foundry's local node.
+### Cast
 
-**[Chisel Overview](/chisel/overview)**
+Learn to interact with blockchain networks from the command line using [Cast](/cast/overview) for contract calls, transactions, and chain data retrieval.
 
-Learn how to use `chisel`, Foundry's integrated Solidity REPL.
+### Anvil
 
-**Configuration**
+Set up local development networks with [Anvil](/anvil/overview), Foundry's fast Ethereum-compatible node with forking capabilities.
 
-Guides on configuring Foundry.
+### Chisel
 
-- [Configuring with `foundry.toml`](/config/overview)
-- [Continuous Integration](/config/continuous-integration)
-- [Integrating with VSCode](/config/vscode)
-- [Shell Autocompletion](/config/shell-autocompletion)
-- [Static Analyzers](/config/static-analyzers)
-- [Integrating with Hardhat](/config/hardhat)
-- [Vyper support](/config/vyper)
-- [Forge Lint](/config/lint)
+Explore Solidity interactively with [Chisel](/chisel/overview), the integrated REPL for rapid prototyping and debugging.
 
-**Guides**
+### Configuration
 
-Guides for building smart contracts with Foundry.
+Customize your Foundry setup and integrate with other tools for an optimized development workflow.
 
-- [Best Practices](/guides/best-practices)
-- [Scripting with Solidity](/guides/scripting-with-solidity)
-- [Deterministic deployments using CREATE2](/guides/deterministic-deployments-using-create2)
-- [Forking Mainnet with Cast and Anvil](/guides/forking-mainnet-with-cast-anvil)
-- [Running Foundry inside of Docker](/guides/foundry-in-docker)
-- [Implementing and Testing EIP-712 signatures](/guides/eip712.md)
+- [Config Overview with `foundry.toml`](/config/overview) - Project configuration and settings
+- [Continuous Integration](/config/continuous-integration) - CI/CD pipeline integration
+- [Integrating with VSCode](/config/vscode) - Editor setup and extensions
+- [Shell Autocompletion](/config/shell-autocompletion) - Command-line productivity enhancements
+- [Static Analyzers](/config/static-analyzers) - Code analysis tool integration
+- [Integrating with Hardhat](/config/hardhat) - Cross-framework compatibility
+- [Vyper support](/config/vyper) - Alternative smart contract language support
+- [Forge Lint](/config/lint) - Code style and quality enforcement
 
-**Contributing**
+### Contributing
 
-Help us improve Foundry: [Contributing](https://github.com/foundry-rs/foundry/blob/master/CONTRIBUTING.md)
+Help improve Foundry by contributing - see the [contribution guidelines](https://github.com/foundry-rs/foundry/blob/master/CONTRIBUTING.md) to learn more.
 
-**Appendix**
+### Reference
 
-References, troubleshooting, and more.
+Complete command references, configuration options, and API documentation for all Foundry tools.
 
-- [Announcements](/misc/announcements.md)
-- [FAQ](/misc/faq.md)
-- [forge Commands](/reference/forge/forge)
-- [cast Commands](/reference/cast/overview)
-- [anvil Commands](/reference/anvil/overview)
-- [chisel Commands](/reference/chisel/overview)
-- [Config Reference](/reference/config/overview)
-- [Cheatcodes Reference](/reference/cheatcodes/overview)
-- [Forge Standard Library Reference](/reference/forge-std/overview)
-- [DSTest Reference](/reference/ds-test)
-
-<br></br>
+- [FAQ](/misc/faq) - Frequently asked questions and troubleshooting
+- **Command References**
+  - [forge Commands](/forge/reference/overview) - Complete forge CLI reference
+  - [cast Commands](/cast/reference/overview) - Complete cast CLI reference
+  - [anvil Commands](/anvil/reference) - Complete anvil CLI reference
+  - [chisel Commands](/chisel/reference) - Complete chisel CLI reference
+- **Configuration & APIs**
+  - [Config Reference](/config/reference/overview) - All configuration options
+  - [Cheatcodes Reference](/reference/cheatcodes/overview) - Testing utilities and helpers
+  - [Forge Standard Library Reference](/reference/forge-std/overview) - Standard library documentation
+  - [DSTest Reference](/reference/ds-test) - Legacy testing framework reference
 
 :::tip
-
 You can also check out [Awesome Foundry](https://github.com/crisgarner/awesome-foundry), a curated list of awesome Foundry resources, guides, tools, and libraries!
-
 :::

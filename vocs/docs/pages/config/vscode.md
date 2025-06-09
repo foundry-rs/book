@@ -37,7 +37,7 @@ To enable the built-in formatter that comes with Foundry to automatically format
 }
 ```
 
-To configure the formatter settings, refer to the [Formatter](/reference/config/formatter) reference.
+To configure the formatter settings, refer to the [Formatter](/config/reference/formatter) reference.
 
 ### 4. Solc Version
 
@@ -67,7 +67,7 @@ solc = "0.8.17"
         └── test
 ```
 
-Add line to `remappings.txt` file ([`forge remapping`](../projects/dependencies.md#remapping-dependencies)):
+Add line to `remappings.txt` file ([`forge remapping`](/guides/project-setup/dependencies#remapping-dependencies)):
 
 ```solidity
 @openzeppelin/=lib/openzeppelin-contracts/

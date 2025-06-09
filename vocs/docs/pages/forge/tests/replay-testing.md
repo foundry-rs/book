@@ -1,3 +1,7 @@
+---
+description: Replay test failures incrementally using persisted failure data for fuzz tests, invariant tests, and unit tests.
+---
+
 ## Replaying Failures
 
 Forge supports incrementally replaying last test run failures by persisting them on the disk.
@@ -49,4 +53,4 @@ or by using inline config
 
 ### Remove persisted failures
 
-To ignore saved failures and start a clean test campaign, simply remove the persisted files or run [`forge clean`](/reference/forge/forge-clean) (removes all build artifacts and cache directories).
+To ignore saved failures and start a clean test campaign, simply remove the persisted files or run [`forge clean`](/forge/reference/forge-clean) (removes all build artifacts and cache directories).

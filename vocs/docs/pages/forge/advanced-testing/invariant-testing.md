@@ -1,3 +1,7 @@
+---
+description: Test protocol invariants with randomized function call sequences to find edge cases and logic errors.
+---
+
 # Invariant Testing
 
 ## Overview
@@ -43,7 +47,7 @@ Similar to how standard tests are run in Foundry by prefixing a function name wi
 ### Configuring invariant test execution
 
 Invariant tests execution is governed by parameters that can be controlled by users via Forge configuration primitives. Configs can be applied globally or on a per-test basis. For details on this topic please refer to
-📚 [`Global config`](/reference/config/overview) and 📚 [`In-line config`](/reference/config/inline-test-config).
+📚 [`Global config`](/config/reference/overview) and 📚 [`In-line config`](/config/reference/inline-test-config).
 
 ## Defining Invariants
 

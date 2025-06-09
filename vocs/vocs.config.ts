@@ -1,7 +1,7 @@
 import { defineConfig } from 'vocs'
 import { sidebar } from './sidebar/sidebar'
 export default defineConfig({
-  title: 'foundry',
+  title: 'foundry - Ethereum Development Framework',
   sidebar,
   theme: {
     accentColor: {
@@ -32,8 +32,8 @@ export default defineConfig({
       ],
     }
   ],
-  logoUrl: '/cropped-ripped-jesus.png',
-  iconUrl: '/cropped-ripped-jesus.png',
+  logoUrl: '/foundry-logo.png',
+  iconUrl: '/foundry-logo.png',
   ogImageUrl: '/og-image.png',
   socials: [
     {
@@ -51,15 +51,15 @@ export default defineConfig({
       text: 'Docs',
     },
     {
-      link: '/guides/best-practices',
+      link: '/guides/best-practices/writing-contracts',
       text: 'Guides',
     },
     {
-      text: 'v1.2.1',
+      text: 'v1.2.2',
       items: [
         {
           text: 'Release notes',
-          link: 'https://github.com/foundry-rs/foundry/releases/tag/v1.2.1',
+          link: 'https://github.com/foundry-rs/foundry/releases/tag/v1.2.2',
         },
         {
           text: 'Contributing',

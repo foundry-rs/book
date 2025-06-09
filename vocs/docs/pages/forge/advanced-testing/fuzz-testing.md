@@ -1,3 +1,7 @@
+---
+description: Property-based testing with randomized inputs to test general behaviors and edge cases in smart contracts.
+---
+
 ## Fuzz Testing
 
 Forge supports property based testing.
@@ -33,7 +37,7 @@ Forge will run any test that takes at least one parameter as a property-based te
 If we run the test now, we can see that Forge runs the property-based test, but it fails for high values of `amount`:
 
 ```sh
-$ forge test
+forge test
 // [!include ~/snippets/output/fuzz_testing/forge-test-fail-fuzz:output]
 ```
 
@@ -71,7 +75,7 @@ You might have noticed that fuzz tests are summarized a bit differently compared
 ### Configuring fuzz test execution
 
 Fuzz tests execution is governed by parameters that can be controlled by users via Forge configuration primitives. Configs can be applied globally or on a per-test basis. For details on this topic please refer to
-📚 [`Global config`](/reference/config/overview) and 📚 [`In-line config`](/reference/config/inline-test-config).
+📚 [`Global config`](/config/reference/overview) and 📚 [`In-line config`](/config/reference/inline-test-config).
 
 #### Fuzz test fixtures
 
