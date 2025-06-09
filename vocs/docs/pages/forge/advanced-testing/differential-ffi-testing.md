@@ -1,3 +1,7 @@
+---
+description: Compare multiple implementations using differential testing and FFI to validate correctness against reference implementations.
+---
+
 ## Differential Testing
 
 Forge can be used for differential testing and differential fuzzing. You can even test against non-EVM executables using the `ffi` [cheatcode](/reference/cheatcodes/ffi).

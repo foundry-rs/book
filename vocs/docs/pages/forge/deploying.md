@@ -1,3 +1,7 @@
+---
+description: Deploy smart contracts to any network using forge create or Solidity scripting with automatic verification support.
+---
+
 ## Deploying
 
 Forge can deploy smart contracts to a given network with the [`forge create`](/forge/reference/forge-create) command.

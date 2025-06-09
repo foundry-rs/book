@@ -1,3 +1,7 @@
+---
+description: Explore advanced testing methodologies including fuzz testing, invariant testing, and differential testing with Forge.
+---
+
 ## Advanced Testing
 
 Forge comes with a number of advanced testing methods:

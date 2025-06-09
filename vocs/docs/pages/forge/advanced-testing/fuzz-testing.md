@@ -1,3 +1,7 @@
+---
+description: Property-based testing with randomized inputs to test general behaviors and edge cases in smart contracts.
+---
+
 ## Fuzz Testing
 
 Forge supports property based testing.

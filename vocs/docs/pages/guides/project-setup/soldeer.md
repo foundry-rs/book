@@ -1,3 +1,7 @@
+---
+description: Use Soldeer as a native Solidity package manager for managing dependencies with central repository and git support.
+---
+
 ## Soldeer as a Package Manager
 
 As explained [here](./dependencies), Foundry has been using git submodules to handle dependencies up until now.

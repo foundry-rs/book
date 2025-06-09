@@ -1,3 +1,7 @@
+---
+description: Comprehensive testing strategies including unit tests, fork tests, test organization, and harness patterns for smart contracts.
+---
+
 ## Tests
 
 ---

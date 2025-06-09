@@ -1,3 +1,7 @@
+---
+description: Manage smart contract dependencies with git submodules, remappings, and package installation in Foundry projects.
+---
+
 ## Dependencies
 
 Forge manages dependencies using [git submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules) by default, which means that it works with any GitHub repository that contains smart contracts.

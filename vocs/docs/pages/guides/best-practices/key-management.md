@@ -1,3 +1,7 @@
+---
+description: Secure private key management strategies using hardware wallets, keystores, and throwaway keys for script execution.
+---
+
 ## Key Management
 
 Script execution requires a private key to send transactions. This key controls all funds in the account, so it must be protected carefully. There are a few options for securely broadcasting transactions through a script:

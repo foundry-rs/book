@@ -1,3 +1,7 @@
+---
+description: Best practices for writing clean, secure, and maintainable smart contracts with proper imports and formatting.
+---
+
 ## General Contract Guidance
 
 ### Named Imports

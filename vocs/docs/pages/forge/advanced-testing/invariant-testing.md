@@ -1,3 +1,7 @@
+---
+description: Test protocol invariants with randomized function call sequences to find edge cases and logic errors.
+---
+
 # Invariant Testing
 
 ## Overview

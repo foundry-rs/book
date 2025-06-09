@@ -1,3 +1,7 @@
+---
+description: Interactive debugger for stepping through smart contract execution with detailed EVM state inspection and navigation controls.
+---
+
 ## Debugger
 
 Forge ships with an interactive debugger.

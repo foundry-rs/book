@@ -1,3 +1,7 @@
+---
+description: Capture and compare gas consumption snapshots for functions to track optimization progress over time.
+---
+
 ## Gas Function Snapshots
 
 Forge can generate gas snapshots for all your test functions. This can

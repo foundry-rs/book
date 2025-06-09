@@ -1,3 +1,7 @@
+---
+description: Configure Foundry project structure with directories for contracts, tests, dependencies, and configuration files.
+---
+
 ## Project Layout
 
 Forge is flexible on how you structure your project. By default, the structure is:

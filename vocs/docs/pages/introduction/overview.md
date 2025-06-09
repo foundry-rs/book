@@ -1,3 +1,7 @@
+---
+description: Foundry is a smart contract development toolchain for building, testing, deploying and interacting with Ethereum applications.
+---
+
 ## Foundry Overview
 
 ![Foundry banner](/og-image.png)

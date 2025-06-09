@@ -1,3 +1,7 @@
+---
+description: Initialize a new Foundry project using forge init with default templates and project structure.
+---
+
 ## Creating a New Project
 
 To start a new project with Foundry, use [`forge init`](/forge/reference/forge-init):
