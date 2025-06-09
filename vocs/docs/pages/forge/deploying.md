@@ -49,10 +49,10 @@ Additionally, we can tell Forge to verify our contract on Etherscan, Sourcify or
 
 ```sh
 forge create src/MyToken.sol:MyToken --rpc-url <YOUR_RPC_URL> \
-    --constructor-args "ForgeUSD" "FUSD" 18 1000000000000000000000 \
     --private-key <YOUR_PRIVATE_KEY> \
     --etherscan-api-key <YOUR_ETHERSCAN_API_KEY> \
-    --verify
+    --verify \
+    --constructor-args "ForgeUSD" "FUSD" 18 1000000000000000000000
 ```
 
 ## Multi-chain deployments
