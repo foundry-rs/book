@@ -102,13 +102,13 @@ exclude_lints = ["incorrect-shift"]
 
 #### Medium Severity
 
-##### ⁠divide-before-multiply
+##### divide-before-multiply
 
 Warns against performing division before multiplication within the same expression, especially with integer arithmetic.
 
 In Solidity, integer division truncates (rounds down towards zero).
 Performing division before multiplication can lead to a loss of precision that might be unintended and could have been avoided by reordering operations.
-For example, `(a / b) * c` might result in `0` if ⁠`a < b`, even if ⁠`(a * c) / b` would have yielded a non-zero result.
+For example, `(a / b) * c` might result in `0` if `a < b`, even if `(a * c) / b` would have yielded a non-zero result.
 
 ```solidity
 // SPDX-License-Identifier: MIT

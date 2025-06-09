@@ -31,6 +31,7 @@ Comprehensive tutorials and best practices for building robust smart contracts a
 - [Deterministic deployments using CREATE2](/guides/deterministic-deployments-using-create2) - Predictable contract addresses
 - [Forking Mainnet with Cast and Anvil](/guides/forking-mainnet-with-cast-anvil) - Test against live chain state
 - [Running Foundry inside of Docker](/guides/foundry-in-docker) - Containerized development environments
+- [Implementing and Testing EIP-712 signatures](/guides/eip712)
 
 ### Project Setup
 
