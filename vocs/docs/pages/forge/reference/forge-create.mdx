@@ -15,13 +15,13 @@ forge-create - Deploy a smart contract.
 
 ### SYNOPSIS
 
-`forge create` [*options*] _contract_
+`forge create` _contract_ [*options*]
 
 ### DESCRIPTION
 
 Deploy a smart contract.
 
-The path to the contract is in the format `<path>:<contract>`, e.g. `src/Contract.sol:Contract`.
+The path to the contract must be specified first, in the format `<path>:<contract>`, e.g. `src/Contract.sol:Contract`.
 
 You can specify constructor arguments with `--constructor-args`. Alternatively, you can specify a file
 containing space-separated constructor arguments with `--constructor-args-path`.
