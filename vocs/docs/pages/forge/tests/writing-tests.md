@@ -93,11 +93,11 @@ contract ContractTest is Test {
 
     function beforeTestSetup(
         bytes4 testSelector
-    ) public returns (bytes[] memory beforeTestCalldata) {
+    ) public pure returns (bytes[] memory beforeTestCalldata) {
         if (testSelector == this.testC.selector) {
             beforeTestCalldata = new bytes[](2);
-            beforeTestCalldata[0] = abi.encodeCall(this.testA, ());
-            beforeTestCalldata[1] = abi.encodeCall(this.setB, (1));
+            beforeTestCalldata[0] = abi.encodePacked(this.testA.selector);
+            beforeTestCalldata[1] = abi.encodeWithSignature("setB(uint256)", 1);
         }
     }
 
