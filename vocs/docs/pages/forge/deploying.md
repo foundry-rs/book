@@ -67,8 +67,8 @@ sepolia = "${SEPOLIA_URL}"
 base-sepolia = "${BASE_SEPOLIA_URL}"
 
 [etherscan]
-sepolia = { key = "${SEPOLIA_KEY}" }
-base-sepolia = { key = "${BASE_SEPOLIA_KEY}" }
+sepolia = { key = "${ETHERSCAN_API_KEY}" }
+base-sepolia = { key = "${ETHERSCAN_API_KEY}" }
 ```
 
 and create a `CounterScript` script as:
@@ -112,7 +112,7 @@ You must provide:
 
 - the contract address
 - the contract name or the path to the contract `<path>:<contractname>`
-- your Etherscan API key (env: `ETHERSCAN_API_KEY`) (if verifying on Etherscan).
+- your Etherscan API key (env: `ETHERSCAN_API_KEY`) (if verifying on Etherscan or similar explorers e.g. BscScan / BaseScan / Polygonscan).
 
 Moreover, you may need to provide:
 
@@ -132,8 +132,11 @@ forge verify-contract <CONTRACT_ADDRESS> src/MyToken.sol:MyToken \
     --num-of-optimizations 1000000 \
     --watch \
     --constructor-args $(cast abi-encode "constructor(string,string,uint256,uint256)" "ForgeUSD" "FUSD" 18 1000000000000000000000) \
-    --etherscan-api-key <YOUR_ETHERSCAN_API_KEY> \
-    --compiler-version v0.8.10+commit.fc410830
+    --verifier etherscan \
+    --etherscan-api-key <your_etherscan_api_key> \
+    --compiler-version v0.8.10+commit.fc410830 \
+    <the_contract_address> \
+    src/MyToken.sol:MyToken
 
 Submitted contract for verification:
                 Response: `OK`
@@ -203,6 +206,10 @@ Version: 0.8.12+commit.f00d7308.Darwin.appleclang
 
 Note: You cannot just paste the entire string "0.8.12+commit.f00d7308.Darwin.appleclang" as the argument for the compiler-version. But you can use the 8 hex digits of the commit to look up exactly what you should copy and paste from [compiler version](https://etherscan.io/solcversions).
 
+##### `Invalid API Key`
+
+With [Etherscan API V2](https://docs.etherscan.io/etherscan-v2), only Etherscan keys are valid, this can be used for similar explorers eg BscScan/BaseScan/Polygonscan. Legacy keys from other explorers have been deprecated.
+
 ### Known Issues
 
 #### Verifying Contracts With Ambiguous Import Paths
@@ -220,9 +227,3 @@ This means that given the following project tree
 it is possible to import `IContract` inside the `Contract.sol` using `folder/IContract.sol` import path.
 
 Etherscan is not able to recompile such sources. Consider changing the imports to use relative import path.
-
-#### Verifying Contracts With No Bytecode Hash
-
-Currently, it's not possible to verify contracts on Etherscan with [`bytecode_hash`](/config/reference/solidity-compiler#bytecode_hash) set to `none`.
-Click [here](https://docs.soliditylang.org/en/v0.8.13/metadata.html#usage-for-source-code-verification) to learn more about
-how metadata hash is used for source code verification.

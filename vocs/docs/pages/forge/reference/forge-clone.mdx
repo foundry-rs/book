@@ -16,9 +16,7 @@ Creates a new Forge project by cloning the source code of an on-chain verified c
 
 By default, `forge clone` clones contracts from Ethereum mainnet (via Etherscan), but it is also possible to clone from other EVM-compatible blockchains that foundry supports, e.g., BNB Smart Chain (BSC), by specifying chain ID: `--chain <ChainID>`.
 
-Obtaining data from Etherscan is subject to rate limit. `forge clone` requires two API calls to Etherscan to collect source code and deployment information, respectively. By default, `forge clone` will wait for _5_ seconds between the two Etherscan invocations to avoid rate limit errors.
-
-Specifying Etherscan API key via `--etherscan-api-key <API_KEY>` will increase Etherscan API rate limit and avoid the _5-second_ wait time in `forge clone`.
+An Etherscan API key is required and can be passed via `--etherscan-api-key <API_KEY>`.
 
 Just as `forge init`, `forge clone` will by default initialize a new git repository and install some submodules.
 
@@ -60,18 +58,18 @@ If you do not want this behavior, pass `--no-git`.
 1. Clone UniswapV3Pool contract from Ethereum mainnet:
 
    ```sh
-   forge clone 0x8f8EF111B67C04Eb1641f5ff19EE54Cda062f163 UniswapV3Pool
+   forge clone 0x8f8EF111B67C04Eb1641f5ff19EE54Cda062f163 UniswapV3Pool --etherscan-api-key YourApiKeyToken
    ```
 
 2. Clone a contract, but do not create a git repository:
 
    ```sh
-   forge clone --no-git 0x8f8EF111B67C04Eb1641f5ff19EE54Cda062f163 UniswapV3Pool
+   forge clone --no-git 0x8f8EF111B67C04Eb1641f5ff19EE54Cda062f163 UniswapV3Pool --etherscan-api-key YourApiKeyToken
    ```
 
 3. Clone a contract from BNB Smart Chain (BSC):
    ```sh
-   forge clone --chain bsc 0x7862D9B4bE2156B15d54F41ee4EDE2d5b0b455e4 UniswapV3Pool
+   forge clone --chain bsc 0x7862D9B4bE2156B15d54F41ee4EDE2d5b0b455e4 UniswapV3Pool --etherscan-api-key YourApiKeyToken
    ```
 
 ### Metadata
