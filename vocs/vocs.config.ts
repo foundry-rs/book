@@ -10,6 +10,10 @@ export default defineConfig({
       light: '#f6b128',
     },
   },
+  editLink: {
+    pattern: 'https://github.com/foundry-rs/book/edit/master/vocs/docs/pages/:path',
+    text: 'Suggest changes on GitHub',
+  },
   sponsors: [
     {
       name: 'Collaborator',
