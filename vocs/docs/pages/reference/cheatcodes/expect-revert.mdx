@@ -7,19 +7,55 @@ function expectRevert() external;
 ```
 
 ```solidity
-function expectRevert(bytes4 message) external;
+function expectRevert(bytes4 revertData) external;
 ```
 
 ```solidity
-function expectRevert(bytes4 message, address reverter) external;
+function expectRevert(bytes4 revertData, address reverter) external;
 ```
 
 ```solidity
-function expectRevert(bytes4 message, uint64 count) external;
+function expectRevert(bytes4 revertData, uint64 count) external;
 ```
 
 ```solidity
-function expectRevert(bytes4 message, address reverter, uint64 count) external;
+function expectRevert(bytes4 revertData, address reverter, uint64 count) external;
+```
+
+```solidity
+function expectRevert(bytes calldata revertData) external;
+```
+
+```solidity
+function expectRevert(bytes calldata revertData, address reverter) external;
+```
+
+```solidity
+function expectRevert(bytes calldata revertData, uint64 count) external;
+```
+
+```solidity
+function expectRevert(bytes calldata revertData, address reverter, uint64 count) external;
+```
+
+```solidity
+function expectRevert(address reverter) external;
+```
+
+```solidity
+function expectRevert(uint64 count) external;
+```
+
+```solidity
+function expectRevert(address reverter, uint64 count) external;
+```
+
+```solidity
+function expectPartialRevert(bytes4 revertData) external;
+```
+
+```solidity
+function expectPartialRevert(bytes4 revertData, address reverter) external;
 ```
 
 ### Error
