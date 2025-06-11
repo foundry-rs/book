@@ -11,8 +11,8 @@ export default defineConfig({
     },
   },
   editLink: {
-    pattern: 'https://github.com/foundry-rs/book/tree/master/vocs/docs/pages/:path',
-    text: 'Edit on GitHub',
+    pattern: 'https://github.com/foundry-rs/book/edit/master/vocs/docs/pages/:path',
+    text: 'Suggest changes on GitHub',
   },
   sponsors: [
     {
