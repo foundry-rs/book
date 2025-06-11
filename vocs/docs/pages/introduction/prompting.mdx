@@ -5,7 +5,17 @@ description: A comprehensive prompt for developers using AI assistants to build 
 
 # Prompting
 
-This guide provides a structured prompt template for developers who want to use AI assistants to build smart contracts with Foundry. Copy and customize this prompt to get the most effective out of AI assistants while using foundry's tools.
+One of the fastest ways to build smart contracts is by using AI to assist with writing boilerplate code, implementing complex testing patterns, and following security best practices. When building, iterating on, or debugging smart contracts using AI tools and Large Language Models (LLMs), a well-structured and extensive prompt helps provide the model with clearer guidelines and examples that can dramatically improve output quality.
+
+Below is an extensive example prompt that can help you build secure, well-tested smart contracts using Foundry and your preferred AI model.
+
+## Build smart contracts using a prompt
+
+To use the prompt:
+
+1. Use the click-to-copy button at the top right of the code block below to copy the full prompt to your clipboard
+2. Paste into your AI tool of choice (for example OpenAI's ChatGPT or Anthropic's Claude)  
+3. Make sure to enter your specific requirements at the end between the `<user_prompt>` and `</user_prompt>` tags
 
 ## Structured Foundry Prompt
 
@@ -613,12 +623,9 @@ forge script script/Deploy.s.sol \
 </user_prompt>
 ````
 
-## How to Use This Prompt
+## Customizing the Prompt
 
-1. **Copy the entire prompt** from the code block above
-2. **Replace `{user_prompt}`** at the bottom with your specific question or request
-3. **Customize sections** as needed for your project requirements
-4. **Paste into your AI assistant** (ChatGPT, Claude, etc.)
+You can customize sections of the prompt as needed for your specific project requirements. The prompt is designed to be comprehensive but can be tailored to focus on particular areas like testing, deployment, or specific Foundry tools.
 
 ## Example Usage
 
@@ -626,7 +633,7 @@ Here's how you might customize the prompt for a specific project:
 
 ```text
 <user_prompt>
-I need to create a yield farming vault contract with the following features:
+I need to create a vault contract with the following features:
 - ERC4626 compliant vault
 - Deposit/withdraw functionality with fees
 - Reward distribution mechanism
@@ -638,14 +645,5 @@ I need to create a yield farming vault contract with the following features:
 Please provide the complete implementation with proper Foundry project structure, including invariant tests with handlers to verify vault properties.
 </user_prompt>
 ```
-
-## Benefits of This Structured Prompt
-
-- **Comprehensive Coverage**: Includes all Foundry tools and advanced testing methodologies
-- **Security Focus**: Emphasizes security patterns, linting, and comprehensive testing
-- **Advanced Testing**: Covers fuzz testing, invariant testing with handlers, and EIP-712
-- **Practical Workflows**: Provides real-world development and deployment patterns
-- **Performance Optimization**: Includes dynamic test linking and other optimization techniques
-- **Professional Standards**: Enforces proper naming conventions and code organization
 
 Remember to always review and test any AI-generated code thoroughly before using it in production environments.
