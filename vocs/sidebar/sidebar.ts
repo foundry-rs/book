@@ -109,7 +109,7 @@ export const sidebar: Sidebar = [
                     { text: 'cast nonce', link: '/cast/reference/cast-nonce' },
                     { text: 'cast code', link: '/cast/reference/cast-code' },
                     { text: 'cast codesize', link: '/cast/reference/cast-codesize' },
-                    { text: 'cast index', link: '/cast/reference/cast-index'},
+                    { text: 'cast index', link: '/cast/reference/cast-'},
                   ],
                 },
                 {
