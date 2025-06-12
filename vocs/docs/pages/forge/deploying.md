@@ -10,7 +10,7 @@ Forge CLI can deploy only one contract at a time.
 
 For deploying and verifying multiple smart contracts on multiple chains in one go, Forge's [Solidity scripting](/guides/scripting-with-solidity) would be the more efficient approach.
 
-To deploy a contract, you must provide a RPC URL (env: `ETH_RPC_URL`) and the private key of the account that will deploy the contract.
+To deploy a contract, you must provide a RPC URL (env: `ETH_RPC_URL`) and the private key of the account that will deploy the contract. Additionally the `--broadcast` flag is responsible for publishing your transaction to the network as a safety precaution and mirrors the `--broadcast` flag of `forge script`. If you do not pass the `--broadcast` flag your transaction is a dry-run.
 
 To deploy `MyContract` to a network:
 
