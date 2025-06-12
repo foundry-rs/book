@@ -15,7 +15,7 @@ To deploy a contract, you must provide a RPC URL (env: `ETH_RPC_URL`) and the pr
 To deploy `MyContract` to a network:
 
 ```sh
-forge create src/MyContract.sol:MyContract --rpc-url <YOUR_RPC_URL> --private-key <YOUR_PRIVATE_KEY>
+forge create src/MyContract.sol:MyContract --rpc-url <YOUR_RPC_URL> --private-key <YOUR_PRIVATE_KEY> --broadcast
 compiling...
 success.
 Deployer: 0xa735b3c25f...
@@ -50,6 +50,7 @@ Additionally, we can tell Forge to verify our contract on Etherscan, Sourcify or
 ```sh
 forge create src/MyToken.sol:MyToken --rpc-url <YOUR_RPC_URL> \
     --private-key <YOUR_PRIVATE_KEY> \
+    --broadcast \
     --etherscan-api-key <YOUR_ETHERSCAN_API_KEY> \
     --verify \
     --constructor-args "ForgeUSD" "FUSD" 18 1000000000000000000000
