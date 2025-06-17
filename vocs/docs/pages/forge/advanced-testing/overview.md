@@ -6,6 +6,7 @@ description: Explore advanced testing methodologies including fuzz testing, inva
 
 Forge comes with a number of advanced testing methods:
 
+- [Table Testing](/forge/advanced-testing/table-testing)
 - [Fuzz Testing](/forge/advanced-testing/fuzz-testing)
 - [Invariant Testing](/forge/advanced-testing/invariant-testing)
 - [Differential Testing](/forge/advanced-testing/differential-ffi-testing)

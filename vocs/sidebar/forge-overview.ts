@@ -23,6 +23,7 @@ export const forgeOverview: SidebarItem[] = [
         collapsed: true,
         items: [
             { text: 'Overview', link: '/forge/advanced-testing/overview' },
+            { text: 'Table Testing', link: '/forge/advanced-testing/table-testing' },
             { text: 'Fuzz Testing', link: '/forge/advanced-testing/fuzz-testing' },
             { text: 'Invariant Testing', link: '/forge/advanced-testing/invariant-testing' },
             { text: 'Differential Testing', link: '/forge/advanced-testing/differential-ffi-testing' }
