@@ -97,10 +97,10 @@ docker build --no-cache --progress=plain .
 Now, what happens if one of our tests fails? Modify `src/test/Counter.t.sol` to make a false assertion. Try to build image again.
 
 ```solidity
-    function testFuzz_SetNumber(uint256 x) public {
-        counter.setNumber(x);
-        assertEq(counter.number(), 5);
-    }
+function testFuzz_SetNumber(uint256 x) public {
+    counter.setNumber(x);
+    assertEq(counter.number(), 5);
+}
 ```
 
 ```sh
