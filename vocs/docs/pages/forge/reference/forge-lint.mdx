@@ -100,6 +100,8 @@ To disable this lint for your project, you can add its ID to the `exclude_lints`
 exclude_lints = ["incorrect-shift"]
 ```
 
+Alternatively, you can also disable this individual occurence using [inline configuration](/config/lint/#inline-configuration).
+
 #### Medium Severity
 
 ##### divide-before-multiply
@@ -132,6 +134,9 @@ To disable this lint for your project, you can add its ID to the `exclude_lints`
 # ... rest of lint config ...
 exclude_lints = ["divide-before-multiply"]
 ```
+
+Alternatively, you can also disable this individual occurence using [inline configuration](/config/lint/#inline-configuration).
+You can also disable this lint using [inline configuration](#inline-config).
 
 #### Informational / Style Guide
 
@@ -169,6 +174,9 @@ To disable this lint for your project, you can add its ID to the `exclude_lints`
 exclude_lints = ["pascal-case-struct"]
 ```
 
+Alternatively, you can also disable this individual occurence using [inline configuration](/config/lint/#inline-configuration).
+You can also disable this lint using [inline configuration](#inline-config).
+
 ##### `mixed-case-function`
 
 Ensures that function names adhere to `mixedCase` (e.g., `myFunction`) convention. This helps in differentiate functions from other identifiers like structs or events and is a standard practice.
@@ -203,6 +211,9 @@ To disable this lint for your project, you can add its ID to the `exclude_lints`
 exclude_lints = ["mixed-case-function"]
 ```
 
+Alternatively, you can also disable this individual occurence using [inline configuration](/config/lint/#inline-configuration).
+You can also disable this lint using [inline configuration](#inline-config).
+
 ##### `mixed-case-variable`
 
 Ensures that mutable variable names (local variables and state variables that are not `constant` or `immutable`) adhere to `mixedCase` (e.g., `myVariable`) convention. This aligns with the general Solidity style for variable naming.
@@ -236,6 +247,9 @@ To disable this lint for your project, you can add its ID to the `exclude_lints`
 exclude_lints = ["mixed-case-variable"]
 ```
 
+Alternatively, you can also disable this individual occurence using [inline configuration](/config/lint/#inline-configuration).
+You can also disable this lint using [inline configuration](#inline-config).
+
 ##### `screaming-snake-case-const`
 
 Ensures that `constant` variable names adhere to `SCREAMING_SNAKE_CASE` (e.g., `MY_CONSTANT`). This is the standard convention for constants in Solidity, making them easily identifiable.
@@ -264,6 +278,9 @@ To disable this lint for your project, you can add its ID to the `exclude_lints`
 exclude_lints = ["screaming-snake-case-constant"]
 ```
 
+Alternatively, you can also disable this individual occurence using [inline configuration](/config/lint/#inline-configuration).
+You can also disable this lint using [inline configuration](#inline-config).
+
 ##### `screaming-snake-case-immutable`
 
 Ensures that `immutable` variable names adhere to `SCREAMING_SNAKE_CASE` (e.g., `MY_IMMUTABLE_VAR`). Similar to constants, this convention helps in distinguish immutable variables and maintaining consistency.
@@ -289,6 +306,9 @@ To disable this lint for your project, you can add its ID to the `exclude_lints`
 # ... rest of lint config ...
 exclude_lints = ["screaming-snake-case-immutable"]
 ```
+
+Alternatively, you can also disable this individual occurence using [inline configuration](/config/lint/#inline-configuration).
+You can also disable this lint using [inline configuration](#inline-config).
 
 #### Gas Optimizations
 
@@ -317,13 +337,16 @@ contract HashOptimization {
 }
 ```
 
-To disable this lint for your project, you can add its ID to the `exclude_lints` array within the `[lint]` section the `foundry.toml` configuration file:
+To disable this lint for your project, you can add its ID to the `exclude_lints` array within the `[lint]` section of the `foundry.toml` configuration file:
 
 ```toml
 [lint]
 # ... rest of lint config ...
 exclude_lints = ["asm-keccak256"]
 ```
+
+Alternatively, you can also disable this individual occurence using [inline configuration](/config/lint/#inline-configuration).
+You can also disable this lint using [inline configuration](#inline-config).
 
 ### SEE ALSO
 
