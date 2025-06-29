@@ -102,6 +102,88 @@ exclude_lints = ["incorrect-shift"]
 
 Alternatively, you can also disable this individual occurrence using [inline configuration](/config/reference/linter#inline-configuration).
 
+##### `unchecked-call`
+
+Warns when low-level calls (`.call()`, `.delegatecall()`, `.staticcall()`) do not check the success return value.
+
+Low-level calls in Solidity return a tuple `(bool success, bytes memory data)`. Not checking the `success` value can lead to silent failures where the called function reverts but execution continues, potentially resulting in unexpected behavior or security vulnerabilities.
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract UncheckedCall {
+    function correct() public {
+        (bool success, ) = address(target).call("");
+        require(success, "Call failed");
+
+        // Or using if statement
+        (bool ok, bytes memory data) = address(target).call(abi.encodeWithSignature("foo()"));
+        if (!ok) revert("Call failed");
+    }
+
+    function incorrect() public {
+        // Unchecked call - success value is ignored
+        address(target).call("");
+
+        // Unchecked call - only data is used
+        (, bytes memory data) = address(target).call("");
+    }
+}
+```
+
+To disable this lint for your project, you can add its ID to the `exclude_lints` array within the `[lint]` section of the `foundry.toml` configuration file:
+
+```toml
+[lint]
+# ... rest of lint config ...
+exclude_lints = ["unchecked-call"]
+```
+
+Alternatively, you can also disable this individual occurrence using [inline configuration](/config/reference/linter#inline-configuration).
+
+##### `erc20-unchecked-transfer`
+
+Warns when ERC20 `transfer` or `transferFrom` calls do not check the return value.
+
+While the ERC20 standard specifies that these functions should return a boolean indicating success, not all implementations follow this pattern correctly. Some tokens revert on failure, while others return false. Not checking the return value can lead to situations where a transfer fails silently, causing loss of funds or incorrect contract state.
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract ERC20UncheckedTransfer {
+    IERC20 public token;
+
+    function correct() public {
+        // Check return value with require
+        require(token.transfer(recipient, amount), "Transfer failed");
+
+        // Or capture and check explicitly
+        bool success = token.transferFrom(sender, recipient, amount);
+        if (!success) revert("Transfer failed");
+    }
+
+    function incorrect() public {
+        // Unchecked transfer - return value ignored
+        token.transfer(recipient, amount);
+
+        // Unchecked transferFrom - return value ignored
+        token.transferFrom(sender, recipient, amount);
+    }
+}
+```
+
+To disable this lint for your project, you can add its ID to the `exclude_lints` array within the `[lint]` section of the `foundry.toml` configuration file:
+
+```toml
+[lint]
+# ... rest of lint config ...
+exclude_lints = ["erc20-unchecked-transfer"]
+```
+
+Note that this lint could fire false positives, as it only checks the function name, but it doesn't ensure that the called address is an ERC20 contract. Because of that, you may have to disable individual occurrences using [inline configuration](/config/reference/linter#inline-configuration).
+
 #### Medium Severity
 
 ##### divide-before-multiply
