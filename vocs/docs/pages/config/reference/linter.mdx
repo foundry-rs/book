@@ -1,0 +1,56 @@
+## Linter Configuration
+
+Configuration related to the behavior of the linter. These keys are set in the `[lint]` section.
+
+##### `severity`
+
+-  Type: array of strings
+-  Default: all severities enabled (`high`, `med`, `low`, `info`, `gas`)
+-  Environment: `FOUNDRY_LINT_SEVERITY`
+
+Specifies which lints to run based on severity. If omitted, all severities are checked.
+
+##### `exclude_lints`
+
+-  Type: array of strings
+-  Default: `[]`
+-  Environment: `FOUNDRY_LINT_EXCLUDE_LINTS`
+
+List of lint IDs to exclude from checking (e.g., `"mixed-case-function"`).
+
+##### `ignore`
+
+-  Type: array of strings (patterns)
+-  Default: `[]`
+-  Environment: `FOUNDRY_LINT_IGNORE`
+
+List of files or patterns to ignore when running the linter. This is a comma-separated list of glob patterns.
+
+## Inline Configuration
+
+The linter also offers the ability to disable lints for specific sections of code using inline comment directives.
+This is useful when you need to suppress false positives or have valid reasons for code that would otherwise trigger a lint warning.
+
+To disable lints using inline config, your comment must follow this format:
+```
+/// forge-lint: <directive>(<lint-ids>)
+```
+
+Where:
+- `<directive>` is one of the directives from the table below
+- `<lint-ids>` is a comma-separated list of lint identifiers, or `all` to disable all lints
+
+### Supported Inline Directives
+
+| Directive | Description | Scope |
+|-----------|-------------|-------|
+| `disable-next-item` | Disables lints for the next code item (contract, function, variable, struct, etc.) | Next item regardless of line count |
+| `disable-line` | Disables lints for the current line | Current line only |
+| `disable-next-line` | Disables lints for the next line | Next line only |
+| `disable-start` / `disable-end` | Disables lints for all code between the start and end comments | Block of code between directives |
+
+### Best Practices
+
+1. **Be Specific**: Always specify which lint(s) you're disabling rather than using `all`.
+2. **Add Comments**: Explain why you're disabling the lint to help future maintainers.
+3. **Minimize Scope**: Use the most targeted directive possible (e.g., `disable-line` instead of `disable-start/end`).

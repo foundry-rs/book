@@ -64,7 +64,6 @@ Customize your Foundry setup and integrate with other tools for an optimized dev
 - [Static Analyzers](/config/static-analyzers) - Code analysis tool integration
 - [Integrating with Hardhat](/config/hardhat) - Cross-framework compatibility
 - [Vyper support](/config/vyper) - Alternative smart contract language support
-- [Forge Lint](/config/lint) - Code style and quality enforcement
 
 ### Contributing
 
