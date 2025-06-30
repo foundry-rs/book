@@ -96,3 +96,15 @@ Listening on 127.0.0.1:8545
 :::info
 See the [`anvil` Reference](/anvil/reference) for in depth information on Anvil and its capabilities.
 :::
+
+## Notes
+
+### EIP-7702 and Default Accounts
+
+Since the advent of EIP-7702, Anvil's default accounts have been delegated to drainers such as https://etherscan.io/address/0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266#authlist7702
+
+This can negatively impact developer experience when users are running Anvil in fork mode and are making RPC calls that involve one of the default anvil accounts. To avoid this issue, use a different mnemonic when starting Anvil:
+
+```bash
+anvil --mnemonic "<custom mnemonic>" --fork-url https://reth-ethereum.ithaca.xyz/rpc
+```
