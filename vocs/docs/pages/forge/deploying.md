@@ -136,7 +136,7 @@ forge verify-contract \
     --verifier etherscan \
     --etherscan-api-key <your_etherscan_api_key> \
     --compiler-version v0.8.10+commit.fc410830 \
-    <the_contract_address> \
+    <CONTRACT_ADDRESS> \
     src/MyToken.sol:MyToken
 
 Submitted contract for verification:
