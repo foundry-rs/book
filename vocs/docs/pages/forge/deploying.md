@@ -128,7 +128,7 @@ Let's say you want to verify `MyToken` (see above). You set the [number of optim
 Here's how to verify it:
 
 ```bash
-forge verify-contract <CONTRACT_ADDRESS> src/MyToken.sol:MyToken \
+forge verify-contract \
     --chain-id 11155111 \
     --num-of-optimizations 1000000 \
     --watch \
