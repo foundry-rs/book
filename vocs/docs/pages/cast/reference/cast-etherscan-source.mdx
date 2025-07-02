@@ -9,7 +9,7 @@ cast-etherscan-source - Get the source code of a contract from Etherscan.
 
 ### SYNOPSIS
 
-`cast etherscan-source` [*options*] _address_
+`cast source` [*options*] _address_
 
 ### DESCRIPTION
 
@@ -37,12 +37,12 @@ The destination (_to_) can be an ENS name or an address.
 1. Get the source code of the WETH contract:
 
    ```sh
-   cast etherscan-source 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
+   cast source 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
    ```
 
 2. Expand the source code of the WETH contract into a directory named `weth`
    ```sh
-   cast etherscan-source -d weth 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
+   cast source -d weth 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
    ```
 
 ### SEE ALSO
