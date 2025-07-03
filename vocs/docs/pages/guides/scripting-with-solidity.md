@@ -61,6 +61,7 @@ Private key: <PRIVATE_KEY>
 
 Grab some Sepolia testnet ETH, available in different faucets:
 
+- [Chainstack](https://faucet.chainstack.com/)
 - [Alchemy](https://sepoliafaucet.com/)
 - [Quicknode](https://faucet.quicknode.com/ethereum/sepolia)
 - [Proof of work faucet](https://sepolia-faucet.pk910.de/)
