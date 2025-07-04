@@ -27,10 +27,17 @@ Running `foundryup` will automatically install the latest stable version of the 
 > ℹ️ **Note**  
 > If you're using Windows, you'll need to install and use [Git BASH](https://gitforwindows.org/) or [WSL](https://learn.microsoft.com/en-us/windows/wsl/install) as your terminal, since Foundryup currently doesn't support Powershell or Command Prompt (Cmd).
 
-#### Verify integrity and provenance of binaries
+#### Verifying the integrity and provenance of binaries
 
-Foundry binaries are attested by using [GitHub artifact attestations](https://docs.github.com/en/actions/security-for-github-actions/using-artifact-attestations/using-artifact-attestations-to-establish-provenance-for-builds). It is strongly recommended to verify the binaries installed using `foundryup` in order to check that they were built and distributed from Foundry repository.  
-For example, `forge` binary integrity and provenance can be verified by running:
+Foundry binaries are attested by using [GitHub artifact attestations](https://docs.github.com/en/actions/security-for-github-actions/using-artifact-attestations/using-artifact-attestations-to-establish-provenance-for-builds).
+
+When installing a release using `foundryup` we match the hashes of the binaries against the hashes of the Github attestation artifact. This guarantees that the binaries were built by our automated release process in the official Foundry repository. We also use these hashes to check whether you already have the version of the binary installed. If so, we will skip the downloading.
+
+You can pass the `--force` flag to skip the verification step. This also forces the installer to install a fresh version of the binaries as it has no hashes to match against.
+
+Note that in the case you install an older release you may find that no `*attestation.txt` are available in the release for `foundryup` to verify against. In this case verification is skipped at installation. You can at any time manually verify the integrity as follows:
+
+For example, `forge`:
 
 ```shell
 gh attestation verify --owner foundry-rs $(which forge)
@@ -45,6 +52,8 @@ The following 1 attestation matched the policy criteria
   - Signer repo:.... foundry-rs/foundry
   - Signer workflow: .github/workflows/release.yml@refs/tags/stable
 ```
+
+This is also the case for older releases.
 
 ### Building from Source
 
