@@ -231,6 +231,12 @@ The model checker will run when `forge build` is invoked, and will show findings
    forge build test/invariant test/RegressionTest.sol
    ```
 
+6. Build the project targeting an EVM version:
+
+   ```sh
+   forge build --evm-version osaka
+   ```
+
 ### SEE ALSO
 
 [forge](/forge/reference/overview), [forge clean](/forge/reference/forge-clean.mdx), [forge inspect](/forge/reference/forge-inspect.mdx), [sparse-mode](/config/reference/solidity-compiler.mdx#sparse_mode), [ir-pipeline](https://docs.soliditylang.org/en/latest/ir-breaking-changes.html), [output-desc](https://docs.soliditylang.org/en/latest/using-the-compiler.html#compiler-api)
