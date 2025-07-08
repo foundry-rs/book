@@ -108,3 +108,9 @@ This can negatively impact developer experience when users are running Anvil in 
 ```bash
 anvil --mnemonic "<custom mnemonic>" --fork-url https://reth-ethereum.ithaca.xyz/rpc
 ```
+
+or let Anvil generate a random mnemonic:
+
+```bash
+anvil --mnemonic-random 12 --fork-url https://reth-ethereum.ithaca.xyz/rpc
+```
