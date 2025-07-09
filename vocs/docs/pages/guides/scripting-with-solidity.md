@@ -61,9 +61,10 @@ Private key: <PRIVATE_KEY>
 
 Grab some Sepolia testnet ETH, available in different faucets:
 
+- [Proof of work faucet](https://sepolia-faucet.pk910.de/)
 - [Alchemy](https://sepoliafaucet.com/)
 - [Quicknode](https://faucet.quicknode.com/ethereum/sepolia)
-- [Proof of work faucet](https://sepolia-faucet.pk910.de/)
+- [Chainstack](https://faucet.chainstack.com/)
 
 Some faucets require you to have a balance on Ethereum mainnet.
 
