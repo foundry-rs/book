@@ -59,6 +59,10 @@ export default defineConfig({
       text: 'Guides',
     },
     {
+      link: 'https://foundry-rs.github.io/foundry/',
+      text: 'Rustdocs',
+    },
+    {
       text: 'v1.2.3',
       items: [
         {
