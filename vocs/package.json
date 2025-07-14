@@ -15,7 +15,7 @@
     "vocs": "latest"
   },
   "devDependencies": {
-    "@types/bun": "^1.2.15",
+    "@types/bun": "^1.2.18",
     "@types/react": "latest",
     "typescript": "latest"
   }
