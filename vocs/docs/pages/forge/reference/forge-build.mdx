@@ -189,6 +189,9 @@ The model checker will run when `forge build` is invoked, and will show findings
 `--skip`
 &nbsp;&nbsp;&nbsp;&nbsp;Skip compilation of non-essential contract directories like test or script (usage `--skip test`).
 
+`--ignore-initcode-size`
+&nbsp;&nbsp;&nbsp;&nbsp;Ignore initcode contract bytecode size limit.
+
 `[PATHS]...`&nbsp;&nbsp;&nbsp;&nbsp;Build source files from specified paths.
 
 <CoreBuildOptions />
@@ -226,6 +229,12 @@ The model checker will run when `forge build` is invoked, and will show findings
 5. Build source files from `test/invariant` directory and `test/RegressionTest.sol`:
    ```sh
    forge build test/invariant test/RegressionTest.sol
+   ```
+
+6. Build the project targeting an EVM version:
+
+   ```sh
+   forge build --evm-version osaka
    ```
 
 ### SEE ALSO
