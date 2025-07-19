@@ -3,6 +3,7 @@ import TxValueOption from "../../reference/common/tx-value-option.mdx";
 import RpcOptions from "../../reference/common/rpc-options.mdx";
 import EtherscanOptions from "../../reference/common/etherscan-options.mdx";
 import CommonOptions from "./common-options.mdx";
+import CastEstimateCreateOption from "../../reference/common/cast-estimate-create-option.mdx";
 
 ## cast estimate
 
@@ -23,6 +24,7 @@ The destination (_to_) can be an ENS name or an address.
 <SigDescription />
 
 ### OPTIONS
+<CastEstimateCreateOption />
 
 #### Transaction Options
 
@@ -41,6 +43,11 @@ The destination (_to_) can be an ENS name or an address.
    cast estimate 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2 \
      --value 0.1ether "deposit()"
    ```
+2. Estimate the gas cost for deploying a new contract:
+   ```sh
+   cast estimate --create 0x608060405234801561001057600080fd5b506040516101...
+   ```
+   Replace `0x6080...` with your contract's deployment (init) bytecode. 
 
 ### SEE ALSO
 
