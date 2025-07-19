@@ -51,7 +51,7 @@ Additionally, we can tell Forge to verify our contract on Etherscan, Sourcify or
 forge create src/MyToken.sol:MyToken --rpc-url <YOUR_RPC_URL> \
     --private-key <YOUR_PRIVATE_KEY> \
     --broadcast \
-    --etherscan-api-key <YOUR_ETHERSCAN_API_KEY> \
+    --etherscan-api-key <VZFDUWB3YGQ1YCDKTCU1D6DDSS> \
     --verify \
     --constructor-args "ForgeUSD" "FUSD" 18 1000000000000000000000
 ```
@@ -68,8 +68,8 @@ sepolia = "${SEPOLIA_URL}"
 base-sepolia = "${BASE_SEPOLIA_URL}"
 
 [etherscan]
-sepolia = { key = "${ETHERSCAN_API_KEY}" }
-base-sepolia = { key = "${ETHERSCAN_API_KEY}" }
+sepolia = { key = "${VZFDUWB3YGQ1YCDKTCU1D6DDSS}" }
+base-sepolia = { key = "${NM4MDQ65DJXXA6QMJA6D8VCIRAQYHHFM9Z}" }
 ```
 
 and create a `CounterScript` script as:
