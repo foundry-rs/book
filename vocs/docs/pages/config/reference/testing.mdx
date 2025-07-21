@@ -76,7 +76,7 @@ The value of the `chainid` opcode in tests.
 ##### `gas_limit`
 
 - Type: integer or string
-- Default: 9223372036854775807
+- Default: 1073741824
 - Environment: `FOUNDRY_GAS_LIMIT` or `DAPP_GAS_LIMIT`
 
 The gas limit for each test case.
@@ -88,7 +88,7 @@ The gas limit for each test case.
 > In order to use higher gas limits use a string:
 
 ```toml
-gas_limit = "18446744073709551615" # u64::MAX
+gas_limit = "9223372036854775807" # limited to 64-bit integers
 ```
 
 ##### `gas_price`
@@ -337,6 +337,22 @@ Configuration values for `[fuzz]` section.
 
 The amount of fuzz runs to perform for each fuzz test case. Higher values gives more confidence in results at the cost of testing speed.
 
+##### `timeout`
+
+- Type: integer
+- Default: None
+- Environment: `FOUNDRY_FUZZ_TIMEOUT`
+
+Optional timeout (in seconds) for fuzz test.
+
+##### `fail_on_revert`
+
+- Type: boolean
+- Default: true
+- Environment: `FOUNDRY_FUZZ_FAIL_ON_REVERT`
+
+Fails the fuzzed test if a revert occurs in a call to a contract other than the test contract.
+
 ##### `max_test_rejects`
 
 - Type: integer
@@ -449,6 +465,14 @@ The number of runs that must execute for each invariant test group. See also [fu
 
 The number of calls executed to attempt to break invariants in one run.
 
+##### `timeout`
+
+- Type: integer
+- Default: None
+- Environment: `FOUNDRY_INVARIANT_TIMEOUT`
+
+Optional timeout (in seconds) for invariant time based campaigns.
+
 ##### `fail_on_revert`
 
 - Type: boolean
@@ -521,6 +545,46 @@ Number of runs to use for generating gas report.
 
 Path where invariant failures are recorded and replayed.
 
+##### `corpus_dir`
+
+- Type: string (path)
+- Default: None
+- Environment: `FOUNDRY_INVARIANT_CORPUS_DIR`
+
+Optional path where invariant corpus is stored. Enables coverage guided fuzzing and edge coverage metrics.
+
+##### `corpus_gzip`
+
+- Type: boolean
+- Default: true
+- Environment: `FOUNDRY_INVARIANT_CORPUS_GZIP`
+
+Flag indicating whether corpus should use gzip file compression and decompression (relevant only if `corpus_dir` is configured). If set to `false`, then corpus is persisted as regular json file.
+
+##### `corpus_min_mutations`
+
+- Type: integer
+- Default: 5
+- Environment: `FOUNDRY_INVARIANT_CORPUS_MIN_MUTATIONS`
+
+Number of corpus mutations until marked as eligible to be flushed from memory (relevant only if `corpus_dir` is configured).
+
+##### `corpus_min_size`
+
+- Type: integer
+- Default: 0
+- Environment: `FOUNDRY_INVARIANT_CORPUS_MIN_SIZE`
+
+Minimum corpus size to mutate and won't be evicted from memory (relevant only if `corpus_dir` is configured).
+
+##### `show_edge_coverage`
+
+- Type: boolean
+- Default: false
+- Environment: `FOUNDRY_INVARIANT_SHOW_EDGE_COVERAGE`
+
+Flag indicating whether to collect and display edge coverage metrics (automatically enabled if `corpus_dir` is configured).
+
 ##### `show_metrics`
 
 - Type: boolean
@@ -528,3 +592,11 @@ Path where invariant failures are recorded and replayed.
 - Environment: `FOUNDRY_INVARIANT_SHOW_METRICS`
 
 The flag indicating whether to collect and display fuzzed selectors metrics in test report.
+
+##### `show_solidity`
+
+- Type: boolean
+- Default: false
+- Environment: `FOUNDRY_INVARIANT_SHOW_SOLIDITY`
+
+Flag indicating whether to display counterexamples as solidity calls.
