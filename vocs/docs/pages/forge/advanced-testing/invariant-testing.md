@@ -10,12 +10,12 @@ Invariant testing allows for a set of invariant expressions to be tested against
 
 Invariant testing is a powerful tool to expose incorrect logic in protocols. Due to the fact that function call sequences are randomized and have fuzzed inputs, invariant testing can expose false assumptions and incorrect logic in edge cases and highly complex protocol states.
 
-Invariant testing campaigns have two dimensions, `runs` and `depth`:
+**Regular invariant testing campaigns** have two dimensions, `runs` and `depth`:
 
 - `runs`: Number of times that a sequence of function calls is generated and run.
 - `depth`: Number of function calls made in a given `run`. Invariants are asserted after each function call is made. If a function call reverts, the `depth` counter still increments.
 
-For long invariant campaigns a `timeout` (in seconds) can be set, ensuring test ends after specified time elapsed.
+**Invariant time based campaigns** can be defined by specifying `timeout` configuration (in seconds) which ensure test ends after specified time elapsed, regardless the number of runs.
 
 > ℹ️ **Note**
 >
@@ -43,6 +43,77 @@ These and other invariant configuration aspects are explained [`here`](#configur
 Similar to how standard tests are run in Foundry by prefixing a function name with `test`, invariant tests are denoted by prefixing the function name with `invariant` (e.g., `function invariant_A()`).
 
 `afterInvariant()` function is called at the end of each invariant run (if declared), allowing post campaign processing. This function can be used for logging campaign metrics (e.g. how many times a selector was called) and post fuzz campaign testing (e.g. close out all positions and assert all funds are able to exit the system).
+
+
+### Coverage-Guided Fuzzing
+
+Starting with Foundry v1.3.0, invariant tests come with coverage-guided fuzzing support, that stores and mutates previously tested call sequences. This mode can be enabled by setting the `corpus_dir` config, which is the path on disk used to persist the corpus that generates new coverage. Each corpus is identified by a unique ID and is persisted in JSON format with entries for each call (sender address, target address and the calldata):
+```json
+[
+  {
+    "sender":"0x5cb738dae833ec21fe65ae1719fad8ab8ce7f23d",
+    "call_details":
+      {
+        "target":"0x7fa9385be102ac3eac297483dd6233d62b3e1496",
+        "calldata":"0xa8ad0bac000...."
+      }
+  },
+  {
+    "sender":"0x7fa9385be102ac3eac297483dd6233d62b3e1496",
+    "call_details":
+      {
+        "target":"0x7fa9385be102ac3eac297483dd6233d62b3e1496",
+        "calldata":"0xd9df5397000...."
+      }
+  }
+]
+```
+On subsequent runs of invariant test, the saved corpus is loaded from disk and replayed.
+The coverage-guided fuzzing mode targets a minimum corpus size by mutating entries a number of times (default: 5) and favoring those likely to uncover new execution paths.
+There are five different strategies used to mutate call sequences:
+- `splice`: Combines two sequences
+- `interleave`: Weaves two sequences together
+- `prefix`: Overwrites the beginning of a sequence
+- `suffix`: Overwrites the end of a sequence
+- `mutate args`: Randomizes some call arguments
+
+Call sequences that do not produce new coverage (after being mutated for the configured number of times) are evicted from memory. When such eviction occurs, a metadata file (in JSON format) with corpus information (unique ID, mutation count, and coverage improvements) is written to disk.
+
+The metadata file name contains the unique corpus ID, the time of eviction and the `-metadata.json` suffix - for example `e58a7c45-475d-4c70-ad32-9a4ef09b1d8f-1753084102-metadata.json` with contents
+```json
+{
+  "uuid":"e58a7c45-475d-4c70-ad32-9a4ef09b1d8f",
+  "total_mutations":6,
+  "new_finds_produced":2,
+  "is_favored":false
+}
+```
+
+In coverage-guided fuzzing mode, the fuzzing progress bar displays metrics for cumulative edges and features, corpus count and number of favored entries.
+```bash
+test/forge/invariant/StaticInvariantTest.sol:StaticInvariantTest
+ → invariantHealthy: [60/2000] Runs
+  - cumulative edges seen: 41
+  - cumulative features seen: 6
+  - corpus count: 15
+  - favored items: 14
+```
+
+If performing tests without progress, then metrics are printed every 5 seconds, in json format, as follows:
+```bash
+{
+  "timestamp": 1753087098,
+  "invariant": "invariantHealthy",
+  "metrics": {
+    "cumulative_edges_seen": 26,
+    "cumulative_features_seen": 2,
+    "corpus_count": 25,
+    "favored_items": 24
+  }
+}
+```
+
+Please refer to [invariant configuration](/config/reference/testing#invariant) for more details about corpus settings.
 
 ### Configuring invariant test execution
 

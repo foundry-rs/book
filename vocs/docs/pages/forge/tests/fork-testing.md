@@ -11,6 +11,10 @@ Forge supports testing in a forked environment with two different approaches:
 
 Which approach to use? Forking mode affords running an entire test suite against a specific forked environment, while forking cheatcodes provide more flexibility and expressiveness to work with multiple forks in your tests. Your particular use case and testing strategy will help inform which approach to use.
 
+:::tip
+Starting with Foundry v1.3.0, forked tests using the Reth client are faster thanks to the `eth_getAccountInfo` API which reduce account data fetching from three requests to one.
+:::
+
 ### Forking Mode
 
 To run all tests in a forked environment, such as a forked Ethereum mainnet, pass an RPC URL via the `--fork-url` flag:
