@@ -149,7 +149,7 @@ export const castCliReference: SidebarItem = {
                 { text: "cast hash-message", link: "/cast/reference/hash-message" },
                 { text: "cast hash-zero", link: "/cast/reference/hash-zero" },
                 { text: "cast implementation", link: "/cast/reference/implementation" },
-                { text: "cast index", link: "/cast/reference/index" },
+                { text: "cast index", link: "/cast/reference/cast-index" },
                 { text: "cast index-erc7201", link: "/cast/reference/index-erc7201" },
                 { text: "cast interface", link: "/cast/reference/interface" },
                 { text: "cast keccak", link: "/cast/reference/keccak" },
