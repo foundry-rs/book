@@ -220,8 +220,9 @@ fn cmd_markdown(out_dir: &Path, cmd: &Cmd, stdout: &str) -> io::Result<()> {
 /// Returns the markdown for a command's help output.
 fn help_markdown(cmd: &Cmd, stdout: &str) -> String {
     let (description, s) = parse_description(stdout);
+    let processed_description = preprocess_help(description);
     let help = preprocess_help(s.trim());
-    format!("{description}\n\n```bash\n$ {cmd} --help\n```\n\n```txt\n{help}\n```")
+    format!("{processed_description}\n\n```bash\n$ {cmd} --help\n```\n\n```txt\n{help}\n```")
 }
 
 /// Splits the help output into a description and the rest.
@@ -282,26 +283,22 @@ fn update_root_summary(root_dir: &Path, root_summary: &str) -> io::Result<()> {
 /// Preprocesses the help output of a command.
 fn preprocess_help(s: &str) -> Cow<'_, str> {
     static REPLACEMENTS: LazyLock<Vec<(Regex, &str)>> = LazyLock::new(|| {
-        let patterns: &[(&str, &str)] = &[
-            // Escape angle brackets that might be interpreted as HTML/JSX
-            (r"<([^>]+)>", "&lt;$1&gt;"),
+        vec![
+            // Convert URLs in angle brackets to markdown links
+            (Regex::new(r"<(https?://[^>]+)>").unwrap(), "[$1]($1)"),
             // Escape comparison operators
-            (r" <= ", " &lt;= "),
-            (r" >= ", " &gt;= "),
-        ];
-        patterns
-            .iter()
-            .map(|&(re, replace_with)| (Regex::new(re).expect(re), replace_with))
-            .collect()
+            (Regex::new(r" <= ").unwrap(), " &lt;= "),
+            (Regex::new(r" >= ").unwrap(), " &gt;= "),
+            // Escape remaining angle brackets that might be interpreted as HTML/JSX
+            (Regex::new(r"<([^>]+)>").unwrap(), "&lt;$1&gt;"),
+        ]
     });
 
-    let mut s = Cow::Borrowed(s);
+    let mut result = s.to_string();
     for (re, replacement) in REPLACEMENTS.iter() {
-        if let Cow::Owned(result) = re.replace_all(&s, *replacement) {
-            s = Cow::Owned(result);
-        }
+        result = re.replace_all(&result, *replacement).to_string();
     }
-    s
+    Cow::Owned(result)
 }
 
 /// Command with subcommands.
