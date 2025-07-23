@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vocs dev",
     "build": "bun run fetch-release && vocs build",
-    "preview": "vocs preview",
+    "preview": "bun run build && vocs preview",
     "check-links": "bun check-links.ts",
     "fetch-release": "bun scripts/fetch-release.ts"
   },

@@ -75,7 +75,8 @@ function formatReleaseForMDX(release: GitHubRelease): string {
   
   // Convert GitHub user mentions to links
   // Format: @username -> [@username](https://github.com/username)
-  body = body.replace(/@(\w+)/g, '[@$1](https://github.com/$1)');
+  // Matches alphanumeric characters and hyphens (valid GitHub username characters)
+  body = body.replace(/@([a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?)/g, '[@$1](https://github.com/$1)');
   
   // Escape any MDX-specific characters if needed (but preserve markdown links)
   // Only escape curly braces that are not part of links
@@ -93,9 +94,7 @@ title: Foundry Releases
 description: Latest release notes for Foundry
 ---
 
-# ${release.name || release.tag_name}
-
-Published on ${publishedDate} • [View on GitHub](${release.html_url})
+# ${release.name || release.tag_name} [${publishedDate}]
 
 ${body}
 
