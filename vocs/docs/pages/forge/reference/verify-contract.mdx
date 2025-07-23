@@ -1,0 +1,231 @@
+## forge verify-contract
+
+Verify smart contracts on Etherscan
+
+```bash
+$ forge verify-contract --help
+```
+
+```txt
+Usage: forge verify-contract [OPTIONS] &lt;ADDRESS&gt; [CONTRACT]
+
+Arguments:
+  &lt;ADDRESS&gt;
+          The address of the contract to verify
+
+  [CONTRACT]
+          The contract identifier in the form `&lt;path&gt;:&lt;contractname&gt;`
+
+Options:
+      --constructor-args &lt;ARGS&gt;
+          The ABI-encoded constructor arguments
+          
+          [aliases: --encoded-constructor-args]
+
+      --constructor-args-path &lt;PATH&gt;
+          The path to a file containing the constructor arguments
+
+      --guess-constructor-args
+          Try to extract constructor arguments from on-chain creation code
+
+      --compiler-version &lt;VERSION&gt;
+          The `solc` version to use to build the smart contract
+
+      --compilation-profile &lt;PROFILE_NAME&gt;
+          The compilation profile to use to build the smart contract
+
+      --num-of-optimizations &lt;NUM&gt;
+          The number of optimization runs used to build the smart contract
+          
+          [aliases: --optimizer-runs]
+
+      --flatten
+          Flatten the source code before verifying
+
+  -f, --force
+          Do not compile the flattened smart contract before verifying (if
+          --flatten is passed)
+
+      --skip-is-verified-check
+          Do not check if the contract is already verified before verifying
+
+      --watch
+          Wait for verification result after submission
+
+      --root &lt;PATH&gt;
+          The project's root path.
+          
+          By default root of the Git repository, if in one, or the current
+          working directory.
+
+      --show-standard-json-input
+          Prints the standard json compiler input.
+          
+          The standard json compiler input can be used to manually submit
+          contract verification in the browser.
+
+      --via-ir
+          Use the Yul intermediate representation compilation pipeline
+
+      --evm-version &lt;EVM_VERSION&gt;
+          The EVM version to use.
+          
+          Overrides the version specified in the config.
+
+  -e, --etherscan-api-key &lt;KEY&gt;
+          The Etherscan (or equivalent) API key
+          
+          [env: ETHERSCAN_API_KEY=]
+
+  -a, --etherscan-api-version &lt;API_VERSION&gt;
+          The Etherscan API version
+          
+          [env: ETHERSCAN_API_VERSION=]
+
+  -c, --chain &lt;CHAIN&gt;
+          The chain name or EIP-155 chain ID
+          
+          [env: CHAIN=]
+
+  -r, --rpc-url &lt;URL&gt;
+          The RPC endpoint, default value is http://localhost:8545
+          
+          [env: ETH_RPC_URL=]
+
+  -k, --insecure
+          Allow insecure RPC connections (accept invalid HTTPS certificates).
+          
+          When the provider's inner runtime transport variant is HTTP, this
+          configures the reqwest client to accept invalid certificates.
+
+      --flashbots
+          Use the Flashbots RPC URL with fast mode
+          (&lt;https://rpc.flashbots.net/fast&gt;).
+          
+          This shares the transaction privately with all registered builders.
+          
+          See:
+          &lt;https://docs.flashbots.net/flashbots-protect/quick-start#faster-transactions&gt;
+
+      --jwt-secret &lt;JWT_SECRET&gt;
+          JWT Secret for the RPC endpoint.
+          
+          The JWT secret will be used to create a JWT for a RPC. For example,
+          the following can be used to simulate a CL `engine_forkchoiceUpdated`
+          call:
+          
+          cast rpc --jwt-secret &lt;JWT_SECRET&gt; engine_forkchoiceUpdatedV2
+          '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
+          
+          [env: ETH_RPC_JWT_SECRET=]
+
+      --rpc-timeout &lt;RPC_TIMEOUT&gt;
+          Timeout for the RPC request in seconds.
+          
+          The specified timeout will be used to override the default timeout for
+          RPC requests.
+          
+          Default value: 45
+          
+          [env: ETH_RPC_TIMEOUT=]
+
+      --rpc-headers &lt;RPC_HEADERS&gt;
+          Specify custom headers for RPC requests
+          
+          [env: ETH_RPC_HEADERS=]
+
+      --retries &lt;RETRIES&gt;
+          Number of attempts for retrying verification
+          
+          [default: 5]
+
+      --delay &lt;DELAY&gt;
+          Optional delay to apply in between verification attempts, in seconds
+          
+          [default: 5]
+
+      --language &lt;LANGUAGE&gt;
+          The contract language (`solidity` or `vyper`).
+          
+          Defaults to `solidity` if none provided.
+
+          Possible values:
+          - solidity: Solidity programming language
+          - vyper:    Vyper programming language
+
+  -h, --help
+          Print help (see a summary with '-h')
+
+  -j, --threads &lt;THREADS&gt;
+          Number of threads to use. Specifying 0 defaults to the number of
+          logical cores
+          
+          [aliases: --jobs]
+
+Linker options:
+      --libraries &lt;LIBRARIES&gt;
+          Set pre-linked libraries
+          
+          [env: DAPP_LIBRARIES=]
+
+Verifier options:
+      --verifier &lt;VERIFIER&gt;
+          The contract verification provider to use
+          
+          [default: sourcify]
+
+          Possible values:
+          - etherscan
+          - sourcify
+          - blockscout
+          - oklink
+          - custom:     Custom verification provider, requires compatibility
+            with the Etherscan API
+
+      --verifier-api-key &lt;VERIFIER_API_KEY&gt;
+          The verifier API KEY, if using a custom provider
+          
+          [env: VERIFIER_API_KEY=]
+
+      --verifier-url &lt;VERIFIER_URL&gt;
+          The verifier URL, if using a custom provider
+          
+          [env: VERIFIER_URL=]
+
+      --verifier-api-version &lt;VERIFIER_API_VERSION&gt;
+          The verifier API version, if using a custom provider
+          
+          [env: VERIFIER_API_VERSION=]
+
+Display options:
+      --color &lt;COLOR&gt;
+          The color of the log messages
+
+          Possible values:
+          - auto:   Intelligently guess whether to use color output (default)
+          - always: Force color output
+          - never:  Force disable color output
+
+      --json
+          Format log messages as JSON
+
+  -q, --quiet
+          Do not print log messages
+
+  -v, --verbosity...
+          Verbosity level of the log messages.
+          
+          Pass multiple times to increase the verbosity (e.g. -v, -vv, -vvv).
+          
+          Depending on the context the verbosity levels have different meanings.
+          
+          For example, the verbosity levels of the EVM are:
+          - 2 (-vv): Print logs for all tests.
+          - 3 (-vvv): Print execution traces for failing tests.
+          - 4 (-vvvv): Print execution traces for all tests, and setup traces
+          for failing tests.
+          - 5 (-vvvvv): Print execution and setup traces for all tests,
+          including storage changes.
+```

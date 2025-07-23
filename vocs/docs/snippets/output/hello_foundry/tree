@@ -1,6 +1,6 @@
 // [!region all]
 // [!region command]
-tree . -d -L 1
+$ tree . -d -L 1
 // [!endregion command]
 // [!region output]
 .

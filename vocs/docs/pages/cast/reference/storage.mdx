@@ -1,0 +1,268 @@
+## cast storage
+
+Get the raw value of a contract's storage slot
+
+```bash
+$ cast storage --help
+```
+
+```txt
+Usage: cast storage [OPTIONS] &lt;ADDRESS&gt; [SLOT]
+
+Arguments:
+  &lt;ADDRESS&gt;
+          The contract address
+
+  [SLOT]
+          The storage slot number. If not provided, it gets the full storage
+          layout
+
+Options:
+      --proxy &lt;PROXY&gt;
+          The known proxy address. If provided, the storage layout is retrieved
+          from this address
+
+  -b, --block &lt;BLOCK&gt;
+          The block height to query at.
+          
+          Can also be the tags earliest, finalized, safe, latest, or pending.
+
+  -r, --rpc-url &lt;URL&gt;
+          The RPC endpoint, default value is http://localhost:8545
+          
+          [env: ETH_RPC_URL=]
+
+  -k, --insecure
+          Allow insecure RPC connections (accept invalid HTTPS certificates).
+          
+          When the provider's inner runtime transport variant is HTTP, this
+          configures the reqwest client to accept invalid certificates.
+
+      --flashbots
+          Use the Flashbots RPC URL with fast mode
+          (&lt;https://rpc.flashbots.net/fast&gt;).
+          
+          This shares the transaction privately with all registered builders.
+          
+          See:
+          &lt;https://docs.flashbots.net/flashbots-protect/quick-start#faster-transactions&gt;
+
+      --jwt-secret &lt;JWT_SECRET&gt;
+          JWT Secret for the RPC endpoint.
+          
+          The JWT secret will be used to create a JWT for a RPC. For example,
+          the following can be used to simulate a CL `engine_forkchoiceUpdated`
+          call:
+          
+          cast rpc --jwt-secret &lt;JWT_SECRET&gt; engine_forkchoiceUpdatedV2
+          '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
+          
+          [env: ETH_RPC_JWT_SECRET=]
+
+      --rpc-timeout &lt;RPC_TIMEOUT&gt;
+          Timeout for the RPC request in seconds.
+          
+          The specified timeout will be used to override the default timeout for
+          RPC requests.
+          
+          Default value: 45
+          
+          [env: ETH_RPC_TIMEOUT=]
+
+      --rpc-headers &lt;RPC_HEADERS&gt;
+          Specify custom headers for RPC requests
+          
+          [env: ETH_RPC_HEADERS=]
+
+  -e, --etherscan-api-key &lt;KEY&gt;
+          The Etherscan (or equivalent) API key
+          
+          [env: ETHERSCAN_API_KEY=]
+
+  -a, --etherscan-api-version &lt;API_VERSION&gt;
+          The Etherscan API version
+          
+          [env: ETHERSCAN_API_VERSION=]
+
+  -c, --chain &lt;CHAIN&gt;
+          The chain name or EIP-155 chain ID
+          
+          [env: CHAIN=]
+
+  -h, --help
+          Print help (see a summary with '-h')
+
+  -j, --threads &lt;THREADS&gt;
+          Number of threads to use. Specifying 0 defaults to the number of
+          logical cores
+          
+          [aliases: --jobs]
+
+Cache options:
+      --force
+          Clear the cache and artifacts folder and recompile
+
+Build options:
+      --no-cache
+          Disable the cache
+
+      --dynamic-test-linking
+          Enable dynamic test linking
+
+      --skip &lt;SKIP&gt;...
+          Skip building files whose names contain the given filter.
+          
+          `test` and `script` are aliases for `.t.sol` and `.s.sol`.
+
+Linker options:
+      --libraries &lt;LIBRARIES&gt;
+          Set pre-linked libraries
+          
+          [env: DAPP_LIBRARIES=]
+
+Compiler options:
+      --ignored-error-codes &lt;ERROR_CODES&gt;
+          Ignore solc warnings by error code
+
+      --deny-warnings
+          Warnings will trigger a compiler error
+
+      --no-auto-detect
+          Do not auto-detect the `solc` version
+
+      --use &lt;SOLC_VERSION&gt;
+          Specify the solc version, or a path to a local solc, to build with.
+          
+          Valid values are in the format `x.y.z`, `solc:x.y.z` or
+          `path/to/solc`.
+
+      --offline
+          Do not access the network.
+          
+          Missing solc versions will not be installed.
+
+      --via-ir
+          Use the Yul intermediate representation compilation pipeline
+
+      --use-literal-content
+          Changes compilation to only use literal content and not URLs
+
+      --no-metadata
+          Do not append any metadata to the bytecode.
+          
+          This is equivalent to setting `bytecode_hash` to `none` and
+          `cbor_metadata` to `false`.
+
+      --ast
+          Includes the AST as JSON in the compiler output
+
+      --evm-version &lt;VERSION&gt;
+          The target EVM version
+
+      --optimize [&lt;OPTIMIZE&gt;]
+          Activate the Solidity optimizer
+          
+          [possible values: true, false]
+
+      --optimizer-runs &lt;RUNS&gt;
+          The number of runs specifies roughly how often each opcode of the
+          deployed code will be executed across the life-time of the contract.
+          This means it is a trade-off parameter between code size (deploy cost)
+          and code execution cost (cost after deployment). An `optimizer_runs`
+          parameter of `1` will produce short but expensive code. In contrast, a
+          larger `optimizer_runs` parameter will produce longer but more gas
+          efficient code
+
+      --extra-output &lt;SELECTOR&gt;...
+          Extra output to include in the contract's artifact.
+          
+          Example keys: evm.assembly, ewasm, ir, irOptimized, metadata
+          
+          For a full description, see
+          &lt;https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description&gt;
+
+      --extra-output-files &lt;SELECTOR&gt;...
+          Extra output to write to separate files.
+          
+          Valid values: metadata, ir, irOptimized, ewasm, evm.assembly
+
+Project options:
+  -o, --out &lt;PATH&gt;
+          The path to the contract artifacts folder
+
+      --revert-strings &lt;REVERT&gt;
+          Revert string configuration.
+          
+          Possible values are "default", "strip" (remove), "debug"
+          (Solidity-generated revert strings) and "verboseDebug"
+
+      --build-info
+          Generate build info files
+
+      --build-info-path &lt;PATH&gt;
+          Output path to directory that build info files will be written to
+
+      --root &lt;PATH&gt;
+          The project's root path.
+          
+          By default root of the Git repository, if in one, or the current
+          working directory.
+
+  -C, --contracts &lt;PATH&gt;
+          The contracts source directory
+
+  -R, --remappings &lt;REMAPPINGS&gt;
+          The project's remappings
+
+      --remappings-env &lt;ENV&gt;
+          The project's remappings from the environment
+
+      --cache-path &lt;PATH&gt;
+          The path to the compiler cache
+
+      --lib-paths &lt;PATH&gt;
+          The path to the library folder
+
+      --hardhat
+          Use the Hardhat-style project layout.
+          
+          This is the same as using: `--contracts contracts --lib-paths
+          node_modules`.
+          
+          [aliases: --hh]
+
+      --config-path &lt;FILE&gt;
+          Path to the config file
+
+Display options:
+      --color &lt;COLOR&gt;
+          The color of the log messages
+
+          Possible values:
+          - auto:   Intelligently guess whether to use color output (default)
+          - always: Force color output
+          - never:  Force disable color output
+
+      --json
+          Format log messages as JSON
+
+  -q, --quiet
+          Do not print log messages
+
+  -v, --verbosity...
+          Verbosity level of the log messages.
+          
+          Pass multiple times to increase the verbosity (e.g. -v, -vv, -vvv).
+          
+          Depending on the context the verbosity levels have different meanings.
+          
+          For example, the verbosity levels of the EVM are:
+          - 2 (-vv): Print logs for all tests.
+          - 3 (-vvv): Print execution traces for failing tests.
+          - 4 (-vvvv): Print execution traces for all tests, and setup traces
+          for failing tests.
+          - 5 (-vvvvv): Print execution and setup traces for all tests,
+          including storage changes.
+```

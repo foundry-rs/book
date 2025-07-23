@@ -25,7 +25,7 @@ contract SafeTest is Test {
 
     // [!region signature]
     function testFuzz_Withdraw(uint96 amount) public {
-        // [!endregion signature]
+    // [!endregion signature]
         payable(address(safe)).transfer(amount);
         uint256 preBalance = address(this).balance;
         safe.withdraw();

@@ -1,0 +1,176 @@
+## cast run
+
+Runs a published transaction in a local environment and prints the trace
+
+```bash
+$ cast run --help
+```
+
+```txt
+Usage: cast run [OPTIONS] &lt;TX_HASH&gt;
+
+Arguments:
+  &lt;TX_HASH&gt;
+          The transaction hash
+
+Options:
+  -d, --debug
+          Opens the transaction in the debugger
+
+      --decode-internal
+          Whether to identify internal functions in traces
+
+  -t, --trace-printer
+          Print out opcode traces
+
+      --quick
+          Executes the transaction only with the state from the previous block.
+          
+          May result in different results than the live execution!
+
+      --disable-labels
+          Disables the labels in the traces
+
+  -l, --label &lt;LABEL&gt;
+          Label addresses in the trace.
+          
+          Example: 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045:vitalik.eth
+
+  -e, --etherscan-api-key &lt;KEY&gt;
+          The Etherscan (or equivalent) API key
+          
+          [env: ETHERSCAN_API_KEY=]
+
+  -a, --etherscan-api-version &lt;API_VERSION&gt;
+          The Etherscan API version
+          
+          [env: ETHERSCAN_API_VERSION=]
+
+  -c, --chain &lt;CHAIN&gt;
+          The chain name or EIP-155 chain ID
+          
+          [env: CHAIN=]
+
+  -r, --rpc-url &lt;URL&gt;
+          The RPC endpoint, default value is http://localhost:8545
+          
+          [env: ETH_RPC_URL=]
+
+  -k, --insecure
+          Allow insecure RPC connections (accept invalid HTTPS certificates).
+          
+          When the provider's inner runtime transport variant is HTTP, this
+          configures the reqwest client to accept invalid certificates.
+
+      --flashbots
+          Use the Flashbots RPC URL with fast mode
+          (&lt;https://rpc.flashbots.net/fast&gt;).
+          
+          This shares the transaction privately with all registered builders.
+          
+          See:
+          &lt;https://docs.flashbots.net/flashbots-protect/quick-start#faster-transactions&gt;
+
+      --jwt-secret &lt;JWT_SECRET&gt;
+          JWT Secret for the RPC endpoint.
+          
+          The JWT secret will be used to create a JWT for a RPC. For example,
+          the following can be used to simulate a CL `engine_forkchoiceUpdated`
+          call:
+          
+          cast rpc --jwt-secret &lt;JWT_SECRET&gt; engine_forkchoiceUpdatedV2
+          '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
+          
+          [env: ETH_RPC_JWT_SECRET=]
+
+      --rpc-timeout &lt;RPC_TIMEOUT&gt;
+          Timeout for the RPC request in seconds.
+          
+          The specified timeout will be used to override the default timeout for
+          RPC requests.
+          
+          Default value: 45
+          
+          [env: ETH_RPC_TIMEOUT=]
+
+      --rpc-headers &lt;RPC_HEADERS&gt;
+          Specify custom headers for RPC requests
+          
+          [env: ETH_RPC_HEADERS=]
+
+      --evm-version &lt;EVM_VERSION&gt;
+          The EVM version to use.
+          
+          Overrides the version specified in the config.
+
+      --compute-units-per-second &lt;CUPS&gt;
+          Sets the number of assumed available compute units per second for this
+          provider
+          
+          default value: 330
+          
+          See also,
+          &lt;https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second&gt;
+
+      --no-rate-limit
+          Disables rate limiting for this node's provider.
+          
+          default value: false
+          
+          See also,
+          &lt;https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second&gt;
+          
+          [aliases: --no-rpc-rate-limit]
+
+      --odyssey
+          Enables Odyssey features
+
+      --with-local-artifacts
+          Use current project artifacts for trace decoding
+          
+          [aliases: --la]
+
+      --disable-block-gas-limit
+          Disable block gas limit check
+
+  -h, --help
+          Print help (see a summary with '-h')
+
+  -j, --threads &lt;THREADS&gt;
+          Number of threads to use. Specifying 0 defaults to the number of
+          logical cores
+          
+          [aliases: --jobs]
+
+Display options:
+      --color &lt;COLOR&gt;
+          The color of the log messages
+
+          Possible values:
+          - auto:   Intelligently guess whether to use color output (default)
+          - always: Force color output
+          - never:  Force disable color output
+
+      --json
+          Format log messages as JSON
+
+  -q, --quiet
+          Do not print log messages
+
+  -v, --verbosity...
+          Verbosity level of the log messages.
+          
+          Pass multiple times to increase the verbosity (e.g. -v, -vv, -vvv).
+          
+          Depending on the context the verbosity levels have different meanings.
+          
+          For example, the verbosity levels of the EVM are:
+          - 2 (-vv): Print logs for all tests.
+          - 3 (-vvv): Print execution traces for failing tests.
+          - 4 (-vvvv): Print execution traces for all tests, and setup traces
+          for failing tests.
+          - 5 (-vvvvv): Print execution and setup traces for all tests,
+          including storage changes.
+```

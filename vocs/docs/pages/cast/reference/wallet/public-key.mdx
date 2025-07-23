@@ -1,0 +1,123 @@
+## cast wallet public-key
+
+Get the public key for the given private key
+
+```bash
+$ cast wallet public-key --help
+```
+
+```txt
+Usage: cast wallet public-key [OPTIONS]
+
+Options:
+      --raw-private-key &lt;PRIVATE_KEY&gt;
+          If provided, the public key will be derived from the specified private
+          key
+
+  -h, --help
+          Print help (see a summary with '-h')
+
+  -j, --threads &lt;THREADS&gt;
+          Number of threads to use. Specifying 0 defaults to the number of
+          logical cores
+          
+          [aliases: --jobs]
+
+Wallet options - raw:
+  -f, --from &lt;ADDRESS&gt;
+          The sender account
+          
+          [env: ETH_FROM=]
+
+  -i, --interactive
+          Open an interactive prompt to enter your private key
+
+      --private-key &lt;RAW_PRIVATE_KEY&gt;
+          Use the provided private key
+
+      --mnemonic &lt;MNEMONIC&gt;
+          Use the mnemonic phrase of mnemonic file at the specified path
+
+      --mnemonic-passphrase &lt;PASSPHRASE&gt;
+          Use a BIP39 passphrase for the mnemonic
+
+      --mnemonic-derivation-path &lt;PATH&gt;
+          The wallet derivation path.
+          
+          Works with both --mnemonic-path and hardware wallets.
+
+      --mnemonic-index &lt;INDEX&gt;
+          Use the private key from the given mnemonic index.
+          
+          Used with --mnemonic-path.
+          
+          [default: 0]
+
+Wallet options - keystore:
+      --keystore &lt;PATH&gt;
+          Use the keystore in the given folder or file
+          
+          [env: ETH_KEYSTORE=]
+
+      --account &lt;ACCOUNT_NAME&gt;
+          Use a keystore from the default keystores folder
+          (~/.foundry/keystores) by its filename
+          
+          [env: ETH_KEYSTORE_ACCOUNT=]
+
+      --password &lt;PASSWORD&gt;
+          The keystore password.
+          
+          Used with --keystore.
+
+      --password-file &lt;PASSWORD_FILE&gt;
+          The keystore password file path.
+          
+          Used with --keystore.
+          
+          [env: ETH_PASSWORD=]
+
+Wallet options - hardware wallet:
+  -l, --ledger
+          Use a Ledger hardware wallet
+
+  -t, --trezor
+          Use a Trezor hardware wallet
+
+Wallet options - remote:
+      --aws
+          Use AWS Key Management Service
+
+      --gcp
+          Use Google Cloud Key Management Service
+
+Display options:
+      --color &lt;COLOR&gt;
+          The color of the log messages
+
+          Possible values:
+          - auto:   Intelligently guess whether to use color output (default)
+          - always: Force color output
+          - never:  Force disable color output
+
+      --json
+          Format log messages as JSON
+
+  -q, --quiet
+          Do not print log messages
+
+  -v, --verbosity...
+          Verbosity level of the log messages.
+          
+          Pass multiple times to increase the verbosity (e.g. -v, -vv, -vvv).
+          
+          Depending on the context the verbosity levels have different meanings.
+          
+          For example, the verbosity levels of the EVM are:
+          - 2 (-vv): Print logs for all tests.
+          - 3 (-vvv): Print execution traces for failing tests.
+          - 4 (-vvvv): Print execution traces for all tests, and setup traces
+          for failing tests.
+          - 5 (-vvvvv): Print execution and setup traces for all tests,
+          including storage changes.
+```

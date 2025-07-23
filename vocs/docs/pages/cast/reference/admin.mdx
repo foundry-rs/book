@@ -1,0 +1,109 @@
+## cast admin
+
+Fetch the EIP-1967 admin account
+
+```bash
+$ cast admin --help
+```
+
+```txt
+Usage: cast admin [OPTIONS] &lt;WHO&gt;
+
+Arguments:
+  &lt;WHO&gt;
+          The address from which the admin account will be fetched
+
+Options:
+  -B, --block &lt;BLOCK&gt;
+          The block height to query at.
+          
+          Can also be the tags earliest, finalized, safe, latest, or pending.
+
+  -r, --rpc-url &lt;URL&gt;
+          The RPC endpoint, default value is http://localhost:8545
+          
+          [env: ETH_RPC_URL=]
+
+  -k, --insecure
+          Allow insecure RPC connections (accept invalid HTTPS certificates).
+          
+          When the provider's inner runtime transport variant is HTTP, this
+          configures the reqwest client to accept invalid certificates.
+
+      --flashbots
+          Use the Flashbots RPC URL with fast mode
+          (&lt;https://rpc.flashbots.net/fast&gt;).
+          
+          This shares the transaction privately with all registered builders.
+          
+          See:
+          &lt;https://docs.flashbots.net/flashbots-protect/quick-start#faster-transactions&gt;
+
+      --jwt-secret &lt;JWT_SECRET&gt;
+          JWT Secret for the RPC endpoint.
+          
+          The JWT secret will be used to create a JWT for a RPC. For example,
+          the following can be used to simulate a CL `engine_forkchoiceUpdated`
+          call:
+          
+          cast rpc --jwt-secret &lt;JWT_SECRET&gt; engine_forkchoiceUpdatedV2
+          '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
+          
+          [env: ETH_RPC_JWT_SECRET=]
+
+      --rpc-timeout &lt;RPC_TIMEOUT&gt;
+          Timeout for the RPC request in seconds.
+          
+          The specified timeout will be used to override the default timeout for
+          RPC requests.
+          
+          Default value: 45
+          
+          [env: ETH_RPC_TIMEOUT=]
+
+      --rpc-headers &lt;RPC_HEADERS&gt;
+          Specify custom headers for RPC requests
+          
+          [env: ETH_RPC_HEADERS=]
+
+  -h, --help
+          Print help (see a summary with '-h')
+
+  -j, --threads &lt;THREADS&gt;
+          Number of threads to use. Specifying 0 defaults to the number of
+          logical cores
+          
+          [aliases: --jobs]
+
+Display options:
+      --color &lt;COLOR&gt;
+          The color of the log messages
+
+          Possible values:
+          - auto:   Intelligently guess whether to use color output (default)
+          - always: Force color output
+          - never:  Force disable color output
+
+      --json
+          Format log messages as JSON
+
+  -q, --quiet
+          Do not print log messages
+
+  -v, --verbosity...
+          Verbosity level of the log messages.
+          
+          Pass multiple times to increase the verbosity (e.g. -v, -vv, -vvv).
+          
+          Depending on the context the verbosity levels have different meanings.
+          
+          For example, the verbosity levels of the EVM are:
+          - 2 (-vv): Print logs for all tests.
+          - 3 (-vvv): Print execution traces for failing tests.
+          - 4 (-vvvv): Print execution traces for all tests, and setup traces
+          for failing tests.
+          - 5 (-vvvvv): Print execution and setup traces for all tests,
+          including storage changes.
+```
