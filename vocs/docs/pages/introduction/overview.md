@@ -75,8 +75,8 @@ Complete command references, configuration options, and API documentation for al
 
 - [FAQ](/misc/faq) - Frequently asked questions and troubleshooting
 - **Command References**
-  - [forge Commands](/forge/reference/overview) - Complete forge CLI reference
-  - [cast Commands](/cast/reference/overview) - Complete cast CLI reference
+  - [forge Commands](/forge/reference/forge) - Complete forge CLI reference
+  - [cast Commands](/cast/reference/cast) - Complete cast CLI reference
   - [anvil Commands](/anvil/reference) - Complete anvil CLI reference
   - [chisel Commands](/chisel/reference) - Complete chisel CLI reference
 - **Configuration & APIs**

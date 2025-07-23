@@ -7,8 +7,8 @@
 
 /reference/cast/:id /cast/reference/:id
 /reference/forge/:id /forge/reference/:id
-/reference/forge /forge/reference/overview
-/forge/reference/forge /forge/reference/overview
+/reference/forge /forge/reference/forge
+/forge/reference/forge /forge/reference/forge
 
 /anvil /anvil/overview
 /cast /cast/overview

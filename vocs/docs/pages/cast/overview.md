@@ -56,5 +56,5 @@ cast send --private-key <PRIVATE_KEY> 0x3c44cdddb6a900fa2b585dd299e03d12fa4293bc
 <br></br>
 
 :::info
-See the [`cast` Reference](/cast/reference/overview) for a complete overview of all the available subcommands.
+See the [`cast` Reference](/cast/reference/cast) for a complete overview of all the available subcommands.
 :::
