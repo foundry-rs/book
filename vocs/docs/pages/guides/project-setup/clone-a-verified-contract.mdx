@@ -4,7 +4,7 @@ description: Clone verified on-chain contracts as Foundry projects with source c
 
 ## Clone a Verified Contract
 
-To clone an on-chain verified contract as a Forge project, use [`forge clone`](/forge/reference/forge-clone), say [WETH9](https://etherscan.io/address/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2) on Ethereum mainnet:
+To clone an on-chain verified contract as a Forge project, use [`forge clone`](/forge/reference/clone), say [WETH9](https://etherscan.io/address/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2) on Ethereum mainnet:
 
 ```sh
 // [!include ~/snippets/clone_contract/forge-clone:command]
@@ -24,4 +24,4 @@ Let's see what the `.clone.meta` file looks like:
 // [!include ~/snippets/clone_contract/clone-meta:output]
 ```
 
-`clone.meta` is a compact JSON data file that contains the information of the on-chain contract instance, e.g., contract address, constructor arguments, etc. More details of the metadata can be found in the [reference](/forge/reference/forge-clone).
+`clone.meta` is a compact JSON data file that contains the information of the on-chain contract instance, e.g., contract address, constructor arguments, etc. More details of the metadata can be found in the [reference](/forge/reference/clone).

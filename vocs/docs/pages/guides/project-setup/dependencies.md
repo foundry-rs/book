@@ -8,7 +8,7 @@ Forge manages dependencies using [git submodules](https://git-scm.com/book/en/v2
 
 ### Adding a dependency
 
-To add a dependency, run [`forge install`](/forge/reference/forge-update):
+To add a dependency, run [`forge install`](/forge/reference/install):
 
 ```sh
 // [!include ~/snippets/output/hello_foundry/forge-install:all]
@@ -85,7 +85,7 @@ This approach ensures that each dependency is mapped to the appropriate library 
 
 ### Updating dependencies
 
-You can update a specific dependency to the latest commit on the version you have specified using [`forge update <dep>`](/forge/reference/forge-update). For example, if we wanted to pull the latest commit from our previously installed master-version of `solady`, we would run:
+You can update a specific dependency to the latest commit on the version you have specified using [`forge update <dep>`](/forge/reference/update). For example, if we wanted to pull the latest commit from our previously installed master-version of `solady`, we would run:
 
 ```sh
 forge update lib/solady
@@ -95,7 +95,7 @@ Alternatively, you can do this for all dependencies at once by just running `for
 
 ### Removing dependencies
 
-You can remove dependencies using [`forge remove <deps>...`](/forge/reference/forge-remove), where `<deps>` is either the full path to the dependency or just the name. For example, to remove `solady` both of these commands are equivalent:
+You can remove dependencies using [`forge remove <deps>...`](/forge/reference/remove), where `<deps>` is either the full path to the dependency or just the name. For example, to remove `solady` both of these commands are equivalent:
 
 ```sh
 forge remove solady
