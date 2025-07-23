@@ -45,7 +45,7 @@ async function fetchAllReleases(): Promise<GitHubRelease[]> {
         if (response.status === 403) {
           console.warn('⚠️  GitHub API rate limit may have been reached. Consider setting GITHUB_TOKEN environment variable.');
         }
-        throw new Error(`Failed to fetch releases: ${response.status} ${response.statusText}`);
+        // throw new Error(`Failed to fetch releases: ${response.status} ${response.statusText}`);
       }
 
       const releases = await response.json();
