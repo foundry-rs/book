@@ -450,6 +450,10 @@ export const sidebar: Sidebar = [
     items: cmdReference,
   },
   {
+    text: "Releases",
+    link: "/releases",
+  },
+  {
     text: "Miscellaneous",
     items: [
       { text: "v1.0 migration guide", link: "/misc/v1.0-migration" },
