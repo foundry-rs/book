@@ -45,6 +45,7 @@ async function fetchAllReleases(): Promise<GitHubRelease[]> {
         if (response.status === 403) {
           console.warn('⚠️  GitHub API rate limit may have been reached. Consider setting GITHUB_TOKEN environment variable.');
         }
+        return [];
         // throw new Error(`Failed to fetch releases: ${response.status} ${response.statusText}`);
       }
 
@@ -211,6 +212,10 @@ async function main() {
     console.log('Fetching all Foundry releases...');
     
     const allReleases = await fetchAllReleases();
+
+    if (allReleases.length === 0) {
+      return;
+    }
     
     // Filter out drafts
     const publishedReleases = allReleases.filter(r => !r.draft);
