@@ -5,10 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vocs dev",
-    "build": "bun run fetch-release && vocs build",
+    "build": "bun run fetch-releases && vocs build",
     "preview": "bun run build && vocs preview",
     "check-links": "bun check-links.ts",
-    "fetch-release": "bun scripts/fetch-release.ts"
+    "fetch-releases": "bun scripts/fetch-releases.ts"
   },
   "dependencies": {
     "react": "latest",

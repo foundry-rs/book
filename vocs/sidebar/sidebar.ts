@@ -452,6 +452,11 @@ export const sidebar: Sidebar = [
   {
     text: "Releases",
     link: "/releases",
+    items: [
+      { text: "Latest", link: "/releases" },
+      { text: "Stable", link: "/releases/stable" },
+      { text: "Nightly", link: "/releases/nightly" },
+    ],
   },
   {
     text: "Miscellaneous",
