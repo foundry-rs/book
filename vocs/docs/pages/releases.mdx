@@ -3,220 +3,220 @@ title: Foundry Releases
 description: Latest release notes for Foundry
 ---
 
-## v1.3.0-rc1
+# v1.3.0-rc1
 
 Published on July 17, 2025 • [View on GitHub](https://github.com/foundry-rs/foundry/releases/tag/v1.3.0-rc1)
 
 ## Anvil Features
-- feat(anvil): add block context overrides for eth_call and eth_estimateGas (#10487) by @mablr
-- feat: added rpc method to deal ERC20 tokens (#10495) by @Soubhik-10
-- feat: implement add_balance endpoint (#10636) by @pistomat
-- feat: Add anvil set erc20 allowance endpoint (#10746) by @pistomat
-- feat: added eth_sendRawTransactionSync and eth_sendTransactionSync support for anvil (#10860) by @Rimeeeeee
-- feat(`anvil`): reset to in-mem (#10897) by @yash-atreya
-- feat: added get_blob_by_hash (#10987) by @Soubhik-10
+- feat(anvil): add block context overrides for eth_call and eth_estimateGas ([#10487](https://github.com/foundry-rs/foundry/pull/10487)) by [@mablr](https://github.com/mablr)
+- feat: added rpc method to deal ERC20 tokens ([#10495](https://github.com/foundry-rs/foundry/pull/10495)) by [@Soubhik](https://github.com/Soubhik)-10
+- feat: implement add_balance endpoint ([#10636](https://github.com/foundry-rs/foundry/pull/10636)) by [@pistomat](https://github.com/pistomat)
+- feat: Add anvil set erc20 allowance endpoint ([#10746](https://github.com/foundry-rs/foundry/pull/10746)) by [@pistomat](https://github.com/pistomat)
+- feat: added eth_sendRawTransactionSync and eth_sendTransactionSync support for anvil ([#10860](https://github.com/foundry-rs/foundry/pull/10860)) by [@Rimeeeeee](https://github.com/Rimeeeeee)
+- feat(`anvil`): reset to in-mem ([#10897](https://github.com/foundry-rs/foundry/pull/10897)) by [@yash](https://github.com/yash)-atreya
+- feat: added get_blob_by_hash ([#10987](https://github.com/foundry-rs/foundry/pull/10987)) by [@Soubhik](https://github.com/Soubhik)-10
 
 ## Anvil Fixes
 
-- fix(anvil): guard against the blockchain advancing while checking latest block (#10714) by @alexghr
-- bug(anvil): incorrectly adds +1 gas when estimating transactions with explicit empty data field (#10786) by @gitToki
-- fix(`anvil`): inject the P256 precompile for `--odyssey` upon EVM construction and fix `NotActivated` error for `--optimism` (#10567) by @zerosnacks
-- fix(`anvil`): latest evm version should be prague (#10653) by @yash-atreya
-- fix: populate missing fields for eth simulate (#10682) by @mattsse
-- fix: receipt conversion (#10853) by @mattsse
-- fix: spawn state writer blocking (#10922) by @mattsse
-- fix: dont check pool for gettransaction receipt (#10946) by @mattsse
-- fix: use correct mix hash for header (#10951) by @mattsse
+- fix(anvil): guard against the blockchain advancing while checking latest block ([#10714](https://github.com/foundry-rs/foundry/pull/10714)) by [@alexghr](https://github.com/alexghr)
+- bug(anvil): incorrectly adds +1 gas when estimating transactions with explicit empty data field ([#10786](https://github.com/foundry-rs/foundry/pull/10786)) by [@gitToki](https://github.com/gitToki)
+- fix(`anvil`): inject the P256 precompile for `--odyssey` upon EVM construction and fix `NotActivated` error for `--optimism` ([#10567](https://github.com/foundry-rs/foundry/pull/10567)) by [@zerosnacks](https://github.com/zerosnacks)
+- fix(`anvil`): latest evm version should be prague ([#10653](https://github.com/foundry-rs/foundry/pull/10653)) by [@yash](https://github.com/yash)-atreya
+- fix: populate missing fields for eth simulate ([#10682](https://github.com/foundry-rs/foundry/pull/10682)) by [@mattsse](https://github.com/mattsse)
+- fix: receipt conversion ([#10853](https://github.com/foundry-rs/foundry/pull/10853)) by [@mattsse](https://github.com/mattsse)
+- fix: spawn state writer blocking ([#10922](https://github.com/foundry-rs/foundry/pull/10922)) by [@mattsse](https://github.com/mattsse)
+- fix: dont check pool for gettransaction receipt ([#10946](https://github.com/foundry-rs/foundry/pull/10946)) by [@mattsse](https://github.com/mattsse)
+- fix: use correct mix hash for header ([#10951](https://github.com/foundry-rs/foundry/pull/10951)) by [@mattsse](https://github.com/mattsse)
 
 ## Cast Features
 
-- feat: add cast da-estimate (#10588) by @mattsse
-- feat(cast mktx): add support for "--ethsign" option (#10641) by @mablr
-- feat(cast): add `--cost` for  `estimate` to return the eth cost at current gas price (#9687) by @0xvv
-- feat(cast): display public_key on wallet creation with "new" and "new-mnemonic" sub-commands (#10600) by @mablr
-- feat(cast): Verbose signing output (#10529) by @GregTheGreek
-- feat(cast): `compute_address` add support CREATE2 addresses (#10783) by @mablr
-- feat: added block.time and block.number override in cast (#10727) by @Soubhik-10
-- feat(cast): add recover-authority for EIP7702 Authorization (#10839) by @jsvisa
-- cast: Improve debugger when tracing on-chain transactions/calls (#10596) by @ngotchac
-- feat(cast): print a warning on calling a contract without code (#10842) by @ryzhak
-- feat(cast): add flag to disable HTTPS certificate validation for RPC (#10869) by @mablr
-- feat(cast): add flag to disable alias (#10924) by @varun-doshi
-- feat(cast): rpc --json should format as json (#10871) by @jsvisa
-- feat(cast): add disable-labels for cast run (#10970) by @grandizzy
-- feat(cast): add `--raw` option to block subcommand (#11027) by @mablr
+- feat: add cast da-estimate ([#10588](https://github.com/foundry-rs/foundry/pull/10588)) by [@mattsse](https://github.com/mattsse)
+- feat(cast mktx): add support for "--ethsign" option ([#10641](https://github.com/foundry-rs/foundry/pull/10641)) by [@mablr](https://github.com/mablr)
+- feat(cast): add `--cost` for  `estimate` to return the eth cost at current gas price ([#9687](https://github.com/foundry-rs/foundry/pull/9687)) by [@0xvv](https://github.com/0xvv)
+- feat(cast): display public_key on wallet creation with "new" and "new-mnemonic" sub-commands ([#10600](https://github.com/foundry-rs/foundry/pull/10600)) by [@mablr](https://github.com/mablr)
+- feat(cast): Verbose signing output ([#10529](https://github.com/foundry-rs/foundry/pull/10529)) by [@GregTheGreek](https://github.com/GregTheGreek)
+- feat(cast): `compute_address` add support CREATE2 addresses ([#10783](https://github.com/foundry-rs/foundry/pull/10783)) by [@mablr](https://github.com/mablr)
+- feat: added block.time and block.number override in cast ([#10727](https://github.com/foundry-rs/foundry/pull/10727)) by [@Soubhik](https://github.com/Soubhik)-10
+- feat(cast): add recover-authority for EIP7702 Authorization ([#10839](https://github.com/foundry-rs/foundry/pull/10839)) by [@jsvisa](https://github.com/jsvisa)
+- cast: Improve debugger when tracing on-chain transactions/calls ([#10596](https://github.com/foundry-rs/foundry/pull/10596)) by [@ngotchac](https://github.com/ngotchac)
+- feat(cast): print a warning on calling a contract without code ([#10842](https://github.com/foundry-rs/foundry/pull/10842)) by [@ryzhak](https://github.com/ryzhak)
+- feat(cast): add flag to disable HTTPS certificate validation for RPC ([#10869](https://github.com/foundry-rs/foundry/pull/10869)) by [@mablr](https://github.com/mablr)
+- feat(cast): add flag to disable alias ([#10924](https://github.com/foundry-rs/foundry/pull/10924)) by [@varun](https://github.com/varun)-doshi
+- feat(cast): rpc --json should format as json ([#10871](https://github.com/foundry-rs/foundry/pull/10871)) by [@jsvisa](https://github.com/jsvisa)
+- feat(cast): add disable-labels for cast run ([#10970](https://github.com/foundry-rs/foundry/pull/10970)) by [@grandizzy](https://github.com/grandizzy)
+- feat(cast): add `--raw` option to block subcommand ([#11027](https://github.com/foundry-rs/foundry/pull/11027)) by [@mablr](https://github.com/mablr)
 
 ## Cast Fixes
 
-- fix(`cast`): respect `full` arg in `cast block` (#10536) by @mattsse
-- fix: check for auth when deriving legacy (#10619) by @mattsse
-- fix(cast): read all lines for message to hash (#10671) by @grandizzy
-- fix: always update auth txenv var (#10707) by @mattsse
-- fix(cast): do not use default overrides if no override arg (#10710) by @grandizzy
-- fix(cast call/estimate/send): omit function selector from arguments on create calls (#10948) by @nuntax
-- fix(cast): disassembler PC & end of code push padding (#10520) by @Philogy
-- fix(`cast`): include zero address as known system sender in cast run (#10608) by @yash-atreya
-- fix: make sign and verify symmetrical (#10614) by @mattsse
-- fix: check for op deposit tx when handling cast tx (#10742) by @mattsse
-- fix: Respect `--override-*` flags on `cast call` with `--trace` flag (#10721) by @Yen
-- fix(cast): Always use from field of getTransaction rpc response in cast run (#10795) by @ckoopmann
-- fix(`cast`): bump alloy-chains to 0.2.5 for Ethereum V2 API compatility w/ `cast` (#10912) by @zerosnacks
-- fix(cast): account state diffs overrides (#10982) by @grandizzy
+- fix(`cast`): respect `full` arg in `cast block` ([#10536](https://github.com/foundry-rs/foundry/pull/10536)) by [@mattsse](https://github.com/mattsse)
+- fix: check for auth when deriving legacy ([#10619](https://github.com/foundry-rs/foundry/pull/10619)) by [@mattsse](https://github.com/mattsse)
+- fix(cast): read all lines for message to hash ([#10671](https://github.com/foundry-rs/foundry/pull/10671)) by [@grandizzy](https://github.com/grandizzy)
+- fix: always update auth txenv var ([#10707](https://github.com/foundry-rs/foundry/pull/10707)) by [@mattsse](https://github.com/mattsse)
+- fix(cast): do not use default overrides if no override arg ([#10710](https://github.com/foundry-rs/foundry/pull/10710)) by [@grandizzy](https://github.com/grandizzy)
+- fix(cast call/estimate/send): omit function selector from arguments on create calls ([#10948](https://github.com/foundry-rs/foundry/pull/10948)) by [@nuntax](https://github.com/nuntax)
+- fix(cast): disassembler PC & end of code push padding ([#10520](https://github.com/foundry-rs/foundry/pull/10520)) by [@Philogy](https://github.com/Philogy)
+- fix(`cast`): include zero address as known system sender in cast run ([#10608](https://github.com/foundry-rs/foundry/pull/10608)) by [@yash](https://github.com/yash)-atreya
+- fix: make sign and verify symmetrical ([#10614](https://github.com/foundry-rs/foundry/pull/10614)) by [@mattsse](https://github.com/mattsse)
+- fix: check for op deposit tx when handling cast tx ([#10742](https://github.com/foundry-rs/foundry/pull/10742)) by [@mattsse](https://github.com/mattsse)
+- fix: Respect `--override-*` flags on `cast call` with `--trace` flag ([#10721](https://github.com/foundry-rs/foundry/pull/10721)) by [@Yen](https://github.com/Yen)
+- fix(cast): Always use from field of getTransaction rpc response in cast run ([#10795](https://github.com/foundry-rs/foundry/pull/10795)) by [@ckoopmann](https://github.com/ckoopmann)
+- fix(`cast`): bump alloy-chains to 0.2.5 for Ethereum V2 API compatility w/ `cast` ([#10912](https://github.com/foundry-rs/foundry/pull/10912)) by [@zerosnacks](https://github.com/zerosnacks)
+- fix(cast): account state diffs overrides ([#10982](https://github.com/foundry-rs/foundry/pull/10982)) by [@grandizzy](https://github.com/grandizzy)
 
 ## Chisel Fixes
 
-- fix(chisel): memory data location for string and bytes params (#10729) by @grandizzy
+- fix(chisel): memory data location for string and bytes params ([#10729](https://github.com/foundry-rs/foundry/pull/10729)) by [@grandizzy](https://github.com/grandizzy)
 
 ## Forge Features
 
-- feat(forge): revert diagnostic inspector (#10446) by @0xrusowsky
-- feat(forge): forge lint (#10405) by @0xrusowsky
-- feat(forge): eip712 cheatcodes + forge cmd (eip712 + bind-json) with solar (#10510) by @0xrusowsky
-- feat(forge vb): creation code from tx trace (#10751) by @grandizzy
-- feat(`dependencies`): support pinning of tags / revs when using `.gitmodules` with `foundry.lock` (#9522) by @yash-atreya
-- feat(forge): cheatcodes to crosschain sign and attach delegation (#10518) by @grandizzy
-- feat(forge inspect): Add standard-json as inspect output field (#10537) by @2xic
-- feat(script): keep script / tx timestamp as milis instead seconds (#10711) by @grandizzy
-- feat(`forge`): run lint on forge build (#10748) by @yash-atreya
-- feat(forge): table tests (#10775) by @grandizzy
-- feat: add useSeed cheatcode to set RNG seed (#10698) by @Another-DevX
-- feat(forge): `--exclude-tests` option from coverage (#10807) by @grandizzy
-- feat(forge): coverage guided fuzzing & time based campaigns for invariant mode (#10190) by @0xalpharush
-- feat(fmt): dprint for toml, json, md, dockerfile, ts, & yml (#10824) by @o-az
-- feat(forge lint): disable lints with inline comment (#10776) by @0xrusowsky
-- feat(cheatcodes): extend usable range in `assertApproxEqRel` (#10758) by @beeb
-- feat(forge-lint): [claude] unchecked calls (#10810) by @0xrusowsky
-- feat(forge lint): unused imports (#10662) by @0xrusowsky
-- feat(forge build): cache project selectors by default (#10651) by @mablr
-- feat: added disable-code-size-limit flag in forge script (#10661) by @Soubhik-10
-- feat: add mesc chainid lookup (#10927) by @mattsse
-- feat(forge): support vyper contract verification in `forge verify-contract` (#10864) by @Another-DevX
-- feat(forge): apply fail_on_revert for fuzz tests too (#10941) by @grandizzy
-- feat(forge): add support for repository-path in forge doc (#10879) by @nitininhouse
-- feat: fuzzer metrics (#10988) by @0xalpharush
-- feat(forge-lint): new `LateLintPass` + support code snippets (#10846) by @0xrusowsky
-- feat(forge fmt): Adds tab support as indent char in fmt (#10979) by @mathewmeconry
+- feat(forge): revert diagnostic inspector ([#10446](https://github.com/foundry-rs/foundry/pull/10446)) by [@0xrusowsky](https://github.com/0xrusowsky)
+- feat(forge): forge lint ([#10405](https://github.com/foundry-rs/foundry/pull/10405)) by [@0xrusowsky](https://github.com/0xrusowsky)
+- feat(forge): eip712 cheatcodes + forge cmd (eip712 + bind-json) with solar ([#10510](https://github.com/foundry-rs/foundry/pull/10510)) by [@0xrusowsky](https://github.com/0xrusowsky)
+- feat(forge vb): creation code from tx trace ([#10751](https://github.com/foundry-rs/foundry/pull/10751)) by [@grandizzy](https://github.com/grandizzy)
+- feat(`dependencies`): support pinning of tags / revs when using `.gitmodules` with `foundry.lock` ([#9522](https://github.com/foundry-rs/foundry/pull/9522)) by [@yash](https://github.com/yash)-atreya
+- feat(forge): cheatcodes to crosschain sign and attach delegation ([#10518](https://github.com/foundry-rs/foundry/pull/10518)) by [@grandizzy](https://github.com/grandizzy)
+- feat(forge inspect): Add standard-json as inspect output field ([#10537](https://github.com/foundry-rs/foundry/pull/10537)) by [@2xic](https://github.com/2xic)
+- feat(script): keep script / tx timestamp as milis instead seconds ([#10711](https://github.com/foundry-rs/foundry/pull/10711)) by [@grandizzy](https://github.com/grandizzy)
+- feat(`forge`): run lint on forge build ([#10748](https://github.com/foundry-rs/foundry/pull/10748)) by [@yash](https://github.com/yash)-atreya
+- feat(forge): table tests ([#10775](https://github.com/foundry-rs/foundry/pull/10775)) by [@grandizzy](https://github.com/grandizzy)
+- feat: add useSeed cheatcode to set RNG seed ([#10698](https://github.com/foundry-rs/foundry/pull/10698)) by [@Another](https://github.com/Another)-DevX
+- feat(forge): `--exclude-tests` option from coverage ([#10807](https://github.com/foundry-rs/foundry/pull/10807)) by [@grandizzy](https://github.com/grandizzy)
+- feat(forge): coverage guided fuzzing & time based campaigns for invariant mode ([#10190](https://github.com/foundry-rs/foundry/pull/10190)) by [@0xalpharush](https://github.com/0xalpharush)
+- feat(fmt): dprint for toml, json, md, dockerfile, ts, & yml ([#10824](https://github.com/foundry-rs/foundry/pull/10824)) by [@o](https://github.com/o)-az
+- feat(forge lint): disable lints with inline comment ([#10776](https://github.com/foundry-rs/foundry/pull/10776)) by [@0xrusowsky](https://github.com/0xrusowsky)
+- feat(cheatcodes): extend usable range in `assertApproxEqRel` ([#10758](https://github.com/foundry-rs/foundry/pull/10758)) by [@beeb](https://github.com/beeb)
+- feat(forge-lint): [claude] unchecked calls ([#10810](https://github.com/foundry-rs/foundry/pull/10810)) by [@0xrusowsky](https://github.com/0xrusowsky)
+- feat(forge lint): unused imports ([#10662](https://github.com/foundry-rs/foundry/pull/10662)) by [@0xrusowsky](https://github.com/0xrusowsky)
+- feat(forge build): cache project selectors by default ([#10651](https://github.com/foundry-rs/foundry/pull/10651)) by [@mablr](https://github.com/mablr)
+- feat: added disable-code-size-limit flag in forge script ([#10661](https://github.com/foundry-rs/foundry/pull/10661)) by [@Soubhik](https://github.com/Soubhik)-10
+- feat: add mesc chainid lookup ([#10927](https://github.com/foundry-rs/foundry/pull/10927)) by [@mattsse](https://github.com/mattsse)
+- feat(forge): support vyper contract verification in `forge verify-contract` ([#10864](https://github.com/foundry-rs/foundry/pull/10864)) by [@Another](https://github.com/Another)-DevX
+- feat(forge): apply fail_on_revert for fuzz tests too ([#10941](https://github.com/foundry-rs/foundry/pull/10941)) by [@grandizzy](https://github.com/grandizzy)
+- feat(forge): add support for repository-path in forge doc ([#10879](https://github.com/foundry-rs/foundry/pull/10879)) by [@nitininhouse](https://github.com/nitininhouse)
+- feat: fuzzer metrics ([#10988](https://github.com/foundry-rs/foundry/pull/10988)) by [@0xalpharush](https://github.com/0xalpharush)
+- feat(forge-lint): new `LateLintPass` + support code snippets ([#10846](https://github.com/foundry-rs/foundry/pull/10846)) by [@0xrusowsky](https://github.com/0xrusowsky)
+- feat(forge fmt): Adds tab support as indent char in fmt ([#10979](https://github.com/foundry-rs/foundry/pull/10979)) by [@mathewmeconry](https://github.com/mathewmeconry)
 
 ## Forge Fixes
 
-- fix: fix formating crash caused by non-breaking space in comment. (#10522) by @l1nxy
-- fix(forge): mark prank applied on contract creation too (#10532) by @grandizzy
-- fix(forge): do not revert if event with count 0 not emitted (#10534) by @grandizzy
-- fix(forge): vm.cool mark cold instead storage cleaning (#10546) by @grandizzy
-- fix: `vm.chainId` regression in isolation mode on `nightly` post `revm` bump (#10589) by @zerosnacks
-- fix: eip7702 cheatcodes multiple auth (#10623) by @zjesko
-- fix: adds zksync, abstract to diff gas calc (#10539) by @dutterbutter
-- fix(fmt): 'at' is not a keyword (#10556) by @DaniPopes
-- fix(`forge bind`): add `serde` as a dependency to generated `Cargo.toml` if `Serde` is being derived in bindings (#10563) by @zerosnacks
-- forge(fix): update persistent storage from active db (#10576) by @grandizzy
-- fix(forge lint): do not flag `fn test*` and `fn invariant*` (#10607) by @0xrusowsky
-- feat(forge/script): decode execution traces when `--json` is enabled (#10109) by @0xpanoramix
-- fix(bindings): ensure forge bind generates snake_case file names (#10622) by @zarkk01
-- fix(fmt): 'layout' is not a keyword (#10656) by @DaniPopes
-- fix(forge lint): gas lints (#10667) by @0xrusowsky
-- fix(forge): Ignore file access events to prevent rebuild loop (#10763) by @joeblogg801
-- fix(`forge`): don't include lib in lint runs (#10771) by @yash-atreya
-- show native token symbol on tx broadcast (#10770) by @ahsan-javaiid
-- fix: eip712, bind-json solar cleanups (#10789) by @DaniPopes
-- fix(forge): vm.getChain use config for rpc and alias (#10806) by @grandizzy
-- fix(forge): filter selectors if test contract is target (#10798) by @grandizzy
-- fix: forge doc panic (#10901) by @zerosnacks
-- fix: update block env after tx forking (#10963) by @mattsse
-- fix(forge-lint): [unused imports] check path slice  (#10985) by @0xrusowsky
-- fix(forge-lint): [unused imports] check doc cmnts (inheritdoc) (#11003) by @0xrusowsky
-- fix(`cheatcodes`): count `0` swallows non-matching reverts (#10867) by @yash-atreya
-- fix(invariant): apply targetSelector and excludeSelector for test contract target (#11015) by @grandizzy
-- fix(forge-lint): [unused-imports] manually walk override paths (#11020) by @0xrusowsky
-- fix(`cheatcodes`): load pranked caller acc in state (#11023) by @yash-atreya
-- fix(forge-lint): [inline-config] use relative span positions (#11022) by @0xrusowsky
-- fix: ensure account is always loaded and marked as touched when pranked (#11025) by @zerosnacks
+- fix: fix formating crash caused by non-breaking space in comment. ([#10522](https://github.com/foundry-rs/foundry/pull/10522)) by [@l1nxy](https://github.com/l1nxy)
+- fix(forge): mark prank applied on contract creation too ([#10532](https://github.com/foundry-rs/foundry/pull/10532)) by [@grandizzy](https://github.com/grandizzy)
+- fix(forge): do not revert if event with count 0 not emitted ([#10534](https://github.com/foundry-rs/foundry/pull/10534)) by [@grandizzy](https://github.com/grandizzy)
+- fix(forge): vm.cool mark cold instead storage cleaning ([#10546](https://github.com/foundry-rs/foundry/pull/10546)) by [@grandizzy](https://github.com/grandizzy)
+- fix: `vm.chainId` regression in isolation mode on `nightly` post `revm` bump ([#10589](https://github.com/foundry-rs/foundry/pull/10589)) by [@zerosnacks](https://github.com/zerosnacks)
+- fix: eip7702 cheatcodes multiple auth ([#10623](https://github.com/foundry-rs/foundry/pull/10623)) by [@zjesko](https://github.com/zjesko)
+- fix: adds zksync, abstract to diff gas calc ([#10539](https://github.com/foundry-rs/foundry/pull/10539)) by [@dutterbutter](https://github.com/dutterbutter)
+- fix(fmt): 'at' is not a keyword ([#10556](https://github.com/foundry-rs/foundry/pull/10556)) by [@DaniPopes](https://github.com/DaniPopes)
+- fix(`forge bind`): add `serde` as a dependency to generated `Cargo.toml` if `Serde` is being derived in bindings ([#10563](https://github.com/foundry-rs/foundry/pull/10563)) by [@zerosnacks](https://github.com/zerosnacks)
+- forge(fix): update persistent storage from active db ([#10576](https://github.com/foundry-rs/foundry/pull/10576)) by [@grandizzy](https://github.com/grandizzy)
+- fix(forge lint): do not flag `fn test*` and `fn invariant*` ([#10607](https://github.com/foundry-rs/foundry/pull/10607)) by [@0xrusowsky](https://github.com/0xrusowsky)
+- feat(forge/script): decode execution traces when `--json` is enabled ([#10109](https://github.com/foundry-rs/foundry/pull/10109)) by [@0xpanoramix](https://github.com/0xpanoramix)
+- fix(bindings): ensure forge bind generates snake_case file names ([#10622](https://github.com/foundry-rs/foundry/pull/10622)) by [@zarkk01](https://github.com/zarkk01)
+- fix(fmt): 'layout' is not a keyword ([#10656](https://github.com/foundry-rs/foundry/pull/10656)) by [@DaniPopes](https://github.com/DaniPopes)
+- fix(forge lint): gas lints ([#10667](https://github.com/foundry-rs/foundry/pull/10667)) by [@0xrusowsky](https://github.com/0xrusowsky)
+- fix(forge): Ignore file access events to prevent rebuild loop ([#10763](https://github.com/foundry-rs/foundry/pull/10763)) by [@joeblogg801](https://github.com/joeblogg801)
+- fix(`forge`): don't include lib in lint runs ([#10771](https://github.com/foundry-rs/foundry/pull/10771)) by [@yash](https://github.com/yash)-atreya
+- show native token symbol on tx broadcast ([#10770](https://github.com/foundry-rs/foundry/pull/10770)) by [@ahsan](https://github.com/ahsan)-javaiid
+- fix: eip712, bind-json solar cleanups ([#10789](https://github.com/foundry-rs/foundry/pull/10789)) by [@DaniPopes](https://github.com/DaniPopes)
+- fix(forge): vm.getChain use config for rpc and alias ([#10806](https://github.com/foundry-rs/foundry/pull/10806)) by [@grandizzy](https://github.com/grandizzy)
+- fix(forge): filter selectors if test contract is target ([#10798](https://github.com/foundry-rs/foundry/pull/10798)) by [@grandizzy](https://github.com/grandizzy)
+- fix: forge doc panic ([#10901](https://github.com/foundry-rs/foundry/pull/10901)) by [@zerosnacks](https://github.com/zerosnacks)
+- fix: update block env after tx forking ([#10963](https://github.com/foundry-rs/foundry/pull/10963)) by [@mattsse](https://github.com/mattsse)
+- fix(forge-lint): [unused imports] check path slice  ([#10985](https://github.com/foundry-rs/foundry/pull/10985)) by [@0xrusowsky](https://github.com/0xrusowsky)
+- fix(forge-lint): [unused imports] check doc cmnts (inheritdoc) ([#11003](https://github.com/foundry-rs/foundry/pull/11003)) by [@0xrusowsky](https://github.com/0xrusowsky)
+- fix(`cheatcodes`): count `0` swallows non-matching reverts ([#10867](https://github.com/foundry-rs/foundry/pull/10867)) by [@yash](https://github.com/yash)-atreya
+- fix(invariant): apply targetSelector and excludeSelector for test contract target ([#11015](https://github.com/foundry-rs/foundry/pull/11015)) by [@grandizzy](https://github.com/grandizzy)
+- fix(forge-lint): [unused-imports] manually walk override paths ([#11020](https://github.com/foundry-rs/foundry/pull/11020)) by [@0xrusowsky](https://github.com/0xrusowsky)
+- fix(`cheatcodes`): load pranked caller acc in state ([#11023](https://github.com/foundry-rs/foundry/pull/11023)) by [@yash](https://github.com/yash)-atreya
+- fix(forge-lint): [inline-config] use relative span positions ([#11022](https://github.com/foundry-rs/foundry/pull/11022)) by [@0xrusowsky](https://github.com/0xrusowsky)
+- fix: ensure account is always loaded and marked as touched when pranked ([#11025](https://github.com/foundry-rs/foundry/pull/11025)) by [@zerosnacks](https://github.com/zerosnacks)
 
 ## Performance improvements
 
-- fix: spawn fork backendhandler on current tokio runtime (#10923) by @mattsse
-- perf: find latest block for next-base-fee. replaces #10505 (#10511) by @naps62
+- fix: spawn fork backendhandler on current tokio runtime ([#10923](https://github.com/foundry-rs/foundry/pull/10923)) by [@mattsse](https://github.com/mattsse)
+- perf: find latest block for next-base-fee. replaces [#10505](https://github.com/foundry-rs/foundry/pull/10505) ([#10511](https://github.com/foundry-rs/foundry/pull/10511)) by [@naps62](https://github.com/naps62)
 
 
 ## Other
-- fix(`Makefile`): update `lint-foundry` target to explicitly use nightly (#10526) by @mablr
-- Refactor: abstract global allocator in `foundry-cli` to be used across crates (#10523) by @mablr
-- fix(`common`): find target by path if present (#10538) by @yash-atreya
-- fix: patch solang-parser (#10509) by @DaniPopes
-- bump(`revm`: step 1): bump `revm` to `21.0.0` release (#10183) by @zerosnacks
-- bump(`revm`: step 2): bump `alloy` + `revm` + `alloy-evm` + other deps to latest (#10454) by @yash-atreya
-- feat(foundry-cli::utils): add support for mimalloc and tracy-allocator (#10545) by @mablr
-- fix(`revm bump`): re-add `P256` precompile injection for `forge` / `cast` (#10555) by @zerosnacks
-- chore(cast): upgrade evmole to 0.8.0 (#10585) by @cdump
-- chore(ens): replacing common::ens with the alloy_ens crate. (#10584) by @l1nxy
-- Force `prevrandao` on Rootstock testnet (#10603) by @ahsan-javaiid
-- chore(lint): correct some spans (#10610) by @DaniPopes
-- chore: use dedicated accountinfo type (#10617) by @mattsse
-- chore(deps): bump revm to 24.0.0 (#10601) by @zerosnacks
-- chore: standardize lint help + validate docs existance (#10639) by @0xrusowsky
-- chore(wallets): improve error message for signer instantiation failure (#10646) by @mablr
-- chore: replaced anvil hardforks with alloy hardforks (#10612) by @Rimeeeeee
-- chore: Simplifing mined_logs_for_block filter (#10572) by @Ayushdubey86
-- chore: replaced anvil DepositTransaction with just op_alloy::TxDeposit (#10480) by @Rimeeeeee
-- chore: fixed dead link in `ui_runner.rs` (#10645) by @cypherpepe
-- chore: Add unused deps lint (#10666) by @nguyenethan01
-- chore: activate `prague` hardfork and Solidity version `0.8.30` as default (#10565) by @zerosnacks
-- chore: add license to preprocessor deploy helper (#10684) by @grandizzy
-- chore: add additional check for is_impersonanted (#10701) by @mattsse
-- feat: add some clippy lint (#10479) by @taikoonwang
-- chore(`forge bind`): pin alloy to 1.0 + e2e test (#10724) by @yash-atreya
-- Update README.md (#10725) by @jenpaff
-- chore: update proptest to 1.7.0 (#10733) by @grandizzy
-- chore: remove announcement link in `nightly` as it is unmaintained (#10745) by @zerosnacks
-- fix: adds remaining ZKsync chains for estimate gas checks (#10719) by @dutterbutter
-- refactor: unify ERC20 storage slot discovery logic (#10749) by @mattsse
-- chore: gitignore CLAUDE instructions and settings (#10750) by @yash-atreya
-- fix: pin action gh release to v2.2.2 (#10752) by @grandizzy
-- chore(config): enable show_metrics by default in [invariant] section (#10737) by @0xChaddB
-- chore: update nix flake (#10485) by @shaunkh
-- bug(`nix`): fix build in CI (#10767) by @zerosnacks
-- deps: bump foundry-fork-db 0.15.1 (#10778) by @onbjerg
-- chore: add hash to eip-712 cmd (#10764) by @0xrusowsky
-- ci: don't check all features (#10790) by @DaniPopes
-- chore: pin nextest version in ci (#10800) by @grandizzy
-- chore: clean up unused EOF code (#10715) by @zerosnacks
-- chore: bump vyper 0.4.3 and remove previous `prague` handling (#10808) by @zerosnacks
-- chore: use native alloy functions for otterscan helpers (#10816) by @mattsse
-- chore: reuse alloy lenient blocknumber deserializer (#10817) by @mattsse
-- chore: remove HexDisplay util (#10819) by @mattsse
-- chore: remove unused util (#10818) by @mattsse
-- test(cast): add tests for EIP-712 type names with colons (#10772) by @mattsse
-- chore: use existing minimal_tx_type fn (#10826) by @mattsse
-- refactor: flatten bind_json.rs to one pass without state structs (#10791) by @DaniPopes
-- chore(forge-lint): clickable links + housekeeping  (#10847) by @0xrusowsky
-- Fix typos in test identifiers and improve timestamp assertions (#10851) by @leopardracer
-- fix: replace broken JSON-RPC error code link with EIP-1474 reference (#10717) by @MozirDmitriy
-- chore: simplify tx type conversion (#10862) by @mattsse
-- cast: rm expect dependency_on_unit_never_type_fallback (#10872) by @jsvisa
-- chore(deps): bump alloy-trie 0.9 (#10881) by @DaniPopes
-- chore(cast wallet): get public key using Alloy's helper (#10883) by @mablr
-- Add more unit tests to `cast call` (#10888) by @ryzhak
-- chore: add trace for contract_abi error (#10898) by @mattsse
-- Fix typos in Anvil module comments, docs, and test names (#10889) by @MozirDmitriy
-- fix(links): update foundry book links (#10899) by @sambacha
-- chore: typos (#10908) by @DaniPopes
-- chore: bump to rust edition 2024 (#10802) by @zerosnacks
-- chore: ignore edition 2024 bump in .git-blame-ignore-revs (#10919) by @DaniPopes
-- test: check before listening (#10920) by @mattsse
-- chore: bump to MSRV 1.88 (#10921) by @DaniPopes
-- Fix misleading doc comment for chisel_history_file function (#10928) by @GarmashAlex
-- fix(docs): correct --unlocked flag documentation for RPC transaction signing (#10929) by @CreeptoGengar
-- chore: more etherescan v1 cleanup (#10956) by @grandizzy
-- chore: link rustdocs in README (#10971) by @yash-atreya
-- feat(`foundryup`): avoid unnecessary downloads and verify hashes of downloaded binaries upon install (#10902) by @zerosnacks
-- feat: benchmark suite (#10804) by @yash-atreya
-- docs: Clarify comments in ChiselRunner: fix incomplete and misleading docstrings (#10931) by @GarmashAlex
-- chore(deps): bump to revm 27.0.3 (#10838) by @zerosnacks
-- chore: relax tracer bounds (#11024) by @mattsse
-- chore: remove manual usage of solar SessionGlobals (#10980) by @DaniPopes
-- docs: Fix dead links across the codebase (#11012) by @vtjl10
-- chore: return reorged blocks (#11026) by @mattsse
-- fix(cheatcodes): remove redundant computation in validate_private_key… (#10993) by @reject-i
-- docs(lintrules): reflect latest impl changes (#11031) by @0xrusowsky
+- fix(`Makefile`): update `lint-foundry` target to explicitly use nightly ([#10526](https://github.com/foundry-rs/foundry/pull/10526)) by [@mablr](https://github.com/mablr)
+- Refactor: abstract global allocator in `foundry-cli` to be used across crates ([#10523](https://github.com/foundry-rs/foundry/pull/10523)) by [@mablr](https://github.com/mablr)
+- fix(`common`): find target by path if present ([#10538](https://github.com/foundry-rs/foundry/pull/10538)) by [@yash](https://github.com/yash)-atreya
+- fix: patch solang-parser ([#10509](https://github.com/foundry-rs/foundry/pull/10509)) by [@DaniPopes](https://github.com/DaniPopes)
+- bump(`revm`: step 1): bump `revm` to `21.0.0` release ([#10183](https://github.com/foundry-rs/foundry/pull/10183)) by [@zerosnacks](https://github.com/zerosnacks)
+- bump(`revm`: step 2): bump `alloy` + `revm` + `alloy-evm` + other deps to latest ([#10454](https://github.com/foundry-rs/foundry/pull/10454)) by [@yash](https://github.com/yash)-atreya
+- feat(foundry-cli::utils): add support for mimalloc and tracy-allocator ([#10545](https://github.com/foundry-rs/foundry/pull/10545)) by [@mablr](https://github.com/mablr)
+- fix(`revm bump`): re-add `P256` precompile injection for `forge` / `cast` ([#10555](https://github.com/foundry-rs/foundry/pull/10555)) by [@zerosnacks](https://github.com/zerosnacks)
+- chore(cast): upgrade evmole to 0.8.0 ([#10585](https://github.com/foundry-rs/foundry/pull/10585)) by [@cdump](https://github.com/cdump)
+- chore(ens): replacing common::ens with the alloy_ens crate. ([#10584](https://github.com/foundry-rs/foundry/pull/10584)) by [@l1nxy](https://github.com/l1nxy)
+- Force `prevrandao` on Rootstock testnet ([#10603](https://github.com/foundry-rs/foundry/pull/10603)) by [@ahsan](https://github.com/ahsan)-javaiid
+- chore(lint): correct some spans ([#10610](https://github.com/foundry-rs/foundry/pull/10610)) by [@DaniPopes](https://github.com/DaniPopes)
+- chore: use dedicated accountinfo type ([#10617](https://github.com/foundry-rs/foundry/pull/10617)) by [@mattsse](https://github.com/mattsse)
+- chore(deps): bump revm to 24.0.0 ([#10601](https://github.com/foundry-rs/foundry/pull/10601)) by [@zerosnacks](https://github.com/zerosnacks)
+- chore: standardize lint help + validate docs existance ([#10639](https://github.com/foundry-rs/foundry/pull/10639)) by [@0xrusowsky](https://github.com/0xrusowsky)
+- chore(wallets): improve error message for signer instantiation failure ([#10646](https://github.com/foundry-rs/foundry/pull/10646)) by [@mablr](https://github.com/mablr)
+- chore: replaced anvil hardforks with alloy hardforks ([#10612](https://github.com/foundry-rs/foundry/pull/10612)) by [@Rimeeeeee](https://github.com/Rimeeeeee)
+- chore: Simplifing mined_logs_for_block filter ([#10572](https://github.com/foundry-rs/foundry/pull/10572)) by [@Ayushdubey86](https://github.com/Ayushdubey86)
+- chore: replaced anvil DepositTransaction with just op_alloy::TxDeposit ([#10480](https://github.com/foundry-rs/foundry/pull/10480)) by [@Rimeeeeee](https://github.com/Rimeeeeee)
+- chore: fixed dead link in `ui_runner.rs` ([#10645](https://github.com/foundry-rs/foundry/pull/10645)) by [@cypherpepe](https://github.com/cypherpepe)
+- chore: Add unused deps lint ([#10666](https://github.com/foundry-rs/foundry/pull/10666)) by [@nguyenethan01](https://github.com/nguyenethan01)
+- chore: activate `prague` hardfork and Solidity version `0.8.30` as default ([#10565](https://github.com/foundry-rs/foundry/pull/10565)) by [@zerosnacks](https://github.com/zerosnacks)
+- chore: add license to preprocessor deploy helper ([#10684](https://github.com/foundry-rs/foundry/pull/10684)) by [@grandizzy](https://github.com/grandizzy)
+- chore: add additional check for is_impersonanted ([#10701](https://github.com/foundry-rs/foundry/pull/10701)) by [@mattsse](https://github.com/mattsse)
+- feat: add some clippy lint ([#10479](https://github.com/foundry-rs/foundry/pull/10479)) by [@taikoonwang](https://github.com/taikoonwang)
+- chore(`forge bind`): pin alloy to 1.0 + e2e test ([#10724](https://github.com/foundry-rs/foundry/pull/10724)) by [@yash](https://github.com/yash)-atreya
+- Update README.md ([#10725](https://github.com/foundry-rs/foundry/pull/10725)) by [@jenpaff](https://github.com/jenpaff)
+- chore: update proptest to 1.7.0 ([#10733](https://github.com/foundry-rs/foundry/pull/10733)) by [@grandizzy](https://github.com/grandizzy)
+- chore: remove announcement link in `nightly` as it is unmaintained ([#10745](https://github.com/foundry-rs/foundry/pull/10745)) by [@zerosnacks](https://github.com/zerosnacks)
+- fix: adds remaining ZKsync chains for estimate gas checks ([#10719](https://github.com/foundry-rs/foundry/pull/10719)) by [@dutterbutter](https://github.com/dutterbutter)
+- refactor: unify ERC20 storage slot discovery logic ([#10749](https://github.com/foundry-rs/foundry/pull/10749)) by [@mattsse](https://github.com/mattsse)
+- chore: gitignore CLAUDE instructions and settings ([#10750](https://github.com/foundry-rs/foundry/pull/10750)) by [@yash](https://github.com/yash)-atreya
+- fix: pin action gh release to v2.2.2 ([#10752](https://github.com/foundry-rs/foundry/pull/10752)) by [@grandizzy](https://github.com/grandizzy)
+- chore(config): enable show_metrics by default in [invariant] section ([#10737](https://github.com/foundry-rs/foundry/pull/10737)) by [@0xChaddB](https://github.com/0xChaddB)
+- chore: update nix flake ([#10485](https://github.com/foundry-rs/foundry/pull/10485)) by [@shaunkh](https://github.com/shaunkh)
+- bug(`nix`): fix build in CI ([#10767](https://github.com/foundry-rs/foundry/pull/10767)) by [@zerosnacks](https://github.com/zerosnacks)
+- deps: bump foundry-fork-db 0.15.1 ([#10778](https://github.com/foundry-rs/foundry/pull/10778)) by [@onbjerg](https://github.com/onbjerg)
+- chore: add hash to eip-712 cmd ([#10764](https://github.com/foundry-rs/foundry/pull/10764)) by [@0xrusowsky](https://github.com/0xrusowsky)
+- ci: don't check all features ([#10790](https://github.com/foundry-rs/foundry/pull/10790)) by [@DaniPopes](https://github.com/DaniPopes)
+- chore: pin nextest version in ci ([#10800](https://github.com/foundry-rs/foundry/pull/10800)) by [@grandizzy](https://github.com/grandizzy)
+- chore: clean up unused EOF code ([#10715](https://github.com/foundry-rs/foundry/pull/10715)) by [@zerosnacks](https://github.com/zerosnacks)
+- chore: bump vyper 0.4.3 and remove previous `prague` handling ([#10808](https://github.com/foundry-rs/foundry/pull/10808)) by [@zerosnacks](https://github.com/zerosnacks)
+- chore: use native alloy functions for otterscan helpers ([#10816](https://github.com/foundry-rs/foundry/pull/10816)) by [@mattsse](https://github.com/mattsse)
+- chore: reuse alloy lenient blocknumber deserializer ([#10817](https://github.com/foundry-rs/foundry/pull/10817)) by [@mattsse](https://github.com/mattsse)
+- chore: remove HexDisplay util ([#10819](https://github.com/foundry-rs/foundry/pull/10819)) by [@mattsse](https://github.com/mattsse)
+- chore: remove unused util ([#10818](https://github.com/foundry-rs/foundry/pull/10818)) by [@mattsse](https://github.com/mattsse)
+- test(cast): add tests for EIP-712 type names with colons ([#10772](https://github.com/foundry-rs/foundry/pull/10772)) by [@mattsse](https://github.com/mattsse)
+- chore: use existing minimal_tx_type fn ([#10826](https://github.com/foundry-rs/foundry/pull/10826)) by [@mattsse](https://github.com/mattsse)
+- refactor: flatten bind_json.rs to one pass without state structs ([#10791](https://github.com/foundry-rs/foundry/pull/10791)) by [@DaniPopes](https://github.com/DaniPopes)
+- chore(forge-lint): clickable links + housekeeping  ([#10847](https://github.com/foundry-rs/foundry/pull/10847)) by [@0xrusowsky](https://github.com/0xrusowsky)
+- Fix typos in test identifiers and improve timestamp assertions ([#10851](https://github.com/foundry-rs/foundry/pull/10851)) by [@leopardracer](https://github.com/leopardracer)
+- fix: replace broken JSON-RPC error code link with EIP-1474 reference ([#10717](https://github.com/foundry-rs/foundry/pull/10717)) by [@MozirDmitriy](https://github.com/MozirDmitriy)
+- chore: simplify tx type conversion ([#10862](https://github.com/foundry-rs/foundry/pull/10862)) by [@mattsse](https://github.com/mattsse)
+- cast: rm expect dependency_on_unit_never_type_fallback ([#10872](https://github.com/foundry-rs/foundry/pull/10872)) by [@jsvisa](https://github.com/jsvisa)
+- chore(deps): bump alloy-trie 0.9 ([#10881](https://github.com/foundry-rs/foundry/pull/10881)) by [@DaniPopes](https://github.com/DaniPopes)
+- chore(cast wallet): get public key using Alloy's helper ([#10883](https://github.com/foundry-rs/foundry/pull/10883)) by [@mablr](https://github.com/mablr)
+- Add more unit tests to `cast call` ([#10888](https://github.com/foundry-rs/foundry/pull/10888)) by [@ryzhak](https://github.com/ryzhak)
+- chore: add trace for contract_abi error ([#10898](https://github.com/foundry-rs/foundry/pull/10898)) by [@mattsse](https://github.com/mattsse)
+- Fix typos in Anvil module comments, docs, and test names ([#10889](https://github.com/foundry-rs/foundry/pull/10889)) by [@MozirDmitriy](https://github.com/MozirDmitriy)
+- fix(links): update foundry book links ([#10899](https://github.com/foundry-rs/foundry/pull/10899)) by [@sambacha](https://github.com/sambacha)
+- chore: typos ([#10908](https://github.com/foundry-rs/foundry/pull/10908)) by [@DaniPopes](https://github.com/DaniPopes)
+- chore: bump to rust edition 2024 ([#10802](https://github.com/foundry-rs/foundry/pull/10802)) by [@zerosnacks](https://github.com/zerosnacks)
+- chore: ignore edition 2024 bump in .git-blame-ignore-revs ([#10919](https://github.com/foundry-rs/foundry/pull/10919)) by [@DaniPopes](https://github.com/DaniPopes)
+- test: check before listening ([#10920](https://github.com/foundry-rs/foundry/pull/10920)) by [@mattsse](https://github.com/mattsse)
+- chore: bump to MSRV 1.88 ([#10921](https://github.com/foundry-rs/foundry/pull/10921)) by [@DaniPopes](https://github.com/DaniPopes)
+- Fix misleading doc comment for chisel_history_file function ([#10928](https://github.com/foundry-rs/foundry/pull/10928)) by [@GarmashAlex](https://github.com/GarmashAlex)
+- fix(docs): correct --unlocked flag documentation for RPC transaction signing ([#10929](https://github.com/foundry-rs/foundry/pull/10929)) by [@CreeptoGengar](https://github.com/CreeptoGengar)
+- chore: more etherescan v1 cleanup ([#10956](https://github.com/foundry-rs/foundry/pull/10956)) by [@grandizzy](https://github.com/grandizzy)
+- chore: link rustdocs in README ([#10971](https://github.com/foundry-rs/foundry/pull/10971)) by [@yash](https://github.com/yash)-atreya
+- feat(`foundryup`): avoid unnecessary downloads and verify hashes of downloaded binaries upon install ([#10902](https://github.com/foundry-rs/foundry/pull/10902)) by [@zerosnacks](https://github.com/zerosnacks)
+- feat: benchmark suite ([#10804](https://github.com/foundry-rs/foundry/pull/10804)) by [@yash](https://github.com/yash)-atreya
+- docs: Clarify comments in ChiselRunner: fix incomplete and misleading docstrings ([#10931](https://github.com/foundry-rs/foundry/pull/10931)) by [@GarmashAlex](https://github.com/GarmashAlex)
+- chore(deps): bump to revm 27.0.3 ([#10838](https://github.com/foundry-rs/foundry/pull/10838)) by [@zerosnacks](https://github.com/zerosnacks)
+- chore: relax tracer bounds ([#11024](https://github.com/foundry-rs/foundry/pull/11024)) by [@mattsse](https://github.com/mattsse)
+- chore: remove manual usage of solar SessionGlobals ([#10980](https://github.com/foundry-rs/foundry/pull/10980)) by [@DaniPopes](https://github.com/DaniPopes)
+- docs: Fix dead links across the codebase ([#11012](https://github.com/foundry-rs/foundry/pull/11012)) by [@vtjl10](https://github.com/vtjl10)
+- chore: return reorged blocks ([#11026](https://github.com/foundry-rs/foundry/pull/11026)) by [@mattsse](https://github.com/mattsse)
+- fix(cheatcodes): remove redundant computation in validate_private_key… ([#10993](https://github.com/foundry-rs/foundry/pull/10993)) by [@reject](https://github.com/reject)-i
+- docs(lintrules): reflect latest impl changes ([#11031](https://github.com/foundry-rs/foundry/pull/11031)) by [@0xrusowsky](https://github.com/0xrusowsky)
 
 ## Full Changelog:
  https://github.com/foundry-rs/foundry/compare/v1.2.3...v1.3.0-rc1

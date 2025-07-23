@@ -69,15 +69,31 @@ function formatReleaseForMDX(release: GitHubRelease): string {
   // Convert GitHub markdown to MDX-compatible format
   let body = release.body;
   
-  // Escape any MDX-specific characters if needed
-  body = body.replace(/\{/g, '\\{').replace(/\}/g, '\\}');
+  // Convert GitHub issue/PR references to links
+  // Format: #12345 -> [#12345](https://github.com/foundry-rs/foundry/pull/12345)
+  body = body.replace(/#(\d+)/g, '[#$1](https://github.com/foundry-rs/foundry/pull/$1)');
+  
+  // Convert GitHub user mentions to links
+  // Format: @username -> [@username](https://github.com/username)
+  body = body.replace(/@(\w+)/g, '[@$1](https://github.com/$1)');
+  
+  // Escape any MDX-specific characters if needed (but preserve markdown links)
+  // Only escape curly braces that are not part of links
+  body = body.replace(/(\{|\})/g, (match, p1, offset, str) => {
+    // Check if this brace is inside a markdown link
+    const beforeText = str.substring(0, offset);
+    const afterText = str.substring(offset);
+    const insideLink = (beforeText.lastIndexOf('[') > beforeText.lastIndexOf(']')) || 
+                      (beforeText.lastIndexOf('(') > beforeText.lastIndexOf(')'));
+    return insideLink ? match : '\\' + match;
+  });
   
   const mdxContent = `---
 title: Foundry Releases
 description: Latest release notes for Foundry
 ---
 
-## ${release.name || release.tag_name}
+# ${release.name || release.tag_name}
 
 Published on ${publishedDate} • [View on GitHub](${release.html_url})
 
