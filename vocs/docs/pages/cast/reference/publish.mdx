@@ -24,6 +24,12 @@ Options:
           
           [env: ETH_RPC_URL=]
 
+  -k, --insecure
+          Allow insecure RPC connections (accept invalid HTTPS certificates).
+          
+          When the provider's inner runtime transport variant is HTTP, this
+          configures the reqwest client to accept invalid certificates.
+
       --flashbots
           Use the Flashbots RPC URL with fast mode
           ([https://rpc.flashbots.net/fast](https://rpc.flashbots.net/fast)).
@@ -69,7 +75,7 @@ Options:
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: jobs]
+          [aliases: --jobs]
 
 Display options:
       --color <COLOR>

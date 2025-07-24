@@ -17,7 +17,7 @@ Options:
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: jobs]
+          [aliases: --jobs]
 
 Build options:
       --names
@@ -35,9 +35,6 @@ Build options:
 
       --dynamic-test-linking
           Enable dynamic test linking
-
-      --eof
-          Whether to compile contracts to EOF bytecode
 
       --skip <SKIP>...
           Skip building files whose names contain the given filter.
@@ -166,7 +163,7 @@ Project options:
           This is the same as using: `--contracts contracts --lib-paths
           node_modules`.
           
-          [aliases: hh]
+          [aliases: --hh]
 
       --config-path <FILE>
           Path to the config file

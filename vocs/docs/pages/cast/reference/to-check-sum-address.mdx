@@ -7,11 +7,14 @@ $ cast to-check-sum-address --help
 ```
 
 ```txt
-Usage: cast to-check-sum-address [OPTIONS] [ADDRESS]
+Usage: cast to-check-sum-address [OPTIONS] [ADDRESS] [CHAIN_ID]
 
 Arguments:
   [ADDRESS]
           The address to convert
+
+  [CHAIN_ID]
+          EIP-155 chain ID to encode the address using EIP-1191
 
 Options:
   -h, --help
@@ -21,7 +24,7 @@ Options:
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: jobs]
+          [aliases: --jobs]
 
 Display options:
       --color <COLOR>

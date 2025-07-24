@@ -32,6 +32,9 @@ Options:
           Forks the remote rpc, executes the transaction locally and prints a
           trace
 
+      --disable-labels
+          Disables the labels in the traces. Can only be set with `--trace`
+
       --debug
           Opens an interactive debugger. Can only be used with `--trace`
 
@@ -60,7 +63,7 @@ Options:
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: jobs]
+          [aliases: --jobs]
 
 Transaction options:
       --gas-limit <GAS_LIMIT>
@@ -121,6 +124,12 @@ Ethereum options:
           The RPC endpoint, default value is http://localhost:8545
           
           [env: ETH_RPC_URL=]
+
+  -k, --insecure
+          Allow insecure RPC connections (accept invalid HTTPS certificates).
+          
+          When the provider's inner runtime transport variant is HTTP, this
+          configures the reqwest client to accept invalid certificates.
 
       --flashbots
           Use the Flashbots RPC URL with fast mode
@@ -208,7 +217,7 @@ Wallet options - raw:
       --with-local-artifacts
           Use current project artifacts for trace decoding
           
-          [aliases: la]
+          [aliases: --la]
 
       --override-balance <ADDRESS:BALANCE>
           Override the balance of an account. Format: address:balance
@@ -224,6 +233,12 @@ Wallet options - raw:
 
       --override-state-diff <ADDRESS:SLOT:VALUE>
           Override the state diff of an account. Format: address:slot:value
+
+      --block.time <TIME>
+          Override the block timestamp
+
+      --block.number <NUMBER>
+          Override the block number
 
 Wallet options - keystore:
       --keystore <PATH>

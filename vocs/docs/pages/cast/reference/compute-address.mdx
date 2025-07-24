@@ -17,10 +17,25 @@ Options:
       --nonce <NONCE>
           The nonce of the deployer address
 
+      --salt <SALT>
+          The salt for CREATE2 address computation
+
+      --init-code <INIT_CODE>
+          The init code for CREATE2 address computation
+
+      --init-code-hash <INIT_CODE_HASH>
+          The init code hash for CREATE2 address computation
+
   -r, --rpc-url <URL>
           The RPC endpoint, default value is http://localhost:8545
           
           [env: ETH_RPC_URL=]
+
+  -k, --insecure
+          Allow insecure RPC connections (accept invalid HTTPS certificates).
+          
+          When the provider's inner runtime transport variant is HTTP, this
+          configures the reqwest client to accept invalid certificates.
 
       --flashbots
           Use the Flashbots RPC URL with fast mode
@@ -67,7 +82,7 @@ Options:
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: jobs]
+          [aliases: --jobs]
 
 Display options:
       --color <COLOR>

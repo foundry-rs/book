@@ -20,7 +20,7 @@ Options:
       --constructor-args <ARGS>
           The ABI-encoded constructor arguments
           
-          [aliases: encoded-constructor-args]
+          [aliases: --encoded-constructor-args]
 
       --constructor-args-path <PATH>
           The path to a file containing the constructor arguments
@@ -37,7 +37,7 @@ Options:
       --num-of-optimizations <NUM>
           The number of optimization runs used to build the smart contract
           
-          [aliases: optimizer-runs]
+          [aliases: --optimizer-runs]
 
       --flatten
           Flatten the source code before verifying
@@ -92,6 +92,12 @@ Options:
           
           [env: ETH_RPC_URL=]
 
+  -k, --insecure
+          Allow insecure RPC connections (accept invalid HTTPS certificates).
+          
+          When the provider's inner runtime transport variant is HTTP, this
+          configures the reqwest client to accept invalid certificates.
+
       --flashbots
           Use the Flashbots RPC URL with fast mode
           ([https://rpc.flashbots.net/fast](https://rpc.flashbots.net/fast)).
@@ -140,6 +146,15 @@ Options:
           
           [default: 5]
 
+      --language <LANGUAGE>
+          The contract language (`solidity` or `vyper`).
+          
+          Defaults to `solidity` if none provided.
+
+          Possible values:
+          - solidity: Solidity programming language
+          - vyper:    Vyper programming language
+
   -h, --help
           Print help (see a summary with '-h')
 
@@ -147,7 +162,7 @@ Options:
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: jobs]
+          [aliases: --jobs]
 
 Linker options:
       --libraries <LIBRARIES>

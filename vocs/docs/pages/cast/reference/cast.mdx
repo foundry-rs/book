@@ -51,6 +51,8 @@ Commands:
                          [aliases: c2]
   creation-code          Download a contract creation code from Etherscan and
                          RPC [aliases: cc]
+  da-estimate            Estimates the data availability size of a given opstack
+                         block
   decode-abi             Decode ABI-encoded input or output data [aliases:
                          abi-decode, --abi-decode, ad]
   decode-calldata        Decode ABI-encoded input data [aliases:
@@ -122,6 +124,8 @@ Commands:
   publish                Publish a raw transaction to the network [aliases: p]
   receipt                Get the transaction receipt for a transaction [aliases:
                          re]
+  recover-authority      Recovery an EIP-7702 authority from a Authorization
+                         JSON string [aliases: decode-auth]
   resolve-name           Perform an ENS lookup [aliases: rn]
   rpc                    Perform a raw JSON-RPC request [aliases: rp]
   run                    Runs a published transaction in a local environment and
@@ -182,7 +186,7 @@ Options:
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: jobs]
+          [aliases: --jobs]
 
   -V, --version
           Print version
@@ -217,6 +221,5 @@ Display options:
           - 5 (-vvvvv): Print execution and setup traces for all tests,
           including storage changes.
 
-Find more information in the book:
-http://book.getfoundry.sh/reference/cast/cast.html
+Find more information in the book: https://getfoundry.sh/cast/overview
 ```

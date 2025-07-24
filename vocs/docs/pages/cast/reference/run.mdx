@@ -28,6 +28,9 @@ Options:
           
           May result in different results than the live execution!
 
+      --disable-labels
+          Disables the labels in the traces
+
   -l, --label <LABEL>
           Label addresses in the trace.
           
@@ -52,6 +55,12 @@ Options:
           The RPC endpoint, default value is http://localhost:8545
           
           [env: ETH_RPC_URL=]
+
+  -k, --insecure
+          Allow insecure RPC connections (accept invalid HTTPS certificates).
+          
+          When the provider's inner runtime transport variant is HTTP, this
+          configures the reqwest client to accept invalid certificates.
 
       --flashbots
           Use the Flashbots RPC URL with fast mode
@@ -113,7 +122,7 @@ Options:
           See also,
           [https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second](https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second)
           
-          [aliases: no-rpc-rate-limit]
+          [aliases: --no-rpc-rate-limit]
 
       --odyssey
           Enables Odyssey features
@@ -121,7 +130,7 @@ Options:
       --with-local-artifacts
           Use current project artifacts for trace decoding
           
-          [aliases: la]
+          [aliases: --la]
 
       --disable-block-gas-limit
           Disable block gas limit check
@@ -133,7 +142,7 @@ Options:
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: jobs]
+          [aliases: --jobs]
 
 Display options:
       --color <COLOR>

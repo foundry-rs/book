@@ -33,7 +33,7 @@ Options:
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: jobs]
+          [aliases: --jobs]
 
 Transaction options:
       --gas-limit <GAS_LIMIT>
@@ -97,6 +97,12 @@ Ethereum options:
           The RPC endpoint, default value is http://localhost:8545
           
           [env: ETH_RPC_URL=]
+
+  -k, --insecure
+          Allow insecure RPC connections (accept invalid HTTPS certificates).
+          
+          When the provider's inner runtime transport variant is HTTP, this
+          configures the reqwest client to accept invalid certificates.
 
       --flashbots
           Use the Flashbots RPC URL with fast mode
@@ -185,6 +191,10 @@ Wallet options - raw:
           Generate a raw RLP-encoded unsigned transaction.
           
           Relaxes the wallet requirement.
+
+      --ethsign
+          Call `eth_signTransaction` using the `--from` argument or $ETH_FROM as
+          sender
 
 Wallet options - keystore:
       --keystore <PATH>

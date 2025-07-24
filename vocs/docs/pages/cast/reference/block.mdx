@@ -19,6 +19,9 @@ Options:
   -f, --field <FIELD>
           If specified, only get the given field of the block
 
+      --raw
+          Print the raw RLP encoded block header
+
       --full
           [env: CAST_FULL_BLOCK=]
 
@@ -26,6 +29,12 @@ Options:
           The RPC endpoint, default value is http://localhost:8545
           
           [env: ETH_RPC_URL=]
+
+  -k, --insecure
+          Allow insecure RPC connections (accept invalid HTTPS certificates).
+          
+          When the provider's inner runtime transport variant is HTTP, this
+          configures the reqwest client to accept invalid certificates.
 
       --flashbots
           Use the Flashbots RPC URL with fast mode
@@ -72,7 +81,7 @@ Options:
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: jobs]
+          [aliases: --jobs]
 
 Display options:
       --color <COLOR>

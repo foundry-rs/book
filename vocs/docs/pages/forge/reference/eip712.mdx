@@ -14,6 +14,9 @@ Arguments:
           The path to the file from which to read struct definitions
 
 Options:
+      --json
+          Output in JSON format
+
   -h, --help
           Print help (see a summary with '-h')
 
@@ -21,7 +24,7 @@ Options:
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: jobs]
+          [aliases: --jobs]
 
 Cache options:
       --force
@@ -33,9 +36,6 @@ Build options:
 
       --dynamic-test-linking
           Enable dynamic test linking
-
-      --eof
-          Whether to compile contracts to EOF bytecode
 
       --skip <SKIP>...
           Skip building files whose names contain the given filter.
@@ -157,7 +157,7 @@ Project options:
           This is the same as using: `--contracts contracts --lib-paths
           node_modules`.
           
-          [aliases: hh]
+          [aliases: --hh]
 
       --config-path <FILE>
           Path to the config file
@@ -170,9 +170,6 @@ Display options:
           - auto:   Intelligently guess whether to use color output (default)
           - always: Force color output
           - never:  Force disable color output
-
-      --json
-          Format log messages as JSON
 
   -q, --quiet
           Do not print log messages

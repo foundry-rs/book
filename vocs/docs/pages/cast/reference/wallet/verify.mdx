@@ -11,7 +11,10 @@ Usage: cast wallet verify [OPTIONS] --address <ADDRESS> <MESSAGE> <SIGNATURE>
 
 Arguments:
   <MESSAGE>
-          The original message
+          The original message.
+          
+          Treats 0x-prefixed strings as hex encoded bytes. Non 0x-prefixed
+          strings are treated as raw input message.
 
   <SIGNATURE>
           The signature to verify
@@ -27,7 +30,7 @@ Options:
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: jobs]
+          [aliases: --jobs]
 
 Display options:
       --color <COLOR>

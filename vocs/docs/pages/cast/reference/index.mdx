@@ -1,30 +1,25 @@
-## cast shr
+## cast index
 
-Perform a right shifting operation
+Compute the storage slot for an entry in a mapping
 
 ```bash
-$ cast shr --help
+$ cast index --help
 ```
 
 ```txt
-Usage: cast shr [OPTIONS] <VALUE> <BITS>
+Usage: cast index [OPTIONS] <KEY_TYPE> <KEY> <SLOT_NUMBER>
 
 Arguments:
-  <VALUE>
-          The value to shift
+  <KEY_TYPE>
+          The mapping key type
 
-  <BITS>
-          The number of bits to shift
+  <KEY>
+          The mapping key
+
+  <SLOT_NUMBER>
+          The storage slot of the mapping
 
 Options:
-      --base-in <BASE_IN>
-          The input base,
-
-      --base-out <BASE_OUT>
-          The output base,
-          
-          [default: 16]
-
   -h, --help
           Print help (see a summary with '-h')
 

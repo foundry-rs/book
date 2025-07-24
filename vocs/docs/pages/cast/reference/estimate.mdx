@@ -29,6 +29,11 @@ Options:
           
           Can also be the tags earliest, finalized, safe, latest, or pending.
 
+      --cost
+          Calculate the cost of a transaction using the network gas price.
+          
+          If not specified the amount of gas will be estimated.
+
   -h, --help
           Print help (see a summary with '-h')
 
@@ -36,7 +41,7 @@ Options:
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: jobs]
+          [aliases: --jobs]
 
 Transaction options:
       --gas-limit <GAS_LIMIT>
@@ -97,6 +102,12 @@ Ethereum options:
           The RPC endpoint, default value is http://localhost:8545
           
           [env: ETH_RPC_URL=]
+
+  -k, --insecure
+          Allow insecure RPC connections (accept invalid HTTPS certificates).
+          
+          When the provider's inner runtime transport variant is HTTP, this
+          configures the reqwest client to accept invalid certificates.
 
       --flashbots
           Use the Flashbots RPC URL with fast mode
