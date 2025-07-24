@@ -41,6 +41,7 @@ export const forgeOverview: SidebarItem[] = [
             { text: 'Gas Section Snapshots', link: '/forge/gas-tracking/gas-section-snapshots' }
         ]
     },
+    { text: 'Linting', link: '/forge/linting' },
     { text: 'Debugger', link: '/forge/debugger' },
     forgeCliReference,
 ]
