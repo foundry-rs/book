@@ -63,11 +63,11 @@ export default defineConfig({
       text: 'Rustdocs',
     },
     {
-      text: 'v1.2.3',
+      text: 'v1.3.0-rc1',
       items: [
         {
           text: 'Release notes',
-          link: 'https://github.com/foundry-rs/foundry/releases/tag/v1.2.3',
+          link: '/releases',
         },
         {
           text: 'Contributing',

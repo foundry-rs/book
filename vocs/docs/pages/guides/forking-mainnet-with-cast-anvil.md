@@ -6,7 +6,11 @@ description: Fork live Ethereum networks using Anvil and interact with real cont
 
 By combining [Anvil][anvil] and [Cast][cast], you can fork and test by interacting with contracts on a real network. The goal of this guide is to show you how to transfer DAI tokens from someone who holds DAI to an account created by Anvil.
 
-## Getting started
+Follow these steps to fork mainnet and transfer DAI tokens:
+
+::::steps
+
+### Fork mainnet with Anvil
 
 Let's start by forking mainnet.
 
@@ -16,7 +20,7 @@ anvil --fork-url https://mainnet.infura.io/v3/$INFURA_KEY
 
 You will see 10 accounts are created with their public and private keys. We will work with `0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266` (Let's call this user Alice).
 
-## Transferring DAI
+### Set up environment variables
 
 Go to Etherscan and search for holders of DAI tokens ([here](https://etherscan.io/token/0x6b175474e89094c44da98b954eedeac495271d0f#balances)). Let's pick a random account. In this example we will be using `0xfc2eE3bD619B7cfb2dE2C797b96DeeCbD7F68e46`. Let's export our contracts and accounts as environment variables:
 
@@ -25,6 +29,8 @@ export ALICE=0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266
 export DAI=0x6b175474e89094c44da98b954eedeac495271d0f
 export UNLUCKY_USER=0xfc2eE3bD619B7cfb2dE2C797b96DeeCbD7F68e46
 ```
+
+### Check initial balances
 
 We can check Alice's balance using [`cast call`][cast-call]:
 
@@ -44,6 +50,8 @@ cast call $DAI \
 21840114973524208109322438
 ```
 
+### Transfer DAI tokens
+
 Let's transfer some tokens from the unlucky user to Alice using [`cast send`][cast-send]:
 
 ```sh
@@ -60,6 +68,8 @@ blockNumber             15052891
 ...
 ```
 
+### Verify the transfer
+
 Let's check that the transfer worked:
 
 ```sh
@@ -73,6 +83,8 @@ cast call $DAI \
   $UNLUCKY_USER
 21540114973524208109322438
 ```
+
+::::
 
 [anvil]: ../reference/anvil/
 [cast]: ../cast/reference/

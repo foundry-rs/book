@@ -8,7 +8,7 @@ Solidity scripting is a way to declaratively deploy contracts using Solidity, in
 
 Solidity scripts are like the scripts you write when working with tools like Hardhat; what makes Solidity scripting different is that they are written in Solidity instead of JavaScript, and they are run on the fast Foundry EVM backend, which provides advanced simulation with dry-run capabilities.
 
-## Overview
+## How `forge script` works?
 
 `forge script` does not work in an asynchronous manner. First, it collects all transactions from the script, and only then does it broadcast them all. It can essentially be split into 4 phases:
 
@@ -23,7 +23,7 @@ Transactions that previously failed or timed-out can be submitted again by provi
 
 Given this flow, it's important to be aware that transactions whose behaviour can be influenced by external state/actors might have a different result than what was simulated on step `2`, e.g. front running.
 
-## Getting started
+## Setup `Counter` Project
 
 Let's try to deploy the basic `Counter` contract Foundry provides:
 
@@ -31,13 +31,17 @@ Let's try to deploy the basic `Counter` contract Foundry provides:
 forge init Counter
 ```
 
-Next let's try compiling our contracts to make sure everything is in order.
+Next compile our contracts to make sure everything is in order.
 
 ```sh
 forge build
 ```
 
-## Deploying our contract
+## Deploying the `Counter` contract
+
+::::steps
+
+### Get RPC and Etherscan API Keys
 
 We are going to deploy the `Counter` contract to the Sepolia testnet but in order to do so we will need to complete a few prerequisites:
 
@@ -70,7 +74,7 @@ Some faucets require you to have a balance on Ethereum mainnet.
 
 If so, claim the testnet ETH on a wallet you control and transfer the testnet ETH to your newly created deployer keypair.
 
-4. Get a Sepolia Etherscan API key.
+4. Get a Sepolia Etherscan API key [here](https://docs.etherscan.io/getting-started/viewing-api-usage-statistics).
 
 ### Configuring `foundry.toml`
 
@@ -352,3 +356,5 @@ Transactions saved to: /home/user/counter/broadcast/Counter.s.sol/31337/run-late
 
 Sensitive values saved to: /home/user/counter/cache/Counter.s.sol/31337/run-latest.json
 ```
+
+::::
