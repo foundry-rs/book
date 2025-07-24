@@ -229,7 +229,7 @@ fn help_markdown(cmd: &Cmd, stdout: &str) -> String {
 fn parse_description(s: &str) -> (&str, &str) {
     match s.find("Usage:") {
         Some(idx) => {
-            let description = s[..idx].trim().lines().next().unwrap_or("");
+            let description = s[..idx].trim();
             (description, &s[idx..])
         }
         None => ("", s),
@@ -424,7 +424,7 @@ fn generate_sidebar(output: &[(Cmd, String)], _out_dir: &Path, sidebar_file: &Pa
     content.push_str("    items: [\n");
     
     // Add root command
-    content.push_str(&format!("        {{ text: \"{}\", link: \"/{}/reference\" }},\n", tool_name, tool_name));
+    content.push_str(&format!("        {{ text: \"{}\", link: \"/{}/reference/{}\" }},\n", tool_name, tool_name, tool_name));
     
     // Add categories
     for (category, cmds) in categories {

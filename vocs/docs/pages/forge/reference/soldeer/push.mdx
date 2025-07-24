@@ -2,6 +2,15 @@
 
 Push a Dependency to the Repository
 
+Examples:
+- Current directory: soldeer push mypkg~0.1.0
+- Custom directory: soldeer push mypkg~0.1.0 /path/to/dep
+- Dry run: soldeer push mypkg~0.1.0 --dry-run
+
+To ignore certain files, create a `.soldeerignore` file in the root of the
+project and add the files you want to ignore. The `.soldeerignore` uses the same
+syntax as `.gitignore`.
+
 ```bash
 $ forge soldeer push --help
 ```

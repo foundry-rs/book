@@ -2,6 +2,13 @@
 
 RLP encodes hex data, or an array of hex data.
 
+Accepts a hex-encoded string, or an array of hex-encoded strings. Can be
+arbitrarily recursive.
+
+Examples: - `cast to-rlp "[]"` -> `0xc0` - `cast to-rlp "0x22"` -> `0x22` -
+`cast to-rlp "[\"0x61\"]"` -> `0xc161` - `cast to-rlp "[\"0xf1\", \"f2\"]"` ->
+`0xc481f181f2`
+
 ```bash
 $ cast to-rlp --help
 ```

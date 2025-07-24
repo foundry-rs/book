@@ -2,6 +2,22 @@
 
 Install a dependency
 
+If used with arguments, a dependency will be added to the configuration. When
+used without argument, installs all dependencies that are missing.
+
+Examples:
+- Install all: soldeer install
+- Add from registry: soldeer install lib_name~2.3.0
+- Add with custom URL: soldeer install lib_name~2.3.0 --url
+https://foo.bar/lib.zip
+- Add with git: soldeer install lib_name~2.3.0 --git git@github.com:foo/bar.git
+- Add with git (commit): soldeer install lib_name~2.3.0 --git
+git@github.com:foo/bar.git --rev 05f218fb6617932e56bf5388c3b389c3028a7b73
+- Add with git (tag): soldeer install lib_name~2.3.0 --git
+git@github.com:foo/bar.git --tag v2.3.0
+- Add with git (branch): soldeer install lib_name~2.3.0 --git
+git@github.com:foo/bar.git --branch feature/baz
+
 ```bash
 $ forge soldeer install --help
 ```

@@ -2,6 +2,11 @@
 
 Decode ABI-encoded input or output data.
 
+Defaults to decoding output data. To decode input data pass --input.
+
+When passing `--input`, function selector must NOT be prefixed in `calldata`
+string
+
 ```bash
 $ cast decode-abi --help
 ```
