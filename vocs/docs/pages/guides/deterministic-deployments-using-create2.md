@@ -14,15 +14,18 @@ With `CREATE2`, you can use the same deployer account to deploy contracts to the
 
 For the best user experience it is recommended to avoid having different addresses of the same deployment across different EVM chains.
 
-## Getting started
+:::note
+This guide is intended to help you get started with configuring deterministic deployments using `CREATE2`.
+By default, `new Counter{salt: salt}()` will use the deterministic deployer at [`0x4e59b44847b379578588920ca78fbf26c0b4956c`](https://github.com/Arachnid/deterministic-deployment-proxy). Note that the deployer may not be available on all EVM chains.
+A different deployer address can be configured by setting `create2_deployer` in `foundry.toml` or by using `--create2-deployer` argument.
 
-> ℹ️ **Note**
->
-> This guide is intended to help you get started with configuring deterministic deployments using `CREATE2`.
-> By default, `new Counter{salt: salt}()` will use the deterministic deployer at [`0x4e59b44847b379578588920ca78fbf26c0b4956c`](https://github.com/Arachnid/deterministic-deployment-proxy). Note that the deployer may not be available on all EVM chains.
-> A different deployer address can be configured by setting `create2_deployer` in `foundry.toml` or by using `--create2-deployer` argument.
+:::
 
-## Configuring your `foundry.toml`
+Follow these steps to set up deterministic deployments:
+
+::::steps
+
+### Configure your `foundry.toml`
 
 In order to reliably deploy to deterministic addresses we will need to make sure our bytecode stays the same. To do so configure our `foundry.toml` as follows:
 
@@ -34,15 +37,23 @@ bytecode_hash = "none"
 cbor_metadata = false
 ```
 
-### Solc version
+### Pin your Solc version
 
 It is required to pin your `solc` (Solidity) version. It is generally recommended to use a recent version or, if preferred, the latest version.
 
-### EVM version
+```toml
+solc = "<SOLC_VERSION>"
+```
+
+### Set your EVM version
 
 Next, configure your `evm_version`. It is generally recommended to use the most recent hardfork but depending on your deployment targets this may need to use an older hardfork due to opcode incompatibilities.
 
-### Metadata and bytecode
+```toml
+evm_version = "<EVM_VERSION>"
+```
+
+### Configure metadata and bytecode settings
 
 By default the Solidity compiler appends the hash of the metadata file at end of the bytecode. This bytecode includes things like the compiler version and the ABI.
 
@@ -141,11 +152,11 @@ cbor_metadata = false
 
 You are not including the metadata hash as part of the bytecode. This means that whilst your bytecode can now be deterministic you won't be able to have a [`full match`](https://docs.sourcify.dev/docs/full-vs-partial-match/#full-perfect-matches), only a [`partial match`](https://docs.sourcify.dev/docs/full-vs-partial-match/#partial-matches) when verifying your contracts. Depending on your requirements this may be acceptable.
 
-### Optimizer
+### Configure the optimizer
 
 If you are enabling the `optimizer` make sure your `optimizer_runs` stay consistent.
 
-### Create2 factory
+### Set up the CREATE2 factory
 
 By default, your contracts won't use the default (or specified using the `create2_deployer` configuration) create2 factory and will default to executing the create2 opcode from the contract it's executed on. For example, this behavior occurs when running tests or executing scripts without a private key.
 
@@ -156,6 +167,8 @@ always_use_create_2_factory = true
 ```
 
 If you wish to always use the create2 factory. This comes handy if you wish to use the create2 factory deployment addresses in your tests for example.
+
+::::
 
 ## Deploying the contract
 
