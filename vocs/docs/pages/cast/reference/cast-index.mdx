@@ -1,42 +1,61 @@
-import CommonOptions from "./common-options.mdx";
-
 ## cast index
 
-### NAME
+Compute the storage slot for an entry in a mapping
 
-cast-index - Compute the storage slot location for an entry in a mapping.
-
-### SYNOPSIS
-
-`cast index` _key_type_ _key_ _slot_
-
-### DESCRIPTION
-
-Compute the storage slot location for an entry in a mapping.
-
-Use `cast storage` to get the value.
-
-### OPTIONS
-
-<CommonOptions />
-
-### EXAMPLES
-
-```solidity
-// World.sol
-
-mapping (address => uint256) public mapping1;
-mapping (string => string) public mapping2;
+```bash
+$ cast index --help
 ```
 
-1. Compute the storage slot of an entry (`hello`) in a mapping of type `mapping(string => string)`, located at slot 1:
-   ```sh
-   >> cast index string "hello" 1
-   0x3556fc8e3c702d4479a1ab7928dd05d87508462a12f53307b5407c969223d1f8
-   >> cast storage [address] 0x3556fc8e3c702d4479a1ab7928dd05d87508462a12f53307b5407c969223d1f8
-   world
-   ```
+```txt
+Usage: cast index [OPTIONS] <KEY_TYPE> <KEY> <SLOT_NUMBER>
 
-### SEE ALSO
+Arguments:
+  <KEY_TYPE>
+          The mapping key type
 
-[cast](/cast/reference/overview)
+  <KEY>
+          The mapping key
+
+  <SLOT_NUMBER>
+          The storage slot of the mapping
+
+Options:
+  -h, --help
+          Print help (see a summary with '-h')
+
+  -j, --threads <THREADS>
+          Number of threads to use. Specifying 0 defaults to the number of
+          logical cores
+          
+          [aliases: jobs]
+
+Display options:
+      --color <COLOR>
+          The color of the log messages
+
+          Possible values:
+          - auto:   Intelligently guess whether to use color output (default)
+          - always: Force color output
+          - never:  Force disable color output
+
+      --json
+          Format log messages as JSON
+
+  -q, --quiet
+          Do not print log messages
+
+  -v, --verbosity...
+          Verbosity level of the log messages.
+          
+          Pass multiple times to increase the verbosity (e.g. -v, -vv, -vvv).
+          
+          Depending on the context the verbosity levels have different meanings.
+          
+          For example, the verbosity levels of the EVM are:
+          - 2 (-vv): Print logs for all tests.
+          - 3 (-vvv): Print execution traces for failing tests.
+          - 4 (-vvvv): Print execution traces for all tests, and setup traces
+          for failing tests.
+          - 5 (-vvvvv): Print execution and setup traces for all tests,
+          including storage changes.
+```

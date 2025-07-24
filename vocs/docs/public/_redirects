@@ -2,13 +2,17 @@
 /getting-started/introduction /introduction/overview
 /getting-started/first-steps  /introduction/getting-started
 
-/reference/anvil /anvil/reference
+/reference/anvil /anvil/reference/anvil
+/anvil/reference /anvil/reference/anvil
 /reference/chisel /chisel/reference
 
 /reference/cast/:id /cast/reference/:id
+/cast/reference /cast/reference/cast
+/cast/reference/overview /cast/reference/cast
+
 /reference/forge/:id /forge/reference/:id
-/reference/forge /forge/reference/overview
-/forge/reference/forge /forge/reference/overview
+/reference/forge /forge/reference/forge
+/forge/reference /forge/reference/forge
 
 /anvil /anvil/overview
 /cast /cast/overview
@@ -46,4 +50,4 @@
 /guides/best-practices /guides/best-practices/writing-contracts
 /guides /guides/best-practices/writing-contracts
 
-/cast/reference/cast-index /cast/reference/cast-
+/cast/reference/cast-index /cast/reference/cast-i

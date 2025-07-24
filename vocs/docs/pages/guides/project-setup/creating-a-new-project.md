@@ -8,7 +8,7 @@ description: Initialize a new Foundry project using forge init with default temp
 
 #### Initialize the project
 
-To start a new project with Foundry, use [`forge init`](/forge/reference/forge-init):
+To start a new project with Foundry, use [`forge init`](/forge/reference/init):
 
 ```sh
 // [!include ~/snippets/output/hello_foundry/forge-init:command]
