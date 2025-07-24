@@ -1,8 +1,8 @@
-## Linting
+# Linting
 
 `forge lint` is a command that analyzes Solidity source files in your project to identify potential issues, and enforce coding standards It helps maintain code quality and consistency across your codebase.
 
-### Examples
+## Examples
 
 1. Lint all Solidity files in the project:
 
@@ -27,13 +27,13 @@
    forge lint --only-lint incorrect-shift --json
    ```
 
-### Supported Lints
+## Supported Lints
 
 This section details the lints supported by `forge lint`. Each lint includes an ID, a description of the issue it checks for, its severity, and examples of incorrect and correct code.
 
-#### High Severity
+### High Severity
 
-##### `incorrect-shift`
+#### `incorrect-shift`
 
 Warns against shift operations where the operands might be in an unconventional or potentially erroneous order, specifically when a literal is shifted by a non-literal.
 
@@ -74,7 +74,7 @@ exclude_lints = ["incorrect-shift"]
 
 Alternatively, you can also disable this individual occurrence using [inline configuration](/config/reference/linter#inline-configuration).
 
-##### `unchecked-call`
+#### `unchecked-call`
 
 Warns when low-level calls (`.call()`, `.delegatecall()`, `.staticcall()`) do not check the success return value.
 
@@ -114,7 +114,7 @@ exclude_lints = ["unchecked-call"]
 
 Alternatively, you can also disable this individual occurrence using [inline configuration](/config/reference/linter#inline-configuration).
 
-##### `erc20-unchecked-transfer`
+#### `erc20-unchecked-transfer`
 
 Warns when ERC20 `transfer` or `transferFrom` calls do not check the return value.
 
@@ -156,9 +156,9 @@ exclude_lints = ["erc20-unchecked-transfer"]
 
 Note that this lint could fire false positives, as it only checks the function name, but it doesn't ensure that the called address is an ERC20 contract. Because of that, you may have to disable individual occurrences using [inline configuration](/config/reference/linter#inline-configuration).
 
-#### Medium Severity
+### Medium Severity
 
-##### divide-before-multiply
+#### divide-before-multiply
 
 Warns against performing division before multiplication within the same expression, especially with integer arithmetic.
 
@@ -191,9 +191,9 @@ exclude_lints = ["divide-before-multiply"]
 
 Alternatively, you can also disable this individual occurrence using [inline configuration](/config/reference/linter#inline-configuration).
 
-#### Informational / Style Guide
+### Informational / Style Guide
 
-##### `pascal-case-struct`
+#### `pascal-case-struct`
 
 Ensures that struct names adhere to `PascalCase` (e.g., `MyStruct`) convention. This is a common styling guideline in Solidity to improve code readability and maintain consistency.
 
@@ -229,7 +229,7 @@ exclude_lints = ["pascal-case-struct"]
 
 Alternatively, you can also disable this individual occurrence using [inline configuration](/config/reference/linter#inline-configuration).
 
-##### `mixed-case-function`
+#### `mixed-case-function`
 
 Ensures that function names adhere to `mixedCase` (e.g., `myFunction`) convention. This helps in differentiate functions from other identifiers like structs or events and is a standard practice.
 
@@ -265,7 +265,7 @@ exclude_lints = ["mixed-case-function"]
 
 Alternatively, you can also disable this individual occurrence using [inline configuration](/config/reference/linter#inline-configuration).
 
-##### `mixed-case-variable`
+#### `mixed-case-variable`
 
 Ensures that mutable variable names (local variables and state variables that are not `constant` or `immutable`) adhere to `mixedCase` (e.g., `myVariable`) convention. This aligns with the general Solidity style for variable naming.
 
@@ -300,7 +300,7 @@ exclude_lints = ["mixed-case-variable"]
 
 Alternatively, you can also disable this individual occurrence using [inline configuration](/config/reference/linter#inline-configuration).
 
-##### `screaming-snake-case-const`
+#### `screaming-snake-case-const`
 
 Ensures that `constant` variable names adhere to `SCREAMING_SNAKE_CASE` (e.g., `MY_CONSTANT`). This is the standard convention for constants in Solidity, making them easily identifiable.
 
@@ -330,7 +330,7 @@ exclude_lints = ["screaming-snake-case-constant"]
 
 Alternatively, you can also disable this individual occurrence using [inline configuration](/config/reference/linter#inline-configuration).
 
-##### `screaming-snake-case-immutable`
+#### `screaming-snake-case-immutable`
 
 Ensures that `immutable` variable names adhere to `SCREAMING_SNAKE_CASE` (e.g., `MY_IMMUTABLE_VAR`). Similar to constants, this convention helps in distinguish immutable variables and maintaining consistency.
 
@@ -358,9 +358,9 @@ exclude_lints = ["screaming-snake-case-immutable"]
 
 Alternatively, you can also disable this individual occurrence using [inline configuration](/config/reference/linter#inline-configuration).
 
-#### Gas Optimizations
+### Gas Optimizations
 
-##### `asm-keccak256`
+#### `asm-keccak256`
 
 Recommends using inline assembly for `keccak256` hashing when possible. The Solidity global function `keccak256()` involves memory allocation and copying which can be less gas-efficient than a direct inline assembly implementation that operates on memory directly, especially for hashing small, fixed-size data.
 
