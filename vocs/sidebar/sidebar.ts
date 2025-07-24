@@ -13,6 +13,7 @@ export const sidebar: Sidebar = [
       { text: "Installation", link: "/introduction/installation" },
       { text: "Getting Started", link: "/introduction/getting-started" },
       { text: "Prompting", link: "/introduction/prompting" },
+      { text: "Benchmarks", link: "/introduction/benchmarks" },
     ],
   },
   {
