@@ -3,7 +3,115 @@ title: Foundry Releases
 description: Latest release notes for Foundry
 ---
 
-# v1.3.0-rc1 [July 17, 2025]
+# v1.3.0-rc2 [July 24, 2025]
+
+# Foundry v1.3.0
+
+This release includes support for `forge lint`, time-based campaigns and coverage-guided fuzzing for invariant tests, table tests, fork test improvements for [Reth clients](https://github.com/paradigmxyz/reth), and new EIP-712 features. Foundry v1.3.0 is built on top of the latest [`revm v27`](https://github.com/bluealloy/revm) and ships with a forge benchmark tool, along with an improved `foundryup` installer.
+
+:warning: It is highly recommended to update to latest version of `foundryup`, which avoids unnecessary downloads and verifies hashes of downloaded binaries upon install.
+
+## Performance Improvements
+
+- This release includes an updated [`revm`](https://github.com/bluealloy/revm) and an optimized inspector stack, which significantly improves performance [compared to previous versions](https://github.com/foundry-rs/foundry/blob/release-1.3.0/benches/LATEST.md)
+#### Forge Test
+
+| Repository           | v1.2.3  | v1.3.0  |
+| -------------------- | ------- | ------- |
+| ithacaxyz-account    | 3.69 s  | 3.12 s  |
+| solady               | 2.95 s  | 2.32 s  |
+| Uniswap-v4-core      | 8.03 s  | 6.76 s  |
+| sparkdotfi-spark-psm | 57.02 s | 44.76 s |
+
+#### Forge Fuzz Test
+
+| Repository           | v1.2.3 | v1.3.0 |
+| -------------------- | ------ | ------ |
+| ithacaxyz-account    | 3.58 s | 3.39 s |
+| solady               | 3.34 s | 2.54 s |
+| Uniswap-v4-core      | 8.03 s | 7.46 s |
+| sparkdotfi-spark-psm | 3.70 s | 3.06 s             
+
+- Forked tests using the [Reth client](https://github.com/paradigmxyz/reth) are now faster thanks to the `eth_getAccountInfo` API, reducing account data fetching from three requests to one. Foundry detects if `eth_getAccountInfo` is available and falls back to the legacy method otherwise.  
+  Example: Running `forge test --mt statefulFuzz_curve_test` on [spark-alm-controller](https://github.com/sparkdotfi/spark-alm-controller/pull/107) showed over 5 seconds in test time savings.
+
+| Provider                                      | Response Time |
+|----------------------------------------------|---------------|
+| reth-ethereum.ithaca.xyz (with `eth_getAccountInfo`)    | 45.21s        |
+| reth-ethereum.ithaca.xyz (without `eth_getAccountInfo`) | 50.83s        |
+| QuickNode (Paid)                             | 59.66s        |
+| Alchemy (Free Tier)                          | 182.12s       |
+| Infura (Free Tier)                           | 176.88s       |
+
+## Forge Lint
+
+As of v1.3.0, Forge ships with a built-in linter that analyzes Solidity code for style, correctness, and best practices.
+
+- Lint rules are configurable in the `[lint]` section of `foundry.toml` and via inline comment directives.
+- Lints can be customized by severity or specific rule identifiers.
+- By default, linting runs during `forge build`. To disable it, set `lint_on_build = false`.
+- For more details please refer to foundry docs:  
+[Supported lints](https://getfoundry.sh/forge/reference/forge-lint/#supported-lints)  
+[Linter configuration docs](https://getfoundry.sh/config/reference/linter)  
+[How to contribute a lint rule](https://github.com/foundry-rs/foundry/blob/master/docs/dev/lintrules.md)
+
+## Invariant Test Improvements
+
+### Time-Based Campaigns
+
+Previously, invariant tests were limited by a fixed number of runs (default: `256`, max: `4294967295`).  
+Now you can run them for a specific time duration by setting the `timeout` value (in seconds) in the `[invariant]` section of `foundry.toml`.
+
+The test progress bar shows the number of runs and the end time.
+```bash
+test/GuidedTest.t.sol:CounterTest
+ → invariant_Puzzle5: [4360] Runs, ends at 11:03:28 2025-06-03 UTC
+ → invariant_Puzzle3: [8784] Runs, ends at 14:50:08 2025-06-04 UTC
+ → invariant_Puzzle6: [77762] Runs, ends at 05:56:48 2025-06-09 UTC
+ → invariant_Puzzle2: [8739] Runs, ends at 12:50:08 2025-06-02 UTC
+ ```
+
+### Coverage-Guided Fuzzing
+
+Enable this mode by setting a path to `corpus_dir` in your invariant config.  
+The coverage-Guided fuzzing mode targets a `corpus_min_size` by mutating entries a number of times (default: 5), favoring those likely to uncover new paths.
+
+**Supported mutations:**
+- `splice`: Combines two sequences
+- `interleave`: Weaves two sequences together
+- `prefix`: Overwrites the beginning of a sequence
+- `suffix`: Overwrites the end of a sequence
+- `mutate args`: Randomizes some call arguments
+
+Additional notes:
+- Entries that generate new coverage are saved to disk (default: `.gz`; set `corpus_gzip = false` to save as JSON).
+- On reruns, the saved corpus is loaded and reused.
+- Metadata (as JSON) is persisted for evicted corpus entries. This includes a unique ID, mutation count, and coverage improvements.
+- The fuzzing progress bar displays metrics for cumulative edges and features, corpus count and number of favored entries.
+```bash
+test/forge/invariant/StaticInvariantTest.sol:StaticInvariantTest
+ → invariantHealthy: [60/2000] Runs
+  - cumulative edges seen: 41
+  - cumulative features seen: 6
+  - corpus count: 15
+  - favored items: 14
+```
+For more details please refer to [invariant docs](https://getfoundry.sh/forge/advanced-testing/invariant-testing#coverage-guided-fuzzing).
+
+## Table Tests
+
+Foundry v1.3.0 comes with support for table testing, which enables the definition of a dataset (the "table") and the execution of a test function for each entry in that dataset. This approach helps ensure that certain combinations of inputs and conditions are tested.  
+For more details please refer to [table testing foundry docs](https://getfoundry.sh/forge/advanced-testing/table-testing).
+
+## Improved EIP-712 support
+
+Foundry v1.3.0 comes with additional utilities (commands and new cheatcodes) to make it easy and reliable to work with EIP-712 signatures.  
+For more details please refer to [EIP-712 foundry guide](https://getfoundry.sh/guides/eip712/).
+
+## Other
+- new Anvil APIs including endpoints to deal and set allowance for ERC20 tokens, add balance and get blob by hash
+- Vyper support for `forge verify-contract` command 
+- `fail_on_revert` config for stateless fuzz tests
 
 ## Anvil Features
 - feat(anvil): add block context overrides for eth_call and eth_estimateGas ([#10487](https://github.com/foundry-rs/foundry/pull/10487)) by [@mablr](https://github.com/mablr)
@@ -13,6 +121,8 @@ description: Latest release notes for Foundry
 - feat: added eth_sendRawTransactionSync and eth_sendTransactionSync support for anvil ([#10860](https://github.com/foundry-rs/foundry/pull/10860)) by [@Rimeeeeee](https://github.com/Rimeeeeee)
 - feat(`anvil`): reset to in-mem ([#10897](https://github.com/foundry-rs/foundry/pull/10897)) by [@yash-atreya](https://github.com/yash-atreya)
 - feat: added get_blob_by_hash ([#10987](https://github.com/foundry-rs/foundry/pull/10987)) by [@Soubhik-10](https://github.com/Soubhik-10)
+- feat: add support for passthrough of debug_codeByHash ([#11053](https://github.com/foundry-rs/foundry/pull/11053)) by [@cakevm](https://github.com/cakevm)
+- feat(anvil): use signatures identifier for --print-traces ([#11070](https://github.com/foundry-rs/foundry/pull/11070)) by [@mattsse](https://github.com/mattsse) 
 
 ## Anvil Fixes
 
@@ -43,6 +153,7 @@ description: Latest release notes for Foundry
 - feat(cast): rpc --json should format as json ([#10871](https://github.com/foundry-rs/foundry/pull/10871)) by [@jsvisa](https://github.com/jsvisa)
 - feat(cast): add disable-labels for cast run ([#10970](https://github.com/foundry-rs/foundry/pull/10970)) by [@grandizzy](https://github.com/grandizzy)
 - feat(cast): add `--raw` option to block subcommand ([#11027](https://github.com/foundry-rs/foundry/pull/11027)) by [@mablr](https://github.com/mablr)
+- feat(cast): add checksum address with chain id ([#11043](https://github.com/foundry-rs/foundry/pull/11043)) by [@KumaCrypto](https://github.com/KumaCrypto)
 
 ## Cast Fixes
 
@@ -94,6 +205,7 @@ description: Latest release notes for Foundry
 - feat: fuzzer metrics ([#10988](https://github.com/foundry-rs/foundry/pull/10988)) by [@0xalpharush](https://github.com/0xalpharush)
 - feat(forge-lint): new `LateLintPass` + support code snippets ([#10846](https://github.com/foundry-rs/foundry/pull/10846)) by [@0xrusowsky](https://github.com/0xrusowsky)
 - feat(forge fmt): Adds tab support as indent char in fmt ([#10979](https://github.com/foundry-rs/foundry/pull/10979)) by [@mathewmeconry](https://github.com/mathewmeconry)
+- feat(cheats): add vm.getRawBlockHeader(blockNumber) ([#11082](https://github.com/foundry-rs/foundry/pull/11082)) by [@0xClandestine](https://github.com/0xClandestine)
 
 ## Forge Fixes
 
@@ -128,11 +240,13 @@ description: Latest release notes for Foundry
 - fix(`cheatcodes`): load pranked caller acc in state ([#11023](https://github.com/foundry-rs/foundry/pull/11023)) by [@yash-atreya](https://github.com/yash-atreya)
 - fix(forge-lint): [inline-config] use relative span positions ([#11022](https://github.com/foundry-rs/foundry/pull/11022)) by [@0xrusowsky](https://github.com/0xrusowsky)
 - fix: ensure account is always loaded and marked as touched when pranked ([#11025](https://github.com/foundry-rs/foundry/pull/11025)) by [@zerosnacks](https://github.com/zerosnacks)
+- fix(forge): show git submodule status error ([#11033](https://github.com/foundry-rs/foundry/pull/11033)) by [@grandizzy](https://github.com/grandizzy) 
 
 ## Performance improvements
 
 - fix: spawn fork backendhandler on current tokio runtime ([#10923](https://github.com/foundry-rs/foundry/pull/10923)) by [@mattsse](https://github.com/mattsse)
 - perf: find latest block for next-base-fee. replaces [#10505](https://github.com/foundry-rs/foundry/pull/10505) ([#10511](https://github.com/foundry-rs/foundry/pull/10511)) by [@naps62](https://github.com/naps62)
+- perf: improve InspectorStack ([#11077](https://github.com/foundry-rs/foundry/pull/11077)) by [@DaniPopes](https://github.com/DaniPopes) 
 
 
 ## Other
@@ -217,13 +331,14 @@ description: Latest release notes for Foundry
 - docs(lintrules): reflect latest impl changes ([#11031](https://github.com/foundry-rs/foundry/pull/11031)) by [@0xrusowsky](https://github.com/0xrusowsky)
 
 ## Full Changelog:
- https://github.com/foundry-rs/foundry/compare/v1.2.3...v1.3.0-rc1
+ https://github.com/foundry-rs/foundry/compare/v1.2.3...v1.3.0-rc2
 
 
 ## Previous Releases
 
 | Version | Release Date | Release Notes |
 |---------|--------------|---------------|
+| v1.3.0-rc1 | July 17, 2025 | [View](https://github.com/foundry-rs/foundry/releases/tag/v1.3.0-rc1) |
 | v1.2.3 | June 8, 2025 | [View](https://github.com/foundry-rs/foundry/releases/tag/v1.2.3) |
 | v1.2.2 | May 30, 2025 | [View](https://github.com/foundry-rs/foundry/releases/tag/v1.2.2) |
 | v1.2.1-rc | May 21, 2025 | [View](https://github.com/foundry-rs/foundry/releases/tag/v1.2.1-rc) |
