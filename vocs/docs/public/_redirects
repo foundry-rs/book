@@ -6,9 +6,12 @@
 /reference/chisel /chisel/reference
 
 /reference/cast/:id /cast/reference/:id
+/cast/reference /cast/reference/cast
+/cast/reference/overview /cast/reference/cast
+
 /reference/forge/:id /forge/reference/:id
 /reference/forge /forge/reference/forge
-/forge/reference/forge /forge/reference/forge
+/forge/reference /forge/reference/forge
 
 /anvil /anvil/overview
 /cast /cast/overview
