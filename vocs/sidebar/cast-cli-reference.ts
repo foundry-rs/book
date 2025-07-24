@@ -4,7 +4,7 @@ export const castCliReference: SidebarItem = {
     text: "Reference",
     collapsed: true,
     items: [
-        { text: "cast", link: "/cast/reference" },
+        { text: "cast", link: "/cast/reference/cast" },
         {
             text: "ABI Commands",
             collapsed: true,

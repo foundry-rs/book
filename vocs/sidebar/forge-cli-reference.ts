@@ -4,7 +4,7 @@ export const forgeCliReference: SidebarItem = {
     text: "Reference",
     collapsed: true,
     items: [
-        { text: "forge", link: "/forge/reference" },
+        { text: "forge", link: "/forge/reference/forge" },
         {
             text: "Build Commands",
             collapsed: true,

@@ -4,7 +4,7 @@ export const chiselCliReference: SidebarItem = {
     text: "Reference",
     collapsed: true,
     items: [
-        { text: "chisel", link: "/chisel/reference" },
+        { text: "chisel", link: "/chisel/reference/chisel" },
         {
             text: "Commands",
             collapsed: true,

@@ -4,7 +4,7 @@ export const anvilCliReference: SidebarItem = {
     text: "Reference",
     collapsed: true,
     items: [
-        { text: "anvil", link: "/anvil/reference" },
+        { text: "anvil", link: "/anvil/reference/anvil" },
         {
             text: "General Commands",
             collapsed: true,
