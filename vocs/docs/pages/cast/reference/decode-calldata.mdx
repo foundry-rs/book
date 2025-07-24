@@ -7,27 +7,27 @@ $ cast decode-calldata --help
 ```
 
 ```txt
-Usage: cast decode-calldata [OPTIONS] &lt;SIG&gt; &lt;CALLDATA&gt;
+Usage: cast decode-calldata [OPTIONS] <SIG> <CALLDATA>
 
 Arguments:
-  &lt;SIG&gt;
-          The function signature in the format `&lt;name&gt;(&lt;in-types&gt;)(&lt;out-types&gt;)`
+  <SIG>
+          The function signature in the format `<name>(<in-types>)(<out-types>)`
 
-  &lt;CALLDATA&gt;
+  <CALLDATA>
           The ABI-encoded calldata
 
 Options:
   -h, --help
           Print help (see a summary with '-h')
 
-  -j, --threads &lt;THREADS&gt;
+  -j, --threads <THREADS>
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: --jobs]
+          [aliases: jobs]
 
 Display options:
-      --color &lt;COLOR&gt;
+      --color <COLOR>
           The color of the log messages
 
           Possible values:

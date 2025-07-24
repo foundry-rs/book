@@ -14,7 +14,7 @@ Arguments:
           Path to the file, directory or '-' to read from stdin
 
 Options:
-      --root &lt;PATH&gt;
+      --root <PATH>
           The project's root path.
           
           By default root of the Git repository, if in one, or the current
@@ -33,14 +33,14 @@ Options:
   -h, --help
           Print help (see a summary with '-h')
 
-  -j, --threads &lt;THREADS&gt;
+  -j, --threads <THREADS>
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: --jobs]
+          [aliases: jobs]
 
 Watch options:
-  -w, --watch [&lt;PATH&gt;...]
+  -w, --watch [<PATH>...]
           Watch the given files or directories for changes.
           
           If no paths are provided, the source and test directories of the
@@ -55,7 +55,7 @@ Watch options:
           By default, only the tests of the last modified test file are
           executed.
 
-      --watch-delay &lt;DELAY&gt;
+      --watch-delay <DELAY>
           File update debounce delay.
           
           During the delay, incoming change events are accumulated and only once
@@ -70,7 +70,7 @@ Watch options:
           overloading disk I/O.
 
 Display options:
-      --color &lt;COLOR&gt;
+      --color <COLOR>
           The color of the log messages
 
           Possible values:

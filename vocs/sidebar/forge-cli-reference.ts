@@ -4,7 +4,7 @@ export const forgeCliReference: SidebarItem = {
     text: "Reference",
     collapsed: true,
     items: [
-        { text: "forge", link: "/forge/reference/forge" },
+        { text: "forge", link: "/forge/reference" },
         {
             text: "Build Commands",
             collapsed: true,
@@ -75,7 +75,6 @@ export const forgeCliReference: SidebarItem = {
                 { text: "forge fmt", link: "/forge/reference/fmt" },
                 { text: "forge generate", link: "/forge/reference/generate" },
                 { text: "forge generate-fig-spec", link: "/forge/reference/generate-fig-spec" },
-                { text: "forge lint", link: "/forge/reference/lint" },
                 { text: "forge script", link: "/forge/reference/script" },
                 { text: "forge selectors", link: "/forge/reference/selectors" },
                 { text: "forge selectors cache", link: "/forge/reference/selectors/cache" },

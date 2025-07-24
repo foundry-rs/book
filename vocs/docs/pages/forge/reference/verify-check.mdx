@@ -7,10 +7,10 @@ $ forge verify-check --help
 ```
 
 ```txt
-Usage: forge verify-check [OPTIONS] &lt;ID&gt;
+Usage: forge verify-check [OPTIONS] <ID>
 
 Arguments:
-  &lt;ID&gt;
+  <ID>
           The verification ID.
           
           For Etherscan - Submission GUID.
@@ -18,27 +18,27 @@ Arguments:
           For Sourcify - Contract Address.
 
 Options:
-      --retries &lt;RETRIES&gt;
+      --retries <RETRIES>
           Number of attempts for retrying verification
           
           [default: 5]
 
-      --delay &lt;DELAY&gt;
+      --delay <DELAY>
           Optional delay to apply in between verification attempts, in seconds
           
           [default: 5]
 
-  -e, --etherscan-api-key &lt;KEY&gt;
+  -e, --etherscan-api-key <KEY>
           The Etherscan (or equivalent) API key
           
           [env: ETHERSCAN_API_KEY=]
 
-  -a, --etherscan-api-version &lt;API_VERSION&gt;
+  -a, --etherscan-api-version <API_VERSION>
           The Etherscan API version
           
           [env: ETHERSCAN_API_VERSION=]
 
-  -c, --chain &lt;CHAIN&gt;
+  -c, --chain <CHAIN>
           The chain name or EIP-155 chain ID
           
           [env: CHAIN=]
@@ -46,14 +46,14 @@ Options:
   -h, --help
           Print help (see a summary with '-h')
 
-  -j, --threads &lt;THREADS&gt;
+  -j, --threads <THREADS>
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: --jobs]
+          [aliases: jobs]
 
 Verifier options:
-      --verifier &lt;VERIFIER&gt;
+      --verifier <VERIFIER>
           The contract verification provider to use
           
           [default: sourcify]
@@ -66,23 +66,23 @@ Verifier options:
           - custom:     Custom verification provider, requires compatibility
             with the Etherscan API
 
-      --verifier-api-key &lt;VERIFIER_API_KEY&gt;
+      --verifier-api-key <VERIFIER_API_KEY>
           The verifier API KEY, if using a custom provider
           
           [env: VERIFIER_API_KEY=]
 
-      --verifier-url &lt;VERIFIER_URL&gt;
+      --verifier-url <VERIFIER_URL>
           The verifier URL, if using a custom provider
           
           [env: VERIFIER_URL=]
 
-      --verifier-api-version &lt;VERIFIER_API_VERSION&gt;
+      --verifier-api-version <VERIFIER_API_VERSION>
           The verifier API version, if using a custom provider
           
           [env: VERIFIER_API_VERSION=]
 
 Display options:
-      --color &lt;COLOR&gt;
+      --color <COLOR>
           The color of the log messages
 
           Possible values:

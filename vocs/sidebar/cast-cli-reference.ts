@@ -4,7 +4,7 @@ export const castCliReference: SidebarItem = {
     text: "Reference",
     collapsed: true,
     items: [
-        { text: "cast", link: "/cast/reference/cast" },
+        { text: "cast", link: "/cast/reference" },
         {
             text: "ABI Commands",
             collapsed: true,
@@ -137,7 +137,6 @@ export const castCliReference: SidebarItem = {
                 { text: "cast constructor-args", link: "/cast/reference/constructor-args" },
                 { text: "cast create2", link: "/cast/reference/create2" },
                 { text: "cast creation-code", link: "/cast/reference/creation-code" },
-                { text: "cast da-estimate", link: "/cast/reference/da-estimate" },
                 { text: "cast decode-error", link: "/cast/reference/decode-error" },
                 { text: "cast decode-event", link: "/cast/reference/decode-event" },
                 { text: "cast decode-string", link: "/cast/reference/decode-string" },
@@ -149,7 +148,7 @@ export const castCliReference: SidebarItem = {
                 { text: "cast hash-message", link: "/cast/reference/hash-message" },
                 { text: "cast hash-zero", link: "/cast/reference/hash-zero" },
                 { text: "cast implementation", link: "/cast/reference/implementation" },
-                { text: "cast index", link: "/cast/reference/cast-index" },
+                { text: "cast index", link: "/cast/reference/index" },
                 { text: "cast index-erc7201", link: "/cast/reference/index-erc7201" },
                 { text: "cast interface", link: "/cast/reference/interface" },
                 { text: "cast keccak", link: "/cast/reference/keccak" },
@@ -158,7 +157,6 @@ export const castCliReference: SidebarItem = {
                 { text: "cast min-int", link: "/cast/reference/min-int" },
                 { text: "cast mktx --create", link: "/cast/reference/mktx/--create" },
                 { text: "cast parse-units", link: "/cast/reference/parse-units" },
-                { text: "cast recover-authority", link: "/cast/reference/recover-authority" },
                 { text: "cast send --create", link: "/cast/reference/send/--create" },
                 { text: "cast sig", link: "/cast/reference/sig" },
                 { text: "cast sig-event", link: "/cast/reference/sig-event" },

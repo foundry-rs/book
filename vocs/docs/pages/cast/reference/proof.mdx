@@ -7,31 +7,25 @@ $ cast proof --help
 ```
 
 ```txt
-Usage: cast proof [OPTIONS] &lt;ADDRESS&gt; [SLOTS]...
+Usage: cast proof [OPTIONS] <ADDRESS> [SLOTS]...
 
 Arguments:
-  &lt;ADDRESS&gt;
+  <ADDRESS>
           The contract address
 
   [SLOTS]...
           The storage slot numbers (hex or decimal)
 
 Options:
-  -B, --block &lt;BLOCK&gt;
+  -B, --block <BLOCK>
           The block height to query at.
           
           Can also be the tags earliest, finalized, safe, latest, or pending.
 
-  -r, --rpc-url &lt;URL&gt;
+  -r, --rpc-url <URL>
           The RPC endpoint, default value is http://localhost:8545
           
           [env: ETH_RPC_URL=]
-
-  -k, --insecure
-          Allow insecure RPC connections (accept invalid HTTPS certificates).
-          
-          When the provider's inner runtime transport variant is HTTP, this
-          configures the reqwest client to accept invalid certificates.
 
       --flashbots
           Use the Flashbots RPC URL with fast mode
@@ -42,21 +36,21 @@ Options:
           See:
           [https://docs.flashbots.net/flashbots-protect/quick-start#faster-transactions](https://docs.flashbots.net/flashbots-protect/quick-start#faster-transactions)
 
-      --jwt-secret &lt;JWT_SECRET&gt;
+      --jwt-secret <JWT_SECRET>
           JWT Secret for the RPC endpoint.
           
           The JWT secret will be used to create a JWT for a RPC. For example,
           the following can be used to simulate a CL `engine_forkchoiceUpdated`
           call:
           
-          cast rpc --jwt-secret &lt;JWT_SECRET&gt; engine_forkchoiceUpdatedV2
+          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2
           '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
           "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
           "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
           
           [env: ETH_RPC_JWT_SECRET=]
 
-      --rpc-timeout &lt;RPC_TIMEOUT&gt;
+      --rpc-timeout <RPC_TIMEOUT>
           Timeout for the RPC request in seconds.
           
           The specified timeout will be used to override the default timeout for
@@ -66,7 +60,7 @@ Options:
           
           [env: ETH_RPC_TIMEOUT=]
 
-      --rpc-headers &lt;RPC_HEADERS&gt;
+      --rpc-headers <RPC_HEADERS>
           Specify custom headers for RPC requests
           
           [env: ETH_RPC_HEADERS=]
@@ -74,14 +68,14 @@ Options:
   -h, --help
           Print help (see a summary with '-h')
 
-  -j, --threads &lt;THREADS&gt;
+  -j, --threads <THREADS>
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: --jobs]
+          [aliases: jobs]
 
 Display options:
-      --color &lt;COLOR&gt;
+      --color <COLOR>
           The color of the log messages
 
           Possible values:

@@ -18,14 +18,14 @@ Options:
   -h, --help
           Print help (see a summary with '-h')
 
-  -j, --threads &lt;THREADS&gt;
+  -j, --threads <THREADS>
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: --jobs]
+          [aliases: jobs]
 
 Wallet options - raw:
-  -f, --from &lt;ADDRESS&gt;
+  -f, --from <ADDRESS>
           The sender account
           
           [env: ETH_FROM=]
@@ -33,21 +33,21 @@ Wallet options - raw:
   -i, --interactive
           Open an interactive prompt to enter your private key
 
-      --private-key &lt;RAW_PRIVATE_KEY&gt;
+      --private-key <RAW_PRIVATE_KEY>
           Use the provided private key
 
-      --mnemonic &lt;MNEMONIC&gt;
+      --mnemonic <MNEMONIC>
           Use the mnemonic phrase of mnemonic file at the specified path
 
-      --mnemonic-passphrase &lt;PASSPHRASE&gt;
+      --mnemonic-passphrase <PASSPHRASE>
           Use a BIP39 passphrase for the mnemonic
 
-      --mnemonic-derivation-path &lt;PATH&gt;
+      --mnemonic-derivation-path <PATH>
           The wallet derivation path.
           
           Works with both --mnemonic-path and hardware wallets.
 
-      --mnemonic-index &lt;INDEX&gt;
+      --mnemonic-index <INDEX>
           Use the private key from the given mnemonic index.
           
           Used with --mnemonic-path.
@@ -55,23 +55,23 @@ Wallet options - raw:
           [default: 0]
 
 Wallet options - keystore:
-      --keystore &lt;PATH&gt;
+      --keystore <PATH>
           Use the keystore in the given folder or file
           
           [env: ETH_KEYSTORE=]
 
-      --account &lt;ACCOUNT_NAME&gt;
+      --account <ACCOUNT_NAME>
           Use a keystore from the default keystores folder
           (~/.foundry/keystores) by its filename
           
           [env: ETH_KEYSTORE_ACCOUNT=]
 
-      --password &lt;PASSWORD&gt;
+      --password <PASSWORD>
           The keystore password.
           
           Used with --keystore.
 
-      --password-file &lt;PASSWORD_FILE&gt;
+      --password-file <PASSWORD_FILE>
           The keystore password file path.
           
           Used with --keystore.
@@ -93,7 +93,7 @@ Wallet options - remote:
           Use Google Cloud Key Management Service
 
 Display options:
-      --color &lt;COLOR&gt;
+      --color <COLOR>
           The color of the log messages
 
           Possible values:

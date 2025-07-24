@@ -4,7 +4,6 @@ $ tree . -L 3 -I output
 // [!endregion command]
 // [!region output]
 .
-├── foundry.lock
 ├── foundry.toml
 ├── lib
 │   └── forge-std
@@ -25,6 +24,6 @@ $ tree . -L 3 -I output
 └── test
     └── Counter.t.sol
 
-9 directories, 12 files
+9 directories, 11 files
 // [!endregion output]
 // [!endregion all]

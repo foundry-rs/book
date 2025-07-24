@@ -7,42 +7,42 @@ $ forge selectors find --help
 ```
 
 ```txt
-Usage: forge selectors find [OPTIONS] &lt;SELECTOR&gt;
+Usage: forge selectors find [OPTIONS] <SELECTOR>
 
 Arguments:
-  &lt;SELECTOR&gt;
+  <SELECTOR>
           The selector to search for (with or without 0x prefix)
 
 Options:
   -h, --help
           Print help (see a summary with '-h')
 
-  -j, --threads &lt;THREADS&gt;
+  -j, --threads <THREADS>
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: --jobs]
+          [aliases: jobs]
 
 Project options:
-      --root &lt;PATH&gt;
+      --root <PATH>
           The project's root path.
           
           By default root of the Git repository, if in one, or the current
           working directory.
 
-  -C, --contracts &lt;PATH&gt;
+  -C, --contracts <PATH>
           The contracts source directory
 
-  -R, --remappings &lt;REMAPPINGS&gt;
+  -R, --remappings <REMAPPINGS>
           The project's remappings
 
-      --remappings-env &lt;ENV&gt;
+      --remappings-env <ENV>
           The project's remappings from the environment
 
-      --cache-path &lt;PATH&gt;
+      --cache-path <PATH>
           The path to the compiler cache
 
-      --lib-paths &lt;PATH&gt;
+      --lib-paths <PATH>
           The path to the library folder
 
       --hardhat
@@ -51,13 +51,13 @@ Project options:
           This is the same as using: `--contracts contracts --lib-paths
           node_modules`.
           
-          [aliases: --hh]
+          [aliases: hh]
 
-      --config-path &lt;FILE&gt;
+      --config-path <FILE>
           Path to the config file
 
 Display options:
-      --color &lt;COLOR&gt;
+      --color <COLOR>
           The color of the log messages
 
           Possible values:

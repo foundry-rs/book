@@ -8,9 +8,9 @@ $ forge install --help
 
 ```txt
 Usage: forge install [OPTIONS] [DEPENDENCIES]...
-    forge install [OPTIONS] &lt;github username&gt;/&lt;github project&gt;@&lt;tag&gt;...
-    forge install [OPTIONS] &lt;alias&gt;=&lt;github username&gt;/&lt;github project&gt;@&lt;tag&gt;...
-    forge install [OPTIONS] [https://&lt;github token](https://<github token)@git url&gt;...)]
+    forge install [OPTIONS] <github username>/<github project>@<tag>...
+    forge install [OPTIONS] <alias>=<github username>/<github project>@<tag>...
+    forge install [OPTIONS] [https://<github token](https://<github token)@git url>...)]
     forge install [OPTIONS] [https:// git url](https:// git url)...
 
 Arguments:
@@ -27,11 +27,11 @@ Arguments:
           For exact match, a ref can be provided with `@tag=`, `@branch=` or
           `@rev=` prefix.
           
-          Target installation directory can be added via `&lt;alias&gt;=` suffix. The
-          dependency will installed to `lib/&lt;alias&gt;`.
+          Target installation directory can be added via `<alias>=` suffix. The
+          dependency will installed to `lib/<alias>`.
 
 Options:
-      --root &lt;PATH&gt;
+      --root <PATH>
           The project's root path.
           
           By default root of the Git repository, if in one, or the current
@@ -52,14 +52,14 @@ Options:
   -h, --help
           Print help (see a summary with '-h')
 
-  -j, --threads &lt;THREADS&gt;
+  -j, --threads <THREADS>
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: --jobs]
+          [aliases: jobs]
 
 Display options:
-      --color &lt;COLOR&gt;
+      --color <COLOR>
           The color of the log messages
 
           Possible values:

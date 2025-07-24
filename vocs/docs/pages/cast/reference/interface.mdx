@@ -7,42 +7,42 @@ $ cast interface --help
 ```
 
 ```txt
-Usage: cast interface [OPTIONS] &lt;CONTRACT&gt;
+Usage: cast interface [OPTIONS] <CONTRACT>
 
 Arguments:
-  &lt;CONTRACT&gt;
+  <CONTRACT>
           The target contract, which can be one of: - A file path to an ABI JSON
-          file. - A contract identifier in the form `&lt;path&gt;:&lt;contractname&gt;` or
-          just `&lt;contractname&gt;`. - An Ethereum address, for which the ABI will
+          file. - A contract identifier in the form `<path>:<contractname>` or
+          just `<contractname>`. - An Ethereum address, for which the ABI will
           be fetched from Etherscan
 
 Options:
-  -n, --name &lt;NAME&gt;
+  -n, --name <NAME>
           The name to use for the generated interface.
           
           Only relevant when retrieving the ABI from a file.
 
-  -p, --pragma &lt;VERSION&gt;
+  -p, --pragma <VERSION>
           Solidity pragma version
           
           [default: ^0.8.4]
 
-  -o, --output &lt;PATH&gt;
+  -o, --output <PATH>
           The path to the output file.
           
           If not specified, the interface will be output to stdout.
 
-  -e, --etherscan-api-key &lt;KEY&gt;
+  -e, --etherscan-api-key <KEY>
           The Etherscan (or equivalent) API key
           
           [env: ETHERSCAN_API_KEY=]
 
-  -a, --etherscan-api-version &lt;API_VERSION&gt;
+  -a, --etherscan-api-version <API_VERSION>
           The Etherscan API version
           
           [env: ETHERSCAN_API_VERSION=]
 
-  -c, --chain &lt;CHAIN&gt;
+  -c, --chain <CHAIN>
           The chain name or EIP-155 chain ID
           
           [env: CHAIN=]
@@ -50,14 +50,14 @@ Options:
   -h, --help
           Print help (see a summary with '-h')
 
-  -j, --threads &lt;THREADS&gt;
+  -j, --threads <THREADS>
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: --jobs]
+          [aliases: jobs]
 
 Display options:
-      --color &lt;COLOR&gt;
+      --color <COLOR>
           The color of the log messages
 
           Possible values:

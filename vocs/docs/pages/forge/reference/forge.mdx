@@ -7,7 +7,7 @@ $ forge --help
 ```
 
 ```txt
-Usage: forge [OPTIONS] &lt;COMMAND&gt;
+Usage: forge [OPTIONS] <COMMAND>
 
 Commands:
   bind               Generate Rust bindings for smart contracts
@@ -38,7 +38,6 @@ Commands:
   inspect            Get specialized information about a smart contract
                      [aliases: in]
   install            Install one or multiple dependencies [aliases: i]
-  lint               Lint Solidity source files [aliases: l]
   remappings         Get the automatically inferred remappings for the project
                      [aliases: re]
   remove             Remove one or multiple dependencies [aliases: rm]
@@ -60,17 +59,17 @@ Options:
   -h, --help
           Print help (see a summary with '-h')
 
-  -j, --threads &lt;THREADS&gt;
+  -j, --threads <THREADS>
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: --jobs]
+          [aliases: jobs]
 
   -V, --version
           Print version
 
 Display options:
-      --color &lt;COLOR&gt;
+      --color <COLOR>
           The color of the log messages
 
           Possible values:
@@ -99,5 +98,6 @@ Display options:
           - 5 (-vvvvv): Print execution and setup traces for all tests,
           including storage changes.
 
-Find more information in the book: https://getfoundry.sh/forge/overview
+Find more information in the book:
+http://book.getfoundry.sh/reference/forge/forge.html
 ```

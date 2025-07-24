@@ -7,33 +7,30 @@ $ cast wallet verify --help
 ```
 
 ```txt
-Usage: cast wallet verify [OPTIONS] --address &lt;ADDRESS&gt; &lt;MESSAGE&gt; &lt;SIGNATURE&gt;
+Usage: cast wallet verify [OPTIONS] --address <ADDRESS> <MESSAGE> <SIGNATURE>
 
 Arguments:
-  &lt;MESSAGE&gt;
-          The original message.
-          
-          Treats 0x-prefixed strings as hex encoded bytes. Non 0x-prefixed
-          strings are treated as raw input message.
+  <MESSAGE>
+          The original message
 
-  &lt;SIGNATURE&gt;
+  <SIGNATURE>
           The signature to verify
 
 Options:
-  -a, --address &lt;ADDRESS&gt;
+  -a, --address <ADDRESS>
           The address of the message signer
 
   -h, --help
           Print help (see a summary with '-h')
 
-  -j, --threads &lt;THREADS&gt;
+  -j, --threads <THREADS>
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: --jobs]
+          [aliases: jobs]
 
 Display options:
-      --color &lt;COLOR&gt;
+      --color <COLOR>
           The color of the log messages
 
           Possible values:

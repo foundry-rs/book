@@ -10,13 +10,13 @@ $ forge doc --help
 Usage: forge doc [OPTIONS]
 
 Options:
-      --root &lt;PATH&gt;
+      --root <PATH>
           The project's root path.
           
           By default root of the Git repository, if in one, or the current
           working directory.
 
-  -o, --out &lt;PATH&gt;
+  -o, --out <PATH>
           The doc's output path.
           
           By default, it is the `docs/` in project root.
@@ -30,20 +30,20 @@ Options:
       --open
           Open the documentation in a browser after serving
 
-      --hostname &lt;HOSTNAME&gt;
+      --hostname <HOSTNAME>
           Hostname for serving documentation
 
   -h, --help
           Print help (see a summary with '-h')
 
-  -j, --threads &lt;THREADS&gt;
+  -j, --threads <THREADS>
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: --jobs]
+          [aliases: jobs]
 
 Watch options:
-  -w, --watch [&lt;PATH&gt;...]
+  -w, --watch [<PATH>...]
           Watch the given files or directories for changes.
           
           If no paths are provided, the source and test directories of the
@@ -58,7 +58,7 @@ Watch options:
           By default, only the tests of the last modified test file are
           executed.
 
-      --watch-delay &lt;DELAY&gt;
+      --watch-delay <DELAY>
           File update debounce delay.
           
           During the delay, incoming change events are accumulated and only once
@@ -72,10 +72,10 @@ Watch options:
           When using --poll mode, you'll want a larger duration, or risk
           overloading disk I/O.
 
-  -p, --port &lt;PORT&gt;
+  -p, --port <PORT>
           Port for serving documentation
 
-      --deployments [&lt;DEPLOYMENTS&gt;]
+      --deployments [<DEPLOYMENTS>]
           The relative path to the `hardhat-deploy` or `forge-deploy` artifact
           directory. Leave blank for default
 
@@ -83,7 +83,7 @@ Watch options:
           Whether to create docs for external libraries
 
 Display options:
-      --color &lt;COLOR&gt;
+      --color <COLOR>
           The color of the log messages
 
           Possible values:

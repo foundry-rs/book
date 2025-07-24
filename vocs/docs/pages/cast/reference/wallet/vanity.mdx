@@ -10,17 +10,17 @@ $ cast wallet vanity --help
 Usage: cast wallet vanity [OPTIONS]
 
 Options:
-      --starts-with &lt;PATTERN&gt;
+      --starts-with <PATTERN>
           Prefix regex pattern or hex string
 
-      --ends-with &lt;PATTERN&gt;
+      --ends-with <PATTERN>
           Suffix regex pattern or hex string
 
-      --nonce &lt;NONCE&gt;
+      --nonce <NONCE>
           Generate a vanity contract address created by the generated keypair
           with the specified nonce
 
-      --save-path &lt;PATH&gt;
+      --save-path <PATH>
           Path to save the generated vanity contract address to.
           
           If provided, the generated vanity addresses will appended to a JSON
@@ -29,14 +29,14 @@ Options:
   -h, --help
           Print help (see a summary with '-h')
 
-  -j, --threads &lt;THREADS&gt;
+  -j, --threads <THREADS>
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: --jobs]
+          [aliases: jobs]
 
 Display options:
-      --color &lt;COLOR&gt;
+      --color <COLOR>
           The color of the log messages
 
           Possible values:

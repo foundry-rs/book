@@ -7,41 +7,41 @@ $ cast source --help
 ```
 
 ```txt
-Usage: cast source [OPTIONS] &lt;ADDRESS&gt;
+Usage: cast source [OPTIONS] <ADDRESS>
 
 Arguments:
-  &lt;ADDRESS&gt;
+  <ADDRESS>
           The contract's address
 
 Options:
   -f, --flatten
           Whether to flatten the source code
 
-  -d &lt;DIRECTORY&gt;
+  -d <DIRECTORY>
           The output directory/file to expand source tree into
 
-  -e, --etherscan-api-key &lt;KEY&gt;
+  -e, --etherscan-api-key <KEY>
           The Etherscan (or equivalent) API key
           
           [env: ETHERSCAN_API_KEY=]
 
-  -a, --etherscan-api-version &lt;API_VERSION&gt;
+  -a, --etherscan-api-version <API_VERSION>
           The Etherscan API version
           
           [env: ETHERSCAN_API_VERSION=]
 
-  -c, --chain &lt;CHAIN&gt;
+  -c, --chain <CHAIN>
           The chain name or EIP-155 chain ID
           
           [env: CHAIN=]
 
-      --explorer-api-url &lt;EXPLORER_API_URL&gt;
+      --explorer-api-url <EXPLORER_API_URL>
           Alternative explorer API URL to use that adheres to the Etherscan API.
           If not provided, defaults to Etherscan
           
           [env: EXPLORER_API_URL=]
 
-      --explorer-url &lt;EXPLORER_URL&gt;
+      --explorer-url <EXPLORER_URL>
           Alternative explorer browser URL
           
           [env: EXPLORER_URL=]
@@ -49,14 +49,14 @@ Options:
   -h, --help
           Print help (see a summary with '-h')
 
-  -j, --threads &lt;THREADS&gt;
+  -j, --threads <THREADS>
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: --jobs]
+          [aliases: jobs]
 
 Display options:
-      --color &lt;COLOR&gt;
+      --color <COLOR>
           The color of the log messages
 
           Possible values:

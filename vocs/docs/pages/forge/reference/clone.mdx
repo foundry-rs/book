@@ -7,10 +7,10 @@ $ forge clone --help
 ```
 
 ```txt
-Usage: forge clone [OPTIONS] &lt;ADDRESS&gt; [PATH]
+Usage: forge clone [OPTIONS] <ADDRESS> [PATH]
 
 Arguments:
-  &lt;ADDRESS&gt;
+  <ADDRESS>
           The contract address to clone
 
   [PATH]
@@ -30,17 +30,17 @@ Options:
           will be kept as is. By default, the directory structure is re-orgnized
           to increase the readability, but may risk some compilation failures.
 
-  -e, --etherscan-api-key &lt;KEY&gt;
+  -e, --etherscan-api-key <KEY>
           The Etherscan (or equivalent) API key
           
           [env: ETHERSCAN_API_KEY=]
 
-  -a, --etherscan-api-version &lt;API_VERSION&gt;
+  -a, --etherscan-api-version <API_VERSION>
           The Etherscan API version
           
           [env: ETHERSCAN_API_VERSION=]
 
-  -c, --chain &lt;CHAIN&gt;
+  -c, --chain <CHAIN>
           The chain name or EIP-155 chain ID
           
           [env: CHAIN=]
@@ -60,14 +60,14 @@ Options:
   -h, --help
           Print help (see a summary with '-h')
 
-  -j, --threads &lt;THREADS&gt;
+  -j, --threads <THREADS>
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: --jobs]
+          [aliases: jobs]
 
 Display options:
-      --color &lt;COLOR&gt;
+      --color <COLOR>
           The color of the log messages
 
           Possible values:

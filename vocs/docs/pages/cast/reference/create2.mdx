@@ -10,43 +10,43 @@ $ cast create2 --help
 Usage: cast create2 [OPTIONS]
 
 Options:
-  -s, --starts-with &lt;HEX&gt;
+  -s, --starts-with <HEX>
           Prefix for the contract address
 
-  -e, --ends-with &lt;HEX&gt;
+  -e, --ends-with <HEX>
           Suffix for the contract address
 
-  -m, --matching &lt;HEX&gt;
+  -m, --matching <HEX>
           Sequence that the address has to match
 
   -c, --case-sensitive
           Case sensitive matching
 
-  -d, --deployer &lt;ADDRESS&gt;
+  -d, --deployer <ADDRESS>
           Address of the contract deployer
           
           [default: 0x4e59b44847b379578588920ca78fbf26c0b4956c]
 
-      --salt &lt;HEX&gt;
+      --salt <HEX>
           Salt to be used for the contract deployment. This option separate from
           the default salt mining with filters
 
-  -i, --init-code &lt;HEX&gt;
+  -i, --init-code <HEX>
           Init code of the contract to be deployed
 
-      --init-code-hash &lt;HASH&gt;
+      --init-code-hash <HASH>
           Init code hash of the contract to be deployed
 
-  -j, --threads &lt;THREADS&gt;
+  -j, --threads <THREADS>
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: --jobs]
+          [aliases: jobs]
 
-      --caller &lt;ADDRESS&gt;
+      --caller <ADDRESS>
           Address of the caller. Used for the first 20 bytes of the salt
 
-      --seed &lt;HEX&gt;
+      --seed <HEX>
           The random number generator's seed, used to initialize the salt
 
       --no-random
@@ -57,7 +57,7 @@ Options:
           Print help (see a summary with '-h')
 
 Display options:
-      --color &lt;COLOR&gt;
+      --color <COLOR>
           The color of the log messages
 
           Possible values:

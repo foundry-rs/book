@@ -7,24 +7,21 @@ $ forge eip712 --help
 ```
 
 ```txt
-Usage: forge eip712 [OPTIONS] &lt;PATH&gt;
+Usage: forge eip712 [OPTIONS] <PATH>
 
 Arguments:
-  &lt;PATH&gt;
+  <PATH>
           The path to the file from which to read struct definitions
 
 Options:
-      --json
-          Output in JSON format
-
   -h, --help
           Print help (see a summary with '-h')
 
-  -j, --threads &lt;THREADS&gt;
+  -j, --threads <THREADS>
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: --jobs]
+          [aliases: jobs]
 
 Cache options:
       --force
@@ -37,19 +34,22 @@ Build options:
       --dynamic-test-linking
           Enable dynamic test linking
 
-      --skip &lt;SKIP&gt;...
+      --eof
+          Whether to compile contracts to EOF bytecode
+
+      --skip <SKIP>...
           Skip building files whose names contain the given filter.
           
           `test` and `script` are aliases for `.t.sol` and `.s.sol`.
 
 Linker options:
-      --libraries &lt;LIBRARIES&gt;
+      --libraries <LIBRARIES>
           Set pre-linked libraries
           
           [env: DAPP_LIBRARIES=]
 
 Compiler options:
-      --ignored-error-codes &lt;ERROR_CODES&gt;
+      --ignored-error-codes <ERROR_CODES>
           Ignore solc warnings by error code
 
       --deny-warnings
@@ -58,7 +58,7 @@ Compiler options:
       --no-auto-detect
           Do not auto-detect the `solc` version
 
-      --use &lt;SOLC_VERSION&gt;
+      --use <SOLC_VERSION>
           Specify the solc version, or a path to a local solc, to build with.
           
           Valid values are in the format `x.y.z`, `solc:x.y.z` or
@@ -84,15 +84,15 @@ Compiler options:
       --ast
           Includes the AST as JSON in the compiler output
 
-      --evm-version &lt;VERSION&gt;
+      --evm-version <VERSION>
           The target EVM version
 
-      --optimize [&lt;OPTIMIZE&gt;]
+      --optimize [<OPTIMIZE>]
           Activate the Solidity optimizer
           
           [possible values: true, false]
 
-      --optimizer-runs &lt;RUNS&gt;
+      --optimizer-runs <RUNS>
           The number of runs specifies roughly how often each opcode of the
           deployed code will be executed across the life-time of the contract.
           This means it is a trade-off parameter between code size (deploy cost)
@@ -101,7 +101,7 @@ Compiler options:
           larger `optimizer_runs` parameter will produce longer but more gas
           efficient code
 
-      --extra-output &lt;SELECTOR&gt;...
+      --extra-output <SELECTOR>...
           Extra output to include in the contract's artifact.
           
           Example keys: evm.assembly, ewasm, ir, irOptimized, metadata
@@ -109,16 +109,16 @@ Compiler options:
           For a full description, see
           [https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description](https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description)
 
-      --extra-output-files &lt;SELECTOR&gt;...
+      --extra-output-files <SELECTOR>...
           Extra output to write to separate files.
           
           Valid values: metadata, ir, irOptimized, ewasm, evm.assembly
 
 Project options:
-  -o, --out &lt;PATH&gt;
+  -o, --out <PATH>
           The path to the contract artifacts folder
 
-      --revert-strings &lt;REVERT&gt;
+      --revert-strings <REVERT>
           Revert string configuration.
           
           Possible values are "default", "strip" (remove), "debug"
@@ -127,28 +127,28 @@ Project options:
       --build-info
           Generate build info files
 
-      --build-info-path &lt;PATH&gt;
+      --build-info-path <PATH>
           Output path to directory that build info files will be written to
 
-      --root &lt;PATH&gt;
+      --root <PATH>
           The project's root path.
           
           By default root of the Git repository, if in one, or the current
           working directory.
 
-  -C, --contracts &lt;PATH&gt;
+  -C, --contracts <PATH>
           The contracts source directory
 
-  -R, --remappings &lt;REMAPPINGS&gt;
+  -R, --remappings <REMAPPINGS>
           The project's remappings
 
-      --remappings-env &lt;ENV&gt;
+      --remappings-env <ENV>
           The project's remappings from the environment
 
-      --cache-path &lt;PATH&gt;
+      --cache-path <PATH>
           The path to the compiler cache
 
-      --lib-paths &lt;PATH&gt;
+      --lib-paths <PATH>
           The path to the library folder
 
       --hardhat
@@ -157,19 +157,22 @@ Project options:
           This is the same as using: `--contracts contracts --lib-paths
           node_modules`.
           
-          [aliases: --hh]
+          [aliases: hh]
 
-      --config-path &lt;FILE&gt;
+      --config-path <FILE>
           Path to the config file
 
 Display options:
-      --color &lt;COLOR&gt;
+      --color <COLOR>
           The color of the log messages
 
           Possible values:
           - auto:   Intelligently guess whether to use color output (default)
           - always: Force color output
           - never:  Force disable color output
+
+      --json
+          Format log messages as JSON
 
   -q, --quiet
           Do not print log messages

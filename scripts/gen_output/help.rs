@@ -286,11 +286,6 @@ fn preprocess_help(s: &str) -> Cow<'_, str> {
         vec![
             // Convert URLs in angle brackets to markdown links
             (Regex::new(r"<(https?://[^>]+)>").unwrap(), "[$1]($1)"),
-            // Escape comparison operators
-            (Regex::new(r" <= ").unwrap(), " &lt;= "),
-            (Regex::new(r" >= ").unwrap(), " &gt;= "),
-            // Escape remaining angle brackets that might be interpreted as HTML/JSX
-            (Regex::new(r"<([^>]+)>").unwrap(), "&lt;$1&gt;"),
         ]
     });
 

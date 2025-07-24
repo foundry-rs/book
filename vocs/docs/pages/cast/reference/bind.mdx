@@ -7,19 +7,19 @@ $ cast bind --help
 ```
 
 ```txt
-Usage: cast bind [OPTIONS] &lt;PATH_OR_ADDRESS&gt;
+Usage: cast bind [OPTIONS] <PATH_OR_ADDRESS>
 
 Arguments:
-  &lt;PATH_OR_ADDRESS&gt;
+  <PATH_OR_ADDRESS>
           The contract address, or the path to an ABI Directory
           
           If an address is specified, then the ABI is fetched from Etherscan.
 
 Options:
-  -o, --output-dir &lt;PATH&gt;
+  -o, --output-dir <PATH>
           Path to where bindings will be stored
 
-      --crate-name &lt;NAME&gt;
+      --crate-name <NAME>
           The name of the Rust crate to generate.
           
           This should be a valid crates.io crate name. However, this is
@@ -27,7 +27,7 @@ Options:
           
           [default: foundry-contracts]
 
-      --crate-version &lt;VERSION&gt;
+      --crate-version <VERSION>
           The version of the Rust crate to generate.
           
           This should be a standard semver version string. However, it is not
@@ -38,17 +38,17 @@ Options:
       --separate-files
           Generate bindings as separate files
 
-  -e, --etherscan-api-key &lt;KEY&gt;
+  -e, --etherscan-api-key <KEY>
           The Etherscan (or equivalent) API key
           
           [env: ETHERSCAN_API_KEY=]
 
-  -a, --etherscan-api-version &lt;API_VERSION&gt;
+  -a, --etherscan-api-version <API_VERSION>
           The Etherscan API version
           
           [env: ETHERSCAN_API_VERSION=]
 
-  -c, --chain &lt;CHAIN&gt;
+  -c, --chain <CHAIN>
           The chain name or EIP-155 chain ID
           
           [env: CHAIN=]
@@ -56,14 +56,14 @@ Options:
   -h, --help
           Print help (see a summary with '-h')
 
-  -j, --threads &lt;THREADS&gt;
+  -j, --threads <THREADS>
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: --jobs]
+          [aliases: jobs]
 
 Display options:
-      --color &lt;COLOR&gt;
+      --color <COLOR>
           The color of the log messages
 
           Possible values:

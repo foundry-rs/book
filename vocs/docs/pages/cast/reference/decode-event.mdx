@@ -7,30 +7,30 @@ $ cast decode-event --help
 ```
 
 ```txt
-Usage: cast decode-event [OPTIONS] &lt;DATA&gt;
+Usage: cast decode-event [OPTIONS] <DATA>
 
 Arguments:
-  &lt;DATA&gt;
+  <DATA>
           The event data to decode
 
 Options:
-      --sig &lt;SIG&gt;
+      --sig <SIG>
           The event signature. If none provided then tries to decode from local
           cache or [https://api.openchain.xyz](https://api.openchain.xyz)
           
-          [aliases: --event-sig]
+          [aliases: event-sig]
 
   -h, --help
           Print help (see a summary with '-h')
 
-  -j, --threads &lt;THREADS&gt;
+  -j, --threads <THREADS>
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: --jobs]
+          [aliases: jobs]
 
 Display options:
-      --color &lt;COLOR&gt;
+      --color <COLOR>
           The color of the log messages
 
           Possible values:
