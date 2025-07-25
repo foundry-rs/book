@@ -395,6 +395,51 @@ exclude_lints = ["asm-keccak256"]
 
 Alternatively, you can also disable this individual occurrence using [inline configuration](/config/reference/linter#inline-configuration).
 
+### Codesize Optimizations
+
+#### `unwrapped-modifier-logic`
+
+Warns when modifiers contain logic that isn't wrapped between the `_` placeholder. In Solidity, code in modifiers that appears before or after the `_` is inlined at every function using that modifier, which can significantly increase contract size when the modifier is used multiple times.
+
+Moving complex logic into internal functions that are called from the modifier can reduce bytecode size by avoiding code duplication, especially for modifiers used across many functions.
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract UnwrappedModifierLogic {
+    address owner;
+
+    // Correct - Complex logic is wrapped in an internal function
+    modifier onlyOwner() {
+        _checkOwner();
+        _;
+    }
+
+    function _checkOwner(address who) internal view {
+        require(who == owner, "Not owner");
+        // Additional complex checks...
+    }
+
+    // Incorrect - Logic directly in modifier gets duplicated
+    modifier onlyOwnerIncorrect() {
+        require(msg.sender == owner, "Not owner");
+        // This code is inlined at every function using this modifier
+        _;
+    }
+}
+```
+
+To disable this lint for your project, you can add its ID to the `exclude_lints` array within the `[lint]` section of the `foundry.toml` configuration file:
+
+```toml
+[lint]
+# ... rest of lint config ...
+exclude_lints = ["unwrapped-modifier-logic"]
+```
+
+Alternatively, you can also disable this individual occurrence using [inline configuration](/config/reference/linter#inline-configuration).
+
 ### See Also
 
 [Lint config](/config/reference/linter)
