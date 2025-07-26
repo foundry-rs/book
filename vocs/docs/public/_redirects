@@ -7,10 +7,13 @@
 /reference/chisel /chisel/reference
 
 /reference/cast/:id /cast/reference/:id
+/cast/reference/cast-:splat /cast/reference/:splat
+
 /cast/reference /cast/reference/cast
 /cast/reference/overview /cast/reference/cast
 
 /forge/reference/forge-lint /forge/linting
+/forge/reference/forge-:splat /forge/reference/:splat
 /reference/forge/:id /forge/reference/:id
 /reference/forge /forge/reference/forge
 /forge/reference /forge/reference/forge
@@ -51,4 +54,7 @@
 /guides/best-practices /guides/best-practices/writing-contracts
 /guides /guides/best-practices/writing-contracts
 
-/cast/reference/cast-index /cast/reference/cast-i
+# General pattern for simple cast commands
+
+
+# General pattern for simple forge commands
