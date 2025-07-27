@@ -67,8 +67,7 @@ Options:
           [default: 130]
 
       --unlocked
-          Send via `eth_sendTransaction` using the `--sender` argument or
-          `$ETH_FROM` as sender
+          Send via `eth_sendTransaction` using the `--sender` argument as sender
 
       --resume
           Resumes submitting transactions that failed or timed-out previously.
@@ -302,17 +301,6 @@ Project options:
           Path to the config file
 
 Wallet options - raw:
-  -a, --froms [<ADDRESSES>...]
-          The sender accounts for transactions when using local signers (private
-          keys, keystores, hardware wallets, etc.).
-          
-          These addresses are derived from the provided private keys/signers and
-          specify which accounts to use for signing transactions locally. This
-          is different from --unlocked which uses eth_sendTransaction with
-          pre-unlocked accounts on the RPC.
-          
-          [env: ETH_FROM=]
-
   -i, --interactives <NUM>
           Open an interactive prompt to enter your private key.
           

@@ -4,20 +4,20 @@ $ tree . -L 3 -I output
 // [!endregion command]
 // [!region output]
 .
+├── README.md
 ├── foundry.lock
 ├── foundry.toml
 ├── lib
 │   └── forge-std
 │       ├── CONTRIBUTING.md
-│       ├── foundry.toml
 │       ├── LICENSE-APACHE
 │       ├── LICENSE-MIT
-│       ├── package.json
 │       ├── README.md
+│       ├── foundry.toml
+│       ├── package.json
 │       ├── scripts
 │       ├── src
 │       └── test
-├── README.md
 ├── script
 │   └── Counter.s.sol
 ├── src
