@@ -191,6 +191,45 @@ exclude_lints = ["divide-before-multiply"]
 
 Alternatively, you can also disable this individual occurrence using [inline configuration](/config/reference/linter#inline-configuration).
 
+#### `unsafe-typecast`
+
+Warns against unsafe type conversions that may result in data loss or unexpected behavior.
+
+In Solidity, typecasts are unchecked and can introduce unexpected behavior when converting between types of different sizes. 
+For example, casting from a larger type to a smaller one (such as `uint256` to `uint8`) will silently truncate the higher-order bits. 
+This may result in data loss and subtle, hard-to-detect bugs.
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract UnsafeTypecast {
+    function safe(uint256 largeValue) public pure {
+        if (largeValue > type(uint8).max) revert();
+        // Cast is safe because we ensure `largeValue` can fit above.
+        // forge-lint: disable-next-line(unsafe-typecast)
+        uint8 smallValue = uint8(largeValue);
+    }
+
+    function unsafe(uint256 largeValue) public pure {
+        // This cast is unsafe: it truncates `largeValue` to fit into 8 bits,
+        // discarding all but the lowest 8 bits (i.e., `largeValue % 256`).
+        // Any value greater than 255 will lose data, which can lead to bugs.
+        uint8 truncated = uint8(largeValue);
+    }
+}
+```
+
+To disable this lint for your project, you can add its ID to the `exclude_lints` array within the `[lint]` section of the `foundry.toml` configuration file:
+
+```toml
+[lint]
+# ... rest of lint config ...
+exclude_lints = ["unsafe-typecast"]
+```
+
+Alternatively, you can also disable this individual occurrence using [inline configuration](/config/reference/linter#inline-configuration).
+
 ### Informational / Style Guide
 
 #### `pascal-case-struct`
