@@ -33,7 +33,6 @@ export const zksyncSpecifics: SidebarItem[] = [
     text: 'Developer Guide',
     collapsed: true,
     items: [
-      { text: 'Overview', link: '/zksync-specifics/developer-guide/overview' },
       { text: 'Linking', link: '/zksync-specifics/developer-guide/linking' },
       { text: 'Nonces', link: '/zksync-specifics/developer-guide/nonces' },
     ],

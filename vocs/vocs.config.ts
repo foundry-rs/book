@@ -51,12 +51,12 @@ export default defineConfig({
   ],
   topNav: [
     {
-      link: '/introduction/getting-started',
+      link: '/zksync-specifics/overview',
       text: 'Docs',
     },
     {
-      link: '/guides/best-practices/writing-contracts',
-      text: 'Guides',
+      link: '/zksync-specifics/examples/overview',
+      text: 'Examples',
     },
     {
       link: 'https://github.com/matter-labs/foundry-zksync',
@@ -65,10 +65,6 @@ export default defineConfig({
     {
       text: 'v1.3.0-rc1',
       items: [
-        {
-          text: 'Release notes',
-          link: '/releases',
-        },
         {
           text: 'Contributing',
           link: 'https://github.com/matter-labs/foundry-zksync/blob/main/CONTRIBUTING.md',
