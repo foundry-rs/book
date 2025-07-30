@@ -206,7 +206,7 @@ pragma solidity ^0.8.0;
 contract UnsafeTypecast {
     function safe(uint256 largeValue) public pure {
         if (largeValue > type(uint8).max) revert();
-        // Cast is safe because we ensure `largeValue` can fit above.
+        // casting to 'uint8' is safe because we ensure 'largeValue' can fit above.
         // forge-lint: disable-next-line(unsafe-typecast)
         uint8 smallValue = uint8(largeValue);
     }
