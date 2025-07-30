@@ -3,17 +3,17 @@ title: Foundry Releases
 description: Latest release notes for Foundry
 ---
 
-# v1.3.0-rc2 [July 24, 2025]
+# v1.3.0-rc3 [July 29, 2025]
 
 # Foundry v1.3.0
 
-This release includes support for `forge lint`, time-based campaigns and coverage-guided fuzzing for invariant tests, table tests, fork test improvements for [Reth clients](https://github.com/paradigmxyz/reth), and new EIP-712 features. Foundry v1.3.0 is built on top of the latest [`revm v27`](https://github.com/bluealloy/revm) and ships with a forge benchmark tool, along with an improved `foundryup` installer.
+This release includes support for `forge lint`, time-based campaigns and coverage-guided fuzzing for invariant tests, table tests, fork test improvements for [Reth clients](https://github.com/paradigmxyz/reth), and new EIP-712 features. Foundry v1.3.0 is built on top of the latest [`revm v27`](https://github.com/bluealloy/revm) Foundry v1.3.0 is built on top of the latest revm v27 and comes with an improved `foundryup` installer.
 
-:warning: It is highly recommended to update to latest version of `foundryup`, which avoids unnecessary downloads and verifies hashes of downloaded binaries upon install.
+:warning: It is highly recommended to update to latest version of `foundryup`, which avoids unnecessary downloads and verifies hashes of downloaded binaries upon install. You can update your installation by running: `foundryup --update`.
 
 ## Performance Improvements
 
-- This release includes an updated [`revm`](https://github.com/bluealloy/revm) and an optimized inspector stack, which significantly improves performance [compared to previous versions](https://github.com/foundry-rs/foundry/blob/release-1.3.0/benches/LATEST.md)
+- This release includes an updated [`revm`](https://github.com/bluealloy/revm) ([#11079](https://github.com/foundry-rs/foundry/pull/11079)) and an optimized inspector stack ([#11077](https://github.com/foundry-rs/foundry/pull/11077) [#11100](https://github.com/foundry-rs/foundry/pull/11100)), which enhances Forge test performance by up to 21.50% [compared to previous versions](https://github.com/foundry-rs/foundry/blob/release-1.3.0/benches/LATEST.md)
 #### Forge Test
 
 | Repository           | v1.2.3  | v1.3.0  |
@@ -32,7 +32,7 @@ This release includes support for `forge lint`, time-based campaigns and coverag
 | Uniswap-v4-core      | 8.03 s | 7.46 s |
 | sparkdotfi-spark-psm | 3.70 s | 3.06 s             
 
-- Forked tests using the [Reth client](https://github.com/paradigmxyz/reth) are now faster thanks to the `eth_getAccountInfo` API, reducing account data fetching from three requests to one. Foundry detects if `eth_getAccountInfo` is available and falls back to the legacy method otherwise.  
+- Forked tests using the [Reth client](https://github.com/paradigmxyz/reth) are now faster thanks to the `eth_getAccountInfo` API ([#10496](https://github.com/foundry-rs/foundry/pull/10496) [#10838](https://github.com/foundry-rs/foundry/pull/10838)), reducing account data fetching from three requests to one. Foundry detects if `eth_getAccountInfo` is available and falls back to the legacy method otherwise.  
   Example: Running `forge test --mt statefulFuzz_curve_test` on [spark-alm-controller](https://github.com/sparkdotfi/spark-alm-controller/pull/107) showed over 5 seconds in test time savings.
 
 | Provider                                      | Response Time |
@@ -45,7 +45,7 @@ This release includes support for `forge lint`, time-based campaigns and coverag
 
 ## Forge Lint
 
-As of v1.3.0, Forge ships with a built-in linter that analyzes Solidity code for style, correctness, and best practices.
+As of v1.3.0, Forge ships with a built-in linter ([#10405](https://github.com/foundry-rs/foundry/pull/10405)) that analyzes Solidity code for style, correctness, and best practices.
 
 - Lint rules are configurable in the `[lint]` section of `foundry.toml` and via inline comment directives.
 - Lints can be customized by severity or specific rule identifiers.
@@ -60,7 +60,7 @@ As of v1.3.0, Forge ships with a built-in linter that analyzes Solidity code for
 ### Time-Based Campaigns
 
 Previously, invariant tests were limited by a fixed number of runs (default: `256`, max: `4294967295`).  
-Now you can run them for a specific time duration by setting the `timeout` value (in seconds) in the `[invariant]` section of `foundry.toml`.
+Now you can run them for a specific time duration by setting the `timeout` value (in seconds) in the `[invariant]` section of `foundry.toml` ([#10190](https://github.com/foundry-rs/foundry/pull/10190)).
 
 The test progress bar shows the number of runs and the end time.
 ```bash
@@ -73,7 +73,7 @@ test/GuidedTest.t.sol:CounterTest
 
 ### Coverage-Guided Fuzzing
 
-Enable this mode by setting a path to `corpus_dir` in your invariant config.  
+Enable this mode by setting a path to `corpus_dir` in your invariant config ([#10190](https://github.com/foundry-rs/foundry/pull/10190)).  
 The coverage-Guided fuzzing mode targets a `corpus_min_size` by mutating entries a number of times (default: 5), favoring those likely to uncover new paths.
 
 **Supported mutations:**
@@ -100,12 +100,12 @@ For more details please refer to [invariant docs](https://getfoundry.sh/forge/ad
 
 ## Table Tests
 
-Foundry v1.3.0 comes with support for table testing, which enables the definition of a dataset (the "table") and the execution of a test function for each entry in that dataset. This approach helps ensure that certain combinations of inputs and conditions are tested.  
+Foundry v1.3.0 comes with support for table testing ([#10775](https://github.com/foundry-rs/foundry/pull/10775)), which enables the definition of a dataset (the "table") and the execution of a test function for each entry in that dataset. This approach helps ensure that certain combinations of inputs and conditions are tested.  
 For more details please refer to [table testing foundry docs](https://getfoundry.sh/forge/advanced-testing/table-testing).
 
 ## Improved EIP-712 support
 
-Foundry v1.3.0 comes with additional utilities (commands and new cheatcodes) to make it easy and reliable to work with EIP-712 signatures.  
+Foundry v1.3.0 comes with additional utilities (commands and new cheatcodes) to make it easy and reliable to work with EIP-712 signatures ([#10510](https://github.com/foundry-rs/foundry/pull/10510)).  
 For more details please refer to [EIP-712 foundry guide](https://getfoundry.sh/guides/eip712/).
 
 ## Other
@@ -135,6 +135,8 @@ For more details please refer to [EIP-712 foundry guide](https://getfoundry.sh/g
 - fix: spawn state writer blocking ([#10922](https://github.com/foundry-rs/foundry/pull/10922)) by [@mattsse](https://github.com/mattsse)
 - fix: dont check pool for gettransaction receipt ([#10946](https://github.com/foundry-rs/foundry/pull/10946)) by [@mattsse](https://github.com/mattsse)
 - fix: use correct mix hash for header ([#10951](https://github.com/foundry-rs/foundry/pull/10951)) by [@mattsse](https://github.com/mattsse)
+- fix: use existing functions for accountinfo ([#11134](https://github.com/foundry-rs/foundry/pull/11134)) by [@mattsse](https://github.com/mattsse)
+- fix(anvil): unwrap panic in eth/backend/mem/mod.rs ([#11141](https://github.com/foundry-rs/foundry/pull/11141)) by [@zerosnacks](https://github.com/zerosnacks) 
 
 ## Cast Features
 
@@ -247,6 +249,7 @@ For more details please refer to [EIP-712 foundry guide](https://getfoundry.sh/g
 - fix: spawn fork backendhandler on current tokio runtime ([#10923](https://github.com/foundry-rs/foundry/pull/10923)) by [@mattsse](https://github.com/mattsse)
 - perf: find latest block for next-base-fee. replaces [#10505](https://github.com/foundry-rs/foundry/pull/10505) ([#10511](https://github.com/foundry-rs/foundry/pull/10511)) by [@naps62](https://github.com/naps62)
 - perf: improve InspectorStack ([#11077](https://github.com/foundry-rs/foundry/pull/11077)) by [@DaniPopes](https://github.com/DaniPopes) 
+- perf: box inspectors in InspectorStack ([#11100](https://github.com/foundry-rs/foundry/pull/11100)) by [@DaniPopes](https://github.com/DaniPopes) 
 
 
 ## Other
@@ -331,13 +334,14 @@ For more details please refer to [EIP-712 foundry guide](https://getfoundry.sh/g
 - docs(lintrules): reflect latest impl changes ([#11031](https://github.com/foundry-rs/foundry/pull/11031)) by [@0xrusowsky](https://github.com/0xrusowsky)
 
 ## Full Changelog:
- https://github.com/foundry-rs/foundry/compare/v1.2.3...v1.3.0-rc2
+ https://github.com/foundry-rs/foundry/compare/v1.2.3...v1.3.0-rc3
 
 
 ## Previous Releases
 
 | Version | Release Date | Release Notes |
 |---------|--------------|---------------|
+| v1.3.0-rc2 | July 24, 2025 | [View](https://github.com/foundry-rs/foundry/releases/tag/v1.3.0-rc2) |
 | v1.3.0-rc1 | July 17, 2025 | [View](https://github.com/foundry-rs/foundry/releases/tag/v1.3.0-rc1) |
 | v1.2.3 | June 8, 2025 | [View](https://github.com/foundry-rs/foundry/releases/tag/v1.2.3) |
 | v1.2.2 | May 30, 2025 | [View](https://github.com/foundry-rs/foundry/releases/tag/v1.2.2) |
