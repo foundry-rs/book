@@ -3,7 +3,7 @@ import { writeFileSync, mkdirSync } from 'fs';
 import { join } from 'path';
 
 const BENCHMARKS_URL = 'https://raw.githubusercontent.com/foundry-rs/foundry/master/benches/LATEST.md';
-const OUTPUT_DIR = join(import.meta.dir, '../docs/pages/introduction');
+const OUTPUT_DIR = join(import.meta.dir, '../docs/pages');
 const OUTPUT_FILE = join(OUTPUT_DIR, 'benches.mdx');
 
 interface BenchmarkData {
