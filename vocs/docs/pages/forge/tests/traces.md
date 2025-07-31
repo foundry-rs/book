@@ -62,7 +62,7 @@ For a deeper insight into the various traces, you can explore the [revm source c
 
 In addition to the above anomalies of incorrect gas and un-decodable traces, there are additional caveats within the ZKsync context:
 
-* The events emitted from within the zkEVM will not show on traces. See [events](../zksync-specifics/limitations/events.md) in zkEVM.
+* The events emitted from within the zkEVM will not show on traces. See [events](/zksync-specifics/limitations/events) in zkEVM.
 * The system call traces from within the zkEVM's bootloader are currently ignored in order to simplify the trace output.
 * Executing each `CREATE` or `CALL` in its own zkEVM has additional bootloader gas costs, which may sometimes not be accounted in the traces. The ignored bootloader system calls, have a heuristic in-place to sum up their gas usage to the nearest non-system parent call, but this may also not add up accurately.
 

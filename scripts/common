@@ -5,7 +5,7 @@ set -eo pipefail
 # the commands and outputs into files that are easily
 # includeable in the book.
 
-ETH_RPC_URL="${ETH_RPC_URL:=https://eth-mainnet.alchemyapi.io/v2/Lc7oIGYeL_QvInzI0Wiu_pOZZDEKBrdf}"
+ETH_RPC_URL="${ETH_RPC_URL:=https://eth-mainnet.alchemyapi.io/v2/YOUR_ALCHEMY_API_KEY_HERE}"
 SNIPPETS_DIR="$(realpath vocs/docs/snippets)"
 OUTPUT_DIR="$(realpath $SNIPPETS_DIR/output)"
 ROOT="$(dirname "$(dirname "$(realpath "$0")")")"

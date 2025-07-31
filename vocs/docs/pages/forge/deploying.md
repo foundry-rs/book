@@ -110,7 +110,7 @@ It is recommended to use the `--verify` flag with `forge create` to automaticall
 
 If you are verifying an already deployed contract, read on.
 
-You can verify a contract on ZKsync Block Explorer, Etherscan, Sourcify, oklink or Blockscout with the [`forge verify-contract`](../reference/forge/forge-verify-contract.md) command.
+You can verify a contract on ZKsync Block Explorer, Etherscan, Sourcify, oklink or Blockscout with the [`forge verify-contract`](/forge/reference/verify-contract) command.
 
 You must provide:
 

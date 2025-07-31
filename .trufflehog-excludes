@@ -1,0 +1,7 @@
+vocs/docs/dist/.*
+vocs/node_modules/.*
+.*lib/forge-std/.*
+vocs/docs/snippets/output/.*
+book/.*
+out/.*
+zkout/.*
