@@ -14,28 +14,6 @@ export default defineConfig({
     pattern: 'https://github.com/matter-labs/foundry-zksync-book/edit/main/vocs/docs/pages/:path',
     text: 'Suggest changes on GitHub',
   },
-  sponsors: [
-    {
-      name: 'Collaborator',
-      height: 120,
-      items: [
-        [
-          {
-            name: 'Paradigm',
-            link: 'https://paradigm.xyz',
-            image:
-              'https://raw.githubusercontent.com/wevm/.github/main/content/sponsors/paradigm-light.svg',
-          },
-          {
-            name: 'Ithaca',
-            link: 'https://ithaca.xyz',
-            image:
-              'https://raw.githubusercontent.com/wevm/.github/main/content/sponsors/ithaca-light.svg',
-          },
-        ],
-      ],
-    }
-  ],
   logoUrl: '/foundry-logo.png',
   iconUrl: '/foundry-logo.png',
   ogImageUrl: '/og-image.png',

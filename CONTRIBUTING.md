@@ -75,27 +75,27 @@ Each output file has three anchors you can use:
 **Display the command _and_ the output**
 
 ```handlebars
-{{#include ../output/abc/xyz:all}}
+// [!include ~/snippets/output/abc/xyz:all]
 ```
 
 **Display just the command**
 
 ```handlebars
-{{#include ../output/abc/xyz:command}}
+// [!include ~/snippets/output/abc/xyz:command]
 ```
 
 **Display just the output**
 
 ```handlebars
-{{#include ../output/abc/xyz:output}}
+// [!include ~/snippets/output/abc/xyz:output]
 ```
 
-You can learn more about auto-generated CLI output in the [output folder](./src/output).
+You can learn more about auto-generated CLI output in the [output folder](./vocs/docs/snippets/output).
 
 #### Where possible, do NOT in-line Solidity code
 
-In the same vein as the previous style guideline, opt to include source files, or parts of source files, from the [projects folder](./projects).
+In the same vein as the previous style guideline, opt to include source files, or parts of source files, from the [projects folder](./vocs/docs/snippets/projects).
 
 This allows us to quickly iterate and improve on our examples without having to change multiple pages.
 
-You can learn more about including files in the [mdbook documentation](https://rust-lang.github.io/mdBook/format/mdbook.html).
+Learn more about including snippets and files in the [vocs documentation](https://vocs.dev/docs/guides/code-snippets#physical-file-snippets).

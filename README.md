@@ -1,30 +1,20 @@
-<img src="src/images/foundry-banner.png" style="border-radius: 20px">
-
-<br>
-
 # 📖 Foundry ZKsync Book
 
 A book on all things foundry ZKsync. [Read now](https://foundry-book.zksync.io/).
 
+### Contributing
+
 Check our [contributing guidelines](./CONTRIBUTING.md). Feel free to contribute wording, sentences, chapters, and guides!
 
-The book is build with [mdbook](https://github.com/rust-lang/mdBook), which you can get by running `cargo install mdbook`.
-
-The book also requires [`mdbook-external-links`](https://github.com/jonahgoldwastaken/mdbook-external-links): `cargo install mdbook-external-links`.
+The book is built with [vocs](https://vocs.dev), which you can get by running `bun i vocs`.
 
 To see the book change live run:
 
 ```sh
-mdbook serve
+cd vocs && bun dev
 ```
 
-To run the book with docker, run:
-
-```sh
-docker run -p 3000:3000 -v `pwd`:/book peaceiris/mdbook serve
-```
-
-To add a new section (file) to the book, add it to [`SUMMARY.md`](src/SUMMARY.md).
+To add a new section (file) to the book, add it to [`sidebar.ts`](./vocs/sidebar/sidebar.ts).
 
 For a more structured overview of the current issues, see [the GitHub project](https://github.com/orgs/foundry-rs/projects/1).
 

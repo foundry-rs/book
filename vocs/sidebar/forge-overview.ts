@@ -14,7 +14,10 @@ export const forgeOverview: SidebarItem[] = [
             { text: 'Writing Tests', link: '/forge/tests/writing-tests' },
             { text: 'Cheatcodes', link: '/forge/tests/cheatcodes' },
             { text: 'Forge Standard Library Overview', link: '/forge/tests/forge-std' },
+<<<<<<< HEAD
             { text: 'Forge-ZKsync Standard Library', link: '/forge/tests/forge-zksync-std' },
+=======
+>>>>>>> ac5e906
             { text: 'Understanding Traces', link: '/forge/tests/traces' },
             { text: 'Fork Testing', link: '/forge/tests/fork-testing' },
             { text: 'Replaying Failures', link: '/forge/tests/replay-testing' }

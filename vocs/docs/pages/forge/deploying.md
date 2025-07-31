@@ -50,21 +50,14 @@ Additionally, we can tell Forge to verify our contract on ZKsync Block Explorer,
 It is recommended to make use of ZKsync Block Explorer by specifying `--verifier zksync` and using the verification URL (e.g. ZKsync Sepolia `https://explorer.sepolia.era.zksync.dev/contract_verification`).
 
 ```sh
-<<<<<<< HEAD:src/forge/deploying.md
 $ forge create --zksync \
     --rpc-url <your_rpc_url> \
     --constructor-args "ForgeUSD" "FUSD" 18 1000000000000000000000 \
     --private-key <your_private_key> \
     --verifier zksync  \
     --verifier-url https://explorer.sepolia.era.zksync.dev/contract_verification \
-=======
-forge create src/MyToken.sol:MyToken --rpc-url <YOUR_RPC_URL> \
-    --private-key <YOUR_PRIVATE_KEY> \
-    --broadcast \
-    --etherscan-api-key <YOUR_ETHERSCAN_API_KEY> \
->>>>>>> ac5e906baf8243f7d4d0c41919c6c87514165d77:vocs/docs/pages/forge/deploying.md
     --verify \
-    --constructor-args "ForgeUSD" "FUSD" 18 1000000000000000000000
+    --broadcast
 ```
 
 ## Multi-chain deployments
@@ -113,20 +106,32 @@ For a list of all available forking cheatcodes see [`forking`](/reference/cheatc
 
 ## Verifying a pre-existing contract
 
+<<<<<<< HEAD
 <<<<<<< HEAD:src/forge/deploying.md
+=======
+<<<<<<<< HEAD:src/forge/deploying.md
+>>>>>>> ac5e906
 It is recommended to use the `--verify` flag with `forge create` to automatically verify the contract on explorer after a deployment using `--verifier zksync` to target ZKsync Block Explorer instance.
 
 If you are verifying an already deployed contract, read on.
 
 You can verify a contract on ZKsync Block Explorer, Etherscan, Sourcify, oklink or Blockscout with the [`forge verify-contract`](../reference/forge/forge-verify-contract.md) command.
+<<<<<<< HEAD
 =======
+=======
+========
+>>>>>>> ac5e906
 It is recommended to use the `--verify` flag with `forge create` to automatically verify the contract on explorer after a deployment.
 Note that for Etherscan [`ETHERSCAN_API_KEY`](https://docs.etherscan.io/getting-started/viewing-api-usage-statistics) must be set.
 
 If you are verifying an already deployed contract, read on.
 
 You can verify a contract on Etherscan, Sourcify, oklink or Blockscout with the [`forge verify-contract`](/forge/reference/verify-contract) command.
+<<<<<<< HEAD
 >>>>>>> ac5e906baf8243f7d4d0c41919c6c87514165d77:vocs/docs/pages/forge/deploying.md
+=======
+>>>>>>>> ac5e906:vocs/docs/pages/forge/deploying.md
+>>>>>>> ac5e906
 
 You must provide:
 
@@ -155,14 +160,24 @@ forge verify-contract \
     --verifier zksync  \
     --verifier-url https://explorer.sepolia.era.zksync.dev/contract_verification \
     --constructor-args $(cast abi-encode "constructor(string,string,uint256,uint256)" "ForgeUSD" "FUSD" 18 1000000000000000000000) \
+<<<<<<< HEAD
 <<<<<<< HEAD:src/forge/deploying.md
     <the_contract_address> \
 =======
+=======
+<<<<<<<< HEAD:src/forge/deploying.md
+    <the_contract_address> \
+========
+>>>>>>> ac5e906
     --verifier etherscan \
     --etherscan-api-key <your_etherscan_api_key> \
     --compiler-version v0.8.10+commit.fc410830 \
     <CONTRACT_ADDRESS> \
+<<<<<<< HEAD
 >>>>>>> ac5e906baf8243f7d4d0c41919c6c87514165d77:vocs/docs/pages/forge/deploying.md
+=======
+>>>>>>>> ac5e906:vocs/docs/pages/forge/deploying.md
+>>>>>>> ac5e906
     src/MyToken.sol:MyToken
 
 Submitting verification for [src/MyToken.sol:MyToken] at address 0x21d6dffe4B406c59E80CD62b4cB1763363c8a040.
@@ -189,11 +204,19 @@ If the `--watch` flag was not supplied, you can check
 the verification status with the [`forge verify-check`](/forge/reference/verify-check) command:
 
 ```bash
+<<<<<<< HEAD
 <<<<<<< HEAD:src/forge/deploying.md
 $ forge verify-check --zksync --chain zksync-testnet <verificationId> --verifier zksync
 =======
 forge verify-check --chain-id 11155111 <GUID> <YOUR_ETHERSCAN_API_KEY>
 >>>>>>> ac5e906baf8243f7d4d0c41919c6c87514165d77:vocs/docs/pages/forge/deploying.md
+=======
+<<<<<<<< HEAD:src/forge/deploying.md
+$ forge verify-check --zksync --chain zksync-testnet <verificationId> --verifier zksync
+========
+forge verify-check --chain-id 11155111 <GUID> <YOUR_ETHERSCAN_API_KEY>
+>>>>>>>> ac5e906:vocs/docs/pages/forge/deploying.md
+>>>>>>> ac5e906
 Contract successfully verified.
 ```
 

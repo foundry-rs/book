@@ -1,0 +1,46 @@
+## `broadcast`
+
+### Signature
+
+```solidity
+function broadcast() external;
+```
+
+```solidity
+function broadcast(address who) external;
+```
+
+```solidity
+function broadcast(uint256 privateKey) external;
+```
+
+### Description
+
+Using the address that calls the test contract or the address / private key provided
+as the sender, has the next call (at this call depth only and excluding cheatcode calls) create a
+transaction that can later be signed and sent onchain.
+
+### Examples
+
+```solidity
+function deploy() public {
+    vm.broadcast(ACCOUNT_A);
+    Test test = new Test();
+
+    // this won't generate tx to sign
+    uint256 b = test.t(4);
+
+    // this will
+    vm.broadcast(ACCOUNT_B);
+    test.t(2);
+
+    // this also will, using a private key from your environment variables
+    vm.broadcast(vm.envUint("PRIVATE_KEY"));
+    test.t(3);
+}
+```
+
+### SEE ALSO
+
+- [startBroadcast](/reference/cheatcodes/start-broadcast.mdx)
+- [stopBroadcast](/reference/cheatcodes/stop-broadcast.mdx)

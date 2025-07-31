@@ -1,0 +1,25 @@
+// [!region all]
+// [!region command]
+forge clone 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2 WETH9 --etherscan-api-key <YOUR_API_KEY>
+// [!endregion command]
+// [!region output]
+Downloading the source code of 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2 from Etherscan...
+Initializing /home/zhan4987/WETH9...
+Installing forge-std in /home/zhan4987/WETH9/lib/forge-std (url: Some("https://github.com/foundry-rs/forge-std"), tag: None)
+Cloning into '/home/zhan4987/WETH9/lib/forge-std'...
+remote: Enumerating objects: 2243, done.
+remote: Counting objects: 100% (2238/2238), done.
+remote: Compressing objects: 100% (778/778), done.
+remote: Total 2243 (delta 1489), reused 2097 (delta 1391), pack-reused 5
+Receiving objects: 100% (2243/2243), 649.07 KiB | 8.89 MiB/s, done.
+Resolving deltas: 100% (1489/1489), done.
+Installed forge-std v1.8.1
+Initialized forge project
+Collecting the creation information of 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2 from Etherscan...
+Waiting for 5 seconds to avoid rate limit...
+[⠊] Compiling...
+[⠒] Compiling 1 files with 0.4.19
+[⠢] Solc 0.4.19 finished in 9.50ms
+Compiler run successful!
+// [!endregion output]
+// [!endregion all]
