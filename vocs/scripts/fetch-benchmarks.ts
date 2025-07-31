@@ -168,13 +168,13 @@ function generateUnifiedTable(data: Map<string, BenchmarkData>): string {
   let mdx = `<table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '1rem', marginBottom: 0 }}>
   <thead>
     <tr style={{ borderBottom: '2px solid var(--vocs-color_border)' }}>
-      <th style={{ padding: '0.75rem', textAlign: 'left', fontWeight: 600 }}>Repository</th>
-      <th style={{ padding: '0.75rem', textAlign: 'left', fontWeight: 600 }}>Forge Test</th>
-      <th style={{ padding: '0.75rem', textAlign: 'left', fontWeight: 600 }}>Forge Fuzz Test</th>
-      <th style={{ padding: '0.75rem', textAlign: 'left', fontWeight: 600 }}>Forge Test (Isolated)</th>
-      <th style={{ padding: '0.75rem', textAlign: 'left', fontWeight: 600 }}>Forge Build (No Cache)</th>
-      <th style={{ padding: '0.75rem', textAlign: 'left', fontWeight: 600 }}>Forge Build (With Cache)</th>
-      <th style={{ padding: '0.75rem', textAlign: 'left', fontWeight: 600 }}>Forge Coverage</th>
+      <th style={{ padding: '0.4rem', textAlign: 'left', fontWeight: 600 }}>Repository</th>
+      <th style={{ padding: '0.4rem', textAlign: 'left', fontWeight: 600 }}>Forge Test</th>
+      <th style={{ padding: '0.4rem', textAlign: 'left', fontWeight: 600 }}>Forge Fuzz Test</th>
+      <th style={{ padding: '0.4rem', textAlign: 'left', fontWeight: 600 }}>Forge Test (Isolated)</th>
+      <th style={{ padding: '0.4rem', textAlign: 'left', fontWeight: 600 }}>Forge Build (No Cache)</th>
+      <th style={{ padding: '0.4rem', textAlign: 'left', fontWeight: 600 }}>Forge Build (With Cache)</th>
+      <th style={{ padding: '0.4rem', textAlign: 'left', fontWeight: 600 }}>Forge Coverage</th>
     </tr>
   </thead>
   <tbody>\n`;
@@ -190,13 +190,13 @@ function generateUnifiedTable(data: Map<string, BenchmarkData>): string {
     const isLastRow = index === sortedRepos.length - 1;
     
     mdx += `    <tr${isLastRow ? '' : ' style={{ borderBottom: \'1px solid var(--vocs-color_border)\' }}'}>\n`;
-    mdx += `      <td style={{ padding: '0.75rem', fontWeight: 500 }}>[${benchData.repository}](${repoUrl})</td>\n`;
-    mdx += `      <td style={{ padding: '0.75rem' }}>${formatBenchmark(benchData.forgeTest)}</td>\n`;
-    mdx += `      <td style={{ padding: '0.75rem' }}>${formatBenchmark(benchData.forgeFuzzTest)}</td>\n`;
-    mdx += `      <td style={{ padding: '0.75rem' }}>${formatBenchmark(benchData.forgeTestIsolated)}</td>\n`;
-    mdx += `      <td style={{ padding: '0.75rem' }}>${formatBenchmark(benchData.forgeBuildNoCache)}</td>\n`;
-    mdx += `      <td style={{ padding: '0.75rem' }}>${formatBenchmark(benchData.forgeBuildWithCache)}</td>\n`;
-    mdx += `      <td style={{ padding: '0.75rem' }}>${formatBenchmark(benchData.forgeCoverage)}</td>\n`;
+    mdx += `      <td style={{ padding: '0.4rem', fontWeight: 500 }}>[${benchData.repository}](${repoUrl})</td>\n`;
+    mdx += `      <td style={{ padding: '0.4rem' }}>${formatBenchmark(benchData.forgeTest)}</td>\n`;
+    mdx += `      <td style={{ padding: '0.4rem' }}>${formatBenchmark(benchData.forgeFuzzTest)}</td>\n`;
+    mdx += `      <td style={{ padding: '0.4rem' }}>${formatBenchmark(benchData.forgeTestIsolated)}</td>\n`;
+    mdx += `      <td style={{ padding: '0.4rem' }}>${formatBenchmark(benchData.forgeBuildNoCache)}</td>\n`;
+    mdx += `      <td style={{ padding: '0.4rem' }}>${formatBenchmark(benchData.forgeBuildWithCache)}</td>\n`;
+    mdx += `      <td style={{ padding: '0.4rem' }}>${formatBenchmark(benchData.forgeCoverage)}</td>\n`;
     mdx += '    </tr>\n';
   });
 
@@ -217,10 +217,20 @@ function formatBenchmark(bench: { old: string; new: string }): string {
   }
   
   const percentage = calculatePercentageChange(oldTime, newTime);
-  const isImprovement = percentage.startsWith('↓');
-  const color = isImprovement ? 'green' : 'red';
+  const percentageValue = parseFloat(percentage.replace(/[↑↓%]/g, ''));
   
-  return `${bench.old} / ${bench.new}<br/><span style={{ color: '${color}', fontSize: '0.9em' }}>${percentage}</span>`;
+  let color = 'red';
+  if (percentage.startsWith('↓')) {
+    color = 'green';
+  } else if (Math.abs(percentageValue) <= 5) {
+    color = 'inherit'; // neutral color for small changes
+  }
+  
+  // Remove spaces before 's' in time values
+  const oldFormatted = bench.old.replace(/\s+s/g, 's');
+  const newFormatted = bench.new.replace(/\s+s/g, 's');
+  
+  return `<span style={{ fontSize: '0.85rem' }}>${oldFormatted} /</span><br/><span style={{ fontSize: '0.85rem' }}>${newFormatted}</span><br/><span style={{ color: '${color}', fontSize: '0.85rem' }}>${percentage}</span>`;
 }
 
 async function main() {
