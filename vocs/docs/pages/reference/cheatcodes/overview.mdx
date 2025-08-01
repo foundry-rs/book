@@ -4,14 +4,15 @@ Cheatcodes give you powerful assertions, the ability to alter the state of the E
 
 Cheatcodes are made available through use of the cheatcode address (`0x7109709ECfa91a80626fF3989D68f67F5b1DD12D`).
 
-> ℹ️ **Note**
->
-> If you encounter errors for this address when using fuzzed addresses in your tests, you may wish to
-> exclude it from your fuzz tests by using the following line:
->
-> ```solidity
-> vm.assume(address_ != 0x7109709ECfa91a80626fF3989D68f67F5b1DD12D);
-> ```
+:::note
+If you encounter errors for this address when using fuzzed addresses in your tests, you may wish to
+exclude it from your fuzz tests by using the following line:
+
+```solidity
+ vm.assume(address_ != 0x7109709ECfa91a80626fF3989D68f67F5b1DD12D);
+```
+
+:::
 
 You can also access cheatcodes easily via `vm` available in Forge Standard Library's [`Test`](/reference/forge-std/overview) contract.
 
@@ -45,5 +46,5 @@ If you need a new feature, consider [contributing to the Foundry's codebase](htt
 This is a Solidity interface for all of the cheatcodes present in Forge.
 
 ```solidity
-// [!include ~/snippets/output/vm/Vm.sol:3]
+// [!include ~/snippets/output/vm/Vm.sol]
 ```
