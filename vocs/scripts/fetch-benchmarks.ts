@@ -245,12 +245,45 @@ async function main() {
     const dateMatch = markdown.match(/# Foundry Benchmarks \[(.*?)\]/);
     const benchmarkDate = dateMatch ? dateMatch[1] : new Date().toLocaleDateString();
     
-    // Extract version information
-    const baselineVersionMatch = markdown.match(/forge Version: ([0-9.]+)-(v[0-9.]+)/);
-    const latestVersionMatch = markdown.match(/forge Version: [0-9.]+-nightly \(([a-f0-9]+) /);
+    // Extract version information - look for all forge version lines (with or without "Version:")
+    const versionLines = markdown.match(/forge (?:Version: )?[0-9.]+-.+/g) || [];
     
-    const baselineVersion = baselineVersionMatch ? baselineVersionMatch[2] : 'v1.2.3';
-    const latestCommit = latestVersionMatch ? latestVersionMatch[1] : 'master';
+    let baselineVersion = 'v1.2.3';
+    let latestVersionDisplay: string;
+    let latestVersionUrl: string;
+    
+    // Process version lines (typically first is baseline, second is latest)
+    if (versionLines.length >= 1) {
+      const baselineMatch = versionLines[0].match(/([0-9.]+)-(v[0-9.]+)/);
+      if (baselineMatch) {
+        baselineVersion = baselineMatch[2];
+      }
+    }
+    
+    if (versionLines.length >= 2) {
+      // Check if second line is a release version
+      const releaseMatch = versionLines[1].match(/([0-9.]+)-(v[0-9.]+)/);
+      if (releaseMatch) {
+        const latestRelease = releaseMatch[2];
+        latestVersionDisplay = latestRelease;
+        latestVersionUrl = `https://github.com/foundry-rs/foundry/releases/tag/${latestRelease}`;
+      } else {
+        // Check if it's a nightly version
+        const nightlyMatch = versionLines[1].match(/[0-9.]+-nightly \(([a-f0-9]+) /);
+        if (nightlyMatch) {
+          const latestCommit = nightlyMatch[1];
+          latestVersionDisplay = `nightly-${latestCommit}`;
+          latestVersionUrl = `https://github.com/foundry-rs/foundry/commit/${latestCommit}`;
+        } else {
+          latestVersionDisplay = 'master';
+          latestVersionUrl = 'https://github.com/foundry-rs/foundry/tree/master';
+        }
+      }
+    } else {
+      // Only one version line found, default to master for latest
+      latestVersionDisplay = 'master';
+      latestVersionUrl = 'https://github.com/foundry-rs/foundry/tree/master';
+    }
     
     console.log('Generating unified benchmark table...');
     let unifiedTable = `{/* Auto-generated benchmark table from ${benchmarkDate}. Do not edit manually. */}\n\n`;
@@ -258,7 +291,7 @@ async function main() {
     // Add version links
     unifiedTable += `  <strong>Baseline:</strong> [${baselineVersion}](https://github.com/foundry-rs/foundry/releases/tag/${baselineVersion})\n`;
     unifiedTable += `\n`;
-    unifiedTable += `  <strong>Latest:</strong> [nightly-${latestCommit}](https://github.com/foundry-rs/foundry/commit/${latestCommit})\n`;
+    unifiedTable += `  <strong>Latest:</strong> [${latestVersionDisplay}](${latestVersionUrl})\n`;
     unifiedTable += `\n`;
     unifiedTable += `  Learn more about what went into the latest release [here](/releases)\n`;
     
