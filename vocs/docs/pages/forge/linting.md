@@ -358,18 +358,73 @@ exclude_lints = ["screaming-snake-case-immutable"]
 
 Alternatively, you can also disable this individual occurrence using [inline configuration](/config/reference/linter#inline-configuration).
 
+#### `unused-import`
+
+Warns when imported symbols are not used anywhere in the source file. Unused imports increase deployment costs unnecessarily and reduce code clarity.
+
+This lint checks for:
+- Unused named imports: `import {Symbol} from "file.sol";`
+- Unused aliased imports: `import "file.sol" as Alias;`
+- Unused aliased named imports: `import {Symbol as Alias} from "file.sol";`
+
+> Note: Plain imports without aliases (`import "file.sol";`) are not checked by this lint as they might be used for their side effects.
+
+To disable this lint for your project, you can add its ID to the `exclude_lints` array within the `[lint]` section of the `foundry.toml` configuration file:
+
+```toml
+[lint]
+# ... rest of lint config ...
+exclude_lints = ["unused-import"]
+```
+
+Alternatively, you can also disable this individual occurrence using [inline configuration](/config/reference/linter#inline-configuration).
+
+#### `unaliased-plain-import`
+
+Warns when using plain imports without an alias. Plain imports like `import "file.sol";` can make it unclear where symbols are coming from and can lead to naming conflicts.
+
+Best practice is to either:
+- Use named imports: `import {Symbol1, Symbol2} from "file.sol";`
+- Use aliased imports: `import "file.sol" as FileAlias;`
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+// Correct - using named imports
+import {SafeMath, Math} from "./Math.sol";
+
+// Correct - using aliased import
+import "./Utils.sol" as Utils;
+
+// Incorrect - plain import without alias
+import "./Helpers.sol";
+```
+
+To disable this lint for your project, you can add its ID to the `exclude_lints` array within the `[lint]` section of the `foundry.toml` configuration file:
+
+```toml
+[lint]
+# ... rest of lint config ...
+exclude_lints = ["unaliased-plain-import"]
+```
+
+Alternatively, you can also disable this individual occurrence using [inline configuration](/config/reference/linter#inline-configuration).
+
 ### Gas Optimizations
 
 #### `asm-keccak256`
 
 Recommends using inline assembly for `keccak256` hashing when possible. The Solidity global function `keccak256()` involves memory allocation and copying which can be less gas-efficient than a direct inline assembly implementation that operates on memory directly, especially for hashing small, fixed-size data.
 
+For production use, consider using [Vectorized's EfficientHashLib](https://github.com/Vectorized/solady/blob/main/src/utils/EfficientHashLib.sol) from the Solady library, which provides highly optimized implementations for common hashing patterns.
+
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
 contract HashOptimization {
-    // Correct
+    // Correct - inline assembly
     function correct(uint256 a, uint256 b) public pure returns (bytes32 hashedVal) {
         assembly {
             mstore(0x00, a)
@@ -377,6 +432,12 @@ contract HashOptimization {
             let hashedVal := keccak256(0x00, 0x40)
         }
     }
+
+    // Alternative - using EfficientHashLib from Solady
+    // import {EfficientHashLib} from "solady/utils/EfficientHashLib.sol";
+    // function efficient(uint256 a, uint256 b) public pure returns (bytes32) {
+    //     return EfficientHashLib.hash(a, b);
+    // }
 
     // Incorrect
     function incorrect(uint256 a, uint256 b) public pure returns (bytes32) {
