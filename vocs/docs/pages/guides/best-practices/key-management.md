@@ -8,7 +8,7 @@ Script execution requires a private key to send transactions. This key controls 
 
 ### Using Hardware Wallet
 
-Hardware wallets such as Ledger and Trezor store seed phrases in a secure enclave. Forge can send a raw transaction to the wallet, and the wallet will sign the transaction. The signed transaction is returned to forge and broadcaster. This way, private keys never leave the hardware wallet, making this a very secure approach. To use a hardware wallet with scripts, see the `--ledger` and `--trezor` [flags](/forge/reference/forge-script).
+Hardware wallets such as Ledger and Trezor store seed phrases in a secure enclave. Forge can send a raw transaction to the wallet, and the wallet will sign the transaction. The signed transaction is returned to forge and broadcaster. This way, private keys never leave the hardware wallet, making this a very secure approach. To use a hardware wallet with scripts, see the `--ledger` and `--trezor` [flags](/forge/reference/script).
 
 ### Using Private Keys
 
@@ -20,7 +20,7 @@ With this approach you expose a private key on your machine, making it riskier t
 
 ### Using a keystore
 
-This can be thought of as a middle ground between the above two approaches. With [`cast wallet import`](/cast/reference/cast-wallet-import) you import a private key and encrypt it with a password. This still temporarily exposes your private key on your machine, but it becomes encrypted and you'll provide the password to decrypt it to run a script.
+This can be thought of as a middle ground between the above two approaches. With [`cast wallet import`](/cast/reference/wallet/import) you import a private key and encrypt it with a password. This still temporarily exposes your private key on your machine, but it becomes encrypted and you'll provide the password to decrypt it to run a script.
 
 Additional security precautions when using scripts:
 

@@ -4,7 +4,7 @@ description: Deploy smart contracts to any network using forge create or Solidit
 
 ## Deploying
 
-Forge can deploy smart contracts to a given network with the [`forge create`](/forge/reference/forge-create) command.
+Forge can deploy smart contracts to a given network with the [`forge create`](/forge/reference/create) command.
 
 Forge CLI can deploy only one contract at a time.
 
@@ -107,7 +107,7 @@ Note that for Etherscan [`ETHERSCAN_API_KEY`](https://docs.etherscan.io/getting-
 
 If you are verifying an already deployed contract, read on.
 
-You can verify a contract on Etherscan, Sourcify, oklink or Blockscout with the [`forge verify-contract`](/forge/reference/forge-verify-contract) command.
+You can verify a contract on Etherscan, Sourcify, oklink or Blockscout with the [`forge verify-contract`](/forge/reference/verify-contract) command.
 
 You must provide:
 
@@ -156,11 +156,11 @@ Submitted contract for verification:
 >
 > arguments.
 
-It is recommended to use the [`--watch`](/forge/reference/forge-verify-contract#verify-contract-options) flag along
+It is recommended to use the [`--watch`](/forge/reference/verify-contract#verify-contract-options) flag along
 with `verify-contract` command in order to poll for the verification result.
 
 If the `--watch` flag was not supplied, you can check
-the verification status with the [`forge verify-check`](/forge/reference/forge-verify-check) command:
+the verification status with the [`forge verify-check`](/forge/reference/verify-check) command:
 
 ```bash
 forge verify-check --chain-id 11155111 <GUID> <YOUR_ETHERSCAN_API_KEY>
@@ -171,7 +171,7 @@ Contract successfully verified.
 
 > 💡 **Tip**
 >
-> Use Cast's [`abi-encode`](/cast/reference/cast-abi-encode) to ABI-encode arguments.
+> Use Cast's [`abi-encode`](/cast/reference/abi-encode) to ABI-encode arguments.
 >
 > In this example, we ran `cast abi-encode "constructor(string,string,uint8,uint256)" "ForgeUSD" "FUSD" 18 1000000000000000000000` to ABI-encode the arguments.
 

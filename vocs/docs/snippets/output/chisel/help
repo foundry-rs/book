@@ -1,8 +1,9 @@
 // [!region all]
 // [!region command]
-echo '!help' | chisel
+$ echo '!help' | chisel
 // [!endregion command]
 // [!region output]
+No solidity versions installed! Installing solidity version 0.8.19...
 Welcome to Chisel! Type `!help` to show available commands.
 ⚒️ Chisel help
 =============

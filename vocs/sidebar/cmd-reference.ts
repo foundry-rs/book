@@ -1,6 +1,7 @@
 import { SidebarItem } from "vocs";
 
 export const cmdReference: SidebarItem[] = [
+      { text: 'Overview', link: '/reference/cheatcodes/overview'},
       {
         text: 'Environment',
         link: '/reference/cheatcodes/environment',

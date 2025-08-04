@@ -6,7 +6,7 @@ description: Interactive debugger for stepping through smart contract execution 
 
 Forge ships with an interactive debugger.
 
-The debugger is accessible on [`forge test`](/forge/reference/forge-test), on [`forge script`](/forge/reference/forge-script) and on [`cast run`](/cast/reference/cast-run). You can only select a single function or a single transaction to debug at the time.
+The debugger is accessible on [`forge test`](/forge/reference/test), on [`forge script`](/forge/reference/script) and on [`cast run`](/cast/reference/run). You can only select a single function or a single transaction to debug at the time.
 
 Using `forge test` (or `forge script`):
 
