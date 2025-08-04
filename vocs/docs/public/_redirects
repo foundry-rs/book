@@ -12,7 +12,7 @@
 /cast/reference /cast/reference/cast
 /cast/reference/overview /cast/reference/cast
 
-/forge/reference/forge-lint/#:splat /forge/linting/#:splat
+/forge/reference/forge-lint/ /forge/linting
 /forge/reference/forge-lint /forge/linting
 /forge/reference/forge-:splat /forge/reference/:splat
 /reference/forge/:id /forge/reference/:id
