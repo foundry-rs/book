@@ -1,80 +1,97 @@
----
-description: zkUsePaymaster cheatcode for enabling paymaster usage in the next transaction.
----
+## `zkUsePaymaster`
 
-# zkUsePaymaster
+### Signature
 
 ```solidity
-function zkUsePaymaster(address paymaster, bytes calldata paymaster_input) external pure;
+function zkUsePaymaster(address paymaster, bytes calldata input) external pure;
 ```
 
-## Description
+### Description
 
-Enables the use of a paymaster for the next transaction. The paymaster will pay for the gas costs of the subsequent operation.
+This cheatcode enables the use of a paymaster for the next transaction in the contract. The parameters specify the address of the paymaster and the pre-encoded data to be passed to the paymaster. The paymaster should be deployed before using this cheatcode.
 
-## Parameters
-
-- `paymaster`: The address of the paymaster contract
-- `paymaster_input`: Encoded input data for the paymaster contract
-
-## Examples
-
-### General Flow Paymaster
+### Examples
 
 ```solidity
-import {Test} from "forge-std/Test.sol";
 import {TestExt} from "forge-zksync-std/TestExt.sol";
 
-contract PaymasterTest is Test, TestExt {
-    function testGeneralPaymaster() public {
-        address paymasterAddress = 0x1234...;
-        
-        // Encode paymaster input for general flow
-        bytes memory paymasterInput = abi.encodeWithSelector(
+contract Test is TestExt {
+    function test_zkUsePaymaster() public {
+        MyPaymaster paymaster = new MyPaymaster();
+        // Encode paymaster input
+        bytes memory paymaster_encoded_input = abi.encodeWithSelector(
             bytes4(keccak256("general(bytes)")),
             bytes("0x")
         );
-        
-        // Enable paymaster for next transaction
-        vmExt.zkUsePaymaster(paymasterAddress, paymasterInput);
-        
-        // This deployment will be paid by the paymaster
-        MyContract contract1 = new MyContract();
+        vmExt.zkUsePaymaster(address(paymaster), paymaster_encoded_input);
     }
 }
 ```
 
-### Approval-Based Paymaster
+The paymaster flow depends on the type of paymaster used. Here's an example of the most straightforward usage of a 'general' paymaster in Foundry:
+
+1. Write a custom paymaster:
 
 ```solidity
-function testApprovalBasedPaymaster() public {
-    address paymasterAddress = 0x3cB2b87D10Ac01736A65688F3e0Fb1b070B3eeA3;
-    address tokenAddress = 0x5678...;
-    
-    // Encode paymaster input for approval-based flow
-    bytes memory paymasterInput = abi.encodeWithSelector(
-        bytes4(keccak256("approvalBased(address,uint256,bytes)")),
-        tokenAddress,     // ERC20 token address
-        uint256(1 ether), // Amount to approve
-        bytes("0x")       // Additional data
-    );
-    
-    // Enable paymaster for next transaction
-    vmExt.zkUsePaymaster(paymasterAddress, paymasterInput);
-    
-    // This call will be paid by the paymaster using ERC20 tokens
-    myContract.someFunction();
+contract MyPaymaster is IPaymaster {
+    modifier onlyBootloader() {
+        require(msg.sender == BOOTLOADER_FORMAL_ADDRESS, "Only bootloader can call this method");
+        _;
+    }
+
+    constructor() payable {}
+
+    function validateAndPayForPaymasterTransaction(bytes32, bytes32, Transaction calldata _transaction)
+        external
+        payable
+        onlyBootloader
+        returns (bytes4 magic, bytes memory context)
+    {
+        // Always accept the transaction
+        magic = PAYMASTER_VALIDATION_SUCCESS_MAGIC;
+
+        // Pay for the transaction fee
+        uint256 requiredETH = _transaction.gasLimit * _transaction.maxFeePerGas;
+        (bool success,) = payable(BOOTLOADER_FORMAL_ADDRESS).call{value: requiredETH}("");
+        require(success, "Failed to transfer tx fee to the bootloader");
+    }
+
+    function postTransaction( 
+        bytes calldata _context,
+        Transaction calldata _transaction,
+        bytes32,
+        bytes32,
+        ExecutionResult _txResult,
+        uint256 _maxRefundedGas
+    ) external payable override onlyBootloader {}
+
+    receive() external payable {}
 }
 ```
 
-## Notes
+2. Deploy the paymaster:
 
-- Only affects the immediate next transaction
-- The paymaster input format depends on the specific paymaster implementation
-- Ensure the paymaster contract has sufficient funds to cover gas costs
-- For approval-based paymasters, ensure the account has approved sufficient tokens
+You can deploy the paymaster either in a test or script:
 
-## See Also
+```solidity
+MyPaymaster paymaster = new MyPaymaster();
+```
 
-- [General Paymaster Example](/zksync-specifics/examples/general-paymaster)
-- [Approval-based Paymaster Example](/zksync-specifics/examples/paymaster-approval-based)
+Or using the `forge create` command:
+
+```sh
+forge create ./src/MyPaymaster.sol:MyPaymaster --rpc-url {RPC_URL} --private-key {PRIVATE_KEY} --zksync
+```
+
+3. Use the cheatcode to set the paymaster for the next transaction:
+
+```solidity
+vmExt.zkUsePaymaster(address(paymaster), abi.encodeWithSelector(
+    bytes4(keccak256("general(bytes)")),
+    bytes("0x")
+));
+```
+
+For more examples, see the [Foundry ZkSync Paymaster Tests](https://github.com/matter-labs/foundry-zksync/blob/main/crates/forge/tests/fixtures/zk/Paymaster.t.sol).
+
+Also, see the [ZKsync Paymaster Documentation](https://docs.zksync.io/build/developer-reference/account-abstraction/paymasters) for more information.

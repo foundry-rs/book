@@ -57,8 +57,8 @@ Execute the test suite:
 // [!include ~/snippets/output/hello_foundry/forge-test:all]
 ```
 
-You'll notice that two new directories have popped up: `out` and `cache`.
+You'll notice that three new directories have popped up: `out` , `zkout` and `cache`.
 
-The `out` directory contains your contract artifact, such as the ABI, while the `cache` is used by `forge` to only recompile what is necessary.
+The `out` and `zkout` directory contains your contract artifact, such as the ABI, while the `cache` is used by `forge` to only recompile what is necessary.
 
 ::::

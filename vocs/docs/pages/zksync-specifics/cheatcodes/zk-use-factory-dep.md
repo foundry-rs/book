@@ -1,64 +1,31 @@
----
-description: zkUseFactoryDep cheatcode for marking contracts as factory dependencies.
----
+## `zkUseFactoryDep`
 
-# zkUseFactoryDep
+### Signature
 
 ```solidity
 function zkUseFactoryDep(string calldata name) external pure;
 ```
 
-## Description
+### Description
 
-Marks a given contract as a factory dependency only for the next CREATE or CALL operation. Factory dependencies are contracts that may be deployed by other contracts during execution.
+Marks a given contract as a factory dependency only for the next CREATE or CALL, unmarking it afterward, similar to [`prank`](../../cheatcodes/prank.md).
 
-## Parameters
+This cheatcode is useful when deploying contracts through factories that do not directly depend on a given contract, as it allows explicitly marking this type of contract as a factory dependency, enabling the factory to deploy the contract.
+More information on factory dependencies can be found in the [official ZKsync docs](https://docs.zksync.io/build/developer-reference/ethereum-differences/contract-deployment#note-on-factory_deps).
 
-- `name`: The name of the contract to mark as a factory dependency
-
-## Examples
+### Examples
 
 ```solidity
-import {Test} from "forge-std/Test.sol";
-import {TestExt} from "forge-zksync-std/TestExt.sol";
+contract Deployer {
+    // Factory does not directly depend on TwoUserMultisig, so we need to mark it explicitly
+    // as a factory dependency to allow deployment through the factory
+    // Deploy the factory
+    Factory factory = new Factory(multisigBytecodeHash);
 
-contract FactoryDepTest is Test, TestExt {
-    function testFactoryDependency() public {
-        // Mark ChildContract as a factory dependency
-        vmExt.zkUseFactoryDep("ChildContract");
-        
-        // Deploy factory contract that will create ChildContract instances
-        Factory factory = new Factory();
-        
-        // The factory can now deploy ChildContract instances
-        address childAddress = factory.createChild();
-    }
-}
+    // Mark the bytecode as a factory dependency
+    vmExt.zkUseFactoryDep("TwoUserMultisig");
 
-contract Factory {
-    function createChild() external returns (address) {
-        // This will work because ChildContract was marked as factory dependency
-        ChildContract child = new ChildContract();
-        return address(child);
-    }
-}
-
-contract ChildContract {
-    uint256 public value = 42;
+    // Deploy the account using the factory
+    factory.deployAccount(multisigBytecodeHash);
 }
 ```
-
-## Use Cases
-
-- Factory pattern implementations where contracts deploy other contracts
-- Complex deployment scenarios with nested contract creation
-- Testing contracts that use CREATE2 for deterministic deployments
-- Working with proxy patterns and upgradeable contracts
-
-## Notes
-
-- Only affects the immediate next CREATE or CALL operation
-- The specified contract must exist in the compilation artifacts
-- Factory dependencies are automatically handled in most cases
-- Manual marking is needed for complex scenarios or edge cases
-- In zkEVM, all factory dependencies must be known at deployment time

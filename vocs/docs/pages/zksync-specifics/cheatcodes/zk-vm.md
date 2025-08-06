@@ -1,45 +1,35 @@
----
-description: zkVm cheatcode for enabling/disabling ZK-VM execution mode in foundry-zksync.
----
+## `zkVm`
 
-# zkVm
+### Signature
 
 ```solidity
 function zkVm(bool enable) external pure;
 ```
 
-## Description
+### Description
 
-Enables or disables the use of ZK-VM for transact/call and create instructions.
+Enables/Disables ZKsync context for transact/call and create instructions within a test or script execution.
 
-When enabled (`true`), subsequent `CREATE` and `CALL` operations in the test will be executed on the zkEVM instead of the regular EVM. When disabled (`false`), operations return to standard EVM execution.
+Switching VMs is an intensive process that translates the entire storage back and forth between EVM and zkEVM. As such, it must be used sparingly in a test to switch between contexts. 
 
-## Examples
+See [Execution Overview](../execution-overview.md#execution-overview) for further details.
+
+See [zkVmSkip](./zk-vm-skip.md) for a more straightforward one-off operation.
+
+### Examples
 
 ```solidity
-import {Test} from "forge-std/Test.sol";
-import {TestExt} from "forge-zksync-std/TestExt.sol";
+/// contract LeetContract {
+///     constructor(uint8 value) public {
+///         // do something
+///     }
+/// }
 
-contract ZkVmTest is Test, TestExt {
-    function testZkVmEnable() public {
-        // Enable ZK-VM mode
-        vmExt.zkVm(true);
-        
-        // This contract deployment will execute on zkEVM
-        MyContract contract1 = new MyContract();
-        
-        // Disable ZK-VM mode
-        vmExt.zkVm(false);
-        
-        // This contract deployment will execute on EVM
-        MyContract contract2 = new MyContract();
-    }
-}
+vmExt.zkVm(true);
+new LeetContract(1); // deployed in zkEVM
+new LeetContract(2); // deployed in zkEVM
+
+vmExt.zkVm(false);
+new LeetContract(3); // deployed in EVM
+new LeetContract(4); // deployed in EVM
 ```
-
-## Notes
-
-- Using `--zksync` flag is equivalent to having `vmExt.zkVm(true)` as the first statement in a test
-- Only `CREATE` and `CALL` operations are affected by this cheatcode
-- Once dispatched to zkEVM, all nested operations remain in zkEVM context
-- Cheatcodes are not supported within zkEVM execution context

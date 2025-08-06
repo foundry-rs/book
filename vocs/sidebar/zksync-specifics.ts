@@ -6,6 +6,10 @@ export const zksyncSpecifics: SidebarItem[] = [
     link: '/zksync-specifics/overview',
   },
   {
+    text: 'Foundry-ZKSync Supported Commands',
+    link: '/misc/README',
+  },
+  {
     text: 'Compilation Overview',
     link: '/zksync-specifics/compilation-overview',
   },

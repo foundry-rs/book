@@ -1,8 +1,6 @@
----
-description: zkRegisterContract cheatcode for registering bytecodes for ZK-VM execution.
----
+## `zkRegisterContract`
 
-# zkRegisterContract
+### Signature
 
 ```solidity
 function zkRegisterContract(
@@ -15,62 +13,32 @@ function zkRegisterContract(
 ) external pure;
 ```
 
-## Description
+### Description
 
-Registers bytecodes for ZK-VM for transact/call and create instructions. This cheatcode allows you to manually register the mapping between EVM and zkEVM bytecodes for contracts.
+Registers bytecodes for ZK-VM for transact/call and create instructions.
 
-## Parameters
+This is especially useful if specific contracts are already deployed on-chain (EVM or ZKsync). Since we compile with both `solc` and `zksolc` as defined in the [Dual Compilation](../compilation-overview.md#dual-compilation) section, if there's an already existing EVM bytecode that must be translated into its zkEVM counterpart, we need to define it with this cheatcode.
 
-- `name`: Contract name identifier
-- `evmBytecodeHash`: Hash of the EVM bytecode
-- `evmDeployedBytecode`: The deployed EVM bytecode
-- `evmBytecode`: The creation EVM bytecode
-- `zkBytecodeHash`: Hash of the zkEVM bytecode
-- `zkDeployedBytecode`: The deployed zkEVM bytecode
+Such an operation must be carried out separately. The source of the pre-deployed contract must be obtained and compiled with zksolc. The json artifact will contain the `zkBytecodeHash` and `zkDeployedBytecode` parameters. The process is similar for obtaining EVM parameters with `solc` - `evmBytecodeHash`, `evmDeployedBytecode`, and `evmBytecode`.
 
-## Examples
+The `name` parameter must be unique and not clash with locally existing contracts.
+
+### Examples
 
 ```solidity
-import {Test} from "forge-std/Test.sol";
-import {TestExt} from "forge-zksync-std/TestExt.sol";
+// LeetContract is pre-deployed on EVM on address(65536)
 
-contract ZkRegisterTest is Test, TestExt {
-    function testRegisterContract() public {
-        // Get bytecodes from compilation artifacts
-        bytes memory evmBytecode = vm.getCode("MyContract.sol");
-        bytes memory evmDeployedBytecode = vm.getDeployedCode("MyContract.sol");
-        bytes memory zkDeployedBytecode = vm.getDeployedCode("MyContract.sol:zksolc");
-        
-        bytes32 evmHash = keccak256(evmBytecode);
-        bytes32 zkHash = keccak256(zkDeployedBytecode);
-        
-        // Register the contract bytecodes
-        vmExt.zkRegisterContract(
-            "MyContract",
-            evmHash,
-            evmDeployedBytecode,
-            evmBytecode,
-            zkHash,
-            zkDeployedBytecode
-        );
-        
-        // Now the contract can be deployed and executed on zkEVM
-        vmExt.zkVm(true);
-        MyContract myContract = new MyContract();
-    }
-}
+/// interface ILeetContract {
+///     function leet() public {
+///         // do something
+///     }
+/// }
+
+vmExt.zkVm(true);
+ILeetContract(address(65536)).leet();       // fails, as the contract was not found locally, so not migrated to zkEVM
+
+
+vmExt.zkRegisterContract("LeetContract", 0x111.., 0x222.., 0x333..., 0x444..., 0x555...); // register LeetContract for migration
+vmExt.zkVm(true);
+ILeetContract(address(65536)).leet();       // succeeds, as the contract was registered via cheatcode, so migrated to zkEVM
 ```
-
-## Use Cases
-
-- Manually managing bytecode mappings for complex deployment scenarios
-- Working with pre-compiled contracts
-- Advanced testing scenarios requiring specific bytecode configurations
-- Debugging bytecode translation issues
-
-## Notes
-
-- This is typically handled automatically by foundry-zksync during compilation
-- Manual registration is only needed for advanced use cases
-- Ensure bytecode hashes are calculated correctly
-- Both EVM and zkEVM bytecodes must be valid for the same contract logic

@@ -2,42 +2,40 @@
 description: Broadcasting and transaction limitations in ZKsync network.
 ---
 
-# Broadcast Limitations
+## Broadcast Limitations
 
-Broadcasting transactions to ZKsync network has specific limitations and considerations.
+These limitations apply when using `cast` to broadcast transactions.
 
-## Transaction Format
+### No Batch Support
 
-- ZKsync uses different transaction format from Ethereum
-- Additional fields for zkEVM-specific data
-- Factory dependencies must be included
+Batching is currently not supported on ZKsync networks, so any batched transactions may not be executed in order. This can often lead to failures, as in the following case:
 
-## Gas Estimation
+```solidity
+contract Calculator {
+    function add(uint8 a, uint8 b) return (uint8) {
+        return a+b;
+    }
+}
 
-- Gas estimation works differently in ZKsync
-- zkEVM gas costs don't directly map to EVM costs
-- May require manual gas limit adjustments
+contract FooScript is Script {
+    function run() public {
+        vm.startBroadcast();
+        Calculator calc = new Calculator();     // tx1
+        uint8 sum = calc.add(1, 2);             // tx2
+        vm.assertEqual(3, sum);
+        vm.stopBroadcast();
+    }
+}
+```
 
-## Nonce Management
+```bash
+forge script script/FooTest.s.sol:FooScript ... --zksync --rpc-url https://sepolia.era.zksync.dev --broadcast 
+```
 
-- ZKsync uses separate transaction and deployment nonces
-- Nonce handling differs from standard Ethereum
-- Requires careful nonce management in scripts
+Here the recorded transactions `tx1` and `tx2` would be batched as a single transaction with appropriate nonces. However, upon broadcasting to a ZKsync network, `tx2` may be executed before `tx1`, which would cause a revert.
 
-## Paymaster Integration
+To circumvent this, the `--slow` flag may be used to sequentially send the transactions to the RPC endpoint, which keeps them in order.
 
-- Broadcasting with paymasters requires special handling
-- Paymaster transactions have different format
-- Must ensure paymaster has sufficient funds
-
-## Factory Dependencies
-
-- All factory dependencies must be known at broadcast time
-- Large factory dependencies may require transaction splitting
-- Dependencies must be properly encoded
-
-## Network Considerations
-
-- Different RPC endpoints for different ZKsync networks
-- Network compatibility checks
-- Confirmation times may vary
+```bash
+forge script script/FooTest.s.sol:FooScript ... --zksync --rpc-url https://sepolia.era.zksync.dev --broadcast --slow
+```

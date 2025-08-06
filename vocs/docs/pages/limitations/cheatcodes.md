@@ -2,34 +2,77 @@
 description: Cheatcode limitations and incompatibilities in ZKsync zkEVM context.
 ---
 
-# Cheatcode Limitations
+## Cheatcode Limitations
 
-Not all Foundry cheatcodes are supported or work the same way in the zkEVM context.
 
-## Unsupported Cheatcodes
+As outlined in the [Execution Overview](../execution-overview.md#zksync-mode), due to the nature of how transactions are executed in zkEVM, cheatcode support is limited to the root level of an executing test. That is, all cheatcode access must happen outside of any `CREATE` or `CALL` that is dispatched to the zkEVM. 
 
-Some cheatcodes are not supported in zkEVM mode:
+Therefore, the following are valid cheatcode accesses:
 
-- Cheatcodes that directly manipulate EVM state may not work
-- Some debugging cheatcodes may have limited functionality
-- Low-level EVM manipulation cheatcodes are not supported
+```solidity
+contract MyContract {
+    function getNumber() public returns (uint256) {
+        return 42;
+    }
+}
 
-## Modified Behavior
+contract FooTest is Test {
+    function testCheatCodesAccess_1() public {
+        vm.roll(10);                    // valid
+        vm.assertEq(10, block.number);
+    }
 
-Some cheatcodes work differently in zkEVM:
+    function testCheatCodesAccess_2() public {
+        vm.roll(10);                    // valid
+        new MyContract();
+    }
 
-- `vm.deal()` - Balance changes work but may have different effects
-- `vm.prank()` - Works but with zkEVM-specific considerations
-- `vm.mockCall()` - Limited support for certain call patterns
+    function testCheatCodesAccess_3() public {
+        vm.roll(10);                    // valid
+        MyContract testContract = new MyContract();
+        testContract.getNumber();
+    }
+}
+```
 
-## zkEVM Context Restrictions
+And consequently, since libraries do not lead to a `CREATE` or a `CALL`, they can be used with cheatcodes:
 
-- Cheatcodes cannot be used within zkEVM execution context
-- Once a transaction is dispatched to zkEVM, no cheatcodes are available
-- Test logic must be structured to use cheatcodes only in EVM context
+```solidity
+library MyLibrary {
+    function setBlockNumber(value uint256) public {
+        vm.roll(value);                 // valid
+    }
+}
 
-## Workarounds
+contract FooTest is Test {
+    function testCheatCodesLibrary() public {
+        vm.roll(10);                    // valid
+        vm.assertEq(10, block.number);
+        MyLibrary.setBlockNumber(20);
+        vm.assertEq(10, block.number);
+    }
+}
+```
 
-- Use `vm.zkVmSkip()` to temporarily return to EVM for cheatcode usage
-- Structure tests to use cheatcodes before zkEVM operations
-- Consider using multiple test functions to separate concerns
+However, the following situations will lead to undefined behavior (or not work at all), as the cheatcodes are not supported within the zkEVM:
+
+```solidity
+contract MyContract {
+    constructor() {
+        vm.roll(20);                    // invalid
+    }
+
+    function getNumber() public returns (uint256) {
+        vm.roll(20);                    // invalid
+        return 42;
+    }
+}
+
+contract FooTest is Test {
+    function testUnsupportedCheatcode() public {
+        vm.roll(10);                    // valid
+        MyContract testContract = new MyContract();
+        testContract.getNumber();
+    }
+}
+```

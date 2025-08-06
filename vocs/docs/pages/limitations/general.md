@@ -27,7 +27,7 @@ contract FooTest is Test {
 contract FooTest is Test {
     function testReservedAddress_Valid() public {
         vm.mockCall(
-            address(65536),     // valid
+            address(65536),     // validz
             abi.encodeWithSelector(bytes4(keccak256("number()"))),
             abi.encode(5)
         );

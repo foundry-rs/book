@@ -1,211 +1,301 @@
----
-description: Deploy smart contracts to predictable addresses across multiple networks using CREATE2 opcode for counterfactual interactions.
----
+# Deterministic deployment using CREATE2 on ZKsync
 
-## Deterministic deployments using `CREATE2`
+## Introduction
 
-Enshrined into the EVM as part of the [Constantinople fork](https://ethereum.org/en/history/#constantinople) of 2019, `CREATE2` is an opcode that started its journey as [EIP-1014](https://eips.ethereum.org/EIPS/eip-1014).
-`CREATE2` allows you to deploy smart contracts to deterministic addresses, based on parameters controlled by the deployer.
+Enshrined into the EVM as part of the Constantinople fork of 2019, CREATE2 is an opcode that started its journey as EIP-1014. CREATE2 allows you to deploy smart contracts to deterministic addresses, based on parameters controlled by the deployer. As a result, it's often mentioned as enabling "counterfactual" deployments, where you can interact with an addresses that haven't been created yet because CREATE2 guarantees known code can be placed at that address. This is in contrast to the CREATE opcode, where the address of the deployed contract is a function of the deployer's nonce. With CREATE2, you can use the same deployer account to deploy contracts to the same address across multiple networks, even if the address has varying nonces.
 
-As a result, it's often mentioned as enabling "counterfactual" deployments, where you can interact with an addresses that haven't been created yet because `CREATE2` guarantees known code can be placed at that address.
-
-This is in contrast to the `CREATE` opcode, where the address of the deployed contract is a function of the deployer's nonce.
-With `CREATE2`, you can use the same deployer account to deploy contracts to the same address across multiple networks, even if the address has varying nonces.
-
-For the best user experience it is recommended to avoid having different addresses of the same deployment across different EVM chains.
-
-:::note
-This guide is intended to help you get started with configuring deterministic deployments using `CREATE2`.
-By default, `new Counter{salt: salt}()` will use the deterministic deployer at [`0x4e59b44847b379578588920ca78fbf26c0b4956c`](https://github.com/Arachnid/deterministic-deployment-proxy). Note that the deployer may not be available on all EVM chains.
-A different deployer address can be configured by setting `create2_deployer` in `foundry.toml` or by using `--create2-deployer` argument.
-
+:::info Note
+This guide is intended to help understand CREATE2. In most use cases, you won't need to write and use your own deployer, and can use an existing deterministic deployer (new MyContract{salt: salt}()).
 :::
 
-Follow these steps to set up deterministic deployments:
+In this tutorial, we will:
 
-::::steps
+- Look at a CREATE2 factory implementation.
+- Deploy the factory using the traditional deployment methods.
+- Use this deployed factory to in turn deploy a simple counter contract at a deterministic address.
+- Simulate this set of events by writing a simple test using Foundry ZKsync.
 
-### Configure your `foundry.toml`
+## Prerequisites
 
-In order to reliably deploy to deterministic addresses we will need to make sure our bytecode stays the same. To do so configure our `foundry.toml` as follows:
+Some familiarity with Solidity and Foundry is required, and some familiarity with inline assembly is recommended. Refer to the official Solidity docs for a primer on inline assembly.
 
-```toml
-[profile.default]
-solc = "<SOLC_VERSION>"
-evm_version = "<EVM_VERSION>"
-bytecode_hash = "none"
-cbor_metadata = false
+Make sure you have Foundry ZKsync installed on your system.
+
+Initialize a new Foundry project.
+
+Install the ZKsync contracts by running the following command in your project directory:
+
+```bash
+forge install matter-labs/era-contracts
 ```
 
-### Pin your Solc version
+## CREATE2 Factory
 
-It is required to pin your `solc` (Solidity) version. It is generally recommended to use a recent version or, if preferred, the latest version.
+Create a file named `Create2ZK.sol` Inside the `src` directory. Initialize a contract named `Create2ZK` like this:
 
-```toml
-solc = "<SOLC_VERSION>"
-```
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
 
-### Set your EVM version
+contract Create2ZK {
 
-Next, configure your `evm_version`. It is generally recommended to use the most recent hardfork but depending on your deployment targets this may need to use an older hardfork due to opcode incompatibilities.
-
-```toml
-evm_version = "<EVM_VERSION>"
-```
-
-### Configure metadata and bytecode settings
-
-By default the Solidity compiler appends the hash of the metadata file at end of the bytecode. This bytecode includes things like the compiler version and the ABI.
-
-Since the source file hashes are included in the metadata file, even if a single byte of source files changes, the metadata hash changes too. That means, if we can compile a contract with given source files and the bytecode + the appended metadata hash are exactly the same as an on-chain contract, we can be sure that this is a byte-by-byte match of the same source files and the same compilation settings.
-
-The metadata file may look something like this:
-
-```json
-{
-  "compiler": {
-    "version": "0.8.28+commit.7893614a"
-  },
-  "language": "Solidity",
-  "output": {
-    "abi": [
-      {
-        "inputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function",
-        "name": "increment"
-      },
-      {
-        "inputs": [],
-        "stateMutability": "view",
-        "type": "function",
-        "name": "number",
-        "outputs": [
-          {
-            "internalType": "uint256",
-            "name": "",
-            "type": "uint256"
-          }
-        ]
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "uint256",
-            "name": "newNumber",
-            "type": "uint256"
-          }
-        ],
-        "stateMutability": "nonpayable",
-        "type": "function",
-        "name": "setNumber"
-      }
-    ],
-    "devdoc": {
-      "kind": "dev",
-      "methods": {},
-      "version": 1
-    },
-    "userdoc": {
-      "kind": "user",
-      "methods": {},
-      "version": 1
-    }
-  },
-  "settings": {
-    "remappings": ["forge-std/=lib/forge-std/src/"],
-    "optimizer": {
-      "enabled": false,
-      "runs": 200
-    },
-    "metadata": {
-      "bytecodeHash": "ipfs"
-    },
-    "compilationTarget": {
-      "src/Counter.sol": "Counter"
-    },
-    "evmVersion": "cancun",
-    "libraries": {}
-  },
-  "sources": {
-    "src/Counter.sol": {
-      "keccak256": "0x09277f949d59a9521708c870dc39c2c434ad8f86a5472efda6a732ef728c0053",
-      "urls": [
-        "bzz-raw://94cd5258357da018bf911aeda60ed9f5b130dce27445669ee200313cd3389200",
-        "dweb:/ipfs/QmNbEfWAqXCtfQpk6u7TpGa8sTHXFLpUz7uebz2FVbchSC"
-      ],
-      "license": "UNLICENSED"
-    }
-  },
-  "version": 1
+    error Create2FailedDeployment();
 }
 ```
 
-Click [here](https://playground.sourcify.dev/) to learn more about the metadata file.
+The error is meant to enforce some sanity checks on the factory deployment, and revert the whole transaction when triggered. The `Create2FailedDeployment()` error triggers if the deployment fails for any reason.
 
-By disabling the metadata as follows:
+:::info Note
+Please note that a CREATE2 deployment may fail due to a number of reasons. For example, if the bytecodeHash is invalid, or if a contract is already deployed at the computed address. Your deployment may also fail if your constructor reverts for any reason.
+:::
 
-```toml
-bytecode_hash = "none"
-cbor_metadata = false
-```
-
-You are not including the metadata hash as part of the bytecode. This means that whilst your bytecode can now be deterministic you won't be able to have a [`full match`](https://docs.sourcify.dev/docs/full-vs-partial-match/#full-perfect-matches), only a [`partial match`](https://docs.sourcify.dev/docs/full-vs-partial-match/#partial-matches) when verifying your contracts. Depending on your requirements this may be acceptable.
-
-### Configure the optimizer
-
-If you are enabling the `optimizer` make sure your `optimizer_runs` stay consistent.
-
-### Set up the CREATE2 factory
-
-By default, your contracts won't use the default (or specified using the `create2_deployer` configuration) create2 factory and will default to executing the create2 opcode from the contract it's executed on. For example, this behavior occurs when running tests or executing scripts without a private key.
-
-You can use the following configuration:
-
-```toml
-always_use_create_2_factory = true
-```
-
-If you wish to always use the create2 factory. This comes handy if you wish to use the create2 factory deployment addresses in your tests for example.
-
-::::
-
-## Deploying the contract
-
-When using Solidity's default `CREATE` where the new address of a contract is determined by taking the `hash` of the `sender`'s address and the `sender`'s `nonce`:
-
-```
-new_contract_address = keccak256(rlp_encode([sender, nonce]))[12:]
-```
+Next, create a function named `deploy`:
 
 ```solidity
-// Using the default CREATE opcode
-Counter counter = new Counter();
+function deploy(bytes32 salt, bytes32 bytecodeHash, bytes calldata inputData) external payable returns (address addr) {
+ 
+ }
 ```
 
-Because the `nonce` can only be used a single time it on each chain it is an unreliable way of deploying to the same contract address.
+This function takes 3 inputs:
 
-Instead let's use `CREATE2`'s `salt` parameter.
+- The `salt` used to calculate the final address. This can basically be any random value we want it to be.
+- The `bytecodeHash` of the contract that we want to deploy.
+- The `inputData` which are the constructor parameters of the contract.
 
-The `salt` parameter in `CREATE2` is a key component that determines the final deployed contract address. It allows for flexibility and uniqueness in deterministic deployments. The address of the deployed contract is derived using the following formula:
+The address of the newly deployed contract is the returned after a successful deploy.
 
-```
-new_contract_address = keccak256(0xff ++ deployer ++ salt ++ keccak256(init_code))
-```
+:::info Note
+You can send ETH to a contract that is being deployed using CREATE2, but only if it has a payable constructor. If you try to send ETH to it without a payable constructor, the transaction will revert.
+:::
+
+Next, we will call the `create2` function from the `ContractDeployer` system contract on ZKsync. This can be done by calling `SystemContractsCaller.systemCallWithReturndata` to interact with system contracts:
+
+To call the `create2` function, we need to pass in 3 parameters:
 
 ```solidity
-// Passing the `salt` parameter to the CREATE2 opcode
-Counter counter = new Counter{salt: salt}();
+    (bool success, bytes memory returnData) = SystemContractsCaller
+        .systemCallWithReturndata(
+            uint32(gasleft()),
+            address(DEPLOYER_SYSTEM_CONTRACT),
+            uint128(0),
+            abi.encodeCall(
+                DEPLOYER_SYSTEM_CONTRACT.create2,
+                (
+                    salt,
+                    bytecodeHash,
+                    inputData
+                )
+            )
+        );
 ```
 
-- `0xff` is a fixed prefix ensuring uniqueness.
-- `deployer` is the address executing the CREATE2 operation.
-- `salt` is a 32-byte value chosen by the deployer.
-- `keccak256(bytecode)` is the hash of the contract's creation bytecode.
+- The `salt`: This is used to differentiate contract deployments and ensure unique contract addresses. It is a key part of the deterministic address generation in CREATE2.
+- The `bytecodeHash`: In ZKsync, contracts are deployed using the hash of the bytecode, not the bytecode itself.
+- The `inputData`: This contains the constructor arguments for the contract being deployed. Similar to traditional contract deployment, this field passes the initialization data to the contract being deployed.
 
-Given that `0xff` is fixed, the `deployer` is a deterministic deployer ([0x4e59b44847b379578588920ca78fbf26c0b4956c](https://github.com/Arachnid/deterministic-deployment-proxy)) and our bytecode is fixed we can use the `salt` parameter to fully control our new contract address.
+Alternatively, instead of writing your own deployment logic, you can leverage the `CREATE2Factory.sol` system contract, which simplifies calling the `create2` method. In many cases, you won't need to manually write a deployer function since you can use existing deterministic deployers, such as the `CREATE2Factory.sol` system contract, or deploy contracts directly using the `new MyContract{salt: salt}()` syntax.
 
-## Additional resources
+Here's an example of how you can use the `CREATE2Factory.sol`:
 
-- [Contract Metadata](https://docs.soliditylang.org/en/latest/metadata.html)
-- [Deterministic deployments agnostic to the initialization code](https://github.com/Vectorized/solady/blob/main/src/utils/CREATE3.sol)
+```solidity
+import {Create2Factory} from "era-contracts/system-contracts/contracts/Create2Factory.sol";
+
+Create2Factory create2Factory = new Create2Factory();
+address deployedAddress = create2Factory.create2(
+    salt,
+    bytecodeHash,
+    abi.encode()
+);
+```
+
+This method allows you to deploy a contract deterministically without having to write the deployment logic from scratch. It handles the `create2` call and returns the address of the newly deployed contract.
+
+This approach simplifies the deployment process by using a pre-built deployer contract, making it easier to manage and reuse your deployment logic across different projects.
+
+Finally, if the deployment fails for any reason, you can handle it by reverting the transaction, similar to how you would handle failure in the EVM:
+
+```solidity
+if (!success) {
+    revert Create2FailedDeployment();
+}
+```
+
+## Computing the Contract Address on ZKsync
+
+Lastly, we will create a view function named `computeAddress`. This function should take in the salt, bytecodeHash, and constructorInput as parameters and return the address of the contract that would be deployed using the deploy function on ZKsync:
+
+```solidity
+function computeAddress(
+    address sender,
+    bytes32 salt, 
+    bytes32 bytecodeHash, 
+    bytes32 constructorInputHash
+) external view returns (address addr) {
+
+ }
+```
+
+Inside the function, we'll use the `L2ContractHelper.computeCreate2Address` method, which follows the address calculation logic specific to ZKsync:
+
+```solidity
+import {L2ContractHelper} from "era-contracts/l2-contracts/contracts/L2ContractHelper.sol";
+
+function computeAddress(
+    address sender,
+    bytes32 salt, 
+    bytes32 bytecodeHash, 
+    bytes32 constructorInputHash
+) external view returns (address addr) {
+
+    address computedAddress = L2ContractHelper.computeCreate2Address(
+        sender,
+        salt,
+        bytecodeHash,
+        constructorInputHash
+    );
+}
+```
+
+Here's the breakdown of the parameters and logic used in ZKsync's CREATE2 address calculation:
+
+- **Sender**: This refers to the address of the contract (typically the factory contract) calling the `create2` function.
+- **Salt**: The salt is used to differentiate deployments and ensure unique contract addresses, just like in traditional CREATE2 usage.
+- **Bytecode Hash**: In ZKsync, you must pass the hash of the contract bytecode. This hash must be known to the operator, as the actual bytecode is provided in the `factory_deps` field of the transaction. For more info on this refer to the docs here.
+- **Constructor Input Hash**: ZKsync requires the constructor input (or initialization) data to be hashed using `keccak256`. This hash is then included in the address derivation formula.
+
+The ZKsync-specific address derivation formula differs slightly from Ethereum's traditional CREATE2:
+
+```solidity
+bytes32 hash = keccak256(
+    bytes.concat(
+        CREATE2_PREFIX,               // ZKsync-specific prefix
+        bytes32(uint256(uint160(_sender))),  // Address of the contract deployer
+        _salt,                         // Salt for the deployment
+        _bytecodeHash,                 // Hash of the bytecode
+        constructorInputHash           // Hash of the constructor input data
+    )
+);
+```
+
+:::info Note
+The prefix (`CREATE2_PREFIX`) is specific to ZKsync, helping avoid collisions with Ethereum's CREATE2 opcode. The `keccak256` function is used to compute the hash from these components, and the address is derived from this hash.
+:::
+
+Finally, we will return the calculated address, ensuring it conforms to the ZKsync address derivation rules:
+
+```solidity
+return address(uint160(uint256(hash)));
+```
+
+## Formula Recap
+
+The formula that ZKsync uses to calculate the contract address is:
+
+```
+keccak256(zksyncCreate2 ++ address ++ salt ++ keccak256(bytecode) ++ keccak256(constructorInput))[12:]
+```
+
+- `zksyncCreate2` is a ZKsync-specific prefix to avoid collisions.
+- `address` is the contract deployer's address.
+- `salt` is the deployment salt.
+- `keccak256(bytecode)` is the hash of the contract bytecode.
+- `keccak256(constructorInput)` is the hash of the constructor data.
+
+These values are concatenated and passed through `keccak256` to produce a 32-byte hash, and the last 20 bytes are used as the deployed contract's address.
+
+:::info Note
+You can check out the complete code for this implementation here.
+:::
+
+## Testing our factory
+
+Create a file named `Create2ZK.t.sol` inside the `test` directory. Initialize a contract named `Create2ZKTest` like this:
+
+```solidity
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.20;
+
+import {Test} from "forge-std/Test.sol";
+import {Counter} from "../src/Counter.sol";
+import {ZKCreate2} from "../src/Create2zk.sol";
+import {ACCOUNT_CODE_STORAGE_SYSTEM_CONTRACT} from "era-contracts/system-contracts/contracts/Constants.sol";
+
+contract Create2ZKTest is Test {
+
+}
+```
+
+Initialize the following state variables and the `setUp()` function:
+
+```solidity
+    Create2ZK internal create2ZK;
+    Counter internal counter;
+
+    function setUp() public {
+        create2ZK = new Create2ZK();
+        counter = new Counter();
+    }
+```
+
+## Deterministic Deployment Test
+
+We'll now create a function named `testDeterministicDeployment()` to do the following:
+
+- Deploy a new instance of the ZKCreate2 contract.
+- Allocate 100 ETH to the deployer address, using the `vm.deal` cheat code, and impersonate this address with the `prank` cheat code.
+- Set up the salt and bytecodeHash parameters.
+- Use the zkCreate2 contract to deploy the Counter contract at a deterministic address using the create2 system contract.
+- Assert that the computed address is equal to the deployed address.
+
+```solidity
+    function testDeterministicDeployment() public {
+        address deployerAddress = address(create2ZK);
+        
+        // Deal 100 ETH to the deployer address
+        vm.deal(deployerAddress, 100 ether);
+        vm.startPrank(deployerAddress);
+
+        // Set up salt and retrieve bytecode hash
+        bytes32 salt = "12345";
+        bytes32 bytecodeHash = ACCOUNT_CODE_STORAGE_SYSTEM_CONTRACT.getRawCodeHash(address(counter));
+
+        // Compute the expected address using ZKsync's specific `CREATE2` logic
+        address expectedAddress = zkCreate2.computeCreate2Address(
+            deployerAddress,
+            salt,
+            bytecodeHash,
+            keccak256(abi.encode()) // constructor input data hash
+        );
+
+        // Deploy the contract using the `ZKCreate2` contract
+        address deployedAddress = create2ZK.deploy(
+            salt,
+            bytecodeHash,
+            abi.encode() // constructor input data
+        );
+
+        vm.stopPrank();
+
+        // Log the computed and deployed addresses for debugging
+        console.log("Computed address:", expectedAddress);
+        console.log("Deployed address:", deployedAddress);
+
+        // Assert that the computed address matches the deployed address
+        assertEq(deployedAddress, expectedAddress);
+    }
+```
+
+## Explanation
+
+- `vm.deal`: This cheat code allocates 100 ETH to the deployer address, allowing it to fund contract deployments.
+- `vm.startPrank`: This makes the deployer address impersonate the caller for all subsequent calls, so we simulate real-world deployment scenarios.
+- `bytes32 salt`: The salt is used to ensure the deployed contract has a deterministic address.
+- `bytes32 bytecodeHash`: We retrieve the bytecode hash of the Counter contract from the `ACCOUNT_CODE_STORAGE_SYSTEM_CONTRACT` to pass it to the ZKsync CREATE2 function.
+- `abi.encode()`: We use this to pass constructor input data, hashed using `keccak256`.
+- `computeCreate2Address`: This function computes the expected address based on ZKsync's deterministic address calculation for CREATE2.
+- `deploy`: This deploys the contract using ZKsync's `ContractDeployer` system contract.
+
+Finally, we assert that the expected address matches the deployed address, ensuring that the contract was deployed deterministically.
+
+Save all your files, and run the test using `forge test --match-path test/Create2ZK.t.sol --zksync --enable-eravm-extensions -vvvv`. Your test should pass without any errors.
