@@ -76,6 +76,8 @@ Enabling a specific fork is done via passing that `forkId` to [`selectFork`](/re
 
 [`createSelectFork`](/reference/cheatcodes/create-select-fork) is a one-liner for `createFork` plus `selectFork`.
 
+> **WARNING:** `vm.createSelectFork` creates a **new** fork every time it is called. If you call `vm.createSelectFork` with the same RPC URL multiple times, it will create multiple independent forks, each starting from a clean state. Any state changes made in one fork will not be present in subsequent forks created with `vm.createSelectFork`. To preserve state changes when switching between forks, use `vm.createFork` once to create each fork, store the returned fork IDs, and then use `vm.selectFork` to switch between them.
+
 There can only be one fork active at a time, and the identifier for the currently active fork can be retrieved via [`activeFork`](/reference/cheatcodes/active-fork).
 
 Similar to [`roll`](/reference/cheatcodes/roll), you can set `block.number` of a fork with [`rollFork`](/reference/cheatcodes/roll-fork).
