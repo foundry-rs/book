@@ -2,7 +2,7 @@
 
 ### Introduction
 
-Solidity scripting is a way to declaratively deploy contracts using Solidity, instead of using the more limiting and less user friendly [`forge create`](../reference/forge/forge-create.md).
+Solidity scripting is a way to declaratively deploy contracts using Solidity, instead of using the more limiting and less user friendly [`forge create`](/forge/reference/create).
 
 Solidity scripts are like the scripts you write when working with tools like Hardhat; what makes Solidity scripting different is that they are written in Solidity instead of JavaScript, and they are run on the fast Foundry backend, which provides dry-run capabilities.
 
@@ -148,7 +148,7 @@ Add the following lines to the end of the file:
 zksync-sepolia = "${ZKSYNC_SEPOLIA_RPC_URL}"
 ```
 
-This creates a [RPC alias](../cheatcodes/rpc.md) for ZKsync Sepolia.
+This creates a [RPC alias](/reference/cheatcodes/rpc) for ZKsync Sepolia.
 
 #### Writing the Script
 
@@ -213,7 +213,7 @@ By default, scripts are executed by calling the function named `run`, our entryp
 uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
 ```
 
-This loads in the private key from our `.env` file. **Note:** you must be careful when exposing private keys in a `.env` file and loading them into programs. This is only recommended for use with non-privileged deployers or for local / test setups. For production setups please review the various [wallet options](../reference/forge/forge-script.md#wallet-options---raw) that Foundry supports.
+This loads in the private key from our `.env` file. **Note:** you must be careful when exposing private keys in a `.env` file and loading them into programs. This is only recommended for use with non-privileged deployers or for local / test setups. For production setups please review the various [wallet options](/forge/reference/script#wallet-options---raw) that Foundry supports.
 
 ```solidity
 vm.startBroadcast(deployerPrivateKey);
@@ -225,7 +225,7 @@ This is a special cheatcode that records calls and contract creations made by ou
 NFT nft = new NFT("NFT_tutorial", "TUT", "baseUri");
 ```
 
-Here we have just created our NFT contract. Because we called `vm.startBroadcast()` before this line, the contract creation will be recorded by Forge, and as mentioned previously, we can broadcast the transaction to deploy the contract on-chain. The broadcast transaction logs will be stored in the `broadcast` directory by default. You can change the logs location by setting [`broadcast`](../reference/config/project.md#broadcast) in your `foundry.toml` file.
+Here we have just created our NFT contract. Because we called `vm.startBroadcast()` before this line, the contract creation will be recorded by Forge, and as mentioned previously, we can broadcast the transaction to deploy the contract on-chain. The broadcast transaction logs will be stored in the `broadcast` directory by default. You can change the logs location by setting [`broadcast`](/config/reference/project#broadcast) in your `foundry.toml` file.
 
 The broadcasting sender is determined by checking the following in order:
 
@@ -251,7 +251,7 @@ Forge is going to run our script and broadcast the transactions for us - this ca
 
 This confirms that you have successfully deployed the `NFT` contract to the ZKsync Sepolia testnet.
 
-> 💡 Note: A full implementation of this tutorial can be found [here](https://github.com/dutterbutter/foundry-zksync-solidity-scripting) and for further reading about solidity scripting, you can check out the `forge script` [reference](../reference/forge/forge-script.md).
+> 💡 Note: A full implementation of this tutorial can be found [here](https://github.com/dutterbutter/foundry-zksync-solidity-scripting) and for further reading about solidity scripting, you can check out the `forge script` [reference](/forge/reference/script).
 This confirms that you have successfully deployed the `NFT` contract to the Sepolia testnet and have also verified it on Etherscan, all with one command.
 
 ### Scripting with Arguments
@@ -349,4 +349,4 @@ Then run the following script:
 forge script script/NFT.s.sol:MyScript --fork-url http://localhost:8545 --broadcast
 ```
 
-> 💡 Note: A full implementation of this tutorial can be found [here](https://github.com/Perelyn-sama/solidity-scripting) and for further reading about solidity scripting, you can check out the `forge script` [reference](../reference/forge/forge-script.md).
+> 💡 Note: A full implementation of this tutorial can be found [here](https://github.com/Perelyn-sama/solidity-scripting) and for further reading about solidity scripting, you can check out the `forge script` [reference](/forge/reference/script).

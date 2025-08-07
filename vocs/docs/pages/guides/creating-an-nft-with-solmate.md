@@ -6,7 +6,7 @@ This tutorial will walk you through creating an OpenSea compatible NFT with Foun
 
 ### Create project and install dependencies
 
-Start by setting up a Foundry project following the steps outlined in the [Getting started section](../getting-started/installation.html). We will also install Solmate for their ERC721 implementation, as well as some OpenZeppelin utility libraries. Install the dependencies by running the following commands from the root of your project:
+Start by setting up a Foundry project following the steps outlined in the [Getting started section](/introduction/installation). We will also install Solmate for their ERC721 implementation, as well as some OpenZeppelin utility libraries. Install the dependencies by running the following commands from the root of your project:
 
 ```bash
 forge install transmissions11/solmate Openzeppelin/openzeppelin-contracts
@@ -67,7 +67,7 @@ this can be fixed by setting up the correct remapping. Create a file `remappings
 openzeppelin-contracts/=lib/openzeppelin-contracts/
 ```
 
-(You can find out more on remappings in [the dependencies documentation](../projects/dependencies.md).
+(You can find out more on remappings in [the dependencies documentation](/guides/project-setup/dependencies).
 
 By default the compiler output will be in the `zkout` directory. To deploy our compiled contract with Forge we have to set environment variables for the RPC endpoint and the private key we want to use to deploy.
 
@@ -336,7 +336,7 @@ contract Receiver is ERC721TokenReceiver {
 
 The test suite is set up as a contract with a `setUp` method which runs before every individual test.
 
-As you can see, Forge offers a number of [cheatcodes](../cheatcodes/) to manipulate state to accommodate your testing scenario.
+As you can see, Forge offers a number of [cheatcodes](/reference/cheatcodes/overview) to manipulate state to accommodate your testing scenario.
 
 For example, our `testFailMaxSupplyReached` test checks that an attempt to mint fails when the max supply of NFT is reached. Thus, the `currentTokenId` of the NFT contract needs to be set to the max supply by using the store cheatcode which allows you to write data to your contracts storage slots. The storage slots you wish to write to can easily be found using the
 [`forge-std`](https://github.com/foundry-rs/forge-std/) helper library. You can run the test with the following command:

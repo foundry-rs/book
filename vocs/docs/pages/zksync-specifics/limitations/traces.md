@@ -7,7 +7,7 @@ description: Tracing and debugging limitations in ZKsync zkEVM environment.
 zkEVM traces are attached to the EVM traces printed with `-vvvv`.
 
 
-* The events emitted from within the zkEVM will not show on traces. See [events](../zksync-specifics/limitations/events.md) in zkEVM.
+* The events emitted from within the zkEVM will not show on traces. See [events](/zksync-specifics/limitations/events) in zkEVM.
 * The system call traces from within the zkEVM's bootloader are currently ignored to simplify the trace output.
 * Executing each `CREATE` or `CALL` in its own zkEVM has additional bootloader gas costs, which may sometimes not be accounted in the traces. The ignored bootloader system calls have a heuristic in place to sum up their gas usage to the nearest non-system parent call, but this may also not add up accurately.
 

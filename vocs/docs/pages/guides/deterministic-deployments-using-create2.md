@@ -4,9 +4,9 @@
 
 Enshrined into the EVM as part of the Constantinople fork of 2019, CREATE2 is an opcode that started its journey as EIP-1014. CREATE2 allows you to deploy smart contracts to deterministic addresses, based on parameters controlled by the deployer. As a result, it's often mentioned as enabling "counterfactual" deployments, where you can interact with an addresses that haven't been created yet because CREATE2 guarantees known code can be placed at that address. This is in contrast to the CREATE opcode, where the address of the deployed contract is a function of the deployer's nonce. With CREATE2, you can use the same deployer account to deploy contracts to the same address across multiple networks, even if the address has varying nonces.
 
-:::info Note
-This guide is intended to help understand CREATE2. In most use cases, you won't need to write and use your own deployer, and can use an existing deterministic deployer (new MyContract{salt: salt}()).
-:::
+> ℹ️ **Info**
+
+> This guide is intended to help understand CREATE2. In most use cases, you won't need to write and use your own deployer, and can use an existing deterministic deployer (`new MyContract{salt: salt}()`).
 
 In this tutorial, we will:
 
@@ -45,9 +45,9 @@ contract Create2ZK {
 
 The error is meant to enforce some sanity checks on the factory deployment, and revert the whole transaction when triggered. The `Create2FailedDeployment()` error triggers if the deployment fails for any reason.
 
-:::info Note
-Please note that a CREATE2 deployment may fail due to a number of reasons. For example, if the bytecodeHash is invalid, or if a contract is already deployed at the computed address. Your deployment may also fail if your constructor reverts for any reason.
-:::
+> ℹ️ **Info**
+
+> Please note that a CREATE2 deployment may fail due to a number of reasons. For example, if the bytecodeHash is invalid, or if a contract is already deployed at the computed address. Your deployment may also fail if your constructor reverts for any reason.
 
 Next, create a function named `deploy`:
 
@@ -65,9 +65,9 @@ This function takes 3 inputs:
 
 The address of the newly deployed contract is the returned after a successful deploy.
 
-:::info Note
-You can send ETH to a contract that is being deployed using CREATE2, but only if it has a payable constructor. If you try to send ETH to it without a payable constructor, the transaction will revert.
-:::
+> ℹ️ **Info**
+
+> You can send ETH to a contract that is being deployed using CREATE2, but only if it has a payable constructor. If you try to send ETH to it without a payable constructor, the transaction will revert.
 
 Next, we will call the `create2` function from the `ContractDeployer` system contract on ZKsync. This can be done by calling `SystemContractsCaller.systemCallWithReturndata` to interact with system contracts:
 
@@ -178,9 +178,9 @@ bytes32 hash = keccak256(
 );
 ```
 
-:::info Note
-The prefix (`CREATE2_PREFIX`) is specific to ZKsync, helping avoid collisions with Ethereum's CREATE2 opcode. The `keccak256` function is used to compute the hash from these components, and the address is derived from this hash.
-:::
+> ℹ️ **Info**
+
+> The prefix (`CREATE2_PREFIX`) is specific to ZKsync, helping avoid collisions with Ethereum's CREATE2 opcode. The `keccak256` function is used to compute the hash from these components, and the address is derived from this hash.
 
 Finally, we will return the calculated address, ensuring it conforms to the ZKsync address derivation rules:
 
@@ -204,9 +204,9 @@ keccak256(zksyncCreate2 ++ address ++ salt ++ keccak256(bytecode) ++ keccak256(c
 
 These values are concatenated and passed through `keccak256` to produce a 32-byte hash, and the last 20 bytes are used as the deployed contract's address.
 
-:::info Note
-You can check out the complete code for this implementation here.
-:::
+> ℹ️ **Info**
+
+> You can check out the complete code for this implementation here.
 
 ## Testing our factory
 

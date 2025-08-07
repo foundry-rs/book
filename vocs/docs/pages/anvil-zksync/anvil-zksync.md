@@ -3,7 +3,7 @@
 
 Anvil-ZKsync is a local testnet node shipped with Foundry-ZKsync. You can use it for testing your contracts from frontends or for interacting over RPC.
 
-Anvil-ZKsync is part of the Foundry-ZKsync suite and is installed alongside `forge`, and `cast`. If you haven't installed Foundry-ZKsync yet, see [Foundry-ZKsync installation](../getting-started/installation.md). 
+Anvil-ZKsync is part of the Foundry-ZKsync suite and is installed alongside `forge`, and `cast`. If you haven't installed Foundry-ZKsync yet, see [Foundry-ZKsync installation](/introduction/installation). 
 
 > Note: If you have an older version of Foundry-ZKsync installed, you'll need to re-install `foundryup-zksync` in order for Anvil-ZKsync to be downloaded.
 
