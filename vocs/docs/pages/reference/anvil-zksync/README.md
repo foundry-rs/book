@@ -830,10 +830,6 @@ Supported shells are:
     ```
 
 
-<!-- ### Usage within Docker
-
-In order to run anvil as a service in Github Actions with the [Docker container](../../tutorials/foundry-docker.md), where passing arguments to the entrypoint command is not possible, use the `ANVIL_IP_ADDR` environment variable to set the host's IP. `ANVIL_IP_ADDR=0.0.0.0` is equivalent to providing the `--host <ip>` option. -->
-
 #### Using `genesis.json`
 
 The `genesis.json` file in Anvil serves a similar purpose as in Geth, defining the network's initial state, consensus rules, and preallocated accounts to ensure all nodes start consistently and maintain network integrity. All values, including balance, gas limit and such, are to be defined as hexadecimals.

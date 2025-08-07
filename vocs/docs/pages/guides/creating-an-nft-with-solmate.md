@@ -99,8 +99,6 @@ cast send --rpc-url=$RPC_URL <contractAddress>  "mintTo(address)" <arg> --privat
 
 Well done! You just minted your first NFT from your contract. You can sanity check the owner of the NFT with `currentTokenId` equal to **1** by running the below `cast call` command. The address you provided above should be returned as the owner.
 
-<!-- TODO: check response from existing foundry -->
-
 ```bash
 cast call --rpc-url=$RPC_URL --private-key=$PRIVATE_KEY <contractAddress> "ownerOf(uint256)" 1
 ```
