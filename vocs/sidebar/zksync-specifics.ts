@@ -1,4 +1,3 @@
-// Updated sidebar to add a new 'Cast' entry under ZKSync Specifics linking to /zksync-specifics/cast.
 import { SidebarItem } from "vocs";
 
 export const zksyncSpecifics: SidebarItem[] = [
