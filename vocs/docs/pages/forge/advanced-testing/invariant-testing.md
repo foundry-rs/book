@@ -17,26 +17,27 @@ Invariant testing is a powerful tool to expose incorrect logic in protocols. Due
 
 **Invariant time based campaigns** can be defined by specifying `timeout` configuration (in seconds) which ensure test ends after specified time elapsed, regardless the number of runs.
 
-> ℹ️ **Note**
->
-> When implementing invariant tests is important to be aware that for each `invariant_*` function a different EVM executor is created, therefore invariants are not asserted against same EVM state. This means that if `invariant_A()` and `invariant_B()` functions are defined then `invariant_B()` won't be asserted against EVM state of `invariant_A()` (and the other way around).
->
-> If you want to assert all invariants at the same time then they can be grouped and run on multiple jobs. For example, assert all invariants using two jobs can be implemented as:
->
-> ```Solidity
-> function invariant_job1() public {
->    assertInvariants();
-> }
->
-> function invariant_job2() public {
->    assertInvariants();
-> }
->
-> function assertInvariants() internal {
->    assertEq(val1, val2);
->    assertEq(val3, val4);
-> }
-> ```
+:::note
+When implementing invariant tests is important to be aware that for each `invariant_*` function a different EVM executor is created, therefore invariants are not asserted against same EVM state. This means that if `invariant_A()` and `invariant_B()` functions are defined then `invariant_B()` won't be asserted against EVM state of `invariant_A()` (and the other way around).
+
+If you want to assert all invariants at the same time then they can be grouped and run on multiple jobs. For example, assert all invariants using two jobs can be implemented as:
+
+```Solidity
+function invariant_job1() public {
+   assertInvariants();
+}
+
+function invariant_job2() public {
+   assertInvariants();
+}
+
+function assertInvariants() internal {
+   assertEq(val1, val2);
+   assertEq(val3, val4);
+}
+```
+
+:::
 
 These and other invariant configuration aspects are explained [`here`](#configuring-invariant-test-execution).
 
@@ -44,33 +45,50 @@ Similar to how standard tests are run in Foundry by prefixing a function name wi
 
 `afterInvariant()` function is called at the end of each invariant run (if declared), allowing post campaign processing. This function can be used for logging campaign metrics (e.g. how many times a selector was called) and post fuzz campaign testing (e.g. close out all positions and assert all funds are able to exit the system).
 
+### Storage Aware Fuzz Inputs
+
+Foundry now supports sampling typed storage values during invariant testing to generate more intelligent test inputs. This feature leverages contract storage layouts to understand the types of storage variables and sample appropriate values based on those types.
+
+:::tip
+This feature requires enabling storage layout output. You can do this in two ways:
+
+- In your `foundry.toml` file: `extra_output = ["storageLayout"]`
+- Using the CLI flag: `--extra-output storageLayout`
+
+:::
+
+This feature improves invariant testing by:
+
+- **Type-aware value generation**: Instead of using raw random values, the fuzzer can generate values that match the expected types of storage variables, leading to more meaningful test scenarios
+- **Better coverage of storage-dependent code paths**: Particularly useful for testing functions that modify storage but don't return values or emit events, as the fuzzer can better understand the effects of these functions
 
 ### Coverage-Guided Fuzzing
 
 Starting with Foundry v1.3.0, invariant tests come with coverage-guided fuzzing support, that stores and mutates previously tested call sequences. This mode can be enabled by setting the `corpus_dir` config, which is the path on disk used to persist the corpus that generates new coverage. Each corpus is identified by a unique ID and is persisted in JSON format with entries for each call (sender address, target address and the calldata):
+
 ```json
 [
   {
-    "sender":"0x5cb738dae833ec21fe65ae1719fad8ab8ce7f23d",
-    "call_details":
-      {
-        "target":"0x7fa9385be102ac3eac297483dd6233d62b3e1496",
-        "calldata":"0xa8ad0bac000...."
-      }
+    "sender": "0x5cb738dae833ec21fe65ae1719fad8ab8ce7f23d",
+    "call_details": {
+      "target": "0x7fa9385be102ac3eac297483dd6233d62b3e1496",
+      "calldata": "0xa8ad0bac000...."
+    }
   },
   {
-    "sender":"0x7fa9385be102ac3eac297483dd6233d62b3e1496",
-    "call_details":
-      {
-        "target":"0x7fa9385be102ac3eac297483dd6233d62b3e1496",
-        "calldata":"0xd9df5397000...."
-      }
+    "sender": "0x7fa9385be102ac3eac297483dd6233d62b3e1496",
+    "call_details": {
+      "target": "0x7fa9385be102ac3eac297483dd6233d62b3e1496",
+      "calldata": "0xd9df5397000...."
+    }
   }
 ]
 ```
+
 On subsequent runs of invariant test, the saved corpus is loaded from disk and replayed.
 The coverage-guided fuzzing mode targets a minimum corpus size by mutating entries a number of times (default: 5) and favoring those likely to uncover new execution paths.
 There are five different strategies used to mutate call sequences:
+
 - `splice`: Combines two sequences
 - `interleave`: Weaves two sequences together
 - `prefix`: Overwrites the beginning of a sequence
@@ -80,16 +98,18 @@ There are five different strategies used to mutate call sequences:
 Call sequences that do not produce new coverage (after being mutated for the configured number of times) are evicted from memory. When such eviction occurs, a metadata file (in JSON format) with corpus information (unique ID, mutation count, and coverage improvements) is written to disk.
 
 The metadata file name contains the unique corpus ID, the time of eviction and the `-metadata.json` suffix - for example `e58a7c45-475d-4c70-ad32-9a4ef09b1d8f-1753084102-metadata.json` with contents
+
 ```json
 {
-  "uuid":"e58a7c45-475d-4c70-ad32-9a4ef09b1d8f",
-  "total_mutations":6,
-  "new_finds_produced":2,
-  "is_favored":false
+  "uuid": "e58a7c45-475d-4c70-ad32-9a4ef09b1d8f",
+  "total_mutations": 6,
+  "new_finds_produced": 2,
+  "is_favored": false
 }
 ```
 
 In coverage-guided fuzzing mode, the fuzzing progress bar displays metrics for cumulative edges and features, corpus count and number of favored entries.
+
 ```bash
 test/forge/invariant/StaticInvariantTest.sol:StaticInvariantTest
  → invariantHealthy: [60/2000] Runs
@@ -100,6 +120,7 @@ test/forge/invariant/StaticInvariantTest.sol:StaticInvariantTest
 ```
 
 If performing tests without progress, then metrics are printed every 5 seconds, in json format, as follows:
+
 ```bash
 {
   "timestamp": 1753087098,
@@ -252,9 +273,9 @@ targetContract2:
 
 This is something to be mindful of when designing target contracts, as target contracts with less functions will have each function called more often due to this probability distribution.
 
-> ℹ️ **Note**
->
-> A good practice is to set `show_metrics = true` in order to get a breakdown of all handler function calls and which functions are reverting/getting discarded (through `vm.assume` cheatcode).
+:::tip
+A good practice is to set `show_metrics = true` in order to get a breakdown of all handler function calls and which functions are reverting/getting discarded (through `vm.assume` cheatcode).
+:::
 
 ### Invariant Test Helper Functions
 
