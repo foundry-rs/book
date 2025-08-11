@@ -10,16 +10,19 @@ $ cast decode-calldata --help
 ```
 
 ```txt
-Usage: cast decode-calldata [OPTIONS] <SIG> <CALLDATA>
+Usage: cast decode-calldata [OPTIONS] <SIG> [CALLDATA]
 
 Arguments:
   <SIG>
           The function signature in the format `<name>(<in-types>)(<out-types>)`
 
-  <CALLDATA>
+  [CALLDATA]
           The ABI-encoded calldata
 
 Options:
+  -f, --file <FILE>
+          Load ABI-encoded calldata from a file instead
+
   -h, --help
           Print help (see a summary with '-h')
 
