@@ -273,10 +273,6 @@ targetContract2:
 
 This is something to be mindful of when designing target contracts, as target contracts with less functions will have each function called more often due to this probability distribution.
 
-:::tip
-A good practice is to set `show_metrics = true` in order to get a breakdown of all handler function calls and which functions are reverting/getting discarded (through `vm.assume` cheatcode).
-:::
-
 ### Invariant Test Helper Functions
 
 Invariant test helper functions are included in [`forge-std`](https://github.com/foundry-rs/forge-std/blob/master/src/StdInvariant.sol) to allow for configurable invariant test setup. The helper functions are outlined below:
