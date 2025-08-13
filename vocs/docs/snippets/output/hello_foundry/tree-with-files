@@ -1,0 +1,41 @@
+// [!region all]
+// [!region command]
+$ tree . -L 3 -I output
+// [!endregion command]
+// [!region output]
+.
+├── README.md
+├── foundry.lock
+├── foundry.toml
+├── lib
+│   ├── forge-std
+│   │   ├── CONTRIBUTING.md
+│   │   ├── LICENSE-APACHE
+│   │   ├── LICENSE-MIT
+│   │   ├── README.md
+│   │   ├── foundry.toml
+│   │   ├── package.json
+│   │   ├── scripts
+│   │   ├── src
+│   │   └── test
+│   └── forge-zksync-std
+│       ├── LICENSE
+│       ├── README.md
+│       ├── foundry.toml
+│       └── src
+├── script
+│   └── Counter.s.sol
+├── src
+│   └── Counter.sol
+└── test
+    └── Counter.t.sol
+
+<<<<<<< HEAD:src/output/hello_foundry/tree-with-files
+11 directories, 14 files
+// ANCHOR_END: output
+// ANCHOR_END: all
+=======
+9 directories, 12 files
+// [!endregion output]
+// [!endregion all]
+>>>>>>> ac5e906:vocs/docs/snippets/output/hello_foundry/tree-with-files

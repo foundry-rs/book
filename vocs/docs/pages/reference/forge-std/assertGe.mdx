@@ -1,0 +1,30 @@
+## `assertGe`
+
+### Signature
+
+```solidity
+function assertGe(uint256 left, uint256 right) internal;
+```
+
+```solidity
+function assertGe(uint256 left, uint256 right, string memory err) internal;
+```
+
+```solidity
+function assertGe(int256 left, int256 right) internal;
+```
+
+```solidity
+function assertGe(int256 left, int256 right, string memory err) internal;
+```
+
+### Description
+
+Asserts `left` is greater than or equal to `right`.
+
+Optionally includes an error message in the revert string.
+
+### SEE ALSO
+
+- [`assertGeDecimal`](/reference/forge-std/assertGeDecimal.mdx)
+- [`assertGt`](/reference/forge-std/assertGt.mdx)

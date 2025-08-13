@@ -1,0 +1,60 @@
+/getting-started/installation /introduction/installation
+/getting-started/introduction /introduction/overview
+/getting-started/first-steps  /introduction/getting-started
+
+/reference/anvil /anvil/reference/anvil
+/anvil/reference /anvil/reference/anvil
+/reference/chisel /chisel/reference
+
+/reference/cast/:id /cast/reference/:id
+/cast/reference/cast-:splat /cast/reference/:splat
+
+/cast/reference /cast/reference/cast
+/cast/reference/overview /cast/reference/cast
+
+/forge/reference/forge-lint /forge/linting
+/forge/reference/forge-:splat /forge/reference/:splat
+/reference/forge/:id /forge/reference/:id
+/reference/forge /forge/reference/forge
+/forge/reference /forge/reference/forge
+
+/anvil /anvil/overview
+/cast /cast/overview
+/chisel /chisel/overview
+/forge /forge/overview
+
+/reference/config/:id /config/reference/:id
+
+/forge/fork-testing /forge/tests/fork-testing
+/forge/traces /forge/tests/traces
+/forge/cheatcodes /forge/tests/cheatcodes
+/forge/forge-std /forge/tests/forge-std
+/forge/replay-testing /forge/tests/replay-testing
+/forge/writing-tests /forge/tests/writing-tests
+/forge/tests /forge/tests/overview
+/forge/testing /forge/tests/overview
+
+/forge/differential-ffi-testing /forge/advanced-testing/differential-ffi-testing
+/forge/fuzz-testing /forge/advanced-testing/fuzz-testing
+/forge/invariant-testing /forge/advanced-testing/invariant-testing
+/forge/advanced-testing /forge/advanced-testing/overview
+
+/forge/gas-tracking /forge/gas-tracking/overview
+/forge/gas-reports /forge/gas-tracking/gas-reports
+/forge/gas-section-snapshots /forge/gas-tracking/gas-section-snapshots
+/forge/gas-function-snapshots /forge/gas-tracking/gas-function-snapshots
+
+/cheatcodes /reference/cheatcodes/overview
+/cheatcodes/:id /reference/cheatcodes/:id
+
+/guides/v1.0-migration /misc/v1.0-migration
+
+/projects/:id /guides/project-setup/:id
+
+/guides/best-practices /guides/best-practices/writing-contracts
+/guides /guides/best-practices/writing-contracts
+
+# General pattern for simple cast commands
+
+
+# General pattern for simple forge commands
