@@ -14,34 +14,6 @@ To add a profile named `local`, you would add:
 
 You can select the profile to use by setting the `FOUNDRY_PROFILE` environment variable.
 
-### Configuration Inheritance
-
-Profiles can extend configuration from external TOML files using the `extends` field. This allows you to share common configuration across multiple projects or profiles.
-
-The `extends` field can be specified in two ways:
-
-```toml
-# Simple string format (uses default "extend-arrays" strategy)
-[profile.default]
-extends = "./base-config.toml"
-```
-
-```toml
-# Object format with explicit strategy
-[profile.default]
-extends = { path = "./base-config.toml", strategy = "no-collision" }
-```
-
-The configuration is merged with the following precedence (highest to lowest):
-1. Environment variables
-2. Local `foundry.toml` values
-3. Base/inherited file values
-
-Available merge strategies:
-- `extend-arrays` (default): Arrays are concatenated (base + local), other values are replaced
-- `replace-arrays`: Arrays are replaced entirely by local arrays
-- `no-collision`: Throws an error if any keys exist in both files
-
 ### Global configuration
 
 You can create a `foundry.toml` file in `~/.foundry` folder to configure Foundry globally.

@@ -8,24 +8,13 @@ Configuration related to the project in general.
 - Default: none
 - Environment: N/A
 
-Configuration for inheriting from a base TOML file. Can be specified in two formats:
+Configuration for inheriting from a base TOML file. Can be specified as either:
+- A string path: `extends = "./base-config.toml"`
+- An object with path and strategy: `extends = { path = "./base-config.toml", strategy = "replace-arrays" }`
 
-**String format:**
-```toml
-extends = "./base-config.toml"
-```
+The path must be relative to the location of the `foundry.toml` file. 
 
-**Object format with strategy:**
-```toml
-extends = { path = "./base-config.toml", strategy = "replace-arrays" }
-```
-
-The path must be relative to the location of the `foundry.toml` file. When specified, configuration from the base file is merged with the current profile's configuration.
-
-**Available strategies:**
-- `"extend-arrays"` (default): Arrays are concatenated (base elements + local elements), other values are replaced
-- `"replace-arrays"`: Arrays are replaced entirely (local arrays replace base arrays)
-- `"no-collision"`: Throws an error if any keys exist in both the base and local files
+See the [Configuration Inheritance](/guides/project-setup/project-layout#configuration-inheritance) section for detailed information about merge strategies, precedence rules, and examples.
 
 ##### `src`
 

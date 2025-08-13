@@ -10,7 +10,7 @@ Forge is flexible on how you structure your project. By default, the structure i
 // [!include ~/snippets/output/hello_foundry/tree-with-files:output]
 ```
 
-- You can configure Foundry's behavior using `foundry.toml`. Configuration can be extended from base files using the `extends` field (see [Configuration Inheritance](#configuration-inheritance) below).
+- You can configure Foundry's behavior using `foundry.toml`. Configuration can be extended from base files using the `extends` field (see [Configuration Inheritance](#configuration-inheritance) below for details).
 - Remappings are specified in `remappings.txt`.
 - The default directory for contracts is `src/`.
 - The default directory for tests is `test/`, where any contract with a function that starts with `test` is considered to be a test.
