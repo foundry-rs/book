@@ -6,6 +6,10 @@ export const zksyncSpecifics: SidebarItem[] = [
     link: '/zksync-specifics/overview',
   },
   {
+    text: 'Cast',
+    link: '/zksync-specifics/cast',
+  },
+  {
     text: 'Foundry-ZKSync Supported Commands',
     link: '/misc/README',
   },
