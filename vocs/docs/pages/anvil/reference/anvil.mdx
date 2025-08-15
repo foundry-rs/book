@@ -360,10 +360,10 @@ EVM options:
           Enable steps tracing used for debug calls returning geth-style traces
           
           [aliases: --tracing]
-```
-Troubleshooting: Chained transactions with automine disabled
 
-When **automine is off**, a second transaction that **depends on funds** created by a previous pending transaction may be rejected with:
+### Troubleshooting: Chained transactions with `automine` disabled
+
++ When `automine` is **off**, a second transaction that **depends on funds** created by a previous pending transaction may be rejected with:
 
 ```text
 error: Insufficient funds for gas * price + value
@@ -372,4 +372,6 @@ error: Insufficient funds for gas * price + value
 This happens because the second tx is validated **before** the funding tx is mined.  
 **Workarounds:**
 - Temporarily enable automine and mine the funding tx first, or
-- Manually mine a block between the two transactions.
++ - Manually mine a block **between** the two transactions.
+
+You can temporarily enable automine via anvil_setAutomine or manually mine a block with anvil_mine.
