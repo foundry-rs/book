@@ -361,3 +361,28 @@ EVM options:
           
           [aliases: --tracing]
 ```
+
+### Troubleshooting: Chained transactions with `automine` disabled
+
+When `automine` is **off**, a second transaction that **depends on funds** created by a previous pending transaction may be rejected with:
+
+```text
+error: Insufficient funds for gas * price + value
+```
+
+This happens because the second tx is validated **before** the funding tx is mined.
+
+**Workarounds:**
+- Temporarily enable `automine` and mine the funding tx first, or
+- Manually mine a block **between** the two transactions.
+- **(Advanced)** If your Anvil version supports it, start with
+  `--disable-pool-balance-checks` to bypass transaction-pool balance checks
+  so the second tx can be accepted while the funding tx is still pending:
+
+  ```sh
+  anvil --disable-pool-balance-checks
+  ```
+
+  _Note:_ This is intended for local testing only; it relaxes safety checks and may admit transactions that would be rejected on mainnet. See `anvil --help` for details.
+
+You can temporarily enable automine via `anvil_setAutomine` or manually mine a block with `anvil_mine`.
