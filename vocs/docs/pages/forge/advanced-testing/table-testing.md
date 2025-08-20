@@ -81,4 +81,4 @@ function tableSwapTest(Wallet memory wallet, Swap memory swap) public pure {
 }
 ```
 
-The same naming requirement mentioned above in relevant here.
+The same naming requirement mentioned above is relevant here.
