@@ -9,27 +9,31 @@ Foundry v1.3.0 comes with support for table testing, which enables the definitio
 #### Test definition
 
 In forge, table tests are functions named with `table` prefix that accepts datasets as one or multiple arguments:
+
 ```solidity
-function tableSumsTest(TestCase memory testCaseSum) public
+function tableSumsTest(TestCase memory sums) public
 ```
+
 ```solidity
-function tableSumsTest(TestCase memory testCaseSum, bool enable) public
+function tableSumsTest(TestCase memory sums, bool enable) public
 ```
 
 The datasets are defined as forge fixtures which can be:
+
 - storage arrays prefixed with `fixture` prefix and followed by dataset name
 - functions named with `fixture` prefix, followed by dataset name. Function should return an (fixed size or dynamic) array of values.
 
 #### Examples
 
 - Single dataset. In following example, `tableSumsTest` test will be executed twice, with inputs from `fixtureSums` dataset: once with `TestCase(1, 2, 3)` and once with `TestCase(4, 5, 9)`.
+
 ```solidity
 struct TestCase {
     uint256 a;
     uint256 b;
     uint256 expected;
 }
-    
+
 function fixtureSums() public returns (TestCase[] memory) {
     TestCase[] memory entries = new TestCase[](2);
     entries[0] = TestCase(1, 2, 3);
@@ -42,7 +46,10 @@ function tableSumsTest(TestCase memory sums) public pure {
 }
 ```
 
+It is required to name the `tableSumsTest`'s `TestCase` parameter `sums` as the parameter name is resolved against the available fixtures (`fixtureSums`). In this example, if the parameter is not named `sums` the following error is raised: `[FAIL: Table test should have fixtures defined]`.
+
 - Multiple datasets. `tableSwapTest` test will be executed twice, by using values at the same position from `fixtureWallet` and `fixtureSwap` datasets.
+
 ```solidity
 struct Wallet {
     address owner;
@@ -53,7 +60,7 @@ struct Swap {
     bool swap;
     uint256 amount;
 }
-    
+
 Wallet[] public fixtureWallet;
 Swap[] public fixtureSwap;
 
@@ -63,7 +70,7 @@ function setUp() public {
     fixtureSwap.push(Swap(true, 11));
 
     // second table test input
-    fixtureWallet.push(Wallet(address(12), 12));        
+    fixtureWallet.push(Wallet(address(12), 12));
     fixtureSwap.push(Swap(false, 12));
 }
 
@@ -73,3 +80,5 @@ function tableSwapTest(Wallet memory wallet, Swap memory swap) public pure {
     );
 }
 ```
+
+The same naming requirement mentioned above in relevant here.
