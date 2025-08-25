@@ -2,6 +2,16 @@
 
 Configuration related to the behavior of the linter. These keys are set in the `[lint]` section.
 
+To disable linting on build entirely, in your `foundry.toml` set:
+
+```toml
+[lint]
+lint_on_build = false
+```
+
+It is however recommended to keep linting enabled during development to catch issues early.
+We are continuously improving the linter to provide better feedback and catch more issues.
+
 ##### `severity`
 
 - Type: array of strings
