@@ -2,16 +2,6 @@
 
 Configuration related to the behavior of the linter. These keys are set in the `[lint]` section.
 
-To disable linting on build entirely, in your `foundry.toml` set:
-
-```toml
-[lint]
-lint_on_build = false
-```
-
-It is however recommended to keep linting enabled during development to catch issues early.
-We are continuously improving the linter to provide better feedback and catch more issues.
-
 ##### `severity`
 
 - Type: array of strings
@@ -66,3 +56,20 @@ Where:
 1. **Be Specific**: Always specify which lint(s) you're disabling rather than using `all`.
 2. **Add Comments**: Explain why you're disabling the lint to help future maintainers.
 3. **Minimize Scope**: Use the most targeted directive possible (e.g., `disable-line` instead of `disable-start/end`).
+
+### Disabling Linter On Build
+
+By default, the linter runs automatically when you build your project with `forge build`.
+
+To disable this behavior, in your `foundry.toml` set:
+
+```toml
+[lint]
+lint_on_build = false
+```
+
+It is however recommended to keep linting enabled during development to catch issues early.
+We are continuously improving the linter and you may be missing out on valuable feedback by disabling it.
+
+It is better to configure your `foundry.toml` to only run specific severities by setting the [`severity`](#severity) key, exclude
+certain lints with [`exclude_lints`](#exclude-lints), or ignore certain files with [`ignore`](#ignore).
