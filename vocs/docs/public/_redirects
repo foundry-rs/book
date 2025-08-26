@@ -18,6 +18,7 @@
 /reference/forge/:id /forge/reference/:id
 /reference/forge /forge/reference/forge
 /forge/reference /forge/reference/forge
+/reference/forge-std /forge/tests/forge-std
 
 /anvil /anvil/overview
 /cast /cast/overview
