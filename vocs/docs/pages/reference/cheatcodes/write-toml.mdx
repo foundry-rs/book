@@ -26,7 +26,7 @@ If no `valueKey` is provided, then the TOML object will be written to a new file
 
 If a `valueKey` is provided, then the file must already exist and be a valid TOML file. The object in that file will be updated by replacing the value at the _JSON path_ `valueKey` with the JSON object `json` after TOML conversion.
 
-This is useful to replace some values in a TOML file without having to first parse and then reserialize it. Note that the TOML path must indicate an existing key, so it's not possible to add new keys this way.
+This is useful for replacing some values in a TOML file without having to first parse and then reserialize it. Note that if the specified key, or any of the intermediate ones in the JSON path, don't exist, they will be created.
 
 **Remember:** The file path `path` needs to be in the allowed paths. Read more in [File cheatcodes](/reference/cheatcodes/fs.mdx).
 
