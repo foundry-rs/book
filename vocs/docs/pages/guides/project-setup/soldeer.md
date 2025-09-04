@@ -222,7 +222,10 @@ forge soldeer push my-project~1.0.0 --dry-run
 
 #### Login Data
 
-By default, Soldeer saves the login token in the `~/.soldeer/.soldeer_login` file, which is used to push files to the central repository. If you prefer to save the token in a different location, you can set the environment variable `SOLDEER_LOGIN_FILE`.
+The `forge soldeer login` command must be used to retrieve or provide an access token for the API.
+CLI tokens can be generated on [soldeer.xyz](https://soldeer.xyz) and should be preferred over using the email and password in the CLI,
+because email login will be removed in a future version of Soldeer.
+Alternatively, you can provide a valid CLI token via the `SOLDEER_API_TOKEN` environment variable. Just use the `forge soldeer login --help` to see the available options.
 
 > **Warning** ⚠️
 >
