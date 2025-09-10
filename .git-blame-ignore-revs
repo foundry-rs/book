@@ -5,3 +5,5 @@
 #
 # $ git config blame.ignoreRevsFile .git-blame-ignore-revs
 
+# moved vocs docs from `./vocs` to repo root
+f2ed1619e98d6a1f034124462256de75e5194f82
