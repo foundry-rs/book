@@ -27,20 +27,19 @@ bun check-links     # Validate all internal documentation links
 ## Architecture & Structure
 
 ### Key Directories
-- `/vocs/` - Main documentation source directory
-  - `/docs/pages/` - All documentation content in MDX format, organized by tool:
-    - `/forge/` - Smart contract compilation and testing documentation
-    - `/cast/` - Ethereum RPC client documentation
-    - `/anvil/` - Local Ethereum node documentation
-    - `/chisel/` - Solidity REPL documentation
-  - `/docs/public/` - Static assets (images, diagrams)
-  - `/sidebar/` - Navigation configuration (sidebar.ts and modular sections)
-  - `/docs/snippets/` - Code examples and auto-generated outputs
+- `/docs/pages/` - All documentation content in MDX format, organized by tool:
+  - `/forge/` - Smart contract compilation and testing documentation
+  - `/cast/` - Ethereum RPC client documentation
+  - `/anvil/` - Local Ethereum node documentation
+  - `/chisel/` - Solidity REPL documentation
+- `/docs/public/` - Static assets (images, diagrams)
+- `/sidebar/` - Navigation configuration (sidebar.ts and modular sections)
+- `/docs/snippets/` - Code examples and auto-generated outputs
 
 ### Configuration Files
-- `vocs/vocs.config.ts` - Main Vocs configuration (theme, navigation, sponsors)
-- `vocs/sidebar/sidebar.ts` - Main sidebar navigation structure
-- `vocs/package.json` - Dependencies and scripts
+- `vocs.config.ts` - Main Vocs configuration (theme, navigation, sponsors)
+- `sidebar/sidebar.ts` - Main sidebar navigation structure
+- `package.json` - Dependencies and scripts
 
 ### Documentation Patterns
 - MDX files support frontmatter for metadata
