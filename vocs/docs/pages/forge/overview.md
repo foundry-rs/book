@@ -2,7 +2,7 @@
 description: Forge is a command-line tool for building, testing, and deploying smart contracts with advanced features like fuzzing and gas tracking.
 ---
 
-## Forge Overview
+## Forge
 
 Forge is a command-line tool that ships with Foundry. Forge tests, builds, and deploys your smart contracts.
 
