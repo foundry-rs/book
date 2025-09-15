@@ -1,30 +1,18 @@
-<<<<<<< HEAD:src/output/cheatcodes/forge-test-cheatcodes-expectrevert
 // ANCHOR: all
 // ANCHOR: command
 $ forge test --zksync --match-test test_IncrementAsOwner|test_IncrementAsNotOwner --match-path test/OwnerUpOnly.t.sol
 // ANCHOR_END: command
 // ANCHOR: output
-=======
-// [!region all]
-// [!region command]
-$ forge test --match-test test_IncrementAsOwner|test_IncrementAsNotOwner --match-path test/OwnerUpOnly.t.sol
-// [!endregion command]
-// [!region output]
->>>>>>> ac5e906:vocs/docs/snippets/output/cheatcodes/forge-test-cheatcodes-expectrevert
 No files changed, compilation skipped
 
 Ran 1 test for test/OwnerUpOnly.t.sol:OwnerUpOnlyTest
 [PASS] test_IncrementAsOwner() (gas: 29808)
-<<<<<<< HEAD:src/output/cheatcodes/forge-test-cheatcodes-expectrevert
 Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 385.55µs (62.92µs CPU time)
 
 Ran 1 test suite in 5.69ms (385.55µs CPU time): 1 tests passed, 0 failed, 0 skipped (1 total tests)
 // ANCHOR_END: output
 // ANCHOR_END: all
-=======
-Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 222.10µs (48.55µs CPU time)
 
-Ran 1 test suite in 5.71ms (222.10µs CPU time): 1 tests passed, 0 failed, 0 skipped (1 total tests)
+Ran 1 test suite in 5.59ms (219.44µs CPU time): 1 tests passed, 0 failed, 0 skipped (1 total tests)
 // [!endregion output]
 // [!endregion all]
->>>>>>> ac5e906:vocs/docs/snippets/output/cheatcodes/forge-test-cheatcodes-expectrevert

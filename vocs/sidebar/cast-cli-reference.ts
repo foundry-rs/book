@@ -157,6 +157,7 @@ export const castCliReference: SidebarItem = {
                 { text: "cast max-uint", link: "/cast/reference/max-uint" },
                 { text: "cast min-int", link: "/cast/reference/min-int" },
                 { text: "cast mktx --create", link: "/cast/reference/mktx/--create" },
+                { text: "cast pad", link: "/cast/reference/pad" },
                 { text: "cast parse-units", link: "/cast/reference/parse-units" },
                 { text: "cast recover-authority", link: "/cast/reference/recover-authority" },
                 { text: "cast send --create", link: "/cast/reference/send/--create" },

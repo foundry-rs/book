@@ -2,6 +2,20 @@
 
 Configuration related to the project in general.
 
+##### `extends`
+
+- Type: string or object
+- Default: none
+- Environment: N/A
+
+Configuration for inheriting from a base TOML file. Can be specified as either:
+- A string path: `extends = "./base-config.toml"`
+- An object with path and strategy: `extends = { path = "./base-config.toml", strategy = "replace-arrays" }`
+
+The path must be relative to the location of the `foundry.toml` file. 
+
+See the [Configuration Inheritance](/guides/project-setup/project-layout#configuration-inheritance) section for detailed information about merge strategies, precedence rules, and examples.
+
 ##### `src`
 
 - Type: string

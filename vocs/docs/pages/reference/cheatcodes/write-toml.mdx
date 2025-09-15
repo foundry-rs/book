@@ -26,11 +26,13 @@ If no `valueKey` is provided, then the TOML object will be written to a new file
 
 If a `valueKey` is provided, then the file must already exist and be a valid TOML file. The object in that file will be updated by replacing the value at the _JSON path_ `valueKey` with the JSON object `json` after TOML conversion.
 
-This is useful to replace some values in a TOML file without having to first parse and then reserialize it. Note that the TOML path must indicate an existing key, so it's not possible to add new keys this way.
+This is useful for replacing some values in a TOML file without having to first parse and then reserialize it. Note that if the specified key, or any of the intermediate ones in the JSON path, don't exist, they will be created.
 
 **Remember:** The file path `path` needs to be in the allowed paths. Read more in [File cheatcodes](/reference/cheatcodes/fs.mdx).
 
 #### JSON Paths
+
+The `valueKey` parameter uses JSONPath syntax to specify where in the JSON structure to place or update the value. Foundry uses the [jsonpath_lib](https://docs.rs/jsonpath_lib/latest/jsonpath_lib/) library internally to parse these paths.
 
 Let's consider the following JSON object:
 
@@ -50,9 +52,22 @@ Let's consider the following JSON object:
 }
 ```
 
-The root object is always assumed, so we can refer to one of its children by starting the path with a dot (`.`). For instance, `.boolean`, `.number`, and `.obj1`.
-We can go as deep as we want: `.obj1.aNumber`, or `.obj1.obj2.aNumber`.
-We can even search for a key in a subtree: `.obj1..veryDeep`, or just `..veryDeep` since there's no ambiguity.
+**Important:** JSON paths must be properly formatted to work correctly:
+
+- **Root object assumption**: The root object is always assumed, so you should start paths with a dot (`.`) or dollar sign (`$`)
+- **Dot notation**: Use `.boolean`, `.number`, `.obj1` to access root-level properties
+- **Nested access**: Use `.obj1.aNumber` or `.obj1.obj2.aNumber` to go deeper into the structure
+- **Descendant search**: Use `..keyName` to search for a key anywhere in a subtree, like `.obj1..veryDeep` or just `..veryDeep`
+
+**Common mistake**: Using bare key names like `"key.foo"` will be silently converted to `"$key.foo"` by the JSONPath parser, which will fail because it looks for a root property named `key.foo`. Instead, use `".key.foo"` or `"$.key.foo"`.
+
+Valid path examples:
+
+- `.boolean` - accesses the boolean property at root level
+- `$.boolean` - equivalent to above using explicit root notation
+- `.obj1.aNumber` - accesses nested property
+- `.obj1..veryDeep` - finds veryDeep anywhere within obj1
+- `..veryDeep` - finds veryDeep anywhere in the document
 
 See the examples to see this in action.
 

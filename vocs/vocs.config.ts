@@ -41,7 +41,7 @@ export default defineConfig({
       text: 'GitHub',
     },
     {
-      text: 'v1.3.0-rc1',
+      text: 'v1.3.1',
       items: [
         {
           text: 'Contributing',
