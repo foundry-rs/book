@@ -1,2 +1,4 @@
 src/output/**/* linguist-generated
 src/output/README.md -linguist-generated
+
+bun.lock linguist-language=JSON-with-Comments

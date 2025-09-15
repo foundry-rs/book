@@ -11,3 +11,16 @@
 /vocs/docs/dist
 _
 links-report.json
+node_modules
+.DS_Store
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnp.*
+.pnp.json
+.vscode-test
+coverage
+dist
+build
+.env
+.env.local

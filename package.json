@@ -4,21 +4,22 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vocs dev",
+    "dev": "bun --bun vocs dev",
     "build": "bun run fetch-releases && bun run fetch-benchmarks && vocs build",
     "preview": "bun run build && vocs preview",
-    "check-links": "bun check-links.ts",
+    "check-links": "bun scripts/check-links.ts",
     "fetch-releases": "bun scripts/fetch-releases.ts",
     "fetch-benchmarks": "bun scripts/fetch-benchmarks.ts"
   },
   "dependencies": {
-    "react": "latest",
-    "react-dom": "latest",
-    "vocs": "latest"
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "vocs": "^1.0.13"
   },
   "devDependencies": {
-    "@types/bun": "^1.2.18",
-    "@types/react": "latest",
-    "typescript": "latest"
+    "@types/bun": "^1.2.21",
+    "@types/node": "^24.3.1",
+    "@types/react": "^19.1.12",
+    "typescript": "^5.9.2"
   }
 }
