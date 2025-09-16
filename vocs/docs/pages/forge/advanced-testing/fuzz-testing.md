@@ -11,7 +11,7 @@ Property-based testing is a way of testing general behaviors as opposed to isola
 Let's examine what that means by writing a unit test, finding the general property we are testing for, and converting it to a property-based test instead:
 
 ```solidity
-// [!include ~/snippets/projects/fuzz_testing/test/Safe.t.sol.1:all]
+// [!include ~/snippets/projects/fuzz_testing/test/Safe.t.sol:all]
 ```
 
 Running the test, we see it passes:
@@ -27,10 +27,10 @@ The general property here is: given a safe balance, when we withdraw, we should 
 Forge will run any test that takes at least one parameter as a property-based test, so let's rewrite:
 
 ```solidity
-// [!include ~/snippets/projects/fuzz_testing/test/Safe.t.sol.2:contract_prelude]
+// [!include ~/snippets/projects/fuzz_testing/test/2.Safe.t.sol:contract_prelude]
     // ...
 
-// [!include ~/snippets/projects/fuzz_testing/test/Safe.t.sol.2:test]
+// [!include ~/snippets/projects/fuzz_testing/test/2.Safe.t.sol:test]
 }
 ```
 
@@ -44,7 +44,7 @@ forge test
 The default amount of ether that the test contract is given is `2**96 wei` (as in DappTools), so we have to restrict the type of amount to `uint96` to make sure we don't try to send more than we have:
 
 ```solidity
-// [!include ~/snippets/projects/fuzz_testing/test/Safe.t.sol.3:signature]
+// [!include ~/snippets/projects/fuzz_testing/test/3.Safe.t.sol:signature]
 ```
 
 And now it passes:
