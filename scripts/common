@@ -84,7 +84,7 @@ in_temp() {
 # and then copy the contents of 1.SomeTest.t.sol into its destination.
 step() {
   rm -f "$1"
-  cp "${2}.{1}" "$1"
+  cp "${2}.${1}" "$1"
 }
 
 err() {
