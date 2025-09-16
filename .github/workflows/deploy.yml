@@ -45,5 +45,5 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy vocs/docs/dist --project-name foundry-book
+          command: pages deploy ./vocs/docs/dist --project-name foundry-book
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
