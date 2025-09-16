@@ -80,11 +80,11 @@ in_temp() {
 # - src/test/SomeTest.2.t.sol
 # - src/test/SomeTest.3.t.sol
 #
-# Calling `step src/test/SomeTest.t.sol 1` would delete src/test/SomeTest.t.sol,
+# Calling `step src/test/SomeTest.t.sol src/test/1.SomeTest.t.sol` would delete src/test/SomeTest.t.sol,
 # and then copy the contents of 1.SomeTest.t.sol into its destination.
 step() {
   rm -f "$1"
-  cp "${2}.${1}" "$1"
+  cp "${2}" "$1"
 }
 
 err() {
