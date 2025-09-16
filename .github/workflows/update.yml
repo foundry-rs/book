@@ -1,4 +1,8 @@
 name: update
+
+permissions:
+  contents: read
+
 on:
   schedule:
     # Run weekly
@@ -11,9 +15,13 @@ jobs:
     name: Update
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       - uses: actions/checkout@v5
         with:
+          persist-credentials: false
           submodules: recursive
 
       - name: Install Foundry
