@@ -39,13 +39,13 @@ gen_forge() {
     forge test --match-test "test_IncrementAsOwner|test_IncrementAsNotOwner" --match-path test/OwnerUpOnly.t.sol
 
   in_project fuzz_testing
-  step test/Safe.t.sol test/1.Safe.t.sol
+  step test/Safe.t.sol 1
   run_command "$OUTPUT_DIR/fuzz_testing/forge-test-no-fuzz" \
     forge test
-  step test/Safe.t.sol test/2.Safe.t.sol
+  step test/Safe.t.sol 2
   run_command "$OUTPUT_DIR/fuzz_testing/forge-test-fail-fuzz" \
     forge test --allow-failure
-  step test/Safe.t.sol test/3.Safe.t.sol
+  step test/Safe.t.sol 3
   run_command "$OUTPUT_DIR/fuzz_testing/forge-test-success-fuzz" \
     forge test
 
