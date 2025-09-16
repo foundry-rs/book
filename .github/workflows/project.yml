@@ -1,4 +1,8 @@
 name: project
+
+permissions:
+  contents: read
+
 on:
   issues:
     types: [opened, transferred]
