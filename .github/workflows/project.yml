@@ -1,7 +1,6 @@
 name: project
 
-permissions:
-  contents: read
+permissions: {}
 
 on:
   issues:

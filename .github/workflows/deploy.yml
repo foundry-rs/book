@@ -1,7 +1,6 @@
 name: deploy
 
-permissions:
-  contents: read
+permissions: {}
 
 on:
   push:
@@ -13,6 +12,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     permissions:
+      contents: read
       deployments: write
     name: Deploy to Cloudflare Pages
     steps:

@@ -1,7 +1,6 @@
 name: update
 
-permissions:
-  contents: read
+permissions: {}
 
 on:
   schedule:
