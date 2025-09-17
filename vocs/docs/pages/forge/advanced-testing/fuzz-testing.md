@@ -82,13 +82,13 @@ Fuzz tests execution is governed by parameters that can be controlled by users v
 Fuzz test fixtures can be defined when you want to make sure a certain set of values is used as inputs for fuzzed parameters.
 These fixtures can be declared in tests as:
 
-- storage arrays prefixed with `fixture` and followed by param name to be fuzzed. For example, fixtures to be used when fuzzing parameter `amount` of type `uint32` can be defined as
+- storage arrays prefixed with `fixture` and followed by parameter name to be fuzzed. For example, fixtures to be used when fuzzing parameter `amount` of type `uint32` can be defined as
 
 ```solidity
 uint32[] public fixtureAmount = [1, 5, 555];
 ```
 
-- functions named with `fixture` prefix, followed by param name to be fuzzed. Function should return an (fixed size or dynamic) array of values to be used for fuzzing. For example, fixtures to be used when fuzzing parameter named `owner` of type `address` can be defined in a function with signature
+- functions named with `fixture` prefix, followed by parameter name to be fuzzed. Function should return an (fixed size or dynamic) array of values to be used for fuzzing. For example, fixtures to be used when fuzzing parameter named `owner` of type `address` can be defined in a function with signature
 
 ```solidity
 function fixtureOwner() public returns (address[] memory)
@@ -131,6 +131,8 @@ To make sure fuzzer includes in the same run a `slate` value derived from a `yay
         keccak256(abi.encodePacked(makeAddr("yay3")))
     ];
 ```
+
+Note the name `fixtureYay` matches against `etch`'s parameter `yay` and `fixtureSlate` matches against `voteSlate`'s parameter `slate`.
 
 Following image shows how fuzzer generates values with and without fixtures being declared:
 

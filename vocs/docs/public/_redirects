@@ -12,11 +12,14 @@
 /cast/reference /cast/reference/cast
 /cast/reference/overview /cast/reference/cast
 
+/forge/reference/forge-lint/ /forge/linting
 /forge/reference/forge-lint /forge/linting
 /forge/reference/forge-:splat /forge/reference/:splat
 /reference/forge/:id /forge/reference/:id
 /reference/forge /forge/reference/forge
 /forge/reference /forge/reference/forge
+/reference/forge-std /forge/tests/forge-std
+/reference/forge-std/ /forge/tests/forge-std
 
 /anvil /anvil/overview
 /cast /cast/overview

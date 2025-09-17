@@ -1,27 +1,29 @@
-## cast decode-calldata
+## cast pad
 
-Decode ABI-encoded input data.
-
-Similar to `abi-decode --input`, but function selector MUST be prefixed in
-`calldata` string
+Pads hex data to a specified length
 
 ```bash
-$ cast decode-calldata --help
+$ cast pad --help
 ```
 
 ```txt
-Usage: cast decode-calldata [OPTIONS] <SIG> [CALLDATA]
+Usage: cast pad [OPTIONS] [DATA]
 
 Arguments:
-  <SIG>
-          The function signature in the format `<name>(<in-types>)(<out-types>)`
-
-  [CALLDATA]
-          The ABI-encoded calldata
+  [DATA]
+          The hex data to pad
 
 Options:
-  -f, --file <FILE>
-          Load ABI-encoded calldata from a file instead
+      --right
+          Right-pad the data (instead of left-pad)
+
+      --left
+          Left-pad the data (default)
+
+      --len <LEN>
+          Target length in bytes (default: 32)
+          
+          [default: 32]
 
   -h, --help
           Print help (see a summary with '-h')
