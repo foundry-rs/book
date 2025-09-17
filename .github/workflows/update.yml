@@ -1,4 +1,7 @@
 name: update
+
+permissions: {}
+
 on:
   schedule:
     # Run weekly
@@ -11,9 +14,13 @@ jobs:
     name: Update
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       - uses: actions/checkout@v5
         with:
+          persist-credentials: false
           submodules: recursive
 
       - name: Install Foundry
@@ -21,7 +28,9 @@ jobs:
         with:
           version: nightly
 
-      - uses: dtolnay/rust-toolchain@nightly
+      - uses: dtolnay/rust-toolchain@e97e2d8cc328f1b50210efc529dca0028893a2d9 # master
+        with:
+          toolchain: nightly
 
       - name: Update
         run: |
@@ -31,7 +40,7 @@ jobs:
           ./scripts/gen_output.sh
 
       - name: Create pull request
-        uses: peter-evans/create-pull-request@v5
+        uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e # v7
         with:
           commit-message: "update command output"
           title: "chore(output): weekly command output update"

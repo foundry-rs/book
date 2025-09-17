@@ -1,4 +1,7 @@
 name: build
+
+permissions: {}
+
 on:
   push:
     branches: [master]
@@ -7,15 +10,18 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
     name: vocs build
-
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout
         uses: actions/checkout@v5
+        with:
+          persist-credentials: false
 
       - name: Install bun
-        uses: oven-sh/setup-bun@v2
+        uses: oven-sh/setup-bun@735343b667d3e6f658f44d0eca948eb6282f2b76 # v2
 
       - name: Build Vocs
         run: cd vocs && bun install && bun run build
