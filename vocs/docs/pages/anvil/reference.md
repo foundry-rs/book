@@ -223,7 +223,7 @@ Retrieves the configuration params for the currently running Anvil node.
 The special methods come from Ganache. You can take a look at the documentation [here](https://github.com/trufflesuite/ganache-cli-archive/blob/master/README.md).
 
 `evm_setAutomine`
-Enables or disables, based on the single boolean argument, the automatic mining of new blocks with each new transaction submitted to the network.
+Enables or disables, based on the single boolean argument, the automatic mining of new blocks with each new transaction submitted to the network. If set to `false`, Anvil keeps mining new blocks for every block interval time set by you. If set to `true`, Anvil pauses mining new blocks, until new transactions are detected.
 
 `evm_setIntervalMining`
 Sets the mining behavior to interval with the given interval (seconds).
