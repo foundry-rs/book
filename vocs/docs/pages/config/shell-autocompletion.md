@@ -1,6 +1,6 @@
 ## Shell Autocompletion
 
-You can generate autocompletion shell scripts for `bash`, `elvish`, `fish`, `powershell`, and `zsh`.
+You can generate autocompletion shell scripts for `bash`, `elvish`, `fish`, `nushell`, `fig`, `powershell`, and `zsh`.
 
 ### zsh
 
@@ -46,3 +46,32 @@ cast completions bash > $HOME/.local/share/bash-completion/completions/cast
 anvil completions bash > $HOME/.local/share/bash-completion/completions/anvil
 exec bash
 ```
+
+### nushell
+
+```sh
+mkdir -p $HOME/.config/nushell/completions
+forge completions nushell > $HOME/.config/nushell/completions/forge.nu
+cast completions nushell > $HOME/.config/nushell/completions/cast.nu
+anvil completions nushell > $HOME/.config/nushell/completions/anvil.nu
+```
+
+Then add the following to your `config.nu` file:
+
+```nu
+use ~/.config/nushell/completions/forge.nu *
+use ~/.config/nushell/completions/cast.nu *
+use ~/.config/nushell/completions/anvil.nu *
+```
+
+### fig
+
+Fig completions are automatically loaded when installed. Generate the completion specs:
+
+```sh
+forge completions fig > ~/.fig/autocomplete/forge.js
+cast completions fig > ~/.fig/autocomplete/cast.js
+anvil completions fig > ~/.fig/autocomplete/anvil.js
+```
+
+Restart your terminal or run `fig source` to reload completions.
