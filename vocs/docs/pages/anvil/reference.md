@@ -171,7 +171,7 @@ Accepts `true` to enable auto impersonation of accounts, and `false` to disable 
 Returns true if automatic mining is enabled, and false if it is not.
 
 `anvil_getBlobByHash`
-Returns the blob for a given a KZG commitment versionned hash.
+Returns the blob for a given a KZG commitment versioned hash.
 
 `anvil_getBlobsByTransactionHash`
 Returns the blobs for a given transaction hash.
