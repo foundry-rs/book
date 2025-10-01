@@ -1,0 +1,145 @@
+## Config
+
+The `Config` abstract contract provides a streamlined way to manage configuration for multi-chain environments in tests and scripts. It automatically loads and parses TOML configuration files, creates forks for specified chains, and provides type-safe access to configuration variables.
+
+### Import
+
+```solidity
+import {Config} from "forge-std/Config.sol";
+```
+
+### Usage
+
+Inherit from both `Test` (or `Script`) and `Config`:
+
+```solidity
+contract MyTest is Test, Config {
+    function setUp() public {
+        // Load config and create forks for all chains
+        _loadConfigAndForks("./config.toml", false);
+    }
+}
+```
+
+### Storage Variables
+
+The `Config` contract provides these storage variables:
+
+- **`config`**: A `StdConfig` instance holding all configuration data
+- **`chainIds`**: Array of chain IDs for which forks have been created
+- **`forkOf`**: Mapping from chain ID to fork ID for easy fork switching
+
+### Functions
+
+#### `_loadConfig`
+
+Loads configuration from a TOML file.
+
+```solidity
+function _loadConfig(string memory filePath, bool writeToFile) internal
+```
+
+**Parameters:**
+- `filePath`: Path to the TOML configuration file
+- `writeToFile`: Whether updates should be written back to the TOML file
+
+#### `_loadConfigAndForks`
+
+Loads configuration and creates forks for each chain specified in the config.
+
+```solidity
+function _loadConfigAndForks(string memory filePath, bool writeToFile) internal
+```
+
+**Parameters:**
+- `filePath`: Path to the TOML configuration file
+- `writeToFile`: Whether updates should be written back to the TOML file (only possible when scripting)
+
+### Configuration File Format
+
+The TOML configuration file must follow this structure:
+
+```toml
+[mainnet]
+endpoint_url = "${MAINNET_RPC}"
+
+[mainnet.bool]
+is_live = true
+
+[mainnet.address]
+weth = "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+admins = ["0x1234...", "${ADMIN_ADDRESS}"]
+
+[mainnet.uint]
+important_number = 123
+numbers = [456, 789]
+
+[optimism]
+endpoint_url = "${OPTIMISM_RPC}"
+
+[optimism.address]
+weth = "0x4200000000000000000000000000000000000006"
+```
+
+**Key points:**
+- Top-level keys represent chain identifiers (names or IDs)
+- Under each chain, variables are organized by type: `bool`, `address`, `uint`, `int`, `bytes32`, `string`, `bytes`
+- Environment variables are automatically resolved (e.g., `${MAINNET_RPC}`)
+- Arrays are supported for all types
+
+### Example: Multi-chain Testing
+
+```solidity
+contract MultiChainTest is Test, Config {
+    function setUp() public {
+        _loadConfigAndForks("./config.toml", false);
+    }
+
+    function test_readValues() public {
+        // Switch to mainnet fork
+        vm.selectFork(forkOf[1]);
+
+        // Read mainnet WETH address
+        address wethMainnet = config.get("weth").toAddress();
+
+        // Switch to optimism fork
+        vm.selectFork(forkOf[10]);
+
+        // Read optimism WETH address
+        address wethOptimism = config.get("weth").toAddress();
+
+        // Values are chain-specific
+        assertEq(wethMainnet, 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2);
+        assertEq(wethOptimism, 0x4200000000000000000000000000000000000006);
+    }
+}
+```
+
+### Example: Configuration Updates
+
+```solidity
+contract DeploymentScript is Script, Config {
+    function run() public {
+        // Enable writing updates back to file
+        _loadConfig("./deployments.toml", true);
+
+        vm.startBroadcast();
+
+        // Deploy contract
+        MyContract deployed = new MyContract();
+
+        // Save deployment address to config
+        config.set("my_contract", address(deployed));
+        config.set("deployed_at", block.timestamp);
+
+        vm.stopBroadcast();
+
+        // Changes are automatically persisted to deployments.toml
+    }
+}
+```
+
+### See Also
+
+- [StdConfig](/reference/forge-std/std-config.mdx) - The underlying configuration contract
+- [Scripting with Config](/guides/scripting-with-config.md) - Guide for orchestrating scripts with Config

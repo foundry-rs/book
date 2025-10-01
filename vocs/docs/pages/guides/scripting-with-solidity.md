@@ -107,6 +107,10 @@ However this does not affect the `getChain` method.
 
 Next, navigate to the `script` folder and locate the `CounterScript`.
 
+:::tip
+For complex deployments, especially multi-chain scenarios, consider using the [Config contract for orchestrating scripts](/guides/scripting-with-config). It provides centralized configuration management through TOML files, making your scripts more maintainable and reusable, as well as built-in support for instantiating and tracking forks.
+:::
+
 Modify the contents so it looks like this:
 
 ```solidity

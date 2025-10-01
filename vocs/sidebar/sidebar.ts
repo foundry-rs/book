@@ -44,6 +44,10 @@ export const sidebar: Sidebar = [
         link: "/guides/scripting-with-solidity",
       },
       {
+        text: "Orchestrating Scripts with Config",
+        link: "/guides/scripting-with-config",
+      },
+      {
         text: "Implementing and Testing EIP-712 signatures",
         link: "/guides/eip712",
       },
