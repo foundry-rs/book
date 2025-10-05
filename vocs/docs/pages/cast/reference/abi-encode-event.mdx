@@ -1,21 +1,22 @@
-## forge clean
+## cast abi-encode-event
 
-Remove the build artifacts and cache directories
+ABI encode an event and its arguments to generate topics and data
 
 ```bash
-$ forge clean --help
+$ cast abi-encode-event --help
 ```
 
 ```txt
-Usage: forge clean [OPTIONS]
+Usage: cast abi-encode-event [OPTIONS] <SIG> [ARGS]...
+
+Arguments:
+  <SIG>
+          The event signature
+
+  [ARGS]...
+          The arguments of the event
 
 Options:
-      --root <PATH>
-          The project's root path.
-          
-          By default root of the Git repository, if in one, or the current
-          working directory.
-
   -h, --help
           Print help (see a summary with '-h')
 

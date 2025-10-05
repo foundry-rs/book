@@ -18,7 +18,7 @@ Arguments:
 
 Options:
       --constructor-args <ARGS>
-          The ABI-encoded constructor arguments
+          The ABI-encoded constructor arguments. Only for Etherscan
           
           [aliases: --encoded-constructor-args]
 
@@ -27,6 +27,10 @@ Options:
 
       --guess-constructor-args
           Try to extract constructor arguments from on-chain creation code
+
+      --creation-transaction-hash <CREATION_TRANSACTION_HASH>
+          The hash of the transaction which created the contract. Optional for
+          Sourcify
 
       --compiler-version <VERSION>
           The `solc` version to use to build the smart contract
@@ -76,11 +80,6 @@ Options:
           The Etherscan (or equivalent) API key
           
           [env: ETHERSCAN_API_KEY=]
-
-  -a, --etherscan-api-version <API_VERSION>
-          The Etherscan API version
-          
-          [env: ETHERSCAN_API_VERSION=]
 
   -c, --chain <CHAIN>
           The chain name or EIP-155 chain ID
@@ -170,11 +169,19 @@ Linker options:
           
           [env: DAPP_LIBRARIES=]
 
+Compiler options:
+      --no-auto-detect
+          Do not auto-detect the `solc` version
+
+      --use <SOLC_VERSION>
+          Specify the solc version, or a path to a local solc, to build with.
+          
+          Valid values are in the format `x.y.z`, `solc:x.y.z` or
+          `path/to/solc`.
+
 Verifier options:
       --verifier <VERIFIER>
           The contract verification provider to use
-          
-          [default: sourcify]
 
           Possible values:
           - etherscan
@@ -183,6 +190,8 @@ Verifier options:
           - oklink
           - custom:     Custom verification provider, requires compatibility
             with the Etherscan API
+          
+          [default: sourcify]
 
       --verifier-api-key <VERIFIER_API_KEY>
           The verifier API KEY, if using a custom provider
@@ -193,11 +202,6 @@ Verifier options:
           The verifier URL, if using a custom provider
           
           [env: VERIFIER_URL=]
-
-      --verifier-api-version <VERIFIER_API_VERSION>
-          The verifier API version, if using a custom provider
-          
-          [env: VERIFIER_API_VERSION=]
 
 Display options:
       --color <COLOR>
@@ -210,6 +214,9 @@ Display options:
 
       --json
           Format log messages as JSON
+
+      --md
+          Format log messages as Markdown
 
   -q, --quiet
           Do not print log messages

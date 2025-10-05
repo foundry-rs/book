@@ -35,6 +35,17 @@ Options:
           Create a .vscode/settings.json file with Solidity settings, and
           generate a remappings.txt file
 
+      --vyper
+          Initialize a Vyper project template
+
+      --use-parent-git
+          Use the parent git repository instead of initializing a new one. Only
+          valid if the target is in a git repository
+
+      --empty
+          Do not create example contracts (Counter.sol, Counter.t.sol,
+          Counter.s.sol)
+
       --shallow
           Perform shallow clones instead of deep ones.
           
@@ -67,6 +78,9 @@ Display options:
 
       --json
           Format log messages as JSON
+
+      --md
+          Format log messages as Markdown
 
   -q, --quiet
           Do not print log messages

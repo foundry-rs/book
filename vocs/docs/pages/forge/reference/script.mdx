@@ -104,15 +104,13 @@ Options:
       --disable-code-size-limit
           Disables the contract size limit during script execution
 
+      --disable-labels
+          Disables the labels in the traces
+
       --etherscan-api-key <KEY>
           The Etherscan (or equivalent) API key
           
           [env: ETHERSCAN_API_KEY=]
-
-      --etherscan-api-version <VERSION>
-          The Etherscan API version
-          
-          [env: ETHERSCAN_API_VERSION=]
 
       --verify
           Verifies all the contracts found in the receipts of a script, if any
@@ -156,6 +154,9 @@ Display options:
       --json
           Format log messages as JSON
 
+      --md
+          Format log messages as Markdown
+
       --color <COLOR>
           The color of the log messages
 
@@ -190,8 +191,20 @@ Compiler options:
       --ignored-error-codes <ERROR_CODES>
           Ignore solc warnings by error code
 
-      --deny-warnings
-          Warnings will trigger a compiler error
+  -D, --deny <LEVEL>
+          A compiler error will be triggered at the specified diagnostic level.
+          
+          Replaces the deprecated `--deny-warnings` flag.
+          
+          Possible values: - `never`: Do not treat any diagnostics as errors. -
+          `warnings`: Treat warnings as errors. - `notes`: Treat both, warnings
+          and notes, as errors.
+
+          Possible values:
+          - never:    Always exit with zero code
+          - warnings: Exit with a non-zero code if any warnings are found
+          - notes:    Exit with a non-zero code if any notes or warnings are
+            found
 
       --no-auto-detect
           Do not auto-detect the `solc` version
@@ -367,10 +380,18 @@ Wallet options - hardware wallet:
 
 Wallet options - remote:
       --aws
-          Use AWS Key Management Service
+          Use AWS Key Management Service.
+          
+          Ensure either one of AWS_KMS_KEY_IDS (comma-separated) or
+          AWS_KMS_KEY_ID environment variables are set.
 
       --gcp
-          Use Google Cloud Key Management Service
+          Use Google Cloud Key Management Service.
+          
+          Ensure the following environment variables are set: GCP_PROJECT_ID,
+          GCP_LOCATION, GCP_KEY_RING, GCP_KEY_NAME, GCP_KEY_VERSION.
+          
+          See: [https://cloud.google.com/kms/docs](https://cloud.google.com/kms/docs)
 
 EVM options:
   -f, --fork-url <URL>
@@ -477,10 +498,10 @@ Executor environment config:
       --block-prevrandao <PREVRANDAO>
           The block prevrandao value. NOTE: Before merge this field was mix_hash
 
-      --block-gas-limit <GAS_LIMIT>
+      --block-gas-limit <BLOCK_GAS_LIMIT>
           The block gas limit
           
-          [aliases: --gas-limit]
+          [aliases: --block-gas-limit, --gas-limit]
 
       --memory-limit <MEMORY_LIMIT>
           The memory limit per EVM execution in bytes. If this limit is
@@ -491,7 +512,12 @@ Executor environment config:
       --disable-block-gas-limit
           Whether to disable the block gas limit checks
           
-          [aliases: --no-gas-limit]
+          [aliases: --no-block-gas-limit, --no-gas-limit]
+
+      --enable-tx-gas-limit
+          Whether to enable tx gas limit checks as imposed by Osaka (EIP-7825)
+          
+          [aliases: --tx-gas-limit]
 
       --isolate
           Whether to enable isolation of calls. In isolation mode all top-level
@@ -499,8 +525,8 @@ Executor environment config:
           context, enabling more precise gas accounting and transaction state
           changes
 
-      --odyssey
-          Whether to enable Odyssey features
+      --celo
+          Whether to enable Celo precompiles
 
       --retries <RETRIES>
           Number of attempts for retrying verification
@@ -515,8 +541,6 @@ Executor environment config:
 Verifier options:
       --verifier <VERIFIER>
           The contract verification provider to use
-          
-          [default: sourcify]
 
           Possible values:
           - etherscan
@@ -525,6 +549,8 @@ Verifier options:
           - oklink
           - custom:     Custom verification provider, requires compatibility
             with the Etherscan API
+          
+          [default: sourcify]
 
       --verifier-api-key <VERIFIER_API_KEY>
           The verifier API KEY, if using a custom provider
@@ -535,9 +561,4 @@ Verifier options:
           The verifier URL, if using a custom provider
           
           [env: VERIFIER_URL=]
-
-      --verifier-api-version <VERIFIER_API_VERSION>
-          The verifier API version, if using a custom provider
-          
-          [env: VERIFIER_API_VERSION=]
 ```
