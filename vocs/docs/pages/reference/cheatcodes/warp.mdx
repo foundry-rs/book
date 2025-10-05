@@ -8,13 +8,17 @@ function warp(uint256) external;
 
 ### Description
 
-Sets `block.timestamp`.
+Sets `block.timestamp` to a specific future (or past).
 
 ### Examples
 
 ```solidity
 vm.warp(1641070800);
 emit log_uint(block.timestamp); // 1641070800
+```
+Sets time to fast forward 10 minutes from current time.
+```solidity
+vm.warp(block.timestamp + 10 minutes);
 ```
 
 ### SEE ALSO
