@@ -1,21 +1,19 @@
-## forge clean
+## cast b2e-payload
 
-Remove the build artifacts and cache directories
+Convert Beacon payload to execution payload
 
 ```bash
-$ forge clean --help
+$ cast b2e-payload --help
 ```
 
 ```txt
-Usage: forge clean [OPTIONS]
+Usage: cast b2e-payload [OPTIONS] <INPUT>
+
+Arguments:
+  <INPUT>
+          File path to JSON file or raw JSON string containing the beacon block
 
 Options:
-      --root <PATH>
-          The project's root path.
-          
-          By default root of the Git repository, if in one, or the current
-          working directory.
-
   -h, --help
           Print help (see a summary with '-h')
 

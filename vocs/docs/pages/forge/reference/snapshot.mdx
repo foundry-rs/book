@@ -56,6 +56,9 @@ Display options:
       --json
           Format log messages as JSON
 
+      --md
+          Format log messages as Markdown
+
       --color <COLOR>
           The color of the log messages
 
@@ -83,6 +86,9 @@ Display options:
 
       --detailed
           Print detailed test summary table
+
+      --disable-labels
+          Disables the labels in the traces
 
 Test options:
   -j, --threads <THREADS>
@@ -156,11 +162,6 @@ Test options:
           The Etherscan (or equivalent) API key
           
           [env: ETHERSCAN_API_KEY=]
-
-      --etherscan-api-version <VERSION>
-          The Etherscan API version
-          
-          [env: ETHERSCAN_API_VERSION=]
 
       --fuzz-seed <FUZZ_SEED>
           Set seed used to generate randomness during your fuzz runs
@@ -327,10 +328,10 @@ Executor environment config:
       --block-prevrandao <PREVRANDAO>
           The block prevrandao value. NOTE: Before merge this field was mix_hash
 
-      --block-gas-limit <GAS_LIMIT>
+      --block-gas-limit <BLOCK_GAS_LIMIT>
           The block gas limit
           
-          [aliases: --gas-limit]
+          [aliases: --block-gas-limit, --gas-limit]
 
       --memory-limit <MEMORY_LIMIT>
           The memory limit per EVM execution in bytes. If this limit is
@@ -341,7 +342,12 @@ Executor environment config:
       --disable-block-gas-limit
           Whether to disable the block gas limit checks
           
-          [aliases: --no-gas-limit]
+          [aliases: --no-block-gas-limit, --no-gas-limit]
+
+      --enable-tx-gas-limit
+          Whether to enable tx gas limit checks as imposed by Osaka (EIP-7825)
+          
+          [aliases: --tx-gas-limit]
 
       --isolate
           Whether to enable isolation of calls. In isolation mode all top-level
@@ -349,8 +355,8 @@ Executor environment config:
           context, enabling more precise gas accounting and transaction state
           changes
 
-      --odyssey
-          Whether to enable Odyssey features
+      --celo
+          Whether to enable Celo precompiles
 
 Cache options:
       --force
@@ -378,8 +384,20 @@ Compiler options:
       --ignored-error-codes <ERROR_CODES>
           Ignore solc warnings by error code
 
-      --deny-warnings
-          Warnings will trigger a compiler error
+  -D, --deny <LEVEL>
+          A compiler error will be triggered at the specified diagnostic level.
+          
+          Replaces the deprecated `--deny-warnings` flag.
+          
+          Possible values: - `never`: Do not treat any diagnostics as errors. -
+          `warnings`: Treat warnings as errors. - `notes`: Treat both, warnings
+          and notes, as errors.
+
+          Possible values:
+          - never:    Always exit with zero code
+          - warnings: Exit with a non-zero code if any warnings are found
+          - notes:    Exit with a non-zero code if any notes or warnings are
+            found
 
       --no-auto-detect
           Do not auto-detect the `solc` version

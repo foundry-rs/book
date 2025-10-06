@@ -1,6 +1,10 @@
 ## forge soldeer push
 
-Push a Dependency to the Repository
+Push a dependency to the soldeer.xyz repository.
+
+You need to be logged in first (soldeer login) or provide the
+`SOLDEER_API_TOKEN` environment variable with a valid
+CLI token generated on soldeer.xyz.
 
 Examples:
 - Current directory: soldeer push mypkg~0.1.0
@@ -49,15 +53,6 @@ Options:
           
           [aliases: --jobs]
 
-  --email <EMAIL>
-          Specify the email without prompting
-
-  --password <PASSWORD>
-          Specify the password without prompting
-
-  --token <TOKEN>
-          Login with a token created via soldeer.xyz
-
 Display options:
       --color <COLOR>
           The color of the log messages
@@ -69,6 +64,9 @@ Display options:
 
       --json
           Format log messages as JSON
+
+      --md
+          Format log messages as Markdown
 
   -q, --quiet
           Do not print log messages
