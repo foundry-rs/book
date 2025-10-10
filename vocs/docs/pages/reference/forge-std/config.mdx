@@ -60,6 +60,8 @@ function _loadConfigAndForks(string memory filePath, bool writeToFile) internal
 The TOML configuration file must follow this structure:
 
 ```toml
+# Using Alloy chain aliases (must match exactly) or numberic chain IDs (always works)
+# See https://github.com/alloy-rs/chains for supported aliases
 [mainnet]
 endpoint_url = "${MAINNET_RPC}"
 
@@ -80,6 +82,16 @@ endpoint_url = "${OPTIMISM_RPC}"
 [optimism.address]
 weth = "0x4200000000000000000000000000000000000006"
 ```
+
+#### Chain Identifiers
+
+The top-level chain key must be one of:
+- **Numeric chain ID**: e.g., `[1]`, `[10]`, `[998]` - Works for any chain, including custom networks
+- **Alloy chain alias**: e.g., `[mainnet]`, `[optimism]`, `[arbitrum_sepolia]` - Must match an exact alias from [Alloy chains](https://github.com/alloy-rs/chains/blob/main/src/named.rs)
+
+:::warning
+Custom chain names like `my_local_chain` will fail with `InvalidChainKey` error unless they exist in Alloy chains. For new/custom networks, fall back to the chain ID.
+:::
 
 **Key points:**
 - Top-level keys represent chain identifiers (names or IDs)
