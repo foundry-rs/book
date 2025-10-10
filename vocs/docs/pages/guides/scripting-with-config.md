@@ -301,7 +301,7 @@ When configuring chains in your TOML files:
 [1]
 endpoint_url = "${MAINNET_RPC}"
 
-[998]
+[1234]
 endpoint_url = "${CUSTOM_CHAIN_RPC}"
 ```
 

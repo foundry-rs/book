@@ -86,8 +86,8 @@ weth = "0x4200000000000000000000000000000000000006"
 #### Chain Identifiers
 
 The top-level chain key must be one of:
-- **Numeric chain ID**: e.g., `[1]`, `[10]`, `[998]` - Works for any chain, including custom networks
-- **Alloy chain alias**: e.g., `[mainnet]`, `[optimism]`, `[arbitrum_sepolia]` - Must match an exact alias from [Alloy chains](https://github.com/alloy-rs/chains/blob/main/src/named.rs)
+- **Numeric chain ID**: `[1]`, `[10]`, `[11155111]` - Works for any chain, including custom networks
+- **Alloy chain alias**: `[mainnet]`, `[optimism]`, `[sepolia]` - Must match an exact alias from [Alloy chains](https://github.com/alloy-rs/chains/blob/main/src/named.rs)
 
 :::warning
 Custom chain names like `my_local_chain` will fail with `InvalidChainKey` error unless they exist in Alloy chains. For new/custom networks, fall back to the chain ID.
