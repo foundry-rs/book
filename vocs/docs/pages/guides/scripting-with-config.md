@@ -309,8 +309,8 @@ endpoint_url = "${CUSTOM_CHAIN_RPC}"
 ```toml
 [mainnet]
 [optimism]
-[arbitrum_sepolia]
-[base_sepolia]
+[arbitrum-sepolia]
+[base-sepolia]
 ```
 
 **Check Alloy chains before using aliases:**
@@ -416,7 +416,7 @@ forge script script/MultiChainDeploy.s.sol:MultiChainDeployScript \
      ```
    - Or use an exact Alloy chain alias (see [supported chains](https://github.com/alloy-rs/chains/blob/main/src/named.rs)):
      ```toml
-     [arbitrum_sepolia]  # Works for supported chains
+     [arbitrum-sepolia]  # Works for supported chains
      endpoint_url = "..."
      ```
 
