@@ -29,6 +29,12 @@ Create a `deployments.toml` file in your project root:
 
 ```toml
 # deployments.toml
+#
+# IMPORTANT: Chain keys must be either:
+# - Numeric chain ID (e.g., [1], [11155111], [10])
+# - Valid Alloy chain alias (e.g., [mainnet], [sepolia], [optimism])
+#
+# See https://github.com/alloy-rs/chains for valid aliases. For new/custom chains, use numeric IDs or consider opening a PR.
 
 [mainnet]
 endpoint_url = "${MAINNET_RPC_URL}"
@@ -286,7 +292,32 @@ contract UpgradeScript is Script, Config {
 
 ## Best Practices
 
-### 1. Environment Variables
+### 1. Chain Configuration
+
+When configuring chains in your TOML files:
+
+**Use numeric chain IDs for maximum compatibility:**
+```toml
+[1]
+endpoint_url = "${MAINNET_RPC}"
+
+[1234]
+endpoint_url = "${CUSTOM_CHAIN_RPC}"
+```
+
+**Use Alloy aliases only for battle-tested chains:**
+```toml
+[mainnet]
+[optimism]
+[arbitrum-sepolia]
+[base-sepolia]
+```
+
+**Check Alloy chains before using aliases:**
+- Visit [Alloy chains repository](https://github.com/alloy-rs/chains/blob/main/src/named.rs)
+- Search for your chain's alias. If not found, use the numeric chain ID or consider opening a PR.
+
+### 2. Environment Variables
 
 Store sensitive data in environment variables:
 
@@ -299,7 +330,7 @@ SEPOLIA_MULTISIG=0x1234567890123456789012345678901234567890
 PRIVATE_KEY=0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
 ```
 
-### 2. Configuration Validation
+### 3. Configuration Validation
 
 Validate configuration before deployment:
 
@@ -322,7 +353,7 @@ function validateConfig() internal view {
 }
 ```
 
-### 3. Separate Config Files
+### 4. Separate Config Files
 
 Use different config files for different purposes:
 
@@ -369,7 +400,25 @@ forge script script/MultiChainDeploy.s.sol:MultiChainDeployScript \
    fs_permissions = [{ access = "read-write", path = "./" }]
    ```
 
-3. **Chain not found**: Ensure the chain key in your TOML matches a valid chain ID or alias
+3. **`InvalidChainKey` error**: This occurs when using a custom chain name that doesn't match an Alloy chain alias.
+
+   **Problem:**
+   ```toml
+   [my_custom_chain]  # This will fail!
+   endpoint_url = "..."
+   ```
+
+   **Solutions:**
+   - Use the numeric chain ID:
+     ```toml
+     [1234]  # Works for any chain
+     endpoint_url = "..."
+     ```
+   - Or use an exact Alloy chain alias (see [supported chains](https://github.com/alloy-rs/chains/blob/main/src/named.rs)):
+     ```toml
+     [arbitrum-sepolia]  # Works for supported chains
+     endpoint_url = "..."
+     ```
 
 4. **Type mismatch errors**: Verify that values in TOML match their declared types (e.g., addresses must be valid hex strings)
 

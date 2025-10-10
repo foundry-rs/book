@@ -19,9 +19,9 @@ While typically used through the `Config` abstract contract, you can instantiate
 ```solidity
 contract MyTest is Test {
     using LibVariable for Variable;
-    
+
     StdConfig config;
-    
+
     function setUp() public {
         config = new StdConfig("./config.toml", false);
         vm.makePersistent(address(config));
@@ -34,6 +34,12 @@ contract MyTest is Test {
 StdConfig expects a specific TOML structure where top-level keys represent chain identifiers, and variables are organized by type in sub-tables:
 
 ```toml
+# IMPORTANT: Chain keys must be either:
+# - Numeric chain ID ([1], [11155111], [10])
+# - Valid Alloy chain alias ([mainnet], [sepolia], [optimism])
+#
+# See https://github.com/alloy-rs/chains for valid aliases. For new/custom chains, use numeric IDs or consider opening a PR.
+
 [<chain>]
 endpoint_url = "https://..."  # Required RPC URL
 
@@ -155,10 +161,18 @@ variable.toUint128Array()    // Returns uint128[] (with overflow checks)
 StdConfig automatically resolves environment variables in the TOML file:
 
 ```toml
+# Using chain alias works because "mainnet" is in alloy-chains
 [mainnet]
 endpoint_url = "${MAINNET_RPC_URL}"
 
 [mainnet.address]
+admin = "${ADMIN_ADDRESS}"
+
+# Using numeric chain ID works for any chain
+[1234]
+endpoint_url = "${HYPEREVM_RPC_URL}"
+
+[1234.address]
 admin = "${ADMIN_ADDRESS}"
 ```
 
@@ -167,49 +181,49 @@ admin = "${ADMIN_ADDRESS}"
 ```solidity
 contract ConfigExample is Test {
     using LibVariable for Variable;
-    
+
     StdConfig config;
-    
+
     function setUp() public {
         // Set environment variables
         vm.setEnv("MAINNET_RPC", "https://eth.llamarpc.com");
         vm.setEnv("ADMIN_ADDRESS", "0x1234567890123456789012345678901234567890");
-        
+
         // Load config with write capability
         config = new StdConfig("./config.toml", true);
         vm.makePersistent(address(config));
     }
-    
+
     function test_readAndWrite() public {
         // Read various types
         bool isLive = config.get(1, "is_live").toBool();
         address weth = config.get(1, "weth").toAddress();
         uint256 number = config.get(1, "important_number").toUint256();
-        
+
         // Read arrays
         address[] memory admins = config.get(1, "admins").toAddressArray();
         uint256[] memory values = config.get(1, "values").toUint256Array();
-        
+
         // Update configuration
         config.set(1, "new_contract", address(0xdead));
         config.set(1, "deployment_block", block.number);
         config.set(1, "is_deployed", true);
-        
+
         // Changes are written to config.toml automatically
     }
-    
+
     function test_multiChain() public {
         // Get all configured chains
         uint256[] memory chains = config.getChainIds();
-        
+
         for (uint256 i = 0; i < chains.length; i++) {
             uint256 chainId = chains[i];
             string memory rpcUrl = config.getRpcUrl(chainId);
-            
+
             // Create fork for this chain
             uint256 forkId = vm.createFork(rpcUrl);
             vm.selectFork(forkId);
-            
+
             // Now config.get() without chainId uses this fork's chain
             address chainWeth = config.get("weth").toAddress();
         }
@@ -224,7 +238,7 @@ StdConfig and LibVariable provide comprehensive error messages:
 - `NotInitialized()`: Variable doesn't exist in configuration
 - `TypeMismatch(expected, actual)`: Variable type doesn't match expected type
 - `UnsafeCast(message)`: Value doesn't fit in target type (overflow/underflow)
-- `InvalidChainKey(aliasOrId)`: Invalid chain identifier
+- `InvalidChainKey(aliasOrId)`: Invalid chain identifier. This occurs when using a custom chain name that doesn't match an [Alloy chain alias](https://github.com/alloy-rs/chains/blob/main/src/named.rs). Use the numeric chain ID instead.
 - `ChainNotInitialized(chainId)`: Chain not found in configuration
 
 ### See Also
