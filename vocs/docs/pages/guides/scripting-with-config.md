@@ -31,7 +31,7 @@ Create a `deployments.toml` file in your project root:
 # deployments.toml
 #
 # IMPORTANT: Chain keys must be either:
-# - Numeric chain ID (e.g., [1], [11155111], [998])
+# - Numeric chain ID (e.g., [1], [11155111], [10])
 # - Valid Alloy chain alias (e.g., [mainnet], [sepolia], [optimism])
 #
 # See https://github.com/alloy-rs/chains for valid aliases. For new/custom chains, use numeric IDs or consider opening a PR.
