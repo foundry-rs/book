@@ -55,6 +55,13 @@ Watch options:
           By default, only the tests of the last modified test file are
           executed.
 
+      --rerun-failed
+          Re-run only previously failed tests first when a change is made.
+          
+          If all previously failed tests pass, the full test suite will be run
+          automatically. This is particularly useful for TDD workflows where you
+          want fast feedback on failures.
+
       --watch-delay <DELAY>
           File update debounce delay.
           

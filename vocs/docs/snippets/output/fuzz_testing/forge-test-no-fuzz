@@ -4,13 +4,13 @@ $ forge test
 // [!endregion command]
 // [!region output]
 Compiling 24 files with Solc 0.8.10
-Solc 0.8.10 finished in 680.39ms
+Solc 0.8.10 finished in 677.30ms
 Compiler run successful!
 
 Ran 1 test for test/Safe.t.sol:SafeTest
 [PASS] test_Withdraw() (gas: 19644)
-Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 214.99µs (33.10µs CPU time)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 214.60µs (33.54µs CPU time)
 
-Ran 1 test suite in 5.37ms (214.99µs CPU time): 1 tests passed, 0 failed, 0 skipped (1 total tests)
+Ran 1 test suite in 5.99ms (214.60µs CPU time): 1 tests passed, 0 failed, 0 skipped (1 total tests)
 // [!endregion output]
 // [!endregion all]
