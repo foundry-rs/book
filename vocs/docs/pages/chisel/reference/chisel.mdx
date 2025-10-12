@@ -77,6 +77,12 @@ REPL options:
           The import is disabled by default if the Solc version is less than
           0.6.2.
 
+      --ir-minimum
+          Enable viaIR with minimum optimization
+          
+          This can fix most of the "stack too deep" errors while resulting a
+          relatively accurate source map.
+
 Cache options:
       --force
           Clear the cache and artifacts folder and recompile
@@ -356,7 +362,4 @@ Executor environment config:
           calls are executed as a separate transaction in a separate EVM
           context, enabling more precise gas accounting and transaction state
           changes
-
-      --celo
-          Whether to enable Celo precompiles
 ```

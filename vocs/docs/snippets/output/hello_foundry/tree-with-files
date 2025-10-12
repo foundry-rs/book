@@ -13,6 +13,7 @@ $ tree . -L 3 -I output
 │       ├── LICENSE-APACHE
 │       ├── LICENSE-MIT
 │       ├── README.md
+│       ├── RELEASE_CHECKLIST.md
 │       ├── foundry.toml
 │       ├── package.json
 │       ├── scripts
@@ -25,6 +26,6 @@ $ tree . -L 3 -I output
 └── test
     └── Counter.t.sol
 
-9 directories, 12 files
+9 directories, 13 files
 // [!endregion output]
 // [!endregion all]

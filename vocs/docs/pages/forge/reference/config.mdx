@@ -202,6 +202,13 @@ Watch options:
           By default, only the tests of the last modified test file are
           executed.
 
+      --rerun-failed
+          Re-run only previously failed tests first when a change is made.
+          
+          If all previously failed tests pass, the full test suite will be run
+          automatically. This is particularly useful for TDD workflows where you
+          want fast feedback on failures.
+
       --watch-delay <DELAY>
           File update debounce delay.
           
@@ -347,9 +354,6 @@ Executor environment config:
           calls are executed as a separate transaction in a separate EVM
           context, enabling more precise gas accounting and transaction state
           changes
-
-      --celo
-          Whether to enable Celo precompiles
 
 Display options:
       --color <COLOR>
