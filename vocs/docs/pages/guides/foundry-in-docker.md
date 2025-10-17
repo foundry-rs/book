@@ -58,7 +58,7 @@ transactions         [...]
 uncles               []
 ```
 
-If we're in a directory with some Solidity [source code](https://github.com/dmfxyz/foundry-docker-guide), we can mount that directory into Docker and use `forge` however we wish. For example:
+If we're in a directory with some Solidity [source code](https://github.com/dmfxyz/foundry-docker-tutorial), we can mount that directory into Docker and use `forge` however we wish. For example:
 
 ```sh
 docker run -v $PWD:/app foundry "forge test --root /app --watch"
