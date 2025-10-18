@@ -18,7 +18,7 @@ Invariant testing is a powerful tool to expose incorrect logic in protocols. Due
 **Invariant time based campaigns** can be defined by specifying `timeout` configuration (in seconds) which ensure test ends after specified time elapsed, regardless the number of runs.
 
 :::note
-When implementing invariant tests is important to be aware that for each `invariant_*` function a different EVM executor is created, therefore invariants are not asserted against same EVM state. This means that if `invariant_A()` and `invariant_B()` functions are defined then `invariant_B()` won't be asserted against EVM state of `invariant_A()` (and the other way around).
+When implementing invariant tests is important to be aware that for each `invariant_*` function a different EVM executor is created, therefore invariants are not asserted against the same EVM state. This means that if `invariant_A()` and `invariant_B()` functions are defined then `invariant_B()` won't be asserted against EVM state of `invariant_A()` (and the other way around).
 
 If you want to assert all invariants at the same time then they can be grouped and run on multiple jobs. For example, assert all invariants using two jobs can be implemented as:
 
