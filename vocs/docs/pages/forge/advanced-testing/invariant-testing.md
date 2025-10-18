@@ -143,7 +143,7 @@ Invariant tests execution is governed by parameters that can be controlled by us
 
 ## Defining Invariants
 
-Invariants are conditions expressions that should always hold true over the course of a fuzzing campaign. A good invariant testing suite should have as many invariants as possible, and can have different testing suites for different protocol states.
+Invariants are conditions or expressions that should always hold true over the course of a fuzzing campaign. A good invariant testing suite should have as many invariants as possible, and can have different testing suites for different protocol states.
 
 Examples of invariants are:
 
