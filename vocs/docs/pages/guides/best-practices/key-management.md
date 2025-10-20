@@ -29,4 +29,4 @@ Additional security precautions when using scripts:
 3. When in doubt about whether a wallet contains real funds or not, assume it does. Always be certain about a wallet's balances and status when using it for development purposes. Use [blockscan](https://blockscan.com/) to easily check many chains to see where the address has been used.
 4. Remember that adding an account in wallets like Metamask generates a new private key. However, that private key is derived from the same mnemonic as the other accounts generated in that wallet. Therefore, never expose the mnemonic as it may compromise all of your accounts.
 
-_This was section was inspired by [The Pledge](https://github.com/smartcontractkit/full-blockchain-solidity-course-js/discussions/5) from [Patrick Collins](https://twitter.com/PatrickAlphaC)._
+_This section was inspired by [The Pledge](https://github.com/smartcontractkit/full-blockchain-solidity-course-js/discussions/5) from [Patrick Collins](https://twitter.com/PatrickAlphaC)._
