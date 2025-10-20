@@ -1,24 +1,13 @@
-## forge soldeer
+## forge soldeer clean
 
-Soldeer dependency manager
+Clean downloaded dependencies and generated artifacts. This command removes the `dependencies` folder from disk.
 
 ```bash
-$ forge soldeer --help
+$ forge soldeer clean --help
 ```
 
 ```txt
-Usage: Native Solidity Package Manager, run `forge soldeer [COMMAND] --help` for more details
-
-Commands:
-  init       Convert a Foundry project to use Soldeer
-  install    Install a dependency
-  update     Update dependencies by reading the config file
-  login      Log into the central repository to push packages
-  push       Push a dependency to the repository
-  uninstall  Uninstall a dependency
-  clean      Clean downloaded dependencies and generated artifacts
-  version    Display the version of Soldeer
-  help       Print this message or the help of the given subcommand(s)
+Usage: forge soldeer clean [OPTIONS]
 
 Options:
   -h, --help
@@ -62,4 +51,6 @@ Display options:
           for failing tests.
           - 5 (-vvvvv): Print execution and setup traces for all tests,
           including storage changes.
+
+For more information, read the README.md
 ```

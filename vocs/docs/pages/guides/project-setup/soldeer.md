@@ -66,13 +66,13 @@ E.g.
 forge soldeer install @custom-dependency~1.0.0 --url https://my-website.com/custom-dependency-1-0-0.zip
 ```
 
-The above command will try to download the dependency from the provided link and install it as a normal dependency. For this, you will see in the config an additional field called `path`.
+The above command will try to download the dependency from the provided link and install it as a normal dependency. For this, you will see in the config an additional field called `url`.
 
 E.g.
 
 ```toml
 [dependencies]
-"@custom-dependency" = { version = "1.0.0", path = "https://my-website.com/custom-dependency-1-0-0.zip" }
+"@custom-dependency" = { version = "1.0.0", url = "https://my-website.com/custom-dependency-1-0-0.zip" }
 ```
 
 #### Add a Dependency Stored in GIT
@@ -114,7 +114,7 @@ forge soldeer install test-project~v1 --git git@github.com:test/test.git --tag v
 
 ### Updating Dependencies
 
-Because Soldeer specifies the dependencies in a config file (foundry or soldeer toml), sharing a dependency configuration within the team is much easier.
+Because Soldeer specifies the dependencies in a config file (foundry or soldeer TOML), sharing a dependency configuration within the team is much easier.
 
 For example, having this Foundry config file in a git repository, one can pull the repository and then run `forge soldeer update`. This command will automatically install all the dependencies specified under the `[dependencies]` tag.
 
@@ -148,10 +148,15 @@ Example: `forge soldeer uninstall @openzeppelin-contracts`. This will action wil
 
 Additionally you can manually remove a dependency by just removing the artifacts: dependency files, config entry, remappings entry.
 
+### Cleaning Artifacts
+
+The command `forge soldeer clean` will remove the `dependencies` folder and all its contents. This can be useful before
+a fresh install from the config file or lockfile, or simply to clear up disk space.
+
 ### Remappings
 
 The remappings are now fully configurable, the config TOML file (foundry.toml) accepts a
-`[soldeer]` field with the following options
+`[soldeer]` table with the following options
 
 ```toml
 [soldeer]
@@ -204,7 +209,7 @@ If you want to push a specific directory and not the current directory your term
 
 **Warning** ⚠️
 
-You are at risk to push sensitive files to the central repository that then can be seen by everyone. Make sure to exclude sensitive files in the `.soldeerignore` file.
+You are at risk to push sensitive files to the central repository that then can be seen by everyone. Make sure to exclude sensitive files in the `.soldeerignore` or `.gitignore` file.
 Furthermore, we've implemented a warning that it will be triggered if you try to push a project that contains any `.dot` files/directories.
 If you want to skip this warning, you can just use
 
