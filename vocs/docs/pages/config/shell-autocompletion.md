@@ -4,7 +4,7 @@ You can generate autocompletion shell scripts for `bash`, `elvish`, `fish`, `nus
 
 ### zsh
 
-First, ensure that the following is present somewhere in your `~/.zshrc` file (if not, add it):
+First, ensure that the following is present at the end in your `~/.zshrc` file (if not, add it):
 
 ```sh
 autoload -U compinit
@@ -22,9 +22,9 @@ anvil completions zsh | sudo tee /usr/local/share/zsh/site-functions/_anvil
 For macOS:
 
 ```sh
-forge completions zsh > /opt/homebrew/completions/zsh/_forge
-cast completions zsh > /opt/homebrew/completions/zsh/_cast
-anvil completions zsh > /opt/homebrew/completions/zsh/_anvil
+forge completions zsh > /opt/homebrew/share/zsh/site-functions/_forge
+cast completions zsh > /opt/homebrew/share/zsh/site-functions/_cast
+anvil completions zsh > /opt/homebrew/share/zsh/site-functions/_anvil
 ```
 
 ### fish
