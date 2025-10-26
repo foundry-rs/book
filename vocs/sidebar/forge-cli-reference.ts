@@ -13,6 +13,7 @@ export const forgeCliReference: SidebarItem = {
                 { text: "forge cache clean", link: "/forge/reference/cache/clean" },
                 { text: "forge clean", link: "/forge/reference/clean" },
                 { text: "forge inspect", link: "/forge/reference/inspect" },
+                { text: "forge soldeer clean", link: "/forge/reference/soldeer/clean" },
             ],
         },
         {
@@ -84,7 +85,6 @@ export const forgeCliReference: SidebarItem = {
                 { text: "forge soldeer login", link: "/forge/reference/soldeer/login" },
                 { text: "forge soldeer push", link: "/forge/reference/soldeer/push" },
                 { text: "forge soldeer uninstall", link: "/forge/reference/soldeer/uninstall" },
-                { text: "forge soldeer clean", link: "/forge/reference/soldeer/clean" },
                 { text: "forge soldeer version", link: "/forge/reference/soldeer/version" },
                 { text: "forge verify-bytecode", link: "/forge/reference/verify-bytecode" },
             ],
