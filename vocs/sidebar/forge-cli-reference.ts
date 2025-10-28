@@ -13,6 +13,7 @@ export const forgeCliReference: SidebarItem = {
                 { text: "forge cache clean", link: "/forge/reference/cache/clean" },
                 { text: "forge clean", link: "/forge/reference/clean" },
                 { text: "forge inspect", link: "/forge/reference/inspect" },
+                { text: "forge soldeer clean", link: "/forge/reference/soldeer/clean" },
             ],
         },
         {

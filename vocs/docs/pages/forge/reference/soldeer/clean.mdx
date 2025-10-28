@@ -1,25 +1,15 @@
-## cast pretty-calldata
+## forge soldeer clean
 
-Pretty print calldata.
-
-Tries to decode the calldata using [https://openchain.xyz](https://openchain.xyz) unless --offline is
-passed.
+Clean downloaded dependencies and generated artifacts
 
 ```bash
-$ cast pretty-calldata --help
+$ forge soldeer clean --help
 ```
 
 ```txt
-Usage: cast pretty-calldata [OPTIONS] [CALLDATA]
-
-Arguments:
-  [CALLDATA]
-          The calldata
+Usage: forge soldeer clean [OPTIONS]
 
 Options:
-  -o, --offline
-          Skip the [https://openchain.xyz](https://openchain.xyz) lookup
-
   -h, --help
           Print help (see a summary with '-h')
 
@@ -62,4 +52,6 @@ Display options:
           - 5 (-vvvvv): Print execution and setup traces for all tests,
           including storage changes and
             backtraces with line numbers.
+
+For more information, read the README.md
 ```

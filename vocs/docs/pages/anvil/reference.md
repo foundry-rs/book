@@ -179,6 +179,9 @@ Returns the blobs for a given transaction hash.
 `anvil_getBlobSidecarsByBlockId`
 Returns the blob sidecars for a given block id.
 
+`anvil_getBlobsByBlockId`
+Returns blobs for a given block ID. Optionally filtered by a list of versioned hashes.
+
 `anvil_mine`
 Mines a series of blocks.
 
