@@ -3,6 +3,6 @@
 $ cast call 0x6b175474e89094c44da98b954eedeac495271d0f "totalSupply()(uint256)" --rpc-url https://reth-ethereum.ithaca.xyz/rpc
 // [!endregion command]
 // [!region output]
-4695705065804824721442856312 [4.695e27]
+4631350336556592749821875437 [4.631e27]
 // [!endregion output]
 // [!endregion all]
