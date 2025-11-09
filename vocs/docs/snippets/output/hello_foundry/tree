@@ -5,7 +5,7 @@ $ tree . -d -L 2
 // [!region output]
 .
 ├── lib
-│   └── solady
+│   └── forge-std
 ├── script
 ├── src
 └── test
