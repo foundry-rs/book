@@ -318,6 +318,16 @@ Gets the transaction hash for a certain sender address, given its nonce.
 `ots_getContractCreator`
 Gets the transaction hash and the address which created a contract.
 
+#### Supported Beacon Node API endpoints
+
+In addition to the JSON-RPC API, Anvil supports some endpoints from the [Eth Beacon Node API](https://ethereum.github.io/beacon-APIs/) specification.
+
+[`GET /eth/v1/beacon/genesis`](https://ethereum.github.io/beacon-APIs/#/Beacon/getGenesis) Retrieves details of the chain's genesis. The response includes three fields: `genesis_time`, `genesis_validators_root`, and `genesis_fork_version`. However, only `genesis_time` is supported; the other two fields default to zero.
+
+
+[`GET /eth/v1/beacon/blobs/{block_id}[?versioned_hashes=...]`](https://ethereum.github.io/beacon-APIs/#/Beacon/getBlobs)
+Retrieves blobs for a given block ID. Optionally filtered by a list of versioned hashes.
+
 ### OPTIONS
 
 #### General Options
