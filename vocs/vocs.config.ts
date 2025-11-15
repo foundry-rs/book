@@ -67,7 +67,7 @@ export default defineConfig({
       text: 'Rustdocs',
     },
     {
-      text: 'v1.3.1',
+      text: 'v1.4.4',
       items: [
         {
           text: 'Release notes',
