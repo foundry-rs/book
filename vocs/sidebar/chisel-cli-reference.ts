@@ -2,6 +2,7 @@ import { SidebarItem } from "vocs";
 
 export const chiselCliReference: SidebarItem = {
     text: "Reference",
+    link: "/chisel/reference",
     collapsed: true,
     items: [
         { text: "chisel", link: "/chisel/reference/chisel" },
