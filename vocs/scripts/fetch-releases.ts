@@ -1,9 +1,10 @@
 #!/usr/bin/env bun
-import { writeFileSync, mkdirSync } from 'fs';
+import { writeFileSync, mkdirSync, readFileSync } from 'fs';
 import { join } from 'path';
 
 const GITHUB_API_URL = 'https://api.github.com/repos/foundry-rs/foundry/releases';
 const OUTPUT_DIR = join(import.meta.dir, '../docs/pages');
+const CONFIG_PATH = join(import.meta.dir, '../vocs.config.ts');
 
 interface GitHubRelease {
   id: number;
@@ -207,6 +208,37 @@ ${previousReleasesTable}
 `;
 }
 
+function updateVocsConfig(version: string): void {
+  try {
+    // Read the current config file
+    let configContent = readFileSync(CONFIG_PATH, 'utf-8');
+    
+    // Extract version number from tag (e.g., "v1.4.4" -> "v1.4.4")
+    // The version tag should already be in the correct format
+    const versionToUse = version.startsWith('v') ? version : `v${version}`;
+    
+    // Replace the version in the topNav section
+    // Pattern: text: 'vX.X.X' (with optional quotes)
+    const versionPattern = /(text:\s*['"])v?\d+\.\d+\.\d+(['"])/;
+    
+    if (versionPattern.test(configContent)) {
+      configContent = configContent.replace(
+        versionPattern,
+        `$1${versionToUse}$2`
+      );
+      
+      // Write the updated config back
+      writeFileSync(CONFIG_PATH, configContent, 'utf-8');
+      console.log(`✅ Updated vocs.config.ts with version ${versionToUse}`);
+    } else {
+      console.warn('⚠️  Could not find version pattern in vocs.config.ts');
+    }
+  } catch (error) {
+    console.error('Failed to update vocs.config.ts:', error);
+    // Don't exit - allow other updates to continue
+  }
+}
+
 async function main() {
   try {
     console.log('Fetching all Foundry releases...');
@@ -295,6 +327,9 @@ async function main() {
       );
       writeFileSync(join(OUTPUT_DIR, 'releases/nightly.mdx'), nightlyContent);
     }
+
+    // Update vocs.config.ts with the latest release version
+    updateVocsConfig(latestRelease.tag_name);
     
     console.log('✅ Successfully generated all release pages');
   } catch (error) {
