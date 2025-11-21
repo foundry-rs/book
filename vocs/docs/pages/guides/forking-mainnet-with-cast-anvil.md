@@ -86,7 +86,7 @@ cast call $DAI \
 
 ::::
 
-[anvil]: ../reference/anvil/
-[cast]: ../cast/reference/
-[cast-call]: ../cast/reference/call.md
-[cast-send]: ../cast/reference/send.md
+[anvil]: /anvil/overview
+[cast]: /cast/overview
+[cast-call]: /cast/reference/call
+[cast-send]: /cast/reference/send
