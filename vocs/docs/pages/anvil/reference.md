@@ -144,6 +144,8 @@ The standard methods are based on [this](https://ethereum.org/en/developers/docs
 
 - `eth_getProof`
 
+- `eth_fillTransaction`
+
 - `debug_traceTransaction`
   Use `anvil --steps-tracing` to get `structLogs`
 
