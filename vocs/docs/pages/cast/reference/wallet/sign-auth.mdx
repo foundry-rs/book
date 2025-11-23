@@ -69,6 +69,12 @@ Options:
       --chain <CHAIN>
           
 
+      --self-broadcast
+          If set, indicates the authorization will be broadcast by the signing
+          account itself. This means the nonce used will be the current nonce +
+          1 (to account for the transaction that will include this
+          authorization)
+
   -h, --help
           Print help (see a summary with '-h')
 
