@@ -20,6 +20,41 @@ Arguments:
           The amount to mint
 
 Options:
+      --async
+          Only print the transaction hash and exit immediately
+          
+          [env: CAST_ASYNC=]
+
+      --sync
+          Wait for transaction receipt synchronously instead of polling. Note:
+          uses `eth_sendTransactionSync` which may not be supported by all
+          clients
+
+      --confirmations <CONFIRMATIONS>
+          The number of confirmations until the receipt is fetched
+          
+          [default: 1]
+
+      --timeout <TIMEOUT>
+          Timeout for sending the transaction
+          
+          [env: ETH_TIMEOUT=]
+
+      --poll-interval <POLL_INTERVAL>
+          Polling interval for transaction receipts (in seconds)
+          
+          [env: ETH_POLL_INTERVAL=]
+
+  -h, --help
+          Print help (see a summary with '-h')
+
+  -j, --threads <THREADS>
+          Number of threads to use. Specifying 0 defaults to the number of
+          logical cores
+          
+          [aliases: --jobs]
+
+Ethereum options:
   -r, --rpc-url <URL>
           The RPC endpoint, default value is http://localhost:8545
           
@@ -69,14 +104,15 @@ Options:
           
           [env: ETH_RPC_HEADERS=]
 
-  -h, --help
-          Print help (see a summary with '-h')
-
-  -j, --threads <THREADS>
-          Number of threads to use. Specifying 0 defaults to the number of
-          logical cores
+  -e, --etherscan-api-key <KEY>
+          The Etherscan (or equivalent) API key
           
-          [aliases: --jobs]
+          [env: ETHERSCAN_API_KEY=]
+
+  -c, --chain <CHAIN>
+          The chain name or EIP-155 chain ID
+          
+          [env: CHAIN=]
 
 Wallet options - raw:
   -f, --from <ADDRESS>

@@ -41,19 +41,15 @@ Options:
           
           [default: 1]
 
-      --poll-interval <POLL_INTERVAL>
-          Polling interval for transaction receipts (in seconds)
-          
-          [env: ETH_POLL_INTERVAL=]
-
-      --unlocked
-          Send via `eth_sendTransaction` using the `--from` argument or
-          $ETH_FROM as sender
-
       --timeout <TIMEOUT>
           Timeout for sending the transaction
           
           [env: ETH_TIMEOUT=]
+
+      --poll-interval <POLL_INTERVAL>
+          Polling interval for transaction receipts (in seconds)
+          
+          [env: ETH_POLL_INTERVAL=]
 
   -h, --help
           Print help (see a summary with '-h')
@@ -63,63 +59,6 @@ Options:
           logical cores
           
           [aliases: --jobs]
-
-Transaction options:
-      --gas-limit <GAS_LIMIT>
-          Gas limit for the transaction
-          
-          [env: ETH_GAS_LIMIT=]
-
-      --gas-price <PRICE>
-          Gas price for legacy transactions, or max fee per gas for EIP1559
-          transactions, either specified in wei, or as a string with a unit
-          type.
-          
-          Examples: 1ether, 10gwei, 0.01ether
-          
-          [env: ETH_GAS_PRICE=]
-
-      --priority-gas-price <PRICE>
-          Max priority fee per gas for EIP1559 transactions
-          
-          [env: ETH_PRIORITY_GAS_PRICE=]
-
-      --value <VALUE>
-          Ether to send in the transaction, either specified in wei, or as a
-          string with a unit type.
-          
-          Examples: 1ether, 10gwei, 0.01ether
-
-      --nonce <NONCE>
-          Nonce for the transaction
-
-      --legacy
-          Send a legacy transaction instead of an EIP1559 transaction.
-          
-          This is automatically enabled for common networks without EIP1559.
-
-      --blob
-          Send a EIP-4844 blob transaction
-
-      --blob-gas-price <BLOB_PRICE>
-          Gas price for EIP-4844 blob transaction
-          
-          [env: ETH_BLOB_GAS_PRICE=]
-
-      --auth <AUTH>
-          EIP-7702 authorization list.
-          
-          Can be either a hex-encoded signed authorization or an address.
-
-      --access-list [<ACCESS_LIST>]
-          EIP-2930 access list.
-          
-          Accepts either a JSON-encoded access list or an empty value to create
-          the access list via an RPC call to `eth_createAccessList`. To retrieve
-          only the access list portion, use the `cast access-list` command.
-
-      --path <BLOB_DATA_PATH>
-          The path of blob data to be sent
 
 Ethereum options:
   -r, --rpc-url <URL>
@@ -211,6 +150,10 @@ Wallet options - raw:
           
           [default: 0]
 
+      --unlocked
+          Send via `eth_sendTransaction` using the `--from` argument or
+          $ETH_FROM as sender
+
 Wallet options - keystore:
       --keystore <PATH>
           Use the keystore in the given folder or file
@@ -275,6 +218,63 @@ Wallet options - browser:
 
       --browser-disable-open
           Whether to open the browser for wallet connection
+
+Transaction options:
+      --gas-limit <GAS_LIMIT>
+          Gas limit for the transaction
+          
+          [env: ETH_GAS_LIMIT=]
+
+      --gas-price <PRICE>
+          Gas price for legacy transactions, or max fee per gas for EIP1559
+          transactions, either specified in wei, or as a string with a unit
+          type.
+          
+          Examples: 1ether, 10gwei, 0.01ether
+          
+          [env: ETH_GAS_PRICE=]
+
+      --priority-gas-price <PRICE>
+          Max priority fee per gas for EIP1559 transactions
+          
+          [env: ETH_PRIORITY_GAS_PRICE=]
+
+      --value <VALUE>
+          Ether to send in the transaction, either specified in wei, or as a
+          string with a unit type.
+          
+          Examples: 1ether, 10gwei, 0.01ether
+
+      --nonce <NONCE>
+          Nonce for the transaction
+
+      --legacy
+          Send a legacy transaction instead of an EIP1559 transaction.
+          
+          This is automatically enabled for common networks without EIP1559.
+
+      --blob
+          Send a EIP-4844 blob transaction
+
+      --blob-gas-price <BLOB_PRICE>
+          Gas price for EIP-4844 blob transaction
+          
+          [env: ETH_BLOB_GAS_PRICE=]
+
+      --auth <AUTH>
+          EIP-7702 authorization list.
+          
+          Can be either a hex-encoded signed authorization or an address.
+
+      --access-list [<ACCESS_LIST>]
+          EIP-2930 access list.
+          
+          Accepts either a JSON-encoded access list or an empty value to create
+          the access list via an RPC call to `eth_createAccessList`. To retrieve
+          only the access list portion, use the `cast access-list` command.
+
+      --path <BLOB_DATA_PATH>
+          The path of blob data to be sent
 
 Display options:
       --color <COLOR>
