@@ -161,7 +161,7 @@ A common layout may look like:
 
 Where the Foundry workspace is in `./contracts`, but packages in `./contracts/node_modules` are symlinked to `./node_modules`.
 
-When running `forge build` in `./contracts/node_modules`, this can lead to an error like:
+When running [`forge build`][forge-build] in `./contracts/node_modules`, this can lead to an error like:
 
 ```console
 error[6275]: ParserError: Source "node_modules/@openzeppelin/contracts/utils/cryptography/draft-EIP712.sol" not found: File outside of allowed directories. The following are allowed: "<repo>/contracts", "<repo>/contracts/contracts", "<repo>/contracts/lib".
@@ -195,7 +195,7 @@ It has been [reported](https://github.com/foundry-rs/foundry/issues/3268) that o
 
 ### Connection refused when running `forge build`
 
-If you're unable to access github URLs called by `forge build`, you will see an error like
+If you're unable to access github URLs called by [`forge build`][forge-build], you will see an error like
 
 ```console
 Error:
@@ -204,18 +204,18 @@ error sending request for url (https://raw.githubusercontent.com/roynalnaruto/so
 
 Connection failed because access to the URL from your location may be restricted. To solve this, you should set proxy.
 
-You could run `export http_proxy=http://127.0.0.1:7890 https_proxy=http://127.0.0.1:7890` first in the terminal then you will `forge build` successfully.
+You could run `export http_proxy=http://127.0.0.1:7890 https_proxy=http://127.0.0.1:7890` first in the terminal then you will [`forge build`][forge-build] successfully.
 
 ### I'm getting `[NotActivated] EvmError: NotActivated` error in my tests.
 
 This error refers to an EVM version mismatch, make sure the `evm_version` configuration is inline with the test (forked chain) you're using (similar for errors like `prevrandao not set`). See [`evm_version` configuration](/config/reference/solidity-compiler#evm_version)
 
 [tg-support]: https://t.me/foundry_support
-[forge-test]: ./forge/reference/test.md
-[traces]: ./forge/traces.md
-[config-solc]: ./config/reference/solidity-compiler.md#solc_version
-[config]: ./config/
-[forge-build]: ./forge/reference/build.md
-[console-log]: ./reference/forge-std/console-log.md
+[forge-test]: /forge/tests/overview
+[traces]: /forge/tests/traces
+[config-solc]: /config/reference/solidity-compiler#solc_version
+[config]: /config/overview
+[forge-build]: /forge/reference/build
+[console-log]: /reference/forge-std/console-log
 [forge-std]: https://github.com/foundry-rs/forge-std
 [dstestplus]: https://github.com/transmissions11/solmate/blob/19a4f345970ed39ee6369f343d145e0d4071c18a/src/test/utils/DSTestPlus.sol#L10

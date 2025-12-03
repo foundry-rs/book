@@ -21,6 +21,7 @@ $ tree . -L 3 -I output
 │   └── forge-zksync-std
 │       ├── LICENSE
 │       ├── README.md
+│       ├── RELEASE_CHECKLIST.md
 │       ├── foundry.toml
 │       └── src
 ├── script
@@ -30,12 +31,8 @@ $ tree . -L 3 -I output
 └── test
     └── Counter.t.sol
 
-<<<<<<< HEAD:src/output/hello_foundry/tree-with-files
 11 directories, 14 files
 // ANCHOR_END: output
 // ANCHOR_END: all
-=======
-9 directories, 12 files
 // [!endregion output]
 // [!endregion all]
->>>>>>> ac5e906:vocs/docs/snippets/output/hello_foundry/tree-with-files

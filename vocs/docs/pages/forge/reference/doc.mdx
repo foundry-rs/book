@@ -58,6 +58,13 @@ Watch options:
           By default, only the tests of the last modified test file are
           executed.
 
+      --rerun-failed
+          Re-run only previously failed tests first when a change is made.
+          
+          If all previously failed tests pass, the full test suite will be run
+          automatically. This is particularly useful for TDD workflows where you
+          want fast feedback on failures.
+
       --watch-delay <DELAY>
           File update debounce delay.
           
@@ -94,6 +101,9 @@ Display options:
       --json
           Format log messages as JSON
 
+      --md
+          Format log messages as Markdown
+
   -q, --quiet
           Do not print log messages
 
@@ -110,5 +120,6 @@ Display options:
           - 4 (-vvvv): Print execution traces for all tests, and setup traces
           for failing tests.
           - 5 (-vvvvv): Print execution and setup traces for all tests,
-          including storage changes.
+          including storage changes and
+            backtraces with line numbers.
 ```

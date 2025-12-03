@@ -1,8 +1,8 @@
 // [!region all]
 // [!region command]
-cast call 0x6b175474e89094c44da98b954eedeac495271d0f "totalSupply()(uint256)" --rpc-url https://eth-mainnet.alchemyapi.io/v2/Lc7oIGYeL_QvInzI0Wiu_pOZZDEKBrdf
+$ cast call 0x6b175474e89094c44da98b954eedeac495271d0f "totalSupply()(uint256)" --rpc-url https://reth-ethereum.ithaca.xyz/rpc
 // [!endregion command]
 // [!region output]
-3815526146743898947335427087 [3.815e27]
+4415362791722390384475178627 [4.415e27]
 // [!endregion output]
 // [!endregion all]

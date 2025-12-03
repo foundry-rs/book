@@ -4,7 +4,7 @@
 /.vscode
 
 /cache/
-/vocs/snippets/projects/**/cache/
+/vocs/docs/snippets/projects/**/cache/
 /out/
 /zkout/
 /projects/**/out/

@@ -21,10 +21,21 @@ Options:
           List accounts from a Trezor hardware wallet
 
       --aws
-          List accounts from AWS KMS
+          List accounts from AWS KMS.
+          
+          Ensure either one of AWS_KMS_KEY_IDS (comma-separated) or
+          AWS_KMS_KEY_ID environment variables are set.
 
       --gcp
-          List accounts from Google Cloud KMS
+          List accounts from Google Cloud KMS.
+          
+          Ensure the following environment variables are set: GCP_PROJECT_ID,
+          GCP_LOCATION, GCP_KEY_RING, GCP_KEY_NAME, GCP_KEY_VERSION.
+          
+          See: [https://cloud.google.com/kms/docs](https://cloud.google.com/kms/docs)
+
+      --turnkey
+          List accounts from Turnkey
 
       --all
           List all configured accounts
@@ -55,6 +66,9 @@ Display options:
       --json
           Format log messages as JSON
 
+      --md
+          Format log messages as Markdown
+
   -q, --quiet
           Do not print log messages
 
@@ -71,5 +85,6 @@ Display options:
           - 4 (-vvvv): Print execution traces for all tests, and setup traces
           for failing tests.
           - 5 (-vvvvv): Print execution and setup traces for all tests,
-          including storage changes.
+          including storage changes and
+            backtraces with line numbers.
 ```

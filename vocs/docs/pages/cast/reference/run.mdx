@@ -20,6 +20,9 @@ Options:
       --decode-internal
           Whether to identify internal functions in traces
 
+      --trace-depth <TRACE_DEPTH>
+          Defines the depth of a trace
+
   -t, --trace-printer
           Print out opcode traces
 
@@ -40,11 +43,6 @@ Options:
           The Etherscan (or equivalent) API key
           
           [env: ETHERSCAN_API_KEY=]
-
-  -a, --etherscan-api-version <API_VERSION>
-          The Etherscan API version
-          
-          [env: ETHERSCAN_API_VERSION=]
 
   -c, --chain <CHAIN>
           The chain name or EIP-155 chain ID
@@ -124,9 +122,6 @@ Options:
           
           [aliases: --no-rpc-rate-limit]
 
-      --odyssey
-          Enables Odyssey features
-
       --with-local-artifacts
           Use current project artifacts for trace decoding
           
@@ -134,6 +129,9 @@ Options:
 
       --disable-block-gas-limit
           Disable block gas limit check
+
+      --enable-tx-gas-limit
+          Enable the tx gas limit checks as imposed by Osaka (EIP-7825)
 
   -h, --help
           Print help (see a summary with '-h')
@@ -156,6 +154,9 @@ Display options:
       --json
           Format log messages as JSON
 
+      --md
+          Format log messages as Markdown
+
   -q, --quiet
           Do not print log messages
 
@@ -172,5 +173,6 @@ Display options:
           - 4 (-vvvv): Print execution traces for all tests, and setup traces
           for failing tests.
           - 5 (-vvvvv): Print execution and setup traces for all tests,
-          including storage changes.
+          including storage changes and
+            backtraces with line numbers.
 ```

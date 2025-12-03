@@ -144,6 +144,8 @@ The standard methods are based on [this](https://ethereum.org/en/developers/docs
 
 - `eth_getProof`
 
+- `eth_fillTransaction`
+
 - `debug_traceTransaction`
   Use `anvil --steps-tracing` to get `structLogs`
 
@@ -169,6 +171,18 @@ Accepts `true` to enable auto impersonation of accounts, and `false` to disable 
 
 `anvil_getAutomine`
 Returns true if automatic mining is enabled, and false if it is not.
+
+`anvil_getBlobByHash`
+Returns the blob for a given a KZG commitment versioned hash.
+
+`anvil_getBlobsByTransactionHash`
+Returns the blobs for a given transaction hash.
+
+`anvil_getBlobSidecarsByBlockId`
+Returns the blob sidecars for a given block id.
+
+`anvil_getBlobsByBlockId`
+Returns blobs for a given block ID. Optionally filtered by a list of versioned hashes.
 
 `anvil_mine`
 Mines a series of blocks.
@@ -223,7 +237,7 @@ Retrieves the configuration params for the currently running Anvil node.
 The special methods come from Ganache. You can take a look at the documentation [here](https://github.com/trufflesuite/ganache-cli-archive/blob/master/README.md).
 
 `evm_setAutomine`
-Enables or disables, based on the single boolean argument, the automatic mining of new blocks with each new transaction submitted to the network.
+Enables or disables, based on the single boolean argument, the automatic mining of new blocks with each new transaction submitted to the network. If set to `false`, Anvil keeps mining new blocks for every block interval time set by you. If set to `true`, Anvil pauses mining new blocks, until new transactions are detected. In order to resume periodic mining from the pause, call evm_setIntervalMining to set block interval time.
 
 `evm_setIntervalMining`
 Sets the mining behavior to interval with the given interval (seconds).
@@ -305,6 +319,16 @@ Gets the transaction hash for a certain sender address, given its nonce.
 
 `ots_getContractCreator`
 Gets the transaction hash and the address which created a contract.
+
+#### Supported Beacon Node API endpoints
+
+In addition to the JSON-RPC API, Anvil supports some endpoints from the [Eth Beacon Node API](https://ethereum.github.io/beacon-APIs/) specification.
+
+[`GET /eth/v1/beacon/genesis`](https://ethereum.github.io/beacon-APIs/#/Beacon/getGenesis) Retrieves details of the chain's genesis. The response includes three fields: `genesis_time`, `genesis_validators_root`, and `genesis_fork_version`. However, only `genesis_time` is supported; the other two fields default to zero.
+
+
+[`GET /eth/v1/beacon/blobs/{block_id}[?versioned_hashes=...]`](https://ethereum.github.io/beacon-APIs/#/Beacon/getBlobs)
+Retrieves blobs for a given block ID. Optionally filtered by a list of versioned hashes.
 
 ### OPTIONS
 
