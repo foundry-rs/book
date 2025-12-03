@@ -1,5 +1,12 @@
 name: deploy
-on: [push]
+
+permissions: {}
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
 
 jobs:
   deploy:
@@ -11,15 +18,35 @@ jobs:
     name: Deploy to Cloudflare Pages
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
       - name: Install bun
-        uses: oven-sh/setup-bun@v2
-      
-      - name: Build book
-        run: cd vocs && bun install && bun run build
+        uses: oven-sh/setup-bun@735343b667d3e6f658f44d0eca948eb6282f2b76 # v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        working-directory: vocs
+        run: bun install
+
+      - name: Check links
+        working-directory: vocs
+        continue-on-error: true
+        run: |
+          bun check-links.ts
+          cat links-report.json | jq
+          if [ $? -ne 0 ]; then
+            exit 1
+          fi
+
+      - name: Build Vocs
+        working-directory: vocs
+        run: bun run build
 
       - name: Publish
-        uses: cloudflare/pages-action@v1.4.0
+        uses: cloudflare/pages-action@f0a1cd58cd66095dee69bfa18fa5efd1dde93bca # v1.5.0
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

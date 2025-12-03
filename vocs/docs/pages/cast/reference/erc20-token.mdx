@@ -1,13 +1,26 @@
-## cast generate-fig-spec
+## cast erc20-token
 
-Generate Fig autocompletion spec
+ERC20 token operations
 
 ```bash
-$ cast generate-fig-spec --help
+$ cast erc20-token --help
 ```
 
 ```txt
-Usage: cast generate-fig-spec [OPTIONS]
+Usage: cast erc20-token [OPTIONS] <COMMAND>
+
+Commands:
+  balance       Query ERC20 token balance [aliases: b]
+  transfer      Transfer ERC20 tokens [aliases: t]
+  approve       Approve ERC20 token spending [aliases: a]
+  allowance     Query ERC20 token allowance [aliases: al]
+  name          Query ERC20 token name [aliases: n]
+  symbol        Query ERC20 token symbol [aliases: s]
+  decimals      Query ERC20 token decimals [aliases: d]
+  total-supply  Query ERC20 token total supply [aliases: ts]
+  mint          Mint ERC20 tokens (if the token supports minting) [aliases: m]
+  burn          Burn ERC20 tokens [aliases: bu]
+  help          Print this message or the help of the given subcommand(s)
 
 Options:
   -h, --help
@@ -31,6 +44,9 @@ Display options:
       --json
           Format log messages as JSON
 
+      --md
+          Format log messages as Markdown
+
   -q, --quiet
           Do not print log messages
 
@@ -47,5 +63,6 @@ Display options:
           - 4 (-vvvv): Print execution traces for all tests, and setup traces
           for failing tests.
           - 5 (-vvvvv): Print execution and setup traces for all tests,
-          including storage changes.
+          including storage changes and
+            backtraces with line numbers.
 ```

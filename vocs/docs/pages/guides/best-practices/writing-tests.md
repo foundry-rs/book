@@ -99,7 +99,7 @@ Be careful with fuzz tests on a fork to avoid burning through RPC requests with 
 
 To test `internal` functions, write a harness contract that inherits from the contract under test (CuT). Harness contracts that inherit from the CuT expose the `internal` functions as `external` ones.
 
-Each `internal` function that is tested should be exposed via an external one with a name that follows the pattern `exposed_<function_name>`. For example:
+Each `internal` function that is tested should be exposed via an external one with a name that follows the pattern `exposed<FunctionName>`. For example:
 
 ```solidity
 // file: src/MyContract.sol
@@ -114,7 +114,7 @@ import {MyContract} from "src/MyContract.sol";
 
 contract MyContractHarness is MyContract {
   // Deploy this contract then call this method to test `myInternalMethod`.
-  function exposed_myInternalMethod() external returns (uint) {
+  function exposedMyInternalMethod() external returns (uint) {
     return myInternalMethod();
   }
 }

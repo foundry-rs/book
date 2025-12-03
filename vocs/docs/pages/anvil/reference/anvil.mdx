@@ -10,9 +10,8 @@ $ anvil --help
 Usage: anvil [OPTIONS] [COMMAND]
 
 Commands:
-  completions        Generate shell completions script [aliases: com]
-  generate-fig-spec  Generate Fig autocompletion spec [aliases: fig]
-  help               Print this message or the help of the given subcommand(s)
+  completions  Generate shell completions script [aliases: com]
+  help         Print this message or the help of the given subcommand(s)
 
 Options:
   -a, --accounts <NUM>
@@ -169,6 +168,9 @@ Display options:
       --json
           Format log messages as JSON
 
+      --md
+          Format log messages as Markdown
+
   -q, --quiet
           Do not print log messages
 
@@ -185,7 +187,8 @@ Display options:
           - 4 (-vvvv): Print execution traces for all tests, and setup traces
           for failing tests.
           - 5 (-vvvvv): Print execution and setup traces for all tests,
-          including storage changes.
+          including storage changes and
+            backtraces with line numbers.
 
 Server options:
       --allow-origin <ALLOW_ORIGIN>
@@ -256,7 +259,8 @@ Fork config:
           See --fork-url.
 
       --fork-transaction-hash <TRANSACTION>
-          Fetch state from a specific transaction hash over a remote endpoint.
+          Fetch state from after a specific transaction hash has been applied
+          over a remote endpoint.
           
           See --fork-url.
 
@@ -339,16 +343,11 @@ EVM options:
           
           [aliases: --no-create2]
 
+      --disable-pool-balance-checks
+          Disable pool balance checks
+
       --memory-limit <MEMORY_LIMIT>
           The memory limit per EVM execution in bytes
-
-      --odyssey
-          Enable Odyssey features
-
-      --optimism
-          Run an Optimism chain
-          
-          [aliases: --optimism]
 
       --print-traces
           Enable printing of traces for executed transactions and `eth_call` to
@@ -360,29 +359,13 @@ EVM options:
           Enable steps tracing used for debug calls returning geth-style traces
           
           [aliases: --tracing]
+
+Networks:
+      --celo
+          Enable Celo network features
+
+      --optimism
+          Enable Optimism network features
+          
+          [aliases: --optimism]
 ```
-
-### Troubleshooting: Chained transactions with `automine` disabled
-
-When `automine` is **off**, a second transaction that **depends on funds** created by a previous pending transaction may be rejected with:
-
-```text
-error: Insufficient funds for gas * price + value
-```
-
-This happens because the second tx is validated **before** the funding tx is mined.
-
-**Workarounds:**
-- Temporarily enable `automine` and mine the funding tx first, or
-- Manually mine a block **between** the two transactions.
-- **(Advanced)** If your Anvil version supports it, start with
-  `--disable-pool-balance-checks` to bypass transaction-pool balance checks
-  so the second tx can be accepted while the funding tx is still pending:
-
-  ```sh
-  anvil --disable-pool-balance-checks
-  ```
-
-  _Note:_ This is intended for local testing only; it relaxes safety checks and may admit transactions that would be rejected on mainnet. See `anvil --help` for details.
-
-You can temporarily enable automine via `anvil_setAutomine` or manually mine a block with `anvil_mine`.

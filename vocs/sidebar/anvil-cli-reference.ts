@@ -10,7 +10,6 @@ export const anvilCliReference: SidebarItem = {
             collapsed: true,
             items: [
                 { text: "anvil completions", link: "/anvil/reference/completions" },
-                { text: "anvil generate-fig-spec", link: "/anvil/reference/generate-fig-spec" },
             ],
         },
     ],

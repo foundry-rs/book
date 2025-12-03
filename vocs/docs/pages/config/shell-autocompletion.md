@@ -1,10 +1,10 @@
 ## Shell Autocompletion
 
-You can generate autocompletion shell scripts for `bash`, `elvish`, `fish`, `powershell`, and `zsh`.
+You can generate autocompletion shell scripts for `bash`, `elvish`, `fish`, `nushell`, `powershell`, and `zsh`.
 
 ### zsh
 
-First, ensure that the following is present somewhere in your `~/.zshrc` file (if not, add it):
+First, ensure that the following is present at the end in your `~/.zshrc` file (if not, add it):
 
 ```sh
 autoload -U compinit
@@ -22,9 +22,9 @@ anvil completions zsh | sudo tee /usr/local/share/zsh/site-functions/_anvil
 For macOS:
 
 ```sh
-forge completions zsh > /opt/homebrew/completions/zsh/_forge
-cast completions zsh > /opt/homebrew/completions/zsh/_cast
-anvil completions zsh > /opt/homebrew/completions/zsh/_anvil
+forge completions zsh > /opt/homebrew/share/zsh/site-functions/_forge
+cast completions zsh > /opt/homebrew/share/zsh/site-functions/_cast
+anvil completions zsh > /opt/homebrew/share/zsh/site-functions/_anvil
 ```
 
 ### fish
@@ -45,4 +45,21 @@ forge completions bash > $HOME/.local/share/bash-completion/completions/forge
 cast completions bash > $HOME/.local/share/bash-completion/completions/cast
 anvil completions bash > $HOME/.local/share/bash-completion/completions/anvil
 exec bash
+```
+
+### nushell
+
+```sh
+mkdir -p $HOME/.config/nushell/completions
+forge completions nushell > $HOME/.config/nushell/completions/forge.nu
+cast completions nushell > $HOME/.config/nushell/completions/cast.nu
+anvil completions nushell > $HOME/.config/nushell/completions/anvil.nu
+```
+
+Then add the following to your `config.nu` file:
+
+```nu
+use ~/.config/nushell/completions/forge.nu *
+use ~/.config/nushell/completions/cast.nu *
+use ~/.config/nushell/completions/anvil.nu *
 ```

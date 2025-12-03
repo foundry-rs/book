@@ -13,6 +13,7 @@ export const forgeCliReference: SidebarItem = {
                 { text: "forge cache clean", link: "/forge/reference/cache/clean" },
                 { text: "forge clean", link: "/forge/reference/clean" },
                 { text: "forge inspect", link: "/forge/reference/inspect" },
+                { text: "forge soldeer clean", link: "/forge/reference/soldeer/clean" },
             ],
         },
         {
@@ -55,7 +56,6 @@ export const forgeCliReference: SidebarItem = {
             collapsed: true,
             items: [
                 { text: "forge coverage", link: "/forge/reference/coverage" },
-                { text: "forge generate test", link: "/forge/reference/generate/test" },
                 { text: "forge snapshot", link: "/forge/reference/snapshot" },
                 { text: "forge test", link: "/forge/reference/test" },
             ],
@@ -73,8 +73,6 @@ export const forgeCliReference: SidebarItem = {
                 { text: "forge doc", link: "/forge/reference/doc" },
                 { text: "forge eip712", link: "/forge/reference/eip712" },
                 { text: "forge fmt", link: "/forge/reference/fmt" },
-                { text: "forge generate", link: "/forge/reference/generate" },
-                { text: "forge generate-fig-spec", link: "/forge/reference/generate-fig-spec" },
                 { text: "forge lint", link: "/forge/reference/lint" },
                 { text: "forge script", link: "/forge/reference/script" },
                 { text: "forge selectors", link: "/forge/reference/selectors" },

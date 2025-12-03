@@ -15,7 +15,7 @@ Arguments:
           
           For Etherscan - Submission GUID.
           
-          For Sourcify - Contract Address.
+          For Sourcify - Verification Job ID.
 
 Options:
       --retries <RETRIES>
@@ -32,11 +32,6 @@ Options:
           The Etherscan (or equivalent) API key
           
           [env: ETHERSCAN_API_KEY=]
-
-  -a, --etherscan-api-version <API_VERSION>
-          The Etherscan API version
-          
-          [env: ETHERSCAN_API_VERSION=]
 
   -c, --chain <CHAIN>
           The chain name or EIP-155 chain ID
@@ -55,8 +50,6 @@ Options:
 Verifier options:
       --verifier <VERIFIER>
           The contract verification provider to use
-          
-          [default: etherscan]
 
           Possible values:
           - etherscan
@@ -66,6 +59,8 @@ Verifier options:
           - zksync
           - custom:     Custom verification provider, requires compatibility
             with the Etherscan API
+          
+          [default: sourcify]
 
       --verifier-api-key <VERIFIER_API_KEY>
           The verifier API KEY, if using a custom provider
@@ -76,11 +71,6 @@ Verifier options:
           The verifier URL, if using a custom provider
           
           [env: VERIFIER_URL=]
-
-      --verifier-api-version <VERIFIER_API_VERSION>
-          The verifier API version, if using a custom provider
-          
-          [env: VERIFIER_API_VERSION=]
 
 Display options:
       --color <COLOR>
@@ -93,6 +83,9 @@ Display options:
 
       --json
           Format log messages as JSON
+
+      --md
+          Format log messages as Markdown
 
   -q, --quiet
           Do not print log messages
@@ -110,5 +103,6 @@ Display options:
           - 4 (-vvvv): Print execution traces for all tests, and setup traces
           for failing tests.
           - 5 (-vvvvv): Print execution and setup traces for all tests,
-          including storage changes.
+          including storage changes and
+            backtraces with line numbers.
 ```

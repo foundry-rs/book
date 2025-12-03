@@ -7,7 +7,6 @@
 /reference/chisel /chisel/reference
 
 /reference/cast/:id /cast/reference/:id
-/cast/reference/cast-:splat /cast/reference/:splat
 
 /cast/reference /cast/reference/cast
 /cast/reference/overview /cast/reference/cast
@@ -56,6 +55,8 @@
 
 /guides/best-practices /guides/best-practices/writing-contracts
 /guides /guides/best-practices/writing-contracts
+
+/dependencies /guides/project-setup/dependencies
 
 # General pattern for simple cast commands
 

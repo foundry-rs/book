@@ -204,6 +204,11 @@ export const cmdReference: SidebarItem[] = [
         ],
       },
       {
+        text: 'Std Config',
+        link: '/reference/forge-std/std-config',
+        items: [],
+      },
+      {
         text: 'Std Errors',
         link: '/reference/forge-std/std-errors',
         items: [
