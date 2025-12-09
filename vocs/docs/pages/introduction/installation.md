@@ -24,7 +24,7 @@ This will install Foundryup. Simply follow the on-screen instructions, and the `
 
 Running `foundryup` will automatically install the latest `stable` version of the [precompiled binaries](#precompiled-binaries): `forge`, `cast`, `anvil`, and `chisel`. If you wish to use the latest `nightly` build run `foundryup --install nightly`. For additional options, such as installing a specific version or commit, run `foundryup --help`.
 
-If you want to install the binaries distributed by [Tempo's fork of Foundry](https://github.com/tempoxyz/tempo-foundry) you can run:
+If you want to install the binaries distributed by [Tempo's fork of Foundry](https://github.com/tempoxyz/tempo-foundry) run:
 
 ```sh
 foundryup -n tempo
