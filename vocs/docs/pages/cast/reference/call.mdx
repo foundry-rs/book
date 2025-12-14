@@ -122,7 +122,7 @@ Transaction options:
           the access list via an RPC call to `eth_createAccessList`. To retrieve
           only the access list portion, use the `cast access-list` command.
 
-Ethereum options:
+Rpc options:
   -r, --rpc-url <URL>
           The RPC endpoint, default value is http://localhost:8545
           
@@ -172,16 +172,6 @@ Ethereum options:
           
           [env: ETH_RPC_HEADERS=]
 
-  -e, --etherscan-api-key <KEY>
-          The Etherscan (or equivalent) API key
-          
-          [env: ETHERSCAN_API_KEY=]
-
-  -c, --chain <CHAIN>
-          The chain name or EIP-155 chain ID
-          
-          [env: CHAIN=]
-
 Wallet options - raw:
   -f, --from <ADDRESS>
           The sender account
@@ -211,6 +201,9 @@ Wallet options - raw:
           Used with --mnemonic-path.
           
           [default: 0]
+
+  -c, --chain <CHAIN>
+          [env: CHAIN=]
 
       --with-local-artifacts
           Use current project artifacts for trace decoding

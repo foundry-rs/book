@@ -17,6 +17,16 @@ Options:
       --verify
           Perform a reverse lookup to verify that the name is correct
 
+  -h, --help
+          Print help (see a summary with '-h')
+
+  -j, --threads <THREADS>
+          Number of threads to use. Specifying 0 defaults to the number of
+          logical cores
+          
+          [aliases: --jobs]
+
+Rpc options:
   -r, --rpc-url <URL>
           The RPC endpoint, default value is http://localhost:8545
           
@@ -65,15 +75,6 @@ Options:
           Specify custom headers for RPC requests
           
           [env: ETH_RPC_HEADERS=]
-
-  -h, --help
-          Print help (see a summary with '-h')
-
-  -j, --threads <THREADS>
-          Number of threads to use. Specifying 0 defaults to the number of
-          logical cores
-          
-          [aliases: --jobs]
 
 Display options:
       --color <COLOR>
