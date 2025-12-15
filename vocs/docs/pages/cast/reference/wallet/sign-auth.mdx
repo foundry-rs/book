@@ -14,6 +14,16 @@ Arguments:
           Address to sign authorization for
 
 Options:
+  -h, --help
+          Print help (see a summary with '-h')
+
+  -j, --threads <THREADS>
+          Number of threads to use. Specifying 0 defaults to the number of
+          logical cores
+          
+          [aliases: --jobs]
+
+Rpc options:
   -r, --rpc-url <URL>
           The RPC endpoint
           
@@ -74,15 +84,6 @@ Options:
           account itself. This means the nonce used will be the current nonce +
           1 (to account for the transaction that will include this
           authorization)
-
-  -h, --help
-          Print help (see a summary with '-h')
-
-  -j, --threads <THREADS>
-          Number of threads to use. Specifying 0 defaults to the number of
-          logical cores
-          
-          [aliases: --jobs]
 
 Wallet options - raw:
   -f, --from <ADDRESS>

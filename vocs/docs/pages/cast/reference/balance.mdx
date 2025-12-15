@@ -22,6 +22,16 @@ Options:
   -e, --ether
           Format the balance in ether
 
+  -h, --help
+          Print help (see a summary with '-h')
+
+  -j, --threads <THREADS>
+          Number of threads to use. Specifying 0 defaults to the number of
+          logical cores
+          
+          [aliases: --jobs]
+
+Rpc options:
   -r, --rpc-url <URL>
           The RPC endpoint
           
@@ -74,15 +84,6 @@ Options:
       --erc20 <ERC20>
           erc20 address to query, with the method `balanceOf(address) return
           (uint256)`, alias with '--erc721'
-
-  -h, --help
-          Print help (see a summary with '-h')
-
-  -j, --threads <THREADS>
-          Number of threads to use. Specifying 0 defaults to the number of
-          logical cores
-          
-          [aliases: --jobs]
 
 Display options:
       --color <COLOR>

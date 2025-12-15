@@ -27,6 +27,16 @@ Options:
           
           [env: CAST_ASYNC=]
 
+  -h, --help
+          Print help (see a summary with '-h')
+
+  -j, --threads <THREADS>
+          Number of threads to use. Specifying 0 defaults to the number of
+          logical cores
+          
+          [aliases: --jobs]
+
+Rpc options:
   -r, --rpc-url <URL>
           The RPC endpoint
           
@@ -75,15 +85,6 @@ Options:
           Specify custom headers for RPC requests
           
           [env: ETH_RPC_HEADERS=]
-
-  -h, --help
-          Print help (see a summary with '-h')
-
-  -j, --threads <THREADS>
-          Number of threads to use. Specifying 0 defaults to the number of
-          logical cores
-          
-          [aliases: --jobs]
 
 Display options:
       --color <COLOR>
