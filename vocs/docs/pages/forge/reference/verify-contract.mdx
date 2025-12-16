@@ -86,6 +86,32 @@ Options:
           
           [env: CHAIN=]
 
+  -h, --help
+          Print help (see a summary with '-h')
+
+  -j, --threads <THREADS>
+          Number of threads to use. Specifying 0 defaults to the number of
+          logical cores
+          
+          [aliases: --jobs]
+
+Linker options:
+      --libraries <LIBRARIES>
+          Set pre-linked libraries
+          
+          [env: DAPP_LIBRARIES=]
+
+Compiler options:
+      --no-auto-detect
+          Do not auto-detect the `solc` version
+
+      --use <SOLC_VERSION>
+          Specify the solc version, or a path to a local solc, to build with.
+          
+          Valid values are in the format `x.y.z`, `solc:x.y.z` or
+          `path/to/solc`.
+
+Rpc options:
   -r, --rpc-url <URL>
           The RPC endpoint, default value is http://localhost:8545
           
@@ -153,31 +179,6 @@ Options:
           Possible values:
           - solidity: Solidity programming language
           - vyper:    Vyper programming language
-
-  -h, --help
-          Print help (see a summary with '-h')
-
-  -j, --threads <THREADS>
-          Number of threads to use. Specifying 0 defaults to the number of
-          logical cores
-          
-          [aliases: --jobs]
-
-Linker options:
-      --libraries <LIBRARIES>
-          Set pre-linked libraries
-          
-          [env: DAPP_LIBRARIES=]
-
-Compiler options:
-      --no-auto-detect
-          Do not auto-detect the `solc` version
-
-      --use <SOLC_VERSION>
-          Specify the solc version, or a path to a local solc, to build with.
-          
-          Valid values are in the format `x.y.z`, `solc:x.y.z` or
-          `path/to/solc`.
 
 Verifier options:
       --verifier <VERIFIER>

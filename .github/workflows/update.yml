@@ -33,7 +33,7 @@ jobs:
           ./scripts/gen_output.sh
 
       - name: Create pull request
-        uses: peter-evans/create-pull-request@84ae59a2cdc2258d6fa0732dd66352dddae2a412 # v7
+        uses: peter-evans/create-pull-request@98357b18bf14b5342f975ff684046ec3b2a07725 # v7
         with:
           token: ${{ secrets.PAT }}
           commit-message: "update command output"
