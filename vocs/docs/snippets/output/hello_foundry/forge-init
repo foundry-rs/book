@@ -3,8 +3,8 @@
 $ forge init hello_foundry
 // [!endregion command]
 // [!region output]
-Initializing /tmp/tmp.gh8T41KXs1/hello_foundry...
-Installing forge-std in /tmp/tmp.gh8T41KXs1/hello_foundry/lib/forge-std (url: https://github.com/foundry-rs/forge-std, tag: None)
+Initializing /tmp/tmp.x31iIkC7On/hello_foundry...
+Installing forge-std in /tmp/tmp.x31iIkC7On/hello_foundry/lib/forge-std (url: https://github.com/foundry-rs/forge-std, tag: None)
     Installed forge-std tag=v1.12.0@7117c90c8cf6c68e5acce4f09a6b24715cea4de6
     Initialized forge project
 // [!endregion output]
