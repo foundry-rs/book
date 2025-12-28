@@ -186,6 +186,7 @@ export const castCliReference: SidebarItem = {
                 { text: "cast wallet address", link: "/cast/reference/wallet/address" },
                 { text: "cast wallet change-password", link: "/cast/reference/wallet/change-password" },
                 { text: "cast wallet decrypt-keystore", link: "/cast/reference/wallet/decrypt-keystore" },
+                { text: "cast wallet derive", link: "/cast/reference/wallet/derive" },
                 { text: "cast wallet import", link: "/cast/reference/wallet/import" },
                 { text: "cast wallet list", link: "/cast/reference/wallet/list" },
                 { text: "cast wallet new", link: "/cast/reference/wallet/new" },
