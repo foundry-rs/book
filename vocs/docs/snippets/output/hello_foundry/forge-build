@@ -6,11 +6,7 @@ $ forge build
 Compiling 23 files with Solc 0.8.33
 Solc 0.8.33 finished in 542.37ms
 Compiler run successful with warnings:
-Warning (2424): Natspec memory-safe-assembly special comment for inline assembly is deprecated and scheduled for removal. Use the memory-safe block annotation instead.
-   --> lib/forge-std/src/StdStorage.sol:297:13:
-    |
-297 |             assembly {
-    |             ^ (Relevant source part starts here and spans across multiple lines).
+// a lot of warnings here, is it okay?
 
 Warning (2424): Natspec memory-safe-assembly special comment for inline assembly is deprecated and scheduled for removal. Use the memory-safe block annotation instead.
    --> lib/forge-std/src/StdStorage.sol:404:9:
