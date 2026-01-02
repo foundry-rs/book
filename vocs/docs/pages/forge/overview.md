@@ -1,4 +1,9 @@
----
+---[⠊] Compiling...
+No files changed, compilation skipped
+Script ran successfully.
+Gas used: 109037
+ 
+If you wish to simulate on-chain transactions pass a RPC URL.forge script script/Counter.s.sol
 description: Forge is a command-line tool for building, testing, and deploying smart contracts with advanced features like fuzzing and gas tracking.
 ---
 
