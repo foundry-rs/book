@@ -122,6 +122,16 @@ Transaction options:
           the access list via an RPC call to `eth_createAccessList`. To retrieve
           only the access list portion, use the `cast access-list` command.
 
+Tempo:
+      --tempo.fee-token <FEE_TOKEN>
+          Fee token address for Tempo transactions.
+          
+          When set, builds a Tempo (type 0x76) transaction that pays gas fees in
+          the specified token.
+          
+          If this is not set, the fee token is chosen according to network
+          rules. See the Tempo docs for more information.
+
 Rpc options:
   -r, --rpc-url <URL>
           The RPC endpoint, default value is http://localhost:8545
