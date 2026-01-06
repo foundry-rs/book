@@ -3,8 +3,8 @@
 $ forge build
 // [!endregion command]
 // [!region output]
-Compiling 23 files with Solc 0.8.31
-Solc 0.8.31 finished in 550.48ms
+Compiling 23 files with Solc 0.8.33
+Solc 0.8.33 finished in 544.49ms
 Compiler run successful with warnings:
 Warning (2424): Natspec memory-safe-assembly special comment for inline assembly is deprecated and scheduled for removal. Use the memory-safe block annotation instead.
    --> lib/forge-std/src/StdStorage.sol:297:13:
