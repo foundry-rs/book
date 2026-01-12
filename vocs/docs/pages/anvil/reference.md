@@ -178,9 +178,6 @@ Returns the blob for a given a KZG commitment versioned hash.
 `anvil_getBlobsByTransactionHash`
 Returns the blobs for a given transaction hash.
 
-`anvil_getBlobSidecarsByBlockId`
-Returns the blob sidecars for a given block id.
-
 `anvil_getBlobsByBlockId`
 Returns blobs for a given block ID. Optionally filtered by a list of versioned hashes.
 
