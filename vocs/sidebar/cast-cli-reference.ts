@@ -178,6 +178,7 @@ export const castCliReference: SidebarItem = {
                 { text: "cast storage-root", link: "/cast/reference/storage-root" },
                 { text: "cast to-check-sum-address", link: "/cast/reference/to-check-sum-address" },
                 { text: "cast to-utf8", link: "/cast/reference/to-utf8" },
+                { text: "cast trace", link: "/cast/reference/trace" },
                 { text: "cast tx-pool", link: "/cast/reference/tx-pool" },
                 { text: "cast tx-pool content", link: "/cast/reference/tx-pool/content" },
                 { text: "cast tx-pool content-from", link: "/cast/reference/tx-pool/content-from" },
