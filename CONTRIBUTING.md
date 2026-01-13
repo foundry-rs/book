@@ -42,60 +42,130 @@ When your pull request is open, other contributors will take a look and may requ
 
 If your pull request is merged, or your issue was addressed, feel free to ping @all-contributors to be added to the README. More information here: https://allcontributors.org/docs/en/bot/overview
 
-### Writing style
+### Writing Style Guide
 
-This section documents a few standards for writing used throughout the book.
+This section documents the standards for writing used throughout the book.
 
-#### Chapters start with a second level heading
+---
 
-We use:
+#### Voice and Tone
+
+- **Use second person ("you")** – Address the reader directly
+  - ✅ "You can run this command..."
+  - ❌ "We can run this command..." / "Let's run this command..."
+- Write in a clear, direct, and professional tone
+- Assume familiarity with Solidity and smart contract concepts
+
+---
+
+#### Page Types
+
+The book uses three primary page structures:
+
+##### Hub Pages
+Introductory pages that orient readers and link to related content.
+
+Structure:
+1. Brief introduction (≤3 paragraphs)
+2. Card grid or link list to child pages
+3. Optional "Next steps" section
+
+##### Guide Pages
+Step-by-step tutorials that walk readers through a task.
+
+Structure:
+1. **Introduction** – What you'll accomplish
+2. **Prerequisites** – Required tools, knowledge, or setup
+3. **Steps** – Numbered instructions (use H4 for each step)
+4. **Verify** – How to confirm success
+5. **Next steps** – Related guides or reference material
+
+##### Reference Pages
+Technical documentation for commands, APIs, or configuration.
+
+Structure:
+1. **Summary** – One-sentence description
+2. **Usage** – Command syntax or API signature
+3. **Options/Parameters** – Table or definition list
+4. **Examples** – Practical usage examples
+
+---
+
+#### Heading Hierarchy
+
+- **H2 (`##`)** – Page title (every page starts with H2, not H1)
+- **H3 (`###`)** – Major sections
+- **H4 (`####`)** – Subsections
 
 ```md
-## Some Page
+## Page Title
+
+### Section
+
+#### Subsection
 ```
 
-We do not use:
+---
 
-```md
-# Some Page
+#### Content Guidelines
+
+- **Introductions** – Keep to ≤3 paragraphs; get to the point quickly
+- **Prefer bullet points** – Use lists over long paragraphs when presenting multiple items
+- **Be concise** – Avoid unnecessary words and filler phrases
+
+---
+
+#### Code Blocks
+
+Always specify the language for syntax highlighting:
+
+````md
+```solidity
+contract Example {}
 ```
+````
 
-This is largely a stylistic choice.
+````md
+```bash
+forge build
+```
+````
 
-#### Always use "we" and not "I"
+---
 
-Pretend like you are explaining Foundry to a friend!
+#### Auto-Generated CLI Output
 
-#### Where possible, use auto-generated CLI output
+Most CLI output is auto-generated to stay in sync with Foundry changes.
 
-As a small change in the Foundry CLIs can have a large impact on the book, most of the CLI output is auto-generated.
+Each output file has three anchors:
 
-Each output file has three anchors you can use:
-
-**Display the command _and_ the output**
-
+**Display the command _and_ the output:**
 ```handlebars
 // [!include ~/snippets/output/abc/xyz:all]
 ```
 
-**Display just the command**
-
+**Display just the command:**
 ```handlebars
 // [!include ~/snippets/output/abc/xyz:command]
 ```
 
-**Display just the output**
-
+**Display just the output:**
 ```handlebars
 // [!include ~/snippets/output/abc/xyz:output]
 ```
 
-You can learn more about auto-generated CLI output in the [output folder](./vocs/docs/snippets/output).
+Learn more in the [output folder](./vocs/docs/snippets/output).
 
-#### Where possible, do NOT in-line Solidity code
+---
 
-In the same vein as the previous style guideline, opt to include source files, or parts of source files, from the [projects folder](./vocs/docs/snippets/projects).
+#### Source Code Snippets
 
-This allows us to quickly iterate and improve on our examples without having to change multiple pages.
+Do **not** inline Solidity code. Instead, include source files from the [projects folder](./vocs/docs/snippets/projects):
 
-Learn more about including snippets and files in the [vocs documentation](https://vocs.dev/docs/guides/code-snippets#physical-file-snippets).
+```md
+// [!include ~/snippets/projects/hello_foundry/src/Counter.sol]
+```
+
+This allows examples to be updated in one place and stay consistent across pages.
+
+Learn more about including snippets in the [Vocs documentation](https://vocs.dev/docs/guides/code-snippets#physical-file-snippets).
