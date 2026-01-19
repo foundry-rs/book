@@ -204,7 +204,7 @@ interface VmSafe {
         // If kind is Call, DelegateCall, StaticCall or CallCode, then the account is the callee.
         // If kind is Create, then the account is the newly created account.
         // If kind is SelfDestruct, then the account is the selfdestruct recipient.
-        // If kind is a Resume, then account represents a account context that has resumed.
+        // If kind is a Resume, then account represents an account context that has resumed.
         AccountAccessKind kind;
         // The account that was accessed.
         // It's either the account created, callee or a selfdestruct recipient for CREATE, CALL or SELFDESTRUCT.
@@ -1889,7 +1889,7 @@ interface VmSafe {
     /// * requires previous binding generation with `forge bind-json`.
     /// * bindings will be retrieved from the path configured in `foundry.toml`.
     /// 2. String representation of the type (i.e. "Foo(Bar bar) Bar(uint256 baz)").
-    /// * Note: the cheatcode will use the canonical type even if the input is malformated
+    /// * Note: the cheatcode will use the canonical type even if the input is malformed
     /// with the wrong order of elements or with extra whitespaces.
     function eip712HashStruct(string calldata typeNameOrDefinition, bytes calldata abiEncodedData)
         external
@@ -1913,7 +1913,7 @@ interface VmSafe {
     /// * requires previous binding generation with `forge bind-json`.
     /// * bindings will be retrieved from the path configured in `foundry.toml`.
     /// 2. String representation of the type (i.e. "Foo(Bar bar) Bar(uint256 baz)").
-    /// * Note: the cheatcode will output the canonical type even if the input is malformated
+    /// * Note: the cheatcode will output the canonical type even if the input is malformed
     /// with the wrong order of elements or with extra whitespaces.
     function eip712HashType(string calldata typeNameOrDefinition) external pure returns (bytes32 typeHash);
 
