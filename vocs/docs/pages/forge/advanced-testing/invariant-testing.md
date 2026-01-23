@@ -168,14 +168,15 @@ When Foundry detects an invariant function returning `int256`, it automatically 
 3. The best (maximum) value and its corresponding sequence are tracked
 4. Sequence shrinking is applied to find the minimal reproducing sequence
 
-The output displays the optimized value and the sequence that produced it:
+The output displays the best value found and the shrunk sequence that produced it:
 
 ```bash
-[PASS] invariant_maxRoundingError() (runs: 256, calls: 128000, optimized value: 1000000000000000000)
-
-Optimized sequence:
-    sender=0x1234... addr=[handler] calldata=deposit(1000000)
-    sender=0x5678... addr=[handler] calldata=swap(500000)
+[PASS]
+        [Best sequence] (original: 392, shrunk: 1)
+                vm.warp(block.timestamp + 123408035);
+                vm.prank(0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496);
+                Handler(0x7FA9...).deposit(1000000);
+ invariant_maxRoundingError() (best: 1000000000000000000, runs: 256, calls: 128000)
 ```
 
 :::tip
