@@ -13,6 +13,7 @@ An output path for generated documentation.
 ##### `title`
 
 - Type: string
+- Default: `""`
 - Environment: `FOUNDRY_DOC_TITLE`
 
 Title for the generated documentation.
@@ -20,18 +21,35 @@ Title for the generated documentation.
 ##### `book`
 
 - Type: string
-- Default: `./book.toml`
+- Default: `book.toml`
 - Environment: `FOUNDRY_DOC_BOOK`
 
 Path to user provided `book.toml`. It will be merged with default settings during doc generation.
 
+##### `homepage`
+
+- Type: string
+- Default: `README.md`
+- Environment: `FOUNDRY_DOC_HOMEPAGE`
+
+Path to user provided welcome markdown. If none is provided, it defaults to `README.md`.
+
 ##### `repository`
 
 - Type: string
+- Default: none
 - Environment: `FOUNDRY_DOC_REPOSITORY`
 
 The git repository URL. Used to provide links to git source files.
 If missing, `forge` will attempt to look up the current origin url and use its value.
+
+##### `path`
+
+- Type: string
+- Default: none
+- Environment: `FOUNDRY_DOC_PATH`
+
+The path to source code (e.g., `tree/main/packages/contracts`). Useful for monorepos or for projects with source code located in specific directories.
 
 ##### `ignore`
 

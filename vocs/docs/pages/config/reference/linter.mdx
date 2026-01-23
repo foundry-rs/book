@@ -2,13 +2,28 @@
 
 Configuration related to the behavior of the linter. These keys are set in the `[lint]` section.
 
+##### `lint_on_build`
+
+- Type: boolean
+- Default: `true`
+- Environment: `FOUNDRY_LINT_ON_BUILD`
+
+Whether to run linting during `forge build`. Set to `false` to disable automatic linting during builds.
+
 ##### `severity`
 
 - Type: array of strings
-- Default: all severities enabled (`high`, `med`, `low`, `info`, `gas`, `codesize`)
+- Default: `["high", "medium", "low"]`
 - Environment: `FOUNDRY_LINT_SEVERITY`
 
-Specifies which lints to run based on severity. If omitted, all severities are checked.
+Specifies which lints to run based on severity. Valid values are:
+
+- `high`
+- `medium` (or `med`)
+- `low`
+- `info`
+- `gas`
+- `code-size` (or `codesize`, `size`)
 
 ##### `exclude_lints`
 
@@ -25,6 +40,14 @@ List of lint IDs to exclude from checking (e.g., `"mixed-case-function"`).
 - Environment: `FOUNDRY_LINT_IGNORE`
 
 List of files or patterns to ignore when running the linter. This is a comma-separated list of glob patterns.
+
+##### `mixed_case_exceptions`
+
+- Type: array of strings
+- Default: `["ERC", "URI"]`
+- Environment: `FOUNDRY_LINT_MIXED_CASE_EXCEPTIONS`
+
+Configurable patterns that should be excluded when performing `mixedCase` lint checks. Defaults to `["ERC", "URI"]` to allow common names like `rescueERC20`, `ERC721TokenReceiver`, or `tokenURI`.
 
 ## Inline Configuration
 
@@ -72,4 +95,4 @@ It is however recommended to keep linting enabled during development to catch is
 We are continuously improving the linter and you may be missing out on valuable feedback by disabling it.
 
 It is better to configure your `foundry.toml` to only run specific severities by setting the [`severity`](#severity) key, exclude
-certain lints with [`exclude_lints`](#exclude-lints), or ignore certain files with [`ignore`](#ignore).
+certain lints with [`exclude_lints`](#exclude_lints), or ignore certain files with [`ignore`](#ignore).
