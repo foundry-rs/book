@@ -49,6 +49,7 @@ test_failures_file = "cache/test-failures"
 
 # Remappings to use for this repo
 # Format: ["@openzeppelin/=lib/openzeppelin-contracts/"]
+# Default: []
 remappings = []
 
 # Whether to autodetect remappings by scanning the libs folders
@@ -57,16 +58,20 @@ auto_detect_remappings = true
 
 # Library addresses to link
 # Format: ["src/MyLib.sol:MyLib:0x..."]
+# Default: []
 libraries = []
 
 # Additional paths passed to solc --allow-paths
+# Default: []
 allow_paths = []
 
 # Additional paths passed to solc --include-path
+# Default: []
 include_paths = []
 
 # Glob patterns for file paths to skip when building and executing contracts
 # Example: ["test/invariant/**/*", "script/**/*"]
+# Default: []
 skip = []
 
 # =============================================================================
@@ -96,6 +101,7 @@ sparse_mode = false
 build_info = false
 
 # The path to the build-info directory that contains the build info json files
+# Default: None
 # build_info_path = "build-info"
 
 # =============================================================================
@@ -116,6 +122,7 @@ gas_snapshot_emit = true
 
 # The Solc instance to use. Takes precedence over auto_detect_solc
 # Can be a version string like "0.8.20" or path to solc binary
+# Default: None
 # solc = "0.8.20"
 
 # Whether to autodetect the solc compiler version to use
@@ -136,6 +143,7 @@ offline = false
 evm_version = "osaka"
 
 # Whether to activate optimizer
+# Default: None
 # optimizer = true
 
 # The number of runs specifies roughly how often each opcode will be executed
@@ -143,24 +151,25 @@ evm_version = "osaka"
 # optimizer_runs = 1 produces short but expensive code
 # Higher values produce longer but more gas efficient code
 # Maximum value: 2^32-1
+# Default: None
 # optimizer_runs = 200
 
 # Switch optimizer components on or off in detail
-# [profile.default.optimizer_details]
-# peephole = true
-# inliner = true
-# jumpdestRemover = true
-# orderLiterals = true
-# deduplicate = true
-# cse = true
-# constantOptimizer = true
-# yul = true
+[profile.default.optimizer_details]
+peephole = true
+inliner = true
+jumpdestRemover = true
+orderLiterals = true
+deduplicate = true
+cse = true
+constantOptimizer = true
+yul = true
 
 # Model checker settings for formal verification
-# [profile.default.model_checker]
-# contracts = {}
-# engine = "chc"
-# timeout = 10000
+[profile.default.model_checker]
+contracts = {}
+engine = "chc"
+timeout = 10000
 
 # If set to true, changes compilation pipeline to go through Yul IR
 # Default: false
@@ -187,16 +196,19 @@ cbor_metadata = true
 
 # How to treat revert (and require) reason strings
 # Options: "default", "strip", "debug", "verboseDebug"
+# Default: None
 # revert_strings = "default"
 
 # Additional output selection for all contracts
 # Examples: "ir", "irOptimized", "devdoc", "userdoc", "storageLayout", "ewasm"
 # See Solc Compiler API for full list
+# Default: []
 extra_output = []
 
 # Additional output files to emit for every contract
 # Difference from extra_output: emits as separate files instead of in artifact
 # Example: ["metadata"] creates metadata.json for each contract
+# Default: []
 extra_output_files = []
 
 # Whether to print the names of the compiled contracts
@@ -208,6 +220,7 @@ names = false
 sizes = false
 
 # Optional additional CLI arguments to pass to solc binary
+# Default: []
 extra_args = []
 
 # =============================================================================
@@ -215,10 +228,11 @@ extra_args = []
 # =============================================================================
 
 # List of solidity error codes to always silence in compiler output
-# Default: [1878, 5574, 5660, 2394, 5733, 3199] (common warnings)
+# Default: [1878, 5574, 5660, 2394, 5733, 3199]
 ignored_error_codes = [1878, 5574, 5660, 2394, 5733, 3199]
 
 # List of file paths to ignore warnings from
+# Default: []
 ignored_warnings_from = []
 
 # Diagnostic level (minimum) at which the process should finish with non-zero exit
@@ -234,39 +248,47 @@ deny = "never"
 # =============================================================================
 
 # The address which will be executing all tests
-# Default: 0x1804c8AB1F12E6bbf3894d4083f33e07309d1f38
+# Default: "0x1804c8AB1F12E6bbf3894d4083f33e07309d1f38"
 sender = "0x1804c8AB1F12E6bbf3894d4083f33e07309d1f38"
 
 # The tx.origin value during EVM execution
-# Default: 0x1804c8AB1F12E6bbf3894d4083f33e07309d1f38
+# Default: "0x1804c8AB1F12E6bbf3894d4083f33e07309d1f38"
 tx_origin = "0x1804c8AB1F12E6bbf3894d4083f33e07309d1f38"
 
 # The initial balance of each deployed test contract
-# Default: 0xffffffffffffffffffffffff (2^96 - 1)
+# Default: "0xffffffffffffffffffffffff"
 initial_balance = "0xffffffffffffffffffffffff"
 
 # Only run test functions matching the specified regex pattern
+# Default: None
 # match_test = "test_.*"
 
 # Only run test functions that do not match the specified regex pattern
+# Default: None
 # no_match_test = "testFail.*"
 
 # Only run tests in contracts matching the specified regex pattern
+# Default: None
 # match_contract = ".*Test"
 
 # Only run tests in contracts that do not match the specified regex pattern
+# Default: None
 # no_match_contract = ".*Invariant.*"
 
 # Only run tests in source files matching the specified glob pattern
+# Default: None
 # match_path = "test/unit/*"
 
 # Only run tests in source files that do not match the specified glob pattern
+# Default: None
 # no_match_path = "test/integration/*"
 
 # Only show coverage for files that do not match the specified regex pattern
+# Default: None
 # no_match_coverage = "test/.*"
 
 # Max concurrent threads to use
+# Default: None
 # threads = 4
 
 # Whether to show test execution progress
@@ -306,21 +328,25 @@ legacy_assertions = false
 block_number = 1
 
 # Pins the block number for the state fork
+# Default: None
 # fork_block_number = 12345678
 
 # The chain name or EIP-155 chain ID
+# Default: None
 # chain = 1
 
 # Block gas limit
-# Default: ~1B (1 << 30)
+# Default: 1073741824
 gas_limit = 1073741824
 
 # EIP-170: Contract code size limit in bytes
 # Useful to increase for tests
+# Default: None
 # code_size_limit = 24576
 
 # tx.gasprice value during EVM execution
 # If not set, uses remote client's gas price in fork mode
+# Default: None
 # gas_price = 0
 
 # The base fee in a block
@@ -328,7 +354,7 @@ gas_limit = 1073741824
 block_base_fee_per_gas = 0
 
 # The block.coinbase value during EVM execution
-# Default: 0x0000000000000000000000000000000000000000
+# Default: "0x0000000000000000000000000000000000000000"
 block_coinbase = "0x0000000000000000000000000000000000000000"
 
 # The block.timestamp value during EVM execution
@@ -340,20 +366,21 @@ block_timestamp = 1
 block_difficulty = 0
 
 # Before merge: block.max_hash, after merge: block.prevrandao
-# Default: 0x0000000000000000000000000000000000000000000000000000000000000000
+# Default: "0x0000000000000000000000000000000000000000000000000000000000000000"
 block_prevrandao = "0x0000000000000000000000000000000000000000000000000000000000000000"
 
 # The block.gaslimit value during EVM execution
+# Default: None
 # block_gas_limit = 30000000
 
 # The memory limit per EVM execution in bytes
 # If exceeded, a MemoryLimitOOG result is thrown
-# Default: 128MiB (134217728 bytes, 1 << 27)
+# Default: 134217728
 memory_limit = 134217728
 
 # Whether to enable call isolation
 # Useful for more correct gas accounting and EVM behavior
-# Default: false (unless isolate-by-default feature is enabled)
+# Default: false
 isolate = false
 
 # Whether to disable the block gas limit checks
@@ -369,6 +396,7 @@ enable_tx_gas_limit = false
 # =============================================================================
 
 # URL of the RPC server that should be used for any RPC calls
+# Default: None
 # eth_rpc_url = "https://eth-mainnet.alchemyapi.io/v2/YOUR_KEY"
 
 # Whether to accept invalid certificates for the RPC server
@@ -381,42 +409,48 @@ eth_rpc_accept_invalid_certs = false
 eth_rpc_no_proxy = false
 
 # JWT secret for RPC authentication
+# Default: None
 # eth_rpc_jwt = "your-jwt-secret"
 
 # Timeout in seconds for RPC calls
+# Default: None
 # eth_rpc_timeout = 30
 
 # Headers to include in RPC calls
 # Format: ["x-custom-header:value", "x-another-header:another-value"]
+# Default: None
 # eth_rpc_headers = []
 
 # Etherscan API key, or alias for an EtherscanConfig in etherscan table
+# Default: None
 # etherscan_api_key = "YOUR_API_KEY"
 
 # RPC storage caching settings
 [profile.default.rpc_storage_caching]
 # Which chains to cache (e.g., "all", "mainnet,optimism", or chain IDs)
+# Default: "all"
 chains = "all"
 # Which endpoints to cache ("all", "remote", or specific URLs)
+# Default: "remote"
 endpoints = "remote"
 
 # Disables storage caching entirely (overrides rpc_storage_caching)
 # Default: false
-# no_storage_caching = false
+no_storage_caching = false
 
 # Disables rate limiting entirely (overrides compute_units_per_second)
 # Default: false
-# no_rpc_rate_limit = false
+no_rpc_rate_limit = false
 
 # Multiple RPC endpoints and their aliases
-# [profile.default.rpc_endpoints]
-# mainnet = "https://eth-mainnet.alchemyapi.io/v2/${ALCHEMY_KEY}"
-# optimism = "https://opt-mainnet.g.alchemy.com/v2/${ALCHEMY_KEY}"
+[profile.default.rpc_endpoints]
+mainnet = "https://eth-mainnet.alchemyapi.io/v2/${ALCHEMY_KEY}"
+optimism = "https://opt-mainnet.g.alchemy.com/v2/${ALCHEMY_KEY}"
 
 # Multiple Etherscan API configs and their aliases
-# [profile.default.etherscan]
-# mainnet = { key = "${ETHERSCAN_API_KEY}" }
-# optimism = { key = "${OPTIMISM_ETHERSCAN_KEY}", chain = "optimism" }
+[profile.default.etherscan]
+mainnet = { key = "${ETHERSCAN_API_KEY}" }
+optimism = { key = "${OPTIMISM_ETHERSCAN_KEY}", chain = "optimism" }
 
 # =============================================================================
 # GAS REPORTS
@@ -428,6 +462,7 @@ endpoints = "remote"
 gas_reports = ["*"]
 
 # List of contracts to ignore for gas reports
+# Default: []
 gas_reports_ignore = []
 
 # Whether to include gas reports for tests
@@ -439,11 +474,11 @@ gas_reports_include_tests = false
 # =============================================================================
 
 # CREATE2 salt to use for library deployment in scripts
-# Default: 0x0000000000000000000000000000000000000000000000000000000000000000
+# Default: "0x0000000000000000000000000000000000000000000000000000000000000000"
 create2_library_salt = "0x0000000000000000000000000000000000000000000000000000000000000000"
 
 # The CREATE2 deployer address to use
-# Default: 0x4e59b44847b379578588920ca78fbf26c0b4956c
+# Default: "0x4e59b44847b379578588920ca78fbf26c0b4956c"
 create2_deployer = "0x4e59b44847b379578588920ca78fbf26c0b4956c"
 
 # =============================================================================
@@ -453,18 +488,17 @@ create2_deployer = "0x4e59b44847b379578588920ca78fbf26c0b4956c"
 # Configures permissions of cheat codes that touch the file system
 # Specifies what operations can be executed (read, write)
 [profile.default.fs_permissions]
-# Default: read access to "out" directory
-# read = ["out"]
-# read-write = ["cache", "broadcast"]
+read = ["out"]
+read-write = ["cache", "broadcast"]
 
 # =============================================================================
 # ADDRESS LABELS
 # =============================================================================
 
 # Address labels for better trace output
-# [profile.default.labels]
-# "0x1234..." = "MyContract"
-# "0xabcd..." = "Treasury"
+[profile.default.labels]
+"0x1234..." = "MyContract"
+"0xabcd..." = "Treasury"
 
 # =============================================================================
 # CHEATCODE CONFIGURATION
@@ -495,8 +529,9 @@ script_execution_protection = true
 # VYPER CONFIGURATION
 # =============================================================================
 
-# [profile.default.vyper]
-# path = "vyper"  # Path to vyper binary
+[profile.default.vyper]
+# Default: "vyper"
+path = "vyper"  # Path to vyper binary
 
 # =============================================================================
 # FUZZ TESTING CONFIGURATION
@@ -516,7 +551,8 @@ fail_on_revert = true
 # Default: 65536
 max_test_rejects = 65536
 
-# Optional seed for the fuzzing RNG algorithm
+# Seed for the fuzzing RNG algorithm
+# Default: None
 # seed = "0x..."
 
 # Number of runs to execute and include in the gas report
@@ -524,14 +560,15 @@ max_test_rejects = 65536
 gas_report_samples = 256
 
 # Path where fuzz failures are recorded and replayed
-# Default: "cache/fuzz"
-failure_persist_dir = "cache/fuzz"
+# Default: None
+# failure_persist_dir = "cache/fuzz"
 
 # Show console.log in fuzz test
 # Default: false
 show_logs = false
 
-# Optional timeout (in seconds) for each property test
+# Timeout (in seconds) for each property test
+# Default: None
 # timeout = 60
 
 # --- Fuzz Dictionary Configuration ---
@@ -550,23 +587,24 @@ include_push_bytes = true
 
 # Maximum addresses to record in dictionary
 # Once exceeded, starts evicting random entries to prevent memory blowup
-# Default: ~15.7M (300MB / 20 bytes)
+# Default: 15728640
 max_fuzz_dictionary_addresses = 15728640
 
 # Maximum values to record in dictionary
 # Once exceeded, starts evicting random entries
-# Default: ~9.8M (300MB / 32 bytes)
+# Default: 9830400
 max_fuzz_dictionary_values = 9830400
 
 # Maximum literal values to seed from the AST
 # Independent from max addresses and values
-# Default: ~6.5M (200MB / 32 bytes)
+# Default: 6553600
 max_fuzz_dictionary_literals = 6553600
 
 # --- Fuzz Corpus Configuration ---
 
 # Path to corpus directory, enables coverage-guided fuzzing mode
 # If not set, sequences producing new coverage are not persisted and mutated
+# Default: None
 # corpus_dir = "corpus/fuzz"
 
 # Whether corpus uses gzip file compression and decompression
@@ -621,14 +659,15 @@ max_assume_rejects = 65536
 gas_report_samples = 256
 
 # Path where invariant failures are recorded and replayed
-# Default: "cache/invariant"
-failure_persist_dir = "cache/invariant"
+# Default: None
+# failure_persist_dir = "cache/invariant"
 
 # Whether to collect and display fuzzed selectors metrics
 # Default: true
 show_metrics = true
 
-# Optional timeout (in seconds) for each invariant test
+# Timeout (in seconds) for each invariant test
+# Default: None
 # timeout = 300
 
 # Display counterexample as solidity calls
@@ -636,9 +675,11 @@ show_metrics = true
 show_solidity = false
 
 # Maximum time (in seconds) between generated transactions
+# Default: None
 # max_time_delay = 86400
 
 # Maximum number of blocks elapsed between generated transactions
+# Default: None
 # max_block_delay = 1000
 
 # Number of calls to execute between invariant assertions
@@ -651,7 +692,7 @@ check_interval = 1
 # --- Invariant Dictionary Configuration ---
 
 # The weight of the dictionary (percentage 0-100)
-# Default: 80 (higher than fuzz default)
+# Default: 80
 dictionary_weight = 80
 
 # Whether to include values from storage
@@ -663,29 +704,37 @@ include_storage = true
 include_push_bytes = true
 
 # Maximum addresses to record in dictionary
+# Default: 15728640
 max_fuzz_dictionary_addresses = 15728640
 
 # Maximum values to record in dictionary
+# Default: 9830400
 max_fuzz_dictionary_values = 9830400
 
 # Maximum literal values to seed from the AST
+# Default: 6553600
 max_fuzz_dictionary_literals = 6553600
 
 # --- Invariant Corpus Configuration ---
 
 # Path to corpus directory, enables coverage-guided fuzzing mode
+# Default: None
 # corpus_dir = "corpus/invariant"
 
 # Whether corpus uses gzip compression
+# Default: true
 corpus_gzip = true
 
 # Minimum mutations before entry can be flushed
+# Default: 5
 corpus_min_mutations = 5
 
 # Minimum corpus entries to keep in memory
+# Default: 0
 corpus_min_size = 0
 
 # Whether to collect and display edge coverage metrics
+# Default: false
 show_edge_coverage = false
 
 # =============================================================================
@@ -761,6 +810,7 @@ wrap_comments = false
 docs_style = "preserve"
 
 # Globs to ignore
+# Default: []
 ignore = []
 
 # Add new line at start and end of contract declarations
@@ -801,6 +851,7 @@ single_line_imports = false
 out = "docs"
 
 # The documentation title
+# Default: ""
 title = ""
 
 # Path to user provided book.toml
@@ -809,16 +860,20 @@ book = "book.toml"
 
 # Path to user provided welcome markdown
 # If none provided, defaults to README.md
+# Default: "README.md"
 homepage = "README.md"
 
 # The repository URL
-# repository = "https://github.com/user/repo"
+# Default: ""
+repository = "https://github.com/user/repo"
 
 # The path to source code (e.g., "tree/main/packages/contracts")
 # Useful for monorepos or projects with source code in specific directories
-# path = "tree/main/src"
+# Default: ""
+path = "tree/main/src"
 
 # Globs to ignore
+# Default: []
 ignore = []
 
 # =============================================================================
@@ -829,13 +884,15 @@ ignore = []
 # Specifies which lints to run based on severity
 # If uninformed, all severities are checked
 # Options: "high", "medium", "low", "info", "gas", "code-size"
-# Default: ["high", "medium", "low"]
+# Default: ["high", "medium", "low", "info", "gas", "code-size"]
 severity = ["high", "medium", "low"]
 
 # Deny specific lints based on their ID (e.g., "mixed-case-function")
+# Default: []
 exclude_lints = []
 
 # Globs to ignore
+# Default: []
 ignore = []
 
 # Whether to run linting during forge build
@@ -843,6 +900,6 @@ ignore = []
 lint_on_build = true
 
 # Patterns excluded from mixedCase lint checks
-# Default: ["ERC", "URI"] to allow names like rescueERC20, ERC721TokenReceiver, tokenURI
+# Default: ["ERC", "URI"]
 mixed_case_exceptions = ["ERC", "URI"]
 ```
