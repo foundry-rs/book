@@ -18,6 +18,32 @@ You can select the profile to use by setting the `FOUNDRY_PROFILE` environment v
 
 You can create a `foundry.toml` file in `~/.foundry` folder to configure Foundry globally.
 
+### Configuration file discovery
+
+Foundry searches for a `foundry.toml` starting at the current working directory. If not found, it checks parent directories until the file is found or the root is reached. The global `~/.foundry/foundry.toml` is also checked.
+
+You can override this behavior by setting the `FOUNDRY_CONFIG` environment variable to an absolute or relative path to a config file:
+
+```bash
+FOUNDRY_CONFIG=./custom-config.toml forge build
+```
+
+If the path is absolute, it is used directly. If relative, the search behavior described above applies.
+
+### Configuration precedence
+
+When resolving configuration values, Foundry considers the following sources in ascending priority order (later sources override earlier ones):
+
+1. Default values
+2. `foundry.toml` (or the file specified by `FOUNDRY_CONFIG`)
+3. Environment variables prefixed with `FOUNDRY_` or `DAPP_`
+
+To view the fully resolved configuration, run:
+
+```bash
+forge config
+```
+
 ### Environment variables
 
 Configuration can be overridden with `FOUNDRY_` and `DAPP_` prefixed environment variables.
