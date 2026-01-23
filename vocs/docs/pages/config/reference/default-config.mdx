@@ -155,16 +155,42 @@ create2_library_salt = "0x000000000000000000000000000000000000000000000000000000
 line_length = 120
 # Number of spaces per indentation level
 tab_width = 4
+# Indentation style: "space" or "tab"
+style = "space"
 # Print spaces between brackets
 bracket_spacing = false
-# Style of uint/int256 types
+# Style of uint/int256 types: "preserve", "long", "short"
 int_types = "long"
-# If function parameters are multiline then always put the function attributes on separate lines
-func_attrs_with_params_multiline = true
-# Style of quotation marks
+# Style of multiline function headers: "params_always", "params_first_multi", "attributes_first", "all", "all_params"
+multiline_func_header = "attributes_first"
+# Style of quotation marks: "preserve", "double", "single"
 quote_style = "double"
-# Style of underscores in number literals
+# Style of underscores in number literals: "preserve", "remove", "thousands"
 number_underscore = "preserve"
+# Style of underscores in hex literals: "preserve", "remove", "bytes"
+hex_underscore = "remove"
+# Style of single-line blocks in statements: "preserve", "single", "multi"
+single_line_statement_blocks = "preserve"
+# Print space in override attribute
+override_spacing = false
+# Wrap comments when line_length is reached
+wrap_comments = false
+# Style of doc comments: "preserve", "line", "block"
+docs_style = "preserve"
+# Globs to ignore when formatting
+ignore = []
+# Add new line at start and end of contract declarations
+contract_new_lines = false
+# Sort import statements alphabetically in groups
+sort_imports = false
+# Import style: "prefer_plain", "prefer_glob", "preserve"
+namespace_import_style = "prefer_plain"
+# Suppress spaces around the power operator (**)
+pow_no_space = false
+# List breaking style: "none", "calls", "events", "errors", "events_errors", "all"
+prefer_compact = "all"
+# Keep single imports on one line even if they exceed line_length
+single_line_imports = false
 
 [fuzz]
 # The number of fuzz runs for fuzz tests
