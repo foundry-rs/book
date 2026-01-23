@@ -426,6 +426,70 @@ Name of the file to record fuzz failures.
 
 The flag indicates whether to display console logs in fuzz tests or not. Note that in order to enable displaying console logs, you'll need to set `show_logs = true` and then use `forge test -vv` or set `verbosity >= 2`.
 
+##### `max_fuzz_dictionary_addresses`
+
+- Type: integer
+- Default: 15728640
+- Environment: `FOUNDRY_FUZZ_MAX_FUZZ_DICTIONARY_ADDRESSES`
+
+Maximum addresses to record for the fuzz dictionary. Once this limit is exceeded, the fuzzer starts evicting random entries.
+
+##### `max_fuzz_dictionary_values`
+
+- Type: integer
+- Default: 9830400
+- Environment: `FOUNDRY_FUZZ_MAX_FUZZ_DICTIONARY_VALUES`
+
+Maximum values to record for the fuzz dictionary. Once this limit is exceeded, the fuzzer starts evicting random entries.
+
+##### `max_fuzz_dictionary_literals`
+
+- Type: integer
+- Default: 6553600
+- Environment: `FOUNDRY_FUZZ_MAX_FUZZ_DICTIONARY_LITERALS`
+
+Maximum literal values to seed from the AST for the fuzz dictionary.
+
+##### `corpus_dir`
+
+- Type: string (path)
+- Default: none
+- Environment: `FOUNDRY_FUZZ_CORPUS_DIR`
+
+Path to corpus directory. When set, enables coverage-guided fuzzing mode.
+
+##### `corpus_gzip`
+
+- Type: boolean
+- Default: true
+- Environment: `FOUNDRY_FUZZ_CORPUS_GZIP`
+
+Whether corpus files use gzip compression (relevant only if `corpus_dir` is configured).
+
+##### `corpus_min_mutations`
+
+- Type: integer
+- Default: 5
+- Environment: `FOUNDRY_FUZZ_CORPUS_MIN_MUTATIONS`
+
+Number of mutations until entry marked as eligible to be flushed from in-memory corpus.
+
+##### `corpus_min_size`
+
+- Type: integer
+- Default: 0
+- Environment: `FOUNDRY_FUZZ_CORPUS_MIN_SIZE`
+
+Minimum corpus size that won't be evicted from memory.
+
+##### `show_edge_coverage`
+
+- Type: boolean
+- Default: false
+- Environment: `FOUNDRY_FUZZ_SHOW_EDGE_COVERAGE`
+
+Whether to collect and display edge coverage metrics (automatically enabled if `corpus_dir` is configured).
+
 ### Invariant
 
 Configuration values for `[invariant]` section.
@@ -588,7 +652,7 @@ Flag indicating whether to collect and display edge coverage metrics (automatica
 ##### `show_metrics`
 
 - Type: boolean
-- Default: false
+- Default: true
 - Environment: `FOUNDRY_INVARIANT_SHOW_METRICS`
 
 The flag indicating whether to collect and display fuzzed selectors metrics in test report.
@@ -600,3 +664,31 @@ The flag indicating whether to collect and display fuzzed selectors metrics in t
 - Environment: `FOUNDRY_INVARIANT_SHOW_SOLIDITY`
 
 Flag indicating whether to display counterexamples as solidity calls.
+
+##### `max_time_delay`
+
+- Type: integer
+- Default: none
+- Environment: `FOUNDRY_INVARIANT_MAX_TIME_DELAY`
+
+Maximum time (in seconds) between generated transactions. If not set, there is no limit.
+
+##### `max_block_delay`
+
+- Type: integer
+- Default: none
+- Environment: `FOUNDRY_INVARIANT_MAX_BLOCK_DELAY`
+
+Maximum number of blocks elapsed between generated transactions. If not set, there is no limit.
+
+##### `check_interval`
+
+- Type: integer
+- Default: 1
+- Environment: `FOUNDRY_INVARIANT_CHECK_INTERVAL`
+
+Number of calls to execute between invariant assertions.
+
+- `0`: Only assert on the last call of each run (fastest, but may miss exact breaking call)
+- `1` (default): Assert after every call (most precise)
+- `N`: Assert every N calls AND always on the last call
