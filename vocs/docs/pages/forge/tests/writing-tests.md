@@ -52,9 +52,9 @@ In this way you know exactly what reverted and with which error:
 
 <br></br>
 
-Tests are deployed to `0xb4c79daB8f259C7Aee6E5b2Aa729821864227e84`. If you deploy a contract within your test, then
-`0xb4c...7e84` will be its deployer. If the contract deployed within a test gives special permissions to its deployer,
-such as `Ownable.sol`'s `onlyOwner` modifier, then the test contract `0xb4c...7e84` will have those permissions.
+Tests are deployed to `0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496`. If you deploy a contract within your test, then
+`0x7FA...1496` will be its deployer. If the contract deployed within a test gives special permissions to its deployer,
+such as `Ownable.sol`'s `onlyOwner` modifier, then the test contract `0x7FA...1496` will have those permissions.
 
 > ⚠️ **Note**
 >
