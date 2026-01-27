@@ -179,7 +179,7 @@ function process() external {
 }
 ```
 
-#### 7. Use `via-ir` Compilation
+#### 7. Use `via-ir` Compilation (Last Resort)
 
 Enable the IR-based code generator in your `foundry.toml`:
 
@@ -188,12 +188,25 @@ Enable the IR-based code generator in your `foundry.toml`:
 via_ir = true
 ```
 
-The IR pipeline uses a different compilation path that can handle more complex stack layouts. However, this comes with trade-offs:
-- Longer compilation times
-- Different (often better) gas optimization
-- May mask issues that would appear with the legacy pipeline
+The IR pipeline uses a different compilation path that can handle more complex stack layouts. However, **this comes with significant trade-offs** and should be considered a last resort:
 
-We recommend fixing the underlying issue rather than relying solely on `via-ir`.
+**Compilation:**
+- Significantly longer compilation times
+- Different gas optimization (sometimes better, sometimes worse)
+
+**Coverage issues:**
+- `forge coverage` may break entirely with `via-ir` due to stack too deep errors in the coverage instrumentation itself ([#3357](https://github.com/foundry-rs/foundry/issues/3357))
+- Using `--ir-minimum` as a workaround often produces **inaccurate coverage reports** — internal functions and library code may be inlined, causing them to appear uncovered ([#9745](https://github.com/foundry-rs/foundry/issues/9745))
+
+**Cheatcode compatibility:**
+- `block.timestamp` is treated as constant by the IR optimizer, causing `vm.warp()` to not work as expected. Use `vm.getBlockTimestamp()` instead ([#11598](https://github.com/foundry-rs/foundry/issues/11598))
+- Similar issues affect `block.number` with `vm.roll()`
+
+**Debugging:**
+- Stack traces and debugging become harder due to IR optimizations
+- Source mapping may be less accurate
+
+We strongly recommend fixing the underlying issue using the techniques above rather than relying on `via-ir`.
 
 ### Best Practices
 
