@@ -1,0 +1,203 @@
+---
+description: Understanding and resolving the "Stack too deep" compilation error in Solidity.
+---
+
+## Stack Too Deep
+
+The "Stack too deep" error is one of the most common compilation errors Solidity developers encounter. This guide explains why it occurs and provides practical techniques to resolve it.
+
+### Why This Error Occurs
+
+The Ethereum Virtual Machine (EVM) is a stack-based machine with a limited stack depth. Specifically, the EVM can only access the top 16 slots of the stack at any given time. When a function has too many local variables, function parameters, or return values, the compiler cannot generate valid bytecode because it would need to access stack slots beyond this limit.
+
+This typically happens when:
+
+- A function declares too many local variables
+- A function has too many parameters
+- A function has too many return values
+- Complex expressions create many intermediate values on the stack
+
+### Solutions
+
+#### 1. Use Structs to Group Variables
+
+The most effective technique is to group related variables into structs. This reduces the number of stack slots needed because the struct is passed as a single reference.
+
+```solidity
+// ❌ Before: Too many parameters
+function processOrder(
+    address buyer,
+    address seller,
+    address token,
+    uint256 amount,
+    uint256 price,
+    uint256 deadline,
+    bytes32 orderHash,
+    uint8 v,
+    bytes32 r,
+    bytes32 s
+) external {
+    // Stack too deep!
+}
+
+// ✅ After: Group into structs
+struct Order {
+    address buyer;
+    address seller;
+    address token;
+    uint256 amount;
+    uint256 price;
+    uint256 deadline;
+    bytes32 orderHash;
+}
+
+struct Signature {
+    uint8 v;
+    bytes32 r;
+    bytes32 s;
+}
+
+function processOrder(Order calldata order, Signature calldata sig) external {
+    // Works fine
+}
+```
+
+#### 2. Use Memory or Storage Structs for Local Variables
+
+When you have many local variables, group them into a memory struct:
+
+```solidity
+// ❌ Before: Too many local variables
+function calculate() external view returns (uint256) {
+    uint256 a = getValue1();
+    uint256 b = getValue2();
+    uint256 c = getValue3();
+    uint256 d = getValue4();
+    uint256 e = getValue5();
+    uint256 f = getValue6();
+    // ... more variables
+    return a + b + c + d + e + f;
+}
+
+// ✅ After: Group into a memory struct
+struct CalcVars {
+    uint256 a;
+    uint256 b;
+    uint256 c;
+    uint256 d;
+    uint256 e;
+    uint256 f;
+}
+
+function calculate() external view returns (uint256) {
+    CalcVars memory vars;
+    vars.a = getValue1();
+    vars.b = getValue2();
+    vars.c = getValue3();
+    vars.d = getValue4();
+    vars.e = getValue5();
+    vars.f = getValue6();
+    return vars.a + vars.b + vars.c + vars.d + vars.e + vars.f;
+}
+```
+
+#### 3. Split Into Multiple Functions
+
+Break complex functions into smaller helper functions:
+
+```solidity
+// ❌ Before: One large function
+function complexOperation(/* many params */) external {
+    // lots of logic with many variables
+}
+
+// ✅ After: Split into focused functions
+function complexOperation(/* many params */) external {
+    _validateInputs(/* subset of params */);
+    uint256 intermediate = _calculateIntermediate(/* subset of params */);
+    _executeOperation(intermediate, /* remaining params */);
+}
+```
+
+#### 4. Use Internal Functions to Isolate Scope
+
+Each function call creates its own stack frame. Wrap parts of your logic in internal functions:
+
+```solidity
+function process() external {
+    uint256 result1 = _stepOne();
+    uint256 result2 = _stepTwo(result1);
+    _stepThree(result2);
+}
+```
+
+#### 5. Reduce Return Values
+
+Instead of returning many values, return a struct:
+
+```solidity
+// ❌ Before: Too many return values
+function getData() external view returns (
+    uint256 a, uint256 b, uint256 c, uint256 d, uint256 e
+) {
+    // Stack too deep!
+}
+
+// ✅ After: Return a struct
+struct Data {
+    uint256 a;
+    uint256 b;
+    uint256 c;
+    uint256 d;
+    uint256 e;
+}
+
+function getData() external view returns (Data memory) {
+    return Data({a: 1, b: 2, c: 3, d: 4, e: 5});
+}
+```
+
+#### 6. Use Block Scoping
+
+Solidity supports block scoping with curly braces. Variables declared in a block are freed when the block ends:
+
+```solidity
+function process() external {
+    uint256 result;
+    {
+        uint256 temp1 = getValue1();
+        uint256 temp2 = getValue2();
+        result = temp1 + temp2;
+        // temp1 and temp2 go out of scope here
+    }
+    {
+        uint256 temp3 = getValue3();
+        uint256 temp4 = getValue4();
+        result += temp3 * temp4;
+        // temp3 and temp4 go out of scope here
+    }
+}
+```
+
+#### 7. Use `via-ir` Compilation
+
+Enable the IR-based code generator in your `foundry.toml`:
+
+```toml
+[profile.default]
+via_ir = true
+```
+
+The IR pipeline uses a different compilation path that can handle more complex stack layouts. However, this comes with trade-offs:
+- Longer compilation times
+- Different (often better) gas optimization
+- May mask issues that would appear with the legacy pipeline
+
+We recommend fixing the underlying issue rather than relying solely on `via-ir`.
+
+### Best Practices
+
+1. **Design with stack limits in mind**: When designing function signatures, prefer structs over many individual parameters
+2. **Group related data**: If you find yourself passing the same variables together, they probably belong in a struct
+3. **Keep functions focused**: Functions that do one thing well rarely hit stack limits
+4. **Review during code review**: Stack too deep errors often indicate overly complex functions that should be refactored anyway

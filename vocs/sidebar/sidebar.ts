@@ -86,6 +86,10 @@ export const sidebar: Sidebar = [
             link: "/guides/best-practices/key-management",
           },
           { text: "Commenting", link: "/guides/best-practices/commenting" },
+          {
+            text: "Stack Too Deep",
+            link: "/guides/best-practices/stack-too-deep",
+          },
         ],
       },
     ],
