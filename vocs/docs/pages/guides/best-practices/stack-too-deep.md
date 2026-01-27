@@ -6,6 +6,24 @@ description: Understanding and resolving the "Stack too deep" compilation error 
 
 The "Stack too deep" error is one of the most common compilation errors Solidity developers encounter. This guide explains why it occurs and provides practical techniques to resolve it.
 
+### The Error
+
+You may encounter this error when running `forge build`, `forge test`, or especially `forge coverage`:
+
+```text
+Warning: optimizer settings and `viaIR` have been disabled for accurate coverage reports.
+If you encounter "stack too deep" errors, consider using `--ir-minimum` which enables
+`viaIR` with minimum optimization resolving most of the errors
+
+Error: Compiler run failed:
+Error: Compiler error (/solidity/libyul/backends/evm/AsmCodeGen.cpp:63):
+Stack too deep. Try compiling with `--via-ir` (cli) or the equivalent `viaIR: true`
+(standard JSON) while enabling the optimizer. Otherwise, try removing local variables.
+When compiling inline assembly: Variable var_fooBar is N slot(s) too deep inside the stack.
+```
+
+While the error suggests using `--via-ir`, **we recommend the refactoring techniques below first** as `via-ir` has significant drawbacks for testing and coverage.
+
 ### Why This Error Occurs
 
 The Ethereum Virtual Machine (EVM) is a stack-based machine with a limited stack depth. Specifically, the EVM can only access the top 16 slots of the stack at any given time. When a function has too many local variables, function parameters, or return values, the compiler cannot generate valid bytecode because it would need to access stack slots beyond this limit.
