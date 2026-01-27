@@ -13,7 +13,8 @@ You may encounter this error when running `forge build`, `forge test`, or especi
 ```text
 Warning: optimizer settings and `viaIR` have been disabled for accurate coverage reports.
 If you encounter "stack too deep" errors, consider using `--ir-minimum` which enables
-`viaIR` with minimum optimization resolving most of the errors
+`viaIR` with minimum optimization resolving most of the errors.
+See more: https://book.getfoundry.sh/guides/best-practices/stack-too-deep
 
 Error: Compiler run failed:
 Error: Compiler error (/solidity/libyul/backends/evm/AsmCodeGen.cpp:63):
