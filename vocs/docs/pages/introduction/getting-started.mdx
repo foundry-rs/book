@@ -1,4 +1,16 @@
----
+// Create and query variables
+➜ uint256 a = 123;
+➜ a
+Type: uint256
+├ Hex: 0x7b
+├ Hex (full word): 0x000000000000000000000000000000000000000000000000000000000000007b
+└ Decimal: 123
+ 
+// Test contract functions
+➜ function add(uint256 x, uint256 y) public pure returns (uint256) { return x + y; }
+➜ add(5, 10)
+Type: uint256
+└ Decimal: 15---
 description: Quick start guide to using Foundry's four essential tools - Forge, Anvil, Cast, and Chisel for smart contract development.
 ---
 
