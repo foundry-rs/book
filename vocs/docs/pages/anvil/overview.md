@@ -16,7 +16,7 @@ To use Anvil, simply type `anvil`. To fork against a live Ethereum network run `
 Let's fork Ethereum mainnet at the latest block:
 
 ```bash
-anvil --fork-url https://reth-ethereum.ithaca.xyz/rpc
+anvil --fork-url https://ethereum.reth.rs/rpc
 ```
 
 ```bash
@@ -106,5 +106,5 @@ Since the advent of EIP-7702, Anvil's default accounts have been delegated to dr
 This can negatively impact developer experience when users are running Anvil in fork mode and are making RPC calls that involve one of the default anvil accounts. To avoid this issue, use a different mnemonic when starting Anvil:
 
 ```bash
-anvil --mnemonic "<custom mnemonic>" --fork-url https://reth-ethereum.ithaca.xyz/rpc
+anvil --mnemonic "<custom mnemonic>" --fork-url https://ethereum.reth.rs/rpc
 ```

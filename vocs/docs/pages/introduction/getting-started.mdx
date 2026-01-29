@@ -43,7 +43,7 @@ forge build
 forge test
 
 # Run tests against live chain state by forking
-forge test --fork-url https://reth-ethereum.ithaca.xyz/rpc
+forge test --fork-url https://ethereum.reth.rs/rpc
 ```
 
 #### Deploy contracts
@@ -84,7 +84,7 @@ anvil
 
 ```bash
 # Fork latest mainnet state for testing
-anvil --fork-url https://reth-ethereum.ithaca.xyz/rpc
+anvil --fork-url https://ethereum.reth.rs/rpc
 ```
 
 `anvil` comes up with other advanced capabilities such as:
@@ -104,12 +104,12 @@ Cast is your Swiss army knife for interacting with Ethereum applications from th
 
 ```bash
 # Check ETH balance
-cast balance vitalik.eth --ether --rpc-url https://reth-ethereum.ithaca.xyz/rpc
+cast balance vitalik.eth --ether --rpc-url https://ethereum.reth.rs/rpc
 
 # Call a contract function to read data
 cast call 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2 \
 "balanceOf(address)" 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045 \
---rpc-url https://reth-ethereum.ithaca.xyz/rpc
+--rpc-url https://ethereum.reth.rs/rpc
 ```
 
 #### Send transactions
@@ -126,10 +126,10 @@ cast send 0x70997970C51812dc3A010C7d01b50e0d17dc79C8 --value 10000000 --private-
 
 ```bash
 # Call JSON-RPC methods directly
-cast rpc eth_getHeaderByNumber $(cast 2h 22539851) --rpc-url https://reth-ethereum.ithaca.xyz/rpc
+cast rpc eth_getHeaderByNumber $(cast 2h 22539851) --rpc-url https://ethereum.reth.rs/rpc
 
 # Get latest block number
-cast block-number --rpc-url https://reth-ethereum.ithaca.xyz/rpc
+cast block-number --rpc-url https://ethereum.reth.rs/rpc
 ```
 
 Learn more about `cast` [here](/cast/overview).

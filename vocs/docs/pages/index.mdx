@@ -142,7 +142,7 @@ forge init Counter
 # Run tests for the Counter contract
 forge test
 # You can run tests against chain state by forking
-forge test --fork-url https://reth-ethereum.ithaca.xyz/rpc
+forge test --fork-url https://ethereum.reth.rs/rpc
 ```
 
 ```bash [Deploy contract]
@@ -174,7 +174,7 @@ anvil
 
 ```bash [Forking mainnet]
 # Fork latest mainnet state
-anvil --fork-url https://reth-ethereum.ithaca.xyz/rpc
+anvil --fork-url https://ethereum.reth.rs/rpc
 ```
 
 ```bash [Load and Dump State]
@@ -194,7 +194,7 @@ anvil --state ./path/to/state-file
 # Perform an `eth_call` on a contract to read balances
 cast call 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2 \
 "balanceOf(address)" 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045 \
---rpc-url https://reth-ethereum.ithaca.xyz/rpc
+--rpc-url https://ethereum.reth.rs/rpc
 ```
 
 ```bash [Send a transaction]
@@ -211,7 +211,7 @@ echo "\nBalance Of 0xf39F:" && cast balance 0xf39Fd6e51aad88F6F4ce6aB8827279cffF
 ```bash [Call JSON-RPC methods]
 # Calls the `eth_getHeaderByNumber` RPC method with the number param in hexadecimal
 # cast 2h converts integer to hex
-cast rpc eth_getHeaderByNumber $(cast 2h 22539851) --rpc-url https://reth-ethereum.ithaca.xyz/rpc
+cast rpc eth_getHeaderByNumber $(cast 2h 22539851) --rpc-url https://ethereum.reth.rs/rpc
 ```
 
 :::
