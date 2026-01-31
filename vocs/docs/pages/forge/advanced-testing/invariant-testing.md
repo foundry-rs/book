@@ -45,7 +45,7 @@ Similar to how standard tests are run in Foundry by prefixing a function name wi
 
 `afterInvariant()` function is called at the end of each invariant run (if declared), allowing post campaign processing. This function can be used for logging campaign metrics (e.g. how many times a selector was called) and post fuzz campaign testing (e.g. close out all positions and assert all funds are able to exit the system).
 
-### Storage Aware Fuzz Inputs
+#### Storage Aware Fuzz Inputs
 
 Foundry now supports sampling typed storage values during invariant testing to generate more intelligent test inputs. This feature leverages contract storage layouts to understand the types of storage variables and sample appropriate values based on those types.
 
@@ -59,7 +59,6 @@ This feature requires enabling storage layout output. You can do this in two way
 
 This feature improves invariant testing by:
 
-- **Type-aware value generation**: Instead of using raw random values, the fuzzer can generate values that match the expected types of storage variables, leading to more meaningful test scenarios
 - **Better coverage of storage-dependent code paths**: Particularly useful for testing functions that modify storage but don't return values or emit events, as the fuzzer can better understand the effects of these functions
 
 ### Coverage-Guided Fuzzing
@@ -308,25 +307,6 @@ Another approach to handle different invariants across protocol states is to uti
 Priorities for the invariant fuzzer in the cases of target clashes are:
 
 `targetInterfaces | targetSelectors > excludeSelectors | targetArtifactSelectors > excludeContracts | excludeArtifacts > targetContracts | targetArtifacts`
-
-### Function Call Probability Distribution
-
-Functions from these contracts will be called at random (with a uniformly distributed probability) with fuzzed inputs.
-
-For example:
-
-```text
-targetContract1:
-├─ function1: 20%
-└─ function2: 20%
-
-targetContract2:
-├─ function1: 20%
-├─ function2: 20%
-└─ function3: 20%
-```
-
-This is something to be mindful of when designing target contracts, as target contracts with less functions will have each function called more often due to this probability distribution.
 
 ### Invariant Test Helper Functions
 
