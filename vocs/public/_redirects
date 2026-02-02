@@ -49,7 +49,7 @@
 /cheatcodes /reference/cheatcodes/overview
 /cheatcodes/:id /reference/cheatcodes/:id
 
-/guides/v1.0-migration /misc/v1.0-migration
+/guides/v1.0-migration /guides/migrations/foundry-v1
 
 /projects/:id /guides/project-setup/:id
 
