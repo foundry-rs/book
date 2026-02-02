@@ -32,7 +32,7 @@ fork_block_number = 18000000
 
 ### Impersonating accounts
 
-Use `vm.prank()` to execute a single call as another address:
+Use `vm.prank(){:solidity}` to execute a single call as another address:
 
 ```solidity
 function test_ImpersonateWhale() public {
@@ -46,7 +46,7 @@ function test_ImpersonateWhale() public {
 }
 ```
 
-Use `vm.startPrank()` for multiple calls:
+Use `vm.startPrank(){:solidity}` for multiple calls:
 
 ```solidity
 function test_MultipleCallsAsWhale() public {
@@ -61,7 +61,7 @@ function test_MultipleCallsAsWhale() public {
 
 ### Time-sensitive tests
 
-Many DeFi protocols have time-based logic. Use `vm.warp()` to manipulate block timestamps:
+Many DeFi protocols have time-based logic. Use `vm.warp(){:solidity}` to manipulate block timestamps:
 
 ```solidity
 function test_VestingUnlock() public {
@@ -75,7 +75,7 @@ function test_VestingUnlock() public {
 }
 ```
 
-Use `vm.roll()` to change block numbers:
+Use `vm.roll(){:solidity}` to change block numbers:
 
 ```solidity
 function test_BlockBasedLogic() public {
@@ -229,7 +229,7 @@ $ rm -rf ~/.foundry/cache/rpc
 | Pin block numbers | Always use `--fork-block-number` for reproducible tests |
 | Use `deal()` | Avoid complex token acquisition logic in tests |
 | Cache RPC calls | Let Foundry cache fork data to speed up tests |
-| Test edge cases | Use `vm.warp()` to test time-sensitive edge cases |
+| Test edge cases | Use `vm.warp(){:solidity}` to test time-sensitive edge cases |
 | Isolate fork tests | Keep fork tests separate from unit tests for faster CI |
 
 ### Troubleshooting
