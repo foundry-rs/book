@@ -100,18 +100,18 @@ function test_RevertWhen_TransferExceedsBalance() public {
 
 Structure test files to mirror your source files:
 
-```
-src/
-├── Token.sol
-├── Vault.sol
-└── governance/
-    └── Governor.sol
-test/
-├── Token.t.sol
-├── Vault.t.sol
-└── governance/
-    └── Governor.t.sol
-```
+:::file-tree
+- +src/
+  - Token.sol
+  - Vault.sol
+  - +governance/
+    - Governor.sol
+- +test/
+  - Token.t.sol
+  - Vault.t.sol
+  - +governance/
+    - Governor.t.sol
+:::
 
 Group related tests in the same contract:
 
@@ -197,13 +197,13 @@ function testFuzz_Transfer(uint256 amount) public {
 
 Split complex deployments into focused scripts:
 
-```
-script/
-├── DeployToken.s.sol
-├── DeployVault.s.sol
-├── ConfigureVault.s.sol
-└── Deploy.s.sol          # Orchestrates all deployments
-```
+:::file-tree
+- +script/
+  - DeployToken.s.sol
+  - DeployVault.s.sol
+  - ConfigureVault.s.sol
+  - Deploy.s.sol Orchestrates all deployments
+:::
 
 ```solidity [script/Deploy.s.sol]
 import {DeployToken} from "./DeployToken.s.sol";
