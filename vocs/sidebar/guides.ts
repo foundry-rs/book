@@ -16,5 +16,11 @@ export const guidesSidebar: Sidebar = {
         { text: "Docker & Containers", link: "/guides/docker" },
       ],
     },
+    {
+      text: "Migrations",
+      items: [
+        { text: "Foundry v1.0", link: "/guides/migrations/foundry-v1" },
+      ],
+    },
   ],
 };

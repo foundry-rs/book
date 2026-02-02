@@ -87,18 +87,10 @@ const docs = [
     text: "Best Practices",
     link: "/best-practices",
   },
-  {
-    text: "Migration",
-    items: [
-      { text: "Foundry v1.0", link: "/migration/v1" },
-      { text: "Struct encoding", link: "/migration/struct-encoding" },
-    ],
-  },
 ];
 
 export const sidebar: Sidebar = {
   "/introduction": docs,
-  "/migration": docs,
   "/projects": docs,
   "/forge": docs,
   "/cast": docs,
