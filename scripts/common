@@ -99,7 +99,6 @@ EOF
 # The project must live in ./projects
 in_project() {
   echo "... $1"
-  mkdir -p "$OUTPUT_DIR/projects/$1"
   cd "$SNIPPETS_DIR/projects/$1"
   forge clean
 }
