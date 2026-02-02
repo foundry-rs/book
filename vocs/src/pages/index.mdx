@@ -16,6 +16,8 @@ curl -L https://foundry.paradigm.xyz | bash
 foundryup
 ```
 
+Start with the [Getting Started guide](/introduction/getting-started) for a full walkthrough.
+
 <Cards>
   <Card
     title="Forge"
@@ -40,6 +42,56 @@ foundryup
     description="Solidity REPL for rapid prototyping and debugging."
     to="/chisel"
     icon="lucide:code"
+  />
+</Cards>
+
+## Quick Actions
+
+<Cards>
+  <Card
+    title="Create a project"
+    description="Initialize a new Foundry workspace in seconds."
+    to="/projects"
+  />
+  <Card
+    title="Run tests"
+    description="Execute Solidity tests with verbose traces."
+    to="/forge/testing"
+  />
+  <Card
+    title="Fork mainnet"
+    description="Start Anvil against live state for realistic testing."
+    to="/anvil/forking"
+  />
+  <Card
+    title="Call a contract"
+    description="Query chain data directly from the CLI."
+    to="/cast/reading-chain-data"
+  />
+</Cards>
+
+## Choose Your Path
+
+<Cards>
+  <Card
+    title="Build and test"
+    description="Compile contracts, write tests, and debug failures."
+    to="/forge"
+  />
+  <Card
+    title="Deploy and verify"
+    description="Ship contracts to testnets and mainnet safely."
+    to="/guides/deploying-contracts"
+  />
+  <Card
+    title="Debug transactions"
+    description="Replay and inspect failed transactions and traces."
+    to="/guides/debugging-transactions"
+  />
+  <Card
+    title="Optimize gas"
+    description="Profile gas usage and tighten hot paths."
+    to="/guides/gas-optimization"
   />
 </Cards>
 
@@ -69,3 +121,7 @@ forge test
 ```
 
 ::::
+
+:::note
+Track releases and breaking changes in the [changelog](/changelog).
+:::

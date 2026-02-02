@@ -32,6 +32,10 @@ This installs the latest stable versions of `forge`, `cast`, `anvil`, and `chise
 Foundryup requires [Git Bash](https://gitforwindows.org/) or [WSL](https://learn.microsoft.com/en-us/windows/wsl/install). PowerShell and Command Prompt are not supported.
 :::
 
+:::note
+If installation fails, see [Troubleshooting](/help/troubleshooting) for common fixes.
+:::
+
 ## Updating
 
 Run `foundryup` anytime to update to the latest stable release:

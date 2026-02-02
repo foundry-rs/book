@@ -1,0 +1,55 @@
+---
+description: Use structured prompts to get better results from AI coding assistants.
+---
+
+## Prompting
+
+You can speed up smart contract development by using AI to draft boilerplate, testing patterns, and documentation. The best results come from structured prompts with clear constraints and examples.
+
+:::warning
+Always review and test AI-generated code before using it in production.
+:::
+
+## Use a structured prompt
+
+Copy the template below and replace the `<user_prompt>` section with your project details.
+
+```txt [Prompt template]
+You are an expert Solidity engineer using Foundry.
+
+Project context:
+- Repository layout:
+- Solidity version:
+- Dependencies:
+- Target chain(s):
+
+Constraints:
+- Use Foundry tools only (forge, cast, anvil, chisel)
+- Prefer forge-std testing utilities
+- Keep functions small and focused
+- Avoid unsafe patterns and unchecked external calls
+
+Testing requirements:
+- Include unit tests and fuzz tests where applicable
+- Add revert tests for all failure paths
+- Use vm.assume or bound to constrain fuzz inputs
+
+Style:
+- Use clear naming and short helper functions
+- Add comments only when logic is non-obvious
+
+<user_prompt>
+Describe the contract or tests you want to generate.
+</user_prompt>
+```
+
+## Example usage
+
+```txt [Example]
+<user_prompt>
+Create a minimal ERC20 with mint and burn functions. Include a test suite that verifies:
+- mint increases balance and total supply
+- burn decreases balance and total supply
+- unauthorized minting reverts
+</user_prompt>
+```
