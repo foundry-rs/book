@@ -31,6 +31,12 @@ gen_forge() {
   in_project cheatcodes
   run_command "$OUTPUT_DIR/cheatcodes/forge-test-cheatcodes-expectrevert" \
     forge test --match-test "test_IncrementAsOwner|test_RevertWhen_CallerIsNotOwner" --match-path test/OwnerUpOnly.t.sol --color always
+  run_command "$OUTPUT_DIR/cheatcodes/forge-test-vvv" \
+    forge test --match-test test_IncrementAsOwner --match-path test/OwnerUpOnly.t.sol -vvv --color always
+  run_command "$OUTPUT_DIR/cheatcodes/forge-test-vvvv" \
+    forge test --match-test test_IncrementAsOwner --match-path test/OwnerUpOnly.t.sol -vvvv --color always
+  run_command "$OUTPUT_DIR/cheatcodes/forge-test-fail-vvv" \
+    forge test --match-test test_WithdrawAsNotOwner --match-path test/FailingTest.t.sol -vvv --allow-failure --color always
 
   in_project fuzz_testing
   step test/Safe.t.sol 1

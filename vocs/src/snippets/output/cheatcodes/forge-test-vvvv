@@ -1,0 +1,22 @@
+// [!region all]
+// [!region command]
+$ forge test --match-test test_IncrementAsOwner --match-path test/OwnerUpOnly.t.sol -vvvv
+// [!endregion command]
+// [!region output]
+Compiling...
+No files changed, compilation skipped
+Ran 1 test for test/OwnerUpOnly.t.sol:OwnerUpOnlyTest
+[32m[PASS][0m test_IncrementAsOwner() (gas: 29808)
+Traces:
+  [29808] [32mOwnerUpOnlyTest[0m::[32mtest_IncrementAsOwner[0m()
+    ├─ [2407] [32mOwnerUpOnly[0m::[32mcount[0m()[33m [staticcall][0m
+    │   └─ [32m← [Return][0m 0
+    ├─ [20460] [32mOwnerUpOnly[0m::[32mincrement[0m()
+    │   └─ [32m← [Stop][0m
+    ├─ [407] [32mOwnerUpOnly[0m::[32mcount[0m()[33m [staticcall][0m
+    │   └─ [32m← [Return][0m 1
+    └─ [32m← [Stop][0m
+Suite result: [32mok[0m. [32m1[0m passed; [31m0[0m failed; [33m0[0m skipped; finished in 393.54µs (37.63µs CPU time)
+Ran 1 test suite in 133.04ms (393.54µs CPU time): [32m1[0m tests passed, [31m0[0m failed, [33m0[0m skipped (1 total tests)
+// [!endregion output]
+// [!endregion all]

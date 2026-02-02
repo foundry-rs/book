@@ -53,7 +53,16 @@ run_command() {
   # 2. Remove erase-line escape sequences
   # 3. Keep only the last spinner line (contains useful info like "Compiling X files...")
   # 4. Remove empty lines and collapse multiple blanks
-  cmd_output=$(script -q -c "${cmd[*]}" /dev/null \
+  # Note: macOS and Linux have different `script` syntax
+  run_with_script() {
+    if [[ "$(uname)" == "Darwin" ]]; then
+      script -q /dev/null "${cmd[@]}"
+    else
+      script -q -c "${cmd[*]}" /dev/null
+    fi
+  }
+
+  cmd_output=$(run_with_script \
     | tr -d '\r' \
     | sed $'s/\x1b\\[2K//g' \
     | perl -ne '
