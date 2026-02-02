@@ -8,10 +8,10 @@ Foundry is a fast, portable, and modular toolkit for Ethereum development. After
 
 | Tool | Purpose | Reference |
 |------|---------|-----------|
-| `forge` | Build, test, debug, deploy, and verify smart contracts | [Forge reference](/reference/forge/forge) |
-| `cast` | Interact with contracts, send transactions, and query chain data | [Cast reference](/reference/cast/cast) |
-| `anvil` | Run a local Ethereum node with forking capabilities | [Anvil reference](/reference/anvil/anvil) |
-| `chisel` | Solidity REPL for rapid prototyping | [Chisel reference](/reference/chisel/chisel) |
+| `forge` | Build, test, debug, deploy, and verify smart contracts | [Reference](/reference/forge/forge) |
+| `cast` | Interact with contracts, send transactions, and query chain data | [Reference](/reference/cast/cast) |
+| `anvil` | Run a local Ethereum node with forking capabilities | [Reference](/reference/anvil/anvil) |
+| `chisel` | Solidity REPL for rapid prototyping | [Reference](/reference/chisel/chisel) |
 
 :::tip
 Run any command with `--help` for detailed usage information.
