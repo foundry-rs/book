@@ -46,7 +46,7 @@ print_anchored() {
   cat > /dev/stdout <<EOF
 // [!region all]
 // [!region command]
-\$ $1
+$1
 // [!endregion command]
 // [!region output]
 $2

@@ -1,6 +1,6 @@
 // [!region all]
 // [!region command]
-$ forge remappings
+forge remappings
 // [!endregion command]
 // [!region output]
 forge-std/=lib/forge-std/src/

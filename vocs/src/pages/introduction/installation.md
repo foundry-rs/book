@@ -29,7 +29,7 @@ foundryup
 This installs the latest stable versions of `forge`, `cast`, `anvil`, and `chisel`.
 
 :::warning[Windows]
-Foundryup requires [Git BASH](https://gitforwindows.org/) or [WSL](https://learn.microsoft.com/en-us/windows/wsl/install). PowerShell and Command Prompt are not supported.
+Foundryup requires [Git Bash](https://gitforwindows.org/) or [WSL](https://learn.microsoft.com/en-us/windows/wsl/install). PowerShell and Command Prompt are not supported.
 :::
 
 ## Updating

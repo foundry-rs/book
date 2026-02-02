@@ -3,8 +3,13 @@ description: Foundry is a fast, portable, and modular toolkit for Ethereum appli
 ---
 
 import { Cards, Card } from 'vocs'
+import { GitHubStats } from '../components/GitHubStats'
 
 # Foundry [Blazing fast smart contract development toolkit]
+
+<img src="/foundry-banner.png" alt="Foundry" style={{ width: '100%', maxWidth: '2048px', margin: '1rem auto', display: 'block', borderRadius: '8px' }} />
+
+<GitHubStats />
 
 ```bash [Install Foundry]
 curl -L https://foundry.paradigm.xyz | bash
@@ -15,25 +20,25 @@ foundryup
   <Card
     title="Forge"
     description="Build, test, debug, deploy, and verify smart contracts."
-    to="/introduction/getting-started#quick-start-with-forge"
+    to="/forge"
     icon="lucide:hammer"
   />
   <Card
     title="Anvil"
     description="Local Ethereum node with forking capabilities."
-    to="/introduction/getting-started#local-development-with-anvil"
+    to="/anvil"
     icon="lucide:server"
   />
   <Card
     title="Cast"
     description="Swiss Army knife for chain interaction from the CLI."
-    to="/introduction/getting-started#interact-with-chains-using-cast"
+    to="/cast"
     icon="lucide:terminal"
   />
   <Card
     title="Chisel"
     description="Solidity REPL for rapid prototyping and debugging."
-    to="/introduction/getting-started#prototype-with-chisel"
+    to="/chisel"
     icon="lucide:code"
   />
 </Cards>

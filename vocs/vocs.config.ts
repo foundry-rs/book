@@ -1,9 +1,10 @@
-import { defineConfig, Feedback, McpSource } from 'vocs/config'
+import { defineConfig, Feedback, McpSource, Changelog } from 'vocs/config'
 import { sidebar } from './sidebar/sidebar'
 export default defineConfig({
   title: 'foundry - Ethereum Development Framework',
   rootDir: '.',
   sidebar,
+  changelog: Changelog.github({ repo: 'foundry-rs/foundry' }),
   feedback: Feedback.slack(),
   mcp: {
     enabled: true,
@@ -100,17 +101,8 @@ export default defineConfig({
       text: 'Benchmarks',
     },
     {
-      text: 'Releases',
-      items: [
-        {
-          text: 'Release notes',
-          link: '/releases',
-        },
-        {
-          text: 'Contributing',
-          link: 'https://github.com/foundry-rs/foundry/blob/master/CONTRIBUTING.md',
-        }
-      ]
+      text: 'Changelog',
+      link: '/changelog',
     }
   ]
 })

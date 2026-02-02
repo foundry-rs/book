@@ -3,7 +3,7 @@
 Estimate the gas cost of a transaction
 
 ```bash
-$ cast estimate --help
+cast estimate --help
 ```
 
 ```txt
@@ -104,28 +104,6 @@ Wallet options - hardware wallet:
   -t, --trezor
           Use a Trezor hardware wallet
 
-Wallet options - remote:
-      --aws
-          Use AWS Key Management Service.
-          
-          Ensure the AWS_KMS_KEY_ID environment variable is set.
-
-      --gcp
-          Use Google Cloud Key Management Service.
-          
-          Ensure the following environment variables are set: GCP_PROJECT_ID,
-          GCP_LOCATION, GCP_KEY_RING, GCP_KEY_NAME, GCP_KEY_VERSION.
-          
-          See: [https://cloud.google.com/kms/docs](https://cloud.google.com/kms/docs)
-
-      --turnkey
-          Use Turnkey.
-          
-          Ensure the following environment variables are set:
-          TURNKEY_API_PRIVATE_KEY, TURNKEY_ORGANIZATION_ID, TURNKEY_ADDRESS.
-          
-          See: [https://docs.turnkey.com/getting-started/quickstart](https://docs.turnkey.com/getting-started/quickstart)
-
 Wallet options - browser:
       --browser
           Use a browser wallet
@@ -173,16 +151,10 @@ Transaction options:
           This is automatically enabled for common networks without EIP1559.
 
       --blob
-          Send a blob transaction using EIP-7594 (PeerDAS) format.
-          
-          Note: Use with `--eip4844` for the legacy EIP-4844 format.
-
-      --eip4844
-          Send a blob transaction using EIP-4844 (legacy) format instead of
-          EIP-7594. Must be used with `--blob`
+          Send a EIP-4844 blob transaction
 
       --blob-gas-price <BLOB_PRICE>
-          Gas price for EIP-7594/EIP-4844 blob transaction
+          Gas price for EIP-4844 blob transaction
           
           [env: ETH_BLOB_GAS_PRICE=]
 
@@ -198,27 +170,6 @@ Transaction options:
           the access list via an RPC call to `eth_createAccessList`. To retrieve
           only the access list portion, use the `cast access-list` command.
 
-Tempo:
-      --tempo.fee-token <FEE_TOKEN>
-          Fee token address for Tempo transactions.
-          
-          When set, builds a Tempo (type 0x76) transaction that pays gas fees in
-          the specified token.
-          
-          If this is not set, the fee token is chosen according to network
-          rules. See the Tempo docs for more information.
-
-      --tempo.seq <SEQUENCE_KEY>
-          Nonce sequence key for Tempo transactions.
-          
-          When set, builds a Tempo (type 0x76) transaction with the specified
-          nonce sequence key.
-          
-          If this is not set, the protocol sequence key (0) will be used.
-          
-          For more information see
-          [https://docs.tempo.xyz/protocol/transactions/spec-tempo-transaction#parallelizable-nonces](https://docs.tempo.xyz/protocol/transactions/spec-tempo-transaction#parallelizable-nonces).
-
 Rpc options:
   -r, --rpc-url <URL>
           The RPC endpoint, default value is http://localhost:8545
@@ -230,14 +181,6 @@ Rpc options:
           
           When the provider's inner runtime transport variant is HTTP, this
           configures the reqwest client to accept invalid certificates.
-
-      --no-proxy
-          Disable automatic proxy detection.
-          
-          Use this in sandboxed environments (e.g., Cursor IDE sandbox, macOS
-          App Sandbox) where system proxy detection causes crashes. When
-          enabled, HTTP_PROXY/HTTPS_PROXY environment variables and system proxy
-          settings will be ignored.
 
       --flashbots
           Use the Flashbots RPC URL with fast mode
@@ -277,8 +220,8 @@ Rpc options:
           
           [env: ETH_RPC_HEADERS=]
 
-      --curl
-          Print the equivalent curl command instead of making the RPC request
+      --fee-token <FEE_TOKEN>
+          Fee token to use for transaction
 
 Display options:
       --color <COLOR>
