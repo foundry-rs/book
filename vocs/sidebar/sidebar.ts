@@ -45,6 +45,15 @@ const docs = [
       { text: "Custom Methods", link: "/anvil/custom-methods" },
     ],
   },
+  {
+    text: "Chisel",
+    items: [
+      { text: "Overview", link: "/chisel" },
+      { text: "Session Management", link: "/chisel/session-management" },
+      { text: "Forking", link: "/chisel/forking" },
+      { text: "Commands", link: "/chisel/commands" },
+    ],
+  },
 ];
 
 export const sidebar: Sidebar = {
@@ -52,6 +61,7 @@ export const sidebar: Sidebar = {
   "/forge": docs,
   "/cast": docs,
   "/anvil": docs,
+  "/chisel": docs,
   "/reference/forge": [
     forgeCliReference,
   ],
