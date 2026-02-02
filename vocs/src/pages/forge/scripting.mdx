@@ -1,0 +1,155 @@
+---
+description: Deploy and interact with contracts using Forge scripts.
+---
+
+## Scripting
+
+Forge scripts are Solidity files that deploy contracts and execute transactions on-chain. They replace deployment scripts traditionally written in JavaScript.
+
+### Script structure
+
+Scripts inherit from `Script` and implement a `run()` function:
+
+```solidity [script/Deploy.s.sol]
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.13;
+
+import {Script} from "forge-std/Script.sol";
+import {Counter} from "../src/Counter.sol";
+
+contract DeployScript is Script {
+    function run() public {
+        vm.startBroadcast();
+        
+        Counter counter = new Counter();
+        counter.setNumber(42);
+        
+        vm.stopBroadcast();
+    }
+}
+```
+
+Key elements:
+- Inherit from `forge-std/Script.sol`
+- Script files end with `.s.sol`
+- Wrap deployment logic in `vm.startBroadcast()` / `vm.stopBroadcast()`
+
+### Running scripts
+
+Simulate a deployment (no transactions sent):
+
+```bash
+forge script script/Deploy.s.sol
+```
+
+Broadcast transactions to a network:
+
+```bash
+forge script script/Deploy.s.sol --broadcast --rpc-url $RPC_URL
+```
+
+### Providing a private key
+
+Pass a private key directly (not recommended for production):
+
+```bash
+forge script script/Deploy.s.sol --broadcast --rpc-url $RPC_URL --private-key $PRIVATE_KEY
+```
+
+Use a keystore file:
+
+```bash
+forge script script/Deploy.s.sol --broadcast --rpc-url $RPC_URL --account deployer
+```
+
+Use a hardware wallet:
+
+```bash
+forge script script/Deploy.s.sol --broadcast --rpc-url $RPC_URL --ledger
+```
+
+### Broadcasting from a specific address
+
+To broadcast from a specific address:
+
+```solidity
+vm.startBroadcast(deployerAddress);
+```
+
+Or use the key at a specific index from a mnemonic:
+
+```solidity
+uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
+vm.startBroadcast(deployerPrivateKey);
+```
+
+### Verifying deployed contracts
+
+Verify on Etherscan during deployment:
+
+```bash
+forge script script/Deploy.s.sol \
+    --broadcast \
+    --rpc-url $RPC_URL \
+    --verify \
+    --etherscan-api-key $ETHERSCAN_API_KEY
+```
+
+### Resuming failed broadcasts
+
+If a broadcast fails partway through, resume from where it left off:
+
+```bash
+forge script script/Deploy.s.sol --broadcast --rpc-url $RPC_URL --resume
+```
+
+### Multi-chain deployments
+
+Deploy to multiple chains by running the script with different RPC URLs:
+
+```bash
+forge script script/Deploy.s.sol --broadcast --rpc-url $MAINNET_RPC
+forge script script/Deploy.s.sol --broadcast --rpc-url $ARBITRUM_RPC
+forge script script/Deploy.s.sol --broadcast --rpc-url $OPTIMISM_RPC
+```
+
+### Reading deployment artifacts
+
+Scripts write transaction receipts to `broadcast/`. Access deployed addresses in subsequent scripts:
+
+```solidity
+function run() public {
+    string memory json = vm.readFile("broadcast/Deploy.s.sol/1/run-latest.json");
+    address counter = vm.parseJsonAddress(json, ".transactions[0].contractAddress");
+}
+```
+
+### Script cheatcodes
+
+Scripts have access to all [cheatcodes](/reference/cheatcodes/overview). Common ones for scripting:
+
+```solidity
+// Read environment variables
+string memory rpcUrl = vm.envString("RPC_URL");
+uint256 privateKey = vm.envUint("PRIVATE_KEY");
+
+// Read/write files
+string memory config = vm.readFile("config.json");
+vm.writeFile("output.txt", "deployed");
+
+// Parse JSON
+address addr = vm.parseJsonAddress(json, ".address");
+
+// Console logging
+console.log("Deploying to:", block.chainid);
+```
+
+### Dry run
+
+Test a script without sending transactions:
+
+```bash
+forge script script/Deploy.s.sol --rpc-url $RPC_URL
+```
+
+This simulates against the live chain state and shows what would happen.

@@ -6,16 +6,31 @@ import { chiselCliReference } from "./chisel-cli-reference";
 import { castCliReference } from "./cast-cli-reference";
 import { forgeStdReference } from "./forge-std-reference";
 
+const docs = [
+  {
+    text: "Introduction",
+    items: [
+      { text: "Installation", link: "/introduction/installation" },
+      { text: "Getting Started", link: "/introduction/getting-started" },
+    ],
+  },
+  {
+    text: "Forge",
+    items: [
+      { text: "Overview", link: "/forge" },
+      { text: "Building", link: "/forge/build" },
+      { text: "Testing", link: "/forge/testing" },
+      { text: "Scripting", link: "/forge/scripting" },
+      { text: "Debugging", link: "/forge/debugging" },
+      { text: "Gas Tracking", link: "/forge/gas-tracking" },
+      { text: "Linting", link: "/forge/linting" },
+    ],
+  },
+];
+
 export const sidebar: Sidebar = {
-  "/introduction": [
-    {
-      text: "Introduction",
-      items: [
-        { text: "Installation", link: "/introduction/installation" },
-        { text: "Getting Started", link: "/introduction/getting-started" },
-      ],
-    },
-  ],
+  "/introduction": docs,
+  "/forge": docs,
   "/reference/forge": [
     forgeCliReference,
   ],

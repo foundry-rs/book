@@ -1,0 +1,214 @@
+---
+description: Write and run tests for Solidity contracts with Forge.
+---
+
+## Testing
+
+Forge runs tests written in Solidity. Test files live in `test/` and test functions are prefixed with `test`.
+
+```bash
+forge test
+```
+
+### Writing tests
+
+Create a test contract that inherits from `Test`:
+
+```solidity [test/Counter.t.sol]
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.13;
+
+import {Test} from "forge-std/Test.sol";
+import {Counter} from "../src/Counter.sol";
+
+contract CounterTest is Test {
+    Counter counter;
+
+    function setUp() public {
+        counter = new Counter();
+    }
+
+    function test_Increment() public {
+        counter.increment();
+        assertEq(counter.number(), 1);
+    }
+
+    function test_SetNumber() public {
+        counter.setNumber(42);
+        assertEq(counter.number(), 42);
+    }
+}
+```
+
+Key conventions:
+- Test files end with `.t.sol`
+- Test contracts inherit from `forge-std/Test.sol`
+- Test functions start with `test_` or `test`
+- `setUp()` runs before each test
+
+### Verbosity levels
+
+Control output detail with `-v` flags:
+
+| Flag | Shows |
+|------|-------|
+| (none) | Pass/fail only |
+| `-v` | Test names |
+| `-vv` | Logs and assertions |
+| `-vvv` | Stack traces for failures |
+| `-vvvv` | Full traces including setup |
+| `-vvvvv` | Full traces including storage changes |
+
+```bash
+forge test -vvv
+```
+
+### Filtering tests
+
+Run specific tests:
+
+```bash [Run tests matching a pattern]
+forge test --match-test test_Increment
+```
+
+```bash [Run tests in a specific contract]
+forge test --match-contract CounterTest
+```
+
+```bash [Run tests in a specific file]
+forge test --match-path test/Counter.t.sol
+```
+
+Exclude tests:
+
+```bash
+forge test --no-match-test test_Skip
+```
+
+### Fuzz testing
+
+Forge automatically fuzzes test functions that take parameters:
+
+```solidity
+function testFuzz_SetNumber(uint256 x) public {
+    counter.setNumber(x);
+    assertEq(counter.number(), x);
+}
+```
+
+Forge generates random inputs and runs the test multiple times (256 by default).
+
+Configure fuzzing:
+
+```toml [foundry.toml]
+[fuzz]
+runs = 1000
+max_test_rejects = 65536
+seed = "0x1234"
+```
+
+Constrain inputs with `vm.assume()`:
+
+```solidity
+function testFuzz_Transfer(uint256 amount) public {
+    vm.assume(amount > 0 && amount <= 1000 ether);
+    // Test with constrained amount
+}
+```
+
+Or use `bound()` to clamp values:
+
+```solidity
+function testFuzz_Transfer(uint256 amount) public {
+    amount = bound(amount, 1, 1000 ether);
+    // Test with bounded amount
+}
+```
+
+### Testing reverts
+
+Use `vm.expectRevert()` to test that a call reverts:
+
+```solidity
+function test_RevertWhen_Unauthorized() public {
+    vm.expectRevert("Not authorized");
+    restricted.doSomething();
+}
+```
+
+Match a custom error:
+
+```solidity
+function test_RevertWhen_InsufficientBalance() public {
+    vm.expectRevert(Token.InsufficientBalance.selector);
+    token.transfer(address(0), 1000);
+}
+```
+
+### Testing events
+
+Use `vm.expectEmit()` to verify events are emitted:
+
+```solidity
+function test_EmitsTransfer() public {
+    vm.expectEmit(true, true, false, true);
+    emit Transfer(alice, bob, 100);
+    
+    token.transfer(bob, 100);
+}
+```
+
+The four booleans specify which topics and data to check.
+
+### Forking
+
+Test against live chain state:
+
+```bash
+forge test --fork-url https://eth.merkle.io
+```
+
+Or configure in `foundry.toml`:
+
+```toml [foundry.toml]
+[profile.default]
+eth_rpc_url = "https://eth.merkle.io"
+```
+
+Pin to a specific block for reproducible tests:
+
+```bash
+forge test --fork-url https://eth.merkle.io --fork-block-number 18000000
+```
+
+### Cheatcodes
+
+Forge provides cheatcodes via the `vm` object to manipulate the test environment:
+
+```solidity
+// Set block timestamp
+vm.warp(1700000000);
+
+// Set block number
+vm.roll(18000000);
+
+// Impersonate an address
+vm.prank(alice);
+contract.doSomething();
+
+// Give ETH to an address
+vm.deal(alice, 100 ether);
+
+// Modify storage
+vm.store(address(token), bytes32(0), bytes32(uint256(1000)));
+```
+
+See the [cheatcodes reference](/reference/cheatcodes/overview) for the full list.
+
+### Watch mode
+
+Re-run tests when files change:
+
+```bash
+forge test --watch
+```

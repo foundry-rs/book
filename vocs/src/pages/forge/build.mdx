@@ -1,0 +1,122 @@
+---
+description: Compile Solidity contracts with Forge.
+---
+
+## Building contracts
+
+Forge compiles all Solidity files in your `src/` directory and outputs artifacts to `out/`.
+
+```bash
+forge build
+```
+
+### Compiler versions
+
+Forge auto-detects the required Solidity version from your contracts' pragma statements and downloads the compiler automatically.
+
+To pin a specific version:
+
+```toml [foundry.toml]
+[profile.default]
+solc_version = "0.8.28"
+```
+
+Or use a version range:
+
+```toml [foundry.toml]
+[profile.default]
+solc = ">=0.8.0 <0.9.0"
+```
+
+### Optimization
+
+Enable the optimizer for production deployments:
+
+```toml [foundry.toml]
+[profile.default]
+optimizer = true
+optimizer_runs = 200
+```
+
+Higher `optimizer_runs` values optimize for frequent function calls at the cost of larger bytecode. Use lower values (like `1`) for contracts deployed once and rarely called.
+
+For maximum optimization with via-IR:
+
+```toml [foundry.toml]
+[profile.default]
+optimizer = true
+optimizer_runs = 200
+via_ir = true
+```
+
+:::warning
+via-IR compilation is slower but can produce more optimized bytecode. Enable it only when needed.
+:::
+
+### Build profiles
+
+Define separate profiles for development and production:
+
+```toml [foundry.toml]
+[profile.default]
+optimizer = false
+
+[profile.production]
+optimizer = true
+optimizer_runs = 200
+via_ir = true
+```
+
+Build with a specific profile:
+
+```bash
+FOUNDRY_PROFILE=production forge build
+```
+
+### Inspecting artifacts
+
+View contract ABI:
+
+```bash
+forge inspect Counter abi
+```
+
+View deployed bytecode:
+
+```bash
+forge inspect Counter bytecode
+```
+
+View storage layout:
+
+```bash
+forge inspect Counter storage-layout
+```
+
+View all available fields:
+
+```bash
+forge inspect Counter --help
+```
+
+### Build cache
+
+Forge caches compilation results. To force a full rebuild:
+
+```bash
+forge build --force
+```
+
+Clear the cache entirely:
+
+```bash
+forge clean
+```
+
+### Watching for changes
+
+Rebuild automatically when files change:
+
+```bash
+forge build --watch
+```

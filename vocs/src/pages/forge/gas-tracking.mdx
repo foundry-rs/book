@@ -1,0 +1,154 @@
+---
+description: Track and compare gas usage with Forge snapshots and reports.
+---
+
+## Gas tracking
+
+Forge tracks gas usage to help optimize contracts and catch regressions.
+
+### Gas reports
+
+Generate a gas report for all tests:
+
+```bash
+forge test --gas-report
+```
+
+Output shows gas usage per function:
+
+```txt
+| src/Counter.sol:Counter contract |                 |       |        |       |         |
+|----------------------------------|-----------------|-------|--------|-------|---------|
+| Deployment Cost                  | Deployment Size |       |        |       |         |
+| 53291                            | 243             |       |        |       |         |
+| Function Name                    | min             | avg   | median | max   | # calls |
+| increment                        | 22340           | 22340 | 22340  | 22340 | 1       |
+| number                           | 283             | 283   | 283    | 283   | 2       |
+| setNumber                        | 2390            | 2390  | 2390   | 2390  | 1       |
+```
+
+### Filter gas reports
+
+Report only specific contracts:
+
+```toml [foundry.toml]
+[profile.default]
+gas_reports = ["Counter", "Token"]
+```
+
+Exclude contracts:
+
+```toml [foundry.toml]
+[profile.default]
+gas_reports_ignore = ["Test", "Script"]
+```
+
+### Gas snapshots
+
+Create a snapshot file to track gas over time:
+
+```bash
+forge snapshot
+```
+
+This creates `.gas-snapshot` with gas usage for each test:
+
+```txt
+CounterTest:test_Increment() (gas: 31293)
+CounterTest:testFuzz_SetNumber(uint256) (runs: 256, μ: 31121, ~: 31277)
+```
+
+Compare against a previous snapshot:
+
+```bash
+forge snapshot --diff
+```
+
+Check that gas hasn't increased:
+
+```bash
+forge snapshot --check
+```
+
+This exits with an error if any test uses more gas than recorded.
+
+### Inline gas tracking
+
+Use `gasleft()` to measure specific operations:
+
+```solidity
+function test_MeasureGas() public {
+    uint256 gasBefore = gasleft();
+    
+    counter.increment();
+    
+    uint256 gasUsed = gasBefore - gasleft();
+    console.log("Gas used:", gasUsed);
+}
+```
+
+### Snapshot cheatcodes
+
+Take named snapshots for comparison in tests:
+
+```solidity
+function test_GasComparison() public {
+    vm.startSnapshotGas("increment");
+    counter.increment();
+    uint256 gasIncrement = vm.stopSnapshotGas();
+
+    vm.startSnapshotGas("setNumber");
+    counter.setNumber(1);
+    uint256 gasSetNumber = vm.stopSnapshotGas();
+
+    assertLt(gasSetNumber, gasIncrement);
+}
+```
+
+### Gas in CI
+
+Add snapshot checking to your CI pipeline:
+
+```yaml
+- name: Check gas
+  run: forge snapshot --check
+```
+
+Update snapshots when gas changes are intentional:
+
+```bash
+forge snapshot
+git add .gas-snapshot
+git commit -m "Update gas snapshot"
+```
+
+### Pause gas metering
+
+Exclude setup code from gas measurements:
+
+```solidity
+function test_OnlyMeasureTarget() public {
+    // Setup not metered
+    vm.pauseGasMetering();
+    _complexSetup();
+    vm.resumeGasMetering();
+    
+    // Only this is measured
+    target.execute();
+}
+```
+
+### Reset gas metering
+
+Reset the gas counter mid-test:
+
+```solidity
+function test_ResetMidway() public {
+    target.setup();
+    
+    vm.resetGasMetering();
+    
+    // Gas measurement starts fresh here
+    target.execute();
+}
+```

@@ -1,0 +1,146 @@
+---
+description: Debug Solidity contracts with Forge traces and the interactive debugger.
+---
+
+## Debugging
+
+Forge provides detailed traces and an interactive debugger to understand contract execution.
+
+### Traces
+
+Run tests with `-vvvv` to see full execution traces:
+
+```bash
+forge test -vvvv
+```
+
+The trace shows every call, its inputs, outputs, and gas usage:
+
+```txt
+[PASS] test_Increment() (gas: 31293)
+Traces:
+  [31293] CounterTest::test_Increment()
+    ├─ [22340] Counter::increment()
+    │   └─ ← [Stop]
+    ├─ [283] Counter::number() [staticcall]
+    │   └─ ← [Return] 1
+    ├─ [0] VM::assertEq(1, 1) [staticcall]
+    │   └─ ← [Return]
+    └─ ← [Stop]
+```
+
+### Understanding trace output
+
+Each line shows:
+- **Gas used** in brackets
+- **Contract::function** being called
+- **Call type** (staticcall, delegatecall, etc.)
+- **Return value** or revert reason
+
+Indentation indicates call depth.
+
+### Tracing a failed transaction
+
+Debug a transaction that failed on-chain:
+
+```bash
+cast run 0x<txhash> --rpc-url $RPC_URL
+```
+
+This replays the transaction and shows the execution trace.
+
+### Interactive debugger
+
+Launch the debugger for a specific test:
+
+```bash
+forge test --debug test_Increment
+```
+
+The debugger shows:
+- Source code with current line highlighted
+- Stack contents
+- Memory contents
+- Storage changes
+- Call stack
+
+#### Debugger commands
+
+| Key | Action |
+|-----|--------|
+| `n` | Step to next opcode |
+| `s` | Step into call |
+| `o` | Step out of call |
+| `g` | Go to start |
+| `G` | Go to end |
+| `c` | Continue to next breakpoint |
+| `q` | Quit |
+| `h` | Show help |
+
+### Debugging scripts
+
+Debug a script:
+
+```bash
+forge script script/Deploy.s.sol --debug
+```
+
+### Console logging
+
+Add logs to your contracts for debugging:
+
+```solidity
+import {console} from "forge-std/console.sol";
+
+function transfer(address to, uint256 amount) public {
+    console.log("Transfer from:", msg.sender);
+    console.log("Transfer to:", to);
+    console.log("Amount:", amount);
+    // ...
+}
+```
+
+View logs with `-vv` or higher:
+
+```bash
+forge test -vv
+```
+
+### Labeling addresses
+
+Make traces more readable by labeling addresses:
+
+```solidity
+function setUp() public {
+    alice = makeAddr("alice");
+    bob = makeAddr("bob");
+    
+    vm.label(address(token), "Token");
+    vm.label(address(pool), "Pool");
+}
+```
+
+Traces will show `Token::transfer()` instead of `0x1234...::transfer()`.
+
+### Debugging reverts
+
+When a test fails, the trace shows where and why:
+
+```txt
+[FAIL] test_Transfer() (gas: 45123)
+Traces:
+  [45123] TokenTest::test_Transfer()
+    ├─ [23456] Token::transfer(bob, 1000)
+    │   └─ ← [Revert] InsufficientBalance()
+    └─ ← [Revert] InsufficientBalance()
+```
+
+### Stack traces
+
+Enable stack traces for revert locations:
+
+```bash
+forge test -vvv
+```
+
+Shows the exact line in your Solidity code where the revert occurred.
