@@ -424,7 +424,7 @@ fn generate_sidebar(output: &[(Cmd, String)], _out_dir: &Path, sidebar_file: &Pa
     content.push_str("    items: [\n");
     
     // Add root command
-    content.push_str(&format!("        {{ text: \"{}\", link: \"/{}/reference/{}\" }},\n", tool_name, tool_name, tool_name));
+    content.push_str(&format!("        {{ text: \"{}\", link: \"/reference/{}/{}\" }},\n", tool_name, tool_name, tool_name));
     
     // Add categories
     for (category, cmds) in categories {
@@ -443,7 +443,7 @@ fn generate_sidebar(output: &[(Cmd, String)], _out_dir: &Path, sidebar_file: &Pa
         
         for cmd in sorted_cmds {
             let cmd_path = cmd.md_path();
-            content.push_str(&format!("                {{ text: \"{}\", link: \"/{}/reference/{}\" }},\n", 
+            content.push_str(&format!("                {{ text: \"{}\", link: \"/reference/{}/{}\" }},\n", 
                 cmd.display_name(), tool_name, cmd_path));
         }
         

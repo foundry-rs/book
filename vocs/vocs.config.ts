@@ -1,7 +1,8 @@
-import { defineConfig } from 'vocs'
+import { defineConfig } from 'vocs/config'
 import { sidebar } from './sidebar/sidebar'
 export default defineConfig({
   title: 'foundry - Ethereum Development Framework',
+  rootDir: '.',
   sidebar,
   theme: {
     accentColor: {
@@ -55,16 +56,37 @@ export default defineConfig({
       text: 'Docs',
     },
     {
-      link: '/guides/best-practices/writing-contracts',
-      text: 'Guides',
+      text: 'Reference',
+      items: [
+        {
+          text: 'forge',
+          link: '/reference/forge/forge',
+        },
+        {
+          text: 'cast',
+          link: '/reference/cast/cast',
+        },
+        {
+          text: 'anvil',
+          link: '/reference/anvil/anvil',
+        },
+        {
+          text: 'chisel',
+          link: '/reference/chisel/chisel',
+        },
+        {
+          text: 'Cheatcodes',
+          link: '/reference/cheatcodes/overview',
+        },
+        {
+          text: 'Forge Std',
+          link: '/reference/forge-std/overview',
+        },
+      ]
     },
     {
       link: '/benchmarks',
       text: 'Benchmarks',
-    },
-    {
-      link: 'https://foundry-rs.github.io/foundry/',
-      text: 'Rustdocs',
     },
     {
       text: 'Releases',

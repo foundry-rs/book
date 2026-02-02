@@ -1,0 +1,37 @@
+{
+  "version": "0.2",
+  "language": "en",
+  "words": [
+    "foundry",
+    "foundryup",
+    "forge",
+    "anvil",
+    "chisel",
+    "solidity",
+    "ethereum",
+    "calldata",
+    "keccak",
+    "abi",
+    "evm",
+    "rpc",
+    "mainnet",
+    "testnet",
+    "devnet",
+    "wei",
+    "gwei",
+    "ether",
+    "struct",
+    "uint",
+    "bytecode",
+    "opcode",
+    "merkle",
+    "vocs",
+    "mdx"
+  ],
+  "ignorePaths": [
+    "node_modules",
+    "dist",
+    "*.lock",
+    "bun.lock"
+  ]
+}

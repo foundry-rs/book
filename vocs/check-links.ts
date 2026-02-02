@@ -4,8 +4,8 @@ import { readFileSync } from "node:fs";
 import { join, dirname, resolve, relative } from "node:path";
 
 const CONFIG = {
-	DOCS_DIR: "./docs/pages",
-	PUBLIC_DIR: "./docs/public",
+	DOCS_DIR: "./src/pages",
+	PUBLIC_DIR: "./public",
 	REPORT_PATH: "links-report.json",
 	FILE_PATTERNS: "**/*.{md,mdx}",
 	MARKDOWN_EXTENSIONS: /\.(md|mdx)$/,

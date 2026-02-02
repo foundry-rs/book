@@ -169,3 +169,113 @@ Do **not** inline Solidity code. Instead, include source files from the [project
 This allows examples to be updated in one place and stay consistent across pages.
 
 Learn more about including snippets in the [Vocs documentation](https://vocs.dev/docs/guides/code-snippets#physical-file-snippets).
+
+---
+
+#### Vocs Markdown Features
+
+The documentation uses [Vocs](https://vocs.dev), which provides several useful markdown extensions.
+
+##### Code Block Titles
+
+Use titles instead of comments for single-action commands:
+
+````md
+```bash [Check an address balance]
+cast balance vitalik.eth --ether
+```
+````
+
+##### Inline Terminal Output
+
+Use `// @log:` to show command output inline:
+
+````md
+```bash
+forge test -vv
+// @log: Ran 2 tests for test/Counter.t.sol:CounterTest
+// @log: [PASS] test_Increment() (gas: 31293)
+// @log: Suite result: ok. 2 passed; 0 failed; 0 skipped
+```
+````
+
+##### Steps
+
+Use `::::steps` for sequential instructions:
+
+````md
+::::steps
+
+### Install foundryup
+
+```bash
+curl -L https://foundry.paradigm.xyz | bash
+```
+
+### Install Foundry
+
+```bash
+foundryup
+```
+
+::::
+````
+
+##### Callouts
+
+Use callouts for warnings, tips, and notes:
+
+````md
+:::tip
+Run any command with `--help` for detailed usage.
+:::
+
+:::warning
+This will overwrite existing files.
+:::
+
+:::note
+This feature requires Foundry v1.0 or later.
+:::
+````
+
+##### Cards
+
+Use `Cards` and `Card` components for navigation grids:
+
+````mdx
+import { Cards, Card } from 'vocs'
+
+<Cards>
+  <Card
+    title="Forge"
+    description="Build and test smart contracts."
+    to="/forge/overview"
+    icon="lucide:hammer"
+  />
+</Cards>
+````
+
+##### Code Groups
+
+Use `:::code-group` for tabbed code examples:
+
+````md
+:::code-group
+
+```bash [npm]
+npm install
+```
+
+```bash [pnpm]
+pnpm install
+```
+
+```bash [bun]
+bun install
+```
+
+:::
+````
+
+Learn more in the [Vocs Markdown Reference](https://vocs.dev/docs/markdown).

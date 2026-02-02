@@ -1,24 +1,40 @@
 {
-  "name": "vocs",
+  "name": "foundry-docs",
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  
   "scripts": {
-    "dev": "vocs dev",
-    "build": "bun run fetch-releases && bun run fetch-benchmarks && vocs build",
-    "preview": "bun run build && vocs preview",
+    "dev": "NODE_OPTIONS='--import tsx' vite",
+    "build": "bun run fetch-releases && bun run fetch-benchmarks && vite build",
+    "preview": "node dist/preview.js",
     "check-links": "bun check-links.ts",
     "fetch-releases": "bun scripts/fetch-releases.ts",
     "fetch-benchmarks": "bun scripts/fetch-benchmarks.ts"
   },
   "dependencies": {
-    "react": "latest",
-    "react-dom": "latest",
-    "vocs": "latest"
+    "mermaid": "^11.12.2",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "tailwindcss": "^4.1.18",
+    "vocs": "https://pkg.pr.new/wevm/vocs@bf4a7fd",
+    "waku": "1.0.0-alpha.2"
   },
   "devDependencies": {
     "@types/bun": "^1.2.18",
-    "@types/react": "latest",
-    "typescript": "latest"
+    "@types/node": "^25.0.10",
+    "@types/react": "^19.2.9",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.2",
+    "tsx": "^4.21.0",
+    "typescript": "~5.9.3",
+    "vite": "^7.3.1"
+  },
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": "24.12.0",
+      "onFail": "download"
+    }
   }
 }
