@@ -222,7 +222,7 @@ fn help_markdown(cmd: &Cmd, stdout: &str) -> String {
     let (description, s) = parse_description(stdout);
     let processed_description = preprocess_help(description);
     let help = preprocess_help(s.trim());
-    format!("{processed_description}\n\n```bash\n{cmd} --help\n```\n\n```txt\n{help}\n```")
+    format!("{processed_description}\n\n```bash\n$ {cmd} --help\n```\n\n```txt\n{help}\n```")
 }
 
 /// Splits the help output into a description and the rest.

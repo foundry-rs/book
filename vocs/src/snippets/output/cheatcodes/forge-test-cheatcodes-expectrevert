@@ -1,14 +1,11 @@
 // [!region all]
 // [!region command]
-$ forge test --match-test "test_IncrementAsOwner|test_RevertWhen_CallerIsNotOwner"
+$ forge test --match-test test_IncrementAsOwner|test_RevertWhen_CallerIsNotOwner --match-path test/OwnerUpOnly.t.sol
 // [!endregion command]
 // [!region output]
-Compiling 1 files with Solc 0.8.10
-Compiler run successful!
-Ran 2 tests for test/OwnerUpOnly.t.sol:OwnerUpOnlyTest
-[32m[PASS][0m test_IncrementAsOwner() (gas: 29808)
-[32m[PASS][0m test_RevertWhen_CallerIsNotOwner() (gas: 8361)
-Suite result: [32mok[0m. [32m2[0m passed; [31m0[0m failed; [33m0[0m skipped; finished in 1.02ms (0.58ms CPU time)
-Ran 1 test suite in 10.12ms (1.02ms CPU time): [32m2[0m tests passed, [31m0[0m failed, [33m0[0m skipped (2 total tests)
+fish: Unknown command: test_RevertWhen_CallerIsNotOwner
+fish: 
+forge test --match-test test_IncrementAsOwner|test_RevertWhen_CallerIsNotOwner --match-path test/OwnerUpOnly.t.sol --color always
+                                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
 // [!endregion output]
 // [!endregion all]
