@@ -1,9 +1,16 @@
-import { defineConfig } from 'vocs/config'
+import { defineConfig, Feedback, McpSource } from 'vocs/config'
 import { sidebar } from './sidebar/sidebar'
 export default defineConfig({
   title: 'foundry - Ethereum Development Framework',
   rootDir: '.',
   sidebar,
+  feedback: Feedback.slack(),
+  mcp: {
+    enabled: true,
+    sources: [
+      McpSource.github({ repo: 'foundry-rs/foundry' }),
+    ],
+  },
   theme: {
     accentColor: {
       dark: '#f9c22f',
