@@ -65,9 +65,15 @@ Forge compiles, tests, and deploys Solidity smart contracts. It's the core devel
 ```
 :::
 
+:::terminal
 ```bash [Run tests with verbose output]
 $ forge test -vvvv
 ```
+
+```ansi
+// [!include ~/snippets/output/cheatcodes/forge-test-vvvv:output]
+```
+:::
 
 ```bash [Deploy via script]
 $ forge script script/Deploy.s.sol --broadcast --rpc-url $RPC_URL

@@ -3,7 +3,7 @@
 $ forge remappings
 // [!endregion command]
 // [!region output]
-forge-std/=lib/forge-std/src/
+^Dforge-std/=lib/forge-std/src/
 solady/=lib/solady/src/
 // [!endregion output]
 // [!endregion all]

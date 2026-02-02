@@ -52,22 +52,62 @@ Key conventions:
 - Test functions start with `test_` or `test`
 - `setUp()` runs before each test
 
-### Verbosity levels
+### Traces
 
-Control output detail with `-v` flags:
+Traces show a tree of all calls made during a test, helping you understand execution flow and debug failures.
 
-| Flag | Shows |
-|------|-------|
-| (none) | Pass/fail only |
-| `-v` | Test names |
-| `-vv` | Logs and assertions |
-| `-vvv` | Stack traces for failures |
-| `-vvvv` | Full traces including setup |
-| `-vvvvv` | Full traces including storage changes |
+#### Stack traces
 
+When a test fails, use `-vvv` to see a stack trace showing exactly where the revert occurred. This is the most common way to debug test failures.
+
+:::terminal
 ```bash
 $ forge test -vvv
 ```
+
+```ansi
+// [!include ~/snippets/output/cheatcodes/forge-test-fail-vvv:output]
+```
+:::
+
+The trace shows the call hierarchy with the revert bubbling up, and the **Backtrace** pinpoints the exact location in your code.
+
+#### Full traces
+
+Use `-vvvv` to see traces for all tests, including passing ones. This helps you understand execution flow, verify call order, and check gas usage for individual operations.
+
+:::terminal
+```bash
+$ forge test -vvvv
+```
+
+```ansi
+// [!include ~/snippets/output/cheatcodes/forge-test-vvvv:output]
+```
+:::
+
+#### Reading traces
+
+- **Gas costs** appear in brackets: `[29808]`
+- **Contract and function names** are color-coded
+- **Call types** are annotated: `[staticcall]` for view/pure functions
+- **Return values** show what each call returned: `← [Return] 0` for a value, `← [Stop]` for void
+- **Indentation** shows the call hierarchy—nested calls are indented under their parent
+
+### Verbosity levels
+
+Control how much detail Forge outputs with `-v` flags:
+
+| Flag | Shows |
+|------|-------|
+| (none) | Pass/fail summary only |
+| `-v` | Test names |
+| `-vv` | Logs emitted during tests |
+| `-vvv` | Traces for failing tests |
+| `-vvvv` | Traces for all tests, including setup |
+| `-vvvvv` | Traces with storage changes |
+
+Use `-vvv` for debugging failures, `-vvvv` when you need to see successful test execution, and `-vvvvv` when tracking state changes.
 
 ### Filtering tests
 

@@ -3,11 +3,11 @@
 $ forge test --allow-failure
 // [!endregion command]
 // [!region output]
-Solc 0.8.10 finished in 455.68ms
+Solc 0.8.10 finished in 474.53ms
 Compiler run [32msuccessful[0m!
 Ran 1 test for test/Safe.t.sol:SafeTest
-[31m[FAIL: EvmError: Revert; counterexample: calldata=0x29facca7000000000000000000000000000000000000014acb28a831f351b5dbb2336de3 args=[26208168238012741616479308574179 [2m[2.62e31][0m[31m]][0m testFuzz_Withdraw(uint256) (runs: 0, μ: 0, ~: 0)
-Suite result: [31mFAILED[0m. [32m0[0m passed; [31m1[0m failed; [33m0[0m skipped; finished in 5.06ms (4.68ms CPU time)
-Ran 1 test suite in 9.31ms (5.06ms CPU time): [32m0[0m tests passed, [31m1[0m failed, [33m0[0m skipped (1 total tests)
+[31m[FAIL: EvmError: Revert; counterexample: calldata=0x29facca700000000000000000000000061c9ee79e58ad8ae17bbc8c1b05ecdc07525e539 args=[558275328758149388269062990826516748593600521529 [2m[5.582e47][0m[31m]][0m testFuzz_Withdraw(uint256) (runs: 4, μ: 19884, ~: 19884)
+Suite result: [31mFAILED[0m. [32m0[0m passed; [31m1[0m failed; [33m0[0m skipped; finished in 6.41ms (6.05ms CPU time)
+Ran 1 test suite in 131.31ms (6.41ms CPU time): [32m0[0m tests passed, [31m1[0m failed, [33m0[0m skipped (1 total tests)
 // [!endregion output]
 // [!endregion all]
