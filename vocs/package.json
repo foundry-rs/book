@@ -6,10 +6,9 @@
   
   "scripts": {
     "dev": "NODE_OPTIONS='--import tsx' vite",
-    "build": "bun run fetch-releases && bun run fetch-benchmarks && vite build",
+    "build": "bun run fetch-benchmarks && vite build",
     "preview": "node dist/preview.js",
     "check-links": "bun check-links.ts",
-    "fetch-releases": "bun scripts/fetch-releases.ts",
     "fetch-benchmarks": "bun scripts/fetch-benchmarks.ts"
   },
   "dependencies": {

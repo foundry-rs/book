@@ -3,7 +3,7 @@ import { writeFileSync, mkdirSync } from 'fs';
 import { join } from 'path';
 
 const BENCHMARKS_URL = 'https://raw.githubusercontent.com/foundry-rs/foundry/master/benches/LATEST.md';
-const OUTPUT_DIR = join(import.meta.dir, '../docs/pages');
+const OUTPUT_DIR = join(import.meta.dir, '../src/pages');
 const OUTPUT_FILE = join(OUTPUT_DIR, 'benches.mdx');
 
 interface BenchmarkData {
@@ -293,7 +293,7 @@ async function main() {
     unifiedTable += `\n`;
     unifiedTable += `  <strong>Latest:</strong> [${latestVersionDisplay}](${latestVersionUrl})\n`;
     unifiedTable += `\n`;
-    unifiedTable += `  Learn more about what went into the latest release [here](/releases)\n`;
+    unifiedTable += `  Learn more about what went into the latest release [here](/changelog)\n`;
     
     unifiedTable += generateUnifiedTable(benchmarkData);
     

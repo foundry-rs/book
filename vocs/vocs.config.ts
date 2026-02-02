@@ -20,7 +20,7 @@ export default defineConfig({
     },
   },
   editLink: {
-    pattern: 'https://github.com/foundry-rs/book/edit/master/vocs/docs/pages/:path',
+    pattern: 'https://github.com/foundry-rs/book/edit/master/vocs/src/pages/:path',
     text: 'Suggest changes on GitHub',
   },
   sponsors: [
