@@ -6,12 +6,12 @@ description: Get started with Foundry's four core tools - Forge, Cast, Anvil, an
 
 Foundry is a fast, portable, and modular toolkit for Ethereum development. After [installing Foundry](/introduction/installation), you have access to four tools:
 
-| Tool | Purpose |
-|------|---------|
-| [`forge`](/reference/forge/forge) | Build, test, debug, deploy, and verify smart contracts |
-| [`cast`](/reference/cast/cast) | Interact with contracts, send transactions, and query chain data |
-| [`anvil`](/reference/anvil/anvil) | Run a local Ethereum node with forking capabilities |
-| [`chisel`](/reference/chisel/chisel) | Solidity REPL for rapid prototyping |
+| Tool | Purpose | Reference |
+|------|---------|-----------|
+| `forge` | Build, test, debug, deploy, and verify smart contracts | [Forge reference](/reference/forge/forge) |
+| `cast` | Interact with contracts, send transactions, and query chain data | [Cast reference](/reference/cast/cast) |
+| `anvil` | Run a local Ethereum node with forking capabilities | [Anvil reference](/reference/anvil/anvil) |
+| `chisel` | Solidity REPL for rapid prototyping | [Chisel reference](/reference/chisel/chisel) |
 
 :::tip
 Run any command with `--help` for detailed usage information.
@@ -128,13 +128,6 @@ Type: uint256
 Type `!help` to see available commands.
 
 ## Next steps
-
-- [**Forge**](/reference/forge/forge) — Learn to build and test smart contracts
-- [**Cast**](/reference/cast/cast) — Master blockchain interactions from the CLI
-- [**Anvil**](/reference/anvil/anvil) — Set up local development networks
-- [**Chisel**](/reference/chisel/chisel) — Prototype Solidity quickly
-
-## Common next tasks
 
 - [Write your first tests](/forge/testing)
 - [Test against mainnet state](/guides/fork-testing)
