@@ -136,7 +136,7 @@ Some systems (including Apple Silicon) may have issues building the Docker image
 
 ### CI/CD
 
-For GitHub Actions, use [foundry-rs/foundry-toolchain](https://github.com/foundry-rs/foundry-toolchain).
+See the [CI integration guide](/config/ci) for GitHub Actions and other CI platforms.
 
 ## Uninstalling
 
