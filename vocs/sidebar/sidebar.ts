@@ -15,6 +15,15 @@ const docs = [
     ],
   },
   {
+    text: "Projects",
+    items: [
+      { text: "Overview", link: "/projects" },
+      { text: "Project Layout", link: "/projects/layout" },
+      { text: "Dependencies", link: "/projects/dependencies" },
+      { text: "Soldeer", link: "/projects/soldeer" },
+    ],
+  },
+  {
     text: "Forge",
     items: [
       { text: "Overview", link: "/forge" },
@@ -65,6 +74,7 @@ const docs = [
 
 export const sidebar: Sidebar = {
   "/introduction": docs,
+  "/projects": docs,
   "/forge": docs,
   "/cast": docs,
   "/anvil": docs,

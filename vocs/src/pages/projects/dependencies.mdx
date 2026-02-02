@@ -1,0 +1,177 @@
+---
+description: Manage dependencies using git submodules and remappings.
+---
+
+## Dependencies
+
+Foundry uses git submodules to manage dependencies. Libraries are stored in `lib/` and imported via remappings.
+
+### Installing dependencies
+
+```bash [Install a library]
+forge install OpenZeppelin/openzeppelin-contracts
+```
+
+```bash [Install a specific version]
+forge install OpenZeppelin/openzeppelin-contracts@v5.0.0
+```
+
+```bash [Install without creating a commit]
+forge install OpenZeppelin/openzeppelin-contracts --no-commit
+```
+
+The library is cloned to `lib/openzeppelin-contracts/`.
+
+### Using dependencies
+
+Import installed libraries in your contracts:
+
+```solidity
+import {ERC20} from "openzeppelin-contracts/contracts/token/ERC20/ERC20.sol";
+```
+
+Foundry automatically creates remappings for libraries in `lib/`. The remapping `openzeppelin-contracts/` points to `lib/openzeppelin-contracts/`.
+
+### Remappings
+
+Customize import paths with remappings in `foundry.toml`:
+
+```toml
+[profile.default]
+remappings = [
+    "@openzeppelin/=lib/openzeppelin-contracts/",
+]
+```
+
+Now you can import with the prefix:
+
+```solidity
+import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+```
+
+Generate remappings automatically:
+
+```bash
+forge remappings
+```
+
+Save to a file for IDE support:
+
+```bash
+forge remappings > remappings.txt
+```
+
+### Updating dependencies
+
+```bash [Update all dependencies]
+forge update
+```
+
+```bash [Update a specific dependency]
+forge update lib/openzeppelin-contracts
+```
+
+### Removing dependencies
+
+```bash
+forge remove openzeppelin-contracts
+```
+
+This removes the submodule from `lib/` and `.gitmodules`.
+
+### Resolving conflicts
+
+When two dependencies require different versions of the same library, you'll encounter conflicts.
+
+#### Diagnosing conflicts
+
+Check dependency trees with:
+
+```bash
+forge tree
+```
+
+#### Resolution strategies
+
+**1. Use a compatible version**
+
+Find a version that works for both dependencies:
+
+```bash
+cd lib/conflicting-library
+git checkout v2.0.0
+cd ../..
+git add lib/conflicting-library
+git commit -m "Pin conflicting-library to v2.0.0"
+```
+
+**2. Create separate remappings**
+
+If dependencies need different versions, install both under different names:
+
+```bash
+forge install org/library@v1.0.0 --no-commit
+mv lib/library lib/library-v1
+
+forge install org/library@v2.0.0 --no-commit
+mv lib/library lib/library-v2
+```
+
+Add remappings:
+
+```toml
+[profile.default]
+remappings = [
+    "library-v1/=lib/library-v1/",
+    "library-v2/=lib/library-v2/",
+]
+```
+
+**3. Patch the dependency**
+
+Fork and modify the dependency to use a compatible version:
+
+```bash
+# In lib/problematic-dependency
+git remote add fork https://github.com/you/fork
+git fetch fork
+git checkout fork/compatible-branch
+```
+
+### Using npm packages
+
+Foundry can use packages from `node_modules`:
+
+```toml
+[profile.default]
+libs = ["lib", "node_modules"]
+```
+
+Install with your preferred package manager:
+
+```bash
+npm install @openzeppelin/contracts
+```
+
+Import directly:
+
+```solidity
+import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+```
+
+:::warning
+npm packages may not be designed for Foundry. Prefer git submodules for Solidity libraries.
+:::
+
+### Hardhat compatibility
+
+For projects migrating from Hardhat or using Hardhat-style imports:
+
+```toml
+[profile.default]
+libs = ["lib", "node_modules"]
+remappings = [
+    "@openzeppelin/=node_modules/@openzeppelin/",
+    "hardhat/=node_modules/hardhat/",
+]
+```

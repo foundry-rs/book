@@ -1,0 +1,147 @@
+---
+description: Use Soldeer as an alternative package manager for Foundry projects.
+---
+
+## Soldeer
+
+[Soldeer](https://soldeer.xyz) is a Solidity-native package manager that provides an alternative to git submodules. It offers versioned dependencies, a package registry, and simpler dependency management.
+
+### Installation
+
+Soldeer comes bundled with Foundry. Initialize it in your project:
+
+```bash
+forge soldeer init
+```
+
+This creates a `soldeer.toml` configuration file.
+
+### Installing packages
+
+```bash [Install from registry]
+forge soldeer install @openzeppelin-contracts~5.0.0
+```
+
+```bash [Install from git]
+forge soldeer install my-lib~1.0.0 https://github.com/org/repo.git
+```
+
+Packages are stored in `dependencies/` by default.
+
+### Configuration
+
+Configure Soldeer in `soldeer.toml`:
+
+```toml
+[soldeer]
+remappings_generate = true
+remappings_regenerate = false
+remappings_version = true
+remappings_prefix = "@"
+remappings_location = "config"
+
+[dependencies]
+"@openzeppelin-contracts" = "5.0.0"
+"@solmate" = "6.7.0"
+```
+
+Key options:
+
+| Option | Description |
+|--------|-------------|
+| `remappings_generate` | Auto-generate remappings |
+| `remappings_prefix` | Prefix for remappings (e.g., `@`) |
+| `remappings_location` | Where to store remappings (`config` or `txt`) |
+
+### Using packages
+
+Import installed packages:
+
+```solidity
+import {ERC20} from "@openzeppelin-contracts/contracts/token/ERC20/ERC20.sol";
+```
+
+When `remappings_location = "config"`, remappings are added to `foundry.toml`. Otherwise, they go to `remappings.txt`.
+
+### Updating packages
+
+```bash [Update all packages]
+forge soldeer update
+```
+
+```bash [Update a specific package]
+forge soldeer update @openzeppelin-contracts
+```
+
+### Publishing packages
+
+Publish your own packages to the Soldeer registry:
+
+::::steps
+
+### Login to Soldeer
+
+```bash
+forge soldeer login
+```
+
+### Prepare your package
+
+Add metadata to `soldeer.toml`:
+
+```toml
+[package]
+name = "my-library"
+version = "1.0.0"
+description = "My awesome Solidity library"
+```
+
+### Publish
+
+```bash
+forge soldeer push my-library~1.0.0
+```
+
+::::
+
+### Git submodules vs Soldeer
+
+| Feature | Git submodules | Soldeer |
+|---------|---------------|---------|
+| Version pinning | Commit hash | Semantic versions |
+| Registry | GitHub | Soldeer registry + git |
+| Lock file | No | Yes (`soldeer.lock`) |
+| Transitive deps | Manual | Automatic |
+| IDE support | Via remappings | Via remappings |
+
+Use git submodules when:
+- You need a specific commit
+- The library isn't on the Soldeer registry
+- Your team is familiar with git submodules
+
+Use Soldeer when:
+- You want semantic versioning
+- You need reproducible builds (lock file)
+- You prefer npm-style dependency management
+
+### Migrating from git submodules
+
+Convert existing submodule dependencies to Soldeer:
+
+```bash
+# Remove the submodule
+forge remove openzeppelin-contracts
+
+# Install via Soldeer
+forge soldeer install @openzeppelin-contracts~5.0.0
+```
+
+Update your imports to use the new remapping prefix:
+
+```solidity
+// Before
+import {ERC20} from "openzeppelin-contracts/contracts/token/ERC20/ERC20.sol";
+
+// After
+import {ERC20} from "@openzeppelin-contracts/contracts/token/ERC20/ERC20.sol";
+```
