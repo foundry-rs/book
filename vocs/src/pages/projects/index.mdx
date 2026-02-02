@@ -1,0 +1,75 @@
+---
+description: Create and configure Foundry projects for smart contract development.
+---
+
+## Project Setup
+
+Foundry projects are initialized with `forge init` and follow a standard layout that works out of the box.
+
+### Creating a project
+
+::::steps
+
+### Initialize a new project
+
+```bash
+forge init my_project
+cd my_project
+```
+
+### Or initialize in an existing directory
+
+```bash
+cd existing_directory
+forge init
+```
+
+::::
+
+The `--force` flag initializes in non-empty directories:
+
+```bash
+forge init --force
+```
+
+### Initialization options
+
+| Flag | Description |
+|------|-------------|
+| `--template <url>` | Use a custom template repository |
+| `--no-git` | Skip git repository initialization |
+| `--no-commit` | Skip initial commit |
+| `--shallow` | Perform shallow clone for template |
+| `--offline` | Skip dependency installation |
+| `--vscode` | Generate VS Code settings |
+
+```bash [Create from template]
+forge init --template https://github.com/PaulRBerg/foundry-template my_project
+```
+
+```bash [Initialize without git]
+forge init --no-git my_project
+```
+
+### What gets created
+
+A new project includes:
+
+```
+my_project/
+├── foundry.toml      # Project configuration
+├── src/
+│   └── Counter.sol   # Example contract
+├── test/
+│   └── Counter.t.sol # Example test
+├── script/
+│   └── Counter.s.sol # Example script
+└── lib/
+    └── forge-std/    # Standard library
+```
+
+### Learn more
+
+- [Project layout](/projects/layout) — Directory structure and conventions
+- [Dependencies](/projects/dependencies) — Managing external libraries
+- [Soldeer](/projects/soldeer) — Alternative package manager

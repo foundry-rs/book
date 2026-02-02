@@ -1,0 +1,129 @@
+---
+description: Understand Foundry's project structure and directory conventions.
+---
+
+## Project Layout
+
+Foundry uses a conventional directory structure. Configure paths in `foundry.toml` or use the defaults.
+
+### Default structure
+
+```
+project/
+├── foundry.toml        # Project configuration
+├── src/                # Contract source files
+├── test/               # Test files (*.t.sol)
+├── script/             # Script files (*.s.sol)
+├── lib/                # Git submodule dependencies
+├── out/                # Compilation artifacts
+├── cache/              # Compiler cache
+└── broadcast/          # Deployment logs
+```
+
+### Source directories
+
+| Directory | Purpose | Config key |
+|-----------|---------|------------|
+| `src/` | Production contracts | `src` |
+| `test/` | Test contracts | `test` |
+| `script/` | Deployment scripts | `script` |
+| `lib/` | Dependencies | `libs` |
+
+Customize in `foundry.toml`:
+
+```toml
+[profile.default]
+src = "contracts"
+test = "tests"
+script = "scripts"
+libs = ["lib", "node_modules"]
+```
+
+### Output directories
+
+| Directory | Purpose | Config key |
+|-----------|---------|------------|
+| `out/` | Compiled artifacts (ABI, bytecode) | `out` |
+| `cache/` | Compiler cache for incremental builds | `cache_path` |
+| `broadcast/` | Transaction logs from script broadcasts | `broadcast` |
+
+:::tip
+Add `out/`, `cache/`, and `broadcast/` to `.gitignore`. The default template does this automatically.
+:::
+
+### File naming conventions
+
+Foundry identifies file types by suffix:
+
+| Suffix | Type | Example |
+|--------|------|---------|
+| `.sol` | Contract | `Token.sol` |
+| `.t.sol` | Test | `Token.t.sol` |
+| `.s.sol` | Script | `Deploy.s.sol` |
+
+Tests must also inherit from `Test`:
+
+```solidity
+import {Test} from "forge-std/Test.sol";
+
+contract TokenTest is Test {
+    // ...
+}
+```
+
+Scripts must inherit from `Script`:
+
+```solidity
+import {Script} from "forge-std/Script.sol";
+
+contract DeployScript is Script {
+    // ...
+}
+```
+
+### Monorepo setup
+
+For monorepos with multiple Foundry projects, use a root `foundry.toml` or per-project configs.
+
+Share dependencies with a root `lib/` directory:
+
+```toml
+[profile.default]
+libs = ["lib", "../lib"]
+```
+
+Or use workspaces:
+
+```
+monorepo/
+├── foundry.toml        # Root config (optional)
+├── lib/                # Shared dependencies
+├── packages/
+│   ├── token/
+│   │   ├── foundry.toml
+│   │   └── src/
+│   └── governance/
+│       ├── foundry.toml
+│       └── src/
+```
+
+### Remappings
+
+Control import paths with remappings. Foundry auto-detects them from `lib/`, but you can customize:
+
+```toml
+[profile.default]
+remappings = [
+    "@openzeppelin/=lib/openzeppelin-contracts/",
+    "@uniswap/=lib/v3-core/contracts/",
+]
+```
+
+Or use a `remappings.txt` file:
+
+```
+@openzeppelin/=lib/openzeppelin-contracts/
+@uniswap/=lib/v3-core/contracts/
+```
+
+See [Dependencies](/projects/dependencies) for more on managing imports.
