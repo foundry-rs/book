@@ -10,7 +10,7 @@ gen_chisel() {
 
   print_anchored \
     "echo '!help' | chisel" \
-    "$(echo '!help' | chisel | escape_colors)" \
+    "$(echo '!help' | chisel)" \
     > "$OUTPUT_DIR/chisel/help"
 
   echo OK.

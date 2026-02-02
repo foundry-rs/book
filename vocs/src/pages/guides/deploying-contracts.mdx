@@ -13,7 +13,7 @@ This guide covers the full deployment workflow: local testing, testnet deploymen
 #### Start a local node
 
 ```bash
-anvil
+$ anvil
 ```
 
 Anvil provides 10 pre-funded accounts for testing. The first account's private key is `0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80`.
@@ -21,7 +21,7 @@ Anvil provides 10 pre-funded accounts for testing. The first account's private k
 #### Deploy your contract
 
 ```bash
-forge script script/Deploy.s.sol --broadcast --rpc-url http://localhost:8545 --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
+$ forge script script/Deploy.s.sol --broadcast --rpc-url http://localhost:8545 --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
 ```
 
 ::::
@@ -35,19 +35,19 @@ forge script script/Deploy.s.sol --broadcast --rpc-url http://localhost:8545 --p
 Never use plaintext private keys. Import your key into an encrypted keystore:
 
 ```bash
-cast wallet import deployer --interactive
+$ cast wallet import deployer --interactive
 ```
 
 #### Deploy to a testnet
 
 ```bash
-forge script script/Deploy.s.sol --account deployer --broadcast --rpc-url https://sepolia.drpc.org
+$ forge script script/Deploy.s.sol --account deployer --broadcast --rpc-url https://sepolia.drpc.org
 ```
 
 #### Verify the contract
 
 ```bash
-forge verify-contract $CONTRACT_ADDRESS src/Counter.sol:Counter --chain sepolia
+$ forge verify-contract $CONTRACT_ADDRESS src/Counter.sol:Counter --chain sepolia
 ```
 
 ::::
@@ -57,13 +57,13 @@ forge verify-contract $CONTRACT_ADDRESS src/Counter.sol:Counter --chain sepolia
 For mainnet, use a hardware wallet:
 
 ```bash
-forge script script/Deploy.s.sol --ledger --broadcast --rpc-url https://ethereum.reth.rs/rpc
+$ forge script script/Deploy.s.sol --ledger --broadcast --rpc-url https://ethereum.reth.rs/rpc
 ```
 
 Or with an encrypted keystore:
 
 ```bash
-forge script script/Deploy.s.sol --account deployer --broadcast --rpc-url https://ethereum.reth.rs/rpc
+$ forge script script/Deploy.s.sol --account deployer --broadcast --rpc-url https://ethereum.reth.rs/rpc
 ```
 
 ### Contract verification
@@ -73,13 +73,13 @@ Forge can verify contracts on Etherscan and compatible explorers.
 #### Automatic verification during deployment
 
 ```bash
-forge script script/Deploy.s.sol --broadcast --verify --rpc-url https://ethereum.reth.rs/rpc # [!code hl]
+$ forge script script/Deploy.s.sol --broadcast --verify --rpc-url https://ethereum.reth.rs/rpc # [!code hl]
 ```
 
 #### Manual verification
 
 ```bash
-forge verify-contract $CONTRACT_ADDRESS src/Token.sol:Token \
+$ forge verify-contract $CONTRACT_ADDRESS src/Token.sol:Token \
     --chain mainnet \
     --constructor-args $(cast abi-encode "constructor(string,string)" "MyToken" "MTK")
 ```
@@ -90,7 +90,7 @@ If your contract has constructor arguments, encode them:
 
 ```bash
 # For a constructor: constructor(address admin, uint256 supply)
-forge verify-contract $CONTRACT_ADDRESS src/Token.sol:Token \
+$ forge verify-contract $CONTRACT_ADDRESS src/Token.sol:Token \
     --chain mainnet \
     --constructor-args $(cast abi-encode "constructor(address,uint256)" 0x1234...5678 1000000000000000000000000)
 ```
@@ -157,9 +157,9 @@ To deploy to the same address on multiple chains:
 
 ```bash
 # Deploy to multiple chains with the same script
-forge script script/DeployCreate2.s.sol --broadcast --rpc-url https://ethereum.reth.rs/rpc
-forge script script/DeployCreate2.s.sol --broadcast --rpc-url https://sepolia.drpc.org
-forge script script/DeployCreate2.s.sol --broadcast --rpc-url https://mainnet.optimism.io
+$ forge script script/DeployCreate2.s.sol --broadcast --rpc-url https://ethereum.reth.rs/rpc
+$ forge script script/DeployCreate2.s.sol --broadcast --rpc-url https://sepolia.drpc.org
+$ forge script script/DeployCreate2.s.sol --broadcast --rpc-url https://mainnet.optimism.io
 ```
 
 ### Deployment script patterns
@@ -217,11 +217,11 @@ After deployment, verify the contract state:
 
 ```bash
 # Check the deployed bytecode
-cast code $CONTRACT_ADDRESS --rpc-url https://ethereum.reth.rs/rpc
+$ cast code $CONTRACT_ADDRESS --rpc-url https://ethereum.reth.rs/rpc
 
 # Call a view function
-cast call $CONTRACT_ADDRESS "owner()" --rpc-url https://ethereum.reth.rs/rpc
+$ cast call $CONTRACT_ADDRESS "owner()" --rpc-url https://ethereum.reth.rs/rpc
 
 # Check contract balance
-cast balance $CONTRACT_ADDRESS --rpc-url https://ethereum.reth.rs/rpc
+$ cast balance $CONTRACT_ADDRESS --rpc-url https://ethereum.reth.rs/rpc
 ```

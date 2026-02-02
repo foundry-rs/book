@@ -38,13 +38,13 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 Use the built-in formatter for consistent code style:
 
 ```bash
-forge fmt
+$ forge fmt
 ```
 
 Check formatting without modifying files:
 
 ```bash
-forge fmt --check
+$ forge fmt --check
 ```
 
 Configure formatting in `foundry.toml`:
@@ -259,11 +259,11 @@ function run() public {
 Use `forge taint` to detect dangerous data flows from untrusted sources:
 
 ```bash [Check a specific contract]
-forge taint src/Vault.sol
+$ forge taint src/Vault.sol
 ```
 
 ```bash [Check all contracts]
-forge taint
+$ forge taint
 ```
 
 Taint analysis identifies when user-controlled data flows into sensitive operations without validation.
@@ -273,7 +273,7 @@ Taint analysis identifies when user-controlled data flows into sensitive operati
 Catch common issues with `forge lint`:
 
 ```bash
-forge lint
+$ forge lint
 ```
 
 Configure rules in `foundry.toml`:
@@ -320,11 +320,11 @@ function test_TransferMaxAmount() public {
 Store keys encrypted, not as plaintext environment variables:
 
 ```bash [Create a keystore]
-cast wallet import deployer --interactive
+$ cast wallet import deployer --interactive
 ```
 
 ```bash [Use the keystore]
-forge script script/Deploy.s.sol --account deployer --broadcast --rpc-url https://ethereum.reth.rs/rpc
+$ forge script script/Deploy.s.sol --account deployer --broadcast --rpc-url https://ethereum.reth.rs/rpc
 ```
 
 #### Use hardware wallets for production
@@ -332,7 +332,7 @@ forge script script/Deploy.s.sol --account deployer --broadcast --rpc-url https:
 For mainnet deployments, use a hardware wallet:
 
 ```bash
-forge script script/Deploy.s.sol --ledger --broadcast --rpc-url https://ethereum.reth.rs/rpc
+$ forge script script/Deploy.s.sol --ledger --broadcast --rpc-url https://ethereum.reth.rs/rpc
 ```
 
 #### Separate development and production keys
@@ -348,11 +348,11 @@ Use different keys for different environments:
 Anvil provides pre-funded accounts for local testing:
 
 ```bash [Start Anvil]
-anvil
+$ anvil
 ```
 
 ```bash [Use Anvil's first account]
-forge script script/Deploy.s.sol --broadcast --rpc-url http://localhost:8545 --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
+$ forge script script/Deploy.s.sol --broadcast --rpc-url http://localhost:8545 --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
 ```
 
 :::warning
@@ -371,7 +371,7 @@ Keep `.env` files out of version control:
 Use `.env.example` to document required variables:
 
 ```bash [.env.example]
-RPC_URL=
-ETHERSCAN_API_KEY=
+$ RPC_URL=
+$ ETHERSCAN_API_KEY=
 # Use `cast wallet import` instead of PRIVATE_KEY
 ```

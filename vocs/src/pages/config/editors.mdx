@@ -41,7 +41,7 @@ To use `forge fmt` instead, configure the Solidity extension to use Foundry's fo
 Create a `remappings.txt` file so your editor can resolve imports:
 
 ```bash
-forge remappings > remappings.txt
+$ forge remappings > remappings.txt
 ```
 
 The Solidity extension reads this file to resolve import paths.
@@ -157,23 +157,23 @@ Generate shell completions for Foundry commands:
 
 ```bash [Bash]
 # Add to ~/.bashrc
-eval "$(forge completions bash)"
-eval "$(cast completions bash)"
-eval "$(anvil completions bash)"
+$ eval "$(forge completions bash)"
+$ eval "$(cast completions bash)"
+$ eval "$(anvil completions bash)"
 ```
 
 ```bash [Zsh]
 # Add to ~/.zshrc
-eval "$(forge completions zsh)"
-eval "$(cast completions zsh)"
-eval "$(anvil completions zsh)"
+$ eval "$(forge completions zsh)"
+$ eval "$(cast completions zsh)"
+$ eval "$(anvil completions zsh)"
 ```
 
 ```bash [Fish]
 # Add to ~/.config/fish/config.fish
-forge completions fish | source
-cast completions fish | source
-anvil completions fish | source
+$ forge completions fish | source
+$ cast completions fish | source
+$ anvil completions fish | source
 ```
 
 :::

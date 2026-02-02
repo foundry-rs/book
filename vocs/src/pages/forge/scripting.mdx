@@ -39,13 +39,13 @@ Key elements:
 Simulate a deployment (no transactions sent):
 
 ```bash
-forge script script/Deploy.s.sol
+$ forge script script/Deploy.s.sol
 ```
 
 Broadcast transactions to a network:
 
 ```bash
-forge script script/Deploy.s.sol --broadcast --rpc-url $RPC_URL
+$ forge script script/Deploy.s.sol --broadcast --rpc-url $RPC_URL
 ```
 
 ### Providing a private key
@@ -53,15 +53,15 @@ forge script script/Deploy.s.sol --broadcast --rpc-url $RPC_URL
 :::code-group
 
 ```bash [Keystore (recommended)]
-forge script script/Deploy.s.sol --broadcast --rpc-url $RPC_URL --account deployer
+$ forge script script/Deploy.s.sol --broadcast --rpc-url $RPC_URL --account deployer
 ```
 
 ```bash [Hardware wallet]
-forge script script/Deploy.s.sol --broadcast --rpc-url $RPC_URL --ledger
+$ forge script script/Deploy.s.sol --broadcast --rpc-url $RPC_URL --ledger
 ```
 
 ```bash [Raw key (not recommended)]
-forge script script/Deploy.s.sol --broadcast --rpc-url $RPC_URL --private-key $PRIVATE_KEY
+$ forge script script/Deploy.s.sol --broadcast --rpc-url $RPC_URL --private-key $PRIVATE_KEY
 ```
 
 :::
@@ -86,7 +86,7 @@ vm.startBroadcast(deployerPrivateKey);
 Verify on Etherscan during deployment:
 
 ```bash
-forge script script/Deploy.s.sol \
+$ forge script script/Deploy.s.sol \
     --broadcast \
     --rpc-url $RPC_URL \
     --verify \
@@ -98,7 +98,7 @@ forge script script/Deploy.s.sol \
 If a broadcast fails partway through, resume from where it left off:
 
 ```bash
-forge script script/Deploy.s.sol --broadcast --rpc-url $RPC_URL --resume
+$ forge script script/Deploy.s.sol --broadcast --rpc-url $RPC_URL --resume
 ```
 
 ### Multi-chain deployments
@@ -106,9 +106,9 @@ forge script script/Deploy.s.sol --broadcast --rpc-url $RPC_URL --resume
 Deploy to multiple chains by running the script with different RPC URLs:
 
 ```bash
-forge script script/Deploy.s.sol --broadcast --rpc-url $MAINNET_RPC
-forge script script/Deploy.s.sol --broadcast --rpc-url $ARBITRUM_RPC
-forge script script/Deploy.s.sol --broadcast --rpc-url $OPTIMISM_RPC
+$ forge script script/Deploy.s.sol --broadcast --rpc-url $MAINNET_RPC
+$ forge script script/Deploy.s.sol --broadcast --rpc-url $ARBITRUM_RPC
+$ forge script script/Deploy.s.sol --broadcast --rpc-url $OPTIMISM_RPC
 ```
 
 ### Reading deployment artifacts
@@ -147,7 +147,7 @@ console.log("Deploying to:", block.chainid);
 Test a script without sending transactions:
 
 ```bash
-forge script script/Deploy.s.sol --rpc-url $RPC_URL
+$ forge script script/Deploy.s.sol --rpc-url $RPC_URL
 ```
 
 This simulates against the live chain state and shows what would happen.

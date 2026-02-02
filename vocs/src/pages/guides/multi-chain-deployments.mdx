@@ -22,8 +22,8 @@ sepolia = "https://sepolia.drpc.org"
 Reference them in scripts:
 
 ```bash
-forge script script/Deploy.s.sol --broadcast --rpc-url mainnet
-forge script script/Deploy.s.sol --broadcast --rpc-url optimism
+$ forge script script/Deploy.s.sol --broadcast --rpc-url mainnet
+$ forge script script/Deploy.s.sol --broadcast --rpc-url optimism
 ```
 
 ### Chain-aware deployment scripts
@@ -125,9 +125,9 @@ contract DeployCreate2 is Script {
 Deploy to all chains:
 
 ```bash
-forge script script/DeployCreate2.s.sol --broadcast --rpc-url mainnet
-forge script script/DeployCreate2.s.sol --broadcast --rpc-url optimism
-forge script script/DeployCreate2.s.sol --broadcast --rpc-url arbitrum
+$ forge script script/DeployCreate2.s.sol --broadcast --rpc-url mainnet
+$ forge script script/DeployCreate2.s.sol --broadcast --rpc-url optimism
+$ forge script script/DeployCreate2.s.sol --broadcast --rpc-url arbitrum
 ```
 
 ### Using environment variables for chain config
@@ -145,11 +145,11 @@ function getConfig() internal view returns (Config memory) {
 ```
 
 ```bash [.env]
-ADMIN_ADDRESS=0x1234567890123456789012345678901234567890
-INITIAL_SUPPLY=1000000000000000000000000
-WETH_1=0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
-WETH_10=0x4200000000000000000000000000000000000006
-WETH_42161=0x82aF49447D8a07e3bd95BD0d56f35241523fBab1
+$ ADMIN_ADDRESS=0x1234567890123456789012345678901234567890
+$ INITIAL_SUPPLY=1000000000000000000000000
+$ WETH_1=0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
+$ WETH_10=0x4200000000000000000000000000000000000006
+$ WETH_42161=0x82aF49447D8a07e3bd95BD0d56f35241523fBab1
 ```
 
 ### Deployment manifest
@@ -217,7 +217,7 @@ base = { key = "${BASESCAN_API_KEY}", url = "https://api.basescan.org/api" }
 Then verify during deployment:
 
 ```bash
-forge script script/Deploy.s.sol --broadcast --verify --rpc-url optimism
+$ forge script script/Deploy.s.sol --broadcast --verify --rpc-url optimism
 ```
 
 ### Best practices

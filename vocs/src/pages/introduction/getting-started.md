@@ -30,20 +30,20 @@ Create and test a smart contract in under 30 seconds:
 ### Create a new project
 
 ```bash
-forge init hello_foundry
-cd hello_foundry
+$ forge init hello_foundry
+$ cd hello_foundry
 ```
 
 ### Build contracts
 
 ```bash
-forge build
+$ forge build
 ```
 
 ### Run tests
 
 ```bash
-forge test
+$ forge test
 ```
 
 ::::
@@ -51,17 +51,17 @@ forge test
 The generated project includes a `Counter` contract and test:
 
 ```bash
-forge test -vv
-// @log: Ran 2 tests for test/Counter.t.sol:CounterTest
-// @log: [PASS] testFuzz_SetNumber(uint256) (runs: 256, μ: 31121, ~: 31277)
-// @log: [PASS] test_Increment() (gas: 31293)
-// @log: Suite result: ok. 2 passed; 0 failed; 0 skipped
+// [!include ~/snippets/output/hello_foundry/forge-test:command]
+```
+
+```ansi
+// [!include ~/snippets/output/hello_foundry/forge-test:output]
 ```
 
 Deploy using a Forge script:
 
 ```bash
-forge script script/Counter.s.sol
+$ forge script script/Counter.s.sol
 ```
 
 ## Local development with Anvil
@@ -69,13 +69,13 @@ forge script script/Counter.s.sol
 Start a local Ethereum node:
 
 ```bash
-anvil
+$ anvil
 ```
 
 This creates 10 pre-funded test accounts. Fork mainnet state for realistic testing:
 
 ```bash
-anvil --fork-url https://eth.merkle.io
+$ anvil --fork-url https://eth.merkle.io
 ```
 
 ## Interact with chains using Cast
@@ -83,23 +83,23 @@ anvil --fork-url https://eth.merkle.io
 Query blockchain data:
 
 ```bash [Check an address balance]
-cast balance vitalik.eth --ether --rpc-url https://eth.merkle.io
+$ cast balance vitalik.eth --ether --rpc-url https://eth.merkle.io
 ```
 
 ```bash [Get the latest block number]
-cast block-number --rpc-url https://eth.merkle.io
+$ cast block-number --rpc-url https://eth.merkle.io
 ```
 
 ```bash [Call a contract function]
-cast call 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2 "totalSupply()" --rpc-url https://eth.merkle.io
+$ cast call 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2 "totalSupply()" --rpc-url https://eth.merkle.io
 ```
 
 Send transactions to your local Anvil node:
 
 ```bash [Send ETH using an Anvil test account]
-cast send 0x70997970C51812dc3A010C7d01b50e0d17dc79C8 \
-  --value 1ether \
-  --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
+$ cast send 0x70997970C51812dc3A010C7d01b50e0d17dc79C8 \
+    --value 1ether \
+    --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
 ```
 
 ## Prototype with Chisel
@@ -107,7 +107,7 @@ cast send 0x70997970C51812dc3A010C7d01b50e0d17dc79C8 \
 Start the Solidity REPL:
 
 ```bash
-chisel
+$ chisel
 ```
 
 Write and execute Solidity interactively:

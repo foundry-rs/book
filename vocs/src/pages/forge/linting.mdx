@@ -11,13 +11,13 @@ Forge includes a formatter and linter to enforce consistent code style.
 Format all Solidity files:
 
 ```bash
-forge fmt
+$ forge fmt
 ```
 
 Check formatting without making changes:
 
 ```bash
-forge fmt --check
+$ forge fmt --check
 ```
 
 This exits with an error if any file needs formatting—useful for CI.
@@ -54,7 +54,7 @@ Common options:
 Run the linter:
 
 ```bash
-forge lint
+$ forge lint
 ```
 
 The linter checks for:
@@ -76,7 +76,7 @@ exclude = ["DeadCode", "MixedCase"]
 List available rules:
 
 ```bash
-forge lint --list
+$ forge lint --list
 ```
 
 ### Ignoring files

@@ -13,7 +13,7 @@ Solutions to common errors and issues.
 The Foundry bin directory isn't in your PATH. Add it:
 
 ```bash [bash/zsh]
-export PATH="$HOME/.foundry/bin:$PATH"
+$ export PATH="$HOME/.foundry/bin:$PATH"
 ```
 
 Add this line to your shell config (`~/.bashrc`, `~/.zshrc`, etc.) and restart your terminal.
@@ -23,17 +23,17 @@ Add this line to your shell config (`~/.bashrc`, `~/.zshrc`, etc.) and restart y
 On Linux, you may need build essentials:
 
 ```bash [Ubuntu/Debian]
-sudo apt-get install build-essential
+$ sudo apt-get install build-essential
 ```
 
 ```bash [Fedora]
-sudo dnf install gcc
+$ sudo dnf install gcc
 ```
 
 On macOS, install Xcode command line tools:
 
 ```bash
-xcode-select --install
+$ xcode-select --install
 ```
 
 ### Compilation
@@ -93,7 +93,7 @@ via_ir = true
 The transaction reverted without a reason string. Debug with:
 
 ```bash
-forge test --match-test test_Failing -vvvv
+$ forge test --match-test test_Failing -vvvv
 ```
 
 Check for:
@@ -131,7 +131,7 @@ Common causes:
 3. **Randomness in fuzzing** — Use `--fuzz-seed` for reproducibility:
 
 ```bash
-forge test --fuzz-seed 12345
+$ forge test --fuzz-seed 12345
 ```
 
 ### Forking
@@ -155,7 +155,7 @@ rpc_retry_backoff = 2
 Enable caching:
 
 ```bash
-forge test --fork-url $RPC_URL --fork-cache
+$ forge test --fork-url $RPC_URL --fork-cache
 ```
 
 Or in `foundry.toml`:
@@ -173,7 +173,7 @@ The specified block number doesn't exist or hasn't been indexed:
 
 ```bash
 # Use a known block or omit to use latest
-anvil --fork-url $RPC_URL --fork-block-number 18000000
+$ anvil --fork-url $RPC_URL --fork-block-number 18000000
 ```
 
 ### Verification
@@ -186,7 +186,7 @@ Common issues:
 2. **Constructor arguments** — Provide them with `--constructor-args`:
 
 ```bash
-forge verify-contract $ADDRESS src/Token.sol:Token \
+$ forge verify-contract $ADDRESS src/Token.sol:Token \
     --constructor-args $(cast abi-encode "constructor(string,string)" "Name" "SYM") \
     --etherscan-api-key $KEY
 ```
@@ -213,7 +213,7 @@ The deployer account doesn't have enough ETH. Fund it first or use a different a
 Add `--broadcast` to actually send transactions:
 
 ```bash
-forge script script/Deploy.s.sol --broadcast --rpc-url $RPC_URL
+$ forge script script/Deploy.s.sol --broadcast --rpc-url $RPC_URL
 ```
 
 Without `--broadcast`, the script only simulates.
@@ -228,7 +228,7 @@ A transaction with this nonce was already mined. Possible causes:
 Fix by letting Foundry fetch the correct nonce (default behavior) or specify:
 
 ```bash
-forge script script/Deploy.s.sol --broadcast --slow
+$ forge script script/Deploy.s.sol --broadcast --slow
 ```
 
 ### Memory and Performance

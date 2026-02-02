@@ -11,11 +11,11 @@ Anvil can save and restore chain state, enabling reproducible test scenarios and
 Save the current state when Anvil exits:
 
 ```bash [Dump state on exit]
-anvil --dump-state state.json
+$ anvil --dump-state state.json
 ```
 
 ```bash [Dump to a directory]
-anvil --dump-state ./states/
+$ anvil --dump-state ./states/
 ```
 
 ### Loading state
@@ -23,7 +23,7 @@ anvil --dump-state ./states/
 Start from a previously saved state:
 
 ```bash [Load from state file]
-anvil --load-state state.json
+$ anvil --load-state state.json
 ```
 
 ### Combined state file
@@ -31,7 +31,7 @@ anvil --load-state state.json
 Use `--state` to both load and dump from the same file:
 
 ```bash [Persist state across restarts]
-anvil --state state.json
+$ anvil --state state.json
 ```
 
 This loads the state on startup (if the file exists) and saves it on exit.
@@ -41,7 +41,7 @@ This loads the state on startup (if the file exists) and saves it on exit.
 Save state at regular intervals to prevent data loss:
 
 ```bash [Dump state every 60 seconds]
-anvil --state state.json --state-interval 60
+$ anvil --state state.json --state-interval 60
 ```
 
 ### Historical states
@@ -49,11 +49,11 @@ anvil --state state.json --state-interval 60
 By default, Anvil only keeps the latest state. Enable historical state preservation for debugging:
 
 ```bash [Preserve historical states]
-anvil --preserve-historical-states --dump-state state.json
+$ anvil --preserve-historical-states --dump-state state.json
 ```
 
 ```bash [Limit persisted states]
-anvil --max-persisted-states 100
+$ anvil --max-persisted-states 100
 ```
 
 ### Memory management
@@ -61,11 +61,11 @@ anvil --max-persisted-states 100
 For long-running instances, prune historical state to reduce memory usage:
 
 ```bash [Prune history (keep 10 states)]
-anvil --prune-history 10
+$ anvil --prune-history 10
 ```
 
 ```bash [Prune all history]
-anvil --prune-history
+$ anvil --prune-history
 ```
 
 ### Genesis configuration
@@ -73,7 +73,7 @@ anvil --prune-history
 Initialize Anvil with a custom genesis file:
 
 ```bash [Use custom genesis]
-anvil --init genesis.json
+$ anvil --init genesis.json
 ```
 
 The genesis file follows the standard Ethereum genesis format with `alloc`, `difficulty`, `gasLimit`, and other fields.

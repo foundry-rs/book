@@ -34,13 +34,13 @@ Set the `FOUNDRY_PROFILE` environment variable:
 :::code-group
 
 ```bash [Single command]
-FOUNDRY_PROFILE=ci forge test
+$ FOUNDRY_PROFILE=ci forge test
 ```
 
 ```bash [Shell session]
-export FOUNDRY_PROFILE=ci
-forge test
-forge build
+$ export FOUNDRY_PROFILE=ci
+$ forge test
+$ forge build
 ```
 
 :::
@@ -105,10 +105,10 @@ Override any configuration value with environment variables prefixed with `FOUND
 
 ```bash
 # Override optimizer runs
-FOUNDRY_OPTIMIZER_RUNS=500 forge build
+$ FOUNDRY_OPTIMIZER_RUNS=500 forge build
 
 # Override solc version
-FOUNDRY_SOLC_VERSION=0.8.25 forge build
+$ FOUNDRY_SOLC_VERSION=0.8.25 forge build
 ```
 
 This is useful for CI or quick one-off builds without modifying `foundry.toml`.

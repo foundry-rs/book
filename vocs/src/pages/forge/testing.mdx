@@ -7,7 +7,11 @@ description: Write and run tests for Solidity contracts with Forge.
 Forge runs tests written in Solidity. Test files live in `test/` and test functions are prefixed with `test`.
 
 ```bash
-forge test
+// [!include ~/snippets/output/hello_foundry/forge-test:command]
+```
+
+```ansi
+// [!include ~/snippets/output/hello_foundry/forge-test:output]
 ```
 
 ### Writing tests
@@ -60,7 +64,7 @@ Control output detail with `-v` flags:
 | `-vvvvv` | Full traces including storage changes |
 
 ```bash
-forge test -vvv
+$ forge test -vvv
 ```
 
 ### Filtering tests
@@ -70,19 +74,19 @@ Run specific tests:
 :::code-group
 
 ```bash [By name]
-forge test --match-test test_Increment
+$ forge test --match-test test_Increment
 ```
 
 ```bash [By contract]
-forge test --match-contract CounterTest
+$ forge test --match-contract CounterTest
 ```
 
 ```bash [By file]
-forge test --match-path test/Counter.t.sol
+$ forge test --match-path test/Counter.t.sol
 ```
 
 ```bash [Exclude]
-forge test --no-match-test test_Skip
+$ forge test --no-match-test test_Skip
 ```
 
 :::
@@ -167,7 +171,7 @@ The four booleans specify which topics and data to check.
 Test against live chain state:
 
 ```bash
-forge test --fork-url https://ethereum.reth.rs/rpc
+$ forge test --fork-url https://ethereum.reth.rs/rpc
 ```
 
 Or configure in `foundry.toml`:
@@ -180,7 +184,7 @@ eth_rpc_url = "https://ethereum.reth.rs/rpc"
 Pin to a specific block for reproducible tests:
 
 ```bash
-forge test --fork-url https://ethereum.reth.rs/rpc --fork-block-number 18000000
+$ forge test --fork-url https://ethereum.reth.rs/rpc --fork-block-number 18000000
 ```
 
 ### Cheatcodes
@@ -212,5 +216,5 @@ See the [cheatcodes reference](/reference/cheatcodes/overview) for the full list
 Re-run tests when files change:
 
 ```bash
-forge test --watch
+$ forge test --watch
 ```

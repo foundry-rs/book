@@ -21,23 +21,23 @@ Cast works both inside and outside a Foundry project.
 ### Common workflows
 
 ```bash [Get the latest block number]
-cast block-number
+$ cast block-number
 ```
 
 ```bash [Read a contract's storage]
-cast call $CONTRACT "balanceOf(address)" $ADDRESS
+$ cast call $CONTRACT "balanceOf(address)" $ADDRESS
 ```
 
 ```bash [Send a transaction]
-cast send $CONTRACT "transfer(address,uint256)" $TO $AMOUNT --private-key $KEY
+$ cast send $CONTRACT "transfer(address,uint256)" $TO $AMOUNT --private-key $KEY
 ```
 
 ```bash [Decode calldata]
-cast 4byte-decode 0xa9059cbb000000000000000000000000...
+$ cast 4byte-decode 0xa9059cbb000000000000000000000000...
 ```
 
 ```bash [Get an account's ETH balance]
-cast balance $ADDRESS
+$ cast balance $ADDRESS
 ```
 
 ### Learn more

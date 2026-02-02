@@ -148,9 +148,9 @@ contract UpgradeToken is Script {
 Foundry can check storage layout compatibility between implementations:
 
 ```bash
-forge inspect src/TokenV1.sol:TokenV1 storage-layout --pretty > v1-layout.txt
-forge inspect src/TokenV2.sol:TokenV2 storage-layout --pretty > v2-layout.txt
-diff v1-layout.txt v2-layout.txt
+$ forge inspect src/TokenV1.sol:TokenV1 storage-layout --pretty > v1-layout.txt
+$ forge inspect src/TokenV2.sol:TokenV2 storage-layout --pretty > v2-layout.txt
+$ diff v1-layout.txt v2-layout.txt
 ```
 
 #### Storage layout rules
@@ -283,26 +283,26 @@ contract TokenUpgradeTest is Test {
 #### Verify storage compatibility
 
 ```bash
-forge inspect src/TokenV1.sol:TokenV1 storage-layout --pretty
-forge inspect src/TokenV2.sol:TokenV2 storage-layout --pretty
+$ forge inspect src/TokenV1.sol:TokenV1 storage-layout --pretty
+$ forge inspect src/TokenV2.sol:TokenV2 storage-layout --pretty
 ```
 
 #### Test the upgrade on a fork
 
 ```bash
-forge test --match-contract TokenUpgradeTest --fork-url https://ethereum.reth.rs/rpc
+$ forge test --match-contract TokenUpgradeTest --fork-url https://ethereum.reth.rs/rpc
 ```
 
 #### Simulate the upgrade transaction
 
 ```bash
-forge script script/UpgradeToken.s.sol --rpc-url https://ethereum.reth.rs/rpc
+$ forge script script/UpgradeToken.s.sol --rpc-url https://ethereum.reth.rs/rpc
 ```
 
 #### Broadcast with verification
 
 ```bash
-forge script script/UpgradeToken.s.sol --broadcast --verify --rpc-url https://ethereum.reth.rs/rpc
+$ forge script script/UpgradeToken.s.sol --broadcast --verify --rpc-url https://ethereum.reth.rs/rpc
 ```
 
 ::::

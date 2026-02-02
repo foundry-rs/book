@@ -11,21 +11,21 @@ Anvil exposes custom RPC methods beyond the standard Ethereum JSON-RPC API. Thes
 Impersonate any account to send transactions without its private key:
 
 ```bash [Impersonate an account]
-cast rpc anvil_impersonateAccount $ADDRESS
+$ cast rpc anvil_impersonateAccount $ADDRESS
 ```
 
 ```bash [Send transaction as impersonated account]
-cast send $CONTRACT "transfer(address,uint256)" $TO $AMOUNT --from $ADDRESS --unlocked
+$ cast send $CONTRACT "transfer(address,uint256)" $TO $AMOUNT --from $ADDRESS --unlocked
 ```
 
 ```bash [Stop impersonating]
-cast rpc anvil_stopImpersonatingAccount $ADDRESS
+$ cast rpc anvil_stopImpersonatingAccount $ADDRESS
 ```
 
 Start Anvil with auto-impersonation enabled:
 
 ```bash [Enable auto-impersonation]
-anvil --auto-impersonate
+$ anvil --auto-impersonate
 ```
 
 ### Mining control
@@ -33,27 +33,27 @@ anvil --auto-impersonate
 Control when blocks are mined:
 
 ```bash [Disable automatic mining]
-anvil --no-mining
+$ anvil --no-mining
 ```
 
 ```bash [Mine a single block]
-cast rpc anvil_mine
+$ cast rpc anvil_mine
 ```
 
 ```bash [Mine multiple blocks]
-cast rpc anvil_mine 10
+$ cast rpc anvil_mine 10
 ```
 
 ```bash [Set block interval (seconds)]
-anvil --block-time 12
+$ anvil --block-time 12
 ```
 
 ```bash [Enable interval mining via RPC]
-cast rpc evm_setIntervalMining 12
+$ cast rpc evm_setIntervalMining 12
 ```
 
 ```bash [Resume automatic mining]
-cast rpc evm_setAutomine true
+$ cast rpc evm_setAutomine true
 ```
 
 ### Time manipulation
@@ -61,15 +61,15 @@ cast rpc evm_setAutomine true
 Control the blockchain's perception of time:
 
 ```bash [Increase time by seconds]
-cast rpc evm_increaseTime 3600
+$ cast rpc evm_increaseTime 3600
 ```
 
 ```bash [Set next block timestamp]
-cast rpc evm_setNextBlockTimestamp 1700000000
+$ cast rpc evm_setNextBlockTimestamp 1700000000
 ```
 
 ```bash [Mine block with new timestamp]
-cast rpc evm_mine
+$ cast rpc evm_mine
 ```
 
 ### State snapshots
@@ -77,11 +77,11 @@ cast rpc evm_mine
 Create and restore chain state snapshots during a session:
 
 ```bash [Create snapshot]
-cast rpc evm_snapshot
+$ cast rpc evm_snapshot
 ```
 
 ```bash [Revert to snapshot]
-cast rpc evm_revert $SNAPSHOT_ID
+$ cast rpc evm_revert $SNAPSHOT_ID
 ```
 
 Snapshots return an ID that you use to revert. Reverting removes the snapshot.
@@ -91,19 +91,19 @@ Snapshots return an ID that you use to revert. Reverting removes the snapshot.
 Modify account state directly:
 
 ```bash [Set account balance]
-cast rpc anvil_setBalance $ADDRESS 0xDE0B6B3A7640000
+$ cast rpc anvil_setBalance $ADDRESS 0xDE0B6B3A7640000
 ```
 
 ```bash [Set account nonce]
-cast rpc anvil_setNonce $ADDRESS 0x10
+$ cast rpc anvil_setNonce $ADDRESS 0x10
 ```
 
 ```bash [Set contract code]
-cast rpc anvil_setCode $ADDRESS $BYTECODE
+$ cast rpc anvil_setCode $ADDRESS $BYTECODE
 ```
 
 ```bash [Set storage slot]
-cast rpc anvil_setStorageAt $ADDRESS $SLOT $VALUE
+$ cast rpc anvil_setStorageAt $ADDRESS $SLOT $VALUE
 ```
 
 ### Chain configuration
@@ -111,15 +111,15 @@ cast rpc anvil_setStorageAt $ADDRESS $SLOT $VALUE
 Modify chain parameters at runtime:
 
 ```bash [Set chain ID]
-cast rpc anvil_setChainId 31337
+$ cast rpc anvil_setChainId 31337
 ```
 
 ```bash [Set block gas limit]
-cast rpc evm_setBlockGasLimit 0x1C9C380
+$ cast rpc evm_setBlockGasLimit 0x1C9C380
 ```
 
 ```bash [Set next block base fee]
-cast rpc anvil_setNextBlockBaseFeePerGas 0x5F5E100
+$ cast rpc anvil_setNextBlockBaseFeePerGas 0x5F5E100
 ```
 
 ### Transaction pool
@@ -127,15 +127,15 @@ cast rpc anvil_setNextBlockBaseFeePerGas 0x5F5E100
 Inspect and manage pending transactions:
 
 ```bash [Get pending transactions]
-cast rpc txpool_content
+$ cast rpc txpool_content
 ```
 
 ```bash [Drop a transaction]
-cast rpc anvil_dropTransaction $TX_HASH
+$ cast rpc anvil_dropTransaction $TX_HASH
 ```
 
 ```bash [Drop all pending transactions]
-cast rpc anvil_dropAllTransactions
+$ cast rpc anvil_dropAllTransactions
 ```
 
 ### Tracing
@@ -143,9 +143,9 @@ cast rpc anvil_dropAllTransactions
 Enable execution traces for debugging:
 
 ```bash [Enable trace printing]
-anvil --print-traces
+$ anvil --print-traces
 ```
 
 ```bash [Enable step tracing for debug_* methods]
-anvil --steps-tracing
+$ anvil --steps-tracing
 ```

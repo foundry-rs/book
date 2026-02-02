@@ -11,15 +11,15 @@ Foundry uses git submodules to manage dependencies. Libraries are stored in `lib
 :::code-group
 
 ```bash [Basic]
-forge install OpenZeppelin/openzeppelin-contracts
+$ forge install OpenZeppelin/openzeppelin-contracts
 ```
 
 ```bash [Specific version]
-forge install OpenZeppelin/openzeppelin-contracts@v5.0.0
+$ forge install OpenZeppelin/openzeppelin-contracts@v5.0.0
 ```
 
 ```bash [No commit]
-forge install OpenZeppelin/openzeppelin-contracts --no-commit
+$ forge install OpenZeppelin/openzeppelin-contracts --no-commit
 ```
 
 :::
@@ -56,13 +56,17 @@ import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 Generate remappings automatically:
 
 ```bash
-forge remappings
+// [!include ~/snippets/output/hello_foundry/forge-remappings:command]
+```
+
+```ansi
+// [!include ~/snippets/output/hello_foundry/forge-remappings:output]
 ```
 
 Save to a file for IDE support:
 
 ```bash
-forge remappings > remappings.txt
+$ forge remappings > remappings.txt
 ```
 
 ### Updating dependencies
@@ -70,11 +74,11 @@ forge remappings > remappings.txt
 :::code-group
 
 ```bash [All]
-forge update
+$ forge update
 ```
 
 ```bash [Specific]
-forge update lib/openzeppelin-contracts
+$ forge update lib/openzeppelin-contracts
 ```
 
 :::
@@ -82,7 +86,7 @@ forge update lib/openzeppelin-contracts
 ### Removing dependencies
 
 ```bash
-forge remove openzeppelin-contracts
+$ forge remove openzeppelin-contracts
 ```
 
 This removes the submodule from `lib/` and `.gitmodules`.
@@ -96,8 +100,17 @@ When two dependencies require different versions of the same library, you'll enc
 Check dependency trees with:
 
 ```bash
-forge tree
+// [!include ~/snippets/output/forge_tree/forge-tree:command]
 ```
+
+<details>
+<summary>Example output</summary>
+
+```ansi
+// [!include ~/snippets/output/forge_tree/forge-tree:output]
+```
+
+</details>
 
 #### Resolution strategies
 
@@ -106,11 +119,11 @@ forge tree
 Find a version that works for both dependencies:
 
 ```bash
-cd lib/conflicting-library
-git checkout v2.0.0
-cd ../..
-git add lib/conflicting-library
-git commit -m "Pin conflicting-library to v2.0.0"
+$ cd lib/conflicting-library
+$ git checkout v2.0.0
+$ cd ../..
+$ git add lib/conflicting-library
+$ git commit -m "Pin conflicting-library to v2.0.0"
 ```
 
 **2. Create separate remappings**
@@ -118,11 +131,11 @@ git commit -m "Pin conflicting-library to v2.0.0"
 If dependencies need different versions, install both under different names:
 
 ```bash
-forge install org/library@v1.0.0 --no-commit
-mv lib/library lib/library-v1
+$ forge install org/library@v1.0.0 --no-commit
+$ mv lib/library lib/library-v1
 
-forge install org/library@v2.0.0 --no-commit
-mv lib/library lib/library-v2
+$ forge install org/library@v2.0.0 --no-commit
+$ mv lib/library lib/library-v2
 ```
 
 Add remappings:
@@ -141,9 +154,9 @@ Fork and modify the dependency to use a compatible version:
 
 ```bash
 # In lib/problematic-dependency
-git remote add fork https://github.com/you/fork
-git fetch fork
-git checkout fork/compatible-branch
+$ git remote add fork https://github.com/you/fork
+$ git fetch fork
+$ git checkout fork/compatible-branch
 ```
 
 ### Using npm packages
@@ -158,7 +171,7 @@ libs = ["lib", "node_modules"]
 Install with your preferred package manager:
 
 ```bash
-npm install @openzeppelin/contracts
+$ npm install @openzeppelin/contracts
 ```
 
 Import directly:

@@ -11,7 +11,7 @@ Foundry is installed using **foundryup**, the official installer and version man
 ### Install foundryup
 
 ```bash
-curl -L https://foundry.paradigm.xyz | bash
+$ curl -L https://foundry.paradigm.xyz | bash
 ```
 
 ### Restart your terminal
@@ -21,7 +21,7 @@ Or run `source ~/.bashrc` / `source ~/.zshrc`.
 ### Install Foundry
 
 ```bash
-foundryup
+$ foundryup
 ```
 
 ::::
@@ -41,25 +41,25 @@ If installation fails, see [Troubleshooting](/help/troubleshooting) for common f
 Run `foundryup` anytime to update to the latest stable release:
 
 ```bash
-foundryup
+$ foundryup
 ```
 
 ## Installing specific versions
 
 ```bash [Install the nightly build]
-foundryup --install nightly
+$ foundryup --install nightly
 ```
 
 ```bash [Install a specific version]
-foundryup --install 1.0.0
+$ foundryup --install 1.0.0
 ```
 
 ```bash [Install from a specific commit]
-foundryup --install abc1234
+$ foundryup --install abc1234
 ```
 
 ```bash [Install from a branch]
-foundryup --branch master
+$ foundryup --branch master
 ```
 
 ## Installing forks
@@ -67,7 +67,7 @@ foundryup --branch master
 To install binaries from [Tempo's fork](https://github.com/tempoxyz/tempo-foundry):
 
 ```bash
-foundryup -n tempo
+$ foundryup -n tempo
 ```
 
 ## Binary verification
@@ -77,7 +77,7 @@ Foundry binaries are attested using [GitHub artifact attestations](https://docs.
 To manually verify an installed binary:
 
 ```bash
-gh attestation verify --owner foundry-rs $(which forge)
+$ gh attestation verify --owner foundry-rs $(which forge)
 ```
 
 Use `foundryup --force` to skip verification and force a fresh install.
@@ -93,41 +93,41 @@ Download binaries directly from the [GitHub releases page](https://github.com/fo
 Requires [Rust](https://rustup.rs/) (latest stable). On Windows, also requires [Visual Studio](https://visualstudio.microsoft.com/downloads/) with the "Desktop Development With C++" workload.
 
 ```bash [Update Rust]
-rustup update stable
+$ rustup update stable
 ```
 
 ```bash [Install from GitHub]
-cargo install --git https://github.com/foundry-rs/foundry --profile release --locked forge cast chisel anvil
+$ cargo install --git https://github.com/foundry-rs/foundry --profile release --locked forge cast chisel anvil
 ```
 
 Or build from a local clone:
 
 ```bash
-git clone https://github.com/foundry-rs/foundry.git
-cd foundry
-cargo install --path ./crates/forge --profile release --locked
-cargo install --path ./crates/cast --profile release --locked
-cargo install --path ./crates/anvil --profile release --locked
-cargo install --path ./crates/chisel --profile release --locked
+$ git clone https://github.com/foundry-rs/foundry.git
+$ cd foundry
+$ cargo install --path ./crates/forge --profile release --locked
+$ cargo install --path ./crates/cast --profile release --locked
+$ cargo install --path ./crates/anvil --profile release --locked
+$ cargo install --path ./crates/chisel --profile release --locked
 ```
 
 You can also use foundryup to build from source:
 
 ```bash
-foundryup --branch master
-foundryup --path /path/to/foundry
+$ foundryup --branch master
+$ foundryup --path /path/to/foundry
 ```
 
 ### Docker
 
 ```bash
-docker pull ghcr.io/foundry-rs/foundry:latest
+$ docker pull ghcr.io/foundry-rs/foundry:latest
 ```
 
 Or build locally from the [repository](https://github.com/foundry-rs/foundry):
 
 ```bash
-docker build -t foundry .
+$ docker build -t foundry .
 ```
 
 :::note
@@ -151,7 +151,7 @@ The `.foundry` directory may contain keystores with private keys.
 ### Remove the directory
 
 ```bash
-rm -rf ~/.foundry
+$ rm -rf ~/.foundry
 ```
 
 ### Remove PATH entry
