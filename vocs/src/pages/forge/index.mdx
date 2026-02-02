@@ -1,0 +1,48 @@
+---
+description: Forge is Foundry's build, test, and deploy tool for Solidity smart contracts.
+---
+
+## Forge
+
+Forge compiles, tests, and deploys Solidity smart contracts. It's the core development tool in the Foundry suite.
+
+### Key capabilities
+
+| Feature | Description |
+|---------|-------------|
+| **Compilation** | Compile contracts with configurable Solidity versions and optimization |
+| **Testing** | Write tests in Solidity with fuzzing, forking, and gas reporting |
+| **Scripting** | Deploy and interact with contracts using Solidity scripts |
+| **Verification** | Verify source code on Etherscan and other explorers |
+| **Analysis** | Inspect bytecode, storage layouts, and gas usage |
+
+### Common workflows
+
+```bash [Build your project]
+forge build
+```
+
+```bash [Run all tests]
+forge test
+```
+
+```bash [Run tests with verbose output]
+forge test -vvvv
+```
+
+```bash [Deploy via script]
+forge script script/Deploy.s.sol --broadcast --rpc-url $RPC_URL
+```
+
+```bash [Verify a deployed contract]
+forge verify-contract $ADDRESS src/Counter.sol:Counter --etherscan-api-key $KEY
+```
+
+### Learn more
+
+- [Building contracts](/forge/build) — Compilation, artifacts, and optimization
+- [Testing](/forge/testing) — Writing and running tests
+- [Scripting](/forge/scripting) — Deployment and on-chain interactions
+- [Debugging](/forge/debugging) — Traces, debugger, and troubleshooting
+- [Gas tracking](/forge/gas-tracking) — Snapshots and reports
+- [Linting](/forge/linting) — Code style enforcement
