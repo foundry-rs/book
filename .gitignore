@@ -8,6 +8,7 @@
 /vocs/docs/snippets/projects/**/out/
 
 /vocs/node_modules
+/vocs/dist
 /vocs/docs/dist
 _
 links-report.json

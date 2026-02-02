@@ -1,0 +1,246 @@
+## StdConfig
+
+`StdConfig` is a powerful contract that provides bidirectional (read/write) configuration management for Solidity tests and scripts. It parses TOML configuration files, automatically resolves environment variables, and provides type-safe access to configuration values.
+
+### Import
+
+```solidity
+import {StdConfig} from "forge-std/StdConfig.sol";
+import {Variable, LibVariable} from "forge-std/LibVariable.sol";
+
+// Enable global usage of LibVariable
+using LibVariable for Variable global;
+```
+
+### Direct Usage
+
+While typically used through the `Config` abstract contract, you can instantiate `StdConfig` directly:
+
+```solidity
+contract MyTest is Test {
+    using LibVariable for Variable;
+
+    StdConfig config;
+
+    function setUp() public {
+        config = new StdConfig("./config.toml", false);
+        vm.makePersistent(address(config));
+    }
+}
+```
+
+### Configuration File Structure
+
+StdConfig expects a specific TOML structure where top-level keys represent chain identifiers, and variables are organized by type in sub-tables:
+
+```toml
+# IMPORTANT: Chain keys must be either:
+# - Numeric chain ID ([1], [11155111], [10])
+# - Valid Alloy chain alias ([mainnet], [sepolia], [optimism])
+#
+# See https://github.com/alloy-rs/chains for valid aliases. For new/custom chains, use numeric IDs or consider opening a PR.
+
+[<chain>]
+endpoint_url = "https://..."  # Required RPC URL
+
+[<chain>.<type>]
+variable_name = value
+```
+
+Where:
+- `<chain>` is either a chain ID (uint) or a valid chain alias
+- `<type>` must be one of: `bool`, `address`, `uint`, `int`, `bytes32`, `string`, `bytes`
+
+### Getter Functions
+
+#### `get`
+
+Retrieves a variable as a generic `Variable` container that must be cast to the appropriate type.
+
+```solidity
+function get(uint256 chainId, string memory key) public view returns (Variable memory)
+function get(string memory key) public view returns (Variable memory)
+```
+
+**Example:**
+```solidity
+// With explicit chain ID
+uint256 value = config.get(1, "important_number").toUint256();
+
+// Using current fork's chain ID
+vm.selectFork(forkOf[1]);
+address weth = config.get("weth").toAddress();
+```
+
+#### `getRpcUrl`
+
+Returns the RPC URL for a specific chain.
+
+```solidity
+function getRpcUrl(uint256 chainId) public view returns (string memory)
+function getRpcUrl() public view returns (string memory)
+```
+
+#### `getChainIds`
+
+Returns all configured chain IDs.
+
+```solidity
+function getChainIds() public view returns (uint256[] memory)
+```
+
+### Setter Functions
+
+All setter methods update the in-memory state and optionally write changes back to the TOML file.
+
+#### `set`
+
+Sets a value for a given key. Overloaded for all supported types and their arrays.
+
+```solidity
+// Single values
+function set(uint256 chainId, string memory key, bool value) public
+function set(uint256 chainId, string memory key, address value) public
+function set(uint256 chainId, string memory key, uint256 value) public
+function set(uint256 chainId, string memory key, int256 value) public
+function set(uint256 chainId, string memory key, bytes32 value) public
+function set(uint256 chainId, string memory key, string memory value) public
+function set(uint256 chainId, string memory key, bytes memory value) public
+
+// Arrays
+function set(uint256 chainId, string memory key, bool[] memory values) public
+function set(uint256 chainId, string memory key, address[] memory values) public
+// ... and so on for all types
+```
+
+There are also variants without `chainId` that use the current fork's chain ID.
+
+#### `writeUpdatesBackToFile`
+
+Enables or disables automatic writing to the TOML file.
+
+```solidity
+function writeUpdatesBackToFile(bool enabled) public
+```
+
+### Type Conversion with LibVariable
+
+The `LibVariable` library provides safe type conversion for `Variable` structs:
+
+#### Single Value Conversions
+
+```solidity
+variable.toBool()        // Returns bool
+variable.toAddress()     // Returns address
+variable.toUint256()     // Returns uint256
+variable.toUint128()     // Returns uint128 (with overflow check)
+variable.toUint64()      // Returns uint64 (with overflow check)
+variable.toUint32()      // Returns uint32 (with overflow check)
+variable.toUint16()      // Returns uint16 (with overflow check)
+variable.toUint8()       // Returns uint8 (with overflow check)
+variable.toInt256()      // Returns int256
+variable.toInt128()      // Returns int128 (with overflow check)
+// ... similar for other int sizes
+variable.toBytes32()     // Returns bytes32
+variable.toString()      // Returns string
+variable.toBytes()       // Returns bytes
+```
+
+#### Array Conversions
+
+```solidity
+variable.toBoolArray()       // Returns bool[]
+variable.toAddressArray()    // Returns address[]
+variable.toUint256Array()    // Returns uint256[]
+variable.toUint128Array()    // Returns uint128[] (with overflow checks)
+// ... and so on for all types
+```
+
+### Environment Variable Resolution
+
+StdConfig automatically resolves environment variables in the TOML file:
+
+```toml
+# Using chain alias works because "mainnet" is in alloy-chains
+[mainnet]
+endpoint_url = "${MAINNET_RPC_URL}"
+
+[mainnet.address]
+admin = "${ADMIN_ADDRESS}"
+
+# Using numeric chain ID works for any chain
+[1234]
+endpoint_url = "${HYPEREVM_RPC_URL}"
+
+[1234.address]
+admin = "${ADMIN_ADDRESS}"
+```
+
+### Complete Example
+
+```solidity
+contract ConfigExample is Test {
+    using LibVariable for Variable;
+
+    StdConfig config;
+
+    function setUp() public {
+        // Set environment variables
+        vm.setEnv("MAINNET_RPC", "https://eth.llamarpc.com");
+        vm.setEnv("ADMIN_ADDRESS", "0x1234567890123456789012345678901234567890");
+
+        // Load config with write capability
+        config = new StdConfig("./config.toml", true);
+        vm.makePersistent(address(config));
+    }
+
+    function test_readAndWrite() public {
+        // Read various types
+        bool isLive = config.get(1, "is_live").toBool();
+        address weth = config.get(1, "weth").toAddress();
+        uint256 number = config.get(1, "important_number").toUint256();
+
+        // Read arrays
+        address[] memory admins = config.get(1, "admins").toAddressArray();
+        uint256[] memory values = config.get(1, "values").toUint256Array();
+
+        // Update configuration
+        config.set(1, "new_contract", address(0xdead));
+        config.set(1, "deployment_block", block.number);
+        config.set(1, "is_deployed", true);
+
+        // Changes are written to config.toml automatically
+    }
+
+    function test_multiChain() public {
+        // Get all configured chains
+        uint256[] memory chains = config.getChainIds();
+
+        for (uint256 i = 0; i < chains.length; i++) {
+            uint256 chainId = chains[i];
+            string memory rpcUrl = config.getRpcUrl(chainId);
+
+            // Create fork for this chain
+            uint256 forkId = vm.createFork(rpcUrl);
+            vm.selectFork(forkId);
+
+            // Now config.get() without chainId uses this fork's chain
+            address chainWeth = config.get("weth").toAddress();
+        }
+    }
+}
+```
+
+### Error Handling
+
+StdConfig and LibVariable provide comprehensive error messages:
+
+- `NotInitialized()`: Variable doesn't exist in configuration
+- `TypeMismatch(expected, actual)`: Variable type doesn't match expected type
+- `UnsafeCast(message)`: Value doesn't fit in target type (overflow/underflow)
+- `InvalidChainKey(aliasOrId)`: Invalid chain identifier. This occurs when using a custom chain name that doesn't match an [Alloy chain alias](https://github.com/alloy-rs/chains/blob/main/src/named.rs). Use the numeric chain ID instead.
+- `ChainNotInitialized(chainId)`: Chain not found in configuration
+
+### See Also
+
+- [Config](/reference/forge-std/config) - Abstract contract for easier usage
