@@ -169,7 +169,7 @@ contract TokenInternalTest is Test {
 
 #### Prefer bound() over assume()
 
-Use `bound()` to constrain fuzz inputs instead of `vm.assume()`:
+Use `bound(){:solidity}` to constrain fuzz inputs instead of `vm.assume(){:solidity}`:
 
 :::code-group
 
@@ -189,7 +189,7 @@ function testFuzz_Transfer(uint256 amount) public {
 
 :::
 
-`vm.assume()` discards invalid inputs, which can slow down fuzzing. `bound()` transforms inputs to valid ranges.
+`vm.assume(){:solidity}` discards invalid inputs, which can slow down fuzzing. `bound(){:solidity}` transforms inputs to valid ranges.
 
 ### Writing scripts
 
