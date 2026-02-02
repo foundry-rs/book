@@ -10,24 +10,17 @@ Forge provides detailed traces and an interactive debugger to understand contrac
 
 Run tests with `-vvvv` to see full execution traces:
 
+:::terminal
 ```bash
 $ forge test -vvvv
 ```
 
-The trace shows every call, its inputs, outputs, and gas usage:
-
-```txt
-[PASS] test_Increment() (gas: 31293)
-Traces:
-  [31293] CounterTest::test_Increment()
-    ├─ [22340] Counter::increment()
-    │   └─ ← [Stop]
-    ├─ [283] Counter::number() [staticcall]
-    │   └─ ← [Return] 1
-    ├─ [0] VM::assertEq(1, 1) [staticcall]
-    │   └─ ← [Return]
-    └─ ← [Stop]
+```ansi
+// [!include ~/snippets/output/cheatcodes/forge-test-vvvv:output]
 ```
+:::
+
+The trace shows every call, its inputs, outputs, and gas usage.
 
 ### Understanding trace output
 
@@ -122,25 +115,18 @@ function setUp() public {
 
 Traces will show `Token::transfer()` instead of `0x1234...::transfer()`.
 
-### Debugging reverts
-
-When a test fails, the trace shows where and why:
-
-```txt
-[FAIL] test_Transfer() (gas: 45123)
-Traces:
-  [45123] TokenTest::test_Transfer()
-    ├─ [23456] Token::transfer(bob, 1000)
-    │   └─ ← [Revert] InsufficientBalance()
-    └─ ← [Revert] InsufficientBalance()
-```
-
 ### Stack traces
 
-Enable stack traces for revert locations:
+When a test fails, use `-vvv` to see a stack trace showing exactly where the revert occurred:
 
+:::terminal
 ```bash
 $ forge test -vvv
 ```
 
-Shows the exact line in your Solidity code where the revert occurred.
+```ansi
+// [!include ~/snippets/output/cheatcodes/forge-test-fail-vvv:output]
+```
+:::
+
+The trace shows the call hierarchy with the revert bubbling up, and the **Backtrace** pinpoints the exact location in your code.

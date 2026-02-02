@@ -38,8 +38,8 @@ run_command() {
       skip_next=true
       continue
     fi
-    # Escape arguments with spaces or parentheses for display
-    if [[ "$arg" == *' '* ]] || [[ "$arg" == *'('* ]]; then
+    # Escape arguments with spaces, parentheses, or pipe for display
+    if [[ "$arg" == *' '* ]] || [[ "$arg" == *'('* ]] || [[ "$arg" == *'|'* ]]; then
       display_cmd+=("\"$arg\"")
     else
       display_cmd+=("$arg")
@@ -54,11 +54,16 @@ run_command() {
   # 3. Keep only the last spinner line (contains useful info like "Compiling X files...")
   # 4. Remove empty lines and collapse multiple blanks
   # Note: macOS and Linux have different `script` syntax
+  # We use `|| true` to ignore exit codes since `script` on macOS doesn't
+  # reliably propagate exit codes, and we capture output regardless.
+  # We use printf %q to properly quote each argument for shell execution.
   run_with_script() {
+    local quoted_cmd
+    quoted_cmd=$(printf '%q ' "${cmd[@]}")
     if [[ "$(uname)" == "Darwin" ]]; then
-      script -q /dev/null "${cmd[@]}"
+      script -q /dev/null bash -c "$quoted_cmd" || true
     else
-      script -q -c "${cmd[*]}" /dev/null
+      script -q -c "$quoted_cmd" /dev/null || true
     fi
   }
 

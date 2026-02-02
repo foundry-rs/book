@@ -3,7 +3,7 @@
 $ forge build
 // [!endregion command]
 // [!region output]
-Solc 0.8.33 finished in 428.68ms
+Solc 0.8.33 finished in 435.81ms
 Compiler run [32msuccessful[0m!
 // [!endregion output]
 // [!endregion all]
