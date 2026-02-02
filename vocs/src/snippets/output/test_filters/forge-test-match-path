@@ -3,11 +3,11 @@
 $ forge test --match-path test/ContractB.t.sol
 // [!endregion command]
 // [!region output]
-Solc 0.8.10 finished in 443.40ms
+Solc 0.8.10 finished in 444.96ms
 Compiler run [32msuccessful[0m!
 Ran 1 test for test/ContractB.t.sol:ContractBTest
 [32m[PASS][0m testExample() (gas: 257)
-Suite result: [32mok[0m. [32m1[0m passed; [31m0[0m failed; [33m0[0m skipped; finished in 430.76µs (37.56µs CPU time)
-Ran 1 test suite in 9.57ms (430.76µs CPU time): [32m1[0m tests passed, [31m0[0m failed, [33m0[0m skipped (1 total tests)
+Suite result: [32mok[0m. [32m1[0m passed; [31m0[0m failed; [33m0[0m skipped; finished in 356.50µs (31.81µs CPU time)
+Ran 1 test suite in 9.25ms (356.50µs CPU time): [32m1[0m tests passed, [31m0[0m failed, [33m0[0m skipped (1 total tests)
 // [!endregion output]
 // [!endregion all]
