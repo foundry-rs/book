@@ -29,10 +29,8 @@ gen_forge() {
     forge test --match-path test/ContractB.t.sol --color always
 
   in_project cheatcodes
-  run_command "$OUTPUT_DIR/cheatcodes/forge-test-simple" \
-    forge test --match-test test_IncrementAsOwner --color always
   run_command "$OUTPUT_DIR/cheatcodes/forge-test-cheatcodes-expectrevert" \
-    forge test --match-test "test_IncrementAsOwner|test_IncrementAsNotOwner" --match-path test/OwnerUpOnly.t.sol --color always
+    forge test --match-test "test_IncrementAsOwner|test_RevertWhen_CallerIsNotOwner" --match-path test/OwnerUpOnly.t.sol --color always
 
   in_project fuzz_testing
   step test/Safe.t.sol 1
