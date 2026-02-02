@@ -3,7 +3,7 @@
 Get the current client version
 
 ```bash
-$ cast client --help
+cast client --help
 ```
 
 ```txt
@@ -30,14 +30,6 @@ Rpc options:
           
           When the provider's inner runtime transport variant is HTTP, this
           configures the reqwest client to accept invalid certificates.
-
-      --no-proxy
-          Disable automatic proxy detection.
-          
-          Use this in sandboxed environments (e.g., Cursor IDE sandbox, macOS
-          App Sandbox) where system proxy detection causes crashes. When
-          enabled, HTTP_PROXY/HTTPS_PROXY environment variables and system proxy
-          settings will be ignored.
 
       --flashbots
           Use the Flashbots RPC URL with fast mode
@@ -76,9 +68,6 @@ Rpc options:
           Specify custom headers for RPC requests
           
           [env: ETH_RPC_HEADERS=]
-
-      --curl
-          Print the equivalent curl command instead of making the RPC request
 
 Display options:
       --color <COLOR>
