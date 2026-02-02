@@ -26,6 +26,7 @@ $ cast abi-encode "constructor(string,uint256)" "MyToken" 1000000
 $ cast calldata-decode "transfer(address,uint256)" 0xa9059cbb000000000000000000000000...
 ```
 
+:::terminal
 ```bash [Decode using 4byte database]
 // [!include ~/snippets/output/cast/cast-4byte-calldata:command]
 ```
@@ -33,6 +34,7 @@ $ cast calldata-decode "transfer(address,uint256)" 0xa9059cbb0000000000000000000
 ```ansi
 // [!include ~/snippets/output/cast/cast-4byte-calldata:output]
 ```
+:::
 
 ```bash [Look up function selector]
 $ cast 4byte 0xa9059cbb

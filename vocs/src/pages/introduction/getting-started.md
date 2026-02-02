@@ -50,6 +50,7 @@ $ forge test
 
 The generated project includes a `Counter` contract and test:
 
+:::terminal
 ```bash
 // [!include ~/snippets/output/hello_foundry/forge-test:command]
 ```
@@ -57,6 +58,7 @@ The generated project includes a `Counter` contract and test:
 ```ansi
 // [!include ~/snippets/output/hello_foundry/forge-test:output]
 ```
+:::
 
 Deploy using a Forge script:
 
