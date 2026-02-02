@@ -26,11 +26,22 @@ const docs = [
       { text: "Linting", link: "/forge/linting" },
     ],
   },
+  {
+    text: "Cast",
+    items: [
+      { text: "Overview", link: "/cast" },
+      { text: "Reading Chain Data", link: "/cast/reading-chain-data" },
+      { text: "Sending Transactions", link: "/cast/sending-transactions" },
+      { text: "Wallet Operations", link: "/cast/wallet-operations" },
+      { text: "ABI Encoding", link: "/cast/abi-encoding" },
+    ],
+  },
 ];
 
 export const sidebar: Sidebar = {
   "/introduction": docs,
   "/forge": docs,
+  "/cast": docs,
   "/reference/forge": [
     forgeCliReference,
   ],

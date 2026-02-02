@@ -1,0 +1,151 @@
+---
+description: Manage wallets, sign messages, and verify signatures with Cast.
+---
+
+## Wallet operations
+
+Cast provides wallet utilities for key generation, signing, and verification.
+
+### Creating wallets
+
+```bash [Generate a new random wallet]
+cast wallet new
+```
+
+```bash [Generate multiple wallets]
+cast wallet new --number 5
+```
+
+```bash [Create wallet from mnemonic]
+cast wallet from-mnemonic "abandon abandon ... about"
+```
+
+```bash [Derive specific path from mnemonic]
+cast wallet from-mnemonic "abandon abandon ... about" --mnemonic-index 2
+```
+
+### Keystore management
+
+::::steps
+
+#### Create a keystore
+
+```bash
+cast wallet import my-key --interactive
+```
+
+Enter your private key when prompted, then set a password.
+
+#### List keystores
+
+```bash
+cast wallet list
+```
+
+#### Get address from keystore
+
+```bash
+cast wallet address --keystore ~/.foundry/keystores/my-key
+```
+
+::::
+
+### Signing messages
+
+```bash [Sign a message]
+cast wallet sign "Hello, Ethereum!" --private-key $KEY
+```
+
+```bash [Sign with keystore]
+cast wallet sign "Hello, Ethereum!" --keystore ~/.foundry/keystores/my-key --interactive
+```
+
+```bash [Sign raw data (no prefix)]
+cast wallet sign --no-hash 0x1234 --private-key $KEY
+```
+
+### EIP-712 typed data
+
+Sign structured data according to EIP-712:
+
+```bash
+cast wallet sign --data '{
+  "types": {
+    "EIP712Domain": [
+      {"name": "name", "type": "string"},
+      {"name": "version", "type": "string"},
+      {"name": "chainId", "type": "uint256"}
+    ],
+    "Mail": [
+      {"name": "from", "type": "address"},
+      {"name": "to", "type": "address"},
+      {"name": "contents", "type": "string"}
+    ]
+  },
+  "primaryType": "Mail",
+  "domain": {
+    "name": "Ether Mail",
+    "version": "1",
+    "chainId": 1
+  },
+  "message": {
+    "from": "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826",
+    "to": "0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB",
+    "contents": "Hello, Bob!"
+  }
+}' --private-key $KEY
+```
+
+### Verifying signatures
+
+```bash [Verify a signed message]
+cast wallet verify --address $SIGNER "Hello, Ethereum!" $SIGNATURE
+```
+
+```bash [Recover signer from signature]
+cast wallet recover "Hello, Ethereum!" $SIGNATURE
+```
+
+### Vanity addresses
+
+Generate addresses matching a pattern:
+
+```bash [Find address starting with 0xdead]
+cast wallet vanity --starts-with dead
+```
+
+```bash [Find address ending with beef]
+cast wallet vanity --ends-with beef
+```
+
+```bash [Match regex pattern]
+cast wallet vanity --regex "^0x00.*00$"
+```
+
+### Address utilities
+
+```bash [Convert to checksummed address]
+cast to-checksum-address 0xd8da6bf26964af9d7eed9e03e53415d37aa96045
+```
+
+```bash [Compute CREATE address]
+cast compute-address $DEPLOYER --nonce 5
+```
+
+```bash [Compute CREATE2 address]
+cast create2 --starts-with 00 --init-code $BYTECODE --deployer $FACTORY
+```
+
+### Hardware wallets
+
+```bash [List Ledger accounts]
+cast wallet list --ledger
+```
+
+```bash [List Trezor accounts]
+cast wallet list --trezor
+```
+
+```bash [Sign with Ledger]
+cast wallet sign "Hello" --ledger
+```

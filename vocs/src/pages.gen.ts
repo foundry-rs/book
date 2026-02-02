@@ -426,7 +426,12 @@ type Page =
 | { path: '/config/reference/overview'; render: 'static' }
 | { path: '/config/reference/project'; render: 'static' }
 | { path: '/config/reference/solidity-compiler'; render: 'static' }
-| { path: '/config/reference/testing'; render: 'static' };
+| { path: '/config/reference/testing'; render: 'static' }
+| { path: '/cast/abi-encoding'; render: 'static' }
+| { path: '/cast'; render: 'static' }
+| { path: '/cast/reading-chain-data'; render: 'static' }
+| { path: '/cast/sending-transactions'; render: 'static' }
+| { path: '/cast/wallet-operations'; render: 'static' };
 
 // prettier-ignore
 declare module 'waku/router' {
