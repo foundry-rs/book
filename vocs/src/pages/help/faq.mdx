@@ -1,0 +1,251 @@
+---
+description: Frequently asked questions about Foundry and its tools.
+---
+
+## FAQ
+
+Common questions about Foundry.
+
+### General
+
+#### What is Foundry?
+
+Foundry is a fast, portable, and modular toolkit for Ethereum development written in Rust. It includes:
+- **Forge** — Build, test, and deploy smart contracts
+- **Cast** — Interact with the chain from the command line
+- **Anvil** — Local Ethereum node for development
+- **Chisel** — Interactive Solidity REPL
+
+#### How do I install Foundry?
+
+Use `foundryup`:
+
+```bash
+curl -L https://foundry.paradigm.xyz | bash
+foundryup
+```
+
+See [Installation](/introduction/installation) for details.
+
+#### How do I update Foundry?
+
+Run `foundryup` again:
+
+```bash
+foundryup
+```
+
+To install a specific version:
+
+```bash
+foundryup --version nightly-abc123
+```
+
+#### How do I get help with a command?
+
+All Foundry tools support `--help`:
+
+```bash
+forge --help
+forge test --help
+cast --help
+anvil --help
+chisel --help
+```
+
+### Forge
+
+#### How do I run a specific test?
+
+Use `--match-test`:
+
+```bash
+forge test --match-test test_Transfer
+```
+
+Use `--match-contract` for a specific contract:
+
+```bash
+forge test --match-contract TokenTest
+```
+
+#### How do I see console.log output?
+
+Use verbosity level 2 or higher:
+
+```bash
+forge test -vv
+```
+
+#### Why are my tests slow?
+
+Common causes:
+1. **Forking without caching** — Enable fork caching with `--fork-cache`
+2. **Too many fuzz runs** — Reduce `fuzz.runs` in `foundry.toml` for local development
+3. **Large contracts** — Consider splitting tests into separate files
+
+#### How do I debug a failing test?
+
+Use the interactive debugger:
+
+```bash
+forge test --debug test_MyTest
+```
+
+Or increase verbosity to see the trace:
+
+```bash
+forge test --match-test test_MyTest -vvvv
+```
+
+See [Debugging](/forge/debugging) for more.
+
+#### How do I fork mainnet in tests?
+
+Set `--fork-url` or configure it in `foundry.toml`:
+
+```bash
+forge test --fork-url https://ethereum.reth.rs/rpc
+```
+
+Or in `foundry.toml`:
+
+```toml
+[profile.default]
+fork_url = "https://ethereum.reth.rs/rpc"
+```
+
+#### How do I run tests in parallel?
+
+Tests run in parallel by default. To control parallelism:
+
+```bash
+forge test --jobs 4
+```
+
+Set to 1 for sequential execution (useful for debugging):
+
+```bash
+forge test --jobs 1
+```
+
+### Cast
+
+#### How do I call a contract function?
+
+Use `cast call` for read-only calls:
+
+```bash
+cast call $CONTRACT "balanceOf(address)" $ADDRESS
+```
+
+Use `cast send` for state-changing transactions:
+
+```bash
+cast send $CONTRACT "transfer(address,uint256)" $TO $AMOUNT --private-key $KEY
+```
+
+#### How do I decode transaction data?
+
+Use `cast 4byte-decode`:
+
+```bash
+cast 4byte-decode 0xa9059cbb000000000000000000000000...
+```
+
+#### How do I convert between units?
+
+Use `cast to-wei` and `cast from-wei`:
+
+```bash
+cast to-wei 1 ether
+# 1000000000000000000
+
+cast from-wei 1000000000000000000
+# 1.000000000000000000
+```
+
+### Anvil
+
+#### How do I get test ETH?
+
+Anvil pre-funds 10 accounts with 10,000 ETH each. List them:
+
+```bash
+anvil
+# Shows accounts and private keys on startup
+```
+
+#### How do I impersonate an account?
+
+Start Anvil with auto-impersonation:
+
+```bash
+anvil --auto-impersonate
+```
+
+Or impersonate a specific account via RPC:
+
+```bash
+cast rpc anvil_impersonateAccount $ADDRESS
+```
+
+#### How do I reset the chain state?
+
+Use the RPC method:
+
+```bash
+cast rpc anvil_reset
+```
+
+Or restart Anvil.
+
+#### How do I mine blocks manually?
+
+Disable auto-mining and mine manually:
+
+```bash
+anvil --no-mining
+# In another terminal:
+cast rpc anvil_mine 10  # Mine 10 blocks
+```
+
+### Chisel
+
+#### How do I access my project's contracts?
+
+Chisel automatically loads your project. Import and use contracts:
+
+```solidity
+➜ import {Counter} from "src/Counter.sol";
+➜ Counter c = new Counter();
+➜ c.increment();
+```
+
+#### How do I fork in Chisel?
+
+Start with a fork:
+
+```bash
+chisel --fork-url https://ethereum.reth.rs/rpc
+```
+
+Or fork during a session:
+
+```solidity
+➜ !fork https://ethereum.reth.rs/rpc
+```
+
+#### How do I save my session?
+
+Use the `!save` command:
+
+```solidity
+➜ !save my-session
+```
+
+Load it later:
+
+```bash
+chisel load my-session
+```

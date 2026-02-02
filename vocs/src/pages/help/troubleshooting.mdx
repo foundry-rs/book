@@ -1,0 +1,270 @@
+---
+description: Solutions to common Foundry errors and issues.
+---
+
+## Troubleshooting
+
+Solutions to common errors and issues.
+
+### Installation
+
+#### `foundryup: command not found`
+
+The Foundry bin directory isn't in your PATH. Add it:
+
+```bash [bash/zsh]
+export PATH="$HOME/.foundry/bin:$PATH"
+```
+
+Add this line to your shell config (`~/.bashrc`, `~/.zshrc`, etc.) and restart your terminal.
+
+#### Build fails with missing dependencies
+
+On Linux, you may need build essentials:
+
+```bash [Ubuntu/Debian]
+sudo apt-get install build-essential
+```
+
+```bash [Fedora]
+sudo dnf install gcc
+```
+
+On macOS, install Xcode command line tools:
+
+```bash
+xcode-select --install
+```
+
+### Compilation
+
+#### `Error: Compiler version X does not satisfy the requirement`
+
+Your contract requires a different Solidity version. Either:
+
+1. Update your `foundry.toml`:
+
+```toml
+[profile.default]
+solc_version = "0.8.28"
+```
+
+2. Or use auto-detection (default behavior):
+
+```toml
+[profile.default]
+auto_detect_solc = true
+```
+
+#### `Error: Source not found`
+
+The compiler can't find an imported file. Check:
+
+1. **Remappings** — Run `forge remappings` to see current mappings
+2. **Dependencies** — Run `forge install` to install missing dependencies
+3. **Path** — Verify the import path matches the file location
+
+Add remappings in `foundry.toml`:
+
+```toml
+[profile.default]
+remappings = [
+    "@openzeppelin/=lib/openzeppelin-contracts/",
+]
+```
+
+#### `Stack too deep`
+
+The compiler hit the EVM's 16 local variable limit. Solutions:
+
+1. Use structs to group variables
+2. Extract code into internal functions
+3. Use `--via-ir` for the IR-based code generator:
+
+```toml
+[profile.default]
+via_ir = true
+```
+
+### Testing
+
+#### `EvmError: Revert` with no message
+
+The transaction reverted without a reason string. Debug with:
+
+```bash
+forge test --match-test test_Failing -vvvv
+```
+
+Check for:
+- Failed `require()` without a message
+- Low-level calls that returned `false`
+- Out of gas
+
+#### `EvmError: OutOfGas`
+
+Increase the gas limit:
+
+```toml
+[profile.default]
+gas_limit = "18446744073709551615"
+```
+
+Or check for infinite loops in your code.
+
+#### Fuzz test finds edge case
+
+When fuzzing finds a failure, it shows the failing input:
+
+```txt
+[FAIL. Reason: Overflow; counterexample: x=115792...]
+```
+
+Add the edge case as a unit test, then fix the bug.
+
+#### Tests pass locally but fail in CI
+
+Common causes:
+
+1. **Different Solidity version** — Pin the version in `foundry.toml`
+2. **Fork URL issues** — Ensure CI has access to RPC endpoints
+3. **Randomness in fuzzing** — Use `--fuzz-seed` for reproducibility:
+
+```bash
+forge test --fuzz-seed 12345
+```
+
+### Forking
+
+#### `Error: Failed to fetch block`
+
+The RPC endpoint is unreachable or rate-limited. Try:
+
+1. Check your internet connection
+2. Use a different RPC provider
+3. Add retry configuration:
+
+```toml
+[profile.default]
+rpc_retry_delay = 1000
+rpc_retry_backoff = 2
+```
+
+#### Fork tests are slow
+
+Enable caching:
+
+```bash
+forge test --fork-url $RPC_URL --fork-cache
+```
+
+Or in `foundry.toml`:
+
+```toml
+[profile.default]
+fork_cache = true
+```
+
+The cache is stored in `~/.foundry/cache/rpc/`.
+
+#### `Error: Block not found`
+
+The specified block number doesn't exist or hasn't been indexed:
+
+```bash
+# Use a known block or omit to use latest
+anvil --fork-url $RPC_URL --fork-block-number 18000000
+```
+
+### Verification
+
+#### `Error: Contract verification failed`
+
+Common issues:
+
+1. **Wrong compiler settings** — Ensure verification uses same settings as deployment
+2. **Constructor arguments** — Provide them with `--constructor-args`:
+
+```bash
+forge verify-contract $ADDRESS src/Token.sol:Token \
+    --constructor-args $(cast abi-encode "constructor(string,string)" "Name" "SYM") \
+    --etherscan-api-key $KEY
+```
+
+3. **Optimizer mismatch** — Check `optimizer` and `optimizer_runs` match
+
+#### `Error: API rate limit exceeded`
+
+Wait and retry, or use a different Etherscan API key. Add delays:
+
+```toml
+[etherscan]
+mainnet = { key = "${ETHERSCAN_API_KEY}", chain = 1 }
+```
+
+### Scripts
+
+#### `Error: Script failed: insufficient funds`
+
+The deployer account doesn't have enough ETH. Fund it first or use a different account.
+
+#### Script runs but transactions aren't broadcast
+
+Add `--broadcast` to actually send transactions:
+
+```bash
+forge script script/Deploy.s.sol --broadcast --rpc-url $RPC_URL
+```
+
+Without `--broadcast`, the script only simulates.
+
+#### `Error: Nonce too low`
+
+A transaction with this nonce was already mined. Possible causes:
+
+1. Script was partially executed before
+2. Account was used elsewhere
+
+Fix by letting Foundry fetch the correct nonce (default behavior) or specify:
+
+```bash
+forge script script/Deploy.s.sol --broadcast --slow
+```
+
+### Memory and Performance
+
+#### `Error: Memory allocation failed`
+
+Large contracts or datasets can exhaust memory. Solutions:
+
+1. Increase system memory
+2. Split large tests into separate files
+3. Reduce fuzz run count for local testing:
+
+```toml
+[profile.default]
+fuzz.runs = 256
+```
+
+#### Compilation is slow
+
+Enable the cache (on by default):
+
+```toml
+[profile.default]
+cache = true
+```
+
+Use `--no-cache` only when debugging cache issues.
+
+For large projects, consider:
+- Splitting into multiple packages
+- Using sparse checkout for dependencies
+
+### Getting More Help
+
+If your issue isn't listed here:
+
+1. Check the [Foundry GitHub issues](https://github.com/foundry-rs/foundry/issues)
+2. Search the [Foundry Telegram](https://t.me/foundry_rs)
+3. Ask in the [Foundry Discord](https://discord.gg/foundry)

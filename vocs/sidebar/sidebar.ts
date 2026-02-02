@@ -54,6 +54,13 @@ const docs = [
       { text: "Commands", link: "/chisel/commands" },
     ],
   },
+  {
+    text: "Help",
+    items: [
+      { text: "FAQ", link: "/help/faq" },
+      { text: "Troubleshooting", link: "/help/troubleshooting" },
+    ],
+  },
 ];
 
 export const sidebar: Sidebar = {
@@ -62,6 +69,7 @@ export const sidebar: Sidebar = {
   "/cast": docs,
   "/anvil": docs,
   "/chisel": docs,
+  "/help": docs,
   "/reference/forge": [
     forgeCliReference,
   ],
