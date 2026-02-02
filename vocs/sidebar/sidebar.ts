@@ -71,6 +71,15 @@ const docs = [
     ],
   },
   {
+    text: "Configuration",
+    items: [
+      { text: "Overview", link: "/config" },
+      { text: "Profiles", link: "/config/profiles" },
+      { text: "CI Integration", link: "/config/ci" },
+      { text: "Editor Setup", link: "/config/editors" },
+    ],
+  },
+  {
     text: "Best Practices",
     link: "/best-practices",
   },
@@ -85,6 +94,7 @@ export const sidebar: Sidebar = {
   "/chisel": docs,
   "/help": docs,
   "/best-practices": docs,
+  "/config": docs,
   "/reference/forge": [
     forgeCliReference,
   ],

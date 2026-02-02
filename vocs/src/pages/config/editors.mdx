@@ -1,0 +1,181 @@
+---
+description: Configure VS Code, Vim, and other editors for Foundry projects.
+---
+
+## Editor Setup
+
+Configure your editor for Solidity syntax highlighting, formatting, and Foundry integration.
+
+### VS Code
+
+#### Recommended extensions
+
+| Extension | Purpose |
+|-----------|---------|
+| [Solidity by Nomic Foundation](https://marketplace.visualstudio.com/items?itemName=NomicFoundation.hardhat-solidity) | Syntax highlighting, diagnostics, code completion |
+| [Even Better TOML](https://marketplace.visualstudio.com/items?itemName=tamasfe.even-better-toml) | `foundry.toml` syntax highlighting |
+
+#### Configure format on save
+
+Add to your VS Code settings (`.vscode/settings.json`):
+
+```json [.vscode/settings.json]
+{
+  "[solidity]": {
+    "editor.defaultFormatter": "NomicFoundation.hardhat-solidity",
+    "editor.formatOnSave": true
+  }
+}
+```
+
+To use `forge fmt` instead, configure the Solidity extension to use Foundry's formatter:
+
+```json [.vscode/settings.json]
+{
+  "solidity.formatter": "forge"
+}
+```
+
+#### Generate remappings for IDE support
+
+Create a `remappings.txt` file so your editor can resolve imports:
+
+```bash
+forge remappings > remappings.txt
+```
+
+The Solidity extension reads this file to resolve import paths.
+
+#### Recommended workspace settings
+
+Create `.vscode/settings.json` in your project:
+
+```json [.vscode/settings.json]
+{
+  "[solidity]": {
+    "editor.defaultFormatter": "NomicFoundation.hardhat-solidity",
+    "editor.formatOnSave": true
+  },
+  "solidity.formatter": "forge",
+  "solidity.packageDefaultDependenciesContractsDirectory": "src",
+  "solidity.packageDefaultDependenciesDirectory": "lib"
+}
+```
+
+### Vim / Neovim
+
+#### Syntax highlighting
+
+Use [vim-solidity](https://github.com/tomlion/vim-solidity) for syntax highlighting:
+
+```vim
+Plug 'tomlion/vim-solidity'
+```
+
+#### LSP support with Neovim
+
+For Neovim with `nvim-lspconfig`, configure the Solidity language server:
+
+```lua [init.lua]
+require('lspconfig').solidity_ls.setup({
+  root_dir = require('lspconfig.util').root_pattern('foundry.toml', '.git'),
+})
+```
+
+#### Format with forge fmt
+
+Create a command to format the current file:
+
+```vim
+command! ForgeFmt !forge fmt %
+```
+
+Or set up autoformatting on save:
+
+```vim
+autocmd BufWritePost *.sol silent! !forge fmt %
+```
+
+### JetBrains IDEs
+
+#### IntelliJ IDEA / WebStorm
+
+Install the [Solidity plugin](https://plugins.jetbrains.com/plugin/9475-solidity) for syntax highlighting and basic support.
+
+Configure external tools for Foundry commands:
+
+1. Go to **Settings → Tools → External Tools**
+2. Add a new tool:
+   - **Name**: Forge Build
+   - **Program**: `forge`
+   - **Arguments**: `build`
+   - **Working directory**: `$ProjectFileDir$`
+
+3. Repeat for other commands (`forge test`, `forge fmt`)
+
+#### Format on save
+
+Use the File Watchers plugin to run `forge fmt` on save:
+
+1. Install the **File Watchers** plugin
+2. Go to **Settings → Tools → File Watchers**
+3. Add a new watcher:
+   - **File type**: Solidity
+   - **Program**: `forge`
+   - **Arguments**: `fmt $FilePath$`
+   - **Output paths to refresh**: `$FilePath$`
+
+### Emacs
+
+Use [solidity-mode](https://github.com/ethereum/solidity-mode):
+
+```elisp
+(use-package solidity-mode
+  :ensure t
+  :mode "\\.sol\\'")
+```
+
+Configure `forge fmt` as the formatter:
+
+```elisp
+(defun forge-fmt ()
+  "Format current buffer with forge fmt."
+  (interactive)
+  (shell-command (format "forge fmt %s" (buffer-file-name)))
+  (revert-buffer t t t))
+
+(add-hook 'solidity-mode-hook
+  (lambda ()
+    (add-hook 'before-save-hook #'forge-fmt nil t)))
+```
+
+### Shell completions
+
+Generate shell completions for Foundry commands:
+
+:::code-group
+
+```bash [Bash]
+# Add to ~/.bashrc
+eval "$(forge completions bash)"
+eval "$(cast completions bash)"
+eval "$(anvil completions bash)"
+```
+
+```bash [Zsh]
+# Add to ~/.zshrc
+eval "$(forge completions zsh)"
+eval "$(cast completions zsh)"
+eval "$(anvil completions zsh)"
+```
+
+```bash [Fish]
+# Add to ~/.config/fish/config.fish
+forge completions fish | source
+cast completions fish | source
+anvil completions fish | source
+```
+
+:::
+
+After adding completions, restart your shell or source your config file.

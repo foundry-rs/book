@@ -1,0 +1,61 @@
+---
+description: Configure Foundry with foundry.toml, profiles, and environment variables.
+---
+
+import { Cards, Card } from 'vocs'
+
+## Configuration
+
+Foundry uses `foundry.toml` for project configuration. This file controls compiler settings, test behavior, formatting rules, and more.
+
+### Quick start
+
+A minimal configuration:
+
+```toml [foundry.toml]
+[profile.default]
+src = "src"
+out = "out"
+libs = ["lib"]
+solc_version = "0.8.28"
+```
+
+View your resolved configuration:
+
+```bash
+forge config
+```
+
+### Key capabilities
+
+| Feature | Description |
+|---------|-------------|
+| **Profiles** | Switch between configurations for development, CI, and production |
+| **Environment variables** | Override settings without modifying files |
+| **Global config** | Share settings across all your projects |
+| **Remappings** | Customize import paths for dependencies |
+
+### Learn more
+
+<Cards>
+  <Card
+    title="Profiles"
+    description="Configure different settings for development, CI, and production."
+    href="/config/profiles"
+  />
+  <Card
+    title="CI Integration"
+    description="Set up GitHub Actions and other CI systems."
+    href="/config/ci"
+  />
+  <Card
+    title="Editor Setup"
+    description="Configure VS Code and other editors for Foundry projects."
+    href="/config/editors"
+  />
+  <Card
+    title="Configuration Reference"
+    description="Complete reference for all configuration options."
+    href="/config/reference/overview"
+  />
+</Cards>
