@@ -28,12 +28,12 @@ bun check-links     # Validate all internal documentation links
 
 ### Key Directories
 - `/vocs/` - Main documentation source directory
-  - `/docs/pages/` - All documentation content in MDX format, organized by tool:
+  - `/src/pages/` - All documentation content in MDX format, organized by tool:
     - `/forge/` - Smart contract compilation and testing documentation
     - `/cast/` - Ethereum RPC client documentation
     - `/anvil/` - Local Ethereum node documentation
     - `/chisel/` - Solidity REPL documentation
-  - `/docs/public/` - Static assets (images, diagrams)
+  - `/public/` - Static assets (images, diagrams)
   - `/sidebar/` - Navigation configuration (sidebar.ts and modular sections)
   - `/docs/snippets/` - Code examples and auto-generated outputs
 
@@ -46,7 +46,7 @@ bun check-links     # Validate all internal documentation links
 - MDX files support frontmatter for metadata
 - Code snippets are pulled from `/docs/snippets/projects/` test projects
 - Auto-generated CLI outputs stored in `/docs/snippets/output/`
-- Images and assets organized by topic in `/docs/public/`
+- Images and assets organized by topic in `/public/`
 
 ## Contributing Guidelines
 
