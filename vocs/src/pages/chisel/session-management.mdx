@@ -1,0 +1,89 @@
+---
+description: Save, load, and export Chisel REPL sessions.
+---
+
+## Session management
+
+Chisel caches sessions so you can save your work and resume later. Sessions store all your Solidity definitions, variables, and state.
+
+### Saving sessions
+
+Save your current session with `!save`:
+
+```solidity
+➜ uint256 counter = 100
+➜ function increment() public { counter++; }
+➜ !save my-session
+Saved session to cache with ID = my-session
+```
+
+Without an ID, Chisel generates one automatically.
+
+### Loading sessions
+
+Load a previously saved session with `!load`:
+
+```solidity
+➜ !load my-session
+Loaded session my-session
+```
+
+:::warning
+Loading a session overwrites your current work. Chisel optimistically caches the current session before loading, but save explicitly if you want to keep it.
+:::
+
+### Listing sessions
+
+View all cached sessions:
+
+```solidity
+➜ !list
+chisel sessions:
+├ my-session
+└ debug-erc20
+```
+
+Or from the command line:
+
+```bash
+chisel list
+```
+
+### Viewing session source
+
+See the generated Solidity source for a cached session:
+
+```bash
+chisel view my-session
+```
+
+### Exporting to a script
+
+Export your session as a Foundry script file:
+
+```solidity
+➜ !export
+Exported session to script/REPL.s.sol
+```
+
+This creates a runnable script with all your definitions, useful for turning prototypes into deployable code.
+
+### Clearing sessions
+
+Clear the current session (start fresh):
+
+```solidity
+➜ !clear
+```
+
+Clear all cached sessions:
+
+```solidity
+➜ !clearcache
+```
+
+Or from the command line:
+
+```bash
+chisel clear-cache
+```

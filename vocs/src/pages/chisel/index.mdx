@@ -1,0 +1,57 @@
+---
+description: Chisel is Foundry's interactive Solidity REPL for rapid prototyping and debugging.
+---
+
+## Chisel
+
+Chisel is an interactive Solidity REPL (Read-Eval-Print Loop) for rapid prototyping and debugging. Write and execute Solidity code instantly without compiling full contracts.
+
+### Key capabilities
+
+| Feature | Description |
+|---------|-------------|
+| **Interactive execution** | Execute Solidity expressions and statements in real-time |
+| **Variable inspection** | Inspect values, types, and raw stack/memory data |
+| **Forking** | Fork any chain to interact with live contracts |
+| **Session management** | Save, load, and export REPL sessions |
+| **Project integration** | Access your project's contracts and dependencies |
+
+### Common workflows
+
+```bash [Start the REPL]
+chisel
+```
+
+```bash [Fork mainnet]
+chisel --fork-url https://ethereum.reth.rs/rpc
+```
+
+```bash [Evaluate without entering REPL]
+chisel eval "uint256 x = 1 + 2; x"
+```
+
+```bash [Load a saved session]
+chisel load my-session
+```
+
+```bash [List cached sessions]
+chisel list
+```
+
+### Quick example
+
+```solidity
+➜ uint256 x = 10
+➜ uint256 y = 20
+➜ x + y
+Type: uint256
+├ Hex: 0x1e
+├ Hex (full word): 0x1e
+└ Decimal: 30
+```
+
+### Learn more
+
+- [Session management](/chisel/session-management) — Save, load, and export sessions
+- [Forking](/chisel/forking) — Interact with live chain state
+- [Commands](/chisel/commands) — All available REPL commands

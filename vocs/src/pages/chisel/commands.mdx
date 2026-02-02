@@ -1,0 +1,91 @@
+---
+description: All available commands in the Chisel REPL.
+---
+
+## Commands
+
+Chisel commands start with `!` and control the REPL environment. Type `!help` to see all commands.
+
+### General
+
+| Command | Alias | Description |
+|---------|-------|-------------|
+| `!help` | `!h` | Display all commands |
+| `!quit` | `!q` | Quit the REPL |
+| `!exec <CMD>` | `!e` | Execute a shell command |
+
+### Session
+
+| Command | Alias | Description |
+|---------|-------|-------------|
+| `!clear` | `!c` | Clear the current session source |
+| `!source` | `!so` | Print the generated source contract |
+| `!save [ID]` | `!s` | Save session to cache |
+| `!load <ID>` | `!l` | Load a cached session |
+| `!list` | `!ls` | List all cached sessions |
+| `!clearcache` | `!cc` | Clear all cached sessions |
+| `!export` | `!ex` | Export session to a Script file |
+| `!fetch <ADDR> <NAME>` | `!fe` | Fetch verified contract interface from Etherscan |
+| `!edit` | | Open session in an editor |
+
+### Environment
+
+| Command | Alias | Description |
+|---------|-------|-------------|
+| `!fork [URL]` | `!f` | Fork an RPC endpoint |
+| `!traces` | `!t` | Enable/disable execution traces |
+| `!calldata [DATA]` | `!cd` | Set `msg.data` for the session |
+
+### Debug
+
+| Command | Alias | Description |
+|---------|-------|-------------|
+| `!memdump` | `!md` | Dump raw memory |
+| `!stackdump` | `!sd` | Dump raw stack |
+| `!rawstack <VAR>` | `!rs` | Display raw value of a variable's stack allocation |
+
+### Examples
+
+View the generated Solidity source:
+
+```solidity
+➜ uint256 x = 42
+➜ !source
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.28;
+
+import {Vm} from "forge-std/Vm.sol";
+
+contract REPL {
+    Vm internal constant vm = Vm(address(uint160(uint256(keccak256("hevm cheat code")))));
+
+    uint256 x = 42;
+
+    function run() public {}
+}
+```
+
+Enable execution traces:
+
+```solidity
+➜ !traces
+Traces enabled
+➜ keccak256("hello")
+Traces:
+  [191] REPL::run()
+    └─ ← [Return]
+
+Type: bytes32
+└ 0x1c8aff950685c2ed4bc3174f3472287b56d9517b9c948127319a09a7a36deac8
+```
+
+Inspect raw stack values:
+
+```solidity
+➜ uint256 num = 0xdeadbeef
+➜ !rawstack num
+Type: uint256
+├ Hex: 0xdeadbeef
+├ Hex (full word): 0xdeadbeef
+└ Decimal: 3735928559
+```

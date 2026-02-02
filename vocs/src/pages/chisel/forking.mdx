@@ -1,0 +1,67 @@
+---
+description: Fork live chains in Chisel to interact with deployed contracts.
+---
+
+## Forking
+
+Fork any EVM chain in Chisel to interact with deployed contracts, inspect state, and prototype against live data.
+
+### Starting with a fork
+
+Launch Chisel with a fork from the command line:
+
+```bash
+chisel --fork-url https://ethereum.reth.rs/rpc
+```
+
+### Forking mid-session
+
+Fork or switch chains during a session with `!fork`:
+
+```solidity
+➜ !fork https://ethereum.reth.rs/rpc
+Set fork URL to https://ethereum.reth.rs/rpc
+```
+
+### Interacting with contracts
+
+Once forked, call any deployed contract:
+
+```solidity
+➜ interface IERC20 {
+    function balanceOf(address) external view returns (uint256);
+    function symbol() external view returns (string memory);
+}
+➜ IERC20 dai = IERC20(0x6B175474E89094C44Da98b954EescdeCB5C8F);
+➜ dai.symbol()
+Type: string
+└ "DAI"
+```
+
+### Fetching interfaces
+
+Fetch a verified contract's interface from Etherscan:
+
+```solidity
+➜ !fetch 0x6B175474E89094C44Da98b954EeacdeCB5C8F DAI
+```
+
+This imports the interface so you can interact with the contract immediately.
+
+### Using cheatcodes
+
+Foundry's cheatcodes are available in forked mode:
+
+```solidity
+➜ address whale = 0x...; // DAI holder
+➜ vm.prank(whale);
+➜ dai.transfer(address(this), 1000e18);
+```
+
+### Fork options
+
+| Option | Description |
+|--------|-------------|
+| `--fork-url <URL>` | RPC endpoint to fork from |
+| `--fork-block-number <BLOCK>` | Fork at a specific block number |
+| `--no-storage-caching` | Disable RPC caching, always fetch fresh data |
