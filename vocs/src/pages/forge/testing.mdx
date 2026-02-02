@@ -6,6 +6,7 @@ description: Write and run tests for Solidity contracts with Forge.
 
 Forge runs tests written in Solidity. Test files live in `test/` and test functions are prefixed with `test`.
 
+:::terminal
 ```bash
 // [!include ~/snippets/output/hello_foundry/forge-test:command]
 ```
@@ -13,6 +14,7 @@ Forge runs tests written in Solidity. Test files live in `test/` and test functi
 ```ansi
 // [!include ~/snippets/output/hello_foundry/forge-test:output]
 ```
+:::
 
 ### Writing tests
 
@@ -81,6 +83,7 @@ $ forge test --match-contract CounterTest
 
 By file path:
 
+:::terminal
 ```bash
 // [!include ~/snippets/output/test_filters/forge-test-match-path:command]
 ```
@@ -88,9 +91,11 @@ By file path:
 ```ansi
 // [!include ~/snippets/output/test_filters/forge-test-match-path:output]
 ```
+:::
 
 Combine filters:
 
+:::terminal
 ```bash
 // [!include ~/snippets/output/test_filters/forge-test-match-contract-and-test:command]
 ```
@@ -98,6 +103,7 @@ Combine filters:
 ```ansi
 // [!include ~/snippets/output/test_filters/forge-test-match-contract-and-test:output]
 ```
+:::
 
 Exclude tests with `--no-match-*` variants:
 
@@ -118,6 +124,7 @@ function testFuzz_SetNumber(uint256 x) public {
 
 Forge generates random inputs and runs the test multiple times (256 by default):
 
+:::terminal
 ```bash
 // [!include ~/snippets/output/fuzz_testing/forge-test-success-fuzz:command]
 ```
@@ -125,6 +132,7 @@ Forge generates random inputs and runs the test multiple times (256 by default):
 ```ansi
 // [!include ~/snippets/output/fuzz_testing/forge-test-success-fuzz:output]
 ```
+:::
 
 Configure fuzzing:
 
@@ -173,6 +181,7 @@ function test_RevertWhen_InsufficientBalance() public {
 }
 ```
 
+:::terminal
 ```bash
 // [!include ~/snippets/output/cheatcodes/forge-test-cheatcodes-expectrevert:command]
 ```
@@ -180,6 +189,7 @@ function test_RevertWhen_InsufficientBalance() public {
 ```ansi
 // [!include ~/snippets/output/cheatcodes/forge-test-cheatcodes-expectrevert:output]
 ```
+:::
 
 ### Testing events
 
