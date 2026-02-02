@@ -1,0 +1,151 @@
+---
+description: Anvil's custom RPC methods for impersonation, mining control, and state manipulation.
+---
+
+## Custom methods
+
+Anvil exposes custom RPC methods beyond the standard Ethereum JSON-RPC API. These methods are useful for testing scenarios that require account impersonation, time manipulation, or mining control.
+
+### Account impersonation
+
+Impersonate any account to send transactions without its private key:
+
+```bash [Impersonate an account]
+cast rpc anvil_impersonateAccount $ADDRESS
+```
+
+```bash [Send transaction as impersonated account]
+cast send $CONTRACT "transfer(address,uint256)" $TO $AMOUNT --from $ADDRESS --unlocked
+```
+
+```bash [Stop impersonating]
+cast rpc anvil_stopImpersonatingAccount $ADDRESS
+```
+
+Start Anvil with auto-impersonation enabled:
+
+```bash [Enable auto-impersonation]
+anvil --auto-impersonate
+```
+
+### Mining control
+
+Control when blocks are mined:
+
+```bash [Disable automatic mining]
+anvil --no-mining
+```
+
+```bash [Mine a single block]
+cast rpc anvil_mine
+```
+
+```bash [Mine multiple blocks]
+cast rpc anvil_mine 10
+```
+
+```bash [Set block interval (seconds)]
+anvil --block-time 12
+```
+
+```bash [Enable interval mining via RPC]
+cast rpc evm_setIntervalMining 12
+```
+
+```bash [Resume automatic mining]
+cast rpc evm_setAutomine true
+```
+
+### Time manipulation
+
+Control the blockchain's perception of time:
+
+```bash [Increase time by seconds]
+cast rpc evm_increaseTime 3600
+```
+
+```bash [Set next block timestamp]
+cast rpc evm_setNextBlockTimestamp 1700000000
+```
+
+```bash [Mine block with new timestamp]
+cast rpc evm_mine
+```
+
+### State snapshots
+
+Create and restore chain state snapshots during a session:
+
+```bash [Create snapshot]
+cast rpc evm_snapshot
+```
+
+```bash [Revert to snapshot]
+cast rpc evm_revert $SNAPSHOT_ID
+```
+
+Snapshots return an ID that you use to revert. Reverting removes the snapshot.
+
+### Balance and code manipulation
+
+Modify account state directly:
+
+```bash [Set account balance]
+cast rpc anvil_setBalance $ADDRESS 0xDE0B6B3A7640000
+```
+
+```bash [Set account nonce]
+cast rpc anvil_setNonce $ADDRESS 0x10
+```
+
+```bash [Set contract code]
+cast rpc anvil_setCode $ADDRESS $BYTECODE
+```
+
+```bash [Set storage slot]
+cast rpc anvil_setStorageAt $ADDRESS $SLOT $VALUE
+```
+
+### Chain configuration
+
+Modify chain parameters at runtime:
+
+```bash [Set chain ID]
+cast rpc anvil_setChainId 31337
+```
+
+```bash [Set block gas limit]
+cast rpc evm_setBlockGasLimit 0x1C9C380
+```
+
+```bash [Set next block base fee]
+cast rpc anvil_setNextBlockBaseFeePerGas 0x5F5E100
+```
+
+### Transaction pool
+
+Inspect and manage pending transactions:
+
+```bash [Get pending transactions]
+cast rpc txpool_content
+```
+
+```bash [Drop a transaction]
+cast rpc anvil_dropTransaction $TX_HASH
+```
+
+```bash [Drop all pending transactions]
+cast rpc anvil_dropAllTransactions
+```
+
+### Tracing
+
+Enable execution traces for debugging:
+
+```bash [Enable trace printing]
+anvil --print-traces
+```
+
+```bash [Enable step tracing for debug_* methods]
+anvil --steps-tracing
+```

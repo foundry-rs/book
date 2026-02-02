@@ -1,0 +1,79 @@
+---
+description: Dump and load Anvil chain state for reproducible testing.
+---
+
+## State management
+
+Anvil can save and restore chain state, enabling reproducible test scenarios and faster development workflows.
+
+### Dumping state
+
+Save the current state when Anvil exits:
+
+```bash [Dump state on exit]
+anvil --dump-state state.json
+```
+
+```bash [Dump to a directory]
+anvil --dump-state ./states/
+```
+
+### Loading state
+
+Start from a previously saved state:
+
+```bash [Load from state file]
+anvil --load-state state.json
+```
+
+### Combined state file
+
+Use `--state` to both load and dump from the same file:
+
+```bash [Persist state across restarts]
+anvil --state state.json
+```
+
+This loads the state on startup (if the file exists) and saves it on exit.
+
+### Periodic snapshots
+
+Save state at regular intervals to prevent data loss:
+
+```bash [Dump state every 60 seconds]
+anvil --state state.json --state-interval 60
+```
+
+### Historical states
+
+By default, Anvil only keeps the latest state. Enable historical state preservation for debugging:
+
+```bash [Preserve historical states]
+anvil --preserve-historical-states --dump-state state.json
+```
+
+```bash [Limit persisted states]
+anvil --max-persisted-states 100
+```
+
+### Memory management
+
+For long-running instances, prune historical state to reduce memory usage:
+
+```bash [Prune history (keep 10 states)]
+anvil --prune-history 10
+```
+
+```bash [Prune all history]
+anvil --prune-history
+```
+
+### Genesis configuration
+
+Initialize Anvil with a custom genesis file:
+
+```bash [Use custom genesis]
+anvil --init genesis.json
+```
+
+The genesis file follows the standard Ethereum genesis format with `alloc`, `difficulty`, `gasLimit`, and other fields.

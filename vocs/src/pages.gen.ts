@@ -431,7 +431,11 @@ type Page =
 | { path: '/cast'; render: 'static' }
 | { path: '/cast/reading-chain-data'; render: 'static' }
 | { path: '/cast/sending-transactions'; render: 'static' }
-| { path: '/cast/wallet-operations'; render: 'static' };
+| { path: '/cast/wallet-operations'; render: 'static' }
+| { path: '/anvil/custom-methods'; render: 'static' }
+| { path: '/anvil/forking'; render: 'static' }
+| { path: '/anvil'; render: 'static' }
+| { path: '/anvil/state-management'; render: 'static' };
 
 // prettier-ignore
 declare module 'waku/router' {
