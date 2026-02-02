@@ -63,6 +63,10 @@ export default defineConfig({
       text: 'Docs',
     },
     {
+      link: '/guides',
+      text: 'Guides',
+    },
+    {
       text: 'Reference',
       items: [
         {

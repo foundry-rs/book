@@ -1,0 +1,248 @@
+---
+description: Replay and debug failed mainnet transactions with trace analysis.
+---
+
+## Debugging Transactions
+
+This guide covers replaying and debugging transactions using `cast run`, analyzing traces, and diagnosing common failure patterns.
+
+### Replaying a transaction
+
+Use `cast run` to replay any transaction locally:
+
+```bash
+cast run $TX_HASH --rpc-url https://ethereum.reth.rs/rpc # [!code hl]
+```
+
+This executes the transaction against the state at the block where it was mined, showing the full execution trace.
+
+### Trace verbosity levels
+
+Control trace output with `-v` flags:
+
+| Flag | Shows |
+|------|-------|
+| (none) | Basic result |
+| `-v` | Function calls |
+| `-vv` | Calls with parameters |
+| `-vvv` | Calls, parameters, and return values |
+| `-vvvv` | Full trace including internal calls |
+| `-vvvvv` | Full trace with storage changes |
+
+```bash [Detailed trace]
+cast run $TX_HASH --rpc-url https://ethereum.reth.rs/rpc -vvvv
+```
+
+### Analyzing a failed transaction
+
+::::steps
+
+#### Get the transaction details
+
+```bash
+cast tx $TX_HASH --rpc-url https://ethereum.reth.rs/rpc
+```
+
+#### Check the receipt for failure
+
+```bash
+cast receipt $TX_HASH --rpc-url https://ethereum.reth.rs/rpc
+```
+
+Look for `status: 0` which indicates failure.
+
+#### Replay with traces
+
+```bash
+cast run $TX_HASH --rpc-url https://ethereum.reth.rs/rpc -vvvv
+```
+
+#### Decode the revert reason
+
+```bash
+cast run $TX_HASH --rpc-url https://ethereum.reth.rs/rpc 2>&1 | grep -A5 "revert"
+```
+
+::::
+
+### Decoding revert reasons
+
+`cast run` automatically decodes revert reasons when possible:
+
+```bash
+$ cast run 0x1234... --rpc-url https://ethereum.reth.rs/rpc
+...
+Revert: InsufficientBalance(1000000000000000000, 500000000000000000)
+```
+
+For custom errors, ensure you have the contract ABI available:
+
+```bash
+cast run $TX_HASH --rpc-url https://ethereum.reth.rs/rpc --label 0xContractAddress:MyContract
+```
+
+### Debugging with quick mode
+
+For faster debugging, use quick mode which skips some validation:
+
+```bash
+cast run $TX_HASH --rpc-url https://ethereum.reth.rs/rpc --quick
+```
+
+### Labeling addresses
+
+Make traces more readable by labeling known addresses:
+
+```bash
+cast run $TX_HASH --rpc-url https://ethereum.reth.rs/rpc \
+    --label 0x6B175474E89094C44Da98b954EeD3CDB5BE3830:DAI \
+    --label 0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D:UniswapRouter
+```
+
+### Debugging in Forge tests
+
+Debug test failures with traces:
+
+```bash
+forge test --match-test test_Failing -vvvv
+```
+
+Use `console.log` for strategic debugging:
+
+```solidity
+import {console} from "forge-std/console.sol";
+
+function test_Debug() public {
+    console.log("Balance before:", token.balanceOf(alice));
+    console.log("Allowance:", token.allowance(alice, address(this)));
+    
+    vm.prank(alice);
+    token.transfer(bob, 100);
+    
+    console.log("Balance after:", token.balanceOf(alice));
+}
+```
+
+### Using the debugger
+
+Forge includes an interactive debugger:
+
+```bash
+forge test --match-test test_Failing --debug
+```
+
+Debugger controls:
+
+| Key | Action |
+|-----|--------|
+| `n` | Next step |
+| `s` | Step into |
+| `o` | Step out |
+| `g` | Jump to start |
+| `G` | Jump to end |
+| `c` | Continue |
+| `q` | Quit |
+
+### Common failure patterns
+
+#### Out of gas
+
+```
+Error: OutOfGas
+```
+
+**Diagnosis**: The transaction ran out of gas before completing.
+
+**Solution**: Increase gas limit or optimize the contract.
+
+```bash
+# Check actual gas used vs limit
+cast tx $TX_HASH --rpc-url https://ethereum.reth.rs/rpc | grep -E "gas|gasLimit"
+```
+
+#### Revert with no message
+
+```
+Error: Revert
+```
+
+**Diagnosis**: A `require()` or `revert()` with no message, or an assertion failed.
+
+**Solution**: Check the trace for the exact call that failed:
+
+```bash
+cast run $TX_HASH --rpc-url https://ethereum.reth.rs/rpc -vvvvv
+```
+
+#### Stack too deep
+
+```
+Error: Stack too deep
+```
+
+**Diagnosis**: Too many local variables in a function.
+
+**Solution**: Reduce local variables or use structs.
+
+#### Invalid opcode
+
+```
+Error: InvalidFEOpcode
+```
+
+**Diagnosis**: Hit an `assert()` failure or uninitialized function pointer.
+
+**Solution**: Check for assertion violations in the trace.
+
+### Comparing successful vs failed transactions
+
+Debug by comparing a working transaction with a failed one:
+
+```bash
+# Get traces for both
+cast run $SUCCESS_TX --rpc-url $RPC -vvvv > success.txt
+cast run $FAILED_TX --rpc-url $RPC -vvvv > failed.txt
+
+# Compare
+diff success.txt failed.txt
+```
+
+### Simulating with modified state
+
+Use Anvil to replay with modifications:
+
+```bash
+# Fork at the block before the transaction
+anvil --fork-url https://ethereum.reth.rs/rpc --fork-block-number $BLOCK_MINUS_ONE
+```
+
+Then in a Forge test or script, modify state and replay:
+
+```solidity
+function test_DebugWithModifiedState() public {
+    // Give the sender more tokens
+    deal(address(token), sender, 1000 ether);
+    
+    // Replay the transaction
+    vm.prank(sender);
+    target.call(originalCalldata);
+}
+```
+
+### Gas profiling a transaction
+
+Analyze gas usage breakdown:
+
+```bash
+cast run $TX_HASH --rpc-url https://ethereum.reth.rs/rpc -vvvv 2>&1 | grep -E "gas:|Gas"
+```
+
+### Best practices
+
+| Practice | Description |
+|----------|-------------|
+| Save failed tx hashes | Keep a log of failed transactions for analysis |
+| Use labels | Label known contracts for readable traces |
+| Fork at correct block | Always fork at `block - 1` for accurate state |
+| Check state changes | Use `-vvvvv` to see storage modifications |
+| Compare transactions | Diff successful vs failed tx traces |

@@ -5,6 +5,7 @@ import { anvilCliReference } from "./anvil-cli-reference";
 import { chiselCliReference } from "./chisel-cli-reference";
 import { castCliReference } from "./cast-cli-reference";
 import { forgeStdReference } from "./forge-std-reference";
+import { guidesSidebar } from "./guides";
 
 const docs = [
   {
@@ -95,6 +96,7 @@ export const sidebar: Sidebar = {
   "/help": docs,
   "/best-practices": docs,
   "/config": docs,
+  ...guidesSidebar,
   "/reference/forge": [
     forgeCliReference,
   ],

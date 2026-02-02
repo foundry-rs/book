@@ -1,0 +1,327 @@
+---
+description: Write effective invariant tests with handler patterns and ghost variables.
+---
+
+## Invariant Testing
+
+Invariant testing verifies properties that should always hold true, regardless of the sequence of actions taken. Forge runs random sequences of function calls and checks invariants after each call.
+
+### Basic invariant test
+
+```solidity [test/Vault.invariant.t.sol]
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.13;
+
+import {Test} from "forge-std/Test.sol";
+import {Vault} from "../src/Vault.sol";
+
+contract VaultInvariantTest is Test {
+    Vault vault;
+
+    function setUp() public {
+        vault = new Vault();
+        targetContract(address(vault)); // [!code hl]
+    }
+
+    function invariant_SolvencyCheck() public view { // [!code hl]
+        assertGe(
+            address(vault).balance,
+            vault.totalDeposits()
+        );
+    }
+}
+```
+
+Run invariant tests:
+
+```bash
+forge test --match-contract VaultInvariantTest
+```
+
+### Handler pattern
+
+Handlers wrap target contracts to constrain inputs and track state:
+
+```solidity [test/handlers/VaultHandler.sol]
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.13;
+
+import {Test} from "forge-std/Test.sol";
+import {Vault} from "../../src/Vault.sol";
+
+contract VaultHandler is Test {
+    Vault public vault;
+    
+    uint256 public ghost_depositSum; // [!code hl]
+    uint256 public ghost_withdrawSum; // [!code hl]
+    
+    address[] public actors;
+    address internal currentActor;
+    
+    modifier useActor(uint256 actorSeed) {
+        currentActor = actors[bound(actorSeed, 0, actors.length - 1)];
+        vm.startPrank(currentActor);
+        _;
+        vm.stopPrank();
+    }
+
+    constructor(Vault _vault) {
+        vault = _vault;
+        for (uint256 i = 0; i < 10; i++) {
+            actors.push(makeAddr(string(abi.encodePacked("actor", i))));
+            vm.deal(actors[i], 100 ether);
+        }
+    }
+
+    function deposit(uint256 amount, uint256 actorSeed) external useActor(actorSeed) {
+        amount = bound(amount, 0.01 ether, 10 ether); // [!code hl]
+        
+        vault.deposit{value: amount}();
+        ghost_depositSum += amount; // [!code hl]
+    }
+
+    function withdraw(uint256 amount, uint256 actorSeed) external useActor(actorSeed) {
+        uint256 balance = vault.balanceOf(currentActor);
+        if (balance == 0) return;
+        
+        amount = bound(amount, 1, balance); // [!code hl]
+        
+        vault.withdraw(amount);
+        ghost_withdrawSum += amount; // [!code hl]
+    }
+}
+```
+
+```solidity [test/Vault.invariant.t.sol]
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.13;
+
+import {Test} from "forge-std/Test.sol";
+import {Vault} from "../src/Vault.sol";
+import {VaultHandler} from "./handlers/VaultHandler.sol";
+
+contract VaultInvariantTest is Test {
+    Vault vault;
+    VaultHandler handler;
+
+    function setUp() public {
+        vault = new Vault();
+        handler = new VaultHandler(vault);
+        
+        // Only target the handler, not the vault directly
+        targetContract(address(handler));
+    }
+
+    function invariant_ConservationOfDeposits() public view {
+        assertEq(
+            address(vault).balance,
+            handler.ghost_depositSum() - handler.ghost_withdrawSum()
+        );
+    }
+
+    function invariant_SolvencyCheck() public view {
+        assertGe(
+            address(vault).balance,
+            vault.totalDeposits()
+        );
+    }
+}
+```
+
+### Ghost variables
+
+Ghost variables track cumulative state that isn't stored on-chain:
+
+```solidity
+contract TokenHandler is Test {
+    Token public token;
+    
+    // Track all mints and burns
+    uint256 public ghost_mintedSum;
+    uint256 public ghost_burnedSum;
+    
+    // Track per-address deltas
+    mapping(address => int256) public ghost_balanceDeltas;
+
+    function mint(address to, uint256 amount) external {
+        amount = bound(amount, 1, 1000 ether);
+        
+        token.mint(to, amount);
+        
+        ghost_mintedSum += amount;
+        ghost_balanceDeltas[to] += int256(amount);
+    }
+
+    function burn(address from, uint256 amount) external {
+        uint256 balance = token.balanceOf(from);
+        if (balance == 0) return;
+        
+        amount = bound(amount, 1, balance);
+        
+        vm.prank(from);
+        token.burn(amount);
+        
+        ghost_burnedSum += amount;
+        ghost_balanceDeltas[from] -= int256(amount);
+    }
+}
+
+contract TokenInvariantTest is Test {
+    function invariant_TotalSupplyMatchesGhosts() public view {
+        assertEq(
+            token.totalSupply(),
+            handler.ghost_mintedSum() - handler.ghost_burnedSum()
+        );
+    }
+}
+```
+
+### Configuring invariant runs
+
+```toml [foundry.toml]
+[invariant]
+runs = 256           # Number of test runs
+depth = 100          # Calls per run
+fail_on_revert = false  # Don't fail on handler reverts
+shrink_run_limit = 5000 # Attempts to shrink failing sequence
+```
+
+### Targeting specific functions
+
+```solidity
+function setUp() public {
+    vault = new Vault();
+    handler = new VaultHandler(vault);
+    
+    targetContract(address(handler));
+    
+    // Only call these functions
+    bytes4[] memory selectors = new bytes4[](2);
+    selectors[0] = VaultHandler.deposit.selector;
+    selectors[1] = VaultHandler.withdraw.selector;
+    targetSelector(FuzzSelector({
+        addr: address(handler),
+        selectors: selectors
+    }));
+}
+```
+
+### Excluding functions
+
+```solidity
+function setUp() public {
+    targetContract(address(handler));
+    
+    // Exclude specific functions
+    excludeSelector(FuzzSelector({
+        addr: address(handler),
+        selectors: toSelectors(VaultHandler.debugFunction.selector)
+    }));
+}
+
+function toSelectors(bytes4 selector) internal pure returns (bytes4[] memory) {
+    bytes4[] memory selectors = new bytes4[](1);
+    selectors[0] = selector;
+    return selectors;
+}
+```
+
+### Call summary
+
+Add a summary function to understand test coverage:
+
+```solidity
+contract VaultHandler is Test {
+    // Call counters
+    mapping(bytes4 => uint256) public calls;
+
+    function deposit(uint256 amount) external {
+        calls[this.deposit.selector]++;
+        // ...
+    }
+
+    function withdraw(uint256 amount) external {
+        calls[this.withdraw.selector]++;
+        // ...
+    }
+
+    function callSummary() external view {
+        console.log("deposit calls:", calls[this.deposit.selector]);
+        console.log("withdraw calls:", calls[this.withdraw.selector]);
+    }
+}
+
+contract VaultInvariantTest is Test {
+    function invariant_CallSummary() public view {
+        handler.callSummary();
+    }
+}
+```
+
+### Multi-contract invariants
+
+Test invariants across multiple contracts:
+
+```solidity [test/handlers/SystemHandler.sol]
+contract SystemHandler is Test {
+    Vault vault;
+    Token token;
+    Oracle oracle;
+
+    function depositAndStake(uint256 amount, uint256 actorSeed) external useActor(actorSeed) {
+        amount = bound(amount, 1 ether, 100 ether);
+        
+        token.approve(address(vault), amount);
+        vault.depositAndStake(amount);
+        
+        ghost_stakedSum += amount;
+    }
+
+    function updatePrice(uint256 newPrice) external {
+        newPrice = bound(newPrice, 0.1 ether, 100 ether);
+        oracle.setPrice(newPrice);
+    }
+}
+```
+
+```solidity [test/System.invariant.t.sol]
+contract SystemInvariantTest is Test {
+    // Cross-contract invariant: vault can always cover withdrawals
+    function invariant_VaultSolvency() public view {
+        uint256 vaultValue = vault.totalStaked() * oracle.price() / 1e18;
+        assertGe(vaultValue, vault.totalLiabilities());
+    }
+}
+```
+
+### Common invariants to test
+
+| Invariant | Description |
+|-----------|-------------|
+| Conservation | Sum of inputs equals sum of outputs |
+| Solvency | Contract can cover all liabilities |
+| Monotonicity | Value only increases/decreases |
+| Bounds | Value stays within expected range |
+| Access control | Only authorized users can call functions |
+| State consistency | Related state variables stay in sync |
+
+### Debugging failed invariants
+
+When an invariant fails, Forge shows the call sequence:
+
+```bash
+forge test --match-test invariant_Solvency -vvvv
+```
+
+The output shows each call that led to the failure, helping you reproduce and fix the bug.
+
+### Best practices
+
+| Practice | Description |
+|----------|-------------|
+| Use handlers | Constrain inputs to valid ranges |
+| Track with ghosts | Verify cumulative state matches on-chain state |
+| Bound inputs | Use `bound()` instead of `vm.assume()` |
+| Multiple actors | Test with various users, not just one |
+| Start simple | Begin with basic invariants, add complexity |
+| Log call counts | Verify all functions are being exercised |

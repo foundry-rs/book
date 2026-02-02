@@ -1,0 +1,319 @@
+---
+description: Implement proxy patterns with Forge scripts and verify storage layout compatibility.
+---
+
+## Upgrading Contracts
+
+This guide covers deploying and upgrading proxy contracts with Forge, including UUPS and Transparent proxies, storage layout verification, and safe upgrade practices.
+
+### Proxy patterns overview
+
+| Pattern | Description | Gas cost |
+|---------|-------------|----------|
+| **UUPS** | Upgrade logic in implementation, minimal proxy | Lower |
+| **Transparent** | Upgrade logic in proxy, admin separation | Higher |
+| **Beacon** | Multiple proxies share upgrade logic | Efficient for many instances |
+
+### UUPS proxy deployment
+
+::::steps
+
+#### Create the implementation
+
+```solidity [src/TokenV1.sol]
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.13;
+
+import {UUPSUpgradeable} from "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+import {OwnableUpgradeable} from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+
+contract TokenV1 is UUPSUpgradeable, OwnableUpgradeable {
+    mapping(address => uint256) public balances;
+    uint256 public totalSupply;
+
+    /// @custom:oz-upgrades-unsafe-allow constructor
+    constructor() {
+        _disableInitializers(); // [!code hl]
+    }
+
+    function initialize(address owner) external initializer { // [!code hl]
+        __Ownable_init(owner);
+        __UUPSUpgradeable_init();
+    }
+
+    function mint(address to, uint256 amount) external onlyOwner {
+        balances[to] += amount;
+        totalSupply += amount;
+    }
+
+    function _authorizeUpgrade(address) internal override onlyOwner {}
+}
+```
+
+#### Deploy the proxy
+
+```solidity [script/DeployToken.s.sol]
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.13;
+
+import {Script, console} from "forge-std/Script.sol";
+import {ERC1967Proxy} from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
+import {TokenV1} from "../src/TokenV1.sol";
+
+contract DeployToken is Script {
+    function run() public {
+        address owner = vm.envAddress("OWNER_ADDRESS");
+
+        vm.startBroadcast();
+
+        TokenV1 implementation = new TokenV1(); // [!code hl]
+        
+        bytes memory initData = abi.encodeCall(TokenV1.initialize, (owner));
+        ERC1967Proxy proxy = new ERC1967Proxy(address(implementation), initData); // [!code hl]
+
+        vm.stopBroadcast();
+
+        console.log("Implementation:", address(implementation));
+        console.log("Proxy:", address(proxy));
+    }
+}
+```
+
+::::
+
+### Upgrading a UUPS proxy
+
+::::steps
+
+#### Create the new implementation
+
+```solidity [src/TokenV2.sol]
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.13;
+
+import {TokenV1} from "./TokenV1.sol";
+
+contract TokenV2 is TokenV1 {
+    // New state variables must be added at the end
+    mapping(address => bool) public frozen;
+
+    function freeze(address account) external onlyOwner {
+        frozen[account] = true;
+    }
+
+    function version() external pure returns (uint256) {
+        return 2;
+    }
+}
+```
+
+#### Deploy and upgrade
+
+```solidity [script/UpgradeToken.s.sol]
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.13;
+
+import {Script, console} from "forge-std/Script.sol";
+import {TokenV2} from "../src/TokenV2.sol";
+import {UUPSUpgradeable} from "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+
+contract UpgradeToken is Script {
+    function run() public {
+        address proxy = vm.envAddress("PROXY_ADDRESS");
+
+        vm.startBroadcast();
+
+        // Deploy new implementation
+        TokenV2 newImplementation = new TokenV2();
+
+        // Upgrade proxy to new implementation
+        UUPSUpgradeable(proxy).upgradeToAndCall(
+            address(newImplementation),
+            "" // No initialization call needed for this upgrade
+        );
+
+        vm.stopBroadcast();
+
+        console.log("New implementation:", address(newImplementation));
+        console.log("Upgraded proxy:", proxy);
+        console.log("Version:", TokenV2(proxy).version());
+    }
+}
+```
+
+::::
+
+### Storage layout verification
+
+Foundry can check storage layout compatibility between implementations:
+
+```bash
+forge inspect src/TokenV1.sol:TokenV1 storage-layout --pretty > v1-layout.txt
+forge inspect src/TokenV2.sol:TokenV2 storage-layout --pretty > v2-layout.txt
+diff v1-layout.txt v2-layout.txt
+```
+
+#### Storage layout rules
+
+| Rule | Description |
+|------|-------------|
+| Never remove variables | Deleting state variables corrupts storage |
+| Never reorder variables | Changing order shifts storage slots |
+| Never change types | Changing a variable's type corrupts data |
+| Add variables at the end | New variables go after existing ones |
+| Use storage gaps | Reserve space for future variables |
+
+#### Using storage gaps
+
+```solidity
+contract TokenV1 is UUPSUpgradeable, OwnableUpgradeable {
+    mapping(address => uint256) public balances;
+    uint256 public totalSupply;
+    
+    // Reserve 50 slots for future variables
+    uint256[50] private __gap;
+}
+
+contract TokenV2 is TokenV1 {
+    // Uses one slot from the gap
+    mapping(address => bool) public frozen;
+    
+    // Update gap to maintain total slot count
+    uint256[49] private __gap;
+}
+```
+
+### Transparent proxy deployment
+
+```solidity [script/DeployTransparent.s.sol]
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.13;
+
+import {Script, console} from "forge-std/Script.sol";
+import {TransparentUpgradeableProxy} from "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol";
+import {ProxyAdmin} from "@openzeppelin/contracts/proxy/transparent/ProxyAdmin.sol";
+import {TokenV1} from "../src/TokenV1.sol";
+
+contract DeployTransparent is Script {
+    function run() public {
+        address owner = vm.envAddress("OWNER_ADDRESS");
+
+        vm.startBroadcast();
+
+        // Deploy implementation
+        TokenV1 implementation = new TokenV1();
+        
+        // Deploy proxy (ProxyAdmin is created automatically)
+        bytes memory initData = abi.encodeCall(TokenV1.initialize, (owner));
+        TransparentUpgradeableProxy proxy = new TransparentUpgradeableProxy(
+            address(implementation),
+            owner, // Admin
+            initData
+        );
+
+        vm.stopBroadcast();
+
+        console.log("Implementation:", address(implementation));
+        console.log("Proxy:", address(proxy));
+    }
+}
+```
+
+### Testing upgrades
+
+```solidity [test/TokenUpgrade.t.sol]
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.13;
+
+import {Test} from "forge-std/Test.sol";
+import {ERC1967Proxy} from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
+import {TokenV1} from "../src/TokenV1.sol";
+import {TokenV2} from "../src/TokenV2.sol";
+
+contract TokenUpgradeTest is Test {
+    TokenV1 proxy;
+    address owner = address(this);
+
+    function setUp() public {
+        TokenV1 implementation = new TokenV1();
+        bytes memory initData = abi.encodeCall(TokenV1.initialize, (owner));
+        proxy = TokenV1(address(new ERC1967Proxy(address(implementation), initData)));
+    }
+
+    function test_UpgradePreservesState() public {
+        // Set state in V1
+        proxy.mint(address(0x1), 1000);
+        assertEq(proxy.balances(address(0x1)), 1000);
+
+        // Upgrade to V2
+        TokenV2 newImpl = new TokenV2();
+        proxy.upgradeToAndCall(address(newImpl), "");
+
+        // State is preserved
+        TokenV2 proxyV2 = TokenV2(address(proxy));
+        assertEq(proxyV2.balances(address(0x1)), 1000);
+        assertEq(proxyV2.version(), 2);
+    }
+
+    function test_NewFunctionalityWorks() public {
+        // Upgrade to V2
+        TokenV2 newImpl = new TokenV2();
+        proxy.upgradeToAndCall(address(newImpl), "");
+
+        // Use new functionality
+        TokenV2 proxyV2 = TokenV2(address(proxy));
+        proxyV2.freeze(address(0x1));
+        assertTrue(proxyV2.frozen(address(0x1)));
+    }
+
+    function test_RevertWhen_UnauthorizedUpgrade() public {
+        TokenV2 newImpl = new TokenV2();
+
+        vm.prank(address(0xdead));
+        vm.expectRevert();
+        proxy.upgradeToAndCall(address(newImpl), "");
+    }
+}
+```
+
+### Safe upgrade checklist
+
+::::steps
+
+#### Verify storage compatibility
+
+```bash
+forge inspect src/TokenV1.sol:TokenV1 storage-layout --pretty
+forge inspect src/TokenV2.sol:TokenV2 storage-layout --pretty
+```
+
+#### Test the upgrade on a fork
+
+```bash
+forge test --match-contract TokenUpgradeTest --fork-url https://ethereum.reth.rs/rpc
+```
+
+#### Simulate the upgrade transaction
+
+```bash
+forge script script/UpgradeToken.s.sol --rpc-url https://ethereum.reth.rs/rpc
+```
+
+#### Broadcast with verification
+
+```bash
+forge script script/UpgradeToken.s.sol --broadcast --verify --rpc-url https://ethereum.reth.rs/rpc
+```
+
+::::
+
+### Best practices
+
+| Practice | Description |
+|----------|-------------|
+| Use initializers | Never use constructors for state in implementations |
+| Disable initializers | Call `_disableInitializers()` in implementation constructors |
+| Storage gaps | Reserve slots for future variables |
+| Test upgrades | Always test state preservation before upgrading |
+| Timelock upgrades | Use a timelock for production upgrade transactions |
+| Verify implementations | Always verify new implementations on block explorers |
