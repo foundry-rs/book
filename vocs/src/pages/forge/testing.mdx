@@ -71,8 +71,6 @@ $ forge test -vvv
 
 Run specific tests:
 
-:::code-group
-
 ```bash [By name]
 $ forge test --match-test test_Increment
 ```
@@ -81,15 +79,31 @@ $ forge test --match-test test_Increment
 $ forge test --match-contract CounterTest
 ```
 
-```bash [By file]
-$ forge test --match-path test/Counter.t.sol
+By file path:
+
+```bash
+// [!include ~/snippets/output/test_filters/forge-test-match-path:command]
 ```
 
-```bash [Exclude]
+```ansi
+// [!include ~/snippets/output/test_filters/forge-test-match-path:output]
+```
+
+Combine filters:
+
+```bash
+// [!include ~/snippets/output/test_filters/forge-test-match-contract-and-test:command]
+```
+
+```ansi
+// [!include ~/snippets/output/test_filters/forge-test-match-contract-and-test:output]
+```
+
+Exclude tests with `--no-match-*` variants:
+
+```bash
 $ forge test --no-match-test test_Skip
 ```
-
-:::
 
 ### Fuzz testing
 
@@ -102,7 +116,15 @@ function testFuzz_SetNumber(uint256 x) public {
 }
 ```
 
-Forge generates random inputs and runs the test multiple times (256 by default).
+Forge generates random inputs and runs the test multiple times (256 by default):
+
+```bash
+// [!include ~/snippets/output/fuzz_testing/forge-test-success-fuzz:command]
+```
+
+```ansi
+// [!include ~/snippets/output/fuzz_testing/forge-test-success-fuzz:output]
+```
 
 Configure fuzzing:
 
@@ -149,6 +171,14 @@ function test_RevertWhen_InsufficientBalance() public {
     vm.expectRevert(Token.InsufficientBalance.selector);
     token.transfer(address(0), 1000);
 }
+```
+
+```bash
+// [!include ~/snippets/output/cheatcodes/forge-test-cheatcodes-expectrevert:command]
+```
+
+```ansi
+// [!include ~/snippets/output/cheatcodes/forge-test-cheatcodes-expectrevert:output]
 ```
 
 ### Testing events
