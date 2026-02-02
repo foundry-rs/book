@@ -1,0 +1,232 @@
+---
+description: Set up Foundry in GitHub Actions and other CI systems.
+---
+
+## CI Integration
+
+Run Foundry tests in continuous integration to catch issues before merging.
+
+### GitHub Actions
+
+#### Basic workflow
+
+Create `.github/workflows/test.yml`:
+
+```yaml [.github/workflows/test.yml]
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+
+      - name: Build
+        run: forge build
+
+      - name: Run tests
+        run: forge test -vvv
+```
+
+#### With caching
+
+Speed up CI by caching dependencies:
+
+```yaml [.github/workflows/test.yml]
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          cache: true
+
+      - name: Build
+        run: forge build
+
+      - name: Run tests
+        run: forge test -vvv
+```
+
+#### Using a CI profile
+
+Use a dedicated profile for more thorough testing in CI:
+
+```yaml [.github/workflows/test.yml]
+- name: Run tests
+  run: forge test -vvv
+  env:
+    FOUNDRY_PROFILE: ci
+```
+
+With the corresponding profile in `foundry.toml`:
+
+```toml [foundry.toml]
+[profile.ci]
+verbosity = 3
+fuzz = { runs = 10000 }
+invariant = { runs = 1000 }
+```
+
+#### Full workflow example
+
+A complete workflow with formatting, linting, build, and tests:
+
+```yaml [.github/workflows/ci.yml]
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+env:
+  FOUNDRY_PROFILE: ci
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          cache: true
+
+      - name: Check formatting
+        run: forge fmt --check
+
+      - name: Run linter
+        run: forge lint
+
+      - name: Build
+        run: forge build
+
+      - name: Run tests
+        run: forge test -vvv
+
+      - name: Check gas snapshots
+        run: forge snapshot --check
+```
+
+### Fork testing in CI
+
+For tests that fork from a live network, provide an RPC URL:
+
+```yaml [.github/workflows/test.yml]
+- name: Run fork tests
+  run: forge test -vvv
+  env:
+    ETH_RPC_URL: ${{ secrets.ETH_RPC_URL }}
+```
+
+Set `ETH_RPC_URL` in your repository secrets. Use your own RPC endpoint or a provider like Alchemy or Infura.
+
+Configure the fork URL in `foundry.toml`:
+
+```toml [foundry.toml]
+[profile.ci]
+eth_rpc_url = "${ETH_RPC_URL}"
+```
+
+### Coverage reports
+
+Generate and upload coverage reports:
+
+```yaml [.github/workflows/coverage.yml]
+name: Coverage
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          cache: true
+
+      - name: Generate coverage report
+        run: forge coverage --report lcov
+
+      - name: Upload to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          files: lcov.info
+          token: ${{ secrets.CODECOV_TOKEN }}
+```
+
+### GitLab CI
+
+```yaml [.gitlab-ci.yml]
+image: ghcr.io/foundry-rs/foundry:latest
+
+stages:
+  - test
+
+test:
+  stage: test
+  script:
+    - forge build
+    - forge test -vvv
+```
+
+### CircleCI
+
+```yaml [.circleci/config.yml]
+version: 2.1
+
+jobs:
+  test:
+    docker:
+      - image: ghcr.io/foundry-rs/foundry:latest
+    steps:
+      - checkout
+      - run:
+          name: Install submodules
+          command: git submodule update --init --recursive
+      - run:
+          name: Build
+          command: forge build
+      - run:
+          name: Test
+          command: forge test -vvv
+
+workflows:
+  main:
+    jobs:
+      - test
+```

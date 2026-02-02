@@ -1,0 +1,114 @@
+---
+description: Use profiles to switch between configurations for development, CI, and production.
+---
+
+## Profiles
+
+Profiles let you maintain different configurations for different scenarios. The `default` profile is always active, and other profiles inherit from it.
+
+### Creating profiles
+
+Define profiles in `foundry.toml`:
+
+```toml [foundry.toml]
+[profile.default]
+src = "src"
+out = "out"
+libs = ["lib"]
+optimizer = true
+optimizer_runs = 200
+
+[profile.ci]
+verbosity = 3
+fuzz = { runs = 10000 }
+
+[profile.lite]
+optimizer = false
+fuzz = { runs = 32 }
+```
+
+### Selecting a profile
+
+Set the `FOUNDRY_PROFILE` environment variable:
+
+:::code-group
+
+```bash [Single command]
+FOUNDRY_PROFILE=ci forge test
+```
+
+```bash [Shell session]
+export FOUNDRY_PROFILE=ci
+forge test
+forge build
+```
+
+:::
+
+### Common profile patterns
+
+#### CI profile
+
+Increase fuzz runs and verbosity for thorough testing in CI:
+
+```toml [foundry.toml]
+[profile.ci]
+verbosity = 3
+fuzz = { runs = 10000, seed = "0x1" }
+invariant = { runs = 1000 }
+```
+
+#### Development profile
+
+Fast iteration with minimal optimization:
+
+```toml [foundry.toml]
+[profile.lite]
+optimizer = false
+fuzz = { runs = 32 }
+via_ir = false
+```
+
+#### Production profile
+
+Maximum optimization for deployment:
+
+```toml [foundry.toml]
+[profile.production]
+optimizer = true
+optimizer_runs = 1000000
+via_ir = true
+bytecode_hash = "none"
+```
+
+### Profile inheritance
+
+All profiles inherit from `default`. You only need to specify values that differ:
+
+```toml [foundry.toml]
+[profile.default]
+src = "src"
+out = "out"
+libs = ["lib"]
+solc_version = "0.8.28"
+optimizer = true
+optimizer_runs = 200
+
+# Inherits everything from default, overrides optimizer_runs
+[profile.production]
+optimizer_runs = 1000000
+```
+
+### Environment variable overrides
+
+Override any configuration value with environment variables prefixed with `FOUNDRY_` or `DAPP_`:
+
+```bash
+# Override optimizer runs
+FOUNDRY_OPTIMIZER_RUNS=500 forge build
+
+# Override solc version
+FOUNDRY_SOLC_VERSION=0.8.25 forge build
+```
+
+This is useful for CI or quick one-off builds without modifying `foundry.toml`.
