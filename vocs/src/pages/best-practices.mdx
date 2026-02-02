@@ -6,6 +6,14 @@ description: Best practices for writing contracts, tests, scripts, and managing 
 
 Guidelines for writing maintainable, secure, and efficient Foundry projects.
 
+### Before you ship
+
+- Run `forge test` with `-vvvv` at least once
+- Run `forge lint` and `forge fmt --check`
+- Verify deployments with the exact compiler settings
+- Store production keys in encrypted keystores or hardware wallets
+- Keep `.env` files out of version control
+
 ### Writing contracts
 
 #### Use named imports

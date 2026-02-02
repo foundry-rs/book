@@ -17,6 +17,10 @@ Foundry is a fast, portable, and modular toolkit for Ethereum development. After
 Run any command with `--help` for detailed usage information.
 :::
 
+:::note
+See the [CLI reference](/reference/forge/forge) for every command and flag.
+:::
+
 ## Quick start with Forge
 
 Create and test a smart contract in under 30 seconds:
@@ -129,3 +133,10 @@ Type `!help` to see available commands.
 - [**Cast**](/reference/cast/cast) — Master blockchain interactions from the CLI
 - [**Anvil**](/reference/anvil/anvil) — Set up local development networks
 - [**Chisel**](/reference/chisel/chisel) — Prototype Solidity quickly
+
+## Common next tasks
+
+- [Write your first tests](/forge/testing)
+- [Test against mainnet state](/guides/fork-testing)
+- [Deploy and verify a contract](/guides/deploying-contracts)
+- [Track gas usage](/forge/gas-tracking)

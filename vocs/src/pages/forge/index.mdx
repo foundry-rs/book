@@ -2,9 +2,36 @@
 description: Forge is Foundry's build, test, and deploy tool for Solidity smart contracts.
 ---
 
+import { Cards, Card } from 'vocs'
+
 ## Forge
 
 Forge compiles, tests, and deploys Solidity smart contracts. It's the core development tool in the Foundry suite.
+
+### Core workflows
+
+<Cards>
+  <Card
+    title="Build and test"
+    description="Compile contracts and run tests with traces."
+    to="/forge/testing"
+  />
+  <Card
+    title="Advanced testing"
+    description="Fuzz, invariant, and fork-based testing workflows."
+    to="/guides/invariant-testing"
+  />
+  <Card
+    title="Deploy and verify"
+    description="Ship contracts with scripts and verify on explorers."
+    to="/guides/deploying-contracts"
+  />
+  <Card
+    title="Debug and optimize"
+    description="Trace failures and track gas usage."
+    to="/forge/gas-tracking"
+  />
+</Cards>
 
 ### Key capabilities
 
@@ -46,3 +73,4 @@ forge verify-contract $ADDRESS src/Counter.sol:Counter --etherscan-api-key $KEY
 - [Debugging](/forge/debugging) — Traces, debugger, and troubleshooting
 - [Gas tracking](/forge/gas-tracking) — Snapshots and reports
 - [Linting](/forge/linting) — Code style enforcement
+- [Reference](/reference/forge/forge) — Full CLI reference

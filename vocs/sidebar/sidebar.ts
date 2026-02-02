@@ -13,6 +13,7 @@ const docs = [
     items: [
       { text: "Installation", link: "/introduction/installation" },
       { text: "Getting Started", link: "/introduction/getting-started" },
+      { text: "Prompting", link: "/introduction/prompting" },
     ],
   },
   {
@@ -78,16 +79,26 @@ const docs = [
       { text: "Profiles", link: "/config/profiles" },
       { text: "CI Integration", link: "/config/ci" },
       { text: "Editor Setup", link: "/config/editors" },
+      { text: "Compiler", link: "/config/reference/solidity-compiler" },
+      { text: "Testing", link: "/config/reference/testing" },
     ],
   },
   {
     text: "Best Practices",
     link: "/best-practices",
   },
+  {
+    text: "Migration",
+    items: [
+      { text: "Foundry v1.0", link: "/migration/v1" },
+      { text: "Struct encoding", link: "/migration/struct-encoding" },
+    ],
+  },
 ];
 
 export const sidebar: Sidebar = {
   "/introduction": docs,
+  "/migration": docs,
   "/projects": docs,
   "/forge": docs,
   "/cast": docs,
