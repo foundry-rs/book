@@ -1,0 +1,292 @@
+---
+description: Run Foundry in Docker for reproducible builds and CI environments.
+---
+
+## Docker & Containers
+
+This guide covers running Foundry in Docker for reproducible builds, CI pipelines, and isolated development environments.
+
+### Official Foundry Docker image
+
+Use the official Foundry image from GitHub Container Registry:
+
+```bash
+docker pull ghcr.io/foundry-rs/foundry:latest
+```
+
+Available tags:
+
+| Tag | Description |
+|-----|-------------|
+| `latest` | Latest stable release |
+| `nightly` | Nightly build |
+| `v1.0.0` | Specific version |
+
+### Running Foundry commands
+
+```bash
+# Run forge build
+docker run --rm -v $(pwd):/app -w /app ghcr.io/foundry-rs/foundry forge build
+
+# Run tests
+docker run --rm -v $(pwd):/app -w /app ghcr.io/foundry-rs/foundry forge test
+
+# Run cast
+docker run --rm ghcr.io/foundry-rs/foundry cast block-number --rpc-url https://ethereum.reth.rs/rpc
+```
+
+### Shell alias for convenience
+
+Add to your shell profile:
+
+```bash [~/.bashrc]
+alias dforge='docker run --rm -v $(pwd):/app -w /app ghcr.io/foundry-rs/foundry forge' # [!code hl]
+alias dcast='docker run --rm ghcr.io/foundry-rs/foundry cast' # [!code hl]
+alias danvil='docker run --rm -p 8545:8545 ghcr.io/foundry-rs/foundry anvil --host 0.0.0.0' # [!code hl]
+```
+
+Then use:
+
+```bash
+dforge build
+dforge test
+dcast balance 0x1234...
+```
+
+### Custom Dockerfile
+
+Create a project-specific image with your dependencies:
+
+```dockerfile [Dockerfile]
+FROM ghcr.io/foundry-rs/foundry:latest
+
+WORKDIR /app
+
+# Copy dependency manifests first for caching
+COPY foundry.toml .
+COPY remappings.txt .
+
+# Install git for dependency management
+RUN apk add --no-cache git
+
+# Copy source files
+COPY src ./src
+COPY test ./test
+COPY script ./script
+COPY lib ./lib
+
+# Build the project
+RUN forge build
+
+# Default command
+CMD ["forge", "test"]
+```
+
+Build and run:
+
+```bash
+docker build -t my-project .
+docker run --rm my-project
+docker run --rm my-project forge test -vvv
+```
+
+### Docker Compose setup
+
+For projects needing Anvil alongside tests:
+
+```yaml [docker-compose.yml]
+services:
+  anvil:
+    image: ghcr.io/foundry-rs/foundry:latest
+    command: anvil --host 0.0.0.0
+    ports:
+      - "8545:8545"
+    healthcheck:
+      test: ["CMD", "cast", "block-number", "--rpc-url", "http://localhost:8545"]
+      interval: 2s
+      timeout: 5s
+      retries: 10
+
+  test:
+    image: ghcr.io/foundry-rs/foundry:latest
+    volumes:
+      - .:/app
+    working_dir: /app
+    depends_on:
+      anvil:
+        condition: service_healthy
+    command: forge test --fork-url http://anvil:8545
+
+  deploy:
+    image: ghcr.io/foundry-rs/foundry:latest
+    volumes:
+      - .:/app
+    working_dir: /app
+    depends_on:
+      anvil:
+        condition: service_healthy
+    command: forge script script/Deploy.s.sol --broadcast --rpc-url http://anvil:8545 --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
+```
+
+Run tests:
+
+```bash
+docker compose up test
+```
+
+Deploy to local Anvil:
+
+```bash
+docker compose up deploy
+```
+
+### CI with GitHub Actions
+
+```yaml [.github/workflows/test.yml]
+name: Test
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+
+      - name: Build
+        run: forge build
+
+      - name: Test
+        run: forge test -vvv
+
+      - name: Check formatting
+        run: forge fmt --check
+
+      - name: Gas snapshot
+        run: forge snapshot --check --tolerance 5
+```
+
+### CI with Docker-based runners
+
+For self-hosted runners or environments without foundry-toolchain:
+
+```yaml [.github/workflows/test.yml]
+name: Test
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/foundry-rs/foundry:latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Build
+        run: forge build
+
+      - name: Test
+        run: forge test -vvv
+```
+
+### Reproducible builds
+
+Pin the Foundry version for reproducible builds:
+
+```dockerfile [Dockerfile]
+FROM ghcr.io/foundry-rs/foundry:v1.0.0
+
+# ... rest of Dockerfile
+```
+
+Or in CI:
+
+```yaml [.github/workflows/test.yml]
+- name: Install Foundry
+  uses: foundry-rs/foundry-toolchain@v1
+  with:
+    version: v1.0.0
+```
+
+### Running Anvil in Docker
+
+Expose Anvil to your host machine:
+
+```bash
+docker run --rm -p 8545:8545 ghcr.io/foundry-rs/foundry anvil --host 0.0.0.0 # [!code hl]
+```
+
+Anvil must bind to `0.0.0.0` (not `127.0.0.1`) to be accessible from outside the container.
+
+With persistent state:
+
+```bash
+docker run --rm -p 8545:8545 -v anvil-state:/state ghcr.io/foundry-rs/foundry \
+    anvil --host 0.0.0.0 --state /state/anvil.json
+```
+
+### Multi-stage builds
+
+Optimize image size with multi-stage builds:
+
+```dockerfile [Dockerfile]
+# Build stage
+FROM ghcr.io/foundry-rs/foundry:latest AS builder
+
+WORKDIR /app
+COPY . .
+RUN forge build --optimize
+
+# Runtime stage
+FROM ghcr.io/foundry-rs/foundry:latest AS runtime
+
+WORKDIR /app
+COPY --from=builder /app/out ./out
+COPY --from=builder /app/broadcast ./broadcast
+
+# Only include what's needed for deployment
+CMD ["forge", "script", "script/Deploy.s.sol", "--broadcast"]
+```
+
+### Environment variables
+
+Pass secrets and configuration:
+
+```bash
+docker run --rm \
+    -v $(pwd):/app \
+    -w /app \
+    -e PRIVATE_KEY \
+    -e ETHERSCAN_API_KEY \
+    ghcr.io/foundry-rs/foundry \
+    forge script script/Deploy.s.sol --broadcast --verify
+```
+
+Or with an env file:
+
+```bash
+docker run --rm \
+    -v $(pwd):/app \
+    -w /app \
+    --env-file .env \
+    ghcr.io/foundry-rs/foundry \
+    forge script script/Deploy.s.sol --broadcast
+```
+
+### Best practices
+
+| Practice | Description |
+|----------|-------------|
+| Pin versions | Use specific tags, not `latest`, for reproducibility |
+| Cache dependencies | Copy manifests before source for better layer caching |
+| Use multi-stage | Reduce final image size by excluding build artifacts |
+| Mount volumes | Use `-v` for local development, `COPY` for CI |
+| Expose correctly | Use `--host 0.0.0.0` for Anvil in containers |

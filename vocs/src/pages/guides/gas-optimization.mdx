@@ -1,0 +1,307 @@
+---
+description: Profile gas usage and optimize with snapshots and the IR pipeline.
+---
+
+## Gas Optimization
+
+This guide covers profiling gas usage, creating gas snapshots, optimization techniques, and using the Solidity IR pipeline.
+
+### Gas snapshots
+
+Create a baseline for gas usage:
+
+```bash
+forge snapshot
+```
+
+This generates `.gas-snapshot` with gas costs for each test:
+
+```
+CounterTest:test_Increment() (gas: 28334)
+CounterTest:test_SetNumber() (gas: 27523)
+TokenTest:testFuzz_Transfer(uint256) (gas: 42156)
+```
+
+Compare against the baseline:
+
+```bash
+forge snapshot --check
+```
+
+Diff against another snapshot:
+
+```bash
+forge snapshot --diff .gas-snapshot.old
+```
+
+### Gas reports
+
+Get detailed gas reports for contract functions:
+
+```bash
+forge test --gas-report
+```
+
+Output shows min, avg, median, and max gas for each function:
+
+```
+| Function    | min   | avg   | median | max   |
+|-------------|-------|-------|--------|-------|
+| transfer    | 51234 | 52341 | 51234  | 65123 |
+| approve     | 24521 | 24521 | 24521  | 24521 |
+| balanceOf   | 562   | 562   | 562    | 562   |
+```
+
+### Profiling specific tests
+
+Focus on gas-critical functions:
+
+```bash
+forge test --match-test test_Transfer --gas-report -vvv
+```
+
+### Optimization techniques
+
+#### Storage optimization
+
+Storage is the most expensive operation. Minimize storage writes:
+
+:::code-group
+
+```solidity [Optimized]
+struct User {
+    uint128 balance;    // 16 bytes // [!code hl]
+    uint64 lastUpdate;  // 8 bytes // [!code hl]
+    uint64 rewards;     // 8 bytes // [!code hl]
+}
+```
+
+```solidity [Expensive]
+struct User {
+    uint256 balance;    // 32 bytes (full slot)
+    uint256 lastUpdate; // 32 bytes (full slot)
+    uint256 rewards;    // 32 bytes (full slot)
+}
+```
+
+:::
+
+#### Caching storage reads
+
+:::code-group
+
+```solidity [Optimized]
+function process() external {
+    uint256 _balance = balance; // [!code hl]
+    
+    for (uint256 i; i < 100; i++) {
+        _balance += i;
+    }
+    
+    balance = _balance; // [!code hl]
+}
+```
+
+```solidity [Expensive]
+function process() external {
+    for (uint256 i; i < 100; i++) {
+        balance += i; // 100 storage reads and writes
+    }
+}
+```
+
+:::
+
+#### Unchecked arithmetic
+
+When overflow is impossible, skip checks:
+
+```solidity
+function sum(uint256[] calldata values) external pure returns (uint256 total) {
+    for (uint256 i; i < values.length;) {
+        unchecked { // [!code hl]
+            total += values[i];
+            ++i;
+        } // [!code hl]
+    }
+}
+```
+
+#### Calldata vs memory
+
+Use `calldata` for read-only array parameters:
+
+:::code-group
+
+```solidity [Optimized]
+function process(uint256[] calldata values) external pure returns (uint256) { // [!code hl]
+    // calldata is cheaper - no copy needed
+}
+```
+
+```solidity [Expensive]
+function process(uint256[] memory values) external pure returns (uint256) {
+    // memory copies the entire array
+}
+```
+
+:::
+
+#### Short-circuit evaluation
+
+Order conditions by likelihood and cost:
+
+```solidity
+// Cheap check first, expensive check second
+if (amount > 0 && token.balanceOf(msg.sender) >= amount) {
+    // ...
+}
+```
+
+#### Custom errors vs require strings
+
+:::code-group
+
+```solidity [Optimized]
+error InsufficientBalance(uint256 available, uint256 required);
+
+function transfer(uint256 amount) external {
+    if (balances[msg.sender] < amount) {
+        revert InsufficientBalance(balances[msg.sender], amount);
+    }
+}
+```
+
+```solidity [Expensive]
+function transfer(uint256 amount) external {
+    require(
+        balances[msg.sender] >= amount,
+        "Token: insufficient balance for transfer"
+    );
+}
+```
+
+:::
+
+### IR pipeline optimization
+
+The Yul IR pipeline can produce more optimized bytecode:
+
+```toml [foundry.toml]
+[profile.default]
+via_ir = true
+optimizer = true
+optimizer_runs = 200
+```
+
+Or enable for production builds only:
+
+```toml [foundry.toml]
+[profile.default]
+via_ir = false
+
+[profile.production]
+via_ir = true
+optimizer = true
+optimizer_runs = 10000
+```
+
+```bash
+FOUNDRY_PROFILE=production forge build
+```
+
+#### IR pipeline trade-offs
+
+| Setting | Compilation time | Gas efficiency | Code size |
+|---------|------------------|----------------|-----------|
+| `via_ir = false` | Fast | Good | Larger |
+| `via_ir = true` | Slow | Better | Smaller |
+| High optimizer runs | Slower | Best for frequent calls | Larger |
+| Low optimizer runs | Faster | Best for deployment | Smaller |
+
+### Optimizer runs tuning
+
+`optimizer_runs` balances deployment cost vs runtime cost:
+
+| Runs | Best for |
+|------|----------|
+| 1 | Deploy once, rarely called |
+| 200 | Default, balanced |
+| 10,000+ | Frequently called contracts |
+
+```toml [foundry.toml]
+[profile.default]
+optimizer = true
+optimizer_runs = 200
+
+# For frequently-called core contracts
+[profile.default.optimizer_details.yulDetails]
+optimizerSteps = "dhfoDgvulfnTUtnIf"
+```
+
+### Assembly optimization
+
+For critical paths, inline assembly can save gas:
+
+```solidity
+// Get balance without function call overhead
+function getBalance(address account) internal view returns (uint256 bal) {
+    assembly {
+        bal := balance(account)
+    }
+}
+
+// Efficient ownership check
+function isOwner(address account) internal view returns (bool result) {
+    address _owner = owner;
+    assembly {
+        result := eq(account, _owner)
+    }
+}
+```
+
+### Gas benchmarking in tests
+
+Create dedicated gas benchmarks:
+
+```solidity [test/Gas.t.sol]
+contract GasTest is Test {
+    Token token;
+
+    function setUp() public {
+        token = new Token();
+        token.mint(address(this), 1000 ether);
+    }
+
+    function test_Transfer_Gas() public {
+        uint256 gasBefore = gasleft();
+        token.transfer(address(1), 100);
+        uint256 gasUsed = gasBefore - gasleft();
+        
+        emit log_named_uint("transfer gas", gasUsed);
+        assertLt(gasUsed, 60000, "transfer too expensive");
+    }
+}
+```
+
+### CI integration
+
+Fail CI if gas regresses:
+
+```yaml [.github/workflows/gas.yml]
+- name: Check gas snapshots
+  run: |
+    forge snapshot --check --tolerance 5
+```
+
+The `--tolerance` flag allows small regressions (5% in this case).
+
+### Best practices
+
+| Practice | Description |
+|----------|-------------|
+| Baseline first | Create snapshots before optimizing |
+| Measure, don't guess | Use gas reports to find actual bottlenecks |
+| Test edge cases | Gas can vary significantly with input size |
+| Cache in production | Use `via_ir` only for final builds |
+| Document optimizations | Explain non-obvious gas optimizations |

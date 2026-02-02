@@ -1,0 +1,254 @@
+---
+description: Test against live chain state, impersonate accounts, and handle time-sensitive logic.
+---
+
+## Fork Testing
+
+Fork testing lets you run tests against real chain state without deploying to a live network. This is essential for testing integrations with existing protocols.
+
+### Basic fork testing
+
+Run tests against a forked network:
+
+```bash
+forge test --fork-url https://ethereum.reth.rs/rpc
+```
+
+Pin to a specific block for reproducible tests:
+
+```bash
+forge test --fork-url https://ethereum.reth.rs/rpc --fork-block-number 18000000
+```
+
+### Configuring forks in foundry.toml
+
+Set a default fork for all tests:
+
+```toml [foundry.toml]
+[profile.default]
+eth_rpc_url = "https://ethereum.reth.rs/rpc"
+fork_block_number = 18000000
+```
+
+### Impersonating accounts
+
+Use `vm.prank()` to execute a single call as another address:
+
+```solidity
+function test_ImpersonateWhale() public {
+    address whale = 0xF977814e90dA44bFA03b6295A0616a897441aceC; // Binance hot wallet
+    address dai = 0x6B175474E89094C44Da98b954EescdeCB5BE3830;
+
+    vm.prank(whale); // [!code hl]
+    IERC20(dai).transfer(address(this), 1000 ether); // [!code hl]
+    
+    assertEq(IERC20(dai).balanceOf(address(this)), 1000 ether);
+}
+```
+
+Use `vm.startPrank()` for multiple calls:
+
+```solidity
+function test_MultipleCallsAsWhale() public {
+    address whale = 0xF977814e90dA44bFA03b6295A0616a897441aceC;
+    
+    vm.startPrank(whale);
+    IERC20(dai).approve(address(vault), type(uint256).max);
+    vault.deposit(1000 ether);
+    vm.stopPrank();
+}
+```
+
+### Time-sensitive tests
+
+Many DeFi protocols have time-based logic. Use `vm.warp()` to manipulate block timestamps:
+
+```solidity
+function test_VestingUnlock() public {
+    vesting.startVesting(alice, 1000 ether, 365 days);
+    
+    vm.warp(block.timestamp + 182 days); // [!code hl]
+    
+    vm.prank(alice);
+    uint256 claimed = vesting.claim();
+    assertApproxEqRel(claimed, 500 ether, 0.01e18);
+}
+```
+
+Use `vm.roll()` to change block numbers:
+
+```solidity
+function test_BlockBasedLogic() public {
+    uint256 startBlock = block.number;
+    
+    // Advance 100 blocks
+    vm.roll(startBlock + 100);
+    
+    assertEq(block.number, startBlock + 100);
+}
+```
+
+### Testing with real protocol state
+
+#### Interacting with Uniswap
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.13;
+
+import {Test} from "forge-std/Test.sol";
+
+interface IUniswapV2Router {
+    function swapExactTokensForTokens(
+        uint256 amountIn,
+        uint256 amountOutMin,
+        address[] calldata path,
+        address to,
+        uint256 deadline
+    ) external returns (uint256[] memory amounts);
+}
+
+interface IERC20 {
+    function approve(address spender, uint256 amount) external returns (bool);
+    function balanceOf(address account) external view returns (uint256);
+}
+
+contract UniswapTest is Test {
+    IUniswapV2Router router = IUniswapV2Router(0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D);
+    address constant WETH = 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2;
+    address constant USDC = 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48;
+
+    function setUp() public {
+        // Give this contract some WETH
+        deal(WETH, address(this), 10 ether);
+    }
+
+    function test_SwapWethForUsdc() public {
+        IERC20(WETH).approve(address(router), 1 ether);
+
+        address[] memory path = new address[](2);
+        path[0] = WETH;
+        path[1] = USDC;
+
+        uint256 usdcBefore = IERC20(USDC).balanceOf(address(this));
+        
+        router.swapExactTokensForTokens(
+            1 ether,
+            0, // Accept any amount
+            path,
+            address(this),
+            block.timestamp
+        );
+
+        uint256 usdcAfter = IERC20(USDC).balanceOf(address(this));
+        assertGt(usdcAfter, usdcBefore);
+    }
+}
+```
+
+#### Testing with Aave
+
+```solidity
+interface IPool {
+    function supply(address asset, uint256 amount, address onBehalfOf, uint16 referralCode) external;
+    function borrow(address asset, uint256 amount, uint256 interestRateMode, uint16 referralCode, address onBehalfOf) external;
+}
+
+contract AaveTest is Test {
+    IPool pool = IPool(0x87870Bca3F3fD6335C3F4ce8392D69350B4fA4E2);
+    address constant WETH = 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2;
+    address constant USDC = 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48;
+
+    function test_SupplyAndBorrow() public {
+        deal(WETH, address(this), 10 ether);
+        IERC20(WETH).approve(address(pool), 10 ether);
+
+        // Supply WETH as collateral
+        pool.supply(WETH, 10 ether, address(this), 0);
+
+        // Borrow USDC against it
+        pool.borrow(USDC, 1000e6, 2, 0, address(this)); // Variable rate
+
+        assertEq(IERC20(USDC).balanceOf(address(this)), 1000e6);
+    }
+}
+```
+
+### Dealing tokens
+
+Use `deal()` to set token balances without needing to acquire them:
+
+```solidity
+function setUp() public {
+    deal(address(dai), alice, 1000 ether); // [!code hl]
+    deal(address(weth), bob, 10 ether); // [!code hl]
+    vm.deal(address(this), 100 ether); // [!code hl]
+}
+```
+
+For tokens with complex balance storage (like USDC with blacklists), use `deal()` with the `adjust` parameter:
+
+```solidity
+deal(address(usdc), alice, 1000e6, true); // Adjusts totalSupply
+```
+
+### Multi-fork testing
+
+Test interactions between different chains:
+
+```solidity
+function test_CrossChainState() public {
+    uint256 mainnetFork = vm.createFork("https://ethereum.reth.rs/rpc"); // [!code hl]
+    uint256 optimismFork = vm.createFork("https://mainnet.optimism.io"); // [!code hl]
+
+    vm.selectFork(mainnetFork); // [!code hl]
+    uint256 mainnetBalance = IERC20(mainnetUsdc).balanceOf(whale);
+
+    vm.selectFork(optimismFork); // [!code hl]
+    uint256 optimismBalance = IERC20(optimismUsdc).balanceOf(whale);
+
+    console.log("Mainnet USDC:", mainnetBalance);
+    console.log("Optimism USDC:", optimismBalance);
+}
+```
+
+### Fork caching
+
+Foundry caches fork data at `~/.foundry/cache/rpc/<chain>/<block>/`. This speeds up subsequent test runs.
+
+Clear the cache if you need fresh data:
+
+```bash
+rm -rf ~/.foundry/cache/rpc
+```
+
+### Best practices
+
+| Practice | Description |
+|----------|-------------|
+| Pin block numbers | Always use `--fork-block-number` for reproducible tests |
+| Use `deal()` | Avoid complex token acquisition logic in tests |
+| Cache RPC calls | Let Foundry cache fork data to speed up tests |
+| Test edge cases | Use `vm.warp()` to test time-sensitive edge cases |
+| Isolate fork tests | Keep fork tests separate from unit tests for faster CI |
+
+### Troubleshooting
+
+#### Rate limiting
+
+If your RPC provider rate-limits requests:
+
+```bash
+forge test --fork-url $RPC_URL --fork-retry-backoff 1000
+```
+
+Or use a dedicated RPC provider with higher limits.
+
+#### Stale cache
+
+If tests behave unexpectedly after protocol upgrades:
+
+```bash
+forge clean
+forge test --fork-url $RPC_URL
+```

@@ -1,0 +1,227 @@
+---
+description: Deploy contracts from local development to testnet and mainnet with verification and deterministic addresses.
+---
+
+## Deploying Contracts
+
+This guide covers the full deployment workflow: local testing, testnet deployment, mainnet deployment, contract verification, and deterministic addresses with CREATE2.
+
+### Local deployment with Anvil
+
+::::steps
+
+#### Start a local node
+
+```bash
+anvil
+```
+
+Anvil provides 10 pre-funded accounts for testing. The first account's private key is `0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80`.
+
+#### Deploy your contract
+
+```bash
+forge script script/Deploy.s.sol --broadcast --rpc-url http://localhost:8545 --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
+```
+
+::::
+
+### Testnet deployment
+
+::::steps
+
+#### Create an encrypted keystore
+
+Never use plaintext private keys. Import your key into an encrypted keystore:
+
+```bash
+cast wallet import deployer --interactive
+```
+
+#### Deploy to a testnet
+
+```bash
+forge script script/Deploy.s.sol --account deployer --broadcast --rpc-url https://sepolia.drpc.org
+```
+
+#### Verify the contract
+
+```bash
+forge verify-contract $CONTRACT_ADDRESS src/Counter.sol:Counter --chain sepolia
+```
+
+::::
+
+### Mainnet deployment
+
+For mainnet, use a hardware wallet:
+
+```bash
+forge script script/Deploy.s.sol --ledger --broadcast --rpc-url https://ethereum.reth.rs/rpc
+```
+
+Or with an encrypted keystore:
+
+```bash
+forge script script/Deploy.s.sol --account deployer --broadcast --rpc-url https://ethereum.reth.rs/rpc
+```
+
+### Contract verification
+
+Forge can verify contracts on Etherscan and compatible explorers.
+
+#### Automatic verification during deployment
+
+```bash
+forge script script/Deploy.s.sol --broadcast --verify --rpc-url https://ethereum.reth.rs/rpc # [!code hl]
+```
+
+#### Manual verification
+
+```bash
+forge verify-contract $CONTRACT_ADDRESS src/Token.sol:Token \
+    --chain mainnet \
+    --constructor-args $(cast abi-encode "constructor(string,string)" "MyToken" "MTK")
+```
+
+#### Verification with constructor arguments
+
+If your contract has constructor arguments, encode them:
+
+```bash
+# For a constructor: constructor(address admin, uint256 supply)
+forge verify-contract $CONTRACT_ADDRESS src/Token.sol:Token \
+    --chain mainnet \
+    --constructor-args $(cast abi-encode "constructor(address,uint256)" 0x1234...5678 1000000000000000000000000)
+```
+
+### Deterministic addresses with CREATE2
+
+CREATE2 deploys contracts to predictable addresses based on the deployer, salt, and bytecode.
+
+#### Using a CREATE2 factory
+
+Deploy through a factory like [CreateX](https://github.com/pcaversaccio/createx):
+
+```solidity [script/DeployCreate2.s.sol]
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.13;
+
+import {Script} from "forge-std/Script.sol";
+import {Counter} from "../src/Counter.sol";
+
+interface ICreateX {
+    function deployCreate2(bytes32 salt, bytes memory initCode) external payable returns (address);
+}
+
+contract DeployCreate2 is Script {
+    ICreateX constant CREATEX = ICreateX(0xba5Ed099633D3B313e4D5F7bdc1305d3c28ba5Ed); // [!code hl]
+
+    function run() public {
+        bytes32 salt = keccak256("my-unique-salt-v1"); // [!code hl]
+        bytes memory initCode = type(Counter).creationCode;
+
+        vm.startBroadcast();
+        address deployed = CREATEX.deployCreate2(salt, initCode); // [!code hl]
+        vm.stopBroadcast();
+
+        console.log("Deployed at:", deployed);
+    }
+}
+```
+
+#### Computing the address beforehand
+
+```solidity
+function computeCreate2Address(
+    bytes32 salt,
+    bytes32 initCodeHash,
+    address deployer
+) internal pure returns (address) {
+    return address(uint160(uint256(keccak256(abi.encodePacked(
+        bytes1(0xff),
+        deployer,
+        salt,
+        initCodeHash
+    )))));
+}
+```
+
+#### Same address across chains
+
+To deploy to the same address on multiple chains:
+
+1. Use the same salt
+2. Use identical bytecode (no immutable chain-specific values in constructor)
+3. Deploy from the same address or use a cross-chain factory like CreateX
+
+```bash
+# Deploy to multiple chains with the same script
+forge script script/DeployCreate2.s.sol --broadcast --rpc-url https://ethereum.reth.rs/rpc
+forge script script/DeployCreate2.s.sol --broadcast --rpc-url https://sepolia.drpc.org
+forge script script/DeployCreate2.s.sol --broadcast --rpc-url https://mainnet.optimism.io
+```
+
+### Deployment script patterns
+
+#### Basic deployment script
+
+```solidity [script/Deploy.s.sol]
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.13;
+
+import {Script, console} from "forge-std/Script.sol";
+import {Counter} from "../src/Counter.sol";
+
+contract DeployScript is Script {
+    function run() public {
+        vm.startBroadcast();
+        
+        Counter counter = new Counter();
+        console.log("Counter deployed at:", address(counter));
+        
+        vm.stopBroadcast();
+    }
+}
+```
+
+#### Deployment with configuration
+
+```solidity [script/Deploy.s.sol]
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.13;
+
+import {Script, console} from "forge-std/Script.sol";
+import {Token} from "../src/Token.sol";
+
+contract DeployScript is Script {
+    function run() public {
+        address admin = vm.envAddress("ADMIN_ADDRESS"); // [!code hl]
+        uint256 initialSupply = vm.envOr("INITIAL_SUPPLY", uint256(1_000_000 ether)); // [!code hl]
+
+        vm.startBroadcast();
+        
+        Token token = new Token(admin, initialSupply);
+        console.log("Token deployed at:", address(token));
+        console.log("Admin:", admin);
+        console.log("Initial supply:", initialSupply);
+        
+        vm.stopBroadcast();
+    }
+}
+```
+
+### Verifying deployment
+
+After deployment, verify the contract state:
+
+```bash
+# Check the deployed bytecode
+cast code $CONTRACT_ADDRESS --rpc-url https://ethereum.reth.rs/rpc
+
+# Call a view function
+cast call $CONTRACT_ADDRESS "owner()" --rpc-url https://ethereum.reth.rs/rpc
+
+# Check contract balance
+cast balance $CONTRACT_ADDRESS --rpc-url https://ethereum.reth.rs/rpc
+```

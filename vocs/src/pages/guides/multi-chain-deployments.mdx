@@ -1,0 +1,232 @@
+---
+description: Deploy the same contracts across multiple networks with per-chain configuration.
+---
+
+## Multi-Chain Deployments
+
+This guide covers deploying contracts to multiple chains with consistent addresses, chain-specific configuration, and coordinated deployment scripts.
+
+### Per-chain RPC configuration
+
+Define RPC endpoints in `foundry.toml`:
+
+```toml [foundry.toml]
+[rpc_endpoints]
+mainnet = "https://ethereum.reth.rs/rpc"
+optimism = "https://mainnet.optimism.io"
+arbitrum = "https://arb1.arbitrum.io/rpc"
+base = "https://mainnet.base.org"
+sepolia = "https://sepolia.drpc.org"
+```
+
+Reference them in scripts:
+
+```bash
+forge script script/Deploy.s.sol --broadcast --rpc-url mainnet
+forge script script/Deploy.s.sol --broadcast --rpc-url optimism
+```
+
+### Chain-aware deployment scripts
+
+Use `block.chainid` to configure chain-specific parameters:
+
+```solidity [script/Deploy.s.sol]
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.13;
+
+import {Script, console} from "forge-std/Script.sol";
+import {Token} from "../src/Token.sol";
+
+contract DeployScript is Script {
+    function run() public {
+        Config memory config = getConfig();
+        
+        vm.startBroadcast();
+        Token token = new Token(config.admin, config.initialSupply);
+        vm.stopBroadcast();
+        
+        console.log("Chain:", block.chainid);
+        console.log("Token:", address(token));
+    }
+
+    struct Config {
+        address admin;
+        uint256 initialSupply;
+        address weth;
+    }
+
+    function getConfig() internal view returns (Config memory) {
+        if (block.chainid == 1) {
+            return Config({
+                admin: 0x1234567890123456789012345678901234567890,
+                initialSupply: 1_000_000 ether,
+                weth: 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
+            });
+        } else if (block.chainid == 10) {
+            return Config({
+                admin: 0x1234567890123456789012345678901234567890,
+                initialSupply: 500_000 ether,
+                weth: 0x4200000000000000000000000000000000000006
+            });
+        } else if (block.chainid == 42161) {
+            return Config({
+                admin: 0x1234567890123456789012345678901234567890,
+                initialSupply: 500_000 ether,
+                weth: 0x82aF49447D8a07e3bd95BD0d56f35241523fBab1
+            });
+        } else {
+            revert("Unsupported chain");
+        }
+    }
+}
+```
+
+### Deterministic addresses with CREATE2
+
+Deploy to the same address on all chains using CREATE2:
+
+```solidity [script/DeployCreate2.s.sol]
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.13;
+
+import {Script, console} from "forge-std/Script.sol";
+import {Token} from "../src/Token.sol";
+
+interface ICreateX {
+    function deployCreate2(bytes32 salt, bytes memory initCode) external payable returns (address);
+    function computeCreate2Address(bytes32 salt, bytes32 initCodeHash) external view returns (address);
+}
+
+contract DeployCreate2 is Script {
+    // CreateX is deployed at the same address on all chains
+    ICreateX constant CREATEX = ICreateX(0xba5Ed099633D3B313e4D5F7bdc1305d3c28ba5Ed);
+    bytes32 constant SALT = keccak256("my-protocol-v1");
+
+    function run() public {
+        bytes memory initCode = abi.encodePacked(
+            type(Token).creationCode,
+            abi.encode("MyToken", "MTK") // Constructor args must be identical across chains
+        );
+
+        // Compute expected address
+        address expected = CREATEX.computeCreate2Address(SALT, keccak256(initCode));
+        console.log("Expected address:", expected);
+
+        vm.startBroadcast();
+        address deployed = CREATEX.deployCreate2(SALT, initCode);
+        vm.stopBroadcast();
+
+        require(deployed == expected, "Address mismatch");
+        console.log("Deployed at:", deployed);
+    }
+}
+```
+
+Deploy to all chains:
+
+```bash
+forge script script/DeployCreate2.s.sol --broadcast --rpc-url mainnet
+forge script script/DeployCreate2.s.sol --broadcast --rpc-url optimism
+forge script script/DeployCreate2.s.sol --broadcast --rpc-url arbitrum
+```
+
+### Using environment variables for chain config
+
+For more flexibility, use environment variables:
+
+```solidity [script/Deploy.s.sol]
+function getConfig() internal view returns (Config memory) {
+    return Config({
+        admin: vm.envAddress("ADMIN_ADDRESS"),
+        initialSupply: vm.envOr("INITIAL_SUPPLY", uint256(1_000_000 ether)),
+        weth: vm.envAddress(string.concat("WETH_", vm.toString(block.chainid)))
+    });
+}
+```
+
+```bash [.env]
+ADMIN_ADDRESS=0x1234567890123456789012345678901234567890
+INITIAL_SUPPLY=1000000000000000000000000
+WETH_1=0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
+WETH_10=0x4200000000000000000000000000000000000006
+WETH_42161=0x82aF49447D8a07e3bd95BD0d56f35241523fBab1
+```
+
+### Deployment manifest
+
+Track deployments across chains in a JSON file:
+
+```solidity [script/Deploy.s.sol]
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.13;
+
+import {Script, console} from "forge-std/Script.sol";
+import {Token} from "../src/Token.sol";
+
+contract DeployScript is Script {
+    function run() public {
+        vm.startBroadcast();
+        Token token = new Token("MyToken", "MTK");
+        vm.stopBroadcast();
+
+        // Write deployment to JSON
+        string memory json = vm.serializeAddress("deployment", "token", address(token));
+        json = vm.serializeUint("deployment", "chainId", block.chainid);
+        json = vm.serializeUint("deployment", "blockNumber", block.number);
+        
+        string memory path = string.concat("deployments/", vm.toString(block.chainid), ".json");
+        vm.writeJson(json, path);
+    }
+}
+```
+
+### Batch deployment script
+
+Automate multi-chain deployments with a shell script:
+
+```bash [scripts/deploy-all.sh]
+#!/bin/bash
+set -e
+
+CHAINS=("mainnet" "optimism" "arbitrum" "base")
+
+for chain in "${CHAINS[@]}"; do
+    echo "Deploying to $chain..."
+    forge script script/Deploy.s.sol \
+        --broadcast \
+        --verify \
+        --rpc-url "$chain" \
+        --account deployer
+done
+
+echo "All deployments complete!"
+```
+
+### Verification across chains
+
+Configure Etherscan API keys for each chain:
+
+```toml [foundry.toml]
+[etherscan]
+mainnet = { key = "${ETHERSCAN_API_KEY}" }
+optimism = { key = "${OPTIMISM_ETHERSCAN_API_KEY}", url = "https://api-optimistic.etherscan.io/api" }
+arbitrum = { key = "${ARBISCAN_API_KEY}", url = "https://api.arbiscan.io/api" }
+base = { key = "${BASESCAN_API_KEY}", url = "https://api.basescan.org/api" }
+```
+
+Then verify during deployment:
+
+```bash
+forge script script/Deploy.s.sol --broadcast --verify --rpc-url optimism
+```
+
+### Best practices
+
+| Practice | Description |
+|----------|-------------|
+| Use CREATE2 | Ensures identical addresses across chains |
+| Chain-agnostic bytecode | Avoid chain-specific immutables in constructors |
+| Consistent salts | Document and version your CREATE2 salts |
+| Deployment manifests | Track all deployments in version control |
+| Verify immediately | Use `--verify` flag during deployment |
+| Test on testnets first | Deploy to Sepolia/Goerli before mainnet |
