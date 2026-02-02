@@ -9,137 +9,141 @@ Cast encodes and decodes data according to the Ethereum ABI specification.
 ### Encoding calldata
 
 ```bash [Encode a function call]
-cast calldata "transfer(address,uint256)" 0xRecipient 1000000000000000000
+$ cast calldata "transfer(address,uint256)" 0xRecipient 1000000000000000000
 ```
 
 ```bash [Encode with named function]
-cast calldata "approve(address spender, uint256 amount)" $SPENDER $AMOUNT
+$ cast calldata "approve(address spender, uint256 amount)" $SPENDER $AMOUNT
 ```
 
 ```bash [Encode constructor arguments]
-cast abi-encode "constructor(string,uint256)" "MyToken" 1000000
+$ cast abi-encode "constructor(string,uint256)" "MyToken" 1000000
 ```
 
 ### Decoding calldata
 
 ```bash [Decode with known signature]
-cast calldata-decode "transfer(address,uint256)" 0xa9059cbb000000000000000000000000...
+$ cast calldata-decode "transfer(address,uint256)" 0xa9059cbb000000000000000000000000...
 ```
 
 ```bash [Decode using 4byte database]
-cast 4byte-decode 0xa9059cbb000000000000000000000000...
+// [!include ~/snippets/output/cast/cast-4byte-calldata:command]
+```
+
+```ansi
+// [!include ~/snippets/output/cast/cast-4byte-calldata:output]
 ```
 
 ```bash [Look up function selector]
-cast 4byte 0xa9059cbb
+$ cast 4byte 0xa9059cbb
 ```
 
 ### ABI encoding primitives
 
 ```bash [Encode raw ABI data]
-cast abi-encode "foo(uint256,address)" 42 0xRecipient
+$ cast abi-encode "foo(uint256,address)" 42 0xRecipient
 ```
 
 ```bash [Decode ABI data]
-cast abi-decode "foo(uint256,address)" 0x000000000000000000000000...
+$ cast abi-decode "foo(uint256,address)" 0x000000000000000000000000...
 ```
 
 ```bash [Decode output data]
-cast abi-decode --output "balanceOf(address)(uint256)" 0x0000000000000000000000000000000000000000000000000de0b6b3a7640000
+$ cast abi-decode --output "balanceOf(address)(uint256)" 0x0000000000000000000000000000000000000000000000000de0b6b3a7640000
 ```
 
 ### Function selectors
 
 ```bash [Compute function selector]
-cast sig "transfer(address,uint256)"
+$ cast sig "transfer(address,uint256)"
 ```
 
 ```bash [Get full signature from selector]
-cast 4byte 0xa9059cbb
+$ cast 4byte 0xa9059cbb
 ```
 
 ```bash [Compute event topic]
-cast sig-event "Transfer(address indexed,address indexed,uint256)"
+$ cast sig-event "Transfer(address indexed,address indexed,uint256)"
 ```
 
 ### Decoding events
 
 ```bash [Decode event data]
-cast abi-decode --event "Transfer(address indexed from, address indexed to, uint256 value)" $DATA
+$ cast abi-decode --event "Transfer(address indexed from, address indexed to, uint256 value)" $DATA
 ```
 
 ```bash [Look up event by topic]
-cast 4byte-event 0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef
+$ cast 4byte-event 0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef
 ```
 
 ### Working with types
 
 ```bash [Encode bytes]
-cast abi-encode "foo(bytes)" 0xdeadbeef
+$ cast abi-encode "foo(bytes)" 0xdeadbeef
 ```
 
 ```bash [Encode dynamic array]
-cast abi-encode "foo(uint256[])" "[1,2,3]"
+$ cast abi-encode "foo(uint256[])" "[1,2,3]"
 ```
 
 ```bash [Encode tuple]
-cast abi-encode "foo((uint256,address))" "(42,0xRecipient)"
+$ cast abi-encode "foo((uint256,address))" "(42,0xRecipient)"
 ```
 
 ```bash [Encode string]
-cast abi-encode "foo(string)" "Hello, World!"
+$ cast abi-encode "foo(string)" "Hello, World!"
 ```
 
 ### Type conversions
 
 ```bash [Parse units (e.g., ether to wei)]
-cast to-wei 1.5 ether
+$ cast to-wei 1.5 ether
 ```
 
 ```bash [Format units (e.g., wei to ether)]
-cast from-wei 1500000000000000000
+$ cast from-wei 1500000000000000000
 ```
 
 ```bash [Convert to hex]
-cast to-hex 255
+$ cast to-hex 255
 ```
 
 ```bash [Convert from hex]
-cast to-dec 0xff
+$ cast to-dec 0xff
 ```
 
 ```bash [Convert to bytes32]
-cast to-bytes32 "Hello"
+$ cast to-bytes32 "Hello"
 ```
 
 ```bash [Format bytes32 as string]
-cast parse-bytes32-string 0x48656c6c6f000000000000000000000000000000000000000000000000000000
+$ cast parse-bytes32-string 0x48656c6c6f000000000000000000000000000000000000000000000000000000
 ```
 
 ### Hashing
 
 ```bash [Keccak256 hash]
-cast keccak "Hello, World!"
+$ cast keccak "Hello, World!"
 ```
 
 ```bash [Hash raw bytes]
-cast keccak 0xdeadbeef
+$ cast keccak 0xdeadbeef
 ```
 
 ```bash [Compute storage slot for mapping]
-cast index address 0xOwner 0
+$ cast index address 0xOwner 0
 ```
 
 ### Interface utilities
 
 ```bash [Generate interface from ABI]
-cast interface ./out/Counter.sol/Counter.json
+$ cast interface ./out/Counter.sol/Counter.json
 ```
 
 ```bash [Generate interface from Etherscan]
-cast interface 0xContractAddress --etherscan-api-key $KEY
+$ cast interface 0xContractAddress --etherscan-api-key $KEY
 ```
 
 ```bash [Pretty print ABI]
-cast abi-print ./out/Counter.sol/Counter.json
+$ cast abi-print ./out/Counter.sol/Counter.json
 ```

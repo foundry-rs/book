@@ -7,69 +7,69 @@ description: Query blockchain data with Cast — blocks, transactions, logs, and
 Cast queries any Ethereum-compatible chain via JSON-RPC. Set your RPC endpoint with `--rpc-url` or the `ETH_RPC_URL` environment variable.
 
 ```bash
-export ETH_RPC_URL=https://eth.merkle.io
+$ export ETH_RPC_URL=https://eth.merkle.io
 ```
 
 ### Blocks
 
 ```bash [Get the latest block number]
-cast block-number
+$ cast block-number
 ```
 
 ```bash [Get block details]
-cast block latest
+$ cast block latest
 ```
 
 ```bash [Get a specific block]
-cast block 18000000
+$ cast block 18000000
 ```
 
 ```bash [Get just the timestamp]
-cast block latest --field timestamp
+$ cast block latest --field timestamp
 ```
 
 ```bash [Get the base fee]
-cast base-fee
+$ cast base-fee
 ```
 
 ### Transactions
 
 ```bash [Get transaction details]
-cast tx $TX_HASH
+$ cast tx $TX_HASH
 ```
 
 ```bash [Get a transaction receipt]
-cast receipt $TX_HASH
+$ cast receipt $TX_HASH
 ```
 
 ```bash [Check if a transaction succeeded]
-cast receipt $TX_HASH --field status
+$ cast receipt $TX_HASH --field status
 ```
 
 ```bash [Get gas used]
-cast receipt $TX_HASH --field gasUsed
+$ cast receipt $TX_HASH --field gasUsed
 ```
 
 ### Account state
 
 ```bash [Get ETH balance]
-cast balance $ADDRESS
+$ cast balance $ADDRESS
 ```
 
 ```bash [Get balance in ether]
-cast balance $ADDRESS --ether
+$ cast balance $ADDRESS --ether
 ```
 
 ```bash [Get nonce]
-cast nonce $ADDRESS
+$ cast nonce $ADDRESS
 ```
 
 ```bash [Get contract bytecode]
-cast code $ADDRESS
+$ cast code $ADDRESS
 ```
 
 ```bash [Read storage slot]
-cast storage $ADDRESS 0
+$ cast storage $ADDRESS 0
 ```
 
 ### Contract calls
@@ -77,51 +77,51 @@ cast storage $ADDRESS 0
 Call view functions without sending a transaction:
 
 ```bash [Call a function]
-cast call $CONTRACT "balanceOf(address)(uint256)" $ADDRESS
+$ cast call $CONTRACT "balanceOf(address)(uint256)" $ADDRESS
 ```
 
 ```bash [Call with named output]
-cast call $CONTRACT "name()(string)"
+$ cast call $CONTRACT "name()(string)"
 ```
 
 ```bash [Call at a specific block]
-cast call $CONTRACT "totalSupply()(uint256)" --block 18000000
+$ cast call $CONTRACT "totalSupply()(uint256)" --block 18000000
 ```
 
 ### Logs and events
 
 ```bash [Get logs for an event signature]
-cast logs "Transfer(address indexed,address indexed,uint256)" --from-block 18000000
+$ cast logs "Transfer(address indexed,address indexed,uint256)" --from-block 18000000
 ```
 
 ```bash [Filter by address]
-cast logs --address $CONTRACT --from-block 18000000 --to-block latest
+$ cast logs --address $CONTRACT --from-block 18000000 --to-block latest
 ```
 
 ```bash [Decode log topics]
-cast logs "Transfer(address,address,uint256)" --address $TOKEN
+$ cast logs "Transfer(address,address,uint256)" --address $TOKEN
 ```
 
 ### Chain info
 
 ```bash [Get chain ID]
-cast chain-id
+$ cast chain-id
 ```
 
 ```bash [Get current gas price]
-cast gas-price
+$ cast gas-price
 ```
 
 ```bash [Estimate gas for a call]
-cast estimate $CONTRACT "transfer(address,uint256)" $TO $AMOUNT
+$ cast estimate $CONTRACT "transfer(address,uint256)" $TO $AMOUNT
 ```
 
 ### ENS resolution
 
 ```bash [Resolve ENS name to address]
-cast resolve-name vitalik.eth
+$ cast resolve-name vitalik.eth
 ```
 
 ```bash [Reverse lookup address to ENS]
-cast lookup-address 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045
+$ cast lookup-address 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045
 ```

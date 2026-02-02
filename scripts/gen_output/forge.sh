@@ -13,14 +13,10 @@ gen_forge() {
   run_command "$OUTPUT_DIR/hello_foundry/forge-init" \
     forge init hello_foundry
   cd hello_foundry
-  run_command "$OUTPUT_DIR/hello_foundry/tree" \
-    tree . -d -L 2
-  run_command "$OUTPUT_DIR/hello_foundry/tree-with-files" \
-    tree . -L 3 -I output
-  run_command "$OUTPUT_DIR/hello_foundry/forge-build" \
-    forge build
+ run_command "$OUTPUT_DIR/hello_foundry/forge-build" \
+    forge build --color always
   run_command "$OUTPUT_DIR/hello_foundry/forge-test" \
-    forge test
+    forge test --color always
   run_command "$OUTPUT_DIR/hello_foundry/forge-install" \
     forge install vectorized/solady
   run_command "$OUTPUT_DIR/hello_foundry/forge-remappings" \
@@ -28,35 +24,35 @@ gen_forge() {
 
   in_project test_filters
   run_command "$OUTPUT_DIR/test_filters/forge-test-match-contract-and-test" \
-    forge test --match-contract ComplicatedContractTest --match-test test_Deposit
+    forge test --match-contract ComplicatedContractTest --match-test test_Deposit --color always
   run_command "$OUTPUT_DIR/test_filters/forge-test-match-path" \
-    forge test --match-path test/ContractB.t.sol
+    forge test --match-path test/ContractB.t.sol --color always
 
   in_project cheatcodes
   run_command "$OUTPUT_DIR/cheatcodes/forge-test-simple" \
-    forge test --match-test test_IncrementAsOwner
+    forge test --match-test test_IncrementAsOwner --color always
   run_command "$OUTPUT_DIR/cheatcodes/forge-test-cheatcodes-expectrevert" \
-    forge test --match-test "test_IncrementAsOwner|test_IncrementAsNotOwner" --match-path test/OwnerUpOnly.t.sol
+    forge test --match-test "test_IncrementAsOwner|test_IncrementAsNotOwner" --match-path test/OwnerUpOnly.t.sol --color always
 
   in_project fuzz_testing
   step test/Safe.t.sol 1
   run_command "$OUTPUT_DIR/fuzz_testing/forge-test-no-fuzz" \
-    forge test
+    forge test --color always
   step test/Safe.t.sol 2
   run_command "$OUTPUT_DIR/fuzz_testing/forge-test-fail-fuzz" \
-    forge test --allow-failure
+    forge test --allow-failure --color always
   step test/Safe.t.sol 3
   run_command "$OUTPUT_DIR/fuzz_testing/forge-test-success-fuzz" \
-    forge test
+    forge test --color always
 
   in_temp forge_tree
   git clone https://github.com/morpho-org/morpho-blue
   cd morpho-blue
   forge install
   run_command "$OUTPUT_DIR/forge_tree/forge-tree" \
-    forge tree
+    forge tree --color always
   run_command "$OUTPUT_DIR/forge_tree/forge-tree-no-dedupe" \
-    forge tree --no-dedupe
+    forge tree --no-dedupe --color always
 
   echo OK.
 }

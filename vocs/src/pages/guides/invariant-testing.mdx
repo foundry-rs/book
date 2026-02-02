@@ -35,7 +35,7 @@ contract VaultInvariantTest is Test {
 Run invariant tests:
 
 ```bash
-forge test --match-contract VaultInvariantTest
+$ forge test --match-contract VaultInvariantTest
 ```
 
 ### Handler pattern
@@ -310,7 +310,7 @@ contract SystemInvariantTest is Test {
 When an invariant fails, Forge shows the call sequence:
 
 ```bash
-forge test --match-test invariant_Solvency -vvvv
+$ forge test --match-test invariant_Solvency -vvvv
 ```
 
 The output shows each call that led to the failure, helping you reproduce and fix the bug.

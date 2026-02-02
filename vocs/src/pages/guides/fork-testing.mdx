@@ -11,13 +11,13 @@ Fork testing lets you run tests against real chain state without deploying to a 
 Run tests against a forked network:
 
 ```bash
-forge test --fork-url https://ethereum.reth.rs/rpc
+$ forge test --fork-url https://ethereum.reth.rs/rpc
 ```
 
 Pin to a specific block for reproducible tests:
 
 ```bash
-forge test --fork-url https://ethereum.reth.rs/rpc --fork-block-number 18000000
+$ forge test --fork-url https://ethereum.reth.rs/rpc --fork-block-number 18000000
 ```
 
 ### Configuring forks in foundry.toml
@@ -219,7 +219,7 @@ Foundry caches fork data at `~/.foundry/cache/rpc/<chain>/<block>/`. This speeds
 Clear the cache if you need fresh data:
 
 ```bash
-rm -rf ~/.foundry/cache/rpc
+$ rm -rf ~/.foundry/cache/rpc
 ```
 
 ### Best practices
@@ -239,7 +239,7 @@ rm -rf ~/.foundry/cache/rpc
 If your RPC provider rate-limits requests:
 
 ```bash
-forge test --fork-url $RPC_URL --fork-retry-backoff 1000
+$ forge test --fork-url $RPC_URL --fork-retry-backoff 1000
 ```
 
 Or use a dedicated RPC provider with higher limits.
@@ -249,6 +249,6 @@ Or use a dedicated RPC provider with higher limits.
 If tests behave unexpectedly after protocol upgrades:
 
 ```bash
-forge clean
-forge test --fork-url $RPC_URL
+$ forge clean
+$ forge test --fork-url $RPC_URL
 ```

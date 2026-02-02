@@ -46,23 +46,31 @@ Forge compiles, tests, and deploys Solidity smart contracts. It's the core devel
 ### Common workflows
 
 ```bash [Build your project]
-forge build
+// [!include ~/snippets/output/hello_foundry/forge-build:command]
+```
+
+```ansi
+// [!include ~/snippets/output/hello_foundry/forge-build:output]
 ```
 
 ```bash [Run all tests]
-forge test
+// [!include ~/snippets/output/hello_foundry/forge-test:command]
+```
+
+```ansi
+// [!include ~/snippets/output/hello_foundry/forge-test:output]
 ```
 
 ```bash [Run tests with verbose output]
-forge test -vvvv
+$ forge test -vvvv
 ```
 
 ```bash [Deploy via script]
-forge script script/Deploy.s.sol --broadcast --rpc-url $RPC_URL
+$ forge script script/Deploy.s.sol --broadcast --rpc-url $RPC_URL
 ```
 
 ```bash [Verify a deployed contract]
-forge verify-contract $ADDRESS src/Counter.sol:Counter --etherscan-api-key $KEY
+$ forge verify-contract $ADDRESS src/Counter.sol:Counter --etherscan-api-key $KEY
 ```
 
 ### Learn more

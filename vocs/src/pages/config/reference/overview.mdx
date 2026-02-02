@@ -25,7 +25,7 @@ Foundry searches for a `foundry.toml` starting at the current working directory.
 You can override this behavior by setting the `FOUNDRY_CONFIG` environment variable to an absolute or relative path to a config file:
 
 ```bash
-FOUNDRY_CONFIG=./custom-config.toml forge build
+$ FOUNDRY_CONFIG=./custom-config.toml forge build
 ```
 
 If the path is absolute, it is used directly. If relative, the search behavior described above applies.
@@ -41,7 +41,7 @@ When resolving configuration values, Foundry considers the following sources in 
 To view the fully resolved configuration, run:
 
 ```bash
-forge config
+$ forge config
 ```
 
 ### Environment variables

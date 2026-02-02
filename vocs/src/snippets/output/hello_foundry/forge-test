@@ -1,15 +1,14 @@
 // [!region all]
 // [!region command]
-forge test
+$ forge test
 // [!endregion command]
 // [!region output]
+Compiling...
 No files changed, compilation skipped
-
 Ran 2 tests for test/Counter.t.sol:CounterTest
-[PASS] testFuzz_SetNumber(uint256) (runs: 256, μ: 26956, ~: 29289)
-[PASS] test_Increment() (gas: 28783)
-Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 8.57ms (8.29ms CPU time)
-
-Ran 1 test suite in 138.59ms (8.57ms CPU time): 2 tests passed, 0 failed, 0 skipped (2 total tests)
+[32m[PASS][0m testFuzz_SetNumber(uint256) (runs: 256, μ: 26879, ~: 29289)
+[32m[PASS][0m test_Increment() (gas: 28783)
+Suite result: [32mok[0m. [32m2[0m passed; [31m0[0m failed; [33m0[0m skipped; finished in 8.88ms (8.52ms CPU time)
+Ran 1 test suite in 9.75ms (8.88ms CPU time): [32m2[0m tests passed, [31m0[0m failed, [33m0[0m skipped (2 total tests)
 // [!endregion output]
 // [!endregion all]

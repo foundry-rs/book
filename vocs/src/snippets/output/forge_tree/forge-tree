@@ -1,6 +1,6 @@
 // [!region all]
 // [!region command]
-forge tree
+$ forge tree
 // [!endregion command]
 // [!region output]
 src/Morpho.sol =0.8.19

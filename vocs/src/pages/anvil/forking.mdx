@@ -9,15 +9,15 @@ Anvil can fork any EVM-compatible chain, allowing you to test against real-world
 ### Basic forking
 
 ```bash [Fork mainnet]
-anvil --fork-url https://ethereum.reth.rs/rpc
+$ anvil --fork-url https://ethereum.reth.rs/rpc
 ```
 
 ```bash [Fork at a specific block]
-anvil --fork-url https://ethereum.reth.rs/rpc --fork-block-number 18000000
+$ anvil --fork-url https://ethereum.reth.rs/rpc --fork-block-number 18000000
 ```
 
 ```bash [Fork from a transaction]
-anvil --fork-url https://ethereum.reth.rs/rpc --fork-transaction-hash $TX_HASH
+$ anvil --fork-url https://ethereum.reth.rs/rpc --fork-transaction-hash $TX_HASH
 ```
 
 ### Chain configuration
@@ -25,11 +25,11 @@ anvil --fork-url https://ethereum.reth.rs/rpc --fork-transaction-hash $TX_HASH
 When forking, Anvil inherits the chain ID from the remote endpoint by default.
 
 ```bash [Override chain ID]
-anvil --fork-url https://ethereum.reth.rs/rpc --chain-id 1337
+$ anvil --fork-url https://ethereum.reth.rs/rpc --chain-id 1337
 ```
 
 ```bash [Specify hardfork]
-anvil --fork-url https://ethereum.reth.rs/rpc --hardfork cancun
+$ anvil --fork-url https://ethereum.reth.rs/rpc --hardfork cancun
 ```
 
 ### Rate limiting
@@ -37,15 +37,15 @@ anvil --fork-url https://ethereum.reth.rs/rpc --hardfork cancun
 RPC providers often rate-limit requests. Anvil handles this automatically but you can tune the behavior:
 
 ```bash [Set compute units per second]
-anvil --fork-url $RPC_URL --compute-units-per-second 100
+$ anvil --fork-url $RPC_URL --compute-units-per-second 100
 ```
 
 ```bash [Disable rate limiting]
-anvil --fork-url $RPC_URL --no-rate-limit
+$ anvil --fork-url $RPC_URL --no-rate-limit
 ```
 
 ```bash [Set retry count]
-anvil --fork-url $RPC_URL --retries 10
+$ anvil --fork-url $RPC_URL --retries 10
 ```
 
 ### Caching
@@ -53,7 +53,7 @@ anvil --fork-url $RPC_URL --retries 10
 Anvil caches forked state to disk at `~/.foundry/cache/rpc/<chain>/<block>/` to speed up subsequent runs.
 
 ```bash [Disable storage caching]
-anvil --fork-url $RPC_URL --no-storage-caching
+$ anvil --fork-url $RPC_URL --no-storage-caching
 ```
 
 ### Custom headers
@@ -61,7 +61,7 @@ anvil --fork-url $RPC_URL --no-storage-caching
 Some RPC providers require authentication headers:
 
 ```bash [Add custom header]
-anvil --fork-url $RPC_URL --fork-header "Authorization: Bearer $TOKEN"
+$ anvil --fork-url $RPC_URL --fork-header "Authorization: Bearer $TOKEN"
 ```
 
 ### L2 support
@@ -69,9 +69,9 @@ anvil --fork-url $RPC_URL --fork-header "Authorization: Bearer $TOKEN"
 Anvil supports L2-specific features:
 
 ```bash [Enable Optimism features]
-anvil --fork-url https://mainnet.optimism.io --optimism
+$ anvil --fork-url https://mainnet.optimism.io --optimism
 ```
 
 ```bash [Enable Celo features]
-anvil --fork-url https://forno.celo.org --celo
+$ anvil --fork-url https://forno.celo.org --celo
 ```

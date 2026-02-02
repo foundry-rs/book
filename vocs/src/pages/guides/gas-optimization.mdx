@@ -11,7 +11,7 @@ This guide covers profiling gas usage, creating gas snapshots, optimization tech
 Create a baseline for gas usage:
 
 ```bash
-forge snapshot
+$ forge snapshot
 ```
 
 This generates `.gas-snapshot` with gas costs for each test:
@@ -25,13 +25,13 @@ TokenTest:testFuzz_Transfer(uint256) (gas: 42156)
 Compare against the baseline:
 
 ```bash
-forge snapshot --check
+$ forge snapshot --check
 ```
 
 Diff against another snapshot:
 
 ```bash
-forge snapshot --diff .gas-snapshot.old
+$ forge snapshot --diff .gas-snapshot.old
 ```
 
 ### Gas reports
@@ -39,7 +39,7 @@ forge snapshot --diff .gas-snapshot.old
 Get detailed gas reports for contract functions:
 
 ```bash
-forge test --gas-report
+$ forge test --gas-report
 ```
 
 Output shows min, avg, median, and max gas for each function:
@@ -57,7 +57,7 @@ Output shows min, avg, median, and max gas for each function:
 Focus on gas-critical functions:
 
 ```bash
-forge test --match-test test_Transfer --gas-report -vvv
+$ forge test --match-test test_Transfer --gas-report -vvv
 ```
 
 ### Optimization techniques
@@ -207,7 +207,7 @@ optimizer_runs = 10000
 ```
 
 ```bash
-FOUNDRY_PROFILE=production forge build
+$ FOUNDRY_PROFILE=production forge build
 ```
 
 #### IR pipeline trade-offs

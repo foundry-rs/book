@@ -11,7 +11,7 @@ This guide covers replaying and debugging transactions using `cast run`, analyzi
 Use `cast run` to replay any transaction locally:
 
 ```bash
-cast run $TX_HASH --rpc-url https://ethereum.reth.rs/rpc # [!code hl]
+$ cast run $TX_HASH --rpc-url https://ethereum.reth.rs/rpc # [!code hl]
 ```
 
 This executes the transaction against the state at the block where it was mined, showing the full execution trace.
@@ -30,7 +30,7 @@ Control trace output with `-v` flags:
 | `-vvvvv` | Full trace with storage changes |
 
 ```bash [Detailed trace]
-cast run $TX_HASH --rpc-url https://ethereum.reth.rs/rpc -vvvv
+$ cast run $TX_HASH --rpc-url https://ethereum.reth.rs/rpc -vvvv
 ```
 
 ### Analyzing a failed transaction
@@ -40,13 +40,13 @@ cast run $TX_HASH --rpc-url https://ethereum.reth.rs/rpc -vvvv
 #### Get the transaction details
 
 ```bash
-cast tx $TX_HASH --rpc-url https://ethereum.reth.rs/rpc
+$ cast tx $TX_HASH --rpc-url https://ethereum.reth.rs/rpc
 ```
 
 #### Check the receipt for failure
 
 ```bash
-cast receipt $TX_HASH --rpc-url https://ethereum.reth.rs/rpc
+$ cast receipt $TX_HASH --rpc-url https://ethereum.reth.rs/rpc
 ```
 
 Look for `status: 0` which indicates failure.
@@ -54,13 +54,13 @@ Look for `status: 0` which indicates failure.
 #### Replay with traces
 
 ```bash
-cast run $TX_HASH --rpc-url https://ethereum.reth.rs/rpc -vvvv
+$ cast run $TX_HASH --rpc-url https://ethereum.reth.rs/rpc -vvvv
 ```
 
 #### Decode the revert reason
 
 ```bash
-cast run $TX_HASH --rpc-url https://ethereum.reth.rs/rpc 2>&1 | grep -A5 "revert"
+$ cast run $TX_HASH --rpc-url https://ethereum.reth.rs/rpc 2>&1 | grep -A5 "revert"
 ```
 
 ::::
@@ -71,14 +71,14 @@ cast run $TX_HASH --rpc-url https://ethereum.reth.rs/rpc 2>&1 | grep -A5 "revert
 
 ```bash
 $ cast run 0x1234... --rpc-url https://ethereum.reth.rs/rpc
-...
-Revert: InsufficientBalance(1000000000000000000, 500000000000000000)
+$ ...
+$ Revert: InsufficientBalance(1000000000000000000, 500000000000000000)
 ```
 
 For custom errors, ensure you have the contract ABI available:
 
 ```bash
-cast run $TX_HASH --rpc-url https://ethereum.reth.rs/rpc --label 0xContractAddress:MyContract
+$ cast run $TX_HASH --rpc-url https://ethereum.reth.rs/rpc --label 0xContractAddress:MyContract
 ```
 
 ### Debugging with quick mode
@@ -86,7 +86,7 @@ cast run $TX_HASH --rpc-url https://ethereum.reth.rs/rpc --label 0xContractAddre
 For faster debugging, use quick mode which skips some validation:
 
 ```bash
-cast run $TX_HASH --rpc-url https://ethereum.reth.rs/rpc --quick
+$ cast run $TX_HASH --rpc-url https://ethereum.reth.rs/rpc --quick
 ```
 
 ### Labeling addresses
@@ -94,7 +94,7 @@ cast run $TX_HASH --rpc-url https://ethereum.reth.rs/rpc --quick
 Make traces more readable by labeling known addresses:
 
 ```bash
-cast run $TX_HASH --rpc-url https://ethereum.reth.rs/rpc \
+$ cast run $TX_HASH --rpc-url https://ethereum.reth.rs/rpc \
     --label 0x6B175474E89094C44Da98b954EeD3CDB5BE3830:DAI \
     --label 0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D:UniswapRouter
 ```
@@ -104,7 +104,7 @@ cast run $TX_HASH --rpc-url https://ethereum.reth.rs/rpc \
 Debug test failures with traces:
 
 ```bash
-forge test --match-test test_Failing -vvvv
+$ forge test --match-test test_Failing -vvvv
 ```
 
 Use `console.log` for strategic debugging:
@@ -128,7 +128,7 @@ function test_Debug() public {
 Forge includes an interactive debugger:
 
 ```bash
-forge test --match-test test_Failing --debug
+$ forge test --match-test test_Failing --debug
 ```
 
 Debugger controls:
@@ -157,7 +157,7 @@ Error: OutOfGas
 
 ```bash
 # Check actual gas used vs limit
-cast tx $TX_HASH --rpc-url https://ethereum.reth.rs/rpc | grep -E "gas|gasLimit"
+$ cast tx $TX_HASH --rpc-url https://ethereum.reth.rs/rpc | grep -E "gas|gasLimit"
 ```
 
 #### Revert with no message
@@ -171,7 +171,7 @@ Error: Revert
 **Solution**: Check the trace for the exact call that failed:
 
 ```bash
-cast run $TX_HASH --rpc-url https://ethereum.reth.rs/rpc -vvvvv
+$ cast run $TX_HASH --rpc-url https://ethereum.reth.rs/rpc -vvvvv
 ```
 
 #### Stack too deep
@@ -200,11 +200,11 @@ Debug by comparing a working transaction with a failed one:
 
 ```bash
 # Get traces for both
-cast run $SUCCESS_TX --rpc-url $RPC -vvvv > success.txt
-cast run $FAILED_TX --rpc-url $RPC -vvvv > failed.txt
+$ cast run $SUCCESS_TX --rpc-url $RPC -vvvv > success.txt
+$ cast run $FAILED_TX --rpc-url $RPC -vvvv > failed.txt
 
 # Compare
-diff success.txt failed.txt
+$ diff success.txt failed.txt
 ```
 
 ### Simulating with modified state
@@ -213,7 +213,7 @@ Use Anvil to replay with modifications:
 
 ```bash
 # Fork at the block before the transaction
-anvil --fork-url https://ethereum.reth.rs/rpc --fork-block-number $BLOCK_MINUS_ONE
+$ anvil --fork-url https://ethereum.reth.rs/rpc --fork-block-number $BLOCK_MINUS_ONE
 ```
 
 Then in a Forge test or script, modify state and replay:
@@ -234,7 +234,7 @@ function test_DebugWithModifiedState() public {
 Analyze gas usage breakdown:
 
 ```bash
-cast run $TX_HASH --rpc-url https://ethereum.reth.rs/rpc -vvvv 2>&1 | grep -E "gas:|Gas"
+$ cast run $TX_HASH --rpc-url https://ethereum.reth.rs/rpc -vvvv 2>&1 | grep -E "gas:|Gas"
 ```
 
 ### Best practices

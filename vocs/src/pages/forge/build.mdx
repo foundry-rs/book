@@ -7,7 +7,11 @@ description: Compile Solidity contracts with Forge.
 Forge compiles all Solidity files in your `src/` directory and outputs artifacts to `out/`.
 
 ```bash
-forge build
+// [!include ~/snippets/output/hello_foundry/forge-build:command]
+```
+
+```ansi
+// [!include ~/snippets/output/hello_foundry/forge-build:output]
 ```
 
 ### Compiler versions
@@ -70,7 +74,7 @@ via_ir = true
 Build with a specific profile:
 
 ```bash
-FOUNDRY_PROFILE=production forge build
+$ FOUNDRY_PROFILE=production forge build
 ```
 
 ### Inspecting artifacts
@@ -78,25 +82,25 @@ FOUNDRY_PROFILE=production forge build
 View contract ABI:
 
 ```bash
-forge inspect Counter abi
+$ forge inspect Counter abi
 ```
 
 View deployed bytecode:
 
 ```bash
-forge inspect Counter bytecode
+$ forge inspect Counter bytecode
 ```
 
 View storage layout:
 
 ```bash
-forge inspect Counter storage-layout
+$ forge inspect Counter storage-layout
 ```
 
 View all available fields:
 
 ```bash
-forge inspect Counter --help
+$ forge inspect Counter --help
 ```
 
 ### Build cache
@@ -104,13 +108,13 @@ forge inspect Counter --help
 Forge caches compilation results. To force a full rebuild:
 
 ```bash
-forge build --force
+$ forge build --force
 ```
 
 Clear the cache entirely:
 
 ```bash
-forge clean
+$ forge clean
 ```
 
 ### Watching for changes
@@ -118,5 +122,5 @@ forge clean
 Rebuild automatically when files change:
 
 ```bash
-forge build --watch
+$ forge build --watch
 ```

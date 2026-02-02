@@ -125,9 +125,11 @@ contract Example {}
 ```
 ````
 
+For terminal commands, prefix each command with `$ `:
+
 ````md
 ```bash
-forge build
+$ forge build
 ```
 ````
 
@@ -182,7 +184,7 @@ Use titles instead of comments for single-action commands:
 
 ````md
 ```bash [Check an address balance]
-cast balance vitalik.eth --ether
+$ cast balance vitalik.eth --ether
 ```
 ````
 
@@ -192,7 +194,7 @@ Use `// @log:` to show command output inline:
 
 ````md
 ```bash
-forge test -vv
+$ forge test -vv
 // @log: Ran 2 tests for test/Counter.t.sol:CounterTest
 // @log: [PASS] test_Increment() (gas: 31293)
 // @log: Suite result: ok. 2 passed; 0 failed; 0 skipped
@@ -209,13 +211,13 @@ Use `::::steps` for sequential instructions:
 ### Install foundryup
 
 ```bash
-curl -L https://foundry.paradigm.xyz | bash
+$ curl -L https://foundry.paradigm.xyz | bash
 ```
 
 ### Install Foundry
 
 ```bash
-foundryup
+$ foundryup
 ```
 
 ::::
@@ -268,15 +270,15 @@ Use `:::code-group` for tabbed code examples. Code groups are ideal for:
 :::code-group
 
 ```bash [npm]
-npm install
+$ npm install
 ```
 
 ```bash [pnpm]
-pnpm install
+$ pnpm install
 ```
 
 ```bash [bun]
-bun install
+$ bun install
 ```
 
 :::

@@ -9,15 +9,15 @@ Cast sends transactions to deploy contracts, call functions, and transfer value.
 ### Basic transaction
 
 ```bash [Send ETH]
-cast send $TO --value 1ether --private-key $PRIVATE_KEY
+$ cast send $TO --value 1ether --private-key $PRIVATE_KEY
 ```
 
 ```bash [Call a contract function]
-cast send $CONTRACT "transfer(address,uint256)" $TO 1000000000000000000 --private-key $PRIVATE_KEY
+$ cast send $CONTRACT "transfer(address,uint256)" $TO 1000000000000000000 --private-key $PRIVATE_KEY
 ```
 
 ```bash [Deploy a contract]
-cast send --create $BYTECODE --private-key $PRIVATE_KEY
+$ cast send --create $BYTECODE --private-key $PRIVATE_KEY
 ```
 
 ### Signing options
@@ -29,7 +29,7 @@ cast send --create $BYTECODE --private-key $PRIVATE_KEY
 Pass directly (not recommended for production):
 
 ```bash
-cast send $CONTRACT "mint()" --private-key $PRIVATE_KEY
+$ cast send $CONTRACT "mint()" --private-key $PRIVATE_KEY
 ```
 
 #### Keystore file
@@ -37,13 +37,13 @@ cast send $CONTRACT "mint()" --private-key $PRIVATE_KEY
 Use an encrypted keystore:
 
 ```bash
-cast send $CONTRACT "mint()" --keystore ~/.foundry/keystores/my-key --password $PASSWORD
+$ cast send $CONTRACT "mint()" --keystore ~/.foundry/keystores/my-key --password $PASSWORD
 ```
 
 Or prompt for password:
 
 ```bash
-cast send $CONTRACT "mint()" --keystore ~/.foundry/keystores/my-key --interactive
+$ cast send $CONTRACT "mint()" --keystore ~/.foundry/keystores/my-key --interactive
 ```
 
 #### Hardware wallet
@@ -51,8 +51,8 @@ cast send $CONTRACT "mint()" --keystore ~/.foundry/keystores/my-key --interactiv
 Use Ledger or Trezor:
 
 ```bash
-cast send $CONTRACT "mint()" --ledger
-cast send $CONTRACT "mint()" --trezor
+$ cast send $CONTRACT "mint()" --ledger
+$ cast send $CONTRACT "mint()" --trezor
 ```
 
 #### AWS KMS
@@ -60,7 +60,7 @@ cast send $CONTRACT "mint()" --trezor
 Use a key stored in AWS KMS:
 
 ```bash
-cast send $CONTRACT "mint()" --aws
+$ cast send $CONTRACT "mint()" --aws
 ```
 
 ::::
@@ -68,23 +68,23 @@ cast send $CONTRACT "mint()" --aws
 ### Transaction parameters
 
 ```bash [Set gas limit]
-cast send $CONTRACT "mint()" --gas-limit 100000 --private-key $KEY
+$ cast send $CONTRACT "mint()" --gas-limit 100000 --private-key $KEY
 ```
 
 ```bash [Set gas price (legacy)]
-cast send $CONTRACT "mint()" --gas-price 20gwei --private-key $KEY
+$ cast send $CONTRACT "mint()" --gas-price 20gwei --private-key $KEY
 ```
 
 ```bash [Set EIP-1559 fees]
-cast send $CONTRACT "mint()" --priority-gas-price 1gwei --private-key $KEY
+$ cast send $CONTRACT "mint()" --priority-gas-price 1gwei --private-key $KEY
 ```
 
 ```bash [Set nonce manually]
-cast send $CONTRACT "mint()" --nonce 42 --private-key $KEY
+$ cast send $CONTRACT "mint()" --nonce 42 --private-key $KEY
 ```
 
 ```bash [Send with value]
-cast send $CONTRACT "deposit()" --value 0.1ether --private-key $KEY
+$ cast send $CONTRACT "deposit()" --value 0.1ether --private-key $KEY
 ```
 
 ### Waiting and confirmations
@@ -92,11 +92,11 @@ cast send $CONTRACT "deposit()" --value 0.1ether --private-key $KEY
 By default, `cast send` waits for the transaction to be mined.
 
 ```bash [Get transaction hash only (don't wait)]
-cast send $CONTRACT "mint()" --private-key $KEY --async
+$ cast send $CONTRACT "mint()" --private-key $KEY --async
 ```
 
 ```bash [Wait for confirmations]
-cast send $CONTRACT "mint()" --private-key $KEY --confirmations 3
+$ cast send $CONTRACT "mint()" --private-key $KEY --confirmations 3
 ```
 
 ### Transaction simulation
@@ -104,11 +104,11 @@ cast send $CONTRACT "mint()" --private-key $KEY --confirmations 3
 Preview a transaction without sending:
 
 ```bash [Simulate with cast call]
-cast call $CONTRACT "transfer(address,uint256)" $TO $AMOUNT --from $SENDER
+$ cast call $CONTRACT "transfer(address,uint256)" $TO $AMOUNT --from $SENDER
 ```
 
 ```bash [Estimate gas]
-cast estimate $CONTRACT "transfer(address,uint256)" $TO $AMOUNT --from $SENDER
+$ cast estimate $CONTRACT "transfer(address,uint256)" $TO $AMOUNT --from $SENDER
 ```
 
 ### Access lists (EIP-2930)
@@ -116,21 +116,21 @@ cast estimate $CONTRACT "transfer(address,uint256)" $TO $AMOUNT --from $SENDER
 Create an access list to reduce gas costs:
 
 ```bash [Generate access list]
-cast access-list $CONTRACT "transfer(address,uint256)" $TO $AMOUNT --from $SENDER
+$ cast access-list $CONTRACT "transfer(address,uint256)" $TO $AMOUNT --from $SENDER
 ```
 
 ```bash [Send with access list]
-cast send $CONTRACT "transfer(address,uint256)" $TO $AMOUNT --access-list $ACCESS_LIST --private-key $KEY
+$ cast send $CONTRACT "transfer(address,uint256)" $TO $AMOUNT --access-list $ACCESS_LIST --private-key $KEY
 ```
 
 ### Raw transactions
 
 ```bash [Sign without sending]
-cast mktx $CONTRACT "mint()" --private-key $KEY
+$ cast mktx $CONTRACT "mint()" --private-key $KEY
 ```
 
 ```bash [Publish a signed transaction]
-cast publish $SIGNED_TX
+$ cast publish $SIGNED_TX
 ```
 
 ### Blob transactions (EIP-4844)
@@ -138,5 +138,5 @@ cast publish $SIGNED_TX
 Send transactions with blob data:
 
 ```bash [Send blob transaction]
-cast send $CONTRACT "submitBlob()" --blob "0x..." --private-key $KEY
+$ cast send $CONTRACT "submitBlob()" --blob "0x..." --private-key $KEY
 ```

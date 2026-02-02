@@ -11,7 +11,7 @@ Forge tracks gas usage to help optimize contracts and catch regressions.
 Generate a gas report for all tests:
 
 ```bash
-forge test --gas-report
+$ forge test --gas-report
 ```
 
 Output shows gas usage per function:
@@ -48,7 +48,7 @@ gas_reports_ignore = ["Test", "Script"]
 Create a snapshot file to track gas over time:
 
 ```bash
-forge snapshot
+$ forge snapshot
 ```
 
 This creates `.gas-snapshot` with gas usage for each test:
@@ -61,13 +61,13 @@ CounterTest:testFuzz_SetNumber(uint256) (runs: 256, μ: 31121, ~: 31277)
 Compare against a previous snapshot:
 
 ```bash
-forge snapshot --diff
+$ forge snapshot --diff
 ```
 
 Check that gas hasn't increased:
 
 ```bash
-forge snapshot --check
+$ forge snapshot --check
 ```
 
 This exits with an error if any test uses more gas than recorded.
@@ -117,9 +117,9 @@ Add snapshot checking to your CI pipeline:
 Update snapshots when gas changes are intentional:
 
 ```bash
-forge snapshot
-git add .gas-snapshot
-git commit -m "Update gas snapshot"
+$ forge snapshot
+$ git add .gas-snapshot
+$ git commit -m "Update gas snapshot"
 ```
 
 ### Pause gas metering

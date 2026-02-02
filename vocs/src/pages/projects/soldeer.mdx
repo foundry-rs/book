@@ -11,7 +11,7 @@ description: Use Soldeer as an alternative package manager for Foundry projects.
 Soldeer comes bundled with Foundry. Initialize it in your project:
 
 ```bash
-forge soldeer init
+$ forge soldeer init
 ```
 
 This creates a `soldeer.toml` configuration file.
@@ -19,11 +19,11 @@ This creates a `soldeer.toml` configuration file.
 ### Installing packages
 
 ```bash [Install from registry]
-forge soldeer install @openzeppelin-contracts~5.0.0
+$ forge soldeer install @openzeppelin-contracts~5.0.0
 ```
 
 ```bash [Install from git]
-forge soldeer install my-lib~1.0.0 https://github.com/org/repo.git
+$ forge soldeer install my-lib~1.0.0 https://github.com/org/repo.git
 ```
 
 Packages are stored in `dependencies/` by default.
@@ -66,11 +66,11 @@ When `remappings_location = "config"`, remappings are added to `foundry.toml`. O
 ### Updating packages
 
 ```bash [Update all packages]
-forge soldeer update
+$ forge soldeer update
 ```
 
 ```bash [Update a specific package]
-forge soldeer update @openzeppelin-contracts
+$ forge soldeer update @openzeppelin-contracts
 ```
 
 ### Publishing packages
@@ -82,7 +82,7 @@ Publish your own packages to the Soldeer registry:
 ### Login to Soldeer
 
 ```bash
-forge soldeer login
+$ forge soldeer login
 ```
 
 ### Prepare your package
@@ -99,7 +99,7 @@ description = "My awesome Solidity library"
 ### Publish
 
 ```bash
-forge soldeer push my-library~1.0.0
+$ forge soldeer push my-library~1.0.0
 ```
 
 ::::
@@ -130,10 +130,10 @@ Convert existing submodule dependencies to Soldeer:
 
 ```bash
 # Remove the submodule
-forge remove openzeppelin-contracts
+$ forge remove openzeppelin-contracts
 
 # Install via Soldeer
-forge soldeer install @openzeppelin-contracts~5.0.0
+$ forge soldeer install @openzeppelin-contracts~5.0.0
 ```
 
 Update your imports to use the new remapping prefix:

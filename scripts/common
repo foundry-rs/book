@@ -12,7 +12,8 @@ ROOT="$(dirname "$(dirname "$(realpath "$0")")")"
 # shellcheck disable=SC2034
 SCRIPTS="$ROOT/scripts"
 
-export NO_COLOR=1
+# Force color output from Foundry tools
+export FORCE_COLOR=1
 
 # Runs a command and outputs text with anchors.
 # The anchors are:
@@ -24,29 +25,67 @@ run_command() {
   shift
 
   cmd=("$@")
-  escaped_cmd=("$@")
+  display_cmd=()
 
-  # Escape arguments for displaying.
-  for i in "${!cmd[@]}"; do
-    if [[ "${cmd[i]}" == *' '* ]] || [[ "${cmd[i]}" == *'('* ]]; then
-      escaped_cmd[i]="\"${cmd[i]}\""
+  # Build display command, excluding --color always from display
+  skip_next=false
+  for arg in "${cmd[@]}"; do
+    if $skip_next; then
+      skip_next=false
+      continue
+    fi
+    if [[ "$arg" == "--color" ]]; then
+      skip_next=true
+      continue
+    fi
+    # Escape arguments with spaces or parentheses for display
+    if [[ "$arg" == *' '* ]] || [[ "$arg" == *'('* ]]; then
+      display_cmd+=("\"$arg\"")
+    else
+      display_cmd+=("$arg")
     fi
   done
 
-  echo "Running $" "${escaped_cmd[*]}" >&2
-  cmd_output=$("${cmd[@]}" | escape_colors)
-  print_anchored "${escaped_cmd[*]}" "$cmd_output" > "$output"
-}
-
-escape_colors() {
-  sed "s,\x1B\[[0-9;]*[a-zA-Z],,g"
+  echo "Running $" "${display_cmd[*]}" >&2
+  # Use script to fake a TTY so commands output ANSI colors
+  # Clean up the output:
+  # 1. Remove carriage returns
+  # 2. Remove erase-line escape sequences
+  # 3. Keep only the last spinner line (contains useful info like "Compiling X files...")
+  # 4. Remove empty lines and collapse multiple blanks
+  cmd_output=$(script -q -c "${cmd[*]}" /dev/null \
+    | tr -d '\r' \
+    | sed $'s/\x1b\\[2K//g' \
+    | perl -ne '
+      # Spinner pattern: ESC[1m[ESC[32m<braille>ESC[0m]ESC[0m <message>
+      # Braille spinner chars are 3 bytes (0xe2 0xa0 0x??)
+      # Multiple spinners can appear on same line; extract the last message
+      $spinner_re = qr/\x1b\[1m\[\x1b\[32m...\x1b\[0m\]\x1b\[0m /;
+      if (/$spinner_re/) {
+        # Split on spinner pattern, last element is the final message
+        @parts = split(/$spinner_re/, $_);
+        $msg = $parts[-1];
+        $msg =~ s/\s+$//;
+        $last_spinner = $msg if $msg ne "";
+      } else {
+        if (defined $last_spinner) {
+          print "$last_spinner\n";
+          undef $last_spinner;
+        }
+        print;
+      }
+      END { print "$last_spinner\n" if defined $last_spinner; }
+    ' \
+    | sed '/^[[:space:]]*$/d' \
+    | cat -s)
+  print_anchored "${display_cmd[*]}" "$cmd_output" > "$output"
 }
 
 print_anchored() {
   cat > /dev/stdout <<EOF
 // [!region all]
 // [!region command]
-$1
+\$ $1
 // [!endregion command]
 // [!region output]
 $2

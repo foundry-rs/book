@@ -11,7 +11,7 @@ Forge provides detailed traces and an interactive debugger to understand contrac
 Run tests with `-vvvv` to see full execution traces:
 
 ```bash
-forge test -vvvv
+$ forge test -vvvv
 ```
 
 The trace shows every call, its inputs, outputs, and gas usage:
@@ -44,7 +44,7 @@ Indentation indicates call depth.
 Debug a transaction that failed on-chain:
 
 ```bash
-cast run 0x<txhash> --rpc-url $RPC_URL
+$ cast run 0x<txhash> --rpc-url $RPC_URL
 ```
 
 This replays the transaction and shows the execution trace.
@@ -54,7 +54,7 @@ This replays the transaction and shows the execution trace.
 Launch the debugger for a specific test:
 
 ```bash
-forge test --debug test_Increment
+$ forge test --debug test_Increment
 ```
 
 The debugger shows:
@@ -82,7 +82,7 @@ The debugger shows:
 Debug a script:
 
 ```bash
-forge script script/Deploy.s.sol --debug
+$ forge script script/Deploy.s.sol --debug
 ```
 
 ### Console logging
@@ -103,7 +103,7 @@ function transfer(address to, uint256 amount) public {
 View logs with `-vv` or higher:
 
 ```bash
-forge test -vv
+$ forge test -vv
 ```
 
 ### Labeling addresses
@@ -140,7 +140,7 @@ Traces:
 Enable stack traces for revert locations:
 
 ```bash
-forge test -vvv
+$ forge test -vvv
 ```
 
 Shows the exact line in your Solidity code where the revert occurred.
