@@ -8,17 +8,17 @@ Foundry uses a conventional directory structure. Configure paths in `foundry.tom
 
 ### Default structure
 
-```
-project/
-├── foundry.toml        # Project configuration
-├── src/                # Contract source files
-├── test/               # Test files (*.t.sol)
-├── script/             # Script files (*.s.sol)
-├── lib/                # Git submodule dependencies
-├── out/                # Compilation artifacts
-├── cache/              # Compiler cache
-└── broadcast/          # Deployment logs
-```
+:::file-tree
+- +project/
+  - foundry.toml Project configuration
+  - +src/ Contract source files
+  - +test/ Test files (*.t.sol)
+  - +script/ Script files (*.s.sol)
+  - +lib/ Git submodule dependencies
+  - +out/ Compilation artifacts
+  - +cache/ Compiler cache
+  - +broadcast/ Deployment logs
+:::
 
 ### Source directories
 
@@ -94,18 +94,18 @@ libs = ["lib", "../lib"]
 
 Or use workspaces:
 
-```
-monorepo/
-├── foundry.toml        # Root config (optional)
-├── lib/                # Shared dependencies
-├── packages/
-│   ├── token/
-│   │   ├── foundry.toml
-│   │   └── src/
-│   └── governance/
-│       ├── foundry.toml
-│       └── src/
-```
+:::file-tree
+- +monorepo/
+  - foundry.toml Root config (optional)
+  - +lib/ Shared dependencies
+  - +packages/
+    - +token/
+      - foundry.toml
+      - +src/
+    - +governance/
+      - foundry.toml
+      - +src/
+:::
 
 ### Remappings
 
