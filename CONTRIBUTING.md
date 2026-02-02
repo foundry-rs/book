@@ -258,7 +258,11 @@ import { Cards, Card } from 'vocs'
 
 ##### Code Groups
 
-Use `:::code-group` for tabbed code examples:
+Use `:::code-group` for tabbed code examples. Code groups are ideal for:
+
+- **Related commands** – Multiple ways to do the same thing (e.g., install options)
+- **Good vs. bad examples** – Show preferred and discouraged patterns
+- **Multi-file examples** – Related files that work together (e.g., test + harness)
 
 ````md
 :::code-group
@@ -273,6 +277,47 @@ pnpm install
 
 ```bash [bun]
 bun install
+```
+
+:::
+````
+
+For good/bad examples, use clear tab names:
+
+````md
+:::code-group
+
+```solidity [Good]
+import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+```
+
+```solidity [Avoid]
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+```
+
+:::
+````
+
+For multi-file examples, use file paths as tab names:
+
+````md
+:::code-group
+
+```solidity [test/harnesses/TokenHarness.sol]
+contract TokenHarness is Token {
+    function exposed_mint(address to, uint256 amount) external {
+        _mint(to, amount);
+    }
+}
+```
+
+```solidity [test/Token.t.sol]
+contract TokenInternalTest is Test {
+    function test_MintIncreasesSupply() public {
+        token.exposed_mint(alice, 1000);
+        assertEq(token.totalSupply(), 1000);
+    }
+}
 ```
 
 :::

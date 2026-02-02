@@ -1,0 +1,369 @@
+---
+description: Best practices for writing contracts, tests, scripts, and managing security in Foundry projects.
+---
+
+## Best Practices
+
+Guidelines for writing maintainable, secure, and efficient Foundry projects.
+
+### Writing contracts
+
+#### Use named imports
+
+Import only what you need to reduce compilation time and make dependencies explicit:
+
+:::code-group
+
+```solidity [Good]
+import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
+```
+
+```solidity [Avoid]
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+```
+
+:::
+
+#### Format with forge fmt
+
+Use the built-in formatter for consistent code style:
+
+```bash
+forge fmt
+```
+
+Check formatting without modifying files:
+
+```bash
+forge fmt --check
+```
+
+Configure formatting in `foundry.toml`:
+
+```toml [foundry.toml]
+[fmt]
+line_length = 120
+tab_width = 4
+bracket_spacing = true
+```
+
+#### Organize contract layout
+
+Follow a consistent ordering within contracts:
+
+1. Type declarations (structs, enums)
+2. State variables
+3. Events
+4. Errors
+5. Modifiers
+6. Constructor
+7. External functions
+8. Public functions
+9. Internal functions
+10. Private functions
+
+### Writing tests
+
+#### Naming conventions
+
+Use descriptive names that explain behavior:
+
+| Pattern | Usage | Example |
+|---------|-------|---------|
+| `test_Description` | Standard tests | `test_TransferUpdatesBalances` |
+| `testFuzz_Description` | Fuzz tests | `testFuzz_TransferAnyAmount` |
+| `test_RevertWhen_Condition` | Revert tests | `test_RevertWhen_InsufficientBalance` |
+| `test_RevertIf_Condition` | Alternative revert naming | `test_RevertIf_NotOwner` |
+
+```solidity
+function test_TransferUpdatesBalances() public {
+    token.transfer(bob, 100);
+    assertEq(token.balanceOf(bob), 100);
+}
+
+function test_RevertWhen_TransferExceedsBalance() public {
+    vm.expectRevert(Token.InsufficientBalance.selector);
+    token.transfer(bob, type(uint256).max);
+}
+```
+
+#### Test organization
+
+Structure test files to mirror your source files:
+
+```
+src/
+├── Token.sol
+├── Vault.sol
+└── governance/
+    └── Governor.sol
+test/
+├── Token.t.sol
+├── Vault.t.sol
+└── governance/
+    └── Governor.t.sol
+```
+
+Group related tests in the same contract:
+
+```solidity [test/Token.t.sol]
+contract TokenTransferTest is Test {
+    function test_TransferUpdatesBalances() public { }
+    function test_TransferEmitsEvent() public { }
+    function test_RevertWhen_InsufficientBalance() public { }
+}
+
+contract TokenApprovalTest is Test {
+    function test_ApproveUpdatesAllowance() public { }
+    function test_TransferFromUsesAllowance() public { }
+}
+```
+
+#### Use test harnesses
+
+Create harness contracts to expose internal functions for testing:
+
+:::code-group
+
+```solidity [test/harnesses/TokenHarness.sol]
+import {Token} from "../../src/Token.sol";
+
+contract TokenHarness is Token {
+    function exposed_mint(address to, uint256 amount) external {
+        _mint(to, amount);
+    }
+
+    function exposed_burn(address from, uint256 amount) external {
+        _burn(from, amount);
+    }
+}
+```
+
+```solidity [test/Token.t.sol]
+import {TokenHarness} from "./harnesses/TokenHarness.sol";
+
+contract TokenInternalTest is Test {
+    TokenHarness token;
+
+    function setUp() public {
+        token = new TokenHarness();
+    }
+
+    function test_MintIncreasesSupply() public {
+        token.exposed_mint(alice, 1000);
+        assertEq(token.totalSupply(), 1000);
+    }
+}
+```
+
+:::
+
+#### Prefer bound() over assume()
+
+Use `bound()` to constrain fuzz inputs instead of `vm.assume()`:
+
+:::code-group
+
+```solidity [Good]
+function testFuzz_Transfer(uint256 amount) public {
+    amount = bound(amount, 1, token.balanceOf(alice));
+    token.transfer(bob, amount);
+}
+```
+
+```solidity [Avoid]
+function testFuzz_Transfer(uint256 amount) public {
+    vm.assume(amount > 0 && amount <= token.balanceOf(alice));
+    token.transfer(bob, amount);
+}
+```
+
+:::
+
+`vm.assume()` discards invalid inputs, which can slow down fuzzing. `bound()` transforms inputs to valid ranges.
+
+### Writing scripts
+
+#### Separate concerns
+
+Split complex deployments into focused scripts:
+
+```
+script/
+├── DeployToken.s.sol
+├── DeployVault.s.sol
+├── ConfigureVault.s.sol
+└── Deploy.s.sol          # Orchestrates all deployments
+```
+
+```solidity [script/Deploy.s.sol]
+import {DeployToken} from "./DeployToken.s.sol";
+import {DeployVault} from "./DeployVault.s.sol";
+
+contract DeployScript is Script {
+    function run() public {
+        DeployToken tokenDeployer = new DeployToken();
+        address token = tokenDeployer.run();
+
+        DeployVault vaultDeployer = new DeployVault();
+        vaultDeployer.run(token);
+    }
+}
+```
+
+#### Use environment variables for configuration
+
+Never hardcode addresses or keys in scripts:
+
+```solidity [Good]
+function run() public {
+    address admin = vm.envAddress("ADMIN_ADDRESS");
+    uint256 initialSupply = vm.envOr("INITIAL_SUPPLY", uint256(1_000_000 ether));
+    
+    vm.startBroadcast();
+    new Token(admin, initialSupply);
+    vm.stopBroadcast();
+}
+```
+
+#### Log deployment information
+
+Output addresses and transaction details for verification:
+
+```solidity
+function run() public {
+    vm.startBroadcast();
+    
+    Token token = new Token();
+    console.log("Token deployed at:", address(token));
+    console.log("Chain ID:", block.chainid);
+    console.log("Deployer:", msg.sender);
+    
+    vm.stopBroadcast();
+}
+```
+
+### Security
+
+#### Run taint analysis
+
+Use `forge taint` to detect dangerous data flows from untrusted sources:
+
+```bash [Check a specific contract]
+forge taint src/Vault.sol
+```
+
+```bash [Check all contracts]
+forge taint
+```
+
+Taint analysis identifies when user-controlled data flows into sensitive operations without validation.
+
+#### Enable the linter
+
+Catch common issues with `forge lint`:
+
+```bash
+forge lint
+```
+
+Configure rules in `foundry.toml`:
+
+```toml [foundry.toml]
+[lint]
+severity = "warning"
+exclude = ["script/**"]
+```
+
+#### Test access control
+
+Verify that protected functions reject unauthorized callers:
+
+```solidity
+function test_RevertWhen_CallerNotOwner() public {
+    vm.prank(attacker);
+    vm.expectRevert(Ownable.OwnableUnauthorizedAccount.selector);
+    vault.withdrawAll();
+}
+```
+
+#### Test edge cases
+
+Cover boundary conditions in your tests:
+
+```solidity
+function test_TransferZeroAmount() public {
+    token.transfer(bob, 0);
+    assertEq(token.balanceOf(bob), 0);
+}
+
+function test_TransferMaxAmount() public {
+    deal(address(token), alice, type(uint256).max);
+    vm.prank(alice);
+    token.transfer(bob, type(uint256).max);
+}
+```
+
+### Key management
+
+#### Use encrypted keystores
+
+Store keys encrypted, not as plaintext environment variables:
+
+```bash [Create a keystore]
+cast wallet import deployer --interactive
+```
+
+```bash [Use the keystore]
+forge script script/Deploy.s.sol --account deployer --broadcast --rpc-url https://ethereum.reth.rs/rpc
+```
+
+#### Use hardware wallets for production
+
+For mainnet deployments, use a hardware wallet:
+
+```bash
+forge script script/Deploy.s.sol --ledger --broadcast --rpc-url https://ethereum.reth.rs/rpc
+```
+
+#### Separate development and production keys
+
+Use different keys for different environments:
+
+| Environment | Key source |
+|-------------|------------|
+| Local development | Anvil default keys |
+| Testnets | Encrypted keystore |
+| Mainnet | Hardware wallet |
+
+Anvil provides pre-funded accounts for local testing:
+
+```bash [Start Anvil]
+anvil
+```
+
+```bash [Use Anvil's first account]
+forge script script/Deploy.s.sol --broadcast --rpc-url http://localhost:8545 --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
+```
+
+:::warning
+Never use Anvil's default keys on public networks. They are publicly known.
+:::
+
+#### Protect environment files
+
+Keep `.env` files out of version control:
+
+```gitignore [.gitignore]
+.env
+.env.*
+```
+
+Use `.env.example` to document required variables:
+
+```bash [.env.example]
+RPC_URL=
+ETHERSCAN_API_KEY=
+# Use `cast wallet import` instead of PRIVATE_KEY
+```
