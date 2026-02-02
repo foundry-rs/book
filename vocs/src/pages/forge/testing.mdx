@@ -67,23 +67,25 @@ forge test -vvv
 
 Run specific tests:
 
-```bash [Run tests matching a pattern]
+:::code-group
+
+```bash [By name]
 forge test --match-test test_Increment
 ```
 
-```bash [Run tests in a specific contract]
+```bash [By contract]
 forge test --match-contract CounterTest
 ```
 
-```bash [Run tests in a specific file]
+```bash [By file]
 forge test --match-path test/Counter.t.sol
 ```
 
-Exclude tests:
-
-```bash
+```bash [Exclude]
 forge test --no-match-test test_Skip
 ```
+
+:::
 
 ### Fuzz testing
 
@@ -165,20 +167,20 @@ The four booleans specify which topics and data to check.
 Test against live chain state:
 
 ```bash
-forge test --fork-url https://eth.merkle.io
+forge test --fork-url https://ethereum.reth.rs/rpc
 ```
 
 Or configure in `foundry.toml`:
 
 ```toml [foundry.toml]
 [profile.default]
-eth_rpc_url = "https://eth.merkle.io"
+eth_rpc_url = "https://ethereum.reth.rs/rpc"
 ```
 
 Pin to a specific block for reproducible tests:
 
 ```bash
-forge test --fork-url https://eth.merkle.io --fork-block-number 18000000
+forge test --fork-url https://ethereum.reth.rs/rpc --fork-block-number 18000000
 ```
 
 ### Cheatcodes

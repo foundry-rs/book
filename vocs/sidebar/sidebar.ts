@@ -70,6 +70,10 @@ const docs = [
       { text: "Troubleshooting", link: "/help/troubleshooting" },
     ],
   },
+  {
+    text: "Best Practices",
+    link: "/best-practices",
+  },
 ];
 
 export const sidebar: Sidebar = {
@@ -80,6 +84,7 @@ export const sidebar: Sidebar = {
   "/anvil": docs,
   "/chisel": docs,
   "/help": docs,
+  "/best-practices": docs,
   "/reference/forge": [
     forgeCliReference,
   ],

@@ -50,23 +50,21 @@ forge script script/Deploy.s.sol --broadcast --rpc-url $RPC_URL
 
 ### Providing a private key
 
-Pass a private key directly (not recommended for production):
+:::code-group
 
-```bash
-forge script script/Deploy.s.sol --broadcast --rpc-url $RPC_URL --private-key $PRIVATE_KEY
-```
-
-Use a keystore file:
-
-```bash
+```bash [Keystore (recommended)]
 forge script script/Deploy.s.sol --broadcast --rpc-url $RPC_URL --account deployer
 ```
 
-Use a hardware wallet:
-
-```bash
+```bash [Hardware wallet]
 forge script script/Deploy.s.sol --broadcast --rpc-url $RPC_URL --ledger
 ```
+
+```bash [Raw key (not recommended)]
+forge script script/Deploy.s.sol --broadcast --rpc-url $RPC_URL --private-key $PRIVATE_KEY
+```
+
+:::
 
 ### Broadcasting from a specific address
 

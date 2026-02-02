@@ -8,17 +8,21 @@ Foundry uses git submodules to manage dependencies. Libraries are stored in `lib
 
 ### Installing dependencies
 
-```bash [Install a library]
+:::code-group
+
+```bash [Basic]
 forge install OpenZeppelin/openzeppelin-contracts
 ```
 
-```bash [Install a specific version]
+```bash [Specific version]
 forge install OpenZeppelin/openzeppelin-contracts@v5.0.0
 ```
 
-```bash [Install without creating a commit]
+```bash [No commit]
 forge install OpenZeppelin/openzeppelin-contracts --no-commit
 ```
+
+:::
 
 The library is cloned to `lib/openzeppelin-contracts/`.
 
@@ -63,13 +67,17 @@ forge remappings > remappings.txt
 
 ### Updating dependencies
 
-```bash [Update all dependencies]
+:::code-group
+
+```bash [All]
 forge update
 ```
 
-```bash [Update a specific dependency]
+```bash [Specific]
 forge update lib/openzeppelin-contracts
 ```
+
+:::
 
 ### Removing dependencies
 
