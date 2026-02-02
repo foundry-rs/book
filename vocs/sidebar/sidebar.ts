@@ -36,12 +36,22 @@ const docs = [
       { text: "ABI Encoding", link: "/cast/abi-encoding" },
     ],
   },
+  {
+    text: "Anvil",
+    items: [
+      { text: "Overview", link: "/anvil" },
+      { text: "Forking", link: "/anvil/forking" },
+      { text: "State Management", link: "/anvil/state-management" },
+      { text: "Custom Methods", link: "/anvil/custom-methods" },
+    ],
+  },
 ];
 
 export const sidebar: Sidebar = {
   "/introduction": docs,
   "/forge": docs,
   "/cast": docs,
+  "/anvil": docs,
   "/reference/forge": [
     forgeCliReference,
   ],
