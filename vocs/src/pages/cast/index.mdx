@@ -1,0 +1,46 @@
+---
+description: Cast is Foundry's command-line tool for interacting with Ethereum.
+---
+
+## Cast
+
+Cast performs Ethereum RPC calls, sends transactions, and decodes data from the command line. It's the Swiss Army knife for blockchain interaction.
+
+### Key capabilities
+
+| Feature | Description |
+|---------|-------------|
+| **Chain data** | Read blocks, transactions, logs, and account state |
+| **Transactions** | Send transactions and interact with contracts |
+| **Wallets** | Manage keys, sign messages, and verify signatures |
+| **ABI encoding** | Encode/decode calldata, events, and function signatures |
+| **Utilities** | Convert units, compute hashes, and manipulate data |
+
+### Common workflows
+
+```bash [Get the latest block number]
+cast block-number
+```
+
+```bash [Read a contract's storage]
+cast call $CONTRACT "balanceOf(address)" $ADDRESS
+```
+
+```bash [Send a transaction]
+cast send $CONTRACT "transfer(address,uint256)" $TO $AMOUNT --private-key $KEY
+```
+
+```bash [Decode calldata]
+cast 4byte-decode 0xa9059cbb000000000000000000000000...
+```
+
+```bash [Get an account's ETH balance]
+cast balance $ADDRESS
+```
+
+### Learn more
+
+- [Reading chain data](/cast/reading-chain-data) — Query blocks, transactions, and state
+- [Sending transactions](/cast/sending-transactions) — Execute on-chain operations
+- [Wallet operations](/cast/wallet-operations) — Key management and signing
+- [ABI encoding](/cast/abi-encoding) — Encode and decode contract data
