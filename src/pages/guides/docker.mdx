@@ -40,9 +40,9 @@ $ docker run --rm ghcr.io/foundry-rs/foundry cast block-number --rpc-url https:/
 Add to your shell profile:
 
 ```bash [~/.bashrc]
-$ alias dforge='docker run --rm -v $(pwd):/app -w /app ghcr.io/foundry-rs/foundry forge' # [!code hl]
-$ alias dcast='docker run --rm ghcr.io/foundry-rs/foundry cast' # [!code hl]
-$ alias danvil='docker run --rm -p 8545:8545 ghcr.io/foundry-rs/foundry anvil --host 0.0.0.0' # [!code hl]
+$ alias dforge='docker run --rm -v $(pwd):/app -w /app ghcr.io/foundry-rs/foundry forge'
+$ alias dcast='docker run --rm ghcr.io/foundry-rs/foundry cast'
+$ alias danvil='docker run --rm -p 8545:8545 ghcr.io/foundry-rs/foundry anvil --host 0.0.0.0'
 ```
 
 Then use:
@@ -221,7 +221,7 @@ Or in CI:
 Expose Anvil to your host machine:
 
 ```bash
-$ docker run --rm -p 8545:8545 ghcr.io/foundry-rs/foundry anvil --host 0.0.0.0 # [!code hl]
+$ docker run --rm -p 8545:8545 ghcr.io/foundry-rs/foundry anvil --host 0.0.0.0
 ```
 
 Anvil must bind to `0.0.0.0` (not `127.0.0.1`) to be accessible from outside the container.
