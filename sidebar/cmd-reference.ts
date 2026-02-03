@@ -4,7 +4,6 @@ export const cmdReference: SidebarItem[] = [
       { text: 'Overview', link: '/reference/cheatcodes/overview'},
       {
         text: 'Environment',
-        link: '/reference/cheatcodes/environment',
         collapsed: true,
         items: [
           { text: 'warp', link: '/reference/cheatcodes/warp' },
@@ -51,7 +50,6 @@ export const cmdReference: SidebarItem[] = [
       },
       {
         text: 'Assertions',
-        link: '/reference/cheatcodes/assertions',
         collapsed: true,
         items: [
           { text: 'expectRevert', link: '/reference/cheatcodes/expect-revert' },
@@ -61,7 +59,6 @@ export const cmdReference: SidebarItem[] = [
       },
       {
         text: 'Fuzzer',
-        link: '/reference/cheatcodes/fuzzer',
         collapsed: true,
         items: [
           { text: 'assume', link: '/reference/cheatcodes/assume' },
@@ -70,7 +67,6 @@ export const cmdReference: SidebarItem[] = [
       },
       {
         text: 'Forking',
-        link: '/reference/cheatcodes/forking',
         collapsed: true,
         items: [
           { text: 'createFork', link: '/reference/cheatcodes/create-fork' },
@@ -87,7 +83,6 @@ export const cmdReference: SidebarItem[] = [
       },
       {
         text: 'External',
-        link: '/reference/cheatcodes/external',
         collapsed: true,
         items: [
           { text: 'ffi', link: '/reference/cheatcodes/ffi' },
@@ -120,7 +115,6 @@ export const cmdReference: SidebarItem[] = [
       },
       {
         text: 'Signing',
-        link: '/reference/cheatcodes/signing',
         collapsed: true,
         items: [
           { text: 'sign', link: '/reference/cheatcodes/sign' },
@@ -129,7 +123,6 @@ export const cmdReference: SidebarItem[] = [
       },
       {
         text: 'Utilities',
-        link: '/reference/cheatcodes/utilities',
         collapsed: true,
         items: [
           { text: 'addr', link: '/reference/cheatcodes/addr' },
