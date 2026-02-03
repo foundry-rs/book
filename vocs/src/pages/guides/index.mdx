@@ -8,6 +8,8 @@ import { Cards, Card } from 'vocs'
 
 Practical guides for common workflows and advanced Foundry patterns.
 
+### Deployment
+
 <Cards>
   <Card
     title="Deploying Contracts"
@@ -15,9 +17,9 @@ Practical guides for common workflows and advanced Foundry patterns.
     to="/guides/deploying-contracts"
   />
   <Card
-    title="Fork Testing"
-    description="Test against live chain state, impersonate accounts, and handle time-sensitive logic."
-    to="/guides/fork-testing"
+    title="Deterministic Deployments (CREATE2)"
+    description="Deploy to predictable addresses across multiple networks using CREATE2."
+    to="/guides/deterministic-deployments-using-create2"
   />
   <Card
     title="Multi-Chain Deployments"
@@ -29,15 +31,30 @@ Practical guides for common workflows and advanced Foundry patterns.
     description="Implement proxy patterns and verify storage layout compatibility."
     to="/guides/upgrading-contracts"
   />
+</Cards>
+
+### Testing
+
+<Cards>
   <Card
-    title="Debugging Transactions"
-    description="Replay and debug failed mainnet transactions with trace analysis."
-    to="/guides/debugging-transactions"
+    title="Fork Testing"
+    description="Test against live chain state, impersonate accounts, and handle time-sensitive logic."
+    to="/guides/fork-testing"
   />
   <Card
     title="Invariant Testing"
     description="Write effective invariant tests with handler patterns and ghost variables."
     to="/guides/invariant-testing"
+  />
+</Cards>
+
+### Debugging & Optimization
+
+<Cards>
+  <Card
+    title="Debugging Transactions"
+    description="Replay and debug failed mainnet transactions with trace analysis."
+    to="/guides/debugging-transactions"
   />
   <Card
     title="Gas Optimization"
@@ -45,13 +62,28 @@ Practical guides for common workflows and advanced Foundry patterns.
     to="/guides/gas-optimization"
   />
   <Card
+    title="Stack Too Deep"
+    description="Understand and fix stack too deep errors with practical solutions."
+    to="/guides/stack-too-deep"
+  />
+</Cards>
+
+### Environment
+
+<Cards>
+  <Card
     title="Docker & Containers"
     description="Run Foundry in Docker for reproducible builds and CI environments."
     to="/guides/docker"
   />
+</Cards>
+
+### Migrations
+
+<Cards>
   <Card
-    title="Migrations"
-    description="Breaking changes and upgrade guidance."
+    title="Foundry v1.0"
+    description="Breaking changes and upgrade guidance for Foundry v1.0."
     to="/guides/migrations/foundry-v1"
   />
 </Cards>
