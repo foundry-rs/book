@@ -38,6 +38,7 @@ const docs = [
       { text: "Scripting", link: "/forge/scripting" },
       { text: "Debugging", link: "/forge/debugging" },
       { text: "Gas Tracking", link: "/forge/gas-tracking" },
+      { text: "Formatting", link: "/forge/formatting" },
       { text: "Linting", link: "/forge/linting" },
     ],
   },
