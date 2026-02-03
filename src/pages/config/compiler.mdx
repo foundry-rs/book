@@ -1,0 +1,144 @@
+---
+description: Configure the Solidity compiler settings for your Foundry project.
+---
+
+## Compiler
+
+Configure how Foundry compiles your Solidity contracts, including version management, optimization, and output options.
+
+### Solidity version
+
+By default, Foundry auto-detects the required Solidity version from your contracts. To pin a specific version:
+
+```toml [foundry.toml]
+[profile.default]
+solc_version = "0.8.28"
+```
+
+Disable auto-detection if you want full control:
+
+```toml [foundry.toml]
+[profile.default]
+solc_version = "0.8.28"
+auto_detect_solc = false
+```
+
+### EVM version
+
+Set the target EVM version for compilation. This affects which opcodes are available:
+
+```toml [foundry.toml]
+[profile.default]
+evm_version = "cancun"
+```
+
+Common values: `paris`, `shanghai`, `cancun`, `prague` (default).
+
+### Optimizer settings
+
+Enable the optimizer and configure the number of runs:
+
+```toml [foundry.toml]
+[profile.default]
+optimizer = true
+optimizer_runs = 200
+```
+
+- **Lower runs** (e.g., 1): Optimizes for deployment cost
+- **Higher runs** (e.g., 1000000): Optimizes for runtime cost (frequent calls)
+
+For production deployments, consider higher optimizer runs:
+
+```toml [foundry.toml]
+[profile.production]
+optimizer = true
+optimizer_runs = 1000000
+```
+
+### Via IR
+
+Enable the new IR-based compilation pipeline for better optimization:
+
+```toml [foundry.toml]
+[profile.default]
+via_ir = true
+```
+
+This can produce more optimized bytecode but increases compilation time.
+
+### Remappings
+
+Map import paths to actual file locations:
+
+```toml [foundry.toml]
+[profile.default]
+remappings = [
+    "@openzeppelin/=lib/openzeppelin-contracts/",
+    "@uniswap/=node_modules/@uniswap/",
+]
+```
+
+Foundry auto-detects remappings from your `lib` folder by default. To disable:
+
+```toml [foundry.toml]
+[profile.default]
+auto_detect_remappings = false
+```
+
+### Ignoring warnings
+
+Suppress specific compiler warnings:
+
+```toml [foundry.toml]
+[profile.default]
+ignored_error_codes = ["license", "code-size"]
+```
+
+Or treat all warnings as errors:
+
+```toml [foundry.toml]
+[profile.default]
+deny_warnings = true
+```
+
+### Bytecode metadata
+
+Control the metadata hash appended to bytecode:
+
+```toml [foundry.toml]
+[profile.default]
+bytecode_hash = "none"  # Options: ipfs, bzzr1, none
+cbor_metadata = false
+```
+
+Setting `bytecode_hash = "none"` is useful for deterministic deployments.
+
+### Extra output
+
+Include additional compiler output in artifacts:
+
+```toml [foundry.toml]
+[profile.default]
+extra_output = ["storageLayout", "metadata"]
+extra_output_files = ["ir", "irOptimized"]
+```
+
+### Example configuration
+
+A complete compiler configuration for production:
+
+```toml [foundry.toml]
+[profile.default]
+solc_version = "0.8.28"
+evm_version = "cancun"
+optimizer = true
+optimizer_runs = 200
+via_ir = false
+
+[profile.production]
+optimizer_runs = 1000000
+via_ir = true
+bytecode_hash = "none"
+```
+
+For the complete list of compiler options, see the [Solidity Compiler Reference](/config/reference/solidity-compiler).
