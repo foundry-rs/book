@@ -428,6 +428,7 @@ type Page =
 | { path: '/guides/migrations/foundry-v1'; render: 'static' }
 | { path: '/forge/build'; render: 'static' }
 | { path: '/forge/debugging'; render: 'static' }
+| { path: '/forge/formatting'; render: 'static' }
 | { path: '/forge/gas-tracking'; render: 'static' }
 | { path: '/forge'; render: 'static' }
 | { path: '/forge/linting'; render: 'static' }

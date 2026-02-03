@@ -1,115 +1,136 @@
 ---
-description: Format and lint Solidity code with Forge.
+description: Lint Solidity code with Forge.
 ---
 
 ## Linting
 
-Forge includes a formatter and linter to enforce consistent code style.
+Forge includes a built-in linter to catch common issues and enforce best practices.
 
-### Formatting
-
-Format all Solidity files:
-
-```bash
-$ forge fmt
-```
-
-Check formatting without making changes:
-
-```bash
-$ forge fmt --check
-```
-
-This exits with an error if any file needs formatting—useful for CI.
-
-### Formatter configuration
-
-Configure the formatter in `foundry.toml`:
-
-```toml [foundry.toml]
-[fmt]
-line_length = 120
-tab_width = 4
-bracket_spacing = true
-int_types = "long"
-multiline_func_header = "params_first"
-quote_style = "double"
-number_underscore = "thousands"
-single_line_statement_blocks = "preserve"
-```
-
-Common options:
-
-| Option | Default | Description |
-|--------|---------|-------------|
-| `line_length` | 120 | Maximum line length |
-| `tab_width` | 4 | Spaces per indentation level |
-| `bracket_spacing` | false | Space inside brackets: `{ x }` vs `{x}` |
-| `int_types` | "long" | `uint256` vs `uint` |
-| `quote_style` | "double" | `"string"` vs `'string'` |
-| `number_underscore` | "preserve" | `1_000_000` vs `1000000` |
-
-### Linting
-
-Run the linter:
+### Run the linter
 
 ```bash
 $ forge lint
 ```
 
 The linter checks for:
-- Unused variables and imports
-- Missing visibility modifiers
-- Incorrect naming conventions
-- Common mistakes
+- Incorrect shift operations
+- Unchecked external calls
+- Divide-before-multiply bugs
+- Unsafe typecasts
+- Naming convention violations
+- Unused imports
+- Gas optimizations
 
-### Linter configuration
+### Configuration
 
 Configure linter rules in `foundry.toml`:
 
 ```toml [foundry.toml]
 [lint]
-severity = ["high", "med"]
-exclude = ["DeadCode", "MixedCase"]
+severity = ["high", "med", "low"]
+exclude_lints = ["mixed-case-function", "custom-errors"]
 ```
 
-List available rules:
+#### Severity levels
 
-```bash
-$ forge lint --list
+Control which lints run by severity:
+
+```toml [foundry.toml]
+[lint]
+severity = ["high", "med"]  # Only high and medium severity
+```
+
+Valid severity levels: `high`, `med`, `low`, `info`, `gas`, `code-size`
+
+#### Exclude specific lints
+
+Disable specific lint rules globally:
+
+```toml [foundry.toml]
+[lint]
+exclude_lints = ["mixed-case-variable", "asm-keccak256"]
 ```
 
 ### Ignoring files
 
-Exclude files from formatting and linting:
+Exclude files from linting:
 
 ```toml [foundry.toml]
-[fmt]
-ignore = ["src/legacy/**"]
-
 [lint]
-ignore = ["test/**"]
+ignore = ["src/legacy/**", "test/**"]
 ```
 
-### Pre-commit integration
+### Inline suppression
 
-Add formatting checks to git pre-commit hooks:
+Disable lints for specific lines or blocks using comment directives.
 
-```bash [.git/hooks/pre-commit]
-#!/bin/sh
-forge fmt --check
+#### Disable on current line
+
+```solidity
+uint256 Mixed_Case = 1; // forge-lint: disable-line(mixed-case-variable)
 ```
 
-Or use a tool like `lefthook` or `husky` for more complex workflows.
+#### Disable on next line
+
+```solidity
+// forge-lint: disable-next-line(custom-errors)
+revert("Use custom errors instead");
+```
+
+#### Disable for next item
+
+Disable lints for an entire function, struct, or contract:
+
+```solidity
+// forge-lint: disable-next-item(mixed-case-function)
+function non_standard_name() public {
+    // entire function is excluded from the lint
+}
+```
+
+#### Disable a block
+
+```solidity
+// forge-lint: disable-start(asm-keccak256)
+bytes32 hash1 = keccak256(abi.encodePacked(a, b));
+bytes32 hash2 = keccak256(abi.encodePacked(c, d));
+// forge-lint: disable-end(asm-keccak256)
+```
+
+#### Disable multiple lints
+
+```solidity
+// forge-lint: disable-next-line(custom-errors, mixed-case-variable)
+```
+
+#### Disable all lints
+
+```solidity
+// forge-lint: disable-next-line
+```
+
+Or explicitly:
+
+```solidity
+// forge-lint: disable-next-line(all)
+```
+
+### Disable linting on build
+
+By default, `forge build` runs the linter. To disable:
+
+```toml [foundry.toml]
+[lint]
+lint_on_build = false
+```
 
 ### CI integration
 
-Check formatting in CI:
+Add linting to your CI pipeline:
 
 ```yaml
-- name: Check formatting
-  run: forge fmt --check
-
 - name: Run linter
   run: forge lint
 ```
+
+See the [linter reference](/config/reference/linter) for all configuration options.
