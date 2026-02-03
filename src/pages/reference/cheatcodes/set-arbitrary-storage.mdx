@@ -1,3 +1,7 @@
+---
+description: Makes the storage of an address fully symbolic
+---
+
 ## `setArbitraryStorage`
 
 ### Signature
@@ -8,14 +12,40 @@ function setArbitraryStorage(address target) external;
 
 ### Description
 
-Utility cheatcode to make the storage of the given address fully symbolic.
-Any subsequent `SLOAD` to target storage reads an arbitrary value which is memorized and returned if the same slot is loaded again.
-If the storage slot is explicitly written (before or after first load), then the written value is returned.
+Makes the storage of the given address fully symbolic. Any subsequent `SLOAD` to target storage reads an arbitrary value which is memorized and returned if the same slot is loaded again.
+
+If the storage slot is explicitly written (before or after first load), then the written value is returned instead.
+
+### Parameters
+
+| Parameter | Type      | Description                           |
+|-----------|-----------|---------------------------------------|
+| `target`  | `address` | The address to set arbitrary storage on |
 
 ### Examples
 
-For a contract with following storage layout:
-```solidity
+:::code-group
+
+```solidity [test/ArbitraryStorage.t.sol]
+contract ArbitraryStorageTest is Test {
+    function testArbitraryStorage() public {
+        Counter counter = new Counter();
+        vm.setArbitraryStorage(address(counter));
+        
+        // This would fail with "array out of bounds" without arbitrary storage
+        address owner = counter.getOwner(55);
+        
+        // Subsequent calls to same slot return same value
+        assertEq(counter.getOwner(55), owner);
+        
+        // Explicitly written values take precedence
+        counter.setOwner(55, address(111));
+        assertEq(counter.getOwner(55), address(111));
+    }
+}
+```
+
+```solidity [src/Counter.sol]
 contract Counter {
     address[] public owners;
 
@@ -28,19 +58,17 @@ contract Counter {
     }
 }
 ```
-using `setArbitraryStorage` cheatcode ensures that arbitrary values are returned: 
-```solidity
-contract ArbitraryStorageTest is Test {
-    function testArbitraryStorage() public {
-        Counter counter = new Counter();
-        vm.setArbitraryStorage(address(counter));
-        // Next call would fail with array out of bounds without arbitrary storage
-        address owner = counter.getOwner(55);
-        // Subsequent calls to same slot returns same value
-        assertEq(counter.getOwner(55), owner);
-        // The new value is returned if explicitly written
-        counter.setOwner(55, address(111));
-        assertEq(counter.getOwner(55), address(111));
-    }
-}
-```
+
+:::
+
+### Gotchas
+
+:::warning
+Contracts with arbitrary storage cannot be targets of [`copyStorage`](/reference/cheatcodes/copy-storage).
+:::
+
+### Related Cheatcodes
+
+- [`copyStorage`](/reference/cheatcodes/copy-storage) - Copies storage between addresses
+- [`load`](/reference/cheatcodes/load) - Loads a single storage slot
+- [`store`](/reference/cheatcodes/store) - Stores a value to a single storage slot

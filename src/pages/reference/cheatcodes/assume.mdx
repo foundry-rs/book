@@ -1,49 +1,67 @@
+---
+description: Discards fuzz inputs that don't satisfy a condition
+---
+
 ## `assume`
 
 ### Signature
 
 ```solidity
-function assume(bool) external;
+function assume(bool condition) external;
 ```
 
 ### Description
 
 If the boolean expression evaluates to false, the fuzzer will discard the current fuzz inputs and start a new fuzz run.
 
-The `assume` cheatcode should mainly be used for very narrow checks.
-Broad checks will slow down tests as it will take a while to find valid values, and the test may fail if you hit the max number of rejects.
+Use `assume` for **narrow checks** where only specific values should be excluded. For broad range constraints, use [`bound`](/reference/forge-std/bound) instead.
 
-You can configure the rejection thresholds by setting [`fuzz.max_test_rejects`][max-test-rejects] in your `foundry.toml` file.
+### Parameters
 
-For broad checks, such as ensuring a `uint256` falls within a certain range, you can bound your input with the modulo operator or Forge Standard's [`bound`][forge-std-bound] method.
-
-More information on filtering via `assume` can be found [here][filtering-guide].
+| Parameter   | Type   | Description                                      |
+|-------------|--------|--------------------------------------------------|
+| `condition` | `bool` | If false, the current fuzz run is discarded      |
 
 ### Examples
 
-```solidity
-// Good example of using assume
-function testSomething(uint256 a) public {
+#### Excluding specific values
+
+```solidity [test/Assume.t.sol]
+function testWithAssume(uint256 a) public {
     vm.assume(a != 1);
     require(a != 1);
     // [PASS]
 }
 ```
 
-```solidity
-// In this case assume is not a great fit, so you should bound inputs manually
-function testSomethingElse(uint256 a) public {
+#### Use bound for ranges instead
+
+```solidity [test/UseBound.t.sol]
+function testWithBound(uint256 a) public {
+    // Don't use assume for ranges - use bound instead
     a = bound(a, 100, 1e36);
     require(a >= 100 && a <= 1e36);
     // [PASS]
 }
 ```
 
-### SEE ALSO
+### Gotchas
 
-Forge Standard Library
-[`bound`][forge-std-bound]
+:::warning
+Broad checks will slow down tests significantly as the fuzzer struggles to find valid values. The test may fail if you hit the max number of rejects.
 
-[max-test-rejects]: /config/reference/testing#max_test_rejects
-[forge-std-bound]: /reference/forge-std/bound
-[filtering-guide]: https://altsysrq.github.io/proptest-book/proptest/tutorial/filtering.html#filtering
+Configure the rejection threshold with [`fuzz.max_test_rejects`](/config/reference/testing#max_test_rejects) in `foundry.toml`.
+:::
+
+:::note
+For range constraints, prefer [`bound`](/reference/forge-std/bound) or the modulo operator over `assume`. These approaches are much more efficient.
+:::
+
+### Related Cheatcodes
+
+- [`assumeNoRevert`](/reference/cheatcodes/assume-no-revert) - Discard fuzz inputs if the next call reverts
+
+### See Also
+
+- [`bound`](/reference/forge-std/bound) - Bound a value to a range
+- [Filtering Guide](https://altsysrq.github.io/proptest-book/proptest/tutorial/filtering.html#filtering) - More on filtering in property testing

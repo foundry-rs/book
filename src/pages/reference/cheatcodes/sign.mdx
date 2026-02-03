@@ -1,80 +1,78 @@
+---
+description: Signs a digest with a private key, returning (v, r, s)
+---
+
 ## `sign`
 
 ### Signature
 
 ```solidity
 function sign(uint256 privateKey, bytes32 digest) external returns (uint8 v, bytes32 r, bytes32 s);
-```
-
-```solidity
 function sign(Wallet memory wallet, bytes32 digest) external returns (uint8 v, bytes32 r, bytes32 s);
 ```
 
 ### Description
 
-Signs a digest `digest` with private key `privateKey` or [`Wallet`](/reference/cheatcodes/create-wallet), returning `(v, r, s)`.
+Signs a digest `digest` with a private key `privateKey` or [`Wallet`](/reference/cheatcodes/create-wallet), returning `(v, r, s)`.
 
 This is useful for testing functions that take signed data and perform an `ecrecover` to verify the signer.
 
+### Parameters
+
+| Parameter    | Type      | Description                          |
+|--------------|-----------|--------------------------------------|
+| `privateKey` | `uint256` | The private key to sign with         |
+| `wallet`     | `Wallet`  | A Wallet struct containing the private key |
+| `digest`     | `bytes32` | The message digest to sign           |
+
+### Returns
+
+| Type      | Description                              |
+|-----------|------------------------------------------|
+| `uint8 v` | The recovery id                          |
+| `bytes32 r` | First 32 bytes of the signature        |
+| `bytes32 s` | Second 32 bytes of the signature       |
+
 ### Examples
 
-```solidity
+#### Basic signing and recovery
+
+```solidity [test/Sign.t.sol]
 (address alice, uint256 alicePk) = makeAddrAndKey("alice");
-emit log_address(alice);
 bytes32 hash = keccak256("Signed by Alice");
 (uint8 v, bytes32 r, bytes32 s) = vm.sign(alicePk, hash);
 address signer = ecrecover(hash, v, r, s);
 assertEq(alice, signer); // [PASS]
 ```
 
-This is useful for testing functions that require a signature:
+#### Using Wallet
 
-```solidity
-// SPDX-License-Identifier: UNLICENSED
-pragma solidity 0.8.17;
+The Wallet overload uses the wallet's private key to sign the digest:
 
+```solidity [test/Sign.t.sol]
+Wallet memory alice = vm.createWallet("alice");
+bytes32 hash = keccak256("Signed by Alice");
+(uint8 v, bytes32 r, bytes32 s) = vm.sign(alice, hash);
+address signer = ecrecover(hash, v, r, s);
+assertEq(alice.addr, signer); // [PASS]
+```
+
+#### Testing signature verification
+
+:::code-group
+
+```solidity [test/SigningExample.t.sol]
 import { ECDSA } from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
-
-contract SigningExample is Ownable {
-    using ECDSA for bytes32;
-
-    address public systemAddress;
-
-    function setSystemAddress(address _address) external onlyOwner {
-        systemAddress = _address;
-    }
-
-    function purchase(uint256 _amount, string calldata _nonce, bytes calldata _signature) external payable {
-        require(isValidSignature(
-            systemAddress,
-            keccak256(abi.encodePacked(msg.sender, _amount, _nonce)),
-            _signature
-            ), "Invalid Signature"
-        );
-
-        // mint tokens
-    }
-
-    function isValidSignature(address _systemAddress, bytes32 hash, bytes memory signature) internal view returns (bool) {
-        require(_systemAddress != address(0), "Missing System Address");
-
-        bytes32 signedHash = hash.toEthSignedMessageHash();
-        return signedHash.recover(signature) == _systemAddress;
-    }
-
-}
 
 contract SigningExampleTest is Test {
     using ECDSA for bytes32;
 
     SigningExample public signingExample;
-
     uint256 internal userPrivateKey;
     uint256 internal signerPrivateKey;
 
     function setUp() public {
         signingExample = new SigningExample();
-
         userPrivateKey = 0xa11ce;
         signerPrivateKey = 0xabc123;
 
@@ -92,31 +90,60 @@ contract SigningExampleTest is Test {
         vm.startPrank(signer);
         bytes32 digest = keccak256(abi.encodePacked(user, amount, nonce)).toEthSignedMessageHash();
         (uint8 v, bytes32 r, bytes32 s) = vm.sign(signerPrivateKey, digest);
-        bytes memory signature = abi.encodePacked(r, s, v); // note the order here is different from line above.
+        bytes memory signature = abi.encodePacked(r, s, v); // note the order here is different
         vm.stopPrank();
 
         vm.startPrank(user);
-        // Give the user some ETH, just for good measure
         vm.deal(user, 1 ether);
-
-        signingExample.purchase(
-            amount,
-            nonce,
-            signature
-        );
+        signingExample.purchase(amount, nonce, signature);
         vm.stopPrank();
     }
 }
 ```
 
-#### `Wallet`
+```solidity [src/SigningExample.sol]
+import { ECDSA } from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 
-The Wallet overload is a simple wrapper that uses the wallet's private key to sign the digest
+contract SigningExample is Ownable {
+    using ECDSA for bytes32;
 
-```solidity
-Wallet memory alice = vm.createWallet("alice");
-bytes32 hash = keccak256("Signed by Alice");
-(uint8 v, bytes32 r, bytes32 s) = vm.sign(alice, hash);
-address signer = ecrecover(hash, v, r, s);
-assertEq(alice.addr, signer); // [PASS]
+    address public systemAddress;
+
+    function setSystemAddress(address _address) external onlyOwner {
+        systemAddress = _address;
+    }
+
+    function purchase(uint256 _amount, string calldata _nonce, bytes calldata _signature) external payable {
+        require(isValidSignature(
+            systemAddress,
+            keccak256(abi.encodePacked(msg.sender, _amount, _nonce)),
+            _signature
+        ), "Invalid Signature");
+
+        // mint tokens
+    }
+
+    function isValidSignature(address _systemAddress, bytes32 hash, bytes memory signature) internal view returns (bool) {
+        require(_systemAddress != address(0), "Missing System Address");
+        bytes32 signedHash = hash.toEthSignedMessageHash();
+        return signedHash.recover(signature) == _systemAddress;
+    }
+}
 ```
+
+:::
+
+### Gotchas
+
+:::warning[Signature Byte Order]
+When encoding the signature as bytes for use with OpenZeppelin's ECDSA library, the order is `(r, s, v)`, not `(v, r, s)`:
+```solidity
+bytes memory signature = abi.encodePacked(r, s, v);
+```
+:::
+
+### Related Cheatcodes
+
+- [`addr`](/reference/cheatcodes/addr) - Computes the address for a given private key
+- [`createWallet`](/reference/cheatcodes/create-wallet) - Creates a new Wallet struct
+- [`signDelegation`](/reference/cheatcodes/sign-delegation) - Signs an EIP-7702 delegation

@@ -1,51 +1,89 @@
-## RPC related cheatcodes
+---
+description: Access configured RPC endpoints and make JSON-RPC calls
+---
+
+## RPC Cheatcodes
 
 ### Signature
 
 ```solidity
-// Returns the URL for a configured alias
-function rpcUrl(string calldata alias) external returns (string memory);
-// Returns all configured (alias, URL) pairs
-function rpcUrls() external returns(string[2][] memory);
-/// Performs an Ethereum JSON-RPC request to the current fork URL.
+function rpcUrl(string calldata rpcAlias) external returns (string memory url);
+function rpcUrls() external returns (string[2][] memory urls);
 function rpc(string calldata method, string calldata params) external returns (bytes memory data);
 ```
 
 ### Description
 
-Provides cheatcodes to access all RPC endpoints configured in the `rpc_endpoints` object of the `foundry.toml`, and the ability to make `rpc` calls using the configured fork URL.
+Provides cheatcodes to access all RPC endpoints configured in the `rpc_endpoints` object of `foundry.toml`, and the ability to make JSON-RPC calls using the configured fork URL.
 
-### Examples
+### Functions
 
-The following `rpc_endpoints` in `foundry.toml` registers two RPC aliases:
+#### `rpcUrl`
 
-- `optimism` references the URL directly
-- `mainnet` references the `RPC_MAINNET` environment value that is expected to contain the actual URL
+Returns the URL for a configured RPC alias.
 
-_Env variables need to be wrapped in `${}`_
+| Parameter  | Type     | Description                    |
+|------------|----------|--------------------------------|
+| `rpcAlias` | `string` | The alias name from config     |
 
-```toml
-# --snip--
+| Returns  | Description              |
+|----------|--------------------------|
+| `string` | The configured RPC URL   |
+
+#### `rpcUrls`
+
+Returns all configured (alias, URL) pairs.
+
+| Returns        | Description                          |
+|----------------|--------------------------------------|
+| `string[2][]`  | Array of [alias, url] pairs          |
+
+#### `rpc`
+
+Performs an Ethereum JSON-RPC request to the current fork URL.
+
+| Parameter | Type     | Description                           |
+|-----------|----------|---------------------------------------|
+| `method`  | `string` | The JSON-RPC method name              |
+| `params`  | `string` | JSON-encoded array of parameters      |
+
+| Returns | Description                    |
+|---------|--------------------------------|
+| `bytes` | The RPC response data          |
+
+### Configuration
+
+Configure RPC endpoints in your `foundry.toml`:
+
+```toml [foundry.toml]
 [rpc_endpoints]
 optimism = "https://optimism.alchemyapi.io/v2/..."
 mainnet = "${RPC_MAINNET}"
 ```
 
-```solidity
+:::note
+Environment variables must be wrapped in `${}` syntax.
+:::
+
+### Examples
+
+#### Get a configured RPC URL
+
+```solidity [test/Rpc.t.sol]
 string memory url = vm.rpcUrl("optimism");
 assertEq(url, "https://optimism.alchemyapi.io/v2/...");
 ```
 
-If a ENV var is missing, `rpcUrl()` will revert:
+#### Handle missing environment variables
 
-```solidity
+```solidity [test/Rpc.t.sol]
 vm.expectRevert("Failed to resolve env var `${RPC_MAINNET}` in `RPC_MAINNET`: environment variable not found");
 string memory url = vm.rpcUrl("mainnet");
 ```
 
-Retrieve all available alias -> URL pairs
+#### Get all configured RPC URLs
 
-```solidity
+```solidity [test/Rpc.t.sol]
 string[2][] memory allUrls = vm.rpcUrls();
 assertEq(allUrls.length, 2);
 
@@ -56,16 +94,28 @@ string[2] memory env = allUrls[1];
 assertEq(env[0], "mainnet");
 ```
 
-Make an RPC call to `eth_getBalance`
+#### Make an RPC call
 
-```solidity
-// balance at block <https://etherscan.io/block/18332681>
-bytes memory result = vm.rpc("eth_getBalance", "[\"0x8D97689C9818892B700e27F316cc3E41e17fBeb9\", \"0x117BC09\"]")
+```solidity [test/Rpc.t.sol]
+// Get balance at block 18332681
+bytes memory result = vm.rpc(
+    "eth_getBalance",
+    "[\"0x8D97689C9818892B700e27F316cc3E41e17fBeb9\", \"0x117BC09\"]"
+);
 assertEq(hex"10b7c11bcb51e6", result);
 ```
 
-### SEE ALSO
+### Gotchas
 
-Forge Config
+:::warning
+If an RPC alias references an environment variable that is not set, `rpcUrl()` will revert with an error message.
+:::
 
-[Config Reference](/config/reference/testing#rpc_endpoints)
+### Related Cheatcodes
+
+- [`createFork`](/reference/cheatcodes/create-fork) - Creates a new fork
+- [`createSelectFork`](/reference/cheatcodes/create-select-fork) - Creates and selects a fork
+
+### See Also
+
+- [RPC Endpoints Configuration](/config/reference/testing#rpc_endpoints)

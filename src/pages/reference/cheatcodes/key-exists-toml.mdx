@@ -1,21 +1,43 @@
+---
+description: Checks if a key exists in a TOML table
+---
+
 ## `keyExistsToml`
 
 ### Signature
 
 ```solidity
-// Check if a key exists in a TOML table.
-vm.keyExistsToml(string memory toml, string memory key) returns (bool)
+function keyExistsToml(string memory toml, string memory key) external returns (bool);
 ```
 
 ### Description
 
 Checks if a key exists in a TOML table.
 
+### Parameters
+
+| Parameter | Type     | Description                      |
+|-----------|----------|----------------------------------|
+| `toml`    | `string` | The TOML string to search        |
+| `key`     | `string` | The JSONPath key to look for     |
+
+### Returns
+
+| Type   | Description                              |
+|--------|------------------------------------------|
+| `bool` | `true` if the key exists, `false` otherwise |
+
 ### Examples
 
-```solidity
+```solidity [test/KeyExistsToml.t.sol]
 string memory path = "./path/to/tomlfile.toml";
 string memory toml = vm.readFile(path);
 bool exists = vm.keyExistsToml(toml, ".key");
 assertTrue(exists);
 ```
+
+### Related Cheatcodes
+
+- [`keyExistsJson`](/reference/cheatcodes/key-exists-json) - Check if a key exists in JSON
+- [`parseToml`](/reference/cheatcodes/parse-toml) - Parse TOML values
+- [`parseTomlKeys`](/reference/cheatcodes/parse-toml-keys) - Get list of keys in TOML

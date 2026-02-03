@@ -1,23 +1,42 @@
+---
+description: Sets block.difficulty for pre-merge EVM versions in Forge tests
+---
+
 ## `difficulty`
 
 ### Signature
 
 ```solidity
-function difficulty(uint256) external;
+function difficulty(uint256 difficulty) external;
 ```
 
 ### Description
 
-Sets `block.difficulty`.
+Sets `block.difficulty` to the specified value.
 
-If used with a post-merge EVM version (Paris and onwards), it will revert. In that case, use [`vm.prevrandao`][prevrandao] instead.
+### Parameters
+
+| Parameter    | Type      | Description                       |
+|--------------|-----------|----------------------------------|
+| `difficulty` | `uint256` | The new block difficulty to set  |
 
 ### Examples
 
-```solidity
-vm.difficulty(25);
-emit log_uint(block.difficulty); // 25
+```solidity [test/Difficulty.t.sol]
+function testDifficulty() public {
+    vm.difficulty(25);
+    assertEq(block.difficulty, 25);
+}
 ```
 
+### Gotchas
 
-[prevrandao]: ./prevrandao
+:::warning
+This cheatcode only works with pre-merge EVM versions (before Paris). If used with Paris or later, it will revert. Use [`vm.prevrandao`](/reference/cheatcodes/prevrandao) for post-merge EVM versions.
+:::
+
+### Related Cheatcodes
+
+- [`prevrandao`](/reference/cheatcodes/prevrandao) - Sets `block.prevrandao` (for post-merge EVM versions)
+- [`roll`](/reference/cheatcodes/roll) - Sets `block.number`
+- [`warp`](/reference/cheatcodes/warp) - Sets `block.timestamp`

@@ -1,9 +1,13 @@
+---
+description: Returns the creation bytecode for a contract in the project
+---
+
 ## `getCode`
 
 ### Signature
 
 ```solidity
-function getCode(string calldata) external returns (bytes memory);
+function getCode(string calldata artifactPath) external returns (bytes memory creationBytecode);
 ```
 
 ### Description
@@ -12,15 +16,21 @@ Returns the **creation** bytecode for a contract in the project given the path t
 
 The calldata parameter can either be in the form `ContractFile.sol` (if the filename and contract name are the same), `ContractFile.sol:ContractName`, or the path to an artifact, relative to the root of your project.
 
-> ℹ️ **Note**
->
-> `getCode` requires read permission for the output directory, see [file cheatcodes](/reference/cheatcodes/fs.mdx).
->
-> To grant read access set `fs_permissions = [{ access = "read", path = "./out"}]` in your `foundry.toml`.
+### Parameters
+
+| Parameter      | Type     | Description                                    |
+|----------------|----------|------------------------------------------------|
+| `artifactPath` | `string` | Path to the contract artifact (see supported formats below) |
+
+### Returns
+
+| Type    | Description                        |
+|---------|------------------------------------|
+| `bytes` | The creation bytecode of the contract |
 
 ### Examples
 
-```solidity
+```solidity [test/GetCode.t.sol]
 MyContract myContract = new MyContract(arg1, arg2);
 
 // Let's do the same thing with `getCode`
@@ -34,9 +44,9 @@ assembly {
 assertEq0(address(myContract).code, anotherAddress.code); // [PASS]
 ```
 
-Deploy a contract to an arbitrary address by combining `getCode` and [`etch`](/reference/cheatcodes/etch.mdx)
+Deploy a contract to an arbitrary address by combining `getCode` and [`etch`](/reference/cheatcodes/etch):
 
-```solidity
+```solidity [test/DeployToAddress.t.sol]
 // Deploy
 bytes memory args = abi.encode(arg1, arg2);
 bytes memory bytecode = abi.encodePacked(vm.getCode("MyContract.sol:MyContract"), args);
@@ -49,7 +59,7 @@ assembly {
 vm.etch(targetAddr, deployed.code);
 ```
 
-### Supported formats
+### Supported Formats
 
 You can fetch artifacts by either contract path or contract name. Fetching artifacts for a specific version is also supported. If not provided, cheatcode will default to the version of a test being executed or the only version artifact was compiled with.
 
@@ -60,14 +70,18 @@ vm.getCode("MyContract.sol:0.8.18");
 vm.getCode("MyContract:0.8.18");
 ```
 
-### SEE ALSO
+### Gotchas
 
-[`getDeployedCode`](/reference/cheatcodes/get-deployed-code.mdx)
-[`etch`](/reference/cheatcodes/etch.mdx)
+:::warning
+`getCode` requires read permission for the output directory. To grant read access, set `fs_permissions = [{ access = "read", path = "./out"}]` in your `foundry.toml`.
+:::
 
-Forge Standard Library
+### Related Cheatcodes
 
-[`deployCode`](/reference/forge-std/deployCode.mdx)
-[`deployCodeTo`](/reference/forge-std/deployCodeTo.mdx)
+- [`getDeployedCode`](/reference/cheatcodes/get-deployed-code) - Returns the runtime bytecode
+- [`etch`](/reference/cheatcodes/etch) - Sets the bytecode of an address
 
-[forge-std]: /reference/forge-std/overview
+### See Also
+
+- [`deployCode`](/reference/forge-std/deployCode)
+- [`deployCodeTo`](/reference/forge-std/deployCodeTo)

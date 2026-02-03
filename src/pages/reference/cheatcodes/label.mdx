@@ -1,3 +1,7 @@
+---
+description: Sets a label for an address in test traces
+---
+
 ## `label`
 
 ### Signature
@@ -8,6 +12,23 @@ function label(address addr, string calldata label) external;
 
 ### Description
 
-Sets a label `label` for `addr` in test traces.
+Sets a label for an address in test traces. If an address is labelled, the label will show up in test traces instead of the address.
 
-If an address is labelled, the label will show up in test traces instead of the address.
+### Parameters
+
+| Parameter | Type      | Description                      |
+|-----------|-----------|----------------------------------|
+| `addr`    | `address` | The address to label             |
+| `label`   | `string`  | The label to assign              |
+
+### Examples
+
+```solidity [test/Label.t.sol]
+address alice = makeAddr("alice");
+vm.label(alice, "Alice's Address");
+// In traces, alice's address will now show as "Alice's Address"
+```
+
+### Related Cheatcodes
+
+- [`getLabel`](/reference/cheatcodes/get-label) - Retrieves the label for an address

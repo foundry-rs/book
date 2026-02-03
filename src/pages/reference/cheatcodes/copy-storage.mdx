@@ -1,3 +1,7 @@
+---
+description: Copies storage from one contract to another
+---
+
 ## `copyStorage`
 
 ### Signature
@@ -8,13 +12,35 @@ function copyStorage(address from, address to) external;
 
 ### Description
 
-Utility cheatcode to copy storage of `from` contract to another `to` contract.
-Cheatcode is not allowed if the target address has arbitrary storage set.
+Copies all storage from one contract address to another.
+
+### Parameters
+
+| Parameter | Type      | Description                        |
+|-----------|-----------|------------------------------------|
+| `from`    | `address` | The source address to copy from    |
+| `to`      | `address` | The destination address to copy to |
 
 ### Examples
 
-Given a contract
-```solidity
+:::code-group
+
+```solidity [test/CopyStorage.t.sol]
+function testCopyStorage() public {
+    Counter original = new Counter();
+    original.setCount(1000);
+    
+    Counter copy = new Counter();
+    copy.setCount(1);
+    assertEq(copy.count(), 1);
+
+    vm.copyStorage(address(original), address(copy));
+    // Storage is copied from original to copy
+    assertEq(copy.count(), 1000);
+}
+```
+
+```solidity [src/Counter.sol]
 contract Counter {
     uint256 public count;
 
@@ -23,19 +49,17 @@ contract Counter {
     }
 }
 ```
-using `copyStorage` cheatcode copies the storage set on an instance to another address:
-```solidity
-function testCopyStorage() public {
-    Counter original = new Counter();
-    original.setCount(1000);
-    Counter copy = new Counter();
-    copy.setCount(1);
-    // Check initial count on copy.
-    assertEq(copy.count(), 1);
 
-    vm.copyStorage(address(original), address(copy));
-    // Value is copied from first contract to copy.
-    assertEq(copy.count(), 1000);
-}
-```
+:::
 
+### Gotchas
+
+:::warning
+This cheatcode is not allowed if the target address has arbitrary storage set via [`setArbitraryStorage`](/reference/cheatcodes/set-arbitrary-storage).
+:::
+
+### Related Cheatcodes
+
+- [`load`](/reference/cheatcodes/load) - Loads a single storage slot
+- [`store`](/reference/cheatcodes/store) - Stores a value to a single storage slot
+- [`setArbitraryStorage`](/reference/cheatcodes/set-arbitrary-storage) - Makes storage fully symbolic

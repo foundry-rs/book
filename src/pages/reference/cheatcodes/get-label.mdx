@@ -1,11 +1,44 @@
+---
+description: Retrieves the label for an address
+---
+
 ## `getLabel`
 
 ### Signature
 
 ```solidity
-function getLabel(address) external returns (string memory);
+function getLabel(address addr) external returns (string memory label);
 ```
 
 ### Description
 
 Retrieves the label for an address if it was previously labeled. If not, it returns the address prefixed with `unlabeled:`.
+
+### Parameters
+
+| Parameter | Type      | Description                      |
+|-----------|-----------|----------------------------------|
+| `addr`    | `address` | The address to get the label for |
+
+### Returns
+
+| Type     | Description                                  |
+|----------|----------------------------------------------|
+| `string` | The label, or `unlabeled:<address>` if not set |
+
+### Examples
+
+```solidity [test/GetLabel.t.sol]
+address alice = makeAddr("alice");
+vm.label(alice, "Alice");
+string memory label = vm.getLabel(alice);
+assertEq(label, "Alice");
+
+address unlabeled = address(0x1234);
+string memory noLabel = vm.getLabel(unlabeled);
+// Returns "unlabeled:0x0000000000000000000000000000000000001234"
+```
+
+### Related Cheatcodes
+
+- [`label`](/reference/cheatcodes/label) - Sets a label for an address

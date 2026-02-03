@@ -1,3 +1,7 @@
+---
+description: Discards fuzz inputs if the next call reverts
+---
+
 ## `assumeNoRevert`
 
 ### Signature
@@ -8,26 +12,39 @@ function assumeNoRevert() external;
 
 ### Description
 
-The fuzzer will discard the current fuzz inputs and start a new fuzz run if next call reverted.
+The fuzzer will discard the current fuzz inputs and start a new fuzz run if the **next call** reverts.
 
-The test may fail if you hit the max number of rejects.
-
-You can configure the rejection thresholds by setting [`fuzz.max_test_rejects`][max-test-rejects] in your `foundry.toml` file.
+This is useful when testing functions that have input validation, allowing the fuzzer to automatically find valid inputs.
 
 ### Examples
 
-For a function that requires an amount in certain range:
-```solidity
-function doSomething(uint256 amount) public {
-    require(amount > 100 ether && amount < 1_000 ether);
-}
-```
-reverts are discarded, resulting in test pass (or fail if max number of rejects hit):
-```solidity
-function testSomething(uint256 amount) public {
+:::code-group
+
+```solidity [test/AssumeNoRevert.t.sol]
+function testDoSomething(uint256 amount) public {
     vm.assumeNoRevert();
     target.doSomething(amount);
-    // [PASS]
+    // Passes if valid inputs are found
 }
 ```
 
+```solidity [src/Target.sol]
+function doSomething(uint256 amount) public {
+    require(amount > 100 ether && amount < 1_000 ether);
+    // ... logic
+}
+```
+
+:::
+
+### Gotchas
+
+:::warning
+The test may fail if you hit the max number of rejects (i.e., too many fuzz inputs cause reverts).
+
+Configure the rejection threshold with [`fuzz.max_test_rejects`](/config/reference/testing#max_test_rejects) in `foundry.toml`.
+:::
+
+### Related Cheatcodes
+
+- [`assume`](/reference/cheatcodes/assume) - Discard fuzz inputs based on a boolean condition

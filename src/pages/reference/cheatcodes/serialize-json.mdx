@@ -1,99 +1,64 @@
+---
+description: Serializes values as a stringified JSON object
+---
+
 ## `serializeJson`
 
 ### Signature
 
 ```solidity
-function serializeJson(string calldata objectKey, string calldata value)
-    external
-    returns (string memory json);
-
-function serializeBool(string calldata objectKey, string calldata valueKey, bool value)
-    external
-    returns (string memory json);
-
-function serializeUint(string calldata objectKey, string calldata valueKey, uint256 value)
-    external
-    returns (string memory json);
-
-function serializeInt(string calldata objectKey, string calldata valueKey, int256 value)
-    external
-    returns (string memory json);
-
-function serializeAddress(string calldata objectKey, string calldata valueKey, address value)
-    external
-    returns (string memory json);
-
-function serializeBytes32(string calldata objectKey, string calldata valueKey, bytes32 value)
-    external
-    returns (string memory json);
-
-function serializeString(string calldata objectKey, string calldata valueKey, string calldata value)
-    external
-    returns (string memory json);
-
-function serializeBytes(string calldata objectKey, string calldata valueKey, bytes calldata value)
-    external
-    returns (string memory json);
-
-function serializeBool(string calldata objectKey, string calldata valueKey, bool[] calldata values)
-    external
-    returns (string memory json);
-
-function serializeUint(string calldata objectKey, string calldata valueKey, uint256[] calldata values)
-    external
-    returns (string memory json);
-
-function serializeInt(string calldata objectKey, string calldata valueKey, int256[] calldata values)
-    external
-    returns (string memory json);
-
-function serializeAddress(string calldata objectKey, string calldata valueKey, address[] calldata values)
-    external
-    returns (string memory json);
-
-function serializeBytes32(string calldata objectKey, string calldata valueKey, bytes32[] calldata values)
-    external
-    returns (string memory json);
-
-function serializeString(string calldata objectKey, string calldata valueKey, string[] calldata values)
-    external
-    returns (string memory json);
-
-function serializeBytes(string calldata objectKey, string calldata valueKey, bytes[] calldata values)
-    external
-    returns (string memory json);
+function serializeJson(string calldata objectKey, string calldata value) external returns (string memory json);
+function serializeBool(string calldata objectKey, string calldata valueKey, bool value) external returns (string memory json);
+function serializeUint(string calldata objectKey, string calldata valueKey, uint256 value) external returns (string memory json);
+function serializeInt(string calldata objectKey, string calldata valueKey, int256 value) external returns (string memory json);
+function serializeAddress(string calldata objectKey, string calldata valueKey, address value) external returns (string memory json);
+function serializeBytes32(string calldata objectKey, string calldata valueKey, bytes32 value) external returns (string memory json);
+function serializeString(string calldata objectKey, string calldata valueKey, string calldata value) external returns (string memory json);
+function serializeBytes(string calldata objectKey, string calldata valueKey, bytes calldata value) external returns (string memory json);
+function serializeBool(string calldata objectKey, string calldata valueKey, bool[] calldata values) external returns (string memory json);
+function serializeUint(string calldata objectKey, string calldata valueKey, uint256[] calldata values) external returns (string memory json);
+function serializeInt(string calldata objectKey, string calldata valueKey, int256[] calldata values) external returns (string memory json);
+function serializeAddress(string calldata objectKey, string calldata valueKey, address[] calldata values) external returns (string memory json);
+function serializeBytes32(string calldata objectKey, string calldata valueKey, bytes32[] calldata values) external returns (string memory json);
+function serializeString(string calldata objectKey, string calldata valueKey, string[] calldata values) external returns (string memory json);
+function serializeBytes(string calldata objectKey, string calldata valueKey, bytes[] calldata values) external returns (string memory json);
 ```
 
 ### Description
 
-Serializes values as a stringified JSON object.
+Serializes values as a stringified JSON object. Values are serialized incrementally, and the final JSON string can be written to a file using [`writeJson`](/reference/cheatcodes/write-json) or [`writeToml`](/reference/cheatcodes/write-toml).
+
+### Parameters
+
+| Parameter   | Type     | Description                                           |
+|-------------|----------|-------------------------------------------------------|
+| `objectKey` | `string` | Key identifying the JSON object being built           |
+| `valueKey`  | `string` | Key for the value in the JSON object                  |
+| `value`     | varies   | The value to serialize                                |
+
+### Returns
+
+| Type     | Description                                      |
+|----------|--------------------------------------------------|
+| `string` | The JSON object serialized up to this point      |
 
 ### How it works
 
-The idea is that the user serializes the values of the JSON file and finally writes that object to a file. The user needs to pass:
+1. Pass an `objectKey` to identify which JSON object you're building (enables building multiple objects in parallel)
+2. Pass a `valueKey` for the key name in the JSON
+3. Pass the value to serialize
 
-- A key for the _object_ to which the value should be serialized to. This enables the user to serialize multiple objects in parallel
-- A key for the _value_ which will be its key in the JSON file
-- The value to be serialized
+The cheatcodes return the JSON object serialized **up to that point**, allowing you to serialize nested objects and then include them in larger objects.
 
-An exception to this is the `serializeJson` function, which only receives an `objectKey` and a json string `value`. This allows the user to serialize an existing json object and directly assign it to the provided `objectKey`. If the `objectKey` is already in use, the whole serialized json is overwritten.
+The `serializeJson` function accepts an `objectKey` and a JSON string `value`, allowing you to serialize an existing JSON object directly.
 
-The keys do not need to be of some specific form. They are of type `string` to enable for intuitive human interpretation. Semantically, they are not important other than to be used as keys.
+### Examples
 
-The cheatcodes return the JSON object that is being serialized **up to that point**. That way the user can serialize inner JSON objects and then serialize them in bigger JSON objects, enabling the user to create arbitrary JSON objects.
+#### Building a simple JSON object
 
-Finally, the user writes the JSON object to a JSON file by using [writeJson](/reference/cheatcodes/write-json.mdx).
-Alternatively, the user can write the JSON object to TOML file by using [writeToml](/reference/cheatcodes/write-toml.mdx).
+Target JSON: `{ "boolean": true, "number": 342, "object": { "title": "finally json serialization" } }`
 
-**Remember:** The file path needs to be in the allowed paths. Read more in [File cheatcodes](/reference/cheatcodes/fs.mdx).
-
-### Example
-
-Let's assume we want to write the following JSON to a file:
-
-`{ "boolean": true, "number": 342, "object": { "title": "finally json serialization" } }`
-
-```solidity
+```solidity [test/SerializeJson.t.sol]
 string memory obj1 = "some key";
 vm.serializeBool(obj1, "boolean", true);
 vm.serializeUint(obj1, "number", uint256(342));
@@ -101,16 +66,27 @@ vm.serializeUint(obj1, "number", uint256(342));
 string memory obj2 = "some other key";
 string memory output = vm.serializeString(obj2, "title", "finally json serialization");
 
-// IMPORTANT: This works because `serializeString` first tries to interpret `output` as
-//   a stringified JSON object. If the parsing fails, then it treats it as a normal
-//   string instead.
-//   For instance, an `output` equal to '{ "ok": "asd" }' will produce an object, but
-//   an output equal to '"ok": "asd" }' will just produce a normal string.
+// Nest obj2 inside obj1
 string memory finalJson = vm.serializeString(obj1, "object", output);
 
 vm.writeJson(finalJson, "./output/example.json");
 ```
 
-### SEE ALSO
+:::note
+`serializeString` first tries to interpret `output` as a stringified JSON object. If parsing fails, it treats it as a normal string. For instance, `'{ "ok": "asd" }'` produces an object, but `'"ok": "asd" }'` produces a string.
+:::
 
-- [writeJson](/reference/cheatcodes/write-json.mdx)
+### Gotchas
+
+:::warning[File Permissions]
+The output file path needs to be in the allowed paths. Configure in `foundry.toml`:
+```toml
+fs_permissions = [{ access = "write", path = "./output" }]
+```
+:::
+
+### Related Cheatcodes
+
+- [`writeJson`](/reference/cheatcodes/write-json) - Write JSON to a file
+- [`writeToml`](/reference/cheatcodes/write-toml) - Write JSON as TOML to a file
+- [`parseJson`](/reference/cheatcodes/parse-json) - Parse JSON files

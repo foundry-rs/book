@@ -4,7 +4,8 @@ pragma solidity 0.8.10;
 
 import {Test} from "forge-std/Test.sol";
 
-// Firstly, we implement a mock emulating the actual precompile behavior
+// [!region mock]
+// Implement a mock emulating the actual precompile behavior
 contract YieldMock {
     address private constant blastContract = 0x4300000000000000000000000000000000000002;
 
@@ -25,7 +26,9 @@ contract YieldMock {
         return 0;
     }
 }
+// [!endregion mock]
 
+// [!region test]
 contract SomeBlastTest is Test {
     function setUp() public {
         vm.createSelectFork("blastRpcUrl");
@@ -39,4 +42,5 @@ contract SomeBlastTest is Test {
         // Now we can interact with Blast contracts without reverts
     }
 }
+// [!endregion test]
 // [!endregion all]

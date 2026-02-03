@@ -1,25 +1,39 @@
+---
+description: Stops collecting transactions for onchain broadcasting
+---
+
 ## `stopBroadcast`
 
 ### Signature
+
 ```solidity
 function stopBroadcast() external;
 ```
 
 ### Description
 
-Stops collecting transactions for later on-chain broadcasting.
+Stops collecting transactions for later onchain broadcasting.
 
 ### Examples
 
-```solidity
-function deployNoArgs() public {
-    // broadcast the next call
-    cheats.broadcast();
+```solidity [script/Deploy.s.sol]
+function deploy() public {
+    // Broadcast a single call
+    vm.broadcast();
     Test test1 = new Test();
 
-    // broadcast all calls between this line and `stopBroadcast`
-    cheats.startBroadcast();
+    // Broadcast all calls until stopBroadcast
+    vm.startBroadcast();
     Test test2 = new Test();
-    cheats.stopBroadcast();
+    test2.initialize();
+    vm.stopBroadcast();
+    
+    // This call is not broadcast
+    test2.doSomething();
 }
 ```
+
+### Related Cheatcodes
+
+- [`broadcast`](/reference/cheatcodes/broadcast) - Broadcast a single call
+- [`startBroadcast`](/reference/cheatcodes/start-broadcast) - Broadcast all subsequent calls

@@ -1,32 +1,52 @@
+---
+description: Returns the deployed (runtime) bytecode for a contract in the project
+---
+
 ## `getDeployedCode`
 
 ### Signature
 
 ```solidity
-function getDeployedCode(string calldata) external returns (bytes memory);
+function getDeployedCode(string calldata artifactPath) external returns (bytes memory runtimeBytecode);
 ```
 
 ### Description
 
-This cheatcode works similar to [`getCode`](/reference/cheatcodes/get-code.mdx) but only returns the **deployed** bytecode (aka runtime
-bytecode) for a contract in the project given the path to the contract.
+This cheatcode works similar to [`getCode`](/reference/cheatcodes/get-code) but only returns the **deployed** bytecode (aka runtime bytecode) for a contract in the project given the path to the contract.
 
-The main use case for this cheat code is as a shortcut to deploy stateless contracts to arbitrary addresses.
+The main use case for this cheatcode is as a shortcut to deploy stateless contracts to arbitrary addresses.
 
-The calldata parameter can either be in the form `ContractFile.sol` (if the filename and contract name are the same)
-, `ContractFile.sol:ContractName`, or the path to an artifact, relative to the root of your project.
+The calldata parameter can either be in the form `ContractFile.sol` (if the filename and contract name are the same), `ContractFile.sol:ContractName`, or the path to an artifact, relative to the root of your project.
 
-> ℹ️ **Note**
->
-> `getDeployedCode` requires read permission for the output directory, see [file cheatcodes](/reference/cheatcodes/fs.mdx).
->
-> To grant read access set `fs_permissions = [{ access = "read", path = "./out"}]` in your `foundry.toml`.
+### Parameters
+
+| Parameter      | Type     | Description                                    |
+|----------------|----------|------------------------------------------------|
+| `artifactPath` | `string` | Path to the contract artifact (see supported formats below) |
+
+### Returns
+
+| Type    | Description                          |
+|---------|--------------------------------------|
+| `bytes` | The runtime bytecode of the contract |
 
 ### Examples
 
-Deploy a stateless contract at an arbitrary address using `getDeployedCode` and [`etch`](/reference/cheatcodes/etch.mdx).
+Deploy a stateless contract at an arbitrary address using `getDeployedCode` and [`etch`](/reference/cheatcodes/etch):
 
-```solidity
+:::code-group
+
+```solidity [test/Override.t.sol]
+// get the **deployedBytecode**
+bytes memory code = vm.getDeployedCode("Override.sol:Override");
+
+// set the code of an arbitrary address
+address overrideAddress = address(64);
+vm.etch(overrideAddress, code);
+assertEq(overrideAddress.code, code);
+```
+
+```solidity [src/Override.sol]
 // A stateless contract that we want deployed at a specific address
 contract Override {
     event Payload(address sender, address target, bytes data);
@@ -38,17 +58,11 @@ contract Override {
         return 0;
     }
 }
-
-// get the **deployedBytecode**
-bytes memory code = vm.getDeployedCode("Override.sol:Override");
-
-// set the code of an arbitrary address
-address overrideAddress = address(64);
-vm.etch(overrideAddress, code);
-assertEq(overrideAddress.code, code);
 ```
 
-### Supported formats
+:::
+
+### Supported Formats
 
 You can fetch artifacts by either contract path or contract name. Fetching artifacts for a specific version is also supported. If not provided, cheatcode will default to the version of a test being executed or the only version artifact was compiled with.
 
@@ -59,11 +73,18 @@ vm.getDeployedCode("MyContract.sol:0.8.18");
 vm.getDeployedCode("MyContract:0.8.18");
 ```
 
-### SEE ALSO
+### Gotchas
 
-Forge Standard Library
+:::warning
+`getDeployedCode` requires read permission for the output directory. To grant read access, set `fs_permissions = [{ access = "read", path = "./out"}]` in your `foundry.toml`.
+:::
 
-[`getCode`](/reference/cheatcodes/get-code.mdx)
-[`etch`](/reference/cheatcodes/etch.mdx)
+### Related Cheatcodes
 
-[forge-std]: /reference/forge-std/overview
+- [`getCode`](/reference/cheatcodes/get-code) - Returns the creation bytecode
+- [`etch`](/reference/cheatcodes/etch) - Sets the bytecode of an address
+
+### See Also
+
+- [`deployCode`](/reference/forge-std/deployCode)
+- [`deployCodeTo`](/reference/forge-std/deployCodeTo)

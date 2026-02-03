@@ -1,3 +1,7 @@
+---
+description: Parses a hex string into bytes32
+---
+
 ## `parseBytes32`
 
 ### Signature
@@ -8,11 +12,29 @@ function parseBytes32(string calldata stringifiedValue) external pure returns (b
 
 ### Description
 
-Parses the value of `string` into `bytes32`
+Parses a hex string into `bytes32`.
+
+### Parameters
+
+| Parameter          | Type     | Description              |
+|--------------------|----------|--------------------------|
+| `stringifiedValue` | `string` | The hex string to parse  |
+
+### Returns
+
+| Type      | Description          |
+|-----------|----------------------|
+| `bytes32` | The parsed bytes32   |
 
 ### Examples
 
-```solidity
+```solidity [test/ParseBytes32.t.sol]
 string memory bytes32AsString = "0x0000000000000000000000000000000000000000000000000000000000000000";
-bytes32 stringToBytes32 = vm.parseBytes32(bytes32AsString); // 0x0000000000000000000000000000000000000000000000000000000000000000
+bytes32 result = vm.parseBytes32(bytes32AsString);
+// result = 0x0000000000000000000000000000000000000000000000000000000000000000
 ```
+
+### Related Cheatcodes
+
+- [`toString`](/reference/cheatcodes/to-string) - Converts bytes32 to string
+- [`parseBytes`](/reference/cheatcodes/parse-bytes) - Parses string to bytes

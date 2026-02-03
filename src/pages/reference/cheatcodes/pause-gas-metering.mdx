@@ -1,3 +1,7 @@
+---
+description: Pauses gas metering so gasleft() does not decrease
+---
+
 ## `pauseGasMetering`
 
 ### Signature
@@ -8,12 +12,35 @@ function pauseGasMetering() external;
 
 ### Description
 
-Pauses gas metering (i.e. `gasleft()` does not decrease as operations are executed).
+Pauses gas metering (i.e., `gasleft()` does not decrease as operations are executed).
 
-This can be useful for getting a better sense of gas costs, by turning off gas metering for unnecessary code, as well as long-running scripts that would otherwise run out of gas.
+This can be useful for getting a better sense of gas costs by turning off gas metering for unnecessary code, as well as for long-running scripts that would otherwise run out of gas.
 
-> ℹ️ **Note**
->
-> `pauseGasMetering` *turns off DoS protections* that come from metering gas usage.
->
-> Exposing a service that assumes a particular instance of the EVM will complete due to gas usage no longer is true, and a timeout should be enabled in that case.
+### Examples
+
+```solidity [test/PauseGasMetering.t.sol]
+function testPauseGasMetering() public {
+    uint256 gasBefore = gasleft();
+    
+    vm.pauseGasMetering();
+    // Expensive operations here don't consume gas
+    for (uint i = 0; i < 1000; i++) {
+        // ...
+    }
+    vm.resumeGasMetering();
+    
+    uint256 gasAfter = gasleft();
+    // gasBefore and gasAfter will be very close
+}
+```
+
+### Gotchas
+
+:::warning
+`pauseGasMetering` **turns off DoS protections** that come from metering gas usage. If you're exposing a service that assumes an EVM instance will complete due to gas limits, you should enable a timeout instead.
+:::
+
+### Related Cheatcodes
+
+- [`resumeGasMetering`](/reference/cheatcodes/resume-gas-metering) - Resume gas metering
+- [`resetGasMetering`](/reference/cheatcodes/reset-gas-metering) - Reset gas to initial value

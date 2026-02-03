@@ -1,11 +1,33 @@
+---
+description: Returns the root directory of the current Foundry project
+---
+
 ## `projectRoot`
 
 ### Signature
 
 ```solidity
-function projectRoot() external returns (string memory);
+function projectRoot() external returns (string memory path);
 ```
 
 ### Description
 
 Returns the root directory of the current Foundry project.
+
+### Returns
+
+| Type     | Description                                |
+|----------|--------------------------------------------|
+| `string` | The absolute path to the project root directory |
+
+### Examples
+
+```solidity [test/ProjectRoot.t.sol]
+string memory root = vm.projectRoot();
+string memory path = string.concat(root, "/src/Contract.sol");
+```
+
+### Related Cheatcodes
+
+- [`ffi`](/reference/cheatcodes/ffi) - Execute commands relative to project root
+- [`readFile`](/reference/cheatcodes/fs) - Read files using paths relative to project root

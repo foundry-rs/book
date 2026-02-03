@@ -1,23 +1,42 @@
+---
+description: Sets block.prevrandao for post-merge EVM versions in Forge tests
+---
+
 ## `prevrandao`
 
 ### Signature
 
 ```solidity
-function prevrandao(bytes32) external;
+function prevrandao(bytes32 prevrandao) external;
 ```
 
 ### Description
 
-Sets `block.prevrandao`.
+Sets `block.prevrandao` to the specified value.
 
-If used with an EVM version previous to the Paris hard fork, it will revert. In that case, use [`vm.difficulty`][prevrandao] instead.
+### Parameters
+
+| Parameter    | Type      | Description                           |
+|--------------|-----------|---------------------------------------|
+| `prevrandao` | `bytes32` | The new prevrandao value to set       |
 
 ### Examples
 
-```solidity
-vm.prevrandao(bytes32(uint256(42)));
-emit log_uint(block.prevrandao); // 42
+```solidity [test/Prevrandao.t.sol]
+function testPrevrandao() public {
+    vm.prevrandao(bytes32(uint256(42)));
+    assertEq(block.prevrandao, 42);
+}
 ```
 
+### Gotchas
 
-[prevrandao]: ./difficulty
+:::warning
+This cheatcode only works with post-merge EVM versions (Paris and later). If used with pre-Paris versions, it will revert. Use [`vm.difficulty`](/reference/cheatcodes/difficulty) for pre-merge EVM versions.
+:::
+
+### Related Cheatcodes
+
+- [`difficulty`](/reference/cheatcodes/difficulty) - Sets `block.difficulty` (for pre-merge EVM versions)
+- [`roll`](/reference/cheatcodes/roll) - Sets `block.number`
+- [`warp`](/reference/cheatcodes/warp) - Sets `block.timestamp`

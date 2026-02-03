@@ -1,3 +1,7 @@
+---
+description: Stops an active prank, resetting msg.sender and tx.origin
+---
+
 ## `stopPrank`
 
 ### Signature
@@ -8,4 +12,22 @@ function stopPrank() external;
 
 ### Description
 
-Stops an active prank started by [`startPrank`](/reference/cheatcodes/start-prank.mdx), resetting `msg.sender` and `tx.origin` to the values before `startPrank` was called.
+Stops an active prank started by [`startPrank`](/reference/cheatcodes/start-prank), resetting `msg.sender` and `tx.origin` to the values before `startPrank` was called.
+
+### Examples
+
+```solidity [test/StopPrank.t.sol]
+function testStopPrank() public {
+    vm.startPrank(alice);
+    myContract.deposit(); // msg.sender == alice
+    vm.stopPrank();
+    
+    myContract.deposit(); // msg.sender == address(this)
+}
+```
+
+### Related Cheatcodes
+
+- [`prank`](/reference/cheatcodes/prank) - Sets `msg.sender` for a single call
+- [`startPrank`](/reference/cheatcodes/start-prank) - Sets `msg.sender` for all subsequent calls
+- [`readCallers`](/reference/cheatcodes/read-callers) - Reads the current caller mode

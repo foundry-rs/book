@@ -1,28 +1,61 @@
+---
+description: Loads a value from a specific storage slot of an account
+---
+
 ## `load`
 
 ### Signature
 
 ```solidity
-function load(address account, bytes32 slot) external returns (bytes32);
+function load(address account, bytes32 slot) external view returns (bytes32 value);
 ```
 
 ### Description
 
 Loads the value from storage slot `slot` on account `account`.
 
+### Parameters
+
+| Parameter | Type      | Description                            |
+|-----------|-----------|----------------------------------------|
+| `account` | `address` | The account whose storage will be read |
+| `slot`    | `bytes32` | The storage slot to read from          |
+
+### Returns
+
+| Parameter | Type      | Description                            |
+|-----------|-----------|----------------------------------------|
+| `value`   | `bytes32` | The value stored at the specified slot |
+
 ### Examples
 
-```solidity
-/// contract LeetContract {
-///     uint256 private leet = 1337; // slot 0
-/// }
+:::code-group
 
-bytes32 leet = vm.load(address(leetContract), bytes32(uint256(0)));
-emit log_uint(uint256(leet)); // 1337
+```solidity [test/Load.t.sol]
+function testLoad() public {
+    bytes32 leet = vm.load(address(leetContract), bytes32(uint256(0)));
+    assertEq(uint256(leet), 1337);
+}
 ```
 
-### SEE ALSO
+```solidity [src/LeetContract.sol]
+contract LeetContract {
+    uint256 private leet = 1337; // slot 0
+}
+```
 
-Forge Standard Library
+:::
 
-[Std Storage](/reference/forge-std/std-storage.mdx)
+### Gotchas
+
+:::warning
+You must know the exact storage slot layout of the contract. Solidity uses complex packing rules for storage, especially for mappings and dynamic arrays. Use `forge inspect` or the [Std Storage](/reference/forge-std/std-storage) library to find storage slots.
+:::
+
+### Related Cheatcodes
+
+- [`store`](/reference/cheatcodes/store) - Stores a value in a storage slot
+
+### See Also
+
+- [Std Storage](/reference/forge-std/std-storage) - Forge Std library for storage manipulation

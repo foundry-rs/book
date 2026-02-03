@@ -1,3 +1,7 @@
+---
+description: Starts recording all storage reads and writes
+---
+
 ## `record`
 
 ### Signature
@@ -8,30 +12,45 @@ function record() external;
 
 ### Description
 
-Tell the VM to start recording all storage reads and writes. To access the reads and writes, use [`accesses`](/reference/cheatcodes/accesses.mdx).
-
-> ℹ️ **Note**
->
-> Every write also counts as an additional read.
+Tells the VM to start recording all storage reads and writes. To access the recorded data, use [`accesses`](/reference/cheatcodes/accesses).
 
 ### Examples
 
-```solidity
-/// contract NumsContract {
-///     uint256 public num1 = 100; // slot 0
-///     uint256 public num2 = 200; // slot 1
-/// }
+:::code-group
 
-vm.record();
-numsContract.num2();
-(bytes32[] memory reads, bytes32[] memory writes) = vm.accesses(
-  address(numsContract)
-);
-emit log_uint(uint256(reads[0])); // 1
+```solidity [test/Record.t.sol]
+function testRecord() public {
+    vm.record();
+    numsContract.num2(); // reads slot 1
+    
+    (bytes32[] memory reads, bytes32[] memory writes) = vm.accesses(
+        address(numsContract)
+    );
+    
+    assertEq(uint256(reads[0]), 1); // slot 1 was read
+    assertEq(writes.length, 0);     // no writes occurred
+}
 ```
 
-### SEE ALSO
+```solidity [src/NumsContract.sol]
+contract NumsContract {
+    uint256 public num1 = 100; // slot 0
+    uint256 public num2 = 200; // slot 1
+}
+```
 
-Forge Standard Library
+:::
 
-[Std Storage](/reference/forge-std/startHoax.mdx)
+### Gotchas
+
+:::note
+Every write also counts as an additional read. If you write to a slot, it will appear in both the `reads` and `writes` arrays.
+:::
+
+### Related Cheatcodes
+
+- [`accesses`](/reference/cheatcodes/accesses) - Gets recorded storage reads and writes
+
+### See Also
+
+- [Std Storage](/reference/forge-std/std-storage) - High-level storage manipulation library

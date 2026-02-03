@@ -1,39 +1,67 @@
+---
+description: Gets list of keys present in a TOML string
+---
+
 ## `parseTomlKeys`
 
 ### Signature
 
 ```solidity
-// Get list of keys present in a TOML string
 function parseTomlKeys(string calldata toml, string calldata key) external pure returns (string[] memory keys);
 ```
 
 ### Description
 
-Gets list of keys present in a TOML string
+Gets list of keys present in a TOML string at the specified JSONPath.
+
+### Parameters
+
+| Parameter | Type     | Description                           |
+|-----------|----------|---------------------------------------|
+| `toml`    | `string` | The TOML string to parse              |
+| `key`     | `string` | The JSONPath to the table to inspect  |
+
+### Returns
+
+| Type       | Description                        |
+|------------|------------------------------------|
+| `string[]` | Array of keys at the specified path |
 
 ### Examples
 
-```solidity
-// [key]
-// a = 1
-// b = 2
+Get keys from a TOML table:
 
+:::code-group
+
+```solidity [test/ParseTomlKeys.t.sol]
 string memory toml = '[key]\n a = 1\n b = 2';
 string[] memory keys = vm.parseTomlKeys(toml, ".key"); // ["a", "b"]
 ```
 
-```solidity
-// key = "something"
+```toml [config.toml]
+[key]
+a = 1
+b = 2
+```
 
-string memory toml = 'key = \"something\"';
+:::
+
+Get root-level keys:
+
+```solidity [test/ParseTomlKeys.t.sol]
+string memory toml = 'key = "something"';
 string[] memory keys = vm.parseTomlKeys(toml, "$"); // ["key"]
 ```
 
-```solidity
-// [[root_key]]
-// a = 1
-// b = 2
+Get keys from array of tables:
 
+```solidity [test/ParseTomlKeys.t.sol]
 string memory toml = '[[root_key]]\n a = 1\n b = 2';
 string[] memory keys = vm.parseTomlKeys(toml, ".root_key.0"); // ["a", "b"]
 ```
+
+### Related Cheatcodes
+
+- [`parseJsonKeys`](/reference/cheatcodes/parse-json-keys) - Get list of keys in JSON
+- [`parseToml`](/reference/cheatcodes/parse-toml) - Parse TOML values
+- [`keyExistsToml`](/reference/cheatcodes/key-exists-toml) - Check if a key exists

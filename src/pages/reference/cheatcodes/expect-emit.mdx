@@ -1,132 +1,120 @@
+---
+description: Asserts that specific events are emitted during the next call
+---
+
 ## `expectEmit`
 
 ### Signature
 
 ```solidity
 function expectEmit() external;
-```
-
-```solidity
-function expectEmit(
-    bool checkTopic1,
-    bool checkTopic2,
-    bool checkTopic3,
-    bool checkData
-) external;
-```
-
-```solidity
+function expectEmit(bool checkTopic1, bool checkTopic2, bool checkTopic3, bool checkData) external;
 function expectEmit(address emitter) external;
-```
-
-```solidity
-function expectEmit(
-    bool checkTopic1,
-    bool checkTopic2,
-    bool checkTopic3,
-    bool checkData,
-    address emitter
-) external;
+function expectEmit(bool checkTopic1, bool checkTopic2, bool checkTopic3, bool checkData, address emitter) external;
 ```
 
 ### Description
 
-Asserts that a specific log is emitted during the next call.
+Asserts that a specific event is emitted during the next call.
 
-1. Call the cheat code, specifying whether we should check the first, second or third topic, and the log data (`expectEmit()` checks them all). Topic 0 is always checked.
-2. Emit the event we are supposed to see during the next call.
-3. Perform the call.
+**Steps to use:**
+1. Call `expectEmit`, optionally specifying which topics to check
+2. Emit the expected event in your test
+3. Perform the call that should emit the event
 
-You can perform steps 1 and 2 multiple times to match a _sequence_ of events in the next call.
+You can repeat steps 1-2 to match a sequence of events.
 
-If the event is not available in the current scope (e.g. if we are using an interface, or an external smart contract), we can define the event ourselves with an identical event signature.
+### Parameters
 
-There are 2 varieties of `expectEmit`:
+| Parameter     | Type      | Description                                           |
+|---------------|-----------|-------------------------------------------------------|
+| `checkTopic1` | `bool`    | Whether to check the first indexed parameter          |
+| `checkTopic2` | `bool`    | Whether to check the second indexed parameter         |
+| `checkTopic3` | `bool`    | Whether to check the third indexed parameter          |
+| `checkData`   | `bool`    | Whether to check the non-indexed event data           |
+| `emitter`     | `address` | The expected address that emits the event             |
 
-- **Without checking the emitter address**: Asserts the topics match **without** checking the emitting address.
-- **With `address`**: Asserts the topics match and that the emitting address matches.
-
-> ℹ️ **Matching sequences**
->
-> In functions that emit a lot of events, it's possible to "skip" events and only match a specific sequence,
-> but this sequence must always be in order. As an example, let's say a 
-> function emits events: `A, B, C, D, E, F, F, G`.
->
-> `expectEmit` will be able to match ranges with and without skipping events in between:
-> - `[A, B, C]` is valid.
-> - `[B, D, F]` is valid.
-> - `[G]` or any other single event combination is valid.
-> - `[B, A]` or similar out-of-order combinations are **invalid** (events must be in order).
-> - `[C, F, F]` is valid.
-> - `[F, F, C]` is **invalid** (out of order).
+:::note
+Topic 0 (the event signature) is always checked automatically.
+:::
 
 ### Examples
 
-This does not check the emitting address.
+#### Basic usage (check all topics)
 
-```solidity
+```solidity [test/ExpectEmit.t.sol]
 event Transfer(address indexed from, address indexed to, uint256 amount);
 
-function testERC20EmitsTransfer() public {
+function testEmitsTransfer() public {
     vm.expectEmit();
-
-    // We emit the event we expect to see.
-    emit MyToken.Transfer(address(this), address(1), 10);
-
-    // We perform the call.
+    emit Transfer(address(this), address(1), 10);
+    
     myToken.transfer(address(1), 10);
 }
 ```
 
-This does check the emitting address.
+#### Check emitter address
 
-```solidity
-event Transfer(address indexed from, address indexed to, uint256 amount);
-
-function testERC20EmitsTransfer() public {
-    // We check that the token is the event emitter by passing the address.
+```solidity [test/ExpectEmitAddress.t.sol]
+function testEmitsTransferFromToken() public {
     vm.expectEmit(address(myToken));
-    emit MyToken.Transfer(address(this), address(1), 10);
-
-    // We perform the call.
+    emit Transfer(address(this), address(1), 10);
+    
     myToken.transfer(address(1), 10);
 }
 ```
 
-We can also assert that multiple events are emitted in a single call.
+#### Selective topic checking
 
-```solidity
-function testERC20EmitsBatchTransfer() public {
-    // We declare multiple expected transfer events
+```solidity [test/ExpectEmitSelective.t.sol]
+function testEmitsBatchTransfer() public {
     for (uint256 i = 0; i < users.length; i++) {
-        // Here we use the longer signature for demonstration purposes. This call checks
-        // topic0 (always checked), topic1 (true), topic2 (true), NOT topic3 (false), and data (true).
+        // Check topic0, topic1, topic2, but NOT topic3, and check data
         vm.expectEmit(true, true, false, true);
         emit Transfer(address(this), users[i], 10);
     }
 
-    // We also expect a custom `BatchTransfer(uint256 numberOfTransfers)` event.
     vm.expectEmit(false, false, false, true);
     emit BatchTransfer(users.length);
 
-    // We perform the call.
     myToken.batchTransfer(users, 10);
 }
 ```
 
-This example fails, as the expected event is not emitted on the next call.
-```solidity
-event Transfer(address indexed from, address indexed to, uint256 amount);
+### Gotchas
 
-function testERC20EmitsTransfer() public {
-    // We check that the token is the event emitter by passing the address as the fifth argument.
-    vm.expectEmit(true, true, false, true, address(myToken));
-    emit MyToken.Transfer(address(this), address(1), 10);
+:::note[Event Sequence Matching]
+When matching multiple events, they must be in order but you can skip events. For a function emitting `A, B, C, D, E, F, F, G`:
 
-    // We perform an unrelated call that won't emit the intended event,
-    // making the cheatcode fail.
+**Valid:**
+- `[A, B, C]` - sequential events
+- `[B, D, F]` - skipping events is allowed
+- `[C, F, F]` - duplicates are allowed
+
+**Invalid:**
+- `[B, A]` - out of order
+- `[F, F, C]` - out of order
+:::
+
+:::warning
+The expected event must be emitted by the **next call**. If you make an unrelated call first, the expectation will fail:
+
+```solidity [test/ExpectEmitFail.t.sol]
+function testFails() public {
+    vm.expectEmit(address(myToken));
+    emit Transfer(address(this), address(1), 10);
+
+    // This unrelated call causes the expectation to fail
     myToken.approve(address(this), 1e18);
-    // We perform the call, but it will have no effect as the cheatcode has already failed.
+    
+    // This call has no effect - expectation already failed
     myToken.transfer(address(1), 10);
 }
 ```
+:::
+
+### Related Cheatcodes
+
+- [`expectRevert`](/reference/cheatcodes/expect-revert) - Assert that calls revert
+- [`expectCall`](/reference/cheatcodes/expect-call) - Assert that calls are made
+- [`recordLogs`](/reference/cheatcodes/record-logs) - Record all emitted events

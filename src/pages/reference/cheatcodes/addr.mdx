@@ -1,18 +1,40 @@
+---
+description: Computes the address for a given private key
+---
+
 ## `addr`
 
 ### Signature
 
 ```solidity
-function addr(uint256 privateKey) external returns (address);
+function addr(uint256 privateKey) external returns (address keyAddr);
 ```
 
 ### Description
 
 Computes the address for a given private key.
 
+### Parameters
+
+| Parameter    | Type      | Description                  |
+|--------------|-----------|------------------------------|
+| `privateKey` | `uint256` | The private key to derive address from |
+
+### Returns
+
+| Type      | Description                          |
+|-----------|--------------------------------------|
+| `address` | The address corresponding to the private key |
+
 ### Examples
 
-```solidity
+```solidity [test/Addr.t.sol]
 address alice = vm.addr(1);
-emit log_address(alice); // 0x7e5f4552091a69125d5dfcb7b8c2659029395bdf
+emit log_address(alice); // 0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf
 ```
+
+### Related Cheatcodes
+
+- [`sign`](/reference/cheatcodes/sign) - Signs a digest with a private key
+- [`createWallet`](/reference/cheatcodes/create-wallet) - Creates a Wallet struct from a private key
+- [`deriveKey`](/reference/cheatcodes/derive-key) - Derives a private key from a mnemonic

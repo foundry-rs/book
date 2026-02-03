@@ -1,84 +1,101 @@
+---
+description: Mocks calls to an address to revert with specified data
+---
+
 ## `mockCallRevert`
 
 ### Signature
 
 ```solidity
 function mockCallRevert(address where, bytes calldata data, bytes calldata retdata) external;
-```
-
-```solidity
-function mockCallRevert(
-    address where,
-    uint256 value,
-    bytes calldata data,
-    bytes calldata retdata
-) external;
+function mockCallRevert(address where, uint256 value, bytes calldata data, bytes calldata retdata) external;
 ```
 
 ### Description
 
-Reverts all calls to an address `where` if the call data either strictly or loosely matches `data` and returns `retdata`.
+Reverts all calls to an address `where` if the call data either strictly or loosely matches `data` and returns `retdata` as the revert reason.
 
 `retdata` can be a raw return message or a custom error.
 
-When a call is made to `where` the call data is first checked to see if it matches in its entirety with `data`.
-If not, the call data is checked to see if there is a partial match, with the match starting at the first byte of the call data.
+When a call is made to `where`, the call data is first checked to see if it matches in its entirety with `data`. If not, the call data is checked to see if there is a partial match, with the match starting at the first byte of the call data.
 
 If a match is found, then the call is reverted and `retdata` is returned.
 
-**Using the second signature** we can mock the calls with a specific `msg.value`. `Calldata` match takes precedence over `msg.value` in case of ambiguity.
+Using the second signature, you can mock calls with a specific `msg.value`. Calldata match takes precedence over `msg.value` in case of ambiguity.
 
-Reverted mock calls are in effect until [`clearMockedCalls`](/reference/cheatcodes/clear-mocked-calls.mdx) is called.
+Reverted mock calls are in effect until [`clearMockedCalls`](/reference/cheatcodes/clear-mocked-calls) is called.
 
-> ℹ️ **Internal calls**
->
-> This cheatcode does not currently work on internal calls. See issue [#432](https://github.com/foundry-rs/foundry/issues/432).
+### Parameters
+
+| Parameter | Type      | Description                                           |
+|-----------|-----------|-------------------------------------------------------|
+| `where`   | `address` | The address to mock calls to                          |
+| `value`   | `uint256` | The `msg.value` to match (optional)                   |
+| `data`    | `bytes`   | The calldata to match (can be partial)                |
+| `retdata` | `bytes`   | The revert message or custom error to return          |
 
 ### Examples
 
-Reverting an exact call with a raw error message:
+#### Reverting with a raw error message
 
-```solidity
+```solidity [test/MockCallRevert.t.sol]
 function testMockCallRevert() public {
     vm.mockCallRevert(
-        address(0),
-        abi.encodeWithSelector(MyToken.balanceOf.selector, address(1)),
-        "REVERT_MESSAGE"
+        address(token),
+        abi.encodeWithSelector(IERC20.balanceOf.selector, alice),
+        "BALANCE_CHECK_FAILED"
     );
-    vm.expectRevert("REVERT_MESSAGE");
-    IERC20(address(0)).balanceOf(address(1));
+    vm.expectRevert("BALANCE_CHECK_FAILED");
+    token.balanceOf(alice);
 }
 ```
 
-Reverting a call with a custom error:
+#### Reverting with a custom error
 
-```solidity
-function testMockCallRevertWithCustomError() public {
-    bytes memory customError = abi.encodeWithSelector(TestError.selector, "ERROR_MESSAGE");
+```solidity [test/MockCallRevertCustom.t.sol]
+error InsufficientBalance(string message);
+
+function testMockCallRevertCustomError() public {
+    bytes memory customError = abi.encodeWithSelector(
+        InsufficientBalance.selector, 
+        "Not enough tokens"
+    );
     vm.mockCallRevert(
-        address(0),
-        abi.encodeWithSelector(MyToken.balanceOf.selector, address(1)),
+        address(token),
+        abi.encodeWithSelector(IERC20.transfer.selector),
         customError
     );
     vm.expectRevert(customError);
-    IERC20(address(0)).balanceOf(address(1));
+    token.transfer(bob, 100);
 }
 ```
 
-Mocking a call with a given `msg.value`:
+#### Reverting based on msg.value
 
-```solidity
-function testMockCallRevertWithValue() public {
-    assertEq(example.pay{value: 10}(1), 1);
-    assertEq(example.pay{value: 1}(2), 2);
+```solidity [test/MockCallRevertValue.t.sol]
+function testMockCallRevertValue() public {
     vm.mockCallRevert(
         address(example),
-        10,
+        10 ether,
         abi.encodeWithSelector(example.pay.selector),
-        "ERROR_MESSAGE"
+        "INVALID_AMOUNT"
     );
-    assertEq(example.pay{value: 1}(2), 2);
-    vm.expectRevert("ERROR_MESSAGE");
-    assertEq(example.pay{value: 10}(1), 99);
+    
+    example.pay{value: 1 ether}(1); // Not reverted
+    
+    vm.expectRevert("INVALID_AMOUNT");
+    example.pay{value: 10 ether}(1); // Reverted
 }
 ```
+
+### Gotchas
+
+:::note
+This cheatcode does not work on internal calls. See [issue #432](https://github.com/foundry-rs/foundry/issues/432).
+:::
+
+### Related Cheatcodes
+
+- [`mockCall`](/reference/cheatcodes/mock-call) - Mock calls to return data
+- [`mockCalls`](/reference/cheatcodes/mock-calls) - Mock calls with different return values per invocation
+- [`clearMockedCalls`](/reference/cheatcodes/clear-mocked-calls) - Clear all mocked calls

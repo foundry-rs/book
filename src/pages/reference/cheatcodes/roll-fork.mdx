@@ -1,63 +1,62 @@
+---
+description: Sets the block number of a fork
+---
+
 ## `rollFork`
 
 ### Signature
 
 ```solidity
-// roll the _active_ fork to the given block
 function rollFork(uint256 blockNumber) external;
-```
-
-```solidity
-// roll the _active_ fork to the block in which the transaction was mined it and replays all previously executed transactions
-function rollFork(bytes32 transaction) external;
-```
-
-```solidity
-// Same as `rollFork(uint256 blockNumber)` but uses the fork corresponding to the `forkId`
+function rollFork(bytes32 txHash) external;
 function rollFork(uint256 forkId, uint256 blockNumber) external;
-```
-
-```solidity
-// Same as `rollFork(bytes32 transaction)` but uses the fork corresponding to the `forkId`
-function rollFork(uint256 forkId, bytes32 transaction) external;
+function rollFork(uint256 forkId, bytes32 txHash) external;
 ```
 
 ### Description
 
-Sets `block.number`. If a fork identifier is passed as an argument, it will update that fork, otherwise it will update the currently active fork.
+Sets `block.number` for a fork. If no fork identifier is passed, it updates the currently active fork. Otherwise, it updates the specified fork.
 
-If a transaction hash is provided, it will roll the fork to the block the transaction was mined in and replays all previously executed transactions.
+If a transaction hash is provided, it rolls the fork to the block containing that transaction and replays all previously executed transactions.
+
+### Parameters
+
+| Parameter     | Type      | Description                                              |
+|---------------|-----------|----------------------------------------------------------|
+| `blockNumber` | `uint256` | The block number to roll to                              |
+| `txHash`      | `bytes32` | Transaction hash to roll to (replays prior transactions) |
+| `forkId`      | `uint256` | Fork to update (optional, defaults to active fork)       |
 
 ### Examples
 
-Set `block.number` for the currently active fork:
+#### Roll the active fork
 
-```solidity
-uint256 forkId = vm.createFork(MAINNET_RPC_URL);
-vm.selectFork(forkId);
+```solidity [test/RollFork.t.sol]
+function testRollFork() public {
+    uint256 forkId = vm.createSelectFork(MAINNET_RPC_URL, 15_000_000);
+    assertEq(block.number, 15_000_000);
 
-assertEq(block.number, 15_171_037); // as of time of writing, 2022-07-19 04:55:27 UTC
-
-vm.rollFork(15_171_057);
-
-assertEq(block.number, 15_171_057);
+    vm.rollFork(15_000_100);
+    assertEq(block.number, 15_000_100);
+}
 ```
 
-Set `block.number` for the fork identified by the passed `forkId` argument:
+#### Roll a specific fork
 
-```solidity
-uint256 optimismForkId = vm.createFork(OPTIMISM_RPC_URL);
-
-vm.rollFork(optimismForkId, 1_337_000);
-
-vm.selectFork(optimismForkId);
-
-assertEq(block.number, 1_337_000);
+```solidity [test/RollForkById.t.sol]
+function testRollForkById() public {
+    uint256 optimismFork = vm.createFork(OPTIMISM_RPC_URL);
+    
+    // Roll the fork without selecting it
+    vm.rollFork(optimismFork, 1_337_000);
+    
+    vm.selectFork(optimismFork);
+    assertEq(block.number, 1_337_000);
+}
 ```
 
-### SEE ALSO
+### Related Cheatcodes
 
-- [roll](/reference/cheatcodes/roll.mdx)
-- [createFork](/reference/cheatcodes/create-fork.mdx)
-- [selectFork](/reference/cheatcodes/select-fork.mdx)
-- [activeFork](/reference/cheatcodes/active-fork.mdx)
+- [`roll`](/reference/cheatcodes/roll) - Set block number (non-fork)
+- [`createFork`](/reference/cheatcodes/create-fork) - Create a new fork
+- [`selectFork`](/reference/cheatcodes/select-fork) - Select a fork

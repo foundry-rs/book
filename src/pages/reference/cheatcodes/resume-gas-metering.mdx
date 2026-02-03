@@ -1,3 +1,7 @@
+---
+description: Resumes gas metering after it was paused
+---
+
 ## `resumeGasMetering`
 
 ### Signature
@@ -8,4 +12,28 @@ function resumeGasMetering() external;
 
 ### Description
 
-Resumes gas metering (i.e. `gasleft()` will decrease as operations are executed). Gas usage will resume at the same amount at which it was paused.
+Resumes gas metering (i.e., `gasleft()` will decrease as operations are executed). Gas usage will resume at the same amount at which it was paused.
+
+### Examples
+
+```solidity [test/ResumeGasMetering.t.sol]
+function testResumeGasMetering() public {
+    uint256 gasBefore = gasleft();
+    
+    vm.pauseGasMetering();
+    // This section doesn't consume gas
+    expensiveSetup();
+    vm.resumeGasMetering();
+    
+    // Gas metering resumes here
+    myContract.doSomething();
+    
+    uint256 gasUsed = gasBefore - gasleft();
+    // gasUsed only reflects doSomething(), not expensiveSetup()
+}
+```
+
+### Related Cheatcodes
+
+- [`pauseGasMetering`](/reference/cheatcodes/pause-gas-metering) - Pause gas metering
+- [`resetGasMetering`](/reference/cheatcodes/reset-gas-metering) - Reset gas to initial value

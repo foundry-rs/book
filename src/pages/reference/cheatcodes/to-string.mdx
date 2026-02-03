@@ -1,38 +1,60 @@
+---
+description: Converts any type to its string representation
+---
+
 ## `toString`
 
 ### Signature
 
 ```solidity
-function toString(address) external returns (string memory);
-function toString(bool) external returns (string memory);
-function toString(uint256) external returns (string memory);
-function toString(int256) external returns (string memory);
-function toString(bytes32) external returns (string memory);
-function toString(bytes) external returns (string memory);
+function toString(address value) external returns (string memory);
+function toString(bool value) external returns (string memory);
+function toString(uint256 value) external returns (string memory);
+function toString(int256 value) external returns (string memory);
+function toString(bytes32 value) external returns (string memory);
+function toString(bytes value) external returns (string memory);
 ```
 
 ### Description
 
-Convert any type to its string version. Very useful for operations that demand strings, such as the cheatcode `ffi`.
+Converts any type to its string representation. Useful for operations that require strings, such as the [`ffi`](/reference/cheatcodes/ffi) cheatcode.
 
-Bytes are converted to a string of their hex representation with `0x` at the start, signifying that they are encoded in hex.
+Bytes are converted to a hex string prefixed with `0x`.
+
+### Parameters
+
+| Parameter | Type    | Description           |
+|-----------|---------|-----------------------|
+| `value`   | varies  | The value to convert  |
+
+### Returns
+
+| Type     | Description                    |
+|----------|--------------------------------|
+| `string` | The string representation      |
 
 ### Examples
 
-```solidity
+```solidity [test/ToString.t.sol]
 uint256 number = 420;
 string memory stringNumber = vm.toString(number);
-vm.assertEq(stringNumber, "420");
+assertEq(stringNumber, "420");
 ```
 
-```solidity
+```solidity [test/ToString.t.sol]
 bytes memory testBytes = hex"7109709ECfa91a80626fF3989D68f67F5b1DD12D";
-string memory stringBytes = cheats.toString(testBytes);
-assertEq("0x7109709ecfa91a80626ff3989d68f67f5b1dd12d", stringBytes);
+string memory stringBytes = vm.toString(testBytes);
+assertEq(stringBytes, "0x7109709ecfa91a80626ff3989d68f67f5b1dd12d");
 ```
 
-```solidity
-address testAddress =  0x7109709ECfa91a80626fF3989D68f67F5b1DD12D;
-string memory stringAddress = cheats.toString(testAddress);
-assertEq("0x7109709ECfa91a80626fF3989D68f67F5b1DD12D", stringAddress);
+```solidity [test/ToString.t.sol]
+address testAddress = 0x7109709ECfa91a80626fF3989D68f67F5b1DD12D;
+string memory stringAddress = vm.toString(testAddress);
+assertEq(stringAddress, "0x7109709ECfa91a80626fF3989D68f67F5b1DD12D");
 ```
+
+### Related Cheatcodes
+
+- [`parseUint`](/reference/cheatcodes/parse-uint) - Parses string to uint
+- [`parseAddress`](/reference/cheatcodes/parse-address) - Parses string to address
+- [`ffi`](/reference/cheatcodes/ffi) - Calls external commands (often needs string arguments)

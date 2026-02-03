@@ -1,46 +1,66 @@
+---
+description: Sets msg.sender for the next call to a specified address
+---
+
 ## `prank`
 
 ### Signature
 
 ```solidity
 function prank(address msgSender) external;
-```
-
-```solidity
 function prank(address msgSender, bool delegateCall) external;
-```
-
-```solidity
 function prank(address msgSender, address txOrigin) external;
-```
-
-```solidity
 function prank(address msgSender, address txOrigin, bool delegateCall) external;
 ```
 
 ### Description
 
-- `prank(address msgSender)`: sets `msg.sender` to the specified address **for the next call**. "The next call" includes static calls as well, but not delegate calls or calls to the cheat code address.
-- `prank(address msgSender, address txOrigin)`: sets `msg.sender` and the `tx.origin` addresses **for the next call**.
-- `prank(address msgSender, bool delegateCall)`: if `delegateCall` value is `true` then sets `msg.sender` to the specified address **for the next delegate call**.
-- `prank(address msgSender, address txOrigin, bool delegateCall)`: if `delegateCall` value is `true` then sets `msg.sender` and the `tx.origin` addresses **for the next delegate call**.
+Sets `msg.sender` to the specified address **for the next call**. "The next call" includes static calls as well, but not delegate calls or calls to the cheat code address.
 
-> ℹ️ **Note**
->
-> The delegate calls cannot be pranked from an EOA.
+Optionally, you can also set `tx.origin` and enable delegate call pranking.
+
+### Parameters
+
+| Parameter      | Type      | Description                                                        |
+|----------------|-----------|---------------------------------------------------------------------|
+| `msgSender`    | `address` | The address to set as `msg.sender`                                 |
+| `txOrigin`     | `address` | The address to set as `tx.origin` (optional)                       |
+| `delegateCall` | `bool`    | If `true`, applies the prank to the next delegate call (optional)  |
 
 ### Examples
 
-```solidity
-/// function withdraw() public {
-///     require(msg.sender == owner);
-
-vm.prank(owner);
-myContract.withdraw(); // [PASS]
+```solidity [test/Prank.t.sol]
+function testPrank() public {
+    // Assume the contract has: require(msg.sender == owner)
+    vm.prank(owner);
+    myContract.withdraw(); // succeeds because msg.sender is owner
+}
 ```
 
-### SEE ALSO
+```solidity [test/PrankWithOrigin.t.sol]
+function testPrankWithOrigin() public {
+    vm.prank(alice, alice);
+    // Both msg.sender and tx.origin are now alice
+    myContract.doSomething();
+}
+```
 
-Forge Standard Library
+### Gotchas
 
-[`hoax`](/reference/forge-std/hoax.mdx)
+:::note
+Delegate calls cannot be pranked from an EOA. Use a contract as the prank source when pranking delegate calls.
+:::
+
+:::warning
+The prank only applies to the **next** call. If you need to prank multiple calls, use [`startPrank`](/reference/cheatcodes/start-prank) instead.
+:::
+
+### Related Cheatcodes
+
+- [`startPrank`](/reference/cheatcodes/start-prank) - Sets `msg.sender` for all subsequent calls
+- [`stopPrank`](/reference/cheatcodes/stop-prank) - Stops an active prank
+- [`readCallers`](/reference/cheatcodes/read-callers) - Reads the current caller mode
+
+### See Also
+
+- [`hoax`](/reference/forge-std/hoax) - Combines prank and deal

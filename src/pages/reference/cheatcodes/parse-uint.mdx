@@ -1,3 +1,7 @@
+---
+description: Parses a string into a uint256
+---
+
 ## `parseUint`
 
 ### Signature
@@ -8,11 +12,29 @@ function parseUint(string calldata stringifiedValue) external pure returns (uint
 
 ### Description
 
-Parses the value of `string` into `uint256`
+Parses a string into a `uint256`.
+
+### Parameters
+
+| Parameter          | Type     | Description              |
+|--------------------|----------|--------------------------|
+| `stringifiedValue` | `string` | The string to parse      |
+
+### Returns
+
+| Type      | Description         |
+|-----------|---------------------|
+| `uint256` | The parsed uint     |
 
 ### Examples
 
-```solidity
+```solidity [test/ParseUint.t.sol]
 string memory uintAsString = "12345";
-uint256 stringToUint = vm.parseUint(uintAsString); // 12345
+uint256 result = vm.parseUint(uintAsString);
+assertEq(result, 12345);
 ```
+
+### Related Cheatcodes
+
+- [`toString`](/reference/cheatcodes/to-string) - Converts uint to string
+- [`parseInt`](/reference/cheatcodes/parse-int) - Parses string to int256

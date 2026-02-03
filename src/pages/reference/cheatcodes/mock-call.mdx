@@ -1,112 +1,95 @@
+---
+description: Mocks calls to an address with specific calldata to return specified data
+---
+
 ## `mockCall`
 
 ### Signature
 
 ```solidity
 function mockCall(address where, bytes calldata data, bytes calldata retdata) external;
-```
-
-```solidity
-function mockCall(
-    address where,
-    uint256 value,
-    bytes calldata data,
-    bytes calldata retdata
-) external;
+function mockCall(address where, uint256 value, bytes calldata data, bytes calldata retdata) external;
 ```
 
 ### Description
 
 Mocks all calls to an address `where` if the call data either strictly or loosely matches `data` and returns `retdata`.
 
-When a call is made to `where` the call data is first checked to see if it matches in its entirety with `data`.
-If not, the call data is checked to see if there is a partial match, with the match starting at the first byte of the call data.
+When a call is made to `where`, the call data is first checked to see if it matches in its entirety with `data`. If not, the call data is checked to see if there is a partial match, with the match starting at the first byte of the call data.
 
 If a match is found, then `retdata` is returned from the call.
 
-**Using the second signature** we can mock the calls with a specific `msg.value`. `Calldata` match takes precedence over `msg.value` in case of ambiguity.
+Using the second signature, you can mock calls with a specific `msg.value`. Calldata match takes precedence over `msg.value` in case of ambiguity.
 
-Mocked calls are in effect until [`clearMockedCalls`](/reference/cheatcodes/clear-mocked-calls.mdx) is called.
+Mocked calls are in effect until [`clearMockedCalls`](/reference/cheatcodes/clear-mocked-calls) is called.
 
-> ℹ️ **Note**
->
-> Calls to mocked addresses may revert if there is no code on the address.
-> This is because Solidity inserts an `extcodesize` check before some contract calls.
->
-> To circumvent this, use the [`etch`](/reference/cheatcodes/etch.mdx) cheatcode if the mocked address has no code.
+### Parameters
 
-> ℹ️ **Internal calls**
->
-> This cheatcode does not currently work on internal calls. See issue [#432](https://github.com/foundry-rs/foundry/issues/432).
+| Parameter | Type      | Description                                          |
+|-----------|-----------|------------------------------------------------------|
+| `where`   | `address` | The address to mock calls to                         |
+| `value`   | `uint256` | The `msg.value` to match (optional)                  |
+| `data`    | `bytes`   | The calldata to match (can be partial)               |
+| `retdata` | `bytes`   | The data to return when the mock matches             |
 
 ### Examples
 
-Mocking an exact call:
+#### Mocking an exact call
 
-```solidity
-function testMockCall() public {
+```solidity [test/MockCallExact.t.sol]
+function testMockCallExact() public {
     vm.mockCall(
-        address(0),
-        abi.encodeWithSelector(MyToken.balanceOf.selector, address(1)),
-        abi.encode(10)
+        address(token),
+        abi.encodeWithSelector(IERC20.balanceOf.selector, alice),
+        abi.encode(10 ether)
     );
-    assertEq(IERC20(address(0)).balanceOf(address(1)), 10);
+    assertEq(token.balanceOf(alice), 10 ether);
 }
 ```
 
-Mocking an entire function:
+#### Mocking an entire function
 
-```solidity
-function testMockCall() public {
+```solidity [test/MockCallFunction.t.sol]
+function testMockCallFunction() public {
+    // Mock all balanceOf calls regardless of the address parameter
     vm.mockCall(
-        address(0),
-        abi.encodeWithSelector(MyToken.balanceOf.selector),
-        abi.encode(10)
+        address(token),
+        abi.encodeWithSelector(IERC20.balanceOf.selector),
+        abi.encode(10 ether)
     );
-    assertEq(IERC20(address(0)).balanceOf(address(1)), 10);
-    assertEq(IERC20(address(0)).balanceOf(address(2)), 10);
+    assertEq(token.balanceOf(alice), 10 ether);
+    assertEq(token.balanceOf(bob), 10 ether);
 }
 ```
 
-Mocking a call with a given `msg.value`:
+#### Mocking a call with msg.value
 
-```solidity
-function testMockCall() public {
-    assertEq(example.pay{value: 10}(1), 1);
-    assertEq(example.pay{value: 1}(2), 2);
+```solidity [test/MockCallValue.t.sol]
+function testMockCallValue() public {
     vm.mockCall(
         address(example),
-        10,
+        10 ether,
         abi.encodeWithSelector(example.pay.selector),
         abi.encode(99)
     );
-    assertEq(example.pay{value: 10}(1), 99);
-    assertEq(example.pay{value: 1}(2), 2);
+    assertEq(example.pay{value: 10 ether}(1), 99);
+    assertEq(example.pay{value: 1 ether}(2), 2); // Not mocked
 }
 ```
 
-Mocking a public variable:
+### Gotchas
 
-```solidity
-contract Example {
-    uint256 public number = 10;
-}
+:::warning
+Calls to mocked addresses may revert if there is no code at the address. Solidity inserts an `extcodesize` check before some contract calls. Use [`etch`](/reference/cheatcodes/etch) to deploy dummy bytecode if the mocked address has no code.
+:::
 
-contract ExampleTest is Test {
-    Example public example;
+:::note
+This cheatcode does not work on internal calls. See [issue #432](https://github.com/foundry-rs/foundry/issues/432).
+:::
 
-    function setUp() public {
-        example = new Example();
-    }
+### Related Cheatcodes
 
-    function testMockPublicVariable() public {
-        assertEq(example.number(), 10);
-        vm.mockCall(
-            address(example),
-            abi.encodeWithSelector(bytes4(keccak256("number()"))),
-            abi.encode(5)
-        );
-        assertEq(example.number(), 5);
-    }
-}
-```
+- [`mockCalls`](/reference/cheatcodes/mock-calls) - Mock calls with different return values per invocation
+- [`mockCallRevert`](/reference/cheatcodes/mock-call-revert) - Mock calls to revert
+- [`clearMockedCalls`](/reference/cheatcodes/clear-mocked-calls) - Clear all mocked calls
+- [`etch`](/reference/cheatcodes/etch) - Set bytecode at an address

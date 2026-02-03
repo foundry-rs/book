@@ -1,25 +1,47 @@
+---
+description: Checks if a key exists in a JSON string (deprecated)
+---
+
 ## `keyExists`
 
-### Status
-
-`keyExists` is being deprecated in favor of `keyExistsJson`. It will be removed in future versions.
+:::warning[Deprecated]
+`keyExists` is being deprecated in favor of [`keyExistsJson`](/reference/cheatcodes/key-exists-json). It will be removed in future versions.
+:::
 
 ### Signature
 
 ```solidity
-// Check if a key exists in a JSON string.
-vm.keyExists(string memory json, string memory key) returns (bool)
+function keyExists(string memory json, string memory key) external returns (bool);
 ```
 
 ### Description
 
 Checks if a key exists in a JSON string.
 
+### Parameters
+
+| Parameter | Type     | Description                      |
+|-----------|----------|----------------------------------|
+| `json`    | `string` | The JSON string to search        |
+| `key`     | `string` | The JSONPath key to look for     |
+
+### Returns
+
+| Type   | Description                              |
+|--------|------------------------------------------|
+| `bool` | `true` if the key exists, `false` otherwise |
+
 ### Examples
 
-```solidity
+```solidity [test/KeyExists.t.sol]
 string memory path = "./path/to/jsonfile.json";
 string memory json = vm.readFile(path);
 bool exists = vm.keyExists(json, ".key");
 assertTrue(exists);
 ```
+
+### Related Cheatcodes
+
+- [`keyExistsJson`](/reference/cheatcodes/key-exists-json) - The non-deprecated version
+- [`keyExistsToml`](/reference/cheatcodes/key-exists-toml) - Check if a key exists in TOML
+- [`parseJson`](/reference/cheatcodes/parse-json) - Parse JSON values

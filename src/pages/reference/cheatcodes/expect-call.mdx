@@ -1,130 +1,136 @@
+---
+description: Asserts that a specific call is made during test execution
+---
+
 ## `expectCall`
+
+### Signature
 
 ```solidity
 function expectCall(address callee, bytes calldata data) external;
-```
-
-```solidity
 function expectCall(address callee, bytes calldata data, uint64 count) external;
-```
-
-```solidity
-function expectCall(
-    address callee,
-    uint256 value,
-    bytes calldata data
-) external;
-```
-
-```solidity
-function expectCall(
-    address callee,
-    uint256 value,
-    bytes calldata data,
-    uint64 count
-) external;
+function expectCall(address callee, uint256 value, bytes calldata data) external;
+function expectCall(address callee, uint256 value, bytes calldata data, uint64 count) external;
 ```
 
 ### Description
 
-Expects a call to a specified address `callee`, where the call data either strictly or loosely matches `data`. The cheatcode can be called in two ways:
+Expects a call to a specified address `callee`, where the call data either strictly or loosely matches `data`.
 
-- If no `count` parameter is specified, the call will be expected to be made at least the amount of times the cheatcode was called. For the same calldata, you cannot call the cheatcode with no `count` and then pass in a `count` parameter.
-- If `count` is specified, the call will be expected to be made strictly `count` times. For the same calldata, the `count` value cannot be overwritten with another cheatcode call, nor it can be increment by calling the cheatcode without a `count` parameter.
+| Signature Variant | Description |
+|-------------------|-------------|
+| Without `count` | Call must be made at least once (can be called multiple times to expect multiple calls) |
+| With `count` | Call must be made exactly `count` times |
+| With `value` | Also checks that the call was made with the specified `msg.value` |
 
-`count` can also be set to 0 to assert that a call is not made.
+Set `count` to 0 to assert that a call is **not** made.
 
-When a call is made to `callee` the call data is first checked to see if it matches in its entirety with `data`. If not, the call data is checked to see if there is a partial match, with the match starting at the first byte of the call data.
+If the test terminates without the expected call being made, the test fails.
 
-**Using the second signature** we can also check if the call was made with the expected `msg.value`.
+### Parameters
 
-If the test terminates without the call being made, the test fails.
-
-> ℹ️ **Internal calls**
->
-> This cheatcode does not currently work on internal calls. See issue [#432](https://github.com/foundry-rs/foundry/issues/432).
+| Parameter | Type      | Description                                           |
+|-----------|-----------|-------------------------------------------------------|
+| `callee`  | `address` | The address expected to be called                     |
+| `data`    | `bytes`   | The expected calldata (can be partial, matching from first byte) |
+| `value`   | `uint256` | The expected `msg.value` for the call                 |
+| `count`   | `uint64`  | Exact number of times the call should be made         |
 
 ### Examples
 
-Expect that `transfer` is called on a token `MyToken` one time:
+#### Expect a call is made
 
-```solidity
-address alice = makeAddr("alice");
-emit log_address(alice);
-vm.expectCall(
-  address(token), abi.encodeCall(token.transfer, (alice, 10))
-);
-token.transfer(alice, 10);
-// [PASS]
+```solidity [test/ExpectCall.t.sol]
+function testExpectCall() public {
+    address alice = makeAddr("alice");
+    vm.expectCall(
+        address(token),
+        abi.encodeCall(token.transfer, (alice, 10))
+    );
+    token.transfer(alice, 10);
+}
 ```
 
-Expect that `transfer` is called on a token `MyToken` *at least* two times:
+#### Expect at least two calls
 
-```solidity
-address alice = makeAddr("alice");
-emit log_address(alice);
-vm.expectCall(
-  address(token), abi.encodeCall(token.transfer, (alice, 10))
-);
-vm.expectCall(
-  address(token), abi.encodeCall(token.transfer, (alice, 10))
-);
-token.transfer(alice, 10);
-token.transfer(alice, 10);
-token.transfer(alice, 10);
-// [PASS]
+```solidity [test/ExpectCallMultiple.t.sol]
+function testExpectMultipleCalls() public {
+    address alice = makeAddr("alice");
+    
+    // Call expectCall twice to expect at least 2 calls
+    vm.expectCall(address(token), abi.encodeCall(token.transfer, (alice, 10)));
+    vm.expectCall(address(token), abi.encodeCall(token.transfer, (alice, 10)));
+    
+    token.transfer(alice, 10);
+    token.transfer(alice, 10);
+    token.transfer(alice, 10); // Extra calls are fine
+}
 ```
 
-Expect that `transfer` is not called on a token `MyToken`:
+#### Assert a call is NOT made
 
-```solidity
-address alice = makeAddr("alice");
-emit log_address(alice);
-vm.expectCall(
-  address(token), abi.encodeCall(token.transfer, (alice, 10)), 0
-);
-token.transferFrom(alice, address(0), 10);
-// [PASS]
+```solidity [test/ExpectNoCall.t.sol]
+function testExpectNoCall() public {
+    address alice = makeAddr("alice");
+    
+    // count = 0 means the call should NOT happen
+    vm.expectCall(
+        address(token),
+        abi.encodeCall(token.transfer, (alice, 10)),
+        0
+    );
+    
+    // This different call is fine
+    token.transferFrom(alice, address(0), 10);
+}
 ```
 
-Expect that `transfer` with any calldata is called on a token `MyToken` 2 times:
+#### Match any calldata with a selector
 
-```solidity
-address alice = makeAddr("alice");
-emit log_address(alice);
-vm.expectCall(
-  address(token), abi.encodeWithSelector(token.transfer.selector), 2
-);
-token.transfer(alice, 10);
-token.transfer(alice, 10);
-// [PASS]
+```solidity [test/ExpectCallSelector.t.sol]
+function testExpectCallWithSelector() public {
+    address alice = makeAddr("alice");
+    
+    // Only match the selector, not the full calldata
+    vm.expectCall(
+        address(token),
+        abi.encodeWithSelector(token.transfer.selector),
+        2
+    );
+    
+    token.transfer(alice, 10);
+    token.transfer(alice, 20);
+}
 ```
 
-Expect that `pay` is called on a `Contract` with a specific `msg.value` and `calldata`:
+#### Expect a call with specific msg.value
 
-```solidity
-Contract target = new Contract();
-vm.expectCall(
-            address(target),
-            1,
-            abi.encodeWithSelector(target.pay.selector, 2)
-        );
-target.pay{value: 1}(2);
-// [PASS]
+```solidity [test/ExpectCallValue.t.sol]
+function testExpectCallWithValue() public {
+    Contract target = new Contract();
+    
+    vm.expectCall(
+        address(target),
+        1 ether,
+        abi.encodeWithSelector(target.pay.selector, 2)
+    );
+    
+    target.pay{value: 1 ether}(2);
+}
 ```
 
-Expect that `pay` is called on a `Contract` with a specific `msg.value` and `calldata` 3 times:
+### Gotchas
 
-```solidity
-Contract target = new Contract();
-vm.expectCall(
-            address(target),
-            1,
-            abi.encodeWithSelector(target.pay.selector, 2),
-            3
-        );
-target.pay{value: 1}(2);
-target.pay{value: 1}(2);
-target.pay{value: 1}(2);
-// [PASS]
-```
+:::note
+This cheatcode does not work on internal calls. See [issue #432](https://github.com/foundry-rs/foundry/issues/432).
+:::
+
+:::warning
+When using `count`, you cannot later change the expected count for the same calldata. The first `count` value is final.
+:::
+
+### Related Cheatcodes
+
+- [`expectRevert`](/reference/cheatcodes/expect-revert) - Assert that calls revert
+- [`expectEmit`](/reference/cheatcodes/expect-emit) - Assert that events are emitted
+- [`mockCall`](/reference/cheatcodes/mock-call) - Mock call return values

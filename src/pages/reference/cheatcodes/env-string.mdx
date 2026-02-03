@@ -1,34 +1,45 @@
+---
+description: Reads an environment variable as string or string[]
+---
+
 ## `envString`
 
 ### Signature
 
 ```solidity
-function envString(string calldata key) external returns (string value);
-```
-
-```solidity
+function envString(string calldata key) external returns (string memory value);
 function envString(string calldata key, string calldata delimiter) external returns (string[] memory values);
 ```
 
 ### Description
 
-Read an environment variable as `string` or `string[]`. In case the environment variable is not defined, Forge will fail
-with the following error message:
+Reads an environment variable as `string` or `string[]`.
+
+If the environment variable is not defined, Forge will fail with the following error message:
 
 > [FAIL. Reason: Failed to get environment variable `FOO` as type `string`: environment variable not found]
 
-### Tips
+### Parameters
 
-- You can put your environment variables in a `.env` file. Forge will automatically load them when running `forge test`.
-- For arrays, you can specify the delimiter used to separate the values with the `delimiter` parameter.
-- Choose a delimiter that doesn't appear in the string values, so that they can be correctly separated.
+| Parameter   | Type     | Description                               |
+|-------------|----------|-------------------------------------------|
+| `key`       | `string` | The environment variable name             |
+| `delimiter` | `string` | The delimiter used to separate array values (optional) |
+
+### Returns
+
+| Type       | Description                                  |
+|------------|----------------------------------------------|
+| `string`   | The environment variable value as a string   |
+| `string[]` | The environment variable value as a string array |
 
 ### Examples
 
 #### Single Value
-With environment variable `STRING_VALUE=hello, world!`,
 
-```solidity
+With environment variable `STRING_VALUE=hello, world!`:
+
+```solidity [test/EnvString.t.sol]
 string memory key = "STRING_VALUE";
 string memory expected = "hello, world!";
 string memory output = vm.envString(key);
@@ -36,9 +47,10 @@ assertEq(output, expected);
 ```
 
 #### Array
-With environment variable `STRING_VALUES=hello, world!|0x7109709ECfa91a80626fF3989D68f67F5b1DD12D`;
 
-```solidity
+With environment variable `STRING_VALUES=hello, world!|0x7109709ECfa91a80626fF3989D68f67F5b1DD12D`:
+
+```solidity [test/EnvString.t.sol]
 string memory key = "STRING_VALUES";
 string memory delimiter = "|";
 string[2] memory expected = [
@@ -50,3 +62,20 @@ for (uint i = 0; i < expected.length; ++i) {
     assert(keccak256(abi.encodePacked((output[i]))) == keccak256(abi.encodePacked((expected[i]))));
 }
 ```
+
+### Gotchas
+
+:::tip[Delimiter Selection]
+Choose a delimiter that doesn't appear in the string values, so that they can be correctly separated.
+:::
+
+:::note
+You can put your environment variables in a `.env` file. Forge will automatically load them when running `forge test`.
+:::
+
+### Related Cheatcodes
+
+- [`envOr`](/reference/cheatcodes/env-or) - Read environment variables with default values
+- [`setEnv`](/reference/cheatcodes/set-env) - Set environment variables
+- [`envBool`](/reference/cheatcodes/env-bool) - Read environment variables as bool
+- [`envUint`](/reference/cheatcodes/env-uint) - Read environment variables as uint

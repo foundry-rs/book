@@ -1,29 +1,55 @@
+---
+description: Gets list of keys present in a JSON string
+---
+
 ## `parseJsonKeys`
 
 ### Signature
 
 ```solidity
-// Get list of keys present in a JSON string
 function parseJsonKeys(string calldata json, string calldata key) external pure returns (string[] memory keys);
 ```
 
 ### Description
 
-Gets list of keys present in a JSON string
+Gets list of keys present in a JSON string at the specified JSONPath.
+
+### Parameters
+
+| Parameter | Type     | Description                           |
+|-----------|----------|---------------------------------------|
+| `json`    | `string` | The JSON string to parse              |
+| `key`     | `string` | The JSONPath to the object to inspect |
+
+### Returns
+
+| Type       | Description                        |
+|------------|------------------------------------|
+| `string[]` | Array of keys at the specified path |
 
 ### Examples
 
-```solidity
+```solidity [test/ParseJsonKeys.t.sol]
 string memory json = '{"key": {"a": 1, "b": 2}}';
 string[] memory keys = vm.parseJsonKeys(json, ".key"); // ["a", "b"]
 ```
 
-```solidity
+Get root-level keys:
+
+```solidity [test/ParseJsonKeys.t.sol]
 string memory json = '{"key": "something"}';
 string[] memory keys = vm.parseJsonKeys(json, "$"); // ["key"]
 ```
 
-```solidity
+Get keys from array element:
+
+```solidity [test/ParseJsonKeys.t.sol]
 string memory json = '{"root_key": [{"a": 1, "b": 2}]}';
 string[] memory keys = vm.parseJsonKeys(json, ".root_key[0]"); // ["a", "b"]
 ```
+
+### Related Cheatcodes
+
+- [`parseTomlKeys`](/reference/cheatcodes/parse-toml-keys) - Get list of keys in TOML
+- [`parseJson`](/reference/cheatcodes/parse-json) - Parse JSON values
+- [`keyExistsJson`](/reference/cheatcodes/key-exists-json) - Check if a key exists

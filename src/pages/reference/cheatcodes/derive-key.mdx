@@ -1,49 +1,58 @@
+---
+description: Derives a private key from a mnemonic phrase
+---
+
 ## `deriveKey`
 
 ### Signature
 
 ```solidity
-function deriveKey(
-  string calldata mnemonic,
-  uint32 index
-) external returns (uint256);
-```
-
-```solidity
-function deriveKey(
-  string calldata mnemonic,
-  string calldata path,
-  uint32 index
-) external returns (uint256);
+function deriveKey(string calldata mnemonic, uint32 index) external returns (uint256 privateKey);
+function deriveKey(string calldata mnemonic, string calldata derivationPath, uint32 index) external returns (uint256 privateKey);
 ```
 
 ### Description
 
-Derive a private key from a given mnemonic or mnemonic file path.
+Derives a private key from a given mnemonic phrase or mnemonic file path.
 
 The first signature derives at the derivation path `m/44'/60'/0'/0/{index}`.
-The second signature allows you to specify the derivation path as the second parameter.
+The second signature allows you to specify a custom derivation path.
+
+### Parameters
+
+| Parameter        | Type     | Description                              |
+|------------------|----------|------------------------------------------|
+| `mnemonic`       | `string` | The mnemonic phrase or path to mnemonic file |
+| `derivationPath` | `string` | Custom HD derivation path (optional)     |
+| `index`          | `uint32` | The index in the derivation path         |
+
+### Returns
+
+| Type      | Description               |
+|-----------|---------------------------|
+| `uint256` | The derived private key   |
 
 ### Examples
 
-Derive the private key from the test mnemonic at path `m/44'/60'/0'/0/0`:
+Derive the private key at path `m/44'/60'/0'/0/0`:
 
-```solidity
+```solidity [test/DeriveKey.t.sol]
 string memory mnemonic = "test test test test test test test test test test test junk";
 uint256 privateKey = vm.deriveKey(mnemonic, 0);
 ```
 
-Derive the private key from the test mnemonic at path `m/44'/60'/0'/1/0`:
+Derive the private key at a custom path `m/44'/60'/0'/1/0`:
 
-```solidity
+```solidity [test/DeriveKey.t.sol]
 string memory mnemonic = "test test test test test test test test test test test junk";
 uint256 privateKey = vm.deriveKey(mnemonic, "m/44'/60'/0'/1/", 0);
 ```
 
-### SEE ALSO
+### Related Cheatcodes
 
-- [rememberKey](/reference/cheatcodes/remember-key.mdx)
+- [`rememberKey`](/reference/cheatcodes/remember-key) - Stores a private key in forge's local wallet
+- [`addr`](/reference/cheatcodes/addr) - Computes address from private key
 
-Forge Standard Library:
+### See Also
 
-- [deriveRememberKey](/reference/forge-std/derive-remember-key.mdx)
+- [`deriveRememberKey`](/reference/forge-std/derive-remember-key)

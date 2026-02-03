@@ -1,43 +1,69 @@
+---
+description: Sets the bytecode of an address to custom code
+---
+
 ## `etch`
 
 ### Signature
 
 ```solidity
-function etch(address who, bytes calldata code) external;
+function etch(address target, bytes calldata code) external;
 ```
 
 ### Description
 
-Sets the bytecode of an address `who` to `code`.
+Sets the bytecode of an address `target` to `code`.
+
+### Parameters
+
+| Parameter | Type    | Description                              |
+|-----------|---------|------------------------------------------|
+| `target`  | `address` | The address to set bytecode on         |
+| `code`    | `bytes` | The bytecode to deploy at the address    |
 
 ### Examples
 
-```solidity
-bytes memory code = address(awesomeContract).code;
-address targetAddr = makeAddr("target");
-vm.etch(targetAddr, code);
-log_bytes(address(targetAddr).code); // 0x6080604052348015610010...
+```solidity [test/Etch.t.sol]
+function testEtch() public {
+    bytes memory code = address(awesomeContract).code;
+    address targetAddr = makeAddr("target");
+    vm.etch(targetAddr, code);
+    assertEq(address(targetAddr).code, code);
+}
 ```
 
 #### Using `vm.etch` for enabling custom precompiles
 
-Some chains, like Blast or Arbitrum, run with custom precompiles. Foundry is operating on vanilla EVM and is not aware of those. If you are encountering reverts due to not available precompile, you can use `vm.etch` cheatcode to inject mock of the missing precompile to the address it is expected to appear at.
+Some chains, like Blast or Arbitrum, run with custom precompiles. Foundry operates on vanilla EVM and is not aware of those. If you encounter reverts due to unavailable precompiles, you can use `vm.etch` to inject a mock of the missing precompile at its expected address.
 
-```solidity
-// [!include ~/snippets/projects/cheatcodes/test/BlastMock.t.sol::all]
+:::code-group
+
+```solidity [test/BlastMock.t.sol]
+// [!include ~/snippets/projects/cheatcodes/test/BlastMock.t.sol:test]
 ```
 
-<div class="warning">
+```solidity [src/BlastMock.sol]
+// [!include ~/snippets/projects/cheatcodes/test/BlastMock.t.sol:mock]
+```
 
-Injecting mocks of precompiles might be tricky as such mocks will not fully emulate the actual precompile behavior on-chain.
+:::
 
-Mock in the case above will not cause the actual yield to be accrued if any yield mode is configured.
+### Gotchas
 
-</div>
+:::warning
+Injecting mocks of precompiles can be tricky as such mocks will not fully emulate the actual precompile behavior on-chain. For example, a Blast yield mock will not cause actual yield to accrue when a yield mode is configured.
+:::
 
-### SEE ALSO
+:::note
+The etched code does not include constructor logic—it only sets the runtime bytecode. If the contract requires initialization, you must call an initializer function separately or set the storage slots manually.
+:::
 
-Forge Standard Library
+### Related Cheatcodes
 
-- [`deployCode`](/reference/forge-std/deployCode.mdx)
-- [`deployCodeTo`](/reference/forge-std/deployCodeTo.mdx)
+- [`deal`](/reference/cheatcodes/deal) - Sets an account's ETH balance
+- [`store`](/reference/cheatcodes/store) - Sets a storage slot value
+
+### See Also
+
+- [`deployCode`](/reference/forge-std/deployCode) - Deploy a contract by artifact name
+- [`deployCodeTo`](/reference/forge-std/deployCodeTo) - Deploy a contract to a specific address
