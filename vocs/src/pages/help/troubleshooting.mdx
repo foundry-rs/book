@@ -75,16 +75,13 @@ remappings = [
 
 #### `Stack too deep`
 
-The compiler hit the EVM's 16 local variable limit. Solutions:
+The compiler hit the EVM's 16 local variable limit. Quick fixes:
 
 1. Use structs to group variables
 2. Extract code into internal functions
-3. Use `--via-ir` for the IR-based code generator:
+3. Use block scoping to limit variable lifetimes
 
-```toml
-[profile.default]
-via_ir = true
-```
+See the [Stack Too Deep guide](/guides/stack-too-deep) for detailed solutions and why `via-ir` should be a last resort.
 
 ### Testing
 

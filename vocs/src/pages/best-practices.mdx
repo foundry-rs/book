@@ -56,6 +56,16 @@ tab_width = 4
 bracket_spacing = true
 ```
 
+#### Avoid "Stack too deep" errors
+
+The EVM can only access the top 16 stack slots. Design functions to stay within this limit:
+
+- **Group parameters into structs** — Prefer `function process(Order calldata order){:solidity}` over many individual parameters
+- **Use memory structs for local variables** — Group related variables into a struct instead of declaring them separately
+- **Split complex functions** — Break large functions into smaller internal helpers
+
+See the [Stack Too Deep guide](/guides/stack-too-deep) for detailed solutions and refactoring techniques.
+
 #### Organize contract layout
 
 Follow a consistent ordering within contracts:

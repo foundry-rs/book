@@ -13,6 +13,7 @@ export const guidesSidebar: Sidebar = {
         { text: "Debugging Transactions", link: "/guides/debugging-transactions" },
         { text: "Invariant Testing", link: "/guides/invariant-testing" },
         { text: "Gas Optimization", link: "/guides/gas-optimization" },
+        { text: "Stack Too Deep", link: "/guides/stack-too-deep" },
         { text: "Docker & Containers", link: "/guides/docker" },
       ],
     },
