@@ -1,18 +1,42 @@
+---
+description: Sets block.chainid to a specified value in Forge tests
+---
+
 ## `chainId`
 
 ### Signature
 
 ```solidity
-function chainId(uint256) external;
+function chainId(uint256 chainId) external;
 ```
 
 ### Description
 
-Sets `block.chainid`.
+Sets `block.chainid` to the specified value.
+
+### Parameters
+
+| Parameter | Type      | Description                 |
+|-----------|-----------|-----------------------------|
+| `chainId` | `uint256` | The new chain ID to set     |
 
 ### Examples
 
-```solidity
-vm.chainId(31337);
-emit log_uint(block.chainid); // 31337
+```solidity [test/ChainId.t.sol]
+function testChainId() public {
+    vm.chainId(31337);
+    assertEq(block.chainid, 31337);
+}
 ```
+
+### Gotchas
+
+:::note
+Changing the chain ID affects how signatures are validated since chain ID is typically included in EIP-712 typed data signatures. Make sure to account for this when testing signature-based functionality.
+:::
+
+### Related Cheatcodes
+
+- [`createSelectFork`](/reference/cheatcodes/create-select-fork) - Creates and selects a fork at a specific block
+- [`warp`](/reference/cheatcodes/warp) - Sets `block.timestamp`
+- [`roll`](/reference/cheatcodes/roll) - Sets `block.number`

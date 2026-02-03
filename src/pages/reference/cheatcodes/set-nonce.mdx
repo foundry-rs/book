@@ -1,3 +1,7 @@
+---
+description: Sets the nonce of an account
+---
+
 ## `setNonce`
 
 ### Signature
@@ -10,10 +14,29 @@ function setNonce(address account, uint64 nonce) external;
 
 Sets the nonce of the given account.
 
-The new nonce must be higher than the current nonce of the account.
+### Parameters
+
+| Parameter | Type      | Description                      |
+|-----------|-----------|----------------------------------|
+| `account` | `address` | The account to set the nonce for |
+| `nonce`   | `uint64`  | The new nonce value              |
 
 ### Examples
 
-```solidity
-vm.setNonce(address(100), 1234);
+```solidity [test/SetNonce.t.sol]
+function testSetNonce() public {
+    address account = address(100);
+    vm.setNonce(account, 1234);
+    assertEq(vm.getNonce(account), 1234);
+}
 ```
+
+### Gotchas
+
+:::warning
+The new nonce must be higher than the current nonce of the account. Attempting to set a lower nonce will revert.
+:::
+
+### Related Cheatcodes
+
+- [`getNonce`](/reference/cheatcodes/get-nonce) - Gets the nonce of an account

@@ -1,51 +1,46 @@
+---
+description: Makes all subsequent calls create transactions that can be signed and sent onchain
+---
+
 ## `startBroadcast`
 
 ### Signature
 
 ```solidity
 function startBroadcast() external;
-```
-
-```solidity
 function startBroadcast(address who) external;
-```
-
-```solidity
 function startBroadcast(uint256 privateKey) external;
 ```
 
 ### Description
 
-Using the address that calls the test contract or the address / private key provided
-as the sender, has all subsequent calls (at this call depth only and excluding cheatcode calls) create
-transactions that can later be signed and sent onchain.
+Using the address that calls the test contract or the address/private key provided as the sender, has all subsequent calls (at this call depth only and excluding cheatcode calls) create transactions that can later be signed and sent onchain.
+
+### Parameters
+
+| Parameter    | Type      | Description                                      |
+|--------------|-----------|--------------------------------------------------|
+| `who`        | `address` | The address to broadcast from (optional)         |
+| `privateKey` | `uint256` | The private key to broadcast from (optional)     |
 
 ### Examples
 
-```solidity
-function t(uint256 a) public returns (uint256) {
-    uint256 b = 0;
-    emit log_string("here");
-    return b;
-}
-
-function deployOther() public {
+```solidity [script/Deploy.s.sol]
+function deploy() public {
     vm.startBroadcast(ACCOUNT_A);
     Test test = new Test();
-
-    // will trigger a transaction
-    test.t(1);
-
+    test.t(1); // Will trigger a transaction
     vm.stopBroadcast();
 
-    // broadcast again, this time using a private key from your environment variables
+    // Broadcast again using a private key from environment
     vm.startBroadcast(vm.envUint("PRIVATE_KEY"));
     test.t(3);
     vm.stopBroadcast();
 }
 ```
 
-### SEE ALSO
+### Related Cheatcodes
 
-- [broadcast](/reference/cheatcodes/broadcast.mdx)
-- [stopBroadcast](/reference/cheatcodes/stop-broadcast.mdx)
+- [`broadcast`](/reference/cheatcodes/broadcast) - Broadcast a single call
+- [`stopBroadcast`](/reference/cheatcodes/stop-broadcast) - Stop broadcasting
+- [`readCallers`](/reference/cheatcodes/read-callers) - Read the current caller mode

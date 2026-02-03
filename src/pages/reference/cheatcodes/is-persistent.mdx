@@ -1,26 +1,46 @@
+---
+description: Checks if an account is marked as persistent across forks
+---
+
 ## `isPersistent`
 
 ### Signature
 
 ```solidity
-function isPersistent(address) external returns (bool);
+function isPersistent(address account) external view returns (bool persistent);
 ```
 
 ### Description
 
-Returns whether an account is marked as persistent ([`makePersistent`](/reference/cheatcodes/make-persistent.mdx)).
+Returns whether an account is marked as persistent via [`makePersistent`](/reference/cheatcodes/make-persistent).
+
+### Parameters
+
+| Parameter | Type      | Description                    |
+|-----------|-----------|--------------------------------|
+| `account` | `address` | The account to check           |
+
+### Returns
+
+| Parameter    | Type   | Description                              |
+|--------------|--------|------------------------------------------|
+| `persistent` | `bool` | `true` if the account is persistent      |
 
 ### Examples
 
-Check default status of `msg.sender` and the current test account
-
-```solidity
-// By default the `sender` and the test contract itself are persistent
-assert(cheats.isPersistent(msg.sender));
-assert(cheats.isPersistent(address(this)));
+```solidity [test/IsPersistent.t.sol]
+function testIsPersistent() public {
+    // By default, sender and test contract are persistent
+    assertTrue(vm.isPersistent(msg.sender));
+    assertTrue(vm.isPersistent(address(this)));
+    
+    // Other addresses are not
+    address random = makeAddr("random");
+    assertFalse(vm.isPersistent(random));
+}
 ```
 
-### SEE ALSO
+### Related Cheatcodes
 
-- [makePersistent](/reference/cheatcodes/make-persistent.mdx)
-- [revokePersistent](/reference/cheatcodes/revoke-persistent.mdx)
+- [`makePersistent`](/reference/cheatcodes/make-persistent) - Mark accounts as persistent
+- [`revokePersistent`](/reference/cheatcodes/revoke-persistent) - Remove persistent status

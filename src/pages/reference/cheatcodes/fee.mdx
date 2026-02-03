@@ -1,18 +1,36 @@
+---
+description: Sets block.basefee to a specified value in Forge tests
+---
+
 ## `fee`
 
 ### Signature
 
 ```solidity
-function fee(uint256) external;
+function fee(uint256 baseFee) external;
 ```
 
 ### Description
 
-Sets `block.basefee`.
+Sets `block.basefee` to the specified value.
+
+### Parameters
+
+| Parameter | Type      | Description                     |
+|-----------|-----------|---------------------------------|
+| `baseFee` | `uint256` | The new base fee to set (in wei)|
 
 ### Examples
 
-```solidity
-vm.fee(25 gwei);
-emit log_uint(block.basefee); // 25000000000
+```solidity [test/Fee.t.sol]
+function testFee() public {
+    vm.fee(25 gwei);
+    assertEq(block.basefee, 25 gwei);
+}
 ```
+
+### Related Cheatcodes
+
+- [`txGasPrice`](/reference/cheatcodes/tx-gas-price) - Sets the transaction gas price
+- [`warp`](/reference/cheatcodes/warp) - Sets `block.timestamp`
+- [`roll`](/reference/cheatcodes/roll) - Sets `block.number`

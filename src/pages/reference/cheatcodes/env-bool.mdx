@@ -1,42 +1,67 @@
+---
+description: Reads an environment variable as bool or bool[]
+---
+
 ## `envBool`
 
 ### Signature
 
 ```solidity
 function envBool(string calldata key) external returns (bool value);
-```
-
-```solidity
 function envBool(string calldata key, string calldata delimiter) external returns (bool[] memory values);
 ```
 
 ### Description
 
-Read an environment variable as `bool` or `bool[]`.
+Reads an environment variable as `bool` or `bool[]`.
 
-### Tips
+### Parameters
 
-- For `true`, use either "true" or "True" for the environment variable value.
-- For `false`, use either "false" or "False" for the environment variable value.
-- For arrays, you can specify the delimiter used to separate the values with the `delimiter` parameter.
+| Parameter   | Type     | Description                               |
+|-------------|----------|-------------------------------------------|
+| `key`       | `string` | The environment variable name             |
+| `delimiter` | `string` | The delimiter used to separate array values (optional) |
+
+### Returns
+
+| Type     | Description                                      |
+|----------|--------------------------------------------------|
+| `bool`   | The environment variable value as a boolean      |
+| `bool[]` | The environment variable value as a boolean array |
 
 ### Examples
 
 #### Single Value
-With environment variable `BOOL_VALUE=true`,
-```solidity
+
+With environment variable `BOOL_VALUE=true`:
+
+```solidity [test/EnvBool.t.sol]
 string memory key = "BOOL_VALUE";
 bool expected = true;
-bool output = cheats.envBool(key);
+bool output = vm.envBool(key);
 assert(output == expected);
 ```
 
 #### Array
-With environment variable `BOOL_VALUES=true,false,True,False`,
-```solidity
+
+With environment variable `BOOL_VALUES=true,false,True,False`:
+
+```solidity [test/EnvBool.t.sol]
 string memory key = "BOOL_VALUES";
 string memory delimiter = ",";
 bool[4] memory expected = [true, false, true, false];
-bool[] memory output = cheats.envBool(key, delimiter);
+bool[] memory output = vm.envBool(key, delimiter);
 assert(keccak256(abi.encodePacked((output))) == keccak256(abi.encodePacked((expected))));
 ```
+
+### Gotchas
+
+:::note
+For `true`, use either "true" or "True" for the environment variable value. For `false`, use either "false" or "False".
+:::
+
+### Related Cheatcodes
+
+- [`envOr`](/reference/cheatcodes/env-or) - Read environment variables with default values
+- [`envUint`](/reference/cheatcodes/env-uint) - Read environment variables as uint
+- [`envString`](/reference/cheatcodes/env-string) - Read environment variables as string

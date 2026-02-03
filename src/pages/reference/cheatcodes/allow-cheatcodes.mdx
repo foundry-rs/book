@@ -1,19 +1,46 @@
+---
+description: Grants cheatcode access to an address in forking mode
+---
+
 ## `allowCheatcodes`
 
 ### Signature
 
 ```solidity
-function allowCheatcodes(address) external;
+function allowCheatcodes(address account) external;
 ```
 
 ### Description
 
-In forking mode, explicitly grant the given address cheatcode access.
+In forking mode, explicitly grants the given address cheatcode access.
 
-By default, the test contract, and its deployer are allowed to access cheatcodes. In addition to that, cheat code
-access is granted if the contract was deployed by an address that already has cheatcode access.
-This will prevent cheatcode access from accounts already deployed on the forked network.
+By default, the test contract and its deployer have cheatcode access. Contracts deployed by addresses with cheatcode access also inherit it. However, contracts already deployed on the forked network do not have access.
 
-> ℹ️ **Note**
->
-> This is only useful for more complex test setups in forking mode.
+### Parameters
+
+| Parameter | Type      | Description                              |
+|-----------|-----------|------------------------------------------|
+| `account` | `address` | The address to grant cheatcode access to |
+
+### Examples
+
+```solidity [test/AllowCheatcodes.t.sol]
+function testAllowCheatcodes() public {
+    vm.createSelectFork(MAINNET_RPC_URL);
+    
+    // Grant cheatcode access to an existing on-chain contract
+    address existingContract = 0x1234...;
+    vm.allowCheatcodes(existingContract);
+}
+```
+
+### Gotchas
+
+:::note
+This is only useful for complex test setups in forking mode where you need existing on-chain contracts to use cheatcodes.
+:::
+
+### Related Cheatcodes
+
+- [`createFork`](/reference/cheatcodes/create-fork) - Create a fork
+- [`createSelectFork`](/reference/cheatcodes/create-select-fork) - Create and select a fork

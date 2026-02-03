@@ -1,100 +1,84 @@
+---
+description: Creates a new Wallet struct with address and keys
+---
+
 ## `createWallet`
 
 ### Signature
 
 ```solidity
-  struct Wallet {
-      address addr;
-      uint256 publicKeyX;
-      uint256 publicKeyY;
-      uint256 privateKey;
-  }
-```
+struct Wallet {
+    address addr;
+    uint256 publicKeyX;
+    uint256 publicKeyY;
+    uint256 privateKey;
+}
 
-```solidity
-  function createWallet(string calldata) external returns (Wallet memory);
-```
-
-```solidity
-  function createWallet(uint256) external returns (Wallet memory);
-```
-
-```solidity
-  function createWallet(uint256, string calldata) external returns (Wallet memory);
+function createWallet(string calldata walletLabel) external returns (Wallet memory);
+function createWallet(uint256 privateKey) external returns (Wallet memory);
+function createWallet(uint256 privateKey, string calldata walletLabel) external returns (Wallet memory);
 ```
 
 ### Description
 
-Creates a new Wallet struct when given a parameter to derive the private key from.
+Creates a new Wallet struct containing the address, public key components, and private key. The private key is derived from the input parameter.
 
-### Tips
+### Parameters
 
-[`sign()`](/reference/cheatcodes/sign.mdx) and [`getNonce()`](/reference/cheatcodes/get-nonce.mdx) both have supported function overloads for the Wallet struct as well.
+| Parameter     | Type      | Description                              |
+|---------------|-----------|------------------------------------------|
+| `walletLabel` | `string`  | Label for the wallet (also used to derive the key) |
+| `privateKey`  | `uint256` | Private key to use directly              |
+
+### Returns
+
+| Type     | Description                                      |
+|----------|--------------------------------------------------|
+| `Wallet` | Struct containing addr, publicKeyX, publicKeyY, privateKey |
 
 ### Examples
 
-#### `uint256`
+#### From a string label
 
-```solidity
-Vm.Wallet memory wallet = vm.createWallet(uint256(keccak256(bytes("1"))));
+```solidity [test/CreateWallet.t.sol]
+Wallet memory wallet = vm.createWallet("bob's wallet");
 
-emit log_uint(wallet.privateKey); // uint256(keccak256(bytes("1")))
+// Private key is derived from keccak256(bytes("bob's wallet"))
+emit log_uint(wallet.privateKey);
+emit log_address(wallet.addr);
 
-emit log_address(wallet.addr); // vm.addr(wallet.privateKey)
-
-emit log_address(
-    address(
-        uint160(
-            uint256(
-                keccak256(abi.encode(wallet.publicKeyX, wallet.publicKeyY))
-            )
-        )
-    )
-); // wallet.addr
-
-emit log_string(vm.getLabel(wallet.addr)); // ""
+// The wallet is automatically labeled
+assertEq(vm.getLabel(wallet.addr), "bob's wallet");
 ```
 
-#### `string`
+#### From a private key
 
-```solidity
-Vm.Wallet memory wallet = vm.createWallet("bob's wallet");
+```solidity [test/CreateWallet.t.sol]
+Wallet memory wallet = vm.createWallet(uint256(keccak256(bytes("1"))));
 
-emit log_uint(wallet.privateKey); // uint256(keccak256(bytes("bob's wallet")))
-
-emit log_address(wallet.addr); // vm.addr(wallet.privateKey)
-
-emit log_address(
-    address(
-        uint160(
-            uint256(
-                keccak256(abi.encode(wallet.publicKeyX, wallet.publicKeyY))
-            )
-        )
-    )
-); // wallet.addr
-
-emit log_string(vm.getLabel(wallet.addr)); // "bob's wallet"
+emit log_uint(wallet.privateKey);
+emit log_address(wallet.addr); // Same as vm.addr(wallet.privateKey)
 ```
 
-#### `uint256` and `string`
+#### From a private key with label
 
-```solidity
-Vm.Wallet memory wallet = vm.createWallet(uint256(keccak256(bytes("1"))), "bob's wallet");
+```solidity [test/CreateWallet.t.sol]
+Wallet memory wallet = vm.createWallet(uint256(keccak256(bytes("1"))), "bob's wallet");
 
-emit log_uint(wallet.privateKey); // uint256(keccak256(bytes("1")))
-
-emit log_address(wallet.addr); // vm.addr(wallet.privateKey)
-
-emit log_address(
-    address(
-        uint160(
-            uint256(
-                keccak256(abi.encode(wallet.publicKeyX, wallet.publicKeyY))
-            )
-        )
-    )
-); // wallet.addr
-
-emit log_string(vm.getLabel(wallet.addr)); // "bob's wallet"
+// Uses the provided private key
+emit log_uint(wallet.privateKey);
+// And applies the label
+assertEq(vm.getLabel(wallet.addr), "bob's wallet");
 ```
+
+### Gotchas
+
+:::note
+[`sign()`](/reference/cheatcodes/sign) and [`getNonce()`](/reference/cheatcodes/get-nonce) both have overloads that accept a Wallet struct directly.
+:::
+
+### Related Cheatcodes
+
+- [`sign`](/reference/cheatcodes/sign) - Signs a digest using a Wallet
+- [`addr`](/reference/cheatcodes/addr) - Computes address from private key
+- [`label`](/reference/cheatcodes/label) - Labels an address

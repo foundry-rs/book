@@ -1,43 +1,61 @@
+---
+description: Stores a private key in forge's local wallet for broadcasting
+---
+
 ## `rememberKey`
 
 ### Signature
 
 ```solidity
-function rememberKey(uint256 privateKey) external returns (address);
+function rememberKey(uint256 privateKey) external returns (address keyAddr);
 ```
 
 ### Description
 
-Stores a private key in forge's local wallet and returns the corresponding address which can later be used for [broadcasting](/reference/cheatcodes/broadcast.mdx).
+Stores a private key in forge's local wallet and returns the corresponding address. The address can then be used for [broadcasting](/reference/cheatcodes/broadcast).
+
+### Parameters
+
+| Parameter    | Type      | Description                  |
+|--------------|-----------|------------------------------|
+| `privateKey` | `uint256` | The private key to store     |
+
+### Returns
+
+| Type      | Description                          |
+|-----------|--------------------------------------|
+| `address` | The address corresponding to the key |
 
 ### Examples
 
-Derive the private key from the test mnemonic at path `m/44'/60'/0'/0/0`, remember it in forge's wallet and use it to start broadcasting transactions:
+Derive and remember a key from a mnemonic:
 
-```solidity
+```solidity [script/Deploy.s.sol]
 string memory mnemonic = "test test test test test test test test test test test junk";
 uint256 privateKey = vm.deriveKey(mnemonic, 0);
 address deployer = vm.rememberKey(privateKey);
 
 vm.startBroadcast(deployer);
-...
+// ... deploy contracts
 vm.stopBroadcast();
 ```
 
-Load a private key from the `PRIVATE_KEY` environment variable and use it to start broadcasting transactions:
+Load a private key from an environment variable:
 
-```solidity
+```solidity [script/Deploy.s.sol]
 address deployer = vm.rememberKey(vm.envUint("PRIVATE_KEY"));
 
 vm.startBroadcast(deployer);
-...
+// ... deploy contracts
 vm.stopBroadcast();
 ```
 
-### SEE ALSO
+### Related Cheatcodes
 
-- [deriveKey](/reference/cheatcodes/derive-key.mdx)
+- [`deriveKey`](/reference/cheatcodes/derive-key) - Derives a private key from a mnemonic
+- [`broadcast`](/reference/cheatcodes/broadcast) - Sets the next call's msg.sender
+- [`startBroadcast`](/reference/cheatcodes/start-broadcast) - Starts broadcasting transactions
 
-Forge Standard Library:
+### See Also
 
-- [deriveRememberKey](/reference/forge-std/derive-remember-key.mdx)
+- [`deriveRememberKey`](/reference/forge-std/derive-remember-key)

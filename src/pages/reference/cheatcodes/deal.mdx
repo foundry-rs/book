@@ -1,35 +1,65 @@
+---
+description: Sets the ETH balance of an address
+---
+
 ## `deal`
 
 ### Signature
 
 ```solidity
-function deal(address who, uint256 newBalance) external;
+function deal(address account, uint256 newBalance) external;
 ```
 
 ### Description
 
-Sets the balance of an address `who` to `newBalance`.
+Sets the ETH balance of an address `account` to `newBalance`.
 
-If the alternative signature of `deal` is used (defined in `StdCheats.sol`), then we can additionally specify ERC20 token address, as well as an option to update `totalSupply`.
+### Parameters
+
+| Parameter    | Type      | Description                              |
+|--------------|-----------|------------------------------------------|
+| `account`    | `address` | The account whose balance will be set   |
+| `newBalance` | `uint256` | The new ETH balance (in wei)            |
 
 ### Examples
 
-```solidity
-address alice = makeAddr("alice");
-emit log_address(alice);
-vm.deal(alice, 1 ether);
-log_uint256(alice.balance); // 1000000000000000000
+```solidity [test/Deal.t.sol]
+function testDeal() public {
+    address alice = makeAddr("alice");
+    vm.deal(alice, 1 ether);
+    assertEq(alice.balance, 1 ether);
+}
 ```
 
-```solidity
-address alice = makeAddr("alice");
-emit log_address(alice);
-deal(address(DAI), alice, 1 ether); // import StdUtils.sol first
-log_uint256(address(DAI).balanceOf(alice)); // 1000000000000000000
+#### ERC20 Token Deals
+
+For ERC20 tokens, use the `deal` function from `StdCheats.sol` which provides additional functionality:
+
+```solidity [test/DealERC20.t.sol]
+import {Test} from "forge-std/Test.sol";
+
+contract DealERC20Test is Test {
+    function testDealERC20() public {
+        address alice = makeAddr("alice");
+        deal(address(DAI), alice, 1 ether);
+        assertEq(DAI.balanceOf(alice), 1 ether);
+    }
+}
 ```
 
-### SEE ALSO
+### Gotchas
 
-Forge Standard Library
+:::note
+The Forge Standard Library version of `deal` for ERC20 tokens works by directly manipulating storage slots. It may not work correctly for tokens with non-standard storage layouts or tokens that have balance hooks (like rebasing tokens).
+:::
 
-[`deal`](/reference/forge-std/deal.mdx), [`hoax`](/reference/forge-std/hoax.mdx), [`startHoax`](/reference/forge-std/startHoax.mdx)
+### Related Cheatcodes
+
+- [`etch`](/reference/cheatcodes/etch) - Sets the bytecode of an address
+- [`prank`](/reference/cheatcodes/prank) - Sets `msg.sender` for the next call
+
+### See Also
+
+- [`deal`](/reference/forge-std/deal) - Forge Std ERC20 deal function
+- [`hoax`](/reference/forge-std/hoax) - Combines prank and deal
+- [`startHoax`](/reference/forge-std/startHoax) - Combines startPrank and deal

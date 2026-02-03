@@ -1,3 +1,7 @@
+---
+description: Parses a hex string into an address
+---
+
 ## `parseAddress`
 
 ### Signature
@@ -8,11 +12,29 @@ function parseAddress(string calldata stringifiedValue) external pure returns (a
 
 ### Description
 
-Parses the value of `string` into `address`
+Parses a hex string into an `address`.
+
+### Parameters
+
+| Parameter          | Type     | Description              |
+|--------------------|----------|--------------------------|
+| `stringifiedValue` | `string` | The hex string to parse  |
+
+### Returns
+
+| Type      | Description         |
+|-----------|---------------------|
+| `address` | The parsed address  |
 
 ### Examples
 
-```solidity
-string memory addressAsString = "0x0000000000000000000000000000000000000000";
-address stringToAddress = vm.parseAddress(addressAsString); // 0x0000000000000000000000000000000000000000
+```solidity [test/ParseAddress.t.sol]
+string memory addrString = "0x7109709ECfa91a80626fF3989D68f67F5b1DD12D";
+address result = vm.parseAddress(addrString);
+// result = 0x7109709ECfa91a80626fF3989D68f67F5b1DD12D
 ```
+
+### Related Cheatcodes
+
+- [`toString`](/reference/cheatcodes/to-string) - Converts address to string
+- [`addr`](/reference/cheatcodes/addr) - Computes address from private key

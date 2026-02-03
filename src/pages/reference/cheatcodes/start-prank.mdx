@@ -1,85 +1,106 @@
+---
+description: Sets msg.sender for all subsequent calls until stopPrank is called
+---
+
 ## `startPrank`
 
 ### Signature
 
 ```solidity
 function startPrank(address msgSender) external;
-```
-
-```solidity
 function startPrank(address msgSender, bool delegateCall) external;
-```
-
-```solidity
 function startPrank(address msgSender, address txOrigin) external;
-```
-
-```solidity
 function startPrank(address msgSender, address txOrigin, bool delegateCall) external;
 ```
 
 ### Description
 
-- `startPrank(address msgSender)`: sets `msg.sender` **for all subsequent calls** until [`stopPrank`](/reference/cheatcodes/stop-prank.mdx) is called.
-- `startPrank(address msgSender, address txOrigin)`: sets `msg.sender` and `tx.origin` **for all subsequent calls** until [`stopPrank`](/reference/cheatcodes/stop-prank.mdx) is called.
-- `startPrank(address msgSender, bool delegateCall)`: if `delegateCall` value is `true` then sets `msg.sender` **for all subsequent delegate calls** until [`stopPrank`](/reference/cheatcodes/stop-prank.mdx) is called.
-- `startPrank(address msgSender, address txOrigin, bool delegateCall)`: if `delegateCall` value is `true` then sets `msg.sender` and `tx.origin` **for all subsequent delegate calls** until [`stopPrank`](/reference/cheatcodes/stop-prank.mdx) is called.
+Sets `msg.sender` **for all subsequent calls** until [`stopPrank`](/reference/cheatcodes/stop-prank) is called.
 
-> ℹ️ **Note**
->
-> The delegate calls cannot be pranked from an EOA.
+Optionally, you can also set `tx.origin` and enable delegate call pranking.
+
+### Parameters
+
+| Parameter      | Type      | Description                                                              |
+|----------------|-----------|--------------------------------------------------------------------------|
+| `msgSender`    | `address` | The address to set as `msg.sender`                                       |
+| `txOrigin`     | `address` | The address to set as `tx.origin` (optional)                             |
+| `delegateCall` | `bool`    | If `true`, applies the prank to all subsequent delegate calls (optional) |
 
 ### Examples
 
-- prank delegate call and record state diffs
+```solidity [test/StartPrank.t.sol]
+function testStartPrank() public {
+    vm.startPrank(alice);
+    
+    // All these calls have msg.sender == alice
+    myContract.deposit();
+    myContract.transfer(bob, 100);
+    myContract.withdraw();
+    
+    vm.stopPrank();
+}
+```
 
-```solidity
-contract ImplementationTest {
+#### Pranking Delegate Calls with State Diff Recording
+
+:::code-group
+
+```solidity [test/PrankDelegateCall.t.sol]
+function testPrankDelegateCall() public {
+    Proxy proxy = new Proxy();
+    Implementation impl = new Implementation();
+    
+    vm.startPrank(address(proxy), true);
+    vm.startStateDiffRecording();
+    
+    (bool success,) = address(impl).delegatecall(
+        abi.encodeWithSignature("setNum(uint256)", 42)
+    );
+    
+    VmSafe.AccountAccess[] memory accesses = vm.stopAndReturnStateDiff();
+    // accesses[0].accessor == proxy
+    // accesses[0].account == impl
+    
+    vm.stopPrank();
+}
+```
+
+```solidity [src/Implementation.sol]
+contract Implementation {
     uint public num;
-    address public sender;
-
+    
     function setNum(uint _num) public {
         num = _num;
     }
 }
+```
 
-contract ProxyTest {
+```solidity [src/Proxy.sol]
+contract Proxy {
     uint public num;
-    address public sender;
-}
-
-contract FoundryIssue is Script {
-    function run() public {
-        ProxyTest proxy = new ProxyTest();
-        ImplementationTest impl = new ImplementationTest();
-
-        vm.label(address(proxy), 'proxy');
-        vm.label(address(impl), 'Impl');
-
-        uint num = 42;
-        vm.startPrank(address(proxy), true);
-        vm.startStateDiffRecording();
-        (bool successTwo,) = address(impl).delegatecall(abi.encodeWithSignature('setNum(uint256)', num));
-
-        VmSafe.AccountAccess[] memory accountAccesses = vm.stopAndReturnStateDiff();
-        console.log('accountAccesses.kind', uint8(accountAccesses[0].kind));
-        console.log('accountAccesses.accessor', vm.getLabel(accountAccesses[0].accessor));
-        console.log('accountAccesses.account', vm.getLabel(accountAccesses[0].account));
-        console.logBytes(accountAccesses[0].data);
-    }
 }
 ```
 
-```bash
-== Logs ==
-  accountAccesses.kind 1
-  accountAccesses.accessor proxy
-  accountAccesses.account Impl
-  0xcd16ecbf000000000000000000000000000000000000000000000000000000000000002a
-```
+:::
 
-### SEE ALSO
+### Gotchas
 
-Forge Standard Library
+:::note
+Delegate calls cannot be pranked from an EOA. Use a contract as the prank source when pranking delegate calls.
+:::
 
-[`startHoax`](/reference/forge-std/startHoax.mdx), [`changePrank`](/reference/forge-std/change-prank.mdx)
+:::warning
+Always call [`stopPrank`](/reference/cheatcodes/stop-prank) when done to avoid affecting subsequent tests.
+:::
+
+### Related Cheatcodes
+
+- [`prank`](/reference/cheatcodes/prank) - Sets `msg.sender` for a single call
+- [`stopPrank`](/reference/cheatcodes/stop-prank) - Stops an active prank
+- [`readCallers`](/reference/cheatcodes/read-callers) - Reads the current caller mode
+
+### See Also
+
+- [`startHoax`](/reference/forge-std/startHoax) - Combines startPrank and deal
+- [`changePrank`](/reference/forge-std/change-prank) - Changes the active prank address

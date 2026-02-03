@@ -1,44 +1,51 @@
+---
+description: Creates and activates a new fork in one call
+---
+
 ## `createSelectFork`
 
 ### Signature
 
 ```solidity
-function createSelectFork(string calldata urlOrAlias) external returns (uint256);
-```
-
-```solidity
-function createSelectFork(string calldata urlOrAlias, uint256 block) external returns (uint256);
-```
-
-```solidity
-function createSelectFork(string calldata urlOrAlias, bytes32 transaction) external returns (uint256);
+function createSelectFork(string calldata urlOrAlias) external returns (uint256 forkId);
+function createSelectFork(string calldata urlOrAlias, uint256 blockNumber) external returns (uint256 forkId);
+function createSelectFork(string calldata urlOrAlias, bytes32 txHash) external returns (uint256 forkId);
 ```
 
 ### Description
 
-Creates _and_ selects a new fork from the given endpoint and returns the identifier of the fork. If a block number is passed as an argument, the fork will begin on that block, otherwise it will begin on the _latest_ block.
+Creates **and** selects a new fork from the given endpoint and returns the identifier of the fork. This is equivalent to calling [`createFork`](/reference/cheatcodes/create-fork) followed by [`selectFork`](/reference/cheatcodes/select-fork).
 
-If a transaction hash is provided, it will roll the fork to the block the transaction was mined in and replays all previously executed transactions.
+### Parameters
+
+| Parameter     | Type      | Description                                              |
+|---------------|-----------|----------------------------------------------------------|
+| `urlOrAlias`  | `string`  | RPC URL or alias from `foundry.toml` `[rpc_endpoints]`   |
+| `blockNumber` | `uint256` | Block number to fork from (optional, defaults to latest) |
+| `txHash`      | `bytes32` | Transaction hash to fork at (replays prior transactions) |
+
+### Returns
+
+| Parameter | Type      | Description                           |
+|-----------|-----------|---------------------------------------|
+| `forkId`  | `uint256` | Identifier for the created fork       |
 
 ### Examples
 
-Create and select a new mainnet fork with the latest block number:
+```solidity [test/CreateSelectFork.t.sol]
+function testCreateSelectFork() public {
+    // Create and select in one call
+    uint256 forkId = vm.createSelectFork(MAINNET_RPC_URL);
+    assertEq(vm.activeFork(), forkId);
 
-```solidity
-uint256 forkId = vm.createSelectFork(MAINNET_RPC_URL);
-
-assertEq(block.number, 15_171_037); // as of time of writing, 2022-07-19 04:55:27 UTC
+    // Fork at specific block
+    uint256 historicalFork = vm.createSelectFork(MAINNET_RPC_URL, 1_337_000);
+    assertEq(block.number, 1_337_000);
+}
 ```
 
-Create and select a new mainnet fork with a given block number:
+### Related Cheatcodes
 
-```solidity
-uint256 forkId = vm.createSelectFork(MAINNET_RPC_URL, 1_337_000);
-
-assertEq(block.number, 1_337_000);
-```
-
-### SEE ALSO
-
-- [createFork](/reference/cheatcodes/create-fork.mdx)
-- [selectFork](/reference/cheatcodes/select-fork.mdx)
+- [`createFork`](/reference/cheatcodes/create-fork) - Create a fork without selecting
+- [`selectFork`](/reference/cheatcodes/select-fork) - Select an existing fork
+- [`activeFork`](/reference/cheatcodes/active-fork) - Get the currently active fork

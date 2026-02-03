@@ -1,10 +1,10 @@
+---
+description: Sets tx.gasprice for the rest of the transaction
+---
+
 ## `txGasPrice`
 
 ### Signature
-
-```solidity
-function txGasPrice(uint256) external;
-```
 
 ```solidity
 function txGasPrice(uint256 newGasPrice) external;
@@ -12,18 +12,29 @@ function txGasPrice(uint256 newGasPrice) external;
 
 ### Description
 
-Sets `tx.gasprice` **for the rest of the transaction**. 
+Sets `tx.gasprice` **for the rest of the transaction**.
+
+### Parameters
+
+| Parameter     | Type      | Description                       |
+|---------------|-----------|-----------------------------------|
+| `newGasPrice` | `uint256` | The new gas price to set (in wei) |
 
 ### Examples
 
-We can use this to get accurate gas usage for a transaction.
-
-```solidity
-function testCalculateGas() public {
-    vm.txGasPrice(2);
+```solidity [test/TxGasPrice.t.sol]
+function testCalculateGasCost() public {
+    vm.txGasPrice(2 gwei);
+    
     uint256 gasStart = gasleft();
     myContract.doStuff();
     uint256 gasEnd = gasleft();
-    uint256 gasUsed = (gasStart - gasEnd) * tx.gasprice; // tx.gasprice is now 2
+    
+    uint256 gasCost = (gasStart - gasEnd) * tx.gasprice;
+    // gasCost is now in wei at 2 gwei per gas
 }
 ```
+
+### Related Cheatcodes
+
+- [`fee`](/reference/cheatcodes/fee) - Sets `block.basefee`

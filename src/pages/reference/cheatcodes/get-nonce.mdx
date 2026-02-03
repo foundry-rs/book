@@ -1,32 +1,51 @@
+---
+description: Gets the nonce of an account or wallet
+---
+
 ## `getNonce`
 
 ### Signature
 
 ```solidity
-function getNonce(address account) external returns (uint64);
-```
-
-```solidity
-function getNonce(Wallet memory wallet) external returns (uint64);
+function getNonce(address account) external view returns (uint64 nonce);
+function getNonce(Wallet memory wallet) external returns (uint64 nonce);
 ```
 
 ### Description
 
-Gets the nonce of the given account or [Wallet](/reference/cheatcodes/create-wallet.mdx).
+Gets the nonce of the given account or [`Wallet`](/reference/cheatcodes/create-wallet).
+
+### Parameters
+
+| Parameter | Type      | Description                         |
+|-----------|-----------|-------------------------------------|
+| `account` | `address` | The account to get the nonce for    |
+| `wallet`  | `Wallet`  | The wallet to get the nonce for     |
+
+### Returns
+
+| Parameter | Type     | Description                    |
+|-----------|----------|--------------------------------|
+| `nonce`   | `uint64` | The current nonce of the account |
 
 ### Examples
 
-#### `address`
-
-```solidity
-uint256 nonce = vm.getNonce(address(100));
-emit log_uint(nonce); // 0
+```solidity [test/GetNonce.t.sol]
+function testGetNonce() public {
+    uint64 nonce = vm.getNonce(address(100));
+    assertEq(nonce, 0);
+}
 ```
 
-#### `Wallet`
-
-```solidity
-Wallet memory alice = vm.createWallet("alice");
-uint256 nonce = vm.getNonce(alice);
-emit log_uint(nonce); // 0
+```solidity [test/GetNonceWallet.t.sol]
+function testGetNonceWallet() public {
+    Wallet memory alice = vm.createWallet("alice");
+    uint64 nonce = vm.getNonce(alice);
+    assertEq(nonce, 0);
+}
 ```
+
+### Related Cheatcodes
+
+- [`setNonce`](/reference/cheatcodes/set-nonce) - Sets the nonce of an account
+- [`createWallet`](/reference/cheatcodes/create-wallet) - Creates a new wallet

@@ -1,3 +1,7 @@
+---
+description: Resets gas metering to the gas limit of the current execution frame
+---
+
 ## `resetGasMetering`
 
 ### Signature
@@ -8,4 +12,26 @@ function resetGasMetering() external;
 
 ### Description
 
-Resets gas metering to the gas limit of current execution frame (i.e. `gasleft()` will be restored to initial value).
+Resets gas metering to the gas limit of current execution frame (i.e., `gasleft()` will be restored to its initial value).
+
+### Examples
+
+```solidity [test/ResetGasMetering.t.sol]
+function testResetGasMetering() public {
+    // Some setup that consumes gas
+    for (uint i = 0; i < 100; i++) {
+        // ...
+    }
+    
+    // Reset gas to measure only the code below
+    vm.resetGasMetering();
+    
+    // Now gasleft() is back to the initial gas limit
+    myContract.doSomething();
+}
+```
+
+### Related Cheatcodes
+
+- [`pauseGasMetering`](/reference/cheatcodes/pause-gas-metering) - Pause gas metering
+- [`resumeGasMetering`](/reference/cheatcodes/resume-gas-metering) - Resume gas metering

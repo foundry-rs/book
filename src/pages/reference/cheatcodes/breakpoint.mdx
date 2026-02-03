@@ -1,32 +1,42 @@
+---
+description: Places a breakpoint for the debugger
+---
+
 ## `breakpoint`
 
 ### Signature
 
 ```solidity
-function breakpoint(string) external;
-function breakpoint(string, bool) external;
+function breakpoint(string calldata char) external;
+function breakpoint(string calldata char, bool enabled) external;
 ```
 
 ### Description
 
 Places a breakpoint to jump to in the debugger view.
 
-Calling `vm.breakpoint('<char>, true)` is equivalent to `vm.breakpoint('<char>)`, but calling `vm.breakpoint('<char>, false)` will erase the breakpoint at `'<char>`.
+Calling `vm.breakpoint("<char>", true)` is equivalent to `vm.breakpoint("<char>")`. Calling `vm.breakpoint("<char>", false)` will erase the breakpoint at `<char>`.
 
-If the char is overwritten, only the last one that was visited in the execution steps is considered.
+If the same char is used multiple times, only the last one visited in execution is considered.
+
+### Parameters
+
+| Parameter | Type     | Description                              |
+|-----------|----------|------------------------------------------|
+| `char`    | `string` | Single character identifier for the breakpoint |
+| `enabled` | `bool`   | Whether to enable or disable the breakpoint (optional) |
 
 ### Examples
 
-```solidity
+```solidity [test/Breakpoint.t.sol]
 function testBreakpoint() public {
     vm.breakpoint("a");
+    // Opening the debugger and pressing 'a will jump here
 }
 ```
 
-Opening up the debugger in a test environment and pressing `'a` will then place the debugger step at the place where the breakpoint cheatcode was called.
-
 ![breakpoint a](/breakpoint.png)
 
-### SEE ALSO
+### See Also
 
-Forge debugger documentation
+- [Forge Debugging](/forge/debugging) - Learn more about the interactive debugger

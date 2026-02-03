@@ -1,3 +1,7 @@
+---
+description: Stores a value in a specific storage slot of an account
+---
+
 ## `store`
 
 ### Signature
@@ -10,20 +14,44 @@ function store(address account, bytes32 slot, bytes32 value) external;
 
 Stores the value `value` in storage slot `slot` on account `account`.
 
+### Parameters
+
+| Parameter | Type      | Description                              |
+|-----------|-----------|------------------------------------------|
+| `account` | `address` | The account whose storage will be modified|
+| `slot`    | `bytes32` | The storage slot to write to             |
+| `value`   | `bytes32` | The value to store                       |
+
 ### Examples
 
-```solidity
-/// contract LeetContract {
-///     uint256 private leet = 1337; // slot 0
-/// }
+:::code-group
 
-vm.store(address(leetContract), bytes32(uint256(0)), bytes32(uint256(31337)));
-bytes32 leet = vm.load(address(leetContract), bytes32(uint256(0)));
-emit log_uint(uint256(leet)); // 31337
+```solidity [test/Store.t.sol]
+function testStore() public {
+    vm.store(address(leetContract), bytes32(uint256(0)), bytes32(uint256(31337)));
+    bytes32 leet = vm.load(address(leetContract), bytes32(uint256(0)));
+    assertEq(uint256(leet), 31337);
+}
 ```
 
-### SEE ALSO
+```solidity [src/LeetContract.sol]
+contract LeetContract {
+    uint256 private leet = 1337; // slot 0
+}
+```
 
-Forge Standard Library
+:::
 
-[Std Storage](/reference/forge-std/std-storage.mdx)
+### Gotchas
+
+:::warning
+You must know the exact storage slot layout of the contract. Solidity uses complex packing rules for storage, especially for mappings and dynamic arrays. Use `forge inspect` or the [Std Storage](/reference/forge-std/std-storage) library to find storage slots.
+:::
+
+### Related Cheatcodes
+
+- [`load`](/reference/cheatcodes/load) - Loads a value from a storage slot
+
+### See Also
+
+- [Std Storage](/reference/forge-std/std-storage) - Forge Std library for storage manipulation

@@ -1,192 +1,106 @@
+---
+description: Capture and compare gas usage across test runs
+---
+
 ## `snapshotGas` cheatcodes
 
 ### Signature
 
 ```solidity
-/// Start a snapshot capture of the current gas usage by name.
-/// The group name is derived from the contract name.
 function startSnapshotGas(string calldata name) external;
-
-/// Start a snapshot capture of the current gas usage by name in a group.
 function startSnapshotGas(string calldata group, string calldata name) external;
-
-/// Stop the snapshot capture of the current gas by latest snapshot name, capturing the gas used since the start.
 function stopSnapshotGas() external returns (uint256 gasUsed);
-
-/// Stop the snapshot capture of the current gas usage by name, capturing the gas used since the start.
-/// The group name is derived from the contract name.
 function stopSnapshotGas(string calldata name) external returns (uint256 gasUsed);
-
-/// Stop the snapshot capture of the current gas usage by name in a group, capturing the gas used since the start.
 function stopSnapshotGas(string calldata group, string calldata name) external returns (uint256 gasUsed);
-
-/// Snapshot capture an arbitrary numerical value by name.
-/// The group name is derived from the contract name.
 function snapshotValue(string calldata name, uint256 value) external;
-
-/// Snapshot capture an arbitrary numerical value by name in a group.
 function snapshotValue(string calldata group, string calldata name, uint256 value) external;
-
-/// Snapshot capture the gas usage of the last call by name from the callee perspective.
 function snapshotGasLastCall(string calldata name) external returns (uint256 gasUsed);
-
-/// Snapshot capture the gas usage of the last call by name in a group from the callee perspective.
 function snapshotGasLastCall(string calldata group, string calldata name) external returns (uint256 gasUsed);
 ```
 
 ### Description
 
-`snapshotGas*` cheatcodes allow you to capture gas usage in your tests. This can be useful to track how much gas your logic is consuming. You can capture the gas usage of the last call by name, capture an arbitrary numerical value by name, or start and stop a snapshot capture of the current gas usage by name.
+These cheatcodes allow you to capture gas usage in your tests. Snapshots are written to the `snapshots/` directory and can be compared across test runs.
 
-In order to strictly compare gas usage across test runs you can set one of the following:
+| Function             | Description                                          |
+|----------------------|------------------------------------------------------|
+| `startSnapshotGas`   | Start capturing gas usage                            |
+| `stopSnapshotGas`    | Stop capturing and record the gas used               |
+| `snapshotValue`      | Record an arbitrary numerical value                  |
+| `snapshotGasLastCall`| Record gas usage of the last external call           |
 
-- Set the `FORGE_SNAPSHOT_CHECK=true` environment variable
+### Configuration
+
+To enforce gas snapshot comparisons:
+- Set `FORGE_SNAPSHOT_CHECK=true` environment variable
 - Set `gas_snapshot_check = true` in `foundry.toml`
 - Pass `--gas-snapshot-check=true`
 
-By default this is **not enabled** and passing `--gas-snapshot-check=false` will override all others.
-
-This will compare the gas usage of your tests against the last snapshot and fail if the gas usage has changed.
-
-It is intended that the `snapshots` directory created when using the `snapshotGas*` cheatcodes is checked into version control. This allows you to track changes in gas usage over time and compare gas usage during code reviews.
-
-To disable the emitting of gas snapshots you can set one of the following:
-
-- Set the `FORGE_SNAPSHOT_EMIT=false` environment variable.
-- Set `gas_snapshot_emit = false` in `foundry.toml`.
+To disable writing snapshots:
+- Set `FORGE_SNAPSHOT_EMIT=false` environment variable
+- Set `gas_snapshot_emit = false` in `foundry.toml`
 - Pass `--gas-snapshot-emit=false`
-
-By default this is **enabled** and gas snapshots are written to disk.
-
-> ℹ️ **Isolated tests**
->
-> These cheatcodes are not accurate if not using isolated test mode.
->
-> You can enable isolation mode by passing the `--isolate` flag or
-> tag the test function with the following inline configuration:
->
-> `/// forge-config: default.isolate = true`
 
 ### Examples
 
-Capturing the gas usage of a section of code that calls an external contract:
+#### Capturing gas for a section of code
 
-```solidity
-contract SnapshotGasTest is Test {
-    Flare public flare;
-
-    function setUp() public {
-        flare = new Flare();
-    }
-
-    function testSnapshotGas() public {
-        vm.startSnapshotGas("externalA");
-        flare.run(256);
-        uint256 gasUsed = vm.stopSnapshotGas();
-    }
+```solidity [test/GasSnapshot.t.sol]
+function testSnapshotGas() public {
+    vm.startSnapshotGas("myOperation");
+    myContract.doSomething();
+    uint256 gasUsed = vm.stopSnapshotGas();
+    // Writes to snapshots/GasSnapshotTest.json
 }
 ```
 
-Capturing the gas usage of multiple sections of code that modify the internal state:
+#### Capturing gas for the last call
 
-```solidity
-contract SnapshotGasTest is Test {
-    uint256 public slot0;
-
-    /// Writes to `snapshots/SnapshotGasTest.json` group with name `internalA`, `internalB`, and `internalC`.
-    function testSnapshotGas() public {
-        vm.startSnapshotGas("internalA");
-        slot0 = 1;
-        vm.stopSnapshotGas();
-
-        vm.startSnapshotGas("internalB");
-        slot0 = 2;
-        vm.stopSnapshotGas();
-
-        vm.startSnapshotGas("internalC");
-        slot0 = 0;
-        vm.stopSnapshotGas();
-    }
+```solidity [test/GasSnapshotLastCall.t.sol]
+function testSnapshotGasLastCall() public {
+    myContract.run(256);
+    vm.snapshotGasLastCall("run256");
+    // Captures gas used by myContract.run(256)
 }
 ```
 
-Capturing the gas usage of a section of code that modifies both the internal state and calls an external contract:
+#### Using custom groups
 
-```solidity
-contract SnapshotGasTest is Test {
-    uint256 public slot0;
-    Flare public flare;
+```solidity [test/GasSnapshotGroup.t.sol]
+function testSnapshotGasGroups() public {
+    vm.startSnapshotGas("Transfers", "smallTransfer");
+    token.transfer(alice, 100);
+    vm.stopSnapshotGas();
 
-    function setUp() public {
-        flare = new Flare();
-    }
-
-    /// Writes to `snapshots/SnapshotGasTest.json` group with name `combinedA`.
-    function testSnapshotGas() public {
-        vm.startSnapshotGas("combinedA");
-        flare.run(256);
-        slot0 = 1;
-        vm.stopSnapshotGas();
-    }
+    vm.startSnapshotGas("Transfers", "largeTransfer");
+    token.transfer(bob, 1000000);
+    vm.stopSnapshotGas();
+    // Writes to snapshots/Transfers.json
 }
 ```
 
-Capturing an arbitrary numerical value (such as the bytecode size of a contract):
+#### Capturing arbitrary values
 
-```solidity
-contract SnapshotGasTest is Test {
-    uint256 public slot0;
-
-    /// Writes to `snapshots/SnapshotGasTest.json` group with name `valueA`, `valueB`, and `valueC`.
-    function testSnapshotValue() public {
-        uint256 a = 123;
-        uint256 b = 456;
-        uint256 c = 789;
-
-        vm.snapshotValue("valueA", a);
-        vm.snapshotValue("valueB", b);
-        vm.snapshotValue("valueC", c);
-    }
+```solidity [test/SnapshotValue.t.sol]
+function testSnapshotBytecodeSize() public {
+    vm.snapshotValue("bytecodeSize", address(myContract).code.length);
 }
 ```
 
-Capturing the gas usage of the last call from the callee perspective:
+### Gotchas
+
+:::warning
+Gas snapshots are not accurate unless using isolated test mode. Enable isolation with the `--isolate` flag or add this to your test:
 
 ```solidity
-contract SnapshotGasTest is Test {
-    Flare public flare;
-
-    function setUp() public {
-        flare = new Flare();
-    }
-
-    /// Writes to `snapshots/SnapshotGasTest.json` group with name `lastCallA`.
-    function testSnapshotGasLastCall() public {
-        flare.run(1);
-        vm.snapshotGasLastCall("lastCallA");
-    }
-}
+/// forge-config: default.isolate = true
 ```
+:::
 
-For each of the above examples you can also use the `group` variant of the cheatcodes to group the snapshots together in a custom group.
+:::note
+The `snapshots/` directory should be committed to version control to track gas changes over time.
+:::
 
-```solidity
-contract SnapshotGasTest is Test {
-    uint256 public slot0;
+### Related Cheatcodes
 
-    /// Writes to `snapshots/CustomGroup.json` group with name `internalA`, `internalB`, and `internalC`.
-    function testSnapshotGas() public {
-        vm.startSnapshotGas("CustomGroup", "internalA");
-        slot0 = 1;
-        vm.stopSnapshotGas();
-
-        vm.startSnapshotGas("CustomGroup", "internalB");
-        slot0 = 2;
-        vm.stopSnapshotGas();
-
-        vm.startSnapshotGas("CustomGroup", "internalC");
-        slot0 = 0;
-        vm.stopSnapshotGas();
-    }
-}
-```
+- [`snapshotState`](/reference/cheatcodes/state-snapshots) - Snapshot EVM state

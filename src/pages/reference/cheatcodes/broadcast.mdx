@@ -1,46 +1,50 @@
+---
+description: Makes the next call create a transaction that can be signed and sent onchain
+---
+
 ## `broadcast`
 
 ### Signature
 
 ```solidity
 function broadcast() external;
-```
-
-```solidity
 function broadcast(address who) external;
-```
-
-```solidity
 function broadcast(uint256 privateKey) external;
 ```
 
 ### Description
 
-Using the address that calls the test contract or the address / private key provided
-as the sender, has the next call (at this call depth only and excluding cheatcode calls) create a
-transaction that can later be signed and sent onchain.
+Using the address that calls the test contract or the address/private key provided as the sender, has the next call (at this call depth only and excluding cheatcode calls) create a transaction that can later be signed and sent onchain.
+
+### Parameters
+
+| Parameter    | Type      | Description                                      |
+|--------------|-----------|--------------------------------------------------|
+| `who`        | `address` | The address to broadcast from (optional)         |
+| `privateKey` | `uint256` | The private key to broadcast from (optional)     |
 
 ### Examples
 
-```solidity
+```solidity [script/Deploy.s.sol]
 function deploy() public {
     vm.broadcast(ACCOUNT_A);
     Test test = new Test();
 
-    // this won't generate tx to sign
+    // This won't generate a tx to sign
     uint256 b = test.t(4);
 
-    // this will
+    // This will
     vm.broadcast(ACCOUNT_B);
     test.t(2);
 
-    // this also will, using a private key from your environment variables
+    // Using a private key from environment variables
     vm.broadcast(vm.envUint("PRIVATE_KEY"));
     test.t(3);
 }
 ```
 
-### SEE ALSO
+### Related Cheatcodes
 
-- [startBroadcast](/reference/cheatcodes/start-broadcast.mdx)
-- [stopBroadcast](/reference/cheatcodes/stop-broadcast.mdx)
+- [`startBroadcast`](/reference/cheatcodes/start-broadcast) - Broadcast all subsequent calls
+- [`stopBroadcast`](/reference/cheatcodes/stop-broadcast) - Stop broadcasting
+- [`readCallers`](/reference/cheatcodes/read-callers) - Read the current caller mode

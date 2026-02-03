@@ -1,3 +1,7 @@
+---
+description: Parses a string into a bool
+---
+
 ## `parseBool`
 
 ### Signature
@@ -8,11 +12,32 @@ function parseBool(string calldata stringifiedValue) external pure returns (bool
 
 ### Description
 
-Parses the value of `string` into `bool`
+Parses a string into a `bool`.
+
+### Parameters
+
+| Parameter          | Type     | Description              |
+|--------------------|----------|--------------------------|
+| `stringifiedValue` | `string` | The string to parse      |
+
+### Returns
+
+| Type   | Description       |
+|--------|-------------------|
+| `bool` | The parsed bool   |
 
 ### Examples
 
-```solidity
-string memory boolAsString = "false";
-bool stringToBool = vm.parseBool(boolAsString); // false
+```solidity [test/ParseBool.t.sol]
+string memory boolAsString = "true";
+bool result = vm.parseBool(boolAsString);
+assertTrue(result);
+
+string memory falseString = "false";
+bool resultFalse = vm.parseBool(falseString);
+assertFalse(resultFalse);
 ```
+
+### Related Cheatcodes
+
+- [`toString`](/reference/cheatcodes/to-string) - Converts bool to string

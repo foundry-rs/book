@@ -1,21 +1,35 @@
+---
+description: Returns the current unix timestamp in milliseconds
+---
+
 ## `unixTime`
 
 ### Signature
 
 ```solidity
-function unixTime() external returns (uint milliseconds);
+function unixTime() external returns (uint256 milliseconds);
 ```
 
 ### Description
 
 Returns the time since unix epoch in milliseconds.
 
+### Returns
+
+| Type      | Description                                  |
+|-----------|----------------------------------------------|
+| `uint256` | The current unix timestamp in milliseconds   |
+
 ### Examples
 
-```solidity
+```solidity [test/UnixTime.t.sol]
 uint start = vm.unixTime();
 vm.sleep(10_000); // Halts execution for 10 seconds
 uint end = vm.unixTime();
 assertEq(end - start, 10_000);
 ```
 
+### Related Cheatcodes
+
+- [`sleep`](/reference/cheatcodes/sleep) - Pauses execution for a specified duration
+- [`getBlockTimestamp`](/reference/cheatcodes/get-block-timestamp) - Gets the `block.timestamp`

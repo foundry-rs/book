@@ -1,21 +1,43 @@
+---
+description: Checks if a key exists in a JSON string
+---
+
 ## `keyExistsJson`
 
 ### Signature
 
 ```solidity
-// Check if a key exists in a JSON string.
-vm.keyExistsJson(string memory json, string memory key) returns (bool)
+function keyExistsJson(string memory json, string memory key) external returns (bool);
 ```
 
 ### Description
 
 Checks if a key exists in a JSON string.
 
+### Parameters
+
+| Parameter | Type     | Description                      |
+|-----------|----------|----------------------------------|
+| `json`    | `string` | The JSON string to search        |
+| `key`     | `string` | The JSONPath key to look for     |
+
+### Returns
+
+| Type   | Description                              |
+|--------|------------------------------------------|
+| `bool` | `true` if the key exists, `false` otherwise |
+
 ### Examples
 
-```solidity
+```solidity [test/KeyExistsJson.t.sol]
 string memory path = "./path/to/jsonfile.json";
 string memory json = vm.readFile(path);
 bool exists = vm.keyExistsJson(json, ".key");
 assertTrue(exists);
 ```
+
+### Related Cheatcodes
+
+- [`keyExistsToml`](/reference/cheatcodes/key-exists-toml) - Check if a key exists in TOML
+- [`parseJson`](/reference/cheatcodes/parse-json) - Parse JSON values
+- [`parseJsonKeys`](/reference/cheatcodes/parse-json-keys) - Get list of keys in JSON

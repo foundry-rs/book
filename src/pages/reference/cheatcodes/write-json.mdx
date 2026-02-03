@@ -1,10 +1,13 @@
+---
+description: Writes a serialized JSON object to a file
+---
+
 ## `writeJson`
 
 ### Signature
 
 ```solidity
 function writeJson(string calldata json, string calldata path) external;
-
 function writeJson(string calldata json, string calldata path, string calldata valueKey) external;
 ```
 
@@ -12,138 +15,86 @@ function writeJson(string calldata json, string calldata path, string calldata v
 
 Writes a serialized JSON object to a file.
 
-The argument `json` must be a JSON object in stringified form. For example:
+If no `valueKey` is provided, the JSON object will be written to a new file (overwriting if it exists).
 
-```text
-{ "boolean": true, "number": 342, "object": { "title": "finally json serialization" } }
+If a `valueKey` is provided, the file must already exist and be valid JSON. The value at the JSONPath `valueKey` will be replaced with the new JSON object.
+
+### Parameters
+
+| Parameter  | Type     | Description                                        |
+|------------|----------|----------------------------------------------------|
+| `json`     | `string` | The JSON object as a stringified string            |
+| `path`     | `string` | The file path to write to                          |
+| `valueKey` | `string` | JSONPath to the value to replace (optional)        |
+
+### JSONPath Syntax
+
+:::warning[Path Format]
+JSON paths must start with `.` or `$`. Using bare key names like `"key.foo"` will fail silently. Use `".key.foo"` or `"$.key.foo"` instead.
+:::
+
+| Path | Description |
+|------|-------------|
+| `.key` | Access root-level property |
+| `$.key` | Equivalent to above (explicit root) |
+| `.obj1.obj2` | Access nested property |
+| `..keyName` | Find key anywhere in document |
+
+### Examples
+
+#### Writing a new JSON file
+
+```solidity [test/WriteJson.t.sol]
+string memory jsonObj = '{ "boolean": true, "number": 342, "myObject": { "title": "finally json serialization" } }';
+vm.writeJson(jsonObj, "./output/example.json");
 ```
 
-This is usually built through [serializeJson](/reference/cheatcodes/serialize-json.mdx).
+#### Updating existing values
 
-The argument `path` is the path of the JSON file to write to.
+```solidity [test/WriteJson.t.sol]
+// Replace the value of `myObject` with a new object
+string memory newJsonObj = '{ "aNumber": 123, "aString": "asd" }';
+vm.writeJson(newJsonObj, "./output/example.json", ".myObject");
 
-If no `valueKey` is provided, then the JSON object will be written to a new file. If the file already exists, it will be overwritten.
+// Replace a nested value
+vm.writeJson("my new string", "./output/example.json", ".myObject.aString");
+```
 
-If a `valueKey` is provided, then the file must already exist and be a valid JSON file. The object in that file will be updated by replacing the value at the _JSON path_ `valueKey` with the JSON object `json`.
+Result:
 
-This is useful for replacing some values in a JSON file without having to first parse and then reserialize it. Note that if the specified key, or any of the intermediate ones in the JSON path, don't exist, they will be created.
-
-**Remember:** The file path `path` needs to be in the allowed paths. Read more in [File cheatcodes](/reference/cheatcodes/fs.mdx).
-
-#### JSON Paths
-
-Let's consider the following JSON object:
-
-```json
+```json [output/example.json]
 {
   "boolean": true,
   "number": 342,
-  "obj1": {
+  "myObject": {
     "aNumber": 123,
-    "obj2": {
-      "aNumber": 123,
-      "obj3": {
-        "veryDeep": 13371337
-      }
-    }
+    "aString": "my new string"
   }
 }
 ```
 
-**Important:** JSON paths must be properly formatted to work correctly:
+#### Using descendant search
 
-- **Root object assumption**: The root object is always assumed, so you should start paths with a dot (`.`) or dollar sign (`$`)
-- **Dot notation**: Use `.boolean`, `.number`, `.obj1` to access root-level properties
-- **Nested access**: Use `.obj1.aNumber` or `.obj1.obj2.aNumber` to go deeper into the structure
-- **Descendant search**: Use `..keyName` to search for a key anywhere in a subtree, like `.obj1..veryDeep` or just `..veryDeep`
-
-**Common mistake**: Using bare key names like `"key.foo"` will be silently converted to `"$key.foo"` by the JSONPath parser, which will fail because it looks for a root property named `key.foo`. Instead, use `".key.foo"` or `"$.key.foo"`.
-
-Valid path examples:
-
-- `.boolean` - accesses the boolean property at root level
-- `$.boolean` - equivalent to above using explicit root notation
-- `.obj1.aNumber` - accesses nested property
-- `.obj1..veryDeep` - finds veryDeep anywhere within obj1
-- `..veryDeep` - finds veryDeep anywhere in the document
-
-See the examples to see this in action.
-
-### Examples
-
-#### A simple example
-
-```solidity
-string memory jsonObj = '{ "boolean": true, "number": 342, "myObject": { "title": "finally json serialization" } }';
-vm.writeJson(jsonObj, "./output/example.json");
-
-// replaces the value of `myObject` with a new object
-string memory newJsonObj = '{ "aNumber": 123, "aString": "asd" }';
-vm.writeJson(newJsonObj, "./output/example.json", ".myObject");
-
-// replaces the value of `aString` in the new object
-vm.writeJson("my new string", "./output/example.json", ".myObject.aString");
-
-// Here's example.json:
-//
-// {
-//   "boolean": true,
-//   "number": 342,
-//   "myObject": {
-//     "aNumber": 123,
-//     "aString": "my new string"
-//   }
-// }
+```solidity [test/WriteJson.t.sol]
+// Update a deeply nested value using descendant search
+vm.writeJson("13371337", "./output/example.json", "..veryDeep");
 ```
 
-#### A more complex example
+### Gotchas
 
-```solidity
-string memory jsonObj = '{ "boolean": true, "number": 342, "obj1": { "foo": "bar" } }';
-vm.writeJson(jsonObj, "./output/example2.json");
-
-string memory jsonObj2 = '{ "aNumber": 123, "obj2": {} }';
-vm.writeJson(jsonObj2, "./output/example2.json", ".obj1");
-
-string memory jsonObj3 = '{ "aNumber": 123, "obj3": { "veryDeep": 3 } }';
-vm.writeJson(jsonObj3, "./output/example2.json", ".obj1.obj2");
-
-// Here's example2.json so far:
-//
-// {
-//   "boolean": true,
-//   "number": 342,
-//   "obj1": {
-//     "aNumber": 123,
-//     "obj2": {
-//       "aNumber": 123,
-//       "obj3": {
-//         "veryDeep": 3
-//       }
-//     }
-//   }
-// }
-
-// Note that the JSON object is just the value 13371337 in this case.
-vm.writeJson("13371337", "./output/example2.json", "..veryDeep");
-
-// Here's the final example2.json:
-//
-// {
-//   "boolean": true,
-//   "number": 342,
-//   "obj1": {
-//     "aNumber": 123,
-//     "obj2": {
-//       "aNumber": 123,
-//       "obj3": {
-//         "veryDeep": 13371337
-//       }
-//     }
-//   }
-// }
+:::warning[File Permissions]
+The file path needs to be in the allowed paths. Configure in `foundry.toml`:
+```toml
+fs_permissions = [{ access = "read-write", path = "./output" }]
 ```
+:::
 
-### SEE ALSO
+:::note
+If the specified key or any intermediate keys in the JSON path don't exist, they will be created automatically.
+:::
 
-- [serializeJson](/reference/cheatcodes/serialize-json.mdx)
+### Related Cheatcodes
+
+- [`serializeJson`](/reference/cheatcodes/serialize-json) - Build JSON objects programmatically
+- [`writeToml`](/reference/cheatcodes/write-toml) - Write JSON as TOML
+- [`parseJson`](/reference/cheatcodes/parse-json) - Parse JSON files

@@ -1,98 +1,86 @@
-## File cheat codes
+---
+description: File system operations for reading, writing, and managing files
+---
+
+## File Cheatcodes
 
 ### Signature
 
 ```solidity
-// Reads the entire content of file to string, (path) => (data)
-function readFile(string calldata) external returns (string memory);
-/// Reads the entire content of file as binary. `path` is relative to the project root.
+function readFile(string calldata path) external returns (string memory data);
 function readFileBinary(string calldata path) external view returns (bytes memory data);
-/// Reads the directory at the given path recursively, up to `maxDepth`.
-/// `maxDepth` defaults to 1, meaning only the direct children of the given directory will be returned.
-/// Follows symbolic links if `followLinks` is true.
+function readLine(string calldata path) external returns (string memory line);
 function readDir(string calldata path) external view returns (DirEntry[] memory entries);
-// Reads next line of file to string, (path) => (line)
-function readLine(string calldata) external returns (string memory);
-/// Reads a symbolic link, returning the path that the link points to.
-/// This cheatcode will revert in the following situations, but is not limited to just these cases:
-/// - `path` is not a symbolic link.
-/// - `path` does not exist.
 function readLink(string calldata linkPath) external view returns (string memory targetPath);
-// Writes data to file, creating a file if it does not exist, and entirely replacing its contents if it does.
-// (path, data) => ()
-function writeFile(string calldata, string calldata) external;
-// Writes line to file, creating a file if it does not exist.
-// (path, data) => ()
-function writeLine(string calldata, string calldata) external;
-// Closes file for reading, resetting the offset and allowing to read it from beginning with readLine.
-// (path) => ()
-function closeFile(string calldata) external;
-// Removes file. This cheatcode will revert in the following situations, but is not limited to just these cases:
-// - Path points to a directory.
-// - The file doesn't exist.
-// - The user lacks permissions to remove the file.
-// (path) => ()
-function removeFile(string calldata) external;
-// Returns true if the given path points to an existing entity, else returns false
-// (path) => (bool)
-function exists(string calldata) external returns (bool);
-// Returns true if the path exists on disk and is pointing at a regular file, else returns false
-// (path) => (bool)
-function isFile(string calldata) external returns (bool);
-// Returns true if the path exists on disk and is pointing at a directory, else returns false
-// (path) => (bool)
-function isDir(string calldata) external returns (bool);
+function writeFile(string calldata path, string calldata data) external;
+function writeLine(string calldata path, string calldata data) external;
+function closeFile(string calldata path) external;
+function removeFile(string calldata path) external;
+function exists(string calldata path) external returns (bool);
+function isFile(string calldata path) external returns (bool);
+function isDir(string calldata path) external returns (bool);
 ```
 
 ### Description
 
-These cheatcodes provided by [forge-std](https://github.com/foundry-rs/forge-std) can be used for filesystem manipulation operations.
+Cheatcodes for filesystem manipulation operations. All paths are relative to the project root.
 
-By default, filesystem access is disallowed and requires the `fs_permissions` setting in `foundry.toml`:
+:::warning[Permissions Required]
+By default, filesystem access is disallowed. You must configure `fs_permissions` in `foundry.toml` to enable access.
+:::
 
-```toml
-# Configures permissions for cheatcodes that touch the filesystem like `vm.writeFile`
-# `access` restricts how the `path` can be accessed via cheatcodes
-#    `read-write` | `true`   => `read` + `write` access allowed (`vm.readFile` + `vm.writeFile`)
-#    `none`| `false` => no access
-#    `read` => only read access (`vm.readFile`)
-#    `write` => only write access (`vm.writeFile`)
-# The `allowed_paths` further lists the paths that are considered, e.g. `./` represents the project root directory
-# By default _no_ fs access permission is granted, and _no_ paths are allowed
-# following example enables read access for the project dir _only_:
-#       `fs_permissions = [{ access = "read", path = "./"}]`
-fs_permissions = [] # default: all file cheat codes are disabled
+### Configuration
+
+Configure filesystem permissions in your `foundry.toml`:
+
+```toml [foundry.toml]
+# Configures permissions for cheatcodes that touch the filesystem
+# `access` options:
+#   - `read-write` or `true` => read + write access
+#   - `read` => only read access
+#   - `write` => only write access  
+#   - `none` or `false` => no access
+fs_permissions = [{ access = "read-write", path = "./" }]
 ```
+
+### Functions
+
+#### Reading Files
+
+| Function         | Description                                    |
+|------------------|------------------------------------------------|
+| `readFile`       | Reads entire file contents as string           |
+| `readFileBinary` | Reads entire file contents as bytes            |
+| `readLine`       | Reads next line from file                      |
+| `readDir`        | Reads directory entries (up to `maxDepth`)     |
+| `readLink`       | Reads symbolic link target path                |
+
+#### Writing Files
+
+| Function    | Description                                         |
+|-------------|-----------------------------------------------------|
+| `writeFile` | Writes data to file, creating or overwriting        |
+| `writeLine` | Appends a line to file, creating if needed          |
+
+#### File Management
+
+| Function     | Description                                |
+|--------------|--------------------------------------------|
+| `closeFile`  | Closes file, resetting read offset         |
+| `removeFile` | Deletes a file                             |
+| `exists`     | Returns true if path exists                |
+| `isFile`     | Returns true if path is a regular file     |
+| `isDir`      | Returns true if path is a directory        |
 
 ### Examples
 
-Append a line to a file, this will create the file if it does not exist yet
+#### Write and read a file
 
-This requires read access to the file / project root
+Requires read-write access:
 
-```toml
-fs_permissions = [{ access = "read", path = "./"}]
-```
+:::code-group
 
-```solidity
-string memory path = "output.txt";
-
-string memory line1 = "first line";
-vm.writeLine(path, line1);
-
-string memory line2 = "second line";
-vm.writeLine(path, line2);
-```
-
-Write to and read from a file
-
-This requires read-write access to file / project root:
-
-```toml
-fs_permissions = [{ access = "read-write", path = "./"}]
-```
-
-```solidity
+```solidity [test/FileSystem.t.sol]
 string memory path = "file.txt";
 string memory data = "hello world";
 vm.writeFile(path, data);
@@ -100,37 +88,69 @@ vm.writeFile(path, data);
 assertEq(vm.readFile(path), data);
 ```
 
-Remove a file
-
-This requires write access to file / project root:
-
-```toml
-fs_permissions = [{ access = "write", path = "./"}]
+```toml [foundry.toml]
+fs_permissions = [{ access = "read-write", path = "./" }]
 ```
 
-```solidity
+:::
+
+#### Append lines to a file
+
+```solidity [test/FileSystem.t.sol]
+string memory path = "output.txt";
+
+vm.writeLine(path, "first line");
+vm.writeLine(path, "second line");
+```
+
+#### Remove a file
+
+Requires write access:
+
+:::code-group
+
+```solidity [test/FileSystem.t.sol]
 string memory path = "file.txt";
 vm.removeFile(path);
 
-assertFalse(vm.exists(validPath));
+assertFalse(vm.exists(path));
 ```
 
-Verify that a filesystem path is valid
-
-```solidity
-// Verify that path 'foo/files/bar.txt' exists
-string memory validPath = "foo/files/bar.txt";
-assertTrue(vm.exists(validPath));
+```toml [foundry.toml]
+fs_permissions = [{ access = "write", path = "./" }]
 ```
 
-Verify that a filesystem path points to a file or directory
+:::
 
-```solidity
-// Verify that path 'foo/file/bar.txt' points to a file
-string memory validFilePath = "foo/files/bar.txt";
-assertTrue(vm.isFile(validFilePath));
+#### Check if paths exist
 
-// Verify that 'foo/file' points to a directory
-string memory validDirPath = "foo/files";
-assertTrue(vm.isDir(validDirPath));
+```solidity [test/FileSystem.t.sol]
+// Check if a path exists
+assertTrue(vm.exists("foo/files/bar.txt"));
+
+// Check if path is a file
+assertTrue(vm.isFile("foo/files/bar.txt"));
+
+// Check if path is a directory
+assertTrue(vm.isDir("foo/files"));
 ```
+
+### Gotchas
+
+:::warning[Path Permissions]
+If you receive "The path is not allowed to be accessed for read operations", ensure the path is covered by your `fs_permissions` configuration.
+:::
+
+:::note[removeFile Restrictions]
+`removeFile` will revert if:
+- The path points to a directory
+- The file doesn't exist
+- The user lacks permissions to remove the file
+:::
+
+### Related Cheatcodes
+
+- [`parseJson`](/reference/cheatcodes/parse-json) - Parse JSON files read from disk
+- [`parseToml`](/reference/cheatcodes/parse-toml) - Parse TOML files read from disk
+- [`writeJson`](/reference/cheatcodes/write-json) - Write JSON to files
+- [`writeToml`](/reference/cheatcodes/write-toml) - Write TOML to files

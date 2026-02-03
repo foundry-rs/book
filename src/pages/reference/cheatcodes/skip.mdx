@@ -1,32 +1,47 @@
+---
+description: Marks a test as skipped conditionally
+---
+
 ## `skip`
 
-## Signature
+### Signature
 
 ```solidity
-function skip(bool skip) external;
+function skip(bool skipTest) external;
 ```
 
-## Description
+### Description
 
-Marks a test as skipped, conditionally. It must be called at the top of the test to ensure it is skipped without any execution.
+Marks a test as skipped conditionally. Must be called at the top of the test to ensure it is skipped without any execution.
 
-If `skip` is called with a false boolean, it will not skip the test.
+If called with `false`, the test will not be skipped.
 
-Tests marked as skipped will appear with a `[SKIPPED]` label on the test runner and on the summary, to easily identify skipped tests.
+Tests marked as skipped appear with a `[SKIPPED]` label in the test runner output.
+
+### Parameters
+
+| Parameter  | Type   | Description                       |
+|------------|--------|-----------------------------------|
+| `skipTest` | `bool` | Whether to skip the test          |
 
 ### Examples
 
-```solidity
-
+```solidity [test/Skip.t.sol]
 function testSkip() public {
     vm.skip(true);
-    /// This revert will not be reached as this test will be skipped.
+    // This revert will not be reached as this test will be skipped
     revert("Should not reach this revert");
 }
 
 function testNotSkip() public {
     vm.skip(false);
-    /// This revert will be reached as this test will not be skipped, and the test will fail.
+    // This revert will be reached as this test will not be skipped
     revert("Should reach this revert");
 }
 ```
+
+### Gotchas
+
+:::warning
+`vm.skip` must be called at the very top of the test function. Any code before it will still execute.
+:::

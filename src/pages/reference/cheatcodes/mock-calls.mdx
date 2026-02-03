@@ -1,75 +1,78 @@
+---
+description: Mocks calls to return different data for each successive invocation
+---
+
 ## `mockCalls`
 
 ### Signature
 
 ```solidity
 function mockCalls(address where, bytes calldata data, bytes[] calldata retdata) external;
-```
-
-```solidity
-function mockCalls(
-    address where,
-    uint256 value,
-    bytes calldata data,
-    bytes[] calldata retdata
-) external;
+function mockCalls(address where, uint256 value, bytes calldata data, bytes[] calldata retdata) external;
 ```
 
 ### Description
 
-Mocks all calls to an address `where` if the call data either strictly or loosely
-matches `data` and returns different data for each call based on the `retdata`
-array values.
+Mocks all calls to an address `where` if the call data either strictly or loosely matches `data` and returns different data for each call based on the `retdata` array values.
 
-See [`mockCall`](/reference/cheatcodes/mock-call.mdx) for more information on mocking calls and
-matching precedence.
+See [`mockCall`](/reference/cheatcodes/mock-call) for more information on mocking calls and matching precedence.
 
-> ℹ️ **Note**
->
-> Any invocation of the mocked call beyond the number of elements in `retdata`
-> will receive the last `retdata` element in response. `clearMockedCalls` can be
-> called to clear the mock
+### Parameters
+
+| Parameter | Type       | Description                                          |
+|-----------|------------|------------------------------------------------------|
+| `where`   | `address`  | The address to mock calls to                         |
+| `value`   | `uint256`  | The `msg.value` to match (optional)                  |
+| `data`    | `bytes`    | The calldata to match (can be partial)               |
+| `retdata` | `bytes[]`  | Array of return values for successive calls          |
 
 ### Examples
 
-Mocking multiple `balanceOf(address)` calls:
-
-```solidity
-function testMockCall() public {
+```solidity [test/MockCalls.t.sol]
+function testMockCalls() public {
     bytes[] memory mocks = new bytes[](2);
     mocks[0] = abi.encode(2 ether);
     mocks[1] = abi.encode(1 ether);
 
     vm.mockCalls(
-        address(0),
-        abi.encodeWithSelector(IERC20.balanceOf.selector, address(1)),
+        address(token),
+        abi.encodeWithSelector(IERC20.balanceOf.selector, alice),
         mocks
     );
 
-    assertEq(IERC20(address(0)).balanceOf(address(1)), 2 ether);
-    assertEq(IERC20(address(0)).balanceOf(address(1)), 1 ether);
+    assertEq(token.balanceOf(alice), 2 ether); // First call
+    assertEq(token.balanceOf(alice), 1 ether); // Second call
 }
 ```
 
-Mocking multiple calls with `msg.value`:
+#### Mocking with msg.value
 
-```solidity
-function testMockCallsWithMsgValue() public {
+```solidity [test/MockCallsValue.t.sol]
+function testMockCallsValue() public {
     bytes[] memory mocks = new bytes[](2);
     mocks[0] = abi.encode(2 ether);
     mocks[1] = abi.encode(1 ether);
 
     vm.mockCalls(
-        address(0),
+        address(pool),
         1 ether,
-        abi.encodeWithSelector(DexPool.swapETHForToken.selector),
+        abi.encodeWithSelector(pool.swap.selector),
         mocks
     );
 
-    uint tokenAmount1 = DexPool(address(0)).swapETHForToken{value: 1 ether}();
-    uint tokenAmount2 = DexPool(address(0)).swapETHForToken{value: 1 ether}();
-
-    assertEq(tokenAmount1, 2 ether);
-    assertEq(tokenAmount2, 1 ether);
+    assertEq(pool.swap{value: 1 ether}(), 2 ether);
+    assertEq(pool.swap{value: 1 ether}(), 1 ether);
 }
 ```
+
+### Gotchas
+
+:::note
+Any invocation beyond the number of elements in `retdata` will receive the **last** `retdata` element in response. Use [`clearMockedCalls`](/reference/cheatcodes/clear-mocked-calls) to reset the mock.
+:::
+
+### Related Cheatcodes
+
+- [`mockCall`](/reference/cheatcodes/mock-call) - Mock calls with a single return value
+- [`mockCallRevert`](/reference/cheatcodes/mock-call-revert) - Mock calls to revert
+- [`clearMockedCalls`](/reference/cheatcodes/clear-mocked-calls) - Clear all mocked calls

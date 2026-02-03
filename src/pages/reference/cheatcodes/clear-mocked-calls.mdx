@@ -1,3 +1,7 @@
+---
+description: Clears all mocked calls
+---
+
 ## `clearMockedCalls`
 
 ### Signature
@@ -8,4 +12,28 @@ function clearMockedCalls() external;
 
 ### Description
 
-Clears all [mocked calls](/reference/cheatcodes/mock-call.mdx).
+Clears all mocked calls set up by [`mockCall`](/reference/cheatcodes/mock-call), [`mockCalls`](/reference/cheatcodes/mock-calls), and [`mockCallRevert`](/reference/cheatcodes/mock-call-revert).
+
+### Examples
+
+```solidity [test/ClearMockedCalls.t.sol]
+function testClearMockedCalls() public {
+    vm.mockCall(
+        address(token),
+        abi.encodeWithSelector(IERC20.balanceOf.selector),
+        abi.encode(100 ether)
+    );
+    
+    assertEq(token.balanceOf(alice), 100 ether); // Mocked
+    
+    vm.clearMockedCalls();
+    
+    assertEq(token.balanceOf(alice), 0); // Real value
+}
+```
+
+### Related Cheatcodes
+
+- [`mockCall`](/reference/cheatcodes/mock-call) - Mock calls to return data
+- [`mockCalls`](/reference/cheatcodes/mock-calls) - Mock calls with different return values per invocation
+- [`mockCallRevert`](/reference/cheatcodes/mock-call-revert) - Mock calls to revert

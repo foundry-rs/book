@@ -1,24 +1,46 @@
+---
+description: Sets block.timestamp to a specified value in Forge tests
+---
+
 ## `warp`
 
 ### Signature
 
 ```solidity
-function warp(uint256) external;
+function warp(uint256 timestamp) external;
 ```
 
 ### Description
 
-Sets `block.timestamp`.
+Sets `block.timestamp` to the specified value.
+
+### Parameters
+
+| Parameter   | Type      | Description                          |
+|-------------|-----------|--------------------------------------|
+| `timestamp` | `uint256` | The new block timestamp to set       |
 
 ### Examples
 
-```solidity
-vm.warp(1641070800);
-emit log_uint(block.timestamp); // 1641070800
+```solidity [test/Warp.t.sol]
+function testWarp() public {
+    vm.warp(1641070800);
+    assertEq(block.timestamp, 1641070800);
+}
 ```
 
-### SEE ALSO
+### Gotchas
 
-Forge Standard Library
+:::warning
+When using `--via-ir` compilation, direct access to `block.timestamp` may be optimized to a constant value. Use [`vm.getBlockTimestamp()`](/reference/cheatcodes/get-block-timestamp) instead to ensure you get the current value after warping.
+:::
 
-[`skip`](/reference/forge-std/skip.mdx), [`rewind`](/reference/forge-std/rewind.mdx)
+### Related Cheatcodes
+
+- [`getBlockTimestamp`](/reference/cheatcodes/get-block-timestamp) - Gets the current block timestamp (avoids IR optimization issues)
+- [`roll`](/reference/cheatcodes/roll) - Sets `block.number`
+
+### See Also
+
+- [`skip`](/reference/forge-std/skip) - Skip forward in time
+- [`rewind`](/reference/forge-std/rewind) - Rewind time

@@ -1,3 +1,7 @@
+---
+description: Pauses execution for a specified duration
+---
+
 ## `sleep`
 
 ### Signature
@@ -10,9 +14,18 @@ function sleep(uint256 milliseconds) external;
 
 Sleeps for a given amount of milliseconds.
 
+### Parameters
+
+| Parameter      | Type      | Description                      |
+|----------------|-----------|----------------------------------|
+| `milliseconds` | `uint256` | Duration to sleep in milliseconds |
+
 ### Examples
 
-```solidity
+```solidity [test/Sleep.t.sol]
 vm.sleep(10_000); // Halts execution for 10 seconds
 ```
 
+### Related Cheatcodes
+
+- [`unixTime`](/reference/cheatcodes/unix-time) - Returns the current unix timestamp in milliseconds

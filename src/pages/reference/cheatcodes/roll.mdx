@@ -1,22 +1,42 @@
+---
+description: Sets block.number to a specified value in Forge tests
+---
+
 ## `roll`
 
 ### Signature
 
 ```solidity
-function roll(uint256) external;
+function roll(uint256 blockNumber) external;
 ```
 
 ### Description
 
-Sets `block.number`.
+Sets `block.number` to the specified value.
+
+### Parameters
+
+| Parameter     | Type      | Description                        |
+|---------------|-----------|-----------------------------------|
+| `blockNumber` | `uint256` | The new block number to set       |
 
 ### Examples
 
-```solidity
-vm.roll(100);
-emit log_uint(block.number); // 100
+```solidity [test/Roll.t.sol]
+function testRoll() public {
+    vm.roll(100);
+    assertEq(block.number, 100);
+}
 ```
 
-### SEE ALSO
+### Gotchas
 
-- [rollFork](/reference/cheatcodes/roll-fork.mdx)
+:::warning
+When using `--via-ir` compilation, direct access to `block.number` may be optimized to a constant value. Use [`vm.getBlockNumber()`](/reference/cheatcodes/get-block-number) instead to ensure you get the current value after rolling.
+:::
+
+### Related Cheatcodes
+
+- [`getBlockNumber`](/reference/cheatcodes/get-block-number) - Gets the current block number (avoids IR optimization issues)
+- [`rollFork`](/reference/cheatcodes/roll-fork) - Rolls the fork to a specific block
+- [`warp`](/reference/cheatcodes/warp) - Sets `block.timestamp`

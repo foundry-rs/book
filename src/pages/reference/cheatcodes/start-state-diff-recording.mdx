@@ -1,13 +1,35 @@
+---
+description: Starts recording all state changes during execution
+---
+
 ## `startStateDiffRecording`
 
 ### Signature
 
 ```solidity
-function startStateDiffRecording()
+function startStateDiffRecording() external;
 ```
 
 ### Description
 
-Records all state changes as part of CREATE, CALL or SELFDESTRUCT opcodes in order,
-along with the context of the calls.
-Refer to [`stopAndReturnStateDiff`](/reference/cheatcodes/stop-and-return-state-diff.mdx) for more details on how to access and interpret the recorded state changes.
+Records all state changes as part of CREATE, CALL, or SELFDESTRUCT opcodes in order, along with the context of the calls.
+
+Refer to [`stopAndReturnStateDiff`](/reference/cheatcodes/stop-and-return-state-diff) for details on how to access and interpret the recorded state changes.
+
+### Examples
+
+```solidity [test/StateDiffRecording.t.sol]
+function testStateDiffRecording() public {
+    vm.startStateDiffRecording();
+    
+    // Perform operations
+    myContract.setValue(100);
+    
+    Vm.AccountAccess[] memory accesses = vm.stopAndReturnStateDiff();
+    // Inspect the recorded state changes
+}
+```
+
+### Related Cheatcodes
+
+- [`stopAndReturnStateDiff`](/reference/cheatcodes/stop-and-return-state-diff) - Stop recording and return state changes

@@ -1,27 +1,22 @@
+---
+description: Checks the current Forge execution context
+---
+
 ## `isContext`
 
 ### Signature
 
 ```solidity
 enum ForgeContext {
-    // Test group execution context (test, coverage or snapshot).
-    TestGroup,
-    // `forge test` execution context.
-    Test,
-    // `forge coverage` execution context.
-    Coverage,
-    // `forge snapshot` execution context.
-    Snapshot,
-    // Script group execution context (dry run, broadcast or resume).
-    ScriptGroup,
-    // `forge script` execution context.
-    ScriptDryRun,
-    // `forge script --broadcast` execution context.
-    ScriptBroadcast,
-    // `forge script --resume` execution context.
-    ScriptResume,
-    // Unknown `forge` execution context.
-    Unknown
+    TestGroup,       // Test, coverage, or snapshot execution
+    Test,            // forge test
+    Coverage,        // forge coverage
+    Snapshot,        // forge snapshot
+    ScriptGroup,     // Dry run, broadcast, or resume
+    ScriptDryRun,    // forge script (no broadcast)
+    ScriptBroadcast, // forge script --broadcast
+    ScriptResume,    // forge script --resume
+    Unknown          // Unknown context
 }
 
 function isContext(ForgeContext context) external view returns (bool result);
@@ -29,22 +24,58 @@ function isContext(ForgeContext context) external view returns (bool result);
 
 ### Description
 
-Checks the current `forge` execution context.
+Checks the current Forge execution context. This allows you to conditionally execute code based on whether you're running tests, coverage, or scripts.
+
+### Parameters
+
+| Parameter | Type           | Description                         |
+|-----------|----------------|-------------------------------------|
+| `context` | `ForgeContext` | The context to check against        |
+
+### Returns
+
+| Parameter | Type   | Description                                    |
+|-----------|--------|------------------------------------------------|
+| `result`  | `bool` | `true` if currently in the specified context   |
 
 ### Examples
 
-```solidity
+```solidity [script/Deploy.s.sol]
 import {VmSafe} from "forge-std/Vm.sol";
 
-if (vm.isContext(VmSafe.ForgeContext.ScriptDryRun)) {
-    // execute specific script dry run logic
-}
+function run() public {
+    if (vm.isContext(VmSafe.ForgeContext.ScriptDryRun)) {
+        // Dry run specific logic
+        console.log("Running in dry run mode");
+    }
 
-if (vm.isContext(VmSafe.ForgeContext.ScriptBroadcast)) {
-    // execute specific script broadcast logic
-}
+    if (vm.isContext(VmSafe.ForgeContext.ScriptBroadcast)) {
+        // Broadcast specific logic
+        console.log("Broadcasting transactions");
+    }
 
-if (vm.isContext(VmSafe.ForgeContext.ScriptResume)) {
-    // execute specific script resume logic
+    if (vm.isContext(VmSafe.ForgeContext.Test)) {
+        // Test specific logic
+        revert("This script should not be run as a test");
+    }
 }
 ```
+
+#### Using group contexts
+
+```solidity [script/Deploy.s.sol]
+function run() public {
+    if (vm.isContext(VmSafe.ForgeContext.TestGroup)) {
+        // Runs for test, coverage, AND snapshot
+    }
+
+    if (vm.isContext(VmSafe.ForgeContext.ScriptGroup)) {
+        // Runs for dry run, broadcast, AND resume
+    }
+}
+```
+
+### Related Cheatcodes
+
+- [`broadcast`](/reference/cheatcodes/broadcast) - Broadcast a single call
+- [`startBroadcast`](/reference/cheatcodes/start-broadcast) - Broadcast all subsequent calls

@@ -1,44 +1,65 @@
+---
+description: Reads an environment variable as bytes or bytes[]
+---
+
 ## `envBytes`
 
 ### Signature
 
 ```solidity
-function envBytes(bytes calldata key) external returns (bytes value);
-```
-
-```solidity
-function envBytes(bytes calldata key, bytes calldata delimiter) external returns (bytes[] memory values);
+function envBytes(string calldata key) external returns (bytes memory value);
+function envBytes(string calldata key, string calldata delimiter) external returns (bytes[] memory values);
 ```
 
 ### Description
 
-Read an environment variable as `bytes` or `bytes[]`.
+Reads an environment variable as `bytes` or `bytes[]`.
 
-### Tips
+### Parameters
 
-- For arrays, you can specify the delimiter used to separate the values with the `delimiter` parameter.
+| Parameter   | Type     | Description                               |
+|-------------|----------|-------------------------------------------|
+| `key`       | `string` | The environment variable name             |
+| `delimiter` | `string` | The delimiter used to separate array values (optional) |
+
+### Returns
+
+| Type      | Description                                 |
+|-----------|---------------------------------------------|
+| `bytes`   | The environment variable value as bytes     |
+| `bytes[]` | The environment variable value as a bytes array |
 
 ### Examples
 
 #### Single Value
-With environment variable `BYTES_VALUE=0x7109709ECfa91a80626fF3989D68f67F5b1DD12D`;
-```solidity
-bytes memory key = "BYTES_VALUE";
-bytes expected = hex"7109709ECfa91a80626fF3989D68f67F5b1DD12D";
-bytes output = cheats.envBytes(key);
+
+With environment variable `BYTES_VALUE=0x7109709ECfa91a80626fF3989D68f67F5b1DD12D`:
+
+```solidity [test/EnvBytes.t.sol]
+string memory key = "BYTES_VALUE";
+bytes memory expected = hex"7109709ECfa91a80626fF3989D68f67F5b1DD12D";
+bytes memory output = vm.envBytes(key);
 assertEq(output, expected);
 ```
 
 #### Array
-With environment variable `BYTES_VALUE=0x7109709ECfa91a80626fF3989D68f67F5b1DD12D,0x00`;
-```solidity
-bytes memory key = "BYTES_VALUES";
-bytes memory delimiter = ",";
+
+With environment variable `BYTES_VALUES=0x7109709ECfa91a80626fF3989D68f67F5b1DD12D,0x00`:
+
+```solidity [test/EnvBytes.t.sol]
+string memory key = "BYTES_VALUES";
+string memory delimiter = ",";
 bytes[] memory expected = new bytes[](2);
 expected[0] = hex"7109709ECfa91a80626fF3989D68f67F5b1DD12D";
 expected[1] = hex"00";
-bytes[] memory output = cheats.envBytes(key, delimiter);
+bytes[] memory output = vm.envBytes(key, delimiter);
 for (uint i = 0; i < expected.length; ++i) {
     assert(keccak256(abi.encodePacked((output[i]))) == keccak256(abi.encodePacked((expected[i]))));
 }
 ```
+
+### Related Cheatcodes
+
+- [`envOr`](/reference/cheatcodes/env-or) - Read environment variables with default values
+- [`envBytes32`](/reference/cheatcodes/env-bytes32) - Read environment variables as bytes32
+- [`envString`](/reference/cheatcodes/env-string) - Read environment variables as string
