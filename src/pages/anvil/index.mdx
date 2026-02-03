@@ -18,23 +18,31 @@ Anvil is a fast local Ethereum node for development and testing. It runs entirel
 
 ### Common workflows
 
-```bash [Start a local node]
+:::code-group
+
+```bash [Start local node]
 $ anvil
 ```
 
-```bash [Start with a specific number of accounts]
+```bash [Custom accounts]
 $ anvil --accounts 20
 ```
+
+:::
+
+:::code-group
 
 ```bash [Fork mainnet]
 $ anvil --fork-url https://ethereum.reth.rs/rpc
 ```
 
-```bash [Fork at a specific block]
+```bash [Fork at block]
 $ anvil --fork-url https://ethereum.reth.rs/rpc --fork-block-number 18000000
 ```
 
-```bash [Enable auto-impersonation]
+:::
+
+```bash [Auto-impersonate]
 $ anvil --auto-impersonate
 ```
 

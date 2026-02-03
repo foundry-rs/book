@@ -113,15 +113,31 @@ Use `-vvv` for debugging failures, `-vvvv` when you need to see successful test 
 
 Run specific tests:
 
-```bash [By name]
-$ forge test --match-test test_Increment
+By name:
+
+:::terminal
+```bash
+// [!include ~/snippets/output/test_filters/forge-test-match-test:command]
 ```
 
-```bash [By contract]
-$ forge test --match-contract CounterTest
+```ansi
+// [!include ~/snippets/output/test_filters/forge-test-match-test:output]
+```
+:::
+
+By contract:
+
+:::terminal
+```bash
+// [!include ~/snippets/output/test_filters/forge-test-match-contract:command]
 ```
 
-By file path:
+```ansi
+// [!include ~/snippets/output/test_filters/forge-test-match-contract:output]
+```
+:::
+
+By path:
 
 :::terminal
 ```bash

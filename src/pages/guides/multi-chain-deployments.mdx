@@ -138,6 +138,8 @@ $ forge script script/DeployCreate2.s.sol --broadcast --rpc-url arbitrum
 
 For more flexibility, use environment variables:
 
+:::code-group
+
 ```solidity [script/Deploy.s.sol]
 function getConfig() internal view returns (Config memory) {
     return Config({
@@ -149,12 +151,14 @@ function getConfig() internal view returns (Config memory) {
 ```
 
 ```bash [.env]
-$ ADMIN_ADDRESS=0x1234567890123456789012345678901234567890
-$ INITIAL_SUPPLY=1000000000000000000000000
-$ WETH_1=0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
-$ WETH_10=0x4200000000000000000000000000000000000006
-$ WETH_42161=0x82aF49447D8a07e3bd95BD0d56f35241523fBab1
+ADMIN_ADDRESS=0x1234567890123456789012345678901234567890
+INITIAL_SUPPLY=1000000000000000000000000
+WETH_1=0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
+WETH_10=0x4200000000000000000000000000000000000006
+WETH_42161=0x82aF49447D8a07e3bd95BD0d56f35241523fBab1
 ```
+
+:::
 
 ### Deployment manifest
 

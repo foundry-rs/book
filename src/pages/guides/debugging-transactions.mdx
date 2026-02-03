@@ -11,7 +11,7 @@ This guide covers replaying and debugging transactions using `cast run`, analyzi
 Use `cast run` to replay any transaction locally:
 
 ```bash
-$ cast run $TX_HASH --rpc-url https://ethereum.reth.rs/rpc # [!code hl]
+$ cast run $TX_HASH --rpc-url https://ethereum.reth.rs/rpc
 ```
 
 This executes the transaction against the state at the block where it was mined, showing the full execution trace.
@@ -71,8 +71,7 @@ $ cast run $TX_HASH --rpc-url https://ethereum.reth.rs/rpc 2>&1 | grep -A5 "reve
 
 ```bash
 $ cast run 0x1234... --rpc-url https://ethereum.reth.rs/rpc
-$ ...
-$ Revert: InsufficientBalance(1000000000000000000, 500000000000000000)
+// @error: Revert: InsufficientBalance(1000000000000000000, 500000000000000000)
 ```
 
 For custom errors, ensure you have the contract ABI available:
@@ -182,7 +181,7 @@ Error: Stack too deep
 
 **Diagnosis**: Too many local variables in a function.
 
-**Solution**: Reduce local variables or use structs.
+**Solution**: Reduce local variables or use structs. See the [Stack Too Deep guide](/guides/stack-too-deep) for detailed solutions.
 
 #### Invalid opcode
 

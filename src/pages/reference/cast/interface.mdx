@@ -34,6 +34,13 @@ Options:
           
           If not specified, the interface will be output to stdout.
 
+      --flatten
+          If set, generate all types in a single interface, inlining any
+          inherited or library types.
+          
+          This can fail if there are structs with the same name in different
+          interfaces.
+
   -e, --etherscan-api-key <KEY>
           The Etherscan (or equivalent) API key
           
