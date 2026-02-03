@@ -3,12 +3,13 @@
 /.vscode
 
 /cache/
-/vocs/docs/snippets/projects/**/cache/
+/docs/snippets/projects/**/cache/
 /out/
-/vocs/docs/snippets/projects/**/out/
+/docs/snippets/projects/**/out/
 
-/vocs/node_modules
-/vocs/dist
-/vocs/docs/dist
+/node_modules
+/dist
+/docs/dist
+/.vocs
 _
 links-report.json

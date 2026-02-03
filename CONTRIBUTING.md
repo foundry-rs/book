@@ -156,13 +156,13 @@ Each output file has three anchors:
 // [!include ~/snippets/output/abc/xyz:output]
 ```
 
-Learn more in the [output folder](./vocs/docs/snippets/output).
+Learn more in the [output folder](./docs/snippets/output).
 
 ---
 
 #### Source Code Snippets
 
-Do **not** inline Solidity code. Instead, include source files from the [projects folder](./vocs/docs/snippets/projects):
+Do **not** inline Solidity code. Instead, include source files from the [projects folder](./docs/snippets/projects):
 
 ```md
 // [!include ~/snippets/projects/hello_foundry/src/Counter.sol]

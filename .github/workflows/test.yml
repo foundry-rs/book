@@ -29,4 +29,4 @@ jobs:
         uses: oven-sh/setup-bun@3d267786b128fe76c2f16a390aa2448b815359f3 # v2
 
       - name: Build Vocs
-        run: cd vocs && bun install && bun run build
+        run: bun install && bun run build
