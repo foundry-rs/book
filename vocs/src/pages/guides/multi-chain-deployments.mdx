@@ -83,7 +83,11 @@ contract DeployScript is Script {
 
 ### Deterministic addresses with CREATE2
 
-Deploy to the same address on all chains using CREATE2:
+Deploy to the same address on all chains using CREATE2. See the [Deterministic Deployments guide](/guides/deterministic-deployments-using-create2) for full configuration requirements.
+
+:::warning
+Using `block.chainid` in constructors or immutables will change your bytecode per chain, breaking address determinism. Keep chain-specific config in external storage or admin functions.
+:::
 
 ```solidity [script/DeployCreate2.s.sol]
 // SPDX-License-Identifier: MIT

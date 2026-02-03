@@ -7,6 +7,7 @@ export const guidesSidebar: Sidebar = {
       items: [
         { text: "Overview", link: "/guides" },
         { text: "Deploying Contracts", link: "/guides/deploying-contracts" },
+        { text: "Deterministic Deployments (CREATE2)", link: "/guides/deterministic-deployments-using-create2" },
         { text: "Fork Testing", link: "/guides/fork-testing" },
         { text: "Multi-Chain Deployments", link: "/guides/multi-chain-deployments" },
         { text: "Upgrading Contracts", link: "/guides/upgrading-contracts" },

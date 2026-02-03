@@ -97,17 +97,15 @@ $ forge verify-contract $CONTRACT_ADDRESS src/Token.sol:Token \
 
 ### Deterministic addresses with CREATE2
 
-CREATE2 deploys contracts to predictable addresses based on the deployer, salt, and bytecode.
+CREATE2 deploys contracts to predictable addresses based on the deployer, salt, and bytecode. See the [Deterministic Deployments guide](/guides/deterministic-deployments-using-create2) for comprehensive coverage including `foundry.toml` configuration requirements.
 
-#### Using a CREATE2 factory
-
-Deploy through a factory like [CreateX](https://github.com/pcaversaccio/createx):
+Quick example using [CreateX](https://github.com/pcaversaccio/createx):
 
 ```solidity [script/DeployCreate2.s.sol]
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.13;
 
-import {Script} from "forge-std/Script.sol";
+import {Script, console} from "forge-std/Script.sol";
 import {Counter} from "../src/Counter.sol";
 
 interface ICreateX {
@@ -115,14 +113,14 @@ interface ICreateX {
 }
 
 contract DeployCreate2 is Script {
-    ICreateX constant CREATEX = ICreateX(0xba5Ed099633D3B313e4D5F7bdc1305d3c28ba5Ed); // [!code hl]
+    ICreateX constant CREATEX = ICreateX(0xba5Ed099633D3B313e4D5F7bdc1305d3c28ba5Ed);
 
     function run() public {
-        bytes32 salt = keccak256("my-unique-salt-v1"); // [!code hl]
+        bytes32 salt = keccak256("my-unique-salt-v1");
         bytes memory initCode = type(Counter).creationCode;
 
         vm.startBroadcast();
-        address deployed = CREATEX.deployCreate2(salt, initCode); // [!code hl]
+        address deployed = CREATEX.deployCreate2(salt, initCode);
         vm.stopBroadcast();
 
         console.log("Deployed at:", deployed);
@@ -130,37 +128,9 @@ contract DeployCreate2 is Script {
 }
 ```
 
-#### Computing the address beforehand
-
-```solidity
-function computeCreate2Address(
-    bytes32 salt,
-    bytes32 initCodeHash,
-    address deployer
-) internal pure returns (address) {
-    return address(uint160(uint256(keccak256(abi.encodePacked(
-        bytes1(0xff),
-        deployer,
-        salt,
-        initCodeHash
-    )))));
-}
-```
-
-#### Same address across chains
-
-To deploy to the same address on multiple chains:
-
-1. Use the same salt
-2. Use identical bytecode (no immutable chain-specific values in constructor)
-3. Deploy from the same address or use a cross-chain factory like CreateX
-
-```bash
-# Deploy to multiple chains with the same script
-$ forge script script/DeployCreate2.s.sol --broadcast --rpc-url https://ethereum.reth.rs/rpc
-$ forge script script/DeployCreate2.s.sol --broadcast --rpc-url https://sepolia.drpc.org
-$ forge script script/DeployCreate2.s.sol --broadcast --rpc-url https://mainnet.optimism.io
-```
+:::warning
+For deterministic addresses, you must pin your `solc` version, `evm_version`, and disable metadata (`bytecode_hash = "none"`, `cbor_metadata = false`). See the [full configuration guide](/guides/deterministic-deployments-using-create2#configuring-for-determinism).
+:::
 
 ### Deployment script patterns
 
