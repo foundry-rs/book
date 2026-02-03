@@ -1,22 +1,29 @@
 ---
-description: Foundry is a fast, portable, and modular toolkit for Ethereum application development.
+title: Foundry – Ethereum Development Framework
+layout: minimal
+showLogo: false
+showAskAi: false
 ---
 
-import { Cards, Card } from 'vocs'
-import { GitHubStats } from '../components/GitHubStats'
+import { HomePage, Cards, Card } from 'vocs'
 
-# Foundry [Blazing fast smart contract development toolkit]
+<HomePage.Root>
+  <img src="/foundry-banner.png" alt="Foundry" style={{ maxWidth: '600px', width: '100%', margin: '0 auto', borderRadius: '12px' }} />
+  <HomePage.Tagline>Blazing fast smart contract development toolkit</HomePage.Tagline>
 
-<img src="/foundry-banner.png" alt="Foundry" style={{ width: '100%', maxWidth: '2048px', margin: '1rem auto', display: 'block', borderRadius: '8px' }} />
-
-<GitHubStats />
-
-```bash [Install Foundry]
-$ curl -L https://foundry.paradigm.xyz | bash
-$ foundryup
+```bash
+curl -L https://foundry.paradigm.xyz | bash && foundryup
 ```
 
-Start with the [Getting Started guide](/introduction/getting-started) for a full walkthrough.
+  <HomePage.Description>
+    Foundry is a fast, portable, and modular toolkit for Ethereum application development written in Rust. Build, test, debug, deploy, and verify smart contracts with ease.
+  </HomePage.Description>
+  <HomePage.Buttons>
+    <HomePage.Button href="/introduction/getting-started" variant="accent">Get Started</HomePage.Button>
+    <HomePage.Button href="/guides">Guides</HomePage.Button>
+    <HomePage.Button href="https://github.com/foundry-rs/foundry">GitHub</HomePage.Button>
+  </HomePage.Buttons>
+</HomePage.Root>
 
 <Cards>
   <Card
@@ -45,58 +52,4 @@ Start with the [Getting Started guide](/introduction/getting-started) for a full
   />
 </Cards>
 
-## Quick Actions
-
-<Cards>
-  <Card
-    title="Create a project"
-    description="Initialize a new Foundry workspace in seconds."
-    to="/projects"
-  />
-  <Card
-    title="Run tests"
-    description="Execute Solidity tests with verbose traces."
-    to="/forge/testing"
-  />
-  <Card
-    title="Fork mainnet"
-    description="Start Anvil against live state for realistic testing."
-    to="/anvil/forking"
-  />
-  <Card
-    title="Call a contract"
-    description="Query chain data directly from the CLI."
-    to="/cast/reading-chain-data"
-  />
-</Cards>
-
-## Choose Your Path
-
-<Cards>
-  <Card
-    title="Build and test"
-    description="Compile contracts, write tests, and debug failures."
-    to="/forge"
-  />
-  <Card
-    title="Deploy and verify"
-    description="Ship contracts to testnets and mainnet safely."
-    to="/guides/deploying-contracts"
-  />
-  <Card
-    title="Debug transactions"
-    description="Replay and inspect failed transactions and traces."
-    to="/guides/debugging-transactions"
-  />
-  <Card
-    title="Optimize gas"
-    description="Profile gas usage and tighten hot paths."
-    to="/guides/gas-optimization"
-  />
-</Cards>
-
-## Community
-
-- Ask for support in the [Telegram chat](https://t.me/foundry_support) or create an [issue on GitHub](https://github.com/foundry-rs/foundry/issues)
-- Become one of 500+ developers by [contributing](https://github.com/foundry-rs/foundry/blob/master/CONTRIBUTING.md) to Foundry
 

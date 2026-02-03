@@ -9,10 +9,6 @@ import { guidesSidebar } from "./guides";
 
 const docs = [
   {
-    text: "Home",
-    link: "/",
-  },
-  {
     text: "Introduction",
     items: [
       { text: "Installation", link: "/introduction/installation" },
@@ -96,7 +92,7 @@ const docs = [
 
 export const sidebar: Sidebar = {
   "/benchmarks": [],
-  "/": docs,
+  "/": [],
   "/introduction": docs,
   "/projects": docs,
   "/forge": docs,
