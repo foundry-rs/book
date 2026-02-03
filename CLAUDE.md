@@ -33,7 +33,7 @@ bun check-links     # Validate all internal documentation links
   - `/chisel/` - Solidity REPL documentation
 - `/public/` - Static assets (images, diagrams)
 - `/sidebar/` - Navigation configuration (sidebar.ts and modular sections)
-- `/docs/snippets/` - Code examples and auto-generated outputs
+- `/src/snippets/` - Code examples and auto-generated outputs
 
 ### Configuration Files
 - `vocs.config.ts` - Main Vocs configuration (theme, navigation, sponsors)
@@ -42,8 +42,8 @@ bun check-links     # Validate all internal documentation links
 
 ### Documentation Patterns
 - MDX files support frontmatter for metadata
-- Code snippets are pulled from `/docs/snippets/projects/` test projects
-- Auto-generated CLI outputs stored in `/docs/snippets/output/`
+- Code snippets are pulled from `/src/snippets/projects/` test projects
+- Auto-generated CLI outputs stored in `/src/snippets/output/`
 - Images and assets organized by topic in `/public/`
 
 ## Contributing Guidelines

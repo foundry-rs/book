@@ -12,15 +12,25 @@ Solutions to common errors and issues.
 
 The Foundry bin directory isn't in your PATH. Add it:
 
+:::code-group
+
 ```bash [bash/zsh]
 $ export PATH="$HOME/.foundry/bin:$PATH"
 ```
 
-Add this line to your shell config (`~/.bashrc`, `~/.zshrc`, etc.) and restart your terminal.
+```fish [fish]
+$ fish_add_path ~/.foundry/bin
+```
+
+:::
+
+Add this line to your shell config (`~/.bashrc`, `~/.zshrc`, `~/.config/fish/config.fish`, etc.) and restart your terminal.
 
 #### Build fails with missing dependencies
 
 On Linux, you may need build essentials:
+
+:::code-group
 
 ```bash [Ubuntu/Debian]
 $ sudo apt-get install build-essential
@@ -29,6 +39,12 @@ $ sudo apt-get install build-essential
 ```bash [Fedora]
 $ sudo dnf install gcc
 ```
+
+```bash [Arch]
+$ sudo pacman -S base-devel
+```
+
+:::
 
 On macOS, install Xcode command line tools:
 

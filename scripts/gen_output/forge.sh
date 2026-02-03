@@ -23,6 +23,10 @@ gen_forge() {
     forge remappings
 
   in_project test_filters
+  run_command "$OUTPUT_DIR/test_filters/forge-test-match-test" \
+    forge test --match-test test_DepositETH --color always
+  run_command "$OUTPUT_DIR/test_filters/forge-test-match-contract" \
+    forge test --match-contract ComplicatedContractTest --color always
   run_command "$OUTPUT_DIR/test_filters/forge-test-match-contract-and-test" \
     forge test --match-contract ComplicatedContractTest --match-test test_Deposit --color always
   run_command "$OUTPUT_DIR/test_filters/forge-test-match-path" \

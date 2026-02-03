@@ -15,6 +15,9 @@ SCRIPTS="$ROOT/scripts"
 # Force color output from Foundry tools
 export FORCE_COLOR=1
 
+# Disable nightly warning in output
+export FOUNDRY_DISABLE_NIGHTLY_WARNING=1
+
 # Runs a command and outputs text with anchors.
 # The anchors are:
 # - all: The command and output

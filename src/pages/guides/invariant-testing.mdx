@@ -42,6 +42,8 @@ $ forge test --match-contract VaultInvariantTest
 
 Handlers wrap target contracts to constrain inputs and track state:
 
+:::code-group
+
 ```solidity [test/handlers/VaultHandler.sol]
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.13;
@@ -98,24 +100,24 @@ pragma solidity ^0.8.13;
 
 import {Test} from "forge-std/Test.sol";
 import {Vault} from "../src/Vault.sol";
-import {VaultHandler} from "./handlers/VaultHandler.sol";
+import {VaultHandler} from "./handlers/VaultHandler.sol"; // [!code hl]
 
 contract VaultInvariantTest is Test {
     Vault vault;
-    VaultHandler handler;
+    VaultHandler handler; // [!code hl]
 
     function setUp() public {
         vault = new Vault();
-        handler = new VaultHandler(vault);
+        handler = new VaultHandler(vault); // [!code hl]
         
         // Only target the handler, not the vault directly
-        targetContract(address(handler));
+        targetContract(address(handler)); // [!code hl]
     }
 
     function invariant_ConservationOfDeposits() public view {
         assertEq(
             address(vault).balance,
-            handler.ghost_depositSum() - handler.ghost_withdrawSum()
+            handler.ghost_depositSum() - handler.ghost_withdrawSum() // [!code hl]
         );
     }
 
@@ -128,11 +130,13 @@ contract VaultInvariantTest is Test {
 }
 ```
 
+:::
+
 ### Ghost variables
 
 Ghost variables track cumulative state that isn't stored on-chain:
 
-```solidity
+```solidity [test/handlers/TokenHandler.sol]
 contract TokenHandler is Test {
     Token public token;
     
@@ -262,24 +266,26 @@ contract VaultInvariantTest is Test {
 
 Test invariants across multiple contracts:
 
+:::code-group
+
 ```solidity [test/handlers/SystemHandler.sol]
 contract SystemHandler is Test {
-    Vault vault;
-    Token token;
-    Oracle oracle;
+    Vault vault; // [!code hl]
+    Token token; // [!code hl]
+    Oracle oracle; // [!code hl]
 
     function depositAndStake(uint256 amount, uint256 actorSeed) external useActor(actorSeed) {
         amount = bound(amount, 1 ether, 100 ether);
         
-        token.approve(address(vault), amount);
-        vault.depositAndStake(amount);
+        token.approve(address(vault), amount); // [!code hl]
+        vault.depositAndStake(amount); // [!code hl]
         
         ghost_stakedSum += amount;
     }
 
     function updatePrice(uint256 newPrice) external {
         newPrice = bound(newPrice, 0.1 ether, 100 ether);
-        oracle.setPrice(newPrice);
+        oracle.setPrice(newPrice); // [!code hl]
     }
 }
 ```
@@ -288,11 +294,13 @@ contract SystemHandler is Test {
 contract SystemInvariantTest is Test {
     // Cross-contract invariant: vault can always cover withdrawals
     function invariant_VaultSolvency() public view {
-        uint256 vaultValue = vault.totalStaked() * oracle.price() / 1e18;
-        assertGe(vaultValue, vault.totalLiabilities());
+        uint256 vaultValue = vault.totalStaked() * oracle.price() / 1e18; // [!code hl]
+        assertGe(vaultValue, vault.totalLiabilities()); // [!code hl]
     }
 }
 ```
+
+:::
 
 ### Common invariants to test
 

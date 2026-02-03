@@ -8,17 +8,23 @@ Anvil can fork any EVM-compatible chain, allowing you to test against real-world
 
 ### Basic forking
 
-```bash [Fork mainnet]
+```bash
 $ anvil --fork-url https://ethereum.reth.rs/rpc
 ```
 
-```bash [Fork at a specific block]
+You can also fork from a specific point in the chain's history:
+
+:::code-group
+
+```bash [At block]
 $ anvil --fork-url https://ethereum.reth.rs/rpc --fork-block-number 18000000
 ```
 
-```bash [Fork from a transaction]
+```bash [At transaction]
 $ anvil --fork-url https://ethereum.reth.rs/rpc --fork-transaction-hash $TX_HASH
 ```
+
+:::
 
 ### Chain configuration
 

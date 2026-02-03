@@ -18,6 +18,8 @@ This creates a `soldeer.toml` configuration file.
 
 ### Installing packages
 
+:::code-group
+
 ```bash [Install from registry]
 $ forge soldeer install @openzeppelin-contracts~5.0.0
 ```
@@ -25,6 +27,8 @@ $ forge soldeer install @openzeppelin-contracts~5.0.0
 ```bash [Install from git]
 $ forge soldeer install my-lib~1.0.0 https://github.com/org/repo.git
 ```
+
+:::
 
 Packages are stored in `dependencies/` by default.
 
@@ -65,6 +69,8 @@ When `remappings_location = "config"`, remappings are added to `foundry.toml`. O
 
 ### Updating packages
 
+:::code-group
+
 ```bash [Update all packages]
 $ forge soldeer update
 ```
@@ -72,6 +78,8 @@ $ forge soldeer update
 ```bash [Update a specific package]
 $ forge soldeer update @openzeppelin-contracts
 ```
+
+:::
 
 ### Publishing packages
 

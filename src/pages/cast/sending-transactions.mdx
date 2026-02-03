@@ -8,17 +8,21 @@ Cast sends transactions to deploy contracts, call functions, and transfer value.
 
 ### Basic transaction
 
+:::code-group
+
 ```bash [Send ETH]
 $ cast send $TO --value 1ether --private-key $PRIVATE_KEY
 ```
 
-```bash [Call a contract function]
+```bash [Call function]
 $ cast send $CONTRACT "transfer(address,uint256)" $TO 1000000000000000000 --private-key $PRIVATE_KEY
 ```
 
-```bash [Deploy a contract]
+```bash [Deploy contract]
 $ cast send --create $BYTECODE --private-key $PRIVATE_KEY
 ```
+
+:::
 
 ### Signing options
 
@@ -67,37 +71,45 @@ $ cast send $CONTRACT "mint()" --aws
 
 ### Transaction parameters
 
-```bash [Set gas limit]
+:::code-group
+
+```bash [Gas limit]
 $ cast send $CONTRACT "mint()" --gas-limit 100000 --private-key $KEY
 ```
 
-```bash [Set gas price (legacy)]
+```bash [Gas price (legacy)]
 $ cast send $CONTRACT "mint()" --gas-price 20gwei --private-key $KEY
 ```
 
-```bash [Set EIP-1559 fees]
+```bash [EIP-1559 fees]
 $ cast send $CONTRACT "mint()" --priority-gas-price 1gwei --private-key $KEY
 ```
 
-```bash [Set nonce manually]
+```bash [Nonce]
 $ cast send $CONTRACT "mint()" --nonce 42 --private-key $KEY
 ```
 
-```bash [Send with value]
+```bash [With value]
 $ cast send $CONTRACT "deposit()" --value 0.1ether --private-key $KEY
 ```
+
+:::
 
 ### Waiting and confirmations
 
 By default, `cast send` waits for the transaction to be mined.
 
-```bash [Get transaction hash only (don't wait)]
+:::code-group
+
+```bash [Async (don't wait)]
 $ cast send $CONTRACT "mint()" --private-key $KEY --async
 ```
 
 ```bash [Wait for confirmations]
 $ cast send $CONTRACT "mint()" --private-key $KEY --confirmations 3
 ```
+
+:::
 
 ### Transaction simulation
 
