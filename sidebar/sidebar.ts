@@ -78,10 +78,10 @@ const docs = [
     items: [
       { text: "Overview", link: "/config" },
       { text: "Profiles", link: "/config/profiles" },
+      { text: "Compiler", link: "/config/compiler" },
+      { text: "Testing", link: "/config/testing" },
       { text: "CI Integration", link: "/config/ci" },
       { text: "Editor Setup", link: "/config/editors" },
-      { text: "Compiler", link: "/config/reference/solidity-compiler" },
-      { text: "Testing", link: "/config/reference/testing" },
     ],
   },
   {
