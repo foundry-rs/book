@@ -6,7 +6,7 @@ set -eo pipefail
 # includeable in the book.
 
 ETH_RPC_URL="${ETH_RPC_URL:=https://ethereum.reth.rs/rpc}"
-SNIPPETS_DIR="$(realpath vocs/src/snippets)"
+SNIPPETS_DIR="$(realpath src/snippets)"
 OUTPUT_DIR="$(realpath $SNIPPETS_DIR/output)"
 ROOT="$(dirname "$(dirname "$(realpath "$0")")")"
 # shellcheck disable=SC2034
