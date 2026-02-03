@@ -1,8 +1,14 @@
+import { Cards, Card } from 'vocs'
+
 ## Cheatcodes Reference
 
 Cheatcodes give you powerful assertions, the ability to alter the state of the EVM, mock data, and more.
 
 Cheatcodes are made available through use of the cheatcode address (`0x7109709ECfa91a80626fF3989D68f67F5b1DD12D`).
+
+:::tip[Finding Cheatcodes]
+Use the sidebar to browse cheatcodes by category, or press `Ctrl+K` / `Cmd+K` to search for a specific cheatcode.
+:::
 
 :::note
 If you encounter errors for this address when using fuzzed addresses in your tests, you may wish to
@@ -16,35 +22,69 @@ exclude it from your fuzz tests by using the following line:
 
 You can also access cheatcodes easily via `vm` available in Forge Standard Library's [`Test`](/reference/forge-std/overview) contract.
 
-### Forge Standard Library Cheatcodes
+### Cheatcode Categories
 
-Forge Std implements wrappers around cheatcodes, which combine multiple standard cheatcodes to improve development experience. These are not technically cheatcodes, but rather compositions of Forge's cheatcodes.
+<Cards>
+  <Card
+    title="Environment"
+    description="Manipulate the EVM state: block timestamp, number, msg.sender, storage, balances, and more."
+    to="/reference/cheatcodes/warp"
+  />
+  <Card
+    title="Assertions"
+    description="Expect reverts, events, and calls in your tests."
+    to="/reference/cheatcodes/expect-revert"
+  />
+  <Card
+    title="Fuzzer"
+    description="Control fuzzer behavior with assumptions and constraints."
+    to="/reference/cheatcodes/assume"
+  />
+  <Card
+    title="Forking"
+    description="Create and manage forks of live networks."
+    to="/reference/cheatcodes/create-fork"
+  />
+  <Card
+    title="External"
+    description="Interact with the outside world: run commands, read environment variables, parse JSON/TOML."
+    to="/reference/cheatcodes/ffi"
+  />
+  <Card
+    title="Signing"
+    description="Sign messages and EIP-7702 delegations."
+    to="/reference/cheatcodes/sign"
+  />
+  <Card
+    title="Utilities"
+    description="Helper functions for addresses, labels, parsing, and wallets."
+    to="/reference/cheatcodes/addr"
+  />
+  <Card
+    title="Files"
+    description="Read and write files from your tests and scripts."
+    to="/reference/cheatcodes/fs"
+  />
+  <Card
+    title="RPC"
+    description="Register and interact with RPC endpoints."
+    to="/reference/cheatcodes/rpc"
+  />
+  <Card
+    title="State Snapshots"
+    description="Snapshot and restore EVM state."
+    to="/reference/cheatcodes/state-snapshots"
+  />
+</Cards>
 
-You can view the list of Forge Standard Library's cheatcode wrappers [in the references section](/reference/forge-std/std-cheats.mdx). You can reference the [Forge Std source code](https://github.com/foundry-rs/forge-std/blob/master/src/Test.sol) to learn more about how the wrappers work under the hood.
+### Forge Standard Library
 
-### Cheatcode Types
+Forge Std implements wrappers around cheatcodes, which combine multiple standard cheatcodes to improve development experience. See [Std Cheats](/reference/forge-std/std-cheats) for more details.
 
-Below are some subsections for the different Forge cheatcodes.
+### Contributing
 
-- [Environment](/reference/cheatcodes/environment.mdx): Cheatcodes that alter the state of the EVM.
-- [Assertions](/reference/cheatcodes/assertions.mdx): Cheatcodes that are powerful assertions
-- [Fuzzer](/reference/cheatcodes/fuzzer.mdx): Cheatcodes that configure the fuzzer
-- [External](/reference/cheatcodes/external.mdx): Cheatcodes that interact with external state (files, commands, ...)
-- [Signing](/reference/cheatcodes/signing.mdx): Cheatcodes for signing
-- [Utilities](/reference/cheatcodes/utilities.mdx): Smaller utility cheatcodes
-- [Forking](/reference/cheatcodes/forking.mdx): Forking mode cheatcodes
-- [State snapshots](/reference/cheatcodes/state-snapshots.mdx): State snapshot cheatcodes
-- [RPC](/reference/cheatcodes/rpc.mdx): RPC related cheatcodes
-- [File](/reference/cheatcodes/fs.mdx): Cheatcodes for working with files
-
-### Add a new cheatcode
-
-If you need a new feature, consider [contributing to the Foundry's codebase](https://github.com/foundry-rs/foundry) to add the cheatcode.
+If you need a new cheatcode, consider [contributing to the Foundry codebase](https://github.com/foundry-rs/foundry).
 
 ### Cheatcodes Interface
 
-This is a Solidity interface for all of the cheatcodes present in Forge.
-
-```solidity
-// [!include ~/snippets/output/vm/Vm.sol]
-```
+The complete Solidity interface for all cheatcodes is available in the [forge-std repository](https://github.com/foundry-rs/forge-std/blob/master/src/Vm.sol).
