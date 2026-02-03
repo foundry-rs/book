@@ -416,6 +416,7 @@ type Page =
 | { path: '/help/troubleshooting'; render: 'static' }
 | { path: '/guides/debugging-transactions'; render: 'static' }
 | { path: '/guides/deploying-contracts'; render: 'static' }
+| { path: '/guides/deterministic-deployments-using-create2'; render: 'static' }
 | { path: '/guides/docker'; render: 'static' }
 | { path: '/guides/fork-testing'; render: 'static' }
 | { path: '/guides/gas-optimization'; render: 'static' }

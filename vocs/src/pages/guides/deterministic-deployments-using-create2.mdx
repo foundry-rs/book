@@ -1,0 +1,258 @@
+---
+description: Deploy smart contracts to predictable addresses across multiple networks using CREATE2 opcode for counterfactual interactions.
+---
+
+## Deterministic Deployments with CREATE2
+
+Enshrined into the EVM as part of the [Constantinople fork](https://ethereum.org/en/history/) of 2019, `CREATE2` is an opcode that started its journey as [EIP-1014](https://eips.ethereum.org/EIPS/eip-1014). `CREATE2` allows you to deploy smart contracts to deterministic addresses, based on parameters controlled by the deployer.
+
+As a result, it's often mentioned as enabling "counterfactual" deployments, where you can interact with addresses that haven't been created yet because `CREATE2` guarantees known code can be placed at that address.
+
+### CREATE vs CREATE2
+
+With the default `CREATE` opcode, the address of a deployed contract is determined by taking the hash of the sender's address and the sender's nonce:
+
+```text
+new_address = keccak256(rlp_encode([sender, nonce]))[12:]
+```
+
+Because the nonce can only be used once on each chain, `CREATE` is unreliable for deploying to the same address across different networks.
+
+With `CREATE2`, the address is derived from:
+
+```text
+new_address = keccak256(0xff ++ deployer ++ salt ++ keccak256(init_code))[12:]
+```
+
+- `0xff{:solidity}` is a fixed prefix ensuring uniqueness
+- `deployer{:solidity}` is the address executing the CREATE2 operation
+- `salt{:solidity}` is a 32-byte value chosen by the deployer
+- `keccak256(init_code){:solidity}` is the hash of the contract's creation bytecode
+
+Given that `0xff{:solidity}` is fixed, the deployer is deterministic, and your bytecode is fixed, you can use the `salt{:solidity}` parameter to fully control the new contract address.
+
+### Configuring for determinism
+
+To reliably deploy to deterministic addresses, your bytecode must be identical across all environments. Configure `foundry.toml`:
+
+```toml [foundry.toml]
+[profile.default]
+# Pin the exact solc version (patch version matters!)
+solc = "0.8.28"
+auto_detect_solc = false
+
+# Set EVM version explicitly (must match across environments)
+evm_version = "cancun"
+
+# Disable metadata hash for deterministic bytecode
+bytecode_hash = "none"   # [!code hl]
+cbor_metadata = false    # [!code hl]
+
+# If using optimizer, keep settings consistent
+optimizer = true
+optimizer_runs = 200
+```
+
+:::warning
+Changing any of these settings will change your bytecode and therefore your deployed address.
+:::
+
+### Why metadata affects bytecode
+
+By default, the Solidity compiler appends a CBOR-encoded metadata hash at the end of the bytecode. This metadata includes:
+
+- Compiler version
+- Source file hashes  
+- Compilation settings
+- ABI information
+
+Since source file hashes are included, even whitespace changes will alter the metadata hash, changing your bytecode. A metadata file looks like:
+
+```json
+{
+  "compiler": { "version": "0.8.28+commit.7893614a" },
+  "language": "Solidity",
+  "settings": {
+    "optimizer": { "enabled": false, "runs": 200 },
+    "evmVersion": "cancun",
+    "compilationTarget": { "src/Counter.sol": "Counter" }
+  },
+  "sources": {
+    "src/Counter.sol": {
+      "keccak256": "0x09277f949d59a9521708c870dc39c2c434ad8f86a5472efda6a732ef728c0053"
+    }
+  }
+}
+```
+
+By setting `bytecode_hash = "none"` and `cbor_metadata = false`, the metadata hash is not appended, making your bytecode deterministic.
+
+:::info
+Disabling metadata means you'll get a [partial match](https://docs.sourcify.dev/docs/full-vs-partial-match/) instead of a full match when verifying contracts on Sourcify. For most use cases, this is acceptable.
+:::
+
+### Using CREATE2 in Solidity
+
+Pass a `salt{:solidity}` parameter to deploy with CREATE2:
+
+```solidity
+// Using CREATE (nonce-based, non-deterministic across chains)
+Counter counter = new Counter();
+
+// Using CREATE2 (salt-based, deterministic)
+Counter counter = new Counter{salt: salt}(); // [!code hl]
+```
+
+:::info
+By default, `new Counter{salt: salt}(){:solidity}` uses the deterministic deployer at [`0x4e59b44847b379578588920ca78fbf26c0b4956c`](https://github.com/Arachnid/deterministic-deployment-proxy). This deployer may not be available on all chains. Configure a different deployer with `create2_deployer` in `foundry.toml` or `--create2-deployer` CLI argument.
+:::
+
+### Computing the address
+
+Calculate the CREATE2 address before deployment:
+
+```solidity
+// Constructor args are part of init code!
+bytes memory initCode = abi.encodePacked(
+    type(MyContract).creationCode,
+    abi.encode(arg1, arg2) // constructor arguments // [!code hl]
+);
+bytes32 initCodeHash = keccak256(initCode);
+
+address predicted = address(uint160(uint256(keccak256(abi.encodePacked(
+    bytes1(0xff),
+    deployer,
+    salt,
+    initCodeHash
+)))));
+```
+
+Or use `cast`:
+
+```bash
+$ cast create2 --salt $SALT --init-code $INIT_CODE --deployer $DEPLOYER
+```
+
+### Using a CREATE2 factory
+
+Deploy through a factory like [CreateX](https://github.com/pcaversaccio/createx) for cross-chain deployments:
+
+```solidity [script/DeployCreate2.s.sol]
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.13;
+
+import {Script, console} from "forge-std/Script.sol";
+import {Counter} from "../src/Counter.sol";
+
+interface ICreateX {
+    function deployCreate2(bytes32 salt, bytes memory initCode) external payable returns (address);
+    function computeCreate2Address(bytes32 salt, bytes32 initCodeHash) external view returns (address);
+}
+
+contract DeployCreate2 is Script {
+    // CreateX is deployed at the same address on all supported chains
+    ICreateX constant CREATEX = ICreateX(0xba5Ed099633D3B313e4D5F7bdc1305d3c28ba5Ed);
+    bytes32 constant SALT = keccak256("my-protocol-v1");
+
+    function run() public {
+        bytes memory initCode = type(Counter).creationCode;
+        
+        // Compute and verify expected address
+        address expected = CREATEX.computeCreate2Address(SALT, keccak256(initCode));
+        console.log("Expected address:", expected);
+
+        vm.startBroadcast();
+        address deployed = CREATEX.deployCreate2(SALT, initCode);
+        vm.stopBroadcast();
+
+        require(deployed == expected, "Address mismatch");
+        console.log("Deployed at:", deployed);
+    }
+}
+```
+
+Deploy to multiple chains:
+
+```bash
+$ forge script script/DeployCreate2.s.sol --broadcast --rpc-url mainnet
+$ forge script script/DeployCreate2.s.sol --broadcast --rpc-url optimism
+$ forge script script/DeployCreate2.s.sol --broadcast --rpc-url arbitrum
+```
+
+### Foundry configuration options
+
+#### `create2_deployer`
+
+The CREATE2 deployer address Foundry uses. Default: `0x4e59b44847b379578588920ca78fbf26c0b4956c`
+
+```toml [foundry.toml]
+create2_deployer = "0x4e59b44847b379578588920ca78fbf26c0b4956c"
+```
+
+Change this for chains where the default deployer isn't available, or when using a custom factory.
+
+#### `always_use_create_2_factory`
+
+Force deployments through the CREATE2 factory even in tests and non-broadcasting scripts:
+
+```toml [foundry.toml]
+always_use_create_2_factory = true
+```
+
+This is useful when you want CREATE2 deployment addresses to match in tests.
+
+#### `create2_library_salt`
+
+Salt for deterministic library deployment in scripts:
+
+```toml [foundry.toml]
+create2_library_salt = "0x0000000000000000000000000000000000000000000000000000000000000001"
+```
+
+:::warning
+Changing this salt changes library addresses, which changes any contract bytecode that links to those libraries.
+:::
+
+### Same address across chains
+
+To deploy to the same address on multiple chains:
+
+1. **Use the same salt**
+2. **Use identical bytecode** - no `block.chainid{:solidity}` or chain-specific values in constructors/immutables
+3. **Use the same deployer** - either same EOA or same factory address (like CreateX)
+4. **Pin compiler settings** - solc version, optimizer, EVM version must match
+
+### Troubleshooting
+
+**Computed address doesn't match deployed address:**
+
+- Constructor args not included in init code hash?
+- Using init code vs runtime code? (CREATE2 uses init code)
+- Solc version mismatch between environments?
+- Metadata hash appended? (set `bytecode_hash = "none"`)
+- Optimizer or `via_ir` settings differ?
+- Library linking addresses changed?
+- EVM version mismatch?
+
+**Verify init code hash:**
+
+```bash
+# Get the init code hash for a contract
+$ forge inspect Counter bytecode | cast keccak
+```
+
+**Check if deployer exists on chain:**
+
+```bash
+$ cast code 0x4e59b44847b379578588920ca78fbf26c0b4956c --rpc-url $RPC_URL
+```
+
+If it returns `0x`, the default deployer isn't available on that chain.
+
+### Additional resources
+
+- [EIP-1014: CREATE2](https://eips.ethereum.org/EIPS/eip-1014)
+- [Solidity Contract Metadata](https://docs.soliditylang.org/en/latest/metadata.html)
+- [CreateX - Cross-chain CREATE2 factory](https://github.com/pcaversaccio/createx)
+- [Deterministic Deployment Proxy](https://github.com/Arachnid/deterministic-deployment-proxy)
+- [CREATE3 - Initialization code agnostic deployments](https://github.com/Vectorized/solady/blob/main/src/utils/CREATE3.sol)
