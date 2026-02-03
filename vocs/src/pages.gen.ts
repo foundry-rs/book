@@ -422,6 +422,7 @@ type Page =
 | { path: '/guides'; render: 'static' }
 | { path: '/guides/invariant-testing'; render: 'static' }
 | { path: '/guides/multi-chain-deployments'; render: 'static' }
+| { path: '/guides/stack-too-deep'; render: 'static' }
 | { path: '/guides/upgrading-contracts'; render: 'static' }
 | { path: '/guides/migrations/foundry-v1'; render: 'static' }
 | { path: '/forge/build'; render: 'static' }
