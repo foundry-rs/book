@@ -1,0 +1,127 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    { "source": "/getting-started/installation", "destination": "/introduction/installation" },
+    { "source": "/getting-started/introduction", "destination": "/introduction/getting-started" },
+    { "source": "/getting-started/first-steps", "destination": "/introduction/getting-started" },
+    { "source": "/getting-started", "destination": "/introduction/getting-started" },
+
+    { "source": "/index.html", "destination": "/" },
+    { "source": "/faq.html", "destination": "/help/faq" },
+    { "source": "/faq", "destination": "/help/faq" },
+    { "source": "/contributing.html", "destination": "/" },
+    { "source": "/contributing", "destination": "/" },
+
+    { "source": "/projects/creating-a-new-project", "destination": "/projects" },
+    { "source": "/projects/working-on-an-existing-project", "destination": "/projects" },
+    { "source": "/projects/clone-a-verified-contract", "destination": "/projects" },
+    { "source": "/projects/project-layout", "destination": "/projects/layout" },
+    { "source": "/dependencies", "destination": "/projects/dependencies" },
+
+    { "source": "/forge/overview", "destination": "/forge" },
+
+    { "source": "/forge/tests", "destination": "/forge/testing" },
+    { "source": "/forge/tests/overview", "destination": "/forge/testing" },
+    { "source": "/forge/tests/writing-tests", "destination": "/forge/testing" },
+    { "source": "/forge/tests/fork-testing", "destination": "/guides/fork-testing" },
+    { "source": "/forge/tests/traces", "destination": "/forge/debugging" },
+    { "source": "/forge/tests/cheatcodes", "destination": "/reference/cheatcodes/overview" },
+    { "source": "/forge/tests/forge-std", "destination": "/reference/forge-std/overview" },
+    { "source": "/forge/tests/replay-testing", "destination": "/forge/testing" },
+    { "source": "/forge/writing-tests", "destination": "/forge/testing" },
+    { "source": "/forge/fork-testing", "destination": "/guides/fork-testing" },
+    { "source": "/forge/traces", "destination": "/forge/debugging" },
+    { "source": "/forge/cheatcodes", "destination": "/reference/cheatcodes/overview" },
+    { "source": "/forge/forge-std", "destination": "/reference/forge-std/overview" },
+    { "source": "/forge/replay-testing", "destination": "/forge/testing" },
+
+    { "source": "/forge/advanced-testing", "destination": "/forge/testing" },
+    { "source": "/forge/advanced-testing/overview", "destination": "/forge/testing" },
+    { "source": "/forge/differential-ffi-testing", "destination": "/forge/testing" },
+    { "source": "/forge/fuzz-testing", "destination": "/forge/testing" },
+    { "source": "/forge/invariant-testing", "destination": "/guides/invariant-testing" },
+
+    { "source": "/forge/gas-tracking/overview", "destination": "/forge/gas-tracking" },
+    { "source": "/forge/gas-reports", "destination": "/forge/gas-tracking" },
+    { "source": "/forge/gas-section-snapshots", "destination": "/forge/gas-tracking" },
+    { "source": "/forge/gas-function-snapshots", "destination": "/forge/gas-tracking" },
+
+    { "source": "/forge/deploying", "destination": "/forge/scripting" },
+    { "source": "/forge/debugger", "destination": "/forge/debugging" },
+
+    { "source": "/forge/reference/forge-lint/", "destination": "/forge/linting" },
+    { "source": "/forge/reference/forge-lint", "destination": "/forge/linting" },
+
+    { "source": "/cast/overview", "destination": "/cast" },
+
+    { "source": "/anvil/overview", "destination": "/anvil" },
+
+    { "source": "/chisel/overview", "destination": "/chisel" },
+
+    { "source": "/config/overview", "destination": "/config" },
+    { "source": "/config/continuous-integration", "destination": "/config/ci" },
+    { "source": "/config/vscode", "destination": "/config/editors" },
+    { "source": "/config/shell-autocompletion", "destination": "/config" },
+    { "source": "/config/static-analyzers", "destination": "/config" },
+    { "source": "/config/hardhat", "destination": "/config" },
+    { "source": "/config/vyper", "destination": "/config" },
+
+    { "source": "/reference/config/:id", "destination": "/config/reference/:id" },
+    { "source": "/reference/config", "destination": "/config/reference/overview" },
+
+    { "source": "/reference/forge", "destination": "/reference/forge/forge" },
+    { "source": "/forge/reference/forge-:id", "destination": "/reference/forge/:id" },
+    { "source": "/forge/reference", "destination": "/reference/forge/forge" },
+
+    { "source": "/reference/cast", "destination": "/reference/cast/cast" },
+    { "source": "/cast/reference/overview", "destination": "/reference/cast/cast" },
+    { "source": "/cast/reference/:id", "destination": "/reference/cast/:id" },
+    { "source": "/cast/reference", "destination": "/reference/cast/cast" },
+
+    { "source": "/reference/anvil", "destination": "/reference/anvil/anvil" },
+    { "source": "/anvil/reference/anvil", "destination": "/reference/anvil/anvil" },
+    { "source": "/anvil/reference/:id", "destination": "/reference/anvil/:id" },
+    { "source": "/anvil/reference", "destination": "/reference/anvil/anvil" },
+
+    { "source": "/reference/chisel", "destination": "/reference/chisel/chisel" },
+    { "source": "/chisel/reference", "destination": "/reference/chisel/chisel" },
+
+    { "source": "/reference/cli/forge/:id", "destination": "/reference/forge/:id" },
+    { "source": "/reference/cli/forge", "destination": "/reference/forge/forge" },
+    { "source": "/reference/cli/cast/:id", "destination": "/reference/cast/:id" },
+    { "source": "/reference/cli/cast", "destination": "/reference/cast/cast" },
+    { "source": "/reference/cli/anvil/:id", "destination": "/reference/anvil/:id" },
+    { "source": "/reference/cli/anvil", "destination": "/reference/anvil/anvil" },
+    { "source": "/reference/cli/chisel/:id", "destination": "/reference/chisel/:id" },
+    { "source": "/reference/cli/chisel", "destination": "/reference/chisel/chisel" },
+    { "source": "/reference/cli", "destination": "/reference/forge/forge" },
+    { "source": "/reference", "destination": "/reference/forge/forge" },
+
+    { "source": "/cheatcodes/:id", "destination": "/reference/cheatcodes/:id" },
+    { "source": "/cheatcodes", "destination": "/reference/cheatcodes/overview" },
+
+    { "source": "/reference/forge-std/", "destination": "/reference/forge-std/overview" },
+    { "source": "/reference/forge-std", "destination": "/reference/forge-std/overview" },
+    { "source": "/forge-std", "destination": "/reference/forge-std/overview" },
+
+    { "source": "/guides/v1.0-migration", "destination": "/guides/migrations/foundry-v1" },
+    { "source": "/guides/best-practices", "destination": "/best-practices" },
+    { "source": "/guides/best-practices/:id", "destination": "/best-practices" },
+
+    { "source": "/tutorials/best-practices", "destination": "/best-practices" },
+    { "source": "/tutorials/solmate-nft", "destination": "/guides" },
+    { "source": "/tutorials/foundry-docker", "destination": "/guides/docker" },
+    { "source": "/tutorials/testing-eip712", "destination": "/guides" },
+    { "source": "/tutorials/solidity-scripting", "destination": "/forge/scripting" },
+    { "source": "/tutorials/create2-tutorial", "destination": "/guides" },
+    { "source": "/tutorials/forking-mainnet-with-cast-anvil", "destination": "/guides/fork-testing" },
+    { "source": "/tutorials/learn-foundry", "destination": "/guides" },
+    { "source": "/tutorials", "destination": "/guides" },
+
+    { "source": "/misc", "destination": "/help/faq" },
+    { "source": "/misc/:id", "destination": "/help/faq" },
+    { "source": "/appendix", "destination": "/help/faq" },
+
+    { "source": "/benches", "destination": "/benchmarks" }
+  ]
+}
