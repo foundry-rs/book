@@ -14,7 +14,7 @@ bun install          # Install dependencies
 bun dev             # Start development server (default: http://localhost:5173)
 bun build           # Build documentation for production
 bun preview         # Preview production build locally
-bun check-links     # Validate all internal documentation links
+
 ```
 
 ### Generating CLI Output
@@ -53,7 +53,7 @@ When adding or modifying documentation:
 2. Use "we" not "I" in documentation
 3. Use auto-generated CLI output where possible (run `./scripts/gen_output.sh`)
 4. Include source files from the projects folder rather than inline code
-5. Run `bun check-links` before committing to ensure all links are valid
+
 
 ## Deployment
 
