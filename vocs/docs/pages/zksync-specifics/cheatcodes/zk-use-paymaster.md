@@ -94,4 +94,4 @@ vmExt.zkUsePaymaster(address(paymaster), abi.encodeWithSelector(
 
 For more examples, see the [Foundry ZkSync Paymaster Tests](https://github.com/matter-labs/foundry-zksync/blob/main/crates/forge/tests/fixtures/zk/Paymaster.t.sol).
 
-Also, see the [ZKsync Paymaster Documentation](https://docs.zksync.io/build/developer-reference/account-abstraction/paymasters) for more information.
+Also, see the [ZKsync Paymaster Documentation](https://docs.zksync.io/zksync-protocol/account-abstraction/paymasters) for more information.

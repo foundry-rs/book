@@ -4,7 +4,7 @@ description: Using the zkUsePaymaster cheatcode with approval-based paymaster co
 
 # Using the zkUsePaymaster Cheatcode in Approval-Based Paymaster Contracts
 
-This example covers the use of an approval-based paymaster contract. The paymaster contract used is the testnet paymaster of ZKsync documented [here](https://docs.zksync.io/build/start-coding/quick-start/paymasters-introduction).
+This example covers the use of an approval-based paymaster contract. The paymaster contract used is the testnet paymaster of ZKsync documented [here](https://docs.zksync.io/zksync-protocol/account-abstraction/paymasters).
 
 ## Steps Overview
 

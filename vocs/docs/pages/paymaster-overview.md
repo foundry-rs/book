@@ -54,4 +54,4 @@ To encode the paymaster input, you can also use the `cast calldata` command, whi
 forge create Greeter.sol:Greeter --rpc-url "https://sepolia.era.zksync.dev" --private-key <your-private-key> --zksync --zk-paymaster-address 0x3cB2b87D10Ac01736A65688F3e0Fb1b070B3eeA3 --zk-paymaster-input $(cast calldata "approvalBased(address,uint256,bytes)" 0x31c43ac5e6A0fe62954B9056441b0A214722516e 1 "0x")
 ```
 
-Also, see the [ZKsync Paymaster Documentation](https://docs.zksync.io/build/developer-reference/account-abstraction/paymasters) for more information.
+Also, see the [ZKsync Paymaster Documentation](https://docs.zksync.io/zksync-protocol/account-abstraction/paymasters) for more information.

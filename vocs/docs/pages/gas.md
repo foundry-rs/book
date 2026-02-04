@@ -15,11 +15,11 @@ Running in zkEVM mode is analogous to running in `isolate` mode, but using the z
 - The gas used is reported back to the EVM so it will then be shown on traces and gas reports. This value represents what would be charged to the user for submitting that transaction. That value differs from the computational cost of running the called contract code and includes:
 
   1. **Intrinsic costs**: Overhead charged on each transaction.
-  2. **Validation costs**: Gas spent on transaction validation. It may vary depending on the account making the transaction. See [Account Abstraction](https://docs.zksync.io/build/developer-reference/account-abstraction) docs.
+  2. **Validation costs**: Gas spent on transaction validation. It may vary depending on the account making the transaction. See [Account Abstraction](https://docs.zksync.io/zksync-protocol/account-abstraction) docs.
   3. **Execution costs**: Gas spent on marking factory dependencies and executing the transaction.
   4. **Pubdata costs**: Gas spent on publishing pubdata. It is influenced by the `gasPerPubdata` network value.
 
-More info about ZKSync Era's fee model can be found [here](https://docs.zksync.io/build/developer-reference/fee-model).
+More info about ZKSync Era's fee model can be found [here](https://docs.zksync.io/zksync-protocol/era-vm/transactions/fee-model).
 
 ## Transaction/Network values that impact gas cost
 

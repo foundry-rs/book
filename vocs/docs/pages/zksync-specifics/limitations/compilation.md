@@ -8,7 +8,7 @@ These limitations apply to `zksolc` compilation of source contracts.
 
 ### Contract Bytecode Access
 
-Contract bytecode [cannot](https://docs.zksync.io/build/developer-reference/ethereum-differences/evm-instructions#extcodecopy) be accessed on zkEVM architecture, therefore `EXTCODECOPY` always produces a compile-time error with zksolc. Using `address(..).code` in a solidity contract will produce a compile-time error.
+Contract bytecode [cannot](https://docs.zksync.io/zksync-protocol/era-vm/differences/evm-instructions#extcodecopy) be accessed on zkEVM architecture, therefore `EXTCODECOPY` always produces a compile-time error with zksolc. Using `address(..).code` in a solidity contract will produce a compile-time error.
 
 ```solidity
 contract FooBar {
@@ -109,7 +109,7 @@ forge build --zksync --libraries src/MyLibrary.sol:MyLibrary:0xfD88CeE74f7D78697
 
 ```
 
-Please refer to [official docs](https://docs.zksync.io/build/developer-reference/ethereum-differences/libraries) for more information.
+Please refer to [official docs](https://docs.zksync.io/zksync-protocol/era-vm/differences/libraries) for more information.
 
 #### Listing missing libraries
 

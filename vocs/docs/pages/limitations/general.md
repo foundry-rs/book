@@ -8,7 +8,7 @@ These limitations apply at all times when working within the ZKsync context.
 
 ## Reserved Address Range
 
-On zkEVM, addresses in the range [0..2^16-1] are [reserved](https://docs.zksync.io/zk-stack/components/zksync-evm/bootloader#system-contracts) for kernel space. Using these addresses within a test, even for mocking, may lead to undefined behavior.
+On zkEVM, addresses in the range [0..2^16-1] are [reserved](https://docs.zksync.io/zksync-protocol/era-vm/contracts/system-contracts) for kernel space. Using these addresses within a test, even for mocking, may lead to undefined behavior.
 Therefore, the user addresses must range from `65536` onwards.
 
 ```solidity

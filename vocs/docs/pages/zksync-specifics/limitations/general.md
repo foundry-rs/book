@@ -8,7 +8,7 @@ These limitations apply at all times when working within the ZKsync context.
 
 ### Reserved Address Range
 
-On zkEVM, addresses in the range [0..2^16-1] are [reserved](https://docs.zksync.io/zk-stack/components/zksync-evm/bootloader#system-contracts) for kernel space. Using these addresses within a test, even for mocking, may lead to undefined behavior.
+On zkEVM, addresses in the range [0..2^16-1] are [reserved](https://docs.zksync.io/zksync-protocol/era-vm/contracts/system-contracts) for kernel space. Using these addresses within a test, even for mocking, may lead to undefined behavior.
 Therefore, the user addresses must range from `65536` onwards.
 
 ```solidity
@@ -64,7 +64,7 @@ contract FooTest is Test {
 
 ### Bytecode Constraints
 
-zkEVM asserts a [bytecode](https://docs.zksync.io/zk-stack/components/zksync-evm/bootloader#bytecode-validity) to be valid if it satisfies the following constraints:
+zkEVM asserts a [bytecode](https://docs.zksync.io/zksync-protocol/era-vm/contracts/bootloader#bytecode-validity) to be valid if it satisfies the following constraints:
 
 * Its length in bytes is divisible by 32 (i.e. 32-byte words).
 * Has a length of less than 2^16 words.
@@ -94,13 +94,13 @@ contract FooTest is Test {
 
 ### Bytecode Hash
 
-Bytecode hashes output by zksolc are fundamentally [different](https://docs.zksync.io/zk-stack/components/zksync-evm/bootloader#bytecode-hashes) from the hash obtained via solc. The most glaring difference is that the first (most significant) byte denotes the version of the format, which is `1` at present. This leads to all zksolc bytecode hashes to begin with `1`, whereas solc bytecodes are merely the keccak hash of the bytecode.
+Bytecode hashes output by zksolc are fundamentally [different](https://docs.zksync.io/zksync-protocol/era-vm/contracts/bootloader#bytecode-hashes) from the hash obtained via solc. The most glaring difference is that the first (most significant) byte denotes the version of the format, which is `1` at present. This leads to all zksolc bytecode hashes to begin with `1`, whereas solc bytecodes are merely the keccak hash of the bytecode.
 
 Any code-making assumptions about bytecode hashes around EVM-scope must be migrated to accommodate ZKsync's bytecode hashes.
 
 ### Address Derivation
 
-zkEVM uses a different `CREATE` and `CREATE2` [address derivation strategy](https://docs.zksync.io/build/developer-reference/ethereum-differences/evm-instructions#address-derivation) compared to EVM. 
+zkEVM uses a different `CREATE` and `CREATE2` [address derivation strategy](https://docs.zksync.io/zksync-protocol/era-vm/differences/evm-instructions#address-derivation) compared to EVM. 
 This can lead to testing issues with the `CREATE2` addresses that are hard-coded for EVM. Therefore, these tests must be updated to reflect the ZKsync-derived addresses.
 
 ```javascript

@@ -11,7 +11,7 @@ function zkUseFactoryDep(string calldata name) external pure;
 Marks a given contract as a factory dependency only for the next CREATE or CALL, unmarking it afterward, similar to [`prank`](/reference/cheatcodes/prank).
 
 This cheatcode is useful when deploying contracts through factories that do not directly depend on a given contract, as it allows explicitly marking this type of contract as a factory dependency, enabling the factory to deploy the contract.
-More information on factory dependencies can be found in the [official ZKsync docs](https://docs.zksync.io/build/developer-reference/ethereum-differences/contract-deployment#note-on-factory_deps).
+More information on factory dependencies can be found in the [official ZKsync docs](https://docs.zksync.io/zksync-protocol/era-vm/differences/contract-deployment#note-on-factory_deps).
 
 ### Examples
 
