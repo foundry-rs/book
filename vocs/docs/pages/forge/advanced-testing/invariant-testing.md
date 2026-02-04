@@ -136,6 +136,61 @@ If performing tests without progress, then metrics are printed every 5 seconds, 
 
 Please refer to [invariant configuration](/config/reference/testing#invariant) for more details about corpus settings.
 
+### Optimization Mode
+
+Optimization mode allows you to find the sequence of function calls that maximizes an `int256` return value from an invariant function, similar to [Echidna's optimization mode](https://secure-contracts.com/program-analysis/echidna/advanced/optimization_mode.html). This is useful for:
+
+- Determining maximum rounding errors in financial calculations
+- Finding worst-case scenarios for gas consumption
+- Identifying edge cases that produce extreme values
+
+To use optimization mode, define an invariant function that returns `int256`:
+
+```solidity
+contract OptimizationTest is Test {
+    MyProtocol protocol;
+
+    function setUp() public {
+        protocol = new MyProtocol();
+    }
+
+    /// @notice Foundry will fuzz to maximize this return value
+    function invariant_maxRoundingError() public view returns (int256) {
+        return int256(protocol.calculateError());
+    }
+}
+```
+
+When Foundry detects an invariant function returning `int256`, it automatically enables optimization mode for that function. During the fuzzing campaign:
+
+1. The fuzzer generates random sequences of function calls
+2. After each sequence, the return value is recorded
+3. The best (maximum) value and its corresponding sequence are tracked
+4. Sequence shrinking is applied to find the minimal reproducing sequence
+
+The output displays the best value found and the shrunk sequence that produced it:
+
+```bash
+[PASS]
+        [Best sequence] (original: 392, shrunk: 1)
+                vm.warp(block.timestamp + 123408035);
+                vm.prank(0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496);
+                Handler(0x7FA9...).deposit(1000000);
+ invariant_maxRoundingError() (best: 1000000000000000000, runs: 256, calls: 128000)
+```
+
+:::tip
+Optimization mode works well with time-based operations. For example, you can optimize for maximum interest accrual over time:
+
+```solidity
+function invariant_maxInterestAccrued() public returns (int256) {
+    return int256(vault.totalAssets() - vault.totalDeposited());
+}
+```
+
+The fuzzer will use `vm.warp` and `vm.roll` to find time progressions that maximize the return value.
+:::
+
 ### Configuring invariant test execution
 
 Invariant tests execution is governed by parameters that can be controlled by users via Forge configuration primitives. Configs can be applied globally or on a per-test basis. For details on this topic please refer to

@@ -1,20 +1,34 @@
-## cast block-number
+## cast trace
 
-Get the latest block number
+CLI arguments for `cast trace`
 
 ```bash
-$ cast block-number --help
+$ cast trace --help
 ```
 
 ```txt
-Usage: cast block-number [OPTIONS] [BLOCK]
+Usage: cast trace [OPTIONS] [TX]
 
 Arguments:
-  [BLOCK]
-          The hash or tag to query. If not specified, the latest number is
-          returned
+  [TX]
+          Transaction hash (for trace_transaction) or raw tx hex/JSON (for
+          trace_rawTransaction with --raw)
 
 Options:
+      --raw
+          Use trace_rawTransaction instead of trace_transaction. Required when
+          passing raw transaction hex or JSON instead of a tx hash
+
+      --trace
+          Include the basic trace of the transaction
+
+      --vm-trace
+          Include the full trace of the virtual machine's state during
+          transaction execution
+
+      --state-diff
+          Include state changes caused by the transaction (requires --raw)
+
   -h, --help
           Print help (see a summary with '-h')
 
@@ -26,7 +40,7 @@ Options:
 
 Rpc options:
   -r, --rpc-url <URL>
-          The RPC endpoint
+          The RPC endpoint, default value is http://localhost:8545
           
           [env: ETH_RPC_URL=]
 

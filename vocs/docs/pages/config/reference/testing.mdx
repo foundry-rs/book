@@ -602,7 +602,7 @@ Flag indicating whether to collect and display edge coverage metrics (automatica
 ##### `show_metrics`
 
 - Type: boolean
-- Default: false
+- Default: true
 - Environment: `FOUNDRY_INVARIANT_SHOW_METRICS`
 
 The flag indicating whether to collect and display fuzzed selectors metrics in test report.
@@ -614,3 +614,31 @@ The flag indicating whether to collect and display fuzzed selectors metrics in t
 - Environment: `FOUNDRY_INVARIANT_SHOW_SOLIDITY`
 
 Flag indicating whether to display counterexamples as solidity calls.
+
+##### `max_time_delay`
+
+- Type: integer
+- Default: none
+- Environment: `FOUNDRY_INVARIANT_MAX_TIME_DELAY`
+
+Maximum time (in seconds) between generated transactions. If not set, there is no limit.
+
+##### `max_block_delay`
+
+- Type: integer
+- Default: none
+- Environment: `FOUNDRY_INVARIANT_MAX_BLOCK_DELAY`
+
+Maximum number of blocks elapsed between generated transactions. If not set, there is no limit.
+
+##### `check_interval`
+
+- Type: integer
+- Default: 1
+- Environment: `FOUNDRY_INVARIANT_CHECK_INTERVAL`
+
+Number of calls to execute between invariant assertions.
+
+- `0`: Only assert on the last call of each run (fastest, but may miss exact breaking call)
+- `1` (default): Assert after every call (most precise)
+- `N`: Assert every N calls AND always on the last call

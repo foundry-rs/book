@@ -63,6 +63,14 @@ Rpc options:
           When the provider's inner runtime transport variant is HTTP, this
           configures the reqwest client to accept invalid certificates.
 
+      --no-proxy
+          Disable automatic proxy detection.
+          
+          Use this in sandboxed environments (e.g., Cursor IDE sandbox, macOS
+          App Sandbox) where system proxy detection causes crashes. When
+          enabled, HTTP_PROXY/HTTPS_PROXY environment variables and system proxy
+          settings will be ignored.
+
       --flashbots
           Use the Flashbots RPC URL with fast mode
           ([https://rpc.flashbots.net/fast](https://rpc.flashbots.net/fast)).
@@ -100,6 +108,9 @@ Rpc options:
           Specify custom headers for RPC requests
           
           [env: ETH_RPC_HEADERS=]
+
+      --curl
+          Print the equivalent curl command instead of making the RPC request
 
   -e, --etherscan-api-key <KEY>
           The Etherscan (or equivalent) API key
@@ -140,6 +151,25 @@ Wallet options - raw:
           Used with --mnemonic-path.
           
           [default: 0]
+
+      --gas-limit <GAS_LIMIT>
+          Gas limit for the transaction
+          
+          [env: ETH_GAS_LIMIT=]
+
+      --gas-price <GAS_PRICE>
+          Gas price for legacy transactions, or max fee per gas for EIP1559
+          transactions
+          
+          [env: ETH_GAS_PRICE=]
+
+      --priority-gas-price <PRIORITY_GAS_PRICE>
+          Max priority fee per gas for EIP1559 transactions
+          
+          [env: ETH_PRIORITY_GAS_PRICE=]
+
+      --nonce <NONCE>
+          Nonce for the transaction
 
 Wallet options - keystore:
       --keystore <PATH>
@@ -205,6 +235,27 @@ Wallet options - browser:
 
       --browser-disable-open
           Whether to open the browser for wallet connection
+
+Tempo:
+      --tempo.fee-token <FEE_TOKEN>
+          Fee token address for Tempo transactions.
+          
+          When set, builds a Tempo (type 0x76) transaction that pays gas fees in
+          the specified token.
+          
+          If this is not set, the fee token is chosen according to network
+          rules. See the Tempo docs for more information.
+
+      --tempo.seq <SEQUENCE_KEY>
+          Nonce sequence key for Tempo transactions.
+          
+          When set, builds a Tempo (type 0x76) transaction with the specified
+          nonce sequence key.
+          
+          If this is not set, the protocol sequence key (0) will be used.
+          
+          For more information see
+          [https://docs.tempo.xyz/protocol/transactions/spec-tempo-transaction#parallelizable-nonces](https://docs.tempo.xyz/protocol/transactions/spec-tempo-transaction#parallelizable-nonces).
 
 Display options:
       --color <COLOR>
