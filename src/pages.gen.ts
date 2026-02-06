@@ -451,6 +451,7 @@ type Page =
 | { path: '/config/reference/project'; render: 'static' }
 | { path: '/config/reference/solidity-compiler'; render: 'static' }
 | { path: '/config/reference/testing'; render: 'static' }
+| { path: '/components/Sponsors'; render: 'static' }
 | { path: '/chisel/commands'; render: 'static' }
 | { path: '/chisel/forking'; render: 'static' }
 | { path: '/chisel'; render: 'static' }

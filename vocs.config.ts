@@ -1,6 +1,26 @@
 import { defineConfig, Feedback, McpSource, Changelog } from 'vocs/config'
 import { sidebar } from './sidebar/sidebar'
+
+export const sponsors = {
+  collaborators: [
+    {
+      name: 'Paradigm',
+      link: 'https://paradigm.xyz',
+      image:
+        'https://raw.githubusercontent.com/wevm/.github/main/content/sponsors/paradigm-light.svg',
+    },
+    {
+      name: 'Tempo',
+      link: 'https://tempo.xyz',
+      image:
+        'https://raw.githubusercontent.com/wevm/.github/main/content/sponsors/tempo-light.svg',
+    },
+  ],
+}
+
 export default defineConfig({
+  // light: '#f98a1a', -- darker orange than the one below
+  accentColor: 'light-dark(#f6b128, #f9c22f)',
   title: 'foundry - Ethereum Development Framework',
   rootDir: '.',
   sidebar,
@@ -12,39 +32,10 @@ export default defineConfig({
       McpSource.github({ repo: 'foundry-rs/foundry' }),
     ],
   },
-  theme: {
-    accentColor: {
-      dark: '#f9c22f',
-      // light: '#f98a1a', -- darker orange than the one below
-      light: '#f6b128',
-    },
-  },
   editLink: {
-    pattern: 'https://github.com/foundry-rs/book/edit/master/vocs/src/pages/:path',
+    link: 'https://github.com/foundry-rs/book/edit/master/vocs/src/pages/:path',
     text: 'Suggest changes on GitHub',
   },
-  sponsors: [
-    {
-      name: 'Collaborator',
-      height: 120,
-      items: [
-        [
-          {
-            name: 'Paradigm',
-            link: 'https://paradigm.xyz',
-            image:
-              'https://raw.githubusercontent.com/wevm/.github/main/content/sponsors/paradigm-light.svg',
-          },
-          {
-            name: 'Ithaca',
-            link: 'https://ithaca.xyz',
-            image:
-              'https://raw.githubusercontent.com/wevm/.github/main/content/sponsors/ithaca-light.svg',
-          },
-        ],
-      ],
-    }
-  ],
   logoUrl: '/foundry-logo.png',
   iconUrl: '/foundry-logo.png',
   ogImageUrl: '/og-image.png',
