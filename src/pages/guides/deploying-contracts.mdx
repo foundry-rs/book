@@ -145,12 +145,12 @@ import {Counter} from "../src/Counter.sol";
 
 contract DeployScript is Script {
     function run() public {
-        vm.startBroadcast();
+        vm.startBroadcast(); // [!code hl]
         
         Counter counter = new Counter();
         console.log("Counter deployed at:", address(counter));
         
-        vm.stopBroadcast();
+        vm.stopBroadcast(); // [!code hl]
     }
 }
 ```

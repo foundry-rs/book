@@ -141,19 +141,19 @@ contract TokenHandler is Test {
     Token public token;
     
     // Track all mints and burns
-    uint256 public ghost_mintedSum;
-    uint256 public ghost_burnedSum;
+    uint256 public ghost_mintedSum; // [!code hl]
+    uint256 public ghost_burnedSum; // [!code hl]
     
     // Track per-address deltas
-    mapping(address => int256) public ghost_balanceDeltas;
+    mapping(address => int256) public ghost_balanceDeltas; // [!code hl]
 
     function mint(address to, uint256 amount) external {
         amount = bound(amount, 1, 1000 ether);
         
         token.mint(to, amount);
         
-        ghost_mintedSum += amount;
-        ghost_balanceDeltas[to] += int256(amount);
+        ghost_mintedSum += amount; // [!code hl]
+        ghost_balanceDeltas[to] += int256(amount); // [!code hl]
     }
 
     function burn(address from, uint256 amount) external {
@@ -165,8 +165,8 @@ contract TokenHandler is Test {
         vm.prank(from);
         token.burn(amount);
         
-        ghost_burnedSum += amount;
-        ghost_balanceDeltas[from] -= int256(amount);
+        ghost_burnedSum += amount; // [!code hl]
+        ghost_balanceDeltas[from] -= int256(amount); // [!code hl]
     }
 }
 
@@ -174,7 +174,7 @@ contract TokenInvariantTest is Test {
     function invariant_TotalSupplyMatchesGhosts() public view {
         assertEq(
             token.totalSupply(),
-            handler.ghost_mintedSum() - handler.ghost_burnedSum()
+            handler.ghost_mintedSum() - handler.ghost_burnedSum() // [!code hl]
         );
     }
 }
@@ -201,12 +201,12 @@ function setUp() public {
     
     // Only call these functions
     bytes4[] memory selectors = new bytes4[](2);
-    selectors[0] = VaultHandler.deposit.selector;
-    selectors[1] = VaultHandler.withdraw.selector;
-    targetSelector(FuzzSelector({
-        addr: address(handler),
-        selectors: selectors
-    }));
+    selectors[0] = VaultHandler.deposit.selector; // [!code hl]
+    selectors[1] = VaultHandler.withdraw.selector; // [!code hl]
+    targetSelector(FuzzSelector({ // [!code hl]
+        addr: address(handler), // [!code hl]
+        selectors: selectors // [!code hl]
+    })); // [!code hl]
 }
 ```
 
@@ -217,10 +217,10 @@ function setUp() public {
     targetContract(address(handler));
     
     // Exclude specific functions
-    excludeSelector(FuzzSelector({
-        addr: address(handler),
-        selectors: toSelectors(VaultHandler.debugFunction.selector)
-    }));
+    excludeSelector(FuzzSelector({ // [!code hl]
+        addr: address(handler), // [!code hl]
+        selectors: toSelectors(VaultHandler.debugFunction.selector) // [!code hl]
+    })); // [!code hl]
 }
 
 function toSelectors(bytes4 selector) internal pure returns (bytes4[] memory) {
@@ -237,27 +237,27 @@ Add a summary function to understand test coverage:
 ```solidity
 contract VaultHandler is Test {
     // Call counters
-    mapping(bytes4 => uint256) public calls;
+    mapping(bytes4 => uint256) public calls; // [!code hl]
 
     function deposit(uint256 amount) external {
-        calls[this.deposit.selector]++;
+        calls[this.deposit.selector]++; // [!code hl]
         // ...
     }
 
     function withdraw(uint256 amount) external {
-        calls[this.withdraw.selector]++;
+        calls[this.withdraw.selector]++; // [!code hl]
         // ...
     }
 
-    function callSummary() external view {
-        console.log("deposit calls:", calls[this.deposit.selector]);
-        console.log("withdraw calls:", calls[this.withdraw.selector]);
-    }
+    function callSummary() external view { // [!code hl]
+        console.log("deposit calls:", calls[this.deposit.selector]); // [!code hl]
+        console.log("withdraw calls:", calls[this.withdraw.selector]); // [!code hl]
+    } // [!code hl]
 }
 
 contract VaultInvariantTest is Test {
     function invariant_CallSummary() public view {
-        handler.callSummary();
+        handler.callSummary(); // [!code hl]
     }
 }
 ```

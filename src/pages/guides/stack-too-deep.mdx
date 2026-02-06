@@ -74,7 +74,7 @@ struct Signature {
     bytes32 s;
 }
 
-function processOrder(Order calldata order, Signature calldata sig) external {
+function processOrder(Order calldata order, Signature calldata sig) external { // [!code hl]
     // Works fine
 }
 ```
@@ -113,7 +113,7 @@ struct CalcVars {
 }
 
 function calculate() external view returns (uint256) {
-    CalcVars memory vars;
+    CalcVars memory vars; // [!code hl]
     vars.a = getValue1();
     vars.b = getValue2();
     vars.c = getValue3();
@@ -202,19 +202,19 @@ Solidity supports block scoping with curly braces. Variables declared in a block
 function process() external {
     uint256 result;
 
-    {
+    { // [!code hl]
         uint256 temp1 = getValue1();
         uint256 temp2 = getValue2();
         result = temp1 + temp2;
         // temp1 and temp2 go out of scope here
-    }
+    } // [!code hl]
 
-    {
+    { // [!code hl]
         uint256 temp3 = getValue3();
         uint256 temp4 = getValue4();
         result += temp3 * temp4;
         // temp3 and temp4 go out of scope here
-    }
+    } // [!code hl]
 }
 ```
 

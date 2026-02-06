@@ -16,9 +16,13 @@ This guide covers deploying and upgrading proxy contracts with Forge, including 
 
 ### UUPS proxy deployment
 
+In the UUPS pattern, the proxy is a thin contract that delegates all calls to an implementation contract. The implementation holds both the business logic and the upgrade logic. Because the proxy uses `delegatecall`, all state is stored on the proxy - the implementation is just code.
+
 ::::steps
 
 #### Create the implementation
+
+Upgradeable contracts replace constructors with `initialize` functions, since constructor logic runs in the implementation's context, not the proxy's. `_disableInitializers()` in the constructor prevents anyone from calling `initialize` directly on the implementation, which could let an attacker take ownership of it.
 
 ```solidity [src/TokenV1.sol]
 // SPDX-License-Identifier: MIT
@@ -51,6 +55,8 @@ contract TokenV1 is UUPSUpgradeable, OwnableUpgradeable {
 ```
 
 #### Deploy the proxy
+
+Deployment is a two-step process: deploy the implementation, then deploy an ERC1967 proxy pointing to it. The proxy constructor accepts initialization calldata, so the `initialize` function is called atomically during deployment.
 
 ```solidity [script/DeployToken.s.sol]
 // SPDX-License-Identifier: MIT
@@ -87,6 +93,8 @@ contract DeployToken is Script {
 
 #### Create the new implementation
 
+The new implementation inherits from V1 and adds state variables **at the end** of the storage layout. Inserting or reordering variables would corrupt existing proxy state.
+
 ```solidity [src/TokenV2.sol]
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.13;
@@ -95,7 +103,7 @@ import {TokenV1} from "./TokenV1.sol";
 
 contract TokenV2 is TokenV1 {
     // New state variables must be added at the end
-    mapping(address => bool) public frozen;
+    mapping(address => bool) public frozen; // [!code ++]
 
     function freeze(address account) external onlyOwner {
         frozen[account] = true;
@@ -108,6 +116,8 @@ contract TokenV2 is TokenV1 {
 ```
 
 #### Deploy and upgrade
+
+To upgrade, deploy the new implementation and call `upgradeToAndCall` on the proxy. This updates the implementation address stored in the proxy's ERC1967 slot. The second argument is optional calldata for a migration function - pass empty bytes if no re-initialization is needed.
 
 ```solidity [script/UpgradeToken.s.sol]
 // SPDX-License-Identifier: MIT
@@ -145,7 +155,7 @@ contract UpgradeToken is Script {
 
 ### Storage layout verification
 
-Foundry can check storage layout compatibility between implementations:
+Since the proxy stores all state, the new implementation's storage layout must be compatible with the old one. Foundry can export and diff storage layouts to catch breaking changes before deployment:
 
 ```bash
 $ forge inspect src/TokenV1.sol:TokenV1 storage-layout --pretty > v1-layout.txt
@@ -165,25 +175,29 @@ $ diff v1-layout.txt v2-layout.txt
 
 #### Using storage gaps
 
+Storage gaps are fixed-size arrays that reserve empty storage slots in a base contract. When you add new state variables in an upgrade, you reduce the gap size by the same number of slots, keeping the total storage layout unchanged and preventing slot collisions with inherited contracts.
+
 ```solidity
 contract TokenV1 is UUPSUpgradeable, OwnableUpgradeable {
     mapping(address => uint256) public balances;
     uint256 public totalSupply;
     
     // Reserve 50 slots for future variables
-    uint256[50] private __gap;
+    uint256[50] private __gap; // [!code hl]
 }
 
 contract TokenV2 is TokenV1 {
     // Uses one slot from the gap
-    mapping(address => bool) public frozen;
+    mapping(address => bool) public frozen; // [!code hl]
     
     // Update gap to maintain total slot count
-    uint256[49] private __gap;
+    uint256[49] private __gap; // [!code hl]
 }
 ```
 
 ### Transparent proxy deployment
+
+In the transparent proxy pattern, the proxy itself contains the upgrade logic and a separate admin address. Only the admin can call upgrade functions; all other callers are transparently delegated to the implementation. This avoids function selector clashes between the proxy and implementation but costs more gas per call due to the admin check.
 
 ```solidity [script/DeployTransparent.s.sol]
 // SPDX-License-Identifier: MIT
@@ -221,6 +235,8 @@ contract DeployTransparent is Script {
 
 ### Testing upgrades
 
+Upgrade tests should verify three things: state is preserved across the upgrade, new functionality works, and only authorized accounts can trigger upgrades.
+
 ```solidity [test/TokenUpgrade.t.sol]
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.13;
@@ -242,16 +258,16 @@ contract TokenUpgradeTest is Test {
 
     function test_UpgradePreservesState() public {
         // Set state in V1
-        proxy.mint(address(0x1), 1000);
+        proxy.mint(address(0x1), 1000); // [!code hl]
         assertEq(proxy.balances(address(0x1)), 1000);
 
         // Upgrade to V2
         TokenV2 newImpl = new TokenV2();
-        proxy.upgradeToAndCall(address(newImpl), "");
+        proxy.upgradeToAndCall(address(newImpl), ""); // [!code hl]
 
         // State is preserved
         TokenV2 proxyV2 = TokenV2(address(proxy));
-        assertEq(proxyV2.balances(address(0x1)), 1000);
+        assertEq(proxyV2.balances(address(0x1)), 1000); // [!code hl]
         assertEq(proxyV2.version(), 2);
     }
 
