@@ -56,19 +56,19 @@ contract DeployScript is Script {
     }
 
     function getConfig() internal view returns (Config memory) {
-        if (block.chainid == 1) {
+        if (block.chainid == 1) { // [!code hl]
             return Config({
                 admin: 0x1234567890123456789012345678901234567890,
                 initialSupply: 1_000_000 ether,
                 weth: 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
             });
-        } else if (block.chainid == 10) {
+        } else if (block.chainid == 10) { // [!code hl]
             return Config({
                 admin: 0x1234567890123456789012345678901234567890,
                 initialSupply: 500_000 ether,
                 weth: 0x4200000000000000000000000000000000000006
             });
-        } else if (block.chainid == 42161) {
+        } else if (block.chainid == 42161) { // [!code hl]
             return Config({
                 admin: 0x1234567890123456789012345678901234567890,
                 initialSupply: 500_000 ether,
@@ -178,12 +178,12 @@ contract DeployScript is Script {
         vm.stopBroadcast();
 
         // Write deployment to JSON
-        string memory json = vm.serializeAddress("deployment", "token", address(token));
-        json = vm.serializeUint("deployment", "chainId", block.chainid);
-        json = vm.serializeUint("deployment", "blockNumber", block.number);
+        string memory json = vm.serializeAddress("deployment", "token", address(token)); // [!code hl]
+        json = vm.serializeUint("deployment", "chainId", block.chainid); // [!code hl]
+        json = vm.serializeUint("deployment", "blockNumber", block.number); // [!code hl]
         
-        string memory path = string.concat("deployments/", vm.toString(block.chainid), ".json");
-        vm.writeJson(json, path);
+        string memory path = string.concat("deployments/", vm.toString(block.chainid), ".json"); // [!code hl]
+        vm.writeJson(json, path); // [!code hl]
     }
 }
 ```
