@@ -3,7 +3,7 @@
 $ forge tree --no-dedupe
 // [!endregion command]
 // [!region output]
-^Dsrc/Morpho.sol =0.8.19
+src/Morpho.sol =0.8.19
 ├── src/interfaces/IMorpho.sol >=0.5.0
 ├── src/interfaces/IMorphoCallbacks.sol >=0.5.0
 ├── src/interfaces/IIrm.sol >=0.5.0

@@ -3,7 +3,7 @@
 $ forge test --match-test test_WithdrawAsNotOwner --match-path test/FailingTest.t.sol -vvv --allow-failure
 // [!endregion command]
 // [!region output]
-Solc 0.8.10 finished in 442.79ms
+Solc 0.8.10 finished in 639.54ms
 Compiler run [32msuccessful[0m!
 Ran 1 test for test/FailingTest.t.sol:VaultTest
 [31m[FAIL: Unauthorized()][0m test_WithdrawAsNotOwner() (gas: 8418)
@@ -17,7 +17,7 @@ Traces:
 [33mBacktrace:[0m
   at Vault.withdraw
   at VaultTest.test_WithdrawAsNotOwner
-Suite result: [31mFAILED[0m. [32m0[0m passed; [31m1[0m failed; [33m0[0m skipped; finished in 232.67µs (48.96µs CPU time)
-Ran 1 test suite in 124.88ms (232.67µs CPU time): [32m0[0m tests passed, [31m1[0m failed, [33m0[0m skipped (1 total tests)
+Suite result: [31mFAILED[0m. [32m0[0m passed; [31m1[0m failed; [33m0[0m skipped; finished in 249.96µs (51.51µs CPU time)
+Ran 1 test suite in 8.72ms (249.96µs CPU time): [32m0[0m tests passed, [31m1[0m failed, [33m0[0m skipped (1 total tests)
 // [!endregion output]
 // [!endregion all]
