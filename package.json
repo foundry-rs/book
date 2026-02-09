@@ -14,7 +14,7 @@
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "tailwindcss": "^4.1.18",
-    "vocs": "https://pkg.pr.new/wevm/vocs@5647cea",
+    "vocs": "https://pkg.pr.new/wevm/vocs@4787d0a",
     "waku": "1.0.0-alpha.2"
   },
   "devDependencies": {
