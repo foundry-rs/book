@@ -3,12 +3,10 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  
   "scripts": {
     "dev": "NODE_OPTIONS='--import tsx' vite",
     "build": "bun run fetch-benchmarks && vite build",
     "preview": "node dist/preview.js",
-    
     "fetch-benchmarks": "bun scripts/fetch-benchmarks.ts"
   },
   "dependencies": {
@@ -16,7 +14,7 @@
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "tailwindcss": "^4.1.18",
-    "vocs": "https://pkg.pr.new/wevm/vocs@3c0ed6f",
+    "vocs": "https://pkg.pr.new/wevm/vocs@5647cea",
     "waku": "1.0.0-alpha.2"
   },
   "devDependencies": {
