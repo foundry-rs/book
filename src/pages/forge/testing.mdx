@@ -217,6 +217,85 @@ function testFuzz_Transfer(uint256 amount) public {
 }
 ```
 
+### Table testing
+
+Table testing enables the definition of a dataset (the "table") and the execution of a test function for each entry in that dataset. This helps ensure that certain combinations of inputs and conditions are tested.
+
+Table tests are functions named with a `table` prefix that accept datasets as one or multiple arguments:
+
+```solidity
+function tableSumsTest(TestCase memory sums) public
+```
+
+```solidity
+function tableSumsTest(TestCase memory sums, bool enable) public
+```
+
+The datasets are defined as forge fixtures which can be:
+
+- Storage arrays prefixed with `fixture` and followed by the dataset name
+- Functions named with `fixture` prefix, followed by the dataset name. The function should return an array of values.
+
+#### Single dataset
+
+In the following example, `tableSumsTest` runs twice with inputs from the `fixtureSums` dataset: once with `TestCase(1, 2, 3)` and once with `TestCase(4, 5, 9)`.
+
+```solidity
+struct TestCase {
+    uint256 a;
+    uint256 b;
+    uint256 expected;
+}
+
+function fixtureSums() public returns (TestCase[] memory) {
+    TestCase[] memory entries = new TestCase[](2);
+    entries[0] = TestCase(1, 2, 3);
+    entries[1] = TestCase(4, 5, 9);
+    return entries;
+}
+
+function tableSumsTest(TestCase memory sums) public pure {
+    require(sums.a + sums.b == sums.expected, "wrong sum");
+}
+```
+
+The parameter name must match the fixture suffix — `sums` resolves to `fixtureSums`. If the parameter name does not match any fixture, forge raises `[FAIL: Table test should have fixtures defined]`.
+
+#### Multiple datasets
+
+`tableSwapTest` runs twice, using values at the same position from the `fixtureWallet` and `fixtureSwap` datasets.
+
+```solidity
+struct Wallet {
+    address owner;
+    uint256 amount;
+}
+
+struct Swap {
+    bool swap;
+    uint256 amount;
+}
+
+Wallet[] public fixtureWallet;
+Swap[] public fixtureSwap;
+
+function setUp() public {
+    fixtureWallet.push(Wallet(address(11), 11));
+    fixtureSwap.push(Swap(true, 11));
+
+    fixtureWallet.push(Wallet(address(12), 12));
+    fixtureSwap.push(Swap(false, 12));
+}
+
+function tableSwapTest(Wallet memory wallet, Swap memory swap) public pure {
+    require(
+        (wallet.owner == address(11) && swap.swap) || (wallet.owner == address(12) && !swap.swap), "not allowed"
+    );
+}
+```
+
+The same naming requirement applies — each parameter name must match a corresponding fixture.
+
 ### Testing reverts
 
 Use `vm.expectRevert(){:solidity}` to test that a call reverts:
