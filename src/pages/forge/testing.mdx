@@ -7,6 +7,7 @@ description: Write and run tests for Solidity contracts with Forge.
 Forge runs tests written in Solidity. Test files live in `test/` and test functions are prefixed with `test`.
 
 :::terminal
+
 ```bash
 // [!include ~/snippets/output/hello_foundry/forge-test:command]
 ```
@@ -14,6 +15,7 @@ Forge runs tests written in Solidity. Test files live in `test/` and test functi
 ```ansi
 // [!include ~/snippets/output/hello_foundry/forge-test:output]
 ```
+
 :::
 
 ### Writing tests
@@ -47,6 +49,7 @@ contract CounterTest is Test {
 ```
 
 Key conventions:
+
 - Test files end with `.t.sol`
 - Test contracts inherit from `forge-std/Test.sol`
 - Test functions start with `test_` or `test`
@@ -61,6 +64,7 @@ Traces show a tree of all calls made during a test, helping you understand execu
 When a test fails, use `-vvv` to see a stack trace showing exactly where the revert occurred. This is the most common way to debug test failures.
 
 :::terminal
+
 ```bash
 $ forge test -vvv
 ```
@@ -68,6 +72,7 @@ $ forge test -vvv
 ```ansi
 // [!include ~/snippets/output/cheatcodes/forge-test-fail-vvv:output]
 ```
+
 :::
 
 The trace shows the call hierarchy with the revert bubbling up, and the **Backtrace** pinpoints the exact location in your code.
@@ -77,6 +82,7 @@ The trace shows the call hierarchy with the revert bubbling up, and the **Backtr
 Use `-vvvv` to see traces for all tests, including passing ones. This helps you understand execution flow, verify call order, and check gas usage for individual operations.
 
 :::terminal
+
 ```bash
 $ forge test -vvvv
 ```
@@ -84,6 +90,7 @@ $ forge test -vvvv
 ```ansi
 // [!include ~/snippets/output/cheatcodes/forge-test-vvvv:output]
 ```
+
 :::
 
 #### Reading traces
@@ -98,14 +105,14 @@ $ forge test -vvvv
 
 Control how much detail Forge outputs with `-v` flags:
 
-| Flag | Shows |
-|------|-------|
-| (none) | Pass/fail summary only |
-| `-v` | Test names |
-| `-vv` | Logs emitted during tests |
-| `-vvv` | Traces for failing tests |
-| `-vvvv` | Traces for all tests, including setup |
-| `-vvvvv` | Traces with storage changes |
+| Flag     | Shows                                 |
+| -------- | ------------------------------------- |
+| (none)   | Pass/fail summary only                |
+| `-v`     | Test names                            |
+| `-vv`    | Logs emitted during tests             |
+| `-vvv`   | Traces for failing tests              |
+| `-vvvv`  | Traces for all tests, including setup |
+| `-vvvvv` | Traces with storage changes           |
 
 Use `-vvv` for debugging failures, `-vvvv` when you need to see successful test execution, and `-vvvvv` when tracking state changes.
 
@@ -116,6 +123,7 @@ Run specific tests:
 By name:
 
 :::terminal
+
 ```bash
 // [!include ~/snippets/output/test_filters/forge-test-match-test:command]
 ```
@@ -123,11 +131,13 @@ By name:
 ```ansi
 // [!include ~/snippets/output/test_filters/forge-test-match-test:output]
 ```
+
 :::
 
 By contract:
 
 :::terminal
+
 ```bash
 // [!include ~/snippets/output/test_filters/forge-test-match-contract:command]
 ```
@@ -135,11 +145,13 @@ By contract:
 ```ansi
 // [!include ~/snippets/output/test_filters/forge-test-match-contract:output]
 ```
+
 :::
 
 By path:
 
 :::terminal
+
 ```bash
 // [!include ~/snippets/output/test_filters/forge-test-match-path:command]
 ```
@@ -147,11 +159,13 @@ By path:
 ```ansi
 // [!include ~/snippets/output/test_filters/forge-test-match-path:output]
 ```
+
 :::
 
 Combine filters:
 
 :::terminal
+
 ```bash
 // [!include ~/snippets/output/test_filters/forge-test-match-contract-and-test:command]
 ```
@@ -159,6 +173,7 @@ Combine filters:
 ```ansi
 // [!include ~/snippets/output/test_filters/forge-test-match-contract-and-test:output]
 ```
+
 :::
 
 Exclude tests with `--no-match-*` variants:
@@ -181,6 +196,7 @@ function testFuzz_SetNumber(uint256 x) public {
 Forge generates random inputs and runs the test multiple times (256 by default):
 
 :::terminal
+
 ```bash
 // [!include ~/snippets/output/fuzz_testing/forge-test-success-fuzz:command]
 ```
@@ -188,6 +204,7 @@ Forge generates random inputs and runs the test multiple times (256 by default):
 ```ansi
 // [!include ~/snippets/output/fuzz_testing/forge-test-success-fuzz:output]
 ```
+
 :::
 
 Configure fuzzing:
@@ -319,6 +336,7 @@ function test_RevertWhen_InsufficientBalance() public {
 ```
 
 :::terminal
+
 ```bash
 // [!include ~/snippets/output/cheatcodes/forge-test-cheatcodes-expectrevert:command]
 ```
@@ -326,7 +344,82 @@ function test_RevertWhen_InsufficientBalance() public {
 ```ansi
 // [!include ~/snippets/output/cheatcodes/forge-test-cheatcodes-expectrevert:output]
 ```
+
 :::
+
+### Branching Tree Technique
+
+The [Branching Tree Technique (BTT)](https://github.com/PaulRBerg/btt-examples) is a methodology for organizing Solidity tests by modeling all conditions and outcomes as a decision tree — each branch represents a condition, each leaf a concrete test case.
+
+BTT maps directly onto Foundry's test naming conventions. For example, a function `transfer` with two conditions (`when paused` / `when not paused`) and a sub-condition (`when balance is insufficient`) becomes:
+
+```
+transfer
+├── when paused
+│   └── it should revert
+└── when not paused
+    ├── when balance is insufficient
+    │   └── it should revert
+    └── when balance is sufficient
+        └── it should transfer the tokens
+```
+
+This tree structure translates into Foundry test files by using `_` as the condition separator and a modifier-based setup pattern:
+
+```solidity
+contract TransferTest is Test {
+    // "when not paused, when balance is sufficient"
+    function test_Transfer_WhenNotPaused_WhenBalanceSufficient() public {
+        // arrange, act, assert
+    }
+
+    // "when not paused, when balance is insufficient"
+    function test_RevertWhen_NotPaused_BalanceInsufficient() public {
+        vm.expectRevert(Token.InsufficientBalance.selector);
+        token.transfer(bob, 1000);
+    }
+}
+```
+
+#### Bulloak
+
+[Bulloak](https://bulloak.dev/) is a CLI tool that automates BTT workflows with Foundry. It takes a `.tree` spec file as input and can:
+
+- **Scaffold** a Solidity test file from the tree
+- **Check** that an existing test file matches the tree spec
+
+**Install:**
+
+```bash
+cargo install bulloak
+```
+
+**Create a spec file (`transfer.tree`):**
+
+```
+transfer.sol
+└── when not paused
+    ├── when balance is insufficient
+    │   └── it should revert
+    └── when balance is sufficient
+        └── it should transfer the tokens
+```
+
+**Scaffold a test file:**
+
+```bash
+bulloak scaffold transfer.tree
+```
+
+**Check an existing test file matches the spec:**
+
+```bash
+bulloak check transfer.tree
+```
+
+Bulloak integrates naturally with `forge test` — the generated test skeletons are standard Foundry test contracts that you fill in with assertions.
+
+For more information see the [Bulloak GitHub](https://github.com/alexfertel/bulloak) and the [BTT presentation at Solidity Summit 2023](https://prberg.com/presentations/solidity-summit-2023/).
 
 ### Testing events
 
@@ -336,7 +429,7 @@ Use `vm.expectEmit(){:solidity}` to verify events are emitted:
 function test_EmitsTransfer() public {
     vm.expectEmit(true, true, false, true);
     emit Transfer(alice, bob, 100);
-    
+
     token.transfer(bob, 100);
 }
 ```
