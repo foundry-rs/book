@@ -80,6 +80,7 @@ const docs = [
       { text: "Profiles", link: "/config/profiles" },
       { text: "Compiler", link: "/config/compiler" },
       { text: "Testing", link: "/config/testing" },
+      { text: "MESC", link: "/config/mesc" },
       { text: "CI Integration", link: "/config/ci" },
       { text: "Editor Setup", link: "/config/editors" },
     ],
