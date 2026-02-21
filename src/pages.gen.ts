@@ -431,6 +431,7 @@ type Page =
 | { path: '/config/compiler'; render: 'static' }
 | { path: '/config/editors'; render: 'static' }
 | { path: '/config'; render: 'static' }
+| { path: '/config/mesc'; render: 'static' }
 | { path: '/config/profiles'; render: 'static' }
 | { path: '/config/testing'; render: 'static' }
 | { path: '/config/reference/README'; render: 'static' }
