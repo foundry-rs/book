@@ -407,6 +407,7 @@ type Page =
 | { path: '/introduction/prompting'; render: 'static' }
 | { path: '/help/faq'; render: 'static' }
 | { path: '/help/troubleshooting'; render: 'static' }
+| { path: '/guides/branching-tree-technique'; render: 'static' }
 | { path: '/guides/debugging-transactions'; render: 'static' }
 | { path: '/guides/deploying-contracts'; render: 'static' }
 | { path: '/guides/deterministic-deployments-using-create2'; render: 'static' }
