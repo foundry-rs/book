@@ -37,7 +37,7 @@ export default defineConfig({
     sources: [McpSource.github({ repo: "foundry-rs/foundry" })],
   },
   editLink: {
-    link: "https://github.com/foundry-rs/book/edit/master/vocs/src/pages/:path",
+    link: "https://github.com/foundry-rs/book/edit/master/src/pages/:path",
     text: "Suggest changes on GitHub",
   },
   logoUrl: "/foundry-logo.png",
