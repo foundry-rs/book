@@ -21,14 +21,14 @@ Displays an interactive prompt to the user for inserting arbitrary data.
 ### Parameters
 
 | Parameter    | Type     | Description                     |
-|--------------|----------|---------------------------------|
+| ------------ | -------- | ------------------------------- |
 | `promptText` | `string` | The text to display to the user |
 
 ### Returns
 
-| Type      | Description                                  |
-|-----------|----------------------------------------------|
-| `string`  | The user's input (for `prompt` and `promptSecret`) |
+| Type      | Description                                              |
+| --------- | -------------------------------------------------------- |
+| `string`  | The user's input (for `prompt` and `promptSecret`)       |
 | `uint256` | The user's input parsed as uint (for `promptSecretUint`) |
 
 ### Configuration
@@ -118,6 +118,10 @@ This cheatcode is meant to be used in scripts, not tests. It also reverts when r
 
 :::note
 Follow the best practices above for testing scripts that use `vm.prompt` and handling timeouts, since scripts might otherwise hang or revert.
+:::
+
+:::note
+When a `forge script` deploys a contract that requires **external library linking**, `vm.prompt` will display the same prompt **twice**. This happens because Foundry runs the script twice internally — once for simulation and once for broadcast — and each run triggers the prompt independently. To work around this, consider passing values as script arguments or reading from environment variables with [`vm.envString`](/reference/cheatcodes/env-string) instead of using `vm.prompt` in scripts that link against external libraries.
 :::
 
 ### Related Cheatcodes
