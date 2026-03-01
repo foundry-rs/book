@@ -3,11 +3,11 @@
 $ forge test
 // [!endregion command]
 // [!region output]
-Solc 0.8.10 finished in 639.00ms
+Solc 0.8.10 finished in 637.89ms
 Compiler run [32msuccessful[0m!
 Ran 1 test for test/Safe.t.sol:SafeTest
-[32m[PASS][0m testFuzz_Withdraw(uint96) (runs: 256, μ: 19765, ~: 19923)
-Suite result: [32mok[0m. [32m1[0m passed; [31m0[0m failed; [33m0[0m skipped; finished in 4.89ms (4.70ms CPU time)
-Ran 1 test suite in 9.15ms (4.89ms CPU time): [32m1[0m tests passed, [31m0[0m failed, [33m0[0m skipped (1 total tests)
+[32m[PASS][0m testFuzz_Withdraw(uint96) (runs: 256, μ: 19713, ~: 19923)
+Suite result: [32mok[0m. [32m1[0m passed; [31m0[0m failed; [33m0[0m skipped; finished in 5.58ms (5.33ms CPU time)
+Ran 1 test suite in 10.25ms (5.58ms CPU time): [32m1[0m tests passed, [31m0[0m failed, [33m0[0m skipped (1 total tests)
 // [!endregion output]
 // [!endregion all]
