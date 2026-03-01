@@ -16,7 +16,7 @@ Traces:
     ├─ [407] [32mOwnerUpOnly[0m::[32mcount[0m()[33m [staticcall][0m
     │   └─ [32m← [Return][0m 1
     └─ [32m← [Stop][0m
-Suite result: [32mok[0m. [32m1[0m passed; [31m0[0m failed; [33m0[0m skipped; finished in 358.46µs (70.37µs CPU time)
-Ran 1 test suite in 7.98ms (358.46µs CPU time): [32m1[0m tests passed, [31m0[0m failed, [33m0[0m skipped (1 total tests)
+Suite result: [32mok[0m. [32m1[0m passed; [31m0[0m failed; [33m0[0m skipped; finished in 384.24µs (68.77µs CPU time)
+Ran 1 test suite in 8.65ms (384.24µs CPU time): [32m1[0m tests passed, [31m0[0m failed, [33m0[0m skipped (1 total tests)
 // [!endregion output]
 // [!endregion all]
