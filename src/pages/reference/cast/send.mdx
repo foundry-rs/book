@@ -167,10 +167,6 @@ Wallet options - raw:
           
           [default: 0]
 
-      --unlocked
-          Send via `eth_sendTransaction` using the `--from` argument or
-          $ETH_FROM as sender
-
 Wallet options - keystore:
       --keystore <PATH>
           Use the keystore in the given folder or file
@@ -224,10 +220,11 @@ Wallet options - remote:
           
           See: [https://docs.turnkey.com/getting-started/quickstart](https://docs.turnkey.com/getting-started/quickstart)
 
-Wallet options - browser:
+:
       --browser
           Use a browser wallet
 
+Browser wallet options:
       --browser-port <PORT>
           Port for the browser wallet server
           
@@ -235,6 +232,10 @@ Wallet options - browser:
 
       --browser-disable-open
           Whether to open the browser for wallet connection
+
+      --unlocked
+          Send via `eth_sendTransaction` using the `--from` argument or
+          $ETH_FROM as sender
 
 Transaction options:
       --gas-limit <GAS_LIMIT>
