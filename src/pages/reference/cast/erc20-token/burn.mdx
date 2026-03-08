@@ -154,25 +154,6 @@ Wallet options - raw:
           
           [default: 0]
 
-      --gas-limit <GAS_LIMIT>
-          Gas limit for the transaction
-          
-          [env: ETH_GAS_LIMIT=]
-
-      --gas-price <GAS_PRICE>
-          Gas price for legacy transactions, or max fee per gas for EIP1559
-          transactions
-          
-          [env: ETH_GAS_PRICE=]
-
-      --priority-gas-price <PRIORITY_GAS_PRICE>
-          Max priority fee per gas for EIP1559 transactions
-          
-          [env: ETH_PRIORITY_GAS_PRICE=]
-
-      --nonce <NONCE>
-          Nonce for the transaction
-
 Wallet options - keystore:
       --keystore <PATH>
           Use the keystore in the given folder or file
@@ -226,10 +207,11 @@ Wallet options - remote:
           
           See: [https://docs.turnkey.com/getting-started/quickstart](https://docs.turnkey.com/getting-started/quickstart)
 
-Wallet options - browser:
+:
       --browser
           Use a browser wallet
 
+Browser wallet options:
       --browser-port <PORT>
           Port for the browser wallet server
           
@@ -237,6 +219,25 @@ Wallet options - browser:
 
       --browser-disable-open
           Whether to open the browser for wallet connection
+
+      --gas-limit <GAS_LIMIT>
+          Gas limit for the transaction
+          
+          [env: ETH_GAS_LIMIT=]
+
+      --gas-price <GAS_PRICE>
+          Gas price for legacy transactions, or max fee per gas for EIP1559
+          transactions
+          
+          [env: ETH_GAS_PRICE=]
+
+      --priority-gas-price <PRIORITY_GAS_PRICE>
+          Max priority fee per gas for EIP1559 transactions
+          
+          [env: ETH_PRIORITY_GAS_PRICE=]
+
+      --nonce <NONCE>
+          Nonce for the transaction
 
 Tempo:
       --tempo.fee-token <FEE_TOKEN>
