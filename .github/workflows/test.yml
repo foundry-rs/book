@@ -26,7 +26,7 @@ jobs:
           node-version: "24"
 
       - name: Install bun
-        uses: oven-sh/setup-bun@3d267786b128fe76c2f16a390aa2448b815359f3 # v2
+        uses: oven-sh/setup-bun@ecf28ddc73e819eb6fa29df6b34ef8921c743461 # v2
 
       - name: Build Vocs
         run: bun install && bun run build
