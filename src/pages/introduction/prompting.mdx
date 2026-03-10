@@ -43,6 +43,30 @@ Describe the contract or tests you want to generate.
 </user_prompt>
 ```
 
+## Solskill: AI-enhanced Solidity development
+
+[Solskill](https://github.com/Cyfrin/solskill) is a [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin that teaches AI to write production-grade Solidity. It makes Claude more aware of smart contract security concerns, more thorough with testing and code quality, and easier to work with on Foundry projects.
+
+### Install
+
+```bash
+npx skills add cyfrin/solskill
+```
+
+### Usage
+
+Once installed, you can make natural language requests directly in Claude Code:
+
+```txt
+Create me an AMM with 2 tokens and a 0.3% fee
+```
+
+```txt
+Build a token vault contract for a specific token
+```
+
+Solskill works alongside the structured prompt template above — install the plugin first, then use the template for more detailed requests.
+
 ## Example usage
 
 ```txt [Example]
