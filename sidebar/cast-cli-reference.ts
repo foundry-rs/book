@@ -132,6 +132,8 @@ export const castCliReference: SidebarItem = {
                 { text: "cast artifact", link: "/reference/cast/artifact" },
                 { text: "cast b2e-payload", link: "/reference/cast/b2e-payload" },
                 { text: "cast base-fee", link: "/reference/cast/base-fee" },
+                { text: "cast batch-mktx", link: "/reference/cast/batch-mktx" },
+                { text: "cast batch-send", link: "/reference/cast/batch-send" },
                 { text: "cast bind", link: "/reference/cast/bind" },
                 { text: "cast call --create", link: "/reference/cast/call/--create" },
                 { text: "cast codehash", link: "/reference/cast/codehash" },

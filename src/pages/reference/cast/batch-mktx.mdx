@@ -1,0 +1,346 @@
+## cast batch-mktx
+
+Build and sign a batch transaction (Tempo)
+
+:::terminal
+
+```bash
+$ cast batch-mktx --help
+```
+
+```txt
+Usage: cast batch-mktx [OPTIONS] --call <SPEC>
+
+Options:
+      --call <SPEC>
+          Call specifications in format: `to[:<value>][:<sig>[:<args>]]` or
+          `to[:<value>][:<0xdata>]`
+          
+          Examples: --call "0x123:0.1ether" (ETH transfer) --call
+          "0x456::transfer(address,uint256):0x789,1000" (ERC20 transfer) --call
+          "0xabc::0x123def" (raw calldata)
+
+  -h, --help
+          Print help (see a summary with '-h')
+
+  -j, --threads <THREADS>
+          Number of threads to use. Specifying 0 defaults to the number of
+          logical cores
+          
+          [aliases: --jobs]
+
+Transaction options:
+      --gas-limit <GAS_LIMIT>
+          Gas limit for the transaction
+          
+          [env: ETH_GAS_LIMIT=]
+
+      --gas-price <PRICE>
+          Gas price for legacy transactions, or max fee per gas for EIP1559
+          transactions, either specified in wei, or as a string with a unit
+          type.
+          
+          Examples: 1ether, 10gwei, 0.01ether
+          
+          [env: ETH_GAS_PRICE=]
+
+      --priority-gas-price <PRICE>
+          Max priority fee per gas for EIP1559 transactions
+          
+          [env: ETH_PRIORITY_GAS_PRICE=]
+
+      --value <VALUE>
+          Ether to send in the transaction, either specified in wei, or as a
+          string with a unit type.
+          
+          Examples: 1ether, 10gwei, 0.01ether
+
+      --nonce <NONCE>
+          Nonce for the transaction
+
+      --legacy
+          Send a legacy transaction instead of an EIP1559 transaction.
+          
+          This is automatically enabled for common networks without EIP1559.
+
+      --blob
+          Send a blob transaction using EIP-7594 (PeerDAS) format.
+          
+          Note: Use with `--eip4844` for the legacy EIP-4844 format.
+
+      --eip4844
+          Send a blob transaction using EIP-4844 (legacy) format instead of
+          EIP-7594. Must be used with `--blob`
+
+      --blob-gas-price <BLOB_PRICE>
+          Gas price for EIP-7594/EIP-4844 blob transaction
+          
+          [env: ETH_BLOB_GAS_PRICE=]
+
+      --auth <AUTH>
+          EIP-7702 authorization list.
+          
+          Can be either a hex-encoded signed authorization or an address.
+
+      --access-list [<ACCESS_LIST>]
+          EIP-2930 access list.
+          
+          Accepts either a JSON-encoded access list or an empty value to create
+          the access list via an RPC call to `eth_createAccessList`. To retrieve
+          only the access list portion, use the `cast access-list` command.
+
+Tempo:
+      --tempo.fee-token <FEE_TOKEN>
+          Fee token address for Tempo transactions.
+          
+          When set, builds a Tempo (type 0x76) transaction that pays gas fees in
+          the specified token.
+          
+          If this is not set, the fee token is chosen according to network
+          rules. See the Tempo docs for more information.
+
+      --tempo.seq <SEQUENCE_KEY>
+          Nonce sequence key for Tempo transactions.
+          
+          When set, builds a Tempo (type 0x76) transaction with the specified
+          nonce sequence key.
+          
+          If this is not set, the protocol sequence key (0) will be used.
+          
+          For more information see
+          [https://docs.tempo.xyz/protocol/transactions/spec-tempo-transaction#parallelizable-nonces](https://docs.tempo.xyz/protocol/transactions/spec-tempo-transaction#parallelizable-nonces).
+
+      --tempo.sponsor-sig <SPONSOR_SIGNATURE>
+          Sponsor (fee payer) signature for Tempo sponsored transactions.
+          
+          The sponsor signs the `fee_payer_signature_hash` to commit to paying
+          gas fees on behalf of the sender. Provide as a hex-encoded signature.
+
+      --tempo.print-sponsor-hash
+          Print the sponsor signature hash and exit.
+          
+          Computes the `fee_payer_signature_hash` for the transaction so that a
+          sponsor knows what hash to sign. The transaction is not sent.
+
+      --tempo.key-id <KEY_ID>
+          Access key ID for Tempo Keychain signature transactions.
+          
+          Used during gas estimation to override the key_id that would normally
+          be recovered from the signature.
+
+      --tempo.expiring-nonce
+          Enable expiring nonce mode for Tempo transactions.
+          
+          Sets nonce to 0 and nonce_key to U256::MAX, enabling time-bounded
+          transaction validity via `--tempo.valid-before` and
+          `--tempo.valid-after`.
+
+      --tempo.valid-before <VALID_BEFORE>
+          Upper bound timestamp for Tempo expiring nonce transactions.
+          
+          The transaction is only valid before this unix timestamp. Requires
+          `--tempo.expiring-nonce`.
+
+      --tempo.valid-after <VALID_AFTER>
+          Lower bound timestamp for Tempo expiring nonce transactions.
+          
+          The transaction is only valid after this unix timestamp. Requires
+          `--tempo.expiring-nonce`.
+
+Rpc options:
+  -r, --rpc-url <URL>
+          The RPC endpoint, default value is http://localhost:8545
+          
+          [env: ETH_RPC_URL=]
+
+  -k, --insecure
+          Allow insecure RPC connections (accept invalid HTTPS certificates).
+          
+          When the provider's inner runtime transport variant is HTTP, this
+          configures the reqwest client to accept invalid certificates.
+
+      --no-proxy
+          Disable automatic proxy detection.
+          
+          Use this in sandboxed environments (e.g., Cursor IDE sandbox, macOS
+          App Sandbox) where system proxy detection causes crashes. When
+          enabled, HTTP_PROXY/HTTPS_PROXY environment variables and system proxy
+          settings will be ignored.
+
+      --flashbots
+          Use the Flashbots RPC URL with fast mode
+          ([https://rpc.flashbots.net/fast](https://rpc.flashbots.net/fast)).
+          
+          This shares the transaction privately with all registered builders.
+          
+          See:
+          [https://docs.flashbots.net/flashbots-protect/quick-start#faster-transactions](https://docs.flashbots.net/flashbots-protect/quick-start#faster-transactions)
+
+      --jwt-secret <JWT_SECRET>
+          JWT Secret for the RPC endpoint.
+          
+          The JWT secret will be used to create a JWT for a RPC. For example,
+          the following can be used to simulate a CL `engine_forkchoiceUpdated`
+          call:
+          
+          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2
+          '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
+          
+          [env: ETH_RPC_JWT_SECRET=]
+
+      --rpc-timeout <RPC_TIMEOUT>
+          Timeout for the RPC request in seconds.
+          
+          The specified timeout will be used to override the default timeout for
+          RPC requests.
+          
+          Default value: 45
+          
+          [env: ETH_RPC_TIMEOUT=]
+
+      --rpc-headers <RPC_HEADERS>
+          Specify custom headers for RPC requests
+          
+          [env: ETH_RPC_HEADERS=]
+
+      --curl
+          Print the equivalent curl command instead of making the RPC request
+
+  -e, --etherscan-api-key <KEY>
+          The Etherscan (or equivalent) API key
+          
+          [env: ETHERSCAN_API_KEY=]
+
+  -c, --chain <CHAIN>
+          The chain name or EIP-155 chain ID
+          
+          [env: CHAIN=]
+
+Wallet options - raw:
+  -f, --from <ADDRESS>
+          The sender account
+          
+          [env: ETH_FROM=]
+
+  -i, --interactive
+          Open an interactive prompt to enter your private key
+
+      --private-key <RAW_PRIVATE_KEY>
+          Use the provided private key
+
+      --mnemonic <MNEMONIC>
+          Use the mnemonic phrase of mnemonic file at the specified path
+
+      --mnemonic-passphrase <PASSPHRASE>
+          Use a BIP39 passphrase for the mnemonic
+
+      --mnemonic-derivation-path <PATH>
+          The wallet derivation path.
+          
+          Works with both --mnemonic-path and hardware wallets.
+
+      --mnemonic-index <INDEX>
+          Use the private key from the given mnemonic index.
+          
+          Used with --mnemonic-path.
+          
+          [default: 0]
+
+      --raw-unsigned
+          Generate a raw RLP-encoded unsigned transaction
+
+      --ethsign
+          Call `eth_signTransaction` using the `--from` argument or $ETH_FROM as
+          sender
+
+Wallet options - keystore:
+      --keystore <PATH>
+          Use the keystore in the given folder or file
+          
+          [env: ETH_KEYSTORE=]
+
+      --account <ACCOUNT_NAME>
+          Use a keystore from the default keystores folder
+          (~/.foundry/keystores) by its filename
+          
+          [env: ETH_KEYSTORE_ACCOUNT=]
+
+      --password <PASSWORD>
+          The keystore password.
+          
+          Used with --keystore.
+
+      --password-file <PASSWORD_FILE>
+          The keystore password file path.
+          
+          Used with --keystore.
+          
+          [env: ETH_PASSWORD=]
+
+Wallet options - hardware wallet:
+  -l, --ledger
+          Use a Ledger hardware wallet
+
+  -t, --trezor
+          Use a Trezor hardware wallet
+
+Wallet options - remote:
+      --aws
+          Use AWS Key Management Service.
+          
+          Ensure the AWS_KMS_KEY_ID environment variable is set.
+
+      --gcp
+          Use Google Cloud Key Management Service.
+          
+          Ensure the following environment variables are set: GCP_PROJECT_ID,
+          GCP_LOCATION, GCP_KEY_RING, GCP_KEY_NAME, GCP_KEY_VERSION.
+          
+          See: [https://cloud.google.com/kms/docs](https://cloud.google.com/kms/docs)
+
+      --turnkey
+          Use Turnkey.
+          
+          Ensure the following environment variables are set:
+          TURNKEY_API_PRIVATE_KEY, TURNKEY_ORGANIZATION_ID, TURNKEY_ADDRESS.
+          
+          See: [https://docs.turnkey.com/getting-started/quickstart](https://docs.turnkey.com/getting-started/quickstart)
+
+Display options:
+      --color <COLOR>
+          The color of the log messages
+
+          Possible values:
+          - auto:   Intelligently guess whether to use color output (default)
+          - always: Force color output
+          - never:  Force disable color output
+
+      --json
+          Format log messages as JSON
+
+      --md
+          Format log messages as Markdown
+
+  -q, --quiet
+          Do not print log messages
+
+  -v, --verbosity...
+          Verbosity level of the log messages.
+          
+          Pass multiple times to increase the verbosity (e.g. -v, -vv, -vvv).
+          
+          Depending on the context the verbosity levels have different meanings.
+          
+          For example, the verbosity levels of the EVM are:
+          - 2 (-vv): Print logs for all tests.
+          - 3 (-vvv): Print execution traces for failing tests.
+          - 4 (-vvvv): Print execution traces for all tests, and setup traces
+          for failing tests.
+          - 5 (-vvvvv): Print execution and setup traces for all tests,
+          including storage changes and
+            backtraces with line numbers.
+```
+
+:::
