@@ -13,9 +13,17 @@ Usage: cast decode-transaction [OPTIONS] [TX]
 
 Arguments:
   [TX]
-          
+          Encoded transaction
 
 Options:
+  -n, --network <NETWORK>
+          Specify the Network for correct encoding
+
+          Possible values:
+          - ethereum: Ethereum (default)
+          - optimism: Optimism / OP-stack
+          - tempo:    Tempo
+
   -h, --help
           Print help (see a summary with '-h')
 

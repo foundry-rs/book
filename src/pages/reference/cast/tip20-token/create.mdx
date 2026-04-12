@@ -1,0 +1,381 @@
+## cast tip20-token create
+
+Create a new TIP-20 token via the TIP20Factory
+
+:::terminal
+
+```bash
+$ cast tip20-token create --help
+```
+
+```txt
+Usage: cast tip20-token create [OPTIONS] <NAME> <SYMBOL> <CURRENCY> <QUOTE_TOKEN> <ADMIN> <SALT>
+
+Arguments:
+  <NAME>
+          The token name (e.g. "US Dollar Coin")
+
+  <SYMBOL>
+          The token symbol (e.g. "USDC")
+
+  <CURRENCY>
+          The ISO 4217 currency code (e.g. "USD", "EUR", "GBP"). This field is
+          IMMUTABLE after creation and affects fee payment eligibility, DEX
+          routing, and quote token pairing
+
+  <QUOTE_TOKEN>
+          The TIP-20 quote token address used for exchange pricing
+
+  <ADMIN>
+          The admin address to receive DEFAULT_ADMIN_ROLE on the new token
+
+  <SALT>
+          A unique salt for deterministic address derivation (hex-encoded
+          bytes32)
+
+Options:
+      --force
+          Skip the ISO 4217 currency code validation warning
+
+      --async
+          Only print the transaction hash and exit immediately
+          
+          [env: CAST_ASYNC=]
+
+      --sync
+          Wait for transaction receipt synchronously instead of polling. Note:
+          uses `eth_sendTransactionSync` which may not be supported by all
+          clients
+
+      --confirmations <CONFIRMATIONS>
+          The number of confirmations until the receipt is fetched
+          
+          [default: 1]
+
+      --timeout <TIMEOUT>
+          Timeout for sending the transaction
+          
+          [env: ETH_TIMEOUT=]
+
+      --poll-interval <POLL_INTERVAL>
+          Polling interval for transaction receipts (in seconds)
+          
+          [env: ETH_POLL_INTERVAL=]
+
+  -h, --help
+          Print help (see a summary with '-h')
+
+  -j, --threads <THREADS>
+          Number of threads to use. Specifying 0 defaults to the number of
+          logical cores
+          
+          [aliases: --jobs]
+
+Rpc options:
+  -r, --rpc-url <RPC_URL>
+          The RPC endpoint
+          
+          [env: ETH_RPC_URL=]
+          [aliases: --fork-url]
+
+  -k, --insecure
+          Allow insecure RPC connections (accept invalid HTTPS certificates).
+          
+          When the provider's inner runtime transport variant is HTTP, this
+          configures the reqwest client to accept invalid certificates.
+
+      --rpc-timeout <RPC_TIMEOUT>
+          Timeout for the RPC request in seconds.
+          
+          The specified timeout will be used to override the default timeout for
+          RPC requests.
+          
+          Default value: 45
+          
+          [env: ETH_RPC_TIMEOUT=]
+
+      --no-proxy
+          Disable automatic proxy detection.
+          
+          Use this in sandboxed environments (e.g., Cursor IDE sandbox, macOS
+          App Sandbox) where system proxy detection causes crashes. When
+          enabled, HTTP_PROXY/HTTPS_PROXY environment variables and system proxy
+          settings will be ignored.
+
+      --compute-units-per-second <CUPS>
+          Sets the number of assumed available compute units per second for this
+          provider.
+          
+          default value: 330
+          
+          See also
+          [https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second](https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second)
+
+      --no-rpc-rate-limit
+          Disables rate limiting for this node's provider.
+          
+          See also
+          [https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second](https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second)
+          
+          [aliases: --no-rate-limit]
+
+      --flashbots
+          Use the Flashbots RPC URL with fast mode
+          ([https://rpc.flashbots.net/fast](https://rpc.flashbots.net/fast)).
+          
+          This shares the transaction privately with all registered builders.
+          
+          See:
+          [https://docs.flashbots.net/flashbots-protect/quick-start#faster-transactions](https://docs.flashbots.net/flashbots-protect/quick-start#faster-transactions)
+
+      --jwt-secret <JWT_SECRET>
+          JWT Secret for the RPC endpoint.
+          
+          The JWT secret will be used to create a JWT for a RPC. For example,
+          the following can be used to simulate a CL `engine_forkchoiceUpdated`
+          call:
+          
+          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2
+          '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
+          
+          [env: ETH_RPC_JWT_SECRET=]
+
+      --rpc-headers <RPC_HEADERS>
+          Specify custom headers for RPC requests
+          
+          [env: ETH_RPC_HEADERS=]
+
+      --curl
+          Print the equivalent curl command instead of making the RPC request
+
+  -e, --etherscan-api-key <KEY>
+          The Etherscan (or equivalent) API key
+          
+          [env: ETHERSCAN_API_KEY=]
+
+  -c, --chain <CHAIN>
+          The chain name or EIP-155 chain ID
+          
+          [env: CHAIN=]
+
+Wallet options - raw:
+  -f, --from <ADDRESS>
+          The sender account
+          
+          [env: ETH_FROM=]
+
+  -i, --interactive
+          Open an interactive prompt to enter your private key
+
+      --private-key <RAW_PRIVATE_KEY>
+          Use the provided private key
+
+      --mnemonic <MNEMONIC>
+          Use the mnemonic phrase of mnemonic file at the specified path
+
+      --mnemonic-passphrase <PASSPHRASE>
+          Use a BIP39 passphrase for the mnemonic
+
+      --mnemonic-derivation-path <PATH>
+          The wallet derivation path.
+          
+          Works with both --mnemonic-path and hardware wallets.
+
+      --mnemonic-index <INDEX>
+          Use the private key from the given mnemonic index.
+          
+          Used with --mnemonic-path.
+          
+          [default: 0]
+
+Wallet options - keystore:
+      --keystore <PATH>
+          Use the keystore in the given folder or file
+          
+          [env: ETH_KEYSTORE=]
+
+      --account <ACCOUNT_NAME>
+          Use a keystore from the default keystores folder
+          (~/.foundry/keystores) by its filename
+          
+          [env: ETH_KEYSTORE_ACCOUNT=]
+
+      --password <PASSWORD>
+          The keystore password.
+          
+          Used with --keystore.
+
+      --password-file <PASSWORD_FILE>
+          The keystore password file path.
+          
+          Used with --keystore.
+          
+          [env: ETH_PASSWORD=]
+
+Wallet options - hardware wallet:
+  -l, --ledger
+          Use a Ledger hardware wallet
+
+  -t, --trezor
+          Use a Trezor hardware wallet
+
+Wallet options - remote:
+      --aws
+          Use AWS Key Management Service.
+          
+          Ensure the AWS_KMS_KEY_ID environment variable is set.
+
+      --gcp
+          Use Google Cloud Key Management Service.
+          
+          Ensure the following environment variables are set: GCP_PROJECT_ID,
+          GCP_LOCATION, GCP_KEY_RING, GCP_KEY_NAME, GCP_KEY_VERSION.
+          
+          See: [https://cloud.google.com/kms/docs](https://cloud.google.com/kms/docs)
+
+      --turnkey
+          Use Turnkey.
+          
+          Ensure the following environment variables are set:
+          TURNKEY_API_PRIVATE_KEY, TURNKEY_ORGANIZATION_ID, TURNKEY_ADDRESS.
+          
+          See: [https://docs.turnkey.com/getting-started/quickstart](https://docs.turnkey.com/getting-started/quickstart)
+
+Wallet options - Tempo:
+      --tempo.access-key <PRIVATE_KEY>
+          Tempo access key private key.
+          
+          When set, the transaction is signed with this access key on behalf of
+          `--tempo.root-account`.
+          
+          [env: TEMPO_ACCESS_KEY=]
+
+      --tempo.root-account <ADDRESS>
+          Tempo root account address (the `from` address for keychain
+          transactions).
+          
+          Required when `--tempo.access-key` is set.
+          
+          [env: TEMPO_ROOT_ACCOUNT=]
+
+Wallet options - browser wallet:
+      --browser
+          Use a browser wallet
+
+      --browser-port <PORT>
+          Port for the browser wallet server
+          
+          [default: 9545]
+
+      --browser-disable-open
+          Whether to open the browser for wallet connection
+
+Transaction options:
+      --gas-limit <GAS_LIMIT>
+          Gas limit for the transaction
+
+      --gas-price <GAS_PRICE>
+          Gas price or max fee per gas for the transaction
+
+      --priority-gas-price <PRIORITY_GAS_PRICE>
+          Max priority fee per gas (EIP-1559)
+
+      --nonce <NONCE>
+          Nonce for the transaction
+
+Tempo:
+      --tempo.fee-token <FEE_TOKEN>
+          Fee token address for Tempo transactions.
+          
+          When set, builds a Tempo (type 0x76) transaction that pays gas fees in
+          the specified token.
+          
+          If this is not set, the fee token is chosen according to network
+          rules. See the Tempo docs for more information.
+
+      --tempo.nonce-key <NONCE_KEY>
+          Nonce key for Tempo parallelizable nonces.
+          
+          When set, builds a Tempo (type 0x76) transaction with the specified
+          nonce key, allowing multiple transactions with the same nonce but
+          different keys to be executed in parallel. If not set, the protocol
+          nonce key (0) will be used.
+          
+          For more information see
+          [https://docs.tempo.xyz/protocol/transactions/spec-tempo-transaction#parallelizable-nonces](https://docs.tempo.xyz/protocol/transactions/spec-tempo-transaction#parallelizable-nonces).
+
+      --tempo.sponsor-signature <SPONSOR_SIGNATURE>
+          Sponsor (fee payer) signature for Tempo sponsored transactions.
+          
+          The sponsor signs the `fee_payer_signature_hash` to commit to paying
+          gas fees on behalf of the sender. Provide as a hex-encoded signature.
+
+      --tempo.print-sponsor-hash
+          Print the sponsor signature hash and exit.
+          
+          Computes the `fee_payer_signature_hash` for the transaction so that a
+          sponsor knows what hash to sign. The transaction is not sent.
+
+      --tempo.key-id <KEY_ID>
+          Access key ID for Tempo Keychain signature transactions.
+          
+          Used during gas estimation to override the key_id that would normally
+          be recovered from the signature.
+
+      --tempo.expiring-nonce
+          Enable expiring nonce mode for Tempo transactions.
+          
+          Sets nonce to 0 and nonce_key to U256::MAX, enabling time-bounded
+          transaction validity via `--tempo.valid-before` and
+          `--tempo.valid-after`.
+
+      --tempo.valid-before <VALID_BEFORE>
+          Upper bound timestamp for Tempo expiring nonce transactions.
+          
+          The transaction is only valid before this unix timestamp. Requires
+          `--tempo.expiring-nonce`.
+
+      --tempo.valid-after <VALID_AFTER>
+          Lower bound timestamp for Tempo expiring nonce transactions.
+          
+          The transaction is only valid after this unix timestamp. Requires
+          `--tempo.expiring-nonce`.
+
+Display options:
+      --color <COLOR>
+          The color of the log messages
+
+          Possible values:
+          - auto:   Intelligently guess whether to use color output (default)
+          - always: Force color output
+          - never:  Force disable color output
+
+      --json
+          Format log messages as JSON
+
+      --md
+          Format log messages as Markdown
+
+  -q, --quiet
+          Do not print log messages
+
+  -v, --verbosity...
+          Verbosity level of the log messages.
+          
+          Pass multiple times to increase the verbosity (e.g. -v, -vv, -vvv).
+          
+          Depending on the context the verbosity levels have different meanings.
+          
+          For example, the verbosity levels of the EVM are:
+          - 2 (-vv): Print logs for all tests.
+          - 3 (-vvv): Print execution traces for failing tests.
+          - 4 (-vvvv): Print execution traces for all tests, and setup traces
+          for failing tests.
+          - 5 (-vvvvv): Print execution and setup traces for all tests,
+          including storage changes and
+            backtraces with line numbers.
+```
+
+:::

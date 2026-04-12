@@ -108,6 +108,23 @@ Wallet options - remote:
           
           See: [https://docs.turnkey.com/getting-started/quickstart](https://docs.turnkey.com/getting-started/quickstart)
 
+Wallet options - Tempo:
+      --tempo.access-key <PRIVATE_KEY>
+          Tempo access key private key.
+          
+          When set, the transaction is signed with this access key on behalf of
+          `--tempo.root-account`.
+          
+          [env: TEMPO_ACCESS_KEY=]
+
+      --tempo.root-account <ADDRESS>
+          Tempo root account address (the `from` address for keychain
+          transactions).
+          
+          Required when `--tempo.access-key` is set.
+          
+          [env: TEMPO_ROOT_ACCOUNT=]
+
 Display options:
       --color <COLOR>
           The color of the log messages
