@@ -56,16 +56,27 @@ Options:
           [aliases: --jobs]
 
 Rpc options:
-  -r, --rpc-url <URL>
-          The RPC endpoint, default value is http://localhost:8545
+  -r, --rpc-url <RPC_URL>
+          The RPC endpoint
           
           [env: ETH_RPC_URL=]
+          [aliases: --fork-url]
 
   -k, --insecure
           Allow insecure RPC connections (accept invalid HTTPS certificates).
           
           When the provider's inner runtime transport variant is HTTP, this
           configures the reqwest client to accept invalid certificates.
+
+      --rpc-timeout <RPC_TIMEOUT>
+          Timeout for the RPC request in seconds.
+          
+          The specified timeout will be used to override the default timeout for
+          RPC requests.
+          
+          Default value: 45
+          
+          [env: ETH_RPC_TIMEOUT=]
 
       --no-proxy
           Disable automatic proxy detection.
@@ -74,6 +85,23 @@ Rpc options:
           App Sandbox) where system proxy detection causes crashes. When
           enabled, HTTP_PROXY/HTTPS_PROXY environment variables and system proxy
           settings will be ignored.
+
+      --compute-units-per-second <CUPS>
+          Sets the number of assumed available compute units per second for this
+          provider.
+          
+          default value: 330
+          
+          See also
+          [https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second](https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second)
+
+      --no-rpc-rate-limit
+          Disables rate limiting for this node's provider.
+          
+          See also
+          [https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second](https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second)
+          
+          [aliases: --no-rate-limit]
 
       --flashbots
           Use the Flashbots RPC URL with fast mode
@@ -97,16 +125,6 @@ Rpc options:
           "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
           
           [env: ETH_RPC_JWT_SECRET=]
-
-      --rpc-timeout <RPC_TIMEOUT>
-          Timeout for the RPC request in seconds.
-          
-          The specified timeout will be used to override the default timeout for
-          RPC requests.
-          
-          Default value: 45
-          
-          [env: ETH_RPC_TIMEOUT=]
 
       --rpc-headers <RPC_HEADERS>
           Specify custom headers for RPC requests
@@ -209,6 +227,23 @@ Wallet options - remote:
           
           See: [https://docs.turnkey.com/getting-started/quickstart](https://docs.turnkey.com/getting-started/quickstart)
 
+Wallet options - Tempo:
+      --tempo.access-key <PRIVATE_KEY>
+          Tempo access key private key.
+          
+          When set, the transaction is signed with this access key on behalf of
+          `--tempo.root-account`.
+          
+          [env: TEMPO_ACCESS_KEY=]
+
+      --tempo.root-account <ADDRESS>
+          Tempo root account address (the `from` address for keychain
+          transactions).
+          
+          Required when `--tempo.access-key` is set.
+          
+          [env: TEMPO_ROOT_ACCOUNT=]
+
 Wallet options - browser wallet:
       --browser
           Use a browser wallet
@@ -291,18 +326,18 @@ Tempo:
           If this is not set, the fee token is chosen according to network
           rules. See the Tempo docs for more information.
 
-      --tempo.seq <SEQUENCE_KEY>
-          Nonce sequence key for Tempo transactions.
+      --tempo.nonce-key <NONCE_KEY>
+          Nonce key for Tempo parallelizable nonces.
           
           When set, builds a Tempo (type 0x76) transaction with the specified
-          nonce sequence key.
-          
-          If this is not set, the protocol sequence key (0) will be used.
+          nonce key, allowing multiple transactions with the same nonce but
+          different keys to be executed in parallel. If not set, the protocol
+          nonce key (0) will be used.
           
           For more information see
           [https://docs.tempo.xyz/protocol/transactions/spec-tempo-transaction#parallelizable-nonces](https://docs.tempo.xyz/protocol/transactions/spec-tempo-transaction#parallelizable-nonces).
 
-      --tempo.sponsor-sig <SPONSOR_SIGNATURE>
+      --tempo.sponsor-signature <SPONSOR_SIGNATURE>
           Sponsor (fee payer) signature for Tempo sponsored transactions.
           
           The sponsor signs the `fee_payer_signature_hash` to commit to paying

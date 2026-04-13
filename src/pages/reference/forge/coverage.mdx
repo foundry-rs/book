@@ -37,7 +37,7 @@ Options:
           This can fix most of the "stack too deep" errors while resulting a
           relatively accurate source map.
 
-  -r, --report-file <PATH>
+      --report-file <PATH>
           The path to output the report.
           
           If not specified, the report will be stored in the root of the
@@ -246,29 +246,67 @@ Test filtering:
           [aliases: --nmco]
 
 EVM options:
-  -f, --fork-url <URL>
-          Fetch state over a remote endpoint instead of starting from an empty
-          state.
+  -r, --rpc-url <RPC_URL>
+          The RPC endpoint
           
-          If you want to fetch state from a specific block number, see
-          --fork-block-number.
+          [env: ETH_RPC_URL=]
+          [aliases: --fork-url]
+
+  -k, --insecure
+          Allow insecure RPC connections (accept invalid HTTPS certificates).
           
-          [aliases: --rpc-url]
+          When the provider's inner runtime transport variant is HTTP, this
+          configures the reqwest client to accept invalid certificates.
+
+      --rpc-timeout <RPC_TIMEOUT>
+          Timeout for the RPC request in seconds.
+          
+          The specified timeout will be used to override the default timeout for
+          RPC requests.
+          
+          Default value: 45
+          
+          [env: ETH_RPC_TIMEOUT=]
+
+      --no-proxy
+          Disable automatic proxy detection.
+          
+          Use this in sandboxed environments (e.g., Cursor IDE sandbox, macOS
+          App Sandbox) where system proxy detection causes crashes. When
+          enabled, HTTP_PROXY/HTTPS_PROXY environment variables and system proxy
+          settings will be ignored.
+
+      --compute-units-per-second <CUPS>
+          Sets the number of assumed available compute units per second for this
+          provider.
+          
+          default value: 330
+          
+          See also
+          [https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second](https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second)
+
+      --no-rpc-rate-limit
+          Disables rate limiting for this node's provider.
+          
+          See also
+          [https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second](https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second)
+          
+          [aliases: --no-rate-limit]
 
       --fork-block-number <BLOCK>
           Fetch state from a specific block number over a remote endpoint.
           
-          See --fork-url.
+          See --rpc-url.
 
       --fork-retries <RETRIES>
           Number of retries.
           
-          See --fork-url.
+          See --rpc-url.
 
       --fork-retry-backoff <BACKOFF>
           Initial retry backoff on encountering errors.
           
-          See --fork-url.
+          See --rpc-url.
 
       --no-storage-caching
           Explicitly disables the use of RPC caching.
@@ -277,7 +315,7 @@ EVM options:
           
           This flag overrides the project's configuration file.
           
-          See --fork-url.
+          See --rpc-url.
 
       --initial-balance <BALANCE>
           The initial balance of deployed test contracts
@@ -299,24 +337,6 @@ EVM options:
       --create2-deployer <ADDRESS>
           The CREATE2 deployer address to use, this will override the one in the
           config
-
-Fork config:
-      --compute-units-per-second <CUPS>
-          Sets the number of assumed available compute units per second for this
-          provider
-          
-          default value: 330
-          
-          See also --fork-url and
-          [https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second](https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second)
-
-      --no-rpc-rate-limit
-          Disables rate limiting for this node's provider.
-          
-          See also --fork-url and
-          [https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second](https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second)
-          
-          [aliases: --no-rate-limit]
 
 Executor environment config:
       --code-size-limit <CODE_SIZE>

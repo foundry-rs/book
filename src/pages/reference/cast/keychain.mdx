@@ -1,0 +1,77 @@
+## cast keychain
+
+Tempo keychain (access key) management
+
+:::terminal
+
+```bash
+$ cast keychain --help
+```
+
+```txt
+Usage: cast keychain [OPTIONS] <COMMAND>
+
+Commands:
+  list       List all keys from the local keys.toml file [aliases: ls]
+  show       Show all keys for a specific wallet address from the local
+             keys.toml file
+  check      Check on-chain provisioning status of a key via the AccountKeychain
+             precompile [aliases: info]
+  authorize  Authorize a new key on-chain via the AccountKeychain precompile
+             [aliases: auth]
+  revoke     Revoke an authorized key on-chain via the AccountKeychain
+             precompile [aliases: rev]
+  rl         Query the remaining spending limit for a key on a specific token
+             [aliases: remaining-limit]
+  ul         Update the spending limit for a key on a specific token [aliases:
+             update-limit]
+  ss         Set allowed call scopes for a key [aliases: set-scope]
+  rs         Remove call scope for a key on a target [aliases: remove-scope]
+  help       Print this message or the help of the given subcommand(s)
+
+Options:
+  -h, --help
+          Print help (see a summary with '-h')
+
+  -j, --threads <THREADS>
+          Number of threads to use. Specifying 0 defaults to the number of
+          logical cores
+          
+          [aliases: --jobs]
+
+Display options:
+      --color <COLOR>
+          The color of the log messages
+
+          Possible values:
+          - auto:   Intelligently guess whether to use color output (default)
+          - always: Force color output
+          - never:  Force disable color output
+
+      --json
+          Format log messages as JSON
+
+      --md
+          Format log messages as Markdown
+
+  -q, --quiet
+          Do not print log messages
+
+  -v, --verbosity...
+          Verbosity level of the log messages.
+          
+          Pass multiple times to increase the verbosity (e.g. -v, -vv, -vvv).
+          
+          Depending on the context the verbosity levels have different meanings.
+          
+          For example, the verbosity levels of the EVM are:
+          - 2 (-vv): Print logs for all tests.
+          - 3 (-vvv): Print execution traces for failing tests.
+          - 4 (-vvvv): Print execution traces for all tests, and setup traces
+          for failing tests.
+          - 5 (-vvvvv): Print execution and setup traces for all tests,
+          including storage changes and
+            backtraces with line numbers.
+```
+
+:::
