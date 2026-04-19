@@ -190,6 +190,7 @@ export const castCliReference: SidebarItem = {
                 { text: "cast storage-root", link: "/reference/cast/storage-root" },
                 { text: "cast tip20-token", link: "/reference/cast/tip20-token" },
                 { text: "cast tip20-token create", link: "/reference/cast/tip20-token/create" },
+                { text: "cast tip20-token mine", link: "/reference/cast/tip20-token/mine" },
                 { text: "cast to-check-sum-address", link: "/reference/cast/to-check-sum-address" },
                 { text: "cast to-utf8", link: "/reference/cast/to-utf8" },
                 { text: "cast trace", link: "/reference/cast/trace" },

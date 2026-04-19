@@ -1,50 +1,23 @@
-## cast keychain authorize
+## cast tip20-token mine
 
-Authorize a new key on-chain via the AccountKeychain precompile
+Mine a TIP-1022 salt for virtual address' master registration on Tempo
 
 :::terminal
 
 ```bash
-$ cast keychain authorize --help
+$ cast tip20-token mine --help
 ```
 
 ```txt
-Usage: cast keychain authorize [OPTIONS] <KEY_ADDRESS> [KEY_TYPE] [EXPIRY]
+Usage: cast tip20-token mine [OPTIONS] <ADDRESS>
 
 Arguments:
-  <KEY_ADDRESS>
-          The key address to authorize
-
-  [KEY_TYPE]
-          Signature type: secp256k1, p256, or webauthn
-          
-          [default: secp256k1]
-
-  [EXPIRY]
-          Expiry timestamp (unix seconds). Defaults to u64::MAX (never expires)
-          
-          [default: 18446744073709551615]
+  <ADDRESS>
+          Address that will call `registerVirtualMaster(bytes32)`
 
 Options:
-      --enforce-limits
-          Enforce spending limits for this key
-
-      --limit <LIMITS>
-          Spending limit in TOKEN:AMOUNT format. Can be specified multiple times
-
-      --scope <SCOPE>
-          Call scope restriction in `TARGET[:SELECTORS[@RECIPIENTS]]` format.
-          TARGET alone allows all calls. `TARGET:transfer,approve` restricts to
-          those selectors. `TARGET:transfer@0x123` restricts selector to
-          specific recipients
-
-      --scopes <SCOPES_JSON>
-          Call scope restrictions as a JSON array. Format:
-          `[{"target":"0x...","selectors":["transfer"]}]` or
-          `[{"target":"0x...","selectors":[{"selector":"transfer","recipients":["0x..."]}]}]`
-
-  -h, --help
-          Print help (see a summary with '-h')
+      --salt <HEX>
+          Salt to validate directly instead of mining one
 
   -j, --threads <THREADS>
           Number of threads to use. Specifying 0 defaults to the number of
@@ -52,123 +25,16 @@ Options:
           
           [aliases: --jobs]
 
-Transaction options:
-      --gas-limit <GAS_LIMIT>
-          Gas limit for the transaction
-          
-          [env: ETH_GAS_LIMIT=]
+      --seed <HEX>
+          The random number generator's seed, used to initialize the salt search
 
-      --gas-price <PRICE>
-          Gas price for legacy transactions, or max fee per gas for EIP1559
-          transactions, either specified in wei, or as a string with a unit
-          type.
-          
-          Examples: 1ether, 10gwei, 0.01ether
-          
-          [env: ETH_GAS_PRICE=]
+      --no-random
+          Don't initialize the salt with a random value, and instead use the
+          default value of 0
 
-      --priority-gas-price <PRICE>
-          Max priority fee per gas for EIP1559 transactions
-          
-          [env: ETH_PRIORITY_GAS_PRICE=]
-
-      --value <VALUE>
-          Ether to send in the transaction, either specified in wei, or as a
-          string with a unit type.
-          
-          Examples: 1ether, 10gwei, 0.01ether
-
-      --nonce <NONCE>
-          Nonce for the transaction
-
-      --legacy
-          Send a legacy transaction instead of an EIP1559 transaction.
-          
-          This is automatically enabled for common networks without EIP1559.
-
-      --blob
-          Send a blob transaction using EIP-7594 (PeerDAS) format.
-          
-          Note: Use with `--eip4844` for the legacy EIP-4844 format.
-
-      --eip4844
-          Send a blob transaction using EIP-4844 (legacy) format instead of
-          EIP-7594. Must be used with `--blob`
-
-      --blob-gas-price <BLOB_PRICE>
-          Gas price for EIP-7594/EIP-4844 blob transaction
-          
-          [env: ETH_BLOB_GAS_PRICE=]
-
-      --auth <AUTH>
-          EIP-7702 authorization list.
-          
-          Can be either a hex-encoded signed authorization or an address.
-
-      --access-list [<ACCESS_LIST>]
-          EIP-2930 access list.
-          
-          Accepts either a JSON-encoded access list or an empty value to create
-          the access list via an RPC call to `eth_createAccessList`. To retrieve
-          only the access list portion, use the `cast access-list` command.
-
-Tempo:
-      --tempo.fee-token <FEE_TOKEN>
-          Fee token address for Tempo transactions.
-          
-          When set, builds a Tempo (type 0x76) transaction that pays gas fees in
-          the specified token.
-          
-          If this is not set, the fee token is chosen according to network
-          rules. See the Tempo docs for more information.
-
-      --tempo.nonce-key <NONCE_KEY>
-          Nonce key for Tempo parallelizable nonces.
-          
-          When set, builds a Tempo (type 0x76) transaction with the specified
-          nonce key, allowing multiple transactions with the same nonce but
-          different keys to be executed in parallel. If not set, the protocol
-          nonce key (0) will be used.
-          
-          For more information see
-          [https://docs.tempo.xyz/protocol/transactions/spec-tempo-transaction#parallelizable-nonces](https://docs.tempo.xyz/protocol/transactions/spec-tempo-transaction#parallelizable-nonces).
-
-      --tempo.sponsor-signature <SPONSOR_SIGNATURE>
-          Sponsor (fee payer) signature for Tempo sponsored transactions.
-          
-          The sponsor signs the `fee_payer_signature_hash` to commit to paying
-          gas fees on behalf of the sender. Provide as a hex-encoded signature.
-
-      --tempo.print-sponsor-hash
-          Print the sponsor signature hash and exit.
-          
-          Computes the `fee_payer_signature_hash` for the transaction so that a
-          sponsor knows what hash to sign. The transaction is not sent.
-
-      --tempo.key-id <KEY_ID>
-          Access key ID for Tempo Keychain signature transactions.
-          
-          Used during gas estimation to override the key_id that would normally
-          be recovered from the signature.
-
-      --tempo.expiring-nonce
-          Enable expiring nonce mode for Tempo transactions.
-          
-          Sets nonce to 0 and nonce_key to U256::MAX, enabling time-bounded
-          transaction validity via `--tempo.valid-before` and
-          `--tempo.valid-after`.
-
-      --tempo.valid-before <VALID_BEFORE>
-          Upper bound timestamp for Tempo expiring nonce transactions.
-          
-          The transaction is only valid before this unix timestamp. Requires
-          `--tempo.expiring-nonce`.
-
-      --tempo.valid-after <VALID_AFTER>
-          Lower bound timestamp for Tempo expiring nonce transactions.
-          
-          The transaction is only valid after this unix timestamp. Requires
-          `--tempo.expiring-nonce`.
+      --register
+          Submit `registerVirtualMaster(bytes32)` on Tempo after finding or
+          validating the salt
 
       --async
           Only print the transaction hash and exit immediately
@@ -194,6 +60,9 @@ Tempo:
           Polling interval for transaction receipts (in seconds)
           
           [env: ETH_POLL_INTERVAL=]
+
+  -h, --help
+          Print help (see a summary with '-h')
 
 Rpc options:
   -r, --rpc-url <RPC_URL>
@@ -395,6 +264,84 @@ Wallet options - browser wallet:
 
       --browser-disable-open
           Whether to open the browser for wallet connection
+
+Transaction options:
+      --gas-limit <GAS_LIMIT>
+          Gas limit for the transaction
+          
+          [env: ETH_GAS_LIMIT=]
+
+      --gas-price <GAS_PRICE>
+          Gas price for legacy transactions, or max fee per gas for EIP1559
+          transactions
+          
+          [env: ETH_GAS_PRICE=]
+
+      --priority-gas-price <PRIORITY_GAS_PRICE>
+          Max priority fee per gas for EIP1559 transactions
+          
+          [env: ETH_PRIORITY_GAS_PRICE=]
+
+      --nonce <NONCE>
+          Nonce for the transaction
+
+Tempo:
+      --tempo.fee-token <FEE_TOKEN>
+          Fee token address for Tempo transactions.
+          
+          When set, builds a Tempo (type 0x76) transaction that pays gas fees in
+          the specified token.
+          
+          If this is not set, the fee token is chosen according to network
+          rules. See the Tempo docs for more information.
+
+      --tempo.nonce-key <NONCE_KEY>
+          Nonce key for Tempo parallelizable nonces.
+          
+          When set, builds a Tempo (type 0x76) transaction with the specified
+          nonce key, allowing multiple transactions with the same nonce but
+          different keys to be executed in parallel. If not set, the protocol
+          nonce key (0) will be used.
+          
+          For more information see
+          [https://docs.tempo.xyz/protocol/transactions/spec-tempo-transaction#parallelizable-nonces](https://docs.tempo.xyz/protocol/transactions/spec-tempo-transaction#parallelizable-nonces).
+
+      --tempo.sponsor-signature <SPONSOR_SIGNATURE>
+          Sponsor (fee payer) signature for Tempo sponsored transactions.
+          
+          The sponsor signs the `fee_payer_signature_hash` to commit to paying
+          gas fees on behalf of the sender. Provide as a hex-encoded signature.
+
+      --tempo.print-sponsor-hash
+          Print the sponsor signature hash and exit.
+          
+          Computes the `fee_payer_signature_hash` for the transaction so that a
+          sponsor knows what hash to sign. The transaction is not sent.
+
+      --tempo.key-id <KEY_ID>
+          Access key ID for Tempo Keychain signature transactions.
+          
+          Used during gas estimation to override the key_id that would normally
+          be recovered from the signature.
+
+      --tempo.expiring-nonce
+          Enable expiring nonce mode for Tempo transactions.
+          
+          Sets nonce to 0 and nonce_key to U256::MAX, enabling time-bounded
+          transaction validity via `--tempo.valid-before` and
+          `--tempo.valid-after`.
+
+      --tempo.valid-before <VALID_BEFORE>
+          Upper bound timestamp for Tempo expiring nonce transactions.
+          
+          The transaction is only valid before this unix timestamp. Requires
+          `--tempo.expiring-nonce`.
+
+      --tempo.valid-after <VALID_AFTER>
+          Lower bound timestamp for Tempo expiring nonce transactions.
+          
+          The transaction is only valid after this unix timestamp. Requires
+          `--tempo.expiring-nonce`.
 
 Display options:
       --color <COLOR>

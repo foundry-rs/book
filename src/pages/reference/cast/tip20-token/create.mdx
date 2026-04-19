@@ -275,12 +275,19 @@ Wallet options - browser wallet:
 Transaction options:
       --gas-limit <GAS_LIMIT>
           Gas limit for the transaction
+          
+          [env: ETH_GAS_LIMIT=]
 
       --gas-price <GAS_PRICE>
-          Gas price or max fee per gas for the transaction
+          Gas price for legacy transactions, or max fee per gas for EIP1559
+          transactions
+          
+          [env: ETH_GAS_PRICE=]
 
       --priority-gas-price <PRIORITY_GAS_PRICE>
-          Max priority fee per gas (EIP-1559)
+          Max priority fee per gas for EIP1559 transactions
+          
+          [env: ETH_PRIORITY_GAS_PRICE=]
 
       --nonce <NONCE>
           Nonce for the transaction
