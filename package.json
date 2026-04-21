@@ -24,7 +24,7 @@
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.2.0",
     "tsx": "^4.21.0",
-    "typescript": "~5.9.3",
+    "typescript": "~6.0.2",
     "vite": "^7.3.2"
   },
   "devEngines": {
