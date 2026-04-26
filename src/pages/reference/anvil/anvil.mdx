@@ -240,6 +240,10 @@ Fork config:
           number like `http://localhost:8545@1400000` or use the
           `--fork-block-number` argument.
           
+          Multiple `--fork-url` flags can be provided to distribute requests
+          across endpoints using round-robin load balancing. On failure, the
+          retry layer rotates to the next endpoint.
+          
           [aliases: --rpc-url]
 
       --fork-block-number <BLOCK>
@@ -380,11 +384,10 @@ Networks:
       --celo
           Enable Celo network features
 
-      --optimism
-          Enable Optimism network features
-
-      --tempo
-          Enable Tempo network features
+  -n, --network <NETWORK>
+          Enable a specific network family
+          
+          [possible values: ethereum, optimism, tempo]
 ```
 
 :::
