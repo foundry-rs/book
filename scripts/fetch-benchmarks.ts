@@ -187,6 +187,149 @@ function formatBenchmark(bench: { old: string; new: string }): { oldTime: string
   };
 }
 
+function formatSeconds(seconds: number): string {
+  if (seconds >= 60) {
+    const m = Math.floor(seconds / 60);
+    const s = seconds - m * 60;
+    return `${m}m ${s.toFixed(1)}s`;
+  }
+  if (seconds >= 10) return `${seconds.toFixed(1)}s`;
+  if (seconds >= 1) return `${seconds.toFixed(2)}s`;
+  return `${seconds.toFixed(3)}s`;
+}
+
+interface CategoryHighlight {
+  label: string;
+  key: keyof Omit<BenchmarkData, 'repository'>;
+  repo: string;
+  oldStr: string;
+  newStr: string;
+  oldSec: number | null;
+  newSec: number | null;
+  absDelta: number | null;
+  pctDelta: number | null;
+}
+
+function pickMostImpactful(
+  data: Map<string, BenchmarkData>,
+  key: keyof Omit<BenchmarkData, 'repository'>,
+  label: string
+): CategoryHighlight | null {
+  let bestByWallclock: CategoryHighlight | null = null;
+  let bestByRelative: CategoryHighlight | null = null;
+
+  for (const [repo, benchData] of data) {
+    const bench = benchData[key];
+    if (!bench || bench.old === '–' || bench.old === '-' || bench.new === '–' || bench.new === '-') continue;
+
+    const oldSec = parseTimeToSeconds(bench.old);
+    const newSec = parseTimeToSeconds(bench.new);
+    if (oldSec === null || newSec === null) continue;
+
+    const absDelta = oldSec - newSec; // positive => improvement
+    const pctDelta = (absDelta / oldSec) * 100; // positive => improvement
+
+    const candidate: CategoryHighlight = {
+      label,
+      key,
+      repo,
+      oldStr: bench.old.replace(/\s+s/g, 's'),
+      newStr: bench.new.replace(/\s+s/g, 's'),
+      oldSec,
+      newSec,
+      absDelta,
+      pctDelta,
+    };
+
+    if (!bestByWallclock || Math.abs(absDelta) > Math.abs(bestByWallclock.absDelta!)) {
+      bestByWallclock = candidate;
+    }
+    if (!bestByRelative || Math.abs(pctDelta) > Math.abs(bestByRelative.pctDelta!)) {
+      bestByRelative = candidate;
+    }
+  }
+
+  // Prefer wallclock if any candidate had a meaningful (>= 0.1s) absolute change.
+  if (bestByWallclock && Math.abs(bestByWallclock.absDelta!) >= 0.1) return bestByWallclock;
+  return bestByRelative;
+}
+
+function generateBenchmarkBarGraph(data: Map<string, BenchmarkData>): string {
+  const categories: { key: keyof Omit<BenchmarkData, 'repository'>; label: string }[] = [
+    { key: 'forgeTest', label: 'Forge Test' },
+    { key: 'forgeFuzzTest', label: 'Forge Fuzz Test' },
+    { key: 'forgeTestIsolated', label: 'Forge Test (Isolated)' },
+    { key: 'forgeBuildNoCache', label: 'Forge Build (No Cache)' },
+    { key: 'forgeBuildWithCache', label: 'Forge Build (With Cache)' },
+    { key: 'forgeCoverage', label: 'Forge Coverage' },
+  ];
+
+  const highlights: CategoryHighlight[] = [];
+  for (const { key, label } of categories) {
+    const h = pickMostImpactful(data, key, label);
+    if (h) highlights.push(h);
+  }
+  if (highlights.length === 0) return '';
+
+  // Scale all bars relative to the largest "old" wallclock so widths are comparable across rows.
+  const maxOldSec = Math.max(...highlights.map(h => h.oldSec ?? 0));
+
+  let mdx = '';
+  mdx += `<div style={{ marginBottom: '2rem' }}>\n`;
+  mdx += `  <h2 style={{ fontSize: '1.25rem', fontWeight: 600, marginBottom: '0.25rem' }}>Highlights</h2>\n`;
+  mdx += `  <p style={{ fontSize: '0.875rem', color: 'var(--vocs-color_text3)', marginBottom: '1rem' }}>Most impactful change per benchmark category (by wallclock time, falling back to relative change).</p>\n`;
+  mdx += `  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '1rem', background: 'rgba(255,255,255,0.02)' }}>\n`;
+
+  for (const h of highlights) {
+    const improved = (h.absDelta ?? 0) > 0;
+    const regressed = (h.absDelta ?? 0) < 0;
+    const newColor = improved ? '#22c55e' : regressed ? '#ef4444' : 'var(--vocs-color_text3)';
+    const newBg = improved ? 'rgba(34, 197, 94, 0.85)' : regressed ? 'rgba(239, 68, 68, 0.85)' : 'rgba(148, 163, 184, 0.6)';
+    const oldBg = 'rgba(148, 163, 184, 0.35)';
+
+    const oldWidthPct = maxOldSec > 0 ? (h.oldSec! / maxOldSec) * 100 : 0;
+    const newWidthPct = maxOldSec > 0 ? (h.newSec! / maxOldSec) * 100 : 0;
+
+    const arrow = improved ? '↓' : regressed ? '↑' : '';
+    const pctDisplay = `${arrow}${Math.abs(h.pctDelta!).toFixed(1)}%`;
+    const deltaSign = improved ? '−' : regressed ? '+' : '';
+    const deltaDisplay = `${deltaSign}${formatSeconds(Math.abs(h.absDelta!))}`;
+    const repoUrl = getRepositoryUrl(h.repo);
+
+    mdx += `    <div>\n`;
+    mdx += `      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.375rem', gap: '0.5rem', flexWrap: 'wrap' }}>\n`;
+    mdx += `        <div style={{ fontSize: '0.875rem', fontWeight: 600 }}>${h.label} <span style={{ color: 'var(--vocs-color_text3)', fontWeight: 400 }}>· <a href="${repoUrl}" style={{ color: 'var(--vocs-color_text3)', textDecoration: 'none' }}>${h.repo}</a></span></div>\n`;
+    mdx += `        <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', fontVariantNumeric: 'tabular-nums' }}>\n`;
+    mdx += `          <span style={{ fontSize: '0.75rem', color: 'var(--vocs-color_text3)' }}>${deltaDisplay}</span>\n`;
+    mdx += `          <span style={{ fontSize: '0.75rem', fontWeight: 600, color: '${newColor}', background: '${improved ? 'rgba(34,197,94,0.15)' : regressed ? 'rgba(239,68,68,0.15)' : 'transparent'}', padding: '0.125rem 0.5rem', borderRadius: '9999px' }}>${pctDisplay}</span>\n`;
+    mdx += `        </div>\n`;
+    mdx += `      </div>\n`;
+    mdx += `      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>\n`;
+    // Old bar
+    mdx += `        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>\n`;
+    mdx += `          <span style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text3)', width: '3.5rem', flexShrink: 0 }}>baseline</span>\n`;
+    mdx += `          <div style={{ flex: 1, height: '0.75rem', background: 'rgba(255,255,255,0.04)', borderRadius: '4px', overflow: 'hidden' }}>\n`;
+    mdx += `            <div style={{ width: '${oldWidthPct.toFixed(2)}%', height: '100%', background: '${oldBg}' }} />\n`;
+    mdx += `          </div>\n`;
+    mdx += `          <span style={{ fontSize: '0.75rem', color: 'var(--vocs-color_text3)', fontVariantNumeric: 'tabular-nums', width: '5rem', textAlign: 'right', flexShrink: 0 }}>${h.oldStr}</span>\n`;
+    mdx += `        </div>\n`;
+    // New bar
+    mdx += `        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>\n`;
+    mdx += `          <span style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text3)', width: '3.5rem', flexShrink: 0 }}>latest</span>\n`;
+    mdx += `          <div style={{ flex: 1, height: '0.75rem', background: 'rgba(255,255,255,0.04)', borderRadius: '4px', overflow: 'hidden' }}>\n`;
+    mdx += `            <div style={{ width: '${newWidthPct.toFixed(2)}%', height: '100%', background: '${newBg}' }} />\n`;
+    mdx += `          </div>\n`;
+    mdx += `          <span style={{ fontSize: '0.75rem', fontWeight: 600, color: '${newColor}', fontVariantNumeric: 'tabular-nums', width: '5rem', textAlign: 'right', flexShrink: 0 }}>${h.newStr}</span>\n`;
+    mdx += `        </div>\n`;
+    mdx += `      </div>\n`;
+    mdx += `    </div>\n`;
+  }
+
+  mdx += `  </div>\n`;
+  mdx += `</div>\n`;
+  return mdx;
+}
+
 function generateBenchmarkCards(data: Map<string, BenchmarkData>): string {
   const benchmarkTypes = [
     { key: 'forgeTest', label: 'Test' },
@@ -303,6 +446,8 @@ async function main() {
     output += `    <div style={{ fontSize: '1.25rem', fontWeight: 600 }}>[${latestVersionDisplay}](${latestVersionUrl})</div>\n`;
     output += `  </div>\n`;
     output += `</div>\n\n`;
+    output += generateBenchmarkBarGraph(benchmarkData);
+    output += `\n`;
     output += generateBenchmarkCards(benchmarkData);
     
     mkdirSync(OUTPUT_DIR, { recursive: true });
