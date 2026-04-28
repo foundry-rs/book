@@ -187,17 +187,6 @@ function formatBenchmark(bench: { old: string; new: string }): { oldTime: string
   };
 }
 
-function formatSeconds(seconds: number): string {
-  if (seconds >= 60) {
-    const m = Math.floor(seconds / 60);
-    const s = seconds - m * 60;
-    return `${m}m ${s.toFixed(1)}s`;
-  }
-  if (seconds >= 10) return `${seconds.toFixed(1)}s`;
-  if (seconds >= 1) return `${seconds.toFixed(2)}s`;
-  return `${seconds.toFixed(3)}s`;
-}
-
 interface CategoryAggregate {
   label: string;
   key: keyof Omit<BenchmarkData, 'repository'>;
@@ -396,22 +385,24 @@ async function main() {
     let latestVersionDisplay: string;
     let latestVersionUrl: string;
 
-    if (versionLines.length >= 1) {
-      const baselineMatch = versionLines[0].match(/([0-9.]+)-(v[0-9.]+)/);
+    const baselineLine = versionLines[0];
+    if (baselineLine) {
+      const baselineMatch = baselineLine.match(/([0-9.]+)-(v[0-9.]+)/);
       if (baselineMatch) {
-        baselineVersion = baselineMatch[2];
+        baselineVersion = baselineMatch[2] ?? baselineVersion;
       }
     }
 
-    if (versionLines.length >= 2) {
-      const releaseMatch = versionLines[1].match(/([0-9.]+)-(v[0-9.]+)/);
-      if (releaseMatch) {
+    const latestLine = versionLines[1];
+    if (latestLine) {
+      const releaseMatch = latestLine.match(/([0-9.]+)-(v[0-9.]+)/);
+      if (releaseMatch && releaseMatch[2]) {
         const latestRelease = releaseMatch[2];
         latestVersionDisplay = latestRelease;
         latestVersionUrl = `https://github.com/foundry-rs/foundry/releases/tag/${latestRelease}`;
       } else {
-        const nightlyMatch = versionLines[1].match(/[0-9.]+-nightly \(([a-f0-9]+) /);
-        if (nightlyMatch) {
+        const nightlyMatch = latestLine.match(/[0-9.]+-nightly \(([a-f0-9]+) /);
+        if (nightlyMatch && nightlyMatch[1]) {
           const latestCommit = nightlyMatch[1];
           latestVersionDisplay = `nightly-${latestCommit}`;
           latestVersionUrl = `https://github.com/foundry-rs/foundry/commit/${latestCommit}`;
