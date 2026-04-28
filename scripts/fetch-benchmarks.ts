@@ -436,6 +436,8 @@ async function main() {
     let output = `{/* Auto-generated from ${benchmarkDate}. Do not edit manually. */}\n\n`;
     output += `# Benchmarks\n\n`;
     output += `Performance comparison between Foundry releases.\n\n`;
+    output += generateBenchmarkBarGraph(benchmarkData);
+    output += `\n`;
     output += `<div style={{ display: 'flex', gap: '2rem', marginBottom: '1.5rem', flexWrap: 'wrap' }}>\n`;
     output += `  <div>\n`;
     output += `    <span style={{ fontSize: '0.75rem', color: 'var(--vocs-color_text3)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Baseline</span>\n`;
@@ -446,8 +448,6 @@ async function main() {
     output += `    <div style={{ fontSize: '1.25rem', fontWeight: 600 }}>[${latestVersionDisplay}](${latestVersionUrl})</div>\n`;
     output += `  </div>\n`;
     output += `</div>\n\n`;
-    output += generateBenchmarkBarGraph(benchmarkData);
-    output += `\n`;
     output += generateBenchmarkCards(benchmarkData);
     
     mkdirSync(OUTPUT_DIR, { recursive: true });
