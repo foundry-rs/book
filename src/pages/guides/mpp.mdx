@@ -33,20 +33,23 @@ Point any Foundry tool at an MPP-backed RPC URL:
 $ cast block-number --rpc-url https://rpc.mpp.tempo.xyz
 ```
 
-You can also add aliases in `foundry.toml`:
+### Built-in `tempo` and `moderato` fallbacks
 
-```toml [foundry.toml]
-[rpc_endpoints]
-tempo = "https://rpc.mpp.tempo.xyz"
-moderato = "https://rpc.mpp.moderato.tempo.xyz"
-```
+Foundry ships with two built-in MPP aliases that work without any `foundry.toml` configuration:
 
-Then use those aliases everywhere:
+| Alias | Resolves to |
+|---|---|
+| `tempo` | `https://rpc.mpp.tempo.xyz` |
+| `moderato` | `https://rpc.mpp.moderato.tempo.xyz` |
+
+So in a fresh shell you can just do:
 
 ```bash
 $ cast block-number --rpc-url tempo
 $ forge test --fork-url moderato
 ```
+
+These fallbacks only apply when the alias is not already defined in `[rpc_endpoints]`.
 
 ## Configure deposits and local state
 

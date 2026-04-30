@@ -19,28 +19,29 @@ This installs the Tempo template, adds `tempo-std`, and configures the project s
 
 ## Configure `foundry.toml`
 
-A small amount of explicit config makes Tempo projects much easier to reason about:
+`forge init --network tempo` now generates a Tempo-ready `foundry.toml` out of the box:
 
 ```toml [foundry.toml]
 [profile.default]
-eth_rpc_url = "tempo"
+src = "src"
+out = "out"
+libs = ["lib"]
 network = "tempo"
-
-# `forge init --network tempo` currently writes the legacy equivalent:
-# tempo = true
+eth_rpc_url = "tempo"
 
 # Pin a Tempo hardfork when you need deterministic local semantics.
 # hardfork = "tempo:T3"
 
 [rpc_endpoints]
-tempo = "${TEMPO_RPC_URL}"
-moderato = "${TEMPO_TESTNET_RPC_URL}"
+tempo = "https://rpc.tempo.xyz/"
+moderato = "https://rpc.moderato.tempo.xyz/"
 ```
 
-Use these settings as follows:
+What each setting does:
 
+- `network = "tempo"` enables Tempo-specific execution behavior when Foundry is not forking a live Tempo RPC. (The legacy form `tempo = true` is still accepted for back-compat.)
 - `eth_rpc_url = "tempo"` makes commands that default to an RPC URL use your Tempo alias.
-- `network = "tempo"` enables Tempo-specific execution behavior when Foundry is not forking a live Tempo RPC.
+- `[rpc_endpoints]` defines the `tempo` and `moderato` aliases used by `--rpc-url` / `--fork-url`. You can swap the literal URLs for environment variables (e.g. `tempo = "${TEMPO_RPC_URL}"`) if you'd rather not commit them.
 - `hardfork = "tempo:T3"` pins tests and scripts to a specific Tempo hardfork. A namespaced hardfork also infers the Tempo network automatically.
 
 If you are forking a live Tempo endpoint, Foundry can usually infer the network from the forked chain ID, so the explicit `network` setting is optional.
@@ -58,7 +59,7 @@ You can also deploy directly against a specific endpoint:
 
 ```bash
 $ forge create src/Mail.sol:Mail \
-    --rpc-url $TEMPO_RPC_URL \
+    --rpc-url tempo \
     --broadcast \
     --private-key $PRIVATE_KEY
 ```
@@ -78,7 +79,7 @@ For example, sending a transaction with a fee token looks like this:
 
 ```bash
 $ cast send $CONTRACT_ADDRESS "increment()" \
-    --rpc-url $TEMPO_RPC_URL \
+    --rpc-url tempo \
     --tempo.fee-token $FEE_TOKEN \
     --private-key $PRIVATE_KEY
 ```
