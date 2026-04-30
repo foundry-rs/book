@@ -73,6 +73,46 @@ The value of `block.number` in tests.
 
 The value of the `chainid` opcode in tests.
 
+##### `network`
+
+- Type: string
+- Default: none
+- Environment: `FOUNDRY_NETWORK`
+
+Selects the active non-Ethereum network family for tests, scripts, and local execution.
+
+Valid values include:
+
+- `optimism`
+- `tempo`
+
+Use this when Foundry is not forking a live RPC endpoint and therefore cannot infer the network from chain ID. Foundry still accepts the legacy boolean forms such as `optimism = true` and `tempo = true`.
+
+```toml
+[profile.default]
+network = "tempo"
+```
+
+##### `hardfork`
+
+- Type: string
+- Default: none
+- Environment: `FOUNDRY_HARDFORK`
+
+Sets the runtime hardfork for tests and scripts.
+
+This can be either:
+
+- A plain Ethereum hardfork such as `osaka` or `cancun`
+- A namespaced hardfork such as `optimism:holocene` or `tempo:T3`
+
+When you use a namespaced hardfork, Foundry also infers the matching network automatically.
+
+```toml
+[profile.default]
+hardfork = "tempo:T3"
+```
+
 ##### `gas_limit`
 
 - Type: integer or string

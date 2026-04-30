@@ -25,6 +25,13 @@ export const guidesSidebar: Sidebar = {
       ],
     },
     {
+      text: "Networks & Payments",
+      items: [
+        { text: "Tempo", link: "/guides/tempo" },
+        { text: "MPP-backed RPC Endpoints", link: "/guides/mpp" },
+      ],
+    },
+    {
       text: "Debugging & Optimization",
       items: [
         { text: "Debugging Transactions", link: "/guides/debugging-transactions" },

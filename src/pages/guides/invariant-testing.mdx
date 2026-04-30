@@ -190,6 +190,54 @@ fail_on_revert = false  # Don't fail on handler reverts
 shrink_run_limit = 5000 # Attempts to shrink failing sequence
 ```
 
+### Advanced invariant campaigns
+
+Foundry v1.7.0 added several options that make deep invariant campaigns both faster and more expressive.
+
+#### `check_interval`
+
+Use `check_interval` to trade precision for speed on deep campaigns:
+
+```toml [foundry.toml]
+[invariant]
+depth = 1000
+check_interval = 10
+```
+
+This changes when Foundry evaluates the invariant:
+
+- `0` only checks the last call in each run
+- `1` checks every call
+- `N` checks every `N` calls and always the last call
+
+This is useful when an invariant is expensive to evaluate, but it can miss bugs that break and then restore the invariant between checks.
+
+#### Time-based campaigns
+
+Use `max_time_delay` and `max_block_delay` when bugs depend on elapsed time or block movement between calls:
+
+```toml [foundry.toml]
+[invariant]
+max_time_delay = 1 days
+max_block_delay = 1000
+```
+
+Foundry will fuzz both the call sequence and the time or block distance between calls. This is especially useful for vesting, auctions, TWAPs, cooldowns, and any logic that depends on `block.timestamp` or `block.number`.
+
+#### Optimization mode
+
+If an invariant function returns `int256` instead of asserting, Foundry switches from "find a failure" mode to "maximize this value" mode:
+
+```solidity
+function invariant_optimize_maxUtilization() public view returns (int256) {
+    return int256(vault.totalBorrows()) - int256(vault.totalIdle());
+}
+```
+
+This is a good fit for worst-case slippage, maximum imbalance, largest rounding error, or any other metric you want the fuzzer to push upward.
+
+For optimization-mode campaigns, use a fixed `seed` when you want reproducible results across runs.
+
 ### Targeting specific functions
 
 ```solidity
