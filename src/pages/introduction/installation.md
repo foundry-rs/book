@@ -62,13 +62,17 @@ $ foundryup --install abc1234
 $ foundryup --branch master
 ```
 
-## Installing forks
+## Tempo support
 
-To install binaries from [Tempo's fork](https://github.com/tempoxyz/tempo-foundry):
+Tempo support ships in the main Foundry release as of v1.7.0. Install the normal toolchain:
 
 ```bash
-$ foundryup -n tempo
+$ foundryup
 ```
+
+The old `foundryup -n tempo` / `foundryup --network tempo` flow is deprecated and ignored.
+
+See the [Tempo guide](/guides/tempo) for project setup and [MPP-backed RPC endpoints](/guides/mpp) for paid RPC configuration.
 
 ## Binary verification
 

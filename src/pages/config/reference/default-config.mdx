@@ -142,6 +142,21 @@ offline = false
 # Default: "osaka"
 evm_version = "osaka"
 
+# Select a non-Ethereum network family for execution.
+# Options: "optimism", "tempo"
+# Default: none
+# network = "tempo"
+
+# Legacy equivalents for the network key are still accepted.
+# optimism = true
+# tempo = true
+
+# Runtime hardfork for tests and scripts.
+# Can be a plain Ethereum hardfork (for example "osaka") or a namespaced
+# network hardfork such as "optimism:holocene" or "tempo:T3".
+# Default: none
+# hardfork = "tempo:T3"
+
 # Whether to activate optimizer
 # Default: None
 # optimizer = true

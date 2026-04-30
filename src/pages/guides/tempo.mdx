@@ -1,0 +1,105 @@
+---
+description: Use Foundry's upstream Tempo support to initialize projects, configure foundry.toml, and work with Tempo transactions.
+---
+
+## Foundry on Tempo
+
+Foundry v1.7.0 ships Tempo support in the main `foundry-rs/foundry` release. You no longer need a separate Tempo fork or a special `foundryup` channel.
+
+## Create a Tempo project
+
+Start from the Tempo template when you want the Tempo example contracts, tests, and scripts:
+
+```bash
+$ forge init --network tempo my-tempo-app
+$ cd my-tempo-app
+```
+
+This installs the Tempo template, adds `tempo-std`, and configures the project so Foundry uses Tempo semantics for local execution.
+
+## Configure `foundry.toml`
+
+A small amount of explicit config makes Tempo projects much easier to reason about:
+
+```toml [foundry.toml]
+[profile.default]
+eth_rpc_url = "tempo"
+network = "tempo"
+
+# `forge init --network tempo` currently writes the legacy equivalent:
+# tempo = true
+
+# Pin a Tempo hardfork when you need deterministic local semantics.
+# hardfork = "tempo:T3"
+
+[rpc_endpoints]
+tempo = "${TEMPO_RPC_URL}"
+moderato = "${TEMPO_TESTNET_RPC_URL}"
+```
+
+Use these settings as follows:
+
+- `eth_rpc_url = "tempo"` makes commands that default to an RPC URL use your Tempo alias.
+- `network = "tempo"` enables Tempo-specific execution behavior when Foundry is not forking a live Tempo RPC.
+- `hardfork = "tempo:T3"` pins tests and scripts to a specific Tempo hardfork. A namespaced hardfork also infers the Tempo network automatically.
+
+If you are forking a live Tempo endpoint, Foundry can usually infer the network from the forked chain ID, so the explicit `network` setting is optional.
+
+## Run tests and scripts
+
+With the config above, commands can refer to Tempo endpoints by alias:
+
+```bash
+$ forge test --fork-url moderato
+$ forge script script/Mail.s.sol --broadcast --rpc-url moderato
+```
+
+You can also deploy directly against a specific endpoint:
+
+```bash
+$ forge create src/Mail.sol:Mail \
+    --rpc-url $TEMPO_RPC_URL \
+    --broadcast \
+    --private-key $PRIVATE_KEY
+```
+
+## Use Tempo transaction features
+
+Tempo-specific transaction options are available across `cast`, `forge create`, and `forge script`.
+
+Common options include:
+
+- `--tempo.fee-token` to pay gas in a TIP-20 token
+- `--tempo.nonce-key` to use Tempo's parallelizable nonces
+- `--tempo.expiring-nonce`, `--tempo.valid-before`, and `--tempo.valid-after` to time-bound a transaction
+- `--tempo.access-key` and `--tempo.root-account` for keychain-based account flows
+
+For example, sending a transaction with a fee token looks like this:
+
+```bash
+$ cast send $CONTRACT_ADDRESS "increment()" \
+    --rpc-url $TEMPO_RPC_URL \
+    --tempo.fee-token $FEE_TOKEN \
+    --private-key $PRIVATE_KEY
+```
+
+## Run Anvil in Tempo mode
+
+Use Tempo network semantics locally when you are not forking a live chain:
+
+```bash
+$ anvil --network tempo --hardfork t3
+```
+
+When you fork a live Tempo RPC, Foundry can infer the network automatically from the upstream chain ID:
+
+```bash
+$ anvil --fork-url $TEMPO_RPC_URL
+```
+
+## Related references
+
+- [Configuration reference](/config/reference/testing) for `network` and `hardfork`
+- [MPP-backed RPC endpoints](/guides/mpp) for payment-gated Tempo RPCs
+- [cast send](/reference/cast/send) for Tempo transaction flags
+- [forge create](/reference/forge/create) and [forge script](/reference/forge/script) for deployment flows
