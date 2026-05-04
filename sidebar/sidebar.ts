@@ -35,7 +35,80 @@ const docs = [
       { text: "Debugging", link: "/forge/debugging" },
       { text: "Gas Tracking", link: "/forge/gas-tracking" },
       { text: "Formatting", link: "/forge/formatting" },
-      { text: "Linting", link: "/forge/linting" },
+      {
+        text: "Linting",
+        link: "/forge/linting",
+        collapsed: true,
+        items: [
+          {
+            text: "High severity",
+            collapsed: true,
+            items: [
+              { text: "erc20-unchecked-transfer", link: "/forge/linting/erc20-unchecked-transfer" },
+              { text: "incorrect-shift", link: "/forge/linting/incorrect-shift" },
+              { text: "rtlo", link: "/forge/linting/rtlo" },
+              { text: "unchecked-call", link: "/forge/linting/unchecked-call" },
+            ],
+          },
+          {
+            text: "Medium severity",
+            collapsed: true,
+            items: [
+              { text: "boolean-cst", link: "/forge/linting/boolean-cst" },
+              { text: "divide-before-multiply", link: "/forge/linting/divide-before-multiply" },
+              { text: "incorrect-erc20-interface", link: "/forge/linting/incorrect-erc20-interface" },
+              { text: "incorrect-erc721-interface", link: "/forge/linting/incorrect-erc721-interface" },
+              { text: "unsafe-typecast", link: "/forge/linting/unsafe-typecast" },
+            ],
+          },
+          {
+            text: "Low severity",
+            collapsed: true,
+            items: [
+              { text: "block-timestamp", link: "/forge/linting/block-timestamp" },
+              { text: "missing-zero-check", link: "/forge/linting/missing-zero-check" },
+            ],
+          },
+          {
+            text: "Informational",
+            collapsed: true,
+            items: [
+              { text: "boolean-equal", link: "/forge/linting/boolean-equal" },
+              { text: "interface-file-naming", link: "/forge/linting/interface-file-naming" },
+              { text: "interface-naming", link: "/forge/linting/interface-naming" },
+              { text: "mixed-case-function", link: "/forge/linting/mixed-case-function" },
+              { text: "mixed-case-variable", link: "/forge/linting/mixed-case-variable" },
+              { text: "multi-contract-file", link: "/forge/linting/multi-contract-file" },
+              { text: "named-struct-fields", link: "/forge/linting/named-struct-fields" },
+              { text: "pascal-case-struct", link: "/forge/linting/pascal-case-struct" },
+              { text: "pragma-inconsistent", link: "/forge/linting/pragma-inconsistent" },
+              { text: "screaming-snake-case-const", link: "/forge/linting/screaming-snake-case-const" },
+              { text: "screaming-snake-case-immutable", link: "/forge/linting/screaming-snake-case-immutable" },
+              { text: "too-many-digits", link: "/forge/linting/too-many-digits" },
+              { text: "unaliased-plain-import", link: "/forge/linting/unaliased-plain-import" },
+              { text: "unsafe-cheatcode", link: "/forge/linting/unsafe-cheatcode" },
+              { text: "unused-import", link: "/forge/linting/unused-import" },
+            ],
+          },
+          {
+            text: "Gas optimization",
+            collapsed: true,
+            items: [
+              { text: "asm-keccak256", link: "/forge/linting/asm-keccak256" },
+              { text: "could-be-immutable", link: "/forge/linting/could-be-immutable" },
+              { text: "custom-errors", link: "/forge/linting/custom-errors" },
+              { text: "unused-state-variables", link: "/forge/linting/unused-state-variables" },
+            ],
+          },
+          {
+            text: "Code size",
+            collapsed: true,
+            items: [
+              { text: "unwrapped-modifier-logic", link: "/forge/linting/unwrapped-modifier-logic" },
+            ],
+          },
+        ],
+      },
     ],
   },
   {
