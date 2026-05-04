@@ -53,29 +53,35 @@ function calculatePercentageChange(oldTime: number, newTime: number): { value: n
   return { value: change, display: absChange.toFixed(1) };
 }
 
-function parseMarkdown(markdown: string): Map<string, BenchmarkData> {
+function parseMarkdown(markdown: string): { data: Map<string, BenchmarkData>; repoUrls: Map<string, string> } {
   const lines = markdown.split('\n');
   const data = new Map<string, BenchmarkData>();
+  const repoUrls = new Map<string, string>();
   const repos = new Set<string>();
 
-  let currentSection = '';
-
+  // First pass: discover repos (from tables) and parse repo URLs (from listed links).
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i].trim();
 
-    if (line.startsWith('## ')) {
-      currentSection = line.substring(3).trim();
+    // Match list entries like "1. [name/repo](https://github.com/name/repo)".
+    const repoLinkMatch = line.match(/^\d+\.\s*\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/);
+    if (repoLinkMatch) {
+      const [, displayName, url] = repoLinkMatch;
+      const key = displayName.replace('/', '-');
+      if (!repoUrls.has(key)) {
+        repoUrls.set(key, url);
+      }
       continue;
     }
 
-    if (!line.includes('|') || line.includes('---') || line.includes('Repository')) {
+    if (!line.includes('|') || line.includes('---') || /\brepository\b/i.test(line)) {
       continue;
     }
 
     const cells = line.split('|').map(cell => cell.trim()).filter(cell => cell);
     if (cells.length >= 3) {
       const repo = cells[0];
-      if (repo && !repo.includes('Repository')) {
+      if (repo) {
         repos.add(repo);
       }
     }
@@ -93,16 +99,32 @@ function parseMarkdown(markdown: string): Map<string, BenchmarkData> {
     });
   });
 
-  currentSection = '';
+  // Second pass: fill in benchmark data using top-section + sub-section state.
+  let topSection = '';
+  let subSection = '';
+
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i].trim();
 
-    if (line.startsWith('## ')) {
-      currentSection = line.substring(3).trim();
+    // Top-level section heading (## ...). Note: '### ' does not match '## '.
+    if (line.startsWith('## ') && !line.startsWith('### ')) {
+      topSection = line.substring(3).trim();
+      subSection = '';
       continue;
     }
 
-    if (!line.includes('|') || line.includes('---') || line.includes('Repository')) {
+    if (line.startsWith('### ')) {
+      const sub = line.substring(4).trim();
+      // These subsections are metadata, not benchmark tables.
+      if (sub === 'Repositories Tested' || sub === 'Foundry Versions') {
+        subSection = '';
+      } else {
+        subSection = sub;
+      }
+      continue;
+    }
+
+    if (!line.includes('|') || line.includes('---') || /\brepository\b/i.test(line)) {
       continue;
     }
 
@@ -113,7 +135,9 @@ function parseMarkdown(markdown: string): Map<string, BenchmarkData> {
     const benchData = data.get(repo);
     if (!benchData) continue;
 
-    switch (currentSection) {
+    const sectionKey = subSection ? `${topSection} (${subSection})` : topSection;
+
+    switch (sectionKey) {
       case 'Forge Test':
         benchData.forgeTest = { old: oldValue, new: newValue };
         break;
@@ -135,18 +159,14 @@ function parseMarkdown(markdown: string): Map<string, BenchmarkData> {
     }
   }
 
-  return data;
+  return { data, repoUrls };
 }
 
-function getRepositoryUrl(repoName: string): string {
-  const repoMap: Record<string, string> = {
-    'ithacaxyz-account': 'https://github.com/ithacaxyz/account',
-    'solady': 'https://github.com/Vectorized/solady',
-    'Uniswap-v4-core': 'https://github.com/Uniswap/v4-core',
-    'sparkdotfi-spark-psm': 'https://github.com/sparkdotfi/spark-psm'
-  };
+function getRepositoryUrl(repoName: string, repoUrls: Map<string, string>): string {
+  const fromMarkdown = repoUrls.get(repoName);
+  if (fromMarkdown) return fromMarkdown;
 
-  return repoMap[repoName] || `https://github.com/search?q=${encodeURIComponent(repoName)}`;
+  return `https://github.com/search?q=${encodeURIComponent(repoName)}`;
 }
 
 function formatBenchmark(bench: { old: string; new: string }): { oldTime: string; newTime: string; change: string; color: string; bgColor: string } | null {
@@ -235,6 +255,18 @@ function aggregateCategory(
   };
 }
 
+function formatSeconds(totalSec: number): string {
+  if (!isFinite(totalSec) || totalSec < 0) return '–';
+  if (totalSec >= 60) {
+    const minutes = Math.floor(totalSec / 60);
+    const seconds = totalSec - minutes * 60;
+    const secStr = seconds >= 10 ? seconds.toFixed(0) : seconds.toFixed(1);
+    return `${minutes}m ${secStr}s`;
+  }
+  if (totalSec >= 10) return `${totalSec.toFixed(1)}s`;
+  return `${totalSec.toFixed(2)}s`;
+}
+
 function generateBenchmarkBarGraph(data: Map<string, BenchmarkData>): string {
   const categories: { key: keyof Omit<BenchmarkData, 'repository'>; label: string }[] = [
     { key: 'forgeTest', label: 'Forge Test' },
@@ -284,26 +316,26 @@ function generateBenchmarkBarGraph(data: Map<string, BenchmarkData>): string {
 
     const arrow = a.absDelta > 0 ? '↓' : a.absDelta < 0 ? '↑' : '';
     const pctDisplay = `${arrow}${Math.abs(a.pctDelta).toFixed(1)}%`;
+    const oldTimeLabel = formatSeconds(a.oldSumSec);
+    const newTimeLabel = formatSeconds(a.newSumSec);
+    const pillBg = improved ? 'rgba(34,197,94,0.15)' : regressed ? 'rgba(239,68,68,0.15)' : 'rgba(148,163,184,0.18)';
 
-    mdx += `    <div>\n`;
-    mdx += `      <div style={{ fontSize: '0.875rem', fontWeight: 600, marginBottom: '0.375rem' }}>${a.label} <span style={{ color: 'var(--vocs-color_text3)', fontWeight: 400 }}>· ${a.repoCount} ${a.repoCount === 1 ? 'repo' : 'repos'}</span></div>\n`;
-    mdx += `      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>\n`;
-    mdx += `        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.25rem', minWidth: 0 }}>\n`;
+    // Three-column grid keeps the bar track (col 1), absolute time labels
+    // (col 2) and pct pill (col 3) at consistent widths across categories,
+    // so all baseline bars are visually the same length.
+    mdx += `    <div style={{ display: 'grid', gridTemplateColumns: '1fr 3.5rem 4rem', columnGap: '0.75rem', rowGap: '0.25rem', alignItems: 'center' }}>\n`;
+    mdx += `      <div style={{ gridColumn: '1 / -1', fontSize: '0.875rem', fontWeight: 600, marginBottom: '0.375rem' }}>${a.label} <span style={{ color: 'var(--vocs-color_text3)', fontWeight: 400 }}>· ${a.repoCount} ${a.repoCount === 1 ? 'repo' : 'repos'}</span></div>\n`;
     // Baseline bar (uniform width across categories)
-    mdx += `          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>\n`;
-    mdx += `            <div style={{ flex: 1, height: '0.75rem', borderRadius: '4px', overflow: 'hidden' }}>\n`;
-    mdx += `              <div style={{ width: '${BASELINE_WIDTH_PCT.toFixed(2)}%', height: '100%', background: '${baselineBg}', borderRadius: '4px' }} />\n`;
-    mdx += `            </div>\n`;
-    mdx += `          </div>\n`;
-    // Latest bar (proportional to baseline)
-    mdx += `          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>\n`;
-    mdx += `            <div style={{ flex: 1, height: '0.75rem', borderRadius: '4px', overflow: 'hidden' }}>\n`;
-    mdx += `              <div style={{ ['--bench-bar-from']: '${BASELINE_WIDTH_PCT.toFixed(2)}%', ['--bench-bar-to']: '${newWidthPct.toFixed(2)}%', width: 'var(--bench-bar-to)', height: '100%', background: '${newBg}', borderRadius: '4px', animation: 'bench-bar-grow 800ms ease-out' }} />\n`;
-    mdx += `            </div>\n`;
-    mdx += `          </div>\n`;
-    mdx += `        </div>\n`;
-    mdx += `        <span style={{ fontSize: '0.75rem', fontWeight: 600, color: '${accentColor}', background: '${improved ? 'rgba(34,197,94,0.15)' : regressed ? 'rgba(239,68,68,0.15)' : 'rgba(148,163,184,0.18)'}', padding: '0.125rem 0.5rem', borderRadius: '9999px', fontVariantNumeric: 'tabular-nums', flexShrink: 0 }}>${pctDisplay}</span>\n`;
+    mdx += `      <div style={{ height: '0.75rem', borderRadius: '4px', overflow: 'hidden' }}>\n`;
+    mdx += `        <div style={{ width: '${BASELINE_WIDTH_PCT.toFixed(2)}%', height: '100%', background: '${baselineBg}', borderRadius: '4px' }} />\n`;
     mdx += `      </div>\n`;
+    mdx += `      <span style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text3)', fontVariantNumeric: 'tabular-nums', textAlign: 'right' }}>${oldTimeLabel}</span>\n`;
+    mdx += `      <span style={{ gridRow: 'span 2', justifySelf: 'start', fontSize: '0.75rem', fontWeight: 600, color: '${accentColor}', background: '${pillBg}', padding: '0.125rem 0.5rem', borderRadius: '9999px', fontVariantNumeric: 'tabular-nums' }}>${pctDisplay}</span>\n`;
+    // Latest bar (proportional to baseline)
+    mdx += `      <div style={{ height: '0.75rem', borderRadius: '4px', overflow: 'hidden' }}>\n`;
+    mdx += `        <div style={{ ['--bench-bar-from']: '${BASELINE_WIDTH_PCT.toFixed(2)}%', ['--bench-bar-to']: '${newWidthPct.toFixed(2)}%', width: 'var(--bench-bar-to)', height: '100%', background: '${newBg}', borderRadius: '4px', animation: 'bench-bar-grow 800ms ease-out' }} />\n`;
+    mdx += `      </div>\n`;
+    mdx += `      <span style={{ fontSize: '0.7rem', color: '${accentColor}', fontVariantNumeric: 'tabular-nums', textAlign: 'right', fontWeight: 500 }}>${newTimeLabel}</span>\n`;
     mdx += `    </div>\n`;
   }
 
@@ -312,7 +344,7 @@ function generateBenchmarkBarGraph(data: Map<string, BenchmarkData>): string {
   return mdx;
 }
 
-function generateBenchmarkCards(data: Map<string, BenchmarkData>): string {
+function generateBenchmarkCards(data: Map<string, BenchmarkData>, repoUrls: Map<string, string>): string {
   const benchmarkTypes = [
     { key: 'forgeTest', label: 'Test' },
     { key: 'forgeFuzzTest', label: 'Fuzz' },
@@ -330,7 +362,7 @@ function generateBenchmarkCards(data: Map<string, BenchmarkData>): string {
     const benchData = data.get(repo);
     if (!benchData) continue;
 
-    const repoUrl = getRepositoryUrl(repo);
+    const repoUrl = getRepositoryUrl(repo, repoUrls);
 
     mdx += `  <div style={{ border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', overflow: 'hidden' }}>\n`;
     mdx += `    <div style={{ padding: '0.75rem 1rem', borderBottom: '1px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.03)' }}>\n`;
@@ -374,12 +406,18 @@ async function main() {
     const markdown = await fetchBenchmarks();
 
     console.log('Parsing benchmark data...');
-    const benchmarkData = parseMarkdown(markdown);
+    const { data: benchmarkData, repoUrls } = parseMarkdown(markdown);
 
-    const dateMatch = markdown.match(/# Foundry Benchmarks \[(.*?)\]/);
-    const benchmarkDate = dateMatch ? dateMatch[1] : new Date().toLocaleDateString();
+    // Date format: "**Generated at**: 2026-05-02 21:53:46 UTC".
+    const generatedMatch = markdown.match(/\*\*Generated at\*\*:\s*(.+)/);
+    const dateMatch = markdown.match(/\*\*Date\*\*:\s*(.+)/);
+    const benchmarkDate = (generatedMatch && generatedMatch[1].trim())
+      || (dateMatch && dateMatch[1].trim())
+      || new Date().toLocaleDateString();
 
-    const versionLines = markdown.match(/forge (?:Version: )?[0-9.]+-.+/g) || [];
+    // Version lines may repeat (one per section); dedupe and use the first two.
+    const allVersionLines = markdown.match(/forge (?:Version: )?[0-9.]+-.+/g) || [];
+    const versionLines = Array.from(new Set(allVersionLines));
 
     let baselineVersion = 'v1.2.3';
     let latestVersionDisplay: string;
@@ -432,7 +470,7 @@ async function main() {
     output += `    <div style={{ fontSize: '1.25rem', fontWeight: 600 }}>[${latestVersionDisplay}](${latestVersionUrl})</div>\n`;
     output += `  </div>\n`;
     output += `</div>\n\n`;
-    output += generateBenchmarkCards(benchmarkData);
+    output += generateBenchmarkCards(benchmarkData, repoUrls);
 
     mkdirSync(OUTPUT_DIR, { recursive: true });
 
