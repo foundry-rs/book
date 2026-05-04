@@ -1,0 +1,68 @@
+---
+description: Reference of all built-in forge lint rules.
+---
+
+## Lint Rules Reference
+
+All lint rules supported by `forge lint`. Each rule has a unique ID that can be used with [`--only-lint`](/reference/forge/lint), [`exclude_lints`](/config/reference/linter), and [inline suppression directives](/forge/linting#inline-suppression).
+
+### High
+
+| ID | Description |
+|---|---|
+| `incorrect-shift` | The order of arguments in a shift operation is incorrect |
+| `unchecked-call` | Low-level calls should check the success return value |
+| `erc20-unchecked-transfer` | ERC20 `transfer` and `transferFrom` calls should check the return value |
+| `rtlo` | Unicode bidirectional override character can hide malicious code |
+
+### Med
+
+| ID | Description |
+|---|---|
+| `divide-before-multiply` | Multiplication should occur before division to avoid loss of precision |
+| `incorrect-erc20-interface` | Incorrect ERC20 function interface |
+| `incorrect-erc721-interface` | Incorrect ERC721 function interface |
+| `unsafe-typecast` | Typecasts that can truncate values should be checked |
+| `boolean-cst` | Misuse of a boolean constant |
+
+### Low
+
+| ID | Description |
+|---|---|
+| `block-timestamp` | Usage of `block.timestamp` in a comparison may be manipulated by validators |
+| `missing-zero-check` | Address parameter is used in a state write or value transfer without a zero-address check |
+
+### Info
+
+| ID | Description |
+|---|---|
+| `boolean-equal` | Boolean comparisons to constants should be simplified |
+| `interface-file-naming` | Interface file names should be prefixed with `I` |
+| `interface-naming` | Interface names should be prefixed with `I` |
+| `mixed-case-function` | Function names should use mixedCase |
+| `mixed-case-variable` | Mutable variables should use mixedCase |
+| `multi-contract-file` | Prefer having only one contract, interface, or library per file |
+| `named-struct-fields` | Prefer initializing structs with named fields |
+| `pascal-case-struct` | Structs should use PascalCase |
+| `pragma-inconsistent` | Inconsistent Solidity pragma version requirements across the project |
+| `screaming-snake-case-const` | Constants should use SCREAMING_SNAKE_CASE |
+| `screaming-snake-case-immutable` | Immutables should use SCREAMING_SNAKE_CASE |
+| `too-many-digits` | Numeric literal with many digits is error-prone; consider using underscores |
+| `unaliased-plain-import` | Use named imports `{A, B}` or alias `import "..." as X` |
+| `unsafe-cheatcode` | Usage of unsafe cheatcodes that can perform dangerous operations |
+| `unused-import` | Unused imports should be removed |
+
+### Gas
+
+| ID | Description |
+|---|---|
+| `asm-keccak256` | Use of inefficient hashing mechanism; consider using inline assembly |
+| `could-be-immutable` | State variable could be declared immutable |
+| `custom-errors` | Prefer using custom errors on revert and require calls |
+| `unused-state-variables` | State variable is never used |
+
+### Code Size
+
+| ID | Description |
+|---|---|
+| `unwrapped-modifier-logic` | Wrap modifier logic to reduce code size |

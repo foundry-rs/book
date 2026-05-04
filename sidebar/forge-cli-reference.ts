@@ -74,6 +74,7 @@ export const forgeCliReference: SidebarItem = {
                 { text: "forge eip712", link: "/reference/forge/eip712" },
                 { text: "forge fmt", link: "/reference/forge/fmt" },
                 { text: "forge lint", link: "/reference/forge/lint" },
+                { text: "Lint Rules", link: "/reference/forge/lint-rules" },
                 { text: "forge script", link: "/reference/forge/script" },
                 { text: "forge selectors", link: "/reference/forge/selectors" },
                 { text: "forge selectors cache", link: "/reference/forge/selectors/cache" },
