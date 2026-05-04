@@ -165,6 +165,7 @@ navigation on the right to browse by severity.
 #### Informational
 
 - [`boolean-equal`](/forge/linting/boolean-equal) — Flags expressions of the form `x == true`, `x == false`, `x != true`, `x != false`, which can be simplified.
+- [`inline-assembly`](/forge/linting/inline-assembly) — Flags every `assembly { ... }` block; inline assembly bypasses Solidity safety features and should be reviewed deliberately.
 - [`interface-file-naming`](/forge/linting/interface-file-naming) — Flags Solidity files whose only top-level declaration is an interface but whose filename is not prefixed with `I`.
 - [`interface-naming`](/forge/linting/interface-naming) — Flags `interface` declarations whose names are not prefixed with `I`.
 - [`mixed-case-function`](/forge/linting/mixed-case-function) — Flags function names that do not follow `mixedCase`.
