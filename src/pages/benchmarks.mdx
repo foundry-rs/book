@@ -1,4 +1,4 @@
-{/* Auto-generated from 4/28/2026. Do not edit manually. */}
+{/* Auto-generated from 2026-05-02 21:53:46 UTC. Do not edit manually. */}
 
 # Benchmarks
 
@@ -9,113 +9,77 @@ Performance comparison between Foundry releases.
   <h2 style={{ fontSize: '1.25rem', fontWeight: 600, marginBottom: '0.25rem' }}>Highlights</h2>
   <p style={{ fontSize: '0.875rem', color: 'var(--vocs-color_text3)', marginBottom: '1rem' }}>Aggregated change per benchmark category (sum of wallclock time across all repositories).</p>
   <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '1rem', background: 'rgba(255,255,255,0.02)' }}>
-    <div>
-      <div style={{ fontSize: '0.875rem', fontWeight: 600, marginBottom: '0.375rem' }}>Forge Test <span style={{ color: 'var(--vocs-color_text3)', fontWeight: 400 }}>· 2 repos</span></div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.25rem', minWidth: 0 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <div style={{ flex: 1, height: '0.75rem', borderRadius: '4px', overflow: 'hidden' }}>
-              <div style={{ width: '97.32%', height: '100%', background: 'rgba(148, 163, 184, 0.25)', borderRadius: '4px' }} />
-            </div>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <div style={{ flex: 1, height: '0.75rem', borderRadius: '4px', overflow: 'hidden' }}>
-              <div style={{ ['--bench-bar-from']: '97.32%', ['--bench-bar-to']: '80.12%', width: 'var(--bench-bar-to)', height: '100%', background: 'rgba(34, 197, 94, 0.85)', borderRadius: '4px', animation: 'bench-bar-grow 800ms ease-out' }} />
-            </div>
-          </div>
-        </div>
-        <span style={{ fontSize: '0.75rem', fontWeight: 600, color: '#22c55e', background: 'rgba(34,197,94,0.15)', padding: '0.125rem 0.5rem', borderRadius: '9999px', fontVariantNumeric: 'tabular-nums', flexShrink: 0 }}>↓17.7%</span>
+    <div style={{ display: 'grid', gridTemplateColumns: '1fr 3.5rem 4rem', columnGap: '0.75rem', rowGap: '0.25rem', alignItems: 'center' }}>
+      <div style={{ gridColumn: '1 / -1', fontSize: '0.875rem', fontWeight: 600, marginBottom: '0.375rem' }}>Forge Test <span style={{ color: 'var(--vocs-color_text3)', fontWeight: 400 }}>· 4 repos</span></div>
+      <div style={{ height: '0.75rem', borderRadius: '4px', overflow: 'hidden' }}>
+        <div style={{ width: '95.59%', height: '100%', background: 'rgba(148, 163, 184, 0.25)', borderRadius: '4px' }} />
       </div>
+      <span style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text3)', fontVariantNumeric: 'tabular-nums', textAlign: 'right' }}>29.7s</span>
+      <span style={{ gridRow: 'span 2', justifySelf: 'start', fontSize: '0.75rem', fontWeight: 600, color: '#22c55e', background: 'rgba(34,197,94,0.15)', padding: '0.125rem 0.5rem', borderRadius: '9999px', fontVariantNumeric: 'tabular-nums' }}>↓55.2%</span>
+      <div style={{ height: '0.75rem', borderRadius: '4px', overflow: 'hidden' }}>
+        <div style={{ ['--bench-bar-from']: '95.59%', ['--bench-bar-to']: '42.84%', width: 'var(--bench-bar-to)', height: '100%', background: 'rgba(34, 197, 94, 0.85)', borderRadius: '4px', animation: 'bench-bar-grow 800ms ease-out' }} />
+      </div>
+      <span style={{ fontSize: '0.7rem', color: '#22c55e', fontVariantNumeric: 'tabular-nums', textAlign: 'right', fontWeight: 500 }}>13.3s</span>
     </div>
-    <div>
-      <div style={{ fontSize: '0.875rem', fontWeight: 600, marginBottom: '0.375rem' }}>Forge Fuzz Test <span style={{ color: 'var(--vocs-color_text3)', fontWeight: 400 }}>· 5 repos</span></div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.25rem', minWidth: 0 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <div style={{ flex: 1, height: '0.75rem', borderRadius: '4px', overflow: 'hidden' }}>
-              <div style={{ width: '97.32%', height: '100%', background: 'rgba(148, 163, 184, 0.25)', borderRadius: '4px' }} />
-            </div>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <div style={{ flex: 1, height: '0.75rem', borderRadius: '4px', overflow: 'hidden' }}>
-              <div style={{ ['--bench-bar-from']: '97.32%', ['--bench-bar-to']: '84.79%', width: 'var(--bench-bar-to)', height: '100%', background: 'rgba(34, 197, 94, 0.85)', borderRadius: '4px', animation: 'bench-bar-grow 800ms ease-out' }} />
-            </div>
-          </div>
-        </div>
-        <span style={{ fontSize: '0.75rem', fontWeight: 600, color: '#22c55e', background: 'rgba(34,197,94,0.15)', padding: '0.125rem 0.5rem', borderRadius: '9999px', fontVariantNumeric: 'tabular-nums', flexShrink: 0 }}>↓12.9%</span>
+    <div style={{ display: 'grid', gridTemplateColumns: '1fr 3.5rem 4rem', columnGap: '0.75rem', rowGap: '0.25rem', alignItems: 'center' }}>
+      <div style={{ gridColumn: '1 / -1', fontSize: '0.875rem', fontWeight: 600, marginBottom: '0.375rem' }}>Forge Fuzz Test <span style={{ color: 'var(--vocs-color_text3)', fontWeight: 400 }}>· 4 repos</span></div>
+      <div style={{ height: '0.75rem', borderRadius: '4px', overflow: 'hidden' }}>
+        <div style={{ width: '95.59%', height: '100%', background: 'rgba(148, 163, 184, 0.25)', borderRadius: '4px' }} />
       </div>
+      <span style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text3)', fontVariantNumeric: 'tabular-nums', textAlign: 'right' }}>12.2s</span>
+      <span style={{ gridRow: 'span 2', justifySelf: 'start', fontSize: '0.75rem', fontWeight: 600, color: '#22c55e', background: 'rgba(34,197,94,0.15)', padding: '0.125rem 0.5rem', borderRadius: '9999px', fontVariantNumeric: 'tabular-nums' }}>↓59.1%</span>
+      <div style={{ height: '0.75rem', borderRadius: '4px', overflow: 'hidden' }}>
+        <div style={{ ['--bench-bar-from']: '95.59%', ['--bench-bar-to']: '39.07%', width: 'var(--bench-bar-to)', height: '100%', background: 'rgba(34, 197, 94, 0.85)', borderRadius: '4px', animation: 'bench-bar-grow 800ms ease-out' }} />
+      </div>
+      <span style={{ fontSize: '0.7rem', color: '#22c55e', fontVariantNumeric: 'tabular-nums', textAlign: 'right', fontWeight: 500 }}>4.97s</span>
     </div>
-    <div>
-      <div style={{ fontSize: '0.875rem', fontWeight: 600, marginBottom: '0.375rem' }}>Forge Test (Isolated) <span style={{ color: 'var(--vocs-color_text3)', fontWeight: 400 }}>· 2 repos</span></div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.25rem', minWidth: 0 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <div style={{ flex: 1, height: '0.75rem', borderRadius: '4px', overflow: 'hidden' }}>
-              <div style={{ width: '97.32%', height: '100%', background: 'rgba(148, 163, 184, 0.25)', borderRadius: '4px' }} />
-            </div>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <div style={{ flex: 1, height: '0.75rem', borderRadius: '4px', overflow: 'hidden' }}>
-              <div style={{ ['--bench-bar-from']: '97.32%', ['--bench-bar-to']: '89.52%', width: 'var(--bench-bar-to)', height: '100%', background: 'rgba(34, 197, 94, 0.85)', borderRadius: '4px', animation: 'bench-bar-grow 800ms ease-out' }} />
-            </div>
-          </div>
-        </div>
-        <span style={{ fontSize: '0.75rem', fontWeight: 600, color: '#22c55e', background: 'rgba(34,197,94,0.15)', padding: '0.125rem 0.5rem', borderRadius: '9999px', fontVariantNumeric: 'tabular-nums', flexShrink: 0 }}>↓8.0%</span>
+    <div style={{ display: 'grid', gridTemplateColumns: '1fr 3.5rem 4rem', columnGap: '0.75rem', rowGap: '0.25rem', alignItems: 'center' }}>
+      <div style={{ gridColumn: '1 / -1', fontSize: '0.875rem', fontWeight: 600, marginBottom: '0.375rem' }}>Forge Test (Isolated) <span style={{ color: 'var(--vocs-color_text3)', fontWeight: 400 }}>· 4 repos</span></div>
+      <div style={{ height: '0.75rem', borderRadius: '4px', overflow: 'hidden' }}>
+        <div style={{ width: '95.59%', height: '100%', background: 'rgba(148, 163, 184, 0.25)', borderRadius: '4px' }} />
       </div>
+      <span style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text3)', fontVariantNumeric: 'tabular-nums', textAlign: 'right' }}>32.7s</span>
+      <span style={{ gridRow: 'span 2', justifySelf: 'start', fontSize: '0.75rem', fontWeight: 600, color: '#22c55e', background: 'rgba(34,197,94,0.15)', padding: '0.125rem 0.5rem', borderRadius: '9999px', fontVariantNumeric: 'tabular-nums' }}>↓55.0%</span>
+      <div style={{ height: '0.75rem', borderRadius: '4px', overflow: 'hidden' }}>
+        <div style={{ ['--bench-bar-from']: '95.59%', ['--bench-bar-to']: '42.99%', width: 'var(--bench-bar-to)', height: '100%', background: 'rgba(34, 197, 94, 0.85)', borderRadius: '4px', animation: 'bench-bar-grow 800ms ease-out' }} />
+      </div>
+      <span style={{ fontSize: '0.7rem', color: '#22c55e', fontVariantNumeric: 'tabular-nums', textAlign: 'right', fontWeight: 500 }}>14.7s</span>
     </div>
-    <div>
-      <div style={{ fontSize: '0.875rem', fontWeight: 600, marginBottom: '0.375rem' }}>Forge Build (No Cache) <span style={{ color: 'var(--vocs-color_text3)', fontWeight: 400 }}>· 5 repos</span></div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.25rem', minWidth: 0 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <div style={{ flex: 1, height: '0.75rem', borderRadius: '4px', overflow: 'hidden' }}>
-              <div style={{ width: '97.32%', height: '100%', background: 'rgba(148, 163, 184, 0.25)', borderRadius: '4px' }} />
-            </div>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <div style={{ flex: 1, height: '0.75rem', borderRadius: '4px', overflow: 'hidden' }}>
-              <div style={{ ['--bench-bar-from']: '97.32%', ['--bench-bar-to']: '97.95%', width: 'var(--bench-bar-to)', height: '100%', background: 'rgba(148, 163, 184, 0.6)', borderRadius: '4px', animation: 'bench-bar-grow 800ms ease-out' }} />
-            </div>
-          </div>
-        </div>
-        <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--vocs-color_text3)', background: 'rgba(148,163,184,0.18)', padding: '0.125rem 0.5rem', borderRadius: '9999px', fontVariantNumeric: 'tabular-nums', flexShrink: 0 }}>↑0.6%</span>
+    <div style={{ display: 'grid', gridTemplateColumns: '1fr 3.5rem 4rem', columnGap: '0.75rem', rowGap: '0.25rem', alignItems: 'center' }}>
+      <div style={{ gridColumn: '1 / -1', fontSize: '0.875rem', fontWeight: 600, marginBottom: '0.375rem' }}>Forge Build (No Cache) <span style={{ color: 'var(--vocs-color_text3)', fontWeight: 400 }}>· 4 repos</span></div>
+      <div style={{ height: '0.75rem', borderRadius: '4px', overflow: 'hidden' }}>
+        <div style={{ width: '95.59%', height: '100%', background: 'rgba(148, 163, 184, 0.25)', borderRadius: '4px' }} />
       </div>
+      <span style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text3)', fontVariantNumeric: 'tabular-nums', textAlign: 'right' }}>3m 19s</span>
+      <span style={{ gridRow: 'span 2', justifySelf: 'start', fontSize: '0.75rem', fontWeight: 600, color: 'var(--vocs-color_text3)', background: 'rgba(148,163,184,0.18)', padding: '0.125rem 0.5rem', borderRadius: '9999px', fontVariantNumeric: 'tabular-nums' }}>↓0.6%</span>
+      <div style={{ height: '0.75rem', borderRadius: '4px', overflow: 'hidden' }}>
+        <div style={{ ['--bench-bar-from']: '95.59%', ['--bench-bar-to']: '95.02%', width: 'var(--bench-bar-to)', height: '100%', background: 'rgba(148, 163, 184, 0.6)', borderRadius: '4px', animation: 'bench-bar-grow 800ms ease-out' }} />
+      </div>
+      <span style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text3)', fontVariantNumeric: 'tabular-nums', textAlign: 'right', fontWeight: 500 }}>3m 18s</span>
     </div>
-    <div>
-      <div style={{ fontSize: '0.875rem', fontWeight: 600, marginBottom: '0.375rem' }}>Forge Build (With Cache) <span style={{ color: 'var(--vocs-color_text3)', fontWeight: 400 }}>· 5 repos</span></div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.25rem', minWidth: 0 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <div style={{ flex: 1, height: '0.75rem', borderRadius: '4px', overflow: 'hidden' }}>
-              <div style={{ width: '97.32%', height: '100%', background: 'rgba(148, 163, 184, 0.25)', borderRadius: '4px' }} />
-            </div>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <div style={{ flex: 1, height: '0.75rem', borderRadius: '4px', overflow: 'hidden' }}>
-              <div style={{ ['--bench-bar-from']: '97.32%', ['--bench-bar-to']: '100.00%', width: 'var(--bench-bar-to)', height: '100%', background: 'rgba(239, 68, 68, 0.85)', borderRadius: '4px', animation: 'bench-bar-grow 800ms ease-out' }} />
-            </div>
-          </div>
-        </div>
-        <span style={{ fontSize: '0.75rem', fontWeight: 600, color: '#ef4444', background: 'rgba(239,68,68,0.15)', padding: '0.125rem 0.5rem', borderRadius: '9999px', fontVariantNumeric: 'tabular-nums', flexShrink: 0 }}>↑2.8%</span>
+    <div style={{ display: 'grid', gridTemplateColumns: '1fr 3.5rem 4rem', columnGap: '0.75rem', rowGap: '0.25rem', alignItems: 'center' }}>
+      <div style={{ gridColumn: '1 / -1', fontSize: '0.875rem', fontWeight: 600, marginBottom: '0.375rem' }}>Forge Build (With Cache) <span style={{ color: 'var(--vocs-color_text3)', fontWeight: 400 }}>· 4 repos</span></div>
+      <div style={{ height: '0.75rem', borderRadius: '4px', overflow: 'hidden' }}>
+        <div style={{ width: '95.59%', height: '100%', background: 'rgba(148, 163, 184, 0.25)', borderRadius: '4px' }} />
       </div>
+      <span style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text3)', fontVariantNumeric: 'tabular-nums', textAlign: 'right' }}>0.28s</span>
+      <span style={{ gridRow: 'span 2', justifySelf: 'start', fontSize: '0.75rem', fontWeight: 600, color: '#ef4444', background: 'rgba(239,68,68,0.15)', padding: '0.125rem 0.5rem', borderRadius: '9999px', fontVariantNumeric: 'tabular-nums' }}>↑4.6%</span>
+      <div style={{ height: '0.75rem', borderRadius: '4px', overflow: 'hidden' }}>
+        <div style={{ ['--bench-bar-from']: '95.59%', ['--bench-bar-to']: '100.00%', width: 'var(--bench-bar-to)', height: '100%', background: 'rgba(239, 68, 68, 0.85)', borderRadius: '4px', animation: 'bench-bar-grow 800ms ease-out' }} />
+      </div>
+      <span style={{ fontSize: '0.7rem', color: '#ef4444', fontVariantNumeric: 'tabular-nums', textAlign: 'right', fontWeight: 500 }}>0.29s</span>
     </div>
-    <div>
-      <div style={{ fontSize: '0.875rem', fontWeight: 600, marginBottom: '0.375rem' }}>Forge Coverage <span style={{ color: 'var(--vocs-color_text3)', fontWeight: 400 }}>· 3 repos</span></div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.25rem', minWidth: 0 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <div style={{ flex: 1, height: '0.75rem', borderRadius: '4px', overflow: 'hidden' }}>
-              <div style={{ width: '97.32%', height: '100%', background: 'rgba(148, 163, 184, 0.25)', borderRadius: '4px' }} />
-            </div>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <div style={{ flex: 1, height: '0.75rem', borderRadius: '4px', overflow: 'hidden' }}>
-              <div style={{ ['--bench-bar-from']: '97.32%', ['--bench-bar-to']: '94.13%', width: 'var(--bench-bar-to)', height: '100%', background: 'rgba(34, 197, 94, 0.85)', borderRadius: '4px', animation: 'bench-bar-grow 800ms ease-out' }} />
-            </div>
-          </div>
-        </div>
-        <span style={{ fontSize: '0.75rem', fontWeight: 600, color: '#22c55e', background: 'rgba(34,197,94,0.15)', padding: '0.125rem 0.5rem', borderRadius: '9999px', fontVariantNumeric: 'tabular-nums', flexShrink: 0 }}>↓3.3%</span>
+    <div style={{ display: 'grid', gridTemplateColumns: '1fr 3.5rem 4rem', columnGap: '0.75rem', rowGap: '0.25rem', alignItems: 'center' }}>
+      <div style={{ gridColumn: '1 / -1', fontSize: '0.875rem', fontWeight: 600, marginBottom: '0.375rem' }}>Forge Coverage <span style={{ color: 'var(--vocs-color_text3)', fontWeight: 400 }}>· 3 repos</span></div>
+      <div style={{ height: '0.75rem', borderRadius: '4px', overflow: 'hidden' }}>
+        <div style={{ width: '95.59%', height: '100%', background: 'rgba(148, 163, 184, 0.25)', borderRadius: '4px' }} />
       </div>
+      <span style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text3)', fontVariantNumeric: 'tabular-nums', textAlign: 'right' }}>3m 58s</span>
+      <span style={{ gridRow: 'span 2', justifySelf: 'start', fontSize: '0.75rem', fontWeight: 600, color: '#22c55e', background: 'rgba(34,197,94,0.15)', padding: '0.125rem 0.5rem', borderRadius: '9999px', fontVariantNumeric: 'tabular-nums' }}>↓28.0%</span>
+      <div style={{ height: '0.75rem', borderRadius: '4px', overflow: 'hidden' }}>
+        <div style={{ ['--bench-bar-from']: '95.59%', ['--bench-bar-to']: '68.83%', width: 'var(--bench-bar-to)', height: '100%', background: 'rgba(34, 197, 94, 0.85)', borderRadius: '4px', animation: 'bench-bar-grow 800ms ease-out' }} />
+      </div>
+      <span style={{ fontSize: '0.7rem', color: '#22c55e', fontVariantNumeric: 'tabular-nums', textAlign: 'right', fontWeight: 500 }}>2m 51s</span>
     </div>
   </div>
 </div>
@@ -127,95 +91,11 @@ Performance comparison between Foundry releases.
   </div>
   <div>
     <span style={{ fontSize: '0.75rem', color: 'var(--vocs-color_text3)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Latest</span>
-    <div style={{ fontSize: '1.25rem', fontWeight: 600 }}>[nightly-a249f5c](https://github.com/foundry-rs/foundry/commit/a249f5c)</div>
+    <div style={{ fontSize: '1.25rem', fontWeight: 600 }}>[v1.7.0](https://github.com/foundry-rs/foundry/releases/tag/v1.7.0)</div>
   </div>
 </div>
 
 <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-  <div style={{ border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', overflow: 'hidden' }}>
-    <div style={{ padding: '0.75rem 1rem', borderBottom: '1px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.03)' }}>
-      <a href="https://github.com/Uniswap/v4-core" style={{ fontWeight: 600, color: 'var(--vocs-color_text)', textDecoration: 'none' }}>Uniswap-v4-core <span style={{ opacity: 0.5, fontSize: '0.875em' }}>↗</span></a>
-    </div>
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)' }}>
-      <div style={{ borderRight: '1px solid var(--vocs-color_border)', padding: '0.875rem 1rem', textAlign: 'center' }}>
-        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text3)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Test</div>
-        <div style={{ fontSize: '1.1rem', color: 'var(--vocs-color_text3)' }}>–</div>
-      </div>
-      <div style={{ borderRight: '1px solid var(--vocs-color_border)', padding: '0.875rem 1rem', textAlign: 'center' }}>
-        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text3)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Fuzz</div>
-        <div style={{ fontSize: '1.1rem', fontWeight: 600, fontVariantNumeric: 'tabular-nums', marginBottom: '0.25rem' }}>2.87s</div>
-        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text4)', marginBottom: '0.375rem' }}>3.01s</div>
-        <div style={{ display: 'inline-block', fontSize: '0.75rem', fontWeight: 500, color: '#22c55e', background: 'rgba(34, 197, 94, 0.15)', padding: '0.125rem 0.5rem', borderRadius: '9999px' }}>↓4.7%</div>
-      </div>
-      <div style={{ borderRight: '1px solid var(--vocs-color_border)', padding: '0.875rem 1rem', textAlign: 'center' }}>
-        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text3)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Isolated</div>
-        <div style={{ fontSize: '1.1rem', fontWeight: 600, fontVariantNumeric: 'tabular-nums', marginBottom: '0.25rem' }}>3.48s.</div>
-        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text4)', marginBottom: '0.375rem' }}>3.50s</div>
-        <div style={{ display: 'inline-block', fontSize: '0.75rem', fontWeight: 500, color: '#22c55e', background: 'rgba(34, 197, 94, 0.15)', padding: '0.125rem 0.5rem', borderRadius: '9999px' }}>↓0.6%</div>
-      </div>
-      <div style={{ borderRight: '1px solid var(--vocs-color_border)', padding: '0.875rem 1rem', textAlign: 'center' }}>
-        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text3)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Build</div>
-        <div style={{ fontSize: '1.1rem', fontWeight: 600, fontVariantNumeric: 'tabular-nums', marginBottom: '0.25rem' }}>2m 5.0s</div>
-        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text4)', marginBottom: '0.375rem' }}>2m 1.3s</div>
-        <div style={{ display: 'inline-block', fontSize: '0.75rem', fontWeight: 500, color: 'var(--vocs-color_text3)', background: 'transparent', padding: '0.125rem 0.5rem', borderRadius: '9999px' }}>↑3.1%</div>
-      </div>
-      <div style={{ borderRight: '1px solid var(--vocs-color_border)', padding: '0.875rem 1rem', textAlign: 'center' }}>
-        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text3)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Cached</div>
-        <div style={{ fontSize: '1.1rem', fontWeight: 600, fontVariantNumeric: 'tabular-nums', marginBottom: '0.25rem' }}>0.140s</div>
-        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text4)', marginBottom: '0.375rem' }}>0.139s</div>
-        <div style={{ display: 'inline-block', fontSize: '0.75rem', fontWeight: 500, color: 'var(--vocs-color_text3)', background: 'transparent', padding: '0.125rem 0.5rem', borderRadius: '9999px' }}>↑0.7%</div>
-      </div>
-      <div style={{ padding: '0.875rem 1rem', textAlign: 'center' }}>
-        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text3)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Coverage</div>
-        <div style={{ fontSize: '1.1rem', fontWeight: 600, fontVariantNumeric: 'tabular-nums', marginBottom: '0.25rem' }}>1m 10.3s</div>
-        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text4)', marginBottom: '0.375rem' }}>1m 13.9s</div>
-        <div style={{ display: 'inline-block', fontSize: '0.75rem', fontWeight: 500, color: '#22c55e', background: 'rgba(34, 197, 94, 0.15)', padding: '0.125rem 0.5rem', borderRadius: '9999px' }}>↓4.9%</div>
-      </div>
-    </div>
-  </div>
-  <div style={{ border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', overflow: 'hidden' }}>
-    <div style={{ padding: '0.75rem 1rem', borderBottom: '1px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.03)' }}>
-      <a href="https://github.com/search?q=aave-aave-v4" style={{ fontWeight: 600, color: 'var(--vocs-color_text)', textDecoration: 'none' }}>aave-aave-v4 <span style={{ opacity: 0.5, fontSize: '0.875em' }}>↗</span></a>
-    </div>
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)' }}>
-      <div style={{ borderRight: '1px solid var(--vocs-color_border)', padding: '0.875rem 1rem', textAlign: 'center' }}>
-        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text3)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Test</div>
-        <div style={{ fontSize: '1.1rem', fontWeight: 600, fontVariantNumeric: 'tabular-nums', marginBottom: '0.25rem' }}>3m 29.1s</div>
-        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text4)', marginBottom: '0.375rem' }}>4m 14.2s</div>
-        <div style={{ display: 'inline-block', fontSize: '0.75rem', fontWeight: 500, color: '#22c55e', background: 'rgba(34, 197, 94, 0.15)', padding: '0.125rem 0.5rem', borderRadius: '9999px' }}>↓17.7%</div>
-      </div>
-      <div style={{ borderRight: '1px solid var(--vocs-color_border)', padding: '0.875rem 1rem', textAlign: 'center' }}>
-        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text3)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Fuzz</div>
-        <div style={{ fontSize: '1.1rem', fontWeight: 600, fontVariantNumeric: 'tabular-nums', marginBottom: '0.25rem' }}>3m 17.3s</div>
-        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text4)', marginBottom: '0.375rem' }}>3m 46.0s</div>
-        <div style={{ display: 'inline-block', fontSize: '0.75rem', fontWeight: 500, color: '#22c55e', background: 'rgba(34, 197, 94, 0.15)', padding: '0.125rem 0.5rem', borderRadius: '9999px' }}>↓12.7%</div>
-      </div>
-      <div style={{ borderRight: '1px solid var(--vocs-color_border)', padding: '0.875rem 1rem', textAlign: 'center' }}>
-        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text3)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Isolated</div>
-        <div style={{ fontSize: '1.1rem', fontWeight: 600, fontVariantNumeric: 'tabular-nums', marginBottom: '0.25rem' }}>3m 53.4s</div>
-        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text4)', marginBottom: '0.375rem' }}>4m 14.0s</div>
-        <div style={{ display: 'inline-block', fontSize: '0.75rem', fontWeight: 500, color: '#22c55e', background: 'rgba(34, 197, 94, 0.15)', padding: '0.125rem 0.5rem', borderRadius: '9999px' }}>↓8.1%</div>
-      </div>
-      <div style={{ borderRight: '1px solid var(--vocs-color_border)', padding: '0.875rem 1rem', textAlign: 'center' }}>
-        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text3)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Build</div>
-        <div style={{ fontSize: '1.1rem', fontWeight: 600, fontVariantNumeric: 'tabular-nums', marginBottom: '0.25rem' }}>3m 35.1s</div>
-        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text4)', marginBottom: '0.375rem' }}>3m 37.0s</div>
-        <div style={{ display: 'inline-block', fontSize: '0.75rem', fontWeight: 500, color: '#22c55e', background: 'rgba(34, 197, 94, 0.15)', padding: '0.125rem 0.5rem', borderRadius: '9999px' }}>↓0.9%</div>
-      </div>
-      <div style={{ borderRight: '1px solid var(--vocs-color_border)', padding: '0.875rem 1rem', textAlign: 'center' }}>
-        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text3)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Cached</div>
-        <div style={{ fontSize: '1.1rem', fontWeight: 600, fontVariantNumeric: 'tabular-nums', marginBottom: '0.25rem' }}>0.357s</div>
-        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text4)', marginBottom: '0.375rem' }}>0.370s</div>
-        <div style={{ display: 'inline-block', fontSize: '0.75rem', fontWeight: 500, color: '#22c55e', background: 'rgba(34, 197, 94, 0.15)', padding: '0.125rem 0.5rem', borderRadius: '9999px' }}>↓3.5%</div>
-      </div>
-      <div style={{ padding: '0.875rem 1rem', textAlign: 'center' }}>
-        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text3)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Coverage</div>
-        <div style={{ fontSize: '1.1rem', fontWeight: 600, fontVariantNumeric: 'tabular-nums', marginBottom: '0.25rem' }}>10m 58.7s</div>
-        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text4)', marginBottom: '0.375rem' }}>11m 20.8s</div>
-        <div style={{ display: 'inline-block', fontSize: '0.75rem', fontWeight: 500, color: '#22c55e', background: 'rgba(34, 197, 94, 0.15)', padding: '0.125rem 0.5rem', borderRadius: '9999px' }}>↓3.2%</div>
-      </div>
-    </div>
-  </div>
   <div style={{ border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', overflow: 'hidden' }}>
     <div style={{ padding: '0.75rem 1rem', borderBottom: '1px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.03)' }}>
       <a href="https://github.com/ithacaxyz/account" style={{ fontWeight: 600, color: 'var(--vocs-color_text)', textDecoration: 'none' }}>ithacaxyz-account <span style={{ opacity: 0.5, fontSize: '0.875em' }}>↗</span></a>
@@ -223,33 +103,39 @@ Performance comparison between Foundry releases.
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)' }}>
       <div style={{ borderRight: '1px solid var(--vocs-color_border)', padding: '0.875rem 1rem', textAlign: 'center' }}>
         <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text3)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Test</div>
-        <div style={{ fontSize: '1.1rem', color: 'var(--vocs-color_text3)' }}>–</div>
+        <div style={{ fontSize: '1.1rem', fontWeight: 600, fontVariantNumeric: 'tabular-nums', marginBottom: '0.25rem' }}>0.965s</div>
+        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text4)', marginBottom: '0.375rem' }}>2.78s</div>
+        <div style={{ display: 'inline-block', fontSize: '0.75rem', fontWeight: 500, color: '#22c55e', background: 'rgba(34, 197, 94, 0.15)', padding: '0.125rem 0.5rem', borderRadius: '9999px' }}>↓65.3%</div>
       </div>
       <div style={{ borderRight: '1px solid var(--vocs-color_border)', padding: '0.875rem 1rem', textAlign: 'center' }}>
         <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text3)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Fuzz</div>
-        <div style={{ fontSize: '1.1rem', fontWeight: 600, fontVariantNumeric: 'tabular-nums', marginBottom: '0.25rem' }}>1.59s</div>
-        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text4)', marginBottom: '0.375rem' }}>2.81s</div>
-        <div style={{ display: 'inline-block', fontSize: '0.75rem', fontWeight: 500, color: '#22c55e', background: 'rgba(34, 197, 94, 0.15)', padding: '0.125rem 0.5rem', borderRadius: '9999px' }}>↓43.4%</div>
+        <div style={{ fontSize: '1.1rem', fontWeight: 600, fontVariantNumeric: 'tabular-nums', marginBottom: '0.25rem' }}>0.923s</div>
+        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text4)', marginBottom: '0.375rem' }}>2.54s</div>
+        <div style={{ display: 'inline-block', fontSize: '0.75rem', fontWeight: 500, color: '#22c55e', background: 'rgba(34, 197, 94, 0.15)', padding: '0.125rem 0.5rem', borderRadius: '9999px' }}>↓63.7%</div>
       </div>
       <div style={{ borderRight: '1px solid var(--vocs-color_border)', padding: '0.875rem 1rem', textAlign: 'center' }}>
         <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text3)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Isolated</div>
-        <div style={{ fontSize: '1.1rem', color: 'var(--vocs-color_text3)' }}>–</div>
+        <div style={{ fontSize: '1.1rem', fontWeight: 600, fontVariantNumeric: 'tabular-nums', marginBottom: '0.25rem' }}>1.02s</div>
+        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text4)', marginBottom: '0.375rem' }}>3.05s</div>
+        <div style={{ display: 'inline-block', fontSize: '0.75rem', fontWeight: 500, color: '#22c55e', background: 'rgba(34, 197, 94, 0.15)', padding: '0.125rem 0.5rem', borderRadius: '9999px' }}>↓66.6%</div>
       </div>
       <div style={{ borderRight: '1px solid var(--vocs-color_border)', padding: '0.875rem 1rem', textAlign: 'center' }}>
         <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text3)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Build</div>
-        <div style={{ fontSize: '1.1rem', fontWeight: 600, fontVariantNumeric: 'tabular-nums', marginBottom: '0.25rem' }}>26.61s</div>
-        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text4)', marginBottom: '0.375rem' }}>26.06s</div>
-        <div style={{ display: 'inline-block', fontSize: '0.75rem', fontWeight: 500, color: 'var(--vocs-color_text3)', background: 'transparent', padding: '0.125rem 0.5rem', borderRadius: '9999px' }}>↑2.1%</div>
+        <div style={{ fontSize: '1.1rem', fontWeight: 600, fontVariantNumeric: 'tabular-nums', marginBottom: '0.25rem' }}>33.29s</div>
+        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text4)', marginBottom: '0.375rem' }}>34.58s</div>
+        <div style={{ display: 'inline-block', fontSize: '0.75rem', fontWeight: 500, color: '#22c55e', background: 'rgba(34, 197, 94, 0.15)', padding: '0.125rem 0.5rem', borderRadius: '9999px' }}>↓3.7%</div>
       </div>
       <div style={{ borderRight: '1px solid var(--vocs-color_border)', padding: '0.875rem 1rem', textAlign: 'center' }}>
         <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text3)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Cached</div>
-        <div style={{ fontSize: '1.1rem', fontWeight: 600, fontVariantNumeric: 'tabular-nums', marginBottom: '0.25rem' }}>0.201s</div>
-        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text4)', marginBottom: '0.375rem' }}>0.167s</div>
-        <div style={{ display: 'inline-block', fontSize: '0.75rem', fontWeight: 500, color: '#ef4444', background: 'rgba(239, 68, 68, 0.15)', padding: '0.125rem 0.5rem', borderRadius: '9999px' }}>↑20.4%</div>
+        <div style={{ fontSize: '1.1rem', fontWeight: 600, fontVariantNumeric: 'tabular-nums', marginBottom: '0.25rem' }}>0.089s</div>
+        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text4)', marginBottom: '0.375rem' }}>0.083s</div>
+        <div style={{ display: 'inline-block', fontSize: '0.75rem', fontWeight: 500, color: '#ef4444', background: 'rgba(239, 68, 68, 0.15)', padding: '0.125rem 0.5rem', borderRadius: '9999px' }}>↑7.2%</div>
       </div>
       <div style={{ padding: '0.875rem 1rem', textAlign: 'center' }}>
         <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text3)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Coverage</div>
-        <div style={{ fontSize: '1.1rem', color: 'var(--vocs-color_text3)' }}>–</div>
+        <div style={{ fontSize: '1.1rem', fontWeight: 600, fontVariantNumeric: 'tabular-nums', marginBottom: '0.25rem' }}>18.69s</div>
+        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text4)', marginBottom: '0.375rem' }}>29.35s</div>
+        <div style={{ display: 'inline-block', fontSize: '0.75rem', fontWeight: 500, color: '#22c55e', background: 'rgba(34, 197, 94, 0.15)', padding: '0.125rem 0.5rem', borderRadius: '9999px' }}>↓36.3%</div>
       </div>
     </div>
   </div>
@@ -260,70 +146,119 @@ Performance comparison between Foundry releases.
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)' }}>
       <div style={{ borderRight: '1px solid var(--vocs-color_border)', padding: '0.875rem 1rem', textAlign: 'center' }}>
         <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text3)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Test</div>
-        <div style={{ fontSize: '1.1rem', color: 'var(--vocs-color_text3)' }}>–</div>
+        <div style={{ fontSize: '1.1rem', fontWeight: 600, fontVariantNumeric: 'tabular-nums', marginBottom: '0.25rem' }}>10.20s</div>
+        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text4)', marginBottom: '0.375rem' }}>19.98s</div>
+        <div style={{ display: 'inline-block', fontSize: '0.75rem', fontWeight: 500, color: '#22c55e', background: 'rgba(34, 197, 94, 0.15)', padding: '0.125rem 0.5rem', borderRadius: '9999px' }}>↓48.9%</div>
       </div>
       <div style={{ borderRight: '1px solid var(--vocs-color_border)', padding: '0.875rem 1rem', textAlign: 'center' }}>
         <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text3)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Fuzz</div>
-        <div style={{ fontSize: '1.1rem', fontWeight: 600, fontVariantNumeric: 'tabular-nums', marginBottom: '0.25rem' }}>1.87s</div>
-        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text4)', marginBottom: '0.375rem' }}>2.04s</div>
-        <div style={{ display: 'inline-block', fontSize: '0.75rem', fontWeight: 500, color: '#22c55e', background: 'rgba(34, 197, 94, 0.15)', padding: '0.125rem 0.5rem', borderRadius: '9999px' }}>↓8.3%</div>
+        <div style={{ fontSize: '1.1rem', fontWeight: 600, fontVariantNumeric: 'tabular-nums', marginBottom: '0.25rem' }}>2.03s</div>
+        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text4)', marginBottom: '0.375rem' }}>2.25s</div>
+        <div style={{ display: 'inline-block', fontSize: '0.75rem', fontWeight: 500, color: '#22c55e', background: 'rgba(34, 197, 94, 0.15)', padding: '0.125rem 0.5rem', borderRadius: '9999px' }}>↓9.8%</div>
       </div>
       <div style={{ borderRight: '1px solid var(--vocs-color_border)', padding: '0.875rem 1rem', textAlign: 'center' }}>
         <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text3)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Isolated</div>
-        <div style={{ fontSize: '1.1rem', color: 'var(--vocs-color_text3)' }}>–</div>
+        <div style={{ fontSize: '1.1rem', fontWeight: 600, fontVariantNumeric: 'tabular-nums', marginBottom: '0.25rem' }}>11.26s</div>
+        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text4)', marginBottom: '0.375rem' }}>21.96s</div>
+        <div style={{ display: 'inline-block', fontSize: '0.75rem', fontWeight: 500, color: '#22c55e', background: 'rgba(34, 197, 94, 0.15)', padding: '0.125rem 0.5rem', borderRadius: '9999px' }}>↓48.7%</div>
       </div>
       <div style={{ borderRight: '1px solid var(--vocs-color_border)', padding: '0.875rem 1rem', textAlign: 'center' }}>
         <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text3)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Build</div>
-        <div style={{ fontSize: '1.1rem', fontWeight: 600, fontVariantNumeric: 'tabular-nums', marginBottom: '0.25rem' }}>15.30s</div>
-        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text4)', marginBottom: '0.375rem' }}>15.16s</div>
-        <div style={{ display: 'inline-block', fontSize: '0.75rem', fontWeight: 500, color: 'var(--vocs-color_text3)', background: 'transparent', padding: '0.125rem 0.5rem', borderRadius: '9999px' }}>↑0.9%</div>
+        <div style={{ fontSize: '1.1rem', fontWeight: 600, fontVariantNumeric: 'tabular-nums', marginBottom: '0.25rem' }}>12.61s</div>
+        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text4)', marginBottom: '0.375rem' }}>12.62s</div>
+        <div style={{ display: 'inline-block', fontSize: '0.75rem', fontWeight: 500, color: '#22c55e', background: 'rgba(34, 197, 94, 0.15)', padding: '0.125rem 0.5rem', borderRadius: '9999px' }}>↓0.1%</div>
       </div>
       <div style={{ borderRight: '1px solid var(--vocs-color_border)', padding: '0.875rem 1rem', textAlign: 'center' }}>
         <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text3)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Cached</div>
-        <div style={{ fontSize: '1.1rem', fontWeight: 600, fontVariantNumeric: 'tabular-nums', marginBottom: '0.25rem' }}>0.173s</div>
-        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text4)', marginBottom: '0.375rem' }}>0.168s</div>
+        <div style={{ fontSize: '1.1rem', fontWeight: 600, fontVariantNumeric: 'tabular-nums', marginBottom: '0.25rem' }}>0.068s</div>
+        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text4)', marginBottom: '0.375rem' }}>0.066s</div>
         <div style={{ display: 'inline-block', fontSize: '0.75rem', fontWeight: 500, color: 'var(--vocs-color_text3)', background: 'transparent', padding: '0.125rem 0.5rem', borderRadius: '9999px' }}>↑3.0%</div>
       </div>
       <div style={{ padding: '0.875rem 1rem', textAlign: 'center' }}>
         <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text3)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Coverage</div>
-        <div style={{ fontSize: '1.1rem', fontWeight: 600, fontVariantNumeric: 'tabular-nums', marginBottom: '0.25rem' }}>2m 50.0s</div>
-        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text4)', marginBottom: '0.375rem' }}>2m 54.7s</div>
-        <div style={{ display: 'inline-block', fontSize: '0.75rem', fontWeight: 500, color: '#22c55e', background: 'rgba(34, 197, 94, 0.15)', padding: '0.125rem 0.5rem', borderRadius: '9999px' }}>↓2.7%</div>
+        <div style={{ fontSize: '1.1rem', fontWeight: 600, fontVariantNumeric: 'tabular-nums', marginBottom: '0.25rem' }}>1m 28.4s</div>
+        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text4)', marginBottom: '0.375rem' }}>2m 1.6s</div>
+        <div style={{ display: 'inline-block', fontSize: '0.75rem', fontWeight: 500, color: '#22c55e', background: 'rgba(34, 197, 94, 0.15)', padding: '0.125rem 0.5rem', borderRadius: '9999px' }}>↓27.3%</div>
       </div>
     </div>
   </div>
   <div style={{ border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', overflow: 'hidden' }}>
     <div style={{ padding: '0.75rem 1rem', borderBottom: '1px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.03)' }}>
-      <a href="https://github.com/search?q=vectorized-solady" style={{ fontWeight: 600, color: 'var(--vocs-color_text)', textDecoration: 'none' }}>vectorized-solady <span style={{ opacity: 0.5, fontSize: '0.875em' }}>↗</span></a>
+      <a href="https://github.com/uniswap/v4-core" style={{ fontWeight: 600, color: 'var(--vocs-color_text)', textDecoration: 'none' }}>uniswap-v4-core <span style={{ opacity: 0.5, fontSize: '0.875em' }}>↗</span></a>
     </div>
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)' }}>
       <div style={{ borderRight: '1px solid var(--vocs-color_border)', padding: '0.875rem 1rem', textAlign: 'center' }}>
         <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text3)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Test</div>
-        <div style={{ fontSize: '1.1rem', fontWeight: 600, fontVariantNumeric: 'tabular-nums', marginBottom: '0.25rem' }}>1.38s</div>
-        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text4)', marginBottom: '0.375rem' }}>1.46s</div>
-        <div style={{ display: 'inline-block', fontSize: '0.75rem', fontWeight: 500, color: '#22c55e', background: 'rgba(34, 197, 94, 0.15)', padding: '0.125rem 0.5rem', borderRadius: '9999px' }}>↓5.5%</div>
+        <div style={{ fontSize: '1.1rem', fontWeight: 600, fontVariantNumeric: 'tabular-nums', marginBottom: '0.25rem' }}>1.51s</div>
+        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text4)', marginBottom: '0.375rem' }}>5.97s</div>
+        <div style={{ display: 'inline-block', fontSize: '0.75rem', fontWeight: 500, color: '#22c55e', background: 'rgba(34, 197, 94, 0.15)', padding: '0.125rem 0.5rem', borderRadius: '9999px' }}>↓74.7%</div>
       </div>
       <div style={{ borderRight: '1px solid var(--vocs-color_border)', padding: '0.875rem 1rem', textAlign: 'center' }}>
         <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text3)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Fuzz</div>
-        <div style={{ fontSize: '1.1rem', fontWeight: 600, fontVariantNumeric: 'tabular-nums', marginBottom: '0.25rem' }}>1.34s</div>
-        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text4)', marginBottom: '0.375rem' }}>1.40s</div>
-        <div style={{ display: 'inline-block', fontSize: '0.75rem', fontWeight: 500, color: '#22c55e', background: 'rgba(34, 197, 94, 0.15)', padding: '0.125rem 0.5rem', borderRadius: '9999px' }}>↓4.3%</div>
+        <div style={{ fontSize: '1.1rem', fontWeight: 600, fontVariantNumeric: 'tabular-nums', marginBottom: '0.25rem' }}>1.40s</div>
+        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text4)', marginBottom: '0.375rem' }}>6.44s</div>
+        <div style={{ display: 'inline-block', fontSize: '0.75rem', fontWeight: 500, color: '#22c55e', background: 'rgba(34, 197, 94, 0.15)', padding: '0.125rem 0.5rem', borderRadius: '9999px' }}>↓78.3%</div>
       </div>
       <div style={{ borderRight: '1px solid var(--vocs-color_border)', padding: '0.875rem 1rem', textAlign: 'center' }}>
         <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text3)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Isolated</div>
-        <div style={{ fontSize: '1.1rem', color: 'var(--vocs-color_text3)' }}>–</div>
+        <div style={{ fontSize: '1.1rem', fontWeight: 600, fontVariantNumeric: 'tabular-nums', marginBottom: '0.25rem' }}>1.68s</div>
+        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text4)', marginBottom: '0.375rem' }}>6.81s</div>
+        <div style={{ display: 'inline-block', fontSize: '0.75rem', fontWeight: 500, color: '#22c55e', background: 'rgba(34, 197, 94, 0.15)', padding: '0.125rem 0.5rem', borderRadius: '9999px' }}>↓75.3%</div>
       </div>
       <div style={{ borderRight: '1px solid var(--vocs-color_border)', padding: '0.875rem 1rem', textAlign: 'center' }}>
         <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text3)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Build</div>
-        <div style={{ fontSize: '1.1rem', fontWeight: 600, fontVariantNumeric: 'tabular-nums', marginBottom: '0.25rem' }}>14.26s</div>
-        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text4)', marginBottom: '0.375rem' }}>14.20s</div>
-        <div style={{ display: 'inline-block', fontSize: '0.75rem', fontWeight: 500, color: 'var(--vocs-color_text3)', background: 'transparent', padding: '0.125rem 0.5rem', borderRadius: '9999px' }}>↑0.4%</div>
+        <div style={{ fontSize: '1.1rem', fontWeight: 600, fontVariantNumeric: 'tabular-nums', marginBottom: '0.25rem' }}>2m 17.7s</div>
+        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text4)', marginBottom: '0.375rem' }}>2m 17.6s</div>
+        <div style={{ display: 'inline-block', fontSize: '0.75rem', fontWeight: 500, color: 'var(--vocs-color_text3)', background: 'transparent', padding: '0.125rem 0.5rem', borderRadius: '9999px' }}>↑0.1%</div>
       </div>
       <div style={{ borderRight: '1px solid var(--vocs-color_border)', padding: '0.875rem 1rem', textAlign: 'center' }}>
         <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text3)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Cached</div>
-        <div style={{ fontSize: '1.1rem', fontWeight: 600, fontVariantNumeric: 'tabular-nums', marginBottom: '0.25rem' }}>0.098s</div>
-        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text4)', marginBottom: '0.375rem' }}>0.099s</div>
-        <div style={{ display: 'inline-block', fontSize: '0.75rem', fontWeight: 500, color: '#22c55e', background: 'rgba(34, 197, 94, 0.15)', padding: '0.125rem 0.5rem', borderRadius: '9999px' }}>↓1.0%</div>
+        <div style={{ fontSize: '1.1rem', fontWeight: 600, fontVariantNumeric: 'tabular-nums', marginBottom: '0.25rem' }}>0.074s</div>
+        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text4)', marginBottom: '0.375rem' }}>0.071s</div>
+        <div style={{ display: 'inline-block', fontSize: '0.75rem', fontWeight: 500, color: 'var(--vocs-color_text3)', background: 'transparent', padding: '0.125rem 0.5rem', borderRadius: '9999px' }}>↑4.2%</div>
+      </div>
+      <div style={{ padding: '0.875rem 1rem', textAlign: 'center' }}>
+        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text3)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Coverage</div>
+        <div style={{ fontSize: '1.1rem', fontWeight: 600, fontVariantNumeric: 'tabular-nums', marginBottom: '0.25rem' }}>1m 4.1s</div>
+        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text4)', marginBottom: '0.375rem' }}>1m 26.8s</div>
+        <div style={{ display: 'inline-block', fontSize: '0.75rem', fontWeight: 500, color: '#22c55e', background: 'rgba(34, 197, 94, 0.15)', padding: '0.125rem 0.5rem', borderRadius: '9999px' }}>↓26.2%</div>
+      </div>
+    </div>
+  </div>
+  <div style={{ border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', overflow: 'hidden' }}>
+    <div style={{ padding: '0.75rem 1rem', borderBottom: '1px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.03)' }}>
+      <a href="https://github.com/vectorized/solady" style={{ fontWeight: 600, color: 'var(--vocs-color_text)', textDecoration: 'none' }}>vectorized-solady <span style={{ opacity: 0.5, fontSize: '0.875em' }}>↗</span></a>
+    </div>
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)' }}>
+      <div style={{ borderRight: '1px solid var(--vocs-color_border)', padding: '0.875rem 1rem', textAlign: 'center' }}>
+        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text3)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Test</div>
+        <div style={{ fontSize: '1.1rem', fontWeight: 600, fontVariantNumeric: 'tabular-nums', marginBottom: '0.25rem' }}>0.645s</div>
+        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text4)', marginBottom: '0.375rem' }}>0.995s</div>
+        <div style={{ display: 'inline-block', fontSize: '0.75rem', fontWeight: 500, color: '#22c55e', background: 'rgba(34, 197, 94, 0.15)', padding: '0.125rem 0.5rem', borderRadius: '9999px' }}>↓35.2%</div>
+      </div>
+      <div style={{ borderRight: '1px solid var(--vocs-color_border)', padding: '0.875rem 1rem', textAlign: 'center' }}>
+        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text3)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Fuzz</div>
+        <div style={{ fontSize: '1.1rem', fontWeight: 600, fontVariantNumeric: 'tabular-nums', marginBottom: '0.25rem' }}>0.617s</div>
+        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text4)', marginBottom: '0.375rem' }}>0.929s</div>
+        <div style={{ display: 'inline-block', fontSize: '0.75rem', fontWeight: 500, color: '#22c55e', background: 'rgba(34, 197, 94, 0.15)', padding: '0.125rem 0.5rem', borderRadius: '9999px' }}>↓33.6%</div>
+      </div>
+      <div style={{ borderRight: '1px solid var(--vocs-color_border)', padding: '0.875rem 1rem', textAlign: 'center' }}>
+        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text3)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Isolated</div>
+        <div style={{ fontSize: '1.1rem', fontWeight: 600, fontVariantNumeric: 'tabular-nums', marginBottom: '0.25rem' }}>0.741s</div>
+        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text4)', marginBottom: '0.375rem' }}>0.871s</div>
+        <div style={{ display: 'inline-block', fontSize: '0.75rem', fontWeight: 500, color: '#22c55e', background: 'rgba(34, 197, 94, 0.15)', padding: '0.125rem 0.5rem', borderRadius: '9999px' }}>↓14.9%</div>
+      </div>
+      <div style={{ borderRight: '1px solid var(--vocs-color_border)', padding: '0.875rem 1rem', textAlign: 'center' }}>
+        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text3)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Build</div>
+        <div style={{ fontSize: '1.1rem', fontWeight: 600, fontVariantNumeric: 'tabular-nums', marginBottom: '0.25rem' }}>14.41s</div>
+        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text4)', marginBottom: '0.375rem' }}>14.40s</div>
+        <div style={{ display: 'inline-block', fontSize: '0.75rem', fontWeight: 500, color: 'var(--vocs-color_text3)', background: 'transparent', padding: '0.125rem 0.5rem', borderRadius: '9999px' }}>↑0.1%</div>
+      </div>
+      <div style={{ borderRight: '1px solid var(--vocs-color_border)', padding: '0.875rem 1rem', textAlign: 'center' }}>
+        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text3)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Cached</div>
+        <div style={{ fontSize: '1.1rem', fontWeight: 600, fontVariantNumeric: 'tabular-nums', marginBottom: '0.25rem' }}>0.064s</div>
+        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text4)', marginBottom: '0.375rem' }}>0.062s</div>
+        <div style={{ display: 'inline-block', fontSize: '0.75rem', fontWeight: 500, color: 'var(--vocs-color_text3)', background: 'transparent', padding: '0.125rem 0.5rem', borderRadius: '9999px' }}>↑3.2%</div>
       </div>
       <div style={{ padding: '0.875rem 1rem', textAlign: 'center' }}>
         <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text3)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Coverage</div>
