@@ -38,7 +38,7 @@ const docs = [
       {
         text: "Linting",
         link: "/forge/linting",
-        collapsed: true,
+        collapsed: false,
         items: [
           {
             text: "High severity",
