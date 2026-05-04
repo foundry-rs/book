@@ -12,7 +12,7 @@ function SponsorCard({ sponsor }: { sponsor: Sponsor }) {
     >
       <img
         alt={sponsor.name}
-        className="h-[40px] brightness-0 dark:invert"
+        className="sponsor-logo"
         src={sponsor.image}
       />
     </a>
