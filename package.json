@@ -3,7 +3,6 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "packageManager": "pnpm@9.15.4",
   "scripts": {
     "dev": "NODE_OPTIONS='--import tsx' vite",
     "build": "pnpm run fetch-benchmarks && vite build",
