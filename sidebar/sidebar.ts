@@ -74,6 +74,7 @@ const docs = [
             collapsed: true,
             items: [
               { text: "boolean-equal", link: "/forge/linting/boolean-equal" },
+              { text: "inline-assembly", link: "/forge/linting/inline-assembly" },
               { text: "interface-file-naming", link: "/forge/linting/interface-file-naming" },
               { text: "interface-naming", link: "/forge/linting/interface-naming" },
               { text: "mixed-case-function", link: "/forge/linting/mixed-case-function" },
