@@ -1,9 +1,11 @@
-#!/usr/bin/env bun
+#!/usr/bin/env -S npx tsx
 import { writeFileSync, mkdirSync } from 'fs';
-import { join } from 'path';
+import { dirname, join } from 'path';
+import { fileURLToPath } from 'url';
 
 const BENCHMARKS_URL = 'https://raw.githubusercontent.com/foundry-rs/foundry/master/benches/LATEST.md';
-const OUTPUT_DIR = join(import.meta.dir, '../src/pages');
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const OUTPUT_DIR = join(__dirname, '../src/pages');
 const OUTPUT_FILE = join(OUTPUT_DIR, 'benchmarks.mdx');
 
 interface BenchmarkData {
