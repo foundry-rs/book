@@ -58,6 +58,7 @@ const docs = [
               { text: "divide-before-multiply", link: "/forge/linting/divide-before-multiply" },
               { text: "incorrect-erc20-interface", link: "/forge/linting/incorrect-erc20-interface" },
               { text: "incorrect-erc721-interface", link: "/forge/linting/incorrect-erc721-interface" },
+              { text: "tx-origin", link: "/forge/linting/tx-origin" },
               { text: "unsafe-typecast", link: "/forge/linting/unsafe-typecast" },
             ],
           },
