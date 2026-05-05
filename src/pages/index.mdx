@@ -12,10 +12,10 @@ import { HomePage, Cards, Card } from 'vocs'
 import { SponsorCards } from './components/Sponsors'
 
 <HomePage.Root>
-  <img src="/foundry-banner.png" alt="Foundry" className="max-w-[600px] w-full mx-auto rounded-xl" />
+  <img src="/foundry-banner.png" alt="Foundry" className="foundry-banner" />
   <HomePage.Tagline>Blazing fast smart contract development toolkit</HomePage.Tagline>
 
-<div className="max-md:-mx-[var(--vocs-content_horizontalPadding,24px)] max-md:[&_[data-v-code-container]]:!rounded-none max-md:[&_pre]:!whitespace-pre-wrap max-md:[&_pre]:!overflow-x-hidden max-md:[&_pre]:!break-all max-md:[&_code]:!block max-md:[&_code]:!whitespace-pre-wrap max-md:[&_code]:!break-all max-md:[&_.line]:!whitespace-pre-wrap max-md:[&_.line]:!break-all">
+<div className="home-install-snippet">
 ```bash
 curl -L https://foundry.paradigm.xyz | bash && foundryup
 ```
