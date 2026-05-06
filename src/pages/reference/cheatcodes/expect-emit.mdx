@@ -113,6 +113,49 @@ function testFails() public {
 ```
 :::
 
+:::warning
+`expectEmit` enforces the "next call must emit" rule by reverting the call when no matching log is found. If the caller catches that revert (low-level `call` or `try/catch`), the expectation is not consumed and remains active for the rest of the test, where it can be satisfied by a log emitted from any later call:
+
+```solidity [test/ExpectEmitCaughtRevert.t.sol]
+contract Example {
+    event Foo();
+
+    function reverting() external pure { revert(); }
+    function emitFoo() external { emit Foo(); }
+}
+
+function testLeaks() public {
+    Example example = new Example();
+
+    vm.expectEmit();
+    emit Example.Foo();
+
+    // This call is the one expectEmit applies to. It reverts before emitting Foo,
+    // but the parent catches the revert, so the expectation remains active.
+    (bool ok,) = address(example).call(abi.encodeCall(example.reverting, ()));
+    require(!ok);
+
+    // This call emits Foo and satisfies the still-active expectation, so the test passes.
+    example.emitFoo();
+}
+```
+
+To prevent this, perform any caught-revert calls first and register `expectEmit` immediately before the call you want to assert against:
+
+```solidity [test/ExpectEmitCorrect.t.sol]
+function testCorrect() public {
+    Example example = new Example();
+
+    (bool ok,) = address(example).call(abi.encodeCall(example.reverting, ()));
+    require(!ok);
+
+    vm.expectEmit();
+    emit Example.Foo();
+    example.emitFoo();
+}
+```
+:::
+
 ### Related Cheatcodes
 
 - [`expectRevert`](/reference/cheatcodes/expect-revert) - Assert that calls revert
