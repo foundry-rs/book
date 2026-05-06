@@ -100,6 +100,7 @@ const docs = [
               { text: "could-be-immutable", link: "/forge/linting/could-be-immutable" },
               { text: "custom-errors", link: "/forge/linting/custom-errors" },
               { text: "unused-state-variables", link: "/forge/linting/unused-state-variables" },
+              { text: "var-read-using-this", link: "/forge/linting/var-read-using-this" },
             ],
           },
           {

@@ -189,6 +189,7 @@ navigation on the right to browse by severity.
 - [`could-be-immutable`](/forge/linting/could-be-immutable) — Flags state variables that are assigned only in the constructor and never written to afterward — making them eligible to be declared `immutable`.
 - [`custom-errors`](/forge/linting/custom-errors) — Flags `require(cond, "message")`, `revert("message")`, and `revert()` calls; suggests replacing them with a `revert CustomError(...)`.
 - [`unused-state-variables`](/forge/linting/unused-state-variables) — Flags state variables that are declared but never read or written anywhere in the contract or its descendants.
+- [`var-read-using-this`](/forge/linting/var-read-using-this) — Flags `this.X(...)` calls that read the contract's own state through its external interface; the unnecessary `STATICCALL` can be avoided by accessing the variable directly.
 
 #### Code size
 
