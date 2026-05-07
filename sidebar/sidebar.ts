@@ -85,6 +85,7 @@ const docs = [
               { text: "named-struct-fields", link: "/forge/linting/named-struct-fields" },
               { text: "pascal-case-struct", link: "/forge/linting/pascal-case-struct" },
               { text: "pragma-inconsistent", link: "/forge/linting/pragma-inconsistent" },
+              { text: "redundant-base-constructor-call", link: "/forge/linting/redundant-base-constructor-call" },
               { text: "screaming-snake-case-const", link: "/forge/linting/screaming-snake-case-const" },
               { text: "screaming-snake-case-immutable", link: "/forge/linting/screaming-snake-case-immutable" },
               { text: "too-many-digits", link: "/forge/linting/too-many-digits" },
