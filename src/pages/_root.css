@@ -1,3 +1,42 @@
-@import "tailwindcss" important;
+.foundry-banner {
+  max-width: 600px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 0.75rem;
+}
 
-@source "./";
+.sponsor-logo {
+  height: 40px;
+  filter: brightness(0);
+}
+
+.dark .sponsor-logo {
+  filter: invert(1);
+}
+
+@media (max-width: 767px) {
+  .home-install-snippet {
+    margin-left: calc(-1 * var(--vocs-content_horizontalPadding, 24px));
+    margin-right: calc(-1 * var(--vocs-content_horizontalPadding, 24px));
+  }
+
+  .home-install-snippet [data-v-code-container] {
+    border-radius: 0 !important;
+  }
+
+  .home-install-snippet pre,
+  .home-install-snippet code,
+  .home-install-snippet .line {
+    white-space: pre-wrap !important;
+    word-break: break-all !important;
+  }
+
+  .home-install-snippet pre {
+    overflow-x: hidden !important;
+  }
+
+  .home-install-snippet code {
+    display: block !important;
+  }
+}

@@ -13,7 +13,6 @@
     "mermaid": "^11.14.0",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
-    "tailwindcss": "^4.2.2",
     "vocs": "https://pkg.pr.new/wevm/vocs@1337e71",
     "waku": "1.0.0-alpha.2"
   },
