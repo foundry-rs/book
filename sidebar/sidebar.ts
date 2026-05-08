@@ -78,6 +78,7 @@ const docs = [
               { text: "inline-assembly", link: "/forge/linting/inline-assembly" },
               { text: "interface-file-naming", link: "/forge/linting/interface-file-naming" },
               { text: "interface-naming", link: "/forge/linting/interface-naming" },
+              { text: "missing-inheritance", link: "/forge/linting/missing-inheritance" },
               { text: "mixed-case-function", link: "/forge/linting/mixed-case-function" },
               { text: "mixed-case-variable", link: "/forge/linting/mixed-case-variable" },
               { text: "multi-contract-file", link: "/forge/linting/multi-contract-file" },

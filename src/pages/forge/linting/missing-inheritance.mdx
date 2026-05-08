@@ -1,0 +1,67 @@
+---
+description: Missing inheritance from an implemented interface
+---
+
+## Missing inheritance from an implemented interface
+
+**Severity**: `Info`
+**ID**: `missing-inheritance`
+
+Flags contracts that implement every external function of an interface but do not explicitly
+inherit from it.
+
+### What it does
+
+For each non-interface contract `C` in the analyzed sources, reports each interface `I` where:
+
+- `C` does not transitively inherit from `I`,
+- `C` (including its inherited bases) implements every external selector exported by `I`, and
+- no already-inherited base of `C` already covers all of `I`'s selectors.
+
+Candidate interfaces include both user-defined interfaces and those declared in dependencies
+(e.g. OpenZeppelin's `IERC20`). When several candidates overlap (e.g. `IERC20` and
+`IERC20Metadata`), only the maximal one is reported. Signature-only abstract contracts — those
+with no state, no constructor, no modifier bodies, and no function bodies — are also treated as
+candidate interfaces.
+
+### Why is this bad?
+
+Explicit inheritance:
+
+- documents which standards a contract claims to implement,
+- enables the compiler to verify function signatures, visibility, mutability, and return types via
+  `override`,
+- makes `type(I).interfaceId` and ERC-165 introspection meaningful,
+- makes refactors safer: changing the interface fails the build instead of silently drifting.
+
+Implementing the API by coincidence (or by copy-paste) skips all of those checks.
+
+### Example
+
+#### Bad
+
+```solidity
+interface ISomething {
+    function f1() external returns (uint256);
+}
+
+contract Something {
+    function f1() external returns (uint256) {
+        return 42;
+    }
+}
+```
+
+#### Good
+
+```solidity
+interface ISomething {
+    function f1() external returns (uint256);
+}
+
+contract Something is ISomething {
+    function f1() external override returns (uint256) {
+        return 42;
+    }
+}
+```

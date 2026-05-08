@@ -170,6 +170,7 @@ navigation on the right to browse by severity.
 - [`inline-assembly`](/forge/linting/inline-assembly) — Flags every `assembly { ... }` block; inline assembly bypasses Solidity safety features and should be reviewed deliberately.
 - [`interface-file-naming`](/forge/linting/interface-file-naming) — Flags Solidity files whose only top-level declaration is an interface but whose filename is not prefixed with `I`.
 - [`interface-naming`](/forge/linting/interface-naming) — Flags `interface` declarations whose names are not prefixed with `I`.
+- [`missing-inheritance`](/forge/linting/missing-inheritance) — Flags contracts that implement every external function of an interface but do not explicitly inherit from it.
 - [`mixed-case-function`](/forge/linting/mixed-case-function) — Flags function names that do not follow `mixedCase`.
 - [`mixed-case-variable`](/forge/linting/mixed-case-variable) — Flags mutable variable names (locals, parameters, mutable state) that do not follow `mixedCase`.
 - [`multi-contract-file`](/forge/linting/multi-contract-file) — Flags source files that declare more than one top-level contract, interface, or library.
