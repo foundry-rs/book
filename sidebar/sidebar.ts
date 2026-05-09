@@ -44,6 +44,7 @@ const docs = [
             text: "High severity",
             collapsed: true,
             items: [
+              { text: "arbitrary-send-erc20", link: "/forge/linting/arbitrary-send-erc20" },
               { text: "erc20-unchecked-transfer", link: "/forge/linting/erc20-unchecked-transfer" },
               { text: "incorrect-shift", link: "/forge/linting/incorrect-shift" },
               { text: "rtlo", link: "/forge/linting/rtlo" },
