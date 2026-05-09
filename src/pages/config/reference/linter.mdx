@@ -84,7 +84,13 @@ Where:
 
 By default, the linter runs automatically when you build your project with `forge build`.
 
-To disable this behavior, in your `foundry.toml` set:
+To skip linting for a single invocation, pass `--no-lint` (alias `--skip-lint`):
+
+```bash
+forge build --no-lint
+```
+
+To disable persistently, in your `foundry.toml` set:
 
 ```toml
 [lint]

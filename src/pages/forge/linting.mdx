@@ -120,7 +120,14 @@ Or explicitly:
 
 ### Disable linting on build
 
-By default, `forge build` runs the linter. To disable:
+By default, `forge build` runs the linter. To disable for a single invocation, pass
+`--no-lint` (alias `--skip-lint`):
+
+```bash
+forge build --no-lint
+```
+
+To disable persistently:
 
 ```toml [foundry.toml]
 [lint]
