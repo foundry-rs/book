@@ -69,6 +69,7 @@ const docs = [
             items: [
               { text: "block-timestamp", link: "/forge/linting/block-timestamp" },
               { text: "missing-zero-check", link: "/forge/linting/missing-zero-check" },
+              { text: "optimism-deprecation", link: "/forge/linting/optimism-deprecation" },
             ],
           },
           {

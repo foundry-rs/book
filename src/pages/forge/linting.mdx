@@ -171,6 +171,7 @@ navigation on the right to browse by severity.
 
 - [`block-timestamp`](/forge/linting/block-timestamp) — Flags use of `block.timestamp` as an operand of a comparison, where its value can be slightly manipulated by the block proposer.
 - [`missing-zero-check`](/forge/linting/missing-zero-check) — Flags entry-point functions and constructors where an `address` parameter flows into a state write or value transfer without a zero-address guard.
+- [`optimism-deprecation`](/forge/linting/optimism-deprecation) — Flags usage of Optimism predeploy addresses removed in the Bedrock upgrade and GasPriceOracle functions that revert unconditionally post-Ecotone.
 
 #### Informational
 
