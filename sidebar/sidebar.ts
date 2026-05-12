@@ -110,6 +110,7 @@ const docs = [
             text: "Code size",
             collapsed: true,
             items: [
+              { text: "dead-code", link: "/forge/linting/dead-code" },
               { text: "unwrapped-modifier-logic", link: "/forge/linting/unwrapped-modifier-logic" },
             ],
           },
