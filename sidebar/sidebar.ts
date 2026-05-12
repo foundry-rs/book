@@ -46,6 +46,7 @@ const docs = [
             items: [
               { text: "erc20-unchecked-transfer", link: "/forge/linting/erc20-unchecked-transfer" },
               { text: "incorrect-shift", link: "/forge/linting/incorrect-shift" },
+              { text: "reentrancy-unlimited-gas", link: "/forge/linting/reentrancy-unlimited-gas" },
               { text: "rtlo", link: "/forge/linting/rtlo" },
               { text: "unchecked-call", link: "/forge/linting/unchecked-call" },
             ],
@@ -82,7 +83,6 @@ const docs = [
               { text: "named-struct-fields", link: "/forge/linting/named-struct-fields" },
               { text: "pascal-case-struct", link: "/forge/linting/pascal-case-struct" },
               { text: "pragma-inconsistent", link: "/forge/linting/pragma-inconsistent" },
-              { text: "reentrancy-unlimited-gas", link: "/forge/linting/reentrancy-unlimited-gas" },
               { text: "screaming-snake-case-const", link: "/forge/linting/screaming-snake-case-const" },
               { text: "screaming-snake-case-immutable", link: "/forge/linting/screaming-snake-case-immutable" },
               { text: "too-many-digits", link: "/forge/linting/too-many-digits" },

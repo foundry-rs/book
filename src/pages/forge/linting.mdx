@@ -146,6 +146,7 @@ navigation on the right to browse by severity.
 
 - [`erc20-unchecked-transfer`](/forge/linting/erc20-unchecked-transfer) — Flags calls to ERC20 `transfer` and `transferFrom` where the boolean return value is ignored.
 - [`incorrect-shift`](/forge/linting/incorrect-shift) — Flags shift operations where a literal appears on the left and a non-literal on the right, which is almost always the wrong operand order.
+- [`reentrancy-unlimited-gas`](/forge/linting/reentrancy-unlimited-gas) — Flags uncapped ETH-transferring low-level `call` operations when state read before the call is written after the call.
 - [`rtlo`](/forge/linting/rtlo) — Flags the presence of Unicode bidirectional override characters in source code, which can be used to hide malicious behavior ("Trojan Source", [CVE-2021-42574](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-42574)).
 - [`unchecked-call`](/forge/linting/unchecked-call) — Flags low-level calls (`call`, `delegatecall`, `staticcall`, `callcode`) whose `success` return value is ignored.
 
@@ -173,7 +174,6 @@ navigation on the right to browse by severity.
 - [`named-struct-fields`](/forge/linting/named-struct-fields) — Flags struct construction expressions that pass fields positionally instead of by name.
 - [`pascal-case-struct`](/forge/linting/pascal-case-struct) — Flags struct definitions whose names do not follow `PascalCase`.
 - [`pragma-inconsistent`](/forge/linting/pragma-inconsistent) — Flags projects whose source files declare incompatible or differently-shaped Solidity version pragmas.
-- [`reentrancy-unlimited-gas`](/forge/linting/reentrancy-unlimited-gas) — Flags uncapped ETH-transferring low-level `call` operations when state read before the call is written after the call.
 - [`screaming-snake-case-const`](/forge/linting/screaming-snake-case-const) — Flags `constant` state variables whose names do not follow `SCREAMING_SNAKE_CASE`.
 - [`screaming-snake-case-immutable`](/forge/linting/screaming-snake-case-immutable) — Flags `immutable` state variables whose names do not follow `SCREAMING_SNAKE_CASE`.
 - [`too-many-digits`](/forge/linting/too-many-digits) — Flags numeric literals containing five or more consecutive zeros, which are easy to misread.
