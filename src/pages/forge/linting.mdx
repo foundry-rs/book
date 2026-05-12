@@ -173,6 +173,7 @@ navigation on the right to browse by severity.
 - [`named-struct-fields`](/forge/linting/named-struct-fields) — Flags struct construction expressions that pass fields positionally instead of by name.
 - [`pascal-case-struct`](/forge/linting/pascal-case-struct) — Flags struct definitions whose names do not follow `PascalCase`.
 - [`pragma-inconsistent`](/forge/linting/pragma-inconsistent) — Flags projects whose source files declare incompatible or differently-shaped Solidity version pragmas.
+- [`reentrancy-unlimited-gas`](/forge/linting/reentrancy-unlimited-gas) — Flags uncapped ETH-transferring low-level `call` operations when state read before the call is written after the call.
 - [`screaming-snake-case-const`](/forge/linting/screaming-snake-case-const) — Flags `constant` state variables whose names do not follow `SCREAMING_SNAKE_CASE`.
 - [`screaming-snake-case-immutable`](/forge/linting/screaming-snake-case-immutable) — Flags `immutable` state variables whose names do not follow `SCREAMING_SNAKE_CASE`.
 - [`too-many-digits`](/forge/linting/too-many-digits) — Flags numeric literals containing five or more consecutive zeros, which are easy to misread.
@@ -190,4 +191,3 @@ navigation on the right to browse by severity.
 #### Code size
 
 - [`unwrapped-modifier-logic`](/forge/linting/unwrapped-modifier-logic) — Flags modifiers whose body contains non-trivial logic that should be moved into a helper function to reduce contract code size.
-
