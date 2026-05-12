@@ -60,6 +60,7 @@ const docs = [
               { text: "incorrect-erc20-interface", link: "/forge/linting/incorrect-erc20-interface" },
               { text: "incorrect-erc721-interface", link: "/forge/linting/incorrect-erc721-interface" },
               { text: "tx-origin", link: "/forge/linting/tx-origin" },
+              { text: "type-based-tautology", link: "/forge/linting/type-based-tautology" },
               { text: "unsafe-typecast", link: "/forge/linting/unsafe-typecast" },
             ],
           },
