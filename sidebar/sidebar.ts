@@ -47,6 +47,7 @@ const docs = [
               { text: "arbitrary-send-erc20", link: "/forge/linting/arbitrary-send-erc20" },
               { text: "erc20-unchecked-transfer", link: "/forge/linting/erc20-unchecked-transfer" },
               { text: "incorrect-shift", link: "/forge/linting/incorrect-shift" },
+              { text: "low-level-calls", link: "/forge/linting/low-level-calls" },
               { text: "rtlo", link: "/forge/linting/rtlo" },
               { text: "unchecked-call", link: "/forge/linting/unchecked-call" },
             ],
