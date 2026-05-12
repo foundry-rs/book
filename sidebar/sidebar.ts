@@ -100,6 +100,7 @@ const docs = [
             collapsed: true,
             items: [
               { text: "asm-keccak256", link: "/forge/linting/asm-keccak256" },
+              { text: "cache-array-length", link: "/forge/linting/cache-array-length" },
               { text: "could-be-immutable", link: "/forge/linting/could-be-immutable" },
               { text: "custom-errors", link: "/forge/linting/custom-errors" },
               { text: "unused-state-variables", link: "/forge/linting/unused-state-variables" },
