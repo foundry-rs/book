@@ -1,0 +1,82 @@
+---
+description: Public function can be declared external
+---
+
+## Public function can be declared external
+
+**Severity**: `Gas`
+**ID**: `external-function`
+
+Flags `public` functions that are never called from inside the contract or any of its
+derivatives and that take at least one reference-type parameter currently located in
+`memory`. Such functions can be declared `external` (and their reference parameters moved to
+`calldata`) to avoid copying arguments from `calldata` into `memory` on every call.
+
+### What it does
+
+Reports a `public` function declaration when **all** of the following hold:
+
+- It is `public` (not `external`, `internal`, or `private`).
+- It is an ordinary function (not a constructor, fallback, receive, or modifier).
+- It has at least one parameter that is a reference type (`struct`, array, `bytes`, or
+  `string`) currently located in `memory`.
+- It is not an `override` of another function. The base must be migrated first because
+  Solidity only allows widening visibility from `external` to `public`, never the reverse.
+- It has a body (so it is neither abstract nor an interface declaration).
+- It does not write to any of its parameters inside the body.
+- It is never called from inside the contract or any contract that derives from it,
+  whether directly (`foo(...)`), via `super.foo(...)`, or as a function-pointer
+  reference (`fn = foo;`).
+
+### Why is this bad?
+
+Calling a `public` function from outside the contract is more expensive than calling the
+equivalent `external` function:
+
+- Every reference-type argument is copied from `calldata` into `memory` before the body
+  executes, even when the only callers are external.
+- The dispatcher includes additional bytecode to support both internal and external entry
+  points, increasing deployment cost and adding a branch on every call.
+
+When the function is never called internally, switching `public` to `external` removes both
+costs without changing semantics.
+
+### Example
+
+#### Bad
+
+```solidity
+contract Vault {
+    mapping(address => uint256) public balances;
+
+    function deposit(address[] memory accounts, uint256[] memory amounts) public {
+        for (uint256 i = 0; i < accounts.length; i++) {
+            balances[accounts[i]] += amounts[i];
+        }
+    }
+}
+```
+
+`deposit` is never called from inside `Vault`, but its `memory` arrays force an
+unnecessary calldata-to-memory copy on every external call.
+
+#### Good
+
+```solidity
+contract Vault {
+    mapping(address => uint256) public balances;
+
+    function deposit(address[] calldata accounts, uint256[] calldata amounts) external {
+        for (uint256 i = 0; i < accounts.length; i++) {
+            balances[accounts[i]] += amounts[i];
+        }
+    }
+}
+```
+
+When migrating `public` to `external`, also change reference-type parameters from `memory`
+to `calldata` to capture the full gas saving.
+
+### Notes
+
+This is a `Gas`-severity lint and is **not** applied to test or script files.
