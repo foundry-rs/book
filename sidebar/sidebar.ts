@@ -47,6 +47,7 @@ const docs = [
               { text: "arbitrary-send-erc20", link: "/forge/linting/arbitrary-send-erc20" },
               { text: "erc20-unchecked-transfer", link: "/forge/linting/erc20-unchecked-transfer" },
               { text: "incorrect-shift", link: "/forge/linting/incorrect-shift" },
+              { text: "reentrancy-unlimited-gas", link: "/forge/linting/reentrancy-unlimited-gas" },
               { text: "rtlo", link: "/forge/linting/rtlo" },
               { text: "unchecked-call", link: "/forge/linting/unchecked-call" },
             ],
@@ -59,9 +60,12 @@ const docs = [
               { text: "divide-before-multiply", link: "/forge/linting/divide-before-multiply" },
               { text: "incorrect-erc20-interface", link: "/forge/linting/incorrect-erc20-interface" },
               { text: "incorrect-erc721-interface", link: "/forge/linting/incorrect-erc721-interface" },
+              { text: "low-level-calls", link: "/forge/linting/low-level-calls" },
               { text: "tx-origin", link: "/forge/linting/tx-origin" },
               { text: "type-based-tautology", link: "/forge/linting/type-based-tautology" },
+              { text: "uninitialized-local", link: "/forge/linting/uninitialized-local" },
               { text: "unsafe-typecast", link: "/forge/linting/unsafe-typecast" },
+              { text: "weak-prng", link: "/forge/linting/weak-prng" },
             ],
           },
           {
@@ -101,6 +105,8 @@ const docs = [
             collapsed: true,
             items: [
               { text: "asm-keccak256", link: "/forge/linting/asm-keccak256" },
+              { text: "cache-array-length", link: "/forge/linting/cache-array-length" },
+              { text: "costly-loop", link: "/forge/linting/costly-loop" },
               { text: "could-be-immutable", link: "/forge/linting/could-be-immutable" },
               { text: "custom-errors", link: "/forge/linting/custom-errors" },
               { text: "unused-state-variables", link: "/forge/linting/unused-state-variables" },
@@ -111,6 +117,7 @@ const docs = [
             text: "Code size",
             collapsed: true,
             items: [
+              { text: "dead-code", link: "/forge/linting/dead-code" },
               { text: "unwrapped-modifier-logic", link: "/forge/linting/unwrapped-modifier-logic" },
             ],
           },
