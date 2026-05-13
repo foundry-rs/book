@@ -1,0 +1,50 @@
+---
+description: Address and id event parameters should be indexed
+---
+
+## Address and id event parameters should be indexed
+
+**Severity**: `Info`
+**ID**: `event-fields`
+
+Flags event parameters that are almost always meant to be filterable but are not declared
+`indexed`: `address` / `address payable` parameters, and `uint256` / `bytes32` parameters
+with id-like names. A single diagnostic is emitted per event listing the offending fields.
+
+### What it does
+
+Reports an event when at least one of its unindexed parameters is filterable, where
+filterable means:
+
+- type `address` or `address payable`, or
+- type `uint256` (or its alias `uint`) and a name matching `id`, `*Id`, `*ID`, `*_id`, or
+  `*_ID`, or
+- type `bytes32` and a name matching `id`, `*Id`, `*ID`, `*_id`, or `*_ID`.
+
+The lint respects the EVM cap on indexed parameters per event (3 for normal events, 4 for
+`anonymous` events) and only suggests changes that are still feasible.
+
+### Why is this bad?
+
+Indexed event parameters are stored as topics in the transaction log. Off-chain indexers,
+explorers, and clients use topics to filter events by sender, recipient, token id, order
+id, etc. Leaving filterable fields unindexed forces consumers to scan and decode every
+event of that type, which is slow and brittle.
+
+### Example
+
+#### Bad
+
+```solidity
+event Transfer(address from, address to, uint256 value);
+event Mint(address to, uint256 tokenId);
+event Order(bytes32 orderId, uint256 amount);
+```
+
+#### Good
+
+```solidity
+event Transfer(address indexed from, address indexed to, uint256 value);
+event Mint(address indexed to, uint256 indexed tokenId);
+event Order(bytes32 indexed orderId, uint256 amount);
+```

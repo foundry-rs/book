@@ -83,6 +83,7 @@ const docs = [
             collapsed: true,
             items: [
               { text: "boolean-equal", link: "/forge/linting/boolean-equal" },
+              { text: "event-fields", link: "/forge/linting/event-fields" },
               { text: "inline-assembly", link: "/forge/linting/inline-assembly" },
               { text: "interface-file-naming", link: "/forge/linting/interface-file-naming" },
               { text: "interface-naming", link: "/forge/linting/interface-naming" },
