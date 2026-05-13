@@ -60,6 +60,7 @@ const docs = [
               { text: "divide-before-multiply", link: "/forge/linting/divide-before-multiply" },
               { text: "incorrect-erc20-interface", link: "/forge/linting/incorrect-erc20-interface" },
               { text: "incorrect-erc721-interface", link: "/forge/linting/incorrect-erc721-interface" },
+              { text: "incorrect-strict-equality", link: "/forge/linting/incorrect-strict-equality" },
               { text: "locked-ether", link: "/forge/linting/locked-ether" },
               { text: "low-level-calls", link: "/forge/linting/low-level-calls" },
               { text: "tx-origin", link: "/forge/linting/tx-origin" },
