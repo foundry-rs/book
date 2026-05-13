@@ -155,6 +155,7 @@ navigation on the right to browse by severity.
 - [`arbitrary-send-erc20`](/forge/linting/arbitrary-send-erc20) — Flags `transferFrom` / `safeTransferFrom` calls whose `from` argument is not provably equal to `msg.sender` or `address(this)`.
 - [`erc20-unchecked-transfer`](/forge/linting/erc20-unchecked-transfer) — Flags calls to ERC20 `transfer` and `transferFrom` where the boolean return value is ignored.
 - [`incorrect-shift`](/forge/linting/incorrect-shift) — Flags shift operations where a literal appears on the left and a non-literal on the right, which is almost always the wrong operand order.
+- [`reentrancy-unlimited-gas`](/forge/linting/reentrancy-unlimited-gas) — Flags uncapped ETH-transferring low-level `call` operations when state read before the call is written after the call.
 - [`rtlo`](/forge/linting/rtlo) — Flags the presence of Unicode bidirectional override characters in source code, which can be used to hide malicious behavior ("Trojan Source", [CVE-2021-42574](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-42574)).
 - [`unchecked-call`](/forge/linting/unchecked-call) — Flags low-level calls (`call`, `delegatecall`, `staticcall`, `callcode`) whose `success` return value is ignored.
 
@@ -164,8 +165,11 @@ navigation on the right to browse by severity.
 - [`divide-before-multiply`](/forge/linting/divide-before-multiply) — Flags arithmetic expressions where division is performed before multiplication, which can cause unintended precision loss in integer arithmetic.
 - [`incorrect-erc20-interface`](/forge/linting/incorrect-erc20-interface) — Flags interfaces or contracts whose function signatures match an ERC20 method by name and parameters but use the wrong return type.
 - [`incorrect-erc721-interface`](/forge/linting/incorrect-erc721-interface) — Flags interfaces or contracts whose function signatures match an ERC721 (or ERC165) method by name and parameters but use the wrong return type.
+- [`low-level-calls`](/forge/linting/low-level-calls) — Flags direct use of Solidity low-level calls (`call`, `delegatecall`, and `staticcall`).
 - [`tx-origin`](/forge/linting/tx-origin) — Flags use of `tx.origin` inside authorization-like predicates, which can be exploited by a malicious contract acting on behalf of a legitimate owner.
+- [`uninitialized-local`](/forge/linting/uninitialized-local) — Flags local variables that are declared without an initializer and read before any explicit assignment, where the silent zero-default is almost certainly unintentional.
 - [`unsafe-typecast`](/forge/linting/unsafe-typecast) — Flags explicit numeric typecasts that can silently truncate or alter the value.
+- [`weak-prng`](/forge/linting/weak-prng) — Flags randomness-like expressions that directly derive entropy from predictable on-chain values.
 
 #### Low severity
 
@@ -196,6 +200,7 @@ navigation on the right to browse by severity.
 #### Gas optimization
 
 - [`asm-keccak256`](/forge/linting/asm-keccak256) — Flags calls to the high-level `keccak256(...)` builtin that can be cheaply rewritten with inline assembly.
+- [`cache-array-length`](/forge/linting/cache-array-length) — Flags `for` loop conditions that read a dynamic array or `bytes` value's `.length` on every iteration instead of comparing against a cached local length.
 - [`costly-loop`](/forge/linting/costly-loop) — Flags storage variable writes inside loops, where each SSTORE multiplies gas cost by the number of iterations.
 - [`could-be-immutable`](/forge/linting/could-be-immutable) — Flags state variables that are assigned only in the constructor and never written to afterward — making them eligible to be declared `immutable`.
 - [`custom-errors`](/forge/linting/custom-errors) — Flags `require(cond, "message")`, `revert("message")`, and `revert()` calls; suggests replacing them with a `revert CustomError(...)`.
@@ -204,5 +209,5 @@ navigation on the right to browse by severity.
 
 #### Code size
 
+- [`dead-code`](/forge/linting/dead-code) — Flags internal and private functions that are not reachable from contract entry points or construction-time initializers.
 - [`unwrapped-modifier-logic`](/forge/linting/unwrapped-modifier-logic) — Flags modifiers whose body contains non-trivial logic that should be moved into a helper function to reduce contract code size.
-
