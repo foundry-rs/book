@@ -205,6 +205,7 @@ navigation on the right to browse by severity.
 - [`asm-keccak256`](/forge/linting/asm-keccak256) — Flags calls to the high-level `keccak256(...)` builtin that can be cheaply rewritten with inline assembly.
 - [`cache-array-length`](/forge/linting/cache-array-length) — Flags `for` loop conditions that read a dynamic array or `bytes` value's `.length` on every iteration instead of comparing against a cached local length.
 - [`costly-loop`](/forge/linting/costly-loop) — Flags storage variable writes inside loops, where each SSTORE multiplies gas cost by the number of iterations.
+- [`could-be-constant`](/forge/linting/could-be-constant) — Flags state variables with a compile-time-constant inline initializer that are never written — making them eligible to be declared `constant`.
 - [`could-be-immutable`](/forge/linting/could-be-immutable) — Flags state variables that are assigned only in the constructor and never written to afterward — making them eligible to be declared `immutable`.
 - [`custom-errors`](/forge/linting/custom-errors) — Flags `require(cond, "message")`, `revert("message")`, and `revert()` calls; suggests replacing them with a `revert CustomError(...)`.
 - [`external-function`](/forge/linting/external-function) — Flags `public` functions that are never called internally and have a reference-type `memory` parameter; switching them to `external` (with `calldata` parameters) avoids an extra calldata-to-memory copy.

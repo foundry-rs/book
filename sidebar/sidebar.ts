@@ -109,6 +109,7 @@ const docs = [
               { text: "asm-keccak256", link: "/forge/linting/asm-keccak256" },
               { text: "cache-array-length", link: "/forge/linting/cache-array-length" },
               { text: "costly-loop", link: "/forge/linting/costly-loop" },
+              { text: "could-be-constant", link: "/forge/linting/could-be-constant" },
               { text: "could-be-immutable", link: "/forge/linting/could-be-immutable" },
               { text: "custom-errors", link: "/forge/linting/custom-errors" },
               { text: "external-function", link: "/forge/linting/external-function" },
