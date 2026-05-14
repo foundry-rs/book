@@ -171,6 +171,7 @@ navigation on the right to browse by severity.
 - [`tx-origin`](/forge/linting/tx-origin) — Flags use of `tx.origin` inside authorization-like predicates, which can be exploited by a malicious contract acting on behalf of a legitimate owner.
 - [`type-based-tautology`](/forge/linting/type-based-tautology) — Flags comparison expressions that are always true or always false due to the numeric range of the variable's type.
 - [`uninitialized-local`](/forge/linting/uninitialized-local) — Flags local variables that are declared without an initializer and read before any explicit assignment, where the silent zero-default is almost certainly unintentional.
+- [`uninitialized-state`](/forge/linting/uninitialized-state) — Flags state variables that are read in a contract's inheritance chain but never assigned, leaving them silently equal to their type's zero default.
 - [`unsafe-typecast`](/forge/linting/unsafe-typecast) — Flags explicit numeric typecasts that can silently truncate or alter the value.
 - [`weak-prng`](/forge/linting/weak-prng) — Flags randomness-like expressions that directly derive entropy from predictable on-chain values.
 
