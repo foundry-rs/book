@@ -10,7 +10,6 @@ type Page =
 | { path: '/best-practices'; render: 'static' }
 | { path: '/'; render: 'static' }
 | { path: '/reference/README'; render: 'static' }
-| { path: '/reference/ds-test'; render: 'static' }
 | { path: '/reference/forge-std/abs'; render: 'static' }
 | { path: '/reference/forge-std/arithmeticError'; render: 'static' }
 | { path: '/reference/forge-std/assertApproxEqAbs'; render: 'static' }

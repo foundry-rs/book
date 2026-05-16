@@ -110,6 +110,5 @@ export const forgeStdReference: SidebarItem = {
             ],
         },
         { text: 'Console Logging', link: '/reference/forge-std/console-log' },
-        { text: 'DSTest Reference', link: '/reference/ds-test' },
     ],
 };

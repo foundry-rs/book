@@ -217,9 +217,6 @@ export const sidebar: Sidebar = {
   "/reference/forge-std": [
     forgeStdReference,
   ],
-  "/reference/ds-test": [
-    forgeStdReference,
-  ],
   "/config/reference": [
     {
       text: "Configuration",

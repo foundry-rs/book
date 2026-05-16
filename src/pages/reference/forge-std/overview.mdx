@@ -30,7 +30,7 @@ What's included:
   import {Script} from "forge-std/Script.sol";
   ```
 
-- `Test.sol`: The complete Forge Std experience (more details [below](#forge-stds-test))
+- `Test.sol`: The complete Forge Std experience (more details [below](#the-test-contract))
 
   ```solidity
   import {Test} from "forge-std/Test.sol";
@@ -42,7 +42,7 @@ What's included:
   import {Config} from "forge-std/Config.sol";
   ```
 
-### Forge Std's `Test`
+### The `Test` Contract
 
 The `Test` contract in `Test.sol` provides all the essential functionality you need to get started writing tests.
 
@@ -58,8 +58,8 @@ What's included:
 
 - Std Libraries
 
-  - [Std Logs](/reference/forge-std/std-logs.mdx): Expand upon the logging events from the DSTest library.
-  - [Std Assertions](/reference/forge-std/std-assertions.mdx): Expand upon the assertion functions from the DSTest library.
+  - [Std Logs](/reference/forge-std/std-logs.mdx): Additional logging events for arrays.
+  - [Std Assertions](/reference/forge-std/std-assertions.mdx): Assertion helpers for common comparisons and approximate equality.
   - [Std Cheats](/reference/forge-std/std-cheats.mdx): Wrappers around Forge cheatcodes for improved safety and DX.
   - [Std Errors](/reference/forge-std/std-errors.mdx): Wrappers around common internal Solidity errors and reverts.
   - [Std Storage](/reference/forge-std/std-storage.mdx): Utilities for storage manipulation.
@@ -81,7 +81,7 @@ What's included:
   console.log(alice.balance); // or `console2`
   ```
 
-- All Dappsys Test functions for asserting and logging (see [Dappsys Test reference](/reference/ds-test.md))
+- Forge Std assertion and logging helpers
 
   ```solidity
   assertEq(dai.balanceOf(alice), 10000e18);
