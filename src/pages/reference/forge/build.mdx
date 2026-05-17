@@ -32,6 +32,14 @@ Build options:
       --ignore-eip-3860
           Ignore initcode contract bytecode size limit introduced by EIP-3860
 
+      --no-lint
+          Skip the post-build lint step for this invocation.
+          
+          Equivalent to setting `lint_on_build = false` under `[lint]` in
+          foundry.toml, but only for the current command.
+          
+          [aliases: --skip-lint]
+
       --no-cache
           Disable the cache
 

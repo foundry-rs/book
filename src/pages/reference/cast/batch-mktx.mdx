@@ -99,6 +99,18 @@ Tempo:
           If this is not set, the fee token is chosen according to network
           rules. See the Tempo docs for more information.
 
+      --tempo.expires <SECONDS>
+          Opt into TIP-1009 expiring-nonce mode with a validity window.
+          
+          Convenience flag that combines `--tempo.expiring-nonce` with a
+          relative `--tempo.valid-before`. Sets nonce_key = U256::MAX, nonce =
+          0, and valid_before = now + seconds.
+          
+          Maximum value is 30 seconds. The transaction must be mined before the
+          deadline or it becomes permanently invalid, giving safe retry
+          semantics: retries produce a fresh tx hash and the old tx can never
+          land late.
+
       --tempo.nonce-key <NONCE_KEY>
           Nonce key for Tempo parallelizable nonces.
           
@@ -110,7 +122,34 @@ Tempo:
           For more information see
           [https://docs.tempo.xyz/protocol/transactions/spec-tempo-transaction#parallelizable-nonces](https://docs.tempo.xyz/protocol/transactions/spec-tempo-transaction#parallelizable-nonces).
 
-      --tempo.sponsor-signature <SPONSOR_SIGNATURE>
+      --tempo.lane <NAME>
+          Named nonce lane for Tempo parallelizable nonces.
+          
+          Resolves a friendly lane name (e.g. `deploy`, `payments`) to a
+          `nonce_key` via a shared lanes file (default: `tempo.lanes.toml` at
+          the project root). The lanes file is a TOML map of `name = <U256>`
+          entries, e.g.:
+          
+          ```toml deploy   = 1 ops      = 2 payments = 3 ```
+          
+          Mutually exclusive with `--tempo.nonce-key`.
+
+      --tempo.lanes-file <PATH>
+          Path to the Tempo lanes file used by `--tempo.lane`.
+          
+          Defaults to `tempo.lanes.toml` at the project root.
+
+      --tempo.sponsor <ADDRESS>
+          Sponsor (fee payer) address for Tempo sponsored transactions
+
+      --tempo.sponsor-signer <SIGNER>
+          Sign Tempo sponsor digests in-band with the given signer URI.
+          
+          Supported forms include `env://VAR`, `keystore://PATH`,
+          `account://NAME`, `ledger://`, `trezor://`, `aws://`, `gcp://`,
+          `turnkey://`, and `private-key://KEY`.
+
+      --tempo.sponsor-sig <SPONSOR_SIG>
           Sponsor (fee payer) signature for Tempo sponsored transactions.
           
           The sponsor signs the `fee_payer_signature_hash` to commit to paying
@@ -148,10 +187,9 @@ Tempo:
           `--tempo.expiring-nonce`.
 
 Rpc options:
-  -r, --rpc-url <RPC_URL>
+  -r, --rpc-url <URL>
           The RPC endpoint
           
-          [env: ETH_RPC_URL=]
           [aliases: --fork-url]
 
   -k, --insecure

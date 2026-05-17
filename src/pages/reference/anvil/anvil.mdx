@@ -46,6 +46,12 @@ Options:
           If the value is a directory, the state will be written to
           `<VALUE>/state.json`.
 
+      --fund-accounts <ADDRESS:AMOUNT>...
+          Fund specific accounts with custom balances on startup.
+          
+          Accepts multiple address:balance pairs where balance is in ETH.
+          Example: --fund-accounts 0x1234...5678:1000 0xabcd...ef01:5000
+
   -h, --help
           Print help (see a summary with '-h')
 
@@ -387,7 +393,7 @@ Networks:
   -n, --network <NETWORK>
           Enable a specific network family
           
-          [possible values: ethereum, optimism, tempo]
+          [possible values: ethereum, tempo]
 ```
 
 :::
