@@ -154,6 +154,16 @@ Test options:
       --fuzz-runs <RUNS>
           [env: FOUNDRY_FUZZ_RUNS=]
 
+      --fuzz-run <RUN>
+          Run only the fuzz case at the given 1-based run index
+          
+          [env: FOUNDRY_FUZZ_RUN=]
+
+      --fuzz-worker <WORKER>
+          Run the fuzz case from the given worker. Requires `--fuzz-run`
+          
+          [env: FOUNDRY_FUZZ_WORKER=]
+
       --fuzz-timeout <TIMEOUT>
           Timeout for each fuzz run in seconds
           
@@ -209,10 +219,9 @@ Test filtering:
           [aliases: --nmco]
 
 EVM options:
-  -r, --rpc-url <RPC_URL>
+  -r, --rpc-url <URL>
           The RPC endpoint
           
-          [env: ETH_RPC_URL=]
           [aliases: --fork-url]
 
   -k, --insecure
@@ -368,7 +377,7 @@ Networks:
   -n, --network <NETWORK>
           Enable a specific network family
           
-          [possible values: ethereum, optimism, tempo]
+          [possible values: ethereum, tempo]
 
       --celo
           Enable Celo network features

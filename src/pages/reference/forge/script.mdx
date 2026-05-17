@@ -69,8 +69,139 @@ Options:
           
           [default: 100]
 
+  -h, --help
+          Print help (see a summary with '-h')
+
+Display options:
+  -v, --verbosity...
+          Verbosity level of the log messages.
+          
+          Pass multiple times to increase the verbosity (e.g. -v, -vv, -vvv).
+          
+          Depending on the context the verbosity levels have different meanings.
+          
+          For example, the verbosity levels of the EVM are:
+          - 2 (-vv): Print logs for all tests.
+          - 3 (-vvv): Print execution traces for failing tests.
+          - 4 (-vvvv): Print execution traces for all tests, and setup traces
+          for failing tests.
+          - 5 (-vvvvv): Print execution and setup traces for all tests,
+          including storage changes and
+            backtraces with line numbers.
+
+  -q, --quiet
+          Do not print log messages
+
+      --json
+          Format log messages as JSON
+
+      --md
+          Format log messages as Markdown
+
+      --color <COLOR>
+          The color of the log messages
+
+          Possible values:
+          - auto:   Intelligently guess whether to use color output (default)
+          - always: Force color output
+          - never:  Force disable color output
+
+Tempo:
       --tempo.fee-token <FEE_TOKEN>
-          Tempo fee token address for paying transaction fees
+          Fee token address for Tempo transactions.
+          
+          When set, builds a Tempo (type 0x76) transaction that pays gas fees in
+          the specified token.
+          
+          If this is not set, the fee token is chosen according to network
+          rules. See the Tempo docs for more information.
+
+      --tempo.expires <SECONDS>
+          Opt into TIP-1009 expiring-nonce mode with a validity window.
+          
+          Convenience flag that combines `--tempo.expiring-nonce` with a
+          relative `--tempo.valid-before`. Sets nonce_key = U256::MAX, nonce =
+          0, and valid_before = now + seconds.
+          
+          Maximum value is 30 seconds. The transaction must be mined before the
+          deadline or it becomes permanently invalid, giving safe retry
+          semantics: retries produce a fresh tx hash and the old tx can never
+          land late.
+
+      --tempo.nonce-key <NONCE_KEY>
+          Nonce key for Tempo parallelizable nonces.
+          
+          When set, builds a Tempo (type 0x76) transaction with the specified
+          nonce key, allowing multiple transactions with the same nonce but
+          different keys to be executed in parallel. If not set, the protocol
+          nonce key (0) will be used.
+          
+          For more information see
+          [https://docs.tempo.xyz/protocol/transactions/spec-tempo-transaction#parallelizable-nonces](https://docs.tempo.xyz/protocol/transactions/spec-tempo-transaction#parallelizable-nonces).
+
+      --tempo.lane <NAME>
+          Named nonce lane for Tempo parallelizable nonces.
+          
+          Resolves a friendly lane name (e.g. `deploy`, `payments`) to a
+          `nonce_key` via a shared lanes file (default: `tempo.lanes.toml` at
+          the project root). The lanes file is a TOML map of `name = <U256>`
+          entries, e.g.:
+          
+          ```toml deploy   = 1 ops      = 2 payments = 3 ```
+          
+          Mutually exclusive with `--tempo.nonce-key`.
+
+      --tempo.lanes-file <PATH>
+          Path to the Tempo lanes file used by `--tempo.lane`.
+          
+          Defaults to `tempo.lanes.toml` at the project root.
+
+      --tempo.sponsor <ADDRESS>
+          Sponsor (fee payer) address for Tempo sponsored transactions
+
+      --tempo.sponsor-signer <SIGNER>
+          Sign Tempo sponsor digests in-band with the given signer URI.
+          
+          Supported forms include `env://VAR`, `keystore://PATH`,
+          `account://NAME`, `ledger://`, `trezor://`, `aws://`, `gcp://`,
+          `turnkey://`, and `private-key://KEY`.
+
+      --tempo.sponsor-sig <SPONSOR_SIG>
+          Sponsor (fee payer) signature for Tempo sponsored transactions.
+          
+          The sponsor signs the `fee_payer_signature_hash` to commit to paying
+          gas fees on behalf of the sender. Provide as a hex-encoded signature.
+
+      --tempo.print-sponsor-hash
+          Print the sponsor signature hash and exit.
+          
+          Computes the `fee_payer_signature_hash` for the transaction so that a
+          sponsor knows what hash to sign. The transaction is not sent.
+
+      --tempo.key-id <KEY_ID>
+          Access key ID for Tempo Keychain signature transactions.
+          
+          Used during gas estimation to override the key_id that would normally
+          be recovered from the signature.
+
+      --tempo.expiring-nonce
+          Enable expiring nonce mode for Tempo transactions.
+          
+          Sets nonce to 0 and nonce_key to U256::MAX, enabling time-bounded
+          transaction validity via `--tempo.valid-before` and
+          `--tempo.valid-after`.
+
+      --tempo.valid-before <VALID_BEFORE>
+          Upper bound timestamp for Tempo expiring nonce transactions.
+          
+          The transaction is only valid before this unix timestamp. Requires
+          `--tempo.expiring-nonce`.
+
+      --tempo.valid-after <VALID_AFTER>
+          Lower bound timestamp for Tempo expiring nonce transactions.
+          
+          The transaction is only valid after this unix timestamp. Requires
+          `--tempo.expiring-nonce`.
 
       --skip-simulation
           Skips on-chain simulation
@@ -142,43 +273,6 @@ Options:
           Timeout to use for broadcasting transactions
           
           [env: ETH_TIMEOUT=]
-
-  -h, --help
-          Print help (see a summary with '-h')
-
-Display options:
-  -v, --verbosity...
-          Verbosity level of the log messages.
-          
-          Pass multiple times to increase the verbosity (e.g. -v, -vv, -vvv).
-          
-          Depending on the context the verbosity levels have different meanings.
-          
-          For example, the verbosity levels of the EVM are:
-          - 2 (-vv): Print logs for all tests.
-          - 3 (-vvv): Print execution traces for failing tests.
-          - 4 (-vvvv): Print execution traces for all tests, and setup traces
-          for failing tests.
-          - 5 (-vvvvv): Print execution and setup traces for all tests,
-          including storage changes and
-            backtraces with line numbers.
-
-  -q, --quiet
-          Do not print log messages
-
-      --json
-          Format log messages as JSON
-
-      --md
-          Format log messages as Markdown
-
-      --color <COLOR>
-          The color of the log messages
-
-          Possible values:
-          - auto:   Intelligently guess whether to use color output (default)
-          - always: Force color output
-          - never:  Force disable color output
 
 Cache options:
       --force
@@ -432,10 +526,9 @@ Wallet options - browser wallet:
           Whether to open the browser for wallet connection
 
 EVM options:
-  -r, --rpc-url <RPC_URL>
+  -r, --rpc-url <URL>
           The RPC endpoint
           
-          [env: ETH_RPC_URL=]
           [aliases: --fork-url]
 
   -k, --insecure
@@ -601,7 +694,7 @@ Networks:
   -n, --network <NETWORK>
           Enable a specific network family
           
-          [possible values: ethereum, optimism, tempo]
+          [possible values: ethereum, tempo]
 
       --celo
           Enable Celo network features
