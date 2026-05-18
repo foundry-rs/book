@@ -88,6 +88,10 @@ Use `foundryup --force` to skip verification and force a fresh install.
 
 ## Alternative installation methods
 
+:::note
+Foundry no longer publishes npm packages for `forge`, `cast`, `anvil`, or `chisel`. Use `foundryup`, GitHub releases, Docker, or build from source instead.
+:::
+
 ### Precompiled binaries
 
 Download binaries directly from the [GitHub releases page](https://github.com/foundry-rs/foundry/releases). Extract and add them to your `PATH`.
