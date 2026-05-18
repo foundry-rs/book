@@ -56,6 +56,7 @@ const docs = [
             text: "Medium severity",
             collapsed: true,
             items: [
+              { text: "assert-state-change", link: "/forge/linting/assert-state-change" },
               { text: "boolean-cst", link: "/forge/linting/boolean-cst" },
               { text: "divide-before-multiply", link: "/forge/linting/divide-before-multiply" },
               { text: "incorrect-erc20-interface", link: "/forge/linting/incorrect-erc20-interface" },
