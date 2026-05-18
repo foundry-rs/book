@@ -1,0 +1,66 @@
+---
+description: External calls inside loops
+---
+
+## External calls inside loops
+
+**Severity**: `Low`
+**ID**: `calls-loop`
+
+Flags external calls made from inside loops.
+
+### What it does
+
+Reports external calls that are reachable from a `for`, `while`, or `do-while` loop body. This
+includes low-level calls, ETH `send`/`transfer`, contract or interface calls, calls through
+`this`, and external calls reached through an internal helper called from inside the loop.
+
+Library-style member calls on non-contract values are ignored.
+
+### Why is this bad?
+
+External calls can revert or consume enough gas to prevent the loop from completing. If the loop
+must process many recipients or contracts in one transaction, one failing callee can deny service
+to every later iteration.
+
+This is especially risky for push-payment patterns where every recipient must accept ETH before the
+function can finish.
+
+### Example
+
+#### Bad
+
+```solidity
+contract Payouts {
+    address payable[] recipients;
+
+    function payAll() external payable {
+        for (uint256 i; i < recipients.length; ++i) {
+            recipients[i].transfer(1 ether);
+        }
+    }
+}
+```
+
+#### Good
+
+```solidity
+contract Payouts {
+    mapping(address => uint256) public owed;
+
+    function queuePayment(address recipient, uint256 amount) external {
+        owed[recipient] += amount;
+    }
+
+    function claim() external {
+        uint256 amount = owed[msg.sender];
+        owed[msg.sender] = 0;
+        payable(msg.sender).transfer(amount);
+    }
+}
+```
+
+### Recommendation
+
+Favor pull-based accounting: record what each recipient can claim, then let each recipient claim in
+a separate transaction.

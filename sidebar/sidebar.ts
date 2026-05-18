@@ -76,6 +76,7 @@ const docs = [
             collapsed: true,
             items: [
               { text: "block-timestamp", link: "/forge/linting/block-timestamp" },
+              { text: "calls-loop", link: "/forge/linting/calls-loop" },
               { text: "missing-zero-check", link: "/forge/linting/missing-zero-check" },
             ],
           },
