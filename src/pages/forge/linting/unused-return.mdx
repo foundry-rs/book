@@ -1,0 +1,73 @@
+---
+description: Unused return value from an external call
+---
+
+## Unused return value
+
+**Severity**: `Med`
+**ID**: `unused-return`
+
+Flags external calls whose return value is silently discarded.
+
+### What it does
+
+Reports member calls on contract-typed variables or explicit interface casts (e.g.
+`IOracle(addr).f()`) that are invoked as standalone expression statements when the callee function
+declares one or more return values. ERC20 `transfer` and `transferFrom` are excluded — they are
+covered by the separate [`erc20-unchecked-transfer`](/forge/linting/erc20-unchecked-transfer) lint.
+
+To avoid false positives from overloading, the lint only fires when **all** same-name / same-arity
+candidates in the target contract return a value. If any overload with the same arity returns
+nothing, the call is skipped conservatively.
+
+### Why is this bad?
+
+Dropping a return value usually means one of:
+
+- **Ignored error signal** — the callee returns a success flag or error code that the caller
+  never checks, silently continuing through failure.
+- **Discarded computation** — the result of a query (e.g. a price oracle, a balance check) is
+  thrown away, making the call a no-op from the caller's perspective.
+
+Both cases are common sources of logic bugs and security vulnerabilities.
+
+### Example
+
+#### Bad
+
+```solidity
+interface IOracle {
+    function getPrice(address token) external returns (uint256);
+}
+
+contract Example {
+    IOracle oracle;
+
+    function updatePrice(address token) external {
+        oracle.getPrice(token); // return value silently discarded
+    }
+}
+```
+
+#### Good
+
+```solidity
+interface IOracle {
+    function getPrice(address token) external returns (uint256);
+}
+
+contract Example {
+    IOracle oracle;
+    uint256 public lastPrice;
+
+    function updatePrice(address token) external {
+        lastPrice = oracle.getPrice(token);
+    }
+}
+```
+
+### Notes
+
+This lint operates on candidate matching rather than exact call resolution: it inspects the
+declared functions on the statically-known contract type. Calls through plain `address` variables,
+`this.f()`, or complex receiver expressions (e.g. `mapping[key].f()`) are not covered.

@@ -69,6 +69,7 @@ const docs = [
               { text: "uninitialized-local", link: "/forge/linting/uninitialized-local" },
               { text: "uninitialized-state", link: "/forge/linting/uninitialized-state" },
               { text: "unsafe-typecast", link: "/forge/linting/unsafe-typecast" },
+              { text: "unused-return", link: "/forge/linting/unused-return" },
               { text: "weak-prng", link: "/forge/linting/weak-prng" },
             ],
           },
