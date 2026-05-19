@@ -22,6 +22,7 @@ The linter checks for:
 - Unsafe typecasts
 - Naming convention violations
 - Use of tx.origin for authorization
+- Return bomb risks from gas-limited calls
 - Unused imports
 - Gas optimizations
 
@@ -183,6 +184,7 @@ navigation on the right to browse by severity.
 - [`calls-loop`](/forge/linting/calls-loop) — Flags external calls made from inside loops, which can cause denial-of-service if a callee reverts or exhausts gas.
 - [`delegatecall-loop`](/forge/linting/delegatecall-loop) — Flags `delegatecall` operations inside loops in externally callable payable functions.
 - [`missing-zero-check`](/forge/linting/missing-zero-check) — Flags entry-point functions and constructors where an `address` parameter flows into a state write or value transfer without a zero-address guard.
+- [`return-bomb`](/forge/linting/return-bomb) — Flags external calls that set an explicit gas limit while copying unbounded dynamic returndata.
 
 #### Informational
 
