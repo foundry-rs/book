@@ -270,15 +270,11 @@ Use `:::code-group` for tabbed code examples. Code groups are ideal for:
 :::code-group
 
 ```bash [npm]
-$ npm install
+$ npm ci --ignore-scripts
 ```
 
 ```bash [pnpm]
-$ pnpm install
-```
-
-```bash [bun]
-$ bun install
+$ pnpm install --frozen-lockfile
 ```
 
 :::
