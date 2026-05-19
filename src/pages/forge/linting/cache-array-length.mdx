@@ -17,6 +17,9 @@ dynamic array-like value, such as `i < values.length`, `values.length > i`, or c
 that repeat the same pattern.
 
 The lint does not report loops that already compare against a local cached length variable.
+It is also intentionally conservative: it skips loops where caching the length could change
+semantics, including loops that mutate an array length, call a state-mutating helper, or read
+`.length` from a receiver that changes as the loop progresses.
 
 ### Why is this bad?
 
@@ -58,3 +61,7 @@ contract C {
 ### Notes
 
 This is a `Gas`-severity lint and is not applied to test or script files.
+
+The lint will not report loop-variant reads like `values[i].length`, or loops where the body or
+post expression can change an array's length with `push`, `pop`, or a state-mutating call. In
+those cases, keeping the `.length` read in the loop condition preserves the original behavior.
