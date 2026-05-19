@@ -181,6 +181,7 @@ navigation on the right to browse by severity.
 
 - [`block-timestamp`](/forge/linting/block-timestamp) — Flags use of `block.timestamp` as an operand of a comparison, where its value can be slightly manipulated by the block proposer.
 - [`calls-loop`](/forge/linting/calls-loop) — Flags external calls made from inside loops, which can cause denial-of-service if a callee reverts or exhausts gas.
+- [`delegatecall-loop`](/forge/linting/delegatecall-loop) — Flags `delegatecall` operations inside loops in externally callable payable functions.
 - [`missing-zero-check`](/forge/linting/missing-zero-check) — Flags entry-point functions and constructors where an `address` parameter flows into a state write or value transfer without a zero-address guard.
 
 #### Informational
