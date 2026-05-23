@@ -49,7 +49,7 @@ export const forgeStdReference: SidebarItem = {
                 { text: 'makeAddr', link: '/reference/forge-std/make-addr' },
                 { text: 'makeAddrAndKey', link: '/reference/forge-std/make-addr-and-key' },
                 { text: 'noGasMetering', link: '/reference/forge-std/noGasMetering' },
-                { text: 'assumeNoPrecompiles', link: '/reference/forge-std/assume-no-precompiles' },
+                { text: 'assumeNotPrecompile', link: '/reference/forge-std/assume-no-precompiles' },
                 { text: 'assumePayable', link: '/reference/forge-std/assume-payable' },
             ],
         },
