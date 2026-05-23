@@ -160,6 +160,7 @@ navigation on the right to browse by severity.
 - [`reentrancy-unlimited-gas`](/forge/linting/reentrancy-unlimited-gas) — Flags uncapped ETH-transferring low-level `call` operations when state read before the call is written after the call.
 - [`rtlo`](/forge/linting/rtlo) — Flags the presence of Unicode bidirectional override characters in source code, which can be used to hide malicious behavior ("Trojan Source", [CVE-2021-42574](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-42574)).
 - [`unchecked-call`](/forge/linting/unchecked-call) — Flags low-level calls (`call`, `delegatecall`, `staticcall`, `callcode`) whose `success` return value is ignored.
+- [`unprotected-initializer`](/forge/linting/unprotected-initializer) — Flags upgradeable initializers that can be called directly on an implementation contract with a destructive entry point.
 
 #### Medium severity
 
