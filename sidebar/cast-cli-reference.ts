@@ -169,6 +169,7 @@ export const castCliReference: SidebarItem = {
                 { text: "cast keychain", link: "/reference/cast/keychain" },
                 { text: "cast keychain authorize", link: "/reference/cast/keychain/authorize" },
                 { text: "cast keychain check", link: "/reference/cast/keychain/check" },
+                { text: "cast keychain doctor", link: "/reference/cast/keychain/doctor" },
                 { text: "cast keychain inspect", link: "/reference/cast/keychain/inspect" },
                 { text: "cast keychain list", link: "/reference/cast/keychain/list" },
                 { text: "cast keychain policy", link: "/reference/cast/keychain/policy" },
