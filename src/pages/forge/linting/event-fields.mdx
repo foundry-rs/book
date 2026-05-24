@@ -48,3 +48,18 @@ event Transfer(address indexed from, address indexed to, uint256 value);
 event Mint(address indexed to, uint256 indexed tokenId);
 event Order(bytes32 indexed orderId, uint256 amount);
 ```
+
+### Limitations
+
+This lint is intentionally conservative:
+
+- Only explicit `address`, `address payable`, `uint256`, and `bytes32` parameters
+  are checked. Custom types (contract types, interfaces, user-defined value types)
+  are **not** unwrapped, so e.g. `IERC20 token` or `type UserId is uint256;`
+  parameters are not flagged.
+- For `uint256`/`bytes32`, only names matching `id`, `*Id`, `*ID`, `*_id`, or
+  `*_ID` are flagged. Other names (e.g. `amount`, `hash`, `nonce`) are ignored.
+- Only actionable suggestions are reported. If an event has no remaining indexed
+  slots (3 for normal events, 4 for `anonymous`), no warning is emitted. If only
+  some slots remain, only the first parameters that could still be indexed are
+  reported; already-indexed parameters are never suggested for change.
