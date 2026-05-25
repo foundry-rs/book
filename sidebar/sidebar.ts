@@ -50,6 +50,7 @@ const docs = [
               { text: "reentrancy-unlimited-gas", link: "/forge/linting/reentrancy-unlimited-gas" },
               { text: "rtlo", link: "/forge/linting/rtlo" },
               { text: "unchecked-call", link: "/forge/linting/unchecked-call" },
+              { text: "unprotected-initializer", link: "/forge/linting/unprotected-initializer" },
             ],
           },
           {
