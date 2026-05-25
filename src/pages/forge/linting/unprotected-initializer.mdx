@@ -16,7 +16,7 @@ Warns on public or external functions that:
 
 1. are marked with an `initializer` or `reinitializer` modifier;
 2. write state directly or through an internal helper;
-3. belong to an implementation whose constructor does not call `_disableInitializers()`; and
+3. belong to an implementation whose constructor does not call an inherited `_disableInitializers()`; and
 4. are in a contract with a public or external `delegatecall`, `callcode`, or `selfdestruct` path
    that is not restricted to proxy calls with `onlyProxy`.
 
