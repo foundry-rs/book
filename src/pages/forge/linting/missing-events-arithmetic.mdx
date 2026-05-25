@@ -15,14 +15,15 @@ unprotected function without emitting an event.
 Looks for scalar `int` and `uint` state variables that are:
 
 1. written by a public or external state-mutating function with access control;
-2. assigned from function input, directly or through local aliases or internal helpers;
+2. assigned from function input, directly or through local aliases or internal helpers, or changed
+   with an arithmetic assignment or increment/decrement;
 3. used in arithmetic by an unprotected public or external function; and
 4. changed along a path that does not emit an event.
 
 The lint intentionally skips fixed-value writes, constructors, unprotected setters, mappings,
-arrays, and functions that emit any event directly or through an internal helper. These limits keep
-the rule focused on configuration-style arithmetic parameters and avoid noisy warnings for updates
-that are not clearly part of an externally visible calculation.
+arrays, and update paths that emit an event directly or through an internal helper. These limits
+keep the rule focused on configuration-style arithmetic parameters and avoid noisy warnings for
+updates that are not clearly part of an externally visible calculation.
 
 ### Why is this bad?
 
