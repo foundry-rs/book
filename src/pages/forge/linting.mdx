@@ -219,6 +219,7 @@ navigation on the right to browse by severity.
 - [`external-function`](/forge/linting/external-function) — Flags `public` functions that are never called internally and have a reference-type `memory` parameter; switching them to `external` (with `calldata` parameters) avoids an extra calldata-to-memory copy.
 - [`unused-state-variables`](/forge/linting/unused-state-variables) — Flags state variables that are declared but never read or written anywhere in the contract or its descendants.
 - [`var-read-using-this`](/forge/linting/var-read-using-this) — Flags `this.X(...)` calls that read the contract's own state through its external interface; the unnecessary `STATICCALL` can be avoided by accessing the variable directly.
+- [`write-after-write`](/forge/linting/write-after-write) — Flags storage variables written consecutively without the first value being read; only the final write is needed.
 
 #### Code size
 
