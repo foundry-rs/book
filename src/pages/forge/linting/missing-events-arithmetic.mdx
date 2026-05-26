@@ -7,23 +7,27 @@ description: Missing events for arithmetic state changes
 **Severity**: `Low`
 **ID**: `missing-events-arithmetic`
 
-Flags protected entry-point functions that update tainted integer state used in arithmetic by an
-unprotected function without emitting an event.
+Flags protected entry-point functions that update dynamic integer state used in arithmetic by an
+unprotected function without emitting an event on the update path.
 
 ### What it does
 
 Looks for scalar `int` and `uint` state variables that are:
 
 1. written by a public or external state-mutating function with access control;
-2. assigned from function input, directly or through local aliases or internal helpers, or changed
+2. assigned from a dynamic value, directly or through local aliases or internal helpers, or changed
    with an arithmetic assignment or increment/decrement;
 3. used in arithmetic by an unprotected public or external function; and
-4. changed along a path that does not emit an event.
+4. changed along a path where the pending write is not followed by an event.
+
+Dynamic values include function inputs, mutable state variables, built-ins such as `block.timestamp`,
+and call results.
 
 The lint intentionally skips fixed-value writes, constructors, unprotected setters, mappings,
-arrays, and update paths that emit an event directly or through an internal helper. These limits
-keep the rule focused on configuration-style arithmetic parameters and avoid noisy warnings for
-updates that are not clearly part of an externally visible calculation.
+arrays, and update paths where the write is followed by an event directly, through an internal
+helper, or after `_` in a modifier. These limits keep the rule focused on configuration-style
+arithmetic parameters and avoid noisy warnings for updates that are not clearly part of an
+externally visible calculation.
 
 ### Why is this bad?
 
