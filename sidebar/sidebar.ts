@@ -81,6 +81,7 @@ const docs = [
               { text: "block-timestamp", link: "/forge/linting/block-timestamp" },
               { text: "calls-loop", link: "/forge/linting/calls-loop" },
               { text: "delegatecall-loop", link: "/forge/linting/delegatecall-loop" },
+              { text: "missing-events-access-control", link: "/forge/linting/missing-events-access-control" },
               { text: "missing-events-arithmetic", link: "/forge/linting/missing-events-arithmetic" },
               { text: "missing-zero-check", link: "/forge/linting/missing-zero-check" },
               { text: "reentrancy-events", link: "/forge/linting/reentrancy-events" },
