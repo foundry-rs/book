@@ -1,0 +1,73 @@
+---
+description: Missing events for access control changes
+---
+
+## Missing events for access control changes
+
+**Severity**: `Low`
+**ID**: `missing-events-access-control`
+
+Flags protected entry-point functions that update state used for access control without emitting an
+event.
+
+### What it does
+
+Looks for mutable state variables that are:
+
+1. read by an access-control check involving `msg.sender` or `tx.origin`;
+2. written by a public or external state-mutating function with access control;
+3. assigned from function input, sender data, access-control state, or indexed mapping keys,
+   directly or through local aliases or internal helpers; and
+4. changed without a related event that covers the updated access-control state.
+
+The lint intentionally skips constructors, unprotected setters, variables not used in authorization
+checks, and fixed writes that are not clearing access-control state used by the active guard. Events
+must be related to the updated state, so unrelated logging does not suppress the warning. These
+limits keep the rule focused on authority-bearing state and avoid noisy warnings for updates that
+are not clearly part of access control.
+
+### Why is this bad?
+
+Off-chain monitors, users, and auditors often rely on events to track changes to owners, guardians,
+roles, and other authority-bearing state. If a protected function silently changes access control,
+critical permission updates are harder to review and investigate.
+
+### Example
+
+#### Bad
+
+```solidity
+contract Owned {
+    address public owner = msg.sender;
+
+    modifier onlyOwner() {
+        require(msg.sender == owner, "not owner");
+        _;
+    }
+
+    function transferOwnership(address newOwner) external onlyOwner {
+        owner = newOwner;
+    }
+}
+```
+
+#### Good
+
+```solidity
+contract Owned {
+    address public owner = msg.sender;
+
+    event OwnershipTransferred(address indexed oldOwner, address indexed newOwner);
+
+    modifier onlyOwner() {
+        require(msg.sender == owner, "not owner");
+        _;
+    }
+
+    function transferOwnership(address newOwner) external onlyOwner {
+        address oldOwner = owner;
+        owner = newOwner;
+        emit OwnershipTransferred(oldOwner, newOwner);
+    }
+}
+```
