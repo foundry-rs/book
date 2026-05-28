@@ -16,13 +16,15 @@ Looks for mutable state variables that are:
 
 1. read by an access-control check involving `msg.sender` or `tx.origin`;
 2. written by a public or external state-mutating function with access control;
-3. assigned from function input, directly or through local aliases or internal helpers; and
-4. changed by a function that does not emit any event directly or through an internal helper.
+3. assigned from function input, sender data, access-control state, or indexed mapping keys,
+   directly or through local aliases or internal helpers; and
+4. changed without a related event that covers the updated access-control state.
 
 The lint intentionally skips constructors, unprotected setters, variables not used in authorization
-checks, fixed writes, and functions that emit any event directly or through an internal helper.
-These limits keep the rule focused on authority-bearing state and avoid noisy warnings for updates
-that are not clearly part of access control.
+checks, and fixed writes that are not clearing access-control state used by the active guard. Events
+must be related to the updated state, so unrelated logging does not suppress the warning. These
+limits keep the rule focused on authority-bearing state and avoid noisy warnings for updates that
+are not clearly part of access control.
 
 ### Why is this bad?
 
