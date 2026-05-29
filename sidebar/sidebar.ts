@@ -126,6 +126,7 @@ const docs = [
               { text: "external-function", link: "/forge/linting/external-function" },
               { text: "unused-state-variables", link: "/forge/linting/unused-state-variables" },
               { text: "var-read-using-this", link: "/forge/linting/var-read-using-this" },
+              { text: "write-after-write", link: "/forge/linting/write-after-write" },
             ],
           },
           {
