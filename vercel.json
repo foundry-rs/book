@@ -51,6 +51,7 @@
 
     { "source": "/forge/reference/forge-lint/", "destination": "/forge/linting" },
     { "source": "/forge/reference/forge-lint", "destination": "/forge/linting" },
+    { "source": "/forge/linting/reentrancy-unlimited-gas", "destination": "/forge/linting/reentrancy-eth" },
 
     { "source": "/cast/overview", "destination": "/cast" },
 

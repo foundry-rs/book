@@ -48,7 +48,7 @@ const docs = [
               { text: "encode-packed-collision", link: "/forge/linting/encode-packed-collision" },
               { text: "erc20-unchecked-transfer", link: "/forge/linting/erc20-unchecked-transfer" },
               { text: "incorrect-shift", link: "/forge/linting/incorrect-shift" },
-              { text: "reentrancy-unlimited-gas", link: "/forge/linting/reentrancy-unlimited-gas" },
+              { text: "reentrancy-eth", link: "/forge/linting/reentrancy-eth" },
               { text: "rtlo", link: "/forge/linting/rtlo" },
               { text: "unchecked-call", link: "/forge/linting/unchecked-call" },
               { text: "unprotected-initializer", link: "/forge/linting/unprotected-initializer" },
