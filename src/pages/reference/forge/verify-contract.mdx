@@ -103,6 +103,35 @@ Linker options:
           
           [env: DAPP_LIBRARIES=]
 
+Verifier options:
+      --license-type <CODE>
+          The Etherscan license type code to include with the verification
+          request.
+          
+          See Etherscan's supported `licenseType` values. This is only used for
+          Etherscan-style verifiers.
+
+      --verifier <VERIFIER>
+          The contract verification provider to use
+
+          Possible values:
+          - etherscan
+          - sourcify
+          - blockscout
+          - oklink
+          - custom:     Custom verification provider, requires compatibility
+            with the Etherscan API
+
+      --verifier-api-key <VERIFIER_API_KEY>
+          The verifier API KEY, if using a custom provider
+          
+          [env: VERIFIER_API_KEY=]
+
+      --verifier-url <VERIFIER_URL>
+          The verifier URL, if using a custom provider
+          
+          [env: VERIFIER_URL=]
+
 Compiler options:
       --no-auto-detect
           Do not auto-detect the `solc` version
@@ -210,30 +239,6 @@ Rpc options:
           - solidity: Solidity programming language
           - vyper:    Vyper programming language
 
-Verifier options:
-      --verifier <VERIFIER>
-          The contract verification provider to use
-
-          Possible values:
-          - etherscan
-          - sourcify
-          - blockscout
-          - oklink
-          - custom:     Custom verification provider, requires compatibility
-            with the Etherscan API
-          
-          [default: sourcify]
-
-      --verifier-api-key <VERIFIER_API_KEY>
-          The verifier API KEY, if using a custom provider
-          
-          [env: VERIFIER_API_KEY=]
-
-      --verifier-url <VERIFIER_URL>
-          The verifier URL, if using a custom provider
-          
-          [env: VERIFIER_URL=]
-
 Display options:
       --color <COLOR>
           The color of the log messages
@@ -245,6 +250,14 @@ Display options:
 
       --json
           Format log messages as JSON
+
+      --machine
+          Activate the agent contract: disables color and wraps CLI-runtime
+          exits (parse / usage / help / version) in a structured envelope.
+          Per-command machine output (declared `output_mode`, progress and
+          prompt suppression, canonical exit codes) is adopted incrementally —
+          see `docs/agents/spec.md` §10. Mutually exclusive with `--json` and
+          `--md` to keep machine-mode output unambiguous
 
       --md
           Format log messages as Markdown
