@@ -10,10 +10,10 @@ This is the official documentation website for Foundry, a smart contract develop
 
 ### Development
 ```bash
-bun install          # Install dependencies
-bun dev             # Start development server (default: http://localhost:5173)
-bun build           # Build documentation for production
-bun preview         # Preview production build locally
+pnpm install         # Install dependencies
+pnpm dev             # Start development server (default: http://localhost:5173)
+pnpm build           # Build documentation for production
+pnpm preview         # Preview production build locally
 
 ```
 
