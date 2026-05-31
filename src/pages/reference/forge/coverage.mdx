@@ -75,6 +75,14 @@ Display options:
       --json
           Format log messages as JSON
 
+      --machine
+          Activate the agent contract: disables color and wraps CLI-runtime
+          exits (parse / usage / help / version) in a structured envelope.
+          Per-command machine output (declared `output_mode`, progress and
+          prompt suppression, canonical exit codes) is adopted incrementally —
+          see `docs/agents/spec.md` §10. Mutually exclusive with `--json` and
+          `--md` to keep machine-mode output unambiguous
+
       --md
           Format log messages as Markdown
 
@@ -215,6 +223,35 @@ Test options:
 
   [PATH]
           The contract file you want to test, it's a shortcut for --match-path
+
+Showmap replay:
+      --showmap-out <DIR>
+          Replay the persisted corpus and emit AFL-`afl-showmap`-style coverage
+          files at the given output directory. Disables the regular
+          fuzz/invariant campaign and skips unit tests
+
+      --showmap-per-input
+          Emit one showmap file per corpus entry (default: one aggregated file
+          per test)
+
+      --showmap-domain <SHOWMAP_DOMAIN>
+          Coverage domain(s) to dump
+          
+          [default: evm]
+          [possible values: evm, sancov, both]
+
+      --showmap-approach <SHOWMAP_APPROACH>
+          Approach name (used as a subdirectory of `--showmap-out`)
+          
+          [default: replay]
+
+      --showmap-trial <SHOWMAP_TRIAL>
+          Trial identifier embedded in each showmap filename. Defaults to a
+          unique `trial-<unix_nanos>` so reruns don't overwrite previous trials
+
+      --showmap-corpus-dir <PATH>
+          Override the corpus directory to replay (defaults to the per-test
+          `corpus_dir` resolved from config)
 
 Test filtering:
       --match-test <REGEX>
