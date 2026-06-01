@@ -156,9 +156,10 @@ navigation on the right to browse by severity.
 
 - [`arbitrary-send-erc20`](/forge/linting/arbitrary-send-erc20) — Flags `transferFrom` / `safeTransferFrom` calls whose `from` argument is not provably equal to `msg.sender` or `address(this)`.
 - [`arbitrary-send-eth`](/forge/linting/arbitrary-send-eth) — Flags functions that send ETH (via `transfer` / `send` / `{value:}` calls / `selfdestruct` / known OZ + Solady helpers) to a caller-controlled destination without restricting who can call them.
+- [`encode-packed-collision`](/forge/linting/encode-packed-collision) — Flags `abi.encodePacked()` calls with two or more dynamic-type arguments (`string`, `bytes`, `T[]`) that can produce hash collisions.
 - [`erc20-unchecked-transfer`](/forge/linting/erc20-unchecked-transfer) — Flags calls to ERC20 `transfer` and `transferFrom` where the boolean return value is ignored.
 - [`incorrect-shift`](/forge/linting/incorrect-shift) — Flags shift operations where a literal appears on the left and a non-literal on the right, which is almost always the wrong operand order.
-- [`reentrancy-unlimited-gas`](/forge/linting/reentrancy-unlimited-gas) — Flags uncapped ETH-transferring low-level `call` operations when state read before the call is written after the call.
+- [`reentrancy-eth`](/forge/linting/reentrancy-eth) — Flags uncapped ETH-transferring low-level `call` operations when state read before the call is written after the call.
 - [`rtlo`](/forge/linting/rtlo) — Flags the presence of Unicode bidirectional override characters in source code, which can be used to hide malicious behavior ("Trojan Source", [CVE-2021-42574](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-42574)).
 - [`unchecked-call`](/forge/linting/unchecked-call) — Flags low-level calls (`call`, `delegatecall`, `staticcall`, `callcode`) whose `success` return value is ignored.
 - [`unprotected-initializer`](/forge/linting/unprotected-initializer) — Flags upgradeable initializers that can be called directly on an implementation contract with a destructive entry point.
@@ -185,6 +186,8 @@ navigation on the right to browse by severity.
 - [`block-timestamp`](/forge/linting/block-timestamp) — Flags use of `block.timestamp` as an operand of a comparison, where its value can be slightly manipulated by the block proposer.
 - [`calls-loop`](/forge/linting/calls-loop) — Flags external calls made from inside loops, which can cause denial-of-service if a callee reverts or exhausts gas.
 - [`delegatecall-loop`](/forge/linting/delegatecall-loop) — Flags `delegatecall` operations inside loops in externally callable payable functions.
+- [`missing-events-access-control`](/forge/linting/missing-events-access-control) — Flags access-controlled updates to state used for authorization when the update function does not emit an event.
+- [`missing-events-arithmetic`](/forge/linting/missing-events-arithmetic) — Flags access-controlled updates to integer state used in arithmetic when the update path does not emit an event.
 - [`missing-zero-check`](/forge/linting/missing-zero-check) — Flags entry-point functions and constructors where an `address` parameter flows into a state write or value transfer without a zero-address guard.
 - [`reentrancy-events`](/forge/linting/reentrancy-events) — Flags `emit` statements reachable after an external call, where a reentrant callee can reorder or fabricate logs that off-chain consumers rely on.
 - [`return-bomb`](/forge/linting/return-bomb) — Flags external calls that set an explicit gas limit while copying unbounded dynamic returndata.
@@ -222,6 +225,7 @@ navigation on the right to browse by severity.
 - [`external-function`](/forge/linting/external-function) — Flags `public` functions that are never called internally and have a reference-type `memory` parameter; switching them to `external` (with `calldata` parameters) avoids an extra calldata-to-memory copy.
 - [`unused-state-variables`](/forge/linting/unused-state-variables) — Flags state variables that are declared but never read or written anywhere in the contract or its descendants.
 - [`var-read-using-this`](/forge/linting/var-read-using-this) — Flags `this.X(...)` calls that read the contract's own state through its external interface; the unnecessary `STATICCALL` can be avoided by accessing the variable directly.
+- [`write-after-write`](/forge/linting/write-after-write) — Flags storage variables written consecutively without the first value being read; only the final write is needed.
 
 #### Code size
 

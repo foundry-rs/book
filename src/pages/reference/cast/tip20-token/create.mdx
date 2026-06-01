@@ -292,6 +292,13 @@ Transaction options:
           Nonce for the transaction
 
 Tempo:
+      --tempo.session <SESSION_ID>
+          Use a live Tempo wallet session for signing.
+          
+          When set, Foundry resolves the session from
+          `$TEMPO_HOME/wallet/sessions.toml` and signs Tempo transactions with
+          the session's temporary access key on behalf of its root account.
+
       --tempo.fee-token <FEE_TOKEN>
           Fee token address for Tempo transactions.
           
@@ -357,6 +364,19 @@ Tempo:
           The sponsor signs the `fee_payer_signature_hash` to commit to paying
           gas fees on behalf of the sender. Provide as a hex-encoded signature.
 
+      --sponsor-url <URL>
+          Remote sponsor (fee payer) service URL.
+          
+          When set, the user-signed transaction is forwarded to this URL via
+          `eth_signRawTransaction`. The service adds its fee payer signature and
+          returns the fully-sponsored transaction, which is then submitted via
+          the regular RPC. No local sponsor key is required.
+          
+          Example: `cast send 0x... --sponsor-url
+          https://sponsor.tempo.xyz/tp_abc123`
+          
+          [env: TEMPO_SPONSOR_URL=]
+
       --tempo.print-sponsor-hash
           Print the sponsor signature hash and exit.
           
@@ -399,6 +419,14 @@ Display options:
 
       --json
           Format log messages as JSON
+
+      --machine
+          Activate the agent contract: disables color and wraps CLI-runtime
+          exits (parse / usage / help / version) in a structured envelope.
+          Per-command machine output (declared `output_mode`, progress and
+          prompt suppression, canonical exit codes) is adopted incrementally —
+          see `docs/agents/spec.md` §10. Mutually exclusive with `--json` and
+          `--md` to keep machine-mode output unambiguous
 
       --md
           Format log messages as Markdown
