@@ -4,17 +4,17 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "NODE_OPTIONS='--import tsx' vite",
-    "build": "bun run fetch-benchmarks && vite build",
-    "preview": "node dist/preview.js",
+    "dev": "vocs dev",
+    "build": "bun run fetch-benchmarks && vocs build",
+    "preview": "vocs preview",
     "fetch-benchmarks": "bun scripts/fetch-benchmarks.ts"
   },
   "dependencies": {
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
     "tailwindcss": "^4.2.2",
-    "vocs": "https://pkg.pr.new/wevm/vocs@e754e7a",
-    "waku": "1.0.0-alpha.6"
+    "vocs": "2.0.10",
+    "waku": "^1.0.0-beta.0"
   },
   "devDependencies": {
     "@types/bun": "^1.3.12",
@@ -24,7 +24,7 @@
     "@vitejs/plugin-react": "^5.2.0",
     "tsx": "^4.21.0",
     "typescript": "^6.0.2",
-    "vite": "^7.3.2"
+    "vite": "^8.0.16"
   },
   "devEngines": {
     "runtime": {

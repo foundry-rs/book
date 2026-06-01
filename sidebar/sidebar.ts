@@ -1,4 +1,4 @@
-import { Sidebar } from "vocs";
+import type { Sidebar } from "./types";
 import { forgeCliReference } from "./forge-cli-reference";
 import { cmdReference } from "./cmd-reference";
 import { anvilCliReference } from "./anvil-cli-reference";

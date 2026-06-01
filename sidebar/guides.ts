@@ -1,4 +1,4 @@
-import { Sidebar } from "vocs";
+import type { Sidebar } from "./types";
 
 export const guidesSidebar: Sidebar = {
   "/guides": [
