@@ -1,4 +1,4 @@
-import { SidebarItem } from "vocs";
+import type { SidebarItem } from "./types";
 
 export const cmdReference: SidebarItem[] = [
       { text: 'Overview', link: '/reference/cheatcodes/overview'},
