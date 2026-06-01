@@ -1,0 +1,94 @@
+---
+description: Arbitrary ETH send
+---
+
+## Arbitrary ETH send
+
+**Severity**: `High`
+**ID**: `arbitrary-send-eth`
+
+Detects functions that send ETH to a destination the caller controls. When the destination of
+`transfer` / `send` / a `{value: …}` low-level call / `selfdestruct` is reachable from a function
+parameter or mutable storage that any caller can rewrite, an attacker can redirect the contract's
+funds.
+
+### What it does
+
+For each non-`view` / non-`pure`, non-constructor, non-library function, the lint flags
+ETH-sending sinks whose destination is not provably safe and whose function is not
+caller-restricted. Sinks inside a modifier body are reported at the modifier definition.
+
+Sinks recognised:
+
+- `addr.transfer(amount)` / `addr.send(amount)`.
+- `recv.method{value: x}(...)` (including `recv.call{value: x}(...)` and function-pointer
+  `f{value: x}()`).
+- `selfdestruct(addr)`.
+- Known ETH helpers — OpenZeppelin `Address.{sendValue, functionCallWithValue}` and Solady
+  `SafeTransferLib.{safeTransferETH, forceSafeTransferETH, safeTransferAllETH,
+  forceSafeTransferAllETH, trySafeTransferETH, trySafeTransferAllETH, safeMoveETH}`. Both
+  positional and named-arg calls are recognised; static `Base.method(...)` is only matched on
+  `library` bases.
+
+A destination is safe when it is `msg.sender` (also through OpenZeppelin-style `_msgSender()`
+helpers), `tx.origin`, `address(this)`, a fixed address or numeric literal (including
+`address(0)`), an `immutable` / `constant` address, a local proven equal to a safe value on the
+current path, or a modifier parameter validated against `msg.sender`. Flow-sensitive facts are
+collected from assignments, `require`, `assert`, `if`/`else` (including ternaries), `&&` / `||`
+of equality checks, and `address(...)` / `payable(...)` casts.
+
+Caller-restriction is detected for equality guards (`require(msg.sender == trusted)`,
+`if (msg.sender != trusted) revert(...)`, and their De Morgan equivalents) in modifier prefixes
+or function bodies. Trusted principals include state variables, `immutable` / `constant`
+addresses, fixed address literals, and zero-arg helpers returning such. `address(this)` is **not**
+trusted (a sibling function can route arbitrary callers via `this.guarded(userArg)`); state
+variables that may alias `address(this)` are likewise rejected.
+
+Branch joins recognise `return`, custom-error `revert`, the `revert(...)` builtin, and
+`assert(false)` / `require(false, ...)` as always-exiting: facts proven on the surviving branch
+propagate past the `if`.
+
+### Why is this bad?
+
+If an attacker can choose the recipient of ETH transfers they can drain the contract balance,
+redirect user funds, or trivially bypass weak access controls. This is one of the most direct
+funds-loss bugs in Solidity contracts.
+
+### Example
+
+#### Bad
+
+```solidity
+contract Vault {
+    function withdraw(address payable to, uint256 amount) external {
+        to.transfer(amount); // attacker passes their own address
+    }
+}
+```
+
+#### Good
+
+```solidity
+contract Vault {
+    address payable public immutable owner;
+
+    constructor(address payable _owner) { owner = _owner; }
+
+    modifier onlyOwner() { require(msg.sender == owner); _; }
+
+    function withdrawTo(address payable to, uint256 amount) external onlyOwner {
+        to.transfer(amount);
+    }
+
+    function refund(uint256 amount) external {
+        payable(msg.sender).transfer(amount);
+    }
+}
+```
+
+### Recommendation
+
+Restrict who can call any function that sends ETH (a deploy-time-fixed `immutable` owner or
+role-based check), or constrain the destination to a deploy-time-fixed principal, `msg.sender`,
+or `address(this)`. Avoid mutable `owner` state without a corresponding access-controlled
+`setOwner` — the lint accepts it as trusted, but a public setter erases the guarantee.
