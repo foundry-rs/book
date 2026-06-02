@@ -67,6 +67,7 @@ const docs = [
               { text: "incorrect-strict-equality", link: "/forge/linting/incorrect-strict-equality" },
               { text: "locked-ether", link: "/forge/linting/locked-ether" },
               { text: "low-level-calls", link: "/forge/linting/low-level-calls" },
+              { text: "reentrancy-no-eth", link: "/forge/linting/reentrancy-no-eth" },
               { text: "tx-origin", link: "/forge/linting/tx-origin" },
               { text: "type-based-tautology", link: "/forge/linting/type-based-tautology" },
               { text: "uninitialized-local", link: "/forge/linting/uninitialized-local" },
