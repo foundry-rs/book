@@ -145,6 +145,34 @@ Test options:
           
           [env: FORGE_ALLOW_FAILURE=]
 
+      --mutate [<PATH>...]
+          Enable mutation testing.
+          
+          If passed with file paths, only those files will be tested
+
+      --mutate-path <PATTERN>
+          Specify which files to mutate with glob pattern matching.
+          
+          Mutually exclusive with passing explicit paths to `--mutate`; either
+          supply paths to `--mutate` or use this glob filter, not both
+
+      --mutate-contract <REGEX>
+          Only mutate contracts whose name matches the specified regex pattern.
+          
+          Mutually exclusive with `--mutate-path`
+
+      --mutation-jobs <JOBS>
+          Number of parallel workers for mutation testing.
+          
+          Defaults to the number of CPU cores
+
+      --mutation-timeout <TIMEOUT>
+          Best-effort per-mutant wall-clock timeout in seconds. Mutants that
+          exceed it are recorded as "timed out" and cleanup continues in the
+          background with bounded pending workers.
+          
+          Analogous to `--invariant-timeout` for invariant campaigns
+
       --trace-depth <TRACE_DEPTH>
           Defines the depth of a trace
 
