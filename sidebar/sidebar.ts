@@ -31,7 +31,6 @@ const docs = [
       { text: "Overview", link: "/forge" },
       { text: "Building", link: "/forge/build" },
       { text: "Testing", link: "/forge/testing" },
-      { text: "Mutation Testing", link: "/forge/mutation-testing" },
       { text: "Scripting", link: "/forge/scripting" },
       { text: "Debugging", link: "/forge/debugging" },
       { text: "Gas Tracking", link: "/forge/gas-tracking" },
