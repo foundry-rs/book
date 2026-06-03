@@ -400,6 +400,13 @@ All operator groups are enabled by default. Exclude specific operators in `found
 exclude_operators = ["assembly", "elim-delegate"]
 ```
 
+Use `include_operators` to re-enable operators that are excluded by default:
+
+```toml [foundry.toml]
+[mutation]
+include_operators = ["assembly"]
+```
+
 #### Reports
 
 The report includes counts for:
@@ -407,8 +414,10 @@ The report includes counts for:
 - **Survived**: mutants that passed the selected tests
 - **Killed**: mutants that caused a test failure
 - **Invalid**: mutants that could not be compiled or run
-- **Skipped**: mutants skipped by the runner
+- **Skipped**: redundant mutants on a span or expression after another mutant in that span survived
 - **Timed out**: mutants that exceeded `mutation.timeout` or `--mutation-timeout`
+
+Skipped and invalid counts can vary with `--mutation-jobs`, because higher parallelism can start more mutants before a survivor is known.
 
 The mutation score is:
 
@@ -417,6 +426,39 @@ killed / (killed + survived)
 ```
 
 Focus on survived mutants first. Each survived mutant points to the source location and mutation that your tests did not catch.
+
+Survived mutants do not currently make `forge test --mutate` fail, and there is no threshold flag yet. To gate mutation testing in CI, run with `--json` and enforce your own threshold from the JSON output.
+
+```bash
+$ forge test --mutate --json
+```
+
+The JSON output has this shape:
+
+```json
+{
+  "summary": {
+    "total": 12,
+    "killed": 8,
+    "survived": 2,
+    "invalid": 1,
+    "skipped": 1,
+    "timed_out": 0,
+    "mutation_score": 80.0,
+    "duration_secs": 12.34
+  },
+  "survived_mutants": {
+    "src/Vault.sol": [
+      {
+        "line": 42,
+        "column": 17,
+        "original": ">",
+        "mutant": ">="
+      }
+    ]
+  }
+}
+```
 
 #### Limitations
 
