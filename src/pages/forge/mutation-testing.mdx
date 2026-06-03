@@ -6,6 +6,10 @@ description: Run mutation testing with Forge to find tests that miss changed con
 
 Mutation testing checks the strength of your test suite by making small changes, or mutants, to your source code and re-running your tests. A mutant is killed when at least one test fails. A mutant survives when the changed code still passes the selected tests.
 
+:::info
+Mutation testing is currently an MVP. It is ready for early use and feedback, but the workflow, reporting, and supported project configurations are still expected to evolve.
+:::
+
 Run mutation testing with `forge test --mutate`:
 
 ```bash
