@@ -88,6 +88,7 @@ const docs = [
               { text: "missing-events-access-control", link: "/forge/linting/missing-events-access-control" },
               { text: "missing-events-arithmetic", link: "/forge/linting/missing-events-arithmetic" },
               { text: "missing-zero-check", link: "/forge/linting/missing-zero-check" },
+              { text: "msg-value-loop", link: "/forge/linting/msg-value-loop" },
               { text: "reentrancy-events", link: "/forge/linting/reentrancy-events" },
               { text: "return-bomb", link: "/forge/linting/return-bomb" },
             ],
