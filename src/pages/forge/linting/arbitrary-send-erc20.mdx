@@ -35,14 +35,17 @@ Safety is established by:
   conjunctions thereof.
 - Inline equality guards in the prefix of a modifier body (statements strictly before its single
   top-level `_;` placeholder), mapped back to the caller's argument variables.
-- A prior EIP-2612 `permit(owner, address(this), …)` on the same token variable, on the **same
-  execution path** as the sink, with the sink's `from` variable matching the permit's `owner`. The
-  record is invalidated if either the token variable or the owner variable is reassigned before the
-  sink.
 
 Branch joins recognise `return`, custom-error `revert`, the `revert(...)` builtin, and
 `assert(false)` / `require(false, ...)` as always-exiting: facts proven on the surviving branch
 propagate past the `if`.
+
+### Related
+
+A prior EIP-2612 `permit(owner, address(this), …)` does **not** suppress this lint — the sink
+is instead reported as
+[`arbitrary-send-erc20-permit`](/forge/linting/arbitrary-send-erc20-permit), since non-EIP-2612
+tokens with a fallback can silently accept the permit and let any prior allowance be drained.
 
 ### Why is this bad?
 

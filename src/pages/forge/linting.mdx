@@ -155,6 +155,7 @@ navigation on the right to browse by severity.
 #### High severity
 
 - [`arbitrary-send-erc20`](/forge/linting/arbitrary-send-erc20) — Flags `transferFrom` / `safeTransferFrom` calls whose `from` argument is not provably equal to `msg.sender` or `address(this)`.
+- [`arbitrary-send-erc20-permit`](/forge/linting/arbitrary-send-erc20-permit) — Flags `transferFrom` calls with an arbitrary `from` after a `permit(owner, address(this), …)` on the same `(token, owner)`.
 - [`arbitrary-send-eth`](/forge/linting/arbitrary-send-eth) — Flags functions that send ETH (via `transfer` / `send` / `{value:}` calls / `selfdestruct` / known OZ + Solady helpers) to a caller-controlled destination without restricting who can call them.
 - [`controlled-delegatecall`](/forge/linting/controlled-delegatecall) — Flags `delegatecall` targets that are not provably trusted.
 - [`encode-packed-collision`](/forge/linting/encode-packed-collision) — Flags `abi.encodePacked()` calls with two or more dynamic-type arguments (`string`, `bytes`, `T[]`) that can produce hash collisions.
