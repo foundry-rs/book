@@ -468,7 +468,7 @@ Mutation testing also rejects projects with `ffi = true`, write-capable file-sys
 
 ### Symbolic testing
 
-Symbolic testing explores your code with symbolic inputs instead of concrete ones, searching every feasible execution path for a counterexample that violates a property. When it finds one, Forge replays the concrete input through the normal executor before reporting it, so a failure is always backed by a real example.
+Symbolic testing explores your code with symbolic inputs instead of concrete ones, searching feasible execution paths within the current symbolic EVM model and configured bounds for a counterexample that violates a property. When Forge reports a failure, it first replays the concrete input or invariant sequence through the normal executor, so the failure is backed by a concrete example.
 
 :::info
 Symbolic testing is currently an MVP. It is ready for early use and feedback, but the modeled EVM surface, configuration, and reporting are still expected to evolve.
@@ -479,7 +479,10 @@ Symbolic tests are Solidity functions named `check*` or `prove*`. They are only 
 ```solidity
 contract MathSymbolicTest is Test {
     function check_average(uint256 a, uint256 b) external pure {
-        uint256 average = (a + b) / 2;
+        uint256 average;
+        unchecked {
+            average = (a + b) / 2;
+        }
 
         // Forge should find an overflow counterexample.
         assertGe(average, a <= b ? a : b);
@@ -514,11 +517,11 @@ When `--symbolic` is enabled, `invariant*` and `statefulFuzz*` functions are exp
 
 Forge reports symbolic outcomes as:
 
-- **`PASS`**: every explored path finished without a feasible failure, within the modeled semantics and configured bounds.
-- **`FAIL`**: the solver found a failing input and Forge replayed it concretely.
-- **`incomplete`**: Forge could not complete the search or validate a counterexample. Treat this as "not established" rather than a proof.
+- **`PASS`**: every explored path finished without a feasible failure under the currently modeled semantics and configured bounds.
+- **`FAIL`**: the solver found a failing input or invariant sequence, and Forge replayed it concretely before reporting it.
+- **`FAIL: incomplete symbolic execution (...)` / `Incomplete`**: Forge could not complete the search or validate a counterexample. Treat this as "not established", not as a proof.
 
-A `PASS` is scoped to the current EVM model and the configured exploration bounds, not a universal proof.
+A `PASS` is scoped to the current symbolic model and configured bounds; it does not cover skipped dynamic lengths, deeper invariant sequences, larger loop bounds, unmodeled behavior, arbitrary unknown external code, or cryptographic preimage/collision properties.
 
 #### Configuration
 
@@ -532,6 +535,8 @@ max_depth = 10000
 max_paths = 1024
 max_solver_queries = 10000
 ```
+
+Symbolic exploration is bounded by configuration, including `symbolic.max_depth`, `symbolic.max_paths`, `symbolic.max_solver_queries`, dynamic calldata length settings, and `symbolic.invariant_depth`.
 
 Bounds can also be set per test with inline `forge-config` annotations:
 
