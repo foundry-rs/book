@@ -466,6 +466,91 @@ Mutation testing cannot be combined with `--list`, `--debug`, `--flamegraph`, `-
 
 Mutation testing also rejects projects with `ffi = true`, write-capable file-system permissions that can reach symlinked dependency directories, or inline per-test network overrides.
 
+### Symbolic testing
+
+Symbolic testing explores your code with symbolic inputs instead of concrete ones, searching feasible execution paths within the current symbolic EVM model and configured bounds for a counterexample that violates a property. When Forge reports a failure, it first replays the concrete input or invariant sequence through the normal executor, so the failure is backed by a concrete example.
+
+:::info
+Symbolic testing is currently an MVP. It is ready for early use and feedback, but the modeled EVM surface, configuration, and reporting are still expected to evolve.
+:::
+
+Symbolic tests are Solidity functions named `check*` or `prove*`. They are only discovered when symbolic mode is enabled with `--symbolic`:
+
+```solidity
+contract MathSymbolicTest is Test {
+    function check_average(uint256 a, uint256 b) external pure {
+        uint256 average;
+        unchecked {
+            average = (a + b) / 2;
+        }
+
+        // Forge should find an overflow counterexample.
+        assertGe(average, a <= b ? a : b);
+    }
+}
+```
+
+Run it with:
+
+```bash
+$ forge test --symbolic --match-test check_average
+```
+
+Symbolic testing requires an SMT solver to be installed. The default solver is `z3`:
+
+```bash
+$ brew install z3        # macOS
+$ sudo apt-get install z3 # Ubuntu
+```
+
+#### Writing symbolic tests
+
+Function parameters become symbolic inputs derived from the ABI, and the executor explores the feasible paths:
+
+- `require(...)` and `vm.assume(...)` prune paths when their condition is false.
+- `assert`, forge-std assertions, and DSTest failure signals are treated as properties to disprove.
+- User reverts terminate the current path.
+
+When `--symbolic` is enabled, `invariant*` and `statefulFuzz*` functions are explored as bounded symbolic call sequences instead of using the normal fuzzer.
+
+#### Results
+
+Forge reports symbolic outcomes as:
+
+- **`PASS`**: every explored path finished without a feasible failure under the currently modeled semantics and configured bounds.
+- **`FAIL`**: the solver found a failing input or invariant sequence, and Forge replayed it concretely before reporting it.
+- **`FAIL: incomplete symbolic execution (...)` / `Incomplete`**: Forge could not complete the search or validate a counterexample. Treat this as "not established", not as a proof.
+
+A `PASS` is scoped to the current symbolic model and configured bounds; it does not cover skipped dynamic lengths, deeper invariant sequences, larger loop bounds, unmodeled behavior, arbitrary unknown external code, or cryptographic preimage/collision properties.
+
+#### Configuration
+
+Tune the exploration bounds and solver in `foundry.toml`:
+
+```toml [foundry.toml]
+[profile.default.symbolic]
+solver = "z3"
+timeout = 30
+max_depth = 10000
+max_paths = 1024
+max_solver_queries = 10000
+```
+
+Symbolic exploration is bounded by configuration, including `symbolic.max_depth`, `symbolic.max_paths`, `symbolic.max_solver_queries`, dynamic calldata length settings, and `symbolic.invariant_depth`.
+
+Bounds can also be set per test with inline `forge-config` annotations:
+
+```solidity
+/// forge-config: default.symbolic.invariant_depth = 4
+function invariant_counterNeverFive() public view {
+    assertTrue(counter.value() != 5);
+}
+```
+
+#### Limitations
+
+The symbolic engine is not a complete revm-equivalent EVM model. Unsupported constructs report `incomplete` rather than a proof, and some supported semantics are bounded or approximate. Notable gaps include gas accounting, Cancun+ `SELFDESTRUCT`, arbitrary unknown external code, and cryptographic preimage or collision properties. The exact unsupported-feature reason is preserved in the test output.
+
 ### Testing reverts
 
 Use `vm.expectRevert(){:solidity}` to test that a call reverts:
