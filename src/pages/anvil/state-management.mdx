@@ -68,6 +68,12 @@ $ anvil --prune-history 10
 $ anvil --prune-history
 ```
 
+Or clear old block's transactions (each time a new block is created):
+
+```bash [Prune history (keep the 100 latest block's transactions)]
+$ anvil --transaction-block-keeper 100
+```
+
 ### Genesis configuration
 
 Initialize Anvil with a custom genesis file:
