@@ -242,6 +242,8 @@ If your RPC provider rate-limits requests:
 $ forge test --fork-url $RPC_URL --fork-retry-backoff 1000
 ```
 
+The value is the initial retry delay in milliseconds, so `1000` starts retries with a one-second backoff. If omitted, Foundry uses the provider default.
+
 Or use a dedicated RPC provider with higher limits.
 
 #### Stale cache
