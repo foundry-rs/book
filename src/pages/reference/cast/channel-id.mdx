@@ -1,50 +1,50 @@
-## cast logs
+## cast channel-id
 
-Get logs by signature or topic
+Compute a Tempo TIP-20 channel reserve channel ID
 
 :::terminal
 
 ```bash
-$ cast logs --help
+$ cast channel-id --help
 ```
 
 ```txt
-Usage: cast logs [OPTIONS] [SIG_OR_TOPIC] [TOPICS_OR_ARGS]...
+Usage: cast channel-id [OPTIONS] <PAYER> <PAYEE> <TOKEN> <SALT>
 
 Arguments:
-  [SIG_OR_TOPIC]
-          The signature of the event to filter logs by which will be converted
-          to the first topic or a topic to filter on
+  <PAYER>
+          Channel payer address
 
-  [TOPICS_OR_ARGS]...
-          If used with a signature, the indexed fields of the event to filter
-          by. Otherwise, the remaining topics of the filter
+  <PAYEE>
+          Channel payee address
+
+  <TOKEN>
+          TIP-20 token address locked by the channel
+
+  <SALT>
+          User-supplied channel salt
 
 Options:
-      --from-block <FROM_BLOCK>
-          The block height to start query at.
+      --operator <OPERATOR>
+          Optional relayer allowed to submit settlements for the payee
+
+      --authorized-signer <AUTHORIZED_SIGNER>
+          Optional voucher signer. Defaults to the zero address, meaning the
+          payer signs
+
+      --expiring-nonce-hash <EXPIRING_NONCE_HASH>
+          Transaction-derived expiring nonce hash from ChannelOpened
+          
+          [default:
+          0x0000000000000000000000000000000000000000000000000000000000000000]
+
+      --reserve <RESERVE>
+          Channel reserve precompile address
+
+  -B, --block <BLOCK>
+          The block height to query at.
           
           Can also be the tags earliest, finalized, safe, latest, or pending.
-
-      --to-block <TO_BLOCK>
-          The block height to stop query at.
-          
-          Can also be the tags earliest, finalized, safe, latest, or pending.
-
-      --address <ADDRESS>
-          The contract address to filter on
-
-      --subscribe
-          If the RPC type and endpoints supports `eth_subscribe` stream logs
-          instead of printing and exiting. Will continue until interrupted or
-          TO_BLOCK is reached
-
-      --query-size <BLOCKS>
-          Split the query into chunks of this many blocks to work around
-          provider range/result limits.
-          
-          When omitted, the range is queried in a single request. Pass a value
-          (e.g. `10000`) to fetch the logs in `query-size`-block chunks instead.
 
   -h, --help
           Print help (see a summary with '-h')

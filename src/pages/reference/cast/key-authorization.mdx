@@ -1,23 +1,20 @@
-## cast tip20-token
+## cast key-authorization
 
-TIP-20 token operations (Tempo)
+Tempo key authorization RLP helpers
 
 :::terminal
 
 ```bash
-$ cast tip20-token --help
+$ cast key-authorization --help
 ```
 
 ```txt
-Usage: cast tip20-token [OPTIONS] <COMMAND>
+Usage: cast key-authorization [OPTIONS] <COMMAND>
 
 Commands:
-  create      Create a new TIP-20 token via the TIP20Factory [aliases: c]
-  logo-check  Validate a TIP-20 logo URI offline against Tempo T5 constraints
-  logo-set    Update a TIP-20 token logo URI
-  mine        Mine a TIP-1022 salt for virtual address' master registration on
-              Tempo [aliases: m]
-  help        Print this message or the help of the given subcommand(s)
+  encode  RLP-encode an unsigned Tempo key authorization
+  sign    Sign and RLP-encode a Tempo key authorization
+  help    Print this message or the help of the given subcommand(s)
 
 Options:
   -h, --help

@@ -193,6 +193,12 @@ Test options:
       --fuzz-runs <RUNS>
           [env: FOUNDRY_FUZZ_RUNS=]
 
+      --invariant-workers <WORKERS>
+          Number of workers to use for invariant test campaigns, or `auto` to
+          derive from `--jobs`
+          
+          [env: FOUNDRY_INVARIANT_WORKERS=]
+
       --fuzz-run <RUN>
           Run only the fuzz case at the given 1-based run index
           
@@ -210,6 +216,103 @@ Test options:
 
       --fuzz-input-file <FUZZ_INPUT_FILE>
           File to rerun fuzz failures from
+
+      --symbolic
+          Run symbolic check*/prove*/invariant*/statefulFuzz* tests
+          
+          [env: FOUNDRY_SYMBOLIC=]
+
+      --symbolic-solver <PATH_OR_NAME>
+          Solver executable used for symbolic tests
+          
+          [env: FOUNDRY_SYMBOLIC_SOLVER=]
+
+      --symbolic-solver-command <COMMAND>
+          Exact solver command used for symbolic tests
+          
+          [env: FOUNDRY_SYMBOLIC_SOLVER_COMMAND=]
+
+      --symbolic-solver-portfolio <SOLVER_OR_COMMAND,...>
+          Comma-separated SMT solver names or commands to race in parallel for
+          symbolic tests
+          
+          [env: FOUNDRY_SYMBOLIC_SOLVER_PORTFOLIO=]
+
+      --symbolic-timeout <SECONDS>
+          Timeout for symbolic execution in seconds
+          
+          [env: FOUNDRY_SYMBOLIC_TIMEOUT=]
+
+      --symbolic-loop <N>
+          Halmos-compatible symbolic loop bound
+          
+          [env: FOUNDRY_SYMBOLIC_LOOP=]
+
+      --symbolic-depth <N>
+          Halmos-compatible symbolic execution depth alias
+          
+          [env: FOUNDRY_SYMBOLIC_DEPTH=]
+
+      --symbolic-width <N>
+          Halmos-compatible symbolic path width alias
+          
+          [env: FOUNDRY_SYMBOLIC_WIDTH=]
+
+      --symbolic-max-depth <N>
+          Maximum number of opcodes executed along a symbolic path
+          
+          [env: FOUNDRY_SYMBOLIC_MAX_DEPTH=]
+
+      --symbolic-max-paths <N>
+          Maximum number of symbolic paths to explore per test
+          
+          [env: FOUNDRY_SYMBOLIC_MAX_PATHS=]
+
+      --symbolic-invariant-depth <N>
+          Maximum number of calls in a bounded symbolic invariant sequence
+          
+          [env: FOUNDRY_SYMBOLIC_INVARIANT_DEPTH=]
+
+      --symbolic-max-solver-queries <N>
+          Maximum number of solver queries per symbolic test
+          
+          [env: FOUNDRY_SYMBOLIC_MAX_SOLVER_QUERIES=]
+
+      --symbolic-default-dynamic-length <N>
+          Default bounded length for symbolic dynamic ABI inputs
+          
+          [env: FOUNDRY_SYMBOLIC_DEFAULT_DYNAMIC_LENGTH=]
+
+      --symbolic-max-dynamic-length <N>
+          Maximum permitted bounded length for symbolic dynamic ABI inputs
+          
+          [env: FOUNDRY_SYMBOLIC_MAX_DYNAMIC_LENGTH=]
+
+      --symbolic-array-lengths <N,...>
+          Per-dynamic-input symbolic lengths, applied in ABI traversal order
+          
+          [env: FOUNDRY_SYMBOLIC_ARRAY_LENGTHS=]
+
+      --symbolic-max-calldata-bytes <N>
+          Maximum symbolic calldata size in bytes
+          
+          [env: FOUNDRY_SYMBOLIC_MAX_CALLDATA_BYTES=]
+
+      --symbolic-call-targets
+          Expand symbolic external call targets over known deployed contracts
+          
+          [env: FOUNDRY_SYMBOLIC_CALL_TARGETS=]
+
+      --symbolic-dump-smt
+          Dump SMT-LIB queries issued by symbolic tests
+          
+          [env: FOUNDRY_SYMBOLIC_DUMP_SMT=]
+
+      --symbolic-storage-layout <solidity|generic>
+          Symbolic storage modelling mode
+          
+          [env: FOUNDRY_SYMBOLIC_STORAGE_LAYOUT=]
+          [possible values: solidity, generic]
 
       --rerun
           Re-run recorded test failures from last run. If no failure recorded
@@ -458,8 +561,8 @@ Build options:
       --no-cache
           Disable the cache
 
-      --dynamic-test-linking
-          Enable dynamic test linking
+      --no-dynamic-test-linking
+          Disable dynamic test linking
 
       --skip <SKIP>...
           Skip building files whose names contain the given filter.
@@ -634,6 +737,32 @@ Watch options:
           
           When using --poll mode, you'll want a larger duration, or risk
           overloading disk I/O.
+
+      --mutate [<PATH>...]
+          Enable mutation testing. If passed with file paths, only those files
+          will be tested
+
+      --mutate-path <PATTERN>
+          Specify which files to mutate with glob pattern matching.
+          
+          Mutually exclusive with passing explicit paths to `--mutate`; either
+          supply paths to `--mutate` or use this glob filter, not both.
+
+      --mutate-contract <REGEX>
+          Only mutate contracts whose name matches the specified regex pattern.
+          
+          Mutually exclusive with `--mutate-path`.
+
+      --mutation-jobs <JOBS>
+          Number of parallel workers for mutation testing. Defaults to the
+          number of CPU cores
+
+      --mutation-timeout <TIMEOUT>
+          Best-effort per-mutant wall-clock timeout in seconds. Mutants that
+          exceed it are recorded as "timed out" and cleanup continues in the
+          background with bounded pending workers.
+          
+          Analogous to `--invariant-timeout` for invariant campaigns.
 
       --asc
           Sort results by gas used (ascending)

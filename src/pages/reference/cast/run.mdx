@@ -39,6 +39,15 @@ Options:
       --disable-labels
           Disables the labels in the traces
 
+      --prestate-tracer
+          Use debug_traceTransaction to fetch the prestate instead of replaying
+          the block.
+          
+          This is significantly faster than replaying all previous transactions
+          in the block, but requires the node to expose the `debug_` namespace
+          (most public RPCs don't). If the call or response can't be used, cast
+          silently falls back to replaying the block.
+
   -l, --label <LABEL>
           Label addresses in the trace.
           

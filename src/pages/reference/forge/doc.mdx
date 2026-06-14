@@ -21,19 +21,19 @@ Options:
   -o, --out <PATH>
           The doc's output path.
           
-          By default, it is the `docs/` in project root.
+          By default, it is the `docs/` directory in the project root. The
+          directory is created if it does not exist, and contains a ready-to-use
+          [vocs](https://vocs.dev) site scaffold alongside the generated MDX
+          pages.
 
-  -b, --build
-          Build the `mdbook` from generated files
+  -i, --include-libraries
+          Document external library sources as well as the project's own sources
 
-  -s, --serve
-          Serve the documentation
-
-      --open
-          Open the documentation in a browser after serving
-
-      --hostname <HOSTNAME>
-          Hostname for serving documentation
+      --deployments [<PATH>]
+          Path to the `hardhat-deploy` or `forge-deploy` artifact directory.
+          
+          Leave blank to use the default (`<root>/deployments`). Omit the flag
+          entirely to disable deployment address injection.
 
   -h, --help
           Print help (see a summary with '-h')
@@ -80,16 +80,6 @@ Watch options:
           
           When using --poll mode, you'll want a larger duration, or risk
           overloading disk I/O.
-
-  -p, --port <PORT>
-          Port for serving documentation
-
-      --deployments [<DEPLOYMENTS>]
-          The relative path to the `hardhat-deploy` or `forge-deploy` artifact
-          directory. Leave blank for default
-
-  -i, --include-libraries
-          Whether to create docs for external libraries
 
 Display options:
       --color <COLOR>

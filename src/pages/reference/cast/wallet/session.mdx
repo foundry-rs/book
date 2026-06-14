@@ -1,47 +1,45 @@
-## forge create
+## cast wallet session
 
-Deploy a smart contract
+Manage temporary Tempo wallet sessions
 
 :::terminal
 
 ```bash
-$ forge create --help
+$ cast wallet session --help
 ```
 
 ```txt
-Usage: forge create [OPTIONS] <CONTRACT>
+Usage: cast wallet session [OPTIONS]
+       cast wallet session <COMMAND>
 
-Arguments:
-  <CONTRACT>
-          The contract identifier in the form `<path>:<contractname>`
+Commands:
+  create  Create a temporary Tempo session and persist it locally
+  revoke  Revoke a Tempo session key on-chain when provisioned, then clear local
+          key material
+  help    Print this message or the help of the given subcommand(s)
 
 Options:
-      --constructor-args <ARGS>...
-          The constructor arguments
+      --root <ADDRESS>
+          Root account that will authorize the temporary session
 
-      --constructor-args-path <PATH>
-          The path to a file containing the constructor arguments
+      --expires <DURATION>
+          Session lifetime, expressed as a duration like `10m`, `2h`, or `7d`
 
-      --broadcast
-          Broadcast the transaction
+      --scope <SCOPE>
+          Allowed call scope, in `TARGET[:SELECTORS[@RECIPIENTS]]` format
 
-      --verify
-          Verify contract after creation
+      --target <ADDRESS>
+          Allowed call target for issue-style `--target ... --selector ...`
+          input
 
-      --unlocked
-          Send via `eth_sendTransaction` using the `--from` argument or
-          `$ETH_FROM` as sender
+      --selector <SELECTOR>
+          Function selector allowed for `--target`, such as `register(address)`
 
-      --show-standard-json-input
-          Prints the standard json compiler input if `--verify` is provided.
-          
-          The standard json compiler input can be used to manually submit
-          contract verification in the browser.
+      --spend-limit <SPEND_LIMITS>
+          Token spend limit, in `TOKEN:AMOUNT` or `TOKEN=AMOUNT` format
 
-      --timeout <TIMEOUT>
-          Timeout to use for broadcasting transactions
-          
-          [env: ETH_TIMEOUT=]
+      --for <COMMAND>
+          Command to run with the temporary Tempo session
 
   -h, --help
           Print help (see a summary with '-h')
@@ -51,154 +49,6 @@ Options:
           logical cores
           
           [aliases: --jobs]
-
-Cache options:
-      --force
-          Clear the cache and artifacts folder and recompile
-
-Build options:
-      --no-cache
-          Disable the cache
-
-      --no-dynamic-test-linking
-          Disable dynamic test linking
-
-      --skip <SKIP>...
-          Skip building files whose names contain the given filter.
-          
-          `test` and `script` are aliases for `.t.sol` and `.s.sol`.
-
-Linker options:
-      --libraries <LIBRARIES>
-          Set pre-linked libraries
-          
-          [env: DAPP_LIBRARIES=]
-
-Compiler options:
-      --ignored-error-codes <ERROR_CODES>
-          Ignore solc warnings by error code
-
-  -D, --deny <LEVEL>
-          A compiler error will be triggered at the specified diagnostic level.
-          
-          Replaces the deprecated `--deny-warnings` flag.
-          
-          Possible values: - `never`: Do not treat any diagnostics as errors. -
-          `warnings`: Treat warnings as errors. - `notes`: Treat both, warnings
-          and notes, as errors.
-
-          Possible values:
-          - never:    Always exit with zero code
-          - warnings: Exit with a non-zero code if any warnings are found
-          - notes:    Exit with a non-zero code if any notes or warnings are
-            found
-
-      --no-auto-detect
-          Do not auto-detect the `solc` version
-
-      --use <SOLC_VERSION>
-          Specify the solc version, or a path to a local solc, to build with.
-          
-          Valid values are in the format `x.y.z`, `solc:x.y.z` or
-          `path/to/solc`.
-
-      --offline
-          Do not access the network.
-          
-          Missing solc versions will not be installed.
-
-      --via-ir
-          Use the Yul intermediate representation compilation pipeline
-
-      --use-literal-content
-          Changes compilation to only use literal content and not URLs
-
-      --no-metadata
-          Do not append any metadata to the bytecode.
-          
-          This is equivalent to setting `bytecode_hash` to `none` and
-          `cbor_metadata` to `false`.
-
-      --ast
-          Includes the AST as JSON in the compiler output
-
-      --evm-version <VERSION>
-          The target EVM version
-
-      --optimize [<OPTIMIZE>]
-          Activate the Solidity optimizer
-          
-          [possible values: true, false]
-
-      --optimizer-runs <RUNS>
-          The number of runs specifies roughly how often each opcode of the
-          deployed code will be executed across the life-time of the contract.
-          This means it is a trade-off parameter between code size (deploy cost)
-          and code execution cost (cost after deployment). An `optimizer_runs`
-          parameter of `1` will produce short but expensive code. In contrast, a
-          larger `optimizer_runs` parameter will produce longer but more gas
-          efficient code
-
-      --extra-output <SELECTOR>...
-          Extra output to include in the contract's artifact.
-          
-          Example keys: evm.assembly, ewasm, ir, irOptimized, metadata
-          
-          For a full description, see
-          [https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description](https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description)
-
-      --extra-output-files <SELECTOR>...
-          Extra output to write to separate files.
-          
-          Valid values: metadata, ir, irOptimized, ewasm, evm.assembly
-
-Project options:
-  -o, --out <PATH>
-          The path to the contract artifacts folder
-
-      --revert-strings <REVERT>
-          Revert string configuration.
-          
-          Possible values are "default", "strip" (remove), "debug"
-          (Solidity-generated revert strings) and "verboseDebug"
-
-      --build-info
-          Generate build info files
-
-      --build-info-path <PATH>
-          Output path to directory that build info files will be written to
-
-      --root <PATH>
-          The project's root path.
-          
-          By default root of the Git repository, if in one, or the current
-          working directory.
-
-  -C, --contracts <PATH>
-          The contracts source directory
-
-  -R, --remappings <REMAPPINGS>
-          The project's remappings
-
-      --remappings-env <ENV>
-          The project's remappings from the environment
-
-      --cache-path <PATH>
-          The path to the compiler cache
-
-      --lib-paths <PATH>
-          The path to the library folder
-
-      --hardhat
-          Use the Hardhat-style project layout.
-          
-          This is the same as using: `--contracts contracts --lib-paths
-          node_modules`.
-          
-          [aliases: --hh]
-
-      --config-path <FILE>
-          Path to the config file
 
 Transaction options:
       --gas-limit <GAS_LIMIT>
@@ -377,6 +227,31 @@ Tempo:
           The transaction is only valid after this unix timestamp. Requires
           `--tempo.expiring-nonce`.
 
+      --async
+          Only print the transaction hash and exit immediately
+          
+          [env: CAST_ASYNC=]
+
+      --sync
+          Wait for transaction receipt synchronously instead of polling. Note:
+          uses `eth_sendTransactionSync` which may not be supported by all
+          clients
+
+      --confirmations <CONFIRMATIONS>
+          The number of confirmations until the receipt is fetched
+          
+          [default: 1]
+
+      --timeout <TIMEOUT>
+          Timeout for sending the transaction
+          
+          [env: ETH_TIMEOUT=]
+
+      --poll-interval <POLL_INTERVAL>
+          Polling interval for transaction receipts (in seconds)
+          
+          [env: ETH_POLL_INTERVAL=]
+
 Rpc options:
   -r, --rpc-url <URL>
           The RPC endpoint
@@ -495,16 +370,6 @@ Wallet options - raw:
           
           [default: 0]
 
-      --retries <RETRIES>
-          Number of attempts for retrying verification
-          
-          [default: 5]
-
-      --delay <DELAY>
-          Optional delay to apply in between verification attempts, in seconds
-          
-          [default: 5]
-
 Wallet options - keystore:
       --keystore <PATH>
           Use the keystore in the given folder or file
@@ -574,28 +439,6 @@ Wallet options - Tempo:
           Required when `--tempo.access-key` is set.
           
           [env: TEMPO_ROOT_ACCOUNT=]
-
-Verifier options:
-      --verifier <VERIFIER>
-          The contract verification provider to use
-
-          Possible values:
-          - etherscan
-          - sourcify
-          - blockscout
-          - oklink
-          - custom:     Custom verification provider, requires compatibility
-            with the Etherscan API
-
-      --verifier-api-key <VERIFIER_API_KEY>
-          The verifier API KEY, if using a custom provider
-          
-          [env: VERIFIER_API_KEY=]
-
-      --verifier-url <VERIFIER_URL>
-          The verifier URL, if using a custom provider
-          
-          [env: VERIFIER_URL=]
 
 Wallet options - browser wallet:
       --browser
