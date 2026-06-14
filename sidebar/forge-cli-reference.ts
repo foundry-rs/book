@@ -1,4 +1,4 @@
-import type { SidebarItem } from "./types";
+import { SidebarItem } from "vocs";
 
 export const forgeCliReference: SidebarItem = {
     text: "Reference",

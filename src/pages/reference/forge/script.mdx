@@ -61,14 +61,6 @@ Options:
           transactions. This provides atomicity (all-or-nothing execution) and
           gas savings.
 
-      --batch-size <BATCH_SIZE>
-          Number of calls per Tempo batch transaction.
-          
-          When `--batch` is enabled, splits the collected calls into multiple
-          batch transactions of at most this many calls each.
-          
-          [default: 100]
-
   -h, --help
           Print help (see a summary with '-h')
 
@@ -231,6 +223,65 @@ Tempo:
           The transaction is only valid after this unix timestamp. Requires
           `--tempo.expiring-nonce`.
 
+      --session
+          Create a temporary Tempo wallet session for this script run
+
+      --session-root <ADDRESS>
+          Root account that authorizes the temporary session
+
+      --session-expires <DURATION>
+          Session lifetime, expressed as a duration like `10m`, `2h`, or `7d`
+
+      --session-scope <SCOPE>
+          Allowed call scope, in `TARGET[:SELECTORS[@RECIPIENTS]]` format
+
+      --session-target <ADDRESS>
+          Allowed call target for issue-style `--target ... --selector ...`
+          input
+
+      --session-selector <SELECTOR>
+          Function selector allowed for `--session-target`, such as
+          `register(address)`
+
+      --session-spend-limit <LIMIT>
+          Token spend limit, in `TOKEN:AMOUNT` or `TOKEN=AMOUNT` format
+
+      --session-interactive
+          Open an interactive prompt for the root private key
+
+      --session-private-key <RAW_PRIVATE_KEY>
+          Root private key that signs the session authorization
+
+      --session-mnemonic <MNEMONIC>
+          Root mnemonic phrase or mnemonic file path
+
+      --session-mnemonic-passphrase <PASSPHRASE>
+          Passphrase for `--session-mnemonic`
+
+      --session-hd-path <PATH>
+          Wallet derivation path for the root signer
+
+      --session-mnemonic-index <INDEX>
+          Mnemonic or hardware-wallet index for the root signer
+
+      --session-keystore <PATH>
+          Root keystore path
+
+      --session-account <ACCOUNT_NAME>
+          Root account name from the default keystore directory
+
+      --session-password <PASSWORD>
+          Root keystore password
+
+      --session-password-file <PATH>
+          Root keystore password file
+
+      --session-ledger
+          Use a Ledger as the root signer
+
+      --session-trezor
+          Use a Trezor as the root signer
+
       --skip-simulation
           Skips on-chain simulation
 
@@ -310,8 +361,8 @@ Build options:
       --no-cache
           Disable the cache
 
-      --dynamic-test-linking
-          Enable dynamic test linking
+      --no-dynamic-test-linking
+          Disable dynamic test linking
 
       --skip <SKIP>...
           Skip building files whose names contain the given filter.

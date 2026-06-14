@@ -1,51 +1,24 @@
-## cast logs
+## cast keychain is-witness-burned
 
-Get logs by signature or topic
+Check whether a TIP-1053 key-authorization witness has been burned
 
 :::terminal
 
 ```bash
-$ cast logs --help
+$ cast keychain is-witness-burned --help
 ```
 
 ```txt
-Usage: cast logs [OPTIONS] [SIG_OR_TOPIC] [TOPICS_OR_ARGS]...
+Usage: cast keychain is-witness-burned [OPTIONS] <ACCOUNT> <WITNESS>
 
 Arguments:
-  [SIG_OR_TOPIC]
-          The signature of the event to filter logs by which will be converted
-          to the first topic or a topic to filter on
+  <ACCOUNT>
+          Account whose witness burn set should be checked
 
-  [TOPICS_OR_ARGS]...
-          If used with a signature, the indexed fields of the event to filter
-          by. Otherwise, the remaining topics of the filter
+  <WITNESS>
+          Witness to check. `bytes32(0)` is valid
 
 Options:
-      --from-block <FROM_BLOCK>
-          The block height to start query at.
-          
-          Can also be the tags earliest, finalized, safe, latest, or pending.
-
-      --to-block <TO_BLOCK>
-          The block height to stop query at.
-          
-          Can also be the tags earliest, finalized, safe, latest, or pending.
-
-      --address <ADDRESS>
-          The contract address to filter on
-
-      --subscribe
-          If the RPC type and endpoints supports `eth_subscribe` stream logs
-          instead of printing and exiting. Will continue until interrupted or
-          TO_BLOCK is reached
-
-      --query-size <BLOCKS>
-          Split the query into chunks of this many blocks to work around
-          provider range/result limits.
-          
-          When omitted, the range is queried in a single request. Pass a value
-          (e.g. `10000`) to fetch the logs in `query-size`-block chunks instead.
-
   -h, --help
           Print help (see a summary with '-h')
 
