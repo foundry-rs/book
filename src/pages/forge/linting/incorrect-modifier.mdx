@@ -1,0 +1,58 @@
+---
+description: Incorrect modifier
+---
+
+## Incorrect modifier
+
+**Severity**: `Low`
+**ID**: `incorrect-modifier`
+
+Flags modifiers that can finish without executing the modified function body or reverting.
+
+### What it does
+
+Reports Solidity modifiers where at least one path can complete before reaching the `_` placeholder.
+Paths that revert before `_` are not flagged.
+
+Only paths that provably revert or otherwise halt are treated as safe: an explicit `revert`
+statement or `revert(...)` builtin call. Yul failing halts (`revert` and `invalid`) are also
+treated as safe. Yul successful halts (`return`, `stop`, and `selfdestruct`) are flagged because
+they finish execution without running the modified function body.
+
+A regular function call that might revert, such as `require(...)`, an internal helper, or an
+external call, does not count as a guaranteed revert. A path that performs such a call and then
+returns without reaching `_` is still flagged.
+
+### Why is this bad?
+
+A modifier that falls through before `_` silently skips the function body. This can make calls look
+successful even though the protected action never ran.
+
+### Example
+
+#### Bad
+
+```solidity
+modifier onlyWhenEnabled() {
+    if (enabled) {
+        _;
+    }
+}
+```
+
+#### Good
+
+```solidity
+modifier onlyWhenEnabled() {
+    if (!enabled) {
+        revert Disabled();
+    }
+    _;
+}
+```
+
+### Recommendation
+
+Make every path in the modifier either execute `_` or explicitly revert before the modifier can
+finish. Avoid relying on helper calls that might revert unless the modifier also has an explicit
+non-reverting path guard.
