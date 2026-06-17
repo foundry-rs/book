@@ -50,6 +50,7 @@ const docs = [
               { text: "controlled-delegatecall", link: "/forge/linting/controlled-delegatecall" },
               { text: "encode-packed-collision", link: "/forge/linting/encode-packed-collision" },
               { text: "erc20-unchecked-transfer", link: "/forge/linting/erc20-unchecked-transfer" },
+              { text: "incorrect-exp", link: "/forge/linting/incorrect-exp" },
               { text: "incorrect-shift", link: "/forge/linting/incorrect-shift" },
               { text: "reentrancy-eth", link: "/forge/linting/reentrancy-eth" },
               { text: "rtlo", link: "/forge/linting/rtlo" },
