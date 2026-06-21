@@ -49,6 +49,27 @@ Options:
           
           This is auto-enabled for common networks without EIP1559.
 
+      --estimate <PRESET>
+          How to estimate EIP-1559 fees: `low`, `market` (default), or
+          `aggressive`.
+          
+          The preset sets the priority-fee percentile and the `maxFeePerGas`
+          buffer (`low`: `base_fee * 1.5`, others: `* 2`); `low`'s tighter
+          buffer is more likely to stall if the base fee rises.
+          `--with-gas-price` and `--priority-gas-price` override only
+          `maxFeePerGas` and `maxPriorityFeePerGas` respectively. Ignored for
+          `--legacy`.
+
+          Possible values:
+          - low:        Lower priority-fee percentile (10th) and a tighter
+            base-fee buffer (`base_fee * 1.5`). This only lowers the tip
+            estimate and the max-fee cap, not the base fee that is actually
+            paid, and risks the transaction stalling if the base fee rises
+          - market:     Default: `base_fee * 2` plus a 20th-percentile priority
+            fee
+          - aggressive: Higher priority-fee percentile (50th) to bid a larger
+            tip for faster inclusion
+
       --broadcast
           Broadcasts the transactions
 
@@ -115,10 +136,12 @@ Tempo:
           the session's temporary access key on behalf of its root account.
 
       --tempo.fee-token <FEE_TOKEN>
-          Fee token address for Tempo transactions.
+          Fee token address, numeric TIP-20 token id, or known symbol for Tempo
+          transactions.
           
           When set, builds a Tempo (type 0x76) transaction that pays gas fees in
-          the specified token.
+          the specified token. Known symbols are PathUSD, AlphaUSD, BetaUSD, and
+          ThetaUSD.
           
           If this is not set, the fee token is chosen according to network
           rules. See the Tempo docs for more information.
@@ -311,6 +334,15 @@ Tempo:
           
           Takes precedence over broadcast.
 
+      --debug-layout <DEBUG_LAYOUT>
+          Debugger layout to use
+
+          Possible values:
+          - auto:       Select horizontal or vertical layout from the terminal
+            size
+          - horizontal: Force the two-column debugger layout
+          - vertical:   Force the single-column debugger layout
+
       --dump <PATH>
           Dumps all debugger steps to file
 
@@ -430,6 +462,12 @@ Compiler options:
           Activate the Solidity optimizer
           
           [possible values: true, false]
+
+      --experimental
+          Enable Solidity's experimental mode.
+          
+          This passes `--experimental` to solc, which is required by Solidity
+          0.8.35+ for experimental features.
 
       --optimizer-runs <RUNS>
           The number of runs specifies roughly how often each opcode of the

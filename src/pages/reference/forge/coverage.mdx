@@ -136,6 +136,15 @@ Test options:
           the first failure case. If the fuzz test does not fail, it will open
           the debugger on the last fuzz case.
 
+      --debug-layout <DEBUG_LAYOUT>
+          Debugger layout to use
+
+          Possible values:
+          - auto:       Select horizontal or vertical layout from the terminal
+            size
+          - horizontal: Force the two-column debugger layout
+          - vertical:   Force the single-column debugger layout
+
       --flamegraph
           Generate a flamegraph for a single test. Implies `--decode-internal`.
           
@@ -638,6 +647,12 @@ Compiler options:
           Activate the Solidity optimizer
           
           [possible values: true, false]
+
+      --experimental
+          Enable Solidity's experimental mode.
+          
+          This passes `--experimental` to solc, which is required by Solidity
+          0.8.35+ for experimental features.
 
       --optimizer-runs <RUNS>
           The number of runs specifies roughly how often each opcode of the

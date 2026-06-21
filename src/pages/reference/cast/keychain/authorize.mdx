@@ -48,6 +48,18 @@ Options:
           
           `0x000...000` is a valid present witness and is distinct from omitting
           the flag.
+          
+          For `--admin`, the `authorizeAdminKey` precompile always takes a
+          witness; omitting this flag submits `bytes32(0)` (which fails if that
+          witness is already burned).
+
+      --admin
+          Authorize a T6 admin access key via `authorizeAdminKey`
+          (key-management only).
+          
+          Admin keys may authorize/revoke other keys but cannot carry an expiry,
+          spending limits, or call scopes. The account is the signing
+          (precompile caller) account.
 
   -h, --help
           Print help (see a summary with '-h')
@@ -127,10 +139,12 @@ Tempo:
           the session's temporary access key on behalf of its root account.
 
       --tempo.fee-token <FEE_TOKEN>
-          Fee token address for Tempo transactions.
+          Fee token address, numeric TIP-20 token id, or known symbol for Tempo
+          transactions.
           
           When set, builds a Tempo (type 0x76) transaction that pays gas fees in
-          the specified token.
+          the specified token. Known symbols are PathUSD, AlphaUSD, BetaUSD, and
+          ThetaUSD.
           
           If this is not set, the fee token is chosen according to network
           rules. See the Tempo docs for more information.
