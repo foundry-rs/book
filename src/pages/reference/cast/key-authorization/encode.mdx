@@ -50,6 +50,20 @@ Options:
           `0x000...000` is a valid present witness and is distinct from omitting
           the flag.
 
+      --admin
+          Authorize a T6 admin access key (key-management only).
+          
+          Admin keys may authorize/revoke other keys but cannot carry an expiry,
+          spending limits, or call scopes, and require a bound account
+          (`--account` for `encode`, signer-derived for `sign`).
+
+      --account <ADDRESS>
+          Bind this authorization to a target account (T6).
+          
+          Required for `--admin` so the authorization cannot be replayed across
+          accounts sharing the same admin key. May also bind a plain
+          authorization without `--admin`.
+
   -h, --help
           Print help (see a summary with '-h')
 

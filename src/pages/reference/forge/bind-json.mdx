@@ -104,6 +104,12 @@ Compiler options:
           
           [possible values: true, false]
 
+      --experimental
+          Enable Solidity's experimental mode.
+          
+          This passes `--experimental` to solc, which is required by Solidity
+          0.8.35+ for experimental features.
+
       --optimizer-runs <RUNS>
           The number of runs specifies roughly how often each opcode of the
           deployed code will be executed across the life-time of the contract.

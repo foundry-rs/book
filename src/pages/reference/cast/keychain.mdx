@@ -28,6 +28,12 @@ Commands:
                      account
   is-witness-burned  Check whether a TIP-1053 key-authorization witness has been
                      burned
+  is-admin           Check whether a key is the root key or an active admin key
+                     for an account (T6)
+  verify             Verify a Tempo keychain signature against an account's
+                     active access key (T6)
+  verify-admin       Verify a Tempo keychain signature against an account's root
+                     or admin key (T6)
   rl                 Query the remaining spending limit for a key on a specific
                      token [aliases: remaining-limit]
   ul                 Update the spending limit for a key on a specific token
