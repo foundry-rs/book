@@ -1,0 +1,44 @@
+---
+description: nonReentrant modifier is not first
+---
+
+## nonReentrant modifier is not first
+
+**Severity**: `Med`
+**ID**: `non-reentrant-not-first`
+
+Flags functions where an OpenZeppelin-style `nonReentrant` modifier is present but is not the
+first modifier in the modifier list.
+
+### What it does
+
+Reports a function, fallback, or receive function when a modifier named `nonReentrant` appears
+after another modifier.
+
+The lint is intentionally narrow: it checks modifier ordering only and only matches a modifier
+named `nonReentrant`.
+
+### Why is this bad?
+
+Solidity applies modifiers in the order they are written. If another modifier runs before
+`nonReentrant`, that modifier's pre-body logic executes before the reentrancy guard is entered.
+For guarded external entry points, placing `nonReentrant` first keeps the reentrancy lock as the
+first modifier logic.
+
+### Example
+
+#### Bad
+
+```solidity
+function withdraw(uint256 amount) external onlyOwner nonReentrant {
+    _withdraw(amount);
+}
+```
+
+#### Good
+
+```solidity
+function withdraw(uint256 amount) external nonReentrant onlyOwner {
+    _withdraw(amount);
+}
+```
