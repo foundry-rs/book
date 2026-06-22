@@ -71,6 +71,7 @@ const docs = [
               { text: "locked-ether", link: "/forge/linting/locked-ether" },
               { text: "low-level-calls", link: "/forge/linting/low-level-calls" },
               { text: "mapping-deletion", link: "/forge/linting/mapping-deletion" },
+              { text: "non-reentrant-not-first", link: "/forge/linting/non-reentrant-not-first" },
               { text: "reentrancy-no-eth", link: "/forge/linting/reentrancy-no-eth" },
               { text: "tautological-compare", link: "/forge/linting/tautological-compare" },
               { text: "tx-origin", link: "/forge/linting/tx-origin" },

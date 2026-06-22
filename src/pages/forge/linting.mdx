@@ -177,6 +177,7 @@ navigation on the right to browse by severity.
 - [`locked-ether`](/forge/linting/locked-ether) — Flags contracts that can receive Ether (via `payable` functions, `receive()`, or a payable `fallback()`) but expose no code path that can send Ether out, permanently trapping user funds.
 - [`low-level-calls`](/forge/linting/low-level-calls) — Flags direct use of Solidity low-level calls (`call`, `delegatecall`, and `staticcall`).
 - [`mapping-deletion`](/forge/linting/mapping-deletion) — Flags `delete` applied to a value whose type contains a `mapping`, because mapping entries are left in storage.
+- [`non-reentrant-not-first`](/forge/linting/non-reentrant-not-first) — Flags functions where a `nonReentrant` modifier appears after another modifier.
 - [`reentrancy-no-eth`](/forge/linting/reentrancy-no-eth) — Flags non-ETH external calls when state read before the call is written after the call.
 - [`tautological-compare`](/forge/linting/tautological-compare) — Flags relational or equality comparisons whose two sides are the same side-effect-free expression.
 - [`tx-origin`](/forge/linting/tx-origin) — Flags use of `tx.origin` inside authorization-like predicates, which can be exploited by a malicious contract acting on behalf of a legitimate owner.
