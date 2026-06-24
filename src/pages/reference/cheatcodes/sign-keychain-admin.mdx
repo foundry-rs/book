@@ -1,0 +1,59 @@
+---
+description: Signs a digest as a Tempo keychain signature using a root or admin key
+---
+
+## `signKeychainAdmin`
+
+### Signature
+
+```solidity
+function signKeychainAdmin(uint256 privateKey, address account, bytes32 digest) external pure returns (bytes memory signature);
+```
+
+### Description
+
+Signs `digest` as a Tempo V2 keychain signature for `account` using a secp256k1 **root or admin key** `privateKey`.
+
+Returns the encoded signature bytes accepted by `SignatureVerifier.verifyKeychainAdmin`. This is the admin counterpart to [`signKeychain`](/reference/cheatcodes/sign-keychain) (T6, [TIP-1049](https://tips.sh/1049)). `verifyKeychainAdmin` returns `true` only when the signer is the account **root key** or an **active admin key** for `account`.
+
+This is useful for testing Tempo contracts that gate key-management or privileged actions behind `SignatureVerifier.verifyKeychainAdmin`.
+
+Like [`signKeychain`](/reference/cheatcodes/sign-keychain), this cheatcode does not check key status — a signature produced with a non-admin or revoked key is still encoded, but `verifyKeychainAdmin` returns `false`.
+
+### Parameters
+
+| Parameter    | Type      | Description                                                |
+|--------------|-----------|-----------------------------------------------------------|
+| `privateKey` | `uint256` | The root or admin-key private key to sign with            |
+| `account`    | `address` | The account whose root/admin key is signing               |
+| `digest`     | `bytes32` | The message digest to sign (see warning below)            |
+
+### Returns
+
+| Type              | Description                                                       |
+|-------------------|------------------------------------------------------------------|
+| `bytes signature` | Encoded Tempo keychain signature accepted by `verifyKeychainAdmin` |
+
+### Examples
+
+```solidity [test/SignKeychainAdmin.t.sol]
+// Domain-separate the application digest yourself: include chain ID,
+// contract address, and account address in the digest the key signs.
+bytes32 digest = keccak256(abi.encode(block.chainid, address(this), account, action));
+bytes memory signature = vm.signKeychainAdmin(adminPk, account, digest);
+
+bool ok = signatureVerifier.verifyKeychainAdmin(account, digest, signature);
+assertTrue(ok); // [PASS]
+```
+
+### Gotchas
+
+:::warning[Domain-separate the digest]
+`verifyKeychainAdmin` does **not** bind the `account` argument into the signed `digest`. To prevent replay across chains, contracts, and accounts, include a replay domain — such as the chain ID, contract address, and account address — in the `digest` you sign.
+:::
+
+### Related Cheatcodes
+
+- [`signKeychain`](/reference/cheatcodes/sign-keychain) - Signs a keychain digest with an access key
+- [`expectKeychainAdminVerified`](/reference/cheatcodes/expect-keychain-admin-verified) - Assert a `verifyKeychainAdmin` call is made
+- [`sign`](/reference/cheatcodes/sign) - Signs a digest with a private key, returning `(v, r, s)`

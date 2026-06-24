@@ -55,6 +55,8 @@ export const cmdReference: SidebarItem[] = [
           { text: 'expectRevert', link: '/reference/cheatcodes/expect-revert' },
           { text: 'expectEmit', link: '/reference/cheatcodes/expect-emit' },
           { text: 'expectCall', link: '/reference/cheatcodes/expect-call' },
+          { text: 'expectKeychainVerified', link: '/reference/cheatcodes/expect-keychain-verified' },
+          { text: 'expectKeychainAdminVerified', link: '/reference/cheatcodes/expect-keychain-admin-verified' },
         ],
       },
       {
@@ -119,6 +121,8 @@ export const cmdReference: SidebarItem[] = [
         items: [
           { text: 'sign', link: '/reference/cheatcodes/sign' },
           { text: 'signDelegation', link: '/reference/cheatcodes/sign-delegation' },
+          { text: 'signKeychain', link: '/reference/cheatcodes/sign-keychain' },
+          { text: 'signKeychainAdmin', link: '/reference/cheatcodes/sign-keychain-admin' },
         ],
       },
       {
