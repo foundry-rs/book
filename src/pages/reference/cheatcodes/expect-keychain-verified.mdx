@@ -1,0 +1,40 @@
+---
+description: Asserts that a SignatureVerifier.verifyKeychain call is made
+---
+
+## `expectKeychainVerified`
+
+### Signature
+
+```solidity
+function expectKeychainVerified(address account, bytes32 digest, bytes calldata signature) external;
+```
+
+### Description
+
+Expects a call to `SignatureVerifier.verifyKeychain(account, digest, signature)` during test execution.
+
+Use this to assert that the code under test calls the `SignatureVerifier` precompile with the expected `account`, `digest`, and `signature` (an access-key verification). This only asserts the **call is made** — it does not assert that the verifier returned `true`. If the test terminates without the expected call being made, the test fails.
+
+### Parameters
+
+| Parameter   | Type      | Description                                              |
+|-------------|-----------|---------------------------------------------------------|
+| `account`   | `address` | The account whose access key is expected to be verified |
+| `digest`    | `bytes32` | The expected digest passed to `verifyKeychain`          |
+| `signature` | `bytes`   | The expected encoded keychain signature                 |
+
+### Examples
+
+```solidity [test/ExpectKeychainVerified.t.sol]
+bytes memory signature = vm.signKeychain(accessPk, account, digest);
+
+vm.expectKeychainVerified(account, digest, signature);
+target.doAuthenticatedAction(account, digest, signature);
+```
+
+### Related Cheatcodes
+
+- [`expectKeychainAdminVerified`](/reference/cheatcodes/expect-keychain-admin-verified) - Assert a `verifyKeychainAdmin` call is made
+- [`signKeychain`](/reference/cheatcodes/sign-keychain) - Signs a keychain digest with an access key
+- [`expectCall`](/reference/cheatcodes/expect-call) - Assert that a specific call is made
