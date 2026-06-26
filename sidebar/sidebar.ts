@@ -96,6 +96,7 @@ const docs = [
               { text: "missing-zero-check", link: "/forge/linting/missing-zero-check" },
               { text: "msg-value-loop", link: "/forge/linting/msg-value-loop" },
               { text: "reentrancy-events", link: "/forge/linting/reentrancy-events" },
+              { text: "require-revert-in-loop", link: "/forge/linting/require-revert-in-loop" },
               { text: "return-bomb", link: "/forge/linting/return-bomb" },
             ],
           },
