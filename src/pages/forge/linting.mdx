@@ -199,6 +199,7 @@ navigation on the right to browse by severity.
 - [`missing-zero-check`](/forge/linting/missing-zero-check) — Flags entry-point functions and constructors where an `address` parameter flows into a state write or value transfer without a zero-address guard.
 - [`msg-value-loop`](/forge/linting/msg-value-loop) — Flags `msg.value` reads inside loops reachable from externally callable payable functions.
 - [`reentrancy-events`](/forge/linting/reentrancy-events) — Flags `emit` statements reachable after an external call, where a reentrant callee can reorder or fabricate logs that off-chain consumers rely on.
+- [`require-revert-in-loop`](/forge/linting/require-revert-in-loop) — Flags `require` calls and `revert` statements that execute inside loops, including checks reached through internal helpers.
 - [`return-bomb`](/forge/linting/return-bomb) — Flags external calls that set an explicit gas limit while copying unbounded dynamic returndata.
 
 #### Informational
