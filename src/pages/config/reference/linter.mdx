@@ -13,7 +13,7 @@ Whether to run linting during `forge build`. Set to `false` to disable automatic
 ##### `severity`
 
 - Type: array of strings
-- Default: `["high", "medium", "low"]`
+- Default: `[]`
 - Environment: `FOUNDRY_LINT_SEVERITY`
 
 Specifies which lints to run based on severity. Valid values are:
@@ -24,6 +24,10 @@ Specifies which lints to run based on severity. Valid values are:
 - `info`
 - `gas`
 - `code-size` (or `codesize`, `size`)
+
+An empty list means no severity filter is applied, so all severity buckets are
+enabled. To run only warning-level lints, set this explicitly to
+`["high", "medium", "low"]`.
 
 ##### `exclude_lints`
 
