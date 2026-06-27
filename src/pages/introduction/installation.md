@@ -54,8 +54,8 @@ $ foundryup --install nightly
 $ foundryup --install 1.0.0
 ```
 
-```bash [Install from a specific commit]
-$ foundryup --install abc1234
+```bash [Install a specific nightly build]
+$ foundryup --install nightly-abc1234
 ```
 
 ```bash [Install from a branch]
