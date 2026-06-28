@@ -7,7 +7,6 @@ description: Write and run tests for Solidity contracts with Forge.
 Forge runs tests written in Solidity. Test files live in `test/` and test functions are prefixed with `test`.
 
 :::terminal
-
 ```bash
 // [!include ~/snippets/output/hello_foundry/forge-test:command]
 ```
@@ -15,7 +14,6 @@ Forge runs tests written in Solidity. Test files live in `test/` and test functi
 ```ansi
 // [!include ~/snippets/output/hello_foundry/forge-test:output]
 ```
-
 :::
 
 ### Writing tests
@@ -49,7 +47,6 @@ contract CounterTest is Test {
 ```
 
 Key conventions:
-
 - Test files end with `.t.sol`
 - Test contracts inherit from `forge-std/Test.sol`
 - Test functions start with `test_` or `test`
@@ -64,7 +61,6 @@ Traces show a tree of all calls made during a test, helping you understand execu
 When a test fails, use `-vvv` to see a stack trace showing exactly where the revert occurred. This is the most common way to debug test failures.
 
 :::terminal
-
 ```bash
 $ forge test -vvv
 ```
@@ -72,7 +68,6 @@ $ forge test -vvv
 ```ansi
 // [!include ~/snippets/output/cheatcodes/forge-test-fail-vvv:output]
 ```
-
 :::
 
 The trace shows the call hierarchy with the revert bubbling up, and the **Backtrace** pinpoints the exact location in your code.
@@ -82,7 +77,6 @@ The trace shows the call hierarchy with the revert bubbling up, and the **Backtr
 Use `-vvvv` to see traces for all tests, including passing ones. This helps you understand execution flow, verify call order, and check gas usage for individual operations.
 
 :::terminal
-
 ```bash
 $ forge test -vvvv
 ```
@@ -90,7 +84,6 @@ $ forge test -vvvv
 ```ansi
 // [!include ~/snippets/output/cheatcodes/forge-test-vvvv:output]
 ```
-
 :::
 
 #### Reading traces
@@ -105,14 +98,14 @@ $ forge test -vvvv
 
 Control how much detail Forge outputs with `-v` flags:
 
-| Flag     | Shows                                 |
-| -------- | ------------------------------------- |
-| (none)   | Pass/fail summary only                |
-| `-v`     | Test names                            |
-| `-vv`    | Logs emitted during tests             |
-| `-vvv`   | Traces for failing tests              |
-| `-vvvv`  | Traces for all tests, including setup |
-| `-vvvvv` | Traces with storage changes           |
+| Flag | Shows |
+|------|-------|
+| (none) | Pass/fail summary only |
+| `-v` | Test names |
+| `-vv` | Logs emitted during tests |
+| `-vvv` | Traces for failing tests |
+| `-vvvv` | Traces for all tests, including setup |
+| `-vvvvv` | Traces with storage changes |
 
 Use `-vvv` for debugging failures, `-vvvv` when you need to see successful test execution, and `-vvvvv` when tracking state changes.
 
@@ -123,7 +116,6 @@ Run specific tests:
 By name:
 
 :::terminal
-
 ```bash
 // [!include ~/snippets/output/test_filters/forge-test-match-test:command]
 ```
@@ -131,13 +123,11 @@ By name:
 ```ansi
 // [!include ~/snippets/output/test_filters/forge-test-match-test:output]
 ```
-
 :::
 
 By contract:
 
 :::terminal
-
 ```bash
 // [!include ~/snippets/output/test_filters/forge-test-match-contract:command]
 ```
@@ -145,13 +135,11 @@ By contract:
 ```ansi
 // [!include ~/snippets/output/test_filters/forge-test-match-contract:output]
 ```
-
 :::
 
 By path:
 
 :::terminal
-
 ```bash
 // [!include ~/snippets/output/test_filters/forge-test-match-path:command]
 ```
@@ -159,13 +147,11 @@ By path:
 ```ansi
 // [!include ~/snippets/output/test_filters/forge-test-match-path:output]
 ```
-
 :::
 
 Combine filters:
 
 :::terminal
-
 ```bash
 // [!include ~/snippets/output/test_filters/forge-test-match-contract-and-test:command]
 ```
@@ -173,7 +159,6 @@ Combine filters:
 ```ansi
 // [!include ~/snippets/output/test_filters/forge-test-match-contract-and-test:output]
 ```
-
 :::
 
 Exclude tests with `--no-match-*` variants:
@@ -196,7 +181,6 @@ function testFuzz_SetNumber(uint256 x) public {
 Forge generates random inputs and runs the test multiple times (256 by default):
 
 :::terminal
-
 ```bash
 // [!include ~/snippets/output/fuzz_testing/forge-test-success-fuzz:command]
 ```
@@ -204,7 +188,6 @@ Forge generates random inputs and runs the test multiple times (256 by default):
 ```ansi
 // [!include ~/snippets/output/fuzz_testing/forge-test-success-fuzz:output]
 ```
-
 :::
 
 Configure fuzzing:
@@ -336,7 +319,6 @@ function test_RevertWhen_InsufficientBalance() public {
 ```
 
 :::terminal
-
 ```bash
 // [!include ~/snippets/output/cheatcodes/forge-test-cheatcodes-expectrevert:command]
 ```
@@ -344,7 +326,6 @@ function test_RevertWhen_InsufficientBalance() public {
 ```ansi
 // [!include ~/snippets/output/cheatcodes/forge-test-cheatcodes-expectrevert:output]
 ```
-
 :::
 
 ### Testing events
@@ -355,7 +336,7 @@ Use `vm.expectEmit(){:solidity}` to verify events are emitted:
 function test_EmitsTransfer() public {
     vm.expectEmit(true, true, false, true);
     emit Transfer(alice, bob, 100);
-
+    
     token.transfer(bob, 100);
 }
 ```
