@@ -1,0 +1,59 @@
+---
+description: Signs a digest as a Tempo keychain signature using an access key
+---
+
+## `signKeychain`
+
+### Signature
+
+```solidity
+function signKeychain(uint256 privateKey, address account, bytes32 digest) external pure returns (bytes memory signature);
+```
+
+### Description
+
+Signs `digest` as a Tempo V2 keychain signature for `account` using a secp256k1 **access key** `privateKey`.
+
+Returns the encoded signature bytes accepted by `SignatureVerifier.verifyKeychain`. Unlike [`sign`](/reference/cheatcodes/sign), the result is an encoded Tempo keychain signature (not a raw `(v, r, s)` tuple), and it verifies only as an **active access key** of `account` — never the root key.
+
+This is useful for testing Tempo contracts that authenticate callers through `SignatureVerifier.verifyKeychain` against `AccountKeychain` state.
+
+`signKeychain` does not query `AccountKeychain` or prove that `privateKey` is authorized — it only encodes the keychain signature. The on-chain active-access-key check happens in `SignatureVerifier.verifyKeychain`, which returns `false` for an unknown or revoked key.
+
+### Parameters
+
+| Parameter    | Type      | Description                                                  |
+|--------------|-----------|-------------------------------------------------------------|
+| `privateKey` | `uint256` | The access-key private key to sign with                     |
+| `account`    | `address` | The root account that the access key is authorized under    |
+| `digest`     | `bytes32` | The message digest to sign                                  |
+
+### Returns
+
+| Type             | Description                                                            |
+|------------------|-----------------------------------------------------------------------|
+| `bytes signature` | Encoded Tempo keychain signature accepted by `verifyKeychain`        |
+
+### Examples
+
+```solidity [test/SignKeychain.t.sol]
+// `account` has authorized `accessPk` as an access key on-chain.
+bytes32 digest = keccak256("authorize this action");
+bytes memory signature = vm.signKeychain(accessPk, account, digest);
+
+// Verifies against the account's active access keys via the SignatureVerifier precompile.
+bool ok = signatureVerifier.verifyKeychain(account, digest, signature);
+assertTrue(ok); // [PASS]
+```
+
+### Gotchas
+
+:::warning[Access keys only]
+`signKeychain` produces a signature that verifies as an **active access key**, never the root key. Use [`signKeychainAdmin`](/reference/cheatcodes/sign-keychain-admin) for root or admin keys.
+:::
+
+### Related Cheatcodes
+
+- [`signKeychainAdmin`](/reference/cheatcodes/sign-keychain-admin) - Signs a keychain digest with a root or admin key
+- [`expectKeychainVerified`](/reference/cheatcodes/expect-keychain-verified) - Assert a `verifyKeychain` call is made
+- [`sign`](/reference/cheatcodes/sign) - Signs a digest with a private key, returning `(v, r, s)`

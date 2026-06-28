@@ -1,4 +1,4 @@
-import { SidebarItem } from "vocs";
+import type { SidebarItem } from "./types";
 
 export const forgeStdReference: SidebarItem = {
     text: "Reference",
@@ -49,7 +49,7 @@ export const forgeStdReference: SidebarItem = {
                 { text: 'makeAddr', link: '/reference/forge-std/make-addr' },
                 { text: 'makeAddrAndKey', link: '/reference/forge-std/make-addr-and-key' },
                 { text: 'noGasMetering', link: '/reference/forge-std/noGasMetering' },
-                { text: 'assumeNoPrecompiles', link: '/reference/forge-std/assume-no-precompiles' },
+                { text: 'assumeNotPrecompile', link: '/reference/forge-std/assume-no-precompiles' },
                 { text: 'assumePayable', link: '/reference/forge-std/assume-payable' },
             ],
         },
@@ -110,6 +110,5 @@ export const forgeStdReference: SidebarItem = {
             ],
         },
         { text: 'Console Logging', link: '/reference/forge-std/console-log' },
-        { text: 'DSTest Reference', link: '/reference/ds-test' },
     ],
 };

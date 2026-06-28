@@ -1,4 +1,4 @@
-import { Sidebar } from "vocs";
+import type { Sidebar } from "./types";
 
 export const guidesSidebar: Sidebar = {
   "/guides": [
@@ -26,6 +26,13 @@ export const guidesSidebar: Sidebar = {
           text: "Branching Tree Technique",
           link: "/guides/branching-tree-technique",
         },
+      ],
+    },
+    {
+      text: "Networks & Payments",
+      items: [
+        { text: "Tempo", link: "/guides/tempo" },
+        { text: "MPP-backed RPC Endpoints", link: "/guides/mpp" },
       ],
     },
     {

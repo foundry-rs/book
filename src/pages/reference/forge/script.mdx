@@ -49,16 +49,253 @@ Options:
           
           This is auto-enabled for common networks without EIP1559.
 
+      --estimate <PRESET>
+          How to estimate EIP-1559 fees: `low`, `market` (default), or
+          `aggressive`.
+          
+          The preset sets the priority-fee percentile and the `maxFeePerGas`
+          buffer (`low`: `base_fee * 1.5`, others: `* 2`); `low`'s tighter
+          buffer is more likely to stall if the base fee rises.
+          `--with-gas-price` and `--priority-gas-price` override only
+          `maxFeePerGas` and `maxPriorityFeePerGas` respectively. Ignored for
+          `--legacy`.
+
+          Possible values:
+          - low:        Lower priority-fee percentile (10th) and a tighter
+            base-fee buffer (`base_fee * 1.5`). This only lowers the tip
+            estimate and the max-fee cap, not the base fee that is actually
+            paid, and risks the transaction stalling if the base fee rises
+          - market:     Default: `base_fee * 2` plus a 20th-percentile priority
+            fee
+          - aggressive: Higher priority-fee percentile (50th) to bid a larger
+            tip for faster inclusion
+
       --broadcast
           Broadcasts the transactions
 
-      --batch-size <BATCH_SIZE>
-          Batch size of transactions.
+      --batch
+          Batch all broadcast transactions into a single Tempo batch
+          transaction.
           
-          This is ignored and set to 1 if batching is not available or `--slow`
-          is enabled.
+          When enabled, all vm.broadcast() calls are collected and sent as a
+          single atomic type 0x76 transaction instead of individual
+          transactions. This provides atomicity (all-or-nothing execution) and
+          gas savings.
+
+  -h, --help
+          Print help (see a summary with '-h')
+
+Display options:
+  -v, --verbosity...
+          Verbosity level of the log messages.
           
-          [default: 100]
+          Pass multiple times to increase the verbosity (e.g. -v, -vv, -vvv).
+          
+          Depending on the context the verbosity levels have different meanings.
+          
+          For example, the verbosity levels of the EVM are:
+          - 2 (-vv): Print logs for all tests.
+          - 3 (-vvv): Print execution traces for failing tests.
+          - 4 (-vvvv): Print execution traces for all tests, and setup traces
+          for failing tests.
+          - 5 (-vvvvv): Print execution and setup traces for all tests,
+          including storage changes and
+            backtraces with line numbers.
+
+  -q, --quiet
+          Do not print log messages
+
+      --json
+          Format log messages as JSON
+
+      --md
+          Format log messages as Markdown
+
+      --color <COLOR>
+          The color of the log messages
+
+          Possible values:
+          - auto:   Intelligently guess whether to use color output (default)
+          - always: Force color output
+          - never:  Force disable color output
+
+Tempo:
+      --tempo.session <SESSION_ID>
+          Use a live Tempo wallet session for signing.
+          
+          When set, Foundry resolves the session from
+          `$TEMPO_HOME/wallet/sessions.toml` and signs Tempo transactions with
+          the session's temporary access key on behalf of its root account.
+
+      --tempo.fee-token <FEE_TOKEN>
+          Fee token address, numeric TIP-20 token id, or known symbol for Tempo
+          transactions.
+          
+          When set, builds a Tempo (type 0x76) transaction that pays gas fees in
+          the specified token. Known symbols are PathUSD, AlphaUSD, BetaUSD, and
+          ThetaUSD.
+          
+          If this is not set, the fee token is chosen according to network
+          rules. See the Tempo docs for more information.
+
+      --tempo.expires <SECONDS>
+          Opt into TIP-1009 expiring-nonce mode with a validity window.
+          
+          Convenience flag that combines `--tempo.expiring-nonce` with a
+          relative `--tempo.valid-before`. Sets nonce_key = U256::MAX, nonce =
+          0, and valid_before = now + seconds.
+          
+          Maximum value is 30 seconds. The transaction must be mined before the
+          deadline or it becomes permanently invalid, giving safe retry
+          semantics: retries produce a fresh tx hash and the old tx can never
+          land late.
+
+      --tempo.nonce-key <NONCE_KEY>
+          Nonce key for Tempo parallelizable nonces.
+          
+          When set, builds a Tempo (type 0x76) transaction with the specified
+          nonce key, allowing multiple transactions with the same nonce but
+          different keys to be executed in parallel. If not set, the protocol
+          nonce key (0) will be used.
+          
+          For more information see
+          [https://docs.tempo.xyz/protocol/transactions/spec-tempo-transaction#parallelizable-nonces](https://docs.tempo.xyz/protocol/transactions/spec-tempo-transaction#parallelizable-nonces).
+
+      --tempo.lane <NAME>
+          Named nonce lane for Tempo parallelizable nonces.
+          
+          Resolves a friendly lane name (e.g. `deploy`, `payments`) to a
+          `nonce_key` via a shared lanes file (default: `tempo.lanes.toml` at
+          the project root). The lanes file is a TOML map of `name = <U256>`
+          entries, e.g.:
+          
+          ```toml deploy   = 1 ops      = 2 payments = 3 ```
+          
+          Mutually exclusive with `--tempo.nonce-key`.
+
+      --tempo.lanes-file <PATH>
+          Path to the Tempo lanes file used by `--tempo.lane`.
+          
+          Defaults to `tempo.lanes.toml` at the project root.
+
+      --tempo.sponsor <ADDRESS>
+          Sponsor (fee payer) address for Tempo sponsored transactions
+
+      --tempo.sponsor-signer <SIGNER>
+          Sign Tempo sponsor digests in-band with the given signer URI.
+          
+          Supported forms include `env://VAR`, `keystore://PATH`,
+          `account://NAME`, `ledger://`, `trezor://`, `aws://`, `gcp://`,
+          `turnkey://`, and `private-key://KEY`.
+
+      --tempo.sponsor-sig <SPONSOR_SIG>
+          Sponsor (fee payer) signature for Tempo sponsored transactions.
+          
+          The sponsor signs the `fee_payer_signature_hash` to commit to paying
+          gas fees on behalf of the sender. Provide as a hex-encoded signature.
+
+      --sponsor-url <URL>
+          Remote sponsor (fee payer) service URL.
+          
+          When set, the user-signed transaction is forwarded to this URL via
+          `eth_signRawTransaction`. The service adds its fee payer signature and
+          returns the fully-sponsored transaction, which is then submitted via
+          the regular RPC. No local sponsor key is required.
+          
+          Example: `cast send 0x... --sponsor-url
+          https://sponsor.tempo.xyz/tp_abc123`
+          
+          [env: TEMPO_SPONSOR_URL=]
+
+      --tempo.print-sponsor-hash
+          Print the sponsor signature hash and exit.
+          
+          Computes the `fee_payer_signature_hash` for the transaction so that a
+          sponsor knows what hash to sign. The transaction is not sent.
+
+      --tempo.key-id <KEY_ID>
+          Access key ID for Tempo Keychain signature transactions.
+          
+          Used during gas estimation to override the key_id that would normally
+          be recovered from the signature.
+
+      --tempo.expiring-nonce
+          Enable expiring nonce mode for Tempo transactions.
+          
+          Sets nonce to 0 and nonce_key to U256::MAX, enabling time-bounded
+          transaction validity via `--tempo.valid-before` and
+          `--tempo.valid-after`.
+
+      --tempo.valid-before <VALID_BEFORE>
+          Upper bound timestamp for Tempo expiring nonce transactions.
+          
+          The transaction is only valid before this unix timestamp. Requires
+          `--tempo.expiring-nonce`.
+
+      --tempo.valid-after <VALID_AFTER>
+          Lower bound timestamp for Tempo expiring nonce transactions.
+          
+          The transaction is only valid after this unix timestamp. Requires
+          `--tempo.expiring-nonce`.
+
+      --session
+          Create a temporary Tempo wallet session for this script run
+
+      --session-root <ADDRESS>
+          Root account that authorizes the temporary session
+
+      --session-expires <DURATION>
+          Session lifetime, expressed as a duration like `10m`, `2h`, or `7d`
+
+      --session-scope <SCOPE>
+          Allowed call scope, in `TARGET[:SELECTORS[@RECIPIENTS]]` format
+
+      --session-target <ADDRESS>
+          Allowed call target for issue-style `--target ... --selector ...`
+          input
+
+      --session-selector <SELECTOR>
+          Function selector allowed for `--session-target`, such as
+          `register(address)`
+
+      --session-spend-limit <LIMIT>
+          Token spend limit, in `TOKEN:AMOUNT` or `TOKEN=AMOUNT` format
+
+      --session-interactive
+          Open an interactive prompt for the root private key
+
+      --session-private-key <RAW_PRIVATE_KEY>
+          Root private key that signs the session authorization
+
+      --session-mnemonic <MNEMONIC>
+          Root mnemonic phrase or mnemonic file path
+
+      --session-mnemonic-passphrase <PASSPHRASE>
+          Passphrase for `--session-mnemonic`
+
+      --session-hd-path <PATH>
+          Wallet derivation path for the root signer
+
+      --session-mnemonic-index <INDEX>
+          Mnemonic or hardware-wallet index for the root signer
+
+      --session-keystore <PATH>
+          Root keystore path
+
+      --session-account <ACCOUNT_NAME>
+          Root account name from the default keystore directory
+
+      --session-password <PASSWORD>
+          Root keystore password
+
+      --session-password-file <PATH>
+          Root keystore password file
+
+      --session-ledger
+          Use a Ledger as the root signer
+
+      --session-trezor
+          Use a Trezor as the root signer
 
       --skip-simulation
           Skips on-chain simulation
@@ -88,6 +325,15 @@ Options:
           Open the script in the debugger.
           
           Takes precedence over broadcast.
+
+      --debug-layout <DEBUG_LAYOUT>
+          Debugger layout to use
+
+          Possible values:
+          - auto:       Select horizontal or vertical layout from the terminal
+            size
+          - horizontal: Force the two-column debugger layout
+          - vertical:   Force the single-column debugger layout
 
       --dump <PATH>
           Dumps all debugger steps to file
@@ -131,43 +377,6 @@ Options:
           
           [env: ETH_TIMEOUT=]
 
-  -h, --help
-          Print help (see a summary with '-h')
-
-Display options:
-  -v, --verbosity...
-          Verbosity level of the log messages.
-          
-          Pass multiple times to increase the verbosity (e.g. -v, -vv, -vvv).
-          
-          Depending on the context the verbosity levels have different meanings.
-          
-          For example, the verbosity levels of the EVM are:
-          - 2 (-vv): Print logs for all tests.
-          - 3 (-vvv): Print execution traces for failing tests.
-          - 4 (-vvvv): Print execution traces for all tests, and setup traces
-          for failing tests.
-          - 5 (-vvvvv): Print execution and setup traces for all tests,
-          including storage changes and
-            backtraces with line numbers.
-
-  -q, --quiet
-          Do not print log messages
-
-      --json
-          Format log messages as JSON
-
-      --md
-          Format log messages as Markdown
-
-      --color <COLOR>
-          The color of the log messages
-
-          Possible values:
-          - auto:   Intelligently guess whether to use color output (default)
-          - always: Force color output
-          - never:  Force disable color output
-
 Cache options:
       --force
           Clear the cache and artifacts folder and recompile
@@ -176,8 +385,8 @@ Build options:
       --no-cache
           Disable the cache
 
-      --dynamic-test-linking
-          Enable dynamic test linking
+      --no-dynamic-test-linking
+          Disable dynamic test linking
 
       --skip <SKIP>...
           Skip building files whose names contain the given filter.
@@ -245,6 +454,12 @@ Compiler options:
           Activate the Solidity optimizer
           
           [possible values: true, false]
+
+      --experimental
+          Enable Solidity's experimental mode.
+          
+          This passes `--experimental` to solc, which is required by Solidity
+          0.8.35+ for experimental features.
 
       --optimizer-runs <RUNS>
           The number of runs specifies roughly how often each opcode of the
@@ -407,7 +622,7 @@ Wallet options - remote:
           
           See: [https://docs.turnkey.com/getting-started/quickstart](https://docs.turnkey.com/getting-started/quickstart)
 
-Wallet options - browser:
+Wallet options - browser wallet:
       --browser
           Use a browser wallet
 
@@ -420,29 +635,66 @@ Wallet options - browser:
           Whether to open the browser for wallet connection
 
 EVM options:
-  -f, --fork-url <URL>
-          Fetch state over a remote endpoint instead of starting from an empty
-          state.
+  -r, --rpc-url <URL>
+          The RPC endpoint
           
-          If you want to fetch state from a specific block number, see
-          --fork-block-number.
+          [aliases: --fork-url]
+
+  -k, --insecure
+          Allow insecure RPC connections (accept invalid HTTPS certificates).
           
-          [aliases: --rpc-url]
+          When the provider's inner runtime transport variant is HTTP, this
+          configures the reqwest client to accept invalid certificates.
+
+      --rpc-timeout <RPC_TIMEOUT>
+          Timeout for the RPC request in seconds.
+          
+          The specified timeout will be used to override the default timeout for
+          RPC requests.
+          
+          Default value: 45
+          
+          [env: ETH_RPC_TIMEOUT=]
+
+      --no-proxy
+          Disable automatic proxy detection.
+          
+          Use this in sandboxed environments (e.g., Cursor IDE sandbox, macOS
+          App Sandbox) where system proxy detection causes crashes. When
+          enabled, HTTP_PROXY/HTTPS_PROXY environment variables and system proxy
+          settings will be ignored.
+
+      --compute-units-per-second <CUPS>
+          Sets the number of assumed available compute units per second for this
+          provider.
+          
+          default value: 330
+          
+          See also
+          [https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second](https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second)
+
+      --no-rpc-rate-limit
+          Disables rate limiting for this node's provider.
+          
+          See also
+          [https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second](https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second)
+          
+          [aliases: --no-rate-limit]
 
       --fork-block-number <BLOCK>
           Fetch state from a specific block number over a remote endpoint.
           
-          See --fork-url.
+          See --rpc-url.
 
       --fork-retries <RETRIES>
           Number of retries.
           
-          See --fork-url.
+          See --rpc-url.
 
       --fork-retry-backoff <BACKOFF>
           Initial retry backoff on encountering errors.
           
-          See --fork-url.
+          See --rpc-url.
 
       --no-storage-caching
           Explicitly disables the use of RPC caching.
@@ -451,7 +703,7 @@ EVM options:
           
           This flag overrides the project's configuration file.
           
-          See --fork-url.
+          See --rpc-url.
 
       --initial-balance <BALANCE>
           The initial balance of deployed test contracts
@@ -473,24 +725,6 @@ EVM options:
       --create2-deployer <ADDRESS>
           The CREATE2 deployer address to use, this will override the one in the
           config
-
-Fork config:
-      --compute-units-per-second <CUPS>
-          Sets the number of assumed available compute units per second for this
-          provider
-          
-          default value: 330
-          
-          See also --fork-url and
-          [https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second](https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second)
-
-      --no-rpc-rate-limit
-          Disables rate limiting for this node's provider.
-          
-          See also --fork-url and
-          [https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second](https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second)
-          
-          [aliases: --no-rate-limit]
 
 Executor environment config:
       --code-size-limit <CODE_SIZE>
@@ -555,6 +789,9 @@ Executor environment config:
           context, enabling more precise gas accounting and transaction state
           changes
 
+      --no-isolate
+          Whether to disable isolation of calls
+
       --retries <RETRIES>
           Number of attempts for retrying verification
           
@@ -564,6 +801,15 @@ Executor environment config:
           Optional delay to apply in between verification attempts, in seconds
           
           [default: 5]
+
+Networks:
+  -n, --network <NETWORK>
+          Enable a specific network family
+          
+          [possible values: ethereum, tempo]
+
+      --celo
+          Enable Celo network features
 
 Verifier options:
       --verifier <VERIFIER>
@@ -576,8 +822,6 @@ Verifier options:
           - oklink
           - custom:     Custom verification provider, requires compatibility
             with the Etherscan API
-          
-          [default: sourcify]
 
       --verifier-api-key <VERIFIER_API_KEY>
           The verifier API KEY, if using a custom provider

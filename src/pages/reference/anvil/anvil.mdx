@@ -46,6 +46,12 @@ Options:
           If the value is a directory, the state will be written to
           `<VALUE>/state.json`.
 
+      --fund-accounts <ADDRESS:AMOUNT>...
+          Fund specific accounts with custom balances on startup.
+          
+          Accepts multiple address:balance pairs where balance is in ETH.
+          Example: --fund-accounts 0x1234...5678:1000 0xabcd...ef01:5000
+
   -h, --help
           Print help (see a summary with '-h')
 
@@ -82,8 +88,13 @@ Options:
           
           Note that `prune_history` will overwrite `max_persisted_states` to 0.
 
+      --max-transactions <MAX_TRANSACTIONS>
+          Maximum number of transactions in a block
+
       --mixed-mining
-          
+          Enable mixed mining mode. Blocks are mined on a timer (set by
+          `--block-time`), but also whenever a transaction is submitted.
+          Requires `--block-time` to be set
 
       --mnemonic-random [<MNEMONIC_RANDOM>]
           Automatically generates a BIP39 mnemonic phrase, and derives accounts
@@ -237,6 +248,10 @@ Fork config:
           number like `http://localhost:8545@1400000` or use the
           `--fork-block-number` argument.
           
+          Multiple `--fork-url` flags can be provided to distribute requests
+          across endpoints using round-robin load balancing. On failure, the
+          retry layer rotates to the next endpoint.
+          
           [aliases: --rpc-url]
 
       --fork-block-number <BLOCK>
@@ -261,7 +276,8 @@ Fork config:
           See --fork-url.
 
       --fork-retry-backoff <BACKOFF>
-          Initial retry backoff on encountering errors.
+          Initial retry backoff, in milliseconds, when fork RPC requests encounter errors.
+          If omitted, the provider default is used.
           
           See --fork-url.
 
@@ -377,8 +393,10 @@ Networks:
       --celo
           Enable Celo network features
 
-      --optimism
-          Enable Optimism network features
+  -n, --network <NETWORK>
+          Enable a specific network family
+          
+          [possible values: ethereum, tempo]
 ```
 
 :::

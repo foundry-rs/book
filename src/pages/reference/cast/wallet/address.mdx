@@ -109,17 +109,22 @@ Wallet options - remote:
           
           See: [https://docs.turnkey.com/getting-started/quickstart](https://docs.turnkey.com/getting-started/quickstart)
 
-Wallet options - browser:
-      --browser
-          Use a browser wallet
-
-      --browser-port <PORT>
-          Port for the browser wallet server
+Wallet options - Tempo:
+      --tempo.access-key <PRIVATE_KEY>
+          Tempo access key private key.
           
-          [default: 9545]
+          When set, the transaction is signed with this access key on behalf of
+          `--tempo.root-account`.
+          
+          [env: TEMPO_ACCESS_KEY=]
 
-      --browser-disable-open
-          Whether to open the browser for wallet connection
+      --tempo.root-account <ADDRESS>
+          Tempo root account address (the `from` address for keychain
+          transactions).
+          
+          Required when `--tempo.access-key` is set.
+          
+          [env: TEMPO_ROOT_ACCOUNT=]
 
 Display options:
       --color <COLOR>

@@ -1,0 +1,285 @@
+## cast keychain doctor
+
+Diagnose access-key signing issues end-to-end.
+
+Walks the local registry, RPC, and on-chain key state and prints a green
+checklist. The first failing step turns red and includes a one-line hint.
+
+:::terminal
+
+```bash
+$ cast keychain doctor --help
+```
+
+```txt
+Usage: cast keychain doctor [OPTIONS] [KEY_ADDRESS]
+
+Arguments:
+  [KEY_ADDRESS]
+          The key address to diagnose. Optional when `--root-account` is
+          provided
+
+Options:
+      --root-account <ADDRESS>
+          Root account address. Required if the key cannot be resolved from the
+          local registry, or to diagnose the default key for a sender
+          
+          [aliases: --wallet-address]
+
+      --to <ADDRESS>
+          Hypothetical call target for the TIP-1011 scope check
+
+      --selector <SELECTOR>
+          Function selector for the TIP-1011 scope check (hex `0x12345678`,
+          known shorthand like `transfer`, or full signature like
+          `foo(uint256)`)
+
+      --recipient <ADDRESS>
+          Recipient address for the TIP-1011 scope check (per-selector recipient
+          list)
+
+      --fee-token <TOKEN>
+          Fee token to check the root account balance for. Defaults to PathUSD
+
+  -h, --help
+          Print help (see a summary with '-h')
+
+  -j, --threads <THREADS>
+          Number of threads to use. Specifying 0 defaults to the number of
+          logical cores
+          
+          [aliases: --jobs]
+
+Tempo:
+      --tempo.session <SESSION_ID>
+          Use a live Tempo wallet session for signing.
+          
+          When set, Foundry resolves the session from
+          `$TEMPO_HOME/wallet/sessions.toml` and signs Tempo transactions with
+          the session's temporary access key on behalf of its root account.
+
+      --tempo.fee-token <FEE_TOKEN>
+          Fee token address, numeric TIP-20 token id, or known symbol for Tempo
+          transactions.
+          
+          When set, builds a Tempo (type 0x76) transaction that pays gas fees in
+          the specified token. Known symbols are PathUSD, AlphaUSD, BetaUSD, and
+          ThetaUSD.
+          
+          If this is not set, the fee token is chosen according to network
+          rules. See the Tempo docs for more information.
+
+      --tempo.expires <SECONDS>
+          Opt into TIP-1009 expiring-nonce mode with a validity window.
+          
+          Convenience flag that combines `--tempo.expiring-nonce` with a
+          relative `--tempo.valid-before`. Sets nonce_key = U256::MAX, nonce =
+          0, and valid_before = now + seconds.
+          
+          Maximum value is 30 seconds. The transaction must be mined before the
+          deadline or it becomes permanently invalid, giving safe retry
+          semantics: retries produce a fresh tx hash and the old tx can never
+          land late.
+
+      --tempo.nonce-key <NONCE_KEY>
+          Nonce key for Tempo parallelizable nonces.
+          
+          When set, builds a Tempo (type 0x76) transaction with the specified
+          nonce key, allowing multiple transactions with the same nonce but
+          different keys to be executed in parallel. If not set, the protocol
+          nonce key (0) will be used.
+          
+          For more information see
+          [https://docs.tempo.xyz/protocol/transactions/spec-tempo-transaction#parallelizable-nonces](https://docs.tempo.xyz/protocol/transactions/spec-tempo-transaction#parallelizable-nonces).
+
+      --tempo.lane <NAME>
+          Named nonce lane for Tempo parallelizable nonces.
+          
+          Resolves a friendly lane name (e.g. `deploy`, `payments`) to a
+          `nonce_key` via a shared lanes file (default: `tempo.lanes.toml` at
+          the project root). The lanes file is a TOML map of `name = <U256>`
+          entries, e.g.:
+          
+          ```toml deploy   = 1 ops      = 2 payments = 3 ```
+          
+          Mutually exclusive with `--tempo.nonce-key`.
+
+      --tempo.lanes-file <PATH>
+          Path to the Tempo lanes file used by `--tempo.lane`.
+          
+          Defaults to `tempo.lanes.toml` at the project root.
+
+      --tempo.sponsor <ADDRESS>
+          Sponsor (fee payer) address for Tempo sponsored transactions
+
+      --tempo.sponsor-signer <SIGNER>
+          Sign Tempo sponsor digests in-band with the given signer URI.
+          
+          Supported forms include `env://VAR`, `keystore://PATH`,
+          `account://NAME`, `ledger://`, `trezor://`, `aws://`, `gcp://`,
+          `turnkey://`, and `private-key://KEY`.
+
+      --tempo.sponsor-sig <SPONSOR_SIG>
+          Sponsor (fee payer) signature for Tempo sponsored transactions.
+          
+          The sponsor signs the `fee_payer_signature_hash` to commit to paying
+          gas fees on behalf of the sender. Provide as a hex-encoded signature.
+
+      --sponsor-url <URL>
+          Remote sponsor (fee payer) service URL.
+          
+          When set, the user-signed transaction is forwarded to this URL via
+          `eth_signRawTransaction`. The service adds its fee payer signature and
+          returns the fully-sponsored transaction, which is then submitted via
+          the regular RPC. No local sponsor key is required.
+          
+          Example: `cast send 0x... --sponsor-url
+          https://sponsor.tempo.xyz/tp_abc123`
+          
+          [env: TEMPO_SPONSOR_URL=]
+
+      --tempo.print-sponsor-hash
+          Print the sponsor signature hash and exit.
+          
+          Computes the `fee_payer_signature_hash` for the transaction so that a
+          sponsor knows what hash to sign. The transaction is not sent.
+
+      --tempo.key-id <KEY_ID>
+          Access key ID for Tempo Keychain signature transactions.
+          
+          Used during gas estimation to override the key_id that would normally
+          be recovered from the signature.
+
+      --tempo.expiring-nonce
+          Enable expiring nonce mode for Tempo transactions.
+          
+          Sets nonce to 0 and nonce_key to U256::MAX, enabling time-bounded
+          transaction validity via `--tempo.valid-before` and
+          `--tempo.valid-after`.
+
+      --tempo.valid-before <VALID_BEFORE>
+          Upper bound timestamp for Tempo expiring nonce transactions.
+          
+          The transaction is only valid before this unix timestamp. Requires
+          `--tempo.expiring-nonce`.
+
+      --tempo.valid-after <VALID_AFTER>
+          Lower bound timestamp for Tempo expiring nonce transactions.
+          
+          The transaction is only valid after this unix timestamp. Requires
+          `--tempo.expiring-nonce`.
+
+Rpc options:
+  -r, --rpc-url <URL>
+          The RPC endpoint
+          
+          [aliases: --fork-url]
+
+  -k, --insecure
+          Allow insecure RPC connections (accept invalid HTTPS certificates).
+          
+          When the provider's inner runtime transport variant is HTTP, this
+          configures the reqwest client to accept invalid certificates.
+
+      --rpc-timeout <RPC_TIMEOUT>
+          Timeout for the RPC request in seconds.
+          
+          The specified timeout will be used to override the default timeout for
+          RPC requests.
+          
+          Default value: 45
+          
+          [env: ETH_RPC_TIMEOUT=]
+
+      --no-proxy
+          Disable automatic proxy detection.
+          
+          Use this in sandboxed environments (e.g., Cursor IDE sandbox, macOS
+          App Sandbox) where system proxy detection causes crashes. When
+          enabled, HTTP_PROXY/HTTPS_PROXY environment variables and system proxy
+          settings will be ignored.
+
+      --compute-units-per-second <CUPS>
+          Sets the number of assumed available compute units per second for this
+          provider.
+          
+          default value: 330
+          
+          See also
+          [https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second](https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second)
+
+      --no-rpc-rate-limit
+          Disables rate limiting for this node's provider.
+          
+          See also
+          [https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second](https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second)
+          
+          [aliases: --no-rate-limit]
+
+      --flashbots
+          Use the Flashbots RPC URL with fast mode
+          ([https://rpc.flashbots.net/fast](https://rpc.flashbots.net/fast)).
+          
+          This shares the transaction privately with all registered builders.
+          
+          See:
+          [https://docs.flashbots.net/flashbots-protect/quick-start#faster-transactions](https://docs.flashbots.net/flashbots-protect/quick-start#faster-transactions)
+
+      --jwt-secret <JWT_SECRET>
+          JWT Secret for the RPC endpoint.
+          
+          The JWT secret will be used to create a JWT for an RPC. For example,
+          the following can be used to simulate a CL `engine_forkchoiceUpdated`
+          call:
+          
+          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2
+          '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
+          
+          [env: ETH_RPC_JWT_SECRET=]
+
+      --rpc-headers <RPC_HEADERS>
+          Specify custom headers for RPC requests
+          
+          [env: ETH_RPC_HEADERS=]
+
+      --curl
+          Print the equivalent curl command instead of making the RPC request
+
+Display options:
+      --color <COLOR>
+          The color of the log messages
+
+          Possible values:
+          - auto:   Intelligently guess whether to use color output (default)
+          - always: Force color output
+          - never:  Force disable color output
+
+      --json
+          Format log messages as JSON
+
+      --md
+          Format log messages as Markdown
+
+  -q, --quiet
+          Do not print log messages
+
+  -v, --verbosity...
+          Verbosity level of the log messages.
+          
+          Pass multiple times to increase the verbosity (e.g. -v, -vv, -vvv).
+          
+          Depending on the context the verbosity levels have different meanings.
+          
+          For example, the verbosity levels of the EVM are:
+          - 2 (-vv): Print logs for all tests.
+          - 3 (-vvv): Print execution traces for failing tests.
+          - 4 (-vvvv): Print execution traces for all tests, and setup traces
+          for failing tests.
+          - 5 (-vvvvv): Print execution and setup traces for all tests,
+          including storage changes and
+            backtraces with line numbers.
+```
+
+:::

@@ -298,6 +298,259 @@ function tableSwapTest(Wallet memory wallet, Swap memory swap) public pure {
 
 The same naming requirement mentioned above is relevant here.
 
+### Mutation testing
+
+Mutation testing checks the strength of your test suite by making small changes, or mutants, to your source code and re-running your tests. A mutant is killed when at least one test fails. A mutant survives when the changed code still passes the selected tests.
+
+:::info
+Mutation testing is currently an MVP. It is ready for early use and feedback, but the workflow, reporting, and supported project configurations are still expected to evolve.
+:::
+
+Run mutation testing with `forge test --mutate`:
+
+```bash
+$ forge test --mutate
+```
+
+Forge first runs the selected tests as a baseline. Mutation testing only starts if the baseline has at least one passing test and no failing tests.
+
+#### Selecting files
+
+Pass paths to mutate only those files:
+
+```bash
+$ forge test --mutate src/Vault.sol src/Token.sol
+```
+
+Use `--mutate-path` to select files with a glob pattern:
+
+```bash
+$ forge test --mutate --mutate-path 'src/**/*.sol'
+```
+
+Use `--mutate-contract` to select contracts by name:
+
+```bash
+$ forge test --mutate --mutate-contract 'Vault|Token'
+```
+
+`--mutate-path` and `--mutate-contract` cannot be combined. `--mutate-path` also cannot be combined with explicit paths passed to `--mutate`.
+
+#### Selecting tests
+
+Regular test filters still select the baseline tests and the tests run against each mutant:
+
+```bash
+$ forge test --mutate src/Vault.sol --match-contract VaultTest
+```
+
+This lets you scope a mutation run to the tests that should detect changes in a specific contract.
+
+#### Parallel workers
+
+Forge runs mutants in parallel. By default, it uses the number of logical CPU cores.
+
+Set the worker count with `--mutation-jobs`:
+
+```bash
+$ forge test --mutate src/Vault.sol --mutation-jobs 4
+```
+
+Passing `0` also uses the number of logical CPU cores:
+
+```bash
+$ forge test --mutate src/Vault.sol --mutation-jobs 0
+```
+
+Parallel mutation testing uses isolated temporary workspaces per mutant. Dependency directories such as `lib`, `node_modules`, and `dependencies` are symlinked into those workspaces for performance.
+
+#### Timeouts
+
+Use `--mutation-timeout` to set a best-effort wall-clock timeout, in seconds, for each mutant:
+
+```bash
+$ forge test --mutate src/Vault.sol --mutation-timeout 30
+```
+
+Timed-out mutants are reported separately from killed, survived, skipped, and invalid mutants.
+
+You can also configure the timeout in `foundry.toml`:
+
+```toml [foundry.toml]
+[mutation]
+timeout = 30
+```
+
+#### Operators
+
+Mutation testing supports these operator groups:
+
+- `assembly`
+- `assignment`
+- `binary-op`
+- `delete-expression`
+- `elim-delegate`
+- `require`
+- `unary-op`
+
+All operator groups are enabled by default. Exclude specific operators in `foundry.toml`:
+
+```toml [foundry.toml]
+[mutation]
+exclude_operators = ["assembly", "elim-delegate"]
+```
+
+Use `include_operators` to re-enable operators that are excluded by default:
+
+```toml [foundry.toml]
+[mutation]
+include_operators = ["assembly"]
+```
+
+#### Reports
+
+The report includes counts for:
+
+- **Survived**: mutants that passed the selected tests
+- **Killed**: mutants that caused a test failure
+- **Invalid**: mutants that could not be compiled or run
+- **Skipped**: redundant mutants on a span or expression after another mutant in that span survived
+- **Timed out**: mutants that exceeded `mutation.timeout` or `--mutation-timeout`
+
+Skipped and invalid counts can vary with `--mutation-jobs`, because higher parallelism can start more mutants before a survivor is known.
+
+The mutation score is:
+
+```text
+killed / (killed + survived)
+```
+
+Focus on survived mutants first. Each survived mutant points to the source location and mutation that your tests did not catch.
+
+Survived mutants do not currently make `forge test --mutate` fail, and there is no threshold flag yet. To gate mutation testing in CI, run with `--json` and enforce your own threshold from the JSON output.
+
+```bash
+$ forge test --mutate --json
+```
+
+The JSON output has this shape:
+
+```json
+{
+  "summary": {
+    "total": 12,
+    "killed": 8,
+    "survived": 2,
+    "invalid": 1,
+    "skipped": 1,
+    "timed_out": 0,
+    "mutation_score": 80.0,
+    "duration_secs": 12.34
+  },
+  "survived_mutants": {
+    "src/Vault.sol": [
+      {
+        "line": 42,
+        "column": 17,
+        "original": ">",
+        "mutant": ">="
+      }
+    ]
+  }
+}
+```
+
+#### Limitations
+
+Mutation testing cannot be combined with `--list`, `--debug`, `--flamegraph`, `--flamechart`, `--junit`, `--dump`, `--showmap`, or `--showmap-out`.
+
+Mutation testing also rejects projects with `ffi = true`, write-capable file-system permissions that can reach symlinked dependency directories, or inline per-test network overrides.
+
+### Symbolic testing
+
+Symbolic testing explores your code with symbolic inputs instead of concrete ones, searching feasible execution paths within the current symbolic EVM model and configured bounds for a counterexample that violates a property. When Forge reports a failure, it first replays the concrete input or invariant sequence through the normal executor, so the failure is backed by a concrete example.
+
+:::info
+Symbolic testing is currently an MVP. It is ready for early use and feedback, but the modeled EVM surface, configuration, and reporting are still expected to evolve.
+:::
+
+Symbolic tests are Solidity functions named `check*` or `prove*`. They are only discovered when symbolic mode is enabled with `--symbolic`:
+
+```solidity
+contract MathSymbolicTest is Test {
+    function check_average(uint256 a, uint256 b) external pure {
+        uint256 average;
+        unchecked {
+            average = (a + b) / 2;
+        }
+
+        // Forge should find an overflow counterexample.
+        assertGe(average, a <= b ? a : b);
+    }
+}
+```
+
+Run it with:
+
+```bash
+$ forge test --symbolic --match-test check_average
+```
+
+Symbolic testing requires an SMT solver to be installed. The default solver is `z3`:
+
+```bash
+$ brew install z3        # macOS
+$ sudo apt-get install z3 # Ubuntu
+```
+
+#### Writing symbolic tests
+
+Function parameters become symbolic inputs derived from the ABI, and the executor explores the feasible paths:
+
+- `require(...)` and `vm.assume(...)` prune paths when their condition is false.
+- `assert`, forge-std assertions, and DSTest failure signals are treated as properties to disprove.
+- User reverts terminate the current path.
+
+When `--symbolic` is enabled, `invariant*` and `statefulFuzz*` functions are explored as bounded symbolic call sequences instead of using the normal fuzzer.
+
+#### Results
+
+Forge reports symbolic outcomes as:
+
+- **`PASS`**: every explored path finished without a feasible failure under the currently modeled semantics and configured bounds.
+- **`FAIL`**: the solver found a failing input or invariant sequence, and Forge replayed it concretely before reporting it.
+- **`FAIL: incomplete symbolic execution (...)` / `Incomplete`**: Forge could not complete the search or validate a counterexample. Treat this as "not established", not as a proof.
+
+A `PASS` is scoped to the current symbolic model and configured bounds; it does not cover skipped dynamic lengths, deeper invariant sequences, larger loop bounds, unmodeled behavior, arbitrary unknown external code, or cryptographic preimage/collision properties.
+
+#### Configuration
+
+Tune the exploration bounds and solver in `foundry.toml`:
+
+```toml [foundry.toml]
+[profile.default.symbolic]
+solver = "z3"
+timeout = 30
+max_depth = 10000
+max_paths = 1024
+max_solver_queries = 10000
+```
+
+Symbolic exploration is bounded by configuration, including `symbolic.max_depth`, `symbolic.max_paths`, `symbolic.max_solver_queries`, dynamic calldata length settings, and `symbolic.invariant_depth`.
+
+Bounds can also be set per test with inline `forge-config` annotations:
+
+```solidity
+/// forge-config: default.symbolic.invariant_depth = 4
+function invariant_counterNeverFive() public view {
+    assertTrue(counter.value() != 5);
+}
+```
+
+#### Limitations
+
+The symbolic engine is not a complete revm-equivalent EVM model. Unsupported constructs report `incomplete` rather than a proof, and some supported semantics are bounded or approximate. Notable gaps include gas accounting, Cancun+ `SELFDESTRUCT`, arbitrary unknown external code, and cryptographic preimage or collision properties. The exact unsupported-feature reason is preserved in the test output.
+
 ### Testing reverts
 
 Use `vm.expectRevert(){:solidity}` to test that a call reverts:

@@ -1,0 +1,85 @@
+---
+description: Missing events for arithmetic state changes
+---
+
+## Missing events for arithmetic state changes
+
+**Severity**: `Low`
+**ID**: `missing-events-arithmetic`
+
+Flags protected entry-point functions that update dynamic integer state used in arithmetic by an
+unprotected function without emitting an event on the update path.
+
+### What it does
+
+Looks for scalar `int` and `uint` state variables that are:
+
+1. written by a public or external state-mutating function with access control;
+2. assigned from a dynamic value, directly or through local aliases or internal helpers, or changed
+   with an arithmetic assignment or increment/decrement;
+3. used in arithmetic by an unprotected public or external function; and
+4. changed along a path where the pending write is not followed by an event.
+
+Dynamic values include function inputs, mutable state variables, built-ins such as `block.timestamp`,
+and call results.
+
+The lint intentionally skips fixed-value writes, constructors, unprotected setters, mappings,
+arrays, and update paths where the write is followed by an event directly, through an internal
+helper, or after `_` in a modifier. These limits keep the rule focused on configuration-style
+arithmetic parameters and avoid noisy warnings for updates that are not clearly part of an
+externally visible calculation.
+
+### Why is this bad?
+
+Off-chain monitors, users, and auditors often rely on events to track changes to critical contract
+parameters such as prices, fees, caps, and rates. If a protected function silently changes a
+parameter used in calculations, downstream behavior can change without an easy audit trail.
+
+### Example
+
+#### Bad
+
+```solidity
+contract Market {
+    address public owner = msg.sender;
+    uint256 public buyPrice;
+
+    modifier onlyOwner() {
+        require(msg.sender == owner, "not owner");
+        _;
+    }
+
+    function setBuyPrice(uint256 newBuyPrice) external onlyOwner {
+        buyPrice = newBuyPrice;
+    }
+
+    function quote(uint256 amount) external view returns (uint256) {
+        return amount / buyPrice;
+    }
+}
+```
+
+#### Good
+
+```solidity
+contract Market {
+    address public owner = msg.sender;
+    uint256 public buyPrice;
+
+    event BuyPriceUpdated(uint256 newBuyPrice);
+
+    modifier onlyOwner() {
+        require(msg.sender == owner, "not owner");
+        _;
+    }
+
+    function setBuyPrice(uint256 newBuyPrice) external onlyOwner {
+        buyPrice = newBuyPrice;
+        emit BuyPriceUpdated(newBuyPrice);
+    }
+
+    function quote(uint256 amount) external view returns (uint256) {
+        return amount / buyPrice;
+    }
+}
+```

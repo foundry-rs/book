@@ -1,0 +1,71 @@
+## cast key-authorization inspect
+
+Decode and inspect a Tempo key authorization (signed or unsigned).
+
+Accepts the hex RLP from `encode` (unsigned) or `sign` (signed) and prints its
+fields, including the T6 `is_admin`/`account` fields and the recovered signer
+for signed input.
+
+:::terminal
+
+```bash
+$ cast key-authorization inspect --help
+```
+
+```txt
+Usage: cast key-authorization inspect [OPTIONS] <AUTHORIZATION>
+
+Arguments:
+  <AUTHORIZATION>
+          Hex-encoded RLP key authorization (signed or unsigned)
+
+Options:
+      --account <ADDRESS>
+          Expected bound account; rejects a mismatched or replayed account-bound
+          authorization
+
+  -h, --help
+          Print help (see a summary with '-h')
+
+  -j, --threads <THREADS>
+          Number of threads to use. Specifying 0 defaults to the number of
+          logical cores
+          
+          [aliases: --jobs]
+
+Display options:
+      --color <COLOR>
+          The color of the log messages
+
+          Possible values:
+          - auto:   Intelligently guess whether to use color output (default)
+          - always: Force color output
+          - never:  Force disable color output
+
+      --json
+          Format log messages as JSON
+
+      --md
+          Format log messages as Markdown
+
+  -q, --quiet
+          Do not print log messages
+
+  -v, --verbosity...
+          Verbosity level of the log messages.
+          
+          Pass multiple times to increase the verbosity (e.g. -v, -vv, -vvv).
+          
+          Depending on the context the verbosity levels have different meanings.
+          
+          For example, the verbosity levels of the EVM are:
+          - 2 (-vv): Print logs for all tests.
+          - 3 (-vvv): Print execution traces for failing tests.
+          - 4 (-vvvv): Print execution traces for all tests, and setup traces
+          for failing tests.
+          - 5 (-vvvvv): Print execution and setup traces for all tests,
+          including storage changes and
+            backtraces with line numbers.
+```
+
+:::

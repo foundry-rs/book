@@ -99,6 +99,8 @@ View logs with `-vv` or higher:
 $ forge test -vv
 ```
 
+For structured output, Foundry also supports `console.table`, which can make repeated values easier to scan than a long sequence of `console.log` lines.
+
 ### Labeling addresses
 
 Make traces more readable by labeling addresses:
@@ -130,3 +132,13 @@ $ forge test -vvv
 :::
 
 The trace shows the call hierarchy with the revert bubbling up, and the **Backtrace** pinpoints the exact location in your code.
+
+### Inspecting inheritance linearization
+
+When debugging overrides in a multiple-inheritance hierarchy, inspect the method-resolution order directly:
+
+```bash
+$ forge inspect src/MyContract.sol:MyContract linearization
+```
+
+This shows the order Solidity uses to resolve inherited functions, which is often the fastest way to understand why a particular override or `super` call is being selected.

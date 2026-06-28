@@ -1,7 +1,7 @@
 // deno-fmt-ignore-file
 // biome-ignore format: generated types do not need formatting
 // prettier-ignore
-import type { PathsForPages, GetConfigResponse } from 'waku/router';
+import type { PathsForPages } from 'waku/router';
 
 
 // prettier-ignore
@@ -10,7 +10,6 @@ type Page =
 | { path: '/best-practices'; render: 'static' }
 | { path: '/'; render: 'static' }
 | { path: '/reference/README'; render: 'static' }
-| { path: '/reference/ds-test'; render: 'static' }
 | { path: '/reference/forge-std/abs'; render: 'static' }
 | { path: '/reference/forge-std/arithmeticError'; render: 'static' }
 | { path: '/reference/forge-std/assertApproxEqAbs'; render: 'static' }
@@ -432,6 +431,7 @@ type Page =
 | { path: '/config/compiler'; render: 'static' }
 | { path: '/config/editors'; render: 'static' }
 | { path: '/config'; render: 'static' }
+| { path: '/config/mesc'; render: 'static' }
 | { path: '/config/profiles'; render: 'static' }
 | { path: '/config/testing'; render: 'static' }
 | { path: '/config/reference/README'; render: 'static' }

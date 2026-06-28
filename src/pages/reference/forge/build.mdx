@@ -32,11 +32,19 @@ Build options:
       --ignore-eip-3860
           Ignore initcode contract bytecode size limit introduced by EIP-3860
 
+      --no-lint
+          Skip the post-build lint step for this invocation.
+          
+          Equivalent to setting `lint_on_build = false` under `[lint]` in
+          foundry.toml, but only for the current command.
+          
+          [aliases: --skip-lint]
+
       --no-cache
           Disable the cache
 
-      --dynamic-test-linking
-          Enable dynamic test linking
+      --no-dynamic-test-linking
+          Disable dynamic test linking
 
       --skip <SKIP>...
           Skip building files whose names contain the given filter.
@@ -111,6 +119,12 @@ Compiler options:
           Activate the Solidity optimizer
           
           [possible values: true, false]
+
+      --experimental
+          Enable Solidity's experimental mode.
+          
+          This passes `--experimental` to solc, which is required by Solidity
+          0.8.35+ for experimental features.
 
       --optimizer-runs <RUNS>
           The number of runs specifies roughly how often each opcode of the

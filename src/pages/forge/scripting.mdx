@@ -48,6 +48,23 @@ Broadcast transactions to a network:
 $ forge script script/Deploy.s.sol --broadcast --rpc-url $RPC_URL
 ```
 
+### Using RPC aliases
+
+Define aliases in `foundry.toml` and pass the alias to `--rpc-url`:
+
+```toml [foundry.toml]
+[rpc_endpoints]
+sepolia = "${SEPOLIA_RPC_URL}"
+```
+
+```bash
+$ forge script script/Deploy.s.sol --broadcast --rpc-url sepolia
+```
+
+:::note
+`--chain` only sets the EVM `block.chainid`. It does not select an RPC endpoint. Use `--rpc-url` (with a URL or an alias from `[rpc_endpoints]`) to choose the network.
+:::
+
 ### Providing a private key
 
 :::code-group

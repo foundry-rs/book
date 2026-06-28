@@ -1,1 +1,1 @@
-test_WithdrawAsNotOwner
+{"version":1,"failures":[{"contract":"test/FailingTest.t.sol:VaultTest","test":"test_WithdrawAsNotOwner"}]}

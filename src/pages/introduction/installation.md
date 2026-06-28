@@ -54,21 +54,25 @@ $ foundryup --install nightly
 $ foundryup --install 1.0.0
 ```
 
-```bash [Install from a specific commit]
-$ foundryup --install abc1234
+```bash [Install a specific nightly build]
+$ foundryup --install nightly-abc1234
 ```
 
 ```bash [Install from a branch]
 $ foundryup --branch master
 ```
 
-## Installing forks
+## Tempo support
 
-To install binaries from [Tempo's fork](https://github.com/tempoxyz/tempo-foundry):
+Tempo support ships in the main Foundry release as of v1.7.0. Install the normal toolchain:
 
 ```bash
-$ foundryup -n tempo
+$ foundryup
 ```
+
+The old `foundryup -n tempo` / `foundryup --network tempo` flow is deprecated and ignored.
+
+See the [Tempo guide](/guides/tempo) for project setup and [MPP-backed RPC endpoints](/guides/mpp) for paid RPC configuration.
 
 ## Binary verification
 
@@ -83,6 +87,10 @@ $ gh attestation verify --owner foundry-rs $(which forge)
 Use `foundryup --force` to skip verification and force a fresh install.
 
 ## Alternative installation methods
+
+:::note
+Foundry no longer publishes npm packages for `forge`, `cast`, `anvil`, or `chisel`. Use `foundryup`, GitHub releases, Docker, or build from source instead.
+:::
 
 ### Precompiled binaries
 

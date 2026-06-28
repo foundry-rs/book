@@ -1,0 +1,58 @@
+---
+description: Delegatecall inside payable loops
+---
+
+## Delegatecall inside payable loops
+
+**Severity**: `Low`
+**ID**: `delegatecall-loop`
+
+Flags `delegatecall` operations inside loops in externally callable payable functions.
+
+### What it does
+
+Reports `delegatecall` expressions that appear in the body of a `for`, `while`, or `do-while`
+loop when the enclosing function is `public payable` or `external payable`.
+
+### Why is this bad?
+
+`delegatecall` executes another contract's code in the caller's storage context and preserves the
+original `msg.sender` and `msg.value`. In a payable function, a loop can therefore expose the same
+`msg.value` to multiple delegatecalls even though Ether was only transferred once.
+
+If the delegated code accounts for `msg.value`, one transaction can credit the same payment
+multiple times or repeatedly mutate the caller's storage in unexpected ways.
+
+### Example
+
+#### Bad
+
+```solidity
+function batch(address[] calldata receivers) external payable {
+    for (uint256 i; i < receivers.length; ++i) {
+        (bool ok,) = address(this).delegatecall(
+            abi.encodeWithSignature("credit(address)", receivers[i])
+        );
+        require(ok);
+    }
+}
+```
+
+#### Good
+
+```solidity
+function batch(address[] calldata receivers) external payable {
+    uint256 share = msg.value / receivers.length;
+    for (uint256 i; i < receivers.length; ++i) {
+        _credit(receivers[i], share);
+    }
+}
+```
+
+### Recommendation
+
+Avoid `delegatecall` in payable loops. Prefer direct internal logic, or calculate the per-iteration
+value explicitly before the loop and pass that value to code that performs the accounting.
+
+If `delegatecall` is required, review the delegated code carefully and make sure it cannot reuse
+the same `msg.value` or unexpectedly modify caller storage across loop iterations.

@@ -36,6 +36,11 @@ Options:
           
           [env: ETH_RPC_URL=]
 
+  -n, --network <NETWORK>
+          Specify the network for correct encoding
+          
+          [possible values: ethereum, tempo]
+
   -e, --etherscan-api-key <KEY>
           The Etherscan (or equivalent) API key
           
@@ -77,8 +82,6 @@ Verifier options:
           - oklink
           - custom:     Custom verification provider, requires compatibility
             with the Etherscan API
-          
-          [default: sourcify]
 
       --verifier-api-key <VERIFIER_API_KEY>
           The verifier API KEY, if using a custom provider
