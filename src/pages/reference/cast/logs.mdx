@@ -114,7 +114,7 @@ Rpc options:
       --jwt-secret <JWT_SECRET>
           JWT Secret for the RPC endpoint.
           
-          The JWT secret will be used to create a JWT for a RPC. For example,
+          The JWT secret will be used to create a JWT for an RPC. For example,
           the following can be used to simulate a CL `engine_forkchoiceUpdated`
           call:
           
@@ -144,14 +144,6 @@ Display options:
 
       --json
           Format log messages as JSON
-
-      --machine
-          Activate the agent contract: disables color and wraps CLI-runtime
-          exits (parse / usage / help / version) in a structured envelope.
-          Per-command machine output (declared `output_mode`, progress and
-          prompt suppression, canonical exit codes) is adopted incrementally —
-          see `docs/agents/spec.md` §10. Mutually exclusive with `--json` and
-          `--md` to keep machine-mode output unambiguous
 
       --md
           Format log messages as Markdown
