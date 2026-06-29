@@ -90,11 +90,7 @@ function testSnapshotBytecodeSize() public {
 ### Gotchas
 
 :::warning
-Gas snapshots are not accurate unless using isolated test mode. Enable isolation with the `--isolate` flag or add this to your test:
-
-```solidity
-/// forge-config: default.isolate = true
-```
+Gas snapshots are not accurate unless using isolated test mode. Isolation is enabled by default; do not disable it when collecting or checking gas snapshots.
 :::
 
 :::note

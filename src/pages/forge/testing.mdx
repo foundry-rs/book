@@ -52,6 +52,12 @@ Key conventions:
 - Test functions start with `test_` or `test`
 - `setUp()` runs before each test
 
+### Call isolation
+
+Forge runs tests with call isolation enabled by default. In isolation mode, each top-level external call made by a test is executed as a separate transaction in a separate EVM context. This gives more precise gas accounting and transaction state changes for each call.
+
+Because those calls use separate transaction contexts, a test function is not always equivalent to one normal transaction with warmed accounts or storage slots shared across every external call in the function body. For example, repeated calls to the same contract can be charged as cold again under isolation. If a test intentionally asserts behavior that depends on warm accounts or slots carrying across repeated calls in one transaction, run it with `--no-isolate` or set `isolate = false` in `foundry.toml`.
+
 ### Traces
 
 Traces show a tree of all calls made during a test, helping you understand execution flow and debug failures.
