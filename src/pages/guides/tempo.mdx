@@ -88,13 +88,13 @@ See [`anvil`](/reference/anvil/anvil) for the full reference. Do not add histori
 
 ## Tempo transactions
 
-Tempo transaction options are available across [`cast send`](/reference/cast/send), [`cast mktx`](/reference/cast/mktx), [`cast batch-send`](/reference/cast/batch-send), [`forge create`](/reference/forge/create), and [`forge script`](/reference/forge/script). The guide gives a capability map; use the generated references for exact syntax.
+Tempo transaction options are available across [`cast send`](/reference/cast/send), [`cast mktx`](/reference/cast/mktx), [`cast batch-send`](/reference/cast/batch-send), [`forge create`](/reference/forge/create), and [`forge script`](/reference/forge/script). This guide gives a capability map; use the generated references for exact syntax.
 
 For protocol semantics, start with Tempo's [transaction specification](https://tempo.xyz/developers/docs/protocol/transactions/spec-tempo-transaction), [fee-token guide](https://tempo.xyz/developers/docs/guide/payments/pay-fees-in-any-stablecoin), [parallel transaction guide](https://tempo.xyz/developers/docs/guide/payments/send-parallel-transactions), and [fee sponsorship guide](https://tempo.xyz/developers/docs/guide/payments/sponsor-user-fees).
 
 ### Fee tokens
 
-Use `--tempo.fee-token` when a transaction should pay gas in a TIP-20 token:
+Use `--tempo.fee-token` when a transaction should pay gas in a TIP-20 token. The value can be an address, numeric TIP-20 token ID, or known token symbol:
 
 ```bash
 $ cast send $CONTRACT_ADDRESS "increment()" \
@@ -103,7 +103,7 @@ $ cast send $CONTRACT_ADDRESS "increment()" \
     --private-key $PRIVATE_KEY
 ```
 
-If the flag is omitted, Tempo transaction building follows the network's default fee-token rules. Use [`cast classify`](/reference/cast/classify) when you need to inspect a raw Tempo transaction's payment/general lane classification.
+If the flag is omitted, Tempo transaction building follows the network's [default fee-token rules](https://tempo.xyz/developers/docs/protocol/fees/spec-fee/#fee-token-preferences). Use [`cast classify`](/reference/cast/classify) when you need to inspect a raw Tempo transaction's payment/general lane classification.
 
 ### Nonce lanes and expiring nonces
 
@@ -135,9 +135,11 @@ Tempo sponsorship lets a fee payer sponsor another account's transaction. Foundr
 - `--sponsor-url` for a remote sponsor service.
 - `--tempo.print-sponsor-hash` when the sponsor needs the hash to sign out of band.
 
+For multi-transaction `forge script --broadcast` runs, prefer `--tempo.sponsor-signer` over a static `--tempo.sponsor-sig` so retries and later transactions can receive fresh sponsor signatures.
+
 ### Access-key and session signing
 
-For transaction-layer keychain flows, pass `--tempo.access-key` with `--tempo.root-account`. For wallet sessions, use `--tempo.session` to sign with a temporary session key from `$TEMPO_HOME/wallet/sessions.toml`.
+For transaction-layer keychain signing, pass `--tempo.access-key` with `--tempo.root-account`. Foundry signs on behalf of the root account using the access key. For wallet sessions, use `--tempo.session` to sign with a temporary session key from `$TEMPO_HOME/wallet/sessions.toml`.
 
 Scripts also support interactive session creation with `--session`, `--session-root`, `--session-expires`, `--session-scope`, `--session-target`, `--session-selector`, and `--session-spend-limit`. For persistent session setup outside a script run, see [`cast wallet session create`](/reference/cast/wallet/session/create).
 
