@@ -8,6 +8,7 @@ description: Expects a TIP-20 LogoURIUpdated event
 
 ```solidity
 function expectTip20LogoURIUpdated(address token, address updater, string calldata newLogoURI) external;
+function expectLogoURIUpdated(address token, address updater, string calldata newLogoURI) external;
 ```
 
 ### Description
@@ -15,6 +16,8 @@ function expectTip20LogoURIUpdated(address token, address updater, string callda
 Expects a TIP-20 `LogoURIUpdated(address indexed updater, string newLogoURI)` event from `token`.
 
 Use this before code that should update a TIP-20 logo URI. If the expected event is not emitted, the test fails.
+
+`expectLogoURIUpdated` is an alias with the same behavior.
 
 ### Parameters
 
@@ -33,5 +36,4 @@ token.setLogoURI("https://example.com/logo.png");
 
 ### Related Cheatcodes
 
-- [`expectLogoURIUpdated`](/reference/cheatcodes/expect-logo-uri-updated) - Shorter alias for this expectation
 - [`setTip20LogoURI`](/reference/cheatcodes/set-tip20-logo-uri) - Set a TIP-20 logo URI directly in storage

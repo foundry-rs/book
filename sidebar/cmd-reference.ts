@@ -16,7 +16,6 @@ export const cmdReference: SidebarItem[] = [
           { text: 'chainId', link: '/reference/cheatcodes/chain-id' },
           { text: 'store', link: '/reference/cheatcodes/store' },
           { text: 'setTip20LogoURI', link: '/reference/cheatcodes/set-tip20-logo-uri' },
-          { text: 'setLogoURI', link: '/reference/cheatcodes/set-logo-uri' },
           { text: 'load', link: '/reference/cheatcodes/load' },
           { text: 'etch', link: '/reference/cheatcodes/etch' },
           { text: 'deal', link: '/reference/cheatcodes/deal' },
@@ -61,7 +60,6 @@ export const cmdReference: SidebarItem[] = [
           { text: 'expectKeychainVerified', link: '/reference/cheatcodes/expect-keychain-verified' },
           { text: 'expectKeychainAdminVerified', link: '/reference/cheatcodes/expect-keychain-admin-verified' },
           { text: 'expectTip20LogoURIUpdated', link: '/reference/cheatcodes/expect-tip20-logo-uri-updated' },
-          { text: 'expectLogoURIUpdated', link: '/reference/cheatcodes/expect-logo-uri-updated' },
         ],
       },
       {

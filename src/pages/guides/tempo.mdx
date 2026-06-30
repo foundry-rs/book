@@ -235,8 +235,8 @@ When contracts call Tempo's `SignatureVerifier`, use the generated cheatcode ref
 
 Tempo also has testing helpers for TIP-20 logo behavior and implicit approvals:
 
-- [`setTip20LogoURI`](/reference/cheatcodes/set-tip20-logo-uri) and [`setLogoURI`](/reference/cheatcodes/set-logo-uri) set a TIP-20 token logo URI directly in storage.
-- [`expectTip20LogoURIUpdated`](/reference/cheatcodes/expect-tip20-logo-uri-updated) and [`expectLogoURIUpdated`](/reference/cheatcodes/expect-logo-uri-updated) assert the TIP-20 logo update event.
+- [`setTip20LogoURI`](/reference/cheatcodes/set-tip20-logo-uri), also available as `setLogoURI`, sets a TIP-20 token logo URI directly in storage.
+- [`expectTip20LogoURIUpdated`](/reference/cheatcodes/expect-tip20-logo-uri-updated), also available as `expectLogoURIUpdated`, asserts the TIP-20 logo update event.
 - [`isImplicitlyApproved`](/reference/cheatcodes/is-implicitly-approved) checks whether a spender is implicitly approved on the active Tempo hardfork.
 - [`assumeImplicitApproval`](/reference/cheatcodes/assume-implicit-approval) skips fuzz or invariant inputs unless a spender is implicitly approved.
 
