@@ -1,0 +1,35 @@
+---
+description: Sets a TIP-20 token logo URI directly in storage
+---
+
+## `setLogoURI`
+
+### Signature
+
+```solidity
+function setLogoURI(address token, string calldata newLogoURI) external;
+```
+
+### Description
+
+Sets a TIP-20 token's logo URI directly in storage.
+
+This is the shorter alias for [`setTip20LogoURI`](/reference/cheatcodes/set-tip20-logo-uri). It bypasses the token admin check, but still validates `newLogoURI` against Tempo T5 logo URI constraints.
+
+### Parameters
+
+| Parameter    | Type      | Description                |
+|--------------|-----------|----------------------------|
+| `token`      | `address` | The TIP-20 token to update |
+| `newLogoURI` | `string`  | The logo URI to store      |
+
+### Examples
+
+```solidity [test/Tip20Logo.t.sol]
+vm.setLogoURI(address(token), "ipfs://bafy...");
+```
+
+### Related Cheatcodes
+
+- [`setTip20LogoURI`](/reference/cheatcodes/set-tip20-logo-uri) - Explicit TIP-20 logo URI setter
+- [`expectLogoURIUpdated`](/reference/cheatcodes/expect-logo-uri-updated) - Assert a TIP-20 logo update event

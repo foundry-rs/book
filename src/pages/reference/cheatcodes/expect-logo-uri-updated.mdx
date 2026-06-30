@@ -1,0 +1,37 @@
+---
+description: Expects a TIP-20 LogoURIUpdated event
+---
+
+## `expectLogoURIUpdated`
+
+### Signature
+
+```solidity
+function expectLogoURIUpdated(address token, address updater, string calldata newLogoURI) external;
+```
+
+### Description
+
+Expects a TIP-20 `LogoURIUpdated(address indexed updater, string newLogoURI)` event from `token`.
+
+This is the shorter alias for [`expectTip20LogoURIUpdated`](/reference/cheatcodes/expect-tip20-logo-uri-updated). Use it before code that should update a TIP-20 logo URI.
+
+### Parameters
+
+| Parameter    | Type      | Description                  |
+|--------------|-----------|------------------------------|
+| `token`      | `address` | The TIP-20 token contract    |
+| `updater`    | `address` | The expected event updater   |
+| `newLogoURI` | `string`  | The expected new logo URI    |
+
+### Examples
+
+```solidity [test/Tip20Logo.t.sol]
+vm.expectLogoURIUpdated(address(token), admin, "");
+token.setLogoURI("");
+```
+
+### Related Cheatcodes
+
+- [`expectTip20LogoURIUpdated`](/reference/cheatcodes/expect-tip20-logo-uri-updated) - Explicit TIP-20 logo update event expectation
+- [`setLogoURI`](/reference/cheatcodes/set-logo-uri) - Set a TIP-20 logo URI directly in storage

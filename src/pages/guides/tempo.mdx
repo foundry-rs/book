@@ -88,7 +88,7 @@ See [`anvil`](/reference/anvil/anvil) for the full reference. Do not add histori
 
 ## Tempo transactions
 
-Tempo transaction options are available across [`cast send`](/reference/cast/send), [`cast mktx`](/reference/cast/mktx), [`cast batch-send`](/reference/cast/batch-send), [`forge create`](/reference/forge/create), and [`forge script`](/reference/forge/script). This guide gives a capability map; use the generated references for exact syntax.
+Tempo transaction options apply to [`cast send`](/reference/cast/send), [`cast mktx`](/reference/cast/mktx), [`forge create`](/reference/forge/create), and [`forge script`](/reference/forge/script). Native Tempo batching uses [`cast batch-mktx`](/reference/cast/batch-mktx) and [`cast batch-send`](/reference/cast/batch-send). This guide gives a capability map; use the generated references for exact syntax.
 
 For protocol semantics, start with Tempo's [transaction specification](https://tempo.xyz/developers/docs/protocol/transactions/spec-tempo-transaction), [fee-token guide](https://tempo.xyz/developers/docs/guide/payments/pay-fees-in-any-stablecoin), [parallel transaction guide](https://tempo.xyz/developers/docs/guide/payments/send-parallel-transactions), and [fee sponsorship guide](https://tempo.xyz/developers/docs/guide/payments/sponsor-user-fees).
 
@@ -125,6 +125,10 @@ $ forge script script/Deploy.s.sol \
 
 Use `--tempo.expiring-nonce` with `--tempo.valid-before` and `--tempo.valid-after` when a transaction should only be valid during a timestamp window. Use `--tempo.expires` for a relative validity window.
 
+### Batch transactions
+
+Use [`cast batch-mktx`](/reference/cast/batch-mktx) to build a signed or unsigned native Tempo batch transaction, and [`cast batch-send`](/reference/cast/batch-send) to publish one from call specs. `forge script --batch` broadcasts a script's remaining transactions as one native Tempo batch transaction.
+
 ### Sponsorship
 
 Tempo sponsorship lets a fee payer sponsor another account's transaction. Foundry supports:
@@ -141,7 +145,7 @@ For multi-transaction `forge script --broadcast` runs, prefer `--tempo.sponsor-s
 
 For transaction-layer keychain signing, pass `--tempo.access-key` with `--tempo.root-account`. Foundry signs on behalf of the root account using the access key. For wallet sessions, use `--tempo.session` to sign with a temporary session key from `$TEMPO_HOME/wallet/sessions.toml`.
 
-Scripts also support interactive session creation with `--session`, `--session-root`, `--session-expires`, `--session-scope`, `--session-target`, `--session-selector`, and `--session-spend-limit`. For persistent session setup outside a script run, see [`cast wallet session create`](/reference/cast/wallet/session/create).
+Scripts also support interactive session creation with `--session`, `--session-root`, `--session-expires`, `--session-scope`, `--session-target`, `--session-selector`, and `--session-spend-limit`. For persistent session setup outside a script run, see [`cast wallet session`](/reference/cast/wallet/session), [`cast wallet session create`](/reference/cast/wallet/session/create), and [`cast wallet session revoke`](/reference/cast/wallet/session/revoke).
 
 ## Tokens and virtual addresses
 
@@ -229,6 +233,13 @@ When contracts call Tempo's `SignatureVerifier`, use the generated cheatcode ref
 - [`expectKeychainVerified`](/reference/cheatcodes/expect-keychain-verified) asserts that code under test calls `SignatureVerifier.verifyKeychain`.
 - [`expectKeychainAdminVerified`](/reference/cheatcodes/expect-keychain-admin-verified) asserts that code under test calls `SignatureVerifier.verifyKeychainAdmin`.
 
+Tempo also has testing helpers for TIP-20 logo behavior and implicit approvals:
+
+- [`setTip20LogoURI`](/reference/cheatcodes/set-tip20-logo-uri) and [`setLogoURI`](/reference/cheatcodes/set-logo-uri) set a TIP-20 token logo URI directly in storage.
+- [`expectTip20LogoURIUpdated`](/reference/cheatcodes/expect-tip20-logo-uri-updated) and [`expectLogoURIUpdated`](/reference/cheatcodes/expect-logo-uri-updated) assert the TIP-20 logo update event.
+- [`isImplicitlyApproved`](/reference/cheatcodes/is-implicitly-approved) checks whether a spender is implicitly approved on the active Tempo hardfork.
+- [`assumeImplicitApproval`](/reference/cheatcodes/assume-implicit-approval) skips fuzz or invariant inputs unless a spender is implicitly approved.
+
 Run the tests with [`forge test`](/reference/forge/test). Use [`forge script`](/reference/forge/script) for scripted local simulation and broadcast flows.
 
 ### Trace and log debugging
@@ -250,10 +261,10 @@ This workflow is important for support tooling: a mined transaction can represen
 Use this map to jump from workflow prose to generated command output:
 
 - Setup and local execution: [`forge init`](/reference/forge/init), [`forge test`](/reference/forge/test), [`forge create`](/reference/forge/create), [`forge script`](/reference/forge/script), [`anvil`](/reference/anvil/anvil).
-- Tempo transactions: [`cast send`](/reference/cast/send), [`cast mktx`](/reference/cast/mktx), [`cast batch-send`](/reference/cast/batch-send), [`cast classify`](/reference/cast/classify), [`cast channel-id`](/reference/cast/channel-id).
+- Tempo transactions: [`cast send`](/reference/cast/send), [`cast mktx`](/reference/cast/mktx), [`cast batch-mktx`](/reference/cast/batch-mktx), [`cast batch-send`](/reference/cast/batch-send), [`cast classify`](/reference/cast/classify), [`cast channel-id`](/reference/cast/channel-id).
 - Tokens and virtual addresses: [`cast erc20-token`](/reference/cast/erc20-token), [`cast tip20-token`](/reference/cast/tip20-token), [`cast tip20-token create`](/reference/cast/tip20-token/create), [`cast tip20-token logo-check`](/reference/cast/tip20-token/logo-check), [`cast tip20-token logo-set`](/reference/cast/tip20-token/logo-set), [`cast virtual-address`](/reference/cast/virtual-address).
 - Policies and held transfers: [`cast tip403`](/reference/cast/tip403), [`cast receive-policy`](/reference/cast/receive-policy).
-- Accounts and signing: [`cast tempo login`](/reference/cast/tempo/login), [`cast keychain`](/reference/cast/keychain), [`cast key-authorization`](/reference/cast/key-authorization), [`cast wallet session create`](/reference/cast/wallet/session/create).
+- Accounts and signing: [`cast tempo login`](/reference/cast/tempo/login), [`cast keychain`](/reference/cast/keychain), [`cast key-authorization`](/reference/cast/key-authorization), [`cast wallet session`](/reference/cast/wallet/session), [`cast wallet session create`](/reference/cast/wallet/session/create), [`cast wallet session revoke`](/reference/cast/wallet/session/revoke).
 - Debugging: [`cast logs`](/reference/cast/logs), [`cast trace`](/reference/cast/trace), [`cast receive-policy receipt decode`](/reference/cast/receive-policy/receipt/decode), [`cast receive-policy claim`](/reference/cast/receive-policy/claim).
 - Payment-gated RPCs: [MPP-backed RPC endpoints](/guides/mpp).
 
