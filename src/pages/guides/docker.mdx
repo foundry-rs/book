@@ -22,6 +22,21 @@ Available tags:
 | `nightly` | Nightly build |
 | `v1.0.0` | Specific version |
 
+### Using Podman
+
+The official Foundry container image is OCI-compatible and can also be used with Podman.
+
+Pull the image:
+
+```bash
+$ podman pull ghcr.io/foundry-rs/foundry:latest
+```
+Podman is an OCI-compatible container engine and can be used with the official Foundry container image.
+
+> **Note**
+>
+> On some rootless Podman configurations, commands that write to bind-mounted directories (such as `forge init`) may require additional user namespace configuration (for example, `--userns=keep-id`) to avoid permission issues.
+
 ### Running Foundry commands
 
 ```bash
