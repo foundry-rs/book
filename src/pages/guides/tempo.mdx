@@ -6,7 +6,7 @@ description: Use Foundry's upstream Tempo support to configure projects, send Te
 
 Foundry ships Tempo support in the main `foundry-rs/foundry` release. You no longer need a separate Tempo fork or a special `foundryup` channel.
 
-The Tempo guide is a Foundry workflow hub. It explains how Tempo capabilities show up in `forge`, `cast`, and `anvil`, and links to generated command references for exact CLI syntax. Protocol-level details live in the [Tempo developer docs](https://tempo.xyz/developers/docs) and the numbered [Tempo Improvement Proposals](https://tempo.xyz/developers/docs/protocol/tips).
+The Tempo guide is a Foundry workflow hub. It explains how Tempo capabilities show up in `forge`, `cast`, and `anvil`, and links to generated command references for exact CLI syntax. Protocol-level details live in the [Tempo developer docs](https://docs.tempo.xyz/docs) and the numbered [Tempo Improvement Proposals](https://docs.tempo.xyz/docs/protocol/tips).
 
 Tempo T6 is the current hardfork for hardfork-specific behavior. Most projects should avoid pinning old Tempo hardforks unless they intentionally need historical semantics.
 
@@ -90,7 +90,7 @@ See [`anvil`](/reference/anvil/anvil) for the full reference. Do not add histori
 
 Tempo transaction options apply to [`cast send`](/reference/cast/send), [`cast mktx`](/reference/cast/mktx), [`forge create`](/reference/forge/create), and [`forge script`](/reference/forge/script). Native Tempo batching uses [`cast batch-mktx`](/reference/cast/batch-mktx) and [`cast batch-send`](/reference/cast/batch-send). This guide gives a capability map; use the generated references for exact syntax.
 
-For protocol semantics, start with Tempo's [transaction specification](https://tempo.xyz/developers/docs/protocol/transactions/spec-tempo-transaction), [fee-token guide](https://tempo.xyz/developers/docs/guide/payments/pay-fees-in-any-stablecoin), [parallel transaction guide](https://tempo.xyz/developers/docs/guide/payments/send-parallel-transactions), and [fee sponsorship guide](https://tempo.xyz/developers/docs/guide/payments/sponsor-user-fees).
+For protocol semantics, start with Tempo's [transaction specification](https://docs.tempo.xyz/docs/protocol/transactions/spec-tempo-transaction), [fee-token guide](https://docs.tempo.xyz/docs/guide/payments/pay-fees-in-any-stablecoin), [parallel transaction guide](https://docs.tempo.xyz/docs/guide/payments/send-parallel-transactions), and [fee sponsorship guide](https://docs.tempo.xyz/docs/guide/payments/sponsor-user-fees).
 
 ### Fee tokens
 
@@ -103,7 +103,7 @@ $ cast send $CONTRACT_ADDRESS "increment()" \
     --private-key $PRIVATE_KEY
 ```
 
-If the flag is omitted, Tempo transaction building follows the network's [default fee-token rules](https://tempo.xyz/developers/docs/protocol/fees/spec-fee/#fee-token-preferences). Use [`cast classify`](/reference/cast/classify) when you need to inspect a raw Tempo transaction's payment/general lane classification.
+If the flag is omitted, Tempo transaction building follows the network's [default fee-token rules](https://docs.tempo.xyz/docs/protocol/fees/spec-fee/#fee-token-preferences). Use [`cast classify`](/reference/cast/classify) when you need to inspect a raw Tempo transaction's payment/general lane classification.
 
 ### Nonce lanes and expiring nonces
 
@@ -164,7 +164,7 @@ Use [`cast virtual-address`](/reference/cast/virtual-address) for vaddr workflow
 - [`cast virtual-address resolve`](/reference/cast/virtual-address/resolve) resolves a virtual address to its registered master.
 - [`cast virtual-address watch`](/reference/cast/virtual-address/watch) tails incoming TIP-20 transfers to a virtual address.
 
-Foundry keeps the workflow details here and links to Tempo's [TIP-20 docs](https://tempo.xyz/developers/docs/protocol/tip20/overview), [virtual-address docs](https://tempo.xyz/developers/docs/protocol/tip20/virtual-addresses), and [TIP-1022](https://tempo.xyz/developers/docs/protocol/tips/tip-1022) for protocol semantics.
+Foundry keeps the workflow details here and links to Tempo's [TIP-20 docs](https://docs.tempo.xyz/docs/protocol/tip20/overview), [virtual-address docs](https://docs.tempo.xyz/docs/protocol/tip20/virtual-addresses), and [TIP-1022](https://docs.tempo.xyz/docs/protocol/tips/tip-1022) for protocol semantics.
 
 ## Policies and receive policies
 
@@ -190,7 +190,7 @@ Use [`cast receive-policy`](/reference/cast/receive-policy) to apply those polic
 
 A mined TIP-20 transfer is not always a credited transfer. If a receive policy blocks delivery, the transaction can still be mined while funds are held by `ReceivePolicyGuard`. The blocked path emits `TransferBlocked` with a claim receipt. Later, [`cast receive-policy claim`](/reference/cast/receive-policy/claim) asks the guard to resume or reroute delivery based on the claim target and on-chain rules; reroute is an outcome of claim target selection, not a separate command. Burn flows consume the receipt through [`cast receive-policy receipt burn`](/reference/cast/receive-policy/receipt/burn).
 
-For support and protocol details, see the Tempo [TIP-403 overview](https://tempo.xyz/developers/docs/protocol/tip403/overview), [TIP-403 specification](https://tempo.xyz/developers/docs/protocol/tip403/spec), [receive-policy docs](https://tempo.xyz/developers/docs/protocol/tip403/receive-policies), [receive-policy guide](https://tempo.xyz/developers/docs/guide/payments/configure-receive-policies), and [TIP-1028](https://tips.sh/1028).
+For support and protocol details, see the Tempo [TIP-403 overview](https://docs.tempo.xyz/docs/protocol/tip403/overview), [TIP-403 specification](https://docs.tempo.xyz/docs/protocol/tip403/spec), [receive-policy docs](https://docs.tempo.xyz/docs/protocol/tip403/receive-policies), [receive-policy guide](https://docs.tempo.xyz/docs/guide/payments/configure-receive-policies), and [TIP-1028](https://docs.tempo.xyz/docs/protocol/tips/tip-1028).
 
 ## Access keys, keychain, and sessions
 
@@ -218,7 +218,7 @@ Use [`cast key-authorization encode`](/reference/cast/key-authorization/encode),
 
 T6 `KeyAuthorization` adds `is_admin` and `account` fields. Admin access keys are key-management keys: they can authorize and revoke other keys, but they cannot carry expiry, spending limits, or call scopes. The `account` binding prevents an admin authorization from being replayed across accounts that share the same admin key.
 
-For protocol context, see Tempo's [AccountKeychain docs](https://tempo.xyz/developers/docs/protocol/transactions/AccountKeychain), [TIP-1011](https://tempo.xyz/developers/docs/protocol/tips/tip-1011), and [TIP-1049](https://tips.sh/1049).
+For protocol context, see Tempo's [AccountKeychain docs](https://docs.tempo.xyz/docs/protocol/transactions/AccountKeychain), [TIP-1011](https://docs.tempo.xyz/docs/protocol/tips/tip-1011), and [TIP-1049](https://docs.tempo.xyz/docs/protocol/tips/tip-1049).
 
 ## Local development, testing, and debugging
 
