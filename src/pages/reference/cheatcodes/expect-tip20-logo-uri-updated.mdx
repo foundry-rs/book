@@ -11,13 +11,15 @@ function expectTip20LogoURIUpdated(address token, address updater, string callda
 function expectLogoURIUpdated(address token, address updater, string calldata newLogoURI) external;
 ```
 
+### Aliases
+
+`expectLogoURIUpdated` is an alias for `expectTip20LogoURIUpdated`.
+
 ### Description
 
 Expects a TIP-20 `LogoURIUpdated(address indexed updater, string newLogoURI)` event from `token`.
 
 Use this before code that should update a TIP-20 logo URI. If the expected event is not emitted, the test fails.
-
-`expectLogoURIUpdated` is an alias with the same behavior.
 
 ### Parameters
 

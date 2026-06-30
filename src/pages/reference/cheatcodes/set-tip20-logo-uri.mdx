@@ -11,13 +11,15 @@ function setTip20LogoURI(address token, string calldata newLogoURI) external;
 function setLogoURI(address token, string calldata newLogoURI) external;
 ```
 
+### Aliases
+
+`setLogoURI` is an alias for `setTip20LogoURI`.
+
 ### Description
 
 Sets a TIP-20 token's logo URI directly in storage.
 
 This bypasses the token admin check, but still validates `newLogoURI` against Tempo T5 logo URI constraints. Use it when tests need a token to start from a specific logo URI without going through the token's on-chain admin flow.
-
-`setLogoURI` is an alias with the same behavior.
 
 ### Parameters
 
