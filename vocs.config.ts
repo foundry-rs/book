@@ -63,6 +63,11 @@ export default defineConfig({
       text: "Guides",
     },
     {
+      link: "/guides/tempo",
+      match: "/guides/tempo",
+      text: "Tempo",
+    },
+    {
       text: "Reference",
       items: [
         {
