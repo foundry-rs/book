@@ -104,14 +104,16 @@ Sets the runtime hardfork for tests and scripts.
 This can be either:
 
 - A plain Ethereum hardfork such as `osaka` or `cancun`
-- A namespaced hardfork such as `optimism:holocene` or `tempo:T3`
+- A namespaced hardfork such as `optimism:holocene` or `tempo:T6`
 
 When you use a namespaced hardfork, Foundry also infers the matching network automatically.
 
 ```toml
 [profile.default]
-hardfork = "tempo:T3"
+hardfork = "tempo:T6"
 ```
+
+For Tempo projects, prefer `network = "tempo"` or a live Tempo fork for normal current behavior. Pin a Tempo hardfork only when you need deterministic behavior for a specific activation point or regression test.
 
 ##### `gas_limit`
 

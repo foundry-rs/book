@@ -15,6 +15,7 @@ export const cmdReference: SidebarItem[] = [
           { text: 'prevrandao', link: '/reference/cheatcodes/prevrandao' },
           { text: 'chainId', link: '/reference/cheatcodes/chain-id' },
           { text: 'store', link: '/reference/cheatcodes/store' },
+          { text: 'setTip20LogoURI', link: '/reference/cheatcodes/set-tip20-logo-uri' },
           { text: 'load', link: '/reference/cheatcodes/load' },
           { text: 'etch', link: '/reference/cheatcodes/etch' },
           { text: 'deal', link: '/reference/cheatcodes/deal' },
@@ -45,6 +46,7 @@ export const cmdReference: SidebarItem[] = [
           { text: 'stopAndReturnStateDiff', link: '/reference/cheatcodes/stop-and-return-state-diff' },
           { text: 'snapshotState', link: '/reference/cheatcodes/state-snapshots' },
           { text: 'snapshotGas', link: '/reference/cheatcodes/gas-snapshots' },
+          { text: 'isImplicitlyApproved', link: '/reference/cheatcodes/is-implicitly-approved' },
           { text: 'isContext', link: '/reference/cheatcodes/is-context' },
         ],
       },
@@ -57,6 +59,7 @@ export const cmdReference: SidebarItem[] = [
           { text: 'expectCall', link: '/reference/cheatcodes/expect-call' },
           { text: 'expectKeychainVerified', link: '/reference/cheatcodes/expect-keychain-verified' },
           { text: 'expectKeychainAdminVerified', link: '/reference/cheatcodes/expect-keychain-admin-verified' },
+          { text: 'expectTip20LogoURIUpdated', link: '/reference/cheatcodes/expect-tip20-logo-uri-updated' },
         ],
       },
       {
@@ -65,6 +68,7 @@ export const cmdReference: SidebarItem[] = [
         items: [
           { text: 'assume', link: '/reference/cheatcodes/assume' },
           { text: 'assumeNoRevert', link: '/reference/cheatcodes/assume-no-revert' },
+          { text: 'assumeImplicitApproval', link: '/reference/cheatcodes/assume-implicit-approval' },
         ],
       },
       {

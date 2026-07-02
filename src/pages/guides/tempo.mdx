@@ -1,25 +1,33 @@
 ---
-description: Use Foundry's upstream Tempo support to initialize projects, configure foundry.toml, and work with Tempo transactions.
+description: Use Foundry's upstream Tempo support to configure projects, send Tempo transactions, manage tokens, policies, keychains, and debug local Tempo workflows.
 ---
 
 ## Foundry on Tempo
 
-Foundry v1.7.0 ships Tempo support in the main `foundry-rs/foundry` release. You no longer need a separate Tempo fork or a special `foundryup` channel.
+Foundry ships Tempo support in the main `foundry-rs/foundry` release. You no longer need a separate Tempo fork or a special `foundryup` channel.
 
-## Create a Tempo project
+The Tempo guide is a Foundry workflow hub. It explains how Tempo capabilities show up in `forge`, `cast`, and `anvil`, and links to generated command references for exact CLI syntax. Protocol-level details live in the [Tempo developer docs](https://docs.tempo.xyz/docs) and the numbered [Tempo Improvement Proposals](https://docs.tempo.xyz/docs/protocol/tips).
 
-Start from the Tempo template when you want the Tempo example contracts, tests, and scripts:
+Tempo T6 is the current hardfork for hardfork-specific behavior. Most projects should avoid pinning old Tempo hardforks unless they intentionally need historical semantics.
+
+This first implementation keeps Tempo as a single guide page. The related [MPP-backed RPC endpoints](/guides/mpp) guide stays separate and is linked here where payment-gated RPC behavior matters.
+
+## Setup and configuration
+
+### Create a Tempo project
+
+Start from the Tempo template when you want Tempo example contracts, tests, scripts, and config:
 
 ```bash
 $ forge init --network tempo my-tempo-app
 $ cd my-tempo-app
 ```
 
-This installs the Tempo template, adds `tempo-std`, and configures the project so Foundry uses Tempo semantics for local execution.
+See [`forge init`](/reference/forge/init) for the generated command reference.
 
-## Configure `foundry.toml`
+### Configure `foundry.toml`
 
-`forge init --network tempo` now generates a Tempo-ready `foundry.toml` out of the box:
+The normal local configuration is `network = "tempo"`. It tells Forge and Anvil to use Tempo EVM semantics when they are not already inferring them from a live Tempo fork.
 
 ```toml [foundry.toml]
 [profile.default]
@@ -28,52 +36,65 @@ out = "out"
 libs = ["lib"]
 network = "tempo"
 
-# Pin a Tempo hardfork when you need deterministic local semantics.
-# hardfork = "tempo:T3"
-
 [rpc_endpoints]
 tempo = "https://rpc.tempo.xyz/"
 moderato = "https://rpc.moderato.tempo.xyz/"
 ```
 
-What each setting does:
+The legacy `tempo = true` form is still accepted for back-compat, but new projects should use `network = "tempo"`.
 
-- `network = "tempo"` enables Tempo-specific execution behavior when Foundry is not forking a live Tempo RPC. (The legacy form `tempo = true` is still accepted for back-compat.)
-- `[rpc_endpoints]` defines the `tempo` and `moderato` aliases used by `--rpc-url` / `--fork-url`. You can swap the literal URLs for environment variables (e.g. `tempo = "${TEMPO_RPC_URL}"`) if you'd rather not commit them.
-- `hardfork = "tempo:T3"` pins tests and scripts to a specific Tempo hardfork. A namespaced hardfork also infers the Tempo network automatically.
-
-If you are forking a live Tempo endpoint, Foundry can usually infer the network from the forked chain ID, so the explicit `network` setting is optional.
-
-## Run tests and scripts
-
-With the config above, commands can refer to Tempo endpoints by alias:
+Use the RPC aliases with `--rpc-url` and `--fork-url`:
 
 ```bash
 $ forge test --fork-url moderato
-$ forge script script/Mail.s.sol --broadcast --rpc-url moderato
+$ forge script script/Deploy.s.sol --broadcast --rpc-url tempo
 ```
 
-You can also deploy directly against a specific endpoint:
+Use environment variables if you do not want to commit literal endpoint URLs:
+
+```toml [foundry.toml]
+[rpc_endpoints]
+tempo = "${TEMPO_RPC_URL}"
+moderato = "${TEMPO_MODERATO_RPC_URL}"
+```
+
+When you fork a live Tempo RPC, Foundry can usually infer Tempo network semantics from the forked chain ID, so the explicit `network` setting is mainly for local, non-forked execution. Keep it in project config when tests, scripts, or local Anvil runs need Tempo behavior without relying on a live RPC.
+
+Hardfork pinning is advanced opt-in behavior. Use it only when you need to reproduce historical semantics or lock a regression test to a particular activation point:
+
+```toml [foundry.toml]
+[profile.historical]
+network = "tempo"
+hardfork = "tempo:T6"
+```
+
+Do not pin a historical hardfork for normal project setup. Live Tempo endpoints and current local development should follow the latest supported Tempo semantics.
+
+### Local Anvil and forks
+
+Run Anvil with Tempo semantics when you are not forking:
 
 ```bash
-$ forge create src/Mail.sol:Mail \
-    --rpc-url tempo \
-    --broadcast \
-    --private-key $PRIVATE_KEY
+$ anvil --network tempo
 ```
 
-## Use Tempo transaction features
+When you fork a live Tempo RPC, Anvil can infer the network from the upstream chain:
 
-Tempo-specific transaction options are available across `cast`, `forge create`, and `forge script`.
+```bash
+$ anvil --fork-url $TEMPO_RPC_URL
+```
 
-Common options include:
+See [`anvil`](/reference/anvil/anvil) for the full reference. Do not add historical hardfork flags to normal Anvil examples; pinning old hardforks should be intentional.
 
-- `--tempo.fee-token` to pay gas in a TIP-20 token
-- `--tempo.nonce-key` to use Tempo's parallelizable nonces
-- `--tempo.expiring-nonce`, `--tempo.valid-before`, and `--tempo.valid-after` to time-bound a transaction
-- `--tempo.access-key` and `--tempo.root-account` for keychain-based account flows
+## Tempo transactions
 
-For example, sending a transaction with a fee token looks like this:
+Tempo transaction options apply to [`cast send`](/reference/cast/send), [`cast mktx`](/reference/cast/mktx), [`forge create`](/reference/forge/create), and [`forge script`](/reference/forge/script). Native Tempo batching uses [`cast batch-mktx`](/reference/cast/batch-mktx) and [`cast batch-send`](/reference/cast/batch-send). This guide gives a capability map; use the generated references for exact syntax.
+
+For protocol semantics, start with Tempo's [transaction specification](https://docs.tempo.xyz/docs/protocol/transactions/spec-tempo-transaction), [fee-token guide](https://docs.tempo.xyz/docs/guide/payments/pay-fees-in-any-stablecoin), [parallel transaction guide](https://docs.tempo.xyz/docs/guide/payments/send-parallel-transactions), and [fee sponsorship guide](https://docs.tempo.xyz/docs/guide/payments/sponsor-user-fees).
+
+### Fee tokens
+
+Use `--tempo.fee-token` when a transaction should pay gas in a TIP-20 token. The value can be an address, numeric TIP-20 token ID, or known token symbol:
 
 ```bash
 $ cast send $CONTRACT_ADDRESS "increment()" \
@@ -82,23 +103,169 @@ $ cast send $CONTRACT_ADDRESS "increment()" \
     --private-key $PRIVATE_KEY
 ```
 
-## Run Anvil in Tempo mode
+If the flag is omitted, Tempo transaction building follows the network's [default fee-token rules](https://docs.tempo.xyz/docs/protocol/fees/spec-fee/#fee-token-preferences). Use [`cast classify`](/reference/cast/classify) when you need to inspect a raw Tempo transaction's payment/general lane classification.
 
-Use Tempo network semantics locally when you are not forking a live chain:
+### Nonce lanes and expiring nonces
 
-```bash
-$ anvil --network tempo --hardfork t3
+Tempo supports parallelizable nonces. Use `--tempo.nonce-key` directly, or give lane names to the team through `tempo.lanes.toml` and pass `--tempo.lane`:
+
+```toml [tempo.lanes.toml]
+deploy = 1
+payments = 2
+maintenance = 3
 ```
 
-When you fork a live Tempo RPC, Foundry can infer the network automatically from the upstream chain ID:
-
 ```bash
-$ anvil --fork-url $TEMPO_RPC_URL
+$ forge script script/Deploy.s.sol \
+    --rpc-url tempo \
+    --broadcast \
+    --tempo.lane deploy \
+    --private-key $PRIVATE_KEY
 ```
 
-## Related references
+Use `--tempo.expiring-nonce` with `--tempo.valid-before` and `--tempo.valid-after` when a transaction should only be valid during a timestamp window. Use `--tempo.expires` for a relative validity window.
 
-- [Configuration reference](/config/reference/testing) for `network` and `hardfork`
-- [MPP-backed RPC endpoints](/guides/mpp) for payment-gated Tempo RPCs
-- [cast send](/reference/cast/send) for Tempo transaction flags
-- [forge create](/reference/forge/create) and [forge script](/reference/forge/script) for deployment flows
+### Batch transactions
+
+Use [`cast batch-mktx`](/reference/cast/batch-mktx) to build a signed or unsigned native Tempo batch transaction, and [`cast batch-send`](/reference/cast/batch-send) to publish one from call specs. `forge script --batch` broadcasts a script's remaining transactions as one native Tempo batch transaction.
+
+### Sponsorship
+
+Tempo sponsorship lets a fee payer sponsor another account's transaction. Foundry supports:
+
+- `--tempo.sponsor` for the sponsor address.
+- `--tempo.sponsor-signer` for in-band sponsor signing.
+- `--tempo.sponsor-sig` for a precomputed sponsor signature.
+- `--sponsor-url` for a remote sponsor service.
+- `--tempo.print-sponsor-hash` when the sponsor needs the hash to sign out of band.
+
+For multi-transaction `forge script --broadcast` runs, prefer `--tempo.sponsor-signer` over a static `--tempo.sponsor-sig` so retries and later transactions can receive fresh sponsor signatures.
+
+### Access-key and session signing
+
+For transaction-layer keychain signing, pass `--tempo.access-key` with `--tempo.root-account`. Foundry signs on behalf of the root account using the access key. For wallet sessions, use `--tempo.session` to sign with a temporary session key from `$TEMPO_HOME/wallet/sessions.toml`.
+
+Scripts also support interactive session creation with `--session`, `--session-root`, `--session-expires`, `--session-scope`, `--session-target`, `--session-selector`, and `--session-spend-limit`. For persistent session setup outside a script run, see [`cast wallet session`](/reference/cast/wallet/session), [`cast wallet session create`](/reference/cast/wallet/session/create), and [`cast wallet session revoke`](/reference/cast/wallet/session/revoke).
+
+## Tokens and virtual addresses
+
+Tempo TIP-20 tokens are ERC-20-compatible where ordinary ERC-20 calls apply, so the generated [`cast erc20-token`](/reference/cast/erc20-token) helpers remain useful for balances, allowances, transfers, mints, and burns.
+
+Use [`cast tip20-token`](/reference/cast/tip20-token) for Tempo-specific TIP-20 workflows:
+
+- [`cast tip20-token create`](/reference/cast/tip20-token/create) deploys a new TIP-20 token through the TIP20Factory.
+- [`cast tip20-token logo-check`](/reference/cast/tip20-token/logo-check) validates a logo URI offline against Tempo constraints.
+- [`cast tip20-token logo-set`](/reference/cast/tip20-token/logo-set) updates a token logo URI.
+- [`cast tip20-token mine`](/reference/cast/tip20-token/mine) mines a TIP-1022 salt for virtual-address registration.
+
+Use [`cast virtual-address`](/reference/cast/virtual-address) for vaddr workflows:
+
+- [`cast virtual-address create`](/reference/cast/virtual-address/create) mines and registers a master, then prints derived virtual addresses.
+- [`cast virtual-address resolve`](/reference/cast/virtual-address/resolve) resolves a virtual address to its registered master.
+- [`cast virtual-address watch`](/reference/cast/virtual-address/watch) tails incoming TIP-20 transfers to a virtual address.
+
+Foundry keeps the workflow details here and links to Tempo's [TIP-20 docs](https://docs.tempo.xyz/docs/protocol/tip20/overview), [virtual-address docs](https://docs.tempo.xyz/docs/protocol/tip20/virtual-addresses), and [TIP-1022](https://docs.tempo.xyz/docs/protocol/tips/tip-1022) for protocol semantics.
+
+## Policies and receive policies
+
+Tempo T6 adds reusable TIP-403 registry policies and account-level receive policies. Foundry exposes both as `cast` workflows.
+
+Use [`cast tip403`](/reference/cast/tip403) to manage reusable policy IDs:
+
+- [`cast tip403 create`](/reference/cast/tip403/create) creates a simple whitelist or blacklist policy.
+- [`cast tip403 info`](/reference/cast/tip403/info) shows a policy's type and admin.
+- [`cast tip403 check`](/reference/cast/tip403/check) checks whether an address is authorized by a policy.
+- [`cast tip403 whitelist`](/reference/cast/tip403/whitelist) updates whitelist membership.
+- [`cast tip403 blacklist`](/reference/cast/tip403/blacklist) updates blacklist membership.
+
+Use [`cast receive-policy`](/reference/cast/receive-policy) to apply those policy IDs to an account's inbound TIP-20 flow:
+
+- [`cast receive-policy get`](/reference/cast/receive-policy/get) reads an account's configured receive policy.
+- [`cast receive-policy validate`](/reference/cast/receive-policy/validate) checks whether a transfer or mint would be credited or held.
+- [`cast receive-policy set`](/reference/cast/receive-policy/set) sets sender and token policy IDs for the caller.
+- [`cast receive-policy receipt decode`](/reference/cast/receive-policy/receipt/decode) decodes an ABI-encoded claim receipt.
+- [`cast receive-policy receipt balance`](/reference/cast/receive-policy/receipt/balance) checks the held TIP-20 balance for a claim receipt.
+- [`cast receive-policy claim`](/reference/cast/receive-policy/claim) claims held funds to a target selected by the caller.
+- [`cast receive-policy receipt burn`](/reference/cast/receive-policy/receipt/burn) burns held funds when the token authorizes it.
+
+A mined TIP-20 transfer is not always a credited transfer. If a receive policy blocks delivery, the transaction can still be mined while funds are held by `ReceivePolicyGuard`. The blocked path emits `TransferBlocked` with a claim receipt. Later, [`cast receive-policy claim`](/reference/cast/receive-policy/claim) asks the guard to resume or reroute delivery based on the claim target and on-chain rules; reroute is an outcome of claim target selection, not a separate command. Burn flows consume the receipt through [`cast receive-policy receipt burn`](/reference/cast/receive-policy/receipt/burn).
+
+For support and protocol details, see the Tempo [TIP-403 overview](https://docs.tempo.xyz/docs/protocol/tip403/overview), [TIP-403 specification](https://docs.tempo.xyz/docs/protocol/tip403/spec), [receive-policy docs](https://docs.tempo.xyz/docs/protocol/tip403/receive-policies), [receive-policy guide](https://docs.tempo.xyz/docs/guide/payments/configure-receive-policies), and [TIP-1028](https://docs.tempo.xyz/docs/protocol/tips/tip-1028).
+
+## Access keys, keychain, and sessions
+
+Tempo accounts can authorize limited access keys, temporary sessions, and T6 admin access keys. Foundry separates interactive wallet login, on-chain keychain management, offline authorization payloads, and transaction-layer signing.
+
+Use [`cast tempo login`](/reference/cast/tempo/login) for local key authorization against wallet.tempo. It persists keys in `$TEMPO_HOME/wallet/keys.toml` or `~/.tempo/wallet/keys.toml`, and it can print the browser URL with `--no-browser` when a browser cannot be opened.
+
+Use browser login for ordinary wallet authorization. For offline payloads, admin-key payloads, or flows that should not depend on a browser, use [`cast key-authorization`](/reference/cast/key-authorization) and [`cast keychain authorize`](/reference/cast/keychain/authorize).
+
+### Keychain management
+
+Use [`cast keychain`](/reference/cast/keychain) for account keychain operations:
+
+- [`cast keychain list`](/reference/cast/keychain/list) and [`cast keychain show`](/reference/cast/keychain/show) inspect local key registry state.
+- [`cast keychain check`](/reference/cast/keychain/check), [`cast keychain inspect`](/reference/cast/keychain/inspect), and [`cast keychain doctor`](/reference/cast/keychain/doctor) diagnose local and on-chain access-key state.
+- [`cast keychain authorize`](/reference/cast/keychain/authorize) and [`cast keychain revoke`](/reference/cast/keychain/revoke) provision or revoke keys on-chain.
+- [`cast keychain rl`](/reference/cast/keychain/rl) and [`cast keychain ul`](/reference/cast/keychain/ul) read and update spending limits.
+- [`cast keychain ss`](/reference/cast/keychain/ss), [`cast keychain rs`](/reference/cast/keychain/rs), and [`cast keychain policy`](/reference/cast/keychain/policy) manage call scopes and policy entries.
+- [`cast keychain burn-witness`](/reference/cast/keychain/burn-witness) and [`cast keychain is-witness-burned`](/reference/cast/keychain/is-witness-burned) handle TIP-1053 witnesses.
+- [`cast keychain is-admin`](/reference/cast/keychain/is-admin), [`cast keychain verify`](/reference/cast/keychain/verify), and [`cast keychain verify-admin`](/reference/cast/keychain/verify-admin) verify active access-key or root/admin-key signatures.
+
+### Offline key authorization
+
+Use [`cast key-authorization encode`](/reference/cast/key-authorization/encode), [`cast key-authorization sign`](/reference/cast/key-authorization/sign), and [`cast key-authorization inspect`](/reference/cast/key-authorization/inspect) when you need to build, sign, review, or transport an authorization payload outside the normal on-chain [`cast keychain authorize`](/reference/cast/keychain/authorize) path.
+
+T6 `KeyAuthorization` adds `is_admin` and `account` fields. Admin access keys are key-management keys: they can authorize and revoke other keys, but they cannot carry expiry, spending limits, or call scopes. The `account` binding prevents an admin authorization from being replayed across accounts that share the same admin key.
+
+For protocol context, see Tempo's [AccountKeychain docs](https://docs.tempo.xyz/docs/protocol/transactions/AccountKeychain), [TIP-1011](https://docs.tempo.xyz/docs/protocol/tips/tip-1011), and [TIP-1049](https://docs.tempo.xyz/docs/protocol/tips/tip-1049).
+
+## Local development, testing, and debugging
+
+### Forge tests and scripts
+
+`network = "tempo"` makes Forge use Tempo EVM behavior for local tests and scripts. Forked tests and scripts can infer Tempo behavior from live Tempo RPCs through `--fork-url` and `--rpc-url`.
+
+When contracts call Tempo's `SignatureVerifier`, use the generated cheatcode references instead of hand-rolled test bindings where they apply:
+
+- [`signKeychain`](/reference/cheatcodes/sign-keychain) signs a digest as an encoded Tempo keychain signature for `verifyKeychain`.
+- [`signKeychainAdmin`](/reference/cheatcodes/sign-keychain-admin) signs a digest for root/admin verification through `verifyKeychainAdmin`.
+- [`expectKeychainVerified`](/reference/cheatcodes/expect-keychain-verified) asserts that code under test calls `SignatureVerifier.verifyKeychain`.
+- [`expectKeychainAdminVerified`](/reference/cheatcodes/expect-keychain-admin-verified) asserts that code under test calls `SignatureVerifier.verifyKeychainAdmin`.
+
+Tempo also has testing helpers for TIP-20 logo behavior and implicit approvals:
+
+- [`setTip20LogoURI`](/reference/cheatcodes/set-tip20-logo-uri), also available as `setLogoURI`, sets a TIP-20 token logo URI directly in storage.
+- [`expectTip20LogoURIUpdated`](/reference/cheatcodes/expect-tip20-logo-uri-updated), also available as `expectLogoURIUpdated`, asserts the TIP-20 logo update event.
+- [`isImplicitlyApproved`](/reference/cheatcodes/is-implicitly-approved) checks whether a spender is implicitly approved on the active Tempo hardfork.
+- [`assumeImplicitApproval`](/reference/cheatcodes/assume-implicit-approval) skips fuzz or invariant inputs unless a spender is implicitly approved.
+
+Run the tests with [`forge test`](/reference/forge/test). Use [`forge script`](/reference/forge/script) for scripted local simulation and broadcast flows.
+
+### Trace and log debugging
+
+Foundry decodes current Tempo surfaces in traces and logs, including `ReceivePolicyGuard`, TIP-403 policy registry calls, account-keychain calls, `SignatureVerifier`, and T6 admin-key calls/events. Relevant decoded events include `TransferBlocked`, `ReceiptClaimed`, `ReceiptBurned`, and `ReceivePolicyUpdated`.
+
+A practical held-transfer debugging path is:
+
+1. Start from [`cast logs`](/reference/cast/logs), [`cast trace`](/reference/cast/trace), Forge verbosity traces, or Anvil output.
+2. Find the decoded `TransferBlocked` event and copy the claim receipt.
+3. Use [`cast receive-policy receipt decode`](/reference/cast/receive-policy/receipt/decode) to inspect the receipt.
+4. Use [`cast receive-policy receipt balance`](/reference/cast/receive-policy/receipt/balance) to check held funds.
+5. Use [`cast receive-policy claim`](/reference/cast/receive-policy/claim) to release or reroute according to the target and on-chain guard rules, or [`cast receive-policy receipt burn`](/reference/cast/receive-policy/receipt/burn) when the token authorizes burning.
+
+This workflow is important for support tooling: a mined transaction can represent held funds, so a receipt alone does not prove the recipient balance was credited.
+
+## Reference map
+
+Use this map to jump from workflow prose to generated command output:
+
+- Setup and local execution: [`forge init`](/reference/forge/init), [`forge test`](/reference/forge/test), [`forge create`](/reference/forge/create), [`forge script`](/reference/forge/script), [`anvil`](/reference/anvil/anvil).
+- Tempo transactions: [`cast send`](/reference/cast/send), [`cast mktx`](/reference/cast/mktx), [`cast batch-mktx`](/reference/cast/batch-mktx), [`cast batch-send`](/reference/cast/batch-send), [`cast classify`](/reference/cast/classify), [`cast channel-id`](/reference/cast/channel-id).
+- Tokens and virtual addresses: [`cast erc20-token`](/reference/cast/erc20-token), [`cast tip20-token`](/reference/cast/tip20-token), [`cast tip20-token create`](/reference/cast/tip20-token/create), [`cast tip20-token logo-check`](/reference/cast/tip20-token/logo-check), [`cast tip20-token logo-set`](/reference/cast/tip20-token/logo-set), [`cast virtual-address`](/reference/cast/virtual-address).
+- Policies and held transfers: [`cast tip403`](/reference/cast/tip403), [`cast receive-policy`](/reference/cast/receive-policy).
+- Accounts and signing: [`cast tempo login`](/reference/cast/tempo/login), [`cast keychain`](/reference/cast/keychain), [`cast key-authorization`](/reference/cast/key-authorization), [`cast wallet session`](/reference/cast/wallet/session), [`cast wallet session create`](/reference/cast/wallet/session/create), [`cast wallet session revoke`](/reference/cast/wallet/session/revoke).
+- Debugging: [`cast logs`](/reference/cast/logs), [`cast trace`](/reference/cast/trace), [`cast receive-policy receipt decode`](/reference/cast/receive-policy/receipt/decode), [`cast receive-policy claim`](/reference/cast/receive-policy/claim).
+- Payment-gated RPCs: [MPP-backed RPC endpoints](/guides/mpp).
+
+Use generated references for flag-level syntax and this guide for how the pieces fit together.
