@@ -64,6 +64,7 @@ const docs = [
             items: [
               { text: "assert-state-change", link: "/forge/linting/assert-state-change" },
               { text: "boolean-cst", link: "/forge/linting/boolean-cst" },
+              { text: "dangerous-unary-operator", link: "/forge/linting/dangerous-unary-operator" },
               { text: "divide-before-multiply", link: "/forge/linting/divide-before-multiply" },
               { text: "incorrect-erc20-interface", link: "/forge/linting/incorrect-erc20-interface" },
               { text: "incorrect-erc721-interface", link: "/forge/linting/incorrect-erc721-interface" },

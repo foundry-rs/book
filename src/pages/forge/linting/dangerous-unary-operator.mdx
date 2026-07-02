@@ -1,0 +1,41 @@
+---
+description: Unary operator fused to assignment
+---
+
+## Dangerous unary operator
+
+**Severity**: `Med`
+**ID**: `dangerous-unary-operator`
+
+Flags assignments whose `=` is fused to a unary operator (`=-`, `=~`), which parses as a plain assignment of a unary expression rather than the compound assignment it resembles.
+
+### What it does
+
+Warns when the source writes `=` directly against a leading unary `-` or `~` on the right-hand side:
+
+```solidity
+x =- y;
+x =~ y;
+```
+
+These expressions parse as `x = -y` and `x = ~y`, not as compound assignments. The lint also reports fused unary operators that lead larger right-hand sides, such as `x =- y + 1`, because that still parses as a plain assignment.
+
+Spaced unary assignments (`x = -y`, `x = ~y`) and real compound assignments (`x -= y`) are left alone.
+
+### Why is this bad?
+
+`x =- 1` silently assigns `-1` instead of decrementing `x`. Developers intending to write `-=` can transpose the operator into `=-`, and the code still compiles and runs with the wrong value.
+
+### Example
+
+#### Bad
+
+```solidity
+x =- 1; // assigns -1, does not subtract 1 from x
+```
+
+#### Good
+
+```solidity
+x -= 1;
+```
