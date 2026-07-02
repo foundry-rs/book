@@ -79,6 +79,7 @@ const docs = [
               { text: "type-based-tautology", link: "/forge/linting/type-based-tautology" },
               { text: "uninitialized-local", link: "/forge/linting/uninitialized-local" },
               { text: "uninitialized-state", link: "/forge/linting/uninitialized-state" },
+              { text: "unsafe-oz-erc721-mint", link: "/forge/linting/unsafe-oz-erc721-mint" },
               { text: "unsafe-typecast", link: "/forge/linting/unsafe-typecast" },
               { text: "unused-return", link: "/forge/linting/unused-return" },
               { text: "weak-prng", link: "/forge/linting/weak-prng" },
