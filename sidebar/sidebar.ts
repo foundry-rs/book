@@ -49,6 +49,7 @@ const docs = [
               { text: "arbitrary-send-eth", link: "/forge/linting/arbitrary-send-eth" },
               { text: "controlled-delegatecall", link: "/forge/linting/controlled-delegatecall" },
               { text: "encode-packed-collision", link: "/forge/linting/encode-packed-collision" },
+              { text: "enumerable-loop-removal", link: "/forge/linting/enumerable-loop-removal" },
               { text: "erc20-unchecked-transfer", link: "/forge/linting/erc20-unchecked-transfer" },
               { text: "incorrect-exp", link: "/forge/linting/incorrect-exp" },
               { text: "incorrect-shift", link: "/forge/linting/incorrect-shift" },
