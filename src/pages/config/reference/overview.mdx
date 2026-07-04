@@ -59,6 +59,40 @@ Exceptions are:
 - `DAPP_TEST_FUZZ_RUNS`
 - `DAPP_TEST_FUZZ_DEPTH`
 
+### Directory Layout
+
+By default, Foundry manages its toolchain, global configuration, cache, and keystore data under the user's home directory.
+
+| Component | Default Location | Override / Customization |
+| :--- | :--- | :--- |
+| **`foundryup` Installation** | `~/.foundry/` | `FOUNDRY_DIR` (or `${XDG_CONFIG_HOME:-$HOME}/.foundry/` as fallback) |
+| **Global Configuration** | `~/.foundry/foundry.toml` | [`FOUNDRY_CONFIG`](#configuration-file-discovery) environment variable |
+| **RPC Cache** | `~/.foundry/cache/` | `cache_path` config option or `FOUNDRY_CACHE_PATH` |
+| **Keystores** | `~/.foundry/keystores/` | `--keystore` CLI flag |
+| **Solidity Compiler (`svm`)** | `~/.svm/` | `XDG_DATA_HOME` / OS-specific data directory (when `~/.svm` is absent) |
+
+#### Toolchain Installation (`FOUNDRY_DIR`)
+
+`foundryup` installs the Foundry binaries (`forge`, `cast`, `anvil`, and `chisel`), manual pages, and versioned toolchains.
+- **Default path:** `~/.foundry/`
+- **Customization:** Set the `FOUNDRY_DIR` environment variable to install to a custom directory.
+- **XDG Fallback:** If `FOUNDRY_DIR` is not set, `foundryup` will respect the `XDG_CONFIG_HOME` environment variable (defaulting to `$HOME` if unset) and install to `$XDG_CONFIG_HOME/.foundry/`. If `FOUNDRY_DIR` is set, it overrides this path completely.
+
+#### CLI Configuration, Cache, and Keystores
+
+The Foundry CLI tools currently store their global configuration, cache, and keystore data under the traditional `~/.foundry` directory. These locations are configurable through existing Foundry-specific options rather than the XDG Base Directory environment variables:
+- **Global Configuration:** Configured in `~/.foundry/foundry.toml`. This can be overridden by setting the `FOUNDRY_CONFIG` environment variable to a custom file path.
+- **RPC Cache:** Fork cache and other non-essential data are stored in `~/.foundry/cache/`. This can be overridden on a project-level using the `cache_path` config option in `foundry.toml` or the `FOUNDRY_CACHE_PATH` environment variable.
+- **Keystores:** Encrypted private keys are stored in `~/.foundry/keystores/`. This can be overridden by passing a custom path using the `--keystore` CLI flag.
+
+#### Solidity Version Manager (`svm`)
+
+The Solidity Version Manager (`svm-rs`), which downloads and manages different compiler (`solc`) versions, adheres to standard platform-specific directories:
+- **Fallback behavior:** It first checks if the legacy `~/.svm/` directory exists. If it does, `svm-rs` continues to use `~/.svm` for compatibility.
+- **XDG Support:** If `~/.svm/` does not exist, it falls back to:
+  - **Linux/Unix:** `$XDG_DATA_HOME/svm/` (which defaults to `~/.local/share/svm/` if `XDG_DATA_HOME` is unset).
+  - **macOS:** `~/Library/Application Support/svm/`.
+
 ### Configuration format
 
 Configuration files are written in the [TOML format](https://toml.io), with simple key-value pairs inside of sections.

@@ -28,6 +28,10 @@ $ foundryup
 
 This installs the latest stable versions of `forge`, `cast`, `anvil`, and `chisel`.
 
+:::tip
+By default, Foundry is installed to `~/.foundry`. You can customize the installation path by setting the `FOUNDRY_DIR` environment variable before running `foundryup`. For details on the directory layout and environment variables, see the [Config Reference Overview](/config/reference/overview#directory-layout).
+:::
+
 :::warning[Windows]
 Foundryup requires [Git Bash](https://gitforwindows.org/) or [WSL](https://learn.microsoft.com/en-us/windows/wsl/install). PowerShell and Command Prompt are not supported.
 :::
