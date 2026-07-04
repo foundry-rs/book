@@ -102,6 +102,7 @@ const docs = [
               { text: "reentrancy-events", link: "/forge/linting/reentrancy-events" },
               { text: "require-revert-in-loop", link: "/forge/linting/require-revert-in-loop" },
               { text: "return-bomb", link: "/forge/linting/return-bomb" },
+              { text: "solmate-safe-transfer-lib", link: "/forge/linting/solmate-safe-transfer-lib" },
             ],
           },
           {
