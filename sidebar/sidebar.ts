@@ -93,6 +93,7 @@ const docs = [
               { text: "block-timestamp", link: "/forge/linting/block-timestamp" },
               { text: "calls-loop", link: "/forge/linting/calls-loop" },
               { text: "delegatecall-loop", link: "/forge/linting/delegatecall-loop" },
+              { text: "deprecated-oz-function", link: "/forge/linting/deprecated-oz-function" },
               { text: "empty-block", link: "/forge/linting/empty-block" },
               { text: "incorrect-modifier", link: "/forge/linting/incorrect-modifier" },
               { text: "missing-events-access-control", link: "/forge/linting/missing-events-access-control" },
