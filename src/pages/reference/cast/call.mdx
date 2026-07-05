@@ -34,8 +34,22 @@ Options:
           Forks the remote rpc, executes the transaction locally and prints a
           trace
 
+      --debug-trace-call
+          Fetch the call trace from the node via `debug_traceCall` (callTracer)
+          and render it, instead of re-executing the call locally like
+          `--trace`.
+          
+          This is a call-tree view: nested calls, value, gas, emitted logs and
+          revert data. It does not provide the opcode / struct-log level detail
+          of a local `--trace` / `--debug` run.
+          
+          The local-execution-only trace flags (`--debug`, `--decode-internal`,
+          `--evm-version`) do not apply, since the trace comes from the node
+          rather than a local run.
+
       --disable-labels
-          Disables the labels in the traces. Can only be set with `--trace`
+          Disables the labels in the traces. Can only be set with `--trace` or
+          `--debug-trace-call`
 
       --debug
           Opens an interactive debugger. Can only be used with `--trace`
@@ -51,7 +65,7 @@ Options:
 
       --labels <LABELS>
           Labels to apply to the traces; format: `address:label`. Can only be
-          used with `--trace`
+          used with `--trace` or `--debug-trace-call`
 
       --evm-version <EVM_VERSION>
           The EVM Version to use. Can only be used with `--trace`

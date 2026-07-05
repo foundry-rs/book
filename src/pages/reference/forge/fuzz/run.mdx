@@ -1,48 +1,17 @@
-## forge snapshot
+## forge fuzz run
 
-Create a gas snapshot of each test's gas usage
+Run only fuzz and invariant tests
 
 :::terminal
 
 ```bash
-$ forge snapshot --help
+$ forge fuzz run --help
 ```
 
 ```txt
-Usage: forge snapshot [OPTIONS] [PATH]
+Usage: forge fuzz run [OPTIONS] [PATH]
 
 Options:
-      --diff [<SNAPSHOT_FILE>]
-          Output a diff against a pre-existing gas snapshot.
-          
-          By default, the comparison is done with .gas-snapshot.
-
-      --check [<SNAPSHOT_FILE>]
-          Compare against a pre-existing gas snapshot, exiting with code 1 if
-          they do not match.
-          
-          Outputs a diff if the gas snapshots do not match.
-          
-          By default, the comparison is done with .gas-snapshot.
-
-      --snap <FILE>
-          Output file for the gas snapshot
-          
-          [default: .gas-snapshot]
-
-      --tolerance <SNAPSHOT_THRESHOLD>
-          Tolerates gas deviations up to the specified percentage
-
-      --diff-sort <ORDER>
-          How to sort diff results
-
-          Possible values:
-          - percentage:      Sort by percentage change (smallest to largest) -
-            default behavior
-          - percentage-desc: Sort by percentage change (largest to smallest)
-          - absolute:        Sort by absolute gas change (smallest to largest)
-          - absolute-desc:   Sort by absolute gas change (largest to smallest)
-
   -h, --help
           Print help (see a summary with '-h')
 
@@ -1019,18 +988,6 @@ Watch options:
           Override via-ir for mutation testing compile-and-test runs
           
           [possible values: true, false]
-
-      --asc
-          Sort results by gas used (ascending)
-
-      --desc
-          Sort results by gas used (descending)
-
-      --min <MIN_GAS>
-          Only include tests that used more gas that the given amount
-
-      --max <MAX_GAS>
-          Only include tests that used less gas that the given amount
 ```
 
 :::
