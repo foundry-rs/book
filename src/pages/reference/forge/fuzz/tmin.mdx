@@ -1,23 +1,15 @@
-## chisel
+## forge fuzz tmin
 
-Fast, utilitarian, and verbose Solidity REPL
+Minimize one corpus entry while preserving its failure or coverage
 
 :::terminal
 
 ```bash
-$ chisel --help
+$ forge fuzz tmin --help
 ```
 
 ```txt
-Usage: chisel [OPTIONS] [COMMAND]
-
-Commands:
-  list         List all cached sessions
-  load         Load a cached session
-  view         View the source of a cached session
-  clear-cache  Clear all cached chisel sessions from the cache directory
-  eval         Simple evaluation of a command without entering the REPL
-  help         Print this message or the help of the given subcommand(s)
+Usage: forge fuzz tmin [OPTIONS] --corpus-out <PATH> <INPUT>
 
 Options:
   -j, --threads <THREADS>
@@ -28,9 +20,6 @@ Options:
 
   -h, --help
           Print help (see a summary with '-h')
-
-  -V, --version
-          Print version
 
 Display options:
   -v, --verbosity...
@@ -66,186 +55,44 @@ Display options:
           - always: Force color output
           - never:  Force disable color output
 
-REPL options:
-      --prelude <PRELUDE>
-          Path to a directory containing Solidity files to import, or path to a
-          single Solidity file.
+Test filtering:
+      --match-test <REGEX>
+          Only run test functions matching the specified regex pattern
           
-          These files will be evaluated before the top-level of the REPL,
-          therefore functioning as a prelude
+          [aliases: --mt]
 
-      --no-vm
-          Disable the default `Vm` import.
+      --no-match-test <REGEX>
+          Only run test functions that do not match the specified regex pattern
           
-          The import is disabled by default if the Solc version is less than
-          0.6.2.
+          [aliases: --nmt]
 
-      --ir-minimum
-          Enable viaIR with minimum optimization
+      --match-contract <REGEX>
+          Only run tests in contracts matching the specified regex pattern
           
-          This can fix most of the "stack too deep" errors while resulting a
-          relatively accurate source map.
+          [aliases: --mc]
 
-Cache options:
-      --force
-          Clear the cache and artifacts folder and recompile
-
-Build options:
-      --no-cache
-          Disable the cache
-
-      --no-dynamic-test-linking
-          Disable dynamic test linking
-
-      --skip <SKIP>...
-          Skip building files whose names contain the given filter.
+      --no-match-contract <REGEX>
+          Only run tests in contracts that do not match the specified regex
+          pattern
           
-          `test` and `script` are aliases for `.t.sol` and `.s.sol`.
+          [aliases: --nmc]
 
-Linker options:
-      --libraries <LIBRARIES>
-          Set pre-linked libraries
+      --match-path <GLOB>
+          Only run tests in source files matching the specified glob pattern
           
-          [env: DAPP_LIBRARIES=]
+          [aliases: --mp]
 
-Compiler options:
-      --ignored-error-codes <ERROR_CODES>
-          Ignore solc warnings by error code
-
-  -D, --deny <LEVEL>
-          A compiler error will be triggered at the specified diagnostic level.
+      --no-match-path <GLOB>
+          Only run tests in source files that do not match the specified glob
+          pattern
           
-          Replaces the deprecated `--deny-warnings` flag.
+          [aliases: --nmp]
+
+      --no-match-coverage <REGEX>
+          Only show coverage for files that do not match the specified regex
+          pattern
           
-          Possible values: - `never`: Do not treat any diagnostics as errors. -
-          `warnings`: Treat warnings as errors. - `notes`: Treat both, warnings
-          and notes, as errors.
-
-          Possible values:
-          - never:    Always exit with zero code
-          - warnings: Exit with a non-zero code if any warnings are found
-          - notes:    Exit with a non-zero code if any notes or warnings are
-            found
-
-      --no-auto-detect
-          Do not auto-detect the `solc` version
-
-      --use <SOLC_VERSION>
-          Specify the solc version, or a path to a local solc, to build with.
-          
-          Valid values are in the format `x.y.z`, `solc:x.y.z` or
-          `path/to/solc`.
-
-      --offline
-          Do not access the network.
-          
-          Missing solc versions will not be installed.
-
-      --use-literal-content
-          Changes compilation to only use literal content and not URLs
-
-      --no-metadata
-          Do not append any metadata to the bytecode.
-          
-          This is equivalent to setting `bytecode_hash` to `none` and
-          `cbor_metadata` to `false`.
-
-      --ast
-          Includes the AST as JSON in the compiler output
-
-      --evm-version <VERSION>
-          The target EVM version
-
-      --optimize [<OPTIMIZE>]
-          Activate the Solidity optimizer
-          
-          [possible values: true, false]
-
-      --optimizer-runs <RUNS>
-          The number of runs specifies roughly how often each opcode of the
-          deployed code will be executed across the life-time of the contract.
-          This means it is a trade-off parameter between code size (deploy cost)
-          and code execution cost (cost after deployment). An `optimizer_runs`
-          parameter of `1` will produce short but expensive code. In contrast, a
-          larger `optimizer_runs` parameter will produce longer but more gas
-          efficient code
-
-      --via-ir
-          Use the Yul intermediate representation compilation pipeline
-
-      --via-ssa-cfg
-          Turn on SSA CFG-based code generation via the IR (experimental).
-          
-          This passes `--via-ssa-cfg` to solc. Implies `--via-ir`. Requires
-          `--experimental` to be set (as of Solidity 0.8.35+). This is false by
-          default.
-
-      --experimental
-          Enable Solidity's experimental mode.
-          
-          This passes `--experimental` to solc, which is required by Solidity
-          0.8.35+ for experimental features.
-
-      --extra-output <SELECTOR>...
-          Extra output to include in the contract's artifact.
-          
-          Example keys: evm.assembly, ewasm, ir, irOptimized, metadata
-          
-          For a full description, see
-          [https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description](https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description)
-
-      --extra-output-files <SELECTOR>...
-          Extra output to write to separate files.
-          
-          Valid values: metadata, ir, irOptimized, ewasm, evm.assembly
-
-Project options:
-  -o, --out <PATH>
-          The path to the contract artifacts folder
-
-      --revert-strings <REVERT>
-          Revert string configuration.
-          
-          Possible values are "default", "strip" (remove), "debug"
-          (Solidity-generated revert strings) and "verboseDebug"
-
-      --build-info
-          Generate build info files
-
-      --build-info-path <PATH>
-          Output path to directory that build info files will be written to
-
-      --root <PATH>
-          The project's root path.
-          
-          By default root of the Git repository, if in one, or the current
-          working directory.
-
-  -C, --contracts <PATH>
-          The contracts source directory
-
-  -R, --remappings <REMAPPINGS>
-          The project's remappings
-
-      --remappings-env <ENV>
-          The project's remappings from the environment
-
-      --cache-path <PATH>
-          The path to the compiler cache
-
-      --lib-paths <PATH>
-          The path to the library folder
-
-      --hardhat
-          Use the Hardhat-style project layout.
-          
-          This is the same as using: `--contracts contracts --lib-paths
-          node_modules`.
-          
-          [aliases: --hh]
-
-      --config-path <FILE>
-          Path to the config file
+          [aliases: --nmco]
 
 EVM options:
   -r, --rpc-url <URL>
@@ -413,6 +260,178 @@ Networks:
 
       --celo
           Enable Celo network features
+
+Cache options:
+      --force
+          Clear the cache and artifacts folder and recompile
+
+Build options:
+      --no-cache
+          Disable the cache
+
+      --no-dynamic-test-linking
+          Disable dynamic test linking
+
+      --skip <SKIP>...
+          Skip building files whose names contain the given filter.
+          
+          `test` and `script` are aliases for `.t.sol` and `.s.sol`.
+
+Linker options:
+      --libraries <LIBRARIES>
+          Set pre-linked libraries
+          
+          [env: DAPP_LIBRARIES=]
+
+Compiler options:
+      --ignored-error-codes <ERROR_CODES>
+          Ignore solc warnings by error code
+
+  -D, --deny <LEVEL>
+          A compiler error will be triggered at the specified diagnostic level.
+          
+          Replaces the deprecated `--deny-warnings` flag.
+          
+          Possible values: - `never`: Do not treat any diagnostics as errors. -
+          `warnings`: Treat warnings as errors. - `notes`: Treat both, warnings
+          and notes, as errors.
+
+          Possible values:
+          - never:    Always exit with zero code
+          - warnings: Exit with a non-zero code if any warnings are found
+          - notes:    Exit with a non-zero code if any notes or warnings are
+            found
+
+      --no-auto-detect
+          Do not auto-detect the `solc` version
+
+      --use <SOLC_VERSION>
+          Specify the solc version, or a path to a local solc, to build with.
+          
+          Valid values are in the format `x.y.z`, `solc:x.y.z` or
+          `path/to/solc`.
+
+      --offline
+          Do not access the network.
+          
+          Missing solc versions will not be installed.
+
+      --use-literal-content
+          Changes compilation to only use literal content and not URLs
+
+      --no-metadata
+          Do not append any metadata to the bytecode.
+          
+          This is equivalent to setting `bytecode_hash` to `none` and
+          `cbor_metadata` to `false`.
+
+      --ast
+          Includes the AST as JSON in the compiler output
+
+      --evm-version <VERSION>
+          The target EVM version
+
+      --optimize [<OPTIMIZE>]
+          Activate the Solidity optimizer
+          
+          [possible values: true, false]
+
+      --optimizer-runs <RUNS>
+          The number of runs specifies roughly how often each opcode of the
+          deployed code will be executed across the life-time of the contract.
+          This means it is a trade-off parameter between code size (deploy cost)
+          and code execution cost (cost after deployment). An `optimizer_runs`
+          parameter of `1` will produce short but expensive code. In contrast, a
+          larger `optimizer_runs` parameter will produce longer but more gas
+          efficient code
+
+      --via-ir
+          Use the Yul intermediate representation compilation pipeline
+
+      --via-ssa-cfg
+          Turn on SSA CFG-based code generation via the IR (experimental).
+          
+          This passes `--via-ssa-cfg` to solc. Implies `--via-ir`. Requires
+          `--experimental` to be set (as of Solidity 0.8.35+). This is false by
+          default.
+
+      --experimental
+          Enable Solidity's experimental mode.
+          
+          This passes `--experimental` to solc, which is required by Solidity
+          0.8.35+ for experimental features.
+
+      --extra-output <SELECTOR>...
+          Extra output to include in the contract's artifact.
+          
+          Example keys: evm.assembly, ewasm, ir, irOptimized, metadata
+          
+          For a full description, see
+          [https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description](https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description)
+
+      --extra-output-files <SELECTOR>...
+          Extra output to write to separate files.
+          
+          Valid values: metadata, ir, irOptimized, ewasm, evm.assembly
+
+Project options:
+  -o, --out <PATH>
+          The path to the contract artifacts folder
+
+      --revert-strings <REVERT>
+          Revert string configuration.
+          
+          Possible values are "default", "strip" (remove), "debug"
+          (Solidity-generated revert strings) and "verboseDebug"
+
+      --build-info
+          Generate build info files
+
+      --build-info-path <PATH>
+          Output path to directory that build info files will be written to
+
+      --root <PATH>
+          The project's root path.
+          
+          By default root of the Git repository, if in one, or the current
+          working directory.
+
+  -C, --contracts <PATH>
+          The contracts source directory
+
+  -R, --remappings <REMAPPINGS>
+          The project's remappings
+
+      --remappings-env <ENV>
+          The project's remappings from the environment
+
+      --cache-path <PATH>
+          The path to the compiler cache
+
+      --lib-paths <PATH>
+          The path to the library folder
+
+      --hardhat
+          Use the Hardhat-style project layout.
+          
+          This is the same as using: `--contracts contracts --lib-paths
+          node_modules`.
+          
+          [aliases: --hh]
+
+      --config-path <FILE>
+          Path to the config file
+
+      --corpus-out <PATH>
+          Output corpus file or directory
+
+      --max-attempts <N>
+          Maximum candidate replays to attempt per corpus entry
+          
+          [default: 5000]
+
+  <INPUT>
+          Input corpus file or directory
 ```
 
 :::
