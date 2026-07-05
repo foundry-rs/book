@@ -127,6 +127,7 @@ const docs = [
               { text: "too-many-digits", link: "/forge/linting/too-many-digits" },
               { text: "unaliased-plain-import", link: "/forge/linting/unaliased-plain-import" },
               { text: "unsafe-cheatcode", link: "/forge/linting/unsafe-cheatcode" },
+              { text: "internal-function-used-once", link: "/forge/linting/internal-function-used-once" },
               { text: "unused-error", link: "/forge/linting/unused-error" },
               { text: "unused-import", link: "/forge/linting/unused-import" },
             ],
