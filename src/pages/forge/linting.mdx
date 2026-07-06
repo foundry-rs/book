@@ -196,6 +196,7 @@ navigation on the right to browse by severity.
 - [`block-timestamp`](/forge/linting/block-timestamp) — Flags use of `block.timestamp` as an operand of a comparison, where its value can be slightly manipulated by the block proposer.
 - [`calls-loop`](/forge/linting/calls-loop) — Flags external calls made from inside loops, which can cause denial-of-service if a callee reverts or exhausts gas.
 - [`delegatecall-loop`](/forge/linting/delegatecall-loop) — Flags `delegatecall` operations inside loops in externally callable payable functions.
+- [`deprecated-oz-function`](/forge/linting/deprecated-oz-function) — Flags references to functions OpenZeppelin deprecated: `SafeERC20.safeApprove` and `AccessControl._setupRole`.
 - [`empty-block`](/forge/linting/empty-block) — Flags regular functions with an empty body; constructors, `receive`/`fallback`, `virtual` and `payable` functions are exempt.
 - [`incorrect-modifier`](/forge/linting/incorrect-modifier) — Flags modifiers that can finish without executing the modified function body or reverting.
 - [`missing-events-access-control`](/forge/linting/missing-events-access-control) — Flags access-controlled updates to state used for authorization when the update function does not emit an event.
@@ -205,6 +206,7 @@ navigation on the right to browse by severity.
 - [`reentrancy-events`](/forge/linting/reentrancy-events) — Flags `emit` statements reachable after an external call, where a reentrant callee can reorder or fabricate logs that off-chain consumers rely on.
 - [`require-revert-in-loop`](/forge/linting/require-revert-in-loop) — Flags `require` calls and `revert` statements that execute inside loops, including checks reached through internal helpers.
 - [`return-bomb`](/forge/linting/return-bomb) — Flags external calls that set an explicit gas limit while copying unbounded dynamic returndata.
+- [`solmate-safe-transfer-lib`](/forge/linting/solmate-safe-transfer-lib) — Flags solmate `SafeTransferLib` token operations: the released library does not check that the token has code.
 
 #### Informational
 
@@ -228,6 +230,7 @@ navigation on the right to browse by severity.
 - [`unaliased-plain-import`](/forge/linting/unaliased-plain-import) — Flags `import "path";` statements that pull in every top-level symbol from another file without an alias.
 - [`unsafe-cheatcode`](/forge/linting/unsafe-cheatcode) — Flags use of Foundry cheatcodes that perform dangerous side effects (filesystem access, network activity, environment variable reads, etc.) so they cannot slip into production code unnoticed.
 - [`cyclomatic-complexity`](/forge/linting/cyclomatic-complexity) — Flags functions whose cyclomatic complexity is strictly above 11; split them into smaller functions.
+- [`incorrect-using-for`](/forge/linting/incorrect-using-for) — Flags `using ... for` directives naming a library with no function applicable to the type: they attach nothing.
 - [`unused-error`](/forge/linting/unused-error) — Flags custom error declarations that are never referenced anywhere in the compiled sources.
 - [`unused-import`](/forge/linting/unused-import) — Flags imported symbols (or whole import statements) whose imported names are not referenced anywhere in the source unit.
 
