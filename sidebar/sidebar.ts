@@ -129,6 +129,7 @@ const docs = [
               { text: "too-many-digits", link: "/forge/linting/too-many-digits" },
               { text: "unaliased-plain-import", link: "/forge/linting/unaliased-plain-import" },
               { text: "unsafe-cheatcode", link: "/forge/linting/unsafe-cheatcode" },
+              { text: "modifier-used-only-once", link: "/forge/linting/modifier-used-only-once" },
               { text: "internal-function-used-once", link: "/forge/linting/internal-function-used-once" },
               { text: "cyclomatic-complexity", link: "/forge/linting/cyclomatic-complexity" },
               { text: "incorrect-using-for", link: "/forge/linting/incorrect-using-for" },
