@@ -52,6 +52,36 @@ Options:
           
           [aliases: --jobs]
 
+Verifier options:
+      --license-type <LICENSE>
+          The Etherscan license type code or SPDX identifier to include with the
+          verification request.
+          
+          Accepts either an Etherscan numeric license code or a common SPDX
+          identifier such as `MIT`. This is only used for Etherscan-style
+          verifiers when `--verify` is enabled.
+
+      --verifier <VERIFIER>
+          The contract verification provider to use
+
+          Possible values:
+          - etherscan
+          - sourcify
+          - blockscout
+          - oklink
+          - custom:     Custom verification provider, requires compatibility
+            with the Etherscan API
+
+      --verifier-api-key <VERIFIER_API_KEY>
+          The verifier API KEY, if using a custom provider
+          
+          [env: VERIFIER_API_KEY=]
+
+      --verifier-url <VERIFIER_URL>
+          The verifier URL, if using a custom provider
+          
+          [env: VERIFIER_URL=]
+
 Cache options:
       --force
           Clear the cache and artifacts folder and recompile
@@ -107,9 +137,6 @@ Compiler options:
           
           Missing solc versions will not be installed.
 
-      --via-ir
-          Use the Yul intermediate representation compilation pipeline
-
       --use-literal-content
           Changes compilation to only use literal content and not URLs
 
@@ -130,12 +157,6 @@ Compiler options:
           
           [possible values: true, false]
 
-      --experimental
-          Enable Solidity's experimental mode.
-          
-          This passes `--experimental` to solc, which is required by Solidity
-          0.8.35+ for experimental features.
-
       --optimizer-runs <RUNS>
           The number of runs specifies roughly how often each opcode of the
           deployed code will be executed across the life-time of the contract.
@@ -144,6 +165,22 @@ Compiler options:
           parameter of `1` will produce short but expensive code. In contrast, a
           larger `optimizer_runs` parameter will produce longer but more gas
           efficient code
+
+      --via-ir
+          Use the Yul intermediate representation compilation pipeline
+
+      --via-ssa-cfg
+          Turn on SSA CFG-based code generation via the IR (experimental).
+          
+          This passes `--via-ssa-cfg` to solc. Implies `--via-ir`. Requires
+          `--experimental` to be set (as of Solidity 0.8.35+). This is false by
+          default.
+
+      --experimental
+          Enable Solidity's experimental mode.
+          
+          This passes `--experimental` to solc, which is required by Solidity
+          0.8.35+ for experimental features.
 
       --extra-output <SELECTOR>...
           Extra output to include in the contract's artifact.
@@ -582,28 +619,6 @@ Wallet options - Tempo:
           Required when `--tempo.access-key` is set.
           
           [env: TEMPO_ROOT_ACCOUNT=]
-
-Verifier options:
-      --verifier <VERIFIER>
-          The contract verification provider to use
-
-          Possible values:
-          - etherscan
-          - sourcify
-          - blockscout
-          - oklink
-          - custom:     Custom verification provider, requires compatibility
-            with the Etherscan API
-
-      --verifier-api-key <VERIFIER_API_KEY>
-          The verifier API KEY, if using a custom provider
-          
-          [env: VERIFIER_API_KEY=]
-
-      --verifier-url <VERIFIER_URL>
-          The verifier URL, if using a custom provider
-          
-          [env: VERIFIER_URL=]
 
 Wallet options - browser wallet:
       --browser
