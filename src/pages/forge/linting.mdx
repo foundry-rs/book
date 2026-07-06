@@ -229,6 +229,7 @@ navigation on the right to browse by severity.
 - [`too-many-digits`](/forge/linting/too-many-digits) — Flags numeric literals containing five or more consecutive zeros, which are easy to misread.
 - [`unaliased-plain-import`](/forge/linting/unaliased-plain-import) — Flags `import "path";` statements that pull in every top-level symbol from another file without an alias.
 - [`unsafe-cheatcode`](/forge/linting/unsafe-cheatcode) — Flags use of Foundry cheatcodes that perform dangerous side effects (filesystem access, network activity, environment variable reads, etc.) so they cannot slip into production code unnoticed.
+- [`literal-instead-of-constant`](/forge/linting/literal-instead-of-constant) — Flags number, address and hex string literals repeated inside a contract; declare a named constant instead.
 - [`modifier-used-only-once`](/forge/linting/modifier-used-only-once) — Flags modifiers invoked by exactly one function; their checks can usually be inlined.
 - [`internal-function-used-once`](/forge/linting/internal-function-used-once) — Flags internal functions referenced exactly once; they can usually be inlined into their caller.
 - [`cyclomatic-complexity`](/forge/linting/cyclomatic-complexity) — Flags functions whose cyclomatic complexity is strictly above 11; split them into smaller functions.
