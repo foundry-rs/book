@@ -104,12 +104,14 @@ Linker options:
           [env: DAPP_LIBRARIES=]
 
 Verifier options:
-      --license-type <CODE>
-          The Etherscan license type code to include with the verification
-          request.
+      --license-type <LICENSE>
+          The Etherscan license type code or SPDX identifier to include with the
+          verification request.
           
-          See Etherscan's supported `licenseType` values. This is only used for
-          Etherscan-style verifiers.
+          Accepts either an Etherscan numeric license code (see
+          [https://etherscan.io/contract-license-types](https://etherscan.io/contract-license-types)) or a common SPDX
+          identifier such as `MIT`, `Apache-2.0`, `GPL-3.0-or-later`, or
+          `AGPL-3.0-or-later`. Only used for Etherscan-style verifiers.
 
       --verifier <VERIFIER>
           The contract verification provider to use
