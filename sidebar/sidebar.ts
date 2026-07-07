@@ -136,6 +136,7 @@ const docs = [
               { text: "incorrect-using-for", link: "/forge/linting/incorrect-using-for" },
               { text: "unused-error", link: "/forge/linting/unused-error" },
               { text: "unused-import", link: "/forge/linting/unused-import" },
+              { text: "todo-comment", link: "/forge/linting/todo-comment" },
             ],
           },
           {
