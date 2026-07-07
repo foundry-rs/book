@@ -989,6 +989,11 @@ Watch options:
           
           [possible values: true, false]
 
+      --brutalize
+          Run tests against source files rewritten with deterministic
+          robustness checks for dirty value bits, dirty memory, and free-memory
+          pointer misalignment.
+
       --corpus-dir <PATH>
           Replay corpus entries from this directory instead of persisted fuzz
           failures

@@ -472,6 +472,35 @@ Mutation testing cannot be combined with `--list`, `--debug`, `--flamegraph`, `-
 
 Mutation testing also rejects projects with `ffi = true`, write-capable file-system permissions that can reach symlinked dependency directories, or inline per-test network overrides.
 
+### Brutalized testing
+
+Brutalized testing checks whether code remains robust when values and memory are dirtier than the assumptions made by clean, ordinary test executions. It is useful for contracts that use inline assembly, narrow integer or fixed-bytes casts, addresses, or low-level memory handling.
+
+Run the selected tests against brutalized sources with `forge test --brutalize`:
+
+```bash
+$ forge test --brutalize
+```
+
+Forge copies the project into a temporary workspace, rewrites source files under `src/`, compiles that temporary project, and runs the selected tests there. Test files (`.t.sol`) and scripts (`.s.sol`) are not rewritten.
+
+Brutalization applies deterministic source rewrites that:
+
+- dirty unused upper bits in casts to `address`, smaller `uint`/`int` types, and fixed-size `bytes` types
+- fill scratch space (`0x00` through `0x3f`) and memory beyond the free memory pointer before eligible external assembly functions run
+- misalign the free memory pointer by a small deterministic odd offset
+
+If `forge test` passes but `forge test --brutalize` fails, the code under test likely depends on assumptions that are not guaranteed in every caller context, such as clean upper bits, zeroed memory, or word-aligned free memory.
+
+Regular test filters still apply:
+
+```bash
+$ forge test --brutalize --match-contract VaultTest
+$ forge test --brutalize --match-test testWithdraw
+```
+
+`--brutalize` is separate from mutation testing. Mutation testing changes code to evaluate test quality; brutalized testing changes call and memory conditions to evaluate code robustness. Because they answer different questions, `--brutalize` cannot be combined with `--mutate`.
+
 ### Symbolic testing
 
 Symbolic testing explores your code with symbolic inputs instead of concrete ones, searching feasible execution paths within the current symbolic EVM model and configured bounds for a counterexample that violates a property. When Forge reports a failure, it first replays the concrete input or invariant sequence through the normal executor, so the failure is backed by a concrete example.
