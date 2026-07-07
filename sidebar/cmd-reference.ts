@@ -153,5 +153,6 @@ export const cmdReference: SidebarItem[] = [
         ],
       },
       { text: 'RPC', link: '/reference/cheatcodes/rpc' },
+      { text: 'getChain', link: '/reference/cheatcodes/get-chain' },
       { text: 'Files', link: '/reference/cheatcodes/fs' },
 ];
