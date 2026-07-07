@@ -1,6 +1,8 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "redirects": [
+    { "source": "/install", "destination": "https://raw.githubusercontent.com/foundry-rs/foundryup/HEAD/foundryup-init.sh" },
+
     { "source": "/getting-started/installation", "destination": "/introduction/installation" },
     { "source": "/getting-started/introduction", "destination": "/introduction/getting-started" },
     { "source": "/getting-started/first-steps", "destination": "/introduction/getting-started" },

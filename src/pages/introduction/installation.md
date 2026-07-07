@@ -11,7 +11,7 @@ Foundry is installed using **foundryup**, the official installer and version man
 ### Install foundryup
 
 ```bash
-$ curl -L https://foundry.paradigm.xyz | bash
+$ curl -L https://getfoundry.sh/install | bash
 ```
 
 ### Restart your terminal
