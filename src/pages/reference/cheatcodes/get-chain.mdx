@@ -1,0 +1,108 @@
+---
+description: Returns chain metadata for a known chain alias or chain ID
+---
+
+## `getChain`
+
+### Signature
+
+```solidity
+struct Chain {
+    string name;
+    uint256 chainId;
+    string chainAlias;
+    string rpcUrl;
+}
+
+function getChain(string calldata chainAlias) external view returns (Chain memory chain);
+function getChain(uint256 chainId) external view returns (Chain memory chain);
+```
+
+### Description
+
+Returns metadata for a chain known to Foundry. The chain can be looked up by alias or by chain ID.
+
+Chain lookup uses Foundry's built-in named chain registry from `alloy-chains`, so supported aliases and chain IDs depend on the Foundry version you are running.
+
+The returned `rpcUrl` is populated only when Foundry can resolve an RPC endpoint for the chain from the `[rpc_endpoints]` table in `foundry.toml`. If no matching endpoint is configured, `rpcUrl` is empty.
+
+### Parameters
+
+| Parameter    | Type      | Description                                   |
+|--------------|-----------|-----------------------------------------------|
+| `chainAlias` | `string`  | Known chain alias, such as `mainnet` or `base` |
+| `chainId`    | `uint256` | Known EIP-155 chain ID                        |
+
+### Returns
+
+| Field        | Type      | Description                                            |
+|--------------|-----------|--------------------------------------------------------|
+| `name`       | `string`  | Resolved Foundry chain name                            |
+| `chainId`    | `uint256` | EIP-155 chain ID                                       |
+| `chainAlias` | `string`  | Configured RPC alias when one is resolved, otherwise the lookup input |
+| `rpcUrl`     | `string`  | Configured RPC URL for the chain, or an empty string   |
+
+### Configuration
+
+Configure RPC endpoints in your `foundry.toml` if you need `rpcUrl` in the returned struct:
+
+```toml [foundry.toml]
+[rpc_endpoints]
+mainnet = "${MAINNET_RPC_URL}"
+base = "https://mainnet.base.org"
+```
+
+### Examples
+
+#### Get chain metadata by alias
+
+```solidity [test/GetChain.t.sol]
+function testGetMainnet() public {
+    Vm.Chain memory mainnet = vm.getChain("mainnet");
+
+    assertEq(mainnet.name, "mainnet");
+    assertEq(mainnet.chainId, 1);
+    assertEq(mainnet.chainAlias, "mainnet");
+}
+```
+
+#### Use a configured RPC URL
+
+```solidity [test/GetChain.t.sol]
+function testCreateForkFromConfiguredChain() public {
+    Vm.Chain memory base = vm.getChain("base");
+
+    assertEq(base.chainId, 8453);
+    assertGt(bytes(base.rpcUrl).length, 0);
+
+    uint256 forkId = vm.createFork(base.rpcUrl);
+    vm.selectFork(forkId);
+}
+```
+
+#### Get chain metadata by chain ID
+
+```solidity [test/GetChain.t.sol]
+function testGetOptimismByChainId() public {
+    Vm.Chain memory optimism = vm.getChain(10);
+
+    assertEq(optimism.name, "optimism");
+    assertEq(optimism.chainId, 10);
+}
+```
+
+### Gotchas
+
+:::warning
+`getChain` does not provide a default public RPC URL. Configure the endpoint in `[rpc_endpoints]` or expect `rpcUrl` to be empty.
+:::
+
+:::warning
+Unknown aliases and unknown numeric chain IDs revert.
+:::
+
+### Related Cheatcodes
+
+- [`rpcUrl`](/reference/cheatcodes/rpc) - Return a configured RPC endpoint by alias
+- [`rpcUrls`](/reference/cheatcodes/rpc) - Return all configured RPC endpoints
+- [`createFork`](/reference/cheatcodes/create-fork) - Create a fork from an RPC URL
