@@ -211,7 +211,7 @@ Use `::::steps` for sequential instructions:
 ### Install foundryup
 
 ```bash
-$ curl -L https://foundry.paradigm.xyz | bash
+$ curl -L https://getfoundry.sh/install | bash
 ```
 
 ### Install Foundry
