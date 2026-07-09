@@ -69,15 +69,15 @@ By default, Foundry manages its toolchain, global configuration, cache, and keys
 | **Global Configuration** | `~/.foundry/foundry.toml` | [`FOUNDRY_CONFIG`](#configuration-file-discovery) environment variable |
 | **Project Build Cache** | `<project_root>/cache/` | `cache_path` config option or `FOUNDRY_CACHE_PATH` |
 | **Global RPC Cache** | `~/.foundry/cache/rpc/` | Not configurable |
-| **Keystores** | `~/.foundry/keystores/` | `--keystore-dir` / `--dir` CLI flags (for management), `--keystore` CLI flag (for signing) |
+| **Keystores** | `~/.foundry/keystores/` | Positional path argument (`cast wallet new`), `--keystore-dir` / `--dir` CLI flags, or `--keystore` CLI flag (for signing) |
 | **Solidity Compiler (`svm`)** | `~/.svm/` | Platform data directory (when `~/.svm` is absent and the data directory exists) |
 
 #### Toolchain Installation (`FOUNDRY_DIR`)
 
 `foundryup` installs the Foundry binaries (`forge`, `cast`, `anvil`, and `chisel`), manual pages, and versioned toolchains.
-- **Default path:** `~/.foundry/`
+- **Default path:** `~/.foundry/` (if neither `FOUNDRY_DIR` nor `XDG_CONFIG_HOME` is set).
 - **Customization:** Set the `FOUNDRY_DIR` environment variable to install to a custom directory.
-- **XDG Fallback:** If `FOUNDRY_DIR` is not set, `foundryup` will respect the `XDG_CONFIG_HOME` environment variable (defaulting to `$HOME` if unset) and install to `$XDG_CONFIG_HOME/.foundry/`. If `FOUNDRY_DIR` is set, it overrides this path completely.
+- **XDG Behavior:** If `FOUNDRY_DIR` is not set but `XDG_CONFIG_HOME` is set, `foundryup` will install to `$XDG_CONFIG_HOME/.foundry/`. If `FOUNDRY_DIR` is set, it takes precedence and overrides this path completely.
 
 #### CLI Configuration, Cache, and Keystores
 
@@ -85,7 +85,11 @@ The Foundry CLI tools currently store their global configuration, cache, and key
 - **Global Configuration:** Configured in `~/.foundry/foundry.toml`. This can be overridden by setting the `FOUNDRY_CONFIG` environment variable to a custom file path.
 - **Project Build Cache:** Compilation artifacts and build caches are stored in the project's local directory (defaulting to `cache/`). This can be overridden on a project-level using the `cache_path` config option in `foundry.toml` or the `FOUNDRY_CACHE_PATH` environment variable.
 - **Global RPC Cache:** Fork cache and other global RPC-related data are stored in `~/.foundry/cache/rpc/` and are not configurable.
-- **Keystores:** Encrypted private keys are stored in `~/.foundry/keystores/` by default. You can customize the storage directory during wallet creation/import using the `--keystore-dir` flag, query it using `--dir` or `--keystore-dir` flags, and specify a specific keystore file for signing via the `--keystore` flag.
+- **Keystores:** Encrypted private keys are stored in `~/.foundry/keystores/` by default. You can customize this directory by command family:
+  - **Creation:** `cast wallet new` takes the target directory as a positional path argument.
+  - **Importing/Management:** `cast wallet import`, `cast wallet decrypt-keystore`, and `cast wallet change-password` support the `--keystore-dir` flag to specify a custom directory.
+  - **Listing/Removal:** `cast wallet list` and `cast wallet remove` use the `--dir` flag.
+  - **Signing:** For CLI commands that require signing (like `cast send` or `forge script`), specify the path to a specific keystore file via the `--keystore` flag.
 
 #### Solidity Version Manager (`svm`)
 
