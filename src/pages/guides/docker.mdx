@@ -31,7 +31,13 @@ Pull the image:
 ```bash
 $ podman pull ghcr.io/foundry-rs/foundry:latest
 ```
-Podman is an OCI-compatible container engine and can be used with the official Foundry container image.
+
+The Docker commands described below can be run with Podman by replacing `docker` with `podman`. For example:
+
+```bash
+# Run forge build using Podman
+$ podman run --rm -v $(pwd):/app -w /app ghcr.io/foundry-rs/foundry forge build
+```
 
 > **Note**
 >
