@@ -59,6 +59,47 @@ Exceptions are:
 - `DAPP_TEST_FUZZ_RUNS`
 - `DAPP_TEST_FUZZ_DEPTH`
 
+### Directory Layout
+
+By default, Foundry manages its toolchain, global configuration, cache, and keystore data under the user's home directory.
+
+| Component | Default Location | Override / Customization |
+| :--- | :--- | :--- |
+| **`foundryup` Installation** | `~/.foundry/` | `FOUNDRY_DIR` (or `${XDG_CONFIG_HOME:-$HOME}/.foundry/` as fallback) |
+| **Global Configuration** | `~/.foundry/foundry.toml` | [`FOUNDRY_CONFIG`](#configuration-file-discovery) environment variable |
+| **Project Build Cache** | `<project_root>/cache/` | `cache_path` config option or `FOUNDRY_CACHE_PATH` |
+| **Global RPC Cache** | `~/.foundry/cache/rpc/` | Not configurable |
+| **Keystores** | `~/.foundry/keystores/` | Positional path argument (`cast wallet new`), `--keystore-dir` / `--dir` CLI flags, or `--keystore` CLI flag (for signing) |
+| **Solidity Compiler (`svm`)** | `~/.svm/` | Platform data directory (when `~/.svm` is absent and the data directory exists) |
+
+#### Toolchain Installation (`FOUNDRY_DIR`)
+
+`foundryup` installs the Foundry binaries (`forge`, `cast`, `anvil`, and `chisel`), manual pages, and versioned toolchains.
+- **Default path:** `~/.foundry/` (if neither `FOUNDRY_DIR` nor `XDG_CONFIG_HOME` is set).
+- **Customization:** Set the `FOUNDRY_DIR` environment variable to install to a custom directory.
+- **XDG Behavior:** If `FOUNDRY_DIR` is not set but `XDG_CONFIG_HOME` is set, `foundryup` will install to `$XDG_CONFIG_HOME/.foundry/`. If `FOUNDRY_DIR` is set, it takes precedence and overrides this path completely.
+
+#### CLI Configuration, Cache, and Keystores
+
+The Foundry CLI tools currently store their global configuration, cache, and keystore data under the traditional `~/.foundry` directory. These locations are configurable through existing Foundry-specific options rather than the XDG Base Directory environment variables:
+- **Global Configuration:** Configured in `~/.foundry/foundry.toml`. This can be overridden by setting the `FOUNDRY_CONFIG` environment variable to a custom file path.
+- **Project Build Cache:** Compilation artifacts and build caches are stored in the project's local directory (defaulting to `cache/`). This can be overridden on a project-level using the `cache_path` config option in `foundry.toml` or the `FOUNDRY_CACHE_PATH` environment variable.
+- **Global RPC Cache:** Fork cache and other global RPC-related data are stored in `~/.foundry/cache/rpc/` and are not configurable.
+- **Keystores:** Encrypted private keys are stored in `~/.foundry/keystores/` by default. You can customize this directory by command family:
+  - **Creation:** `cast wallet new` takes the target directory as a positional path argument.
+  - **Importing/Management:** `cast wallet import`, `cast wallet decrypt-keystore`, and `cast wallet change-password` support the `--keystore-dir` flag to specify a custom directory.
+  - **Listing/Removal:** `cast wallet list` and `cast wallet remove` use the `--dir` flag.
+  - **Signing:** For CLI commands that require signing (like `cast send` or `forge script`), specify the path to a specific keystore file via the `--keystore` flag.
+
+#### Solidity Version Manager (`svm`)
+
+The Solidity Version Manager (`svm-rs`), which downloads and manages different compiler (`solc`) versions, resolves its storage directory as follows:
+- **Fallback behavior:** It first checks if the legacy `~/.svm/` directory exists. If it does, `svm-rs` continues to use `~/.svm` for compatibility.
+- **Platform Data Directory Fallback:** If `~/.svm/` does not exist **and** the system's platform-specific data directory exists, it will use:
+  - **Linux/Unix:** `$XDG_DATA_HOME/svm/` (which defaults to `~/.local/share/svm/` if `XDG_DATA_HOME` is unset).
+  - **macOS:** `~/Library/Application Support/svm/`.
+- **Otherwise:** If neither of the above conditions is met (e.g., the platform-specific data directory does not exist on disk), it defaults back to creating and using `~/.svm/`.
+
 ### Configuration format
 
 Configuration files are written in the [TOML format](https://toml.io), with simple key-value pairs inside of sections.
