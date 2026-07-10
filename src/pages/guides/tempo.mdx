@@ -84,6 +84,39 @@ When you fork a live Tempo RPC, Anvil can infer the network from the upstream ch
 $ anvil --fork-url $TEMPO_RPC_URL
 ```
 
+### Fund TIP-20 balances
+
+In Tempo mode, use `tempo_fundAddress` or its `anvil_dealTip20` alias to mint TIP-20 tokens to an account. Unlike `anvil_dealERC20`, these methods mint through the Tempo token implementation and therefore work with precompile-backed TIP-20 balances.
+
+```text
+tempo_fundAddress(address[, tokens]) -> transactionHashes
+anvil_dealTip20(address[, tokens]) -> transactionHashes
+```
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `address` | `address` | Account that receives the tokens |
+| `tokens` | `address[]` | Optional TIP-20 token addresses. If omitted, Anvil funds PathUSD, AlphaUSD, BetaUSD, and ThetaUSD |
+
+Omitting `tokens` submits one mint transaction for each default token:
+
+```bash
+$ cast rpc tempo_fundAddress $RECIPIENT \
+    --rpc-url http://127.0.0.1:8545
+```
+
+Pass the optional array to fund only specific TIP-20 tokens. Both RPC names accept the same parameters:
+
+```bash
+$ cast rpc anvil_dealTip20 $RECIPIENT \
+    "[\"$ALPHA_USD\",\"$THETA_USD\"]" \
+    --rpc-url http://127.0.0.1:8545
+```
+
+Each selected token receives `18,446,744,073,709,551,615` base units, and the result contains one transaction hash per token in the same order. Repeated calls mint the amount again. Passing an empty token array returns an empty result without changing state.
+
+Explicit token addresses must be TIP-20 tokens deployed through the active Tempo token factory. Anvil validates the complete list before changing state and grants its local faucet account the issuer role for valid custom tokens. These methods are available only when Anvil is running in Tempo mode and are intended for local development and testing.
+
 See [`anvil`](/reference/anvil/anvil) for the full reference. Do not add historical hardfork flags to normal Anvil examples; pinning old hardforks should be intentional.
 
 ## Tempo transactions
