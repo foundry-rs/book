@@ -86,7 +86,7 @@ $ anvil --fork-url $TEMPO_RPC_URL
 
 ### Set TIP-20 balances
 
-In Tempo mode, use `anvil_dealTIP20` to set a TIP-20 token balance for an account. Unlike `anvil_dealERC20`, it writes the balance directly into native TIP-20 storage, so it works with precompile-backed TIP-20 balances that ERC-20 slot discovery cannot reach.
+In Tempo mode, use `anvil_dealTIP20` to set a TIP-20 token balance for an account. It writes the balance directly into native TIP-20 storage, so it works with precompile-backed TIP-20 balances that ERC-20 slot discovery cannot reach.
 
 ```text
 anvil_dealTIP20(address, tokenAddress, balance)
