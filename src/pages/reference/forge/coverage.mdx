@@ -18,8 +18,14 @@ Options:
           This flag can be used multiple times. Falls back to the
           `[profile.<name>.coverage] report` config value when not provided
           (default: `summary`).
-          
-          [possible values: summary, lcov, debug, bytecode]
+
+          Possible values:
+          - summary
+          - lcov
+          - debug
+          - bytecode
+          - attribution: JSON report mapping each test to the source items it
+            covers
 
       --lcov-version <LCOV_VERSION_CLI>
           The version of the LCOV "tracefile" format to use.
@@ -42,8 +48,8 @@ Options:
       --report-file <PATH>
           The path to output the report.
           
-          If not specified, the report will be stored in the root of the
-          project.
+          Used only when a single file report is requested. If not specified,
+          the report will be stored in the root of the project.
 
       --include-libs
           Whether to include libraries in the coverage report
@@ -419,6 +425,21 @@ Test options:
           Replay a durable symbolic counterexample artifact emitted by `forge
           test --symbolic`
 
+      --emit-regression
+          Emit Solidity regression tests for confirmed symbolic counterexamples
+          
+          [env: FOUNDRY_SYMBOLIC_EMIT_REGRESSION=]
+
+      --regression-out <PATH>
+          File or directory for generated symbolic regression tests
+          
+          [env: FOUNDRY_SYMBOLIC_REGRESSION_OUT=]
+
+      --regression-overwrite
+          Overwrite existing generated symbolic regression tests
+          
+          [env: FOUNDRY_SYMBOLIC_REGRESSION_OVERWRITE=]
+
       --symbolic-seed-corpus
           Run fuzz tests symbolically and persist non-failing concrete inputs to
           the fuzz corpus
@@ -557,6 +578,14 @@ Test options:
       --rerun
           Re-run recorded test failures from last run. If no failure recorded
           then regular test run is performed
+
+      --opcodes <OPCODES>
+          Print the given opcodes in trace output, with their gas cost and the
+          storage slot and value, if available.
+          
+          Accepts a comma-separated list of opcode names, e.g. `--opcodes
+          SLOAD,MLOAD,SSTORE`. Names are in uppercase. Requires `-vvvvv` to
+          render.
 
   [PATH]
           The contract file you want to test, it's a shortcut for --match-path
@@ -1029,9 +1058,23 @@ Watch options:
           [possible values: true, false]
 
       --brutalize
-          Run tests against source files rewritten with deterministic
-          robustness checks for dirty value bits, dirty memory, and free-memory
-          pointer misalignment.
+          Enable brutalization mode.
+          
+          Catches latent bugs that normal tests miss because the EVM initializes
+          memory to zero and registers to clean values. Applies source-level
+          sanitizers before compiling:
+          
+          - Dirties unused bits in sub-256-bit type casts (address, uint8,
+          bytes4, etc.) to catch assembly code that assumes clean upper bits
+          when using legacy codegen. Via-IR may clean these bits before inline
+          assembly observes them. - Fills scratch space (0x00-0x3f) and memory
+          beyond the free memory pointer with junk to catch uninitialized memory
+          reads - Misaligns the free memory pointer to catch word-alignment
+          assumptions
+          
+          If `forge test` passes but `forge test --brutalize` fails, the code
+          has a robustness issue that could manifest when called in a different
+          context.
 ```
 
 :::

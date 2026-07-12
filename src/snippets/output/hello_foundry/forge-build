@@ -3,7 +3,14 @@
 $ forge build
 // [!endregion command]
 // [!region output]
-Solc 0.8.35 finished in 697.17ms
+Solc 0.8.36 finished in 970.11ms
 Compiler run [32msuccessful[0m!
+[1m[33mwarning[empty-block][0m[1m: empty function body[0m
+  [1m[94m ╭▸ [0mscript/Counter.s.sol:10:29
+   [1m[94m│[0m
+[1m[94m10[0m [1m[94m│[0m     function setUp() public {}
+   [1m[94m│[0m                             [1m[33m━━[0m
+   [1m[94m│[0m
+   [1m[94m╰ [0m[1mhelp[0m: ]8;;https://getfoundry.sh/forge/linting/empty-block\https://getfoundry.sh/forge/linting/empty-block]8;;\
 // [!endregion output]
 // [!endregion all]

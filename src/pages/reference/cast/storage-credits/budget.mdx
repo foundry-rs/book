@@ -1,82 +1,24 @@
-## cast run
+## cast storage-credits budget
 
-Runs a published transaction in a local environment and prints the trace
+Show an account's storage credit spend budget.
+
+Budget is transaction-local transient state, so a standalone read reflects the
+default rather than a value set by an earlier `set-budget` transaction.
 
 :::terminal
 
 ```bash
-$ cast run --help
+$ cast storage-credits budget --help
 ```
 
 ```txt
-Usage: cast run [OPTIONS] <TX_HASH>
+Usage: cast storage-credits budget [OPTIONS] <ACCOUNT>
 
 Arguments:
-  <TX_HASH>
-          The transaction hash
+  <ACCOUNT>
+          Account to query
 
 Options:
-  -d, --debug
-          Opens the transaction in the debugger
-
-      --decode-internal
-          Whether to identify internal functions in traces
-
-      --trace-depth <TRACE_DEPTH>
-          Defines the depth of a trace
-
-  -t, --trace-printer
-          Print out opcode traces
-
-      --quick
-          Executes the transaction only with the state from the previous block.
-          
-          May result in different results than the live execution!
-
-      --replay-system-txes
-          Whether to replay system transactions
-
-      --disable-labels
-          Disables the labels in the traces
-
-      --prestate-tracer
-          Use debug_traceTransaction to fetch the prestate instead of replaying
-          the block.
-          
-          This is significantly faster than replaying all previous transactions
-          in the block, but requires the node to expose the `debug_` namespace
-          (most public RPCs don't). If the call or response can't be used, cast
-          silently falls back to replaying the block.
-
-      --debug-trace-transaction
-          Fetch the transaction's trace from the node via
-          `debug_traceTransaction` (callTracer) and render it, instead of
-          re-executing the transaction locally.
-          
-          This skips the block replay entirely, so it is fast and reflects
-          exactly what happened on-chain, including chain-specific EVM behavior
-          a local replay may not reproduce, but it requires the node to expose
-          the `debug_` namespace. The result is a call-tree view: nested calls,
-          value, gas, emitted logs and revert data. It does not provide the
-          opcode-level detail of a local run, so the local-execution-only flags
-          (`--debug`, `--decode-internal`, `--trace-printer`, `--quick`,
-          `--prestate-tracer`, `--evm-version`) do not apply.
-
-  -l, --label <LABEL>
-          Label addresses in the trace.
-          
-          Example: 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045:vitalik.eth
-
-  -e, --etherscan-api-key <KEY>
-          The Etherscan (or equivalent) API key
-          
-          [env: ETHERSCAN_API_KEY=]
-
-  -c, --chain <CHAIN>
-          The chain name or EIP-155 chain ID
-          
-          [env: CHAIN=]
-
   -h, --help
           Print help (see a summary with '-h')
 
@@ -163,22 +105,6 @@ Rpc options:
 
       --curl
           Print the equivalent curl command instead of making the RPC request
-
-      --evm-version <EVM_VERSION>
-          The EVM version to use.
-          
-          Overrides the version specified in the config.
-
-      --with-local-artifacts
-          Use current project artifacts for trace decoding
-          
-          [aliases: --la]
-
-      --disable-block-gas-limit
-          Disable block gas limit check
-
-      --enable-tx-gas-limit
-          Enable the tx gas limit checks as imposed by Osaka (EIP-7825)
 
 Display options:
       --color <COLOR>
