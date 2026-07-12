@@ -1,30 +1,26 @@
-## cast decode-transaction
+## cast storage-credits
 
-Decodes a raw signed EIP 2718 typed transaction
+T7 storage credits operations (Tempo)
 
 :::terminal
 
 ```bash
-$ cast decode-transaction --help
+$ cast storage-credits --help
 ```
 
 ```txt
-Usage: cast decode-transaction [OPTIONS] [TX]
+Usage: cast storage-credits [OPTIONS] <COMMAND>
 
-Arguments:
-  [TX]
-          Encoded transaction
+Commands:
+  balance     Show an account's storage credit balance
+  mode        Show an account's storage credit consumption mode
+  budget      Show an account's storage credit spend budget
+  set-mode    Set the caller's storage credit consumption mode
+  set-budget  Set the caller's storage credit spend budget, which also selects
+              `direct` mode
+  help        Print this message or the help of the given subcommand(s)
 
 Options:
-  -n, --network <NETWORK>
-          Override the network used to decode the transaction.
-          
-          By default, cast decodes with Foundry's transaction envelope, which
-          recognizes standard Ethereum txs and Foundry-supported
-          network-specific tx types such as Tempo.
-          
-          [possible values: ethereum, tempo]
-
   -h, --help
           Print help (see a summary with '-h')
 
