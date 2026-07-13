@@ -13,7 +13,7 @@
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
     "tailwindcss": "^4.2.2",
-    "vocs": "2.1.12",
+    "vocs": "2.3.3",
     "waku": "^1.0.0-beta.0"
   },
   "devDependencies": {
