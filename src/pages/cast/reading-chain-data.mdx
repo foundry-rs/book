@@ -104,6 +104,73 @@ $ cast call $CONTRACT "totalSupply()(uint256)" --block 18000000
 
 :::
 
+### Simulating state with call overrides
+
+`cast call` can temporarily replace account data for an `eth_call`. Overrides only affect the simulation; they do not change on-chain state.
+
+| Flag | Effect |
+| --- | --- |
+| `--override-balance <ADDRESS:BALANCE>` | Replaces an account's native balance. |
+| `--override-nonce <ADDRESS:NONCE>` | Replaces an account's nonce. |
+| `--override-code <ADDRESS:CODE>` | Replaces an account's bytecode. |
+| `--override-state <ADDRESS:SLOT:VALUE>` | Replaces all storage for an account with the supplied slots. |
+| `--override-state-diff <ADDRESS:SLOT:VALUE>` | Replaces the supplied storage slots while preserving the account's other storage. |
+
+Each flag accepts a comma-separated list of entries. For example, you can simulate a contract call after changing one storage slot:
+
+```bash
+$ cast call $CONTRACT "balanceOf(address)(uint256)" $ADDRESS \
+    --override-state-diff $CONTRACT:$BALANCE_SLOT:$VALUE
+```
+
+Use `--override-state-diff` when you only want to change specific slots. `--override-state` replaces the account's entire storage, so omitted slots read as zero during the call.
+
+### Simulating block context
+
+Use `--block` to select the chain state on which to base the call, then use `--block.*` options to change the block values visible to the simulated EVM:
+
+| Flag | EVM block value |
+| --- | --- |
+| `--block.number <NUMBER>` | Block number. |
+| `--block.time <TIME>` | Timestamp. |
+| `--block.gas-limit <GAS_LIMIT>` | Gas limit. |
+| `--block.fee-recipient <ADDRESS>` | Fee recipient (`COINBASE`). Alias: `--block.coinbase`. |
+| `--block.base-fee <BASE_FEE>` | Base fee per gas. Alias: `--block.base-fee-per-gas`. |
+| `--block.blob-base-fee <BLOB_BASE_FEE>` | Base fee per blob gas. Alias: `--block.blob-base-fee-per-gas`. |
+
+For example, this reads state from block `20000000` while the contract observes the overridden block context:
+
+```bash
+$ cast call $CONTRACT "quote()(uint256)" \
+    --block 20000000 \
+    --block.number 21000000 \
+    --block.time 1750000000 \
+    --block.gas-limit 30000000 \
+    --block.fee-recipient 0x000000000000000000000000000000000000bEEF \
+    --block.base-fee 1000000000 \
+    --block.blob-base-fee 1
+```
+
+The same state and block overrides apply to regular calls, local `--trace` calls, remote `--debug-trace-call` calls, and requests printed with `--curl`. Remote calls require an RPC node that supports the corresponding `eth_call` or `debug_traceCall` override parameters.
+
+See the [`cast call` reference](/reference/cast/call) for the complete option list.
+
+### ERC-20 balances with call overrides
+
+`cast erc20-token balance` supports the state override flags above together with `--block.number` and `--block.time`. These options compose with `--block`, so you can select historical state and change the context used for the token's `balanceOf` call:
+
+```bash
+$ cast erc20-token balance $TOKEN $OWNER \
+    --block 20000000 \
+    --override-state-diff $TOKEN:$BALANCE_SLOT:$VALUE \
+    --block.number 21000000 \
+    --block.time 1750000000
+```
+
+Here, `BALANCE_SLOT` must be the exact storage key used by that token for the owner's balance. The deprecated `cast balance $OWNER --erc20 $TOKEN` form accepts the same call overrides, but new scripts should use [`cast erc20-token balance`](/reference/cast/erc20-token/balance).
+
+Native ETH balance queries use `eth_getBalance`, not `eth_call`. As a result, `cast balance $ADDRESS` does not accept call override flags; use `--block` alone to query a native balance at another block.
+
 ### Logs and events
 
 :::code-group
