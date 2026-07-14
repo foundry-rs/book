@@ -13,7 +13,6 @@ Flags external calls that set an explicit gas limit while copying unbounded dyna
 
 Detects low-level `call`, `delegatecall`, and `staticcall` expressions that specify `{gas: ...}`.
 Solidity copies the full returndata for these calls even when the second tuple element is ignored.
-
 It also detects high-level external calls with `{gas: ...}` that consume dynamically encoded return
 values such as `bytes`, `string`, dynamic arrays, or structs containing dynamic fields.
 
@@ -46,7 +45,5 @@ function callTarget(address target, bytes memory payload, uint256 gasLimit) exte
 }
 ```
 
-### Notes
-
-Ignoring the second tuple element does not avoid the returndata copy. If the returndata is needed,
-copy only a bounded number of bytes with a helper that caps returndata size.
+Ignoring the second tuple element does not avoid the copy. If the returndata is needed, copy only a
+bounded number of bytes with a helper that caps returndata size.

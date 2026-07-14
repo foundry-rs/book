@@ -199,8 +199,8 @@ navigation on the right to browse by severity.
 - [`deprecated-oz-function`](/forge/linting/deprecated-oz-function) — Flags references to functions OpenZeppelin deprecated: `SafeERC20.safeApprove` and `AccessControl._setupRole`.
 - [`empty-block`](/forge/linting/empty-block) — Flags regular functions with an empty body; constructors, `receive`/`fallback`, `virtual` and `payable` functions are exempt.
 - [`incorrect-modifier`](/forge/linting/incorrect-modifier) — Flags modifiers that can finish without executing the modified function body or reverting.
-- [`missing-events-access-control`](/forge/linting/missing-events-access-control) — Flags access-controlled updates to state used for authorization when the update function does not emit an event.
-- [`missing-events-arithmetic`](/forge/linting/missing-events-arithmetic) — Flags access-controlled updates to integer state used in arithmetic when the update path does not emit an event.
+- [`missing-events-access-control`](/forge/linting/missing-events-access-control) — Flags protected entry-point functions that update state used for access control without emitting an event.
+- [`missing-events-arithmetic`](/forge/linting/missing-events-arithmetic) — Flags protected entry-point functions that update tainted integer state used in arithmetic by an unprotected function without emitting an event.
 - [`missing-zero-check`](/forge/linting/missing-zero-check) — Flags entry-point functions and constructors where an `address` parameter flows into a state write or value transfer without a zero-address guard.
 - [`msg-value-loop`](/forge/linting/msg-value-loop) — Flags `msg.value` reads inside loops reachable from externally callable payable functions.
 - [`reentrancy-events`](/forge/linting/reentrancy-events) — Flags `emit` statements reachable after an external call, where a reentrant callee can reorder or fabricate logs that off-chain consumers rely on.
@@ -211,7 +211,7 @@ navigation on the right to browse by severity.
 #### Informational
 
 - [`boolean-equal`](/forge/linting/boolean-equal) — Flags expressions of the form `x == true`, `x == false`, `x != true`, `x != false`, which can be simplified.
-- [`event-fields`](/forge/linting/event-fields) — Flags event parameters of type `address`, `address payable`, or id-like `uint256`/`bytes32` that are not declared `indexed`.
+- [`event-fields`](/forge/linting/event-fields) — Flags events whose `address` parameters are not declared `indexed`.
 - [`function-init-state`](/forge/linting/function-init-state) — Flags state variables whose initializer depends on a non-pure function or another state variable; initializers run before the constructor body.
 - [`inline-assembly`](/forge/linting/inline-assembly) — Flags every `assembly { ... }` block; inline assembly bypasses Solidity safety features and should be reviewed deliberately.
 - [`interface-file-naming`](/forge/linting/interface-file-naming) — Flags Solidity files whose only top-level declaration is an interface but whose filename is not prefixed with `I`.
@@ -241,7 +241,7 @@ navigation on the right to browse by severity.
 #### Gas optimization
 
 - [`asm-keccak256`](/forge/linting/asm-keccak256) — Flags calls to the high-level `keccak256(...)` builtin that can be cheaply rewritten with inline assembly.
-- [`cache-array-length`](/forge/linting/cache-array-length) — Flags `for` loop conditions that read a dynamic array or `bytes` value's `.length` on every iteration instead of comparing against a cached local length.
+- [`cache-array-length`](/forge/linting/cache-array-length) — Flags `for` loop conditions that read a storage dynamic array's `.length` on every iteration instead of comparing against a cached local length.
 - [`costly-loop`](/forge/linting/costly-loop) — Flags storage variable writes inside loops, where each SSTORE multiplies gas cost by the number of iterations.
 - [`could-be-constant`](/forge/linting/could-be-constant) — Flags state variables with a compile-time-constant inline initializer that are never written — making them eligible to be declared `constant`.
 - [`could-be-immutable`](/forge/linting/could-be-immutable) — Flags state variables that are assigned only in the constructor and never written to afterward — making them eligible to be declared `immutable`.

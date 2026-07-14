@@ -2,50 +2,34 @@
 description: require or revert inside loops
 ---
 
-## Require or revert inside loops
+## Require or revert inside a loop
 
 **Severity**: `Low`
 **ID**: `require-revert-in-loop`
 
-Flags `require` calls and `revert` statements that execute inside loops.
+Flags `require` calls and `revert` statements inside loops because one invalid item can abort the
+entire batch.
 
 ### What it does
 
-Reports `require` and `revert` operations reachable from a `for`, `while`, or `do-while` loop. This
-includes checks in loop bodies, loop conditions, loop update expressions, modifier placeholders,
-internal helpers, internal library extension calls, and inline assembly `revert` instructions.
-
-Calls through an external interface are not followed; this lint reports the `require` or `revert`
-operation itself when Foundry can see that it executes as part of the loop.
+Reports Solidity `require`/`revert`, revert statements, and Yul `revert` inside loops. The analysis
+also follows modifiers and internal helper calls reached from a loop.
 
 ### Why is this bad?
 
-A single invalid item can revert the entire loop. In batched operations, that can make one bad
-entry deny service to every later entry and force users to retry the whole batch.
-
-This is especially risky when invalid items are expected or caller-controlled, because a caller can
-make the batch unusable by including one value that fails validation.
+A single invalid item can revert the entire loop, which can make batched operations unusable when
+one element fails validation.
 
 ### Example
 
 #### Bad
 
 ```solidity
-error BadItem(uint256 index);
-
 contract Batch {
     function process(uint256[] calldata values) external {
         for (uint256 i; i < values.length; ++i) {
-            if (values[i] == 0) {
-                revert BadItem(i);
-            }
-
-            _process(values[i]);
+            require(values[i] != 0, "zero");
         }
-    }
-
-    function _process(uint256 value) internal {
-        // ...
     }
 }
 ```
@@ -53,29 +37,12 @@ contract Batch {
 #### Good
 
 ```solidity
-event SkippedZero(uint256 index);
-
 contract Batch {
     function process(uint256[] calldata values) external {
         for (uint256 i; i < values.length; ++i) {
-            if (values[i] == 0) {
-                emit SkippedZero(i);
-                continue;
-            }
-
-            _process(values[i]);
+            if (values[i] == 0) continue;
+            // Process valid entries.
         }
-    }
-
-    function _process(uint256 value) internal {
-        // ...
     }
 }
 ```
-
-### Recommendation
-
-Prefer batch designs where one invalid item does not revert the whole loop: skip invalid entries
-explicitly, record per-item failures, or split the work into separate transactions. When every item
-must be valid, validate batch-level invariants before the loop and consider exposing a per-item
-entry point so callers can isolate failures.

@@ -7,31 +7,24 @@ description: Unary operator fused to assignment
 **Severity**: `Med`
 **ID**: `dangerous-unary-operator`
 
-Flags assignments whose `=` is fused to a unary operator (`=-`, `=~`), which parses as a plain assignment of a unary expression rather than the compound assignment it resembles.
+Flags an assignment whose `=` is fused to a unary operator (`=-`, `=~`), which parses as a plain assignment of a unary expression rather than the compound assignment it resembles.
 
 ### What it does
 
-Warns when the source writes `=` directly against a leading unary `-` or `~` on the right-hand side:
+Reports `x =- y` and `x =~ y` when the source writes `=` directly against the unary operator, with no space. `x =- 1` lexes as `x` `=` `-` `1` and parses as `x = -1`, identical to the intentional spaced form, but it is a common typo for the compound `x -= 1`. The fused unary is also reported when it only leads a larger right-hand side: `x =- a + 1` parses as `x = (-a) + 1`, still a plain assignment rather than the `x -= a + 1` it resembles. The spaced forms (`x = -1`, `x = ~y`) and the real compound operators (`x -= 1`) are left alone. This mirrors Slither's `incorrect-unary` (Dangerous unary expressions).
 
-```solidity
-x =- y;
-x =~ y;
-```
-
-These expressions parse as `x = -y` and `x = ~y`, not as compound assignments. The lint also reports fused unary operators that lead larger right-hand sides, such as `x =- y + 1`, because that still parses as a plain assignment.
-
-Spaced unary assignments (`x = -y`, `x = ~y`) and real compound assignments (`x -= y`) are left alone.
+`=+` is not reported: unary `+` was removed in Solidity 0.5.0, so `x =+ 1` is a parse error and never reaches the linter.
 
 ### Why is this bad?
 
-`x =- 1` silently assigns `-1` instead of decrementing `x`. Developers intending to write `-=` can transpose the operator into `=-`, and the code still compiles and runs with the wrong value.
+`x =- 1` silently assigns `-1` instead of decrementing `x`. Developers reaching for `-=` can transpose the operator into `=-`, and because the code compiles and runs, the wrong value is used with no warning.
 
 ### Example
 
 #### Bad
 
 ```solidity
-x =- 1; // assigns -1, does not subtract 1 from x
+x =- 1; // parses as `x = -1`, not `x -= 1`
 ```
 
 #### Good
