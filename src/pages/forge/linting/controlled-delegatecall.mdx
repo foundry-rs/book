@@ -19,10 +19,10 @@ guards against trusted values, and modifier guards that refine the target argume
 Function parameters, `msg.sender`, mutable state variables, mapping and array reads, local aliases of
 those values, and all immutables are treated conservatively as untrusted.
 
-This lint does not attempt to prove trust through access-control modifiers such as `onlyOwner`, role
-checks, allowlist mappings, implementation-slot reads, assembly, external/library predicate helpers,
-codehash checks, or constructor-initialized immutables. Those patterns may be safe in a specific
-system, but they are intentionally outside this lint's proof model and can still warn.
+This lint does not attempt to prove trust through access-control modifiers such as `onlyOwner`,
+role checks, allowlist mappings, implementation-slot reads, assembly, external/library predicate
+helpers, codehash checks, or constructor-initialized immutables. Those patterns may be safe in a
+specific system, but they are intentionally outside this lint's proof model and can still warn.
 
 ### Why is this bad?
 

@@ -30,8 +30,8 @@ constructor, the parentheses are redundant noise that obscure the real inheritan
 contract A {}
 contract B { constructor() {} }
 
-contract C is A() {}                        // A has no constructor
-contract D is B { constructor() B() {} }    // B's constructor takes no arguments
+contract C is A() {}                 // A has no constructor
+contract D is B { constructor() B() {} } // B's constructor takes no arguments
 ```
 
 #### Good
@@ -41,5 +41,5 @@ contract A {}
 contract B { constructor() {} }
 
 contract C is A {}
-contract D is B {}
+contract D is B { constructor() {} }
 ```

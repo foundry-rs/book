@@ -2,7 +2,7 @@
 description: Missing events for access control changes
 ---
 
-## Missing events for access control changes
+## Missing events access control
 
 **Severity**: `Low`
 **ID**: `missing-events-access-control`
@@ -12,19 +12,18 @@ event.
 
 ### What it does
 
-Looks for mutable state variables that are:
+This lint looks for mutable state variables that are:
 
-1. read by an access-control check involving `msg.sender` or `tx.origin`;
-2. written by a public or external state-mutating function with access control;
-3. assigned from function input, sender data, access-control state, or indexed mapping keys,
-   directly or through local aliases or internal helpers; and
-4. changed without a related event that covers the updated access-control state.
+- read by an access-control check involving `msg.sender` or `tx.origin`,
+- written by a public or external state-mutating function with access control, and
+- assigned from function input, `msg.sender`, another access-control state variable, or a keyed
+  mapping write, directly or through local aliases/internal helpers, and
+- changed without a related event that includes the same value or key source.
 
-The lint intentionally skips constructors, unprotected setters, variables not used in authorization
-checks, and fixed writes that are not clearing access-control state used by the active guard. Events
-must be related to the updated state, so unrelated logging does not suppress the warning. These
-limits keep the rule focused on authority-bearing state and avoid noisy warnings for updates that
-are not clearly part of access control.
+It intentionally skips constructors, unprotected setters, variables not used in authorization
+checks, unrelated events, and fixed writes other than clearing the state variable currently used by
+the access guard. Those limits keep the rule focused on Slither's low-severity `events-access` case
+while avoiding common false positives.
 
 ### Why is this bad?
 
@@ -37,37 +36,19 @@ critical permission updates are harder to review and investigate.
 #### Bad
 
 ```solidity
-contract Owned {
-    address public owner = msg.sender;
-
-    modifier onlyOwner() {
-        require(msg.sender == owner, "not owner");
-        _;
-    }
-
-    function transferOwnership(address newOwner) external onlyOwner {
-        owner = newOwner;
-    }
+function transferOwnership(address newOwner) external onlyOwner {
+    owner = newOwner;
 }
 ```
 
 #### Good
 
 ```solidity
-contract Owned {
-    address public owner = msg.sender;
+event OwnershipTransferred(address indexed oldOwner, address indexed newOwner);
 
-    event OwnershipTransferred(address indexed oldOwner, address indexed newOwner);
-
-    modifier onlyOwner() {
-        require(msg.sender == owner, "not owner");
-        _;
-    }
-
-    function transferOwnership(address newOwner) external onlyOwner {
-        address oldOwner = owner;
-        owner = newOwner;
-        emit OwnershipTransferred(oldOwner, newOwner);
-    }
+function transferOwnership(address newOwner) external onlyOwner {
+    address oldOwner = owner;
+    owner = newOwner;
+    emit OwnershipTransferred(oldOwner, newOwner);
 }
 ```

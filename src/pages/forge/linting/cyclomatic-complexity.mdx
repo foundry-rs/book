@@ -19,7 +19,7 @@ A function with many independent paths is hard to read, hard to review and hard 
 
 ### Example
 
-### Bad
+#### Bad
 
 ```solidity
 // complexity 12: eleven branching points plus one
@@ -30,7 +30,7 @@ function dispatch(uint256 kind) internal {
 }
 ```
 
-### Good
+#### Good
 
 ```solidity
 function dispatch(uint256 kind) internal {

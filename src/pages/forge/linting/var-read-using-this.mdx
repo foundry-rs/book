@@ -13,15 +13,15 @@ address, paying the call overhead for data that could be read directly.
 
 ### What it does
 
-Reports `this.<name>(<args>)` calls where `<name>` resolves (via overload resolution by arity)
-to a function reachable on the contract's external interface (`public` or `external`) whose
-state mutability is `view` or `pure`. This includes:
+Reports `this.<name>(<args>)` calls where `<name>` resolves (via overload resolution by arity) to
+a function reachable on the contract's external interface (`public` or `external`) whose state
+mutability is `view` or `pure`. This includes:
 
 - The auto-generated getter for any `public` state variable (simple variables, mappings, arrays).
 - Any inherited `public`/`external` `view`/`pure` function declared in a base contract.
 
-When the offending call is the auto-generated getter for a state variable, the lint emits a
-code fix:
+When the offending call is the auto-generated getter for a state variable, the lint emits a code
+fix:
 
 - Simple state variable: `this.foo()` → `foo` (machine-applicable).
 - Mapping/array getter: `this.m(k)` → `m[k]` (`maybe-incorrect`; double-check the rewrite).
@@ -32,8 +32,8 @@ suggested — the developer is intentionally reaching for the external-call mach
 ### Why is this bad?
 
 Each `this.X(...)` call compiles to a `STATICCALL` to the contract's own address. That costs a
-fixed amount of gas, plus the encoding/decoding of arguments and return data, in addition to
-the storage read itself. Reading the variable directly skips the call entirely.
+fixed amount of gas, plus the encoding/decoding of arguments and return data, in addition to the
+storage read itself. Reading the variable directly skips the call entirely.
 
 ### Example
 
