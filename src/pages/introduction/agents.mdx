@@ -1,0 +1,64 @@
+---
+description: Retrieve Foundry documentation efficiently from AI agents and other automated tools.
+---
+
+## Foundry documentation for agents
+
+The Foundry documentation is available as rendered HTML, page-level Markdown, compact and full text indexes, and an MCP server. Use the smallest source that answers the task instead of loading the entire book.
+
+### Retrieval interfaces
+
+| Interface | URL pattern | Use it for |
+| --- | --- | --- |
+| Page Markdown | `https://getfoundry.sh/<page>.md` | Reading one conceptual, guide, or reference page without navigation and presentation markup |
+| Compact index | `https://getfoundry.sh/llms.txt` | Finding candidate pages by title, route, and description |
+| Full corpus | `https://getfoundry.sh/llms-full.txt` | Building an offline index or retrieving across the whole documentation set |
+| MCP server | `https://getfoundry.sh/api/mcp` | Searching the documentation from an MCP-capable client |
+| HTML | `https://getfoundry.sh/<page>` | Presenting the result to a person or inspecting rendered tables and navigation |
+
+For example, retrieve the testing guide as Markdown from `https://getfoundry.sh/forge/testing.md`, then use the HTML route [`/forge/testing`](/forge/testing) when linking the answer for a person.
+
+The full corpus is large because it includes generated CLI, cheatcode, and Forge Standard Library reference pages. Start with `llms.txt`, select one or more page routes, and fetch their `.md` forms. Only retrieve `llms-full.txt` when a bulk local copy is actually needed.
+
+### Route by task
+
+| Task | Start here | Follow with |
+| --- | --- | --- |
+| Install Foundry or create a project | [Getting started](/introduction/getting-started) | [Project setup](/projects), [project layout](/projects/layout) |
+| Compile or configure Solidity | [Building contracts](/forge/build) | [Configuration](/config), [configuration reference](/config/reference/default-config) |
+| Write or diagnose tests | [Testing](/forge/testing) | [Invariant testing](/guides/invariant-testing), [fork testing](/guides/fork-testing), [debugging](/forge/debugging) |
+| Deploy or verify contracts | [Scripting](/forge/scripting) | [Deploying contracts](/guides/deploying-contracts), [`forge script`](/reference/forge/script) |
+| Query a chain or send a transaction | [Cast overview](/cast) | [Reading chain data](/cast/reading-chain-data), [sending transactions](/cast/sending-transactions) |
+| Run or control a local node | [Anvil overview](/anvil) | [Forking](/anvil/forking), [custom methods](/anvil/custom-methods) |
+| Manipulate Forge test state | [Cheatcode overview](/reference/cheatcodes/overview) | The exact cheatcode reference page |
+| Look up exact flags or syntax | [`forge` reference](/reference/forge/forge) | The specific `forge`, `cast`, `anvil`, or `chisel` command page |
+
+Concept and guide pages explain intent, safe workflows, and how features fit together. Generated reference pages are better for exact signatures, flags, defaults, and accepted values. Retrieve both when an answer needs operational context and precise syntax.
+
+### Agent retrieval workflow
+
+1. Identify the tool and task: Forge, Cast, Anvil, Chisel, configuration, cheatcodes, or Forge Standard Library.
+2. Search `llms.txt` or the MCP server for the task and its likely command or API name.
+3. Read the narrow conceptual or guide page as Markdown.
+4. Read the exact reference page when flags, overloads, parameters, or defaults matter.
+5. Confirm version-sensitive or safety-critical behavior against the installed command's `--help` output or the current Foundry source.
+6. Link the human-readable HTML pages in the final answer.
+
+Prefer local evidence when working inside a Foundry project. Read `foundry.toml`, `remappings.txt`, scripts, tests, generated artifacts, and the installed `forge --version` before assuming the project follows defaults. Avoid network calls, broadcasts, key access, or explorer requests unless the task requires them and the user has authorized them.
+
+### Search terms that map well
+
+Search with the exact command, configuration key, cheatcode, error fragment, or output field when known. When it is not known, pair the tool name with the intended outcome, such as:
+
+- `forge replay fuzz corpus`
+- `forge symbolic incomplete`
+- `cast send hardware wallet`
+- `anvil manual mining txpool`
+- `vm record state diff`
+- `foundry.toml invariant depth`
+
+Keep aliases in the query when terminology varies. Useful pairs include `script` and `broadcast`, `fork` and `forking`, `trace` and `debug`, `binding` and `ABI`, and `wallet` and `signer`.
+
+### Report uncertainty
+
+Foundry nightly releases can move faster than documentation. State the Foundry version used for a version-sensitive answer. If documentation, installed help, and source disagree, report the disagreement and prefer evidence from the version the user is actually running.
