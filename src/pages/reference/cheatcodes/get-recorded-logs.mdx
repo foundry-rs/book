@@ -1,5 +1,5 @@
 ---
-description: Gets all emitted events recorded by recordLogs
+description: Gets emitted events recorded by recordLogs as Solidity structs or JSON
 ---
 
 ## `getRecordedLogs`
@@ -13,12 +13,27 @@ struct Log {
     address emitter;
 }
 
-function getRecordedLogs() external returns (Log[] memory);
+function getRecordedLogs() external view returns (Log[] memory logs);
+function getRecordedLogsJson() external view returns (string memory logsJson);
 ```
 
 ### Description
 
 Gets all emitted events recorded by [`recordLogs`](/reference/cheatcodes/record-logs).
+
+`getRecordedLogs` returns Solidity `Log` structs. `getRecordedLogsJson` returns the same fields as a JSON array, with topics, data, and emitter addresses encoded as `0x`-prefixed strings:
+
+```json
+[
+  {
+    "topics": ["0xddf252ad...", "0x00000000..."],
+    "data": "0x00000000...",
+    "emitter": "0x1234..."
+  }
+]
+```
+
+An empty recording is returned as `[]`.
 
 ### Returns
 
@@ -27,6 +42,8 @@ Gets all emitted events recorded by [`recordLogs`](/reference/cheatcodes/record-
 | `topics`  | `bytes32[]` | The indexed topics (topics[0] is the event signature) |
 | `data`    | `bytes`     | The non-indexed event data               |
 | `emitter` | `address`   | The address that emitted the event       |
+
+The JSON representation uses the same field names. Each topic and the data field are hex encoded, while `emitter` is formatted as an address string.
 
 ### Examples
 
@@ -61,10 +78,16 @@ function testGetRecordedLogs() public {
 }
 ```
 
+#### Get logs as JSON
+
+```solidity [test/GetRecordedLogsJson.t.sol]
+// [!include ~/snippets/projects/cheatcodes/test/GetRecordedLogsJson.t.sol:json]
+```
+
 ### Gotchas
 
 :::warning
-Calling `getRecordedLogs` **consumes** the recorded logs. Subsequent calls will only return logs emitted after the previous call.
+Calling either `getRecordedLogs` or `getRecordedLogsJson` **consumes** the recorded logs. Subsequent calls to either function only return logs emitted after the previous call.
 :::
 
 ```solidity [test/LogsConsumed.t.sol]
@@ -84,3 +107,4 @@ function testLogsConsumed() public {
 ### Related Cheatcodes
 
 - [`recordLogs`](/reference/cheatcodes/record-logs) - Starts recording emitted events
+- [`parseJson`](/reference/cheatcodes/parse-json) - Parses values from a JSON string
