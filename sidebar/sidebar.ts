@@ -69,6 +69,7 @@ const docs = [
               { text: "boolean-cst", link: "/forge/linting/boolean-cst" },
               { text: "dangerous-unary-operator", link: "/forge/linting/dangerous-unary-operator" },
               { text: "divide-before-multiply", link: "/forge/linting/divide-before-multiply" },
+              { text: "ecrecover", link: "/forge/linting/ecrecover" },
               { text: "incorrect-erc20-interface", link: "/forge/linting/incorrect-erc20-interface" },
               { text: "incorrect-erc721-interface", link: "/forge/linting/incorrect-erc721-interface" },
               { text: "incorrect-strict-equality", link: "/forge/linting/incorrect-strict-equality" },
