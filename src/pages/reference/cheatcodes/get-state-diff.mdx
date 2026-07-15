@@ -1,0 +1,68 @@
+---
+description: Reads recorded state changes as text, JSON, or flattened storage accesses
+---
+
+## State diff queries
+
+### Signatures
+
+```solidity
+function getStateDiff() external view returns (string memory diff);
+function getStateDiffJson() external view returns (string memory diff);
+function getStorageAccesses() external view returns (StorageAccess[] memory storageAccesses);
+```
+
+### Description
+
+These functions inspect the current [`startStateDiffRecording`](/reference/cheatcodes/start-state-diff-recording) session without stopping it or consuming its records:
+
+- `getStateDiff` returns a human-readable summary of net balance, nonce, and storage changes grouped by account.
+- `getStateDiffJson` returns the same aggregated account changes as JSON.
+- `getStorageAccesses` returns the recorded `StorageAccess` structs from every account access as one ordered array, including reads, writes, and reverted accesses.
+
+Use [`stopAndReturnStateDiff`](/reference/cheatcodes/stop-and-return-state-diff) when you need the complete ordered account-access model or want to finish the recording session.
+
+### JSON format
+
+`getStateDiffJson` returns an object keyed by lowercase account address. Each account contains this shape:
+
+```json
+{
+  "0x1234...": {
+    "label": "Counter",
+    "contract": "test/Counter.t.sol:Counter",
+    "balanceDiff": null,
+    "nonceDiff": null,
+    "stateDiff": {
+      "0x0000...0000": {
+        "previousValue": "0x0000...0000",
+        "newValue": "0x0000...002a"
+      }
+    }
+  }
+}
+```
+
+`balanceDiff` contains `previousValue` and `newValue` as quantity-style hex strings. `nonceDiff` contains the same fields as JSON numbers. `stateDiff` is keyed by the full 32-byte slot and contains full 32-byte previous and new values.
+
+When storage layout information is available, a slot can also include `label`, `type`, `offset`, `slot`, and a `decoded` object with typed previous and new values. Otherwise those optional fields are omitted.
+
+### Example
+
+```solidity [test/GetStateDiff.t.sol]
+// [!include ~/snippets/projects/cheatcodes/test/GetStateDiff.t.sol:queries]
+```
+
+### Gotchas
+
+- Call `startStateDiffRecording` first. Without an active session, the text output is empty, the JSON output is `{}`, and the storage-access array is empty.
+- `getStateDiff` and `getStateDiffJson` aggregate repeated writes to a slot from its first recorded value to its latest value. Use `getStorageAccesses` or `stopAndReturnStateDiff` for each individual access.
+- Aggregated state diffs exclude reverted writes. `getStorageAccesses` retains the `reverted` flag so you can inspect them explicitly.
+- Contract names and decoded variable metadata depend on matching deployed bytecode to a compiled artifact and having storage layout information available.
+- These getters leave recording enabled. Finish with `stopAndReturnStateDiff`, even if you only needed the string or JSON representation.
+
+### Related Cheatcodes
+
+- [`startStateDiffRecording`](/reference/cheatcodes/start-state-diff-recording) - Start a recording session
+- [`stopAndReturnStateDiff`](/reference/cheatcodes/stop-and-return-state-diff) - Stop recording and return ordered account accesses
+- [`record`](/reference/cheatcodes/record) - Record storage slot reads and writes without account context
