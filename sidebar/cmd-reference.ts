@@ -42,6 +42,7 @@ export const cmdReference: SidebarItem[] = [
           { text: 'resetGasMetering', link: '/reference/cheatcodes/reset-gas-metering' },
           { text: 'resumeGasMetering', link: '/reference/cheatcodes/resume-gas-metering' },
           { text: 'txGasPrice', link: '/reference/cheatcodes/tx-gas-price' },
+          { text: 'executeTransaction', link: '/reference/cheatcodes/execute-transaction' },
           { text: 'startStateDiffRecording', link: '/reference/cheatcodes/start-state-diff-recording' },
           { text: 'stopAndReturnStateDiff', link: '/reference/cheatcodes/stop-and-return-state-diff' },
           { text: 'snapshotState', link: '/reference/cheatcodes/state-snapshots' },
