@@ -1,0 +1,78 @@
+---
+description: Returns the physical storage slots occupied by a named state variable
+---
+
+## `getStorageSlots`
+
+### Signature
+
+```solidity
+function getStorageSlots(address target, string calldata variableName)
+    external
+    view
+    returns (uint256[] memory slots);
+```
+
+### Description
+
+Returns the physical storage slots occupied by a top-level state variable in the compiled storage layout for `target`.
+
+The result always begins with the variable's base slot. For in-place values such as structs and fixed-size arrays, it also contains each following slot covered by the type. For `bytes` and `string`, it returns only the base slot when the current value uses Solidity's short encoding; for a long value, it also returns the data slots beginning at `keccak256(baseSlot)`.
+
+The variable-name comparison is case-insensitive. A state-diff recording session is not required.
+
+### Configuration
+
+Compile with storage layout output so Foundry can resolve variable names and types:
+
+```toml [foundry.toml]
+[profile.default]
+extra_output = ["storageLayout"]
+```
+
+You can also request it for one command:
+
+```bash
+$ forge test --extra-output storageLayout
+```
+
+### Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `target` | `address` | Deployed contract whose bytecode is matched to a compiled artifact |
+| `variableName` | `string` | Case-insensitive name of a top-level state variable |
+
+### Returns
+
+| Type | Description |
+|------|-------------|
+| `uint256[]` | Base slot followed by any additional physical slots occupied by the variable |
+
+### Examples
+
+#### Fixed-size array
+
+```solidity [test/GetStorageSlots.t.sol]
+// [!include ~/snippets/projects/cheatcodes/test/GetStorageSlots.t.sol:fixed-array]
+```
+
+#### Long bytes
+
+```solidity [test/GetStorageSlots.t.sol]
+// [!include ~/snippets/projects/cheatcodes/test/GetStorageSlots.t.sol:long-bytes]
+```
+
+### Gotchas
+
+- The call reverts when Foundry cannot match `target` to an artifact with storage layout output.
+- `variableName` must be a top-level layout label. Member paths and array indexes are not accepted.
+- Mappings and dynamic arrays are rejected because their occupied slots depend on keys or runtime indexes.
+- A `bytes` or `string` result depends on its current encoded length. Long data adds `ceil(length / 32)` data slots; short data remains entirely in the base slot.
+- For proxy storage, the proxy bytecode normally matches the proxy artifact rather than the implementation layout. Account for that when resolving implementation variables stored at the proxy address.
+
+### Related Cheatcodes
+
+- [`load`](/reference/cheatcodes/load) - Read a value from a known storage slot
+- [`record`](/reference/cheatcodes/record) - Discover storage slots accessed during execution
+- [`startStateDiffRecording`](/reference/cheatcodes/start-state-diff-recording) - Record decoded storage changes during execution
