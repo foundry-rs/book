@@ -74,6 +74,10 @@ export default defineConfig({
       text: "Reference",
       items: [
         {
+          text: "Overview",
+          link: "/reference",
+        },
+        {
           text: "forge",
           link: "/reference/forge/forge",
         },
@@ -96,6 +100,10 @@ export default defineConfig({
         {
           text: "Forge Std",
           link: "/reference/forge-std/overview",
+        },
+        {
+          text: "Configuration",
+          link: "/config/reference/overview",
         },
       ],
     },
