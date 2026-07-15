@@ -44,6 +44,7 @@ export const cmdReference: SidebarItem[] = [
           { text: 'txGasPrice', link: '/reference/cheatcodes/tx-gas-price' },
           { text: 'startStateDiffRecording', link: '/reference/cheatcodes/start-state-diff-recording' },
           { text: 'stopAndReturnStateDiff', link: '/reference/cheatcodes/stop-and-return-state-diff' },
+          { text: 'getStorageSlots', link: '/reference/cheatcodes/get-storage-slots' },
           { text: 'snapshotState', link: '/reference/cheatcodes/state-snapshots' },
           { text: 'snapshotGas', link: '/reference/cheatcodes/gas-snapshots' },
           { text: 'isImplicitlyApproved', link: '/reference/cheatcodes/is-implicitly-approved' },
