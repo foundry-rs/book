@@ -1,0 +1,111 @@
+---
+description: Send Cast and Forge transactions through an injected browser wallet.
+---
+
+## Browser Wallet Signing
+
+Foundry can hand transaction requests to an injected browser wallet instead of loading a private key in the CLI. The wallet shows its normal approval prompt, signs the request, broadcasts it, and returns the transaction hash to Foundry.
+
+:::warning
+Browser wallet support is still in early development. Review every request and use it cautiously. For high-value production operations, prefer a well-tested hardware wallet or organizational signer policy.
+:::
+
+### Send a Cast transaction
+
+Add `--browser` to a command that submits a transaction:
+
+```bash
+$ cast send $CONTRACT "mint(address,uint256)" $RECIPIENT 1 \
+    --rpc-url $RPC_URL \
+    --browser
+```
+
+Foundry opens a local page, waits for you to connect an injected wallet, and then submits the transaction request to that wallet. Confirm the account, network, destination, value, calldata, and fees in the wallet prompt. `cast send` waits for the receipt by default; add `--async` to print the hash and exit after the wallet submits it.
+
+The same browser options are available on other Cast commands that submit on-chain transactions, including the ERC-20 transaction commands. They are not part of `cast wallet sign`; check a command's `--help` output for the **Wallet options - browser wallet** section.
+
+### Deploy a contract
+
+Use a browser wallet with `forge create`:
+
+```bash
+$ forge create src/Counter.sol:Counter \
+    --rpc-url $RPC_URL \
+    --broadcast \
+    --browser
+```
+
+Without `--broadcast`, `forge create` performs a dry run. The browser session is still opened when you pass `--browser`, so omit the browser flag from preflight commands that do not need approval.
+
+### Broadcast a Forge script
+
+Simulate first with the address you intend to connect:
+
+```bash
+$ forge script script/Deploy.s.sol \
+    --rpc-url $RPC_URL \
+    --sender $DEPLOYER
+```
+
+Then repeat the command with browser signing and broadcasting enabled:
+
+```bash
+$ forge script script/Deploy.s.sol \
+    --rpc-url $RPC_URL \
+    --sender $DEPLOYER \
+    --broadcast \
+    --browser \
+    --slow
+```
+
+`--slow` waits for each transaction to succeed before sending the next one. This makes a multi-transaction deployment easier to review and preserves explicit ordering. Each transaction still requires approval in the wallet.
+
+If you omit `--sender`, Forge uses the connected browser address when it is the available browser signer. Setting `--sender` during both simulation and broadcast makes an address mismatch fail early and keeps deployment addresses consistent.
+
+### Control the local connection page
+
+The browser bridge listens only on the local loopback interface. Its default URL is `http://127.0.0.1:9545`.
+
+Choose another port if 9545 is occupied or if you run more than one Foundry command:
+
+```bash
+$ cast send $TO --value 0.01ether \
+    --rpc-url $RPC_URL \
+    --browser \
+    --browser-port 9546
+```
+
+Prevent Foundry from opening the default browser automatically:
+
+```bash
+$ cast send $TO --value 0.01ether \
+    --rpc-url $RPC_URL \
+    --browser \
+    --browser-disable-open
+```
+
+Then open the local URL yourself. `--browser-disable-open` does not make the flow headless: an interactive browser wallet must still connect and approve requests. The command times out if a connection or wallet response is not received within five minutes.
+
+Each command creates a new local session and stops its bridge when the signer is dropped. A connection is not a persistent CLI credential.
+
+### Check the account and network
+
+Foundry records the address and chain ID reported at connection time. Before a transaction is sent, it verifies that the request's `from` address and `chainId` match the connected wallet. Cast may ask the wallet to switch to the RPC network; approve that switch before the transaction request. Forge commands should start with the wallet already on the target network.
+
+The CLI RPC and the browser wallet both participate in the flow. Foundry uses the CLI RPC for simulation, fee and gas estimation, and receipt polling, while the browser wallet submits the approved transaction through its provider. Make sure both point to the same chain.
+
+### Hand off safely from an agent
+
+Browser signing is a useful boundary between preparation and authorization:
+
+| Agent can prepare | Human must authorize |
+| --- | --- |
+| Resolve the RPC chain ID and target addresses | Connect the intended wallet account |
+| Simulate the script or call | Verify the wallet is on the intended network |
+| Decode calldata and summarize value and effects | Review destination, value, calldata, nonce, and fees |
+| Produce the exact command and expected sender | Approve or reject each wallet request |
+| Watch the hash and inspect the receipt | Decide whether to resume after a partial script |
+
+An agent should not treat a connected browser as blanket permission to send transactions. Keep the final `--broadcast --browser` invocation and wallet approvals as an explicit user-authorized step. For unattended CI, use a purpose-built keystore, hardware, KMS, or remote signer workflow with scoped credentials and policy controls.
+
+See the [`cast send`](/reference/cast/send), [`forge create`](/reference/forge/create), and [`forge script`](/reference/forge/script) references for transaction-specific options.
