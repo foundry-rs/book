@@ -11,12 +11,24 @@ Flags calls that resolve to `ERC721._mint`, which credits a token without checki
 
 ### What it does
 
-Reports a call whose callee resolves to a function named `_mint` declared in a non-library contract whose name contains `ERC721` (`ERC721`, `ERC721Upgradeable`, `ERC721Enumerable`, ...), wherever that contract sits in the caller's inheritance chain. The plain `_mint(to, id)`, the qualified `ERC721._mint(to, id)` and `super._mint(to, id)` forms are all covered. Overload sets are filtered by arity, so a call that can only dispatch to a same-name local overload of a non-ERC721 contract stays clean.
+Reports calls that resolve to the unchecked `_mint` implementation in OpenZeppelin's `ERC721`, `ERC721Upgradeable`, `ERC721Consecutive`, or `ERC721ConsecutiveUpgradeable`, including calls that transitively reach one through a user override. Plain `_mint(to, id)`, qualified `ERC721._mint(to, id)`, and `super._mint(to, id)` forms are covered. Exact contract names and OpenZeppelin source provenance keep unrelated local functions and `ERC20._mint` out of scope.
 
-Two exemptions:
+The lint recognizes wrappers that provide the receiver check themselves. A wrapper must call `onERC721Received` on the same recipient and token, require the ERC721 receiver selector on the accepting path, and revert on refusal without a path that can return successfully. Common `require`, `assert`, `if`/`else`, and contract-account short-circuit forms are supported.
 
-- calls to `_safeMint` are the recommended fix and never fire;
-- calls made inside a function named `_safeMint` are the wrapper implementation itself, which legitimately calls `_mint` next to its receiver check.
+Guards may be factored into non-virtual, same-frame internal helpers or modifiers when both the recipient and token are forwarded unchanged and the guard cannot be bypassed. Cross-contract helpers do not count because the receiver would see the helper contract as its caller. The analysis follows recursive unsafe `_mint` overrides as well, so every intermediate delegation must preserve those identities. Reassigning either value after a guard invalidates its coverage, including reassignment inside a condition or inside the helper or modifier itself.
+
+Assembly is handled conservatively because it can remap values or leave the current call frame. Assembly reached while evaluating a guard prevents that guard from establishing coverage, and assembly between a guard and mint retires the coverage; a fresh guard afterward can establish it again. An unresolved internal function-pointer call is likewise treated as able to leave the frame before a later revert.
+
+The receiver selector must resolve to `0x150b7a02` without a lossy conversion. A same-name function with another signature, a mutable state value, or a hook whose result is merely stored or discarded does not establish safety.
+
+The principal exemptions are:
+
+- calls to `_safeMint`, the recommended fix;
+- calls inside OpenZeppelin's canonical `_safeMint` wrapper;
+- delegation inside a user `_mint` override, whose call sites are checked instead;
+- call sites whose full delegated path is protected by a recognized receiver guard.
+
+Calls dispatched through assembly or an internal function pointer are not analyzed because the type checker does not resolve them to an `_mint` declaration. A user override that reimplements ownership changes without delegating to OpenZeppelin is likewise outside this lint's scope.
 
 ### Why is this bad?
 
