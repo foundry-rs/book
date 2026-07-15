@@ -55,6 +55,7 @@ const docs = [
               { text: "function-selector-collision", link: "/forge/linting/function-selector-collision" },
               { text: "incorrect-exp", link: "/forge/linting/incorrect-exp" },
               { text: "incorrect-shift", link: "/forge/linting/incorrect-shift" },
+              { text: "protected-vars", link: "/forge/linting/protected-vars" },
               { text: "reentrancy-eth", link: "/forge/linting/reentrancy-eth" },
               { text: "rtlo", link: "/forge/linting/rtlo" },
               { text: "unchecked-call", link: "/forge/linting/unchecked-call" },
