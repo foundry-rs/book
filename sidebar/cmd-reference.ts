@@ -124,6 +124,7 @@ export const cmdReference: SidebarItem[] = [
         collapsed: true,
         items: [
           { text: 'sign', link: '/reference/cheatcodes/sign' },
+          { text: 'Ed25519', link: '/reference/cheatcodes/ed25519' },
           { text: 'signDelegation', link: '/reference/cheatcodes/sign-delegation' },
           { text: 'signKeychain', link: '/reference/cheatcodes/sign-keychain' },
           { text: 'signKeychainAdmin', link: '/reference/cheatcodes/sign-keychain-admin' },
