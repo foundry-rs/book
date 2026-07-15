@@ -48,6 +48,7 @@ export const cmdReference: SidebarItem[] = [
           { text: 'snapshotGas', link: '/reference/cheatcodes/gas-snapshots' },
           { text: 'isImplicitlyApproved', link: '/reference/cheatcodes/is-implicitly-approved' },
           { text: 'isContext', link: '/reference/cheatcodes/is-context' },
+          { text: 'isIsolateMode', link: '/reference/cheatcodes/is-isolate-mode' },
         ],
       },
       {
