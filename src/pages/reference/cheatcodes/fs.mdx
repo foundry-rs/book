@@ -19,11 +19,12 @@ function removeFile(string calldata path) external;
 function exists(string calldata path) external returns (bool);
 function isFile(string calldata path) external returns (bool);
 function isDir(string calldata path) external returns (bool);
+function currentFilePath() external view returns (string memory path);
 ```
 
 ### Description
 
-Cheatcodes for filesystem manipulation operations. All paths are relative to the project root.
+Cheatcodes for filesystem manipulation operations. File-operation paths are relative to the project root. `currentFilePath` returns the source path of the test or script contract currently being executed, also relative to the project root.
 
 :::warning[Permissions Required]
 By default, filesystem access is disallowed. You must configure `fs_permissions` in `foundry.toml` to enable access.
@@ -71,6 +72,12 @@ fs_permissions = [{ access = "read-write", path = "./" }]
 | `exists`     | Returns true if path exists                |
 | `isFile`     | Returns true if path is a regular file     |
 | `isDir`      | Returns true if path is a directory        |
+
+#### Project Context
+
+| Function | Description |
+|----------|-------------|
+| `currentFilePath` | Returns the current test or script contract's source path relative to the project root |
 
 ### Examples
 
@@ -135,6 +142,14 @@ assertTrue(vm.isFile("foo/files/bar.txt"));
 assertTrue(vm.isDir("foo/files"));
 ```
 
+#### Get the current source path
+
+```solidity [test/CurrentFilePath.t.sol]
+// [!include ~/snippets/projects/cheatcodes/test/CurrentFilePath.t.sol:path]
+```
+
+`currentFilePath` does not access the filesystem, so it does not require an `fs_permissions` entry.
+
 ### Gotchas
 
 :::warning[Path Permissions]
@@ -147,6 +162,9 @@ If you receive "The path is not allowed to be accessed for read operations", ens
 - The file doesn't exist
 - The user lacks permissions to remove the file
 :::
+
+- `currentFilePath` identifies the test or script contract being executed. It does not change when the call originates from an imported library or inherited helper.
+- Path separators follow the host platform. Normalize `\\` to `/` before exact string comparisons when tests must also run on Windows.
 
 ### Related Cheatcodes
 
