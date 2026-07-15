@@ -202,6 +202,7 @@ navigation on the right to browse by severity.
 - [`deprecated-oz-function`](/forge/linting/deprecated-oz-function) — Flags references to functions OpenZeppelin deprecated: `SafeERC20.safeApprove` and `AccessControl._setupRole`.
 - [`empty-block`](/forge/linting/empty-block) — Flags regular functions with an empty body; constructors, `receive`/`fallback`, `virtual` and `payable` functions are exempt.
 - [`incorrect-modifier`](/forge/linting/incorrect-modifier) — Flags modifiers that can finish without executing the modified function body or reverting.
+- [`inconsistent-type-names`](/forge/linting/inconsistent-type-names) — Flags mixed use of `uint`/`uint256` or `int`/`int256` spellings within one contract.
 - [`missing-events-access-control`](/forge/linting/missing-events-access-control) — Flags protected entry-point functions that update state used for access control without emitting an event.
 - [`missing-events-arithmetic`](/forge/linting/missing-events-arithmetic) — Flags protected entry-point functions that update tainted integer state used in arithmetic by an unprotected function without emitting an event.
 - [`missing-zero-check`](/forge/linting/missing-zero-check) — Flags entry-point functions and constructors where an `address` parameter flows into a state write or value transfer without a zero-address guard.
