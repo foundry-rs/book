@@ -47,6 +47,7 @@ const docs = [
     items: [
       { text: "Overview", link: "/anvil" },
       { text: "Forking", link: "/anvil/forking" },
+      { text: "Mining and Transaction Pool", link: "/anvil/mining" },
       { text: "State Management", link: "/anvil/state-management" },
       { text: "Custom Methods", link: "/anvil/custom-methods" },
     ],

@@ -1,0 +1,169 @@
+---
+description: Control Anvil mining, inspect pending transactions, and build deterministic local workflows.
+---
+
+## Mining and Transaction Pool
+
+Anvil can mine immediately, on a fixed interval, both ways, or only when you request a block. Choose the mode that matches the behavior you need to test instead of relying on the default instant-mining behavior.
+
+### Choose a mining mode
+
+| Mode | Start command | Behavior |
+| --- | --- | --- |
+| Instant | `anvil` | Mines when ready transactions enter the pool. This is the default. |
+| Interval | `anvil --block-time 12` | Mines a block every 12 seconds and includes ready transactions. |
+| Mixed | `anvil --block-time 12 --mixed-mining` | Mines on the timer and when a ready transaction arrives. |
+| Manual | `anvil --no-mining` | Keeps transactions pending until you explicitly mine. |
+
+Use instant mining for fast application development. Use interval mining to model confirmation delays and block batching. Mixed mining is useful when you want immediate transaction feedback but also need time-based empty blocks. Manual mining gives a test runner or coding agent full control over transaction ordering, timestamps, and block boundaries.
+
+`--no-mining` conflicts with `--block-time`. Mixed mining requires `--block-time`.
+
+### Mine on demand
+
+Start Anvil in manual mode:
+
+```bash
+$ anvil --no-mining
+```
+
+Submit transactions without waiting for a receipt. A normal `cast send` waits for the transaction to be mined, so use `--async` when the same shell still needs to trigger mining:
+
+```bash
+$ cast send --async $TO --value 1ether \
+    --private-key $PRIVATE_KEY \
+    --rpc-url http://127.0.0.1:8545
+```
+
+Mine one block:
+
+```bash
+$ cast rpc --rpc-url http://127.0.0.1:8545 anvil_mine
+```
+
+Mine ten blocks and advance timestamps by 12 seconds between each block:
+
+```bash
+$ cast rpc --rpc-url http://127.0.0.1:8545 anvil_mine 10 12
+```
+
+The interval passed to `anvil_mine` applies only to that RPC call. Use `anvil_setBlockTimestampInterval` when later blocks should continue advancing by a fixed amount:
+
+```bash
+$ cast rpc anvil_setBlockTimestampInterval 12
+$ cast rpc anvil_removeBlockTimestampInterval
+```
+
+You can also use `evm_mine` to mine a single block. Use `anvil_mine_detailed` when automation needs the mined block data in the RPC response.
+
+### Change modes at runtime
+
+Disable or enable instant mining without restarting the node:
+
+```bash
+$ cast rpc evm_setAutomine false
+$ cast rpc evm_setAutomine true
+```
+
+Switch to interval mining, or disable mining with a zero interval:
+
+```bash
+$ cast rpc evm_setIntervalMining 12
+$ cast rpc evm_setIntervalMining 0
+```
+
+Inspect the current mode before changing it:
+
+```bash
+$ cast rpc anvil_getAutomine
+$ cast rpc anvil_getIntervalMining
+```
+
+The getters only identify pure instant and interval modes. In mixed mode, `anvil_getAutomine`
+returns `false` and `anvil_getIntervalMining` reports no interval.
+
+`evm_setAutomine false` only disables pure instant mining; it is a no-op in interval and mixed
+modes. Enabling automine replaces any non-instant mode with instant mining.
+`evm_setIntervalMining` always replaces the current mode with interval mining, or disables mining
+when passed `0`. None of these methods can restore mixed mode, so use startup flags when a
+long-running node must stay in that mode.
+
+### Control transaction selection
+
+Anvil orders executable pool transactions by fees by default. Use FIFO ordering when deterministic arrival order matters:
+
+```bash
+$ anvil --no-mining --order fifo
+```
+
+Account nonces still constrain execution: a transaction with a future nonce remains queued until its predecessors are available.
+
+Limit the size of transaction-triggered instant-mining batches:
+
+```bash
+$ anvil --max-transactions 100
+```
+
+Interval mining drains the ready pool at each tick. If you need exact block boundaries, use manual mining and submit only the transactions intended for the next block.
+
+### Inspect the pending pool
+
+Use the `txpool` namespace instead of inferring pending state from logs:
+
+```bash
+$ cast rpc txpool_status
+$ cast rpc txpool_inspect
+$ cast rpc txpool_content
+$ cast rpc txpool_contentFrom $SENDER
+```
+
+`txpool_status` reports hexadecimal `pending` and `queued` counts. `txpool_inspect` returns a compact sender-and-nonce summary, while `txpool_content` returns full transaction objects.
+
+Remove one pending transaction or clear the entire pool:
+
+```bash
+$ cast rpc anvil_dropTransaction $TX_HASH
+$ cast rpc anvil_dropAllTransactions
+```
+
+Dropping a transaction can move later nonces from pending to queued. Re-read `txpool_status` after mutating the pool.
+
+### Make automation deterministic
+
+Bind explicitly and write startup information to a file when another process launches Anvil:
+
+```bash
+$ anvil \
+    --host 127.0.0.1 \
+    --port 8545 \
+    --no-mining \
+    --order fifo \
+    --config-out .anvil/config.json
+```
+
+:::warning
+`--config-out` includes generated private keys and the mnemonic. Keep the file outside version control and do not use these development keys on public networks.
+:::
+
+Wait for an RPC response rather than treating process creation as node readiness:
+
+```bash
+$ cast chain-id --rpc-url http://127.0.0.1:8545
+```
+
+Query `anvil_nodeInfo` for structured runtime state, including the current block, hardfork, transaction order, environment, and fork configuration:
+
+```bash
+$ cast rpc --rpc-url http://127.0.0.1:8545 anvil_nodeInfo
+```
+
+For a repeatable test step, use this sequence:
+
+1. Start a fresh node or restore a known [state file](/anvil/state-management).
+2. Wait for RPC readiness and verify the chain ID.
+3. Submit transactions with `--async` and record their hashes.
+4. Inspect the pool and assert the expected pending and queued counts.
+5. Mine the intended block or blocks.
+6. Fetch receipts by hash and assert the resulting block numbers and state.
+
+Agents should prefer these RPC results over terminal-log scraping. Start Anvil with `--json` only when you also need structured process logs; JSON logs do not replace the chain and pool RPC APIs.

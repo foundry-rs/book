@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vocs dev",
     "build": "bun run fetch-benchmarks && vocs build",
+    "check:cheatcodes": "bun scripts/check-cheatcode-coverage.ts",
     "preview": "vocs preview",
     "fetch-benchmarks": "bun scripts/fetch-benchmarks.ts"
   },
