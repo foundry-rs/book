@@ -46,6 +46,7 @@ export const cmdReference: SidebarItem[] = [
           { text: 'executeTransaction', link: '/reference/cheatcodes/execute-transaction' },
           { text: 'startStateDiffRecording', link: '/reference/cheatcodes/start-state-diff-recording' },
           { text: 'stopAndReturnStateDiff', link: '/reference/cheatcodes/stop-and-return-state-diff' },
+          { text: 'getStateDiff', link: '/reference/cheatcodes/get-state-diff' },
           { text: 'snapshotState', link: '/reference/cheatcodes/state-snapshots' },
           { text: 'snapshotGas', link: '/reference/cheatcodes/gas-snapshots' },
           { text: 'isImplicitlyApproved', link: '/reference/cheatcodes/is-implicitly-approved' },
