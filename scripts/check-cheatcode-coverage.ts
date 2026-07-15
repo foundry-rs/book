@@ -77,7 +77,9 @@ const docs = docFiles
 
 const isMentioned = (name: string) => {
   const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  return new RegExp(`(^|[^A-Za-z0-9_])${escaped}([^A-Za-z0-9_]|$)`).test(docs);
+  return new RegExp(`\\b(?:function\\s+${escaped}|vm\\s*\\.\\s*${escaped})\\s*\\(`).test(
+    docs,
+  );
 };
 
 const missing = manifest.functions.filter((name) => !isMentioned(name));
