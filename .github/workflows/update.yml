@@ -32,6 +32,21 @@ jobs:
         with:
           toolchain: nightly
 
+      - name: Install bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+
+      - name: Refresh cheatcode manifest
+        run: |
+          foundry_commit="$(forge --version | sed -n 's/^Commit SHA: //p')"
+          test -n "$foundry_commit"
+          spec="$(mktemp)"
+          trap 'rm -f "$spec"' EXIT
+          curl --fail --location --retry 3 \
+            "https://raw.githubusercontent.com/foundry-rs/foundry/$foundry_commit/crates/cheatcodes/assets/cheatcodes.json" \
+            --output "$spec"
+          bun scripts/check-cheatcode-coverage.ts \
+            --refresh --spec "$spec" --commit "$foundry_commit"
+
       - name: Update
         run: |
           git config --global user.name "GitHub Actions Bot"
