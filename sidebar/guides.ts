@@ -21,6 +21,7 @@ export const guidesSidebar: Sidebar = {
       text: "Testing",
       items: [
         { text: "Fork Testing", link: "/guides/fork-testing" },
+        { text: "Fuzz Corpus Workflow", link: "/guides/fuzz-corpus" },
         { text: "Invariant Testing", link: "/guides/invariant-testing" },
         {
           text: "Branching Tree Technique",
