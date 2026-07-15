@@ -59,6 +59,16 @@ $ cast send $CONTRACT "mint()" --ledger
 $ cast send $CONTRACT "mint()" --trezor
 ```
 
+#### Browser wallet
+
+Connect an injected wallet through Foundry's local browser bridge:
+
+```bash
+$ cast send $CONTRACT "mint()" --rpc-url $RPC_URL --browser
+```
+
+See [Browser Wallet Signing](/guides/browser-wallet) for the approval flow, network checks, and agent handoff guidance.
+
 #### AWS KMS
 
 Use a key stored in AWS KMS:

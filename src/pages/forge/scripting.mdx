@@ -77,11 +77,17 @@ $ forge script script/Deploy.s.sol --broadcast --rpc-url $RPC_URL --account depl
 $ forge script script/Deploy.s.sol --broadcast --rpc-url $RPC_URL --ledger
 ```
 
+```bash [Browser wallet]
+$ forge script script/Deploy.s.sol --broadcast --rpc-url $RPC_URL --browser
+```
+
 ```bash [Raw key (not recommended)]
 $ forge script script/Deploy.s.sol --broadcast --rpc-url $RPC_URL --private-key $PRIVATE_KEY
 ```
 
 :::
+
+See [Browser Wallet Signing](/guides/browser-wallet) for the local connection flow, network checks, and a simulation-first deployment workflow.
 
 ### Broadcasting from a specific address
 

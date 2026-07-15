@@ -1,0 +1,116 @@
+---
+description: Persist, replay, inspect, and minimize fuzz and invariant corpora.
+---
+
+## Fuzz Corpus Workflow
+
+A fuzz corpus is a set of inputs that reached new execution edges. When you configure a corpus directory, Forge persists those inputs and mutates them in later campaigns. This lets subsequent runs build on previously discovered coverage instead of starting from only fresh random inputs.
+
+Corpus entries are not the same as persisted failures:
+
+| Artifact | Configuration | Purpose |
+| --- | --- | --- |
+| Failure | `failure_persist_dir` | Reproduce a counterexample that failed a fuzz or invariant test |
+| Corpus | `corpus_dir` | Preserve coverage-increasing inputs and reuse them for mutation |
+| Branch frontier | `frontier_dir` | Preserve near-miss branch conditions for targeted symbolic solving |
+
+### Enable corpus persistence
+
+Add a corpus directory to `foundry.toml`:
+
+```toml [foundry.toml]
+[fuzz]
+runs = 512
+corpus_dir = "cache/fuzz-corpus"
+show_edge_coverage = true
+```
+
+Setting `corpus_dir` enables coverage-guided fuzzing. `show_edge_coverage` is optional; it collects edge coverage metrics without changing which entries Forge persists. `corpus_gzip` is enabled by default, although small entries remain plain JSON.
+
+Use a separate directory for invariant campaigns:
+
+```toml [foundry.toml]
+[invariant]
+corpus_dir = "cache/invariant-corpus"
+```
+
+The following test has several paths that a corpus can preserve:
+
+```solidity
+// [!include ~/snippets/projects/fuzz_corpus/test/Corpus.t.sol:all]
+```
+
+Run only fuzz and invariant campaigns with `forge fuzz run`:
+
+```bash
+$ forge fuzz run --match-test testFuzz_classify
+```
+
+You can also use `forge test`; corpus persistence applies to both commands. Forge namespaces entries by contract and test below the configured directory. Treat that layout as Forge-managed instead of depending on generated filenames.
+
+### Inspect and replay a corpus
+
+Print decoded entries before replaying them:
+
+```bash
+$ forge fuzz show cache/fuzz-corpus --limit 10
+```
+
+Use `--format json` when another tool or an agent needs structured output.
+
+Replay every persisted entry without starting a new campaign:
+
+```bash
+$ forge fuzz replay --corpus-dir cache/fuzz-corpus \
+    --match-test testFuzz_classify
+```
+
+The `--corpus-dir` flag matters. Without it, `forge fuzz replay` replays persisted failures rather than coverage corpus entries.
+
+Replay is useful in CI because it checks known inputs deterministically and fails if any entry now violates the property. Run a new campaign separately when you also want to search for additional inputs.
+
+### Minimize corpus data
+
+Long campaigns can accumulate entries whose coverage overlaps. Use `cmin` to write a smaller corpus that retains entries contributing distinct coverage:
+
+```bash
+$ forge fuzz cmin cache/fuzz-corpus \
+    --corpus-out cache/fuzz-corpus-min \
+    --match-test testFuzz_classify
+```
+
+Use `tmin` when you want to simplify the transactions in one entry while preserving either its failure or its coverage contribution:
+
+```bash
+$ forge fuzz tmin path/to/corpus-entry \
+    --corpus-out path/to/minimized-entry \
+    --match-test testFuzz_classify
+```
+
+Both minimizers compile the project and replay candidates against the matched fuzz or invariant test. Use test filters when a project has more than one possible target.
+
+### Export showmap coverage
+
+To compare corpora outside Forge, replay the configured corpus and emit AFL `afl-showmap`-style edge counts:
+
+```bash
+$ forge test --showmap-out showmap \
+    --match-test testFuzz_classify
+```
+
+Showmap mode skips unit tests and the regular fuzz or invariant campaign. By default it writes one aggregated file per test. Add `--showmap-per-input` to emit one file for every corpus entry, or `--showmap-corpus-dir <PATH>` to replay a directory other than the one in `foundry.toml`.
+
+Use `--showmap-approach` and `--showmap-trial` to give repeated runs stable grouping labels. The default trial identifier is unique so a later run does not overwrite earlier output.
+
+### Keep a reproducible corpus
+
+For a corpus you intend to keep:
+
+1. Run the campaign with a fixed Foundry version and record the relevant profile.
+2. Minimize the corpus before committing it or storing it as a CI artifact.
+3. Replay the retained corpus in CI with the same test filters and EVM configuration.
+4. Run fresh fuzz campaigns separately, with an explicit `--seed` when you need to reproduce the generated sequence.
+
+Do not replace failure persistence with a corpus. Keep failing counterexamples so Forge can reproduce regressions directly, and keep corpus entries when their coverage is valuable even though they pass.
+
+See the [`forge fuzz` command reference](/reference/forge/fuzz) for every campaign, replay, and minimization option.

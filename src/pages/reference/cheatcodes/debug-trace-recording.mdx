@@ -1,0 +1,70 @@
+---
+description: Records opcode-level debug steps for a selected section of execution
+---
+
+## Debug trace recording
+
+### Signatures
+
+```solidity
+struct DebugStep {
+    uint256[] stack;
+    bytes memoryInput;
+    uint8 opcode;
+    uint64 depth;
+    bool isOutOfGas;
+    address contractAddr;
+}
+
+function startDebugTraceRecording() external;
+function stopAndReturnDebugTraceRecording() external returns (DebugStep[] memory steps);
+```
+
+### Description
+
+`startDebugTraceRecording` begins opcode-level tracing for the following execution. `stopAndReturnDebugTraceRecording` stops the session and returns its steps in execution order, including steps from nested calls.
+
+Run Forge with at least three verbosity flags so a tracing inspector is available:
+
+```bash
+$ forge test -vvv
+```
+
+Each `DebugStep` contains the inputs needed to inspect one opcode before it executes:
+
+| Field | Description |
+|-------|-------------|
+| `stack` | Relevant stack operands, with `stack[0]` representing the top of the stack |
+| `memoryInput` | Relevant pre-execution memory bytes for opcodes that read memory |
+| `opcode` | Numeric EVM opcode byte |
+| `depth` | Call depth at which the opcode executes |
+| `isOutOfGas` | Whether this step ends in an out-of-gas error |
+| `contractAddr` | Contract whose code contains the opcode |
+
+The stack and memory fields are intentionally selective rather than full snapshots. For example, an `MLOAD` step contains its offset in `stack[0]` and the 32 bytes read in `memoryInput`.
+
+### Example
+
+```solidity [test/DebugTraceRecording.t.sol]
+// [!include ~/snippets/projects/cheatcodes/test/DebugTraceRecording.t.sol:trace]
+```
+
+Run the example with:
+
+```bash
+$ forge test -vvv --match-contract DebugTraceRecordingTest
+```
+
+### Gotchas
+
+- The start call reverts with `no tracer initiated` unless Forge is running with `-vvv` or greater verbosity.
+- Only one recording session can be active. Calling `startDebugTraceRecording` again before stopping reverts and leaves the first session active.
+- Calling `stopAndReturnDebugTraceRecording` without an active session reverts with `nothing recorded`.
+- Opcode-level traces can be large. Start immediately before the operation you need and stop immediately after it.
+- `stack` and `memoryInput` contain only data relevant to the opcode, not complete EVM snapshots.
+
+### Related Cheatcodes
+
+- [`startStateDiffRecording`](/reference/cheatcodes/start-state-diff-recording) - Record account and storage changes
+- [`recordLogs`](/reference/cheatcodes/record-logs) - Record emitted EVM logs
+- [`breakpoint`](/reference/cheatcodes/breakpoint) - Add a named debugger breakpoint
