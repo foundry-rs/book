@@ -51,6 +51,7 @@ const docs = [
               { text: "encode-packed-collision", link: "/forge/linting/encode-packed-collision" },
               { text: "enumerable-loop-removal", link: "/forge/linting/enumerable-loop-removal" },
               { text: "erc20-unchecked-transfer", link: "/forge/linting/erc20-unchecked-transfer" },
+              { text: "function-selector-collision", link: "/forge/linting/function-selector-collision" },
               { text: "incorrect-exp", link: "/forge/linting/incorrect-exp" },
               { text: "incorrect-shift", link: "/forge/linting/incorrect-shift" },
               { text: "reentrancy-eth", link: "/forge/linting/reentrancy-eth" },
