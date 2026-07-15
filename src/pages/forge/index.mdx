@@ -31,6 +31,11 @@ Forge compiles, tests, and deploys Solidity smart contracts. It's the core devel
     description="Trace failures and track gas usage."
     to="/forge/gas-tracking"
   />
+  <Card
+    title="Generate contract bindings"
+    description="Create typed Alloy bindings and Solidity JSON helpers."
+    to="/forge/contract-bindings"
+  />
 </Cards>
 
 ### Key capabilities
@@ -42,6 +47,7 @@ Forge compiles, tests, and deploys Solidity smart contracts. It's the core devel
 | **Scripting** | Deploy and interact with contracts using Solidity scripts |
 | **Verification** | Verify source code on Etherscan and other explorers |
 | **Analysis** | Inspect bytecode, storage layouts, and gas usage |
+| **Bindings** | Generate typed Alloy crates and Solidity JSON helpers |
 
 ### Common workflows
 
@@ -86,6 +92,7 @@ $ forge verify-contract $ADDRESS src/Counter.sol:Counter --etherscan-api-key $KE
 ### Learn more
 
 - [Building contracts](/forge/build) — Compilation, artifacts, and optimization
+- [Contract bindings](/forge/contract-bindings) — Alloy bindings and Solidity JSON helpers
 - [Testing](/forge/testing) — Writing and running tests
 - [Scripting](/forge/scripting) — Deployment and on-chain interactions
 - [Debugging](/forge/debugging) — Traces, debugger, and troubleshooting
