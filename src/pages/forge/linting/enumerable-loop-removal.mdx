@@ -7,20 +7,28 @@ description: EnumerableSet removal while iterating with at
 **Severity**: `High`
 **ID**: `enumerable-loop-removal`
 
-Flags `remove` on an EnumerableSet inside a loop that also iterates a set with `at`.
+Flags `remove` on an EnumerableSet while a loop iterates the same set with `at`.
 
 ### What it does
 
-Reports a call `set.remove(...)` where the receiver is a struct declared in a library named `EnumerableSet` (OpenZeppelin's `AddressSet`, `UintSet`, `Bytes32Set`), when an enclosing loop also contains a call `at(...)` on an EnumerableSet, not necessarily the same instance.
+Reports an `EnumerableSet.remove` call when an enclosing loop reads the same set with `EnumerableSet.at` at an index that the loop advances and can return to the loop after the removal. Calls are resolved by type, so both `set.remove(value)` and `EnumerableSet.remove(set, value)` are recognized while same-name functions from other libraries are ignored.
+
+The lint follows the set's storage path, including struct fields, literal mapping keys, and straight-line local `storage` aliases. It also follows loop cursors through member or indexed paths and through straight-line copies; changing a mapping key makes the indexed cursor vary. Assignments are interpreted in statement order, so resetting either a copied cursor or the loop's own cadence before `at` is not confused with a later assignment.
+
+The warning is path- and order-sensitive. A removal followed by a relevant `at` read before an exit still warns, but a mutating path that exits the loop before another such read or backedge is safe. This includes successful `remove` conditions such as `if (set.remove(value)) break` and their logically negated equivalents.
 
 Only the combination is dangerous, so neither half fires alone:
 
-- `remove` in a loop without `at` is the recommended collect-then-remove pattern;
+- `remove` in a loop without `at` supports the recommended collect-then-remove pattern;
 - `at` in a loop without `remove` is a plain read;
 - `remove` outside a loop is fine;
+- reading and removing different set instances is fine;
+- repeatedly removing `at(0)`, or another index that the loop does not advance, drains a fixed slot;
+- a descending loop that directly removes the value read from its current reverse-drain slot does not skip elements, provided the index expression preserves that downward direction;
+- a removal whose mutating path exits before another relevant read or loop backedge is safe;
 - the same method names on a type that is not an EnumerableSet are out of scope.
 
-Calls reached indirectly through a function invoked from the loop are not analyzed.
+Calls reached indirectly through a helper invoked from the loop are not analyzed. When the lint cannot prove which storage path an operand names, it reports conservatively rather than risk missing a mutation of the iterated set. A value copied from the reverse-drain `at` result also reports because that value flow is not tracked.
 
 ### Why is this bad?
 
@@ -39,11 +47,19 @@ for (uint256 i = 0; i < set.length(); i++) {
 #### Good
 
 ```solidity
+// Collect values while iterating, then remove them afterward.
 address[] memory toRemove = new address[](set.length());
+uint256 count;
 for (uint256 i = 0; i < set.length(); i++) {
-    toRemove[i] = set.at(i);
+    address value = set.at(i);
+    if (shouldRemove(value)) toRemove[count++] = value;
 }
-for (uint256 i = 0; i < toRemove.length; i++) {
+for (uint256 i = 0; i < count; i++) {
     set.remove(toRemove[i]);
+}
+
+// Or drain directly from the end.
+for (uint256 i = set.length(); i > 0; i--) {
+    set.remove(set.at(i - 1));
 }
 ```
