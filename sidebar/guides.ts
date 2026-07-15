@@ -12,6 +12,7 @@ export const guidesSidebar: Sidebar = {
       text: "Deployment",
       items: [
         { text: "Deploying Contracts", link: "/guides/deploying-contracts" },
+        { text: "Browser Wallet Signing", link: "/guides/browser-wallet" },
         { text: "Deterministic Deployments (CREATE2)", link: "/guides/deterministic-deployments-using-create2" },
         { text: "Multi-Chain Deployments", link: "/guides/multi-chain-deployments" },
         { text: "Upgrading Contracts", link: "/guides/upgrading-contracts" },
@@ -20,9 +21,12 @@ export const guidesSidebar: Sidebar = {
     {
       text: "Testing",
       items: [
+        { text: "Code Coverage", link: "/guides/coverage" },
         { text: "Fork Testing", link: "/guides/fork-testing" },
         { text: "Fuzz Corpus Workflow", link: "/guides/fuzz-corpus" },
+        { text: "Mutation Testing", link: "/guides/mutation-testing" },
         { text: "Invariant Testing", link: "/guides/invariant-testing" },
+        { text: "Symbolic Testing", link: "/guides/symbolic-testing" },
         {
           text: "Branching Tree Technique",
           link: "/guides/branching-tree-technique",

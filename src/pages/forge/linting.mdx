@@ -161,8 +161,11 @@ navigation on the right to browse by severity.
 - [`encode-packed-collision`](/forge/linting/encode-packed-collision) — Flags `abi.encodePacked()` calls with two or more dynamic-type arguments (`string`, `bytes`, `T[]`) that can produce hash collisions.
 - [`enumerable-loop-removal`](/forge/linting/enumerable-loop-removal) — Flags `remove` on an EnumerableSet inside a loop that also iterates a set with `at`; swap-and-pop removal corrupts the iteration.
 - [`erc20-unchecked-transfer`](/forge/linting/erc20-unchecked-transfer) — Flags calls to ERC20 `transfer` and `transferFrom` where the boolean return value is ignored.
+- [`function-selector-collision`](/forge/linting/function-selector-collision) — Flags different proxy and implementation function signatures that produce the same four-byte selector.
 - [`incorrect-exp`](/forge/linting/incorrect-exp) — Flags `^` (bitwise xor) used between integer literals where `**` (exponentiation) was almost certainly intended.
 - [`incorrect-shift`](/forge/linting/incorrect-shift) — Flags shift operations where a literal appears on the left and a non-literal on the right, which is almost always the wrong operand order.
+- [`protected-vars`](/forge/linting/protected-vars) — Flags externally callable functions that can write an annotated state variable without invoking its declared protection.
+- [`reentrancy-balance`](/forge/linting/reentrancy-balance) — Flags reentrant external calls between saving the current contract balance and checking a fresh balance against that stale value.
 - [`reentrancy-eth`](/forge/linting/reentrancy-eth) — Flags uncapped ETH-transferring low-level `call` operations when state read before the call is written after the call.
 - [`rtlo`](/forge/linting/rtlo) — Flags the presence of Unicode bidirectional override characters in source code, which can be used to hide malicious behavior ("Trojan Source", [CVE-2021-42574](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-42574)).
 - [`unchecked-call`](/forge/linting/unchecked-call) — Flags low-level calls (`call`, `delegatecall`, `staticcall`, `callcode`) whose `success` return value is ignored.
@@ -174,6 +177,7 @@ navigation on the right to browse by severity.
 - [`boolean-cst`](/forge/linting/boolean-cst) — Flags expressions where a boolean constant (`true`/`false`) is used as a control-flow condition or operand of a boolean operator, which usually indicates dead code or a leftover debug toggle.
 - [`dangerous-unary-operator`](/forge/linting/dangerous-unary-operator) — Flags assignments whose `=` is fused to a unary operator (`=-`, `=~`), which parses as a plain assignment rather than the compound assignment it resembles.
 - [`divide-before-multiply`](/forge/linting/divide-before-multiply) — Flags arithmetic expressions where division is performed before multiplication, which can cause unintended precision loss in integer arithmetic.
+- [`ecrecover`](/forge/linting/ecrecover) — Flags direct calls to Solidity's `ecrecover` builtin when the signature's `s` value is not proven to be canonical.
 - [`incorrect-erc20-interface`](/forge/linting/incorrect-erc20-interface) — Flags interfaces or contracts whose function signatures match an ERC20 method by name and parameters but use the wrong return type.
 - [`incorrect-erc721-interface`](/forge/linting/incorrect-erc721-interface) — Flags interfaces or contracts whose function signatures match an ERC721 (or ERC165) method by name and parameters but use the wrong return type.
 - [`locked-ether`](/forge/linting/locked-ether) — Flags contracts that can receive Ether (via `payable` functions, `receive()`, or a payable `fallback()`) but expose no code path that can send Ether out, permanently trapping user funds.
@@ -199,6 +203,7 @@ navigation on the right to browse by severity.
 - [`deprecated-oz-function`](/forge/linting/deprecated-oz-function) — Flags references to functions OpenZeppelin deprecated: `SafeERC20.safeApprove` and `AccessControl._setupRole`.
 - [`empty-block`](/forge/linting/empty-block) — Flags regular functions with an empty body; constructors, `receive`/`fallback`, `virtual` and `payable` functions are exempt.
 - [`incorrect-modifier`](/forge/linting/incorrect-modifier) — Flags modifiers that can finish without executing the modified function body or reverting.
+- [`inconsistent-type-names`](/forge/linting/inconsistent-type-names) — Flags mixed use of `uint`/`uint256` or `int`/`int256` spellings within one contract.
 - [`missing-events-access-control`](/forge/linting/missing-events-access-control) — Flags protected entry-point functions that update state used for access control without emitting an event.
 - [`missing-events-arithmetic`](/forge/linting/missing-events-arithmetic) — Flags protected entry-point functions that update tainted integer state used in arithmetic by an unprotected function without emitting an event.
 - [`missing-zero-check`](/forge/linting/missing-zero-check) — Flags entry-point functions and constructors where an `address` parameter flows into a state write or value transfer without a zero-address guard.
@@ -224,6 +229,7 @@ navigation on the right to browse by severity.
 - [`pascal-case-struct`](/forge/linting/pascal-case-struct) — Flags struct definitions whose names do not follow `PascalCase`.
 - [`pragma-inconsistent`](/forge/linting/pragma-inconsistent) — Flags projects whose source files declare incompatible or differently-shaped Solidity version pragmas.
 - [`redundant-base-constructor-call`](/forge/linting/redundant-base-constructor-call) — Flags explicit empty base-constructor arguments (e.g. `is A()` or `constructor() A() {}`) when the base contract requires no arguments.
+- [`reentrancy-unlimited-gas`](/forge/linting/reentrancy-unlimited-gas) — Flags state changes and event emissions that remain reachable after built-in `transfer` or `send` calls.
 - [`screaming-snake-case-const`](/forge/linting/screaming-snake-case-const) — Flags `constant` state variables whose names do not follow `SCREAMING_SNAKE_CASE`.
 - [`screaming-snake-case-immutable`](/forge/linting/screaming-snake-case-immutable) — Flags `immutable` state variables whose names do not follow `SCREAMING_SNAKE_CASE`.
 - [`too-many-digits`](/forge/linting/too-many-digits) — Flags numeric literals containing five or more consecutive zeros, which are easy to misread.
