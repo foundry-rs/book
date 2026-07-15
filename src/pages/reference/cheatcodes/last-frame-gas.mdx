@@ -1,0 +1,66 @@
+---
+description: Returns gas measurements for the last external call or contract creation
+---
+
+## `lastFrameGas`
+
+### Signatures
+
+```solidity
+struct Gas {
+    uint64 gasLimit;
+    uint64 gasTotalUsed;
+    uint64 gasMemoryUsed;
+    int64 gasRefunded;
+    uint64 gasRemaining;
+}
+
+function lastFrameGas() external view returns (Gas memory gas);
+function lastCallGas() external view returns (Gas memory gas);
+```
+
+### Description
+
+`lastFrameGas` returns gas measurements for the most recently completed external call or contract creation. The values are recorded from the callee's perspective, so they describe the child execution frame rather than all overhead paid by its caller.
+
+`lastCallGas` provides the same measurements but only records calls, not `CREATE` or `CREATE2`. It is deprecated; use `lastFrameGas` for new tests.
+
+Reading either value does not replace the recorded frame because cheatcode calls are excluded from this measurement.
+
+### Returns
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `gasLimit` | `uint64` | Gas limit available to the frame |
+| `gasTotalUsed` | `uint64` | Total gas spent by the frame |
+| `gasMemoryUsed` | `uint64` | Deprecated field that currently returns `0` |
+| `gasRefunded` | `int64` | Gas refund accumulated by the frame |
+| `gasRemaining` | `uint64` | Gas remaining when the frame completed |
+
+### Examples
+
+#### Inspect an external call
+
+```solidity [test/LastFrameGas.t.sol]
+// [!include ~/snippets/projects/cheatcodes/test/LastFrameGas.t.sol:call]
+```
+
+#### Inspect contract creation
+
+```solidity [test/LastFrameGas.t.sol]
+// [!include ~/snippets/projects/cheatcodes/test/LastFrameGas.t.sol:create]
+```
+
+### Gotchas
+
+- `lastFrameGas` reverts when no external call or contract creation has completed yet.
+- `lastCallGas` reverts when no external call has completed, even if a contract was created.
+- The measurement is for the callee frame. It does not equal the caller's complete gas delta around the call.
+- Expected-revert handling can clear the cached frame. Do not rely on `lastFrameGas` after a call or creation consumed by `vm.expectRevert`.
+- Gas depends on EVM version, optimizer settings, isolation, and warm or cold state. Keep those inputs stable when comparing values.
+
+### Related Cheatcodes
+
+- [`snapshotGas`](/reference/cheatcodes/gas-snapshots) - Persist the last frame's gas usage or measure a code section
+- [`pauseGasMetering`](/reference/cheatcodes/pause-gas-metering) - Exclude code from gas metering
+- [Forge testing](/forge/testing) - Understand isolation and transaction-like call boundaries

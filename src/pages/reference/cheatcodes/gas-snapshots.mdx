@@ -16,6 +16,8 @@ function snapshotValue(string calldata name, uint256 value) external;
 function snapshotValue(string calldata group, string calldata name, uint256 value) external;
 function snapshotGasLastCall(string calldata name) external returns (uint256 gasUsed);
 function snapshotGasLastCall(string calldata group, string calldata name) external returns (uint256 gasUsed);
+function snapshotGasLastFrame(string calldata name) external returns (uint256 gasUsed);
+function snapshotGasLastFrame(string calldata group, string calldata name) external returns (uint256 gasUsed);
 ```
 
 ### Description
@@ -27,7 +29,8 @@ These cheatcodes allow you to capture gas usage in your tests. Snapshots are wri
 | `startSnapshotGas`   | Start capturing gas usage                            |
 | `stopSnapshotGas`    | Stop capturing and record the gas used               |
 | `snapshotValue`      | Record an arbitrary numerical value                  |
-| `snapshotGasLastCall`| Record gas usage of the last external call           |
+| `snapshotGasLastFrame` | Record gas usage of the last external call or contract creation |
+| `snapshotGasLastCall` | Deprecated call-only variant; use `snapshotGasLastFrame` |
 
 ### Configuration
 
@@ -54,12 +57,12 @@ function testSnapshotGas() public {
 }
 ```
 
-#### Capturing gas for the last call
+#### Capturing gas for the last frame
 
 ```solidity [test/GasSnapshotLastCall.t.sol]
-function testSnapshotGasLastCall() public {
+function testSnapshotGasLastFrame() public {
     myContract.run(256);
-    vm.snapshotGasLastCall("run256");
+    vm.snapshotGasLastFrame("run256");
     // Captures gas used by myContract.run(256)
 }
 ```
@@ -99,4 +102,5 @@ The `snapshots/` directory should be committed to version control to track gas c
 
 ### Related Cheatcodes
 
+- [`lastFrameGas`](/reference/cheatcodes/last-frame-gas) - Inspect all gas fields for the last call or creation without writing a snapshot
 - [`snapshotState`](/reference/cheatcodes/state-snapshots) - Snapshot EVM state
