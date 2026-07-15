@@ -24,6 +24,7 @@ export const guidesSidebar: Sidebar = {
         { text: "Code Coverage", link: "/guides/coverage" },
         { text: "Fork Testing", link: "/guides/fork-testing" },
         { text: "Fuzz Corpus Workflow", link: "/guides/fuzz-corpus" },
+        { text: "Mutation Testing", link: "/guides/mutation-testing" },
         { text: "Invariant Testing", link: "/guides/invariant-testing" },
         { text: "Symbolic Testing", link: "/guides/symbolic-testing" },
         {
