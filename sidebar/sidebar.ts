@@ -96,6 +96,7 @@ const docs = [
               { text: "deprecated-oz-function", link: "/forge/linting/deprecated-oz-function" },
               { text: "empty-block", link: "/forge/linting/empty-block" },
               { text: "incorrect-modifier", link: "/forge/linting/incorrect-modifier" },
+              { text: "inconsistent-type-names", link: "/forge/linting/inconsistent-type-names" },
               { text: "missing-events-access-control", link: "/forge/linting/missing-events-access-control" },
               { text: "missing-events-arithmetic", link: "/forge/linting/missing-events-arithmetic" },
               { text: "missing-zero-check", link: "/forge/linting/missing-zero-check" },
