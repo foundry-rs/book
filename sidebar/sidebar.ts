@@ -173,6 +173,7 @@ const docs = [
       { text: "Reading Chain Data", link: "/cast/reading-chain-data" },
       { text: "Sending Transactions", link: "/cast/sending-transactions" },
       { text: "Wallet Operations", link: "/cast/wallet-operations" },
+      { text: "EIP-7702 Delegation", link: "/cast/eip-7702-delegation" },
       { text: "ABI Encoding", link: "/cast/abi-encoding" },
     ],
   },
