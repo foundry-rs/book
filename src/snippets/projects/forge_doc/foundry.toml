@@ -1,0 +1,10 @@
+[profile.default]
+src = "src"
+
+[doc]
+out = "docs"
+title = "Counter API"
+homepage = "README.md"
+repository = "https://github.com/example/counter"
+commit = "main"
+ignore = ["src/mocks/**"]

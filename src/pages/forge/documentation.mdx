@@ -1,0 +1,128 @@
+---
+description: Generate and publish contract API documentation from Solidity NatSpec comments.
+---
+
+## Contract Documentation
+
+`forge doc` turns Solidity source and NatSpec comments into MDX API pages and a ready-to-run [Vocs](https://vocs.dev) site. It documents contracts, interfaces, libraries, functions, state variables, events, errors, structs, enums, and user-defined value types.
+
+### Write useful NatSpec
+
+Document the contract's purpose and the behavior callers need to know. Name every parameter and return value so generated tables remain searchable and unambiguous.
+
+```solidity [src/ICounter.sol]
+// [!include ~/snippets/projects/forge_doc/src/ICounter.sol]
+```
+
+Use `@inheritdoc` when an implementation should reuse an interface or base-contract description:
+
+```solidity [src/Counter.sol]
+// [!include ~/snippets/projects/forge_doc/src/Counter.sol]
+```
+
+Forge renders `@title`, `@author`, `@notice`, `@dev`, `@param`, `@return`, `@inheritdoc`, and `@custom:<name>` metadata. References such as `{value}` become links when Forge can resolve the target in the generated pages.
+
+### Generate the site
+
+Run the generator from the project root:
+
+```bash
+$ forge doc
+```
+
+The default `docs/` output contains:
+
+```text
+docs/
+├── package.json
+├── vocs.config.ts
+├── vocs.sidebar.ts
+└── src/pages/
+    ├── index.mdx
+    └── src/
+        ├── contract.Counter.mdx
+        └── interface.ICounter.mdx
+```
+
+Use `--out <PATH>` to generate elsewhere. By default, Forge documents the project's source directory and excludes external libraries. Pass `--include-libraries` when library APIs belong in the published site.
+
+### Configure generation
+
+Keep durable settings in the top-level `[doc]` section of `foundry.toml`:
+
+```toml [foundry.toml]
+// [!include ~/snippets/projects/forge_doc/foundry.toml]
+```
+
+- `out` selects the generated site directory.
+- `title` becomes the Vocs site title.
+- `homepage` selects Markdown for the generated landing page. It defaults to `README.md`.
+- `repository` adds source and edit links. Forge tries to infer it from the Git `origin` when omitted.
+- `commit` pins source and homepage links to a commit, tag, or branch. When omitted, Forge uses the current Git revision.
+- `ignore` excludes source files with glob patterns.
+
+Relative links from the homepage to documented `.sol` files are rewritten to generated site routes. Other relative links become repository links when `repository` is configured.
+
+See the [documentation generator configuration reference](/config/reference/doc-generator) for the complete schema.
+
+### Preview and watch
+
+The generated output is a Vocs project. Install its dependencies and start the development server:
+
+```bash
+$ cd docs
+$ npm install --legacy-peer-deps
+$ npm run dev
+```
+
+`forge doc --serve` was removed during the Vocs migration. Older instructions that use it no longer apply.
+
+Run generation in watch mode in a separate terminal:
+
+```bash
+$ forge doc --watch
+```
+
+With no paths, Forge watches the project's source and test directories. You can provide explicit paths after `--watch` to narrow regeneration.
+
+### Customize without losing changes
+
+Forge separates generated files from user-editable site files:
+
+- `vocs.config.ts`, `package.json`, and `.gitignore` are created only when absent, so later customizations remain intact.
+- `vocs.sidebar.ts` is regenerated to reflect the current API pages. Import it from `vocs.config.ts` instead of editing it.
+- `src/pages/index.mdx` is regenerated from `homepage` on every run.
+- Generated API pages are tracked in `src/pages/.forge-doc-manifest`. Forge prunes stale pages from that manifest but leaves unrelated user-authored pages in place.
+
+Do not hand-edit generated API pages. Change the Solidity NatSpec and regenerate so the source stays authoritative.
+
+### Add deployment addresses
+
+Inject known deployment addresses from `hardhat-deploy` or `forge-deploy` artifacts:
+
+```bash
+$ forge doc --deployments
+```
+
+This reads `<root>/deployments/<network>/<Contract>.json` by default and renders an address table on the matching contract page. Pass a path to use another artifact directory:
+
+```bash
+$ forge doc --deployments artifacts/deployments
+```
+
+Omit `--deployments` entirely when addresses should not be published. Review the generated tables before deployment because unreadable or mismatched artifact entries are skipped.
+
+### Build in CI
+
+Generate from a clean checkout, then build the resulting Vocs site:
+
+```bash
+$ forge doc
+$ cd docs
+$ npm install --legacy-peer-deps
+$ npm run build
+```
+
+Pin `doc.commit` to the release tag or commit being published so source links remain stable. Treat generator warnings and a failed Vocs build as documentation failures.
+
+For agent workflows, the generated MDX and `.forge-doc-manifest` provide a deterministic inventory of documented Solidity symbols. Search those files instead of parsing rendered HTML, but return to the Solidity source before changing behavior. Regeneration is the only supported way to update generated API content.

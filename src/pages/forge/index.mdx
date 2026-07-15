@@ -17,6 +17,11 @@ Forge compiles, tests, and deploys Solidity smart contracts. It's the core devel
     to="/forge/testing"
   />
   <Card
+    title="Document contracts"
+    description="Generate and publish an API site from Solidity NatSpec."
+    to="/forge/documentation"
+  />
+  <Card
     title="Advanced testing"
     description="Fuzz, invariant, and fork-based testing workflows."
     to="/guides/invariant-testing"
@@ -38,6 +43,7 @@ Forge compiles, tests, and deploys Solidity smart contracts. It's the core devel
 | Feature | Description |
 |---------|-------------|
 | **Compilation** | Compile contracts with configurable Solidity versions and optimization |
+| **Documentation** | Generate a Vocs API site from Solidity source and NatSpec comments |
 | **Testing** | Write tests in Solidity with fuzzing, forking, and gas reporting |
 | **Scripting** | Deploy and interact with contracts using Solidity scripts |
 | **Verification** | Verify source code on Etherscan and other explorers |
@@ -86,6 +92,7 @@ $ forge verify-contract $ADDRESS src/Counter.sol:Counter --etherscan-api-key $KE
 ### Learn more
 
 - [Building contracts](/forge/build) — Compilation, artifacts, and optimization
+- [Contract documentation](/forge/documentation) — NatSpec, generated API pages, and publishing
 - [Testing](/forge/testing) — Writing and running tests
 - [Scripting](/forge/scripting) — Deployment and on-chain interactions
 - [Debugging](/forge/debugging) — Traces, debugger, and troubleshooting

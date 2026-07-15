@@ -30,6 +30,7 @@ const docs = [
     items: [
       { text: "Overview", link: "/forge" },
       { text: "Building", link: "/forge/build" },
+      { text: "Documentation", link: "/forge/documentation" },
       { text: "Testing", link: "/forge/testing" },
       { text: "Scripting", link: "/forge/scripting" },
       { text: "Debugging", link: "/forge/debugging" },
