@@ -208,13 +208,52 @@ fn parse_sub_commands(s: &str) -> Vec<String> {
 
 /// Writes the markdown for a command to out_dir.
 fn cmd_markdown(out_dir: &Path, cmd: &Cmd, stdout: &str) -> io::Result<()> {
-    let out = format!("## {}\n\n{}", cmd, help_markdown(cmd, stdout));
+    let (description, _) = parse_description(stdout);
+    let description = normalize_description(cmd, description);
+    let provenance = format!(
+        "_Generated from `{cmd} --help`; see [CLI reference versions](/reference/versions). Regenerate this page instead of editing it directly._"
+    );
+    let generation_note = if cmd.subcommands.is_empty() {
+        "\n\n:::note[Generated CLI reference]\nThis reference is generated from the installed command's `--help` output. See [CLI reference versions](/reference/versions) for the exact binaries used.\n:::"
+    } else {
+        ""
+    };
+    let out = format!(
+        "---\ndescription: {}\n---\n\n{}\n\n## {}{}\n\n{}",
+        yaml_double_quote(&description),
+        provenance,
+        cmd,
+        generation_note,
+        help_markdown(cmd, stdout)
+    );
 
     let out_path = out_dir.join(cmd.md_path());
     fs::create_dir_all(out_path.parent().unwrap())?;
     write_file(&out_path.with_extension("mdx"), &out)?;
 
     Ok(())
+}
+
+/// Returns a single-line description suitable for page metadata.
+fn normalize_description(cmd: &Cmd<'_>, description: &str) -> String {
+    let description = description.split_whitespace().collect::<Vec<_>>().join(" ");
+    if description.is_empty() {
+        format!("Command reference for `{cmd}`.")
+    } else {
+        description
+    }
+}
+
+/// Quotes a string as a YAML double-quoted scalar.
+fn yaml_double_quote(value: &str) -> String {
+    format!(
+        "\"{}\"",
+        value
+            .replace('\\', "\\\\")
+            .replace('"', "\\\"")
+            .replace('\n', "\\n")
+            .replace('\r', "\\r")
+    )
 }
 
 /// Returns the markdown for a command's help output.
