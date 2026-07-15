@@ -57,6 +57,7 @@ export const cmdReference: SidebarItem[] = [
           { text: 'expectRevert', link: '/reference/cheatcodes/expect-revert' },
           { text: 'expectEmit', link: '/reference/cheatcodes/expect-emit' },
           { text: 'expectCall', link: '/reference/cheatcodes/expect-call' },
+          { text: 'expectSafeMemory', link: '/reference/cheatcodes/expect-safe-memory' },
           { text: 'expectKeychainVerified', link: '/reference/cheatcodes/expect-keychain-verified' },
           { text: 'expectKeychainAdminVerified', link: '/reference/cheatcodes/expect-keychain-admin-verified' },
           { text: 'expectTip20LogoURIUpdated', link: '/reference/cheatcodes/expect-tip20-logo-uri-updated' },
