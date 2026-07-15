@@ -27,6 +27,7 @@ export const cmdReference: SidebarItem[] = [
           { text: 'accesses', link: '/reference/cheatcodes/accesses' },
           { text: 'recordLogs', link: '/reference/cheatcodes/record-logs' },
           { text: 'getRecordedLogs', link: '/reference/cheatcodes/get-recorded-logs' },
+          { text: 'debugTraceRecording', link: '/reference/cheatcodes/debug-trace-recording' },
           { text: 'setNonce', link: '/reference/cheatcodes/set-nonce' },
           { text: 'getNonce', link: '/reference/cheatcodes/get-nonce' },
           { text: 'mockCall', link: '/reference/cheatcodes/mock-call' },
