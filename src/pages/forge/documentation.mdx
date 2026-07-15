@@ -83,7 +83,10 @@ Run generation in watch mode in a separate terminal:
 $ forge doc --watch
 ```
 
-With no paths, Forge watches the project's source and test directories. You can provide explicit paths after `--watch` to narrow regeneration.
+With no paths, Forge watches the project's source directory, homepage inputs, `foundry.toml`, the
+deployments directory when `--deployments` is enabled, and library directories when
+`--include-libraries` is enabled. It does not watch the test directory by default. Explicit paths
+after `--watch` replace this default set, so include every path that should trigger regeneration.
 
 ### Customize without losing changes
 
