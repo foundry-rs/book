@@ -12,6 +12,7 @@ export const guidesSidebar: Sidebar = {
       text: "Deployment",
       items: [
         { text: "Deploying Contracts", link: "/guides/deploying-contracts" },
+        { text: "Browser Wallet Signing", link: "/guides/browser-wallet" },
         { text: "Deterministic Deployments (CREATE2)", link: "/guides/deterministic-deployments-using-create2" },
         { text: "Multi-Chain Deployments", link: "/guides/multi-chain-deployments" },
         { text: "Upgrading Contracts", link: "/guides/upgrading-contracts" },
