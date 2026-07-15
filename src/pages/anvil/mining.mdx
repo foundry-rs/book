@@ -79,7 +79,14 @@ $ cast rpc anvil_getAutomine
 $ cast rpc anvil_getIntervalMining
 ```
 
-These RPC methods replace the current mining mode; they do not preserve mixed mode. Prefer startup flags when a long-running node must stay in mixed mode.
+The getters only identify pure instant and interval modes. In mixed mode, `anvil_getAutomine`
+returns `false` and `anvil_getIntervalMining` reports no interval.
+
+`evm_setAutomine false` only disables pure instant mining; it is a no-op in interval and mixed
+modes. Enabling automine replaces any non-instant mode with instant mining.
+`evm_setIntervalMining` always replaces the current mode with interval mining, or disables mining
+when passed `0`. None of these methods can restore mixed mode, so use startup flags when a
+long-running node must stay in that mode.
 
 ### Control transaction selection
 
