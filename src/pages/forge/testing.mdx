@@ -586,6 +586,8 @@ function invariant_counterNeverFive() public view {
 
 The symbolic engine is not a complete revm-equivalent EVM model. Unsupported constructs report `incomplete` rather than a proof, and some supported semantics are bounded or approximate. Notable gaps include gas accounting, Cancun+ `SELFDESTRUCT`, arbitrary unknown external code, and cryptographic preimage or collision properties. The exact unsupported-feature reason is preserved in the test output.
 
+For a counterexample-to-fix workflow, including durable JSON artifacts, concrete replay, generated regression tests, fuzz corpus integration, and CI handoffs, see the [symbolic testing workflow](/guides/symbolic-testing).
+
 ### Testing reverts
 
 Use `vm.expectRevert(){:solidity}` to test that a call reverts:
