@@ -32,4 +32,26 @@ gen_help() {
     echo "Running: ${cmd[*]}"
     "${cmd[@]}"
   done
+
+  versions_file="$ROOT/src/pages/reference/versions.mdx"
+  {
+    cat <<'EOF'
+---
+description: Exact Foundry binary versions used to generate the CLI command reference.
+---
+
+## CLI reference versions
+
+The CLI pages under `/reference` are generated from the following installed binaries. Use this page to distinguish documentation drift from behavior in a different stable or nightly release.
+
+EOF
+    for bin in "${bins[@]}"; do
+      if [[ "$bin" != "${bins[0]}" ]]; then
+        printf '\n'
+      fi
+      printf '### `%s`\n\n```text\n' "$bin"
+      "$bin" --version
+      printf '```\n'
+    done
+  } > "$versions_file"
 }
