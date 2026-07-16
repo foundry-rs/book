@@ -26,6 +26,32 @@ $ forge install OpenZeppelin/openzeppelin-contracts --no-commit
 
 The library is cloned to `lib/openzeppelin-contracts/`.
 
+### Locking dependencies
+
+For dependencies installed as git submodules, Foundry maintains a `foundry.lock` file in the project root. The lock file complements `.gitmodules`: `.gitmodules` records where each submodule comes from, while `foundry.lock` records whether you selected a branch, tag, or revision and the resolved commit.
+
+For example, a dependency installed from a tag produces an entry like this:
+
+```json
+{
+  "lib/openzeppelin-contracts": {
+    "tag": {
+      "name": "v5.0.0",
+      "rev": "b7954c3e9ce1d487b49489f5800f52f4b77b7351"
+    }
+  }
+}
+```
+
+Commit `foundry.lock` so other contributors and CI use the same dependency state. Let Forge update the file instead of editing it manually:
+
+- `forge install` creates or synchronizes the lock file. With no dependency arguments, it also installs existing submodules from the recorded state.
+- `forge update` updates branch-based dependencies to the latest commit on their recorded branch. Dependencies installed from a tag or revision stay pinned unless you explicitly select a different ref.
+- `forge remove` removes the dependency's lock-file entry.
+- `forge build` warns if the lock file is malformed, a dependency is missing, or its checked-out revision does not match the lock file.
+
+Dependencies installed with `forge install --no-git` are regular directories rather than git submodules, so Foundry does not add them to `foundry.lock`.
+
 ### Using dependencies
 
 Import installed libraries in your contracts:
