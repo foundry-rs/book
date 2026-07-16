@@ -11,24 +11,25 @@ Flags `remove` on an EnumerableSet while a loop iterates the same set with `at`.
 
 ### What it does
 
-Reports an `EnumerableSet.remove` call when an enclosing loop reads the same set with `EnumerableSet.at` at an index that the loop advances and can return to the loop after the removal. Calls are resolved by type, so both `set.remove(value)` and `EnumerableSet.remove(set, value)` are recognized while same-name functions from other libraries are ignored.
+Reports the conservative, flow-free shape where a loop walks a set by an ascending index and removes from that same set. The loop must read a bare cadence such as `set.at(i)`, write `i` only through unconditional positive increments, and have a straight-line statement body without branches, jumps, reverts, inline assembly, `try`, or nested loops.
 
-The lint follows the set's storage path, including struct fields, literal mapping keys, and straight-line local `storage` aliases. It also follows loop cursors through member or indexed paths and through straight-line copies; changing a mapping key makes the indexed cursor vary. Assignments are interpreted in statement order, so resetting either a copied cursor or the loop's own cadence before `at` is not confused with a later assignment.
+Calls are resolved by type, so both `set.remove(value)` and `EnumerableSet.remove(set, value)` are recognized. The implementation identifies `at` and `remove` by whether they are declared in a library named exactly `EnumerableSet`; it does not verify OpenZeppelin provenance or behavior. A user library with that name can therefore match, while a renamed or differently named fork is not recognized.
 
-The warning is path- and order-sensitive. A removal followed by a relevant `at` read before an exit still warns, but a mutating path that exits the loop before another such read or backedge is safe. This includes successful `remove` conditions such as `if (set.remove(value)) break` and their logically negated equivalents.
+The `at` and `remove` receivers must resolve to the same storage path. The lint follows struct fields, literal mapping keys, and straight-line local `storage` aliases. If a receiver cannot be resolved statically, it is treated as a possible alias, so the lint can warn even when two operands are distinct at runtime.
 
-Only the combination is dangerous, so neither half fires alone:
+Several nearby shapes do not match the report:
 
 - `remove` in a loop without `at` supports the recommended collect-then-remove pattern;
 - `at` in a loop without `remove` is a plain read;
 - `remove` outside a loop is fine;
-- reading and removing different set instances is fine;
+- reading and removing different, statically distinguishable set instances is fine;
 - repeatedly removing `at(0)`, or another index that the loop does not advance, drains a fixed slot;
-- a descending loop that directly removes the value read from its current reverse-drain slot does not skip elements, provided the index expression preserves that downward direction;
-- a removal whose mutating path exits before another relevant read or loop backedge is safe;
-- the same method names on a type that is not an EnumerableSet are out of scope.
+- a stationary or composite index such as `set.at(i % 1)` is outside the reported shape;
+- the same method names from a library not named `EnumerableSet` are out of scope.
 
-Calls reached indirectly through a helper invoked from the loop are not analyzed. When the lint cannot prove which storage path an operand names, it reports conservatively rather than risk missing a mutation of the iterated set. A value copied from the reverse-drain `at` result also reports because that value flow is not tracked.
+Calls reached indirectly through a helper invoked from the loop are not analyzed. The detector deliberately leaves statement-level control-flow cases unreported, including removals under `if`, removals followed by `continue`, nested loops, and all descending traversals. Composite or copied indices and member cursors are also outside the reported shape. Some of these are genuine corruptions; distinguishing them from safe lookalikes requires analysis this lint does not perform.
+
+A `remove` nested in a short-circuit or ternary expression remains part of an otherwise straight-line statement and can report even when that expression arm does not execute. The lint also does not relate the argument passed to `remove` back to the value returned by `at`, so a safe same-set operation such as removing the current tail while separately reading at the ascending cadence can warn.
 
 ### Why is this bad?
 
