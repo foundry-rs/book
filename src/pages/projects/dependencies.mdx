@@ -99,17 +99,25 @@ $ forge remappings > remappings.txt
 
 ### Updating dependencies
 
-:::code-group
+Use `forge install` to add a dependency or initialize the dependencies already recorded in a checkout. Running it without arguments reconciles existing git submodules and `foundry.lock`; it does not intentionally fetch newer dependency revisions.
 
-```bash [All]
+Use `forge update` when you want to move a dependency to a different revision. With no arguments, it fetches the latest commit for every branch-based dependency:
+
+```bash
 $ forge update
 ```
 
-```bash [Specific]
-$ forge update lib/openzeppelin-contracts
+Dependencies installed from a tag or commit revision remain pinned during a plain `forge update`. To upgrade one of them, provide the new ref explicitly. For example, to move OpenZeppelin Contracts from `v5.0.0` to `v5.1.0`:
+
+```bash
+$ forge update openzeppelin/openzeppelin-contracts@tag=v5.1.0
 ```
 
-:::
+You can also select a branch or an exact commit with `@branch=<NAME>` or `@rev=<COMMIT>`. Forge updates the dependency's git submodule checkout and its `foundry.lock` entry together.
+
+Review and commit both the changed dependency path and `foundry.lock` after an update.
+
+See the [`forge install`](/reference/forge/install) and [`forge update`](/reference/forge/update) references for all options.
 
 ### Removing dependencies
 
