@@ -16,14 +16,21 @@ Warns when a public or external entry point saves `address(this).balance` in a l
 an external call that can forward enough gas to re-enter, and then compares the saved value with a
 fresh contract-balance read in a `require`, `assert`, or exiting branch. Casts, tuple assignments,
 derived locals, fresh post-call balance locals, internal helper parameters and returns, and
-modifiers are tracked when their bodies are available.
+modifiers are tracked when their bodies are available. The fresh and stale dependencies must occur
+on opposite comparison operands; a delta expression that combines both on one operand may establish
+a payment condition, but is outside the comparison shape this detector reports.
+
+Standard state-lock reentrancy modifiers are recognized when they reject the entered value,
+acquire one lock before their placeholder, and restore it afterward. The warning is suppressed only
+when that same lock protects every effective mutable entry point that a callback could reach.
 
 This detector intentionally covers native ETH held by the current contract. It is not the later
 token `balanceOf(address)` detector with a similar name. It does not report token balances,
 balances of other addresses, mutable state or storage baselines, view or static calls, calls capped
-at the 2,300-gas stipend or less, checks on directly mutually exclusive branches, baselines
+to a total of 2,300 gas or less, checks on directly mutually exclusive branches, baselines
 overwritten after the call, or expressions that do not compare a fresh contract-balance read with
-the stale local value.
+the stale local value. For value-bearing calls, the EVM's 2,300-gas stipend is added to any explicit
+nonzero gas cap when deciding whether re-entry is possible.
 
 ### Why is this bad?
 
