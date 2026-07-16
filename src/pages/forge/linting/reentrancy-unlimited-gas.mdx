@@ -16,19 +16,44 @@ make new callback behavior affordable within that stipend.
 The lint tracks Solidity's built-in `transfer` and `send` calls through public and external entry
 points, modifiers, inherited helpers, and other internal calls. It follows branches and loop
 backedges and warns when a later reachable operation writes contract state or emits an event.
-Writes through storage references and storage-array `push`/`pop` calls count as state changes.
-Both calls are tracked regardless of the transferred amount because even a zero-value call
-executes recipient code.
+Writes through storage references, storage-array `push`/`pop` calls, and Yul `sstore`/`tstore`
+operations count as state changes; Yul `log0` through `log4` count as event emissions. Both calls
+are tracked regardless of the transferred amount because even a zero-value call executes recipient
+code.
 
-For `send` used in a Boolean control-flow condition, only continuations on which the call may have
-succeeded are treated as reentrant because a failed call reverts its callee's effects. Sibling
-expression order is conservatively treated as unspecified, matching Solidity's evaluation-order
-rules.
+For `send` used directly in Boolean control flow or through a stored result, only continuations on
+which the call may have succeeded are treated as reentrant because a failed call reverts its
+callee's effects. Sibling expression order is conservatively treated as unspecified, matching
+Solidity's evaluation-order rules; effects on an expression path that can only roll back are
+discarded.
 
 Contract methods that merely reuse the names `transfer` or `send` are excluded by checking the
 compiler-resolved call target. Low-level calls, including calls with an explicit 2,300 gas cap, are
 outside this detector's Slither-compatible scope. Constructors, local-variable writes, effects
 that occur only before the call, and effects on mutually exclusive paths are not reported.
+
+### Control-flow details
+
+The lint can follow a `send` result through direct assignments, Boolean copies, negation, and
+equality or inequality with Boolean literals. This correlation is a must-fact: it survives a
+control-flow merge only when it is valid on every incoming path. Overwriting the variable through
+an unrelated assignment, tuple write, or `delete` invalidates it. If the analysis reaches the same
+source `send` while an earlier execution remains pending, the result can no longer identify one
+particular execution, so the lint drops the correlation and keeps the possibly successful earlier
+call. This can intentionally produce a conservative warning even when the most recently stored
+result is false.
+
+Branch, ternary, short-circuit, `require`, and `assert` outcomes prune a pending `send` only when
+they prove that exact call failed. In expressions whose sibling order is unspecified, writes that
+can persist under any valid evaluation order are retained. Writes on paths that only reach
+`revert` or Yul `revert`/`invalid` are discarded, while writes before successful Yul
+`return`/`stop` or `selfdestruct` still count.
+
+For `do while`, the body is analyzed before the condition and `continue` still evaluates the
+condition, so an interaction in the body can reach an effect in the condition or after the loop.
+Assembly blocks, switch cases, and Yul loop post blocks are followed for this control flow. The
+assembly effect model is deliberately limited to direct `sstore`, `tstore`, and `log0` through
+`log4` operations; local and memory-only Yul operations do not count as contract-state effects.
 
 ### Why is this bad?
 
