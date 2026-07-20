@@ -14,7 +14,7 @@
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
     "tailwindcss": "^4.2.2",
-    "vocs": "2.3.3",
+    "vocs": "2.5.3",
     "waku": "^1.0.0-beta.0"
   },
   "devDependencies": {
@@ -24,7 +24,7 @@
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.2",
     "tsx": "^4.21.0",
-    "typescript": "^6.0.2",
+    "typescript": "^7.0.2",
     "vite": "^8.0.16"
   },
   "devEngines": {
