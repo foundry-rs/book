@@ -7,14 +7,29 @@ description: Access configured RPC endpoints and make JSON-RPC calls
 ### Signature
 
 ```solidity
-function rpcUrl(string calldata rpcAlias) external returns (string memory url);
-function rpcUrls() external returns (string[2][] memory urls);
+struct Rpc {
+    string key;
+    string url;
+}
+
+function rpcUrl(string calldata rpcAlias) external view returns (string memory url);
+function rpcUrls() external view returns (string[2][] memory urls);
+function rpcUrlStructs() external view returns (Rpc[] memory urls);
 function rpc(string calldata method, string calldata params) external returns (bytes memory data);
+function rpc(string calldata urlOrAlias, string calldata method, string calldata params)
+    external
+    returns (bytes memory data);
+function rpcJson(string calldata method, string calldata params) external returns (string memory data);
+function rpcJson(string calldata urlOrAlias, string calldata method, string calldata params)
+    external
+    returns (string memory data);
 ```
 
 ### Description
 
-Provides cheatcodes to access all RPC endpoints configured in the `rpc_endpoints` object of `foundry.toml`, and the ability to make JSON-RPC calls using the configured fork URL.
+Provides cheatcodes to access RPC endpoints configured in the `rpc_endpoints` object of `foundry.toml` and make JSON-RPC calls.
+
+The two-parameter request overloads use the currently active fork's URL. The three-parameter overloads accept either a configured alias or a URL directly.
 
 ### Functions
 
@@ -38,18 +53,41 @@ Returns all configured (alias, URL) pairs.
 |----------------|--------------------------------------|
 | `string[2][]`  | Array of [alias, url] pairs          |
 
+#### `rpcUrlStructs`
+
+Returns all configured RPC aliases and URLs as `Rpc` structs.
+
+| Returns | Description |
+|---------|-------------|
+| `Rpc[]` | Array whose `key` and `url` fields contain each configured endpoint |
+
 #### `rpc`
 
-Performs an Ethereum JSON-RPC request to the current fork URL.
+Performs an Ethereum JSON-RPC request and ABI-encodes the result. The two-parameter overload uses the current fork URL; the three-parameter overload uses `urlOrAlias`.
 
-| Parameter | Type     | Description                           |
-|-----------|----------|---------------------------------------|
-| `method`  | `string` | The JSON-RPC method name              |
-| `params`  | `string` | JSON-encoded array of parameters      |
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `urlOrAlias` | `string` | Configured RPC alias or endpoint URL (optional) |
+| `method` | `string` | JSON-RPC method name |
+| `params` | `string` | JSON-encoded array of parameters |
 
 | Returns | Description                    |
 |---------|--------------------------------|
 | `bytes` | The RPC response data          |
+
+#### `rpcJson`
+
+Performs the same request as `rpc`, but returns the JSON result as a string. Strings remain JSON-quoted, while arrays and objects retain their JSON structure. This is useful when you need to inspect the result with JSON cheatcodes instead of relying on `rpc`'s inferred ABI encoding.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `urlOrAlias` | `string` | Configured RPC alias or endpoint URL (optional) |
+| `method` | `string` | JSON-RPC method name |
+| `params` | `string` | JSON-encoded array of parameters |
+
+| Returns | Description |
+|---------|-------------|
+| `string` | JSON representation of the RPC result |
 
 ### Configuration
 
@@ -94,6 +132,12 @@ string[2] memory env = allUrls[1];
 assertEq(env[0], "mainnet");
 ```
 
+Use `rpcUrlStructs` when named fields are more convenient:
+
+```solidity [test/RecentCheatcodes.t.sol]
+// [!include ~/snippets/projects/cheatcodes/test/RecentCheatcodes.t.sol:rpc-url-structs]
+```
+
 #### Make an RPC call
 
 ```solidity [test/Rpc.t.sol]
@@ -103,6 +147,12 @@ bytes memory result = vm.rpc(
     "[\"0x8D97689C9818892B700e27F316cc3E41e17fBeb9\", \"0x117BC09\"]"
 );
 assertEq(hex"10b7c11bcb51e6", result);
+```
+
+Use `rpcJson` to preserve the JSON representation:
+
+```solidity [test/RecentCheatcodes.t.sol]
+// [!include ~/snippets/projects/cheatcodes/test/RecentCheatcodes.t.sol:rpc-json]
 ```
 
 ### Gotchas

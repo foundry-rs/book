@@ -7,30 +7,36 @@ description: Mocks calls to an address with specific calldata to return specifie
 ### Signature
 
 ```solidity
-function mockCall(address where, bytes calldata data, bytes calldata retdata) external;
-function mockCall(address where, uint256 value, bytes calldata data, bytes calldata retdata) external;
+function mockCall(address callee, bytes calldata data, bytes calldata returnData) external;
+function mockCall(address callee, uint256 msgValue, bytes calldata data, bytes calldata returnData) external;
+function mockCall(address callee, bytes4 data, bytes calldata returnData) external;
+function mockCall(address callee, uint256 msgValue, bytes4 data, bytes calldata returnData) external;
+function mockCall(address callee, bytes calldata data, bytes calldata returnData, bool injectCode) external;
 ```
 
 ### Description
 
-Mocks all calls to an address `where` if the call data either strictly or loosely matches `data` and returns `retdata`.
+Mocks all calls to an address `callee` if the call data either strictly or loosely matches `data` and returns `returnData`.
 
-When a call is made to `where`, the call data is first checked to see if it matches in its entirety with `data`. If not, the call data is checked to see if there is a partial match, with the match starting at the first byte of the call data.
+When a call is made to `callee`, the call data is first checked to see if it matches in its entirety with `data`. If not, the call data is checked to see if there is a partial match, with the match starting at the first byte of the call data.
 
-If a match is found, then `retdata` is returned from the call.
+If a match is found, then `returnData` is returned from the call.
 
-Using the second signature, you can mock calls with a specific `msg.value`. Calldata match takes precedence over `msg.value` in case of ambiguity.
+Use the `msgValue` overloads to match a specific `msg.value`. Calldata matches take precedence over `msg.value` in case of ambiguity. The `bytes4` overloads accept a function selector directly instead of requiring `abi.encodeWithSelector`.
+
+By default, `mockCall` injects one byte of code when `callee` has no code. This allows Solidity calls without return values to pass its `extcodesize` check. Set `injectCode` to `false` to leave the account codeless.
 
 Mocked calls are in effect until [`clearMockedCalls`](/reference/cheatcodes/clear-mocked-calls) is called.
 
 ### Parameters
 
-| Parameter | Type      | Description                                          |
-|-----------|-----------|------------------------------------------------------|
-| `where`   | `address` | The address to mock calls to                         |
-| `value`   | `uint256` | The `msg.value` to match (optional)                  |
-| `data`    | `bytes`   | The calldata to match (can be partial)               |
-| `retdata` | `bytes`   | The data to return when the mock matches             |
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `callee` | `address` | Address whose calls are mocked |
+| `msgValue` | `uint256` | `msg.value` to match in value-specific overloads |
+| `data` | `bytes` or `bytes4` | Calldata prefix or function selector to match |
+| `returnData` | `bytes` | Data returned when the mock matches |
+| `injectCode` | `bool` | Whether to add one byte of code when `callee` is codeless |
 
 ### Examples
 
@@ -77,10 +83,16 @@ function testMockCallValue() public {
 }
 ```
 
+#### Leaving an empty account codeless
+
+```solidity [test/RecentCheatcodes.t.sol]
+// [!include ~/snippets/projects/cheatcodes/test/RecentCheatcodes.t.sol:mock-without-code]
+```
+
 ### Gotchas
 
 :::warning
-Calls to mocked addresses may revert if there is no code at the address. Solidity inserts an `extcodesize` check before some contract calls. Use [`etch`](/reference/cheatcodes/etch) to deploy dummy bytecode if the mocked address has no code.
+With `injectCode = false`, mocked calls that expect return data can succeed while the account remains codeless because Solidity checks `returndatasize`. Calls without return values and unmocked calls can still revert in the caller because of its `extcodesize` check.
 :::
 
 :::note

@@ -425,8 +425,6 @@
     "resumeTracing",
     "revertTo",
     "revertToAndDelete",
-    "rpcJson",
-    "rpcUrlStructs",
     "serializeJsonType",
     "serializeUintToHex",
     "setBlockhash",
