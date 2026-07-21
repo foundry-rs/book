@@ -30,7 +30,7 @@ export default defineConfig({
   title: "foundry - Ethereum Development Framework",
   description:
     "Documentation for Foundry's Forge, Cast, Anvil, and Chisel Ethereum development tools.",
-  baseUrl: "https://getfoundry.sh",
+  baseUrl: "https://www.getfoundry.sh",
   rootDir: ".",
   sidebar,
   changelog: Changelog.github({ repo: "foundry-rs/foundry" }),
