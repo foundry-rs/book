@@ -30,7 +30,12 @@ export default defineConfig({
   title: "foundry - Ethereum Development Framework",
   description:
     "Documentation for Foundry's Forge, Cast, Anvil, and Chisel Ethereum development tools.",
-  baseUrl: "https://getfoundry.sh",
+  baseUrl: "https://www.getfoundry.sh",
+  // Keep assets on the current origin so Vercel previews do not load them cross-origin.
+  // `baseUrl` still provides the production origin for canonical and Open Graph metadata.
+  head: {
+    base: false,
+  },
   rootDir: ".",
   sidebar,
   changelog: Changelog.github({ repo: "foundry-rs/foundry" }),
