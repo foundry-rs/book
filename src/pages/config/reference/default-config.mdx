@@ -508,17 +508,27 @@ read = ["out"]
 read-write = ["cache", "broadcast"]
 
 # =============================================================================
-# ADDRESS LABELS
+# TRACE CONFIGURATION
 # =============================================================================
 
-# Address labels for better trace output
-[profile.default.labels]
+# Trace rendering settings
+[profile.default.tracing]
+verbosity = 0
+disable_labels = false
+compact_labels = false
+# trace_depth = 10
+decode_internal = false
+
+# Address labels for trace output
+[profile.default.tracing.labels]
 "0x1234..." = "MyContract"
 "0xabcd..." = "Treasury"
 
 # =============================================================================
 # CHEATCODE CONFIGURATION
 # =============================================================================
+
+[profile.default]
 
 # Verbosity level (0-5)
 # Default: 0
