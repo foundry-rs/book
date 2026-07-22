@@ -129,6 +129,7 @@ export const sidebar: Sidebar = {
         { text: "Project", link: "/config/reference/project" },
         { text: "Solidity Compiler", link: "/config/reference/solidity-compiler" },
         { text: "Testing", link: "/config/reference/testing" },
+        { text: "Tracing", link: "/config/reference/tracing" },
         { text: "Advanced Testing", link: "/config/reference/advanced-testing" },
         { text: "Build, Runtime, and RPC", link: "/config/reference/build-and-runtime" },
         { text: "Tool-specific Configuration", link: "/config/reference/tooling" },
