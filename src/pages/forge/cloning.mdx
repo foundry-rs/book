@@ -1,0 +1,64 @@
+---
+description: Clone explorer-verified Solidity source into a Forge project, including a proxy's implementation.
+---
+
+## Cloning verified contracts
+
+`forge clone` downloads verified Solidity source and compiler settings from a block explorer, initializes a Forge project, compiles it, and writes deployment metadata to `.clone.meta`.
+
+By default, Forge clones the exact address you provide. Add `--implementation` when the address is a proxy and you want the implementation reported by Etherscan.
+
+### Prerequisites
+
+- An explorer-verified contract.
+- An Etherscan API key, supplied through `ETHERSCAN_API_KEY` or `--etherscan-api-key`.
+- The contract's chain name or chain ID when it is not on Ethereum mainnet.
+
+### Clone the contract at an address
+
+Pass the contract address and the directory that Forge should create:
+
+```bash
+$ forge clone \
+  --chain mainnet \
+  0xC02aB1A5eaA8d1B114EF786D9bde108cD4364359 \
+  sparklend-usds
+```
+
+This clones the verified contract at the supplied address. If the address is a proxy, the generated project contains the proxy source unless you request its implementation explicitly.
+
+### Clone a proxy implementation
+
+Add `--implementation` to clone the implementation address reported in the proxy's Etherscan metadata:
+
+```bash
+$ forge clone \
+  --implementation \
+  --chain mainnet \
+  0xC02aB1A5eaA8d1B114EF786D9bde108cD4364359 \
+  sparklend-usds
+```
+
+Forge uses the resolved implementation for:
+
+- Downloaded source code and compiler settings.
+- Contract creation data and constructor arguments.
+- The compiled storage layout.
+- The address, contract name, and source path recorded in `.clone.meta`.
+
+If Etherscan does not mark the supplied address as a proxy, `--implementation` clones the supplied address normally.
+
+### Understand implementation resolution
+
+Implementation resolution follows one Etherscan metadata link. Forge fetches the implementation reported for the supplied proxy and stops there, even if that implementation is also marked as a proxy. This avoids following an unrelated delegate-call target reported by the explorer.
+
+The resolved target must be a Solidity contract. A Vyper proxy can still resolve to a Solidity implementation because Forge only compiles the selected target.
+
+When verified sources remain under `lib`, Forge creates an import-only entry point such as `src/Clone.sol` so the compiler discovers the cloned target. The downloaded library sources remain under `lib`.
+
+`--implementation` is supported only with Etherscan. It cannot be combined with `--source sourcify` or `--sourcify-url`, and resolution depends on the proxy metadata returned by the explorer.
+
+### Next steps
+
+- See the [`forge clone` reference](/reference/forge/clone) for all command options.
+- Compare storage layouts when [upgrading contracts](/guides/upgrading-contracts).
