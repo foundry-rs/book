@@ -47,11 +47,11 @@ $ cast abi-encode "foo(uint256,address)" 42 0xRecipient
 ```
 
 ```bash [Decode ABI data]
-$ cast abi-decode "foo(uint256,address)" 0x000000000000000000000000...
+$ cast decode-abi --input "foo(uint256,address)" 0x000000000000000000000000...
 ```
 
 ```bash [Decode output data]
-$ cast abi-decode --output "balanceOf(address)(uint256)" 0x0000000000000000000000000000000000000000000000000de0b6b3a7640000
+$ cast decode-abi "balanceOf(address)(uint256)" 0x0000000000000000000000000000000000000000000000000de0b6b3a7640000
 ```
 
 ### Function selectors
@@ -96,8 +96,13 @@ $ cast abi-encode "foo((uint256,address))" "(42,0xRecipient)"
 $ cast abi-encode "foo(((uint256)[],uint256))" "([(1)],123)"
 ```
 
+```bash [Decode nested struct with array field]
+$ ENCODED=$(cast abi-encode "foo(((uint256)[],uint256))" "([(1)],123)")
+$ cast decode-abi --input "foo(((uint256)[],uint256))" "$ENCODED"
+```
+
 :::note
-`cast abi-encode` encodes function arguments, not a single struct. To produce the same encoding as Solidity's `abi.encode(struct)`, wrap the struct's fields in an extra pair of parentheses — for example, `"foo(((uint256)[],uint256))"` encodes a function taking one tuple argument, while `"foo((uint256)[],uint256)"` encodes a function taking two separate arguments (an array and an integer). The two produce different calldata.
+`cast abi-encode` encodes function arguments, not a single struct. To produce the same encoding as Solidity's `abi.encode(struct)`, wrap the struct's fields in an extra pair of parentheses — for example, `"foo(((uint256)[],uint256))"` encodes a function taking one tuple argument, while `"foo((uint256)[],uint256)"` encodes a function taking two separate arguments (an array and an integer). The two produce different ABI encodings.
 :::
 
 ```bash [Encode string]
