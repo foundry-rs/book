@@ -1,0 +1,69 @@
+## Tracing
+
+Configuration for decoding and rendering execution traces produced by `forge test`,
+`forge script`, `cast call`, and `cast run`.
+
+Define these settings under `[profile.<name>.tracing]`:
+
+```toml
+[profile.default.tracing]
+verbosity = 3
+compact_labels = true
+trace_depth = 10
+decode_internal = true
+
+[profile.default.tracing.labels]
+"0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045" = "vitalik.eth"
+```
+
+CLI trace options override or extend these values for the current command. The
+legacy `[labels]` and profile-level `labels` settings are deprecated; move them
+to `[profile.<name>.tracing.labels]`.
+
+### Fields
+
+#### `verbosity`
+
+- Type: integer
+- Default: 0
+
+The minimum verbosity used when rendering traces. A command's `-v` flags can
+increase, but not decrease, this value.
+
+#### `labels`
+
+- Type: table mapping addresses to strings
+- Default: empty
+
+Labels addresses in decoded traces. Labels passed with `--label` or `--labels`
+extend this table and take precedence for duplicate addresses.
+
+#### `disable_labels`
+
+- Type: boolean
+- Default: false
+
+Disables address labels in rendered traces.
+
+#### `compact_labels`
+
+- Type: boolean
+- Default: false
+
+Hides an address in trace parameters when a label is available, displaying only
+the label.
+
+#### `trace_depth`
+
+- Type: integer
+- Default: none
+
+Limits the maximum depth of rendered traces.
+
+#### `decode_internal`
+
+- Type: boolean
+- Default: false
+
+Identifies internal functions and decodes their stack parameters. Dynamic values
+stored in memory are decoded only when Foundry can match a single function.
