@@ -1,0 +1,55 @@
+## Tool-specific Configuration
+
+Configuration for Vyper, JSON bindings, Soldeer, and network-specific behavior.
+
+### Vyper
+
+Define Vyper settings under `[profile.<name>.vyper]`.
+
+| Field | Default | Description |
+| --- | --- | --- |
+| `path` | none | Selects the Vyper executable. |
+| `optimize` | none | Selects the Vyper optimization mode. |
+| `opt_level` | none | Selects the numeric optimization level; `optLevel` is an alias. |
+| `experimental_codegen` | none | Enables experimental code generation. |
+| `venom_experimental` | none | Enables the experimental Venom pipeline. |
+| `debug` | none | Compiles in debug mode. |
+| `enable_decimals` | none | Re-enables the Vyper decimal type. |
+| `venom` | none | Supplies fine-grained Venom optimizer settings. |
+
+### JSON bindings
+
+Define `forge bind-json` settings under `[profile.<name>.bind_json]`.
+
+| Field | Default | Description |
+| --- | --- | --- |
+| `out` | `utils/JsonBindings.sol` | Sets the generated Solidity file. |
+| `include` | `[]` | Includes only matching project-file globs. |
+| `exclude` | `[]` | Excludes matching project-file globs. |
+
+### Soldeer
+
+`[dependencies]` maps dependency names to version strings or objects. Dependency
+objects support `version`, `url`, `git`, `rev`, `branch`, `tag`, and
+`project_root`.
+
+```toml
+[dependencies]
+forge-std = "1.9.7"
+my-lib = { version = "1.0.0", git = "https://github.com/example/my-lib", tag = "v1.0.0" }
+```
+
+The `[soldeer]` table configures Soldeer's install and remapping behavior. See
+the [Soldeer guide](/projects/soldeer) for its fields and workflows.
+
+### Networks
+
+The `network` field selects a network family (`ethereum`, `optimism`, or
+`tempo`). Foundry also accepts the legacy `celo` and `tempo` boolean fields.
+`bypass_prevrandao` controls the Celo-specific prevrandao compatibility path.
+
+### Linter-specific fields
+
+Under `[profile.<name>.lint.lint_specific]`, `mixed_case_exceptions` lists
+allowed mixed-case name fragments and `multi_contract_file_exceptions` accepts
+`interface`, `library`, and `abstract_contract`.

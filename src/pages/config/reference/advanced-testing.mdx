@@ -1,0 +1,102 @@
+## Advanced Testing
+
+Configuration for coverage-guided fuzzing, symbolic execution, coverage, and
+mutation testing.
+
+### Additional fuzz and invariant fields
+
+The following fields extend the `[fuzz]` and `[invariant]` sections documented in
+the [testing reference](/config/reference/testing).
+
+| Field | Sections | Default | Description |
+| --- | --- | --- | --- |
+| `run` | fuzz | none | Runs one 1-based fuzz case. |
+| `worker` | fuzz | none | Selects the worker paired with `run`. |
+| `min_depth` | invariant | `1` | Minimum depth when `depth_mode = "random"`. |
+| `depth_mode` | invariant | `fixed` | Uses a fixed depth or samples a random depth. |
+| `workers` | invariant | `auto` | Uses automatic sharding or a positive worker count. |
+| `frontier_dir` | both | none | Stores branch-frontier artifacts for symbolic follow-up. |
+| `frontier_limit` | both | `256` | Limits frontier records per test. |
+| `evm_edge_coverage_collision_free` | both | `true` | Uses collision-free dense EVM edge IDs. |
+| `evm_edge_coverage_include_call_depth` | both | `false` | Includes call depth in EVM edge IDs. |
+| `sancov_edges` | both | `false` | Collects native Rust SanitizerCoverage edges. |
+| `sancov_trace_cmp` | both | `false` | Adds native comparison operands to the fuzz dictionary. |
+| `corpus_random_sequence_weight` | both | `10` | Sets the percent chance of generating a fresh sequence. |
+| `payable_value_weight` | both | fuzz: `0`, invariant: `15` | Sets the percent chance that payable calls carry value. |
+| `mutation_weight_splice` | both | `1` | Weights corpus sequence splicing. |
+| `mutation_weight_repeat` | both | `1` | Weights repeating part of a sequence. |
+| `mutation_weight_interleave` | both | `1` | Weights interleaving sequences. |
+| `mutation_weight_prefix` | both | `1` | Weights replacing a prefix with generated calls. |
+| `mutation_weight_suffix` | both | `1` | Weights replacing a suffix with generated calls. |
+| `mutation_weight_abi` | both | `1` | Weights ABI-aware argument mutation. |
+| `mutation_weight_cmp` | both | `1` | Weights comparison-guided argument mutation. |
+
+### Symbolic testing
+
+Define symbolic settings under `[profile.<name>.symbolic]`.
+
+| Field | Default | Description |
+| --- | --- | --- |
+| `enabled` | `false` | Enables symbolic tests. |
+| `seed_corpus` | `false` | Adds symbolically derived inputs to the fuzz corpus. |
+| `use_fuzz_corpus` | `false` | Imports fuzz corpus seeds for symbolic exploration. |
+| `corpus_seed_limit` | `32` | Limits imported corpus seeds. |
+| `use_fuzz_frontiers` | `false` | Uses fuzz branch frontiers for targeted exploration. |
+| `frontier_limit` | `256` | Limits imported branch frontiers. |
+| `frontier_ids` | `[]` | Filters imported frontier artifact IDs. |
+| `frontier_pcs` | `[]` | Filters frontier program counters. |
+| `frontier_selectors` | `[]` | Filters frontier calldata selectors. |
+| `solver` | `z3` | Selects the solver executable. |
+| `solver_command` | none | Overrides `solver` with an exact command. |
+| `solver_portfolio` | `[]` | Races multiple solvers or commands. |
+| `timeout` | `30` | Sets the solver and invariant-exploration timeout in seconds. |
+| `loop` | none | Sets the Halmos-compatible loop bound. |
+| `depth` | none | Overrides `max_depth`. |
+| `width` | none | Overrides `max_paths`. |
+| `max_depth` | `10000` | Limits opcodes executed along a path. |
+| `max_paths` | `1024` | Limits symbolic paths. |
+| `invariant_depth` | `10` | Limits calls in a symbolic invariant sequence. |
+| `exploration_order` | `bfs` | Selects `bfs` or `dfs` path order. |
+| `max_solver_queries` | `10000` | Limits solver queries. |
+| `default_dynamic_length` | `2` | Sets the default dynamic ABI-input length. |
+| `max_dynamic_length` | `256` | Caps dynamic ABI-input lengths. |
+| `array_lengths` | `[]` | Supplies dynamic lengths in ABI traversal order. |
+| `dynamic_lengths` | `{}` | Supplies lengths keyed by ABI argument or symbolic name. |
+| `default_array_lengths` | `[]` | Supplies default dynamic-array lengths. |
+| `default_bytes_lengths` | `[]` | Supplies default `bytes` and `string` lengths. |
+| `max_calldata_bytes` | `4096` | Caps symbolic calldata size. |
+| `symbolic_call_targets` | `false` | Expands symbolic targets over known deployed contracts. |
+| `dump_smt` | `false` | Writes SMT-LIB queries before solving. |
+| `storage_layout` | `solidity` | Selects `solidity`, `generic`, or `zero_init` storage modelling. |
+
+### Coverage
+
+Define coverage settings under `[profile.<name>.coverage]`. Command-line flags
+take precedence.
+
+| Field | Default | Description |
+| --- | --- | --- |
+| `report` | `["summary"]` | Selects `summary`, `lcov`, `debug`, `bytecode`, or `attribution` reports. |
+| `lcov_version` | `"1"` | Selects the LCOV tracefile version. |
+| `ir_minimum` | `false` | Enables minimum via-IR optimization as a stack-depth workaround. |
+| `report_file` | none | Writes the report to a project-relative path. |
+| `include_libs` | `false` | Includes dependencies in coverage. |
+| `exclude_tests` | `false` | Excludes test source from coverage. |
+| `skip_files` | `[]` | Excludes project-relative source globs. |
+
+### Mutation testing
+
+Define mutation settings under `[profile.<name>.mutation]`.
+
+| Field | Default | Description |
+| --- | --- | --- |
+| `include_operators` | `[]` | Re-enables selected mutation operators. |
+| `exclude_operators` | `[]` | Disables selected mutation operators. |
+| `timeout` | none | Sets a per-mutant timeout in seconds. |
+| `optimizer_runs` | none | Overrides optimizer runs for mutation campaigns. |
+| `via_ir` | none | Overrides via-IR for mutation campaigns. |
+
+Supported operators are `assembly`, `assignment`, `binary-op`,
+`delete-expression`, `elim-delegate`, `require`, and `unary-op`. The
+top-level `mutation_dir` field sets the resume cache directory.
+Its default is `cache/mutation`.
