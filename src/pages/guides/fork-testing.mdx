@@ -244,7 +244,7 @@ $ forge test --fork-url $RPC_URL --fork-retry-backoff 1000
 
 The value is the initial retry delay in milliseconds, so `1000` starts retries with a one-second backoff. If omitted, Foundry uses the provider default.
 
-Or use a dedicated RPC provider with higher limits.
+Or use a dedicated RPC provider with higher limits. Independent latency and reliability measurements across public RPC providers on Ethereum, Arbitrum, Base, Optimism, Polygon, BNB, Avalanche, Linea, Scroll, Mantle and Solana are published at [OpenChainBench](https://openchainbench.com/benchmarks/rpc-capabilities), which can inform the choice when latency or archive coverage matters for fork tests.
 
 #### Stale cache
 
