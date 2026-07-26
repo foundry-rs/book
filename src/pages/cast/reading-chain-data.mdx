@@ -49,11 +49,11 @@ $ cast receipt $TX_HASH
 ```
 
 ```bash [Status]
-$ cast receipt $TX_HASH --field status
+$ cast receipt $TX_HASH status
 ```
 
 ```bash [Gas used]
-$ cast receipt $TX_HASH --field gasUsed
+$ cast receipt $TX_HASH gasUsed
 ```
 
 :::
@@ -133,22 +133,14 @@ Use `--block` to select the chain state on which to base the call, then use `--b
 | --- | --- |
 | `--block.number <NUMBER>` | Block number. |
 | `--block.time <TIME>` | Timestamp. |
-| `--block.gas-limit <GAS_LIMIT>` | Gas limit. |
-| `--block.fee-recipient <ADDRESS>` | Fee recipient (`COINBASE`). Alias: `--block.coinbase`. |
-| `--block.base-fee <BASE_FEE>` | Base fee per gas. Alias: `--block.base-fee-per-gas`. |
-| `--block.blob-base-fee <BLOB_BASE_FEE>` | Base fee per blob gas. Alias: `--block.blob-base-fee-per-gas`. |
 
-For example, this reads state from block `20000000` while the contract observes the overridden block context:
+For example, this reads state from block `20000000` while the contract observes the overridden block number and timestamp:
 
 ```bash
 $ cast call $CONTRACT "quote()(uint256)" \
     --block 20000000 \
     --block.number 21000000 \
-    --block.time 1750000000 \
-    --block.gas-limit 30000000 \
-    --block.fee-recipient 0x000000000000000000000000000000000000bEEF \
-    --block.base-fee 1000000000 \
-    --block.blob-base-fee 1
+    --block.time 1750000000
 ```
 
 The same state and block overrides apply to regular calls, local `--trace` calls, remote `--debug-trace-call` calls, and requests printed with `--curl`. Remote calls require an RPC node that supports the corresponding `eth_call` or `debug_traceCall` override parameters.

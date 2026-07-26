@@ -158,8 +158,8 @@ contract UpgradeToken is Script {
 Since the proxy stores all state, the new implementation's storage layout must be compatible with the old one. Foundry can export and diff storage layouts to catch breaking changes before deployment:
 
 ```bash
-$ forge inspect src/TokenV1.sol:TokenV1 storage-layout --pretty > v1-layout.txt
-$ forge inspect src/TokenV2.sol:TokenV2 storage-layout --pretty > v2-layout.txt
+$ forge inspect src/TokenV1.sol:TokenV1 storage-layout > v1-layout.txt
+$ forge inspect src/TokenV2.sol:TokenV2 storage-layout > v2-layout.txt
 $ diff v1-layout.txt v2-layout.txt
 ```
 
@@ -299,8 +299,8 @@ contract TokenUpgradeTest is Test {
 #### Verify storage compatibility
 
 ```bash
-$ forge inspect src/TokenV1.sol:TokenV1 storage-layout --pretty
-$ forge inspect src/TokenV2.sol:TokenV2 storage-layout --pretty
+$ forge inspect src/TokenV1.sol:TokenV1 storage-layout
+$ forge inspect src/TokenV2.sol:TokenV2 storage-layout
 ```
 
 #### Test the upgrade on a fork
