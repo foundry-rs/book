@@ -130,17 +130,17 @@ Forge includes an interactive debugger:
 $ forge test --match-test test_Failing --debug
 ```
 
-Debugger controls:
+Basic controls:
 
 | Key | Action |
 |-----|--------|
-| `n` | Next step |
-| `s` | Step into |
-| `o` | Step out |
-| `g` | Jump to start |
-| `G` | Jump to end |
-| `c` | Continue |
+| `j` / `k` | Step forward / backward |
+| `s` / `a` | Move to the next / previous jump |
+| `C` / `c` | Move to the next / previous call |
+| `g` / `G` | Jump to start / end |
 | `q` | Quit |
+
+See [Debugging](/forge/debugging#interactive-debugger) for the full list of key bindings and debugger commands.
 
 ### Common failure patterns
 

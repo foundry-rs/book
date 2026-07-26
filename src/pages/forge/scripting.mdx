@@ -104,6 +104,16 @@ uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
 vm.startBroadcast(deployerPrivateKey);
 ```
 
+### Overriding the sender nonce
+
+By default the sender's starting nonce is fetched from the RPC endpoint, or set to 1 when no endpoint is configured. Pass `--sender-nonce` to pin it instead:
+
+```bash
+$ forge script script/Deploy.s.sol --rpc-url $RPC_URL --sender-nonce 7
+```
+
+The override applies to script execution and transaction generation and is kept even when broadcasting switches to a different sender. Because addresses of contracts deployed with `CREATE` depend on the sender's nonce, this keeps simulated deployment addresses consistent with the nonce you plan to broadcast from. See [`forge script`](/reference/forge/script) for the full option reference.
+
 ### Verifying deployed contracts
 
 Verify on Etherscan during deployment:

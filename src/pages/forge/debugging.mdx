@@ -40,35 +40,78 @@ Debug a transaction that failed on-chain:
 $ cast run 0x<txhash> --rpc-url $RPC_URL
 ```
 
-This replays the transaction and shows the execution trace.
+This replays the transaction and shows the execution trace. Add `--debug` to open the transaction in the interactive debugger instead; `cast call --trace --debug` does the same for a call without sending it.
 
 ### Interactive debugger
 
-Launch the debugger for a specific test:
+Launch the debugger for a single test:
 
 ```bash
-$ forge test --debug test_Increment
+$ forge test --debug --match-test test_Increment
 ```
 
-The debugger shows:
-- Source code with current line highlighted
-- Stack contents
-- Memory contents
-- Storage changes
-- Call stack
+In an interactive terminal, a filter that matches more than one test opens a prompt asking which test to debug, so you can also run `forge test --debug` without a filter and pick from the list. In a non-interactive terminal the filter must match exactly one test.
 
-#### Debugger commands
+The debugger is a terminal UI with five panes:
+
+- **Source** – Source code with the currently executing line highlighted.
+- **Opcodes** – The opcode list for the current call, with the program counter, address, and gas information in the title.
+- **Variables** – Parameters, return values, and locals in the current scope, with decoded values where available. When you step through a constructor during contract creation, the constructor arguments are decoded and shown here. Storage reads and writes performed by the current step also appear in this pane.
+- **Stack** – The current EVM stack.
+- **Data** – A shared pane showing either a buffer (memory, calldata, or returndata) or the [storage explorer](#storage-explorer).
+
+The debugger picks a two-column or single-column layout based on the terminal size. Press `l` to switch layouts, or force one with `--debug-layout <horizontal|vertical>`.
+
+#### Key bindings
 
 | Key | Action |
 |-----|--------|
-| `n` | Step to next opcode |
-| `s` | Step into call |
-| `o` | Step out of call |
-| `g` | Go to start |
-| `G` | Go to end |
-| `c` | Continue to next breakpoint |
+| `j` / `k` (or arrow keys, mouse scroll) | Step forward / backward one instruction |
+| `s` / `a` | Move to the next / previous jump |
+| `C` / `c` | Move to the next / previous call |
+| `g` / `G` | Go to the beginning / end |
+| `'<char>` | Jump to the breakpoint set with [`vm.breakpoint`](/reference/cheatcodes/breakpoint) |
+| `0-9` | Repeat prefix for movement keys, e.g. `10k` steps back 10 instructions |
+| `b` | Cycle the data pane between memory, calldata, and returndata |
+| `J` / `K` | Scroll the stack pane |
+| `Ctrl+j` / `Ctrl+k` | Scroll the data pane |
+| `t` | Toggle stack labels |
+| `m` | Toggle UTF-8 decoding of the active buffer |
+| `p` | Go to a program counter |
+| `o` | Go to a byte offset in the active buffer, or to a slot when the storage explorer is active |
+| `/`, then `n` / `N` | Search opcodes in the current call, then repeat the search forward / backward |
+| `:` | Open the command prompt |
+| `h` | Toggle the shortcut footer |
 | `q` | Quit |
-| `h` | Show help |
+
+#### Command prompt
+
+Press `:` to run a debugger command. `:help` lists all commands and their aliases.
+
+| Command | Action |
+|---------|--------|
+| `:pc <pc>` (alias `:continue <pc>`) | Jump to a program counter in the current contract |
+| `:line <line>` | Jump to the nearest instruction mapped to a source line in the current contract |
+| `:mem [<offset>]`, `:calldata [<offset>]`, `:ret [<offset>]` | Select a buffer in the data pane, optionally jumping to a byte offset |
+| `:storage [<slot>]` | Open the storage explorer, optionally jumping to the nearest access of a slot |
+| `:transient [<slot>]` | Open the transient storage explorer, optionally jumping to a slot |
+| `:source`, `:opcodes`, `:variables`, `:stack`, `:data` | Show or hide a pane; the remaining panes reclaim the space |
+
+#### Storage explorer
+
+`:storage` switches the data pane to a storage view that lists every slot the current call has accessed up to the current step, showing each slot's most recent operation (`SLOAD` or `SSTORE`) and value. The slot touched by the current step is highlighted. `:storage <slot>` jumps to the nearest access of a specific slot: the access at or after the current step, or the most recent earlier one.
+
+`:transient` and `:transient <slot>` provide the same view for transient storage (`TLOAD` and `TSTORE`). Press `b` to switch the data pane back to the buffer view.
+
+#### Breakpoints
+
+Place breakpoints in code with the [`vm.breakpoint`](/reference/cheatcodes/breakpoint) cheatcode:
+
+```solidity
+vm.breakpoint("a");
+```
+
+Pressing `'a` in the debugger jumps to the step where the breakpoint was recorded.
 
 ### Debugging scripts
 

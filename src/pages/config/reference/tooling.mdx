@@ -44,9 +44,29 @@ the [Soldeer guide](/projects/soldeer) for its fields and workflows.
 
 ### Networks
 
-The `network` field selects a network family (`ethereum`, `optimism`, or
-`tempo`). Foundry also accepts the legacy `celo` and `tempo` boolean fields.
-`bypass_prevrandao` controls the Celo-specific prevrandao compatibility path.
+Network keys enable chain-specific execution behavior. They live at the top
+level of `[profile.<name>]`.
+
+| Field | Default | Description |
+| --- | --- | --- |
+| `network` | none | Selects the network family: `ethereum`, `optimism`, or `tempo`. |
+| `celo` | `false` | Enables Celo network features such as the Celo transfer precompile. |
+| `bypass_prevrandao` | `false` | Uses a random `prevrandao` when the forked block does not provide one. |
+
+Selecting a network family enables its execution rules and precompiles — for
+example the Tempo system precompiles, which are also labeled in traces. When
+forking, Foundry infers the network from the chain ID, so `network` mainly
+matters for local execution; see the
+[`network`](/config/reference/testing#network) entry for details. The legacy
+boolean forms `optimism = true` and `tempo = true` are still accepted.
+
+```toml
+[profile.default]
+network = "tempo"
+```
+
+`bypass_prevrandao` is enabled automatically on chains that do not supply a
+`prevrandao` value, such as Moonbeam, RSK, and Gnosis.
 
 ### Linter-specific fields
 
