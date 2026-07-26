@@ -31,5 +31,11 @@ jobs:
       - name: Check cheatcode coverage
         run: bun run check:cheatcodes
 
+      - name: Check anvil RPC coverage
+        run: bun run check:anvil-rpc
+
+      - name: Check narrative commands
+        run: bun run check:commands
+
       - name: Build Vocs
         run: bun install && bun run build

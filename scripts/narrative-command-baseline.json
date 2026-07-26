@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "violations": [
+    "src/pages/anvil/forking.mdx: `anvil` does not document `--optimism`",
+    "src/pages/best-practices.mdx: unknown subcommand `forge taint`",
+    "src/pages/cast/abi-encoding.mdx: `cast abi-decode` does not document `--event`",
+    "src/pages/cast/abi-encoding.mdx: unknown subcommand `cast abi-print`",
+    "src/pages/cast/index.mdx: unknown subcommand `cast 4byte-decode`",
+    "src/pages/cast/reading-chain-data.mdx: `cast call` does not document `--block.base-fee`",
+    "src/pages/cast/reading-chain-data.mdx: `cast call` does not document `--block.blob-base-fee`",
+    "src/pages/cast/reading-chain-data.mdx: `cast call` does not document `--block.fee-recipient`",
+    "src/pages/cast/reading-chain-data.mdx: `cast call` does not document `--block.gas-limit`",
+    "src/pages/cast/reading-chain-data.mdx: `cast receipt` does not document `--field`",
+    "src/pages/cast/wallet-operations.mdx: `cast wallet vanity` does not document `--regex`",
+    "src/pages/cast/wallet-operations.mdx: unknown subcommand `cast to-checksum-address`",
+    "src/pages/cast/wallet-operations.mdx: unknown subcommand `cast wallet from-mnemonic`",
+    "src/pages/cast/wallet-operations.mdx: unknown subcommand `cast wallet recover`",
+    "src/pages/guides/upgrading-contracts.mdx: `forge inspect` does not document `--pretty`",
+    "src/pages/help/faq.mdx: unknown subcommand `cast 4byte-decode`",
+    "src/pages/help/troubleshooting.mdx: `forge test` does not document `--fork-cache`",
+    "src/pages/projects/dependencies.mdx: `forge install` does not document `--no-commit`",
+    "src/pages/projects/index.mdx: `forge init` does not document `--no-commit`"
+  ]
+}

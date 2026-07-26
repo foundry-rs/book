@@ -7,6 +7,8 @@
     "dev": "vocs dev",
     "build": "bun run fetch-benchmarks && vocs build",
     "check:cheatcodes": "bun scripts/check-cheatcode-coverage.ts",
+    "check:anvil-rpc": "bun scripts/check-anvil-rpc-coverage.ts",
+    "check:commands": "bun scripts/check-narrative-commands.ts",
     "preview": "vocs preview",
     "fetch-benchmarks": "bun scripts/fetch-benchmarks.ts"
   },
