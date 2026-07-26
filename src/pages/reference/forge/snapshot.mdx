@@ -86,11 +86,6 @@ Display options:
           - always: Force color output
           - never:  Force disable color output
 
-  -s, --suppress-successful-traces
-          Suppress successful test traces and show only traces for failures
-          
-          [env: FORGE_SUPPRESS_SUCCESSFUL_TRACES=]
-
       --junit
           Output test results as JUnit XML report
 
@@ -106,15 +101,15 @@ Display options:
       --detailed
           Print detailed test summary table
 
-      --disable-labels
-          Disables the labels in the traces
-
 Test options:
   -j, --threads <THREADS>
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: --jobs]
+          [alias: --jobs]
+
+      --profile <PROFILE>
+          The configuration profile to use
 
       --debug
           Run a single test in the debugger.
@@ -164,15 +159,6 @@ Test options:
           
           The profile is saved to disk without starting the local viewer server.
 
-      --decode-internal
-          Identify internal functions in traces.
-          
-          This will trace internal functions and decode stack parameters.
-          
-          Parameters stored in memory (such as bytes or arrays) are currently
-          decoded only when a single function is matched, similarly to
-          `--debug`, for performance reasons.
-
       --dump <PATH>
           Dumps all debugger steps to file
 
@@ -197,9 +183,6 @@ Test options:
           Exit with code 0 even if a test fails
           
           [env: FORGE_ALLOW_FAILURE=]
-
-      --trace-depth <TRACE_DEPTH>
-          Defines the depth of a trace
 
       --fail-fast
           Stop running tests after the first failure
@@ -492,7 +475,8 @@ Test options:
           [env: FOUNDRY_SYMBOLIC_SOLVER_PORTFOLIO=]
 
       --symbolic-timeout <SECONDS>
-          Timeout for symbolic execution in seconds
+          SMT solver timeout in seconds; also bounds symbolic invariant
+          exploration
           
           [env: FOUNDRY_SYMBOLIC_TIMEOUT=]
 
@@ -582,6 +566,37 @@ Test options:
   [PATH]
           The contract file you want to test, it's a shortcut for --match-path
 
+Trace options:
+      --decode-internal
+          Identify internal functions in traces.
+          
+          This will trace internal functions and decode stack parameters.
+          
+          Parameters stored in memory (such as bytes or arrays) are currently
+          decoded only when a single function is matched, similarly to
+          `--debug`, for performance reasons.
+
+      --trace-depth <DEPTH>
+          Maximum depth of rendered traces
+
+      --disable-labels
+          Disable labels in traces
+
+      --compact-labels
+          Hide addresses in trace parameters when a label is available
+
+      --labels <ADDRESS:LABEL>
+          Label addresses in traces.
+          
+          Example: 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045:vitalik.eth
+          
+          [alias: --label]
+
+  -s, --suppress-successful-traces
+          Suppress successful test traces and show only traces for failures
+          
+          [env: FORGE_SUPPRESS_SUCCESSFUL_TRACES=]
+
 Showmap replay:
       --showmap-out <DIR>
           Replay the persisted corpus and emit AFL-`afl-showmap`-style coverage
@@ -615,46 +630,46 @@ Test filtering:
       --match-test <REGEX>
           Only run test functions matching the specified regex pattern
           
-          [aliases: --mt]
+          [alias: --mt]
 
       --no-match-test <REGEX>
           Only run test functions that do not match the specified regex pattern
           
-          [aliases: --nmt]
+          [alias: --nmt]
 
       --match-contract <REGEX>
           Only run tests in contracts matching the specified regex pattern
           
-          [aliases: --mc]
+          [alias: --mc]
 
       --no-match-contract <REGEX>
           Only run tests in contracts that do not match the specified regex
           pattern
           
-          [aliases: --nmc]
+          [alias: --nmc]
 
       --match-path <GLOB>
           Only run tests in source files matching the specified glob pattern
           
-          [aliases: --mp]
+          [alias: --mp]
 
       --no-match-path <GLOB>
           Only run tests in source files that do not match the specified glob
           pattern
           
-          [aliases: --nmp]
+          [alias: --nmp]
 
       --no-match-coverage <REGEX>
           Only show coverage for files that do not match the specified regex
           pattern
           
-          [aliases: --nmco]
+          [alias: --nmco]
 
 EVM options:
   -r, --rpc-url <URL>
           The RPC endpoint
           
-          [aliases: --fork-url]
+          [alias: --fork-url]
 
   -k, --insecure
           Allow insecure RPC connections (accept invalid HTTPS certificates).
@@ -695,7 +710,7 @@ EVM options:
           See also
           [https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second](https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second)
           
-          [aliases: --no-rate-limit]
+          [alias: --no-rate-limit]
 
       --fork-block-number <BLOCK>
           Fetch state from a specific block number over a remote endpoint.
@@ -750,7 +765,7 @@ Executor environment config:
       --chain <CHAIN>
           The chain name or EIP-155 chain ID
           
-          [aliases: --chain-id]
+          [alias: --chain-id]
 
       --gas-price <GAS_PRICE>
           The gas price
@@ -758,7 +773,7 @@ Executor environment config:
       --block-base-fee-per-gas <FEE>
           The base fee in a block
           
-          [aliases: --base-fee]
+          [alias: --base-fee]
 
       --tx-origin <ADDRESS>
           The transaction origin
@@ -781,7 +796,7 @@ Executor environment config:
       --block-gas-limit <BLOCK_GAS_LIMIT>
           The block gas limit
           
-          [aliases: --gas-limit]
+          [alias: --gas-limit]
 
       --memory-limit <MEMORY_LIMIT>
           The memory limit per EVM execution in bytes. If this limit is
@@ -797,7 +812,7 @@ Executor environment config:
       --enable-tx-gas-limit
           Whether to enable tx gas limit checks as imposed by Osaka (EIP-7825)
           
-          [aliases: --tx-gas-limit]
+          [alias: --tx-gas-limit]
 
       --isolate
           Whether to enable isolation of calls. In isolation mode all top-level
@@ -973,7 +988,7 @@ Project options:
           This is the same as using: `--contracts contracts --lib-paths
           node_modules`.
           
-          [aliases: --hh]
+          [alias: --hh]
 
       --config-path <FILE>
           Path to the config file

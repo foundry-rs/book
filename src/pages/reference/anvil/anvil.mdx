@@ -22,7 +22,7 @@ $ anvil --help
 Usage: anvil [OPTIONS] [COMMAND]
 
 Commands:
-  completions  Generate shell completions script [aliases: com]
+  completions  Generate shell completions script [alias: com]
   help         Print this message or the help of the given subcommand(s)
 
 Options:
@@ -34,7 +34,7 @@ Options:
   -b, --block-time <SECONDS>
           Block time in seconds for interval mining
           
-          [aliases: --blockTime]
+          [alias: --blockTime]
 
       --balance <NUM>
           The balance of every dev account in Ether
@@ -78,13 +78,13 @@ Options:
           Launch an ipc server at the given path or default path =
           `/tmp/anvil.ipc`
           
-          [aliases: --ipcpath]
+          [alias: --ipcpath]
 
   -j, --threads <THREADS>
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: --jobs]
+          [alias: --jobs]
 
       --load-state <PATH>
           Initialize the chain from a previously saved state snapshot
@@ -121,7 +121,7 @@ Options:
       --no-mining
           Disable auto and interval mining, and mine on demand instead
           
-          [aliases: --no-mine]
+          [alias: --no-mine]
 
       --number <NUM>
           The number of the genesis block
@@ -145,6 +145,9 @@ Options:
           These historical states will be loaded into the memory when
           `--load-state` / `--state`, and aids in RPC calls beyond the block at
           which state was dumped.
+
+      --profile <PROFILE>
+          The configuration profile to use
 
       --prune-history [<PRUNE_HISTORY>]
           Don't keep full chain history. If a number argument is specified, at
@@ -262,7 +265,7 @@ Fork config:
           across endpoints using round-robin load balancing. On failure, the
           retry layer rotates to the next endpoint.
           
-          [aliases: --rpc-url]
+          [alias: --rpc-url]
 
       --fork-block-number <BLOCK>
           Fetch state from a specific block number over a remote endpoint.
@@ -304,7 +307,7 @@ Fork config:
           See also --fork-url and
           [https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second](https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second)
           
-          [aliases: --no-rpc-rate-limit]
+          [alias: --no-rpc-rate-limit]
 
       --no-storage-caching
           Explicitly disables the use of RPC caching.
@@ -330,7 +333,7 @@ Environment config:
       --block-base-fee-per-gas <FEE>
           The base fee in a block
           
-          [aliases: --base-fee]
+          [alias: --base-fee]
 
       --chain-id <CHAIN_ID>
           The chain ID
@@ -349,13 +352,13 @@ Environment config:
       --disable-min-priority-fee
           Disable the enforcement of a minimum suggested priority fee
           
-          [aliases: --no-priority-fee]
+          [alias: --no-priority-fee]
 
       --enable-tx-gas-limit
           Enable the transaction gas limit check as imposed by EIP-7825 (Osaka
           hardfork)
           
-          [aliases: --tx-gas-limit]
+          [alias: --tx-gas-limit]
 
       --gas-limit <GAS_LIMIT>
           The block gas limit
@@ -369,17 +372,17 @@ EVM options:
           transaction sender to be simulated as different accounts, which is
           useful for testing contract behavior
           
-          [aliases: --auto-unlock]
+          [alias: --auto-unlock]
 
       --disable-console-log
           Disable printing of `console.log` invocations to stdout
           
-          [aliases: --no-console-log]
+          [alias: --no-console-log]
 
       --disable-default-create2-deployer
           Disable the default create2 deployer
           
-          [aliases: --no-create2]
+          [alias: --no-create2]
 
       --disable-pool-balance-checks
           Disable pool balance checks
@@ -391,12 +394,12 @@ EVM options:
           Enable printing of traces for executed transactions and `eth_call` to
           stdout
           
-          [aliases: --enable-trace-printing]
+          [alias: --enable-trace-printing]
 
       --steps-tracing
           Enable steps tracing used for debug calls returning geth-style traces
           
-          [aliases: --tracing]
+          [alias: --tracing]
 
 Networks:
       --celo

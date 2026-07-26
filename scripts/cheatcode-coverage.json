@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "source": {
     "repository": "foundry-rs/foundry",
-    "commit": "14b8607edbf213e9a2f0a937dd6e415136b08a43",
+    "commit": "4aec465267fd92b44b54fafc7fbe8ebbe7f96eca",
     "path": "crates/cheatcodes/assets/cheatcodes.json"
   },
   "functions": [
@@ -128,6 +128,7 @@
     "getRawBlockHeader",
     "getRecordedLogs",
     "getRecordedLogsJson",
+    "getSelectors",
     "getStateDiff",
     "getStateDiffJson",
     "getStorageAccesses",
@@ -163,6 +164,7 @@
     "parseJson",
     "parseJsonAddress",
     "parseJsonAddressArray",
+    "parseJsonArrayLength",
     "parseJsonBool",
     "parseJsonBoolArray",
     "parseJsonBytes",

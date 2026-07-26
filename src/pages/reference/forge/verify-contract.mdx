@@ -28,7 +28,7 @@ Options:
       --constructor-args <ARGS>
           The ABI-encoded constructor arguments. Only for Etherscan
           
-          [aliases: --encoded-constructor-args]
+          [alias: --encoded-constructor-args]
 
       --constructor-args-path <PATH>
           The path to a file containing the constructor arguments
@@ -49,7 +49,7 @@ Options:
       --num-of-optimizations <NUM>
           The number of optimization runs used to build the smart contract
           
-          [aliases: --optimizer-runs]
+          [alias: --optimizer-runs]
 
       --flatten
           Flatten the source code before verifying
@@ -101,7 +101,10 @@ Options:
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: --jobs]
+          [alias: --jobs]
+
+      --profile <PROFILE>
+          The configuration profile to use
 
 Linker options:
       --libraries <LIBRARIES>
@@ -154,7 +157,7 @@ Rpc options:
   -r, --rpc-url <URL>
           The RPC endpoint
           
-          [aliases: --fork-url]
+          [alias: --fork-url]
 
   -k, --insecure
           Allow insecure RPC connections (accept invalid HTTPS certificates).
@@ -195,7 +198,7 @@ Rpc options:
           See also
           [https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second](https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second)
           
-          [aliases: --no-rate-limit]
+          [alias: --no-rate-limit]
 
       --flashbots
           Use the Flashbots RPC URL with fast mode
