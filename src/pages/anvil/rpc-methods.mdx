@@ -1,0 +1,626 @@
+---
+description: Complete reference for Anvil's custom anvil_* and evm_* RPC methods and nonstandard eth_ extensions.
+---
+
+## RPC method reference
+
+Anvil serves the standard Ethereum JSON-RPC API together with a custom `anvil_*` and `evm_*` namespace for manipulating the node at runtime. This page is the complete reference for every custom method. For workflow-oriented examples, see [Custom methods](/anvil/custom-methods), [Mining and transaction pool](/anvil/mining), and [State management](/anvil/state-management).
+
+Call any method with [`cast rpc`](/reference/cast/rpc). The examples below assume a local node on the default endpoint; pass `--rpc-url` otherwise:
+
+```bash
+$ cast rpc anvil_nodeInfo --rpc-url http://127.0.0.1:8545
+```
+
+Many methods accept alias names for Ganache (`evm_*`), Hardhat (`hardhat_*`), and Tenderly (`tenderly_*`) compatibility. Each entry lists its aliases; aliased names behave identically. Numeric parameters accept `0x`-prefixed hex quantities and decimal numbers unless noted, but decimal number literals only work up to `u64::MAX` (about `1.8e19`); pass larger amounts as hex quantities or quoted decimal strings.
+
+### Account impersonation
+
+#### anvil_impersonateAccount
+
+Allows sending transactions from an address without its private key. Alias: `hardhat_impersonateAccount`.
+
+Parameters: `address` — the account to impersonate.
+
+```bash [Impersonate an account]
+$ cast rpc anvil_impersonateAccount $ADDRESS
+```
+
+Send transactions from the impersonated account with `--unlocked`:
+
+```bash [Send as impersonated account]
+$ cast send $CONTRACT "transfer(address,uint256)" $TO $AMOUNT --from $ADDRESS --unlocked
+```
+
+#### anvil_stopImpersonatingAccount
+
+Stops impersonating an account previously set with `anvil_impersonateAccount`. Alias: `hardhat_stopImpersonatingAccount`.
+
+Parameters: `address` — the account to stop impersonating.
+
+```bash [Stop impersonating]
+$ cast rpc anvil_stopImpersonatingAccount $ADDRESS
+```
+
+#### anvil_autoImpersonateAccount
+
+Enables or disables impersonation of every account, so any sender can be used without a key. Alias: `hardhat_autoImpersonateAccount`. Equivalent to starting Anvil with `--auto-impersonate`.
+
+Parameters: `enabled` — `true` to impersonate all accounts, `false` to disable.
+
+```bash [Enable auto-impersonation]
+$ cast rpc anvil_autoImpersonateAccount true
+```
+
+#### anvil_impersonateSignature
+
+Registers a signature/address pair that overrides the `ecrecover` precompile: recovering the given 65-byte signature returns the given address. Useful together with impersonation when contracts verify signatures.
+
+Parameters: a single two-element array `[signature, address]` — the 65-byte signature as hex and the address `ecrecover` should return for it.
+
+```bash [Fake an ecrecover result]
+$ cast rpc anvil_impersonateSignature "[\"$SIGNATURE\", \"$ADDRESS\"]"
+```
+
+### Mining
+
+#### anvil_getAutomine
+
+Returns `true` if automatic mining is enabled. Alias: `hardhat_getAutomine`. No parameters.
+
+```bash [Check automine]
+$ cast rpc anvil_getAutomine
+```
+
+#### anvil_setAutomine
+
+Enables or disables automatic mining of a new block with each new transaction. Alias: `evm_setAutomine`.
+
+Parameters: `enabled` — `true` for instant mining, `false` to stop instant mining.
+
+```bash [Disable automatic mining]
+$ cast rpc anvil_setAutomine false
+```
+
+#### anvil_setIntervalMining
+
+Switches to interval mining with the given interval in seconds. Passing `0` disables mining entirely. Alias: `evm_setIntervalMining`.
+
+Parameters: `seconds` — mining interval.
+
+```bash [Mine every 12 seconds]
+$ cast rpc anvil_setIntervalMining 12
+```
+
+#### anvil_getIntervalMining
+
+Returns the current mining interval in seconds, or `null` if interval mining is not active. No parameters.
+
+```bash [Check mining interval]
+$ cast rpc anvil_getIntervalMining
+```
+
+#### anvil_mine
+
+Mines a series of blocks. Alias: `hardhat_mine`.
+
+Parameters (both optional): `blocks` — number of blocks to mine (default `1`), `interval` — seconds between the timestamps of the mined blocks. The interval applies only to blocks mined by this call.
+
+```bash [Mine 10 blocks with 12s spacing]
+$ cast rpc anvil_mine 10 12
+```
+
+#### evm_mine
+
+Mines a single block (or several, with options), regardless of the configured mining mode. Always returns `"0x0"`.
+
+Parameters (optional): either a timestamp for the mined block, or an options object `{"timestamp": ..., "blocks": ...}` to mine a fixed number of blocks. The options object requires the `timestamp` key (`null` keeps the current clock), and a timestamp must not be lower than the previous block's timestamp.
+
+```bash [Mine one block]
+$ cast rpc evm_mine
+```
+
+```bash [Mine 5 blocks]
+$ cast rpc evm_mine "{\"timestamp\": $TIMESTAMP, \"blocks\": 5}"
+```
+
+#### anvil_mine_detailed
+
+Behaves exactly like `evm_mine` but returns the mined blocks with full transaction objects; transactions with return data carry an additional `output` field, and failed transactions also a `revertReason` field. Alias: `evm_mine_detailed`.
+
+Parameters (optional): same as `evm_mine`.
+
+```bash [Mine and return block data]
+$ cast rpc anvil_mine_detailed
+```
+
+### Time
+
+#### anvil_setTime
+
+Sets the node's internal clock to the given Unix timestamp and returns the number of seconds between the previous clock time and the new one, clamped to `0` when moving backwards. Values above `1e12` are interpreted as milliseconds. Alias: `evm_setTime`.
+
+Parameters: `timestamp` — Unix timestamp in seconds (or milliseconds).
+
+```bash [Jump to a specific time]
+$ cast rpc anvil_setTime 1700000000
+```
+
+#### anvil_increaseTime
+
+Jumps forward in time by the given number of seconds and returns the node's total accumulated clock offset in seconds. Alias: `evm_increaseTime`.
+
+Parameters: `seconds` — amount of time to advance.
+
+```bash [Advance time by one hour]
+$ cast rpc anvil_increaseTime 3600
+```
+
+#### anvil_setNextBlockTimestamp
+
+Sets the exact timestamp of the next mined block. Fails if the timestamp is lower than the previous block's timestamp. Alias: `evm_setNextBlockTimestamp`.
+
+Parameters: `timestamp` — Unix timestamp in seconds for the next block.
+
+```bash [Pin the next block's timestamp]
+$ cast rpc anvil_setNextBlockTimestamp $TIMESTAMP
+```
+
+#### anvil_setBlockTimestampInterval
+
+Sets a fixed timestamp interval: every new block's timestamp is computed as the previous block's timestamp plus the interval. Unlike the `anvil_mine` interval, this applies to all future blocks until removed.
+
+Parameters: `seconds` — timestamp interval.
+
+```bash [Advance timestamps by 12s per block]
+$ cast rpc anvil_setBlockTimestampInterval 12
+```
+
+#### anvil_removeBlockTimestampInterval
+
+Removes a timestamp interval set with `anvil_setBlockTimestampInterval`. Returns `true` if an interval existed. No parameters.
+
+```bash [Remove the timestamp interval]
+$ cast rpc anvil_removeBlockTimestampInterval
+```
+
+#### anvil_getGenesisTime
+
+Returns the genesis block timestamp in Unix seconds. Anvil also serves this value through its Beacon API genesis endpoint. No parameters.
+
+```bash [Get the genesis timestamp]
+$ cast rpc anvil_getGenesisTime
+```
+
+### State snapshots
+
+#### anvil_snapshot
+
+Snapshots the state of the blockchain at the current block and returns the snapshot ID. Alias: `evm_snapshot`. No parameters.
+
+```bash [Create snapshot]
+$ cast rpc anvil_snapshot
+```
+
+#### anvil_revert
+
+Reverts the chain to a previous snapshot and returns `true` on success. Reverting consumes the snapshot: the same ID cannot be used again. Alias: `evm_revert`.
+
+Parameters: `id` — snapshot ID returned by `anvil_snapshot`.
+
+```bash [Revert to snapshot]
+$ cast rpc anvil_revert $SNAPSHOT_ID
+```
+
+### State dump and load
+
+The [`--dump-state`, `--load-state`, and `--state` CLI flags](/anvil/state-management) cover the same functionality at startup and shutdown; the RPC forms work on a running node.
+
+#### anvil_dumpState
+
+Serializes the current chain state, including accounts, contract code, storage, and blocks, into a gzip-compressed hex-encoded blob that can later be loaded with `anvil_loadState`. Alias: `hardhat_dumpState`.
+
+Parameters (optional): `preserveHistoricalStates` — `true` to include historical states in the dump (default `false`).
+
+```bash [Dump chain state]
+$ cast rpc anvil_dumpState
+```
+
+#### anvil_loadState
+
+Merges a state blob previously produced by `anvil_dumpState` into the current chain, overwriting any conflicting accounts or storage, and returns `true` on success. Alias: `hardhat_loadState`.
+
+Parameters: `state` — hex-encoded state blob.
+
+```bash [Load chain state]
+$ cast rpc anvil_loadState $STATE
+```
+
+### Fork management
+
+#### anvil_reset
+
+Resets the chain. Without parameters this resets to a fresh, empty in-memory state and disables any active fork. With a `forking` object it resets onto the given fork; omit `jsonRpcUrl` to re-fork the current fork URL at a different block. Alias: `hardhat_reset`.
+
+Parameters (optional): `{"forking": {"jsonRpcUrl": ..., "blockNumber": ...}}` — both fields optional.
+
+```bash [Reset to a fresh empty state]
+$ cast rpc anvil_reset
+```
+
+```bash [Fork mainnet at a block]
+$ cast rpc anvil_reset '{"forking": {"jsonRpcUrl": "https://ethereum.reth.rs/rpc", "blockNumber": 18000000}}'
+```
+
+```bash [Reset the current fork to a block]
+$ cast rpc anvil_reset '{"forking": {"blockNumber": 18000000}}'
+```
+
+#### anvil_setRpcUrl
+
+Updates the RPC endpoint used by the active fork. Later `anvil_reset` calls also use the new URL.
+
+Parameters: `url` — the new fork RPC endpoint.
+
+```bash [Switch the fork endpoint]
+$ cast rpc anvil_setRpcUrl $RPC_URL
+```
+
+### Reorgs and rollbacks
+
+#### anvil_reorg
+
+Reorgs the chain: rewinds by `depth` blocks and mines new blocks back to the same height, optionally including supplied transactions in the replacement blocks. The depth must not exceed the current chain height.
+
+Parameters: `depth` — number of blocks to reorg, `tx_block_pairs` — array of `[transaction, blockIndex]` pairs, where `transaction` is a raw signed transaction hex string or a transaction request object and `blockIndex` (0-based, less than `depth`) selects the replacement block that includes it. Pass `[]` for empty replacement blocks.
+
+```bash [Reorg the last 5 blocks]
+$ cast rpc anvil_reorg 5 '[]'
+```
+
+```bash [Reorg 3 blocks and include a transfer in the first new block]
+$ cast rpc anvil_reorg 3 '[[{"from": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266", "to": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8", "value": "0xde0b6b3a7640000"}, 0]]'
+```
+
+#### anvil_rollback
+
+Rolls the chain back by the given number of blocks without mining replacements, shortening the chain. The depth must not exceed the current chain height.
+
+Parameters (optional): `depth` — number of blocks to remove (default `1`).
+
+```bash [Drop the last 3 blocks]
+$ cast rpc anvil_rollback 3
+```
+
+### Account state
+
+#### anvil_setBalance
+
+Sets the ETH balance of an account. Aliases: `hardhat_setBalance`, `tenderly_setBalance`.
+
+Parameters: `address`, `balance` — new balance in wei.
+
+```bash [Set balance to 1 ETH]
+$ cast rpc anvil_setBalance $ADDRESS 0xDE0B6B3A7640000
+```
+
+#### anvil_addBalance
+
+Adds the given amount to an account's ETH balance. Aliases: `hardhat_addBalance`, `tenderly_addBalance`.
+
+Parameters: `address`, `amount` — wei to add.
+
+```bash [Add 1 ETH]
+$ cast rpc anvil_addBalance $ADDRESS 0xDE0B6B3A7640000
+```
+
+#### anvil_setCode
+
+Sets the bytecode of an account. Alias: `hardhat_setCode`.
+
+Parameters: `address`, `code` — deployed bytecode as hex.
+
+```bash [Set contract code]
+$ cast rpc anvil_setCode $ADDRESS $BYTECODE
+```
+
+#### anvil_setNonce
+
+Sets the nonce of an account. Aliases: `hardhat_setNonce`, `evm_setAccountNonce`.
+
+Parameters: `address`, `nonce`.
+
+```bash [Set account nonce]
+$ cast rpc anvil_setNonce $ADDRESS 0x10
+```
+
+#### anvil_setStorageAt
+
+Writes a single storage slot of an account and returns `true`. Alias: `hardhat_setStorageAt`.
+
+Parameters: `address`, `slot` — storage slot, `value` — 32-byte value.
+
+```bash [Write a storage slot]
+$ cast rpc anvil_setStorageAt $ADDRESS $SLOT $VALUE
+```
+
+### Token balances and allowances
+
+#### anvil_dealERC20
+
+Sets the ERC-20 token balance of an account by discovering and overwriting the token's balance storage slot. Fails with an error if no slot can be found, which can happen for tokens with nonstandard balance accounting. Aliases: `anvil_setERC20Balance`, `hardhat_dealERC20`. On Tempo nodes, TIP-20 tokens are written through the native TIP-20 path instead (see [Foundry on Tempo](/guides/tempo)).
+
+Parameters: `address` — account whose balance is set, `token` — ERC-20 token contract, `balance` — absolute balance to write.
+
+```bash [Set an ERC-20 balance]
+$ cast rpc anvil_dealERC20 $ADDRESS $TOKEN 0xDE0B6B3A7640000
+```
+
+#### anvil_setERC20Allowance
+
+Sets an ERC-20 allowance by discovering and overwriting the token's allowance storage slot.
+
+Parameters: `owner`, `spender`, `token` — ERC-20 token contract, `amount` — allowance to write.
+
+```bash [Set an ERC-20 allowance]
+$ cast rpc anvil_setERC20Allowance $OWNER $SPENDER $TOKEN 0xDE0B6B3A7640000
+```
+
+### Transaction pool
+
+#### anvil_dropTransaction
+
+Removes a transaction from the pool. Returns the hash if the transaction was pending, otherwise `null`. Alias: `hardhat_dropTransaction`.
+
+Parameters: `hash` — transaction hash.
+
+```bash [Drop a pending transaction]
+$ cast rpc anvil_dropTransaction $TX_HASH
+```
+
+#### anvil_dropAllTransactions
+
+Removes all transactions from the pool. Alias: `hardhat_dropAllTransactions`. No parameters.
+
+```bash [Clear the pool]
+$ cast rpc anvil_dropAllTransactions
+```
+
+#### anvil_removePoolTransactions
+
+Removes all pool transactions sent by the given address.
+
+Parameters: `address` — sender whose transactions are removed.
+
+```bash [Drop all transactions from a sender]
+$ cast rpc anvil_removePoolTransactions $SENDER
+```
+
+### Chain and block configuration
+
+#### anvil_setChainId
+
+Sets the chain ID of the running node.
+
+Parameters: `chainId`.
+
+```bash [Change the chain ID]
+$ cast rpc anvil_setChainId 31338
+```
+
+#### anvil_setCoinbase
+
+Sets the coinbase (block beneficiary) address used for subsequent blocks. Alias: `hardhat_setCoinbase`.
+
+Parameters: `address`.
+
+```bash [Set the coinbase]
+$ cast rpc anvil_setCoinbase $ADDRESS
+```
+
+#### anvil_setBlockGasLimit
+
+Sets the gas limit for subsequent blocks and returns `true`. Alias: `evm_setBlockGasLimit`.
+
+Parameters: `gasLimit`.
+
+```bash [Set the block gas limit]
+$ cast rpc anvil_setBlockGasLimit 0x1C9C380
+```
+
+#### anvil_setNextBlockBaseFeePerGas
+
+Sets the base fee of the next block. Only supported when EIP-1559 is active; returns an error otherwise. Alias: `hardhat_setNextBlockBaseFeePerGas`.
+
+Parameters: `baseFee` — base fee in wei.
+
+```bash [Set the next base fee]
+$ cast rpc anvil_setNextBlockBaseFeePerGas 0x5F5E100
+```
+
+#### anvil_setMinGasPrice
+
+Sets the minimum gas price for the node. Only supported on legacy (pre-EIP-1559) chains; returns an error when EIP-1559 is active. Alias: `hardhat_setMinGasPrice`.
+
+Parameters: `gasPrice` — minimum gas price in wei.
+
+```bash [Set the minimum gas price]
+$ cast rpc anvil_setMinGasPrice 0x4A817C800
+```
+
+#### anvil_setNextBlockPrevRandao
+
+Sets the `prevrandao` value of the next block. This is a one-shot override: it applies to the next mined block only.
+
+Parameters: `prevrandao` — 32-byte value.
+
+```bash [Override the next prevrandao]
+$ cast rpc anvil_setNextBlockPrevRandao $VALUE
+```
+
+#### anvil_setLoggingEnabled
+
+Enables or disables the node's logging. Alias: `hardhat_setLoggingEnabled`.
+
+Parameters: `enabled`.
+
+```bash [Silence node logs]
+$ cast rpc anvil_setLoggingEnabled false
+```
+
+### Node information
+
+#### anvil_nodeInfo
+
+Returns the node's runtime configuration: current block number, timestamp, and hash, hardfork, transaction ordering, environment (base fee, chain ID, gas limit, gas price), and fork configuration. No parameters.
+
+```bash [Inspect the node]
+$ cast rpc anvil_nodeInfo
+```
+
+#### anvil_metadata
+
+Returns instance metadata: client version, chain ID, latest block hash and number, instance ID, forked network details, and the list of active state snapshots. Alias: `hardhat_metadata`. No parameters.
+
+```bash [Get instance metadata]
+$ cast rpc anvil_metadata
+```
+
+### Blobs
+
+#### anvil_getBlobByHash
+
+Returns the EIP-4844 blob for a given blob versioned hash, or `null` if unknown.
+
+Parameters: `versionedHash` — blob versioned hash.
+
+```bash [Fetch a blob by versioned hash]
+$ cast rpc anvil_getBlobByHash $VERSIONED_HASH
+```
+
+#### anvil_getBlobsByTransactionHash
+
+Returns all blobs of a blob transaction, or `null` if the transaction is unknown or carries no blobs.
+
+Parameters: `hash` — transaction hash.
+
+```bash [Fetch blobs for a transaction]
+$ cast rpc anvil_getBlobsByTransactionHash $TX_HASH
+```
+
+### Tempo methods
+
+These methods apply to Anvil's [Tempo mode](/guides/tempo) (`anvil --network tempo`). Except for `anvil_classifyTransaction`, they return an error on non-Tempo nodes.
+
+#### anvil_dealTIP20
+
+Sets a TIP-20 token balance by writing directly into native TIP-20 storage. See [Foundry on Tempo](/guides/tempo) for details on how this differs from `anvil_dealERC20`.
+
+Parameters: `address` — account whose balance is set, `token` — TIP-20 token contract, `balance` — absolute balance to write.
+
+```bash [Set a TIP-20 balance]
+$ cast rpc anvil_dealTIP20 $RECIPIENT $TIP20_TOKEN 0x56BC75E2D63100000
+```
+
+#### anvil_setFeeToken
+
+Sets the fee token for a user address, so its transactions pay gas in that TIP-20 token.
+
+Parameters: `user`, `token` — TIP-20 fee token.
+
+```bash [Set a user's fee token]
+$ cast rpc anvil_setFeeToken $ADDRESS $FEE_TOKEN
+```
+
+#### anvil_setValidatorFeeToken
+
+Sets the fee token for a validator address.
+
+Parameters: `validator`, `token` — TIP-20 fee token.
+
+```bash [Set a validator's fee token]
+$ cast rpc anvil_setValidatorFeeToken $VALIDATOR $FEE_TOKEN
+```
+
+#### anvil_setFeeAmmLiquidity
+
+Mints FeeAMM liquidity for a user-token/validator-token pair, so fee conversion between the two tokens can succeed locally.
+
+Parameters: `userToken`, `validatorToken`, `amount` — liquidity to mint.
+
+```bash [Mint FeeAMM liquidity]
+$ cast rpc anvil_setFeeAmmLiquidity $USER_TOKEN $VALIDATOR_TOKEN 0x56BC75E2D63100000
+```
+
+#### anvil_classifyTransaction
+
+Classifies a raw signed transaction with the Tempo T5 payment-lane classifier and returns `{"lane": ..., "payment": ..., "reason": ...}`. Works on any node: outside Tempo mode (or before the T5 hardfork) every transaction classifies into the general lane with a matching reason.
+
+Parameters: `rawTransaction` — raw signed transaction as hex.
+
+```bash [Classify a raw transaction]
+$ cast rpc anvil_classifyTransaction $RAW_TX
+```
+
+### Nonstandard eth_ methods
+
+Anvil also serves a number of `eth_` methods beyond the standard Ethereum JSON-RPC specification.
+
+#### eth_callBundle
+
+Simulates a bundle of raw signed transactions on top of a given block, Flashbots style, and returns per-transaction results together with bundle totals such as gas fees and coinbase payments.
+
+Parameters: a bundle object with `txs` — array of raw signed transactions, `blockNumber` — block the bundle is valid for, and `stateBlockNumber` — block number or tag to base the simulation state on; optionally `timestamp`, `gasLimit`, `difficulty`, `baseFee`, and `coinbase`.
+
+```bash [Simulate a bundle]
+$ cast rpc eth_callBundle "{\"txs\": [\"$RAW_TX\"], \"blockNumber\": \"$BLOCK_NUMBER\", \"stateBlockNumber\": \"latest\"}"
+```
+
+#### eth_callMany
+
+Simulates a sequence of transaction bundles on top of each other and returns the call results for each bundle.
+
+Parameters: `bundles` — array of `{"transactions": [...], "blockOverride": ...}` objects; optionally a state context `{"blockNumber": ..., "transactionIndex": ...}` and a state override object.
+
+```bash [Simulate two dependent calls]
+$ cast rpc eth_callMany '[{"transactions": [{"from": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266", "to": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8", "value": "0xde0b6b3a7640000"}, {"from": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8", "to": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266", "value": "0xde0b6b3a7640000"}]}]'
+```
+
+#### eth_sendUnsignedTransaction
+
+Executes a transaction from any sender regardless of signature status, without requiring impersonation to be enabled.
+
+Parameters: `transaction` — a transaction request object including `from`.
+
+```bash [Send without a signature]
+$ cast rpc eth_sendUnsignedTransaction "{\"from\": \"$FROM\", \"to\": \"$TO\", \"value\": \"0x1\"}"
+```
+
+#### eth_getTransactionBySenderAndNonce
+
+Returns the full transaction for a sender and nonce, checking pending pool transactions first and then mined blocks, or `null` if not found.
+
+Parameters: `sender`, `nonce`.
+
+```bash [Look up a transaction by sender and nonce]
+$ cast rpc eth_getTransactionBySenderAndNonce $ADDRESS 5
+```
+
+#### Other extensions
+
+Anvil additionally serves these nonstandard `eth_` extensions, largely mirroring geth and reth:
+
+| Method | Description |
+| --- | --- |
+| `eth_baseFee` | Returns the base fee of the next block. |
+| `eth_pendingTransactions` | Returns the transactions currently pending in the pool. |
+| `eth_fillTransaction` | Fills in defaults (nonce, gas, fees) for a transaction request and returns the raw unsigned transaction and its fields. |
+| `eth_resend` | Resends a pending transaction with an updated gas price or gas limit. |
+| `eth_getHeaderByHash`, `eth_getHeaderByNumber` | Return a block header by hash or number. |
+| `eth_getAccountInfo` | Returns an account's balance, nonce, and code in a single call. |
+| `eth_getStorageValues` | Returns storage values for multiple accounts and slots in a single call. |
+| `eth_getBlockAccessList`, `eth_getBlockAccessListByBlockHash`, `eth_getBlockAccessListByBlockNumber`, `eth_getBlockAccessListRaw` | Return the EIP-7928 block-level access list for a block. |
+| `eth_sendTransactionSync`, `eth_sendRawTransactionSync` | Send a transaction and wait for its receipt in a single call; the raw variant accepts an optional timeout in milliseconds. |
+| `eth_sendRawTransactionConditional` | Accepts a raw transaction with conditional-inclusion options; Anvil accepts the options but does not enforce the conditions. |
+
+Anvil also implements the `txpool_*`, `debug_*`, `trace_*`, and `ots_*` (Otterscan) namespaces, plus `erigon_getHeaderByNumber` for Otterscan compatibility. See [Mining and transaction pool](/anvil/mining) for the `txpool_*` methods.
