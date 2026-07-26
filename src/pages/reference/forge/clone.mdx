@@ -55,6 +55,9 @@ Options:
           
           Implies `--source sourcify`.
 
+      --implementation
+          Clone the implementation contract if the address is a proxy
+
   -e, --etherscan-api-key <KEY>
           The Etherscan (or equivalent) API key
           
@@ -84,7 +87,10 @@ Options:
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: --jobs]
+          [alias: --jobs]
+
+      --profile <PROFILE>
+          The configuration profile to use
 
 Display options:
       --color <COLOR>

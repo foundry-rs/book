@@ -75,7 +75,10 @@ Options:
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: --jobs]
+          [alias: --jobs]
+
+      --profile <PROFILE>
+          The configuration profile to use
 
 Verifier options:
       --verifier <VERIFIER>
@@ -98,6 +101,10 @@ Verifier options:
           The verifier URL, if using a custom provider
           
           [env: VERIFIER_URL=]
+
+Linker options:
+      --libraries <LIBRARIES>
+          Set pre-linked libraries
 
 Display options:
       --color <COLOR>

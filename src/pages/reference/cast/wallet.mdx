@@ -18,24 +18,23 @@ $ cast wallet --help
 Usage: cast wallet [OPTIONS] <COMMAND>
 
 Commands:
-  new               Create a new random keypair [aliases: n]
-  new-mnemonic      Generates a random BIP39 mnemonic phrase [aliases: nm]
-  vanity            Generate a vanity address [aliases: va]
+  new               Create a new random keypair [alias: n]
+  new-mnemonic      Generates a random BIP39 mnemonic phrase [alias: nm]
+  vanity            Generate a vanity address [alias: va]
   address           Convert a private key to an address [aliases: a, addr]
-  derive            Derive accounts from a mnemonic [aliases: d]
-  sign              Sign a message or typed data [aliases: s]
-  sign-auth         EIP-7702 sign authorization [aliases: sa]
-  verify            Verify the signature of a message [aliases: v]
-  import            Import a private key into an encrypted keystore [aliases: i]
+  derive            Derive accounts from a mnemonic [alias: d]
+  sign              Sign a message or typed data [alias: s]
+  sign-auth         EIP-7702 sign authorization [alias: sa]
+  verify            Verify the signature of a message [alias: v]
+  import            Import a private key into an encrypted keystore [alias: i]
   list              List all the accounts in the keystore default directory
-                    [aliases: ls]
+                    [alias: ls]
   session           Manage temporary Tempo wallet sessions
-  remove            Remove a wallet from the keystore [aliases: rm]
-  private-key       Derives private key from mnemonic [aliases: pk]
-  public-key        Get the public key for the given private key [aliases:
-                    pubkey]
-  decrypt-keystore  Decrypt a keystore file to get the private key [aliases: dk]
-  change-password   Change the password of a keystore file [aliases: cp]
+  remove            Remove a wallet from the keystore [alias: rm]
+  private-key       Derives private key from mnemonic [alias: pk]
+  public-key        Get the public key for the given private key [alias: pubkey]
+  decrypt-keystore  Decrypt a keystore file to get the private key [alias: dk]
+  change-password   Change the password of a keystore file [alias: cp]
   help              Print this message or the help of the given subcommand(s)
 
 Options:
@@ -46,7 +45,10 @@ Options:
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: --jobs]
+          [alias: --jobs]
+
+      --profile <PROFILE>
+          The configuration profile to use
 
 Display options:
       --color <COLOR>

@@ -32,12 +32,15 @@ Options:
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: --jobs]
+          [alias: --jobs]
+
+      --profile <PROFILE>
+          The configuration profile to use
 
       --target-contract <CONTRACT_NAME>
           The name of the contract you want to run
           
-          [aliases: --tc]
+          [alias: --tc]
 
   -s, --sig <SIG>
           The signature of the function you want to call in the contract, or raw
@@ -311,6 +314,10 @@ Tempo:
           
           [default: 130]
 
+      --sender-nonce <NONCE>
+          Override the sender's initial nonce for script execution and
+          transaction generation
+
       --unlocked
           Send via `eth_sendTransaction` using the `--sender` argument as sender
 
@@ -358,9 +365,6 @@ Tempo:
       --disable-code-size-limit
           Disables the contract size limit during script execution
 
-      --disable-labels
-          Disables the labels in the traces
-
       --etherscan-api-key <KEY>
           The Etherscan (or equivalent) API key
           
@@ -382,6 +386,32 @@ Tempo:
           Timeout to use for broadcasting transactions
           
           [env: ETH_TIMEOUT=]
+
+Trace options:
+      --decode-internal
+          Identify internal functions in traces.
+          
+          This will trace internal functions and decode stack parameters.
+          
+          Parameters stored in memory (such as bytes or arrays) are currently
+          decoded only when a single function is matched, similarly to
+          `--debug`, for performance reasons.
+
+      --trace-depth <DEPTH>
+          Maximum depth of rendered traces
+
+      --disable-labels
+          Disable labels in traces
+
+      --compact-labels
+          Hide addresses in trace parameters when a label is available
+
+      --labels <ADDRESS:LABEL>
+          Label addresses in traces.
+          
+          Example: 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045:vitalik.eth
+          
+          [alias: --label]
 
 Cache options:
       --force
@@ -539,7 +569,7 @@ Project options:
           This is the same as using: `--contracts contracts --lib-paths
           node_modules`.
           
-          [aliases: --hh]
+          [alias: --hh]
 
       --config-path <FILE>
           Path to the config file
@@ -584,14 +614,14 @@ Wallet options - keystore:
           Use the keystore by its filename in the given folder
           
           [env: ETH_KEYSTORE=]
-          [aliases: --keystores]
+          [alias: --keystores]
 
       --account <ACCOUNT_NAMES>
           Use a keystore from the default keystores folder
           (~/.foundry/keystores) by its filename
           
           [env: ETH_KEYSTORE_ACCOUNT=]
-          [aliases: --accounts]
+          [alias: --accounts]
 
       --password <PASSWORDS>
           The keystore password.
@@ -651,7 +681,7 @@ EVM options:
   -r, --rpc-url <URL>
           The RPC endpoint
           
-          [aliases: --fork-url]
+          [alias: --fork-url]
 
   -k, --insecure
           Allow insecure RPC connections (accept invalid HTTPS certificates).
@@ -692,7 +722,7 @@ EVM options:
           See also
           [https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second](https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second)
           
-          [aliases: --no-rate-limit]
+          [alias: --no-rate-limit]
 
       --fork-block-number <BLOCK>
           Fetch state from a specific block number over a remote endpoint.
@@ -747,7 +777,7 @@ Executor environment config:
       --chain <CHAIN>
           The chain name or EIP-155 chain ID
           
-          [aliases: --chain-id]
+          [alias: --chain-id]
 
       --gas-price <GAS_PRICE>
           The gas price
@@ -755,7 +785,7 @@ Executor environment config:
       --block-base-fee-per-gas <FEE>
           The base fee in a block
           
-          [aliases: --base-fee]
+          [alias: --base-fee]
 
       --tx-origin <ADDRESS>
           The transaction origin
@@ -778,7 +808,7 @@ Executor environment config:
       --block-gas-limit <BLOCK_GAS_LIMIT>
           The block gas limit
           
-          [aliases: --gas-limit]
+          [alias: --gas-limit]
 
       --memory-limit <MEMORY_LIMIT>
           The memory limit per EVM execution in bytes. If this limit is
@@ -794,7 +824,7 @@ Executor environment config:
       --enable-tx-gas-limit
           Whether to enable tx gas limit checks as imposed by Osaka (EIP-7825)
           
-          [aliases: --tx-gas-limit]
+          [alias: --tx-gas-limit]
 
       --isolate
           Whether to enable isolation of calls. In isolation mode all top-level

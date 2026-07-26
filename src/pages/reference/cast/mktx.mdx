@@ -41,7 +41,10 @@ Options:
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: --jobs]
+          [alias: --jobs]
+
+      --profile <PROFILE>
+          The configuration profile to use
 
 Transaction options:
       --gas-limit <GAS_LIMIT>
@@ -229,7 +232,7 @@ Rpc options:
   -r, --rpc-url <URL>
           The RPC endpoint
           
-          [aliases: --fork-url]
+          [alias: --fork-url]
 
   -k, --insecure
           Allow insecure RPC connections (accept invalid HTTPS certificates).
@@ -270,7 +273,7 @@ Rpc options:
           See also
           [https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second](https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second)
           
-          [aliases: --no-rate-limit]
+          [alias: --no-rate-limit]
 
       --flashbots
           Use the Flashbots RPC URL with fast mode
@@ -351,6 +354,9 @@ Wallet options - raw:
       --ethsign
           Call `eth_signTransaction` using the `--from` argument or $ETH_FROM as
           sender
+
+      --signature <SIGNATURE>
+          Generate a raw signed transaction using the provided 65-byte signature
 
 Wallet options - keystore:
       --keystore <PATH>

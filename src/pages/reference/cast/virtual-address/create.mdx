@@ -43,7 +43,7 @@ Options:
           Number of threads to use for mining. Defaults to number of logical
           cores
           
-          [aliases: --jobs]
+          [alias: --jobs]
 
       --seed <HEX>
           Seed for the random number generator used to initialize the salt
@@ -84,11 +84,14 @@ Options:
   -h, --help
           Print help (see a summary with '-h')
 
+      --profile <PROFILE>
+          The configuration profile to use
+
 Rpc options:
   -r, --rpc-url <URL>
           The RPC endpoint
           
-          [aliases: --fork-url]
+          [alias: --fork-url]
 
   -k, --insecure
           Allow insecure RPC connections (accept invalid HTTPS certificates).
@@ -129,7 +132,7 @@ Rpc options:
           See also
           [https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second](https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second)
           
-          [aliases: --no-rate-limit]
+          [alias: --no-rate-limit]
 
       --flashbots
           Use the Flashbots RPC URL with fast mode

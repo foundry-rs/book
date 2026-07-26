@@ -53,25 +53,8 @@ Options:
           `--evm-version`) do not apply, since the trace comes from the node
           rather than a local run.
 
-      --disable-labels
-          Disables the labels in the traces. Can only be set with `--trace` or
-          `--debug-trace-call`
-
       --debug
           Opens an interactive debugger. Can only be used with `--trace`
-
-      --decode-internal
-          Identify internal functions in traces.
-          
-          This will trace internal functions and decode stack parameters.
-          
-          Parameters stored in memory (such as bytes or arrays) are currently
-          decoded only when a single function is matched, similarly to
-          `--debug`, for performance reasons.
-
-      --labels <LABELS>
-          Labels to apply to the traces; format: `address:label`. Can only be
-          used with `--trace` or `--debug-trace-call`
 
       --evm-version <EVM_VERSION>
           The EVM Version to use. Can only be used with `--trace`
@@ -88,7 +71,36 @@ Options:
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
           
-          [aliases: --jobs]
+          [alias: --jobs]
+
+      --profile <PROFILE>
+          The configuration profile to use
+
+Trace options:
+      --decode-internal
+          Identify internal functions in traces.
+          
+          This will trace internal functions and decode stack parameters.
+          
+          Parameters stored in memory (such as bytes or arrays) are currently
+          decoded only when a single function is matched, similarly to
+          `--debug`, for performance reasons.
+
+      --trace-depth <DEPTH>
+          Maximum depth of rendered traces
+
+      --disable-labels
+          Disable labels in traces
+
+      --compact-labels
+          Hide addresses in trace parameters when a label is available
+
+      --labels <ADDRESS:LABEL>
+          Label addresses in traces.
+          
+          Example: 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045:vitalik.eth
+          
+          [alias: --label]
 
 Transaction options:
       --gas-limit <GAS_LIMIT>
@@ -273,7 +285,7 @@ Rpc options:
   -r, --rpc-url <URL>
           The RPC endpoint
           
-          [aliases: --fork-url]
+          [alias: --fork-url]
 
   -k, --insecure
           Allow insecure RPC connections (accept invalid HTTPS certificates).
@@ -314,7 +326,7 @@ Rpc options:
           See also
           [https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second](https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second)
           
-          [aliases: --no-rate-limit]
+          [alias: --no-rate-limit]
 
       --flashbots
           Use the Flashbots RPC URL with fast mode
@@ -383,25 +395,24 @@ Wallet options - raw:
       --with-local-artifacts
           Use current project artifacts for trace decoding
           
-          [aliases: --la]
+          [alias: --la]
 
       --override-balance <ADDRESS:BALANCE>
-          Override the accounts balance. Format:
-          "address:balance,address:balance"
+          Override account balances. Format: "address:balance,address:balance"
 
       --override-nonce <ADDRESS:NONCE>
-          Override the accounts nonce. Format: "address:nonce,address:nonce"
+          Override account nonces. Format: "address:nonce,address:nonce"
 
       --override-code <ADDRESS:CODE>
-          Override the accounts code. Format: "address:code,address:code"
+          Override account code. Format: "address:code,address:code"
 
       --override-state <ADDRESS:SLOT:VALUE>
-          Override the accounts state and replace the current state entirely
-          with the new one. Format: "address:slot:value,address:slot:value"
+          Override account state and replace the current state entirely with the
+          new one. Format: "address:slot:value,address:slot:value"
 
       --override-state-diff <ADDRESS:SLOT:VALUE>
-          Override the accounts state specific slots and preserve the rest of
-          the state. Format: "address:slot:value,address:slot:value"
+          Override specific account storage slots and preserve the rest of the
+          state. Format: "address:slot:value,address:slot:value"
 
       --block.time <TIME>
           Override the block timestamp
