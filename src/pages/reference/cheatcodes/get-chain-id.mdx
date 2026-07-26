@@ -1,0 +1,42 @@
+---
+description: Gets the current block.chainid of the selected environment
+---
+
+## `getChainId`
+
+### Signature
+
+```solidity
+function getChainId() external view returns (uint256 blockChainId);
+```
+
+### Description
+
+Gets the current `block.chainid` of the currently selected environment.
+
+Prefer this over reading `block.chainid` directly when using [`selectFork`](/reference/cheatcodes/select-fork) or [`createSelectFork`](/reference/cheatcodes/create-select-fork): the compiler may assume `block.chainid` is constant within a transaction and cache it, returning a stale value after a fork switch. See [issue #6180](https://github.com/foundry-rs/foundry/issues/6180).
+
+### Returns
+
+| Type      | Description                            |
+|-----------|----------------------------------------|
+| `uint256` | The chain ID of the active environment |
+
+### Examples
+
+```solidity [test/GetChainId.t.sol]
+function testFork_getChainId() public {
+    vm.createSelectFork("mainnet");
+    assertEq(vm.getChainId(), 1);
+
+    vm.createSelectFork("optimism");
+    assertEq(vm.getChainId(), 10);
+}
+```
+
+### Related Cheatcodes
+
+- [`chainId`](/reference/cheatcodes/chain-id) - Set `block.chainid`
+- [`selectFork`](/reference/cheatcodes/select-fork) - Switch to a fork
+- [`getBlockTimestamp`](/reference/cheatcodes/get-block-timestamp) - Same pattern for `block.timestamp`
+- [`getBlockNumber`](/reference/cheatcodes/get-block-number) - Same pattern for `block.number`

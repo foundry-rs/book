@@ -1,0 +1,72 @@
+---
+description: Parses JSON and coerces it to a described Solidity type in field order
+---
+
+## `parseJsonType`
+
+### Signature
+
+```solidity
+function parseJsonType(string calldata json, string calldata typeDescription) external pure returns (bytes memory);
+function parseJsonType(string calldata json, string calldata key, string calldata typeDescription) external pure returns (bytes memory);
+```
+
+### Description
+
+Parses a string of JSON data and coerces it to the type described by `typeDescription`, returning the ABI-encoded value for use with `abi.decode`.
+
+Unlike [`parseJson`](/reference/cheatcodes/parse-json), which infers types and orders struct fields alphabetically, `parseJsonType` encodes fields in the exact order given by the type description. This removes the alphabetical-ordering pitfall when decoding into Solidity structs.
+
+`typeDescription` is either a plain Solidity type (for example `uint256` or `address[]`) or an EIP-712 style `encodeType` string such as `Item(uint256 a,string b)`. Nested structs append their definitions, exactly as in EIP-712: `Order(Item item,address maker)Item(uint256 a,string b)`. You can generate these strings for the structs in your project with `forge eip712`.
+
+The overload with `key` parses only the value at the given [JSONPath](/reference/cheatcodes/parse-json#jsonpath-key-syntax) key.
+
+### Parameters
+
+| Parameter         | Type     | Description                                          |
+|-------------------|----------|------------------------------------------------------|
+| `json`            | `string` | The JSON string to parse                             |
+| `key`             | `string` | The JSONPath key to parse (optional)                 |
+| `typeDescription` | `string` | Solidity type or EIP-712 `encodeType` description    |
+
+### Returns
+
+| Type    | Description                                    |
+|---------|------------------------------------------------|
+| `bytes` | The ABI-encoded value, ready for `abi.decode`  |
+
+### Examples
+
+:::code-group
+
+```solidity [test/ParseJsonType.t.sol]
+struct Item {
+    uint256 amount;
+    string name;
+}
+
+string constant ITEM_SCHEMA = "Item(uint256 amount,string name)";
+
+function test_parseJsonType() public view {
+    string memory json = '{"amount": 42, "name": "widget"}';
+    Item memory item = abi.decode(vm.parseJsonType(json, ITEM_SCHEMA), (Item));
+
+    assertEq(item.amount, 42);
+    assertEq(item.name, "widget");
+}
+
+function test_parseJsonTypeWithKey() public view {
+    string memory json = '{"order": {"amount": 1, "name": "gadget"}}';
+    Item memory item = abi.decode(vm.parseJsonType(json, ".order", ITEM_SCHEMA), (Item));
+
+    assertEq(item.name, "gadget");
+}
+```
+
+:::
+
+### Related Cheatcodes
+
+- [`parseJson`](/reference/cheatcodes/parse-json) - Parse JSON with inferred types
+- [`parseJsonTypeArray`](/reference/cheatcodes/parse-json-type-array) - Parse a JSON array with a type description
+- [`serializeJsonType`](/reference/cheatcodes/serialize-json-type) - Serialize a value using a type description

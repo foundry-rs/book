@@ -1,0 +1,97 @@
+---
+description: Records mapping writes to discover mapping keys and slots
+---
+
+## Mapping recording
+
+### Signature
+
+```solidity
+function startMappingRecording() external;
+function stopMappingRecording() external;
+function getMappingLength(address target, bytes32 mappingSlot) external view returns (uint256 length);
+function getMappingSlotAt(address target, bytes32 mappingSlot, uint256 idx) external view returns (bytes32 value);
+function getMappingKeyAndParentOf(address target, bytes32 elementSlot) external view returns (bool found, bytes32 key, bytes32 parent);
+```
+
+### Description
+
+These cheatcodes record mapping writes so tests can enumerate mapping entries and recover the keys behind storage slots, which is normally impossible because Solidity stores mapping values at `keccak256(key . slot)`.
+
+| Function                   | Description                                                              |
+|----------------------------|--------------------------------------------------------------------------|
+| `startMappingRecording`    | Starts recording mapping writes                                          |
+| `stopMappingRecording`     | Stops recording and clears the recorded data                             |
+| `getMappingLength`         | Number of recorded entries of the mapping at `mappingSlot`               |
+| `getMappingSlotAt`         | Storage slot of the recorded entry at index `idx`                        |
+| `getMappingKeyAndParentOf` | Key and parent slot that derive `elementSlot`, if it was recorded        |
+
+While recording, Foundry tracks `keccak256` hashes of 64-byte inputs and links every storage write whose slot matches such a hash back to its mapping key and parent slot. `getMappingLength` and `getMappingSlotAt` only see entries written via `SSTORE` while recording is active; `getMappingKeyAndParentOf` can also resolve slots whose key derivation was observed on a read. For nested mappings, the parent chain is recorded as well, so `getMappingKeyAndParentOf` can be applied repeatedly to walk back to the mapping's declaration slot.
+
+### Parameters
+
+| Parameter     | Type      | Description                                          |
+|---------------|-----------|------------------------------------------------------|
+| `target`      | `address` | The contract whose mapping writes were recorded      |
+| `mappingSlot` | `bytes32` | The declaration slot of the mapping                  |
+| `idx`         | `uint256` | Index of the entry; must be less than the length     |
+| `elementSlot` | `bytes32` | A storage slot to resolve back to its key and parent |
+
+### Returns
+
+| Parameter | Type      | Description                                                        |
+|-----------|-----------|--------------------------------------------------------------------|
+| `length`  | `uint256` | Number of recorded entries; `0` if nothing was recorded            |
+| `value`   | `bytes32` | The storage slot at the given index; zero if out of range          |
+| `found`   | `bool`    | Whether the slot was recorded as a mapping entry                   |
+| `key`     | `bytes32` | The mapping key that derives the slot                              |
+| `parent`  | `bytes32` | The parent slot the key was hashed with                            |
+
+### Examples
+
+```solidity [test/MappingRecording.t.sol]
+contract Store {
+    mapping(uint256 => uint256) public data; // Declared at slot 0.
+
+    function set(uint256 key, uint256 value) external {
+        data[key] = value;
+    }
+}
+
+contract MappingRecordingTest is Test {
+    function testMappingRecording() public {
+        Store store = new Store();
+        vm.startMappingRecording();
+
+        store.set(7, 42);
+        store.set(9, 99);
+
+        bytes32 mappingSlot = bytes32(uint256(0));
+        assertEq(vm.getMappingLength(address(store), mappingSlot), 2);
+
+        // Resolve the first recorded entry back to its key.
+        bytes32 elementSlot = vm.getMappingSlotAt(address(store), mappingSlot, 0);
+        (bool found, bytes32 key, bytes32 parent) =
+            vm.getMappingKeyAndParentOf(address(store), elementSlot);
+
+        assertTrue(found);
+        assertEq(parent, mappingSlot);
+        assertEq(uint256(vm.load(address(store), elementSlot)), store.data(uint256(key)));
+
+        vm.stopMappingRecording();
+    }
+}
+```
+
+### Gotchas
+
+:::note
+The getters return empty results (`0`, zero slot, `found = false`) instead of reverting when recording is not active or the slot is unknown.
+:::
+
+### Related Cheatcodes
+
+- [`record`](/reference/cheatcodes/record) - Record storage reads and writes
+- [`accesses`](/reference/cheatcodes/accesses) - Get recorded storage accesses
+- [`load`](/reference/cheatcodes/load) - Load a storage slot
+- [`store`](/reference/cheatcodes/store) - Write a storage slot

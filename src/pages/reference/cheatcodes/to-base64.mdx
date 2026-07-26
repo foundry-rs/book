@@ -1,0 +1,49 @@
+---
+description: Encodes bytes or strings to base64 and base64url
+---
+
+## `toBase64`
+
+### Signature
+
+```solidity
+function toBase64(bytes calldata data) external pure returns (string memory);
+function toBase64(string calldata data) external pure returns (string memory);
+function toBase64URL(bytes calldata data) external pure returns (string memory);
+function toBase64URL(string calldata data) external pure returns (string memory);
+```
+
+### Description
+
+Encodes a `bytes` or `string` value to a base64 string. `toBase64` uses the standard alphabet (RFC 4648 section 4, with `+` and `/`), while `toBase64URL` uses the URL-safe alphabet (section 5, with `-` and `_`).
+
+Useful for building data URIs, JWT-style payloads, or fixtures for contracts that consume base64 input.
+
+### Parameters
+
+| Parameter | Type                 | Description         |
+|-----------|----------------------|---------------------|
+| `data`    | `bytes` or `string`  | The value to encode |
+
+### Returns
+
+| Type     | Description                |
+|----------|----------------------------|
+| `string` | The base64-encoded value   |
+
+### Examples
+
+```solidity [test/ToBase64.t.sol]
+function testToBase64() public view {
+    string memory s = "forge";
+    bytes memory b = hex"fbff";
+    assertEq(vm.toBase64(s), "Zm9yZ2U=");
+    assertEq(vm.toBase64(b), "+/8=");
+    assertEq(vm.toBase64URL(b), "-_8=");
+}
+```
+
+### Related Cheatcodes
+
+- [`toString`](/reference/cheatcodes/to-string) - Convert values to strings
+- [`ffi`](/reference/cheatcodes/ffi) - Call external programs, which often exchange base64 data

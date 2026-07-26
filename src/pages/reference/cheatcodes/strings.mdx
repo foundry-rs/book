@@ -1,0 +1,62 @@
+---
+description: String helpers for searching, splitting, replacing, trimming, and case conversion
+---
+
+## String Cheatcodes
+
+### Signature
+
+```solidity
+function contains(string calldata subject, string calldata search) external pure returns (bool result);
+function indexOf(string calldata input, string calldata key) external pure returns (uint256);
+function replace(string calldata input, string calldata from, string calldata to) external pure returns (string memory output);
+function split(string calldata input, string calldata delimiter) external pure returns (string[] memory outputs);
+function trim(string calldata input) external pure returns (string memory output);
+function toLowercase(string calldata input) external pure returns (string memory output);
+function toUppercase(string calldata input) external pure returns (string memory output);
+```
+
+### Description
+
+These cheatcodes provide common string operations that are expensive or tedious to implement in Solidity.
+
+| Function      | Description                                                                    |
+|---------------|--------------------------------------------------------------------------------|
+| `contains`    | Returns `true` if `search` occurs in `subject`                                 |
+| `indexOf`     | Byte index of the first occurrence of `key` in `input`; `type(uint256).max` if not found, `0` for an empty key |
+| `replace`     | Replaces all occurrences of `from` with `to`                                   |
+| `split`       | Splits `input` into the parts separated by `delimiter`                         |
+| `trim`        | Removes leading and trailing whitespace                                        |
+| `toLowercase` | Converts the string to lowercase                                               |
+| `toUppercase` | Converts the string to uppercase                                               |
+
+They are handy when post-processing output from [`ffi`](/reference/cheatcodes/ffi), file contents, or environment variables.
+
+### Examples
+
+```solidity [test/Strings.t.sol]
+function testStringHelpers() public view {
+    string memory input = "  forge,cast,anvil  ";
+
+    string memory trimmed = vm.trim(input);
+    assertEq(trimmed, "forge,cast,anvil");
+
+    assertTrue(vm.contains(trimmed, "cast"));
+    assertEq(vm.indexOf(trimmed, "cast"), 6);
+    assertEq(vm.indexOf(trimmed, "chisel"), type(uint256).max);
+
+    string[] memory tools = vm.split(trimmed, ",");
+    assertEq(tools.length, 3);
+    assertEq(tools[0], "forge");
+
+    assertEq(vm.replace(trimmed, ",", " "), "forge cast anvil");
+    assertEq(vm.toUppercase("forge"), "FORGE");
+    assertEq(vm.toLowercase("FORGE"), "forge");
+}
+```
+
+### Related Cheatcodes
+
+- [`toString`](/reference/cheatcodes/to-string) - Convert values to strings
+- [`parseUint`](/reference/cheatcodes/parse-uint) - Parse strings into values
+- [`toBase64`](/reference/cheatcodes/to-base64) - Base64-encode strings and bytes
