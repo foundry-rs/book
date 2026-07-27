@@ -19,11 +19,11 @@ $ cast wallet new --number 5
 ```
 
 ```bash [From mnemonic]
-$ cast wallet from-mnemonic "abandon abandon ... about"
+$ cast wallet derive "abandon abandon ... about"
 ```
 
-```bash [Specific derivation path]
-$ cast wallet from-mnemonic "abandon abandon ... about" --mnemonic-index 2
+```bash [Specific mnemonic index]
+$ cast wallet private-key "abandon abandon ... about" 2
 ```
 
 :::
@@ -63,11 +63,11 @@ $ cast wallet sign "Hello, Ethereum!" --private-key $KEY
 ```
 
 ```bash [With keystore]
-$ cast wallet sign "Hello, Ethereum!" --keystore ~/.foundry/keystores/my-key --interactive
+$ cast wallet sign "Hello, Ethereum!" --keystore ~/.foundry/keystores/my-key
 ```
 
-```bash [Raw data (no prefix)]
-$ cast wallet sign --no-hash 0x1234 --private-key $KEY
+```bash [Sign a 32-byte hash]
+$ cast wallet sign --no-hash $HASH --private-key $KEY
 ```
 
 :::
@@ -106,17 +106,9 @@ $ cast wallet sign --data '{
 
 ### Verifying signatures
 
-:::code-group
-
-```bash [Verify]
+```bash
 $ cast wallet verify --address $SIGNER "Hello, Ethereum!" $SIGNATURE
 ```
-
-```bash [Recover signer]
-$ cast wallet recover "Hello, Ethereum!" $SIGNATURE
-```
-
-:::
 
 ### EIP-7702 account delegation
 
@@ -138,8 +130,8 @@ $ cast wallet vanity --starts-with dead
 $ cast wallet vanity --ends-with beef
 ```
 
-```bash [Regex]
-$ cast wallet vanity --regex "^0x00.*00$"
+```bash [Prefix and suffix]
+$ cast wallet vanity --starts-with 00 --ends-with 00
 ```
 
 :::
@@ -149,7 +141,7 @@ $ cast wallet vanity --regex "^0x00.*00$"
 :::code-group
 
 ```bash [Checksum]
-$ cast to-checksum-address 0xd8da6bf26964af9d7eed9e03e53415d37aa96045
+$ cast to-check-sum-address 0xd8da6bf26964af9d7eed9e03e53415d37aa96045
 ```
 
 ```bash [CREATE address]
