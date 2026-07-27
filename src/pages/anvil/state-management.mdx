@@ -26,6 +26,8 @@ Start from a previously saved state:
 $ anvil --load-state state.json
 ```
 
+The `anvil_dumpState` and `anvil_loadState` RPC methods provide the same functionality on a running node, and `anvil_reset` restores a fresh chain; see the [RPC method reference](/anvil/rpc-methods) for parameters and examples.
+
 ### Combined state file
 
 Use `--state` to both load and dump from the same file:
