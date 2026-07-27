@@ -1,5 +1,5 @@
 ---
-description: "Create a gas snapshot of each test's gas usage"
+description: "Create a gas snapshot of each test's gas usage Examples: - forge snapshot - forge snapshot --diff (compare against the existing .gas-snapshot file) - forge snapshot --check (fail if gas usage does not match .gas-snapshot)"
 ---
 
 _Generated from `forge snapshot --help`; see [CLI reference versions](/reference/versions). Regenerate this page instead of editing it directly._
@@ -7,6 +7,11 @@ _Generated from `forge snapshot --help`; see [CLI reference versions](/reference
 ## forge snapshot
 
 Create a gas snapshot of each test's gas usage
+
+Examples:
+- forge snapshot
+- forge snapshot --diff (compare against the existing .gas-snapshot file)
+- forge snapshot --check (fail if gas usage does not match .gas-snapshot)
 
 :::terminal
 
@@ -591,6 +596,10 @@ Trace options:
           Example: 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045:vitalik.eth
           
           [alias: --label]
+
+      --disable-external-identification
+          Disable external trace identification using Sourcify, Etherscan, or
+          OpenChain
 
   -s, --suppress-successful-traces
           Suppress successful test traces and show only traces for failures

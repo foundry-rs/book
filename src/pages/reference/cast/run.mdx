@@ -1,5 +1,5 @@
 ---
-description: "Runs a published transaction in a local environment and prints the trace"
+description: "Runs a published transaction in a local environment and prints the trace Examples: - cast run $TX_HASH - cast run $TX_HASH --quick (only use the state from the previous block) - cast run $TX_HASH --debug (open the transaction in the debugger)"
 ---
 
 _Generated from `cast run --help`; see [CLI reference versions](/reference/versions). Regenerate this page instead of editing it directly._
@@ -7,6 +7,11 @@ _Generated from `cast run --help`; see [CLI reference versions](/reference/versi
 ## cast run
 
 Runs a published transaction in a local environment and prints the trace
+
+Examples:
+- cast run $TX_HASH
+- cast run $TX_HASH --quick (only use the state from the previous block)
+- cast run $TX_HASH --debug (open the transaction in the debugger)
 
 :::terminal
 
@@ -106,6 +111,10 @@ Trace options:
           Example: 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045:vitalik.eth
           
           [alias: --label]
+
+      --disable-external-identification
+          Disable external trace identification using Sourcify, Etherscan, or
+          OpenChain
 
 Rpc options:
   -r, --rpc-url <URL>

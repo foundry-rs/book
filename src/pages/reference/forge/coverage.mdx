@@ -1,5 +1,5 @@
 ---
-description: "Generate coverage reports"
+description: "Generate coverage reports Examples: - forge coverage - forge coverage --report lcov --report-file lcov.info - forge coverage --match-contract CounterTest"
 ---
 
 _Generated from `forge coverage --help`; see [CLI reference versions](/reference/versions). Regenerate this page instead of editing it directly._
@@ -7,6 +7,11 @@ _Generated from `forge coverage --help`; see [CLI reference versions](/reference
 ## forge coverage
 
 Generate coverage reports
+
+Examples:
+- forge coverage
+- forge coverage --report lcov --report-file lcov.info
+- forge coverage --match-contract CounterTest
 
 :::terminal
 
@@ -605,6 +610,10 @@ Trace options:
           Example: 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045:vitalik.eth
           
           [alias: --label]
+
+      --disable-external-identification
+          Disable external trace identification using Sourcify, Etherscan, or
+          OpenChain
 
   -s, --suppress-successful-traces
           Suppress successful test traces and show only traces for failures

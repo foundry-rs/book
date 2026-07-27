@@ -1,5 +1,5 @@
 ---
-description: "Run a smart contract as a script, building transactions that can be sent onchain"
+description: "Run a smart contract as a script, building transactions that can be sent onchain Examples: - forge script script/Counter.s.sol (simulate the script locally) - forge script script/Counter.s.sol --rpc-url $RPC_URL --broadcast --account dev - forge script script/Counter.s.sol --rpc-url $RPC_URL --resume"
 ---
 
 _Generated from `forge script --help`; see [CLI reference versions](/reference/versions). Regenerate this page instead of editing it directly._
@@ -7,6 +7,11 @@ _Generated from `forge script --help`; see [CLI reference versions](/reference/v
 ## forge script
 
 Run a smart contract as a script, building transactions that can be sent onchain
+
+Examples:
+- forge script script/Counter.s.sol (simulate the script locally)
+- forge script script/Counter.s.sol --rpc-url $RPC_URL --broadcast --account dev
+- forge script script/Counter.s.sol --rpc-url $RPC_URL --resume
 
 :::terminal
 
@@ -204,15 +209,19 @@ Tempo:
           gas fees on behalf of the sender. Provide as a hex-encoded signature.
 
       --sponsor-url <URL>
-          Remote sponsor (fee payer) service URL.
+          Remote sponsor (fee payer) service URL for Cast transaction commands.
           
           When set, the user-signed transaction is forwarded to this URL via
           `eth_signRawTransaction`. The service adds its fee payer signature and
           returns the fully-sponsored transaction, which is then submitted via
           the regular RPC. No local sponsor key is required.
           
+          This option is supported by `cast send` and `cast erc20`. Forge
+          commands currently support local sponsorship through `--tempo.sponsor`
+          and `--tempo.sponsor-signer` instead.
+
           Example: `cast send 0x... --sponsor-url
-          https://sponsor.tempo.xyz/tp_abc123`
+          https://sponsor.moderato.tempo.xyz`
           
           [env: TEMPO_SPONSOR_URL=]
 
@@ -373,6 +382,10 @@ Tempo:
       --verify
           Verifies all the contracts found in the receipts of a script, if any
 
+      --verify-external
+          Opt-in verification of contracts deployed by external factories using
+          explorer source
+
       --with-gas-price <PRICE>
           Gas price for legacy transactions, or max fee per gas for EIP1559
           transactions, either specified in wei, or as a string with a unit
@@ -412,6 +425,10 @@ Trace options:
           Example: 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045:vitalik.eth
           
           [alias: --label]
+
+      --disable-external-identification
+          Disable external trace identification using Sourcify, Etherscan, or
+          OpenChain
 
 Cache options:
       --force

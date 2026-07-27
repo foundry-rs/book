@@ -1,5 +1,5 @@
 ---
-description: "Perform a call on an account without publishing a transaction"
+description: "Perform a call on an account without publishing a transaction Examples: - cast call $TOKEN \"balanceOf(address)(uint256)\" vitalik.eth - cast call $TOKEN \"transfer(address,uint256)\" vitalik.eth 100 --trace"
 ---
 
 _Generated from `cast call --help`; see [CLI reference versions](/reference/versions). Regenerate this page instead of editing it directly._
@@ -7,6 +7,10 @@ _Generated from `cast call --help`; see [CLI reference versions](/reference/vers
 ## cast call
 
 Perform a call on an account without publishing a transaction
+
+Examples:
+- cast call $TOKEN "balanceOf(address)(uint256)" vitalik.eth
+- cast call $TOKEN "transfer(address,uint256)" vitalik.eth 100 --trace
 
 :::terminal
 
@@ -33,8 +37,8 @@ Arguments:
 
 Options:
       --data <DATA>
-          Raw hex-encoded data for the transaction. Used instead of \[SIG\] and
-          \[ARGS\]
+          Raw hex-encoded data for the transaction. Used instead of `SIG` and
+          `ARGS`
 
       --trace
           Forks the remote rpc, executes the transaction locally and prints a
@@ -101,6 +105,10 @@ Trace options:
           Example: 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045:vitalik.eth
           
           [alias: --label]
+
+      --disable-external-identification
+          Disable external trace identification using Sourcify, Etherscan, or
+          OpenChain
 
 Transaction options:
       --gas-limit <GAS_LIMIT>
@@ -238,15 +246,19 @@ Tempo:
           gas fees on behalf of the sender. Provide as a hex-encoded signature.
 
       --sponsor-url <URL>
-          Remote sponsor (fee payer) service URL.
+          Remote sponsor (fee payer) service URL for Cast transaction commands.
           
           When set, the user-signed transaction is forwarded to this URL via
           `eth_signRawTransaction`. The service adds its fee payer signature and
           returns the fully-sponsored transaction, which is then submitted via
           the regular RPC. No local sponsor key is required.
           
+          This option is supported by `cast send` and `cast erc20`. Forge
+          commands currently support local sponsorship through `--tempo.sponsor`
+          and `--tempo.sponsor-signer` instead.
+
           Example: `cast send 0x... --sponsor-url
-          https://sponsor.tempo.xyz/tp_abc123`
+          https://sponsor.moderato.tempo.xyz`
           
           [env: TEMPO_SPONSOR_URL=]
 
