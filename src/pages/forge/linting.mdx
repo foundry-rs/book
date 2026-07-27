@@ -138,11 +138,12 @@ lint_on_build = false
 
 ### CI integration
 
-Add linting to your CI pipeline:
+Add linting to your CI pipeline with `--deny warnings`, which exits with a non-zero
+status when warning-level lint diagnostics are emitted:
 
 ```yaml
 - name: Run linter
-  run: forge lint
+  run: forge lint --deny warnings
 ```
 
 See the [linter reference](/config/reference/linter) for all configuration options.
