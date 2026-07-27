@@ -18,8 +18,8 @@ $ forge install OpenZeppelin/openzeppelin-contracts
 $ forge install OpenZeppelin/openzeppelin-contracts@v5.0.0
 ```
 
-```bash [No commit]
-$ forge install OpenZeppelin/openzeppelin-contracts --no-commit
+```bash [With commit]
+$ forge install OpenZeppelin/openzeppelin-contracts --commit
 ```
 
 :::
@@ -167,11 +167,8 @@ $ git commit -m "Pin conflicting-library to v2.0.0"
 If dependencies need different versions, install both under different names:
 
 ```bash
-$ forge install org/library@v1.0.0 --no-commit
-$ mv lib/library lib/library-v1
-
-$ forge install org/library@v2.0.0 --no-commit
-$ mv lib/library lib/library-v2
+$ forge install library-v1=org/library@v1.0.0
+$ forge install library-v2=org/library@v2.0.0
 ```
 
 Add remappings:
