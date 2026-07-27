@@ -72,12 +72,14 @@ $ anvil --fork-url $RPC_URL --fork-header "Authorization: Bearer $TOKEN"
 
 ### L2 support
 
-Anvil supports L2-specific features:
+Anvil can fork L2 networks directly. The network family is inferred from the forked chain ID, so forking a network like Optimism needs no extra flags:
 
-```bash [Enable Optimism features]
-$ anvil --fork-url https://mainnet.optimism.io --optimism
+```bash [Fork Optimism]
+$ anvil --fork-url https://mainnet.optimism.io
 ```
 
 ```bash [Enable Celo features]
 $ anvil --fork-url https://forno.celo.org --celo
 ```
+
+Use `--network` to select a network family explicitly; see the [`anvil` reference](/reference/anvil/anvil) for the supported values.

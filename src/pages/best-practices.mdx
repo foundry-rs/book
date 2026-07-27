@@ -260,20 +260,6 @@ function run() public {
 
 ### Security
 
-#### Run taint analysis
-
-Use `forge taint` to detect dangerous data flows from untrusted sources:
-
-```bash [Check a specific contract]
-$ forge taint src/Vault.sol
-```
-
-```bash [Check all contracts]
-$ forge taint
-```
-
-Taint analysis identifies when user-controlled data flows into sensitive operations without validation.
-
 #### Enable the linter
 
 Catch common issues with `forge lint`:

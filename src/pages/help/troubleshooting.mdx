@@ -165,17 +165,17 @@ rpc_retry_backoff = 2
 
 #### Fork tests are slow
 
-Enable caching:
+Forked state is cached to disk by default, but the cache is only reused when the fork block is pinned:
 
 ```bash
-$ forge test --fork-url $RPC_URL --fork-cache
+$ forge test --fork-url $RPC_URL --fork-block-number 18000000
 ```
 
 Or in `foundry.toml`:
 
 ```toml
 [profile.default]
-fork_cache = true
+fork_block_number = 18000000
 ```
 
 The cache is stored in `~/.foundry/cache/rpc/`.

@@ -82,7 +82,7 @@ $ forge test -vv
 #### Why are my tests slow?
 
 Common causes:
-1. **Forking without caching** — Enable fork caching with `--fork-cache`
+1. **Forking without a pinned block** — Pin the fork with `--fork-block-number` so the RPC cache is reused across runs
 2. **Too many fuzz runs** — Reduce `fuzz.runs` in `foundry.toml` for local development
 3. **Large contracts** — Consider splitting tests into separate files
 
