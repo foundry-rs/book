@@ -149,10 +149,10 @@ $ cast send $CONTRACT "transfer(address,uint256)" $TO $AMOUNT --private-key $KEY
 
 #### How do I decode transaction data?
 
-Use `cast 4byte-decode`:
+Use `cast 4byte-calldata`:
 
 ```bash
-$ cast 4byte-decode 0xa9059cbb000000000000000000000000...
+$ cast 4byte-calldata 0xa9059cbb000000000000000000000000...
 ```
 
 #### How do I convert between units?
