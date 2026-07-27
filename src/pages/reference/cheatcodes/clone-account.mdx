@@ -1,0 +1,50 @@
+---
+description: Clones an account's code, storage, balance, and nonce to another address
+---
+
+## `cloneAccount`
+
+### Signature
+
+```solidity
+function cloneAccount(address source, address target) external;
+```
+
+### Description
+
+Clones the code, storage, balance, and nonce of the `source` account to the `target` account, updating the in-memory EVM state.
+
+In forking mode the cloned account is marked persistent, so it keeps its state across fork switches.
+
+This is useful for duplicating a fully initialized contract, for example to test an identical instance at a known address or to copy a mainnet contract onto a chosen address while forking.
+
+### Parameters
+
+| Parameter | Type      | Description                        |
+|-----------|-----------|------------------------------------|
+| `source`  | `address` | The account to copy from           |
+| `target`  | `address` | The account that receives the copy |
+
+### Examples
+
+```solidity [test/CloneAccount.t.sol]
+function testCloneAccount() public {
+    Counter counter = new Counter();
+    counter.setNumber(42);
+    vm.deal(address(counter), 1 ether);
+
+    address clone = address(0xC10E);
+    vm.cloneAccount(address(counter), clone);
+
+    assertEq(clone.code, address(counter).code);
+    assertEq(clone.balance, 1 ether);
+    assertEq(Counter(clone).number(), 42);
+}
+```
+
+### Related Cheatcodes
+
+- [`copyStorage`](/reference/cheatcodes/copy-storage) - Copy only the storage of an account
+- [`etch`](/reference/cheatcodes/etch) - Set bytecode at an address
+- [`deal`](/reference/cheatcodes/deal) - Set the balance of an account
+- [`makePersistent`](/reference/cheatcodes/make-persistent) - Keep accounts across fork switches

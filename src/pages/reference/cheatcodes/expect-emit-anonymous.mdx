@@ -1,0 +1,72 @@
+---
+description: Asserts that a specific anonymous event is emitted during the next call
+---
+
+## `expectEmitAnonymous`
+
+### Signature
+
+```solidity
+function expectEmitAnonymous() external;
+function expectEmitAnonymous(address emitter) external;
+function expectEmitAnonymous(bool checkTopic0, bool checkTopic1, bool checkTopic2, bool checkTopic3, bool checkData) external;
+function expectEmitAnonymous(bool checkTopic0, bool checkTopic1, bool checkTopic2, bool checkTopic3, bool checkData, address emitter) external;
+```
+
+### Description
+
+Asserts that a specific anonymous event is emitted during the next call. This is the [`expectEmit`](/reference/cheatcodes/expect-emit) counterpart for events declared with the `anonymous` keyword.
+
+**Steps to use:**
+1. Call `expectEmitAnonymous`, optionally specifying which topics to check
+2. Emit the expected anonymous event in your test
+3. Perform the call that should emit the event
+
+Because anonymous events do not reserve topic 0 for the event signature, all four topics carry indexed parameters and each of them can be checked individually, starting with `checkTopic0`. The overloads without booleans enable all topic and data checks.
+
+### Parameters
+
+| Parameter     | Type      | Description                                    |
+|---------------|-----------|------------------------------------------------|
+| `checkTopic0` | `bool`    | Whether to check the first indexed parameter   |
+| `checkTopic1` | `bool`    | Whether to check the second indexed parameter  |
+| `checkTopic2` | `bool`    | Whether to check the third indexed parameter   |
+| `checkTopic3` | `bool`    | Whether to check the fourth indexed parameter  |
+| `checkData`   | `bool`    | Whether to check the non-indexed event data    |
+| `emitter`     | `address` | The expected address that emits the event      |
+
+### Examples
+
+```solidity [test/ExpectEmitAnonymous.t.sol]
+contract Emitter {
+    event Message(address indexed sender, uint256 indexed id, uint256 amount) anonymous;
+
+    function send(uint256 id, uint256 amount) external {
+        emit Message(msg.sender, id, amount);
+    }
+}
+
+contract ExpectEmitAnonymousTest is Test {
+    event Message(address indexed sender, uint256 indexed id, uint256 amount) anonymous;
+
+    Emitter emitter = new Emitter();
+
+    function testEmitsAnonymousMessage() public {
+        vm.expectEmitAnonymous(address(emitter));
+        emit Message(address(this), 1, 10 ether);
+
+        emitter.send(1, 10 ether);
+    }
+}
+```
+
+### Gotchas
+
+:::note
+Unlike regular events, anonymous events have no signature topic, so nothing identifies the event type on-chain. With all checks disabled, any anonymous log emitted by the next call matches.
+:::
+
+### Related Cheatcodes
+
+- [`expectEmit`](/reference/cheatcodes/expect-emit) - Assert non-anonymous events, including sequence-matching rules that also apply here
+- [`recordLogs`](/reference/cheatcodes/record-logs) - Record all emitted events

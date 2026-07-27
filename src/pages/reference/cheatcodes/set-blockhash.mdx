@@ -1,0 +1,44 @@
+---
+description: Sets the blockhash for a recent block
+---
+
+## `setBlockhash`
+
+### Signature
+
+```solidity
+function setBlockhash(uint256 blockNumber, bytes32 blockHash) external;
+```
+
+### Description
+
+Sets the hash returned by the `BLOCKHASH` opcode for the given block number.
+
+The block number must not be greater than the current `block.number`, and `blockhash` only serves blocks in the window `[block.number - 256, block.number)`. On chains with [EIP-2935](https://eips.ethereum.org/EIPS/eip-2935) (Prague and later), the history storage contract is updated as well.
+
+This is useful for testing contracts that derive randomness or commitments from block hashes, which are otherwise zero for locally mined blocks.
+
+### Parameters
+
+| Parameter     | Type      | Description                              |
+|---------------|-----------|------------------------------------------|
+| `blockNumber` | `uint256` | The block number to set the hash for     |
+| `blockHash`   | `bytes32` | The hash to return for that block        |
+
+### Examples
+
+```solidity [test/SetBlockhash.t.sol]
+function testSetBlockhash() public {
+    vm.roll(100);
+
+    bytes32 hash = keccak256("fake block");
+    vm.setBlockhash(99, hash);
+
+    assertEq(blockhash(99), hash);
+}
+```
+
+### Related Cheatcodes
+
+- [`roll`](/reference/cheatcodes/roll) - Set `block.number`
+- [`prevrandao`](/reference/cheatcodes/prevrandao) - Set `block.prevrandao`
