@@ -11,6 +11,7 @@ verbosity = 3
 compact_labels = true
 trace_depth = 10
 decode_internal = true
+external_identification_timeout = 5
 
 [profile.default.tracing.labels]
 "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045" = "vitalik.eth"
@@ -67,3 +68,17 @@ Limits the maximum depth of rendered traces.
 
 Identifies internal functions and decodes their stack parameters. Dynamic values
 stored in memory are decoded only when Foundry can match a single function.
+
+#### `external_identification_timeout`
+
+- Type: integer
+- Default: 5
+
+Sets the cumulative time budget, in seconds, for identifying contracts in traces
+through Sourcify and Etherscan. Once the budget is exhausted, Foundry renders
+the trace with any identification results it has already received.
+
+Set this value to `0` to disable all external trace identification, including
+OpenChain signature lookups. You can also pass
+`--disable-external-identification` to disable it for a single command. Neither
+setting prevents Foundry from downloading compiler versions.
