@@ -22,16 +22,44 @@ Coverage settings can live with the profile that uses them:
 [profile.default.coverage]
 report = ["summary", "lcov"]
 lcov_version = "1"
-report_file = "lcov.info"
 exclude_tests = true
 skip_files = ["script/**", "src/mocks/**"]
 ```
 
-`report` accepts `summary`, `lcov`, `attribution`, `debug`, and `bytecode`. A CLI `--report` overrides the configured list and can be repeated:
+`report` accepts `summary`, `json-summary`, `lcov`, `attribution`, `debug`, and `bytecode`. A CLI `--report` overrides the configured list and can be repeated:
 
 ```bash
 $ forge coverage --report summary --report lcov
 ```
+
+### Generate a structured aggregate
+
+Use the named `json-summary` report when a CI job or other tool needs aggregate
+coverage without parsing the terminal table:
+
+```bash
+$ forge coverage --report json-summary
+```
+
+The default `coverage-summary.json` follows
+[Istanbul's `json-summary` format](https://istanbul.js.org/docs/advanced/alternative-reporters/#json-summary).
+It contains a `total` entry and one entry per source path. Each entry contains
+`lines`, `statements`, `functions`, and `branches` metrics with `total`,
+`covered`, `skipped`, and `pct` fields:
+
+```json
+{
+  "total": {
+    "lines": { "total": 12, "covered": 11, "skipped": 0, "pct": 91.66 },
+    "statements": { "total": 9, "covered": 8, "skipped": 0, "pct": 88.88 },
+    "functions": { "total": 4, "covered": 4, "skipped": 0, "pct": 100 },
+    "branches": { "total": 6, "covered": 5, "skipped": 0, "pct": 83.33 }
+  }
+}
+```
+
+Istanbul represents a metric with no coverable items as `pct: 100`. Foundry's
+terminal summary displays that metric as `N/A`, and native thresholds skip it.
 
 The following contract and tests cover all three fee paths:
 
@@ -64,9 +92,41 @@ Generate only an LCOV tracefile at a chosen path:
 $ forge coverage --report lcov --report-file lcov.info
 ```
 
-The default path is `lcov.info` in the project root. Use `--lcov-version 1`, `2`, or `2.2` to match the tracefile version supported by your coverage service. Foundry generates the data but does not enforce a minimum percentage; configure thresholds in the service or tool that consumes the LCOV file.
+The default path is `lcov.info` in the project root. Use `--lcov-version 1`, `2`, or `2.2` to match the tracefile version supported by your coverage service.
 
-`--report-file` applies when exactly one file report is requested. If you request both `lcov` and `attribution`, Foundry uses their default names, `lcov.info` and `coverage-attribution.json`, instead.
+`--report-file` applies when exactly one file report is requested. If you request multiple file reports, Foundry uses their default names: `coverage-summary.json`, `lcov.info`, and `coverage-attribution.json`.
+
+### Enforce aggregate thresholds
+
+Set any combination of line, statement, branch, and function thresholds in the
+coverage profile used by CI:
+
+```toml [foundry.toml]
+[profile.ci.coverage]
+report = ["json-summary", "lcov"]
+exclude_tests = true
+skip_files = ["script/**", "src/mocks/**"]
+lines = 90
+statements = 90
+branches = 80
+functions = 90
+```
+
+`forge coverage` exits with a nonzero status when the final aggregate misses a
+configured threshold. CLI flags override individual settings:
+
+```bash
+$ forge coverage --fail-under-lines 95 \
+    --fail-under-statements 95 \
+    --fail-under-branches 85 \
+    --fail-under-functions 95
+```
+
+Thresholds are checked after `--no-match-coverage`, `skip_files`,
+`--exclude-tests`, and dependency filtering. A metric with no coverable items is
+not applicable and does not fail its threshold. Requested reports are written
+before Foundry returns the threshold failure, so CI must always check the
+command's exit status.
 
 ### Map coverage to individual tests
 
@@ -125,6 +185,8 @@ $ FOUNDRY_PROFILE=ci forge coverage
 
 Coverage uses a static fuzz seed by default, which keeps fuzz-derived reports repeatable. An explicit `--fuzz-seed` or `[fuzz] seed` overrides it. Pin the Foundry version, compiler version, active profile, test filters, and report filters before treating a percentage change as a regression.
 
-Foundry writes requested file reports before returning a failing exit status for failed tests. CI should therefore check the command status even if an LCOV or attribution file exists.
+Foundry writes requested file reports before returning a failing exit status for
+failed tests or missed coverage thresholds. CI should therefore check the
+command status even if a coverage file exists.
 
 See the [`forge coverage` command reference](/reference/forge/coverage) for all test, compiler, and report options.

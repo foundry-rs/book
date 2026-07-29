@@ -71,18 +71,8 @@ Define symbolic settings under `[profile.<name>.symbolic]`.
 
 ### Coverage
 
-Define coverage settings under `[profile.<name>.coverage]`. Command-line flags
-take precedence.
-
-| Field | Default | Description |
-| --- | --- | --- |
-| `report` | `["summary"]` | Selects `summary`, `lcov`, `debug`, `bytecode`, or `attribution` reports. |
-| `lcov_version` | `"1"` | Selects the LCOV tracefile version. |
-| `ir_minimum` | `false` | Enables minimum via-IR optimization as a stack-depth workaround. |
-| `report_file` | none | Writes the report to a project-relative path. |
-| `include_libs` | `false` | Includes dependencies in coverage. |
-| `exclude_tests` | `false` | Excludes test source from coverage. |
-| `skip_files` | `[]` | Excludes project-relative source globs. |
+See the dedicated [coverage configuration reference](/config/reference/coverage)
+for aggregate reports, source filters, and failure thresholds.
 
 ### Mutation testing
 

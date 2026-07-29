@@ -562,6 +562,47 @@ script_execution_protection = true
 path = "vyper"  # Path to vyper binary
 
 # =============================================================================
+# COVERAGE CONFIGURATION
+# =============================================================================
+
+[coverage]
+# Reports to generate
+# Options: "summary", "json-summary", "lcov", "attribution", "debug", "bytecode"
+# Default: ["summary"]
+report = ["summary"]
+
+# LCOV tracefile version
+# Default: "1"
+lcov_version = "1"
+
+# Enable viaIR with minimum optimization for coverage compilation
+# Default: false
+ir_minimum = false
+
+# Optional project-relative path for a single file report
+# Default: none
+# report_file = "coverage-summary.json"
+
+# Include dependency sources in the coverage result
+# Default: false
+include_libs = false
+
+# Exclude test sources from the coverage result
+# Default: false
+exclude_tests = false
+
+# Project-relative source globs to exclude
+# Default: []
+skip_files = []
+
+# Optional aggregate coverage thresholds, as percentages from 0 to 100
+# Default: none
+# lines = 90
+# statements = 90
+# branches = 80
+# functions = 90
+
+# =============================================================================
 # FUZZ TESTING CONFIGURATION
 # =============================================================================
 

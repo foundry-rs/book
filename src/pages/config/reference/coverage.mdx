@@ -1,0 +1,131 @@
+## Coverage
+
+Configuration for `forge coverage`.
+
+Define these settings under `[profile.<name>.coverage]`, or use the standalone
+`[coverage]` section for the active profile.
+
+##### `report`
+
+- Type: array of strings
+- Default: `["summary"]`
+- Environment: N/A
+
+Selects one or more coverage reports. Supported values are `summary`,
+`json-summary`, `lcov`, `attribution`, `debug`, and `bytecode`.
+
+The `json-summary` reporter writes
+[Istanbul-compatible](https://istanbul.js.org/docs/advanced/alternative-reporters/#json-summary)
+`coverage-summary.json`. The `lcov` reporter writes `lcov.info`, and
+`attribution` writes `coverage-attribution.json`.
+
+##### `lcov_version`
+
+- Type: string
+- Default: `"1"`
+- Environment: `FOUNDRY_COVERAGE_LCOV_VERSION`
+
+Selects the LCOV tracefile version. Accepted versions include `"1"`, `"2"`,
+and `"2.2"`.
+
+##### `ir_minimum`
+
+- Type: boolean
+- Default: `false`
+- Environment: `FOUNDRY_COVERAGE_IR_MINIMUM`
+
+Enables `viaIR` with minimum optimization. This can work around stack-too-deep
+errors, but may reduce source-map accuracy.
+
+##### `report_file`
+
+- Type: string (path)
+- Default: none
+- Environment: `FOUNDRY_COVERAGE_REPORT_FILE`
+
+Writes a single file report to this project-relative path. When multiple file
+reports are selected, each reporter uses its default filename instead.
+
+##### `include_libs`
+
+- Type: boolean
+- Default: `false`
+- Environment: `FOUNDRY_COVERAGE_INCLUDE_LIBS`
+
+Includes dependency sources in the coverage result.
+
+##### `exclude_tests`
+
+- Type: boolean
+- Default: `false`
+- Environment: `FOUNDRY_COVERAGE_EXCLUDE_TESTS`
+
+Excludes test sources from the coverage result.
+
+##### `skip_files`
+
+- Type: array of strings (globs)
+- Default: `[]`
+- Environment: N/A
+
+Excludes project-relative source paths from the coverage result. Patterns use
+glob syntax, including `*`, `**`, `?`, and character classes.
+
+##### `lines`
+
+- Type: number (percentage)
+- Default: none
+- Environment: `FOUNDRY_COVERAGE_LINES`
+
+Fails `forge coverage` when aggregate line coverage is below this percentage.
+The value must be between 0 and 100. `--fail-under-lines` overrides it.
+
+##### `statements`
+
+- Type: number (percentage)
+- Default: none
+- Environment: `FOUNDRY_COVERAGE_STATEMENTS`
+
+Fails `forge coverage` when aggregate statement coverage is below this
+percentage. The value must be between 0 and 100.
+`--fail-under-statements` overrides it.
+
+##### `branches`
+
+- Type: number (percentage)
+- Default: none
+- Environment: `FOUNDRY_COVERAGE_BRANCHES`
+
+Fails `forge coverage` when aggregate branch coverage is below this percentage.
+The value must be between 0 and 100. `--fail-under-branches` overrides it.
+
+##### `functions`
+
+- Type: number (percentage)
+- Default: none
+- Environment: `FOUNDRY_COVERAGE_FUNCTIONS`
+
+Fails `forge coverage` when aggregate function coverage is below this
+percentage. The value must be between 0 and 100.
+`--fail-under-functions` overrides it.
+
+Thresholds use the final aggregate after coverage source filters are applied.
+A metric with no coverable items is not applicable and does not fail its
+threshold.
+
+```toml [foundry.toml]
+[profile.ci.coverage]
+report = ["json-summary", "lcov"]
+exclude_tests = true
+skip_files = ["script/**", "src/mocks/**"]
+lines = 90
+statements = 90
+branches = 80
+functions = 90
+```
+
+Command-line values override only their corresponding configured thresholds:
+
+```bash
+$ FOUNDRY_PROFILE=ci forge coverage --fail-under-branches 85
+```
