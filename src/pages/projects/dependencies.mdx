@@ -97,6 +97,27 @@ Save to a file for IDE support:
 $ forge remappings > remappings.txt
 ```
 
+#### Nested dependency remappings
+
+When a dependency remapping points below an auto-detected package root, Foundry preserves both by
+scoping the dependency remapping to the directory that declares it. For example, `forge remappings`
+can output:
+
+```txt
+lib/outer/:inner/=lib/outer/lib/inner/contracts/
+inner/=lib/outer/lib/inner/
+```
+
+The contextual form `<context>:<name>=<target>` applies to imports made by source units whose names
+begin with `<context>`. Here, the trailing slash in `lib/outer/` creates a directory boundary, so
+sources inside `lib/outer/` use the dependency's `contracts/` directory while root sources and
+sibling dependencies use the auto-detected package-root mapping.
+
+Foundry preserves explicit root-project and CLI remappings when constructing generated dependency
+contexts. An equal or broader global alias suppresses the generated context. A narrower global
+alias is overlaid into that context, so it overrides only its matching import subtree while the
+dependency mapping handles the remaining imports. Explicit contextual remappings are unchanged.
+
 ### Updating dependencies
 
 Use `forge install` to add a dependency or initialize the dependencies already recorded in a checkout. Running it without arguments reconciles existing git submodules and `foundry.lock`; it does not intentionally fetch newer dependency revisions.

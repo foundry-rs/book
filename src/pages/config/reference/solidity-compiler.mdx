@@ -19,7 +19,8 @@ Configuration related to the behavior of the Solidity compiler.
 - Default: none
 - Environment: `FOUNDRY_REMAPPINGS` or `DAPP_REMAPPINGS`
 
-An array of remappings in the following format: `<name>=<target>`.
+An array of remappings in the following format: `[<context>:]<name>=<target>`. The optional
+`<context>` restricts the remapping to imports made by source units whose names begin with it.
 
 A remapping _remaps_ Solidity imports to different directories. For example, the following remapping
 
@@ -38,6 +39,10 @@ becomes
 ```solidity
 import {Context} from "node_modules/@openzeppelin/openzeppelin-contracts/contracts/utils/Context.sol";
 ```
+
+Foundry can generate contextual remappings for dependencies while retaining a broader package
+fallback. See [Nested dependency remappings](/projects/dependencies#nested-dependency-remappings)
+for details.
 
 ##### `auto_detect_remappings`
 
