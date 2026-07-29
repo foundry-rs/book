@@ -1,4 +1,9 @@
 {
   "schemaVersion": 1,
-  "violations": []
+  "violations": [
+    "src/pages/guides/coverage.mdx: `forge coverage` does not document `--fail-under-branches`",
+    "src/pages/guides/coverage.mdx: `forge coverage` does not document `--fail-under-functions`",
+    "src/pages/guides/coverage.mdx: `forge coverage` does not document `--fail-under-lines`",
+    "src/pages/guides/coverage.mdx: `forge coverage` does not document `--fail-under-statements`"
+  ]
 }

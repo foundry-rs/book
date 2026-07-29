@@ -766,6 +766,48 @@ corpus_min_size = 0
 show_edge_coverage = false
 
 # =============================================================================
+# COVERAGE CONFIGURATION
+# =============================================================================
+
+[coverage]
+# Coverage reports to generate
+# Options: "summary", "json-summary", "lcov", "debug", "bytecode", "attribution"
+# Default: ["summary"]
+report = ["summary"]
+
+# LCOV tracefile format version
+# Default: "1"
+lcov_version = "1"
+
+# Enable via-IR with minimum optimization for coverage compilation
+# Default: false
+ir_minimum = false
+
+# Path for a single file report, relative to the project root
+# Default: None
+# report_file = "coverage-summary.json"
+
+# Include dependency sources
+# Default: false
+include_libs = false
+
+# Exclude test sources
+# Default: false
+exclude_tests = false
+
+# Project-relative source globs to exclude
+# Default: []
+skip_files = []
+
+[coverage.thresholds]
+# Fail when aggregate coverage is below an integer percentage from 0 through 100
+# Default: None
+# lines = 90
+# statements = 90
+# branches = 80
+# functions = 90
+
+# =============================================================================
 # FORMATTER CONFIGURATION
 # =============================================================================
 

@@ -132,6 +132,7 @@ export const sidebar: Sidebar = {
         { text: "Testing", link: "/config/reference/testing" },
         { text: "Tracing", link: "/config/reference/tracing" },
         { text: "Advanced Testing", link: "/config/reference/advanced-testing" },
+        { text: "Coverage", link: "/config/reference/advanced-testing#coverage" },
         { text: "Build, Runtime, and RPC", link: "/config/reference/build-and-runtime" },
         { text: "Tool-specific Configuration", link: "/config/reference/tooling" },
         { text: "In-line Test Config", link: "/config/reference/inline-test-config" },

@@ -74,15 +74,39 @@ Define symbolic settings under `[profile.<name>.symbolic]`.
 Define coverage settings under `[profile.<name>.coverage]`. Command-line flags
 take precedence.
 
-| Field | Default | Description |
-| --- | --- | --- |
-| `report` | `["summary"]` | Selects `summary`, `lcov`, `debug`, `bytecode`, or `attribution` reports. |
-| `lcov_version` | `"1"` | Selects the LCOV tracefile version. |
-| `ir_minimum` | `false` | Enables minimum via-IR optimization as a stack-depth workaround. |
-| `report_file` | none | Writes the report to a project-relative path. |
-| `include_libs` | `false` | Includes dependencies in coverage. |
-| `exclude_tests` | `false` | Excludes test source from coverage. |
-| `skip_files` | `[]` | Excludes project-relative source globs. |
+| Field | Type | Default | Environment | Description |
+| --- | --- | --- | --- | --- |
+| `report` | array of strings | `["summary"]` | `FOUNDRY_COVERAGE_REPORT` | Selects `summary`, `json-summary`, `lcov`, `debug`, `bytecode`, or `attribution` reports. |
+| `lcov_version` | string | `"1"` | `FOUNDRY_COVERAGE_LCOV_VERSION` | Selects the LCOV tracefile version. |
+| `ir_minimum` | boolean | `false` | `FOUNDRY_COVERAGE_IR_MINIMUM` | Enables minimum via-IR optimization as a stack-depth workaround. |
+| `report_file` | string or none | none | `FOUNDRY_COVERAGE_REPORT_FILE` | Writes the report to a project-relative path. |
+| `include_libs` | boolean | `false` | `FOUNDRY_COVERAGE_INCLUDE_LIBS` | Includes dependencies in coverage. |
+| `exclude_tests` | boolean | `false` | `FOUNDRY_COVERAGE_EXCLUDE_TESTS` | Excludes test source from coverage. |
+| `skip_files` | array of strings | `[]` | `FOUNDRY_COVERAGE_SKIP_FILES` | Excludes project-relative source globs. |
+| `thresholds.lines` | integer from 0 to 100 or none | none | none | Fails when aggregate line coverage is below the percentage. |
+| `thresholds.statements` | integer from 0 to 100 or none | none | none | Fails when aggregate statement coverage is below the percentage. |
+| `thresholds.branches` | integer from 0 to 100 or none | none | none | Fails when aggregate branch coverage is below the percentage. |
+| `thresholds.functions` | integer from 0 to 100 or none | none | none | Fails when aggregate function coverage is below the percentage. |
+
+Configure thresholds in the nested table. Unset thresholds are not enforced,
+and a metric with no coverable items is not applicable:
+
+```toml
+[profile.ci.coverage]
+report = ["json-summary", "lcov"]
+exclude_tests = true
+skip_files = ["script/**", "src/mocks/**"]
+
+[profile.ci.coverage.thresholds]
+lines = 90
+statements = 90
+branches = 80
+functions = 90
+```
+
+The corresponding CLI flags are `--fail-under-lines`,
+`--fail-under-statements`, `--fail-under-branches`, and
+`--fail-under-functions`.
 
 ### Mutation testing
 
