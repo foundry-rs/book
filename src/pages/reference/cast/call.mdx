@@ -174,9 +174,9 @@ Tempo:
       --tempo.session <SESSION_ID>
           Use a live Tempo wallet session for signing.
           
-          When set, Foundry resolves the session from
-          `$TEMPO_HOME/wallet/sessions.toml` and signs Tempo transactions with
-          the session's temporary access key on behalf of its root account.
+          When set, Foundry resolves the authorization witness from
+          `$TEMPO_HOME/wallet/store.json` and signs with that Accounts access
+          key on behalf of its root account.
 
       --tempo.fee-token <FEE_TOKEN>
           Fee token address, numeric TIP-20 token id, or known symbol for Tempo
@@ -401,37 +401,6 @@ Wallet options - raw:
           
           [default: 0]
 
-  -c, --chain <CHAIN>
-          [env: CHAIN=]
-
-      --with-local-artifacts
-          Use current project artifacts for trace decoding
-          
-          [alias: --la]
-
-      --override-balance <ADDRESS:BALANCE>
-          Override account balances. Format: "address:balance,address:balance"
-
-      --override-nonce <ADDRESS:NONCE>
-          Override account nonces. Format: "address:nonce,address:nonce"
-
-      --override-code <ADDRESS:CODE>
-          Override account code. Format: "address:code,address:code"
-
-      --override-state <ADDRESS:SLOT:VALUE>
-          Override account state and replace the current state entirely with the
-          new one. Format: "address:slot:value,address:slot:value"
-
-      --override-state-diff <ADDRESS:SLOT:VALUE>
-          Override specific account storage slots and preserve the rest of the
-          state. Format: "address:slot:value,address:slot:value"
-
-      --block.time <TIME>
-          Override the block timestamp
-
-      --block.number <NUMBER>
-          Override the block number
-
 Wallet options - keystore:
       --keystore <PATH>
           Use the keystore in the given folder or file
@@ -501,6 +470,49 @@ Wallet options - Tempo:
           Required when `--tempo.access-key` is set.
           
           [env: TEMPO_ROOT_ACCOUNT=]
+
+Wallet options - browser wallet:
+      --browser
+          Use a browser wallet
+
+      --browser-port <PORT>
+          Port for the browser wallet server
+
+          [default: 9545]
+
+      --browser-disable-open
+          Whether to open the browser for wallet connection
+
+  -c, --chain <CHAIN>
+          [env: CHAIN=]
+
+      --with-local-artifacts
+          Use current project artifacts for trace decoding
+
+          [alias: --la]
+
+      --override-balance <ADDRESS:BALANCE>
+          Override account balances. Format: "address:balance,address:balance"
+
+      --override-nonce <ADDRESS:NONCE>
+          Override account nonces. Format: "address:nonce,address:nonce"
+
+      --override-code <ADDRESS:CODE>
+          Override account code. Format: "address:code,address:code"
+
+      --override-state <ADDRESS:SLOT:VALUE>
+          Override account state and replace the current state entirely with the
+          new one. Format: "address:slot:value,address:slot:value"
+
+      --override-state-diff <ADDRESS:SLOT:VALUE>
+          Override specific account storage slots and preserve the rest of the
+          state. Format: "address:slot:value,address:slot:value"
+
+      --block.time <TIME>
+          Override the block timestamp
+
+      --block.number <NUMBER>
+          Override the block number
 
 Display options:
       --color <COLOR>

@@ -1,10 +1,10 @@
 ---
-description: Send Cast and Forge transactions through an injected browser wallet.
+description: Use an injected browser wallet with Cast and Forge.
 ---
 
 ## Browser Wallet Signing
 
-Foundry can hand transaction requests to an injected browser wallet instead of loading a private key in the CLI. The wallet shows its normal approval prompt, signs the request, broadcasts it, and returns the transaction hash to Foundry.
+Foundry can connect to an injected browser wallet instead of loading a private key in the CLI. You can use the connected account to sign messages, resolve the sender for simulations, and approve transactions through the wallet's normal prompts.
 
 :::warning
 Browser wallet support is still in early development. Review every request and use it cautiously. For high-value production operations, prefer a well-tested hardware wallet or organizational signer policy.
@@ -22,7 +22,40 @@ $ cast send $CONTRACT "mint(address,uint256)" $RECIPIENT 1 \
 
 Foundry opens a local page, waits for you to connect an injected wallet, and then submits the transaction request to that wallet. Confirm the account, network, destination, value, calldata, and fees in the wallet prompt. `cast send` waits for the receipt by default; add `--async` to print the hash and exit after the wallet submits it.
 
-The same browser options are available on other Cast commands that submit on-chain transactions, including the ERC-20 transaction commands. They are not part of `cast wallet sign`; check a command's `--help` output for the **Wallet options - browser wallet** section.
+The same browser options are available on other Cast commands that submit on-chain transactions, including the ERC-20 transaction commands. Check a command's `--help` output for the **Wallet options - browser wallet** section.
+
+### Sign a message
+
+Use the connected browser account to sign a personal message:
+
+```bash
+$ cast wallet sign "Hello, Ethereum!" --browser
+```
+
+Pass `--data` to sign dynamic EIP-712 typed data. Browser wallets do not support signing a raw hash with `--no-hash`.
+
+Foundry verifies that the returned personal-message or EIP-712 signature belongs to the connected account. The command fails if the signature recovers to a different address.
+
+### Resolve the account for a simulation
+
+Use `--browser` when a read-only command should use the connected account as its sender:
+
+```bash
+$ cast wallet address --browser
+$ cast call $CONTRACT "balanceOf(address)(uint256)" $ACCOUNT \
+    --rpc-url $RPC_URL \
+    --browser
+$ cast estimate $CONTRACT "transfer(address,uint256)" $TO $AMOUNT \
+    --rpc-url $RPC_URL \
+    --browser
+$ cast access-list $CONTRACT "transfer(address,uint256)" $TO $AMOUNT \
+    --rpc-url $RPC_URL \
+    --browser
+```
+
+These commands connect to the wallet to obtain its address; they do not ask it to sign or submit a transaction. `cast estimate` also prepares the request for browser-wallet transaction behavior where the network requires it.
+
+`cast call --curl` only prints an offline RPC request and cannot connect to a browser wallet. Use `--from <ADDRESS>` instead of `--browser` when generating a curl command.
 
 ### Deploy a contract
 
@@ -90,7 +123,7 @@ Each command creates a new local session and stops its bridge when the signer is
 
 ### Check the account and network
 
-Foundry records the address and chain ID reported at connection time. Before a transaction is sent, it verifies that the request's `from` address and `chainId` match the connected wallet. Cast may ask the wallet to switch to the RPC network; approve that switch before the transaction request. Forge commands should start with the wallet already on the target network.
+Foundry records the address and chain ID reported at connection time. Before a transaction is sent, it verifies that the request's `from` address and `chainId` match the connected wallet. It also verifies that personal-message and EIP-712 signatures recover to the connected address. Cast may ask the wallet to switch to the RPC network; approve that switch before the transaction request. Forge commands should start with the wallet already on the target network.
 
 The CLI RPC and the browser wallet both participate in the flow. Foundry uses the CLI RPC for simulation, fee and gas estimation, and receipt polling, while the browser wallet submits the approved transaction through its provider. Make sure both point to the same chain.
 
@@ -108,4 +141,4 @@ Browser signing is a useful boundary between preparation and authorization:
 
 An agent should not treat a connected browser as blanket permission to send transactions. Keep the final `--broadcast --browser` invocation and wallet approvals as an explicit user-authorized step. For unattended CI, use a purpose-built keystore, hardware, KMS, or remote signer workflow with scoped credentials and policy controls.
 
-See the [`cast send`](/reference/cast/send), [`forge create`](/reference/forge/create), and [`forge script`](/reference/forge/script) references for transaction-specific options.
+See the [`cast wallet sign`](/reference/cast/wallet/sign), [`cast call`](/reference/cast/call), [`cast estimate`](/reference/cast/estimate), [`cast access-list`](/reference/cast/access-list), [`cast send`](/reference/cast/send), [`forge create`](/reference/forge/create), and [`forge script`](/reference/forge/script) references for command-specific options.

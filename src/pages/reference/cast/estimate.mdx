@@ -1,5 +1,5 @@
 ---
-description: "Estimate the gas cost of a transaction"
+description: "Estimate the gas cost of a transaction Examples: - cast estimate vitalik.eth --value 0.1ether - cast estimate $CONTRACT \"deposit()\" --value 1ether"
 ---
 
 _Generated from `cast estimate --help`; see [CLI reference versions](/reference/versions). Regenerate this page instead of editing it directly._
@@ -7,6 +7,10 @@ _Generated from `cast estimate --help`; see [CLI reference versions](/reference/
 ## cast estimate
 
 Estimate the gas cost of a transaction
+
+Examples:
+- cast estimate vitalik.eth --value 0.1ether
+- cast estimate $CONTRACT "deposit()" --value 1ether
 
 :::terminal
 
@@ -154,6 +158,18 @@ Wallet options - Tempo:
           
           [env: TEMPO_ROOT_ACCOUNT=]
 
+Wallet options - browser wallet:
+      --browser
+          Use a browser wallet
+
+      --browser-port <PORT>
+          Port for the browser wallet server
+
+          [default: 9545]
+
+      --browser-disable-open
+          Whether to open the browser for wallet connection
+
 Transaction options:
       --gas-limit <GAS_LIMIT>
           Gas limit for the transaction
@@ -218,9 +234,9 @@ Tempo:
       --tempo.session <SESSION_ID>
           Use a live Tempo wallet session for signing.
           
-          When set, Foundry resolves the session from
-          `$TEMPO_HOME/wallet/sessions.toml` and signs Tempo transactions with
-          the session's temporary access key on behalf of its root account.
+          When set, Foundry resolves the authorization witness from
+          `$TEMPO_HOME/wallet/store.json` and signs with that Accounts access
+          key on behalf of its root account.
 
       --tempo.fee-token <FEE_TOKEN>
           Fee token address, numeric TIP-20 token id, or known symbol for Tempo
@@ -290,15 +306,19 @@ Tempo:
           gas fees on behalf of the sender. Provide as a hex-encoded signature.
 
       --sponsor-url <URL>
-          Remote sponsor (fee payer) service URL.
+          Remote sponsor (fee payer) service URL for Cast transaction commands.
           
           When set, the user-signed transaction is forwarded to this URL via
           `eth_signRawTransaction`. The service adds its fee payer signature and
           returns the fully-sponsored transaction, which is then submitted via
           the regular RPC. No local sponsor key is required.
           
+          This option is supported by `cast send` and `cast erc20`. Forge
+          commands currently support local sponsorship through `--tempo.sponsor`
+          and `--tempo.sponsor-signer` instead.
+
           Example: `cast send 0x... --sponsor-url
-          https://sponsor.tempo.xyz/tp_abc123`
+          https://sponsor.moderato.tempo.xyz`
           
           [env: TEMPO_SPONSOR_URL=]
 

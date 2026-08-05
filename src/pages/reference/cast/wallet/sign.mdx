@@ -1,5 +1,5 @@
 ---
-description: "Sign a message or typed data"
+description: "Sign a message or typed data Examples: - cast wallet sign \"hello\" --account dev - cast wallet sign \"hello\" --private-key $PK - cast wallet sign --data --from-file typed_data.json --ledger"
 ---
 
 _Generated from `cast wallet sign --help`; see [CLI reference versions](/reference/versions). Regenerate this page instead of editing it directly._
@@ -7,6 +7,11 @@ _Generated from `cast wallet sign --help`; see [CLI reference versions](/referen
 ## cast wallet sign
 
 Sign a message or typed data
+
+Examples:
+- cast wallet sign "hello" --account dev
+- cast wallet sign "hello" --private-key $PK
+- cast wallet sign --data --from-file typed_data.json --ledger
 
 :::terminal
 
@@ -156,6 +161,18 @@ Wallet options - Tempo:
           Required when `--tempo.access-key` is set.
           
           [env: TEMPO_ROOT_ACCOUNT=]
+
+Wallet options - browser wallet:
+      --browser
+          Use a browser wallet
+
+      --browser-port <PORT>
+          Port for the browser wallet server
+
+          [default: 9545]
+
+      --browser-disable-open
+          Whether to open the browser for wallet connection
 
 Display options:
       --color <COLOR>
