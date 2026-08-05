@@ -66,6 +66,10 @@ $ cast wallet sign "Hello, Ethereum!" --private-key $KEY
 $ cast wallet sign "Hello, Ethereum!" --keystore ~/.foundry/keystores/my-key
 ```
 
+```bash [With browser wallet]
+$ cast wallet sign "Hello, Ethereum!" --browser
+```
+
 ```bash [Sign a 32-byte hash]
 $ cast wallet sign --no-hash $HASH --private-key $KEY
 ```
@@ -103,6 +107,8 @@ $ cast wallet sign --data '{
     }
   }' --private-key $KEY
 ```
+
+Use `--browser` instead of a private-key option to sign the typed data with an injected browser wallet. Browser wallets support personal-message and EIP-712 signing, but not raw-hash signing with `--no-hash`.
 
 ### Verifying signatures
 
