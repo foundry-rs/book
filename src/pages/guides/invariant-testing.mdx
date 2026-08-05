@@ -38,6 +38,45 @@ Run invariant tests:
 $ forge test --match-contract VaultInvariantTest
 ```
 
+### After-invariant hook
+
+Define `afterInvariant()` when you need to check a property once after each
+invariant run, rather than after every call in the run:
+
+```solidity [test/Vault.invariant.t.sol]
+contract VaultInvariantTest is Test {
+    Vault vault;
+    VaultHandler handler;
+
+    function setUp() public {
+        vault = new Vault();
+        handler = new VaultHandler(vault);
+        targetContract(address(handler));
+    }
+
+    function invariant_SolvencyCheck() public view {
+        assertGe(address(vault).balance, vault.totalDeposits());
+    }
+
+    function afterInvariant() public view { // [!code hl]
+        assertEq( // [!code hl]
+            address(vault).balance, // [!code hl]
+            handler.ghost_depositSum() - handler.ghost_withdrawSum() // [!code hl]
+        ); // [!code hl]
+    } // [!code hl]
+}
+```
+
+Forge calls the hook against the final state of a run after its invariant checks
+pass. A revert or failed assertion in the hook fails the invariant test and
+reports the run's call sequence. The hook must have the exact signature
+`afterInvariant()` and a test contract can define only one. State changes made
+by the hook are not persisted.
+
+Use an `invariant_*` function for properties that must hold throughout a call
+sequence. Use `afterInvariant()` for aggregate or end-of-run checks, especially
+when evaluating the property after every call would be unnecessarily expensive.
+
 ### Handler pattern
 
 Handlers wrap target contracts to constrain inputs and track state:
