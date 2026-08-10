@@ -422,7 +422,7 @@ fn categorize_command(cmd_name: &str, tool_name: &str) -> &'static str {
             "lookup-address" | "resolve-name" | "namehash" => "ENS Commands",
             "etherscan-source" | "source" => "Etherscan Commands",
             "abi-encode" | "4byte" | "4byte-calldata" | "4byte-event" | "calldata" | "decode-abi" | "decode-calldata" | "pretty-calldata" | "selectors" | "upload-signature" => "ABI Commands",
-            "format-bytes32-string" | "from-bin" | "from-fixed-point" | "from-rlp" | "from-utf8" | "from-wei" | "parse-bytes32-address" | "parse-bytes32-string" | "to-ascii" | "to-base" | "to-bytes32" | "to-dec" | "to-fixed-point" | "to-hex" | "to-hexdata" | "to-int256" | "to-rlp" | "to-uint256" | "to-unit" | "to-wei" | "shl" | "shr" => "Conversion Commands",
+            "format-bytes32-string" | "from-bin" | "from-fixed-point" | "from-rlp" | "from-utf8" | "from-wei" | "parse-bytes32-address" | "parse-bytes32-string" | "to-ascii" | "to-base" | "to-bytes-memory" | "to-bytes32" | "to-dec" | "to-fixed-point" | "to-hex" | "to-hexdata" | "to-int256" | "to-rlp" | "to-uint256" | "to-unit" | "to-wei" | "shl" | "shr" => "Conversion Commands",
             "address-zero" | "sig" | "sig-event" | "keccak" | "compute-address" | "create2" | "interface" | "index" | "concat-hex" | "max-int" | "min-int" | "max-uint" | "to-check-sum-address" => "Utility Commands",
             "wallet" => "Wallet Commands",
             _ => "Utility Commands",

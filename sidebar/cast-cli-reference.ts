@@ -72,6 +72,7 @@ export const castCliReference: SidebarItem = {
                 { text: "cast shr", link: "/reference/cast/shr" },
                 { text: "cast to-ascii", link: "/reference/cast/to-ascii" },
                 { text: "cast to-base", link: "/reference/cast/to-base" },
+                { text: "cast to-bytes-memory", link: "/reference/cast/to-bytes-memory" },
                 { text: "cast to-bytes32", link: "/reference/cast/to-bytes32" },
                 { text: "cast to-dec", link: "/reference/cast/to-dec" },
                 { text: "cast to-fixed-point", link: "/reference/cast/to-fixed-point" },
