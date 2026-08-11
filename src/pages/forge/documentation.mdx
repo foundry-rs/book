@@ -44,6 +44,10 @@ docs/
         └── interface.ICounter.mdx
 ```
 
+::::note[Foundry 1.7.1 and earlier]
+Prior Foundry releases generate an mdBook site with `book.toml`, `book.css`, and Markdown pages under `docs/src/`. The Vocs migration replaces that layout with the scaffold above. When upgrading an existing project, generate into a clean output directory so legacy mdBook files are not mixed into the Vocs site.
+::::
+
 Use `--out <PATH>` to generate elsewhere. By default, Forge documents the project's source directory and excludes external libraries. Pass `--include-libraries` when library APIs belong in the published site.
 
 ### Configure generation
