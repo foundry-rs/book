@@ -109,7 +109,7 @@ $ rustup update stable
 ```
 
 ```bash [Install from GitHub]
-$ cargo install --git https://github.com/foundry-rs/foundry --profile release --locked forge cast chisel anvil
+$ cargo install --git https://github.com/foundry-rs/foundry --profile release --locked forge cast chisel anvil solar
 ```
 
 Or build from a local clone:
@@ -121,7 +121,10 @@ $ cargo install --path ./crates/forge --profile release --locked
 $ cargo install --path ./crates/cast --profile release --locked
 $ cargo install --path ./crates/anvil --profile release --locked
 $ cargo install --path ./crates/chisel --profile release --locked
+$ cargo install --path ./crates/solar --profile release --locked
 ```
+
+The `solar` package in the Foundry workspace builds the Solar compiler distributed with Foundry. The compiler's source is maintained in the separate [Solar repository](https://github.com/paradigmxyz/solar).
 
 You can also use foundryup to build from source:
 
