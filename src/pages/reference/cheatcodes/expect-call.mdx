@@ -11,11 +11,14 @@ function expectCall(address callee, bytes calldata data) external;
 function expectCall(address callee, bytes calldata data, uint64 count) external;
 function expectCall(address callee, uint256 value, bytes calldata data) external;
 function expectCall(address callee, uint256 value, bytes calldata data, uint64 count) external;
+function expectDelegateCall(address callee, bytes calldata data) external;
 ```
 
 ### Description
 
 Expects a call to a specified address `callee`, where the call data either strictly or loosely matches `data`.
+
+Use `expectDelegateCall` when only a delegate call should satisfy the expectation. It uses the same calldata matching behavior as `expectCall`, but an ordinary call does not match it.
 
 | Signature Variant | Description |
 |-------------------|-------------|
@@ -48,6 +51,16 @@ function testExpectCall() public {
         abi.encodeCall(token.transfer, (alice, 10))
     );
     token.transfer(alice, 10);
+}
+```
+
+#### Expect a delegate call is made
+
+```solidity [test/ExpectDelegateCall.t.sol]
+function testExpectDelegateCall() public {
+    bytes memory data = abi.encodeWithSignature("call()");
+    vm.expectDelegateCall(address(implementation), data);
+    proxy.delegateCall(implementation);
 }
 ```
 
