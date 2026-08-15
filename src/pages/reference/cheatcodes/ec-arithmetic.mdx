@@ -1,0 +1,52 @@
+---
+description: Adds and multiplies secp256k1 points in affine or projective coordinates
+---
+
+## secp256k1 arithmetic
+
+### Signatures
+
+```solidity
+function ecAddAffine(uint256 pointX1, uint256 pointY1, uint256 pointX2, uint256 pointY2)
+    external
+    pure
+    returns (uint256 resultX, uint256 resultY);
+
+function ecAddProjective(
+    uint256 pointX1,
+    uint256 pointY1,
+    uint256 pointZ1,
+    uint256 pointX2,
+    uint256 pointY2,
+    uint256 pointZ2
+) external pure returns (uint256 resultX, uint256 resultY, uint256 resultZ);
+
+function ecMulAffine(uint256 pointX, uint256 pointY, uint256 scalar)
+    external
+    pure
+    returns (uint256 resultX, uint256 resultY);
+
+function ecMulProjective(uint256 pointX, uint256 pointY, uint256 pointZ, uint256 scalar)
+    external
+    pure
+    returns (uint256 resultX, uint256 resultY, uint256 resultZ);
+```
+
+### Description
+
+These cheatcodes add and multiply points on the secp256k1 curve. Except for the point-at-infinity encodings described below, coordinates must be valid field elements and represent points on the curve.
+
+- `ecAddAffine` and `ecAddProjective` add two points.
+- `ecMulAffine` and `ecMulProjective` multiply a point by a scalar. The scalar is reduced modulo the secp256k1 group order.
+
+#### Coordinate representations
+
+The affine point at infinity is represented as `(0, 0)`.
+
+Projective inputs use homogeneous coordinates: `(X, Y, Z)` represents the affine point `(X / Z, Y / Z)` over the secp256k1 base field. These are not Jacobian coordinates, which use `(X / Z², Y / Z³)`.
+
+For projective inputs, the point at infinity is `(0, y, 0)` for any non-zero `y`. Projective results are normalized: finite points return `(x, y, 1)`, and the point at infinity returns `(0, 1, 0)`.
+
+:::note
+Use the affine cheatcodes unless you already have a point in homogeneous projective coordinates.
+:::

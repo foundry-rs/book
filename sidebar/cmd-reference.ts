@@ -149,6 +149,7 @@ export const cmdReference: SidebarItem[] = [
           { text: 'signCompact', link: '/reference/cheatcodes/sign-compact' },
           { text: 'Ed25519', link: '/reference/cheatcodes/ed25519' },
           { text: 'P256', link: '/reference/cheatcodes/p256' },
+          { text: 'secp256k1 arithmetic', link: '/reference/cheatcodes/ec-arithmetic' },
           { text: 'signDelegation', link: '/reference/cheatcodes/sign-delegation' },
           { text: 'signKeychain', link: '/reference/cheatcodes/sign-keychain' },
           { text: 'signKeychainAdmin', link: '/reference/cheatcodes/sign-keychain-admin' },
