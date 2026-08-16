@@ -9,8 +9,10 @@ description: Asserts that a specific call is made during test execution
 ```solidity
 function expectCall(address callee, bytes calldata data) external;
 function expectCall(address callee, bytes calldata data, uint64 count) external;
-function expectCall(address callee, uint256 value, bytes calldata data) external;
-function expectCall(address callee, uint256 value, bytes calldata data, uint64 count) external;
+function expectCall(address callee, uint256 msgValue, bytes calldata data) external;
+function expectCall(address callee, uint256 msgValue, bytes calldata data, uint64 count) external;
+function expectCallMinGas(address callee, uint256 msgValue, uint64 minGas, bytes calldata data) external;
+function expectCallMinGas(address callee, uint256 msgValue, uint64 minGas, bytes calldata data, uint64 count) external;
 function expectDelegateCall(address callee, bytes calldata data) external;
 ```
 
@@ -20,11 +22,14 @@ Expects a call to a specified address `callee`, where the call data either stric
 
 Use `expectDelegateCall` when only a delegate call should satisfy the expectation. It uses the same calldata matching behavior as `expectCall`, but an ordinary call does not match it.
 
+Use `expectCallMinGas` to additionally require that the call is supplied with at least `minGas` gas. The minimum applies to the gas supplied to the call, not the gas consumed during execution.
+
 | Signature Variant | Description |
 |-------------------|-------------|
 | Without `count` | Call must be made at least once (can be called multiple times to expect multiple calls) |
 | With `count` | Call must be made exactly `count` times |
-| With `value` | Also checks that the call was made with the specified `msg.value` |
+| With `msgValue` | Also checks that the call was made with the specified `msg.value` |
+| With `minGas` | Uses `expectCallMinGas` to require at least the specified gas for the matching call |
 
 Set `count` to 0 to assert that a call is **not** made.
 
@@ -36,7 +41,8 @@ If the test terminates without the expected call being made, the test fails.
 |-----------|-----------|-------------------------------------------------------|
 | `callee`  | `address` | The address expected to be called                     |
 | `data`    | `bytes`   | The expected calldata (can be partial, matching from first byte) |
-| `value`   | `uint256` | The expected `msg.value` for the call                 |
+| `msgValue` | `uint256` | The expected `msg.value` for the call                |
+| `minGas`  | `uint64`  | The minimum gas that must be supplied to the call     |
 | `count`   | `uint64`  | Exact number of times the call should be made         |
 
 ### Examples
@@ -130,6 +136,12 @@ function testExpectCallWithValue() public {
     
     target.pay{value: 1 ether}(2);
 }
+```
+
+#### Expect a call with minimum gas
+
+```solidity [test/ExpectCallMinGas.t.sol]
+// [!include ~/snippets/projects/cheatcodes/test/ExpectCallMinGas.t.sol:minimum-gas]
 ```
 
 ### Gotchas
