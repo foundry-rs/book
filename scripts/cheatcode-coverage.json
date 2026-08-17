@@ -352,7 +352,6 @@
     "deleteSnapshots",
     "envExists",
     "eth_getLogs",
-    "expectCallMinGas",
     "expectCreate",
     "expectCreate2",
     "fromRlp",
