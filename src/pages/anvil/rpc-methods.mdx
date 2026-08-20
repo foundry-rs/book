@@ -562,6 +562,16 @@ Parameters: `rawTransaction` — raw signed transaction as hex.
 $ cast rpc anvil_classifyTransaction $RAW_TX
 ```
 
+#### eth_signRawTransaction
+
+Signs a sender-signed Tempo transaction as the node's fee payer (sponsor) and returns the fully signed raw transaction without broadcasting it. This is the sign-only mode of the Tempo fee payer service contract, so `cast send --sponsor-url` and the Tempo SDK relay transport can point directly at Anvil; raw transactions submitted to `eth_sendRawTransaction` with the sponsorship placeholder are sponsored automatically instead. The sponsor account defaults to the last dev account and is configurable with Anvil's `--tempo.fee-payer` option; it selects the fee token when the sender left it open and must not equal the transaction sender. See the [sponsorship guide](/guides/tempo#sponsorship) for the end-to-end flow.
+
+Parameters: `rawTransaction` — sender-signed Tempo transaction as hex, carrying the fee payer signature placeholder.
+
+```bash [Sponsor-sign a raw transaction]
+$ cast rpc eth_signRawTransaction $RAW_TX
+```
+
 ### Nonstandard eth_ methods
 
 Anvil also serves a number of `eth_` methods beyond the standard Ethereum JSON-RPC specification.
