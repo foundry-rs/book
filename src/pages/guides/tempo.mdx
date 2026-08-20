@@ -154,7 +154,9 @@ Use [`cast batch-mktx`](/reference/cast/batch-mktx) to build a signed or unsigne
 
 ### Sponsorship
 
-Tempo sponsorship lets a fee payer sponsor another account's transaction. Foundry supports:
+Tempo sponsorship lets a fee payer pay gas for another account's transaction. The sender signs the transaction with a fee payer placeholder, leaving the two sponsor-owned fields open: the fee token and the fee payer signature. The sponsor fills them by signing the sponsor digest, which commits to the full transaction, so nonce, gas, and fee fields are pinned once the digest exists. Protocol details live in Tempo's [fee sponsorship guide](https://docs.tempo.xyz/docs/guide/payments/sponsor-user-fees).
+
+Foundry supports:
 
 - `--tempo.sponsor` for the sponsor address.
 - `--tempo.sponsor-signer` for in-band sponsor signing.
@@ -163,6 +165,34 @@ Tempo sponsorship lets a fee payer sponsor another account's transaction. Foundr
 - `--tempo.print-sponsor-hash` when the sponsor needs the hash to sign out of band.
 
 For multi-transaction `forge script --broadcast` runs, prefer `--tempo.sponsor-signer` over a static `--tempo.sponsor-sig` so retries and later transactions can receive fresh sponsor signatures.
+
+#### Remote sponsor services
+
+With `--sponsor-url`, the sender-signed transaction is forwarded to a sponsor service via `eth_signRawTransaction`. The service selects the fee token it pays with, adds its fee payer signature, and returns the fully sponsored transaction, which is then submitted through the regular RPC; no local sponsor key is required. Hosted Tempo networks run such a service, built on the Accounts SDK [relay handler](https://docs.tempo.xyz/docs/server/relay-handler); the deployed worker is public at [`tempoxyz/tempo-apps`](https://github.com/tempoxyz/tempo-apps/tree/main/apps/fee-payer).
+
+```bash
+$ cast send $TOKEN "transfer(address,uint256)" $RECIPIENT 1000 \
+    --rpc-url tempo \
+    --sponsor-url https://sponsor.tempo.xyz \
+    --private-key $PRIVATE_KEY
+```
+
+#### Anvil's built-in fee payer
+
+In Tempo mode, Anvil serves the sponsor service contract itself, so sponsored flows work locally without hosting a separate service: [`eth_signRawTransaction`](/anvil/rpc-methods#eth_signrawtransaction) sponsor-signs a sender-signed Tempo transaction, and raw transactions submitted with the sponsorship placeholder are sponsored automatically on submission. Point `--sponsor-url` at the node itself:
+
+```bash
+$ anvil --network tempo
+```
+
+```bash
+$ cast send $TOKEN "transfer(address,uint256)" $RECIPIENT 1000 \
+    --rpc-url http://127.0.0.1:8545 \
+    --sponsor-url http://127.0.0.1:8545 \
+    --private-key $PRIVATE_KEY
+```
+
+The sponsor account defaults to the last dev account and pays with its stored fee token. Pass `--tempo.fee-payer` to Anvil to sponsor with a different unlocked account; the sponsor must not equal the transaction sender.
 
 ### Access-key and session signing
 
