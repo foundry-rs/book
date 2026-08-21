@@ -8,9 +8,11 @@ Configuration shared by build commands and EVM execution. All fields belong unde
 | Field | Type | Default | Description |
 | --- | --- | --- | --- |
 | `dynamic_test_linking` | boolean | `false` | Dynamically links test contracts. |
-| `snapshots` | path | `snapshots` | Directory used for gas snapshot files. |
+| `snapshots` | path | `snapshots` | Directory used for gas and CPU snapshot files. |
 | `gas_snapshot_check` | boolean | `false` | Checks generated snapshots against stored snapshots. |
 | `gas_snapshot_emit` | boolean | `true` | Writes gas snapshots to disk. |
+| `cpu_snapshot_check` | boolean | `false` | Checks generated CPU snapshots against stored snapshots. |
+| `cpu_snapshot_emit` | boolean | `true` | Writes CPU snapshots to disk. |
 | `skip` | array of globs | `[]` | Skips matching source paths during build and execution. |
 | `test_failures_file` | path | `cache/test-failures` | Stores the last failed tests for reruns. |
 | `no_match_coverage` | regular expression or none | none | Excludes matching source paths from coverage reports. |
@@ -20,6 +22,22 @@ Configuration shared by build commands and EVM execution. All fields belong unde
 | `build_info_path` | path or none | none | Overrides the build-info output directory. |
 | `names` | boolean | `false` | Prints compiled contract names. |
 | `sizes` | boolean | `false` | Prints compiled contract sizes. |
+
+#### CPU snapshot controls
+
+CPU snapshots record elapsed thread CPU time in nanoseconds and are stored as
+`<snapshots>/cpu/<group>.json`. When `cpu_snapshot_check` is enabled, `forge test`
+fails if a recorded value differs from an existing value on disk. When
+`cpu_snapshot_emit` is enabled, the values from the run are written after the
+check. The settings can also be controlled by `FORGE_CPU_SNAPSHOT_CHECK` and
+`FORGE_CPU_SNAPSHOT_EMIT`, or overridden with the corresponding
+`--cpu-snapshot-check=<boolean>` and `--cpu-snapshot-emit=<boolean>` flags.
+
+```toml
+[profile.default]
+cpu_snapshot_check = true
+cpu_snapshot_emit = false
+```
 
 ### Compiler and diagnostic fields
 
