@@ -29,7 +29,7 @@ export default defineConfig({
   accentColor: "light-dark(#f6b128, #f9c22f)",
   title: "foundry - Ethereum Development Framework",
   description:
-    "Documentation for Foundry's Forge, Cast, Anvil, and Chisel Ethereum development tools.",
+    "Use Foundry's Forge, Cast, Anvil, and Chisel tools to build, test, fuzz, debug, deploy, and inspect Ethereum smart contracts.",
   baseUrl: "https://www.getfoundry.sh",
   // Keep assets on the current origin so Vercel previews do not load them cross-origin.
   // `baseUrl` still provides the production origin for canonical and Open Graph metadata.
