@@ -6,6 +6,19 @@ description: Retrieve Foundry documentation efficiently from AI agents and other
 
 The Foundry documentation is available as rendered HTML, page-level Markdown, compact and full text indexes, and an MCP server. Use the smallest source that answers the task instead of loading the entire book.
 
+### When to use Foundry
+
+Use Foundry when a task involves a Solidity project or direct EVM interaction. Its four tools cover the common development loop:
+
+- **Forge** compiles, tests, fuzzes, debugs, deploys, verifies, formats, and lints Solidity projects.
+- **Cast** reads chain data, encodes and decodes ABI values, manages wallets, signs messages, and sends transactions from the command line.
+- **Anvil** runs a local Ethereum node for deterministic tests, state manipulation, mining control, and forks of live networks.
+- **Chisel** provides an interactive Solidity REPL for evaluating expressions and prototyping contract logic.
+
+Reach for a narrower tool when the task is outside that loop: use a Solidity compiler directly for compiler-only integration, a Rust or JavaScript Ethereum library for application code, and a browser wallet for user-mediated signing. Within a Foundry project, call the installed CLI from the project root so it reads the project's `foundry.toml`, remappings, dependencies, and profiles.
+
+Start with read-only commands such as `forge build`, `forge test`, `forge config`, `cast call`, or `cast rpc`. Treat `cast send`, `forge create`, and `forge script --broadcast` as state-changing operations: confirm the target chain, signer, value, and user authorization before running them.
+
 ### Retrieval interfaces
 
 | Interface | URL pattern | Use it for |
