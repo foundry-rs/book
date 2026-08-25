@@ -162,6 +162,49 @@ function parseMarkdown(markdown: string): { data: Map<string, BenchmarkData>; re
   return { data, repoUrls };
 }
 
+export function parseFoundryVersions(markdown: string) {
+  const versionLines = Array.from(
+    new Set(markdown.match(/forge (?:Version: )?\S+ \([^)]+\)/g) ?? []),
+  );
+  const releaseVersions = versionLines.map(line => {
+    const version = line.match(/[0-9.]+-(v[0-9.]+)/)?.[1]
+      ?? line.match(/forge (?:Version: )?(v?[0-9.]+) \(/)?.[1];
+    return version && `v${version.replace(/^v/, '')}`;
+  });
+
+  const baselineVersion = releaseVersions[0];
+  if (!baselineVersion) {
+    throw new Error('Could not determine the Foundry baseline release');
+  }
+
+  const latestVersion = releaseVersions[1];
+  if (latestVersion) {
+    return {
+      baselineVersion,
+      latestVersionDisplay: latestVersion,
+      latestVersionUrl: `https://github.com/foundry-rs/foundry/releases/tag/${latestVersion}`,
+    };
+  }
+
+  const development = versionLines[1]?.match(
+    /v?([0-9.]+)-(nightly|dev) \(([0-9a-f]+) /,
+  );
+  if (development) {
+    const [, version, channel, commit] = development;
+    return {
+      baselineVersion,
+      latestVersionDisplay: channel === 'nightly' ? `nightly-${commit}` : `v${version}-dev`,
+      latestVersionUrl: `https://github.com/foundry-rs/foundry/commit/${commit}`,
+    };
+  }
+
+  return {
+    baselineVersion,
+    latestVersionDisplay: 'master',
+    latestVersionUrl: 'https://github.com/foundry-rs/foundry/tree/master',
+  };
+}
+
 function getRepositoryUrl(repoName: string, repoUrls: Map<string, string>): string {
   const fromMarkdown = repoUrls.get(repoName);
   if (fromMarkdown) return fromMarkdown;
@@ -415,44 +458,8 @@ async function main() {
       || (dateMatch && dateMatch[1].trim())
       || new Date().toLocaleDateString();
 
-    // Version lines may repeat (one per section); dedupe and use the first two.
-    const allVersionLines = markdown.match(/forge (?:Version: )?[0-9.]+-.+/g) || [];
-    const versionLines = Array.from(new Set(allVersionLines));
-
-    let baselineVersion = 'v1.2.3';
-    let latestVersionDisplay: string;
-    let latestVersionUrl: string;
-
-    const baselineLine = versionLines[0];
-    if (baselineLine) {
-      const baselineMatch = baselineLine.match(/([0-9.]+)-(v[0-9.]+)/);
-      if (baselineMatch) {
-        baselineVersion = baselineMatch[2] ?? baselineVersion;
-      }
-    }
-
-    const latestLine = versionLines[1];
-    if (latestLine) {
-      const releaseMatch = latestLine.match(/([0-9.]+)-(v[0-9.]+)/);
-      if (releaseMatch && releaseMatch[2]) {
-        const latestRelease = releaseMatch[2];
-        latestVersionDisplay = latestRelease;
-        latestVersionUrl = `https://github.com/foundry-rs/foundry/releases/tag/${latestRelease}`;
-      } else {
-        const nightlyMatch = latestLine.match(/[0-9.]+-nightly \(([a-f0-9]+) /);
-        if (nightlyMatch && nightlyMatch[1]) {
-          const latestCommit = nightlyMatch[1];
-          latestVersionDisplay = `nightly-${latestCommit}`;
-          latestVersionUrl = `https://github.com/foundry-rs/foundry/commit/${latestCommit}`;
-        } else {
-          latestVersionDisplay = 'master';
-          latestVersionUrl = 'https://github.com/foundry-rs/foundry/tree/master';
-        }
-      }
-    } else {
-      latestVersionDisplay = 'master';
-      latestVersionUrl = 'https://github.com/foundry-rs/foundry/tree/master';
-    }
+    const { baselineVersion, latestVersionDisplay, latestVersionUrl } =
+      parseFoundryVersions(markdown);
 
     console.log('Generating benchmark cards...');
     let output = `{/* Auto-generated from ${benchmarkDate}. Do not edit manually. */}\n\n`;
@@ -484,4 +491,6 @@ async function main() {
   }
 }
 
-main();
+if (import.meta.main) {
+  main();
+}
