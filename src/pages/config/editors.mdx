@@ -6,6 +6,17 @@ description: Configure VS Code, Vim, and other editors for Foundry projects.
 
 Configure your editor for Solidity syntax highlighting, formatting, and Foundry integration.
 
+### Solidity language server
+
+Foundry includes Solar's Solidity language server. To enable it in an editor that supports a
+custom language server, configure the server command as `forge lsp`. The server communicates over
+standard input and output by default; `forge lsp --stdio` is also accepted by clients that require
+an explicit transport argument. You do not need to install the standalone `solar` executable.
+
+The server automatically loads your `foundry.toml`, workspace folders, source and library paths,
+remappings, EVM version, and selected Foundry profile. Its default flycheck runs
+`forge lint --json` with the same Forge executable that started the server.
+
 ### VS Code
 
 #### Recommended extensions
@@ -74,10 +85,11 @@ Plug 'tomlion/vim-solidity'
 
 #### LSP support with Neovim
 
-For Neovim with `nvim-lspconfig`, configure the Solidity language server:
+For Neovim with `nvim-lspconfig`, configure the Solidity language server to run through Forge:
 
 ```lua [init.lua]
 require('lspconfig').solidity_ls.setup({
+  cmd = { 'forge', 'lsp' },
   root_dir = require('lspconfig.util').root_pattern('foundry.toml', '.git'),
 })
 ```
