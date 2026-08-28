@@ -49,7 +49,7 @@ level of `[profile.<name>]`.
 
 | Field | Default | Description |
 | --- | --- | --- |
-| `network` | none | Selects the network family: `ethereum`, `optimism`, or `tempo`. |
+| `network` | none | Selects an available network family: `ethereum`, `optimism`, `tempo`, or `monad`. |
 | `celo` | `false` | Enables Celo network features such as the Celo transfer precompile. |
 | `bypass_prevrandao` | `false` | Uses a random `prevrandao` when the forked block does not provide one. |
 
@@ -57,8 +57,11 @@ Selecting a network family enables its execution rules and precompiles — for
 example the Tempo system precompiles, which are also labeled in traces. When
 forking, Foundry infers the network from the chain ID, so `network` mainly
 matters for local execution; see the
-[`network`](/config/reference/testing#network) entry for details. The legacy
-boolean forms `optimism = true` and `tempo = true` are still accepted.
+[`network`](/config/reference/testing#network) entry and the
+[network selection guide](/config/networks) for details. The values exposed by
+a binary depend on its compiled features. The legacy boolean forms
+`optimism = true`, `tempo = true`, and `monad = true` are still accepted when
+the corresponding family is available.
 
 ```toml
 [profile.default]
