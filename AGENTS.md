@@ -11,6 +11,8 @@ the installed CLI as the source of truth for current behavior.
 - `src/pages/`: authored MDX and Markdown pages.
 - `src/snippets/projects/`: source files used by documentation examples.
 - `src/snippets/output/`: captured Foundry command output.
+- `src/data/`: generated changelog data rendered on `/changelog`; refresh with
+  `bun run fetch-changelog` instead of editing by hand.
 - `sidebar/`: authored navigation plus generated CLI reference navigation.
 - `scripts/gen_output/`: CLI reference and example-output generators.
 - `public/`: static images and other public assets.
@@ -22,14 +24,14 @@ the installed CLI as the source of truth for current behavior.
 ```bash
 bun install              # Install pinned dependencies.
 bun dev                  # Start the local Vocs server.
-bunx vocs build          # Validate content without refreshing benchmark data.
-bun run build            # Refresh benchmarks and run the production build.
+bunx vocs build          # Validate content without refreshing remote data.
+bun run build            # Refresh remote data and run the production build.
 ./scripts/gen_output.sh  # Regenerate CLI references and captured output.
 ```
 
-`bun run build` fetches remote benchmark data. Use the direct Vocs build for a
-focused content change, then use the production build when the changed path or
-release workflow requires it.
+`bun run build` fetches remote benchmark and changelog data. Use the direct
+Vocs build for a focused content change, then use the production build when the
+changed path or release workflow requires it.
 
 `gen_output.sh` requires current `forge`, `cast`, `anvil`, and `chisel` binaries,
 plus the tools checked by its scripts. It runs networked examples, clones an

@@ -47,6 +47,11 @@ jobs:
           bun scripts/check-cheatcode-coverage.ts \
             --refresh --spec "$spec" --commit "$foundry_commit"
 
+      - name: Refresh changelog data
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: bun scripts/fetch-changelog.ts --strict
+
       - name: Update
         run: |
           git config --global user.name "GitHub Actions Bot"
