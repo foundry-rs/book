@@ -5,12 +5,13 @@
   "type": "module",
   "scripts": {
     "dev": "vocs dev",
-    "build": "bun run fetch-benchmarks && vocs build",
+    "build": "bun run fetch-benchmarks && bun run fetch-changelog && vocs build",
     "check:cheatcodes": "bun scripts/check-cheatcode-coverage.ts",
     "check:anvil-rpc": "bun scripts/check-anvil-rpc-coverage.ts",
     "check:commands": "bun scripts/check-narrative-commands.ts",
     "preview": "vocs preview",
-    "fetch-benchmarks": "bun scripts/fetch-benchmarks.ts"
+    "fetch-benchmarks": "bun scripts/fetch-benchmarks.ts",
+    "fetch-changelog": "bun scripts/fetch-changelog.ts"
   },
   "dependencies": {
     "react": "^19.2.5",
