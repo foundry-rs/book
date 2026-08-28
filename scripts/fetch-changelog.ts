@@ -6,10 +6,8 @@ import { dirname, join } from 'path';
 //
 // Foundry publishes a nightly (pre)release every day, so the plain GitHub
 // releases feed is dominated by nightlies and a single-page fetch contains few
-// or no stable releases. This script paginates the full release list, keeps
-// stable `vX.Y.Z` releases only, and additionally builds an "Unreleased"
-// section from the `.changelog/*.md` fragments that landed on master since the
-// latest stable tag.
+// or no stable releases. This script paginates the full release list and keeps
+// stable `vX.Y.Z` releases only.
 //
 // Without `--strict`, network failures keep the existing checked-in data so
 // builds stay reproducible offline. The weekly update workflow runs with
@@ -17,12 +15,9 @@ import { dirname, join } from 'path';
 
 const REPO = 'foundry-rs/foundry';
 const API_BASE = `https://api.github.com/repos/${REPO}`;
-const RAW_BASE = `https://raw.githubusercontent.com/${REPO}`;
 const OUTPUT_FILE = join(import.meta.dir, '../src/data/changelog.json');
 
 const STABLE_TAG = /^v(\d+)\.(\d+)\.(\d+)$/;
-// Cargo package names from fragment frontmatter that map to user-facing tools.
-const USER_FACING_PACKAGES = ['forge', 'cast', 'anvil', 'chisel'];
 
 const strict = process.argv.includes('--strict');
 
@@ -34,15 +29,7 @@ interface Release {
   body: string;
 }
 
-interface Unreleased {
-  since: string;
-  date: string;
-  url: string;
-  body: string;
-}
-
 interface ChangelogData {
-  unreleased: Unreleased | null;
   releases: Release[];
 }
 
@@ -103,97 +90,6 @@ async function fetchStableReleases(): Promise<Release[]> {
   return releases;
 }
 
-async function listChangelogFragments(ref: string): Promise<string[]> {
-  interface DirEntry {
-    name: string;
-    type: string;
-  }
-
-  const entries = (await githubFetch(`/contents/.changelog?ref=${ref}`)) as DirEntry[];
-  return entries
-    .filter(entry => entry.type === 'file' && entry.name.endsWith('.md') && entry.name !== 'README.md')
-    .map(entry => entry.name);
-}
-
-interface Fragment {
-  packages: string[];
-  note: string;
-}
-
-function parseFragment(markdown: string): Fragment | null {
-  const match = markdown.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/);
-  if (!match) return null;
-
-  const packages: string[] = [];
-  for (const line of match[1].split(/\r?\n/)) {
-    const entry = line.match(/^([\w-]+):\s*(major|minor|patch)\s*$/);
-    if (entry) packages.push(entry[1]);
-  }
-
-  const note = match[2].replace(/\s*\n\s*/g, ' ').trim();
-  if (!note) return null;
-
-  const tools = USER_FACING_PACKAGES.filter(tool => packages.includes(tool));
-  return { packages: tools, note };
-}
-
-async function fetchUnreleased(latestTag: string): Promise<Unreleased | null> {
-  const [masterFragments, releasedFragments] = await Promise.all([
-    listChangelogFragments('master'),
-    listChangelogFragments(latestTag),
-  ]);
-
-  // Fragments are consumed into CHANGELOG.md at release time, but compare
-  // against the tag's snapshot instead of assuming an empty directory so
-  // fragments that already shipped are never listed as unreleased.
-  const released = new Set(releasedFragments);
-  const added = masterFragments.filter(name => !released.has(name)).sort();
-  if (added.length === 0) return null;
-
-  const fragments: Fragment[] = [];
-  for (let i = 0; i < added.length; i += 16) {
-    const batch = await Promise.all(
-      added.slice(i, i + 16).map(async name => {
-        const response = await fetch(`${RAW_BASE}/master/.changelog/${name}`);
-        if (!response.ok) {
-          throw new Error(`Failed to fetch fragment ${name}: ${response.status} ${response.statusText}`);
-        }
-        return parseFragment(await response.text());
-      }),
-    );
-    fragments.push(...batch.filter(fragment => fragment !== null));
-  }
-  if (fragments.length === 0) return null;
-
-  // Group user-facing tools first, internal-only changes last.
-  fragments.sort((a, b) => {
-    const rank = (fragment: Fragment) =>
-      fragment.packages.length === 0 ? USER_FACING_PACKAGES.length : USER_FACING_PACKAGES.indexOf(fragment.packages[0]);
-    return rank(a) - rank(b) || a.note.localeCompare(b.note);
-  });
-
-  // Date the section by the last commit that touched the fragments so the
-  // generated file only changes when its content does.
-  interface Commit {
-    commit: { committer: { date: string } };
-  }
-  const commits = (await githubFetch('/commits?path=.changelog&per_page=1')) as Commit[];
-  const date = commits[0]?.commit.committer.date ?? new Date().toISOString();
-
-  let body = `Changes merged since ${latestTag}. Available in [nightly builds](https://github.com/foundry-rs/foundry/releases/tag/nightly) and part of the next stable release.\n`;
-  for (const fragment of fragments) {
-    const prefix = fragment.packages.length > 0 ? `**${fragment.packages.join(', ')}**: ` : '';
-    body += `\n- ${prefix}${fragment.note}`;
-  }
-
-  return {
-    since: latestTag,
-    date,
-    url: 'https://github.com/foundry-rs/foundry/releases/tag/nightly',
-    body,
-  };
-}
-
 function readExisting(): ChangelogData | null {
   if (!existsSync(OUTPUT_FILE)) return null;
   try {
@@ -212,11 +108,7 @@ async function main() {
     }
     console.log(`Found ${releases.length} stable releases (latest: ${releases[0].version})`);
 
-    console.log('Collecting unreleased changelog fragments...');
-    const unreleased = await fetchUnreleased(releases[0].version);
-    console.log(unreleased ? `Found unreleased changes since ${unreleased.since}` : 'No unreleased changes');
-
-    const data: ChangelogData = { unreleased, releases };
+    const data: ChangelogData = { releases };
     const serialized = `${JSON.stringify(data, null, 2)}\n`;
 
     const existing = readExisting();
