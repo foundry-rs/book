@@ -74,6 +74,7 @@ const docs = [
     items: [
       { text: "Overview", link: "/config" },
       { text: "Profiles", link: "/config/profiles" },
+      { text: "Network Selection", link: "/config/networks" },
       { text: "Compiler", link: "/config/compiler" },
       { text: "Testing", link: "/config/testing" },
       { text: "MESC", link: "/config/mesc" },

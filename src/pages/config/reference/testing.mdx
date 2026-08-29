@@ -79,14 +79,21 @@ The value of the `chainid` opcode in tests.
 - Default: none
 - Environment: `FOUNDRY_NETWORK`
 
-Selects the active non-Ethereum network family for tests, scripts, and local execution.
+Selects the active network family for tests, scripts, and local execution.
 
 Valid values include:
 
+- `ethereum`
 - `optimism`
 - `tempo`
+- `monad`
 
-Use this when Foundry is not forking a live RPC endpoint and therefore cannot infer the network from chain ID. Foundry still accepts the legacy boolean forms such as `optimism = true` and `tempo = true`.
+The values exposed by a binary depend on its compiled features. Use this setting
+when Foundry is not forking a recognized live RPC endpoint and therefore cannot
+infer the execution family. Foundry still accepts the legacy boolean forms such
+as `optimism = true`, `tempo = true`, and `monad = true` when the corresponding
+family is available. See [Network configuration](/config/networks) for runtime
+selection, fork inference, and build availability.
 
 ```toml
 [profile.default]
