@@ -82,15 +82,22 @@ See also [solc path resolution](https://docs.soliditylang.org/en/latest/path-res
 
 An array of libraries to link against in the following format: `<file>:<lib>:<address>`, for example: `src/MyLibrary.sol:MyLibrary:0xfD88CeE74f7D78697775aBDAE53f9Da1559728E4`.
 
-##### `solc_version`
+##### `solc`
 
-- Type: string (semver)
+- Type: string (semver, path, or executable name)
 - Default: none
 - Environment: `FOUNDRY_SOLC_VERSION` or `DAPP_SOLC_VERSION`
 
-If specified, overrides the auto-detection system (more below) and uses a single Solidity compiler version for the project.
+If specified, overrides the auto-detection system (more below) and uses a single Solidity compiler for the project.
 
-Only strict versions are supported (i.e. `0.8.11` is valid, but `^0.8.0` is not).
+The value can be a strict version, a path to a local compiler, or an executable name available on `PATH`:
+
+```toml
+solc = "custom-solc"
+```
+
+Version requirements are not supported (i.e. `0.8.28` is valid, but `^0.8.0` is not). The legacy
+`solc_version` key is still accepted for backwards compatibility.
 
 ##### `auto_detect_solc`
 
@@ -100,7 +107,7 @@ Only strict versions are supported (i.e. `0.8.11` is valid, but `^0.8.0` is not)
 
 If enabled, Foundry will automatically try to resolve appropriate Solidity compiler versions to compile your project.
 
-This key is ignored if `solc_version` is set.
+This key is ignored if `solc` is set.
 
 ##### `offline`
 
@@ -579,7 +586,7 @@ There are several configurable values for an compilation restriction:
 
 - Type: string (semver)
 
-Restrict compilation for specific [solc_version](#solc_version).
+Restrict compilation for a specific [`solc`](#solc) version.
 
 ##### `compilation_restriction.via_ir`
 
