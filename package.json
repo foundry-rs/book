@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "vp run fetch-benchmarks && vp run fetch-changelog && vp exec vocs build",
-    "build:vercel": "vp run build && vp run --filter foundry-perf build -- --outDir ../.vercel/output/static/perf && vp run --filter foundry-perf build:vercel-api",
+    "build:vercel": "vp run build && vp run --filter foundry-perf build -- --outDir ../.vercel/output/static/perf",
     "check": "vp check .github package.json pnpm-workspace.yaml scripts sidebar src/components tsconfig.json vite.config.ts vocs.config.ts && vp run --filter foundry-perf check",
     "check:anvil-rpc": "vp exec tsx scripts/check-anvil-rpc-coverage.ts",
     "check:cheatcodes": "vp exec tsx scripts/check-cheatcode-coverage.ts",

@@ -5,7 +5,6 @@
   "type": "module",
   "scripts": {
     "build": "vp build",
-    "build:vercel-api": "node scripts/build-vercel-api.mjs",
     "check": "vp check",
     "dev": "vp dev",
     "db:backfill": "node scripts/ingest-github-runs.mjs",

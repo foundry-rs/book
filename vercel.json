@@ -150,11 +150,5 @@
     { "source": "/benches", "destination": "/benchmarks" }
   ],
   "buildCommand": "$HOME/.local/share/vite-plus/bin/vp run build:vercel",
-  "installCommand": "curl -fsSL https://vite.plus | VP_VERSION=0.3.0 bash && $HOME/.local/share/vite-plus/bin/vp install --frozen-lockfile",
-  "crons": [
-    {
-      "path": "/api/worker/tick",
-      "schedule": "*/15 * * * *"
-    }
-  ]
+  "installCommand": "curl -fsSL https://vite.plus | VP_VERSION=0.3.0 bash && $HOME/.local/share/vite-plus/bin/vp install --frozen-lockfile"
 }

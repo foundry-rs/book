@@ -79,8 +79,8 @@ To preview the dashboard without ClickHouse or credentials, run the Vite server 
 
 Until the GitHub App and ClickHouse are configured, Vercel deploys the same
 credential-free dummy API as an Edge function. It neither reads GitHub nor writes data.
-To enable live on-demand imports later, switch `scripts/build-vercel-api.mjs` back to the
-Node adapter in `src/server/vercel.ts`, restore its Node `.vc-config.json` and the cron;
+To enable live on-demand imports later, replace the Edge handler in
+`api/[...path].ts` with the Node adapter in `src/server/vercel.ts` and restore the cron;
 the complete credentialed API and its tests are retained in this repository.
 
 `scripts/ingest-github-runs.mjs` is the one-off local backfill tool. It uses the
