@@ -1,0 +1,40 @@
+{
+  "name": "foundry-perf",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "vp build",
+    "check": "vp check",
+    "dev": "vp dev",
+    "db:backfill": "node scripts/ingest-github-runs.mjs",
+    "db:schema": "node scripts/apply-schema.mjs",
+    "db:verify": "node scripts/verify-clickhouse.mjs",
+    "format": "vp fmt",
+    "lint": "vp lint",
+    "test": "vp test --run"
+  },
+  "dependencies": {
+    "@pierre/diffs": "^1.3.6",
+    "fflate": "0.8.3",
+    "hono": "^4.13.5",
+    "lucide-react": "^1.38.0",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/node": "^24.3.0",
+    "@types/react": "^19.1.12",
+    "@types/react-dom": "^19.1.9",
+    "@vitejs/plugin-react": "^6.1.1",
+    "tailwindcss": "^4.3.3",
+    "typescript": "~6.0.3",
+    "vite": "catalog:",
+    "vite-plus": "catalog:",
+    "vitest": "catalog:"
+  },
+  "engines": {
+    "node": "24.x"
+  }
+}

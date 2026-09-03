@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "build": "vp run fetch-benchmarks && vp run fetch-changelog && vp exec vocs build",
-    "check": "vp check .github package.json pnpm-workspace.yaml scripts sidebar src/components tsconfig.json vite.config.ts vocs.config.ts",
+    "build:vercel": "vp run build && corepack pnpm --filter foundry-perf exec vp build --outDir ../dist/perf",
+    "check": "vp check .github package.json pnpm-workspace.yaml scripts sidebar src/components tsconfig.json vite.config.ts vocs.config.ts && corepack pnpm --filter foundry-perf exec vp check",
     "check:anvil-rpc": "vp exec tsx scripts/check-anvil-rpc-coverage.ts",
     "check:cheatcodes": "vp exec tsx scripts/check-cheatcode-coverage.ts",
     "check:commands": "vp exec tsx scripts/check-narrative-commands.ts",
@@ -13,7 +14,7 @@
     "fetch-benchmarks": "vp exec tsx scripts/fetch-benchmarks.ts",
     "fetch-changelog": "vp exec tsx scripts/fetch-changelog.ts",
     "preview": "vp exec vocs preview",
-    "test": "vp test --run"
+    "test": "vp test --run scripts/fetch-benchmarks.test.ts && corepack pnpm --filter foundry-perf exec vp test --run"
   },
   "dependencies": {
     "react": "^19.2.5",
