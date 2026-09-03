@@ -20,8 +20,26 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Install bun
-        uses: oven-sh/setup-bun@735343b667d3e6f658f44d0eca948eb6282f2b76 # v2
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11.25.0
+
+      - name: Set up Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: vocs/pnpm-lock.yaml
+
+      - name: Install dependencies
+        working-directory: vocs
+        run: vp install --frozen-lockfile
+
+      - name: Check
+        working-directory: vocs
+        run: vp check
 
       - name: Build Vocs
-        run: cd vocs && bun install && bun run build
+        working-directory: vocs
+        run: vp run build

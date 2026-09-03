@@ -7,7 +7,7 @@
 /out/
 /vocs/snippets/projects/**/out/
 
-/vocs/node_modules
+node_modules
 /vocs/docs/dist
 _
 links-report.json

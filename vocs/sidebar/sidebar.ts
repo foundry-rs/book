@@ -96,24 +96,15 @@ export const sidebar: Sidebar = [
   },
   {
     text: "Cast",
-    items: [
-      { text: "Overview", link: "/cast/overview" },
-      castCliReference,
-    ],
+    items: [{ text: "Overview", link: "/cast/overview" }, castCliReference],
   },
   {
     text: "Anvil",
-    items: [
-      { text: "Overview", link: "/anvil/overview" },
-      anvilCliReference,
-    ],
+    items: [{ text: "Overview", link: "/anvil/overview" }, anvilCliReference],
   },
   {
     text: "Chisel",
-    items: [
-      { text: "Overview", link: "/chisel/overview" },
-      chiselCliReference,
-    ],
+    items: [{ text: "Overview", link: "/chisel/overview" }, chiselCliReference],
   },
   {
     text: "Configuration",

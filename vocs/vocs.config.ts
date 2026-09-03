@@ -1,83 +1,83 @@
-import { defineConfig } from 'vocs'
-import { sidebar } from './sidebar/sidebar'
+import { defineConfig } from "vocs";
+import { sidebar } from "./sidebar/sidebar";
 export default defineConfig({
-  title: 'foundry - Ethereum Development Framework',
+  title: "foundry - Ethereum Development Framework",
   sidebar,
   theme: {
     accentColor: {
-      dark: '#f9c22f',
+      dark: "#f9c22f",
       // light: '#f98a1a', -- darker orange than the one below
-      light: '#f6b128',
+      light: "#f6b128",
     },
   },
   editLink: {
-    pattern: 'https://github.com/foundry-rs/book/edit/master/vocs/docs/pages/:path',
-    text: 'Suggest changes on GitHub',
+    pattern: "https://github.com/foundry-rs/book/edit/master/vocs/docs/pages/:path",
+    text: "Suggest changes on GitHub",
   },
   sponsors: [
     {
-      name: 'Collaborator',
+      name: "Collaborator",
       height: 120,
       items: [
         [
           {
-            name: 'Paradigm',
-            link: 'https://paradigm.xyz',
+            name: "Paradigm",
+            link: "https://paradigm.xyz",
             image:
-              'https://raw.githubusercontent.com/wevm/.github/main/content/sponsors/paradigm-light.svg',
+              "https://raw.githubusercontent.com/wevm/.github/main/content/sponsors/paradigm-light.svg",
           },
           {
-            name: 'Ithaca',
-            link: 'https://ithaca.xyz',
+            name: "Ithaca",
+            link: "https://ithaca.xyz",
             image:
-              'https://raw.githubusercontent.com/wevm/.github/main/content/sponsors/ithaca-light.svg',
+              "https://raw.githubusercontent.com/wevm/.github/main/content/sponsors/ithaca-light.svg",
           },
         ],
       ],
-    }
+    },
   ],
-  logoUrl: '/foundry-logo.png',
-  iconUrl: '/foundry-logo.png',
-  ogImageUrl: '/og-image.png',
+  logoUrl: "/foundry-logo.png",
+  iconUrl: "/foundry-logo.png",
+  ogImageUrl: "/og-image.png",
   socials: [
     {
-      link: 'https://github.com/foundry-rs/foundry',
-      icon: 'github'
+      link: "https://github.com/foundry-rs/foundry",
+      icon: "github",
     },
     {
-      link: 'https://t.me/foundry_support',
-      icon: 'telegram',
-    }
+      link: "https://t.me/foundry_support",
+      icon: "telegram",
+    },
   ],
   topNav: [
     {
-      link: '/introduction/getting-started',
-      text: 'Docs',
+      link: "/introduction/getting-started",
+      text: "Docs",
     },
     {
-      link: '/guides/best-practices/writing-contracts',
-      text: 'Guides',
+      link: "/guides/best-practices/writing-contracts",
+      text: "Guides",
     },
     {
-      link: '/benchmarks',
-      text: 'Benchmarks',
+      link: "/benchmarks",
+      text: "Benchmarks",
     },
     {
-      link: 'https://foundry-rs.github.io/foundry/',
-      text: 'Rustdocs',
+      link: "https://foundry-rs.github.io/foundry/",
+      text: "Rustdocs",
     },
     {
-      text: 'v1.3.1',
+      text: "v1.3.1",
       items: [
         {
-          text: 'Release notes',
-          link: '/releases',
+          text: "Release notes",
+          link: "/releases",
         },
         {
-          text: 'Contributing',
-          link: 'https://github.com/foundry-rs/foundry/blob/master/CONTRIBUTING.md',
-        }
-      ]
-    }
-  ]
-})
+          text: "Contributing",
+          link: "https://github.com/foundry-rs/foundry/blob/master/CONTRIBUTING.md",
+        },
+      ],
+    },
+  ],
+});

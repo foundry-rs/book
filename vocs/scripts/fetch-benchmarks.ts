@@ -1,10 +1,11 @@
-#!/usr/bin/env bun
-import { writeFileSync, mkdirSync } from 'fs';
-import { join } from 'path';
+#!/usr/bin/env node
+import { writeFileSync, mkdirSync } from "fs";
+import { join } from "path";
 
-const BENCHMARKS_URL = 'https://raw.githubusercontent.com/foundry-rs/foundry/master/benches/LATEST.md';
-const OUTPUT_DIR = join(import.meta.dir, '../docs/pages');
-const OUTPUT_FILE = join(OUTPUT_DIR, 'benches.mdx');
+const BENCHMARKS_URL =
+  "https://raw.githubusercontent.com/foundry-rs/foundry/master/benches/LATEST.md";
+const OUTPUT_DIR = join(import.meta.dirname, "../docs/pages");
+const OUTPUT_FILE = join(OUTPUT_DIR, "benches.mdx");
 
 interface BenchmarkData {
   repository: string;
@@ -24,14 +25,14 @@ async function fetchBenchmarks(): Promise<string> {
     }
     return await response.text();
   } catch (error) {
-    console.error('Error fetching benchmarks:', error);
+    console.error("Error fetching benchmarks:", error);
     throw error;
   }
 }
 
 function parseTimeToSeconds(timeStr: string): number | null {
-  if (!timeStr || timeStr === '–' || timeStr === '-') return null;
-  
+  if (!timeStr || timeStr === "–" || timeStr === "-") return null;
+
   // Handle minutes and seconds format (e.g., "2m 8.3s")
   const minutesMatch = timeStr.match(/(\d+)m\s*([\d.]+)s/);
   if (minutesMatch) {
@@ -39,127 +40,133 @@ function parseTimeToSeconds(timeStr: string): number | null {
     const seconds = parseFloat(minutesMatch[2]);
     return minutes * 60 + seconds;
   }
-  
+
   // Handle seconds only format (e.g., "3.69 s")
   const secondsMatch = timeStr.match(/([\d.]+)\s*s/);
   if (secondsMatch) {
     return parseFloat(secondsMatch[1]);
   }
-  
+
   return null;
 }
 
 function calculatePercentageChange(oldTime: number, newTime: number): string {
   const change = ((newTime - oldTime) / oldTime) * 100;
   const absChange = Math.abs(change);
-  const arrow = change < 0 ? '↓' : '↑';
+  const arrow = change < 0 ? "↓" : "↑";
   return `${arrow}${absChange.toFixed(2)}%`;
 }
 
 function parseMarkdown(markdown: string): Map<string, BenchmarkData> {
-  const lines = markdown.split('\n');
+  const lines = markdown.split("\n");
   const data = new Map<string, BenchmarkData>();
   const repos = new Set<string>();
-  
-  let currentSection = '';
-  
+
+  let currentSection = "";
+
   // First pass: collect all repository names
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i].trim();
-    
+
     // Detect section headers
-    if (line.startsWith('## ')) {
+    if (line.startsWith("## ")) {
       currentSection = line.substring(3).trim();
       continue;
     }
-    
+
     // Skip non-table rows
-    if (!line.includes('|') || line.includes('---') || line.includes('Repository')) {
+    if (!line.includes("|") || line.includes("---") || line.includes("Repository")) {
       continue;
     }
-    
+
     // Extract repository names from table rows
-    const cells = line.split('|').map(cell => cell.trim()).filter(cell => cell);
+    const cells = line
+      .split("|")
+      .map((cell) => cell.trim())
+      .filter((cell) => cell);
     if (cells.length >= 3) {
       const repo = cells[0];
-      if (repo && !repo.includes('Repository')) {
+      if (repo && !repo.includes("Repository")) {
         repos.add(repo);
       }
     }
   }
-  
+
   // Initialize data structure for each repository
-  repos.forEach(repo => {
+  repos.forEach((repo) => {
     data.set(repo, {
       repository: repo,
-      forgeTest: { old: '–', new: '–' },
-      forgeFuzzTest: { old: '–', new: '–' },
-      forgeTestIsolated: { old: '–', new: '–' },
-      forgeBuildNoCache: { old: '–', new: '–' },
-      forgeBuildWithCache: { old: '–', new: '–' },
-      forgeCoverage: { old: '–', new: '–' }
+      forgeTest: { old: "–", new: "–" },
+      forgeFuzzTest: { old: "–", new: "–" },
+      forgeTestIsolated: { old: "–", new: "–" },
+      forgeBuildNoCache: { old: "–", new: "–" },
+      forgeBuildWithCache: { old: "–", new: "–" },
+      forgeCoverage: { old: "–", new: "–" },
     });
   });
-  
+
   // Second pass: populate benchmark data
-  currentSection = '';
+  currentSection = "";
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i].trim();
-    
+
     // Detect section headers
-    if (line.startsWith('## ')) {
+    if (line.startsWith("## ")) {
       currentSection = line.substring(3).trim();
       continue;
     }
-    
+
     // Skip non-table rows
-    if (!line.includes('|') || line.includes('---') || line.includes('Repository')) {
+    if (!line.includes("|") || line.includes("---") || line.includes("Repository")) {
       continue;
     }
-    
+
     // Parse table rows
-    const cells = line.split('|').map(cell => cell.trim()).filter(cell => cell);
+    const cells = line
+      .split("|")
+      .map((cell) => cell.trim())
+      .filter((cell) => cell);
     if (cells.length < 3) continue;
-    
+
     const [repo, oldValue, newValue] = cells;
     const benchData = data.get(repo);
     if (!benchData) continue;
-    
+
     // Map to the correct benchmark type
     switch (currentSection) {
-      case 'Forge Test':
+      case "Forge Test":
         benchData.forgeTest = { old: oldValue, new: newValue };
         break;
-      case 'Forge Fuzz Test':
+      case "Forge Fuzz Test":
         benchData.forgeFuzzTest = { old: oldValue, new: newValue };
         break;
-      case 'Forge Test (Isolated)':
+      case "Forge Test (Isolated)":
         benchData.forgeTestIsolated = { old: oldValue, new: newValue };
         break;
-      case 'Forge Build (No Cache)':
+      case "Forge Build (No Cache)":
         benchData.forgeBuildNoCache = { old: oldValue, new: newValue };
         break;
-      case 'Forge Build (With Cache)':
+      case "Forge Build (With Cache)":
         benchData.forgeBuildWithCache = { old: oldValue, new: newValue };
         break;
-      case 'Forge Coverage':
+      case "Forge Coverage":
         benchData.forgeCoverage = { old: oldValue, new: newValue };
         break;
     }
   }
-  
+
   return data;
 }
 
 function getRepositoryUrl(repoName: string): string {
   // Map of repository names to their GitHub URLs
   const repoMap: Record<string, string> = {
-    'ithacaxyz-account': 'https://github.com/ithacaxyz/account',
-    'solady': 'https://github.com/Vectorized/solady',
-    'Uniswap-v4-core': 'https://github.com/Uniswap/v4-core',
-    'sparkdotfi-spark-psm': 'https://github.com/sparkdotfi/spark-psm'
+    "ithacaxyz-account": "https://github.com/ithacaxyz/account",
+    solady: "https://github.com/Vectorized/solady",
+    "Uniswap-v4-core": "https://github.com/Uniswap/v4-core",
+    "sparkdotfi-spark-psm": "https://github.com/sparkdotfi/spark-psm",
   };
-  
+
   // Return the mapped URL or construct a generic GitHub search URL
   return repoMap[repoName] || `https://github.com/search?q=${encodeURIComponent(repoName)}`;
 }
@@ -181,15 +188,15 @@ function generateUnifiedTable(data: Map<string, BenchmarkData>): string {
 
   // Sort repositories by name for consistent ordering
   const sortedRepos = Array.from(data.keys()).sort();
-  
+
   sortedRepos.forEach((repo, index) => {
     const benchData = data.get(repo);
     if (!benchData) return;
-    
+
     const repoUrl = getRepositoryUrl(repo);
     const isLastRow = index === sortedRepos.length - 1;
-    
-    mdx += `    <tr${isLastRow ? '' : ' style={{ borderBottom: \'1px solid var(--vocs-color_border)\' }}'}>\n`;
+
+    mdx += `    <tr${isLastRow ? "" : " style={{ borderBottom: '1px solid var(--vocs-color_border)' }}"}>\n`;
     mdx += `      <td style={{ padding: '0.4rem', fontWeight: 500 }}>[${benchData.repository}](${repoUrl})</td>\n`;
     mdx += `      <td style={{ padding: '0.4rem' }}>${formatBenchmark(benchData.forgeTest)}</td>\n`;
     mdx += `      <td style={{ padding: '0.4rem' }}>${formatBenchmark(benchData.forgeFuzzTest)}</td>\n`;
@@ -197,7 +204,7 @@ function generateUnifiedTable(data: Map<string, BenchmarkData>): string {
     mdx += `      <td style={{ padding: '0.4rem' }}>${formatBenchmark(benchData.forgeBuildNoCache)}</td>\n`;
     mdx += `      <td style={{ padding: '0.4rem' }}>${formatBenchmark(benchData.forgeBuildWithCache)}</td>\n`;
     mdx += `      <td style={{ padding: '0.4rem' }}>${formatBenchmark(benchData.forgeCoverage)}</td>\n`;
-    mdx += '    </tr>\n';
+    mdx += "    </tr>\n";
   });
 
   mdx += `  </tbody>
@@ -207,51 +214,51 @@ function generateUnifiedTable(data: Map<string, BenchmarkData>): string {
 }
 
 function formatBenchmark(bench: { old: string; new: string }): string {
-  if (bench.new === '–' || bench.new === '-' || bench.old === '–' || bench.old === '-') return '–';
-  
+  if (bench.new === "–" || bench.new === "-" || bench.old === "–" || bench.old === "-") return "–";
+
   const oldTime = parseTimeToSeconds(bench.old);
   const newTime = parseTimeToSeconds(bench.new);
-  
+
   if (oldTime === null || newTime === null) {
     return bench.new;
   }
-  
+
   const percentage = calculatePercentageChange(oldTime, newTime);
-  const percentageValue = parseFloat(percentage.replace(/[↑↓%]/g, ''));
-  
-  let color = 'red';
-  if (percentage.startsWith('↓')) {
-    color = 'green';
+  const percentageValue = parseFloat(percentage.replace(/[↑↓%]/g, ""));
+
+  let color = "red";
+  if (percentage.startsWith("↓")) {
+    color = "green";
   } else if (Math.abs(percentageValue) <= 5) {
-    color = 'inherit'; // neutral color for small changes
+    color = "inherit"; // neutral color for small changes
   }
-  
+
   // Remove spaces before 's' in time values
-  const oldFormatted = bench.old.replace(/\s+s/g, 's');
-  const newFormatted = bench.new.replace(/\s+s/g, 's');
-  
+  const oldFormatted = bench.old.replace(/\s+s/g, "s");
+  const newFormatted = bench.new.replace(/\s+s/g, "s");
+
   return `<span style={{ fontSize: '0.85rem' }}>${oldFormatted} /</span><br/><span style={{ fontSize: '0.85rem' }}>${newFormatted}</span><br/><span style={{ color: '${color}', fontSize: '0.85rem' }}>${percentage}</span>`;
 }
 
 async function main() {
   try {
-    console.log('Fetching benchmark data from Foundry repository...');
+    console.log("Fetching benchmark data from Foundry repository...");
     const markdown = await fetchBenchmarks();
-    
-    console.log('Parsing benchmark data...');
+
+    console.log("Parsing benchmark data...");
     const benchmarkData = parseMarkdown(markdown);
-    
+
     // Extract date from markdown if available
     const dateMatch = markdown.match(/# Foundry Benchmarks \[(.*?)\]/);
     const benchmarkDate = dateMatch ? dateMatch[1] : new Date().toLocaleDateString();
-    
+
     // Extract version information - look for all forge version lines (with or without "Version:")
     const versionLines = markdown.match(/forge (?:Version: )?[0-9.]+-.+/g) || [];
-    
-    let baselineVersion = 'v1.2.3';
+
+    let baselineVersion = "v1.2.3";
     let latestVersionDisplay: string;
     let latestVersionUrl: string;
-    
+
     // Process version lines (typically first is baseline, second is latest)
     if (versionLines.length >= 1) {
       const baselineMatch = versionLines[0].match(/([0-9.]+)-(v[0-9.]+)/);
@@ -259,7 +266,7 @@ async function main() {
         baselineVersion = baselineMatch[2];
       }
     }
-    
+
     if (versionLines.length >= 2) {
       // Check if second line is a release version
       const releaseMatch = versionLines[1].match(/([0-9.]+)-(v[0-9.]+)/);
@@ -275,38 +282,38 @@ async function main() {
           latestVersionDisplay = `nightly-${latestCommit}`;
           latestVersionUrl = `https://github.com/foundry-rs/foundry/commit/${latestCommit}`;
         } else {
-          latestVersionDisplay = 'master';
-          latestVersionUrl = 'https://github.com/foundry-rs/foundry/tree/master';
+          latestVersionDisplay = "master";
+          latestVersionUrl = "https://github.com/foundry-rs/foundry/tree/master";
         }
       }
     } else {
       // Only one version line found, default to master for latest
-      latestVersionDisplay = 'master';
-      latestVersionUrl = 'https://github.com/foundry-rs/foundry/tree/master';
+      latestVersionDisplay = "master";
+      latestVersionUrl = "https://github.com/foundry-rs/foundry/tree/master";
     }
-    
-    console.log('Generating unified benchmark table...');
+
+    console.log("Generating unified benchmark table...");
     let unifiedTable = `{/* Auto-generated benchmark table from ${benchmarkDate}. Do not edit manually. */}\n\n`;
-    
+
     // Add version links
     unifiedTable += `  <strong>Baseline:</strong> [${baselineVersion}](https://github.com/foundry-rs/foundry/releases/tag/${baselineVersion})\n`;
     unifiedTable += `\n`;
     unifiedTable += `  <strong>Latest:</strong> [${latestVersionDisplay}](${latestVersionUrl})\n`;
     unifiedTable += `\n`;
     unifiedTable += `  Learn more about what went into the latest release [here](/releases)\n`;
-    
+
     unifiedTable += generateUnifiedTable(benchmarkData);
-    
+
     // Ensure output directory exists
     mkdirSync(OUTPUT_DIR, { recursive: true });
-    
+
     // Write the MDX file
     console.log(`Writing benchmark table to ${OUTPUT_FILE}...`);
     writeFileSync(OUTPUT_FILE, unifiedTable);
-    
-    console.log('✅ Successfully generated benchmark table');
+
+    console.log("✅ Successfully generated benchmark table");
   } catch (error) {
-    console.error('Failed to fetch and process benchmarks:', error);
+    console.error("Failed to fetch and process benchmarks:", error);
     process.exit(1);
   }
 }
