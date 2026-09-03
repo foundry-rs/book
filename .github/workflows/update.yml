@@ -32,19 +32,15 @@ jobs:
         with:
           toolchain: nightly
 
-      - name: Set up pnpm
-        uses: pnpm/action-setup@v4
+      - name: Set up Vite+
+        uses: voidzero-dev/setup-vp@1b32467adbe183473499fd9d5d372c3ed9641754 # v1.18.0
         with:
-          version: 11.25.0
-
-      - name: Install Node.js
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
-        with:
+          cache: true
           node-version: "24"
-          cache: pnpm
+          run-install: false
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: vp install --frozen-lockfile
 
       - name: Refresh cheatcode manifest
         run: |
@@ -55,13 +51,13 @@ jobs:
           curl --fail --location --retry 3 \
             "https://raw.githubusercontent.com/foundry-rs/foundry/$foundry_commit/crates/cheatcodes/assets/cheatcodes.json" \
             --output "$spec"
-          pnpm run check:cheatcodes -- \
+          vp run check:cheatcodes -- \
             --refresh --spec "$spec" --commit "$foundry_commit"
 
       - name: Refresh changelog data
         env:
           GITHUB_TOKEN: ${{ github.token }}
-        run: pnpm run fetch-changelog -- --strict
+        run: vp run fetch-changelog -- --strict
 
       - name: Update
         run: |
