@@ -162,21 +162,5 @@
       "path": "/api/worker/tick",
       "schedule": "*/15 * * * *"
     }
-  ],
-  "rewrites": [
-    {
-      "source": "/api/:path*",
-      "destination": "/api/:path*"
-    },
-    {
-      "source": "/:path*",
-      "has": [
-        {
-          "type": "host",
-          "value": "perf.getfoundry.sh"
-        }
-      ],
-      "destination": "/perf/:path*"
-    }
   ]
 }

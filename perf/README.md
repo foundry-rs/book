@@ -1,6 +1,6 @@
 # Foundry performance site
 
-This Vite app runs at `perf.getfoundry.sh`. The browser reads only the
+This Vite app runs at `getfoundry.sh/perf/`. The browser reads only the
 same-origin API. GitHub and ClickHouse credentials stay in Vercel Functions.
 
 ```bash
@@ -13,8 +13,8 @@ pnpm build
 ## Deployment
 
 The Vercel project root is `vocs/`. It builds the Book and this app into one
-deployment. [`../vercel.json`](../vercel.json) routes `perf.getfoundry.sh` to
-this app and exposes its API from [`../api/`](../api/). Configure these
+deployment. It serves this app from `/perf/` and exposes its API from
+[`../api/`](../api/). Configure these
 production environment variables in that Vercel project:
 
 ```text
