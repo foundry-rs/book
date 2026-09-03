@@ -31,19 +31,19 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Check cheatcode coverage
-        run: vp run check:cheatcodes
+        run: pnpm run check:cheatcodes
 
       - name: Check anvil RPC coverage
-        run: vp run check:anvil-rpc
+        run: pnpm run check:anvil-rpc
 
       - name: Check narrative commands
-        run: vp run check:commands
+        run: pnpm run check:commands
 
       - name: Check
-        run: vp run check
+        run: pnpm run check
 
       - name: Test
-        run: vp run test
+        run: pnpm run test
 
       - name: Build Vocs
-        run: vp run build
+        run: pnpm run build
