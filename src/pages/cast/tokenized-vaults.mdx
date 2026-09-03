@@ -1,0 +1,93 @@
+---
+description: Inspect and transact with synchronous ERC-4626 tokenized vaults using Cast.
+---
+
+## Tokenized vaults
+
+Cast provides typed commands for the complete synchronous base interface defined by [ERC-4626](https://eips.ethereum.org/EIPS/eip-4626). Use `cast erc4626` or its `cast vault` alias to inspect exchange rates and limits, preview operations, and deposit, mint, withdraw, or redeem without writing ABI signatures by hand.
+
+The commands accept integer amounts in the underlying asset's or vault share's smallest unit. Use `cast erc20-token decimals` and `cast parse-units` when you need to convert human-readable amounts.
+
+### Command surface
+
+Each state-changing operation has a limit query and a preview query:
+
+| Operation | Limit | Preview | Transaction |
+| --- | --- | --- | --- |
+| Deposit an asset amount for a receiver | [`max-deposit`](/reference/cast/erc4626/max-deposit) | [`preview-deposit`](/reference/cast/erc4626/preview-deposit) | [`deposit`](/reference/cast/erc4626/deposit) |
+| Mint a share amount for a receiver | [`max-mint`](/reference/cast/erc4626/max-mint) | [`preview-mint`](/reference/cast/erc4626/preview-mint) | [`mint`](/reference/cast/erc4626/mint) |
+| Withdraw an asset amount owned by an account | [`max-withdraw`](/reference/cast/erc4626/max-withdraw) | [`preview-withdraw`](/reference/cast/erc4626/preview-withdraw) | [`withdraw`](/reference/cast/erc4626/withdraw) |
+| Redeem a share amount owned by an account | [`max-redeem`](/reference/cast/erc4626/max-redeem) | [`preview-redeem`](/reference/cast/erc4626/preview-redeem) | [`redeem`](/reference/cast/erc4626/redeem) |
+
+You can also query the [`asset`](/reference/cast/erc4626/asset) address, [`total-assets`](/reference/cast/erc4626/total-assets), or use [`convert-to-shares`](/reference/cast/erc4626/convert-to-shares) and [`convert-to-assets`](/reference/cast/erc4626/convert-to-assets) for caller-independent conversions.
+
+For a combined view, [`info`](/reference/cast/erc4626/info) summarizes the vault and its exchange rate, [`position`](/reference/cast/erc4626/position) summarizes one owner's shares and exit limits, and [`check`](/reference/cast/erc4626/check) probes whether the synchronous read interface behaves as expected.
+
+The vault contract is also the ERC-20 share token. Use `cast erc20-token` for inherited operations such as `balance`, `allowance`, `approve`, and `transfer`.
+
+### Inspect a vault
+
+Set the vault and RPC endpoint, then read its underlying asset and accounting state:
+
+```bash
+$ export VAULT=0x...
+$ export RPC_URL=https://...
+$ cast erc4626 info $VAULT --rpc-url $RPC_URL
+$ cast erc4626 info $VAULT --human --rpc-url $RPC_URL
+$ cast erc4626 position $VAULT $OWNER --human --rpc-url $RPC_URL
+```
+
+`info` reports vault and asset metadata, total assets and shares, and normalized conversions in both directions. `position` reports an owner's share balance, its asset equivalent, and the owner's current `max-withdraw` and `max-redeem` values. Text output uses exact integer amounts by default; pass `--human` to format them using the on-chain token decimals. JSON output always preserves each integer as `raw` and includes `formatted` when decimals are available.
+
+`convert-to-shares` and `convert-to-assets` provide idealized, caller-independent conversions. Use the corresponding preview command when you are preparing a specific operation because previews account for the vault's operation-specific fees and rounding.
+
+### Deposit assets
+
+An ERC-4626 deposit pulls the underlying ERC-20 asset from the sender. Approve the vault to spend the asset before submitting the deposit:
+
+```bash
+$ ASSET=$(cast erc4626 asset $VAULT --rpc-url $RPC_URL)
+$ cast erc4626 max-deposit $VAULT $RECEIVER --rpc-url $RPC_URL
+$ cast erc4626 preview-deposit $VAULT $ASSETS --rpc-url $RPC_URL
+$ cast erc20-token approve $ASSET $VAULT $ASSETS --rpc-url $RPC_URL --private-key $PRIVATE_KEY
+$ cast erc4626 deposit $VAULT $ASSETS $RECEIVER --rpc-url $RPC_URL --private-key $PRIVATE_KEY
+```
+
+`mint` follows the same approval flow, but takes the exact number of shares to mint. Use `preview-mint` to calculate the assets the vault expects to pull.
+
+State-changing vault commands use the same signer, fee, hardware wallet, browser wallet, and Tempo options as `cast send`. See [Sending transactions](/cast/sending-transactions) for those options.
+
+### Withdraw assets
+
+Choose `withdraw` when you know the asset amount to receive, or `redeem` when you know the share amount to burn:
+
+```bash
+$ cast erc4626 max-redeem $VAULT $OWNER --rpc-url $RPC_URL
+$ cast erc4626 preview-redeem $VAULT $SHARES --rpc-url $RPC_URL
+$ cast erc4626 redeem $VAULT $SHARES $RECEIVER $OWNER --rpc-url $RPC_URL --private-key $PRIVATE_KEY
+```
+
+The signing account must be `OWNER` or have sufficient allowance to spend the owner's vault shares. `RECEIVER` receives the withdrawn underlying assets.
+
+### Compatibility and safety
+
+Probe a vault before relying on the synchronous read interface:
+
+```bash
+$ cast erc4626 check $VAULT --account $OWNER --rpc-url $RPC_URL
+```
+
+`check` makes only read calls. It verifies contract code, the base accounting, conversion, limit, and preview calls, inherited ERC-20 reads, and the underlying asset contract. It prints the full report and exits nonzero when a required check fails; warnings do not make the command fail. Omit `--account` to use the zero address for account-dependent probes.
+
+This is a compatibility probe, not a compliance certificate. It does not invoke state-changing selectors or prove the standard's semantic requirements. Cast reports targeted warnings for compatibility cases it can identify:
+
+- A zero `max-deposit` or `max-mint` may be a conservative limit rather than proof that the operation is permanently disabled.
+- A zero `max-withdraw` or `max-redeem` for an owner with shares may reflect temporary liquidity, authorization, or integration constraints.
+- The [ERC-7535](https://eips.ethereum.org/EIPS/eip-7535) native-asset sentinel requires a payable, value-bearing call; the typed write commands currently encode ERC-20-style calldata only.
+- Preview calls can revert by design for the corresponding asynchronous flow in [ERC-7540](https://eips.ethereum.org/EIPS/eip-7540). `check` treats these reverts as expected warnings only when the vault advertises the mandated ERC-165 interface ID for that flow; an unadvertised preview failure remains a failed check.
+
+The transaction commands invoke the base ERC-4626 methods without minimum-output or maximum-input slippage fields. A preview can become stale before the transaction executes, so use a protocol router or a vault-specific extension such as [ERC-5143](https://eips.ethereum.org/EIPS/eip-5143) when the operation needs on-chain price bounds.
+
+Asynchronous ERC-7540 request and claim flows, [ERC-7575](https://eips.ethereum.org/EIPS/eip-7575) multi-asset vaults, native-value deposits, permit composition, and router-specific methods are outside this synchronous base interface. Use `cast call` or `cast send` with the project's ABI for those extensions.
+
+See the [`cast erc4626` reference](/reference/cast/erc4626) for the complete option list.

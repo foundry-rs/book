@@ -286,6 +286,47 @@ export const castCliReference: SidebarItem = {
       ],
     },
     {
+      text: "Vault Commands",
+      collapsed: true,
+      items: [
+        { text: "cast erc4626", link: "/reference/cast/erc4626" },
+        { text: "cast erc4626 asset", link: "/reference/cast/erc4626/asset" },
+        { text: "cast erc4626 check", link: "/reference/cast/erc4626/check" },
+        {
+          text: "cast erc4626 convert-to-assets",
+          link: "/reference/cast/erc4626/convert-to-assets",
+        },
+        {
+          text: "cast erc4626 convert-to-shares",
+          link: "/reference/cast/erc4626/convert-to-shares",
+        },
+        { text: "cast erc4626 deposit", link: "/reference/cast/erc4626/deposit" },
+        { text: "cast erc4626 info", link: "/reference/cast/erc4626/info" },
+        { text: "cast erc4626 max-deposit", link: "/reference/cast/erc4626/max-deposit" },
+        { text: "cast erc4626 max-mint", link: "/reference/cast/erc4626/max-mint" },
+        { text: "cast erc4626 max-redeem", link: "/reference/cast/erc4626/max-redeem" },
+        { text: "cast erc4626 max-withdraw", link: "/reference/cast/erc4626/max-withdraw" },
+        { text: "cast erc4626 mint", link: "/reference/cast/erc4626/mint" },
+        { text: "cast erc4626 position", link: "/reference/cast/erc4626/position" },
+        {
+          text: "cast erc4626 preview-deposit",
+          link: "/reference/cast/erc4626/preview-deposit",
+        },
+        { text: "cast erc4626 preview-mint", link: "/reference/cast/erc4626/preview-mint" },
+        {
+          text: "cast erc4626 preview-redeem",
+          link: "/reference/cast/erc4626/preview-redeem",
+        },
+        {
+          text: "cast erc4626 preview-withdraw",
+          link: "/reference/cast/erc4626/preview-withdraw",
+        },
+        { text: "cast erc4626 redeem", link: "/reference/cast/erc4626/redeem" },
+        { text: "cast erc4626 total-assets", link: "/reference/cast/erc4626/total-assets" },
+        { text: "cast erc4626 withdraw", link: "/reference/cast/erc4626/withdraw" },
+      ],
+    },
+    {
       text: "Wallet Commands",
       collapsed: true,
       items: [{ text: "cast wallet", link: "/reference/cast/wallet" }],
