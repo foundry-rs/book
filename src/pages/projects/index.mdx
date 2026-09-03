@@ -34,14 +34,14 @@ $ forge init --force
 
 ### Initialization options
 
-| Flag | Description |
-|------|-------------|
+| Flag                | Description                                            |
+| ------------------- | ------------------------------------------------------ |
 | `--template <repo>` | Use a custom template repository (URL or `owner/repo`) |
-| `--no-git` | Skip git repository initialization |
-| `--commit` | Create an initial commit |
-| `--shallow` | Perform shallow dependency clones |
-| `--offline` | Skip dependency installation |
-| `--vscode` | Generate VS Code settings |
+| `--no-git`          | Skip git repository initialization                     |
+| `--commit`          | Create an initial commit                               |
+| `--shallow`         | Perform shallow dependency clones                      |
+| `--offline`         | Skip dependency installation                           |
+| `--vscode`          | Generate VS Code settings                              |
 
 ```bash [Create from template]
 $ forge init --template https://github.com/PaulRBerg/foundry-template my_project
@@ -56,6 +56,7 @@ $ forge init --no-git my_project
 A new project includes:
 
 :::file-tree
+
 - +my_project/
   - foundry.toml Project configuration
   - +src/
@@ -64,9 +65,8 @@ A new project includes:
     - Counter.t.sol Example test
   - +script/
     - Counter.s.sol Example script
-  - +lib/
-    - +forge-std/ Standard library
-:::
+  - +lib/ - +forge-std/ Standard library
+    :::
 
 ### Learn more
 

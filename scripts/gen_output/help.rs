@@ -456,7 +456,7 @@ fn generate_sidebar(output: &[(Cmd, String)], _out_dir: &Path, sidebar_file: &Pa
     }
     
     // Build TypeScript content
-    let mut content = String::from("import { SidebarItem } from \"vocs\";\n\n");
+    let mut content = String::from("import type { SidebarItem } from \"./types\";\n\n");
     content.push_str(&format!("export const {}CliReference: SidebarItem = {{\n", tool_name));
     content.push_str("    text: \"Reference\",\n");
     content.push_str("    collapsed: true,\n");

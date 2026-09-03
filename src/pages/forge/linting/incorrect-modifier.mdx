@@ -16,8 +16,8 @@ Paths that revert before `_` are not flagged.
 
 Only a path that provably reverts or otherwise halts is treated as safe: an explicit `revert`
 statement or `revert(...)` builtin call, and the Yul halting builtins (`revert`/`invalid` to fail,
-and `return`/`stop`/`selfdestruct`, which halt *successfully* without running the function body and
-are therefore flagged). A regular function call that *might* revert (e.g. `require(...)`, an
+and `return`/`stop`/`selfdestruct`, which halt _successfully_ without running the function body and
+are therefore flagged). A regular function call that _might_ revert (e.g. `require(...)`, an
 internal helper, or an external call) does not count, so a path that performs such a call and then
 returns without reaching `_` is still flagged. This is intentionally stricter than some other
 tools.

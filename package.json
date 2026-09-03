@@ -1,7 +1,7 @@
 {
   "name": "foundry-docs",
-  "private": true,
   "version": "0.0.0",
+  "private": true,
   "type": "module",
   "scripts": {
     "dev": "vocs dev",
@@ -28,9 +28,18 @@
     "@vitejs/plugin-react": "^6.0.2",
     "tsx": "^4.21.0",
     "typescript": "^7.0.2",
-    "vite": "^8.0.16"
+    "vite": "npm:@voidzero-dev/vite-plus-core@0.3.0",
+    "vite-plus": "0.3.0"
+  },
+  "overrides": {
+    "vite": "npm:@voidzero-dev/vite-plus-core@0.3.0"
   },
   "devEngines": {
+    "packageManager": {
+      "name": "bun",
+      "version": "1.4.0",
+      "onFail": "download"
+    },
     "runtime": {
       "name": "node",
       "version": "24.12.0",

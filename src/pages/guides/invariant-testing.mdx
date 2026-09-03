@@ -92,13 +92,13 @@ import {Vault} from "../../src/Vault.sol";
 
 contract VaultHandler is Test {
     Vault public vault;
-    
+
     uint256 public ghost_depositSum; // [!code hl]
     uint256 public ghost_withdrawSum; // [!code hl]
-    
+
     address[] public actors;
     address internal currentActor;
-    
+
     modifier useActor(uint256 actorSeed) {
         currentActor = actors[bound(actorSeed, 0, actors.length - 1)];
         vm.startPrank(currentActor);
@@ -116,7 +116,7 @@ contract VaultHandler is Test {
 
     function deposit(uint256 amount, uint256 actorSeed) external useActor(actorSeed) {
         amount = bound(amount, 0.01 ether, 10 ether); // [!code hl]
-        
+
         vault.deposit{value: amount}();
         ghost_depositSum += amount; // [!code hl]
     }
@@ -124,9 +124,9 @@ contract VaultHandler is Test {
     function withdraw(uint256 amount, uint256 actorSeed) external useActor(actorSeed) {
         uint256 balance = vault.balanceOf(currentActor);
         if (balance == 0) return;
-        
+
         amount = bound(amount, 1, balance); // [!code hl]
-        
+
         vault.withdraw(amount);
         ghost_withdrawSum += amount; // [!code hl]
     }
@@ -148,7 +148,7 @@ contract VaultInvariantTest is Test {
     function setUp() public {
         vault = new Vault();
         handler = new VaultHandler(vault); // [!code hl]
-        
+
         // Only target the handler, not the vault directly
         targetContract(address(handler)); // [!code hl]
     }
@@ -178,19 +178,19 @@ Ghost variables track cumulative state that isn't stored on-chain:
 ```solidity [test/handlers/TokenHandler.sol]
 contract TokenHandler is Test {
     Token public token;
-    
+
     // Track all mints and burns
     uint256 public ghost_mintedSum; // [!code hl]
     uint256 public ghost_burnedSum; // [!code hl]
-    
+
     // Track per-address deltas
     mapping(address => int256) public ghost_balanceDeltas; // [!code hl]
 
     function mint(address to, uint256 amount) external {
         amount = bound(amount, 1, 1000 ether);
-        
+
         token.mint(to, amount);
-        
+
         ghost_mintedSum += amount; // [!code hl]
         ghost_balanceDeltas[to] += int256(amount); // [!code hl]
     }
@@ -198,12 +198,12 @@ contract TokenHandler is Test {
     function burn(address from, uint256 amount) external {
         uint256 balance = token.balanceOf(from);
         if (balance == 0) return;
-        
+
         amount = bound(amount, 1, balance);
-        
+
         vm.prank(from);
         token.burn(amount);
-        
+
         ghost_burnedSum += amount; // [!code hl]
         ghost_balanceDeltas[from] -= int256(amount); // [!code hl]
     }
@@ -283,9 +283,9 @@ For optimization-mode campaigns, use a fixed `seed` when you want reproducible r
 function setUp() public {
     vault = new Vault();
     handler = new VaultHandler(vault);
-    
+
     targetContract(address(handler));
-    
+
     // Only call these functions
     bytes4[] memory selectors = new bytes4[](2);
     selectors[0] = VaultHandler.deposit.selector; // [!code hl]
@@ -302,7 +302,7 @@ function setUp() public {
 ```solidity
 function setUp() public {
     targetContract(address(handler));
-    
+
     // Exclude specific functions
     excludeSelector(FuzzSelector({ // [!code hl]
         addr: address(handler), // [!code hl]
@@ -363,10 +363,10 @@ contract SystemHandler is Test {
 
     function depositAndStake(uint256 amount, uint256 actorSeed) external useActor(actorSeed) {
         amount = bound(amount, 1 ether, 100 ether);
-        
+
         token.approve(address(vault), amount); // [!code hl]
         vault.depositAndStake(amount); // [!code hl]
-        
+
         ghost_stakedSum += amount;
     }
 
@@ -391,14 +391,14 @@ contract SystemInvariantTest is Test {
 
 ### Common invariants to test
 
-| Invariant | Description |
-|-----------|-------------|
-| Conservation | Sum of inputs equals sum of outputs |
-| Solvency | Contract can cover all liabilities |
-| Monotonicity | Value only increases/decreases |
-| Bounds | Value stays within expected range |
-| Access control | Only authorized users can call functions |
-| State consistency | Related state variables stay in sync |
+| Invariant         | Description                              |
+| ----------------- | ---------------------------------------- |
+| Conservation      | Sum of inputs equals sum of outputs      |
+| Solvency          | Contract can cover all liabilities       |
+| Monotonicity      | Value only increases/decreases           |
+| Bounds            | Value stays within expected range        |
+| Access control    | Only authorized users can call functions |
+| State consistency | Related state variables stay in sync     |
 
 ### Debugging failed invariants
 
@@ -412,11 +412,11 @@ The output shows each call that led to the failure, helping you reproduce and fi
 
 ### Best practices
 
-| Practice | Description |
-|----------|-------------|
-| Use handlers | Constrain inputs to valid ranges |
-| Track with ghosts | Verify cumulative state matches on-chain state |
-| Bound inputs | Use `bound(){:solidity}` instead of `vm.assume(){:solidity}` |
-| Multiple actors | Test with various users, not just one |
-| Start simple | Begin with basic invariants, add complexity |
-| Log call counts | Verify all functions are being exercised |
+| Practice          | Description                                                  |
+| ----------------- | ------------------------------------------------------------ |
+| Use handlers      | Constrain inputs to valid ranges                             |
+| Track with ghosts | Verify cumulative state matches on-chain state               |
+| Bound inputs      | Use `bound(){:solidity}` instead of `vm.assume(){:solidity}` |
+| Multiple actors   | Test with various users, not just one                        |
+| Start simple      | Begin with basic invariants, add complexity                  |
+| Log call counts   | Verify all functions are being exercised                     |

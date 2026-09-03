@@ -8,11 +8,11 @@ A fuzz corpus is a set of inputs that reached new execution edges. When you conf
 
 Corpus entries are not the same as persisted failures:
 
-| Artifact | Configuration | Purpose |
-| --- | --- | --- |
-| Failure | `failure_persist_dir` | Reproduce a counterexample that failed a fuzz or invariant test |
-| Corpus | `corpus_dir` | Preserve coverage-increasing inputs and reuse them for mutation |
-| Branch frontier | `frontier_dir` | Preserve near-miss branch conditions for targeted symbolic solving |
+| Artifact        | Configuration         | Purpose                                                            |
+| --------------- | --------------------- | ------------------------------------------------------------------ |
+| Failure         | `failure_persist_dir` | Reproduce a counterexample that failed a fuzz or invariant test    |
+| Corpus          | `corpus_dir`          | Preserve coverage-increasing inputs and reuse them for mutation    |
+| Branch frontier | `frontier_dir`        | Preserve near-miss branch conditions for targeted symbolic solving |
 
 ### Enable corpus persistence
 

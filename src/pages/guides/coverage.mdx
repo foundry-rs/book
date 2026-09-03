@@ -47,12 +47,12 @@ The following contract and tests cover all three fee paths:
 
 Test filters such as `--match-test`, `--match-contract`, and `--match-path` decide which tests execute. Coverage filters decide which source files appear in the result:
 
-| Setting | Syntax | Effect |
-| --- | --- | --- |
-| `--no-match-coverage <REGEX>` | CLI regular expression | Removes matching source paths from the report |
-| `skip_files` | Configuration glob list | Removes project-relative paths such as `src/mocks/**` |
-| `--exclude-tests` | CLI flag or configuration | Excludes test sources from analysis |
-| `--include-libs` | CLI flag or configuration | Includes dependency sources under library directories |
+| Setting                       | Syntax                    | Effect                                                |
+| ----------------------------- | ------------------------- | ----------------------------------------------------- |
+| `--no-match-coverage <REGEX>` | CLI regular expression    | Removes matching source paths from the report         |
+| `skip_files`                  | Configuration glob list   | Removes project-relative paths such as `src/mocks/**` |
+| `--exclude-tests`             | CLI flag or configuration | Excludes test sources from analysis                   |
+| `--include-libs`              | CLI flag or configuration | Includes dependency sources under library directories |
 
 Filtering a source from the report does not prevent its code from executing. Likewise, filtering tests changes the executed workload and can lower coverage elsewhere.
 

@@ -93,14 +93,14 @@ Forge does not overwrite an existing generated test unless you pass `--regressio
 
 Increase one bound at a time and record the effective configuration with the result:
 
-| Goal | Configuration or flag |
-| --- | --- |
-| Explore more branches | `symbolic.max_paths` or `--symbolic-max-paths` |
-| Allow longer executions | `symbolic.max_depth` or `--symbolic-max-depth` |
-| Allow more SMT work | `symbolic.max_solver_queries` or `--symbolic-max-solver-queries` |
-| Explore longer stateful sequences | `symbolic.invariant_depth` or `--symbolic-invariant-depth` |
-| Explore longer dynamic ABI values | `symbolic.default_dynamic_length`, `symbolic.max_dynamic_length`, or the corresponding CLI flags |
-| Expand symbolic external calls over known contracts | `symbolic.symbolic_call_targets` or `--symbolic-call-targets` |
+| Goal                                                | Configuration or flag                                                                            |
+| --------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| Explore more branches                               | `symbolic.max_paths` or `--symbolic-max-paths`                                                   |
+| Allow longer executions                             | `symbolic.max_depth` or `--symbolic-max-depth`                                                   |
+| Allow more SMT work                                 | `symbolic.max_solver_queries` or `--symbolic-max-solver-queries`                                 |
+| Explore longer stateful sequences                   | `symbolic.invariant_depth` or `--symbolic-invariant-depth`                                       |
+| Explore longer dynamic ABI values                   | `symbolic.default_dynamic_length`, `symbolic.max_dynamic_length`, or the corresponding CLI flags |
+| Expand symbolic external calls over known contracts | `symbolic.symbolic_call_targets` or `--symbolic-call-targets`                                    |
 
 The default solver is Z3. Select another executable with `--symbolic-solver`, provide an exact invocation with `--symbolic-solver-command`, or race comma-separated solvers with `--symbolic-solver-portfolio`. Pin solver versions in CI when reproducibility matters. A portfolio may select different winners across machines, but confirmed artifacts still replay concretely.
 

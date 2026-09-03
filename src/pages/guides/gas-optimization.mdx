@@ -93,11 +93,11 @@ struct User {
 ```solidity [Optimized]
 function process() external {
     uint256 _balance = balance; // [!code hl]
-    
+
     for (uint256 i; i < 100; i++) {
         _balance += i;
     }
-    
+
     balance = _balance; // [!code hl]
 }
 ```
@@ -212,21 +212,21 @@ $ FOUNDRY_PROFILE=production forge build
 
 #### IR pipeline trade-offs
 
-| Setting | Compilation time | Gas efficiency | Code size |
-|---------|------------------|----------------|-----------|
-| `via_ir = false` | Fast | Good | Larger |
-| `via_ir = true` | Slow | Better | Smaller |
-| High optimizer runs | Slower | Best for frequent calls | Larger |
-| Low optimizer runs | Faster | Best for deployment | Smaller |
+| Setting             | Compilation time | Gas efficiency          | Code size |
+| ------------------- | ---------------- | ----------------------- | --------- |
+| `via_ir = false`    | Fast             | Good                    | Larger    |
+| `via_ir = true`     | Slow             | Better                  | Smaller   |
+| High optimizer runs | Slower           | Best for frequent calls | Larger    |
+| Low optimizer runs  | Faster           | Best for deployment     | Smaller   |
 
 ### Optimizer runs tuning
 
 `optimizer_runs` balances deployment cost vs runtime cost:
 
-| Runs | Best for |
-|------|----------|
-| 1 | Deploy once, rarely called |
-| 200 | Default, balanced |
+| Runs    | Best for                    |
+| ------- | --------------------------- |
+| 1       | Deploy once, rarely called  |
+| 200     | Default, balanced           |
 | 10,000+ | Frequently called contracts |
 
 ```toml [foundry.toml]
@@ -277,7 +277,7 @@ contract GasTest is Test {
         uint256 gasBefore = gasleft();
         token.transfer(address(1), 100);
         uint256 gasUsed = gasBefore - gasleft();
-        
+
         emit log_named_uint("transfer gas", gasUsed);
         assertLt(gasUsed, 60000, "transfer too expensive");
     }
@@ -298,10 +298,10 @@ The `--tolerance` flag allows small regressions (5% in this case).
 
 ### Best practices
 
-| Practice | Description |
-|----------|-------------|
-| Baseline first | Create snapshots before optimizing |
-| Measure, don't guess | Use gas reports to find actual bottlenecks |
-| Test edge cases | Gas can vary significantly with input size |
-| Cache in production | Use `via_ir` only for final builds |
-| Document optimizations | Explain non-obvious gas optimizations |
+| Practice               | Description                                |
+| ---------------------- | ------------------------------------------ |
+| Baseline first         | Create snapshots before optimizing         |
+| Measure, don't guess   | Use gas reports to find actual bottlenecks |
+| Test edge cases        | Gas can vary significantly with input size |
+| Cache in production    | Use `via_ir` only for final builds         |
+| Document optimizations | Explain non-obvious gas optimizations      |

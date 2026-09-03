@@ -8,11 +8,11 @@ This guide covers deploying and upgrading proxy contracts with Forge, including 
 
 ### Proxy patterns overview
 
-| Pattern | Description | Gas cost |
-|---------|-------------|----------|
-| **UUPS** | Upgrade logic in implementation, minimal proxy | Lower |
-| **Transparent** | Upgrade logic in proxy, admin separation | Higher |
-| **Beacon** | Multiple proxies share upgrade logic | Efficient for many instances |
+| Pattern         | Description                                    | Gas cost                     |
+| --------------- | ---------------------------------------------- | ---------------------------- |
+| **UUPS**        | Upgrade logic in implementation, minimal proxy | Lower                        |
+| **Transparent** | Upgrade logic in proxy, admin separation       | Higher                       |
+| **Beacon**      | Multiple proxies share upgrade logic           | Efficient for many instances |
 
 ### UUPS proxy deployment
 
@@ -73,7 +73,7 @@ contract DeployToken is Script {
         vm.startBroadcast();
 
         TokenV1 implementation = new TokenV1(); // [!code hl]
-        
+
         bytes memory initData = abi.encodeCall(TokenV1.initialize, (owner));
         ERC1967Proxy proxy = new ERC1967Proxy(address(implementation), initData); // [!code hl]
 
@@ -165,13 +165,13 @@ $ diff v1-layout.txt v2-layout.txt
 
 #### Storage layout rules
 
-| Rule | Description |
-|------|-------------|
-| Never remove variables | Deleting state variables corrupts storage |
-| Never reorder variables | Changing order shifts storage slots |
-| Never change types | Changing a variable's type corrupts data |
-| Add variables at the end | New variables go after existing ones |
-| Use storage gaps | Reserve space for future variables |
+| Rule                     | Description                               |
+| ------------------------ | ----------------------------------------- |
+| Never remove variables   | Deleting state variables corrupts storage |
+| Never reorder variables  | Changing order shifts storage slots       |
+| Never change types       | Changing a variable's type corrupts data  |
+| Add variables at the end | New variables go after existing ones      |
+| Use storage gaps         | Reserve space for future variables        |
 
 #### Using storage gaps
 
@@ -181,7 +181,7 @@ Storage gaps are fixed-size arrays that reserve empty storage slots in a base co
 contract TokenV1 is UUPSUpgradeable, OwnableUpgradeable {
     mapping(address => uint256) public balances;
     uint256 public totalSupply;
-    
+
     // Reserve 50 slots for future variables
     uint256[50] private __gap; // [!code hl]
 }
@@ -189,7 +189,7 @@ contract TokenV1 is UUPSUpgradeable, OwnableUpgradeable {
 contract TokenV2 is TokenV1 {
     // Uses one slot from the gap
     mapping(address => bool) public frozen; // [!code hl]
-    
+
     // Update gap to maintain total slot count
     uint256[49] private __gap; // [!code hl]
 }
@@ -216,7 +216,7 @@ contract DeployTransparent is Script {
 
         // Deploy implementation
         TokenV1 implementation = new TokenV1();
-        
+
         // Deploy proxy (ProxyAdmin is created automatically)
         bytes memory initData = abi.encodeCall(TokenV1.initialize, (owner));
         TransparentUpgradeableProxy proxy = new TransparentUpgradeableProxy(
@@ -325,11 +325,11 @@ $ forge script script/UpgradeToken.s.sol --broadcast --verify --rpc-url https://
 
 ### Best practices
 
-| Practice | Description |
-|----------|-------------|
-| Use initializers | Never use constructors for state in implementations |
-| Disable initializers | Call `_disableInitializers()` in implementation constructors |
-| Storage gaps | Reserve slots for future variables |
-| Test upgrades | Always test state preservation before upgrading |
-| Timelock upgrades | Use a timelock for production upgrade transactions |
-| Verify implementations | Always verify new implementations on block explorers |
+| Practice               | Description                                                  |
+| ---------------------- | ------------------------------------------------------------ |
+| Use initializers       | Never use constructors for state in implementations          |
+| Disable initializers   | Call `_disableInitializers()` in implementation constructors |
+| Storage gaps           | Reserve slots for future variables                           |
+| Test upgrades          | Always test state preservation before upgrading              |
+| Timelock upgrades      | Use a timelock for production upgrade transactions           |
+| Verify implementations | Always verify new implementations on block explorers         |

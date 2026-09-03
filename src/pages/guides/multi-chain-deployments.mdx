@@ -40,11 +40,11 @@ import {Token} from "../src/Token.sol";
 contract DeployScript is Script {
     function run() public {
         Config memory config = getConfig();
-        
+
         vm.startBroadcast();
         Token token = new Token(config.admin, config.initialSupply);
         vm.stopBroadcast();
-        
+
         console.log("Chain:", block.chainid);
         console.log("Token:", address(token));
     }
@@ -181,7 +181,7 @@ contract DeployScript is Script {
         string memory json = vm.serializeAddress("deployment", "token", address(token)); // [!code hl]
         json = vm.serializeUint("deployment", "chainId", block.chainid); // [!code hl]
         json = vm.serializeUint("deployment", "blockNumber", block.number); // [!code hl]
-        
+
         string memory path = string.concat("deployments/", vm.toString(block.chainid), ".json"); // [!code hl]
         vm.writeJson(json, path); // [!code hl]
     }
@@ -230,11 +230,11 @@ $ forge script script/Deploy.s.sol --broadcast --verify --rpc-url optimism
 
 ### Best practices
 
-| Practice | Description |
-|----------|-------------|
-| Use CREATE2 | Ensures identical addresses across chains |
+| Practice                | Description                                     |
+| ----------------------- | ----------------------------------------------- |
+| Use CREATE2             | Ensures identical addresses across chains       |
 | Chain-agnostic bytecode | Avoid chain-specific immutables in constructors |
-| Consistent salts | Document and version your CREATE2 salts |
-| Deployment manifests | Track all deployments in version control |
-| Verify immediately | Use `--verify` flag during deployment |
-| Test on testnets first | Deploy to Sepolia/Goerli before mainnet |
+| Consistent salts        | Document and version your CREATE2 salts         |
+| Deployment manifests    | Track all deployments in version control        |
+| Verify immediately      | Use `--verify` flag during deployment           |
+| Test on testnets first  | Deploy to Sepolia/Goerli before mainnet         |

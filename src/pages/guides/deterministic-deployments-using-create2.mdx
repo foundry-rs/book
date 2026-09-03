@@ -62,7 +62,7 @@ Changing any of these settings will change your bytecode and therefore your depl
 By default, the Solidity compiler appends a CBOR-encoded metadata hash at the end of the bytecode. This metadata includes:
 
 - Compiler version
-- Source file hashes  
+- Source file hashes
 - Compilation settings
 - ABI information
 
@@ -156,7 +156,7 @@ contract DeployCreate2 is Script {
 
     function run() public {
         bytes memory initCode = type(Counter).creationCode;
-        
+
         // Compute and verify expected address
         address expected = CREATEX.computeCreate2Address(SALT, keccak256(initCode));
         console.log("Expected address:", expected);

@@ -102,27 +102,17 @@ export const sidebar: Sidebar = {
   "/config": docs,
   ...guidesSidebar,
   "/forge/linting": lintingSidebar,
-  "/reference/forge": [
-    forgeCliReference,
-  ],
-  "/reference/cast": [
-    castCliReference,
-  ],
-  "/reference/anvil": [
-    anvilCliReference,
-  ],
-  "/reference/chisel": [
-    chiselCliReference,
-  ],
+  "/reference/forge": [forgeCliReference],
+  "/reference/cast": [castCliReference],
+  "/reference/anvil": [anvilCliReference],
+  "/reference/chisel": [chiselCliReference],
   "/reference/cheatcodes": [
     {
       text: "Cheatcodes",
       items: cmdReference,
     },
   ],
-  "/reference/forge-std": [
-    forgeStdReference,
-  ],
+  "/reference/forge-std": [forgeStdReference],
   "/config/reference": [
     {
       text: "Configuration",

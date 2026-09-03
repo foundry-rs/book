@@ -16,11 +16,11 @@ $ docker pull ghcr.io/foundry-rs/foundry:latest
 
 Available tags:
 
-| Tag | Description |
-|-----|-------------|
-| `latest` | Latest stable release |
-| `nightly` | Nightly build |
-| `v1.0.0` | Specific version |
+| Tag       | Description           |
+| --------- | --------------------- |
+| `latest`  | Latest stable release |
+| `nightly` | Nightly build         |
+| `v1.0.0`  | Specific version      |
 
 ### Using Podman
 
@@ -304,10 +304,10 @@ $ docker run --rm \
 
 ### Best practices
 
-| Practice | Description |
-|----------|-------------|
-| Pin versions | Use specific tags, not `latest`, for reproducibility |
+| Practice           | Description                                           |
+| ------------------ | ----------------------------------------------------- |
+| Pin versions       | Use specific tags, not `latest`, for reproducibility  |
 | Cache dependencies | Copy manifests before source for better layer caching |
-| Use multi-stage | Reduce final image size by excluding build artifacts |
-| Mount volumes | Use `-v` for local development, `COPY` for CI |
-| Expose correctly | Use `--host 0.0.0.0` for Anvil in containers |
+| Use multi-stage    | Reduce final image size by excluding build artifacts  |
+| Mount volumes      | Use `-v` for local development, `COPY` for CI         |
+| Expose correctly   | Use `--host 0.0.0.0` for Anvil in containers          |

@@ -6,12 +6,12 @@ description: Get started with Foundry's four core tools - Forge, Cast, Anvil, an
 
 Foundry is a fast, portable, and modular toolkit for Ethereum development. After [installing Foundry](/introduction/installation), you have access to four tools:
 
-| Tool | Purpose | Reference |
-|------|---------|-----------|
-| `forge` | Build, test, debug, deploy, and verify smart contracts | [Reference](/reference/forge/forge) |
-| `cast` | Interact with contracts, send transactions, and query chain data | [Reference](/reference/cast/cast) |
-| `anvil` | Run a local Ethereum node with forking capabilities | [Reference](/reference/anvil/anvil) |
-| `chisel` | Solidity REPL for rapid prototyping | [Reference](/reference/chisel/chisel) |
+| Tool     | Purpose                                                          | Reference                             |
+| -------- | ---------------------------------------------------------------- | ------------------------------------- |
+| `forge`  | Build, test, debug, deploy, and verify smart contracts           | [Reference](/reference/forge/forge)   |
+| `cast`   | Interact with contracts, send transactions, and query chain data | [Reference](/reference/cast/cast)     |
+| `anvil`  | Run a local Ethereum node with forking capabilities              | [Reference](/reference/anvil/anvil)   |
+| `chisel` | Solidity REPL for rapid prototyping                              | [Reference](/reference/chisel/chisel) |
 
 :::tip
 Run any command with `--help` for detailed usage information.
@@ -51,6 +51,7 @@ $ forge test
 The generated project includes a `Counter` contract and test:
 
 :::terminal
+
 ```bash
 // [!include ~/snippets/output/hello_foundry/forge-test:command]
 ```
@@ -58,6 +59,7 @@ The generated project includes a `Counter` contract and test:
 ```ansi
 // [!include ~/snippets/output/hello_foundry/forge-test:output]
 ```
+
 :::
 
 Deploy using a Forge script:

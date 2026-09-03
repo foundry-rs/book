@@ -8,40 +8,40 @@ Chisel commands start with `!` and control the REPL environment. Type `!help` to
 
 ### General
 
-| Command | Alias | Description |
-|---------|-------|-------------|
-| `!help` | `!h` | Display all commands |
-| `!quit` | `!q` | Quit the REPL |
-| `!exec <CMD>` | `!e` | Execute a shell command |
+| Command       | Alias | Description             |
+| ------------- | ----- | ----------------------- |
+| `!help`       | `!h`  | Display all commands    |
+| `!quit`       | `!q`  | Quit the REPL           |
+| `!exec <CMD>` | `!e`  | Execute a shell command |
 
 ### Session
 
-| Command | Alias | Description |
-|---------|-------|-------------|
-| `!clear` | `!c` | Clear the current session source |
-| `!source` | `!so` | Print the generated source contract |
-| `!save [ID]` | `!s` | Save session to cache |
-| `!load <ID>` | `!l` | Load a cached session |
-| `!list` | `!ls` | List all cached sessions |
-| `!clearcache` | `!cc` | Clear all cached sessions |
-| `!export` | `!ex` | Export session to a Script file |
+| Command                | Alias | Description                                      |
+| ---------------------- | ----- | ------------------------------------------------ |
+| `!clear`               | `!c`  | Clear the current session source                 |
+| `!source`              | `!so` | Print the generated source contract              |
+| `!save [ID]`           | `!s`  | Save session to cache                            |
+| `!load <ID>`           | `!l`  | Load a cached session                            |
+| `!list`                | `!ls` | List all cached sessions                         |
+| `!clearcache`          | `!cc` | Clear all cached sessions                        |
+| `!export`              | `!ex` | Export session to a Script file                  |
 | `!fetch <ADDR> <NAME>` | `!fe` | Fetch verified contract interface from Etherscan |
-| `!edit` | | Open session in an editor |
+| `!edit`                |       | Open session in an editor                        |
 
 ### Environment
 
-| Command | Alias | Description |
-|---------|-------|-------------|
-| `!fork [URL]` | `!f` | Fork an RPC endpoint |
-| `!traces` | `!t` | Enable/disable execution traces |
-| `!calldata [DATA]` | `!cd` | Set `msg.data` for the session |
+| Command            | Alias | Description                     |
+| ------------------ | ----- | ------------------------------- |
+| `!fork [URL]`      | `!f`  | Fork an RPC endpoint            |
+| `!traces`          | `!t`  | Enable/disable execution traces |
+| `!calldata [DATA]` | `!cd` | Set `msg.data` for the session  |
 
 ### Debug
 
-| Command | Alias | Description |
-|---------|-------|-------------|
-| `!memdump` | `!md` | Dump raw memory |
-| `!stackdump` | `!sd` | Dump raw stack |
+| Command           | Alias | Description                                        |
+| ----------------- | ----- | -------------------------------------------------- |
+| `!memdump`        | `!md` | Dump raw memory                                    |
+| `!stackdump`      | `!sd` | Dump raw stack                                     |
 | `!rawstack <VAR>` | `!rs` | Display raw value of a variable's stack allocation |
 
 ### Examples

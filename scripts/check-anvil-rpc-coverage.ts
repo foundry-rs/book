@@ -48,9 +48,7 @@ if (args.has("--refresh")) {
   // hardhat_/evm_ compatibility aliases resolve to the same handlers.
   const source = readFileSync(sourcePath, "utf8");
   const methods = [
-    ...new Set(
-      [...source.matchAll(/rename = "((?:anvil|evm)_\w+)"/g)].map((match) => match[1]),
-    ),
+    ...new Set([...source.matchAll(/rename = "((?:anvil|evm)_\w+)"/g)].map((match) => match[1])),
   ].sort();
 
   manifest = {
@@ -109,9 +107,7 @@ if (unexpectedMissing.length > 0) {
   failures.push(`New undocumented anvil RPC methods:\n  ${unexpectedMissing.join("\n  ")}`);
 }
 if (resolved.length > 0) {
-  failures.push(
-    `Remove newly documented methods from knownMissing:\n  ${resolved.join("\n  ")}`,
-  );
+  failures.push(`Remove newly documented methods from knownMissing:\n  ${resolved.join("\n  ")}`);
 }
 
 if (failures.length > 0) {

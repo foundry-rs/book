@@ -1,6 +1,6 @@
-import { sponsors } from '../../../vocs.config.js'
+import { sponsors } from "../../../vocs.config.js";
 
-type Sponsor = { name: string; link: string; image: string }
+type Sponsor = { name: string; link: string; image: string };
 
 function SponsorCard({ sponsor }: { sponsor: Sponsor }) {
   return (
@@ -10,13 +10,9 @@ function SponsorCard({ sponsor }: { sponsor: Sponsor }) {
       rel="noreferrer noopener"
       className="vocs_Card vocs:flex vocs:items-center vocs:justify-center vocs:rounded-md vocs:bg-surfaceTint/70 vocs:border vocs:border-primary vocs:p-8 vocs:no-underline vocs:transition-colors vocs:hover:bg-surfaceTint"
     >
-      <img
-        alt={sponsor.name}
-        className="h-[40px] brightness-0 dark:invert"
-        src={sponsor.image}
-      />
+      <img alt={sponsor.name} className="h-[40px] brightness-0 dark:invert" src={sponsor.image} />
     </a>
-  )
+  );
 }
 
 export function SponsorCards() {
@@ -26,5 +22,5 @@ export function SponsorCards() {
         <SponsorCard key={sponsor.name} sponsor={sponsor} />
       ))}
     </div>
-  )
+  );
 }

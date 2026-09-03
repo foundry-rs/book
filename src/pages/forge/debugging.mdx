@@ -11,6 +11,7 @@ Forge provides detailed traces and an interactive debugger to understand contrac
 Run tests with `-vvvv` to see full execution traces:
 
 :::terminal
+
 ```bash
 $ forge test -vvvv
 ```
@@ -18,6 +19,7 @@ $ forge test -vvvv
 ```ansi
 // [!include ~/snippets/output/cheatcodes/forge-test-vvvv:output]
 ```
+
 :::
 
 The trace shows every call, its inputs, outputs, and gas usage.
@@ -25,6 +27,7 @@ The trace shows every call, its inputs, outputs, and gas usage.
 ### Understanding trace output
 
 Each line shows:
+
 - **Gas used** in brackets
 - **Contract::function** being called
 - **Call type** (staticcall, delegatecall, etc.)
@@ -64,38 +67,38 @@ The debugger picks a two-column or single-column layout based on the terminal si
 
 #### Key bindings
 
-| Key | Action |
-|-----|--------|
-| `j` / `k` (or arrow keys, mouse scroll) | Step forward / backward one instruction |
-| `s` / `a` | Move to the next / previous jump |
-| `C` / `c` | Move to the next / previous call |
-| `g` / `G` | Go to the beginning / end |
-| `'<char>` | Jump to the breakpoint set with [`vm.breakpoint`](/reference/cheatcodes/breakpoint) |
-| `0-9` | Repeat prefix for movement keys, e.g. `10k` steps back 10 instructions |
-| `b` | Cycle the data pane between memory, calldata, and returndata |
-| `J` / `K` | Scroll the stack pane |
-| `Ctrl+j` / `Ctrl+k` | Scroll the data pane |
-| `t` | Toggle stack labels |
-| `m` | Toggle UTF-8 decoding of the active buffer |
-| `p` | Go to a program counter |
-| `o` | Go to a byte offset in the active buffer, or to a slot when the storage explorer is active |
-| `/`, then `n` / `N` | Search opcodes in the current call, then repeat the search forward / backward |
-| `:` | Open the command prompt |
-| `h` | Toggle the shortcut footer |
-| `q` | Quit |
+| Key                                     | Action                                                                                     |
+| --------------------------------------- | ------------------------------------------------------------------------------------------ |
+| `j` / `k` (or arrow keys, mouse scroll) | Step forward / backward one instruction                                                    |
+| `s` / `a`                               | Move to the next / previous jump                                                           |
+| `C` / `c`                               | Move to the next / previous call                                                           |
+| `g` / `G`                               | Go to the beginning / end                                                                  |
+| `'<char>`                               | Jump to the breakpoint set with [`vm.breakpoint`](/reference/cheatcodes/breakpoint)        |
+| `0-9`                                   | Repeat prefix for movement keys, e.g. `10k` steps back 10 instructions                     |
+| `b`                                     | Cycle the data pane between memory, calldata, and returndata                               |
+| `J` / `K`                               | Scroll the stack pane                                                                      |
+| `Ctrl+j` / `Ctrl+k`                     | Scroll the data pane                                                                       |
+| `t`                                     | Toggle stack labels                                                                        |
+| `m`                                     | Toggle UTF-8 decoding of the active buffer                                                 |
+| `p`                                     | Go to a program counter                                                                    |
+| `o`                                     | Go to a byte offset in the active buffer, or to a slot when the storage explorer is active |
+| `/`, then `n` / `N`                     | Search opcodes in the current call, then repeat the search forward / backward              |
+| `:`                                     | Open the command prompt                                                                    |
+| `h`                                     | Toggle the shortcut footer                                                                 |
+| `q`                                     | Quit                                                                                       |
 
 #### Command prompt
 
 Press `:` to run a debugger command. `:help` lists all commands and their aliases.
 
-| Command | Action |
-|---------|--------|
-| `:pc <pc>` (alias `:continue <pc>`) | Jump to a program counter in the current contract |
-| `:line <line>` | Jump to the nearest instruction mapped to a source line in the current contract |
-| `:mem [<offset>]`, `:calldata [<offset>]`, `:ret [<offset>]` | Select a buffer in the data pane, optionally jumping to a byte offset |
-| `:storage [<slot>]` | Open the storage explorer, optionally jumping to the nearest access of a slot |
-| `:transient [<slot>]` | Open the transient storage explorer, optionally jumping to a slot |
-| `:source`, `:opcodes`, `:variables`, `:stack`, `:data` | Show or hide a pane; the remaining panes reclaim the space |
+| Command                                                      | Action                                                                          |
+| ------------------------------------------------------------ | ------------------------------------------------------------------------------- |
+| `:pc <pc>` (alias `:continue <pc>`)                          | Jump to a program counter in the current contract                               |
+| `:line <line>`                                               | Jump to the nearest instruction mapped to a source line in the current contract |
+| `:mem [<offset>]`, `:calldata [<offset>]`, `:ret [<offset>]` | Select a buffer in the data pane, optionally jumping to a byte offset           |
+| `:storage [<slot>]`                                          | Open the storage explorer, optionally jumping to the nearest access of a slot   |
+| `:transient [<slot>]`                                        | Open the transient storage explorer, optionally jumping to a slot               |
+| `:source`, `:opcodes`, `:variables`, `:stack`, `:data`       | Show or hide a pane; the remaining panes reclaim the space                      |
 
 #### Storage explorer
 
@@ -152,7 +155,7 @@ Make traces more readable by labeling addresses:
 function setUp() public {
     alice = makeAddr("alice");
     bob = makeAddr("bob");
-    
+
     vm.label(address(token), "Token");
     vm.label(address(pool), "Pool");
 }
@@ -165,6 +168,7 @@ Traces will show `Token::transfer()` instead of `0x1234...::transfer()`.
 When a test fails, use `-vvv` to see a stack trace showing exactly where the revert occurred:
 
 :::terminal
+
 ```bash
 $ forge test -vvv
 ```
@@ -172,6 +176,7 @@ $ forge test -vvv
 ```ansi
 // [!include ~/snippets/output/cheatcodes/forge-test-fail-vvv:output]
 ```
+
 :::
 
 The trace shows the call hierarchy with the revert bubbling up, and the **Backtrace** pinpoints the exact location in your code.

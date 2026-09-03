@@ -51,10 +51,10 @@ remappings_location = "config"
 
 Key options:
 
-| Option | Description |
-|--------|-------------|
-| `remappings_generate` | Auto-generate remappings |
-| `remappings_prefix` | Prefix for remappings (e.g., `@`) |
+| Option                | Description                                   |
+| --------------------- | --------------------------------------------- |
+| `remappings_generate` | Auto-generate remappings                      |
+| `remappings_prefix`   | Prefix for remappings (e.g., `@`)             |
 | `remappings_location` | Where to store remappings (`config` or `txt`) |
 
 ### Using packages
@@ -113,24 +113,27 @@ Publish your package.
 ```bash
 $ forge soldeer push my-library~1.0.0
 ```
+
 ::::
 
 ### Git submodules vs Soldeer
 
-| Feature | Git submodules | Soldeer |
-|---------|---------------|---------|
-| Version pinning | Commit hash | Semantic versions |
-| Registry | GitHub | Soldeer registry + git |
-| Lock file | No | Yes (`soldeer.lock`) |
-| Transitive deps | Manual | Automatic |
-| IDE support | Via remappings | Via remappings |
+| Feature         | Git submodules | Soldeer                |
+| --------------- | -------------- | ---------------------- |
+| Version pinning | Commit hash    | Semantic versions      |
+| Registry        | GitHub         | Soldeer registry + git |
+| Lock file       | No             | Yes (`soldeer.lock`)   |
+| Transitive deps | Manual         | Automatic              |
+| IDE support     | Via remappings | Via remappings         |
 
 Use git submodules when:
+
 - You need a specific commit
 - The library isn't on the Soldeer registry
 - Your team is familiar with git submodules
 
 Use Soldeer when:
+
 - You want semantic versioning
 - You need reproducible builds (lock file)
 - You prefer npm-style dependency management

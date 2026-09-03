@@ -572,7 +572,7 @@ Parameters: `rawTransaction` — sender-signed Tempo transaction as hex, carryin
 $ cast rpc eth_signRawTransaction $RAW_TX
 ```
 
-### Nonstandard eth_ methods
+### Nonstandard eth\_ methods
 
 Anvil also serves a number of `eth_` methods beyond the standard Ethereum JSON-RPC specification.
 
@@ -620,17 +620,17 @@ $ cast rpc eth_getTransactionBySenderAndNonce $ADDRESS 5
 
 Anvil additionally serves these nonstandard `eth_` extensions, largely mirroring geth and reth:
 
-| Method | Description |
-| --- | --- |
-| `eth_baseFee` | Returns the base fee of the next block. |
-| `eth_pendingTransactions` | Returns the transactions currently pending in the pool. |
-| `eth_fillTransaction` | Fills in defaults (nonce, gas, fees) for a transaction request and returns the raw unsigned transaction and its fields. |
-| `eth_resend` | Resends a pending transaction with an updated gas price or gas limit. |
-| `eth_getHeaderByHash`, `eth_getHeaderByNumber` | Return a block header by hash or number. |
-| `eth_getAccountInfo` | Returns an account's balance, nonce, and code in a single call. |
-| `eth_getStorageValues` | Returns storage values for multiple accounts and slots in a single call. |
-| `eth_getBlockAccessList`, `eth_getBlockAccessListByBlockHash`, `eth_getBlockAccessListByBlockNumber`, `eth_getBlockAccessListRaw` | Return the EIP-7928 block-level access list for a block. |
-| `eth_sendTransactionSync`, `eth_sendRawTransactionSync` | Send a transaction and wait for its receipt in a single call; the raw variant accepts an optional timeout in milliseconds. |
-| `eth_sendRawTransactionConditional` | Accepts a raw transaction with conditional-inclusion options; Anvil accepts the options but does not enforce the conditions. |
+| Method                                                                                                                            | Description                                                                                                                  |
+| --------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `eth_baseFee`                                                                                                                     | Returns the base fee of the next block.                                                                                      |
+| `eth_pendingTransactions`                                                                                                         | Returns the transactions currently pending in the pool.                                                                      |
+| `eth_fillTransaction`                                                                                                             | Fills in defaults (nonce, gas, fees) for a transaction request and returns the raw unsigned transaction and its fields.      |
+| `eth_resend`                                                                                                                      | Resends a pending transaction with an updated gas price or gas limit.                                                        |
+| `eth_getHeaderByHash`, `eth_getHeaderByNumber`                                                                                    | Return a block header by hash or number.                                                                                     |
+| `eth_getAccountInfo`                                                                                                              | Returns an account's balance, nonce, and code in a single call.                                                              |
+| `eth_getStorageValues`                                                                                                            | Returns storage values for multiple accounts and slots in a single call.                                                     |
+| `eth_getBlockAccessList`, `eth_getBlockAccessListByBlockHash`, `eth_getBlockAccessListByBlockNumber`, `eth_getBlockAccessListRaw` | Return the EIP-7928 block-level access list for a block.                                                                     |
+| `eth_sendTransactionSync`, `eth_sendRawTransactionSync`                                                                           | Send a transaction and wait for its receipt in a single call; the raw variant accepts an optional timeout in milliseconds.   |
+| `eth_sendRawTransactionConditional`                                                                                               | Accepts a raw transaction with conditional-inclusion options; Anvil accepts the options but does not enforce the conditions. |
 
 Anvil also implements the `txpool_*`, `debug_*`, `trace_*`, and `ots_*` (Otterscan) namespaces, plus `erigon_getHeaderByNumber` for Otterscan compatibility. See [Mining and transaction pool](/anvil/mining) for the `txpool_*` methods.

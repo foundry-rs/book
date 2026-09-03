@@ -9,25 +9,26 @@ Foundry uses a conventional directory structure. Configure paths in `foundry.tom
 ### Default structure
 
 :::file-tree
+
 - +project/
   - foundry.toml Project configuration
   - +src/ Contract source files
-  - +test/ Test files (*.t.sol)
-  - +script/ Script files (*.s.sol)
+  - +test/ Test files (\*.t.sol)
+  - +script/ Script files (\*.s.sol)
   - +lib/ Git submodule dependencies
   - +out/ Compilation artifacts
   - +cache/ Compiler cache
   - +broadcast/ Deployment logs
-:::
+    :::
 
 ### Source directories
 
-| Directory | Purpose | Config key |
-|-----------|---------|------------|
-| `src/` | Production contracts | `src` |
-| `test/` | Test contracts | `test` |
-| `script/` | Deployment scripts | `script` |
-| `lib/` | Dependencies | `libs` |
+| Directory | Purpose              | Config key |
+| --------- | -------------------- | ---------- |
+| `src/`    | Production contracts | `src`      |
+| `test/`   | Test contracts       | `test`     |
+| `script/` | Deployment scripts   | `script`   |
+| `lib/`    | Dependencies         | `libs`     |
 
 Customize in `foundry.toml`:
 
@@ -41,11 +42,11 @@ libs = ["lib", "node_modules"]
 
 ### Output directories
 
-| Directory | Purpose | Config key |
-|-----------|---------|------------|
-| `out/` | Compiled artifacts (ABI, bytecode) | `out` |
-| `cache/` | Compiler cache for incremental builds | `cache_path` |
-| `broadcast/` | Transaction logs from script broadcasts | `broadcast` |
+| Directory    | Purpose                                 | Config key   |
+| ------------ | --------------------------------------- | ------------ |
+| `out/`       | Compiled artifacts (ABI, bytecode)      | `out`        |
+| `cache/`     | Compiler cache for incremental builds   | `cache_path` |
+| `broadcast/` | Transaction logs from script broadcasts | `broadcast`  |
 
 :::tip
 Add `out/`, `cache/`, and `broadcast/` to `.gitignore`. The default template does this automatically.
@@ -55,11 +56,11 @@ Add `out/`, `cache/`, and `broadcast/` to `.gitignore`. The default template doe
 
 Foundry identifies file types by suffix:
 
-| Suffix | Type | Example |
-|--------|------|---------|
-| `.sol` | Contract | `Token.sol` |
-| `.t.sol` | Test | `Token.t.sol` |
-| `.s.sol` | Script | `Deploy.s.sol` |
+| Suffix   | Type     | Example        |
+| -------- | -------- | -------------- |
+| `.sol`   | Contract | `Token.sol`    |
+| `.t.sol` | Test     | `Token.t.sol`  |
+| `.s.sol` | Script   | `Deploy.s.sol` |
 
 Tests must also inherit from `Test`:
 
@@ -95,17 +96,12 @@ libs = ["lib", "../lib"]
 Or use workspaces:
 
 :::file-tree
+
 - +monorepo/
   - foundry.toml Root config (optional)
   - +lib/ Shared dependencies
-  - +packages/
-    - +token/
-      - foundry.toml
-      - +src/
-    - +governance/
-      - foundry.toml
-      - +src/
-:::
+  - +packages/ - +token/ - foundry.toml - +src/ - +governance/ - foundry.toml - +src/
+    :::
 
 ### Remappings
 

@@ -20,14 +20,14 @@ This executes the transaction against the state at the block where it was mined,
 
 Control trace output with `-v` flags:
 
-| Flag | Shows |
-|------|-------|
-| (none) | Basic result |
-| `-v` | Function calls |
-| `-vv` | Calls with parameters |
-| `-vvv` | Calls, parameters, and return values |
-| `-vvvv` | Full trace including internal calls |
-| `-vvvvv` | Full trace with storage changes |
+| Flag     | Shows                                |
+| -------- | ------------------------------------ |
+| (none)   | Basic result                         |
+| `-v`     | Function calls                       |
+| `-vv`    | Calls with parameters                |
+| `-vvv`   | Calls, parameters, and return values |
+| `-vvvv`  | Full trace including internal calls  |
+| `-vvvvv` | Full trace with storage changes      |
 
 ```bash [Detailed trace]
 $ cast run $TX_HASH --rpc-url https://ethereum.reth.rs/rpc -vvvv
@@ -114,10 +114,10 @@ import {console} from "forge-std/console.sol";
 function test_Debug() public {
     console.log("Balance before:", token.balanceOf(alice));
     console.log("Allowance:", token.allowance(alice, address(this)));
-    
+
     vm.prank(alice);
     token.transfer(bob, 100);
-    
+
     console.log("Balance after:", token.balanceOf(alice));
 }
 ```
@@ -132,13 +132,13 @@ $ forge test --match-test test_Failing --debug
 
 Basic controls:
 
-| Key | Action |
-|-----|--------|
-| `j` / `k` | Step forward / backward |
+| Key       | Action                           |
+| --------- | -------------------------------- |
+| `j` / `k` | Step forward / backward          |
 | `s` / `a` | Move to the next / previous jump |
 | `C` / `c` | Move to the next / previous call |
-| `g` / `G` | Jump to start / end |
-| `q` | Quit |
+| `g` / `G` | Jump to start / end              |
+| `q`       | Quit                             |
 
 See [Debugging](/forge/debugging#interactive-debugger) for the full list of key bindings and debugger commands.
 
@@ -221,7 +221,7 @@ Then in a Forge test or script, modify state and replay:
 function test_DebugWithModifiedState() public {
     // Give the sender more tokens
     deal(address(token), sender, 1000 ether);
-    
+
     // Replay the transaction
     vm.prank(sender);
     target.call(originalCalldata);
@@ -238,10 +238,10 @@ $ cast run $TX_HASH --rpc-url https://ethereum.reth.rs/rpc -vvvv 2>&1 | grep -E 
 
 ### Best practices
 
-| Practice | Description |
-|----------|-------------|
+| Practice              | Description                                    |
+| --------------------- | ---------------------------------------------- |
 | Save failed tx hashes | Keep a log of failed transactions for analysis |
-| Use labels | Label known contracts for readable traces |
-| Fork at correct block | Always fork at `block - 1` for accurate state |
-| Check state changes | Use `-vvvvv` to see storage modifications |
-| Compare transactions | Diff successful vs failed tx traces |
+| Use labels            | Label known contracts for readable traces      |
+| Fork at correct block | Always fork at `block - 1` for accurate state  |
+| Check state changes   | Use `-vvvvv` to see storage modifications      |
+| Compare transactions  | Diff successful vs failed tx traces            |

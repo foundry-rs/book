@@ -22,12 +22,12 @@ $ anvil --hardfork prague
 
 The examples use these values:
 
-| Variable | Meaning |
-|----------|---------|
-| `$AUTHORITY` | EOA whose code will point to the implementation |
+| Variable          | Meaning                                                     |
+| ----------------- | ----------------------------------------------------------- |
+| `$AUTHORITY`      | EOA whose code will point to the implementation             |
 | `$IMPLEMENTATION` | Deployed contract whose code will execute for the authority |
-| `$BROADCASTER` | Account that submits and pays for the EIP-7702 transaction |
-| `$RPC_URL` | RPC endpoint for an EIP-7702-compatible chain |
+| `$BROADCASTER`    | Account that submits and pays for the EIP-7702 transaction  |
+| `$RPC_URL`        | RPC endpoint for an EIP-7702-compatible chain               |
 
 The `authority` and `broadcaster` names in the examples refer to encrypted Cast keystores. See [wallet operations](/cast/wallet-operations) for keystore setup.
 
@@ -69,12 +69,12 @@ $ cast send $AUTHORITY "initialize(address)" $OWNER \
 
 An authorization is valid only when its nonce equals the authority's nonce during authorization processing.
 
-| Flow | Nonce behavior |
-|------|----------------|
-| `cast send --auth $IMPLEMENTATION` | Cast signs for the transaction sender using the carrier transaction nonce plus one. |
-| `cast wallet sign-auth` with a different broadcaster | Cast queries and uses the authority's current nonce. |
-| `cast wallet sign-auth --self-broadcast` | Cast queries the current nonce and adds one because the authority's carrier transaction increments it first. |
-| `cast wallet sign-auth --nonce $NONCE` | Cast uses the exact nonce provided. |
+| Flow                                                 | Nonce behavior                                                                                               |
+| ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `cast send --auth $IMPLEMENTATION`                   | Cast signs for the transaction sender using the carrier transaction nonce plus one.                          |
+| `cast wallet sign-auth` with a different broadcaster | Cast queries and uses the authority's current nonce.                                                         |
+| `cast wallet sign-auth --self-broadcast`             | Cast queries the current nonce and adds one because the authority's carrier transaction increments it first. |
+| `cast wallet sign-auth --nonce $NONCE`               | Cast uses the exact nonce provided.                                                                          |
 
 Use `--self-broadcast` only when the same authority will submit the pre-signed authorization:
 

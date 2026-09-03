@@ -32,8 +32,11 @@ jobs:
         with:
           toolchain: nightly
 
-      - name: Install bun
-        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+      - name: Install Vite+
+        uses: voidzero-dev/setup-vp@1b32467adbe183473499fd9d5d372c3ed9641754 # v1.18.0
+        with:
+          cache: true
+          run-install: true
 
       - name: Refresh cheatcode manifest
         run: |

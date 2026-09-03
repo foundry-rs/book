@@ -92,11 +92,11 @@ In Tempo mode, use `anvil_dealTIP20` to set a TIP-20 token balance for an accoun
 anvil_dealTIP20(address, tokenAddress, balance)
 ```
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `address` | `address` | Account whose balance is set |
+| Parameter      | Type      | Description                                                  |
+| -------------- | --------- | ------------------------------------------------------------ |
+| `address`      | `address` | Account whose balance is set                                 |
 | `tokenAddress` | `address` | TIP-20 token deployed through the active Tempo token factory |
-| `balance` | `uint256` | Absolute balance to write |
+| `balance`      | `uint256` | Absolute balance to write                                    |
 
 ```bash
 $ cast rpc anvil_dealTIP20 $RECIPIENT $TIP20_TOKEN 0x56BC75E2D63100000 \

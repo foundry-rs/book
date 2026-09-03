@@ -108,12 +108,12 @@ $ cast call $CONTRACT "totalSupply()(uint256)" --block 18000000
 
 `cast call` can temporarily replace account data for an `eth_call`. Overrides only affect the simulation; they do not change on-chain state.
 
-| Flag | Effect |
-| --- | --- |
-| `--override-balance <ADDRESS:BALANCE>` | Replaces an account's native balance. |
-| `--override-nonce <ADDRESS:NONCE>` | Replaces an account's nonce. |
-| `--override-code <ADDRESS:CODE>` | Replaces an account's bytecode. |
-| `--override-state <ADDRESS:SLOT:VALUE>` | Replaces all storage for an account with the supplied slots. |
+| Flag                                         | Effect                                                                            |
+| -------------------------------------------- | --------------------------------------------------------------------------------- |
+| `--override-balance <ADDRESS:BALANCE>`       | Replaces an account's native balance.                                             |
+| `--override-nonce <ADDRESS:NONCE>`           | Replaces an account's nonce.                                                      |
+| `--override-code <ADDRESS:CODE>`             | Replaces an account's bytecode.                                                   |
+| `--override-state <ADDRESS:SLOT:VALUE>`      | Replaces all storage for an account with the supplied slots.                      |
 | `--override-state-diff <ADDRESS:SLOT:VALUE>` | Replaces the supplied storage slots while preserving the account's other storage. |
 
 Each flag accepts a comma-separated list of entries. For example, you can simulate a contract call after changing one storage slot:
@@ -129,10 +129,10 @@ Use `--override-state-diff` when you only want to change specific slots. `--over
 
 Use `--block` to select the chain state on which to base the call, then use `--block.*` options to change the block values visible to the simulated EVM:
 
-| Flag | EVM block value |
-| --- | --- |
-| `--block.number <NUMBER>` | Block number. |
-| `--block.time <TIME>` | Timestamp. |
+| Flag                      | EVM block value |
+| ------------------------- | --------------- |
+| `--block.number <NUMBER>` | Block number.   |
+| `--block.time <TIME>`     | Timestamp.      |
 
 For example, this reads state from block `20000000` while the contract observes the overridden block number and timestamp:
 

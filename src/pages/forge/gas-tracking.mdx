@@ -88,9 +88,9 @@ Use `gasleft()` to measure specific operations:
 ```solidity
 function test_MeasureGas() public {
     uint256 gasBefore = gasleft();
-    
+
     counter.increment();
-    
+
     uint256 gasUsed = gasBefore - gasleft();
     console.log("Gas used:", gasUsed);
 }
@@ -141,7 +141,7 @@ function test_OnlyMeasureTarget() public {
     vm.pauseGasMetering();
     _complexSetup();
     vm.resumeGasMetering();
-    
+
     // Only this is measured
     target.execute();
 }
@@ -154,9 +154,9 @@ Reset the gas counter mid-test:
 ```solidity
 function test_ResetMidway() public {
     target.setup();
-    
+
     vm.resetGasMetering();
-    
+
     // Gas measurement starts fresh here
     target.execute();
 }

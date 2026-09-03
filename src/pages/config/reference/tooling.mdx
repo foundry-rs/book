@@ -6,26 +6,26 @@ Configuration for Vyper, JSON bindings, Soldeer, and network-specific behavior.
 
 Define Vyper settings under `[profile.<name>.vyper]`.
 
-| Field | Default | Description |
-| --- | --- | --- |
-| `path` | none | Selects the Vyper executable. |
-| `optimize` | none | Selects the Vyper optimization mode. |
-| `opt_level` | none | Selects the numeric optimization level; `optLevel` is an alias. |
-| `experimental_codegen` | none | Enables experimental code generation. |
-| `venom_experimental` | none | Enables the experimental Venom pipeline. |
-| `debug` | none | Compiles in debug mode. |
-| `enable_decimals` | none | Re-enables the Vyper decimal type. |
-| `venom` | none | Supplies fine-grained Venom optimizer settings. |
+| Field                  | Default | Description                                                     |
+| ---------------------- | ------- | --------------------------------------------------------------- |
+| `path`                 | none    | Selects the Vyper executable.                                   |
+| `optimize`             | none    | Selects the Vyper optimization mode.                            |
+| `opt_level`            | none    | Selects the numeric optimization level; `optLevel` is an alias. |
+| `experimental_codegen` | none    | Enables experimental code generation.                           |
+| `venom_experimental`   | none    | Enables the experimental Venom pipeline.                        |
+| `debug`                | none    | Compiles in debug mode.                                         |
+| `enable_decimals`      | none    | Re-enables the Vyper decimal type.                              |
+| `venom`                | none    | Supplies fine-grained Venom optimizer settings.                 |
 
 ### JSON bindings
 
 Define `forge bind-json` settings under `[profile.<name>.bind_json]`.
 
-| Field | Default | Description |
-| --- | --- | --- |
-| `out` | `utils/JsonBindings.sol` | Sets the generated Solidity file. |
-| `include` | `[]` | Includes only matching project-file globs. |
-| `exclude` | `[]` | Excludes matching project-file globs. |
+| Field     | Default                  | Description                                |
+| --------- | ------------------------ | ------------------------------------------ |
+| `out`     | `utils/JsonBindings.sol` | Sets the generated Solidity file.          |
+| `include` | `[]`                     | Includes only matching project-file globs. |
+| `exclude` | `[]`                     | Excludes matching project-file globs.      |
 
 ### Soldeer
 
@@ -47,11 +47,11 @@ the [Soldeer guide](/projects/soldeer) for its fields and workflows.
 Network keys enable chain-specific execution behavior. They live at the top
 level of `[profile.<name>]`.
 
-| Field | Default | Description |
-| --- | --- | --- |
-| `network` | none | Selects an available network family: `ethereum`, `optimism`, `tempo`, or `monad`. |
-| `celo` | `false` | Enables Celo network features such as the Celo transfer precompile. |
-| `bypass_prevrandao` | `false` | Uses a random `prevrandao` when the forked block does not provide one. |
+| Field               | Default | Description                                                                       |
+| ------------------- | ------- | --------------------------------------------------------------------------------- |
+| `network`           | none    | Selects an available network family: `ethereum`, `optimism`, `tempo`, or `monad`. |
+| `celo`              | `false` | Enables Celo network features such as the Celo transfer precompile.               |
+| `bypass_prevrandao` | `false` | Uses a random `prevrandao` when the forked block does not provide one.            |
 
 Selecting a network family enables its execution rules and precompiles — for
 example the Tempo system precompiles, which are also labeled in traces. When

@@ -20,22 +20,23 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Install Node.js
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+      - name: Install Vite+
+        uses: voidzero-dev/setup-vp@1b32467adbe183473499fd9d5d372c3ed9641754 # v1.18.0
         with:
-          node-version: "24"
-
-      - name: Install bun
-        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+          cache: true
+          run-install: true
 
       - name: Check cheatcode coverage
-        run: bun run check:cheatcodes
+        run: vp run check:cheatcodes
 
       - name: Check anvil RPC coverage
-        run: bun run check:anvil-rpc
+        run: vp run check:anvil-rpc
 
       - name: Check narrative commands
-        run: bun run check:commands
+        run: vp run check:commands
+
+      - name: Format, lint, and type-check
+        run: vp check
 
       - name: Build Vocs
-        run: bun install && bun run build
+        run: vp run build

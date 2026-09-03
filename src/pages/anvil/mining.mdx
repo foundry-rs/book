@@ -8,12 +8,12 @@ Anvil can mine immediately, on a fixed interval, both ways, or only when you req
 
 ### Choose a mining mode
 
-| Mode | Start command | Behavior |
-| --- | --- | --- |
-| Instant | `anvil` | Mines when ready transactions enter the pool. This is the default. |
-| Interval | `anvil --block-time 12` | Mines a block every 12 seconds and includes ready transactions. |
-| Mixed | `anvil --block-time 12 --mixed-mining` | Mines on the timer and when a ready transaction arrives. |
-| Manual | `anvil --no-mining` | Keeps transactions pending until you explicitly mine. |
+| Mode     | Start command                          | Behavior                                                           |
+| -------- | -------------------------------------- | ------------------------------------------------------------------ |
+| Instant  | `anvil`                                | Mines when ready transactions enter the pool. This is the default. |
+| Interval | `anvil --block-time 12`                | Mines a block every 12 seconds and includes ready transactions.    |
+| Mixed    | `anvil --block-time 12 --mixed-mining` | Mines on the timer and when a ready transaction arrives.           |
+| Manual   | `anvil --no-mining`                    | Keeps transactions pending until you explicitly mine.              |
 
 Use instant mining for fast application development. Use interval mining to model confirmation delays and block batching. Mixed mining is useful when you want immediate transaction feedback but also need time-based empty blocks. Manual mining gives a test runner or coding agent full control over transaction ordering, timestamps, and block boundaries.
 

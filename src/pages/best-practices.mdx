@@ -83,12 +83,12 @@ Follow a consistent ordering within contracts:
 
 Use descriptive names that explain behavior:
 
-| Pattern | Usage | Example |
-|---------|-------|---------|
-| `test_Description` | Standard tests | `test_TransferUpdatesBalances` |
-| `testFuzz_Description` | Fuzz tests | `testFuzz_TransferAnyAmount` |
-| `test_RevertWhen_Condition` | Revert tests | `test_RevertWhen_InsufficientBalance` |
-| `test_RevertIf_Condition` | Alternative revert naming | `test_RevertIf_NotOwner` |
+| Pattern                     | Usage                     | Example                               |
+| --------------------------- | ------------------------- | ------------------------------------- |
+| `test_Description`          | Standard tests            | `test_TransferUpdatesBalances`        |
+| `testFuzz_Description`      | Fuzz tests                | `testFuzz_TransferAnyAmount`          |
+| `test_RevertWhen_Condition` | Revert tests              | `test_RevertWhen_InsufficientBalance` |
+| `test_RevertIf_Condition`   | Alternative revert naming | `test_RevertIf_NotOwner`              |
 
 ```solidity
 function test_TransferUpdatesBalances() public {
@@ -107,6 +107,7 @@ function test_RevertWhen_TransferExceedsBalance() public {
 Structure test files to mirror your source files:
 
 :::file-tree
+
 - +src/
   - Token.sol
   - Vault.sol
@@ -115,9 +116,8 @@ Structure test files to mirror your source files:
 - +test/
   - Token.t.sol
   - Vault.t.sol
-  - +governance/
-    - Governor.t.sol
-:::
+  - +governance/ - Governor.t.sol
+    :::
 
 Group related tests in the same contract:
 
@@ -204,12 +204,13 @@ function testFuzz_Transfer(uint256 amount) public {
 Split complex deployments into focused scripts:
 
 :::file-tree
+
 - +script/
   - DeployToken.s.sol
   - DeployVault.s.sol
   - ConfigureVault.s.sol
   - Deploy.s.sol Orchestrates all deployments
-:::
+    :::
 
 ```solidity [script/Deploy.s.sol]
 import {DeployToken} from "./DeployToken.s.sol";
@@ -234,7 +235,7 @@ Never hardcode addresses or keys in scripts:
 function run() public {
     address admin = vm.envAddress("ADMIN_ADDRESS");
     uint256 initialSupply = vm.envOr("INITIAL_SUPPLY", uint256(1_000_000 ether));
-    
+
     vm.startBroadcast();
     new Token(admin, initialSupply);
     vm.stopBroadcast();
@@ -248,12 +249,12 @@ Output addresses and transaction details for verification:
 ```solidity
 function run() public {
     vm.startBroadcast();
-    
+
     Token token = new Token();
     console.log("Token deployed at:", address(token));
     console.log("Chain ID:", block.chainid);
     console.log("Deployer:", msg.sender);
-    
+
     vm.stopBroadcast();
 }
 ```
@@ -331,11 +332,11 @@ $ forge script script/Deploy.s.sol --ledger --broadcast --rpc-url https://ethere
 
 Use different keys for different environments:
 
-| Environment | Key source |
-|-------------|------------|
+| Environment       | Key source         |
+| ----------------- | ------------------ |
 | Local development | Anvil default keys |
-| Testnets | Encrypted keystore |
-| Mainnet | Hardware wallet |
+| Testnets          | Encrypted keystore |
+| Mainnet           | Hardware wallet    |
 
 Anvil provides pre-funded accounts for local testing:
 

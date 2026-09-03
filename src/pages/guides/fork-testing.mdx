@@ -41,7 +41,7 @@ function test_ImpersonateWhale() public {
 
     vm.prank(whale); // [!code hl]
     IERC20(dai).transfer(address(this), 1000 ether); // [!code hl]
-    
+
     assertEq(IERC20(dai).balanceOf(address(this)), 1000 ether);
 }
 ```
@@ -51,7 +51,7 @@ Use `vm.startPrank(){:solidity}` for multiple calls:
 ```solidity
 function test_MultipleCallsAsWhale() public {
     address whale = 0xF977814e90dA44bFA03b6295A0616a897441aceC;
-    
+
     vm.startPrank(whale);
     IERC20(dai).approve(address(vault), type(uint256).max);
     vault.deposit(1000 ether);
@@ -66,9 +66,9 @@ Many DeFi protocols have time-based logic. Use `vm.warp(){:solidity}` to manipul
 ```solidity
 function test_VestingUnlock() public {
     vesting.startVesting(alice, 1000 ether, 365 days);
-    
+
     vm.warp(block.timestamp + 182 days); // [!code hl]
-    
+
     vm.prank(alice);
     uint256 claimed = vesting.claim();
     assertApproxEqRel(claimed, 500 ether, 0.01e18);
@@ -80,10 +80,10 @@ Use `vm.roll(){:solidity}` to change block numbers:
 ```solidity
 function test_BlockBasedLogic() public {
     uint256 startBlock = block.number;
-    
+
     // Advance 100 blocks
     vm.roll(startBlock + 100);
-    
+
     assertEq(block.number, startBlock + 100);
 }
 ```
@@ -131,7 +131,7 @@ contract UniswapTest is Test {
         path[1] = USDC;
 
         uint256 usdcBefore = IERC20(USDC).balanceOf(address(this));
-        
+
         router.swapExactTokensForTokens(
             1 ether,
             0, // Accept any amount
@@ -224,13 +224,13 @@ $ rm -rf ~/.foundry/cache/rpc
 
 ### Best practices
 
-| Practice | Description |
-|----------|-------------|
-| Pin block numbers | Always use `--fork-block-number` for reproducible tests |
-| Use `deal()` | Avoid complex token acquisition logic in tests |
-| Cache RPC calls | Let Foundry cache fork data to speed up tests |
-| Test edge cases | Use `vm.warp(){:solidity}` to test time-sensitive edge cases |
-| Isolate fork tests | Keep fork tests separate from unit tests for faster CI |
+| Practice           | Description                                                  |
+| ------------------ | ------------------------------------------------------------ |
+| Pin block numbers  | Always use `--fork-block-number` for reproducible tests      |
+| Use `deal()`       | Avoid complex token acquisition logic in tests               |
+| Cache RPC calls    | Let Foundry cache fork data to speed up tests                |
+| Test edge cases    | Use `vm.warp(){:solidity}` to test time-sensitive edge cases |
+| Isolate fork tests | Keep fork tests separate from unit tests for faster CI       |
 
 ### Troubleshooting
 

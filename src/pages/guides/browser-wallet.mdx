@@ -131,13 +131,13 @@ The CLI RPC and the browser wallet both participate in the flow. Foundry uses th
 
 Browser signing is a useful boundary between preparation and authorization:
 
-| Agent can prepare | Human must authorize |
-| --- | --- |
-| Resolve the RPC chain ID and target addresses | Connect the intended wallet account |
-| Simulate the script or call | Verify the wallet is on the intended network |
+| Agent can prepare                               | Human must authorize                                 |
+| ----------------------------------------------- | ---------------------------------------------------- |
+| Resolve the RPC chain ID and target addresses   | Connect the intended wallet account                  |
+| Simulate the script or call                     | Verify the wallet is on the intended network         |
 | Decode calldata and summarize value and effects | Review destination, value, calldata, nonce, and fees |
-| Produce the exact command and expected sender | Approve or reject each wallet request |
-| Watch the hash and inspect the receipt | Decide whether to resume after a partial script |
+| Produce the exact command and expected sender   | Approve or reject each wallet request                |
+| Watch the hash and inspect the receipt          | Decide whether to resume after a partial script      |
 
 An agent should not treat a connected browser as blanket permission to send transactions. Keep the final `--broadcast --browser` invocation and wallet approvals as an explicit user-authorized step. For unattended CI, use a purpose-built keystore, hardware, KMS, or remote signer workflow with scoped credentials and policy controls.
 

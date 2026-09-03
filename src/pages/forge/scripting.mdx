@@ -20,16 +20,17 @@ import {Counter} from "../src/Counter.sol";
 contract DeployScript is Script {
     function run() public {
         vm.startBroadcast();
-        
+
         Counter counter = new Counter();
         counter.setNumber(42);
-        
+
         vm.stopBroadcast();
     }
 }
 ```
 
 Key elements:
+
 - Inherit from `forge-std/Script.sol`
 - Script files end with `.s.sol`
 - Wrap deployment logic in `vm.startBroadcast(){:solidity}` / `vm.stopBroadcast(){:solidity}`

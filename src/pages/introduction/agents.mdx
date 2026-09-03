@@ -21,13 +21,13 @@ Start with read-only commands such as `forge build`, `forge test`, `forge config
 
 ### Retrieval interfaces
 
-| Interface | URL pattern | Use it for |
-| --- | --- | --- |
-| Page Markdown | `https://getfoundry.sh/<page>.md` | Reading one conceptual, guide, or reference page without navigation and presentation markup |
-| Compact index | `https://getfoundry.sh/llms.txt` | Finding candidate pages by title, route, and description |
-| Full corpus | `https://getfoundry.sh/llms-full.txt` | Building an offline index or retrieving across the whole documentation set |
-| MCP server | `https://getfoundry.sh/api/mcp` | Searching the documentation from an MCP-capable client |
-| HTML | `https://getfoundry.sh/<page>` | Presenting the result to a person or inspecting rendered tables and navigation |
+| Interface     | URL pattern                           | Use it for                                                                                  |
+| ------------- | ------------------------------------- | ------------------------------------------------------------------------------------------- |
+| Page Markdown | `https://getfoundry.sh/<page>.md`     | Reading one conceptual, guide, or reference page without navigation and presentation markup |
+| Compact index | `https://getfoundry.sh/llms.txt`      | Finding candidate pages by title, route, and description                                    |
+| Full corpus   | `https://getfoundry.sh/llms-full.txt` | Building an offline index or retrieving across the whole documentation set                  |
+| MCP server    | `https://getfoundry.sh/api/mcp`       | Searching the documentation from an MCP-capable client                                      |
+| HTML          | `https://getfoundry.sh/<page>`        | Presenting the result to a person or inspecting rendered tables and navigation              |
 
 For example, retrieve the testing guide as Markdown from `https://getfoundry.sh/forge/testing.md`, then use the HTML route [`/forge/testing`](/forge/testing) when linking the answer for a person.
 
@@ -35,16 +35,16 @@ The full corpus is large because it includes generated CLI, cheatcode, and Forge
 
 ### Route by task
 
-| Task | Start here | Follow with |
-| --- | --- | --- |
-| Install Foundry or create a project | [Getting started](/introduction/getting-started) | [Project setup](/projects), [project layout](/projects/layout) |
-| Compile or configure Solidity | [Building contracts](/forge/build) | [Configuration](/config), [configuration reference](/config/reference/default-config) |
-| Write or diagnose tests | [Testing](/forge/testing) | [Invariant testing](/guides/invariant-testing), [fork testing](/guides/fork-testing), [debugging](/forge/debugging) |
-| Deploy or verify contracts | [Scripting](/forge/scripting) | [Deploying contracts](/guides/deploying-contracts), [`forge script`](/reference/forge/script) |
-| Query a chain or send a transaction | [Cast overview](/cast) | [Reading chain data](/cast/reading-chain-data), [sending transactions](/cast/sending-transactions) |
-| Run or control a local node | [Anvil overview](/anvil) | [Forking](/anvil/forking), [custom methods](/anvil/custom-methods) |
-| Manipulate Forge test state | [Cheatcode overview](/reference/cheatcodes/overview) | The exact cheatcode reference page |
-| Look up exact flags or syntax | [`forge` reference](/reference/forge/forge) | The specific `forge`, `cast`, `anvil`, or `chisel` command page |
+| Task                                | Start here                                           | Follow with                                                                                                         |
+| ----------------------------------- | ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| Install Foundry or create a project | [Getting started](/introduction/getting-started)     | [Project setup](/projects), [project layout](/projects/layout)                                                      |
+| Compile or configure Solidity       | [Building contracts](/forge/build)                   | [Configuration](/config), [configuration reference](/config/reference/default-config)                               |
+| Write or diagnose tests             | [Testing](/forge/testing)                            | [Invariant testing](/guides/invariant-testing), [fork testing](/guides/fork-testing), [debugging](/forge/debugging) |
+| Deploy or verify contracts          | [Scripting](/forge/scripting)                        | [Deploying contracts](/guides/deploying-contracts), [`forge script`](/reference/forge/script)                       |
+| Query a chain or send a transaction | [Cast overview](/cast)                               | [Reading chain data](/cast/reading-chain-data), [sending transactions](/cast/sending-transactions)                  |
+| Run or control a local node         | [Anvil overview](/anvil)                             | [Forking](/anvil/forking), [custom methods](/anvil/custom-methods)                                                  |
+| Manipulate Forge test state         | [Cheatcode overview](/reference/cheatcodes/overview) | The exact cheatcode reference page                                                                                  |
+| Look up exact flags or syntax       | [`forge` reference](/reference/forge/forge)          | The specific `forge`, `cast`, `anvil`, or `chisel` command page                                                     |
 
 Concept and guide pages explain intent, safe workflows, and how features fit together. Generated reference pages are better for exact signatures, flags, defaults, and accepted values. Retrieve both when an answer needs operational context and precise syntax.
 

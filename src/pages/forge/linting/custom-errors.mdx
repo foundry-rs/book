@@ -18,6 +18,7 @@ Reports `require` calls with no reason or whose second argument is a string lite
 ### Why is this bad?
 
 Custom errors:
+
 - cost less gas than encoding/decoding a string,
 - can carry typed parameters for richer diagnostics,
 - shrink contract bytecode (string constants live in code).

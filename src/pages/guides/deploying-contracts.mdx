@@ -146,10 +146,10 @@ import {Counter} from "../src/Counter.sol";
 contract DeployScript is Script {
     function run() public {
         vm.startBroadcast(); // [!code hl]
-        
+
         Counter counter = new Counter();
         console.log("Counter deployed at:", address(counter));
-        
+
         vm.stopBroadcast(); // [!code hl]
     }
 }
@@ -170,12 +170,12 @@ contract DeployScript is Script {
         uint256 initialSupply = vm.envOr("INITIAL_SUPPLY", uint256(1_000_000 ether)); // [!code hl]
 
         vm.startBroadcast();
-        
+
         Token token = new Token(admin, initialSupply);
         console.log("Token deployed at:", address(token));
         console.log("Admin:", admin);
         console.log("Initial supply:", initialSupply);
-        
+
         vm.stopBroadcast();
     }
 }

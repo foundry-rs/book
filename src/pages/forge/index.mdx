@@ -2,7 +2,7 @@
 description: Forge is Foundry's build, test, and deploy tool for Solidity smart contracts.
 ---
 
-import { Cards, Card } from 'vocs'
+import { Cards, Card } from "vocs";
 
 ## Forge
 
@@ -50,19 +50,20 @@ Forge compiles, tests, and deploys Solidity smart contracts. It's the core devel
 
 ### Key capabilities
 
-| Feature | Description |
-|---------|-------------|
-| **Compilation** | Compile contracts with configurable Solidity versions and optimization |
-| **Documentation** | Generate a Vocs API site from Solidity source and NatSpec comments |
-| **Testing** | Write tests in Solidity with fuzzing, forking, and gas reporting |
-| **Scripting** | Deploy and interact with contracts using Solidity scripts |
-| **Verification** | Verify source code on Etherscan and other explorers |
-| **Analysis** | Inspect bytecode, storage layouts, and gas usage |
-| **Bindings** | Generate typed Alloy crates and Solidity JSON helpers |
+| Feature           | Description                                                            |
+| ----------------- | ---------------------------------------------------------------------- |
+| **Compilation**   | Compile contracts with configurable Solidity versions and optimization |
+| **Documentation** | Generate a Vocs API site from Solidity source and NatSpec comments     |
+| **Testing**       | Write tests in Solidity with fuzzing, forking, and gas reporting       |
+| **Scripting**     | Deploy and interact with contracts using Solidity scripts              |
+| **Verification**  | Verify source code on Etherscan and other explorers                    |
+| **Analysis**      | Inspect bytecode, storage layouts, and gas usage                       |
+| **Bindings**      | Generate typed Alloy crates and Solidity JSON helpers                  |
 
 ### Common workflows
 
 :::terminal
+
 ```bash [Build your project]
 // [!include ~/snippets/output/hello_foundry/forge-build:command]
 ```
@@ -70,9 +71,11 @@ Forge compiles, tests, and deploys Solidity smart contracts. It's the core devel
 ```ansi
 // [!include ~/snippets/output/hello_foundry/forge-build:output]
 ```
+
 :::
 
 :::terminal
+
 ```bash [Run all tests]
 // [!include ~/snippets/output/hello_foundry/forge-test:command]
 ```
@@ -80,9 +83,11 @@ Forge compiles, tests, and deploys Solidity smart contracts. It's the core devel
 ```ansi
 // [!include ~/snippets/output/hello_foundry/forge-test:output]
 ```
+
 :::
 
 :::terminal
+
 ```bash [Run tests with verbose output]
 $ forge test -vvvv
 ```
@@ -90,6 +95,7 @@ $ forge test -vvvv
 ```ansi
 // [!include ~/snippets/output/cheatcodes/forge-test-vvvv:output]
 ```
+
 :::
 
 ```bash [Deploy via script]

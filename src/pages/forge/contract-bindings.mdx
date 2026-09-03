@@ -6,11 +6,11 @@ description: Generate typed Rust contract bindings and Solidity JSON helpers fro
 
 Foundry provides two generators with different outputs. Choose the workflow based on what consumes the generated code.
 
-| Goal | Command | Output |
-| --- | --- | --- |
-| Call contracts from Rust | [`forge bind`](/reference/forge/bind) | An Alloy crate or Rust module generated from compiled contract artifacts |
-| Start from a verified deployed contract | [`cast source`](/reference/cast/source), then `forge bind` | Explorer source followed by local Alloy bindings |
-| Serialize Solidity structs to and from JSON | [`forge bind-json`](/reference/forge/bind-json) | A Solidity helper library for JSON cheatcodes |
+| Goal                                        | Command                                                    | Output                                                                   |
+| ------------------------------------------- | ---------------------------------------------------------- | ------------------------------------------------------------------------ |
+| Call contracts from Rust                    | [`forge bind`](/reference/forge/bind)                      | An Alloy crate or Rust module generated from compiled contract artifacts |
+| Start from a verified deployed contract     | [`cast source`](/reference/cast/source), then `forge bind` | Explorer source followed by local Alloy bindings                         |
+| Serialize Solidity structs to and from JSON | [`forge bind-json`](/reference/forge/bind-json)            | A Solidity helper library for JSON cheatcodes                            |
 
 `forge bind-json` does not generate Rust code. The former `cast bind` workflow has also been removed; fetch verified source with `cast source` and generate bindings from a Forge project with `forge bind` instead.
 

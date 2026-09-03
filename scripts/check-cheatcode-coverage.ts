@@ -71,15 +71,11 @@ if (args.has("--refresh")) {
 const docFiles = readdirSync(docsDir)
   .filter((file) => file.endsWith(".mdx"))
   .sort();
-const docs = docFiles
-  .map((file) => readFileSync(join(docsDir, file), "utf8"))
-  .join("\n");
+const docs = docFiles.map((file) => readFileSync(join(docsDir, file), "utf8")).join("\n");
 
 const isMentioned = (name: string) => {
   const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  return new RegExp(`\\b(?:function\\s+${escaped}|vm\\s*\\.\\s*${escaped})\\s*\\(`).test(
-    docs,
-  );
+  return new RegExp(`\\b(?:function\\s+${escaped}|vm\\s*\\.\\s*${escaped})\\s*\\(`).test(docs);
 };
 
 const missing = manifest.functions.filter((name) => !isMentioned(name));
@@ -99,9 +95,7 @@ const resolved = manifest.knownMissing.filter((name) => !missing.includes(name))
 const pageSlugs = new Set(docFiles.map((file) => file.slice(0, -4)));
 const sidebar = readFileSync(sidebarPath, "utf8");
 const sidebarSlugs = new Set(
-  [...sidebar.matchAll(/\/reference\/cheatcodes\/([a-z0-9-]+)/g)].map(
-    (match) => match[1],
-  ),
+  [...sidebar.matchAll(/\/reference\/cheatcodes\/([a-z0-9-]+)/g)].map((match) => match[1]),
 );
 const missingPages = [...sidebarSlugs].filter((slug) => !pageSlugs.has(slug));
 const orphanPages = [...pageSlugs].filter((slug) => !sidebarSlugs.has(slug));
@@ -119,9 +113,7 @@ if (unexpectedMissing.length > 0) {
   failures.push(`New undocumented cheatcodes:\n  ${unexpectedMissing.join("\n  ")}`);
 }
 if (resolved.length > 0) {
-  failures.push(
-    `Remove newly documented names from knownMissing:\n  ${resolved.join("\n  ")}`,
-  );
+  failures.push(`Remove newly documented names from knownMissing:\n  ${resolved.join("\n  ")}`);
 }
 if (missingPages.length > 0) {
   failures.push(`Sidebar routes without pages:\n  ${missingPages.join("\n  ")}`);
