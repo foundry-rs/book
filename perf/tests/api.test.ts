@@ -31,6 +31,22 @@ describe('website API', () => {
     await expect(response.json()).resolves.toEqual({ source: 'clickhouse' })
   })
 
+  it('serves deterministic demo data when the temporary fallback is enabled', async () => {
+    const app = createApi({ clickHouse: null, demoFallback: true })
+
+    const health = await app.request('http://web.test/api/health')
+    const index = await app.request('http://web.test/api/data/index.json')
+
+    expect(health.status).toBe(200)
+    await expect(health.json()).resolves.toEqual({ source: 'demo' })
+    const data = await index.json()
+    expect(data).toMatchObject({ schemaVersion: 1 })
+    expect(data.runs[0]).toMatchObject({
+      commit: '9d8c7b6a5e4f32100123456789abcdef01234567',
+      title: 'Dummy benchmark run 3',
+    })
+  })
+
   it('protects and runs the import worker through Hono', async () => {
     const ingestRecent = vi.fn(async () => ({ imported: 1 }))
     const app = createApi({ cronSecret: 'secret', ingestRecent })

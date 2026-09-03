@@ -1,11 +1,14 @@
 import { Hono } from 'hono'
 
 import { clickHouseConfig, select, type ClickHouseConfig } from './clickhouse'
+import { demoResponse } from './demo'
+import { gitHubConfig } from './github'
 import { ImportPendingError, ingestCommit, ingestRecent } from './ingest'
 
 interface ApiOptions {
   clickHouse?: ClickHouseConfig | null
   cronSecret?: string | undefined
+  demoFallback?: boolean
   ingestRecent?: () => Promise<unknown>
   importRun?: (sha: string) => Promise<unknown>
 }
@@ -177,6 +180,13 @@ async function loadRunId(
 
 export function createApi(options: ApiOptions = {}) {
   const config = options.clickHouse === undefined ? clickHouseConfig() : options.clickHouse
+  // Until the GitHub App is configured, let an empty deployment remain usable with
+  // deterministic sample data. A configured App automatically restores on-demand
+  // imports and live data without a code change.
+  const useDemoFallback =
+    options.demoFallback === undefined
+      ? process.env.VERCEL === '1' && !gitHubConfig()
+      : options.demoFallback
   const cronSecret = options.cronSecret === undefined ? process.env.CRON_SECRET : options.cronSecret
   const scheduledImport = options.ingestRecent || (() => ingestRecent())
   const importRun = options.importRun || ((sha: string) => ingestCommit(sha))
@@ -191,7 +201,10 @@ export function createApi(options: ApiOptions = {}) {
   const app = new Hono()
 
   app.get('/api/health', (context) =>
-    context.json({ source: config ? 'clickhouse' : 'unconfigured' }, config ? 200 : 503),
+    context.json(
+      { source: config ? 'clickhouse' : useDemoFallback ? 'demo' : 'unconfigured' },
+      config || useDemoFallback ? 200 : 503,
+    ),
   )
 
   app.get('/api/worker/tick', async (context) => {
@@ -207,17 +220,29 @@ export function createApi(options: ApiOptions = {}) {
   })
 
   app.get('/api/data/*', async (context) => {
-    if (!config) return context.json({ error: 'Benchmark data is not configured' }, 503)
-
     const path = context.req.path.slice('/api/data/'.length)
+    const demo = useDemoFallback ? demoResponse(context.req.path) : null
+    if (!config) {
+      if (demo) return demo
+      return context.json({ error: 'Benchmark data is not configured' }, 503)
+    }
+
     try {
       if (path === 'index.json') {
         context.header('cache-control', 'public, max-age=60, stale-while-revalidate=120')
-        return context.json(await indexFromClickHouse(config))
+        const index = await indexFromClickHouse(config)
+        if (!index.runs.length && demo) return demo
+        return context.json(index)
       }
 
       const runMatch = /^runs\/([0-9a-f]{40})\/run\.json$/.exec(path)
       if (runMatch) {
+        if (demo) {
+          const current = await runFromClickHouse(config, runMatch[1])
+          if (!current) return demo
+          context.header('cache-control', 'public, max-age=300, stale-while-revalidate=3_600')
+          return context.json(current)
+        }
         const run = await loadRun(config, runMatch[1], loadImport)
         if (!run) return context.json({ error: 'Run not found' }, 404)
         context.header('cache-control', 'public, max-age=300, stale-while-revalidate=3_600')
@@ -230,7 +255,9 @@ export function createApi(options: ApiOptions = {}) {
       if (!artifactMatch) return context.json({ error: 'Unknown data file' }, 404)
 
       const [, sha, benchmark, compiler, storagePath] = artifactMatch
-      const runId = await loadRunId(config, sha, loadImport)
+      const runId = useDemoFallback
+        ? await runIdFromClickHouse(config, sha)
+        : await loadRunId(config, sha, loadImport)
       if (runId === null) return context.json({ error: 'Run not found' }, 404)
       const [artifact] = await select(
         config,

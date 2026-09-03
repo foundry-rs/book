@@ -74,6 +74,13 @@ pnpm dev
 
 Open `http://127.0.0.1:5173/?base=<base-sha>&head=<head-sha>`.
 
+To preview the dashboard without ClickHouse or credentials, run the Vite server with
+`PERF_DEMO_DATA=1`. This serves deterministic dummy runs from the local API bridge only.
+
+On Vercel, the deployed API automatically serves the same dummy data while the GitHub App
+is not configured and ClickHouse has no benchmark runs. Supplying GitHub App credentials
+returns it to live, on-demand imports without a code change.
+
 `scripts/ingest-github-runs.mjs` is the one-off local backfill tool. It uses the
 authenticated `gh` CLI and the same ClickHouse schema. Do not run it from a pull
 request workflow and do not give repository Actions ClickHouse credentials.
