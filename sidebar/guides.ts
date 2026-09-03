@@ -4,16 +4,17 @@ export const guidesSidebar: Sidebar = {
   "/guides": [
     {
       text: "Guides",
-      items: [
-        { text: "Overview", link: "/guides" },
-      ],
+      items: [{ text: "Overview", link: "/guides" }],
     },
     {
       text: "Deployment",
       items: [
         { text: "Deploying Contracts", link: "/guides/deploying-contracts" },
         { text: "Browser Wallet Signing", link: "/guides/browser-wallet" },
-        { text: "Deterministic Deployments (CREATE2)", link: "/guides/deterministic-deployments-using-create2" },
+        {
+          text: "Deterministic Deployments (CREATE2)",
+          link: "/guides/deterministic-deployments-using-create2",
+        },
         { text: "Multi-Chain Deployments", link: "/guides/multi-chain-deployments" },
         { text: "Upgrading Contracts", link: "/guides/upgrading-contracts" },
       ],
@@ -50,15 +51,11 @@ export const guidesSidebar: Sidebar = {
     },
     {
       text: "Environment",
-      items: [
-        { text: "Docker & Containers", link: "/guides/docker" },
-      ],
+      items: [{ text: "Docker & Containers", link: "/guides/docker" }],
     },
     {
       text: "Migrations",
-      items: [
-        { text: "Foundry v1.0", link: "/guides/migrations/foundry-v1" },
-      ],
+      items: [{ text: "Foundry v1.0", link: "/guides/migrations/foundry-v1" }],
     },
   ],
 };

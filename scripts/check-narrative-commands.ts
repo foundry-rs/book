@@ -12,7 +12,7 @@ type Baseline = {
   violations: string[];
 };
 
-const root = resolve(import.meta.dir, "..");
+const root = resolve(import.meta.dirname, "..");
 const baselinePath = join(root, "scripts/narrative-command-baseline.json");
 const pagesDir = join(root, "src/pages");
 const referenceDir = join(pagesDir, "reference");
@@ -25,8 +25,8 @@ const args = new Set(process.argv.slice(2));
 
 if (args.has("--help")) {
   console.log(`Usage:
-  bun scripts/check-narrative-commands.ts
-  bun scripts/check-narrative-commands.ts --accept-current
+  pnpm exec tsx scripts/check-narrative-commands.ts
+  pnpm exec tsx scripts/check-narrative-commands.ts --accept-current
 
 The default mode checks authored pages against the committed baseline. Only use
 --accept-current when intentionally reviewing and accepting the current

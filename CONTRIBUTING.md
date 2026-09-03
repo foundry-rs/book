@@ -63,17 +63,21 @@ This section documents the standards for writing used throughout the book.
 The book uses three primary page structures:
 
 ##### Hub Pages
+
 Introductory pages that orient readers and link to related content.
 
 Structure:
+
 1. Brief introduction (≤3 paragraphs)
 2. Card grid or link list to child pages
 3. Optional "Next steps" section
 
 ##### Guide Pages
+
 Step-by-step tutorials that walk readers through a task.
 
 Structure:
+
 1. **Introduction** – What you'll accomplish
 2. **Prerequisites** – Required tools, knowledge, or setup
 3. **Steps** – Numbered instructions (use H4 for each step)
@@ -81,9 +85,11 @@ Structure:
 5. **Next steps** – Related guides or reference material
 
 ##### Reference Pages
+
 Technical documentation for commands, APIs, or configuration.
 
 Structure:
+
 1. **Summary** – One-sentence description
 2. **Usage** – Command syntax or API signature
 3. **Options/Parameters** – Table or definition list
@@ -142,16 +148,19 @@ Most CLI output is auto-generated to stay in sync with Foundry changes.
 Each output file has three anchors:
 
 **Display the command _and_ the output:**
+
 ```handlebars
 // [!include ~/snippets/output/abc/xyz:all]
 ```
 
 **Display just the command:**
+
 ```handlebars
 // [!include ~/snippets/output/abc/xyz:command]
 ```
 
 **Display just the output:**
+
 ```handlebars
 // [!include ~/snippets/output/abc/xyz:output]
 ```
@@ -227,7 +236,7 @@ $ foundryup
 
 Use callouts for warnings, tips, and notes:
 
-````md
+```md
 :::tip
 Run any command with `--help` for detailed usage.
 :::
@@ -239,14 +248,14 @@ This will overwrite existing files.
 :::note
 This feature requires Foundry v1.0 or later.
 :::
-````
+```
 
 ##### Cards
 
 Use `Cards` and `Card` components for navigation grids:
 
-````mdx
-import { Cards, Card } from 'vocs'
+```mdx
+import { Cards, Card } from "vocs";
 
 <Cards>
   <Card
@@ -256,7 +265,7 @@ import { Cards, Card } from 'vocs'
     icon="lucide:hammer"
   />
 </Cards>
-````
+```
 
 ##### Code Groups
 
@@ -275,10 +284,6 @@ $ npm install
 
 ```bash [pnpm]
 $ pnpm install
-```
-
-```bash [bun]
-$ bun install
 ```
 
 :::

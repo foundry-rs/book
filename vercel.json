@@ -1,7 +1,10 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "redirects": [
-    { "source": "/install", "destination": "https://raw.githubusercontent.com/foundry-rs/foundryup/HEAD/foundryup-init.sh" },
+    {
+      "source": "/install",
+      "destination": "https://raw.githubusercontent.com/foundry-rs/foundryup/HEAD/foundryup-init.sh"
+    },
 
     { "source": "/getting-started/installation", "destination": "/introduction/installation" },
     { "source": "/getting-started/introduction", "destination": "/introduction/getting-started" },
@@ -102,13 +105,22 @@
     { "source": "/cheatcodes/:id", "destination": "/reference/cheatcodes/:id" },
     { "source": "/cheatcodes", "destination": "/reference/cheatcodes/overview" },
 
-    { "source": "/reference/cheatcodes/environment", "destination": "/reference/cheatcodes/overview" },
-    { "source": "/reference/cheatcodes/assertions", "destination": "/reference/cheatcodes/overview" },
+    {
+      "source": "/reference/cheatcodes/environment",
+      "destination": "/reference/cheatcodes/overview"
+    },
+    {
+      "source": "/reference/cheatcodes/assertions",
+      "destination": "/reference/cheatcodes/overview"
+    },
     { "source": "/reference/cheatcodes/fuzzer", "destination": "/reference/cheatcodes/overview" },
     { "source": "/reference/cheatcodes/forking", "destination": "/reference/cheatcodes/overview" },
     { "source": "/reference/cheatcodes/external", "destination": "/reference/cheatcodes/overview" },
     { "source": "/reference/cheatcodes/signing", "destination": "/reference/cheatcodes/overview" },
-    { "source": "/reference/cheatcodes/utilities", "destination": "/reference/cheatcodes/overview" },
+    {
+      "source": "/reference/cheatcodes/utilities",
+      "destination": "/reference/cheatcodes/overview"
+    },
 
     { "source": "/reference/forge-std/", "destination": "/reference/forge-std/overview" },
     { "source": "/reference/forge-std", "destination": "/reference/forge-std/overview" },
@@ -124,7 +136,10 @@
     { "source": "/tutorials/testing-eip712", "destination": "/guides" },
     { "source": "/tutorials/solidity-scripting", "destination": "/forge/scripting" },
     { "source": "/tutorials/create2-tutorial", "destination": "/guides" },
-    { "source": "/tutorials/forking-mainnet-with-cast-anvil", "destination": "/guides/fork-testing" },
+    {
+      "source": "/tutorials/forking-mainnet-with-cast-anvil",
+      "destination": "/guides/fork-testing"
+    },
     { "source": "/tutorials/learn-foundry", "destination": "/guides" },
     { "source": "/tutorials", "destination": "/guides" },
 

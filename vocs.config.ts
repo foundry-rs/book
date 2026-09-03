@@ -13,8 +13,7 @@ export const sponsors = {
     {
       name: "Tempo",
       link: "https://tempo.xyz",
-      image:
-        "https://raw.githubusercontent.com/wevm/.github/main/content/sponsors/tempo-light.svg",
+      image: "https://raw.githubusercontent.com/wevm/.github/main/content/sponsors/tempo-light.svg",
     },
   ],
 };

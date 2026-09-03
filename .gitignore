@@ -11,5 +11,6 @@
 /dist
 /docs/dist
 /.vocs
+*.tsbuildinfo
 _
 links-report.json

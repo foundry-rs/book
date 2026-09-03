@@ -12,7 +12,7 @@ updates:
     groups:
       ci-weekly:
         patterns:
-          - '*'
+          - "*"
   - package-ecosystem: npm
     directory: /
     schedule:
@@ -25,4 +25,4 @@ updates:
     groups:
       npm-weekly:
         patterns:
-          - '*'
+          - "*"

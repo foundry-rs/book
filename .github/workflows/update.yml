@@ -32,8 +32,15 @@ jobs:
         with:
           toolchain: nightly
 
-      - name: Install bun
-        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+      - name: Set up Vite+
+        uses: voidzero-dev/setup-vp@1b32467adbe183473499fd9d5d372c3ed9641754 # v1.18.0
+        with:
+          cache: true
+          node-version: "24"
+          run-install: false
+
+      - name: Install dependencies
+        run: vp install --frozen-lockfile
 
       - name: Refresh cheatcode manifest
         run: |
@@ -44,13 +51,13 @@ jobs:
           curl --fail --location --retry 3 \
             "https://raw.githubusercontent.com/foundry-rs/foundry/$foundry_commit/crates/cheatcodes/assets/cheatcodes.json" \
             --output "$spec"
-          bun scripts/check-cheatcode-coverage.ts \
+          vp run check:cheatcodes -- \
             --refresh --spec "$spec" --commit "$foundry_commit"
 
       - name: Refresh changelog data
         env:
           GITHUB_TOKEN: ${{ github.token }}
-        run: bun scripts/fetch-changelog.ts --strict
+        run: vp run fetch-changelog -- --strict
 
       - name: Update
         run: |

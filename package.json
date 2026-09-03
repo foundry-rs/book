@@ -1,34 +1,36 @@
 {
   "name": "foundry-docs",
-  "private": true,
   "version": "0.0.0",
+  "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vocs dev",
-    "build": "bun run fetch-benchmarks && bun run fetch-changelog && vocs build",
-    "check:cheatcodes": "bun scripts/check-cheatcode-coverage.ts",
-    "check:anvil-rpc": "bun scripts/check-anvil-rpc-coverage.ts",
-    "check:commands": "bun scripts/check-narrative-commands.ts",
-    "preview": "vocs preview",
-    "fetch-benchmarks": "bun scripts/fetch-benchmarks.ts",
-    "fetch-changelog": "bun scripts/fetch-changelog.ts"
+    "build": "vp run fetch-benchmarks && vp run fetch-changelog && vp exec vocs build",
+    "check": "vp check .github package.json pnpm-workspace.yaml scripts sidebar src/components tsconfig.json vite.config.ts vocs.config.ts",
+    "check:anvil-rpc": "vp exec tsx scripts/check-anvil-rpc-coverage.ts",
+    "check:cheatcodes": "vp exec tsx scripts/check-cheatcode-coverage.ts",
+    "check:commands": "vp exec tsx scripts/check-narrative-commands.ts",
+    "dev": "vp exec vocs dev",
+    "fetch-benchmarks": "vp exec tsx scripts/fetch-benchmarks.ts",
+    "fetch-changelog": "vp exec tsx scripts/fetch-changelog.ts",
+    "preview": "vp exec vocs preview",
+    "test": "vp test --run"
   },
   "dependencies": {
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
     "tailwindcss": "^4.2.2",
     "vocs": "2.8.5",
-    "waku": "^1.0.0-beta.0"
+    "waku": "1.0.0-beta.6"
   },
   "devDependencies": {
-    "@types/bun": "^1.3.12",
     "@types/node": "^26.0.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.2",
     "tsx": "^4.21.0",
     "typescript": "^7.0.2",
-    "vite": "^8.0.16"
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
   },
   "devEngines": {
     "runtime": {
@@ -36,5 +38,6 @@
       "version": "24.12.0",
       "onFail": "download"
     }
-  }
+  },
+  "packageManager": "pnpm@11.25.0"
 }

@@ -1,6 +1,6 @@
-#!/usr/bin/env bun
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
-import { dirname, join } from 'path';
+#!/usr/bin/env node
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
+import { dirname, join } from "path";
 
 // Generates src/data/changelog.json, the data behind the /changelog page.
 //
@@ -13,13 +13,13 @@ import { dirname, join } from 'path';
 // builds stay reproducible offline. The weekly update workflow runs with
 // `--strict` to refresh the data and fails loudly instead.
 
-const REPO = 'foundry-rs/foundry';
+const REPO = "foundry-rs/foundry";
 const API_BASE = `https://api.github.com/repos/${REPO}`;
-const OUTPUT_FILE = join(import.meta.dir, '../src/data/changelog.json');
+const OUTPUT_FILE = join(import.meta.dirname, "../src/data/changelog.json");
 
 const STABLE_TAG = /^v(\d+)\.(\d+)\.(\d+)$/;
 
-const strict = process.argv.includes('--strict');
+const strict = process.argv.includes("--strict");
 
 interface Release {
   version: string;
@@ -35,15 +35,17 @@ interface ChangelogData {
 
 async function githubFetch(path: string): Promise<unknown> {
   const headers: Record<string, string> = {
-    Accept: 'application/vnd.github.v3+json',
-    'User-Agent': 'foundry-book-changelog',
+    Accept: "application/vnd.github.v3+json",
+    "User-Agent": "foundry-book-changelog",
   };
   const token = process.env.GITHUB_TOKEN;
   if (token) headers.Authorization = `Bearer ${token}`;
 
   const response = await fetch(`${API_BASE}${path}`, { headers });
   if (!response.ok) {
-    throw new Error(`GitHub API request for ${path} failed: ${response.status} ${response.statusText}`);
+    throw new Error(
+      `GitHub API request for ${path} failed: ${response.status} ${response.statusText}`,
+    );
   }
   return response.json();
 }
@@ -80,7 +82,7 @@ async function fetchStableReleases(): Promise<Release[]> {
         title: release.name || release.tag_name,
         date: release.published_at,
         url: release.html_url,
-        body: (release.body || '').replace(/\r\n/g, '\n').trim(),
+        body: (release.body || "").replace(/\r\n/g, "\n").trim(),
       });
     }
     if (batch.length < 100) break;
@@ -93,7 +95,7 @@ async function fetchStableReleases(): Promise<Release[]> {
 function readExisting(): ChangelogData | null {
   if (!existsSync(OUTPUT_FILE)) return null;
   try {
-    return JSON.parse(readFileSync(OUTPUT_FILE, 'utf-8')) as ChangelogData;
+    return JSON.parse(readFileSync(OUTPUT_FILE, "utf-8")) as ChangelogData;
   } catch {
     return null;
   }
@@ -104,7 +106,7 @@ async function main() {
     console.log(`Fetching stable releases from ${REPO}...`);
     const releases = await fetchStableReleases();
     if (releases.length === 0) {
-      throw new Error('No stable releases found');
+      throw new Error("No stable releases found");
     }
     console.log(`Found ${releases.length} stable releases (latest: ${releases[0].version})`);
 
@@ -113,7 +115,7 @@ async function main() {
 
     const existing = readExisting();
     if (existing && `${JSON.stringify(existing, null, 2)}\n` === serialized) {
-      console.log('✅ Changelog data already up to date');
+      console.log("✅ Changelog data already up to date");
       return;
     }
 
@@ -122,10 +124,10 @@ async function main() {
     console.log(`✅ Wrote changelog data to ${OUTPUT_FILE}`);
   } catch (error) {
     if (!strict && existsSync(OUTPUT_FILE)) {
-      console.warn('Failed to refresh changelog data, keeping existing file:', error);
+      console.warn("Failed to refresh changelog data, keeping existing file:", error);
       return;
     }
-    console.error('Failed to fetch changelog data:', error);
+    console.error("Failed to fetch changelog data:", error);
     process.exit(1);
   }
 }

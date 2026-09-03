@@ -1,0 +1,16 @@
+catalog:
+  vite: npm:@voidzero-dev/vite-plus-core@0.3.0
+  vite-plus: 0.3.0
+allowBuilds:
+  es5-ext: false
+  esbuild: true
+  vue-demi: false
+  workerd: true
+peerDependencyRules:
+  allowAny:
+    - vite
+  allowedVersions:
+    typescript: "*"
+    vite: "*"
+overrides:
+  vite@*: "catalog:"

@@ -1,472 +1,705 @@
 // deno-fmt-ignore-file
 // biome-ignore format: generated types do not need formatting
 // prettier-ignore
-import type { PathsForPages } from 'waku/router';
-
+import type { PathsForPages } from 'waku/router'
 
 // prettier-ignore
 type Page =
-| { path: '/benchmarks'; render: 'static' }
-| { path: '/best-practices'; render: 'static' }
-| { path: '/'; render: 'static' }
-| { path: '/reference/README'; render: 'static' }
-| { path: '/reference/forge-std/abs'; render: 'static' }
-| { path: '/reference/forge-std/arithmeticError'; render: 'static' }
-| { path: '/reference/forge-std/assertApproxEqAbs'; render: 'static' }
-| { path: '/reference/forge-std/assertApproxEqAbsDecimal'; render: 'static' }
-| { path: '/reference/forge-std/assertApproxEqRel'; render: 'static' }
-| { path: '/reference/forge-std/assertApproxEqRelDecimal'; render: 'static' }
-| { path: '/reference/forge-std/assertEq'; render: 'static' }
-| { path: '/reference/forge-std/assertEqDecimal'; render: 'static' }
-| { path: '/reference/forge-std/assertFalse'; render: 'static' }
-| { path: '/reference/forge-std/assertGe'; render: 'static' }
-| { path: '/reference/forge-std/assertGeDecimal'; render: 'static' }
-| { path: '/reference/forge-std/assertGt'; render: 'static' }
-| { path: '/reference/forge-std/assertGtDecimal'; render: 'static' }
-| { path: '/reference/forge-std/assertLe'; render: 'static' }
-| { path: '/reference/forge-std/assertLeDecimal'; render: 'static' }
-| { path: '/reference/forge-std/assertLt'; render: 'static' }
-| { path: '/reference/forge-std/assertLtDecimal'; render: 'static' }
-| { path: '/reference/forge-std/assertNotEq'; render: 'static' }
-| { path: '/reference/forge-std/assertNotEqDecimal'; render: 'static' }
-| { path: '/reference/forge-std/assertTrue'; render: 'static' }
-| { path: '/reference/forge-std/assertionError'; render: 'static' }
-| { path: '/reference/forge-std/assume-no-precompiles'; render: 'static' }
-| { path: '/reference/forge-std/assume-payable'; render: 'static' }
-| { path: '/reference/forge-std/bound'; render: 'static' }
-| { path: '/reference/forge-std/change-prank'; render: 'static' }
-| { path: '/reference/forge-std/checked_write'; render: 'static' }
-| { path: '/reference/forge-std/compute-create-address'; render: 'static' }
-| { path: '/reference/forge-std/config'; render: 'static' }
-| { path: '/reference/forge-std/console-log'; render: 'static' }
-| { path: '/reference/forge-std/deal'; render: 'static' }
-| { path: '/reference/forge-std/delta'; render: 'static' }
-| { path: '/reference/forge-std/deployCode'; render: 'static' }
-| { path: '/reference/forge-std/deployCodeTo'; render: 'static' }
-| { path: '/reference/forge-std/depth'; render: 'static' }
-| { path: '/reference/forge-std/derive-remember-key'; render: 'static' }
-| { path: '/reference/forge-std/divisionError'; render: 'static' }
-| { path: '/reference/forge-std/enable_packed_slots'; render: 'static' }
-| { path: '/reference/forge-std/encodeStorageError'; render: 'static' }
-| { path: '/reference/forge-std/enumConversionError'; render: 'static' }
-| { path: '/reference/forge-std/fail'; render: 'static' }
-| { path: '/reference/forge-std/find'; render: 'static' }
-| { path: '/reference/forge-std/hoax'; render: 'static' }
-| { path: '/reference/forge-std/indexOOBError'; render: 'static' }
-| { path: '/reference/forge-std/make-addr-and-key'; render: 'static' }
-| { path: '/reference/forge-std/make-addr'; render: 'static' }
-| { path: '/reference/forge-std/memOverflowError'; render: 'static' }
-| { path: '/reference/forge-std/noGasMetering'; render: 'static' }
-| { path: '/reference/forge-std/overview'; render: 'static' }
-| { path: '/reference/forge-std/percentDelta'; render: 'static' }
-| { path: '/reference/forge-std/popError'; render: 'static' }
-| { path: '/reference/forge-std/read'; render: 'static' }
-| { path: '/reference/forge-std/rewind'; render: 'static' }
-| { path: '/reference/forge-std/script-utils'; render: 'static' }
-| { path: '/reference/forge-std/sig'; render: 'static' }
-| { path: '/reference/forge-std/skip'; render: 'static' }
-| { path: '/reference/forge-std/startHoax'; render: 'static' }
-| { path: '/reference/forge-std/std-assertions'; render: 'static' }
-| { path: '/reference/forge-std/std-cheats'; render: 'static' }
-| { path: '/reference/forge-std/std-config'; render: 'static' }
-| { path: '/reference/forge-std/std-errors'; render: 'static' }
-| { path: '/reference/forge-std/std-logs'; render: 'static' }
-| { path: '/reference/forge-std/std-math'; render: 'static' }
-| { path: '/reference/forge-std/std-storage'; render: 'static' }
-| { path: '/reference/forge-std/target'; render: 'static' }
-| { path: '/reference/forge-std/with_key'; render: 'static' }
-| { path: '/reference/forge-std/zeroVarError'; render: 'static' }
-| { path: '/reference/forge/bind-json'; render: 'static' }
-| { path: '/reference/forge/bind'; render: 'static' }
-| { path: '/reference/forge/build'; render: 'static' }
-| { path: '/reference/forge/cache'; render: 'static' }
-| { path: '/reference/forge/clean'; render: 'static' }
-| { path: '/reference/forge/clone'; render: 'static' }
-| { path: '/reference/forge/compiler'; render: 'static' }
-| { path: '/reference/forge/completions'; render: 'static' }
-| { path: '/reference/forge/config'; render: 'static' }
-| { path: '/reference/forge/coverage'; render: 'static' }
-| { path: '/reference/forge/create'; render: 'static' }
-| { path: '/reference/forge/doc'; render: 'static' }
-| { path: '/reference/forge/eip712'; render: 'static' }
-| { path: '/reference/forge/flatten'; render: 'static' }
-| { path: '/reference/forge/fmt'; render: 'static' }
-| { path: '/reference/forge/forge'; render: 'static' }
-| { path: '/reference/forge/geiger'; render: 'static' }
-| { path: '/reference/forge/generate'; render: 'static' }
-| { path: '/reference/forge/init'; render: 'static' }
-| { path: '/reference/forge/inspect'; render: 'static' }
-| { path: '/reference/forge/install'; render: 'static' }
-| { path: '/reference/forge/lint'; render: 'static' }
-| { path: '/reference/forge/remappings'; render: 'static' }
-| { path: '/reference/forge/remove'; render: 'static' }
-| { path: '/reference/forge/script'; render: 'static' }
-| { path: '/reference/forge/selectors'; render: 'static' }
-| { path: '/reference/forge/snapshot'; render: 'static' }
-| { path: '/reference/forge/soldeer'; render: 'static' }
-| { path: '/reference/forge/test'; render: 'static' }
-| { path: '/reference/forge/tree'; render: 'static' }
-| { path: '/reference/forge/update'; render: 'static' }
-| { path: '/reference/forge/verify-bytecode'; render: 'static' }
-| { path: '/reference/forge/verify-check'; render: 'static' }
-| { path: '/reference/forge/verify-contract'; render: 'static' }
-| { path: '/reference/forge/soldeer/clean'; render: 'static' }
-| { path: '/reference/forge/soldeer/init'; render: 'static' }
-| { path: '/reference/forge/soldeer/install'; render: 'static' }
-| { path: '/reference/forge/soldeer/login'; render: 'static' }
-| { path: '/reference/forge/soldeer/push'; render: 'static' }
-| { path: '/reference/forge/soldeer/uninstall'; render: 'static' }
-| { path: '/reference/forge/soldeer/update'; render: 'static' }
-| { path: '/reference/forge/soldeer/version'; render: 'static' }
-| { path: '/reference/forge/selectors/cache'; render: 'static' }
-| { path: '/reference/forge/selectors/collision'; render: 'static' }
-| { path: '/reference/forge/selectors/find'; render: 'static' }
-| { path: '/reference/forge/selectors/list'; render: 'static' }
-| { path: '/reference/forge/selectors/upload'; render: 'static' }
-| { path: '/reference/forge/generate/test'; render: 'static' }
-| { path: '/reference/forge/compiler/resolve'; render: 'static' }
-| { path: '/reference/forge/cache/clean'; render: 'static' }
-| { path: '/reference/forge/cache/ls'; render: 'static' }
-| { path: '/reference/common/base-options'; render: 'static' }
-| { path: '/reference/common/cast-estimate-create-option'; render: 'static' }
-| { path: '/reference/common/display-options'; render: 'static' }
-| { path: '/reference/common/etherscan-options'; render: 'static' }
-| { path: '/reference/common/multi-wallet-options-hardware'; render: 'static' }
-| { path: '/reference/common/multi-wallet-options-keystore'; render: 'static' }
-| { path: '/reference/common/multi-wallet-options-raw'; render: 'static' }
-| { path: '/reference/common/multi-wallet-options-remote'; render: 'static' }
-| { path: '/reference/common/multi-wallet-options'; render: 'static' }
-| { path: '/reference/common/retry-options'; render: 'static' }
-| { path: '/reference/common/rpc-options'; render: 'static' }
-| { path: '/reference/common/rpc-url-option'; render: 'static' }
-| { path: '/reference/common/transaction-options'; render: 'static' }
-| { path: '/reference/common/tx-value-option'; render: 'static' }
-| { path: '/reference/common/verifier-options'; render: 'static' }
-| { path: '/reference/common/wallet-options-hardware'; render: 'static' }
-| { path: '/reference/common/wallet-options-keystore'; render: 'static' }
-| { path: '/reference/common/wallet-options-raw'; render: 'static' }
-| { path: '/reference/common/wallet-options-remote'; render: 'static' }
-| { path: '/reference/common/wallet-options'; render: 'static' }
-| { path: '/reference/chisel/chisel'; render: 'static' }
-| { path: '/reference/chisel/clear-cache'; render: 'static' }
-| { path: '/reference/chisel/eval'; render: 'static' }
-| { path: '/reference/chisel/list'; render: 'static' }
-| { path: '/reference/chisel/load'; render: 'static' }
-| { path: '/reference/chisel/view'; render: 'static' }
-| { path: '/reference/cheatcodes/accesses'; render: 'static' }
-| { path: '/reference/cheatcodes/active-fork'; render: 'static' }
-| { path: '/reference/cheatcodes/addr'; render: 'static' }
-| { path: '/reference/cheatcodes/allow-cheatcodes'; render: 'static' }
-| { path: '/reference/cheatcodes/assume-no-revert'; render: 'static' }
-| { path: '/reference/cheatcodes/assume'; render: 'static' }
-| { path: '/reference/cheatcodes/breakpoint'; render: 'static' }
-| { path: '/reference/cheatcodes/broadcast'; render: 'static' }
-| { path: '/reference/cheatcodes/chain-id'; render: 'static' }
-| { path: '/reference/cheatcodes/clear-mocked-calls'; render: 'static' }
-| { path: '/reference/cheatcodes/coinbase'; render: 'static' }
-| { path: '/reference/cheatcodes/copy-storage'; render: 'static' }
-| { path: '/reference/cheatcodes/create-fork'; render: 'static' }
-| { path: '/reference/cheatcodes/create-select-fork'; render: 'static' }
-| { path: '/reference/cheatcodes/create-wallet'; render: 'static' }
-| { path: '/reference/cheatcodes/deal'; render: 'static' }
-| { path: '/reference/cheatcodes/derive-key'; render: 'static' }
-| { path: '/reference/cheatcodes/difficulty'; render: 'static' }
-| { path: '/reference/cheatcodes/env-address'; render: 'static' }
-| { path: '/reference/cheatcodes/env-bool'; render: 'static' }
-| { path: '/reference/cheatcodes/env-bytes'; render: 'static' }
-| { path: '/reference/cheatcodes/env-bytes32'; render: 'static' }
-| { path: '/reference/cheatcodes/env-int'; render: 'static' }
-| { path: '/reference/cheatcodes/env-or'; render: 'static' }
-| { path: '/reference/cheatcodes/env-string'; render: 'static' }
-| { path: '/reference/cheatcodes/env-uint'; render: 'static' }
-| { path: '/reference/cheatcodes/etch'; render: 'static' }
-| { path: '/reference/cheatcodes/expect-call'; render: 'static' }
-| { path: '/reference/cheatcodes/expect-emit'; render: 'static' }
-| { path: '/reference/cheatcodes/expect-revert'; render: 'static' }
-| { path: '/reference/cheatcodes/fee'; render: 'static' }
-| { path: '/reference/cheatcodes/ffi'; render: 'static' }
-| { path: '/reference/cheatcodes/fs'; render: 'static' }
-| { path: '/reference/cheatcodes/gas-snapshots'; render: 'static' }
-| { path: '/reference/cheatcodes/get-block-number'; render: 'static' }
-| { path: '/reference/cheatcodes/get-block-timestamp'; render: 'static' }
-| { path: '/reference/cheatcodes/get-code'; render: 'static' }
-| { path: '/reference/cheatcodes/get-deployed-code'; render: 'static' }
-| { path: '/reference/cheatcodes/get-label'; render: 'static' }
-| { path: '/reference/cheatcodes/get-nonce'; render: 'static' }
-| { path: '/reference/cheatcodes/get-recorded-logs'; render: 'static' }
-| { path: '/reference/cheatcodes/is-context'; render: 'static' }
-| { path: '/reference/cheatcodes/is-persistent'; render: 'static' }
-| { path: '/reference/cheatcodes/key-exists-json'; render: 'static' }
-| { path: '/reference/cheatcodes/key-exists-toml'; render: 'static' }
-| { path: '/reference/cheatcodes/key-exists'; render: 'static' }
-| { path: '/reference/cheatcodes/label'; render: 'static' }
-| { path: '/reference/cheatcodes/load'; render: 'static' }
-| { path: '/reference/cheatcodes/make-persistent'; render: 'static' }
-| { path: '/reference/cheatcodes/mock-call-revert'; render: 'static' }
-| { path: '/reference/cheatcodes/mock-call'; render: 'static' }
-| { path: '/reference/cheatcodes/mock-calls'; render: 'static' }
-| { path: '/reference/cheatcodes/mock-function'; render: 'static' }
-| { path: '/reference/cheatcodes/overview'; render: 'static' }
-| { path: '/reference/cheatcodes/parse-address'; render: 'static' }
-| { path: '/reference/cheatcodes/parse-bool'; render: 'static' }
-| { path: '/reference/cheatcodes/parse-bytes'; render: 'static' }
-| { path: '/reference/cheatcodes/parse-bytes32'; render: 'static' }
-| { path: '/reference/cheatcodes/parse-int'; render: 'static' }
-| { path: '/reference/cheatcodes/parse-json-keys'; render: 'static' }
-| { path: '/reference/cheatcodes/parse-json'; render: 'static' }
-| { path: '/reference/cheatcodes/parse-toml-keys'; render: 'static' }
-| { path: '/reference/cheatcodes/parse-toml'; render: 'static' }
-| { path: '/reference/cheatcodes/parse-uint'; render: 'static' }
-| { path: '/reference/cheatcodes/pause-gas-metering'; render: 'static' }
-| { path: '/reference/cheatcodes/prank'; render: 'static' }
-| { path: '/reference/cheatcodes/prevrandao'; render: 'static' }
-| { path: '/reference/cheatcodes/project-root'; render: 'static' }
-| { path: '/reference/cheatcodes/prompt'; render: 'static' }
-| { path: '/reference/cheatcodes/read-callers'; render: 'static' }
-| { path: '/reference/cheatcodes/record-logs'; render: 'static' }
-| { path: '/reference/cheatcodes/record'; render: 'static' }
-| { path: '/reference/cheatcodes/remember-key'; render: 'static' }
-| { path: '/reference/cheatcodes/reset-gas-metering'; render: 'static' }
-| { path: '/reference/cheatcodes/resume-gas-metering'; render: 'static' }
-| { path: '/reference/cheatcodes/revoke-persistent'; render: 'static' }
-| { path: '/reference/cheatcodes/roll-fork'; render: 'static' }
-| { path: '/reference/cheatcodes/roll'; render: 'static' }
-| { path: '/reference/cheatcodes/rpc'; render: 'static' }
-| { path: '/reference/cheatcodes/select-fork'; render: 'static' }
-| { path: '/reference/cheatcodes/serialize-json'; render: 'static' }
-| { path: '/reference/cheatcodes/set-arbitrary-storage'; render: 'static' }
-| { path: '/reference/cheatcodes/set-env'; render: 'static' }
-| { path: '/reference/cheatcodes/set-nonce'; render: 'static' }
-| { path: '/reference/cheatcodes/sign-delegation'; render: 'static' }
-| { path: '/reference/cheatcodes/sign'; render: 'static' }
-| { path: '/reference/cheatcodes/skip'; render: 'static' }
-| { path: '/reference/cheatcodes/sleep'; render: 'static' }
-| { path: '/reference/cheatcodes/start-broadcast'; render: 'static' }
-| { path: '/reference/cheatcodes/start-prank'; render: 'static' }
-| { path: '/reference/cheatcodes/start-state-diff-recording'; render: 'static' }
-| { path: '/reference/cheatcodes/state-snapshots'; render: 'static' }
-| { path: '/reference/cheatcodes/stop-and-return-state-diff'; render: 'static' }
-| { path: '/reference/cheatcodes/stop-broadcast'; render: 'static' }
-| { path: '/reference/cheatcodes/stop-prank'; render: 'static' }
-| { path: '/reference/cheatcodes/store'; render: 'static' }
-| { path: '/reference/cheatcodes/to-string'; render: 'static' }
-| { path: '/reference/cheatcodes/transact'; render: 'static' }
-| { path: '/reference/cheatcodes/tx-gas-price'; render: 'static' }
-| { path: '/reference/cheatcodes/unix-time'; render: 'static' }
-| { path: '/reference/cheatcodes/warp'; render: 'static' }
-| { path: '/reference/cheatcodes/write-json'; render: 'static' }
-| { path: '/reference/cheatcodes/write-toml'; render: 'static' }
-| { path: '/reference/cast/4byte-calldata'; render: 'static' }
-| { path: '/reference/cast/4byte-event'; render: 'static' }
-| { path: '/reference/cast/4byte'; render: 'static' }
-| { path: '/reference/cast/abi-encode-event'; render: 'static' }
-| { path: '/reference/cast/abi-encode'; render: 'static' }
-| { path: '/reference/cast/access-list'; render: 'static' }
-| { path: '/reference/cast/address-zero'; render: 'static' }
-| { path: '/reference/cast/admin'; render: 'static' }
-| { path: '/reference/cast/age'; render: 'static' }
-| { path: '/reference/cast/artifact'; render: 'static' }
-| { path: '/reference/cast/b2e-payload'; render: 'static' }
-| { path: '/reference/cast/balance'; render: 'static' }
-| { path: '/reference/cast/base-fee'; render: 'static' }
-| { path: '/reference/cast/bind'; render: 'static' }
-| { path: '/reference/cast/block-number'; render: 'static' }
-| { path: '/reference/cast/block'; render: 'static' }
-| { path: '/reference/cast/call'; render: 'static' }
-| { path: '/reference/cast/calldata'; render: 'static' }
-| { path: '/reference/cast/cast'; render: 'static' }
-| { path: '/reference/cast/chain-id'; render: 'static' }
-| { path: '/reference/cast/chain'; render: 'static' }
-| { path: '/reference/cast/client'; render: 'static' }
-| { path: '/reference/cast/code'; render: 'static' }
-| { path: '/reference/cast/codehash'; render: 'static' }
-| { path: '/reference/cast/codesize'; render: 'static' }
-| { path: '/reference/cast/completions'; render: 'static' }
-| { path: '/reference/cast/compute-address'; render: 'static' }
-| { path: '/reference/cast/concat-hex'; render: 'static' }
-| { path: '/reference/cast/constructor-args'; render: 'static' }
-| { path: '/reference/cast/create2'; render: 'static' }
-| { path: '/reference/cast/creation-code'; render: 'static' }
-| { path: '/reference/cast/da-estimate'; render: 'static' }
-| { path: '/reference/cast/decode-abi'; render: 'static' }
-| { path: '/reference/cast/decode-calldata'; render: 'static' }
-| { path: '/reference/cast/decode-error'; render: 'static' }
-| { path: '/reference/cast/decode-event'; render: 'static' }
-| { path: '/reference/cast/decode-string'; render: 'static' }
-| { path: '/reference/cast/decode-transaction'; render: 'static' }
-| { path: '/reference/cast/disassemble'; render: 'static' }
-| { path: '/reference/cast/erc20-token'; render: 'static' }
-| { path: '/reference/cast/estimate'; render: 'static' }
-| { path: '/reference/cast/find-block'; render: 'static' }
-| { path: '/reference/cast/format-bytes32-string'; render: 'static' }
-| { path: '/reference/cast/format-units'; render: 'static' }
-| { path: '/reference/cast/from-bin'; render: 'static' }
-| { path: '/reference/cast/from-fixed-point'; render: 'static' }
-| { path: '/reference/cast/from-rlp'; render: 'static' }
-| { path: '/reference/cast/from-utf8'; render: 'static' }
-| { path: '/reference/cast/from-wei'; render: 'static' }
-| { path: '/reference/cast/gas-price'; render: 'static' }
-| { path: '/reference/cast/hash-message'; render: 'static' }
-| { path: '/reference/cast/hash-zero'; render: 'static' }
-| { path: '/reference/cast/implementation'; render: 'static' }
-| { path: '/reference/cast/index-cmd'; render: 'static' }
-| { path: '/reference/cast/index-erc7201'; render: 'static' }
-| { path: '/reference/cast'; render: 'static' }
-| { path: '/reference/cast/interface'; render: 'static' }
-| { path: '/reference/cast/keccak'; render: 'static' }
-| { path: '/reference/cast/logs'; render: 'static' }
-| { path: '/reference/cast/lookup-address'; render: 'static' }
-| { path: '/reference/cast/max-int'; render: 'static' }
-| { path: '/reference/cast/max-uint'; render: 'static' }
-| { path: '/reference/cast/min-int'; render: 'static' }
-| { path: '/reference/cast/mktx'; render: 'static' }
-| { path: '/reference/cast/namehash'; render: 'static' }
-| { path: '/reference/cast/nonce'; render: 'static' }
-| { path: '/reference/cast/pad'; render: 'static' }
-| { path: '/reference/cast/parse-bytes32-address'; render: 'static' }
-| { path: '/reference/cast/parse-bytes32-string'; render: 'static' }
-| { path: '/reference/cast/parse-units'; render: 'static' }
-| { path: '/reference/cast/pretty-calldata'; render: 'static' }
-| { path: '/reference/cast/proof'; render: 'static' }
-| { path: '/reference/cast/publish'; render: 'static' }
-| { path: '/reference/cast/receipt'; render: 'static' }
-| { path: '/reference/cast/recover-authority'; render: 'static' }
-| { path: '/reference/cast/resolve-name'; render: 'static' }
-| { path: '/reference/cast/rpc'; render: 'static' }
-| { path: '/reference/cast/run'; render: 'static' }
-| { path: '/reference/cast/selectors'; render: 'static' }
-| { path: '/reference/cast/send'; render: 'static' }
-| { path: '/reference/cast/shl'; render: 'static' }
-| { path: '/reference/cast/shr'; render: 'static' }
-| { path: '/reference/cast/sig-event'; render: 'static' }
-| { path: '/reference/cast/sig'; render: 'static' }
-| { path: '/reference/cast/source'; render: 'static' }
-| { path: '/reference/cast/storage-root'; render: 'static' }
-| { path: '/reference/cast/storage'; render: 'static' }
-| { path: '/reference/cast/to-ascii'; render: 'static' }
-| { path: '/reference/cast/to-base'; render: 'static' }
-| { path: '/reference/cast/to-bytes32'; render: 'static' }
-| { path: '/reference/cast/to-check-sum-address'; render: 'static' }
-| { path: '/reference/cast/to-dec'; render: 'static' }
-| { path: '/reference/cast/to-fixed-point'; render: 'static' }
-| { path: '/reference/cast/to-hex'; render: 'static' }
-| { path: '/reference/cast/to-hexdata'; render: 'static' }
-| { path: '/reference/cast/to-int256'; render: 'static' }
-| { path: '/reference/cast/to-rlp'; render: 'static' }
-| { path: '/reference/cast/to-uint256'; render: 'static' }
-| { path: '/reference/cast/to-unit'; render: 'static' }
-| { path: '/reference/cast/to-utf8'; render: 'static' }
-| { path: '/reference/cast/to-wei'; render: 'static' }
-| { path: '/reference/cast/trace'; render: 'static' }
-| { path: '/reference/cast/tx-pool'; render: 'static' }
-| { path: '/reference/cast/tx'; render: 'static' }
-| { path: '/reference/cast/upload-signature'; render: 'static' }
-| { path: '/reference/cast/wallet'; render: 'static' }
-| { path: '/reference/cast/wallet/address'; render: 'static' }
-| { path: '/reference/cast/wallet/change-password'; render: 'static' }
-| { path: '/reference/cast/wallet/decrypt-keystore'; render: 'static' }
-| { path: '/reference/cast/wallet/derive'; render: 'static' }
-| { path: '/reference/cast/wallet/import'; render: 'static' }
-| { path: '/reference/cast/wallet/list'; render: 'static' }
-| { path: '/reference/cast/wallet/new-mnemonic'; render: 'static' }
-| { path: '/reference/cast/wallet/new'; render: 'static' }
-| { path: '/reference/cast/wallet/private-key'; render: 'static' }
-| { path: '/reference/cast/wallet/public-key'; render: 'static' }
-| { path: '/reference/cast/wallet/remove'; render: 'static' }
-| { path: '/reference/cast/wallet/sign-auth'; render: 'static' }
-| { path: '/reference/cast/wallet/sign'; render: 'static' }
-| { path: '/reference/cast/wallet/vanity'; render: 'static' }
-| { path: '/reference/cast/wallet/verify'; render: 'static' }
-| { path: '/reference/cast/tx-pool/content-from'; render: 'static' }
-| { path: '/reference/cast/tx-pool/content'; render: 'static' }
-| { path: '/reference/cast/tx-pool/inspect'; render: 'static' }
-| { path: '/reference/cast/tx-pool/status'; render: 'static' }
-| { path: '/reference/cast/send/--create'; render: 'static' }
-| { path: '/reference/cast/mktx/--create'; render: 'static' }
-| { path: '/reference/cast/estimate/--create'; render: 'static' }
-| { path: '/reference/cast/erc20-token/allowance'; render: 'static' }
-| { path: '/reference/cast/erc20-token/approve'; render: 'static' }
-| { path: '/reference/cast/erc20-token/balance'; render: 'static' }
-| { path: '/reference/cast/erc20-token/burn'; render: 'static' }
-| { path: '/reference/cast/erc20-token/decimals'; render: 'static' }
-| { path: '/reference/cast/erc20-token/mint'; render: 'static' }
-| { path: '/reference/cast/erc20-token/name'; render: 'static' }
-| { path: '/reference/cast/erc20-token/symbol'; render: 'static' }
-| { path: '/reference/cast/erc20-token/total-supply'; render: 'static' }
-| { path: '/reference/cast/erc20-token/transfer'; render: 'static' }
-| { path: '/reference/cast/call/--create'; render: 'static' }
-| { path: '/reference/anvil/anvil'; render: 'static' }
-| { path: '/reference/anvil/completions'; render: 'static' }
-| { path: '/projects/dependencies'; render: 'static' }
-| { path: '/projects'; render: 'static' }
-| { path: '/projects/layout'; render: 'static' }
-| { path: '/projects/soldeer'; render: 'static' }
-| { path: '/introduction/getting-started'; render: 'static' }
-| { path: '/introduction/installation'; render: 'static' }
-| { path: '/introduction/prompting'; render: 'static' }
-| { path: '/help/faq'; render: 'static' }
-| { path: '/help/troubleshooting'; render: 'static' }
-| { path: '/guides/branching-tree-technique'; render: 'static' }
-| { path: '/guides/debugging-transactions'; render: 'static' }
-| { path: '/guides/deploying-contracts'; render: 'static' }
-| { path: '/guides/deterministic-deployments-using-create2'; render: 'static' }
-| { path: '/guides/docker'; render: 'static' }
-| { path: '/guides/fork-testing'; render: 'static' }
-| { path: '/guides/gas-optimization'; render: 'static' }
-| { path: '/guides'; render: 'static' }
-| { path: '/guides/invariant-testing'; render: 'static' }
-| { path: '/guides/multi-chain-deployments'; render: 'static' }
-| { path: '/guides/stack-too-deep'; render: 'static' }
-| { path: '/guides/upgrading-contracts'; render: 'static' }
-| { path: '/guides/migrations/foundry-v1'; render: 'static' }
-| { path: '/forge/build'; render: 'static' }
-| { path: '/forge/debugging'; render: 'static' }
-| { path: '/forge/formatting'; render: 'static' }
-| { path: '/forge/gas-tracking'; render: 'static' }
-| { path: '/forge'; render: 'static' }
-| { path: '/forge/linting'; render: 'static' }
-| { path: '/forge/scripting'; render: 'static' }
-| { path: '/forge/testing'; render: 'static' }
-| { path: '/config/ci'; render: 'static' }
-| { path: '/config/compiler'; render: 'static' }
-| { path: '/config/editors'; render: 'static' }
-| { path: '/config'; render: 'static' }
-| { path: '/config/mesc'; render: 'static' }
-| { path: '/config/profiles'; render: 'static' }
-| { path: '/config/testing'; render: 'static' }
-| { path: '/config/reference/README'; render: 'static' }
-| { path: '/config/reference/default-config'; render: 'static' }
-| { path: '/config/reference/doc-generator'; render: 'static' }
-| { path: '/config/reference/etherscan'; render: 'static' }
-| { path: '/config/reference/formatter'; render: 'static' }
-| { path: '/config/reference/inline-test-config'; render: 'static' }
-| { path: '/config/reference/linter'; render: 'static' }
-| { path: '/config/reference/overview'; render: 'static' }
-| { path: '/config/reference/project'; render: 'static' }
-| { path: '/config/reference/solidity-compiler'; render: 'static' }
-| { path: '/config/reference/testing'; render: 'static' }
-| { path: '/components/Sponsors'; render: 'static' }
-| { path: '/chisel/commands'; render: 'static' }
-| { path: '/chisel/forking'; render: 'static' }
-| { path: '/chisel'; render: 'static' }
-| { path: '/chisel/session-management'; render: 'static' }
-| { path: '/changelog'; render: 'static' }
-| { path: '/cast/abi-encoding'; render: 'static' }
-| { path: '/cast'; render: 'static' }
-| { path: '/cast/reading-chain-data'; render: 'static' }
-| { path: '/cast/sending-transactions'; render: 'static' }
-| { path: '/cast/wallet-operations'; render: 'static' }
-| { path: '/anvil/custom-methods'; render: 'static' }
-| { path: '/anvil/forking'; render: 'static' }
-| { path: '/anvil'; render: 'static' }
-| { path: '/anvil/state-management'; render: 'static' };
+  | { path: '/anvil/custom-methods'; render: 'static' }
+  | { path: '/anvil/forking'; render: 'static' }
+  | { path: '/anvil'; render: 'static' }
+  | { path: '/anvil/mining'; render: 'static' }
+  | { path: '/anvil/rpc-methods'; render: 'static' }
+  | { path: '/anvil/state-management'; render: 'static' }
+  | { path: '/benchmarks'; render: 'static' }
+  | { path: '/best-practices'; render: 'static' }
+  | { path: '/cast/abi-encoding'; render: 'static' }
+  | { path: '/cast/eip-7702-delegation'; render: 'static' }
+  | { path: '/cast'; render: 'static' }
+  | { path: '/cast/reading-chain-data'; render: 'static' }
+  | { path: '/cast/sending-transactions'; render: 'static' }
+  | { path: '/cast/wallet-operations'; render: 'static' }
+  | { path: '/changelog'; render: 'static' }
+  | { path: '/chisel/commands'; render: 'static' }
+  | { path: '/chisel/forking'; render: 'static' }
+  | { path: '/chisel'; render: 'static' }
+  | { path: '/chisel/session-management'; render: 'static' }
+  | { path: '/components/Sponsors'; render: 'static' }
+  | { path: '/config/ci'; render: 'static' }
+  | { path: '/config/compiler'; render: 'static' }
+  | { path: '/config/editors'; render: 'static' }
+  | { path: '/config'; render: 'static' }
+  | { path: '/config/mesc'; render: 'static' }
+  | { path: '/config/networks'; render: 'static' }
+  | { path: '/config/profiles'; render: 'static' }
+  | { path: '/config/reference/README'; render: 'static' }
+  | { path: '/config/reference/advanced-testing'; render: 'static' }
+  | { path: '/config/reference/build-and-runtime'; render: 'static' }
+  | { path: '/config/reference/default-config'; render: 'static' }
+  | { path: '/config/reference/doc-generator'; render: 'static' }
+  | { path: '/config/reference/etherscan'; render: 'static' }
+  | { path: '/config/reference/formatter'; render: 'static' }
+  | { path: '/config/reference/inline-test-config'; render: 'static' }
+  | { path: '/config/reference/linter'; render: 'static' }
+  | { path: '/config/reference/overview'; render: 'static' }
+  | { path: '/config/reference/project'; render: 'static' }
+  | { path: '/config/reference/solidity-compiler'; render: 'static' }
+  | { path: '/config/reference/testing'; render: 'static' }
+  | { path: '/config/reference/tooling'; render: 'static' }
+  | { path: '/config/reference/tracing'; render: 'static' }
+  | { path: '/config/testing'; render: 'static' }
+  | { path: '/forge/build'; render: 'static' }
+  | { path: '/forge/cloning'; render: 'static' }
+  | { path: '/forge/contract-bindings'; render: 'static' }
+  | { path: '/forge/debugging'; render: 'static' }
+  | { path: '/forge/documentation'; render: 'static' }
+  | { path: '/forge/formatting'; render: 'static' }
+  | { path: '/forge/gas-tracking'; render: 'static' }
+  | { path: '/forge'; render: 'static' }
+  | { path: '/forge/linting/arbitrary-send-erc20-permit'; render: 'static' }
+  | { path: '/forge/linting/arbitrary-send-erc20'; render: 'static' }
+  | { path: '/forge/linting/arbitrary-send-eth'; render: 'static' }
+  | { path: '/forge/linting/asm-keccak256'; render: 'static' }
+  | { path: '/forge/linting/assert-state-change'; render: 'static' }
+  | { path: '/forge/linting/block-timestamp'; render: 'static' }
+  | { path: '/forge/linting/boolean-cst'; render: 'static' }
+  | { path: '/forge/linting/boolean-equal'; render: 'static' }
+  | { path: '/forge/linting/cache-array-length'; render: 'static' }
+  | { path: '/forge/linting/calls-loop'; render: 'static' }
+  | { path: '/forge/linting/controlled-delegatecall'; render: 'static' }
+  | { path: '/forge/linting/costly-loop'; render: 'static' }
+  | { path: '/forge/linting/could-be-constant'; render: 'static' }
+  | { path: '/forge/linting/could-be-immutable'; render: 'static' }
+  | { path: '/forge/linting/custom-errors'; render: 'static' }
+  | { path: '/forge/linting/cyclomatic-complexity'; render: 'static' }
+  | { path: '/forge/linting/dangerous-unary-operator'; render: 'static' }
+  | { path: '/forge/linting/delegatecall-loop'; render: 'static' }
+  | { path: '/forge/linting/deprecated-oz-function'; render: 'static' }
+  | { path: '/forge/linting/divide-before-multiply'; render: 'static' }
+  | { path: '/forge/linting/ecrecover'; render: 'static' }
+  | { path: '/forge/linting/empty-block'; render: 'static' }
+  | { path: '/forge/linting/encode-packed-collision'; render: 'static' }
+  | { path: '/forge/linting/enumerable-loop-removal'; render: 'static' }
+  | { path: '/forge/linting/erc20-unchecked-transfer'; render: 'static' }
+  | { path: '/forge/linting/event-fields'; render: 'static' }
+  | { path: '/forge/linting/external-function'; render: 'static' }
+  | { path: '/forge/linting/function-init-state'; render: 'static' }
+  | { path: '/forge/linting/function-selector-collision'; render: 'static' }
+  | { path: '/forge/linting/inconsistent-type-names'; render: 'static' }
+  | { path: '/forge/linting/incorrect-erc20-interface'; render: 'static' }
+  | { path: '/forge/linting/incorrect-erc721-interface'; render: 'static' }
+  | { path: '/forge/linting/incorrect-exp'; render: 'static' }
+  | { path: '/forge/linting/incorrect-modifier'; render: 'static' }
+  | { path: '/forge/linting/incorrect-shift'; render: 'static' }
+  | { path: '/forge/linting/incorrect-strict-equality'; render: 'static' }
+  | { path: '/forge/linting/incorrect-using-for'; render: 'static' }
+  | { path: '/forge/linting/inline-assembly'; render: 'static' }
+  | { path: '/forge/linting/interface-file-naming'; render: 'static' }
+  | { path: '/forge/linting/interface-naming'; render: 'static' }
+  | { path: '/forge/linting/internal-function-used-once'; render: 'static' }
+  | { path: '/forge/linting/literal-instead-of-constant'; render: 'static' }
+  | { path: '/forge/linting/locked-ether'; render: 'static' }
+  | { path: '/forge/linting/low-level-calls'; render: 'static' }
+  | { path: '/forge/linting/mapping-deletion'; render: 'static' }
+  | { path: '/forge/linting/missing-events-access-control'; render: 'static' }
+  | { path: '/forge/linting/missing-events-arithmetic'; render: 'static' }
+  | { path: '/forge/linting/missing-inheritance'; render: 'static' }
+  | { path: '/forge/linting/missing-zero-check'; render: 'static' }
+  | { path: '/forge/linting/mixed-case-function'; render: 'static' }
+  | { path: '/forge/linting/mixed-case-variable'; render: 'static' }
+  | { path: '/forge/linting/modifier-used-only-once'; render: 'static' }
+  | { path: '/forge/linting/msg-value-loop'; render: 'static' }
+  | { path: '/forge/linting/multi-contract-file'; render: 'static' }
+  | { path: '/forge/linting/named-struct-fields'; render: 'static' }
+  | { path: '/forge/linting/non-reentrant-not-first'; render: 'static' }
+  | { path: '/forge/linting/pascal-case-struct'; render: 'static' }
+  | { path: '/forge/linting/pragma-inconsistent'; render: 'static' }
+  | { path: '/forge/linting/protected-vars'; render: 'static' }
+  | { path: '/forge/linting/redundant-base-constructor-call'; render: 'static' }
+  | { path: '/forge/linting/reentrancy-balance'; render: 'static' }
+  | { path: '/forge/linting/reentrancy-eth'; render: 'static' }
+  | { path: '/forge/linting/reentrancy-events'; render: 'static' }
+  | { path: '/forge/linting/reentrancy-no-eth'; render: 'static' }
+  | { path: '/forge/linting/reentrancy-unlimited-gas'; render: 'static' }
+  | { path: '/forge/linting/require-revert-in-loop'; render: 'static' }
+  | { path: '/forge/linting/return-bomb'; render: 'static' }
+  | { path: '/forge/linting/rtlo'; render: 'static' }
+  | { path: '/forge/linting/screaming-snake-case-const'; render: 'static' }
+  | { path: '/forge/linting/screaming-snake-case-immutable'; render: 'static' }
+  | { path: '/forge/linting/solmate-safe-transfer-lib'; render: 'static' }
+  | { path: '/forge/linting/tautological-compare'; render: 'static' }
+  | { path: '/forge/linting/todo-comment'; render: 'static' }
+  | { path: '/forge/linting/too-many-digits'; render: 'static' }
+  | { path: '/forge/linting/tx-origin'; render: 'static' }
+  | { path: '/forge/linting/type-based-tautology'; render: 'static' }
+  | { path: '/forge/linting/unaliased-plain-import'; render: 'static' }
+  | { path: '/forge/linting/unchecked-call'; render: 'static' }
+  | { path: '/forge/linting/uninitialized-local'; render: 'static' }
+  | { path: '/forge/linting/uninitialized-state'; render: 'static' }
+  | { path: '/forge/linting/unprotected-initializer'; render: 'static' }
+  | { path: '/forge/linting/unsafe-cheatcode'; render: 'static' }
+  | { path: '/forge/linting/unsafe-oz-erc721-mint'; render: 'static' }
+  | { path: '/forge/linting/unsafe-typecast'; render: 'static' }
+  | { path: '/forge/linting/unused-error'; render: 'static' }
+  | { path: '/forge/linting/unused-import'; render: 'static' }
+  | { path: '/forge/linting/unused-return'; render: 'static' }
+  | { path: '/forge/linting/unused-state-variables'; render: 'static' }
+  | { path: '/forge/linting/unwrapped-modifier-logic'; render: 'static' }
+  | { path: '/forge/linting/var-read-using-this'; render: 'static' }
+  | { path: '/forge/linting/weak-prng'; render: 'static' }
+  | { path: '/forge/linting/write-after-write'; render: 'static' }
+  | { path: '/forge/linting'; render: 'static' }
+  | { path: '/forge/scripting'; render: 'static' }
+  | { path: '/forge/testing'; render: 'static' }
+  | { path: '/guides/branching-tree-technique'; render: 'static' }
+  | { path: '/guides/browser-wallet'; render: 'static' }
+  | { path: '/guides/coverage'; render: 'static' }
+  | { path: '/guides/debugging-transactions'; render: 'static' }
+  | { path: '/guides/deploying-contracts'; render: 'static' }
+  | { path: '/guides/deterministic-deployments-using-create2'; render: 'static' }
+  | { path: '/guides/docker'; render: 'static' }
+  | { path: '/guides/fork-testing'; render: 'static' }
+  | { path: '/guides/fuzz-corpus'; render: 'static' }
+  | { path: '/guides/gas-optimization'; render: 'static' }
+  | { path: '/guides'; render: 'static' }
+  | { path: '/guides/invariant-testing'; render: 'static' }
+  | { path: '/guides/migrations/foundry-v1'; render: 'static' }
+  | { path: '/guides/mpp'; render: 'static' }
+  | { path: '/guides/multi-chain-deployments'; render: 'static' }
+  | { path: '/guides/mutation-testing'; render: 'static' }
+  | { path: '/guides/stack-too-deep'; render: 'static' }
+  | { path: '/guides/symbolic-testing'; render: 'static' }
+  | { path: '/guides/tempo'; render: 'static' }
+  | { path: '/guides/upgrading-contracts'; render: 'static' }
+  | { path: '/help/faq'; render: 'static' }
+  | { path: '/help/troubleshooting'; render: 'static' }
+  | { path: '/'; render: 'static' }
+  | { path: '/introduction/agents'; render: 'static' }
+  | { path: '/introduction/getting-started'; render: 'static' }
+  | { path: '/introduction/installation'; render: 'static' }
+  | { path: '/introduction/prompting'; render: 'static' }
+  | { path: '/projects/dependencies'; render: 'static' }
+  | { path: '/projects'; render: 'static' }
+  | { path: '/projects/layout'; render: 'static' }
+  | { path: '/projects/soldeer'; render: 'static' }
+  | { path: '/reference/anvil/anvil'; render: 'static' }
+  | { path: '/reference/anvil/completions'; render: 'static' }
+  | { path: '/reference/cast/4byte-calldata'; render: 'static' }
+  | { path: '/reference/cast/4byte-event'; render: 'static' }
+  | { path: '/reference/cast/4byte'; render: 'static' }
+  | { path: '/reference/cast/abi-encode-event'; render: 'static' }
+  | { path: '/reference/cast/abi-encode'; render: 'static' }
+  | { path: '/reference/cast/access-list'; render: 'static' }
+  | { path: '/reference/cast/address-zero'; render: 'static' }
+  | { path: '/reference/cast/admin'; render: 'static' }
+  | { path: '/reference/cast/age'; render: 'static' }
+  | { path: '/reference/cast/artifact'; render: 'static' }
+  | { path: '/reference/cast/b2e-payload'; render: 'static' }
+  | { path: '/reference/cast/balance'; render: 'static' }
+  | { path: '/reference/cast/base-fee'; render: 'static' }
+  | { path: '/reference/cast/batch-mktx'; render: 'static' }
+  | { path: '/reference/cast/batch-send'; render: 'static' }
+  | { path: '/reference/cast/bind'; render: 'static' }
+  | { path: '/reference/cast/block-number'; render: 'static' }
+  | { path: '/reference/cast/block'; render: 'static' }
+  | { path: '/reference/cast/call/--create'; render: 'static' }
+  | { path: '/reference/cast/call'; render: 'static' }
+  | { path: '/reference/cast/calldata'; render: 'static' }
+  | { path: '/reference/cast/cast'; render: 'static' }
+  | { path: '/reference/cast/chain-id'; render: 'static' }
+  | { path: '/reference/cast/chain'; render: 'static' }
+  | { path: '/reference/cast/channel-id'; render: 'static' }
+  | { path: '/reference/cast/classify'; render: 'static' }
+  | { path: '/reference/cast/client'; render: 'static' }
+  | { path: '/reference/cast/code'; render: 'static' }
+  | { path: '/reference/cast/codehash'; render: 'static' }
+  | { path: '/reference/cast/codesize'; render: 'static' }
+  | { path: '/reference/cast/completions'; render: 'static' }
+  | { path: '/reference/cast/compute-address'; render: 'static' }
+  | { path: '/reference/cast/concat-hex'; render: 'static' }
+  | { path: '/reference/cast/constructor-args'; render: 'static' }
+  | { path: '/reference/cast/create2'; render: 'static' }
+  | { path: '/reference/cast/creation-code'; render: 'static' }
+  | { path: '/reference/cast/da-estimate'; render: 'static' }
+  | { path: '/reference/cast/decode-abi'; render: 'static' }
+  | { path: '/reference/cast/decode-calldata'; render: 'static' }
+  | { path: '/reference/cast/decode-error'; render: 'static' }
+  | { path: '/reference/cast/decode-event'; render: 'static' }
+  | { path: '/reference/cast/decode-string'; render: 'static' }
+  | { path: '/reference/cast/decode-transaction'; render: 'static' }
+  | { path: '/reference/cast/disassemble'; render: 'static' }
+  | { path: '/reference/cast/erc20-token/allowance'; render: 'static' }
+  | { path: '/reference/cast/erc20-token/approve'; render: 'static' }
+  | { path: '/reference/cast/erc20-token/balance'; render: 'static' }
+  | { path: '/reference/cast/erc20-token/burn'; render: 'static' }
+  | { path: '/reference/cast/erc20-token/decimals'; render: 'static' }
+  | { path: '/reference/cast/erc20-token/mint'; render: 'static' }
+  | { path: '/reference/cast/erc20-token/name'; render: 'static' }
+  | { path: '/reference/cast/erc20-token/symbol'; render: 'static' }
+  | { path: '/reference/cast/erc20-token/total-supply'; render: 'static' }
+  | { path: '/reference/cast/erc20-token/transfer'; render: 'static' }
+  | { path: '/reference/cast/erc20-token'; render: 'static' }
+  | { path: '/reference/cast/estimate/--create'; render: 'static' }
+  | { path: '/reference/cast/estimate'; render: 'static' }
+  | { path: '/reference/cast/find-block'; render: 'static' }
+  | { path: '/reference/cast/format-bytes32-string'; render: 'static' }
+  | { path: '/reference/cast/format-units'; render: 'static' }
+  | { path: '/reference/cast/from-bin'; render: 'static' }
+  | { path: '/reference/cast/from-fixed-point'; render: 'static' }
+  | { path: '/reference/cast/from-rlp'; render: 'static' }
+  | { path: '/reference/cast/from-utf8'; render: 'static' }
+  | { path: '/reference/cast/from-wei'; render: 'static' }
+  | { path: '/reference/cast/gas-price'; render: 'static' }
+  | { path: '/reference/cast/hash-message'; render: 'static' }
+  | { path: '/reference/cast/hash-zero'; render: 'static' }
+  | { path: '/reference/cast/implementation'; render: 'static' }
+  | { path: '/reference/cast/index-cmd'; render: 'static' }
+  | { path: '/reference/cast/index-erc7201'; render: 'static' }
+  | { path: '/reference/cast'; render: 'static' }
+  | { path: '/reference/cast/interface'; render: 'static' }
+  | { path: '/reference/cast/keccak'; render: 'static' }
+  | { path: '/reference/cast/key-authorization/encode'; render: 'static' }
+  | { path: '/reference/cast/key-authorization/inspect'; render: 'static' }
+  | { path: '/reference/cast/key-authorization/sign'; render: 'static' }
+  | { path: '/reference/cast/key-authorization'; render: 'static' }
+  | { path: '/reference/cast/keychain/authorize'; render: 'static' }
+  | { path: '/reference/cast/keychain/burn-witness'; render: 'static' }
+  | { path: '/reference/cast/keychain/check'; render: 'static' }
+  | { path: '/reference/cast/keychain/doctor'; render: 'static' }
+  | { path: '/reference/cast/keychain/inspect'; render: 'static' }
+  | { path: '/reference/cast/keychain/is-admin'; render: 'static' }
+  | { path: '/reference/cast/keychain/is-witness-burned'; render: 'static' }
+  | { path: '/reference/cast/keychain/list'; render: 'static' }
+  | { path: '/reference/cast/keychain/policy/add-call'; render: 'static' }
+  | { path: '/reference/cast/keychain/policy/remove-target'; render: 'static' }
+  | { path: '/reference/cast/keychain/policy/set-limit'; render: 'static' }
+  | { path: '/reference/cast/keychain/policy'; render: 'static' }
+  | { path: '/reference/cast/keychain/revoke'; render: 'static' }
+  | { path: '/reference/cast/keychain/rl'; render: 'static' }
+  | { path: '/reference/cast/keychain/rs'; render: 'static' }
+  | { path: '/reference/cast/keychain/show'; render: 'static' }
+  | { path: '/reference/cast/keychain/ss'; render: 'static' }
+  | { path: '/reference/cast/keychain/ul'; render: 'static' }
+  | { path: '/reference/cast/keychain/verify-admin'; render: 'static' }
+  | { path: '/reference/cast/keychain/verify'; render: 'static' }
+  | { path: '/reference/cast/keychain'; render: 'static' }
+  | { path: '/reference/cast/logs'; render: 'static' }
+  | { path: '/reference/cast/lookup-address'; render: 'static' }
+  | { path: '/reference/cast/max-int'; render: 'static' }
+  | { path: '/reference/cast/max-uint'; render: 'static' }
+  | { path: '/reference/cast/min-int'; render: 'static' }
+  | { path: '/reference/cast/mktx/--create'; render: 'static' }
+  | { path: '/reference/cast/mktx'; render: 'static' }
+  | { path: '/reference/cast/namehash'; render: 'static' }
+  | { path: '/reference/cast/nonce'; render: 'static' }
+  | { path: '/reference/cast/pad'; render: 'static' }
+  | { path: '/reference/cast/parse-bytes32-address'; render: 'static' }
+  | { path: '/reference/cast/parse-bytes32-string'; render: 'static' }
+  | { path: '/reference/cast/parse-units'; render: 'static' }
+  | { path: '/reference/cast/pretty-calldata'; render: 'static' }
+  | { path: '/reference/cast/proof'; render: 'static' }
+  | { path: '/reference/cast/publish'; render: 'static' }
+  | { path: '/reference/cast/receipt'; render: 'static' }
+  | { path: '/reference/cast/receive-policy/claim'; render: 'static' }
+  | { path: '/reference/cast/receive-policy/get'; render: 'static' }
+  | { path: '/reference/cast/receive-policy/receipt/balance'; render: 'static' }
+  | { path: '/reference/cast/receive-policy/receipt/burn'; render: 'static' }
+  | { path: '/reference/cast/receive-policy/receipt/decode'; render: 'static' }
+  | { path: '/reference/cast/receive-policy/receipt'; render: 'static' }
+  | { path: '/reference/cast/receive-policy/set'; render: 'static' }
+  | { path: '/reference/cast/receive-policy/validate'; render: 'static' }
+  | { path: '/reference/cast/receive-policy'; render: 'static' }
+  | { path: '/reference/cast/recover-authority'; render: 'static' }
+  | { path: '/reference/cast/resolve-name'; render: 'static' }
+  | { path: '/reference/cast/rpc'; render: 'static' }
+  | { path: '/reference/cast/run'; render: 'static' }
+  | { path: '/reference/cast/selectors'; render: 'static' }
+  | { path: '/reference/cast/send/--create'; render: 'static' }
+  | { path: '/reference/cast/send'; render: 'static' }
+  | { path: '/reference/cast/shl'; render: 'static' }
+  | { path: '/reference/cast/shr'; render: 'static' }
+  | { path: '/reference/cast/sig-event'; render: 'static' }
+  | { path: '/reference/cast/sig'; render: 'static' }
+  | { path: '/reference/cast/source'; render: 'static' }
+  | { path: '/reference/cast/storage-credits/balance'; render: 'static' }
+  | { path: '/reference/cast/storage-credits/budget'; render: 'static' }
+  | { path: '/reference/cast/storage-credits/mode'; render: 'static' }
+  | { path: '/reference/cast/storage-credits/set-budget'; render: 'static' }
+  | { path: '/reference/cast/storage-credits/set-mode'; render: 'static' }
+  | { path: '/reference/cast/storage-credits'; render: 'static' }
+  | { path: '/reference/cast/storage-root'; render: 'static' }
+  | { path: '/reference/cast/storage'; render: 'static' }
+  | { path: '/reference/cast/tempo/login'; render: 'static' }
+  | { path: '/reference/cast/tempo'; render: 'static' }
+  | { path: '/reference/cast/tip20-token/create'; render: 'static' }
+  | { path: '/reference/cast/tip20-token/logo-check'; render: 'static' }
+  | { path: '/reference/cast/tip20-token/logo-set'; render: 'static' }
+  | { path: '/reference/cast/tip20-token/mine'; render: 'static' }
+  | { path: '/reference/cast/tip20-token'; render: 'static' }
+  | { path: '/reference/cast/tip403/blacklist'; render: 'static' }
+  | { path: '/reference/cast/tip403/check'; render: 'static' }
+  | { path: '/reference/cast/tip403/create'; render: 'static' }
+  | { path: '/reference/cast/tip403/info'; render: 'static' }
+  | { path: '/reference/cast/tip403/whitelist'; render: 'static' }
+  | { path: '/reference/cast/tip403'; render: 'static' }
+  | { path: '/reference/cast/to-ascii'; render: 'static' }
+  | { path: '/reference/cast/to-base'; render: 'static' }
+  | { path: '/reference/cast/to-bytes-memory'; render: 'static' }
+  | { path: '/reference/cast/to-bytes32'; render: 'static' }
+  | { path: '/reference/cast/to-check-sum-address'; render: 'static' }
+  | { path: '/reference/cast/to-dec'; render: 'static' }
+  | { path: '/reference/cast/to-fixed-point'; render: 'static' }
+  | { path: '/reference/cast/to-hex'; render: 'static' }
+  | { path: '/reference/cast/to-hexdata'; render: 'static' }
+  | { path: '/reference/cast/to-int256'; render: 'static' }
+  | { path: '/reference/cast/to-rlp'; render: 'static' }
+  | { path: '/reference/cast/to-uint256'; render: 'static' }
+  | { path: '/reference/cast/to-unit'; render: 'static' }
+  | { path: '/reference/cast/to-utf8'; render: 'static' }
+  | { path: '/reference/cast/to-wei'; render: 'static' }
+  | { path: '/reference/cast/trace'; render: 'static' }
+  | { path: '/reference/cast/tx-pool/content-from'; render: 'static' }
+  | { path: '/reference/cast/tx-pool/content'; render: 'static' }
+  | { path: '/reference/cast/tx-pool/inspect'; render: 'static' }
+  | { path: '/reference/cast/tx-pool/status'; render: 'static' }
+  | { path: '/reference/cast/tx-pool'; render: 'static' }
+  | { path: '/reference/cast/tx'; render: 'static' }
+  | { path: '/reference/cast/upload-signature'; render: 'static' }
+  | { path: '/reference/cast/virtual-address/create'; render: 'static' }
+  | { path: '/reference/cast/virtual-address/resolve'; render: 'static' }
+  | { path: '/reference/cast/virtual-address/watch'; render: 'static' }
+  | { path: '/reference/cast/virtual-address'; render: 'static' }
+  | { path: '/reference/cast/wallet/address'; render: 'static' }
+  | { path: '/reference/cast/wallet/change-password'; render: 'static' }
+  | { path: '/reference/cast/wallet/decrypt-keystore'; render: 'static' }
+  | { path: '/reference/cast/wallet/derive'; render: 'static' }
+  | { path: '/reference/cast/wallet/import'; render: 'static' }
+  | { path: '/reference/cast/wallet/list'; render: 'static' }
+  | { path: '/reference/cast/wallet/new-mnemonic'; render: 'static' }
+  | { path: '/reference/cast/wallet/new'; render: 'static' }
+  | { path: '/reference/cast/wallet/private-key'; render: 'static' }
+  | { path: '/reference/cast/wallet/public-key'; render: 'static' }
+  | { path: '/reference/cast/wallet/remove'; render: 'static' }
+  | { path: '/reference/cast/wallet/session/create'; render: 'static' }
+  | { path: '/reference/cast/wallet/session/revoke'; render: 'static' }
+  | { path: '/reference/cast/wallet/session'; render: 'static' }
+  | { path: '/reference/cast/wallet/sign-auth'; render: 'static' }
+  | { path: '/reference/cast/wallet/sign'; render: 'static' }
+  | { path: '/reference/cast/wallet/vanity'; render: 'static' }
+  | { path: '/reference/cast/wallet/verify'; render: 'static' }
+  | { path: '/reference/cast/wallet'; render: 'static' }
+  | { path: '/reference/cheatcodes/accesses'; render: 'static' }
+  | { path: '/reference/cheatcodes/active-fork'; render: 'static' }
+  | { path: '/reference/cheatcodes/addr'; render: 'static' }
+  | { path: '/reference/cheatcodes/allow-cheatcodes'; render: 'static' }
+  | { path: '/reference/cheatcodes/assume-implicit-approval'; render: 'static' }
+  | { path: '/reference/cheatcodes/assume-no-revert'; render: 'static' }
+  | { path: '/reference/cheatcodes/assume'; render: 'static' }
+  | { path: '/reference/cheatcodes/bound'; render: 'static' }
+  | { path: '/reference/cheatcodes/breakpoint'; render: 'static' }
+  | { path: '/reference/cheatcodes/broadcast-raw-transaction'; render: 'static' }
+  | { path: '/reference/cheatcodes/broadcast'; render: 'static' }
+  | { path: '/reference/cheatcodes/chain-id'; render: 'static' }
+  | { path: '/reference/cheatcodes/clear-mocked-calls'; render: 'static' }
+  | { path: '/reference/cheatcodes/clone-account'; render: 'static' }
+  | { path: '/reference/cheatcodes/coinbase'; render: 'static' }
+  | { path: '/reference/cheatcodes/compute-create-address'; render: 'static' }
+  | { path: '/reference/cheatcodes/compute-create2-address'; render: 'static' }
+  | { path: '/reference/cheatcodes/copy-storage'; render: 'static' }
+  | { path: '/reference/cheatcodes/create-fork'; render: 'static' }
+  | { path: '/reference/cheatcodes/create-select-fork'; render: 'static' }
+  | { path: '/reference/cheatcodes/create-wallet'; render: 'static' }
+  | { path: '/reference/cheatcodes/deal'; render: 'static' }
+  | { path: '/reference/cheatcodes/debug-trace-recording'; render: 'static' }
+  | { path: '/reference/cheatcodes/deploy-code'; render: 'static' }
+  | { path: '/reference/cheatcodes/derive-key'; render: 'static' }
+  | { path: '/reference/cheatcodes/difficulty'; render: 'static' }
+  | { path: '/reference/cheatcodes/dump-state'; render: 'static' }
+  | { path: '/reference/cheatcodes/ec-arithmetic'; render: 'static' }
+  | { path: '/reference/cheatcodes/ed25519'; render: 'static' }
+  | { path: '/reference/cheatcodes/eip712-hash-struct'; render: 'static' }
+  | { path: '/reference/cheatcodes/eip712-hash-type'; render: 'static' }
+  | { path: '/reference/cheatcodes/eip712-hash-typed-data'; render: 'static' }
+  | { path: '/reference/cheatcodes/ens-namehash'; render: 'static' }
+  | { path: '/reference/cheatcodes/env-address'; render: 'static' }
+  | { path: '/reference/cheatcodes/env-bool'; render: 'static' }
+  | { path: '/reference/cheatcodes/env-bytes'; render: 'static' }
+  | { path: '/reference/cheatcodes/env-bytes32'; render: 'static' }
+  | { path: '/reference/cheatcodes/env-int'; render: 'static' }
+  | { path: '/reference/cheatcodes/env-or'; render: 'static' }
+  | { path: '/reference/cheatcodes/env-string'; render: 'static' }
+  | { path: '/reference/cheatcodes/env-uint'; render: 'static' }
+  | { path: '/reference/cheatcodes/etch'; render: 'static' }
+  | { path: '/reference/cheatcodes/execute-transaction'; render: 'static' }
+  | { path: '/reference/cheatcodes/expect-call'; render: 'static' }
+  | { path: '/reference/cheatcodes/expect-emit-anonymous'; render: 'static' }
+  | { path: '/reference/cheatcodes/expect-emit'; render: 'static' }
+  | { path: '/reference/cheatcodes/expect-keychain-admin-verified'; render: 'static' }
+  | { path: '/reference/cheatcodes/expect-keychain-verified'; render: 'static' }
+  | { path: '/reference/cheatcodes/expect-revert'; render: 'static' }
+  | { path: '/reference/cheatcodes/expect-safe-memory'; render: 'static' }
+  | { path: '/reference/cheatcodes/expect-tip20-logo-uri-updated'; render: 'static' }
+  | { path: '/reference/cheatcodes/fee'; render: 'static' }
+  | { path: '/reference/cheatcodes/ffi'; render: 'static' }
+  | { path: '/reference/cheatcodes/foundry-version'; render: 'static' }
+  | { path: '/reference/cheatcodes/fs'; render: 'static' }
+  | { path: '/reference/cheatcodes/gas-snapshots'; render: 'static' }
+  | { path: '/reference/cheatcodes/get-block-number'; render: 'static' }
+  | { path: '/reference/cheatcodes/get-block-timestamp'; render: 'static' }
+  | { path: '/reference/cheatcodes/get-chain-id'; render: 'static' }
+  | { path: '/reference/cheatcodes/get-chain'; render: 'static' }
+  | { path: '/reference/cheatcodes/get-code'; render: 'static' }
+  | { path: '/reference/cheatcodes/get-deployed-code'; render: 'static' }
+  | { path: '/reference/cheatcodes/get-label'; render: 'static' }
+  | { path: '/reference/cheatcodes/get-nonce'; render: 'static' }
+  | { path: '/reference/cheatcodes/get-recorded-logs'; render: 'static' }
+  | { path: '/reference/cheatcodes/get-selectors'; render: 'static' }
+  | { path: '/reference/cheatcodes/get-state-diff'; render: 'static' }
+  | { path: '/reference/cheatcodes/get-storage-slots'; render: 'static' }
+  | { path: '/reference/cheatcodes/get-wallets'; render: 'static' }
+  | { path: '/reference/cheatcodes/is-context'; render: 'static' }
+  | { path: '/reference/cheatcodes/is-implicitly-approved'; render: 'static' }
+  | { path: '/reference/cheatcodes/is-isolate-mode'; render: 'static' }
+  | { path: '/reference/cheatcodes/is-persistent'; render: 'static' }
+  | { path: '/reference/cheatcodes/key-exists-json'; render: 'static' }
+  | { path: '/reference/cheatcodes/key-exists-toml'; render: 'static' }
+  | { path: '/reference/cheatcodes/key-exists'; render: 'static' }
+  | { path: '/reference/cheatcodes/label'; render: 'static' }
+  | { path: '/reference/cheatcodes/last-frame-gas'; render: 'static' }
+  | { path: '/reference/cheatcodes/load-allocs'; render: 'static' }
+  | { path: '/reference/cheatcodes/load'; render: 'static' }
+  | { path: '/reference/cheatcodes/make-persistent'; render: 'static' }
+  | { path: '/reference/cheatcodes/mapping-recording'; render: 'static' }
+  | { path: '/reference/cheatcodes/mock-call-revert'; render: 'static' }
+  | { path: '/reference/cheatcodes/mock-call'; render: 'static' }
+  | { path: '/reference/cheatcodes/mock-calls'; render: 'static' }
+  | { path: '/reference/cheatcodes/mock-function'; render: 'static' }
+  | { path: '/reference/cheatcodes/overview'; render: 'static' }
+  | { path: '/reference/cheatcodes/p256'; render: 'static' }
+  | { path: '/reference/cheatcodes/parse-address'; render: 'static' }
+  | { path: '/reference/cheatcodes/parse-bool'; render: 'static' }
+  | { path: '/reference/cheatcodes/parse-bytes'; render: 'static' }
+  | { path: '/reference/cheatcodes/parse-bytes32'; render: 'static' }
+  | { path: '/reference/cheatcodes/parse-int'; render: 'static' }
+  | { path: '/reference/cheatcodes/parse-json-array-length'; render: 'static' }
+  | { path: '/reference/cheatcodes/parse-json-keys'; render: 'static' }
+  | { path: '/reference/cheatcodes/parse-json-type-array'; render: 'static' }
+  | { path: '/reference/cheatcodes/parse-json-type'; render: 'static' }
+  | { path: '/reference/cheatcodes/parse-json'; render: 'static' }
+  | { path: '/reference/cheatcodes/parse-toml-keys'; render: 'static' }
+  | { path: '/reference/cheatcodes/parse-toml'; render: 'static' }
+  | { path: '/reference/cheatcodes/parse-uint'; render: 'static' }
+  | { path: '/reference/cheatcodes/pause-gas-metering'; render: 'static' }
+  | { path: '/reference/cheatcodes/prank'; render: 'static' }
+  | { path: '/reference/cheatcodes/prevrandao'; render: 'static' }
+  | { path: '/reference/cheatcodes/project-root'; render: 'static' }
+  | { path: '/reference/cheatcodes/prompt'; render: 'static' }
+  | { path: '/reference/cheatcodes/random-address'; render: 'static' }
+  | { path: '/reference/cheatcodes/random-bool'; render: 'static' }
+  | { path: '/reference/cheatcodes/random-bytes'; render: 'static' }
+  | { path: '/reference/cheatcodes/random-int'; render: 'static' }
+  | { path: '/reference/cheatcodes/random-uint'; render: 'static' }
+  | { path: '/reference/cheatcodes/read-callers'; render: 'static' }
+  | { path: '/reference/cheatcodes/record-logs'; render: 'static' }
+  | { path: '/reference/cheatcodes/record'; render: 'static' }
+  | { path: '/reference/cheatcodes/remember-key'; render: 'static' }
+  | { path: '/reference/cheatcodes/reset-gas-metering'; render: 'static' }
+  | { path: '/reference/cheatcodes/resume-gas-metering'; render: 'static' }
+  | { path: '/reference/cheatcodes/revoke-persistent'; render: 'static' }
+  | { path: '/reference/cheatcodes/roll-fork'; render: 'static' }
+  | { path: '/reference/cheatcodes/roll'; render: 'static' }
+  | { path: '/reference/cheatcodes/rpc'; render: 'static' }
+  | { path: '/reference/cheatcodes/select-fork'; render: 'static' }
+  | { path: '/reference/cheatcodes/serialize-json-type'; render: 'static' }
+  | { path: '/reference/cheatcodes/serialize-json'; render: 'static' }
+  | { path: '/reference/cheatcodes/set-arbitrary-storage'; render: 'static' }
+  | { path: '/reference/cheatcodes/set-blockhash'; render: 'static' }
+  | { path: '/reference/cheatcodes/set-env'; render: 'static' }
+  | { path: '/reference/cheatcodes/set-nonce'; render: 'static' }
+  | { path: '/reference/cheatcodes/set-seed'; render: 'static' }
+  | { path: '/reference/cheatcodes/set-tip20-logo-uri'; render: 'static' }
+  | { path: '/reference/cheatcodes/sign-compact'; render: 'static' }
+  | { path: '/reference/cheatcodes/sign-delegation'; render: 'static' }
+  | { path: '/reference/cheatcodes/sign-keychain-admin'; render: 'static' }
+  | { path: '/reference/cheatcodes/sign-keychain'; render: 'static' }
+  | { path: '/reference/cheatcodes/sign'; render: 'static' }
+  | { path: '/reference/cheatcodes/skip'; render: 'static' }
+  | { path: '/reference/cheatcodes/sleep'; render: 'static' }
+  | { path: '/reference/cheatcodes/start-broadcast'; render: 'static' }
+  | { path: '/reference/cheatcodes/start-prank'; render: 'static' }
+  | { path: '/reference/cheatcodes/start-state-diff-recording'; render: 'static' }
+  | { path: '/reference/cheatcodes/state-snapshots'; render: 'static' }
+  | { path: '/reference/cheatcodes/stop-and-return-state-diff'; render: 'static' }
+  | { path: '/reference/cheatcodes/stop-broadcast'; render: 'static' }
+  | { path: '/reference/cheatcodes/stop-prank'; render: 'static' }
+  | { path: '/reference/cheatcodes/store'; render: 'static' }
+  | { path: '/reference/cheatcodes/strings'; render: 'static' }
+  | { path: '/reference/cheatcodes/to-base64'; render: 'static' }
+  | { path: '/reference/cheatcodes/to-string'; render: 'static' }
+  | { path: '/reference/cheatcodes/transact'; render: 'static' }
+  | { path: '/reference/cheatcodes/tx-gas-price'; render: 'static' }
+  | { path: '/reference/cheatcodes/unix-time'; render: 'static' }
+  | { path: '/reference/cheatcodes/warp'; render: 'static' }
+  | { path: '/reference/cheatcodes/write-json'; render: 'static' }
+  | { path: '/reference/cheatcodes/write-toml'; render: 'static' }
+  | { path: '/reference/chisel/chisel'; render: 'static' }
+  | { path: '/reference/chisel/clear-cache'; render: 'static' }
+  | { path: '/reference/chisel/eval'; render: 'static' }
+  | { path: '/reference/chisel/list'; render: 'static' }
+  | { path: '/reference/chisel/load'; render: 'static' }
+  | { path: '/reference/chisel/view'; render: 'static' }
+  | { path: '/reference/common/base-options'; render: 'static' }
+  | { path: '/reference/common/cast-estimate-create-option'; render: 'static' }
+  | { path: '/reference/common/display-options'; render: 'static' }
+  | { path: '/reference/common/etherscan-options'; render: 'static' }
+  | { path: '/reference/common/multi-wallet-options-hardware'; render: 'static' }
+  | { path: '/reference/common/multi-wallet-options-keystore'; render: 'static' }
+  | { path: '/reference/common/multi-wallet-options-raw'; render: 'static' }
+  | { path: '/reference/common/multi-wallet-options-remote'; render: 'static' }
+  | { path: '/reference/common/multi-wallet-options'; render: 'static' }
+  | { path: '/reference/common/retry-options'; render: 'static' }
+  | { path: '/reference/common/rpc-options'; render: 'static' }
+  | { path: '/reference/common/rpc-url-option'; render: 'static' }
+  | { path: '/reference/common/transaction-options'; render: 'static' }
+  | { path: '/reference/common/tx-value-option'; render: 'static' }
+  | { path: '/reference/common/verifier-options'; render: 'static' }
+  | { path: '/reference/common/wallet-options-hardware'; render: 'static' }
+  | { path: '/reference/common/wallet-options-keystore'; render: 'static' }
+  | { path: '/reference/common/wallet-options-raw'; render: 'static' }
+  | { path: '/reference/common/wallet-options-remote'; render: 'static' }
+  | { path: '/reference/common/wallet-options'; render: 'static' }
+  | { path: '/reference/forge/bind-json'; render: 'static' }
+  | { path: '/reference/forge/bind'; render: 'static' }
+  | { path: '/reference/forge/build'; render: 'static' }
+  | { path: '/reference/forge/cache/clean'; render: 'static' }
+  | { path: '/reference/forge/cache/ls'; render: 'static' }
+  | { path: '/reference/forge/cache'; render: 'static' }
+  | { path: '/reference/forge/clean'; render: 'static' }
+  | { path: '/reference/forge/clone'; render: 'static' }
+  | { path: '/reference/forge/compiler/resolve'; render: 'static' }
+  | { path: '/reference/forge/compiler'; render: 'static' }
+  | { path: '/reference/forge/completions'; render: 'static' }
+  | { path: '/reference/forge/config'; render: 'static' }
+  | { path: '/reference/forge/coverage'; render: 'static' }
+  | { path: '/reference/forge/create'; render: 'static' }
+  | { path: '/reference/forge/doc'; render: 'static' }
+  | { path: '/reference/forge/eip712'; render: 'static' }
+  | { path: '/reference/forge/flatten'; render: 'static' }
+  | { path: '/reference/forge/fmt'; render: 'static' }
+  | { path: '/reference/forge/forge'; render: 'static' }
+  | { path: '/reference/forge/fuzz/cmin'; render: 'static' }
+  | { path: '/reference/forge/fuzz/replay'; render: 'static' }
+  | { path: '/reference/forge/fuzz/run'; render: 'static' }
+  | { path: '/reference/forge/fuzz/show'; render: 'static' }
+  | { path: '/reference/forge/fuzz/tmin'; render: 'static' }
+  | { path: '/reference/forge/fuzz'; render: 'static' }
+  | { path: '/reference/forge/geiger'; render: 'static' }
+  | { path: '/reference/forge/generate/test'; render: 'static' }
+  | { path: '/reference/forge/generate'; render: 'static' }
+  | { path: '/reference/forge/init'; render: 'static' }
+  | { path: '/reference/forge/inspect'; render: 'static' }
+  | { path: '/reference/forge/install'; render: 'static' }
+  | { path: '/reference/forge/lint'; render: 'static' }
+  | { path: '/reference/forge/remappings'; render: 'static' }
+  | { path: '/reference/forge/remove'; render: 'static' }
+  | { path: '/reference/forge/script'; render: 'static' }
+  | { path: '/reference/forge/selectors/cache'; render: 'static' }
+  | { path: '/reference/forge/selectors/collision'; render: 'static' }
+  | { path: '/reference/forge/selectors/find'; render: 'static' }
+  | { path: '/reference/forge/selectors/list'; render: 'static' }
+  | { path: '/reference/forge/selectors/upload'; render: 'static' }
+  | { path: '/reference/forge/selectors'; render: 'static' }
+  | { path: '/reference/forge/snapshot'; render: 'static' }
+  | { path: '/reference/forge/soldeer/clean'; render: 'static' }
+  | { path: '/reference/forge/soldeer/init'; render: 'static' }
+  | { path: '/reference/forge/soldeer/install'; render: 'static' }
+  | { path: '/reference/forge/soldeer/login'; render: 'static' }
+  | { path: '/reference/forge/soldeer/push'; render: 'static' }
+  | { path: '/reference/forge/soldeer/uninstall'; render: 'static' }
+  | { path: '/reference/forge/soldeer/update'; render: 'static' }
+  | { path: '/reference/forge/soldeer/version'; render: 'static' }
+  | { path: '/reference/forge/soldeer'; render: 'static' }
+  | { path: '/reference/forge/test'; render: 'static' }
+  | { path: '/reference/forge/tree'; render: 'static' }
+  | { path: '/reference/forge/update'; render: 'static' }
+  | { path: '/reference/forge/verify-bytecode'; render: 'static' }
+  | { path: '/reference/forge/verify-check'; render: 'static' }
+  | { path: '/reference/forge/verify-contract'; render: 'static' }
+  | { path: '/reference/forge-std/abs'; render: 'static' }
+  | { path: '/reference/forge-std/arithmeticError'; render: 'static' }
+  | { path: '/reference/forge-std/assertApproxEqAbs'; render: 'static' }
+  | { path: '/reference/forge-std/assertApproxEqAbsDecimal'; render: 'static' }
+  | { path: '/reference/forge-std/assertApproxEqRel'; render: 'static' }
+  | { path: '/reference/forge-std/assertApproxEqRelDecimal'; render: 'static' }
+  | { path: '/reference/forge-std/assertEq'; render: 'static' }
+  | { path: '/reference/forge-std/assertEqDecimal'; render: 'static' }
+  | { path: '/reference/forge-std/assertFalse'; render: 'static' }
+  | { path: '/reference/forge-std/assertGe'; render: 'static' }
+  | { path: '/reference/forge-std/assertGeDecimal'; render: 'static' }
+  | { path: '/reference/forge-std/assertGt'; render: 'static' }
+  | { path: '/reference/forge-std/assertGtDecimal'; render: 'static' }
+  | { path: '/reference/forge-std/assertLe'; render: 'static' }
+  | { path: '/reference/forge-std/assertLeDecimal'; render: 'static' }
+  | { path: '/reference/forge-std/assertLt'; render: 'static' }
+  | { path: '/reference/forge-std/assertLtDecimal'; render: 'static' }
+  | { path: '/reference/forge-std/assertNotEq'; render: 'static' }
+  | { path: '/reference/forge-std/assertNotEqDecimal'; render: 'static' }
+  | { path: '/reference/forge-std/assertTrue'; render: 'static' }
+  | { path: '/reference/forge-std/assertionError'; render: 'static' }
+  | { path: '/reference/forge-std/assume-no-precompiles'; render: 'static' }
+  | { path: '/reference/forge-std/assume-payable'; render: 'static' }
+  | { path: '/reference/forge-std/bound'; render: 'static' }
+  | { path: '/reference/forge-std/change-prank'; render: 'static' }
+  | { path: '/reference/forge-std/checked_write'; render: 'static' }
+  | { path: '/reference/forge-std/compute-create-address'; render: 'static' }
+  | { path: '/reference/forge-std/config'; render: 'static' }
+  | { path: '/reference/forge-std/console-log'; render: 'static' }
+  | { path: '/reference/forge-std/deal'; render: 'static' }
+  | { path: '/reference/forge-std/delta'; render: 'static' }
+  | { path: '/reference/forge-std/deployCode'; render: 'static' }
+  | { path: '/reference/forge-std/deployCodeTo'; render: 'static' }
+  | { path: '/reference/forge-std/depth'; render: 'static' }
+  | { path: '/reference/forge-std/derive-remember-key'; render: 'static' }
+  | { path: '/reference/forge-std/divisionError'; render: 'static' }
+  | { path: '/reference/forge-std/enable_packed_slots'; render: 'static' }
+  | { path: '/reference/forge-std/encodeStorageError'; render: 'static' }
+  | { path: '/reference/forge-std/enumConversionError'; render: 'static' }
+  | { path: '/reference/forge-std/fail'; render: 'static' }
+  | { path: '/reference/forge-std/find'; render: 'static' }
+  | { path: '/reference/forge-std/hoax'; render: 'static' }
+  | { path: '/reference/forge-std/indexOOBError'; render: 'static' }
+  | { path: '/reference/forge-std/make-addr-and-key'; render: 'static' }
+  | { path: '/reference/forge-std/make-addr'; render: 'static' }
+  | { path: '/reference/forge-std/memOverflowError'; render: 'static' }
+  | { path: '/reference/forge-std/noGasMetering'; render: 'static' }
+  | { path: '/reference/forge-std/overview'; render: 'static' }
+  | { path: '/reference/forge-std/percentDelta'; render: 'static' }
+  | { path: '/reference/forge-std/popError'; render: 'static' }
+  | { path: '/reference/forge-std/read'; render: 'static' }
+  | { path: '/reference/forge-std/rewind'; render: 'static' }
+  | { path: '/reference/forge-std/script-utils'; render: 'static' }
+  | { path: '/reference/forge-std/sig'; render: 'static' }
+  | { path: '/reference/forge-std/skip'; render: 'static' }
+  | { path: '/reference/forge-std/startHoax'; render: 'static' }
+  | { path: '/reference/forge-std/std-assertions'; render: 'static' }
+  | { path: '/reference/forge-std/std-cheats'; render: 'static' }
+  | { path: '/reference/forge-std/std-config'; render: 'static' }
+  | { path: '/reference/forge-std/std-errors'; render: 'static' }
+  | { path: '/reference/forge-std/std-logs'; render: 'static' }
+  | { path: '/reference/forge-std/std-math'; render: 'static' }
+  | { path: '/reference/forge-std/std-storage'; render: 'static' }
+  | { path: '/reference/forge-std/target'; render: 'static' }
+  | { path: '/reference/forge-std/with_key'; render: 'static' }
+  | { path: '/reference/forge-std/zeroVarError'; render: 'static' }
+  | { path: '/reference'; render: 'static' }
+  | { path: '/reference/versions'; render: 'static' }
 
 // prettier-ignore
 declare module 'waku/router' {
   interface RouteConfig {
-    paths: PathsForPages<Page>;
+    paths: PathsForPages<Page>
   }
   interface CreatePagesConfig {
-    pages: Page;
+    pages: Page
   }
 }

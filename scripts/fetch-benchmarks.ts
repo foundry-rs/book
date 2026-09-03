@@ -1,10 +1,11 @@
-#!/usr/bin/env bun
-import { writeFileSync, mkdirSync } from 'fs';
-import { join } from 'path';
+#!/usr/bin/env node
+import { writeFileSync, mkdirSync } from "fs";
+import { join } from "path";
 
-const BENCHMARKS_URL = 'https://raw.githubusercontent.com/foundry-rs/foundry/master/benches/LATEST.md';
-const OUTPUT_DIR = join(import.meta.dir, '../src/pages');
-const OUTPUT_FILE = join(OUTPUT_DIR, 'benchmarks.mdx');
+const BENCHMARKS_URL =
+  "https://raw.githubusercontent.com/foundry-rs/foundry/master/benches/LATEST.md";
+const OUTPUT_DIR = join(import.meta.dirname, "../src/pages");
+const OUTPUT_FILE = join(OUTPUT_DIR, "benchmarks.mdx");
 
 interface BenchmarkData {
   repository: string;
@@ -24,13 +25,13 @@ async function fetchBenchmarks(): Promise<string> {
     }
     return await response.text();
   } catch (error) {
-    console.error('Error fetching benchmarks:', error);
+    console.error("Error fetching benchmarks:", error);
     throw error;
   }
 }
 
 function parseTimeToSeconds(timeStr: string): number | null {
-  if (!timeStr || timeStr === '–' || timeStr === '-') return null;
+  if (!timeStr || timeStr === "–" || timeStr === "-") return null;
 
   const minutesMatch = timeStr.match(/(\d+)m\s*([\d.]+)s/);
   if (minutesMatch) {
@@ -47,14 +48,20 @@ function parseTimeToSeconds(timeStr: string): number | null {
   return null;
 }
 
-function calculatePercentageChange(oldTime: number, newTime: number): { value: number; display: string } {
+function calculatePercentageChange(
+  oldTime: number,
+  newTime: number,
+): { value: number; display: string } {
   const change = ((newTime - oldTime) / oldTime) * 100;
   const absChange = Math.abs(change);
   return { value: change, display: absChange.toFixed(1) };
 }
 
-function parseMarkdown(markdown: string): { data: Map<string, BenchmarkData>; repoUrls: Map<string, string> } {
-  const lines = markdown.split('\n');
+function parseMarkdown(markdown: string): {
+  data: Map<string, BenchmarkData>;
+  repoUrls: Map<string, string>;
+} {
+  const lines = markdown.split("\n");
   const data = new Map<string, BenchmarkData>();
   const repoUrls = new Map<string, string>();
   const repos = new Set<string>();
@@ -64,21 +71,24 @@ function parseMarkdown(markdown: string): { data: Map<string, BenchmarkData>; re
     const line = lines[i].trim();
 
     // Match list entries like "1. [name/repo](https://github.com/name/repo)".
-    const repoLinkMatch = line.match(/^\d+\.\s*\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/);
+    const repoLinkMatch = line.match(/^\d+\.\s*\[([^\]]+)\]\((https?:\/\/[^)]+)\)/);
     if (repoLinkMatch) {
       const [, displayName, url] = repoLinkMatch;
-      const key = displayName.replace('/', '-');
+      const key = displayName.replace("/", "-");
       if (!repoUrls.has(key)) {
         repoUrls.set(key, url);
       }
       continue;
     }
 
-    if (!line.includes('|') || line.includes('---') || /\brepository\b/i.test(line)) {
+    if (!line.includes("|") || line.includes("---") || /\brepository\b/i.test(line)) {
       continue;
     }
 
-    const cells = line.split('|').map(cell => cell.trim()).filter(cell => cell);
+    const cells = line
+      .split("|")
+      .map((cell) => cell.trim())
+      .filter((cell) => cell);
     if (cells.length >= 3) {
       const repo = cells[0];
       if (repo) {
@@ -87,48 +97,51 @@ function parseMarkdown(markdown: string): { data: Map<string, BenchmarkData>; re
     }
   }
 
-  repos.forEach(repo => {
+  repos.forEach((repo) => {
     data.set(repo, {
       repository: repo,
-      forgeTest: { old: '–', new: '–' },
-      forgeFuzzTest: { old: '–', new: '–' },
-      forgeTestIsolated: { old: '–', new: '–' },
-      forgeBuildNoCache: { old: '–', new: '–' },
-      forgeBuildWithCache: { old: '–', new: '–' },
-      forgeCoverage: { old: '–', new: '–' }
+      forgeTest: { old: "–", new: "–" },
+      forgeFuzzTest: { old: "–", new: "–" },
+      forgeTestIsolated: { old: "–", new: "–" },
+      forgeBuildNoCache: { old: "–", new: "–" },
+      forgeBuildWithCache: { old: "–", new: "–" },
+      forgeCoverage: { old: "–", new: "–" },
     });
   });
 
   // Second pass: fill in benchmark data using top-section + sub-section state.
-  let topSection = '';
-  let subSection = '';
+  let topSection = "";
+  let subSection = "";
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i].trim();
 
     // Top-level section heading (## ...). Note: '### ' does not match '## '.
-    if (line.startsWith('## ') && !line.startsWith('### ')) {
+    if (line.startsWith("## ") && !line.startsWith("### ")) {
       topSection = line.substring(3).trim();
-      subSection = '';
+      subSection = "";
       continue;
     }
 
-    if (line.startsWith('### ')) {
+    if (line.startsWith("### ")) {
       const sub = line.substring(4).trim();
       // These subsections are metadata, not benchmark tables.
-      if (sub === 'Repositories Tested' || sub === 'Foundry Versions') {
-        subSection = '';
+      if (sub === "Repositories Tested" || sub === "Foundry Versions") {
+        subSection = "";
       } else {
         subSection = sub;
       }
       continue;
     }
 
-    if (!line.includes('|') || line.includes('---') || /\brepository\b/i.test(line)) {
+    if (!line.includes("|") || line.includes("---") || /\brepository\b/i.test(line)) {
       continue;
     }
 
-    const cells = line.split('|').map(cell => cell.trim()).filter(cell => cell);
+    const cells = line
+      .split("|")
+      .map((cell) => cell.trim())
+      .filter((cell) => cell);
     if (cells.length < 3) continue;
 
     const [repo, oldValue, newValue] = cells;
@@ -138,22 +151,22 @@ function parseMarkdown(markdown: string): { data: Map<string, BenchmarkData>; re
     const sectionKey = subSection ? `${topSection} (${subSection})` : topSection;
 
     switch (sectionKey) {
-      case 'Forge Test':
+      case "Forge Test":
         benchData.forgeTest = { old: oldValue, new: newValue };
         break;
-      case 'Forge Fuzz Test':
+      case "Forge Fuzz Test":
         benchData.forgeFuzzTest = { old: oldValue, new: newValue };
         break;
-      case 'Forge Test (Isolated)':
+      case "Forge Test (Isolated)":
         benchData.forgeTestIsolated = { old: oldValue, new: newValue };
         break;
-      case 'Forge Build (No Cache)':
+      case "Forge Build (No Cache)":
         benchData.forgeBuildNoCache = { old: oldValue, new: newValue };
         break;
-      case 'Forge Build (With Cache)':
+      case "Forge Build (With Cache)":
         benchData.forgeBuildWithCache = { old: oldValue, new: newValue };
         break;
-      case 'Forge Coverage':
+      case "Forge Coverage":
         benchData.forgeCoverage = { old: oldValue, new: newValue };
         break;
     }
@@ -166,15 +179,16 @@ export function parseFoundryVersions(markdown: string) {
   const versionLines = Array.from(
     new Set(markdown.match(/forge (?:Version: )?\S+ \([^)]+\)/g) ?? []),
   );
-  const releaseVersions = versionLines.map(line => {
-    const version = line.match(/[0-9.]+-(v[0-9.]+)/)?.[1]
-      ?? line.match(/forge (?:Version: )?(v?[0-9.]+) \(/)?.[1];
-    return version && `v${version.replace(/^v/, '')}`;
+  const releaseVersions = versionLines.map((line) => {
+    const version =
+      line.match(/[0-9.]+-(v[0-9.]+)/)?.[1] ??
+      line.match(/forge (?:Version: )?(v?[0-9.]+) \(/)?.[1];
+    return version && `v${version.replace(/^v/, "")}`;
   });
 
   const baselineVersion = releaseVersions[0];
   if (!baselineVersion) {
-    throw new Error('Could not determine the Foundry baseline release');
+    throw new Error("Could not determine the Foundry baseline release");
   }
 
   const latestVersion = releaseVersions[1];
@@ -186,22 +200,20 @@ export function parseFoundryVersions(markdown: string) {
     };
   }
 
-  const development = versionLines[1]?.match(
-    /v?([0-9.]+)-(nightly|dev) \(([0-9a-f]+) /,
-  );
+  const development = versionLines[1]?.match(/v?([0-9.]+)-(nightly|dev) \(([0-9a-f]+) /);
   if (development) {
     const [, version, channel, commit] = development;
     return {
       baselineVersion,
-      latestVersionDisplay: channel === 'nightly' ? `nightly-${commit}` : `v${version}-dev`,
+      latestVersionDisplay: channel === "nightly" ? `nightly-${commit}` : `v${version}-dev`,
       latestVersionUrl: `https://github.com/foundry-rs/foundry/commit/${commit}`,
     };
   }
 
   return {
     baselineVersion,
-    latestVersionDisplay: 'master',
-    latestVersionUrl: 'https://github.com/foundry-rs/foundry/tree/master',
+    latestVersionDisplay: "master",
+    latestVersionUrl: "https://github.com/foundry-rs/foundry/tree/master",
   };
 }
 
@@ -212,14 +224,23 @@ function getRepositoryUrl(repoName: string, repoUrls: Map<string, string>): stri
   return `https://github.com/search?q=${encodeURIComponent(repoName)}`;
 }
 
-function formatBenchmark(bench: { old: string; new: string }): { oldTime: string; newTime: string; change: string; color: string; bgColor: string } | null {
-  if (bench.new === '–' || bench.new === '-' || bench.old === '–' || bench.old === '-') return null;
+function formatBenchmark(bench: {
+  old: string;
+  new: string;
+}): { oldTime: string; newTime: string; change: string; color: string; bgColor: string } | null {
+  if (bench.new === "–" || bench.new === "-" || bench.old === "–" || bench.old === "-") return null;
 
   const oldTime = parseTimeToSeconds(bench.old);
   const newTime = parseTimeToSeconds(bench.new);
 
   if (oldTime === null || newTime === null) {
-    return { oldTime: bench.old.replace(/\s+s/g, 's'), newTime: bench.new.replace(/\s+s/g, 's'), change: '', color: 'inherit', bgColor: 'transparent' };
+    return {
+      oldTime: bench.old.replace(/\s+s/g, "s"),
+      newTime: bench.new.replace(/\s+s/g, "s"),
+      change: "",
+      color: "inherit",
+      bgColor: "transparent",
+    };
   }
 
   const { value, display } = calculatePercentageChange(oldTime, newTime);
@@ -228,31 +249,31 @@ function formatBenchmark(bench: { old: string; new: string }): { oldTime: string
   let bgColor: string;
   let arrow: string;
   if (value < 0) {
-    color = '#22c55e';
-    bgColor = 'rgba(34, 197, 94, 0.15)';
-    arrow = '↓';
+    color = "#22c55e";
+    bgColor = "rgba(34, 197, 94, 0.15)";
+    arrow = "↓";
   } else if (value > 5) {
-    color = '#ef4444';
-    bgColor = 'rgba(239, 68, 68, 0.15)';
-    arrow = '↑';
+    color = "#ef4444";
+    bgColor = "rgba(239, 68, 68, 0.15)";
+    arrow = "↑";
   } else {
-    color = 'var(--vocs-color_text3)';
-    bgColor = 'transparent';
-    arrow = value === 0 ? '' : '↑';
+    color = "var(--vocs-color_text3)";
+    bgColor = "transparent";
+    arrow = value === 0 ? "" : "↑";
   }
 
   return {
-    oldTime: bench.old.replace(/\s+s/g, 's'),
-    newTime: bench.new.replace(/\s+s/g, 's'),
+    oldTime: bench.old.replace(/\s+s/g, "s"),
+    newTime: bench.new.replace(/\s+s/g, "s"),
     change: arrow ? `${arrow}${display}%` : `${display}%`,
     color,
-    bgColor
+    bgColor,
   };
 }
 
 interface CategoryAggregate {
   label: string;
-  key: keyof Omit<BenchmarkData, 'repository'>;
+  key: keyof Omit<BenchmarkData, "repository">;
   oldSumSec: number;
   newSumSec: number;
   repoCount: number;
@@ -262,8 +283,8 @@ interface CategoryAggregate {
 
 function aggregateCategory(
   data: Map<string, BenchmarkData>,
-  key: keyof Omit<BenchmarkData, 'repository'>,
-  label: string
+  key: keyof Omit<BenchmarkData, "repository">,
+  label: string,
 ): CategoryAggregate | null {
   let oldSum = 0;
   let newSum = 0;
@@ -271,7 +292,8 @@ function aggregateCategory(
 
   for (const [, benchData] of data) {
     const bench = benchData[key];
-    if (!bench || bench.old === '–' || bench.old === '-' || bench.new === '–' || bench.new === '-') continue;
+    if (!bench || bench.old === "–" || bench.old === "-" || bench.new === "–" || bench.new === "-")
+      continue;
 
     const oldSec = parseTimeToSeconds(bench.old);
     const newSec = parseTimeToSeconds(bench.new);
@@ -299,7 +321,7 @@ function aggregateCategory(
 }
 
 function formatSeconds(totalSec: number): string {
-  if (!isFinite(totalSec) || totalSec < 0) return '–';
+  if (!isFinite(totalSec) || totalSec < 0) return "–";
   if (totalSec >= 60) {
     const minutes = Math.floor(totalSec / 60);
     const seconds = totalSec - minutes * 60;
@@ -311,13 +333,13 @@ function formatSeconds(totalSec: number): string {
 }
 
 function generateBenchmarkBarGraph(data: Map<string, BenchmarkData>): string {
-  const categories: { key: keyof Omit<BenchmarkData, 'repository'>; label: string }[] = [
-    { key: 'forgeTest', label: 'Forge Test' },
-    { key: 'forgeFuzzTest', label: 'Forge Fuzz Test' },
-    { key: 'forgeTestIsolated', label: 'Forge Test (Isolated)' },
-    { key: 'forgeBuildNoCache', label: 'Forge Build (No Cache)' },
-    { key: 'forgeBuildWithCache', label: 'Forge Build (With Cache)' },
-    { key: 'forgeCoverage', label: 'Forge Coverage' },
+  const categories: { key: keyof Omit<BenchmarkData, "repository">; label: string }[] = [
+    { key: "forgeTest", label: "Forge Test" },
+    { key: "forgeFuzzTest", label: "Forge Fuzz Test" },
+    { key: "forgeTestIsolated", label: "Forge Test (Isolated)" },
+    { key: "forgeBuildNoCache", label: "Forge Build (No Cache)" },
+    { key: "forgeBuildWithCache", label: "Forge Build (With Cache)" },
+    { key: "forgeCoverage", label: "Forge Coverage" },
   ];
 
   const aggregates: CategoryAggregate[] = [];
@@ -325,19 +347,16 @@ function generateBenchmarkBarGraph(data: Map<string, BenchmarkData>): string {
     const a = aggregateCategory(data, key, label);
     if (a) aggregates.push(a);
   }
-  if (aggregates.length === 0) return '';
+  if (aggregates.length === 0) return "";
 
   // Scale so that the longest bar (baseline or latest, across all categories)
   // fills 100% of the available width. All baseline bars share the same width.
   // baselineWidth = 100 / max(1, maxLatestRatio)
   // latestWidth_i = ratio_i * baselineWidth
-  const maxRatio = Math.max(
-    1,
-    ...aggregates.map(a => a.newSumSec / a.oldSumSec),
-  );
+  const maxRatio = Math.max(1, ...aggregates.map((a) => a.newSumSec / a.oldSumSec));
   const BASELINE_WIDTH_PCT = 100 / maxRatio;
 
-  let mdx = '';
+  let mdx = "";
   mdx += `<div style={{ marginBottom: '2rem' }}>\n`;
   mdx += `  <style>{\`@keyframes bench-bar-grow{from{width:var(--bench-bar-from)}to{width:var(--bench-bar-to)}}\`}</style>\n`;
   mdx += `  <h2 style={{ fontSize: '1.25rem', fontWeight: 600, marginBottom: '0.25rem' }}>Highlights</h2>\n`;
@@ -350,24 +369,32 @@ function generateBenchmarkBarGraph(data: Map<string, BenchmarkData>): string {
     const isNeutral = Math.abs(a.pctDelta) < NEUTRAL_PCT_THRESHOLD;
     const improved = !isNeutral && a.absDelta > 0;
     const regressed = !isNeutral && a.absDelta < 0;
-    const accentColor = improved ? '#22c55e' : regressed ? '#ef4444' : 'var(--vocs-color_text3)';
-    const newBg = improved ? 'rgba(34, 197, 94, 0.85)' : regressed ? 'rgba(239, 68, 68, 0.85)' : 'rgba(148, 163, 184, 0.6)';
-    const baselineBg = 'rgba(148, 163, 184, 0.25)';
+    const accentColor = improved ? "#22c55e" : regressed ? "#ef4444" : "var(--vocs-color_text3)";
+    const newBg = improved
+      ? "rgba(34, 197, 94, 0.85)"
+      : regressed
+        ? "rgba(239, 68, 68, 0.85)"
+        : "rgba(148, 163, 184, 0.6)";
+    const baselineBg = "rgba(148, 163, 184, 0.25)";
 
     const ratio = a.newSumSec / a.oldSumSec;
     const newWidthPct = Math.min(ratio * BASELINE_WIDTH_PCT, 100);
 
-    const arrow = a.absDelta > 0 ? '↓' : a.absDelta < 0 ? '↑' : '';
+    const arrow = a.absDelta > 0 ? "↓" : a.absDelta < 0 ? "↑" : "";
     const pctDisplay = `${arrow}${Math.abs(a.pctDelta).toFixed(1)}%`;
     const oldTimeLabel = formatSeconds(a.oldSumSec);
     const newTimeLabel = formatSeconds(a.newSumSec);
-    const pillBg = improved ? 'rgba(34,197,94,0.15)' : regressed ? 'rgba(239,68,68,0.15)' : 'rgba(148,163,184,0.18)';
+    const pillBg = improved
+      ? "rgba(34,197,94,0.15)"
+      : regressed
+        ? "rgba(239,68,68,0.15)"
+        : "rgba(148,163,184,0.18)";
 
     // Three-column grid keeps the bar track (col 1), absolute time labels
     // (col 2) and pct pill (col 3) at consistent widths across categories,
     // so all baseline bars are visually the same length.
     mdx += `    <div style={{ display: 'grid', gridTemplateColumns: '1fr 3.5rem 4rem', columnGap: '0.75rem', rowGap: '0.25rem', alignItems: 'center' }}>\n`;
-    mdx += `      <div style={{ gridColumn: '1 / -1', fontSize: '0.875rem', fontWeight: 600, marginBottom: '0.375rem' }}>${a.label} <span style={{ color: 'var(--vocs-color_text3)', fontWeight: 400 }}>· ${a.repoCount} ${a.repoCount === 1 ? 'repo' : 'repos'}</span></div>\n`;
+    mdx += `      <div style={{ gridColumn: '1 / -1', fontSize: '0.875rem', fontWeight: 600, marginBottom: '0.375rem' }}>${a.label} <span style={{ color: 'var(--vocs-color_text3)', fontWeight: 400 }}>· ${a.repoCount} ${a.repoCount === 1 ? "repo" : "repos"}</span></div>\n`;
     // Baseline bar (uniform width across categories)
     mdx += `      <div style={{ height: '0.75rem', borderRadius: '4px', overflow: 'hidden' }}>\n`;
     mdx += `        <div style={{ width: '${BASELINE_WIDTH_PCT.toFixed(2)}%', height: '100%', background: '${baselineBg}', borderRadius: '4px' }} />\n`;
@@ -387,14 +414,17 @@ function generateBenchmarkBarGraph(data: Map<string, BenchmarkData>): string {
   return mdx;
 }
 
-function generateBenchmarkCards(data: Map<string, BenchmarkData>, repoUrls: Map<string, string>): string {
+function generateBenchmarkCards(
+  data: Map<string, BenchmarkData>,
+  repoUrls: Map<string, string>,
+): string {
   const benchmarkTypes = [
-    { key: 'forgeTest', label: 'Test' },
-    { key: 'forgeFuzzTest', label: 'Fuzz' },
-    { key: 'forgeTestIsolated', label: 'Isolated' },
-    { key: 'forgeBuildNoCache', label: 'Build' },
-    { key: 'forgeBuildWithCache', label: 'Cached' },
-    { key: 'forgeCoverage', label: 'Coverage' },
+    { key: "forgeTest", label: "Test" },
+    { key: "forgeFuzzTest", label: "Fuzz" },
+    { key: "forgeTestIsolated", label: "Isolated" },
+    { key: "forgeBuildNoCache", label: "Build" },
+    { key: "forgeBuildWithCache", label: "Cached" },
+    { key: "forgeCoverage", label: "Coverage" },
   ] as const;
 
   const sortedRepos = Array.from(data.keys()).sort();
@@ -417,7 +447,7 @@ function generateBenchmarkCards(data: Map<string, BenchmarkData>, repoUrls: Map<
       const { key, label } = benchmarkTypes[i];
       const result = formatBenchmark(benchData[key]);
       const isLastInRow = (i + 1) % 6 === 0 || i === benchmarkTypes.length - 1;
-      const borderRight = isLastInRow ? '' : 'borderRight: \'1px solid var(--vocs-color_border)\', ';
+      const borderRight = isLastInRow ? "" : "borderRight: '1px solid var(--vocs-color_border)', ";
 
       mdx += `      <div style={{ ${borderRight}padding: '0.875rem 1rem', textAlign: 'center' }}>\n`;
       mdx += `        <div style={{ fontSize: '0.7rem', color: 'var(--vocs-color_text3)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>${label}</div>\n`;
@@ -445,23 +475,24 @@ function generateBenchmarkCards(data: Map<string, BenchmarkData>, repoUrls: Map<
 
 async function main() {
   try {
-    console.log('Fetching benchmark data from Foundry repository...');
+    console.log("Fetching benchmark data from Foundry repository...");
     const markdown = await fetchBenchmarks();
 
-    console.log('Parsing benchmark data...');
+    console.log("Parsing benchmark data...");
     const { data: benchmarkData, repoUrls } = parseMarkdown(markdown);
 
     // Date format: "**Generated at**: 2026-05-02 21:53:46 UTC".
     const generatedMatch = markdown.match(/\*\*Generated at\*\*:\s*(.+)/);
     const dateMatch = markdown.match(/\*\*Date\*\*:\s*(.+)/);
-    const benchmarkDate = (generatedMatch && generatedMatch[1].trim())
-      || (dateMatch && dateMatch[1].trim())
-      || new Date().toLocaleDateString();
+    const benchmarkDate =
+      (generatedMatch && generatedMatch[1].trim()) ||
+      (dateMatch && dateMatch[1].trim()) ||
+      new Date().toLocaleDateString();
 
     const { baselineVersion, latestVersionDisplay, latestVersionUrl } =
       parseFoundryVersions(markdown);
 
-    console.log('Generating benchmark cards...');
+    console.log("Generating benchmark cards...");
     let output = `{/* Auto-generated from ${benchmarkDate}. Do not edit manually. */}\n\n`;
     output += `# Benchmarks\n\n`;
     output += `Performance comparison between Foundry releases.\n\n`;
@@ -484,9 +515,9 @@ async function main() {
     console.log(`Writing benchmark cards to ${OUTPUT_FILE}...`);
     writeFileSync(OUTPUT_FILE, output);
 
-    console.log('✅ Successfully generated benchmark cards');
+    console.log("✅ Successfully generated benchmark cards");
   } catch (error) {
-    console.error('Failed to fetch and process benchmarks:', error);
+    console.error("Failed to fetch and process benchmarks:", error);
     process.exit(1);
   }
 }
