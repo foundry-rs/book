@@ -28,22 +28,22 @@ jobs:
           run-install: false
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: vp install --frozen-lockfile
 
       - name: Check cheatcode coverage
-        run: pnpm run check:cheatcodes
+        run: vp run check:cheatcodes
 
       - name: Check anvil RPC coverage
-        run: pnpm run check:anvil-rpc
+        run: vp run check:anvil-rpc
 
       - name: Check narrative commands
-        run: pnpm run check:commands
+        run: vp run check:commands
 
       - name: Check
-        run: pnpm run check
+        run: vp run check
 
       - name: Test
-        run: pnpm run test
+        run: vp run test
 
       - name: Build Vocs
-        run: pnpm run build
+        run: vp run build
