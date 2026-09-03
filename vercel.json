@@ -149,7 +149,7 @@
 
     { "source": "/benches", "destination": "/benchmarks" }
   ],
-  "buildCommand": "vp run build:vercel",
+  "buildCommand": "pnpm run build:vercel",
   "installCommand": "pnpm install --frozen-lockfile",
   "outputDirectory": "dist",
   "functions": {
