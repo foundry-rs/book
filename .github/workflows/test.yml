@@ -46,4 +46,4 @@ jobs:
         run: vp run test
 
       - name: Build Vocs
-        run: vp run build
+        run: vp exec vocs build
