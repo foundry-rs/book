@@ -1,0 +1,49 @@
+---
+description: Checks whether isolated test execution is enabled
+---
+
+## `isIsolateMode`
+
+### Signature
+
+```solidity
+function isIsolateMode() external view returns (bool result);
+```
+
+### Description
+
+Returns whether isolated test execution is enabled for the current Forge run.
+
+Isolation runs external calls from a test with transaction-like boundaries. This gives each call its own gas accounting and access-list state instead of carrying warmed accounts and storage slots across every call in the test function. Isolation is enabled by default.
+
+Use `isIsolateMode` when a test helper needs to reject an incompatible mode or select assertions whose gas or warm-state assumptions depend on isolation.
+
+### Returns
+
+| Type | Description |
+|------|-------------|
+| `bool` | `true` when isolated execution is enabled; otherwise `false` |
+
+### Example
+
+```solidity [test/IsIsolateMode.t.sol]
+// [!include ~/snippets/projects/cheatcodes/test/IsIsolateMode.t.sol:require-isolation]
+```
+
+Run with `forge test --no-isolate` to disable isolation, or set it persistently in `foundry.toml`:
+
+```toml [foundry.toml]
+[profile.default]
+isolate = false
+```
+
+### Gotchas
+
+- The result reports the resolved Forge configuration. It does not toggle isolation; use the CLI flag or `isolate` configuration value to do that.
+- Gas snapshots and tests that model separate transactions generally require isolation. Tests that intentionally depend on warm access carrying between calls may require `--no-isolate`.
+- Avoid silently skipping broad assertions based on this value. Prefer a clear failure when the test requires a specific mode.
+
+### Related Cheatcodes
+
+- [`isContext`](/reference/cheatcodes/is-context) - Check whether Forge is running a test, coverage, snapshot, or script workflow
+- [`snapshotGas`](/reference/cheatcodes/gas-snapshots) - Record and compare gas snapshots

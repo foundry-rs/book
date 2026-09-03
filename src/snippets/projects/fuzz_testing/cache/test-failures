@@ -1,0 +1,1 @@
+{"version":1,"failures":[{"contract":"test/Safe.t.sol:SafeTest","test":"testFuzz_Withdraw"}]}

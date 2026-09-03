@@ -1,0 +1,134 @@
+---
+description: Practical guides for common Foundry workflows and advanced patterns.
+---
+
+import { Cards, Card } from 'vocs'
+
+## Guides
+
+Practical guides for common workflows and advanced Foundry patterns.
+
+### Deployment
+
+<Cards>
+  <Card
+    title="Deploying Contracts"
+    description="Deploy from local to testnet to mainnet with verification and deterministic addresses."
+    to="/guides/deploying-contracts"
+  />
+  <Card
+    title="Browser Wallet Signing"
+    description="Send Cast and Forge transactions through an injected browser wallet."
+    to="/guides/browser-wallet"
+  />
+  <Card
+    title="Deterministic Deployments (CREATE2)"
+    description="Deploy to predictable addresses across multiple networks using CREATE2."
+    to="/guides/deterministic-deployments-using-create2"
+  />
+  <Card
+    title="Multi-Chain Deployments"
+    description="Deploy the same contracts across multiple networks with per-chain configuration."
+    to="/guides/multi-chain-deployments"
+  />
+  <Card
+    title="Upgrading Contracts"
+    description="Implement proxy patterns and verify storage layout compatibility."
+    to="/guides/upgrading-contracts"
+  />
+</Cards>
+
+### Testing
+
+<Cards>
+  <Card
+    title="Code Coverage"
+    description="Generate accurate summaries, LCOV files, and per-test coverage attribution."
+    to="/guides/coverage"
+  />
+  <Card
+    title="Fork Testing"
+    description="Test against live chain state, impersonate accounts, and handle time-sensitive logic."
+    to="/guides/fork-testing"
+  />
+  <Card
+    title="Fuzz Corpus Workflow"
+    description="Persist, replay, inspect, minimize, and compare fuzz and invariant corpora."
+    to="/guides/fuzz-corpus"
+  />
+  <Card
+    title="Mutation Testing"
+    description="Evaluate test-suite strength by generating mutants and interpreting survivors."
+    to="/guides/mutation-testing"
+  />
+  <Card
+    title="Invariant Testing"
+    description="Write effective invariant tests with handler patterns and ghost variables."
+    to="/guides/invariant-testing"
+  />
+  <Card
+    title="Symbolic Testing"
+    description="Turn symbolic counterexamples into reproducible tests and durable CI artifacts."
+    to="/guides/symbolic-testing"
+  />
+  <Card
+    title="Branching Tree Technique"
+    description="Organize test suites as decision trees and scaffold them with Bulloak."
+    to="/guides/branching-tree-technique"
+  />
+</Cards>
+
+### Networks & Payments
+
+<Cards>
+  <Card
+    title="Tempo"
+    description="Configure Tempo projects, transactions, tokens, policies, keychains, and debugging."
+    to="/guides/tempo"
+  />
+  <Card
+    title="MPP-backed RPC Endpoints"
+    description="Use Foundry with HTTP 402 payment-gated RPC endpoints through MPP."
+    to="/guides/mpp"
+  />
+</Cards>
+
+### Debugging & Optimization
+
+<Cards>
+  <Card
+    title="Debugging Transactions"
+    description="Replay and debug failed mainnet transactions with trace analysis."
+    to="/guides/debugging-transactions"
+  />
+  <Card
+    title="Gas Optimization"
+    description="Profile gas usage and optimize with snapshots and the IR pipeline."
+    to="/guides/gas-optimization"
+  />
+  <Card
+    title="Stack Too Deep"
+    description="Understand and fix stack too deep errors with practical solutions."
+    to="/guides/stack-too-deep"
+  />
+</Cards>
+
+### Environment
+
+<Cards>
+  <Card
+    title="Docker & Containers"
+    description="Run Foundry in Docker for reproducible builds and CI environments."
+    to="/guides/docker"
+  />
+</Cards>
+
+### Migrations
+
+<Cards>
+  <Card
+    title="Foundry v1.0"
+    description="Breaking changes and upgrade guidance for Foundry v1.0."
+    to="/guides/migrations/foundry-v1"
+  />
+</Cards>

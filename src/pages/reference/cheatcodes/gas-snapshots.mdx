@@ -1,0 +1,106 @@
+---
+description: Capture and compare gas usage across test runs
+---
+
+## `snapshotGas` cheatcodes
+
+### Signature
+
+```solidity
+function startSnapshotGas(string calldata name) external;
+function startSnapshotGas(string calldata group, string calldata name) external;
+function stopSnapshotGas() external returns (uint256 gasUsed);
+function stopSnapshotGas(string calldata name) external returns (uint256 gasUsed);
+function stopSnapshotGas(string calldata group, string calldata name) external returns (uint256 gasUsed);
+function snapshotValue(string calldata name, uint256 value) external;
+function snapshotValue(string calldata group, string calldata name, uint256 value) external;
+function snapshotGasLastCall(string calldata name) external returns (uint256 gasUsed);
+function snapshotGasLastCall(string calldata group, string calldata name) external returns (uint256 gasUsed);
+function snapshotGasLastFrame(string calldata name) external returns (uint256 gasUsed);
+function snapshotGasLastFrame(string calldata group, string calldata name) external returns (uint256 gasUsed);
+```
+
+### Description
+
+These cheatcodes allow you to capture gas usage in your tests. Snapshots are written to the `snapshots/` directory and can be compared across test runs.
+
+| Function             | Description                                          |
+|----------------------|------------------------------------------------------|
+| `startSnapshotGas`   | Start capturing gas usage                            |
+| `stopSnapshotGas`    | Stop capturing and record the gas used               |
+| `snapshotValue`      | Record an arbitrary numerical value                  |
+| `snapshotGasLastFrame` | Record gas usage of the last external call or contract creation |
+| `snapshotGasLastCall` | Deprecated call-only variant; use `snapshotGasLastFrame` |
+
+### Configuration
+
+To enforce gas snapshot comparisons:
+- Set `FORGE_SNAPSHOT_CHECK=true` environment variable
+- Set `gas_snapshot_check = true` in `foundry.toml`
+- Pass `--gas-snapshot-check=true`
+
+To disable writing snapshots:
+- Set `FORGE_SNAPSHOT_EMIT=false` environment variable
+- Set `gas_snapshot_emit = false` in `foundry.toml`
+- Pass `--gas-snapshot-emit=false`
+
+### Examples
+
+#### Capturing gas for a section of code
+
+```solidity [test/GasSnapshot.t.sol]
+function testSnapshotGas() public {
+    vm.startSnapshotGas("myOperation");
+    myContract.doSomething();
+    uint256 gasUsed = vm.stopSnapshotGas();
+    // Writes to snapshots/GasSnapshotTest.json
+}
+```
+
+#### Capturing gas for the last frame
+
+```solidity [test/GasSnapshotLastCall.t.sol]
+function testSnapshotGasLastFrame() public {
+    myContract.run(256);
+    vm.snapshotGasLastFrame("run256");
+    // Captures gas used by myContract.run(256)
+}
+```
+
+#### Using custom groups
+
+```solidity [test/GasSnapshotGroup.t.sol]
+function testSnapshotGasGroups() public {
+    vm.startSnapshotGas("Transfers", "smallTransfer");
+    token.transfer(alice, 100);
+    vm.stopSnapshotGas();
+
+    vm.startSnapshotGas("Transfers", "largeTransfer");
+    token.transfer(bob, 1000000);
+    vm.stopSnapshotGas();
+    // Writes to snapshots/Transfers.json
+}
+```
+
+#### Capturing arbitrary values
+
+```solidity [test/SnapshotValue.t.sol]
+function testSnapshotBytecodeSize() public {
+    vm.snapshotValue("bytecodeSize", address(myContract).code.length);
+}
+```
+
+### Gotchas
+
+:::warning
+Gas snapshots are not accurate unless using isolated test mode. Isolation is enabled by default; do not disable it when collecting or checking gas snapshots.
+:::
+
+:::note
+The `snapshots/` directory should be committed to version control to track gas changes over time.
+:::
+
+### Related Cheatcodes
+
+- [`lastFrameGas`](/reference/cheatcodes/last-frame-gas) - Inspect all gas fields for the last call or creation without writing a snapshot
+- [`snapshotState`](/reference/cheatcodes/state-snapshots) - Snapshot EVM state

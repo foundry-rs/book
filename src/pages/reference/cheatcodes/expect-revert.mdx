@@ -1,0 +1,152 @@
+---
+description: Asserts that the next call reverts with optional message matching
+---
+
+## `expectRevert`
+
+### Signature
+
+```solidity
+function expectRevert() external;
+function expectRevert(bytes4 revertData) external;
+function expectRevert(bytes4 revertData, address reverter) external;
+function expectRevert(bytes4 revertData, uint64 count) external;
+function expectRevert(bytes4 revertData, address reverter, uint64 count) external;
+function expectRevert(bytes calldata revertData) external;
+function expectRevert(bytes calldata revertData, address reverter) external;
+function expectRevert(bytes calldata revertData, uint64 count) external;
+function expectRevert(bytes calldata revertData, address reverter, uint64 count) external;
+function expectRevert(address reverter) external;
+function expectRevert(uint64 count) external;
+function expectRevert(address reverter, uint64 count) external;
+function expectPartialRevert(bytes4 revertData) external;
+function expectPartialRevert(bytes4 revertData, address reverter) external;
+```
+
+### Description
+
+Asserts that the **next call** reverts. If the call does not revert with the expected data, `expectRevert` will cause the test to fail.
+
+| Signature Variant | Description |
+|-------------------|-------------|
+| No parameters | Asserts the next call reverts, regardless of the message |
+| `bytes4` message | Asserts exact match of the 4-byte selector |
+| `bytes` message | Asserts exact match of the full revert data |
+| `address` reverter | Asserts the revert comes from a specific address |
+| `uint64` count | Expects exactly `count` reverts (use 0 to assert no revert) |
+| `expectPartialRevert` | Matches only the 4-byte selector, ignoring arguments |
+
+### Parameters
+
+| Parameter    | Type      | Description                                           |
+|--------------|-----------|-------------------------------------------------------|
+| `revertData` | `bytes4`  | The 4-byte selector of the expected error             |
+| `revertData` | `bytes`   | The full ABI-encoded revert data                      |
+| `reverter`   | `address` | The address expected to cause the revert              |
+| `count`      | `uint64`  | Expected number of reverts (0 = assert no revert)     |
+
+### Examples
+
+#### Basic usage
+
+```solidity [test/ExpectRevert.t.sol]
+function testRevertWithMessage() public {
+    vm.expectRevert("insufficient balance");
+    vault.withdraw(1000);
+}
+```
+
+#### With custom error selector
+
+```solidity [test/ExpectRevertSelector.t.sol]
+function testRevertWithCustomError() public {
+    vm.expectRevert(InsufficientBalance.selector);
+    vault.withdraw(1000);
+}
+```
+
+#### With custom error and parameters
+
+```solidity [test/ExpectRevertEncoded.t.sol]
+function testRevertWithEncodedError() public {
+    vm.expectRevert(
+        abi.encodeWithSelector(InsufficientBalance.selector, 100, 1000)
+    );
+    vault.withdraw(1000);
+}
+```
+
+#### Partial revert matching
+
+Use `expectPartialRevert` when you only care about the error selector, not its arguments:
+
+```solidity [test/ExpectPartialRevert.t.sol]
+function testPartialRevert() public {
+    // Only checks the selector, ignores the uint256 argument
+    vm.expectPartialRevert(WrongNumber.selector);
+    counter.count();
+}
+```
+
+#### Empty revert message
+
+```solidity [test/ExpectRevertEmpty.t.sol]
+function testRevertWithoutMessage() public {
+    vm.expectRevert(bytes(""));
+    reverter.revertWithoutReason();
+}
+```
+
+#### Multiple reverts in one test
+
+```solidity [test/ExpectRevertMultiple.t.sol]
+function testMultipleReverts() public {
+    vm.expectRevert("INVALID_AMOUNT");
+    vault.send(user, 0);
+
+    vm.expectRevert("INVALID_ADDRESS");
+    vault.send(address(0), 200);
+}
+```
+
+### Gotchas
+
+:::warning[Call Depth Error]
+If you see `[FAIL: call didn't revert at a lower depth than cheatcode call depth]`, you're likely using `expectRevert` on an internal function. By default, `expectRevert` only works for external calls.
+
+To enable internal revert testing, add above your test function:
+```solidity
+/// forge-config: default.allow_internal_expect_revert = true
+```
+:::
+
+:::warning[Low-Level Calls]
+When using `expectRevert` with low-level calls, the `status` boolean indicates whether the expectation was met, not whether the call reverted:
+
+```solidity [test/ExpectRevertLowLevel.t.sol]
+function testLowLevelCallRevert() public {
+    vm.expectRevert(bytes("error message"));
+    (bool revertsAsExpected, ) = address(myContract).call(myCalldata);
+    assertTrue(revertsAsExpected, "expectRevert: call did not revert");
+}
+```
+:::
+
+:::note[Nested Calls]
+For a call like `stable.donate(sUSD.balanceOf(user))`, the next call expected to revert is `sUSD.balanceOf(user)`, not `stable.donate()`.
+:::
+
+:::note
+After calling `expectRevert`, calls to other cheatcodes before the reverting call are ignored. You can safely call [`prank`](/reference/cheatcodes/prank) immediately before the reverting call.
+:::
+
+### Related Cheatcodes
+
+- [`expectEmit`](/reference/cheatcodes/expect-emit) - Assert that events are emitted
+- [`expectCall`](/reference/cheatcodes/expect-call) - Assert that calls are made
+
+### See Also
+
+- [Std Errors](/reference/forge-std/std-errors) - Common error selectors
+
+[error-type]: https://docs.soliditylang.org/en/v0.8.11/contracts.html#errors

@@ -1,0 +1,59 @@
+---
+description: Parses a JSON array and coerces its elements to a described Solidity type
+---
+
+## `parseJsonTypeArray`
+
+### Signature
+
+```solidity
+function parseJsonTypeArray(string calldata json, string calldata key, string calldata typeDescription) external pure returns (bytes memory);
+```
+
+### Description
+
+Parses the JSON array at `key` and coerces every element to the type described by `typeDescription`, returning the ABI-encoded array.
+
+This is the array variant of [`parseJsonType`](/reference/cheatcodes/parse-json-type): `typeDescription` describes a single element, and the result decodes as a dynamic array of that type.
+
+### Parameters
+
+| Parameter         | Type     | Description                                          |
+|-------------------|----------|------------------------------------------------------|
+| `json`            | `string` | The JSON string to parse                             |
+| `key`             | `string` | The JSONPath key of the array                        |
+| `typeDescription` | `string` | Solidity type or EIP-712 `encodeType` description of one element |
+
+### Returns
+
+| Type    | Description                                          |
+|---------|------------------------------------------------------|
+| `bytes` | The ABI-encoded array, ready for `abi.decode`        |
+
+### Examples
+
+```solidity [test/ParseJsonTypeArray.t.sol]
+struct Item {
+    uint256 amount;
+    string name;
+}
+
+string constant ITEM_SCHEMA = "Item(uint256 amount,string name)";
+
+function test_parseJsonTypeArray() public view {
+    string memory json =
+        '{"items": [{"amount": 1, "name": "a"}, {"amount": 2, "name": "b"}]}';
+
+    Item[] memory items =
+        abi.decode(vm.parseJsonTypeArray(json, ".items", ITEM_SCHEMA), (Item[]));
+
+    assertEq(items.length, 2);
+    assertEq(items[1].amount, 2);
+}
+```
+
+### Related Cheatcodes
+
+- [`parseJsonType`](/reference/cheatcodes/parse-json-type) - Parse a single value with a type description
+- [`parseJson`](/reference/cheatcodes/parse-json) - Parse JSON with inferred types
+- [`parseJsonArrayLength`](/reference/cheatcodes/parse-json-array-length) - Get the length of a JSON array

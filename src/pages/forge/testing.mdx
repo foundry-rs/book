@@ -1,0 +1,525 @@
+---
+description: Write and run tests for Solidity contracts with Forge.
+---
+
+## Testing
+
+Forge runs tests written in Solidity. Test files live in `test/` and test functions are prefixed with `test`.
+
+:::terminal
+```bash
+// [!include ~/snippets/output/hello_foundry/forge-test:command]
+```
+
+```ansi
+// [!include ~/snippets/output/hello_foundry/forge-test:output]
+```
+:::
+
+### Writing tests
+
+Create a test contract that inherits from `Test`:
+
+```solidity [test/Counter.t.sol]
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.13;
+
+import {Test} from "forge-std/Test.sol";
+import {Counter} from "../src/Counter.sol";
+
+contract CounterTest is Test {
+    Counter counter;
+
+    function setUp() public {
+        counter = new Counter();
+    }
+
+    function test_Increment() public {
+        counter.increment();
+        assertEq(counter.number(), 1);
+    }
+
+    function test_SetNumber() public {
+        counter.setNumber(42);
+        assertEq(counter.number(), 42);
+    }
+}
+```
+
+Key conventions:
+- Test files end with `.t.sol`
+- Test contracts inherit from `forge-std/Test.sol`
+- Test functions start with `test_` or `test`
+- `setUp()` runs before each test
+
+### Call isolation
+
+Forge runs tests with call isolation enabled by default. In isolation mode, each top-level external call made by a test is executed as a separate transaction in a separate EVM context. This gives more precise gas accounting and transaction state changes for each call.
+
+Because those calls use separate transaction contexts, a test function is not always equivalent to one normal transaction with warmed accounts or storage slots shared across every external call in the function body. For example, repeated calls to the same contract can be charged as cold again under isolation. If a test intentionally asserts behavior that depends on warm accounts or slots carrying across repeated calls in one transaction, run it with `--no-isolate` or set `isolate = false` in `foundry.toml`.
+
+### Traces
+
+Traces show a tree of all calls made during a test, helping you understand execution flow and debug failures.
+
+#### Stack traces
+
+When a test fails, use `-vvv` to see a stack trace showing exactly where the revert occurred. This is the most common way to debug test failures.
+
+:::terminal
+```bash
+$ forge test -vvv
+```
+
+```ansi
+// [!include ~/snippets/output/cheatcodes/forge-test-fail-vvv:output]
+```
+:::
+
+The trace shows the call hierarchy with the revert bubbling up, and the **Backtrace** pinpoints the exact location in your code.
+
+#### Full traces
+
+Use `-vvvv` to see traces for all tests, including passing ones. This helps you understand execution flow, verify call order, and check gas usage for individual operations.
+
+:::terminal
+```bash
+$ forge test -vvvv
+```
+
+```ansi
+// [!include ~/snippets/output/cheatcodes/forge-test-vvvv:output]
+```
+:::
+
+#### Reading traces
+
+- **Gas costs** appear in brackets: `[29808]`
+- **Contract and function names** are color-coded
+- **Call types** are annotated: `[staticcall]` for view/pure functions
+- **Return values** show what each call returned: `← [Return] 0` for a value, `← [Stop]` for void
+- **Indentation** shows the call hierarchy—nested calls are indented under their parent
+
+### Verbosity levels
+
+Control how much detail Forge outputs with `-v` flags:
+
+| Flag | Shows |
+|------|-------|
+| (none) | Pass/fail summary only |
+| `-v` | Test names |
+| `-vv` | Logs emitted during tests |
+| `-vvv` | Traces for failing tests |
+| `-vvvv` | Traces for all tests, including setup |
+| `-vvvvv` | Traces with storage changes |
+
+Use `-vvv` for debugging failures, `-vvvv` when you need to see successful test execution, and `-vvvvv` when tracking state changes.
+
+### Filtering tests
+
+Run specific tests:
+
+By name:
+
+:::terminal
+```bash
+// [!include ~/snippets/output/test_filters/forge-test-match-test:command]
+```
+
+```ansi
+// [!include ~/snippets/output/test_filters/forge-test-match-test:output]
+```
+:::
+
+By contract:
+
+:::terminal
+```bash
+// [!include ~/snippets/output/test_filters/forge-test-match-contract:command]
+```
+
+```ansi
+// [!include ~/snippets/output/test_filters/forge-test-match-contract:output]
+```
+:::
+
+By path:
+
+:::terminal
+```bash
+// [!include ~/snippets/output/test_filters/forge-test-match-path:command]
+```
+
+```ansi
+// [!include ~/snippets/output/test_filters/forge-test-match-path:output]
+```
+:::
+
+Combine filters:
+
+:::terminal
+```bash
+// [!include ~/snippets/output/test_filters/forge-test-match-contract-and-test:command]
+```
+
+```ansi
+// [!include ~/snippets/output/test_filters/forge-test-match-contract-and-test:output]
+```
+:::
+
+Exclude tests with `--no-match-*` variants:
+
+```bash
+$ forge test --no-match-test test_Skip
+```
+
+### Fuzz testing
+
+Forge automatically fuzzes test functions that take parameters:
+
+```solidity
+function testFuzz_SetNumber(uint256 x) public {
+    counter.setNumber(x);
+    assertEq(counter.number(), x);
+}
+```
+
+Forge generates random inputs and runs the test multiple times (256 by default):
+
+:::terminal
+```bash
+// [!include ~/snippets/output/fuzz_testing/forge-test-success-fuzz:command]
+```
+
+```ansi
+// [!include ~/snippets/output/fuzz_testing/forge-test-success-fuzz:output]
+```
+:::
+
+Configure fuzzing:
+
+```toml [foundry.toml]
+[fuzz]
+runs = 1000
+max_test_rejects = 65536
+seed = "0x1234"
+```
+
+Constrain inputs with `vm.assume(){:solidity}`:
+
+```solidity
+function testFuzz_Transfer(uint256 amount) public {
+    vm.assume(amount > 0 && amount <= 1000 ether);
+    // Test with constrained amount
+}
+```
+
+Or use `bound(){:solidity}` to clamp values:
+
+```solidity
+function testFuzz_Transfer(uint256 amount) public {
+    amount = bound(amount, 1, 1000 ether);
+    // Test with bounded amount
+}
+```
+
+### Table testing
+
+Foundry v1.3.0 comes with support for table testing, which enables the definition of a dataset (the "table") and the execution of a test function for each entry in that dataset. This approach helps ensure that certain combinations of inputs and conditions are tested.
+
+In forge, table tests are functions named with `table` prefix that accepts datasets as one or multiple arguments:
+
+```solidity
+function tableSumsTest(TestCase memory sums) public
+```
+
+```solidity
+function tableSumsTest(TestCase memory sums, bool enable) public
+```
+
+The datasets are defined as forge fixtures which can be:
+
+- storage arrays prefixed with `fixture` prefix and followed by dataset name
+- functions named with `fixture` prefix, followed by dataset name. Function should return an (fixed size or dynamic) array of values.
+
+#### Single dataset
+
+In following example, `tableSumsTest` test will be executed twice, with inputs from `fixtureSums` dataset: once with `TestCase(1, 2, 3)` and once with `TestCase(4, 5, 9)`.
+
+```solidity
+struct TestCase {
+    uint256 a;
+    uint256 b;
+    uint256 expected;
+}
+
+function fixtureSums() public returns (TestCase[] memory) {
+    TestCase[] memory entries = new TestCase[](2);
+    entries[0] = TestCase(1, 2, 3);
+    entries[1] = TestCase(4, 5, 9);
+    return entries;
+}
+
+function tableSumsTest(TestCase memory sums) public pure {
+    require(sums.a + sums.b == sums.expected, "wrong sum");
+}
+```
+
+It is required to name the `tableSumsTest`'s `TestCase` parameter `sums` as the parameter name is resolved against the available fixtures (`fixtureSums`). In this example, if the parameter is not named `sums` the following error is raised: `[FAIL: Table test should have fixtures defined]`.
+
+#### Multiple datasets
+
+`tableSwapTest` test will be executed twice, by using values at the same position from `fixtureWallet` and `fixtureSwap` datasets.
+
+```solidity
+struct Wallet {
+    address owner;
+    uint256 amount;
+}
+
+struct Swap {
+    bool swap;
+    uint256 amount;
+}
+
+Wallet[] public fixtureWallet;
+Swap[] public fixtureSwap;
+
+function setUp() public {
+    // first table test input
+    fixtureWallet.push(Wallet(address(11), 11));
+    fixtureSwap.push(Swap(true, 11));
+
+    // second table test input
+    fixtureWallet.push(Wallet(address(12), 12));
+    fixtureSwap.push(Swap(false, 12));
+}
+
+function tableSwapTest(Wallet memory wallet, Swap memory swap) public pure {
+    require(
+        (wallet.owner == address(11) && swap.swap) || (wallet.owner == address(12) && !swap.swap), "not allowed"
+    );
+}
+```
+
+The same naming requirement mentioned above is relevant here.
+
+### Mutation testing
+
+Mutation testing checks the strength of your test suite by making small changes, or mutants, to your source code and re-running your tests. A mutant is killed when at least one test fails. A mutant survives when the changed code still passes the selected tests.
+
+See the [mutation testing guide](/guides/mutation-testing) to select source files and tests, configure parallel workers and operators, interpret reports, and understand current limitations.
+
+### Brutalized testing
+
+Brutalized testing checks whether code remains robust when values and memory are dirtier than the assumptions made by clean, ordinary test executions. It is useful for contracts that use inline assembly, narrow integer or fixed-bytes casts, addresses, or low-level memory handling.
+
+Run the selected tests against brutalized sources with `forge test --brutalize`:
+
+```bash
+$ forge test --brutalize
+```
+
+Forge copies the project into a temporary workspace, rewrites source files under `src/`, compiles that temporary project, and runs the selected tests there. Test files (`.t.sol`) and scripts (`.s.sol`) are not rewritten.
+
+Brutalization applies deterministic source rewrites that:
+
+- dirty unused upper bits in casts to `address`, smaller `uint`/`int` types, and fixed-size `bytes` types
+- fill scratch space (`0x00` through `0x3f`) and memory beyond the free memory pointer before eligible external assembly functions run
+- misalign the free memory pointer by a small deterministic odd offset
+
+If `forge test` passes but `forge test --brutalize` fails, the code under test likely depends on assumptions that are not guaranteed in every caller context, such as clean upper bits, zeroed memory, or word-aligned free memory.
+
+Regular test filters still apply:
+
+```bash
+$ forge test --brutalize --match-contract VaultTest
+$ forge test --brutalize --match-test testWithdraw
+```
+
+`--brutalize` is separate from mutation testing. Mutation testing changes code to evaluate test quality; brutalized testing changes call and memory conditions to evaluate code robustness. Because they answer different questions, `--brutalize` cannot be combined with `--mutate`.
+
+### Symbolic testing
+
+Symbolic testing explores your code with symbolic inputs instead of concrete ones, searching feasible execution paths within the current symbolic EVM model and configured bounds for a counterexample that violates a property. When Forge reports a failure, it first replays the concrete input or invariant sequence through the normal executor, so the failure is backed by a concrete example.
+
+:::info
+Symbolic testing is currently an MVP. It is ready for early use and feedback, but the modeled EVM surface, configuration, and reporting are still expected to evolve.
+:::
+
+Symbolic tests are Solidity functions named `check*` or `prove*`. They are only discovered when symbolic mode is enabled with `--symbolic`:
+
+```solidity
+contract MathSymbolicTest is Test {
+    function check_average(uint256 a, uint256 b) external pure {
+        uint256 average;
+        unchecked {
+            average = (a + b) / 2;
+        }
+
+        // Forge should find an overflow counterexample.
+        assertGe(average, a <= b ? a : b);
+    }
+}
+```
+
+Run it with:
+
+```bash
+$ forge test --symbolic --match-test check_average
+```
+
+Symbolic testing requires an SMT solver to be installed. The default solver is `z3`:
+
+```bash
+$ brew install z3        # macOS
+$ sudo apt-get install z3 # Ubuntu
+```
+
+#### Writing symbolic tests
+
+Function parameters become symbolic inputs derived from the ABI, and the executor explores the feasible paths:
+
+- `require(...)` and `vm.assume(...)` prune paths when their condition is false.
+- `assert`, forge-std assertions, and DSTest failure signals are treated as properties to disprove.
+- User reverts terminate the current path.
+
+When `--symbolic` is enabled, `invariant*` and `statefulFuzz*` functions are explored as bounded symbolic call sequences instead of using the normal fuzzer.
+
+#### Results
+
+Forge reports symbolic outcomes as:
+
+- **`PASS`**: every explored path finished without a feasible failure under the currently modeled semantics and configured bounds.
+- **`FAIL`**: the solver found a failing input or invariant sequence, and Forge replayed it concretely before reporting it.
+- **`FAIL: incomplete symbolic execution (...)` / `Incomplete`**: Forge could not complete the search or validate a counterexample. Treat this as "not established", not as a proof.
+
+A `PASS` is scoped to the current symbolic model and configured bounds; it does not cover skipped dynamic lengths, deeper invariant sequences, larger loop bounds, unmodeled behavior, arbitrary unknown external code, or cryptographic preimage/collision properties.
+
+#### Configuration
+
+Tune the exploration bounds and solver in `foundry.toml`:
+
+```toml [foundry.toml]
+[profile.default.symbolic]
+solver = "z3"
+timeout = 30
+max_depth = 10000
+max_paths = 1024
+max_solver_queries = 10000
+```
+
+Symbolic exploration is bounded by configuration, including `symbolic.max_depth`, `symbolic.max_paths`, `symbolic.max_solver_queries`, dynamic calldata length settings, and `symbolic.invariant_depth`.
+
+Bounds can also be set per test with inline `forge-config` annotations:
+
+```solidity
+/// forge-config: default.symbolic.invariant_depth = 4
+function invariant_counterNeverFive() public view {
+    assertTrue(counter.value() != 5);
+}
+```
+
+#### Limitations
+
+The symbolic engine is not a complete revm-equivalent EVM model. Unsupported constructs report `incomplete` rather than a proof, and some supported semantics are bounded or approximate. Notable gaps include gas accounting, Cancun+ `SELFDESTRUCT`, arbitrary unknown external code, and cryptographic preimage or collision properties. The exact unsupported-feature reason is preserved in the test output.
+
+For a counterexample-to-fix workflow, including durable JSON artifacts, concrete replay, generated regression tests, fuzz corpus integration, and CI handoffs, see the [symbolic testing workflow](/guides/symbolic-testing).
+
+### Testing reverts
+
+Use `vm.expectRevert(){:solidity}` to test that a call reverts:
+
+```solidity
+function test_RevertWhen_Unauthorized() public {
+    vm.expectRevert("Not authorized");
+    restricted.doSomething();
+}
+```
+
+Match a custom error:
+
+```solidity
+function test_RevertWhen_InsufficientBalance() public {
+    vm.expectRevert(Token.InsufficientBalance.selector);
+    token.transfer(address(0), 1000);
+}
+```
+
+:::terminal
+```bash
+// [!include ~/snippets/output/cheatcodes/forge-test-cheatcodes-expectrevert:command]
+```
+
+```ansi
+// [!include ~/snippets/output/cheatcodes/forge-test-cheatcodes-expectrevert:output]
+```
+:::
+
+### Testing events
+
+Use `vm.expectEmit(){:solidity}` to verify events are emitted:
+
+```solidity
+function test_EmitsTransfer() public {
+    vm.expectEmit(true, true, false, true);
+    emit Transfer(alice, bob, 100);
+    
+    token.transfer(bob, 100);
+}
+```
+
+The four booleans specify which topics and data to check.
+
+### Forking
+
+Test against live chain state:
+
+```bash
+$ forge test --fork-url https://ethereum.reth.rs/rpc
+```
+
+Or configure in `foundry.toml`:
+
+```toml [foundry.toml]
+[profile.default]
+eth_rpc_url = "https://ethereum.reth.rs/rpc"
+```
+
+Pin to a specific block for reproducible tests:
+
+```bash
+$ forge test --fork-url https://ethereum.reth.rs/rpc --fork-block-number 18000000
+```
+
+### Cheatcodes
+
+Forge provides cheatcodes via the `vm` object to manipulate the test environment:
+
+```solidity
+// Set block timestamp
+vm.warp(1700000000);
+
+// Set block number
+vm.roll(18000000);
+
+// Impersonate an address
+vm.prank(alice);
+contract.doSomething();
+
+// Give ETH to an address
+vm.deal(alice, 100 ether);
+
+// Modify storage
+vm.store(address(token), bytes32(0), bytes32(uint256(1000)));
+```
+
+See the [cheatcodes reference](/reference/cheatcodes/overview) for the full list.
+
+### Watch mode
+
+Re-run tests when files change:
+
+```bash
+$ forge test --watch
+```

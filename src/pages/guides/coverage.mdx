@@ -1,0 +1,130 @@
+---
+description: Generate accurate summaries, LCOV files, and per-test coverage attribution.
+---
+
+## Code Coverage
+
+`forge coverage` compiles your project for source mapping, runs the selected tests, and reports which lines, statements, branches, and functions they execute.
+
+Run it without options for a summary table:
+
+```bash
+$ forge coverage
+```
+
+Line and statement coverage show whether executable source locations ran. Branch coverage tracks the alternative paths through conditionals, so 100% line coverage does not necessarily mean every outcome was tested. Function coverage shows whether each function was entered.
+
+### Configure a repeatable report
+
+Coverage settings can live with the profile that uses them:
+
+```toml [foundry.toml]
+[profile.default.coverage]
+report = ["summary", "lcov"]
+lcov_version = "1"
+report_file = "lcov.info"
+exclude_tests = true
+skip_files = ["script/**", "src/mocks/**"]
+```
+
+`report` accepts `summary`, `lcov`, `attribution`, `debug`, and `bytecode`. A CLI `--report` overrides the configured list and can be repeated:
+
+```bash
+$ forge coverage --report summary --report lcov
+```
+
+The following contract and tests cover all three fee paths:
+
+```solidity [src/Pricing.sol]
+// [!include ~/snippets/projects/coverage/src/Pricing.sol:all]
+```
+
+```solidity [test/Pricing.t.sol]
+// [!include ~/snippets/projects/coverage/test/Pricing.t.sol:all]
+```
+
+### Choose what to run and report
+
+Test filters such as `--match-test`, `--match-contract`, and `--match-path` decide which tests execute. Coverage filters decide which source files appear in the result:
+
+| Setting | Syntax | Effect |
+| --- | --- | --- |
+| `--no-match-coverage <REGEX>` | CLI regular expression | Removes matching source paths from the report |
+| `skip_files` | Configuration glob list | Removes project-relative paths such as `src/mocks/**` |
+| `--exclude-tests` | CLI flag or configuration | Excludes test sources from analysis |
+| `--include-libs` | CLI flag or configuration | Includes dependency sources under library directories |
+
+Filtering a source from the report does not prevent its code from executing. Likewise, filtering tests changes the executed workload and can lower coverage elsewhere.
+
+### Generate LCOV for CI
+
+Generate only an LCOV tracefile at a chosen path:
+
+```bash
+$ forge coverage --report lcov --report-file lcov.info
+```
+
+The default path is `lcov.info` in the project root. Use `--lcov-version 1`, `2`, or `2.2` to match the tracefile version supported by your coverage service. Foundry generates the data but does not enforce a minimum percentage; configure thresholds in the service or tool that consumes the LCOV file.
+
+`--report-file` applies when exactly one file report is requested. If you request both `lcov` and `attribution`, Foundry uses their default names, `lcov.info` and `coverage-attribution.json`, instead.
+
+### Map coverage to individual tests
+
+The attribution report is structured JSON that maps every executed test to the source items it covered:
+
+```bash
+$ forge coverage --report attribution \
+    --report-file coverage-attribution.json
+```
+
+The top-level object has a schema `version` and a `tests` array. Each test contains its suite, name, status, kind, and `covered` items. Covered items identify the source, contract, item kind, line and byte ranges, hit count, and function or branch identifiers when applicable.
+
+This report is useful for test selection and repository tooling. An agent can find tests that exercise a changed file without parsing a terminal table:
+
+```bash
+$ jq --arg source "src/Pricing.sol" \
+    '.tests[] | select(any(.covered[]; .source == $source)) | .test' \
+    coverage-attribution.json
+```
+
+Source filters also apply to attribution output, so keep the same filters when comparing it with a summary or LCOV report.
+
+### Understand compiler differences
+
+For accurate source maps, `forge coverage` disables optimizer settings and `viaIR` by default. The coverage build can therefore differ from the production build in bytecode shape, gas use, and inlining.
+
+If coverage compilation fails with a stack-too-deep error, retry with:
+
+```bash
+$ forge coverage --ir-minimum
+```
+
+`--ir-minimum` enables `viaIR` with minimal optimization. It is a workaround, not the preferred baseline: inlining and IR source maps can make internal functions or library code appear uncovered. See [Stack Too Deep](/guides/stack-too-deep) for alternatives.
+
+Coverage compilation is ephemeral and does not leave normal build artifacts behind. Run `forge build` after coverage if a later step needs artifacts from the selected production profile.
+
+### Keep CI results stable
+
+Use a dedicated profile when CI needs different exclusions or fuzz settings:
+
+```toml [foundry.toml]
+[profile.ci.fuzz]
+runs = 512
+
+[profile.ci.coverage]
+report = ["lcov", "attribution"]
+exclude_tests = true
+skip_files = ["script/**", "src/mocks/**"]
+```
+
+Run that profile explicitly:
+
+```bash
+$ FOUNDRY_PROFILE=ci forge coverage
+```
+
+Coverage uses a static fuzz seed by default, which keeps fuzz-derived reports repeatable. An explicit `--fuzz-seed` or `[fuzz] seed` overrides it. Pin the Foundry version, compiler version, active profile, test filters, and report filters before treating a percentage change as a regression.
+
+Foundry writes requested file reports before returning a failing exit status for failed tests. CI should therefore check the command status even if an LCOV or attribution file exists.
+
+See the [`forge coverage` command reference](/reference/forge/coverage) for all test, compiler, and report options.

@@ -1,0 +1,41 @@
+---
+description: Checks whether a spender is implicitly approved on Tempo
+---
+
+## `isImplicitlyApproved`
+
+### Signature
+
+```solidity
+function isImplicitlyApproved(address spender) external view returns (bool implicitlyApproved);
+```
+
+### Description
+
+Returns `true` if `spender` is on the active Tempo hardfork's implicit-approval list, meaning it can pull TIP-20 tokens from `msg.sender` without a prior `approve()`.
+
+Returns `false` on non-Tempo networks.
+
+### Parameters
+
+| Parameter | Type      | Description          |
+|-----------|-----------|----------------------|
+| `spender` | `address` | The spender to check |
+
+### Returns
+
+| Type   | Description                                      |
+|--------|--------------------------------------------------|
+| `bool` | Whether `spender` is implicitly approved         |
+
+### Examples
+
+```solidity [test/ImplicitApproval.t.sol]
+if (vm.isImplicitlyApproved(spender)) {
+    token.transferFrom(owner, recipient, amount);
+}
+```
+
+### Related Cheatcodes
+
+- [`assumeImplicitApproval`](/reference/cheatcodes/assume-implicit-approval) - Skip fuzz inputs unless a spender is implicitly approved

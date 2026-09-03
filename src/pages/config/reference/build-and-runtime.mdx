@@ -1,0 +1,101 @@
+## Build, Runtime, and RPC
+
+Configuration shared by build commands and EVM execution. All fields belong under
+`[profile.<name>]` unless a table is shown explicitly.
+
+### Build and project fields
+
+| Field | Type | Default | Description |
+| --- | --- | --- | --- |
+| `dynamic_test_linking` | boolean | `false` | Dynamically links test contracts. |
+| `snapshots` | path | `snapshots` | Directory used for gas snapshot files. |
+| `gas_snapshot_check` | boolean | `false` | Checks generated snapshots against stored snapshots. |
+| `gas_snapshot_emit` | boolean | `true` | Writes gas snapshots to disk. |
+| `skip` | array of globs | `[]` | Skips matching source paths during build and execution. |
+| `test_failures_file` | path | `cache/test-failures` | Stores the last failed tests for reruns. |
+| `no_match_coverage` | regular expression or none | none | Excludes matching source paths from coverage reports. |
+| `gas_reports_ignore` | array of strings | `[]` | Excludes matching contracts from gas reports. |
+| `gas_reports_include_tests` | boolean | `false` | Includes test contracts in gas reports. |
+| `build_info` | boolean | `false` | Emits build-info files containing compiler input and output. |
+| `build_info_path` | path or none | none | Overrides the build-info output directory. |
+| `names` | boolean | `false` | Prints compiled contract names. |
+| `sizes` | boolean | `false` | Prints compiled contract sizes. |
+
+### Compiler and diagnostic fields
+
+| Field | Type | Default | Description |
+| --- | --- | --- | --- |
+| `ast` | boolean | `false` | Includes the AST in compiler output. |
+| `cbor_metadata` | boolean | `true` | Appends CBOR metadata to bytecode. |
+| `via_ssa_cfg` | boolean | `false` | Enables Solidity's experimental SSA CFG pipeline and implies `via_ir`. |
+| `experimental` | boolean | `false` | Passes Solidity's experimental-mode option to the compiler. |
+| `extra_args` | array of strings | `[]` | Passes additional arguments to the `solc` binary. |
+| `ignored_error_codes_from` | array | `[]` | Silences selected compiler diagnostics for specific path prefixes. |
+| `deny` | `never`, `warnings`, or `notes` | `never` | Selects the minimum diagnostic level that makes a command fail. |
+
+`ignored_error_codes_from` is an array of path-and-code pairs:
+
+```toml
+ignored_error_codes_from = [
+  ["src/generated", [1878, 5574]],
+]
+```
+
+### EVM execution fields
+
+| Field | Type | Default | Description |
+| --- | --- | --- | --- |
+| `fork_block_number` | integer or none | none | Pins the block used for a fork. |
+| `code_size_limit` | integer or none | none | Overrides the EIP-170 deployed-code size limit. |
+| `block_prevrandao` | bytes32 | zero | Sets `block.prevrandao` (`mix_hash` before the Merge). |
+| `block_gas_limit` | integer or none | none | Sets `block.gaslimit`; distinct from the per-call `gas_limit`. |
+| `isolate` | boolean | `true` | Executes each top-level call in a separate EVM transaction context. |
+| `disable_block_gas_limit` | boolean | `false` | Disables block gas-limit checks. |
+| `enable_tx_gas_limit` | boolean | `false` | Enables the Osaka transaction gas-limit check from EIP-7825. |
+| `live_logs` | boolean | `false` | Displays `console.log` output while tests or scripts execute. |
+| `allow_internal_expect_revert` | boolean | `false` | Allows `expectRevert` to match internal calls. |
+| `always_use_create_2_factory` | boolean | `false` | Uses the CREATE2 factory in tests and non-broadcast scripts. |
+| `eip1559_fee_estimate` | string | `market` | Selects `low`, `market`, or `aggressive` script fee estimation. |
+| `assertions_revert` | boolean | `true` | Makes native cheatcode assertions revert. |
+| `legacy_assertions` | boolean | `false` | Uses the legacy `failed()` assertion check. |
+| `unchecked_cheatcode_artifacts` | boolean | `false` | Disables artifact freshness checks for `vm.getCode` and `vm.getDeployedCode`. |
+| `create2_library_salt` | bytes32 | zero | Sets the CREATE2 salt used for library deployment. |
+| `create2_deployer` | address | `0x4e59…956c` | Sets the CREATE2 deployer address. |
+| `transaction_timeout` | integer | `120` | Sets the transaction timeout in seconds. |
+| `script_execution_protection` | boolean | `true` | Prevents unsafe script execution. |
+
+### File-system permissions
+
+`fs_permissions` controls which paths file cheatcodes may access. Each entry has
+an `access` value (`read`, `write`, `read-write`, or `none`) and a path:
+
+```toml
+fs_permissions = [
+  { access = "read", path = "out" },
+  { access = "read-write", path = "./tmp" },
+]
+```
+
+### RPC fields
+
+| Field | Type | Default | Description |
+| --- | --- | --- | --- |
+| `eth_rpc_accept_invalid_certs` | boolean | `false` | Accepts invalid TLS certificates. |
+| `eth_rpc_no_proxy` | boolean | `false` | Disables system and environment proxy detection. |
+| `eth_rpc_jwt` | string or none | none | Supplies a JWT secret for RPC authentication. |
+| `eth_rpc_timeout` | integer or none | none | Sets the RPC timeout in seconds. |
+| `eth_rpc_headers` | array of strings or none | none | Adds `name:value` headers to RPC requests. |
+| `eth_rpc_curl` | boolean | `false` | Prints an equivalent cURL command instead of sending the request. |
+| `no_rpc_rate_limit` | boolean | `false` | Disables provider rate limiting. |
+
+Named endpoints under `[rpc_endpoints]` accept either a URL string or an object.
+Objects support `endpoint` (or an `endpoints` array), `auth`, `retries`,
+`retry_backoff`, and `compute_units_per_second`:
+
+```toml
+[rpc_endpoints]
+mainnet = { endpoints = ["${MAINNET_RPC_URL}", "${FALLBACK_RPC_URL}"], retries = 5, retry_backoff = 1000, compute_units_per_second = 330 }
+```
+
+`[rpc_storage_caching]` supports `chains` (`"all"`, `"none"`, or an array of
+chains) and `endpoints` (`"all"`, `"remote"`, or a regular expression).

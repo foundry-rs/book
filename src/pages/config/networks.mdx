@@ -1,0 +1,105 @@
+---
+description: Select Ethereum or a custom EVM network family for Foundry tests, scripts, forks, and local nodes.
+---
+
+## Network configuration
+
+Foundry can execute against several EVM network families from the same toolchain. Network selection
+controls execution rules such as transaction types, hardforks, precompiles, and trace decoding. It
+is separate from choosing an RPC URL or setting the numeric chain ID.
+
+### Select a network
+
+Set `network` in your project when local tests and scripts should use a non-default execution
+family:
+
+```toml [foundry.toml]
+[profile.default]
+network = "tempo"
+```
+
+Use `--network` to select a family for one command:
+
+```bash
+$ forge test --network tempo
+$ forge script script/Deploy.s.sol --network optimism
+$ anvil --network monad
+```
+
+The available values depend on how the binary was built. `ethereum` and `tempo` are always
+available. `optimism` and `monad` require their matching Cargo features; official Foundry release
+builds currently include both. Run the command with `--help` to see the values supported by your
+installed binary.
+
+:::note
+Compiling support for a network makes it available to the binary; it does not activate that network.
+Use `network`, `--network`, a namespaced hardfork, or fork inference to select it at runtime.
+:::
+
+### Fork inference
+
+When you use a live fork, Foundry normally infers the execution family from a known chain ID or
+from metadata exposed by an Anvil endpoint:
+
+```bash
+$ forge test --fork-url $RPC_URL
+$ anvil --fork-url $RPC_URL
+```
+
+You do not need `--network` for a recognized network family. Select the network explicitly when the
+endpoint uses an unknown chain ID, does not expose enough metadata, or when you intentionally need
+a specific execution family. Compatibility profiles exposed through separate switches, such as
+Celo, still require their switch. The selected execution profile must be compatible with the fork
+source.
+
+Optional metadata methods are capability probes. A standard RPC endpoint can reject an Anvil-only
+method and still be a valid fork source; Foundry falls back to standard chain and block methods
+until an endpoint identifies itself as Anvil.
+
+See [Anvil forking](/anvil/forking) for block pinning, caching, headers, and fork configuration.
+
+### Select a hardfork
+
+Use `hardfork` when you need deterministic semantics for a particular activation. A namespaced
+hardfork also selects its network family:
+
+```toml [foundry.toml]
+[profile.default]
+hardfork = "optimism:holocene"
+```
+
+```toml [foundry.toml]
+[profile.default]
+hardfork = "tempo:T6"
+```
+
+For normal current behavior, prefer `network` or live fork inference. Pin a hardfork for historical
+testing, compatibility checks, or regression coverage.
+
+### Celo features
+
+Celo compatibility remains a separate switch rather than a `network` family:
+
+```toml [foundry.toml]
+[profile.default]
+celo = true
+```
+
+```bash
+$ anvil --fork-url https://forno.celo.org --celo
+```
+
+### Legacy settings
+
+Foundry still accepts `optimism = true`, `tempo = true`, and `monad = true` for compatibility when
+the corresponding family is available. New configuration should use the canonical `network` field.
+
+Inspect the resolved project configuration with:
+
+```bash
+$ forge config --json
+```
+
+See the [`network`](/config/reference/testing#network) and
+[`hardfork`](/config/reference/testing#hardfork) reference entries for environment variables and
+field details. For Tempo-specific workflows, see [Foundry on Tempo](/guides/tempo).

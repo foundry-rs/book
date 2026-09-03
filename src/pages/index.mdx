@@ -1,0 +1,64 @@
+---
+title: Foundry - Ethereum Development Framework
+content:
+  width: 100%
+layout: landing
+logo: false
+outline: false
+showAskAi: false
+---
+
+import { HomePage, Cards, Card } from 'vocs'
+import { SponsorCards } from './components/Sponsors'
+
+<HomePage.Root>
+  <img src="/foundry-banner.png" alt="Foundry" className="max-w-[600px] w-full mx-auto rounded-xl" />
+  <h1 className="sr-only">Foundry</h1>
+  <HomePage.Tagline>Blazing fast smart contract development toolkit</HomePage.Tagline>
+
+<div className="max-md:-mx-[var(--vocs-content_horizontalPadding,24px)] max-md:[&_[data-v-code-container]]:!rounded-none max-md:[&_pre]:!whitespace-pre-wrap max-md:[&_pre]:!overflow-x-hidden max-md:[&_pre]:!break-all max-md:[&_code]:!block max-md:[&_code]:!whitespace-pre-wrap max-md:[&_code]:!break-all max-md:[&_.line]:!whitespace-pre-wrap max-md:[&_.line]:!break-all">
+```bash
+curl -L https://getfoundry.sh/install | bash && foundryup
+```
+</div>
+
+  <HomePage.Description>
+    Foundry is a fast, portable, and modular toolkit for Ethereum application development written in Rust. Build, test, debug, deploy, and verify smart contracts with ease.
+  </HomePage.Description>
+  <HomePage.Buttons>
+    <HomePage.Button href="/introduction/getting-started" variant="accent">Get Started</HomePage.Button>
+    <HomePage.Button href="/guides">Guides</HomePage.Button>
+    <HomePage.Button href="https://github.com/foundry-rs/foundry">GitHub</HomePage.Button>
+  </HomePage.Buttons>
+</HomePage.Root>
+
+<Cards>
+  <Card
+    title="Forge"
+    description="Build, test, debug, deploy, and verify smart contracts."
+    to="/forge"
+    icon="lucide:hammer"
+  />
+  <Card
+    title="Anvil"
+    description="Local Ethereum node with forking capabilities."
+    to="/anvil"
+    icon="lucide:server"
+  />
+  <Card
+    title="Cast"
+    description="Swiss Army knife for chain interaction from the CLI."
+    to="/cast"
+    icon="lucide:terminal"
+  />
+  <Card
+    title="Chisel"
+    description="Solidity REPL for rapid prototyping and debugging."
+    to="/chisel"
+    icon="lucide:code"
+  />
+</Cards>
+
+## Supporters
+
+<SponsorCards />

@@ -1,0 +1,42 @@
+---
+description: Sets block.prevrandao for post-merge EVM versions in Forge tests
+---
+
+## `prevrandao`
+
+### Signature
+
+```solidity
+function prevrandao(bytes32 prevrandao) external;
+```
+
+### Description
+
+Sets `block.prevrandao` to the specified value.
+
+### Parameters
+
+| Parameter    | Type      | Description                           |
+|--------------|-----------|---------------------------------------|
+| `prevrandao` | `bytes32` | The new prevrandao value to set       |
+
+### Examples
+
+```solidity [test/Prevrandao.t.sol]
+function testPrevrandao() public {
+    vm.prevrandao(bytes32(uint256(42)));
+    assertEq(block.prevrandao, 42);
+}
+```
+
+### Gotchas
+
+:::warning
+This cheatcode only works with post-merge EVM versions (Paris and later). If used with pre-Paris versions, it will revert. Use [`vm.difficulty`](/reference/cheatcodes/difficulty) for pre-merge EVM versions.
+:::
+
+### Related Cheatcodes
+
+- [`difficulty`](/reference/cheatcodes/difficulty) - Sets `block.difficulty` (for pre-merge EVM versions)
+- [`roll`](/reference/cheatcodes/roll) - Sets `block.number`
+- [`warp`](/reference/cheatcodes/warp) - Sets `block.timestamp`

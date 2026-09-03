@@ -1,0 +1,45 @@
+---
+description: Gets the current block.number, avoiding IR compilation optimization issues
+---
+
+## `getBlockNumber`
+
+### Signature
+
+```solidity
+function getBlockNumber() external view returns (uint256 height);
+```
+
+### Description
+
+Gets the current `block.number`.
+
+This cheatcode is particularly useful when using `--via-ir` compilation with `vm.roll`. The Solidity compiler assumes `block.number` is constant during a transaction, so with IR optimization enabled, multiple calls to `block.number` may return the same cached value instead of the updated value. `vm.getBlockNumber()` avoids this optimization and always returns the current `block.number`.
+
+### Returns
+
+| Parameter | Type      | Description                    |
+|-----------|-----------|-------------------------------|
+| `height`  | `uint256` | The current block number      |
+
+### Examples
+
+```solidity [test/GetBlockNumber.t.sol]
+function testGetBlockNumber() public {
+    uint256 height = vm.getBlockNumber();
+    assertEq(height, block.number);
+    vm.roll(10);
+    assertEq(vm.getBlockNumber(), 10);
+}
+```
+
+### Gotchas
+
+:::note
+You only need to use this cheatcode when compiling with `--via-ir`. Without IR compilation, accessing `block.number` directly works as expected.
+:::
+
+### Related Cheatcodes
+
+- [`roll`](/reference/cheatcodes/roll) - Sets `block.number`
+- [`getBlockTimestamp`](/reference/cheatcodes/get-block-timestamp) - Gets the current block timestamp (avoids IR optimization issues)

@@ -1,0 +1,59 @@
+---
+description: Executes a signed raw transaction with isolated transaction semantics
+---
+
+## `executeTransaction`
+
+### Signature
+
+```solidity
+function executeTransaction(bytes calldata rawTx) external returns (bytes memory output);
+```
+
+### Description
+
+Decodes and executes a signed raw transaction with full transaction semantics, similar to running a test with `forge test --isolate`. The input can be a legacy RLP transaction or an [EIP-2718](https://eips.ethereum.org/EIPS/eip-2718) typed transaction containing its type byte and encoded payload.
+
+Foundry recovers the sender from the signature, checks the account nonce, executes the transaction in a fresh EVM context, and merges the resulting state back into the test. Calls after `executeTransaction` can immediately use those state changes.
+
+During the nested execution, Foundry sets the base fee and effective gas price to zero. Gas limits and EVM rules are still enforced, but the sender is not charged a gas fee.
+
+The returned bytes are the transaction output. Contract calls return their returndata, contract creation returns the created contract's bytecode output, and a plain value transfer returns empty bytes.
+
+This cheatcode is available in tests, but it is not allowed in `forge script`.
+
+### Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `rawTx` | `bytes` | Signed legacy RLP or EIP-2718 transaction envelope |
+
+### Returns
+
+| Type | Description |
+|------|-------------|
+| `bytes` | Output produced by a successful transaction |
+
+### Example
+
+```solidity [test/ExecuteTransaction.t.sol]
+// [!include ~/snippets/projects/cheatcodes/test/ExecuteTransaction.t.sol:execute]
+```
+
+The encoded transaction sends 17 wei from `sender` to `recipient`. Because its nonce is zero and its chain ID is one, the test configures matching state before execution.
+
+### Gotchas
+
+- The transaction must be signed. Foundry recovers and uses its signer instead of `msg.sender` from the surrounding test.
+- The signer's current nonce and the configured chain ID must match the transaction.
+- Fund the signer for the transaction value. You do not need to fund the gas fee because execution uses a zero gas price.
+- Invalid encoding or signatures, transaction reverts, and EVM halts cause the cheatcode call to revert.
+- This cheatcode commits transaction state to the test, unlike an RPC simulation such as `eth_call`.
+- `executeTransaction` cannot be used from `forge script`.
+
+### Related Cheatcodes
+
+- [`transact`](/reference/cheatcodes/transact) - Replay a transaction from the active fork by hash
+- [`prank`](/reference/cheatcodes/prank) - Set the caller for the next test call
+- [`chainId`](/reference/cheatcodes/chain-id) - Set the chain ID used by the test
+- [`deal`](/reference/cheatcodes/deal) - Set an account's balance

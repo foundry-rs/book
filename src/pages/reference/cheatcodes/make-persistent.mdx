@@ -1,0 +1,62 @@
+---
+description: Marks accounts as persistent across fork switches
+---
+
+## `makePersistent`
+
+### Signature
+
+```solidity
+function makePersistent(address account) external;
+function makePersistent(address account0, address account1) external;
+function makePersistent(address account0, address account1, address account2) external;
+function makePersistent(address[] calldata accounts) external;
+```
+
+### Description
+
+Each fork has its own independent storage, which is replaced when another fork is selected. By default, only the test contract and `msg.sender` are persistent across forks.
+
+Use `makePersistent` to mark additional accounts as persistent, meaning their state is available regardless of which fork is active.
+
+### Parameters
+
+| Parameter  | Type        | Description                           |
+|------------|-------------|---------------------------------------|
+| `account`  | `address`   | The account to mark as persistent     |
+| `accounts` | `address[]` | Array of accounts to mark as persistent |
+
+### Examples
+
+```solidity [test/MakePersistent.t.sol]
+function testMakePersistent() public {
+    vm.selectFork(mainnetFork);
+    
+    // Deploy a contract on mainnet fork
+    SimpleStorage simple = new SimpleStorage();
+    simple.set(99);
+    
+    // Not persistent by default
+    assertFalse(vm.isPersistent(address(simple)));
+    
+    // Mark as persistent
+    vm.makePersistent(address(simple));
+    assertTrue(vm.isPersistent(address(simple)));
+    
+    // Switch forks - contract state is preserved
+    vm.selectFork(optimismFork);
+    assertEq(simple.value(), 99);
+}
+```
+
+### Gotchas
+
+:::note
+By default, only the test contract (`address(this)`) and the caller (`msg.sender`) are persistent across forks.
+:::
+
+### Related Cheatcodes
+
+- [`isPersistent`](/reference/cheatcodes/is-persistent) - Check if an account is persistent
+- [`revokePersistent`](/reference/cheatcodes/revoke-persistent) - Remove persistent status
+- [`selectFork`](/reference/cheatcodes/select-fork) - Switch between forks

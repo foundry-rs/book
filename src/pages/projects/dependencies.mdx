@@ -1,0 +1,252 @@
+---
+description: Manage dependencies using git submodules and remappings.
+---
+
+## Dependencies
+
+Foundry uses git submodules to manage dependencies. Libraries are stored in `lib/` and imported via remappings.
+
+### Installing dependencies
+
+:::code-group
+
+```bash [Basic]
+$ forge install OpenZeppelin/openzeppelin-contracts
+```
+
+```bash [Specific version]
+$ forge install OpenZeppelin/openzeppelin-contracts@v5.0.0
+```
+
+```bash [With commit]
+$ forge install OpenZeppelin/openzeppelin-contracts --commit
+```
+
+:::
+
+The library is cloned to `lib/openzeppelin-contracts/`.
+
+### Locking dependencies
+
+For dependencies installed as git submodules, Foundry maintains a `foundry.lock` file in the project root. The lock file complements `.gitmodules`: `.gitmodules` records where each submodule comes from, while `foundry.lock` records whether you selected a branch, tag, or revision and the resolved commit.
+
+For example, a dependency installed from a tag produces an entry like this:
+
+```json
+{
+  "lib/openzeppelin-contracts": {
+    "tag": {
+      "name": "v5.0.0",
+      "rev": "b7954c3e9ce1d487b49489f5800f52f4b77b7351"
+    }
+  }
+}
+```
+
+Commit `foundry.lock` so other contributors and CI use the same dependency state. Let Forge update the file instead of editing it manually:
+
+- `forge install` creates or synchronizes the lock file. With no dependency arguments, it also installs existing submodules from the recorded state.
+- `forge update` updates branch-based dependencies to the latest commit on their recorded branch. Dependencies installed from a tag or revision stay pinned unless you explicitly select a different ref.
+- `forge remove` removes the dependency's lock-file entry.
+- `forge build` warns if the lock file is malformed, a dependency is missing, or its checked-out revision does not match the lock file.
+
+Dependencies installed with `forge install --no-git` are regular directories rather than git submodules, so Foundry does not add them to `foundry.lock`.
+
+### Using dependencies
+
+Import installed libraries in your contracts:
+
+```solidity
+import {ERC20} from "openzeppelin-contracts/contracts/token/ERC20/ERC20.sol";
+```
+
+Foundry automatically creates remappings for libraries in `lib/`. The remapping `openzeppelin-contracts/` points to `lib/openzeppelin-contracts/`.
+
+### Remappings
+
+Customize import paths with remappings in `foundry.toml`:
+
+```toml
+[profile.default]
+remappings = [
+    "@openzeppelin/=lib/openzeppelin-contracts/",
+]
+```
+
+Now you can import with the prefix:
+
+```solidity
+import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+```
+
+Generate remappings automatically:
+
+:::terminal
+```bash
+// [!include ~/snippets/output/hello_foundry/forge-remappings:command]
+```
+
+```ansi
+// [!include ~/snippets/output/hello_foundry/forge-remappings:output]
+```
+:::
+
+Save to a file for IDE support:
+
+```bash
+$ forge remappings > remappings.txt
+```
+
+#### Nested dependency remappings
+
+When a dependency remapping points below an auto-detected package root, Foundry preserves both by
+scoping the dependency remapping to the directory that declares it. For example, `forge remappings`
+can output:
+
+```txt
+lib/outer/:inner/=lib/outer/lib/inner/contracts/
+inner/=lib/outer/lib/inner/
+```
+
+The contextual form `<context>:<name>=<target>` applies to imports made by source units whose names
+begin with `<context>`. Here, the trailing slash in `lib/outer/` creates a directory boundary, so
+sources inside `lib/outer/` use the dependency's `contracts/` directory while root sources and
+sibling dependencies use the auto-detected package-root mapping.
+
+Foundry preserves explicit root-project and CLI remappings when constructing generated dependency
+contexts. An equal or broader global alias suppresses the generated context. A narrower global
+alias is overlaid into that context, so it overrides only its matching import subtree while the
+dependency mapping handles the remaining imports. Explicit contextual remappings are unchanged.
+
+### Updating dependencies
+
+Use `forge install` to add a dependency or initialize the dependencies already recorded in a checkout. Running it without arguments reconciles existing git submodules and `foundry.lock`; it does not intentionally fetch newer dependency revisions.
+
+Use `forge update` when you want to move a dependency to a different revision. With no arguments, it fetches the latest commit for every branch-based dependency:
+
+```bash
+$ forge update
+```
+
+Dependencies installed from a tag or commit revision remain pinned during a plain `forge update`. To upgrade one of them, provide the new ref explicitly. For example, to move OpenZeppelin Contracts from `v5.0.0` to `v5.1.0`:
+
+```bash
+$ forge update openzeppelin/openzeppelin-contracts@tag=v5.1.0
+```
+
+You can also select a branch or an exact commit with `@branch=<NAME>` or `@rev=<COMMIT>`. Forge updates the dependency's git submodule checkout and its `foundry.lock` entry together.
+
+Review and commit both the changed dependency path and `foundry.lock` after an update.
+
+See the [`forge install`](/reference/forge/install) and [`forge update`](/reference/forge/update) references for all options.
+
+### Removing dependencies
+
+```bash
+$ forge remove openzeppelin-contracts
+```
+
+This removes the submodule from `lib/` and `.gitmodules`.
+
+### Resolving conflicts
+
+When two dependencies require different versions of the same library, you'll encounter conflicts.
+
+#### Diagnosing conflicts
+
+Check dependency trees with:
+
+```bash
+// [!include ~/snippets/output/forge_tree/forge-tree:command]
+```
+
+<details>
+<summary>Example output</summary>
+
+```ansi
+// [!include ~/snippets/output/forge_tree/forge-tree:output]
+```
+
+</details>
+
+#### Resolution strategies
+
+**1. Use a compatible version**
+
+Find a version that works for both dependencies:
+
+```bash
+$ cd lib/conflicting-library
+$ git checkout v2.0.0
+$ cd ../..
+$ git add lib/conflicting-library
+$ git commit -m "Pin conflicting-library to v2.0.0"
+```
+
+**2. Create separate remappings**
+
+If dependencies need different versions, install both under different names:
+
+```bash
+$ forge install library-v1=org/library@v1.0.0
+$ forge install library-v2=org/library@v2.0.0
+```
+
+Add remappings:
+
+```toml
+[profile.default]
+remappings = [
+    "library-v1/=lib/library-v1/",
+    "library-v2/=lib/library-v2/",
+]
+```
+
+**3. Patch the dependency**
+
+Fork and modify the dependency to use a compatible version:
+
+```bash
+# In lib/problematic-dependency
+$ git remote add fork https://github.com/you/fork
+$ git fetch fork
+$ git checkout fork/compatible-branch
+```
+
+### Using npm packages
+
+Foundry can use packages from `node_modules`:
+
+```toml
+[profile.default]
+libs = ["lib", "node_modules"]
+```
+
+Install with your preferred package manager:
+
+```bash
+$ npm install @openzeppelin/contracts
+```
+
+Import directly:
+
+```solidity
+import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+```
+
+:::warning
+npm packages may not be designed for Foundry. Prefer git submodules for Solidity libraries.
+:::
+
+### Hardhat compatibility
+
+For projects migrating from Hardhat or using Hardhat-style imports:
+
+```toml
+[profile.default]
+libs = ["lib", "node_modules"]
+remappings = [
+    "@openzeppelin/=node_modules/@openzeppelin/",
+    "hardhat/=node_modules/hardhat/",
+]
+```

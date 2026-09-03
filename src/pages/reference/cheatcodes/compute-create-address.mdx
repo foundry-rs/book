@@ -1,0 +1,48 @@
+---
+description: Computes the address where a contract will be deployed via CREATE for a deployer and nonce
+---
+
+## `computeCreateAddress`
+
+### Signature
+
+```solidity
+function computeCreateAddress(address deployer, uint256 nonce) external pure returns (address);
+```
+
+### Description
+
+Computes the address a contract will be deployed at when deployed with the `CREATE` opcode by `deployer` with the given account `nonce`.
+
+This is the standard `keccak256(rlp([deployer, nonce]))` address derivation used for regular contract creations and `new` expressions.
+
+### Parameters
+
+| Parameter  | Type      | Description                            |
+|------------|-----------|----------------------------------------|
+| `deployer` | `address` | The address performing the deployment  |
+| `nonce`    | `uint256` | The account nonce used for the deployment |
+
+### Returns
+
+| Type      | Description                                 |
+|-----------|---------------------------------------------|
+| `address` | The address the contract will be deployed at |
+
+### Examples
+
+```solidity [test/ComputeCreateAddress.t.sol]
+function testComputeCreateAddress() public {
+    address expected = vm.computeCreateAddress(address(this), vm.getNonce(address(this)));
+
+    Counter counter = new Counter();
+
+    assertEq(address(counter), expected);
+}
+```
+
+### Related Cheatcodes
+
+- [`computeCreate2Address`](/reference/cheatcodes/compute-create2-address) - Compute a CREATE2 deployment address
+- [`getNonce`](/reference/cheatcodes/get-nonce) - Get the nonce of an account
+- [`setNonce`](/reference/cheatcodes/set-nonce) - Set the nonce of an account

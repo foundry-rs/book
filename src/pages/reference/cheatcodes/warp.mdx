@@ -1,0 +1,46 @@
+---
+description: Sets block.timestamp to a specified value in Forge tests
+---
+
+## `warp`
+
+### Signature
+
+```solidity
+function warp(uint256 timestamp) external;
+```
+
+### Description
+
+Sets `block.timestamp` to the specified value.
+
+### Parameters
+
+| Parameter   | Type      | Description                          |
+|-------------|-----------|--------------------------------------|
+| `timestamp` | `uint256` | The new block timestamp to set       |
+
+### Examples
+
+```solidity [test/Warp.t.sol]
+function testWarp() public {
+    vm.warp(1641070800);
+    assertEq(block.timestamp, 1641070800);
+}
+```
+
+### Gotchas
+
+:::warning
+When using `--via-ir` compilation, direct access to `block.timestamp` may be optimized to a constant value. Use [`vm.getBlockTimestamp()`](/reference/cheatcodes/get-block-timestamp) instead to ensure you get the current value after warping.
+:::
+
+### Related Cheatcodes
+
+- [`getBlockTimestamp`](/reference/cheatcodes/get-block-timestamp) - Gets the current block timestamp (avoids IR optimization issues)
+- [`roll`](/reference/cheatcodes/roll) - Sets `block.number`
+
+### See Also
+
+- [`skip`](/reference/forge-std/skip) - Skip forward in time
+- [`rewind`](/reference/forge-std/rewind) - Rewind time

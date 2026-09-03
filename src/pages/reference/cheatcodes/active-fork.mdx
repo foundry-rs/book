@@ -1,0 +1,42 @@
+---
+description: Returns the identifier of the currently active fork
+---
+
+## `activeFork`
+
+### Signature
+
+```solidity
+function activeFork() external view returns (uint256 forkId);
+```
+
+### Description
+
+Returns the identifier for the currently active fork. Reverts if no fork is currently active.
+
+### Returns
+
+| Parameter | Type      | Description                           |
+|-----------|-----------|---------------------------------------|
+| `forkId`  | `uint256` | Identifier of the active fork         |
+
+### Examples
+
+```solidity [test/ActiveFork.t.sol]
+function testActiveFork() public {
+    uint256 mainnetFork = vm.createFork(MAINNET_RPC_URL);
+    uint256 optimismFork = vm.createFork(OPTIMISM_RPC_URL);
+
+    vm.selectFork(mainnetFork);
+    assertEq(vm.activeFork(), mainnetFork);
+
+    vm.selectFork(optimismFork);
+    assertEq(vm.activeFork(), optimismFork);
+}
+```
+
+### Related Cheatcodes
+
+- [`createFork`](/reference/cheatcodes/create-fork) - Create a new fork
+- [`selectFork`](/reference/cheatcodes/select-fork) - Select a fork
+- [`createSelectFork`](/reference/cheatcodes/create-select-fork) - Create and select a fork

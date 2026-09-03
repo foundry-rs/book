@@ -1,0 +1,58 @@
+---
+description: Summary of breaking changes and migration steps for Foundry v1.0.
+---
+
+## Foundry v1.0 migration guide
+
+Foundry v1.0 introduced breaking changes that may require updates in existing projects. Use this checklist to migrate safely.
+
+### Compiler defaults
+
+The optimizer is disabled by default in v1.0. Explicitly enable it in `foundry.toml`:
+
+```toml [foundry.toml]
+[profile.default]
+optimizer = true
+optimizer_runs = 200
+```
+
+### `vm.expectRevert` behavior
+
+`vm.expectRevert` no longer applies to internal calls by default. If you were testing internal functions directly, move the call behind a public wrapper or enable revert checking on internal calls.
+
+### `testFail` tests removed
+
+`testFail`-prefixed tests are no longer supported. Replace them with explicit revert tests:
+
+```solidity
+function test_RevertWhen_Unauthorized() public {
+    vm.expectRevert("Not authorized");
+    target.doSomething();
+}
+```
+
+### Legacy `console.sol` signatures removed
+
+Upgrade to the latest `forge-std` and use the current `console.sol` signatures. Old signatures fail to compile.
+
+### Conflicting remappings now error
+
+Foundry fails when remappings collide between root and dependencies. Make the root remapping explicit in `foundry.toml` and avoid duplicating it in dependencies.
+
+### Coverage artifacts no longer persist
+
+`forge coverage` does not write artifacts anymore. If you depended on those artifacts, run `forge build` after coverage.
+
+### Other changes
+
+- `FORGE_SNAPSHOT_CHECK` requires a boolean value
+- `forge inspect --pretty` removed; use `forge inspect`
+- `forge bind --ethers` removed; use `forge bind`
+- `forge debug` removed; use `forge test --debug` or `forge script --debug`
+- `cast etherscan-source` replaced by `cast source`
+- `foundryup` installs stable by default; use `foundryup -i nightly` for nightly
+
+### Related references
+
+- [Solidity compiler configuration](/config/reference/solidity-compiler)
+- [`vm.expectRevert` reference](/reference/cheatcodes/expect-revert)

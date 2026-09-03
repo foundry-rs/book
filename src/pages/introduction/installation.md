@@ -1,0 +1,176 @@
+---
+description: Install Foundry using foundryup, precompiled binaries, or build from source.
+---
+
+## Installation
+
+Foundry is installed using **foundryup**, the official installer and version manager.
+
+::::steps
+
+### Install foundryup
+
+```bash
+$ curl -L https://getfoundry.sh/install | bash
+```
+
+### Restart your terminal
+
+Or run `source ~/.bashrc` / `source ~/.zshrc`.
+
+### Install Foundry
+
+```bash
+$ foundryup
+```
+
+::::
+
+This installs the latest stable versions of `forge`, `cast`, `anvil`, and `chisel`.
+
+:::tip
+By default, if neither `FOUNDRY_DIR` nor `XDG_CONFIG_HOME` is set, Foundry is installed to `~/.foundry`. If `XDG_CONFIG_HOME` is set, it defaults to `$XDG_CONFIG_HOME/.foundry`. You can override both defaults by setting the `FOUNDRY_DIR` environment variable before running `foundryup`. For details on the directory layout and environment variables, see the [Config Reference Overview](/config/reference/overview#directory-layout).
+:::
+
+:::warning[Windows]
+Foundryup requires [Git Bash](https://gitforwindows.org/) or [WSL](https://learn.microsoft.com/en-us/windows/wsl/install). PowerShell and Command Prompt are not supported.
+:::
+
+:::note
+If installation fails, see [Troubleshooting](/help/troubleshooting) for common fixes.
+:::
+
+## Updating
+
+Run `foundryup` anytime to update to the latest stable release:
+
+```bash
+$ foundryup
+```
+
+## Installing specific versions
+
+```bash [Install the nightly build]
+$ foundryup --install nightly
+```
+
+```bash [Install a specific version]
+$ foundryup --install 1.0.0
+```
+
+```bash [Install a specific nightly build]
+$ foundryup --install nightly-abc1234
+```
+
+```bash [Install from a branch]
+$ foundryup --branch master
+```
+
+## Tempo support
+
+Tempo support ships in the main Foundry release as of v1.7.0. Install the normal toolchain:
+
+```bash
+$ foundryup
+```
+
+The old `foundryup -n tempo` / `foundryup --network tempo` flow is deprecated and ignored.
+
+See the [Tempo guide](/guides/tempo) for project setup and [MPP-backed RPC endpoints](/guides/mpp) for paid RPC configuration.
+
+## Binary verification
+
+Foundry binaries are attested using [GitHub artifact attestations](https://docs.github.com/en/actions/security-for-github-actions/using-artifact-attestations/using-artifact-attestations-to-establish-provenance-for-builds). When installing via `foundryup`, binary hashes are automatically verified against the GitHub attestation.
+
+To manually verify an installed binary:
+
+```bash
+$ gh attestation verify --owner foundry-rs $(which forge)
+```
+
+Use `foundryup --force` to skip verification and force a fresh install.
+
+## Alternative installation methods
+
+:::note
+Foundry no longer publishes npm packages for `forge`, `cast`, `anvil`, or `chisel`. Use `foundryup`, GitHub releases, Docker, or build from source instead.
+:::
+
+### Precompiled binaries
+
+Download binaries directly from the [GitHub releases page](https://github.com/foundry-rs/foundry/releases). Extract and add them to your `PATH`.
+
+### Building from source
+
+Requires [Rust](https://rustup.rs/) (latest stable). On Windows, also requires [Visual Studio](https://visualstudio.microsoft.com/downloads/) with the "Desktop Development With C++" workload.
+
+```bash [Update Rust]
+$ rustup update stable
+```
+
+```bash [Install from GitHub]
+$ cargo install --git https://github.com/foundry-rs/foundry --profile release --locked forge cast chisel anvil solar
+```
+
+Or build from a local clone:
+
+```bash
+$ git clone https://github.com/foundry-rs/foundry.git
+$ cd foundry
+$ cargo install --path ./crates/forge --profile release --locked
+$ cargo install --path ./crates/cast --profile release --locked
+$ cargo install --path ./crates/anvil --profile release --locked
+$ cargo install --path ./crates/chisel --profile release --locked
+$ cargo install --path ./crates/solar --profile release --locked
+```
+
+The `solar` package in the Foundry workspace builds the Solar compiler distributed with Foundry. The compiler's source is maintained in the separate [Solar repository](https://github.com/paradigmxyz/solar).
+
+You can also use foundryup to build from source:
+
+```bash
+$ foundryup --branch master
+$ foundryup --path /path/to/foundry
+```
+
+### Docker
+
+```bash
+$ docker pull ghcr.io/foundry-rs/foundry:latest
+```
+
+Or build locally from the [repository](https://github.com/foundry-rs/foundry):
+
+```bash
+$ docker build -t foundry .
+```
+
+:::note
+Some systems (including Apple Silicon) may have issues building the Docker image locally.
+:::
+
+### CI/CD
+
+See the [CI integration guide](/config/ci) for GitHub Actions and other CI platforms.
+
+## Uninstalling
+
+Foundry stores all files in `~/.foundry`. To uninstall:
+
+::::steps
+
+### Back up keystores
+
+The `.foundry` directory may contain keystores with private keys.
+
+### Remove the directory
+
+```bash
+$ rm -rf ~/.foundry
+```
+
+### Remove PATH entry
+
+Edit your shell config (`.bashrc`, `.zshrc`, etc.) and remove the Foundry PATH line.
+
+::::

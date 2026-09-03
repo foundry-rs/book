@@ -208,7 +208,24 @@ fn parse_sub_commands(s: &str) -> Vec<String> {
 
 /// Writes the markdown for a command to out_dir.
 fn cmd_markdown(out_dir: &Path, cmd: &Cmd, stdout: &str) -> io::Result<()> {
-    let out = format!("## {}\n\n{}", cmd, help_markdown(cmd, stdout));
+    let (description, _) = parse_description(stdout);
+    let description = normalize_description(cmd, description);
+    let provenance = format!(
+        "_Generated from `{cmd} --help`; see [CLI reference versions](/reference/versions). Regenerate this page instead of editing it directly._"
+    );
+    let generation_note = if cmd.subcommands.is_empty() {
+        "\n\n:::note[Generated CLI reference]\nThis reference is generated from the installed command's `--help` output. See [CLI reference versions](/reference/versions) for the exact binaries used.\n:::"
+    } else {
+        ""
+    };
+    let out = format!(
+        "---\ndescription: {}\n---\n\n{}\n\n## {}{}\n\n{}",
+        yaml_double_quote(&description),
+        provenance,
+        cmd,
+        generation_note,
+        help_markdown(cmd, stdout)
+    );
 
     let out_path = out_dir.join(cmd.md_path());
     fs::create_dir_all(out_path.parent().unwrap())?;
@@ -217,12 +234,34 @@ fn cmd_markdown(out_dir: &Path, cmd: &Cmd, stdout: &str) -> io::Result<()> {
     Ok(())
 }
 
+/// Returns a single-line description suitable for page metadata.
+fn normalize_description(cmd: &Cmd<'_>, description: &str) -> String {
+    let description = description.split_whitespace().collect::<Vec<_>>().join(" ");
+    if description.is_empty() {
+        format!("Command reference for `{cmd}`.")
+    } else {
+        description
+    }
+}
+
+/// Quotes a string as a YAML double-quoted scalar.
+fn yaml_double_quote(value: &str) -> String {
+    format!(
+        "\"{}\"",
+        value
+            .replace('\\', "\\\\")
+            .replace('"', "\\\"")
+            .replace('\n', "\\n")
+            .replace('\r', "\\r")
+    )
+}
+
 /// Returns the markdown for a command's help output.
 fn help_markdown(cmd: &Cmd, stdout: &str) -> String {
     let (description, s) = parse_description(stdout);
     let processed_description = preprocess_help(description);
     let help = preprocess_help(s.trim());
-    format!("{processed_description}\n\n```bash\n$ {cmd} --help\n```\n\n```txt\n{help}\n```")
+    format!("{processed_description}\n\n:::terminal\n\n```bash\n$ {cmd} --help\n```\n\n```txt\n{help}\n```\n\n:::")
 }
 
 /// Splits the help output into a description and the rest.
@@ -383,7 +422,7 @@ fn categorize_command(cmd_name: &str, tool_name: &str) -> &'static str {
             "lookup-address" | "resolve-name" | "namehash" => "ENS Commands",
             "etherscan-source" | "source" => "Etherscan Commands",
             "abi-encode" | "4byte" | "4byte-calldata" | "4byte-event" | "calldata" | "decode-abi" | "decode-calldata" | "pretty-calldata" | "selectors" | "upload-signature" => "ABI Commands",
-            "format-bytes32-string" | "from-bin" | "from-fixed-point" | "from-rlp" | "from-utf8" | "from-wei" | "parse-bytes32-address" | "parse-bytes32-string" | "to-ascii" | "to-base" | "to-bytes32" | "to-dec" | "to-fixed-point" | "to-hex" | "to-hexdata" | "to-int256" | "to-rlp" | "to-uint256" | "to-unit" | "to-wei" | "shl" | "shr" => "Conversion Commands",
+            "format-bytes32-string" | "from-bin" | "from-fixed-point" | "from-rlp" | "from-utf8" | "from-wei" | "parse-bytes32-address" | "parse-bytes32-string" | "to-ascii" | "to-base" | "to-bytes-memory" | "to-bytes32" | "to-dec" | "to-fixed-point" | "to-hex" | "to-hexdata" | "to-int256" | "to-rlp" | "to-uint256" | "to-unit" | "to-wei" | "shl" | "shr" => "Conversion Commands",
             "address-zero" | "sig" | "sig-event" | "keccak" | "compute-address" | "create2" | "interface" | "index" | "concat-hex" | "max-int" | "min-int" | "max-uint" | "to-check-sum-address" => "Utility Commands",
             "wallet" => "Wallet Commands",
             _ => "Utility Commands",
@@ -424,7 +463,7 @@ fn generate_sidebar(output: &[(Cmd, String)], _out_dir: &Path, sidebar_file: &Pa
     content.push_str("    items: [\n");
     
     // Add root command
-    content.push_str(&format!("        {{ text: \"{}\", link: \"/{}/reference/{}\" }},\n", tool_name, tool_name, tool_name));
+    content.push_str(&format!("        {{ text: \"{}\", link: \"/reference/{}/{}\" }},\n", tool_name, tool_name, tool_name));
     
     // Add categories
     for (category, cmds) in categories {
@@ -443,7 +482,7 @@ fn generate_sidebar(output: &[(Cmd, String)], _out_dir: &Path, sidebar_file: &Pa
         
         for cmd in sorted_cmds {
             let cmd_path = cmd.md_path();
-            content.push_str(&format!("                {{ text: \"{}\", link: \"/{}/reference/{}\" }},\n", 
+            content.push_str(&format!("                {{ text: \"{}\", link: \"/reference/{}/{}\" }},\n", 
                 cmd.display_name(), tool_name, cmd_path));
         }
         

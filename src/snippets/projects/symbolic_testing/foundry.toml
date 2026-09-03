@@ -1,0 +1,5 @@
+[profile.default.symbolic]
+solver = "z3"
+timeout = 30
+max_paths = 128
+max_solver_queries = 1000

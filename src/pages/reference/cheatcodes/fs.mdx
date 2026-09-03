@@ -1,0 +1,174 @@
+---
+description: File system operations for reading, writing, and managing files
+---
+
+## File Cheatcodes
+
+### Signature
+
+```solidity
+function readFile(string calldata path) external returns (string memory data);
+function readFileBinary(string calldata path) external view returns (bytes memory data);
+function readLine(string calldata path) external returns (string memory line);
+function readDir(string calldata path) external view returns (DirEntry[] memory entries);
+function readLink(string calldata linkPath) external view returns (string memory targetPath);
+function writeFile(string calldata path, string calldata data) external;
+function writeLine(string calldata path, string calldata data) external;
+function closeFile(string calldata path) external;
+function removeFile(string calldata path) external;
+function exists(string calldata path) external returns (bool);
+function isFile(string calldata path) external returns (bool);
+function isDir(string calldata path) external returns (bool);
+function currentFilePath() external view returns (string memory path);
+```
+
+### Description
+
+Cheatcodes for filesystem manipulation operations. File-operation paths are relative to the project root. `currentFilePath` returns the source path of the test or script contract currently being executed, also relative to the project root.
+
+:::warning[Permissions Required]
+By default, filesystem access is disallowed. You must configure `fs_permissions` in `foundry.toml` to enable access.
+:::
+
+### Configuration
+
+Configure filesystem permissions in your `foundry.toml`:
+
+```toml [foundry.toml]
+# Configures permissions for cheatcodes that touch the filesystem
+# `access` options:
+#   - `read-write` or `true` => read + write access
+#   - `read` => only read access
+#   - `write` => only write access  
+#   - `none` or `false` => no access
+fs_permissions = [{ access = "read-write", path = "./" }]
+```
+
+### Functions
+
+#### Reading Files
+
+| Function         | Description                                    |
+|------------------|------------------------------------------------|
+| `readFile`       | Reads entire file contents as string           |
+| `readFileBinary` | Reads entire file contents as bytes            |
+| `readLine`       | Reads next line from file                      |
+| `readDir`        | Reads directory entries (up to `maxDepth`)     |
+| `readLink`       | Reads symbolic link target path                |
+
+#### Writing Files
+
+| Function    | Description                                         |
+|-------------|-----------------------------------------------------|
+| `writeFile` | Writes data to file, creating or overwriting        |
+| `writeLine` | Appends a line to file, creating if needed          |
+
+#### File Management
+
+| Function     | Description                                |
+|--------------|--------------------------------------------|
+| `closeFile`  | Closes file, resetting read offset         |
+| `removeFile` | Deletes a file                             |
+| `exists`     | Returns true if path exists                |
+| `isFile`     | Returns true if path is a regular file     |
+| `isDir`      | Returns true if path is a directory        |
+
+#### Project Context
+
+| Function | Description |
+|----------|-------------|
+| `currentFilePath` | Returns the current test or script contract's source path relative to the project root |
+
+### Examples
+
+#### Write and read a file
+
+Requires read-write access:
+
+:::code-group
+
+```solidity [test/FileSystem.t.sol]
+string memory path = "file.txt";
+string memory data = "hello world";
+vm.writeFile(path, data);
+
+assertEq(vm.readFile(path), data);
+```
+
+```toml [foundry.toml]
+fs_permissions = [{ access = "read-write", path = "./" }]
+```
+
+:::
+
+#### Append lines to a file
+
+```solidity [test/FileSystem.t.sol]
+string memory path = "output.txt";
+
+vm.writeLine(path, "first line");
+vm.writeLine(path, "second line");
+```
+
+#### Remove a file
+
+Requires write access:
+
+:::code-group
+
+```solidity [test/FileSystem.t.sol]
+string memory path = "file.txt";
+vm.removeFile(path);
+
+assertFalse(vm.exists(path));
+```
+
+```toml [foundry.toml]
+fs_permissions = [{ access = "write", path = "./" }]
+```
+
+:::
+
+#### Check if paths exist
+
+```solidity [test/FileSystem.t.sol]
+// Check if a path exists
+assertTrue(vm.exists("foo/files/bar.txt"));
+
+// Check if path is a file
+assertTrue(vm.isFile("foo/files/bar.txt"));
+
+// Check if path is a directory
+assertTrue(vm.isDir("foo/files"));
+```
+
+#### Get the current source path
+
+```solidity [test/CurrentFilePath.t.sol]
+// [!include ~/snippets/projects/cheatcodes/test/CurrentFilePath.t.sol:path]
+```
+
+`currentFilePath` does not access the filesystem, so it does not require an `fs_permissions` entry.
+
+### Gotchas
+
+:::warning[Path Permissions]
+If you receive "The path is not allowed to be accessed for read operations", ensure the path is covered by your `fs_permissions` configuration.
+:::
+
+:::note[removeFile Restrictions]
+`removeFile` will revert if:
+- The path points to a directory
+- The file doesn't exist
+- The user lacks permissions to remove the file
+:::
+
+- `currentFilePath` identifies the test or script contract being executed. It does not change when the call originates from an imported library or inherited helper.
+- Path separators follow the host platform. Normalize `\\` to `/` before exact string comparisons when tests must also run on Windows.
+
+### Related Cheatcodes
+
+- [`parseJson`](/reference/cheatcodes/parse-json) - Parse JSON files read from disk
+- [`parseToml`](/reference/cheatcodes/parse-toml) - Parse TOML files read from disk
+- [`writeJson`](/reference/cheatcodes/write-json) - Write JSON to files
+- [`writeToml`](/reference/cheatcodes/write-toml) - Write TOML to files

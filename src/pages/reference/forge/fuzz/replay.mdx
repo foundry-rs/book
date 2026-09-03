@@ -1,0 +1,571 @@
+---
+description: "Replay persisted fuzz failures, or corpus entries with `--corpus-dir`"
+---
+
+_Generated from `forge fuzz replay --help`; see [CLI reference versions](/reference/versions). Regenerate this page instead of editing it directly._
+
+## forge fuzz replay
+
+Replay persisted fuzz failures, or corpus entries with `--corpus-dir`
+
+:::terminal
+
+```bash
+$ forge fuzz replay --help
+```
+
+```txt
+Usage: forge fuzz replay [OPTIONS] [PATH]
+
+Arguments:
+  [PATH]
+          The contract file you want to test, it's a shortcut for --match-path
+
+Options:
+  -j, --threads <THREADS>
+          Number of threads to use. Specifying 0 defaults to the number of
+          logical cores
+          
+          [alias: --jobs]
+
+      --profile <PROFILE>
+          The configuration profile to use
+
+  -h, --help
+          Print help (see a summary with '-h')
+
+Display options:
+  -v, --verbosity...
+          Verbosity level of the log messages.
+          
+          Pass multiple times to increase the verbosity (e.g. -v, -vv, -vvv).
+          
+          Depending on the context the verbosity levels have different meanings.
+          
+          For example, the verbosity levels of the EVM are:
+          - 2 (-vv): Print logs for all tests.
+          - 3 (-vvv): Print execution traces for failing tests.
+          - 4 (-vvvv): Print execution traces for all tests, and setup traces
+          for failing tests.
+          - 5 (-vvvvv): Print execution and setup traces for all tests,
+          including storage changes and
+            backtraces with line numbers.
+
+  -q, --quiet
+          Do not print log messages
+
+      --json
+          Format log messages as JSON
+
+      --md
+          Format log messages as Markdown
+
+      --color <COLOR>
+          The color of the log messages
+
+          Possible values:
+          - auto:   Intelligently guess whether to use color output (default)
+          - always: Force color output
+          - never:  Force disable color output
+
+      --junit
+          Output test results as JUnit XML report
+
+      --show-progress
+          Show test execution progress
+
+  -l, --list
+          List fuzz and invariant tests instead of running them
+
+Test filtering:
+      --match-test <REGEX>
+          Only run test functions matching the specified regex pattern
+          
+          [alias: --mt]
+
+      --no-match-test <REGEX>
+          Only run test functions that do not match the specified regex pattern
+          
+          [alias: --nmt]
+
+      --match-contract <REGEX>
+          Only run tests in contracts matching the specified regex pattern
+          
+          [alias: --mc]
+
+      --no-match-contract <REGEX>
+          Only run tests in contracts that do not match the specified regex
+          pattern
+          
+          [alias: --nmc]
+
+      --match-path <GLOB>
+          Only run tests in source files matching the specified glob pattern
+          
+          [alias: --mp]
+
+      --no-match-path <GLOB>
+          Only run tests in source files that do not match the specified glob
+          pattern
+          
+          [alias: --nmp]
+
+      --no-match-coverage <REGEX>
+          Only show coverage for files that do not match the specified regex
+          pattern
+          
+          [alias: --nmco]
+
+Campaign options:
+      --runs <RUNS>
+          Number of runs to execute for each fuzz or invariant campaign
+
+      --timeout <TIMEOUT>
+          Campaign-global timeout in seconds
+
+      --seed <SEED>
+          Set seed used to generate randomness during fuzz runs
+
+      --depth <DEPTH>
+          Number of calls executed to try to break invariants in one run
+
+      --min-depth <DEPTH>
+          Minimum sampled invariant depth when `--depth-mode random` is active
+
+      --depth-mode <fixed|random>
+          How invariant run depth is selected
+
+      --workers <WORKERS>
+          Number of workers to use for invariant test campaigns, or `auto` to
+          derive from `--jobs`
+
+      --corpus-dir <PATH>
+          Directory for fuzz and invariant corpus persistence
+
+      --dictionary-weight <PERCENT>
+          Percent of calldata generated from the dictionary
+
+      --dictionary-addresses <N|max>
+          Maximum dictionary addresses, or `max`
+
+      --dictionary-values <N|max>
+          Maximum dictionary values, or `max`
+
+      --dictionary-literals <N|max>
+          Maximum dictionary literals, or `max`
+
+      --corpus-random-sequence-weight <PERCENT>
+          Percent chance that coverage-guided fuzzing generates fresh input
+          instead of mutating corpus input
+
+      --payable-value-weight <PERCENT>
+          Percent chance that fuzzed payable calls carry non-zero msg.value
+
+      --mutation-weight-splice <WEIGHT>
+          Corpus mutation weight for splice
+
+      --mutation-weight-repeat <WEIGHT>
+          Corpus mutation weight for repeat
+
+      --mutation-weight-interleave <WEIGHT>
+          Corpus mutation weight for interleave
+
+      --mutation-weight-prefix <WEIGHT>
+          Corpus mutation weight for prefix replacement
+
+      --mutation-weight-suffix <WEIGHT>
+          Corpus mutation weight for suffix replacement
+
+      --mutation-weight-abi <WEIGHT>
+          Corpus mutation weight for ABI argument mutation
+
+      --mutation-weight-cmp <WEIGHT>
+          Corpus mutation weight for comparison-operand mutation
+
+      --frontier-dir <PATH>
+          Directory for fuzz branch frontier artifacts
+
+      --frontier-limit <COUNT>
+          Maximum number of fuzz branch frontier records to write per test
+
+EVM options:
+  -r, --rpc-url <URL>
+          The RPC endpoint
+          
+          [alias: --fork-url]
+
+  -k, --insecure
+          Allow insecure RPC connections (accept invalid HTTPS certificates).
+          
+          When the provider's inner runtime transport variant is HTTP, this
+          configures the reqwest client to accept invalid certificates.
+
+      --rpc-timeout <RPC_TIMEOUT>
+          Timeout for the RPC request in seconds.
+          
+          The specified timeout will be used to override the default timeout for
+          RPC requests.
+          
+          Default value: 45
+          
+          [env: ETH_RPC_TIMEOUT=]
+
+      --no-proxy
+          Disable automatic proxy detection.
+          
+          Use this in sandboxed environments (e.g., Cursor IDE sandbox, macOS
+          App Sandbox) where system proxy detection causes crashes. When
+          enabled, HTTP_PROXY/HTTPS_PROXY environment variables and system proxy
+          settings will be ignored.
+
+      --compute-units-per-second <CUPS>
+          Sets the number of assumed available compute units per second for this
+          provider.
+          
+          default value: 330
+          
+          See also
+          [https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second](https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second)
+
+      --no-rpc-rate-limit
+          Disables rate limiting for this node's provider.
+          
+          See also
+          [https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second](https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second)
+          
+          [alias: --no-rate-limit]
+
+      --fork-block-number <BLOCK>
+          Fetch state from a specific block number over a remote endpoint.
+          
+          See --rpc-url.
+
+      --fork-retries <RETRIES>
+          Number of retries.
+          
+          See --rpc-url.
+
+      --fork-retry-backoff <BACKOFF>
+          Initial retry backoff on encountering errors.
+          
+          See --rpc-url.
+
+      --no-storage-caching
+          Explicitly disables the use of RPC caching.
+          
+          All storage slots are read entirely from the endpoint.
+          
+          This flag overrides the project's configuration file.
+          
+          See --rpc-url.
+
+      --initial-balance <BALANCE>
+          The initial balance of deployed test contracts
+
+      --sender <ADDRESS>
+          The address which will be executing tests/scripts
+
+      --ffi
+          Enable the FFI cheatcode
+
+      --live-logs
+          Whether to show `console.log` outputs in realtime during script/test
+          execution
+
+      --always-use-create-2-factory
+          Use the create 2 factory in all cases including tests and
+          non-broadcasting scripts
+
+      --create2-deployer <ADDRESS>
+          The CREATE2 deployer address to use, this will override the one in the
+          config
+
+Executor environment config:
+      --code-size-limit <CODE_SIZE>
+          EIP-170: Contract code size limit in bytes. Useful to increase this
+          because of tests. By default, it is 0x6000 (~25kb)
+
+      --chain <CHAIN>
+          The chain name or EIP-155 chain ID
+          
+          [alias: --chain-id]
+
+      --gas-price <GAS_PRICE>
+          The gas price
+
+      --block-base-fee-per-gas <FEE>
+          The base fee in a block
+          
+          [alias: --base-fee]
+
+      --tx-origin <ADDRESS>
+          The transaction origin
+
+      --block-coinbase <ADDRESS>
+          The coinbase of the block
+
+      --block-timestamp <TIMESTAMP>
+          The timestamp of the block
+
+      --block-number <BLOCK>
+          The block number
+
+      --block-difficulty <DIFFICULTY>
+          The block difficulty
+
+      --block-prevrandao <PREVRANDAO>
+          The block prevrandao value. NOTE: Before merge this field was mix_hash
+
+      --block-gas-limit <BLOCK_GAS_LIMIT>
+          The block gas limit
+          
+          [alias: --gas-limit]
+
+      --memory-limit <MEMORY_LIMIT>
+          The memory limit per EVM execution in bytes. If this limit is
+          exceeded, a `MemoryLimitOOG` result is thrown.
+          
+          The default is 128MiB.
+
+      --disable-block-gas-limit
+          Whether to disable the block gas limit checks
+          
+          [aliases: --no-block-gas-limit, --no-gas-limit]
+
+      --enable-tx-gas-limit
+          Whether to enable tx gas limit checks as imposed by Osaka (EIP-7825)
+          
+          [alias: --tx-gas-limit]
+
+      --isolate
+          Whether to enable isolation of calls. In isolation mode all top-level
+          calls are executed as a separate transaction in a separate EVM
+          context, enabling more precise gas accounting and transaction state
+          changes
+
+      --no-isolate
+          Whether to disable isolation of calls
+
+Networks:
+  -n, --network <NETWORK>
+          Enable a specific network family
+          
+          [possible values: ethereum, tempo]
+
+      --celo
+          Enable Celo network features
+
+Cache options:
+      --force
+          Clear the cache and artifacts folder and recompile
+
+Build options:
+      --no-cache
+          Disable the cache
+
+      --no-dynamic-test-linking
+          Disable dynamic test linking
+
+      --skip <SKIP>...
+          Skip building files whose names contain the given filter.
+          
+          `test` and `script` are aliases for `.t.sol` and `.s.sol`.
+
+Linker options:
+      --libraries <LIBRARIES>
+          Set pre-linked libraries
+          
+          [env: DAPP_LIBRARIES=]
+
+Compiler options:
+      --ignored-error-codes <ERROR_CODES>
+          Ignore solc warnings by error code
+
+  -D, --deny <LEVEL>
+          A compiler error will be triggered at the specified diagnostic level.
+          
+          Replaces the deprecated `--deny-warnings` flag.
+          
+          Possible values: - `never`: Do not treat any diagnostics as errors. -
+          `warnings`: Treat warnings as errors. - `notes`: Treat both, warnings
+          and notes, as errors.
+
+          Possible values:
+          - never:    Always exit with zero code
+          - warnings: Exit with a non-zero code if any warnings are found
+          - notes:    Exit with a non-zero code if any notes or warnings are
+            found
+
+      --no-auto-detect
+          Do not auto-detect the `solc` version
+
+      --use <SOLC_VERSION>
+          Specify the solc version, or a path to a local solc, to build with.
+          
+          Valid values are in the format `x.y.z`, `solc:x.y.z` or
+          `path/to/solc`.
+
+      --offline
+          Do not access the network.
+          
+          Missing solc versions will not be installed.
+
+      --use-literal-content
+          Changes compilation to only use literal content and not URLs
+
+      --no-metadata
+          Do not append any metadata to the bytecode.
+          
+          This is equivalent to setting `bytecode_hash` to `none` and
+          `cbor_metadata` to `false`.
+
+      --ast
+          Includes the AST as JSON in the compiler output
+
+      --evm-version <VERSION>
+          The target EVM version
+
+      --optimize [<OPTIMIZE>]
+          Activate the Solidity optimizer
+          
+          [possible values: true, false]
+
+      --optimizer-runs <RUNS>
+          The number of runs specifies roughly how often each opcode of the
+          deployed code will be executed across the life-time of the contract.
+          This means it is a trade-off parameter between code size (deploy cost)
+          and code execution cost (cost after deployment). An `optimizer_runs`
+          parameter of `1` will produce short but expensive code. In contrast, a
+          larger `optimizer_runs` parameter will produce longer but more gas
+          efficient code
+
+      --via-ir
+          Use the Yul intermediate representation compilation pipeline
+
+      --via-ssa-cfg
+          Turn on SSA CFG-based code generation via the IR (experimental).
+          
+          This passes `--via-ssa-cfg` to solc. Implies `--via-ir`. Requires
+          `--experimental` to be set (as of Solidity 0.8.35+). This is false by
+          default.
+
+      --experimental
+          Enable Solidity's experimental mode.
+          
+          This passes `--experimental` to solc, which is required by Solidity
+          0.8.35+ for experimental features.
+
+      --extra-output <SELECTOR>...
+          Extra output to include in the contract's artifact.
+          
+          Example keys: evm.assembly, ewasm, ir, irOptimized, metadata
+          
+          For a full description, see
+          [https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description](https://docs.soliditylang.org/en/v0.8.13/using-the-compiler.html#input-description)
+
+      --extra-output-files <SELECTOR>...
+          Extra output to write to separate files.
+          
+          Valid values: metadata, ir, irOptimized, ewasm, evm.assembly
+
+Project options:
+  -o, --out <PATH>
+          The path to the contract artifacts folder
+
+      --revert-strings <REVERT>
+          Revert string configuration.
+          
+          Possible values are "default", "strip" (remove), "debug"
+          (Solidity-generated revert strings) and "verboseDebug"
+
+      --build-info
+          Generate build info files
+
+      --build-info-path <PATH>
+          Output path to directory that build info files will be written to
+
+      --root <PATH>
+          The project's root path.
+          
+          By default root of the Git repository, if in one, or the current
+          working directory.
+
+  -C, --contracts <PATH>
+          The contracts source directory
+
+  -R, --remappings <REMAPPINGS>
+          The project's remappings
+
+      --remappings-env <ENV>
+          The project's remappings from the environment
+
+      --cache-path <PATH>
+          The path to the compiler cache
+
+      --lib-paths <PATH>
+          The path to the library folder
+
+      --hardhat
+          Use the Hardhat-style project layout.
+          
+          This is the same as using: `--contracts contracts --lib-paths
+          node_modules`.
+          
+          [alias: --hh]
+
+      --config-path <FILE>
+          Path to the config file
+
+      --allow-failure
+          Exit with code 0 even if a test fails
+          
+          [env: FORGE_ALLOW_FAILURE=]
+
+      --fail-fast
+          Stop running tests after the first failure
+
+      --rerun
+          Re-run recorded test failures from last run. If no failure recorded
+          then regular test run is performed
+
+      --etherscan-api-key <KEY>
+          The Etherscan (or equivalent) API key
+          
+          [env: ETHERSCAN_API_KEY=]
+
+      --gas-report
+          Print a gas report
+          
+          [env: FORGE_GAS_REPORT=]
+
+      --fuzz-input-file <FUZZ_INPUT_FILE>
+          File to rerun fuzz failures from
+
+Showmap replay:
+      --showmap-out <DIR>
+          Replay the persisted corpus and emit AFL-`afl-showmap`-style coverage
+          files at the given output directory
+
+      --showmap-per-input
+          Emit one showmap file per corpus entry (default: one aggregated file
+          per test)
+
+      --showmap-domain <SHOWMAP_DOMAIN>
+          Coverage domain(s) to dump
+          
+          [default: evm]
+          [possible values: evm, sancov, both]
+
+      --showmap-approach <SHOWMAP_APPROACH>
+          Approach name (used as a subdirectory of `--showmap-out`)
+          
+          [default: replay]
+
+      --showmap-trial <SHOWMAP_TRIAL>
+          Trial identifier embedded in each showmap filename
+
+      --showmap-corpus-dir <PATH>
+          Override the corpus directory to replay
+```
+
+:::

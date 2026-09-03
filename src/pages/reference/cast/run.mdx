@@ -1,0 +1,248 @@
+---
+description: "Runs a published transaction in a local environment and prints the trace Examples: - cast run $TX_HASH - cast run $TX_HASH --quick (only use the state from the previous block) - cast run $TX_HASH --debug (open the transaction in the debugger)"
+---
+
+_Generated from `cast run --help`; see [CLI reference versions](/reference/versions). Regenerate this page instead of editing it directly._
+
+## cast run
+
+Runs a published transaction in a local environment and prints the trace
+
+Examples:
+- cast run $TX_HASH
+- cast run $TX_HASH --quick (only use the state from the previous block)
+- cast run $TX_HASH --debug (open the transaction in the debugger)
+
+:::terminal
+
+```bash
+$ cast run --help
+```
+
+```txt
+Usage: cast run [OPTIONS] <TX_HASH>
+
+Arguments:
+  <TX_HASH>
+          The transaction hash
+
+Options:
+  -d, --debug
+          Opens the transaction in the debugger
+
+  -t, --trace-printer
+          Print out opcode traces
+
+      --quick
+          Executes the transaction only with the state from the previous block.
+          
+          May result in different results than the live execution!
+
+      --replay-system-txes
+          Whether to replay system transactions
+
+      --prestate-tracer
+          Use debug_traceTransaction to fetch the prestate instead of replaying
+          the block.
+          
+          This is significantly faster than replaying all previous transactions
+          in the block, but requires the node to expose the `debug_` namespace
+          (most public RPCs don't). If the call or response can't be used, cast
+          silently falls back to replaying the block.
+
+      --debug-trace-transaction
+          Fetch the transaction's trace from the node via
+          `debug_traceTransaction` (callTracer) and render it, instead of
+          re-executing the transaction locally.
+          
+          This skips the block replay entirely, so it is fast and reflects
+          exactly what happened on-chain, including chain-specific EVM behavior
+          a local replay may not reproduce, but it requires the node to expose
+          the `debug_` namespace. The result is a call-tree view: nested calls,
+          value, gas, emitted logs and revert data. It does not provide the
+          opcode-level detail of a local run, so the local-execution-only flags
+          (`--debug`, `--decode-internal`, `--trace-printer`, `--quick`,
+          `--prestate-tracer`, `--evm-version`) do not apply.
+
+  -e, --etherscan-api-key <KEY>
+          The Etherscan (or equivalent) API key
+          
+          [env: ETHERSCAN_API_KEY=]
+
+  -c, --chain <CHAIN>
+          The chain name or EIP-155 chain ID
+          
+          [env: CHAIN=]
+
+  -h, --help
+          Print help (see a summary with '-h')
+
+  -j, --threads <THREADS>
+          Number of threads to use. Specifying 0 defaults to the number of
+          logical cores
+          
+          [alias: --jobs]
+
+      --profile <PROFILE>
+          The configuration profile to use
+
+Trace options:
+      --decode-internal
+          Identify internal functions in traces.
+          
+          This will trace internal functions and decode stack parameters.
+          
+          Parameters stored in memory (such as bytes or arrays) are currently
+          decoded only when a single function is matched, similarly to
+          `--debug`, for performance reasons.
+
+      --trace-depth <DEPTH>
+          Maximum depth of rendered traces
+
+      --disable-labels
+          Disable labels in traces
+
+      --compact-labels
+          Hide addresses in trace parameters when a label is available
+
+      --labels <ADDRESS:LABEL>
+          Label addresses in traces.
+          
+          Example: 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045:vitalik.eth
+          
+          [alias: --label]
+
+      --disable-external-identification
+          Disable external trace identification using Sourcify, Etherscan, or
+          OpenChain
+
+Rpc options:
+  -r, --rpc-url <URL>
+          The RPC endpoint
+          
+          [alias: --fork-url]
+
+  -k, --insecure
+          Allow insecure RPC connections (accept invalid HTTPS certificates).
+          
+          When the provider's inner runtime transport variant is HTTP, this
+          configures the reqwest client to accept invalid certificates.
+
+      --rpc-timeout <RPC_TIMEOUT>
+          Timeout for the RPC request in seconds.
+          
+          The specified timeout will be used to override the default timeout for
+          RPC requests.
+          
+          Default value: 45
+          
+          [env: ETH_RPC_TIMEOUT=]
+
+      --no-proxy
+          Disable automatic proxy detection.
+          
+          Use this in sandboxed environments (e.g., Cursor IDE sandbox, macOS
+          App Sandbox) where system proxy detection causes crashes. When
+          enabled, HTTP_PROXY/HTTPS_PROXY environment variables and system proxy
+          settings will be ignored.
+
+      --compute-units-per-second <CUPS>
+          Sets the number of assumed available compute units per second for this
+          provider.
+          
+          default value: 330
+          
+          See also
+          [https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second](https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second)
+
+      --no-rpc-rate-limit
+          Disables rate limiting for this node's provider.
+          
+          See also
+          [https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second](https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second)
+          
+          [alias: --no-rate-limit]
+
+      --flashbots
+          Use the Flashbots RPC URL with fast mode
+          ([https://rpc.flashbots.net/fast](https://rpc.flashbots.net/fast)).
+          
+          This shares the transaction privately with all registered builders.
+          
+          See:
+          [https://docs.flashbots.net/flashbots-protect/quick-start#faster-transactions](https://docs.flashbots.net/flashbots-protect/quick-start#faster-transactions)
+
+      --jwt-secret <JWT_SECRET>
+          JWT Secret for the RPC endpoint.
+          
+          The JWT secret will be used to create a JWT for an RPC. For example,
+          the following can be used to simulate a CL `engine_forkchoiceUpdated`
+          call:
+          
+          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2
+          '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
+          
+          [env: ETH_RPC_JWT_SECRET=]
+
+      --rpc-headers <RPC_HEADERS>
+          Specify custom headers for RPC requests
+          
+          [env: ETH_RPC_HEADERS=]
+
+      --curl
+          Print the equivalent curl command instead of making the RPC request
+
+      --evm-version <EVM_VERSION>
+          The EVM version to use.
+          
+          Overrides the version specified in the config.
+
+      --with-local-artifacts
+          Use current project artifacts for trace decoding
+          
+          [alias: --la]
+
+      --disable-block-gas-limit
+          Disable block gas limit check
+
+      --enable-tx-gas-limit
+          Enable the tx gas limit checks as imposed by Osaka (EIP-7825)
+
+Display options:
+      --color <COLOR>
+          The color of the log messages
+
+          Possible values:
+          - auto:   Intelligently guess whether to use color output (default)
+          - always: Force color output
+          - never:  Force disable color output
+
+      --json
+          Format log messages as JSON
+
+      --md
+          Format log messages as Markdown
+
+  -q, --quiet
+          Do not print log messages
+
+  -v, --verbosity...
+          Verbosity level of the log messages.
+          
+          Pass multiple times to increase the verbosity (e.g. -v, -vv, -vvv).
+          
+          Depending on the context the verbosity levels have different meanings.
+          
+          For example, the verbosity levels of the EVM are:
+          - 2 (-vv): Print logs for all tests.
+          - 3 (-vvv): Print execution traces for failing tests.
+          - 4 (-vvvv): Print execution traces for all tests, and setup traces
+          for failing tests.
+          - 5 (-vvvvv): Print execution and setup traces for all tests,
+          including storage changes and
+            backtraces with line numbers.
+```
+
+:::

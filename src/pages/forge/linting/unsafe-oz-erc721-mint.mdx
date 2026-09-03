@@ -1,0 +1,53 @@
+---
+description: ERC721 _mint without receiver check
+---
+
+## Unsafe OZ ERC721 mint
+
+**Severity**: `Med`
+**ID**: `unsafe-oz-erc721-mint`
+
+Flags calls that resolve to `ERC721._mint`, which credits a token without checking that the recipient can receive it.
+
+### What it does
+
+Reports calls that resolve to the unchecked `_mint` implementation in OpenZeppelin's `ERC721`, `ERC721Upgradeable`, `ERC721Consecutive`, or `ERC721ConsecutiveUpgradeable`, including calls that transitively reach one through a user override. Plain `_mint(to, id)`, qualified `ERC721._mint(to, id)`, and `super._mint(to, id)` forms are covered. Exact contract names and OpenZeppelin source provenance keep unrelated local functions and `ERC20._mint` out of scope.
+
+The lint recognizes wrappers that prove the recipient has no code or provide the receiver check themselves. A receiver-checking wrapper must call `onERC721Received` on the same recipient and token, require the ERC721 receiver selector on the accepting path, and revert on refusal without a path that can return successfully. Common `require`, `assert`, `if`/`else`, and contract-account short-circuit forms are supported.
+
+Guards may be factored into non-virtual, same-frame internal helpers or modifiers when the guard cannot be bypassed. A code-less proof needs only the recipient; a receiver callback must receive both the recipient and token unchanged. Cross-contract helpers do not count because the receiver would see the helper contract as its caller. The analysis follows recursive unsafe `_mint` overrides as well, requiring every intermediate delegation to preserve the recipient and, for callback guards, the token. Reassigning the recipient invalidates either proof, while a computed or remapped token remains covered by a code-less proof.
+
+Assembly is handled conservatively because it can remap values or leave the current call frame. Assembly reached while evaluating a guard prevents that guard from establishing coverage, and assembly between a guard and mint retires the coverage; a fresh guard afterward can establish it again. An unresolved internal function-pointer call is likewise treated as able to leave the frame before a later revert.
+
+The receiver selector must resolve to `0x150b7a02` without a lossy conversion. A same-name function with another signature, a mutable state value, or a hook whose result is merely stored or discarded does not establish safety.
+
+The principal exemptions are:
+
+- calls to `_safeMint`, the recommended fix;
+- calls inside OpenZeppelin's canonical `_safeMint` wrapper;
+- delegation inside a user `_mint` override, whose call sites are checked instead;
+- call sites whose full delegated path proves the recipient is code-less or is protected by a recognized receiver guard.
+
+Calls dispatched through assembly or an internal function pointer are not analyzed because the type checker does not resolve them to an `_mint` declaration. A user override that reimplements ownership changes without delegating to OpenZeppelin is likewise outside this lint's scope.
+
+### Why is this bad?
+
+`ERC721._mint` assigns the token without calling `onERC721Received` on the recipient. Minting to a contract that does not implement the receiver interface permanently locks the token. `_safeMint` performs the check and reverts instead.
+
+### Example
+
+#### Bad
+
+```solidity
+function mint(address to, uint256 id) external {
+    _mint(to, id);
+}
+```
+
+#### Good
+
+```solidity
+function mint(address to, uint256 id) external {
+    _safeMint(to, id);
+}
+```

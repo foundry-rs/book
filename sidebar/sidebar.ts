@@ -1,0 +1,146 @@
+import type { Sidebar } from "./types";
+import { forgeCliReference } from "./forge-cli-reference";
+import { cmdReference } from "./cmd-reference";
+import { anvilCliReference } from "./anvil-cli-reference";
+import { chiselCliReference } from "./chisel-cli-reference";
+import { castCliReference } from "./cast-cli-reference";
+import { forgeStdReference } from "./forge-std-reference";
+import { forgeDocs, lintingSidebar } from "./forge";
+import { guidesSidebar } from "./guides";
+
+const docs = [
+  {
+    text: "Introduction",
+    items: [
+      { text: "Installation", link: "/introduction/installation" },
+      { text: "Getting Started", link: "/introduction/getting-started" },
+      { text: "Prompting", link: "/introduction/prompting" },
+      { text: "Documentation for Agents", link: "/introduction/agents" },
+    ],
+  },
+  {
+    text: "Projects",
+    items: [
+      { text: "Overview", link: "/projects" },
+      { text: "Project Layout", link: "/projects/layout" },
+      { text: "Dependencies", link: "/projects/dependencies" },
+      { text: "Soldeer", link: "/projects/soldeer" },
+    ],
+  },
+  {
+    text: "Forge",
+    items: forgeDocs,
+  },
+  {
+    text: "Cast",
+    items: [
+      { text: "Overview", link: "/cast" },
+      { text: "Reading Chain Data", link: "/cast/reading-chain-data" },
+      { text: "Sending Transactions", link: "/cast/sending-transactions" },
+      { text: "Wallet Operations", link: "/cast/wallet-operations" },
+      { text: "EIP-7702 Delegation", link: "/cast/eip-7702-delegation" },
+      { text: "ABI Encoding", link: "/cast/abi-encoding" },
+    ],
+  },
+  {
+    text: "Anvil",
+    items: [
+      { text: "Overview", link: "/anvil" },
+      { text: "Forking", link: "/anvil/forking" },
+      { text: "Mining and Transaction Pool", link: "/anvil/mining" },
+      { text: "State Management", link: "/anvil/state-management" },
+      { text: "Custom Methods", link: "/anvil/custom-methods" },
+      { text: "RPC Method Reference", link: "/anvil/rpc-methods" },
+    ],
+  },
+  {
+    text: "Chisel",
+    items: [
+      { text: "Overview", link: "/chisel" },
+      { text: "Session Management", link: "/chisel/session-management" },
+      { text: "Forking", link: "/chisel/forking" },
+      { text: "Commands", link: "/chisel/commands" },
+    ],
+  },
+  {
+    text: "Help",
+    items: [
+      { text: "FAQ", link: "/help/faq" },
+      { text: "Troubleshooting", link: "/help/troubleshooting" },
+    ],
+  },
+  {
+    text: "Configuration",
+    items: [
+      { text: "Overview", link: "/config" },
+      { text: "Profiles", link: "/config/profiles" },
+      { text: "Network Selection", link: "/config/networks" },
+      { text: "Compiler", link: "/config/compiler" },
+      { text: "Testing", link: "/config/testing" },
+      { text: "MESC", link: "/config/mesc" },
+      { text: "CI Integration", link: "/config/ci" },
+      { text: "Editor Setup", link: "/config/editors" },
+    ],
+  },
+  {
+    text: "Best Practices",
+    link: "/best-practices",
+  },
+];
+
+export const sidebar: Sidebar = {
+  "/benchmarks": [],
+  "/": [],
+  "/introduction": docs,
+  "/projects": docs,
+  "/forge": docs,
+  "/cast": docs,
+  "/anvil": docs,
+  "/chisel": docs,
+  "/help": docs,
+  "/best-practices": docs,
+  "/config": docs,
+  ...guidesSidebar,
+  "/forge/linting": lintingSidebar,
+  "/reference/forge": [forgeCliReference],
+  "/reference/cast": [castCliReference],
+  "/reference/anvil": [anvilCliReference],
+  "/reference/chisel": [chiselCliReference],
+  "/reference/cheatcodes": [
+    {
+      text: "Cheatcodes",
+      items: cmdReference,
+    },
+  ],
+  "/reference/forge-std": [forgeStdReference],
+  "/config/reference": [
+    {
+      text: "Configuration",
+      items: [
+        { text: "Overview", link: "/config/reference/overview" },
+        { text: "Project", link: "/config/reference/project" },
+        { text: "Solidity Compiler", link: "/config/reference/solidity-compiler" },
+        { text: "Testing", link: "/config/reference/testing" },
+        { text: "Tracing", link: "/config/reference/tracing" },
+        { text: "Advanced Testing", link: "/config/reference/advanced-testing" },
+        { text: "Build, Runtime, and RPC", link: "/config/reference/build-and-runtime" },
+        { text: "Tool-specific Configuration", link: "/config/reference/tooling" },
+        { text: "In-line Test Config", link: "/config/reference/inline-test-config" },
+        { text: "Formatter", link: "/config/reference/formatter" },
+        { text: "Linter", link: "/config/reference/linter" },
+        { text: "Documentation Generator", link: "/config/reference/doc-generator" },
+        { text: "Etherscan", link: "/config/reference/etherscan" },
+      ],
+    },
+  ],
+  "/releases": [
+    {
+      text: "Releases",
+      items: [
+        { text: "Latest", link: "/releases" },
+        { text: "Stable", link: "/releases/stable" },
+        { text: "Nightly", link: "/releases/nightly" },
+      ],
+    },
+  ],
+};

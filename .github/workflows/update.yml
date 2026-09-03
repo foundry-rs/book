@@ -18,19 +18,50 @@ jobs:
       contents: write
       pull-requests: write
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
           submodules: recursive
 
       - name: Install Foundry
-        uses: foundry-rs/foundry-toolchain@v1
+        uses: foundry-rs/foundry-toolchain@908c540300062bd5a7e473851cdb4282204cee09 # v1.9.1
         with:
           version: nightly
 
-      - uses: dtolnay/rust-toolchain@e97e2d8cc328f1b50210efc529dca0028893a2d9 # master
+      - uses: dtolnay/rust-toolchain@6c977a6ca4077a0ceb28ffbe03f59d46e9ac8772 # master
         with:
           toolchain: nightly
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11.25.0
+
+      - name: Install Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24"
+          cache: pnpm
+
+      - name: Install dependencies
+        run: vp install --frozen-lockfile
+
+      - name: Refresh cheatcode manifest
+        run: |
+          foundry_commit="$(forge --version | sed -n 's/^Commit SHA: //p')"
+          test -n "$foundry_commit"
+          spec="$(mktemp)"
+          trap 'rm -f "$spec"' EXIT
+          curl --fail --location --retry 3 \
+            "https://raw.githubusercontent.com/foundry-rs/foundry/$foundry_commit/crates/cheatcodes/assets/cheatcodes.json" \
+            --output "$spec"
+          vp run check:cheatcodes -- \
+            --refresh --spec "$spec" --commit "$foundry_commit"
+
+      - name: Refresh changelog data
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: vp run fetch-changelog -- --strict
 
       - name: Update
         run: |
@@ -40,7 +71,7 @@ jobs:
           ./scripts/gen_output.sh
 
       - name: Create pull request
-        uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e # v7
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
         with:
           commit-message: "update command output"
           title: "chore(output): weekly command output update"

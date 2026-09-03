@@ -16,7 +16,7 @@ jobs:
       contents: read
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
@@ -25,21 +25,29 @@ jobs:
         with:
           version: 11.25.0
 
-      - name: Set up Node
-        uses: actions/setup-node@v5
+      - name: Install Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: 24
+          node-version: "24"
           cache: pnpm
-          cache-dependency-path: vocs/pnpm-lock.yaml
 
       - name: Install dependencies
-        working-directory: vocs
         run: vp install --frozen-lockfile
 
+      - name: Check cheatcode coverage
+        run: vp run check:cheatcodes
+
+      - name: Check anvil RPC coverage
+        run: vp run check:anvil-rpc
+
+      - name: Check narrative commands
+        run: vp run check:commands
+
       - name: Check
-        working-directory: vocs
-        run: vp check
+        run: vp run check
+
+      - name: Test
+        run: vp run test
 
       - name: Build Vocs
-        working-directory: vocs
         run: vp run build

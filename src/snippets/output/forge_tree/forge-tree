@@ -1,0 +1,175 @@
+// [!region all]
+// [!region command]
+$ forge tree
+// [!endregion command]
+// [!region output]
+src/Morpho.sol =0.8.19
+├── src/interfaces/IMorpho.sol >=0.5.0
+├── src/interfaces/IMorphoCallbacks.sol >=0.5.0
+├── src/interfaces/IIrm.sol >=0.5.0
+│   └── src/interfaces/IMorpho.sol >=0.5.0
+├── src/interfaces/IERC20.sol >=0.5.0
+├── src/interfaces/IOracle.sol >=0.5.0
+├── src/libraries/ConstantsLib.sol ^0.8.0
+├── src/libraries/UtilsLib.sol ^0.8.0
+│   └── src/libraries/ErrorsLib.sol ^0.8.0
+├── src/libraries/EventsLib.sol ^0.8.0
+│   └── src/interfaces/IMorpho.sol >=0.5.0
+├── src/libraries/ErrorsLib.sol ^0.8.0
+├── src/libraries/MathLib.sol ^0.8.0
+├── src/libraries/SharesMathLib.sol ^0.8.0
+│   └── src/libraries/MathLib.sol ^0.8.0
+├── src/libraries/MarketParamsLib.sol ^0.8.0
+│   └── src/interfaces/IMorpho.sol >=0.5.0
+└── src/libraries/SafeTransferLib.sol ^0.8.0
+    ├── src/interfaces/IERC20.sol >=0.5.0
+    └── src/libraries/ErrorsLib.sol ^0.8.0
+src/interfaces/IERC20.sol >=0.5.0
+src/interfaces/IIrm.sol >=0.5.0 (*)
+src/interfaces/IMorpho.sol >=0.5.0
+src/interfaces/IMorphoCallbacks.sol >=0.5.0
+src/interfaces/IOracle.sol >=0.5.0
+src/libraries/ConstantsLib.sol ^0.8.0
+src/libraries/ErrorsLib.sol ^0.8.0
+src/libraries/EventsLib.sol ^0.8.0 (*)
+src/libraries/MarketParamsLib.sol ^0.8.0 (*)
+src/libraries/MathLib.sol ^0.8.0
+src/libraries/SafeTransferLib.sol ^0.8.0 (*)
+src/libraries/SharesMathLib.sol ^0.8.0 (*)
+src/libraries/UtilsLib.sol ^0.8.0 (*)
+src/libraries/periphery/MorphoBalancesLib.sol ^0.8.0
+├── src/interfaces/IMorpho.sol >=0.5.0
+├── src/interfaces/IIrm.sol >=0.5.0 (*)
+├── src/libraries/MathLib.sol ^0.8.0
+├── src/libraries/UtilsLib.sol ^0.8.0 (*)
+├── src/libraries/periphery/MorphoLib.sol ^0.8.0
+│   ├── src/interfaces/IMorpho.sol >=0.5.0
+│   └── src/libraries/periphery/MorphoStorageLib.sol ^0.8.0
+│       └── src/interfaces/IMorpho.sol >=0.5.0
+├── src/libraries/SharesMathLib.sol ^0.8.0 (*)
+└── src/libraries/MarketParamsLib.sol ^0.8.0 (*)
+src/libraries/periphery/MorphoLib.sol ^0.8.0 (*)
+src/libraries/periphery/MorphoStorageLib.sol ^0.8.0 (*)
+src/mocks/ERC20Mock.sol ^0.8.0
+└── src/mocks/interfaces/IERC20.sol ^0.8.0
+src/mocks/FlashBorrowerMock.sol ^0.8.0
+├── src/mocks/interfaces/IERC20.sol ^0.8.0
+├── src/interfaces/IMorpho.sol >=0.5.0
+└── src/interfaces/IMorphoCallbacks.sol >=0.5.0
+src/mocks/IrmMock.sol ^0.8.0
+├── src/interfaces/IIrm.sol >=0.5.0 (*)
+├── src/interfaces/IMorpho.sol >=0.5.0
+└── src/libraries/MathLib.sol ^0.8.0
+src/mocks/OracleMock.sol ^0.8.0
+└── src/interfaces/IOracle.sol >=0.5.0
+src/mocks/interfaces/IERC20.sol ^0.8.0
+test/BaseTest.sol ^0.8.0
+├── lib/forge-std/src/Test.sol >=0.6.2, <0.9.0
+│   ├── lib/forge-std/src/console.sol >=0.4.22, <0.9.0
+│   ├── lib/forge-std/src/console2.sol >=0.4.22, <0.9.0
+│   ├── lib/forge-std/src/safeconsole.sol >=0.6.2, <0.9.0
+│   ├── lib/forge-std/src/StdAssertions.sol >=0.6.2, <0.9.0
+│   │   ├── lib/forge-std/lib/ds-test/src/test.sol >=0.5.0
+│   │   └── lib/forge-std/src/StdMath.sol >=0.6.2, <0.9.0
+│   ├── lib/forge-std/src/StdChains.sol >=0.6.2, <0.9.0
+│   │   └── lib/forge-std/src/Vm.sol >=0.6.2, <0.9.0
+│   ├── lib/forge-std/src/StdCheats.sol >=0.6.2, <0.9.0
+│   │   ├── lib/forge-std/src/StdStorage.sol >=0.6.2, <0.9.0
+│   │   │   └── lib/forge-std/src/Vm.sol >=0.6.2, <0.9.0
+│   │   ├── lib/forge-std/src/console2.sol >=0.4.22, <0.9.0
+│   │   └── lib/forge-std/src/Vm.sol >=0.6.2, <0.9.0
+│   ├── lib/forge-std/src/StdError.sol >=0.6.2, <0.9.0
+│   ├── lib/forge-std/src/StdInvariant.sol >=0.6.2, <0.9.0
+│   ├── lib/forge-std/src/StdJson.sol >=0.6.0, <0.9.0
+│   │   └── lib/forge-std/src/Vm.sol >=0.6.2, <0.9.0
+│   ├── lib/forge-std/src/StdMath.sol >=0.6.2, <0.9.0
+│   ├── lib/forge-std/src/StdStorage.sol >=0.6.2, <0.9.0 (*)
+│   ├── lib/forge-std/src/StdStyle.sol >=0.4.22, <0.9.0
+│   │   └── lib/forge-std/src/Vm.sol >=0.6.2, <0.9.0
+│   ├── lib/forge-std/src/StdUtils.sol >=0.6.2, <0.9.0
+│   │   ├── lib/forge-std/src/interfaces/IMulticall3.sol >=0.6.2, <0.9.0
+│   │   ├── lib/forge-std/src/mocks/MockERC20.sol >=0.6.2, <0.9.0
+│   │   ├── lib/forge-std/src/mocks/MockERC721.sol >=0.6.2, <0.9.0
+│   │   └── lib/forge-std/src/Vm.sol >=0.6.2, <0.9.0
+│   ├── lib/forge-std/src/Vm.sol >=0.6.2, <0.9.0
+│   ├── lib/forge-std/src/Base.sol >=0.6.2, <0.9.0
+│   │   ├── lib/forge-std/src/StdStorage.sol >=0.6.2, <0.9.0 (*)
+│   │   └── lib/forge-std/src/Vm.sol >=0.6.2, <0.9.0
+│   └── lib/forge-std/lib/ds-test/src/test.sol >=0.5.0
+├── lib/forge-std/src/console.sol >=0.4.22, <0.9.0
+├── src/interfaces/IMorpho.sol >=0.5.0
+├── src/interfaces/IMorphoCallbacks.sol >=0.5.0
+├── src/mocks/IrmMock.sol ^0.8.0 (*)
+├── src/mocks/ERC20Mock.sol ^0.8.0 (*)
+├── src/mocks/OracleMock.sol ^0.8.0 (*)
+├── src/Morpho.sol =0.8.19 (*)
+├── test/helpers/Math.sol ^0.8.0
+├── test/helpers/SigUtils.sol ^0.8.0
+│   ├── src/libraries/ConstantsLib.sol ^0.8.0
+│   └── src/interfaces/IMorpho.sol >=0.5.0
+├── test/helpers/ArrayLib.sol ^0.8.0
+├── src/libraries/periphery/MorphoLib.sol ^0.8.0 (*)
+└── src/libraries/periphery/MorphoBalancesLib.sol ^0.8.0 (*)
+test/InvariantTest.sol ^0.8.0
+└── test/BaseTest.sol ^0.8.0 (*)
+test/MarketParamsLibTest.sol ^0.8.0
+├── lib/forge-std/src/Test.sol >=0.6.2, <0.9.0 (*)
+└── src/libraries/MarketParamsLib.sol ^0.8.0 (*)
+test/helpers/ArrayLib.sol ^0.8.0
+test/helpers/Math.sol ^0.8.0
+test/helpers/SigUtils.sol ^0.8.0 (*)
+test/helpers/WadMath.sol ^0.8.0
+test/integration/AccrueInterestIntegrationTest.sol ^0.8.0
+└── test/BaseTest.sol ^0.8.0 (*)
+test/integration/AuthorizationIntegrationTest.sol ^0.8.0
+└── test/BaseTest.sol ^0.8.0 (*)
+test/integration/BorrowIntegrationTest.sol ^0.8.0
+└── test/BaseTest.sol ^0.8.0 (*)
+test/integration/CallbacksIntegrationTest.sol ^0.8.0
+└── test/BaseTest.sol ^0.8.0 (*)
+test/integration/CreateMarketIntegrationTest.sol ^0.8.0
+└── test/BaseTest.sol ^0.8.0 (*)
+test/integration/ExtSloadIntegrationTest.sol ^0.8.0
+└── test/BaseTest.sol ^0.8.0 (*)
+test/integration/LiquidateIntegrationTest.sol ^0.8.0
+└── test/BaseTest.sol ^0.8.0 (*)
+test/integration/OnlyOwnerIntegrationTest.sol ^0.8.0
+└── test/BaseTest.sol ^0.8.0 (*)
+test/integration/RepayIntegrationTest.sol ^0.8.0
+└── test/BaseTest.sol ^0.8.0 (*)
+test/integration/SupplyCollateralIntegrationTest.sol ^0.8.0
+└── test/BaseTest.sol ^0.8.0 (*)
+test/integration/SupplyIntegrationTest.sol ^0.8.0
+└── test/BaseTest.sol ^0.8.0 (*)
+test/integration/WithdrawCollateralIntegrationTest.sol ^0.8.0
+└── test/BaseTest.sol ^0.8.0 (*)
+test/integration/WithdrawIntegrationTest.sol ^0.8.0
+└── test/BaseTest.sol ^0.8.0 (*)
+test/invariant/BaseInvariantTest.sol ^0.8.0
+└── test/InvariantTest.sol ^0.8.0 (*)
+test/invariant/DynamicInvariantTest.sol ^0.8.0
+└── test/invariant/BaseInvariantTest.sol ^0.8.0 (*)
+test/invariant/StaticInvariantTest.sol ^0.8.0
+└── test/invariant/BaseInvariantTest.sol ^0.8.0 (*)
+test/libraries/MathLibTest.sol ^0.8.0
+├── lib/forge-std/src/Test.sol >=0.6.2, <0.9.0 (*)
+├── src/libraries/MathLib.sol ^0.8.0
+└── test/helpers/WadMath.sol ^0.8.0
+test/libraries/SafeTransferLibTest.sol ^0.8.0
+├── lib/forge-std/src/Test.sol >=0.6.2, <0.9.0 (*)
+├── src/libraries/ErrorsLib.sol ^0.8.0
+└── src/libraries/SafeTransferLib.sol ^0.8.0 (*)
+test/libraries/UtilsLibTest.sol ^0.8.0
+├── lib/forge-std/src/Test.sol >=0.6.2, <0.9.0 (*)
+├── src/libraries/ErrorsLib.sol ^0.8.0
+└── src/libraries/UtilsLib.sol ^0.8.0 (*)
+test/libraries/periphery/MorphoBalancesLibTest.sol ^0.8.0
+└── test/BaseTest.sol ^0.8.0 (*)
+test/libraries/periphery/MorphoLibTest.sol ^0.8.0
+└── test/BaseTest.sol ^0.8.0 (*)
+test/libraries/periphery/MorphoStorageLibTest.sol ^0.8.0
+├── src/libraries/periphery/MorphoStorageLib.sol ^0.8.0 (*)
+├── test/helpers/SigUtils.sol ^0.8.0 (*)
+└── test/BaseTest.sol ^0.8.0 (*)
+// [!endregion output]
+// [!endregion all]

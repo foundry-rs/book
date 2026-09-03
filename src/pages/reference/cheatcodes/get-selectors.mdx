@@ -1,0 +1,61 @@
+---
+description: Returns the function selectors declared in a compiled contract artifact
+---
+
+## `getSelectors`
+
+### Signature
+
+```solidity
+function getSelectors(string calldata artifactPath) external view returns (bytes4[] memory selectors);
+```
+
+### Description
+
+Returns every function selector declared in the ABI of a compiled contract artifact.
+
+You can identify the artifact by contract name, source path, compiler version, build profile, or a direct path to its JSON file. Use a more specific identifier when multiple artifacts match.
+
+### Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `artifactPath` | `string` | Contract or artifact identifier |
+
+### Returns
+
+| Type | Description |
+|------|-------------|
+| `bytes4[]` | Function selectors from the artifact ABI |
+
+### Example
+
+```solidity [test/RecentCheatcodes.t.sol]
+// [!include ~/snippets/projects/cheatcodes/test/RecentCheatcodes.t.sol:get-selectors]
+```
+
+### Supported Formats
+
+Artifact identifiers include:
+
+```text
+Counter
+Counter:0.8.30
+Counter:optimized
+src/Counter.sol
+src/Counter.sol:Counter
+src/Counter.sol:Counter:0.8.30
+src/Counter.sol:Counter:optimized
+out/Counter.sol/Counter.json
+```
+
+### Gotchas
+
+- The call reverts when no artifact matches or when an identifier matches multiple artifacts.
+- Reading a direct `.json` path requires read permission for that path. Identifiers resolved from the current build's in-memory artifact list do not.
+- The result comes from the artifact ABI, so it excludes functions that are not present in that ABI.
+
+### Related Cheatcodes
+
+- [`getCode`](/reference/cheatcodes/get-code) - Return creation bytecode from an artifact
+- [`getDeployedCode`](/reference/cheatcodes/get-deployed-code) - Return runtime bytecode from an artifact

@@ -1,0 +1,291 @@
+## Formatter
+
+Configuration related to the behavior of the Forge formatter. Each of these keys live under the `[fmt]` section.
+
+### `line_length`
+
+- Type: number
+- Default: 120
+- Environment: `FOUNDRY_FMT_LINE_LENGTH` or `DAPP_FMT_LINE_LENGTH`
+
+Maximum line length where formatter will try to wrap the line.
+
+### `tab_width`
+
+- Type: number
+- Default: 4
+- Environment: `FOUNDRY_FMT_TAB_WIDTH` or `DAPP_FMT_TAB_WIDTH`
+
+Number of spaces per indentation level. Ignored if `style` is set to `"tab"`.
+
+### `style`
+
+- Type: string
+- Default: `space`
+- Environment: `FOUNDRY_FMT_STYLE` or `DAPP_FMT_STYLE`
+
+Indentation style. Valid values are:
+
+- `space` (default): Use spaces for indentation
+- `tab`: Use tabs for indentation
+
+### `bracket_spacing`
+
+- Type: bool
+- Default: false
+- Environment: `FOUNDRY_FMT_BRACKET_SPACING` or `DAPP_FMT_BRACKET_SPACING`
+
+Whether or not to print spaces between brackets.
+
+### `int_types`
+
+- Type: string
+- Default: `long`
+- Environment: `FOUNDRY_FMT_INT_TYPES` or `DAPP_FMT_INT_TYPES`
+
+Style of uint/int256 types. Valid values are:
+
+- `long` (default): Use the explicit `uint256` or `int256`
+- `short`: Use the implicit `uint` or `int`
+- `preserve`: Use the type defined in the source code
+
+### `multiline_func_header`
+
+- Type: string
+- Default: `attributes_first`
+- Environment: `FOUNDRY_FMT_MULTILINE_FUNC_HEADER` or `DAPP_FMT_MULTILINE_FUNC_HEADER`
+
+Style of multiline function header in case it doesn't fit in one line. Valid values are:
+
+- `attributes_first` (default): Write function attributes multiline first
+- `params_always`: Always write function parameters multiline
+- `params_first_multi`: Write function parameters multiline first when there is more than one param
+- `all`: If function params or attrs are multiline, multiline everything
+- `all_params`: Same as `all` but writes function params multiline even when there is a single param
+
+For example, with `params_always`:
+
+```solidity
+function myFunction(
+    uint256 param1,
+    uint256 param2,
+    uint256 param3
+) public returns (uint256) {
+  // ...
+}
+```
+
+And with `all`:
+
+```solidity
+function myFunction(
+    uint256 param1,
+    uint256 param2,
+    uint256 param3
+)
+    public
+    returns (uint256)
+{
+  // ...
+}
+```
+
+### `quote_style`
+
+- Type: string
+- Default: `double`
+- Environment: `FOUNDRY_FMT_QUOTE_STYLE` or `DAPP_FMT_QUOTE_STYLE`
+
+Defines the quotation mark style. Valid values are:
+
+- `double` (default): Use double quotes where possible (`"`)
+- `single`: Use single quotes where possible (`'`)
+- `preserve`: Use quotation mark defined in the source code
+
+### `number_underscore`
+
+- Type: string
+- Default: `preserve`
+- Environment: `FOUNDRY_FMT_NUMBER_UNDERSCORE` or `DAPP_FMT_NUMBER_UNDERSCORE`
+
+Style of underscores in number literals. Valid values are:
+
+- `preserve` (default): Use the underscores defined in the source code
+- `thousands`: Add an underscore every thousand, if greater than 9999. i.e. `1000` is formatted as `1000` and `10000` as `10_000`
+- `remove`: Remove all underscores
+
+### `hex_underscore`
+
+- Type: string
+- Default: `remove`
+- Environment: `FOUNDRY_FMT_HEX_UNDERSCORE` or `DAPP_FMT_HEX_UNDERSCORE`
+
+Style of underscores in hex literals. Valid values are:
+
+- `preserve`: Use the underscores defined in the source code
+- `remove` (default): Remove all underscores
+- `bytes`: Add underscore as separator between byte boundaries. i.e. `hex"deadbeef"` is formatted as `hex"de_ad_be_ef"`
+
+### `single_line_statement_blocks`
+
+- Type: string
+- Default: `preserve`
+- Environment: `FOUNDRY_FMT_SINGLE_LINE_STATEMENT_BLOCKS` or `DAPP_FMT_SINGLE_LINE_STATEMENT_BLOCKS`
+
+Style of single line blocks in statements. Valid values are:
+
+- `preserve` (default): Keep the existing single/multi line formatting of statement blocks
+- `single`: Statement blocks will be formatted to a single line if possible
+- `multi`: Statement blocks will always be formatted to multiple lines
+
+For example, with `single`:
+
+```solidity
+if (true) { return true; }
+```
+
+With `multi`:
+
+```solidity
+if (true) {
+    return true;
+}
+```
+
+### `override_spacing`
+
+- Type: bool
+- Default: false
+- Environment: `FOUNDRY_FMT_OVERRIDE_SPACING` or `DAPP_FMT_OVERRIDE_SPACING`
+
+Whether to print a space in state variable, function and modifier `override` attribute.
+
+When enabled:
+
+```solidity
+function foo() override (Parent) public { }
+```
+
+When disabled:
+
+```solidity
+function foo() override(Parent) public { }
+```
+
+### `wrap_comments`
+
+- Type: bool
+- Default: false
+- Environment: `FOUNDRY_FMT_WRAP_COMMENTS` or `DAPP_FMT_WRAP_COMMENTS`
+
+Whether or not to wrap comments on `line_length` reached.
+
+### `docs_style`
+
+- Type: string
+- Default: `preserve`
+- Environment: `FOUNDRY_FMT_DOCS_STYLE` or `DAPP_FMT_DOCS_STYLE`
+
+Style of doc comments. Valid values are:
+
+- `preserve` (default): Preserve the source code style
+- `line`: Use single-line style (`///`)
+- `block`: Use block style (`/** ... */`)
+
+### `ignore`
+
+- Type: array of strings (patterns)
+- Default: `[]`
+- Environment: `FOUNDRY_FMT_IGNORE` or `DAPP_FMT_IGNORE`
+
+List of files to ignore when formatting. This is a comma separated list of glob patterns.
+
+```toml
+[fmt]
+ignore = ["src/vendor/**/*.sol", "lib/**/*.sol"]
+```
+
+### `contract_new_lines`
+
+- Type: bool
+- Default: false
+- Environment: `FOUNDRY_FMT_CONTRACT_NEW_LINES` or `DAPP_FMT_CONTRACT_NEW_LINES`
+
+Whether to add new lines before and after contract declarations.
+
+When enabled:
+
+```solidity
+// imports...
+
+contract MyContract {
+    // ...
+}
+
+contract AnotherContract {
+    // ...
+}
+```
+
+### `sort_imports`
+
+- Type: bool
+- Default: false
+- Environment: `FOUNDRY_FMT_SORT_IMPORTS` or `DAPP_FMT_SORT_IMPORTS`
+
+Whether to sort import statements alphabetically within their import groups. Groups are separated by blank lines.
+
+### `namespace_import_style`
+
+- Type: string
+- Default: `prefer_plain`
+- Environment: `FOUNDRY_FMT_NAMESPACE_IMPORT_STYLE` or `DAPP_FMT_NAMESPACE_IMPORT_STYLE`
+
+Choose between import styles. Valid values are:
+
+- `prefer_plain` (default): Prefer `import "source" as name;`
+- `prefer_glob`: Prefer `import * as name from "source";`
+- `preserve`: Preserve the original style
+
+### `pow_no_space`
+
+- Type: bool
+- Default: false
+- Environment: `FOUNDRY_FMT_POW_NO_SPACE` or `DAPP_FMT_POW_NO_SPACE`
+
+Whether to suppress spaces around the power operator (`**`).
+
+When enabled:
+
+```solidity
+uint256 result = base**exponent;
+```
+
+When disabled (default):
+
+```solidity
+uint256 result = base ** exponent;
+```
+
+### `prefer_compact`
+
+- Type: string
+- Default: `all`
+- Environment: `FOUNDRY_FMT_PREFER_COMPACT` or `DAPP_FMT_PREFER_COMPACT`
+
+Style that determines if a broken list should keep its elements together on their own line, before breaking individually. Valid values are:
+
+- `all` (default): All elements are preferred compact
+- `none`: All elements are preferred consistent
+- `calls`: Calls are preferred compact; events and errors break consistently
+- `events`: Events are preferred compact; calls and errors break consistently
+- `errors`: Errors are preferred compact; calls and events break consistently
+- `events_errors`: Events and errors are preferred compact; calls break consistently
+
+### `single_line_imports`
+
+- Type: bool
+- Default: false
+- Environment: `FOUNDRY_FMT_SINGLE_LINE_IMPORTS` or `DAPP_FMT_SINGLE_LINE_IMPORTS`
+
+Keep single imports on a single line even if they exceed `line_length`.

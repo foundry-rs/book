@@ -1,0 +1,163 @@
+---
+description: Asserts that specific events are emitted during the next call
+---
+
+## `expectEmit`
+
+### Signature
+
+```solidity
+function expectEmit() external;
+function expectEmit(bool checkTopic1, bool checkTopic2, bool checkTopic3, bool checkData) external;
+function expectEmit(address emitter) external;
+function expectEmit(bool checkTopic1, bool checkTopic2, bool checkTopic3, bool checkData, address emitter) external;
+```
+
+### Description
+
+Asserts that a specific event is emitted during the next call.
+
+**Steps to use:**
+1. Call `expectEmit`, optionally specifying which topics to check
+2. Emit the expected event in your test
+3. Perform the call that should emit the event
+
+You can repeat steps 1-2 to match a sequence of events.
+
+### Parameters
+
+| Parameter     | Type      | Description                                           |
+|---------------|-----------|-------------------------------------------------------|
+| `checkTopic1` | `bool`    | Whether to check the first indexed parameter          |
+| `checkTopic2` | `bool`    | Whether to check the second indexed parameter         |
+| `checkTopic3` | `bool`    | Whether to check the third indexed parameter          |
+| `checkData`   | `bool`    | Whether to check the non-indexed event data           |
+| `emitter`     | `address` | The expected address that emits the event             |
+
+:::note
+Topic 0 (the event signature) is always checked automatically.
+:::
+
+### Examples
+
+#### Basic usage (check all topics)
+
+```solidity [test/ExpectEmit.t.sol]
+event Transfer(address indexed from, address indexed to, uint256 amount);
+
+function testEmitsTransfer() public {
+    vm.expectEmit();
+    emit Transfer(address(this), address(1), 10);
+    
+    myToken.transfer(address(1), 10);
+}
+```
+
+#### Check emitter address
+
+```solidity [test/ExpectEmitAddress.t.sol]
+function testEmitsTransferFromToken() public {
+    vm.expectEmit(address(myToken));
+    emit Transfer(address(this), address(1), 10);
+    
+    myToken.transfer(address(1), 10);
+}
+```
+
+#### Selective topic checking
+
+```solidity [test/ExpectEmitSelective.t.sol]
+function testEmitsBatchTransfer() public {
+    for (uint256 i = 0; i < users.length; i++) {
+        // Check topic0, topic1, topic2, but NOT topic3, and check data
+        vm.expectEmit(true, true, false, true);
+        emit Transfer(address(this), users[i], 10);
+    }
+
+    vm.expectEmit(false, false, false, true);
+    emit BatchTransfer(users.length);
+
+    myToken.batchTransfer(users, 10);
+}
+```
+
+### Gotchas
+
+:::note[Event Sequence Matching]
+When matching multiple events, they must be in order but you can skip events. For a function emitting `A, B, C, D, E, F, F, G`:
+
+**Valid:**
+- `[A, B, C]` - sequential events
+- `[B, D, F]` - skipping events is allowed
+- `[C, F, F]` - duplicates are allowed
+
+**Invalid:**
+- `[B, A]` - out of order
+- `[F, F, C]` - out of order
+:::
+
+:::warning
+The expected event must be emitted by the **next call**. If you make an unrelated call first, the expectation will fail:
+
+```solidity [test/ExpectEmitFail.t.sol]
+function testFails() public {
+    vm.expectEmit(address(myToken));
+    emit Transfer(address(this), address(1), 10);
+
+    // This unrelated call causes the expectation to fail
+    myToken.approve(address(this), 1e18);
+    
+    // This call has no effect - expectation already failed
+    myToken.transfer(address(1), 10);
+}
+```
+:::
+
+:::warning
+`expectEmit` enforces the "next call must emit" rule by reverting the call when no matching log is found. If the caller catches that revert (low-level `call` or `try/catch`), the expectation is not consumed and remains active for the rest of the test, where it can be satisfied by a log emitted from any later call:
+
+```solidity [test/ExpectEmitCaughtRevert.t.sol]
+contract Example {
+    event Foo();
+
+    function reverting() external pure { revert(); }
+    function emitFoo() external { emit Foo(); }
+}
+
+function testLeaks() public {
+    Example example = new Example();
+
+    vm.expectEmit();
+    emit Example.Foo();
+
+    // This call is the one expectEmit applies to. It reverts before emitting Foo,
+    // but the parent catches the revert, so the expectation remains active.
+    (bool ok,) = address(example).call(abi.encodeCall(example.reverting, ()));
+    require(!ok);
+
+    // This call emits Foo and satisfies the still-active expectation, so the test passes.
+    example.emitFoo();
+}
+```
+
+To prevent this, perform any caught-revert calls first and register `expectEmit` immediately before the call you want to assert against:
+
+```solidity [test/ExpectEmitCorrect.t.sol]
+function testCorrect() public {
+    Example example = new Example();
+
+    (bool ok,) = address(example).call(abi.encodeCall(example.reverting, ()));
+    require(!ok);
+
+    vm.expectEmit();
+    emit Example.Foo();
+    example.emitFoo();
+}
+```
+:::
+
+### Related Cheatcodes
+
+- [`expectRevert`](/reference/cheatcodes/expect-revert) - Assert that calls revert
+- [`expectCall`](/reference/cheatcodes/expect-call) - Assert that calls are made
+- [`recordLogs`](/reference/cheatcodes/record-logs) - Record all emitted events

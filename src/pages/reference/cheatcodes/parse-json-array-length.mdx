@@ -1,0 +1,51 @@
+---
+description: Returns the length of an array selected from JSON data
+---
+
+## `parseJsonArrayLength`
+
+### Signature
+
+```solidity
+function parseJsonArrayLength(string calldata json, string calldata key)
+    external
+    pure
+    returns (uint256 length);
+```
+
+### Description
+
+Returns the length of the single JSON array selected by `key`. The key uses the same JSONPath syntax as [`parseJson`](/reference/cheatcodes/parse-json).
+
+### Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `json` | `string` | JSON data to inspect |
+| `key` | `string` | JSONPath selecting one array |
+
+### Returns
+
+| Type | Description |
+|------|-------------|
+| `uint256` | Number of elements in the selected array |
+
+### Example
+
+```solidity [test/RecentCheatcodes.t.sol]
+// [!include ~/snippets/projects/cheatcodes/test/RecentCheatcodes.t.sol:json-array-length]
+```
+
+Use `$` to select a root-level array, as shown by the final assertion in the example.
+
+### Gotchas
+
+- The selected value must be an array.
+- The key must resolve to exactly one array. Missing keys and JSONPath expressions that select multiple arrays revert.
+- Empty arrays return `0`.
+
+### Related Cheatcodes
+
+- [`parseJson`](/reference/cheatcodes/parse-json) - Parse JSON values
+- [`parseJsonKeys`](/reference/cheatcodes/parse-json-keys) - Return keys from a JSON object
+- [`keyExistsJson`](/reference/cheatcodes/key-exists-json) - Check whether a JSON key exists

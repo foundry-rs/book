@@ -1,0 +1,88 @@
+---
+description: "Wallet management utilities"
+---
+
+_Generated from `cast wallet --help`; see [CLI reference versions](/reference/versions). Regenerate this page instead of editing it directly._
+
+## cast wallet
+
+Wallet management utilities
+
+:::terminal
+
+```bash
+$ cast wallet --help
+```
+
+```txt
+Usage: cast wallet [OPTIONS] <COMMAND>
+
+Commands:
+  new               Create a new random keypair [alias: n]
+  new-mnemonic      Generates a random BIP39 mnemonic phrase [alias: nm]
+  vanity            Generate a vanity address [alias: va]
+  address           Convert a private key to an address [aliases: a, addr]
+  derive            Derive accounts from a mnemonic [alias: d]
+  sign              Sign a message or typed data [alias: s]
+  sign-auth         EIP-7702 sign authorization [alias: sa]
+  verify            Verify the signature of a message [alias: v]
+  import            Import a private key into an encrypted keystore [alias: i]
+  list              List all the accounts in the keystore default directory
+                    [alias: ls]
+  session           Manage temporary Tempo wallet sessions
+  remove            Remove a wallet from the keystore [alias: rm]
+  private-key       Derives private key from mnemonic [alias: pk]
+  public-key        Get the public key for the given private key [alias: pubkey]
+  decrypt-keystore  Decrypt a keystore file to get the private key [alias: dk]
+  change-password   Change the password of a keystore file [alias: cp]
+  help              Print this message or the help of the given subcommand(s)
+
+Options:
+  -h, --help
+          Print help (see a summary with '-h')
+
+  -j, --threads <THREADS>
+          Number of threads to use. Specifying 0 defaults to the number of
+          logical cores
+          
+          [alias: --jobs]
+
+      --profile <PROFILE>
+          The configuration profile to use
+
+Display options:
+      --color <COLOR>
+          The color of the log messages
+
+          Possible values:
+          - auto:   Intelligently guess whether to use color output (default)
+          - always: Force color output
+          - never:  Force disable color output
+
+      --json
+          Format log messages as JSON
+
+      --md
+          Format log messages as Markdown
+
+  -q, --quiet
+          Do not print log messages
+
+  -v, --verbosity...
+          Verbosity level of the log messages.
+          
+          Pass multiple times to increase the verbosity (e.g. -v, -vv, -vvv).
+          
+          Depending on the context the verbosity levels have different meanings.
+          
+          For example, the verbosity levels of the EVM are:
+          - 2 (-vv): Print logs for all tests.
+          - 3 (-vvv): Print execution traces for failing tests.
+          - 4 (-vvvv): Print execution traces for all tests, and setup traces
+          for failing tests.
+          - 5 (-vvvvv): Print execution and setup traces for all tests,
+          including storage changes and
+            backtraces with line numbers.
+```
+
+:::

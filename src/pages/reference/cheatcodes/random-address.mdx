@@ -1,0 +1,50 @@
+---
+description: Returns a random address
+---
+
+## `randomAddress`
+
+### Signature
+
+```solidity
+function randomAddress() external view returns (address);
+```
+
+### Description
+
+Returns a random `address` from Foundry's internal RNG.
+
+Useful for generating fresh actor addresses in tests without hardcoding constants. The RNG is seeded randomly on each run unless a seed is set via [`setSeed`](/reference/cheatcodes/set-seed) or the `[fuzz] seed` setting in `foundry.toml`.
+
+### Returns
+
+| Type      | Description        |
+|-----------|--------------------|
+| `address` | The random address |
+
+### Examples
+
+```solidity [test/RandomAddress.t.sol]
+function testRandomAddress() public {
+    address alice = vm.randomAddress();
+    address bob = vm.randomAddress();
+
+    vm.deal(alice, 1 ether);
+    vm.prank(alice);
+    payable(bob).transfer(0.5 ether);
+
+    assertEq(bob.balance, 0.5 ether);
+}
+```
+
+### Gotchas
+
+:::note
+The generated address is an arbitrary account with no known private key. If you need to sign with the account, use [`createWallet`](/reference/cheatcodes/create-wallet) or [`addr`](/reference/cheatcodes/addr) instead.
+:::
+
+### Related Cheatcodes
+
+- [`randomUint`](/reference/cheatcodes/random-uint) - Random `uint256`
+- [`createWallet`](/reference/cheatcodes/create-wallet) - Create a wallet with a usable private key
+- [`setSeed`](/reference/cheatcodes/set-seed) - Seed the RNG for deterministic results

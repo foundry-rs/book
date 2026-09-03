@@ -1,0 +1,66 @@
+---
+description: Reads and compares the Foundry version running the tests
+---
+
+## `foundryVersion` cheatcodes
+
+### Signature
+
+```solidity
+function getFoundryVersion() external view returns (string memory version);
+function foundryVersionCmp(string calldata version) external view returns (int256);
+function foundryVersionAtLeast(string calldata version) external view returns (bool);
+```
+
+### Description
+
+These cheatcodes let tests and scripts inspect the Foundry version they are running under, for example to gate logic that depends on a cheatcode introduced in a newer release.
+
+| Function                | Description                                                          |
+|-------------------------|----------------------------------------------------------------------|
+| `getFoundryVersion`     | Returns the full version string                                      |
+| `foundryVersionCmp`     | Compares the current version against `version`, returning -1, 0, or 1 |
+| `foundryVersionAtLeast` | Returns `true` if the current version is at least `version`          |
+
+`getFoundryVersion` returns the format `<cargo_version>-<tag>+<git_sha_short>.<unix_build_timestamp>.<profile>`, for example `1.3.0-nightly+3cb96bde9b.1737036656.debug`.
+
+The comparison cheatcodes take a `major.minor.patch` version string and compare only the semver components, ignoring pre-release and build metadata. `foundryVersionCmp` returns `-1`, `0`, or `1` for less than, equal, and greater than, so it can be compared against `0` like a classic `compare` function. `foundryVersionAtLeast(version)` is equivalent to `foundryVersionCmp(version) >= 0`.
+
+### Parameters
+
+| Parameter | Type     | Description                                    |
+|-----------|----------|------------------------------------------------|
+| `version` | `string` | Version to compare against, as `major.minor.patch` |
+
+### Returns
+
+| Function                | Return value                                              |
+|-------------------------|-----------------------------------------------------------|
+| `getFoundryVersion`     | The full version string                                   |
+| `foundryVersionCmp`     | `-1`, `0`, or `1`                                         |
+| `foundryVersionAtLeast` | `true` if the current version is `>=` the given version   |
+
+### Examples
+
+```solidity [test/FoundryVersion.t.sol]
+function testFoundryVersion() public view {
+    string memory version = vm.getFoundryVersion();
+    console.log(version);
+
+    if (vm.foundryVersionAtLeast("1.0.0")) {
+        // Use functionality that requires Foundry 1.0 or later.
+    }
+
+    assertGe(vm.foundryVersionCmp("0.2.0"), 0);
+}
+```
+
+### Gotchas
+
+:::note
+Pre-release versions such as nightlies compare by their semver components only. A nightly `1.3.0-nightly` build is treated as `1.3.0`.
+:::
+
+### Related Cheatcodes
+
+- [`getChainId`](/reference/cheatcodes/get-chain-id) - Get the current chain ID

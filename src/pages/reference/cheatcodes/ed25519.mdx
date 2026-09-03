@@ -1,0 +1,86 @@
+---
+description: Creates Ed25519 keys and signs or verifies namespaced messages
+---
+
+## Ed25519
+
+### Signatures
+
+```solidity
+function createEd25519Key(bytes32 salt) external pure returns (bytes32 publicKey, bytes32 privateKey);
+function publicKeyEd25519(bytes32 privateKey) external pure returns (bytes32 publicKey);
+function signEd25519(bytes calldata namespace, bytes calldata message, bytes32 privateKey)
+    external
+    pure
+    returns (bytes memory signature);
+function verifyEd25519(
+    bytes calldata signature,
+    bytes calldata namespace,
+    bytes calldata message,
+    bytes32 publicKey
+) external pure returns (bool valid);
+```
+
+### Description
+
+These cheatcodes provide deterministic Ed25519 key generation, public-key derivation, signing, and verification for tests.
+
+- `createEd25519Key` treats the 32-byte `salt` as the private key and derives its public key.
+- `publicKeyEd25519` derives a public key from an existing 32-byte private key.
+- `signEd25519` returns a 64-byte signature over `namespace || message`.
+- `verifyEd25519` verifies the same byte sequence and returns `false` for an invalid signature, public key, or signature length.
+
+The namespace provides domain separation when the signer and verifier use the same unambiguous encoding.
+
+### Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `salt` | `bytes32` | Deterministic private key input; returned unchanged as `privateKey` |
+| `privateKey` | `bytes32` | Ed25519 private key used to derive a public key or create a signature |
+| `publicKey` | `bytes32` | Ed25519 public key used to verify a signature |
+| `namespace` | `bytes` | Domain-separation prefix prepended to the message |
+| `message` | `bytes` | Message bytes to sign or verify |
+| `signature` | `bytes` | 64-byte Ed25519 signature to verify |
+
+### Returns
+
+| Function | Return value |
+|----------|--------------|
+| `createEd25519Key` | The derived 32-byte public key and the supplied salt as the private key |
+| `publicKeyEd25519` | The derived 32-byte public key |
+| `signEd25519` | A 64-byte signature over `namespace || message` |
+| `verifyEd25519` | `true` when the signature is valid; otherwise `false` |
+
+### Examples
+
+#### Create a key pair
+
+```solidity [test/Ed25519.t.sol]
+// [!include ~/snippets/projects/cheatcodes/test/Ed25519.t.sol:key-pair]
+```
+
+The same salt always produces the same key pair, and `privateKey` is equal to the supplied salt.
+
+#### Sign and verify a namespaced message
+
+```solidity [test/Ed25519.t.sol]
+// [!include ~/snippets/projects/cheatcodes/test/Ed25519.t.sol:sign-verify]
+```
+
+Changing either the namespace or the message causes verification to return `false`.
+
+### Gotchas
+
+:::warning[Test keys only]
+The salt is the private key, not entropy passed to a key-derivation function. Never use predictable or committed salts for production keys.
+:::
+
+- The signature covers the raw concatenation `namespace || message` without a delimiter. Use a fixed-length namespace, or encode variable components into the message with `abi.encode`, when boundaries can vary.
+- `verifyEd25519` returns `false` instead of reverting for malformed public keys and signatures that are not 64 bytes long.
+- These functions operate in Foundry's test environment. They do not add Ed25519 verification to a deployed Solidity contract.
+
+### Related Cheatcodes
+
+- [`sign`](/reference/cheatcodes/sign) - Sign a digest with a secp256k1 key
+- [`createWallet`](/reference/cheatcodes/create-wallet) - Create a secp256k1 wallet for tests

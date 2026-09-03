@@ -1,0 +1,78 @@
+---
+description: Reads the current caller mode, msg.sender, and tx.origin
+---
+
+## `readCallers`
+
+### Signature
+
+```solidity
+enum CallerMode {
+    None,
+    Broadcast,
+    RecurrentBroadcast,
+    Prank,
+    RecurrentPrank
+}
+
+function readCallers() external returns (CallerMode callerMode, address msgSender, address txOrigin);
+```
+
+### Description
+
+Reads the current `CallerMode`, `msg.sender`, and `tx.origin`.
+
+The `CallerMode` enum indicates if there is an active caller modification and the type:
+
+| Mode                | Description                                                    |
+|---------------------|----------------------------------------------------------------|
+| `None`              | No caller modification is active                               |
+| `Prank`             | Single-call prank set with [`prank`](/reference/cheatcodes/prank) |
+| `RecurrentPrank`    | Multi-call prank set with [`startPrank`](/reference/cheatcodes/start-prank) |
+| `Broadcast`         | Single-call broadcast set with [`broadcast`](/reference/cheatcodes/broadcast) |
+| `RecurrentBroadcast`| Multi-call broadcast set with [`startBroadcast`](/reference/cheatcodes/start-broadcast) |
+
+### Returns
+
+| Parameter    | Type         | Description                              |
+|--------------|--------------|------------------------------------------|
+| `callerMode` | `CallerMode` | The current caller modification mode     |
+| `msgSender`  | `address`    | The current `msg.sender` value           |
+| `txOrigin`   | `address`    | The current `tx.origin` value            |
+
+### Examples
+
+```solidity [test/ReadCallers.t.sol]
+function testReadCallers() public {
+    // No modification active
+    (CallerMode mode, address sender, address origin) = vm.readCallers();
+    assertEq(uint8(mode), uint8(CallerMode.None));
+    
+    // With prank
+    vm.prank(alice);
+    (mode, sender, origin) = vm.readCallers();
+    assertEq(uint8(mode), uint8(CallerMode.Prank));
+    assertEq(sender, alice);
+    
+    // With prank including tx.origin
+    vm.prank(alice, bob);
+    (mode, sender, origin) = vm.readCallers();
+    assertEq(uint8(mode), uint8(CallerMode.Prank));
+    assertEq(sender, alice);
+    assertEq(origin, bob);
+    
+    // With broadcast
+    vm.broadcast(alice);
+    (mode, sender, origin) = vm.readCallers();
+    assertEq(uint8(mode), uint8(CallerMode.Broadcast));
+    assertEq(sender, alice);
+    assertEq(origin, alice);
+}
+```
+
+### Related Cheatcodes
+
+- [`prank`](/reference/cheatcodes/prank) - Sets `msg.sender` for a single call
+- [`startPrank`](/reference/cheatcodes/start-prank) - Sets `msg.sender` for all subsequent calls
+- [`broadcast`](/reference/cheatcodes/broadcast) - Sets broadcaster for a single call
+- [`startBroadcast`](/reference/cheatcodes/start-broadcast) - Sets broadcaster for all subsequent calls

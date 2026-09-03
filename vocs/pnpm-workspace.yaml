@@ -1,8 +1,0 @@
-packages:
-  - perf
-catalog:
-  vite-plus: 0.3.0
-allowBuilds:
-  esbuild: true
-  es5-ext: false
-  vue-demi: false

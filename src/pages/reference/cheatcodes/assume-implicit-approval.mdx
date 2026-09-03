@@ -1,0 +1,37 @@
+---
+description: Skips fuzz inputs unless a spender is implicitly approved on Tempo
+---
+
+## `assumeImplicitApproval`
+
+### Signature
+
+```solidity
+function assumeImplicitApproval(address spender) external view;
+```
+
+### Description
+
+Skips a fuzz or invariant input unless `spender` is implicitly approved on the active Tempo hardfork.
+
+This is the Tempo-specific counterpart to [`assume`](/reference/cheatcodes/assume) for tests that only make sense when a spender can pull TIP-20 tokens from `msg.sender` without a prior `approve()`.
+
+### Parameters
+
+| Parameter | Type      | Description          |
+|-----------|-----------|----------------------|
+| `spender` | `address` | The spender to check |
+
+### Examples
+
+```solidity [test/ImplicitApproval.t.sol]
+function testImplicitPull(address spender) public {
+    vm.assumeImplicitApproval(spender);
+    token.transferFrom(owner, recipient, amount);
+}
+```
+
+### Related Cheatcodes
+
+- [`isImplicitlyApproved`](/reference/cheatcodes/is-implicitly-approved) - Check whether a spender is implicitly approved
+- [`assume`](/reference/cheatcodes/assume) - Skip fuzz inputs based on a boolean condition

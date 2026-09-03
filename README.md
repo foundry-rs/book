@@ -1,6 +1,7 @@
 ## 📖 Foundry Docs
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+
 [![All Contributors](https://img.shields.io/badge/all_contributors-115-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
@@ -10,15 +11,15 @@ Documentation on all things Foundry. [Read now](https://getfoundry.sh).
 
 Check our [contributing guidelines](./CONTRIBUTING.md). Feel free to contribute wording, sentences, chapters, and guides!
 
-The book is built with [vocs](https://vocs.dev), which you can get by running `bun i vocs`.
+The book is built with [vocs](https://vocs.dev). Install dependencies with `pnpm install`.
 
 To see the book change live run:
 
 ```sh
-cd vocs && bun dev
+pnpm dev
 ```
 
-To add a new section (file) to the book, add it to [`sidebar.ts`](./vocs/sidebar/sidebar.ts).
+To add a new section (file) to the book, add it to [`sidebar.ts`](./sidebar/sidebar.ts).
 
 For a more structured overview of the current issues, see [the GitHub project](https://github.com/orgs/foundry-rs/projects/1).
 

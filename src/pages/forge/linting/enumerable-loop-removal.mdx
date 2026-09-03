@@ -1,0 +1,66 @@
+---
+description: EnumerableSet removal while iterating with at
+---
+
+## Enumerable loop removal
+
+**Severity**: `High`
+**ID**: `enumerable-loop-removal`
+
+Flags `remove` on an EnumerableSet while a loop iterates the same set with `at`.
+
+### What it does
+
+Reports the conservative, flow-free shape where a loop walks a set by an ascending index and removes from that same set. The loop must read a bare cadence such as `set.at(i)`, write `i` only through unconditional positive increments, and have a straight-line statement body without branches, jumps, reverts, inline assembly, `try`, or nested loops.
+
+Calls are resolved by type, so both `set.remove(value)` and `EnumerableSet.remove(set, value)` are recognized. The implementation identifies `at` and `remove` by whether they are declared in a library named exactly `EnumerableSet`; it does not verify OpenZeppelin provenance or behavior. A user library with that name can therefore match, while a renamed or differently named fork is not recognized.
+
+The `at` and `remove` receivers must resolve to the same storage path. The lint follows struct fields, literal mapping keys, and straight-line local `storage` aliases. If a receiver cannot be resolved statically, it is treated as a possible alias, so the lint can warn even when two operands are distinct at runtime.
+
+Several nearby shapes do not match the report:
+
+- `remove` in a loop without `at` supports the recommended collect-then-remove pattern;
+- `at` in a loop without `remove` is a plain read;
+- `remove` outside a loop is fine;
+- reading and removing different, statically distinguishable set instances is fine;
+- repeatedly removing `at(0)`, or another index that the loop does not advance, drains a fixed slot;
+- a stationary or composite index such as `set.at(i % 1)` is outside the reported shape;
+- the same method names from a library not named `EnumerableSet` are out of scope.
+
+Calls reached indirectly through a helper invoked from the loop are not analyzed. The detector deliberately leaves statement-level control-flow cases unreported, including removals under `if`, removals followed by `continue`, nested loops, and all descending traversals. Composite or copied indices and member cursors are also outside the reported shape. Some of these are genuine corruptions; distinguishing them from safe lookalikes requires analysis this lint does not perform.
+
+A `remove` nested in a short-circuit or ternary expression remains part of an otherwise straight-line statement and can report even when that expression arm does not execute. The lint also does not relate the argument passed to `remove` back to the value returned by `at`, so a safe same-set operation such as removing the current tail while separately reading at the ascending cadence can warn.
+
+### Why is this bad?
+
+`EnumerableSet.remove` is swap-and-pop: it moves the last element into the removed slot and shrinks the set. Iterating by index with `at` while removing skips the swapped-in elements or reads out-of-bounds indices, so some elements are silently never visited.
+
+### Example
+
+#### Bad
+
+```solidity
+for (uint256 i = 0; i < set.length(); i++) {
+    set.remove(set.at(i));
+}
+```
+
+#### Good
+
+```solidity
+// Collect values while iterating, then remove them afterward.
+address[] memory toRemove = new address[](set.length());
+uint256 count;
+for (uint256 i = 0; i < set.length(); i++) {
+    address value = set.at(i);
+    if (shouldRemove(value)) toRemove[count++] = value;
+}
+for (uint256 i = 0; i < count; i++) {
+    set.remove(toRemove[i]);
+}
+
+// Or drain directly from the end.
+for (uint256 i = set.length(); i > 0; i--) {
+    set.remove(set.at(i - 1));
+}
+```

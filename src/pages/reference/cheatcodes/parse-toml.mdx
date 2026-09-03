@@ -1,0 +1,203 @@
+---
+description: Parses TOML files and returns values as ABI-encoded bytes
+---
+
+## `parseToml`
+
+### Signature
+
+```solidity
+function parseToml(string memory toml, string memory key) external pure returns (bytes memory);
+function parseToml(string memory toml) external pure returns (bytes memory);
+```
+
+### Description
+
+Parses TOML files in the form of strings after converting to JSON internally. Usually coupled with `vm.readFile()` which returns an entire file in the form of a string.
+
+The cheatcode accepts either a `key` to search for a specific value in the TOML, or no key to return the entire TOML. It returns the value as an ABI-encoded `bytes` array that must be decoded with `abi.decode()`.
+
+You can use `stdToml` from `forge-std` as a helper library for better UX.
+
+### Parameters
+
+| Parameter | Type     | Description                                |
+|-----------|----------|--------------------------------------------|
+| `toml`    | `string` | The TOML string to parse                   |
+| `key`     | `string` | The JSONPath key to retrieve (optional)    |
+
+### Returns
+
+| Type    | Description                                |
+|---------|--------------------------------------------|
+| `bytes` | The ABI-encoded value(s) from the TOML     |
+
+### JSONPath Key Syntax
+
+`parseToml` uses JSONpath syntax to form arbitrary keys. The same syntax (or a dialect) is used by [`jq`](https://stedolan.github.io/jq/).
+
+See the [jsonpath-rust README](https://crates.io/crates/jsonpath-rust) for the exact dialect used.
+
+### Encoding Rules
+
+TOML values are first converted to JSON, then encoded to Solidity types.
+
+**TOML to JSON Conversion**
+
+| TOML Type | JSON Type | Notes |
+|-----------|-----------|-------|
+| `integer` | `number` | Limited to 64 bits; use strings for larger values |
+| `float` | `number` | Limited to 32 bits; use strings to prevent precision loss |
+| `datetime` | `string` | Encoded as string |
+| `inline-table` | `object` | Tables become objects |
+| `null` | `"null"` | Encoded as string "null" |
+
+**JSON to Solidity Encoding**
+
+| JSON Type | Solidity Type |
+|-----------|---------------|
+| `null` | `bytes32(0)` or `""` |
+| Number >= 0 | `uint256` |
+| Negative number | `int256` |
+| String starting with `0x` (40 hex chars) | `address` |
+| String starting with `0x` (66 chars) | `bytes32` |
+| String starting with `0x` (other lengths) | `bytes` |
+| Other strings | `string` |
+| Array | Dynamic array of first element's type |
+| Object (`{}`) | `tuple` |
+
+:::warning
+- Floating point numbers with decimal digits are not allowed
+- Array values cannot have mixed types (e.g., `[256, "b"]` is invalid)
+- TOML integers are limited to 64 bits; use strings for larger values
+:::
+
+### Type Coercion
+
+For more control, use typed parsing functions:
+
+```solidity
+vm.parseTomlUint(toml, key)      // Parse as uint256
+vm.parseTomlInt(toml, key)       // Parse as int256
+vm.parseTomlBool(toml, key)      // Parse as bool
+vm.parseTomlAddress(toml, key)   // Parse as address
+vm.parseTomlBytes(toml, key)     // Parse as bytes
+vm.parseTomlBytes32(toml, key)   // Parse as bytes32
+vm.parseTomlString(toml, key)    // Parse as string
+vm.parseTomlUintArray(toml, key) // Parse as uint256[]
+// ... and more array variants
+```
+
+### Examples
+
+#### Decoding TOML tables into Solidity structs
+
+:::code-group
+
+```solidity [test/ParseToml.t.sol]
+struct Data {
+    uint256 a;
+    string b;
+}
+
+function test_parseToml() public {
+    string memory toml = vm.readFile("./fixtures/example.toml");
+    bytes memory data = vm.parseToml(toml);
+    Data memory result = abi.decode(data, (Data));
+    assertEq(result.a, 43);
+    assertEq(result.b, "sigma");
+}
+```
+
+```toml [fixtures/example.toml]
+a = 43
+b = "sigma"
+```
+
+:::
+
+:::warning[Alphabetical Ordering]
+Struct fields are matched to TOML keys in **alphabetical order by key name**, not by struct field order. Ensure your struct field types match the alphabetically-sorted keys.
+:::
+
+#### Complex nested structures
+
+:::code-group
+
+```solidity [test/ParseToml.t.sol]
+struct Apple {
+    string color;    // 'c' comes first alphabetically
+    uint8 sourness;  // 's' comes second
+    uint8 sweetness; // 's' - but 'sourness' < 'sweetness'
+}
+
+struct FruitStall {
+    Apple[] apples;  // 'a' comes before 'n'
+    string name;
+}
+
+function test_parseNestedToml() public {
+    string memory root = vm.projectRoot();
+    string memory path = string.concat(root, "/fixtures/fruitstall.toml");
+    string memory toml = vm.readFile(path);
+    bytes memory data = vm.parseToml(toml);
+    FruitStall memory fruitstall = abi.decode(data, (FruitStall));
+    
+    console2.log("Welcome to", fruitstall.name);
+}
+```
+
+```toml [fixtures/fruitstall.toml]
+name = "Fresh Fruit"
+
+[[apples]]
+sweetness = 7
+sourness = 3
+color = "Red"
+
+[[apples]]
+sweetness = 5
+sourness = 5
+color = "Green"
+```
+
+:::
+
+### How to use StdToml
+
+1. Import the library: `import {stdToml} from "forge-std/StdToml.sol";`
+2. Define its usage: `using stdToml for string;`
+3. Use helper functions for simple values or `parseRaw()` for entire tables
+
+```solidity [test/StdTomlExample.t.sol]
+using stdToml for string;
+
+function test_stdToml() public {
+    string memory root = vm.projectRoot();
+    string memory path = string.concat(root, "/fixtures/config.toml");
+    string memory toml = vm.readFile(path);
+    bytes memory data = toml.parseRaw(".");
+    Config memory config = abi.decode(data, (Config));
+}
+```
+
+### Gotchas
+
+:::warning[File Permissions]
+If you receive "The path is not allowed to be accessed for read operations", enable read permissions in `foundry.toml`:
+```toml
+fs_permissions = [{ access = "read", path = "./fixtures" }]
+```
+:::
+
+### Related Cheatcodes
+
+- [`parseJson`](/reference/cheatcodes/parse-json) - Parse JSON files
+- [`parseTomlKeys`](/reference/cheatcodes/parse-toml-keys) - Get list of keys
+- [`keyExistsToml`](/reference/cheatcodes/key-exists-toml) - Check if key exists
+- [`writeToml`](/reference/cheatcodes/write-toml) - Write TOML files
+
+### See Also
+
+- [stdToml.sol](https://github.com/foundry-rs/forge-std/blob/master/src/StdToml.sol)
+- [File Cheatcodes](/reference/cheatcodes/fs)

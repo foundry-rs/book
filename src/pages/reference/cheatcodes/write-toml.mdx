@@ -1,0 +1,108 @@
+---
+description: Writes a serialized JSON object to a TOML file
+---
+
+## `writeToml`
+
+### Signature
+
+```solidity
+function writeToml(string calldata json, string calldata path) external;
+function writeToml(string calldata json, string calldata path, string calldata valueKey) external;
+```
+
+### Description
+
+Writes a serialized JSON object to a TOML file after conversion.
+
+If no `valueKey` is provided, the TOML object will be written to a new file (overwriting if it exists).
+
+If a `valueKey` is provided, the file must already exist and be valid TOML. The value at the JSONPath `valueKey` will be replaced with the new object after TOML conversion.
+
+### Parameters
+
+| Parameter  | Type     | Description                                        |
+|------------|----------|----------------------------------------------------|
+| `json`     | `string` | The JSON object as a stringified string            |
+| `path`     | `string` | The file path to write to                          |
+| `valueKey` | `string` | JSONPath to the value to replace (optional)        |
+
+### JSONPath Syntax
+
+:::warning[Path Format]
+JSON paths must start with `.` or `$`. Using bare key names like `"key.foo"` will fail silently. Use `".key.foo"` or `"$.key.foo"` instead.
+:::
+
+| Path | Description |
+|------|-------------|
+| `.key` | Access root-level property |
+| `$.key` | Equivalent to above (explicit root) |
+| `.obj1.obj2` | Access nested property |
+| `..keyName` | Find key anywhere in document |
+
+### Examples
+
+#### Writing a new TOML file
+
+```solidity [test/WriteToml.t.sol]
+string memory jsonObj = '{ "boolean": true, "number": 342, "myObject": { "title": "finally json serialization" } }';
+vm.writeToml(jsonObj, "./output/example.toml");
+```
+
+Result:
+
+```toml [output/example.toml]
+boolean = true
+number = 342
+
+[myObject]
+title = "finally json serialization"
+```
+
+#### Updating existing values
+
+```solidity [test/WriteToml.t.sol]
+// Replace the value of `myObject` with a new object
+string memory newJsonObj = '{ "aNumber": 123, "aString": "asd" }';
+vm.writeToml(newJsonObj, "./output/example.toml", ".myObject");
+
+// Replace a nested value
+vm.writeToml("my new string", "./output/example.toml", ".myObject.aString");
+```
+
+Result:
+
+```toml [output/example.toml]
+boolean = true
+number = 342
+
+[myObject]
+aNumber = 123
+aString = "my new string"
+```
+
+#### Using descendant search
+
+```solidity [test/WriteToml.t.sol]
+// Update a deeply nested value using descendant search
+vm.writeToml("13371337", "./output/example.toml", "..veryDeep");
+```
+
+### Gotchas
+
+:::warning[File Permissions]
+The file path needs to be in the allowed paths. Configure in `foundry.toml`:
+```toml
+fs_permissions = [{ access = "read-write", path = "./output" }]
+```
+:::
+
+:::note
+If the specified key or any intermediate keys in the JSON path don't exist, they will be created automatically.
+:::
+
+### Related Cheatcodes
+
+- [`serializeJson`](/reference/cheatcodes/serialize-json) - Build JSON objects programmatically
+- [`writeJson`](/reference/cheatcodes/write-json) - Write JSON files
+- [`parseToml`](/reference/cheatcodes/parse-toml) - Parse TOML files
