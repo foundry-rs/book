@@ -1,10 +1,10 @@
-#!/usr/bin/env bun
 import { writeFileSync, mkdirSync } from "fs";
 import { join } from "path";
+import { pathToFileURL } from "url";
 
 const BENCHMARKS_URL =
   "https://raw.githubusercontent.com/foundry-rs/foundry/master/benches/LATEST.md";
-const OUTPUT_DIR = join(import.meta.dir, "../src/pages");
+const OUTPUT_DIR = join(import.meta.dirname, "../src/pages");
 const OUTPUT_FILE = join(OUTPUT_DIR, "benchmarks.mdx");
 
 interface BenchmarkData {
@@ -522,6 +522,6 @@ async function main() {
   }
 }
 
-if (import.meta.main) {
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   void main();
 }

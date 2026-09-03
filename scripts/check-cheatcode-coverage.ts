@@ -19,7 +19,7 @@ type Manifest = {
   knownMissing: string[];
 };
 
-const root = resolve(import.meta.dir, "..");
+const root = resolve(import.meta.dirname, "..");
 const manifestPath = join(root, "scripts/cheatcode-coverage.json");
 const docsDir = join(root, "src/pages/reference/cheatcodes");
 const sidebarPath = join(root, "sidebar/cmd-reference.ts");
@@ -32,9 +32,9 @@ const valueAfter = (flag: string) => {
 
 if (args.has("--help")) {
   console.log(`Usage:
-  bun scripts/check-cheatcode-coverage.ts
-  bun scripts/check-cheatcode-coverage.ts --refresh --spec <path> --commit <sha>
-  bun scripts/check-cheatcode-coverage.ts --accept-current
+  vp run check:cheatcodes
+  vp exec tsx scripts/check-cheatcode-coverage.ts --refresh --spec <path> --commit <sha>
+  vp exec tsx scripts/check-cheatcode-coverage.ts --accept-current
 
 The default mode checks documentation against the committed manifest. Refresh
 updates the canonical function list while preserving reviewed gaps. Only use

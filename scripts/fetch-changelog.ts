@@ -1,4 +1,3 @@
-#!/usr/bin/env bun
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import { dirname, join } from "path";
 
@@ -15,7 +14,7 @@ import { dirname, join } from "path";
 
 const REPO = "foundry-rs/foundry";
 const API_BASE = `https://api.github.com/repos/${REPO}`;
-const OUTPUT_FILE = join(import.meta.dir, "../src/data/changelog.json");
+const OUTPUT_FILE = join(import.meta.dirname, "../src/data/changelog.json");
 
 const STABLE_TAG = /^v(\d+)\.(\d+)\.(\d+)$/;
 

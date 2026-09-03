@@ -47,13 +47,13 @@ jobs:
           curl --fail --location --retry 3 \
             "https://raw.githubusercontent.com/foundry-rs/foundry/$foundry_commit/crates/cheatcodes/assets/cheatcodes.json" \
             --output "$spec"
-          bun scripts/check-cheatcode-coverage.ts \
+          vp exec tsx scripts/check-cheatcode-coverage.ts \
             --refresh --spec "$spec" --commit "$foundry_commit"
 
       - name: Refresh changelog data
         env:
           GITHUB_TOKEN: ${{ github.token }}
-        run: bun scripts/fetch-changelog.ts --strict
+        run: vp exec tsx scripts/fetch-changelog.ts --strict
 
       - name: Update
         run: |

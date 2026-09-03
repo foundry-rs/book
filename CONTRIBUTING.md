@@ -286,10 +286,6 @@ $ npm install
 $ pnpm install
 ```
 
-```bash [bun]
-$ bun install
-```
-
 :::
 ````
 

@@ -6,7 +6,7 @@ export default defineConfig({
   fmt: {
     ignorePatterns: [
       ".all-contributorsrc",
-      "bun.lock",
+      "pnpm-lock.yaml",
       "src/data/**",
       "src/pages.gen.ts",
       "src/pages/benchmarks.mdx",

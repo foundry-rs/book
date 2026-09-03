@@ -12,7 +12,7 @@ type Manifest = {
   knownMissing: string[];
 };
 
-const root = resolve(import.meta.dir, "..");
+const root = resolve(import.meta.dirname, "..");
 const manifestPath = join(root, "scripts/anvil-rpc-coverage.json");
 const docsDir = join(root, "src/pages/anvil");
 
@@ -24,9 +24,9 @@ const valueAfter = (flag: string) => {
 
 if (args.has("--help")) {
   console.log(`Usage:
-  bun scripts/check-anvil-rpc-coverage.ts
-  bun scripts/check-anvil-rpc-coverage.ts --refresh --source <path to anvil core eth/mod.rs> --commit <sha>
-  bun scripts/check-anvil-rpc-coverage.ts --accept-current
+  vp run check:anvil-rpc
+  vp exec tsx scripts/check-anvil-rpc-coverage.ts --refresh --source <path to anvil core eth/mod.rs> --commit <sha>
+  vp exec tsx scripts/check-anvil-rpc-coverage.ts --accept-current
 
 The default mode checks the anvil documentation against the committed manifest.
 Refresh updates the canonical method list while preserving reviewed gaps. Only
