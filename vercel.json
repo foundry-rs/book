@@ -149,8 +149,8 @@
 
     { "source": "/benches", "destination": "/benchmarks" }
   ],
-  "buildCommand": "$HOME/.vite-plus/bin/vp run build:vercel",
-  "installCommand": "curl -fsSL https://vite.plus | VP_VERSION=0.3.0 bash && $HOME/.vite-plus/bin/vp install --frozen-lockfile",
+  "buildCommand": "$HOME/.local/share/vite-plus/bin/vp run build:vercel",
+  "installCommand": "curl -fsSL https://vite.plus | VP_VERSION=0.3.0 bash && $HOME/.local/share/vite-plus/bin/vp install --frozen-lockfile",
   "functions": {
     "api/[...path].ts": {
       "maxDuration": 60
