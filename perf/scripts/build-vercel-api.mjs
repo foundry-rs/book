@@ -14,12 +14,18 @@ await build({
   build: {
     emptyOutDir: false,
     outDir: directory,
-    rollupOptions: { input: resolve(import.meta.dirname, '../src/server/vercel-demo.ts'), output: { codeSplitting: false, entryFileNames: 'index.js', format: 'es' } },
+    rollupOptions: {
+      input: resolve(import.meta.dirname, '../src/server/vercel-demo.ts'),
+      output: { codeSplitting: false, entryFileNames: 'index.js', format: 'es' },
+    },
     ssr: true,
     target: 'es2022',
   },
 })
-await writeFile(resolve(directory, '.vc-config.json'), '{"runtime":"edge","entrypoint":"index.js"}\n')
+await writeFile(
+  resolve(directory, '.vc-config.json'),
+  '{"runtime":"edge","entrypoint":"index.js"}\n',
+)
 const configPath = resolve(output, 'config.json')
 const config = JSON.parse(await readFile(configPath, 'utf8'))
 const apiRoute = { src: '^/api(?:/(.*))?$', dest: '/perf-api?__perf_path=$1' }
