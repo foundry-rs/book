@@ -149,10 +149,6 @@
 
     { "source": "/benches", "destination": "/benchmarks" }
   ],
-  "rewrites": [
-    { "source": "/api", "destination": "/api/perf" },
-    { "source": "/api/:path*", "destination": "/api/perf?__perf_path=:path*" }
-  ],
   "buildCommand": "$HOME/.local/share/vite-plus/bin/vp run build:vercel",
   "installCommand": "curl -fsSL https://vite.plus | VP_VERSION=0.3.0 bash && $HOME/.local/share/vite-plus/bin/vp install --frozen-lockfile"
 }
