@@ -21,6 +21,8 @@ Each state-changing operation has a limit query and a preview query:
 
 You can also query the [`asset`](/reference/cast/erc4626/asset) address, [`total-assets`](/reference/cast/erc4626/total-assets), or use [`convert-to-shares`](/reference/cast/erc4626/convert-to-shares) and [`convert-to-assets`](/reference/cast/erc4626/convert-to-assets) for caller-independent conversions.
 
+For a combined view, [`info`](/reference/cast/erc4626/info) summarizes the vault and its exchange rate, [`position`](/reference/cast/erc4626/position) summarizes one owner's shares and exit limits, and [`check`](/reference/cast/erc4626/check) probes whether the synchronous read interface behaves as expected.
+
 The vault contract is also the ERC-20 share token. Use `cast erc20-token` for inherited operations such as `balance`, `allowance`, `approve`, and `transfer`.
 
 ### Inspect a vault
@@ -30,10 +32,12 @@ Set the vault and RPC endpoint, then read its underlying asset and accounting st
 ```bash
 $ export VAULT=0x...
 $ export RPC_URL=https://...
-$ cast erc4626 asset $VAULT --rpc-url $RPC_URL
-$ cast erc4626 total-assets $VAULT --rpc-url $RPC_URL
-$ cast erc4626 convert-to-shares $VAULT $ASSETS --rpc-url $RPC_URL
+$ cast erc4626 info $VAULT --rpc-url $RPC_URL
+$ cast erc4626 info $VAULT --human --rpc-url $RPC_URL
+$ cast erc4626 position $VAULT $OWNER --human --rpc-url $RPC_URL
 ```
+
+`info` reports vault and asset metadata, total assets and shares, and normalized conversions in both directions. `position` reports an owner's share balance, its asset equivalent, and the owner's current `max-withdraw` and `max-redeem` values. Text output uses exact integer amounts by default; pass `--human` to format them using the on-chain token decimals. JSON output always preserves each integer as `raw` and includes `formatted` when decimals are available.
 
 `convert-to-shares` and `convert-to-assets` provide idealized, caller-independent conversions. Use the corresponding preview command when you are preparing a specific operation because previews account for the vault's operation-specific fees and rounding.
 
@@ -67,12 +71,20 @@ The signing account must be `OWNER` or have sufficient allowance to spend the ow
 
 ### Compatibility and safety
 
-`cast erc4626` calls the standard selectors directly; it does not certify that a contract implements every ERC-4626 requirement. Cast reports targeted warnings for compatibility cases it can identify:
+Probe a vault before relying on the synchronous read interface:
+
+```bash
+$ cast erc4626 check $VAULT --account $OWNER --rpc-url $RPC_URL
+```
+
+`check` makes only read calls. It verifies contract code, the base accounting, conversion, limit, and preview calls, inherited ERC-20 reads, and the underlying asset contract. It prints the full report and exits nonzero when a required check fails; warnings do not make the command fail. Omit `--account` to use the zero address for account-dependent probes.
+
+This is a compatibility probe, not a compliance certificate. It does not invoke state-changing selectors or prove the standard's semantic requirements. Cast reports targeted warnings for compatibility cases it can identify:
 
 - A zero `max-deposit` or `max-mint` may be a conservative limit rather than proof that the operation is permanently disabled.
 - A zero `max-withdraw` or `max-redeem` for an owner with shares may reflect temporary liquidity, authorization, or integration constraints.
 - The [ERC-7535](https://eips.ethereum.org/EIPS/eip-7535) native-asset sentinel requires a payable, value-bearing call; the typed write commands currently encode ERC-20-style calldata only.
-- Preview calls can revert by design for the corresponding asynchronous flow in [ERC-7540](https://eips.ethereum.org/EIPS/eip-7540).
+- Preview calls can revert by design for the corresponding asynchronous flow in [ERC-7540](https://eips.ethereum.org/EIPS/eip-7540). `check` treats these reverts as expected warnings only when the vault advertises the mandated ERC-165 interface ID for that flow; an unadvertised preview failure remains a failed check.
 
 The transaction commands invoke the base ERC-4626 methods without minimum-output or maximum-input slippage fields. A preview can become stale before the transaction executes, so use a protocol router or a vault-specific extension such as [ERC-5143](https://eips.ethereum.org/EIPS/eip-5143) when the operation needs on-chain price bounds.
 

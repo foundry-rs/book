@@ -1,30 +1,30 @@
 ---
-description: "Preview the assets required to mint a share amount"
+description: "Show vault, asset, and exchange-rate information"
 ---
 
-_Generated from `cast erc4626 preview-mint --help`; see [CLI reference versions](/reference/versions). Regenerate this page instead of editing it directly._
+_Generated from `cast erc4626 info --help`; see [CLI reference versions](/reference/versions). Regenerate this page instead of editing it directly._
 
-## cast erc4626 preview-mint
+## cast erc4626 info
 
-Preview the assets required to mint a share amount
+Show vault, asset, and exchange-rate information
 
 :::terminal
 
 ```bash
-$ cast erc4626 preview-mint --help
+$ cast erc4626 info --help
 ```
 
 ```txt
-Usage: cast erc4626 preview-mint [OPTIONS] <VAULT> <SHARES>
+Usage: cast erc4626 info [OPTIONS] <VAULT>
 
 Arguments:
   <VAULT>
           The ERC-4626 vault contract address
 
-  <SHARES>
-          The amount of vault shares
-
 Options:
+      --human
+          Use formatted token amounts in text output
+
   -B, --block <BLOCK>
           The block height to query at
 

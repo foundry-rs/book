@@ -18,6 +18,10 @@ $ cast erc4626 --help
 Usage: cast erc4626 [OPTIONS] <COMMAND>
 
 Commands:
+  info               Show vault, asset, and exchange-rate information
+  position           Show an account's shares, asset value, and withdrawal
+                     limits
+  check              Probe synchronous ERC-4626 interface compatibility
   asset              Query the vault's underlying asset token
   total-assets       Query the total amount of underlying assets managed by the
                      vault
@@ -45,7 +49,7 @@ Options:
   -j, --threads <THREADS>
           Number of threads to use. Specifying 0 defaults to the number of
           logical cores
-          
+
           [alias: --jobs]
 
       --profile <PROFILE>
@@ -71,11 +75,11 @@ Display options:
 
   -v, --verbosity...
           Verbosity level of the log messages.
-          
+
           Pass multiple times to increase the verbosity (e.g. -v, -vv, -vvv).
-          
+
           Depending on the context the verbosity levels have different meanings.
-          
+
           For example, the verbosity levels of the EVM are:
           - 2 (-vv): Print logs for all tests.
           - 3 (-vvv): Print execution traces for failing tests.

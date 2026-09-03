@@ -291,6 +291,7 @@ export const castCliReference: SidebarItem = {
       items: [
         { text: "cast erc4626", link: "/reference/cast/erc4626" },
         { text: "cast erc4626 asset", link: "/reference/cast/erc4626/asset" },
+        { text: "cast erc4626 check", link: "/reference/cast/erc4626/check" },
         {
           text: "cast erc4626 convert-to-assets",
           link: "/reference/cast/erc4626/convert-to-assets",
@@ -300,11 +301,13 @@ export const castCliReference: SidebarItem = {
           link: "/reference/cast/erc4626/convert-to-shares",
         },
         { text: "cast erc4626 deposit", link: "/reference/cast/erc4626/deposit" },
+        { text: "cast erc4626 info", link: "/reference/cast/erc4626/info" },
         { text: "cast erc4626 max-deposit", link: "/reference/cast/erc4626/max-deposit" },
         { text: "cast erc4626 max-mint", link: "/reference/cast/erc4626/max-mint" },
         { text: "cast erc4626 max-redeem", link: "/reference/cast/erc4626/max-redeem" },
         { text: "cast erc4626 max-withdraw", link: "/reference/cast/erc4626/max-withdraw" },
         { text: "cast erc4626 mint", link: "/reference/cast/erc4626/mint" },
+        { text: "cast erc4626 position", link: "/reference/cast/erc4626/position" },
         {
           text: "cast erc4626 preview-deposit",
           link: "/reference/cast/erc4626/preview-deposit",
@@ -330,4 +333,3 @@ export const castCliReference: SidebarItem = {
     },
   ],
 };
-
