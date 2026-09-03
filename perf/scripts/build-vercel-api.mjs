@@ -20,15 +20,15 @@ await build({
     minify: false,
     outDir: functionDirectory,
     rollupOptions: {
-      input: resolve(import.meta.dirname, '../src/server/vercel.ts'),
+      input: resolve(import.meta.dirname, '../src/server/vercel-demo.ts'),
       output: {
         codeSplitting: false,
         entryFileNames: 'index.js',
-        format: 'cjs',
+        format: 'es',
       },
     },
     ssr: true,
-    target: 'node22',
+    target: 'es2022',
   },
 })
 
@@ -36,17 +36,13 @@ await writeFile(
   resolve(functionDirectory, '.vc-config.json'),
   `${JSON.stringify(
     {
-      handler: 'index.js',
-      launcherType: 'Nodejs',
-      maxDuration: 60,
-      runtime: 'nodejs22.x',
-      shouldAddHelpers: true,
+      entrypoint: 'index.js',
+      runtime: 'edge',
     },
     null,
     2,
   )}\n`,
 )
-await writeFile(resolve(functionDirectory, 'package.json'), '{"type":"commonjs"}\n')
 
 const config = JSON.parse(await readFile(configPath, 'utf8'))
 const apiRoute = {
@@ -57,5 +53,5 @@ const routes = (config.routes || []).filter((route) => route.src !== apiRoute.sr
 const filesystem = routes.findIndex((route) => route.handle === 'filesystem')
 routes.splice(filesystem < 0 ? 0 : filesystem, 0, apiRoute)
 config.routes = routes
-config.crons = [{ path: '/api/worker/tick', schedule: '*/15 * * * *' }]
+delete config.crons
 await writeFile(configPath, `${JSON.stringify(config, null, 2)}\n`)

@@ -37,10 +37,10 @@ read permission. `CLICKHOUSE_READ_*` may only select the public tables;
 insert into the public tables and `ingestion_jobs`. Never expose either account
 or the GitHub App private key to the browser.
 
-The Vercel cron invokes `/api/worker/tick` every 15 minutes. The worker polls
-GitHub for successful `main` benchmark runs and imports new artifacts. Solar
-only uploads its public benchmark artifact; it has no performance-service
-secrets or callback step.
+Once the credentialed backend is enabled, the Vercel cron invokes
+`/api/worker/tick` every 15 minutes. The worker polls GitHub for successful
+`main` benchmark runs and imports new artifacts. Solar only uploads its public
+benchmark artifact; it has no performance-service secrets or callback step.
 
 The importer stores retry state in ClickHouse. It retries transient GitHub
 requests with backoff, keeps failed artifact imports in the queue, and never
@@ -77,9 +77,11 @@ Open `http://127.0.0.1:5173/?base=<base-sha>&head=<head-sha>`.
 To preview the dashboard without ClickHouse or credentials, run the Vite server with
 `PERF_DEMO_DATA=1`. This serves deterministic dummy runs from the local API bridge only.
 
-On Vercel, the deployed API automatically serves the same dummy data while the GitHub App
-is not configured and ClickHouse has no benchmark runs. Supplying GitHub App credentials
-returns it to live, on-demand imports without a code change.
+Until the GitHub App and ClickHouse are configured, Vercel deploys the same
+credential-free dummy API as an Edge function. It neither reads GitHub nor writes data.
+To enable live on-demand imports later, switch `scripts/build-vercel-api.mjs` back to the
+Node adapter in `src/server/vercel.ts`, restore its Node `.vc-config.json` and the cron;
+the complete credentialed API and its tests are retained in this repository.
 
 `scripts/ingest-github-runs.mjs` is the one-off local backfill tool. It uses the
 authenticated `gh` CLI and the same ClickHouse schema. Do not run it from a pull

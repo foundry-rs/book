@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it, vi } from 'vite-plus/test'
 
 import { createApi } from '../src/server/api'
 import { clickHouseConfig } from '../src/server/clickhouse'
+import vercelDemo from '../src/server/vercel-demo'
 
 const config = {
   database: 'solar_perf',
@@ -17,6 +18,15 @@ afterEach(() => {
 })
 
 describe('website API', () => {
+  it("serves demo data through Vercel's rewritten API route", async () => {
+    const response = vercelDemo(new Request('https://web.test/api?__perf_path=data/index.json'))
+
+    expect(response.status).toBe(200)
+    await expect(response.json()).resolves.toMatchObject({
+      runs: expect.arrayContaining([expect.objectContaining({ title: 'Dummy benchmark run 3' })]),
+    })
+  })
+
   it('reports when ClickHouse is not configured', async () => {
     const response = await createApi({ clickHouse: null }).request('http://web.test/api/health')
 
