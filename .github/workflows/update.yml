@@ -40,7 +40,7 @@ jobs:
           run-install: false
 
       - name: Install dependencies
-        run: vp install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Refresh cheatcode manifest
         run: |
