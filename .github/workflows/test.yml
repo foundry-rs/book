@@ -9,8 +9,8 @@ on:
     branches: [master]
 
 jobs:
-  test:
-    name: vocs build
+  checks:
+    name: checks
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -44,6 +44,27 @@ jobs:
 
       - name: Test
         run: vp run test
+
+  build:
+    name: vocs build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Vite+
+        uses: voidzero-dev/setup-vp@1b32467adbe183473499fd9d5d372c3ed9641754 # v1.18.0
+        with:
+          cache: true
+          node-version: "24"
+          run-install: false
+
+      - name: Install dependencies
+        run: vp install --frozen-lockfile
 
       - name: Build Vocs
         run: vp exec vocs build
