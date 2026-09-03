@@ -150,7 +150,7 @@
     { "source": "/benches", "destination": "/benchmarks" }
   ],
   "buildCommand": "vp run build:vercel",
-  "installCommand": "vp install --frozen-lockfile",
+  "installCommand": "pnpm install --frozen-lockfile",
   "outputDirectory": "dist",
   "functions": {
     "api/[...path].ts": {
