@@ -30,14 +30,16 @@ to avoid false positives from untracked storage writes.
 
 **Known limitations**:
 - *Storage aliases*: pointer tracking is flow-insensitive, so a pointer that is reassigned
-  (`f = bar; f = baz; f.x = 1;`) counts as a write to both `bar` and `baz`.
+  (`f = bar; f = baz; f.x = 1;`) counts as a write to both `bar` and `baz`. A pointer
+  initialized from a function return value has no known target, so writes through it are
+  not attributed to any state variable.
 - *Storage-parameter calls (partial)*: the lint detects when a state variable or a local
   storage pointer is passed as a storage reference to a bare, qualified, or `super` internal
   call and treats it as a write. Calls through a member expression where the receiver is
   itself a state variable remain undetected.
-- *Member calls*: any member call whose receiver is a state variable (e.g.
-  `oracle.latestAnswer()`, `token.balanceOf(address)`) suppresses the warning for that
-  variable. Without full call-graph resolution the lint conservatively treats the receiver
+- *Member calls*: any member call whose receiver is a state variable or a local storage
+  pointer to one (e.g. `oracle.latestAnswer()`, `token.balanceOf(address)`) suppresses the
+  warning for that variable. Without full call-graph resolution the lint conservatively treats the receiver
   as potentially mutated, to avoid false positives from `push`/`pop` and library-dispatch
   patterns (`using Lib for T`). Read-only interface calls on uninitialized variables will
   therefore not be flagged.
