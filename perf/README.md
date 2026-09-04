@@ -12,10 +12,11 @@ pnpm build
 
 ## Deployment
 
-The Vercel project root is `vocs/`. It builds the Book and this app into one
-deployment. It serves this app from `/perf/` and exposes its API from
-[`../api/`](../api/). Configure these
-production environment variables in that Vercel project:
+The Vercel project root is the Book repository root. It builds the Book, this app,
+and its API into one deployment. The app is served at `/perf/`, and
+`scripts/build-vercel-api.mjs` adds the `/api/*` route and function to Vocs' Build
+Output. The default API serves dummy data without credentials or database setup.
+For the future live backend, configure these environment variables:
 
 ```text
 CLICKHOUSE_HOST
@@ -72,7 +73,7 @@ node scripts/ingest-run.mjs \
 pnpm dev
 ```
 
-Open `http://127.0.0.1:5173/?base=<base-sha>&head=<head-sha>`.
+Open `http://127.0.0.1:5173/perf/?base=<base-sha>&head=<head-sha>`.
 
 To preview the dashboard without ClickHouse or credentials, run the Vite server with
 `PERF_DEMO_DATA=1`. This serves deterministic dummy runs from the local API bridge only.
