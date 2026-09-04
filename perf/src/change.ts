@@ -2,7 +2,7 @@ function roundedChange(value: number) {
   return Math.round(value * 100) / 100
 }
 
-export function changeClass(value: number | null, higherIsBetter = true) {
+export function changeClass(value: number | null, higherIsBetter = false) {
   if (value === null) return 'neutral'
   const rounded = roundedChange(value)
   if (rounded === 0) return 'neutral'
