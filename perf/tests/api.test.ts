@@ -18,6 +18,30 @@ afterEach(() => {
 })
 
 describe('website API', () => {
+  it('serves distinct demo artifacts for commit and compiler comparisons', async () => {
+    const commits = [
+      '9d8c7b6a5e4f32100123456789abcdef01234567',
+      '8c7b6a5e4f32100123456789abcdef0123456789',
+    ]
+    const contents = await Promise.all(
+      [
+        [commits[0], 'solar'],
+        [commits[1], 'solar'],
+        [commits[0], 'solc'],
+      ].map(async ([commit, compiler]) => {
+        const response = vercelDemo(
+          new Request(
+            `https://web.test/api/data/runs/${commit}/demo%3A%3Afactorial/${compiler}/0.json`,
+          ),
+        )
+        expect(response.status).toBe(200)
+        return response.json()
+      }),
+    )
+    expect(new Set(contents).size).toBe(3)
+    expect(contents.every((content) => content.includes('Synthetic demo::factorial'))).toBe(true)
+  })
+
   it("serves demo data through Vercel's rewritten API route", async () => {
     const response = vercelDemo(new Request('https://web.test/api?__perf_path=data/index.json'))
 

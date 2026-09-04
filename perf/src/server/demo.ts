@@ -1,4 +1,4 @@
-import type { RunDocument, RunIndex, RunSummary } from '../types'
+import type { ArtifactFile, RunDocument, RunIndex, RunSummary } from '../types'
 
 const commits = [
   '9d8c7b6a5e4f32100123456789abcdef01234567',
@@ -43,11 +43,56 @@ const summaries: RunSummary[] = commits.map((commit, index) => ({
   title: `Dummy benchmark run ${3 - index}`,
 }))
 
+// Small synthetic compiler outputs exercise the viewer without GitHub artifacts.
+const artifactContents = new Map<string, string>()
+function artifactsFor(commit: string, revision: number) {
+  return Object.fromEntries(
+    ['demo::factorial', 'demo::fibonacci'].map((benchmark) => {
+      const files: ArtifactFile[] = []
+      for (const [index, path, language] of [
+        [0, 'optimized.yul', 'yul'],
+        [1, 'runtime.disasm', 'text'],
+        [2, 'abi.json', 'json'],
+      ] as const) {
+        const storagePath = `${index}.json`
+        const outputs = ['solar', 'solc'].map((compiler) => {
+          const constant = 40 + revision + (compiler === 'solc' ? 3 : 0)
+          const contents =
+            path === 'optimized.yul'
+              ? `// Synthetic ${benchmark} output\nobject "Demo" {\n  code {\n    let result := add(calldataload(0), ${constant})\n    mstore(0, result)\n    return(0, 32)\n  }\n}\n`
+              : path === 'runtime.disasm'
+                ? `PUSH1 0x00 CALLDATALOAD PUSH1 0x${constant.toString(16)} ADD PUSH1 0x00 MSTORE PUSH1 0x20 PUSH1 0x00 RETURN`
+                : JSON.stringify([
+                    {
+                      type: 'function',
+                      name: benchmark.split('::')[1],
+                      inputs: [{ name: 'n', type: 'uint256' }],
+                      outputs: [{ name: '', type: 'uint256' }],
+                      stateMutability: 'pure',
+                    },
+                  ])
+          artifactContents.set(`${commit}/${benchmark}/${compiler}/${storagePath}`, contents)
+          return contents
+        })
+        files.push({
+          path,
+          storagePath,
+          language,
+          label: path,
+          bytes: new TextEncoder().encode(outputs[0]).length,
+          compilers: ['solar', 'solc'],
+        })
+      }
+      return [benchmark, files]
+    }),
+  )
+}
+
 const documents = new Map<string, RunDocument>(
-  summaries.map((summary) => [
+  summaries.map((summary, revision) => [
     summary.commit,
     {
-      artifacts: {},
+      artifacts: artifactsFor(summary.commit, revision),
       branch: summary.branch,
       commit: summary.commit,
       pr: summary.pr,
@@ -106,6 +151,24 @@ export function demoResponse(pathname: string) {
   if (match) {
     const run = documents.get(match[1])
     return run ? Response.json(run) : Response.json({ error: 'Run not found' }, { status: 404 })
+  }
+
+  const artifact = /^\/api\/data\/runs\/([0-9a-f]{40})\/([^/]+)\/(solar|solc)\/(\d+\.json)$/.exec(
+    pathname,
+  )
+  if (artifact) {
+    let benchmark: string
+    try {
+      benchmark = decodeURIComponent(artifact[2])
+    } catch {
+      return Response.json({ error: 'Invalid benchmark' }, { status: 400 })
+    }
+    const contents = artifactContents.get(
+      `${artifact[1]}/${benchmark}/${artifact[3]}/${artifact[4]}`,
+    )
+    return contents === undefined
+      ? Response.json({ error: 'Artifact not found' }, { status: 404 })
+      : Response.json(contents)
   }
 
   return null
