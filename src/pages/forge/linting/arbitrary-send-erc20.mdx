@@ -40,6 +40,11 @@ Safety is established by:
 - Inline equality guards in the prefix of a modifier body (statements
   strictly before its single top-level `_;` placeholder), mapped back to
   the caller's argument variables.
+- Parameters of internal functions and modifiers whose every call or
+  invocation site passes a safe expression.
+
+Modifier, `fallback`, and `receive` bodies are analyzed like ordinary
+functions; only constructors are skipped.
 
 Branch joins recognise `return`, custom-error `revert`, the `revert(...)`
 builtin, and `assert(false)` / `require(false, ...)` as always-exiting:

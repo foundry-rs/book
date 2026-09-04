@@ -20,6 +20,9 @@ This lint looks for scalar `int`/`uint` state variables that are:
 - used in arithmetic by an unprotected public or external function, and
 - changed along a path that does not emit an event.
 
+State variables and entry points are collected across the whole inheritance chain, with
+overridden base functions resolved to the most derived implementation.
+
 It intentionally skips fixed-value writes, constructors, unprotected setters, mappings/arrays, and
 update paths that emit an event directly or through an internal helper. Those limits keep the rule
 focused on Slither's low-severity `events-maths` case while avoiding common false positives.
