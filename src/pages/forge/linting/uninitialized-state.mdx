@@ -19,23 +19,27 @@ chain, the lint checks whether it is ever written, via an inline initialiser at 
 declaration site, any assignment (including compound assignments such as `+=`), `delete`,
 pre/post increment/decrement, or `push`/`pop` on a dynamic array, anywhere in any function
 or constructor in the hierarchy, including modifier call arguments and base-constructor
-arguments. If the variable is read (in a function body, state-variable initialiser,
-modifier argument, or compiler-synthesised public getter) but never written by any of the
-above, it is flagged.
+arguments. Writes through a local `storage` pointer (`Foo storage f = bar; f.x = 1;`) count
+as writes to every state variable the pointer may reference. If the variable is read (in a
+function body, state-variable initialiser, modifier argument, or compiler-synthesised public
+getter) but never written by any of the above, it is flagged.
 
 **Assembly bail-out**: if any function body in the inheritance chain contains inline assembly
 (which Solar lowers to an opaque AST node), the lint skips the entire contract conservatively
 to avoid false positives from untracked storage writes.
 
 **Known limitations**:
-- *Storage aliases*: `Foo storage f = bar; f.x = 1;` is not detected as a write to `bar`.
-- *Storage-parameter calls (partial)*: the lint detects when a state variable is passed as
-  a storage reference to a bare, qualified, or `super` internal call and treats it as a
-  write. What remains undetected are calls made through a local storage alias, or through
-  a member expression where the receiver is itself a state variable.
-- *Member calls*: any member call whose receiver is a state variable (e.g.
-  `oracle.latestAnswer()`, `token.balanceOf(address)`) suppresses the warning for that
-  variable. Without full call-graph resolution the lint conservatively treats the receiver
+- *Storage aliases*: pointer tracking is flow-insensitive, so a pointer that is reassigned
+  (`f = bar; f = baz; f.x = 1;`) counts as a write to both `bar` and `baz`. A pointer
+  initialized from a function return value has no known target, so writes through it are
+  not attributed to any state variable.
+- *Storage-parameter calls (partial)*: the lint detects when a state variable or a local
+  storage pointer is passed as a storage reference to a bare, qualified, or `super` internal
+  call and treats it as a write. Calls through a member expression where the receiver is
+  itself a state variable remain undetected.
+- *Member calls*: any member call whose receiver is a state variable or a local storage
+  pointer to one (e.g. `oracle.latestAnswer()`, `token.balanceOf(address)`) suppresses the
+  warning for that variable. Without full call-graph resolution the lint conservatively treats the receiver
   as potentially mutated, to avoid false positives from `push`/`pop` and library-dispatch
   patterns (`using Lib for T`). Read-only interface calls on uninitialized variables will
   therefore not be flagged.

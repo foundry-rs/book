@@ -12,7 +12,8 @@ to be in the canonical lower half of the secp256k1 curve order.
 
 ### What it does
 
-The lint follows simple local aliases and recognizes low-`s` bounds established by `require`,
+The lint follows simple local aliases and struct fields such as `sig.s`, and recognizes
+low-`s` bounds established by `require`,
 `assert`, conditionals, and early-return or revert branches. It accepts the canonical maximum
 `0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF5D576E7357A4501DDFE92F46681B20A0`, stricter bounds, reversed
 comparisons, and the equivalent strict comparison against that value plus one. Facts are
