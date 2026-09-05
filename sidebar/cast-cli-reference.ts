@@ -159,6 +159,7 @@ export const castCliReference: SidebarItem = {
         { text: "cast erc20-token decimals", link: "/reference/cast/erc20-token/decimals" },
         { text: "cast erc20-token mint", link: "/reference/cast/erc20-token/mint" },
         { text: "cast erc20-token name", link: "/reference/cast/erc20-token/name" },
+        { text: "cast erc20-token permit", link: "/reference/cast/erc20-token/permit" },
         { text: "cast erc20-token symbol", link: "/reference/cast/erc20-token/symbol" },
         { text: "cast erc20-token total-supply", link: "/reference/cast/erc20-token/total-supply" },
         { text: "cast erc20-token transfer", link: "/reference/cast/erc20-token/transfer" },
