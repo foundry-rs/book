@@ -53,6 +53,8 @@ $ cast erc20-token approve $ASSET $VAULT $ASSETS --rpc-url $RPC_URL --private-ke
 $ cast erc4626 deposit $VAULT $ASSETS $RECEIVER --rpc-url $RPC_URL --private-key $PRIVATE_KEY
 ```
 
+If the underlying asset supports ERC-2612, you can also authorize spending with a [permit signature](/cast/token-approvals). A permit on the vault itself approves its shares, not the underlying deposit asset.
+
 `mint` follows the same approval flow, but takes the exact number of shares to mint. Use `preview-mint` to calculate the assets the vault expects to pull.
 
 State-changing vault commands use the same signer, fee, hardware wallet, browser wallet, and Tempo options as `cast send`. See [Sending transactions](/cast/sending-transactions) for those options.
