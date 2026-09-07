@@ -113,9 +113,16 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
   )
   const selectedFile = visibleFiles.find((file) => file.path === selected) || visibleFiles[0]
   const leftLabel = runs
-    ? compilerLabel(runs[against === 'base' ? 0 : 1], activeBenchmark, leftCompiler)
+    ? compilerLabel(
+        runs[against === 'base' ? 0 : 1],
+        activeBenchmark,
+        leftCompiler,
+        against === 'base' ? 'base' : 'head',
+      )
     : leftCompiler
-  const rightLabel = runs ? compilerLabel(runs[1], activeBenchmark, rightCompiler) : rightCompiler
+  const rightLabel = runs
+    ? compilerLabel(runs[1], activeBenchmark, rightCompiler, 'head')
+    : rightCompiler
 
   const updateUrl = (key: string, value: string) => {
     const url = new URL(window.location.href)
@@ -167,7 +174,7 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
                     >
                       {compilers.map((name) => (
                         <option key={name} value={name}>
-                          {compilerLabel(runs[1], activeBenchmark, name)}
+                          {compilerLabel(runs[1], activeBenchmark, name, 'head')}
                         </option>
                       ))}
                     </select>
@@ -182,10 +189,12 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
                         updateUrl('against', event.target.value)
                       }}
                     >
-                      <option value="base">Base commit</option>
+                      <option value="base">
+                        {compilerLabel(runs[0], activeBenchmark, rightCompiler, 'base')}
+                      </option>
                       {compilers.map((name) => (
                         <option key={name} value={name}>
-                          {compilerLabel(runs[1], activeBenchmark, name)}
+                          {compilerLabel(runs[1], activeBenchmark, name, 'head')}
                         </option>
                       ))}
                     </select>
