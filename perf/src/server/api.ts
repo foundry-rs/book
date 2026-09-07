@@ -19,6 +19,7 @@ interface ApiOptions {
 }
 
 interface StoredRun {
+  commit: string
   workflow_run_id: unknown
   [key: string]: unknown
 }
@@ -61,60 +62,88 @@ async function indexFromClickHouse(config: ClickHouseConfig) {
   }
 }
 
-async function runFromClickHouse(
+const measurementColumns = [
+  'test_id',
+  'description',
+  'suite',
+  'compiler',
+  'status',
+  'compile_time_seconds',
+  'bytecode_size',
+  'runtime_size',
+  'deploy_gas',
+  'total_gas',
+  'peak_rss_bytes',
+]
+
+async function runsFromClickHouse(
   config: ClickHouseConfig,
-  sha: string,
+  commits: string[],
   includeArtifacts: boolean,
-): Promise<StoredRun | null> {
-  const [run] = await select(
+): Promise<StoredRun[]> {
+  const stored = await select(
     config,
-    `SELECT workflow_run_id, commit, branch, pr, title, raw_results,
-       formatDateTime(started_at, '%Y-%m-%dT%H:%i:%SZ', 'UTC') AS timestamp
-     FROM runs FINAL WHERE commit = '${sha}' ORDER BY imported_at DESC LIMIT 1`,
+    `WITH selected AS (
+       SELECT workflow_run_id, commit, branch, pr, title, raw_results, started_at
+       FROM runs FINAL WHERE commit IN (${commits.map((sha) => `'${sha}'`).join(',')})
+       ORDER BY imported_at DESC, workflow_run_id DESC LIMIT 1 BY commit
+     ) SELECT r.workflow_run_id, r.commit, r.branch, r.pr, r.title, r.raw_results,
+       formatDateTime(r.started_at, '%Y-%m-%dT%H:%i:%SZ', 'UTC') AS timestamp,
+       b.measurements
+     FROM selected AS r LEFT JOIN (
+       SELECT workflow_run_id, groupArray(tuple(${measurementColumns.join(',')})) AS measurements
+       FROM benchmark_results FINAL
+       WHERE workflow_run_id IN (SELECT workflow_run_id FROM selected)
+       GROUP BY workflow_run_id
+     ) AS b ON r.workflow_run_id = b.workflow_run_id`,
   )
-  if (!run) return null
-  const [rows, artifacts] = await Promise.all([
-    select(
-      config,
-      `SELECT test_id, description, suite, compiler, status, compile_time_seconds, bytecode_size,
-     runtime_size, deploy_gas, total_gas, peak_rss_bytes
-     FROM benchmark_results FINAL WHERE workflow_run_id = ${Number(run.workflow_run_id)}
-     ORDER BY test_id, compiler`,
-    ),
-    includeArtifacts ? artifactsFromClickHouse(config, sha) : Promise.resolve({}),
-  ])
-  const { raw_results, ...runMetadata } = run
-  const labels = compilerLabels(raw_results)
+  return Promise.all(
+    stored.map(async (run) => {
+      const { raw_results, measurements, ...runMetadata } = run
+      const labels = compilerLabels(raw_results)
+      const rows = (Array.isArray(measurements) ? (measurements as unknown[][]) : [])
+        .sort(
+          (a, b) =>
+            String(a[0]).localeCompare(String(b[0])) || String(a[3]).localeCompare(String(b[3])),
+        )
+        .map((values) =>
+          Object.fromEntries(measurementColumns.map((name, index) => [name, values[index]])),
+        )
 
-  const results = new Map<string, Record<string, unknown>>()
-  for (const row of rows) {
-    const testId = String(row.test_id)
-    const result = results.get(testId) ?? {
-      test_id: testId,
-      description: row.description,
-      suite: row.suite,
-      compilers: Object.create(null),
-    }
-    ;(result.compilers as Record<string, unknown>)[String(row.compiler)] = {
-      status: row.status,
-      label: labels.get(testId)?.[String(row.compiler)],
-      compile_time_seconds: row.compile_time_seconds,
-      bytecode_size: row.bytecode_size,
-      runtime_size: row.runtime_size,
-      deploy_gas: row.deploy_gas,
-      total_gas: row.total_gas,
-      peak_rss_bytes: row.peak_rss_bytes,
-    }
-    results.set(testId, result)
-  }
+      const results = new Map<string, Record<string, unknown>>()
+      for (const row of rows) {
+        const testId = String(row.test_id)
+        const result = results.get(testId) ?? {
+          test_id: testId,
+          description: row.description,
+          suite: row.suite,
+          compilers: Object.create(null),
+        }
+        ;(result.compilers as Record<string, unknown>)[String(row.compiler)] = {
+          status: row.status,
+          label: labels.get(testId)?.[String(row.compiler)],
+          compile_time_seconds: row.compile_time_seconds,
+          bytecode_size: row.bytecode_size,
+          runtime_size: row.runtime_size,
+          deploy_gas: row.deploy_gas,
+          total_gas: row.total_gas,
+          peak_rss_bytes: row.peak_rss_bytes,
+        }
+        results.set(testId, result)
+      }
 
-  return {
-    ...runMetadata,
-    schemaVersion: 1,
-    results: [...results.values()],
-    artifacts,
-    workflow_run_id: run.workflow_run_id,
-  }
+      return {
+        ...runMetadata,
+        commit: String(run.commit),
+        schemaVersion: 1,
+        results: [...results.values()],
+        artifacts: includeArtifacts
+          ? await artifactsFromClickHouse(config, String(run.commit))
+          : {},
+        workflow_run_id: run.workflow_run_id,
+      }
+    }),
+  )
 }
 
 async function artifactsFromClickHouse(config: ClickHouseConfig, sha: string) {
@@ -173,16 +202,17 @@ async function historyFromClickHouse(config: ClickHouseConfig, metric: string, b
   )
 }
 
-async function loadRun(
+async function loadRuns(
   config: ClickHouseConfig,
-  sha: string,
+  commits: string[],
   importRun: (sha: string) => Promise<unknown>,
   includeArtifacts: boolean,
 ) {
-  const current = await runFromClickHouse(config, sha, includeArtifacts)
-  if (current) return current
-  await importRun(sha)
-  return runFromClickHouse(config, sha, includeArtifacts)
+  const current = await runsFromClickHouse(config, commits, includeArtifacts)
+  const missing = commits.filter((sha) => !current.some((run) => run.commit === sha))
+  if (!missing.length) return current
+  await Promise.all(missing.map(importRun))
+  return [...current, ...(await runsFromClickHouse(config, missing, includeArtifacts))]
 }
 
 async function runIdFromClickHouse(config: ClickHouseConfig, sha: string) {
@@ -316,6 +346,20 @@ export function createApi(options: ApiOptions = {}) {
     }
 
     try {
+      if (path === 'runs.json') {
+        const commits = context.req.query('commits')?.split(',') ?? []
+        if (
+          !commits.length ||
+          commits.length > 2 ||
+          commits.some((sha) => !/^[0-9a-f]{40}$/.test(sha))
+        )
+          return context.json({ error: 'Expected one or two full commit SHAs' }, 400)
+        const unique = [...new Set(commits)]
+        const runs = await loadRuns(config, unique, loadImport, false)
+        if (runs.length !== unique.length) return context.json({ error: 'Run not found' }, 404)
+        context.header('cache-control', 'public, max-age=300, stale-while-revalidate=3600')
+        return context.json({ runs })
+      }
       if (path === 'history.json') {
         const metric = context.req.query('metric') ?? 'total_gas'
         const benchmark = context.req.query('benchmark')
@@ -335,9 +379,9 @@ export function createApi(options: ApiOptions = {}) {
 
       const runMatch = /^runs\/([0-9a-f]{40})\/run\.json$/.exec(path)
       if (runMatch) {
-        const run = await loadRun(
+        const [run] = await loadRuns(
           config,
-          runMatch[1],
+          [runMatch[1]],
           loadImport,
           context.req.query('artifacts') !== '0',
         )

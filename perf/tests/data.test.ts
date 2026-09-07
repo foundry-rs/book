@@ -2,6 +2,49 @@ import { afterEach, expect, it, vi } from 'vite-plus/test'
 
 afterEach(() => vi.unstubAllGlobals())
 
+it('batches comparison runs and retains each run in the individual cache', async () => {
+  vi.resetModules()
+  const commits = ['a'.repeat(40), 'b'.repeat(40)]
+  const fetch = vi.fn(async () => Response.json({ runs: commits.map((commit) => ({ commit })) }))
+  vi.stubGlobal('fetch', fetch)
+  const { loadRun } = await import('../src/data')
+  const runs = await Promise.all([loadRun(commits[1]), loadRun(commits[0])])
+  expect(runs.map((run) => run.commit)).toEqual([...commits].reverse())
+  expect(fetch).toHaveBeenCalledExactlyOnceWith(
+    `/api/data/runs.json?commits=${commits.join('%2C')}`,
+  )
+  await Promise.all(commits.map(loadRun))
+  expect(fetch).toHaveBeenCalledOnce()
+})
+
+it('only fetches the uncached comparison side', async () => {
+  vi.resetModules()
+  const commits = ['a'.repeat(40), 'b'.repeat(40)]
+  const fetch = vi.fn(async (url: string) => Response.json({ commit: url.split('/')[4] }))
+  vi.stubGlobal('fetch', fetch)
+  const { loadRun } = await import('../src/data')
+  await loadRun(commits[0])
+  await Promise.all(commits.map(loadRun))
+  expect(fetch).toHaveBeenCalledTimes(2)
+  expect(fetch).toHaveBeenLastCalledWith(`/api/data/runs/${commits[1]}/run.json?artifacts=0`)
+})
+
+it('retries failed batches without caching failures', async () => {
+  vi.resetModules()
+  const commits = ['a'.repeat(40), 'b'.repeat(40)]
+  const fetch = vi.fn(async () => new Response('unavailable', { status: 503 }))
+  vi.stubGlobal('fetch', fetch)
+  const { loadRun } = await import('../src/data')
+  expect(
+    (await Promise.allSettled(commits.map(loadRun))).every((r) => r.status === 'rejected'),
+  ).toBe(true)
+  fetch.mockImplementation(async () =>
+    Response.json({ runs: commits.map((commit) => ({ commit })) }),
+  )
+  await Promise.all(commits.map(loadRun))
+  expect(fetch).toHaveBeenCalledTimes(2)
+})
+
 it('allows the index HTTP cache while keeping mutable ref resolution fresh', async () => {
   vi.resetModules()
   const fetch = vi.fn(async () => Response.json({ runs: [], commit: 'c'.repeat(40) }))

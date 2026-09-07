@@ -135,7 +135,10 @@ artifacts and failed requests are retried, not retained. Artifact HTTP responses
 for one hour; an uncached stored artifact uses one ClickHouse request. Compiler labels
 come from the stored original results; Solar uses its run commit and missing versions
 are explicitly marked unknown.
-Comparisons request `run.json?artifacts=0` (two database reads per run). The file viewer
+Concurrent comparison reads coalesce into `runs.json?commits=<sha>,<sha>` (one database
+query for both runs, at most two full SHAs). Each result remains cached individually;
+if only one side is missing, `run.json?artifacts=0` uses one database query. Missing
+runs are imported concurrently and only missing commits are reread. The file viewer
 loads `artifacts.json` lazily in one database read, reusing cached run metrics, and skips
 file requests for sides absent from the manifest. The full `run.json` remains compatible.
 

@@ -19,6 +19,61 @@ afterEach(() => {
 })
 
 describe('website API', () => {
+  it('loads both comparison runs and nullable measurements in one query', async () => {
+    const commits = ['a'.repeat(40), 'b'.repeat(40)]
+    globalThis.fetch = vi.fn(
+      async () =>
+        new Response(
+          commits
+            .map((commit) =>
+              JSON.stringify({
+                commit,
+                workflow_run_id: 1,
+                measurements: [
+                  ['test', 'Description', 'micro', 'future', 'ok', 0, null, 12, null, 0, 100],
+                ],
+              }),
+            )
+            .join('\n'),
+        ),
+    )
+    const app = createApi({ clickHouse: config })
+    const response = await app.request(`/api/data/runs.json?commits=${commits.join(',')}`)
+    expect(response.status).toBe(200)
+    const { runs } = await response.json()
+    expect(runs.map((run: { commit: string }) => run.commit)).toEqual(commits)
+    expect(runs[0].results[0].compilers.future).toMatchObject({
+      compile_time_seconds: 0,
+      bytecode_size: null,
+      runtime_size: 12,
+      total_gas: 0,
+    })
+    expect(runs[0].artifacts).toEqual({})
+    expect(globalThis.fetch).toHaveBeenCalledOnce()
+    expect(response.headers.get('server-timing')).toContain('1 queries')
+    for (const query of ['', 'oops', `${commits.join(',')},${commits[0]}`]) {
+      expect((await app.request(`/api/data/runs.json?commits=${query}`)).status).toBe(400)
+    }
+    expect(globalThis.fetch).toHaveBeenCalledOnce()
+  })
+
+  it('imports only the missing batch side and rereads only that side', async () => {
+    const commits = ['a'.repeat(40), 'b'.repeat(40)]
+    globalThis.fetch = vi
+      .fn()
+      .mockResolvedValueOnce(Response.json({ commit: commits[0], workflow_run_id: 1 }))
+      .mockResolvedValueOnce(Response.json({ commit: commits[1], workflow_run_id: 2 }))
+    const importRun = vi.fn(async () => undefined)
+    const response = await createApi({ clickHouse: config, importRun }).request(
+      `/api/data/runs.json?commits=${commits.join(',')}`,
+    )
+    expect(response.status).toBe(200)
+    expect(importRun).toHaveBeenCalledExactlyOnceWith(commits[1])
+    const sql = vi.mocked(globalThis.fetch).mock.calls[1][1]?.body
+    expect(sql).toContain(commits[1])
+    expect(sql).not.toContain(commits[0])
+  })
+
   it('does not CDN-cache failed reads and binds benchmark names rather than interpolating SQL', async () => {
     const benchmark = "a' OR 1=1 --"
     globalThis.fetch = vi.fn(async (input, init) => {
@@ -61,12 +116,12 @@ describe('website API', () => {
     const app = createApi({ clickHouse: config })
     const run = await app.request(`/api/data/runs/${sha}/run.json?artifacts=0`)
     expect(run.status).toBe(200)
-    expect(queries).toHaveLength(2)
+    expect(queries).toHaveLength(1)
     expect(queries.join('\n')).not.toContain('artifact_files')
     const manifest = await app.request(`/api/data/runs/${sha}/artifacts.json`)
     expect(manifest.status).toBe(200)
-    expect(queries).toHaveLength(3)
-    expect(queries[2]).toContain('FROM artifact_files FINAL')
+    expect(queries).toHaveLength(2)
+    expect(queries[1]).toContain('FROM artifact_files FINAL')
   })
   it('loads bounded per-benchmark history without summing or reading artifacts', async () => {
     const queries: string[] = []

@@ -7,6 +7,42 @@ const cachedHistory = responseCache<HistoryRun[]>(60_000)
 const cachedArtifact = responseCache<string | null>(3_600_000)
 const cachedRun = responseCache<RunDocument>(300_000)
 const cachedManifest = responseCache<RunDocument['artifacts']>(300_000)
+const runQueue: {
+  commit: string
+  resolve: (run: RunDocument) => void
+  reject: (error: unknown) => void
+}[] = []
+
+// Coalesce the comparison's concurrent cache misses without refetching a cached side.
+// Individual cache entries also remain shared with the artifact viewer.
+function fetchRun(commit: string): Promise<RunDocument> {
+  return new Promise((resolve, reject) => {
+    runQueue.push({ commit, resolve, reject })
+    if (runQueue.length !== 1) return
+    queueMicrotask(() => {
+      const pending = runQueue.splice(0)
+      for (let i = 0; i < pending.length; i += 2) {
+        const batch = pending.slice(i, i + 2)
+        const commits = batch.map((entry) => entry.commit).sort()
+        const request =
+          commits.length === 1
+            ? getJson<RunDocument>(`runs/${commits[0]}/run.json?artifacts=0`).then((run) => [run])
+            : getJson<{ runs: RunDocument[] }>(
+                `runs.json?${new URLSearchParams({ commits: commits.join(',') })}`,
+              ).then(({ runs }) => runs)
+        void request
+          .then((runs) => {
+            for (const entry of batch) {
+              const run = runs.find((run) => run.commit === entry.commit)
+              if (run) entry.resolve(run)
+              else entry.reject(new Error('Run not found in response'))
+            }
+          })
+          .catch((error: unknown) => batch.forEach((entry) => entry.reject(error)))
+      }
+    })
+  })
+}
 
 export function loadHistory(metric: string, benchmark?: string) {
   const params = new URLSearchParams({ metric })
@@ -59,9 +95,7 @@ export async function resolveCommit(value: string): Promise<string> {
 
 export async function loadRun(commit: string) {
   const resolved = await resolveCommit(commit)
-  return cachedRun(resolved, () =>
-    getJson<RunDocument>(`runs/${encodeURIComponent(resolved)}/run.json?artifacts=0`),
-  )
+  return cachedRun(resolved, () => fetchRun(resolved))
 }
 
 export async function loadRunWithArtifacts(commit: string): Promise<RunDocument> {
