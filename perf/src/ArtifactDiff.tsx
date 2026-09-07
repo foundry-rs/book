@@ -1,13 +1,14 @@
 import { File, MultiFileDiff } from '@pierre/diffs/react'
 import { useEffect, useState } from 'react'
+import { Info } from 'lucide-react'
 import { formatArtifactContents } from './artifactFormat'
 import { loadArtifact } from './data'
 import { artifactLanguage } from './highlight'
 import type { Theme } from './types'
 
 interface Props {
-  before: { commit: string; benchmark: string; compiler: string }
-  after: { commit: string; benchmark: string; compiler: string }
+  before: { commit: string; benchmark: string; compiler: string; label: string }
+  after: { commit: string; benchmark: string; compiler: string; label: string }
   path: string
   storagePath: string
   language: string
@@ -61,11 +62,12 @@ export default function ArtifactDiff({ before, after, path, storagePath, languag
   if (!oldFile || !newFile || oldFile.contents === newFile.contents) {
     return (
       <>
-        <p className="detail-muted">
+        <p className="artifact-notice" role="status">
+          <Info size={16} aria-hidden="true" />
           {!oldFile
-            ? 'Published only on the right.'
+            ? `Published only by ${after.label}.`
             : !newFile
-              ? 'Published only on the left.'
+              ? `Published only by ${before.label}.`
               : 'Contents are identical.'}
         </p>
         <File

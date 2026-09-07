@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
 import { artifactTree, mergeArtifactFiles, type ArtifactNode } from './artifactTree'
 import { loadRun } from './data'
+import { compilerLabel } from './compilerLabel'
 import type { RunDocument, Theme } from './types'
 
 const ArtifactDiff = lazy(() => import('./ArtifactDiff'))
@@ -111,6 +112,10 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
     (file) => file.compilers.includes(leftCompiler) || file.compilers.includes(rightCompiler),
   )
   const selectedFile = visibleFiles.find((file) => file.path === selected) || visibleFiles[0]
+  const leftLabel = runs
+    ? compilerLabel(runs[against === 'base' ? 0 : 1], activeBenchmark, leftCompiler)
+    : leftCompiler
+  const rightLabel = runs ? compilerLabel(runs[1], activeBenchmark, rightCompiler) : rightCompiler
 
   const updateUrl = (key: string, value: string) => {
     const url = new URL(window.location.href)
@@ -162,7 +167,7 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
                     >
                       {compilers.map((name) => (
                         <option key={name} value={name}>
-                          {name}
+                          {compilerLabel(runs[1], activeBenchmark, name)}
                         </option>
                       ))}
                     </select>
@@ -180,7 +185,7 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
                       <option value="base">Base commit</option>
                       {compilers.map((name) => (
                         <option key={name} value={name}>
-                          {name}
+                          {compilerLabel(runs[1], activeBenchmark, name)}
                         </option>
                       ))}
                     </select>
@@ -198,22 +203,24 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
             {selectedFile ? (
               <>
                 <div className="diff-sides">
-                  <span>
-                    Left: {leftCompiler} · {comparisonCommit.slice(0, 8)}
-                  </span>
-                  <span>
-                    Right: {rightCompiler} · {head.slice(0, 8)}
-                  </span>
+                  <span>{leftLabel}</span>
+                  <span>{rightLabel}</span>
                 </div>
                 <Suspense fallback={<p className="empty">Loading renderer…</p>}>
                   <ArtifactDiff
                     key={`${activeBenchmark}/${selectedFile.path}/${comparisonCommit}/${leftCompiler}/${head}/${rightCompiler}`}
                     before={{
+                      label: leftLabel,
                       commit: comparisonCommit,
                       benchmark: activeBenchmark,
                       compiler: leftCompiler,
                     }}
-                    after={{ commit: head, benchmark: activeBenchmark, compiler: rightCompiler }}
+                    after={{
+                      commit: head,
+                      benchmark: activeBenchmark,
+                      compiler: rightCompiler,
+                      label: rightLabel,
+                    }}
                     path={selectedFile.path}
                     storagePath={selectedFile.storagePath}
                     language={selectedFile.language}

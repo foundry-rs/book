@@ -1,10 +1,8 @@
-import { useEffect, useId, useMemo, useRef, useState } from 'react'
-import { createPortal } from 'react-dom'
+import { useEffect, useMemo, useState } from 'react'
 import { Moon, Sun } from 'lucide-react'
-import { changeClass, formatChange } from './change'
+import { HistoryGraph } from './HistoryGraph'
 import { Compare } from './Compare'
 import { loadHistory, loadIndex } from './data'
-import { benchmarkMetric } from './benchmarkMetric'
 import logo from './assets/logo.png'
 import { FileViewer } from './FileViewer'
 import type { HistoryRun, RunIndex, RunSummary, Theme } from './types'
@@ -20,16 +18,6 @@ const charts = [
   { metric: 'peak_rss_bytes', title: 'Peak memory (RSS)', unit: 'memory' },
 ]
 
-function formatValue(value: number, unit: string) {
-  if (unit === 'seconds')
-    return value < 1 ? `${(value * 1000).toFixed(2)} ms` : `${value.toFixed(2)} s`
-  if (unit === 'memory')
-    return value >= 1024 * 1024
-      ? `${(value / 1024 / 1024).toFixed(1)} MiB`
-      : `${Math.round(value / 1024).toLocaleString()} KiB`
-  return `${Math.round(value).toLocaleString()} ${unit}`
-}
-
 function runRef(run: RunSummary) {
   return run.branch ?? (run.pr ? `PR #${run.pr}` : 'detached')
 }
@@ -44,18 +32,7 @@ function runTitle(run: RunSummary) {
   return pr && !title.includes(`#${pr}`) ? `${title} (#${pr})` : title
 }
 
-function runSelectorValue(run: RunSummary) {
-  const pr = runPr(run)
-  if (pr) return `#${pr}`
-  if (run.branch?.startsWith('v')) return run.branch
-  return run.branch || short(run.commit)
-}
-
-function runLabel(run: RunSummary) {
-  return `${runSelectorValue(run)} · ${short(run.commit)} · ${runTitle(run)}`
-}
-
-function resolveCommit(value: string, runs: RunSummary[]) {
+export function resolveCommit(value: string, runs: RunSummary[]) {
   const normalized = value.trim().toLowerCase()
   const pr = normalized.match(/^#?(\d+)$/)?.[1]
   return (
@@ -72,212 +49,27 @@ function resolveCommit(value: string, runs: RunSummary[]) {
   )
 }
 
-function CommitPicker({
+export function CommitInput({
   label,
   value,
-  runs,
   onChange,
 }: {
   label: string
   value: string
-  runs: RunSummary[]
   onChange: (value: string) => void
 }) {
-  const list = `${label}-runs`
   return (
     <label>
       {label}
       <input
-        list={list}
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        placeholder="Commit SHA"
-        disabled={!runs.length}
+        placeholder="Commit, branch, tag, or PR"
+        autoComplete="off"
         spellCheck={false}
         aria-label={`${label} commit`}
       />
-      <datalist id={list}>
-        {runs.map((run) => (
-          <option key={run.commit} value={runSelectorValue(run)} label={runLabel(run)} />
-        ))}
-      </datalist>
     </label>
-  )
-}
-
-export function HistoryGraph({
-  runs,
-  metric,
-  title,
-  unit,
-  benchmark,
-}: {
-  runs: HistoryRun[]
-  metric: string
-  title: string
-  unit: string
-  benchmark: string
-}) {
-  const clipId = useId()
-  const [hovered, setHovered] = useState<number | null>(null)
-  const [tooltip, setTooltip] = useState<{ x: number; y: number } | null>(null)
-  const points = [...runs].reverse().map((run) => ({
-    ...run,
-    value: benchmarkMetric(
-      run.results.find((result) => result.test_id === benchmark),
-      metric,
-    ),
-  }))
-  const values = points.flatMap((run) => (run.value === null ? [] : [run.value]))
-  const min = Math.min(...values)
-  const max = Math.max(...values)
-  const range = max - min
-  const padding = range === 0 ? Math.max(Math.abs(max) * 0.04, 1) : range * 0.1
-  const chartMin = min - padding
-  const chartMax = max + padding
-  const position = (value: number) =>
-    Math.max(10, Math.min(90, 90 - ((value - chartMin) / (chartMax - chartMin)) * 80))
-  const path = points
-    .map((run, index) => {
-      if (run.value === null) return ''
-      const x = 3 + (index / Math.max(points.length - 1, 1)) * 94
-      return `${index && points[index - 1].value !== null ? 'L' : 'M'} ${x} ${position(run.value)}`
-    })
-    .join(' ')
-  const first = values[0]
-  const latest = points.at(-1)?.value
-  const active = points[hovered ?? points.length - 1]
-  const activeIndex = hovered ?? points.length - 1
-  const activeX = 3 + (activeIndex / Math.max(points.length - 1, 1)) * 94
-  const activeY = active?.value != null ? position(active.value) : 0
-  const change = first && latest != null ? ((latest - first) / first) * 100 : null
-
-  return (
-    <section className="graph-card">
-      <div className="graph-heading">
-        <h2 title={benchmark}>{benchmark}</h2>
-        {active && (
-          <div>
-            <strong>{active.value === null ? 'n/a' : formatValue(active.value, unit)}</strong>
-            <span className={changeClass(change, false)}>{formatChange(change)}</span>
-          </div>
-        )}
-      </div>
-      {values.length < 2 ? (
-        <div className="empty-graph">
-          {values.length ? 'Waiting for two measurements.' : 'No measurements for this metric.'}
-        </div>
-      ) : (
-        <>
-          <div className="chart-body">
-            <div className="chart-scale">
-              <span>{formatValue(max, unit)}</span>
-              <span>{formatValue(min, unit)}</span>
-            </div>
-            <div
-              className="history-plot"
-              onPointerMove={(event) => {
-                const bounds = event.currentTarget.getBoundingClientRect()
-                const x = (event.clientX - bounds.left) / bounds.width
-                setHovered(
-                  Math.max(
-                    0,
-                    Math.min(
-                      points.length - 1,
-                      Math.round(((x - 0.03) / 0.94) * (points.length - 1)),
-                    ),
-                  ),
-                )
-                setTooltip({ x: event.clientX, y: event.clientY })
-              }}
-              onPointerLeave={() => {
-                setHovered(null)
-                setTooltip(null)
-              }}
-            >
-              <svg
-                className="history"
-                viewBox="0 0 100 100"
-                preserveAspectRatio="none"
-                role="img"
-                aria-label={`${benchmark}: ${title} over time`}
-              >
-                <defs>
-                  <clipPath id={clipId}>
-                    <rect width="100" height="100" />
-                  </clipPath>
-                </defs>
-                <g clipPath={`url(#${clipId})`}>
-                  <path className="grid" d="M0 12H100 M0 50H100 M0 88H100" />
-                  <path className="series" d={path} />
-                </g>
-              </svg>
-              {hovered !== null && active?.value != null && (
-                <>
-                  <span
-                    className="chart-crosshair chart-crosshair-x"
-                    style={{ left: `${activeX}%` }}
-                  />
-                  <span
-                    className="chart-crosshair chart-crosshair-y"
-                    style={{ top: `${activeY}%` }}
-                  />
-                </>
-              )}
-              {points.map((run, index) => {
-                if (run.value === null) return null
-                const x = 3 + (index / Math.max(points.length - 1, 1)) * 94
-                const y = position(run.value)
-                const label = `${benchmark}: ${formatValue(run.value, unit)} · ${short(run.commit)} · ${new Date(run.timestamp).toLocaleDateString()}`
-                return (
-                  <button
-                    key={run.commit}
-                    className={`history-point${index === (hovered ?? points.length - 1) ? ' active-point' : ''}`}
-                    style={{ left: `${x}%`, top: `${y}%` }}
-                    onPointerEnter={() => setHovered(index)}
-                    onPointerLeave={() => setHovered(null)}
-                    onFocus={() => setHovered(index)}
-                    onBlur={() => setHovered(null)}
-                    onClick={() => {
-                      const base = points[index - 1]
-                      if (!base) return
-                      const url = new URL(window.location.href)
-                      url.search = new URLSearchParams({
-                        base: base.commit,
-                        head: run.commit,
-                        benchmark,
-                        metric,
-                      }).toString()
-                      window.location.href = url.toString()
-                    }}
-                    disabled={index === 0}
-                    aria-label={label}
-                    title={label}
-                  />
-                )
-              })}
-            </div>
-            {hovered !== null &&
-              active &&
-              tooltip &&
-              createPortal(
-                <span
-                  className="chart-tooltip chart-tooltip-floating"
-                  style={{ left: tooltip.x, top: tooltip.y }}
-                >
-                  {new Date(active.timestamp).toLocaleString()} · {short(active.commit)} ·{' '}
-                  {active.value === null ? 'No measurement' : formatValue(active.value, unit)}
-                </span>,
-                document.body,
-              )}
-          </div>
-          <div className="chart-dates">
-            <span>{new Date(points[0].timestamp).toLocaleDateString()}</span>
-            <span>{new Date(points.at(-1)!.timestamp).toLocaleDateString()}</span>
-          </div>
-        </>
-      )}
-    </section>
   )
 }
 
@@ -386,7 +178,6 @@ function Home() {
   const [error, setError] = useState('')
   const [base, setBase] = useState('')
   const [head, setHead] = useState('')
-  const defaultsApplied = useRef(false)
   const runs = useMemo(() => index?.runs ?? [], [index])
   const mainRuns = useMemo(() => runs.filter((run) => run.branch === 'main'), [runs])
   const selectedBase = resolveCommit(base, runs)
@@ -400,16 +191,6 @@ function Home() {
       .then(setHistory)
       .catch((value: Error) => setError(value.message))
   }, [])
-  useEffect(() => {
-    if (defaultsApplied.current || runs.length === 0) return
-    const nextHead = runSelectorValue(runs[0])
-    setHead(nextHead)
-    if (runs.length > 1) {
-      const nextBase = runSelectorValue(runs[1])
-      setBase(resolveCommit(nextBase, runs) === runs[0].commit ? short(runs[1].commit) : nextBase)
-    }
-    defaultsApplied.current = true
-  }, [runs])
 
   const compare = () => {
     if (!selectedBase || !selectedHead || selectedBase === selectedHead) return
@@ -428,9 +209,9 @@ function Home() {
         <span>{mainRuns.length} runs</span>
       </section>
       <section className="compare-box" aria-label="Compare commits">
-        <CommitPicker label="base" value={base} runs={runs} onChange={setBase} />
+        <CommitInput label="base" value={base} onChange={setBase} />
         <span className="arrow">→</span>
-        <CommitPicker label="head" value={head} runs={runs} onChange={setHead} />
+        <CommitInput label="head" value={head} onChange={setHead} />
         <button
           onClick={compare}
           disabled={!selectedBase || !selectedHead || selectedBase === selectedHead}
@@ -507,7 +288,7 @@ function Home() {
                 <span title={runTitle(run)}>{runTitle(run)}</span>
                 <time>{new Date(run.timestamp).toLocaleDateString()}</time>
                 <strong>{run.benchmarkCount}</strong>
-                <span>{runRef(run)}</span>
+                <span title={runRef(run)}>{runRef(run)}</span>
               </>
             )
             return comparison ? (

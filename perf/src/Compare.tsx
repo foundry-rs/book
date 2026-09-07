@@ -6,13 +6,16 @@ import { benchmarkSource } from './sources'
 import type { RunDocument, Theme } from './types'
 import { benchmarkMetric as value } from './benchmarkMetric'
 
-const metrics: Record<string, { label: string; key: string; unit: 'bytes' | 'gas' | 'seconds' }> = {
+const metrics: Record<
+  string,
+  { label: string; key: string; unit: 'bytes' | 'gas' | 'seconds' | 'memory' }
+> = {
   runtimeGas: { label: 'Runtime gas', key: 'total_gas', unit: 'gas' },
   deployGas: { label: 'Deployment gas', key: 'deploy_gas', unit: 'gas' },
   runtimeSize: { label: 'Runtime bytes', key: 'runtime_size', unit: 'bytes' },
   creationSize: { label: 'Creation bytes', key: 'bytecode_size', unit: 'bytes' },
   compileTime: { label: 'Compile time', key: 'compile_time_seconds', unit: 'seconds' },
-  peakMemory: { label: 'Peak memory (RSS)', key: 'peak_rss_bytes', unit: 'bytes' },
+  peakMemory: { label: 'Peak memory (RSS)', key: 'peak_rss_bytes', unit: 'memory' },
 }
 
 const short = (commit: string) => commit.slice(0, 8)
@@ -202,6 +205,7 @@ export function Compare({ base, head }: Props) {
                       <BenchmarkHistory
                         benchmark={after.test_id}
                         metric={metrics[metric].key}
+                        title={metrics[metric].label}
                         unit={metrics[metric].unit}
                       />
                     </div>

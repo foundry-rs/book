@@ -1,4 +1,5 @@
 import { Hono } from 'hono'
+import { compilerLabels } from '../compilerMetadata'
 
 import { clickHouseConfig, select, type ClickHouseConfig } from './clickhouse'
 import { demoResponse } from './demo'
@@ -86,11 +87,13 @@ async function indexFromClickHouse(config: ClickHouseConfig) {
 async function runFromClickHouse(config: ClickHouseConfig, sha: string): Promise<StoredRun | null> {
   const [run] = await select(
     config,
-    `SELECT workflow_run_id, commit, branch, pr, title,
+    `SELECT workflow_run_id, commit, branch, pr, title, raw_results,
        formatDateTime(started_at, '%Y-%m-%dT%H:%i:%SZ', 'UTC') AS timestamp
      FROM runs FINAL WHERE commit = '${sha}' ORDER BY imported_at DESC LIMIT 1`,
   )
   if (!run) return null
+  const { raw_results, ...runMetadata } = run
+  const labels = compilerLabels(raw_results)
 
   const runId = Number(run.workflow_run_id)
   const rows = await select(
@@ -111,6 +114,7 @@ async function runFromClickHouse(config: ClickHouseConfig, sha: string): Promise
     }
     ;(result.compilers as Record<string, unknown>)[String(row.compiler)] = {
       status: row.status,
+      label: labels.get(testId)?.[String(row.compiler)],
       compile_time_seconds: row.compile_time_seconds,
       bytecode_size: row.bytecode_size,
       runtime_size: row.runtime_size,
@@ -141,7 +145,7 @@ async function runFromClickHouse(config: ClickHouseConfig, sha: string): Promise
     })
   }
   return {
-    ...run,
+    ...runMetadata,
     schemaVersion: 1,
     results: [...results.values()],
     artifacts,

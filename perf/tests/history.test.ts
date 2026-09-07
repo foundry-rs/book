@@ -1,7 +1,7 @@
 import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { expect, it } from 'vite-plus/test'
-import { HistoryGraph } from '../src/App'
+import { HistoryGraph } from '../src/HistoryGraph'
 import type { HistoryRun } from '../src/types'
 
 const runs: HistoryRun[] = [3, 2, 1].map((n) => ({
@@ -21,14 +21,14 @@ const runs: HistoryRun[] = [3, 2, 1].map((n) => ({
   ],
 }))
 
-function render(history = runs) {
+function render(history = runs, metric = 'total_gas', unit = 'gas') {
   return renderToStaticMarkup(
     createElement(HistoryGraph, {
       runs: history,
       benchmark: 'small',
-      metric: 'total_gas',
+      metric,
       title: 'Runtime gas',
-      unit: 'gas',
+      unit,
     }),
   )
 }
@@ -42,14 +42,46 @@ it('plots only the selected benchmark and leaves failed samples as gaps', () => 
   expect(html.match(/class="history-point/g)).toHaveLength(2)
 })
 
-it('does not label an older value as the latest when the latest sample is missing', () => {
+it('hides a card when the latest sample is missing, even with older measurements', () => {
   const html = render([{ ...runs[0], results: [] }, ...runs.slice(1)])
-  expect(html).toContain('<strong>n/a</strong>')
-  expect(html).toContain('Waiting for two measurements.')
+  expect(html).toBe('')
 })
 
-it('handles metrics with no measurements without invalid SVG coordinates', () => {
+it('hides metrics with no measurements', () => {
   const html = render(runs.map((run) => ({ ...run, results: [] })))
-  expect(html).toContain('No measurements for this metric.')
-  expect(html).not.toMatch(/NaN|Infinity/)
+  expect(html).toBe('')
+})
+
+it('keeps a valid zero measurement visible', () => {
+  const html = render(
+    runs.map((run) => ({
+      ...run,
+      results: [
+        {
+          test_id: 'small',
+          suite: 'runtime',
+          compilers: { solar: { status: 'ok', total_gas: 0 } },
+        },
+      ],
+    })),
+  )
+  expect(html).toContain('0 gas')
+})
+
+it.each([
+  ['compile_time_seconds', 'seconds', 0.00342, '3.42 ms'],
+  ['peak_rss_bytes', 'memory', 23592960, '22.5 MiB'],
+  ['runtime_size', 'bytes', 130, '130 bytes'],
+])('formats %s consistently in the shared graph', (metric, unit, value, expected) => {
+  const history = runs.map((run) => ({
+    ...run,
+    results: [
+      {
+        test_id: 'small',
+        suite: 'runtime',
+        compilers: { solar: { status: 'ok', [metric]: value } },
+      },
+    ],
+  }))
+  expect(render(history, metric, unit)).toContain(expected)
 })
