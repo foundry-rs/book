@@ -1,4 +1,6 @@
 import type { ArtifactFile, RunDocument, RunIndex } from '../types'
+import { historyMetrics, historySeries } from '../historySeries'
+import { benchmarkMetric } from '../benchmarkMetric'
 
 const commits = [
   '9d8c7b6a5e4f32100123456789abcdef01234567',
@@ -143,17 +145,37 @@ const index: RunIndex = {
   updatedAt: '2026-09-03T12:00:00.000Z',
 }
 
-export function demoResponse(pathname: string) {
+export function demoResponse(input: string) {
+  const url = new URL(input, 'http://demo.local')
+  const pathname = url.pathname
   if (pathname === '/api/health') return Response.json({ source: 'demo' })
   if (pathname === '/api/data/index.json') return Response.json(index)
-  if (pathname === '/api/data/history.json')
-    return Response.json({
-      runs: [...documents.values()].map(({ commit, timestamp, results }) => ({
-        commit,
-        timestamp,
-        results,
-      })),
-    })
+  if (pathname === '/api/data/history.json') {
+    const metric = url.searchParams.get('metric') ?? 'total_gas'
+    const benchmark = url.searchParams.get('benchmark')
+    if (
+      !historyMetrics.includes(metric) ||
+      (benchmark !== null && (!benchmark || benchmark.length > 256))
+    )
+      return Response.json({ error: 'Invalid history selection' }, { status: 400 })
+    return Response.json(
+      historySeries(
+        [...documents.values()].flatMap(({ commit, timestamp, results }) => {
+          const selected = results.filter(
+            (result) => benchmark === null || result.test_id === benchmark,
+          )
+          return selected.length
+            ? selected.map((result) => ({
+                commit,
+                timestamp,
+                test_id: result.test_id,
+                value: benchmarkMetric(result, metric),
+              }))
+            : [{ commit, timestamp, test_id: '', value: null }]
+        }),
+      ),
+    )
+  }
 
   const match = /^\/api\/data\/runs\/([0-9a-f]{40})\/(run|artifacts)\.json$/.exec(pathname)
   if (match) {

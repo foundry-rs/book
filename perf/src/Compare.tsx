@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, type CSSProperties } from 'react'
 import { BenchmarkHistory } from './BenchmarkHistory'
 import { changeClass, formatChange } from './change'
 import { formatValue } from './formatValue'
@@ -7,6 +7,8 @@ import { benchmarkSource } from './sources'
 import type { RunDocument, Theme } from './types'
 import { benchmarkMetric as value } from './benchmarkMetric'
 import { replaceUrl } from './navigation'
+import { comparisonCompilers, comparisonRows, percentChange } from './comparison'
+import { compilerLabel } from './compilerLabel'
 
 const metrics: Record<
   string,
@@ -21,11 +23,6 @@ const metrics: Record<
 }
 
 const short = (commit: string) => commit.slice(0, 8)
-
-function change(before: number | null, after: number | null) {
-  if (before === null || after === null || before === 0) return null
-  return ((after - before) / before) * 100
-}
 
 function formatRunDate(timestamp: string) {
   return new Intl.DateTimeFormat(undefined, {
@@ -79,16 +76,9 @@ export function Compare({ base, head }: Props) {
 
   const rows = useMemo(() => {
     if (!runs) return []
-    const before = new Map(runs[0].results.map((result) => [result.test_id, result]))
-    const after = new Map(runs[1].results.map((result) => [result.test_id, result]))
-    return [...new Set([...after.keys(), ...before.keys()])]
-      .filter((name) => name.toLowerCase().includes(query.toLowerCase()))
-      .map((name) => ({
-        before: before.get(name),
-        headResult: after.get(name),
-        result: after.get(name) || before.get(name)!,
-      }))
+    return comparisonRows(runs[0], runs[1], metrics[metric].key, query)
   }, [metric, query, runs])
+  const compilers = useMemo(() => (runs ? comparisonCompilers(runs[1]) : []), [runs])
 
   const selectBenchmark = (benchmark: string) => {
     const next = expanded === benchmark ? '' : benchmark
@@ -164,18 +154,36 @@ export function Compare({ base, head }: Props) {
           ))}
         </select>
       </section>
-      <section className="results" id="benchmarks">
+      <section
+        className="results"
+        id="benchmarks"
+        style={{ '--compiler-count': compilers.length } as CSSProperties}
+      >
         <div className="result header-row">
           <span>Benchmark</span>
-          <span>{short(base)}</span>
-          <span>{short(head)}</span>
-          <span>Change</span>
+          <span>solar {short(base)} (base)</span>
+          {compilers.map((compiler) => {
+            const labels = [
+              ...new Set(
+                afterRun.results.flatMap((result) =>
+                  result.compilers[compiler]?.label ? [result.compilers[compiler].label] : [],
+                ),
+              ),
+            ]
+            return (
+              <span key={compiler}>
+                {compiler === 'solar'
+                  ? `solar ${short(head)} (head)`
+                  : labels.length === 1
+                    ? labels[0]
+                    : compiler}
+              </span>
+            )
+          })}
         </div>
         {rows.map(({ before, headResult, result: after }) => {
           const selected = expanded === after.test_id
           const beforeValue = value(before, metrics[metric].key)
-          const afterValue = value(headResult, metrics[metric].key)
-          const delta = change(beforeValue, afterValue)
           const source = benchmarkSource(after.test_id, head)
           return (
             <div key={after.test_id} className="benchmark-row">
@@ -191,23 +199,30 @@ export function Compare({ base, head }: Props) {
                 <span>
                   {beforeValue === null ? '—' : formatValue(beforeValue, metrics[metric].unit)}
                 </span>
-                <strong>
-                  {afterValue === null ? '—' : formatValue(afterValue, metrics[metric].unit)}
-                </strong>
-                <strong className={changeClass(delta)}>
-                  {!before ? 'Added' : !headResult ? 'Removed' : formatChange(delta)}
-                </strong>
+                {compilers.map((compiler) => {
+                  const afterValue = value(headResult, metrics[metric].key, compiler)
+                  const delta = percentChange(beforeValue, afterValue)
+                  const label = compilerLabel(afterRun, after.test_id, compiler)
+                  const raw =
+                    afterValue === null
+                      ? 'No measurement'
+                      : formatValue(afterValue, metrics[metric].unit)
+                  return (
+                    <strong
+                      key={compiler}
+                      className={changeClass(delta)}
+                      title={`${label}: ${raw}${afterValue === null ? '' : ` (${afterValue.toLocaleString()} ${metrics[metric].unit === 'bytes' || metrics[metric].unit === 'memory' ? 'b' : metrics[metric].unit})`}`}
+                    >
+                      {formatChange(delta, '—')}
+                    </strong>
+                  )
+                })}
               </button>
               {selected && (
                 <section className="benchmark-detail" id={after.test_id}>
                   <div className="detail-copy">
                     <p className="eyebrow">Benchmark details</p>
                     <h2>{after.test_id}</h2>
-                    <p className="detail-muted">
-                      Compiler status — base: {before?.compilers.solar?.status ?? 'not present'};
-                      head: {headResult?.compilers.solar?.status ?? 'not present'}. Missing metrics
-                      are shown as —.
-                    </p>
                     {after.description && (
                       <p className="benchmark-description">{after.description}</p>
                     )}

@@ -448,7 +448,7 @@ footer {
 }
 .results {
   margin-top: 12px;
-  overflow: hidden;
+  overflow-x: auto;
   border: 1px solid var(--line);
   border-radius: 6px;
   background: var(--surface);
@@ -458,7 +458,8 @@ footer {
   min-height: 48px;
   padding: 0 16px;
   display: grid;
-  grid-template-columns: minmax(220px, 1fr) 130px 130px 100px;
+  grid-template-columns: minmax(180px, 1fr) 150px repeat(var(--compiler-count, 1), 150px);
+  min-width: calc(180px + (var(--compiler-count, 1) + 1) * 166px);
   column-gap: 16px;
   align-items: center;
   border: 0;
@@ -696,12 +697,7 @@ footer {
   }
   .result {
     padding: 0 10px;
-    grid-template-columns: minmax(0, 1fr) 64px 70px;
     column-gap: 8px;
-  }
-  .result > span:first-of-type,
-  .header-row span:first-of-type {
-    display: none;
   }
   .artifact-body {
     grid-template-columns: 1fr;

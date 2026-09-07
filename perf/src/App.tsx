@@ -182,10 +182,24 @@ function Home() {
     loadIndex()
       .then(setIndex)
       .catch((value: Error) => setError(value.message))
-    loadHistory()
-      .then(setHistory)
-      .catch((value: Error) => setError(value.message))
   }, [])
+
+  useEffect(() => {
+    let cancelled = false
+    setHistory(null)
+    setError('')
+    loadHistory(metric).then(
+      (value) => {
+        if (!cancelled) setHistory(value)
+      },
+      (value: Error) => {
+        if (!cancelled) setError(value.message)
+      },
+    )
+    return () => {
+      cancelled = true
+    }
+  }, [metric])
 
   const compare = async () => {
     if (resolving || !base.trim() || !head.trim()) return

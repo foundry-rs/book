@@ -1,5 +1,7 @@
 import { Hono } from 'hono'
 import { compilerLabels } from '../compilerMetadata'
+import { historyMetrics, historySeries } from '../historySeries'
+import { requestTiming } from './timing'
 
 import { clickHouseConfig, select, type ClickHouseConfig } from './clickhouse'
 import { demoResponse } from './demo'
@@ -80,20 +82,19 @@ async function runFromClickHouse(
      FROM runs FINAL WHERE commit = '${sha}' ORDER BY imported_at DESC LIMIT 1`,
   )
   if (!run) return null
-  const { raw_results, ...runMetadata } = run
-  const labels = compilerLabels(raw_results)
-
-  const runId = Number(run.workflow_run_id)
   const [rows, artifacts] = await Promise.all([
     select(
       config,
       `SELECT test_id, description, suite, compiler, status, compile_time_seconds, bytecode_size,
-       runtime_size, deploy_gas, total_gas, peak_rss_bytes
-     FROM benchmark_results FINAL WHERE workflow_run_id = ${runId}
+     runtime_size, deploy_gas, total_gas, peak_rss_bytes
+     FROM benchmark_results FINAL WHERE workflow_run_id = ${Number(run.workflow_run_id)}
      ORDER BY test_id, compiler`,
     ),
     includeArtifacts ? artifactsFromClickHouse(config, sha) : Promise.resolve({}),
   ])
+  const { raw_results, ...runMetadata } = run
+  const labels = compilerLabels(raw_results)
+
   const results = new Map<string, Record<string, unknown>>()
   for (const row of rows) {
     const testId = String(row.test_id)
@@ -150,50 +151,35 @@ async function artifactsFromClickHouse(config: ClickHouseConfig, sha: string) {
   return artifacts
 }
 
-async function historyFromClickHouse(config: ClickHouseConfig) {
-  // Read metrics only, in two bounded queries; never download artifact manifests for charts.
-  const runs = await select(
+async function historyFromClickHouse(config: ClickHouseConfig, metric: string, benchmark?: string) {
+  const rows = await select(
     config,
-    `SELECT commit, workflow_run_id,
-    formatDateTime(started_at, '%Y-%m-%dT%H:%i:%SZ', 'UTC') AS timestamp
-    FROM (SELECT * FROM runs FINAL ORDER BY imported_at DESC, workflow_run_id DESC LIMIT 1 BY commit)
+    `WITH recent AS (
+    SELECT commit, workflow_run_id, started_at
+    FROM (SELECT commit, workflow_run_id, started_at, branch, source_schema
+      FROM runs FINAL ORDER BY imported_at DESC, workflow_run_id DESC LIMIT 1 BY commit)
     WHERE source_schema > 0 AND branch = 'main'
-    ORDER BY started_at DESC, commit DESC LIMIT 60`,
+    ORDER BY started_at DESC, commit DESC LIMIT 60
   )
-  const ids = runs.map((run) => Number(run.workflow_run_id))
-  const rows = ids.length
-    ? await select(
-        config,
-        `SELECT workflow_run_id, test_id, suite,
-    status, compile_time_seconds, bytecode_size, runtime_size, deploy_gas, total_gas, peak_rss_bytes
+  SELECT r.commit, formatDateTime(r.started_at, '%Y-%m-%dT%H:%i:%SZ', 'UTC') AS timestamp,
+    b.test_id, if(b.status = 'ok', b.${metric}, NULL) AS value
+  FROM recent AS r LEFT JOIN (
+    SELECT workflow_run_id, test_id, status, ${metric}
     FROM benchmark_results FINAL
-    WHERE workflow_run_id IN (${ids.join(',')}) AND compiler = 'solar'
-    ORDER BY test_id`,
-      )
-    : []
-  return {
-    runs: runs.map((run) => ({
-      commit: run.commit,
-      timestamp: run.timestamp,
-      results: rows
-        .filter((row) => Number(row.workflow_run_id) === Number(run.workflow_run_id))
-        .map((row) => ({
-          test_id: row.test_id,
-          suite: row.suite,
-          compilers: {
-            solar: {
-              status: row.status,
-              compile_time_seconds: row.compile_time_seconds,
-              bytecode_size: row.bytecode_size,
-              runtime_size: row.runtime_size,
-              deploy_gas: row.deploy_gas,
-              total_gas: row.total_gas,
-              peak_rss_bytes: row.peak_rss_bytes,
-            },
-          },
-        })),
+    WHERE workflow_run_id IN (SELECT workflow_run_id FROM recent) AND compiler = 'solar'
+      ${benchmark === undefined ? '' : 'AND test_id = {benchmark:String}'}
+  ) AS b ON r.workflow_run_id = b.workflow_run_id
+  ORDER BY r.started_at DESC, r.commit DESC, b.test_id`,
+    benchmark === undefined ? undefined : { benchmark },
+  )
+  return historySeries(
+    rows.map((row) => ({
+      commit: String(row.commit),
+      timestamp: String(row.timestamp),
+      test_id: typeof row.test_id === 'string' ? row.test_id : '',
+      value: typeof row.value === 'number' && Number.isFinite(row.value) ? row.value : null,
     })),
-  }
+  )
 }
 
 async function loadRun(
@@ -237,6 +223,24 @@ export function createApi(options: ApiOptions = {}) {
   }
   const app = new Hono()
   let github: GitHubClient | undefined
+
+  app.use('/api/*', async (context, next) => {
+    const started = performance.now()
+    const timing = { queries: 0, databaseMs: 0 }
+    await requestTiming.run(timing, next)
+    context.header(
+      'server-timing',
+      `api;dur=${(performance.now() - started).toFixed(1)}, db;dur=${timing.databaseMs.toFixed(1)};desc="${timing.queries} queries"`,
+    )
+    // Browser max-age alone does not opt functions into Vercel's shared CDN cache.
+    const cacheControl = context.res.headers.get('cache-control')
+    if (
+      context.res.ok &&
+      context.req.path.startsWith('/api/data/') &&
+      cacheControl?.startsWith('public,')
+    )
+      context.header('vercel-cdn-cache-control', cacheControl.replace('max-age=', 's-maxage='))
+  })
 
   app.get('/api/resolve', async (context) => {
     context.header('cache-control', 'no-store')
@@ -287,9 +291,11 @@ export function createApi(options: ApiOptions = {}) {
       )
     try {
       // Verify the public schema and read access, not just environment presence.
-      for (const table of ['runs', 'benchmark_results', 'artifact_files']) {
-        await select(config, `SELECT 1 FROM ${table} LIMIT 0`)
-      }
+      await Promise.all(
+        ['runs', 'benchmark_results', 'artifact_files'].map((table) =>
+          select(config, `SELECT 1 FROM ${table} LIMIT 0`),
+        ),
+      )
       return context.json({ source: 'clickhouse' })
     } catch {
       return context.json({ source: 'clickhouse', error: 'Database unavailable' }, 503)
@@ -312,7 +318,7 @@ export function createApi(options: ApiOptions = {}) {
 
   app.get('/api/data/*', async (context) => {
     const path = context.req.path.slice('/api/data/'.length)
-    const demo = useDemoFallback ? demoResponse(context.req.path) : null
+    const demo = useDemoFallback ? demoResponse(context.req.url) : null
     if (!config) {
       if (demo) return demo
       return context.json({ error: 'Benchmark data is not configured' }, 503)
@@ -320,8 +326,15 @@ export function createApi(options: ApiOptions = {}) {
 
     try {
       if (path === 'history.json') {
+        const metric = context.req.query('metric') ?? 'total_gas'
+        const benchmark = context.req.query('benchmark')
+        if (
+          !historyMetrics.includes(metric) ||
+          (benchmark !== undefined && (!benchmark || benchmark.length > 256))
+        )
+          return context.json({ error: 'Invalid history selection' }, 400)
         context.header('cache-control', 'public, max-age=60, stale-while-revalidate=120')
-        return context.json(await historyFromClickHouse(config))
+        return context.json(await historyFromClickHouse(config, metric, benchmark))
       }
       if (path === 'index.json') {
         context.header('cache-control', 'public, max-age=60, stale-while-revalidate=120')

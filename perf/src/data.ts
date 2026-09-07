@@ -1,4 +1,4 @@
-import type { HistoryRun, RunDocument, RunIndex } from './types'
+import type { HistoryRun, HistorySeries, RunDocument, RunIndex } from './types'
 import { responseCache } from './cache'
 
 const root = '/api/data/'
@@ -8,9 +8,22 @@ const cachedArtifact = responseCache<string | null>(3_600_000)
 const cachedRun = responseCache<RunDocument>(300_000)
 const cachedManifest = responseCache<RunDocument['artifacts']>(300_000)
 
-export function loadHistory() {
-  return cachedHistory('history', () =>
-    getJson<{ runs: HistoryRun[] }>('history.json').then((history) => history.runs),
+export function loadHistory(metric: string, benchmark?: string) {
+  const params = new URLSearchParams({ metric })
+  if (benchmark !== undefined) params.set('benchmark', benchmark)
+  return cachedHistory(params.toString(), () =>
+    getJson<HistorySeries>(`history.json?${params}`).then(({ runs, values }) =>
+      runs.map((run, index) => ({
+        ...run,
+        results: Object.entries(values).map(([test_id, points]) => ({
+          test_id,
+          suite: '',
+          compilers: {
+            solar: { status: points[index] === null ? 'missing' : 'ok', [metric]: points[index] },
+          },
+        })),
+      })),
+    ),
   )
 }
 

@@ -78,7 +78,7 @@ it('keeps a valid zero measurement visible', () => {
 it.each([
   ['compile_time_seconds', 'seconds', 0.00342, '3.42 ms'],
   ['peak_rss_bytes', 'memory', 23592960, '22.5 MiB'],
-  ['runtime_size', 'bytes', 130, '130 bytes'],
+  ['runtime_size', 'bytes', 130, '130 b'],
 ])('formats %s consistently in the shared graph', (metric, unit, value, expected) => {
   const history = runs.map((run) => ({
     ...run,

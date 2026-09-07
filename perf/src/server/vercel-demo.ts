@@ -11,5 +11,6 @@ export default function handler(request: Request) {
   const path = url.searchParams.get('__perf_path')
   const pathname = path ? `/api/${path}` : url.pathname
 
-  return demoResponse(pathname) ?? Response.json({ error: 'Not found' }, { status: 404 })
+  url.pathname = pathname
+  return demoResponse(url.toString()) ?? Response.json({ error: 'Not found' }, { status: 404 })
 }

@@ -1,3 +1,5 @@
+import { requestTiming } from './timing'
+
 export interface ClickHouseConfig {
   database: string
   host: string
@@ -35,9 +37,15 @@ function authorization(config: ClickHouseConfig) {
   return `Basic ${Buffer.from(`${config.user}:${config.password}`).toString('base64')}`
 }
 
-async function request(config: ClickHouseConfig, query: string, body?: string) {
+async function request(
+  config: ClickHouseConfig,
+  query: string,
+  body?: string,
+  params: Record<string, string> = {},
+) {
   const url = new URL(config.host)
   url.searchParams.set('database', config.database)
+  for (const [key, value] of Object.entries(params)) url.searchParams.set(`param_${key}`, value)
   if (body !== undefined) url.searchParams.set('query', query)
   const response = await fetch(url, {
     method: 'POST',
@@ -54,14 +62,25 @@ async function request(config: ClickHouseConfig, query: string, body?: string) {
   throw new Error(`ClickHouse request failed (${response.status}): ${detail}`)
 }
 
-export async function select(config: ClickHouseConfig, query: string) {
-  const response = await request(config, `${query}\nFORMAT JSONEachRow`)
-  const body = await response.text()
-  return body
-    .trim()
-    .split('\n')
-    .filter(Boolean)
-    .map((line) => JSON.parse(line) as Record<string, unknown>)
+export async function select(
+  config: ClickHouseConfig,
+  query: string,
+  params?: Record<string, string>,
+) {
+  const started = performance.now()
+  const timing = requestTiming.getStore()
+  if (timing) timing.queries++
+  try {
+    const response = await request(config, `${query}\nFORMAT JSONEachRow`, undefined, params)
+    const body = await response.text()
+    return body
+      .trim()
+      .split('\n')
+      .filter(Boolean)
+      .map((line) => JSON.parse(line) as Record<string, unknown>)
+  } finally {
+    if (timing) timing.databaseMs += performance.now() - started
+  }
 }
 
 export async function insert(

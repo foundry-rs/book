@@ -100,10 +100,13 @@ jobs only on production deployments. Check that `/api/data/index.json` contains 
 then compare two successful Solar benchmark commits at `/perf/solar/?base=<sha>&head=<sha>`.
 The old `/perf/` URL redirects to `/perf/solar/`; API endpoints remain at `/api/`.
 The dashboard shows one graph per benchmark, with a metric selector and name filter.
-`/api/data/history.json` returns Solar measurements for the latest 60 main-branch runs
-without artifact manifests. Values are never summed across benchmarks; failed or missing
+`/api/data/history.json?metric=total_gas` returns only the selected Solar metric for the
+latest 60 main-branch runs, as a shared run axis and one value array per benchmark.
+Opening an individual benchmark requests `&benchmark=<encoded name>`: one bounded database
+query returns only that benchmark and metric, never other benchmarks or artifacts.
+Values are never summed across benchmarks; failed or missing
 measurements leave gaps. Click a graph point to compare it with the preceding commit.
-The individual benchmark History section uses the same graph and data. Dashboard cards
+The individual benchmark History section uses the same graph. Dashboard cards
 without a latest measurement are hidden for the selected metric; individual benchmark
 history still retains older measurements. The index contains metadata and benchmark
 counts, not aggregate metrics. Compare inputs start
@@ -113,6 +116,18 @@ on submission using the GitHub App (Contents read for commits/branches/tags, Pul
 read for PRs). Merged PRs resolve to the merge commit; open PRs resolve to their head.
 Internal navigation and Back/Forward preserve the browser's data caches. Comparison metric
 changes are reflected in the permalink.
+
+Comparison rows without measurements for the selected metric are hidden. The table shows
+the Solar base value, followed by a percentage-change column for each compiler in the head
+run. Lower values are green, higher values red; hovering a delta reveals the compiler's
+value. A missing measurement or a nonzero value against a zero base has no defined percentage.
+Byte sizes use `b`, `KiB`, `MiB`, etc. Compiler columns are discovered from the run data.
+
+Successful data responses explicitly enable the Vercel CDN cache with the same lifetimes
+as the browser cache. Errors, ref resolution, health checks, and worker responses are not
+shared-cached. `Server-Timing` reports API duration, cumulative database duration, and query
+count; database duration can exceed API duration for parallel queries. Check `x-vercel-cache`
+and `age` as well: timing headers on a CDN hit describe the original cache fill, not a new query.
 
 Successful browser reads are cached for 60 seconds (index/history), five minutes (runs),
 or one hour (artifacts), with a 128-entry/32 MiB estimated-size limit per cache. Missing

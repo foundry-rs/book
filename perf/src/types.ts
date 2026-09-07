@@ -65,3 +65,8 @@ export interface RunDocument {
 }
 
 export type HistoryRun = Pick<RunDocument, 'commit' | 'timestamp' | 'results'>
+
+export interface HistorySeries {
+  runs: Pick<RunDocument, 'commit' | 'timestamp'>[]
+  values: Record<string, (number | null)[]>
+}

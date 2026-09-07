@@ -36,8 +36,15 @@ it('revisiting artifacts and runs does not fetch again in the same instance', as
   await loadRun(sha)
   await loadRun(sha)
   expect(fetch).toHaveBeenCalledTimes(3)
-  fetch.mockImplementation(async () => new Response(JSON.stringify({ runs: [] })))
-  await loadHistory()
-  await loadHistory()
+  fetch.mockImplementation(async () => new Response(JSON.stringify({ runs: [], values: {} })))
+  await loadHistory('total_gas', 'test')
+  await loadHistory('total_gas', 'test')
   expect(fetch).toHaveBeenCalledTimes(4)
+  expect(fetch).toHaveBeenLastCalledWith(
+    '/api/data/history.json?metric=total_gas&benchmark=test',
+    undefined,
+  )
+  await loadHistory('total_gas', 'other')
+  await loadHistory('runtime_size', 'test')
+  expect(fetch).toHaveBeenCalledTimes(6)
 })

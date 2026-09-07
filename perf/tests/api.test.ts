@@ -59,56 +59,42 @@ describe('website API', () => {
     globalThis.fetch = vi.fn(async (_url, options) => {
       const sql = String(options?.body)
       queries.push(sql)
-      const rows =
-        queries.length === 1
-          ? [{ commit: 'a'.repeat(40), workflow_run_id: 1, timestamp: '2026-09-07T00:00:00Z' }]
-          : [
-              {
-                workflow_run_id: 1,
-                test_id: 'small',
-                suite: 'runtime',
-                status: 'ok',
-                total_gas: 12,
-              },
-              {
-                workflow_run_id: 1,
-                test_id: 'large',
-                suite: 'runtime',
-                status: 'ok',
-                total_gas: 9000,
-              },
-              {
-                workflow_run_id: 1,
-                test_id: 'failed',
-                suite: 'runtime',
-                status: 'error',
-                total_gas: 0,
-              },
-            ]
+      const rows = [
+        { commit: 'a'.repeat(40), timestamp: '2026-09-07T00:00:00Z', test_id: 'small', value: 12 },
+        { commit: 'b'.repeat(40), timestamp: '2026-09-06T00:00:00Z', test_id: '', value: null },
+      ]
       return new Response(rows.map((row) => JSON.stringify(row)).join('\n'))
     })
-    const response = await createApi({ clickHouse: config }).request('/api/data/history.json')
+    const app = createApi({ clickHouse: config })
+    const response = await app.request('/api/data/history.json?benchmark=small&metric=total_gas')
     expect(response.status).toBe(200)
-    const { runs } = await response.json()
-    expect(
-      runs[0].results.map(
-        (result: { compilers: { solar: { total_gas: number } } }) =>
-          result.compilers.solar.total_gas,
-      ),
-    ).toEqual([12, 9000, 0])
-    expect(runs[0].results[2].compilers.solar.status).toBe('error')
-    expect(queries).toHaveLength(2)
+    const { runs, values } = await response.json()
+    expect(runs).toHaveLength(2)
+    expect(values).toEqual({ small: [12, null] })
+    expect(queries).toHaveLength(1)
     expect(queries[0]).toContain("branch = 'main'")
     expect(queries[0]).toContain('LIMIT 60')
-    expect(queries[1]).toContain("compiler = 'solar'")
+    expect(queries[0]).toContain("compiler = 'solar'")
+    expect(queries[0]).toContain('test_id = {benchmark:String}')
+    expect(queries[0]).not.toMatch(/compile_time_seconds|peak_rss_bytes/)
+    expect(
+      (vi.mocked(globalThis.fetch).mock.calls[0][0] as URL).searchParams.get('param_benchmark'),
+    ).toBe('small')
     expect(queries.join(' ')).not.toMatch(/sumIf|artifact_files/)
+    expect(response.headers.get('server-timing')).toContain('1 queries')
+    expect(response.headers.get('vercel-cdn-cache-control')).toContain('s-maxage=60')
+    expect((await app.request('/api/data/history.json?metric=oops')).status).toBe(400)
+    expect(queries).toHaveLength(1)
   })
 
   it('serves per-benchmark demo history', async () => {
-    const response = await createApi({ demoFallback: true }).request('/api/data/history.json')
-    const { runs } = await response.json()
+    const response = await createApi({ demoFallback: true }).request(
+      '/api/data/history.json?benchmark=demo%3A%3Afactorial&metric=runtime_size',
+    )
+    const { runs, values } = await response.json()
     expect(runs).toHaveLength(3)
-    expect(runs[0].results).toHaveLength(2)
+    expect(values).toEqual({ 'demo::factorial': [96, 94, 92] })
+    expect(runs[0].results).toBeUndefined()
     expect(runs[0].artifacts).toBeUndefined()
   })
   it('serves distinct demo artifacts for commit and compiler comparisons', async () => {

@@ -16,7 +16,9 @@ export function BenchmarkHistory(props: Props) {
 
   useEffect(() => {
     let cancelled = false
-    loadHistory().then(
+    setRuns(null)
+    setError(false)
+    loadHistory(props.metric, props.benchmark).then(
       (history) => {
         if (!cancelled) setRuns(history)
       },
@@ -27,7 +29,7 @@ export function BenchmarkHistory(props: Props) {
     return () => {
       cancelled = true
     }
-  }, [])
+  }, [props.benchmark, props.metric])
 
   if (error) return <p className="detail-muted">Could not load benchmark history.</p>
   if (runs === null) return <p className="detail-muted">Loading history…</p>
