@@ -15,7 +15,7 @@ const metrics: Record<
   { label: string; key: string; unit: 'bytes' | 'gas' | 'seconds' | 'memory' }
 > = {
   runtimeGas: { label: 'Runtime gas', key: 'total_gas', unit: 'gas' },
-  deployGas: { label: 'Deployment gas', key: 'deploy_gas', unit: 'gas' },
+  deployGas: { label: 'Deploy gas', key: 'deploy_gas', unit: 'gas' },
   runtimeSize: { label: 'Runtime bytes', key: 'runtime_size', unit: 'bytes' },
   creationSize: { label: 'Creation bytes', key: 'bytecode_size', unit: 'bytes' },
   compileTime: { label: 'Compile time', key: 'compile_time_seconds', unit: 'seconds' },

@@ -13,7 +13,7 @@ const short = (commit: string) => commit.slice(0, 8)
 
 const charts = [
   { metric: 'total_gas', title: 'Runtime gas', unit: 'gas' },
-  { metric: 'deploy_gas', title: 'Deployment gas', unit: 'gas' },
+  { metric: 'deploy_gas', title: 'Deploy gas', unit: 'gas' },
   { metric: 'runtime_size', title: 'Runtime bytecode', unit: 'bytes' },
   { metric: 'bytecode_size', title: 'Creation bytecode', unit: 'bytes' },
   { metric: 'compile_time_seconds', title: 'Compile time', unit: 'seconds' },
