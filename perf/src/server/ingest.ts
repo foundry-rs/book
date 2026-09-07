@@ -204,6 +204,7 @@ export async function extractArchive(response: Response): Promise<ArtifactArchiv
 export function normalizeArchive(archive: ArtifactArchive, run: ImportedRun): NormalizedRun {
   const document = JSON.parse(archive.results) as unknown
   const results = normalizeResults(document, run)
+  if (!results.length) throw new Error('Benchmark archive contains no supported results')
   const knownTests = new Set(results.map((result) => String(result.test_id)))
   const artifacts = [...archive.artifacts].flatMap(([key, content]) => {
     const [, testId, compiler, path] = key.split('/')

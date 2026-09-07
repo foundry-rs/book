@@ -14,6 +14,11 @@ const run = {
 }
 
 describe('GitHub Actions importer', () => {
+  it('does not publish an empty or unsupported results document', () => {
+    expect(() =>
+      normalizeArchive({ artifacts: new Map(), results: '{"results":[]}' }, run),
+    ).toThrow('no supported results')
+  })
   it('reserves each worker tick for fresh main runs', () => {
     const makeRun = (id: number) => ({
       conclusion: 'success',

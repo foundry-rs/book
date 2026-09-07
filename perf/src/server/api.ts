@@ -34,11 +34,13 @@ async function indexFromClickHouse(config: ClickHouseConfig) {
     `SELECT
        r.commit,
        r.workflow_run_id,
-       toString(r.started_at) AS timestamp,
+       formatDateTime(r.started_at, '%Y-%m-%dT%H:%i:%SZ', 'UTC') AS timestamp,
        r.branch,
        r.pr,
        r.title
-     FROM runs AS r FINAL
+     FROM (
+       SELECT * FROM runs FINAL ORDER BY imported_at DESC, workflow_run_id DESC LIMIT 1 BY commit
+     ) AS r
      WHERE r.source_schema > 0
      ORDER BY r.started_at DESC
      LIMIT 2_000`,
@@ -83,7 +85,8 @@ async function indexFromClickHouse(config: ClickHouseConfig) {
 async function runFromClickHouse(config: ClickHouseConfig, sha: string): Promise<StoredRun | null> {
   const [run] = await select(
     config,
-    `SELECT workflow_run_id, commit, branch, pr, title, toString(started_at) AS timestamp
+    `SELECT workflow_run_id, commit, branch, pr, title,
+       formatDateTime(started_at, '%Y-%m-%dT%H:%i:%SZ', 'UTC') AS timestamp
      FROM runs FINAL WHERE commit = '${sha}' ORDER BY imported_at DESC LIMIT 1`,
   )
   if (!run) return null

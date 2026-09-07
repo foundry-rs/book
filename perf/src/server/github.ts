@@ -154,6 +154,7 @@ export class GitHubClient {
         `${api}app/installations/${this.config.installationId}/access_tokens`,
         {
           method: 'POST',
+          signal: AbortSignal.timeout(15_000),
           headers: {
             accept: 'application/vnd.github+json',
             authorization: `Bearer ${appJwt(this.config)}`,

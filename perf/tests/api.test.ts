@@ -195,6 +195,8 @@ describe('website API', () => {
     })
     expect(fetch).toHaveBeenCalledTimes(2)
     expect(queries[0]).toContain('LIMIT 2_000')
+    expect(queries[0]).toContain('LIMIT 1 BY commit')
+    expect(queries[0]).toContain("'%Y-%m-%dT%H:%i:%SZ', 'UTC'")
     expect(queries[1]).toContain('WHERE workflow_run_id IN (1)')
   })
 
