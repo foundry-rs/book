@@ -45,12 +45,15 @@ async function request(
 ) {
   const url = new URL(config.host)
   url.searchParams.set('database', config.database)
+  // ClickHouse requires an explicit opt-in in addition to Accept-Encoding.
+  url.searchParams.set('enable_http_compression', '1')
   for (const [key, value] of Object.entries(params)) url.searchParams.set(`param_${key}`, value)
   if (body !== undefined) url.searchParams.set('query', query)
   const response = await fetch(url, {
     method: 'POST',
     headers: {
       authorization: authorization(config),
+      'accept-encoding': 'gzip',
       'content-type': 'text/plain; charset=utf-8',
     },
     body: body ?? query,
