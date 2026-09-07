@@ -175,7 +175,7 @@ export class GitHubClient {
     const result = new Headers(headers)
     result.set('accept', 'application/vnd.github+json')
     result.set('authorization', `Bearer ${await this.#token()}`)
-    result.set('x-github-api-version', '2026-03-10')
+    if (!result.has('x-github-api-version')) result.set('x-github-api-version', '2026-03-10')
     return result
   }
 
@@ -210,7 +210,11 @@ export class GitHubClient {
         merged_at: string | null
         merge_commit_sha: string | null
         head: { sha: string }
-      }>(`repos/${this.config.repository}/pulls/${pr[1]}`)
+      }>(`repos/${this.config.repository}/pulls/${pr[1]}`, {
+        // The 2026 response omits merge_commit_sha; use the version exposing the
+        // actual merged revision instead of silently comparing the unmerged head.
+        headers: { 'x-github-api-version': '2022-11-28' },
+      })
       return pull.merged_at && pull.merge_commit_sha ? pull.merge_commit_sha : pull.head.sha
     }
     const commit = await this.request<{ sha: string }>(

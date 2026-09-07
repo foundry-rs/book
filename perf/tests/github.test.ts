@@ -29,14 +29,16 @@ describe('GitHub retry policy', () => {
       workflow: 'bench.yml',
       token: 'test',
     })
-    const fetch = vi.fn(async (input: RequestInfo | URL) => {
+    const fetch = vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
       const url = requestUrl(input)
-      if (url.includes('/pulls/'))
+      if (url.includes('/pulls/')) {
+        expect(new Headers(init?.headers).get('x-github-api-version')).toBe('2022-11-28')
         return Response.json({
           merged_at: url.endsWith('/2') ? 'today' : null,
           merge_commit_sha: 'b'.repeat(40),
           head: { sha: 'c'.repeat(40) },
         })
+      }
       return Response.json({ sha: 'a'.repeat(40) })
     })
     globalThis.fetch = fetch
