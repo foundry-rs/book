@@ -93,6 +93,11 @@ On a preview, manually invoke `GET /api/worker/tick` with `Authorization: Bearer
 and check the returned `failed`, `imported`, and `scanned` counts. Vercel schedules cron
 jobs only on production deployments. Check that `/api/data/index.json` contains real runs,
 then compare two successful Solar benchmark commits at `/perf/?base=<sha>&head=<sha>`.
+The dashboard shows one graph per benchmark, with a metric selector and name filter.
+`/api/data/history.json` returns Solar measurements for the latest 60 main-branch runs
+without artifact manifests. Values are never summed across benchmarks; failed or missing
+measurements leave gaps. Click a graph point to compare it with the preceding commit.
+
 Verify benchmark metrics, history, compiler artifact diffs, repeated cached reads, and
 the docs root `/`. A missing run is imported on demand; an already stored run is read
 without downloading its GitHub artifact again. Keep secrets out of URLs and screenshots.

@@ -149,6 +149,52 @@ async function runFromClickHouse(config: ClickHouseConfig, sha: string): Promise
   }
 }
 
+async function historyFromClickHouse(config: ClickHouseConfig) {
+  // Read metrics only, in two bounded queries; never download artifact manifests for charts.
+  const runs = await select(
+    config,
+    `SELECT commit, workflow_run_id,
+    formatDateTime(started_at, '%Y-%m-%dT%H:%i:%SZ', 'UTC') AS timestamp
+    FROM (SELECT * FROM runs FINAL ORDER BY imported_at DESC, workflow_run_id DESC LIMIT 1 BY commit)
+    WHERE source_schema > 0 AND branch = 'main'
+    ORDER BY started_at DESC, commit DESC LIMIT 60`,
+  )
+  const ids = runs.map((run) => Number(run.workflow_run_id))
+  const rows = ids.length
+    ? await select(
+        config,
+        `SELECT workflow_run_id, test_id, suite,
+    status, compile_time_seconds, bytecode_size, runtime_size, deploy_gas, total_gas, peak_rss_bytes
+    FROM benchmark_results FINAL
+    WHERE workflow_run_id IN (${ids.join(',')}) AND compiler = 'solar'
+    ORDER BY test_id`,
+      )
+    : []
+  return {
+    runs: runs.map((run) => ({
+      commit: run.commit,
+      timestamp: run.timestamp,
+      results: rows
+        .filter((row) => Number(row.workflow_run_id) === Number(run.workflow_run_id))
+        .map((row) => ({
+          test_id: row.test_id,
+          suite: row.suite,
+          compilers: {
+            solar: {
+              status: row.status,
+              compile_time_seconds: row.compile_time_seconds,
+              bytecode_size: row.bytecode_size,
+              runtime_size: row.runtime_size,
+              deploy_gas: row.deploy_gas,
+              total_gas: row.total_gas,
+              peak_rss_bytes: row.peak_rss_bytes,
+            },
+          },
+        })),
+    })),
+  }
+}
+
 async function loadRun(
   config: ClickHouseConfig,
   sha: string,
@@ -241,6 +287,10 @@ export function createApi(options: ApiOptions = {}) {
     }
 
     try {
+      if (path === 'history.json') {
+        context.header('cache-control', 'public, max-age=60, stale-while-revalidate=120')
+        return context.json(await historyFromClickHouse(config))
+      }
       if (path === 'index.json') {
         context.header('cache-control', 'public, max-age=60, stale-while-revalidate=120')
         const index = await indexFromClickHouse(config)

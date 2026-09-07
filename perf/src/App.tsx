@@ -1,25 +1,28 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useId, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { Moon, Sun } from 'lucide-react'
 import { changeClass, formatChange } from './change'
 import { Compare } from './Compare'
-import { loadIndex } from './data'
+import { loadHistory, loadIndex } from './data'
+import { benchmarkMetric } from './benchmarkMetric'
+import logo from './assets/logo.png'
 import { FileViewer } from './FileViewer'
-import type { MetricSummary, RunIndex, RunSummary, Theme } from './types'
+import type { HistoryRun, RunIndex, RunSummary, Theme } from './types'
 
 const short = (commit: string) => commit.slice(0, 8)
 
-const charts: { metric: keyof MetricSummary; title: string; unit: string }[] = [
-  { metric: 'runtimeGas', title: 'Runtime gas', unit: 'gas' },
-  { metric: 'deployGas', title: 'Deployment gas', unit: 'gas' },
-  { metric: 'runtimeSize', title: 'Runtime bytecode', unit: 'bytes' },
-  { metric: 'creationSize', title: 'Creation bytecode', unit: 'bytes' },
-  { metric: 'compileTime', title: 'Compile time', unit: 'seconds' },
-  { metric: 'peakMemory', title: 'Peak memory (RSS)', unit: 'memory' },
+const charts = [
+  { metric: 'total_gas', title: 'Runtime gas', unit: 'gas' },
+  { metric: 'deploy_gas', title: 'Deployment gas', unit: 'gas' },
+  { metric: 'runtime_size', title: 'Runtime bytecode', unit: 'bytes' },
+  { metric: 'bytecode_size', title: 'Creation bytecode', unit: 'bytes' },
+  { metric: 'compile_time_seconds', title: 'Compile time', unit: 'seconds' },
+  { metric: 'peak_rss_bytes', title: 'Peak memory (RSS)', unit: 'memory' },
 ]
 
 function formatValue(value: number, unit: string) {
-  if (unit === 'seconds') return `${value.toFixed(2)} s`
+  if (unit === 'seconds')
+    return value < 1 ? `${(value * 1000).toFixed(2)} ms` : `${value.toFixed(2)} s`
   if (unit === 'memory')
     return value >= 1024 * 1024
       ? `${(value / 1024 / 1024).toFixed(1)} MiB`
@@ -102,24 +105,30 @@ function CommitPicker({
   )
 }
 
-function HistoryGraph({
+export function HistoryGraph({
   runs,
   metric,
   title,
   unit,
+  benchmark,
 }: {
-  runs: RunSummary[]
-  metric: keyof MetricSummary
+  runs: HistoryRun[]
+  metric: string
   title: string
   unit: string
+  benchmark: string
 }) {
+  const clipId = useId()
   const [hovered, setHovered] = useState<number | null>(null)
   const [tooltip, setTooltip] = useState<{ x: number; y: number } | null>(null)
-  const points = runs
-    .filter((run) => run.branch === 'main' && typeof run.metrics[metric] === 'number')
-    .slice(0, 60)
-    .reverse()
-  const values = points.map((run) => run.metrics[metric]!)
+  const points = [...runs].reverse().map((run) => ({
+    ...run,
+    value: benchmarkMetric(
+      run.results.find((result) => result.test_id === benchmark),
+      metric,
+    ),
+  }))
+  const values = points.flatMap((run) => (run.value === null ? [] : [run.value]))
   const min = Math.min(...values)
   const max = Math.max(...values)
   const range = max - min
@@ -130,31 +139,34 @@ function HistoryGraph({
     Math.max(10, Math.min(90, 90 - ((value - chartMin) / (chartMax - chartMin)) * 80))
   const path = points
     .map((run, index) => {
+      if (run.value === null) return ''
       const x = 3 + (index / Math.max(points.length - 1, 1)) * 94
-      return `${index ? 'L' : 'M'} ${x} ${position(run.metrics[metric]!)}`
+      return `${index && points[index - 1].value !== null ? 'L' : 'M'} ${x} ${position(run.value)}`
     })
     .join(' ')
   const first = values[0]
-  const latest = values.at(-1)
+  const latest = points.at(-1)?.value
   const active = points[hovered ?? points.length - 1]
   const activeIndex = hovered ?? points.length - 1
   const activeX = 3 + (activeIndex / Math.max(points.length - 1, 1)) * 94
-  const activeY = active ? position(active.metrics[metric]!) : 0
-  const change = first && latest !== undefined ? ((latest - first) / first) * 100 : null
+  const activeY = active?.value != null ? position(active.value) : 0
+  const change = first && latest != null ? ((latest - first) / first) * 100 : null
 
   return (
     <section className="graph-card">
       <div className="graph-heading">
-        <h2>{title}</h2>
-        {active && latest !== undefined && (
+        <h2 title={benchmark}>{benchmark}</h2>
+        {active && (
           <div>
-            <strong>{formatValue(active.metrics[metric]!, unit)}</strong>
+            <strong>{active.value === null ? 'n/a' : formatValue(active.value, unit)}</strong>
             <span className={changeClass(change, false)}>{formatChange(change)}</span>
           </div>
         )}
       </div>
-      {points.length < 2 ? (
-        <div className="empty-graph">Waiting for two main-branch runs.</div>
+      {values.length < 2 ? (
+        <div className="empty-graph">
+          {values.length ? 'Waiting for two measurements.' : 'No measurements for this metric.'}
+        </div>
       ) : (
         <>
           <div className="chart-body">
@@ -188,19 +200,19 @@ function HistoryGraph({
                 viewBox="0 0 100 100"
                 preserveAspectRatio="none"
                 role="img"
-                aria-label={`${title} over time`}
+                aria-label={`${benchmark}: ${title} over time`}
               >
                 <defs>
-                  <clipPath id={`chart-clip-${metric}`}>
+                  <clipPath id={clipId}>
                     <rect width="100" height="100" />
                   </clipPath>
                 </defs>
-                <g clipPath={`url(#chart-clip-${metric})`}>
+                <g clipPath={`url(#${clipId})`}>
                   <path className="grid" d="M0 12H100 M0 50H100 M0 88H100" />
                   <path className="series" d={path} />
                 </g>
               </svg>
-              {hovered !== null && (
+              {hovered !== null && active?.value != null && (
                 <>
                   <span
                     className="chart-crosshair chart-crosshair-x"
@@ -213,9 +225,10 @@ function HistoryGraph({
                 </>
               )}
               {points.map((run, index) => {
+                if (run.value === null) return null
                 const x = 3 + (index / Math.max(points.length - 1, 1)) * 94
-                const y = position(run.metrics[metric]!)
-                const label = `${formatValue(run.metrics[metric]!, unit)} · ${short(run.commit)} · ${new Date(run.timestamp).toLocaleDateString()}`
+                const y = position(run.value)
+                const label = `${benchmark}: ${formatValue(run.value, unit)} · ${short(run.commit)} · ${new Date(run.timestamp).toLocaleDateString()}`
                 return (
                   <button
                     key={run.commit}
@@ -232,6 +245,8 @@ function HistoryGraph({
                       url.search = new URLSearchParams({
                         base: base.commit,
                         head: run.commit,
+                        benchmark,
+                        metric,
                       }).toString()
                       window.location.href = url.toString()
                     }}
@@ -243,6 +258,7 @@ function HistoryGraph({
               })}
             </div>
             {hovered !== null &&
+              active &&
               tooltip &&
               createPortal(
                 <span
@@ -250,7 +266,7 @@ function HistoryGraph({
                   style={{ left: tooltip.x, top: tooltip.y }}
                 >
                   {new Date(active.timestamp).toLocaleString()} · {short(active.commit)} ·{' '}
-                  {formatValue(active.metrics[metric]!, unit)}
+                  {active.value === null ? 'No measurement' : formatValue(active.value, unit)}
                 </span>,
                 document.body,
               )}
@@ -323,7 +339,7 @@ function SiteHeader({
   return (
     <header className={compact ? 'file-header' : ''}>
       <a className="wordmark" href={import.meta.env.BASE_URL}>
-        <img alt="Solar" src={`${import.meta.env.BASE_URL}logo.png`} />
+        <img alt="Solar" src={logo} />
         <span>Web</span>
       </a>
       <nav>
@@ -355,6 +371,17 @@ function SiteFooter() {
 }
 
 function Home() {
+  const [history, setHistory] = useState<HistoryRun[] | null>(null)
+  const [metric, setMetric] = useState(charts[0].metric)
+  const [filter, setFilter] = useState('')
+  const chart = charts.find((chart) => chart.metric === metric)!
+  const benchmarks = useMemo(
+    () =>
+      [
+        ...new Set(history?.flatMap((run) => run.results.map((result) => result.test_id)) ?? []),
+      ].sort(),
+    [history],
+  )
   const [index, setIndex] = useState<RunIndex | null>(null)
   const [error, setError] = useState('')
   const [base, setBase] = useState('')
@@ -368,6 +395,9 @@ function Home() {
   useEffect(() => {
     loadIndex()
       .then(setIndex)
+      .catch((value: Error) => setError(value.message))
+    loadHistory()
+      .then(setHistory)
       .catch((value: Error) => setError(value.message))
   }, [])
   useEffect(() => {
@@ -408,26 +438,63 @@ function Home() {
           Compare
         </button>
       </section>
+      <section className="history-controls" aria-label="Graph settings">
+        <label>
+          Metric
+          <select value={metric} onChange={(event) => setMetric(event.target.value)}>
+            {charts.map((chart) => (
+              <option key={chart.metric} value={chart.metric}>
+                {chart.title}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label>
+          Benchmark
+          <input
+            type="search"
+            placeholder="Filter benchmarks"
+            value={filter}
+            onChange={(event) => setFilter(event.target.value)}
+          />
+        </label>
+        <span>Solar · latest {history?.length ?? 0} main runs · lower is better</span>
+      </section>
+      <p className="history-note">
+        Each graph is one benchmark. Gaps indicate failed or missing measurements. Click a point to
+        compare commits.
+      </p>
       {error ? (
         <p className="error">{error}</p>
+      ) : history === null ? (
+        <p className="empty">Loading benchmark history…</p>
       ) : (
         <section className="chart-grid">
-          {charts.map((chart) => (
-            <HistoryGraph key={chart.metric} runs={runs} {...chart} />
-          ))}
+          {benchmarks
+            .filter((benchmark) => benchmark.toLowerCase().includes(filter.toLowerCase()))
+            .map((benchmark) => (
+              <HistoryGraph
+                key={`${benchmark}:${metric}`}
+                runs={history}
+                benchmark={benchmark}
+                {...chart}
+              />
+            ))}
+          {!benchmarks.some((benchmark) =>
+            benchmark.toLowerCase().includes(filter.toLowerCase()),
+          ) && <p className="empty">No matching benchmarks.</p>}
         </section>
       )}
       <section className="recent">
         <div className="section-heading">
           <h2>Recent runs</h2>
-          <span>lower is better</span>
         </div>
         <div className="run run-head">
           <span>commit</span>
           <span>change</span>
           <span>date</span>
-          <span>runtime gas</span>
-          <span>runtime bytes</span>
+          <span>benchmarks</span>
+          <span>branch</span>
         </div>
         {runs.length === 0 ? (
           <p className="empty">No published benchmark runs yet.</p>
@@ -439,8 +506,8 @@ function Home() {
                 <code>{short(run.commit)}</code>
                 <span title={runTitle(run)}>{runTitle(run)}</span>
                 <time>{new Date(run.timestamp).toLocaleDateString()}</time>
-                <strong>{run.metrics.runtimeGas?.toLocaleString() ?? 'n/a'}</strong>
-                <strong>{run.metrics.runtimeSize?.toLocaleString() ?? 'n/a'}</strong>
+                <strong>{run.benchmarkCount}</strong>
+                <span>{runRef(run)}</span>
               </>
             )
             return comparison ? (

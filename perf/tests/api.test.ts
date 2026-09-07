@@ -19,6 +19,63 @@ afterEach(() => {
 })
 
 describe('website API', () => {
+  it('loads bounded per-benchmark history without summing or reading artifacts', async () => {
+    const queries: string[] = []
+    globalThis.fetch = vi.fn(async (_url, options) => {
+      const sql = String(options?.body)
+      queries.push(sql)
+      const rows =
+        queries.length === 1
+          ? [{ commit: 'a'.repeat(40), workflow_run_id: 1, timestamp: '2026-09-07T00:00:00Z' }]
+          : [
+              {
+                workflow_run_id: 1,
+                test_id: 'small',
+                suite: 'runtime',
+                status: 'ok',
+                total_gas: 12,
+              },
+              {
+                workflow_run_id: 1,
+                test_id: 'large',
+                suite: 'runtime',
+                status: 'ok',
+                total_gas: 9000,
+              },
+              {
+                workflow_run_id: 1,
+                test_id: 'failed',
+                suite: 'runtime',
+                status: 'error',
+                total_gas: 0,
+              },
+            ]
+      return new Response(rows.map((row) => JSON.stringify(row)).join('\n'))
+    })
+    const response = await createApi({ clickHouse: config }).request('/api/data/history.json')
+    expect(response.status).toBe(200)
+    const { runs } = await response.json()
+    expect(
+      runs[0].results.map(
+        (result: { compilers: { solar: { total_gas: number } } }) =>
+          result.compilers.solar.total_gas,
+      ),
+    ).toEqual([12, 9000, 0])
+    expect(runs[0].results[2].compilers.solar.status).toBe('error')
+    expect(queries).toHaveLength(2)
+    expect(queries[0]).toContain("branch = 'main'")
+    expect(queries[0]).toContain('LIMIT 60')
+    expect(queries[1]).toContain("compiler = 'solar'")
+    expect(queries.join(' ')).not.toMatch(/sumIf|artifact_files/)
+  })
+
+  it('serves per-benchmark demo history', async () => {
+    const response = await createApi({ demoFallback: true }).request('/api/data/history.json')
+    const { runs } = await response.json()
+    expect(runs).toHaveLength(3)
+    expect(runs[0].results).toHaveLength(2)
+    expect(runs[0].artifacts).toBeUndefined()
+  })
   it('serves distinct demo artifacts for commit and compiler comparisons', async () => {
     const commits = [
       '9d8c7b6a5e4f32100123456789abcdef01234567',

@@ -1,9 +1,13 @@
-import type { RunDocument, RunIndex } from './types'
+import type { HistoryRun, RunDocument, RunIndex } from './types'
 
 const root = '/api/data/'
 let indexPromise: Promise<RunIndex> | null = null
 const artifactPromises = new Map<string, Promise<string | null>>()
 const runPromises = new Map<string, Promise<RunDocument>>()
+
+export function loadHistory() {
+  return getJson<{ runs: HistoryRun[] }>('history.json').then((history) => history.runs)
+}
 
 async function getJson<T>(path: string, fresh = false): Promise<T> {
   const response = await fetch(`${root}${path}`, fresh ? { cache: 'no-store' } : undefined)

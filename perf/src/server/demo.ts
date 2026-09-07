@@ -146,6 +146,14 @@ const index: RunIndex = {
 export function demoResponse(pathname: string) {
   if (pathname === '/api/health') return Response.json({ source: 'demo' })
   if (pathname === '/api/data/index.json') return Response.json(index)
+  if (pathname === '/api/data/history.json')
+    return Response.json({
+      runs: [...documents.values()].map(({ commit, timestamp, results }) => ({
+        commit,
+        timestamp,
+        results,
+      })),
+    })
 
   const match = /^\/api\/data\/runs\/([0-9a-f]{40})\/run\.json$/.exec(pathname)
   if (match) {

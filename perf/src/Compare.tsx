@@ -49,7 +49,9 @@ export function Compare({ base, head }: Props) {
   const [loadError, setLoadError] = useState<string | null>(null)
   const [query, setQuery] = useState('')
   const [metric, setMetric] = useState(
-    initialMetric && initialMetric in metrics ? initialMetric : 'runtimeGas',
+    Object.entries(metrics).find(
+      ([name, definition]) => name === initialMetric || definition.key === initialMetric,
+    )?.[0] ?? 'runtimeGas',
   )
   const [expanded, setExpanded] = useState(initial.get('benchmark') ?? '')
 
