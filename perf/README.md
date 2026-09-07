@@ -1,6 +1,6 @@
 # Foundry performance site
 
-This Vite app runs at `getfoundry.sh/perf/`. The browser reads only the
+This Vite app runs at `getfoundry.sh/perf/solar/`. The browser reads only the
 same-origin API. GitHub and ClickHouse credentials stay in Vercel Functions.
 
 ```bash
@@ -13,7 +13,7 @@ pnpm build
 ## Deployment
 
 The Vercel project root is the Book repository root. It builds the Book, this app,
-and its API into one deployment. The app is served at `/perf/`, and
+and its API into one deployment. The app is served at `/perf/solar/`, and
 `scripts/build-vercel-api.mjs` adds the `/api/*` route and function to Vocs' Build
 Output. The API runs on Node.js 24 with a five-minute execution limit.
 Configure these server-only variables in Production and in the Preview environment
@@ -74,7 +74,7 @@ node scripts/ingest-run.mjs \
 pnpm dev
 ```
 
-Open `http://127.0.0.1:5173/perf/?base=<base-sha>&head=<head-sha>`.
+Open `http://127.0.0.1:5173/perf/solar/?base=<base-sha>&head=<head-sha>`.
 
 To preview the dashboard without ClickHouse or credentials, run the Vite server with
 `PERF_DEMO_DATA=1`. The same explicit flag works in Vercel as a rollback: set it and
@@ -92,7 +92,8 @@ against the three public tables. It does not verify GitHub or writer permissions
 On a preview, manually invoke `GET /api/worker/tick` with `Authorization: Bearer <CRON_SECRET>`
 and check the returned `failed`, `imported`, and `scanned` counts. Vercel schedules cron
 jobs only on production deployments. Check that `/api/data/index.json` contains real runs,
-then compare two successful Solar benchmark commits at `/perf/?base=<sha>&head=<sha>`.
+then compare two successful Solar benchmark commits at `/perf/solar/?base=<sha>&head=<sha>`.
+The old `/perf/` URL redirects to `/perf/solar/`; API endpoints remain at `/api/`.
 The dashboard shows one graph per benchmark, with a metric selector and name filter.
 `/api/data/history.json` returns Solar measurements for the latest 60 main-branch runs
 without artifact manifests. Values are never summed across benchmarks; failed or missing

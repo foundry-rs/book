@@ -43,7 +43,7 @@ function localApi(): Plugin {
 }
 
 export default defineConfig({
-  base: '/perf/',
+  base: '/perf/solar/',
   plugins: lazyPlugins(() => [localApi(), react(), tailwindcss()]),
   build: {
     outDir: process.env.PERF_OUT_DIR,
