@@ -198,7 +198,9 @@ export function Compare({ base, head }: Props) {
                   <span className="row-chevron">{selected ? '⌄' : '›'}</span>
                   {after.test_id}
                 </code>
-                <span title={`Head: ${formatRawValue(headValue, metrics[metric].unit)}`}>
+                <span
+                  title={`${compilerLabel(afterRun, after.test_id, 'solar')}: ${formatRawValue(headValue, metrics[metric].unit)}`}
+                >
                   {headValue === null ? '—' : formatValue(headValue, metrics[metric].unit)}
                 </span>
                 {compilers.map((compiler) => {
