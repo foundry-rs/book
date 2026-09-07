@@ -2,7 +2,6 @@ import { Hono } from 'hono'
 
 import { clickHouseConfig, select, type ClickHouseConfig } from './clickhouse'
 import { demoResponse } from './demo'
-import { gitHubConfig } from './github'
 import { ImportPendingError, ingestCommit, ingestRecent } from './ingest'
 
 interface ApiOptions {
@@ -179,14 +178,12 @@ async function loadRunId(
 }
 
 export function createApi(options: ApiOptions = {}) {
-  const config = options.clickHouse === undefined ? clickHouseConfig() : options.clickHouse
-  // Until the GitHub App is configured, let an empty deployment remain usable with
-  // deterministic sample data. A configured App automatically restores on-demand
-  // imports and live data without a code change.
-  const useDemoFallback =
-    options.demoFallback === undefined
-      ? process.env.VERCEL === '1' && !gitHubConfig()
-      : options.demoFallback
+  const useDemoFallback = options.demoFallback ?? process.env.PERF_DEMO_DATA === '1'
+  const config = useDemoFallback
+    ? null
+    : options.clickHouse === undefined
+      ? clickHouseConfig()
+      : options.clickHouse
   const cronSecret = options.cronSecret === undefined ? process.env.CRON_SECRET : options.cronSecret
   const scheduledImport = options.ingestRecent || (() => ingestRecent())
   const importRun = options.importRun || ((sha: string) => ingestCommit(sha))
@@ -200,16 +197,29 @@ export function createApi(options: ApiOptions = {}) {
   }
   const app = new Hono()
 
-  app.get('/api/health', (context) =>
-    context.json(
-      { source: config ? 'clickhouse' : useDemoFallback ? 'demo' : 'unconfigured' },
-      config || useDemoFallback ? 200 : 503,
-    ),
-  )
+  app.get('/api/health', async (context) => {
+    context.header('cache-control', 'no-store')
+    if (!config)
+      return context.json(
+        { source: useDemoFallback ? 'demo' : 'unconfigured' },
+        useDemoFallback ? 200 : 503,
+      )
+    try {
+      // Verify the public schema and read access, not just environment presence.
+      for (const table of ['runs', 'benchmark_results', 'artifact_files']) {
+        await select(config, `SELECT 1 FROM ${table} LIMIT 0`)
+      }
+      return context.json({ source: 'clickhouse' })
+    } catch {
+      return context.json({ source: 'clickhouse', error: 'Database unavailable' }, 503)
+    }
+  })
 
   app.get('/api/worker/tick', async (context) => {
     if (!cronSecret || context.req.header('authorization') !== `Bearer ${cronSecret}`)
       return context.json({ error: 'Unauthorized' }, 401)
+    context.header('cache-control', 'no-store')
+    if (useDemoFallback) return context.json({ skipped: 'demo' })
 
     try {
       return context.json(await scheduledImport())
@@ -231,18 +241,11 @@ export function createApi(options: ApiOptions = {}) {
       if (path === 'index.json') {
         context.header('cache-control', 'public, max-age=60, stale-while-revalidate=120')
         const index = await indexFromClickHouse(config)
-        if (!index.runs.length && demo) return demo
         return context.json(index)
       }
 
       const runMatch = /^runs\/([0-9a-f]{40})\/run\.json$/.exec(path)
       if (runMatch) {
-        if (demo) {
-          const current = await runFromClickHouse(config, runMatch[1])
-          if (!current) return demo
-          context.header('cache-control', 'public, max-age=300, stale-while-revalidate=3_600')
-          return context.json(current)
-        }
         const run = await loadRun(config, runMatch[1], loadImport)
         if (!run) return context.json({ error: 'Run not found' }, 404)
         context.header('cache-control', 'public, max-age=300, stale-while-revalidate=3_600')
@@ -255,9 +258,7 @@ export function createApi(options: ApiOptions = {}) {
       if (!artifactMatch) return context.json({ error: 'Unknown data file' }, 404)
 
       const [, sha, benchmark, compiler, storagePath] = artifactMatch
-      const runId = useDemoFallback
-        ? await runIdFromClickHouse(config, sha)
-        : await loadRunId(config, sha, loadImport)
+      const runId = await loadRunId(config, sha, loadImport)
       if (runId === null) return context.json({ error: 'Run not found' }, 404)
       const [artifact] = await select(
         config,

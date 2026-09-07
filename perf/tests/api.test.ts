@@ -59,10 +59,42 @@ describe('website API', () => {
   })
 
   it('reports ClickHouse when configured', async () => {
+    globalThis.fetch = vi.fn(async () => new Response(''))
     const response = await createApi({ clickHouse: config }).request('http://web.test/api/health')
 
     expect(response.status).toBe(200)
     await expect(response.json()).resolves.toEqual({ source: 'clickhouse' })
+    expect(globalThis.fetch).toHaveBeenCalledTimes(3)
+  })
+
+  it('reports unhealthy when database credentials or schema fail', async () => {
+    globalThis.fetch = vi.fn(async () => new Response('denied', { status: 403 }))
+    const response = await createApi({ clickHouse: config }).request('http://web.test/api/health')
+    expect(response.status).toBe(503)
+    expect(response.headers.get('cache-control')).toBe('no-store')
+    await expect(response.json()).resolves.toEqual({
+      source: 'clickhouse',
+      error: 'Database unavailable',
+    })
+  })
+
+  it('makes demo rollback independent of configured database credentials', async () => {
+    globalThis.fetch = vi.fn()
+    const ingestRecent = vi.fn()
+    const app = createApi({
+      clickHouse: config,
+      demoFallback: true,
+      cronSecret: 'secret',
+      ingestRecent,
+    })
+    const index = await app.request('http://web.test/api/data/index.json')
+    expect((await index.json()).runs[0].title).toBe('Dummy benchmark run 3')
+    const tick = await app.request('http://web.test/api/worker/tick', {
+      headers: { authorization: 'Bearer secret' },
+    })
+    await expect(tick.json()).resolves.toEqual({ skipped: 'demo' })
+    expect(ingestRecent).not.toHaveBeenCalled()
+    expect(globalThis.fetch).not.toHaveBeenCalled()
   })
 
   it('serves deterministic demo data when the temporary fallback is enabled', async () => {

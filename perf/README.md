@@ -15,8 +15,9 @@ pnpm build
 The Vercel project root is the Book repository root. It builds the Book, this app,
 and its API into one deployment. The app is served at `/perf/`, and
 `scripts/build-vercel-api.mjs` adds the `/api/*` route and function to Vocs' Build
-Output. The default API serves dummy data without credentials or database setup.
-For the future live backend, configure these environment variables:
+Output. The API runs on Node.js 24 with a five-minute execution limit.
+Configure these server-only variables in Production and in the Preview environment
+used for testing (prefer branch-scoped preview credentials):
 
 ```text
 CLICKHOUSE_HOST
@@ -38,7 +39,7 @@ read permission. `CLICKHOUSE_READ_*` may only select the public tables;
 insert into the public tables and `ingestion_jobs`. Never expose either account
 or the GitHub App private key to the browser.
 
-Once the credentialed backend is enabled, the Vercel cron invokes
+In production, the Vercel cron invokes
 `/api/worker/tick` every 15 minutes. The worker polls GitHub for successful
 `main` benchmark runs and imports new artifacts. Solar only uploads its public
 benchmark artifact; it has no performance-service secrets or callback step.
@@ -76,13 +77,25 @@ pnpm dev
 Open `http://127.0.0.1:5173/perf/?base=<base-sha>&head=<head-sha>`.
 
 To preview the dashboard without ClickHouse or credentials, run the Vite server with
-`PERF_DEMO_DATA=1`. This serves deterministic dummy runs from the local API bridge only.
+`PERF_DEMO_DATA=1`. The same explicit flag works in Vercel as a rollback: set it and
+redeploy to serve synthetic runs and artifacts without database access or imports.
+Remove the flag and redeploy to restore live data. Missing credentials never silently
+enable demo mode.
 
-Until the GitHub App and ClickHouse are configured, Vercel deploys the same
-credential-free dummy API as an Edge function. It neither reads GitHub nor writes data.
-To enable live on-demand imports later, change `scripts/build-vercel-api.mjs` to emit the
-Node adapter in `src/server/vercel.ts` and restore the cron;
-the complete credentialed API and its tests are retained in this repository.
+## Deployment verification
+
+Initialize the schema once with an administrative database account using `pnpm db:schema`;
+the runtime reader and writer should not have schema-management permissions.
+`GET /api/health` must return HTTP 200 with `source: "clickhouse"`; it verifies queries
+against the three public tables. It does not verify GitHub or writer permissions.
+
+On a preview, manually invoke `GET /api/worker/tick` with `Authorization: Bearer <CRON_SECRET>`
+and check the returned `failed`, `imported`, and `scanned` counts. Vercel schedules cron
+jobs only on production deployments. Check that `/api/data/index.json` contains real runs,
+then compare two successful Solar benchmark commits at `/perf/?base=<sha>&head=<sha>`.
+Verify benchmark metrics, history, compiler artifact diffs, repeated cached reads, and
+the docs root `/`. A missing run is imported on demand; an already stored run is read
+without downloading its GitHub artifact again. Keep secrets out of URLs and screenshots.
 
 `scripts/ingest-github-runs.mjs` is the one-off local backfill tool. It uses the
 authenticated `gh` CLI and the same ClickHouse schema. Do not run it from a pull

@@ -15,8 +15,8 @@ await build({
     emptyOutDir: false,
     outDir: directory,
     rollupOptions: {
-      input: resolve(import.meta.dirname, '../src/server/vercel-demo.ts'),
-      output: { codeSplitting: false, entryFileNames: 'index.js', format: 'es' },
+      input: resolve(import.meta.dirname, '../src/server/vercel.ts'),
+      output: { codeSplitting: false, entryFileNames: 'index.cjs', format: 'cjs' },
     },
     ssr: true,
     target: 'es2022',
@@ -24,7 +24,7 @@ await build({
 })
 await writeFile(
   resolve(directory, '.vc-config.json'),
-  '{"runtime":"edge","entrypoint":"index.js"}\n',
+  `${JSON.stringify({ runtime: 'nodejs24.x', handler: 'index.cjs', launcherType: 'Nodejs', maxDuration: 300, supportsResponseStreaming: true })}\n`,
 )
 const configPath = resolve(output, 'config.json')
 const config = JSON.parse(await readFile(configPath, 'utf8'))
@@ -34,5 +34,5 @@ const routes = (config.routes || []).filter((route) => route.src !== apiRoute.sr
 // otherwise send extensionless endpoints (including health) to the docs server.
 routes.unshift(apiRoute)
 config.routes = routes
-delete config.crons
+config.crons = [{ path: '/api/worker/tick', schedule: '*/15 * * * *' }]
 await writeFile(configPath, `${JSON.stringify(config, null, 2)}\n`)
