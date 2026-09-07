@@ -25,7 +25,8 @@ The book follows the [Rust Code of Conduct](https://www.rust-lang.org/policies/c
 ### Browser smoke tests
 
 CI runs Chromium against the production Vocs build on pull requests and pushes
-to `master`. The smoke tests check rendered content, search hydration, navigation,
+to `master`. The separate `browser smoke tests` job downloads the build job's
+`vocs-build` artifact. The smoke tests check rendered content, search hydration, navigation,
 direct page loads, and reloads, and fail on console errors or uncaught exceptions.
 Only externally hosted sponsor SVGs are stubbed; application code and local assets
 are served from the real build.
