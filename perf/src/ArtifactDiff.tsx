@@ -24,12 +24,21 @@ interface Props {
   path: string
   language: string
   theme: Theme
+  style: 'split' | 'unified'
+  onStyleChange: (style: 'split' | 'unified') => void
 }
 
-export default function ArtifactDiff({ before, after, path, language, theme }: Props) {
+export default function ArtifactDiff({
+  before,
+  after,
+  path,
+  language,
+  theme,
+  style,
+  onStyleChange,
+}: Props) {
   const [contents, setContents] = useState<[string | null, string | null] | null>(null)
   const [error, setError] = useState('')
-  const [style, setStyle] = useState<'split' | 'unified'>('split')
   useEffect(() => {
     let cancelled = false
     setContents(null)
@@ -98,10 +107,16 @@ export default function ArtifactDiff({ before, after, path, language, theme }: P
   return (
     <div className="artifact-diff">
       <div className="diff-tools">
-        <button className={style === 'split' ? 'active' : ''} onClick={() => setStyle('split')}>
+        <button
+          className={style === 'split' ? 'active' : ''}
+          onClick={() => onStyleChange('split')}
+        >
           Split
         </button>
-        <button className={style === 'unified' ? 'active' : ''} onClick={() => setStyle('unified')}>
+        <button
+          className={style === 'unified' ? 'active' : ''}
+          onClick={() => onStyleChange('unified')}
+        >
           Unified
         </button>
       </div>

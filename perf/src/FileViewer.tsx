@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
 import { artifactTree, mergeArtifactFiles, type ArtifactNode } from './artifactTree'
 import { loadRunWithArtifacts } from './data'
 import { compilerLabel } from './compilerLabel'
+import { replaceUrl } from './navigation'
 import type { RunDocument, Theme } from './types'
 
 const ArtifactDiff = lazy(() => import('./ArtifactDiff'))
@@ -57,6 +58,7 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
   const [against, setAgainst] = useState(params.get('against') || 'base')
   const [compiler, setCompiler] = useState(params.get('compiler') || 'solar')
   const [selected, setSelected] = useState(params.get('file') || '')
+  const [diffStyle, setDiffStyle] = useState<'split' | 'unified'>('split')
 
   useEffect(() => {
     let cancelled = false
@@ -121,7 +123,7 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
     const url = new URL(window.location.href)
     url.searchParams.set(key, value)
     if (key === 'benchmark') url.searchParams.delete('file')
-    history.replaceState(null, '', url)
+    replaceUrl(url)
   }
   const selectFile = (path: string) => {
     setSelected(path)
@@ -234,6 +236,8 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
                     path={selectedFile.path}
                     language={selectedFile.language}
                     theme={theme}
+                    style={diffStyle}
+                    onStyleChange={setDiffStyle}
                   />
                 </Suspense>
               </>
