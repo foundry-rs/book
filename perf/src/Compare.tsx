@@ -243,7 +243,7 @@ export function Compare({ base, head }: Props) {
                     <a href={fileViewerHref(base, head, after.test_id, metrics[metric].key)}>
                       Artifacts diff viewer →
                     </a>
-                    <a href={source.url}>Source: {source.label} ↗</a>
+                    <a href={source.url}>{source.label} ↗</a>
                   </aside>
                 </section>
               )}

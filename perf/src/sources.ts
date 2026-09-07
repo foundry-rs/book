@@ -2,7 +2,7 @@
 // location, source filenames, or benchmark-to-source mapping.
 export function benchmarkSource(_testId: string, solarCommit: string) {
   return {
-    label: 'Run source revision',
+    label: 'Solar repository',
     url: `https://github.com/paradigmxyz/solar/tree/${solarCommit}`,
   }
 }
