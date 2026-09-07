@@ -403,7 +403,11 @@ impl<'a> fmt::Display for Cmd<'a> {
 }
 
 /// Categorize commands for sidebar generation
-fn categorize_command(cmd_name: &str, tool_name: &str) -> &'static str {
+fn categorize_command(cmd: &Cmd<'_>, tool_name: &str) -> &'static str {
+    let cmd_name = cmd.subcommands.last().map(String::as_str).unwrap_or_default();
+    if tool_name == "cast" && cmd.subcommands.first().is_some_and(|name| name == "erc4626") {
+        return "Vault Commands"
+    }
     match tool_name {
         "forge" => match cmd_name {
             "help" | "completions" => "General Commands",
@@ -450,8 +454,7 @@ fn generate_sidebar(output: &[(Cmd, String)], _out_dir: &Path, sidebar_file: &Pa
             continue; // Skip root command
         }
         
-        let cmd_name = cmd.subcommands.last().unwrap();
-        let category = categorize_command(cmd_name, tool_name);
+        let category = categorize_command(cmd, tool_name);
         categories.entry(category).or_insert_with(Vec::new).push(cmd);
     }
     

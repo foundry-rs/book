@@ -13,7 +13,7 @@ Whether to run linting during `forge build`. Set to `false` to disable automatic
 ##### `severity`
 
 - Type: array of strings
-- Default: `[]`
+- Default: `["high", "medium", "low"]`
 - Environment: `FOUNDRY_LINT_SEVERITY`
 
 Specifies which lints to run based on severity. Valid values are:
@@ -25,9 +25,8 @@ Specifies which lints to run based on severity. Valid values are:
 - `gas`
 - `code-size` (or `codesize`, `size`)
 
-An empty list means no severity filter is applied, so all severity buckets are
-enabled. To run only warning-level lints, set this explicitly to
-`["high", "medium", "low"]`.
+By default, Forge runs high, medium, and low severity lints. An empty list means no severity filter
+is applied, enabling all severity buckets, including informational, gas, and code-size lints.
 
 ##### `exclude_lints`
 
@@ -48,10 +47,10 @@ List of files or patterns to ignore when running the linter. This is a comma-sep
 ##### `mixed_case_exceptions`
 
 - Type: array of strings
-- Default: `["ERC", "URI"]`
+- Default: `["ERC", "URI", "ID", "URL", "API", "JSON", "XML", "HTML", "HTTP", "HTTPS"]`
 - Environment: `FOUNDRY_LINT_MIXED_CASE_EXCEPTIONS`
 
-Configurable patterns that should be excluded when performing `mixedCase` lint checks. Defaults to `["ERC", "URI"]` to allow common names like `rescueERC20`, `ERC721TokenReceiver`, or `tokenURI`.
+Configurable patterns that should be excluded when performing `mixedCase` and `PascalCase` lint checks. The defaults allow common names like `rescueERC20`, `ERC721TokenReceiver`, `tokenURI`, or `ERC20Data`.
 
 ## Inline Configuration
 
