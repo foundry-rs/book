@@ -2,6 +2,24 @@ import { afterEach, expect, it, vi } from 'vite-plus/test'
 
 afterEach(() => vi.unstubAllGlobals())
 
+it('reuses fresh compact dashboard history for an individual benchmark', async () => {
+  vi.resetModules()
+  const history = {
+    runs: [{ commit: 'a'.repeat(40), timestamp: '2026-09-08' }],
+    values: { test: [0], other: [null] },
+  }
+  const fetch = vi.fn(async () => Response.json(history))
+  vi.stubGlobal('fetch', fetch)
+  const { loadHistory } = await import('../src/data')
+  expect(await loadHistory('total_gas')).toEqual(history)
+  expect(await loadHistory('total_gas', 'test')).toEqual({
+    runs: history.runs,
+    values: { test: [0] },
+  })
+  expect(await loadHistory('total_gas', 'absent')).toEqual({ runs: history.runs, values: {} })
+  expect(fetch).toHaveBeenCalledOnce()
+})
+
 it('batches comparison runs and retains each run in the individual cache', async () => {
   vi.resetModules()
   const commits = ['a'.repeat(40), 'b'.repeat(40)]

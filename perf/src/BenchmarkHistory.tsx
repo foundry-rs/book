@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { loadHistory } from './data'
 import { HistoryGraph } from './HistoryGraph'
-import type { HistoryRun } from './types'
+import type { HistorySeries } from './types'
 
 interface Props {
   benchmark: string
@@ -11,7 +11,7 @@ interface Props {
 }
 
 export function BenchmarkHistory(props: Props) {
-  const [runs, setRuns] = useState<HistoryRun[] | null>(null)
+  const [runs, setRuns] = useState<HistorySeries | null>(null)
   const [error, setError] = useState(false)
 
   useEffect(() => {

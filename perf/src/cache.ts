@@ -7,7 +7,7 @@ export function responseCache<T>(ttl: number, maxBytes = 32 * 1024 * 1024) {
     bytes -= values.get(key)?.bytes ?? 0
     values.delete(key)
   }
-  return (key: string, load: () => Promise<T>): Promise<T> => {
+  const cache = (key: string, load: () => Promise<T>): Promise<T> => {
     const cached = values.get(key)
     if (cached && cached.expires > Date.now()) {
       values.delete(key)
@@ -21,7 +21,7 @@ export function responseCache<T>(ttl: number, maxBytes = 32 * 1024 * 1024) {
       .then(load)
       .then((value) => {
         if (value != null) {
-          const size = JSON.stringify(value).length * 2
+          const size = (typeof value === 'string' ? value.length : JSON.stringify(value).length) * 2
           if (size <= maxBytes) {
             for (const [oldKey, entry] of values) {
               if (entry.expires <= Date.now()) remove(oldKey)
@@ -39,4 +39,9 @@ export function responseCache<T>(ttl: number, maxBytes = 32 * 1024 * 1024) {
     pending.set(key, request)
     return request
   }
+  cache.peek = (key: string): Promise<T> | undefined => {
+    const cached = values.get(key)
+    return cached && cached.expires > Date.now() ? Promise.resolve(cached.value) : pending.get(key)
+  }
+  return cache
 }

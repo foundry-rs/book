@@ -4,6 +4,7 @@ import { expect, it } from 'vite-plus/test'
 import { HistoryGraph } from '../src/HistoryGraph'
 import type { HistoryRun } from '../src/types'
 import { historySeries } from '../src/historySeries'
+import { benchmarkMetric } from '../src/benchmarkMetric'
 
 it('aligns sparse histories with a shared run axis and safely handles arbitrary benchmark names', () => {
   expect(
@@ -43,7 +44,18 @@ const runs: HistoryRun[] = [3, 2, 1].map((n) => ({
 function render(history = runs, metric = 'total_gas', unit = 'gas', hideMissingLatest = true) {
   return renderToStaticMarkup(
     createElement(HistoryGraph, {
-      runs: history,
+      runs: historySeries(
+        history.flatMap((run) =>
+          run.results.length
+            ? run.results.map((result) => ({
+                commit: run.commit,
+                timestamp: run.timestamp,
+                test_id: result.test_id,
+                value: benchmarkMetric(result, metric),
+              }))
+            : [{ commit: run.commit, timestamp: run.timestamp, test_id: '', value: null }],
+        ),
+      ),
       benchmark: 'small',
       metric,
       title: 'Runtime gas',

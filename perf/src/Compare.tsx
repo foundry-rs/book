@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState, type CSSProperties } from 'react'
 import { BenchmarkHistory } from './BenchmarkHistory'
 import { changeClass, formatChange } from './change'
 import { formatRawValue, formatValue } from './formatValue'
-import { loadRun } from './data'
+import { loadHistory, loadRun } from './data'
 import { benchmarkSource } from './sources'
 import type { RunDocument, Theme } from './types'
 import { benchmarkMetric as value } from './benchmarkMetric'
@@ -73,6 +73,10 @@ export function Compare({ base, head }: Props) {
       cancelled = true
     }
   }, [base, head])
+
+  useEffect(() => {
+    if (expanded) void loadHistory(metrics[metric].key, expanded).catch(() => {})
+  }, [expanded, metric])
 
   const rows = useMemo(() => {
     if (!runs) return []

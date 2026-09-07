@@ -35,7 +35,7 @@ it('does not retain failures or missing artifacts', async () => {
 })
 
 it('evicts the least recently used entry at the byte limit', async () => {
-  const cache = responseCache<string>(1000, 12)
+  const cache = responseCache<string>(1000, 4)
   const a = vi.fn(async () => 'a')
   const b = vi.fn(async () => 'b')
   const c = vi.fn(async () => 'c')
@@ -55,4 +55,31 @@ it('does not retain oversized values', async () => {
   await cache('file', load)
   await cache('file', load)
   expect(load).toHaveBeenCalledTimes(2)
+})
+
+it('peek shares the completion-based expiry and never renews stale snapshots', async () => {
+  vi.useFakeTimers()
+  try {
+    const cache = responseCache<string>(1000)
+    let complete!: (value: string) => void
+    const request = cache(
+      'key',
+      () =>
+        new Promise<string>((resolve) => {
+          complete = resolve
+        }),
+    )
+    await Promise.resolve()
+    await vi.advanceTimersByTimeAsync(100)
+    complete('first')
+    await request
+    await vi.advanceTimersByTimeAsync(999)
+    expect(await cache.peek('key')).toBe('first')
+    await vi.advanceTimersByTimeAsync(2)
+    expect(cache.peek('key')).toBeUndefined()
+    await cache('key', async () => 'second')
+    expect(await cache.peek('key')).toBe('second')
+  } finally {
+    vi.useRealTimers()
+  }
 })

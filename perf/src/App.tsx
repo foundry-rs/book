@@ -7,7 +7,7 @@ import { comparisonHref, navigate, useNavigation } from './navigation'
 import { comparisonBase } from './comparisonBase'
 import logo from './assets/logo.png'
 import { FileViewer } from './FileViewer'
-import type { HistoryRun, RunIndex, RunSummary, Theme } from './types'
+import type { HistorySeries, RunIndex, RunSummary, Theme } from './types'
 
 const short = (commit: string) => commit.slice(0, 8)
 
@@ -158,18 +158,12 @@ function SiteFooter() {
 }
 
 function Home() {
-  const [history, setHistory] = useState<HistoryRun[] | null>(null)
+  const [history, setHistory] = useState<HistorySeries | null>(null)
   const [historyError, setHistoryError] = useState('')
   const [metric, setMetric] = useState(charts[0].metric)
   const [filter, setFilter] = useState('')
   const chart = charts.find((chart) => chart.metric === metric)!
-  const benchmarks = useMemo(
-    () =>
-      [
-        ...new Set(history?.flatMap((run) => run.results.map((result) => result.test_id)) ?? []),
-      ].sort(),
-    [history],
-  )
+  const benchmarks = useMemo(() => Object.keys(history?.values ?? {}).sort(), [history])
   const [index, setIndex] = useState<RunIndex | null>(null)
   const [error, setError] = useState('')
   const [base, setBase] = useState('')
@@ -271,7 +265,7 @@ function Home() {
             onChange={(event) => setFilter(event.target.value)}
           />
         </label>
-        <span>Solar · latest {history?.length ?? 0} main runs · lower is better</span>
+        <span>Solar · latest {history?.runs.length ?? 0} main runs · lower is better</span>
       </section>
       <p className="history-note">
         Each graph is one benchmark. Gaps indicate failed or missing measurements. Click a point to

@@ -1,9 +1,9 @@
-import type { HistoryRun, HistorySeries, RunDocument, RunIndex } from './types'
+import type { HistorySeries, RunDocument, RunIndex } from './types'
 import { responseCache } from './cache'
 
 const root = '/api/data/'
 const cachedIndex = responseCache<RunIndex>(60_000)
-const cachedHistory = responseCache<HistoryRun[]>(60_000)
+const cachedHistory = responseCache<HistorySeries>(60_000)
 const cachedArtifact = responseCache<string | null>(3_600_000)
 const cachedRun = responseCache<RunDocument>(300_000)
 const cachedManifest = responseCache<RunDocument['artifacts']>(300_000)
@@ -45,22 +45,16 @@ function fetchRun(commit: string): Promise<RunDocument> {
 }
 
 export function loadHistory(metric: string, benchmark?: string) {
+  const dashboard = cachedHistory.peek(new URLSearchParams({ metric }).toString())
+  if (benchmark !== undefined && dashboard) {
+    return dashboard.then(({ runs, values }) => ({
+      runs,
+      values: Object.hasOwn(values, benchmark) ? { [benchmark]: values[benchmark] } : {},
+    }))
+  }
   const params = new URLSearchParams({ metric })
   if (benchmark !== undefined) params.set('benchmark', benchmark)
-  return cachedHistory(params.toString(), () =>
-    getJson<HistorySeries>(`history.json?${params}`).then(({ runs, values }) =>
-      runs.map((run, index) => ({
-        ...run,
-        results: Object.entries(values).map(([test_id, points]) => ({
-          test_id,
-          suite: '',
-          compilers: {
-            solar: { status: points[index] === null ? 'missing' : 'ok', [metric]: points[index] },
-          },
-        })),
-      })),
-    ),
-  )
+  return cachedHistory(params.toString(), () => getJson<HistorySeries>(`history.json?${params}`))
 }
 
 async function getJson<T>(path: string): Promise<T> {

@@ -1,9 +1,8 @@
-import { useId, useState } from 'react'
+import { useId, useMemo, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { changeClass, formatChange } from './change'
-import { benchmarkMetric } from './benchmarkMetric'
 import { formatValue } from './formatValue'
-import type { HistoryRun } from './types'
+import type { HistorySeries } from './types'
 import { navigate } from './navigation'
 
 const short = (commit: string) => commit.slice(0, 8)
@@ -16,7 +15,7 @@ export function HistoryGraph({
   benchmark,
   hideMissingLatest = false,
 }: {
-  runs: HistoryRun[]
+  runs: HistorySeries
   metric: string
   title: string
   unit: string
@@ -26,31 +25,31 @@ export function HistoryGraph({
   const clipId = useId()
   const [hovered, setHovered] = useState<number | null>(null)
   const [tooltip, setTooltip] = useState<{ x: number; y: number } | null>(null)
-  const points = [...runs].reverse().map((run) => ({
-    ...run,
-    value: benchmarkMetric(
-      run.results.find((result) => result.test_id === benchmark),
-      metric,
-    ),
-  }))
-  const values = points.flatMap((run) => (run.value === null ? [] : [run.value]))
+  const { points, values, min, max, position, path } = useMemo(() => {
+    const series = runs.values[benchmark] ?? []
+    const points = runs.runs
+      .map((run, index) => ({ ...run, value: series[index] ?? null }))
+      .reverse()
+    const values = points.flatMap((run) => (run.value === null ? [] : [run.value]))
+    const min = values.length ? Math.min(...values) : 0
+    const max = values.length ? Math.max(...values) : 0
+    const range = max - min
+    const padding = range === 0 ? Math.max(Math.abs(max) * 0.04, 1) : range * 0.1
+    const chartMin = min - padding
+    const chartMax = max + padding
+    const position = (value: number) =>
+      Math.max(10, Math.min(90, 90 - ((value - chartMin) / (chartMax - chartMin)) * 80))
+    const path = points
+      .map((run, index) => {
+        if (run.value === null) return ''
+        const x = 3 + (index / Math.max(points.length - 1, 1)) * 94
+        return `${index && points[index - 1].value !== null ? 'L' : 'M'} ${x} ${position(run.value)}`
+      })
+      .join(' ')
+    return { points, values, min, max, position, path }
+  }, [runs, benchmark])
   // Hide cards without a current measurement, while retaining gaps in visible histories.
   if (!values.length || (hideMissingLatest && points.at(-1)?.value == null)) return null
-  const min = Math.min(...values)
-  const max = Math.max(...values)
-  const range = max - min
-  const padding = range === 0 ? Math.max(Math.abs(max) * 0.04, 1) : range * 0.1
-  const chartMin = min - padding
-  const chartMax = max + padding
-  const position = (value: number) =>
-    Math.max(10, Math.min(90, 90 - ((value - chartMin) / (chartMax - chartMin)) * 80))
-  const path = points
-    .map((run, index) => {
-      if (run.value === null) return ''
-      const x = 3 + (index / Math.max(points.length - 1, 1)) * 94
-      return `${index && points[index - 1].value !== null ? 'L' : 'M'} ${x} ${position(run.value)}`
-    })
-    .join(' ')
   const first = values[0]
   const latest = points.at(-1)?.value
   const active = points[hovered ?? points.length - 1]

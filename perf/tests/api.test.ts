@@ -122,6 +122,7 @@ describe('website API', () => {
     expect(manifest.status).toBe(200)
     expect(queries).toHaveLength(2)
     expect(queries[1]).toContain('FROM artifact_files FINAL')
+    expect(queries[1]).not.toContain('content')
   })
   it('loads bounded per-benchmark history without summing or reading artifacts', async () => {
     const queries: string[] = []

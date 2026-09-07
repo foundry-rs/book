@@ -149,7 +149,7 @@ async function runsFromClickHouse(
 async function artifactsFromClickHouse(config: ClickHouseConfig, sha: string) {
   const artifactRows = await select(
     config,
-    `SELECT test_id, path, max(ifNull(bytes, length(content))) AS bytes,
+    `SELECT test_id, path, ifNull(max(bytes), 0) AS bytes,
        groupUniqArray(compiler) AS compilers
      FROM artifact_files FINAL WHERE workflow_run_id IN (
        SELECT workflow_run_id FROM runs FINAL WHERE commit = '${sha}' ORDER BY imported_at DESC LIMIT 1

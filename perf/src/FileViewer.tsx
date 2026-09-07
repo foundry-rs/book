@@ -5,7 +5,8 @@ import { artifactSides, initialArtifactSides } from './artifactSides'
 import { replaceUrl } from './navigation'
 import type { RunDocument, Theme } from './types'
 
-const ArtifactDiff = lazy(() => import('./ArtifactDiff'))
+const loadRenderer = () => import('./ArtifactDiff')
+const ArtifactDiff = lazy(loadRenderer)
 
 interface Props {
   base: string
@@ -61,6 +62,8 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
 
   useEffect(() => {
     let cancelled = false
+    // Download the renderer alongside metadata, not after manifests arrive.
+    void loadRenderer().catch(() => {})
     setRuns(null)
     setLoadError(null)
     Promise.all([loadRunWithArtifacts(base), loadRunWithArtifacts(head)]).then(
