@@ -2,6 +2,17 @@ import { afterEach, expect, it, vi } from 'vite-plus/test'
 
 afterEach(() => vi.unstubAllGlobals())
 
+it('allows the index HTTP cache while keeping mutable ref resolution fresh', async () => {
+  vi.resetModules()
+  const fetch = vi.fn(async () => Response.json({ runs: [], commit: 'c'.repeat(40) }))
+  vi.stubGlobal('fetch', fetch)
+  const { loadIndex, resolveCommit } = await import('../src/data')
+  await loadIndex()
+  expect(fetch).toHaveBeenLastCalledWith('/api/data/index.json')
+  await resolveCommit('main')
+  expect(fetch).toHaveBeenLastCalledWith('/api/resolve?ref=main', { cache: 'no-store' })
+})
+
 it('loads manifests lazily without repeating comparison metrics', async () => {
   vi.resetModules()
   const sha = 'b'.repeat(40)
@@ -40,10 +51,7 @@ it('revisiting artifacts and runs does not fetch again in the same instance', as
   await loadHistory('total_gas', 'test')
   await loadHistory('total_gas', 'test')
   expect(fetch).toHaveBeenCalledTimes(4)
-  expect(fetch).toHaveBeenLastCalledWith(
-    '/api/data/history.json?metric=total_gas&benchmark=test',
-    undefined,
-  )
+  expect(fetch).toHaveBeenLastCalledWith('/api/data/history.json?metric=total_gas&benchmark=test')
   await loadHistory('total_gas', 'other')
   await loadHistory('runtime_size', 'test')
   expect(fetch).toHaveBeenCalledTimes(6)

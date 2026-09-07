@@ -486,6 +486,11 @@ footer {
 .header-row > span:first-child {
   text-align: left;
 }
+.header-row > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 .result:hover,
 .result.selected {
   background: var(--raised);

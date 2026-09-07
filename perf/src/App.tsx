@@ -159,6 +159,7 @@ function SiteFooter() {
 
 function Home() {
   const [history, setHistory] = useState<HistoryRun[] | null>(null)
+  const [historyError, setHistoryError] = useState('')
   const [metric, setMetric] = useState(charts[0].metric)
   const [filter, setFilter] = useState('')
   const chart = charts.find((chart) => chart.metric === metric)!
@@ -187,13 +188,13 @@ function Home() {
   useEffect(() => {
     let cancelled = false
     setHistory(null)
-    setError('')
+    setHistoryError('')
     loadHistory(metric).then(
       (value) => {
         if (!cancelled) setHistory(value)
       },
       (value: Error) => {
-        if (!cancelled) setError(value.message)
+        if (!cancelled) setHistoryError(value.message)
       },
     )
     return () => {
@@ -276,8 +277,8 @@ function Home() {
         Each graph is one benchmark. Gaps indicate failed or missing measurements. Click a point to
         compare commits.
       </p>
-      {error ? (
-        <p className="error">{error}</p>
+      {error || historyError ? (
+        <p className="error">{error || historyError}</p>
       ) : history === null ? (
         <p className="empty">Loading benchmark history…</p>
       ) : (

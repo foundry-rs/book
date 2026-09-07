@@ -19,6 +19,20 @@ afterEach(() => {
 })
 
 describe('website API', () => {
+  it('does not CDN-cache failed reads and binds benchmark names rather than interpolating SQL', async () => {
+    const benchmark = "a' OR 1=1 --"
+    globalThis.fetch = vi.fn(async (input, init) => {
+      expect(String(init?.body)).not.toContain(benchmark)
+      expect((input as URL).searchParams.get('param_benchmark')).toBe(benchmark)
+      return new Response('unavailable', { status: 503 })
+    })
+    const response = await createApi({ clickHouse: config }).request(
+      `/api/data/history.json?metric=total_gas&benchmark=${encodeURIComponent(benchmark)}`,
+    )
+    expect(response.status).toBe(503)
+    expect(response.headers.get('cache-control')).toBe('no-store')
+    expect(response.headers.get('vercel-cdn-cache-control')).toBeNull()
+  })
   it('resolves refs without database queries and validates its boundary', async () => {
     globalThis.fetch = vi.fn()
     const resolveRef = vi.fn(async () => 'a'.repeat(40))
@@ -232,27 +246,15 @@ describe('website API', () => {
       const query = typeof init?.body === 'string' ? init.body : ''
       queries.push(query)
       return new Response(
-        `${JSON.stringify(
-          query.includes('FROM benchmark_results')
-            ? {
-                benchmarkCount: 1,
-                bytecode_size: 12,
-                compile_time: 1.5,
-                deploy_gas: 23,
-                peak_rss_bytes: 34,
-                runtime_size: 45,
-                total_gas: 56,
-                workflow_run_id: 1,
-              }
-            : {
-                branch: 'main',
-                commit: '0123456789abcdef0123456789abcdef01234567',
-                pr: null,
-                timestamp: '2026-09-03 10:00:00',
-                title: 'Benchmark run',
-                workflow_run_id: 1,
-              },
-        )}\n`,
+        `${JSON.stringify({
+          benchmarkCount: 1,
+          branch: 'main',
+          commit: '0123456789abcdef0123456789abcdef01234567',
+          pr: null,
+          timestamp: '2026-09-03 10:00:00',
+          title: 'Benchmark run',
+          workflow_run_id: 1,
+        })}\n`,
       )
     })
     globalThis.fetch = fetch
@@ -272,12 +274,12 @@ describe('website API', () => {
       ],
       schemaVersion: 1,
     })
-    expect(fetch).toHaveBeenCalledTimes(2)
+    expect(fetch).toHaveBeenCalledTimes(1)
     expect(queries[0]).toContain('LIMIT 2_000')
     expect(queries[0]).toContain('LIMIT 1 BY commit')
     expect(queries[0]).toContain("'%Y-%m-%dT%H:%i:%SZ', 'UTC'")
-    expect(queries[1]).toContain('WHERE workflow_run_id IN (1)')
-    expect(queries[1]).not.toMatch(/sumIf|maxIf|compile_time_seconds|peak_rss_bytes/)
+    expect(queries[0]).toContain('WHERE workflow_run_id IN (SELECT workflow_run_id FROM recent)')
+    expect(queries[0]).not.toMatch(/sumIf|maxIf|compile_time_seconds|peak_rss_bytes/)
   })
 
   it('imports a missing run before responding to the client', async () => {

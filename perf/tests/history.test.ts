@@ -3,6 +3,25 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import { expect, it } from 'vite-plus/test'
 import { HistoryGraph } from '../src/HistoryGraph'
 import type { HistoryRun } from '../src/types'
+import { historySeries } from '../src/historySeries'
+
+it('aligns sparse histories with a shared run axis and safely handles arbitrary benchmark names', () => {
+  expect(
+    historySeries([
+      { commit: 'new', timestamp: 'new', test_id: 'a', value: 0 },
+      { commit: 'new', timestamp: 'new', test_id: '__proto__', value: 1 },
+      { commit: 'middle', timestamp: 'middle', test_id: '', value: null },
+      { commit: 'old', timestamp: 'old', test_id: 'a', value: 3 },
+    ]),
+  ).toEqual({
+    runs: [
+      { commit: 'new', timestamp: 'new' },
+      { commit: 'middle', timestamp: 'middle' },
+      { commit: 'old', timestamp: 'old' },
+    ],
+    values: { a: [0, null, 3], ['__proto__']: [1, null, null] },
+  })
+})
 
 const runs: HistoryRun[] = [3, 2, 1].map((n) => ({
   commit: String(n).repeat(40),

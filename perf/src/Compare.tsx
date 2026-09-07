@@ -171,11 +171,13 @@ export function Compare({ base, head }: Props) {
               ),
             ]
             return (
-              <span key={compiler}>
+              <span key={compiler} title={labels.join(', ')}>
                 {compiler === 'solar'
                   ? `solar ${short(head)} (head)`
                   : labels.length === 1
-                    ? labels[0]
+                    ? compiler === 'solc'
+                      ? labels[0]?.split('+')[0]
+                      : labels[0]
                     : compiler}
               </span>
             )
@@ -206,12 +208,12 @@ export function Compare({ base, head }: Props) {
                   const raw =
                     afterValue === null
                       ? 'No measurement'
-                      : formatValue(afterValue, metrics[metric].unit)
+                      : `${afterValue} ${metrics[metric].unit === 'bytes' || metrics[metric].unit === 'memory' ? 'b' : metrics[metric].unit === 'seconds' ? 's' : metrics[metric].unit}`
                   return (
                     <strong
                       key={compiler}
                       className={changeClass(delta)}
-                      title={`${label}: ${raw}${afterValue === null ? '' : ` (${afterValue.toLocaleString()} ${metrics[metric].unit === 'bytes' || metrics[metric].unit === 'memory' ? 'b' : metrics[metric].unit})`}`}
+                      title={`${label}: ${raw}`}
                     >
                       {formatChange(delta, '—')}
                     </strong>

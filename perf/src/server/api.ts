@@ -26,47 +26,38 @@ interface StoredRun {
 async function indexFromClickHouse(config: ClickHouseConfig) {
   const runs = await select(
     config,
-    `SELECT
+    `WITH recent AS (
+       SELECT commit, workflow_run_id, started_at, branch, pr, title FROM (
+         SELECT commit, workflow_run_id, started_at, branch, pr, title, source_schema
+         FROM runs FINAL ORDER BY imported_at DESC, workflow_run_id DESC LIMIT 1 BY commit
+       ) WHERE source_schema > 0 ORDER BY started_at DESC LIMIT 2_000
+     ) SELECT
        r.commit,
        r.workflow_run_id,
        formatDateTime(r.started_at, '%Y-%m-%dT%H:%i:%SZ', 'UTC') AS timestamp,
        r.branch,
        r.pr,
-       r.title
-     FROM (
-       SELECT * FROM runs FINAL ORDER BY imported_at DESC, workflow_run_id DESC LIMIT 1 BY commit
-     ) AS r
-     WHERE r.source_schema > 0
-     ORDER BY r.started_at DESC
-     LIMIT 2_000`,
+       r.title,
+       ifNull(b.benchmarkCount, 0) AS benchmarkCount
+     FROM recent AS r LEFT JOIN (
+       SELECT workflow_run_id, countDistinct(test_id) AS benchmarkCount
+       FROM benchmark_results FINAL
+       WHERE workflow_run_id IN (SELECT workflow_run_id FROM recent)
+       GROUP BY workflow_run_id
+     ) AS b ON r.workflow_run_id = b.workflow_run_id
+     ORDER BY r.started_at DESC`,
   )
-  const ids = runs.map((run) => Number(run.workflow_run_id))
-  const results = ids.length
-    ? await select(
-        config,
-        `SELECT
-           workflow_run_id,
-           countDistinct(test_id) AS benchmarkCount
-         FROM benchmark_results FINAL
-         WHERE workflow_run_id IN (${ids.join(',')})
-         GROUP BY workflow_run_id`,
-      )
-    : []
-  const resultByRun = new Map(results.map((result) => [Number(result.workflow_run_id), result]))
   return {
     schemaVersion: 1,
     updatedAt: new Date().toISOString(),
-    runs: runs.map((run) => {
-      const result = resultByRun.get(Number(run.workflow_run_id)) ?? {}
-      return {
-        commit: run.commit,
-        timestamp: run.timestamp,
-        branch: run.branch,
-        pr: run.pr,
-        title: run.title,
-        benchmarkCount: result.benchmarkCount ?? 0,
-      }
-    }),
+    runs: runs.map((run) => ({
+      commit: run.commit,
+      timestamp: run.timestamp,
+      branch: run.branch,
+      pr: run.pr,
+      title: run.title,
+      benchmarkCount: run.benchmarkCount ?? 0,
+    })),
   }
 }
 

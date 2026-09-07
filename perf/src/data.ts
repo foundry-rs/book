@@ -27,14 +27,14 @@ export function loadHistory(metric: string, benchmark?: string) {
   )
 }
 
-async function getJson<T>(path: string, fresh = false): Promise<T> {
-  const response = await fetch(`${root}${path}`, fresh ? { cache: 'no-store' } : undefined)
+async function getJson<T>(path: string): Promise<T> {
+  const response = await fetch(`${root}${path}`)
   if (!response.ok) throw new Error(`Could not load benchmark data (${response.status})`)
   return response.json() as Promise<T>
 }
 
 export function loadIndex() {
-  return cachedIndex('index', () => getJson<RunIndex>('index.json', true))
+  return cachedIndex('index', () => getJson<RunIndex>('index.json'))
 }
 
 export async function resolveCommit(value: string): Promise<string> {
