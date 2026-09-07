@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState, type CSSProperties } from 'react'
 import { BenchmarkHistory } from './BenchmarkHistory'
 import { changeClass, formatChange } from './change'
-import { formatValue } from './formatValue'
+import { formatRawValue, formatValue } from './formatValue'
 import { loadRun } from './data'
 import { benchmarkSource } from './sources'
 import type { RunDocument, Theme } from './types'
@@ -198,7 +198,7 @@ export function Compare({ base, head }: Props) {
                   <span className="row-chevron">{selected ? '⌄' : '›'}</span>
                   {after.test_id}
                 </code>
-                <span>
+                <span title={`Head: ${formatRawValue(headValue, metrics[metric].unit)}`}>
                   {headValue === null ? '—' : formatValue(headValue, metrics[metric].unit)}
                 </span>
                 {compilers.map((compiler) => {
@@ -213,15 +213,11 @@ export function Compare({ base, head }: Props) {
                     after.test_id,
                     compiler,
                   )
-                  const raw =
-                    comparedValue === null
-                      ? 'No measurement'
-                      : `${comparedValue} ${metrics[metric].unit === 'bytes' || metrics[metric].unit === 'memory' ? 'b' : metrics[metric].unit === 'seconds' ? 's' : metrics[metric].unit}`
                   return (
                     <strong
                       key={compiler}
-                      className={changeClass(delta, compiler !== 'solar')}
-                      title={`${label}: ${raw}`}
+                      className={changeClass(delta, true)}
+                      title={`${label}: ${formatRawValue(comparedValue, metrics[metric].unit)}`}
                     >
                       {formatChange(delta, '—')}
                     </strong>

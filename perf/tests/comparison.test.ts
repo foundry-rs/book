@@ -1,6 +1,6 @@
 import { expect, it } from 'vite-plus/test'
 import { comparisonCompilers, comparisonRows, percentChange } from '../src/comparison'
-import { formatValue } from '../src/formatValue'
+import { formatRawValue, formatValue } from '../src/formatValue'
 import { changeClass } from '../src/change'
 import type { RunDocument } from '../src/types'
 
@@ -50,13 +50,19 @@ it('uses the reference denominator and handles zero without bogus infinities or 
   expect(percentChange(null, 1)).toBeNull()
 })
 
-it('compares costs against Head and reverses colors only for other compilers', () => {
+it('colors higher Base and compiler costs green relative to Head', () => {
   const headValue = 100
   expect(percentChange(headValue, 120)).toBe(20)
-  expect(changeClass(percentChange(headValue, 120), false)).toBe('bad')
   expect(changeClass(percentChange(headValue, 120), true)).toBe('good')
   expect(changeClass(percentChange(headValue, 80), true)).toBe('bad')
   expect(changeClass(percentChange(headValue, null), true)).toBe('neutral')
+})
+
+it('preserves exact values and units for Head and comparison tooltips', () => {
+  expect(formatRawValue(12345, 'bytes')).toBe('12345 b')
+  expect(formatRawValue(0.012345, 'seconds')).toBe('0.012345 s')
+  expect(formatRawValue(0, 'gas')).toBe('0 gas')
+  expect(formatRawValue(null, 'memory')).toBe('No measurement')
 })
 
 it('formats byte units consistently without rounding small values to zero KiB', () => {

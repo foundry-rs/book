@@ -119,9 +119,9 @@ changes are reflected in the permalink.
 
 Comparison rows without measurements for the selected metric are hidden. The table shows
 the Solar Head value, followed by Base and the other compilers as percentage differences
-relative to Head. Solar decreases are green and increases red; other compilers use the
-opposite colors, so a more expensive solc result is green. Hovering a delta reveals that
-compiler's value. Missing measurements and a nonzero value against a zero Head have no defined percentage.
+relative to Head. Higher Base or other-compiler costs are green; lower costs are red.
+Hovering Head or a delta reveals the exact raw value. Missing measurements and a nonzero
+value against a zero Head have no defined percentage.
 Byte sizes use `b`, `KiB`, `MiB`, etc. Compiler columns are discovered from the run data.
 
 Successful data responses explicitly enable the Vercel CDN cache with the same lifetimes

@@ -1,3 +1,8 @@
+export function formatRawValue(value: number | null, unit: string) {
+  if (value === null) return 'No measurement'
+  return `${value} ${unit === 'bytes' || unit === 'memory' ? 'b' : unit === 'seconds' ? 's' : unit}`
+}
+
 export function formatValue(value: number, unit: string) {
   if (unit === 'seconds')
     return value < 1 ? `${(value * 1000).toFixed(2)} ms` : `${value.toFixed(2)} s`
