@@ -42,6 +42,7 @@ Define symbolic settings under `[profile.<name>.symbolic]`.
 | `use_fuzz_corpus` | `false` | Imports fuzz corpus seeds for symbolic exploration. |
 | `corpus_seed_limit` | `32` | Limits imported corpus seeds. |
 | `use_fuzz_frontiers` | `false` | Uses fuzz branch frontiers for targeted exploration. |
+| `check_invariant_frontiers` | `false` | Checks imported invariant frontiers for property failures before branch-target seeding. |
 | `frontier_limit` | `256` | Limits imported branch frontiers. |
 | `frontier_ids` | `[]` | Filters imported frontier artifact IDs. |
 | `frontier_pcs` | `[]` | Filters frontier program counters. |
@@ -68,6 +69,23 @@ Define symbolic settings under `[profile.<name>.symbolic]`.
 | `symbolic_call_targets` | `false` | Expands symbolic targets over known deployed contracts. |
 | `dump_smt` | `false` | Writes SMT-LIB queries before solving. |
 | `storage_layout` | `solidity` | Selects `solidity`, `generic`, or `zero_init` storage modelling. |
+
+#### Invariant frontier property checks
+
+`check_invariant_frontiers` is a boolean that defaults to `false`. It is also
+available as `FOUNDRY_SYMBOLIC_CHECK_INVARIANT_FRONTIERS` and applies when
+`use_fuzz_frontiers` imports an invariant frontier artifact. For each selected
+frontier, Forge replays the concrete sequence prefix, symbolically executes the
+target call, and checks the configured invariant functions from the resulting
+state before separately attempting to flip the retained branch. Only candidates
+that reproduce the failure during concrete replay are persisted. An incomplete
+symbolic search is not a proof that the invariant holds.
+
+```toml
+[profile.default.symbolic]
+use_fuzz_frontiers = true
+check_invariant_frontiers = true
+```
 
 ### Coverage
 

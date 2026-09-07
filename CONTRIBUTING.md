@@ -22,6 +22,26 @@ For this particular book, it is OK to assume some familiarity with Solidity and 
 
 The book follows the [Rust Code of Conduct](https://www.rust-lang.org/policies/code-of-conduct).
 
+### Browser smoke tests
+
+CI runs Chromium against the production Vocs build on pull requests and pushes
+to `master`. The smoke tests check rendered content, search hydration, navigation,
+direct page loads, and reloads, and fail on console errors or uncaught exceptions.
+Only externally hosted sponsor SVGs are stubbed; application code and local assets
+are served from the real build.
+
+To run them locally after installing dependencies:
+
+```bash
+vp exec playwright install chromium
+vp exec vocs build
+vp run test:e2e
+```
+
+Failed runs retain screenshots, traces, and an HTML report in `test-results/` and
+`playwright-report/`; CI uploads these as the `browser-test-results` artifact.
+Open the report with `vp exec playwright show-report`.
+
 ### Ways to contribute
 
 #### Issues
