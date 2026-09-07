@@ -7,15 +7,26 @@ import { artifactLanguage } from './highlight'
 import type { Theme } from './types'
 
 interface Props {
-  before: { commit: string; benchmark: string; compiler: string; label: string }
-  after: { commit: string; benchmark: string; compiler: string; label: string }
+  before: {
+    commit: string
+    benchmark: string
+    compiler: string
+    label: string
+    storagePath?: string
+  }
+  after: {
+    commit: string
+    benchmark: string
+    compiler: string
+    label: string
+    storagePath?: string
+  }
   path: string
-  storagePath: string
   language: string
   theme: Theme
 }
 
-export default function ArtifactDiff({ before, after, path, storagePath, language, theme }: Props) {
+export default function ArtifactDiff({ before, after, path, language, theme }: Props) {
   const [contents, setContents] = useState<[string | null, string | null] | null>(null)
   const [error, setError] = useState('')
   const [style, setStyle] = useState<'split' | 'unified'>('split')
@@ -24,8 +35,12 @@ export default function ArtifactDiff({ before, after, path, storagePath, languag
     setContents(null)
     setError('')
     Promise.all([
-      loadArtifact(before.commit, before.benchmark, before.compiler, storagePath),
-      loadArtifact(after.commit, after.benchmark, after.compiler, storagePath),
+      before.storagePath
+        ? loadArtifact(before.commit, before.benchmark, before.compiler, before.storagePath)
+        : null,
+      after.storagePath
+        ? loadArtifact(after.commit, after.benchmark, after.compiler, after.storagePath)
+        : null,
     ])
       .then(([beforeContents, afterContents]) => {
         if (!cancelled)
@@ -49,7 +64,8 @@ export default function ArtifactDiff({ before, after, path, storagePath, languag
     before.compiler,
     language,
     path,
-    storagePath,
+    before.storagePath,
+    after.storagePath,
   ])
   if (error) return <p className="error">Could not load artifact: {error}</p>
   if (!contents) return <p className="empty">Loading diff…</p>

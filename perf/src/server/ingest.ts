@@ -296,7 +296,12 @@ function importedRun(run: GitHubRun, pr: number | null, title: string | null): I
 async function knownRuns(config: ClickHouseConfig) {
   const rows = await select(
     config,
-    'SELECT workflow_run_id FROM runs FINAL ORDER BY imported_at DESC LIMIT 2_000',
+    `SELECT workflow_run_id FROM (
+       SELECT workflow_run_id FROM runs FINAL ORDER BY imported_at DESC LIMIT 2_000
+     )
+     UNION DISTINCT
+     SELECT workflow_run_id FROM ingestion_jobs FINAL
+     WHERE state = 'retry' AND next_attempt_at > now64(3)`,
   )
   return new Set(rows.map((row) => Number(row.workflow_run_id)))
 }

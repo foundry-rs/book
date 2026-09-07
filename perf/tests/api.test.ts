@@ -19,6 +19,28 @@ afterEach(() => {
 })
 
 describe('website API', () => {
+  it('skips manifests for comparisons and loads them independently in one query', async () => {
+    const sha = 'a'.repeat(40)
+    const queries: string[] = []
+    globalThis.fetch = vi.fn(async (_input, init) => {
+      const sql = String(init?.body)
+      queries.push(sql)
+      return new Response(
+        sql.includes('SELECT workflow_run_id, commit')
+          ? JSON.stringify({ workflow_run_id: 1, commit: sha })
+          : '',
+      )
+    })
+    const app = createApi({ clickHouse: config })
+    const run = await app.request(`/api/data/runs/${sha}/run.json?artifacts=0`)
+    expect(run.status).toBe(200)
+    expect(queries).toHaveLength(2)
+    expect(queries.join('\n')).not.toContain('artifact_files')
+    const manifest = await app.request(`/api/data/runs/${sha}/artifacts.json`)
+    expect(manifest.status).toBe(200)
+    expect(queries).toHaveLength(3)
+    expect(queries[2]).toContain('FROM artifact_files FINAL')
+  })
   it('loads bounded per-benchmark history without summing or reading artifacts', async () => {
     const queries: string[] = []
     globalThis.fetch = vi.fn(async (_url, options) => {

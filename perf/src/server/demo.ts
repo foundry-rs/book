@@ -155,10 +155,12 @@ export function demoResponse(pathname: string) {
       })),
     })
 
-  const match = /^\/api\/data\/runs\/([0-9a-f]{40})\/run\.json$/.exec(pathname)
+  const match = /^\/api\/data\/runs\/([0-9a-f]{40})\/(run|artifacts)\.json$/.exec(pathname)
   if (match) {
     const run = documents.get(match[1])
-    return run ? Response.json(run) : Response.json({ error: 'Run not found' }, { status: 404 })
+    return run
+      ? Response.json(match[2] === 'artifacts' ? run.artifacts : run)
+      : Response.json({ error: 'Run not found' }, { status: 404 })
   }
 
   const artifact = /^\/api\/data\/runs\/([0-9a-f]{40})\/([^/]+)\/(solar|solc)\/(\d+\.json)$/.exec(

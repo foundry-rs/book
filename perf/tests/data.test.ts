@@ -2,6 +2,26 @@ import { afterEach, expect, it, vi } from 'vite-plus/test'
 
 afterEach(() => vi.unstubAllGlobals())
 
+it('loads manifests lazily without repeating comparison metrics', async () => {
+  vi.resetModules()
+  const sha = 'b'.repeat(40)
+  const fetch = vi.fn(async (input) =>
+    Response.json(
+      String(input).endsWith('artifacts.json')
+        ? { test: [] }
+        : { commit: sha, results: [], artifacts: {} },
+    ),
+  )
+  vi.stubGlobal('fetch', fetch)
+  const { loadRun, loadRunWithArtifacts } = await import('../src/data')
+  await loadRun(sha)
+  expect(fetch).toHaveBeenCalledTimes(1)
+  expect(fetch.mock.calls[0][0]).toContain('artifacts=0')
+  expect((await loadRunWithArtifacts(sha)).artifacts).toEqual({ test: [] })
+  await loadRunWithArtifacts(sha)
+  expect(fetch).toHaveBeenCalledTimes(2)
+})
+
 it('revisiting artifacts and runs does not fetch again in the same instance', async () => {
   vi.resetModules()
   const fetch = vi.fn(async () => new Response(JSON.stringify('contents')))

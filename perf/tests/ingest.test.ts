@@ -1,7 +1,7 @@
 import { strToU8, zipSync } from 'fflate'
-import { describe, expect, it } from 'vite-plus/test'
+import { afterEach, describe, expect, it, vi } from 'vite-plus/test'
 
-import { extractArchive, normalizeArchive, selectRuns } from '../src/server/ingest'
+import { extractArchive, ingestRecent, normalizeArchive, selectRuns } from '../src/server/ingest'
 import { artifactMetadata, textArtifact, validArtifactPath } from '../src/server/artifacts'
 
 const run = {
@@ -14,7 +14,50 @@ const run = {
   workflowRunId: 1,
 }
 
+afterEach(() => vi.unstubAllGlobals())
+
 describe('GitHub Actions importer', () => {
+  it('excludes cooling-down runs before allocating the worker batch', async () => {
+    const queries: string[] = []
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async (input, init) => {
+        const url = String(input)
+        if (url.startsWith('https://clickhouse.example')) {
+          const sql = String(init?.body)
+          queries.push(sql)
+          return new Response(
+            sql.includes('UNION DISTINCT')
+              ? [1, 2, 3, 4]
+                  .map((workflow_run_id) => JSON.stringify({ workflow_run_id }))
+                  .join('\n')
+              : '',
+          )
+        }
+        if (url.includes('/actions/workflows/'))
+          return Response.json({
+            workflow_runs: [1, 2, 3, 4, 5, 6].map((id) => ({
+              id,
+              conclusion: 'success',
+              event: 'push',
+              head_branch: 'main',
+              head_sha: id.toString(16).padStart(40, '0'),
+              created_at: run.startedAt,
+            })),
+          })
+        if (url.includes('/artifacts?')) return Response.json({ artifacts: [] })
+        return Response.json([])
+      }),
+    )
+    const result = await ingestRecent({
+      CLICKHOUSE_HOST: 'https://clickhouse.example',
+      GITHUB_TOKEN: 'test',
+    })
+    expect(result).toEqual({ scanned: 2, imported: 0, failed: [5, 6] })
+    expect(queries.find((sql) => sql.includes('UNION DISTINCT'))).toContain(
+      "state = 'retry' AND next_attempt_at > now64(3)",
+    )
+  })
   it('does not publish an empty or unsupported results document', () => {
     expect(() =>
       normalizeArchive({ artifacts: new Map(), results: '{"results":[]}' }, run),

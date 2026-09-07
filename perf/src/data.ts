@@ -6,6 +6,7 @@ const cachedIndex = responseCache<RunIndex>(60_000)
 const cachedHistory = responseCache<HistoryRun[]>(60_000)
 const cachedArtifact = responseCache<string | null>(3_600_000)
 const cachedRun = responseCache<RunDocument>(300_000)
+const cachedManifest = responseCache<RunDocument['artifacts']>(300_000)
 
 export function loadHistory() {
   return cachedHistory('history', () =>
@@ -33,8 +34,18 @@ async function resolveCommit(commit: string) {
 export async function loadRun(commit: string) {
   const resolved = await resolveCommit(commit)
   return cachedRun(resolved, () =>
-    getJson<RunDocument>(`runs/${encodeURIComponent(resolved)}/run.json`),
+    getJson<RunDocument>(`runs/${encodeURIComponent(resolved)}/run.json?artifacts=0`),
   )
+}
+
+export async function loadRunWithArtifacts(commit: string): Promise<RunDocument> {
+  // Ensure on-demand imports finish before requesting the manifest. Metrics remain shared
+  // with the comparison page, which never needs to read artifact_files.
+  const run = await loadRun(commit)
+  const artifacts = await cachedManifest(run.commit, () =>
+    getJson<RunDocument['artifacts']>(`runs/${run.commit}/artifacts.json`),
+  )
+  return { ...run, artifacts }
 }
 
 export async function loadArtifact(

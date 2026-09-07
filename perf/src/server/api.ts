@@ -84,7 +84,11 @@ async function indexFromClickHouse(config: ClickHouseConfig) {
   }
 }
 
-async function runFromClickHouse(config: ClickHouseConfig, sha: string): Promise<StoredRun | null> {
+async function runFromClickHouse(
+  config: ClickHouseConfig,
+  sha: string,
+  includeArtifacts: boolean,
+): Promise<StoredRun | null> {
   const [run] = await select(
     config,
     `SELECT workflow_run_id, commit, branch, pr, title, raw_results,
@@ -96,13 +100,16 @@ async function runFromClickHouse(config: ClickHouseConfig, sha: string): Promise
   const labels = compilerLabels(raw_results)
 
   const runId = Number(run.workflow_run_id)
-  const rows = await select(
-    config,
-    `SELECT test_id, description, suite, compiler, status, compile_time_seconds, bytecode_size,
+  const [rows, artifacts] = await Promise.all([
+    select(
+      config,
+      `SELECT test_id, description, suite, compiler, status, compile_time_seconds, bytecode_size,
        runtime_size, deploy_gas, total_gas, peak_rss_bytes
      FROM benchmark_results FINAL WHERE workflow_run_id = ${runId}
      ORDER BY test_id, compiler`,
-  )
+    ),
+    includeArtifacts ? artifactsFromClickHouse(config, sha) : Promise.resolve({}),
+  ])
   const results = new Map<string, Record<string, unknown>>()
   for (const row of rows) {
     const testId = String(row.test_id)
@@ -125,11 +132,23 @@ async function runFromClickHouse(config: ClickHouseConfig, sha: string): Promise
     results.set(testId, result)
   }
 
+  return {
+    ...runMetadata,
+    schemaVersion: 1,
+    results: [...results.values()],
+    artifacts,
+    workflow_run_id: run.workflow_run_id,
+  }
+}
+
+async function artifactsFromClickHouse(config: ClickHouseConfig, sha: string) {
   const artifactRows = await select(
     config,
     `SELECT test_id, path, max(ifNull(bytes, length(content))) AS bytes,
        groupUniqArray(compiler) AS compilers
-     FROM artifact_files FINAL WHERE workflow_run_id = ${runId}
+     FROM artifact_files FINAL WHERE workflow_run_id IN (
+       SELECT workflow_run_id FROM runs FINAL WHERE commit = '${sha}' ORDER BY imported_at DESC LIMIT 1
+     )
      GROUP BY test_id, path
      ORDER BY test_id, path`,
   )
@@ -144,13 +163,7 @@ async function runFromClickHouse(config: ClickHouseConfig, sha: string): Promise
       compilers: row.compilers,
     })
   }
-  return {
-    ...runMetadata,
-    schemaVersion: 1,
-    results: [...results.values()],
-    artifacts,
-    workflow_run_id: run.workflow_run_id,
-  }
+  return artifacts
 }
 
 async function historyFromClickHouse(config: ClickHouseConfig) {
@@ -203,11 +216,12 @@ async function loadRun(
   config: ClickHouseConfig,
   sha: string,
   importRun: (sha: string) => Promise<unknown>,
+  includeArtifacts: boolean,
 ) {
-  const current = await runFromClickHouse(config, sha)
+  const current = await runFromClickHouse(config, sha, includeArtifacts)
   if (current) return current
   await importRun(sha)
-  return runFromClickHouse(config, sha)
+  return runFromClickHouse(config, sha, includeArtifacts)
 }
 
 async function runIdFromClickHouse(config: ClickHouseConfig, sha: string) {
@@ -292,10 +306,22 @@ export function createApi(options: ApiOptions = {}) {
 
       const runMatch = /^runs\/([0-9a-f]{40})\/run\.json$/.exec(path)
       if (runMatch) {
-        const run = await loadRun(config, runMatch[1], loadImport)
+        const run = await loadRun(
+          config,
+          runMatch[1],
+          loadImport,
+          context.req.query('artifacts') !== '0',
+        )
         if (!run) return context.json({ error: 'Run not found' }, 404)
         context.header('cache-control', 'public, max-age=300, stale-while-revalidate=3600')
         return context.json(run)
+      }
+
+      const manifestMatch = /^runs\/([0-9a-f]{40})\/artifacts\.json$/.exec(path)
+      if (manifestMatch) {
+        const artifacts = await artifactsFromClickHouse(config, manifestMatch[1])
+        context.header('cache-control', 'public, max-age=300, stale-while-revalidate=3600')
+        return context.json(artifacts)
       }
 
       const artifactMatch =
@@ -333,6 +359,7 @@ export function createApi(options: ApiOptions = {}) {
       context.header('cache-control', 'public, max-age=3600, stale-while-revalidate=86400')
       return context.json(artifact.content)
     } catch (error) {
+      context.header('cache-control', 'no-store')
       if (error instanceof ImportPendingError) {
         context.header('retry-after', String(error.retryAfter))
         return context.json({ error: error.message }, 503)

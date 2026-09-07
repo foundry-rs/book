@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
 import { artifactTree, mergeArtifactFiles, type ArtifactNode } from './artifactTree'
-import { loadRun } from './data'
+import { loadRunWithArtifacts } from './data'
 import { compilerLabel } from './compilerLabel'
 import type { RunDocument, Theme } from './types'
 
@@ -62,7 +62,7 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
     let cancelled = false
     setRuns(null)
     setLoadError(null)
-    Promise.all([loadRun(base), loadRun(head)]).then(
+    Promise.all([loadRunWithArtifacts(base), loadRunWithArtifacts(head)]).then(
       (value) => {
         if (!cancelled) setRuns(value)
       },
@@ -214,15 +214,24 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
                       commit: comparisonCommit,
                       benchmark: activeBenchmark,
                       compiler: leftCompiler,
+                      storagePath: runs[against === 'base' ? 0 : 1].artifacts[
+                        activeBenchmark
+                      ]?.find(
+                        (file) =>
+                          file.path === selectedFile.path && file.compilers.includes(leftCompiler),
+                      )?.storagePath,
                     }}
                     after={{
                       commit: head,
                       benchmark: activeBenchmark,
                       compiler: rightCompiler,
                       label: rightLabel,
+                      storagePath: runs[1].artifacts[activeBenchmark]?.find(
+                        (file) =>
+                          file.path === selectedFile.path && file.compilers.includes(rightCompiler),
+                      )?.storagePath,
                     }}
                     path={selectedFile.path}
-                    storagePath={selectedFile.storagePath}
                     language={selectedFile.language}
                     theme={theme}
                   />
