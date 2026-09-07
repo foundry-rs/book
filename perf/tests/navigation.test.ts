@@ -1,9 +1,36 @@
 import { afterEach, expect, it, vi } from 'vite-plus/test'
-import { followLink, navigate } from '../src/navigation'
+import { comparisonHref, followLink, navigate, replaceUrl } from '../src/navigation'
 
 afterEach(() => {
   vi.unstubAllGlobals()
   vi.unstubAllEnvs()
+})
+
+it('returns from artifacts to the same comparison, benchmark, and metric', () => {
+  expect(
+    comparisonHref(
+      '?base=a&head=b&benchmark=factorial&metric=total_gas&view=files&file=mir.mir&against=solc&compiler=solar',
+    ),
+  ).toBe('?base=a&head=b&benchmark=factorial&metric=total_gas')
+})
+
+it('notifies URL replacements without triggering page navigation', () => {
+  const browser = Object.assign(new EventTarget(), {
+    history: { replaceState: vi.fn() },
+  })
+  vi.stubGlobal('window', browser)
+  const replace = vi.fn()
+  const navigate = vi.fn()
+  browser.addEventListener('routechange', replace)
+  browser.addEventListener('popstate', navigate)
+  replaceUrl('/perf/solar/?benchmark=factorial')
+  expect(browser.history.replaceState).toHaveBeenCalledWith(
+    null,
+    '',
+    '/perf/solar/?benchmark=factorial',
+  )
+  expect(replace).toHaveBeenCalledOnce()
+  expect(navigate).not.toHaveBeenCalled()
 })
 
 it('pushes browser history and notifies the app without reloading', () => {

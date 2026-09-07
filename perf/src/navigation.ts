@@ -6,6 +6,17 @@ export function navigate(url: string | URL) {
   window.scrollTo(0, 0)
 }
 
+export function replaceUrl(url: string | URL) {
+  window.history.replaceState(null, '', url)
+  window.dispatchEvent(new Event('routechange'))
+}
+
+export function comparisonHref(search: string) {
+  const params = new URLSearchParams(search)
+  for (const key of ['view', 'against', 'compiler', 'file']) params.delete(key)
+  return `?${params}`
+}
+
 export function followLink(event: MouseEvent) {
   if (
     event.defaultPrevented ||
@@ -34,10 +45,13 @@ export function useNavigation() {
   useEffect(() => {
     const update = () =>
       setRoute((previous) => ({ search: window.location.search, key: previous.key + 1 }))
+    const replace = () => setRoute((previous) => ({ ...previous, search: window.location.search }))
     window.addEventListener('popstate', update)
+    window.addEventListener('routechange', replace)
     document.addEventListener('click', followLink)
     return () => {
       window.removeEventListener('popstate', update)
+      window.removeEventListener('routechange', replace)
       document.removeEventListener('click', followLink)
     }
   }, [])

@@ -6,6 +6,7 @@ import { loadRun } from './data'
 import { benchmarkSource } from './sources'
 import type { RunDocument, Theme } from './types'
 import { benchmarkMetric as value } from './benchmarkMetric'
+import { replaceUrl } from './navigation'
 
 const metrics: Record<
   string,
@@ -36,8 +37,8 @@ function formatRunDate(timestamp: string) {
   }).format(new Date(timestamp))
 }
 
-function fileViewerHref(base: string, head: string, benchmark: string) {
-  return `?${new URLSearchParams({ base, head, benchmark, view: 'files' })}`
+function fileViewerHref(base: string, head: string, benchmark: string, metric: string) {
+  return `?${new URLSearchParams({ base, head, benchmark, metric, view: 'files' })}`
 }
 
 interface Props {
@@ -95,7 +96,7 @@ export function Compare({ base, head }: Props) {
     const url = new URL(window.location.href)
     if (next) url.searchParams.set('benchmark', next)
     else url.searchParams.delete('benchmark')
-    history.replaceState(null, '', url)
+    replaceUrl(url)
   }
 
   if (loadError)
@@ -153,7 +154,7 @@ export function Compare({ base, head }: Props) {
             setMetric(event.target.value)
             const url = new URL(window.location.href)
             url.searchParams.set('metric', metrics[event.target.value].key)
-            history.replaceState(null, '', url)
+            replaceUrl(url)
           }}
         >
           {Object.entries(metrics).map(([key, config]) => (
@@ -222,7 +223,9 @@ export function Compare({ base, head }: Props) {
                   </div>
                   <aside className="benchmark-links">
                     <p className="eyebrow">Links</p>
-                    <a href={fileViewerHref(base, head, after.test_id)}>Artifacts diff viewer →</a>
+                    <a href={fileViewerHref(base, head, after.test_id, metrics[metric].key)}>
+                      Artifacts diff viewer →
+                    </a>
                     <a href={source.url}>Source: {source.label} ↗</a>
                   </aside>
                 </section>

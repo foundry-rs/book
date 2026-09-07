@@ -3,7 +3,8 @@ import { Moon, Sun } from 'lucide-react'
 import { HistoryGraph } from './HistoryGraph'
 import { Compare } from './Compare'
 import { loadHistory, loadIndex, resolveCommit } from './data'
-import { navigate, useNavigation } from './navigation'
+import { comparisonHref, navigate, useNavigation } from './navigation'
+import { comparisonBase } from './comparisonBase'
 import logo from './assets/logo.png'
 import { FileViewer } from './FileViewer'
 import type { HistoryRun, RunIndex, RunSummary, Theme } from './types'
@@ -84,6 +85,7 @@ export function App() {
       <SiteHeader
         compact={Boolean(fileViewer)}
         dashboard={!comparison}
+        comparisonHref={comparisonHref(navigation.search)}
         theme={theme}
         onToggleTheme={toggleTheme}
       />
@@ -110,11 +112,13 @@ export function App() {
 function SiteHeader({
   compact,
   dashboard,
+  comparisonHref,
   theme,
   onToggleTheme,
 }: {
   compact: boolean
   dashboard: boolean
+  comparisonHref?: string
   theme: Theme
   onToggleTheme: () => void
 }) {
@@ -127,7 +131,7 @@ function SiteHeader({
       </a>
       <nav>
         {compact ? (
-          <a href={import.meta.env.BASE_URL}>Dashboard</a>
+          <a href={comparisonHref}>Comparison</a>
         ) : (
           <>
             <a className={dashboard ? 'nav-active' : undefined} href={import.meta.env.BASE_URL}>
@@ -212,14 +216,21 @@ function Home() {
         </div>
         <span>{mainRuns.length} runs</span>
       </section>
-      <section className="compare-box" aria-label="Compare commits">
+      <form
+        className="compare-box"
+        aria-label="Compare commits"
+        onSubmit={(event) => {
+          event.preventDefault()
+          void compare()
+        }}
+      >
         <CommitInput label="base" value={base} onChange={setBase} />
         <span className="arrow">→</span>
         <CommitInput label="head" value={head} onChange={setHead} />
-        <button onClick={compare} disabled={resolving || !base.trim() || !head.trim()}>
+        <button type="submit" disabled={resolving || !base.trim() || !head.trim()}>
           {resolving ? 'Resolving…' : 'Compare'}
         </button>
-      </section>
+      </form>
       {compareError && (
         <p className="error" role="alert">
           {compareError}
@@ -288,7 +299,7 @@ function Home() {
           <p className="empty">No published benchmark runs yet.</p>
         ) : (
           runs.slice(0, 12).map((run) => {
-            const comparison = runs.find((candidate) => candidate.commit !== run.commit)?.commit
+            const comparison = comparisonBase(runs, run)
             const contents = (
               <>
                 <code>{short(run.commit)}</code>
