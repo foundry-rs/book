@@ -161,7 +161,7 @@ export function Compare({ base, head }: Props) {
       >
         <div className="result header-row">
           <span>Benchmark</span>
-          <span>solar {short(base)} (base)</span>
+          <span>Base</span>
           {compilers.map((compiler) => {
             const labels = [
               ...new Set(
@@ -173,7 +173,7 @@ export function Compare({ base, head }: Props) {
             return (
               <span key={compiler} title={labels.join(', ')}>
                 {compiler === 'solar'
-                  ? `solar ${short(head)} (head)`
+                  ? 'Head'
                   : labels.length === 1
                     ? compiler === 'solc'
                       ? labels[0]?.split('+')[0]
