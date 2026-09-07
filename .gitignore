@@ -8,6 +8,8 @@
 /docs/snippets/projects/**/out/
 
 /node_modules
+/playwright-report/
+/test-results/
 /dist
 /docs/dist
 /.vocs
