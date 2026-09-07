@@ -12,5 +12,5 @@ export function compilerLabel(
     compiler === 'solar'
       ? `solar ${run.commit.slice(0, 8)}`
       : recorded?.trim() || `${compiler} (version unknown)`
-  return side ? `${label} (${side})` : label
+  return compiler === 'solar' && side ? `${label} (${side})` : label
 }

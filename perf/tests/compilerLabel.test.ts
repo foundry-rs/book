@@ -29,7 +29,8 @@ it('names Solar by commit and solc by recorded version', () => {
 it('identifies the source run in selectors and diff headings', () => {
   expect(compilerLabel(run, 'test', 'solar', 'base')).toBe('solar abcdef01 (base)')
   expect(compilerLabel(run, 'test', 'solar', 'head')).toBe('solar abcdef01 (head)')
-  expect(compilerLabel(run, 'test', 'solc', 'head')).toBe('solc 0.8.36 (head)')
+  expect(compilerLabel(run, 'test', 'solc', 'head')).toBe('solc 0.8.36')
+  expect(compilerLabel(run, 'test', 'solc', 'base')).toBe('solc 0.8.36')
 })
 
 it.each([
