@@ -102,6 +102,16 @@ The dashboard shows one graph per benchmark, with a metric selector and name fil
 `/api/data/history.json` returns Solar measurements for the latest 60 main-branch runs
 without artifact manifests. Values are never summed across benchmarks; failed or missing
 measurements leave gaps. Click a graph point to compare it with the preceding commit.
+The individual benchmark History section uses the same graph and data. Dashboard cards
+without a latest measurement are hidden for the selected metric. Compare inputs start
+empty and accept published commit prefixes, branch/tag names, and PR numbers without suggestions.
+
+Successful browser reads are cached for 60 seconds (index/history), five minutes (runs),
+or one hour (artifacts), with a 128-entry/32 MiB estimated-size limit per cache. Missing
+artifacts and failed requests are retried, not retained. Artifact HTTP responses cache
+for one hour; an uncached stored artifact uses one ClickHouse request. Compiler labels
+come from the stored original results; Solar uses its run commit and missing versions
+are explicitly marked unknown.
 
 Verify benchmark metrics, history, compiler artifact diffs, repeated cached reads, and
 the docs root `/`. A missing run is imported on demand; an already stored run is read

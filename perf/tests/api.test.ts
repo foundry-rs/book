@@ -341,7 +341,10 @@ describe('website API', () => {
     globalThis.fetch = vi.fn(async (_input: RequestInfo | URL, init?: RequestInit) => {
       const query = typeof init?.body === 'string' ? init.body : ''
       queries.push(query)
-      if (query.includes('SELECT workflow_run_id FROM runs')) {
+      if (
+        !query.includes('FROM artifact_files') &&
+        query.includes('SELECT workflow_run_id FROM runs')
+      ) {
         return new Response(`${JSON.stringify({ workflow_run_id: 1 })}\n`)
       }
       return new Response(`${JSON.stringify({ content: 'fn factorial' })}\n`)
@@ -353,7 +356,10 @@ describe('website API', () => {
 
     expect(response.status).toBe(200)
     await expect(response.json()).resolves.toBe('fn factorial')
-    expect(queries).toHaveLength(2)
+    expect(queries).toHaveLength(1)
+    expect(response.headers.get('cache-control')).toBe(
+      'public, max-age=3600, stale-while-revalidate=86400',
+    )
     expect(queries.join('\n')).not.toContain('FROM benchmark_results')
     expect(queries.join('\n')).not.toContain('GROUP BY test_id')
   })
@@ -378,7 +384,9 @@ describe('website API', () => {
       queries.push(query)
       return new Response(
         JSON.stringify(
-          query.includes('FROM runs') ? { workflow_run_id: 1 } : { content: 'new output' },
+          query.includes('FROM artifact_files')
+            ? { content: 'new output' }
+            : { workflow_run_id: 1 },
         ),
       )
     })
@@ -387,7 +395,8 @@ describe('website API', () => {
     )
     expect(response.status).toBe(200)
     expect(await response.json()).toBe('new output')
-    expect(queries[1]).toContain('lower(hex(SHA256(path)))')
-    expect(queries[1]).toContain("compiler = 'experimental'")
+    expect(queries).toHaveLength(1)
+    expect(queries[0]).toContain('lower(hex(SHA256(path)))')
+    expect(queries[0]).toContain("compiler = 'experimental'")
   })
 })

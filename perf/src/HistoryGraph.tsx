@@ -2,19 +2,10 @@ import { useId, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { changeClass, formatChange } from './change'
 import { benchmarkMetric } from './benchmarkMetric'
+import { formatValue } from './formatValue'
 import type { HistoryRun } from './types'
 
 const short = (commit: string) => commit.slice(0, 8)
-
-function formatValue(value: number, unit: string) {
-  if (unit === 'seconds')
-    return value < 1 ? `${(value * 1000).toFixed(2)} ms` : `${value.toFixed(2)} s`
-  if (unit === 'memory')
-    return value >= 1024 * 1024
-      ? `${(value / 1024 / 1024).toFixed(1)} MiB`
-      : `${Math.round(value / 1024).toLocaleString()} KiB`
-  return `${Math.round(value).toLocaleString()} ${unit}`
-}
 
 export function HistoryGraph({
   runs,

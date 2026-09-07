@@ -219,17 +219,6 @@ async function runIdFromClickHouse(config: ClickHouseConfig, sha: string) {
   return run ? Number(run.workflow_run_id) : null
 }
 
-async function loadRunId(
-  config: ClickHouseConfig,
-  sha: string,
-  importRun: (sha: string) => Promise<unknown>,
-) {
-  const current = await runIdFromClickHouse(config, sha)
-  if (current !== null) return current
-  await importRun(sha)
-  return runIdFromClickHouse(config, sha)
-}
-
 export function createApi(options: ApiOptions = {}) {
   const useDemoFallback = options.demoFallback ?? process.env.PERF_DEMO_DATA === '1'
   const config = useDemoFallback
@@ -305,7 +294,7 @@ export function createApi(options: ApiOptions = {}) {
       if (runMatch) {
         const run = await loadRun(config, runMatch[1], loadImport)
         if (!run) return context.json({ error: 'Run not found' }, 404)
-        context.header('cache-control', 'public, max-age=300, stale-while-revalidate=3_600')
+        context.header('cache-control', 'public, max-age=300, stale-while-revalidate=3600')
         return context.json(run)
       }
 
@@ -320,17 +309,28 @@ export function createApi(options: ApiOptions = {}) {
       const fileCondition = /^[a-f0-9]{64}\.json$/.test(storagePath)
         ? `lower(hex(SHA256(path))) = '${storagePath.slice(0, -5)}'`
         : `storage_path = '${storagePath}'`
-      const runId = await loadRunId(config, sha, loadImport)
-      if (runId === null) return context.json({ error: 'Run not found' }, 404)
-      const [artifact] = await select(
-        config,
-        `SELECT content FROM artifact_files FINAL
-         WHERE workflow_run_id = ${runId}
+      const readArtifact = () =>
+        select(
+          config,
+          `SELECT content FROM artifact_files FINAL
+         WHERE workflow_run_id IN (
+           SELECT workflow_run_id FROM runs FINAL
+           WHERE commit = '${sha}' ORDER BY imported_at DESC LIMIT 1
+         )
            AND test_id = '${benchmark}' AND compiler = '${compiler}' AND ${fileCondition}
          ORDER BY imported_at DESC LIMIT 1`,
-      )
+        )
+      let [artifact] = await readArtifact()
+      if (!artifact) {
+        // Only take the import/retry path when the run itself is not published yet.
+        const runId = await runIdFromClickHouse(config, sha)
+        if (runId === null) {
+          await loadImport(sha)
+          ;[artifact] = await readArtifact()
+        }
+      }
       if (!artifact) return context.json({ error: 'Artifact not found' }, 404)
-      context.header('cache-control', 'public, max-age=3_600, stale-while-revalidate=86_400')
+      context.header('cache-control', 'public, max-age=3600, stale-while-revalidate=86400')
       return context.json(artifact.content)
     } catch (error) {
       if (error instanceof ImportPendingError) {

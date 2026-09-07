@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { BenchmarkHistory } from './BenchmarkHistory'
 import { changeClass, formatChange } from './change'
+import { formatValue } from './formatValue'
 import { loadRun } from './data'
 import { benchmarkSource } from './sources'
 import type { RunDocument, Theme } from './types'
@@ -181,8 +182,12 @@ export function Compare({ base, head }: Props) {
                   <span className="row-chevron">{selected ? '⌄' : '›'}</span>
                   {after.test_id}
                 </code>
-                <span>{beforeValue?.toLocaleString() ?? '—'}</span>
-                <strong>{afterValue?.toLocaleString() ?? '—'}</strong>
+                <span>
+                  {beforeValue === null ? '—' : formatValue(beforeValue, metrics[metric].unit)}
+                </span>
+                <strong>
+                  {afterValue === null ? '—' : formatValue(afterValue, metrics[metric].unit)}
+                </strong>
                 <strong className={changeClass(delta)}>
                   {!before ? 'Added' : !headResult ? 'Removed' : formatChange(delta)}
                 </strong>

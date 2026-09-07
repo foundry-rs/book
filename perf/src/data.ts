@@ -1,12 +1,16 @@
 import type { HistoryRun, RunDocument, RunIndex } from './types'
+import { responseCache } from './cache'
 
 const root = '/api/data/'
-let indexPromise: Promise<RunIndex> | null = null
-const artifactPromises = new Map<string, Promise<string | null>>()
-const runPromises = new Map<string, Promise<RunDocument>>()
+const cachedIndex = responseCache<RunIndex>(60_000)
+const cachedHistory = responseCache<HistoryRun[]>(60_000)
+const cachedArtifact = responseCache<string | null>(3_600_000)
+const cachedRun = responseCache<RunDocument>(300_000)
 
 export function loadHistory() {
-  return getJson<{ runs: HistoryRun[] }>('history.json').then((history) => history.runs)
+  return cachedHistory('history', () =>
+    getJson<{ runs: HistoryRun[] }>('history.json').then((history) => history.runs),
+  )
 }
 
 async function getJson<T>(path: string, fresh = false): Promise<T> {
@@ -16,13 +20,7 @@ async function getJson<T>(path: string, fresh = false): Promise<T> {
 }
 
 export function loadIndex() {
-  if (!indexPromise) {
-    indexPromise = getJson<RunIndex>('index.json', true).catch((error) => {
-      indexPromise = null
-      throw error
-    })
-  }
-  return indexPromise
+  return cachedIndex('index', () => getJson<RunIndex>('index.json', true))
 }
 
 async function resolveCommit(commit: string) {
@@ -34,13 +32,9 @@ async function resolveCommit(commit: string) {
 
 export async function loadRun(commit: string) {
   const resolved = await resolveCommit(commit)
-  const existing = runPromises.get(resolved)
-  if (existing) return existing
-  const inFlight = getJson<RunDocument>(`runs/${encodeURIComponent(resolved)}/run.json`).finally(
-    () => runPromises.delete(resolved),
+  return cachedRun(resolved, () =>
+    getJson<RunDocument>(`runs/${encodeURIComponent(resolved)}/run.json`),
   )
-  runPromises.set(resolved, inFlight)
-  return inFlight
 }
 
 export async function loadArtifact(
@@ -52,15 +46,11 @@ export async function loadArtifact(
   const resolved = await resolveCommit(commit)
   const parts = [resolved, benchmark, compiler, ...storagePath.split('/')].map(encodeURIComponent)
   const path = `runs/${parts.join('/')}`
-  const existing = artifactPromises.get(path)
-  if (existing) return existing
-  const inFlight = fetch(`${root}${path}`)
-    .then((response) => {
+  return cachedArtifact(path, () =>
+    fetch(`${root}${path}`).then((response) => {
       if (response.status === 404) return null
       if (!response.ok) throw new Error(`Could not load artifact (${response.status})`)
       return response.json() as Promise<string>
-    })
-    .finally(() => artifactPromises.delete(path))
-  artifactPromises.set(path, inFlight)
-  return inFlight
+    }),
+  )
 }
