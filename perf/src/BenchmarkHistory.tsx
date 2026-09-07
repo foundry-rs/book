@@ -1,16 +1,11 @@
 import { useEffect, useState } from 'react'
 import { loadIndex, loadRun } from './data'
-import type { BenchmarkResult } from './types'
+import { benchmarkMetric as metricValue } from './benchmarkMetric'
 
 interface Props {
   benchmark: string
   metric: string
   unit: 'bytes' | 'gas' | 'seconds'
-}
-
-function metricValue(result: BenchmarkResult | undefined, metric: string) {
-  const value = result?.compilers.solar?.[metric as keyof BenchmarkResult['compilers']['solar']]
-  return typeof value === 'number' ? value : null
 }
 
 function formatValue(value: number, unit: Props['unit']) {

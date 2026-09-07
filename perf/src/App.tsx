@@ -278,7 +278,7 @@ export function App() {
   const head = route.get('head')
   const benchmark = route.get('benchmark')
   const fileViewer = route.get('view') === 'files' && benchmark
-  const comparison = Boolean(base && head && base !== head)
+  const comparison = Boolean(base && head)
   const toggleTheme = () =>
     setTheme((value) => {
       const next = value === 'light' ? 'dark' : 'light'

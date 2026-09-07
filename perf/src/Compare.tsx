@@ -3,7 +3,8 @@ import { BenchmarkHistory } from './BenchmarkHistory'
 import { changeClass, formatChange } from './change'
 import { loadRun } from './data'
 import { benchmarkSource } from './sources'
-import type { BenchmarkResult, RunDocument, Theme } from './types'
+import type { RunDocument, Theme } from './types'
+import { benchmarkMetric as value } from './benchmarkMetric'
 
 const metrics: Record<string, { label: string; key: string; unit: 'bytes' | 'gas' | 'seconds' }> = {
   runtimeGas: { label: 'Runtime gas', key: 'total_gas', unit: 'gas' },
@@ -15,11 +16,6 @@ const metrics: Record<string, { label: string; key: string; unit: 'bytes' | 'gas
 }
 
 const short = (commit: string) => commit.slice(0, 8)
-
-function value(result: BenchmarkResult | undefined, metric: string) {
-  const item = result?.compilers.solar[metric as keyof BenchmarkResult['compilers']['solar']]
-  return typeof item === 'number' ? item : null
-}
 
 function change(before: number | null, after: number | null) {
   if (before === null || after === null || before === 0) return null
@@ -40,10 +36,6 @@ function fileViewerHref(base: string, head: string, benchmark: string) {
   return `?${new URLSearchParams({ base, head, benchmark, view: 'files' })}`
 }
 
-function localCommand(benchmark: string) {
-  return `python3 benches/runtime/benchmark.py --solar target/debug/solar --tests ${benchmark} --gas --gas-profile hot --start-anvil --artifacts target/codegen-bench/artifacts --output target/codegen-bench/results.json`
-}
-
 interface Props {
   base: string
   head: string
@@ -62,23 +54,33 @@ export function Compare({ base, head }: Props) {
   const [expanded, setExpanded] = useState(initial.get('benchmark') ?? '')
 
   useEffect(() => {
+    let cancelled = false
     setRuns(null)
     setLoadError(null)
-    Promise.all([loadRun(base), loadRun(head)]).then(setRuns, () => {
-      setLoadError('These benchmark runs are not published yet.')
-    })
+    Promise.all([loadRun(base), loadRun(head)]).then(
+      (value) => {
+        if (!cancelled) setRuns(value)
+      },
+      () => {
+        if (!cancelled) setLoadError('These benchmark runs are not published yet.')
+      },
+    )
+    return () => {
+      cancelled = true
+    }
   }, [base, head])
 
   const rows = useMemo(() => {
     if (!runs) return []
     const before = new Map(runs[0].results.map((result) => [result.test_id, result]))
-    return runs[1].results
-      .map((after) => ({ before: before.get(after.test_id), after }))
-      .filter(({ after }) => after.test_id.toLowerCase().includes(query.toLowerCase()))
-      .filter(
-        ({ before, after }) =>
-          value(before, metrics[metric].key) !== null && value(after, metrics[metric].key) !== null,
-      )
+    const after = new Map(runs[1].results.map((result) => [result.test_id, result]))
+    return [...new Set([...after.keys(), ...before.keys()])]
+      .filter((name) => name.toLowerCase().includes(query.toLowerCase()))
+      .map((name) => ({
+        before: before.get(name),
+        headResult: after.get(name),
+        result: after.get(name) || before.get(name)!,
+      }))
   }, [metric, query, runs])
 
   const selectBenchmark = (benchmark: string) => {
@@ -120,7 +122,13 @@ export function Compare({ base, head }: Props) {
             (afterRun.branch ?? 'detached')
           )}{' '}
           · {afterRun.results.length} benchmarks ·{' '}
-          <a href="https://github.com/paradigmxyz/solar/actions/workflows/bench.yml">
+          <a
+            href={
+              afterRun.workflow_run_id
+                ? `https://github.com/paradigmxyz/solar/actions/runs/${afterRun.workflow_run_id}`
+                : 'https://github.com/paradigmxyz/solar/actions'
+            }
+          >
             GitHub workflow
           </a>
         </p>
@@ -151,10 +159,10 @@ export function Compare({ base, head }: Props) {
           <span>{short(head)}</span>
           <span>Change</span>
         </div>
-        {rows.map(({ before, after }) => {
+        {rows.map(({ before, headResult, result: after }) => {
           const selected = expanded === after.test_id
           const beforeValue = value(before, metrics[metric].key)
-          const afterValue = value(after, metrics[metric].key)
+          const afterValue = value(headResult, metrics[metric].key)
           const delta = change(beforeValue, afterValue)
           const source = benchmarkSource(after.test_id, head)
           return (
@@ -168,19 +176,25 @@ export function Compare({ base, head }: Props) {
                   <span className="row-chevron">{selected ? '⌄' : '›'}</span>
                   {after.test_id}
                 </code>
-                <span>{beforeValue?.toLocaleString()}</span>
-                <strong>{afterValue?.toLocaleString()}</strong>
-                <strong className={changeClass(delta)}>{formatChange(delta)}</strong>
+                <span>{beforeValue?.toLocaleString() ?? '—'}</span>
+                <strong>{afterValue?.toLocaleString() ?? '—'}</strong>
+                <strong className={changeClass(delta)}>
+                  {!before ? 'Added' : !headResult ? 'Removed' : formatChange(delta)}
+                </strong>
               </button>
               {selected && (
                 <section className="benchmark-detail" id={after.test_id}>
                   <div className="detail-copy">
                     <p className="eyebrow">Benchmark details</p>
                     <h2>{after.test_id}</h2>
+                    <p className="detail-muted">
+                      Compiler status — base: {before?.compilers.solar?.status ?? 'not present'};
+                      head: {headResult?.compilers.solar?.status ?? 'not present'}. Missing metrics
+                      are shown as —.
+                    </p>
                     {after.description && (
                       <p className="benchmark-description">{after.description}</p>
                     )}
-                    <code className="local-command">{localCommand(after.test_id)}</code>
                     <div className="detail-chart">
                       <p className="eyebrow">History</p>
                       <BenchmarkHistory

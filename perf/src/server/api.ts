@@ -2,6 +2,7 @@ import { Hono } from 'hono'
 
 import { clickHouseConfig, select, type ClickHouseConfig } from './clickhouse'
 import { demoResponse } from './demo'
+import { artifactMetadata } from './artifacts'
 import { ImportPendingError, ingestCommit, ingestRecent } from './ingest'
 
 interface ApiOptions {
@@ -106,7 +107,7 @@ async function runFromClickHouse(config: ClickHouseConfig, sha: string): Promise
       test_id: testId,
       description: row.description,
       suite: row.suite,
-      compilers: {},
+      compilers: Object.create(null),
     }
     ;(result.compilers as Record<string, unknown>)[String(row.compiler)] = {
       status: row.status,
@@ -122,20 +123,19 @@ async function runFromClickHouse(config: ClickHouseConfig, sha: string): Promise
 
   const artifactRows = await select(
     config,
-    `SELECT test_id, path, storage_path, label, language, max(ifNull(bytes, length(content))) AS bytes,
-       groupArray(compiler) AS compilers
+    `SELECT test_id, path, max(ifNull(bytes, length(content))) AS bytes,
+       groupUniqArray(compiler) AS compilers
      FROM artifact_files FINAL WHERE workflow_run_id = ${runId}
-     GROUP BY test_id, path, storage_path, label, language
-     ORDER BY test_id, storage_path`,
+     GROUP BY test_id, path
+     ORDER BY test_id, path`,
   )
-  const artifacts: Record<string, unknown[]> = {}
+  const artifacts: Record<string, unknown[]> = Object.create(null)
   for (const row of artifactRows) {
     const testId = String(row.test_id)
+    const metadata = artifactMetadata(String(row.path))
     ;(artifacts[testId] ??= []).push({
       path: row.path,
-      storagePath: row.storage_path,
-      label: row.label,
-      language: row.language,
+      ...metadata,
       bytes: row.bytes,
       compilers: row.compilers,
     })
@@ -255,19 +255,24 @@ export function createApi(options: ApiOptions = {}) {
         return context.json(run)
       }
 
-      const artifactMatch = /^runs\/([0-9a-f]{40})\/([\w.-]+)\/(solar|solc)\/(\d+\.json)$/.exec(
-        path,
-      )
+      const artifactMatch =
+        /^runs\/([0-9a-f]{40})\/([\w.-]{1,128})\/([\w.-]{1,128})\/((?:\d+|[a-f0-9]{64})\.json)$/.exec(
+          path,
+        )
       if (!artifactMatch) return context.json({ error: 'Unknown data file' }, 404)
 
       const [, sha, benchmark, compiler, storagePath] = artifactMatch
+      // Path hashes also resolve legacy rows without rewriting their numeric IDs.
+      const fileCondition = /^[a-f0-9]{64}\.json$/.test(storagePath)
+        ? `lower(hex(SHA256(path))) = '${storagePath.slice(0, -5)}'`
+        : `storage_path = '${storagePath}'`
       const runId = await loadRunId(config, sha, loadImport)
       if (runId === null) return context.json({ error: 'Run not found' }, 404)
       const [artifact] = await select(
         config,
         `SELECT content FROM artifact_files FINAL
          WHERE workflow_run_id = ${runId}
-           AND test_id = '${benchmark}' AND compiler = '${compiler}' AND storage_path = '${storagePath}'
+           AND test_id = '${benchmark}' AND compiler = '${compiler}' AND ${fileCondition}
          ORDER BY imported_at DESC LIMIT 1`,
       )
       if (!artifact) return context.json({ error: 'Artifact not found' }, 404)

@@ -3,6 +3,7 @@ import { afterEach, describe, expect, it, vi } from 'vite-plus/test'
 import { createApi } from '../src/server/api'
 import { clickHouseConfig } from '../src/server/clickhouse'
 import vercelDemo from '../src/server/vercel-demo'
+import { artifactMetadata } from '../src/server/artifacts'
 
 const config = {
   database: 'solar_perf',
@@ -310,5 +311,26 @@ describe('website API', () => {
 
     expect(response.status).toBe(404)
     expect(fetch).not.toHaveBeenCalled()
+  })
+
+  it('resolves path hashes for new compiler names and legacy stored files', async () => {
+    const storagePath = artifactMetadata('nested/new output.log').storagePath
+    const queries: string[] = []
+    globalThis.fetch = vi.fn(async (_input, init) => {
+      const query = String(init?.body)
+      queries.push(query)
+      return new Response(
+        JSON.stringify(
+          query.includes('FROM runs') ? { workflow_run_id: 1 } : { content: 'new output' },
+        ),
+      )
+    })
+    const response = await createApi({ clickHouse: config }).request(
+      `http://web.test/api/data/runs/${'a'.repeat(40)}/test/experimental/${storagePath}`,
+    )
+    expect(response.status).toBe(200)
+    expect(await response.json()).toBe('new output')
+    expect(queries[1]).toContain('lower(hex(SHA256(path)))')
+    expect(queries[1]).toContain("compiler = 'experimental'")
   })
 })

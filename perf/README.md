@@ -100,3 +100,27 @@ without downloading its GitHub artifact again. Keep secrets out of URLs and scre
 `scripts/ingest-github-runs.mjs` is the one-off local backfill tool. It uses the
 authenticated `gh` CLI and the same ClickHouse schema. Do not run it from a pull
 request workflow and do not give repository Actions ClickHouse credentials.
+
+## Producer contract
+
+The GitHub artifact is named `codegen-runtime-results` and contains `results.json`
+at its root (or inside one unambiguous wrapper directory). A separate baseline
+results document must not replace the run's own results. Metrics accept either a
+results array or `{ results: [...] }`, `test_id`/`id`/`name` identifiers, nested
+`compilers` or legacy top-level `solar`/`solc` objects, and the existing snake-case
+or camel-case metric aliases. New metric meanings still require an explicit schema
+change; the UI does not guess units from arbitrary fields.
+
+Optional files live beside the results at `artifacts/<test-id>/<compiler>/...`.
+Both importers discover nested UTF-8 text files without a filename allowlist.
+The viewer builds its directory and compiler selectors from the stored manifest,
+shows files present on either side, and loads only the selected file. Unknown
+extensions render as plain text; HTML is displayed as source, never executed.
+Binary files are omitted. Paths, file counts, and compressed/uncompressed sizes
+are bounded; the local importer rejects symlinks. No artifact content is executed.
+
+Existing numeric artifact URLs remain readable; path-based hashes identify newly
+discovered files independently of directory order. Existing imported runs are not
+automatically refreshed: adding support for previously omitted files requires a
+deliberate reimport while their GitHub archives are retained. Metrics-only runs
+remain usable and display an explicit empty state in the artifact viewer.

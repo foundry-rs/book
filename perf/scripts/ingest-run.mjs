@@ -3,19 +3,12 @@ import { lstat, readFile, readdir, stat } from 'node:fs/promises'
 import { join, resolve } from 'node:path'
 
 import { insert } from './lib/clickhouse.mjs'
-
-const artifactFiles = new Map([
-  ['input.json', ['Compiler input', 'json', '0.json']],
-  ['output.json', ['Compiler output', 'json', '1.json']],
-  ['mir.mir', ['MIR', 'text', '2.json']],
-  ['creation.evmir', ['Creation EVM IR', 'text', '3.json']],
-  ['runtime.evmir', ['Runtime EVM IR', 'text', '4.json']],
-  ['optimized-ir.yul', ['Optimized Yul IR', 'solidity', '5.json']],
-  ['creation.disasm', ['Creation disassembly', 'asm', '6.json']],
-  ['runtime.disasm', ['Runtime disassembly', 'asm', '7.json']],
-  ['creation.hex', ['Creation bytecode', 'text', '8.json']],
-  ['runtime.hex', ['Runtime bytecode', 'text', '9.json']],
-])
+import {
+  artifactMetadata,
+  textArtifact,
+  validArtifactPath,
+  validIdentifier,
+} from '../src/server/artifacts.ts'
 const maxResultsBytes = 32 * 1024 * 1024
 const maxResults = 500
 const maxArtifactBytes = 32 * 1024 * 1024
@@ -42,7 +35,7 @@ function number(value) {
 
 function resultId(result) {
   const value = result.test_id ?? result.id ?? result.name
-  return typeof value === 'string' && /^[\w.-]+$/.test(value) ? value : null
+  return typeof value === 'string' && validIdentifier.test(value) ? value : null
 }
 
 function compilerResults(result) {
@@ -60,7 +53,7 @@ function normalizeResults(document, run) {
     const testId = resultId(result)
     if (!testId) return []
     return Object.entries(compilerResults(result)).flatMap(([compiler, metrics]) => {
-      if (!metrics || typeof metrics !== 'object') return []
+      if (!validIdentifier.test(compiler) || !metrics || typeof metrics !== 'object') return []
       return [
         {
           workflow_run_id: run.workflow_run_id,
@@ -85,17 +78,46 @@ function normalizeResults(document, run) {
 async function normalizeArtifacts(root, run) {
   const entries = []
   let totalBytes = 0
+  let fileCount = 0
+  async function walk(directory, prefix = '') {
+    const paths = []
+    for (const entry of await readdir(directory, { withFileTypes: true })) {
+      if (++fileCount > 10_000) throw new Error('Artifact run exceeds 10000 files')
+      const path = prefix + entry.name
+      if (!validArtifactPath(path)) continue
+      if (entry.isSymbolicLink()) throw new Error(`Artifact is a symlink: ${path}`)
+      if (entry.isDirectory()) paths.push(...(await walk(join(directory, entry.name), `${path}/`)))
+      else if (entry.isFile()) paths.push(path)
+    }
+    return paths
+  }
   for (const testId of new Set(run.results.map((result) => result.test_id))) {
-    for (const compiler of ['solar', 'solc']) {
+    let compilerDirectories
+    try {
+      for (const directory of [root, join(root, testId)]) {
+        if (!(await lstat(directory)).isDirectory())
+          throw new Error(`Artifact is not a directory: ${directory}`)
+      }
+      compilerDirectories = await readdir(join(root, testId))
+    } catch (error) {
+      if (error.code !== 'ENOENT') throw error
+      continue
+    }
+    for (const compiler of compilerDirectories.filter((name) => validIdentifier.test(name))) {
       let names
       try {
-        names = await readdir(join(root, testId, compiler))
-      } catch {
+        // Reject symlinked parent directories as well as individual files.
+        for (const directory of [root, join(root, testId), join(root, testId, compiler)]) {
+          if (!(await lstat(directory)).isDirectory())
+            throw new Error(`Artifact is not a directory: ${directory}`)
+        }
+        names = await walk(join(root, testId, compiler))
+      } catch (error) {
+        if (error.code !== 'ENOENT') throw error
         continue
       }
       for (const path of names) {
-        const metadata = artifactFiles.get(path)
-        if (!metadata) continue
+        const metadata = artifactMetadata(path)
         const file = join(root, testId, compiler, path)
         const info = await lstat(file)
         if (!info.isFile())
@@ -104,16 +126,17 @@ async function normalizeArtifacts(root, run) {
           throw new Error(`${testId}/${compiler}/${path} exceeds 32 MiB`)
         totalBytes += info.size
         if (totalBytes > maxArtifactRunBytes) throw new Error('Artifact run exceeds 256 MiB')
-        const content = await readFile(file, 'utf8')
+        const content = textArtifact(await readFile(file))
+        if (content === null) continue
         entries.push({
           workflow_run_id: run.workflow_run_id,
           commit: run.commit,
           test_id: testId,
           compiler,
           path,
-          storage_path: metadata[2],
-          label: metadata[0],
-          language: metadata[1],
+          storage_path: metadata.storagePath,
+          label: metadata.label,
+          language: metadata.language,
           bytes: Buffer.byteLength(content),
           content,
           content_sha256: createHash('sha256').update(content).digest('hex'),

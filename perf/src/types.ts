@@ -54,6 +54,7 @@ export interface ArtifactFile {
 }
 
 export interface RunDocument {
+  workflow_run_id?: number
   schemaVersion: number
   commit: string
   branch: string | null

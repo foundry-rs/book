@@ -2,7 +2,7 @@ import { createHash } from 'node:crypto'
 
 import { Unzip, UnzipInflate, UnzipPassThrough } from 'fflate'
 
-import { artifactFiles } from './artifacts'
+import { artifactMetadata, textArtifact, validArtifactPath, validIdentifier } from './artifacts'
 import { clickHouseConfig, insert, select, type ClickHouseConfig } from './clickhouse'
 import { GitHubClient, gitHubConfig, type GitHubRun } from './github'
 
@@ -12,7 +12,6 @@ const maxArtifactRunBytes = 256 * 1024 * 1024
 const maxResults = 500
 const maxResultsBytes = 32 * 1024 * 1024
 const validCommit = /^[0-9a-f]{40}$/
-const validIdentifier = /^[\w.-]{1,128}$/
 const retryDelay = 60_000
 const maxRetryDelay = 6 * 60 * 60 * 1_000
 
@@ -92,7 +91,12 @@ export function normalizeResults(document: unknown, run: ImportedRun) {
     if (!testId) return []
 
     return Object.entries(compilerResults(result)).flatMap(([compiler, metrics]) => {
-      if (!['solar', 'solc'].includes(compiler) || !metrics || typeof metrics !== 'object')
+      if (
+        !validIdentifier.test(compiler) ||
+        !metrics ||
+        typeof metrics !== 'object' ||
+        Array.isArray(metrics)
+      )
         return []
       const values = metrics as Record<string, unknown>
       return [
@@ -117,11 +121,11 @@ export function normalizeResults(document: unknown, run: ImportedRun) {
 }
 
 function archivePath(name: string) {
-  if (name === 'results.json' || name.endsWith('/results.json')) return 'results.json'
-
-  const match = /(?:^|\/)artifacts\/([\w.-]+)\/(solar|solc)\/([^/]+)$/.exec(name)
-  if (!match || !artifactFiles.has(match[3])) return null
-  return `artifacts/${match[1]}/${match[2]}/${match[3]}`
+  if (!validArtifactPath(name)) return null
+  if (name === 'results.json' || name.endsWith('/results.json')) return name
+  const match = /(?:^|\/)artifacts\/([\w.-]+)\/([\w.-]+)\/(.+)$/.exec(name)
+  if (!match || !validIdentifier.test(match[1]) || !validIdentifier.test(match[2])) return null
+  return name
 }
 
 function contents(chunks: Uint8Array[]) {
@@ -132,7 +136,7 @@ function contents(chunks: Uint8Array[]) {
     data.set(chunk, offset)
     offset += chunk.byteLength
   }
-  return new TextDecoder('utf-8', { fatal: true }).decode(data)
+  return textArtifact(data)
 }
 
 export async function extractArchive(response: Response): Promise<ArtifactArchive> {
@@ -143,7 +147,12 @@ export async function extractArchive(response: Response): Promise<ArtifactArchiv
   const files = new Map<string, string>()
   let failure: Error | null = null
   let totalBytes = 0
+  let fileCount = 0
   const unzip = new Unzip((file) => {
+    if (++fileCount > 10_000) {
+      failure = new Error('Artifact archive exceeds 10000 files')
+      return
+    }
     const path = archivePath(file.name)
     if (!path) return
     if (file.originalSize && file.originalSize > maxArtifactBytes) {
@@ -168,7 +177,13 @@ export async function extractArchive(response: Response): Promise<ArtifactArchiv
         }
         chunks.push(chunk)
       }
-      if (final && !failure) files.set(path, contents(chunks))
+      if (final && !failure) {
+        const content = contents(chunks)
+        if (content !== null) {
+          if (files.has(path)) failure = new Error('Artifact archive contains duplicate paths')
+          else files.set(path, content)
+        }
+      }
     }
     file.start()
   })
@@ -192,13 +207,33 @@ export async function extractArchive(response: Response): Promise<ArtifactArchiv
     reader.releaseLock()
   }
 
-  const results = files.get('results.json')
+  // A baseline/results.json is a different run, not a replacement for the root.
+  const candidates = [...files.keys()]
+    .filter((path) => path === 'results.json' || path.endsWith('/results.json'))
+    .filter(
+      (path) =>
+        !path
+          .split('/')
+          .slice(0, -1)
+          .some((part) => part === 'baseline' || part === 'artifacts'),
+    )
+    .sort((a, b) => a.split('/').length - b.split('/').length)
+  const resultPath = candidates[0]
+  if (!resultPath) throw new Error('Artifact archive has no results.json')
+  if (candidates[1] && candidates[1].split('/').length === resultPath.split('/').length)
+    throw new Error('Artifact archive contains ambiguous results documents')
+  const results = files.get(resultPath)
   if (!results) throw new Error('Artifact archive has no results.json')
   if (new TextEncoder().encode(results).byteLength > maxResultsBytes)
     throw new Error('Benchmark results exceed 32 MiB')
 
-  files.delete('results.json')
-  return { artifacts: files, results }
+  const prefix = resultPath.slice(0, -'results.json'.length) + 'artifacts/'
+  const artifacts = new Map(
+    [...files].flatMap(([path, content]) =>
+      path.startsWith(prefix) ? [[`artifacts/${path.slice(prefix.length)}`, content] as const] : [],
+    ),
+  )
+  return { artifacts, results }
 }
 
 export function normalizeArchive(archive: ArtifactArchive, run: ImportedRun): NormalizedRun {
@@ -207,9 +242,11 @@ export function normalizeArchive(archive: ArtifactArchive, run: ImportedRun): No
   if (!results.length) throw new Error('Benchmark archive contains no supported results')
   const knownTests = new Set(results.map((result) => String(result.test_id)))
   const artifacts = [...archive.artifacts].flatMap(([key, content]) => {
-    const [, testId, compiler, path] = key.split('/')
-    const metadata = artifactFiles.get(path)
-    if (!metadata || !knownTests.has(testId)) return []
+    const [, testId, compiler, ...parts] = key.split('/')
+    const path = parts.join('/')
+    if (!knownTests.has(testId) || !validIdentifier.test(compiler) || !validArtifactPath(path))
+      return []
+    const metadata = artifactMetadata(path)
     return [
       {
         workflow_run_id: run.workflowRunId,
@@ -217,9 +254,9 @@ export function normalizeArchive(archive: ArtifactArchive, run: ImportedRun): No
         test_id: testId,
         compiler,
         path,
-        storage_path: metadata[2],
-        label: metadata[0],
-        language: metadata[1],
+        storage_path: metadata.storagePath,
+        label: metadata.label,
+        language: metadata.language,
         bytes: Buffer.byteLength(content),
         content,
         content_sha256: createHash('sha256').update(content).digest('hex'),

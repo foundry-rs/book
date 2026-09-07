@@ -832,7 +832,7 @@ header.file-header {
   padding: 0 8px;
   font-size: 11px;
 }
-.file-viewer-body aside > button {
+.file-viewer-body .artifact-file {
   width: 100%;
   height: auto;
   min-height: 44px;
@@ -847,11 +847,11 @@ header.file-header {
   padding: 7px 8px;
   text-align: left;
 }
-.file-viewer-body aside > button:hover,
-.file-viewer-body aside > button.active {
+.file-viewer-body .artifact-file:hover,
+.file-viewer-body .artifact-file.active {
   background: var(--surface-muted);
 }
-.file-viewer-body aside > button > span {
+.file-viewer-body .artifact-file > span {
   overflow: hidden;
   font:
     12px/1.35 ui-monospace,
@@ -1086,4 +1086,17 @@ header.file-header {
     border-left: 0;
     padding: 20px 0 0;
   }
+}
+.artifact-directory {
+  padding-left: 12px;
+}
+.file-selector-head label {
+  display: block;
+  font-size: 12px;
+  margin-top: 8px;
+}
+.file-viewer aside summary {
+  padding: 8px 12px;
+  cursor: pointer;
+  overflow-wrap: anywhere;
 }
