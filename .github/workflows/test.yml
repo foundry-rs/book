@@ -48,6 +48,7 @@ jobs:
   build:
     name: vocs build
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     permissions:
       contents: read
     steps:
@@ -68,3 +69,19 @@ jobs:
 
       - name: Build Vocs
         run: vp exec vocs build
+
+      - name: Install Chromium
+        run: vp exec playwright install --with-deps chromium
+
+      - name: Browser smoke tests
+        run: vp run test:e2e
+
+      - name: Upload browser test results
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: browser-test-results
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7
