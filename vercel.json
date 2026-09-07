@@ -1,8 +1,8 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "redirects": [
-    { "source": "/perf", "destination": "/perf/solar/", "permanent": true },
-    { "source": "/perf/", "destination": "/perf/solar/", "permanent": true },
+    { "source": "/perf", "destination": "/perf/solar/", "permanent": false },
+    { "source": "/perf/", "destination": "/perf/solar/", "permanent": false },
     {
       "source": "/install",
       "destination": "https://raw.githubusercontent.com/foundry-rs/foundryup/HEAD/foundryup-init.sh"

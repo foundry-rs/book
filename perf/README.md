@@ -3,6 +3,10 @@
 This Vite app runs at `getfoundry.sh/perf/solar/`. The browser reads only the
 same-origin API. GitHub and ClickHouse credentials stay in Vercel Functions.
 
+TODO: Replace the temporary `/perf` and `/perf/` redirects in `vercel.json` with
+a generic performance dashboard when more projects are available. Until then,
+both URLs redirect to `/perf/solar/`, preserving comparison query parameters.
+
 ```bash
 pnpm install --frozen-lockfile
 pnpm check
