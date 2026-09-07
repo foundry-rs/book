@@ -5,6 +5,7 @@ import { clickHouseConfig, select, type ClickHouseConfig } from './clickhouse'
 import { demoResponse } from './demo'
 import { artifactMetadata } from './artifacts'
 import { ImportPendingError, ingestCommit, ingestRecent } from './ingest'
+import { GitHubClient, GitHubRequestError, gitHubConfig } from './github'
 
 interface ApiOptions {
   clickHouse?: ClickHouseConfig | null
@@ -12,6 +13,7 @@ interface ApiOptions {
   demoFallback?: boolean
   ingestRecent?: () => Promise<unknown>
   importRun?: (sha: string) => Promise<unknown>
+  resolveRef?: (ref: string) => Promise<string>
 }
 
 interface StoredRun {
@@ -252,6 +254,47 @@ export function createApi(options: ApiOptions = {}) {
     return pending
   }
   const app = new Hono()
+  let github: GitHubClient | undefined
+
+  app.get('/api/resolve', async (context) => {
+    context.header('cache-control', 'no-store')
+    const ref = context.req.query('ref')?.trim() || ''
+    if (
+      !ref ||
+      ref.length > 256 ||
+      Array.from(ref).some((char) => char.charCodeAt(0) <= 32 || char.charCodeAt(0) === 127)
+    )
+      return context.json({ error: 'Invalid ref' }, 400)
+    if (/^[0-9a-f]{40}$/i.test(ref)) return context.json({ commit: ref.toLowerCase() })
+    try {
+      if (useDemoFallback) {
+        const response = demoResponse('/api/data/index.json')!
+        const { runs } = await response.json()
+        const run = runs.find(
+          (run: { branch: string; pr: number; commit: string }) =>
+            run.branch === ref ||
+            String(run.pr) === ref.replace(/^#/, '') ||
+            run.commit.startsWith(ref),
+        )
+        return run
+          ? context.json({ commit: run.commit })
+          : context.json({ error: 'Unknown demo ref' }, 404)
+      }
+      if (!options.resolveRef && !github) {
+        const config = gitHubConfig()
+        if (!config) return context.json({ error: 'GitHub is not configured' }, 503)
+        github = new GitHubClient(config)
+      }
+      const commit = await (options.resolveRef ? options.resolveRef(ref) : github!.resolveRef(ref))
+      if (!/^[0-9a-f]{40}$/.test(commit)) throw new Error('Invalid resolved commit')
+      return context.json({ commit })
+    } catch (error) {
+      if (error instanceof GitHubRequestError && error.status === 404)
+        return context.json({ error: 'Ref not found' }, 404)
+      console.error('Failed to resolve benchmark ref', error)
+      return context.json({ error: 'Could not resolve ref' }, 503)
+    }
+  })
 
   app.get('/api/health', async (context) => {
     context.header('cache-control', 'no-store')

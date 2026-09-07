@@ -152,7 +152,7 @@ export function HistoryGraph({
                         benchmark,
                         metric,
                       }).toString()
-                      window.location.href = url.toString()
+                      navigate(url)
                     }}
                     disabled={index === 0}
                     aria-label={label}
@@ -184,3 +184,4 @@ export function HistoryGraph({
     </section>
   )
 }
+import { navigate } from './navigation'

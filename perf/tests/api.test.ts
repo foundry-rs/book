@@ -19,6 +19,19 @@ afterEach(() => {
 })
 
 describe('website API', () => {
+  it('resolves refs without database queries and validates its boundary', async () => {
+    globalThis.fetch = vi.fn()
+    const resolveRef = vi.fn(async () => 'a'.repeat(40))
+    const app = createApi({ clickHouse: config, resolveRef })
+    const response = await app.request('/api/resolve?ref=Release%2Fv1')
+    expect(await response.json()).toEqual({ commit: 'a'.repeat(40) })
+    expect(response.headers.get('cache-control')).toBe('no-store')
+    expect(resolveRef).toHaveBeenCalledWith('Release/v1')
+    expect((await app.request('/api/resolve?ref=')).status).toBe(400)
+    expect((await app.request(`/api/resolve?ref=${'b'.repeat(40)}`)).status).toBe(200)
+    expect(resolveRef).toHaveBeenCalledOnce()
+    expect(globalThis.fetch).not.toHaveBeenCalled()
+  })
   it('skips manifests for comparisons and loads them independently in one query', async () => {
     const sha = 'a'.repeat(40)
     const queries: string[] = []

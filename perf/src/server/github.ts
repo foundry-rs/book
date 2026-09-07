@@ -203,6 +203,22 @@ export class GitHubClient {
     return this.request<GitHubRun>(`repos/${this.config.repository}/actions/runs/${runId}`)
   }
 
+  async resolveRef(ref: string) {
+    const pr = /^#?(\d+)$/.exec(ref)
+    if (pr) {
+      const pull = await this.request<{
+        merged_at: string | null
+        merge_commit_sha: string | null
+        head: { sha: string }
+      }>(`repos/${this.config.repository}/pulls/${pr[1]}`)
+      return pull.merged_at && pull.merge_commit_sha ? pull.merge_commit_sha : pull.head.sha
+    }
+    const commit = await this.request<{ sha: string }>(
+      `repos/${this.config.repository}/commits/${encodeURIComponent(ref)}`,
+    )
+    return commit.sha
+  }
+
   async runForCommit(sha: string) {
     const query = new URLSearchParams({ head_sha: sha, per_page: '100', status: 'completed' })
     const result = await this.request<GitHubPage<GitHubRun>>(
@@ -244,7 +260,8 @@ export class GitHubClient {
 
 async function githubError(response: Response) {
   const body = (await response.json().catch(() => ({}))) as GitHubError
-  const retryAfter = Number(response.headers.get('retry-after'))
+  const header = response.headers.get('retry-after')
+  const retryAfter = header === null ? NaN : Number(header)
   return new GitHubRequestError(
     Number.isFinite(retryAfter) ? Math.min(retryAfter * 1_000, 10_000) : null,
     response.status,

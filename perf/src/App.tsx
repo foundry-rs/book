@@ -2,7 +2,8 @@ import { useEffect, useMemo, useState } from 'react'
 import { Moon, Sun } from 'lucide-react'
 import { HistoryGraph } from './HistoryGraph'
 import { Compare } from './Compare'
-import { loadHistory, loadIndex } from './data'
+import { loadHistory, loadIndex, resolveCommit } from './data'
+import { navigate, useNavigation } from './navigation'
 import logo from './assets/logo.png'
 import { FileViewer } from './FileViewer'
 import type { HistoryRun, RunIndex, RunSummary, Theme } from './types'
@@ -30,23 +31,6 @@ function runTitle(run: RunSummary) {
   const title = run.title || runRef(run)
   const pr = runPr(run)
   return pr && !title.includes(`#${pr}`) ? `${title} (#${pr})` : title
-}
-
-export function resolveCommit(value: string, runs: RunSummary[]) {
-  const normalized = value.trim().toLowerCase()
-  const pr = normalized.match(/^#?(\d+)$/)?.[1]
-  return (
-    runs.find(
-      (run) =>
-        run.commit === normalized ||
-        run.branch?.toLowerCase() === normalized ||
-        (pr !== undefined && String(runPr(run)) === pr),
-    )?.commit ??
-    (normalized.length >= 7
-      ? runs.find((run) => run.commit.startsWith(normalized))?.commit
-      : undefined) ??
-    ''
-  )
 }
 
 export function CommitInput({
@@ -81,7 +65,8 @@ export function App() {
     document.documentElement.dataset.theme = theme
   }, [theme])
 
-  const route = new URLSearchParams(window.location.search)
+  const navigation = useNavigation()
+  const route = new URLSearchParams(navigation.search)
   const base = route.get('base')
   const head = route.get('head')
   const benchmark = route.get('benchmark')
@@ -104,9 +89,15 @@ export function App() {
       />
       {comparison ? (
         fileViewer ? (
-          <FileViewer base={base!} head={head!} benchmark={benchmark!} theme={theme} />
+          <FileViewer
+            key={navigation.key}
+            base={base!}
+            head={head!}
+            benchmark={benchmark!}
+            theme={theme}
+          />
         ) : (
-          <Compare base={base!} head={head!} theme={theme} />
+          <Compare key={navigation.key} base={base!} head={head!} theme={theme} />
         )
       ) : (
         <Home />
@@ -180,8 +171,8 @@ function Home() {
   const [head, setHead] = useState('')
   const runs = useMemo(() => index?.runs ?? [], [index])
   const mainRuns = useMemo(() => runs.filter((run) => run.branch === 'main'), [runs])
-  const selectedBase = resolveCommit(base, runs)
-  const selectedHead = resolveCommit(head, runs)
+  const [resolving, setResolving] = useState(false)
+  const [compareError, setCompareError] = useState('')
 
   useEffect(() => {
     loadIndex()
@@ -192,11 +183,24 @@ function Home() {
       .catch((value: Error) => setError(value.message))
   }, [])
 
-  const compare = () => {
-    if (!selectedBase || !selectedHead || selectedBase === selectedHead) return
-    const url = new URL(window.location.href)
-    url.search = new URLSearchParams({ base: selectedBase, head: selectedHead }).toString()
-    window.location.href = url.toString()
+  const compare = async () => {
+    if (resolving || !base.trim() || !head.trim()) return
+    setResolving(true)
+    setCompareError('')
+    try {
+      const [selectedBase, selectedHead] = await Promise.all([
+        resolveCommit(base),
+        resolveCommit(head),
+      ])
+      if (selectedBase === selectedHead) throw new Error('Choose two different commits.')
+      const url = new URL(window.location.href)
+      url.search = new URLSearchParams({ base: selectedBase, head: selectedHead }).toString()
+      navigate(url)
+    } catch (error) {
+      setCompareError(error instanceof Error ? error.message : 'Could not resolve commits.')
+    } finally {
+      setResolving(false)
+    }
   }
 
   return (
@@ -212,13 +216,15 @@ function Home() {
         <CommitInput label="base" value={base} onChange={setBase} />
         <span className="arrow">→</span>
         <CommitInput label="head" value={head} onChange={setHead} />
-        <button
-          onClick={compare}
-          disabled={!selectedBase || !selectedHead || selectedBase === selectedHead}
-        >
-          Compare
+        <button onClick={compare} disabled={resolving || !base.trim() || !head.trim()}>
+          {resolving ? 'Resolving…' : 'Compare'}
         </button>
       </section>
+      {compareError && (
+        <p className="error" role="alert">
+          {compareError}
+        </p>
+      )}
       <section className="history-controls" aria-label="Graph settings">
         <label>
           Metric

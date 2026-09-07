@@ -1,7 +1,7 @@
 import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
-import { expect, it } from 'vite-plus/test'
-import { CommitInput, resolveCommit } from '../src/App'
+import { afterEach, expect, it, vi } from 'vite-plus/test'
+import { CommitInput } from '../src/App'
 import type { RunSummary } from '../src/types'
 
 const run: RunSummary = {
@@ -30,14 +30,41 @@ it.each(['base', 'head'])('renders an empty %s input without suggestions', (labe
   expect(html).not.toMatch(/datalist|list=|disabled/)
 })
 
-it.each([run.commit, 'abcdef0', 'main', '#1400', '1400'])('still resolves %s', (ref) => {
-  expect(resolveCommit(ref, [run])).toBe(run.commit)
+afterEach(() => vi.unstubAllGlobals())
+
+it('accepts unpublished full SHAs without any lookup', async () => {
+  const fetch = vi.fn()
+  vi.stubGlobal('fetch', fetch)
+  const { resolveCommit } = await import('../src/data')
+  await expect(resolveCommit('B'.repeat(40))).resolves.toBe('b'.repeat(40))
+  expect(fetch).not.toHaveBeenCalled()
 })
 
-it('still resolves published tag refs', () => {
-  expect(resolveCommit('v0.1.0', [{ ...run, branch: 'v0.1.0' }])).toBe(run.commit)
-})
+it.each(['main', 'Release/v0.1.0', '#1400', '1400'])(
+  'resolves %s on the backend at submission time',
+  async (ref) => {
+    const fetch = vi.fn(async () => Response.json({ commit: run.commit }))
+    vi.stubGlobal('fetch', fetch)
+    const { resolveCommit } = await import('../src/data')
+    await expect(resolveCommit(ref)).resolves.toBe(run.commit)
+    expect(fetch).toHaveBeenCalledWith(`/api/resolve?${new URLSearchParams({ ref })}`, {
+      cache: 'no-store',
+    })
+  },
+)
 
-it('does not resolve an empty input', () => {
-  expect(resolveCommit('', [run])).toBe('')
+it('resolves a unique published prefix and rejects ambiguity', async () => {
+  vi.resetModules()
+  vi.stubGlobal(
+    'fetch',
+    vi.fn(async () =>
+      Response.json({
+        runs: [run, { ...run, commit: 'abcdef099999999999999999999999999999999999' }],
+      }),
+    ),
+  )
+  const { resolveCommit } = await import('../src/data')
+  await expect(resolveCommit('abcdef012')).resolves.toBe(run.commit)
+  await expect(resolveCommit('abcdef0')).rejects.toThrow('Ambiguous')
+  await expect(resolveCommit('')).rejects.toThrow('Enter a commit')
 })

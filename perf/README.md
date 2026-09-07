@@ -37,7 +37,7 @@ GH_APP_PRIVATE_KEY
 CRON_SECRET
 ```
 
-Install the GitHub App only on `paradigmxyz/solar` with Actions and Pull requests
+Install the GitHub App only on `paradigmxyz/solar` with Actions, Contents, and Pull requests
 read permission. `CLICKHOUSE_READ_*` may only select the public tables;
 `CLICKHOUSE_WRITE_*` may select `runs` and `ingestion_jobs` for idempotency and
 insert into the public tables and `ingestion_jobs`. Never expose either account
@@ -105,7 +105,12 @@ without artifact manifests. Values are never summed across benchmarks; failed or
 measurements leave gaps. Click a graph point to compare it with the preceding commit.
 The individual benchmark History section uses the same graph and data. Dashboard cards
 without a latest measurement are hidden for the selected metric. Compare inputs start
-empty and accept published commit prefixes, branch/tag names, and PR numbers without suggestions.
+empty and accept full SHAs, unique published commit prefixes, branch/tag names, and PR numbers
+without suggestions. Full SHAs need no lookup; `/api/resolve?ref=<ref>` resolves other refs
+on submission using the GitHub App (Contents read for commits/branches/tags, Pull requests
+read for PRs). Merged PRs resolve to the merge commit; open PRs resolve to their head.
+Internal navigation and Back/Forward preserve the browser's data caches. Comparison metric
+changes are reflected in the permalink.
 
 Successful browser reads are cached for 60 seconds (index/history), five minutes (runs),
 or one hour (artifacts), with a 128-entry/32 MiB estimated-size limit per cache. Missing

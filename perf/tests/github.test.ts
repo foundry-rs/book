@@ -23,6 +23,28 @@ afterEach(() => {
 })
 
 describe('GitHub retry policy', () => {
+  it('resolves case-sensitive branch/tag refs and open/merged PRs', async () => {
+    const client = new GitHubClient({
+      repository: 'paradigmxyz/solar',
+      workflow: 'bench.yml',
+      token: 'test',
+    })
+    const fetch = vi.fn(async (input: RequestInfo | URL) => {
+      const url = requestUrl(input)
+      if (url.includes('/pulls/'))
+        return Response.json({
+          merged_at: url.endsWith('/2') ? 'today' : null,
+          merge_commit_sha: 'b'.repeat(40),
+          head: { sha: 'c'.repeat(40) },
+        })
+      return Response.json({ sha: 'a'.repeat(40) })
+    })
+    globalThis.fetch = fetch
+    expect(await client.resolveRef('Release/v1')).toBe('a'.repeat(40))
+    expect(requestUrl(fetch.mock.calls[0][0])).toContain('/commits/Release%2Fv1')
+    expect(await client.resolveRef('#1')).toBe('c'.repeat(40))
+    expect(await client.resolveRef('2')).toBe('b'.repeat(40))
+  })
   it('retries transient failures with backoff', async () => {
     let attempts = 0
     const delays: number[] = []

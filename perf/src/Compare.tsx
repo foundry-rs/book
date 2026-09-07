@@ -149,7 +149,12 @@ export function Compare({ base, head }: Props) {
         <select
           aria-label="Metric"
           value={metric}
-          onChange={(event) => setMetric(event.target.value)}
+          onChange={(event) => {
+            setMetric(event.target.value)
+            const url = new URL(window.location.href)
+            url.searchParams.set('metric', metrics[event.target.value].key)
+            history.replaceState(null, '', url)
+          }}
         >
           {Object.entries(metrics).map(([key, config]) => (
             <option key={key} value={key}>
