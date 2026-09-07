@@ -261,6 +261,7 @@ function Home() {
             .filter((benchmark) => benchmark.toLowerCase().includes(filter.toLowerCase()))
             .map((benchmark) => (
               <HistoryGraph
+                hideMissingLatest
                 key={`${benchmark}:${metric}`}
                 runs={history}
                 benchmark={benchmark}

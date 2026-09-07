@@ -5,11 +5,11 @@ import { Unzip, UnzipInflate, UnzipPassThrough } from 'fflate'
 import { artifactMetadata, textArtifact, validArtifactPath, validIdentifier } from './artifacts'
 import { clickHouseConfig, insert, select, type ClickHouseConfig } from './clickhouse'
 import { GitHubClient, gitHubConfig, type GitHubRun } from './github'
+import { normalizeResults } from './normalizeResults'
 
 const maxArtifactBytes = 32 * 1024 * 1024
 const maxArchiveBytes = 128 * 1024 * 1024
 const maxArtifactRunBytes = 256 * 1024 * 1024
-const maxResults = 500
 const maxResultsBytes = 32 * 1024 * 1024
 const validCommit = /^[0-9a-f]{40}$/
 const retryDelay = 60_000
@@ -48,76 +48,6 @@ export class ImportPendingError extends Error {
   constructor(readonly retryAfter: number) {
     super('Benchmark import is waiting to retry')
   }
-}
-
-function number(value: unknown) {
-  return typeof value === 'number' && Number.isFinite(value) ? value : null
-}
-
-function text(value: unknown, maximum: number) {
-  return typeof value === 'string' && value.length <= maximum ? value : ''
-}
-
-function resultId(result: Record<string, unknown>) {
-  const value = result.test_id ?? result.id ?? result.name
-  return typeof value === 'string' && validIdentifier.test(value) ? value : null
-}
-
-function compilerResults(result: Record<string, unknown>) {
-  if (result.compilers && typeof result.compilers === 'object' && !Array.isArray(result.compilers))
-    return result.compilers as Record<string, unknown>
-  return Object.fromEntries(
-    ['solar', 'solc'].flatMap((compiler) =>
-      result[compiler] ? [[compiler, result[compiler]]] : [],
-    ),
-  )
-}
-
-export function normalizeResults(document: unknown, run: ImportedRun) {
-  const results = Array.isArray(document)
-    ? document
-    : document &&
-        typeof document === 'object' &&
-        Array.isArray((document as { results?: unknown }).results)
-      ? (document as { results: unknown[] }).results
-      : null
-  if (!results) throw new Error('Benchmark results must be an array')
-  if (results.length > maxResults) throw new Error('Benchmark results exceed 500 entries')
-
-  return results.flatMap((entry) => {
-    if (!entry || typeof entry !== 'object' || Array.isArray(entry)) return []
-    const result = entry as Record<string, unknown>
-    const testId = resultId(result)
-    if (!testId) return []
-
-    return Object.entries(compilerResults(result)).flatMap(([compiler, metrics]) => {
-      if (
-        !validIdentifier.test(compiler) ||
-        !metrics ||
-        typeof metrics !== 'object' ||
-        Array.isArray(metrics)
-      )
-        return []
-      const values = metrics as Record<string, unknown>
-      return [
-        {
-          workflow_run_id: run.workflowRunId,
-          commit: run.commit,
-          test_id: testId,
-          description: text(result.description, 4_096),
-          suite: text(result.suite, 128) || 'unknown',
-          compiler,
-          status: text(values.status, 64) || 'unknown',
-          compile_time_seconds: number(values.compile_time_seconds ?? values.compileTime),
-          bytecode_size: number(values.bytecode_size ?? values.bytecodeSize),
-          runtime_size: number(values.runtime_size ?? values.runtimeSize),
-          deploy_gas: number(values.deploy_gas ?? values.deployGas),
-          total_gas: number(values.total_gas ?? values.runtimeGas),
-          peak_rss_bytes: number(values.peak_rss_bytes ?? values.peakMemory),
-        },
-      ]
-    })
-  })
 }
 
 function archivePath(name: string) {
@@ -239,7 +169,6 @@ export async function extractArchive(response: Response): Promise<ArtifactArchiv
 export function normalizeArchive(archive: ArtifactArchive, run: ImportedRun): NormalizedRun {
   const document = JSON.parse(archive.results) as unknown
   const results = normalizeResults(document, run)
-  if (!results.length) throw new Error('Benchmark archive contains no supported results')
   const knownTests = new Set(results.map((result) => String(result.test_id)))
   const artifacts = [...archive.artifacts].flatMap(([key, content]) => {
     const [, testId, compiler, ...parts] = key.split('/')

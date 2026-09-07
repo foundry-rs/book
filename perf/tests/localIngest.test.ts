@@ -52,6 +52,11 @@ describe('local importer', () => {
         promisify(execFile)(process.execPath, args, { env: environment }),
       ).rejects.toThrow('symlink')
       expect(inserts).toHaveLength(0)
+      await writeFile(join(directory, 'results.json'), JSON.stringify({ results: [] }))
+      await expect(
+        promisify(execFile)(process.execPath, args, { env: environment }),
+      ).rejects.toThrow('no supported results')
+      expect(inserts).toHaveLength(0)
     } finally {
       server.close()
       await rm(directory, { recursive: true, force: true })

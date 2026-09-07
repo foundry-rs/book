@@ -21,7 +21,7 @@ const runs: HistoryRun[] = [3, 2, 1].map((n) => ({
   ],
 }))
 
-function render(history = runs, metric = 'total_gas', unit = 'gas') {
+function render(history = runs, metric = 'total_gas', unit = 'gas', hideMissingLatest = true) {
   return renderToStaticMarkup(
     createElement(HistoryGraph, {
       runs: history,
@@ -29,6 +29,7 @@ function render(history = runs, metric = 'total_gas', unit = 'gas') {
       metric,
       title: 'Runtime gas',
       unit,
+      hideMissingLatest,
     }),
   )
 }
@@ -50,6 +51,12 @@ it('hides a card when the latest sample is missing, even with older measurements
 it('hides metrics with no measurements', () => {
   const html = render(runs.map((run) => ({ ...run, results: [] })))
   expect(html).toBe('')
+})
+
+it('keeps individual benchmark history when the latest run has no measurement', () => {
+  expect(
+    render([{ ...runs[0], results: [] }, ...runs.slice(1)], 'total_gas', 'gas', false),
+  ).toContain('Waiting for two measurements.')
 })
 
 it('keeps a valid zero measurement visible', () => {

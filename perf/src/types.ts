@@ -16,7 +16,6 @@ export interface RunSummary {
   pr: number | null
   title: string | null
   benchmarkCount: number
-  metrics: MetricSummary
 }
 
 export interface RunIndex {

@@ -281,7 +281,7 @@ describe('website API', () => {
       runs: [
         {
           commit: '0123456789abcdef0123456789abcdef01234567',
-          metrics: { runtimeGas: 56, runtimeSize: 45 },
+          benchmarkCount: 1,
         },
       ],
       schemaVersion: 1,
@@ -291,6 +291,7 @@ describe('website API', () => {
     expect(queries[0]).toContain('LIMIT 1 BY commit')
     expect(queries[0]).toContain("'%Y-%m-%dT%H:%i:%SZ', 'UTC'")
     expect(queries[1]).toContain('WHERE workflow_run_id IN (1)')
+    expect(queries[1]).not.toMatch(/sumIf|maxIf|compile_time_seconds|peak_rss_bytes/)
   })
 
   it('imports a missing run before responding to the client', async () => {

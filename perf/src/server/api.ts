@@ -21,17 +21,6 @@ interface StoredRun {
   [key: string]: unknown
 }
 
-function metrics(row: Record<string, unknown>) {
-  return {
-    compileTime: row.compile_time,
-    creationSize: row.bytecode_size,
-    runtimeSize: row.runtime_size,
-    deployGas: row.deploy_gas,
-    runtimeGas: row.total_gas,
-    peakMemory: row.peak_rss_bytes,
-  }
-}
-
 async function indexFromClickHouse(config: ClickHouseConfig) {
   const runs = await select(
     config,
@@ -55,13 +44,7 @@ async function indexFromClickHouse(config: ClickHouseConfig) {
         config,
         `SELECT
            workflow_run_id,
-           countDistinct(test_id) AS benchmarkCount,
-           sumIf(compile_time_seconds, compiler = 'solar' AND status = 'ok') AS compile_time,
-           sumIf(bytecode_size, compiler = 'solar' AND status = 'ok') AS bytecode_size,
-           sumIf(runtime_size, compiler = 'solar' AND status = 'ok') AS runtime_size,
-           sumIf(deploy_gas, compiler = 'solar' AND status = 'ok') AS deploy_gas,
-           sumIf(total_gas, compiler = 'solar' AND status = 'ok') AS total_gas,
-           maxIf(peak_rss_bytes, compiler = 'solar' AND status = 'ok') AS peak_rss_bytes
+           countDistinct(test_id) AS benchmarkCount
          FROM benchmark_results FINAL
          WHERE workflow_run_id IN (${ids.join(',')})
          GROUP BY workflow_run_id`,
@@ -80,7 +63,6 @@ async function indexFromClickHouse(config: ClickHouseConfig) {
         pr: run.pr,
         title: run.title,
         benchmarkCount: result.benchmarkCount ?? 0,
-        metrics: metrics(result),
       }
     }),
   }

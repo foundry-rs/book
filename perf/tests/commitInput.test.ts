@@ -11,14 +11,6 @@ const run: RunSummary = {
   pr: 1400,
   title: null,
   benchmarkCount: 1,
-  metrics: {
-    compileTime: null,
-    creationSize: null,
-    runtimeSize: null,
-    deployGas: null,
-    runtimeGas: null,
-    peakMemory: null,
-  },
 }
 
 it.each(['base', 'head'])('renders an empty %s input without suggestions', (label) => {

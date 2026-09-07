@@ -4,6 +4,7 @@ import { changeClass, formatChange } from './change'
 import { benchmarkMetric } from './benchmarkMetric'
 import { formatValue } from './formatValue'
 import type { HistoryRun } from './types'
+import { navigate } from './navigation'
 
 const short = (commit: string) => commit.slice(0, 8)
 
@@ -13,12 +14,14 @@ export function HistoryGraph({
   title,
   unit,
   benchmark,
+  hideMissingLatest = false,
 }: {
   runs: HistoryRun[]
   metric: string
   title: string
   unit: string
   benchmark: string
+  hideMissingLatest?: boolean
 }) {
   const clipId = useId()
   const [hovered, setHovered] = useState<number | null>(null)
@@ -32,7 +35,7 @@ export function HistoryGraph({
   }))
   const values = points.flatMap((run) => (run.value === null ? [] : [run.value]))
   // Hide cards without a current measurement, while retaining gaps in visible histories.
-  if (points.at(-1)?.value == null) return null
+  if (!values.length || (hideMissingLatest && points.at(-1)?.value == null)) return null
   const min = Math.min(...values)
   const max = Math.max(...values)
   const range = max - min
@@ -184,4 +187,3 @@ export function HistoryGraph({
     </section>
   )
 }
-import { navigate } from './navigation'

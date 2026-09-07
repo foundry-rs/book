@@ -1,4 +1,4 @@
-import type { ArtifactFile, RunDocument, RunIndex, RunSummary } from '../types'
+import type { ArtifactFile, RunDocument, RunIndex } from '../types'
 
 const commits = [
   '9d8c7b6a5e4f32100123456789abcdef01234567',
@@ -33,7 +33,7 @@ const metrics = [
   },
 ]
 
-const summaries: RunSummary[] = commits.map((commit, index) => ({
+const summaries = commits.map((commit, index) => ({
   benchmarkCount: 2,
   branch: 'main',
   commit,

@@ -104,7 +104,9 @@ The dashboard shows one graph per benchmark, with a metric selector and name fil
 without artifact manifests. Values are never summed across benchmarks; failed or missing
 measurements leave gaps. Click a graph point to compare it with the preceding commit.
 The individual benchmark History section uses the same graph and data. Dashboard cards
-without a latest measurement are hidden for the selected metric. Compare inputs start
+without a latest measurement are hidden for the selected metric; individual benchmark
+history still retains older measurements. The index contains metadata and benchmark
+counts, not aggregate metrics. Compare inputs start
 empty and accept full SHAs, unique published commit prefixes, branch/tag names, and PR numbers
 without suggestions. Full SHAs need no lookup; `/api/resolve?ref=<ref>` resolves other refs
 on submission using the GitHub App (Contents read for commits/branches/tags, Pull requests

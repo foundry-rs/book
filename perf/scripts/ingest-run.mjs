@@ -3,6 +3,7 @@ import { lstat, readFile, readdir, stat } from 'node:fs/promises'
 import { join, resolve } from 'node:path'
 
 import { insert } from './lib/clickhouse.mjs'
+import { normalizeResults } from '../src/server/normalizeResults.ts'
 import {
   artifactMetadata,
   textArtifact,
@@ -10,7 +11,6 @@ import {
   validIdentifier,
 } from '../src/server/artifacts.ts'
 const maxResultsBytes = 32 * 1024 * 1024
-const maxResults = 500
 const maxArtifactBytes = 32 * 1024 * 1024
 const maxArtifactRunBytes = 256 * 1024 * 1024
 
@@ -27,52 +27,6 @@ function args() {
     if (!values[name]) throw new Error(`Missing --${name}`)
   }
   return values
-}
-
-function number(value) {
-  return typeof value === 'number' && Number.isFinite(value) ? value : null
-}
-
-function resultId(result) {
-  const value = result.test_id ?? result.id ?? result.name
-  return typeof value === 'string' && validIdentifier.test(value) ? value : null
-}
-
-function compilerResults(result) {
-  if (result.compilers && typeof result.compilers === 'object') return result.compilers
-  return Object.fromEntries(
-    ['solar', 'solc'].flatMap((name) => (result[name] ? [[name, result[name]]] : [])),
-  )
-}
-
-function normalizeResults(document, run) {
-  const results = Array.isArray(document) ? document : document.results
-  if (!Array.isArray(results)) throw new Error('Benchmark results must be an array')
-  if (results.length > maxResults) throw new Error('Benchmark results exceed 500 entries')
-  return results.flatMap((result) => {
-    const testId = resultId(result)
-    if (!testId) return []
-    return Object.entries(compilerResults(result)).flatMap(([compiler, metrics]) => {
-      if (!validIdentifier.test(compiler) || !metrics || typeof metrics !== 'object') return []
-      return [
-        {
-          workflow_run_id: run.workflow_run_id,
-          commit: run.commit,
-          test_id: testId,
-          description: typeof result.description === 'string' ? result.description : '',
-          suite: typeof result.suite === 'string' ? result.suite : 'unknown',
-          compiler,
-          status: typeof metrics.status === 'string' ? metrics.status : 'unknown',
-          compile_time_seconds: number(metrics.compile_time_seconds ?? metrics.compileTime),
-          bytecode_size: number(metrics.bytecode_size ?? metrics.bytecodeSize),
-          runtime_size: number(metrics.runtime_size ?? metrics.runtimeSize),
-          deploy_gas: number(metrics.deploy_gas ?? metrics.deployGas),
-          total_gas: number(metrics.total_gas ?? metrics.runtimeGas),
-          peak_rss_bytes: number(metrics.peak_rss_bytes ?? metrics.peakMemory),
-        },
-      ]
-    })
-  })
 }
 
 async function normalizeArtifacts(root, run) {
@@ -164,7 +118,10 @@ const run = {
   source_schema: 1,
   raw_results: JSON.stringify(document),
 }
-const results = normalizeResults(document, run)
+const results = normalizeResults(document, {
+  workflowRunId: run.workflow_run_id,
+  commit: run.commit,
+})
 const artifacts = await normalizeArtifacts(resolve(options.artifacts), { ...run, results })
 await insert('benchmark_results', results)
 await insert('artifact_files', artifacts)
