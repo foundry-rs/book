@@ -124,6 +124,11 @@ Hovering Head or a delta reveals the exact raw value. Missing measurements and a
 value against a zero Head have no defined percentage.
 Byte sizes use `b`, `KiB`, `MiB`, etc. Compiler columns are discovered from the run data.
 
+The artifact viewer has independent Left and Right selectors, each offering compilers
+from both Base and Head. Defaults are Base Solar on the left and Head Solar on the right.
+Selections are permalinked as `left=base:solar&right=head:solar`; older `compiler` and
+`against` links remain supported. Files are discovered from the two selected sides.
+
 Successful data responses explicitly enable the Vercel CDN cache with the same lifetimes
 as the browser cache. Errors, ref resolution, health checks, and worker responses are not
 shared-cached. `Server-Timing` reports API duration, cumulative database duration, and query

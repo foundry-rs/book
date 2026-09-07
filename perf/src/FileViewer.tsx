@@ -1,7 +1,7 @@
 import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
 import { artifactTree, mergeArtifactFiles, type ArtifactNode } from './artifactTree'
 import { loadRunWithArtifacts } from './data'
-import { compilerLabel } from './compilerLabel'
+import { artifactSides, initialArtifactSides } from './artifactSides'
 import { replaceUrl } from './navigation'
 import type { RunDocument, Theme } from './types'
 
@@ -55,8 +55,7 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
   const [runs, setRuns] = useState<[RunDocument, RunDocument] | null>(null)
   const [loadError, setLoadError] = useState<string | null>(null)
   const [activeBenchmark, setActiveBenchmark] = useState(benchmark)
-  const [against, setAgainst] = useState(params.get('against') || 'base')
-  const [compiler, setCompiler] = useState(params.get('compiler') || 'solar')
+  const [sides, setSides] = useState(() => initialArtifactSides(params))
   const [selected, setSelected] = useState(params.get('file') || '')
   const [diffStyle, setDiffStyle] = useState<'split' | 'unified'>('split')
 
@@ -93,38 +92,31 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
         : [],
     [runs, activeBenchmark],
   )
-  const files = useMemo(
+  const choices = useMemo(
+    () => (runs ? artifactSides(runs, activeBenchmark) : []),
+    [runs, activeBenchmark],
+  )
+  const left =
+    choices.find((choice) => choice.id === sides.left) ||
+    choices.find((choice) => choice.id === 'base:solar')
+  const right =
+    choices.find((choice) => choice.id === sides.right) ||
+    choices.find((choice) => choice.id === 'head:solar')
+  const visibleFiles = useMemo(
     () =>
-      runs
+      left && right
         ? mergeArtifactFiles(
-            runs[against === 'base' ? 0 : 1].artifacts[activeBenchmark] || [],
-            runs[1].artifacts[activeBenchmark] || [],
+            (left.run.artifacts[activeBenchmark] || []).filter((file) =>
+              file.compilers.includes(left.compiler),
+            ),
+            (right.run.artifacts[activeBenchmark] || []).filter((file) =>
+              file.compilers.includes(right.compiler),
+            ),
           )
         : [],
-    [runs, activeBenchmark, against],
-  )
-  const compilers = useMemo(
-    () => [...new Set(files.flatMap((file) => file.compilers))].sort(),
-    [files],
-  )
-  const rightCompiler = compilers.includes(compiler) ? compiler : compilers[0] || compiler
-  const comparisonCommit = against === 'base' ? base : head
-  const leftCompiler = against === 'base' || !compilers.includes(against) ? rightCompiler : against
-  const visibleFiles = files.filter(
-    (file) => file.compilers.includes(leftCompiler) || file.compilers.includes(rightCompiler),
+    [left, right, activeBenchmark],
   )
   const selectedFile = visibleFiles.find((file) => file.path === selected) || visibleFiles[0]
-  const leftLabel = runs
-    ? compilerLabel(
-        runs[against === 'base' ? 0 : 1],
-        activeBenchmark,
-        leftCompiler,
-        against === 'base' ? 'base' : 'head',
-      )
-    : leftCompiler
-  const rightLabel = runs
-    ? compilerLabel(runs[1], activeBenchmark, rightCompiler, 'head')
-    : rightCompiler
 
   const updateUrl = (key: string, value: string) => {
     const url = new URL(window.location.href)
@@ -162,47 +154,37 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
                   </option>
                 ))}
               </select>
-              {!!compilers.length && (
-                <>
-                  <label>
-                    Compiler
-                    <select
-                      aria-label="Compiler"
-                      value={rightCompiler}
-                      onChange={(event) => {
-                        setCompiler(event.target.value)
-                        updateUrl('compiler', event.target.value)
-                      }}
-                    >
-                      {compilers.map((name) => (
-                        <option key={name} value={name}>
-                          {compilerLabel(runs[1], activeBenchmark, name, 'head')}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                  <label>
-                    Compare with
-                    <select
-                      aria-label="Compare with"
-                      value={against === 'base' ? 'base' : leftCompiler}
-                      onChange={(event) => {
-                        setAgainst(event.target.value)
-                        updateUrl('against', event.target.value)
-                      }}
-                    >
-                      <option value="base">
-                        {compilerLabel(runs[0], activeBenchmark, rightCompiler, 'base')}
-                      </option>
-                      {compilers.map((name) => (
-                        <option key={name} value={name}>
-                          {compilerLabel(runs[1], activeBenchmark, name, 'head')}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                </>
-              )}
+              {(['left', 'right'] as const).map((side) => (
+                <label key={side}>
+                  {side === 'left' ? 'Left' : 'Right'}
+                  <select
+                    aria-label={side === 'left' ? 'Left' : 'Right'}
+                    value={(side === 'left' ? left : right)?.id}
+                    onChange={(event) => {
+                      const next = { left: left!.id, right: right!.id, [side]: event.target.value }
+                      setSides(next)
+                      const url = new URL(window.location.href)
+                      url.searchParams.set('left', next.left)
+                      url.searchParams.set('right', next.right)
+                      url.searchParams.delete('compiler')
+                      url.searchParams.delete('against')
+                      replaceUrl(url)
+                    }}
+                  >
+                    {(['base', 'head'] as const).map((runSide) => (
+                      <optgroup key={runSide} label={runSide === 'base' ? 'Base' : 'Head'}>
+                        {choices
+                          .filter((choice) => choice.side === runSide)
+                          .map((choice) => (
+                            <option key={choice.id} value={choice.id}>
+                              {choice.label}
+                            </option>
+                          ))}
+                      </optgroup>
+                    ))}
+                  </select>
+                </label>
+              ))}
             </div>
             <FileTree
               nodes={artifactTree(visibleFiles)}
@@ -211,35 +193,34 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
             />
           </aside>
           <div className="file-diff">
-            {selectedFile ? (
+            {selectedFile && left && right ? (
               <>
                 <div className="diff-sides">
-                  <span>{leftLabel}</span>
-                  <span>{rightLabel}</span>
+                  <span>{left.label}</span>
+                  <span>{right.label}</span>
                 </div>
                 <Suspense fallback={<p className="empty">Loading renderer…</p>}>
                   <ArtifactDiff
-                    key={`${activeBenchmark}/${selectedFile.path}/${comparisonCommit}/${leftCompiler}/${head}/${rightCompiler}`}
+                    key={`${activeBenchmark}/${selectedFile.path}/${left.id}/${right.id}`}
                     before={{
-                      label: leftLabel,
-                      commit: comparisonCommit,
+                      label: left.label,
+                      commit: left.run.commit,
                       benchmark: activeBenchmark,
-                      compiler: leftCompiler,
-                      storagePath: runs[against === 'base' ? 0 : 1].artifacts[
-                        activeBenchmark
-                      ]?.find(
+                      compiler: left.compiler,
+                      storagePath: left.run.artifacts[activeBenchmark]?.find(
                         (file) =>
-                          file.path === selectedFile.path && file.compilers.includes(leftCompiler),
+                          file.path === selectedFile.path && file.compilers.includes(left.compiler),
                       )?.storagePath,
                     }}
                     after={{
-                      commit: head,
+                      commit: right.run.commit,
                       benchmark: activeBenchmark,
-                      compiler: rightCompiler,
-                      label: rightLabel,
-                      storagePath: runs[1].artifacts[activeBenchmark]?.find(
+                      compiler: right.compiler,
+                      label: right.label,
+                      storagePath: right.run.artifacts[activeBenchmark]?.find(
                         (file) =>
-                          file.path === selectedFile.path && file.compilers.includes(rightCompiler),
+                          file.path === selectedFile.path &&
+                          file.compilers.includes(right.compiler),
                       )?.storagePath,
                     }}
                     path={selectedFile.path}
