@@ -118,9 +118,10 @@ Internal navigation and Back/Forward preserve the browser's data caches. Compari
 changes are reflected in the permalink.
 
 Comparison rows without measurements for the selected metric are hidden. The table shows
-the Solar base value, followed by a percentage-change column for each compiler in the head
-run. Lower values are green, higher values red; hovering a delta reveals the compiler's
-value. A missing measurement or a nonzero value against a zero base has no defined percentage.
+the Solar Head value, followed by Base and the other compilers as percentage differences
+relative to Head. Solar decreases are green and increases red; other compilers use the
+opposite colors, so a more expensive solc result is green. Hovering a delta reveals that
+compiler's value. Missing measurements and a nonzero value against a zero Head have no defined percentage.
 Byte sizes use `b`, `KiB`, `MiB`, etc. Compiler columns are discovered from the run data.
 
 Successful data responses explicitly enable the Vercel CDN cache with the same lifetimes

@@ -101,7 +101,7 @@ export function Compare({ base, head }: Props) {
         <p className="empty">Loading benchmark runs…</p>
       </main>
     )
-  const [, afterRun] = runs
+  const [beforeRun, afterRun] = runs
 
   return (
     <main className="compare-page">
@@ -161,7 +161,7 @@ export function Compare({ base, head }: Props) {
       >
         <div className="result header-row">
           <span>Benchmark</span>
-          <span>Base</span>
+          <span>Head</span>
           {compilers.map((compiler) => {
             const labels = [
               ...new Set(
@@ -173,7 +173,7 @@ export function Compare({ base, head }: Props) {
             return (
               <span key={compiler} title={labels.join(', ')}>
                 {compiler === 'solar'
-                  ? 'Head'
+                  ? 'Base'
                   : labels.length === 1
                     ? compiler === 'solc'
                       ? labels[0]?.split('+')[0]
@@ -185,7 +185,7 @@ export function Compare({ base, head }: Props) {
         </div>
         {rows.map(({ before, headResult, result: after }) => {
           const selected = expanded === after.test_id
-          const beforeValue = value(before, metrics[metric].key)
+          const headValue = value(headResult, metrics[metric].key)
           const source = benchmarkSource(after.test_id, head)
           return (
             <div key={after.test_id} className="benchmark-row">
@@ -199,20 +199,28 @@ export function Compare({ base, head }: Props) {
                   {after.test_id}
                 </code>
                 <span>
-                  {beforeValue === null ? '—' : formatValue(beforeValue, metrics[metric].unit)}
+                  {headValue === null ? '—' : formatValue(headValue, metrics[metric].unit)}
                 </span>
                 {compilers.map((compiler) => {
-                  const afterValue = value(headResult, metrics[metric].key, compiler)
-                  const delta = percentChange(beforeValue, afterValue)
-                  const label = compilerLabel(afterRun, after.test_id, compiler)
+                  const comparedValue = value(
+                    compiler === 'solar' ? before : headResult,
+                    metrics[metric].key,
+                    compiler,
+                  )
+                  const delta = percentChange(headValue, comparedValue)
+                  const label = compilerLabel(
+                    compiler === 'solar' ? beforeRun : afterRun,
+                    after.test_id,
+                    compiler,
+                  )
                   const raw =
-                    afterValue === null
+                    comparedValue === null
                       ? 'No measurement'
-                      : `${afterValue} ${metrics[metric].unit === 'bytes' || metrics[metric].unit === 'memory' ? 'b' : metrics[metric].unit === 'seconds' ? 's' : metrics[metric].unit}`
+                      : `${comparedValue} ${metrics[metric].unit === 'bytes' || metrics[metric].unit === 'memory' ? 'b' : metrics[metric].unit === 'seconds' ? 's' : metrics[metric].unit}`
                   return (
                     <strong
                       key={compiler}
-                      className={changeClass(delta)}
+                      className={changeClass(delta, compiler !== 'solar')}
                       title={`${label}: ${raw}`}
                     >
                       {formatChange(delta, '—')}

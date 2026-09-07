@@ -41,13 +41,22 @@ it('hides empty metrics but retains zero, added, removed and non-Solar measureme
   expect(comparisonCompilers(head)).toEqual(['solar', 'experimental', 'solc'])
 })
 
-it('uses the base denominator and handles zero without bogus infinities or colors', () => {
+it('uses the reference denominator and handles zero without bogus infinities or colors', () => {
   expect(percentChange(100, 120)).toBe(20)
   expect(changeClass(percentChange(100, 120))).toBe('bad')
   expect(changeClass(percentChange(100, 80))).toBe('good')
   expect(percentChange(0, 0)).toBe(0)
   expect(percentChange(0, 1)).toBeNull()
   expect(percentChange(null, 1)).toBeNull()
+})
+
+it('compares costs against Head and reverses colors only for other compilers', () => {
+  const headValue = 100
+  expect(percentChange(headValue, 120)).toBe(20)
+  expect(changeClass(percentChange(headValue, 120), false)).toBe('bad')
+  expect(changeClass(percentChange(headValue, 120), true)).toBe('good')
+  expect(changeClass(percentChange(headValue, 80), true)).toBe('bad')
+  expect(changeClass(percentChange(headValue, null), true)).toBe('neutral')
 })
 
 it('formats byte units consistently without rounding small values to zero KiB', () => {
