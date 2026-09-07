@@ -7,24 +7,10 @@ description: Works with secp256k1 points in affine or projective coordinates
 ### Signatures
 
 ```solidity
-function ecIdentityAffine() external pure returns (uint256 resultX, uint256 resultY);
-
-function ecIsIdentityAffine(uint256 pointX, uint256 pointY) external pure returns (bool);
-
 function ecAffineToProjective(uint256 pointX, uint256 pointY)
     external
     pure
     returns (uint256 resultX, uint256 resultY, uint256 resultZ);
-
-function ecIdentityProjective()
-    external
-    pure
-    returns (uint256 resultX, uint256 resultY, uint256 resultZ);
-
-function ecIsIdentityProjective(uint256 pointX, uint256 pointY, uint256 pointZ)
-    external
-    pure
-    returns (bool);
 
 function ecProjectiveToAffine(uint256 pointX, uint256 pointY, uint256 pointZ)
     external
@@ -58,10 +44,8 @@ function ecMulProjective(uint256 pointX, uint256 pointY, uint256 pointZ, uint256
 
 ### Description
 
-These cheatcodes work with points on the secp256k1 curve. Except for the identity checks and point-at-infinity encodings described below, coordinates must be valid field elements and represent points on the curve.
+These cheatcodes work with points on the secp256k1 curve. Except for the point-at-infinity encodings described below, coordinates must be valid field elements and represent points on the curve.
 
-- `ecIdentityAffine` and `ecIdentityProjective` return the point at infinity in the corresponding coordinate representation.
-- `ecIsIdentityAffine` returns whether both affine coordinates are zero. `ecIsIdentityProjective` returns whether `pointX` and `pointZ` are zero; `pointY` is ignored.
 - `ecAffineToProjective` and `ecProjectiveToAffine` convert between affine and homogeneous projective coordinates.
 - `ecAddAffine` and `ecAddProjective` add two points.
 - `ecMulAffine` and `ecMulProjective` multiply a point by a scalar. The scalar is reduced modulo the secp256k1 group order.
