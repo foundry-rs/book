@@ -53,7 +53,9 @@ Formatted artifacts are retained in a bounded browser cache. Files larger than
 512 Ki characters skip JSON formatting and interactive diffing, with a bounded
 text preview and full-content downloads to keep navigation responsive.
 Interactive diff computation runs in a cancellable browser worker with a five-second
-limit. On timeout or worker failure, both files remain downloadable with bounded
+limit. Unfinished computation is cancelled in hidden tabs and restarted when visible,
+so background throttling does not consume the time budget. On timeout or worker failure,
+both files remain downloadable with bounded
 previews. Theme and split/unified changes reuse the computed diff. Syntax highlighting
 uses the library's worker pool (one worker); `CodeView` virtualizes visible lines.
 DOM updates still run on the main thread. This follows the

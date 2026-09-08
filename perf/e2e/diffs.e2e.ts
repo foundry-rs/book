@@ -38,3 +38,22 @@ test('worker failures retain readable previews and full downloads', async ({ pag
   await expect(page.getByText(/Download the full files below/)).toBeVisible({ timeout: 10000 })
   await expect(page.getByRole('link', { name: 'Download runtime.disasm' })).toHaveCount(2)
 })
+
+test('defers computation while hidden and starts when visible', async ({ page }) => {
+  let workers = 0
+  page.on('worker', (worker) => {
+    if (worker.url().includes('diff.worker')) workers++
+  })
+  await page.addInitScript(() => {
+    Object.defineProperty(document, 'hidden', { configurable: true, value: true })
+  })
+  await page.goto(url)
+  await expect(page.getByText('Computing diff…', { exact: true })).toBeVisible()
+  expect(workers).toBe(0)
+  await page.evaluate(() => {
+    Object.defineProperty(document, 'hidden', { configurable: true, value: false })
+    document.dispatchEvent(new Event('visibilitychange'))
+  })
+  await expect(page.getByRole('button', { name: 'Unified', exact: true })).toBeVisible()
+  expect(workers).toBe(1)
+})

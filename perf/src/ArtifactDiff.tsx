@@ -158,18 +158,37 @@ function ComputedDiff({
   const [diff, setDiff] = useState<FileDiffMetadata | null>(null)
   const [error, setError] = useState('')
   useEffect(() => {
-    const controller = new AbortController()
+    let controller: AbortController | undefined
     setDiff(null)
     setError('')
-    computeDiff(before, after, controller.signal).then(
-      (value) => {
-        if (!controller.signal.aborted) setDiff(value)
-      },
-      (error: Error) => {
-        if (!controller.signal.aborted) setError(error.message)
-      },
-    )
-    return () => controller.abort()
+    let settled = false
+    const computeWhenVisible = () => {
+      if (settled) return
+      controller?.abort()
+      if (document.hidden) return
+      controller = new AbortController()
+      const { signal } = controller
+      computeDiff(before, after, signal).then(
+        (value) => {
+          if (!signal.aborted) {
+            settled = true
+            setDiff(value)
+          }
+        },
+        (error: Error) => {
+          if (!signal.aborted) {
+            settled = true
+            setError(error.message)
+          }
+        },
+      )
+    }
+    document.addEventListener('visibilitychange', computeWhenVisible)
+    computeWhenVisible()
+    return () => {
+      controller?.abort()
+      document.removeEventListener('visibilitychange', computeWhenVisible)
+    }
     // File values, not object identity: presentation changes reuse the computed diff.
   }, [before.contents, before.name, before.lang, after.contents, after.name, after.lang])
   if (error)
