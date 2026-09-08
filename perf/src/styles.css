@@ -67,7 +67,6 @@ header {
 .wordmark {
   display: flex;
   align-items: center;
-  gap: 8px;
   text-decoration: none;
 }
 .wordmark img {
@@ -75,17 +74,6 @@ header {
   width: 31px;
   height: 31px;
   border-radius: 4px;
-}
-.wordmark span {
-  border-radius: 4px;
-  background: #0b3f82;
-  color: #80b5ff;
-  padding: 3px 7px;
-  font-size: 11px;
-  font-style: normal;
-  font-weight: 500;
-  letter-spacing: -0.02em;
-  text-transform: none;
 }
 nav {
   display: flex;
@@ -631,15 +619,9 @@ button:disabled {
   header {
     height: 68px;
   }
-  .wordmark {
-    gap: 7px;
-  }
   .wordmark img {
     width: 27px;
     height: 27px;
-  }
-  .wordmark span {
-    font-size: 10px;
   }
   nav {
     gap: 2px;

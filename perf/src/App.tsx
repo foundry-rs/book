@@ -126,7 +126,6 @@ function SiteHeader({
     <header className={compact ? 'file-header' : ''}>
       <a className="wordmark" href={import.meta.env.BASE_URL}>
         <img alt="Solar" src={logo} />
-        <span>Web</span>
       </a>
       <nav>
         {compact ? (
