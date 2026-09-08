@@ -1,6 +1,9 @@
 catalog:
   vite: npm:@voidzero-dev/vite-plus-core@0.3.0
   vite-plus: 0.3.0
+  vitest: 4.1.11
+packages:
+  - perf
 allowBuilds:
   es5-ext: false
   esbuild: true

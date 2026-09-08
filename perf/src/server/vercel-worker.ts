@@ -1,0 +1,29 @@
+import { Hono } from 'hono'
+import { ingestCommit, ingestRecent } from './ingest'
+import { nodeHandler } from './http'
+import { RunNotFoundError } from './pending'
+
+const app = new Hono()
+app.use('*', async (context, next) => {
+  context.header('cache-control', 'no-store')
+  if (
+    !process.env.CRON_SECRET ||
+    context.req.header('authorization') !== `Bearer ${process.env.CRON_SECRET}`
+  )
+    return context.json({ error: 'Unauthorized' }, 401)
+  if (process.env.PERF_DEMO_DATA === '1') return context.json({ skipped: 'demo' })
+  await next()
+})
+app.get('/api/worker/tick', async (context) => context.json(await ingestRecent()))
+app.post('/api/worker/import', async (context) => {
+  const sha = context.req.query('commit') ?? ''
+  if (!/^[a-f0-9]{40}$/.test(sha)) return context.json({ error: 'Invalid commit' }, 400)
+  return context.json({ imported: await ingestCommit(sha) })
+})
+app.onError((error, context) => {
+  if (error instanceof RunNotFoundError) return context.json({ error: error.message }, 404)
+  console.error('perf_worker_failed', error)
+  return context.json({ error: 'Import unavailable; retry later' }, 503)
+})
+
+export default nodeHandler(app)

@@ -1,6 +1,8 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "redirects": [
+    { "source": "/perf", "destination": "/perf/solar/", "permanent": false },
+    { "source": "/perf/", "destination": "/perf/solar/", "permanent": false },
     {
       "source": "/install",
       "destination": "https://raw.githubusercontent.com/foundry-rs/foundryup/HEAD/foundryup-init.sh"
@@ -148,5 +150,7 @@
     { "source": "/appendix", "destination": "/help/faq" },
 
     { "source": "/benches", "destination": "/benchmarks" }
-  ]
+  ],
+  "buildCommand": "$HOME/.local/share/vite-plus/bin/vp run build:vercel",
+  "installCommand": "curl -fsSL https://vite.plus | VP_VERSION=0.3.0 bash && $HOME/.local/share/vite-plus/bin/vp install --frozen-lockfile"
 }

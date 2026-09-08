@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <meta name="theme-color" content="#080808" />
+    <meta name="description" content="Solar compiler benchmark history and artifact diffs" />
+    <title>Solar web</title>
+    <script>
+      ;(() => {
+        let theme
+        try {
+          theme = localStorage.getItem('solar-web-theme')
+        } catch {}
+        document.documentElement.dataset.theme =
+          theme === 'light' || theme === 'dark'
+            ? theme
+            : matchMedia('(prefers-color-scheme: dark)').matches
+              ? 'dark'
+              : 'light'
+      })()
+    </script>
+    <style>
+      html {
+        background: #fff;
+        color: #18181b;
+        color-scheme: light;
+      }
+      html[data-theme='dark'] {
+        background: #080808;
+        color: #f4f4f5;
+        color-scheme: dark;
+      }
+      body {
+        margin: 0;
+        background: inherit;
+        color: inherit;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
