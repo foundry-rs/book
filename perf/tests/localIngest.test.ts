@@ -13,6 +13,15 @@ describe('local importer', () => {
     const server = createServer(async (request, response) => {
       let body = ''
       for await (const chunk of request) body += chunk
+      if (
+        new URL(request.url!, 'http://localhost').searchParams.get(
+          'input_format_json_named_tuples_as_objects',
+        ) !== '0'
+      ) {
+        response.writeHead(400)
+        response.end('Snapshot tuples require array input mode')
+        return
+      }
       inserts.push(body)
       response.end('')
     })
