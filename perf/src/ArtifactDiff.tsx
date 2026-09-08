@@ -118,7 +118,7 @@ function ArtifactDiffContents({
         </p>
         <CodeView
           className="solar-diff"
-          style={{ height: '75vh' }}
+          style={{ height: '75vh', overflow: 'auto' }}
           items={[{ id: path, type: 'file', file: oldFile ?? newFile! }]}
           options={{ overflow: 'scroll', themeType: theme }}
         />
@@ -225,7 +225,7 @@ function ComputedDiff({
       </div>
       <CodeView
         className="solar-diff"
-        style={{ height: '75vh' }}
+        style={{ height: '75vh', overflow: 'auto' }}
         items={[{ id: before.name, type: 'diff', fileDiff: diff }]}
         options={{ diffStyle: style, overflow: 'scroll', themeType: theme }}
       />

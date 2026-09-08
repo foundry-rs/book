@@ -11,6 +11,7 @@ test('computes diff in a worker and reuses it for presentation changes', async (
   await page.goto(url)
   await expect(page.getByRole('button', { name: 'Unified', exact: true })).toBeVisible()
   await expect(page.locator('diffs-container').locator('pre')).toBeVisible()
+  await expect(page.locator('.solar-diff')).toHaveCSS('overflow', 'auto')
   // A plain-text placeholder is not proof that worker highlighting succeeded.
   await expect(page.locator('diffs-container').locator('code span[style]').first()).toBeVisible()
   expect(workers).toBe(1)
