@@ -2,6 +2,8 @@ import { expect, it } from 'vite-plus/test'
 import { comparisonCompilers, comparisonRows, percentChange } from '../src/comparison'
 import { formatRawValue, formatValue } from '../src/formatValue'
 import { changeClass } from '../src/change'
+import { compilerColumn, orderedCompilers } from '../src/compilers'
+import { benchmarkMetric } from '../src/benchmarkMetric'
 import type { RunDocument } from '../src/types'
 
 const base: RunDocument = {
@@ -27,6 +29,7 @@ const head: RunDocument = {
       compilers: {
         experimental: { status: 'ok', total_gas: 0 },
         solc: { status: 'ok', total_gas: 12 },
+        solx: { status: 'ok', total_gas: 15, label: 'solx 0.1.8+build' },
       },
     },
   ],
@@ -38,7 +41,21 @@ it('hides empty metrics but retains zero, added, removed and non-Solar measureme
     'removed',
   ])
   expect(comparisonRows(base, head, 'runtime_size', '')).toEqual([])
-  expect(comparisonCompilers(head)).toEqual(['solar', 'experimental', 'solc'])
+  expect(comparisonCompilers(head)).toEqual(['solar', 'solc', 'experimental', 'solx'])
+})
+
+it('discovers solx and future compilers without depending on producer ordering', () => {
+  expect(orderedCompilers(['solx', 'solc', 'solar', 'future', 'solx'])).toEqual([
+    'solar',
+    'solc',
+    'future',
+    'solx',
+  ])
+  expect(compilerColumn(head, 'solx')).toEqual({ label: 'solx 0.1.8', title: 'solx 0.1.8+build' })
+  expect(compilerColumn(head, 'future').label).toBe('future')
+  expect(compilerColumn(base, 'solar').label).toBe('Base')
+  expect(benchmarkMetric(head.results[1], 'total_gas', 'solx')).toBe(15)
+  expect(benchmarkMetric(base.results[1], 'total_gas', 'solx')).toBeNull()
 })
 
 it('uses the reference denominator and handles zero without bogus infinities or colors', () => {

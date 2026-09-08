@@ -49,7 +49,7 @@ it('offers compilers from both runs with the correct provenance and no solc suff
           label: 'x',
           language: 'text',
           bytes: 0,
-          compilers: ['future'],
+          compilers: ['solx', 'future'],
         },
       ],
     },
@@ -60,6 +60,7 @@ it('offers compilers from both runs with the correct provenance and no solc suff
     'base:solc',
     'head:solar',
     'head:future',
+    'head:solx',
   ])
   expect(choices.find((choice) => choice.id === 'base:solc')).toMatchObject({
     label: 'solc 0.8.30',

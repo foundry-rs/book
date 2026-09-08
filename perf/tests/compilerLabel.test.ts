@@ -15,7 +15,10 @@ const run: RunDocument = {
     {
       test_id: 'test',
       suite: 'runtime',
-      compilers: { solc: { status: 'ok', label: 'solc 0.8.36' } },
+      compilers: {
+        solc: { status: 'ok', label: 'solc 0.8.36' },
+        solx: { status: 'ok', label: 'solx 0.1.8' },
+      },
     },
   ],
 }
@@ -31,6 +34,7 @@ it('identifies the source run in selectors and diff headings', () => {
   expect(compilerLabel(run, 'test', 'solar', 'head')).toBe('solar abcdef01 (head)')
   expect(compilerLabel(run, 'test', 'solc', 'head')).toBe('solc 0.8.36')
   expect(compilerLabel(run, 'test', 'solc', 'base')).toBe('solc 0.8.36')
+  expect(compilerLabel(run, 'test', 'solx', 'head')).toBe('solx 0.1.8')
 })
 
 it.each([

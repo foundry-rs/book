@@ -57,8 +57,9 @@ function artifactsFor(commit: string, revision: number) {
         [2, 'abi.json', 'json'],
       ] as const) {
         const storagePath = `${index}.json`
-        const outputs = ['solar', 'solc'].map((compiler) => {
-          const constant = 40 + revision + (compiler === 'solc' ? 3 : 0)
+        const compilers = path === 'optimized.yul' ? ['solar', 'solc'] : ['solar', 'solc', 'solx']
+        const outputs = compilers.map((compiler, compilerIndex) => {
+          const constant = 40 + revision + compilerIndex * 3
           const contents =
             path === 'optimized.yul'
               ? `// Synthetic ${benchmark} output\nobject "Demo" {\n  code {\n    let result := add(calldataload(0), ${constant})\n    mstore(0, result)\n    return(0, 32)\n  }\n}\n`
@@ -82,7 +83,7 @@ function artifactsFor(commit: string, revision: number) {
           language,
           label: path,
           bytes: new TextEncoder().encode(outputs[0]).length,
-          compilers: ['solar', 'solc'],
+          compilers,
         })
       }
       return [benchmark, files]
@@ -138,6 +139,27 @@ const documents = new Map<string, RunDocument>(
     },
   ]),
 )
+
+// Synthetic reference metrics are only served in explicit demo mode, never imported.
+for (const document of documents.values()) {
+  for (const result of document.results) {
+    for (const [compiler, label, factor] of [
+      ['solc', 'solc 0.8.36', 1.1],
+      ['solx', 'solx 0.1.8', 0.9],
+    ] as const) {
+      result.compilers[compiler] = {
+        ...Object.fromEntries(
+          Object.entries(result.compilers.solar).map(([key, value]) => [
+            key,
+            typeof value === 'number' ? value * factor : value,
+          ]),
+        ),
+        status: 'ok',
+        label,
+      }
+    }
+  }
+}
 
 const index: RunIndex = {
   runs: summaries,
@@ -198,7 +220,7 @@ export function demoResponse(input: string) {
       : Response.json({ error: 'Run not found' }, { status: 404 })
   }
 
-  const artifact = /^\/api\/data\/runs\/([0-9a-f]{40})\/([^/]+)\/(solar|solc)\/(\d+\.json)$/.exec(
+  const artifact = /^\/api\/data\/runs\/([0-9a-f]{40})\/([^/]+)\/([^/]+)\/(\d+\.json)$/.exec(
     pathname,
   )
   if (artifact) {

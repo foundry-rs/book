@@ -1,8 +1,9 @@
 import { benchmarkMetric } from './benchmarkMetric'
+import { orderedCompilers } from './compilers'
 import type { RunDocument } from './types'
 
 export function comparisonCompilers(run: RunDocument) {
-  return [...new Set(['solar', ...run.results.flatMap((result) => Object.keys(result.compilers))])]
+  return orderedCompilers(run.results.flatMap((result) => Object.keys(result.compilers)))
 }
 
 export function comparisonRows(

@@ -87,6 +87,7 @@ describe('GitHub Actions importer', () => {
           compilers: {
             solar: { runtimeGas: 42, status: 'ok' },
             solc: { runtimeGas: 43, status: 'ok' },
+            solx: { total_gas: 44, status: 'ok', label: 'solx 0.1.8' },
           },
           description: 'Factorial',
           suite: 'micro',
@@ -124,6 +125,7 @@ describe('GitHub Actions importer', () => {
     expect(normalized.results).toMatchObject([
       { compiler: 'solar', status: 'ok', total_gas: 42 },
       { compiler: 'solc', status: 'ok', total_gas: 43 },
+      { compiler: 'solx', status: 'ok', total_gas: 44, label: 'solx 0.1.8' },
     ])
   })
 

@@ -9,6 +9,7 @@ import { benchmarkMetric as value } from './benchmarkMetric'
 import { replaceUrl } from './navigation'
 import { comparisonCompilers, comparisonRows, percentChange } from './comparison'
 import { compilerLabel } from './compilerLabel'
+import { compilerColumn } from './compilers'
 
 const metrics: Record<
   string,
@@ -169,22 +170,10 @@ export function Compare({ base, head }: Props) {
           <span>Benchmark</span>
           <span>Head</span>
           {compilers.map((compiler) => {
-            const labels = [
-              ...new Set(
-                afterRun.results.flatMap((result) =>
-                  result.compilers[compiler]?.label ? [result.compilers[compiler].label] : [],
-                ),
-              ),
-            ]
+            const column = compilerColumn(afterRun, compiler)
             return (
-              <span key={compiler} title={labels.join(', ')}>
-                {compiler === 'solar'
-                  ? 'Base'
-                  : labels.length === 1
-                    ? compiler === 'solc'
-                      ? labels[0]?.split('+')[0]
-                      : labels[0]
-                    : compiler}
+              <span key={compiler} title={column.title}>
+                {column.label}
               </span>
             )
           })}
