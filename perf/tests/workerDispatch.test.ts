@@ -22,9 +22,13 @@ it('dispatches to the trusted deployment and responds pending without waiting fo
   vi.stubGlobal('fetch', fetch)
   const { dispatchImport } = await import('../src/server/workerDispatch')
   const sha = 'a'.repeat(40)
-  await expect(dispatchImport(sha)).rejects.toMatchObject({ retryAfter: 3 })
+  await expect(dispatchImport(sha)).rejects.toMatchObject({
+    retryAfter: 1,
+    state: 'queued',
+    commit: sha,
+  })
   const now = vi.spyOn(Date, 'now').mockReturnValue(Date.now() + 31_000)
-  await expect(dispatchImport(sha)).rejects.toMatchObject({ retryAfter: 3 })
+  await expect(dispatchImport(sha)).rejects.toMatchObject({ retryAfter: 1, state: 'importing' })
   now.mockRestore()
   expect(fetch).toHaveBeenCalledExactlyOnceWith(
     `https://perf-test.vercel.app/api/worker/import?commit=${sha}`,

@@ -54,7 +54,6 @@ a {
   color: inherit;
 }
 header,
-footer,
 main {
   width: min(1100px, calc(100% - 48px));
   margin: auto;
@@ -68,7 +67,6 @@ header {
 .wordmark {
   display: flex;
   align-items: center;
-  gap: 8px;
   text-decoration: none;
 }
 .wordmark img {
@@ -76,17 +74,6 @@ header {
   width: 31px;
   height: 31px;
   border-radius: 4px;
-}
-.wordmark span {
-  border-radius: 4px;
-  background: #0b3f82;
-  color: #80b5ff;
-  padding: 3px 7px;
-  font-size: 11px;
-  font-style: normal;
-  font-weight: 500;
-  letter-spacing: -0.02em;
-  text-transform: none;
 }
 nav {
   display: flex;
@@ -397,11 +384,6 @@ button:disabled {
   color: var(--muted);
   font-size: 13px;
 }
-footer {
-  padding: 28px 0 42px;
-  color: var(--muted);
-  font-size: 12px;
-}
 .compare-page {
   padding-top: 31px;
 }
@@ -631,22 +613,15 @@ footer {
 }
 @media (max-width: 680px) {
   header,
-  footer,
   main {
     width: min(100% - 28px, 1100px);
   }
   header {
     height: 68px;
   }
-  .wordmark {
-    gap: 7px;
-  }
   .wordmark img {
     width: 27px;
     height: 27px;
-  }
-  .wordmark span {
-    font-size: 10px;
   }
   nav {
     gap: 2px;

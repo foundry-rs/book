@@ -104,7 +104,6 @@ export function App() {
       ) : (
         <Home />
       )}
-      {!fileViewer && <SiteFooter />}
     </>
   )
 }
@@ -127,7 +126,6 @@ function SiteHeader({
     <header className={compact ? 'file-header' : ''}>
       <a className="wordmark" href={import.meta.env.BASE_URL}>
         <img alt="Solar" src={logo} />
-        <span>Web</span>
       </a>
       <nav>
         {compact ? (
@@ -151,10 +149,6 @@ function SiteHeader({
       </nav>
     </header>
   )
-}
-
-function SiteFooter() {
-  return <footer>Measured by the in-repository runtime corpus.</footer>
 }
 
 function Home() {

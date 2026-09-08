@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
 import { artifactTree, mergeArtifactFiles, type ArtifactNode } from './artifactTree'
 import { loadArtifact, loadViewerRuns } from './data'
+import { useImportProgress } from './importProgress'
 import { artifactSides, initialArtifactSides } from './artifactSides'
 import { replaceUrl } from './navigation'
 import type { RunDocument, Theme } from './types'
@@ -52,6 +53,7 @@ function FileTree({
 }
 
 export function FileViewer({ base, head, benchmark, theme }: Props) {
+  const importProgress = useImportProgress(base, head)
   const params = new URLSearchParams(window.location.search)
   const baseRevision = params.get('baseRevision') ?? undefined
   const headRevision = params.get('headRevision') ?? undefined
@@ -80,8 +82,11 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
           if (url.search !== window.location.search) replaceUrl(url)
         }
       },
-      () => {
-        if (!cancelled) setLoadError('Could not load these benchmark runs.')
+      (error: unknown) => {
+        if (!cancelled)
+          setLoadError(
+            error instanceof Error ? error.message : 'Could not load these benchmark runs.',
+          )
       },
     )
     return () => {
@@ -166,7 +171,9 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
       {loadError ? (
         <p className="error">{loadError}</p>
       ) : !runs ? (
-        <p className="empty">Loading files…</p>
+        <p className="empty" role="status">
+          {importProgress || 'Loading files…'}
+        </p>
       ) : (
         <div className="file-viewer-body">
           <aside>

@@ -67,14 +67,39 @@ and its API into one deployment. The app is served at `/perf/solar/`, and
 `scripts/build-vercel-api.mjs` adds the `/api/*` route and function to Vocs' Build
 Output. Reads and imports deploy as separate Node.js 24 functions with five-minute
 execution limits. Missing-run reads dispatch to the authenticated worker using
-`VERCEL_URL` and `CRON_SECRET`, return retry status immediately, and the browser
-polls for at most 90 seconds. `waitUntil` retains the worker-dispatch request after
+`VERCEL_URL` and `CRON_SECRET`, return HTTP 202 with `Retry-After: 1` immediately,
+and the browser polls for at most 90 seconds while displaying “Importing benchmark
+runs…”. Pending responses contain `status` (`queued`, `importing`, or `retry`),
+`commit`, and a public-safe `message`; they are never cached. HTTP 503 is reserved
+for unavailability. The client temporarily also accepts the old 503 + Retry-After
+contract during rollout. A durable retry reports its actual backoff; if that exceeds
+the browser's remaining budget, the UI displays the retry delay instead of falsely
+claiming the run is unpublished. `waitUntil` retains the worker-dispatch request after
 the read response. If deployment protection is enabled, configure
 `VERCEL_AUTOMATION_BYPASS_SECRET` for same-deployment worker calls.
 Dispatch deduplication/concurrency limits are per instance, not a distributed lock:
 publication is idempotent and the cron remains the recovery path for main runs.
+Imports use on-demand requests and the existing cron; no GitHub webhook or new secret is required.
+Workers persist `importing` state in `ingestion_jobs` with a five-minute
+expiry. Cron also recovers expired importing jobs (including on-demand PR imports),
+as well as due retries. No schema alteration is required. These state
+rows reduce duplicate work but are not atomic leases. Failed imports retain internal
+details in `last_error`; public status responses deliberately omit those details.
 A durable cross-instance queue is still required if imports need guaranteed
 delivery independent of the function lifetime or browser retries.
+
+`perf_import` log events report total duration and per-stage milliseconds for workflow
+lookup, job/snapshot reads, GitHub metadata/artifact lookup, download headers, streamed
+download plus extraction, normalization, blob preparation/writes, snapshot publication,
+and job completion. Parallel stages overlap, so their sum is not wall time. The
+streamed download/extraction stage intentionally includes both network and CPU work.
+Compare these worker logs with `perf_api` and browser timings: time outside the API
+timer is not automatically evidence of a cold start.
+
+Run the deterministic pending/retry/missing-run browser checks with
+`pnpm exec playwright test --config perf/playwright.config.ts` from the repository
+root. They use a local demo server and intercepted responses, never production data.
+
 Configure these server-only variables in Production and in the Preview environment
 used for testing (prefer branch-scoped preview credentials):
 
@@ -93,8 +118,18 @@ CRON_SECRET
 ```
 
 Install the GitHub App only on `paradigmxyz/solar` with Actions, Contents, and Pull requests
-read permission. `CLICKHOUSE_READ_*` may only select the public tables;
-`CLICKHOUSE_WRITE_*` may select `runs` and `ingestion_jobs` for idempotency and
+read permission. `CLICKHOUSE_READ_*` may select the public tables and the status
+columns below. Before deploying this version, grant status reads (substitute your
+database/user names if different):
+
+```sql
+GRANT SELECT(workflow_run_id, commit, state, next_attempt_at, updated_at)
+ON solar_perf.ingestion_jobs TO solar_perf_read;
+```
+
+This does not grant access to `last_error`. For rollback, first restore the previous
+deployment, then revoke this same column grant if desired. `CLICKHOUSE_WRITE_*`
+may select `run_snapshots` and `ingestion_jobs` for idempotency and
 insert into the public tables and `ingestion_jobs`. Never expose either account
 or the GitHub App private key to the browser.
 
