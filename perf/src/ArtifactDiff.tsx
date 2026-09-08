@@ -1,6 +1,7 @@
-import { File, FileDiff } from '@pierre/diffs/react'
+import { CodeView, WorkerPoolContextProvider } from '@pierre/diffs/react'
 import type { FileContents, FileDiffMetadata } from '@pierre/diffs'
 import { computeDiff } from './computeDiff'
+import HighlightWorker from '@pierre/diffs/worker/worker.js?worker'
 import { useEffect, useState } from 'react'
 import { Info } from 'lucide-react'
 import {
@@ -21,7 +22,20 @@ interface Props {
   onStyleChange: (style: 'split' | 'unified') => void
 }
 
-export default function ArtifactDiff({
+const poolOptions = {
+  poolSize: 1,
+  workerFactory: () => new HighlightWorker(),
+}
+
+export default function ArtifactDiff(props: Props) {
+  return (
+    <WorkerPoolContextProvider poolOptions={poolOptions} highlighterOptions={{}}>
+      <ArtifactDiffContents {...props} />
+    </WorkerPoolContextProvider>
+  )
+}
+
+function ArtifactDiffContents({
   before,
   after,
   path,
@@ -102,11 +116,11 @@ export default function ArtifactDiff({
               ? `Published only by ${before.label}.`
               : 'Contents are identical.'}
         </p>
-        <File
+        <CodeView
           className="solar-diff"
-          file={oldFile ?? newFile!}
+          style={{ height: '75vh' }}
+          items={[{ id: path, type: 'file', file: oldFile ?? newFile! }]}
           options={{ overflow: 'scroll', themeType: theme }}
-          disableWorkerPool
         />
       </>
     )
@@ -190,11 +204,11 @@ function ComputedDiff({
           Unified
         </button>
       </div>
-      <FileDiff
+      <CodeView
         className="solar-diff"
-        fileDiff={diff}
+        style={{ height: '75vh' }}
+        items={[{ id: before.name, type: 'diff', fileDiff: diff }]}
         options={{ diffStyle: style, overflow: 'scroll', themeType: theme }}
-        disableWorkerPool
       />
     </div>
   )

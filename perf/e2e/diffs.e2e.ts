@@ -5,7 +5,9 @@ const url =
 
 test('computes diff in a worker and reuses it for presentation changes', async ({ page }) => {
   let workers = 0
-  page.on('worker', () => workers++)
+  page.on('worker', (worker) => {
+    if (worker.url().includes('diff.worker')) workers++
+  })
   await page.goto(url)
   await expect(page.getByRole('button', { name: 'Unified', exact: true })).toBeVisible()
   await expect(page.locator('diffs-container').locator('pre')).toBeVisible()
