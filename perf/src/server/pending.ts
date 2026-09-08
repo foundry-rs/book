@@ -1,6 +1,14 @@
 export class ImportPendingError extends Error {
-  constructor(readonly retryAfter: number) {
-    super('Benchmark import is in progress or waiting to retry')
+  constructor(
+    readonly retryAfter: number,
+    readonly state: 'queued' | 'importing' | 'retry' = 'importing',
+    readonly commit?: string,
+  ) {
+    super(
+      state === 'retry'
+        ? 'Benchmark import failed; a retry is scheduled'
+        : 'Importing benchmark runs…',
+    )
   }
 }
 

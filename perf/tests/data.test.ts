@@ -2,6 +2,47 @@ import { afterEach, expect, it, vi } from 'vite-plus/test'
 
 afterEach(() => vi.unstubAllGlobals())
 
+it('polls 202 without caching its status as a run document', async () => {
+  vi.resetModules()
+  vi.useFakeTimers()
+  try {
+    const commit = 'a'.repeat(40)
+    const fetch = vi
+      .fn()
+      .mockResolvedValueOnce(
+        Response.json(
+          { status: 'importing', commit },
+          { status: 202, headers: { 'retry-after': '1' } },
+        ),
+      )
+      .mockResolvedValueOnce(Response.json({ commit, results: [] }))
+    vi.stubGlobal('fetch', fetch)
+    const { loadRun } = await import('../src/data')
+    const result = loadRun(commit)
+    await vi.advanceTimersByTimeAsync(1000)
+    expect(await result).toMatchObject({ commit, results: [] })
+    await loadRun(commit)
+    expect(fetch).toHaveBeenCalledTimes(2)
+  } finally {
+    vi.useRealTimers()
+  }
+})
+
+it('reports durable retry backoff instead of waiting or showing unpublished data', async () => {
+  vi.resetModules()
+  vi.stubGlobal(
+    'fetch',
+    vi.fn(async () =>
+      Response.json(
+        { status: 'retry', commit: 'a'.repeat(40) },
+        { status: 202, headers: { 'retry-after': '120' } },
+      ),
+    ),
+  )
+  const { loadRun } = await import('../src/data')
+  await expect(loadRun('a'.repeat(40))).rejects.toThrow('Retry scheduled in 120 seconds')
+})
+
 it('reuses a resolved run when returning from a revision-pinned viewer link', async () => {
   vi.resetModules()
   const commit = 'a'.repeat(40)

@@ -10,6 +10,7 @@ import { replaceUrl } from './navigation'
 import { comparisonCompilers, comparisonRows, percentChange } from './comparison'
 import { compilerLabel } from './compilerLabel'
 import { compilerColumn } from './compilers'
+import { useImportProgress } from './importProgress'
 
 const metrics: Record<
   string,
@@ -46,6 +47,7 @@ interface Props {
 }
 
 export function Compare({ base, head }: Props) {
+  const importProgress = useImportProgress(base, head)
   const initial = new URLSearchParams(window.location.search)
   const initialMetric = initial.get('metric')
   const baseRevision = initial.get('baseRevision') ?? undefined
@@ -68,8 +70,9 @@ export function Compare({ base, head }: Props) {
       (value) => {
         if (!cancelled) setRuns(value)
       },
-      () => {
-        if (!cancelled) setLoadError('These benchmark runs are not published yet.')
+      (error: unknown) => {
+        if (!cancelled)
+          setLoadError(error instanceof Error ? error.message : 'Could not load benchmark runs.')
       },
     )
     return () => {
@@ -105,7 +108,9 @@ export function Compare({ base, head }: Props) {
   if (!runs)
     return (
       <main className="compare-page">
-        <p className="empty">Loading benchmark runs…</p>
+        <p className="empty" role="status">
+          {importProgress || 'Loading benchmark runs…'}
+        </p>
       </main>
     )
   const [beforeRun, afterRun] = runs

@@ -8,6 +8,7 @@ import { type GitHubClient, sharedGitHubClient, gitHubConfig, type GitHubRun } f
 import { normalizeResults } from './normalizeResults'
 import { publication, publicationBlobs } from './publication'
 import { ImportPendingError, RunNotFoundError } from './pending'
+import { importStage, timeImport } from './importTiming'
 export { ImportPendingError } from './pending'
 
 const maxArtifactBytes = 32 * 1024 * 1024
@@ -227,7 +228,7 @@ async function knownRuns(config: ClickHouseConfig) {
      )
      UNION DISTINCT
      SELECT workflow_run_id, 0 AS run_attempt FROM ingestion_jobs FINAL
-     WHERE state = 'retry' AND next_attempt_at > now64(3)`,
+     WHERE state IN ('retry', 'importing', 'queued') AND next_attempt_at > now64(3)`,
   )
   return new Map(rows.map((row) => [Number(row.workflow_run_id), Number(row.run_attempt)]))
 }
@@ -279,7 +280,7 @@ async function dueJobs(config: ClickHouseConfig, limit: number) {
     config,
     `SELECT workflow_run_id, commit, state, attempts, toUnixTimestamp64Milli(next_attempt_at) AS next_attempt_at
      FROM ingestion_jobs FINAL
-     WHERE state = 'retry' AND next_attempt_at <= now64(3)
+     WHERE state IN ('retry', 'importing', 'queued') AND next_attempt_at <= now64(3)
      ORDER BY next_attempt_at ASC LIMIT ${limit}`,
   )
   return rows as unknown as IngestJob[]
@@ -288,7 +289,7 @@ async function dueJobs(config: ClickHouseConfig, limit: number) {
 async function recordJob(
   config: ClickHouseConfig,
   source: GitHubRun,
-  state: 'complete' | 'retry',
+  state: 'complete' | 'retry' | 'importing' | 'queued',
   attempts: number,
   error: string | null,
 ) {
@@ -297,8 +298,12 @@ async function recordJob(
       attempts,
       commit: source.head_sha,
       last_error: error,
-      next_attempt_at:
-        state === 'complete' ? new Date(0).toISOString() : retryAt(attempts).toISOString(),
+      next_attempt_at: (state === 'complete'
+        ? new Date(0)
+        : state === 'retry'
+          ? retryAt(attempts)
+          : new Date(Date.now() + 300_000)
+      ).toISOString(),
       state,
       workflow_run_id: source.id,
     },
@@ -307,38 +312,52 @@ async function recordJob(
 
 async function ingestRun(config: ClickHouseConfig, github: GitHubClient, source: GitHubRun) {
   const [pull, artifact] = await Promise.all([
-    github.pullRequest(source.head_sha).catch(() => null),
-    github.artifact(source.id),
+    importStage('githubMetadataMs', () => github.pullRequest(source.head_sha).catch(() => null)),
+    importStage('githubArtifactMs', () => github.artifact(source.id)),
   ])
   const run = importedRun(source, pull?.number || null, pull?.title || source.display_title || null)
   if (!artifact) throw new Error('Benchmark artifact is not available yet')
   if (artifact.size_in_bytes > maxArchiveBytes)
     throw new Error('Benchmark artifact exceeds 128 MiB')
 
-  const archive = await extractArchive(await github.download(artifact.archive_download_url))
-  const normalized = normalizeArchive(archive, run)
-  await insert(config, 'artifact_blobs', publicationBlobs(normalized.artifacts))
-  await insert(config, 'run_snapshots', [
-    publication(
-      { ...normalized.run, run_attempt: source.run_attempt ?? 1 },
-      normalized.results,
-      normalized.artifacts,
-    ),
-  ])
+  const response = await importStage('downloadHeadersMs', () =>
+    github.download(artifact.archive_download_url),
+  )
+  // Extraction is streamed while downloading; report the combined stage honestly.
+  const archive = await importStage('downloadExtractMs', () => extractArchive(response))
+  const normalized = await importStage('normalizeMs', () => normalizeArchive(archive, run))
+  const blobs = await importStage('prepareBlobsMs', () => publicationBlobs(normalized.artifacts))
+  await importStage('writeBlobsMs', () => insert(config, 'artifact_blobs', blobs))
+  await importStage('publishSnapshotMs', () =>
+    insert(config, 'run_snapshots', [
+      publication(
+        { ...normalized.run, run_attempt: source.run_attempt ?? 1 },
+        normalized.results,
+        normalized.artifacts,
+      ),
+    ]),
+  )
   return true
 }
 
 async function ingestTracked(config: ClickHouseConfig, github: GitHubClient, source: GitHubRun) {
-  const previous = await job(config, source.id)
+  const previous = await importStage('jobLookupMs', () => job(config, source.id))
   throwIfPending(previous)
-  if (await hasRun(config, source.id, source.run_attempt ?? 1)) {
+  if (
+    await importStage('snapshotLookupMs', () => hasRun(config, source.id, source.run_attempt ?? 1))
+  ) {
     await recordJob(config, source, 'complete', Number(previous?.attempts ?? 0), null)
     return false
   }
 
   try {
+    await importStage('markImportingMs', () =>
+      recordJob(config, source, 'importing', Number(previous?.attempts || 0), null),
+    )
     const imported = await ingestRun(config, github, source)
-    await recordJob(config, source, 'complete', Number(previous?.attempts || 0), null)
+    await importStage('markCompleteMs', () =>
+      recordJob(config, source, 'complete', Number(previous?.attempts || 0), null),
+    )
     return imported
   } catch (error) {
     if (error instanceof ImportPendingError) throw error
@@ -351,9 +370,18 @@ async function ingestTracked(config: ClickHouseConfig, github: GitHubClient, sou
 }
 
 function throwIfPending(job: IngestJob | undefined) {
-  if (job?.state !== 'retry' || Number(job.next_attempt_at) <= Date.now()) return
+  if (
+    !job ||
+    !['retry', 'importing'].includes(job.state) ||
+    Number(job.next_attempt_at) <= Date.now()
+  )
+    return
   throw new ImportPendingError(
-    Math.max(1, Math.ceil((Number(job.next_attempt_at) - Date.now()) / 1_000)),
+    job.state === 'retry'
+      ? Math.max(1, Math.ceil((Number(job.next_attempt_at) - Date.now()) / 1_000))
+      : 1,
+    job.state === 'retry' ? 'retry' : 'importing',
+    job.commit,
   )
 }
 
@@ -422,7 +450,7 @@ export async function ingestRecent(environment: NodeJS.ProcessEnv = process.env)
   let imported = 0
   for (const run of runs) {
     try {
-      imported += Number(await ingestTracked(config, github, run))
+      imported += Number(await timeImport(run.head_sha, () => ingestTracked(config, github, run)))
     } catch (error) {
       console.warn(`Could not import benchmark run ${run.id}`, error)
       failed.push(run.id)
@@ -439,10 +467,35 @@ export async function ingestCommit(sha: string, environment: NodeJS.ProcessEnv =
   if (!config) throw new Error('ClickHouse ingestion credentials are not configured')
   if (!githubConfig) throw new Error('GitHub App credentials are not configured')
 
-  throwIfPending(await jobForCommit(config, sha))
+  return timeImport(sha, async () => {
+    const github = sharedGitHubClient(githubConfig)
+    const [previous, source] = await Promise.all([
+      importStage('commitJobLookupMs', () => jobForCommit(config, sha)),
+      importStage('githubRunLookupMs', () => github.runForCommit(sha)),
+    ])
+    throwIfPending(previous)
+    if (!source) throw new RunNotFoundError()
+    return ingestTracked(config, github, source)
+  })
+}
 
-  const github = sharedGitHubClient(githubConfig)
-  const source = await github.runForCommit(sha)
-  if (!source) throw new RunNotFoundError()
-  return ingestTracked(config, github, source)
+// Persist before acknowledging a webhook. Cron recovers queued/interrupted jobs
+// after the five-minute worker window; this is not an atomic distributed lock.
+export async function enqueueWorkflowImport(source: GitHubRun) {
+  const config = clickHouseConfig(process.env, 'write')
+  const githubConfig = gitHubConfig(process.env)
+  if (!config || !githubConfig) throw new Error('Import credentials are not configured')
+  const previous = await job(config, source.id)
+  if (await hasRun(config, source.id, source.run_attempt ?? 1)) return null
+  if (
+    previous &&
+    ['queued', 'importing', 'retry'].includes(previous.state) &&
+    previous.next_attempt_at > Date.now()
+  )
+    return null
+  await recordJob(config, source, 'queued', Number(previous?.attempts || 0), null)
+  return () =>
+    timeImport(source.head_sha, () =>
+      ingestTracked(config, sharedGitHubClient(githubConfig), source),
+    )
 }

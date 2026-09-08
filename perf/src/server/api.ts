@@ -541,7 +541,10 @@ export function createApi(options: ApiOptions = {}) {
       if (error instanceof RunNotFoundError) return context.json({ error: error.message }, 404)
       if (error instanceof ImportPendingError) {
         context.header('retry-after', String(error.retryAfter))
-        return context.json({ error: error.message }, 503)
+        return context.json(
+          { status: error.state, message: error.message, commit: error.commit },
+          202,
+        )
       }
       console.error('Failed to read benchmark data', error)
       return context.json({ error: 'Benchmark data is unavailable' }, 503)

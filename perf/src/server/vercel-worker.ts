@@ -1,9 +1,13 @@
 import { Hono } from 'hono'
-import { ingestCommit, ingestRecent } from './ingest'
+import { enqueueWorkflowImport, ingestCommit, ingestRecent } from './ingest'
 import { nodeHandler } from './http'
-import { RunNotFoundError } from './pending'
+import { ImportPendingError, RunNotFoundError } from './pending'
+import { waitUntil } from '@vercel/functions'
+import { createWebhook } from './webhook'
 
 const app = new Hono()
+// This endpoint uses GitHub's HMAC authentication, not the cron bearer token.
+app.route('/api/worker/github', createWebhook(enqueueWorkflowImport, waitUntil))
 app.use('*', async (context, next) => {
   context.header('cache-control', 'no-store')
   if (
@@ -22,6 +26,10 @@ app.post('/api/worker/import', async (context) => {
 })
 app.onError((error, context) => {
   if (error instanceof RunNotFoundError) return context.json({ error: error.message }, 404)
+  if (error instanceof ImportPendingError) {
+    context.header('retry-after', String(error.retryAfter))
+    return context.json({ status: error.state }, 202)
+  }
   console.error('perf_worker_failed', error)
   return context.json({ error: 'Import unavailable; retry later' }, 503)
 })

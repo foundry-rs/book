@@ -1,5 +1,6 @@
 import type { HistorySeries, RunDocument, RunIndex } from './types'
 import { responseCache } from './cache'
+import { reportImport } from './importProgress'
 
 const root = '/api/data/'
 const cachedIndex = responseCache<RunIndex>(60_000)
@@ -70,17 +71,44 @@ export function loadHistory(metric: string, benchmark?: string) {
 
 async function getJson<T>(path: string): Promise<T> {
   const deadline = Date.now() + 90_000
-  for (;;) {
-    const response = await fetch(`${root}${path}`, {
-      signal: AbortSignal.timeout(Math.max(1, deadline - Date.now())),
-    })
-    const retry = Number(response.headers.get('retry-after'))
-    if (response.status === 503 && retry > 0 && Date.now() + retry * 1000 < deadline) {
-      await new Promise((resolve) => setTimeout(resolve, retry * 1000))
-      continue
+  const pendingCommits = new Set<string>()
+  try {
+    for (;;) {
+      const response = await fetch(`${root}${path}`, {
+        signal: AbortSignal.timeout(Math.max(1, deadline - Date.now())),
+      })
+      const retry = Number(response.headers.get('retry-after'))
+      // Retain old-preview compatibility while 202 replaces the pending-only 503.
+      if (response.status === 202 || (response.status === 503 && retry > 0)) {
+        const status = await response.json().catch(() => ({}))
+        const message =
+          status.status === 'retry'
+            ? `Benchmark import failed. Retry scheduled in ${Math.ceil(retry)} seconds.`
+            : 'Importing benchmark runs…'
+        if (typeof status.commit === 'string') {
+          pendingCommits.add(status.commit)
+          reportImport(status.commit, message)
+        }
+        if (!Number.isFinite(retry) || retry <= 0) throw new Error('Invalid import retry response.')
+        if (Date.now() + retry * 1000 >= deadline)
+          throw new Error(
+            status.status === 'retry'
+              ? message
+              : 'Benchmark import is still running. Try again shortly.',
+          )
+        await new Promise((resolve) => setTimeout(resolve, retry * 1000))
+        continue
+      }
+      if (!response.ok)
+        throw new Error(
+          response.status === 404
+            ? 'No completed benchmark run is available for this commit.'
+            : `Could not load benchmark data (${response.status}). Try again shortly.`,
+        )
+      return response.json() as Promise<T>
     }
-    if (!response.ok) throw new Error(`Could not load benchmark data (${response.status})`)
-    return response.json() as Promise<T>
+  } finally {
+    for (const commit of pendingCommits) reportImport(commit, null)
   }
 }
 
