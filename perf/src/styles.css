@@ -54,7 +54,6 @@ a {
   color: inherit;
 }
 header,
-footer,
 main {
   width: min(1100px, calc(100% - 48px));
   margin: auto;
@@ -397,11 +396,6 @@ button:disabled {
   color: var(--muted);
   font-size: 13px;
 }
-footer {
-  padding: 28px 0 42px;
-  color: var(--muted);
-  font-size: 12px;
-}
 .compare-page {
   padding-top: 31px;
 }
@@ -631,7 +625,6 @@ footer {
 }
 @media (max-width: 680px) {
   header,
-  footer,
   main {
     width: min(100% - 28px, 1100px);
   }

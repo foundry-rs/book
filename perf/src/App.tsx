@@ -104,7 +104,6 @@ export function App() {
       ) : (
         <Home />
       )}
-      {!fileViewer && <SiteFooter />}
     </>
   )
 }
@@ -151,10 +150,6 @@ function SiteHeader({
       </nav>
     </header>
   )
-}
-
-function SiteFooter() {
-  return <footer>Measured by the in-repository runtime corpus.</footer>
 }
 
 function Home() {
