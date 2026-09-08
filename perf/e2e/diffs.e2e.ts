@@ -11,11 +11,25 @@ test('computes diff in a worker and reuses it for presentation changes', async (
   await page.goto(url)
   await expect(page.getByRole('button', { name: 'Unified', exact: true })).toBeVisible()
   await expect(page.locator('diffs-container').locator('pre')).toBeVisible()
+  // A plain-text placeholder is not proof that worker highlighting succeeded.
+  await expect(page.locator('diffs-container').locator('code span[style]').first()).toBeVisible()
   expect(workers).toBe(1)
   await page.getByRole('button', { name: 'Unified', exact: true }).click()
   await page.getByRole('button', { name: /Switch to .* theme/ }).click()
   await expect(page.locator('diffs-container').locator('pre')).toBeVisible()
   expect(workers).toBe(1)
+})
+
+test('leaving a pending diff cannot replace the newly selected file', async ({ page }) => {
+  await page.route('**/diff.worker.ts*', (route) =>
+    route.fulfill({ contentType: 'text/javascript', body: 'self.onmessage = () => {}' }),
+  )
+  await page.goto(url)
+  await expect(page.getByText('Computing diff…', { exact: true })).toBeVisible()
+  await page.getByRole('button', { name: 'abi.json', exact: true }).click()
+  await expect(page.getByText('Contents are identical.', { exact: true })).toBeVisible()
+  await expect(page.locator('diffs-container').locator('pre')).toBeVisible()
+  await expect(page.getByText(/Download the full files below/)).toHaveCount(0)
 })
 
 test('worker failures retain readable previews and full downloads', async ({ page }) => {
