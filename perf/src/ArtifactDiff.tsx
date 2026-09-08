@@ -13,6 +13,7 @@ interface Props {
     compiler: string
     label: string
     storagePath?: string
+    contentHash?: string
   }
   after: {
     commit: string
@@ -20,6 +21,7 @@ interface Props {
     compiler: string
     label: string
     storagePath?: string
+    contentHash?: string
   }
   path: string
   language: string
@@ -45,10 +47,22 @@ export default function ArtifactDiff({
     setError('')
     Promise.all([
       before.storagePath
-        ? loadArtifact(before.commit, before.benchmark, before.compiler, before.storagePath)
+        ? loadArtifact(
+            before.commit,
+            before.benchmark,
+            before.compiler,
+            before.storagePath,
+            before.contentHash,
+          )
         : null,
       after.storagePath
-        ? loadArtifact(after.commit, after.benchmark, after.compiler, after.storagePath)
+        ? loadArtifact(
+            after.commit,
+            after.benchmark,
+            after.compiler,
+            after.storagePath,
+            after.contentHash,
+          )
         : null,
     ])
       .then(([beforeContents, afterContents]) => {
@@ -75,6 +89,8 @@ export default function ArtifactDiff({
     path,
     before.storagePath,
     after.storagePath,
+    before.contentHash,
+    after.contentHash,
   ])
   if (error) return <p className="error">Could not load artifact: {error}</p>
   if (!contents) return <p className="empty">Loading diff…</p>

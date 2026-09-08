@@ -4,6 +4,7 @@ import { join, resolve } from 'node:path'
 
 import { insert } from './lib/clickhouse.mjs'
 import { normalizeResults } from '../src/server/normalizeResults.ts'
+import { publication, publicationBlobs } from '../src/server/publication.ts'
 import {
   artifactMetadata,
   textArtifact,
@@ -104,6 +105,9 @@ async function normalizeArtifacts(root, run) {
 const options = args()
 if (!/^[0-9a-f]{40}$/.test(options.commit)) throw new Error('Commit must be a full SHA')
 if (!/^\d+$/.test(options['workflow-run'])) throw new Error('Workflow run must be numeric')
+const attempt = Number(options['run-attempt'] ?? 1)
+if (!Number.isSafeInteger(attempt) || attempt < 1)
+  throw new Error('Run attempt must be a positive integer')
 if ((await stat(resolve(options.results))).size > maxResultsBytes)
   throw new Error('Results exceed 32 MiB')
 const document = JSON.parse(await readFile(resolve(options.results), 'utf8'))
@@ -126,4 +130,6 @@ const artifacts = await normalizeArtifacts(resolve(options.artifacts), { ...run,
 await insert('benchmark_results', results)
 await insert('artifact_files', artifacts)
 await insert('runs', [run])
+await insert('artifact_blobs', publicationBlobs(artifacts))
+await insert('run_snapshots', [publication({ ...run, run_attempt: attempt }, results, artifacts)])
 console.log(`Ingested ${run.commit.slice(0, 8)} from workflow run ${run.workflow_run_id}`)

@@ -6,6 +6,7 @@ import { artifactMetadata, textArtifact, validArtifactPath, validIdentifier } fr
 import { clickHouseConfig, insert, select, type ClickHouseConfig } from './clickhouse'
 import { GitHubClient, gitHubConfig, type GitHubRun } from './github'
 import { normalizeResults } from './normalizeResults'
+import { publication, publicationBlobs } from './publication'
 
 const maxArtifactBytes = 32 * 1024 * 1024
 const maxArchiveBytes = 128 * 1024 * 1024
@@ -225,20 +226,20 @@ function importedRun(run: GitHubRun, pr: number | null, title: string | null): I
 async function knownRuns(config: ClickHouseConfig) {
   const rows = await select(
     config,
-    `SELECT workflow_run_id FROM (
-       SELECT workflow_run_id FROM runs FINAL ORDER BY imported_at DESC LIMIT 2_000
+    `SELECT workflow_run_id, run_attempt FROM (
+       SELECT workflow_run_id, max(run_attempt) AS run_attempt FROM run_snapshots FINAL GROUP BY workflow_run_id ORDER BY workflow_run_id DESC LIMIT 2_000
      )
      UNION DISTINCT
-     SELECT workflow_run_id FROM ingestion_jobs FINAL
+     SELECT workflow_run_id, 0 AS run_attempt FROM ingestion_jobs FINAL
      WHERE state = 'retry' AND next_attempt_at > now64(3)`,
   )
-  return new Set(rows.map((row) => Number(row.workflow_run_id)))
+  return new Map(rows.map((row) => [Number(row.workflow_run_id), Number(row.run_attempt)]))
 }
 
-async function hasRun(config: ClickHouseConfig, runId: number) {
+async function hasRun(config: ClickHouseConfig, runId: number, attempt: number) {
   const rows = await select(
     config,
-    `SELECT 1 FROM runs FINAL WHERE workflow_run_id = ${runId} LIMIT 1`,
+    `SELECT 1 FROM run_snapshots FINAL WHERE workflow_run_id = ${runId} AND run_attempt >= ${attempt} LIMIT 1`,
   )
   return rows.length > 0
 }
@@ -323,13 +324,21 @@ async function ingestRun(config: ClickHouseConfig, github: GitHubClient, source:
   await insert(config, 'benchmark_results', normalized.results)
   await insert(config, 'artifact_files', normalized.artifacts)
   await insert(config, 'runs', [normalized.run])
+  await insert(config, 'artifact_blobs', publicationBlobs(normalized.artifacts))
+  await insert(config, 'run_snapshots', [
+    publication(
+      { ...normalized.run, run_attempt: source.run_attempt ?? 1 },
+      normalized.results,
+      normalized.artifacts,
+    ),
+  ])
   return true
 }
 
 async function ingestTracked(config: ClickHouseConfig, github: GitHubClient, source: GitHubRun) {
   const previous = await job(config, source.id)
   throwIfPending(previous)
-  if (previous?.state === 'retry' && (await hasRun(config, source.id))) {
+  if (previous?.state === 'retry' && (await hasRun(config, source.id, source.run_attempt ?? 1))) {
     await recordJob(config, source, 'complete', Number(previous.attempts), null)
     return false
   }
@@ -404,7 +413,12 @@ export async function ingestRecent(environment: NodeJS.ProcessEnv = process.env)
       }
     }),
   )
-  const recent = listedRuns.filter((run) => isMainRun(run) && !known.has(run.id))
+  const recent = listedRuns.filter(
+    (run) =>
+      isMainRun(run) &&
+      (!known.has(run.id) ||
+        (known.get(run.id)! > 0 && known.get(run.id)! < (run.run_attempt ?? 1))),
+  )
   const runs = selectRuns(
     retried.flatMap((run) => (run && isCompleteRun(run) ? [run] : [])),
     recent,

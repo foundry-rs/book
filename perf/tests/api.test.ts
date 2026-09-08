@@ -19,6 +19,71 @@ afterEach(() => {
 })
 
 describe('website API', () => {
+  it('serves scoped viewer descriptors with compiler content hashes in one query', async () => {
+    const commits = ['a'.repeat(40), 'b'.repeat(40)]
+    const revision = 'c'.repeat(64)
+    const hash = 'd'.repeat(64)
+    globalThis.fetch = vi.fn(async (_input, init) => {
+      const sql = init?.body
+      expect(sql).toContain('arrayFilter(f -> f.test_id = {benchmark:String}, artifacts)')
+      expect(sql).toContain(`revision = '${revision}'`)
+      return new Response(
+        commits
+          .map((commit) =>
+            JSON.stringify({
+              commit,
+              revision,
+              measurements: [['counter', '', '', 'solar', 'ok']],
+              artifacts: [['counter', 'output.json', 'solar', 10, hash, '1.json']],
+            }),
+          )
+          .join('\n'),
+      )
+    })
+    const app = createApi({ clickHouse: config })
+    const response = await app.request(
+      `/api/data/viewer.json?commits=${commits.join(',')}&revisions=${revision},${revision}&benchmark=counter`,
+    )
+    expect(response.status).toBe(200)
+    const { runs } = await response.json()
+    expect(runs).toHaveLength(2)
+    expect(runs[0].artifacts.counter[0].contentHashes.solar).toBe(hash)
+    expect(globalThis.fetch).toHaveBeenCalledOnce()
+    expect((await app.request(`/api/data/viewer.json?commits=${commits.join(',')}`)).status).toBe(
+      400,
+    )
+    expect(
+      (
+        await app.request(
+          `/api/data/runs.json?commits=${commits[0]},${commits[0]}&revisions=${revision},${hash}`,
+        )
+      ).status,
+    ).toBe(400)
+  })
+
+  it('does not import or fall back when a pinned revision is missing', async () => {
+    globalThis.fetch = vi.fn(async () => new Response(''))
+    const importRun = vi.fn(async () => undefined)
+    const app = createApi({ clickHouse: config, importRun })
+    const response = await app.request(
+      `/api/data/runs/${'a'.repeat(40)}/run.json?revision=${'b'.repeat(64)}`,
+    )
+    expect(response.status).toBe(404)
+    expect(importRun).not.toHaveBeenCalled()
+    expect(globalThis.fetch).toHaveBeenCalledOnce()
+  })
+
+  it('serves immutable blob contents without querying manifests', async () => {
+    globalThis.fetch = vi.fn(async () => Response.json({ content: 'body' }))
+    const response = await createApi({ clickHouse: config }).request(
+      `/api/data/blobs/${'a'.repeat(64)}.json`,
+    )
+    expect(await response.json()).toBe('body')
+    expect(response.headers.get('cache-control')).toContain('immutable')
+    expect(globalThis.fetch).toHaveBeenCalledOnce()
+    expect(vi.mocked(globalThis.fetch).mock.calls[0][1]?.body).not.toContain('run_snapshots')
+  })
+
   it('loads both comparison runs and nullable measurements in one query', async () => {
     const commits = ['a'.repeat(40), 'b'.repeat(40)]
     globalThis.fetch = vi.fn(
@@ -64,7 +129,7 @@ describe('website API', () => {
     })
     expect(runs[0].artifacts).toEqual({})
     expect(globalThis.fetch).toHaveBeenCalledOnce()
-    expect(String(vi.mocked(globalThis.fetch).mock.calls[0][1]?.body)).not.toContain('raw_results')
+    expect(vi.mocked(globalThis.fetch).mock.calls[0][1]?.body).not.toContain('raw_results')
     expect(response.headers.get('server-timing')).toContain('1 queries')
     expect(response.headers.get('server-timing')).not.toContain('sql;')
     for (const query of ['', 'oops', `${commits.join(',')},${commits[0]}`]) {
@@ -135,8 +200,8 @@ describe('website API', () => {
       const sql = String(init?.body)
       queries.push(sql)
       return new Response(
-        sql.includes('SELECT workflow_run_id, commit')
-          ? JSON.stringify({ workflow_run_id: 1, commit: sha })
+        sql.includes('FROM run_snapshots')
+          ? JSON.stringify({ workflow_run_id: 1, commit: sha, artifacts: [] })
           : '',
       )
     })
@@ -148,7 +213,7 @@ describe('website API', () => {
     const manifest = await app.request(`/api/data/runs/${sha}/artifacts.json`)
     expect(manifest.status).toBe(200)
     expect(queries).toHaveLength(2)
-    expect(queries[1]).toContain('FROM artifact_files FINAL')
+    expect(queries[1]).toContain('FROM run_snapshots FINAL')
     expect(queries[1]).not.toContain('content')
   })
   it('loads bounded per-benchmark history without summing or reading artifacts', async () => {
@@ -240,7 +305,7 @@ describe('website API', () => {
 
     expect(response.status).toBe(200)
     await expect(response.json()).resolves.toEqual({ source: 'clickhouse' })
-    expect(globalThis.fetch).toHaveBeenCalledTimes(3)
+    expect(globalThis.fetch).toHaveBeenCalledTimes(2)
   })
 
   it('reports unhealthy when database credentials or schema fail', async () => {
@@ -361,7 +426,7 @@ describe('website API', () => {
     expect(queries[0]).toContain('LIMIT 2_000')
     expect(queries[0]).toContain('LIMIT 1 BY commit')
     expect(queries[0]).toContain("'%Y-%m-%dT%H:%i:%SZ', 'UTC'")
-    expect(queries[0]).toContain('WHERE workflow_run_id IN (SELECT workflow_run_id FROM recent)')
+    expect(queries[0]).toContain('benchmark_count AS benchmarkCount')
     expect(queries[0]).not.toMatch(/sumIf|maxIf|compile_time_seconds|peak_rss_bytes/)
   })
 
@@ -373,7 +438,7 @@ describe('website API', () => {
     })
     const fetch = vi.fn(async (_input: RequestInfo | URL, init?: RequestInit) => {
       const query = typeof init?.body === 'string' ? init.body : ''
-      if (query.includes('FROM runs')) {
+      if (query.includes('FROM run_snapshots')) {
         return new Response(
           imported
             ? `${JSON.stringify({
@@ -415,7 +480,7 @@ describe('website API', () => {
     )
     globalThis.fetch = vi.fn(async (_input: RequestInfo | URL, init?: RequestInit) => {
       const query = typeof init?.body === 'string' ? init.body : ''
-      if (query.includes('FROM runs')) {
+      if (query.includes('FROM run_snapshots')) {
         return new Response(
           imported
             ? `${JSON.stringify({
@@ -491,7 +556,7 @@ describe('website API', () => {
       queries.push(query)
       return new Response(
         JSON.stringify(
-          query.includes('FROM artifact_files')
+          query.includes('FROM artifact_blobs')
             ? { content: 'new output' }
             : { workflow_run_id: 1 },
         ),
@@ -503,7 +568,7 @@ describe('website API', () => {
     expect(response.status).toBe(200)
     expect(await response.json()).toBe('new output')
     expect(queries).toHaveLength(1)
-    expect(queries[0]).toContain('lower(hex(SHA256(path)))')
-    expect(queries[0]).toContain("compiler = 'experimental'")
+    expect(queries[0]).toContain('lower(hex(SHA256(f.path)))')
+    expect(queries[0]).toContain("f.compiler = 'experimental'")
   })
 })

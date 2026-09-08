@@ -24,6 +24,7 @@ export interface GitHubPullRequest {
 }
 
 export interface GitHubRun {
+  run_attempt?: number
   conclusion: string | null
   created_at: string
   display_title: string

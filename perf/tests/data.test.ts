@@ -2,6 +2,33 @@ import { afterEach, expect, it, vi } from 'vite-plus/test'
 
 afterEach(() => vi.unstubAllGlobals())
 
+it('shares content-addressed artifact reads across commits and compilers', async () => {
+  vi.resetModules()
+  const fetch = vi.fn(async () => Response.json('same content'))
+  vi.stubGlobal('fetch', fetch)
+  const { loadArtifact } = await import('../src/data')
+  const hash = 'c'.repeat(64)
+  await Promise.all([
+    loadArtifact('a'.repeat(40), 'test', 'solar', '1.json', hash),
+    loadArtifact('b'.repeat(40), 'test', 'solc', '2.json', hash),
+  ])
+  expect(fetch).toHaveBeenCalledExactlyOnceWith(`/api/data/blobs/${hash}.json`)
+})
+
+it('loads both viewer manifests in one request and includes revision pins in cache keys', async () => {
+  vi.resetModules()
+  const commits = ['a'.repeat(40), 'b'.repeat(40)]
+  const fetch = vi.fn(async () => Response.json({ runs: commits.map((commit) => ({ commit })) }))
+  vi.stubGlobal('fetch', fetch)
+  const { loadViewerRuns } = await import('../src/data')
+  await loadViewerRuns(commits[0], commits[1], 'counter', 'c'.repeat(64))
+  await loadViewerRuns(commits[0], commits[1], 'counter', 'c'.repeat(64))
+  expect(fetch).toHaveBeenCalledOnce()
+  expect(fetch).toHaveBeenCalledWith(expect.stringContaining('/viewer.json?'))
+  await loadViewerRuns(commits[0], commits[1], 'counter', 'd'.repeat(64))
+  expect(fetch).toHaveBeenCalledTimes(2)
+})
+
 it('reuses fresh compact dashboard history for an individual benchmark', async () => {
   vi.resetModules()
   const history = {
@@ -31,7 +58,7 @@ it('batches comparison runs and retains each run in the individual cache', async
   expect(fetch).toHaveBeenCalledExactlyOnceWith(
     `/api/data/runs.json?commits=${commits.join('%2C')}`,
   )
-  await Promise.all(commits.map(loadRun))
+  await Promise.all(commits.map((commit) => loadRun(commit)))
   expect(fetch).toHaveBeenCalledOnce()
 })
 
@@ -42,7 +69,7 @@ it('only fetches the uncached comparison side', async () => {
   vi.stubGlobal('fetch', fetch)
   const { loadRun } = await import('../src/data')
   await loadRun(commits[0])
-  await Promise.all(commits.map(loadRun))
+  await Promise.all(commits.map((commit) => loadRun(commit)))
   expect(fetch).toHaveBeenCalledTimes(2)
   expect(fetch).toHaveBeenLastCalledWith(`/api/data/runs/${commits[1]}/run.json?artifacts=0`)
 })
@@ -54,12 +81,14 @@ it('retries failed batches without caching failures', async () => {
   vi.stubGlobal('fetch', fetch)
   const { loadRun } = await import('../src/data')
   expect(
-    (await Promise.allSettled(commits.map(loadRun))).every((r) => r.status === 'rejected'),
+    (await Promise.allSettled(commits.map((commit) => loadRun(commit)))).every(
+      (r) => r.status === 'rejected',
+    ),
   ).toBe(true)
   fetch.mockImplementation(async () =>
     Response.json({ runs: commits.map((commit) => ({ commit })) }),
   )
-  await Promise.all(commits.map(loadRun))
+  await Promise.all(commits.map((commit) => loadRun(commit)))
   expect(fetch).toHaveBeenCalledTimes(2)
 })
 

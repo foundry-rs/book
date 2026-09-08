@@ -150,13 +150,18 @@ export function demoResponse(input: string) {
   const pathname = url.pathname
   if (pathname === '/api/health') return Response.json({ source: 'demo' })
   if (pathname === '/api/data/index.json') return Response.json(index)
-  if (pathname === '/api/data/runs.json') {
+  if (pathname === '/api/data/runs.json' || pathname === '/api/data/viewer.json') {
     const commits = url.searchParams.get('commits')?.split(',') ?? []
     if (!commits.length || commits.length > 2 || commits.some((sha) => !/^[0-9a-f]{40}$/.test(sha)))
       return Response.json({ error: 'Expected one or two full commit SHAs' }, { status: 400 })
     const runs = [...new Set(commits)].map((sha) => documents.get(sha))
     if (runs.some((run) => !run)) return Response.json({ error: 'Run not found' }, { status: 404 })
-    return Response.json({ runs: runs.map((run) => ({ ...run, artifacts: {} })) })
+    return Response.json({
+      runs: runs.map((run) => ({
+        ...run,
+        artifacts: pathname.endsWith('/viewer.json') ? run!.artifacts : {},
+      })),
+    })
   }
   if (pathname === '/api/data/history.json') {
     const metric = url.searchParams.get('metric') ?? 'total_gas'

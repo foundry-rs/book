@@ -1,4 +1,5 @@
 import { execFile } from 'node:child_process'
+import { createHash } from 'node:crypto'
 import { mkdtemp, readdir, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { dirname, join, resolve } from 'node:path'
@@ -31,7 +32,7 @@ async function runs(repository, runId, limit) {
       '--repo',
       repository,
       '--json',
-      'databaseId,event,headSha,headBranch,createdAt,conclusion,name,displayTitle',
+      'attempt,databaseId,event,headSha,headBranch,createdAt,conclusion,name,displayTitle',
     ])
     return [JSON.parse(stdout)]
   }
@@ -47,7 +48,7 @@ async function runs(repository, runId, limit) {
       '--limit',
       limit,
       '--json',
-      'databaseId,event,headSha,headBranch,createdAt,conclusion,name,displayTitle',
+      'attempt,databaseId,event,headSha,headBranch,createdAt,conclusion,name,displayTitle',
     ],
     { maxBuffer },
   )
@@ -64,10 +65,12 @@ function trustedRun(run) {
 }
 
 async function importedRuns() {
-  return new Set(
-    (await select('SELECT workflow_run_id FROM runs FINAL')).map((run) =>
-      Number(run.workflow_run_id),
-    ),
+  return new Map(
+    (
+      await select(
+        'SELECT workflow_run_id, max(run_attempt) AS attempt FROM run_snapshots FINAL GROUP BY workflow_run_id',
+      )
+    ).map((run) => [Number(run.workflow_run_id), Number(run.attempt)]),
   )
 }
 
@@ -82,6 +85,20 @@ async function refreshMetadata(run) {
   await insert('runs', [
     { ...stored, pr: pull?.number || null, title: pull?.title || run.displayTitle || null },
   ])
+  const [snapshot] = await select(
+    `SELECT * EXCEPT (published_at) FROM run_snapshots FINAL WHERE workflow_run_id = ${run.databaseId} ORDER BY run_attempt DESC, published_at DESC LIMIT 1`,
+  )
+  if (snapshot) {
+    const next = {
+      ...snapshot,
+      pr: pull?.number || null,
+      title: pull?.title || run.displayTitle || null,
+    }
+    if (next.pr === snapshot.pr && next.title === snapshot.title) return true
+    delete next.revision
+    next.revision = createHash('sha256').update(JSON.stringify(next)).digest('hex')
+    await insert('run_snapshots', [next])
+  }
   return true
 }
 
@@ -133,7 +150,7 @@ function runDocument(run, pull, sourceSchema, rawResults) {
 
 async function ingest(repository, run, refresh, knownRuns) {
   if (!trustedRun(run)) return false
-  if (!refresh && knownRuns.has(run.databaseId)) return false
+  if (!refresh && (knownRuns.get(run.databaseId) ?? 0) >= (run.attempt ?? 1)) return false
   const pull = await pullRequest(repository, run.headSha)
   const directory = await mkdtemp(join(tmpdir(), 'solar-web-'))
   try {
@@ -159,6 +176,8 @@ async function ingest(repository, run, refresh, knownRuns) {
       run.headSha,
       '--workflow-run',
       String(run.databaseId),
+      '--run-attempt',
+      String(run.attempt ?? 1),
       '--workflow',
       run.name || 'Benchmark',
       '--branch',
@@ -170,7 +189,7 @@ async function ingest(repository, run, refresh, knownRuns) {
       '--timestamp',
       run.createdAt,
     ])
-    knownRuns.add(run.databaseId)
+    knownRuns.set(run.databaseId, run.attempt ?? 1)
     return true
   } catch (error) {
     if (
@@ -178,7 +197,7 @@ async function ingest(repository, run, refresh, knownRuns) {
       error.message.includes('Downloaded artifact has no results.json')
     ) {
       await insert('runs', [runDocument(run, pull, 0, '')])
-      knownRuns.add(run.databaseId)
+      knownRuns.set(run.databaseId, run.attempt ?? 1)
       return true
     }
     console.warn(`Skipped workflow run ${run.databaseId}: ${error.message.split('\n', 1)[0]}`)

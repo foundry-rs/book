@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
 import { artifactTree, mergeArtifactFiles, type ArtifactNode } from './artifactTree'
-import { loadRunWithArtifacts } from './data'
+import { loadArtifact, loadViewerRuns } from './data'
 import { artifactSides, initialArtifactSides } from './artifactSides'
 import { replaceUrl } from './navigation'
 import type { RunDocument, Theme } from './types'
@@ -53,8 +53,11 @@ function FileTree({
 
 export function FileViewer({ base, head, benchmark, theme }: Props) {
   const params = new URLSearchParams(window.location.search)
+  const baseRevision = params.get('baseRevision') ?? undefined
+  const headRevision = params.get('headRevision') ?? undefined
   const [runs, setRuns] = useState<[RunDocument, RunDocument] | null>(null)
   const [loadError, setLoadError] = useState<string | null>(null)
+  const [loading, setLoading] = useState(true)
   const [activeBenchmark, setActiveBenchmark] = useState(benchmark)
   const [sides, setSides] = useState(() => initialArtifactSides(params))
   const [selected, setSelected] = useState(params.get('file') || '')
@@ -64,11 +67,14 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
     let cancelled = false
     // Download the renderer alongside metadata, not after manifests arrive.
     void loadRenderer().catch(() => {})
-    setRuns(null)
+    setLoading(true)
     setLoadError(null)
-    Promise.all([loadRunWithArtifacts(base), loadRunWithArtifacts(head)]).then(
+    loadViewerRuns(base, head, activeBenchmark, baseRevision, headRevision).then(
       (value) => {
-        if (!cancelled) setRuns(value)
+        if (!cancelled) {
+          setRuns(value)
+          setLoading(false)
+        }
       },
       () => {
         if (!cancelled) setLoadError('Could not load these benchmark runs.')
@@ -77,7 +83,7 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
     return () => {
       cancelled = true
     }
-  }, [base, head])
+  }, [base, head, activeBenchmark, baseRevision, headRevision])
   useEffect(() => {
     setActiveBenchmark(benchmark)
   }, [benchmark])
@@ -87,8 +93,8 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
       runs
         ? [
             ...new Set([
-              ...Object.keys(runs[0].artifacts),
-              ...Object.keys(runs[1].artifacts),
+              ...runs[0].results.map((result) => result.test_id),
+              ...runs[1].results.map((result) => result.test_id),
               activeBenchmark,
             ]),
           ].sort()
@@ -120,6 +126,25 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
     [left, right, activeBenchmark],
   )
   const selectedFile = visibleFiles.find((file) => file.path === selected) || visibleFiles[0]
+
+  // Start bodies as soon as the descriptor arrives, even while the renderer chunk loads.
+  useEffect(() => {
+    if (!selectedFile) return
+    for (const side of [left, right]) {
+      if (!side) continue
+      const file = side.run.artifacts[activeBenchmark]?.find(
+        (file) => file.path === selectedFile.path && file.compilers.includes(side.compiler),
+      )
+      if (file)
+        void loadArtifact(
+          side.run.commit,
+          activeBenchmark,
+          side.compiler,
+          file.storagePath,
+          file.contentHashes?.[side.compiler],
+        ).catch(() => {})
+    }
+  }, [left, right, activeBenchmark, selectedFile])
 
   const updateUrl = (key: string, value: string) => {
     const url = new URL(window.location.href)
@@ -162,6 +187,7 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
                   {side === 'left' ? 'Left' : 'Right'}
                   <select
                     aria-label={side === 'left' ? 'Left' : 'Right'}
+                    disabled={loading}
                     value={(side === 'left' ? left : right)?.id}
                     onChange={(event) => {
                       const next = { left: left!.id, right: right!.id, [side]: event.target.value }
@@ -189,14 +215,24 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
                 </label>
               ))}
             </div>
-            <FileTree
-              nodes={artifactTree(visibleFiles)}
-              selected={selectedFile?.path || ''}
-              onSelect={selectFile}
-            />
+            {loading ? (
+              <p className="empty" role="status">
+                Loading files…
+              </p>
+            ) : (
+              <FileTree
+                nodes={artifactTree(visibleFiles)}
+                selected={selectedFile?.path || ''}
+                onSelect={selectFile}
+              />
+            )}
           </aside>
           <div className="file-diff">
-            {selectedFile && left && right ? (
+            {loading ? (
+              <p className="empty" role="status">
+                Loading files…
+              </p>
+            ) : selectedFile && left && right ? (
               <>
                 <div className="diff-sides">
                   <span>{left.label}</span>
@@ -210,6 +246,9 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
                       commit: left.run.commit,
                       benchmark: activeBenchmark,
                       compiler: left.compiler,
+                      contentHash: left.run.artifacts[activeBenchmark]?.find(
+                        (file) => file.path === selectedFile.path,
+                      )?.contentHashes?.[left.compiler],
                       storagePath: left.run.artifacts[activeBenchmark]?.find(
                         (file) =>
                           file.path === selectedFile.path && file.compilers.includes(left.compiler),
@@ -219,6 +258,9 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
                       commit: right.run.commit,
                       benchmark: activeBenchmark,
                       compiler: right.compiler,
+                      contentHash: right.run.artifacts[activeBenchmark]?.find(
+                        (file) => file.path === selectedFile.path,
+                      )?.contentHashes?.[right.compiler],
                       label: right.label,
                       storagePath: right.run.artifacts[activeBenchmark]?.find(
                         (file) =>

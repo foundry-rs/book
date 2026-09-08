@@ -3,10 +3,13 @@ import { fileURLToPath } from 'node:url'
 
 import { database, execute } from './lib/clickhouse.mjs'
 
-const schema = await readFile(
-  fileURLToPath(new URL('../schema/clickhouse.sql', import.meta.url)),
-  'utf8',
-)
+const schema = (
+  await Promise.all(
+    ['clickhouse.sql', 'snapshots.sql'].map((name) =>
+      readFile(fileURLToPath(new URL(`../schema/${name}`, import.meta.url)), 'utf8'),
+    ),
+  )
+).join('\n')
 await execute(`CREATE DATABASE IF NOT EXISTS ${database()}`, false)
 for (const statement of schema
   .split(';')

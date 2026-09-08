@@ -34,8 +34,8 @@ function formatRunDate(timestamp: string) {
   }).format(new Date(timestamp))
 }
 
-function fileViewerHref(base: string, head: string, benchmark: string, metric: string) {
-  return `?${new URLSearchParams({ base, head, benchmark, metric, view: 'files' })}`
+function fileViewerHref(base: RunDocument, head: RunDocument, benchmark: string, metric: string) {
+  return `?${new URLSearchParams({ base: base.commit, head: head.commit, benchmark, metric, view: 'files', ...(base.revision ? { baseRevision: base.revision } : {}), ...(head.revision ? { headRevision: head.revision } : {}) })}`
 }
 
 interface Props {
@@ -47,6 +47,8 @@ interface Props {
 export function Compare({ base, head }: Props) {
   const initial = new URLSearchParams(window.location.search)
   const initialMetric = initial.get('metric')
+  const baseRevision = initial.get('baseRevision') ?? undefined
+  const headRevision = initial.get('headRevision') ?? undefined
   const [runs, setRuns] = useState<[RunDocument, RunDocument] | null>(null)
   const [loadError, setLoadError] = useState<string | null>(null)
   const [query, setQuery] = useState('')
@@ -61,7 +63,7 @@ export function Compare({ base, head }: Props) {
     let cancelled = false
     setRuns(null)
     setLoadError(null)
-    Promise.all([loadRun(base), loadRun(head)]).then(
+    Promise.all([loadRun(base, baseRevision), loadRun(head, headRevision)]).then(
       (value) => {
         if (!cancelled) setRuns(value)
       },
@@ -72,7 +74,7 @@ export function Compare({ base, head }: Props) {
     return () => {
       cancelled = true
     }
-  }, [base, head])
+  }, [base, head, baseRevision, headRevision])
 
   useEffect(() => {
     if (expanded) void loadHistory(metrics[metric].key, expanded).catch(() => {})
@@ -250,7 +252,7 @@ export function Compare({ base, head }: Props) {
                   </div>
                   <aside className="benchmark-links">
                     <p className="eyebrow">Links</p>
-                    <a href={fileViewerHref(base, head, after.test_id, metrics[metric].key)}>
+                    <a href={fileViewerHref(runs[0], runs[1], after.test_id, metrics[metric].key)}>
                       Artifacts diff viewer →
                     </a>
                     <a href={source.url}>{source.label} ↗</a>

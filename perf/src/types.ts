@@ -50,9 +50,11 @@ export interface ArtifactFile {
   language: string
   bytes: number
   compilers: string[]
+  contentHashes?: Record<string, string>
 }
 
 export interface RunDocument {
+  revision?: string
   workflow_run_id?: number
   schemaVersion: number
   commit: string

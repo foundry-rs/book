@@ -16,6 +16,30 @@ pnpm build
 
 ## Deployment
 
+### Snapshot read-model rollout
+
+Before deploying snapshot readers, apply `schema/clickhouse.sql` and `schema/snapshots.sql`,
+then execute `schema/backfill-snapshots.sql` with the database administrator.
+The backfill is additive and restartable: it copies content-addressed bodies first
+and only publishes snapshots whose bodies exist. Repeat after legacy writers drain.
+Grant the website reader SELECT on `run_snapshots` and `artifact_blobs`; grant the
+writer SELECT/INSERT on `run_snapshots` and INSERT on `artifact_blobs`.
+Verify `arrayJoin(artifacts).content_sha256` from every snapshot exists in
+`artifact_blobs`, and compare snapshot measurement/file counts with the legacy tables.
+Schema creation alone is not a completed migration.
+
+Each immutable snapshot contains a run's measurements and manifest together.
+Latest usable runs are selected by workflow ID, attempt, then publication time,
+not by when an older workflow happened to be backfilled. Comparison-to-viewer links
+pin snapshot revisions; artifact bodies are cached by content hash across runs.
+`viewer.json` returns both selected runs' compiler catalogs and only the selected
+benchmark's manifests in one query. `blobs/<sha256>.json` serves immutable bodies.
+Legacy artifact URLs remain supported. Writers still populate the old tables for
+rollback: redeploy the pre-snapshot commit to restore legacy reads without deleting data.
+
+Public object storage is not required for this stage: deduplicated bodies remain
+in ClickHouse until the artifact-store access and environment scope are approved.
+
 The Vercel project root is the Book repository root. It builds the Book, this app,
 and its API into one deployment. The app is served at `/perf/solar/`, and
 `scripts/build-vercel-api.mjs` adds the `/api/*` route and function to Vocs' Build

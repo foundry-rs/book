@@ -2,6 +2,7 @@ import { Hono } from 'hono'
 import { historyMetrics, historySeries } from '../historySeries'
 import { requestTiming } from './timing'
 import { responseCache } from '../cache'
+import { measurementColumns } from './publication'
 
 import { clickHouseConfig, select, type ClickHouseConfig } from './clickhouse'
 import { demoResponse } from './demo'
@@ -27,26 +28,12 @@ interface StoredRun {
 async function indexFromClickHouse(config: ClickHouseConfig) {
   const runs = await select(
     config,
-    `WITH recent AS (
-       SELECT commit, workflow_run_id, started_at, branch, pr, title FROM (
-         SELECT commit, workflow_run_id, started_at, branch, pr, title, source_schema
-         FROM runs FINAL ORDER BY imported_at DESC, workflow_run_id DESC LIMIT 1 BY commit
-       ) WHERE source_schema > 0 ORDER BY started_at DESC LIMIT 2_000
-     ) SELECT
-       r.commit,
-       r.workflow_run_id,
-       formatDateTime(r.started_at, '%Y-%m-%dT%H:%i:%SZ', 'UTC') AS timestamp,
-       r.branch,
-       r.pr,
-       r.title,
-       ifNull(b.benchmarkCount, 0) AS benchmarkCount
-     FROM recent AS r LEFT JOIN (
-       SELECT workflow_run_id, countDistinct(test_id) AS benchmarkCount
-       FROM benchmark_results FINAL
-       WHERE workflow_run_id IN (SELECT workflow_run_id FROM recent)
-       GROUP BY workflow_run_id
-     ) AS b ON r.workflow_run_id = b.workflow_run_id
-     ORDER BY r.started_at DESC`,
+    `SELECT commit, revision, workflow_run_id,
+       formatDateTime(started_at, '%Y-%m-%dT%H:%i:%SZ', 'UTC') AS timestamp,
+       branch, pr, title, benchmark_count AS benchmarkCount
+     FROM (SELECT * EXCEPT (measurements, artifacts) FROM run_snapshots FINAL WHERE source_schema > 0
+       ORDER BY workflow_run_id DESC, run_attempt DESC, published_at DESC LIMIT 1 BY commit)
+     WHERE source_schema > 0 ORDER BY started_at DESC LIMIT 2_000`,
   )
   return {
     schemaVersion: 1,
@@ -62,45 +49,72 @@ async function indexFromClickHouse(config: ClickHouseConfig) {
   }
 }
 
-const measurementColumns = [
-  'test_id',
-  'description',
-  'suite',
-  'compiler',
-  'status',
-  'compile_time_seconds',
-  'bytecode_size',
-  'runtime_size',
-  'deploy_gas',
-  'total_gas',
-  'peak_rss_bytes',
-  'label',
-]
+const revisionPattern = /^[a-f0-9]{64}$/
+const snapshotOrder = 'workflow_run_id DESC, run_attempt DESC, published_at DESC'
+function snapshotSelection(commits: string[], revisions: Record<string, string> = {}) {
+  return commits
+    .map(
+      (sha) =>
+        `(commit = '${sha}'${revisions[sha] ? ` AND revision = '${revisions[sha]}'` : ' AND source_schema > 0'})`,
+    )
+    .join(' OR ')
+}
+
+function manifest(entries: unknown[][]) {
+  const tests: Record<
+    string,
+    Record<
+      string,
+      ReturnType<typeof artifactMetadata> & {
+        path: string
+        bytes: number
+        compilers: string[]
+        contentHashes: Record<string, string>
+      }
+    >
+  > = Object.create(null)
+  for (const [test, path, compiler, bytes, hash] of entries) {
+    const files = (tests[String(test)] ??= Object.create(null))
+    const name = String(path)
+    const file = (files[name] ??= {
+      ...artifactMetadata(name),
+      path: name,
+      bytes: 0,
+      compilers: [],
+      contentHashes: Object.create(null),
+    })
+    file.bytes = Math.max(file.bytes, Number(bytes) || 0)
+    if (!file.compilers.includes(String(compiler))) file.compilers.push(String(compiler))
+    file.contentHashes[String(compiler)] = String(hash)
+  }
+  return Object.fromEntries(
+    Object.entries(tests).map(([test, files]) => [
+      test,
+      Object.values(files).sort((a, b) => a.path.localeCompare(b.path)),
+    ]),
+  )
+}
 
 async function runsFromClickHouse(
   config: ClickHouseConfig,
   commits: string[],
   includeArtifacts: boolean,
+  revisions: Record<string, string> = {},
+  benchmark?: string,
 ): Promise<StoredRun[]> {
   const stored = await select(
     config,
-    `WITH selected AS (
-       SELECT workflow_run_id, commit, branch, pr, title, started_at
-       FROM runs FINAL WHERE commit IN (${commits.map((sha) => `'${sha}'`).join(',')})
-       ORDER BY imported_at DESC, workflow_run_id DESC LIMIT 1 BY commit
-     ) SELECT r.workflow_run_id, r.commit, r.branch, r.pr, r.title,
-       formatDateTime(r.started_at, '%Y-%m-%dT%H:%i:%SZ', 'UTC') AS timestamp,
-       b.measurements
-     FROM selected AS r LEFT JOIN (
-       SELECT workflow_run_id, groupArray(tuple(${measurementColumns.join(',')})) AS measurements
-       FROM benchmark_results FINAL
-       WHERE workflow_run_id IN (SELECT workflow_run_id FROM selected)
-       GROUP BY workflow_run_id
-     ) AS b ON r.workflow_run_id = b.workflow_run_id`,
+    `SELECT workflow_run_id, revision, commit, branch, pr, title,
+       formatDateTime(started_at, '%Y-%m-%dT%H:%i:%SZ', 'UTC') AS timestamp,
+       ${benchmark === undefined ? 'measurements' : "arrayMap(m -> tuple(m.test_id, '', '', m.compiler, m.status, NULL, NULL, NULL, NULL, NULL, NULL, m.label), measurements) AS measurements"}
+       ${includeArtifacts ? `, ${benchmark === undefined ? 'artifacts' : 'arrayFilter(f -> f.test_id = {benchmark:String}, artifacts) AS artifacts'}` : ''}
+     FROM run_snapshots FINAL WHERE ${snapshotSelection(commits, revisions)}
+     ORDER BY ${snapshotOrder} LIMIT 1 BY commit`,
+    benchmark === undefined ? undefined : { benchmark },
   )
   return Promise.all(
     stored.map(async (run) => {
-      const { measurements, ...runMetadata } = run
+      const { measurements, artifacts, ...runMetadata } = run
       const rows = (Array.isArray(measurements) ? (measurements as unknown[][]) : [])
         .sort(
           (a, b) =>
@@ -137,59 +151,39 @@ async function runsFromClickHouse(
         commit: String(run.commit),
         schemaVersion: 1,
         results: [...results.values()],
-        artifacts: includeArtifacts
-          ? await artifactsFromClickHouse(config, String(run.commit))
-          : {},
+        artifacts: includeArtifacts ? manifest(Array.isArray(artifacts) ? artifacts : []) : {},
         workflow_run_id: run.workflow_run_id,
       }
     }),
   )
 }
 
-async function artifactsFromClickHouse(config: ClickHouseConfig, sha: string) {
+async function artifactsFromClickHouse(config: ClickHouseConfig, sha: string, revision?: string) {
   const artifactRows = await select(
     config,
-    `SELECT test_id, path, ifNull(max(bytes), 0) AS bytes,
-       groupUniqArray(compiler) AS compilers
-     FROM artifact_files FINAL WHERE workflow_run_id IN (
-       SELECT workflow_run_id FROM runs FINAL WHERE commit = '${sha}' ORDER BY imported_at DESC LIMIT 1
-     )
-     GROUP BY test_id, path
-     ORDER BY test_id, path`,
+    `SELECT artifacts FROM run_snapshots FINAL
+     WHERE ${snapshotSelection([sha], revision ? { [sha]: revision } : {})}
+     ORDER BY ${snapshotOrder} LIMIT 1`,
   )
-  const artifacts: Record<string, unknown[]> = Object.create(null)
-  for (const row of artifactRows) {
-    const testId = String(row.test_id)
-    const metadata = artifactMetadata(String(row.path))
-    ;(artifacts[testId] ??= []).push({
-      path: row.path,
-      ...metadata,
-      bytes: row.bytes,
-      compilers: row.compilers,
-    })
-  }
-  return artifacts
+  if (!artifactRows.length) return null
+  return manifest(artifactRows[0].artifacts as unknown[][])
 }
 
 async function historyFromClickHouse(config: ClickHouseConfig, metric: string, benchmark?: string) {
   const rows = await select(
     config,
     `WITH recent AS (
-    SELECT commit, workflow_run_id, started_at
-    FROM (SELECT commit, workflow_run_id, started_at, branch, source_schema
-      FROM runs FINAL ORDER BY imported_at DESC, workflow_run_id DESC LIMIT 1 BY commit)
+    SELECT commit, started_at, measurements
+    FROM (SELECT commit, started_at, branch, source_schema, measurements
+      FROM run_snapshots FINAL WHERE source_schema > 0 ORDER BY ${snapshotOrder} LIMIT 1 BY commit)
     WHERE source_schema > 0 AND branch = 'main'
     ORDER BY started_at DESC, commit DESC LIMIT 60
   )
-  SELECT r.commit, formatDateTime(r.started_at, '%Y-%m-%dT%H:%i:%SZ', 'UTC') AS timestamp,
-    b.test_id, if(b.status = 'ok', b.${metric}, NULL) AS value
-  FROM recent AS r LEFT JOIN (
-    SELECT workflow_run_id, test_id, status, ${metric}
-    FROM benchmark_results FINAL
-    WHERE workflow_run_id IN (SELECT workflow_run_id FROM recent) AND compiler = 'solar'
-      ${benchmark === undefined ? '' : 'AND test_id = {benchmark:String}'}
-  ) AS b ON r.workflow_run_id = b.workflow_run_id
-  ORDER BY r.started_at DESC, r.commit DESC, b.test_id`,
+  SELECT commit, formatDateTime(started_at, '%Y-%m-%dT%H:%i:%SZ', 'UTC') AS timestamp,
+    b.test_id AS test_id, if(b.status = 'ok', b.${metric}, NULL) AS value
+  FROM recent LEFT ARRAY JOIN arrayFilter(m -> m.compiler = 'solar'
+    ${benchmark === undefined ? '' : 'AND m.test_id = {benchmark:String}'}, measurements) AS b
+  ORDER BY started_at DESC, commit DESC, test_id`,
     benchmark === undefined ? undefined : { benchmark },
   )
   return historySeries(
@@ -207,19 +201,26 @@ async function loadRuns(
   commits: string[],
   importRun: (sha: string) => Promise<unknown>,
   includeArtifacts: boolean,
+  revisions: Record<string, string> = {},
+  benchmark?: string,
 ) {
-  const current = await runsFromClickHouse(config, commits, includeArtifacts)
+  const current = await runsFromClickHouse(config, commits, includeArtifacts, revisions, benchmark)
   const missing = commits.filter((sha) => !current.some((run) => run.commit === sha))
   if (!missing.length) return current
-  await Promise.all(missing.map(importRun))
-  return [...current, ...(await runsFromClickHouse(config, missing, includeArtifacts))]
+  const importable = missing.filter((sha) => !revisions[sha])
+  if (!importable.length) return current
+  await Promise.all(importable.map(importRun))
+  return [
+    ...current,
+    ...(await runsFromClickHouse(config, importable, includeArtifacts, revisions, benchmark)),
+  ]
 }
 
 async function runIdFromClickHouse(config: ClickHouseConfig, sha: string) {
   const [run] = await select(
     config,
-    `SELECT workflow_run_id FROM runs FINAL
-     WHERE commit = '${sha}' ORDER BY imported_at DESC LIMIT 1`,
+    `SELECT workflow_run_id FROM run_snapshots FINAL
+     WHERE commit = '${sha}' AND source_schema > 0 ORDER BY ${snapshotOrder} LIMIT 1`,
   )
   return run ? Number(run.workflow_run_id) : null
 }
@@ -323,7 +324,7 @@ export function createApi(options: ApiOptions = {}) {
     try {
       // Verify the public schema and read access, not just environment presence.
       await Promise.all(
-        ['runs', 'benchmark_results', 'artifact_files'].map((table) =>
+        ['run_snapshots', 'artifact_blobs'].map((table) =>
           select(config, `SELECT 1 FROM ${table} LIMIT 0`),
         ),
       )
@@ -356,16 +357,33 @@ export function createApi(options: ApiOptions = {}) {
     }
 
     try {
-      if (path === 'runs.json') {
+      if (path === 'runs.json' || path === 'viewer.json') {
         const commits = context.req.query('commits')?.split(',') ?? []
+        const pins = context.req.query('revisions')?.split(',')
+        const benchmark = path === 'viewer.json' ? context.req.query('benchmark') : undefined
         if (
           !commits.length ||
           commits.length > 2 ||
-          commits.some((sha) => !/^[0-9a-f]{40}$/.test(sha))
+          (commits[0] === commits[1] && pins?.[0] !== pins?.[1]) ||
+          commits.some((sha) => !/^[0-9a-f]{40}$/.test(sha)) ||
+          (pins &&
+            (pins.length !== commits.length ||
+              pins.some((pin) => pin && !revisionPattern.test(pin)))) ||
+          (path === 'viewer.json' && (!benchmark || benchmark.length > 256))
         )
           return context.json({ error: 'Expected one or two full commit SHAs' }, 400)
         const unique = [...new Set(commits)]
-        const runs = await loadRuns(config, unique, loadImport, false)
+        const revisions = Object.fromEntries(
+          commits.flatMap((sha, i) => (pins?.[i] ? [[sha, pins[i]]] : [])),
+        )
+        const runs = await loadRuns(
+          config,
+          unique,
+          loadImport,
+          path === 'viewer.json',
+          revisions,
+          benchmark,
+        )
         if (runs.length !== unique.length) return context.json({ error: 'Run not found' }, 404)
         context.header('cache-control', 'public, max-age=300, stale-while-revalidate=3600')
         return context.json({ runs })
@@ -389,11 +407,15 @@ export function createApi(options: ApiOptions = {}) {
 
       const runMatch = /^runs\/([0-9a-f]{40})\/run\.json$/.exec(path)
       if (runMatch) {
+        const revision = context.req.query('revision')
+        if (revision && !revisionPattern.test(revision))
+          return context.json({ error: 'Invalid revision' }, 400)
         const [run] = await loadRuns(
           config,
           [runMatch[1]],
           loadImport,
           context.req.query('artifacts') !== '0',
+          revision ? { [runMatch[1]]: revision } : {},
         )
         if (!run) return context.json({ error: 'Run not found' }, 404)
         context.header('cache-control', 'public, max-age=300, stale-while-revalidate=3600')
@@ -402,9 +424,24 @@ export function createApi(options: ApiOptions = {}) {
 
       const manifestMatch = /^runs\/([0-9a-f]{40})\/artifacts\.json$/.exec(path)
       if (manifestMatch) {
-        const artifacts = await artifactsFromClickHouse(config, manifestMatch[1])
+        const revision = context.req.query('revision')
+        if (revision && !revisionPattern.test(revision))
+          return context.json({ error: 'Invalid revision' }, 400)
+        const artifacts = await artifactsFromClickHouse(config, manifestMatch[1], revision)
+        if (artifacts === null) return context.json({ error: 'Run not found' }, 404)
         context.header('cache-control', 'public, max-age=300, stale-while-revalidate=3600')
         return context.json(artifacts)
+      }
+
+      const blobMatch = /^blobs\/([a-f0-9]{64})\.json$/.exec(path)
+      if (blobMatch) {
+        const [blob] = await select(
+          config,
+          `SELECT content FROM artifact_blobs FINAL WHERE content_sha256 = '${blobMatch[1]}' LIMIT 1`,
+        )
+        if (!blob) return context.json({ error: 'Artifact not found' }, 404)
+        context.header('cache-control', 'public, max-age=31536000, immutable')
+        return context.json(blob.content)
       }
 
       const artifactMatch =
@@ -416,18 +453,20 @@ export function createApi(options: ApiOptions = {}) {
       const [, sha, benchmark, compiler, storagePath] = artifactMatch
       // Path hashes also resolve legacy rows without rewriting their numeric IDs.
       const fileCondition = /^[a-f0-9]{64}\.json$/.test(storagePath)
-        ? `lower(hex(SHA256(path))) = '${storagePath.slice(0, -5)}'`
-        : `storage_path = '${storagePath}'`
+        ? `lower(hex(SHA256(f.path))) = '${storagePath.slice(0, -5)}'`
+        : `f.legacy_storage_path = '${storagePath}'`
       const readArtifact = () =>
         select(
           config,
-          `SELECT content FROM artifact_files FINAL
-         WHERE workflow_run_id IN (
-           SELECT workflow_run_id FROM runs FINAL
-           WHERE commit = '${sha}' ORDER BY imported_at DESC LIMIT 1
+          `SELECT content FROM artifact_blobs FINAL
+         WHERE content_sha256 IN (
+           SELECT f.content_sha256 FROM (
+             SELECT artifacts FROM run_snapshots FINAL
+             WHERE commit = '${sha}' AND source_schema > 0 ORDER BY ${snapshotOrder} LIMIT 1
+           ) ARRAY JOIN artifacts AS f
+           WHERE f.test_id = '${benchmark}' AND f.compiler = '${compiler}' AND ${fileCondition}
          )
-           AND test_id = '${benchmark}' AND compiler = '${compiler}' AND ${fileCondition}
-         ORDER BY imported_at DESC LIMIT 1`,
+         LIMIT 1`,
         )
       let [artifact] = await readArtifact()
       if (!artifact) {

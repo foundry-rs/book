@@ -27,6 +27,7 @@ const maxInsertBytes = 64 * 1024 * 1024
 async function request(query, body = query, useDatabase = true) {
   const settings = config()
   const url = new URL(settings.url)
+  url.searchParams.set('output_format_json_named_tuples_as_objects', '0')
   if (useDatabase) url.searchParams.set('database', settings.database)
   const response = await fetch(url, {
     method: 'POST',

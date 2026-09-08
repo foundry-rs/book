@@ -47,6 +47,7 @@ async function request(
   url.searchParams.set('database', config.database)
   // ClickHouse requires an explicit opt-in in addition to Accept-Encoding.
   url.searchParams.set('enable_http_compression', '1')
+  url.searchParams.set('output_format_json_named_tuples_as_objects', '0')
   // Reads are fully buffered by select(); ask for a complete execution summary.
   if (body === undefined) url.searchParams.set('wait_end_of_query', '1')
   for (const [key, value] of Object.entries(params)) url.searchParams.set(`param_${key}`, value)
