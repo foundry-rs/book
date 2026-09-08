@@ -106,7 +106,9 @@ export async function resolveCommit(value: string): Promise<string> {
 
 export async function loadRun(commit: string, revision?: string) {
   const resolved = await resolveCommit(commit)
-  return cachedRun(`${resolved}:${revision ?? ''}`, () => fetchRun(resolved, revision))
+  const run = await cachedRun(`${resolved}:${revision ?? ''}`, () => fetchRun(resolved, revision))
+  if (!revision && run.revision) await cachedRun(`${resolved}:${run.revision}`, async () => run)
+  return run
 }
 
 export async function loadRunWithArtifacts(commit: string): Promise<RunDocument> {
@@ -137,7 +139,14 @@ export async function loadViewerRuns(
     const before = runs.find((run) => run.commit === commits[0])
     const after = runs.find((run) => run.commit === commits[1])
     if (!before || !after) throw new Error('Run not found in response')
-    return [before, after]
+    const value: [RunDocument, RunDocument] = [before, after]
+    if (before.revision || after.revision) {
+      const pinned = new URLSearchParams(params)
+      pinned.set('revisions', [before.revision ?? '', after.revision ?? ''].join(','))
+      if (pinned.toString() !== params.toString())
+        await cachedViewer(pinned.toString(), async () => value)
+    }
+    return value
   })
 }
 

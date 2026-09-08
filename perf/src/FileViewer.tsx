@@ -74,6 +74,10 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
         if (!cancelled) {
           setRuns(value)
           setLoading(false)
+          const url = new URL(window.location.href)
+          if (value[0].revision) url.searchParams.set('baseRevision', value[0].revision)
+          if (value[1].revision) url.searchParams.set('headRevision', value[1].revision)
+          if (url.search !== window.location.search) replaceUrl(url)
         }
       },
       () => {

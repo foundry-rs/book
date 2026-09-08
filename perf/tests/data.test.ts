@@ -2,6 +2,18 @@ import { afterEach, expect, it, vi } from 'vite-plus/test'
 
 afterEach(() => vi.unstubAllGlobals())
 
+it('reuses a resolved run when returning from a revision-pinned viewer link', async () => {
+  vi.resetModules()
+  const commit = 'a'.repeat(40)
+  const revision = 'b'.repeat(64)
+  const fetch = vi.fn(async () => Response.json({ commit, revision }))
+  vi.stubGlobal('fetch', fetch)
+  const { loadRun } = await import('../src/data')
+  await loadRun(commit)
+  await loadRun(commit, revision)
+  expect(fetch).toHaveBeenCalledOnce()
+})
+
 it('shares content-addressed artifact reads across commits and compilers', async () => {
   vi.resetModules()
   const fetch = vi.fn(async () => Response.json('same content'))
