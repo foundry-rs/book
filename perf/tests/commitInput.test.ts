@@ -49,10 +49,10 @@ it('resolves a unique published prefix and rejects ambiguity', async () => {
   vi.resetModules()
   vi.stubGlobal(
     'fetch',
-    vi.fn(async () =>
-      Response.json({
-        runs: [run, { ...run, commit: 'abcdef099999999999999999999999999999999999' }],
-      }),
+    vi.fn(async (url: string) =>
+      url.includes('abcdef012')
+        ? Response.json({ commit: run.commit })
+        : Response.json({ error: 'Ambiguous commit prefix' }, { status: 422 }),
     ),
   )
   const { resolveCommit } = await import('../src/data')

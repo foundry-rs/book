@@ -7,4 +7,5 @@ export const requestTiming = new AsyncLocalStorage<{
   readRows?: number
   readBytes?: number
   summaries?: number
+  queryIds?: string[]
 }>()

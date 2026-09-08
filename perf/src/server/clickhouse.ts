@@ -1,4 +1,5 @@
 import { requestTiming } from './timing'
+import { randomUUID } from 'node:crypto'
 
 export interface ClickHouseConfig {
   database: string
@@ -49,7 +50,13 @@ async function request(
   url.searchParams.set('enable_http_compression', '1')
   url.searchParams.set('output_format_json_named_tuples_as_objects', '0')
   // Reads are fully buffered by select(); ask for a complete execution summary.
-  if (body === undefined) url.searchParams.set('wait_end_of_query', '1')
+  if (body === undefined) {
+    url.searchParams.set('wait_end_of_query', '1')
+    url.searchParams.set('max_execution_time', '5')
+    const queryId = randomUUID()
+    url.searchParams.set('query_id', queryId)
+    requestTiming.getStore()?.queryIds?.push(queryId)
+  }
   for (const [key, value] of Object.entries(params)) url.searchParams.set(`param_${key}`, value)
   if (body !== undefined) url.searchParams.set('query', query)
   const response = await fetch(url, {

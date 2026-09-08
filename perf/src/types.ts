@@ -10,6 +10,7 @@ export interface MetricSummary {
 }
 
 export interface RunSummary {
+  baseCommit?: string | null
   commit: string
   timestamp: string
   branch: string | null
@@ -19,6 +20,7 @@ export interface RunSummary {
 }
 
 export interface RunIndex {
+  totalMainRuns?: number
   schemaVersion: number
   updatedAt: string | null
   runs: RunSummary[]

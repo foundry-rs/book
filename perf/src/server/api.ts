@@ -30,14 +30,19 @@ async function indexFromClickHouse(config: ClickHouseConfig) {
     config,
     `SELECT commit, revision, workflow_run_id,
        formatDateTime(started_at, '%Y-%m-%dT%H:%i:%SZ', 'UTC') AS timestamp,
-       branch, pr, title, benchmark_count AS benchmarkCount
+       branch, pr, title, benchmark_count AS benchmarkCount,
+       countIf(branch = 'main') OVER () AS totalMainRuns,
+       anyOrNullIf(commit, branch = 'main') OVER (
+         ORDER BY started_at DESC, commit DESC ROWS BETWEEN 1 FOLLOWING AND UNBOUNDED FOLLOWING
+       ) AS baseCommit
      FROM (SELECT * EXCEPT (measurements, artifacts) FROM run_snapshots FINAL WHERE source_schema > 0
        ORDER BY workflow_run_id DESC, run_attempt DESC, published_at DESC LIMIT 1 BY commit)
-     WHERE source_schema > 0 ORDER BY started_at DESC LIMIT 2_000`,
+     WHERE source_schema > 0 ORDER BY started_at DESC, commit DESC LIMIT 12`,
   )
   return {
     schemaVersion: 1,
     updatedAt: new Date().toISOString(),
+    totalMainRuns: Number(runs[0]?.totalMainRuns ?? 0),
     runs: runs.map((run) => ({
       commit: run.commit,
       timestamp: run.timestamp,
@@ -45,6 +50,7 @@ async function indexFromClickHouse(config: ClickHouseConfig) {
       pr: run.pr,
       title: run.title,
       benchmarkCount: run.benchmarkCount ?? 0,
+      baseCommit: run.baseCommit ?? null,
     })),
   }
 }
@@ -245,12 +251,34 @@ export function createApi(options: ApiOptions = {}) {
   }
   const app = new Hono()
   const resolvedRefs = responseCache<string>(10_000, 64 * 1024)
+  // Coalesce concurrent origin misses; the CDN remains the cross-instance cache.
+  const indexReads = responseCache<Awaited<ReturnType<typeof indexFromClickHouse>>>(1_000)
+  const historyReads = responseCache<Awaited<ReturnType<typeof historyFromClickHouse>>>(1_000)
+  const blobReads = responseCache<string | null>(300_000, 8 * 1024 * 1024)
   let github: GitHubClient | undefined
 
   app.use('/api/*', async (context, next) => {
     const started = performance.now()
-    const timing = { queries: 0, databaseMs: 0, sqlMs: 0, readRows: 0, readBytes: 0, summaries: 0 }
+    const timing = {
+      queries: 0,
+      databaseMs: 0,
+      sqlMs: 0,
+      readRows: 0,
+      readBytes: 0,
+      summaries: 0,
+      queryIds: [] as string[],
+    }
     await requestTiming.run(timing, next)
+    if (process.env.VERCEL)
+      console.info(
+        JSON.stringify({
+          event: 'perf_api',
+          route: context.req.path.replace(/[a-f0-9]{40,64}/g, ':id'),
+          status: context.res.status,
+          durationMs: Math.round(performance.now() - started),
+          ...timing,
+        }),
+      )
     context.header(
       'server-timing',
       `api;dur=${(performance.now() - started).toFixed(1)}, db;dur=${timing.databaseMs.toFixed(1)};desc="${timing.queries} queries (roundtrip sum)"` +
@@ -292,12 +320,21 @@ export function createApi(options: ApiOptions = {}) {
           ? context.json({ commit: run.commit })
           : context.json({ error: 'Unknown demo ref' }, 404)
       }
-      if (!options.resolveRef && !github) {
-        const config = gitHubConfig()
-        if (!config) return context.json({ error: 'GitHub is not configured' }, 503)
-        github = new GitHubClient(config)
-      }
       const commit = await resolvedRefs(ref, async () => {
+        if (config && /^[0-9a-f]{7,39}$/i.test(ref)) {
+          const matches = await select(
+            config,
+            `SELECT DISTINCT commit FROM run_snapshots WHERE startsWith(commit, {prefix:String}) AND source_schema > 0 LIMIT 2`,
+            { prefix: ref.toLowerCase() },
+          )
+          if (matches.length > 1) throw new GitHubRequestError(null, 422, 'Ambiguous commit prefix')
+          if (matches.length === 1) return String(matches[0].commit)
+        }
+        if (!options.resolveRef && !github) {
+          const settings = gitHubConfig()
+          if (!settings) throw new Error('GitHub is not configured')
+          github = new GitHubClient(settings)
+        }
         const resolved = await (options.resolveRef
           ? options.resolveRef(ref)
           : github!.resolveRef(ref))
@@ -307,6 +344,8 @@ export function createApi(options: ApiOptions = {}) {
       if (!/^[0-9a-f]{40}$/.test(commit)) throw new Error('Invalid resolved commit')
       return context.json({ commit })
     } catch (error) {
+      if (error instanceof GitHubRequestError && error.status === 422)
+        return context.json({ error: 'Ambiguous commit prefix; use a longer SHA.' }, 422)
       if (error instanceof GitHubRequestError && error.status === 404)
         return context.json({ error: 'Ref not found' }, 404)
       console.error('Failed to resolve benchmark ref', error)
@@ -397,11 +436,15 @@ export function createApi(options: ApiOptions = {}) {
         )
           return context.json({ error: 'Invalid history selection' }, 400)
         context.header('cache-control', 'public, max-age=60, stale-while-revalidate=120')
-        return context.json(await historyFromClickHouse(config, metric, benchmark))
+        return context.json(
+          await historyReads(JSON.stringify([metric, benchmark]), () =>
+            historyFromClickHouse(config, metric, benchmark),
+          ),
+        )
       }
       if (path === 'index.json') {
         context.header('cache-control', 'public, max-age=60, stale-while-revalidate=120')
-        const index = await indexFromClickHouse(config)
+        const index = await indexReads('index', () => indexFromClickHouse(config))
         return context.json(index)
       }
 
@@ -435,13 +478,16 @@ export function createApi(options: ApiOptions = {}) {
 
       const blobMatch = /^blobs\/([a-f0-9]{64})\.json$/.exec(path)
       if (blobMatch) {
-        const [blob] = await select(
-          config,
-          `SELECT content FROM artifact_blobs FINAL WHERE content_sha256 = '${blobMatch[1]}' LIMIT 1`,
-        )
-        if (!blob) return context.json({ error: 'Artifact not found' }, 404)
+        const blob = await blobReads(blobMatch[1], async () => {
+          const [row] = await select(
+            config,
+            `SELECT content FROM artifact_blobs FINAL WHERE content_sha256 = '${blobMatch[1]}' LIMIT 1`,
+          )
+          return row ? String(row.content) : null
+        })
+        if (blob === null) return context.json({ error: 'Artifact not found' }, 404)
         context.header('cache-control', 'public, max-age=31536000, immutable')
-        return context.json(blob.content)
+        return context.json(blob)
       }
 
       const artifactMatch =

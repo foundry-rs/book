@@ -34,6 +34,13 @@ not by when an older workflow happened to be backfilled. Comparison-to-viewer li
 pin snapshot revisions; artifact bodies are cached by content hash across runs.
 `viewer.json` returns both selected runs' compiler catalogs and only the selected
 benchmark's manifests in one query. `blobs/<sha256>.json` serves immutable bodies.
+The dashboard index returns only its 12 displayed rows, the main-run total and
+the preceding main commit for each row; commit prefixes resolve on the server.
+Origin index/history misses coalesce for one second; immutable bodies have a bounded
+8 MiB per-instance cache. These are optimizations, not distributed locks or durable storage.
+Vercel logs emit `perf_api` events with route, status, API/database/SQL durations,
+read rows/bytes and ClickHouse query IDs for percentile analysis. SQL reads have a
+five-second execution limit and a ten-second transport timeout.
 Legacy artifact URLs remain supported. Writers still populate the old tables for
 rollback: redeploy the pre-snapshot commit to restore legacy reads without deleting data.
 

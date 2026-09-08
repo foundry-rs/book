@@ -223,7 +223,7 @@ function Home() {
           <h1>Performance</h1>
           <p>Main branch benchmark history</p>
         </div>
-        <span>{mainRuns.length} runs</span>
+        <span>{index?.totalMainRuns ?? mainRuns.length} runs</span>
       </section>
       <form
         className="compare-box"

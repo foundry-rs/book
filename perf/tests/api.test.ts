@@ -19,6 +19,34 @@ afterEach(() => {
 })
 
 describe('website API', () => {
+  it('resolves published prefixes with one bounded query without GitHub', async () => {
+    const commit = 'a'.repeat(40)
+    globalThis.fetch = vi.fn(async () => Response.json({ commit }))
+    const resolveRef = vi.fn(async () => commit)
+    const app = createApi({ clickHouse: config, resolveRef })
+    expect(await (await app.request('/api/resolve?ref=aaaaaaa')).json()).toEqual({ commit })
+    expect(resolveRef).not.toHaveBeenCalled()
+    expect(globalThis.fetch).toHaveBeenCalledOnce()
+    expect(vi.mocked(globalThis.fetch).mock.calls[0][1]?.body).toContain('LIMIT 2')
+  })
+
+  it('coalesces origin blob reads and retains empty contents without caching missing blobs', async () => {
+    globalThis.fetch = vi.fn(async () => Response.json({ content: '' }))
+    const app = createApi({ clickHouse: config })
+    const path = `/api/data/blobs/${'a'.repeat(64)}.json`
+    const responses = await Promise.all([app.request(path), app.request(path)])
+    expect(await responses[0].json()).toBe('')
+    expect(await responses[1].json()).toBe('')
+    expect(globalThis.fetch).toHaveBeenCalledOnce()
+    await app.request(path)
+    expect(globalThis.fetch).toHaveBeenCalledOnce()
+    globalThis.fetch = vi.fn(async () => new Response(''))
+    const absent = `/api/data/blobs/${'b'.repeat(64)}.json`
+    expect((await app.request(absent)).status).toBe(404)
+    expect((await app.request(absent)).status).toBe(404)
+    expect(globalThis.fetch).toHaveBeenCalledTimes(2)
+  })
+
   it('serves scoped viewer descriptors with compiler content hashes in one query', async () => {
     const commits = ['a'.repeat(40), 'b'.repeat(40)]
     const revision = 'c'.repeat(64)
@@ -423,7 +451,9 @@ describe('website API', () => {
       schemaVersion: 1,
     })
     expect(fetch).toHaveBeenCalledTimes(1)
-    expect(queries[0]).toContain('LIMIT 2_000')
+    expect(queries[0]).toContain('LIMIT 12')
+    expect(queries[0]).toContain('AS baseCommit')
+    expect(queries[0]).toContain('AS totalMainRuns')
     expect(queries[0]).toContain('LIMIT 1 BY commit')
     expect(queries[0]).toContain("'%Y-%m-%dT%H:%i:%SZ', 'UTC'")
     expect(queries[0]).toContain('benchmark_count AS benchmarkCount')

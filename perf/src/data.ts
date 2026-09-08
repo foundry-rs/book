@@ -82,18 +82,14 @@ export async function resolveCommit(value: string): Promise<string> {
   const ref = value.trim()
   if (!ref) throw new Error('Enter a commit, branch, tag, or PR.')
   if (/^[0-9a-f]{40}$/i.test(ref)) return ref.toLowerCase()
-  if (/^[0-9a-f]{7,39}$/i.test(ref)) {
-    const matches = (await loadIndex()).runs.filter((run) =>
-      run.commit.startsWith(ref.toLowerCase()),
-    )
-    if (matches.length > 1) throw new Error('Ambiguous commit prefix; use a longer SHA.')
-    if (matches.length === 1) return matches[0].commit
-  }
   // Mutable refs are resolved only on submission, never against a stale published index.
   const response = await fetch(`/api/resolve?${new URLSearchParams({ ref })}`, {
     cache: 'no-store',
   })
-  if (!response.ok) throw new Error(`Could not resolve “${ref}” (${response.status}).`)
+  if (!response.ok) {
+    if (response.status === 422) throw new Error('Ambiguous commit prefix; use a longer SHA.')
+    throw new Error(`Could not resolve “${ref}” (${response.status}).`)
+  }
   const result = (await response.json()) as { commit: string }
   return result.commit
 }
