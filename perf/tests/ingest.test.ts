@@ -4,7 +4,6 @@ import { afterEach, describe, expect, it, vi } from 'vite-plus/test'
 import {
   extractArchive,
   ingestCommit,
-  enqueueWorkflowImport,
   ingestRecent,
   normalizeArchive,
   selectRuns,
@@ -128,39 +127,6 @@ describe('GitHub Actions importer', () => {
     })
   })
 
-  it('persists queued webhook work before returning a task and skips active duplicates', async () => {
-    vi.stubEnv('CLICKHOUSE_HOST', 'https://clickhouse.example')
-    vi.stubEnv('GITHUB_TOKEN', 'test')
-    let state = ''
-    vi.stubGlobal(
-      'fetch',
-      vi.fn(async (input, init) => {
-        const url = new URL(String(input))
-        if (url.searchParams.has('query')) {
-          state = JSON.parse(String(init.body)).state
-          return new Response('')
-        }
-        return new Response(
-          String(init.body).includes('FROM ingestion_jobs') && state
-            ? JSON.stringify({ state, next_attempt_at: Date.now() + 300_000, attempts: 0 })
-            : '',
-        )
-      }),
-    )
-    const source = {
-      id: 99,
-      head_sha: run.commit,
-      conclusion: 'success',
-      event: 'push',
-      head_branch: 'main',
-      name: 'Benchmark',
-      display_title: 'Test',
-      created_at: run.startedAt,
-    }
-    expect(await enqueueWorkflowImport(source)).toEqual(expect.any(Function))
-    expect(state).toBe('queued')
-    expect(await enqueueWorkflowImport(source)).toBeNull()
-  })
   it('excludes cooling-down runs before allocating the worker batch', async () => {
     const queries: string[] = []
     vi.stubGlobal(
@@ -199,7 +165,7 @@ describe('GitHub Actions importer', () => {
     })
     expect(result).toEqual({ scanned: 2, imported: 0, failed: [5, 6] })
     expect(queries.find((sql) => sql.includes('UNION DISTINCT'))).toContain(
-      "state IN ('retry', 'importing', 'queued') AND next_attempt_at > now64(3)",
+      "state IN ('retry', 'importing') AND next_attempt_at > now64(3)",
     )
   })
   it('does not publish an empty or unsupported results document', () => {

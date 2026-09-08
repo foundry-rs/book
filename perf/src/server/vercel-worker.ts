@@ -1,13 +1,9 @@
 import { Hono } from 'hono'
-import { enqueueWorkflowImport, ingestCommit, ingestRecent } from './ingest'
+import { ingestCommit, ingestRecent } from './ingest'
 import { nodeHandler } from './http'
 import { ImportPendingError, RunNotFoundError } from './pending'
-import { waitUntil } from '@vercel/functions'
-import { createWebhook } from './webhook'
 
 const app = new Hono()
-// This endpoint uses GitHub's HMAC authentication, not the cron bearer token.
-app.route('/api/worker/github', createWebhook(enqueueWorkflowImport, waitUntil))
 app.use('*', async (context, next) => {
   context.header('cache-control', 'no-store')
   if (

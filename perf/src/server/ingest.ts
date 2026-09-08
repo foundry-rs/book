@@ -228,7 +228,7 @@ async function knownRuns(config: ClickHouseConfig) {
      )
      UNION DISTINCT
      SELECT workflow_run_id, 0 AS run_attempt FROM ingestion_jobs FINAL
-     WHERE state IN ('retry', 'importing', 'queued') AND next_attempt_at > now64(3)`,
+     WHERE state IN ('retry', 'importing') AND next_attempt_at > now64(3)`,
   )
   return new Map(rows.map((row) => [Number(row.workflow_run_id), Number(row.run_attempt)]))
 }
@@ -280,7 +280,7 @@ async function dueJobs(config: ClickHouseConfig, limit: number) {
     config,
     `SELECT workflow_run_id, commit, state, attempts, toUnixTimestamp64Milli(next_attempt_at) AS next_attempt_at
      FROM ingestion_jobs FINAL
-     WHERE state IN ('retry', 'importing', 'queued') AND next_attempt_at <= now64(3)
+     WHERE state IN ('retry', 'importing') AND next_attempt_at <= now64(3)
      ORDER BY next_attempt_at ASC LIMIT ${limit}`,
   )
   return rows as unknown as IngestJob[]
@@ -289,7 +289,7 @@ async function dueJobs(config: ClickHouseConfig, limit: number) {
 async function recordJob(
   config: ClickHouseConfig,
   source: GitHubRun,
-  state: 'complete' | 'retry' | 'importing' | 'queued',
+  state: 'complete' | 'retry' | 'importing',
   attempts: number,
   error: string | null,
 ) {
@@ -477,25 +477,4 @@ export async function ingestCommit(sha: string, environment: NodeJS.ProcessEnv =
     if (!source) throw new RunNotFoundError()
     return ingestTracked(config, github, source)
   })
-}
-
-// Persist before acknowledging a webhook. Cron recovers queued/interrupted jobs
-// after the five-minute worker window; this is not an atomic distributed lock.
-export async function enqueueWorkflowImport(source: GitHubRun) {
-  const config = clickHouseConfig(process.env, 'write')
-  const githubConfig = gitHubConfig(process.env)
-  if (!config || !githubConfig) throw new Error('Import credentials are not configured')
-  const previous = await job(config, source.id)
-  if (await hasRun(config, source.id, source.run_attempt ?? 1)) return null
-  if (
-    previous &&
-    ['queued', 'importing', 'retry'].includes(previous.state) &&
-    previous.next_attempt_at > Date.now()
-  )
-    return null
-  await recordJob(config, source, 'queued', Number(previous?.attempts || 0), null)
-  return () =>
-    timeImport(source.head_sha, () =>
-      ingestTracked(config, sharedGitHubClient(githubConfig), source),
-    )
 }

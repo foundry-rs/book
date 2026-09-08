@@ -79,30 +79,14 @@ the read response. If deployment protection is enabled, configure
 `VERCEL_AUTOMATION_BYPASS_SECRET` for same-deployment worker calls.
 Dispatch deduplication/concurrency limits are per instance, not a distributed lock:
 publication is idempotent and the cron remains the recovery path for main runs.
-Workers persist `queued`/`importing` state in `ingestion_jobs` with a five-minute
-expiry. Cron also recovers expired queued/importing jobs (including PR runs received
-by webhook), as well as due retries. No schema alteration is required. These state
+Imports use on-demand requests and the existing cron; no GitHub webhook or new secret is required.
+Workers persist `importing` state in `ingestion_jobs` with a five-minute
+expiry. Cron also recovers expired importing jobs (including on-demand PR imports),
+as well as due retries. No schema alteration is required. These state
 rows reduce duplicate work but are not atomic leases. Failed imports retain internal
 details in `last_error`; public status responses deliberately omit those details.
 A durable cross-instance queue is still required if imports need guaranteed
 delivery independent of the function lifetime or browser retries.
-
-### Import immediately after a benchmark workflow completes
-
-Configure a repository webhook on `paradigmxyz/solar`, or the existing GitHub App's
-webhook subscription, for **Workflow runs** (`workflow_run`). Set its content type
-to JSON, URL to `https://www.getfoundry.sh/api/worker/github`, and a new random
-secret matching the server-only Vercel `GH_WEBHOOK_SECRET` variable. Do not reuse
-the cron token. Set the variable in Production before enabling the webhook; use a
-separate secret and endpoint for Preview testing. An existing App webhook serving
-another integration must not be overwritten: use a repository webhook instead.
-
-The endpoint verifies GitHub's HMAC-SHA256 signature over the original body with a
-constant-time comparison, accepts only successful completed runs from the configured
-repository and benchmark workflow, and persists a job before acknowledging it with 202. The worker retains the import with `waitUntil`. Duplicate deliveries for known
-or active jobs do not start another task. Cron remains the fallback; adding this code
-alone does not configure the GitHub subscription. See GitHub's
-[webhook signature documentation](https://docs.github.com/en/webhooks/using-webhooks/validating-webhook-deliveries).
 
 `perf_import` log events report total duration and per-stage milliseconds for workflow
 lookup, job/snapshot reads, GitHub metadata/artifact lookup, download headers, streamed
