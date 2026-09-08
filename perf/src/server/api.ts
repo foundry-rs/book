@@ -7,7 +7,7 @@ import { measurementColumns } from './publication'
 import { clickHouseConfig, select, type ClickHouseConfig } from './clickhouse'
 import { demoResponse } from './demo'
 import { artifactMetadata } from './artifacts'
-import { ImportPendingError, ingestCommit, ingestRecent } from './ingest'
+import { ImportPendingError, RunNotFoundError } from './pending'
 import { GitHubClient, GitHubRequestError, gitHubConfig } from './github'
 
 interface ApiOptions {
@@ -142,12 +142,16 @@ async function runsFromClickHouse(
         ;(result.compilers as Record<string, unknown>)[String(row.compiler)] = {
           status: row.status,
           label: row.label || undefined,
-          compile_time_seconds: row.compile_time_seconds,
-          bytecode_size: row.bytecode_size,
-          runtime_size: row.runtime_size,
-          deploy_gas: row.deploy_gas,
-          total_gas: row.total_gas,
-          peak_rss_bytes: row.peak_rss_bytes,
+          ...(benchmark === undefined
+            ? {
+                compile_time_seconds: row.compile_time_seconds,
+                bytecode_size: row.bytecode_size,
+                runtime_size: row.runtime_size,
+                deploy_gas: row.deploy_gas,
+                total_gas: row.total_gas,
+                peak_rss_bytes: row.peak_rss_bytes,
+              }
+            : {}),
         }
         results.set(testId, result)
       }
@@ -239,8 +243,10 @@ export function createApi(options: ApiOptions = {}) {
       ? clickHouseConfig()
       : options.clickHouse
   const cronSecret = options.cronSecret === undefined ? process.env.CRON_SECRET : options.cronSecret
-  const scheduledImport = options.ingestRecent || (() => ingestRecent())
-  const importRun = options.importRun || ((sha: string) => ingestCommit(sha))
+  const scheduledImport =
+    options.ingestRecent || (() => Promise.reject(new Error('Worker is not configured')))
+  const importRun =
+    options.importRun || (() => Promise.reject(new Error('Worker is not configured')))
   const imports = new Map<string, Promise<unknown>>()
   const loadImport = (sha: string) => {
     const existing = imports.get(sha)
@@ -251,6 +257,7 @@ export function createApi(options: ApiOptions = {}) {
   }
   const app = new Hono()
   const resolvedRefs = responseCache<string>(10_000, 64 * 1024)
+  const missingRefs = responseCache<boolean>(15_000, 64 * 1024)
   // Coalesce concurrent origin misses; the CDN remains the cross-instance cache.
   const indexReads = responseCache<Awaited<ReturnType<typeof indexFromClickHouse>>>(1_000)
   const historyReads = responseCache<Awaited<ReturnType<typeof historyFromClickHouse>>>(1_000)
@@ -306,6 +313,7 @@ export function createApi(options: ApiOptions = {}) {
     )
       return context.json({ error: 'Invalid ref' }, 400)
     if (/^[0-9a-f]{40}$/i.test(ref)) return context.json({ commit: ref.toLowerCase() })
+    if (await missingRefs.peek(ref)) return context.json({ error: 'Ref not found' }, 404)
     try {
       if (useDemoFallback) {
         const response = demoResponse('/api/data/index.json')!
@@ -346,8 +354,10 @@ export function createApi(options: ApiOptions = {}) {
     } catch (error) {
       if (error instanceof GitHubRequestError && error.status === 422)
         return context.json({ error: 'Ambiguous commit prefix; use a longer SHA.' }, 422)
-      if (error instanceof GitHubRequestError && error.status === 404)
+      if (error instanceof GitHubRequestError && error.status === 404) {
+        await missingRefs(ref, async () => true)
         return context.json({ error: 'Ref not found' }, 404)
+      }
       console.error('Failed to resolve benchmark ref', error)
       return context.json({ error: 'Could not resolve ref' }, 503)
     }
@@ -528,6 +538,7 @@ export function createApi(options: ApiOptions = {}) {
       return context.json(artifact.content)
     } catch (error) {
       context.header('cache-control', 'no-store')
+      if (error instanceof RunNotFoundError) return context.json({ error: error.message }, 404)
       if (error instanceof ImportPendingError) {
         context.header('retry-after', String(error.retryAfter))
         return context.json({ error: error.message }, 503)

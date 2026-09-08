@@ -21,10 +21,12 @@ CREATE TABLE IF NOT EXISTS run_snapshots (
     content_sha256 String, legacy_storage_path String)),
   published_at DateTime64(3, 'UTC') DEFAULT now64(3)
 ) ENGINE = ReplacingMergeTree
-ORDER BY (commit, revision);
+ORDER BY (commit, revision)
+SETTINGS index_granularity = 1, index_granularity_bytes = 1048576;
 
 CREATE TABLE IF NOT EXISTS artifact_blobs (
   content_sha256 FixedString(64),
   content String CODEC(ZSTD(9))
 ) ENGINE = ReplacingMergeTree
-ORDER BY content_sha256;
+ORDER BY content_sha256
+SETTINGS index_granularity = 1, index_granularity_bytes = 1048576;

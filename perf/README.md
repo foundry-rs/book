@@ -27,6 +27,10 @@ writer SELECT/INSERT on `run_snapshots` and INSERT on `artifact_blobs`.
 Verify `arrayJoin(artifacts).content_sha256` from every snapshot exists in
 `artifact_blobs`, and compare snapshot measurement/file counts with the legacy tables.
 Schema creation alone is not a completed migration.
+The two snapshot tables use one-row index granules because they are point-read
+documents/blobs, not dense analytical fact rows. For existing tables, apply
+`ALTER TABLE <table> MODIFY SETTING index_granularity=1, index_granularity_bytes=1048576`
+and rewrite old parts with `OPTIMIZE TABLE <table> FINAL` during this small-data rollout.
 
 Each immutable snapshot contains a run's measurements and manifest together.
 Latest usable runs are selected by workflow ID, attempt, then publication time,
@@ -41,6 +45,9 @@ Origin index/history misses coalesce for one second; immutable bodies have a bou
 Vercel logs emit `perf_api` events with route, status, API/database/SQL durations,
 read rows/bytes and ClickHouse query IDs for percentile analysis. SQL reads have a
 five-second execution limit and a ten-second transport timeout.
+Formatted artifacts are retained in a bounded browser cache. Files larger than
+512 Ki characters skip JSON formatting and interactive diffing, with a bounded
+text preview and full-content downloads to keep navigation responsive.
 Legacy artifact URLs remain supported. Writers still populate the old tables for
 rollback: redeploy the pre-snapshot commit to restore legacy reads without deleting data.
 
@@ -50,7 +57,16 @@ in ClickHouse until the artifact-store access and environment scope are approved
 The Vercel project root is the Book repository root. It builds the Book, this app,
 and its API into one deployment. The app is served at `/perf/solar/`, and
 `scripts/build-vercel-api.mjs` adds the `/api/*` route and function to Vocs' Build
-Output. The API runs on Node.js 24 with a five-minute execution limit.
+Output. Reads and imports deploy as separate Node.js 24 functions with five-minute
+execution limits. Missing-run reads dispatch to the authenticated worker using
+`VERCEL_URL` and `CRON_SECRET`, return retry status immediately, and the browser
+polls for at most 90 seconds. `waitUntil` retains the worker-dispatch request after
+the read response. If deployment protection is enabled, configure
+`VERCEL_AUTOMATION_BYPASS_SECRET` for same-deployment worker calls.
+Dispatch deduplication/concurrency limits are per instance, not a distributed lock:
+publication is idempotent and the cron remains the recovery path for main runs.
+A durable cross-instance queue is still required if imports need guaranteed
+delivery independent of the function lifetime or browser retries.
 Configure these server-only variables in Production and in the Preview environment
 used for testing (prefer branch-scoped preview credentials):
 

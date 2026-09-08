@@ -4,9 +4,11 @@ import { Unzip, UnzipInflate, UnzipPassThrough } from 'fflate'
 
 import { artifactMetadata, textArtifact, validArtifactPath, validIdentifier } from './artifacts'
 import { clickHouseConfig, insert, select, type ClickHouseConfig } from './clickhouse'
-import { GitHubClient, gitHubConfig, type GitHubRun } from './github'
+import { type GitHubClient, sharedGitHubClient, gitHubConfig, type GitHubRun } from './github'
 import { normalizeResults } from './normalizeResults'
 import { publication, publicationBlobs } from './publication'
+import { ImportPendingError, RunNotFoundError } from './pending'
+export { ImportPendingError } from './pending'
 
 const maxArtifactBytes = 32 * 1024 * 1024
 const maxArchiveBytes = 128 * 1024 * 1024
@@ -43,12 +45,6 @@ interface IngestJob {
   next_attempt_at: number
   state: string
   workflow_run_id: number
-}
-
-export class ImportPendingError extends Error {
-  constructor(readonly retryAfter: number) {
-    super('Benchmark import is waiting to retry')
-  }
 }
 
 function archivePath(name: string) {
@@ -338,8 +334,8 @@ async function ingestRun(config: ClickHouseConfig, github: GitHubClient, source:
 async function ingestTracked(config: ClickHouseConfig, github: GitHubClient, source: GitHubRun) {
   const previous = await job(config, source.id)
   throwIfPending(previous)
-  if (previous?.state === 'retry' && (await hasRun(config, source.id, source.run_attempt ?? 1))) {
-    await recordJob(config, source, 'complete', Number(previous.attempts), null)
+  if (await hasRun(config, source.id, source.run_attempt ?? 1)) {
+    await recordJob(config, source, 'complete', Number(previous?.attempts ?? 0), null)
     return false
   }
 
@@ -397,7 +393,7 @@ export async function ingestRecent(environment: NodeJS.ProcessEnv = process.env)
   if (!githubConfig) throw new Error('GitHub App credentials are not configured')
 
   const limit = ingestLimit(environment)
-  const github = new GitHubClient(githubConfig)
+  const github = sharedGitHubClient(githubConfig)
   const [known, jobs, listedRuns] = await Promise.all([
     knownRuns(config),
     dueJobs(config, limit),
@@ -448,8 +444,8 @@ export async function ingestCommit(sha: string, environment: NodeJS.ProcessEnv =
 
   throwIfPending(await jobForCommit(config, sha))
 
-  const github = new GitHubClient(githubConfig)
+  const github = sharedGitHubClient(githubConfig)
   const source = await github.runForCommit(sha)
-  if (!source) throw new Error('No completed benchmark run is available for this commit')
+  if (!source) throw new RunNotFoundError()
   return ingestTracked(config, github, source)
 }

@@ -24,7 +24,10 @@ it('loads both viewer manifests in one request and includes revision pins in cac
   await loadViewerRuns(commits[0], commits[1], 'counter', 'c'.repeat(64))
   await loadViewerRuns(commits[0], commits[1], 'counter', 'c'.repeat(64))
   expect(fetch).toHaveBeenCalledOnce()
-  expect(fetch).toHaveBeenCalledWith(expect.stringContaining('/viewer.json?'))
+  expect(fetch).toHaveBeenCalledWith(
+    expect.stringContaining('/viewer.json?'),
+    expect.objectContaining({ signal: expect.any(AbortSignal) }),
+  )
   await loadViewerRuns(commits[0], commits[1], 'counter', 'd'.repeat(64))
   expect(fetch).toHaveBeenCalledTimes(2)
 })
@@ -57,6 +60,7 @@ it('batches comparison runs and retains each run in the individual cache', async
   expect(runs.map((run) => run.commit)).toEqual([...commits].reverse())
   expect(fetch).toHaveBeenCalledExactlyOnceWith(
     `/api/data/runs.json?commits=${commits.join('%2C')}`,
+    expect.objectContaining({ signal: expect.any(AbortSignal) }),
   )
   await Promise.all(commits.map((commit) => loadRun(commit)))
   expect(fetch).toHaveBeenCalledOnce()
@@ -71,7 +75,10 @@ it('only fetches the uncached comparison side', async () => {
   await loadRun(commits[0])
   await Promise.all(commits.map((commit) => loadRun(commit)))
   expect(fetch).toHaveBeenCalledTimes(2)
-  expect(fetch).toHaveBeenLastCalledWith(`/api/data/runs/${commits[1]}/run.json?artifacts=0`)
+  expect(fetch).toHaveBeenLastCalledWith(
+    `/api/data/runs/${commits[1]}/run.json?artifacts=0`,
+    expect.objectContaining({ signal: expect.any(AbortSignal) }),
+  )
 })
 
 it('retries failed batches without caching failures', async () => {
@@ -98,7 +105,10 @@ it('allows the index HTTP cache while keeping mutable ref resolution fresh', asy
   vi.stubGlobal('fetch', fetch)
   const { loadIndex, resolveCommit } = await import('../src/data')
   await loadIndex()
-  expect(fetch).toHaveBeenLastCalledWith('/api/data/index.json')
+  expect(fetch).toHaveBeenLastCalledWith(
+    '/api/data/index.json',
+    expect.objectContaining({ signal: expect.any(AbortSignal) }),
+  )
   await resolveCommit('main')
   expect(fetch).toHaveBeenLastCalledWith('/api/resolve?ref=main', { cache: 'no-store' })
 })
@@ -141,7 +151,10 @@ it('revisiting artifacts and runs does not fetch again in the same instance', as
   await loadHistory('total_gas', 'test')
   await loadHistory('total_gas', 'test')
   expect(fetch).toHaveBeenCalledTimes(4)
-  expect(fetch).toHaveBeenLastCalledWith('/api/data/history.json?metric=total_gas&benchmark=test')
+  expect(fetch).toHaveBeenLastCalledWith(
+    '/api/data/history.json?metric=total_gas&benchmark=test',
+    expect.objectContaining({ signal: expect.any(AbortSignal) }),
+  )
   await loadHistory('total_gas', 'other')
   await loadHistory('runtime_size', 'test')
   expect(fetch).toHaveBeenCalledTimes(6)

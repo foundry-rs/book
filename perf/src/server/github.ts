@@ -263,6 +263,14 @@ export class GitHubClient {
   }
 }
 
+let sharedClient: GitHubClient | undefined
+// Reuse installation-token refresh and its in-flight request across worker jobs.
+export function sharedGitHubClient(config: GitHubConfig) {
+  if (!sharedClient || JSON.stringify(sharedClient.config) !== JSON.stringify(config))
+    sharedClient = new GitHubClient(config)
+  return sharedClient
+}
+
 async function githubError(response: Response) {
   const body = (await response.json().catch(() => ({}))) as GitHubError
   const header = response.headers.get('retry-after')

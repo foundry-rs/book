@@ -3,7 +3,9 @@ import type { Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
-import api from './src/server/api'
+import { createApi } from './src/server/api'
+import { ingestCommit, ingestRecent } from './src/server/ingest'
+const api = createApi({ importRun: ingestCommit, ingestRecent })
 
 function localApi(): Plugin {
   return {

@@ -1,28 +1,17 @@
 import { File, MultiFileDiff } from '@pierre/diffs/react'
 import { useEffect, useState } from 'react'
 import { Info } from 'lucide-react'
-import { formatArtifactContents } from './artifactFormat'
-import { loadArtifact } from './data'
+import {
+  loadFormattedArtifact,
+  maxInteractiveArtifact,
+  type ArtifactSource,
+} from './formattedArtifact'
 import { artifactLanguage } from './highlight'
 import type { Theme } from './types'
 
 interface Props {
-  before: {
-    commit: string
-    benchmark: string
-    compiler: string
-    label: string
-    storagePath?: string
-    contentHash?: string
-  }
-  after: {
-    commit: string
-    benchmark: string
-    compiler: string
-    label: string
-    storagePath?: string
-    contentHash?: string
-  }
+  before: ArtifactSource
+  after: ArtifactSource
   path: string
   language: string
   theme: Theme
@@ -46,31 +35,11 @@ export default function ArtifactDiff({
     setContents(null)
     setError('')
     Promise.all([
-      before.storagePath
-        ? loadArtifact(
-            before.commit,
-            before.benchmark,
-            before.compiler,
-            before.storagePath,
-            before.contentHash,
-          )
-        : null,
-      after.storagePath
-        ? loadArtifact(
-            after.commit,
-            after.benchmark,
-            after.compiler,
-            after.storagePath,
-            after.contentHash,
-          )
-        : null,
+      loadFormattedArtifact(before, path, language),
+      loadFormattedArtifact(after, path, language),
     ])
       .then(([beforeContents, afterContents]) => {
-        if (!cancelled)
-          setContents([
-            formatArtifactContents(beforeContents, path, language),
-            formatArtifactContents(afterContents, path, language),
-          ])
+        if (!cancelled) setContents([beforeContents, afterContents])
       })
       .catch((value: Error) => {
         if (!cancelled) setError(value.message)
@@ -94,6 +63,26 @@ export default function ArtifactDiff({
   ])
   if (error) return <p className="error">Could not load artifact: {error}</p>
   if (!contents) return <p className="empty">Loading diff…</p>
+  if (contents.some((value) => value !== null && value.length > maxInteractiveArtifact))
+    return (
+      <section className="large-artifact">
+        <p className="artifact-notice" role="status">
+          This file is too large for an interactive diff. Download the full contents below; the
+          preview is limited to 20,000 characters.
+        </p>
+        {contents.map(
+          (value, index) =>
+            value !== null && (
+              <LargeArtifact
+                key={index}
+                contents={value}
+                label={(index === 0 ? before : after).label}
+                path={path}
+              />
+            ),
+        )}
+      </section>
+    )
   const lang = artifactLanguage(path, language)
   const oldFile = contents[0] === null ? null : { name: path, contents: contents[0], lang }
   const newFile = contents[1] === null ? null : { name: path, contents: contents[1], lang }
@@ -144,5 +133,33 @@ export default function ArtifactDiff({
         disableWorkerPool
       />
     </div>
+  )
+}
+
+function LargeArtifact({
+  contents,
+  label,
+  path,
+}: {
+  contents: string
+  label: string
+  path: string
+}) {
+  const [url, setUrl] = useState<string>()
+  useEffect(() => {
+    const value = URL.createObjectURL(new Blob([contents], { type: 'text/plain;charset=utf-8' }))
+    setUrl(value)
+    return () => URL.revokeObjectURL(value)
+  }, [contents])
+  return (
+    <section>
+      <h3>{label}</h3>
+      {url && (
+        <a href={url} download={path.split('/').pop()}>
+          Download {path}
+        </a>
+      )}
+      <pre style={{ overflow: 'auto', maxHeight: '50vh' }}>{contents.slice(0, 20_000)}</pre>
+    </section>
   )
 }

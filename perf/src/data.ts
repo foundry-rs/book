@@ -69,9 +69,19 @@ export function loadHistory(metric: string, benchmark?: string) {
 }
 
 async function getJson<T>(path: string): Promise<T> {
-  const response = await fetch(`${root}${path}`)
-  if (!response.ok) throw new Error(`Could not load benchmark data (${response.status})`)
-  return response.json() as Promise<T>
+  const deadline = Date.now() + 90_000
+  for (;;) {
+    const response = await fetch(`${root}${path}`, {
+      signal: AbortSignal.timeout(Math.max(1, deadline - Date.now())),
+    })
+    const retry = Number(response.headers.get('retry-after'))
+    if (response.status === 503 && retry > 0 && Date.now() + retry * 1000 < deadline) {
+      await new Promise((resolve) => setTimeout(resolve, retry * 1000))
+      continue
+    }
+    if (!response.ok) throw new Error(`Could not load benchmark data (${response.status})`)
+    return response.json() as Promise<T>
+  }
 }
 
 export function loadIndex() {
