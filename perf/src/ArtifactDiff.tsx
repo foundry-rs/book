@@ -1,4 +1,6 @@
-import { File, MultiFileDiff } from '@pierre/diffs/react'
+import { File, FileDiff } from '@pierre/diffs/react'
+import type { FileContents, FileDiffMetadata } from '@pierre/diffs'
+import { computeDiff } from './computeDiff'
 import { useEffect, useState } from 'react'
 import { Info } from 'lucide-react'
 import {
@@ -110,6 +112,69 @@ export default function ArtifactDiff({
     )
   }
   return (
+    <ComputedDiff
+      before={oldFile}
+      after={newFile}
+      beforeLabel={before.label}
+      afterLabel={after.label}
+      theme={theme}
+      style={style}
+      onStyleChange={onStyleChange}
+    />
+  )
+}
+
+function ComputedDiff({
+  before,
+  after,
+  beforeLabel,
+  afterLabel,
+  theme,
+  style,
+  onStyleChange,
+}: {
+  before: FileContents
+  after: FileContents
+  beforeLabel: string
+  afterLabel: string
+  theme: Theme
+  style: Props['style']
+  onStyleChange: Props['onStyleChange']
+}) {
+  const [diff, setDiff] = useState<FileDiffMetadata | null>(null)
+  const [error, setError] = useState('')
+  useEffect(() => {
+    const controller = new AbortController()
+    setDiff(null)
+    setError('')
+    computeDiff(before, after, controller.signal).then(
+      (value) => {
+        if (!controller.signal.aborted) setDiff(value)
+      },
+      (error: Error) => {
+        if (!controller.signal.aborted) setError(error.message)
+      },
+    )
+    return () => controller.abort()
+    // File values, not object identity: presentation changes reuse the computed diff.
+  }, [before.contents, before.name, before.lang, after.contents, after.name, after.lang])
+  if (error)
+    return (
+      <section className="large-artifact">
+        <p className="artifact-notice" role="status">
+          {error} Download the full files below; previews are limited to 20,000 characters.
+        </p>
+        <LargeArtifact contents={before.contents} label={beforeLabel} path={before.name} />
+        <LargeArtifact contents={after.contents} label={afterLabel} path={after.name} />
+      </section>
+    )
+  if (!diff)
+    return (
+      <p className="empty" role="status">
+        Computing diff…
+      </p>
+    )
+  return (
     <div className="artifact-diff">
       <div className="diff-tools">
         <button
@@ -125,10 +190,9 @@ export default function ArtifactDiff({
           Unified
         </button>
       </div>
-      <MultiFileDiff
+      <FileDiff
         className="solar-diff"
-        oldFile={oldFile}
-        newFile={newFile}
+        fileDiff={diff}
         options={{ diffStyle: style, overflow: 'scroll', themeType: theme }}
         disableWorkerPool
       />

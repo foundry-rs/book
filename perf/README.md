@@ -52,6 +52,9 @@ five-second execution limit and a ten-second transport timeout.
 Formatted artifacts are retained in a bounded browser cache. Files larger than
 512 Ki characters skip JSON formatting and interactive diffing, with a bounded
 text preview and full-content downloads to keep navigation responsive.
+Interactive diff computation runs in a cancellable browser worker with a five-second
+limit. On timeout or worker failure, both files remain downloadable with bounded
+previews. Theme and split/unified changes reuse the computed diff.
 Legacy artifact URLs remain supported through snapshot manifests and content hashes.
 Writers now populate only snapshots and blobs. Before retiring `runs`,
 `benchmark_results`, and `artifact_files`, rerun the additive backfill, verify
