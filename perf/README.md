@@ -18,7 +18,11 @@ pnpm build
 
 ### Snapshot read-model rollout
 
-Before deploying snapshot readers, apply `schema/clickhouse.sql` and `schema/snapshots.sql`,
+New installations use `db:schema`, which creates only `ingestion_jobs`,
+`run_snapshots`, and `artifact_blobs`. `schema/clickhouse.sql` is retained only
+as the historical legacy schema, not applied to new installations.
+
+Before migrating an existing legacy installation, apply `schema/snapshots.sql`,
 then execute `schema/backfill-snapshots.sql` with the database administrator.
 The backfill is additive and restartable: it copies content-addressed bodies first
 and only publishes snapshots whose bodies exist. Repeat after legacy writers drain.
@@ -48,8 +52,12 @@ five-second execution limit and a ten-second transport timeout.
 Formatted artifacts are retained in a bounded browser cache. Files larger than
 512 Ki characters skip JSON formatting and interactive diffing, with a bounded
 text preview and full-content downloads to keep navigation responsive.
-Legacy artifact URLs remain supported. Writers still populate the old tables for
-rollback: redeploy the pre-snapshot commit to restore legacy reads without deleting data.
+Legacy artifact URLs remain supported through snapshot manifests and content hashes.
+Writers now populate only snapshots and blobs. Before retiring `runs`,
+`benchmark_results`, and `artifact_files`, rerun the additive backfill, verify
+measurement/manifest parity and that every referenced body exists, deploy the
+snapshot-only workers, and drain old writers. Back up the legacy tables before
+dropping them. A pre-snapshot deployment requires restoring those backups first.
 
 Public object storage is not required for this stage: deduplicated bodies remain
 in ClickHouse until the artifact-store access and environment scope are approved.
@@ -229,7 +237,7 @@ remain usable and display an explicit empty state in the artifact viewer.
 
 # Latency and schema rollout
 
-Apply `schema/clickhouse.sql`, then run `schema/backfill-labels.sql` against the same database
+For legacy installations only, apply `schema/clickhouse.sql`, then run `schema/backfill-labels.sql` against the same database
 before deploying the normalized-label reader. After older worker invocations have drained,
 rerun the idempotent backfill and verify that no labels remain empty; stop old workers that
 share this database before final cutover. The backfill is additive and skips populated

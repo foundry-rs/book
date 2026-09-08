@@ -5,7 +5,7 @@ import { database, execute } from './lib/clickhouse.mjs'
 
 const schema = (
   await Promise.all(
-    ['clickhouse.sql', 'snapshots.sql'].map((name) =>
+    ['ingestion-jobs.sql', 'snapshots.sql'].map((name) =>
       readFile(fileURLToPath(new URL(`../schema/${name}`, import.meta.url)), 'utf8'),
     ),
   )

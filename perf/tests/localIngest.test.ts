@@ -54,6 +54,9 @@ describe('local importer', () => {
       expect(inserts.join('\n')).toContain('passes/phase α.log')
       expect(inserts.join('\n')).toContain('experimental')
       expect(inserts.join('\n')).not.toContain('binary.bin')
+      expect(inserts).toHaveLength(2)
+      expect(inserts[0]).toContain('INSERT INTO artifact_blobs')
+      expect(inserts[1]).toContain('INSERT INTO run_snapshots')
       expect(await readFile(join(nested, 'phase α.log'), 'utf8')).toBe('new pass output')
       inserts.length = 0
       await symlink(join(directory, 'results.json'), join(nested, 'link.txt'))

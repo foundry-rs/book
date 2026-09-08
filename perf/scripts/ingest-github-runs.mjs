@@ -76,15 +76,7 @@ async function importedRuns() {
 
 async function refreshMetadata(run) {
   if (!trustedRun(run)) return false
-  const [stored] = await select(
-    `SELECT workflow_run_id, commit, branch, pr, started_at, workflow_name, source_schema, raw_results
-     FROM runs FINAL WHERE workflow_run_id = ${run.databaseId} LIMIT 1`,
-  )
-  if (!stored) return false
   const pull = await pullRequest(repository, run.headSha)
-  await insert('runs', [
-    { ...stored, pr: pull?.number || null, title: pull?.title || run.displayTitle || null },
-  ])
   const [snapshot] = await select(
     `SELECT * EXCEPT (published_at) FROM run_snapshots FINAL WHERE workflow_run_id = ${run.databaseId} ORDER BY run_attempt DESC, published_at DESC LIMIT 1`,
   )
@@ -132,20 +124,6 @@ async function artifactPaths(directory) {
     }
   }
   throw new Error('Downloaded artifact has no results.json')
-}
-
-function runDocument(run, pull, sourceSchema, rawResults) {
-  return {
-    workflow_run_id: Number(run.databaseId),
-    commit: run.headSha,
-    branch: run.headBranch || null,
-    pr: pull?.number || null,
-    title: pull?.title || run.displayTitle || null,
-    started_at: run.createdAt,
-    workflow_name: run.name || 'Benchmark',
-    source_schema: sourceSchema,
-    raw_results: rawResults,
-  }
 }
 
 async function ingest(repository, run, refresh, knownRuns) {
@@ -196,9 +174,8 @@ async function ingest(repository, run, refresh, knownRuns) {
       error.stderr?.includes('no valid artifacts found to download') ||
       error.message.includes('Downloaded artifact has no results.json')
     ) {
-      await insert('runs', [runDocument(run, pull, 0, '')])
-      knownRuns.set(run.databaseId, run.attempt ?? 1)
-      return true
+      console.warn(`Skipped workflow run ${run.databaseId}: no benchmark results available`)
+      return false
     }
     console.warn(`Skipped workflow run ${run.databaseId}: ${error.message.split('\n', 1)[0]}`)
     return false

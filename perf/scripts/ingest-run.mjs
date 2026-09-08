@@ -127,9 +127,6 @@ const results = normalizeResults(document, {
   commit: run.commit,
 })
 const artifacts = await normalizeArtifacts(resolve(options.artifacts), { ...run, results })
-await insert('benchmark_results', results)
-await insert('artifact_files', artifacts)
-await insert('runs', [run])
 await insert('artifact_blobs', publicationBlobs(artifacts))
 await insert('run_snapshots', [publication({ ...run, run_attempt: attempt }, results, artifacts)])
 console.log(`Ingested ${run.commit.slice(0, 8)} from workflow run ${run.workflow_run_id}`)

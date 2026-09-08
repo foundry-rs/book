@@ -317,9 +317,6 @@ async function ingestRun(config: ClickHouseConfig, github: GitHubClient, source:
 
   const archive = await extractArchive(await github.download(artifact.archive_download_url))
   const normalized = normalizeArchive(archive, run)
-  await insert(config, 'benchmark_results', normalized.results)
-  await insert(config, 'artifact_files', normalized.artifacts)
-  await insert(config, 'runs', [normalized.run])
   await insert(config, 'artifact_blobs', publicationBlobs(normalized.artifacts))
   await insert(config, 'run_snapshots', [
     publication(
