@@ -1,7 +1,7 @@
 import { Hono } from 'hono'
-import { compilerLabels } from '../compilerMetadata'
 import { historyMetrics, historySeries } from '../historySeries'
 import { requestTiming } from './timing'
+import { responseCache } from '../cache'
 
 import { clickHouseConfig, select, type ClickHouseConfig } from './clickhouse'
 import { demoResponse } from './demo'
@@ -74,6 +74,7 @@ const measurementColumns = [
   'deploy_gas',
   'total_gas',
   'peak_rss_bytes',
+  'label',
 ]
 
 async function runsFromClickHouse(
@@ -84,10 +85,10 @@ async function runsFromClickHouse(
   const stored = await select(
     config,
     `WITH selected AS (
-       SELECT workflow_run_id, commit, branch, pr, title, raw_results, started_at
+       SELECT workflow_run_id, commit, branch, pr, title, started_at
        FROM runs FINAL WHERE commit IN (${commits.map((sha) => `'${sha}'`).join(',')})
        ORDER BY imported_at DESC, workflow_run_id DESC LIMIT 1 BY commit
-     ) SELECT r.workflow_run_id, r.commit, r.branch, r.pr, r.title, r.raw_results,
+     ) SELECT r.workflow_run_id, r.commit, r.branch, r.pr, r.title,
        formatDateTime(r.started_at, '%Y-%m-%dT%H:%i:%SZ', 'UTC') AS timestamp,
        b.measurements
      FROM selected AS r LEFT JOIN (
@@ -99,8 +100,7 @@ async function runsFromClickHouse(
   )
   return Promise.all(
     stored.map(async (run) => {
-      const { raw_results, measurements, ...runMetadata } = run
-      const labels = compilerLabels(raw_results)
+      const { measurements, ...runMetadata } = run
       const rows = (Array.isArray(measurements) ? (measurements as unknown[][]) : [])
         .sort(
           (a, b) =>
@@ -121,7 +121,7 @@ async function runsFromClickHouse(
         }
         ;(result.compilers as Record<string, unknown>)[String(row.compiler)] = {
           status: row.status,
-          label: labels.get(testId)?.[String(row.compiler)],
+          label: row.label || undefined,
           compile_time_seconds: row.compile_time_seconds,
           bytecode_size: row.bytecode_size,
           runtime_size: row.runtime_size,
@@ -243,15 +243,19 @@ export function createApi(options: ApiOptions = {}) {
     return pending
   }
   const app = new Hono()
+  const resolvedRefs = responseCache<string>(10_000, 64 * 1024)
   let github: GitHubClient | undefined
 
   app.use('/api/*', async (context, next) => {
     const started = performance.now()
-    const timing = { queries: 0, databaseMs: 0 }
+    const timing = { queries: 0, databaseMs: 0, sqlMs: 0, readRows: 0, readBytes: 0, summaries: 0 }
     await requestTiming.run(timing, next)
     context.header(
       'server-timing',
-      `api;dur=${(performance.now() - started).toFixed(1)}, db;dur=${timing.databaseMs.toFixed(1)};desc="${timing.queries} queries"`,
+      `api;dur=${(performance.now() - started).toFixed(1)}, db;dur=${timing.databaseMs.toFixed(1)};desc="${timing.queries} queries (roundtrip sum)"` +
+        (timing.queries > 0 && timing.summaries === timing.queries
+          ? `, sql;dur=${timing.sqlMs.toFixed(1)};desc="${timing.readRows} rows / ${timing.readBytes} bytes"`
+          : ''),
     )
     // Browser max-age alone does not opt functions into Vercel's shared CDN cache.
     const cacheControl = context.res.headers.get('cache-control')
@@ -292,7 +296,13 @@ export function createApi(options: ApiOptions = {}) {
         if (!config) return context.json({ error: 'GitHub is not configured' }, 503)
         github = new GitHubClient(config)
       }
-      const commit = await (options.resolveRef ? options.resolveRef(ref) : github!.resolveRef(ref))
+      const commit = await resolvedRefs(ref, async () => {
+        const resolved = await (options.resolveRef
+          ? options.resolveRef(ref)
+          : github!.resolveRef(ref))
+        if (!/^[0-9a-f]{40}$/.test(resolved)) throw new Error('Invalid resolved commit')
+        return resolved
+      })
       if (!/^[0-9a-f]{40}$/.test(commit)) throw new Error('Invalid resolved commit')
       return context.json({ commit })
     } catch (error) {

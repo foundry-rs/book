@@ -179,3 +179,21 @@ discovered files independently of directory order. Existing imported runs are no
 automatically refreshed: adding support for previously omitted files requires a
 deliberate reimport while their GitHub archives are retained. Metrics-only runs
 remain usable and display an explicit empty state in the artifact viewer.
+
+# Latency and schema rollout
+
+Apply `schema/clickhouse.sql`, then run `schema/backfill-labels.sql` against the same database
+before deploying the normalized-label reader. After older worker invocations have drained,
+rerun the idempotent backfill and verify that no labels remain empty; stop old workers that
+share this database before final cutover. The backfill is additive and skips populated
+labels. Original results remain available for reprocessing; normal comparison queries no
+longer read them. Artifact sizes are populated at ingestion so manifests never scan text.
+
+`Server-Timing` separates API wall time, cumulative database roundtrip time (`db`), and
+ClickHouse execution time (`sql`, when the server returns its summary). Database roundtrips
+include transfer/parsing and may overlap; their sum is not an extra sequential delay.
+Reads request `wait_end_of_query=1` because the API already consumes complete responses;
+this also buffers results on ClickHouse so the summary is final. SQL timing is omitted if
+any query lacks a valid summary. Headers on CDN hits describe the original cache fill, not a new function invocation.
+Mutable refs are resolved at submission and coalesced/cached at the origin for up to ten
+seconds. Full commit hashes require no GitHub lookup.

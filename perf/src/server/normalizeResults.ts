@@ -48,6 +48,7 @@ export function normalizeResults(
           suite: text(result.suite, 128) || 'unknown',
           compiler,
           status: text(values.status, 64) || 'unknown',
+          label: text(values.label, 512),
           compile_time_seconds: number(values.compile_time_seconds ?? values.compileTime),
           bytecode_size: number(values.bytecode_size ?? values.bytecodeSize),
           runtime_size: number(values.runtime_size ?? values.runtimeSize),

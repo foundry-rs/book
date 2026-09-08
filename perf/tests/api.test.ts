@@ -30,7 +30,20 @@ describe('website API', () => {
                 commit,
                 workflow_run_id: 1,
                 measurements: [
-                  ['test', 'Description', 'micro', 'future', 'ok', 0, null, 12, null, 0, 100],
+                  [
+                    'test',
+                    'Description',
+                    'micro',
+                    'future',
+                    'ok',
+                    0,
+                    null,
+                    12,
+                    null,
+                    0,
+                    100,
+                    'future 1.0',
+                  ],
                 ],
               }),
             )
@@ -47,10 +60,13 @@ describe('website API', () => {
       bytecode_size: null,
       runtime_size: 12,
       total_gas: 0,
+      label: 'future 1.0',
     })
     expect(runs[0].artifacts).toEqual({})
     expect(globalThis.fetch).toHaveBeenCalledOnce()
+    expect(String(vi.mocked(globalThis.fetch).mock.calls[0][1]?.body)).not.toContain('raw_results')
     expect(response.headers.get('server-timing')).toContain('1 queries')
+    expect(response.headers.get('server-timing')).not.toContain('sql;')
     for (const query of ['', 'oops', `${commits.join(',')},${commits[0]}`]) {
       expect((await app.request(`/api/data/runs.json?commits=${query}`)).status).toBe(400)
     }
@@ -100,6 +116,17 @@ describe('website API', () => {
     expect((await app.request(`/api/resolve?ref=${'b'.repeat(40)}`)).status).toBe(200)
     expect(resolveRef).toHaveBeenCalledOnce()
     expect(globalThis.fetch).not.toHaveBeenCalled()
+  })
+  it('deduplicates and briefly caches mutable ref resolution without caching failures', async () => {
+    const resolveRef = vi.fn(async () => 'a'.repeat(40))
+    const app = createApi({ clickHouse: config, resolveRef })
+    await Promise.all([app.request('/api/resolve?ref=main'), app.request('/api/resolve?ref=main')])
+    await app.request('/api/resolve?ref=main')
+    expect(resolveRef).toHaveBeenCalledOnce()
+    resolveRef.mockRejectedValueOnce(new Error('temporary'))
+    expect((await app.request('/api/resolve?ref=other')).status).toBe(503)
+    expect((await app.request('/api/resolve?ref=other')).status).toBe(200)
+    expect(resolveRef).toHaveBeenCalledTimes(3)
   })
   it('skips manifests for comparisons and loads them independently in one query', async () => {
     const sha = 'a'.repeat(40)

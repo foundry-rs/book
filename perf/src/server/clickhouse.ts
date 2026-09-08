@@ -47,6 +47,8 @@ async function request(
   url.searchParams.set('database', config.database)
   // ClickHouse requires an explicit opt-in in addition to Accept-Encoding.
   url.searchParams.set('enable_http_compression', '1')
+  // Reads are fully buffered by select(); ask for a complete execution summary.
+  if (body === undefined) url.searchParams.set('wait_end_of_query', '1')
   for (const [key, value] of Object.entries(params)) url.searchParams.set(`param_${key}`, value)
   if (body !== undefined) url.searchParams.set('query', query)
   const response = await fetch(url, {
@@ -76,6 +78,30 @@ export async function select(
   try {
     const response = await request(config, `${query}\nFORMAT JSONEachRow`, undefined, params)
     const body = await response.text()
+    const summary = response.headers.get('x-clickhouse-summary')
+    if (timing && summary) {
+      try {
+        const stats = JSON.parse(summary)
+        if (
+          !['elapsed_ns', 'read_rows', 'read_bytes'].every(
+            (key) =>
+              stats[key] != null && Number.isFinite(Number(stats[key])) && Number(stats[key]) >= 0,
+          )
+        )
+          throw new Error('Incomplete summary')
+        timing.summaries = (timing.summaries ?? 0) + 1
+        const add = (key: 'sqlMs' | 'readRows' | 'readBytes', value: unknown, divisor = 1) => {
+          const number = Number(value)
+          if (Number.isFinite(number) && number >= 0)
+            timing[key] = (timing[key] ?? 0) + number / divisor
+        }
+        add('sqlMs', stats.elapsed_ns, 1e6)
+        add('readRows', stats.read_rows)
+        add('readBytes', stats.read_bytes)
+      } catch {
+        /* Optional diagnostics must not fail a successful query. */
+      }
+    }
     return body
       .trim()
       .split('\n')

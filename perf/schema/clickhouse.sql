@@ -33,6 +33,7 @@ CREATE TABLE IF NOT EXISTS benchmark_results (
   suite LowCardinality(String),
   compiler LowCardinality(String),
   status LowCardinality(String),
+  label String DEFAULT '',
   compile_time_seconds Nullable(Float64),
   bytecode_size Nullable(UInt64),
   runtime_size Nullable(UInt64),
@@ -43,6 +44,8 @@ CREATE TABLE IF NOT EXISTS benchmark_results (
 ) ENGINE = ReplacingMergeTree(imported_at)
 PARTITION BY toYYYYMM(imported_at)
 ORDER BY (workflow_run_id, test_id, compiler);
+
+ALTER TABLE benchmark_results ADD COLUMN IF NOT EXISTS label String DEFAULT '' AFTER status;
 
 CREATE TABLE IF NOT EXISTS artifact_files (
   workflow_run_id UInt64,
