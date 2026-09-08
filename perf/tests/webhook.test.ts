@@ -1,5 +1,5 @@
 import { createHmac } from 'node:crypto'
-import { afterEach, expect, it, vi } from 'vite-plus/test'
+import { afterEach, beforeEach, expect, it, vi } from 'vite-plus/test'
 import { createWebhook } from '../src/server/webhook'
 
 const source = {
@@ -31,6 +31,11 @@ const request = (value: unknown, signature?: string) => {
     },
   })
 }
+beforeEach(() => {
+  vi.stubEnv('GITHUB_REPOSITORY', 'paradigmxyz/solar')
+  vi.stubEnv('BENCHMARK_WORKFLOW', 'bench.yml')
+  vi.stubEnv('PERF_DEMO_DATA', '0')
+})
 afterEach(() => vi.unstubAllEnvs())
 
 it('persists a signed completed workflow before acknowledging and retains background work', async () => {
