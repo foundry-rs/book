@@ -1,7 +1,16 @@
 import type { FileContents, FileDiffMetadata } from '@pierre/diffs'
+import { responseCache } from './cache'
+
+const completed = responseCache<FileDiffMetadata>(3_600_000, 16 * 1024 * 1024)
 
 // Terminate abandoned/expensive computations instead of blocking navigation.
 export function computeDiff(before: FileContents, after: FileContents, signal: AbortSignal) {
+  const key =
+    before.cacheKey && after.cacheKey
+      ? JSON.stringify([before.cacheKey, after.cacheKey])
+      : undefined
+  const cached = key && completed.peek(key)
+  if (!signal.aborted && cached) return cached
   return new Promise<FileDiffMetadata>((resolve, reject) => {
     if (signal.aborted) return reject(new Error('Diff cancelled'))
     const worker = new Worker(new URL('./diff.worker.ts', import.meta.url), { type: 'module' })
@@ -10,7 +19,11 @@ export function computeDiff(before: FileContents, after: FileContents, signal: A
       signal.removeEventListener('abort', abort)
       worker.terminate()
       if (error) reject(error)
-      else resolve(diff!)
+      else {
+        // Cache only finished work: a cancelled request must not poison its replacement.
+        if (key) void completed(key, async () => diff!)
+        resolve(diff!)
+      }
     }
     const abort = () => finish(new Error('Diff cancelled'))
     const timer = setTimeout(

@@ -57,7 +57,11 @@ limit. Unfinished computation is cancelled in hidden tabs and restarted when vis
 so background throttling does not consume the time budget. On timeout or worker failure,
 both files remain downloadable with bounded
 previews. Theme and split/unified changes reuse the computed diff. Syntax highlighting
-uses the library's worker pool (one worker); `CodeView` virtualizes visible lines.
+uses the library's worker pool (one worker, retained across file/compiler switches);
+`CodeView` owns the scroll container and virtualizes visible lines. File cache keys
+include a SHA-256 of the actual formatted text, path, and language, preventing
+same-name artifacts from sharing highlighting. Completed diffs reuse the existing
+bounded cache (16 MiB, one hour); cancelled and failed computations are not retained.
 DOM updates still run on the main thread. This follows the
 [Diffs performance guidance](https://diffs.com/docs); workers keep the UI responsive,
 but do not eliminate computation time. The separate computation worker is necessary

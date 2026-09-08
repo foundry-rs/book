@@ -21,6 +21,41 @@ test('computes diff in a worker and reuses it for presentation changes', async (
   expect(workers).toBe(1)
 })
 
+test('compiler switches isolate highlight caches and revisits reuse computed diffs', async ({
+  page,
+}) => {
+  const workers: string[] = []
+  page.on('worker', (worker) => workers.push(worker.url()))
+  await page.goto(url)
+  const code = page.locator('diffs-container').locator('code[data-additions]')
+  await expect(code).toContainText('0x28')
+  await expect(page.locator('diffs-container').locator('code span[style]').first()).toBeVisible()
+  const initialWorkers = workers.length
+  await page.getByRole('combobox', { name: 'Right', exact: true }).selectOption('head:solx')
+  await expect(code).toContainText('0x2e')
+  await expect(code).not.toContainText('0x28')
+  await page.getByRole('combobox', { name: 'Right', exact: true }).selectOption('head:solar')
+  await expect(code).toContainText('0x28')
+  await expect(code).not.toContainText('0x2e')
+  expect(workers.length).toBe(initialWorkers + 1)
+})
+
+test('virtualizes long files and renders their last lines on scroll', async ({ page }) => {
+  const contents = Array.from(
+    { length: 2000 },
+    (_, i) => `PUSH2 0x${i.toString(16).padStart(4, '0')}`,
+  ).join('\n')
+  await page.route('**/api/data/runs/**/1.json', (route) => route.fulfill({ json: contents }))
+  await page.goto(url)
+  await expect(page.getByText('Contents are identical.', { exact: true })).toBeVisible()
+  const code = page.locator('diffs-container').locator('code')
+  await expect(code).toContainText('0x0000')
+  await expect(code).not.toContainText('0x07cf')
+  await page.locator('.solar-diff').press('End')
+  await expect(code).toContainText('0x07cf')
+  await expect(code).not.toContainText('0x0000')
+})
+
 test('leaving a pending diff cannot replace the newly selected file', async ({ page }) => {
   await page.route('**/diff.worker.ts*', (route) =>
     route.fulfill({ contentType: 'text/javascript', body: 'self.onmessage = () => {}' }),

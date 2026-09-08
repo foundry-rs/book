@@ -4,12 +4,7 @@ import { computeDiff } from './computeDiff'
 import HighlightWorker from '@pierre/diffs/worker/worker.js?worker'
 import { useEffect, useState } from 'react'
 import { Info } from 'lucide-react'
-import {
-  loadFormattedArtifact,
-  maxInteractiveArtifact,
-  type ArtifactSource,
-} from './formattedArtifact'
-import { artifactLanguage } from './highlight'
+import { loadDiffFile, maxInteractiveArtifact, type ArtifactSource } from './formattedArtifact'
 import type { Theme } from './types'
 
 interface Props {
@@ -30,7 +25,10 @@ const poolOptions = {
 export default function ArtifactDiff(props: Props) {
   return (
     <WorkerPoolContextProvider poolOptions={poolOptions} highlighterOptions={{}}>
-      <ArtifactDiffContents {...props} />
+      <ArtifactDiffContents
+        key={JSON.stringify([props.before, props.after, props.path, props.language])}
+        {...props}
+      />
     </WorkerPoolContextProvider>
   )
 }
@@ -44,16 +42,13 @@ function ArtifactDiffContents({
   style,
   onStyleChange,
 }: Props) {
-  const [contents, setContents] = useState<[string | null, string | null] | null>(null)
+  const [contents, setContents] = useState<[FileContents | null, FileContents | null] | null>(null)
   const [error, setError] = useState('')
   useEffect(() => {
     let cancelled = false
     setContents(null)
     setError('')
-    Promise.all([
-      loadFormattedArtifact(before, path, language),
-      loadFormattedArtifact(after, path, language),
-    ])
+    Promise.all([loadDiffFile(before, path, language), loadDiffFile(after, path, language)])
       .then(([beforeContents, afterContents]) => {
         if (!cancelled) setContents([beforeContents, afterContents])
       })
@@ -79,7 +74,7 @@ function ArtifactDiffContents({
   ])
   if (error) return <p className="error">Could not load artifact: {error}</p>
   if (!contents) return <p className="empty">Loading diff…</p>
-  if (contents.some((value) => value !== null && value.length > maxInteractiveArtifact))
+  if (contents.some((value) => value !== null && value.contents.length > maxInteractiveArtifact))
     return (
       <section className="large-artifact">
         <p className="artifact-notice" role="status">
@@ -91,7 +86,7 @@ function ArtifactDiffContents({
             value !== null && (
               <LargeArtifact
                 key={index}
-                contents={value}
+                contents={value.contents}
                 label={(index === 0 ? before : after).label}
                 path={path}
               />
@@ -99,9 +94,7 @@ function ArtifactDiffContents({
         )}
       </section>
     )
-  const lang = artifactLanguage(path, language)
-  const oldFile = contents[0] === null ? null : { name: path, contents: contents[0], lang }
-  const newFile = contents[1] === null ? null : { name: path, contents: contents[1], lang }
+  const [oldFile, newFile] = contents
   if (oldFile === null && newFile === null) {
     return <p className="empty">This artifact was not published by either side.</p>
   }

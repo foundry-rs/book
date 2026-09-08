@@ -52,3 +52,20 @@ it('reports worker failures without a synchronous fallback', async () => {
   await expect(promise).rejects.toThrow('worker')
   expect(TestWorker.latest.terminate).toHaveBeenCalledOnce()
 })
+
+it('caches completed diffs but not cancelled work', async () => {
+  const oldFile = { ...before, cacheKey: 'old-content' }
+  const newFile = { ...after, cacheKey: 'new-content' }
+  const controller = new AbortController()
+  const abandoned = computeDiff(oldFile, newFile, controller.signal)
+  controller.abort()
+  await expect(abandoned).rejects.toThrow('cancelled')
+  const result = computeDiff(oldFile, newFile, new AbortController().signal)
+  const worker = TestWorker.latest
+  const diff = { name: before.name, hunks: [] }
+  worker.onmessage!({ data: { diff } })
+  await expect(result).resolves.toEqual(diff)
+  await expect(computeDiff(oldFile, newFile, new AbortController().signal)).resolves.toEqual(diff)
+  expect(TestWorker.latest).toBe(worker)
+  expect(worker.postMessage).toHaveBeenCalledOnce()
+})
