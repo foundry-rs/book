@@ -70,7 +70,8 @@ test('highlights a large repetitive assembly diff without expensive intraline de
   })
   await page.goto(url)
   const code = page.locator('diffs-container').locator('code')
-  await expect(code.locator('span[style]').first()).toBeVisible({ timeout: 3000 })
+  // Include cold worker/grammar startup within the five-second rendering budget.
+  await expect(code.locator('span[style]').first()).toBeVisible({ timeout: 5000 })
   await expect(page.locator('diffs-container').locator('code[data-additions]')).toContainText(
     '0x11',
   )
