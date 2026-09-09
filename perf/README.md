@@ -64,9 +64,8 @@ Theme and split/unified changes reuse the computed diff. Syntax highlighting
 uses the library's worker pool (one worker, retained across file/compiler switches);
 intraline decorations are disabled because Shiki's decoration splitting becomes
 quadratic on generated files. Syntax colors and added/deleted line colors remain.
-The pnpm patch for `@pierre/diffs` replaces array spreads in `trimPatchContext`
-with loops: a single large hunk otherwise exceeds Chrome's argument-count limit.
-Remove it when an upstream release includes that fix.
+`@pierre/diffs` 1.4.1 includes the large-hunk stack-overflow fix upstream;
+no dependency patch is needed. Its edit-session APIs are not used by this read-only viewer.
 `CodeView` owns the scroll container and virtualizes visible lines. File cache keys
 include a SHA-256 of the actual formatted text, path, and language, preventing
 same-name artifacts from sharing highlighting. Completed diffs reuse the existing
