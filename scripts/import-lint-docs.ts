@@ -31,6 +31,7 @@ const navigation = {
 } as const;
 
 const hash = (text: string) => createHash("sha256").update(text).digest("hex");
+const hasOwn = (value: object, key: string) => Object.prototype.hasOwnProperty.call(value, key);
 const read = (root: string, path: string) => readFileSync(join(root, path), "utf8");
 const git = (foundry: string, ...args: string[]) =>
   execFileSync("git", ["-C", foundry, ...args], { encoding: "utf8" }).trim();
@@ -98,7 +99,7 @@ export function readLintDocs(foundry: string): LintDoc[] {
       const title = body.match(/^# (.+)\n/)?.[1];
       if (
         !title ||
-        !Object.hasOwn(groups, severity) ||
+        !hasOwn(groups, severity) ||
         !body.includes(`**ID**: \`${id}\``) ||
         !body.includes(`**Severity**: \`${severity}\``)
       )
@@ -109,7 +110,7 @@ export function readLintDocs(foundry: string): LintDoc[] {
 }
 
 export function renderPage(lint: LintDoc): string {
-  const description = JSON.stringify(lint.title.replaceAll("`", ""));
+  const description = JSON.stringify(lint.title.replace(/`/g, ""));
   return `---\ndescription: ${description}\n---\n\n${generatedNotice}\n\n${shiftHeadings(lint.body, 1)}\n`;
 }
 
@@ -147,7 +148,7 @@ export function planImport(root: string, foundry: string): Map<string, string> {
   }
   // Retain removed lint URLs with a legacy notice rather than deleting published pages.
   for (const file of readdirSync(join(root, pagesPath)).filter((file) => file.endsWith(".mdx"))) {
-    if (Object.hasOwn(manifest.pages, file.slice(0, -4))) continue;
+    if (hasOwn(manifest.pages, file.slice(0, -4))) continue;
     const path = `${pagesPath}/${file}`;
     const page = read(root, path);
     if (/^status: legacy$/m.test(page.split("---")[1] ?? "")) continue;
@@ -219,7 +220,7 @@ export function checkImportedDocs(root: string): void {
   }
   for (const file of readdirSync(join(root, pagesPath)).filter((file) => file.endsWith(".mdx"))) {
     if (
-      !Object.hasOwn(manifest.pages, file.slice(0, -4)) &&
+      !hasOwn(manifest.pages, file.slice(0, -4)) &&
       !/^status: legacy$/m.test(read(root, `${pagesPath}/${file}`).split("---")[1] ?? "")
     )
       failures.push(`${file}: unimported active page`);
