@@ -175,6 +175,8 @@ navigation on the right to browse by severity.
 #### Medium severity
 
 - [`assert-state-change`](/forge/linting/assert-state-change) — Flags expressions inside `assert()` that modify contract state.
+- [`block-number-across-roll`](/forge/linting/block-number-across-roll) — Flags raw block-number values used across `vm.roll` or raw reads on both sides of a roll; use `vm.getBlockNumber()` for reliable captures.
+- [`block-timestamp-across-warp`](/forge/linting/block-timestamp-across-warp) — Flags raw timestamp values used across `vm.warp` or raw reads on both sides of a warp; use `vm.getBlockTimestamp()` for reliable captures.
 - [`boolean-cst`](/forge/linting/boolean-cst) — Flags expressions where a boolean constant (`true`/`false`) is used as a control-flow condition or operand of a boolean operator, which usually indicates dead code or a leftover debug toggle.
 - [`dangerous-unary-operator`](/forge/linting/dangerous-unary-operator) — Flags assignments whose `=` is fused to a unary operator (`=-`, `=~`), which parses as a plain assignment rather than the compound assignment it resembles.
 - [`divide-before-multiply`](/forge/linting/divide-before-multiply) — Flags arithmetic expressions where division is performed before multiplication, which can cause unintended precision loss in integer arithmetic.
