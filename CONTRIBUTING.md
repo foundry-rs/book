@@ -165,8 +165,24 @@ $ forge build
 
 The canonical lint explanations live in
 [`crates/lint/docs`](https://github.com/foundry-rs/foundry/tree/master/crates/lint/docs)
-in Foundry. Update those files first, then synchronize the corresponding pages in
-`src/pages/forge/linting/`. Keep each lint's public kebab-case ID, severity, and
+in Foundry. Edit explanations only there, then import the corresponding pages
+into the Book:
+
+```bash
+$ vp run import:lints -- --foundry /path/to/foundry
+$ vp run import:lints -- --check
+```
+
+Lint page bodies and their generated navigation are generator-owned; do not
+hand-edit the copies in `src/pages/forge/linting/`. Commit the generated snapshots
+and `scripts/lint-docs-manifest.json` together. The manifest pins their Foundry
+source commit. Like the cheatcode manifest, these snapshots remain committed so
+the Book can build without fetching Foundry. The weekly update workflow imports
+both references from the exact commit of its installed Forge binary.
+
+The `--check` command validates committed generated output offline. Add
+`--foundry /path/to/foundry` to compare it against a local source checkout.
+Keep each lint's public kebab-case ID, severity, and
 URL unchanged unless a separately reviewed compatibility change requires it.
 Clippy uses snake_case IDs; do not copy that spelling convention into Forge.
 

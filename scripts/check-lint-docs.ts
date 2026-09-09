@@ -1,7 +1,9 @@
 import { readFileSync, readdirSync } from "node:fs";
 import { basename, join, resolve } from "node:path";
+import { canonicalBody, checkImportedDocs, readLintDocs } from "./import-lint-docs.ts";
 
 const root = resolve(import.meta.dirname, "..");
+checkImportedDocs(root);
 const pagesDir = join(root, "src/pages/forge/linting");
 const index = readFileSync(join(root, "src/pages/forge/linting.mdx"), "utf8");
 const sidebar = readFileSync(join(root, "sidebar/forge.ts"), "utf8");
@@ -35,19 +37,6 @@ const legacy = new Set<string>();
 // Ignore code fences when interpreting headings and example markers.
 function prose(text: string): string {
   return text.replace(/^```[^\n]*\n[\s\S]*?^```\s*$/gm, "");
-}
-
-function canonicalBody(text: string): string {
-  let fenced = false;
-  return text
-    .replace(/^---\n[\s\S]*?\n---\n\n/, "")
-    .split("\n")
-    .map((line) => {
-      if (line.startsWith("```")) fenced = !fenced;
-      return !fenced ? line.replace(/^#(#+) /, "$1 ") : line;
-    })
-    .join("\n")
-    .trim();
 }
 
 for (const file of readdirSync(pagesDir)
@@ -120,29 +109,9 @@ if (foundryFlag !== -1) {
   const argument = process.argv[foundryFlag + 1];
   if (!argument) throw new Error("--foundry requires a checkout path");
   const foundry = resolve(argument);
-  const solDir = join(foundry, "crates/lint/src/sol");
-  const registry = ["high", "med", "low", "info", "gas", "codesize"]
-    .map(
-      (group) =>
-        readFileSync(join(solDir, group, "mod.rs"), "utf8").split("register_lints!(")[1] ?? "",
-    )
-    .join("\n");
-  const sourceFiles = readdirSync(solDir, { recursive: true }).filter(
-    (file): file is string => typeof file === "string" && file.endsWith(".rs"),
-  );
-  const declarations = sourceFiles.flatMap((file) =>
-    [
-      ...readFileSync(join(solDir, file), "utf8").matchAll(
-        /declare_forge_lint!\(\s*([A-Z_0-9]+),\s*Severity::(\w+),\s*"([a-z0-9-]+)"/g,
-      ),
-    ].map((match) => ({ symbol: match[1], severity: match[2], id: match[3] })),
-  );
-  const registered = declarations.filter(({ symbol }) =>
-    new RegExp(`\\b${symbol}\\b`).test(registry),
-  );
-  if (registered.length === 0) throw new Error("no registered Foundry lints found");
+  const registered = readLintDocs(foundry);
   const registeredIds = new Set(registered.map(({ id }) => id));
-  for (const { id, severity } of registered) {
+  for (const { id, severity, body } of registered) {
     const page = pages.get(id);
     if (!page || legacy.has(id)) {
       failures.push(`${id}: registered lint has no active page`);
@@ -150,8 +119,7 @@ if (foundryFlag !== -1) {
     }
     if (!page.includes(`**Severity**: \`${severity}\``))
       failures.push(`${id}: severity differs from registry`);
-    const canonical = readFileSync(join(foundry, "crates/lint/docs", `${id}.md`), "utf8").trim();
-    if (canonicalBody(page) !== canonical)
+    if (canonicalBody(page) !== body)
       failures.push(`${id}: page differs from canonical Foundry documentation`);
   }
   for (const id of pages.keys()) {

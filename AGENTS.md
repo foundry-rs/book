@@ -71,11 +71,19 @@ stale snapshot.
 
 ### Lint reference pages
 
-Follow the lint documentation rules in `CONTRIBUTING.md`. The canonical content
-is in Foundry's `crates/lint/docs/`; synchronize all affected pages and preserve
-their public kebab-case IDs. Run `vp run check:lints` and, when a Foundry checkout
-is available, `vp run check:lints -- --foundry /path/to/foundry` to check the
-registered inventory and canonical content. Verify the rendered Vocs output.
+Follow the lint documentation rules in `CONTRIBUTING.md`. Edit canonical lint
+explanations only in Foundry's `crates/lint/docs/`, then run
+`vp run import:lints -- --foundry /path/to/foundry`. Lint page bodies and their
+generated navigation are generator-owned; do not edit those copies by hand.
+Preserve public kebab-case IDs. Commit the generated snapshots together with
+`scripts/lint-docs-manifest.json`, which records the source commit, just as the
+cheatcode manifest refresh commits its generated snapshot.
+
+Run `vp run import:lints -- --check` to validate committed generated output
+offline. Add `--foundry /path/to/foundry` to compare it with that source checkout.
+Run `vp run check:lints` for documentation structure and verify the rendered
+Vocs output. The weekly update workflow refreshes lint references and the
+cheatcode manifest from the exact same commit as its installed Forge binary.
 
 ### Source snippets
 

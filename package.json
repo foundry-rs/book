@@ -11,6 +11,7 @@
     "check:cheatcodes": "vp exec tsx scripts/check-cheatcode-coverage.ts",
     "check:commands": "vp exec tsx scripts/check-narrative-commands.ts",
     "check:lints": "vp exec tsx scripts/check-lint-docs.ts",
+    "import:lints": "vp exec tsx scripts/import-lint-docs.ts",
     "dev": "vp exec vocs dev",
     "fetch-benchmarks": "vp exec tsx scripts/fetch-benchmarks.ts",
     "fetch-changelog": "vp exec tsx scripts/fetch-changelog.ts",
