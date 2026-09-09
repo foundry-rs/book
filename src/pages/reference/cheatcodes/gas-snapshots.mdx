@@ -34,7 +34,16 @@ These cheatcodes allow you to capture gas usage in your tests. Snapshots are wri
 
 ### EIP-8037 gas accounting
 
-A scalar snapshot is not a guaranteed total of regular and state gas. `snapshotGasLastFrame` and the deprecated `snapshotGasLastCall` use gas consumed from the regular counter: that can include state gas spilled into regular gas, but excludes state gas paid from the reservoir. For isolated frames with zero net state gas, they use the isolated transaction's receipt gas instead. They therefore need not equal `lastFrameGas().gasTotalUsed`.
+`snapshotGasLastFrame` and the deprecated `snapshotGasLastCall` record one gas number. Without isolation, they measure consumption of the regular gas counter, including state charges spilled into that counter and excluding charges paid from the reservoir.
+
+For an **isolated transaction**, the current snapshot value depends on its net state gas:
+
+| Net state gas in the isolated frame | Snapshot value |
+| --- | --- |
+| Positive (state created and retained) | Regular counter consumption before the ordinary refund, including any state spillover but excluding reservoir-funded state gas. |
+| Zero (no net state creation) | Receipt gas after ordinary refund and calldata-floor processing. |
+
+These are different accounting bases; keep the same workload and isolation mode when comparing snapshots. Use [`lastFrameGas`](/reference/cheatcodes/last-frame-gas) for the separate components.
 
 Section snapshots (`startSnapshotGas` / `stopSnapshotGas`) also measure regular gas-counter consumption and do not capture state gas paid from the reservoir. Use [`lastFrameGas`](/reference/cheatcodes/last-frame-gas) to inspect regular and signed net state gas separately. Use receipt `gasUsed` for a mined transaction's total charged gas, and `eth_estimateGas` to estimate a sufficient transaction limit.
 

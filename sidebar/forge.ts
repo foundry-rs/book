@@ -10,7 +10,7 @@ export const forgeDocs: SidebarItem[] = [
   { text: "Scripting", link: "/forge/scripting" },
   { text: "Debugging", link: "/forge/debugging" },
   { text: "Gas Tracking", link: "/forge/gas-tracking" },
-  { text: "Gas Accounting", link: "/forge/gas-accounting" },
+  { text: "Gas Accounting (EIP-8037)", link: "/forge/gas-accounting" },
   { text: "Formatting", link: "/forge/formatting" },
   { text: "Linting", link: "/forge/linting" },
 ];

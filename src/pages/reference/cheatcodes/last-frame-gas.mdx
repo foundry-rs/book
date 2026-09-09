@@ -24,9 +24,9 @@ function lastCallGas() external view returns (Gas memory gas);
 
 `lastFrameGas` returns gas measurements for the most recently completed external call or contract creation. The values are recorded from the callee's perspective, so they describe the child execution frame rather than all overhead paid by its caller.
 
-### Is this just a rename of `lastCallGas`?
+### Comparison with `lastCallGas`
 
-No. Both return the same `Gas` struct and use the same gas accounting for a given call, but **`lastFrameGas` also records contract creation** (`CREATE` and `CREATE2`). `lastCallGas` only records calls and is deprecated; use `lastFrameGas` for new tests.
+`lastFrameGas` extends `lastCallGas` with **contract creation** (`CREATE` and `CREATE2`); it is more than a rename. Both return the same `Gas` struct and use the same gas accounting for a given call. `lastCallGas` only records calls and is deprecated; use `lastFrameGas` for new tests.
 
 | Most recently completed operation | `lastFrameGas()` | `lastCallGas()` |
 | --- | --- | --- |
@@ -55,10 +55,19 @@ Reading either value does not replace the recorded frame because cheatcode calls
 
 When EIP-8037 is active, `gasTotalUsed` excludes state gas regardless of whether the state charge was paid from the reservoir or spilled into regular gas. An exceptional halt consumes the remaining regular allowance after state rollback; those consumed units are reported as regular gas and `gasStateUsed` is zero.
 
-For the net sum of the measured components, widen both fields to signed integers before adding them. This preserves negative nested-frame state deltas:
+For the net sum of the measured components, widen both fields to signed integers before adding them. The example below disables isolation so both calls share one transaction: the second call undoes the first call's state creation and reports a negative state delta. With isolation enabled, the calls are separate transactions and clearing the slot reports zero state gas instead.
 
-```solidity [test/LastFrameGas.t.sol]
-// [!include ~/snippets/projects/cheatcodes/test/LastFrameGas.t.sol:components]
+Use Solidity 0.8.36, `evm_version = "amsterdam"`, and `experimental = true` for this example. The [complete example project](https://github.com/foundry-rs/book/tree/master/src/snippets/projects/gas-accounting) includes these settings. From that directory, install a current forge-std containing `gasStateUsed` and run:
+
+```bash
+$ forge install foundry-rs/forge-std --no-git
+$ forge test --match-contract StateGasTest -vv
+```
+
+The function's inline configuration disables isolation only for this test:
+
+```solidity [test/StateGas.t.sol]
+// [!include ~/snippets/projects/gas-accounting/test/StateGas.t.sol:components]
 ```
 
 That sum is **not a gas-limit estimate**. You may need gas temporarily before a state refill, and the caller pays additional overhead. Call forwarding rules and the regular gas cap also constrain execution. A negative state delta is valid accounting, not a negative gas limit.

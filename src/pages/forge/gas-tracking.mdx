@@ -6,7 +6,7 @@ description: Track and compare gas usage with Forge snapshots and reports.
 
 Forge tracks gas usage to help optimize contracts and catch regressions.
 
-For EIP-8037, distinguish regular (execution) gas, state gas, and charged receipt gas. A scalar gas report or snapshot is not a transaction gas-limit estimate. See [gas accounting](/forge/gas-accounting) for what each value includes and [`lastFrameGas`](/reference/cheatcodes/last-frame-gas) for separate frame measurements.
+Under EIP-8037 (Amsterdam), gas has two dimensions: regular gas and state gas. See [gas accounting](/forge/gas-accounting) for how reports, snapshots, and [`lastFrameGas`](/reference/cheatcodes/last-frame-gas) relate to them.
 
 ### Gas reports
 
