@@ -46,12 +46,11 @@ export const lintingSidebar: SidebarItem[] = [
   ]),
   ruleGroup("Medium severity", [
     "assert-state-change",
-    "block-number-across-roll",
-    "block-timestamp-across-warp",
     "boolean-cst",
     "dangerous-unary-operator",
     "divide-before-multiply",
     "ecrecover",
+    "environment-read-across-mutation",
     "incorrect-erc20-interface",
     "incorrect-erc721-interface",
     "incorrect-strict-equality",

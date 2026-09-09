@@ -26,6 +26,16 @@
     { "source": "/dependencies", "destination": "/projects/dependencies" },
 
     { "source": "/forge/overview", "destination": "/forge" },
+    {
+      "source": "/forge/linting/block-number-across-roll",
+      "destination": "/forge/linting/environment-read-across-mutation",
+      "permanent": true
+    },
+    {
+      "source": "/forge/linting/block-timestamp-across-warp",
+      "destination": "/forge/linting/environment-read-across-mutation",
+      "permanent": true
+    },
 
     { "source": "/forge/tests", "destination": "/forge/testing" },
     { "source": "/forge/tests/overview", "destination": "/forge/testing" },

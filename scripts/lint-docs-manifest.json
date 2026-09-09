@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "source": {
     "repository": "foundry-rs/foundry",
-    "commit": "fdcc8c694db9a45019cf883d6fc9fb5d8199ff02",
+    "commit": "5e84b293bfd0f71e266b4500f97beda25fcd9553",
     "path": "crates/lint/docs"
   },
   "pages": {
@@ -11,9 +11,7 @@
     "arbitrary-send-eth": "96137494d080f7ca93cd1722ed834d4301509b935fe61d0a18fc8c734ca1162f",
     "asm-keccak256": "1faaf88eadf502d5ec41b29df82545725c0b1fb5c084d2f06d8c81642d83eaa5",
     "assert-state-change": "568509f64c3bd7eab8aa15b1fa3bcd399fdf02f61c26d99b6d882156119b768d",
-    "block-number-across-roll": "835e7c2608dd9269c4ef2f0a8622eb9135e6a3c6b28e11f266f4375c9c7e9362",
     "block-timestamp": "42131b8f170b3d7c1d9ab0d084e57b2d3a4af77bec5da41aa69b756cf0a90e1d",
-    "block-timestamp-across-warp": "b1ce449be44f1a53a90210586019b1e78593bbb3de5ebef2d5af12b74523031c",
     "boolean-cst": "3057d2c392aeb87695115163077e4eecde01f3b199f6772c50c76a8f829be959",
     "boolean-equal": "4232b1933b89fdd45a818cad56c0949c3748ce14b250ea88b894d717fd6f27f1",
     "cache-array-length": "e6a8f31ccbb65a22a0f41ce20127117157a088567706cad9cb495852fcaa1adc",
@@ -32,6 +30,7 @@
     "empty-block": "c6b5392136553929dde26fb678e3c5e7efb55d4bd824098a993220a45dc01468",
     "encode-packed-collision": "e0400d624b9ea0243653d93b474ed7376957413575648e1ca58e484ed208cffc",
     "enumerable-loop-removal": "899b84d7835847f26650914c052b6cba8eaeac5c2a4ed0802165b6d960cc7b15",
+    "environment-read-across-mutation": "faa70209a2bc9c75224525498cac9c37ec3be6e98cb163528c6df04d9b14b421",
     "erc20-unchecked-transfer": "9951336cbd31043aea72fc7b4d03724a5e8a006b3409b7f89f0f4f256df43b7a",
     "event-fields": "0ea6e03b14a023ab928abae31f51caf180a7ef0a3272b7cdf57e1a915bba0e17",
     "external-function": "f93cbac4c2fe94b02d0e422f284c145def032ed661886d8fe0fd3a26dedef8da",
@@ -101,7 +100,7 @@
     "write-after-write": "3642499ec54ea4ecb71ef5a28fb2a0e9ef850f7af04df07b4e1d8b5346f5221f"
   },
   "navigation": {
-    "sidebar/forge.ts": "e76b67a80e3e2a48531c9ff900feb7a6b6a5d2f619e83713e4210b0abbbf83b8",
-    "src/pages/forge/linting.mdx": "58a9cc5148d8a15724d827da9b77783d027265d3665ee20fe5360087df808443"
+    "sidebar/forge.ts": "434a8c18f65f627efcb1c243567717749a4368af17adf623e0564ead57452cac",
+    "src/pages/forge/linting.mdx": "df2f39f61eeb2d8be9ddb422a1e82780e5dc2096652ddb2bd3a0406a917d5aa0"
   }
 }

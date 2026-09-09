@@ -177,12 +177,11 @@ navigation on the right to browse by severity.
 #### Medium severity
 
 - [`assert-state-change`](/forge/linting/assert-state-change) — Flags expressions inside `assert()` that modify contract state.
-- [`block-number-across-roll`](/forge/linting/block-number-across-roll) — Block number captures across roll
-- [`block-timestamp-across-warp`](/forge/linting/block-timestamp-across-warp) — Timestamp captures across warp
 - [`boolean-cst`](/forge/linting/boolean-cst) — Flags expressions where a boolean constant (`true`/`false`) is used as a control-flow condition or operand of a boolean operator, which usually indicates dead code or a leftover debug toggle.
 - [`dangerous-unary-operator`](/forge/linting/dangerous-unary-operator) — Flags an assignment whose `=` is fused to a unary operator (`=-`, `=~`), which parses as a plain assignment of a unary expression rather than the compound assignment it resembles.
 - [`divide-before-multiply`](/forge/linting/divide-before-multiply) — Flags arithmetic expressions where division is performed before multiplication, which can cause unintended precision loss in integer arithmetic.
 - [`ecrecover`](/forge/linting/ecrecover) — Flags direct calls to Solidity's `ecrecover` builtin when the signature's `s` value is not proven to be in the canonical lower half of the secp256k1 curve order.
+- [`environment-read-across-mutation`](/forge/linting/environment-read-across-mutation) — Environment reads across Foundry mutations
 - [`incorrect-erc20-interface`](/forge/linting/incorrect-erc20-interface) — Flags interfaces or contracts whose function signatures match an ERC20 method by name and parameters but use the wrong return type.
 - [`incorrect-erc721-interface`](/forge/linting/incorrect-erc721-interface) — Flags interfaces or contracts whose function signatures match an ERC721 (or ERC165) method by name and parameters but use the wrong return type.
 - [`incorrect-strict-equality`](/forge/linting/incorrect-strict-equality) — Flags `==` and `!=` comparisons on values that can be manipulated by parties outside the contract's control: ETH balances (`.balance`) and ERC-20 balances (`.balanceOf(...)`).
