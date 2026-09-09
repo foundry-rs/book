@@ -52,6 +52,28 @@ five-second execution limit and a ten-second transport timeout.
 Formatted artifacts are retained in a bounded browser cache. Files larger than
 512 Ki characters skip JSON formatting and interactive diffing, with a bounded
 text preview and full-content downloads to keep navigation responsive.
+Interactive diff computation uses patience line matching in a cancellable browser
+worker with a five-second limit. Unlike unbounded Myers diffing, patience anchors
+unique lines and replaces unmatched regions rather than searching for a minimal edit
+sequence through repetitive assembly. It can produce coarser changes, but preserves
+both files exactly. The library parses the resulting patch with three context lines
+and retains both full files for context expansion. On timeout or worker failure,
+both files remain downloadable with bounded previews; the failed content pair stays
+failed for the page session, with no automatic retries on revisits or visibility changes.
+Theme and split/unified changes reuse the computed diff. Syntax highlighting
+uses the library's worker pool (one worker, retained across file/compiler switches);
+intraline decorations are disabled because Shiki's decoration splitting becomes
+quadratic on generated files. Syntax colors and added/deleted line colors remain.
+`@pierre/diffs` 1.4.1 includes the large-hunk stack-overflow fix upstream;
+no dependency patch is needed. Its edit-session APIs are not used by this read-only viewer.
+`CodeView` owns the scroll container and virtualizes visible lines. File cache keys
+include a SHA-256 of the actual formatted text, path, and language, preventing
+same-name artifacts from sharing highlighting. Completed diffs reuse the existing
+bounded cache (16 MiB, one hour); cancelled computations are not retained.
+DOM updates still run on the main thread. This follows the
+[Diffs performance guidance](https://diffs.com/docs); workers keep the UI responsive,
+but do not eliminate computation time. The separate computation worker is necessary
+because `MultiFileDiff` calculates its Myers diff synchronously even with a highlighting pool.
 Legacy artifact URLs remain supported through snapshot manifests and content hashes.
 Writers now populate only snapshots and blobs. Before retiring `runs`,
 `benchmark_results`, and `artifact_files`, rerun the additive backfill, verify
@@ -141,8 +163,8 @@ benchmark artifact; it has no performance-service secrets or callback step.
 The importer stores retry state in ClickHouse. It retries transient GitHub
 requests with backoff, keeps failed artifact imports in the queue, and never
 runs code from an artifact. A missing run requested through the public data API
-is fetched synchronously once, which lets a PR benchmark permalink wait for its
-own data without exposing GitHub credentials. Set `INGEST_MAX_RUNS` to a value
+dispatches an authenticated background import in Vercel; the public request returns
+202 and the client polls as described above. Set `INGEST_MAX_RUNS` to a value
 from 1 through 20 to change the cron batch size; it defaults to 4.
 Runs still in retry backoff are excluded before allocating that batch.
 
@@ -182,7 +204,8 @@ enable demo mode.
 Initialize the schema once with an administrative database account using `pnpm db:schema`;
 the runtime reader and writer should not have schema-management permissions.
 `GET /api/health` must return HTTP 200 with `source: "clickhouse"`; it verifies queries
-against the three public tables. It does not verify GitHub or writer permissions.
+against `run_snapshots` and `artifact_blobs`. It does not verify GitHub, ingestion-job
+status grants, or writer permissions.
 
 On a preview, manually invoke `GET /api/worker/tick` with `Authorization: Bearer <CRON_SECRET>`
 and check the returned `failed`, `imported`, and `scanned` counts. Vercel schedules cron
@@ -219,24 +242,27 @@ from both Base and Head. Defaults are Base Solar on the left and Head Solar on t
 Selections are permalinked as `left=base:solar&right=head:solar`; older `compiler` and
 `against` links remain supported. Files are discovered from the two selected sides.
 
-Successful data responses explicitly enable the Vercel CDN cache with the same lifetimes
-as the browser cache. Errors, ref resolution, health checks, and worker responses are not
+Successful data responses explicitly enable the Vercel CDN cache using their HTTP cache
+lifetimes. Errors, ref resolution, health checks, and worker responses are not
 shared-cached. `Server-Timing` reports API duration, cumulative database duration, and query
 count; database duration can exceed API duration for parallel queries. Check `x-vercel-cache`
 and `age` as well: timing headers on a CDN hit describe the original cache fill, not a new query.
 
 Successful browser reads are cached for 60 seconds (index/history), five minutes (runs),
 or one hour (artifacts), with a 128-entry/32 MiB estimated-size limit per cache. Missing
-artifacts and failed requests are retried, not retained. Artifact HTTP responses cache
-for one hour; an uncached stored artifact uses one ClickHouse request. Compiler labels
+artifacts and failed requests are retried, not retained. Content-addressed blob HTTP
+responses cache for one year as immutable; legacy artifact URLs cache for one hour.
+An uncached stored artifact uses one ClickHouse request. Compiler labels
 come from the stored original results; Solar uses its run commit and missing versions
 are explicitly marked unknown.
 Concurrent comparison reads coalesce into `runs.json?commits=<sha>,<sha>` (one database
 query for both runs, at most two full SHAs). Each result remains cached individually;
 if only one side is missing, `run.json?artifacts=0` uses one database query. Missing
-runs are imported concurrently and only missing commits are reread. The file viewer
-loads `artifacts.json` lazily in one database read, reusing cached run metrics, and skips
-file requests for sides absent from the manifest. The full `run.json` remains compatible.
+runs are dispatched concurrently and only missing commits are reread. The file viewer
+uses `viewer.json` to fetch both runs' catalogs and the selected benchmark's manifests
+in one query, then fetches the two selected bodies concurrently by content hash. It
+skips sides absent from the manifest and reuses bodies shared across runs and compilers.
+`artifacts.json` and the full `run.json` remain compatible legacy endpoints.
 
 Verify benchmark metrics, history, compiler artifact diffs, repeated cached reads, and
 the docs root `/`. A missing run is imported on demand; an already stored run is read

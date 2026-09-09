@@ -1,12 +1,10 @@
-import { File, MultiFileDiff } from '@pierre/diffs/react'
+import { CodeView, WorkerPoolContextProvider } from '@pierre/diffs/react'
+import type { FileContents, FileDiffMetadata } from '@pierre/diffs'
+import { computeDiff } from './computeDiff'
+import HighlightWorker from '@pierre/diffs/worker/worker.js?worker'
 import { useEffect, useState } from 'react'
 import { Info } from 'lucide-react'
-import {
-  loadFormattedArtifact,
-  maxInteractiveArtifact,
-  type ArtifactSource,
-} from './formattedArtifact'
-import { artifactLanguage } from './highlight'
+import { loadDiffFile, maxInteractiveArtifact, type ArtifactSource } from './formattedArtifact'
 import type { Theme } from './types'
 
 interface Props {
@@ -19,7 +17,28 @@ interface Props {
   onStyleChange: (style: 'split' | 'unified') => void
 }
 
-export default function ArtifactDiff({
+const poolOptions = {
+  poolSize: 1,
+  workerFactory: () => new HighlightWorker(),
+}
+
+export default function ArtifactDiff(props: Props) {
+  return (
+    <WorkerPoolContextProvider
+      poolOptions={poolOptions}
+      // Intraline decorations make Shiki quadratic on large generated artifacts.
+      // Keep syntax highlighting and line-level additions/deletions.
+      highlighterOptions={{ lineDiffType: 'none' }}
+    >
+      <ArtifactDiffContents
+        key={JSON.stringify([props.before, props.after, props.path, props.language])}
+        {...props}
+      />
+    </WorkerPoolContextProvider>
+  )
+}
+
+function ArtifactDiffContents({
   before,
   after,
   path,
@@ -28,16 +47,13 @@ export default function ArtifactDiff({
   style,
   onStyleChange,
 }: Props) {
-  const [contents, setContents] = useState<[string | null, string | null] | null>(null)
+  const [contents, setContents] = useState<[FileContents | null, FileContents | null] | null>(null)
   const [error, setError] = useState('')
   useEffect(() => {
     let cancelled = false
     setContents(null)
     setError('')
-    Promise.all([
-      loadFormattedArtifact(before, path, language),
-      loadFormattedArtifact(after, path, language),
-    ])
+    Promise.all([loadDiffFile(before, path, language), loadDiffFile(after, path, language)])
       .then(([beforeContents, afterContents]) => {
         if (!cancelled) setContents([beforeContents, afterContents])
       })
@@ -63,7 +79,7 @@ export default function ArtifactDiff({
   ])
   if (error) return <p className="error">Could not load artifact: {error}</p>
   if (!contents) return <p className="empty">Loading diff…</p>
-  if (contents.some((value) => value !== null && value.length > maxInteractiveArtifact))
+  if (contents.some((value) => value !== null && value.contents.length > maxInteractiveArtifact))
     return (
       <section className="large-artifact">
         <p className="artifact-notice" role="status">
@@ -75,7 +91,7 @@ export default function ArtifactDiff({
             value !== null && (
               <LargeArtifact
                 key={index}
-                contents={value}
+                contents={value.contents}
                 label={(index === 0 ? before : after).label}
                 path={path}
               />
@@ -83,9 +99,7 @@ export default function ArtifactDiff({
         )}
       </section>
     )
-  const lang = artifactLanguage(path, language)
-  const oldFile = contents[0] === null ? null : { name: path, contents: contents[0], lang }
-  const newFile = contents[1] === null ? null : { name: path, contents: contents[1], lang }
+  const [oldFile, newFile] = contents
   if (oldFile === null && newFile === null) {
     return <p className="empty">This artifact was not published by either side.</p>
   }
@@ -100,15 +114,78 @@ export default function ArtifactDiff({
               ? `Published only by ${before.label}.`
               : 'Contents are identical.'}
         </p>
-        <File
+        <CodeView
           className="solar-diff"
-          file={oldFile ?? newFile!}
+          style={{ height: '75vh', overflow: 'auto' }}
+          items={[{ id: path, type: 'file', file: oldFile ?? newFile! }]}
           options={{ overflow: 'scroll', themeType: theme }}
-          disableWorkerPool
         />
       </>
     )
   }
+  return (
+    <ComputedDiff
+      before={oldFile}
+      after={newFile}
+      beforeLabel={before.label}
+      afterLabel={after.label}
+      theme={theme}
+      style={style}
+      onStyleChange={onStyleChange}
+    />
+  )
+}
+
+function ComputedDiff({
+  before,
+  after,
+  beforeLabel,
+  afterLabel,
+  theme,
+  style,
+  onStyleChange,
+}: {
+  before: FileContents
+  after: FileContents
+  beforeLabel: string
+  afterLabel: string
+  theme: Theme
+  style: Props['style']
+  onStyleChange: Props['onStyleChange']
+}) {
+  const [diff, setDiff] = useState<FileDiffMetadata | null>(null)
+  const [error, setError] = useState('')
+  useEffect(() => {
+    const controller = new AbortController()
+    const { signal } = controller
+    setDiff(null)
+    setError('')
+    computeDiff(before, after, signal).then(
+      (value) => {
+        if (!signal.aborted) setDiff(value)
+      },
+      (error: Error) => {
+        if (!signal.aborted) setError(error.message)
+      },
+    )
+    return () => controller.abort()
+  }, [before, after])
+  if (error)
+    return (
+      <section className="large-artifact">
+        <p className="artifact-notice" role="status">
+          {error} Download the full files below; previews are limited to 20,000 characters.
+        </p>
+        <LargeArtifact contents={before.contents} label={beforeLabel} path={before.name} />
+        <LargeArtifact contents={after.contents} label={afterLabel} path={after.name} />
+      </section>
+    )
+  if (!diff)
+    return (
+      <p className="empty" role="status">
+        Computing diff…
+      </p>
+    )
   return (
     <div className="artifact-diff">
       <div className="diff-tools">
@@ -125,12 +202,11 @@ export default function ArtifactDiff({
           Unified
         </button>
       </div>
-      <MultiFileDiff
+      <CodeView
         className="solar-diff"
-        oldFile={oldFile}
-        newFile={newFile}
+        style={{ height: '75vh', overflow: 'auto' }}
+        items={[{ id: before.name, type: 'diff', fileDiff: diff }]}
         options={{ diffStyle: style, overflow: 'scroll', themeType: theme }}
-        disableWorkerPool
       />
     </div>
   )

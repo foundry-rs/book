@@ -6,7 +6,7 @@ it('retains formatted contents across viewer visits and keeps large files unpars
   vi.resetModules()
   const fetch = vi.fn(async () => Response.json('{"value":1}'))
   vi.stubGlobal('fetch', fetch)
-  const { loadFormattedArtifact, maxInteractiveArtifact } = await import('../src/formattedArtifact')
+  const { loadDiffFile, maxInteractiveArtifact } = await import('../src/formattedArtifact')
   const source = {
     commit: 'a'.repeat(40),
     benchmark: 'test',
@@ -15,13 +15,14 @@ it('retains formatted contents across viewer visits and keeps large files unpars
     label: 'Solar',
     contentHash: 'b'.repeat(64),
   }
-  const first = await loadFormattedArtifact(source, 'output.json', 'json')
-  expect(first).toBe('{\n  "value": 1\n}\n')
-  expect(await loadFormattedArtifact(source, 'output.json', 'json')).toBe(first)
+  const first = await loadDiffFile(source, 'output.json', 'json')
+  expect(first?.contents).toBe('{\n  "value": 1\n}\n')
+  expect(first?.cacheKey).toBeTruthy()
+  expect(await loadDiffFile(source, 'output.json', 'json')).toBe(first)
   expect(fetch).toHaveBeenCalledOnce()
   const large = `{"value":"${'x'.repeat(maxInteractiveArtifact)}"}`
   fetch.mockImplementation(async () => Response.json(large))
   expect(
-    await loadFormattedArtifact({ ...source, contentHash: 'c'.repeat(64) }, 'output.json', 'json'),
-  ).toBe(large)
+    await loadDiffFile({ ...source, contentHash: 'c'.repeat(64) }, 'output.json', 'json'),
+  ).toEqual({ name: 'output.json', lang: 'json', contents: large })
 })

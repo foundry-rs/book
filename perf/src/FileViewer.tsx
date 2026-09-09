@@ -251,7 +251,6 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
                 </div>
                 <Suspense fallback={<p className="empty">Loading renderer…</p>}>
                   <ArtifactDiff
-                    key={`${activeBenchmark}/${selectedFile.path}/${left.id}/${right.id}`}
                     before={{
                       label: left.label,
                       commit: left.run.commit,
