@@ -24,7 +24,12 @@ const poolOptions = {
 
 export default function ArtifactDiff(props: Props) {
   return (
-    <WorkerPoolContextProvider poolOptions={poolOptions} highlighterOptions={{}}>
+    <WorkerPoolContextProvider
+      poolOptions={poolOptions}
+      // Intraline decorations make Shiki quadratic on large generated artifacts.
+      // Keep syntax highlighting and line-level additions/deletions.
+      highlighterOptions={{ lineDiffType: 'none' }}
+    >
       <ArtifactDiffContents
         key={JSON.stringify([props.before, props.after, props.path, props.language])}
         {...props}
@@ -151,37 +156,19 @@ function ComputedDiff({
   const [diff, setDiff] = useState<FileDiffMetadata | null>(null)
   const [error, setError] = useState('')
   useEffect(() => {
-    let controller: AbortController | undefined
+    const controller = new AbortController()
+    const { signal } = controller
     setDiff(null)
     setError('')
-    let settled = false
-    const computeWhenVisible = () => {
-      if (settled) return
-      controller?.abort()
-      if (document.hidden) return
-      controller = new AbortController()
-      const { signal } = controller
-      computeDiff(before, after, signal).then(
-        (value) => {
-          if (!signal.aborted) {
-            settled = true
-            setDiff(value)
-          }
-        },
-        (error: Error) => {
-          if (!signal.aborted) {
-            settled = true
-            setError(error.message)
-          }
-        },
-      )
-    }
-    document.addEventListener('visibilitychange', computeWhenVisible)
-    computeWhenVisible()
-    return () => {
-      controller?.abort()
-      document.removeEventListener('visibilitychange', computeWhenVisible)
-    }
+    computeDiff(before, after, signal).then(
+      (value) => {
+        if (!signal.aborted) setDiff(value)
+      },
+      (error: Error) => {
+        if (!signal.aborted) setError(error.message)
+      },
+    )
+    return () => controller.abort()
   }, [before, after])
   if (error)
     return (

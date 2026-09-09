@@ -52,20 +52,29 @@ five-second execution limit and a ten-second transport timeout.
 Formatted artifacts are retained in a bounded browser cache. Files larger than
 512 Ki characters skip JSON formatting and interactive diffing, with a bounded
 text preview and full-content downloads to keep navigation responsive.
-Interactive diff computation runs in a cancellable browser worker with a five-second
-limit. Unfinished computation is cancelled in hidden tabs and restarted when visible,
-so background throttling does not consume the time budget. On timeout or worker failure,
-both files remain downloadable with bounded
-previews. Theme and split/unified changes reuse the computed diff. Syntax highlighting
+Interactive diff computation uses patience line matching in a cancellable browser
+worker with a five-second limit. Unlike unbounded Myers diffing, patience anchors
+unique lines and replaces unmatched regions rather than searching for a minimal edit
+sequence through repetitive assembly. It can produce coarser changes, but preserves
+both files exactly. The library parses the resulting patch with three context lines
+and retains both full files for context expansion. On timeout or worker failure,
+both files remain downloadable with bounded previews; the failed content pair stays
+failed for the page session, with no automatic retries on revisits or visibility changes.
+Theme and split/unified changes reuse the computed diff. Syntax highlighting
 uses the library's worker pool (one worker, retained across file/compiler switches);
+intraline decorations are disabled because Shiki's decoration splitting becomes
+quadratic on generated files. Syntax colors and added/deleted line colors remain.
+The pnpm patch for `@pierre/diffs` replaces array spreads in `trimPatchContext`
+with loops: a single large hunk otherwise exceeds Chrome's argument-count limit.
+Remove it when an upstream release includes that fix.
 `CodeView` owns the scroll container and virtualizes visible lines. File cache keys
 include a SHA-256 of the actual formatted text, path, and language, preventing
 same-name artifacts from sharing highlighting. Completed diffs reuse the existing
-bounded cache (16 MiB, one hour); cancelled and failed computations are not retained.
+bounded cache (16 MiB, one hour); cancelled computations are not retained.
 DOM updates still run on the main thread. This follows the
 [Diffs performance guidance](https://diffs.com/docs); workers keep the UI responsive,
 but do not eliminate computation time. The separate computation worker is necessary
-because `MultiFileDiff` calculates its diff synchronously even with a highlighting pool.
+because `MultiFileDiff` calculates its Myers diff synchronously even with a highlighting pool.
 Legacy artifact URLs remain supported through snapshot manifests and content hashes.
 Writers now populate only snapshots and blobs. Before retiring `runs`,
 `benchmark_results`, and `artifact_files`, rerun the additive backfill, verify

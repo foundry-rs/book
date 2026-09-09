@@ -1,0 +1,22 @@
+diff --git a/dist/utils/trimPatchContext.js b/dist/utils/trimPatchContext.js
+index 11eaaf1af8549119116120302c4b0b550fecb379..ef43d9a0aa01d0fb60f808bb74138c7496425a56 100644
+--- a/dist/utils/trimPatchContext.js
++++ b/dist/utils/trimPatchContext.js
+@@ -77,7 +77,7 @@ function flushContextLines(hunk, contextSize, mode) {
+ 	}
+ 	if (mode === "trailing" && hunk.contextLines.length > contextSize) hunk.contextLines.length = contextSize;
+ 	if (hunk.contextLines.length > 0) {
+-		hunk.hunkLines.push(...hunk.contextLines);
++		for (const line of hunk.contextLines) hunk.hunkLines.push(line);
+ 		hunk.additionCount += hunk.contextLines.length;
+ 		hunk.deletionCount += hunk.contextLines.length;
+ 		hunk.contextLines.length = 0;
+@@ -86,7 +86,7 @@ function flushContextLines(hunk, contextSize, mode) {
+ }
+ function flushHunk(hunk, lines) {
+ 	lines.push(`@@ -${formatHunkRange(hunk.deletionStart, hunk.deletionCount)} +${formatHunkRange(hunk.additionStart, hunk.additionCount)} @@`);
+-	lines.push(...hunk.hunkLines);
++	for (const line of hunk.hunkLines) lines.push(line);
+ }
+ function formatHunkRange(start, count) {
+ 	return count === 1 ? `${start}` : `${start},${count}`;

@@ -69,3 +69,17 @@ it('caches completed diffs but not cancelled work', async () => {
   expect(TestWorker.latest).toBe(worker)
   expect(worker.postMessage).toHaveBeenCalledOnce()
 })
+
+it.each(['timeout', 'error'])('never retries a failed content pair after %s', async (failure) => {
+  const oldFile = { ...before, cacheKey: `failed-old-${failure}` }
+  const newFile = { ...after, cacheKey: `failed-new-${failure}` }
+  const result = computeDiff(oldFile, newFile, new AbortController().signal)
+  const rejected = expect(result).rejects.toThrow()
+  const worker = TestWorker.latest
+  if (failure === 'timeout') vi.advanceTimersByTime(5000)
+  else worker.onerror!()
+  await rejected
+  await expect(computeDiff(oldFile, newFile, new AbortController().signal)).rejects.toThrow()
+  expect(TestWorker.latest).toBe(worker)
+  expect(worker.postMessage).toHaveBeenCalledOnce()
+})

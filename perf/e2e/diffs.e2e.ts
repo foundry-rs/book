@@ -58,6 +58,29 @@ test('virtualizes long files and renders their last lines on scroll', async ({ p
   await expect(code).not.toContainText('0x0000')
 })
 
+test('highlights a large repetitive assembly diff without expensive intraline decorations', async ({
+  page,
+}) => {
+  await page.route('**/api/data/runs/**/1.json', (route) => {
+    const head = route.request().url().includes('9d8c7b6a5e4f32100123456789abcdef01234567')
+    const contents = Array.from({ length: 40000 }, (_, i) =>
+      i % 2 ? 'ADD\n' : head ? 'PUSH2 0x11\n' : 'PUSH1 0x00\n',
+    ).join('')
+    return route.fulfill({ json: contents })
+  })
+  await page.goto(url)
+  const code = page.locator('diffs-container').locator('code')
+  await expect(code.locator('span[style]').first()).toBeVisible({ timeout: 3000 })
+  await expect(page.locator('diffs-container').locator('code[data-additions]')).toContainText(
+    '0x11',
+  )
+  await expect(page.locator('diffs-container').locator('code[data-deletions]')).toContainText(
+    '0x00',
+  )
+  await page.locator('.solar-diff').press('End')
+  await expect(code.first()).toContainText('40000')
+})
+
 test('leaving a pending diff cannot replace the newly selected file', async ({ page }) => {
   await page.route('**/diff.worker.ts*', (route) =>
     route.fulfill({ contentType: 'text/javascript', body: 'self.onmessage = () => {}' }),
@@ -77,21 +100,26 @@ test('worker failures retain readable previews and full downloads', async ({ pag
   await expect(page.getByRole('link', { name: 'Download runtime.disasm' })).toHaveCount(2)
 })
 
-test('defers computation while hidden and starts when visible', async ({ page }) => {
+test('does not retry a failed diff on visibility changes or file revisits', async ({ page }) => {
   let workers = 0
   page.on('worker', (worker) => {
     if (worker.url().includes('diff.worker')) workers++
   })
-  await page.addInitScript(() => {
-    Object.defineProperty(document, 'hidden', { configurable: true, value: true })
-  })
+  await page.route('**/diff.worker.ts*', (route) =>
+    route.fulfill({
+      contentType: 'text/javascript',
+      body: 'self.onmessage = () => { throw new Error("failed") }',
+    }),
+  )
   await page.goto(url)
-  await expect(page.getByText('Computing diff…', { exact: true })).toBeVisible()
-  expect(workers).toBe(0)
+  await expect(page.getByText(/Download the full files below/)).toBeVisible()
+  expect(workers).toBe(1)
   await page.evaluate(() => {
-    Object.defineProperty(document, 'hidden', { configurable: true, value: false })
     document.dispatchEvent(new Event('visibilitychange'))
   })
-  await expect(page.getByRole('button', { name: 'Unified', exact: true })).toBeVisible()
+  await page.getByRole('button', { name: 'abi.json', exact: true }).click()
+  await expect(page.getByText('Contents are identical.', { exact: true })).toBeVisible()
+  await page.getByRole('button', { name: 'runtime.disasm', exact: true }).click()
+  await expect(page.getByText(/Download the full files below/)).toBeVisible()
   expect(workers).toBe(1)
 })

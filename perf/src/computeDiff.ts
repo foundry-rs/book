@@ -2,6 +2,8 @@ import type { FileContents, FileDiffMetadata } from '@pierre/diffs'
 import { responseCache } from './cache'
 
 const completed = responseCache<FileDiffMetadata>(3_600_000, 16 * 1024 * 1024)
+// Failed content pairs stay failed for this page session. Never retry on navigation.
+const failures = new Map<string, Error>()
 
 // Terminate abandoned/expensive computations instead of blocking navigation.
 export function computeDiff(before: FileContents, after: FileContents, signal: AbortSignal) {
@@ -10,6 +12,7 @@ export function computeDiff(before: FileContents, after: FileContents, signal: A
       ? JSON.stringify([before.cacheKey, after.cacheKey])
       : undefined
   const cached = key && completed.peek(key)
+  if (!signal.aborted && key && failures.has(key)) return Promise.reject(failures.get(key))
   if (!signal.aborted && cached) return cached
   return new Promise<FileDiffMetadata>((resolve, reject) => {
     if (signal.aborted) return reject(new Error('Diff cancelled'))
@@ -41,5 +44,8 @@ export function computeDiff(before: FileContents, after: FileContents, signal: A
     } catch {
       finish(new Error('Could not send files to the interactive diff worker.'))
     }
+  }).catch((error: Error) => {
+    if (key && !signal.aborted) failures.set(key, error)
+    throw error
   })
 }
