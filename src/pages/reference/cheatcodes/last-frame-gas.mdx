@@ -24,7 +24,17 @@ function lastCallGas() external view returns (Gas memory gas);
 
 `lastFrameGas` returns gas measurements for the most recently completed external call or contract creation. The values are recorded from the callee's perspective, so they describe the child execution frame rather than all overhead paid by its caller.
 
-`lastCallGas` provides the same measurements but only records calls, not `CREATE` or `CREATE2`. It is deprecated; use `lastFrameGas` for new tests.
+### Is this just a rename of `lastCallGas`?
+
+No. Both return the same `Gas` struct and use the same gas accounting for a given call, but **`lastFrameGas` also records contract creation** (`CREATE` and `CREATE2`). `lastCallGas` only records calls and is deprecated; use `lastFrameGas` for new tests.
+
+| Most recently completed operation | `lastFrameGas()` | `lastCallGas()` |
+| --- | --- | --- |
+| An external call | Gas for that call | The same gas measurements for that call |
+| Contract creation whose constructor makes no external calls | Gas for the creation frame | Gas for the earlier call, or reverts if no call has been recorded |
+| Contract creation whose constructor makes external calls | Gas for the completed creation frame, including nested execution | Gas for the most recently completed call within the constructor |
+
+For example, after `target.setValue(42)` followed by `new GasTarget()` with no external calls in its constructor, `lastFrameGas()` describes the creation while `lastCallGas()` still describes `setValue`. Replacing `lastCallGas` with `lastFrameGas` therefore changes what you measure if a creation completes between the call you intended to measure and the measurement.
 
 Reading either value does not replace the recorded frame because cheatcode calls are excluded from this measurement.
 
