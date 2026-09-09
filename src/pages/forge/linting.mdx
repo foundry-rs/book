@@ -175,8 +175,8 @@ navigation on the right to browse by severity.
 #### Medium severity
 
 - [`assert-state-change`](/forge/linting/assert-state-change) — Flags expressions inside `assert()` that modify contract state.
-- [`block-number-across-roll`](/forge/linting/block-number-across-roll) — Flags raw block-number values used across `vm.roll` or raw reads on both sides of a roll; use `vm.getBlockNumber()` for reliable captures.
-- [`block-timestamp-across-warp`](/forge/linting/block-timestamp-across-warp) — Flags raw timestamp values used across `vm.warp` or raw reads on both sides of a warp; use `vm.getBlockTimestamp()` for reliable captures.
+- [`block-number-across-roll`](/forge/linting/block-number-across-roll) — Flags `block.number` values read before and used after `vm.roll`; use `vm.getBlockNumber()` to capture the intended block number.
+- [`block-timestamp-across-warp`](/forge/linting/block-timestamp-across-warp) — Flags `block.timestamp` values read before and used after `vm.warp`; use `vm.getBlockTimestamp()` to capture the intended timestamp.
 - [`boolean-cst`](/forge/linting/boolean-cst) — Flags expressions where a boolean constant (`true`/`false`) is used as a control-flow condition or operand of a boolean operator, which usually indicates dead code or a leftover debug toggle.
 - [`dangerous-unary-operator`](/forge/linting/dangerous-unary-operator) — Flags assignments whose `=` is fused to a unary operator (`=-`, `=~`), which parses as a plain assignment rather than the compound assignment it resembles.
 - [`divide-before-multiply`](/forge/linting/divide-before-multiply) — Flags arithmetic expressions where division is performed before multiplication, which can cause unintended precision loss in integer arithmetic.
@@ -189,11 +189,11 @@ navigation on the right to browse by severity.
 - [`non-reentrant-not-first`](/forge/linting/non-reentrant-not-first) — Flags functions where a `nonReentrant` modifier appears after another modifier.
 - [`reentrancy-no-eth`](/forge/linting/reentrancy-no-eth) — Flags non-ETH external calls when state read before the call is written after the call.
 - [`tautological-compare`](/forge/linting/tautological-compare) — Flags relational or equality comparisons whose two sides are the same side-effect-free expression.
-- [`tx-origin`](/forge/linting/tx-origin) — Flags use of `tx.origin` inside authorization-like predicates, which can be exploited by a malicious contract acting on behalf of a legitimate owner.
+- [`tx-origin`](/forge/linting/tx-origin) — Flags use of `tx.origin` in authorization checks, which a malicious contract can bypass when called by a legitimate owner.
 - [`type-based-tautology`](/forge/linting/type-based-tautology) — Detects comparison expressions that are always true or always false due to the numeric range of the variable's type. These dead conditions indicate logic errors or misunderstandings about integer bounds.
 - [`uninitialized-local`](/forge/linting/uninitialized-local) — Flags local variables that are declared without an initializer and read before any explicit assignment, where the silent zero-default is almost certainly unintentional.
 - [`uninitialized-state`](/forge/linting/uninitialized-state) — Flags state variables that are read anywhere in a contract's inheritance chain but never assigned. Because Solidity zero-initialises all storage, such a variable silently returns its type's zero value (`0`, `address(0)`, `false`, etc.), which almost always indicates a missing initialisation step, for example, forgetting to set `owner` in the constructor.
-- [`unsafe-oz-erc721-mint`](/forge/linting/unsafe-oz-erc721-mint) — Flags calls that resolve to `ERC721._mint`, which credits a token without checking that the recipient can receive it.
+- [`unsafe-oz-erc721-mint`](/forge/linting/unsafe-oz-erc721-mint) — Flags calls to OpenZeppelin's `ERC721._mint`, which credits a token without checking that the recipient can receive it.
 - [`unsafe-typecast`](/forge/linting/unsafe-typecast) — Flags explicit numeric typecasts that can silently truncate or alter the value.
 - [`unused-return`](/forge/linting/unused-return) — Flags external calls whose return value is silently discarded.
 - [`weak-prng`](/forge/linting/weak-prng) — Flags randomness-like expressions that directly derive entropy from predictable on-chain values.
@@ -208,11 +208,11 @@ navigation on the right to browse by severity.
 - [`incorrect-modifier`](/forge/linting/incorrect-modifier) — Flags modifiers that can finish without executing the modified function body or reverting.
 - [`inconsistent-type-names`](/forge/linting/inconsistent-type-names) — Flags mixed use of the equivalent `uint`/`uint256` or `int`/`int256` type spellings within one contract.
 - [`missing-events-access-control`](/forge/linting/missing-events-access-control) — Flags protected entry-point functions that update state used for access control without emitting an event.
-- [`missing-events-arithmetic`](/forge/linting/missing-events-arithmetic) — Flags protected entry-point functions that update tainted integer state used in arithmetic by an unprotected function without emitting an event.
-- [`missing-zero-check`](/forge/linting/missing-zero-check) — Flags entry-point functions and constructors where an `address` parameter flows into a state write or value transfer without a zero-address guard.
-- [`msg-value-loop`](/forge/linting/msg-value-loop) — Flags `msg.value` reads inside loops reachable from externally callable payable functions.
-- [`reentrancy-events`](/forge/linting/reentrancy-events) — Flags `emit` statements reachable after an external call, where a reentrant callee can reorder or fabricate logs that off-chain consumers rely on.
-- [`require-revert-in-loop`](/forge/linting/require-revert-in-loop) — Flags `require` calls and `revert` statements that execute inside loops, including checks reached through internal helpers.
+- [`missing-events-arithmetic`](/forge/linting/missing-events-arithmetic) — Flags protected functions that update integer state used in arithmetic by an unprotected function without emitting an event.
+- [`missing-zero-check`](/forge/linting/missing-zero-check) — Flags functions and constructors that use an `address` parameter in a state write or value transfer without checking for the zero address.
+- [`msg-value-loop`](/forge/linting/msg-value-loop) — Flags `msg.value` reads inside loops executed by externally callable payable functions.
+- [`reentrancy-events`](/forge/linting/reentrancy-events) — Flags events emitted after an external call, where reentrancy can change the log order that off-chain consumers rely on.
+- [`require-revert-in-loop`](/forge/linting/require-revert-in-loop) — Flags `require` calls and `revert` statements inside loops, where one failure can revert the whole batch.
 - [`return-bomb`](/forge/linting/return-bomb) — Flags external calls that set an explicit gas limit while copying unbounded dynamic returndata.
 - [`solmate-safe-transfer-lib`](/forge/linting/solmate-safe-transfer-lib) — Flags solmate `SafeTransferLib` token operations: the released library does not check that the token has code.
 

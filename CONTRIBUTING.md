@@ -172,7 +172,14 @@ Clippy uses snake_case IDs; do not copy that spelling convention into Forge.
 
 Follow [Clippy's lint documentation guidance](https://doc.rust-lang.org/clippy/development/adding_lints.html#documentation):
 
-1. **What it does** states the precise pattern detected and relevant exclusions.
+Write for the person fixing the warning: explain the problem, its impact, and
+the remedy. Omit lint implementation details such as AST/HIR representation,
+alias or dataflow tracking, traversal order, analysis budgets, diagnostic
+placement, and comparisons with other tools. Those details belong in developer
+documentation. Include a caveat only when it changes what the reader should do.
+
+1. **What it does** states the user-visible pattern detected and exclusions that
+   affect how you act on the warning.
 2. **Why is this bad?** explains the concrete impact. Use **Why restrict this?**
    for a style or policy preference, and explain when opting out is reasonable.
    Forge has no Clippy `restriction` category; choose the heading by the lint's
@@ -183,8 +190,8 @@ Follow [Clippy's lint documentation guidance](https://doc.rust-lang.org/clippy/d
    suggestion is universally safe.
 
 Keep these sections in order. Additional sections may explain configuration,
-limitations, and related lints. For new examples, use physical Solidity snippets
-where practical; existing canonical Foundry examples may remain inline so the
+actionable limitations, and related lints. For new examples, use physical Solidity
+snippets where practical; existing canonical Foundry examples may remain inline so the
 two repositories do not maintain different explanations.
 
 Use [rustc's diagnostic style](https://rustc-dev-guide.rust-lang.org/diagnostics.html)
