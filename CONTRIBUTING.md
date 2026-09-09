@@ -163,76 +163,24 @@ $ forge build
 
 #### Lint reference documentation
 
-The canonical lint explanations live in
-[`crates/lint/docs`](https://github.com/foundry-rs/foundry/tree/master/crates/lint/docs)
-in Foundry. Edit explanations only there, then import the corresponding pages
-into the Book:
+Edit lint explanations in Foundry's
+[`crates/lint/docs`](https://github.com/foundry-rs/foundry/tree/master/crates/lint/docs),
+following its [documentation guide](https://github.com/foundry-rs/foundry/blob/master/crates/lint/docs/README.md).
+Commit the source changes, then import them:
 
 ```bash
 $ vp run import:lints -- --foundry /path/to/foundry
 $ vp run import:lints -- --check
 ```
 
-Lint page bodies and their generated navigation are generator-owned; do not
-hand-edit the copies in `src/pages/forge/linting/`. Commit the generated snapshots
-and `scripts/lint-docs-manifest.json` together. The manifest pins their Foundry
-source commit. Like the cheatcode manifest, these snapshots remain committed so
-the Book can build without fetching Foundry. The weekly update workflow imports
-both references from the exact commit of its installed Forge binary.
+The importer validates required sections and examples and generates the pages, index, and
+sidebar. Commit the generated output and `scripts/lint-docs-manifest.json` together; do not
+hand-edit them. The manifest pins the Foundry revision so the Book builds without fetching
+Foundry. The weekly update imports the revision matching its installed Forge binary.
 
-The `--check` command validates committed generated output offline. Add
-`--foundry /path/to/foundry` to compare it against a local source checkout.
-Keep each lint's public kebab-case ID, severity, and
-URL unchanged unless a separately reviewed compatibility change requires it.
-Clippy uses snake_case IDs; do not copy that spelling convention into Forge.
-
-Follow [Clippy's lint documentation guidance](https://doc.rust-lang.org/clippy/development/adding_lints.html#documentation):
-
-Write for the person fixing the warning: explain the problem, its impact, and
-the remedy. Omit lint implementation details such as AST/HIR representation,
-alias or dataflow tracking, traversal order, analysis budgets, diagnostic
-placement, and comparisons with other tools. Those details belong in developer
-documentation. Include a caveat only when it changes what the reader should do.
-
-1. **What it does** states the user-visible pattern detected and exclusions that
-   affect how you act on the warning.
-2. **Why is this bad?** explains the concrete impact. Use **Why restrict this?**
-   for a style or policy preference, and explain when opting out is reasonable.
-   Forge has no Clippy `restriction` category; choose the heading by the lint's
-   purpose, not its severity.
-3. **Example** shows a minimal triggering Solidity example, followed by the
-   literal text **Use instead:** and the corrected example. Preserve the intended
-   behavior and explain tradeoffs or limitations instead of claiming every
-   suggestion is universally safe.
-
-Keep these sections in order, without a duplicate introductory summary. Keep shared severity,
-file-exclusion, and suppression instructions in the linting guide. Additional sections should
-only explain lint-specific configuration or limitations that change how to fix a warning.
-For new examples, use physical Solidity
-snippets where practical; existing canonical Foundry examples may remain inline so the
-two repositories do not maintain different explanations.
-
-Use [rustc's diagnostic style](https://rustc-dev-guide.rust-lang.org/diagnostics.html)
-for quoted lint messages: matter-of-fact wording, a lowercase opening, no final
-period for a single sentence, and backticks around code. These rules apply to
-diagnostics, not prose headings or explanatory paragraphs. New lint names should
-describe the detected problem, following the intent of the
-[Rust lint naming conventions](https://rust-lang.github.io/rfcs/0344-conventions-galore.html#lints)
-while preserving Forge's kebab-case IDs.
-
-Run `vp run check:lints` to check every page's metadata, section order, example
-pair, index entry, sidebar entry, and matching severity groups. To check the
-complete registered inventory and canonical content against a local Foundry
-checkout, run:
-
-```bash
-vp run check:lints -- --foundry /path/to/foundry
-```
-
-Run `vp exec vocs build` and inspect the rendered Markdown under
-`dist/public/assets/md/forge/linting/` before submitting changes. This validates
-rendering; it does not prove that an example triggers or clears a lint. Verify
-new or changed examples against the matching Foundry version separately.
+`--check` validates the committed output offline. Add `--foundry /path/to/foundry` to check
+against that source checkout. Run `vp exec vocs build` and inspect the rendered Markdown
+under `dist/public/assets/md/forge/linting/`. Verify changed Solidity examples in Foundry.
 
 #### Auto-Generated CLI Output
 

@@ -1,4 +1,5 @@
 import { execFileSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import { mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
@@ -255,6 +256,62 @@ describe("lint import", () => {
   test("requires explicit import source and rejects unknown options", () => {
     expect(() => main([], root)).toThrow("--foundry");
     expect(() => main(["--foundyr", foundry], root)).toThrow();
+  });
+
+  test("rejects invalid sections and examples before writing", () => {
+    run();
+    const original = read(pagePath);
+    for (const invalid of [
+      canonical().replace("## What it does", "## Other"),
+      canonical().replace("## What it does", "## Example"),
+      canonical().replace("## Why is this bad?", "## Why is this bad?\n\n## Why restrict this?"),
+      canonical().replace("Reports an example.", ""),
+      canonical().replace("It is an example.", ""),
+      canonical().replace("Use instead:", "### Good"),
+      canonical().replace("good();", ""),
+      canonical().replace("Use instead:", "").replace("good();", "Use instead:\ngood();"),
+      canonical() + "\n```solidity\nunclosed();\n",
+    ]) {
+      put(foundry, "crates/lint/docs/example.md", invalid);
+      commit();
+      expect(() => run()).toThrow("example:");
+      expect(read(pagePath)).toBe(original);
+    }
+  });
+
+  test("ignores example contents when validating headings and markers", () => {
+    const source = canonical()
+      .replace("Why is this bad?", "Why restrict this?")
+      .replace("bad();", "## What it does\nUse instead:\nbad();")
+      .replaceAll("```", "~~~~");
+    put(foundry, "crates/lint/docs/example.md", source);
+    commit();
+    run();
+    expect(() => main(["--check"], root)).not.toThrow();
+    expect(canonicalBody(read(pagePath))).toBe(source.trim());
+  });
+
+  test("validates sections offline even when the manifest matches", () => {
+    run();
+    const invalid = read(pagePath).replace("### Example", "### Other");
+    put(root, pagePath, invalid);
+    const manifest = JSON.parse(read("scripts/lint-docs-manifest.json"));
+    manifest.pages.example = createHash("sha256").update(invalid).digest("hex");
+    put(root, "scripts/lint-docs-manifest.json", JSON.stringify(manifest));
+    expect(() => main(["--check"], root)).toThrow("required sections missing or out of order");
+  });
+
+  test("validates legacy sections during import and offline checks", () => {
+    run();
+    put(
+      root,
+      "src/pages/forge/linting/removed.mdx",
+      read(pagePath).replace("---\n", "---\nstatus: legacy\n").replace("### Example", "### Other"),
+    );
+    expect(() => run()).toThrow("removed: required sections missing or out of order");
+    expect(() => main(["--check"], root)).toThrow(
+      "removed: required sections missing or out of order",
+    );
   });
 });
 

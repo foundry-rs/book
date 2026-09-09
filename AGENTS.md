@@ -71,7 +71,7 @@ stale snapshot.
 
 ### Lint reference pages
 
-Follow the lint documentation rules in `CONTRIBUTING.md`. Edit canonical lint
+Follow Foundry's `crates/lint/docs/README.md` for lint documentation style. Edit canonical lint
 explanations only in Foundry's `crates/lint/docs/`, then run
 `vp run import:lints -- --foundry /path/to/foundry`. Lint page bodies and their
 generated navigation are generator-owned; do not edit those copies by hand.
@@ -81,8 +81,8 @@ cheatcode manifest refresh commits its generated snapshot.
 
 Run `vp run import:lints -- --check` to validate committed generated output
 offline. Add `--foundry /path/to/foundry` to compare it with that source checkout.
-Run `vp run check:lints` for documentation structure and verify the rendered
-Vocs output. The weekly update workflow refreshes lint references and the
+The importer validates required sections and examples. Verify the rendered Vocs output.
+The weekly update workflow refreshes lint references and the
 cheatcode manifest from the exact same commit as its installed Forge binary.
 
 ### Source snippets

@@ -73,6 +73,66 @@ export function canonicalBody(page: string): string {
   ).trim();
 }
 
+function validateLintDoc(body: string, id: string): void {
+  const lines: string[] = [];
+  let fence: { char: string; length: number; solidity: boolean; content: boolean } | undefined;
+  for (const line of body.split("\n")) {
+    const marker = line.match(/^ {0,3}(`{3,}|~{3,})(.*)$/);
+    if (fence) {
+      if (
+        marker &&
+        marker[1][0] === fence.char &&
+        marker[1].length >= fence.length &&
+        !marker[2].trim()
+      ) {
+        if (fence.solidity && fence.content) lines.push("\0solidity");
+        fence = undefined;
+      } else if (line.trim()) fence.content = true;
+    } else if (marker) {
+      fence = {
+        char: marker[1][0],
+        length: marker[1].length,
+        solidity: marker[2].trim() === "solidity",
+        content: false,
+      };
+    } else lines.push(line);
+  }
+  const fail = (reason: string): never => {
+    throw new Error(`${id}: ${reason}`);
+  };
+  if (fence) fail("unclosed code fence");
+  const text = lines.join("\n");
+  const sections = text
+    .split(/^## /m)
+    .slice(1)
+    .map((section) => {
+      const [heading, ...content] = section.split("\n");
+      return { heading, content: content.join("\n").trim() };
+    });
+  const what = sections.findIndex(({ heading }) => heading === "What it does");
+  const why = sections.findIndex(({ heading }) =>
+    /^Why (is this bad|restrict this)\?$/.test(heading),
+  );
+  const example = sections.findIndex(({ heading }) => heading === "Example");
+  if (!(what >= 0 && why > what && example > why))
+    fail("required sections missing or out of order");
+  for (const heading of ["What it does", "Example"])
+    if (sections.filter((section) => section.heading === heading).length !== 1)
+      fail(`expected one ${heading} section`);
+  if (
+    sections.filter(({ heading }) => /^Why (is this bad|restrict this)\?$/.test(heading)).length !==
+    1
+  )
+    fail("expected exactly one rationale section");
+  for (const index of [what, why])
+    if (!sections[index].content.replaceAll("\0solidity", "").trim())
+      fail(`${sections[index].heading} section must explain the lint`);
+  if (/^### (Bad|Good)$/m.test(text)) fail("replace Bad/Good headings with Use instead:");
+  const examples = sections[example].content.split(/^Use instead:$/m);
+  if (examples.length !== 2 || !examples.every((part) => part.includes("\0solidity")))
+    fail("expected a Solidity example on each side of Use instead:");
+}
+
 export function readLintDocs(foundry: string): LintDoc[] {
   const solDir = join(foundry, "crates/lint/src/sol");
   const registry = ["high", "med", "low", "info", "gas", "codesize"]
@@ -104,6 +164,7 @@ export function readLintDocs(foundry: string): LintDoc[] {
         !body.includes(`**Severity**: \`${severity}\``)
       )
         throw new Error(`${id}: invalid canonical title or metadata`);
+      validateLintDoc(body, id);
       return { id, severity: severity as Severity, title, body };
     })
     .sort((a, b) => a.id.localeCompare(b.id, "en"));
@@ -151,6 +212,7 @@ export function planImport(root: string, foundry: string): Map<string, string> {
     if (hasOwn(manifest.pages, file.slice(0, -4))) continue;
     const path = `${pagesPath}/${file}`;
     const page = read(root, path);
+    validateLintDoc(canonicalBody(page), file.slice(0, -4));
     if (/^status: legacy$/m.test(page.split("---")[1] ?? "")) continue;
     if (!page.startsWith("---\n"))
       throw new Error(`${file}: cannot preserve page without frontmatter`);
@@ -224,9 +286,11 @@ export function checkImportedDocs(root: string): void {
     if (hash(read(root, `${pagesPath}/${id}.mdx`)) !== expected) failures.push(id);
   }
   for (const file of readdirSync(join(root, pagesPath)).filter((file) => file.endsWith(".mdx"))) {
+    const page = read(root, `${pagesPath}/${file}`);
+    validateLintDoc(canonicalBody(page), file.slice(0, -4));
     if (
       !hasOwn(manifest.pages, file.slice(0, -4)) &&
-      !/^status: legacy$/m.test(read(root, `${pagesPath}/${file}`).split("---")[1] ?? "")
+      !/^status: legacy$/m.test(page.split("---")[1] ?? "")
     )
       failures.push(`${file}: unimported active page`);
   }

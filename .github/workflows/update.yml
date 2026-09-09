@@ -69,10 +69,7 @@ jobs:
             --commit "$FOUNDRY_COMMIT"
 
       - name: Refresh lint references
-        run: |
-          vp run import:lints -- --foundry .foundry-reference
-          vp run import:lints -- --check
-          vp run check:lints -- --foundry .foundry-reference
+        run: vp run import:lints -- --foundry .foundry-reference
 
       - name: Remove temporary Foundry checkout
         run: rm -rf -- .foundry-reference
