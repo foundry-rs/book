@@ -42,17 +42,37 @@ jobs:
       - name: Install dependencies
         run: vp install --frozen-lockfile
 
-      - name: Refresh cheatcode manifest
+      - name: Resolve installed Foundry source
+        id: foundry-source
         run: |
           foundry_commit="$(forge --version | sed -n 's/^Commit SHA: //p')"
-          test -n "$foundry_commit"
-          spec="$(mktemp)"
-          trap 'rm -f "$spec"' EXIT
-          curl --fail --location --retry 3 \
-            "https://raw.githubusercontent.com/foundry-rs/foundry/$foundry_commit/crates/cheatcodes/assets/cheatcodes.json" \
-            --output "$spec"
+          [[ "$foundry_commit" =~ ^[0-9a-f]{40}$ ]]
+          echo "commit=$foundry_commit" >> "$GITHUB_OUTPUT"
+
+      - name: Check out matching Foundry source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: foundry-rs/foundry
+          ref: ${{ steps.foundry-source.outputs.commit }}
+          path: .foundry-reference
+          persist-credentials: false
+          sparse-checkout: |
+            crates/cheatcodes/assets
+            crates/lint
+
+      - name: Refresh cheatcode manifest
+        env:
+          FOUNDRY_COMMIT: ${{ steps.foundry-source.outputs.commit }}
+        run: |
           vp run check:cheatcodes -- \
-            --refresh --spec "$spec" --commit "$foundry_commit"
+            --refresh --spec .foundry-reference/crates/cheatcodes/assets/cheatcodes.json \
+            --commit "$FOUNDRY_COMMIT"
+
+      - name: Refresh lint references
+        run: vp run import:lints -- --foundry .foundry-reference
+
+      - name: Remove temporary Foundry checkout
+        run: rm -rf -- .foundry-reference
 
       - name: Refresh changelog data
         env:

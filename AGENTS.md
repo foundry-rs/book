@@ -69,6 +69,22 @@ Captured output in `src/snippets/output/` is also generator-owned. Regenerate it
 with the matching installed Foundry version instead of manually normalizing a
 stale snapshot.
 
+### Lint reference pages
+
+Follow Foundry's `crates/lint/docs/README.md` for lint documentation style. Edit canonical lint
+explanations only in Foundry's `crates/lint/docs/`, then run
+`vp run import:lints -- --foundry /path/to/foundry`. Lint page bodies and their
+generated navigation are generator-owned; do not edit those copies by hand.
+Preserve public kebab-case IDs. Commit the generated snapshots together with
+`scripts/lint-docs-manifest.json`, which records the source commit, just as the
+cheatcode manifest refresh commits its generated snapshot.
+
+Run `vp run import:lints -- --check` to validate committed generated output
+offline. Add `--foundry /path/to/foundry` to compare it with that source checkout.
+The importer validates required sections and examples. Verify the rendered Vocs output.
+The weekly update workflow refreshes lint references and the
+cheatcode manifest from the exact same commit as its installed Forge binary.
+
 ### Source snippets
 
 Put runnable Solidity examples under `src/snippets/projects/` and include them

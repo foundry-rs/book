@@ -161,6 +161,27 @@ $ forge build
 
 ---
 
+#### Lint reference documentation
+
+Edit lint explanations in Foundry's
+[`crates/lint/docs`](https://github.com/foundry-rs/foundry/tree/master/crates/lint/docs),
+following its [documentation guide](https://github.com/foundry-rs/foundry/blob/master/crates/lint/docs/README.md).
+Commit the source changes, then import them:
+
+```bash
+$ vp run import:lints -- --foundry /path/to/foundry
+$ vp run import:lints -- --check
+```
+
+The importer validates required sections and examples and generates the pages, index, and
+sidebar. Commit the generated output and `scripts/lint-docs-manifest.json` together; do not
+hand-edit them. The manifest pins the Foundry revision so the Book builds without fetching
+Foundry. The weekly update imports the revision matching its installed Forge binary.
+
+`--check` validates the committed output offline. Add `--foundry /path/to/foundry` to check
+against that source checkout. Run `vp exec vocs build` and inspect the rendered Markdown
+under `dist/public/assets/md/forge/linting/`. Verify changed Solidity examples in Foundry.
+
 #### Auto-Generated CLI Output
 
 Most CLI output is auto-generated to stay in sync with Foundry changes.

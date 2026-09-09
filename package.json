@@ -10,11 +10,12 @@
     "check:anvil-rpc": "vp exec tsx scripts/check-anvil-rpc-coverage.ts",
     "check:cheatcodes": "vp exec tsx scripts/check-cheatcode-coverage.ts",
     "check:commands": "vp exec tsx scripts/check-narrative-commands.ts",
+    "import:lints": "vp exec tsx scripts/import-lint-docs.ts",
     "dev": "vp exec vocs dev",
     "fetch-benchmarks": "vp exec tsx scripts/fetch-benchmarks.ts",
     "fetch-changelog": "vp exec tsx scripts/fetch-changelog.ts",
     "preview": "vp exec vocs preview",
-    "test": "vp test --run scripts/fetch-benchmarks.test.ts && vp run --filter foundry-perf test -- --run",
+    "test": "vp test --run scripts/fetch-benchmarks.test.ts scripts/import-lint-docs.test.ts && vp run --filter foundry-perf test -- --run",
     "test:e2e": "vp exec playwright test"
   },
   "dependencies": {

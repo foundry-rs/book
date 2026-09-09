@@ -39,6 +39,9 @@ jobs:
       - name: Check narrative commands
         run: vp run check:commands
 
+      - name: Check imported lint references
+        run: vp run import:lints -- --check
+
       - name: Check
         run: vp run check
 
