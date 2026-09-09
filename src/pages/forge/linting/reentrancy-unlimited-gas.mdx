@@ -14,8 +14,6 @@ configuration. The description below documents the historical rule.
 **Severity**: `Info`
 **ID**: `reentrancy-unlimited-gas`
 
-Flags state changes and event emissions after Solidity's built-in `transfer` or `send`.
-
 ### What it does
 
 Reports a storage update or event emission that can happen after a built-in ETH `transfer` or

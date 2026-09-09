@@ -205,8 +205,10 @@ documentation. Include a caveat only when it changes what the reader should do.
    behavior and explain tradeoffs or limitations instead of claiming every
    suggestion is universally safe.
 
-Keep these sections in order. Additional sections may explain configuration,
-actionable limitations, and related lints. For new examples, use physical Solidity
+Keep these sections in order, without a duplicate introductory summary. Keep shared severity,
+file-exclusion, and suppression instructions in the linting guide. Additional sections should
+only explain lint-specific configuration or limitations that change how to fix a warning.
+For new examples, use physical Solidity
 snippets where practical; existing canonical Foundry examples may remain inline so the
 two repositories do not maintain different explanations.
 

@@ -186,7 +186,12 @@ export function planImport(root: string, foundry: string): Map<string, string> {
               ?.split(/^## /m)[0]
               .trim()
               .replace(/\s*\n\s*/g, " ");
-            const summary = introduction || lint.title;
+            const what = lint.body
+              .split(/^## What it does\n+/m)[1]
+              ?.split(/\n\n|^## /m)[0]
+              .trim()
+              .replace(/\s*\n\s*/g, " ");
+            const summary = introduction || (what && !what.endsWith(":") ? what : lint.title);
             return `- [\`${lint.id}\`](/forge/linting/${lint.id}) — ${summary}`;
           })
           .join("\n")}`,

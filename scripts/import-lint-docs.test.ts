@@ -143,6 +143,31 @@ describe("lint import", () => {
     },
   );
 
+  test("uses What it does for the index when the page has no introductory summary", () => {
+    const source = canonical()
+      .replace("Flags an example.\n\n", "")
+      .replace(
+        "Reports an example.",
+        "Reports an example\nacross two lines.\n\nAdditional detail.",
+      );
+    put(foundry, "crates/lint/docs/example.md", source);
+    commit();
+    run();
+    expect(read("src/pages/forge/linting.mdx")).toContain(
+      "- [`example`](/forge/linting/example) — Reports an example across two lines.\n",
+    );
+    expect(canonicalBody(read(pagePath))).toBe(source.trim());
+    expect(() => run("--check")).not.toThrow();
+    put(
+      foundry,
+      "crates/lint/docs/example.md",
+      source.replace("Reports an example\nacross two lines.", "Reports the following:"),
+    );
+    commit();
+    run();
+    expect(read("src/pages/forge/linting.mdx")).toContain("— Example `code`: a lint\n");
+  });
+
   test("permits authored guide edits outside generated regions", () => {
     run();
     put(
@@ -225,13 +250,6 @@ describe("lint import", () => {
     expect(() => readLintDocs(foundry)).toThrow("ENOENT");
     put(foundry, "crates/lint/src/sol/info/mod.rs", "register_lints!();\n");
     expect(() => readLintDocs(foundry)).toThrow("no registered Foundry lints found");
-  });
-
-  test("supports pages without an introductory summary", () => {
-    put(foundry, "crates/lint/docs/example.md", canonical().replace("Flags an example.\n\n", ""));
-    commit();
-    run();
-    expect(read("src/pages/forge/linting.mdx")).toContain("— Example `code`: a lint");
   });
 
   test("requires explicit import source and rejects unknown options", () => {
