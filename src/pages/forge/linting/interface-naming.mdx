@@ -29,6 +29,16 @@ when renaming would disrupt downstream imports or conflict with that convention.
 interface ERC20 { /* ... */ }
 ```
 
+```text
+note[interface-naming]: interface name is missing the `I` prefix
+  ╭▸ src/Example.sol:1:11
+  │
+1 │ interface ERC20 { /* ... */ }
+  │           ━━━━━
+  │
+  ╰ help: https://getfoundry.sh/forge/linting/interface-naming
+```
+
 Use instead:
 
 ```solidity

@@ -4,6 +4,7 @@ import { readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { parseArgs } from "node:util";
 import { pathToFileURL } from "node:url";
+import { renderExamples, runExample } from "./lint-examples.ts";
 
 export const groups = {
   High: "High severity",
@@ -189,7 +190,7 @@ function region(
 }
 
 // Build every replacement before writing, so invalid input cannot partially update the book.
-export function planImport(root: string, foundry: string): Map<string, string> {
+export function planImport(root: string, foundry: string, forge = "forge"): Map<string, string> {
   const commit = git(foundry, "rev-parse", "HEAD");
   if (!/^[a-f0-9]{40}$/.test(commit)) throw new Error("expected a full Foundry commit SHA");
   if (git(foundry, "status", "--porcelain", "--", "crates/lint"))
@@ -203,7 +204,8 @@ export function planImport(root: string, foundry: string): Map<string, string> {
     navigation: {},
   };
   for (const lint of lints) {
-    const page = renderPage(lint);
+    const body = renderExamples(lint.body, lint.id, (source, id) => runExample(source, id, forge));
+    const page = renderPage({ ...lint, body });
     files.set(`${pagesPath}/${lint.id}.mdx`, page);
     manifest.pages[lint.id] = hash(page);
   }
@@ -287,6 +289,9 @@ export function checkImportedDocs(root: string): void {
   }
   for (const file of readdirSync(join(root, pagesPath)).filter((file) => file.endsWith(".mdx"))) {
     const page = read(root, `${pagesPath}/${file}`);
+    renderExamples(canonicalBody(page), file.slice(0, -4), () => {
+      throw new Error(`${file}: unresolved {{produces}}; regenerate the lint import`);
+    });
     validateLintDoc(canonicalBody(page), file.slice(0, -4));
     if (
       !hasOwn(manifest.pages, file.slice(0, -4)) &&
@@ -312,13 +317,14 @@ export function main(
     args: args.filter((arg) => arg !== "--"),
     options: {
       foundry: { type: "string" },
+      forge: { type: "string" },
       check: { type: "boolean" },
       help: { type: "boolean" },
     },
   });
   if (values.help) {
     console.log(
-      "Usage: vp run import:lints -- --foundry <checkout> [--check]\n       vp run import:lints -- --check\n\nImport committed Foundry lint pages and navigation. --check never writes files;\nwithout --foundry it checks the committed import manifest offline.",
+      "Usage: vp run import:lints -- --foundry <checkout> [--forge <binary>] [--check]\n       vp run import:lints -- --check\n\nImport committed Foundry lint pages and navigation. Use a Forge binary matching the source.\n--check never writes files; without --foundry it checks the committed import manifest offline.",
     );
     return;
   }
@@ -328,7 +334,7 @@ export function main(
     console.log("Imported lint documentation matches the committed manifest.");
     return;
   }
-  const files = planImport(root, resolve(values.foundry));
+  const files = planImport(root, resolve(values.foundry), values.forge);
   const changed = [...files].filter(([path, text]) => {
     try {
       return read(root, path) !== text;

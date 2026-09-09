@@ -29,6 +29,26 @@ contract C {
 }
 ```
 
+```text
+note[could-be-constant]: state variable has a constant initializer and is never written
+  ╭▸ src/Example.sol:2:13
+  │
+2 │     uint256 LIMIT = 100;
+  │             ━━━━━
+  │
+  ├ help: consider declaring it `constant`
+  ╰ help: https://getfoundry.sh/forge/linting/could-be-constant
+
+note[could-be-constant]: state variable has a constant initializer and is never written
+  ╭▸ src/Example.sol:3:13
+  │
+3 │     bytes32 SALT = keccak256("foundry");
+  │             ━━━━
+  │
+  ├ help: consider declaring it `constant`
+  ╰ help: https://getfoundry.sh/forge/linting/could-be-constant
+```
+
 Use instead:
 
 ```solidity

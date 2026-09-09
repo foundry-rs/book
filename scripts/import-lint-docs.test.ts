@@ -13,6 +13,7 @@ import {
   renderPage,
   shiftHeadings,
 } from "./import-lint-docs.ts";
+import { diagnosticOutput, renderExamples } from "./lint-examples.ts";
 
 let temporary: string;
 let root: string;
@@ -104,6 +105,107 @@ beforeEach(() => {
 afterEach(() => rmSync(temporary, { recursive: true, force: true }));
 
 describe("lint import", () => {
+  const diagnostic = (
+    id = "example",
+    rendered = "warning[example]: explanation\n  --> src/Example.sol:1:1\n",
+  ) => JSON.stringify({ level: "warning", code: { code: id }, rendered });
+
+  test("replaces produces with the expected lint's actual rendered output", () => {
+    const source = canonical().replace("\nUse instead:", "\n{{produces}}\n\nUse instead:");
+    const seen: string[] = [];
+    const page = renderExamples(source, "example", (code, id) => {
+      seen.push(code, id);
+      return [diagnostic("other", "unrelated"), diagnostic()].join("\n");
+    });
+    expect(seen).toEqual(["bad();\n", "example"]);
+    expect(page).toContain(
+      "```text\nwarning[example]: explanation\n  --> src/Example.sol:1:1\n```",
+    );
+    expect(page).not.toContain("unrelated");
+    expect(page).not.toContain("{{produces}}");
+    expect(page).toContain("Use instead:\n\n```solidity\ngood();");
+  });
+
+  test("preserves markers inside code and does not execute unmarked fragments", () => {
+    const source = canonical().replace("bad();", "// {{produces}}\n{{produces}}");
+    expect(
+      renderExamples(source, "example", () => {
+        throw new Error("must not run");
+      }),
+    ).toBe(source);
+  });
+
+  test("supports longer and tilde fences and encloses backticks in diagnostics", () => {
+    for (const fence of ["````", "~~~"]) {
+      const source = `${fence}solidity\ncontract C {}\n${fence}\n\n{{produces}}`;
+      expect(
+        renderExamples(source, "example", (code) => {
+          expect(code).toBe("contract C {}\n");
+          return diagnostic("example", "source contains ```\n");
+        }),
+      ).toContain("````text\nsource contains ```\n````");
+    }
+  });
+
+  test("rejects markers without an immediately preceding Solidity block", () => {
+    for (const source of [
+      "{{produces}}",
+      "```text\ncode\n```\n{{produces}}",
+      "```solidity\ncode\n```\nExplanation\n{{produces}}",
+      "```solidity\ncode\n```\n{{produces}}\n{{produces}}",
+    ])
+      expect(() => renderExamples(source, "example", () => diagnostic())).toThrow(
+        "must immediately follow",
+      );
+  });
+
+  test("requires a rendered diagnostic for the documented lint", () => {
+    for (const output of ["", diagnostic("other"), diagnostic("example", "")])
+      expect(() => diagnosticOutput(output, "example")).toThrow("did not produce");
+    expect(() => diagnosticOutput("not JSON", "example")).toThrow();
+    expect(() =>
+      diagnosticOutput(
+        `${diagnostic()}\n${JSON.stringify({ level: "error", message: "invalid source" })}`,
+        "example",
+      ),
+    ).toThrow("invalid documentation example: invalid source");
+  });
+
+  test("keeps multiple diagnostics in emission order, including note severity", () => {
+    expect(
+      diagnosticOutput(
+        [
+          diagnostic("example", "first\n"),
+          JSON.stringify({ level: "note", code: { code: "example" }, rendered: "second\n" }),
+        ].join("\n"),
+        "example",
+      ),
+    ).toBe("first\n\nsecond");
+  });
+
+  test("offline validation rejects unresolved produces without running Forge", () => {
+    run();
+    put(root, pagePath, read(pagePath).replace("\nUse instead:", "\n{{produces}}\n\nUse instead:"));
+    expect(() => checkImportedDocs(root)).toThrow("unresolved {{produces}}");
+  });
+
+  test("failed example generation leaves all imported files untouched", () => {
+    run();
+    const original = read(pagePath);
+    const manifest = read("scripts/lint-docs-manifest.json");
+    put(
+      foundry,
+      "crates/lint/docs/example.md",
+      canonical().replace("\nUse instead:", "\n{{produces}}\n\nUse instead:"),
+    );
+    commit();
+    expect(() => run("--forge", join(temporary, "missing-forge"))).toThrow(
+      "cannot lint documentation example",
+    );
+    expect(read(pagePath)).toBe(original);
+    expect(read("scripts/lint-docs-manifest.json")).toBe(manifest);
+  });
+
   test("imports source content, metadata, navigation and exact revision, then is idempotent", () => {
     run();
     expect(canonicalBody(read(pagePath))).toBe(canonical().trim());

@@ -27,6 +27,17 @@ which can corrupt amounts, decimals, or limits.
 uint256 constant WAD = 10 ^ 18; // evaluates to 24, not 1e18
 ```
 
+```text
+warning[incorrect-exp]: `^` is bitwise xor, not exponentiation
+  ╭▸ src/Example.sol:1:24
+  │
+1 │ uint256 constant WAD = 10 ^ 18; // evaluates to 24, not 1e18
+  │                        ━━━━━━━
+  │
+  ├ help: use `**` for exponentiation
+  ╰ help: https://getfoundry.sh/forge/linting/incorrect-exp
+```
+
 Use instead:
 
 ```solidity

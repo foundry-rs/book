@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "source": {
     "repository": "foundry-rs/foundry",
-    "commit": "913a2970f28d626c895b07b01d50fc91db93626e",
+    "commit": "07c3b806313d8a83c482a6de3d1e4d0032cd2939",
     "path": "crates/lint/docs"
   },
   "pages": {
@@ -20,7 +20,7 @@
     "calls-loop": "a0e1bad08e194574a862e8dd2802e5efc822fd8c9ff7738d01c0f4f8313629bc",
     "controlled-delegatecall": "5d17b9fdff51e5299a6a1fa8536bc51d30bc80c32b6bf866624845d3c93b215a",
     "costly-loop": "e4088a9c09ebd0a676bb1d2060fbfbbe63eea8ac47c8271d6352d90f16db30b9",
-    "could-be-constant": "e2bbcfe7101f9a56888b08e024ec68155b1fd41eadc2c58def487eba06675307",
+    "could-be-constant": "be14ab82b6983b40c50cc38be25284b8a22a8ee6908a5573a3473ce5797484b0",
     "could-be-immutable": "3758a14ec66a549a7dbd1e5e6386101fb604a67727fbfdc462495fffaaec30e2",
     "custom-errors": "a7c8652d046c7212f075591901ccf65127646c8cdc228afa9c45363f364f2c25",
     "cyclomatic-complexity": "faa8470190745d4e406c42104a8bbf9361f044f472578fc6957c5808b464a452",
@@ -40,14 +40,14 @@
     "inconsistent-type-names": "f4575f849175bffd3a42f35098d782bfae78c629d849636c554843ba1ddd6924",
     "incorrect-erc20-interface": "d696a4922839139e338bb4d7be4d5c78dd8d454916e915198365030dc38fe9ea",
     "incorrect-erc721-interface": "7b9645279e17d5b16d30176b35d09f2b7bd412cf7dcf504b0432f525b952f12e",
-    "incorrect-exp": "09fb57712b8aa1809b2f00d091a3ce0f7ff66fa1e4cc62e879b9ab1c6bc6c94c",
+    "incorrect-exp": "b97216ceb2fb30def0ec7fbecb895e5e95b3afff7499bf11e48db8a7503872fa",
     "incorrect-modifier": "5a2e1acb1f59b8e7921de837736c41567d72cceeaa7def930049038cfc082aff",
     "incorrect-shift": "da23bf5a27a4d7f5c3e66a28242b5f5cf6e73a737cf9c00309ac4ee911f50f81",
     "incorrect-strict-equality": "0c79123282f86fbb62259115d1741638b3ac9f72381a676627abf313fb024a6c",
     "incorrect-using-for": "d9669e972d7fc69bd6bc7fd48b1346c449e39d862269280c247a6ee38fcec496",
     "inline-assembly": "685dacbab25a1ce919ddb064d33fa198dad15be2b6b8f054d3ca21c956058e29",
     "interface-file-naming": "63173b1202d2a2b2e01ce57f32c26899b197628d4c65c09772ebd0f6d8d3ff8d",
-    "interface-naming": "c310ad3a13454640f0215ce5d0706b3b575527a1ce6cc9481f288819e58c6340",
+    "interface-naming": "02ed8e2ce229e5d0a1f532bbf2fb5314d378e9072709c514ac1f2cb0694c10c1",
     "internal-function-used-once": "b95e0e73fbd91f6b0e2b967f8d0e0013040c18b25b446b81849a7eb64aae051a",
     "literal-instead-of-constant": "e3307933ab664802af5f260580a19e2b579565c1f60aedad62f86d15515a2872",
     "locked-ether": "bfb3b93dda019b5db43480f755952821d54e5f6d4c106915ea4bd82881b485ba",
@@ -61,7 +61,7 @@
     "mixed-case-variable": "d1ecd76d7a13a364fda349497059c0d7d14f0a6ea54bc001ead52bdb7e4784d6",
     "modifier-used-only-once": "578aa3ba68f8a94e2d6feaf616a85cbbf76beb2ceed388d5a60a10588c72c669",
     "msg-value-loop": "3b4fe1d59ab7a522a611f8e1c3efa64d06e44ad93a5c7d0110b90526a885b635",
-    "multi-contract-file": "f78f54598b26d60bbaf62004c6ccf0a8d437f7d24e80730c0cf56c03836c32a4",
+    "multi-contract-file": "4f6e2570e1cd4cb3e92c49edf73c0ee35db7cd44c8264b1f44c48bcf8a535aa5",
     "named-struct-fields": "7b01b01b09ad5550832f14bc591b63f84e122dc1a8964b29bfc0ed7c78908fd1",
     "non-reentrant-not-first": "b13f6310ad1f6ef8b1ac1fa031a00c0bc5bbae515102963e53ef1562998f1247",
     "pascal-case-struct": "7034fc96ee2d655930315cb6b897c2b235d535fbc9fb97dcdf054e1f68b2cf14",
@@ -92,16 +92,16 @@
     "unsafe-oz-erc721-mint": "60b4bb4f73cb29cee85d35a2a451c086b43354babbef519d62f607ce6c5fb660",
     "unsafe-typecast": "8971505bdf79fc9df826c6410a594d1318e6d31f44eaae8c32ae50dac1ebb20f",
     "unused-error": "426915d68002b0245040f794521e22bdda056054e814e3c369b646b202d3adfc",
-    "unused-import": "a6eb3a5954418be203f473834c3ef4717e05c43b534c026bd611e8ff45349138",
+    "unused-import": "d2c6afb1e4f87897f6564f30f5bcd9dbb1bafd86e52a4d3e448f81d4a24bad80",
     "unused-return": "24c2207c5174dc7685da4031dd2823100c739782745084d2c8639703b0a085c2",
     "unused-state-variables": "798fe8bc47e5e79ab9c3bd1eca979862dd9093eecd706c4268db5ec801c7b89c",
-    "unwrapped-modifier-logic": "0a50b16765e4480a87d0945dfcb9b2503f8a7a77bde412c965d00b35adf9aee0",
+    "unwrapped-modifier-logic": "3ea0c3eaa384cb718c7edaab425badf769d35bc30fc7d944c381c60ea712f76b",
     "var-read-using-this": "700eb04fce0843008db184eef675202170b4d2c31bb5ab978ba44ec487f3ff44",
     "weak-prng": "734a50fbf32dae86cda45304551676a97a493f5845098824746708ec78c043c4",
     "write-after-write": "14707732c38124cc28a2eec5b315291358f8e8977f31c52c2f2c865c09771570"
   },
   "navigation": {
     "sidebar/forge.ts": "e76b67a80e3e2a48531c9ff900feb7a6b6a5d2f619e83713e4210b0abbbf83b8",
-    "src/pages/forge/linting.mdx": "3057b4e13d82aae7279d311057c0f7b62e43fa15f6273f48eb3f01860dc80cda"
+    "src/pages/forge/linting.mdx": "833b580bd7538e774c91ae873a06403d6643c6bd81c7b8d0f25eea5eda6b1863"
   }
 }

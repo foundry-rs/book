@@ -178,9 +178,17 @@ sidebar. Commit the generated output and `scripts/lint-docs-manifest.json` toget
 hand-edit them. The manifest pins the Foundry revision so the Book builds without fetching
 Foundry. The weekly update imports the revision matching its installed Forge binary.
 
+The importer replaces standalone `{{produces}}` markers after Solidity code blocks with
+diagnostics from `forge lint --json --only-lint <id>`. Marked blocks must be complete source
+files: they are linted as `src/Example.sol` in isolated temporary projects, never executed.
+The import fails if the example is invalid or does not emit the documented lint. Unmarked
+fragments are copied without running Forge. Install the matching Forge binary or pass
+`--forge /path/to/forge`; no Forge installation is needed for offline checks or Book builds.
+
 `--check` validates the committed output offline. Add `--foundry /path/to/foundry` to check
 against that source checkout. Run `vp exec vocs build` and inspect the rendered Markdown
-under `dist/public/assets/md/forge/linting/`. Verify changed Solidity examples in Foundry.
+under `dist/public/assets/md/forge/linting/`. Foundry's existing lint tests cover lint behavior;
+the Book owns documentation validation and diagnostic generation at sync time.
 
 #### Auto-Generated CLI Output
 

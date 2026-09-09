@@ -237,7 +237,7 @@ navigation on the right to browse by severity.
 - [`mixed-case-function`](/forge/linting/mixed-case-function) — Reports functions whose names contain embedded underscores, start with an uppercase letter, or otherwise deviate from `mixedCase`. Leading and trailing underscores are preserved, and single-character names are not checked. Test functions starting with `test`, `invariant_`, or `statefulFuzz`, configured uppercase patterns (for example, `ERC20`), and external constant-style getters are exempted.
 - [`mixed-case-variable`](/forge/linting/mixed-case-variable) — Reports mutable variable identifiers that contain embedded underscores, start with an uppercase letter, or otherwise deviate from `mixedCase`. Leading and trailing underscores are preserved, and single-character names are not checked.
 - [`modifier-used-only-once`](/forge/linting/modifier-used-only-once) — Reports modifiers used by exactly one function or constructor across the compiled sources. Virtual modifiers, overrides, and unused modifiers are excluded.
-- [`multi-contract-file`](/forge/linting/multi-contract-file) — Reports each top-level `contract`, `interface`, or `library` definition (after the first) in a file that contains more than one such declaration.
+- [`multi-contract-file`](/forge/linting/multi-contract-file) — Reports every non-exempt top-level `contract`, `interface`, or `library` definition in a file that contains more than one non-exempt declaration.
 - [`named-struct-fields`](/forge/linting/named-struct-fields) — Reports `Struct(a, b, c)` style struct construction; suggests `Struct({ field1: a, field2: b, field3: c })` instead.
 - [`pascal-case-struct`](/forge/linting/pascal-case-struct) — Reports `struct` identifiers longer than one character that do not match the `PascalCase` convention. Single-character names are not checked.
 - [`pragma-inconsistent`](/forge/linting/pragma-inconsistent) — Reports inconsistent `pragma solidity ...;` requirements across source files, such as different exact versions or mixed caret, tilde, and range constraints.
@@ -249,7 +249,7 @@ navigation on the right to browse by severity.
 - [`unaliased-plain-import`](/forge/linting/unaliased-plain-import) — Reports plain imports of the form `import "path";`. Suggests using either named imports (`import { A, B } from "path"`) or an aliased import (`import "path" as X`).
 - [`unsafe-cheatcode`](/forge/linting/unsafe-cheatcode) — Reports calls to `ffi`, `readFile`, `readLine`, `writeFile`, `writeLine`, `removeFile`, `closeFile`, `setEnv`, or `deriveKey`. Unrelated methods with these names may also be flagged.
 - [`unused-error`](/forge/linting/unused-error) — Reports custom error declarations that are never used by a revert, `require`, or selector reference anywhere in the compiled sources.
-- [`unused-import`](/forge/linting/unused-import) — Reports `import "..."`, `import "..." as X`, and `import { A, B } from "..."` statements where one or more imported names are never used. This includes unused namespace imports (`import * as X`).
+- [`unused-import`](/forge/linting/unused-import) — Reports unused names in named imports (`import { A, B } from "..."`) and unused namespace aliases (`import "..." as X` or `import * as X from "..."`). Plain imports without an alias are not checked.
 
 #### Gas optimization
 
@@ -266,6 +266,6 @@ navigation on the right to browse by severity.
 
 #### Code size
 
-- [`unwrapped-modifier-logic`](/forge/linting/unwrapped-modifier-logic) — Reports modifiers containing logic beyond a placeholder, simple `require` or `assert` checks, or a single library call. Assembly blocks are excluded from suggested extraction.
+- [`unwrapped-modifier-logic`](/forge/linting/unwrapped-modifier-logic) — Reports modifier logic that can be extracted into a helper, including `require` and `assert` checks. A single ordinary function or library call on either side of `_` is left inline. Assembly blocks are excluded from suggested extraction.
 
 {/* END GENERATED LINTS */}
