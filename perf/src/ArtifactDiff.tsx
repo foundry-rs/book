@@ -182,8 +182,7 @@ function ComputedDiff({
       controller?.abort()
       document.removeEventListener('visibilitychange', computeWhenVisible)
     }
-    // File values, not object identity: presentation changes reuse the computed diff.
-  }, [before.contents, before.name, before.lang, after.contents, after.name, after.lang])
+  }, [before, after])
   if (error)
     return (
       <section className="large-artifact">

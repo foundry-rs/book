@@ -34,9 +34,11 @@ test('compiler switches isolate highlight caches and revisits reuse computed dif
   await page.getByRole('combobox', { name: 'Right', exact: true }).selectOption('head:solx')
   await expect(code).toContainText('0x2e')
   await expect(code).not.toContainText('0x28')
+  await expect(code.locator('span[style]').first()).toBeVisible()
   await page.getByRole('combobox', { name: 'Right', exact: true }).selectOption('head:solar')
   await expect(code).toContainText('0x28')
   await expect(code).not.toContainText('0x2e')
+  await expect(code.locator('span[style]').first()).toBeVisible()
   expect(workers.length).toBe(initialWorkers + 1)
 })
 
