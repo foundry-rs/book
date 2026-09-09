@@ -1,8 +1,15 @@
 ---
-description: Reentrancy through fixed-gas ETH transfers
+description: Legacy reference for reentrancy through fixed-gas ETH transfers
+status: legacy
 ---
 
 ## Reentrancy through fixed-gas ETH transfers
+
+:::note[Legacy lint reference]
+This page is retained for existing links. The current Foundry lint registry does
+not include `reentrancy-unlimited-gas`; do not select this ID in current lint
+configuration. The description below documents the historical rule.
+:::
 
 **Severity**: `Info`
 **ID**: `reentrancy-unlimited-gas`
@@ -67,8 +74,6 @@ with the recipient. Use a reentrancy guard when the interaction cannot safely be
 
 ### Example
 
-#### Bad
-
 ```solidity
 function withdraw(address payable recipient, uint256 amount) external {
     recipient.transfer(amount);
@@ -77,7 +82,7 @@ function withdraw(address payable recipient, uint256 amount) external {
 }
 ```
 
-#### Good
+Use instead:
 
 ```solidity
 function withdraw(address payable recipient, uint256 amount) external {

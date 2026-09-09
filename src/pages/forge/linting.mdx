@@ -164,7 +164,7 @@ navigation on the right to browse by severity.
 - [`erc20-unchecked-transfer`](/forge/linting/erc20-unchecked-transfer) — Flags calls to ERC20 `transfer` and `transferFrom` where the boolean return value is ignored.
 - [`function-selector-collision`](/forge/linting/function-selector-collision) — Flags different proxy and implementation function signatures that produce the same four-byte selector and can route implementation calls to the proxy instead.
 - [`incorrect-exp`](/forge/linting/incorrect-exp) — Flags `^` (bitwise xor) used between integer literals where `**` (exponentiation) was almost certainly intended.
-- [`incorrect-shift`](/forge/linting/incorrect-shift) — Flags shift operations where a literal appears on the left and a non-literal on the right, which is almost always the wrong operand order.
+- [`incorrect-shift`](/forge/linting/incorrect-shift) — Flags Yul `shl` and `shr` calls whose operands appear to be reversed.
 - [`protected-vars`](/forge/linting/protected-vars) — Flags externally callable functions that can write a state variable without invoking the function or modifier named by its `@custom:security write-protection` annotation.
 - [`reentrancy-balance`](/forge/linting/reentrancy-balance) — Flags reentrant external calls between saving `address(this).balance` and checking the current contract balance against that saved value.
 - [`reentrancy-eth`](/forge/linting/reentrancy-eth) — Flags uncapped ETH-transferring low-level `call` operations when state read before the call is written after the call.
@@ -183,8 +183,8 @@ navigation on the right to browse by severity.
 - [`ecrecover`](/forge/linting/ecrecover) — Flags direct calls to Solidity's `ecrecover` builtin when the signature's `s` value is not proven to be in the canonical lower half of the secp256k1 curve order.
 - [`incorrect-erc20-interface`](/forge/linting/incorrect-erc20-interface) — Flags interfaces or contracts whose function signatures match an ERC20 method by name and parameters but use the wrong return type.
 - [`incorrect-erc721-interface`](/forge/linting/incorrect-erc721-interface) — Flags interfaces or contracts whose function signatures match an ERC721 (or ERC165) method by name and parameters but use the wrong return type.
+- [`incorrect-strict-equality`](/forge/linting/incorrect-strict-equality) — Flags `==` and `!=` comparisons on values that can be manipulated by parties outside the contract's control: ETH balances (`.balance`) and ERC-20 balances (`.balanceOf(...)`).
 - [`locked-ether`](/forge/linting/locked-ether) — Flags contracts that can receive Ether (via `payable` functions, `receive()`, or a payable `fallback()`) but expose no code path that can send Ether out, permanently trapping user funds.
-- [`low-level-calls`](/forge/linting/low-level-calls) — Flags direct use of Solidity low-level calls (`call`, `delegatecall`, and `staticcall`).
 - [`mapping-deletion`](/forge/linting/mapping-deletion) — Flags `delete` applied to a value whose type contains a `mapping`, because mapping entries are left in storage.
 - [`non-reentrant-not-first`](/forge/linting/non-reentrant-not-first) — Flags functions where a `nonReentrant` modifier appears after another modifier.
 - [`reentrancy-no-eth`](/forge/linting/reentrancy-no-eth) — Flags non-ETH external calls when state read before the call is written after the call.
@@ -200,11 +200,11 @@ navigation on the right to browse by severity.
 
 #### Low severity
 
-- [`block-timestamp`](/forge/linting/block-timestamp) — Flags use of `block.timestamp` as an operand of a comparison, where its value can be slightly manipulated by the block proposer.
+- [`block-timestamp`](/forge/linting/block-timestamp) — Flags comparisons using `block.timestamp` for review against the target chain's timestamp and transaction-inclusion guarantees.
 - [`calls-loop`](/forge/linting/calls-loop) — Flags external calls made from inside loops, which can cause denial-of-service if a callee reverts or exhausts gas.
 - [`delegatecall-loop`](/forge/linting/delegatecall-loop) — Flags `delegatecall` operations inside loops in externally callable payable functions.
 - [`deprecated-oz-function`](/forge/linting/deprecated-oz-function) — Flags references to functions OpenZeppelin deprecated: `SafeERC20.safeApprove` and `AccessControl._setupRole`.
-- [`empty-block`](/forge/linting/empty-block) — Flags regular functions with an empty body; constructors, `receive`/`fallback`, `virtual` and `payable` functions are exempt.
+- [`empty-block`](/forge/linting/empty-block) — Flags empty function bodies, excluding constructors, `receive`/`fallback`, virtual functions, and payable functions without return parameters.
 - [`incorrect-modifier`](/forge/linting/incorrect-modifier) — Flags modifiers that can finish without executing the modified function body or reverting.
 - [`inconsistent-type-names`](/forge/linting/inconsistent-type-names) — Flags mixed use of the equivalent `uint`/`uint256` or `int`/`int256` type spellings within one contract.
 - [`missing-events-access-control`](/forge/linting/missing-events-access-control) — Flags protected entry-point functions that update state used for access control without emitting an event.
@@ -222,8 +222,9 @@ navigation on the right to browse by severity.
 - [`event-fields`](/forge/linting/event-fields) — Flags events whose `address` parameters are not declared `indexed`.
 - [`function-init-state`](/forge/linting/function-init-state) — Flags state variables whose initializer depends on a non-pure function or another state variable; initializers run before the constructor body.
 - [`inline-assembly`](/forge/linting/inline-assembly) — Flags every `assembly { ... }` block; inline assembly bypasses Solidity safety features and should be reviewed deliberately.
-- [`interface-file-naming`](/forge/linting/interface-file-naming) — Flags Solidity files whose only top-level declaration is an interface but whose filename is not prefixed with `I`.
+- [`interface-file-naming`](/forge/linting/interface-file-naming) — Flags Solidity files whose contract-like declarations are all interfaces but whose filename is not prefixed with `I`. Other top-level declarations do not exclude a file.
 - [`interface-naming`](/forge/linting/interface-naming) — Flags `interface` declarations whose names are not prefixed with `I`.
+- [`low-level-calls`](/forge/linting/low-level-calls) — Flags direct use of Solidity low-level calls (`call`, `delegatecall`, and `staticcall`).
 - [`missing-inheritance`](/forge/linting/missing-inheritance) — Flags contracts that implement every external function of an interface but do not explicitly inherit from it.
 - [`mixed-case-function`](/forge/linting/mixed-case-function) — Flags function names that do not follow `mixedCase`.
 - [`mixed-case-variable`](/forge/linting/mixed-case-variable) — Flags mutable variable names (locals, parameters, mutable state) that do not follow `mixedCase`.
@@ -232,12 +233,11 @@ navigation on the right to browse by severity.
 - [`pascal-case-struct`](/forge/linting/pascal-case-struct) — Flags struct definitions whose names do not follow `PascalCase`.
 - [`pragma-inconsistent`](/forge/linting/pragma-inconsistent) — Flags projects whose source files declare incompatible or differently-shaped Solidity version pragmas.
 - [`redundant-base-constructor-call`](/forge/linting/redundant-base-constructor-call) — Flags explicit empty base-constructor arguments (e.g. `is A()` or `constructor() A() {}`) when the base contract requires no arguments.
-- [`reentrancy-unlimited-gas`](/forge/linting/reentrancy-unlimited-gas) — Flags state changes and event emissions that remain reachable after built-in `transfer` or `send` calls.
 - [`screaming-snake-case-const`](/forge/linting/screaming-snake-case-const) — Flags `constant` state variables whose names do not follow `SCREAMING_SNAKE_CASE`.
 - [`screaming-snake-case-immutable`](/forge/linting/screaming-snake-case-immutable) — Flags `immutable` state variables whose names do not follow `SCREAMING_SNAKE_CASE`.
 - [`too-many-digits`](/forge/linting/too-many-digits) — Flags numeric literals containing five or more consecutive zeros, which are easy to misread.
 - [`unaliased-plain-import`](/forge/linting/unaliased-plain-import) — Flags `import "path";` statements that pull in every top-level symbol from another file without an alias.
-- [`unsafe-cheatcode`](/forge/linting/unsafe-cheatcode) — Flags use of Foundry cheatcodes that perform dangerous side effects (filesystem access, network activity, environment variable reads, etc.) so they cannot slip into production code unnoticed.
+- [`unsafe-cheatcode`](/forge/linting/unsafe-cheatcode) — Flags use of Foundry cheatcodes classified as unsafe so their effects can receive deliberate review.
 - [`literal-instead-of-constant`](/forge/linting/literal-instead-of-constant) — Flags literal values appearing more than once in the executable bodies of a contract.
 - [`modifier-used-only-once`](/forge/linting/modifier-used-only-once) — Flags modifiers invoked by exactly one function; their checks can usually be inlined.
 - [`internal-function-used-once`](/forge/linting/internal-function-used-once) — Flags internal functions referenced exactly once; they can usually be inlined into their caller.
@@ -249,16 +249,16 @@ navigation on the right to browse by severity.
 
 #### Gas optimization
 
-- [`asm-keccak256`](/forge/linting/asm-keccak256) — Flags calls to the high-level `keccak256(...)` builtin that can be cheaply rewritten with inline assembly.
+- [`asm-keccak256`](/forge/linting/asm-keccak256) — Flags direct calls to the high-level `keccak256(...)` builtin for review as gas optimization candidates.
 - [`cache-array-length`](/forge/linting/cache-array-length) — Flags `for` loop conditions that read a storage dynamic array's `.length` on every iteration instead of comparing against a cached local length.
-- [`costly-loop`](/forge/linting/costly-loop) — Flags storage variable writes inside loops, where each SSTORE multiplies gas cost by the number of iterations.
+- [`costly-loop`](/forge/linting/costly-loop) — Flags storage writes inside loops; accumulating a result locally can reduce repeated storage work when it preserves behavior.
 - [`could-be-constant`](/forge/linting/could-be-constant) — Flags state variables with a compile-time-constant inline initializer that are never written — making them eligible to be declared `constant`.
 - [`could-be-immutable`](/forge/linting/could-be-immutable) — Flags state variables that are assigned only in the constructor and never written to afterward — making them eligible to be declared `immutable`.
-- [`custom-errors`](/forge/linting/custom-errors) — Flags `require(cond, "message")`, `revert("message")`, and `revert()` calls; suggests replacing them with a `revert CustomError(...)`.
-- [`external-function`](/forge/linting/external-function) — Flags `public` functions that are never called internally and have a reference-type `memory` parameter; switching them to `external` (with `calldata` parameters) avoids an extra calldata-to-memory copy.
+- [`custom-errors`](/forge/linting/custom-errors) — Flags `require(cond)`, `require(cond, "message")`, `revert("message")`, and `revert()` calls; suggests replacing them with a `revert CustomError(...)`.
+- [`external-function`](/forge/linting/external-function) — Flags `public` functions without internal callers as candidates for `external` visibility and `calldata` parameters; verify callers and inheritance before changing them.
 - [`unused-state-variables`](/forge/linting/unused-state-variables) — Flags state variables that are declared but never read or written anywhere in the contract or its descendants.
 - [`var-read-using-this`](/forge/linting/var-read-using-this) — Flags `this.X(...)` calls that read the contract's own state through its external interface; the unnecessary `STATICCALL` can be avoided by accessing the variable directly.
-- [`write-after-write`](/forge/linting/write-after-write) — Flags storage variables written consecutively without the first value being read; only the final write is needed.
+- [`write-after-write`](/forge/linting/write-after-write) — Flags storage writes overwritten before being read; removing one can save gas if the compiler has not already eliminated it and its value expression has no required side effects.
 
 #### Code size
 

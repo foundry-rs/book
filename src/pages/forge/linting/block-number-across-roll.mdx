@@ -20,23 +20,27 @@ move, or defer `block.number` reads across calls. Foundry's `vm.roll` changes th
 inside a test, so a Solidity local is not a guarantee that the earlier number was captured.
 This can happen with optimized solc via IR as well as other compiler optimizations.
 
-Use [`vm.getBlockNumber()`](/reference/cheatcodes/get-block-number) for test values that need to observe a particular point in time.
+Use `vm.getBlockNumber()` for test values that need to observe a particular point in time.
 Its call result is materialized. Keep normal compiler optimizations enabled.
 
 ### Example
 
-#### Bad
-
 ```solidity
-// [!include ~/snippets/projects/lint-block-environment/test/BlockEnvironment.t.sol:number-bad]
+vm.roll(100);
+uint256 saved = block.number; // Warning: this capture can cross the next roll.
+vm.roll(200);
+vm.roll(saved);
 ```
 
-#### Good
+Use instead:
 
 Capture through the getter instead:
 
 ```solidity
-// [!include ~/snippets/projects/lint-block-environment/test/BlockEnvironment.t.sol:number-good]
+vm.roll(100);
+uint256 saved = vm.getBlockNumber();
+vm.roll(200);
+vm.roll(saved); // Restores 100.
 ```
 
 For before/after comparisons, use the getter on both sides of the mutation.
@@ -52,7 +56,8 @@ The analysis follows scalar local aliases, arithmetic, tuples, internal helper a
 returns, inherited helpers, and modifier bodies. It recognizes the constant cheatcode address
 and the resolved `roll(uint256)` signature, even when the receiver is not named `vm`.
 Unrelated methods named `roll` and changes to the timestamp do not trigger this rule.
-External call results are treated as materialized values from a separate call frame.
+External call results, including public and external library calls through `delegatecall`,
+are treated as materialized values from a separate call frame.
 
 This is a bounded warning, not a complete execution analysis: it visits up to 16,384 nodes,
 retains at most 32 paths at statement boundaries, follows at most eight function frames, and
@@ -68,5 +73,6 @@ Existing severity filters, `exclude_lints`, and inline suppressions apply. Suppr
 capture when its behavior is intentional:
 
 ```solidity
-// [!include ~/snippets/projects/lint-block-environment/test/BlockEnvironment.t.sol:number-suppression]
+// forge-lint: disable-next-line(block-number-across-roll)
+uint256 saved = block.number;
 ```

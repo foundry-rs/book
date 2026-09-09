@@ -39,6 +39,9 @@ jobs:
       - name: Check narrative commands
         run: vp run check:commands
 
+      - name: Check lint documentation
+        run: vp run check:lints
+
       - name: Check
         run: vp run check
 

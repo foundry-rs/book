@@ -161,6 +161,54 @@ $ forge build
 
 ---
 
+#### Lint reference documentation
+
+The canonical lint explanations live in
+[`crates/lint/docs`](https://github.com/foundry-rs/foundry/tree/master/crates/lint/docs)
+in Foundry. Update those files first, then synchronize the corresponding pages in
+`src/pages/forge/linting/`. Keep each lint's public kebab-case ID, severity, and
+URL unchanged unless a separately reviewed compatibility change requires it.
+Clippy uses snake_case IDs; do not copy that spelling convention into Forge.
+
+Follow [Clippy's lint documentation guidance](https://doc.rust-lang.org/clippy/development/adding_lints.html#documentation):
+
+1. **What it does** states the precise pattern detected and relevant exclusions.
+2. **Why is this bad?** explains the concrete impact. Use **Why restrict this?**
+   for a style or policy preference, and explain when opting out is reasonable.
+   Forge has no Clippy `restriction` category; choose the heading by the lint's
+   purpose, not its severity.
+3. **Example** shows a minimal triggering Solidity example, followed by the
+   literal text **Use instead:** and the corrected example. Preserve the intended
+   behavior and explain tradeoffs or limitations instead of claiming every
+   suggestion is universally safe.
+
+Keep these sections in order. Additional sections may explain configuration,
+limitations, and related lints. For new examples, use physical Solidity snippets
+where practical; existing canonical Foundry examples may remain inline so the
+two repositories do not maintain different explanations.
+
+Use [rustc's diagnostic style](https://rustc-dev-guide.rust-lang.org/diagnostics.html)
+for quoted lint messages: matter-of-fact wording, a lowercase opening, no final
+period for a single sentence, and backticks around code. These rules apply to
+diagnostics, not prose headings or explanatory paragraphs. New lint names should
+describe the detected problem, following the intent of the
+[Rust lint naming conventions](https://rust-lang.github.io/rfcs/0344-conventions-galore.html#lints)
+while preserving Forge's kebab-case IDs.
+
+Run `vp run check:lints` to check every page's metadata, section order, example
+pair, index entry, sidebar entry, and matching severity groups. To check the
+complete registered inventory and canonical content against a local Foundry
+checkout, run:
+
+```bash
+vp run check:lints -- --foundry /path/to/foundry
+```
+
+Run `vp exec vocs build` and inspect the rendered Markdown under
+`dist/public/assets/md/forge/linting/` before submitting changes. This validates
+rendering; it does not prove that an example triggers or clears a lint. Verify
+new or changed examples against the matching Foundry version separately.
+
 #### Auto-Generated CLI Output
 
 Most CLI output is auto-generated to stay in sync with Foundry changes.

@@ -69,6 +69,14 @@ Captured output in `src/snippets/output/` is also generator-owned. Regenerate it
 with the matching installed Foundry version instead of manually normalizing a
 stale snapshot.
 
+### Lint reference pages
+
+Follow the lint documentation rules in `CONTRIBUTING.md`. The canonical content
+is in Foundry's `crates/lint/docs/`; synchronize all affected pages and preserve
+their public kebab-case IDs. Run `vp run check:lints` and, when a Foundry checkout
+is available, `vp run check:lints -- --foundry /path/to/foundry` to check the
+registered inventory and canonical content. Verify the rendered Vocs output.
+
 ### Source snippets
 
 Put runnable Solidity examples under `src/snippets/projects/` and include them
