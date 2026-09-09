@@ -27,6 +27,24 @@ contract LastFrameGasTest is Test {
     }
     // [!endregion call]
 
+    // [!region components]
+    function testMeasureGasComponents() public {
+        GasTarget target = new GasTarget();
+        target.setValue(42);
+        Vm.Gas memory gas = vm.lastFrameGas();
+
+        uint256 regularGasUsed = uint256(gas.gasTotalUsed);
+        int256 netStateGasUsed = int256(gas.gasStateUsed);
+        int256 netMeasuredGas = int256(regularGasUsed) + netStateGasUsed;
+
+        // These are measured components, not a transaction gas-limit estimate.
+        emit log_named_uint("Regular gas (excludes state gas)", regularGasUsed);
+        emit log_named_int("State gas (after state refills)", netStateGasUsed);
+        emit log_named_int("Net sum of measured components", netMeasuredGas);
+        emit log_named_int("Ordinary refund (excludes state refills)", int256(gas.gasRefunded));
+    }
+    // [!endregion components]
+
     // [!region create]
     function testMeasureContractCreationFrame() public {
         new GasTarget();

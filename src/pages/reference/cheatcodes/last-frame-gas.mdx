@@ -13,6 +13,7 @@ struct Gas {
     uint64 gasMemoryUsed;
     int64 gasRefunded;
     uint64 gasRemaining;
+    int64 gasStateUsed;
 }
 
 function lastFrameGas() external view returns (Gas memory gas);
@@ -31,11 +32,36 @@ Reading either value does not replace the recorded frame because cheatcode calls
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `gasLimit` | `uint64` | Gas limit available to the frame |
-| `gasTotalUsed` | `uint64` | Total gas spent by the frame |
-| `gasMemoryUsed` | `uint64` | Deprecated field that currently returns `0` |
-| `gasRefunded` | `int64` | Gas refund accumulated by the frame |
-| `gasRemaining` | `uint64` | Gas remaining when the frame completed |
+| `gasLimit` | `uint64` | Regular gas limit of the frame. Excludes the EIP-8037 state gas reservoir; it is not the transaction's combined limit or the minimum required to succeed. |
+| `gasTotalUsed` | `uint64` | Regular (execution) gas used, including nested execution, before subtracting `gasRefunded`. **Excludes EIP-8037 state gas.** With isolation, includes intrinsic gas and the regular-gas calldata floor. Without EIP-8037, state creation costs use the ordinary gas schedule and are included here. |
+| `gasMemoryUsed` | `uint64` | Deprecated; always `0`. Memory expansion costs are included in `gasTotalUsed`. |
+| `gasRefunded` | `int64` | Ordinary gas refund counter for the frame, which can be negative in a nested frame. Without isolation, this is before the transaction-wide refund cap and calldata floor. With isolation, this is the isolated transaction's final refund reported by the EVM. **Excludes state gas refills**, which are already reflected in `gasStateUsed`. Refunds do not provide gas to continue executing. |
+| `gasRemaining` | `uint64` | Regular gas remaining at completion. **Excludes the state gas reservoir.** State charges can draw from regular gas and state refills can restore it, so `gasLimit - gasRemaining` need not equal `gasTotalUsed`. |
+| `gasStateUsed` | `int64` | Net EIP-8037 state creation gas, including nested execution, **excluding regular gas** and already subtracting state refills. Zero without EIP-8037 and for reverted or halted frames. Can be negative when a successful nested frame undoes state creation charged by an earlier frame in the same transaction. Do not subtract `gasRefunded` from this value. |
+
+### Regular gas, state gas, and total gas
+
+[Regular gas and execution gas mean the same dimension](/forge/gas-accounting): computation, memory, access costs, and transaction intrinsic costs. [EIP-8037](https://eips.ethereum.org/EIPS/eip-8037) adds a separate **state gas** dimension for state creation, such as new storage slots, accounts, and deployed code. Reading or updating existing state still costs regular gas.
+
+When EIP-8037 is active, `gasTotalUsed` excludes state gas regardless of whether the state charge was paid from the reservoir or spilled into regular gas. An exceptional halt consumes the remaining regular allowance after state rollback; those consumed units are reported as regular gas and `gasStateUsed` is zero.
+
+For the net sum of the measured components, widen both fields to signed integers before adding them. This preserves negative nested-frame state deltas:
+
+```solidity [test/LastFrameGas.t.sol]
+// [!include ~/snippets/projects/cheatcodes/test/LastFrameGas.t.sol:components]
+```
+
+That sum is **not a gas-limit estimate**. You may need gas temporarily before a state refill, and the caller pays additional overhead. Call forwarding rules and the regular gas cap also constrain execution. A negative state delta is valid accounting, not a negative gas limit.
+
+Use the transaction receipt's `gasUsed` for the total charged by a mined transaction. It already includes regular and state gas, refunds, and the calldata floor. Do not add state gas again. Use `eth_estimateGas` on a node supporting the target network's rules to estimate the transaction gas limit. See [which gas value to use](/forge/gas-accounting#which-value-should-you-use).
+
+### Isolation and network support
+
+With isolation enabled, a top-level external call or creation in a test runs as a separate transaction. Its measurement includes transaction intrinsic gas, and `gasTotalUsed` uses the transaction's regular block-accounting contribution, including its calldata floor. The refund field is finalized for that isolated transaction. Without isolation, these are frame-local measurements: intrinsic gas and the caller's call setup are outside the frame, and the ordinary refund counter has not been finalized. Nested frames remain frame-local even within an isolated transaction.
+
+Do not reconstruct a receipt by blindly subtracting `gasRefunded` from the sum: frame scope, final refund handling, the calldata floor, and state charges incurred outside the child frame can differ. In particular, the isolated creation frame need not include an account-creation charge already paid by its caller.
+
+EIP-8037 behavior depends on the selected EVM/network rules. In Foundry's Ethereum EVM, it is enabled for `amsterdam` and later EVM versions. This does not mean every live Ethereum-compatible network has activated it. On an earlier fork or a network without EIP-8037, `gasStateUsed` is zero and state creation is still charged through the ordinary gas schedule in `gasTotalUsed`. See [network support](/forge/gas-accounting#which-networks-are-affected).
 
 ### Examples
 

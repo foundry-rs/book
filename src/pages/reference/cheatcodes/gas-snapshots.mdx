@@ -32,6 +32,14 @@ These cheatcodes allow you to capture gas usage in your tests. Snapshots are wri
 | `snapshotGasLastFrame` | Record gas usage of the last external call or contract creation |
 | `snapshotGasLastCall` | Deprecated call-only variant; use `snapshotGasLastFrame` |
 
+### EIP-8037 gas accounting
+
+A scalar snapshot is not a guaranteed total of regular and state gas. `snapshotGasLastFrame` and the deprecated `snapshotGasLastCall` use gas consumed from the regular counter: that can include state gas spilled into regular gas, but excludes state gas paid from the reservoir. For isolated frames with zero net state gas, they use the isolated transaction's receipt gas instead. They therefore need not equal `lastFrameGas().gasTotalUsed`.
+
+Section snapshots (`startSnapshotGas` / `stopSnapshotGas`) also measure regular gas-counter consumption and do not capture state gas paid from the reservoir. Use [`lastFrameGas`](/reference/cheatcodes/last-frame-gas) to inspect regular and signed net state gas separately. Use receipt `gasUsed` for a mined transaction's total charged gas, and `eth_estimateGas` to estimate a sufficient transaction limit.
+
+Without EIP-8037, state creation costs use the ordinary gas schedule and there is no separate state reservoir to exclude. See [gas accounting](/forge/gas-accounting) and [EIP-8037](https://eips.ethereum.org/EIPS/eip-8037) for refunds, state refills, isolation, and network support.
+
 ### Configuration
 
 To enforce gas snapshot comparisons:
