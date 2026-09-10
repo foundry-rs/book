@@ -62,8 +62,13 @@ both files remain downloadable with bounded previews; the failed content pair st
 failed for the page session, with no automatic retries on revisits or visibility changes.
 Theme and split/unified changes reuse the computed diff. Syntax highlighting
 uses the library's worker pool (one worker, retained across file/compiler switches);
-intraline decorations are disabled because Shiki's decoration splitting becomes
-quadratic on generated files. Syntax colors and added/deleted line colors remain.
+intraline word decorations are enabled only when both sides together contain at most
+2,000 lines, 200 changed lines, and 32,768 characters. Lines longer than 256 characters
+skip word matching. Large diffs retain syntax colors and added/deleted line colors
+without intraline decorations, whose Shiki processing becomes quadratic on generated
+files. These are whole-diff limits: Pierre does not expose per-block decoration budgets.
+Changing between decorated and undecorated diffs clears the library's highlighting
+caches through `setRenderOptions`; the worker and our computed-diff cache are retained.
 `@pierre/diffs` 1.4.1 includes the large-hunk stack-overflow fix upstream;
 no dependency patch is needed. Its edit-session APIs are not used by this read-only viewer.
 `CodeView` owns the scroll container and virtualizes visible lines. File cache keys

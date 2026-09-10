@@ -1,6 +1,7 @@
-import { CodeView, WorkerPoolContextProvider } from '@pierre/diffs/react'
+import { CodeView, WorkerPoolContextProvider, useWorkerPool } from '@pierre/diffs/react'
 import type { FileContents, FileDiffMetadata } from '@pierre/diffs'
 import { computeDiff } from './computeDiff'
+import { intralineOptions } from './intralineOptions'
 import HighlightWorker from '@pierre/diffs/worker/worker.js?worker'
 import { useEffect, useState } from 'react'
 import { Info } from 'lucide-react'
@@ -26,8 +27,7 @@ export default function ArtifactDiff(props: Props) {
   return (
     <WorkerPoolContextProvider
       poolOptions={poolOptions}
-      // Intraline decorations make Shiki quadratic on large generated artifacts.
-      // Keep syntax highlighting and line-level additions/deletions.
+      // Start safely; computed diffs opt into bounded intraline highlighting.
       highlighterOptions={{ lineDiffType: 'none' }}
     >
       <ArtifactDiffContents
@@ -153,6 +153,7 @@ function ComputedDiff({
   style: Props['style']
   onStyleChange: Props['onStyleChange']
 }) {
+  const pool = useWorkerPool()
   const [diff, setDiff] = useState<FileDiffMetadata | null>(null)
   const [error, setError] = useState('')
   useEffect(() => {
@@ -160,16 +161,23 @@ function ComputedDiff({
     const { signal } = controller
     setDiff(null)
     setError('')
-    computeDiff(before, after, signal).then(
-      (value) => {
-        if (!signal.aborted) setDiff(value)
-      },
-      (error: Error) => {
-        if (!signal.aborted) setError(error.message)
-      },
-    )
+    computeDiff(before, after, signal)
+      .then(async (value) => {
+        if (signal.aborted) return value
+        // Pool options, not CodeView options, control worker highlighting.
+        await pool?.setRenderOptions(intralineOptions(value))
+        return value
+      })
+      .then(
+        (value) => {
+          if (!signal.aborted) setDiff(value)
+        },
+        (error: Error) => {
+          if (!signal.aborted) setError(error.message)
+        },
+      )
     return () => controller.abort()
-  }, [before, after])
+  }, [before, after, pool])
   if (error)
     return (
       <section className="large-artifact">
@@ -206,7 +214,12 @@ function ComputedDiff({
         className="solar-diff"
         style={{ height: '75vh', overflow: 'auto' }}
         items={[{ id: before.name, type: 'diff', fileDiff: diff }]}
-        options={{ diffStyle: style, overflow: 'scroll', themeType: theme }}
+        options={{
+          ...intralineOptions(diff),
+          diffStyle: style,
+          overflow: 'scroll',
+          themeType: theme,
+        }}
       />
     </div>
   )

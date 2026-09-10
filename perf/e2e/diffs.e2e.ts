@@ -14,6 +14,7 @@ test('computes diff in a worker and reuses it for presentation changes', async (
   await expect(page.locator('.solar-diff')).toHaveCSS('overflow', 'auto')
   // A plain-text placeholder is not proof that worker highlighting succeeded.
   await expect(page.locator('diffs-container').locator('code span[style]').first()).toBeVisible()
+  await expect(page.locator('diffs-container').locator('[data-diff-span]').first()).toBeVisible()
   expect(workers).toBe(1)
   await page.getByRole('button', { name: 'Unified', exact: true }).click()
   await page.getByRole('button', { name: /Switch to .* theme/ }).click()
@@ -72,6 +73,7 @@ test('highlights a large repetitive assembly diff without expensive intraline de
   const code = page.locator('diffs-container').locator('code')
   // Include cold worker/grammar startup within the five-second rendering budget.
   await expect(code.locator('span[style]').first()).toBeVisible({ timeout: 5000 })
+  await expect(code.locator('[data-diff-span]')).toHaveCount(0)
   await expect(page.locator('diffs-container').locator('code[data-additions]')).toContainText(
     '0x11',
   )
@@ -80,6 +82,23 @@ test('highlights a large repetitive assembly diff without expensive intraline de
   )
   await page.locator('.solar-diff').press('End')
   await expect(code.first()).toContainText('40000')
+  // Changing policy must not leave the pool highlighting the next file incorrectly.
+  await page.getByRole('button', { name: 'optimized.yul', exact: true }).click()
+  await expect(code.locator('[data-diff-span]').first()).toBeVisible()
+  await page.getByRole('button', { name: 'runtime.disasm', exact: true }).click()
+  await expect(code.locator('span[style]').first()).toBeVisible({ timeout: 5000 })
+  await expect(code.locator('[data-diff-span]')).toHaveCount(0)
+})
+
+test('skips within-line matching for long lines in an otherwise small diff', async ({ page }) => {
+  await page.route('**/api/data/runs/**/1.json', (route) => {
+    const head = route.request().url().includes('9d8c7b6a5e4f32100123456789abcdef01234567')
+    return route.fulfill({ json: `PUSH32 ${'a'.repeat(256)}${head ? '1' : '0'}\n` })
+  })
+  await page.goto(url)
+  const code = page.locator('diffs-container').locator('code')
+  await expect(code.locator('span[style]').first()).toBeVisible()
+  await expect(code.locator('[data-diff-span]')).toHaveCount(0)
 })
 
 test('leaving a pending diff cannot replace the newly selected file', async ({ page }) => {
