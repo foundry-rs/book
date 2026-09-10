@@ -8,10 +8,12 @@ export const cmdReference: SidebarItem[] = [
     items: [
       { text: "warp", link: "/reference/cheatcodes/warp" },
       { text: "roll", link: "/reference/cheatcodes/roll" },
+      { text: "rollSlot", link: "/reference/cheatcodes/roll-slot" },
       { text: "setBlockhash", link: "/reference/cheatcodes/set-blockhash" },
       { text: "fee", link: "/reference/cheatcodes/fee" },
       { text: "getBlockTimestamp", link: "/reference/cheatcodes/get-block-timestamp" },
       { text: "getBlockNumber", link: "/reference/cheatcodes/get-block-number" },
+      { text: "getSlotNumber", link: "/reference/cheatcodes/get-slot-number" },
       { text: "difficulty", link: "/reference/cheatcodes/difficulty" },
       { text: "prevrandao", link: "/reference/cheatcodes/prevrandao" },
       { text: "chainId", link: "/reference/cheatcodes/chain-id" },

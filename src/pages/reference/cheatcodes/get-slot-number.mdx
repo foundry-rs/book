@@ -1,0 +1,51 @@
+---
+description: Gets the current block.slotnum.
+---
+
+## `getSlotNumber`
+
+### Signature
+
+```solidity
+function getSlotNumber() external view returns (uint64 slotNumber);
+```
+
+### Description
+
+Gets the current `block.slotnum`.
+
+Use this after `vm.rollSlot` to read the updated slot number. The Solidity compiler assumes `block.slotnum` is constant during a transaction and may optimize repeated reads away, especially with `--via-ir`. The cheatcode reads the current EVM value on every call.
+
+Requires the Amsterdam EVM hardfork or later and reverts on earlier versions. Slot numbers are unsigned 64-bit values, as defined by [EIP-7843](https://eips.ethereum.org/EIPS/eip-7843).
+
+### Returns
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `slotNumber` | `uint64` | The current block slot number |
+
+Solidity exposes `block.slotnum` starting with version 0.8.37.
+
+### Examples
+
+With `evm_version = "amsterdam"` configured:
+
+```solidity [test/SlotNumber.t.sol]
+function testSlotNumber() public {
+    uint256 number = vm.getBlockNumber();
+    uint256 timestamp = vm.getBlockTimestamp();
+
+    vm.rollSlot(100);
+    assertEq(vm.getSlotNumber(), 100);
+    vm.rollSlot(101);
+    assertEq(vm.getSlotNumber(), 101);
+
+    assertEq(vm.getBlockNumber(), number);
+    assertEq(vm.getBlockTimestamp(), timestamp);
+}
+```
+
+### Related Cheatcodes
+
+- [`rollSlot`](/reference/cheatcodes/roll-slot) - Sets the slot number
+- [`getBlockNumber`](/reference/cheatcodes/get-block-number) - Gets the block number
