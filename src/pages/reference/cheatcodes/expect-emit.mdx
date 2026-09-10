@@ -96,6 +96,12 @@ When matching multiple events, they must be in order but you can skip events. Fo
 - `[F, F, C]` - out of order
 :::
 
+:::warning[Library helpers and call depth]
+`expectEmit` records the call depth where you register the expectation. If you move only the expectation setup into a `public` or `external` library function, the library's `delegatecall` adds a call frame. This changes when Foundry checks the expectation, even though `delegatecall` preserves `address(this)`.
+
+Use an `internal` library helper to register the expectation and emit the template event, or keep those steps directly in your test immediately before the call you want to check. Internal library calls do not add an EVM call frame.
+:::
+
 :::warning
 The expected event must be emitted by the **next call**. If you make an unrelated call first, the expectation will fail:
 
