@@ -1,0 +1,78 @@
+---
+description: Understand execution gas, state gas, refunds, receipts, and gas limits with EIP-8037.
+---
+
+## Gas accounting
+
+Use a gas **measurement** to understand an execution, a transaction **receipt** to find the charged gas, and a gas **estimate** to choose the limit for a new transaction. These numbers answer different questions, even when they happen to be equal.
+
+[EIP-8037: State Creation Gas Cost Increase](https://eips.ethereum.org/EIPS/eip-8037) separates gas into two dimensions. This page explains that model and how Foundry exposes it. The EIP and its [tracing API proposal](https://github.com/ethereum/execution-apis/pull/852) are evolving; select tools and a node that implement the rules of the network and block you are testing.
+
+### Which value should you use?
+
+| Your question | Value or API | Important boundary |
+| --- | --- | --- |
+| How much regular gas did the last call or creation use? | `vm.lastFrameGas().gasTotalUsed` | Excludes EIP-8037 state gas; includes nested execution. Isolation adds transaction intrinsic gas and the regular calldata floor. |
+| How much net state gas did that frame use? | `vm.lastFrameGas().gasStateUsed` | Already net of state refills; can be negative. Zero without EIP-8037 or after frame rollback. |
+| What is the net sum of those frame components? | `int256(uint256(g.gasTotalUsed)) + int256(g.gasStateUsed)` | A signed measurement, not a sufficient gas limit or necessarily receipt gas. |
+| What ordinary refund did that frame accumulate? | `vm.lastFrameGas().gasRefunded` | Frame counter without isolation; finalized refund for an isolated transaction. Excludes state refills. |
+| How much total gas was charged for a mined transaction? | `eth_getTransactionReceipt` → `gasUsed`; `cast receipt <TX_HASH> gasUsed` | Includes both dimensions after refund/floor processing. **Do not add state gas again.** |
+| What was the transaction's execution/state breakdown? | `debug_traceTransaction` with `stateGasTracer`, if the node supports it | Returns `gasUsed`, `executionGasUsed` (the proposal’s `regularGasUsed`), `stateGasUsed`, and `gasRefund`. The dimension fields use block-accounting rules; receipt gas is `gasUsed`. |
+| How much gas should I supply for another transaction? | `eth_estimateGas`; `cast estimate`; Alloy `Provider::estimate_gas` | Use the target network, input, sender, value, and state. Estimates require a node implementing its fork rules. |
+| What gas fee did I pay? | Receipt `gasUsed × effectiveGasPrice` | Covers regular and state gas. Add blob or network-specific fee components separately when applicable. |
+
+See [`lastFrameGas`](/reference/cheatcodes/last-frame-gas) for every field, [Cast receipt](/reference/cast/receipt), [Cast estimate](/reference/cast/estimate), and [Alloy's gas trace types](https://docs.rs/alloy-rpc-types-trace/latest/alloy_rpc_types_trace/geth/state_gas/index.html).
+
+### Execution gas and state gas
+
+| Term | What it pays for | What it excludes |
+| --- | --- | --- |
+| **Regular gas** (the EIP’s *execution gas*) | Computation, memory expansion, state access, existing-state updates, and transaction intrinsic costs. | State creation charges assigned to the EIP-8037 state dimension; blob gas. |
+| **State gas** | State creation, such as a new storage slot, a new account, or deployed code. Reported net usage already deducts charges undone by state refills or rollback. | The accompanying regular execution costs; blob gas. |
+| **Combined transaction gas limit** (`tx.gas`) | The single gas budget you supply for intrinsic costs and both execution and state gas. | Blob gas, which is accounted for separately. |
+| **Receipt gas used** (`gasUsed`) | The transaction's combined charged gas after ordinary refunds and the applicable calldata floor. | Unused gas, blob gas, and separate network-specific fees. |
+
+A state-changing opcode can incur **both** regular and state gas. State gas does not mean “all gas spent by storage opcodes.” Before EIP-8037, those operations still cost gas, but their costs use the ordinary single-dimensional schedule.
+
+### How the reservoir works
+
+You still supply **one transaction gas limit**. After intrinsic gas, the EVM gives the transaction a regular gas allowance, capped by the protocol, and puts any excess into a **state gas reservoir**. Regular execution spends regular gas only. State creation spends the reservoir first and spills into regular gas once it is empty. State **refills** reverse creation charges and restore the gas pools according to EIP-8037's refill rules. Child calls receive the reservoir in full; their `{gas: amount}` allowance and the 63/64 rule apply to regular gas only.
+
+`gasleft()` reports regular gas only. Its delta can miss state gas paid from the reservoir or include state charges spilling into regular gas. A refill can make a later `gasleft()` **larger**, causing checked subtraction to revert. An empty reservoir does not disable state charges, and a large reservoir cannot fund regular execution. See the EIP's [reservoir model](https://eips.ethereum.org/EIPS/eip-8037#transaction-level-gas-accounting-reservoir-model) and [call-frame rules](https://eips.ethereum.org/EIPS/eip-8037#gas-accounting-for-halts-and-reverts) for the full mechanics.
+
+### Two meanings of “refund”
+
+**Ordinary gas refunds** accumulate in the EVM refund counter and are settled at the transaction boundary. [EIP-3529](https://eips.ethereum.org/EIPS/eip-3529) caps the applied refund at one fifth of gas spent; the [EIP-7623 calldata floor](https://eips.ethereum.org/EIPS/eip-7623) can further limit the reduction in charged gas. A refund does not replenish gas available to execute instructions.
+
+**State gas refills** reverse state creation charges during execution, for example when a slot that was zero at transaction start is set and then cleared. They can replenish gas available during execution and are already deducted from net state gas. They are not the ordinary capped refund counter. A reverted or exceptionally halted frame reports zero net state gas, even if it temporarily needed state gas before failing; its regular execution still costs gas.
+
+A successful nested frame can have a **negative state gas delta** when it clears state created by an earlier frame in the same transaction. This is why `Vm.Gas.gasStateUsed` is signed. Transaction-level state gas is nonnegative. Use signed arithmetic for frame deltas and avoid subtracting state refills twice.
+
+### Why used gas is not required gas
+
+Your transaction budget must fund both regular and state gas **when they are charged**, before later refills or refunds. Regular execution must also fit its separate protocol cap. A transaction that allocates state and later undoes it can report little net state gas while requiring enough gas for the temporary allocation. Call forwarding and minimum gas checks can require additional headroom as well.
+
+For example, if a frame reports 30,000 regular gas and 100,000 net state gas, their sum is 130,000 measured gas units. It is not proof that a transaction with a 130,000 gas limit will succeed: the frame can exclude intrinsic or caller-side costs, and it does not report peak temporary state consumption. Subtracting its ordinary refund makes an estimate even less reliable.
+
+For an already executed transaction, read the receipt directly. In the EIP-8037 model, transaction gas before the ordinary refund includes both dimensions and intrinsic costs. The applied ordinary refund is capped, then the calldata floor determines the final charged amount. This settlement cannot generally be reconstructed from `lastFrameGas`, because a child frame is not the whole transaction.
+
+### Transaction gas versus block gas
+
+Receipt `gasUsed` is the transaction's combined charge. Under EIP-8037, the block header uses the **larger** accumulated gas dimension instead. With [EIP-7778](https://eips.ethereum.org/EIPS/eip-7778), block accounting counts regular gas before ordinary refunds, while state gas remains net of state refills. See [Alloy's gas accounting documentation](https://docs.rs/alloy-rpc-types-trace/latest/alloy_rpc_types_trace/geth/state_gas/index.html) for the fields and calldata-floor rules.
+
+Do not sum parent and child frames to reconstruct a transaction total: parent measurements already include nested execution. Some state charges and rollbacks also occur outside opcode steps.
+
+### Which networks are affected?
+
+| Execution environment | Behavior |
+| --- | --- |
+| Foundry's Ethereum EVM with `evm_version = "amsterdam"` or a later supported fork | Uses EIP-8037 regular/state gas accounting. This is a local execution setting, not evidence of activation on a live chain. |
+| Ethereum forks before Amsterdam, or another network that has not activated EIP-8037 | No separate state gas dimension: `Vm.Gas.gasStateUsed` is zero. State creation still costs ordinary gas and is included in `gasTotalUsed`. |
+| A custom network or an L2 | Follows its own hardfork and gas schedule. EVM compatibility alone does not establish EIP-8037 support, pricing, activation dates, or fee equivalence. |
+| RPC tracing on any network | Depends on both the block's rules and the node's tracer support. Optional state fields may be absent; an unsupported `stateGasTracer` can return an RPC error. An absent field means “not reported,” not measured zero. |
+
+When compiling with Solidity 0.8.36, Amsterdam is experimental and also requires `--experimental` (or `experimental = true` in `foundry.toml`).
+
+Pin the [EVM version](/config/reference/solidity-compiler#evm_version), fork block, optimizer settings, and isolation mode when comparing measurements. Use a Foundry version supporting the selected fork and a current forge-std `Vm.Gas` interface containing `gasStateUsed`. For a live network, consult that network's activation schedule rather than assuming Amsterdam rules from a chain name or from Alloy's ability to decode the fields.
+
+RPC field names differ between implementations. The [execution-apis proposal](https://github.com/ethereum/execution-apis/pull/852) names the execution dimension `regularGasUsed`; Alloy and reth serialize `executionGasUsed`. Check what your node returns and whether your Alloy version accepts both names when decoding.

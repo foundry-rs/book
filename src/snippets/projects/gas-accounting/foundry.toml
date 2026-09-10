@@ -1,0 +1,5 @@
+[profile.default]
+solc = "0.8.36"
+evm_version = "amsterdam"
+experimental = true
+isolate = true
