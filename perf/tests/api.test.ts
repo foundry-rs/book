@@ -19,31 +19,22 @@ afterEach(() => {
 })
 
 describe('website API', () => {
-  it('loads pinned source catalogs without database queries and coalesces reads', async () => {
+  it('returns source links with the existing run query, without GitHub calls', async () => {
     const commit = 'd'.repeat(40)
-    globalThis.fetch = vi.fn(
-      async () => new Response('TestCase(test_id="counter", source_code=source("Counter.sol"))'),
+    const url = `https://github.com/paradigmxyz/solar/blob/${commit}/testdata/Counter.sol`
+    globalThis.fetch = vi.fn(async () =>
+      Response.json({
+        commit,
+        measurements: [['counter', '', 'micro', 'solar', 'ok']],
+        source_links: { counter: [['Counter.sol', url]] },
+      }),
     )
-    const app = createApi({ clickHouse: null })
-    const path = `/api/data/sources/${commit}.json`
-    const [first, second] = await Promise.all([app.request(path), app.request(path)])
-    expect(first.status).toBe(200)
-    expect(await first.json()).toEqual(await second.json())
+    const response = await createApi({ clickHouse: config }).request(
+      `/api/data/runs/${commit}/run.json?artifacts=0`,
+    )
+    expect(response.status).toBe(200)
+    expect((await response.json()).results[0].source_links).toEqual([{ label: 'Counter.sol', url }])
     expect(globalThis.fetch).toHaveBeenCalledOnce()
-    expect(vi.mocked(globalThis.fetch).mock.calls[0][0]).toBe(
-      `https://raw.githubusercontent.com/paradigmxyz/solar/${commit}/benches/runtime/cases.py`,
-    )
-    expect(first.headers.get('vercel-cdn-cache-control')).toBe('public, s-maxage=3600')
-    expect((await app.request('/api/data/sources/main.json')).status).toBe(400)
-  })
-
-  it('does not cache missing source catalogs as successful source links', async () => {
-    globalThis.fetch = vi.fn(async () => new Response('', { status: 404 }))
-    const response = await createApi({ clickHouse: null }).request(
-      `/api/data/sources/${'e'.repeat(40)}.json`,
-    )
-    expect(response.status).toBe(502)
-    expect(response.headers.get('cache-control')).toBe('no-store')
   })
 
   it('resolves published prefixes with one bounded query without GitHub', async () => {

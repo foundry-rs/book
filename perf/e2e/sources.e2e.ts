@@ -1,19 +1,21 @@
 import { expect, test } from '@playwright/test'
 
-test('loads pinned sources only when expanded and reuses the commit catalog', async ({ page }) => {
+test('shows imported source links without a separate source request', async ({ page }) => {
   let requests = 0
   const source =
     'https://github.com/paradigmxyz/solar/blob/9d8c7b6a5e4f32100123456789abcdef01234567/testdata/Factorial.sol'
-  await page.route('**/api/data/sources/*.json', (route) => {
-    requests++
-    return route.fulfill({
-      json: {
-        'demo::factorial': [{ label: 'Factorial.sol', url: source }],
-        'demo::fibonacci': [
-          { label: 'Fibonacci.sol', url: source.replace('Factorial', 'Fibonacci') },
-        ],
-      },
-    })
+  page.on('request', (request) => {
+    if (request.url().includes('/api/data/sources/')) requests++
+  })
+  await page.route('**/api/data/runs.json?*', async (route) => {
+    const response = await route.fetch()
+    const data = await response.json()
+    for (const run of data.runs)
+      for (const result of run.results) {
+        const name = result.test_id === 'demo::factorial' ? 'Factorial' : 'Fibonacci'
+        result.source_links = [{ label: `${name}.sol`, url: source.replace('Factorial', name) }]
+      }
+    await route.fulfill({ json: data })
   })
   await page.goto(
     '/perf/solar/?base=8c7b6a5e4f32100123456789abcdef0123456789&head=9d8c7b6a5e4f32100123456789abcdef01234567',
@@ -27,6 +29,6 @@ test('loads pinned sources only when expanded and reuses the commit catalog', as
   )
   await page.getByRole('button', { name: /demo::fibonacci/ }).click()
   await expect(page.getByRole('link', { name: 'Fibonacci.sol ↗', exact: true })).toBeVisible()
-  expect(requests).toBe(1)
+  expect(requests).toBe(0)
   await expect(page.getByRole('link', { name: 'Solar repository' })).toHaveCount(0)
 })

@@ -1,7 +1,4 @@
-export interface SourceLink {
-  label: string
-  url: string
-}
+import type { SourceLink } from '../types.ts'
 
 // Solar benches/runtime/README.md provenance and named release refs resolved to
 // immutable commits. Catalog paths are read from the selected run, not main.
@@ -43,6 +40,26 @@ function sourceLink(repository: string, commit: string, path: string, label: str
 // Read supported literal fields; never execute a fetched Python catalog.
 export function benchmarkSources(catalog: string, commit: string) {
   const sources: Record<string, SourceLink[]> = Object.create(null)
+  // Also cover the rollout window: old importers discarded PR #1449 metadata
+  // even though its catalogs already use shared Project/Source literals.
+  const projects = new Map<string, { file: string; origins: [string, string][] }>()
+  const definitions = [
+    ...catalog.matchAll(
+      /["']([\w.-]+)["']:\s*Project\(\s*["'][\w.-]+["'],\s*["']([\w.-]+\.json\.gz)["']/g,
+    ),
+  ]
+  for (let i = 0; i < definitions.length; i++) {
+    const definition = catalog.slice(
+      definitions[i].index,
+      definitions[i + 1]?.index ?? catalog.length,
+    )
+    projects.set(definitions[i][1], {
+      file: definitions[i][2],
+      origins: [
+        ...definition.matchAll(/Source\(\s*["']([\w.-]+\/[\w.-]+)["'],\s*["']([a-f0-9]{40})["']/g),
+      ].map((match) => [match[1], match[2]]),
+    })
+  }
   const cases = [...catalog.matchAll(/\btest_id\s*=\s*["']([\w.-]+)["']/g)]
   for (let i = 0; i < cases.length; i++) {
     const entry = catalog.slice(cases[i].index, cases[i + 1]?.index ?? catalog.length)
@@ -54,11 +71,23 @@ export function benchmarkSources(catalog: string, commit: string) {
     const links: SourceLink[] = []
     if (local && !local.split('/').includes('..'))
       links.push(sourceLink('paradigmxyz/solar', commit, `testdata/${local}`, local))
-    const archive = literal('project_file')
+    const project = projects.get(
+      entry.match(/\bproject\s*=\s*PROJECTS\[["']([\w.-]+)["']\]/)?.[1] ?? '',
+    )
+    const archive =
+      literal('project_file') ??
+      project?.file ??
+      (literal('project')?.endsWith('.json.gz') ? literal('project') : undefined)
     if (archive && !archive.split('/').includes('..')) {
       const path = archive.includes('/') ? archive : `testdata/projects/${archive}`
       const name = archive.split('/').pop()!
       links.push(sourceLink('paradigmxyz/solar', commit, path, `Input: ${name}`))
+      if (project) {
+        for (const [repository, revision] of project.origins)
+          links.push(sourceLink(repository, revision, '', repository))
+        sources[cases[i][1]] = links
+        continue
+      }
       const origin = upstream[name.replace(/\.json\.gz$/, '')]
       if (origin) {
         // Aave's harness and Solar's wrappers aren't upstream files.

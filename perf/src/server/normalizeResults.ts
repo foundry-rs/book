@@ -1,4 +1,5 @@
 import { validIdentifier } from './artifacts.ts'
+import { normalizeSourceLinks } from './benchmarkSources.ts'
 
 function number(value: unknown) {
   return typeof value === 'number' && Number.isFinite(value) ? value : null
@@ -46,6 +47,7 @@ export function normalizeResults(
           test_id: testId,
           description: text(result.description, 4_096),
           suite: text(result.suite, 128) || 'unknown',
+          source_links: normalizeSourceLinks(result.source_links),
           compiler,
           status: text(values.status, 64) || 'unknown',
           label: text(values.label, 512),

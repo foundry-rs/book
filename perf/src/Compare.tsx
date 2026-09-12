@@ -248,7 +248,7 @@ export function Compare({ base, head }: Props) {
                     <a href={fileViewerHref(runs[0], runs[1], after.test_id, metrics[metric].key)}>
                       Artifacts diff viewer →
                     </a>
-                    <BenchmarkSources benchmark={after.test_id} commit={headResult ? head : base} />
+                    <BenchmarkSources links={after.source_links} />
                   </aside>
                 </section>
               )}

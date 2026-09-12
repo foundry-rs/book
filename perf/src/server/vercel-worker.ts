@@ -2,6 +2,8 @@ import { Hono } from 'hono'
 import { ingestCommit, ingestRecent } from './ingest'
 import { nodeHandler } from './http'
 import { ImportPendingError, RunNotFoundError } from './pending'
+import { backfillSources } from './backfillSources'
+import { clickHouseConfig } from './clickhouse'
 
 const app = new Hono()
 app.use('*', async (context, next) => {
@@ -15,6 +17,11 @@ app.use('*', async (context, next) => {
   await next()
 })
 app.get('/api/worker/tick', async (context) => context.json(await ingestRecent()))
+app.post('/api/worker/backfill-sources', async (context) => {
+  const config = clickHouseConfig(process.env, 'write')
+  if (!config) throw new Error('ClickHouse write credentials are not configured')
+  return context.json(await backfillSources(config))
+})
 app.post('/api/worker/import', async (context) => {
   const sha = context.req.query('commit') ?? ''
   if (!/^[a-f0-9]{40}$/.test(sha)) return context.json({ error: 'Invalid commit' }, 400)

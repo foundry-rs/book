@@ -1,5 +1,23 @@
 import { describe, expect, it } from 'vite-plus/test'
-import { benchmarkSources } from '../src/sources'
+import { benchmarkSources } from '../src/server/legacySources'
+
+it('backfills shared Project/Source catalogs from the producer rollout window', () => {
+  const commit = 'a'.repeat(40)
+  const sources = benchmarkSources(
+    `
+    PROJECTS = {"example": Project("example", "example.json.gz", (Source("owner/example", "${commit}"),))}
+    TestCase(test_id="new-case", project=PROJECTS["example"], source="src/Example.sol")
+  `,
+    commit,
+  )
+  expect(sources['new-case']).toEqual([
+    {
+      label: 'Input: example.json.gz',
+      url: `https://github.com/paradigmxyz/solar/blob/${commit}/testdata/projects/example.json.gz`,
+    },
+    { label: 'owner/example', url: `https://github.com/owner/example/tree/${commit}` },
+  ])
+})
 
 describe('benchmark sources', () => {
   const commit = 'a'.repeat(40)

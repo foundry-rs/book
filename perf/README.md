@@ -92,15 +92,30 @@ using Pierre's virtualized line positions. Changing the file, benchmark, or
 compiler clears the selection. Line numbers refer to the displayed artifact
 (including pretty-printed JSON).
 
-Benchmark source links load lazily from `/api/data/sources/<commit>.json`. The API
-reads literal source paths from `benches/runtime/cases.py` at that exact Solar
-commit (without executing Python), preserving historical archive locations.
-Checked-in sources and compressed inputs get Solar permalinks; known archives
-also link to their pinned upstream entrypoints and Lil Web3's Solmate dependencies.
-The archive provenance map lives in `src/sources.ts`; new upstream archives need
-verified provenance there. Unsupported catalog expressions display unavailable
-metadata, never a generic repository link. Catalogs are cached per commit in the
-browser, server, and CDN for an hour and require no database queries or GitHub token.
+Benchmark sources come from Solar's `source_links` result field (Solar PR #1449),
+validated during import and stored once per benchmark in `run_snapshots.source_links`.
+The existing run response includes these links; expanding a benchmark makes no
+source request. The browser never fetches or parses Solar's Python catalog.
+Historical results without source links are enriched by the importer from the
+catalog at their exact Solar commit, without executing Python. The old archive
+provenance map lives in `src/server/legacySources.ts`; new producer-supplied links
+need no dashboard mapping changes. Failed catalog reads do not block metrics
+publication and can be retried through the backend source backfill.
+
+Before deploying this change, apply the additive `source_links` column from
+`schema/snapshots.sql` using `pnpm run db:schema` with a schema-admin account.
+The read account needs SELECT on this column; a table-level SELECT grant already
+covers it. No new credentials are needed for the application itself.
+Then run `pnpm run db:backfill-sources` with write credentials to enrich all existing
+snapshots, including pinned revisions. It skips complete snapshots, preserves
+their original revision and `published_at` (so latest-run selection cannot change),
+and never downloads artifact bodies or modifies metrics/manifests. Failures stop
+the CLI with the unresolved commits reported; rerunning resumes unfinished rows.
+Alternatively, authenticated `POST /api/worker/backfill-sources` processes up to
+10 snapshots per call using the deployed worker's credentials and `CRON_SECRET`.
+Repeat until `scanned` is zero; resolve any `failed` commits before repeating.
+This maintenance endpoint does not run automatically on the import cron.
+Roll back by restoring the old deployment; the additive column can remain.
 
 Legacy artifact URLs remain supported through snapshot manifests and content hashes.
 Writers now populate only snapshots and blobs. Before retiring `runs`,
