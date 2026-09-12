@@ -85,6 +85,13 @@ DOM updates still run on the main thread. This follows the
 but do not eliminate computation time. The separate computation worker is necessary
 because `MultiFileDiff` calculates its Myers diff synchronously even with a highlighting pool.
 
+Click a line number to highlight it; Shift-click or drag across the gutter to
+select a range. Side-aware URL fragments (`#L12`, `#R12-R20`) preserve the
+selection. Opening a link reveals its collapsed context and scrolls to the line
+using Pierre's virtualized line positions. Changing the file, benchmark, or
+compiler clears the selection. Line numbers refer to the displayed artifact
+(including pretty-printed JSON).
+
 Benchmark source links load lazily from `/api/data/sources/<commit>.json`. The API
 reads literal source paths from `benches/runtime/cases.py` at that exact Solar
 commit (without executing Python), preserving historical archive locations.

@@ -168,6 +168,7 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
   const updateUrl = (key: string, value: string) => {
     const url = new URL(window.location.href)
     url.searchParams.set(key, value)
+    url.hash = ''
     if (key === 'benchmark') url.searchParams.delete('file')
     replaceUrl(url)
   }
@@ -246,6 +247,7 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
                       url.searchParams.set('right', next.right)
                       url.searchParams.delete('compiler')
                       url.searchParams.delete('against')
+                      url.hash = ''
                       replaceUrl(url)
                     }}
                   >

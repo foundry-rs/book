@@ -9,6 +9,7 @@ import { Virtualizer } from '@pierre/diffs'
 import type { FileContents, FileDiffMetadata } from '@pierre/diffs'
 import { computeDiff } from './computeDiff'
 import { intralineOptions } from './intralineOptions'
+import { useLineSelection } from './lineSelection'
 import HighlightWorker from '@pierre/diffs/worker/worker.js?worker'
 import { useEffect, useState } from 'react'
 import { Info } from 'lucide-react'
@@ -119,11 +120,7 @@ function ArtifactDiffContents({ before, after, path, language, theme, style }: P
               ? `Published only by ${before.label}.`
               : 'Contents are identical.'}
         </p>
-        <File
-          className="solar-diff"
-          file={oldFile ?? newFile!}
-          options={{ overflow: 'scroll', themeType: theme, disableFileHeader: true }}
-        />
+        <SelectedFile file={oldFile ?? newFile!} theme={theme} side={newFile ? 'R' : 'L'} />
       </>
     )
   }
@@ -135,6 +132,23 @@ function ArtifactDiffContents({ before, after, path, language, theme, style }: P
       afterLabel={after.label}
       theme={theme}
       style={style}
+    />
+  )
+}
+
+function SelectedFile({ file, theme, side }: { file: FileContents; theme: Theme; side: string }) {
+  const selection = useLineSelection(file.name, undefined, side)
+  return (
+    <File
+      className="solar-diff"
+      file={file}
+      selectedLines={selection.selectedLines}
+      options={{
+        ...selection.options,
+        overflow: 'scroll',
+        themeType: theme,
+        disableFileHeader: true,
+      }}
     />
   )
 }
@@ -156,6 +170,7 @@ function ComputedDiff({
 }) {
   const pool = useWorkerPool()
   const [diff, setDiff] = useState<FileDiffMetadata | null>(null)
+  const selection = useLineSelection(after.name, diff ?? undefined)
   const [error, setError] = useState('')
   useEffect(() => {
     const controller = new AbortController()
@@ -199,7 +214,9 @@ function ComputedDiff({
     <FileDiff
       className="solar-diff"
       fileDiff={diff}
+      selectedLines={selection.selectedLines}
       options={{
+        ...selection.options,
         ...intralineOptions(diff),
         disableFileHeader: true,
         diffStyle: style,
