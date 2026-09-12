@@ -71,7 +71,12 @@ Changing between decorated and undecorated diffs clears the library's highlighti
 caches through `setRenderOptions`; the worker and our computed-diff cache are retained.
 `@pierre/diffs` 1.4.1 includes the large-hunk stack-overflow fix upstream;
 no dependency patch is needed. Its edit-session APIs are not used by this read-only viewer.
-`CodeView` owns the scroll container and virtualizes visible lines. File cache keys
+`FileDiff`/`File` use Pierre's `Virtualizer` with `setup(document)` through
+`VirtualizerContext`: the browser page scrolls normally while only visible lines
+are rendered. The file toolbar and side labels stick during scrolling. The file
+tree can be collapsed or resized with a pointer or the separator's arrow keys;
+its visibility and width reset on reload. Narrow screens stack the tree above the
+diff and omit the resize handle. File cache keys
 include a SHA-256 of the actual formatted text, path, and language, preventing
 same-name artifacts from sharing highlighting. Completed diffs reuse the existing
 bounded cache (16 MiB, one hour); cancelled computations are not retained.

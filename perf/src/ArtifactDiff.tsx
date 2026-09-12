@@ -1,4 +1,11 @@
-import { CodeView, WorkerPoolContextProvider, useWorkerPool } from '@pierre/diffs/react'
+import {
+  File,
+  FileDiff,
+  VirtualizerContext,
+  WorkerPoolContextProvider,
+  useWorkerPool,
+} from '@pierre/diffs/react'
+import { Virtualizer } from '@pierre/diffs'
 import type { FileContents, FileDiffMetadata } from '@pierre/diffs'
 import { computeDiff } from './computeDiff'
 import { intralineOptions } from './intralineOptions'
@@ -15,7 +22,6 @@ interface Props {
   language: string
   theme: Theme
   style: 'split' | 'unified'
-  onStyleChange: (style: 'split' | 'unified') => void
 }
 
 const poolOptions = {
@@ -24,29 +30,28 @@ const poolOptions = {
 }
 
 export default function ArtifactDiff(props: Props) {
+  const [virtualizer] = useState(() => new Virtualizer())
+  useEffect(() => {
+    virtualizer.setup(document)
+    return () => virtualizer.cleanUp()
+  }, [virtualizer])
   return (
-    <WorkerPoolContextProvider
-      poolOptions={poolOptions}
-      // Start safely; computed diffs opt into bounded intraline highlighting.
-      highlighterOptions={{ lineDiffType: 'none' }}
-    >
-      <ArtifactDiffContents
-        key={JSON.stringify([props.before, props.after, props.path, props.language])}
-        {...props}
-      />
-    </WorkerPoolContextProvider>
+    <VirtualizerContext.Provider value={virtualizer}>
+      <WorkerPoolContextProvider
+        poolOptions={poolOptions}
+        // Start safely; computed diffs opt into bounded intraline highlighting.
+        highlighterOptions={{ lineDiffType: 'none' }}
+      >
+        <ArtifactDiffContents
+          key={JSON.stringify([props.before, props.after, props.path, props.language])}
+          {...props}
+        />
+      </WorkerPoolContextProvider>
+    </VirtualizerContext.Provider>
   )
 }
 
-function ArtifactDiffContents({
-  before,
-  after,
-  path,
-  language,
-  theme,
-  style,
-  onStyleChange,
-}: Props) {
+function ArtifactDiffContents({ before, after, path, language, theme, style }: Props) {
   const [contents, setContents] = useState<[FileContents | null, FileContents | null] | null>(null)
   const [error, setError] = useState('')
   useEffect(() => {
@@ -114,11 +119,10 @@ function ArtifactDiffContents({
               ? `Published only by ${before.label}.`
               : 'Contents are identical.'}
         </p>
-        <CodeView
+        <File
           className="solar-diff"
-          style={{ height: '75vh', overflow: 'auto' }}
-          items={[{ id: path, type: 'file', file: oldFile ?? newFile! }]}
-          options={{ overflow: 'scroll', themeType: theme }}
+          file={oldFile ?? newFile!}
+          options={{ overflow: 'scroll', themeType: theme, disableFileHeader: true }}
         />
       </>
     )
@@ -131,7 +135,6 @@ function ArtifactDiffContents({
       afterLabel={after.label}
       theme={theme}
       style={style}
-      onStyleChange={onStyleChange}
     />
   )
 }
@@ -143,7 +146,6 @@ function ComputedDiff({
   afterLabel,
   theme,
   style,
-  onStyleChange,
 }: {
   before: FileContents
   after: FileContents
@@ -151,7 +153,6 @@ function ComputedDiff({
   afterLabel: string
   theme: Theme
   style: Props['style']
-  onStyleChange: Props['onStyleChange']
 }) {
   const pool = useWorkerPool()
   const [diff, setDiff] = useState<FileDiffMetadata | null>(null)
@@ -164,7 +165,7 @@ function ComputedDiff({
     computeDiff(before, after, signal)
       .then(async (value) => {
         if (signal.aborted) return value
-        // Pool options, not CodeView options, control worker highlighting.
+        // Pool options, not FileDiff options, control worker highlighting.
         await pool?.setRenderOptions(intralineOptions(value))
         return value
       })
@@ -195,33 +196,17 @@ function ComputedDiff({
       </p>
     )
   return (
-    <div className="artifact-diff">
-      <div className="diff-tools">
-        <button
-          className={style === 'split' ? 'active' : ''}
-          onClick={() => onStyleChange('split')}
-        >
-          Split
-        </button>
-        <button
-          className={style === 'unified' ? 'active' : ''}
-          onClick={() => onStyleChange('unified')}
-        >
-          Unified
-        </button>
-      </div>
-      <CodeView
-        className="solar-diff"
-        style={{ height: '75vh', overflow: 'auto' }}
-        items={[{ id: before.name, type: 'diff', fileDiff: diff }]}
-        options={{
-          ...intralineOptions(diff),
-          diffStyle: style,
-          overflow: 'scroll',
-          themeType: theme,
-        }}
-      />
-    </div>
+    <FileDiff
+      className="solar-diff"
+      fileDiff={diff}
+      options={{
+        ...intralineOptions(diff),
+        disableFileHeader: true,
+        diffStyle: style,
+        overflow: 'scroll',
+        themeType: theme,
+      }}
+    />
   )
 }
 
@@ -248,7 +233,7 @@ function LargeArtifact({
           Download {path}
         </a>
       )}
-      <pre style={{ overflow: 'auto', maxHeight: '50vh' }}>{contents.slice(0, 20_000)}</pre>
+      <pre style={{ overflowX: 'auto' }}>{contents.slice(0, 20_000)}</pre>
     </section>
   )
 }
