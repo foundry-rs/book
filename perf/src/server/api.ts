@@ -3,6 +3,7 @@ import { historyMetrics, historySeries } from '../historySeries'
 import { requestTiming } from './timing'
 import { responseCache } from '../cache'
 import { measurementColumns } from './publication'
+import { loadBenchmarkSources } from './benchmarkSources'
 
 import { clickHouseConfig, select, type ClickHouseConfig } from './clickhouse'
 import { demoResponse } from './demo'
@@ -301,6 +302,19 @@ export function createApi(options: ApiOptions = {}) {
       cacheControl?.startsWith('public,')
     )
       context.header('vercel-cdn-cache-control', cacheControl.replace('max-age=', 's-maxage='))
+  })
+
+  app.get('/api/data/sources/:file', async (context) => {
+    const match = /^([a-f0-9]{40})\.json$/.exec(context.req.param('file'))
+    if (!match) return context.json({ error: 'Expected a full commit SHA' }, 400)
+    try {
+      const sources = await loadBenchmarkSources(match[1])
+      context.header('cache-control', 'public, max-age=3600')
+      return context.json(sources)
+    } catch {
+      context.header('cache-control', 'no-store')
+      return context.json({ error: 'Source metadata unavailable' }, 502)
+    }
   })
 
   app.get('/api/resolve', async (context) => {

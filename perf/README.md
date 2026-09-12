@@ -84,6 +84,17 @@ DOM updates still run on the main thread. This follows the
 [Diffs performance guidance](https://diffs.com/docs); workers keep the UI responsive,
 but do not eliminate computation time. The separate computation worker is necessary
 because `MultiFileDiff` calculates its Myers diff synchronously even with a highlighting pool.
+
+Benchmark source links load lazily from `/api/data/sources/<commit>.json`. The API
+reads literal source paths from `benches/runtime/cases.py` at that exact Solar
+commit (without executing Python), preserving historical archive locations.
+Checked-in sources and compressed inputs get Solar permalinks; known archives
+also link to their pinned upstream entrypoints and Lil Web3's Solmate dependencies.
+The archive provenance map lives in `src/sources.ts`; new upstream archives need
+verified provenance there. Unsupported catalog expressions display unavailable
+metadata, never a generic repository link. Catalogs are cached per commit in the
+browser, server, and CDN for an hour and require no database queries or GitHub token.
+
 Legacy artifact URLs remain supported through snapshot manifests and content hashes.
 Writers now populate only snapshots and blobs. Before retiring `runs`,
 `benchmark_results`, and `artifact_files`, rerun the additive backfill, verify

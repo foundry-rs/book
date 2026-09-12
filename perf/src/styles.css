@@ -1113,6 +1113,7 @@ header.file-header {
   margin: 0 0 4px;
 }
 .benchmark-links a {
+  overflow-wrap: anywhere;
   color: var(--text);
   font-size: 13px;
   text-decoration-color: var(--line);
