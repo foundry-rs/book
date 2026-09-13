@@ -1,4 +1,5 @@
-import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
+import { lazy, Suspense, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
+import { PanelLeftClose, PanelLeftOpen } from 'lucide-react'
 import { artifactTree, mergeArtifactFiles, type ArtifactNode } from './artifactTree'
 import { loadArtifact, loadViewerRuns } from './data'
 import { useImportProgress } from './importProgress'
@@ -64,6 +65,15 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
   const [sides, setSides] = useState(() => initialArtifactSides(params))
   const [selected, setSelected] = useState(params.get('file') || '')
   const [diffStyle, setDiffStyle] = useState<'split' | 'unified'>('split')
+  const [sidebarOpen, setSidebarOpen] = useState(true)
+  const [sidebarWidth, setSidebarWidth] = useState(270)
+  const drag = useRef<{ x: number; width: number } | null>(null)
+  const resizeSidebar = (width: number) => setSidebarWidth(Math.max(200, Math.min(480, width)))
+
+  useEffect(() => {
+    // A new file starts at its first line, rather than the previous file's page offset.
+    window.scrollTo({ top: 0, behavior: 'instant' })
+  }, [selected, activeBenchmark, sides.left, sides.right])
 
   useEffect(() => {
     let cancelled = false
@@ -158,6 +168,7 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
   const updateUrl = (key: string, value: string) => {
     const url = new URL(window.location.href)
     url.searchParams.set(key, value)
+    url.hash = ''
     if (key === 'benchmark') url.searchParams.delete('file')
     replaceUrl(url)
   }
@@ -167,7 +178,35 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
   }
 
   return (
-    <main className="file-viewer">
+    <main
+      className="file-viewer"
+      style={{ '--sidebar-width': `${sidebarWidth}px` } as CSSProperties}
+    >
+      <div className="viewer-toolbar">
+        <button
+          aria-label={sidebarOpen ? 'Hide file tree' : 'Show file tree'}
+          aria-expanded={sidebarOpen}
+          aria-controls="artifact-sidebar"
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+        >
+          {sidebarOpen ? <PanelLeftClose size={18} /> : <PanelLeftOpen size={18} />}
+        </button>
+        <span className="viewer-filename" title={selectedFile?.path}>
+          {selectedFile?.path || 'Artifacts'}
+        </span>
+        <div className="diff-tools" aria-label="Diff layout">
+          {(['split', 'unified'] as const).map((style) => (
+            <button
+              key={style}
+              className={diffStyle === style ? 'active' : ''}
+              aria-pressed={diffStyle === style}
+              onClick={() => setDiffStyle(style)}
+            >
+              {style === 'split' ? 'Split' : 'Unified'}
+            </button>
+          ))}
+        </div>
+      </div>
       {loadError ? (
         <p className="error">{loadError}</p>
       ) : !runs ? (
@@ -175,8 +214,8 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
           {importProgress || 'Loading files…'}
         </p>
       ) : (
-        <div className="file-viewer-body">
-          <aside>
+        <div className={`file-viewer-body${sidebarOpen ? '' : ' sidebar-collapsed'}`}>
+          <aside id="artifact-sidebar" hidden={!sidebarOpen}>
             <div className="file-selector-head">
               <select
                 aria-label="Benchmark"
@@ -208,6 +247,7 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
                       url.searchParams.set('right', next.right)
                       url.searchParams.delete('compiler')
                       url.searchParams.delete('against')
+                      url.hash = ''
                       replaceUrl(url)
                     }}
                   >
@@ -238,6 +278,46 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
               />
             )}
           </aside>
+          {sidebarOpen && (
+            <div
+              className="sidebar-resizer"
+              role="separator"
+              aria-label="Resize file tree"
+              aria-orientation="vertical"
+              aria-controls="artifact-sidebar"
+              aria-valuemin={200}
+              aria-valuemax={480}
+              aria-valuenow={sidebarWidth}
+              tabIndex={0}
+              onPointerDown={(event) => {
+                if (event.button !== 0) return
+                drag.current = { x: event.clientX, width: sidebarWidth }
+                event.currentTarget.setPointerCapture(event.pointerId)
+                event.preventDefault()
+              }}
+              onPointerMove={(event) => {
+                if (drag.current) resizeSidebar(drag.current.width + event.clientX - drag.current.x)
+              }}
+              onPointerUp={(event) => {
+                drag.current = null
+                event.currentTarget.releasePointerCapture(event.pointerId)
+              }}
+              onLostPointerCapture={() => {
+                drag.current = null
+              }}
+              onKeyDown={(event) => {
+                if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return
+                event.preventDefault()
+                resizeSidebar(
+                  event.key === 'Home'
+                    ? 200
+                    : event.key === 'End'
+                      ? 480
+                      : sidebarWidth + (event.key === 'ArrowLeft' ? -20 : 20),
+                )
+              }}
+            />
+          )}
           <div className="file-diff">
             {loading ? (
               <p className="empty" role="status">
@@ -282,7 +362,6 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
                     language={selectedFile.language}
                     theme={theme}
                     style={diffStyle}
-                    onStyleChange={setDiffStyle}
                   />
                 </Suspense>
               </>

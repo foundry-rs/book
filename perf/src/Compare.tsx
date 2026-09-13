@@ -3,7 +3,7 @@ import { BenchmarkHistory } from './BenchmarkHistory'
 import { changeClass, formatChange } from './change'
 import { formatRawValue, formatValue } from './formatValue'
 import { loadHistory, loadRun } from './data'
-import { benchmarkSource } from './sources'
+import { BenchmarkSources } from './BenchmarkSources'
 import type { RunDocument, Theme } from './types'
 import { benchmarkMetric as value } from './benchmarkMetric'
 import { replaceUrl } from './navigation'
@@ -186,7 +186,6 @@ export function Compare({ base, head }: Props) {
         {rows.map(({ before, headResult, result: after }) => {
           const selected = expanded === after.test_id
           const headValue = value(headResult, metrics[metric].key)
-          const source = benchmarkSource(after.test_id, head)
           return (
             <div key={after.test_id} className="benchmark-row">
               <button
@@ -249,7 +248,7 @@ export function Compare({ base, head }: Props) {
                     <a href={fileViewerHref(runs[0], runs[1], after.test_id, metrics[metric].key)}>
                       Artifacts diff viewer →
                     </a>
-                    <a href={source.url}>{source.label} ↗</a>
+                    <BenchmarkSources links={after.source_links} />
                   </aside>
                 </section>
               )}

@@ -9,6 +9,7 @@
     "check": "vp check",
     "dev": "vp dev",
     "db:backfill": "node scripts/ingest-github-runs.mjs",
+    "db:backfill-sources": "node scripts/backfill-sources.mjs",
     "db:schema": "node scripts/apply-schema.mjs",
     "db:verify": "node scripts/verify-clickhouse.mjs",
     "format": "vp fmt",

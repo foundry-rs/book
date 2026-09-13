@@ -4,6 +4,7 @@ import { join, resolve } from 'node:path'
 
 import { insert } from './lib/clickhouse.mjs'
 import { normalizeResults } from '../src/server/normalizeResults.ts'
+import { enrichSources } from '../src/server/benchmarkSources.ts'
 import { publication, publicationBlobs } from '../src/server/publication.ts'
 import {
   artifactMetadata,
@@ -127,6 +128,9 @@ const results = normalizeResults(document, {
   commit: run.commit,
 })
 const artifacts = await normalizeArtifacts(resolve(options.artifacts), { ...run, results })
+await enrichSources(run.commit, results).catch((error) =>
+  console.warn('Could not enrich historical benchmark sources', error.message),
+)
 await insert('artifact_blobs', publicationBlobs(artifacts))
 await insert('run_snapshots', [publication({ ...run, run_attempt: attempt }, results, artifacts)])
 console.log(`Ingested ${run.commit.slice(0, 8)} from workflow run ${run.workflow_run_id}`)

@@ -7,6 +7,7 @@ import { clickHouseConfig, insert, select, type ClickHouseConfig } from './click
 import { type GitHubClient, sharedGitHubClient, gitHubConfig, type GitHubRun } from './github'
 import { normalizeResults } from './normalizeResults'
 import { publication, publicationBlobs } from './publication'
+import { enrichSources } from './benchmarkSources'
 import { ImportPendingError, RunNotFoundError } from './pending'
 import { importStage, timeImport } from './importTiming'
 export { ImportPendingError } from './pending'
@@ -326,6 +327,11 @@ async function ingestRun(config: ClickHouseConfig, github: GitHubClient, source:
   // Extraction is streamed while downloading; report the combined stage honestly.
   const archive = await importStage('downloadExtractMs', () => extractArchive(response))
   const normalized = await importStage('normalizeMs', () => normalizeArchive(archive, run))
+  // Missing historical provenance must not prevent publication of measurements.
+  // The backend backfill retries it independently of artifact import.
+  await enrichSources(run.commit, normalized.results).catch((error) =>
+    console.warn('Could not enrich historical benchmark sources', error),
+  )
   const blobs = await importStage('prepareBlobsMs', () => publicationBlobs(normalized.artifacts))
   await importStage('writeBlobsMs', () => insert(config, 'artifact_blobs', blobs))
   await importStage('publishSnapshotMs', () =>

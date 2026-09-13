@@ -19,6 +19,24 @@ afterEach(() => {
 })
 
 describe('website API', () => {
+  it('returns source links with the existing run query, without GitHub calls', async () => {
+    const commit = 'd'.repeat(40)
+    const url = `https://github.com/paradigmxyz/solar/blob/${commit}/testdata/Counter.sol`
+    globalThis.fetch = vi.fn(async () =>
+      Response.json({
+        commit,
+        measurements: [['counter', '', 'micro', 'solar', 'ok']],
+        source_links: { counter: [['Counter.sol', url]] },
+      }),
+    )
+    const response = await createApi({ clickHouse: config }).request(
+      `/api/data/runs/${commit}/run.json?artifacts=0`,
+    )
+    expect(response.status).toBe(200)
+    expect((await response.json()).results[0].source_links).toEqual([{ label: 'Counter.sol', url }])
+    expect(globalThis.fetch).toHaveBeenCalledOnce()
+  })
+
   it('resolves published prefixes with one bounded query without GitHub', async () => {
     const commit = 'a'.repeat(40)
     globalThis.fetch = vi.fn(async () => Response.json({ commit }))

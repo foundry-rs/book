@@ -35,7 +35,7 @@ async function indexFromClickHouse(config: ClickHouseConfig) {
        anyOrNullIf(commit, branch = 'main') OVER (
          ORDER BY started_at DESC, commit DESC ROWS BETWEEN 1 FOLLOWING AND UNBOUNDED FOLLOWING
        ) AS baseCommit
-     FROM (SELECT * EXCEPT (measurements, artifacts) FROM run_snapshots FINAL WHERE source_schema > 0
+     FROM (SELECT * EXCEPT (measurements, artifacts, source_links) FROM run_snapshots FINAL WHERE source_schema > 0
        ORDER BY workflow_run_id DESC, run_attempt DESC, published_at DESC LIMIT 1 BY commit)
      WHERE source_schema > 0 ORDER BY started_at DESC, commit DESC LIMIT 12`,
   )
@@ -112,7 +112,7 @@ async function runsFromClickHouse(
     config,
     `SELECT workflow_run_id, revision, commit, branch, pr, title,
        formatDateTime(started_at, '%Y-%m-%dT%H:%i:%SZ', 'UTC') AS timestamp,
-       ${benchmark === undefined ? 'measurements' : "arrayMap(m -> tuple(m.test_id, '', '', m.compiler, m.status, NULL, NULL, NULL, NULL, NULL, NULL, m.label), measurements) AS measurements"}
+       ${benchmark === undefined ? 'measurements, source_links' : "arrayMap(m -> tuple(m.test_id, '', '', m.compiler, m.status, NULL, NULL, NULL, NULL, NULL, NULL, m.label), measurements) AS measurements"}
        ${includeArtifacts ? `, ${benchmark === undefined ? 'artifacts' : 'arrayFilter(f -> f.test_id = {benchmark:String}, artifacts) AS artifacts'}` : ''}
      FROM run_snapshots FINAL WHERE ${snapshotSelection(commits, revisions)}
      ORDER BY ${snapshotOrder} LIMIT 1 BY commit`,
@@ -120,7 +120,8 @@ async function runsFromClickHouse(
   )
   return Promise.all(
     stored.map(async (run) => {
-      const { measurements, artifacts, ...runMetadata } = run
+      const { measurements, artifacts, source_links, ...runMetadata } = run
+      const sources = (source_links ?? {}) as Record<string, [string, string][]>
       const rows = (Array.isArray(measurements) ? (measurements as unknown[][]) : [])
         .sort(
           (a, b) =>
@@ -137,6 +138,13 @@ async function runsFromClickHouse(
           test_id: testId,
           description: row.description,
           suite: row.suite,
+          ...(benchmark === undefined
+            ? {
+                source_links: (Object.hasOwn(sources, testId) ? sources[testId] : []).map(
+                  ([label, url]) => ({ label, url }),
+                ),
+              }
+            : {}),
           compilers: Object.create(null),
         }
         ;(result.compilers as Record<string, unknown>)[String(row.compiler)] = {

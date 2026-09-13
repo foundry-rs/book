@@ -3,6 +3,39 @@ import { expect, test } from '@playwright/test'
 const url =
   '/perf/solar/?base=8c7b6a5e4f32100123456789abcdef0123456789&head=9d8c7b6a5e4f32100123456789abcdef01234567&view=files&benchmark=demo::factorial&file=runtime.disasm'
 
+test('file tree resizes, collapses and resets on reload', async ({ page }) => {
+  await page.goto(url)
+  const sidebar = page.locator('#artifact-sidebar')
+  const handle = page.getByRole('separator', { name: 'Resize file tree' })
+  await expect(handle).toHaveAttribute('aria-valuenow', '270')
+  // Short files fill the viewport without an extra blank scrolling region.
+  expect(await page.evaluate(() => document.documentElement.scrollHeight)).toBe(
+    await page.evaluate(() => innerHeight),
+  )
+  const box = (await handle.boundingBox())!
+  await page.mouse.move(box.x + box.width / 2, box.y + 40)
+  await page.mouse.down()
+  await page.mouse.move(box.x + box.width / 2 + 80, box.y + 40)
+  await page.mouse.up()
+  await expect(handle).toHaveAttribute('aria-valuenow', '350')
+  await handle.press('ArrowLeft')
+  await expect(handle).toHaveAttribute('aria-valuenow', '330')
+  await page.getByRole('button', { name: 'Hide file tree' }).click()
+  await expect(sidebar).toBeHidden()
+  await page.getByRole('button', { name: 'Show file tree' }).click()
+  await expect(sidebar).toBeVisible()
+  await expect(handle).toHaveAttribute('aria-valuenow', '330')
+  await page.getByRole('button', { name: 'Hide file tree' }).click()
+  await page.reload()
+  await expect(sidebar).toBeVisible()
+  await expect(handle).toHaveAttribute('aria-valuenow', '270')
+  await page.setViewportSize({ width: 390, height: 844 })
+  await expect(handle).toBeHidden()
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(390)
+  await page.getByRole('button', { name: 'Hide file tree' }).click()
+  await expect(sidebar).toBeHidden()
+})
+
 test('computes diff in a worker and reuses it for presentation changes', async ({ page }) => {
   let workers = 0
   page.on('worker', (worker) => {
@@ -11,7 +44,7 @@ test('computes diff in a worker and reuses it for presentation changes', async (
   await page.goto(url)
   await expect(page.getByRole('button', { name: 'Unified', exact: true })).toBeVisible()
   await expect(page.locator('diffs-container').locator('pre')).toBeVisible()
-  await expect(page.locator('.solar-diff')).toHaveCSS('overflow', 'auto')
+  await expect(page.locator('.file-diff')).toHaveCSS('overflow', 'visible')
   // A plain-text placeholder is not proof that worker highlighting succeeded.
   await expect(page.locator('diffs-container').locator('code span[style]').first()).toBeVisible()
   await expect(page.locator('diffs-container').locator('[data-diff-span]').first()).toBeVisible()
@@ -54,9 +87,15 @@ test('virtualizes long files and renders their last lines on scroll', async ({ p
   const code = page.locator('diffs-container').locator('code')
   await expect(code).toContainText('0x0000')
   await expect(code).not.toContainText('0x07cf')
-  await page.locator('.solar-diff').press('End')
+  await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight))
   await expect(code).toContainText('0x07cf')
   await expect(code).not.toContainText('0x0000')
+  expect(await page.evaluate(() => window.scrollY)).toBeGreaterThan(1000)
+  expect((await page.locator('.viewer-toolbar').boundingBox())!.y).toBe(0)
+  expect((await page.locator('.diff-sides').boundingBox())!.y).toBe(48)
+  await page.getByRole('button', { name: 'abi.json', exact: true }).click()
+  await expect(page.locator('.viewer-filename')).toHaveText('abi.json')
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0)
 })
 
 test('highlights a large repetitive assembly diff without expensive intraline decorations', async ({
@@ -80,7 +119,7 @@ test('highlights a large repetitive assembly diff without expensive intraline de
   await expect(page.locator('diffs-container').locator('code[data-deletions]')).toContainText(
     '0x00',
   )
-  await page.locator('.solar-diff').press('End')
+  await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight))
   await expect(code.first()).toContainText('40000')
   // Changing policy must not leave the pool highlighting the next file incorrectly.
   await page.getByRole('button', { name: 'optimized.yul', exact: true }).click()
