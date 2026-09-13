@@ -104,7 +104,9 @@ Counter counter = new Counter{salt: salt}(); // [!code hl]
 ```
 
 :::info
-By default, `new Counter{salt: salt}(){:solidity}` uses the deterministic deployer at [`0x4e59b44847b379578588920ca78fbf26c0b4956c`](https://github.com/Arachnid/deterministic-deployment-proxy). This deployer may not be available on all chains. Configure a different deployer with `create2_deployer` in `foundry.toml` or `--create2-deployer` CLI argument.
+At a script's broadcast depth, Forge routes `new Counter{salt: salt}(){:solidity}` through the deterministic deployer at [`0x4e59b44847b379578588920ca78fbf26c0b4956c`](https://github.com/Arachnid/deterministic-deployment-proxy) by default. The wallet sends a transaction to the factory, which executes CREATE2. The constructor's `msg.sender` is therefore the factory.
+
+This routing requires the expected deployer runtime bytecode at the configured address. `create2_deployer` in `foundry.toml`, or the `--create2-deployer` CLI argument, changes that address; it does not adapt Forge to an arbitrary factory ABI. Use an explicit call for [other factories](#using-a-create2-factory). Outside broadcasting, ordinary Solidity CREATE2 uses the contract executing the opcode unless `always_use_create_2_factory` enables Forge's factory routing at the applicable depth.
 :::
 
 ### Computing the address
@@ -186,10 +188,11 @@ $ forge script script/DeployCreate2.s.sol --broadcast --rpc-url arbitrum
 The CREATE2 deployer address Foundry uses. Default: `0x4e59b44847b379578588920ca78fbf26c0b4956c`
 
 ```toml [foundry.toml]
+[profile.default]
 create2_deployer = "0x4e59b44847b379578588920ca78fbf26c0b4956c"
 ```
 
-Change this for chains where the default deployer isn't available, or when using a custom factory.
+Change this when the expected deployer runtime bytecode is installed at another address. Forge rejects automatic routing if the address has no code or different runtime bytecode. For a factory such as CreateX, call its deployment function explicitly instead of setting its address here.
 
 #### `always_use_create_2_factory`
 
