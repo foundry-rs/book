@@ -26,6 +26,18 @@ $ anvil --fork-url https://ethereum.reth.rs/rpc --fork-transaction-hash $TX_HASH
 
 :::
 
+### Skipping fork identity probes
+
+By default, Anvil sends `anvil_nodeInfo` and, if it succeeds, `anvil_metadata` to detect whether the fork endpoint is another Anvil instance. Some public RPC gateways delay responses to these methods. You can skip both probes with `--no-fork-node-info`:
+
+```bash
+$ anvil --fork-url $RPC_URL --no-fork-node-info
+```
+
+The flag requires `--fork-url` and treats the endpoint as a regular chain. Standard RPC requests for chain ID, blocks, and gas price still run, subject to your other fork options. Leave the probes enabled when you need Anvil to inherit another Anvil instance's network and hardfork metadata.
+
+See the [`anvil` reference](/reference/anvil/anvil) for all fork options.
+
 ### Chain configuration
 
 When forking, Anvil inherits the chain ID from the remote endpoint by default.
