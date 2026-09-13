@@ -24,6 +24,19 @@ Foundry opens a local page, waits for you to connect an injected wallet, and the
 
 The same browser options are available on other Cast commands that submit on-chain transactions, including the ERC-20 transaction commands. Check a command's `--help` output for the **Wallet options - browser wallet** section.
 
+#### Send a legacy transaction
+
+Add `--legacy` to request a legacy transaction instead of an EIP-1559 transaction through your browser wallet:
+
+```bash
+$ cast send $CONTRACT "mint(address,uint256)" $RECIPIENT 1 \
+    --rpc-url $RPC_URL \
+    --browser \
+    --legacy
+```
+
+On Ethereum, Foundry passes the explicit legacy transaction type (`0x0`) and `gasPrice` to the wallet. You can set the gas price with `--gas-price`; otherwise, Foundry estimates it through the CLI RPC. Review the fees in the wallet before approving. See the [`cast send` reference](/reference/cast/send) for transaction options.
+
 ### Sign a message
 
 Use the connected browser account to sign a personal message:
