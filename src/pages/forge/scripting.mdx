@@ -99,12 +99,16 @@ To broadcast from a specific address:
 vm.startBroadcast(deployerAddress);
 ```
 
-Or use the key at a specific index from a mnemonic:
+Or derive the sender from a private key read from the environment:
 
 ```solidity
 uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
 vm.startBroadcast(deployerPrivateKey);
 ```
+
+The address overload selects a transaction sender but does not supply a signing key. Provide a matching wallet when broadcasting, or use `--unlocked` with a node that controls that account. The private-key overload derives the address and adds the key to Forge's script wallets.
+
+Starting a broadcast changes the sender of outgoing calls; it does not change `msg.sender` in the script's current frame. Pass the intended owner or deployer explicitly in transaction arguments. Inside a contract called directly by the broadcast transaction, `msg.sender` is the transaction sender.
 
 ### Overriding the sender nonce
 
