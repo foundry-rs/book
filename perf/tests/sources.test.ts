@@ -21,6 +21,17 @@ it('backfills shared Project/Source catalogs from the producer rollout window', 
 
 describe('benchmark sources', () => {
   const commit = 'a'.repeat(40)
+  it('pins historical runtime corpus fixtures and rejects traversal', () => {
+    const sources = benchmarkSources(
+      `TestCase(test_id="seeded-words", source_code=(RUNTIME_CORPUS_ROOT / "fixtures/runtime/SeededWords.sol").read_text()),
+       TestCase(test_id="bad", source_code=(RUNTIME_CORPUS_ROOT / "../secret.sol").read_text())`,
+      commit,
+    )
+    expect(sources['seeded-words'][0].url).toBe(
+      `https://github.com/paradigmxyz/solar/blob/${commit}/benches/runtime/fixtures/runtime/SeededWords.sol`,
+    )
+    expect(sources.bad).toEqual([])
+  })
   it('links literal local sources to the selected Solar commit', () => {
     const sources = benchmarkSources(
       `TestCase(test_id="factorial", source_code=source("Factorial.sol")),

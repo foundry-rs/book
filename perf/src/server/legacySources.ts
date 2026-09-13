@@ -71,6 +71,11 @@ export function benchmarkSources(catalog: string, commit: string) {
     const links: SourceLink[] = []
     if (local && !local.split('/').includes('..'))
       links.push(sourceLink('paradigmxyz/solar', commit, `testdata/${local}`, local))
+    const fixture = entry.match(
+      /source_code\s*=\s*\(RUNTIME_CORPUS_ROOT\s*\/\s*["']([\w./-]+)["']\)/,
+    )?.[1]
+    if (fixture && !fixture.split('/').includes('..'))
+      links.push(sourceLink('paradigmxyz/solar', commit, `benches/runtime/${fixture}`, fixture))
     const project = projects.get(
       entry.match(/\bproject\s*=\s*PROJECTS\[["']([\w.-]+)["']\]/)?.[1] ?? '',
     )
