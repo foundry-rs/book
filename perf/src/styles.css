@@ -804,6 +804,37 @@ header.file-header {
   max-width: none;
   min-height: calc(100vh - 60px);
   padding: 0;
+  background: var(--raised);
+  --viewer-toolbar-height: 48px;
+}
+.viewer-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  height: var(--viewer-toolbar-height);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 12px;
+  border-bottom: 1px solid var(--line);
+  background: var(--surface);
+}
+.viewer-toolbar > button {
+  padding: 6px;
+  display: flex;
+}
+.viewer-filename {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font:
+    12px ui-monospace,
+    monospace;
+}
+.viewer-toolbar .diff-tools {
+  margin: 0 0 0 auto;
+  flex-shrink: 0;
 }
 .file-viewer > .empty {
   width: min(1100px, calc(100% - 48px));
@@ -811,10 +842,30 @@ header.file-header {
 }
 .file-viewer-body {
   display: grid;
-  grid-template-columns: 270px minmax(0, 1fr);
-  min-height: calc(100vh - 60px);
+  grid-template-columns: min(var(--sidebar-width), 40vw) 6px minmax(0, 1fr);
+  min-height: calc(100dvh - 60px - var(--viewer-toolbar-height));
+}
+.file-viewer-body.sidebar-collapsed {
+  grid-template-columns: minmax(0, 1fr);
+}
+.sidebar-resizer {
+  position: sticky;
+  top: var(--viewer-toolbar-height);
+  align-self: start;
+  height: calc(100dvh - 60px - var(--viewer-toolbar-height));
+  cursor: col-resize;
+  touch-action: none;
+  background: var(--surface);
+}
+.sidebar-resizer:hover,
+.sidebar-resizer:focus-visible {
+  background: var(--primary);
 }
 .file-viewer-body aside {
+  position: sticky;
+  top: var(--viewer-toolbar-height);
+  align-self: start;
+  max-height: calc(100dvh - var(--viewer-toolbar-height));
   overflow: auto;
   border-right: 1px solid var(--line);
   background: var(--surface);
@@ -905,7 +956,6 @@ header.file-header {
 }
 .file-diff {
   min-width: 0;
-  overflow: auto;
   background: var(--raised);
 }
 .file-diff .diff-frame {
@@ -913,6 +963,9 @@ header.file-header {
   padding: 16px 20px;
 }
 .diff-sides {
+  position: sticky;
+  top: var(--viewer-toolbar-height);
+  z-index: 4;
   display: grid;
   grid-template-columns: 1fr 1fr;
   border-bottom: 1px solid var(--line);
@@ -948,9 +1001,13 @@ header.file-header {
     grid-template-columns: 1fr;
   }
   .file-viewer-body aside {
-    max-height: 210px;
+    position: static;
+    max-height: none;
     border-right: 0;
     border-bottom: 1px solid var(--line);
+  }
+  .sidebar-resizer {
+    display: none;
   }
   .diff-sides {
     grid-template-columns: 1fr;
@@ -1056,6 +1113,7 @@ header.file-header {
   margin: 0 0 4px;
 }
 .benchmark-links a {
+  overflow-wrap: anywhere;
   color: var(--text);
   font-size: 13px;
   text-decoration-color: var(--line);

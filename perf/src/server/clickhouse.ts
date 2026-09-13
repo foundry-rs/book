@@ -1,4 +1,4 @@
-import { requestTiming } from './timing'
+import { requestTiming } from './timing.ts'
 import { randomUUID } from 'node:crypto'
 
 export interface ClickHouseConfig {

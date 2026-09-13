@@ -1,4 +1,5 @@
 import { createHash } from 'node:crypto'
+import { normalizeSourceLinks } from './benchmarkSources.ts'
 
 export const measurementColumns = [
   'test_id',
@@ -60,6 +61,14 @@ export function publication(
   return {
     ...snapshot,
     revision: createHash('sha256').update(JSON.stringify(snapshot)).digest('hex'),
+    // Provenance is additive metadata, not artifact identity. This lets the
+    // backfill enrich existing pinned revisions without breaking shared URLs.
+    source_links: Object.fromEntries(
+      results.map((row) => [
+        String(row.test_id),
+        normalizeSourceLinks(row.source_links).map((link) => [link.label, link.url]),
+      ]),
+    ),
   }
 }
 

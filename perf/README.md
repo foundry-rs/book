@@ -71,7 +71,12 @@ Changing between decorated and undecorated diffs clears the library's highlighti
 caches through `setRenderOptions`; the worker and our computed-diff cache are retained.
 `@pierre/diffs` 1.4.1 includes the large-hunk stack-overflow fix upstream;
 no dependency patch is needed. Its edit-session APIs are not used by this read-only viewer.
-`CodeView` owns the scroll container and virtualizes visible lines. File cache keys
+`FileDiff`/`File` use Pierre's `Virtualizer` with `setup(document)` through
+`VirtualizerContext`: the browser page scrolls normally while only visible lines
+are rendered. The file toolbar and side labels stick during scrolling. The file
+tree can be collapsed or resized with a pointer or the separator's arrow keys;
+its visibility and width reset on reload. Narrow screens stack the tree above the
+diff and omit the resize handle. File cache keys
 include a SHA-256 of the actual formatted text, path, and language, preventing
 same-name artifacts from sharing highlighting. Completed diffs reuse the existing
 bounded cache (16 MiB, one hour); cancelled computations are not retained.
@@ -79,6 +84,39 @@ DOM updates still run on the main thread. This follows the
 [Diffs performance guidance](https://diffs.com/docs); workers keep the UI responsive,
 but do not eliminate computation time. The separate computation worker is necessary
 because `MultiFileDiff` calculates its Myers diff synchronously even with a highlighting pool.
+
+Click a line number to highlight it; Shift-click or drag across the gutter to
+select a range. Side-aware URL fragments (`#L12`, `#R12-R20`) preserve the
+selection. Opening a link reveals its collapsed context and scrolls to the line
+using Pierre's virtualized line positions. Changing the file, benchmark, or
+compiler clears the selection. Line numbers refer to the displayed artifact
+(including pretty-printed JSON).
+
+Benchmark sources come from Solar's `source_links` result field (Solar PR #1449),
+validated during import and stored once per benchmark in `run_snapshots.source_links`.
+The existing run response includes these links; expanding a benchmark makes no
+source request. The browser never fetches or parses Solar's Python catalog.
+Historical results without source links are enriched by the importer from the
+catalog at their exact Solar commit, without executing Python. The old archive
+provenance map lives in `src/server/legacySources.ts`; new producer-supplied links
+need no dashboard mapping changes. Failed catalog reads do not block metrics
+publication and can be retried through the backend source backfill.
+
+Before deploying this change, apply the additive `source_links` column from
+`schema/snapshots.sql` using `pnpm run db:schema` with a schema-admin account.
+The read account needs SELECT on this column; a table-level SELECT grant already
+covers it. No new credentials are needed for the application itself.
+Then run `pnpm run db:backfill-sources` with write credentials to enrich all existing
+snapshots, including pinned revisions. It skips complete snapshots, preserves
+their original revision and `published_at` (so latest-run selection cannot change),
+and never downloads artifact bodies or modifies metrics/manifests. Failures stop
+the CLI with the unresolved commits reported; rerunning resumes unfinished rows.
+Alternatively, authenticated `POST /api/worker/backfill-sources` processes up to
+10 snapshots per call using the deployed worker's credentials and `CRON_SECRET`.
+Repeat until `scanned` is zero; resolve any `failed` commits before repeating.
+This maintenance endpoint does not run automatically on the import cron.
+Roll back by restoring the old deployment; the additive column can remain.
+
 Legacy artifact URLs remain supported through snapshot manifests and content hashes.
 Writers now populate only snapshots and blobs. Before retiring `runs`,
 `benchmark_results`, and `artifact_files`, rerun the additive backfill, verify

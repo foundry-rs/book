@@ -42,7 +42,13 @@ export interface BenchmarkResult {
   test_id: string
   description?: string
   suite: string
+  source_links?: SourceLink[]
   compilers: Record<string, CompilerResult>
+}
+
+export interface SourceLink {
+  label: string
+  url: string
 }
 
 export interface ArtifactFile {
