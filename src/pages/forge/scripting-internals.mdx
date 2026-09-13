@@ -1,0 +1,128 @@
+---
+description: Understand how Forge chooses senders, links libraries, collects transactions, simulates them, and resumes broadcasts.
+---
+
+## How scripting works
+
+The [scripting guide](/forge/scripting) introduces deployment scripts. This page explains how an ordinary `forge script` invocation turns Solidity execution into transactions, and which addresses and state each stage uses. Network-specific modes, such as [Tempo transaction batching](/guides/tempo), can change the transaction format and deployment behavior.
+
+### From a script to transactions
+
+Forge executes the script contract locally. The script contract itself is not deployed to the target network. Instead, broadcasting cheatcodes identify calls and creations that should become transactions.
+
+| Stage | What runs | What carries forward |
+| --- | --- | --- |
+| Compile and link | The Solidity compiler and library linker | Script bytecode, contract artifacts, and library addresses |
+| Execute the script | The script constructor, optional `setUp()`, then `run()` or the function selected by `--sig` | Transactions collected from broadcast calls, plus required library deployments |
+| Simulate transactions | The collected transactions against separate local EVM state backed by the target RPC | Execution results, gas estimates, and deployment metadata |
+| Broadcast | Signing and RPC submission, when `--broadcast` is set | Transaction hashes and receipts |
+| Verify | Explorer verification, when requested | Verification results for deployed contracts |
+
+With no RPC URL, Forge can execute the script locally but cannot perform the RPC-backed transaction simulation or send the transactions. With an RPC URL and without `--broadcast`, it executes and simulates without submitting transactions. `--skip-simulation` skips the separate transaction simulation; it does not skip executing the script to collect transactions.
+
+### Script caller, transaction sender, and signer
+
+These are distinct pieces of information:
+
+- The **script caller** is the address Forge uses to call `setUp()` and the selected script function. It determines `msg.sender` in that script frame.
+- The **transaction sender** is the address recorded in a collected transaction's `from` field.
+- The **signer** supplies the signature for that sender. Choosing an address does not supply its private key or unlock an account.
+
+For ordinary wallet-backed scripts, Forge initializes the script caller from the configured sender, whose default is `0x1804c8AB1F12E6bbf3894d4083f33e07309d1f38`. A single raw private key or Turnkey address supplies an inferred caller. Otherwise, when `--sender` is absent, Forge can infer the caller from a sole available wallet address, or from the connected browser wallet. Multiple wallets require an explicit choice if we want a predictable script caller. Network-specific session signers have their own sender resolution.
+
+The broadcast cheatcodes choose the transaction sender separately:
+
+| Invocation | Transaction sender | Signing material |
+| --- | --- | --- |
+| `vm.startBroadcast(address)` | The supplied address | Must be available separately when sending |
+| `vm.startBroadcast(uint256)` | The address derived from that private key | The key is added to Forge's script wallets |
+| `vm.startBroadcast()` | Explicit `--sender`, otherwise the sole available signer, otherwise the current transaction caller | Must be available when sending |
+
+The same selection applies to the three `vm.broadcast` overloads. `broadcast` records the next eligible call; `startBroadcast` records eligible calls until `stopBroadcast`. The scope is the call depth at which broadcasting starts. Cheatcode calls are excluded. Calls made inside a deployed contract remain part of that contract's transaction rather than becoming additional top-level transactions.
+
+`--sender` alone is enough for simulation, but normal broadcasting also needs a matching wallet, such as `--account deployer`. With `--unlocked`, the RPC node is responsible for sending from the selected account. Forge rejects ordinary broadcasts whose transaction sender is the default Foundry address.
+
+#### What `msg.sender` means during broadcasting
+
+Starting a broadcast changes the sender of outgoing calls. It does not rewrite the caller of the already-running script frame. For example, the script caller can be Foundry's default address while `vm.startBroadcast(deployer)` sends the next call from `deployer`.
+
+Inside a contract called directly by that transaction, `msg.sender` is the transaction sender. Inside the script, it is still the script caller. A callback or another nested contract call has its own caller as usual.
+
+With the default `script_execution_protection = true`, Forge rejects a `msg.sender` opcode read in the main script's broadcasting frame when that caller differs from the broadcast sender. It also protects against relying on the ephemeral script's `address(this)`. These are runtime opcode checks: they do not track values captured before broadcasting, and compiler optimizations can move a read outside the guarded region. Disabling the protection does not make the addresses equal.
+
+Pass the intended owner or deployer explicitly when constructing transaction arguments. This example uses the same address for broadcasting and ownership, without depending on the script frame's caller:
+
+```solidity [script/DeployOwned.s.sol]
+// [!include ~/snippets/projects/scripting/script/DeployOwned.s.sol]
+```
+
+For a local run of the example, choose an address and use it consistently:
+
+```bash
+$ export DEPLOYER=0x0000000000000000000000000000000000001337
+$ forge script script/DeployOwned.s.sol:DeployOwned --sender "$DEPLOYER"
+```
+
+For deployment, set `DEPLOYER` to the address controlled by the chosen wallet and also supply the RPC and wallet options. Keep `--sender` and the wallet address aligned; a raw key's inferred script caller and an explicitly different broadcast sender can otherwise disagree.
+
+### CREATE and CREATE2
+
+A direct `new Contract(...)` inside a broadcast produces a contract-creation transaction. Its address depends on the transaction sender and that sender's nonce. The constructor sees the transaction sender as `msg.sender`.
+
+A direct `new Contract{salt: salt}(...)` at the broadcast depth is different. Forge routes it through its configured CREATE2 deployer, by default `0x4e59b44847b379578588920ca78fbf26c0b4956c`. The collected transaction calls that deployer with the salt followed by the creation bytecode, including encoded constructor arguments. The factory then performs CREATE2.
+
+This has three consequences:
+
+- The constructor's `msg.sender` is the **factory**, even though the outer transaction comes from the wallet.
+- The contract address depends on the factory address, salt, and complete init code. Constructor arguments and linked library addresses are part of that init code.
+- The outer transaction still consumes the wallet's nonce, although that nonce is not part of the CREATE2 address formula.
+
+Forge's automatic routing validates the expected deployer bytecode. A configured address is not sufficient if it has no code or incompatible code. To use another factory protocol, call that factory explicitly with its own ABI. A CREATE2 performed inside an ordinary called contract also uses that contract's execution context; it is not the script-level rewrite described above.
+
+When running locally without an RPC, Forge can install its default deployer for simulation. That does not install it on a target chain. Check the target chain's factory state when preparing a deployment. The [CREATE2 guide](/guides/deterministic-deployments-using-create2) explains the address formula and compiler settings that affect determinism.
+
+### External libraries and linking
+
+Solidity contracts that use external library functions contain link references. Those references must be replaced with library addresses before the bytecode can run. Internal library functions that the compiler includes in the contract do not require a separate library deployment.
+
+Forge first uses explicitly configured library addresses. For unresolved references it attempts CREATE2 linking when the configured deployer is available and linking succeeds, using `create2_library_salt`. Otherwise, it links using addresses calculated from the script sender and consecutive CREATE nonces.
+
+Required library deployments are collected before the script's own broadcast transactions. For CREATE2 libraries, Forge skips a deployment when code already exists at the calculated address. For CREATE libraries, their deployment transactions consume the first sender nonces, so they also affect the addresses of contracts created later by the script.
+
+If execution discovers a different deployer and no `--sender` was given, Forge can relink and execute again using that sender. When several deployers are candidates, it warns and retains the configured sender for predeployment. Set `--sender` explicitly when library deployment ownership matters.
+
+Forge can also keep libraries used only by the local script out of the broadcast sequence. This optimization applies only to eligible scripts and reruns them with those libraries deployed locally, checking the candidate before accepting it. It is not a guarantee that every library absent from the final deployed contracts will be omitted. Inspect the prepared sequence to see which library deployments will actually be sent.
+
+Changing a linked library address changes the consuming contract's bytecode. It can therefore change CREATE2 addresses as well as verification inputs, even if the contract's Solidity source is unchanged.
+
+### Nonces and deployment addresses
+
+With an RPC, Forge obtains the initial script sender nonce from the resolved fork state. Without an RPC, the initial nonce is `1`. `--sender-nonce` overrides this starting value and is retained if Forge changes the inferred sender during relinking.
+
+During script execution, each collected transaction gets a nonce from its sender's simulated account state. Calls and creations consume nonces, and multiple senders have separate nonce sequences. Local script setup must not consume the same nonce as an actual deployment: Forge handles the ephemeral script deployment separately and adjusts local execution bookkeeping accordingly.
+
+For example, if a sender begins at nonce 7 and needs two ordinary CREATE library deployments, those transactions use nonces 7 and 8. A subsequent direct contract creation uses nonce 9. Adding another required library before it changes that contract's CREATE address.
+
+The nonce override is a planning input; it does not change the account nonce on the network. If other transactions use the account after simulation, the prepared transactions may no longer be usable as planned. During sequential broadcasting, Forge checks the provider nonce against the expected transaction nonce, retries when the provider is behind, and errors when it is ahead. This check does not reserve nonces against other processes.
+
+### What simulation does and does not replay
+
+The first execution runs Solidity script logic, including reads, calculations, and cheatcodes, to construct transaction arguments. Operations outside a broadcast can affect this local execution without becoming transactions.
+
+The second simulation starts from separate RPC-backed state and runs the **collected transactions**. It does not rerun `run()` to recalculate arguments, and script-only state changes are not carried into it. For example, a local storage modification can make script execution succeed, but the transaction simulation will fail if the collected calls depend on that modification existing on-chain.
+
+Transactions are associated with their RPC endpoints and simulated in the corresponding contexts. Forge gathers traces, deployment metadata, and gas usage, then applies the gas-estimate multiplier. `--slow` also advances the simulated block number between transactions. This does not predict the exact block timestamps, ordering with other users' transactions, or state that will exist when a real transaction is mined.
+
+When broadcasting, Forge resolves the required signers and fills transaction details such as fees. Some networks and `--skip-simulation` workflows require RPC gas estimation immediately before sending. With `--slow`, or when another condition requires sequential submission, Forge waits for receipts between transactions. An ordinary script containing several transactions is not one atomic operation: an earlier transaction can succeed even if a later one fails.
+
+### Saved sequences and resume
+
+Forge saves transaction sequences and receipts under the configured `broadcast` directory, normally grouped by script and chain ID. Dry-run sequences use a `dry-run` subdirectory. These files record the prepared calls and deployments, not just the source code that produced them.
+
+`--resume` loads a saved sequence, checks pending transactions, and continues publishing the remaining transactions. It skips the ordinary transaction-simulation stage. If signing keys are only available through script execution, Forge may execute the script again to collect those keys; the saved transaction sequence remains authoritative.
+
+Editing the script and passing `--resume` does not regenerate its saved transaction arguments or recreate the original `--broadcast` execution state. To produce a new transaction plan, run the script again without `--resume`. To continue a multi-chain saved sequence, use `--multi` with `--resume`.
+
+### Implementation references
+
+The main implementation boundaries are [sender selection and orchestration](https://github.com/foundry-rs/foundry/blob/master/crates/script/src/lib.rs), [broadcast cheatcodes](https://github.com/foundry-rs/foundry/blob/master/crates/cheatcodes/src/script.rs), [linking and resume](https://github.com/foundry-rs/foundry/blob/master/crates/script/src/build.rs), [local execution](https://github.com/foundry-rs/foundry/blob/master/crates/script/src/runner.rs), [transaction simulation](https://github.com/foundry-rs/foundry/blob/master/crates/script/src/simulate.rs), and [transaction submission](https://github.com/foundry-rs/foundry/blob/master/crates/script/src/broadcast.rs).

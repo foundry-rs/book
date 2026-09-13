@@ -1,0 +1,5 @@
+[profile.default]
+src = "src"
+script = "script"
+libs = ["../cheatcodes/lib"]
+remappings = ["forge-std=../cheatcodes/lib/forge-std/src/"]

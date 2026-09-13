@@ -8,6 +8,7 @@ export const forgeDocs: SidebarItem[] = [
   { text: "Contract Bindings", link: "/forge/contract-bindings" },
   { text: "Testing", link: "/forge/testing" },
   { text: "Scripting", link: "/forge/scripting" },
+  { text: "How Scripting Works", link: "/forge/scripting-internals" },
   { text: "Debugging", link: "/forge/debugging" },
   { text: "Gas Tracking", link: "/forge/gas-tracking" },
   { text: "Gas Accounting (EIP-8037)", link: "/forge/gas-accounting" },

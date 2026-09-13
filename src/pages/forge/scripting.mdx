@@ -6,6 +6,8 @@ description: Deploy and interact with contracts using Forge scripts.
 
 Forge scripts are Solidity files that deploy contracts and execute transactions on-chain. They replace deployment scripts traditionally written in JavaScript.
 
+For sender selection, CREATE2, library linking, nonces, simulation, and resume semantics, see [How scripting works](/forge/scripting-internals).
+
 ### Script structure
 
 Scripts inherit from `Script` and implement a `run()` function:
