@@ -1,5 +1,5 @@
 ---
-description: "A fast local Ethereum development node"
+description: "A fast local Ethereum development node Examples: - anvil (start a local node on 127.0.0.1:8545) - anvil --fork-url $RPC_URL (fork the latest state of a live network) - anvil --block-time 12 (mine a new block every 12 seconds) - anvil --state state.json (load state if it exists and dump it on exit)"
 ---
 
 _Generated from `anvil --help`; see [CLI reference versions](/reference/versions). Regenerate this page instead of editing it directly._
@@ -11,6 +11,12 @@ This reference is generated from the installed command's `--help` output. See [C
 :::
 
 A fast local Ethereum development node
+
+Examples:
+- anvil (start a local node on 127.0.0.1:8545)
+- anvil --fork-url $RPC_URL (fork the latest state of a live network)
+- anvil --block-time 12 (mine a new block every 12 seconds)
+- anvil --state state.json (load state if it exists and dump it on exit)
 
 :::terminal
 
@@ -173,6 +179,14 @@ Options:
           It initializes the chain with the state and block environment stored
           at the file, if it exists, and dumps the chain's state on exit.
 
+      --tempo.fee-payer <ADDRESS>
+          The account used to sponsor Tempo fee-payer requests
+          (`eth_signRawTransaction` and raw transactions carrying the
+          sponsorship placeholder).
+          
+          Must be an unlocked account. Only used on Tempo networks; defaults to
+          the last dev account.
+
       --timestamp <NUM>
           The timestamp of the genesis block
 
@@ -226,9 +240,8 @@ Server options:
           Path to the cache directory where persisted states are stored (see
           `--max-persisted-states`).
           
-          Note: This does not affect the fork RPC cache location
-          (`storage.json`), which is stored in
-          `~/.foundry/cache/rpc/<chain>/<block>/`.
+          Note: This does not affect the fork RPC cache location, which uses
+          endpoint-specific files under `~/.foundry/cache/rpc/<chain>/<block>/`.
 
       --host <IP_ADDR>
           The hosts the server will listen on
@@ -293,11 +306,28 @@ Fork config:
           
           See --fork-url.
 
+      --fork-state-by-number
+          Read fork state by block number instead of by block hash.
+          
+          Use this for RPCs that cannot serve `eth_getBalance`, `eth_getCode`,
+          `eth_getStorageAt` or `eth_getTransactionCount` for a block hash.
+          Block hash ancestry is still validated against the fork block.
+          
+          See --fork-url.
+
       --fork-transaction-hash <TRANSACTION>
           Fetch state from after a specific transaction hash has been applied
           over a remote endpoint.
           
           See --fork-url.
+
+      --no-fork-node-info
+          Do not probe the fork endpoint with `anvil_nodeInfo` /
+          `anvil_metadata`.
+          
+          Those calls detect a nested Anvil. Some public RPCs retry unknown
+          methods for tens of seconds instead of returning method-not-found,
+          which delays listen until the probe finishes.
 
       --no-rate-limit
           Disables rate limiting for this node's provider.
@@ -408,7 +438,7 @@ Networks:
   -n, --network <NETWORK>
           Enable a specific network family
           
-          [possible values: ethereum, tempo]
+          [possible values: ethereum, optimism, tempo]
 ```
 
 :::
