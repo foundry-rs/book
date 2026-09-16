@@ -3,24 +3,8 @@ import { registerCustomLanguage } from '@pierre/diffs'
 export const artifactThemes = { light: 'github-light', dark: 'github-dark' } as const
 
 registerCustomLanguage('solar-solidity', async () => {
-  const [{ default: solidity }, { default: yul }] = await Promise.all([
-    import('./grammars/solidity.json'),
-    import('./grammars/yul.json'),
-  ])
-  return {
-    default: [
-      {
-        ...solidity,
-        name: 'solar-solidity',
-        // Upstream Solidity misses escapes and literals in some declaration contexts.
-        injections: {
-          'L:source.solidity -comment -string': {
-            patterns: yul.patterns.filter((pattern) => pattern.name === 'string'),
-          },
-        },
-      },
-    ],
-  }
+  const { default: solidity } = await import('./grammars/solidity.json')
+  return { default: [{ ...solidity, name: 'solar-solidity' }] }
 })
 
 registerCustomLanguage('yul', async () => {

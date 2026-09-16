@@ -396,12 +396,24 @@
     "string": {
       "patterns": [
         {
-          "match": "\\\".*?\\\"",
-          "name": "string.quoted.double"
+          "name": "string.quoted.double",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [
+            {
+              "match": "\\\\."
+            }
+          ]
         },
         {
-          "match": "\\'.*?\\'",
-          "name": "string.quoted.single"
+          "name": "string.quoted.single",
+          "begin": "'",
+          "end": "'",
+          "patterns": [
+            {
+              "match": "\\\\."
+            }
+          ]
         }
       ]
     },
@@ -726,8 +738,17 @@
           },
           "patterns": [
             {
+              "include": "#comment"
+            },
+            {
+              "include": "#inheritance-arguments"
+            },
+            {
               "match": "\\b(\\w+)\\b",
               "name": "entity.name.type.contract.extend"
+            },
+            {
+              "include": "#punctuation"
             }
           ]
         }
@@ -776,11 +797,14 @@
           },
           "patterns": [
             {
+              "include": "#comment"
+            },
+            {
               "match": "\\b(\\w+)\\b",
               "name": "entity.name.type.interface.extend"
             },
             {
-              "include": "#comment"
+              "include": "#punctuation"
             }
           ]
         }
@@ -925,7 +949,9 @@
                 }
               ]
             },
-            { "include": "#punctuation" }
+            {
+              "include": "#punctuation"
+            }
           ]
         },
         {
@@ -1026,6 +1052,9 @@
           },
           "end": "(?=\\{|;)",
           "patterns": [
+            {
+              "include": "#primitive"
+            },
             {
               "include": "#natspec"
             },
@@ -1241,6 +1270,32 @@
         {
           "match": "\\)",
           "name": "punctuation.parameters.end"
+        }
+      ]
+    },
+    "inheritance-arguments": {
+      "begin": "\\(",
+      "end": "\\)",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.parameters.begin"
+        }
+      },
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.parameters.end"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#inheritance-arguments"
+        },
+        {
+          "match": "\\b[A-Za-z_]\\w*(?=\\s*\\()",
+          "name": "entity.name.function"
+        },
+        {
+          "include": "$self"
         }
       ]
     }

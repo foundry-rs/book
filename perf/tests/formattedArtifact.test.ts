@@ -127,3 +127,43 @@ it('uses the upstream Yul grammar for objects, builtins, strings and block comme
     }
   }
 })
+
+it('keeps expression and comment scopes inside Solidity declaration headers', async () => {
+  const { artifactThemes } = await import('../src/highlight')
+  const { getSharedHighlighter } = await import('@pierre/diffs')
+  const lang = 'solar-solidity'
+  const highlighter = await getSharedHighlighter({
+    themes: Object.values(artifactThemes),
+    langs: [lang],
+  })
+  const source = String.raw`contract C is Base(compute(42, "{;}"), 43 /* "ignored" */) {
+    function f() external guard('it\'s') {}
+    string constant X = "first\
+second";
+}`
+  for (const theme of Object.values(artifactThemes)) {
+    const { tokens } = highlighter.codeToTokens(source, { lang, theme, includeExplanation: true })
+    expect(tokens.map((line) => line.map((token) => token.content).join('')).join('\n')).toBe(
+      source,
+    )
+    const scoped = tokens.flat().flatMap((token) => token.explanation ?? [])
+    for (const [content, scope] of [
+      ['compute', 'entity.name.function'],
+      ['42', 'constant.numeric.decimal'],
+      ['43', 'constant.numeric.decimal'],
+      ['{;}', 'string.quoted.double'],
+      [' "ignored" ', 'comment.block'],
+      ['second', 'string.quoted.double'],
+    ]) {
+      expect(
+        scoped
+          .filter((part) => part.content === content)
+          .map((part) => part.scopes.at(-1)?.scopeName),
+      ).toEqual([scope])
+    }
+    const stringColor = highlighter.codeToTokens('"literal"', { lang, theme }).tokens[0][0].color
+    expect(tokens[1].find((token) => token.content === String.raw`'it\'s'`)?.color).toBe(
+      stringColor,
+    )
+  }
+})
