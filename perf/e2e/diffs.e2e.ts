@@ -216,3 +216,20 @@ test('keeps opened directories when selecting files or changing compilers', asyn
   await expect(sourceFile).toBeHidden()
   await expect(libraryFile).toBeVisible()
 })
+
+test('highlights Yul diffs with the upstream grammar in the worker', async ({ page }) => {
+  await page.goto(url.replace('file=runtime.disasm', 'file=optimized.yul'))
+  const code = page.locator('diffs-container').locator('code[data-additions]')
+  await expect(code).toContainText('object "Demo"')
+  await expect(code.locator('span[style]').filter({ hasText: /^object$/ })).toHaveAttribute(
+    'style',
+    /--diffs-token-light:#D73A49/,
+  )
+  await expect(code.locator('span[style]').filter({ hasText: /^\s*mstore$/ })).toHaveAttribute(
+    'style',
+    /--diffs-token-light:#6F42C1/,
+  )
+  await page.getByRole('button', { name: 'Unified', exact: true }).click()
+  await page.getByRole('button', { name: /Switch to .* theme/ }).click()
+  await expect(page.locator('diffs-container').locator('code')).toContainText('object "Demo"')
+})

@@ -51,7 +51,15 @@ contract C is Base("base") {
       source,
     )
     const stringColor = highlighter.codeToTokens('"literal"', { lang, theme }).tokens[0][0].color
-    for (const literal of ['"./Base.sol"', '"base"', '"ERC20Mock"', "'E20M'", '"allowed"']) {
+    for (const literal of [
+      '"./Base.sol"',
+      '"base"',
+      '"ERC20Mock"',
+      "'E20M'",
+      '"allowed"',
+      String.raw`"ends in \\"`,
+      String.raw`"escaped \" quote"`,
+    ]) {
       expect(tokens.flat().find((token) => token.content === literal)?.color).toBe(stringColor)
     }
     // Exclude strings and comments whose brackets must retain their own scopes.
@@ -72,5 +80,50 @@ contract C is Base("base") {
     expect(tokens[7].find((token) => token.content === 'g')?.color?.toLowerCase()).not.toBe(
       fg?.toLowerCase(),
     )
+  }
+})
+
+it('uses the upstream Yul grammar for objects, builtins, strings and block comments', async () => {
+  const { artifactLanguage, artifactThemes } = await import('../src/highlight')
+  const { getSharedHighlighter } = await import('@pierre/diffs')
+  const lang = artifactLanguage('optimized-ir.yul', 'text')
+  expect(lang).toBe('yul')
+  expect(artifactLanguage('mir.mir', 'text')).toBe('solar-ir')
+  expect(artifactLanguage('runtime.evmir', 'text')).toBe('solar-ir')
+  const highlighter = await getSharedHighlighter({
+    themes: Object.values(artifactThemes),
+    langs: [lang],
+  })
+  const source = String.raw`object "Contract" {
+  code {
+    /* mstore(0, "not a string")
+       let hidden := 42 */
+    let value := calldataload(0)
+    mstore(0, value)
+    return(0, 32)
+  }
+  data "escaped\"name" hex"abcd"
+}`
+  for (const theme of Object.values(artifactThemes)) {
+    const { tokens } = highlighter.codeToTokens(source, { lang, theme, includeExplanation: true })
+    expect(tokens.map((line) => line.map((token) => token.content).join('')).join('\n')).toBe(
+      source,
+    )
+    const scoped = tokens.flat().flatMap((token) => token.explanation ?? [])
+    for (const [content, scope] of [
+      ['object', 'keyword'],
+      ['calldataload', 'entity.name.type.class'],
+      ['mstore', 'entity.name.type.class'],
+      ['return', 'entity.name.type.class'],
+      ['"Contract"', 'string'],
+      [String.raw`"escaped\"name"`, 'string'],
+      ['       let hidden := 42 ', 'comment'],
+    ]) {
+      expect(
+        scoped
+          .filter((part) => part.content === content)
+          .map((part) => part.scopes.at(-1)?.scopeName),
+      ).toEqual([scope])
+    }
   }
 })

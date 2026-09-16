@@ -1,42 +1,31 @@
-import { registerCustomLanguage, resolveLanguage } from '@pierre/diffs'
+import { registerCustomLanguage } from '@pierre/diffs'
 
 export const artifactThemes = { light: 'github-light', dark: 'github-dark' } as const
 
 registerCustomLanguage('solar-solidity', async () => {
-  const { data } = await resolveLanguage('solidity')
-  const grammar = structuredClone(data[0])
-  grammar.name = 'solar-solidity'
-  const rules = grammar.repository!
-  // The bundled constructor rule omits literals and punctuation after its parameters.
-  rules['declaration-constructor'].patterns![0] = {
-    ...rules['declaration-constructor'].patterns![0],
-    patterns: [
-      { include: '#declaration-function-parameters' },
-      { include: '#comment' },
-      { include: '#primitive' },
-      { include: '#constant' },
-      { include: '#type-modifier-access' },
-      { include: '#type-modifier-payable' },
-      { include: '#function-call' },
-      { include: '#operator' },
-      { include: '#punctuation' },
+  const [{ default: solidity }, { default: yul }] = await Promise.all([
+    import('./grammars/solidity.json'),
+    import('./grammars/yul.json'),
+  ])
+  return {
+    default: [
+      {
+        ...solidity,
+        name: 'solar-solidity',
+        // Upstream Solidity misses escapes and literals in some declaration contexts.
+        injections: {
+          'L:source.solidity -comment -string': {
+            patterns: yul.patterns.filter((pattern) => pattern.name === 'string'),
+          },
+        },
+      },
     ],
   }
-  // Base arguments and modifier arguments can contain strings, comments, and nested calls.
-  for (const name of ['declaration-contract', 'declaration-interface', 'declaration-function']) {
-    rules[name].patterns![0].patterns!.unshift({ include: '#comment' }, { include: '#primitive' })
-  }
-  rules['control-import'].patterns![0].patterns![0].patterns!.push({ include: '#punctuation' })
-  // Consume escaped backslashes as pairs so they cannot hide a closing quote.
-  rules.string = {
-    patterns: ['"', "'"].map((quote) => ({
-      name: quote === '"' ? 'string.quoted.double' : 'string.quoted.single',
-      begin: quote,
-      end: quote,
-      patterns: [{ match: String.raw`\\.`, name: 'constant.character.escape' }],
-    })),
-  }
-  return { default: [grammar] }
+})
+
+registerCustomLanguage('yul', async () => {
+  const { default: yul } = await import('./grammars/yul.json')
+  return { default: [{ ...yul, name: 'yul', repository: {} }] }
 })
 
 const solarIr = {
@@ -105,7 +94,8 @@ registerCustomLanguage('evm-disasm', async () => ({ default: [evmDisasm] }))
 registerCustomLanguage('evm-bytecode', async () => ({ default: [evmBytecode] }))
 
 export function artifactLanguage(path: string, language: string) {
-  if (path.endsWith('.mir') || path.endsWith('.evmir') || path.endsWith('.yul')) return 'solar-ir'
+  if (path.endsWith('.mir') || path.endsWith('.evmir')) return 'solar-ir'
+  if (path.endsWith('.yul')) return 'yul'
   if (path.endsWith('.disasm')) return 'evm-disasm'
   if (path.endsWith('.hex')) return 'evm-bytecode'
   return language === 'solidity' ? 'solar-solidity' : language
