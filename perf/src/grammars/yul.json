@@ -1,0 +1,53 @@
+{
+  "name": "Yul",
+  "scopeName": "source.yul",
+  "fileTypes": ["yul"],
+  "uuid": "2c4dbab5-a5ca-4210-b006-bec19f1bfe36",
+  "patterns": [
+    {
+      "match": "\\b(stop|add|sub|mul|div|sdiv|mod|smod|exp|not|lt|gt|slt|sgt|eq|iszero|and|or|xor|byte|shl|shr|sar|addmod|mulmod|signextend|keccak256|pop|mload|mstore|mstore8|sload|sstore|msize|gas|address|balance|selfbalance|caller|callvalue|calldataload|calldatasize|calldatacopy|extcodesize|extcodecopy|returndatasize|returndatacopy|extcodehash|create|create2|call|callcode|delegatecall|staticcall|return|revert|selfdestruct|invalid|log0|log1|log2|log3|log4|chainid|origin|gasprice|blockhash|coinbase|timestamp|number|difficulty|gaslimit|basefee|pc|codesize|codecopy|datasize|dataoffset|datacopy|setimmutable|loadimmutable|linkersymbol|memoryguard|verbatim_[0-9][0-9]?i_[0-9][0-9]?o)\\b",
+      "name": "entity.name.type.class"
+    },
+    {
+      "match": "\\b(break|case|continue|default|for|function|if|leave|let|switch|hex|object|code|data)\\b",
+      "name": "keyword"
+    },
+    {
+      "match": "\\/\\/.*",
+      "name": "comment"
+    },
+    {
+      "begin": "\\/\\*",
+      "end": "\\*\\/",
+      "name": "comment"
+    },
+    {
+      "match": "\\b([A-Za-z_$][A-Za-z0-9_$\\.]*)\\s*\\(",
+      "captures": {
+        "1": {
+          "name": "entity.name.function"
+        }
+      }
+    },
+    {
+      "match": "\\b(true|false)\\b",
+      "name": "constant.language"
+    },
+    {
+      "match": "\\b([0-9]+)\\b",
+      "name": "constant.numeric"
+    },
+    {
+      "match": "\\b(0x[a-fA-F0-9]+)\\b",
+      "name": "constant.numeric"
+    },
+    {
+      "match": "\\\"([^\\\"\\\\]|\\\\.)*\\\"",
+      "name": "string"
+    },
+    {
+      "match": "'([^'\\\\]|\\\\.)*'",
+      "name": "string"
+    }
+  ]
+}

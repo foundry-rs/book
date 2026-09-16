@@ -11,6 +11,20 @@ const file = (path: string, compiler = 'solar') => ({
 })
 
 describe('dynamic artifact directory', () => {
+  it('sorts directories before files at every level regardless of input order', () => {
+    const tree = artifactTree([
+      file('a.json'),
+      file('sources/z.sol'),
+      file('sources/lib/Z.sol'),
+      file('sources/a.sol'),
+      file('sources/lib/A.sol'),
+      file('b.json'),
+    ])
+    expect(tree.map((node) => node.name)).toEqual(['sources', 'a.json', 'b.json'])
+    expect(tree[0].children.map((node) => node.name)).toEqual(['lib', 'a.sol', 'z.sol'])
+    expect(tree[0].children[0].children.map((node) => node.name)).toEqual(['A.sol', 'Z.sol'])
+  })
+
   it('keeps extensionless sources distinct from .sol files and directory prefixes', () => {
     expect(
       artifactTree([file('sources/A'), file('sources/A.sol'), file('sources/A/Child.sol')]),

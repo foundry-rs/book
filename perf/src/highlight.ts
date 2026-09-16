@@ -1,5 +1,17 @@
 import { registerCustomLanguage } from '@pierre/diffs'
 
+export const artifactThemes = { light: 'github-light', dark: 'github-dark' } as const
+
+registerCustomLanguage('solar-solidity', async () => {
+  const { default: solidity } = await import('./grammars/solidity.json')
+  return { default: [{ ...solidity, name: 'solar-solidity' }] }
+})
+
+registerCustomLanguage('yul', async () => {
+  const { default: yul } = await import('./grammars/yul.json')
+  return { default: [{ ...yul, name: 'yul', repository: {} }] }
+})
+
 const solarIr = {
   name: 'solar-ir',
   scopeName: 'source.solar-ir',
@@ -66,8 +78,9 @@ registerCustomLanguage('evm-disasm', async () => ({ default: [evmDisasm] }))
 registerCustomLanguage('evm-bytecode', async () => ({ default: [evmBytecode] }))
 
 export function artifactLanguage(path: string, language: string) {
-  if (path.endsWith('.mir') || path.endsWith('.evmir') || path.endsWith('.yul')) return 'solar-ir'
+  if (path.endsWith('.mir') || path.endsWith('.evmir')) return 'solar-ir'
+  if (path.endsWith('.yul')) return 'yul'
   if (path.endsWith('.disasm')) return 'evm-disasm'
   if (path.endsWith('.hex')) return 'evm-bytecode'
-  return language
+  return language === 'solidity' ? 'solar-solidity' : language
 }

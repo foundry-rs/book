@@ -36,5 +36,12 @@ export function artifactTree(files: ArtifactFile[]): ArtifactNode[] {
       children = node.children
     }
   }
-  return root
+  const sort = (nodes: ArtifactNode[]): ArtifactNode[] =>
+    nodes
+      .sort(
+        (a, b) =>
+          Number(!!b.children.length) - Number(!!a.children.length) || a.name.localeCompare(b.name),
+      )
+      .map((node) => ({ ...node, children: sort(node.children) }))
+  return sort(root)
 }

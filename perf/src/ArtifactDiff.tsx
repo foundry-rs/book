@@ -7,6 +7,7 @@ import {
 } from '@pierre/diffs/react'
 import { Virtualizer } from '@pierre/diffs'
 import type { FileContents, FileDiffMetadata } from '@pierre/diffs'
+import { artifactThemes } from './highlight'
 import { computeDiff } from './computeDiff'
 import { intralineOptions } from './intralineOptions'
 import { useLineSelection } from './lineSelection'
@@ -41,7 +42,7 @@ export default function ArtifactDiff(props: Props) {
       <WorkerPoolContextProvider
         poolOptions={poolOptions}
         // Start safely; computed diffs opt into bounded intraline highlighting.
-        highlighterOptions={{ lineDiffType: 'none' }}
+        highlighterOptions={{ lineDiffType: 'none', theme: artifactThemes }}
       >
         <ArtifactDiffContents
           key={JSON.stringify([props.before, props.after, props.path, props.language])}
@@ -147,6 +148,7 @@ function SelectedFile({ file, theme, side }: { file: FileContents; theme: Theme;
         ...selection.options,
         overflow: 'scroll',
         themeType: theme,
+        theme: artifactThemes,
         disableFileHeader: true,
       }}
     />
@@ -222,6 +224,7 @@ function ComputedDiff({
         diffStyle: style,
         overflow: 'scroll',
         themeType: theme,
+        theme: artifactThemes,
       }}
     />
   )
