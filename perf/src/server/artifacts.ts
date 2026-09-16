@@ -38,7 +38,11 @@ export function artifactMetadata(path: string) {
   }
   return {
     label: path,
-    language: Object.hasOwn(languages, extension || '') ? languages[extension!] : 'text',
+    language: Object.hasOwn(languages, extension || '')
+      ? languages[extension!]
+      : path.startsWith('sources/')
+        ? 'solidity'
+        : 'text',
     storagePath: `${createHash('sha256').update(path).digest('hex')}.json`,
   }
 }
@@ -63,6 +67,7 @@ export function inputSources(content: string): [string, string][] {
     return []
   return Object.entries(input.sources).flatMap(([name, source]) => {
     if (
+      /^[a-z]:/i.test(name) ||
       !validArtifactPath(`sources/${name}`) ||
       !source ||
       typeof source !== 'object' ||

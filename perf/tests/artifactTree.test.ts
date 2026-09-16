@@ -11,6 +11,24 @@ const file = (path: string, compiler = 'solar') => ({
 })
 
 describe('dynamic artifact directory', () => {
+  it('keeps extensionless sources distinct from .sol files and directory prefixes', () => {
+    expect(
+      artifactTree([file('sources/A'), file('sources/A.sol'), file('sources/A/Child.sol')]),
+    ).toMatchObject([
+      {
+        name: 'sources',
+        children: [
+          {
+            name: 'A',
+            file: { path: 'sources/A' },
+            children: [{ name: 'Child.sol', file: { path: 'sources/A/Child.sol' } }],
+          },
+          { name: 'A.sol', file: { path: 'sources/A.sol' } },
+        ],
+      },
+    ])
+  })
+
   it('shows nested Solidity sources from both compiler inputs', () => {
     const files = mergeArtifactFiles(
       [file('sources/src/Main.sol'), file('sources/lib/Lib.sol')],
