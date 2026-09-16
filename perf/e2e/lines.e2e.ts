@@ -45,7 +45,10 @@ for (const identical of [false, true]) {
       .locator('diffs-container [data-column-number="1800"][data-selected-line]')
       .last()
     await expect(line).toBeVisible()
-    await expect.poll(async () => (await line.boundingBox())?.y).toBeGreaterThanOrEqual(80)
+    await expect(page.locator('.diff-sides')).toHaveCount(identical ? 0 : 1)
+    await expect
+      .poll(async () => (await line.boundingBox())?.y)
+      .toBeGreaterThanOrEqual(identical ? 48 : 80)
     expect((await line.boundingBox())!.y).toBeLessThan(200)
     expect(await page.evaluate(() => window.scrollY)).toBeGreaterThan(1000)
     await page.getByRole('button', { name: 'abi.json', exact: true }).click()
