@@ -902,34 +902,36 @@ header.file-header {
   padding: 0 8px;
   font-size: 11px;
 }
-.file-viewer-body .artifact-file {
+.file-viewer-body .artifact-file,
+.file-viewer aside summary {
   width: 100%;
   height: auto;
-  min-height: 44px;
+  min-height: 28px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 8px;
+  gap: 6px;
   border: 0;
   border-radius: 4px;
   background: transparent;
   color: var(--text);
-  padding: 7px 8px;
-  text-align: left;
-}
-.file-viewer-body .artifact-file:hover,
-.file-viewer-body .artifact-file.active {
-  background: var(--surface-muted);
-}
-.file-viewer-body .artifact-file > span {
-  overflow: hidden;
+  padding: 4px 8px;
   font:
-    12px/1.35 ui-monospace,
+    13px/20px ui-monospace,
     SFMono-Regular,
     Menlo,
     Monaco,
     Consolas,
     monospace;
+  text-align: left;
+}
+.file-viewer aside summary:hover,
+.file-viewer-body .artifact-file:hover,
+.file-viewer-body .artifact-file.active {
+  background: var(--surface-muted);
+}
+.file-viewer-body .artifact-file > span,
+.file-viewer aside summary > span {
+  overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -1133,7 +1135,7 @@ header.file-header {
   }
 }
 .artifact-directory {
-  padding-left: 12px;
+  padding-left: 16px;
 }
 .file-selector-head label {
   display: block;
@@ -1141,7 +1143,25 @@ header.file-header {
   margin-top: 8px;
 }
 .file-viewer aside summary {
-  padding: 8px 12px;
   cursor: pointer;
-  overflow-wrap: anywhere;
+  list-style: none;
+}
+.file-viewer aside summary::-webkit-details-marker {
+  display: none;
+}
+.file-viewer aside summary svg,
+.artifact-file svg {
+  flex-shrink: 0;
+  color: var(--muted);
+}
+.file-viewer aside details[open] > summary .directory-chevron {
+  transform: rotate(90deg);
+}
+.file-viewer-body .artifact-file {
+  padding-left: 28px;
+}
+.file-viewer aside summary:focus-visible,
+.file-viewer-body .artifact-file:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: -2px;
 }

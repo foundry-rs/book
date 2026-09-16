@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
-import { PanelLeftClose, PanelLeftOpen } from 'lucide-react'
+import { ChevronRight, File, Folder, PanelLeftClose, PanelLeftOpen } from 'lucide-react'
 import { artifactTree, mergeArtifactFiles, type ArtifactNode } from './artifactTree'
 import { loadArtifact, loadViewerRuns } from './data'
 import { useImportProgress } from './importProgress'
@@ -34,14 +34,20 @@ function FileTree({
             <button
               className={`artifact-file${selected === node.path ? ' active' : ''}`}
               title={node.path}
+              aria-current={selected === node.path ? 'page' : undefined}
               onClick={() => onSelect(node.path)}
             >
+              <File size={15} aria-hidden="true" />
               <span>{node.name}</span>
             </button>
           )}
           {!!node.children.length && (
-            <details open>
-              <summary>{node.name}/</summary>
+            <details open={selected.startsWith(`${node.path}/`)}>
+              <summary title={`${node.path}/`}>
+                <ChevronRight className="directory-chevron" size={14} aria-hidden="true" />
+                <Folder size={15} aria-hidden="true" />
+                <span>{node.name}/</span>
+              </summary>
               <div className="artifact-directory">
                 <FileTree nodes={node.children} selected={selected} onSelect={onSelect} />
               </div>
