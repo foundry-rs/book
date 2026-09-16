@@ -21,10 +21,14 @@ function FileTree({
   nodes,
   selected,
   onSelect,
+  expanded,
+  onToggle,
 }: {
   nodes: ArtifactNode[]
   selected: string
   onSelect: (path: string) => void
+  expanded: Set<string>
+  onToggle: (path: string, open: boolean) => void
 }) {
   return (
     <>
@@ -42,14 +46,23 @@ function FileTree({
             </button>
           )}
           {!!node.children.length && (
-            <details open={selected.startsWith(`${node.path}/`)}>
+            <details
+              open={expanded.has(node.path)}
+              onToggle={(event) => onToggle(node.path, event.currentTarget.open)}
+            >
               <summary title={`${node.path}/`}>
                 <ChevronRight className="directory-chevron" size={14} aria-hidden="true" />
                 <Folder size={15} aria-hidden="true" />
                 <span>{node.name}/</span>
               </summary>
               <div className="artifact-directory">
-                <FileTree nodes={node.children} selected={selected} onSelect={onSelect} />
+                <FileTree
+                  nodes={node.children}
+                  selected={selected}
+                  onSelect={onSelect}
+                  expanded={expanded}
+                  onToggle={onToggle}
+                />
               </div>
             </details>
           )}
@@ -72,6 +85,7 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
   const [selected, setSelected] = useState(params.get('file') || '')
   const [diffStyle, setDiffStyle] = useState<'split' | 'unified'>('split')
   const [sidebarOpen, setSidebarOpen] = useState(true)
+  const [expanded, setExpanded] = useState<Set<string>>(() => new Set())
   const [sidebarWidth, setSidebarWidth] = useState(270)
   const drag = useRef<{ x: number; width: number } | null>(null)
   const resizeSidebar = (width: number) => setSidebarWidth(Math.max(200, Math.min(480, width)))
@@ -151,6 +165,26 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
     [left, right, activeBenchmark],
   )
   const selectedFile = visibleFiles.find((file) => file.path === selected) || visibleFiles[0]
+
+  useEffect(() => {
+    if (!selectedFile) return
+    const parts = selectedFile.path.split('/')
+    setExpanded((previous) => {
+      const next = new Set(previous)
+      for (let i = 1; i < parts.length; i++) next.add(parts.slice(0, i).join('/'))
+      return next
+    })
+  }, [selectedFile?.path])
+
+  const toggleDirectory = (path: string, open: boolean) => {
+    setExpanded((previous) => {
+      if (previous.has(path) === open) return previous
+      const next = new Set(previous)
+      if (open) next.add(path)
+      else next.delete(path)
+      return next
+    })
+  }
 
   // Start bodies as soon as the descriptor arrives, even while the renderer chunk loads.
   useEffect(() => {
@@ -281,6 +315,8 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
                 nodes={artifactTree(visibleFiles)}
                 selected={selectedFile?.path || ''}
                 onSelect={selectFile}
+                expanded={expanded}
+                onToggle={toggleDirectory}
               />
             )}
           </aside>
