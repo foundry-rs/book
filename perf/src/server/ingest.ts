@@ -2,7 +2,13 @@ import { createHash } from 'node:crypto'
 
 import { Unzip, UnzipInflate, UnzipPassThrough } from 'fflate'
 
-import { artifactMetadata, textArtifact, validArtifactPath, validIdentifier } from './artifacts'
+import {
+  artifactMetadata,
+  inputSources,
+  textArtifact,
+  validArtifactPath,
+  validIdentifier,
+} from './artifacts'
 import { clickHouseConfig, insert, select, type ClickHouseConfig } from './clickhouse'
 import { type GitHubClient, sharedGitHubClient, gitHubConfig, type GitHubRun } from './github'
 import { normalizeResults } from './normalizeResults'
@@ -169,7 +175,23 @@ export function normalizeArchive(archive: ArtifactArchive, run: ImportedRun): No
   const document = JSON.parse(archive.results) as unknown
   const results = normalizeResults(document, run)
   const knownTests = new Set(results.map((result) => String(result.test_id)))
-  const artifacts = [...archive.artifacts].flatMap(([key, content]) => {
+  const files = new Map(archive.artifacts)
+  let totalBytes = [...files.values()].reduce(
+    (total, content) => total + Buffer.byteLength(content),
+    0,
+  )
+  for (const [key, content] of archive.artifacts) {
+    if (!/^artifacts\/[^/]+\/[^/]+\/input\.json$/.test(key)) continue
+    const prefix = key.slice(0, -'input.json'.length)
+    for (const [path, source] of inputSources(content)) {
+      if (files.has(prefix + path)) continue
+      totalBytes += Buffer.byteLength(source)
+      if (files.size >= 10_000 || totalBytes > maxArtifactRunBytes)
+        throw new Error('Source artifacts exceed the configured size limit')
+      files.set(prefix + path, source)
+    }
+  }
+  const artifacts = [...files].flatMap(([key, content]) => {
     const [, testId, compiler, ...parts] = key.split('/')
     const path = parts.join('/')
     if (!knownTests.has(testId) || !validIdentifier.test(compiler) || !validArtifactPath(path))

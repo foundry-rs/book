@@ -51,3 +51,25 @@ export function textArtifact(bytes: Uint8Array): string | null {
     return null
   }
 }
+
+export function inputSources(content: string): [string, string][] {
+  let input
+  try {
+    input = JSON.parse(content)
+  } catch {
+    return []
+  }
+  if (!input?.sources || typeof input.sources !== 'object' || Array.isArray(input.sources))
+    return []
+  return Object.entries(input.sources).flatMap(([name, source]) => {
+    if (
+      !validArtifactPath(`sources/${name}`) ||
+      !source ||
+      typeof source !== 'object' ||
+      !('content' in source) ||
+      typeof source.content !== 'string'
+    )
+      return []
+    return [[`sources/${name}`, source.content]]
+  })
+}

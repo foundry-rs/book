@@ -27,6 +27,49 @@ afterEach(() => {
 })
 
 describe('GitHub Actions importer', () => {
+  it('imports the full source tree from input JSON without replacing physical sources', () => {
+    const artifacts = new Map([
+      [
+        'artifacts/test/solar/input.json',
+        JSON.stringify({
+          sources: {
+            'src/Main.sol': { content: 'contract Main {}\n' },
+            'lib/Lib.sol': { content: 'library Lib {}\n' },
+            '../escape.sol': { content: 'unsafe' },
+            '/absolute.sol': { content: 'unsafe' },
+            'remote.sol': { urls: ['https://example.com/remote.sol'] },
+          },
+        }),
+      ],
+      ['artifacts/test/solar/sources/src/Main.sol', 'physical'],
+      ['artifacts/test/solc/input.json', '{malformed'],
+    ])
+    const normalized = normalizeArchive(
+      {
+        artifacts,
+        results: JSON.stringify([{ test_id: 'test', solar: { status: 'ok', runtimeGas: 1 } }]),
+      },
+      run,
+    )
+    expect(
+      normalized.artifacts.filter((file) => String(file.path).startsWith('sources/')),
+    ).toMatchObject([
+      {
+        path: 'sources/src/Main.sol',
+        content: 'physical',
+        language: 'solidity',
+        compiler: 'solar',
+      },
+      {
+        path: 'sources/lib/Lib.sol',
+        content: 'library Lib {}\n',
+        language: 'solidity',
+        compiler: 'solar',
+      },
+    ])
+    expect(artifacts.size).toBe(3)
+  })
+
   it('persists importing before publishing, completes after blobs and snapshot, and logs stages', async () => {
     const writes: { table: string; state?: string }[] = []
     const log = vi.spyOn(console, 'info').mockImplementation(() => {})
