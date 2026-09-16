@@ -213,20 +213,28 @@ function ComputedDiff({
       </p>
     )
   return (
-    <FileDiff
-      className="solar-diff"
-      fileDiff={diff}
-      selectedLines={selection.selectedLines}
-      options={{
-        ...selection.options,
-        ...intralineOptions(diff),
-        disableFileHeader: true,
-        diffStyle: style,
-        overflow: 'scroll',
-        themeType: theme,
-        theme: artifactThemes,
-      }}
-    />
+    <>
+      {style === 'split' && (
+        <div className="diff-sides">
+          <span>{beforeLabel}</span>
+          <span>{afterLabel}</span>
+        </div>
+      )}
+      <FileDiff
+        className="solar-diff"
+        fileDiff={diff}
+        selectedLines={selection.selectedLines}
+        options={{
+          ...selection.options,
+          ...intralineOptions(diff),
+          disableFileHeader: true,
+          diffStyle: style,
+          overflow: 'scroll',
+          themeType: theme,
+          theme: artifactThemes,
+        }}
+      />
+    </>
   )
 }
 

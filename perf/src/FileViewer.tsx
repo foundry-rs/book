@@ -367,10 +367,6 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
               </p>
             ) : selectedFile && left && right ? (
               <>
-                <div className="diff-sides">
-                  <span>{left.label}</span>
-                  <span>{right.label}</span>
-                </div>
                 <Suspense fallback={<p className="empty">Loading renderer…</p>}>
                   <ArtifactDiff
                     before={{
