@@ -38,7 +38,11 @@ export function artifactMetadata(path: string) {
   }
   return {
     label: path,
-    language: Object.hasOwn(languages, extension || '') ? languages[extension!] : 'text',
+    language: Object.hasOwn(languages, extension || '')
+      ? languages[extension!]
+      : path.startsWith('sources/')
+        ? 'solidity'
+        : 'text',
     storagePath: `${createHash('sha256').update(path).digest('hex')}.json`,
   }
 }
@@ -50,4 +54,27 @@ export function textArtifact(bytes: Uint8Array): string | null {
   } catch {
     return null
   }
+}
+
+export function inputSources(content: string): [string, string][] {
+  let input
+  try {
+    input = JSON.parse(content)
+  } catch {
+    return []
+  }
+  if (!input?.sources || typeof input.sources !== 'object' || Array.isArray(input.sources))
+    return []
+  return Object.entries(input.sources).flatMap(([name, source]) => {
+    if (
+      /^[a-z]:/i.test(name) ||
+      !validArtifactPath(`sources/${name}`) ||
+      !source ||
+      typeof source !== 'object' ||
+      !('content' in source) ||
+      typeof source.content !== 'string'
+    )
+      return []
+    return [[`sources/${name}`, source.content]]
+  })
 }

@@ -8,7 +8,12 @@ import {
   normalizeArchive,
   selectRuns,
 } from '../src/server/ingest'
-import { artifactMetadata, textArtifact, validArtifactPath } from '../src/server/artifacts'
+import {
+  artifactMetadata,
+  inputSources,
+  textArtifact,
+  validArtifactPath,
+} from '../src/server/artifacts'
 
 const run = {
   branch: 'main',
@@ -27,6 +32,113 @@ afterEach(() => {
 })
 
 describe('GitHub Actions importer', () => {
+  it('preserves source names, empty contents, Unicode and line endings without extension collisions', () => {
+    const sources = {
+      '@scope/package/Source': { content: '// π\r\ncontract Source {}\r\n' },
+      '@scope/package/Source.sol': { content: '' },
+      'folder with spaces/你好.sol': { content: 'contract Other {}' },
+      '__proto__/constructor.sol': { content: 'contract Names {}' },
+    }
+    const extracted = inputSources(JSON.stringify({ sources }))
+    expect(extracted).toEqual(
+      Object.entries(sources).map(([name, source]) => [`sources/${name}`, source.content]),
+    )
+    expect(artifactMetadata('sources/@scope/package/Source').language).toBe('solidity')
+    expect(artifactMetadata('other/Source').language).toBe('text')
+  })
+
+  it.each([
+    '',
+    '.',
+    '..',
+    '../A.sol',
+    '/A.sol',
+    './A.sol',
+    'a/../A.sol',
+    'a//A.sol',
+    'a/./A.sol',
+    'a\\A.sol',
+    'C:/A.sol',
+    'C:A.sol',
+    '//server/A.sol',
+    'a\0.sol',
+    'a\x7f.sol',
+    'a'.repeat(256) + '.sol',
+    'a/'.repeat(520) + 'A.sol',
+  ])('omits unsafe source path %j', (name) => {
+    expect(inputSources(JSON.stringify({ sources: { [name]: { content: 'unsafe' } } }))).toEqual([])
+  })
+
+  it.each([
+    '{',
+    'null',
+    '[]',
+    '{}',
+    '{"sources":null}',
+    '{"sources":[]}',
+    '{"sources":{"A.sol":null,"B.sol":5,"C.sol":{"content":3},"D.sol":{"urls":["https://example.com"]}}}',
+  ])('ignores malformed or unavailable embedded sources: %s', (input) => {
+    expect(inputSources(input)).toEqual([])
+  })
+
+  it('counts extracted source files toward the import limit', () => {
+    const sources = Object.fromEntries(
+      Array.from({ length: 10_000 }, (_, index) => [`${index}.sol`, { content: '' }]),
+    )
+    expect(() =>
+      normalizeArchive(
+        {
+          artifacts: new Map([['artifacts/test/solar/input.json', JSON.stringify({ sources })]]),
+          results: JSON.stringify([{ test_id: 'test', solar: { status: 'ok' } }]),
+        },
+        run,
+      ),
+    ).toThrow('Source artifacts exceed the configured size limit')
+  })
+
+  it('imports the full source tree from input JSON without replacing physical sources', () => {
+    const artifacts = new Map([
+      [
+        'artifacts/test/solar/input.json',
+        JSON.stringify({
+          sources: {
+            'src/Main.sol': { content: 'contract Main {}\n' },
+            'lib/Lib.sol': { content: 'library Lib {}\n' },
+            '../escape.sol': { content: 'unsafe' },
+            '/absolute.sol': { content: 'unsafe' },
+            'remote.sol': { urls: ['https://example.com/remote.sol'] },
+          },
+        }),
+      ],
+      ['artifacts/test/solar/sources/src/Main.sol', 'physical'],
+      ['artifacts/test/solc/input.json', '{malformed'],
+    ])
+    const normalized = normalizeArchive(
+      {
+        artifacts,
+        results: JSON.stringify([{ test_id: 'test', solar: { status: 'ok', runtimeGas: 1 } }]),
+      },
+      run,
+    )
+    expect(
+      normalized.artifacts.filter((file) => String(file.path).startsWith('sources/')),
+    ).toMatchObject([
+      {
+        path: 'sources/src/Main.sol',
+        content: 'physical',
+        language: 'solidity',
+        compiler: 'solar',
+      },
+      {
+        path: 'sources/lib/Lib.sol',
+        content: 'library Lib {}\n',
+        language: 'solidity',
+        compiler: 'solar',
+      },
+    ])
+    expect(artifacts.size).toBe(3)
+  })
+
   it('persists importing before publishing, completes after blobs and snapshot, and logs stages', async () => {
     const writes: { table: string; state?: string }[] = []
     const log = vi.spyOn(console, 'info').mockImplementation(() => {})

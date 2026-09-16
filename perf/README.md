@@ -327,6 +327,13 @@ change; the UI does not guess units from arbitrary fields.
 
 Optional files live beside the results at `artifacts/<test-id>/<compiler>/...`.
 Both importers discover nested UTF-8 text files without a filename allowlist.
+The `sources/` directory shows the full source tree with Solidity highlighting.
+When importing older GitHub archives, the backend extracts embedded source contents from
+`input.json`; physical source artifacts take precedence. Source URLs are not fetched.
+Extensionless sources keep their names and use Solidity highlighting; `A` and `A.sol`
+remain separate files. Absolute paths, drive prefixes, traversal components, and other
+invalid artifact paths are omitted rather than rewritten into colliding names.
+Already imported runs need a reimport to gain these source files.
 The viewer builds its directory and compiler selectors from the stored manifest,
 shows files present on either side, and loads only the selected file. Unknown
 extensions render as plain text; HTML is displayed as source, never executed.
