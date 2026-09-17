@@ -5,6 +5,7 @@ import { clickHouseConfig } from './clickhouse'
 import { pendingImport } from './importStatus'
 
 const dispatched = responseCache<boolean>(30_000, 64 * 1024)
+const running = responseCache<boolean>(30_000, 64 * 1024)
 const inFlight = new Set<string>()
 const missing = responseCache<boolean>(120_000, 64 * 1024)
 const failures = responseCache<boolean>(10_000, 64 * 1024)
@@ -13,6 +14,7 @@ let active = 0
 export async function dispatchImport(sha: string) {
   if (!/^[a-f0-9]{40}$/.test(sha)) throw new Error('Invalid commit')
   if (await missing.peek(sha)) throw new RunNotFoundError()
+  if (await running.peek(sha)) throw new ImportPendingError(5, 'benchmark-running', sha)
   const hostname = process.env.VERCEL_URL
   const secret = process.env.CRON_SECRET
   // Never send credentials to a host supplied by an incoming request.
@@ -40,7 +42,12 @@ export async function dispatchImport(sha: string) {
       signal: AbortSignal.timeout(285_000),
     })
       .then(async (response) => {
-        await response.arrayBuffer()
+        if (response.status === 202) {
+          const pending = await response.json()
+          if (pending.status === 'benchmark-running') await running(sha, async () => true)
+        } else {
+          await response.arrayBuffer()
+        }
         if (response.status === 404) await missing(sha, async () => true)
         if (!response.ok) {
           if (response.status !== 404) await failures(sha, async () => true)

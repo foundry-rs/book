@@ -10,7 +10,13 @@ import {
   validIdentifier,
 } from './artifacts'
 import { clickHouseConfig, insert, select, type ClickHouseConfig } from './clickhouse'
-import { type GitHubClient, sharedGitHubClient, gitHubConfig, type GitHubRun } from './github'
+import {
+  type GitHubClient,
+  sharedGitHubClient,
+  gitHubConfig,
+  type GitHubRun,
+  type GitHubArtifact,
+} from './github'
 import { normalizeResults } from './normalizeResults'
 import { publication, publicationBlobs } from './publication'
 import { enrichSources } from './benchmarkSources'
@@ -333,10 +339,15 @@ async function recordJob(
   ])
 }
 
-async function ingestRun(config: ClickHouseConfig, github: GitHubClient, source: GitHubRun) {
+async function ingestRun(
+  config: ClickHouseConfig,
+  github: GitHubClient,
+  source: GitHubRun,
+  availableArtifact?: GitHubArtifact,
+) {
   const [pull, artifact] = await Promise.all([
     importStage('githubMetadataMs', () => github.pullRequest(source.head_sha).catch(() => null)),
-    importStage('githubArtifactMs', () => github.artifact(source.id)),
+    importStage('githubArtifactMs', () => availableArtifact ?? github.artifact(source.id)),
   ])
   const run = importedRun(source, pull?.number || null, pull?.title || source.display_title || null)
   if (!artifact) throw new Error('Benchmark artifact is not available yet')
@@ -368,7 +379,12 @@ async function ingestRun(config: ClickHouseConfig, github: GitHubClient, source:
   return true
 }
 
-async function ingestTracked(config: ClickHouseConfig, github: GitHubClient, source: GitHubRun) {
+async function ingestTracked(
+  config: ClickHouseConfig,
+  github: GitHubClient,
+  source: GitHubRun,
+  artifact?: GitHubArtifact,
+) {
   const previous = await importStage('jobLookupMs', () => job(config, source.id))
   throwIfPending(previous)
   if (
@@ -382,7 +398,7 @@ async function ingestTracked(config: ClickHouseConfig, github: GitHubClient, sou
     await importStage('markImportingMs', () =>
       recordJob(config, source, 'importing', Number(previous?.attempts || 0), null),
     )
-    const imported = await ingestRun(config, github, source)
+    const imported = await ingestRun(config, github, source, artifact)
     await importStage('markCompleteMs', () =>
       recordJob(config, source, 'complete', Number(previous?.attempts || 0), null),
     )
@@ -497,12 +513,18 @@ export async function ingestCommit(sha: string, environment: NodeJS.ProcessEnv =
 
   return timeImport(sha, async () => {
     const github = sharedGitHubClient(githubConfig)
-    const [previous, source] = await Promise.all([
+    const [previous, sources] = await Promise.all([
       importStage('commitJobLookupMs', () => jobForCommit(config, sha)),
-      importStage('githubRunLookupMs', () => github.runForCommit(sha)),
+      importStage('githubRunLookupMs', () => github.runsForCommit(sha)),
     ])
     throwIfPending(previous)
-    if (!source) throw new RunNotFoundError()
-    return ingestTracked(config, github, source)
+    if (!sources.length) throw new RunNotFoundError()
+    for (const source of sources) {
+      const artifact = await importStage('githubArtifactMs', () => github.artifact(source.id))
+      if (artifact) return ingestTracked(config, github, source, artifact)
+    }
+    if (sources.some((source) => source.conclusion === null))
+      throw new ImportPendingError(5, 'benchmark-running', sha)
+    throw new Error('Benchmark workflows did not publish an available codegen artifact')
   })
 }

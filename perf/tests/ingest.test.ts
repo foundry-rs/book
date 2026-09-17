@@ -139,105 +139,129 @@ describe('GitHub Actions importer', () => {
     expect(artifacts.size).toBe(3)
   })
 
-  it('persists importing before publishing, completes after blobs and snapshot, and logs stages', async () => {
-    const writes: { table: string; state?: string }[] = []
-    const log = vi.spyOn(console, 'info').mockImplementation(() => {})
-    const source = {
-      id: 99,
-      head_sha: run.commit,
-      conclusion: 'success',
-      event: 'push',
-      head_branch: 'main',
-      name: 'Benchmark',
-      display_title: 'Test',
-      created_at: run.startedAt,
-    }
-    const archive = zipSync({
-      'results.json': strToU8(
-        JSON.stringify([{ test_id: 'test', solar: { status: 'ok', runtimeGas: 1 } }]),
-      ),
-      'artifacts/test/solar/output.txt': strToU8('output'),
-    })
-    vi.stubGlobal(
-      'fetch',
-      vi.fn(async (input, init) => {
-        const url = new URL(String(input))
-        if (url.hostname === 'clickhouse.example') {
-          if (url.searchParams.has('query'))
-            writes.push({
-              table: url.searchParams.get('query')!.split(' ')[2],
-              state: JSON.parse(String(init.body).trim().split('\n')[0]).state,
+  it.each(['success', null, 'failure', 'cancelled'])(
+    'imports available artifacts with workflow conclusion %s',
+    async (conclusion) => {
+      const writes: { table: string; state?: string }[] = []
+      const log = vi.spyOn(console, 'info').mockImplementation(() => {})
+      const source = {
+        id: 99,
+        head_sha: run.commit,
+        conclusion,
+        event: 'push',
+        head_branch: 'main',
+        name: 'Benchmark',
+        display_title: 'Test',
+        created_at: run.startedAt,
+      }
+      const archive = zipSync({
+        'results.json': strToU8(
+          JSON.stringify([{ test_id: 'test', solar: { status: 'ok', runtimeGas: 1 } }]),
+        ),
+        'artifacts/test/solar/output.txt': strToU8('output'),
+      })
+      vi.stubGlobal(
+        'fetch',
+        vi.fn(async (input, init) => {
+          const url = new URL(String(input))
+          if (url.hostname === 'clickhouse.example') {
+            if (url.searchParams.has('query'))
+              writes.push({
+                table: url.searchParams.get('query')!.split(' ')[2],
+                state: JSON.parse(String(init.body).trim().split('\n')[0]).state,
+              })
+            return new Response('')
+          }
+          if (url.pathname.includes('/actions/workflows/'))
+            return Response.json({
+              workflow_runs: [{ ...source, id: 100, conclusion: null }, source],
             })
-          return new Response('')
-        }
-        if (url.pathname.includes('/actions/workflows/'))
-          return Response.json({ workflow_runs: [source] })
-        if (url.pathname.endsWith('/artifacts'))
-          return Response.json({
-            artifacts: [
-              {
-                archive_download_url: 'https://api.github.com/archive',
-                size_in_bytes: archive.length,
-                expired: false,
-              },
-            ],
-          })
-        if (url.pathname === '/archive') return new Response(archive)
-        return Response.json([])
-      }),
-    )
-    await expect(
-      ingestCommit(run.commit, {
-        CLICKHOUSE_HOST: 'https://clickhouse.example',
-        GITHUB_TOKEN: 'test',
-      }),
-    ).resolves.toBe(true)
-    expect(writes).toEqual([
-      { table: 'ingestion_jobs', state: 'importing' },
-      { table: 'artifact_blobs', state: undefined },
-      { table: 'run_snapshots', state: undefined },
-      { table: 'ingestion_jobs', state: 'complete' },
-    ])
-    expect(JSON.parse(log.mock.calls[0][0])).toMatchObject({
-      event: 'perf_import',
-      outcome: 'complete',
-      stages: { downloadExtractMs: expect.any(Number), writeBlobsMs: expect.any(Number) },
-    })
-  })
+          if (url.pathname.endsWith('/runs/100/artifacts')) return Response.json({ artifacts: [] })
+          if (url.pathname.endsWith('/artifacts'))
+            return Response.json({
+              artifacts: [
+                {
+                  archive_download_url: 'https://api.github.com/archive',
+                  size_in_bytes: archive.length,
+                  expired: false,
+                },
+              ],
+            })
+          if (url.pathname === '/archive') return new Response(archive)
+          return Response.json([])
+        }),
+      )
+      await expect(
+        ingestCommit(run.commit, {
+          CLICKHOUSE_HOST: 'https://clickhouse.example',
+          GITHUB_TOKEN: 'test',
+        }),
+      ).resolves.toBe(true)
+      expect(writes).toEqual([
+        { table: 'ingestion_jobs', state: 'importing' },
+        { table: 'artifact_blobs', state: undefined },
+        { table: 'run_snapshots', state: undefined },
+        { table: 'ingestion_jobs', state: 'complete' },
+      ])
+      expect(JSON.parse(log.mock.calls[0][0])).toMatchObject({
+        event: 'perf_import',
+        outcome: 'complete',
+        stages: { downloadExtractMs: expect.any(Number), writeBlobsMs: expect.any(Number) },
+      })
+    },
+  )
 
-  it('records a retry and failure timing when an archive is not available', async () => {
-    const states: string[] = []
-    const log = vi.spyOn(console, 'info').mockImplementation(() => {})
-    vi.stubGlobal(
-      'fetch',
-      vi.fn(async (input, init) => {
-        const url = new URL(String(input))
-        if (url.hostname === 'clickhouse.example') {
-          if (url.searchParams.has('query')) states.push(JSON.parse(String(init.body)).state)
-          return new Response('')
-        }
-        if (url.pathname.includes('/actions/workflows/'))
-          return Response.json({
-            workflow_runs: [
-              { id: 99, head_sha: run.commit, conclusion: 'success', created_at: run.startedAt },
-            ],
-          })
-        if (url.pathname.endsWith('/artifacts')) return Response.json({ artifacts: [] })
-        return Response.json([])
-      }),
-    )
-    await expect(
-      ingestCommit(run.commit, {
-        CLICKHOUSE_HOST: 'https://clickhouse.example',
-        GITHUB_TOKEN: 'test',
-      }),
-    ).rejects.toThrow('not available yet')
-    expect(states).toEqual(['importing', 'retry'])
-    expect(JSON.parse(log.mock.calls[0][0])).toMatchObject({
-      event: 'perf_import',
-      outcome: 'Error',
-    })
-  })
+  it.each([null, 'success', 'failure', 'missing'])(
+    'does not start an import without an artifact (conclusion %s)',
+    async (conclusion) => {
+      const states: string[] = []
+      const log = vi.spyOn(console, 'info').mockImplementation(() => {})
+      vi.stubGlobal(
+        'fetch',
+        vi.fn(async (input, init) => {
+          const url = new URL(String(input))
+          if (url.hostname === 'clickhouse.example') {
+            if (url.searchParams.has('query')) states.push(JSON.parse(String(init.body)).state)
+            return new Response('')
+          }
+          if (url.pathname.includes('/actions/workflows/'))
+            return Response.json({
+              workflow_runs:
+                conclusion === 'missing'
+                  ? []
+                  : [{ id: 99, head_sha: run.commit, conclusion, created_at: run.startedAt }],
+            })
+          if (url.pathname.endsWith('/artifacts')) return Response.json({ artifacts: [] })
+          return Response.json([])
+        }),
+      )
+      await expect(
+        ingestCommit(run.commit, {
+          CLICKHOUSE_HOST: 'https://clickhouse.example',
+          GITHUB_TOKEN: 'test',
+        }),
+      ).rejects.toMatchObject(
+        conclusion === null
+          ? { state: 'benchmark-running', retryAfter: 5, commit: run.commit }
+          : {
+              message:
+                conclusion === 'missing'
+                  ? 'No benchmark workflow is available for this commit'
+                  : 'Benchmark workflows did not publish an available codegen artifact',
+            },
+      )
+      expect(states).toEqual([])
+      expect(JSON.parse(log.mock.calls[0][0])).toMatchObject({
+        event: 'perf_import',
+        outcome:
+          conclusion === null
+            ? 'ImportPendingError'
+            : conclusion === 'missing'
+              ? 'RunNotFoundError'
+              : 'Error',
+      })
+    },
+  )
 
   it('excludes cooling-down runs before allocating the worker batch', async () => {
     const queries: string[] = []

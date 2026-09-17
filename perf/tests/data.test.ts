@@ -2,31 +2,31 @@ import { afterEach, expect, it, vi } from 'vite-plus/test'
 
 afterEach(() => vi.unstubAllGlobals())
 
-it('polls 202 without caching its status as a run document', async () => {
-  vi.resetModules()
-  vi.useFakeTimers()
-  try {
-    const commit = 'a'.repeat(40)
-    const fetch = vi
-      .fn()
-      .mockResolvedValueOnce(
-        Response.json(
-          { status: 'importing', commit },
-          { status: 202, headers: { 'retry-after': '1' } },
-        ),
-      )
-      .mockResolvedValueOnce(Response.json({ commit, results: [] }))
-    vi.stubGlobal('fetch', fetch)
-    const { loadRun } = await import('../src/data')
-    const result = loadRun(commit)
-    await vi.advanceTimersByTimeAsync(1000)
-    expect(await result).toMatchObject({ commit, results: [] })
-    await loadRun(commit)
-    expect(fetch).toHaveBeenCalledTimes(2)
-  } finally {
-    vi.useRealTimers()
-  }
-})
+it.each(['importing', 'benchmark-running'])(
+  'polls %s without caching its status as a run document',
+  async (status) => {
+    vi.resetModules()
+    vi.useFakeTimers()
+    try {
+      const commit = 'a'.repeat(40)
+      const fetch = vi
+        .fn()
+        .mockResolvedValueOnce(
+          Response.json({ status, commit }, { status: 202, headers: { 'retry-after': '1' } }),
+        )
+        .mockResolvedValueOnce(Response.json({ commit, results: [] }))
+      vi.stubGlobal('fetch', fetch)
+      const { loadRun } = await import('../src/data')
+      const result = loadRun(commit)
+      await vi.advanceTimersByTimeAsync(1000)
+      expect(await result).toMatchObject({ commit, results: [] })
+      await loadRun(commit)
+      expect(fetch).toHaveBeenCalledTimes(2)
+    } finally {
+      vi.useRealTimers()
+    }
+  },
+)
 
 it('reports durable retry backoff instead of waiting or showing unpublished data', async () => {
   vi.resetModules()

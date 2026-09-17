@@ -84,7 +84,9 @@ async function getJson<T>(path: string): Promise<T> {
         const message =
           status.status === 'retry'
             ? `Benchmark import failed. Retry scheduled in ${Math.ceil(retry)} seconds.`
-            : 'Importing benchmark runs…'
+            : status.status === 'benchmark-running'
+              ? 'Benchmarks still running…'
+              : 'Importing benchmark runs…'
         if (typeof status.commit === 'string') {
           pendingCommits.add(status.commit)
           reportImport(status.commit, message)
@@ -94,7 +96,9 @@ async function getJson<T>(path: string): Promise<T> {
           throw new Error(
             status.status === 'retry'
               ? message
-              : 'Benchmark import is still running. Try again shortly.',
+              : status.status === 'benchmark-running'
+                ? 'Benchmarks are still running. Try again shortly.'
+                : 'Benchmark import is still running. Try again shortly.',
           )
         await new Promise((resolve) => setTimeout(resolve, retry * 1000))
         continue
@@ -102,7 +106,7 @@ async function getJson<T>(path: string): Promise<T> {
       if (!response.ok)
         throw new Error(
           response.status === 404
-            ? 'No completed benchmark run is available for this commit.'
+            ? 'No benchmark workflow is available for this commit.'
             : `Could not load benchmark data (${response.status}). Try again shortly.`,
         )
       return response.json() as Promise<T>
