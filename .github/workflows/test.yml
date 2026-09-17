@@ -70,17 +70,17 @@ jobs:
       - name: Install dependencies
         run: vp install --frozen-lockfile
 
-      - name: Build Vocs
-        run: vp exec vocs build
-
-      - name: Install Chromium
-        run: vp exec playwright install --with-deps chromium
+      - name: Build Vocs and install Chromium
+        run: |
+          vp exec playwright install --with-deps chromium &
+          chromium_pid=$!
+          trap 'kill "$chromium_pid" 2>/dev/null || true' EXIT
+          vp exec vocs build
+          wait "$chromium_pid"
+          trap - EXIT
 
       - name: Browser smoke tests
         run: vp run test:e2e
-
-      - name: Perf import browser tests
-        run: vp exec playwright test --config perf/playwright.config.ts
 
       - name: Upload browser test results
         if: failure()
@@ -90,4 +90,41 @@ jobs:
           path: |
             playwright-report/
             test-results/
+          retention-days: 7
+
+  perf-browser:
+    name: perf browser tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Vite+
+        uses: voidzero-dev/setup-vp@49c3e4e92c52e7f8392712a9267bbe71c5ab30e5 # v1.19.0
+        with:
+          cache: true
+          node-version: "24"
+          run-install: false
+
+      - name: Install dependencies
+        run: vp install --frozen-lockfile
+
+      - name: Install Chromium
+        run: vp exec playwright install --with-deps chromium
+
+      # These tests start the perf app's own server and do not use the Vocs build.
+      - name: Perf import browser tests
+        run: vp exec playwright test --config perf/playwright.config.ts
+
+      - name: Upload perf browser test results
+        if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: perf-browser-test-results
+          path: test-results/perf/
           retention-days: 7
