@@ -47,6 +47,27 @@ describe('GitHub retry policy', () => {
     expect(await client.resolveRef('#1')).toBe('c'.repeat(40))
     expect(await client.resolveRef('2')).toBe('b'.repeat(40))
   })
+  it('finds workflows regardless of status or conclusion', async () => {
+    const client = new GitHubClient({
+      repository: 'paradigmxyz/solar',
+      workflow: 'bench.yml',
+      token: 'test',
+    })
+    const sha = 'a'.repeat(40)
+    const runs = [
+      { id: 3, head_sha: sha, conclusion: null },
+      { id: 2, head_sha: sha, conclusion: 'failure' },
+      { id: 1, head_sha: sha, conclusion: 'success' },
+    ]
+    globalThis.fetch = vi.fn(async (input) => {
+      const url = new URL(requestUrl(input))
+      expect(url.searchParams.get('head_sha')).toBe(sha)
+      expect(url.searchParams.has('status')).toBe(false)
+      return Response.json({ workflow_runs: [...runs, { head_sha: 'b'.repeat(40) }] })
+    })
+    expect(await client.runsForCommit(sha)).toEqual(runs)
+  })
+
   it('retries transient failures with backoff', async () => {
     let attempts = 0
     const delays: number[] = []

@@ -52,3 +52,30 @@ it('rejects invalid dispatch configuration without leaking credentials', async (
   await expect(dispatchImport('a'.repeat(40))).rejects.toThrow('not configured')
   expect(fetch).not.toHaveBeenCalled()
 })
+
+it('retries running benchmarks without caching them as missing', async () => {
+  vi.resetModules()
+  vi.stubEnv('VERCEL_URL', 'perf-test.vercel.app')
+  vi.stubEnv('CRON_SECRET', 'test-secret')
+  const fetch = vi
+    .fn()
+    .mockResolvedValueOnce(Response.json({ status: 'benchmark-running' }, { status: 202 }))
+    .mockResolvedValueOnce(Response.json({ imported: true }))
+  vi.stubGlobal('fetch', fetch)
+  const { dispatchImport } = await import('../src/server/workerDispatch')
+  const sha = 'a'.repeat(40)
+  await expect(dispatchImport(sha)).rejects.toMatchObject({ state: 'queued' })
+  await lifecycle.waitUntil.mock.calls[0][0]
+  await expect(dispatchImport(sha)).rejects.toMatchObject({
+    state: 'benchmark-running',
+    retryAfter: 5,
+  })
+  const now = vi.spyOn(Date, 'now').mockReturnValue(Date.now() + 31_000)
+  try {
+    await expect(dispatchImport(sha)).rejects.toMatchObject({ state: 'queued' })
+    await lifecycle.waitUntil.mock.calls[1][0]
+    expect(fetch).toHaveBeenCalledTimes(2)
+  } finally {
+    now.mockRestore()
+  }
+})

@@ -224,15 +224,12 @@ export class GitHubClient {
     return commit.sha
   }
 
-  async runForCommit(sha: string) {
-    const query = new URLSearchParams({ head_sha: sha, per_page: '100', status: 'completed' })
+  async runsForCommit(sha: string) {
+    const query = new URLSearchParams({ head_sha: sha, per_page: '100' })
     const result = await this.request<GitHubPage<GitHubRun>>(
       `repos/${this.config.repository}/actions/workflows/${this.config.workflow}/runs?${query}`,
     )
-    return (
-      result.workflow_runs?.find((run) => run.head_sha === sha && run.conclusion === 'success') ||
-      null
-    )
+    return result.workflow_runs?.filter((run) => run.head_sha === sha) || []
   }
 
   async artifact(runId: number) {
