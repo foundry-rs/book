@@ -53,7 +53,5 @@ test('file viewer also displays import progress and surfaces a missing workflow'
   )
   await page.goto(`/perf/solar/?base=${base}&head=${head}&view=files&benchmark=demo::factorial`)
   await expect(page.getByRole('status')).toHaveText('Importing benchmark runs…')
-  await expect(
-    page.getByText('No completed benchmark run is available for this commit.'),
-  ).toBeVisible()
+  await expect(page.getByText('No benchmark workflow is available for this commit.')).toBeVisible()
 })
