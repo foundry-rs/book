@@ -34,7 +34,13 @@ $ cast block latest --field timestamp
 $ cast base-fee
 ```
 
+```bash [Block access list]
+$ cast bal latest
+```
+
 :::
+
+`cast bal` prints the EIP-7928 block access list of a block as decoded JSON, listing every account and storage slot the block touched along with balance, nonce, and code changes. Pass `--raw` for the RLP encoding. The command fails for blocks whose list the node does not serve, typically blocks before the Amsterdam fork.
 
 ### Transactions
 
