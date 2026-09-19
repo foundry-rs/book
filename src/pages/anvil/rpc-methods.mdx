@@ -629,7 +629,7 @@ Anvil additionally serves these nonstandard `eth_` extensions, largely mirroring
 | `eth_getHeaderByHash`, `eth_getHeaderByNumber` | Return a block header by hash or number. |
 | `eth_getAccountInfo` | Returns an account's balance, nonce, and code in a single call. |
 | `eth_getStorageValues` | Returns storage values for multiple accounts and slots in a single call. |
-| `eth_getBlockAccessList`, `eth_getBlockAccessListByBlockHash`, `eth_getBlockAccessListByBlockNumber`, `eth_getBlockAccessListRaw` | Return the EIP-7928 block-level access list for a block. |
+| `eth_getBlockAccessList`, `eth_getBlockAccessListByBlockHash`, `eth_getBlockAccessListByBlockNumber`, `eth_getBlockAccessListRaw` | Return the EIP-7928 block access list for a block as JSON, or RLP for the raw variant. Anvil records the list for every Amsterdam block it mines; pre-Amsterdam blocks return `null`, and when forking, blocks below the fork block are answered by the upstream node. |
 | `eth_sendTransactionSync`, `eth_sendRawTransactionSync` | Send a transaction and wait for its receipt in a single call; the raw variant accepts an optional timeout in milliseconds. |
 | `eth_sendRawTransactionConditional` | Accepts a raw transaction with conditional-inclusion options; Anvil accepts the options but does not enforce the conditions. |
 

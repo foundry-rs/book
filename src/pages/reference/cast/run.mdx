@@ -1,5 +1,5 @@
 ---
-description: "Runs a published transaction in a local environment and prints the trace Examples: - cast run $TX_HASH - cast run $TX_HASH --quick (only use the state from the previous block) - cast run $TX_HASH --debug (open the transaction in the debugger)"
+description: "Runs a published transaction in a local environment and prints the trace If the node serves an EIP-7928 block access list (BAL) for the transaction's block, the transaction's prestate is read from it instead of replaying the earlier transactions of the block. Pass `--no-bal` to always replay the block. Examples: - cast run $TX_HASH - cast run $TX_HASH --quick (only use the state from the previous block) - cast run $TX_HASH --debug (open the transaction in the debugger)"
 ---
 
 _Generated from `cast run --help`; see [CLI reference versions](/reference/versions). Regenerate this page instead of editing it directly._
@@ -7,6 +7,12 @@ _Generated from `cast run --help`; see [CLI reference versions](/reference/versi
 ## cast run
 
 Runs a published transaction in a local environment and prints the trace
+
+If the node serves an EIP-7928 block access list (BAL) for the transaction's
+block, the
+transaction's prestate is read from it instead of replaying the earlier
+transactions of
+the block. Pass `--no-bal` to always replay the block.
 
 Examples:
 - cast run $TX_HASH
@@ -38,6 +44,14 @@ Options:
           
           May result in different results than the live execution!
 
+      --no-bal
+          Do not use the block access list (BAL) of the transaction's block.
+          
+          If the node serves an EIP-7928 block access list, cast reads the
+          transaction's prestate from it instead of replaying the earlier
+          transactions of the block. With this flag, the block is always
+          replayed.
+
       --replay-system-txes
           Whether to replay system transactions
 
@@ -48,7 +62,8 @@ Options:
           This is significantly faster than replaying all previous transactions
           in the block, but requires the node to expose the `debug_` namespace
           (most public RPCs don't). If the call or response can't be used, cast
-          silently falls back to replaying the block.
+          silently falls back to the block access list, then to replaying the
+          block.
 
       --debug-trace-transaction
           Fetch the transaction's trace from the node via
@@ -62,7 +77,7 @@ Options:
           value, gas, emitted logs and revert data. It does not provide the
           opcode-level detail of a local run, so the local-execution-only flags
           (`--debug`, `--decode-internal`, `--trace-printer`, `--quick`,
-          `--prestate-tracer`, `--evm-version`) do not apply.
+          `--no-bal`, `--prestate-tracer`, `--evm-version`) do not apply.
 
   -e, --etherscan-api-key <KEY>
           The Etherscan (or equivalent) API key
@@ -205,7 +220,10 @@ Rpc options:
           [alias: --la]
 
       --disable-block-gas-limit
-          Disable block gas limit check
+          Disable block gas limit check.
+          
+          Always implied: a mined transaction already passed its chain's own
+          check.
 
       --enable-tx-gas-limit
           Enable the tx gas limit checks as imposed by Osaka (EIP-7825)
