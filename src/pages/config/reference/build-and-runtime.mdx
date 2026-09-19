@@ -59,10 +59,36 @@ ignored_error_codes_from = [
 | `assertions_revert` | boolean | `true` | Makes native cheatcode assertions revert. |
 | `legacy_assertions` | boolean | `false` | Uses the legacy `failed()` assertion check. |
 | `unchecked_cheatcode_artifacts` | boolean | `false` | Disables artifact freshness checks for `vm.getCode` and `vm.getDeployedCode`. |
+| `decode_external_storage` | boolean | `false` | Decodes the storage of contracts outside the local project in state diffs using verified block explorer sources. |
 | `create2_library_salt` | bytes32 | zero | Sets the CREATE2 salt used for library deployment. |
 | `create2_deployer` | address | `0x4e59…956c` | Sets the CREATE2 deployer address. |
 | `transaction_timeout` | integer | `120` | Sets the transaction timeout in seconds. |
 | `script_execution_protection` | boolean | `true` | Prevents unsafe script execution. |
+
+### External storage decoding
+
+`decode_external_storage` labels the storage slots of contracts that are not part
+of the local project in `vm.getStateDiff()` and `vm.getStateDiffJson()` output.
+For each such contract written to during recording, Forge fetches the verified
+source from the block explorer configured for the chain, compiles it for its
+storage layout, and decodes the slots with that layout. For a `delegatecall`,
+the layout of the implementation that executed the write is used. Sourcify is not
+consulted, since its responses do not carry the sources needed for compilation.
+
+- Type: boolean
+- Default: false
+- Environment: `FOUNDRY_DECODE_EXTERNAL_STORAGE`
+
+```toml
+[profile.default]
+decode_external_storage = true
+```
+
+`forge test --decode-external-storage` enables it for a single run. Lookups
+require an `[etherscan]` entry or `etherscan_api_key` for the chain being
+forked, and are bounded by `external_identification_timeout` in the `[tracing]`
+section. Resolved layouts are cached under the block explorer cache directory,
+so later runs skip the fetch and the compile; `forge cache clean` removes them.
 
 ### File-system permissions
 
