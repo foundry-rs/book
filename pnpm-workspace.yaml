@@ -17,3 +17,5 @@ peerDependencyRules:
     vite: "*"
 overrides:
   vite@*: "catalog:"
+patchedDependencies:
+  vocs@2.8.5: patches/vocs@2.8.5.patch
