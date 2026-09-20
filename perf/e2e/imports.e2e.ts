@@ -74,3 +74,46 @@ for (const view of ['comparison', 'files']) {
     else await expect(page.getByRole('heading', { name: 'Benchmark comparison' })).toBeVisible()
   })
 }
+
+test('Back restores a cached comparison when ref resolution is unavailable', async ({ page }) => {
+  await page.goto(`/perf/solar/?base=${base}&head=${head}`)
+  await expect(page.getByRole('heading', { name: 'Benchmark comparison' })).toBeVisible()
+  await page.locator('a.wordmark').click()
+  await expect(page.getByRole('heading', { name: 'Performance', exact: true })).toBeVisible()
+  let resolutions = 0
+  await page.route('**/api/resolve?*', (route) => {
+    resolutions++
+    return route.fulfill({ status: 503, json: { error: 'unavailable' } })
+  })
+  await page.goBack()
+  await expect(page.getByRole('heading', { name: 'Benchmark comparison' })).toBeVisible()
+  expect(resolutions).toBe(0)
+})
+
+test('file viewer pins resolved commits before pinning revisions', async ({ page }) => {
+  let moved = false
+  let branchResolutions = 0
+  await page.route('**/api/resolve?ref=feature', (route) => {
+    branchResolutions++
+    return route.fulfill({ json: { commit: moved ? head : base } })
+  })
+  await page.route('**/api/data/viewer.json?*', async (route) => {
+    const response = await route.fetch()
+    const data = await response.json()
+    for (const run of data.runs) run.revision = (run.commit === base ? 'a' : 'b').repeat(64)
+    await route.fulfill({ json: data })
+  })
+  await page.goto(`/perf/solar/?base=feature&head=${head}&view=files&benchmark=demo::factorial`)
+  await expect(page.locator('#artifact-sidebar')).toBeVisible()
+  await expect(page).toHaveURL((url) => url.searchParams.get('base') === base)
+  const pinned = new URL(page.url()).searchParams
+  expect(pinned.get('baseRevision')).toMatch(/^[a-f0-9]{64}$/)
+  const initialResolutions = branchResolutions
+  moved = true
+  await page.reload()
+  await expect(page.locator('#artifact-sidebar')).toBeVisible()
+  const reloaded = new URL(page.url()).searchParams
+  expect(reloaded.get('base')).toBe(base)
+  expect(reloaded.get('baseRevision')).toBe(pinned.get('baseRevision'))
+  expect(branchResolutions).toBe(initialResolutions)
+})

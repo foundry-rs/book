@@ -3,6 +3,7 @@ import { responseCache } from './cache'
 import { reportImport } from './importProgress'
 
 const root = '/api/data/'
+const knownCommits = responseCache<string>(300_000, 64 * 1024)
 const cachedIndex = responseCache<RunIndex>(60_000)
 const cachedHistory = responseCache<HistorySeries>(60_000)
 const cachedArtifact = responseCache<string | null>(3_600_000)
@@ -123,6 +124,10 @@ export function loadIndex() {
 export async function resolveCommit(value: string): Promise<string> {
   const ref = value.trim()
   if (!ref) throw new Error('Enter a commit, branch, tag, or PR.')
+  if (/^[0-9a-f]{40}$/i.test(ref)) {
+    const known = knownCommits.peek(ref.toLowerCase())
+    if (known) return known
+  }
   // Mutable refs are resolved only on submission, never against a stale published index.
   const response = await fetch(`/api/resolve?${new URLSearchParams({ ref })}`, {
     cache: 'no-store',
@@ -132,7 +137,8 @@ export async function resolveCommit(value: string): Promise<string> {
     throw new Error(`Could not resolve “${ref}” (${response.status}).`)
   }
   const result = (await response.json()) as { commit: string }
-  return result.commit
+  if (!/^[0-9a-f]{40}$/.test(result.commit)) throw new Error('Invalid resolved commit.')
+  return knownCommits(result.commit, async () => result.commit)
 }
 
 // Runs and artifacts already carry canonical full SHAs; resolve only user refs here.

@@ -3,7 +3,7 @@ import { Moon, Sun } from 'lucide-react'
 import { HistoryGraph } from './HistoryGraph'
 import { Compare } from './Compare'
 import { loadHistory, loadIndex, resolveCommit } from './data'
-import { comparisonHref, navigate, useNavigation } from './navigation'
+import { comparisonHref, navigate, replaceUrl, useNavigation } from './navigation'
 import { comparisonBase } from './comparisonBase'
 import logo from './assets/logo.png'
 import { FileViewer } from './FileViewer'
@@ -121,7 +121,13 @@ function ResolvedComparison({
     let cancelled = false
     Promise.all([resolveCommit(base), resolveCommit(head)]).then(
       (value) => {
-        if (!cancelled) setCommits(value)
+        if (!cancelled) {
+          const url = new URL(window.location.href)
+          url.searchParams.set('base', value[0])
+          url.searchParams.set('head', value[1])
+          if (url.search !== window.location.search) replaceUrl(url)
+          setCommits(value)
+        }
       },
       (error: Error) => {
         if (!cancelled) setError(error.message)

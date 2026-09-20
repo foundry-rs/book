@@ -216,27 +216,23 @@ export class GitHubClient {
         // actual merged revision instead of silently comparing the unmerged head.
         headers: { 'x-github-api-version': '2022-11-28' },
       })
-      return pull.merged_at && pull.merge_commit_sha ? pull.merge_commit_sha : pull.head.sha
+      ref = pull.merged_at && pull.merge_commit_sha ? pull.merge_commit_sha : pull.head.sha
     }
     const commit = await this.request<{
       sha: string
-      commit?: { message: string; tree: { sha: string } }
+      commit?: { tree: { sha: string } }
       parents?: { sha: string }[]
     }>(`repos/${this.config.repository}/commits/${encodeURIComponent(ref)}`)
-    const merge = /^Merge ([0-9a-f]{40}) into ([0-9a-f]{40})$/.exec(commit.commit?.message || '')
-    if (
-      merge &&
-      commit.parents?.length === 2 &&
-      commit.parents[0].sha === merge[2] &&
-      commit.parents[1].sha === merge[1] &&
-      !(await this.runsForCommit(commit.sha)).length
-    ) {
+    if (commit.parents?.length === 2 && !(await this.runsForCommit(commit.sha)).length) {
       const parent = await this.request<{ sha: string; commit: { tree: { sha: string } } }>(
-        `repos/${this.config.repository}/commits/${merge[1]}`,
+        `repos/${this.config.repository}/commits/${commit.parents[1].sha}`,
       )
-      // GitHub stack merge refs have no workflow of their own. Reuse the head
-      // only when the entire source tree matches; a real merge stays distinct.
-      if (parent.commit.tree.sha === commit.commit?.tree.sha) return parent.sha
+      // An unbenchmarked merge can reuse a benchmarked head with the same source.
+      if (
+        parent.commit.tree.sha === commit.commit?.tree.sha &&
+        (await this.runsForCommit(parent.sha)).length
+      )
+        return parent.sha
     }
     return commit.sha
   }
