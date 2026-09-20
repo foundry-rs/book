@@ -90,21 +90,58 @@ export function App() {
         onToggleTheme={toggleTheme}
       />
       {comparison ? (
-        fileViewer ? (
-          <FileViewer
-            key={navigation.key}
-            base={base!}
-            head={head!}
-            benchmark={benchmark!}
-            theme={theme}
-          />
-        ) : (
-          <Compare key={navigation.key} base={base!} head={head!} theme={theme} />
-        )
+        <ResolvedComparison
+          key={navigation.key}
+          base={base!}
+          head={head!}
+          benchmark={fileViewer ? benchmark! : null}
+          theme={theme}
+        />
       ) : (
         <Home />
       )}
     </>
+  )
+}
+
+function ResolvedComparison({
+  base,
+  head,
+  benchmark,
+  theme,
+}: {
+  base: string
+  head: string
+  benchmark: string | null
+  theme: Theme
+}) {
+  const [commits, setCommits] = useState<string[] | null>(null)
+  const [error, setError] = useState('')
+  useEffect(() => {
+    let cancelled = false
+    Promise.all([resolveCommit(base), resolveCommit(head)]).then(
+      (value) => {
+        if (!cancelled) setCommits(value)
+      },
+      (error: Error) => {
+        if (!cancelled) setError(error.message)
+      },
+    )
+    return () => {
+      cancelled = true
+    }
+  }, [base, head])
+  if (error)
+    return (
+      <p className="error" role="alert">
+        {error}
+      </p>
+    )
+  if (!commits) return <p>Resolving commits…</p>
+  return benchmark ? (
+    <FileViewer base={commits[0]} head={commits[1]} benchmark={benchmark} theme={theme} />
+  ) : (
+    <Compare base={commits[0]} head={commits[1]} theme={theme} />
   )
 }
 

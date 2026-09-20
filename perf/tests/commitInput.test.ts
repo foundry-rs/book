@@ -24,15 +24,7 @@ it.each(['base', 'head'])('renders an empty %s input without suggestions', (labe
 
 afterEach(() => vi.unstubAllGlobals())
 
-it('accepts unpublished full SHAs without any lookup', async () => {
-  const fetch = vi.fn()
-  vi.stubGlobal('fetch', fetch)
-  const { resolveCommit } = await import('../src/data')
-  await expect(resolveCommit('B'.repeat(40))).resolves.toBe('b'.repeat(40))
-  expect(fetch).not.toHaveBeenCalled()
-})
-
-it.each(['main', 'Release/v0.1.0', '#1400', '1400'])(
+it.each(['main', 'Release/v0.1.0', '#1400', '1400', 'B'.repeat(40)])(
   'resolves %s on the backend at submission time',
   async (ref) => {
     const fetch = vi.fn(async () => Response.json({ commit: run.commit }))

@@ -37,12 +37,12 @@ describe('website API', () => {
     expect(globalThis.fetch).toHaveBeenCalledOnce()
   })
 
-  it('resolves published prefixes with one bounded query without GitHub', async () => {
+  it.each(['aaaaaaa', 'a'.repeat(40)])('resolves published SHA %s without GitHub', async (ref) => {
     const commit = 'a'.repeat(40)
     globalThis.fetch = vi.fn(async () => Response.json({ commit }))
     const resolveRef = vi.fn(async () => commit)
     const app = createApi({ clickHouse: config, resolveRef })
-    expect(await (await app.request('/api/resolve?ref=aaaaaaa')).json()).toEqual({ commit })
+    expect(await (await app.request(`/api/resolve?ref=${ref}`)).json()).toEqual({ commit })
     expect(resolveRef).not.toHaveBeenCalled()
     expect(globalThis.fetch).toHaveBeenCalledOnce()
     expect(vi.mocked(globalThis.fetch).mock.calls[0][1]?.body).toContain('LIMIT 2')
@@ -224,9 +224,18 @@ describe('website API', () => {
     expect(response.headers.get('cache-control')).toBe('no-store')
     expect(resolveRef).toHaveBeenCalledWith('Release/v1')
     expect((await app.request('/api/resolve?ref=')).status).toBe(400)
-    expect((await app.request(`/api/resolve?ref=${'b'.repeat(40)}`)).status).toBe(200)
     expect(resolveRef).toHaveBeenCalledOnce()
     expect(globalThis.fetch).not.toHaveBeenCalled()
+  })
+  it('resolves an unpublished full SHA through GitHub for stack merge aliases', async () => {
+    globalThis.fetch = vi.fn(async () => new Response(''))
+    const resolveRef = vi.fn(async () => 'a'.repeat(40))
+    const app = createApi({ clickHouse: config, resolveRef })
+    const ref = 'b'.repeat(40)
+    expect(await (await app.request(`/api/resolve?ref=${ref}`)).json()).toEqual({
+      commit: 'a'.repeat(40),
+    })
+    expect(resolveRef).toHaveBeenCalledWith(ref)
   })
   it('deduplicates and briefly caches mutable ref resolution without caching failures', async () => {
     const resolveRef = vi.fn(async () => 'a'.repeat(40))

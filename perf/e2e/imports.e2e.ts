@@ -47,13 +47,30 @@ test('file viewer also displays import progress and surfaces a missing workflow'
         ? { status: 202, headers: { 'retry-after': '1' }, json: { status: 'queued', commit: head } }
         : {
             status: 404,
-            json: { error: 'No completed benchmark run is available for this commit' },
+            json: { error: 'No benchmark workflow is available for this commit' },
           },
     ),
   )
   await page.goto(`/perf/solar/?base=${base}&head=${head}&view=files&benchmark=demo::factorial`)
   await expect(page.getByRole('status')).toHaveText('Importing benchmark runs…')
-  await expect(
-    page.getByText('No completed benchmark run is available for this commit.'),
-  ).toBeVisible()
+  await expect(page.getByText('No benchmark workflow is available for this commit.')).toBeVisible()
 })
+
+for (const view of ['comparison', 'files']) {
+  test(`${view} resolves full synthetic merge SHAs in direct links`, async ({ page }) => {
+    const synthetic = 'a'.repeat(40)
+    await page.route(`**/api/resolve?ref=${synthetic}`, (route) =>
+      route.fulfill({ json: { commit: base } }),
+    )
+    const request = page.waitForRequest((request) => {
+      const url = new URL(request.url())
+      return url.pathname === `/api/data/${view === 'files' ? 'viewer' : 'runs'}.json`
+    })
+    await page.goto(
+      `/perf/solar/?base=${synthetic}&head=${head}${view === 'files' ? '&view=files&benchmark=demo::factorial' : ''}`,
+    )
+    expect(new URL((await request).url()).searchParams.get('commits')).toBe(`${base},${head}`)
+    if (view === 'files') await expect(page.locator('#artifact-sidebar')).toBeVisible()
+    else await expect(page.getByRole('heading', { name: 'Benchmark comparison' })).toBeVisible()
+  })
+}
