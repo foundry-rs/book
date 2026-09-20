@@ -465,10 +465,18 @@ button:disabled {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
-.header-row > span:first-child {
+.header-row > button:first-child {
   text-align: left;
 }
-.header-row > span {
+.header-row > button {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  text-align: right;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

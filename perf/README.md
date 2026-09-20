@@ -276,6 +276,9 @@ changes are reflected in the permalink.
 Comparison rows without measurements for the selected metric are hidden. The table shows
 the Solar Head value, followed by Base and the other compilers as percentage differences
 relative to Head. Higher Base or other-compiler costs are green; lower costs are red.
+Click a column heading to sort ascending; click it again to reverse the order.
+Head sorts by its measurement, while Base and other compiler columns sort by their
+percentage difference. Missing values remain last in both directions.
 Hovering Head or a delta reveals the exact raw value. Missing measurements and a nonzero
 value against a zero Head have no defined percentage.
 Byte sizes use `b`, `KiB`, `MiB`, etc. Compiler columns are discovered from the run data.

@@ -7,7 +7,12 @@ import { BenchmarkSources } from './BenchmarkSources'
 import type { RunDocument, Theme } from './types'
 import { benchmarkMetric as value } from './benchmarkMetric'
 import { replaceUrl } from './navigation'
-import { comparisonCompilers, comparisonRows, percentChange } from './comparison'
+import {
+  comparisonCompilers,
+  comparisonRows,
+  percentChange,
+  type ComparisonSort,
+} from './comparison'
 import { compilerLabel } from './compilerLabel'
 import { compilerColumn } from './compilers'
 import { useImportProgress } from './importProgress'
@@ -55,6 +60,7 @@ export function Compare({ base, head }: Props) {
   const [runs, setRuns] = useState<[RunDocument, RunDocument] | null>(null)
   const [loadError, setLoadError] = useState<string | null>(null)
   const [query, setQuery] = useState('')
+  const [sort, setSort] = useState<ComparisonSort>()
   const [metric, setMetric] = useState(
     Object.entries(metrics).find(
       ([name, definition]) => name === initialMetric || definition.key === initialMetric,
@@ -86,8 +92,8 @@ export function Compare({ base, head }: Props) {
 
   const rows = useMemo(() => {
     if (!runs) return []
-    return comparisonRows(runs[0], runs[1], metrics[metric].key, query)
-  }, [metric, query, runs])
+    return comparisonRows(runs[0], runs[1], metrics[metric].key, query, sort)
+  }, [metric, query, runs, sort])
   const compilers = useMemo(() => (runs ? comparisonCompilers(runs[1]) : []), [runs])
 
   const selectBenchmark = (benchmark: string) => {
@@ -172,14 +178,31 @@ export function Compare({ base, head }: Props) {
         style={{ '--compiler-count': compilers.length } as CSSProperties}
       >
         <div className="result header-row">
-          <span>Benchmark</span>
-          <span>Head</span>
-          {compilers.map((compiler) => {
-            const column = compilerColumn(afterRun, compiler)
+          {[
+            { key: 'benchmark' as const, label: 'Benchmark', title: 'Benchmark name' },
+            { key: 'head' as const, label: 'Head', title: 'Head measurement' },
+            ...compilers.map((compiler) => ({
+              key: `compiler:${compiler}` as const,
+              ...compilerColumn(afterRun, compiler),
+            })),
+          ].map((column) => {
+            const active = sort?.column === column.key
+            const nextDirection =
+              active && sort.direction === 'ascending' ? 'descending' : 'ascending'
             return (
-              <span key={compiler} title={column.title}>
-                {column.label}
-              </span>
+              <button
+                key={column.key}
+                type="button"
+                aria-pressed={active}
+                aria-label={`${column.label}${active ? `, sorted ${sort.direction}` : ''}`}
+                title={`${column.title}. Sort ${nextDirection}`}
+                onClick={() => setSort({ column: column.key, direction: nextDirection })}
+              >
+                {column.label}{' '}
+                <span aria-hidden="true">
+                  {active ? (sort.direction === 'ascending' ? '↑' : '↓') : '↕'}
+                </span>
+              </button>
             )
           })}
         </div>
