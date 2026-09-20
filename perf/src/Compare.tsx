@@ -1,3 +1,4 @@
+import { LoadingText } from './LoadingText'
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import { BenchmarkHistory } from './BenchmarkHistory'
 import { changeClass, formatChange } from './change'
@@ -120,7 +121,7 @@ export function Compare({ base, head }: Props) {
     return (
       <main className="compare-page">
         <p className="empty" role="status">
-          {importProgress || 'Loading benchmark runs…'}
+          <LoadingText>{importProgress || 'Loading benchmark runs…'}</LoadingText>
         </p>
       </main>
     )

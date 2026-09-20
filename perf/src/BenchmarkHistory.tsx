@@ -1,3 +1,4 @@
+import { LoadingText } from './LoadingText'
 import { useEffect, useState } from 'react'
 import { loadHistory } from './data'
 import { HistoryGraph } from './HistoryGraph'
@@ -32,6 +33,11 @@ export function BenchmarkHistory(props: Props) {
   }, [props.benchmark, props.metric])
 
   if (error) return <p className="detail-muted">Could not load benchmark history.</p>
-  if (runs === null) return <p className="detail-muted">Loading history…</p>
+  if (runs === null)
+    return (
+      <p className="detail-muted">
+        <LoadingText>Loading history…</LoadingText>
+      </p>
+    )
   return <HistoryGraph key={`${props.benchmark}:${props.metric}`} runs={runs} {...props} />
 }

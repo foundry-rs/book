@@ -1175,3 +1175,34 @@ header.file-header {
   outline: 2px solid var(--text);
   outline-offset: -2px;
 }
+
+.loading-dots {
+  display: inline-block;
+  width: 3ch;
+  font-family: monospace;
+  vertical-align: baseline;
+}
+.loading-dots > span {
+  display: block;
+  overflow: hidden;
+  width: 1ch;
+  animation: loading-dots 1.2s step-end infinite;
+}
+@keyframes loading-dots {
+  0% {
+    width: 1ch;
+  }
+  33.333% {
+    width: 2ch;
+  }
+  66.667%,
+  100% {
+    width: 3ch;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .loading-dots > span {
+    animation: none;
+    width: 3ch;
+  }
+}
