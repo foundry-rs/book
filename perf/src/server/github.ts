@@ -218,9 +218,26 @@ export class GitHubClient {
       })
       return pull.merged_at && pull.merge_commit_sha ? pull.merge_commit_sha : pull.head.sha
     }
-    const commit = await this.request<{ sha: string }>(
-      `repos/${this.config.repository}/commits/${encodeURIComponent(ref)}`,
-    )
+    const commit = await this.request<{
+      sha: string
+      commit?: { message: string; tree: { sha: string } }
+      parents?: { sha: string }[]
+    }>(`repos/${this.config.repository}/commits/${encodeURIComponent(ref)}`)
+    const merge = /^Merge ([0-9a-f]{40}) into ([0-9a-f]{40})$/.exec(commit.commit?.message || '')
+    if (
+      merge &&
+      commit.parents?.length === 2 &&
+      commit.parents[0].sha === merge[2] &&
+      commit.parents[1].sha === merge[1] &&
+      !(await this.runsForCommit(commit.sha)).length
+    ) {
+      const parent = await this.request<{ sha: string; commit: { tree: { sha: string } } }>(
+        `repos/${this.config.repository}/commits/${merge[1]}`,
+      )
+      // GitHub stack merge refs have no workflow of their own. Reuse the head
+      // only when the entire source tree matches; a real merge stays distinct.
+      if (parent.commit.tree.sha === commit.commit?.tree.sha) return parent.sha
+    }
     return commit.sha
   }
 

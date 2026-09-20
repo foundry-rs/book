@@ -123,7 +123,6 @@ export function loadIndex() {
 export async function resolveCommit(value: string): Promise<string> {
   const ref = value.trim()
   if (!ref) throw new Error('Enter a commit, branch, tag, or PR.')
-  if (/^[0-9a-f]{40}$/i.test(ref)) return ref.toLowerCase()
   // Mutable refs are resolved only on submission, never against a stale published index.
   const response = await fetch(`/api/resolve?${new URLSearchParams({ ref })}`, {
     cache: 'no-store',
@@ -136,8 +135,15 @@ export async function resolveCommit(value: string): Promise<string> {
   return result.commit
 }
 
+// Runs and artifacts already carry canonical full SHAs; resolve only user refs here.
+function resolveRunCommit(commit: string) {
+  return /^[0-9a-f]{40}$/i.test(commit)
+    ? Promise.resolve(commit.toLowerCase())
+    : resolveCommit(commit)
+}
+
 export async function loadRun(commit: string, revision?: string) {
-  const resolved = await resolveCommit(commit)
+  const resolved = await resolveRunCommit(commit)
   const run = await cachedRun(`${resolved}:${revision ?? ''}`, () => fetchRun(resolved, revision))
   if (!revision && run.revision) await cachedRun(`${resolved}:${run.revision}`, async () => run)
   return run
@@ -162,7 +168,7 @@ export async function loadViewerRuns(
   baseRevision?: string,
   headRevision?: string,
 ) {
-  const commits = await Promise.all([resolveCommit(base), resolveCommit(head)])
+  const commits = await Promise.all([resolveRunCommit(base), resolveRunCommit(head)])
   const params = new URLSearchParams({ commits: commits.join(','), benchmark })
   if (baseRevision || headRevision)
     params.set('revisions', [baseRevision ?? '', headRevision ?? ''].join(','))
@@ -189,7 +195,7 @@ export async function loadArtifact(
   storagePath: string,
   contentHash?: string,
 ): Promise<string | null> {
-  const resolved = await resolveCommit(commit)
+  const resolved = await resolveRunCommit(commit)
   const parts = [resolved, benchmark, compiler, ...storagePath.split('/')].map(encodeURIComponent)
   const path = contentHash ? `blobs/${contentHash}.json` : `runs/${parts.join('/')}`
   return cachedArtifact(path, () =>

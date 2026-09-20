@@ -68,6 +68,40 @@ describe('GitHub retry policy', () => {
     expect(await client.runsForCommit(sha)).toEqual(runs)
   })
 
+  it.each([
+    { sameTree: true, ownRun: false, synthetic: true, resolvesParent: true },
+    { sameTree: false, ownRun: false, synthetic: true, resolvesParent: false },
+    { sameTree: true, ownRun: true, synthetic: true, resolvesParent: false },
+    { sameTree: true, ownRun: false, synthetic: false, resolvesParent: false },
+  ])('resolves stack merge refs only with identical trees: %j', async (scenario) => {
+    const client = new GitHubClient({
+      repository: 'paradigmxyz/solar',
+      workflow: 'bench.yml',
+      token: 'test',
+    })
+    const merge = 'a'.repeat(40)
+    const head = 'b'.repeat(40)
+    const base = 'c'.repeat(40)
+    globalThis.fetch = vi.fn(async (input) => {
+      const url = new URL(requestUrl(input))
+      if (url.pathname.endsWith('/runs')) {
+        expect(url.searchParams.get('head_sha')).toBe(merge)
+        return Response.json({ workflow_runs: scenario.ownRun ? [{ head_sha: merge }] : [] })
+      }
+      if (url.pathname.endsWith(head))
+        return Response.json({ sha: head, commit: { tree: { sha: 'head-tree' } } })
+      return Response.json({
+        sha: merge,
+        parents: [{ sha: base }, { sha: head }],
+        commit: {
+          message: scenario.synthetic ? `Merge ${head} into ${base}` : 'Merge feature branch',
+          tree: { sha: scenario.sameTree ? 'head-tree' : 'merged-tree' },
+        },
+      })
+    })
+    expect(await client.resolveRef(merge.slice(0, 8))).toBe(scenario.resolvesParent ? head : merge)
+  })
+
   it('retries transient failures with backoff', async () => {
     let attempts = 0
     const delays: number[] = []
