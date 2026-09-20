@@ -39,7 +39,8 @@ describe('GitHub retry policy', () => {
           head: { sha: 'c'.repeat(40) },
         })
       }
-      return Response.json({ sha: 'a'.repeat(40) })
+      const ref = url.split('/').at(-1)!
+      return Response.json({ sha: /^[a-f0-9]{40}$/.test(ref) ? ref : 'a'.repeat(40) })
     })
     globalThis.fetch = fetch
     expect(await client.resolveRef('Release/v1')).toBe('a'.repeat(40))
@@ -86,6 +87,8 @@ describe('GitHub retry policy', () => {
     const base = 'c'.repeat(40)
     globalThis.fetch = vi.fn(async (input) => {
       const url = new URL(requestUrl(input))
+      if (url.pathname.endsWith('/pulls/123'))
+        return Response.json({ merged_at: 'today', merge_commit_sha: merge, head: { sha: head } })
       if (url.pathname.endsWith('/runs')) {
         const sha = url.searchParams.get('head_sha')
         expect([merge, head]).toContain(sha)
@@ -103,7 +106,8 @@ describe('GitHub retry policy', () => {
         },
       })
     })
-    expect(await client.resolveRef(merge.slice(0, 8))).toBe(scenario.resolvesParent ? head : merge)
+    for (const ref of [merge.slice(0, 8), merge, '#123'])
+      expect(await client.resolveRef(ref)).toBe(scenario.resolvesParent ? head : merge)
   })
 
   it('retries transient failures with backoff', async () => {

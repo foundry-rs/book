@@ -216,7 +216,7 @@ export class GitHubClient {
         // actual merged revision instead of silently comparing the unmerged head.
         headers: { 'x-github-api-version': '2022-11-28' },
       })
-      return pull.merged_at && pull.merge_commit_sha ? pull.merge_commit_sha : pull.head.sha
+      ref = pull.merged_at && pull.merge_commit_sha ? pull.merge_commit_sha : pull.head.sha
     }
     const commit = await this.request<{
       sha: string
