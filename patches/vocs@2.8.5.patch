@@ -1,0 +1,85 @@
+diff --git a/dist/internal/git.js b/dist/internal/git.js
+index 73aa6c0f8e2543fc53594b1a168b95a541cfd112..910154f28edae5a9c2f27c6a5e7d44957955cbf3 100644
+--- a/dist/internal/git.js
++++ b/dist/internal/git.js
+@@ -1,11 +1,20 @@
+ import { execSync } from 'node:child_process';
++const buildDates = new Map();
+ export function getLastModified(filePath) {
++    // MDX and the sitemap ask for the same dates during a production build.
++    // Do not cache in dev, where new commits can arrive without a restart.
++    const cache = process.env.NODE_ENV === 'production';
++    if (cache && buildDates.has(filePath))
++        return buildDates.get(filePath);
+     try {
+         const result = execSync(`git log -1 --format=%cI -- "${filePath}"`, {
+             encoding: 'utf-8',
+             stdio: ['pipe', 'pipe', 'pipe'],
+         }).trim();
+-        return result || undefined;
++        const date = result || undefined;
++        if (cache)
++            buildDates.set(filePath, date);
++        return date;
+     }
+     catch {
+         return undefined;
+diff --git a/dist/internal/vite-plugins.js b/dist/internal/vite-plugins.js
+index ba17f7d688e4c4df6da2abe1b7bf875655a83e79..833012e681305b005df036028a13738789223f1e 100644
+--- a/dist/internal/vite-plugins.js
++++ b/dist/internal/vite-plugins.js
+@@ -218,7 +218,11 @@ export function llms(config) {
+                 next();
+             });
+         },
+-        async buildEnd() {
++        async writeBundle() {
++            // Markdown exports are public assets. The RSC analysis/server passes
++            // must not rebuild the same documents before the client output.
++            if (this.environment.name !== 'client')
++                return;
+             const content = await buildLlmsContent();
+             const outDir = path.resolve(viteConfig.root, config.outDir, 'public');
+             await fs.mkdir(outDir, { recursive: true });
+diff --git a/src/internal/git.ts b/src/internal/git.ts
+index cb1340d24683b77d6daaff5a5e7749d5625ff195..b4ab70c931af3a06a6411e767013df17545f65f2 100644
+--- a/src/internal/git.ts
++++ b/src/internal/git.ts
+@@ -1,12 +1,20 @@
+ import { execSync } from 'node:child_process'
+ 
++const buildDates = new Map<string, string | undefined>()
++
+ export function getLastModified(filePath: string): string | undefined {
++  // MDX and the sitemap ask for the same dates during a production build.
++  // Do not cache in dev, where new commits can arrive without a restart.
++  const cache = process.env.NODE_ENV === 'production'
++  if (cache && buildDates.has(filePath)) return buildDates.get(filePath)
+   try {
+     const result = execSync(`git log -1 --format=%cI -- "${filePath}"`, {
+       encoding: 'utf-8',
+       stdio: ['pipe', 'pipe', 'pipe'],
+     }).trim()
+-    return result || undefined
++    const date = result || undefined
++    if (cache) buildDates.set(filePath, date)
++    return date
+   } catch {
+     return undefined
+   }
+diff --git a/src/internal/vite-plugins.ts b/src/internal/vite-plugins.ts
+index 2852c38212fde11881cb8fa97328576cee9c5a8c..a2ea55d83bed437a7f3bbffd78dceaa7fb08d37b 100644
+--- a/src/internal/vite-plugins.ts
++++ b/src/internal/vite-plugins.ts
+@@ -230,7 +230,10 @@ export function llms(config: Config.Config): PluginOption {
+         next()
+       })
+     },
+-    async buildEnd() {
++    async writeBundle() {
++      // Markdown exports are public assets. The RSC analysis/server passes
++      // must not rebuild the same documents before the client output.
++      if (this.environment.name !== 'client') return
+       const content = await buildLlmsContent()
+       const outDir = path.resolve(viteConfig.root, config.outDir, 'public')
+       await fs.mkdir(outDir, { recursive: true })
