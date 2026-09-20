@@ -279,6 +279,8 @@ relative to Head. Higher Base or other-compiler costs are green; lower costs are
 Click a column heading to sort ascending; click it again to reverse the order.
 Head sorts by its measurement, while Base and other compiler columns sort by their
 percentage difference. Missing values remain last in both directions.
+The selected benchmark scrolls into view when opened from a link, expanded, or
+reordered by sorting.
 Hovering Head or a delta reveals the exact raw value. Missing measurements and a nonzero
 value against a zero Head have no defined percentage.
 Byte sizes use `b`, `KiB`, `MiB`, etc. Compiler columns are discovered from the run data.

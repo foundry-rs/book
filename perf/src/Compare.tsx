@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type CSSProperties } from 'react'
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import { BenchmarkHistory } from './BenchmarkHistory'
 import { changeClass, formatChange } from './change'
 import { formatRawValue, formatValue } from './formatValue'
@@ -67,6 +67,7 @@ export function Compare({ base, head }: Props) {
     )?.[0] ?? 'runtimeGas',
   )
   const [expanded, setExpanded] = useState(initial.get('benchmark') ?? '')
+  const selectedRow = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
     let cancelled = false
@@ -95,6 +96,10 @@ export function Compare({ base, head }: Props) {
     return comparisonRows(runs[0], runs[1], metrics[metric].key, query, sort)
   }, [metric, query, runs, sort])
   const compilers = useMemo(() => (runs ? comparisonCompilers(runs[1]) : []), [runs])
+
+  useEffect(() => {
+    selectedRow.current?.scrollIntoView({ block: 'nearest', inline: 'nearest' })
+  }, [expanded, rows])
 
   const selectBenchmark = (benchmark: string) => {
     const next = expanded === benchmark ? '' : benchmark
@@ -212,6 +217,7 @@ export function Compare({ base, head }: Props) {
           return (
             <div key={after.test_id} className="benchmark-row">
               <button
+                ref={selected ? selectedRow : null}
                 className={`result ${selected ? 'selected' : ''}`}
                 onClick={() => selectBenchmark(after.test_id)}
                 aria-expanded={selected}
