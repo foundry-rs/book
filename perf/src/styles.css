@@ -481,8 +481,10 @@ button:disabled {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.result:hover,
-.result.selected {
+.header-row > button:hover,
+.header-row > button:focus-visible,
+button.result:hover,
+button.result.selected {
   background: var(--raised);
 }
 .header-row {
