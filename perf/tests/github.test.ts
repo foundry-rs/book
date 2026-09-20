@@ -69,11 +69,13 @@ describe('GitHub retry policy', () => {
   })
 
   it.each([
-    { sameTree: true, ownRun: false, synthetic: true, resolvesParent: true },
-    { sameTree: false, ownRun: false, synthetic: true, resolvesParent: false },
-    { sameTree: true, ownRun: true, synthetic: true, resolvesParent: false },
-    { sameTree: true, ownRun: false, synthetic: false, resolvesParent: false },
-  ])('resolves stack merge refs only with identical trees: %j', async (scenario) => {
+    { sameTree: true, ownRun: false, headRun: true, parents: 2, resolvesParent: true },
+    { sameTree: false, ownRun: false, headRun: true, parents: 2, resolvesParent: false },
+    { sameTree: true, ownRun: true, headRun: true, parents: 2, resolvesParent: false },
+    { sameTree: true, ownRun: false, headRun: false, parents: 2, resolvesParent: false },
+    { sameTree: true, ownRun: false, headRun: true, parents: 1, resolvesParent: false },
+    { sameTree: true, ownRun: false, headRun: true, parents: 3, resolvesParent: false },
+  ])('resolves unbenchmarked merges only to equivalent benchmarked heads: %j', async (scenario) => {
     const client = new GitHubClient({
       repository: 'paradigmxyz/solar',
       workflow: 'bench.yml',
@@ -85,16 +87,18 @@ describe('GitHub retry policy', () => {
     globalThis.fetch = vi.fn(async (input) => {
       const url = new URL(requestUrl(input))
       if (url.pathname.endsWith('/runs')) {
-        expect(url.searchParams.get('head_sha')).toBe(merge)
-        return Response.json({ workflow_runs: scenario.ownRun ? [{ head_sha: merge }] : [] })
+        const sha = url.searchParams.get('head_sha')
+        expect([merge, head]).toContain(sha)
+        const hasRun = sha === merge ? scenario.ownRun : scenario.headRun
+        return Response.json({ workflow_runs: hasRun ? [{ head_sha: sha }] : [] })
       }
       if (url.pathname.endsWith(head))
         return Response.json({ sha: head, commit: { tree: { sha: 'head-tree' } } })
       return Response.json({
         sha: merge,
-        parents: [{ sha: base }, { sha: head }],
+        parents: [base, head, 'd'.repeat(40)].slice(0, scenario.parents).map((sha) => ({ sha })),
         commit: {
-          message: scenario.synthetic ? `Merge ${head} into ${base}` : 'Merge feature branch',
+          message: 'Merge feature branch with a custom message',
           tree: { sha: scenario.sameTree ? 'head-tree' : 'merged-tree' },
         },
       })
