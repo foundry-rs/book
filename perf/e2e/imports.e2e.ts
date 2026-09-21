@@ -12,11 +12,14 @@ test('comparison shows import progress then real table content, without a page r
     return route.fulfill({
       status: 202,
       headers: { 'retry-after': '1' },
-      json: { status: 'importing', commit: head },
+      json: { status: 'importing', commit: polls === 1 ? head : base },
     })
   })
   await page.goto(`/perf/solar/?base=${base}&head=${head}`)
-  await expect(page.getByRole('status')).toHaveText('Importing benchmark runs…')
+  await expect(page.getByRole('status')).toHaveText('Importing benchmark runs...')
+  await expect.poll(() => polls).toBe(2)
+  await expect(page.getByRole('status')).toHaveText('Importing benchmark runs...')
+  await expect(page.locator('.loading-dots')).toHaveCount(1)
   await page.screenshot({ path: '/tmp/perf-import-pending.png' })
   await expect(page.getByRole('heading', { name: 'Benchmark comparison' })).toBeVisible()
   expect(polls).toBe(3)
@@ -52,7 +55,7 @@ test('file viewer also displays import progress and surfaces a missing workflow'
     ),
   )
   await page.goto(`/perf/solar/?base=${base}&head=${head}&view=files&benchmark=demo::factorial`)
-  await expect(page.getByRole('status')).toHaveText('Importing benchmark runs…')
+  await expect(page.getByRole('status')).toHaveText('Importing benchmark runs...')
   await expect(page.getByText('No benchmark workflow is available for this commit.')).toBeVisible()
 })
 
@@ -116,4 +119,38 @@ test('file viewer pins resolved commits before pinning revisions', async ({ page
   expect(reloaded.get('base')).toBe(base)
   expect(reloaded.get('baseRevision')).toBe(pinned.get('baseRevision'))
   expect(branchResolutions).toBe(initialResolutions)
+})
+
+test('loading dots cycle without shifting text and respect reduced motion', async ({ page }) => {
+  await page.route('**/api/data/runs.json?*', (route) =>
+    route.fulfill({
+      status: 202,
+      headers: { 'retry-after': '1' },
+      json: { status: 'importing', commit: head },
+    }),
+  )
+  await page.goto(`/perf/solar/?base=${base}&head=${head}`)
+  const dots = page.locator('.loading-dots')
+  await expect(dots).toHaveAttribute('aria-hidden', 'true')
+  const width = (await dots.boundingBox())!.width
+  const phases = new Set<number>()
+  await expect
+    .poll(
+      async () => {
+        const phase = await dots.evaluate((element) =>
+          Math.round(
+            (3 * element.firstElementChild!.getBoundingClientRect().width) /
+              element.getBoundingClientRect().width,
+          ),
+        )
+        phases.add(phase)
+        return phases.size
+      },
+      { intervals: [100], timeout: 3000 },
+    )
+    .toBe(3)
+  expect((await dots.boundingBox())!.width).toBe(width)
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await expect(dots.locator('span')).toHaveCSS('animation-name', 'none')
+  expect((await dots.locator('span').boundingBox())!.width).toBe(width)
 })

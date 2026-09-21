@@ -1,3 +1,4 @@
+import { LoadingText } from './LoadingText'
 import { useEffect, useMemo, useState } from 'react'
 import { Moon, Sun } from 'lucide-react'
 import { HistoryGraph } from './HistoryGraph'
@@ -143,7 +144,12 @@ function ResolvedComparison({
         {error}
       </p>
     )
-  if (!commits) return <p>Resolving commits…</p>
+  if (!commits)
+    return (
+      <p>
+        <LoadingText>Resolving commits…</LoadingText>
+      </p>
+    )
   return benchmark ? (
     <FileViewer base={commits[0]} head={commits[1]} benchmark={benchmark} theme={theme} />
   ) : (
@@ -274,7 +280,7 @@ function Home() {
         <span className="arrow">→</span>
         <CommitInput label="head" value={head} onChange={setHead} />
         <button type="submit" disabled={resolving || !base.trim() || !head.trim()}>
-          {resolving ? 'Resolving…' : 'Compare'}
+          {resolving ? <LoadingText>Resolving…</LoadingText> : 'Compare'}
         </button>
       </form>
       {compareError && (
@@ -311,7 +317,9 @@ function Home() {
       {error || historyError ? (
         <p className="error">{error || historyError}</p>
       ) : history === null ? (
-        <p className="empty">Loading benchmark history…</p>
+        <p className="empty">
+          <LoadingText>Loading benchmark history…</LoadingText>
+        </p>
       ) : (
         <section className="chart-grid">
           {benchmarks

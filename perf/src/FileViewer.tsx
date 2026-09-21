@@ -1,3 +1,4 @@
+import { LoadingText } from './LoadingText'
 import { lazy, Suspense, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import { ChevronRight, File, Folder, PanelLeftClose, PanelLeftOpen } from 'lucide-react'
 import { artifactTree, mergeArtifactFiles, type ArtifactNode } from './artifactTree'
@@ -251,7 +252,7 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
         <p className="error">{loadError}</p>
       ) : !runs ? (
         <p className="empty" role="status">
-          {importProgress || 'Loading files…'}
+          <LoadingText>{importProgress || 'Loading files…'}</LoadingText>
         </p>
       ) : (
         <div className={`file-viewer-body${sidebarOpen ? '' : ' sidebar-collapsed'}`}>
@@ -308,7 +309,7 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
             </div>
             {loading ? (
               <p className="empty" role="status">
-                Loading files…
+                <LoadingText>Loading files…</LoadingText>
               </p>
             ) : (
               <FileTree
@@ -363,11 +364,17 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
           <div className="file-diff">
             {loading ? (
               <p className="empty" role="status">
-                Loading files…
+                <LoadingText>Loading files…</LoadingText>
               </p>
             ) : selectedFile && left && right ? (
               <>
-                <Suspense fallback={<p className="empty">Loading renderer…</p>}>
+                <Suspense
+                  fallback={
+                    <p className="empty">
+                      <LoadingText>Loading renderer…</LoadingText>
+                    </p>
+                  }
+                >
                   <ArtifactDiff
                     before={{
                       label: left.label,
