@@ -12,11 +12,14 @@ test('comparison shows import progress then real table content, without a page r
     return route.fulfill({
       status: 202,
       headers: { 'retry-after': '1' },
-      json: { status: 'importing', commit: head },
+      json: { status: 'importing', commit: polls === 1 ? head : base },
     })
   })
   await page.goto(`/perf/solar/?base=${base}&head=${head}`)
-  await expect(page.getByRole('status')).toHaveText('Importing benchmark runs…')
+  await expect(page.getByRole('status')).toHaveText('Importing benchmark runs...')
+  await expect.poll(() => polls).toBe(2)
+  await expect(page.getByRole('status')).toHaveText('Importing benchmark runs...')
+  await expect(page.locator('.loading-dots')).toHaveCount(1)
   await page.screenshot({ path: '/tmp/perf-import-pending.png' })
   await expect(page.getByRole('heading', { name: 'Benchmark comparison' })).toBeVisible()
   expect(polls).toBe(3)
@@ -47,11 +50,107 @@ test('file viewer also displays import progress and surfaces a missing workflow'
         ? { status: 202, headers: { 'retry-after': '1' }, json: { status: 'queued', commit: head } }
         : {
             status: 404,
-            json: { error: 'No completed benchmark run is available for this commit' },
+            json: { error: 'No benchmark workflow is available for this commit' },
           },
     ),
   )
   await page.goto(`/perf/solar/?base=${base}&head=${head}&view=files&benchmark=demo::factorial`)
-  await expect(page.getByRole('status')).toHaveText('Importing benchmark runs…')
+  await expect(page.getByRole('status')).toHaveText('Importing benchmark runs...')
   await expect(page.getByText('No benchmark workflow is available for this commit.')).toBeVisible()
+})
+
+for (const view of ['comparison', 'files']) {
+  test(`${view} resolves full synthetic merge SHAs in direct links`, async ({ page }) => {
+    const synthetic = 'a'.repeat(40)
+    await page.route(`**/api/resolve?ref=${synthetic}`, (route) =>
+      route.fulfill({ json: { commit: base } }),
+    )
+    const request = page.waitForRequest((request) => {
+      const url = new URL(request.url())
+      return url.pathname === `/api/data/${view === 'files' ? 'viewer' : 'runs'}.json`
+    })
+    await page.goto(
+      `/perf/solar/?base=${synthetic}&head=${head}${view === 'files' ? '&view=files&benchmark=demo::factorial' : ''}`,
+    )
+    expect(new URL((await request).url()).searchParams.get('commits')).toBe(`${base},${head}`)
+    if (view === 'files') await expect(page.locator('#artifact-sidebar')).toBeVisible()
+    else await expect(page.getByRole('heading', { name: 'Benchmark comparison' })).toBeVisible()
+  })
+}
+
+test('Back restores a cached comparison when ref resolution is unavailable', async ({ page }) => {
+  await page.goto(`/perf/solar/?base=${base}&head=${head}`)
+  await expect(page.getByRole('heading', { name: 'Benchmark comparison' })).toBeVisible()
+  await page.locator('a.wordmark').click()
+  await expect(page.getByRole('heading', { name: 'Performance', exact: true })).toBeVisible()
+  let resolutions = 0
+  await page.route('**/api/resolve?*', (route) => {
+    resolutions++
+    return route.fulfill({ status: 503, json: { error: 'unavailable' } })
+  })
+  await page.goBack()
+  await expect(page.getByRole('heading', { name: 'Benchmark comparison' })).toBeVisible()
+  expect(resolutions).toBe(0)
+})
+
+test('file viewer pins resolved commits before pinning revisions', async ({ page }) => {
+  let moved = false
+  let branchResolutions = 0
+  await page.route('**/api/resolve?ref=feature', (route) => {
+    branchResolutions++
+    return route.fulfill({ json: { commit: moved ? head : base } })
+  })
+  await page.route('**/api/data/viewer.json?*', async (route) => {
+    const response = await route.fetch()
+    const data = await response.json()
+    for (const run of data.runs) run.revision = (run.commit === base ? 'a' : 'b').repeat(64)
+    await route.fulfill({ json: data })
+  })
+  await page.goto(`/perf/solar/?base=feature&head=${head}&view=files&benchmark=demo::factorial`)
+  await expect(page.locator('#artifact-sidebar')).toBeVisible()
+  await expect(page).toHaveURL((url) => url.searchParams.get('base') === base)
+  const pinned = new URL(page.url()).searchParams
+  expect(pinned.get('baseRevision')).toMatch(/^[a-f0-9]{64}$/)
+  const initialResolutions = branchResolutions
+  moved = true
+  await page.reload()
+  await expect(page.locator('#artifact-sidebar')).toBeVisible()
+  const reloaded = new URL(page.url()).searchParams
+  expect(reloaded.get('base')).toBe(base)
+  expect(reloaded.get('baseRevision')).toBe(pinned.get('baseRevision'))
+  expect(branchResolutions).toBe(initialResolutions)
+})
+
+test('loading dots cycle without shifting text and respect reduced motion', async ({ page }) => {
+  await page.route('**/api/data/runs.json?*', (route) =>
+    route.fulfill({
+      status: 202,
+      headers: { 'retry-after': '1' },
+      json: { status: 'importing', commit: head },
+    }),
+  )
+  await page.goto(`/perf/solar/?base=${base}&head=${head}`)
+  const dots = page.locator('.loading-dots')
+  await expect(dots).toHaveAttribute('aria-hidden', 'true')
+  const width = (await dots.boundingBox())!.width
+  const phases = new Set<number>()
+  await expect
+    .poll(
+      async () => {
+        const phase = await dots.evaluate((element) =>
+          Math.round(
+            (3 * element.firstElementChild!.getBoundingClientRect().width) /
+              element.getBoundingClientRect().width,
+          ),
+        )
+        phases.add(phase)
+        return phases.size
+      },
+      { intervals: [100], timeout: 3000 },
+    )
+    .toBe(3)
+  expect((await dots.boundingBox())!.width).toBe(width)
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await expect(dots.locator('span')).toHaveCSS('animation-name', 'none')
+  expect((await dots.locator('span').boundingBox())!.width).toBe(width)
 })

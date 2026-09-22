@@ -165,7 +165,7 @@ test('leaving a pending diff cannot replace the newly selected file', async ({ p
     route.fulfill({ contentType: 'text/javascript', body: 'self.onmessage = () => {}' }),
   )
   await page.goto(url)
-  await expect(page.getByText('Computing diff…', { exact: true })).toBeVisible()
+  await expect(page.getByText('Computing diff...', { exact: true })).toBeVisible()
   await page.getByRole('button', { name: 'abi.json', exact: true }).click()
   await expect(page.getByText('Contents are identical.', { exact: true })).toBeVisible()
   await expect(page.locator('diffs-container').locator('pre')).toBeVisible()

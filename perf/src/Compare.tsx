@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useState, type CSSProperties } from 'react'
+import { LoadingText } from './LoadingText'
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import { BenchmarkHistory } from './BenchmarkHistory'
 import { changeClass, formatChange } from './change'
 import { formatRawValue, formatValue } from './formatValue'
@@ -7,7 +8,12 @@ import { BenchmarkSources } from './BenchmarkSources'
 import type { RunDocument, Theme } from './types'
 import { benchmarkMetric as value } from './benchmarkMetric'
 import { replaceUrl } from './navigation'
-import { comparisonCompilers, comparisonRows, percentChange } from './comparison'
+import {
+  comparisonCompilers,
+  comparisonRows,
+  percentChange,
+  type ComparisonSort,
+} from './comparison'
 import { compilerLabel } from './compilerLabel'
 import { compilerColumn } from './compilers'
 import { useImportProgress } from './importProgress'
@@ -55,12 +61,14 @@ export function Compare({ base, head }: Props) {
   const [runs, setRuns] = useState<[RunDocument, RunDocument] | null>(null)
   const [loadError, setLoadError] = useState<string | null>(null)
   const [query, setQuery] = useState('')
+  const [sort, setSort] = useState<ComparisonSort>()
   const [metric, setMetric] = useState(
     Object.entries(metrics).find(
       ([name, definition]) => name === initialMetric || definition.key === initialMetric,
     )?.[0] ?? 'runtimeGas',
   )
   const [expanded, setExpanded] = useState(initial.get('benchmark') ?? '')
+  const selectedRow = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
     let cancelled = false
@@ -86,9 +94,13 @@ export function Compare({ base, head }: Props) {
 
   const rows = useMemo(() => {
     if (!runs) return []
-    return comparisonRows(runs[0], runs[1], metrics[metric].key, query)
-  }, [metric, query, runs])
+    return comparisonRows(runs[0], runs[1], metrics[metric].key, query, sort)
+  }, [metric, query, runs, sort])
   const compilers = useMemo(() => (runs ? comparisonCompilers(runs[1]) : []), [runs])
+
+  useEffect(() => {
+    selectedRow.current?.scrollIntoView({ block: 'nearest', inline: 'nearest' })
+  }, [expanded, rows])
 
   const selectBenchmark = (benchmark: string) => {
     const next = expanded === benchmark ? '' : benchmark
@@ -109,7 +121,7 @@ export function Compare({ base, head }: Props) {
     return (
       <main className="compare-page">
         <p className="empty" role="status">
-          {importProgress || 'Loading benchmark runs…'}
+          <LoadingText>{importProgress || 'Loading benchmark runs…'}</LoadingText>
         </p>
       </main>
     )
@@ -172,14 +184,31 @@ export function Compare({ base, head }: Props) {
         style={{ '--compiler-count': compilers.length } as CSSProperties}
       >
         <div className="result header-row">
-          <span>Benchmark</span>
-          <span>Head</span>
-          {compilers.map((compiler) => {
-            const column = compilerColumn(afterRun, compiler)
+          {[
+            { key: 'benchmark' as const, label: 'Benchmark', title: 'Benchmark name' },
+            { key: 'head' as const, label: 'Head', title: 'Head measurement' },
+            ...compilers.map((compiler) => ({
+              key: `compiler:${compiler}` as const,
+              ...compilerColumn(afterRun, compiler),
+            })),
+          ].map((column) => {
+            const active = sort?.column === column.key
+            const nextDirection =
+              active && sort.direction === 'ascending' ? 'descending' : 'ascending'
             return (
-              <span key={compiler} title={column.title}>
-                {column.label}
-              </span>
+              <button
+                key={column.key}
+                type="button"
+                aria-pressed={active}
+                aria-label={`${column.label}${active ? `, sorted ${sort.direction}` : ''}`}
+                title={`${column.title}. Sort ${nextDirection}`}
+                onClick={() => setSort({ column: column.key, direction: nextDirection })}
+              >
+                {column.label}{' '}
+                <span aria-hidden="true">
+                  {active ? (sort.direction === 'ascending' ? '↑' : '↓') : '↕'}
+                </span>
+              </button>
             )
           })}
         </div>
@@ -189,6 +218,7 @@ export function Compare({ base, head }: Props) {
           return (
             <div key={after.test_id} className="benchmark-row">
               <button
+                ref={selected ? selectedRow : null}
                 className={`result ${selected ? 'selected' : ''}`}
                 onClick={() => selectBenchmark(after.test_id)}
                 aria-expanded={selected}

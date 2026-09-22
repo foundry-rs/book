@@ -465,16 +465,26 @@ button:disabled {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
-.header-row > span:first-child {
+.header-row > button:first-child {
   text-align: left;
 }
-.header-row > span {
+.header-row > button {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  text-align: right;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.result:hover,
-.result.selected {
+.header-row > button:hover,
+.header-row > button:focus-visible,
+button.result:hover,
+button.result.selected {
   background: var(--raised);
 }
 .header-row {
@@ -713,6 +723,12 @@ button:disabled {
   color: var(--text);
   text-decoration-color: var(--line);
   text-underline-offset: 3px;
+}
+.run-meta a:hover,
+.run-meta a:focus-visible {
+  color: var(--orange);
+  text-decoration-line: underline;
+  text-decoration-color: currentColor;
 }
 .compare-commits {
   margin-top: 18px;
@@ -1164,4 +1180,35 @@ header.file-header {
 .file-viewer-body .artifact-file:focus-visible {
   outline: 2px solid var(--text);
   outline-offset: -2px;
+}
+
+.loading-dots {
+  display: inline-block;
+  width: 3ch;
+  font-family: monospace;
+  vertical-align: baseline;
+}
+.loading-dots > span {
+  display: block;
+  overflow: hidden;
+  width: 1ch;
+  animation: loading-dots 1.2s step-end infinite;
+}
+@keyframes loading-dots {
+  0% {
+    width: 1ch;
+  }
+  33.333% {
+    width: 2ch;
+  }
+  66.667%,
+  100% {
+    width: 3ch;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .loading-dots > span {
+    animation: none;
+    width: 3ch;
+  }
 }

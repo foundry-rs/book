@@ -1,9 +1,10 @@
+import { LoadingText } from './LoadingText'
 import { useEffect, useMemo, useState } from 'react'
 import { Moon, Sun } from 'lucide-react'
 import { HistoryGraph } from './HistoryGraph'
 import { Compare } from './Compare'
 import { loadHistory, loadIndex, resolveCommit } from './data'
-import { comparisonHref, navigate, useNavigation } from './navigation'
+import { comparisonHref, navigate, replaceUrl, useNavigation } from './navigation'
 import { comparisonBase } from './comparisonBase'
 import logo from './assets/logo.png'
 import { FileViewer } from './FileViewer'
@@ -90,21 +91,69 @@ export function App() {
         onToggleTheme={toggleTheme}
       />
       {comparison ? (
-        fileViewer ? (
-          <FileViewer
-            key={navigation.key}
-            base={base!}
-            head={head!}
-            benchmark={benchmark!}
-            theme={theme}
-          />
-        ) : (
-          <Compare key={navigation.key} base={base!} head={head!} theme={theme} />
-        )
+        <ResolvedComparison
+          key={navigation.key}
+          base={base!}
+          head={head!}
+          benchmark={fileViewer ? benchmark! : null}
+          theme={theme}
+        />
       ) : (
         <Home />
       )}
     </>
+  )
+}
+
+function ResolvedComparison({
+  base,
+  head,
+  benchmark,
+  theme,
+}: {
+  base: string
+  head: string
+  benchmark: string | null
+  theme: Theme
+}) {
+  const [commits, setCommits] = useState<string[] | null>(null)
+  const [error, setError] = useState('')
+  useEffect(() => {
+    let cancelled = false
+    Promise.all([resolveCommit(base), resolveCommit(head)]).then(
+      (value) => {
+        if (!cancelled) {
+          const url = new URL(window.location.href)
+          url.searchParams.set('base', value[0])
+          url.searchParams.set('head', value[1])
+          if (url.search !== window.location.search) replaceUrl(url)
+          setCommits(value)
+        }
+      },
+      (error: Error) => {
+        if (!cancelled) setError(error.message)
+      },
+    )
+    return () => {
+      cancelled = true
+    }
+  }, [base, head])
+  if (error)
+    return (
+      <p className="error" role="alert">
+        {error}
+      </p>
+    )
+  if (!commits)
+    return (
+      <p>
+        <LoadingText>Resolving commits…</LoadingText>
+      </p>
+    )
+  return benchmark ? (
+    <FileViewer base={commits[0]} head={commits[1]} benchmark={benchmark} theme={theme} />
+  ) : (
+    <Compare base={commits[0]} head={commits[1]} theme={theme} />
   )
 }
 
@@ -231,7 +280,7 @@ function Home() {
         <span className="arrow">→</span>
         <CommitInput label="head" value={head} onChange={setHead} />
         <button type="submit" disabled={resolving || !base.trim() || !head.trim()}>
-          {resolving ? 'Resolving…' : 'Compare'}
+          {resolving ? <LoadingText>Resolving…</LoadingText> : 'Compare'}
         </button>
       </form>
       {compareError && (
@@ -268,7 +317,9 @@ function Home() {
       {error || historyError ? (
         <p className="error">{error || historyError}</p>
       ) : history === null ? (
-        <p className="empty">Loading benchmark history…</p>
+        <p className="empty">
+          <LoadingText>Loading benchmark history…</LoadingText>
+        </p>
       ) : (
         <section className="chart-grid">
           {benchmarks

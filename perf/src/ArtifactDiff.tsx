@@ -1,3 +1,4 @@
+import { LoadingText } from './LoadingText'
 import {
   File,
   FileDiff,
@@ -85,7 +86,12 @@ function ArtifactDiffContents({ before, after, path, language, theme, style }: P
     after.contentHash,
   ])
   if (error) return <p className="error">Could not load artifact: {error}</p>
-  if (!contents) return <p className="empty">Loading diff…</p>
+  if (!contents)
+    return (
+      <p className="empty">
+        <LoadingText>Loading diff…</LoadingText>
+      </p>
+    )
   if (contents.some((value) => value !== null && value.contents.length > maxInteractiveArtifact))
     return (
       <section className="large-artifact">
@@ -209,7 +215,7 @@ function ComputedDiff({
   if (!diff)
     return (
       <p className="empty" role="status">
-        Computing diff…
+        <LoadingText>Computing diff…</LoadingText>
       </p>
     )
   return (

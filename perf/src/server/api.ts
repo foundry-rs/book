@@ -320,7 +320,6 @@ export function createApi(options: ApiOptions = {}) {
       Array.from(ref).some((char) => char.charCodeAt(0) <= 32 || char.charCodeAt(0) === 127)
     )
       return context.json({ error: 'Invalid ref' }, 400)
-    if (/^[0-9a-f]{40}$/i.test(ref)) return context.json({ commit: ref.toLowerCase() })
     if (await missingRefs.peek(ref)) return context.json({ error: 'Ref not found' }, 404)
     try {
       if (useDemoFallback) {
@@ -337,7 +336,7 @@ export function createApi(options: ApiOptions = {}) {
           : context.json({ error: 'Unknown demo ref' }, 404)
       }
       const commit = await resolvedRefs(ref, async () => {
-        if (config && /^[0-9a-f]{7,39}$/i.test(ref)) {
+        if (config && /^[0-9a-f]{7,40}$/i.test(ref)) {
           const matches = await select(
             config,
             `SELECT DISTINCT commit FROM run_snapshots WHERE startsWith(commit, {prefix:String}) AND source_schema > 0 LIMIT 2`,

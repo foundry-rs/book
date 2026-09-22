@@ -88,3 +88,45 @@ it('formats byte units consistently without rounding small values to zero KiB', 
   expect(formatValue(1024, 'bytes')).toBe('1 KiB')
   expect(formatValue(1.5 * 1024 ** 2, 'memory')).toBe('1.5 MiB')
 })
+
+it('sorts names, raw Head values and signed deltas, with missing values last', () => {
+  const result = (test_id: string, gas: number, other: number) => ({
+    test_id,
+    suite: '',
+    compilers: {
+      solar: { status: 'ok' as const, total_gas: gas, runtime_size: 100 - gas },
+      solx: { status: 'ok' as const, total_gas: other },
+    },
+  })
+  const before = { ...base, results: [result('alpha', 120, 0), result('beta', 1, 0)] }
+  const after = {
+    ...head,
+    results: [result('beta', 2, 4), result('alpha', 10, 5), result('zero', 0, 1)],
+  }
+  const names = (
+    column: 'benchmark' | 'head' | `compiler:${string}`,
+    descending = false,
+    metric = 'total_gas',
+    query = '',
+  ) =>
+    comparisonRows(before, after, metric, query, {
+      column,
+      direction: descending ? 'descending' : 'ascending',
+    }).map((row) => row.result.test_id)
+  expect(names('benchmark')).toEqual(['alpha', 'beta', 'zero'])
+  expect(names('benchmark', true)).toEqual(['zero', 'beta', 'alpha'])
+  expect(names('head')).toEqual(['zero', 'beta', 'alpha'])
+  expect(names('head', true)).toEqual(['alpha', 'beta', 'zero'])
+  expect(names('compiler:solar')).toEqual(['beta', 'alpha', 'zero'])
+  expect(names('compiler:solar', true)).toEqual(['alpha', 'beta', 'zero'])
+  expect(names('compiler:solx')).toEqual(['alpha', 'beta', 'zero'])
+  expect(names('compiler:solx', true)).toEqual(['beta', 'alpha', 'zero'])
+  expect(names('head', false, 'runtime_size')).toEqual(['alpha', 'beta', 'zero'])
+  expect(names('head', true, 'total_gas', 'a')).toEqual(['alpha', 'beta'])
+  expect(after.results.map((row) => row.test_id)).toEqual(['beta', 'alpha', 'zero'])
+  expect(
+    comparisonRows(base, head, 'total_gas', '', { column: 'head', direction: 'descending' }).map(
+      (row) => row.result.test_id,
+    ),
+  ).toEqual(['new', 'removed'])
+})

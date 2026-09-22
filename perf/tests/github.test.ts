@@ -39,7 +39,8 @@ describe('GitHub retry policy', () => {
           head: { sha: 'c'.repeat(40) },
         })
       }
-      return Response.json({ sha: 'a'.repeat(40) })
+      const ref = url.split('/').at(-1)!
+      return Response.json({ sha: /^[a-f0-9]{40}$/.test(ref) ? ref : 'a'.repeat(40) })
     })
     globalThis.fetch = fetch
     expect(await client.resolveRef('Release/v1')).toBe('a'.repeat(40))
@@ -66,6 +67,47 @@ describe('GitHub retry policy', () => {
       return Response.json({ workflow_runs: [...runs, { head_sha: 'b'.repeat(40) }] })
     })
     expect(await client.runsForCommit(sha)).toEqual(runs)
+  })
+
+  it.each([
+    { sameTree: true, ownRun: false, headRun: true, parents: 2, resolvesParent: true },
+    { sameTree: false, ownRun: false, headRun: true, parents: 2, resolvesParent: false },
+    { sameTree: true, ownRun: true, headRun: true, parents: 2, resolvesParent: false },
+    { sameTree: true, ownRun: false, headRun: false, parents: 2, resolvesParent: false },
+    { sameTree: true, ownRun: false, headRun: true, parents: 1, resolvesParent: false },
+    { sameTree: true, ownRun: false, headRun: true, parents: 3, resolvesParent: false },
+  ])('resolves unbenchmarked merges only to equivalent benchmarked heads: %j', async (scenario) => {
+    const client = new GitHubClient({
+      repository: 'paradigmxyz/solar',
+      workflow: 'bench.yml',
+      token: 'test',
+    })
+    const merge = 'a'.repeat(40)
+    const head = 'b'.repeat(40)
+    const base = 'c'.repeat(40)
+    globalThis.fetch = vi.fn(async (input) => {
+      const url = new URL(requestUrl(input))
+      if (url.pathname.endsWith('/pulls/123'))
+        return Response.json({ merged_at: 'today', merge_commit_sha: merge, head: { sha: head } })
+      if (url.pathname.endsWith('/runs')) {
+        const sha = url.searchParams.get('head_sha')
+        expect([merge, head]).toContain(sha)
+        const hasRun = sha === merge ? scenario.ownRun : scenario.headRun
+        return Response.json({ workflow_runs: hasRun ? [{ head_sha: sha }] : [] })
+      }
+      if (url.pathname.endsWith(head))
+        return Response.json({ sha: head, commit: { tree: { sha: 'head-tree' } } })
+      return Response.json({
+        sha: merge,
+        parents: [base, head, 'd'.repeat(40)].slice(0, scenario.parents).map((sha) => ({ sha })),
+        commit: {
+          message: 'Merge feature branch with a custom message',
+          tree: { sha: scenario.sameTree ? 'head-tree' : 'merged-tree' },
+        },
+      })
+    })
+    for (const ref of [merge.slice(0, 8), merge, '#123'])
+      expect(await client.resolveRef(ref)).toBe(scenario.resolvesParent ? head : merge)
   })
 
   it('retries transient failures with backoff', async () => {

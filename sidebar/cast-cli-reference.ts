@@ -134,6 +134,7 @@ export const castCliReference: SidebarItem = {
         { text: "cast admin", link: "/reference/cast/admin" },
         { text: "cast artifact", link: "/reference/cast/artifact" },
         { text: "cast b2e-payload", link: "/reference/cast/b2e-payload" },
+        { text: "cast bal", link: "/reference/cast/bal" },
         { text: "cast base-fee", link: "/reference/cast/base-fee" },
         { text: "cast batch-mktx", link: "/reference/cast/batch-mktx" },
         { text: "cast batch-send", link: "/reference/cast/batch-send" },
