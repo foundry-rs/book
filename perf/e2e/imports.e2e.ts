@@ -132,6 +132,7 @@ test('loading dots cycle without shifting text and respect reduced motion', asyn
   await page.goto(`/perf/solar/?base=${base}&head=${head}`)
   const dots = page.locator('.loading-dots')
   await expect(dots).toHaveAttribute('aria-hidden', 'true')
+  await expect.poll(async () => (await dots.boundingBox())?.width ?? 0).toBeGreaterThan(0)
   const width = (await dots.boundingBox())!.width
   const phases = new Set<number>()
   await expect
