@@ -16,4 +16,6 @@ jobs:
       contents: read
       id-token: write
     with:
+      # Nested forge-std/ds-test copies are documentation fixtures, not this repo's CI.
+      paths: .github
       secure-runner-fail-on-violation: false
