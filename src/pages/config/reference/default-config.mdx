@@ -1,3 +1,7 @@
+---
+description: Default Foundry configuration values and available settings.
+---
+
 ## Default foundry configuration
 
 ```toml
@@ -157,6 +161,11 @@ evm_version = "osaka"
 # network hardfork such as "optimism:holocene" or "tempo:T6".
 # Default: none
 # hardfork = "tempo:T6"
+
+# Disables parent-block BAL cache prewarming for transaction-hash fork cheatcodes.
+# Independent of disk storage caching; preceding transactions are still replayed.
+# Default: false
+no_fork_bal = false
 
 # Whether to activate optimizer
 # Default: None

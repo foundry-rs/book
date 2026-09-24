@@ -1,3 +1,7 @@
+---
+description: Configure build commands, EVM execution, RPC connections, and fork prewarming.
+---
+
 ## Build, Runtime, and RPC
 
 Configuration shared by build commands and EVM execution. All fields belong under
@@ -125,3 +129,32 @@ mainnet = { endpoints = ["${MAINNET_RPC_URL}", "${FALLBACK_RPC_URL}"], retries =
 
 `[rpc_storage_caching]` supports `chains` (`"all"`, `"none"`, or an array of
 chains) and `endpoints` (`"all"`, `"remote"`, or a regular expression).
+
+### Transaction-hash fork prewarming
+
+`no_fork_bal` disables Block Access List (BAL) prewarming for the transaction-hash
+overloads of `vm.createFork`, `vm.createSelectFork`, and `vm.rollFork`.
+
+- Section: `[profile.<name>]`
+- Type: boolean
+- Default: `false`
+- Environment: `FOUNDRY_NO_FORK_BAL`
+
+When prewarming is enabled, Foundry can populate the parent block's in-memory
+cache from a validated BAL before replaying the transactions preceding your
+target transaction. This reduces individual RPC reads when the provider supports
+BALs and the fork source is eligible. Unsupported, invalid, or timed-out BAL
+requests fall back to ordinary RPC reads. Preceding transactions are always
+replayed, and the target transaction is not executed by these fork cheatcodes.
+
+You can disable prewarming in your project configuration:
+
+```toml
+[profile.default]
+no_fork_bal = true
+```
+
+The environment variable overrides the selected profile. The `--no-fork-bal`
+flag overrides both the configuration file and environment variable for a run.
+This setting is independent of `no_storage_caching`, which controls disk caching.
+It does not affect block-number forks or `vm.transact`.
