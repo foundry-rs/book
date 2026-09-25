@@ -80,15 +80,9 @@ See the [Tempo guide](/guides/tempo) for project setup and [MPP-backed RPC endpo
 
 ## Binary verification
 
-Foundry binaries are attested using [GitHub artifact attestations](https://docs.github.com/en/actions/security-for-github-actions/using-artifact-attestations/using-artifact-attestations-to-establish-provenance-for-builds). When installing via `foundryup`, binary hashes are automatically verified against the GitHub attestation.
+`foundryup` automatically checks downloaded binaries' SHA-256 hashes against the release's GitHub attestation.
 
-To manually verify an installed binary:
-
-```bash
-$ gh attestation verify --owner foundry-rs $(which forge)
-```
-
-Use `foundryup --force` to skip verification and force a fresh install.
+See [Verifying Releases](/introduction/verifying-releases) for what this check covers and how to verify signed build provenance for binaries, release archives, and Docker images.
 
 ## Alternative installation methods
 
