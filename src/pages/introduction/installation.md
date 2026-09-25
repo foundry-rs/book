@@ -80,9 +80,9 @@ See the [Tempo guide](/guides/tempo) for project setup and [MPP-backed RPC endpo
 
 ## Binary verification
 
-`foundryup` automatically verifies the release's Sigstore attestation and checks the installed binaries' SHA-256 hashes against it. You do not need to run a separate verification command for a normal installation.
+`foundryup` automatically checks downloaded binaries' SHA-256 hashes against the release's GitHub attestation.
 
-See [Verifying Releases](/introduction/verifying-releases) for manual verification of binaries, release archives, and Docker images, plus the verification behavior for older releases and source builds.
+See [Verifying Releases](/introduction/verifying-releases) for what this check covers and how to verify signed build provenance for binaries, release archives, and Docker images.
 
 ## Alternative installation methods
 

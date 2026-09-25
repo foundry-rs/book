@@ -1,110 +1,58 @@
 ---
-description: Verify Foundry binaries, release archives, and Docker images using attestations, signatures, and checksums.
+description: Check Foundry release provenance and verify binaries, downloaded archives, and Docker images.
 ---
 
 ## Verifying Releases
 
-When you [install Foundry](/introduction/installation) with `foundryup`, release verification happens automatically. Use this guide when you download an archive or Docker image directly, or want to independently verify an installed binary.
+`foundryup` checks downloaded binaries automatically. For an independent check of who built a binary, archive, or Docker image, use [GitHub CLI](https://cli.github.com/)'s `gh attestation verify` command.
 
-### Automatic verification with foundryup
+### What foundryup checks
 
-`foundryup` verifies the release's Sigstore attestation against the `foundry-rs/foundry` release workflow identity and the GitHub Actions issuer. It then checks the binaries' SHA-256 hashes against the verified attestation before activating them. You do not need GitHub CLI or Cosign for this check.
+When you [install Foundry](/introduction/installation), `foundryup` compares each binary's SHA-256 hash with the hashes in the release's GitHub attestation. A hash mismatch aborts installation. Source builds do not use release attestations, and `--force` skips the hash check.
 
-Prebuilt releases from `v1.3.0-rc1` onward, including nightly releases, require a valid attestation. Older releases can be installed without verification when no attestation exists. Branch, pull request, commit, and local-path installations build from source instead. Passing `foundryup --force` explicitly disables release verification.
+:::note
+[`foundryup` v0.0.8](https://github.com/foundry-rs/foundryup/releases/tag/v0.0.8) reads the attestation's hashes but does not verify its cryptographic signature. It also skips verification if the release has no attestation. Use the commands below to verify the signed build provenance.
+:::
 
-### Release artifacts
+### Verify an installed binary
 
-Current official releases publish the following files alongside each `foundry_<version>_<platform>_<arch>.{tar.gz,zip}` archive on the [releases page](https://github.com/foundry-rs/foundry/releases):
-
-| Suffix | Purpose |
-| --- | --- |
-| `.sha256` | SHA-256 checksum of the archive |
-| `.sigstore.json` | Cosign signature bundle for the archive |
-| `.spdx.json` | SPDX SBOM describing the build's dependencies |
-| `.attestation.txt` | URL of the GitHub artifact-attestation summary |
-
-GitHub also stores SLSA build-provenance and SBOM attestations for the archive. Signing uses [Sigstore](https://www.sigstore.dev/) with GitHub Actions identities, and signatures are recorded in the public [Rekor](https://docs.sigstore.dev/logging/overview/) transparency log.
-
-The examples below use the `v1.7.1` Linux AMD64 release. Choose the version, platform, and architecture you downloaded; older releases may not provide every artifact listed above.
-
-### Verify a binary or archive with GitHub CLI
-
-Install [GitHub CLI](https://cli.github.com/) and authenticate with `gh auth login` if needed. To verify the `forge` binary on your `PATH`:
+Install a current version of [GitHub CLI](https://cli.github.com/) and sign in with `gh auth login`. Run:
 
 ```bash
-$ gh attestation verify "$(command -v forge)" --repo foundry-rs/foundry
-```
-
-To verify a downloaded archive's provenance and signer workflow:
-
-```bash
-$ gh attestation verify foundry_v1.7.1_linux_amd64.tar.gz \
+$ gh attestation verify "$(command -v forge)" \
   --repo foundry-rs/foundry \
   --signer-workflow foundry-rs/foundry/.github/workflows/release.yml
 ```
 
-To verify its SBOM attestation:
+Replace `forge` with `cast`, `anvil`, or `chisel` to check another binary. This applies to official prebuilt binaries; locally compiled binaries will not match a release attestation.
+
+The command checks the artifact's digest and the attestation's signature, repository, and signing workflow. A successful check exits with status 0. If verification fails, do not use the artifact until you have resolved the failure.
+
+### Verify a downloaded archive
+
+The following Bash commands download and verify the latest stable Linux AMD64 release before you extract it:
 
 ```bash
-$ gh attestation verify foundry_v1.7.1_linux_amd64.tar.gz \
+$ release_tag=$(gh release view --repo foundry-rs/foundry --json tagName --jq .tagName)
+$ archive="foundry_${release_tag}_linux_amd64.tar.gz"
+$ gh release download "$release_tag" --repo foundry-rs/foundry --pattern "$archive"
+$ gh attestation verify "$archive" \
   --repo foundry-rs/foundry \
-  --predicate-type 'https://spdx.dev/Document/v2.3'
+  --signer-workflow foundry-rs/foundry/.github/workflows/release.yml
 ```
 
-These commands compute the artifact's digest and verify its signed attestation. A successful result identifies the repository and workflow that produced it.
+For another platform, use the matching archive name from the [release assets](https://github.com/foundry-rs/foundry/releases/latest): for example, `darwin_arm64.tar.gz` for Apple Silicon or `win32_amd64.zip` for Windows. To verify a specific release, set `release_tag` to its tag instead of looking up the latest release.
 
-### Verify an archive with Cosign
-
-Install [Cosign](https://docs.sigstore.dev/cosign/system_config/installation/) and download the archive and its matching `.sigstore.json` bundle from the same release:
-
-```bash
-$ cosign verify-blob \
-  --bundle foundry_v1.7.1_linux_amd64.sigstore.json \
-  --certificate-identity 'https://github.com/foundry-rs/foundry/.github/workflows/release.yml@refs/tags/v1.7.1' \
-  --certificate-oidc-issuer 'https://token.actions.githubusercontent.com' \
-  foundry_v1.7.1_linux_amd64.tar.gz
-```
-
-For nightly builds, the certificate identity ends in `@refs/heads/master` instead of a release tag.
-
-### Check an archive's checksum
-
-Download the matching `.sha256` file into the same directory as the archive:
-
-```bash [Linux]
-$ sha256sum -c foundry_v1.7.1_linux_amd64.sha256
-```
-
-```bash [macOS]
-$ shasum -a 256 -c foundry_v1.7.1_linux_amd64.sha256
-```
-
-A checksum detects changed bytes but does not establish who published them. Use an attestation or signature check above to verify provenance.
+You do not need to download a separate attestation file: GitHub CLI retrieves it using the archive's digest.
 
 ### Verify a Docker image
 
-Container signatures and attestations are published to GHCR. With Cosign installed, verify the image signature:
+Verify the image's build provenance before running it:
 
 ```bash
-$ cosign verify ghcr.io/foundry-rs/foundry:v1.7.1 \
-  --certificate-identity-regexp '^https://github.com/foundry-rs/foundry/\.github/workflows/(release|docker-publish)\.yml@.*' \
-  --certificate-oidc-issuer 'https://token.actions.githubusercontent.com'
+$ gh attestation verify oci://ghcr.io/foundry-rs/foundry:latest \
+  --repo foundry-rs/foundry \
+  --signer-workflow foundry-rs/foundry/.github/workflows/docker-publish.yml
 ```
 
-With GitHub CLI authenticated to the container registry, verify the build provenance:
-
-```bash
-$ gh attestation verify oci://ghcr.io/foundry-rs/foundry:v1.7.1 \
-  --repo foundry-rs/foundry
-```
-
-You can inspect the SBOM and provenance attached by Docker Buildx:
-
-```bash
-$ docker buildx imagetools inspect ghcr.io/foundry-rs/foundry:v1.7.1 \
-  --format '{{ json .SBOM }}'
-$ docker buildx imagetools inspect ghcr.io/foundry-rs/foundry:v1.7.1 \
-  --format '{{ json .Provenance }}'
-```
-
-For reproducible deployments, use an immutable `ghcr.io/foundry-rs/foundry@sha256:<digest>` reference in both verification and deployment commands.
+GitHub CLI requires authentication to the container registry for OCI verification. Replace `latest` with a release tag to check a specific version. For deployments, use the same immutable `ghcr.io/foundry-rs/foundry@sha256:<digest>` reference when verifying and running the image so a tag update cannot change which image you run.
