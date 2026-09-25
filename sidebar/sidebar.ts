@@ -13,6 +13,7 @@ const docs = [
     text: "Introduction",
     items: [
       { text: "Installation", link: "/introduction/installation" },
+      { text: "Verifying Releases", link: "/introduction/verifying-releases" },
       { text: "Getting Started", link: "/introduction/getting-started" },
       { text: "Prompting", link: "/introduction/prompting" },
       { text: "Documentation for Agents", link: "/introduction/agents" },
