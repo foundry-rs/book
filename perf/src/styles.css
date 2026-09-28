@@ -881,11 +881,40 @@ header.file-header {
   position: sticky;
   top: var(--viewer-toolbar-height);
   align-self: start;
-  max-height: calc(100dvh - var(--viewer-toolbar-height));
-  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  height: calc(100dvh - 60px - var(--viewer-toolbar-height));
+  overflow: hidden;
   border-right: 1px solid var(--line);
   background: var(--surface);
   padding: 8px;
+}
+.artifact-tree {
+  flex: 1;
+  min-height: 0;
+  --trees-bg-override: var(--surface);
+  --trees-fg-override: var(--text);
+  --trees-fg-muted-override: var(--muted);
+  --trees-selected-bg-override: var(--surface-muted);
+  --trees-selected-fg-override: var(--text);
+  --trees-border-color-override: var(--line);
+}
+.artifact-tree-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 36px;
+  padding: 0 6px;
+  color: var(--muted);
+  font:
+    600 11px ui-monospace,
+    monospace;
+  text-transform: uppercase;
+}
+.artifact-tree-toolbar small {
+  margin-left: 4px;
+  color: var(--text);
+  font: inherit;
 }
 .file-selector-head {
   min-height: 70px;
@@ -917,60 +946,6 @@ header.file-header {
   height: 26px;
   padding: 0 8px;
   font-size: 11px;
-}
-.file-viewer-body .artifact-file,
-.file-viewer aside summary {
-  width: 100%;
-  height: auto;
-  min-height: 28px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  border: 0;
-  border-radius: 4px;
-  background: transparent;
-  color: var(--text);
-  padding: 4px 8px;
-  font:
-    13px/20px ui-monospace,
-    SFMono-Regular,
-    Menlo,
-    Monaco,
-    Consolas,
-    monospace;
-  text-align: left;
-}
-.file-viewer aside summary:hover,
-.file-viewer-body .artifact-file:hover,
-.file-viewer-body .artifact-file.active {
-  background: var(--surface-muted);
-}
-.file-viewer-body .artifact-file > span,
-.file-viewer aside summary > span {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.file-viewer-body aside small {
-  display: flex;
-  flex: none;
-  gap: 5px;
-  font:
-    11px ui-monospace,
-    SFMono-Regular,
-    Menlo,
-    Monaco,
-    Consolas,
-    monospace;
-}
-.file-viewer-body aside i {
-  font-style: normal;
-}
-.file-viewer-body .removed {
-  color: var(--bad);
-}
-.file-viewer-body .added {
-  color: var(--good);
 }
 .file-diff {
   min-width: 0;
@@ -1020,7 +995,7 @@ header.file-header {
   }
   .file-viewer-body aside {
     position: static;
-    max-height: none;
+    height: 45dvh;
     border-right: 0;
     border-bottom: 1px solid var(--line);
   }
@@ -1150,38 +1125,11 @@ header.file-header {
     padding: 20px 0 0;
   }
 }
-.artifact-directory {
-  padding-left: 16px;
-}
 .file-selector-head label {
   display: block;
   font-size: 12px;
   margin-top: 8px;
 }
-.file-viewer aside summary {
-  cursor: pointer;
-  list-style: none;
-}
-.file-viewer aside summary::-webkit-details-marker {
-  display: none;
-}
-.file-viewer aside summary svg,
-.artifact-file svg {
-  flex-shrink: 0;
-  color: var(--muted);
-}
-.file-viewer aside details[open] > summary .directory-chevron {
-  transform: rotate(90deg);
-}
-.file-viewer-body .artifact-file {
-  padding-left: 28px;
-}
-.file-viewer aside summary:focus-visible,
-.file-viewer-body .artifact-file:focus-visible {
-  outline: 2px solid var(--text);
-  outline-offset: -2px;
-}
-
 .loading-dots {
   display: inline-block;
   width: 3ch;

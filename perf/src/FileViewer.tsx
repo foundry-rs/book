@@ -1,7 +1,8 @@
 import { LoadingText } from './LoadingText'
+import { FileTree as PierreFileTree, useFileTree } from '@pierre/trees/react'
 import { lazy, Suspense, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
-import { ChevronRight, File, Folder, PanelLeftClose, PanelLeftOpen } from 'lucide-react'
-import { artifactTree, mergeArtifactFiles, type ArtifactNode } from './artifactTree'
+import { PanelLeftClose, PanelLeftOpen } from 'lucide-react'
+import { mergeArtifactFiles } from './artifactTree'
 import { loadArtifact, loadViewerRuns } from './data'
 import { useImportProgress } from './importProgress'
 import { artifactSides, initialArtifactSides } from './artifactSides'
@@ -18,57 +19,68 @@ interface Props {
   theme: Theme
 }
 
-function FileTree({
-  nodes,
+function parentPaths(path: string) {
+  const parts = path.split('/')
+  return parts.slice(0, -1).map((_, index) => parts.slice(0, index + 1).join('/'))
+}
+
+function ArtifactFileTree({
+  paths,
   selected,
   onSelect,
-  expanded,
-  onToggle,
 }: {
-  nodes: ArtifactNode[]
+  paths: string[]
   selected: string
   onSelect: (path: string) => void
-  expanded: Set<string>
-  onToggle: (path: string, open: boolean) => void
 }) {
+  const onSelectRef = useRef(onSelect)
+  const selectedRef = useRef(selected)
+  const pathsRef = useRef(paths)
+  onSelectRef.current = onSelect
+  selectedRef.current = selected
+  pathsRef.current = paths
+
+  const { model } = useFileTree({
+    paths,
+    flattenEmptyDirectories: true,
+    initialExpansion: 'closed',
+    initialExpandedPaths: parentPaths(selected),
+    initialSelectedPaths: selected ? [selected] : [],
+    icons: 'minimal',
+    density: 'compact',
+    search: true,
+    onSelectionChange: (selection) => {
+      const path = selection.find((item) => pathsRef.current.includes(item))
+      if (path && path !== selectedRef.current) onSelectRef.current(path)
+    },
+  })
+
+  useEffect(() => {
+    const expandedPaths = [...new Set(paths.flatMap(parentPaths))].filter((path) => {
+      const item = model.getItem(path)
+      return !!item && 'isExpanded' in item && item.isExpanded()
+    })
+    model.resetPaths(paths, { initialExpandedPaths: expandedPaths })
+  }, [model, paths])
+
+  useEffect(() => {
+    if (!selected || !model.getItem(selected)) return
+    for (const path of parentPaths(selected)) {
+      const item = model.getItem(path)
+      if (item && 'expand' in item) item.expand()
+    }
+    if (!model.getSelectedPaths().includes(selected)) model.getItem(selected)?.select()
+    model.scrollToPath(selected, { focus: false })
+  }, [model, selected, paths])
+
   return (
     <>
-      {nodes.map((node) => (
-        <div key={node.path}>
-          {node.file && (
-            <button
-              className={`artifact-file${selected === node.path ? ' active' : ''}`}
-              title={node.path}
-              aria-current={selected === node.path ? 'page' : undefined}
-              onClick={() => onSelect(node.path)}
-            >
-              <File size={15} aria-hidden="true" />
-              <span>{node.name}</span>
-            </button>
-          )}
-          {!!node.children.length && (
-            <details
-              open={expanded.has(node.path)}
-              onToggle={(event) => onToggle(node.path, event.currentTarget.open)}
-            >
-              <summary title={`${node.path}/`}>
-                <ChevronRight className="directory-chevron" size={14} aria-hidden="true" />
-                <Folder size={15} aria-hidden="true" />
-                <span>{node.name}/</span>
-              </summary>
-              <div className="artifact-directory">
-                <FileTree
-                  nodes={node.children}
-                  selected={selected}
-                  onSelect={onSelect}
-                  expanded={expanded}
-                  onToggle={onToggle}
-                />
-              </div>
-            </details>
-          )}
-        </div>
-      ))}
+      <div className="artifact-tree-toolbar">
+        <span>
+          Files <small>{paths.length}</small>
+        </span>
+      </div>
+      <PierreFileTree model={model} className="artifact-tree" aria-label="Artifact files" />
     </>
   )
 }
@@ -86,7 +98,6 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
   const [selected, setSelected] = useState(params.get('file') || '')
   const [diffStyle, setDiffStyle] = useState<'split' | 'unified'>('split')
   const [sidebarOpen, setSidebarOpen] = useState(true)
-  const [expanded, setExpanded] = useState<Set<string>>(() => new Set())
   const [sidebarWidth, setSidebarWidth] = useState(270)
   const drag = useRef<{ x: number; width: number } | null>(null)
   const resizeSidebar = (width: number) => setSidebarWidth(Math.max(200, Math.min(480, width)))
@@ -165,27 +176,8 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
         : [],
     [left, right, activeBenchmark],
   )
+  const visiblePaths = useMemo(() => visibleFiles.map((file) => file.path), [visibleFiles])
   const selectedFile = visibleFiles.find((file) => file.path === selected) || visibleFiles[0]
-
-  useEffect(() => {
-    if (!selectedFile) return
-    const parts = selectedFile.path.split('/')
-    setExpanded((previous) => {
-      const next = new Set(previous)
-      for (let i = 1; i < parts.length; i++) next.add(parts.slice(0, i).join('/'))
-      return next
-    })
-  }, [selectedFile?.path])
-
-  const toggleDirectory = (path: string, open: boolean) => {
-    setExpanded((previous) => {
-      if (previous.has(path) === open) return previous
-      const next = new Set(previous)
-      if (open) next.add(path)
-      else next.delete(path)
-      return next
-    })
-  }
 
   // Start bodies as soon as the descriptor arrives, even while the renderer chunk loads.
   useEffect(() => {
@@ -312,12 +304,10 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
                 <LoadingText>Loading files…</LoadingText>
               </p>
             ) : (
-              <FileTree
-                nodes={artifactTree(visibleFiles)}
+              <ArtifactFileTree
+                paths={visiblePaths}
                 selected={selectedFile?.path || ''}
                 onSelect={selectFile}
-                expanded={expanded}
-                onToggle={toggleDirectory}
               />
             )}
           </aside>

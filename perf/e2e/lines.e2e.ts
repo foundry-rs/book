@@ -51,7 +51,7 @@ for (const identical of [false, true]) {
       .toBeGreaterThanOrEqual(identical ? 48 : 80)
     expect((await line.boundingBox())!.y).toBeLessThan(200)
     expect(await page.evaluate(() => window.scrollY)).toBeGreaterThan(1000)
-    await page.getByRole('button', { name: 'abi.json', exact: true }).click()
+    await page.getByRole('treeitem', { name: 'abi.json', exact: true }).click()
     await expect(page).not.toHaveURL(/#/)
     await expect(page.locator('diffs-container [data-selected-line]')).toHaveCount(0)
   })
