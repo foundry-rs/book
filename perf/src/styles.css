@@ -883,7 +883,7 @@ header.file-header {
   align-self: start;
   display: flex;
   flex-direction: column;
-  height: calc(100dvh - var(--viewer-toolbar-height));
+  height: calc(100dvh - 60px - var(--viewer-toolbar-height));
   overflow: hidden;
   border-right: 1px solid var(--line);
   background: var(--surface);

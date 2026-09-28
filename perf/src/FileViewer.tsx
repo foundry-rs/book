@@ -56,7 +56,11 @@ function ArtifactFileTree({
   })
 
   useEffect(() => {
-    model.resetPaths(paths)
+    const expandedPaths = [...new Set(paths.flatMap(parentPaths))].filter((path) => {
+      const item = model.getItem(path)
+      return !!item && 'isExpanded' in item && item.isExpanded()
+    })
+    model.resetPaths(paths, { initialExpandedPaths: expandedPaths })
   }, [model, paths])
 
   useEffect(() => {
