@@ -25,10 +25,11 @@ This is the execution EVM version, which is not necessarily the one the contract
 ### Examples
 
 ```solidity [test/GetEvmVersion.t.sol]
-// forge test --evm-version cancun
-function testGetEvmVersion() public {
-    assertEq(vm.getEvmVersion(), "cancun");
-}
+// [!include ~/snippets/projects/evm_version/test/GetEvmVersion.t.sol]
+```
+
+```bash
+$ forge test --root src/snippets/projects/evm_version --match-contract GetEvmVersionTest --evm-version cancun
 ```
 
 ### Related Cheatcodes
