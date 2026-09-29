@@ -892,12 +892,17 @@ header.file-header {
 .artifact-tree {
   flex: 1;
   min-height: 0;
+  /* Pierre's light-dark() colors otherwise follow the OS scheme, not the page theme. */
+  color-scheme: dark;
   --trees-bg-override: var(--surface);
   --trees-fg-override: var(--text);
   --trees-fg-muted-override: var(--muted);
   --trees-selected-bg-override: var(--surface-muted);
   --trees-selected-fg-override: var(--text);
   --trees-border-color-override: var(--line);
+}
+:root[data-theme='light'] .artifact-tree {
+  color-scheme: light;
 }
 .artifact-tree-toolbar {
   display: flex;

@@ -76,7 +76,13 @@ no dependency patch is needed. Its edit-session APIs are not used by this read-o
 are rendered. The file toolbar and side labels stick during scrolling. The file
 tree can be collapsed or resized with a pointer or the separator's arrow keys;
 its visibility and width reset on reload. Narrow screens stack the tree above the
-diff and omit the resize handle. File cache keys
+diff and omit the resize handle. File icons use Pierre's complete colored set, as on
+[DiffsHub](https://diffshub.com). `src/artifactIcons.ts` adds icons for formats that set
+lacks: Solidity (`.sol`), EVM IR (`.evmir`) and LLVM IR (`.ll`) use
+[Simple Icons](https://simpleicons.org) marks (CC0-1.0); Solar MIR (`.mir`), Yul
+(`.yul`), disassembly (`.disasm`) and hex bytecode (`.hex`) use
+[Lucide](https://lucide.dev) glyphs (ISC, the license bundled with `lucide-react`).
+File cache keys
 include a SHA-256 of the actual formatted text, path, and language, preventing
 same-name artifacts from sharing highlighting. Completed diffs reuse the existing
 bounded cache (16 MiB, one hour); cancelled computations are not retained.
