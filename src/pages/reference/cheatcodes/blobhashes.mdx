@@ -1,0 +1,42 @@
+---
+description: Sets the EIP-4844 blob versioned hashes of the current transaction in Forge tests
+---
+
+## `blobhashes`
+
+### Signature
+
+```solidity
+function blobhashes(bytes32[] calldata hashes) external;
+```
+
+### Description
+
+Sets the blob versioned hashes ([EIP-4844](https://eips.ethereum.org/EIPS/eip-4844)) of the current transaction. After this call, the `BLOBHASH` opcode (`blobhash(i)` in Solidity) returns `hashes[i]`, and `bytes32(0)` for any index out of range.
+
+### Parameters
+
+| Parameter | Type        | Description                                  |
+|-----------|-------------|----------------------------------------------|
+| `hashes`  | `bytes32[]` | The blob versioned hashes to set             |
+
+### Examples
+
+```solidity [test/Blobhashes.t.sol]
+// [!include ~/snippets/projects/blob_cheatcodes/test/Blobhashes.t.sol]
+```
+
+```bash
+$ forge test --root src/snippets/projects/blob_cheatcodes --match-contract BlobhashesTest
+```
+
+### Gotchas
+
+:::warning
+This cheatcode is only available on EVM versions Cancun and later. On earlier EVM versions it reverts with `` `blobhashes` is not supported before the Cancun hard fork ``. Set `evm_version = "cancun"` (or later) in `foundry.toml`, or pass `--evm-version cancun`.
+:::
+
+### Related Cheatcodes
+
+- [`getBlobhashes`](/reference/cheatcodes/get-blobhashes) - Gets the blob versioned hashes of the current transaction
+- [`blobBaseFee`](/reference/cheatcodes/blob-base-fee) - Sets `block.blobbasefee`
