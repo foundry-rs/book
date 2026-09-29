@@ -1,0 +1,44 @@
+---
+description: Sets the EVM version used to execute the current Forge test or script
+---
+
+## `setEvmVersion`
+
+### Signature
+
+```solidity
+function setEvmVersion(string calldata evm) external;
+```
+
+### Description
+
+Sets the EVM version used to execute the rest of the current test or script, e.g. `"berlin"` or `"cancun"`. Cheatcodes and opcodes that depend on a hardfork follow the new version.
+
+This changes only the execution EVM version. The contracts are not recompiled, so the compilation EVM version stays the one set by `evm_version` in `foundry.toml` or `--evm-version`.
+
+### Parameters
+
+| Parameter | Type     | Description                                     |
+|-----------|----------|-------------------------------------------------|
+| `evm`     | `string` | The EVM version name, in lowercase (e.g. `"cancun"`) |
+
+### Examples
+
+```solidity [test/SetEvmVersion.t.sol]
+function testSetEvmVersion() public {
+    vm.setEvmVersion("shanghai");
+    assertEq(vm.getEvmVersion(), "shanghai");
+
+    // Cancun-only cheatcodes now revert, e.g. `vm.blobhashes`
+}
+```
+
+### Gotchas
+
+:::warning
+The version name is case-sensitive: `vm.setEvmVersion("Cancun")` reverts with `invalid evm version Cancun`. Use lowercase names.
+:::
+
+### Related Cheatcodes
+
+- [`getEvmVersion`](/reference/cheatcodes/get-evm-version) - Gets the execution EVM version

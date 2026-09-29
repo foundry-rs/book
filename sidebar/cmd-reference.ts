@@ -18,6 +18,8 @@ export const cmdReference: SidebarItem[] = [
       { text: "prevrandao", link: "/reference/cheatcodes/prevrandao" },
       { text: "chainId", link: "/reference/cheatcodes/chain-id" },
       { text: "getChainId", link: "/reference/cheatcodes/get-chain-id" },
+      { text: "getEvmVersion", link: "/reference/cheatcodes/get-evm-version" },
+      { text: "setEvmVersion", link: "/reference/cheatcodes/set-evm-version" },
       { text: "store", link: "/reference/cheatcodes/store" },
       { text: "setTip20LogoURI", link: "/reference/cheatcodes/set-tip20-logo-uri" },
       { text: "load", link: "/reference/cheatcodes/load" },
