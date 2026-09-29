@@ -193,6 +193,8 @@ export const cmdReference: SidebarItem[] = [
       { text: "randomBool", link: "/reference/cheatcodes/random-bool" },
       { text: "randomBytes", link: "/reference/cheatcodes/random-bytes" },
       { text: "setSeed", link: "/reference/cheatcodes/set-seed" },
+      { text: "sort", link: "/reference/cheatcodes/sort" },
+      { text: "shuffle", link: "/reference/cheatcodes/shuffle" },
       { text: "ensNamehash", link: "/reference/cheatcodes/ens-namehash" },
       { text: "foundryVersion", link: "/reference/cheatcodes/foundry-version" },
       { text: "eip712HashType", link: "/reference/cheatcodes/eip712-hash-type" },

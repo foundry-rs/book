@@ -1,0 +1,51 @@
+---
+description: Sorts a uint256 array in ascending order in Forge tests and scripts
+---
+
+## `sort`
+
+### Signature
+
+```solidity
+function sort(uint256[] calldata array) external returns (uint256[] memory);
+```
+
+### Description
+
+Returns a copy of `array` sorted in ascending order. The input array is not modified.
+
+### Parameters
+
+| Parameter | Type        | Description           |
+|-----------|-------------|-----------------------|
+| `array`   | `uint256[]` | The array to sort     |
+
+### Returns
+
+| Type        | Description                                  |
+|-------------|----------------------------------------------|
+| `uint256[]` | A new array with the elements in ascending order |
+
+### Examples
+
+```solidity [test/Sort.t.sol]
+function testSort() public {
+    uint256[] memory array = new uint256[](4);
+    array[0] = 3;
+    array[1] = 1;
+    array[2] = 4;
+    array[3] = 2;
+
+    uint256[] memory sorted = vm.sort(array);
+
+    assertEq(sorted[0], 1);
+    assertEq(sorted[1], 2);
+    assertEq(sorted[2], 3);
+    assertEq(sorted[3], 4);
+    assertEq(array[0], 3); // input is unchanged
+}
+```
+
+### Related Cheatcodes
+
+- [`shuffle`](/reference/cheatcodes/shuffle) - Randomly shuffles an array
