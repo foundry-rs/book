@@ -578,6 +578,56 @@ The number of runs that must execute for each invariant test group. See also [fu
 
 The number of calls executed to attempt to break invariants in one run.
 
+#### `tx_generator`
+
+- Type: string (`"rng"` or `"jev"`)
+- Default: `"rng"`
+- Environment: `FOUNDRY_INVARIANT_TX_GENERATOR`
+
+Select how you generate fresh invariant transactions. `rng` uses Foundry's local seeded generator
+without network requests. `jev` asks Jev Choices during the campaign to select from a grammar
+derived from your eligible target ABIs for 20% of fresh transactions; the other 80% use RNG. Each
+function has random-argument and dictionary-backed productions. Foundry also derives same-contract
+view candidates whose single output exactly matches one destination argument's ABI type. View
+inputs must be empty or addresses, which are bound to the selected sender. This makes relationships
+such as `amount = balanceOf(sender)` model-selectable without treating ABI compatibility as proof
+that the relationship is semantically valid.
+
+Foundry evaluates a selected view against the current invariant-run state without committing its
+state changes. It replaces one argument on success while leaving the other arguments random. A
+failed or undecodable read retains the original random argument. The resulting concrete transaction
+is what corpus replay, shrinking, and failure reporting retain.
+
+```toml [foundry.toml]
+[profile.default.invariant]
+tx_generator = "jev"
+workers = 1
+```
+
+Set `OPENROUTER_API_KEY` in your environment. You can override the configuration with
+`forge test --invariant-tx-generator rng` or `forge test --invariant-tx-generator jev`.
+
+:::warning
+Enabling `jev` opts in to sending eligible function and compatible view signatures, types, local
+target ordinals, and recent execution outcomes to OpenRouter. Foundry does not send source,
+addresses, calldata, storage, dictionary contents, or view results. Requests incur provider charges.
+:::
+
+Jev selects batches of eight productions from current ABI choices. Later requests include up to
+eight actual call outcomes: revert, discard, and new-coverage flags. Changing target sets invalidates
+pending choices; resetting an invariant run clears pending choices and execution history. Corpus
+mutation and replay remain local and can continue alongside model-selected fresh calls.
+
+This experimental mode supports at most 64 eligible functions, 256 grammar productions, and 32
+requests per worker per invariant test group, with two-second HTTP deadlines. Workers wait for each batch; include that
+latency when comparing campaign budgets. Missing credentials, request failures, invalid responses,
+or exhausted limits produce a warning and switch that worker to RNG without retries. Increasing
+workers multiplies the request cap. The provider endpoint and model (`typesafe/jev-1.13`) are fixed.
+
+Remote choices are not seed-deterministic. Replay concrete persisted corpus or failure transactions;
+the same RNG seed alone does not reproduce the model's decisions. Provider responses are not
+persisted by this mode.
+
 ##### `timeout`
 
 - Type: integer

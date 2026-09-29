@@ -663,6 +663,9 @@ show_edge_coverage = false
 # =============================================================================
 
 [invariant]
+# Fresh transaction generator; Jev mixes local RNG with remote ABI grammar decisions.
+tx_generator = "rng"
+
 # The number of runs that must execute for each invariant test group
 # Default: 256
 runs = 256
