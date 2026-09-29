@@ -25,11 +25,11 @@ Use this instead of `block.blobbasefee` after [`vm.blobBaseFee`](/reference/chea
 ### Examples
 
 ```solidity [test/GetBlobBaseFee.t.sol]
-function testGetBlobBaseFee() public {
-    uint256 current = vm.getBlobBaseFee();
-    vm.blobBaseFee(current + 1);
-    assertEq(vm.getBlobBaseFee(), current + 1);
-}
+// [!include ~/snippets/projects/blob_cheatcodes/test/GetBlobBaseFee.t.sol]
+```
+
+```bash
+$ forge test --root src/snippets/projects/blob_cheatcodes --match-contract GetBlobBaseFeeTest
 ```
 
 ### Related Cheatcodes

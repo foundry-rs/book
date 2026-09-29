@@ -23,17 +23,11 @@ Sets the blob versioned hashes ([EIP-4844](https://eips.ethereum.org/EIPS/eip-48
 ### Examples
 
 ```solidity [test/Blobhashes.t.sol]
-function testBlobhashes() public {
-    bytes32[] memory hashes = new bytes32[](2);
-    hashes[0] = bytes32(uint256(1));
-    hashes[1] = bytes32(uint256(2));
-    vm.blobhashes(hashes);
+// [!include ~/snippets/projects/blob_cheatcodes/test/Blobhashes.t.sol]
+```
 
-    assertEq(vm.getBlobhashes(), hashes);
-    assertEq(blobhash(0), hashes[0]);
-    assertEq(blobhash(1), hashes[1]);
-    assertEq(blobhash(2), bytes32(0));
-}
+```bash
+$ forge test --root src/snippets/projects/blob_cheatcodes --match-contract BlobhashesTest
 ```
 
 ### Gotchas
