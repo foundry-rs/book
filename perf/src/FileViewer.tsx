@@ -2,6 +2,7 @@ import { LoadingText } from './LoadingText'
 import { FileTree as PierreFileTree, useFileTree } from '@pierre/trees/react'
 import { lazy, Suspense, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import { PanelLeftClose, PanelLeftOpen } from 'lucide-react'
+import { artifactIcons } from './artifactIcons'
 import { mergeArtifactFiles } from './artifactTree'
 import { loadArtifact, loadViewerRuns } from './data'
 import { useImportProgress } from './importProgress'
@@ -46,7 +47,7 @@ function ArtifactFileTree({
     initialExpansion: 'closed',
     initialExpandedPaths: parentPaths(selected),
     initialSelectedPaths: selected ? [selected] : [],
-    icons: 'minimal',
+    icons: artifactIcons,
     density: 'compact',
     search: true,
     onSelectionChange: (selection) => {
