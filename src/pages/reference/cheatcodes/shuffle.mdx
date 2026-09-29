@@ -31,18 +31,11 @@ The RNG is seeded randomly on each run unless a seed is set via [`setSeed`](/ref
 ### Examples
 
 ```solidity [test/Shuffle.t.sol]
-function testShuffle() public {
-    uint256[] memory array = new uint256[](5);
-    for (uint256 i = 0; i < array.length; i++) {
-        array[i] = i;
-    }
+// [!include ~/snippets/projects/array_utilities/test/Shuffle.t.sol]
+```
 
-    uint256[] memory shuffled = vm.shuffle(array);
-
-    // Same elements, possibly in a different order
-    assertEq(shuffled.length, array.length);
-    assertEq(vm.sort(shuffled), array);
-}
+```bash
+$ forge test --root src/snippets/projects/array_utilities --match-contract ShuffleTest
 ```
 
 ### Related Cheatcodes

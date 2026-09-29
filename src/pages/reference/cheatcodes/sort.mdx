@@ -29,21 +29,11 @@ Returns a copy of `array` sorted in ascending order. The input array is not modi
 ### Examples
 
 ```solidity [test/Sort.t.sol]
-function testSort() public {
-    uint256[] memory array = new uint256[](4);
-    array[0] = 3;
-    array[1] = 1;
-    array[2] = 4;
-    array[3] = 2;
+// [!include ~/snippets/projects/array_utilities/test/Sort.t.sol]
+```
 
-    uint256[] memory sorted = vm.sort(array);
-
-    assertEq(sorted[0], 1);
-    assertEq(sorted[1], 2);
-    assertEq(sorted[2], 3);
-    assertEq(sorted[3], 4);
-    assertEq(array[0], 3); // input is unchanged
-}
+```bash
+$ forge test --root src/snippets/projects/array_utilities --match-contract SortTest
 ```
 
 ### Related Cheatcodes
