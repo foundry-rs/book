@@ -220,9 +220,8 @@ export function demoResponse(input: string) {
       : Response.json({ error: 'Run not found' }, { status: 404 })
   }
 
-  const artifact = /^\/api\/data\/runs\/([0-9a-f]{40})\/([^/]+)\/([^/]+)\/(\d+\.json)$/.exec(
-    pathname,
-  )
+  const artifact =
+    /^\/api\/data\/runs\/([0-9a-f]{40})\/([^/]+)\/([^/]+)\/(\d+(?:\.(?:txt|json))?)$/.exec(pathname)
   if (artifact) {
     let benchmark: string
     try {
@@ -231,11 +230,16 @@ export function demoResponse(input: string) {
       return Response.json({ error: 'Invalid benchmark' }, { status: 400 })
     }
     const contents = artifactContents.get(
-      `${artifact[1]}/${benchmark}/${artifact[3]}/${artifact[4]}`,
+      `${artifact[1]}/${benchmark}/${artifact[3]}/${artifact[4].replace(/\.(?:txt|json)$/, '')}.json`,
     )
     return contents === undefined
       ? Response.json({ error: 'Artifact not found' }, { status: 404 })
-      : Response.json(contents)
+      : new Response(contents, {
+          headers: {
+            'content-type': 'text/plain; charset=utf-8',
+            'x-content-type-options': 'nosniff',
+          },
+        })
   }
 
   return null

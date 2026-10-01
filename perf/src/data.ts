@@ -202,13 +202,25 @@ export async function loadArtifact(
   contentHash?: string,
 ): Promise<string | null> {
   const resolved = await resolveRunCommit(commit)
-  const parts = [resolved, benchmark, compiler, ...storagePath.split('/')].map(encodeURIComponent)
-  const path = contentHash ? `blobs/${contentHash}.json` : `runs/${parts.join('/')}`
-  return cachedArtifact(path, () =>
-    fetch(`${root}${path}`).then((response) => {
+  const url = artifactUrl(resolved, benchmark, compiler, storagePath, contentHash)
+  return cachedArtifact(url, () =>
+    fetch(url).then((response) => {
       if (response.status === 404) return null
       if (!response.ok) throw new Error(`Could not load artifact (${response.status})`)
-      return response.json() as Promise<string>
+      return response.text()
     }),
   )
+}
+
+export function artifactUrl(
+  commit: string,
+  benchmark: string,
+  compiler: string,
+  storagePath: string,
+  contentHash?: string,
+) {
+  const parts = [commit, benchmark, compiler, ...storagePath.replace(/\.json$/, '').split('/')].map(
+    encodeURIComponent,
+  )
+  return `${root}${contentHash ? `blobs/${contentHash}` : `runs/${parts.join('/')}`}`
 }

@@ -493,7 +493,7 @@ export function createApi(options: ApiOptions = {}) {
         return context.json(artifacts)
       }
 
-      const blobMatch = /^blobs\/([a-f0-9]{64})\.json$/.exec(path)
+      const blobMatch = /^blobs\/([a-f0-9]{64})(?:\.(?:txt|json))?$/.exec(path)
       if (blobMatch) {
         const blob = await blobReads(blobMatch[1], async () => {
           const [row] = await select(
@@ -504,16 +504,18 @@ export function createApi(options: ApiOptions = {}) {
         })
         if (blob === null) return context.json({ error: 'Artifact not found' }, 404)
         context.header('cache-control', 'public, max-age=31536000, immutable')
-        return context.json(blob)
+        context.header('x-content-type-options', 'nosniff')
+        return context.text(blob)
       }
 
       const artifactMatch =
-        /^runs\/([0-9a-f]{40})\/([\w.-]{1,128})\/([\w.-]{1,128})\/((?:\d+|[a-f0-9]{64})\.json)$/.exec(
+        /^runs\/([0-9a-f]{40})\/([\w.-]{1,128})\/([\w.-]{1,128})\/((?:\d+|[a-f0-9]{64})(?:\.(?:txt|json))?)$/.exec(
           path,
         )
       if (!artifactMatch) return context.json({ error: 'Unknown data file' }, 404)
 
-      const [, sha, benchmark, compiler, storagePath] = artifactMatch
+      const [, sha, benchmark, compiler, bodyPath] = artifactMatch
+      const storagePath = `${bodyPath.replace(/\.(?:txt|json)$/, '')}.json`
       // Path hashes also resolve legacy rows without rewriting their numeric IDs.
       const fileCondition = /^[a-f0-9]{64}\.json$/.test(storagePath)
         ? `lower(hex(SHA256(f.path))) = '${storagePath.slice(0, -5)}'`
@@ -542,7 +544,8 @@ export function createApi(options: ApiOptions = {}) {
       }
       if (!artifact) return context.json({ error: 'Artifact not found' }, 404)
       context.header('cache-control', 'public, max-age=3600, stale-while-revalidate=86400')
-      return context.json(artifact.content)
+      context.header('x-content-type-options', 'nosniff')
+      return context.text(String(artifact.content))
     } catch (error) {
       context.header('cache-control', 'no-store')
       if (error instanceof RunNotFoundError) return context.json({ error: error.message }, 404)

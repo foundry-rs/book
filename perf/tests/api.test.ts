@@ -51,15 +51,15 @@ describe('website API', () => {
   it('coalesces origin blob reads and retains empty contents without caching missing blobs', async () => {
     globalThis.fetch = vi.fn(async () => Response.json({ content: '' }))
     const app = createApi({ clickHouse: config })
-    const path = `/api/data/blobs/${'a'.repeat(64)}.json`
+    const path = `/api/data/blobs/${'a'.repeat(64)}`
     const responses = await Promise.all([app.request(path), app.request(path)])
-    expect(await responses[0].json()).toBe('')
-    expect(await responses[1].json()).toBe('')
+    expect(await responses[0].text()).toBe('')
+    expect(await responses[1].text()).toBe('')
     expect(globalThis.fetch).toHaveBeenCalledOnce()
     await app.request(path)
     expect(globalThis.fetch).toHaveBeenCalledOnce()
     globalThis.fetch = vi.fn(async () => new Response(''))
-    const absent = `/api/data/blobs/${'b'.repeat(64)}.json`
+    const absent = `/api/data/blobs/${'b'.repeat(64)}`
     expect((await app.request(absent)).status).toBe(404)
     expect((await app.request(absent)).status).toBe(404)
     expect(globalThis.fetch).toHaveBeenCalledTimes(2)
@@ -122,13 +122,27 @@ describe('website API', () => {
   it('serves immutable blob contents without querying manifests', async () => {
     globalThis.fetch = vi.fn(async () => Response.json({ content: 'body' }))
     const response = await createApi({ clickHouse: config }).request(
-      `/api/data/blobs/${'a'.repeat(64)}.json`,
+      `/api/data/blobs/${'a'.repeat(64)}`,
     )
-    expect(await response.json()).toBe('body')
+    expect(await response.text()).toBe('body')
     expect(response.headers.get('cache-control')).toContain('immutable')
     expect(globalThis.fetch).toHaveBeenCalledOnce()
     expect(vi.mocked(globalThis.fetch).mock.calls[0][1]?.body).not.toContain('run_snapshots')
   })
+
+  it.each(['', '.txt', '.json'])(
+    'serves blob URLs with suffix "%s" as exact plain text with sniffing disabled',
+    async (suffix) => {
+      const raw = '<script>alert("test")</script>\r\nλ\\literal\n'
+      globalThis.fetch = vi.fn(async () => Response.json({ content: raw }))
+      const response = await createApi({ clickHouse: config }).request(
+        `/api/data/blobs/${'a'.repeat(64)}${suffix}`,
+      )
+      expect(response.headers.get('content-type')).toBe('text/plain; charset=UTF-8')
+      expect(response.headers.get('x-content-type-options')).toBe('nosniff')
+      expect(await response.text()).toBe(raw)
+    },
+  )
 
   it('loads both comparison runs and nullable measurements in one query', async () => {
     const commits = ['a'.repeat(40), 'b'.repeat(40)]
@@ -326,12 +340,10 @@ describe('website API', () => {
         [commits[0], 'solc'],
       ].map(async ([commit, compiler]) => {
         const response = vercelDemo(
-          new Request(
-            `https://web.test/api/data/runs/${commit}/demo%3A%3Afactorial/${compiler}/0.json`,
-          ),
+          new Request(`https://web.test/api/data/runs/${commit}/demo%3A%3Afactorial/${compiler}/0`),
         )
         expect(response.status).toBe(200)
-        return response.json()
+        return response.text()
       }),
     )
     expect(new Set(contents).size).toBe(3)
@@ -580,11 +592,11 @@ describe('website API', () => {
     })
 
     const response = await createApi({ clickHouse: config }).request(
-      `http://web.test/api/data/runs/${sha}/factorial/solar/2.json`,
+      `http://web.test/api/data/runs/${sha}/factorial/solar/2`,
     )
 
     expect(response.status).toBe(200)
-    await expect(response.json()).resolves.toBe('fn factorial')
+    await expect(response.text()).resolves.toBe('fn factorial')
     expect(queries).toHaveLength(1)
     expect(response.headers.get('cache-control')).toBe(
       'public, max-age=3600, stale-while-revalidate=86400',
@@ -623,7 +635,7 @@ describe('website API', () => {
       `http://web.test/api/data/runs/${'a'.repeat(40)}/test/experimental/${storagePath}`,
     )
     expect(response.status).toBe(200)
-    expect(await response.json()).toBe('new output')
+    expect(await response.text()).toBe('new output')
     expect(queries).toHaveLength(1)
     expect(queries[0]).toContain('lower(hex(SHA256(f.path)))')
     expect(queries[0]).toContain("f.compiler = 'experimental'")

@@ -31,10 +31,10 @@ for (const identical of [false, true]) {
   test(`deep links reveal virtualized ${identical ? 'identical' : 'collapsed diff'} lines`, async ({
     page,
   }) => {
-    await page.route('**/api/data/runs/**/1.json', (route) => {
+    await page.route('**/api/data/runs/**/1', (route) => {
       const head = route.request().url().includes('9d8c7b6a5e4f32100123456789abcdef01234567')
       return route.fulfill({
-        json: Array.from(
+        body: Array.from(
           { length: 2000 },
           (_, i) => `PUSH2 ${i === 1000 && head && !identical ? 'changed' : i}`,
         ).join('\n'),
