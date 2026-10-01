@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Copy, ExternalLink } from 'lucide-react'
-import { loadArtifact } from './data'
+import { artifactUrl, loadArtifact } from './data'
 import type { ArtifactSource } from './formattedArtifact'
 
 export function loadRawArtifact(source: ArtifactSource) {
@@ -16,26 +16,25 @@ export function loadRawArtifact(source: ArtifactSource) {
 
 export function ArtifactActions({ source }: { source: ArtifactSource }) {
   const { commit, benchmark, compiler, storagePath, contentHash, label } = source
-  const [artifact, setArtifact] = useState<{ contents: string; url: string } | null>(null)
+  const [artifact, setArtifact] = useState<string | null>(null)
   const [status, setStatus] = useState('')
+  const url = storagePath
+    ? artifactUrl(commit, benchmark, compiler, storagePath, contentHash)
+    : undefined
 
   useEffect(() => {
     let active = true
-    let url: string | undefined
     setArtifact(null)
     setStatus('')
     void loadRawArtifact({ commit, benchmark, compiler, storagePath, contentHash, label })
       .then((contents) => {
-        if (!active || contents === null) return
-        url = URL.createObjectURL(new Blob([contents], { type: 'text/plain;charset=utf-8' }))
-        setArtifact({ contents, url })
+        if (active) setArtifact(contents)
       })
       .catch(() => {
         if (active) setStatus('Could not load raw file')
       })
     return () => {
       active = false
-      if (url) URL.revokeObjectURL(url)
     }
   }, [commit, benchmark, compiler, storagePath, contentHash, label])
 
@@ -45,13 +44,13 @@ export function ArtifactActions({ source }: { source: ArtifactSource }) {
         {label}
       </span>
       <button
-        disabled={!artifact}
+        disabled={artifact === null}
         aria-label={`Copy ${label} raw file`}
         onClick={async () => {
-          if (!artifact) return
+          if (artifact === null) return
           setStatus('')
           try {
-            await navigator.clipboard.writeText(artifact.contents)
+            await navigator.clipboard.writeText(artifact)
             setStatus('Copied')
           } catch {
             setStatus('Copy failed; open raw to copy manually')
@@ -60,9 +59,9 @@ export function ArtifactActions({ source }: { source: ArtifactSource }) {
       >
         <Copy size={14} /> Copy
       </button>
-      {artifact ? (
+      {artifact !== null && url ? (
         <a
-          href={artifact.url}
+          href={url}
           target="_blank"
           rel="noopener noreferrer"
           aria-label={`Open ${label} raw file`}

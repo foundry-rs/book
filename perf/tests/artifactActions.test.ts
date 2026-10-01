@@ -2,7 +2,7 @@ import { expect, it, vi } from 'vitest'
 import { loadRawArtifact } from '../src/ArtifactActions'
 import { loadArtifact } from '../src/data'
 
-vi.mock('../src/data', () => ({ loadArtifact: vi.fn() }))
+vi.mock('../src/data', () => ({ loadArtifact: vi.fn(), artifactUrl: vi.fn() }))
 
 const source = {
   commit: 'a'.repeat(40),

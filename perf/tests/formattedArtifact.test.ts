@@ -4,7 +4,7 @@ afterEach(() => vi.unstubAllGlobals())
 
 it('retains formatted contents across viewer visits and keeps large files unparsed', async () => {
   vi.resetModules()
-  const fetch = vi.fn(async () => Response.json('{"value":1}'))
+  const fetch = vi.fn(async () => new Response('{"value":1}'))
   vi.stubGlobal('fetch', fetch)
   const { loadDiffFile, maxInteractiveArtifact } = await import('../src/formattedArtifact')
   const source = {
@@ -21,7 +21,7 @@ it('retains formatted contents across viewer visits and keeps large files unpars
   expect(await loadDiffFile(source, 'output.json', 'json')).toBe(first)
   expect(fetch).toHaveBeenCalledOnce()
   const large = `{"value":"${'x'.repeat(maxInteractiveArtifact)}"}`
-  fetch.mockImplementation(async () => Response.json(large))
+  fetch.mockImplementation(async () => new Response(large))
   expect(
     await loadDiffFile({ ...source, contentHash: 'c'.repeat(64) }, 'output.json', 'json'),
   ).toEqual({ name: 'output.json', lang: 'json', contents: large })
