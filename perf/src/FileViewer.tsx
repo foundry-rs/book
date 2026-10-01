@@ -3,6 +3,7 @@ import { FileTree as PierreFileTree, useFileTree } from '@pierre/trees/react'
 import { lazy, Suspense, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import { PanelLeftClose, PanelLeftOpen } from 'lucide-react'
 import { artifactIcons } from './artifactIcons'
+import { ArtifactActions } from './ArtifactActions'
 import { mergeArtifactFiles } from './artifactTree'
 import { loadArtifact, loadViewerRuns } from './data'
 import { useImportProgress } from './importProgress'
@@ -359,6 +360,27 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
               </p>
             ) : selectedFile && left && right ? (
               <>
+                <div className="artifact-actions-toolbar">
+                  {[left, right].map((side, index) => {
+                    const file = side.run.artifacts[activeBenchmark]?.find(
+                      (file) =>
+                        file.path === selectedFile.path && file.compilers.includes(side.compiler),
+                    )
+                    return (
+                      <ArtifactActions
+                        key={`${index}:${side.id}:${selectedFile.path}`}
+                        source={{
+                          label: side.label,
+                          commit: side.run.commit,
+                          benchmark: activeBenchmark,
+                          compiler: side.compiler,
+                          storagePath: file?.storagePath,
+                          contentHash: file?.contentHashes?.[side.compiler],
+                        }}
+                      />
+                    )
+                  })}
+                </div>
                 <Suspense
                   fallback={
                     <p className="empty">

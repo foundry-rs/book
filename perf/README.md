@@ -353,6 +353,11 @@ extensions render as plain text; HTML is displayed as source, never executed.
 Binary files are omitted. Paths, file counts, and compressed/uncompressed sizes
 are bounded; the local importer rejects symlinks. No artifact content is executed.
 
+Each selected side has Copy and Open raw controls for the original, unformatted
+artifact text. Open raw uses a plain-text tab, including for HTML artifacts, so
+artifact content is never executed. Controls stay disabled for missing files or
+while the body is loading; clipboard failures offer the raw tab as a fallback.
+
 Existing numeric artifact URLs remain readable; path-based hashes identify newly
 discovered files independently of directory order. Existing imported runs are not
 automatically refreshed: adding support for previously omitted files requires a

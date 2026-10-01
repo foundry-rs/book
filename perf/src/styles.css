@@ -856,6 +856,36 @@ header.file-header {
   width: min(1100px, calc(100% - 48px));
   margin: 32px auto;
 }
+.artifact-actions-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--line);
+}
+.artifact-actions {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 12px;
+}
+.artifact-actions-label {
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.artifact-actions button,
+.artifact-actions a {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.artifact-actions-status {
+  color: var(--muted);
+}
 .file-viewer-body {
   display: grid;
   grid-template-columns: min(var(--sidebar-width), 40vw) 6px minmax(0, 1fr);
