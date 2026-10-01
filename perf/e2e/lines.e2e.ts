@@ -31,7 +31,7 @@ for (const identical of [false, true]) {
   test(`deep links reveal virtualized ${identical ? 'identical' : 'collapsed diff'} lines`, async ({
     page,
   }) => {
-    await page.route('**/api/data/runs/**/1.txt', (route) => {
+    await page.route('**/api/data/runs/**/1', (route) => {
       const head = route.request().url().includes('9d8c7b6a5e4f32100123456789abcdef01234567')
       return route.fulfill({
         body: Array.from(

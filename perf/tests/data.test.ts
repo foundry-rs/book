@@ -65,7 +65,7 @@ it('shares content-addressed artifact reads across commits and compilers', async
     loadArtifact('a'.repeat(40), 'test', 'solar', '1.json', hash),
     loadArtifact('b'.repeat(40), 'test', 'solc', '2.json', hash),
   ])
-  expect(fetch).toHaveBeenCalledExactlyOnceWith(`/api/data/blobs/${hash}.txt`)
+  expect(fetch).toHaveBeenCalledExactlyOnceWith(`/api/data/blobs/${hash}`)
 })
 
 it('reads unescaped raw text through fresh body URLs and encodes benchmark names', async () => {
@@ -76,11 +76,9 @@ it('reads unescaped raw text through fresh body URLs and encodes benchmark names
   const { loadArtifact, artifactUrl } = await import('../src/data')
   const commit = 'a'.repeat(40)
   expect(await loadArtifact(commit, 'demo::a b', 'solar', '0.json')).toBe(raw)
-  expect(fetch).toHaveBeenCalledExactlyOnceWith(
-    `/api/data/runs/${commit}/demo%3A%3Aa%20b/solar/0.txt`,
-  )
+  expect(fetch).toHaveBeenCalledExactlyOnceWith(`/api/data/runs/${commit}/demo%3A%3Aa%20b/solar/0`)
   expect(artifactUrl(commit, 'demo::a b', 'solc', '0.json', 'b'.repeat(64))).toBe(
-    `/api/data/blobs/${'b'.repeat(64)}.txt`,
+    `/api/data/blobs/${'b'.repeat(64)}`,
   )
 })
 

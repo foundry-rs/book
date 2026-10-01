@@ -219,11 +219,8 @@ export function artifactUrl(
   storagePath: string,
   contentHash?: string,
 ) {
-  const parts = [
-    commit,
-    benchmark,
-    compiler,
-    ...storagePath.replace(/\.json$/, '.txt').split('/'),
-  ].map(encodeURIComponent)
-  return `${root}${contentHash ? `blobs/${contentHash}.txt` : `runs/${parts.join('/')}`}`
+  const parts = [commit, benchmark, compiler, ...storagePath.replace(/\.json$/, '').split('/')].map(
+    encodeURIComponent,
+  )
+  return `${root}${contentHash ? `blobs/${contentHash}` : `runs/${parts.join('/')}`}`
 }

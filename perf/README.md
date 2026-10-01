@@ -41,7 +41,7 @@ Latest usable runs are selected by workflow ID, attempt, then publication time,
 not by when an older workflow happened to be backfilled. Comparison-to-viewer links
 pin snapshot revisions; artifact bodies are cached by content hash across runs.
 `viewer.json` returns both selected runs' compiler catalogs and only the selected
-benchmark's manifests in one query. `blobs/<sha256>.txt` serves immutable plain-text bodies.
+benchmark's manifests in one query. `blobs/<sha256>` serves immutable plain-text bodies.
 The dashboard index returns only its 12 displayed rows, the main-run total and
 the preceding main commit for each row; commit prefixes resolve on the server.
 Origin index/history misses coalesce for one second; immutable bodies have a bounded
@@ -358,9 +358,10 @@ artifact text. Open raw links directly to the plain-text artifact API, including
 for HTML artifacts, with `X-Content-Type-Options: nosniff`. Controls stay disabled
 for missing files or while the body is loading; clipboard failures offer the raw
 tab as a fallback. Body clients use `response.text()`, not `response.json()`.
-The viewer uses `.txt` body URLs so previously cached JSON responses cannot be
-mistaken for raw text. Existing `.json` artifact paths also return plain text;
-run documents, manifests, and API errors remain JSON.
+The viewer uses extensionless body URLs (`blobs/<sha256>` or
+`runs/<commit>/<benchmark>/<compiler>/<file-id>`) so previously cached JSON
+responses cannot be mistaken for raw text. Existing `.json` and `.txt` artifact
+paths also return plain text; run documents, manifests, and API errors remain JSON.
 
 Existing numeric artifact URLs remain readable; path-based hashes identify newly
 discovered files independently of directory order. Existing imported runs are not

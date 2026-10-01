@@ -101,7 +101,7 @@ test('virtualizes long files and renders their last lines on scroll', async ({ p
     { length: 2000 },
     (_, i) => `PUSH2 0x${i.toString(16).padStart(4, '0')}`,
   ).join('\n')
-  await page.route('**/api/data/runs/**/1.txt', (route) => route.fulfill({ body: contents }))
+  await page.route('**/api/data/runs/**/1', (route) => route.fulfill({ body: contents }))
   await page.goto(url)
   await expect(page.getByText('Contents are identical.', { exact: true })).toBeVisible()
   const code = page.locator('diffs-container').locator('code')
@@ -121,7 +121,7 @@ test('virtualizes long files and renders their last lines on scroll', async ({ p
 test('highlights a large repetitive assembly diff without expensive intraline decorations', async ({
   page,
 }) => {
-  await page.route('**/api/data/runs/**/1.txt', (route) => {
+  await page.route('**/api/data/runs/**/1', (route) => {
     const head = route.request().url().includes('9d8c7b6a5e4f32100123456789abcdef01234567')
     const contents = Array.from({ length: 40000 }, (_, i) =>
       i % 2 ? 'ADD\n' : head ? 'PUSH2 0x11\n' : 'PUSH1 0x00\n',
@@ -150,7 +150,7 @@ test('highlights a large repetitive assembly diff without expensive intraline de
 })
 
 test('skips within-line matching for long lines in an otherwise small diff', async ({ page }) => {
-  await page.route('**/api/data/runs/**/1.txt', (route) => {
+  await page.route('**/api/data/runs/**/1', (route) => {
     const head = route.request().url().includes('9d8c7b6a5e4f32100123456789abcdef01234567')
     return route.fulfill({ body: `PUSH32 ${'a'.repeat(256)}${head ? '1' : '0'}\n` })
   })

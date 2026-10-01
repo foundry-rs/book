@@ -10,7 +10,7 @@ it('serves metrics and discovered artifacts for every demo compiler', async () =
     for (const file of files) {
       for (const compiler of file.compilers) {
         const response = demoResponse(
-          `/api/data/runs/${commit}/${encodeURIComponent(benchmark)}/${compiler}/${file.storagePath.replace(/\.json$/, '.txt')}`,
+          `/api/data/runs/${commit}/${encodeURIComponent(benchmark)}/${compiler}/${file.storagePath.replace(/\.json$/, '')}`,
         )!
         expect(response.status).toBe(200)
         expect(response.headers.get('content-type')).toBe('text/plain; charset=utf-8')

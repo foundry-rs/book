@@ -9,7 +9,7 @@ test('copies original text and opens a safe plain-text tab for either side', asy
   context,
 }) => {
   await context.grantPermissions(['clipboard-read', 'clipboard-write'])
-  await context.route('**/api/data/runs/**/2.txt', (route) =>
+  await context.route('**/api/data/runs/**/2', (route) =>
     route.fulfill({ body: raw, contentType: 'text/plain; charset=utf-8' }),
   )
   await page.goto(url)
@@ -25,7 +25,7 @@ test('copies original text and opens a safe plain-text tab for either side', asy
     await group.getByRole('link', { name: /^Open/ }).click()
     const popup = await popupPromise
     await popup.waitForLoadState()
-    expect(popup.url()).toMatch(/\/api\/data\/runs\/.*\/2\.txt$/)
+    expect(popup.url()).toMatch(/\/api\/data\/runs\/.*\/2$/)
     expect(await popup.evaluate(() => document.contentType)).toBe('text/plain')
     expect(
       await popup.evaluate(() => fetch(location.href).then((response) => response.text())),
@@ -48,7 +48,7 @@ test('offers the raw tab when clipboard access fails', async ({ page }) => {
 })
 
 test('disables actions for missing files and enables them for empty files', async ({ page }) => {
-  await page.route('**/api/data/runs/**/2.txt', (route) =>
+  await page.route('**/api/data/runs/**/2', (route) =>
     route.request().url().includes('8c7b6a5e4f32100123456789abcdef0123456789')
       ? route.fulfill({ status: 404 })
       : route.fulfill({ body: '', contentType: 'text/plain; charset=utf-8' }),

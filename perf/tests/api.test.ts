@@ -51,7 +51,7 @@ describe('website API', () => {
   it('coalesces origin blob reads and retains empty contents without caching missing blobs', async () => {
     globalThis.fetch = vi.fn(async () => Response.json({ content: '' }))
     const app = createApi({ clickHouse: config })
-    const path = `/api/data/blobs/${'a'.repeat(64)}.txt`
+    const path = `/api/data/blobs/${'a'.repeat(64)}`
     const responses = await Promise.all([app.request(path), app.request(path)])
     expect(await responses[0].text()).toBe('')
     expect(await responses[1].text()).toBe('')
@@ -59,7 +59,7 @@ describe('website API', () => {
     await app.request(path)
     expect(globalThis.fetch).toHaveBeenCalledOnce()
     globalThis.fetch = vi.fn(async () => new Response(''))
-    const absent = `/api/data/blobs/${'b'.repeat(64)}.txt`
+    const absent = `/api/data/blobs/${'b'.repeat(64)}`
     expect((await app.request(absent)).status).toBe(404)
     expect((await app.request(absent)).status).toBe(404)
     expect(globalThis.fetch).toHaveBeenCalledTimes(2)
@@ -122,7 +122,7 @@ describe('website API', () => {
   it('serves immutable blob contents without querying manifests', async () => {
     globalThis.fetch = vi.fn(async () => Response.json({ content: 'body' }))
     const response = await createApi({ clickHouse: config }).request(
-      `/api/data/blobs/${'a'.repeat(64)}.txt`,
+      `/api/data/blobs/${'a'.repeat(64)}`,
     )
     expect(await response.text()).toBe('body')
     expect(response.headers.get('cache-control')).toContain('immutable')
@@ -130,13 +130,13 @@ describe('website API', () => {
     expect(vi.mocked(globalThis.fetch).mock.calls[0][1]?.body).not.toContain('run_snapshots')
   })
 
-  it.each(['txt', 'json'])(
-    'serves %s blob URLs as exact plain text with sniffing disabled',
-    async (extension) => {
+  it.each(['', '.txt', '.json'])(
+    'serves blob URLs with suffix "%s" as exact plain text with sniffing disabled',
+    async (suffix) => {
       const raw = '<script>alert("test")</script>\r\nλ\\literal\n'
       globalThis.fetch = vi.fn(async () => Response.json({ content: raw }))
       const response = await createApi({ clickHouse: config }).request(
-        `/api/data/blobs/${'a'.repeat(64)}.${extension}`,
+        `/api/data/blobs/${'a'.repeat(64)}${suffix}`,
       )
       expect(response.headers.get('content-type')).toBe('text/plain; charset=UTF-8')
       expect(response.headers.get('x-content-type-options')).toBe('nosniff')
@@ -340,9 +340,7 @@ describe('website API', () => {
         [commits[0], 'solc'],
       ].map(async ([commit, compiler]) => {
         const response = vercelDemo(
-          new Request(
-            `https://web.test/api/data/runs/${commit}/demo%3A%3Afactorial/${compiler}/0.txt`,
-          ),
+          new Request(`https://web.test/api/data/runs/${commit}/demo%3A%3Afactorial/${compiler}/0`),
         )
         expect(response.status).toBe(200)
         return response.text()
@@ -594,7 +592,7 @@ describe('website API', () => {
     })
 
     const response = await createApi({ clickHouse: config }).request(
-      `http://web.test/api/data/runs/${sha}/factorial/solar/2.txt`,
+      `http://web.test/api/data/runs/${sha}/factorial/solar/2`,
     )
 
     expect(response.status).toBe(200)

@@ -493,7 +493,7 @@ export function createApi(options: ApiOptions = {}) {
         return context.json(artifacts)
       }
 
-      const blobMatch = /^blobs\/([a-f0-9]{64})\.(?:txt|json)$/.exec(path)
+      const blobMatch = /^blobs\/([a-f0-9]{64})(?:\.(?:txt|json))?$/.exec(path)
       if (blobMatch) {
         const blob = await blobReads(blobMatch[1], async () => {
           const [row] = await select(
@@ -509,13 +509,13 @@ export function createApi(options: ApiOptions = {}) {
       }
 
       const artifactMatch =
-        /^runs\/([0-9a-f]{40})\/([\w.-]{1,128})\/([\w.-]{1,128})\/((?:\d+|[a-f0-9]{64})\.(?:txt|json))$/.exec(
+        /^runs\/([0-9a-f]{40})\/([\w.-]{1,128})\/([\w.-]{1,128})\/((?:\d+|[a-f0-9]{64})(?:\.(?:txt|json))?)$/.exec(
           path,
         )
       if (!artifactMatch) return context.json({ error: 'Unknown data file' }, 404)
 
       const [, sha, benchmark, compiler, bodyPath] = artifactMatch
-      const storagePath = bodyPath.replace(/\.txt$/, '.json')
+      const storagePath = `${bodyPath.replace(/\.(?:txt|json)$/, '')}.json`
       // Path hashes also resolve legacy rows without rewriting their numeric IDs.
       const fileCondition = /^[a-f0-9]{64}\.json$/.test(storagePath)
         ? `lower(hex(SHA256(f.path))) = '${storagePath.slice(0, -5)}'`

@@ -221,7 +221,7 @@ export function demoResponse(input: string) {
   }
 
   const artifact =
-    /^\/api\/data\/runs\/([0-9a-f]{40})\/([^/]+)\/([^/]+)\/(\d+\.(?:txt|json))$/.exec(pathname)
+    /^\/api\/data\/runs\/([0-9a-f]{40})\/([^/]+)\/([^/]+)\/(\d+(?:\.(?:txt|json))?)$/.exec(pathname)
   if (artifact) {
     let benchmark: string
     try {
@@ -230,7 +230,7 @@ export function demoResponse(input: string) {
       return Response.json({ error: 'Invalid benchmark' }, { status: 400 })
     }
     const contents = artifactContents.get(
-      `${artifact[1]}/${benchmark}/${artifact[3]}/${artifact[4].replace(/\.txt$/, '.json')}`,
+      `${artifact[1]}/${benchmark}/${artifact[3]}/${artifact[4].replace(/\.(?:txt|json)$/, '')}.json`,
     )
     return contents === undefined
       ? Response.json({ error: 'Artifact not found' }, { status: 404 })
