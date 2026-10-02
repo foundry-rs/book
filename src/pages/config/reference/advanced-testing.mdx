@@ -31,6 +31,45 @@ the [testing reference](/config/reference/testing).
 | `mutation_weight_abi` | both | `1` | Weights ABI-aware argument mutation. |
 | `mutation_weight_cmp` | both | `1` | Weights comparison-guided argument mutation. |
 
+### Fuzz guidance
+
+Set `[fuzz] guidance`, pass `--fuzz-guidance` to `forge test`, or set
+`FOUNDRY_FUZZ_GUIDANCE` to apply source-informed inputs without changing the test harness.
+`forge fuzz run` accepts the same file through `--guidance`.
+
+```toml
+[fuzz]
+guidance = "fuzz-guidance.json"
+```
+
+```json
+{
+  "version": 1,
+  "dictionary": ["0xdeadbeef", "1000000000000000000", "-1"],
+  "selector_weights": {
+    "src/Vault.sol:Vault.withdraw(uint256)": 10,
+    "pause()": 0
+  }
+}
+```
+
+Dictionary entries are hexadecimal values of up to 32 bytes, decimal integers, or negative decimal
+integers. Hexadecimal entries preserve their written bytes for fixed-size byte parameters and use
+their numeric value for integer parameters. Guided values are sampled only when the state-based
+dictionary strategy is selected. With the default `dictionary_weight` of 40, a guided value is
+selected for a parameter about 20% of the time; setting `dictionary_weight = 0` disables guided
+values.
+
+Selector keys may be a 4-byte selector, a function signature, `Contract.signature(types)`, or
+`path:Contract.signature(types)`. Exact artifact identifiers take precedence over contract names,
+which take precedence over unqualified selectors. Unlisted functions keep weight 1. Weight 0
+excludes a function from newly generated invariant calls. When every available function has weight
+0, Forge ignores the weights and selects uniformly so the campaign can continue.
+
+Guidance affects candidate generation only. Persisted failures and corpus entries replay their
+recorded calls unchanged, and reentrant `call_override` calls do not use selector weights. The file
+is loaded once for the test run, so inline test configuration cannot select a different file.
+
 ### Symbolic testing
 
 Define symbolic settings under `[profile.<name>.symbolic]`.
