@@ -67,9 +67,10 @@ which take precedence over unqualified selectors. Unlisted functions keep weight
 excludes a function from newly generated invariant calls. When every available function has weight
 0, Forge ignores the weights and selects uniformly so the campaign can continue.
 
-Guidance affects candidate generation only. Persisted failures and corpus entries replay their
-recorded calls unchanged, and reentrant `call_override` calls do not use selector weights. The file
-is loaded once for the test run, so inline test configuration cannot select a different file.
+Guidance affects candidate generation only. Selector weights apply to both top-level invariant
+calls and calls injected by `call_override`; persisted failures and corpus entries still replay
+their recorded calls unchanged. Inline test configuration may select a different guidance file for
+a contract or function.
 
 ### Symbolic testing
 
