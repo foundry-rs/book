@@ -20,24 +20,22 @@ Pin to a specific block for reproducible tests:
 $ forge test --fork-url https://ethereum.reth.rs/rpc --fork-block-number 18000000
 ```
 
-### RPC compatibility
+### RPCs without state by block hash
 
-Forge resolves your fork to a block number and hash, then requests state by hash.
-If your RPC rejects that selector with an invalid-parameters error, Forge retries
-at the resolved block number automatically. This also applies to the nonce and
-code reads made before `forge script` starts simulation. You do not need a flag
-or configuration setting.
+If your RPC serves fork state by block number but rejects reads by hash, enable
+`--fork-state-by-number`:
 
-Before and after each numeric retry, Forge checks that the block number still
-refers to the resolved hash. It rejects an observed change and disables disk
-caching for any fork that attempts a numeric retry. These checks cannot guarantee
-consistent state across reorganizations or disagreeing RPC replicas; use an RPC
-that supports historical state by hash when you need an exact snapshot.
+```sh
+forge test --fork-url "$RPC_URL" --fork-block-number 18000000 --fork-state-by-number
+forge script script/Deploy.s.sol:Deploy --rpc-url "$RPC_URL" --fork-state-by-number
+```
 
-Transaction-targeted forks and `cast run` require hash-addressed state.
-`vm.transact` rejects a fork that has already attempted a numeric retry and
-requires hash-addressed reads afterwards. Create a fresh transaction-targeted
-fork with a compatible RPC to replay a transaction.
+Hash-based reads remain the default. Number-based reads have weaker protection
+against reorganizations and do not use the disk state cache. Transaction replay
+still requires hash-based reads.
+
+To enable this for a profile, including forks created by cheatcodes, set
+[`fork_state_by_number = true`](/config/reference/build-and-runtime#fork-state-by-block-number).
 
 ### Configuring forks in foundry.toml
 

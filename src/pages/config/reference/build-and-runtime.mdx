@@ -46,6 +46,7 @@ ignored_error_codes_from = [
 | Field | Type | Default | Description |
 | --- | --- | --- | --- |
 | `fork_block_number` | integer or none | none | Pins the block used for a fork. |
+| `fork_state_by_number` | boolean | `false` | Reads fork state by block number for RPCs that cannot serve it by hash. |
 | `code_size_limit` | integer or none | none | Overrides the EIP-170 deployed-code size limit. |
 | `block_prevrandao` | bytes32 | zero | Sets `block.prevrandao` (`mix_hash` before the Merge). |
 | `block_gas_limit` | integer or none | none | Sets `block.gaslimit`; distinct from the per-call `gas_limit`. |
@@ -64,6 +65,42 @@ ignored_error_codes_from = [
 | `create2_deployer` | address | `0x4e59…956c` | Sets the CREATE2 deployer address. |
 | `transaction_timeout` | integer | `120` | Sets the transaction timeout in seconds. |
 | `script_execution_protection` | boolean | `true` | Prevents unsafe script execution. |
+
+### Fork state by block number
+
+`fork_state_by_number` makes Forge read account balances, nonces, code, and storage
+using the resolved fork block's number instead of its hash. Use it when your RPC
+serves state by number but rejects hash selectors or cannot serve older state by
+hash. It does not restore historical state that the RPC no longer has.
+
+- Section: a profile, such as `[profile.default]`
+- Type: boolean
+- Default: `false`
+- Environment: `FOUNDRY_FORK_STATE_BY_NUMBER` or `DAPP_FORK_STATE_BY_NUMBER`
+
+```toml
+[profile.default]
+fork_state_by_number = true
+```
+
+The setting covers `forge test`, forks created or rolled to a block number by
+cheatcodes, and the initial and simulation state reads made by `forge script`. The `--fork-state-by-number` flag enables
+it for an individual run and takes precedence over configuration and environment
+values. Omitting the flag preserves the configured value.
+
+You can scope it to a named profile alongside that profile's `eth_rpc_url` when
+only one network requires it. It is a profile setting, not an `rpc_endpoints`
+entry option.
+
+Hash-based reads remain the default. Number-based reads use the resolved block
+number, but cannot guarantee the same state if the remote chain reorganizes.
+`fork_block_number` alone selects the fork block without enabling this mode.
+Number-mode forks keep their state cache in memory and do not read or write the
+disk cache.
+
+Forks created or rolled to a transaction hash, and `cast run`, still require
+hash-addressed state. `vm.transact` rejects number-mode forks; use a
+transaction-targeted fork with an RPC that supports state by hash for replay.
 
 ### External storage decoding
 
