@@ -1,0 +1,41 @@
+---
+description: Gets the EIP-4844 blob versioned hashes of the current transaction in Forge tests
+---
+
+## `getBlobhashes`
+
+### Signature
+
+```solidity
+function getBlobhashes() external view returns (bytes32[] memory hashes);
+```
+
+### Description
+
+Returns the blob versioned hashes ([EIP-4844](https://eips.ethereum.org/EIPS/eip-4844)) of the current transaction, as set by [`blobhashes`](/reference/cheatcodes/blobhashes).
+
+### Returns
+
+| Name     | Type        | Description                                        |
+|----------|-------------|----------------------------------------------------|
+| `hashes` | `bytes32[]` | The blob versioned hashes of the current transaction |
+
+### Examples
+
+```solidity [test/GetBlobhashes.t.sol]
+// [!include ~/snippets/projects/blob_cheatcodes/test/GetBlobhashes.t.sol]
+```
+
+```bash
+$ forge test --root src/snippets/projects/blob_cheatcodes --match-contract GetBlobhashesTest
+```
+
+### Gotchas
+
+:::warning
+This cheatcode is only available on EVM versions Cancun and later. On earlier EVM versions it reverts.
+:::
+
+### Related Cheatcodes
+
+- [`blobhashes`](/reference/cheatcodes/blobhashes) - Sets the blob versioned hashes of the current transaction
