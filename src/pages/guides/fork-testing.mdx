@@ -20,6 +20,23 @@ Pin to a specific block for reproducible tests:
 $ forge test --fork-url https://ethereum.reth.rs/rpc --fork-block-number 18000000
 ```
 
+### RPCs without state by block hash
+
+If your RPC serves fork state by block number but rejects reads by hash, enable
+`--fork-state-by-number`:
+
+```sh
+forge test --fork-url "$RPC_URL" --fork-block-number 18000000 --fork-state-by-number
+forge script script/Deploy.s.sol:Deploy --rpc-url "$RPC_URL" --fork-state-by-number
+```
+
+Hash-based reads remain the default. Number-based reads have weaker protection
+against reorganizations and do not use the disk state cache. Transaction replay
+still requires hash-based reads.
+
+To enable this for a profile, including forks created by cheatcodes, set
+[`fork_state_by_number = true`](/config/reference/build-and-runtime#fork-state-by-block-number).
+
 ### Configuring forks in foundry.toml
 
 Set a default fork for all tests:
