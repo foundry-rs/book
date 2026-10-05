@@ -23,7 +23,7 @@
     "react-dom": "^19.3.0",
     "tailwindcss": "^4.2.2",
     "vocs": "2.10.0",
-    "waku": "1.0.0-rc.2"
+    "waku": "1.0.0-rc.1"
   },
   "devDependencies": {
     "@playwright/test": "1.63.0",
