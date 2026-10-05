@@ -1,7 +1,7 @@
 catalog:
-  vite: npm:@voidzero-dev/vite-plus-core@0.3.3
-  vite-plus: 0.3.3
-  vitest: 5.0.1
+  vite: npm:@voidzero-dev/vite-plus-core@1.0.0
+  vite-plus: 1.0.0
+  vitest: 5.0.2
 packages:
   - perf
 allowBuilds:

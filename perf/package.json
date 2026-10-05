@@ -17,18 +17,18 @@
     "test": "vp test --run"
   },
   "dependencies": {
-    "@pierre/diffs": "1.4.3",
+    "@pierre/diffs": "1.5.1",
     "@pierre/trees": "1.0.0-beta.6",
-    "@vercel/functions": "^3.9.8",
+    "@vercel/functions": "^3.9.9",
     "fflate": "0.8.3",
-    "hono": "^4.13.8",
-    "lucide-react": "^1.47.0",
+    "hono": "^4.13.10",
+    "lucide-react": "^1.48.0",
     "react": "^19.3.0",
     "react-dom": "^19.3.0"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.3",
-    "@types/node": "^26.6.2",
+    "@types/node": "^26.6.3",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.1.1",
