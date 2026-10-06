@@ -13,6 +13,7 @@ export function HistoryGraph({
   title,
   unit,
   benchmark,
+  id,
   hideMissingLatest = false,
 }: {
   runs: HistorySeries
@@ -20,6 +21,7 @@ export function HistoryGraph({
   title: string
   unit: string
   benchmark: string
+  id?: string
   hideMissingLatest?: boolean
 }) {
   const clipId = useId()
@@ -59,7 +61,7 @@ export function HistoryGraph({
   const change = first && latest != null ? ((latest - first) / first) * 100 : null
 
   return (
-    <section className="graph-card">
+    <section className="graph-card" id={id}>
       <div className="graph-heading">
         <h2 title={benchmark}>{benchmark}</h2>
         {active && (
