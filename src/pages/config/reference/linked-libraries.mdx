@@ -1,0 +1,65 @@
+---
+description: Reject externally linked Solidity libraries while retaining dynamic test linking.
+---
+
+## Linked libraries
+
+Solidity library functions declared `public` or `external` can create a dependency on a separately
+deployed library. Internal library functions are compiled into their callers. Use
+`allow_linked_libraries` to reject actual external library dependencies during compilation.
+
+### `allow_linked_libraries`
+
+- Type: boolean
+- Default: `true`
+- Environment: `FOUNDRY_ALLOW_LINKED_LIBRARIES`
+
+When set to `false`, `forge build`, `forge test`, `forge script`, `forge create`, and `forge coverage`
+fail if a compiled contract's creation or runtime bytecode requires an external Solidity library.
+The check includes cached artifacts and the compilation used by mutation tests.
+
+```toml
+[profile.default]
+allow_linked_libraries = false
+```
+
+You can also enforce this for one invocation with `--disallow-linked-libraries`:
+
+```sh
+forge build --disallow-linked-libraries
+forge test --disallow-linked-libraries
+```
+
+The flag overrides the selected profile and `FOUNDRY_ALLOW_LINKED_LIBRARIES`, including when either
+allows linked libraries. `forge build --json` reports a policy violation as a
+`LinkedLibraryError` in its JSON `errors` array and exits with a nonzero status.
+
+Configured library addresses are withheld from solc while the policy is disabled. This preserves
+link references so explicitly configured or previously cached prelinked dependencies cannot bypass
+the check. An unused address entry alone does not fail compilation. Re-enabling the setting restores
+normal library-address configuration and recompiles artifacts when the compiler settings change.
+
+The policy applies to the artifacts selected for compilation, including dependencies and test or
+script contracts in that compilation. It does not inspect arbitrary existing artifacts or libraries
+loaded at runtime through cheatcodes. ABI discovery, test listing, and read-only inspection remain
+available so you can identify a dependency before compiling executable contracts.
+
+### Dynamic test linking
+
+`dynamic_test_linking` optimizes contract deployment in tests and scripts by replacing eligible
+`new Contract(...)` expressions with deployment cheatcodes. It does not introduce Solidity library
+link references. Its constructor-argument helpers are also compatible with this policy.
+
+You can keep dynamic test linking enabled while prohibiting external Solidity libraries:
+
+```toml
+[profile.default]
+allow_linked_libraries = false
+dynamic_test_linking = true
+```
+
+The prohibition does not change `dynamic_test_linking` or require
+`--no-dynamic-test-linking`. It permits internal libraries, unused public library functions, and
+ordinary contract deployment with or without dynamic test linking. A contract deployed through
+dynamic test linking still fails compilation if that contract actually depends on an external
+Solidity library.
