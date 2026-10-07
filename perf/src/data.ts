@@ -1,6 +1,7 @@
 import type { HistorySeries, RunDocument, RunIndex } from './types'
 import { responseCache } from './cache'
 import { reportImport } from './importProgress'
+import { mergeHistory, type HistoryRange } from './historySeries'
 
 const root = '/api/data/'
 const knownCommits = responseCache<string>(300_000, 64 * 1024)
@@ -57,17 +58,29 @@ function fetchRun(commit: string, revision?: string): Promise<RunDocument> {
   })
 }
 
-export function loadHistory(metric: string, benchmark?: string) {
-  const dashboard = cachedHistory.peek(new URLSearchParams({ metric }).toString())
+export function loadHistory(metric: string, benchmark?: string, range: HistoryRange = '90d') {
+  const params = new URLSearchParams({ metric })
+  if (range !== '90d') params.set('range', range)
+  const dashboard = cachedHistory.peek(params.toString())
   if (benchmark !== undefined && dashboard) {
     return dashboard.then(({ runs, values }) => ({
       runs,
       values: Object.hasOwn(values, benchmark) ? { [benchmark]: values[benchmark] } : {},
     }))
   }
-  const params = new URLSearchParams({ metric })
   if (benchmark !== undefined) params.set('benchmark', benchmark)
-  return cachedHistory(params.toString(), () => getJson<HistorySeries>(`history.json?${params}`))
+  return cachedHistory(params.toString(), async () => {
+    const result: HistorySeries = { runs: [], values: Object.create(null) }
+    const cursors = new Set<string>()
+    for (;;) {
+      const page = await getJson<HistorySeries>(`history.json?${params}`)
+      mergeHistory(result, page)
+      if (!page.nextCursor) return result
+      if (cursors.has(page.nextCursor)) throw new Error('History pagination did not advance.')
+      cursors.add(page.nextCursor)
+      params.set('cursor', page.nextCursor)
+    }
+  })
 }
 
 async function getJson<T>(path: string): Promise<T> {

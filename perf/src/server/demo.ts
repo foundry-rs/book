@@ -1,5 +1,12 @@
 import type { ArtifactFile, RunDocument, RunIndex } from '../types'
-import { historyMetrics, historySeries } from '../historySeries'
+import {
+  historyCutoff,
+  historyMetrics,
+  historyRanges,
+  historySeries,
+  validHistoryCursor,
+  type HistoryRange,
+} from '../historySeries'
 import { benchmarkMetric } from '../benchmarkMetric'
 
 const commits = [
@@ -188,26 +195,40 @@ export function demoResponse(input: string) {
   if (pathname === '/api/data/history.json') {
     const metric = url.searchParams.get('metric') ?? 'total_gas'
     const benchmark = url.searchParams.get('benchmark')
+    const range = url.searchParams.get('range') ?? '90d'
+    const cursor = url.searchParams.get('cursor')
     if (
+      !historyRanges.includes(range as HistoryRange) ||
+      (cursor !== null && !validHistoryCursor(cursor)) ||
       !historyMetrics.includes(metric) ||
       (benchmark !== null && (!benchmark || benchmark.length > 256))
     )
       return Response.json({ error: 'Invalid history selection' }, { status: 400 })
+    const cutoff = historyCutoff(range as HistoryRange)
+    const [before, beforeCommit] = cursor?.split(',') ?? []
     return Response.json(
       historySeries(
-        [...documents.values()].flatMap(({ commit, timestamp, results }) => {
-          const selected = results.filter(
-            (result) => benchmark === null || result.test_id === benchmark,
+        [...documents.values()]
+          .filter(
+            (run) =>
+              (!cutoff || Date.parse(run.timestamp) >= Date.parse(cutoff)) &&
+              (!before ||
+                Date.parse(run.timestamp) < Date.parse(before) ||
+                (Date.parse(run.timestamp) === Date.parse(before) && run.commit < beforeCommit)),
           )
-          return selected.length
-            ? selected.map((result) => ({
-                commit,
-                timestamp,
-                test_id: result.test_id,
-                value: benchmarkMetric(result, metric),
-              }))
-            : [{ commit, timestamp, test_id: '', value: null }]
-        }),
+          .flatMap(({ commit, timestamp, results }) => {
+            const selected = results.filter(
+              (result) => benchmark === null || result.test_id === benchmark,
+            )
+            return selected.length
+              ? selected.map((result) => ({
+                  commit,
+                  timestamp,
+                  test_id: result.test_id,
+                  value: benchmarkMetric(result, metric),
+                }))
+              : [{ commit, timestamp, test_id: '', value: null }]
+          }),
       ),
     )
   }

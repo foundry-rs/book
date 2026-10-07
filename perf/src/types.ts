@@ -77,6 +77,7 @@ export interface RunDocument {
 export type HistoryRun = Pick<RunDocument, 'commit' | 'timestamp' | 'results'>
 
 export interface HistorySeries {
+  nextCursor?: string
   runs: Pick<RunDocument, 'commit' | 'timestamp'>[]
   values: Record<string, (number | null)[]>
 }

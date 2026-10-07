@@ -263,11 +263,22 @@ then compare two successful Solar benchmark commits at `/perf/solar/?base=<sha>&
 The old `/perf/` URL redirects to `/perf/solar/`; API endpoints remain at `/api/`.
 The dashboard shows one graph per benchmark, with a metric selector and name filter.
 `/api/data/history.json?metric=total_gas` returns only the selected Solar metric for the
-latest 60 main-branch runs, as a shared run axis and one value array per benchmark.
+selected main-branch date range (90 days by default), as a shared run axis and one
+value array per benchmark. Select 30d, 90d, 1y, or All on the dashboard or in an
+individual benchmark. The API accepts `range=30d|90d|1y|all` and returns up to 1,000
+runs per page; pass its opaque `nextCursor` as `cursor` for older pages. The browser
+loads every page and retains raw measurements for hover and comparisons.
+Charts use elapsed time on the horizontal axis. Gas and bytecode sizes use step
+lines; timing and memory use lines with time-bucket endpoints, minima, and maxima
+for long histories. Missing measurements always break the line. Markers appear
+only while hovering or using the keyboard. Arrow keys select runs, Home/End jump
+to endpoints, and Enter compares the selected run with its preceding commit.
+The Changed only filter compares exact measured values within the selected range;
+missing measurements alone do not count as a value change.
 Opening an individual benchmark requests `&benchmark=<encoded name>`: one bounded database
 query returns only that benchmark and metric, never other benchmarks or artifacts.
 Values are never summed across benchmarks; failed or missing
-measurements leave gaps. Click a graph point to compare it with the preceding commit.
+measurements leave gaps. Hover a graph to inspect a measurement; click to compare it with the preceding commit.
 The individual benchmark History section uses the same graph. Dashboard cards
 without a latest measurement are hidden for the selected metric; individual benchmark
 history still retains older measurements. The index contains metadata and benchmark
@@ -325,7 +336,11 @@ the docs root `/`. A missing run is imported on demand; an already stored run is
 without downloading its GitHub artifact again. Keep secrets out of URLs and screenshots.
 
 `scripts/ingest-github-runs.mjs` is the one-off local backfill tool. It uses the
-authenticated `gh` CLI and the same ClickHouse schema. Do not run it from a pull
+authenticated `gh` CLI and the same ClickHouse schema. With database write
+credentials loaded, run `pnpm --dir perf db:backfill --limit 10000` to recover
+available older runs. Already imported attempts are skipped. Expired GitHub
+artifacts cannot be recovered by this tool; stored snapshots remain available
+regardless of GitHub artifact retention. Do not run it from a pull
 request workflow and do not give repository Actions ClickHouse credentials.
 
 ## Producer contract

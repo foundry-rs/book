@@ -6,6 +6,8 @@ import { Compare } from './Compare'
 import { loadHistory, loadIndex, resolveCommit } from './data'
 import { comparisonHref, navigate, replaceUrl, useNavigation } from './navigation'
 import { comparisonBase } from './comparisonBase'
+import { hasHistoryChanges, type HistoryRange } from './historySeries'
+import { HistoryRangeSelect } from './HistoryRangeSelect'
 import logo from './assets/logo.png'
 import { FileViewer } from './FileViewer'
 import type { HistorySeries, RunIndex, RunSummary, Theme } from './types'
@@ -205,8 +207,16 @@ function Home({ benchmark, navigationKey }: { benchmark: string | null; navigati
   const [historyError, setHistoryError] = useState('')
   const [metric, setMetric] = useState(charts[0].metric)
   const [filter, setFilter] = useState('')
+  const [range, setRange] = useState<HistoryRange>('90d')
+  const [changedOnly, setChangedOnly] = useState(false)
   const chart = charts.find((chart) => chart.metric === metric)!
   const benchmarks = useMemo(() => Object.keys(history?.values ?? {}).sort(), [history])
+  const visibleBenchmarks = benchmarks.filter(
+    (benchmark) =>
+      benchmark.toLowerCase().includes(filter.toLowerCase()) &&
+      history?.values[benchmark].at(0) != null &&
+      (!changedOnly || hasHistoryChanges(history.values[benchmark])),
+  )
   const [index, setIndex] = useState<RunIndex | null>(null)
   const [error, setError] = useState('')
   const [base, setBase] = useState('')
@@ -226,7 +236,7 @@ function Home({ benchmark, navigationKey }: { benchmark: string | null; navigati
     let cancelled = false
     setHistory(null)
     setHistoryError('')
-    loadHistory(metric).then(
+    loadHistory(metric, undefined, range).then(
       (value) => {
         if (!cancelled) setHistory(value)
       },
@@ -237,7 +247,7 @@ function Home({ benchmark, navigationKey }: { benchmark: string | null; navigati
     return () => {
       cancelled = true
     }
-  }, [metric])
+  }, [metric, range])
 
   useEffect(() => {
     if (!benchmark || !history) return
@@ -297,6 +307,7 @@ function Home({ benchmark, navigationKey }: { benchmark: string | null; navigati
         </p>
       )}
       <section className="history-controls" aria-label="Graph settings">
+        <HistoryRangeSelect value={range} onChange={setRange} />
         <label>
           Metric
           <select value={metric} onChange={(event) => setMetric(event.target.value)}>
@@ -316,11 +327,22 @@ function Home({ benchmark, navigationKey }: { benchmark: string | null; navigati
             onChange={(event) => setFilter(event.target.value)}
           />
         </label>
-        <span>Solar · latest {history?.runs.length ?? 0} main runs · lower is better</span>
+        <label className="history-checkbox">
+          <input
+            type="checkbox"
+            checked={changedOnly}
+            onChange={(event) => setChangedOnly(event.target.checked)}
+          />
+          Changed only
+        </label>
+        <span>Solar · {history?.runs.length ?? 0} main runs in range · lower is better</span>
       </section>
       <p className="history-note">
-        Each graph is one benchmark. Gaps indicate failed or missing measurements. Click a point to
-        compare commits.
+        Each graph is one benchmark. Gaps indicate failed or missing measurements. Hover to inspect
+        a run; click to compare it with the preceding commit.
+        {metric === 'compile_time_seconds' || metric === 'peak_rss_bytes'
+          ? ' Timing and memory can vary between runs. Long histories preserve peaks and lows; hover shows raw measurements.'
+          : ''}
       </p>
       {error || historyError ? (
         <p className="error">{error || historyError}</p>
@@ -330,21 +352,17 @@ function Home({ benchmark, navigationKey }: { benchmark: string | null; navigati
         </p>
       ) : (
         <section className="chart-grid">
-          {benchmarks
-            .filter((benchmark) => benchmark.toLowerCase().includes(filter.toLowerCase()))
-            .map((benchmark) => (
-              <HistoryGraph
-                hideMissingLatest
-                id={benchmark}
-                key={`${benchmark}:${metric}`}
-                runs={history}
-                benchmark={benchmark}
-                {...chart}
-              />
-            ))}
-          {!benchmarks.some((benchmark) =>
-            benchmark.toLowerCase().includes(filter.toLowerCase()),
-          ) && <p className="empty">No matching benchmarks.</p>}
+          {visibleBenchmarks.map((benchmark) => (
+            <HistoryGraph
+              hideMissingLatest
+              id={benchmark}
+              key={`${benchmark}:${metric}:${range}`}
+              runs={history}
+              benchmark={benchmark}
+              {...chart}
+            />
+          ))}
+          {!visibleBenchmarks.length && <p className="empty">No matching benchmarks.</p>}
         </section>
       )}
       <section className="recent">

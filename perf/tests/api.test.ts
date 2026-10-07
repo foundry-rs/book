@@ -304,7 +304,7 @@ describe('website API', () => {
     expect(values).toEqual({ small: [12, null] })
     expect(queries).toHaveLength(1)
     expect(queries[0]).toContain("branch = 'main'")
-    expect(queries[0]).toContain('LIMIT 60')
+    expect(queries[0]).toContain('LIMIT 1001')
     expect(queries[0]).toContain("compiler = 'solar'")
     expect(queries[0]).toContain('test_id = {benchmark:String}')
     expect(queries[0]).not.toMatch(/compile_time_seconds|peak_rss_bytes/)

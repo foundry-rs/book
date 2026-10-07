@@ -1,5 +1,13 @@
 import { Hono } from 'hono'
-import { historyMetrics, historySeries } from '../historySeries'
+import {
+  historyCutoff,
+  historyMetrics,
+  historyPageSize,
+  historyRanges,
+  historySeries,
+  validHistoryCursor,
+  type HistoryRange,
+} from '../historySeries'
 import { requestTiming } from './timing'
 import { responseCache } from '../cache'
 import { measurementColumns } from './publication'
@@ -187,7 +195,22 @@ async function artifactsFromClickHouse(config: ClickHouseConfig, sha: string, re
   return manifest(artifactRows[0].artifacts as unknown[][])
 }
 
-async function historyFromClickHouse(config: ClickHouseConfig, metric: string, benchmark?: string) {
+async function historyFromClickHouse(
+  config: ClickHouseConfig,
+  metric: string,
+  benchmark: string | undefined,
+  range: HistoryRange,
+  cursor?: string,
+) {
+  const cutoff = historyCutoff(range)
+  const [before, commit] = cursor?.split(',') ?? []
+  const params: Record<string, string> = {}
+  if (benchmark !== undefined) params.benchmark = benchmark
+  if (cutoff) params.cutoff = cutoff
+  if (before) {
+    params.before = before
+    params.commit = commit
+  }
   const rows = await select(
     config,
     `WITH recent AS (
@@ -195,16 +218,18 @@ async function historyFromClickHouse(config: ClickHouseConfig, metric: string, b
     FROM (SELECT commit, started_at, branch, source_schema, measurements
       FROM run_snapshots FINAL WHERE source_schema > 0 ORDER BY ${snapshotOrder} LIMIT 1 BY commit)
     WHERE source_schema > 0 AND branch = 'main'
-    ORDER BY started_at DESC, commit DESC LIMIT 60
+    ${cutoff ? 'AND started_at >= parseDateTimeBestEffort({cutoff:String})' : ''}
+    ${before ? 'AND (started_at, commit) < (parseDateTime64BestEffort({before:String}, 3), {commit:String})' : ''}
+    ORDER BY started_at DESC, commit DESC LIMIT ${historyPageSize + 1}
   )
-  SELECT commit, formatDateTime(started_at, '%Y-%m-%dT%H:%i:%SZ', 'UTC') AS timestamp,
+  SELECT commit, formatDateTime(started_at, '%Y-%m-%dT%H:%i:%S.%fZ', 'UTC') AS timestamp,
     b.test_id AS test_id, if(b.status = 'ok', b.${metric}, NULL) AS value
   FROM recent LEFT ARRAY JOIN arrayFilter(m -> m.compiler = 'solar'
     ${benchmark === undefined ? '' : 'AND m.test_id = {benchmark:String}'}, measurements) AS b
   ORDER BY started_at DESC, commit DESC, test_id`,
-    benchmark === undefined ? undefined : { benchmark },
+    params,
   )
-  return historySeries(
+  const series = historySeries(
     rows.map((row) => ({
       commit: String(row.commit),
       timestamp: String(row.timestamp),
@@ -212,6 +237,13 @@ async function historyFromClickHouse(config: ClickHouseConfig, metric: string, b
       value: typeof row.value === 'number' && Number.isFinite(row.value) ? row.value : null,
     })),
   )
+  if (series.runs.length > historyPageSize) {
+    series.runs.length = historyPageSize
+    for (const values of Object.values(series.values)) values.length = historyPageSize
+    const last = series.runs.at(-1)!
+    series.nextCursor = `${last.timestamp},${last.commit}`
+  }
+  return series
 }
 
 async function loadRuns(
@@ -447,15 +479,19 @@ export function createApi(options: ApiOptions = {}) {
       if (path === 'history.json') {
         const metric = context.req.query('metric') ?? 'total_gas'
         const benchmark = context.req.query('benchmark')
+        const range = context.req.query('range') ?? '90d'
+        const cursor = context.req.query('cursor')
         if (
+          !historyRanges.includes(range as HistoryRange) ||
+          (cursor !== undefined && !validHistoryCursor(cursor)) ||
           !historyMetrics.includes(metric) ||
           (benchmark !== undefined && (!benchmark || benchmark.length > 256))
         )
           return context.json({ error: 'Invalid history selection' }, 400)
         context.header('cache-control', 'public, max-age=60, stale-while-revalidate=120')
         return context.json(
-          await historyReads(JSON.stringify([metric, benchmark]), () =>
-            historyFromClickHouse(config, metric, benchmark),
+          await historyReads(JSON.stringify([metric, benchmark, range, cursor]), () =>
+            historyFromClickHouse(config, metric, benchmark, range as HistoryRange, cursor),
           ),
         )
       }

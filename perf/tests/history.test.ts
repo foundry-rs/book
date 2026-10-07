@@ -71,7 +71,7 @@ it('plots only the selected benchmark and leaves failed samples as gaps', () => 
   expect(html).not.toContain('999,999')
   expect(html).not.toContain('20 gas')
   expect(html).toMatch(/class="series" d="M[^"L]+M/)
-  expect(html.match(/class="history-point/g)).toHaveLength(2)
+  expect(html).not.toContain('class="history-point')
 })
 
 it('hides a card when the latest sample is missing, even with older measurements', () => {
