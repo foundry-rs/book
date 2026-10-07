@@ -99,7 +99,7 @@ export function App() {
           theme={theme}
         />
       ) : (
-        <Home />
+        <Home benchmark={benchmark} navigationKey={navigation.key} />
       )}
     </>
   )
@@ -200,7 +200,7 @@ function SiteHeader({
   )
 }
 
-function Home() {
+function Home({ benchmark, navigationKey }: { benchmark: string | null; navigationKey: number }) {
   const [history, setHistory] = useState<HistorySeries | null>(null)
   const [historyError, setHistoryError] = useState('')
   const [metric, setMetric] = useState(charts[0].metric)
@@ -238,6 +238,14 @@ function Home() {
       cancelled = true
     }
   }, [metric])
+
+  useEffect(() => {
+    if (!benchmark || !history) return
+    const frame = requestAnimationFrame(() => {
+      document.getElementById(benchmark)?.scrollIntoView({ block: 'nearest', inline: 'nearest' })
+    })
+    return () => cancelAnimationFrame(frame)
+  }, [benchmark, history, navigationKey])
 
   const compare = async () => {
     if (resolving || !base.trim() || !head.trim()) return
@@ -327,6 +335,7 @@ function Home() {
             .map((benchmark) => (
               <HistoryGraph
                 hideMissingLatest
+                id={benchmark}
                 key={`${benchmark}:${metric}`}
                 runs={history}
                 benchmark={benchmark}
