@@ -19,6 +19,18 @@ Use instant mining for fast application development. Use interval mining to mode
 
 `--no-mining` conflicts with `--block-time`. Mixed mining requires `--block-time`.
 
+### Configure transaction coalescing
+
+By default, instant mining uses a 5-millisecond coalescing window to group ready transactions into a block. The transaction-triggered part of mixed mining uses the same window. This can increase the latency of sequential tests: a receipt watcher that checks before the block is mined may have to wait for its next polling interval.
+
+Use `--transaction-coalescing-window 0` to disable the coalescing delay:
+
+```bash
+$ anvil --transaction-coalescing-window 0
+```
+
+The window is measured in milliseconds and defaults to `5`. You can set a different value with the same flag. The configured window is preserved when you disable and re-enable automine.
+
 ### Mine on demand
 
 Start Anvil in manual mode:
