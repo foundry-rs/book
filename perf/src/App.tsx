@@ -99,7 +99,7 @@ export function App() {
           theme={theme}
         />
       ) : (
-        <Home benchmark={benchmark} />
+        <Home benchmark={benchmark} navigationKey={navigation.key} />
       )}
     </>
   )
@@ -200,7 +200,7 @@ function SiteHeader({
   )
 }
 
-function Home({ benchmark }: { benchmark: string | null }) {
+function Home({ benchmark, navigationKey }: { benchmark: string | null; navigationKey: number }) {
   const [history, setHistory] = useState<HistorySeries | null>(null)
   const [historyError, setHistoryError] = useState('')
   const [metric, setMetric] = useState(charts[0].metric)
@@ -245,7 +245,7 @@ function Home({ benchmark }: { benchmark: string | null }) {
       document.getElementById(benchmark)?.scrollIntoView({ block: 'nearest', inline: 'nearest' })
     })
     return () => cancelAnimationFrame(frame)
-  }, [benchmark, history])
+  }, [benchmark, history, navigationKey])
 
   const compare = async () => {
     if (resolving || !base.trim() || !head.trim()) return

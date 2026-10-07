@@ -30,5 +30,13 @@ for (const hash of ['', '#section', '#benchmark-00', '#benchmark-39']) {
     expect(await page.evaluate(() => window.scrollY)).toBeGreaterThan(0)
     await page.reload()
     await expect(selected).toBeInViewport({ ratio: 1 })
+    const nextHash = hash === '#benchmark-00' ? '#benchmark-01' : '#benchmark-00'
+    await page.goto(`/perf/solar/?benchmark=benchmark-39${nextHash}`)
+    await expect(selected).toBeInViewport({ ratio: 1 })
+    await expect(page).toHaveURL(`/perf/solar/?benchmark=benchmark-39${nextHash}`)
+    await page.goBack()
+    await expect(selected).toBeInViewport({ ratio: 1 })
+    await page.goForward()
+    await expect(selected).toBeInViewport({ ratio: 1 })
   })
 }
