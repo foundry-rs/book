@@ -60,4 +60,7 @@ it('merges pages with new and missing benchmarks without losing alignment', () =
   expect(target.values.a).toEqual([0, null, null])
   expect(Object.hasOwn(target.values, '__proto__')).toBe(true)
   expect(target.values.__proto__).toEqual([null, 1, 2])
+  mergeHistory(target, { runs: [points[2]], values: {} })
+  expect(target.values.__proto__).toEqual([null, 1, 2, null])
+  expect(target.values.a).toEqual([0, null, null, null])
 })

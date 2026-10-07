@@ -27,7 +27,11 @@ export function historyCutoff(range: HistoryRange, now = Date.now()) {
 export function mergeHistory(target: HistorySeries, page: HistorySeries) {
   const offset = target.runs.length
   for (const name of Object.keys(target.values)) {
-    target.values[name].push(...(page.values[name] ?? Array<null>(page.runs.length).fill(null)))
+    target.values[name].push(
+      ...(Object.hasOwn(page.values, name)
+        ? page.values[name]
+        : Array<null>(page.runs.length).fill(null)),
+    )
   }
   for (const name of Object.keys(page.values)) {
     if (!Object.hasOwn(target.values, name))
