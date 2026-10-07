@@ -21,8 +21,8 @@ In this guide, you write a brief and a generator, run `forge properties`, and re
 
 1. Forge runs mutation testing on the target files once for each seed. Mutants that survive show where your tests are weak.
 2. Forge writes a prompt file. It contains the surviving mutants with source context, the target sources and their NatSpec, related tests, remappings, test settings such as `isolate`, and feedback from earlier rounds.
-3. Forge runs the generator. The generator returns Solidity test files and the names of the tests to check.
-4. Forge copies the project to a temporary directory, adds the files, and runs each test on every seed. Then it runs mutation testing again with the new tests.
+3. Forge runs the generator. The generator returns Solidity test files.
+4. Forge copies the project to a temporary directory, adds the files, and runs every test in them on every seed. Then it runs mutation testing again on your selected tests and the new tests.
 5. Forge keeps, reports, or rejects the candidate. With `--rounds N`, steps 2 to 5 repeat, and each round gets the results of the earlier rounds.
 
 ### Steps
@@ -64,8 +64,7 @@ claude -p --model sonnet --tools "Read,Grep,Glob" --allowedTools "Read Grep Glob
     "schema",
     "rationale",
     "generator",
-    "files",
-    "tests"
+    "files"
   ],
   "properties": {
     "schema": {
@@ -116,33 +115,6 @@ claude -p --model sonnet --tools "Read,Grep,Glob" --allowedTools "Read Grep Glob
           }
         }
       }
-    },
-    "tests": {
-      "type": "array",
-      "minItems": 1,
-      "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "path",
-          "contract",
-          "name"
-        ],
-        "properties": {
-          "path": {
-            "type": "string",
-            "minLength": 1
-          },
-          "contract": {
-            "type": "string",
-            "minLength": 1
-          },
-          "name": {
-            "type": "string",
-            "minLength": 1
-          }
-        }
-      }
     }
   }
 }
@@ -161,18 +133,11 @@ The output file must contain one candidate:
       "path": "test/generated/VaultWithdraw.t.sol",
       "content": "pragma solidity ^0.8.20;\n..."
     }
-  ],
-  "tests": [
-    {
-      "path": "test/generated/VaultWithdraw.t.sol",
-      "contract": "VaultWithdrawTest",
-      "name": "testFuzz_withdrawReducesTotalDeposits"
-    }
   ]
 }
 ```
 
-Files must be new Solidity files under the `generated` directory of your test directory. The prompt's `output_contract` gives the exact path prefix and the size limits.
+Files must be new Solidity files under the `generated` directory of your test directory. The prompt's `output_contract` gives the exact path prefix and the size limits. A file must not set a fuzz or invariant `seed` in inline config, because Forge sets the seeds.
 
 #### Run the command
 
