@@ -231,7 +231,17 @@ A generator can compile and run a candidate before it returns it:
 $ forge properties --check candidate.json --seed 0x5eed --seed 0xc0ffee
 ```
 
-This command does not run mutation testing. It prints `passed`, the failure reasons, and the possible bugs as JSON. The prompt gives the generator the exact command in `output_contract.check_command`. To use it, the generator needs permission to write the candidate file and to run `forge properties`.
+This command does not run mutation testing. It prints `passed`, the failure reasons, and the possible bugs as JSON. The prompt gives the generator the exact command in `output_contract.check_command`. To use it, the generator needs permission to write the candidate file and to run `forge properties`. With Claude Code, allow writes only in the prompt's directory and only that command. File writes use `Edit` rules, and an absolute path starts with `//`:
+
+```bash
+scratch=$(dirname "$prompt")
+forge=$(jq -r '.output_contract.check_command[0]' "$prompt")
+claude -p "..." --tools Read Grep Glob Write Bash \
+  --allowedTools Read Grep Glob "Edit(/$scratch/**)" "Edit(//private$scratch/**)" "Bash($forge properties:*)" \
+  --add-dir "$scratch" --permission-mode dontAsk
+```
+
+Tell the agent to write the candidate JSON with the Write tool and to run the check command without other commands. Without that instruction, agents often try to build the JSON with a script, which these rules block.
 
 ### Stateful properties
 
