@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react'
 import { loadHistory } from './data'
 import { HistoryGraph } from './HistoryGraph'
 import type { HistorySeries } from './types'
+import type { HistoryRange } from './historySeries'
+import { HistoryRangeSelect } from './HistoryRangeSelect'
 
 interface Props {
   benchmark: string
@@ -14,12 +16,13 @@ interface Props {
 export function BenchmarkHistory(props: Props) {
   const [runs, setRuns] = useState<HistorySeries | null>(null)
   const [error, setError] = useState(false)
+  const [range, setRange] = useState<HistoryRange>('90d')
 
   useEffect(() => {
     let cancelled = false
     setRuns(null)
     setError(false)
-    loadHistory(props.metric, props.benchmark).then(
+    loadHistory(props.metric, props.benchmark, range).then(
       (history) => {
         if (!cancelled) setRuns(history)
       },
@@ -30,14 +33,24 @@ export function BenchmarkHistory(props: Props) {
     return () => {
       cancelled = true
     }
-  }, [props.benchmark, props.metric])
+  }, [props.benchmark, props.metric, range])
 
-  if (error) return <p className="detail-muted">Could not load benchmark history.</p>
-  if (runs === null)
-    return (
-      <p className="detail-muted">
-        <LoadingText>Loading history…</LoadingText>
-      </p>
-    )
-  return <HistoryGraph key={`${props.benchmark}:${props.metric}`} runs={runs} {...props} />
+  return (
+    <>
+      <div className="history-controls">
+        <HistoryRangeSelect value={range} onChange={setRange} />
+      </div>
+      {error ? (
+        <p className="detail-muted">Could not load benchmark history.</p>
+      ) : runs === null ? (
+        <p className="detail-muted">
+          <LoadingText>Loading history…</LoadingText>
+        </p>
+      ) : !runs.runs.length ? (
+        <p className="detail-muted">No measurements in this range.</p>
+      ) : (
+        <HistoryGraph key={`${props.benchmark}:${props.metric}:${range}`} runs={runs} {...props} />
+      )}
+    </>
+  )
 }

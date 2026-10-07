@@ -1055,19 +1055,37 @@ header.file-header {
   min-width: 0;
   height: 100%;
   overflow: hidden;
+  cursor: crosshair;
+}
+.history-plot:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: -2px;
+}
+.history-controls .history-checkbox {
+  display: flex;
+  align-items: center;
+  min-height: 38px;
+}
+.history-controls .history-checkbox input {
+  width: 16px;
+  height: 16px;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  accent-color: var(--primary);
 }
 .history-point {
+  pointer-events: none;
   position: absolute;
   z-index: 1;
-  width: 8px;
-  height: 8px;
+  width: 12px;
+  height: 12px;
   margin: 0;
   border: 1px solid var(--surface);
   border-radius: 50%;
   background: var(--primary);
   padding: 0;
   transform: translate(-50%, -50%);
-  opacity: 0.65;
 }
 .chart-crosshair {
   position: absolute;
@@ -1111,14 +1129,6 @@ header.file-header {
 .chart-tooltip-floating {
   position: fixed;
   z-index: 10;
-}
-.history-point:hover,
-.history-point:focus-visible,
-.history-point.active-point {
-  width: 12px;
-  height: 12px;
-  opacity: 1;
-  outline: 0;
 }
 .benchmark-detail {
   grid-template-columns: minmax(0, 1fr) minmax(220px, 0.42fr);
