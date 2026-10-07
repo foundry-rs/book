@@ -167,10 +167,6 @@ streamed download/extraction stage intentionally includes both network and CPU w
 Compare these worker logs with `perf_api` and browser timings: time outside the API
 timer is not automatically evidence of a cold start.
 
-Run the deterministic pending/retry/missing-run browser checks with
-`pnpm exec playwright test --config perf/playwright.config.ts` from the repository
-root. They use a local demo server and intercepted responses, never production data.
-
 Configure these server-only variables in Production and in the Preview environment
 used for testing (prefer branch-scoped preview credentials):
 
