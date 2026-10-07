@@ -14,6 +14,7 @@ the [testing reference](/config/reference/testing).
 | `worker` | fuzz | none | Selects the worker paired with `run`. |
 | `min_depth` | invariant | `1` | Minimum depth when `depth_mode = "random"`. |
 | `depth_mode` | invariant | `fixed` | Uses a fixed depth or samples a random depth. |
+| [`tx_generator`](/config/reference/testing#tx_generator) | invariant | `rng` | Selects local RNG or opt-in mixed RNG/Jev Choices with ABI-derived view relationships. |
 | `workers` | invariant | `auto` | Uses automatic sharding or a positive worker count. |
 | `frontier_dir` | both | none | Stores branch-frontier artifacts for symbolic follow-up. |
 | `frontier_limit` | both | `256` | Limits frontier records per test. |
