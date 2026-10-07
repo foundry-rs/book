@@ -27,7 +27,7 @@ test('column headers toggle sorting with mouse and keyboard and retain filtering
   await expect(names).toHaveText(['›demo::factorial'])
 })
 
-for (const hash of ['', '#benchmarks', '#benchmark-39']) {
+for (const hash of ['', '#benchmarks', '#benchmark-39', '#artifacts']) {
   test(`keeps the selected benchmark in view after loading a link with ${hash || 'no fragment'} and sorting`, async ({
     page,
   }) => {
@@ -67,3 +67,30 @@ for (const hash of ['', '#benchmarks', '#benchmark-39']) {
     await expect(another).toBeInViewport({ ratio: 1 })
   })
 }
+
+test('scrolls an already visible benchmark row to reveal its details', async ({ page }) => {
+  await page.route('**/api/data/runs.json?*', async (route) => {
+    const response = await route.fetch()
+    const data = await response.json()
+    for (const run of data.runs) {
+      run.results = Array.from({ length: 40 }, (_, index) => ({
+        ...run.results[0],
+        test_id: `benchmark-${String(index).padStart(2, '0')}`,
+      }))
+    }
+    await route.fulfill({ json: data })
+  })
+  await page.goto(
+    '/perf/solar/?base=8c7b6a5e4f32100123456789abcdef0123456789&head=9d8c7b6a5e4f32100123456789abcdef01234567&benchmark=benchmark-05#artifacts',
+  )
+  const selected = page.locator('.benchmark-row > button[aria-expanded="true"]')
+  await expect(selected).toContainText('benchmark-05')
+  await expect
+    .poll(() => selected.evaluate((element) => Math.abs(element.getBoundingClientRect().top - 20)))
+    .toBeLessThan(1)
+  await expect(page.getByRole('heading', { name: 'benchmark-05', exact: true })).toBeInViewport()
+  await page.reload()
+  await expect
+    .poll(() => selected.evaluate((element) => Math.abs(element.getBoundingClientRect().top - 20)))
+    .toBeLessThan(1)
+})

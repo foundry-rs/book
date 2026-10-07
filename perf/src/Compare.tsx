@@ -99,7 +99,7 @@ export function Compare({ base, head }: Props) {
   const compilers = useMemo(() => (runs ? comparisonCompilers(runs[1]) : []), [runs])
 
   useEffect(() => {
-    selectedRow.current?.scrollIntoView({ block: 'nearest', inline: 'nearest' })
+    selectedRow.current?.scrollIntoView({ block: 'start', inline: 'nearest' })
   }, [expanded, rows])
 
   const selectBenchmark = (benchmark: string) => {
