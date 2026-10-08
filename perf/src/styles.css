@@ -1178,31 +1178,22 @@ header.file-header {
 }
 .loading-dots {
   display: inline-block;
-  width: 3ch;
-  font-family: monospace;
-  vertical-align: baseline;
-}
-.loading-dots > span {
-  display: block;
-  overflow: hidden;
-  width: 1ch;
   animation: loading-dots 1.2s step-end infinite;
 }
 @keyframes loading-dots {
   0% {
-    width: 1ch;
+    clip-path: inset(0 66.667% 0 0);
   }
   33.333% {
-    width: 2ch;
+    clip-path: inset(0 33.333% 0 0);
   }
   66.667%,
   100% {
-    width: 3ch;
+    clip-path: inset(0);
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .loading-dots > span {
+  .loading-dots {
     animation: none;
-    width: 3ch;
   }
 }
