@@ -1,6 +1,7 @@
 import { useId, useMemo, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { changeClass, formatChange } from './change'
+import { percentChange } from './comparison'
 import { formatValue } from './formatValue'
 import type { HistorySeries } from './types'
 import { navigate } from './navigation'
@@ -50,13 +51,11 @@ export function HistoryGraph({
   }, [runs, benchmark, metric])
   // Hide cards without a current measurement, while retaining gaps in visible histories.
   if (!values.length || (hideMissingLatest && points.at(-1)?.value == null)) return null
-  const first = values[0]
-  const latest = points.at(-1)?.value
   const active = points[hovered ?? points.length - 1]
   const activeIndex = hovered ?? points.length - 1
   const activeX = positions[activeIndex]
   const activeY = active?.value != null ? position(active.value) : 0
-  const change = first && latest != null ? ((latest - first) / first) * 100 : null
+  const change = percentChange(values[0], active?.value ?? null)
 
   const unchanged = unchangedCounts[activeIndex]
   const compare = (index: number) => {
