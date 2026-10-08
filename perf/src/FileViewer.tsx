@@ -4,6 +4,7 @@ import { lazy, Suspense, useEffect, useMemo, useRef, useState, type CSSPropertie
 import { PanelLeftClose, PanelLeftOpen } from 'lucide-react'
 import { artifactIcons } from './artifactIcons'
 import { ArtifactActions } from './ArtifactActions'
+import { Combobox } from './Combobox'
 import { mergeArtifactFiles } from './artifactTree'
 import { loadArtifact, loadViewerRuns } from './data'
 import { useImportProgress } from './importProgress'
@@ -141,22 +142,35 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
     setActiveBenchmark(benchmark)
   }, [benchmark])
 
+  // Benchmarks without published files in either run would open an empty viewer. Responses
+  // cached before the server listed them fall back to every measured benchmark.
   const benchmarks = useMemo(
     () =>
       runs
         ? [
-            ...new Set([
-              ...runs[0].results.map((result) => result.test_id),
-              ...runs[1].results.map((result) => result.test_id),
-              activeBenchmark,
-            ]),
-          ].sort()
+            ...new Set(
+              runs.flatMap(
+                (run) => run.artifactBenchmarks ?? run.results.map((result) => result.test_id),
+              ),
+            ),
+          ]
+            .sort()
+            .map((name) => ({ value: name }))
         : [],
-    [runs, activeBenchmark],
+    [runs],
   )
   const choices = useMemo(
     () => (runs ? artifactSides(runs, activeBenchmark) : []),
     [runs, activeBenchmark],
+  )
+  const sideOptions = useMemo(
+    () =>
+      choices.map((choice) => ({
+        value: choice.id,
+        label: choice.label,
+        group: choice.side === 'base' ? 'Base' : 'Head',
+      })),
+    [choices],
   )
   const left =
     choices.find((choice) => choice.id === sides.left) ||
@@ -204,7 +218,6 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
     const url = new URL(window.location.href)
     url.searchParams.set(key, value)
     url.hash = ''
-    if (key === 'benchmark') url.searchParams.delete('file')
     replaceUrl(url)
   }
   const selectFile = (path: string) => {
@@ -252,30 +265,27 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
         <div className={`file-viewer-body${sidebarOpen ? '' : ' sidebar-collapsed'}`}>
           <aside id="artifact-sidebar" hidden={!sidebarOpen}>
             <div className="file-selector-head">
-              <select
-                aria-label="Benchmark"
+              <Combobox
+                label="Benchmark"
+                className="compact"
                 value={activeBenchmark}
-                onChange={(event) => {
-                  setActiveBenchmark(event.target.value)
-                  setSelected('')
-                  updateUrl('benchmark', event.target.value)
+                options={benchmarks}
+                onChange={(name) => {
+                  setActiveBenchmark(name)
+                  updateUrl('benchmark', name)
                 }}
-              >
-                {benchmarks.map((name) => (
-                  <option key={name} value={name}>
-                    {name}
-                  </option>
-                ))}
-              </select>
+              />
               {(['left', 'right'] as const).map((side) => (
                 <label key={side}>
                   {side === 'left' ? 'Left' : 'Right'}
-                  <select
-                    aria-label={side === 'left' ? 'Left' : 'Right'}
+                  <Combobox
+                    label={side === 'left' ? 'Left' : 'Right'}
+                    className="compact"
                     disabled={loading}
-                    value={(side === 'left' ? left : right)?.id}
-                    onChange={(event) => {
-                      const next = { left: left!.id, right: right!.id, [side]: event.target.value }
+                    value={(side === 'left' ? left : right)?.id ?? ''}
+                    options={sideOptions}
+                    onChange={(id) => {
+                      const next = { left: left!.id, right: right!.id, [side]: id }
                       setSides(next)
                       const url = new URL(window.location.href)
                       url.searchParams.set('left', next.left)
@@ -285,19 +295,7 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
                       url.hash = ''
                       replaceUrl(url)
                     }}
-                  >
-                    {(['base', 'head'] as const).map((runSide) => (
-                      <optgroup key={runSide} label={runSide === 'base' ? 'Base' : 'Head'}>
-                        {choices
-                          .filter((choice) => choice.side === runSide)
-                          .map((choice) => (
-                            <option key={choice.id} value={choice.id}>
-                              {choice.label}
-                            </option>
-                          ))}
-                      </optgroup>
-                    ))}
-                  </select>
+                  />
                 </label>
               ))}
             </div>

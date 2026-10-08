@@ -5,6 +5,7 @@ import { changeClass, formatChange } from './change'
 import { formatRawValue, formatValue } from './formatValue'
 import { loadHistory, loadRun } from './data'
 import { BenchmarkSources } from './BenchmarkSources'
+import { Combobox } from './Combobox'
 import type { RunDocument, Theme } from './types'
 import { benchmarkMetric as value } from './benchmarkMetric'
 import { replaceUrl } from './navigation'
@@ -29,6 +30,10 @@ const metrics: Record<
   compileTime: { label: 'Compile time', key: 'compile_time_seconds', unit: 'seconds' },
   peakMemory: { label: 'Peak memory (RSS)', key: 'peak_rss_bytes', unit: 'memory' },
 }
+const metricOptions = Object.entries(metrics).map(([key, config]) => ({
+  value: key,
+  label: config.label,
+}))
 
 const short = (commit: string) => commit.slice(0, 8)
 
@@ -161,22 +166,17 @@ export function Compare({ base, head }: Props) {
           value={query}
           onChange={(event) => setQuery(event.target.value)}
         />
-        <select
-          aria-label="Metric"
+        <Combobox
+          label="Metric"
           value={metric}
-          onChange={(event) => {
-            setMetric(event.target.value)
+          options={metricOptions}
+          onChange={(key) => {
+            setMetric(key)
             const url = new URL(window.location.href)
-            url.searchParams.set('metric', metrics[event.target.value].key)
+            url.searchParams.set('metric', metrics[key].key)
             replaceUrl(url)
           }}
-        >
-          {Object.entries(metrics).map(([key, config]) => (
-            <option key={key} value={key}>
-              {config.label}
-            </option>
-          ))}
-        </select>
+        />
       </section>
       <section
         className="results"

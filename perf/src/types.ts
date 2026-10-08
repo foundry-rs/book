@@ -72,6 +72,7 @@ export interface RunDocument {
   timestamp: string
   results: BenchmarkResult[]
   artifacts: Record<string, ArtifactFile[]>
+  artifactBenchmarks?: string[]
 }
 
 export type HistoryRun = Pick<RunDocument, 'commit' | 'timestamp' | 'results'>
