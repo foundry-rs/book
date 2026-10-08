@@ -142,15 +142,19 @@ function ResolvedComparison({
   }, [base, head])
   if (error)
     return (
-      <p className="error" role="alert">
-        {error}
-      </p>
+      <main className="compare-page">
+        <p className="error" role="alert">
+          {error}
+        </p>
+      </main>
     )
   if (!commits)
     return (
-      <p>
-        <LoadingText>Resolving commits…</LoadingText>
-      </p>
+      <main className="compare-page">
+        <p className="empty" role="status">
+          <LoadingText>Resolving commits…</LoadingText>
+        </p>
+      </main>
     )
   return benchmark ? (
     <FileViewer base={commits[0]} head={commits[1]} benchmark={benchmark} theme={theme} />
