@@ -71,7 +71,10 @@ describe('website API', () => {
     const hash = 'd'.repeat(64)
     globalThis.fetch = vi.fn(async (_input, init) => {
       const sql = init?.body
-      expect(sql).toContain('arrayFilter(f -> f.test_id = {benchmark:String}, artifacts)')
+      expect(sql).toContain(
+        'arrayFilter(f -> f.test_id = {benchmark:String}, artifacts) AS scoped_artifacts',
+      )
+      expect(sql).toContain('arrayDistinct(artifacts.test_id) AS artifact_benchmarks')
       expect(sql).toContain(`revision = '${revision}'`)
       return new Response(
         commits
@@ -80,7 +83,8 @@ describe('website API', () => {
               commit,
               revision,
               measurements: [['counter', '', '', 'solar', 'ok']],
-              artifacts: [['counter', 'output.json', 'solar', 10, hash, '1.json']],
+              scoped_artifacts: [['counter', 'output.json', 'solar', 10, hash, '1.json']],
+              artifact_benchmarks: ['sum-array', 'counter'],
             }),
           )
           .join('\n'),
@@ -94,6 +98,7 @@ describe('website API', () => {
     const { runs } = await response.json()
     expect(runs).toHaveLength(2)
     expect(runs[0].artifacts.counter[0].contentHashes.solar).toBe(hash)
+    expect(runs[0].artifactBenchmarks).toEqual(['sum-array', 'counter'])
     expect(globalThis.fetch).toHaveBeenCalledOnce()
     expect((await app.request(`/api/data/viewer.json?commits=${commits.join(',')}`)).status).toBe(
       400,

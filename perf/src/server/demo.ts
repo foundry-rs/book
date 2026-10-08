@@ -189,6 +189,13 @@ export function demoResponse(input: string) {
       runs: runs.map((run) => ({
         ...run,
         artifacts: pathname.endsWith('/viewer.json') ? run!.artifacts : {},
+        ...(pathname.endsWith('/viewer.json')
+          ? {
+              artifactBenchmarks: Object.keys(run!.artifacts).filter(
+                (benchmark) => run!.artifacts[benchmark].length,
+              ),
+            }
+          : {}),
       })),
     })
   }

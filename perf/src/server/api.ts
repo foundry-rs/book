@@ -121,14 +121,23 @@ async function runsFromClickHouse(
     `SELECT workflow_run_id, revision, commit, branch, pr, title,
        formatDateTime(started_at, '%Y-%m-%dT%H:%i:%SZ', 'UTC') AS timestamp,
        ${benchmark === undefined ? 'measurements, source_links' : "arrayMap(m -> tuple(m.test_id, '', '', m.compiler, m.status, NULL, NULL, NULL, NULL, NULL, NULL, m.label), measurements) AS measurements"}
-       ${includeArtifacts ? `, ${benchmark === undefined ? 'artifacts' : 'arrayFilter(f -> f.test_id = {benchmark:String}, artifacts) AS artifacts'}` : ''}
+       ${includeArtifacts ? `, ${benchmark === undefined ? 'artifacts' : 'arrayFilter(f -> f.test_id = {benchmark:String}, artifacts) AS scoped_artifacts, arrayDistinct(artifacts.test_id) AS artifact_benchmarks'}` : ''}
      FROM run_snapshots FINAL WHERE ${snapshotSelection(commits, revisions)}
      ORDER BY ${snapshotOrder} LIMIT 1 BY commit`,
     benchmark === undefined ? undefined : { benchmark },
   )
   return Promise.all(
     stored.map(async (run) => {
-      const { measurements, artifacts, source_links, ...runMetadata } = run
+      const {
+        measurements,
+        artifacts,
+        scoped_artifacts,
+        artifact_benchmarks,
+        source_links,
+        ...runMetadata
+      } = run
+      // An `artifacts` alias would shadow the column that `artifact_benchmarks` reads.
+      const files = scoped_artifacts ?? artifacts
       const sources = (source_links ?? {}) as Record<string, [string, string][]>
       const rows = (Array.isArray(measurements) ? (measurements as unknown[][]) : [])
         .sort(
@@ -177,7 +186,10 @@ async function runsFromClickHouse(
         commit: String(run.commit),
         schemaVersion: 1,
         results: [...results.values()],
-        artifacts: includeArtifacts ? manifest(Array.isArray(artifacts) ? artifacts : []) : {},
+        artifacts: includeArtifacts ? manifest(Array.isArray(files) ? files : []) : {},
+        ...(Array.isArray(artifact_benchmarks)
+          ? { artifactBenchmarks: artifact_benchmarks.map(String) }
+          : {}),
         workflow_run_id: run.workflow_run_id,
       }
     }),
