@@ -1,0 +1,81 @@
+---
+description: "Create, propose, and sign Safe transactions"
+---
+
+_Generated from `cast safe --help`; see [CLI reference versions](/reference/versions). Regenerate this page instead of editing it directly._
+
+## cast safe
+
+Create, propose, and sign Safe transactions
+
+:::terminal
+
+```bash
+$ cast safe --help
+```
+
+```txt
+Usage: cast safe [OPTIONS] <COMMAND>
+
+Commands:
+  create           Deploy a Safe account.
+  add-delegate     Register a transaction-service delegate for a Safe owner
+  list-delegates   List transaction-service delegates registered for a Safe
+  remove-delegate  Remove a transaction-service delegate for a Safe owner
+  propose          Create, sign, and submit a Safe transaction proposal
+  sign             Sign and submit a confirmation for a proposed Safe
+                   transaction
+  simulate         Simulate a proposed Safe transaction without requiring owner
+                   signatures.
+  execute          Execute a confirmed Safe transaction onchain
+  help             Print this message or the help of the given subcommand(s)
+
+Options:
+  -h, --help
+          Print help (see a summary with '-h')
+
+  -j, --threads <THREADS>
+          Number of threads to use. Specifying 0 defaults to the number of
+          logical cores
+
+          [alias: --jobs]
+
+      --profile <PROFILE>
+          The configuration profile to use
+
+Display options:
+      --color <COLOR>
+          The color of the log messages
+
+          Possible values:
+          - auto:   Intelligently guess whether to use color output (default)
+          - always: Force color output
+          - never:  Force disable color output
+
+      --json
+          Format log messages as JSON
+
+      --md
+          Format log messages as Markdown
+
+  -q, --quiet
+          Do not print log messages
+
+  -v, --verbosity...
+          Verbosity level of the log messages.
+
+          Pass multiple times to increase the verbosity (e.g. -v, -vv, -vvv).
+
+          Depending on the context the verbosity levels have different meanings.
+
+          For example, the verbosity levels of the EVM are:
+          - 2 (-vv): Print logs for all tests.
+          - 3 (-vvv): Print execution traces for failing tests.
+          - 4 (-vvvv): Print execution traces for all tests, and setup traces
+          for failing tests.
+          - 5 (-vvvvv): Print execution and setup traces for all tests,
+          including storage changes and
+            backtraces with line numbers.
+```
+
+:::

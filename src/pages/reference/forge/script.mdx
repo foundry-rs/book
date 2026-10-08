@@ -137,17 +137,17 @@ Tempo:
       --tempo.session <SESSION_ID>
           Use a live Tempo wallet session for signing.
           
-          When set, Foundry resolves the session from
-          `$TEMPO_HOME/wallet/sessions.toml` and signs Tempo transactions with
-          the session's temporary access key on behalf of its root account.
+          When set, Foundry resolves the authorization witness from
+          `$TEMPO_HOME/wallet/store.json` and signs with that Accounts access
+          key on behalf of its root account.
 
       --tempo.fee-token <FEE_TOKEN>
           Fee token address, numeric TIP-20 token id, or known symbol for Tempo
           transactions.
           
           When set, builds a Tempo (type 0x76) transaction that pays gas fees in
-          the specified token. Known symbols are PathUSD, AlphaUSD, BetaUSD, and
-          ThetaUSD.
+          the specified token. Known symbols are PathUSD, AlphaUSD, BetaUSD,
+          ThetaUSD, and OUSD.
           
           If this is not set, the fee token is chosen according to network
           rules. See the Tempo docs for more information.
@@ -159,10 +159,11 @@ Tempo:
           relative `--tempo.valid-before`. Sets nonce_key = U256::MAX, nonce =
           0, and valid_before = now + seconds.
           
-          Maximum value is 30 seconds. The transaction must be mined before the
-          deadline or it becomes permanently invalid, giving safe retry
-          semantics: retries produce a fresh tx hash and the old tx can never
-          land late.
+          Maximum value is 300 seconds; networks that have not activated the T11
+          hardfork reject windows above 30 seconds. The transaction must be
+          mined before the deadline or it becomes permanently invalid, giving
+          safe retry semantics: retries produce a fresh tx hash and the old tx
+          can never land late.
 
       --tempo.nonce-key <NONCE_KEY>
           Nonce key for Tempo parallelizable nonces.
@@ -339,6 +340,17 @@ Tempo:
           Example: If transaction N has a nonce of 22, then the account should
           have a nonce of 22, otherwise it fails.
 
+      --resume-attempt <RESUME_ATTEMPT>
+          Selects the interrupted delegated submission attempt to resolve
+
+      --resume-tx-hash <RESUME_TX_HASH>
+          Records a transaction hash discovered for an interrupted delegated
+          submission
+
+      --resume-retry
+          Retries an interrupted delegated submission proven not to have been
+          submitted
+
       --multi
           If present, --resume or --verify will be assumed to be a multi chain
           deployment
@@ -362,7 +374,20 @@ Tempo:
 
       --slow
           Makes sure a transaction is sent, only after its previous one has been
-          confirmed and succeeded
+          confirmed and succeeded.
+
+          Transactions are prepared during local script execution, before
+          broadcasting. This flag does not re-run the script or update
+          transaction destinations and calldata derived from simulated return
+          values.
+
+          State changes or front-running can make those values stale, even with
+          this flag.
+
+      --confirmations <CONFIRMATIONS>
+          The number of confirmations to wait for after broadcasting
+
+          [default: 1]
 
       --non-interactive
           Disables interactive prompts that might appear when deploying big
@@ -427,8 +452,7 @@ Trace options:
           [alias: --label]
 
       --disable-external-identification
-          Disable external trace identification using Sourcify, Etherscan, or
-          OpenChain
+          Disable external trace identification using Sourcify or Etherscan
 
 Cache options:
       --force
@@ -475,10 +499,11 @@ Compiler options:
           Do not auto-detect the `solc` version
 
       --use <SOLC_VERSION>
-          Specify the solc version, or a path to a local solc, to build with.
+          Specify the solc version, path, or executable name on `PATH` to build
+          with.
           
-          Valid values are in the format `x.y.z`, `solc:x.y.z` or
-          `path/to/solc`.
+          Valid values are in the format `x.y.z`, `solc:x.y.z`, `path/to/solc`,
+          or `solc`.
 
       --offline
           Do not access the network.
@@ -589,7 +614,9 @@ Project options:
           [alias: --hh]
 
       --config-path <FILE>
-          Path to the config file
+          Path to the config file.
+
+          The project root is the config file's parent directory.
 
 Wallet options - raw:
       --interactives <NUM>
@@ -746,6 +773,14 @@ EVM options:
           
           See --rpc-url.
 
+      --fork-state-by-number
+          Fetch fork state by block number instead of hash.
+
+          Use for RPC endpoints that cannot serve state by block hash.
+          Number-based reads cannot guarantee a consistent snapshot if the
+          remote chain reorganizes and do not use the disk state cache.
+          Transaction replay still requires hash-addressed state.
+
       --fork-retries <RETRIES>
           Number of retries.
           
@@ -764,6 +799,12 @@ EVM options:
           This flag overrides the project's configuration file.
           
           See --rpc-url.
+
+      --no-fork-bal
+          Disable parent-block BAL cache prewarming for transaction-hash fork
+          cheatcodes.
+
+          Preceding transactions are still replayed when prewarming is enabled.
 
       --initial-balance <BALANCE>
           The initial balance of deployed test contracts
@@ -852,6 +893,11 @@ Executor environment config:
       --no-isolate
           Whether to disable isolation of calls
 
+      --hardfork <HARDFORK>
+          The runtime EVM hardfork to use.
+
+          Network-specific hardforks must be namespaced, for example `tempo:T5`.
+
       --retries <RETRIES>
           Number of attempts for retrying verification
           
@@ -866,7 +912,7 @@ Networks:
   -n, --network <NETWORK>
           Enable a specific network family
           
-          [possible values: ethereum, tempo]
+          [possible values: ethereum, base, optimism, tempo, monad]
 
       --celo
           Enable Celo network features

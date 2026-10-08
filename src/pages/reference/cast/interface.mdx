@@ -1,14 +1,18 @@
 ---
-description: "Generate a Solidity interface from a given ABI. Currently does not support ABI encoder v2."
+description: "Generate a Solidity interface from a given ABI Currently does not support ABI encoder v2. Examples: - cast interface $TOKEN --etherscan-api-key $KEY (fetch the ABI from Etherscan) - cast interface ./out/Counter.sol/Counter.json (load a local ABI file)"
 ---
 
 _Generated from `cast interface --help`; see [CLI reference versions](/reference/versions). Regenerate this page instead of editing it directly._
 
 ## cast interface
 
-Generate a Solidity interface from a given ABI.
+Generate a Solidity interface from a given ABI
 
 Currently does not support ABI encoder v2.
+
+Examples:
+- cast interface $TOKEN --etherscan-api-key $KEY (fetch the ABI from Etherscan)
+- cast interface ./out/Counter.sol/Counter.json (load a local ABI file)
 
 :::terminal
 
@@ -24,7 +28,8 @@ Arguments:
           The target contract, which can be one of: - A file path to an ABI JSON
           file. - A contract identifier in the form `<path>:<contractname>` or
           just `<contractname>`. - An Ethereum address, for which the ABI will
-          be fetched from Etherscan
+          be fetched from Etherscan. If Etherscan reports the contract as a
+          proxy, the ABI of its implementation is included as well
 
 Options:
   -n, --name <NAME>

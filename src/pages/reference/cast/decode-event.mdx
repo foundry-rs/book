@@ -1,5 +1,5 @@
 ---
-description: "Decode event data"
+description: "Decode event data Parameters marked `indexed` in the supplied signature are emitted as log topics rather than data, so they are ignored when decoding. With `--sig`, DATA must contain only the encoded non-indexed event data, without topics. Examples: - cast decode-event --sig \"Transfer(address indexed from, address indexed to, uint256 value)\" $DATA - cast decode-event $DATA (topic0-prefixed data; looks up the signature)"
 ---
 
 _Generated from `cast decode-event --help`; see [CLI reference versions](/reference/versions). Regenerate this page instead of editing it directly._
@@ -7,6 +7,18 @@ _Generated from `cast decode-event --help`; see [CLI reference versions](/refere
 ## cast decode-event
 
 Decode event data
+
+Parameters marked `indexed` in the supplied signature are emitted as log topics
+rather than
+data, so they are ignored when decoding. With `--sig`, DATA must contain only
+the encoded
+non-indexed event data, without topics.
+
+Examples:
+- cast decode-event --sig "Transfer(address indexed from, address indexed to,
+uint256
+  value)" $DATA
+- cast decode-event $DATA (topic0-prefixed data; looks up the signature)
 
 :::terminal
 
@@ -24,7 +36,7 @@ Arguments:
 Options:
       --sig <SIG>
           The event signature. If none provided then tries to decode from local
-          cache or [https://api.openchain.xyz](https://api.openchain.xyz)
+          cache or [https://4byte.sourcify.dev](https://4byte.sourcify.dev)
           
           [alias: --event-sig]
 
