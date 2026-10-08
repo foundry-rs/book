@@ -1,5 +1,5 @@
 ---
-description: "Format Solidity source files"
+description: "Format Solidity source files Examples: - forge fmt - forge fmt --check (report formatting issues without writing changes) - forge fmt src/Counter.sol"
 ---
 
 _Generated from `forge fmt --help`; see [CLI reference versions](/reference/versions). Regenerate this page instead of editing it directly._
@@ -7,6 +7,11 @@ _Generated from `forge fmt --help`; see [CLI reference versions](/reference/vers
 ## forge fmt
 
 Format Solidity source files
+
+Examples:
+- forge fmt
+- forge fmt --check (report formatting issues without writing changes)
+- forge fmt src/Counter.sol
 
 :::terminal
 
@@ -27,6 +32,9 @@ Options:
           
           By default root of the Git repository, if in one, or the current
           working directory.
+
+      --nearest
+          Use each input file's nearest `foundry.toml` for formatter settings
 
       --check
           Run in 'check' mode.

@@ -1,5 +1,5 @@
 ---
-description: "Show vault, asset, and exchange-rate information"
+description: "Show vault, asset, and exchange-rate information Example: ```text $ cast erc4626 info 0xBEEF01735c132Ada46AA9aA4c54623cAA92A64CB --human \\ --block 25519075 --rpc-url https://ethereum.reth.rs/rpc ``` Output: ```text Vault 0xBEEF01735c132Ada46AA9aA4c54623cAA92A64CB Name Steakhouse USDC Symbol steakUSDC Decimals 18 Asset 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48 Asset name USD Coin Asset symbol USDC Asset decimals 6 Total assets 95183395.377893 USDC Total supply 84037200.060143388288943211 steakUSDC Assets per share 1.132634 USDC Shares per asset 0.882897731163608580 steakUSDC ```"
 ---
 
 _Generated from `cast erc4626 info --help`; see [CLI reference versions](/reference/versions). Regenerate this page instead of editing it directly._
@@ -7,6 +7,30 @@ _Generated from `cast erc4626 info --help`; see [CLI reference versions](/refere
 ## cast erc4626 info
 
 Show vault, asset, and exchange-rate information
+
+Example:
+
+```text
+$ cast erc4626 info 0xBEEF01735c132Ada46AA9aA4c54623cAA92A64CB --human \
+    --block 25519075 --rpc-url https://ethereum.reth.rs/rpc
+```
+
+Output:
+
+```text
+Vault                0xBEEF01735c132Ada46AA9aA4c54623cAA92A64CB
+Name                 Steakhouse USDC
+Symbol               steakUSDC
+Decimals             18
+Asset                0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48
+Asset name           USD Coin
+Asset symbol         USDC
+Asset decimals       6
+Total assets         95183395.377893 USDC
+Total supply         84037200.060143388288943211 steakUSDC
+Assets per share     1.132634 USDC
+Shares per asset     0.882897731163608580 steakUSDC
+```
 
 :::terminal
 

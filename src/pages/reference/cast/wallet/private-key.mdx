@@ -1,5 +1,5 @@
 ---
-description: "Derives private key from mnemonic"
+description: "Derives private key from mnemonic Examples: - cast wallet private-key \"test test test test test test test test test test test junk\" - cast wallet private-key \"$MNEMONIC\" 1 (derive the key at index 1) - cast wallet private-key \"$MNEMONIC\" \"m/44'/60'/0'/0/1\" (use a custom path)"
 ---
 
 _Generated from `cast wallet private-key --help`; see [CLI reference versions](/reference/versions). Regenerate this page instead of editing it directly._
@@ -7,6 +7,12 @@ _Generated from `cast wallet private-key --help`; see [CLI reference versions](/
 ## cast wallet private-key
 
 Derives private key from mnemonic
+
+Examples:
+- cast wallet private-key "test test test test test test test test test test
+test junk"
+- cast wallet private-key "$MNEMONIC" 1 (derive the key at index 1)
+- cast wallet private-key "$MNEMONIC" "m/44'/60'/0'/0/1" (use a custom path)
 
 :::terminal
 

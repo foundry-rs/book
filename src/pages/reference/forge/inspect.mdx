@@ -1,5 +1,5 @@
 ---
-description: "Get specialized information about a smart contract"
+description: "Get specialized information about a smart contract Examples: - forge inspect Counter abi - forge inspect Counter bytecode - forge inspect src/Counter.sol:Counter storageLayout"
 ---
 
 _Generated from `forge inspect --help`; see [CLI reference versions](/reference/versions). Regenerate this page instead of editing it directly._
@@ -7,6 +7,11 @@ _Generated from `forge inspect --help`; see [CLI reference versions](/reference/
 ## forge inspect
 
 Get specialized information about a smart contract
+
+Examples:
+- forge inspect Counter abi
+- forge inspect Counter bytecode
+- forge inspect src/Counter.sol:Counter storageLayout
 
 :::terminal
 
@@ -27,8 +32,9 @@ Arguments:
           
           [possible values: artifact, abi, bytecode, deployedBytecode, assembly,
           legacyAssembly, assemblyOptimized, methodIdentifiers, gasEstimates,
-          storageLayout, devdoc, ir, irOptimized, metadata, userdoc, ewasm,
-          errors, events, standardJson, libraries, linearization]
+          storageLayout, transientStorageLayout, devdoc, ir, irOptimized,
+          metadata, userdoc, ewasm, errors, events, standardJson, libraries,
+          linearization]
 
 Options:
   -h, --help
@@ -88,10 +94,11 @@ Compiler options:
           Do not auto-detect the `solc` version
 
       --use <SOLC_VERSION>
-          Specify the solc version, or a path to a local solc, to build with.
+          Specify the solc version, path, or executable name on `PATH` to build
+          with.
           
-          Valid values are in the format `x.y.z`, `solc:x.y.z` or
-          `path/to/solc`.
+          Valid values are in the format `x.y.z`, `solc:x.y.z`, `path/to/solc`,
+          or `solc`.
 
       --offline
           Do not access the network.
@@ -202,7 +209,9 @@ Project options:
           [alias: --hh]
 
       --config-path <FILE>
-          Path to the config file
+          Path to the config file.
+
+          The project root is the config file's parent directory.
 
 Display options:
   -s, --strip-yul-comments
