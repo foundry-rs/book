@@ -55,7 +55,7 @@ export function Combobox({
     const rect = trigger.current!.getBoundingClientRect()
     const below = window.innerHeight - rect.bottom - 8
     const above = rect.top - 8
-    const width = Math.min(Math.max(rect.width, 240), window.innerWidth - 16)
+    const width = Math.min(Math.max(rect.width, 320), window.innerWidth - 16)
     const left = Math.max(8, Math.min(rect.left, window.innerWidth - width - 8))
     const up = below < 240 && below < above
     setPosition({
