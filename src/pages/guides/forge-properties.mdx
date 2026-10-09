@@ -1,0 +1,239 @@
+---
+description: Generate test properties with an external agent and keep only the properties that mutation testing proves useful.
+---
+
+## Property generation
+
+`forge properties` asks an external generator, usually an AI agent, to write Solidity test properties for a contract. Forge keeps a property only when mutation testing shows that it makes your test suite stronger. If a property fails against the current code on every seed, Forge reports it as a possible bug.
+
+:::info
+`forge properties` is experimental. The prompt format, the candidate format, and the acceptance rules can change.
+:::
+
+In this guide, you write a brief and a generator, run `forge properties`, and review the results.
+
+### Prerequisites
+
+- A Foundry project whose tests pass, and a target contract with tests. See [Mutation testing](/guides/mutation-testing) for how Forge finds surviving mutants.
+- A generator: any executable that reads a prompt file and writes a candidate file. This guide uses the `claude` CLI, but any agent or script works.
+
+### How a run works
+
+1. Forge runs mutation testing on the target files once for each seed. Mutants that survive show where your tests are weak.
+2. Forge writes a prompt file. It contains the surviving mutants with source context, the target sources and their NatSpec, related tests, remappings, test settings such as `isolate`, and feedback from earlier rounds.
+3. Forge runs the generator. The generator returns Solidity test files.
+4. Forge copies the project to a temporary directory, adds the files, and runs every test in them on every seed. Then it runs mutation testing again on your selected tests and the new tests.
+5. Forge keeps, reports, or rejects the candidate. With `--rounds N`, steps 2 to 5 repeat, and each round gets the results of the earlier rounds.
+
+### Steps
+
+::::steps
+
+#### Write a brief
+
+The brief is a short Markdown file that tells the generator what to focus on:
+
+```markdown [brief.md]
+Strengthen the tests for Vault. Prefer properties that follow the documented
+accounting rules over properties that copy the implementation.
+```
+
+#### Write a generator
+
+Forge calls the generator with two arguments: the path of the prompt file and the path of the output file. A non-zero exit status makes the command fail.
+
+This example runs Claude Code with read-only tools and asks for structured output that matches `candidate-schema.json`, stored next to the script:
+
+```bash [generator.sh]
+#!/bin/sh
+set -eu
+prompt=$1
+output=$2
+claude -p --model sonnet --tools "Read,Grep,Glob" --allowedTools "Read Grep Glob" \
+  --add-dir "$(dirname "$prompt")" --permission-mode dontAsk \
+  --output-format json --json-schema "$(cat "$(dirname "$0")/candidate-schema.json")" \
+  "Read $prompt. It is a request from Forge to propose Solidity test properties for this project. Follow its brief, guidance, and output_contract. Return the candidate object." \
+  < /dev/null | jq -e '.structured_output' > "$output"
+```
+
+```json [candidate-schema.json]
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "rationale",
+    "generator",
+    "files"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "foundry/properties-candidate-v1"
+    },
+    "rationale": {
+      "type": "string",
+      "minLength": 1
+    },
+    "generator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "agent",
+        "model"
+      ],
+      "properties": {
+        "agent": {
+          "type": "string",
+          "minLength": 1
+        },
+        "model": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "files": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 8,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "path",
+          "content"
+        ],
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "content": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+The prompt file is in a temporary directory outside the project. Give the agent read access to that directory, as `--add-dir` does above.
+
+The output file must contain one candidate:
+
+```json
+{
+  "schema": "foundry/properties-candidate-v1",
+  "rationale": "The NatSpec says that withdraw reduces totalDeposits by amount.",
+  "files": [
+    {
+      "path": "test/generated/VaultWithdraw.t.sol",
+      "content": "pragma solidity ^0.8.20;\n..."
+    }
+  ]
+}
+```
+
+Files must be new Solidity files under the `generated` directory of your test directory. The prompt's `output_contract` gives the exact path prefix and the size limits. A file must not set a fuzz or invariant `seed` in inline config, because Forge sets the seeds.
+
+#### Run the command
+
+Pass the files to mutate, the brief, the generator, and at least two seeds:
+
+```bash
+$ forge properties --mutate src/Vault.sol --brief brief.md --generator ./generator.sh \
+    --seed 0x5eed --seed 0xc0ffee --rounds 2 --match-contract VaultTest
+```
+
+`--match-contract` limits mutation testing to the tests that cover the target. Use `--mutation-timeout` to limit the time for each mutant.
+
+#### Review the results
+
+Forge prints one line for each possible bug and lists the files that it kept:
+
+```text
+possible bug: VaultWithdrawTest::testWithdrawOne (seed 1: counterexample: args=[1]; seed 2: ...)
+  the property fails on every seed against the current implementation; candidate: cache/properties/0x9831...
+added 1 generated test file(s) that reproducibly resolve 22 mutation survivor(s):
+  test/generated/VaultGenerated.t.sol
+```
+
+::::
+
+### Verify
+
+- Run `forge test --match-path 'test/generated/*'`. The kept tests pass.
+- Read `cache/properties/rounds.json`. It records the result and the reasons for every round.
+
+### Keep, report, or reject
+
+Forge keeps a candidate only when all of these are true:
+
+- Every test passes on every seed.
+- The candidate kills at least one surviving mutant, and it kills that mutant on every seed.
+- It does not revive a mutant that an earlier round killed.
+- It does not change the set of mutants, and it does not make a surviving mutant fail to compile.
+- It does not cause a mutant to time out.
+
+#### Possible bugs
+
+If a test fails on every seed against the current code, Forge reports it as a possible bug and does not keep it. Review each report: the property can be wrong, or the code can be wrong. The candidate files stay in `cache/properties/<digest>/candidate.json`.
+
+A later round can keep a test that avoids or even asserts the reported behavior. Forge marks such files with `kept after a possible bug was reported`. Review them together with the report before you merge them.
+
+#### Rejected candidates
+
+A candidate that does not compile, does not kill a survivor, or fails a check is rejected. Forge sends the reason to the generator in the next round. Compiler warnings are removed from these reasons, so the generator sees the error.
+
+### Check a candidate quickly
+
+A generator can compile and run a candidate before it returns it:
+
+```bash
+$ forge properties --check candidate.json --seed 0x5eed --seed 0xc0ffee
+```
+
+This command does not run mutation testing. It prints `passed`, the failure reasons, and the possible bugs as JSON. The prompt gives the generator the exact command in `output_contract.check_command`. To use it, the generator needs permission to write the candidate file and to run `forge properties`. With Claude Code, allow writes only in the prompt's directory and only that command. File writes use `Edit` rules, and an absolute path starts with `//`:
+
+```bash
+scratch=$(dirname "$prompt")
+forge=$(jq -r '.output_contract.check_command[0]' "$prompt")
+claude -p "..." --tools Read Grep Glob Write Bash \
+  --allowedTools Read Grep Glob "Edit(/$scratch/**)" "Edit(//private$scratch/**)" "Bash($forge properties:*)" \
+  --add-dir "$scratch" --permission-mode dontAsk
+```
+
+Tell the agent to write the candidate JSON with the Write tool and to run the check command without other commands. Without that instruction, agents often try to build the JSON with a script, which these rules block.
+
+### Stateful properties
+
+When documented behavior spans several calls, the prompt asks the generator for an invariant test that follows this convention:
+
+- One handler contract wraps each documented state-changing function. The test targets only the handler with `targetContract` and `targetSelector`.
+- `setUp` deploys the contracts and funds two or three fixed actors.
+- Each handler action picks the actor from a fuzzed seed, uses `bound` for every input, and returns early when a documented precondition fails. It does not use `vm.assume`.
+- Ghost variables track expected state from the handler's own inputs, never from the code under test.
+- One `invariant_` function checks each documented claim for every actor.
+- Runs and depth stay at 32 or less with inline config, because mutation testing reruns the campaign for every mutant.
+
+If `isolate` is `true`, each external call from a test contract runs as its own transaction. Transient storage does not persist between those calls.
+
+### Cost
+
+Mutation testing runs once for each seed for the baseline, and again for each candidate that passes its tests. Seeds run in parallel. For a library with about 1,000 mutants, expect tens of minutes per mutation run. Use `--match-contract` and `--mutation-timeout` to reduce the cost.
+
+### Limitations
+
+- Results depend on the generator, its model, and its permissions.
+- A kept property describes the current behavior. It can lock in a bug that no round reported.
+- A higher mutation score shows stronger tests. It does not show that the code has no bugs.
+- Some surviving mutants cannot be killed because they are equivalent to the original code. The prompt marks common cases with `likely_equivalent`.
+
+### Next steps
+
+- [Mutation testing](/guides/mutation-testing)
+- [Invariant testing](/guides/invariant-testing)
+- [Symbolic testing](/guides/symbolic-testing)
