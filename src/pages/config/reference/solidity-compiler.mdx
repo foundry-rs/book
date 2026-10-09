@@ -82,6 +82,16 @@ See also [solc path resolution](https://docs.soliditylang.org/en/latest/path-res
 
 An array of libraries to link against in the following format: `<file>:<lib>:<address>`, for example: `src/MyLibrary.sol:MyLibrary:0xfD88CeE74f7D78697775aBDAE53f9Da1559728E4`.
 
+##### `allow_linked_libraries`
+
+- Type: boolean
+- Default: true
+- Environment: `FOUNDRY_ALLOW_LINKED_LIBRARIES`
+
+Set to `false` to reject external Solidity library dependencies during builds, tests, scripts,
+contract creation, and coverage. Internal libraries and dynamic test linking remain available.
+See [Linked libraries](/config/reference/linked-libraries) for CLI overrides, cache behavior, and scope.
+
 ##### `solc`
 
 - Type: string (semver, path, or executable name)
