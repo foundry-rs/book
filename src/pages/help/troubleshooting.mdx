@@ -155,12 +155,10 @@ The RPC endpoint is unreachable or rate-limited. Try:
 
 1. Check your internet connection
 2. Use a different RPC provider
-3. Add retry configuration:
+3. Configure fork retries via CLI flags:
 
-```toml
-[profile.default]
-rpc_retry_delay = 1000
-rpc_retry_backoff = 2
+```bash
+$ forge test --fork-url "$RPC_URL" --fork-retries 5 --fork-retry-backoff 1000
 ```
 
 #### Fork tests are slow
