@@ -155,12 +155,17 @@ The RPC endpoint is unreachable or rate-limited. Try:
 
 1. Check your internet connection
 2. Use a different RPC provider
-3. Add retry configuration:
+3. Add retry configuration via CLI flags or named RPC endpoints:
+
+```bash
+$ forge test --fork-url $RPC_URL --fork-retries 5 --fork-retry-backoff 1000
+```
+
+Or in `foundry.toml`:
 
 ```toml
-[profile.default]
-rpc_retry_delay = 1000
-rpc_retry_backoff = 2
+[rpc_endpoints]
+mainnet = { endpoint = "${MAINNET_RPC_URL}", retries = 5, retry_backoff = 1000 }
 ```
 
 #### Fork tests are slow
