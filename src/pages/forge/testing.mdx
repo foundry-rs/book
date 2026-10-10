@@ -304,6 +304,26 @@ function tableSwapTest(Wallet memory wallet, Swap memory swap) public pure {
 
 The same naming requirement mentioned above is relevant here.
 
+#### Skipping a table row
+
+To omit a single row, return early from the table test before its assertions. Forge continues with the remaining rows. The returned row counts as a successful run, rather than a skipped test.
+
+Do not use [`vm.skip`](/reference/cheatcodes/skip) to omit a row: it marks the entire table test as skipped and stops processing the remaining rows, which can hide failures in later rows.
+
+```solidity [test/TableSkip.t.sol]
+// [!include ~/snippets/projects/table_testing/test/TableSkip.t.sol]
+```
+
+In this example, you check the first and third rows and return early for the second row. The second row's deliberately incorrect sum is never asserted.
+
+Run the example from its project directory:
+
+```bash
+$ forge test --match-test tableSumsTest -vv
+```
+
+The table test passes with three runs, including the row that returned early. If you change the third row's expected sum to an incorrect value, the test fails: the early return only omits the second row.
+
 ### Mutation testing
 
 Mutation testing checks the strength of your test suite by making small changes, or mutants, to your source code and re-running your tests. A mutant is killed when at least one test fails. A mutant survives when the changed code still passes the selected tests.
