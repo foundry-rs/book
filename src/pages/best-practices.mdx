@@ -134,6 +134,45 @@ contract TokenApprovalTest is Test {
 }
 ```
 
+For larger contracts, prefer **one test contract per method**: a shared setup contract, then one nested contract per function under test, with each `test_` asserting a single behavior. Method-named test contracts stay ordered like the source API, which keeps failures easy to locate.
+
+```solidity [src/MyFactory.sol]
+contract MyFactory {
+    constructor() {}
+
+    function deploy(address owner) external {}
+
+    function computeAddress(address owner) external {}
+}
+```
+
+```solidity [test/MyFactory.t.sol]
+contract MyFactoryTest is Test {
+    // Shared setup (deploy factory, seed state) lives here.
+}
+
+contract Constructor is MyFactoryTest {
+    function test_SetsChildContractLogicAddress() public {}
+    function test_SetsOwnerAddress() public {}
+}
+
+contract Deploy is MyFactoryTest {
+    function deployChild() internal returns (address) {} // helper
+
+    function test_RevertsIf_CalledByAccountThatIsNotOwner(address caller) public {}
+    function test_IncrementsChildDeployCountByOne() public {}
+    function test_DeploysChildAsMinimalProxy() public {}
+    function test_InitializesChildContract() public {}
+    function test_SetsChildOwnerAddress() public {}
+    function test_EmitsChildDeployedEvent() public {}
+    function test_ReturnsAddressOfTheNewChildContract() public {}
+}
+
+contract ComputeAddress is MyFactoryTest {
+    function test_ComputesExpectedAddress() public {}
+}
+```
+
 #### Use test harnesses
 
 Create harness contracts to expose internal functions for testing:
