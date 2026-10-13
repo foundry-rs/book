@@ -70,7 +70,9 @@ Choose a delimiter that doesn't appear in the string values, so that they can be
 :::
 
 :::note
-You can put your environment variables in a `.env` file. Forge will automatically load them when running `forge test`.
+You can put your environment variables in a `.env` file. Foundry loads it automatically on every `forge`, `cast`, and `anvil` invocation — not just `forge test` — reading the `.env` file in your project root and, if it differs, the one in your current working directory.
+
+Loading never overrides a variable that is already set: variables from your shell take precedence, followed by the project root's `.env`, so the working directory's `.env` only supplies values that are not set anywhere else. If a line in a `.env` file cannot be parsed, Foundry prints a warning and the remaining variables in that file are not loaded.
 :::
 
 ### Related Cheatcodes
