@@ -205,6 +205,12 @@ max_test_rejects = 65536
 seed = "0x1234"
 ```
 
+The `seed` controls the randomness Forge uses to generate fuzz inputs. If you don't set a seed, Forge generates a random one for each run and records it in the results. Pin a seed — in `foundry.toml` as above, or for a single run with `--fuzz-seed` — and Forge generates the same sequence of inputs again, so you can reproduce a failing run locally or in CI:
+
+```bash
+$ forge test --fuzz-seed 0x1234
+```
+
 Constrain inputs with `vm.assume(){:solidity}`:
 
 ```solidity
