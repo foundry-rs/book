@@ -148,6 +148,13 @@ $ forge remove openzeppelin-contracts
 
 This removes the submodule from `lib/` and `.gitmodules`.
 
+`forge remove` performs the full submodule cleanup for you, so there is no need to remove a dependency by hand. For each dependency it:
+
+- runs `git rm`, which deletes the dependency's directory from `lib/` and its entry from `.gitmodules`
+- deletes the dependency's directory under `.git/modules/`
+- removes the dependency's `submodule.*` section from `.git/config`
+- removes the dependency's entry from `foundry.lock`
+
 ### Resolving conflicts
 
 When two dependencies require different versions of the same library, you'll encounter conflicts.
