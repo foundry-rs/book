@@ -70,6 +70,14 @@ $ anvil --prune-history 10
 $ anvil --prune-history
 ```
 
+Anvil also keeps the transactions of every mined block in memory by default, so they stay available for lookups by hash. On a long-running instance this grows without bound. Limit how many blocks keep their transaction data with `--transaction-block-keeper`:
+
+```bash [Keep transaction data for the last 1000 blocks]
+$ anvil --transaction-block-keeper 1000
+```
+
+Once more blocks than the limit have been mined, Anvil drops the transaction data of the oldest block beyond the limit each time a new block arrives. Block headers and state are not affected, but transactions and their receipts from pruned blocks can no longer be fetched by hash. Leave the flag unset when your tooling needs to look up transactions from any point in the node's history.
+
 ### Genesis configuration
 
 Initialize Anvil with a custom genesis file:
