@@ -1,4 +1,4 @@
-import { LoadingText } from './LoadingText'
+import { GraphsSkeleton } from './Skeleton'
 import { useEffect, useState } from 'react'
 import { loadHistory } from './data'
 import { HistoryGraph } from './HistoryGraph'
@@ -43,9 +43,7 @@ export function BenchmarkHistory(props: Props) {
       {error ? (
         <p className="detail-muted">Could not load benchmark history.</p>
       ) : runs === null ? (
-        <p className="detail-muted">
-          <LoadingText>Loading history…</LoadingText>
-        </p>
+        <GraphsSkeleton count={1} />
       ) : !runs.runs.length ? (
         <p className="detail-muted">No measurements in this range.</p>
       ) : (

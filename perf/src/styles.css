@@ -887,7 +887,7 @@ header.file-header {
 }
 .file-viewer-body {
   display: grid;
-  grid-template-columns: min(var(--sidebar-width), 40vw) 6px minmax(0, 1fr);
+  grid-template-columns: min(var(--sidebar-width, 270px), 40vw) 6px minmax(0, 1fr);
   min-height: calc(100dvh - 60px - var(--viewer-toolbar-height));
 }
 .file-viewer-body.sidebar-collapsed {
@@ -1282,8 +1282,49 @@ header.file-header {
     clip-path: inset(0);
   }
 }
+.skeleton {
+  display: inline-block;
+  max-width: 100%;
+  vertical-align: middle;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--text) 9%, transparent);
+  animation: skeleton-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+@keyframes skeleton-pulse {
+  50% {
+    opacity: 0.5;
+  }
+}
+.graph-skeleton-plot {
+  display: block;
+  height: 220px;
+  margin: 3px 18px 16px 84px;
+}
+.result > .skeleton + .skeleton,
+.run > .skeleton:nth-child(n + 4) {
+  justify-self: end;
+}
+.tree-skeleton {
+  display: grid;
+  justify-items: start;
+  gap: 12px;
+  padding: 14px 6px;
+}
+.diff-skeleton {
+  display: grid;
+  gap: 20px;
+  padding: 16px 20px;
+}
+.diff-skeleton > div {
+  display: grid;
+  gap: 8px;
+}
+.diff-skeleton > div > :first-child {
+  margin-bottom: 4px;
+}
 @media (prefers-reduced-motion: reduce) {
-  .loading-dots {
+  .loading-dots,
+  .skeleton {
     animation: none;
   }
 }

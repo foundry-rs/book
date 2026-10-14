@@ -1,4 +1,4 @@
-import { LoadingText } from './LoadingText'
+import { DiffSkeleton, FilesSkeleton, TreeSkeleton } from './Skeleton'
 import { FileTree as PierreFileTree, useFileTree } from '@pierre/trees/react'
 import { lazy, Suspense, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import { PanelLeftClose, PanelLeftOpen } from 'lucide-react'
@@ -258,9 +258,7 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
       {loadError ? (
         <p className="error">{loadError}</p>
       ) : !runs ? (
-        <p className="empty" role="status">
-          <LoadingText>{importProgress || 'Loading files…'}</LoadingText>
-        </p>
+        <FilesSkeleton sidebarOpen={sidebarOpen} progress={importProgress} />
       ) : (
         <div className={`file-viewer-body${sidebarOpen ? '' : ' sidebar-collapsed'}`}>
           <aside id="artifact-sidebar" hidden={!sidebarOpen}>
@@ -300,9 +298,7 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
               ))}
             </div>
             {loading ? (
-              <p className="empty" role="status">
-                <LoadingText>Loading files…</LoadingText>
-              </p>
+              <TreeSkeleton />
             ) : (
               <ArtifactFileTree
                 paths={visiblePaths}
@@ -353,9 +349,7 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
           )}
           <div className="file-diff">
             {loading ? (
-              <p className="empty" role="status">
-                <LoadingText>Loading files…</LoadingText>
-              </p>
+              <DiffSkeleton label="Loading diff" />
             ) : selectedFile && left && right ? (
               <>
                 <div className="artifact-actions-toolbar">
@@ -379,13 +373,7 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
                     )
                   })}
                 </div>
-                <Suspense
-                  fallback={
-                    <p className="empty">
-                      <LoadingText>Loading renderer…</LoadingText>
-                    </p>
-                  }
-                >
+                <Suspense fallback={<DiffSkeleton label="Loading renderer" />}>
                   <ArtifactDiff
                     before={{
                       label: left.label,
