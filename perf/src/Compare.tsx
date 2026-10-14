@@ -1,4 +1,4 @@
-import { LoadingText } from './LoadingText'
+import { CompareSkeleton } from './Skeleton'
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import { BenchmarkHistory } from './BenchmarkHistory'
 import { changeClass, formatChange } from './change'
@@ -122,14 +122,7 @@ export function Compare({ base, head }: Props) {
         <p className="error">{loadError}</p>
       </main>
     )
-  if (!runs)
-    return (
-      <main className="compare-page">
-        <p className="empty" role="status">
-          <LoadingText>{importProgress || 'Loading benchmark runs…'}</LoadingText>
-        </p>
-      </main>
-    )
+  if (!runs) return <CompareSkeleton progress={importProgress} />
   const [beforeRun, afterRun] = runs
 
   return (

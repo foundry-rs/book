@@ -1,4 +1,5 @@
 import { LoadingText } from './LoadingText'
+import { CompareSkeleton, FilesSkeleton, GraphsSkeleton, RunsSkeleton, Skeleton } from './Skeleton'
 import { useEffect, useMemo, useState } from 'react'
 import { Moon, Sun } from 'lucide-react'
 import { HistoryGraph } from './HistoryGraph'
@@ -151,12 +152,13 @@ function ResolvedComparison({
       </main>
     )
   if (!commits)
-    return (
-      <main className="compare-page">
-        <p className="empty" role="status">
-          <LoadingText>Resolving commits…</LoadingText>
-        </p>
+    return benchmark ? (
+      <main className="file-viewer">
+        <div className="viewer-toolbar" />
+        <FilesSkeleton />
       </main>
+    ) : (
+      <CompareSkeleton />
     )
   return benchmark ? (
     <FileViewer base={commits[0]} head={commits[1]} benchmark={benchmark} theme={theme} />
@@ -290,7 +292,9 @@ function Home({ benchmark, navigationKey }: { benchmark: string | null; navigati
           <h1>Performance</h1>
           <p>Main branch benchmark history</p>
         </div>
-        <span>{index?.totalMainRuns ?? mainRuns.length} runs</span>
+        <span>
+          {index ? `${index.totalMainRuns ?? mainRuns.length} runs` : <Skeleton width={56} />}
+        </span>
       </section>
       <form
         className="compare-box"
@@ -335,7 +339,10 @@ function Home({ benchmark, navigationKey }: { benchmark: string | null; navigati
           />
           Changed only
         </label>
-        <span>Solar · {history?.runs.length ?? 0} main runs in range · lower is better</span>
+        <span>
+          Solar · {history ? history.runs.length : <Skeleton width={24} />} main runs in range ·
+          lower is better
+        </span>
       </section>
       <p className="history-note">
         Each graph is one benchmark. Gaps indicate failed or missing measurements. Hover to inspect
@@ -347,9 +354,7 @@ function Home({ benchmark, navigationKey }: { benchmark: string | null; navigati
       {error || historyError ? (
         <p className="error">{error || historyError}</p>
       ) : history === null ? (
-        <p className="empty">
-          <LoadingText>Loading benchmark history…</LoadingText>
-        </p>
+        <GraphsSkeleton count={6} />
       ) : (
         <section className="chart-grid">
           {visibleBenchmarks.map((benchmark) => (
@@ -376,7 +381,9 @@ function Home({ benchmark, navigationKey }: { benchmark: string | null; navigati
           <span>benchmarks</span>
           <span>branch</span>
         </div>
-        {runs.length === 0 ? (
+        {!index && !error ? (
+          <RunsSkeleton />
+        ) : runs.length === 0 ? (
           <p className="empty">No published benchmark runs yet.</p>
         ) : (
           runs.slice(0, 12).map((run) => {
