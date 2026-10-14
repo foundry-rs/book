@@ -21,15 +21,19 @@ Use instant mining for fast application development. Use interval mining to mode
 
 ### Configure transaction coalescing
 
-By default, instant mining uses a 5-millisecond coalescing window to group ready transactions into a block. The transaction-triggered part of mixed mining uses the same window. This can increase the latency of sequential tests: a receipt watcher that checks before the block is mined may have to wait for its next polling interval.
+By default, instant mining uses a `0`-millisecond coalescing window and mines ready transactions without an added delay. The transaction-triggered part of mixed mining uses the same window. Concurrent transactions, including transactions in one JSON-RPC batch, can land in separate blocks.
 
-Use `--transaction-coalescing-window 0` to disable the coalescing delay:
+To enable coalescing, set a positive window with [`--transaction-coalescing-window`](/reference/anvil/anvil). For example, use `5` to restore the previous 5-millisecond delay:
 
 ```bash
-$ anvil --transaction-coalescing-window 0
+$ anvil --transaction-coalescing-window 5
 ```
 
-The window is measured in milliseconds and defaults to `5`. You can set a different value with the same flag. The configured window is preserved when you disable and re-enable automine.
+The window is measured in milliseconds. Set it to `0` to disable the delay. The configured window is preserved when you disable and re-enable automine.
+
+Coalescing gives ready transactions time to accumulate, but does not guarantee that every concurrent transaction shares a block. If your workflow requires exact block boundaries, use [manual mining](#mine-on-demand) and submit the batch before calling `evm_mine`.
+
+A positive window can increase the latency of sequential tests: a receipt watcher that checks before the block is mined may have to wait for its next polling interval.
 
 ### Mine on demand
 
