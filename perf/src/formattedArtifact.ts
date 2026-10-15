@@ -4,7 +4,6 @@ import { formatArtifactContents } from './artifactFormat'
 import { artifactLanguage } from './highlight'
 import type { FileContents } from '@pierre/diffs'
 
-export const maxInteractiveArtifact = 512 * 1024
 const formatted = responseCache<FileContents | null>(3_600_000, 16 * 1024 * 1024)
 
 export interface ArtifactSource {
@@ -36,12 +35,9 @@ export function loadDiffFile(
       source.storagePath!,
       source.contentHash,
     )
-    // Large outputs remain downloadable, but must not freeze navigation with parsing/diffing.
     if (raw === null) return null
-    const contents =
-      raw.length > maxInteractiveArtifact ? raw : formatArtifactContents(raw, path, language)!
+    const contents = formatArtifactContents(raw, path, language)!
     const lang = artifactLanguage(path, language)
-    if (contents.length > maxInteractiveArtifact) return { name: path, contents, lang }
     // Hash the actual formatted text, including legacy artifacts without content hashes.
     const hash = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(contents))
     const digest = Array.from(new Uint8Array(hash), (byte) =>

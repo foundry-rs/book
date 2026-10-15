@@ -79,9 +79,9 @@ Origin index/history misses coalesce for one second; immutable bodies have a bou
 Vercel logs emit `perf_api` events with route, status, API/database/SQL durations,
 read rows/bytes and ClickHouse query IDs for percentile analysis. SQL reads have a
 five-second execution limit and a ten-second transport timeout.
-Formatted artifacts are retained in a bounded browser cache. Files larger than
-512 Ki characters skip JSON formatting and interactive diffing, with a bounded
-text preview and full-content downloads to keep navigation responsive.
+Formatted artifacts are retained in a bounded browser cache. Files of any size are
+formatted and diffed; the library renders files over 100,000 lines without syntax
+highlighting.
 Interactive diff computation uses patience line matching in a cancellable browser
 worker with a five-second limit. Unlike unbounded Myers diffing, patience anchors
 unique lines and replaces unmatched regions rather than searching for a minimal edit
