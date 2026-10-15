@@ -45,7 +45,7 @@ it('stores project metrics without fixed columns and keeps Solar snapshot identi
             opt_s_lines: 7800,
             compile_time_seconds: 0.21,
             spills: 0,
-            reloads: 30,
+            frame_bytes: 30,
           },
         },
       },
