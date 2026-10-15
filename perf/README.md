@@ -105,8 +105,9 @@ no dependency patch is needed. Its edit-session APIs are not used by this read-o
 `VirtualizerContext`: the browser page scrolls normally while only visible lines
 are rendered. The file toolbar and side labels stick during scrolling. The file
 tree can be collapsed or resized with a pointer or the separator's arrow keys;
-its visibility and width reset on reload. As on DiffsHub, narrow screens open on a
-unified diff and show the tree as a bottom sheet that closes once you pick a file. File icons use Pierre's complete colored set, as on
+its visibility and width reset on reload. As on DiffsHub, narrow screens and
+landscape phones open on a unified diff and show the tree as a bottom sheet that
+closes once you pick a file. File icons use Pierre's complete colored set, as on
 [DiffsHub](https://diffshub.com). `src/artifactIcons.ts` adds icons for formats that set
 lacks: Solidity (`.sol`), EVM IR (`.evmir`) and LLVM IR (`.ll`) use
 [Simple Icons](https://simpleicons.org) marks (CC0-1.0); Solar MIR (`.mir`), Yul
