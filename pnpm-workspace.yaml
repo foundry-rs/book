@@ -23,4 +23,4 @@ overrides:
   vite@*: "catalog:"
 # TODO: remove once https://github.com/shikijs/shiki/pull/1338 is released.
 patchedDependencies:
-  '@shikijs/core@4.5.0': patches/@shikijs__core@4.5.0.patch
+  "@shikijs/core@4.5.0": patches/@shikijs__core@4.5.0.patch
