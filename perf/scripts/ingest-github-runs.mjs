@@ -6,6 +6,7 @@ import { dirname, join, resolve } from 'node:path'
 import { promisify } from 'node:util'
 
 import { insert, select } from './lib/clickhouse.mjs'
+import { projects } from '../src/projects.ts'
 
 const exec = promisify(execFile)
 const maxBuffer = 16 * 1024 * 1024
@@ -44,7 +45,7 @@ async function runs(repository, runId, limit) {
       '--repo',
       repository,
       '--workflow',
-      'Benchmark',
+      project.workflow,
       '--limit',
       limit,
       '--json',
@@ -139,13 +140,15 @@ async function ingest(repository, run, refresh, knownRuns) {
       '--repo',
       repository,
       '--name',
-      'codegen-runtime-results',
+      project.artifact,
       '--dir',
       directory,
     ])
     const paths = await artifactPaths(directory)
     await exec('node', [
       resolve('scripts/ingest-run.mjs'),
+      '--project',
+      project.id,
       '--results',
       paths.results,
       '--artifacts',
@@ -185,7 +188,10 @@ async function ingest(repository, run, refresh, knownRuns) {
 }
 
 const options = args()
-const repository = options.repo || process.env.GITHUB_REPOSITORY || 'paradigmxyz/solar'
+if (!Object.hasOwn(projects, options.project ?? 'solar'))
+  throw new Error(`Unknown project: ${options.project}`)
+const project = projects[options.project ?? 'solar']
+const repository = options.repo || project.repository
 const limit = options.limit || '10000'
 const available = await runs(repository, options['workflow-run'], limit)
 const concurrency = Number(options.concurrency || '2')

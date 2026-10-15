@@ -167,3 +167,25 @@ second";
     )
   }
 })
+
+it('highlights native assembly and LLVM IR with bundled grammars', async () => {
+  const { artifactLanguage, artifactThemes } = await import('../src/highlight')
+  const { getSharedHighlighter } = await import('@pierre/diffs')
+  expect(artifactLanguage('opt.s', 'text')).toBe('asm')
+  expect(artifactLanguage('unopt.ll', 'text')).toBe('llvm')
+  expect(artifactLanguage('bytecode.txt', 'text')).toBe('text')
+  const highlighter = await getSharedHighlighter({
+    themes: Object.values(artifactThemes),
+    langs: ['asm', 'llvm'],
+  })
+  for (const [lang, source, keyword] of [
+    ['asm', '  mov rcx, qword ptr [rax + 168]', 'mov'],
+    ['llvm', '  %0 = load i64, ptr %gas, align 8', 'load'],
+  ]) {
+    const { tokens, fg } = highlighter.codeToTokens(source, { lang, theme: artifactThemes.light })
+    expect(tokens[0].map((token) => token.content).join('')).toBe(source)
+    expect(
+      tokens[0].find((token) => token.content.trim() === keyword)?.color?.toLowerCase(),
+    ).not.toBe(fg?.toLowerCase())
+  }
+})

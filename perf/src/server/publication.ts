@@ -45,7 +45,18 @@ export function publication(
       row.content_sha256,
       row.storage_path,
     ])
+  const metricValues = Object.fromEntries(
+    results.flatMap((row) => {
+      const metrics = (row.metrics ?? {}) as Record<string, number>
+      return Object.keys(metrics).length
+        ? [[`${String(row.test_id)}/${String(row.compiler)}`, metrics]]
+        : []
+    }),
+  )
+  const project = run.project ?? 'solar'
   const snapshot = {
+    // Solar snapshots keep their original identity: default fields stay out of the hash.
+    ...(project === 'solar' ? {} : { project }),
     commit: run.commit,
     workflow_run_id: run.workflow_run_id,
     run_attempt: run.run_attempt ?? 1,
@@ -57,9 +68,11 @@ export function publication(
     benchmark_count: new Set(results.map((row) => row.test_id)).size,
     measurements,
     artifacts,
+    ...(Object.keys(metricValues).length ? { metric_values: metricValues } : {}),
   }
   return {
     ...snapshot,
+    project,
     revision: createHash('sha256').update(JSON.stringify(snapshot)).digest('hex'),
     // Provenance is additive metadata, not artifact identity. This lets the
     // backfill enrich existing pinned revisions without breaking shared URLs.

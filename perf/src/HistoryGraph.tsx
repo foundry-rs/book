@@ -5,6 +5,7 @@ import { percentChange } from './comparison'
 import { formatValue } from './formatValue'
 import type { HistorySeries } from './types'
 import { navigate } from './navigation'
+import { project } from './project'
 import { historyPath, nearestPoint, timePositions, unchangedRunCounts } from './historyPlot'
 
 const short = (commit: string) => commit.slice(0, 8)
@@ -44,7 +45,7 @@ export function HistoryGraph({
     const position = (value: number) =>
       Math.max(10, Math.min(90, 90 - ((value - chartMin) / (chartMax - chartMin)) * 80))
     const positions = timePositions(points)
-    const stepped = metric !== 'compile_time_seconds' && metric !== 'peak_rss_bytes'
+    const stepped = !project.metrics.find((definition) => definition.key === metric)?.noisy
     const path = historyPath(points, positions, position, stepped)
     const unchangedCounts = unchangedRunCounts(points)
     return { points, values, min, max, position, positions, path, unchangedCounts }

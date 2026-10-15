@@ -18,22 +18,16 @@ import {
 import { compilerLabel } from './compilerLabel'
 import { compilerColumn } from './compilers'
 import { useImportProgress } from './importProgress'
+import { project } from './project'
 
-const metrics: Record<
-  string,
-  { label: string; key: string; unit: 'bytes' | 'gas' | 'seconds' | 'memory' }
-> = {
-  runtimeGas: { label: 'Runtime gas', key: 'total_gas', unit: 'gas' },
-  deployGas: { label: 'Deploy gas', key: 'deploy_gas', unit: 'gas' },
-  runtimeSize: { label: 'Runtime bytes', key: 'runtime_size', unit: 'bytes' },
-  creationSize: { label: 'Creation bytes', key: 'bytecode_size', unit: 'bytes' },
-  compileTime: { label: 'Compile time', key: 'compile_time_seconds', unit: 'seconds' },
-  peakMemory: { label: 'Peak memory (RSS)', key: 'peak_rss_bytes', unit: 'memory' },
-}
-const metricOptions = Object.entries(metrics).map(([key, config]) => ({
-  value: key,
-  label: config.label,
+const metrics = Object.fromEntries(
+  project.metrics.map((metric) => [metric.key, { ...metric, label: metric.label ?? metric.title }]),
+)
+const metricOptions = project.metrics.map((metric) => ({
+  value: metric.key,
+  label: metric.label ?? metric.title,
 }))
+const repository = `https://github.com/${project.repository}`
 
 const short = (commit: string) => commit.slice(0, 8)
 
@@ -68,9 +62,9 @@ export function Compare({ base, head }: Props) {
   const [query, setQuery] = useState('')
   const [sort, setSort] = useState<ComparisonSort>()
   const [metric, setMetric] = useState(
-    Object.entries(metrics).find(
-      ([name, definition]) => name === initialMetric || definition.key === initialMetric,
-    )?.[0] ?? 'runtimeGas',
+    project.metrics.find(
+      (definition) => definition.alias === initialMetric || definition.key === initialMetric,
+    )?.key ?? project.metrics[0].key,
   )
   const [expanded, setExpanded] = useState(initial.get('benchmark') ?? '')
   const selectedRow = useRef<HTMLButtonElement>(null)
@@ -79,7 +73,7 @@ export function Compare({ base, head }: Props) {
     let cancelled = false
     setRuns(null)
     setLoadError(null)
-    Promise.all([loadRun(base, baseRevision), loadRun(head, headRevision)]).then(
+    Promise.all([loadRun(base, baseRevision, head), loadRun(head, headRevision, base)]).then(
       (value) => {
         if (!cancelled) setRuns(value)
       },
@@ -132,11 +126,9 @@ export function Compare({ base, head }: Props) {
         <h1>Benchmark comparison</h1>
         <p className="run-meta">
           <time>{formatRunDate(afterRun.timestamp)}</time> ·{' '}
-          <a href={`https://github.com/paradigmxyz/solar/commit/${head}`}>{short(head)}</a> ·{' '}
+          <a href={`${repository}/commit/${head}`}>{short(head)}</a> ·{' '}
           {afterRun.pr ? (
-            <a href={`https://github.com/paradigmxyz/solar/pull/${afterRun.pr}`}>
-              PR #{afterRun.pr}
-            </a>
+            <a href={`${repository}/pull/${afterRun.pr}`}>PR #{afterRun.pr}</a>
           ) : (
             (afterRun.branch ?? 'detached')
           )}{' '}
@@ -144,8 +136,8 @@ export function Compare({ base, head }: Props) {
           <a
             href={
               afterRun.workflow_run_id
-                ? `https://github.com/paradigmxyz/solar/actions/runs/${afterRun.workflow_run_id}`
-                : 'https://github.com/paradigmxyz/solar/actions'
+                ? `${repository}/actions/runs/${afterRun.workflow_run_id}`
+                : `${repository}/actions`
             }
           >
             GitHub workflow
@@ -221,19 +213,19 @@ export function Compare({ base, head }: Props) {
                   {after.test_id}
                 </code>
                 <span
-                  title={`${compilerLabel(afterRun, after.test_id, 'solar')}: ${formatRawValue(headValue, metrics[metric].unit)}`}
+                  title={`${compilerLabel(afterRun, after.test_id, project.compiler)}: ${formatRawValue(headValue, metrics[metric].unit)}`}
                 >
                   {headValue === null ? '—' : formatValue(headValue, metrics[metric].unit)}
                 </span>
                 {compilers.map((compiler) => {
                   const comparedValue = value(
-                    compiler === 'solar' ? before : headResult,
+                    compiler === project.compiler ? before : headResult,
                     metrics[metric].key,
                     compiler,
                   )
                   const delta = percentChange(headValue, comparedValue)
                   const label = compilerLabel(
-                    compiler === 'solar' ? beforeRun : afterRun,
+                    compiler === project.compiler ? beforeRun : afterRun,
                     after.test_id,
                     compiler,
                   )

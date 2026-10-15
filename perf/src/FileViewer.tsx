@@ -10,6 +10,7 @@ import { loadArtifact, loadViewerRuns } from './data'
 import { useImportProgress } from './importProgress'
 import { artifactSides, initialArtifactSides } from './artifactSides'
 import { replaceUrl } from './navigation'
+import { project } from './project'
 import type { RunDocument, Theme } from './types'
 
 const loadRenderer = () => import('./ArtifactDiff')
@@ -174,10 +175,10 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
   )
   const left =
     choices.find((choice) => choice.id === sides.left) ||
-    choices.find((choice) => choice.id === 'base:solar')
+    choices.find((choice) => choice.id === `base:${project.compiler}`)
   const right =
     choices.find((choice) => choice.id === sides.right) ||
-    choices.find((choice) => choice.id === 'head:solar')
+    choices.find((choice) => choice.id === `head:${project.compiler}`)
   const visibleFiles = useMemo(
     () =>
       left && right

@@ -12,6 +12,7 @@ import {
   validArtifactPath,
   validIdentifier,
 } from '../src/server/artifacts.ts'
+import { projects } from '../src/projects.ts'
 const maxResultsBytes = 32 * 1024 * 1024
 const maxArtifactBytes = 32 * 1024 * 1024
 const maxArtifactRunBytes = 256 * 1024 * 1024
@@ -25,7 +26,7 @@ function args() {
       throw new Error(`Invalid argument: ${option}`)
     values[option.slice(2)] = value
   }
-  for (const name of ['results', 'artifacts', 'commit', 'workflow-run']) {
+  for (const name of ['results', 'artifacts', 'workflow-run']) {
     if (!values[name]) throw new Error(`Missing --${name}`)
   }
   return values
@@ -104,7 +105,9 @@ async function normalizeArtifacts(root, run) {
 }
 
 const options = args()
-if (!/^[0-9a-f]{40}$/.test(options.commit)) throw new Error('Commit must be a full SHA')
+if (!Object.hasOwn(projects, options.project ?? 'solar'))
+  throw new Error(`Unknown project: ${options.project}`)
+const project = projects[options.project ?? 'solar']
 if (!/^\d+$/.test(options['workflow-run'])) throw new Error('Workflow run must be numeric')
 const attempt = Number(options['run-attempt'] ?? 1)
 if (!Number.isSafeInteger(attempt) || attempt < 1)
@@ -112,9 +115,13 @@ if (!Number.isSafeInteger(attempt) || attempt < 1)
 if ((await stat(resolve(options.results))).size > maxResultsBytes)
   throw new Error('Results exceed 32 MiB')
 const document = JSON.parse(await readFile(resolve(options.results), 'utf8'))
+// Producers that record their commit (evm2) make --commit optional.
+const commit = options.commit ?? document?.commit
+if (!/^[0-9a-f]{40}$/.test(commit ?? '')) throw new Error('Commit must be a full SHA')
 const run = {
+  project: project.id,
   workflow_run_id: Number(options['workflow-run']),
-  commit: options.commit,
+  commit,
   branch: options.branch || null,
   pr: options.pr ? Number(options.pr) : null,
   title: options.title || null,
@@ -123,14 +130,18 @@ const run = {
   source_schema: 1,
   raw_results: JSON.stringify(document),
 }
-const results = normalizeResults(document, {
-  workflowRunId: run.workflow_run_id,
-  commit: run.commit,
-})
-const artifacts = await normalizeArtifacts(resolve(options.artifacts), { ...run, results })
-await enrichSources(run.commit, results).catch((error) =>
-  console.warn('Could not enrich historical benchmark sources', error.message),
+const results = normalizeResults(
+  document,
+  { workflowRunId: run.workflow_run_id, commit: run.commit },
+  project,
 )
+const artifacts = await normalizeArtifacts(resolve(options.artifacts), { ...run, results })
+if (project.id === 'solar')
+  await enrichSources(run.commit, results).catch((error) =>
+    console.warn('Could not enrich historical benchmark sources', error.message),
+  )
 await insert('artifact_blobs', publicationBlobs(artifacts))
 await insert('run_snapshots', [publication({ ...run, run_attempt: attempt }, results, artifacts)])
-console.log(`Ingested ${run.commit.slice(0, 8)} from workflow run ${run.workflow_run_id}`)
+console.log(
+  `Ingested ${project.id} ${run.commit.slice(0, 8)} from workflow run ${run.workflow_run_id}`,
+)

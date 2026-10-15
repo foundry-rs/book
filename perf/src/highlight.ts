@@ -82,5 +82,8 @@ export function artifactLanguage(path: string, language: string) {
   if (path.endsWith('.yul')) return 'yul'
   if (path.endsWith('.disasm')) return 'evm-disasm'
   if (path.endsWith('.hex')) return 'evm-bytecode'
+  // Shiki's bundled grammars: LLVM IR and x86 assembly (Intel and AT&T syntax).
+  if (path.endsWith('.ll')) return 'llvm'
+  if (path.endsWith('.s')) return 'asm'
   return language === 'solidity' ? 'solar-solidity' : language
 }

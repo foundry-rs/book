@@ -5,7 +5,29 @@ import tailwindcss from '@tailwindcss/vite'
 
 import { createApi } from './src/server/api'
 import { ingestCommit, ingestRecent } from './src/server/ingest'
-const api = createApi({ importRun: ingestCommit, ingestRecent })
+import { projects } from './src/projects'
+const api = createApi({
+  importRun: (sha, project, partner) => ingestCommit(sha, process.env, project, partner),
+  ingestRecent,
+})
+
+// Each project is a separate build of the same app, served at /perf/<project>/.
+const projectId = process.env.PERF_PROJECT || 'solar'
+if (!Object.hasOwn(projects, projectId)) throw new Error(`Unknown PERF_PROJECT: ${projectId}`)
+const project = projects[projectId]
+
+function projectHtml(): Plugin {
+  return {
+    name: 'project-html',
+    transformIndexHtml: (html) =>
+      html
+        .replace('<title>Solar perf</title>', `<title>${project.name} perf</title>`)
+        .replace(
+          'content="Solar compiler benchmark history and artifact diffs"',
+          `content="${project.description}"`,
+        ),
+  }
+}
 
 function localApi(): Plugin {
   return {
@@ -41,8 +63,8 @@ function localApi(): Plugin {
 }
 
 export default defineConfig({
-  base: '/perf/solar/',
-  plugins: lazyPlugins(() => [localApi(), react(), tailwindcss()]),
+  base: `/perf/${project.id}/`,
+  plugins: lazyPlugins(() => [localApi(), projectHtml(), react(), tailwindcss()]),
   build: {
     outDir: process.env.PERF_OUT_DIR,
     target: 'es2022',
