@@ -443,9 +443,9 @@ button:disabled {
   padding: 0 16px;
   display: grid;
   grid-template-columns:
-    minmax(150px, 1fr)
+    minmax(120px, 1fr)
     repeat(calc(var(--compiler-count, 1) + 1), minmax(100px, 150px));
-  min-width: calc(150px + (var(--compiler-count, 1) + 1) * 116px);
+  min-width: calc(120px + (var(--compiler-count, 1) + 1) * 116px);
   column-gap: 16px;
   align-items: center;
   border: 0;
@@ -1353,19 +1353,6 @@ header.file-header {
   .history-filter input {
     width: 100%;
   }
-  /* Wrap each benchmark row instead of hiding compiler columns off-screen. */
-  .result {
-    grid-template-columns: repeat(calc(var(--compiler-count, 1) + 1), minmax(0, 1fr));
-    min-width: 0;
-    row-gap: 6px;
-    padding: 10px 12px;
-  }
-  .result > :first-child {
-    grid-column: 1 / -1;
-  }
-  .header-row > button {
-    height: auto;
-  }
   .artifact-actions-toolbar {
     gap: 8px;
     padding: 6px 10px;
@@ -1420,5 +1407,32 @@ header.file-header {
   }
   body:has(.sidebar-backdrop) {
     overflow: hidden;
+  }
+}
+@media (max-width: 760px) {
+  /* Each row shows the benchmark and Head value, then the deltas, instead of hiding columns. */
+  .result {
+    grid-template-columns: repeat(var(--compiler-count, 1), minmax(0, 1fr));
+    height: auto;
+    min-width: 0;
+    row-gap: 6px;
+    padding: 10px 12px;
+  }
+  .result > strong {
+    font-size: 12px;
+  }
+  .result > :first-child {
+    grid-row: 1;
+    grid-column: 1 / -1;
+    padding-right: 112px;
+  }
+  .result > :nth-child(2) {
+    grid-row: 1;
+    grid-column: -2;
+    justify-self: end;
+    white-space: nowrap;
+  }
+  .header-row > button {
+    height: auto;
   }
 }
