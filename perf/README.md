@@ -92,11 +92,12 @@ both files remain downloadable with bounded previews; the failed content pair st
 failed for the page session, with no automatic retries on revisits or visibility changes.
 Theme and split/unified changes reuse the computed diff. Syntax highlighting
 uses the library's worker pool (one worker, retained across file/compiler switches);
-intraline word decorations are enabled only when both sides together contain at most
-2,000 lines, 200 changed lines, and 32,768 characters. Lines longer than 256 characters
-skip word matching. Large diffs retain syntax colors and added/deleted line colors
-without intraline decorations, whose Shiki processing becomes quadratic on generated
-files. These are whole-diff limits: Pierre does not expose per-block decoration budgets.
+intraline word decorations are enabled for diffs with at most 20,000 changed lines.
+Shiki checks every pair of decorations for overlaps, so larger diffs keep syntax colors
+and added/deleted line colors without intraline decorations. Pierre's own shiki
+dependency is overridden to 4.x, which splits tokens at decoration offsets in linear
+time; 3.x scanned every offset for every token, which made word diffs slow even with
+few changes in a large file. Lines longer than 1,000 characters skip word matching.
 Changing between decorated and undecorated diffs clears the library's highlighting
 caches through `setRenderOptions`; the worker and our computed-diff cache are retained.
 `@pierre/diffs` 1.4.1 includes the large-hunk stack-overflow fix upstream;
