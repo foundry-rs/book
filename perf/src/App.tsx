@@ -316,7 +316,7 @@ function Home({ benchmark, navigationKey }: { benchmark: string | null; navigati
           Metric
           <Combobox label="Metric" value={metric} options={metricOptions} onChange={setMetric} />
         </label>
-        <label>
+        <label className="history-filter">
           Benchmark
           <input
             type="search"
@@ -339,8 +339,8 @@ function Home({ benchmark, navigationKey }: { benchmark: string | null; navigati
         </span>
       </section>
       <p className="history-note">
-        Each graph is one benchmark. Gaps indicate failed or missing measurements. Hover to inspect
-        a run; click to compare it with the preceding commit.
+        Each graph is one benchmark. Gaps indicate failed or missing measurements. Hover or tap to
+        inspect a run; click it or tap it again to compare it with the preceding commit.
         {project.metrics.find((definition) => definition.key === metric)?.noisy
           ? ' Timing and memory can vary between runs. Long histories preserve peaks and lows; hover shows raw measurements.'
           : ''}

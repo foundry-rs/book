@@ -1,6 +1,10 @@
 import type { ReactNode } from 'react'
 import { LoadingText } from './LoadingText'
 
+// Narrow screens and landscape phones show the file tree as a bottom sheet.
+// Keep in sync with the matching media queries in styles.css.
+export const narrowQuery = '(max-width: 760px), (max-height: 500px) and (pointer: coarse)'
+
 const widths = [72, 54, 86, 63, 47, 78, 58, 91, 66, 51]
 const width = (index: number) => widths[index % widths.length]
 
@@ -134,7 +138,7 @@ export function DiffSkeleton({ label, progress }: { label: string; progress?: st
 }
 
 export function FilesSkeleton({
-  sidebarOpen = true,
+  sidebarOpen = !matchMedia(narrowQuery).matches,
   progress,
 }: {
   sidebarOpen?: boolean

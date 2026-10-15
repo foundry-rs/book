@@ -1,4 +1,4 @@
-import { DiffSkeleton, FilesSkeleton, TreeSkeleton } from './Skeleton'
+import { DiffSkeleton, FilesSkeleton, narrowQuery, TreeSkeleton } from './Skeleton'
 import { FileTree as PierreFileTree, useFileTree } from '@pierre/trees/react'
 import { lazy, Suspense, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import { PanelLeftClose, PanelLeftOpen } from 'lucide-react'
@@ -100,8 +100,10 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
   const [activeBenchmark, setActiveBenchmark] = useState(benchmark)
   const [sides, setSides] = useState(() => initialArtifactSides(params))
   const [selected, setSelected] = useState(params.get('file') || '')
-  const [diffStyle, setDiffStyle] = useState<'split' | 'unified'>('split')
-  const [sidebarOpen, setSidebarOpen] = useState(true)
+  // Narrow screens open on a unified diff, as on DiffsHub; the file tree becomes a bottom sheet.
+  const [narrow] = useState(() => matchMedia(narrowQuery).matches)
+  const [diffStyle, setDiffStyle] = useState<'split' | 'unified'>(narrow ? 'unified' : 'split')
+  const [sidebarOpen, setSidebarOpen] = useState(!narrow)
   const [sidebarWidth, setSidebarWidth] = useState(270)
   const drag = useRef<{ x: number; width: number } | null>(null)
   const resizeSidebar = (width: number) => setSidebarWidth(Math.max(200, Math.min(480, width)))
@@ -224,6 +226,7 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
   const selectFile = (path: string) => {
     setSelected(path)
     updateUrl('file', path)
+    if (matchMedia(narrowQuery).matches) setSidebarOpen(false)
   }
 
   return (
@@ -308,6 +311,13 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
               />
             )}
           </aside>
+          {sidebarOpen && (
+            <button
+              className="sidebar-backdrop"
+              aria-label="Close file tree"
+              onClick={() => setSidebarOpen(false)}
+            />
+          )}
           {sidebarOpen && (
             <div
               className="sidebar-resizer"

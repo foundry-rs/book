@@ -236,8 +236,10 @@ button:disabled {
   display: flex;
   align-items: start;
   justify-content: space-between;
+  gap: 12px;
 }
 .graph-heading h2 {
+  min-width: 0;
   overflow-wrap: anywhere;
   margin-right: 12px;
   margin: 0;
@@ -251,6 +253,7 @@ button:disabled {
   display: grid;
   justify-items: end;
   gap: 5px;
+  white-space: nowrap;
 }
 .graph-heading strong {
   font-size: 20px;
@@ -439,8 +442,10 @@ button:disabled {
   min-height: 48px;
   padding: 0 16px;
   display: grid;
-  grid-template-columns: minmax(180px, 1fr) 150px repeat(var(--compiler-count, 1), 150px);
-  min-width: calc(180px + (var(--compiler-count, 1) + 1) * 166px);
+  grid-template-columns:
+    minmax(150px, 1fr)
+    repeat(calc(var(--compiler-count, 1) + 1), minmax(100px, 150px));
+  min-width: calc(150px + (var(--compiler-count, 1) + 1) * 116px);
   column-gap: 16px;
   align-items: center;
   border: 0;
@@ -765,7 +770,7 @@ button.result.selected {
   border-bottom: 1px solid var(--line);
   background: var(--raised);
 }
-.detail-copy h2 {
+.detail-copy > h2 {
   margin: 0;
   font-size: 18px;
   letter-spacing: -0.025em;
@@ -1024,18 +1029,6 @@ header.file-header {
   .run-meta {
     line-height: 1.65;
   }
-  .file-viewer-body {
-    grid-template-columns: 1fr;
-  }
-  .file-viewer-body aside {
-    position: static;
-    height: 45dvh;
-    border-right: 0;
-    border-bottom: 1px solid var(--line);
-  }
-  .sidebar-resizer {
-    display: none;
-  }
   .diff-sides {
     grid-template-columns: 1fr;
   }
@@ -1127,6 +1120,22 @@ header.file-header {
 .chart-tooltip-floating {
   position: fixed;
   z-index: 10;
+  width: max-content;
+  max-width: calc(100vw - 16px);
+  white-space: normal;
+}
+.sidebar-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 19;
+  height: auto;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  background: rgb(0 0 0 / 0.45);
+  backdrop-filter: blur(2px);
+  cursor: default;
 }
 .benchmark-detail {
   grid-template-columns: minmax(0, 1fr) minmax(220px, 0.42fr);
@@ -1326,5 +1335,90 @@ header.file-header {
   .loading-dots,
   .skeleton {
     animation: none;
+  }
+}
+@media (max-width: 680px) {
+  .compare-box {
+    grid-template-columns: 1fr;
+  }
+  .compare-box button {
+    grid-column: auto;
+  }
+  .history-controls {
+    gap: 12px;
+  }
+  .history-filter {
+    flex: 1 1 180px;
+  }
+  .history-filter input {
+    width: 100%;
+  }
+  /* Wrap each benchmark row instead of hiding compiler columns off-screen. */
+  .result {
+    grid-template-columns: repeat(calc(var(--compiler-count, 1) + 1), minmax(0, 1fr));
+    min-width: 0;
+    row-gap: 6px;
+    padding: 10px 12px;
+  }
+  .result > :first-child {
+    grid-column: 1 / -1;
+  }
+  .header-row > button {
+    height: auto;
+  }
+  .artifact-actions-toolbar {
+    gap: 8px;
+    padding: 6px 10px;
+  }
+  .artifact-actions {
+    flex-wrap: nowrap;
+    min-width: 0;
+  }
+  .artifact-actions-label {
+    min-width: 0;
+  }
+  .artifact-actions button,
+  .artifact-actions a {
+    flex: none;
+    height: 30px;
+    padding: 0 8px;
+  }
+  .artifact-actions button span,
+  .artifact-actions a span {
+    display: none;
+  }
+}
+@media (max-width: 760px), (max-height: 500px) and (pointer: coarse) {
+  .file-viewer-body {
+    grid-template-columns: 1fr;
+  }
+  .file-viewer-body aside {
+    position: fixed;
+    inset: auto 0 0;
+    z-index: 20;
+    height: min(80dvh, 640px);
+    border: 1px solid var(--line);
+    border-bottom: 0;
+    border-radius: 12px 12px 0 0;
+    box-shadow: 0 -8px 32px rgb(0 0 0 / 0.35);
+    overscroll-behavior: contain;
+  }
+  .file-viewer-body aside::before {
+    content: '';
+    flex: none;
+    width: 36px;
+    height: 4px;
+    margin: 0 auto 6px;
+    border-radius: 2px;
+    background: var(--line);
+  }
+  .sidebar-resizer {
+    display: none;
+  }
+  .sidebar-backdrop {
+    display: block;
+  }
+  body:has(.sidebar-backdrop) {
+    overflow: hidden;
   }
 }
