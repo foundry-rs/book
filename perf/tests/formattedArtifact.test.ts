@@ -2,11 +2,11 @@ import { afterEach, expect, it, vi } from 'vite-plus/test'
 
 afterEach(() => vi.unstubAllGlobals())
 
-it('retains formatted contents across viewer visits and keeps large files unparsed', async () => {
+it('retains formatted contents across viewer visits and formats large files', async () => {
   vi.resetModules()
   const fetch = vi.fn(async () => new Response('{"value":1}'))
   vi.stubGlobal('fetch', fetch)
-  const { loadDiffFile, maxInteractiveArtifact } = await import('../src/formattedArtifact')
+  const { loadDiffFile } = await import('../src/formattedArtifact')
   const source = {
     commit: 'a'.repeat(40),
     benchmark: 'test',
@@ -20,11 +20,15 @@ it('retains formatted contents across viewer visits and keeps large files unpars
   expect(first?.cacheKey).toBeTruthy()
   expect(await loadDiffFile(source, 'output.json', 'json')).toBe(first)
   expect(fetch).toHaveBeenCalledOnce()
-  const large = `{"value":"${'x'.repeat(maxInteractiveArtifact)}"}`
-  fetch.mockImplementation(async () => new Response(large))
-  expect(
-    await loadDiffFile({ ...source, contentHash: 'c'.repeat(64) }, 'output.json', 'json'),
-  ).toEqual({ name: 'output.json', lang: 'json', contents: large })
+  const value = 'x'.repeat(1024 * 1024)
+  fetch.mockImplementation(async () => new Response(`{"value":"${value}"}`))
+  const large = await loadDiffFile(
+    { ...source, contentHash: 'c'.repeat(64) },
+    'output.json',
+    'json',
+  )
+  expect(large?.contents).toBe(`{\n  "value": "${value}"\n}\n`)
+  expect(large?.cacheKey).toBeTruthy()
 })
 
 it('highlights Solidity literals and balanced punctuation without changing source text', async () => {

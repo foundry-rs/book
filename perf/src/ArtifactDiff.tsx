@@ -15,7 +15,7 @@ import { useLineSelection } from './lineSelection'
 import HighlightWorker from '@pierre/diffs/worker/worker.js?worker'
 import { useEffect, useState } from 'react'
 import { Info } from 'lucide-react'
-import { loadDiffFile, maxInteractiveArtifact, type ArtifactSource } from './formattedArtifact'
+import { loadDiffFile, type ArtifactSource } from './formattedArtifact'
 import type { Theme } from './types'
 
 interface Props {
@@ -87,26 +87,6 @@ function ArtifactDiffContents({ before, after, path, language, theme, style }: P
   ])
   if (error) return <p className="error">Could not load artifact: {error}</p>
   if (!contents) return <DiffSkeleton label="Loading diff" />
-  if (contents.some((value) => value !== null && value.contents.length > maxInteractiveArtifact))
-    return (
-      <section className="large-artifact">
-        <p className="artifact-notice" role="status">
-          This file is too large for an interactive diff. Download the full contents below; the
-          preview is limited to 20,000 characters.
-        </p>
-        {contents.map(
-          (value, index) =>
-            value !== null && (
-              <LargeArtifact
-                key={index}
-                contents={value.contents}
-                label={(index === 0 ? before : after).label}
-                path={path}
-              />
-            ),
-        )}
-      </section>
-    )
   const [oldFile, newFile] = contents
   if (oldFile === null && newFile === null) {
     return <p className="empty">This artifact was not published by either side.</p>
