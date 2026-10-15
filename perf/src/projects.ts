@@ -86,6 +86,12 @@ export const projects: Record<string, Project> = {
         noisy: true,
       },
       { key: 'compile_time_seconds', title: 'Compile time', unit: 'seconds', noisy: true },
+      {
+        key: 'runtime_instructions',
+        title: 'Runtime instructions',
+        unit: 'instructions',
+        noisy: true,
+      },
     ],
   },
 }
