@@ -105,8 +105,9 @@ no dependency patch is needed. Its edit-session APIs are not used by this read-o
 `VirtualizerContext`: the browser page scrolls normally while only visible lines
 are rendered. The file toolbar and side labels stick during scrolling. The file
 tree can be collapsed or resized with a pointer or the separator's arrow keys;
-its visibility and width reset on reload. Narrow screens stack the tree above the
-diff and omit the resize handle. File icons use Pierre's complete colored set, as on
+its visibility and width reset on reload. As on DiffsHub, narrow screens and
+landscape phones open on a unified diff and show the tree as a bottom sheet that
+closes once you pick a file. File icons use Pierre's complete colored set, as on
 [DiffsHub](https://diffshub.com). `src/artifactIcons.ts` adds icons for formats that set
 lacks: Solidity (`.sol`), EVM IR (`.evmir`) and LLVM IR (`.ll`) use
 [Simple Icons](https://simpleicons.org) marks (CC0-1.0); Solar MIR (`.mir`), Yul
@@ -330,6 +331,7 @@ Opening an individual benchmark requests `&benchmark=<encoded name>`: one bounde
 query returns only that benchmark and metric, never other benchmarks or artifacts.
 Values are never summed across benchmarks; failed or missing
 measurements leave gaps. Hover a graph to inspect a measurement; click to compare it with the preceding commit.
+On touch screens, the first tap inspects a run and a second tap on it compares.
 The individual benchmark History section uses the same graph. Dashboard cards
 without a latest measurement are hidden for the selected metric; individual benchmark
 history still retains older measurements. The index contains metadata and benchmark

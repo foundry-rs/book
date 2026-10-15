@@ -57,7 +57,7 @@ export function ArtifactActions({ source }: { source: ArtifactSource }) {
           }
         }}
       >
-        <Copy size={14} /> Copy
+        <Copy size={14} /> <span>Copy</span>
       </button>
       {artifact !== null && url ? (
         <a
@@ -66,11 +66,11 @@ export function ArtifactActions({ source }: { source: ArtifactSource }) {
           rel="noopener noreferrer"
           aria-label={`Open ${label} raw file`}
         >
-          <ExternalLink size={14} /> Open raw
+          <ExternalLink size={14} /> <span>Open raw</span>
         </a>
       ) : (
         <button disabled aria-label={`Open ${label} raw file`}>
-          <ExternalLink size={14} /> Open raw
+          <ExternalLink size={14} /> <span>Open raw</span>
         </button>
       )}
       <span className="artifact-actions-status" role="status">

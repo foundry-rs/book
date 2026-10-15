@@ -1,4 +1,4 @@
-import { useId, useMemo, useState } from 'react'
+import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { changeClass, formatChange } from './change'
 import { percentChange } from './comparison'
@@ -30,6 +30,28 @@ export function HistoryGraph({
   const clipId = useId()
   const [hovered, setHovered] = useState<number | null>(null)
   const [tooltip, setTooltip] = useState<{ x: number; y: number } | null>(null)
+  // Touch has no hover: the first tap inspects a run and a second tap on it compares.
+  const tap = useRef<{ touch: boolean; selected: number | null }>({ touch: false, selected: null })
+  const tooltipRef = useRef<HTMLSpanElement>(null)
+  useLayoutEffect(() => {
+    // Keep the floating tooltip inside the viewport, which matters on phones.
+    const element = tooltipRef.current
+    if (!element) return
+    element.style.translate = ''
+    const { left, right } = element.getBoundingClientRect()
+    const shift = Math.min(0, window.innerWidth - 8 - right) || Math.max(0, 8 - left)
+    element.style.translate = `${shift}px`
+  })
+  useEffect(() => {
+    // The floating tooltip is fixed to the viewport, so a scrolled-away tap closes it.
+    if (!tooltip || !tap.current.touch) return
+    const close = () => {
+      setHovered(null)
+      setTooltip(null)
+    }
+    window.addEventListener('scroll', close, { once: true, passive: true })
+    return () => window.removeEventListener('scroll', close)
+  }, [tooltip])
   const { points, values, min, max, position, positions, path, unchangedCounts } = useMemo(() => {
     const series = runs.values[benchmark] ?? []
     const points = runs.runs
@@ -132,11 +154,21 @@ export function HistoryGraph({
                 event.preventDefault()
                 setHovered(Math.max(0, Math.min(points.length - 1, index)))
               }}
+              onPointerDown={(event) => {
+                tap.current = { touch: event.pointerType !== 'mouse', selected: hovered }
+              }}
               onClick={(event) => {
                 const bounds = event.currentTarget.getBoundingClientRect()
-                compare(
-                  nearestPoint(positions, ((event.clientX - bounds.left) / bounds.width) * 100),
+                const index = nearestPoint(
+                  positions,
+                  ((event.clientX - bounds.left) / bounds.width) * 100,
                 )
+                if (tap.current.touch && tap.current.selected !== index) {
+                  setHovered(index)
+                  setTooltip({ x: event.clientX, y: event.clientY })
+                  return
+                }
+                compare(index)
               }}
               onPointerMove={(event) => {
                 const bounds = event.currentTarget.getBoundingClientRect()
@@ -144,7 +176,9 @@ export function HistoryGraph({
                 setHovered(nearestPoint(positions, x * 100))
                 setTooltip({ x: event.clientX, y: event.clientY })
               }}
-              onPointerLeave={() => {
+              onPointerLeave={(event) => {
+                // Touch pointers leave after every tap; keep the inspected run until blur.
+                if (event.pointerType !== 'mouse') return
                 setHovered(null)
                 setTooltip(null)
               }}
@@ -190,6 +224,7 @@ export function HistoryGraph({
               tooltip &&
               createPortal(
                 <span
+                  ref={tooltipRef}
                   className="chart-tooltip chart-tooltip-floating"
                   style={{ left: tooltip.x, top: tooltip.y }}
                 >
