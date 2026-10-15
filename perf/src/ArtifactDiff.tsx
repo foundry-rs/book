@@ -1,16 +1,9 @@
 import { DiffSkeleton } from './Skeleton'
-import {
-  File,
-  FileDiff,
-  VirtualizerContext,
-  WorkerPoolContextProvider,
-  useWorkerPool,
-} from '@pierre/diffs/react'
+import { File, FileDiff, VirtualizerContext, WorkerPoolContextProvider } from '@pierre/diffs/react'
 import { Virtualizer } from '@pierre/diffs'
 import type { FileContents, FileDiffMetadata } from '@pierre/diffs'
 import { artifactThemes } from './highlight'
 import { computeDiff } from './computeDiff'
-import { intralineOptions } from './intralineOptions'
 import { useLineSelection } from './lineSelection'
 import HighlightWorker from '@pierre/diffs/worker/worker.js?worker'
 import { useEffect, useState } from 'react'
@@ -42,8 +35,7 @@ export default function ArtifactDiff(props: Props) {
     <VirtualizerContext.Provider value={virtualizer}>
       <WorkerPoolContextProvider
         poolOptions={poolOptions}
-        // Start safely; computed diffs opt into bounded intraline highlighting.
-        highlighterOptions={{ lineDiffType: 'none', theme: artifactThemes }}
+        highlighterOptions={{ theme: artifactThemes }}
       >
         <ArtifactDiffContents
           key={JSON.stringify([props.before, props.after, props.path, props.language])}
@@ -151,7 +143,6 @@ function ComputedDiff({
   theme: Theme
   style: Props['style']
 }) {
-  const pool = useWorkerPool()
   const [diff, setDiff] = useState<FileDiffMetadata | null>(null)
   const selection = useLineSelection(after.name, diff ?? undefined)
   const [error, setError] = useState('')
@@ -160,23 +151,16 @@ function ComputedDiff({
     const { signal } = controller
     setDiff(null)
     setError('')
-    computeDiff(before, after, signal)
-      .then(async (value) => {
-        if (signal.aborted) return value
-        // Pool options, not FileDiff options, control worker highlighting.
-        await pool?.setRenderOptions(intralineOptions(value))
-        return value
-      })
-      .then(
-        (value) => {
-          if (!signal.aborted) setDiff(value)
-        },
-        (error: Error) => {
-          if (!signal.aborted) setError(error.message)
-        },
-      )
+    computeDiff(before, after, signal).then(
+      (value) => {
+        if (!signal.aborted) setDiff(value)
+      },
+      (error: Error) => {
+        if (!signal.aborted) setError(error.message)
+      },
+    )
     return () => controller.abort()
-  }, [before, after, pool])
+  }, [before, after])
   if (error)
     return (
       <section className="large-artifact">
@@ -202,7 +186,6 @@ function ComputedDiff({
         selectedLines={selection.selectedLines}
         options={{
           ...selection.options,
-          ...intralineOptions(diff),
           disableFileHeader: true,
           diffStyle: style,
           overflow: 'scroll',

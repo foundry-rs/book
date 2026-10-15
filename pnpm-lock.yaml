@@ -22,6 +22,9 @@ overrides:
   '@pierre/theming>@shikijs/themes': ^4.5.0
   vite@*: npm:@voidzero-dev/vite-plus-core@1.0.0
 
+patchedDependencies:
+  '@shikijs/core@4.5.0': ef52d95da5f659b0596d3aa462d70e4161e97e1ff2165e29f28aac4612dc16ce
+
 importers:
 
   .:
@@ -6038,7 +6041,7 @@ snapshots:
       '@types/hast': 3.0.5
       hast-util-to-html: 9.0.5
 
-  '@shikijs/core@4.5.0':
+  '@shikijs/core@4.5.0(patch_hash=ef52d95da5f659b0596d3aa462d70e4161e97e1ff2165e29f28aac4612dc16ce)':
     dependencies:
       '@shikijs/primitive': 4.5.0
       '@shikijs/types': 4.5.0
@@ -6106,7 +6109,7 @@ snapshots:
 
   '@shikijs/transformers@4.5.0':
     dependencies:
-      '@shikijs/core': 4.5.0
+      '@shikijs/core': 4.5.0(patch_hash=ef52d95da5f659b0596d3aa462d70e4161e97e1ff2165e29f28aac4612dc16ce)
       '@shikijs/types': 4.5.0
 
   '@shikijs/twoslash@3.23.0(supports-color@8.1.1)(typescript@7.0.2)':
@@ -8997,7 +9000,7 @@ snapshots:
 
   shiki@4.5.0:
     dependencies:
-      '@shikijs/core': 4.5.0
+      '@shikijs/core': 4.5.0(patch_hash=ef52d95da5f659b0596d3aa462d70e4161e97e1ff2165e29f28aac4612dc16ce)
       '@shikijs/engine-javascript': 4.5.0
       '@shikijs/engine-oniguruma': 4.5.0
       '@shikijs/langs': 4.5.0
