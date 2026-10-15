@@ -56,13 +56,34 @@ async function runs(repository, runId, limit) {
   return JSON.parse(stdout)
 }
 
+// Manual dispatches on main named `Benchmark backfill <sha>` benchmark that older main commit.
+function backfillCommit(run) {
+  return run.event === 'workflow_dispatch' && run.headBranch === 'main'
+    ? /^Benchmark backfill ([0-9a-f]{40})$/.exec(run.displayTitle ?? '')?.[1]
+    : undefined
+}
+
+function benchmarkedCommit(run) {
+  return backfillCommit(run) ?? run.headSha
+}
+
 function trustedRun(run) {
   return (
     run.conclusion === 'success' &&
-    run.event === 'push' &&
+    (run.event === 'push' || backfillCommit(run) !== undefined) &&
     run.headBranch === 'main' &&
     /^[0-9a-f]{40}$/.test(run.headSha)
   )
+}
+
+async function commitDate(repository, sha) {
+  const { stdout } = await exec('gh', [
+    'api',
+    `repos/${repository}/commits/${sha}`,
+    '--jq',
+    '.commit.committer.date',
+  ])
+  return stdout.trim()
 }
 
 async function importedRuns() {
@@ -77,7 +98,7 @@ async function importedRuns() {
 
 async function refreshMetadata(run) {
   if (!trustedRun(run)) return false
-  const pull = await pullRequest(repository, run.headSha)
+  const pull = await pullRequest(repository, benchmarkedCommit(run))
   const [snapshot] = await select(
     `SELECT * EXCEPT (published_at) FROM run_snapshots FINAL WHERE workflow_run_id = ${run.databaseId} ORDER BY run_attempt DESC, published_at DESC LIMIT 1`,
   )
@@ -130,7 +151,11 @@ async function artifactPaths(directory) {
 async function ingest(repository, run, refresh, knownRuns) {
   if (!trustedRun(run)) return false
   if (!refresh && (knownRuns.get(run.databaseId) ?? 0) >= (run.attempt ?? 1)) return false
-  const pull = await pullRequest(repository, run.headSha)
+  const commit = benchmarkedCommit(run)
+  const backfill = commit !== run.headSha
+  const pull = await pullRequest(repository, commit)
+  // History is ordered by time; a backfill belongs at its commit's time, not the dispatch's.
+  const timestamp = backfill ? await commitDate(repository, commit) : run.createdAt
   const directory = await mkdtemp(join(tmpdir(), 'solar-web-'))
   try {
     await exec('gh', [
@@ -154,7 +179,7 @@ async function ingest(repository, run, refresh, knownRuns) {
       '--artifacts',
       paths.artifacts,
       '--commit',
-      run.headSha,
+      commit,
       '--workflow-run',
       String(run.databaseId),
       '--run-attempt',
@@ -166,9 +191,9 @@ async function ingest(repository, run, refresh, knownRuns) {
       '--pr',
       String(pull?.number || ''),
       '--title',
-      pull?.title || run.displayTitle || '',
+      pull?.title || (backfill ? '' : run.displayTitle) || '',
       '--timestamp',
-      run.createdAt,
+      timestamp,
     ])
     knownRuns.set(run.databaseId, run.attempt ?? 1)
     return true

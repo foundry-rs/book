@@ -348,6 +348,84 @@ describe('GitHub Actions importer', () => {
     },
   )
 
+  it.each([
+    ['main', 'workflow_dispatch', 'old'],
+    ['main', 'push', 'head'],
+    ['feature', 'workflow_dispatch', 'none'],
+  ])(
+    'imports a backfill-named run on %s (%s) under the %s commit',
+    async (branch, event, stored) => {
+      const head = 'a'.repeat(40)
+      const old = 'b'.repeat(40)
+      const inserts: Record<string, unknown>[] = []
+      vi.spyOn(console, 'info').mockImplementation(() => {})
+      const archive = zipSync({
+        'results.json': strToU8(
+          JSON.stringify({
+            results: [
+              { test_id: 'weth', compilers: { evm2: { status: 'ok', jit_size_bytes: 5 } } },
+            ],
+          }),
+        ),
+      })
+      const source = {
+        id: 7,
+        head_sha: head,
+        head_branch: branch,
+        event,
+        conclusion: 'success',
+        name: 'Benchmark',
+        display_title: `Benchmark backfill ${old}`,
+        created_at: '2026-10-15T06:00:00Z',
+      }
+      vi.stubGlobal(
+        'fetch',
+        vi.fn(async (input, init) => {
+          const url = new URL(String(input))
+          if (url.hostname === 'clickhouse.example') {
+            if (url.searchParams.get('query')?.includes('run_snapshots'))
+              inserts.push(JSON.parse(String(init.body).trim()) as Record<string, unknown>)
+            return new Response('')
+          }
+          if (url.pathname.includes('/actions/workflows/'))
+            return Response.json({ workflow_runs: [source] })
+          if (url.pathname.endsWith(`/commits/${old}`))
+            return Response.json({ commit: { committer: { date: '2026-10-06T12:00:00Z' } } })
+          if (url.pathname.endsWith('/artifacts'))
+            return Response.json({
+              artifacts: [
+                {
+                  archive_download_url: 'https://api.github.com/archive',
+                  size_in_bytes: archive.length,
+                  expired: false,
+                },
+              ],
+            })
+          if (url.pathname === '/archive') return new Response(archive)
+          return Response.json([])
+        }),
+      )
+      const environment = { CLICKHOUSE_HOST: 'https://clickhouse.example', GITHUB_TOKEN: 'test' }
+      await ingestRecent(environment, [projects.evm2])
+      expect(inserts).toEqual(
+        stored === 'none'
+          ? []
+          : [
+              expect.objectContaining(
+                stored === 'old'
+                  ? { commit: old, started_at: '2026-10-06T12:00:00Z', title: null }
+                  : { commit: head, started_at: '2026-10-15T06:00:00Z' },
+              ),
+            ],
+      )
+      if (stored === 'old')
+        // An on-demand import of main's head must not take the backfill run's results.
+        await expect(ingestCommit(head, environment, projects.evm2)).rejects.toThrow(
+          'No benchmark workflow is available',
+        )
+    },
+  )
+
   it('excludes cooling-down runs before allocating the worker batch', async () => {
     const queries: string[] = []
     vi.stubGlobal(

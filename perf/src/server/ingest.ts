@@ -246,10 +246,22 @@ export function normalizeArchive(
   }
 }
 
+// A manual `workflow_dispatch` on main can benchmark an older main commit's code; the producer
+// names such runs `Benchmark backfill <sha>`. Every other run benchmarks its own head.
+const backfillTitle = /^Benchmark backfill ([0-9a-f]{40})$/
+
+export function benchmarkedCommit(run: GitHubRun) {
+  const backfill =
+    run.event === 'workflow_dispatch' && run.head_branch === 'main'
+      ? backfillTitle.exec(run.display_title)
+      : null
+  return backfill ? backfill[1] : run.head_sha
+}
+
 function importedRun(run: GitHubRun, pr: number | null, title: string | null): ImportedRun {
   return {
     branch: run.head_branch,
-    commit: run.head_sha,
+    commit: benchmarkedCommit(run),
     pr,
     startedAt: run.created_at,
     title,
@@ -275,7 +287,7 @@ async function knownRuns(config: ClickHouseConfig, project: Project) {
 async function hasRun(config: ClickHouseConfig, source: GitHubRun) {
   const rows = await select(
     config,
-    `SELECT 1 FROM run_snapshots FINAL WHERE workflow_run_id = ${source.id} AND commit = '${source.head_sha}' AND run_attempt >= ${source.run_attempt ?? 1} LIMIT 1`,
+    `SELECT 1 FROM run_snapshots FINAL WHERE workflow_run_id = ${source.id} AND commit = '${benchmarkedCommit(source)}' AND run_attempt >= ${source.run_attempt ?? 1} LIMIT 1`,
   )
   return rows.length > 0
 }
@@ -336,7 +348,7 @@ async function recordJob(
   await insert(config, 'ingestion_jobs', [
     {
       attempts,
-      commit: source.head_sha,
+      commit: benchmarkedCommit(source),
       last_error: error,
       next_attempt_at: (state === 'complete' || state === 'missing'
         ? new Date(0)
@@ -395,11 +407,26 @@ async function ingestRun(
   source: GitHubRun,
   availableArtifact?: GitHubArtifact,
 ) {
-  const [pull, artifact] = await Promise.all([
-    importStage('githubMetadataMs', () => github.pullRequest(source.head_sha).catch(() => null)),
+  const commit = benchmarkedCommit(source)
+  const backfill = commit !== source.head_sha
+  const [pull, artifact, committed] = await Promise.all([
+    importStage('githubMetadataMs', () => github.pullRequest(commit).catch(() => null)),
     importStage('githubArtifactMs', () => availableArtifact ?? github.artifact(source.id)),
+    // History is ordered by time; a backfill belongs at its commit's time, not the dispatch's.
+    backfill
+      ? importStage('githubMetadataMs', () =>
+          github.request<{ commit: { committer: { date: string } } }>(
+            `repos/${github.config.repository}/commits/${commit}`,
+          ),
+        )
+      : null,
   ])
-  const run = importedRun(source, pull?.number || null, pull?.title || source.display_title || null)
+  const run = importedRun(
+    source,
+    pull?.number || null,
+    pull?.title || (backfill ? null : source.display_title) || null,
+  )
+  if (committed) run.startedAt = committed.commit.committer.date
   if (!artifact)
     throw new (source.conclusion === null ? Error : MissingArtifactError)(
       'Benchmark artifact is not available yet',
@@ -590,7 +617,7 @@ async function ingestProject(
   for (const run of runs) {
     try {
       imported += Number(
-        await timeImport(run.head_sha, () => ingestTracked(config, github, project, run)),
+        await timeImport(benchmarkedCommit(run), () => ingestTracked(config, github, project, run)),
       )
     } catch (error) {
       console.warn(`Could not import benchmark run ${run.id}`, error)
@@ -619,7 +646,12 @@ export async function ingestCommit(
     const github = sharedGitHubClient(githubConfig)
     const [previous, sources] = await Promise.all([
       importStage('commitJobLookupMs', () => jobForCommit(config, sha, project)),
-      importStage('githubRunLookupMs', () => github.runsForCommit(sha)),
+      // A backfill dispatch shares main's head SHA but benchmarks an older commit.
+      importStage('githubRunLookupMs', () =>
+        github
+          .runsForCommit(sha)
+          .then((runs) => runs.filter((run) => benchmarkedCommit(run) === sha)),
+      ),
     ])
     throwIfPending(previous)
     for (const source of sources) {
