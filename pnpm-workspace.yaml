@@ -16,4 +16,8 @@ peerDependencyRules:
     typescript: "*"
     vite: "*"
 overrides:
+  # Shiki 4 splits tokens at decoration offsets in linear time; perf word diffs rely on it.
+  "@pierre/diffs>shiki": ^4.5.0
+  "@pierre/diffs>@shikijs/transformers": ^4.5.0
+  "@pierre/theming>@shikijs/themes": ^4.5.0
   vite@*: "catalog:"
