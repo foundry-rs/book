@@ -92,6 +92,7 @@ export const projects: Record<string, Project> = {
         unit: 'instructions',
         noisy: true,
       },
+      { key: 'runtime_cycles', title: 'Runtime cycles', unit: 'cycles', noisy: true },
     ],
   },
 }
