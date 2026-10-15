@@ -214,8 +214,13 @@ export class GitHubClient {
     })
   }
 
+  /** Completed runs on main; PR runs would crowd unimported main runs out of the window. */
   async runs(limit: number) {
-    const query = new URLSearchParams({ per_page: String(limit), status: 'completed' })
+    const query = new URLSearchParams({
+      branch: 'main',
+      per_page: String(limit),
+      status: 'completed',
+    })
     const result = await this.request<GitHubPage<GitHubRun>>(
       `repos/${this.config.repository}/actions/workflows/${this.config.workflow}/runs?${query}`,
     )

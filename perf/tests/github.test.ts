@@ -216,8 +216,8 @@ describe('GitHub retry policy', () => {
     expect(fetch.mock.calls.map(([input]) => requestUrl(input as RequestInfo | URL))).toEqual([
       'https://api.github.com/repos/alloy-rs/evm2/installation',
       'https://api.github.com/app/installations/77/access_tokens',
-      'https://api.github.com/repos/alloy-rs/evm2/actions/workflows/bench.yml/runs?per_page=1&status=completed',
-      'https://api.github.com/repos/alloy-rs/evm2/actions/workflows/bench.yml/runs?per_page=1&status=completed',
+      'https://api.github.com/repos/alloy-rs/evm2/actions/workflows/bench.yml/runs?branch=main&per_page=1&status=completed',
+      'https://api.github.com/repos/alloy-rs/evm2/actions/workflows/bench.yml/runs?branch=main&per_page=1&status=completed',
     ])
   })
 
