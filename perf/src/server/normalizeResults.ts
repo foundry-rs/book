@@ -1,5 +1,9 @@
 import { validIdentifier } from './artifacts.ts'
 import { normalizeSourceLinks } from './benchmarkSources.ts'
+import { measurementColumns } from './publication.ts'
+import { projects, type Project } from '../projects.ts'
+
+const metricName = /^[a-z][a-z0-9_]{0,63}$/
 
 function number(value: unknown) {
   return typeof value === 'number' && Number.isFinite(value) ? value : null
@@ -9,10 +13,29 @@ function text(value: unknown, maximum: number) {
   return typeof value === 'string' && value.length <= maximum ? value : ''
 }
 
+// Metrics without a fixed snapshot column: the project's and the producer's declared ones.
+function extraMetrics(document: unknown, project: Project) {
+  const declared =
+    document && typeof document === 'object' && !Array.isArray(document)
+      ? (document as { metrics?: unknown }).metrics
+      : undefined
+  const names = [
+    ...project.metrics.map((metric) => metric.key),
+    ...(declared && typeof declared === 'object' && !Array.isArray(declared)
+      ? Object.keys(declared).slice(0, 64)
+      : []),
+  ]
+  return [...new Set(names)].filter(
+    (name) => metricName.test(name) && !measurementColumns.includes(name),
+  )
+}
+
 export function normalizeResults(
   document: unknown,
   run: { workflowRunId: number; commit: string },
+  project: Project = projects.solar,
 ) {
+  const metricNames = extraMetrics(document, project)
   const results = Array.isArray(document)
     ? document
     : document &&
@@ -57,6 +80,12 @@ export function normalizeResults(
           deploy_gas: number(values.deploy_gas ?? values.deployGas),
           total_gas: number(values.total_gas ?? values.runtimeGas),
           peak_rss_bytes: number(values.peak_rss_bytes ?? values.peakMemory),
+          metrics: Object.fromEntries(
+            metricNames.flatMap((name) => {
+              const value = number(values[name])
+              return value === null ? [] : [[name, value]]
+            }),
+          ),
         },
       ]
     })

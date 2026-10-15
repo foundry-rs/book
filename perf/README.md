@@ -1,7 +1,37 @@
 # Foundry performance site
 
-This Vite app runs at `getfoundry.sh/perf/solar/`. The browser reads only the
-same-origin API. GitHub and ClickHouse credentials stay in Vercel Functions.
+This Vite app runs at `getfoundry.sh/perf/solar/` and `getfoundry.sh/perf/evm2/`.
+The browser reads only the same-origin API. GitHub and ClickHouse credentials stay
+in Vercel Functions.
+
+## Projects
+
+`src/projects.ts` defines each project: repository, workflow file, artifact name,
+primary compiler, metrics, and display name. The same app is built once per project
+with `PERF_PROJECT=<id>` (default `solar`), which sets the base path `/perf/<id>/`.
+Solar keeps its original API paths under `/api/`; other projects use
+`/api/<id>/` (for example `/api/evm2/data/index.json`). One ClickHouse database
+holds every project: `run_snapshots.project` and `ingestion_jobs.project` default to
+`solar`, so existing rows remain Solar's. The cron tick imports `main` runs for every
+project; a failure in one project does not stop the others.
+
+Metrics with a legacy snapshot column (`total_gas`, `compile_time_seconds`, …) keep
+using it. Other metrics declared by the project or by the results document's
+top-level `metrics` map are stored in `run_snapshots.metric_values`, keyed by
+`<test_id>/<compiler>`. Run documents merge them into each compiler's results.
+Solar snapshots store no extra metrics, so their revision hashes are unchanged.
+
+evm2 PR runs whose base commit has no usable run of its own (no run, or no artifact)
+also upload `jit-bench-baseline`, whose `results.json` names the base commit. When a
+comparison's base has no artifact, the importer reads the other compared commit's
+runs for that artifact and publishes it under workflow run 0 with no branch: any
+real run of the base takes precedence, and baselines never enter `main` history.
+Comparison requests carry the other commit (both commits in `runs.json` and
+`viewer.json`, or `partner=<sha>` on a single `run.json`). Baseline imports do not
+write `ingestion_jobs` rows, because they share the PR run's workflow ID.
+
+Completed runs without the project's artifact, such as evm2 runs from before the
+JIT job existed, are recorded as `missing` and not retried.
 
 TODO: Replace the temporary `/perf` and `/perf/` redirects in `vercel.json` with
 a generic performance dashboard when more projects are available. Until then,
@@ -123,6 +153,19 @@ Repeat until `scanned` is zero; resolve any `failed` commits before repeating.
 This maintenance endpoint does not run automatically on the import cron.
 Roll back by restoring the old deployment; the additive column can remain.
 
+### Multi-project rollout
+
+Before deploying the evm2 project, apply the additive `project` and `metric_values`
+columns from `schema/snapshots.sql` and `schema/ingestion-jobs.sql` with
+`pnpm run db:schema` and a schema-admin account. The current deployment keeps working
+against the migrated tables (new columns have defaults); the new deployment fails
+without them, so migrate first. Table-level grants already cover the new columns. The
+reader's column grant on `ingestion_jobs` needs no change, because only the writer
+reads `ingestion_jobs.project`. Roll back by restoring the old deployment; the columns
+can remain. Old readers do not filter by project, so once evm2 runs exist they would
+appear in Solar's run index and history axis: delete them first with
+`ALTER TABLE run_snapshots DELETE WHERE project != 'solar'`.
+
 Legacy artifact URLs remain supported through snapshot manifests and content hashes.
 Writers now populate only snapshots and blobs. Before retiring `runs`,
 `benchmark_results`, and `artifact_files`, rerun the additive backfill, verify
@@ -133,8 +176,9 @@ dropping them. A pre-snapshot deployment requires restoring those backups first.
 Public object storage is not required for this stage: deduplicated bodies remain
 in ClickHouse until the artifact-store access and environment scope are approved.
 
-The Vercel project root is the Book repository root. It builds the Book, this app,
-and its API into one deployment. The app is served at `/perf/solar/`, and
+The Vercel project root is the Book repository root. It builds the Book, this app
+(once per project), and its API into one deployment. The app is served at
+`/perf/solar/` and `/perf/evm2/`, and
 `scripts/build-vercel-api.mjs` adds the `/api/*` route and function to Vocs' Build
 Output. Reads and imports deploy as separate Node.js 24 functions with five-minute
 execution limits. Missing-run reads dispatch to the authenticated worker using
@@ -184,8 +228,11 @@ GH_APP_PRIVATE_KEY
 CRON_SECRET
 ```
 
-Install the GitHub App only on `paradigmxyz/solar` with Actions, Contents, and Pull requests
-read permission. `CLICKHOUSE_READ_*` may select the public tables and the status
+Install the GitHub App on `paradigmxyz/solar` and `alloy-rs/evm2` (selected repositories
+only) with Actions, Contents, and Pull requests read permission. `GH_APP_INSTALLATION_ID`
+is Solar's installation; other repositories find theirs through
+`GET /repos/{owner}/{repo}/installation` with the App JWT, so a new project needs no new
+variable. `CLICKHOUSE_READ_*` may select the public tables and the status
 columns below. Before deploying this version, grant status reads (substitute your
 database/user names if different):
 
@@ -233,10 +280,18 @@ node scripts/ingest-run.mjs \
   --artifacts /path/to/solar/target/codegen-bench/artifacts \
   --commit <solar-sha> \
   --workflow-run 1
+node scripts/ingest-run.mjs --project evm2 \
+  --results /path/to/evm2/target/jit-bench/results.json \
+  --artifacts /path/to/evm2/target/jit-bench/artifacts \
+  --workflow-run 2 --branch main
 pnpm dev
+PERF_PROJECT=evm2 pnpm dev --port 5174
 ```
 
-Open `http://127.0.0.1:5173/perf/solar/?base=<base-sha>&head=<head-sha>`.
+Open `http://127.0.0.1:5173/perf/solar/?base=<base-sha>&head=<head-sha>` or
+`http://127.0.0.1:5174/perf/evm2/?base=<base-sha>&head=<head-sha>`. `--commit` defaults
+to the results document's `commit` field. `pnpm db:backfill --project evm2` backfills
+evm2 `main` runs.
 
 To preview the dashboard without ClickHouse or credentials, run the Vite server with
 `PERF_DEMO_DATA=1`. The same explicit flag works in Vercel as a rollback: set it and
@@ -341,7 +396,8 @@ request workflow and do not give repository Actions ClickHouse credentials.
 
 ## Producer contract
 
-The GitHub artifact is named `codegen-runtime-results` and contains `results.json`
+The GitHub artifact is named `codegen-runtime-results` (Solar) or `jit-bench-results`
+(evm2) and contains `results.json`
 at its root (or inside one unambiguous wrapper directory). A separate baseline
 results document must not replace the run's own results. Metrics accept either a
 results array or `{ results: [...] }`, `test_id`/`id`/`name` identifiers, nested

@@ -1,5 +1,7 @@
 import { createSign } from 'node:crypto'
 
+import { projects, type Project } from '../projects.ts'
+
 interface GitHubAppToken {
   expires_at: string
   token: string
@@ -51,6 +53,7 @@ export class GitHubRequestError extends Error {
 
 export interface GitHubConfig {
   appId?: string
+  artifact: string
   installationId?: string
   privateKey?: string
   repository: string
@@ -93,23 +96,25 @@ export async function retryGitHub<T>(
   throw error
 }
 
-export function gitHubConfig(environment: NodeJS.ProcessEnv = process.env): GitHubConfig | null {
+export function gitHubConfig(
+  environment: NodeJS.ProcessEnv = process.env,
+  project: Project = projects.solar,
+): GitHubConfig | null {
   const token = environment.GITHUB_TOKEN
   const appId = environment.GH_APP_ID
-  const installationId = environment.GH_APP_INSTALLATION_ID
+  // The configured installation belongs to Solar; other repositories resolve their own.
+  const installationId = project.id === 'solar' ? environment.GH_APP_INSTALLATION_ID : undefined
   const privateKey = environment.GH_APP_PRIVATE_KEY?.replace(/\\n/g, '\n')
-  if (!token && !(appId && installationId && privateKey)) return null
-
-  const repository = environment.GITHUB_REPOSITORY || 'paradigmxyz/solar'
-  if (!/^[\w.-]+\/[\w.-]+$/.test(repository)) throw new Error('Invalid GITHUB_REPOSITORY')
+  if (!token && !(appId && privateKey)) return null
 
   return {
     appId,
+    artifact: project.artifact,
     installationId,
     privateKey,
-    repository,
+    repository: project.repository,
     token,
-    workflow: environment.BENCHMARK_WORKFLOW || 'bench.yml',
+    workflow: project.workflow,
   }
 }
 
@@ -130,6 +135,7 @@ function appJwt(config: GitHubConfig) {
 }
 
 export class GitHubClient {
+  #installationId: string | undefined
   #installationToken: { expiresAt: number; value: string } | null = null
   #tokenRequest: Promise<string> | null = null
 
@@ -147,22 +153,38 @@ export class GitHubClient {
     return this.#tokenRequest
   }
 
-  async #requestToken() {
-    if (!this.config.installationId) throw new Error('GitHub App installation is not configured')
-
-    return retryGitHub(async () => {
-      const response = await fetch(
-        `${api}app/installations/${this.config.installationId}/access_tokens`,
-        {
-          method: 'POST',
-          signal: AbortSignal.timeout(15_000),
-          headers: {
-            accept: 'application/vnd.github+json',
-            authorization: `Bearer ${appJwt(this.config)}`,
-            'x-github-api-version': '2026-03-10',
-          },
+  async #installation() {
+    if (this.config.installationId) return this.config.installationId
+    if (this.#installationId) return this.#installationId
+    // Apps are installed per organization; find the installation that covers this repository.
+    const installation = await retryGitHub(async () => {
+      const response = await fetch(`${api}repos/${this.config.repository}/installation`, {
+        signal: AbortSignal.timeout(15_000),
+        headers: {
+          accept: 'application/vnd.github+json',
+          authorization: `Bearer ${appJwt(this.config)}`,
+          'x-github-api-version': '2026-03-10',
         },
-      )
+      })
+      if (!response.ok) throw await githubError(response)
+      return (await response.json()) as { id: number }
+    })
+    this.#installationId = String(installation.id)
+    return this.#installationId
+  }
+
+  async #requestToken() {
+    const installationId = await this.#installation()
+    return retryGitHub(async () => {
+      const response = await fetch(`${api}app/installations/${installationId}/access_tokens`, {
+        method: 'POST',
+        signal: AbortSignal.timeout(15_000),
+        headers: {
+          accept: 'application/vnd.github+json',
+          authorization: `Bearer ${appJwt(this.config)}`,
+          'x-github-api-version': '2026-03-10',
+        },
+      })
       if (!response.ok) throw await githubError(response)
 
       const token = (await response.json()) as GitHubAppToken
@@ -245,8 +267,8 @@ export class GitHubClient {
     return result.workflow_runs?.filter((run) => run.head_sha === sha) || []
   }
 
-  async artifact(runId: number) {
-    const query = new URLSearchParams({ name: 'codegen-runtime-results', per_page: '100' })
+  async artifact(runId: number, name = this.config.artifact) {
+    const query = new URLSearchParams({ name, per_page: '100' })
     const result = await this.request<{ artifacts: GitHubArtifact[] }>(
       `repos/${this.config.repository}/actions/runs/${runId}/artifacts?${query}`,
     )
@@ -273,12 +295,13 @@ export class GitHubClient {
   }
 }
 
-let sharedClient: GitHubClient | undefined
+const sharedClients = new Map<string, GitHubClient>()
 // Reuse installation-token refresh and its in-flight request across worker jobs.
 export function sharedGitHubClient(config: GitHubConfig) {
-  if (!sharedClient || JSON.stringify(sharedClient.config) !== JSON.stringify(config))
-    sharedClient = new GitHubClient(config)
-  return sharedClient
+  const key = JSON.stringify(config)
+  let client = sharedClients.get(key)
+  if (!client) sharedClients.set(key, (client = new GitHubClient(config)))
+  return client
 }
 
 async function githubError(response: Response) {

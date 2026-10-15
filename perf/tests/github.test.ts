@@ -8,7 +8,8 @@ vi.mock('node:crypto', () => ({
   }),
 }))
 
-import { GitHubClient, GitHubRequestError, retryGitHub } from '../src/server/github'
+import { GitHubClient, GitHubRequestError, gitHubConfig, retryGitHub } from '../src/server/github'
+import { projects } from '../src/projects'
 
 const originalFetch = globalThis.fetch
 
@@ -25,6 +26,7 @@ afterEach(() => {
 describe('GitHub retry policy', () => {
   it('resolves case-sensitive branch/tag refs and open/merged PRs', async () => {
     const client = new GitHubClient({
+      artifact: 'codegen-runtime-results',
       repository: 'paradigmxyz/solar',
       workflow: 'bench.yml',
       token: 'test',
@@ -50,6 +52,7 @@ describe('GitHub retry policy', () => {
   })
   it('finds workflows regardless of status or conclusion', async () => {
     const client = new GitHubClient({
+      artifact: 'codegen-runtime-results',
       repository: 'paradigmxyz/solar',
       workflow: 'bench.yml',
       token: 'test',
@@ -78,6 +81,7 @@ describe('GitHub retry policy', () => {
     { sameTree: true, ownRun: false, headRun: true, parents: 3, resolvesParent: false },
   ])('resolves unbenchmarked merges only to equivalent benchmarked heads: %j', async (scenario) => {
     const client = new GitHubClient({
+      artifact: 'codegen-runtime-results',
       repository: 'paradigmxyz/solar',
       workflow: 'bench.yml',
       token: 'test',
@@ -176,6 +180,7 @@ describe('GitHub retry policy', () => {
       appId: '1',
       installationId: '2',
       privateKey: 'test key',
+      artifact: 'codegen-runtime-results',
       repository: 'paradigmxyz/solar',
       workflow: 'bench.yml',
     })
@@ -187,6 +192,33 @@ describe('GitHub retry policy', () => {
         requestUrl(input as RequestInfo | URL).includes('/access_tokens'),
       ),
     ).toHaveLength(1)
+  })
+
+  it("resolves another organization's installation from the repository", async () => {
+    const fetch = vi.fn(async (input: RequestInfo | URL) => {
+      const url = requestUrl(input)
+      if (url.endsWith('/repos/alloy-rs/evm2/installation')) return Response.json({ id: 77 })
+      if (url.endsWith('/app/installations/77/access_tokens'))
+        return Response.json({ expires_at: '2099-01-01T00:00:00Z', token: 'evm2-token' })
+      return Response.json({ workflow_runs: [] })
+    })
+    globalThis.fetch = fetch
+    const environment = {
+      GH_APP_ID: '1',
+      GH_APP_INSTALLATION_ID: '2',
+      GH_APP_PRIVATE_KEY: 'test key',
+    }
+    // The configured installation ID belongs to Solar only.
+    expect(gitHubConfig(environment)?.installationId).toBe('2')
+    const client = new GitHubClient(gitHubConfig(environment, projects.evm2)!)
+    await client.runs(1)
+    await client.runs(1)
+    expect(fetch.mock.calls.map(([input]) => requestUrl(input as RequestInfo | URL))).toEqual([
+      'https://api.github.com/repos/alloy-rs/evm2/installation',
+      'https://api.github.com/app/installations/77/access_tokens',
+      'https://api.github.com/repos/alloy-rs/evm2/actions/workflows/bench.yml/runs?per_page=1&status=completed',
+      'https://api.github.com/repos/alloy-rs/evm2/actions/workflows/bench.yml/runs?per_page=1&status=completed',
+    ])
   })
 
   it('retries a transient GitHub App token exchange', async () => {
@@ -209,6 +241,7 @@ describe('GitHub retry policy', () => {
       appId: '1',
       installationId: '2',
       privateKey: 'test key',
+      artifact: 'codegen-runtime-results',
       repository: 'paradigmxyz/solar',
       workflow: 'bench.yml',
     })
