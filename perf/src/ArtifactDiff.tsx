@@ -9,6 +9,7 @@ import HighlightWorker from '@pierre/diffs/worker/worker.js?worker'
 import { useEffect, useState } from 'react'
 import { Info } from 'lucide-react'
 import { loadDiffFile, type ArtifactSource } from './formattedArtifact'
+import { ImageDiff, ImageView, type ImageMode } from './ImageDiff'
 import type { Theme } from './types'
 
 interface Props {
@@ -18,6 +19,9 @@ interface Props {
   language: string
   theme: Theme
   style: 'split' | 'unified'
+  /** Show images, and Graphviz sources rendered to SVG, instead of diffing their text. */
+  rendered: boolean
+  imageMode: ImageMode
 }
 
 const poolOptions = {
@@ -46,7 +50,16 @@ export default function ArtifactDiff(props: Props) {
   )
 }
 
-function ArtifactDiffContents({ before, after, path, language, theme, style }: Props) {
+function ArtifactDiffContents({
+  before,
+  after,
+  path,
+  language,
+  theme,
+  style,
+  rendered,
+  imageMode,
+}: Props) {
   const [contents, setContents] = useState<[FileContents | null, FileContents | null] | null>(null)
   const [error, setError] = useState('')
   useEffect(() => {
@@ -94,10 +107,24 @@ function ArtifactDiffContents({ before, after, path, language, theme, style }: P
               ? `Published only by ${before.label}.`
               : 'Contents are identical.'}
         </p>
-        <SelectedFile file={oldFile ?? newFile!} theme={theme} side={newFile ? 'R' : 'L'} />
+        {rendered ? (
+          <ImageView file={oldFile ?? newFile!} />
+        ) : (
+          <SelectedFile file={oldFile ?? newFile!} theme={theme} side={newFile ? 'R' : 'L'} />
+        )}
       </>
     )
   }
+  if (rendered)
+    return (
+      <ImageDiff
+        before={oldFile}
+        after={newFile}
+        beforeLabel={before.label}
+        afterLabel={after.label}
+        mode={imageMode}
+      />
+    )
   return (
     <ComputedDiff
       before={oldFile}

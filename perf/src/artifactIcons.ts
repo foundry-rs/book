@@ -47,6 +47,12 @@ const spriteSheet = `<svg xmlns="http://www.w3.org/2000/svg" style="display:none
     'green',
     '<rect x="14" y="14" width="4" height="6" rx="2"/><rect x="6" y="4" width="4" height="6" rx="2"/><path d="M6 20h4"/><path d="M14 10h4"/><path d="M6 14h2v6"/><path d="M14 4h2v6"/>',
   ),
+  // Graphviz control-flow graphs.
+  outline(
+    'perf-icon-graph',
+    'cyan',
+    '<rect x="16" y="16" width="6" height="6" rx="1"/><rect x="2" y="16" width="6" height="6" rx="1"/><rect x="9" y="2" width="6" height="6" rx="1"/><path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"/><path d="M12 12V8"/>',
+  ),
 ].join('')}</svg>`
 
 /** Pierre's full colored icon set, plus the Solidity and compiler output formats it lacks. */
@@ -63,5 +69,6 @@ export const artifactIcons: FileTreeIconConfig = {
     disasm: 'perf-icon-disasm',
     s: 'perf-icon-disasm',
     hex: 'perf-icon-hex',
+    dot: 'perf-icon-graph',
   },
 }

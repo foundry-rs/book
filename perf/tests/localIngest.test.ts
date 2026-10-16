@@ -32,6 +32,7 @@ describe('local importer', () => {
       await mkdir(nested, { recursive: true })
       await writeFile(join(nested, 'phase α.log'), 'new pass output')
       await writeFile(join(nested, 'binary.bin'), new Uint8Array([0, 255]))
+      await writeFile(join(nested, 'plot.png'), new Uint8Array([0x89, 0x50, 0, 255]))
       await writeFile(
         join(directory, 'results.json'),
         JSON.stringify({ results: [{ test_id: 'test', compilers: { solar: { status: 'ok' } } }] }),
@@ -54,6 +55,7 @@ describe('local importer', () => {
       expect(inserts.join('\n')).toContain('passes/phase α.log')
       expect(inserts.join('\n')).toContain('experimental')
       expect(inserts.join('\n')).not.toContain('binary.bin')
+      expect(inserts[0]).toContain('"content":"iVAA/w=="')
       expect(inserts).toHaveLength(2)
       expect(inserts[0]).toContain('INSERT INTO artifact_blobs')
       expect(inserts[1]).toContain('INSERT INTO run_snapshots')

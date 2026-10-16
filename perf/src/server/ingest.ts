@@ -73,7 +73,7 @@ function archivePath(name: string) {
   return name
 }
 
-function contents(chunks: Uint8Array[]) {
+function contents(chunks: Uint8Array[], path: string) {
   const length = chunks.reduce((total, chunk) => total + chunk.byteLength, 0)
   const data = new Uint8Array(length)
   let offset = 0
@@ -81,7 +81,7 @@ function contents(chunks: Uint8Array[]) {
     data.set(chunk, offset)
     offset += chunk.byteLength
   }
-  return textArtifact(data)
+  return textArtifact(data, path)
 }
 
 export async function extractArchive(response: Response): Promise<ArtifactArchive> {
@@ -123,7 +123,7 @@ export async function extractArchive(response: Response): Promise<ArtifactArchiv
         chunks.push(chunk)
       }
       if (final && !failure) {
-        const content = contents(chunks)
+        const content = contents(chunks, path)
         if (content !== null) {
           if (files.has(path)) failure = new Error('Artifact archive contains duplicate paths')
           else files.set(path, content)

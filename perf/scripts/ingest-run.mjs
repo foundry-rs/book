@@ -83,7 +83,7 @@ async function normalizeArtifacts(root, run) {
           throw new Error(`${testId}/${compiler}/${path} exceeds 32 MiB`)
         totalBytes += info.size
         if (totalBytes > maxArtifactRunBytes) throw new Error('Artifact run exceeds 256 MiB')
-        const content = textArtifact(await readFile(file))
+        const content = textArtifact(await readFile(file), path)
         if (content === null) continue
         entries.push({
           workflow_run_id: run.workflow_run_id,
