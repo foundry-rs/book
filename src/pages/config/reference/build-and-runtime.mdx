@@ -7,7 +7,7 @@ Configuration shared by build commands and EVM execution. All fields belong unde
 
 | Field | Type | Default | Description |
 | --- | --- | --- | --- |
-| `dynamic_test_linking` | boolean | `true` | Dynamically links test contracts. |
+| `dynamic_test_linking` | boolean | `true` | Dynamically links test contracts. Disable this when using external tools that do not support the generated `vm.deployCode` and `vm.getCode` calls. |
 | `snapshots` | path | `snapshots` | Directory used for gas snapshot files. |
 | `gas_snapshot_check` | boolean | `false` | Checks generated snapshots against stored snapshots. |
 | `gas_snapshot_emit` | boolean | `true` | Writes gas snapshots to disk. |

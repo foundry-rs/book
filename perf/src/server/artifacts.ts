@@ -1,5 +1,7 @@
 import { createHash } from 'node:crypto'
 
+import { imageType } from '../imageArtifacts.ts'
+
 export const validIdentifier = /^(?!\.{1,2}$)[\w.-]{1,128}$/
 
 export function validArtifactPath(path: string) {
@@ -47,7 +49,8 @@ export function artifactMetadata(path: string) {
   }
 }
 
-export function textArtifact(bytes: Uint8Array): string | null {
+export function textArtifact(bytes: Uint8Array, path: string): string | null {
+  if (imageType(path)) return Buffer.from(bytes).toString('base64')
   try {
     const text = new TextDecoder('utf-8', { fatal: true }).decode(bytes)
     return bytes.some((byte) => byte < 9 || (byte > 13 && byte < 32)) ? null : text

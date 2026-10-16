@@ -111,8 +111,15 @@ closes once you pick a file. File icons use Pierre's complete colored set, as on
 [DiffsHub](https://diffshub.com). `src/artifactIcons.ts` adds icons for formats that set
 lacks: Solidity (`.sol`), EVM IR (`.evmir`) and LLVM IR (`.ll`) use
 [Simple Icons](https://simpleicons.org) marks (CC0-1.0); Solar MIR (`.mir`), Yul
-(`.yul`), disassembly (`.disasm`) and hex bytecode (`.hex`) use
+(`.yul`), disassembly (`.disasm`), hex bytecode (`.hex`) and Graphviz graphs (`.dot`) use
 [Lucide](https://lucide.dev) glyphs (ISC, the license bundled with `lucide-react`).
+SVG files open as images. Graphviz files, such as evm2's `bytecode.dot` control-flow
+graph, open as SVG images rendered by [Viz.js](https://github.com/mdaines/viz-js)
+(Graphviz compiled to WebAssembly) in a worker per side. A Source toggle shows the text
+diff instead. As on GitHub, changed images compare 2-up (side by side, with dimensions
+and file sizes), by swipe (a draggable divider over both images) or by onion skin (the
+head fades in over the base); overlays share a frame sized to the larger image. The
+image element keeps scripts and links in the SVG inert.
 File cache keys
 include a SHA-256 of the actual formatted text, path, and language, preventing
 same-name artifacts from sharing highlighting. Completed diffs reuse the existing
@@ -419,7 +426,9 @@ Already imported runs need a reimport to gain these source files.
 The viewer builds its directory and compiler selectors from the stored manifest,
 shows files present on either side, and loads only the selected file. Unknown
 extensions render as plain text; HTML is displayed as source, never executed.
-Binary files are omitted. Paths, file counts, and compressed/uncompressed sizes
+PNG, JPEG, GIF, WebP and AVIF images (by extension) are stored base64-encoded and
+shown as images, as are SVG files; Copy and Open raw use the decoded image. Other
+binary files are omitted. Paths, file counts, and compressed/uncompressed sizes
 are bounded; the local importer rejects symlinks. No artifact content is executed.
 
 Each selected side has Copy and Open raw controls for the original, unformatted

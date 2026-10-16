@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Copy, ExternalLink } from 'lucide-react'
 import { artifactUrl, loadArtifact } from './data'
 import type { ArtifactSource } from './formattedArtifact'
+import { imageBlob, imageType } from './imageArtifacts'
 
 export function loadRawArtifact(source: ArtifactSource) {
   if (!source.storagePath) return Promise.resolve(null)
@@ -14,13 +15,25 @@ export function loadRawArtifact(source: ArtifactSource) {
   )
 }
 
-export function ArtifactActions({ source }: { source: ArtifactSource }) {
+export function ArtifactActions({ source, path }: { source: ArtifactSource; path: string }) {
   const { commit, benchmark, compiler, storagePath, contentHash, label } = source
   const [artifact, setArtifact] = useState<string | null>(null)
   const [status, setStatus] = useState('')
-  const url = storagePath
-    ? artifactUrl(commit, benchmark, compiler, storagePath, contentHash)
-    : undefined
+  // Images are stored base64-encoded; copy and open the decoded image instead.
+  const image = useMemo(
+    () => (artifact !== null && imageType(path) ? imageBlob(artifact, path) : null),
+    [artifact, path],
+  )
+  const [imageUrl, setImageUrl] = useState<string>()
+  useEffect(() => {
+    if (!image) return setImageUrl(undefined)
+    const value = URL.createObjectURL(image)
+    setImageUrl(value)
+    return () => URL.revokeObjectURL(value)
+  }, [image])
+  const url =
+    imageUrl ??
+    (storagePath ? artifactUrl(commit, benchmark, compiler, storagePath, contentHash) : undefined)
 
   useEffect(() => {
     let active = true
@@ -50,7 +63,8 @@ export function ArtifactActions({ source }: { source: ArtifactSource }) {
           if (artifact === null) return
           setStatus('')
           try {
-            await navigator.clipboard.writeText(artifact)
+            if (image) await navigator.clipboard.write([new ClipboardItem({ [image.type]: image })])
+            else await navigator.clipboard.writeText(artifact)
             setStatus('Copied')
           } catch {
             setStatus('Copy failed; open raw to copy manually')
