@@ -426,19 +426,6 @@ The symbolic engine is not a complete revm-equivalent EVM model. Unsupported con
 
 For a counterexample-to-fix workflow, including durable JSON artifacts, concrete replay, generated regression tests, fuzz corpus integration, and CI handoffs, see the [symbolic testing workflow](/guides/symbolic-testing).
 
-#### External symbolic tools
-
-Dynamic test linking, enabled by default, rewrites contract creation in tests and scripts, such as `new Counter()`, into `vm.deployCode(...)` and `vm.getCode(...)` cheatcode calls. External tools that execute Forge build artifacts but do not implement these cheatcodes can fail before evaluating any property. For example, Halmos 0.3.3 does not support `vm.deployCode`, so proofs whose `setUp()` deploys contracts with `new` error with an unsupported cheatcode.
-
-Disable dynamic test linking in the profile used to build for these tools:
-
-```toml [foundry.toml]
-[profile.halmos]
-dynamic_test_linking = false
-```
-
-Then run the tool with that profile selected, for example `FOUNDRY_PROFILE=halmos halmos`. For a single Forge command, pass `--no-dynamic-test-linking` instead.
-
 ### Testing reverts
 
 Use `vm.expectRevert(){:solidity}` to test that a call reverts:
