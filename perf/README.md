@@ -113,10 +113,10 @@ lacks: Solidity (`.sol`), EVM IR (`.evmir`) and LLVM IR (`.ll`) use
 [Simple Icons](https://simpleicons.org) marks (CC0-1.0); Solar MIR (`.mir`), Yul
 (`.yul`), disassembly (`.disasm`), hex bytecode (`.hex`) and Graphviz graphs (`.dot`) use
 [Lucide](https://lucide.dev) glyphs (ISC, the license bundled with `lucide-react`).
-Graphviz files, such as evm2's `bytecode.dot` control-flow graph, open as SVG images
-rendered by [Viz.js](https://github.com/mdaines/viz-js) (Graphviz compiled to WebAssembly)
-in a worker per side; a Source toggle shows the text diff instead. The image element
-keeps any links in the SVG inert.
+SVG files open as images. Graphviz files, such as evm2's `bytecode.dot` control-flow
+graph, open as SVG images rendered by [Viz.js](https://github.com/mdaines/viz-js)
+(Graphviz compiled to WebAssembly) in a worker per side. A Source toggle shows the text
+diff instead. The image element keeps scripts and links in the SVG inert.
 File cache keys
 include a SHA-256 of the actual formatted text, path, and language, preventing
 same-name artifacts from sharing highlighting. Completed diffs reuse the existing
@@ -423,7 +423,9 @@ Already imported runs need a reimport to gain these source files.
 The viewer builds its directory and compiler selectors from the stored manifest,
 shows files present on either side, and loads only the selected file. Unknown
 extensions render as plain text; HTML is displayed as source, never executed.
-Binary files are omitted. Paths, file counts, and compressed/uncompressed sizes
+PNG, JPEG, GIF, WebP and AVIF images (by extension) are stored base64-encoded and
+shown as images, as are SVG files; Copy and Open raw use the decoded image. Other
+binary files are omitted. Paths, file counts, and compressed/uncompressed sizes
 are bounded; the local importer rejects symlinks. No artifact content is executed.
 
 Each selected side has Copy and Open raw controls for the original, unformatted

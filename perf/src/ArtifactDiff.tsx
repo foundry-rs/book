@@ -9,6 +9,7 @@ import HighlightWorker from '@pierre/diffs/worker/worker.js?worker'
 import { useEffect, useRef, useState } from 'react'
 import { Info } from 'lucide-react'
 import { loadDiffFile, type ArtifactSource } from './formattedArtifact'
+import { imageBlob, imageType } from './imageArtifacts'
 import { renderDot } from './renderDot'
 import type { Theme } from './types'
 
@@ -19,8 +20,8 @@ interface Props {
   language: string
   theme: Theme
   style: 'split' | 'unified'
-  /** Render Graphviz sources as SVG instead of diffing their text. */
-  graph: boolean
+  /** Show images, and Graphviz sources rendered to SVG, instead of diffing their text. */
+  rendered: boolean
 }
 
 const poolOptions = {
@@ -49,7 +50,7 @@ export default function ArtifactDiff(props: Props) {
   )
 }
 
-function ArtifactDiffContents({ before, after, path, language, theme, style, graph }: Props) {
+function ArtifactDiffContents({ before, after, path, language, theme, style, rendered }: Props) {
   const [contents, setContents] = useState<[FileContents | null, FileContents | null] | null>(null)
   const [error, setError] = useState('')
   useEffect(() => {
@@ -97,15 +98,15 @@ function ArtifactDiffContents({ before, after, path, language, theme, style, gra
               ? `Published only by ${before.label}.`
               : 'Contents are identical.'}
         </p>
-        {graph ? (
-          <DotGraph file={oldFile ?? newFile!} />
+        {rendered ? (
+          <ArtifactImage file={oldFile ?? newFile!} />
         ) : (
           <SelectedFile file={oldFile ?? newFile!} theme={theme} side={newFile ? 'R' : 'L'} />
         )}
       </>
     )
   }
-  if (graph)
+  if (rendered)
     return (
       <div className={`dot-graphs ${style}`}>
         {(
@@ -116,7 +117,7 @@ function ArtifactDiffContents({ before, after, path, language, theme, style, gra
         ).map(([label, file], index) => (
           <section key={index}>
             <h3>{label}</h3>
-            <DotGraph file={file} />
+            <ArtifactImage file={file} />
           </section>
         ))}
       </div>
@@ -133,7 +134,7 @@ function ArtifactDiffContents({ before, after, path, language, theme, style, gra
   )
 }
 
-function DotGraph({ file }: { file: FileContents }) {
+function ArtifactImage({ file }: { file: FileContents }) {
   const [url, setUrl] = useState<string>()
   const [error, setError] = useState('')
   const pane = useRef<HTMLDivElement>(null)
@@ -143,10 +144,16 @@ function DotGraph({ file }: { file: FileContents }) {
     let value: string | undefined
     setUrl(undefined)
     setError('')
-    renderDot(file, controller.signal).then(
-      (svg) => {
+    const image = imageType(file.name)
+      ? Promise.resolve(imageBlob(file.contents, file.name))
+      : (file.name.endsWith('.svg')
+          ? Promise.resolve(file.contents)
+          : renderDot(file, controller.signal)
+        ).then((svg) => new Blob([svg], { type: 'image/svg+xml' }))
+    image.then(
+      (blob) => {
         if (controller.signal.aborted) return
-        value = URL.createObjectURL(new Blob([svg], { type: 'image/svg+xml' }))
+        value = URL.createObjectURL(blob)
         setUrl(value)
       },
       (error: Error) => {
@@ -166,7 +173,7 @@ function DotGraph({ file }: { file: FileContents }) {
     const zoom = (event: WheelEvent) => {
       if (!event.ctrlKey && !event.metaKey) return
       event.preventDefault()
-      // Zoom between fitting the pane and Graphviz's natural size, around the cursor.
+      // Zoom between fitting the pane and the image's natural size, around the cursor.
       const rect = element.getBoundingClientRect()
       const x = event.clientX - rect.left
       const y = event.clientY - rect.top
@@ -221,7 +228,7 @@ function DotGraph({ file }: { file: FileContents }) {
       }}
     >
       {/* An image keeps links and scripts in the SVG inert. */}
-      <img src={url} alt={`Graph of ${file.name}`} draggable={false} />
+      <img src={url} alt={file.name} draggable={false} />
     </div>
   )
 }

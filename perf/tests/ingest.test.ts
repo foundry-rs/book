@@ -566,7 +566,7 @@ describe('GitHub Actions importer', () => {
     for (const path of ['../x', '/x', 'a//b', 'a/./b', 'a\\b'])
       expect(validArtifactPath(path)).toBe(false)
     expect(validArtifactPath("passes/phase #2 (α)'s output.log")).toBe(true)
-    expect(textArtifact(new Uint8Array([0xff]))).toBeNull()
+    expect(textArtifact(new Uint8Array([0xff]), 'a.bin')).toBeNull()
     expect(artifactMetadata('constructor').language).toBe('text')
     expect(() =>
       normalizeArchive(
