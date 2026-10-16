@@ -92,16 +92,15 @@ both files remain downloadable with bounded previews; the failed content pair st
 failed for the page session, with no automatic retries on revisits or visibility changes.
 Theme and split/unified changes reuse the computed diff. Syntax highlighting
 uses the library's worker pool (one worker, retained across file/compiler switches);
-intraline word decorations are enabled for diffs with at most 20,000 changed lines.
-Shiki checks every pair of decorations for overlaps, so larger diffs keep syntax colors
-and added/deleted line colors without intraline decorations. Pierre's own shiki
-dependency is overridden to 4.x, which splits tokens at decoration offsets in linear
-time; 3.x scanned every offset for every token, which made word diffs slow even with
-few changes in a large file. Lines longer than 1,000 characters skip word matching.
-Changing between decorated and undecorated diffs clears the library's highlighting
-caches through `setRenderOptions`; the worker and our computed-diff cache are retained.
-`@pierre/diffs` 1.4.1 includes the large-hunk stack-overflow fix upstream;
-no dependency patch is needed. Its edit-session APIs are not used by this read-only viewer.
+every diff gets Pierre's default intraline word decorations, which skip lines longer
+than 1,000 characters. Pierre's own shiki dependency is overridden to 4.x, which splits
+tokens at decoration offsets in linear time. `patches/@shikijs__core@4.5.0.patch`
+applies [shikijs/shiki#1338](https://github.com/shikijs/shiki/pull/1338), which makes
+the overlap check, position conversion and multi-line decorations linear too; remove
+it once a Shiki release includes that change. Without it, decoration cost grows with
+the square of the changed line count.
+`@pierre/diffs` 1.4.1 includes the large-hunk stack-overflow fix upstream,
+so Pierre itself needs no patch. Its edit-session APIs are not used by this read-only viewer.
 `FileDiff`/`File` use Pierre's `Virtualizer` with `setup(document)` through
 `VirtualizerContext`: the browser page scrolls normally while only visible lines
 are rendered. The file toolbar and side labels stick during scrolling. The file
