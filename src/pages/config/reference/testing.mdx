@@ -427,6 +427,16 @@ Optional seed for the fuzzing RNG algorithm.
 
 The weight of the dictionary. A higher dictionary weight will bias the fuzz inputs towards "interesting" values, e.g. boundary values like `type(uint256).max` or contract addresses from your environment.
 
+##### `guidance`
+
+- Type: string (path)
+- Default: none
+- Environment: `FOUNDRY_FUZZ_GUIDANCE`
+
+Optional path to a JSON guidance file that supplies dictionary values for fuzz tests and selector
+weights for invariant campaigns. Relative paths are resolved from the project root. See
+[Fuzz guidance](/config/reference/advanced-testing#fuzz-guidance) for the file format and behavior.
+
 ##### `include_storage`
 
 - Type: boolean
