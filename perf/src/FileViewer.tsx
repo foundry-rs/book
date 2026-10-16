@@ -10,6 +10,7 @@ import { loadArtifact, loadViewerRuns } from './data'
 import { useImportProgress } from './importProgress'
 import { artifactSides, initialArtifactSides } from './artifactSides'
 import { imageType } from './imageArtifacts'
+import type { ImageMode } from './ImageDiff'
 import { replaceUrl } from './navigation'
 import { project } from './project'
 import type { RunDocument, Theme } from './types'
@@ -105,6 +106,7 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
   const [narrow] = useState(() => matchMedia(narrowQuery).matches)
   const [diffStyle, setDiffStyle] = useState<'split' | 'unified'>(narrow ? 'unified' : 'split')
   const [renderedView, setRenderedView] = useState(true)
+  const [imageMode, setImageMode] = useState<ImageMode>('2-up')
   const [sidebarOpen, setSidebarOpen] = useState(!narrow)
   const [sidebarWidth, setSidebarWidth] = useState(270)
   const drag = useRef<{ x: number; width: number } | null>(null)
@@ -203,6 +205,7 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
   const renderable = isSvg || !!selectedFile?.path.endsWith('.dot')
   // Raster images are stored base64-encoded, so their source is not worth showing.
   const isImage = !!selectedFile && !!imageType(selectedFile.path)
+  const rendered = isImage || (renderable && renderedView)
 
   // Start bodies as soon as the descriptor arrives, even while the renderer chunk loads.
   useEffect(() => {
@@ -266,18 +269,33 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
             ))}
           </div>
         )}
-        <div className="diff-tools" aria-label="Diff layout">
-          {(['split', 'unified'] as const).map((style) => (
-            <button
-              key={style}
-              className={diffStyle === style ? 'active' : ''}
-              aria-pressed={diffStyle === style}
-              onClick={() => setDiffStyle(style)}
-            >
-              {style === 'split' ? 'Split' : 'Unified'}
-            </button>
-          ))}
-        </div>
+        {rendered ? (
+          <div className="diff-tools" aria-label="Image comparison">
+            {(['2-up', 'swipe', 'onion-skin'] as const).map((mode) => (
+              <button
+                key={mode}
+                className={imageMode === mode ? 'active' : ''}
+                aria-pressed={imageMode === mode}
+                onClick={() => setImageMode(mode)}
+              >
+                {mode === '2-up' ? '2-up' : mode === 'swipe' ? 'Swipe' : 'Onion skin'}
+              </button>
+            ))}
+          </div>
+        ) : (
+          <div className="diff-tools" aria-label="Diff layout">
+            {(['split', 'unified'] as const).map((style) => (
+              <button
+                key={style}
+                className={diffStyle === style ? 'active' : ''}
+                aria-pressed={diffStyle === style}
+                onClick={() => setDiffStyle(style)}
+              >
+                {style === 'split' ? 'Split' : 'Unified'}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
       {loadError ? (
         <p className="error">{loadError}</p>
@@ -438,7 +456,8 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
                     language={selectedFile.language}
                     theme={theme}
                     style={diffStyle}
-                    rendered={isImage || (renderable && renderedView)}
+                    rendered={rendered}
+                    imageMode={imageMode}
                   />
                 </Suspense>
               </>

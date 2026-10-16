@@ -116,7 +116,10 @@ lacks: Solidity (`.sol`), EVM IR (`.evmir`) and LLVM IR (`.ll`) use
 SVG files open as images. Graphviz files, such as evm2's `bytecode.dot` control-flow
 graph, open as SVG images rendered by [Viz.js](https://github.com/mdaines/viz-js)
 (Graphviz compiled to WebAssembly) in a worker per side. A Source toggle shows the text
-diff instead. The image element keeps scripts and links in the SVG inert.
+diff instead. As on GitHub, changed images compare 2-up (side by side, with dimensions
+and file sizes), by swipe (a draggable divider over both images) or by onion skin (the
+head fades in over the base); overlays share a frame sized to the larger image. The
+image element keeps scripts and links in the SVG inert.
 File cache keys
 include a SHA-256 of the actual formatted text, path, and language, preventing
 same-name artifacts from sharing highlighting. Completed diffs reuse the existing

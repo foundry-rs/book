@@ -1020,17 +1020,17 @@ header.file-header {
 .diff-sides span + span {
   border-left: 1px solid var(--line);
 }
-.dot-graphs.split {
+.image-diff.two-up {
   display: grid;
   grid-template-columns: 1fr 1fr;
 }
-.dot-graphs section {
+.image-diff section {
   min-width: 0;
 }
-.dot-graphs.split section + section {
+.image-diff.two-up section + section {
   border-left: 1px solid var(--line);
 }
-.dot-graphs h3 {
+.image-diff h3 {
   margin: 0;
   padding: 10px 14px;
   border-bottom: 1px solid var(--line);
@@ -1043,17 +1043,85 @@ header.file-header {
     Consolas,
     monospace;
 }
-.dot-graph {
-  max-height: calc(100vh - var(--viewer-toolbar-height) - 150px);
+.image-view {
+  margin: 0;
+}
+.image-pane {
+  max-height: calc(100vh - var(--viewer-toolbar-height) - 180px);
   overflow: auto;
 }
-.dot-graph img {
+.image-pane img {
   display: block;
   max-width: 100%;
   cursor: grab;
 }
-.dot-graph:active img {
+.image-pane:active img {
   cursor: grabbing;
+}
+.image-view.deleted .image-pane img,
+.image-frame .deleted {
+  outline: 1px solid #cf222e;
+  outline-offset: -1px;
+}
+.image-view.added .image-pane img,
+.image-frame .added {
+  outline: 1px solid #1a7f37;
+  outline-offset: -1px;
+}
+.image-view figcaption,
+.image-dimensions {
+  padding: 8px 14px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.image-diff.overlay {
+  padding: 16px;
+}
+.image-frame {
+  position: relative;
+  margin: 0 auto;
+  touch-action: none;
+  user-select: none;
+}
+.image-frame img {
+  position: absolute;
+  top: 0;
+  display: block;
+}
+.swipe-layer {
+  position: absolute;
+  inset: 0;
+}
+.image-diff.swipe .image-frame {
+  cursor: ew-resize;
+}
+.swipe-handle {
+  position: absolute;
+  top: -8px;
+  bottom: -8px;
+  width: 2px;
+  margin-left: -1px;
+  background: #fff;
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 0.6);
+  pointer-events: none;
+}
+.image-slider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 16px;
+  font:
+    600 11px ui-monospace,
+    monospace;
+}
+.image-slider input {
+  width: min(320px, 50%);
+}
+.image-dimensions {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
 }
 .file-diff .diff-frame {
   min-height: calc(100vh - 96px);
@@ -1067,10 +1135,12 @@ header.file-header {
   .run-meta {
     line-height: 1.65;
   }
-  .diff-sides {
+  .diff-sides,
+  .image-diff.two-up {
     grid-template-columns: 1fr;
   }
-  .diff-sides span + span {
+  .diff-sides span + span,
+  .image-diff.two-up section + section {
     border-top: 1px solid var(--line);
     border-left: 0;
   }

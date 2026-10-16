@@ -6,11 +6,10 @@ import { artifactThemes } from './highlight'
 import { computeDiff } from './computeDiff'
 import { useLineSelection } from './lineSelection'
 import HighlightWorker from '@pierre/diffs/worker/worker.js?worker'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Info } from 'lucide-react'
 import { loadDiffFile, type ArtifactSource } from './formattedArtifact'
-import { imageBlob, imageType } from './imageArtifacts'
-import { renderDot } from './renderDot'
+import { ImageDiff, ImageView, type ImageMode } from './ImageDiff'
 import type { Theme } from './types'
 
 interface Props {
@@ -22,6 +21,7 @@ interface Props {
   style: 'split' | 'unified'
   /** Show images, and Graphviz sources rendered to SVG, instead of diffing their text. */
   rendered: boolean
+  imageMode: ImageMode
 }
 
 const poolOptions = {
@@ -50,7 +50,16 @@ export default function ArtifactDiff(props: Props) {
   )
 }
 
-function ArtifactDiffContents({ before, after, path, language, theme, style, rendered }: Props) {
+function ArtifactDiffContents({
+  before,
+  after,
+  path,
+  language,
+  theme,
+  style,
+  rendered,
+  imageMode,
+}: Props) {
   const [contents, setContents] = useState<[FileContents | null, FileContents | null] | null>(null)
   const [error, setError] = useState('')
   useEffect(() => {
@@ -99,7 +108,7 @@ function ArtifactDiffContents({ before, after, path, language, theme, style, ren
               : 'Contents are identical.'}
         </p>
         {rendered ? (
-          <ArtifactImage file={oldFile ?? newFile!} />
+          <ImageView file={oldFile ?? newFile!} />
         ) : (
           <SelectedFile file={oldFile ?? newFile!} theme={theme} side={newFile ? 'R' : 'L'} />
         )}
@@ -108,19 +117,13 @@ function ArtifactDiffContents({ before, after, path, language, theme, style, ren
   }
   if (rendered)
     return (
-      <div className={`dot-graphs ${style}`}>
-        {(
-          [
-            [before.label, oldFile],
-            [after.label, newFile],
-          ] as const
-        ).map(([label, file], index) => (
-          <section key={index}>
-            <h3>{label}</h3>
-            <ArtifactImage file={file} />
-          </section>
-        ))}
-      </div>
+      <ImageDiff
+        before={oldFile}
+        after={newFile}
+        beforeLabel={before.label}
+        afterLabel={after.label}
+        mode={imageMode}
+      />
     )
   return (
     <ComputedDiff
@@ -131,105 +134,6 @@ function ArtifactDiffContents({ before, after, path, language, theme, style, ren
       theme={theme}
       style={style}
     />
-  )
-}
-
-function ArtifactImage({ file }: { file: FileContents }) {
-  const [url, setUrl] = useState<string>()
-  const [error, setError] = useState('')
-  const pane = useRef<HTMLDivElement>(null)
-  const drag = useRef<{ x: number; y: number; left: number; top: number } | null>(null)
-  useEffect(() => {
-    const controller = new AbortController()
-    let value: string | undefined
-    setUrl(undefined)
-    setError('')
-    const image = imageType(file.name)
-      ? Promise.resolve(imageBlob(file.contents, file.name))
-      : (file.name.endsWith('.svg')
-          ? Promise.resolve(file.contents)
-          : renderDot(file, controller.signal)
-        ).then((svg) => new Blob([svg], { type: 'image/svg+xml' }))
-    image.then(
-      (blob) => {
-        if (controller.signal.aborted) return
-        value = URL.createObjectURL(blob)
-        setUrl(value)
-      },
-      (error: Error) => {
-        if (!controller.signal.aborted) setError(error.message)
-      },
-    )
-    return () => {
-      controller.abort()
-      if (value) URL.revokeObjectURL(value)
-    }
-  }, [file])
-  // React wheel listeners are passive, so zooming needs a native listener to cancel page zoom.
-  useEffect(() => {
-    const element = pane.current
-    const image = element?.querySelector('img')
-    if (!element || !image) return
-    const zoom = (event: WheelEvent) => {
-      if (!event.ctrlKey && !event.metaKey) return
-      event.preventDefault()
-      // Zoom between fitting the pane and the image's natural size, around the cursor.
-      const rect = element.getBoundingClientRect()
-      const x = event.clientX - rect.left
-      const y = event.clientY - rect.top
-      const old = image.clientWidth
-      const fit = Math.min(element.clientWidth, image.naturalWidth)
-      const width = Math.max(fit, Math.min(image.naturalWidth, old * Math.exp(-event.deltaY / 200)))
-      image.style.width = `${width}px`
-      image.style.maxWidth = 'none'
-      const scale = width / old
-      element.scrollTo((element.scrollLeft + x) * scale - x, (element.scrollTop + y) * scale - y)
-    }
-    element.addEventListener('wheel', zoom, { passive: false })
-    return () => element.removeEventListener('wheel', zoom)
-  }, [url])
-  if (error) return <p className="error">Could not render graph: {error}</p>
-  if (!url) return <DiffSkeleton label="Rendering graph" />
-  return (
-    <div
-      ref={pane}
-      className="dot-graph"
-      title="Ctrl+scroll or pinch to zoom, drag to pan, double-click to fit"
-      onPointerDown={(event) => {
-        if (event.button !== 0) return
-        const element = event.currentTarget
-        drag.current = {
-          x: event.clientX,
-          y: event.clientY,
-          left: element.scrollLeft,
-          top: element.scrollTop,
-        }
-        element.setPointerCapture(event.pointerId)
-        event.preventDefault()
-      }}
-      onPointerMove={(event) => {
-        const start = drag.current
-        if (!start) return
-        event.currentTarget.scrollTo(
-          start.left - (event.clientX - start.x),
-          start.top - (event.clientY - start.y),
-        )
-      }}
-      onPointerUp={() => {
-        drag.current = null
-      }}
-      onLostPointerCapture={() => {
-        drag.current = null
-      }}
-      onDoubleClick={(event) => {
-        const image = event.currentTarget.querySelector('img')!
-        image.style.width = ''
-        image.style.maxWidth = ''
-      }}
-    >
-      {/* An image keeps links and scripts in the SVG inert. */}
-      <img src={url} alt={file.name} draggable={false} />
-    </div>
   )
 }
 
