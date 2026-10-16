@@ -103,6 +103,7 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
   // Narrow screens open on a unified diff, as on DiffsHub; the file tree becomes a bottom sheet.
   const [narrow] = useState(() => matchMedia(narrowQuery).matches)
   const [diffStyle, setDiffStyle] = useState<'split' | 'unified'>(narrow ? 'unified' : 'split')
+  const [graphView, setGraphView] = useState(true)
   const [sidebarOpen, setSidebarOpen] = useState(!narrow)
   const [sidebarWidth, setSidebarWidth] = useState(270)
   const drag = useRef<{ x: number; width: number } | null>(null)
@@ -197,6 +198,7 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
   )
   const visiblePaths = useMemo(() => visibleFiles.map((file) => file.path), [visibleFiles])
   const selectedFile = visibleFiles.find((file) => file.path === selected) || visibleFiles[0]
+  const isGraph = !!selectedFile?.path.endsWith('.dot')
 
   // Start bodies as soon as the descriptor arrives, even while the renderer chunk loads.
   useEffect(() => {
@@ -246,6 +248,20 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
         <span className="viewer-filename" title={selectedFile?.path}>
           {selectedFile?.path || 'Artifacts'}
         </span>
+        {isGraph && (
+          <div className="diff-tools" aria-label="Graph view">
+            {[true, false].map((graph) => (
+              <button
+                key={String(graph)}
+                className={graphView === graph ? 'active' : ''}
+                aria-pressed={graphView === graph}
+                onClick={() => setGraphView(graph)}
+              >
+                {graph ? 'Graph' : 'Source'}
+              </button>
+            ))}
+          </div>
+        )}
         <div className="diff-tools" aria-label="Diff layout">
           {(['split', 'unified'] as const).map((style) => (
             <button
@@ -417,6 +433,7 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
                     language={selectedFile.language}
                     theme={theme}
                     style={diffStyle}
+                    graph={isGraph && graphView}
                   />
                 </Suspense>
               </>

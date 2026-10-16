@@ -111,8 +111,12 @@ closes once you pick a file. File icons use Pierre's complete colored set, as on
 [DiffsHub](https://diffshub.com). `src/artifactIcons.ts` adds icons for formats that set
 lacks: Solidity (`.sol`), EVM IR (`.evmir`) and LLVM IR (`.ll`) use
 [Simple Icons](https://simpleicons.org) marks (CC0-1.0); Solar MIR (`.mir`), Yul
-(`.yul`), disassembly (`.disasm`) and hex bytecode (`.hex`) use
+(`.yul`), disassembly (`.disasm`), hex bytecode (`.hex`) and Graphviz graphs (`.dot`) use
 [Lucide](https://lucide.dev) glyphs (ISC, the license bundled with `lucide-react`).
+Graphviz files, such as evm2's `bytecode.dot` control-flow graph, open as SVG images
+rendered by [Viz.js](https://github.com/mdaines/viz-js) (Graphviz compiled to WebAssembly)
+in a worker per side; a Source toggle shows the text diff instead. The image element
+keeps any links in the SVG inert.
 File cache keys
 include a SHA-256 of the actual formatted text, path, and language, preventing
 same-name artifacts from sharing highlighting. Completed diffs reuse the existing

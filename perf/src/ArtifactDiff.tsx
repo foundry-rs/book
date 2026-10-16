@@ -6,9 +6,10 @@ import { artifactThemes } from './highlight'
 import { computeDiff } from './computeDiff'
 import { useLineSelection } from './lineSelection'
 import HighlightWorker from '@pierre/diffs/worker/worker.js?worker'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Info } from 'lucide-react'
 import { loadDiffFile, type ArtifactSource } from './formattedArtifact'
+import { renderDot } from './renderDot'
 import type { Theme } from './types'
 
 interface Props {
@@ -18,6 +19,8 @@ interface Props {
   language: string
   theme: Theme
   style: 'split' | 'unified'
+  /** Render Graphviz sources as SVG instead of diffing their text. */
+  graph: boolean
 }
 
 const poolOptions = {
@@ -46,7 +49,7 @@ export default function ArtifactDiff(props: Props) {
   )
 }
 
-function ArtifactDiffContents({ before, after, path, language, theme, style }: Props) {
+function ArtifactDiffContents({ before, after, path, language, theme, style, graph }: Props) {
   const [contents, setContents] = useState<[FileContents | null, FileContents | null] | null>(null)
   const [error, setError] = useState('')
   useEffect(() => {
@@ -94,10 +97,30 @@ function ArtifactDiffContents({ before, after, path, language, theme, style }: P
               ? `Published only by ${before.label}.`
               : 'Contents are identical.'}
         </p>
-        <SelectedFile file={oldFile ?? newFile!} theme={theme} side={newFile ? 'R' : 'L'} />
+        {graph ? (
+          <DotGraph file={oldFile ?? newFile!} />
+        ) : (
+          <SelectedFile file={oldFile ?? newFile!} theme={theme} side={newFile ? 'R' : 'L'} />
+        )}
       </>
     )
   }
+  if (graph)
+    return (
+      <div className={`dot-graphs ${style}`}>
+        {(
+          [
+            [before.label, oldFile],
+            [after.label, newFile],
+          ] as const
+        ).map(([label, file], index) => (
+          <section key={index}>
+            <h3>{label}</h3>
+            <DotGraph file={file} />
+          </section>
+        ))}
+      </div>
+    )
   return (
     <ComputedDiff
       before={oldFile}
@@ -107,6 +130,99 @@ function ArtifactDiffContents({ before, after, path, language, theme, style }: P
       theme={theme}
       style={style}
     />
+  )
+}
+
+function DotGraph({ file }: { file: FileContents }) {
+  const [url, setUrl] = useState<string>()
+  const [error, setError] = useState('')
+  const pane = useRef<HTMLDivElement>(null)
+  const drag = useRef<{ x: number; y: number; left: number; top: number } | null>(null)
+  useEffect(() => {
+    const controller = new AbortController()
+    let value: string | undefined
+    setUrl(undefined)
+    setError('')
+    renderDot(file, controller.signal).then(
+      (svg) => {
+        if (controller.signal.aborted) return
+        value = URL.createObjectURL(new Blob([svg], { type: 'image/svg+xml' }))
+        setUrl(value)
+      },
+      (error: Error) => {
+        if (!controller.signal.aborted) setError(error.message)
+      },
+    )
+    return () => {
+      controller.abort()
+      if (value) URL.revokeObjectURL(value)
+    }
+  }, [file])
+  // React wheel listeners are passive, so zooming needs a native listener to cancel page zoom.
+  useEffect(() => {
+    const element = pane.current
+    const image = element?.querySelector('img')
+    if (!element || !image) return
+    const zoom = (event: WheelEvent) => {
+      if (!event.ctrlKey && !event.metaKey) return
+      event.preventDefault()
+      // Zoom between fitting the pane and Graphviz's natural size, around the cursor.
+      const rect = element.getBoundingClientRect()
+      const x = event.clientX - rect.left
+      const y = event.clientY - rect.top
+      const old = image.clientWidth
+      const fit = Math.min(element.clientWidth, image.naturalWidth)
+      const width = Math.max(fit, Math.min(image.naturalWidth, old * Math.exp(-event.deltaY / 200)))
+      image.style.width = `${width}px`
+      image.style.maxWidth = 'none'
+      const scale = width / old
+      element.scrollTo((element.scrollLeft + x) * scale - x, (element.scrollTop + y) * scale - y)
+    }
+    element.addEventListener('wheel', zoom, { passive: false })
+    return () => element.removeEventListener('wheel', zoom)
+  }, [url])
+  if (error) return <p className="error">Could not render graph: {error}</p>
+  if (!url) return <DiffSkeleton label="Rendering graph" />
+  return (
+    <div
+      ref={pane}
+      className="dot-graph"
+      title="Ctrl+scroll or pinch to zoom, drag to pan, double-click to fit"
+      onPointerDown={(event) => {
+        if (event.button !== 0) return
+        const element = event.currentTarget
+        drag.current = {
+          x: event.clientX,
+          y: event.clientY,
+          left: element.scrollLeft,
+          top: element.scrollTop,
+        }
+        element.setPointerCapture(event.pointerId)
+        event.preventDefault()
+      }}
+      onPointerMove={(event) => {
+        const start = drag.current
+        if (!start) return
+        event.currentTarget.scrollTo(
+          start.left - (event.clientX - start.x),
+          start.top - (event.clientY - start.y),
+        )
+      }}
+      onPointerUp={() => {
+        drag.current = null
+      }}
+      onLostPointerCapture={() => {
+        drag.current = null
+      }}
+      onDoubleClick={(event) => {
+        const image = event.currentTarget.querySelector('img')!
+        image.style.width = ''
+        image.style.maxWidth = ''
+      }}
+    >
+      {/* An image keeps links and scripts in the SVG inert. */}
+      <img src={url} alt={`Graph of ${file.name}`} draggable={false} />
+    </div>
   )
 }
 

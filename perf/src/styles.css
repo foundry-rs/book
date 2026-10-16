@@ -856,6 +856,9 @@ header.file-header {
   margin: 0 0 0 auto;
   flex-shrink: 0;
 }
+.viewer-toolbar .diff-tools + .diff-tools {
+  margin-left: 0;
+}
 .file-viewer > .empty {
   width: min(1100px, calc(100% - 48px));
   margin: 32px auto;
@@ -1016,6 +1019,41 @@ header.file-header {
 }
 .diff-sides span + span {
   border-left: 1px solid var(--line);
+}
+.dot-graphs.split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.dot-graphs section {
+  min-width: 0;
+}
+.dot-graphs.split section + section {
+  border-left: 1px solid var(--line);
+}
+.dot-graphs h3 {
+  margin: 0;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--line);
+  background: var(--surface);
+  font:
+    600 11px ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    monospace;
+}
+.dot-graph {
+  max-height: calc(100vh - var(--viewer-toolbar-height) - 150px);
+  overflow: auto;
+}
+.dot-graph img {
+  display: block;
+  max-width: 100%;
+  cursor: grab;
+}
+.dot-graph:active img {
+  cursor: grabbing;
 }
 .file-diff .diff-frame {
   min-height: calc(100vh - 96px);
