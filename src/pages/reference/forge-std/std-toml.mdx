@@ -1,0 +1,73 @@
+## Std Toml
+
+`stdToml` is a helper library for parsing and writing TOML in tests and scripts. It wraps the [TOML cheatcodes](/reference/cheatcodes/parse-toml) (`vm.parseToml*`, `vm.serializeToml`, and `vm.writeToml`) in typed functions that attach to a `string` holding TOML data.
+
+Keys use the same selector syntax as the `vm.parseToml*` cheatcodes: `.a` selects a nested field, `$` selects the root object, and `.a[0]` selects an array element.
+
+### Import
+
+```solidity
+import {stdToml} from "forge-std/StdToml.sol";
+
+using stdToml for string;
+```
+
+### Reading values
+
+Each read function takes the TOML string and a key, and reverts if the key does not exist or the value cannot be read as the requested type.
+
+| Type      | Single value  | Array              | With default (single) | With default (array) |
+| --------- | ------------- | ------------------ | --------------------- | -------------------- |
+| `uint256` | `readUint`    | `readUintArray`    | `readUintOr`          | `readUintArrayOr`    |
+| `int256`  | `readInt`     | `readIntArray`     | `readIntOr`           | `readIntArrayOr`     |
+| `bool`    | `readBool`    | `readBoolArray`    | `readBoolOr`          | `readBoolArrayOr`    |
+| `address` | `readAddress` | `readAddressArray` | `readAddressOr`       | `readAddressArrayOr` |
+| `string`  | `readString`  | `readStringArray`  | `readStringOr`        | `readStringArrayOr`  |
+| `bytes`   | `readBytes`   | `readBytesArray`   | `readBytesOr`         | `readBytesArrayOr`   |
+| `bytes32` | `readBytes32` | `readBytes32Array` | `readBytes32Or`       | `readBytes32ArrayOr` |
+
+The `Or` variants return the given default value when the key does not exist, instead of reverting. `keyExists(toml, key)` returns whether a key is present.
+
+#### Example
+
+```solidity
+using stdToml for string;
+
+function test_readToml() public {
+    string memory toml = vm.readFile("config.toml");
+    uint256 count = toml.readUint(".count");
+    string memory name = toml.readString(".name");
+    bool active = toml.readBool(".active");
+    uint256 rate = toml.readUint(".nested.rate");
+    string[] memory tags = toml.readStringArray(".tags");
+}
+```
+
+#### Parsing raw values
+
+`parseRaw(toml, key)` returns the value at `key` ABI-encoded, ready to be decoded with `abi.decode`. Use it for values that do not map to a single read function, such as a whole table decoded into a struct.
+
+### Writing values
+
+`serialize` builds a TOML object one key at a time. Start from a string that names the object, and pass that same string as the first argument of every call: each call adds one key, and the string returned by the final call contains the whole object. Reassigning the name string between calls starts a new object instead.
+
+```solidity
+using stdToml for string;
+
+function test_writeToml() public {
+    string memory obj = "obj";
+    obj.serialize("name", string("vault"));
+    obj.serialize("count", uint256(42));
+    string memory out = obj.serialize("active", true);
+    out.write("out.toml");
+}
+```
+
+String values are written as `string("...")` so the compiler selects the `string` overload of `serialize`. There are `serialize` overloads for `bool`, `uint256`, `int256`, `address`, `bytes32`, `bytes`, and `string`, each in single-value and array form, plus an overload that nests a previously serialized object as a value.
+
+`write(path)` writes the serialized object to a file as TOML. The three-argument form `write(path, valueKey)` writes only the value stored under `valueKey`. Reading and writing files is governed by [`fs_permissions`](/reference/cheatcodes/fs).
+
+### See Also
+
+- [stdToml.sol](https://github.com/foundry-rs/forge-std/blob/master/src/StdToml.sol)
+- [parseToml cheatcodes](/reference/cheatcodes/parse-toml)
