@@ -1,16 +1,14 @@
+---
+description: Read and write JSON files with the forge-std stdJson library.
+---
+
 ## Std Json
 
 `stdJson` is a helper library for parsing and writing JSON in tests and scripts. It wraps the [JSON cheatcodes](/reference/cheatcodes/parse-json) (`vm.parseJson*`, `vm.serializeJson`, and `vm.writeJson`) in typed functions that attach to a `string` holding JSON data.
 
 Keys use the same selector syntax as the `vm.parseJson*` cheatcodes: `.a` selects a nested field, `$` selects the root object, and `.a[0]` selects an array element.
 
-### Import
-
-```solidity
-import {stdJson} from "forge-std/StdJson.sol";
-
-using stdJson for string;
-```
+Import `stdJson` from `forge-std/StdJson.sol` and declare `using stdJson for string;`, as shown in the runnable example below.
 
 ### Reading values
 
@@ -28,21 +26,6 @@ Each read function takes the JSON string and a key, and reverts if the key does 
 
 The `Or` variants return the given default value when the key does not exist, instead of reverting. `keyExists(json, key)` returns whether a key is present.
 
-#### Example
-
-```solidity
-using stdJson for string;
-
-function test_readJson() public {
-    string memory json = vm.readFile("fixtures/example.json");
-    uint256 count = json.readUint(".count");
-    string memory name = json.readString(".name");
-    bool active = json.readBool(".active");
-    uint256 rate = json.readUint(".nested.rate");
-    string[] memory tags = json.readStringArray(".tags");
-}
-```
-
 #### Parsing raw values
 
 `parseRaw(json, key)` returns the value at `key` ABI-encoded, ready to be decoded with `abi.decode`. The value's type is inferred rather than declared: a hex string of exactly 20 bytes is encoded as an `address`, one of exactly 32 bytes as a `bytes32`, and any other length as dynamic `bytes`. Decoding those two lengths as `bytes` therefore reverts, so prefer `readBytes` when the value is meant to be byte data.
@@ -51,21 +34,25 @@ function test_readJson() public {
 
 `serialize` builds a JSON object one key at a time. Start from a string that names the object, and pass that same string as the first argument of every call: each call adds one key, and the string returned by the final call contains the whole object. Reassigning the name string between calls starts a new object instead.
 
-```solidity
-using stdJson for string;
 
-function test_writeJson() public {
-    string memory obj = "obj";
-    obj.serialize("name", string("vault"));
-    obj.serialize("count", uint256(42));
-    string memory out = obj.serialize("active", true);
-    out.write("out.json");
-}
+String values are written as `string("...")` so the compiler selects the `string` overload of `serialize`. There are `serialize` overloads for `bool`, `uint256`, `int256`, `address`, `bytes32`, `bytes`, and `string`, each in single-value and array form, plus `serialize(objectName, rootObject)`, which initializes the named object from a JSON object string. To nest an object, pass its serialized JSON to the string-valued overload with a key.
+
+`write(path)` writes the serialized object to a file. With extension syntax, `value.write(path, valueKey)` writes `value` at `valueKey` in the destination JSON file, preserving its other fields. The key selects a location in the destination file, not a value to extract from the input. Reading and writing files is governed by [`fs_permissions`](/reference/cheatcodes/fs).
+
+### Runnable example
+
+This example reads a fixture, checks a missing key's default, writes an object, and updates a key in the destination file.
+
+```solidity [test/StdJson.t.sol]
+// [!include ~/snippets/projects/std_json/test/StdJson.t.sol]
 ```
 
-String values are written as `string("...")` so the compiler selects the `string` overload of `serialize`. There are `serialize` overloads for `bool`, `uint256`, `int256`, `address`, `bytes32`, `bytes`, and `string`, each in single-value and array form, plus an overload that nests a previously serialized object as a value.
+From `src/snippets/projects/std_json`, install the pinned library and run the tests:
 
-`write(path)` writes the serialized object to a file. The three-argument form `write(path, valueKey)` writes only the value stored under `valueKey`. Reading and writing files is governed by [`fs_permissions`](/reference/cheatcodes/fs).
+```bash
+$ forge install --no-git foundry-rs/forge-std@b013eff2ac4fce26f34d789e6f5c49021c5ee817
+$ forge test -vv
+```
 
 ### See Also
 
