@@ -100,8 +100,12 @@ export function HistoryGraph({
     return selectPoint(
       points,
       positions,
-      ((event.clientX - bounds.left) / bounds.width) * 100,
-      (pointerReach / bounds.width) * 100,
+      position,
+      {
+        x: ((event.clientX - bounds.left) / bounds.width) * 100,
+        y: ((event.clientY - bounds.top) / bounds.height) * 100,
+      },
+      { x: (pointerReach / bounds.width) * 100, y: (pointerReach / bounds.height) * 100 },
     )
   }
   const compare = (index: number) => {

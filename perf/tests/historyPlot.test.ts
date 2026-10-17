@@ -29,10 +29,25 @@ it('selects the largest change among runs that share the pointer position', () =
   // Index 3 is the drop; its neighbours sit within a pixel and change less or not at all.
   const crowded = [30, 31, 31, 10, 10, 11].map((value) => ({ ...points[0], value }))
   const positions = [0, 49.8, 49.9, 50, 50.1, 90]
-  expect(selectPoint(crowded, positions, 50.1, 0.5)).toBe(3)
-  expect(selectPoint(crowded, positions, 49.8, 0.5)).toBe(3)
-  expect(selectPoint(crowded, positions, 51, 0.5)).toBe(4)
-  expect(selectPoint(crowded, positions, 89, 0.5)).toBe(5)
+  const select = (x: number, y: number) =>
+    selectPoint(crowded, positions, (value) => value, { x, y }, { x: 0.5, y: 0.5 })
+  expect(select(50.1, 10)).toBe(3)
+  expect(select(49.8, 31)).toBe(3)
+  expect(select(51, 10)).toBe(4)
+  expect(select(89, 11)).toBe(5)
+})
+
+it('selects the stacked step that passes under the pointer', () => {
+  // Two drops minutes apart draw one vertical line: 84 to 71, then 71 to 60.
+  const stacked = [84, 84, 71, 60, 60].map((value) => ({ ...points[0], value }))
+  const positions = [0, 49.9, 50, 50.1, 90]
+  const select = (y: number) =>
+    selectPoint(stacked, positions, (value) => value, { x: 50, y }, { x: 0.5, y: 1 })
+  expect(select(84)).toBe(2)
+  expect(select(60)).toBe(3)
+  expect(select(65)).toBe(3)
+  expect(select(71)).toBe(2)
+  expect(select(40)).toBe(2)
 })
 
 it('draws steps without bridging gaps or erasing value changes', () => {
