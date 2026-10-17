@@ -22,7 +22,7 @@ overrides:
   "@pierre/theming>@shikijs/themes": ^4.5.0
   vite@*: "catalog:"
 patchedDependencies:
-  # TODO: remove once @pierre/diffs sends highlighted lines from workers without structured cloning hast trees.
+  # TODO: remove once https://github.com/pierrecomputer/pierre/pull/1197 is released.
   "@pierre/diffs@1.5.2": patches/@pierre__diffs@1.5.2.patch
   # TODO: remove once https://github.com/shikijs/shiki/pull/1338 is released.
   "@shikijs/core@4.5.0": patches/@shikijs__core@4.5.0.patch
