@@ -91,6 +91,10 @@ export function HistoryGraph({
   const change = percentChange(values[0], active?.value ?? null)
 
   const unchanged = unchangedCounts[activeIndex]
+  // The change a click opens: this run against the run before it.
+  const previous = points[activeIndex - 1]?.value ?? null
+  const delta = previous !== null && active?.value != null ? active.value - previous : 0
+  const deltaChange = percentChange(previous, active?.value ?? null)
   const pointedRun = (event: MouseEvent<HTMLElement>) => {
     const bounds = event.currentTarget.getBoundingClientRect()
     return selectPoint(
@@ -244,6 +248,16 @@ export function HistoryGraph({
                   {active.title && <strong className="chart-tooltip-title">{active.title}</strong>}
                   {new Date(active.timestamp).toLocaleString()} · {short(active.commit)} ·{' '}
                   {active.value === null ? 'No measurement' : formatValue(active.value, unit)}
+                  {delta !== 0 && (
+                    <>
+                      {' · '}
+                      <span className={changeClass(deltaChange, false)}>
+                        {delta > 0 && '+'}
+                        {formatValue(delta, unit)}
+                        {deltaChange !== null && ` (${formatChange(deltaChange)})`}
+                      </span>
+                    </>
+                  )}
                   {unchanged > 1 && ` · Unchanged across ${unchanged} runs`}
                 </span>,
                 document.body,
