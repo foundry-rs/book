@@ -22,6 +22,26 @@ export function nearestPoint(positions: number[], x: number) {
   return low > 0 && x - positions[low - 1] < positions[low] - x ? low - 1 : low
 }
 
+// Runs minutes apart share a pixel, so prefer the largest change within reach of the pointer.
+export function selectPoint(points: HistoryPoint[], positions: number[], x: number, reach: number) {
+  const nearest = nearestPoint(positions, x)
+  let selected = nearest
+  let largest = 0
+  let start = nearest
+  while (start > 0 && positions[start - 1] >= x - reach) start--
+  for (let index = start; index < points.length && positions[index] <= x + reach; index++) {
+    const previous = points[index - 1]?.value
+    const value = points[index].value
+    if (previous == null || value === null) continue
+    const change = Math.abs(value - previous)
+    if (change > largest) {
+      selected = index
+      largest = change
+    }
+  }
+  return selected
+}
+
 // Keep each time bucket's endpoints and extrema; never bridge missing measurements.
 export function plotIndices(
   points: HistoryPoint[],

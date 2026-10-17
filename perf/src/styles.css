@@ -846,6 +846,19 @@ header.file-header {
     12px ui-monospace,
     monospace;
 }
+.viewer-run {
+  max-width: 40%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13px;
+  font-weight: 560;
+}
+.viewer-run + .viewer-filename::before {
+  content: '/';
+  margin-right: 12px;
+  color: var(--muted);
+}
 .viewer-toolbar .diff-tools {
   margin: 0 0 0 auto;
   flex-shrink: 0;
@@ -1129,6 +1142,12 @@ header.file-header {
   .run-meta {
     line-height: 1.65;
   }
+  .viewer-run {
+    display: none;
+  }
+  .viewer-run + .viewer-filename::before {
+    content: none;
+  }
   .diff-sides,
   .image-diff.two-up {
     grid-template-columns: 1fr;
@@ -1218,6 +1237,15 @@ header.file-header {
   pointer-events: none;
   transform: translate(10px, -120%);
   white-space: nowrap;
+}
+.chart-tooltip-title {
+  display: block;
+  margin-bottom: 3px;
+  font:
+    600 12px Inter,
+    ui-sans-serif,
+    system-ui,
+    sans-serif;
 }
 .chart-tooltip-floating {
   position: fixed;

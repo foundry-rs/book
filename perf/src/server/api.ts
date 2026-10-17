@@ -248,8 +248,8 @@ async function historyFromClickHouse(
   const rows = await select(
     config,
     `WITH recent AS (
-    SELECT commit, started_at, measurements, metric_values
-    FROM (SELECT commit, started_at, branch, source_schema, measurements, metric_values
+    SELECT commit, started_at, title, measurements, metric_values
+    FROM (SELECT commit, started_at, branch, title, source_schema, measurements, metric_values
       FROM run_snapshots FINAL WHERE project = '${project.id}' AND source_schema > 0
       ORDER BY ${snapshotOrder} LIMIT 1 BY commit)
     WHERE source_schema > 0 AND branch = 'main'
@@ -257,7 +257,7 @@ async function historyFromClickHouse(
     ${before ? 'AND (started_at, commit) < (parseDateTime64BestEffort({before:String}, 3), {commit:String})' : ''}
     ORDER BY started_at DESC, commit DESC LIMIT ${historyPageSize + 1}
   )
-  SELECT commit, formatDateTime(started_at, '%Y-%m-%dT%H:%i:%S.%fZ', 'UTC') AS timestamp,
+  SELECT commit, formatDateTime(started_at, '%Y-%m-%dT%H:%i:%S.%fZ', 'UTC') AS timestamp, title,
     b.test_id AS test_id, if(b.status = 'ok'${present}, ${value}, NULL) AS value
   FROM recent LEFT ARRAY JOIN arrayFilter(m -> m.compiler = '${project.compiler}'
     ${benchmark === undefined ? '' : 'AND m.test_id = {benchmark:String}'}, measurements) AS b
@@ -268,6 +268,7 @@ async function historyFromClickHouse(
     rows.map((row) => ({
       commit: String(row.commit),
       timestamp: String(row.timestamp),
+      title: typeof row.title === 'string' ? row.title : null,
       test_id: typeof row.test_id === 'string' ? row.test_id : '',
       value: typeof row.value === 'number' && Number.isFinite(row.value) ? row.value : null,
     })),

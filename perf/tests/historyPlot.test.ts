@@ -3,6 +3,7 @@ import {
   historyPath,
   nearestPoint,
   plotIndices,
+  selectPoint,
   timePositions,
   unchangedRunCounts,
 } from '../src/historyPlot'
@@ -22,6 +23,16 @@ it('spaces irregular runs by elapsed time and selects the nearest raw measuremen
   expect(nearestPoint(positions, 39)).toBe(4)
   expect(nearestPoint(positions, 100)).toBe(5)
   expect(timePositions([points[0], points[0]])).toEqual([50, 50])
+})
+
+it('selects the largest change among runs that share the pointer position', () => {
+  // Index 3 is the drop; its neighbours sit within a pixel and change less or not at all.
+  const crowded = [30, 31, 31, 10, 10, 11].map((value) => ({ ...points[0], value }))
+  const positions = [0, 49.8, 49.9, 50, 50.1, 90]
+  expect(selectPoint(crowded, positions, 50.1, 0.5)).toBe(3)
+  expect(selectPoint(crowded, positions, 49.8, 0.5)).toBe(3)
+  expect(selectPoint(crowded, positions, 51, 0.5)).toBe(4)
+  expect(selectPoint(crowded, positions, 89, 0.5)).toBe(5)
 })
 
 it('draws steps without bridging gaps or erasing value changes', () => {

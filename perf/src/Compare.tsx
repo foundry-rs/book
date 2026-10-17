@@ -122,11 +122,15 @@ export function Compare({ base, head }: Props) {
   return (
     <main className="compare-page">
       <section className="run-overview">
-        <p className="eyebrow">Benchmark run</p>
-        <h1>Benchmark comparison</h1>
+        <p className="eyebrow">Benchmark comparison</p>
+        <h1>{afterRun.title || `Commit ${short(head)}`}</h1>
         <p className="run-meta">
           <time>{formatRunDate(afterRun.timestamp)}</time> ·{' '}
-          <a href={`${repository}/commit/${head}`}>{short(head)}</a> ·{' '}
+          <a href={`${repository}/commit/${head}`}>{short(head)}</a> vs{' '}
+          <a href={`${repository}/commit/${base}`} title={beforeRun.title ?? undefined}>
+            {short(base)}
+          </a>{' '}
+          ·{' '}
           {afterRun.pr ? (
             <a href={`${repository}/pull/${afterRun.pr}`}>PR #{afterRun.pr}</a>
           ) : (

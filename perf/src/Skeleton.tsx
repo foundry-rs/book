@@ -75,8 +75,10 @@ export function CompareSkeleton({ progress }: { progress?: string }) {
     <main className="compare-page">
       <Status label="Loading benchmark comparison">
         <section className="run-overview">
-          <p className="eyebrow">Benchmark run</p>
-          <h1>Benchmark comparison</h1>
+          <p className="eyebrow">Benchmark comparison</p>
+          <h1>
+            <Skeleton width={360} height={25} />
+          </h1>
           <p className="run-meta">
             {progress ? (
               <LoadingText>{progress}</LoadingText>

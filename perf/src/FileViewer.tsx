@@ -252,6 +252,11 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
         >
           {sidebarOpen ? <PanelLeftClose size={18} /> : <PanelLeftOpen size={18} />}
         </button>
+        {runs?.[1].title && (
+          <span className="viewer-run" title={runs[1].title}>
+            {runs[1].title}
+          </span>
+        )}
         <span className="viewer-filename" title={selectedFile?.path}>
           {selectedFile?.path || 'Artifacts'}
         </span>
