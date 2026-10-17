@@ -1,4 +1,12 @@
-import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import {
+  useEffect,
+  useId,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+  type MouseEvent,
+} from 'react'
 import { createPortal } from 'react-dom'
 import { changeClass, formatChange } from './change'
 import { percentChange } from './comparison'
@@ -6,9 +14,11 @@ import { formatValue } from './formatValue'
 import type { HistorySeries } from './types'
 import { navigate } from './navigation'
 import { project } from './project'
-import { historyPath, nearestPoint, timePositions, unchangedRunCounts } from './historyPlot'
+import { historyPath, selectPoint, timePositions, unchangedRunCounts } from './historyPlot'
 
 const short = (commit: string) => commit.slice(0, 8)
+// Pixels around the pointer searched for the run that changed the measurement.
+const pointerReach = 6
 
 export function HistoryGraph({
   runs,
@@ -81,6 +91,15 @@ export function HistoryGraph({
   const change = percentChange(values[0], active?.value ?? null)
 
   const unchanged = unchangedCounts[activeIndex]
+  const pointedRun = (event: MouseEvent<HTMLElement>) => {
+    const bounds = event.currentTarget.getBoundingClientRect()
+    return selectPoint(
+      points,
+      positions,
+      ((event.clientX - bounds.left) / bounds.width) * 100,
+      (pointerReach / bounds.width) * 100,
+    )
+  }
   const compare = (index: number) => {
     const base = points[index - 1]
     const head = points[index]
@@ -158,11 +177,7 @@ export function HistoryGraph({
                 tap.current = { touch: event.pointerType !== 'mouse', selected: hovered }
               }}
               onClick={(event) => {
-                const bounds = event.currentTarget.getBoundingClientRect()
-                const index = nearestPoint(
-                  positions,
-                  ((event.clientX - bounds.left) / bounds.width) * 100,
-                )
+                const index = pointedRun(event)
                 if (tap.current.touch && tap.current.selected !== index) {
                   setHovered(index)
                   setTooltip({ x: event.clientX, y: event.clientY })
@@ -171,9 +186,7 @@ export function HistoryGraph({
                 compare(index)
               }}
               onPointerMove={(event) => {
-                const bounds = event.currentTarget.getBoundingClientRect()
-                const x = (event.clientX - bounds.left) / bounds.width
-                setHovered(nearestPoint(positions, x * 100))
+                setHovered(pointedRun(event))
                 setTooltip({ x: event.clientX, y: event.clientY })
               }}
               onPointerLeave={(event) => {

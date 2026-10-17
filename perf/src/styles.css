@@ -852,6 +852,19 @@ header.file-header {
     12px ui-monospace,
     monospace;
 }
+.viewer-run {
+  max-width: 40%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13px;
+  font-weight: 560;
+}
+.viewer-run + .viewer-filename::before {
+  content: '/';
+  margin-right: 12px;
+  color: var(--muted);
+}
 .viewer-toolbar .diff-tools {
   margin: 0 0 0 auto;
   flex-shrink: 0;
@@ -1134,6 +1147,12 @@ header.file-header {
   }
   .run-meta {
     line-height: 1.65;
+  }
+  .viewer-run {
+    display: none;
+  }
+  .viewer-run + .viewer-filename::before {
+    content: none;
   }
   .diff-sides,
   .image-diff.two-up {
