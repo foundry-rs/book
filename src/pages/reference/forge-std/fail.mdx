@@ -1,22 +1,35 @@
+---
+description: Mark a test as failed, optionally with a custom message.
+---
+
 ## `fail`
 
 ### Signature
 
 ```solidity
-function fail(string memory err) internal virtual;
+function fail() internal virtual;
+function fail(string memory message) internal virtual;
 ```
 
 ### Description
 
-Fail a test with a message if a certain branch or execution point is hit.
+Mark the current test as failed when execution reaches a branch that should not run. Use `fail()` without a message, or `fail("reason")` to include a custom assertion message.
+
+The message overload requires **forge-std v1.10.0 or later**. If you use an older forge-std dependency, use `fail()` or `assertTrue(false, "reason")`, or update the dependency with `forge update forge-std`. Updating the Forge binary alone does not update your project's forge-std library.
 
 ### Examples
 
-```solidity
-function test() external {
-    for(uint256 place; place < 10; ++i){
-        if(game.leaderboard(place) == address(this)) return;
-    }
-    fail("Not in the top 10.");
-}
+Both tests below intentionally fail. The second includes a custom message:
+
+```solidity [test/Fail.t.sol]
+// [!include ~/snippets/projects/fail_assertions/test/Fail.t.sol]
 ```
+
+Run the example from `src/snippets/projects/fail_assertions`:
+
+```bash
+$ forge install --no-git foundry-rs/forge-std@v1.10.0
+$ forge test -vv
+```
+
+Expect two failed tests and a nonzero exit status.
