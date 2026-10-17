@@ -7,7 +7,7 @@ Configuration shared by build commands and EVM execution. All fields belong unde
 
 | Field | Type | Default | Description |
 | --- | --- | --- | --- |
-| `dynamic_test_linking` | boolean | `false` | Dynamically links test contracts. |
+| `dynamic_test_linking` | boolean | `true` | Dynamically links test contracts. Disable this when using external tools that do not support the generated `vm.deployCode` and `vm.getCode` calls. |
 | `snapshots` | path | `snapshots` | Directory used for gas snapshot files. |
 | `gas_snapshot_check` | boolean | `false` | Checks generated snapshots against stored snapshots. |
 | `gas_snapshot_emit` | boolean | `true` | Writes gas snapshots to disk. |
@@ -20,6 +20,14 @@ Configuration shared by build commands and EVM execution. All fields belong unde
 | `build_info_path` | path or none | none | Overrides the build-info output directory. |
 | `names` | boolean | `false` | Prints compiled contract names. |
 | `sizes` | boolean | `false` | Prints compiled contract sizes. |
+
+`dynamic_test_linking` is enabled by default since Foundry 1.8.0. It rewrites
+contract deployments in tests and scripts to `vm.deployCode` and `vm.getCode`, so
+changing a contract does not recompile the tests that deploy it. As a result, test
+and script artifacts no longer contain the `linkReferences` of libraries used by the
+contracts they deploy. Tools that link libraries from artifacts should read
+`linkReferences` from the deployed contract's own artifact, or set
+`dynamic_test_linking = false` to restore them in harness artifacts.
 
 ### Compiler and diagnostic fields
 
