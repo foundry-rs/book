@@ -1,0 +1,104 @@
+diff --git a/dist/worker/WorkerPoolManager.js b/dist/worker/WorkerPoolManager.js
+index 243aa38e4e13fdf19eb9df2f2a27a3d9eb350f66..88b8938f0e8346b67a4da9774dc6def5081b9f3c 100644
+--- a/dist/worker/WorkerPoolManager.js
++++ b/dist/worker/WorkerPoolManager.js
+@@ -23,6 +23,35 @@ import { resolveThemes } from "../highlighter/themes/resolveThemes.js";
+ import LRUMapPkg from "lru_map";
+ //#region src/worker/WorkerPoolManager.ts
+ const IGNORE_RESPONSE = Symbol("IGNORE_RESPONSE");
++// TODO: remove with the worker.js transfer patch. Workers send each highlighted line as a
++// JSON string; parse a line the first time a renderer reads it and keep the parsed node.
++const lazyLinesHandler = { get(target, key, receiver) {
++	const value = Reflect.get(target, key, receiver);
++	if (typeof value !== "string") return value;
++	const line = JSON.parse(value);
++	target[key] = line;
++	return line;
++} };
++function decodeLines(lines) {
++	return new Proxy(lines, lazyLinesHandler);
++}
++function decodeFileResult({ encodedLines, ...result }) {
++	if (encodedLines !== true) return result;
++	return {
++		...result,
++		code: decodeLines(result.code)
++	};
++}
++function decodeDiffResult({ encodedLines, ...result }) {
++	if (encodedLines !== true) return result;
++	return {
++		...result,
++		code: {
++			deletionLines: decodeLines(result.code.deletionLines),
++			additionLines: decodeLines(result.code.additionLines)
++		}
++	};
++}
+ const DEFAULT_WORKER_INITIALIZATION_TIMEOUT = 1e4;
+ var WorkerPoolManager = class {
+ 	options;
+@@ -681,7 +710,8 @@ var WorkerPoolManager = class {
+ 						break;
+ 					case "file": {
+ 						if (task.type !== "file") throw new Error("handleWorkerMessage: task/response dont match");
+-						const { result, options } = response;
++						const { options } = response;
++						const result = decodeFileResult(response.result);
+ 						if (!this.isCurrentRenderTask(task) || !areFileRenderOptionsEqual(options, this.getFileRenderOptions())) throw IGNORE_RESPONSE;
+ 						const { request } = task;
+ 						this.syncCustomExtensionVersion(managedWorker, request);
+@@ -695,7 +725,8 @@ var WorkerPoolManager = class {
+ 					}
+ 					case "diff": {
+ 						if (task.type !== "diff") throw new Error("handleWorkerMessage: task/response dont match");
+-						const { result, options } = response;
++						const { options } = response;
++						const result = decodeDiffResult(response.result);
+ 						if (!this.isCurrentRenderTask(task) || !areDiffRenderOptionsEqual(options, this.getDiffRenderOptions())) throw IGNORE_RESPONSE;
+ 						const { request } = task;
+ 						this.syncCustomExtensionVersion(managedWorker, request);
+diff --git a/dist/worker/worker.js b/dist/worker/worker.js
+index 527dd057117dd5e94e97dd49835eff1af2b1bd96..da07c5646975fdf893d4de5e2467571578d7733f 100644
+--- a/dist/worker/worker.js
++++ b/dist/worker/worker.js
+@@ -1845,12 +1845,22 @@ function syncCustomExtensionsFromRequest({ customExtensionsVersion, customExtens
+ 	if (customExtensionsVersion == null || customExtensionMap == null) throw new Error("Worker request must include both customExtensionsVersion and customExtensionMap");
+ 	replaceCustomExtensions(customExtensionsVersion, customExtensionMap);
+ }
++// TODO: remove this patch once @pierre/diffs transfers highlighted lines compactly.
++// Structured-cloning a tree of millions of hast nodes blocks both threads, so send each line
++// as a JSON string and let the pool manager parse lines when they are read.
++function encodeLines(lines) {
++	return lines.map((line) => JSON.stringify(line));
++}
+ function sendFileSuccess(id, result, options) {
+ 	postMessage({
+ 		type: "success",
+ 		requestType: "file",
+ 		id,
+-		result,
++		result: {
++			...result,
++			code: encodeLines(result.code),
++			encodedLines: true
++		},
+ 		options,
+ 		sentAt: Date.now()
+ 	});
+@@ -1860,7 +1870,14 @@ function sendDiffSuccess(id, result, options) {
+ 		type: "success",
+ 		requestType: "diff",
+ 		id,
+-		result,
++		result: {
++			...result,
++			code: {
++				deletionLines: encodeLines(result.code.deletionLines),
++				additionLines: encodeLines(result.code.additionLines)
++			},
++			encodedLines: true
++		},
+ 		options,
+ 		sentAt: Date.now()
+ 	});

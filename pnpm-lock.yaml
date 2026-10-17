@@ -23,6 +23,7 @@ overrides:
   vite@*: npm:@voidzero-dev/vite-plus-core@1.1.0
 
 patchedDependencies:
+  '@pierre/diffs@1.5.2': 00569a73948588a76a68fb3e31f6f38e063dd0e5dc85ad951c9b92bcc0b0d73a
   '@shikijs/core@4.5.0': ef52d95da5f659b0596d3aa462d70e4161e97e1ff2165e29f28aac4612dc16ce
 
 importers:
@@ -80,7 +81,7 @@ importers:
     dependencies:
       '@pierre/diffs':
         specifier: 1.5.2
-        version: 1.5.2(@shikijs/themes@4.5.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+        version: 1.5.2(patch_hash=00569a73948588a76a68fb3e31f6f38e063dd0e5dc85ad951c9b92bcc0b0d73a)(@shikijs/themes@4.5.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@pierre/trees':
         specifier: 1.0.0-beta.6
         version: 1.0.0-beta.6(@pierre/theme@2.0.0)(@shikijs/themes@4.5.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(shiki@3.23.0)
@@ -5476,7 +5477,7 @@ snapshots:
 
   '@phosphor-icons/core@2.1.1': {}
 
-  '@pierre/diffs@1.5.2(@shikijs/themes@4.5.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@pierre/diffs@1.5.2(patch_hash=00569a73948588a76a68fb3e31f6f38e063dd0e5dc85ad951c9b92bcc0b0d73a)(@shikijs/themes@4.5.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
     dependencies:
       '@pierre/theme': 2.0.0
       '@pierre/theming': 1.0.1(@pierre/theme@2.0.0)(@shikijs/themes@4.5.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(shiki@4.5.0)
