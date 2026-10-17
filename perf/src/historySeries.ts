@@ -56,10 +56,18 @@ export const historyMetrics = [
 
 // A shared run axis avoids repeating commit hashes and timestamps for every benchmark.
 export function historySeries(
-  rows: { commit: string; timestamp: string; test_id: string; value: number | null }[],
+  rows: {
+    commit: string
+    timestamp: string
+    title?: string | null
+    test_id: string
+    value: number | null
+  }[],
 ): HistorySeries {
   const runs = [
-    ...new Map(rows.map(({ commit, timestamp }) => [commit, { commit, timestamp }])).values(),
+    ...new Map(
+      rows.map(({ commit, timestamp, title }) => [commit, { commit, timestamp, title }]),
+    ).values(),
   ]
   const indices = new Map(runs.map((run, index) => [run.commit, index]))
   const values: HistorySeries['values'] = Object.create(null)

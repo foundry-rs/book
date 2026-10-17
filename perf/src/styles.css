@@ -1238,6 +1238,15 @@ header.file-header {
   transform: translate(10px, -120%);
   white-space: nowrap;
 }
+.chart-tooltip-title {
+  display: block;
+  margin-bottom: 3px;
+  font:
+    600 12px Inter,
+    ui-sans-serif,
+    system-ui,
+    sans-serif;
+}
 .chart-tooltip-floating {
   position: fixed;
   z-index: 10;

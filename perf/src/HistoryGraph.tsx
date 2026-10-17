@@ -146,7 +146,7 @@ export function HistoryGraph({
               aria-valuenow={activeIndex}
               aria-valuetext={
                 active
-                  ? `${new Date(active.timestamp).toLocaleString()} · ${short(active.commit)} · ${active.value === null ? 'No measurement' : formatValue(active.value, unit)}`
+                  ? `${active.title ? `${active.title} · ` : ''}${new Date(active.timestamp).toLocaleString()} · ${short(active.commit)} · ${active.value === null ? 'No measurement' : formatValue(active.value, unit)}`
                   : undefined
               }
               onFocus={() => setHovered(points.length - 1)}
@@ -241,6 +241,7 @@ export function HistoryGraph({
                   className="chart-tooltip chart-tooltip-floating"
                   style={{ left: tooltip.x, top: tooltip.y }}
                 >
+                  {active.title && <strong className="chart-tooltip-title">{active.title}</strong>}
                   {new Date(active.timestamp).toLocaleString()} · {short(active.commit)} ·{' '}
                   {active.value === null ? 'No measurement' : formatValue(active.value, unit)}
                   {unchanged > 1 && ` · Unchanged across ${unchanged} runs`}
