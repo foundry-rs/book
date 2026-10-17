@@ -15,13 +15,21 @@ interface LoadedImage {
   bytes?: number
 }
 
+function dataUrl(blob: Blob) {
+  return new Promise<string>((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onload = () => resolve(reader.result as string)
+    reader.onerror = () => reject(reader.error)
+    reader.readAsDataURL(blob)
+  })
+}
+
 function useImage(file: FileContents) {
   const [image, setImage] = useState<LoadedImage>()
   const [error, setError] = useState('')
   useEffect(() => {
     const controller = new AbortController()
     const { signal } = controller
-    let url: string | undefined
     setImage(undefined)
     setError('')
     const dot = !imageType(file.name) && !file.name.endsWith('.svg')
@@ -32,8 +40,10 @@ function useImage(file: FileContents) {
         )
     blob
       .then(async (blob) => {
+        // A data URL, unlike a blob URL, never runs an SVG's scripts on this origin, even when the
+        // image is opened in a new tab.
+        const url = await dataUrl(blob)
         if (signal.aborted) return
-        url = URL.createObjectURL(blob)
         const element = new Image()
         element.src = url
         await element.decode()
@@ -49,10 +59,7 @@ function useImage(file: FileContents) {
       .catch((error: Error) => {
         if (!signal.aborted) setError(error.message || 'Invalid image')
       })
-    return () => {
-      controller.abort()
-      if (url) URL.revokeObjectURL(url)
-    }
+    return () => controller.abort()
   }, [file])
   return { image, error }
 }
