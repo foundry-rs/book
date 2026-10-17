@@ -23,11 +23,11 @@
     "react-dom": "^19.3.0",
     "tailwindcss": "^4.2.2",
     "vocs": "2.10.2",
-    "waku": "1.0.0-rc.2"
+    "waku": "1.0.0-rc.3"
   },
   "devDependencies": {
-    "@playwright/test": "1.63.0",
-    "@types/node": "^26.6.4",
+    "@playwright/test": "1.64.0",
+    "@types/node": "^26.6.5",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.1.2",
