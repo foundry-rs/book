@@ -1,12 +1,13 @@
 import { DiffSkeleton } from './Skeleton'
-import { File, FileDiff, VirtualizerContext, WorkerPoolContextProvider } from '@pierre/diffs/react'
+import { File, FileDiff, VirtualizerContext, WorkerPoolContext } from '@pierre/diffs/react'
 import { Virtualizer } from '@pierre/diffs'
+import { WorkerPoolManager } from '@pierre/diffs/worker'
 import type { FileContents, FileDiffMetadata } from '@pierre/diffs'
 import { artifactThemes } from './highlight'
 import { computeDiff } from './computeDiff'
 import { useLineSelection } from './lineSelection'
 import HighlightWorker from '@pierre/diffs/worker/worker.js?worker'
-import { useEffect, useState } from 'react'
+import { useEffect, useInsertionEffect, useState } from 'react'
 import { Info } from 'lucide-react'
 import { loadDiffFile, type ArtifactSource } from './formattedArtifact'
 import { ImageDiff, ImageView, type ImageMode } from './ImageDiff'
@@ -29,23 +30,48 @@ const poolOptions = {
   workerFactory: () => new HighlightWorker(),
 }
 
+// Highlighting both themes at once runs the grammar twice, so each theme gets its own pool and
+// cache: the first switch to a theme highlights once, later switches reuse the cached result.
+const pools = new Map<Theme, WorkerPoolManager>()
+let poolUsers = 0
+
+function themePool(theme: Theme) {
+  let pool = pools.get(theme)
+  if (!pool) {
+    pool = new WorkerPoolManager(poolOptions, { theme: artifactThemes[theme] })
+    pools.set(theme, pool)
+  }
+  return pool
+}
+
 export default function ArtifactDiff(props: Props) {
   const [virtualizer] = useState(() => new Virtualizer())
   useEffect(() => {
     virtualizer.setup(document)
     return () => virtualizer.cleanUp()
   }, [virtualizer])
+  useInsertionEffect(() => {
+    poolUsers++
+    return () => {
+      poolUsers--
+    }
+  }, [])
+  useEffect(
+    () => () => {
+      if (poolUsers > 0) return
+      for (const pool of pools.values()) pool.terminate()
+      pools.clear()
+    },
+    [],
+  )
   return (
     <VirtualizerContext.Provider value={virtualizer}>
-      <WorkerPoolContextProvider
-        poolOptions={poolOptions}
-        highlighterOptions={{ theme: artifactThemes }}
-      >
+      <WorkerPoolContext.Provider value={themePool(props.theme)}>
         <ArtifactDiffContents
           key={JSON.stringify([props.before, props.after, props.path, props.language])}
           {...props}
         />
-      </WorkerPoolContextProvider>
+      </WorkerPoolContext.Provider>
     </VirtualizerContext.Provider>
   )
 }
@@ -141,14 +167,14 @@ function SelectedFile({ file, theme, side }: { file: FileContents; theme: Theme;
   const selection = useLineSelection(file.name, undefined, side)
   return (
     <File
+      key={theme}
       className="solar-diff"
       file={file}
       selectedLines={selection.selectedLines}
       options={{
         ...selection.options,
         overflow: 'scroll',
-        themeType: theme,
-        theme: artifactThemes,
+        theme: artifactThemes[theme],
         disableFileHeader: true,
       }}
     />
@@ -208,6 +234,7 @@ function ComputedDiff({
         </div>
       )}
       <FileDiff
+        key={theme}
         className="solar-diff"
         fileDiff={diff}
         selectedLines={selection.selectedLines}
@@ -216,8 +243,7 @@ function ComputedDiff({
           disableFileHeader: true,
           diffStyle: style,
           overflow: 'scroll',
-          themeType: theme,
-          theme: artifactThemes,
+          theme: artifactThemes[theme],
         }}
       />
     </>
