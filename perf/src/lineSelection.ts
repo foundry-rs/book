@@ -51,6 +51,14 @@ export function useLineSelection(path: string, diff?: FileDiffMetadata, fileSide
   }, [])
   return {
     selectedLines,
+    // Selects a range and scrolls to it, as a deep link does.
+    select(range: SelectedLineRange) {
+      // Drop a scroll queued for the previous selection, which would otherwise consume this one.
+      cancelAnimationFrame(frame.current)
+      frame.current = 0
+      pendingScroll.current = true
+      setSelectedLines(range)
+    },
     options: {
       enableLineSelection: true,
       // Unlike onLineSelected, this fires only for pointer interactions, not
@@ -109,7 +117,7 @@ export function useLineSelection(path: string, diff?: FileDiffMetadata, fileSide
               frame.current = requestAnimationFrame(scrollWhenReady)
               return
             }
-            const stickyHeight = ['.viewer-toolbar', '.diff-sides'].reduce(
+            const stickyHeight = ['.viewer-toolbar', '.diff-sides', '.diff-search'].reduce(
               (height, selector) =>
                 height + (document.querySelector(selector)?.getBoundingClientRect().height ?? 0),
               8,

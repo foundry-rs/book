@@ -5,9 +5,11 @@ import { WorkerPoolManager } from '@pierre/diffs/worker'
 import type { FileContents, FileDiffMetadata } from '@pierre/diffs'
 import { artifactThemes } from './highlight'
 import { computeDiff } from './computeDiff'
+import { DiffSearch } from './DiffSearch'
+import { matchRange, searchDiff, searchFile } from './diffSearch'
 import { useLineSelection } from './lineSelection'
 import HighlightWorker from '@pierre/diffs/worker/worker.js?worker'
-import { useEffect, useInsertionEffect, useState } from 'react'
+import { useCallback, useEffect, useInsertionEffect, useState } from 'react'
 import { Info } from 'lucide-react'
 import { loadDiffFile, type ArtifactSource } from './formattedArtifact'
 import { ImageDiff, ImageView, type ImageMode } from './ImageDiff'
@@ -165,19 +167,26 @@ function ArtifactDiffContents({
 
 function SelectedFile({ file, theme, side }: { file: FileContents; theme: Theme; side: string }) {
   const selection = useLineSelection(file.name, undefined, side)
+  const search = useCallback(
+    (query: string) => searchFile(file.contents, side === 'L' ? 'deletions' : 'additions', query),
+    [file.contents, side],
+  )
   return (
-    <File
-      key={theme}
-      className="solar-diff"
-      file={file}
-      selectedLines={selection.selectedLines}
-      options={{
-        ...selection.options,
-        overflow: 'scroll',
-        theme: artifactThemes[theme],
-        disableFileHeader: true,
-      }}
-    />
+    <>
+      <DiffSearch search={search} onMatch={(match) => selection.select(matchRange(match))} />
+      <File
+        key={theme}
+        className="solar-diff"
+        file={file}
+        selectedLines={selection.selectedLines}
+        options={{
+          ...selection.options,
+          overflow: 'scroll',
+          theme: artifactThemes[theme],
+          disableFileHeader: true,
+        }}
+      />
+    </>
   )
 }
 
@@ -199,6 +208,7 @@ function ComputedDiff({
   const [diff, setDiff] = useState<FileDiffMetadata | null>(null)
   const selection = useLineSelection(after.name, diff ?? undefined)
   const [error, setError] = useState('')
+  const search = useCallback((query: string) => (diff ? searchDiff(diff, query) : []), [diff])
   useEffect(() => {
     const controller = new AbortController()
     const { signal } = controller
@@ -227,6 +237,11 @@ function ComputedDiff({
   if (!diff) return <DiffSkeleton label="Computing diff" />
   return (
     <>
+      <DiffSearch
+        search={search}
+        onMatch={(match) => selection.select(matchRange(match))}
+        belowSides={style === 'split'}
+      />
       {style === 'split' && (
         <div className="diff-sides">
           <span>{beforeLabel}</span>
