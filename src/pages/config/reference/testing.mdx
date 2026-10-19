@@ -741,3 +741,20 @@ Number of calls to execute between invariant assertions.
 - `0`: Only assert on the last call of each run (fastest, but may miss exact breaking call)
 - `1` (default): Assert after every call (most precise)
 - `N`: Assert every N calls AND always on the last call
+
+##### `track_max_gas`
+
+- Type: boolean
+- Default: false
+- Environment: `FOUNDRY_INVARIANT_TRACK_MAX_GAS`
+
+Flag indicating whether to track and report the highest gas used by each fuzzed selector.
+
+If enabled, the campaign records the gas of each successful handler call, without the transaction stipend. For each selector, the test report shows the highest value and a call sequence that reproduces it. Forge shrinks each call sequence within `shrink_run_limit`.
+
+The human output prints a `Max gas per selector:` block after the metrics table. With `--json`, the result gets a `kind.Invariant.max_gas` field. If a corpus is set (`corpus_dir`), calls that raise a selector's maximum gas are kept as corpus entries.
+
+```toml
+[invariant]
+track_max_gas = true
+```
