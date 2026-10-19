@@ -28,7 +28,7 @@ export function searchDiff(diff: FileDiffMetadata, query: string) {
   let next = 0
   for (const hunk of diff.hunks) {
     findInLines(additionLines, next, hunk.additionLineIndex, 'additions', needle, matches)
-    next = hunk.additionLineIndex
+    next = Math.max(next, hunk.additionLineIndex)
     for (const block of hunk.hunkContent) {
       if (block.type === 'context') {
         findInLines(
@@ -39,7 +39,7 @@ export function searchDiff(diff: FileDiffMetadata, query: string) {
           needle,
           matches,
         )
-        next = block.additionLineIndex + block.lines
+        next = Math.max(next, block.additionLineIndex + block.lines)
       } else {
         findInLines(
           deletionLines,
@@ -57,7 +57,7 @@ export function searchDiff(diff: FileDiffMetadata, query: string) {
           needle,
           matches,
         )
-        next = block.additionLineIndex + block.additions
+        next = Math.max(next, block.additionLineIndex + block.additions)
       }
     }
   }

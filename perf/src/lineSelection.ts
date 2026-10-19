@@ -102,7 +102,7 @@ export function useLineSelection(path: string, diff?: FileDiffMetadata, fileSide
               else if (next < 0 && diff.hunks.length) {
                 const last = diff.hunks.at(-1)!
                 if (line >= last[start] + last[count])
-                  instance.expandHunk(diff.hunks.length - 1, 'down', Infinity)
+                  instance.expandHunk(diff.hunks.length, 'up', Infinity)
               }
             }
           }

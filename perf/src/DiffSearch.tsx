@@ -16,7 +16,6 @@ export function DiffSearch({ search, onMatch, belowSides }: Props) {
   const [index, setIndex] = useState(0)
   const input = useRef<HTMLInputElement>(null)
   const matches = useMemo(() => (open ? search(query) : []), [open, query, search])
-  const match = matches[index] ?? null
   const onMatchRef = useRef(onMatch)
   onMatchRef.current = onMatch
 
@@ -33,17 +32,20 @@ export function DiffSearch({ search, onMatch, belowSides }: Props) {
     return () => window.removeEventListener('keydown', onKeyDown)
   }, [])
 
-  useEffect(() => setIndex(0), [matches])
+  useEffect(() => {
+    setIndex(0)
+    if (matches[0]) onMatchRef.current(matches[0])
+  }, [matches])
   useEffect(() => {
     if (open) input.current?.focus()
   }, [open])
-  useEffect(() => {
-    if (match) onMatchRef.current(match)
-  }, [match])
 
   if (!open) return null
   const step = (delta: number) => {
-    if (matches.length) setIndex((index + delta + matches.length) % matches.length)
+    if (!matches.length) return
+    const next = (index + delta + matches.length) % matches.length
+    setIndex(next)
+    onMatchRef.current(matches[next])
   }
   return (
     <div className={`diff-search-anchor${belowSides ? ' below-sides' : ''}`}>
