@@ -752,7 +752,7 @@ Flag indicating whether to track and report the highest gas used by each fuzzed 
 
 If enabled, the campaign records the gas of each successful handler call, without the transaction stipend. For each selector, the test report shows the highest value and a call sequence that reproduces it. Forge shrinks each call sequence within `shrink_run_limit`.
 
-The human output prints a `Max gas per selector:` block after the metrics table. With `--json`, the result gets a `kind.Invariant.max_gas` field. If a corpus is set (`corpus_dir`), calls that raise a selector's maximum gas are kept as corpus entries.
+The selector metrics table gets a `Max Gas` column, and Forge prints the table even if `show_metrics` is disabled. A `Max gas sequences:` block after the table lists the call sequence for each selector. With `--json`, the result gets a `kind.Invariant.max_gas` field. If a corpus is set (`corpus_dir`), calls that raise a selector's maximum gas are kept as corpus entries.
 
 ```toml
 [invariant]
