@@ -1021,6 +1021,56 @@ header.file-header {
     Consolas,
     monospace;
 }
+.diff-search-anchor {
+  position: sticky;
+  top: calc(var(--viewer-toolbar-height) + 8px);
+  z-index: 6;
+  height: 0;
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 16px;
+  pointer-events: none;
+}
+.diff-search-anchor.below-sides {
+  top: calc(var(--viewer-toolbar-height) + 42px);
+}
+.diff-search {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: fit-content;
+  padding: 4px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface);
+  box-shadow: 0 4px 16px rgb(0 0 0 / 0.25);
+  pointer-events: auto;
+}
+.diff-search input {
+  width: 200px;
+  height: 28px;
+  font-size: 12px;
+}
+.diff-search button {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border-color: transparent;
+  background: transparent;
+  color: var(--muted);
+}
+.diff-search button:hover:not(:disabled) {
+  color: var(--text);
+}
+.diff-search-count {
+  min-width: 56px;
+  color: var(--muted);
+  font-size: 12px;
+  text-align: center;
+  white-space: nowrap;
+}
 .diff-sides span {
   padding: 10px 14px;
 }
