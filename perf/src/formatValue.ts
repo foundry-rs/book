@@ -5,7 +5,7 @@ export function formatRawValue(value: number | null, unit: string) {
 
 export function formatValue(value: number, unit: string) {
   if (unit === 'seconds')
-    return value < 1 ? `${(value * 1000).toFixed(2)} ms` : `${value.toFixed(2)} s`
+    return Math.abs(value) < 1 ? `${(value * 1000).toFixed(2)} ms` : `${value.toFixed(2)} s`
   if (unit === 'memory' || unit === 'bytes') {
     const units = ['b', 'KiB', 'MiB', 'GiB', 'TiB']
     const index = Math.min(
