@@ -97,10 +97,7 @@ of Shiki. It highlights both GitHub themes in one pass, so a theme switch only s
 variables. Highlights has no lexers for Yul, EVM disassembly, Solar MIR, EVM IR or LLVM IR:
 Yul uses its Solidity lexer, the others its assembly lexer, and hex bytecode stays plain
 text. Every diff gets Pierre's default intraline word decorations, which skip lines
-longer than 1,000 characters. `@pierre/diffs` 1.6.0 resolves theme names through a
-fallback loader that the published `@pierre/theming` 1.0.1 lacks;
-`patches/@pierre__theming@1.0.1.patch` adds it until
-[pierrecomputer/pierre#1207](https://github.com/pierrecomputer/pierre/issues/1207) is fixed.
+longer than 1,000 characters.
 Pierre's edit-session APIs are not used by this read-only viewer.
 `FileDiff`/`File` use Pierre's `Virtualizer` with `setup(document)` through
 `VirtualizerContext`: the browser page scrolls normally while only visible lines

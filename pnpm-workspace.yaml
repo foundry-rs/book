@@ -17,6 +17,3 @@ peerDependencyRules:
     vite: "*"
 overrides:
   vite@*: "catalog:"
-patchedDependencies:
-  # TODO: remove once https://github.com/pierrecomputer/pierre/issues/1207 is fixed.
-  "@pierre/theming@1.0.1": patches/@pierre__theming@1.0.1.patch
