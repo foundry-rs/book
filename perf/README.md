@@ -91,16 +91,14 @@ and retains both full files for context expansion. On timeout or worker failure,
 both files remain downloadable with bounded previews; the failed content pair stays
 failed for the page session, with no automatic retries on revisits or visibility changes.
 Theme and split/unified changes reuse the computed diff. Syntax highlighting
-uses the library's worker pool (one worker, retained across file/compiler switches);
-every diff gets Pierre's default intraline word decorations, which skip lines longer
-than 1,000 characters. Pierre's own shiki dependency is overridden to 4.x, which splits
-tokens at decoration offsets in linear time. `patches/@shikijs__core@4.5.0.patch`
-applies [shikijs/shiki#1338](https://github.com/shikijs/shiki/pull/1338), which makes
-the overlap check, position conversion and multi-line decorations linear too; remove
-it once a Shiki release includes that change. Without it, decoration cost grows with
-the square of the changed line count.
-`@pierre/diffs` 1.4.1 includes the large-hunk stack-overflow fix upstream,
-so Pierre itself needs no patch. Its edit-session APIs are not used by this read-only viewer.
+uses the library's worker pool (one worker, retained across file/compiler switches)
+with [Highlights](https://diffs.com/highlights), Pierre's WebAssembly highlighter, instead
+of Shiki. It highlights both GitHub themes in one pass, so a theme switch only swaps CSS
+variables. Highlights has no lexers for Yul, EVM disassembly, Solar MIR, EVM IR or LLVM IR:
+Yul uses its Solidity lexer, the others its assembly lexer, and hex bytecode stays plain
+text. Every diff gets Pierre's default intraline word decorations, which skip lines
+longer than 1,000 characters.
+Pierre's edit-session APIs are not used by this read-only viewer.
 `FileDiff`/`File` use Pierre's `Virtualizer` with `setup(document)` through
 `VirtualizerContext`: the browser page scrolls normally while only visible lines
 are rendered. The file toolbar and side labels stick during scrolling. The file

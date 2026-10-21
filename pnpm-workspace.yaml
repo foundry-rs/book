@@ -16,13 +16,9 @@ peerDependencyRules:
     typescript: "*"
     vite: "*"
 overrides:
-  # Shiki 4 splits tokens at decoration offsets in linear time; perf word diffs rely on it.
-  "@pierre/diffs>shiki": ^4.5.0
-  "@pierre/diffs>@shikijs/transformers": ^4.5.0
-  "@pierre/theming>@shikijs/themes": ^4.5.0
   vite@*: "catalog:"
-patchedDependencies:
-  # TODO: remove once https://github.com/pierrecomputer/pierre/pull/1197 is released.
-  "@pierre/diffs@1.5.2": patches/@pierre__diffs@1.5.2.patch
-  # TODO: remove once https://github.com/shikijs/shiki/pull/1338 is released.
-  "@shikijs/core@4.5.0": patches/@shikijs__core@4.5.0.patch
+# TODO: remove once these are a day old (2026-10-22 18:05 UTC).
+minimumReleaseAgeExclude:
+  - "@pierre/diffs@1.6.1"
+  - "@pierre/highlights@0.2.0"
+  - "@pierre/theming@1.0.2"

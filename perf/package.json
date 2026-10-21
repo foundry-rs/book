@@ -17,7 +17,7 @@
     "test": "vp test --run"
   },
   "dependencies": {
-    "@pierre/diffs": "1.5.2",
+    "@pierre/diffs": "1.6.1",
     "@pierre/trees": "1.0.0-beta.6",
     "@vercel/functions": "^3.9.11",
     "@viz-js/viz": "3.31.0",
