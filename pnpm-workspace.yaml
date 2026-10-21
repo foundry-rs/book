@@ -17,3 +17,8 @@ peerDependencyRules:
     vite: "*"
 overrides:
   vite@*: "catalog:"
+# TODO: remove once these are a day old (2026-10-22 18:05 UTC).
+minimumReleaseAgeExclude:
+  - "@pierre/diffs@1.6.1"
+  - "@pierre/highlights@0.2.0"
+  - "@pierre/theming@1.0.2"
