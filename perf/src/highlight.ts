@@ -6,7 +6,7 @@ const assemblyExtensions = ['.disasm', '.evmir', '.ll', '.mir', '.s']
 
 export function artifactLanguage(path: string, language: string) {
   if (assemblyExtensions.some((extension) => path.endsWith(extension))) return 'asm'
-  // Nor for Yul; the Solidity lexer covers its `assembly` blocks.
+  // Nor for Yul (demo data labels it `yul`); its Solidity lexer covers `assembly` blocks.
   if (path.endsWith('.yul')) return 'solidity'
   return language
 }
