@@ -13,15 +13,18 @@ jobs:
     name: checks
     runs-on: ubuntu-latest
     permissions:
+      id-token: write
       contents: read
     steps:
+      - name: Secure runner
+        uses: tempoxyz/gh-actions/actions/secure-runner@d5402286a7abdfb7232173b3228d56473feb8a66 # 2026-09-29T02-04-45Z-d5402286
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
       - name: Set up Vite+
-        uses: voidzero-dev/setup-vp@49c3e4e92c52e7f8392712a9267bbe71c5ab30e5 # v1.19.0
+        uses: voidzero-dev/setup-vp@68f39c78aaf39be468cabd2afb09c162574c84af # v1.21.2
         with:
           cache: true
           node-version: "24"
@@ -53,15 +56,18 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
+      id-token: write
       contents: read
     steps:
+      - name: Secure runner
+        uses: tempoxyz/gh-actions/actions/secure-runner@d5402286a7abdfb7232173b3228d56473feb8a66 # 2026-09-29T02-04-45Z-d5402286
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
       - name: Set up Vite+
-        uses: voidzero-dev/setup-vp@49c3e4e92c52e7f8392712a9267bbe71c5ab30e5 # v1.19.0
+        uses: voidzero-dev/setup-vp@68f39c78aaf39be468cabd2afb09c162574c84af # v1.21.2
         with:
           cache: true
           node-version: "24"
@@ -84,47 +90,10 @@ jobs:
 
       - name: Upload browser test results
         if: failure()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: browser-test-results
           path: |
             playwright-report/
             test-results/
-          retention-days: 7
-
-  perf-browser:
-    name: perf browser tests
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    permissions:
-      contents: read
-    steps:
-      - name: Checkout
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-
-      - name: Set up Vite+
-        uses: voidzero-dev/setup-vp@49c3e4e92c52e7f8392712a9267bbe71c5ab30e5 # v1.19.0
-        with:
-          cache: true
-          node-version: "24"
-          run-install: false
-
-      - name: Install dependencies
-        run: vp install --frozen-lockfile
-
-      - name: Install Chromium
-        run: vp exec playwright install --with-deps chromium
-
-      # These tests start the perf app's own server and do not use the Vocs build.
-      - name: Perf import browser tests
-        run: vp exec playwright test --config perf/playwright.config.ts
-
-      - name: Upload perf browser test results
-        if: failure()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        with:
-          name: perf-browser-test-results
-          path: test-results/perf/
           retention-days: 7

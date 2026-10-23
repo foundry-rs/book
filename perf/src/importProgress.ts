@@ -19,11 +19,7 @@ const subscribe = (listener: () => void) => {
 export function useImportProgress(base: string, head: string) {
   return useSyncExternalStore(
     subscribe,
-    () =>
-      [base, head]
-        .map((commit) => pending.get(commit))
-        .filter(Boolean)
-        .join(' '),
+    () => [...new Set([base, head].map((commit) => pending.get(commit)).filter(Boolean))].join(' '),
     () => '',
   )
 }

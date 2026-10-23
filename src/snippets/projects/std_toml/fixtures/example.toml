@@ -1,0 +1,7 @@
+count = 42
+name = "vault"
+active = true
+tags = ["test", "docs"]
+
+[nested]
+rate = 7

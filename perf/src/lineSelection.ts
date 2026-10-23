@@ -51,6 +51,14 @@ export function useLineSelection(path: string, diff?: FileDiffMetadata, fileSide
   }, [])
   return {
     selectedLines,
+    // Selects a range and scrolls to it, as a deep link does.
+    select(range: SelectedLineRange) {
+      // Drop a scroll queued for the previous selection, which would otherwise consume this one.
+      cancelAnimationFrame(frame.current)
+      frame.current = 0
+      pendingScroll.current = true
+      setSelectedLines(range)
+    },
     options: {
       enableLineSelection: true,
       // Unlike onLineSelected, this fires only for pointer interactions, not
@@ -76,7 +84,10 @@ export function useLineSelection(path: string, diff?: FileDiffMetadata, fileSide
         if (!(instance instanceof VirtualizedFile || instance instanceof VirtualizedFileDiff))
           return
         frame.current = requestAnimationFrame(() => {
-          if (!node.isConnected || !pendingScroll.current) return
+          if (!node.isConnected || !pendingScroll.current) {
+            frame.current = 0
+            return
+          }
           // Reveal only the context blocks containing the linked endpoints.
           if (instance instanceof VirtualizedFileDiff && diff) {
             for (const [line, side] of [
@@ -91,17 +102,22 @@ export function useLineSelection(path: string, diff?: FileDiffMetadata, fileSide
               else if (next < 0 && diff.hunks.length) {
                 const last = diff.hunks.at(-1)!
                 if (line >= last[start] + last[count])
-                  instance.expandHunk(diff.hunks.length - 1, 'down', Infinity)
+                  instance.expandHunk(diff.hunks.length, 'up', Infinity)
               }
             }
           }
-          frame.current = requestAnimationFrame(() => {
+          const scrollWhenReady = () => {
             frame.current = 0
             if (!node.isConnected || !pendingScroll.current) return
-            pendingScroll.current = false
             const position = instance.getLinePosition(selectedLines.start, selectedLines.side)
             if (!position) return
-            const stickyHeight = ['.viewer-toolbar', '.diff-sides'].reduce(
+            // A render callback can precede the virtualizer's layout update.
+            // Keep the request alive until the target can actually be scrolled to.
+            if (node.getBoundingClientRect().height < position.top + position.height) {
+              frame.current = requestAnimationFrame(scrollWhenReady)
+              return
+            }
+            const stickyHeight = ['.viewer-toolbar', '.diff-sides', '.diff-search'].reduce(
               (height, selector) =>
                 height + (document.querySelector(selector)?.getBoundingClientRect().height ?? 0),
               8,
@@ -110,7 +126,9 @@ export function useLineSelection(path: string, diff?: FileDiffMetadata, fileSide
               top: window.scrollY + node.getBoundingClientRect().top + position.top - stickyHeight,
               behavior: 'instant',
             })
-          })
+            pendingScroll.current = false
+          }
+          frame.current = requestAnimationFrame(scrollWhenReady)
         })
       },
     },

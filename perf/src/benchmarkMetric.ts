@@ -1,9 +1,10 @@
+import { project } from './project'
 import type { BenchmarkResult, CompilerResult } from './types'
 
 export function benchmarkMetric(
   result: BenchmarkResult | undefined,
   metric: string,
-  name = 'solar',
+  name = project.compiler,
 ) {
   const compiler = result?.compilers[name]
   if (compiler?.status !== 'ok') return null

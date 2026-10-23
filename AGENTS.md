@@ -137,4 +137,3 @@ in the pull request. Keep speculative future behavior out of user-facing docs.
 - Keep redirects in `vercel.json` when moving or replacing a public route.
 - Use Conventional Commit subjects such as `docs(forge): add ...` or
   `chore(output): update ...`.
-- Follow the Foundry contribution policy for disclosing AI assistance.

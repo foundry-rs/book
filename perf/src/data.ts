@@ -1,8 +1,12 @@
 import type { HistorySeries, RunDocument, RunIndex } from './types'
 import { responseCache } from './cache'
 import { reportImport } from './importProgress'
+import { mergeHistory, type HistoryRange } from './historySeries'
+import { project } from './project'
+import { apiBase } from './projects'
 
-const root = '/api/data/'
+const root = `${apiBase(project)}/data/`
+const knownCommits = responseCache<string>(300_000, 64 * 1024)
 const cachedIndex = responseCache<RunIndex>(60_000)
 const cachedHistory = responseCache<HistorySeries>(60_000)
 const cachedArtifact = responseCache<string | null>(3_600_000)
@@ -12,15 +16,17 @@ const cachedViewer = responseCache<[RunDocument, RunDocument]>(300_000)
 const runQueue: {
   commit: string
   revision?: string
+  partner?: string
   resolve: (run: RunDocument) => void
   reject: (error: unknown) => void
 }[] = []
 
 // Coalesce the comparison's concurrent cache misses without refetching a cached side.
-// Individual cache entries also remain shared with the artifact viewer.
-function fetchRun(commit: string, revision?: string): Promise<RunDocument> {
+// Individual cache entries also remain shared with the artifact viewer. A lone side names
+// its compared `partner`, whose run may carry the missing base's baseline results.
+function fetchRun(commit: string, revision?: string, partner?: string): Promise<RunDocument> {
   return new Promise((resolve, reject) => {
-    runQueue.push({ commit, revision, resolve, reject })
+    runQueue.push({ commit, revision, partner, resolve, reject })
     if (runQueue.length !== 1) return
     queueMicrotask(() => {
       const pending = runQueue.splice(0)
@@ -37,7 +43,7 @@ function fetchRun(commit: string, revision?: string): Promise<RunDocument> {
         const request =
           commits.length === 1
             ? getJson<RunDocument>(
-                `runs/${commits[0]}/run.json?artifacts=0${batch[0].revision ? `&revision=${batch[0].revision}` : ''}`,
+                `runs/${commits[0]}/run.json?artifacts=0${batch[0].revision ? `&revision=${batch[0].revision}` : ''}${batch[0].partner ? `&partner=${batch[0].partner}` : ''}`,
               ).then((run) => [run])
             : getJson<{ runs: RunDocument[] }>(
                 `runs.json?${new URLSearchParams({ commits: commits.join(','), ...(batch.some((entry) => entry.revision) ? { revisions } : {}) })}`,
@@ -56,17 +62,29 @@ function fetchRun(commit: string, revision?: string): Promise<RunDocument> {
   })
 }
 
-export function loadHistory(metric: string, benchmark?: string) {
-  const dashboard = cachedHistory.peek(new URLSearchParams({ metric }).toString())
+export function loadHistory(metric: string, benchmark?: string, range: HistoryRange = '90d') {
+  const params = new URLSearchParams({ metric })
+  if (range !== '90d') params.set('range', range)
+  const dashboard = cachedHistory.peek(params.toString())
   if (benchmark !== undefined && dashboard) {
     return dashboard.then(({ runs, values }) => ({
       runs,
       values: Object.hasOwn(values, benchmark) ? { [benchmark]: values[benchmark] } : {},
     }))
   }
-  const params = new URLSearchParams({ metric })
   if (benchmark !== undefined) params.set('benchmark', benchmark)
-  return cachedHistory(params.toString(), () => getJson<HistorySeries>(`history.json?${params}`))
+  return cachedHistory(params.toString(), async () => {
+    const result: HistorySeries = { runs: [], values: Object.create(null) }
+    const cursors = new Set<string>()
+    for (;;) {
+      const page = await getJson<HistorySeries>(`history.json?${params}`)
+      mergeHistory(result, page)
+      if (!page.nextCursor) return result
+      if (cursors.has(page.nextCursor)) throw new Error('History pagination did not advance.')
+      cursors.add(page.nextCursor)
+      params.set('cursor', page.nextCursor)
+    }
+  })
 }
 
 async function getJson<T>(path: string): Promise<T> {
@@ -123,9 +141,12 @@ export function loadIndex() {
 export async function resolveCommit(value: string): Promise<string> {
   const ref = value.trim()
   if (!ref) throw new Error('Enter a commit, branch, tag, or PR.')
-  if (/^[0-9a-f]{40}$/i.test(ref)) return ref.toLowerCase()
+  if (/^[0-9a-f]{40}$/i.test(ref)) {
+    const known = knownCommits.peek(ref.toLowerCase())
+    if (known) return known
+  }
   // Mutable refs are resolved only on submission, never against a stale published index.
-  const response = await fetch(`/api/resolve?${new URLSearchParams({ ref })}`, {
+  const response = await fetch(`${apiBase(project)}/resolve?${new URLSearchParams({ ref })}`, {
     cache: 'no-store',
   })
   if (!response.ok) {
@@ -133,12 +154,22 @@ export async function resolveCommit(value: string): Promise<string> {
     throw new Error(`Could not resolve “${ref}” (${response.status}).`)
   }
   const result = (await response.json()) as { commit: string }
-  return result.commit
+  if (!/^[0-9a-f]{40}$/.test(result.commit)) throw new Error('Invalid resolved commit.')
+  return knownCommits(result.commit, async () => result.commit)
 }
 
-export async function loadRun(commit: string, revision?: string) {
-  const resolved = await resolveCommit(commit)
-  const run = await cachedRun(`${resolved}:${revision ?? ''}`, () => fetchRun(resolved, revision))
+// Runs and artifacts already carry canonical full SHAs; resolve only user refs here.
+function resolveRunCommit(commit: string) {
+  return /^[0-9a-f]{40}$/i.test(commit)
+    ? Promise.resolve(commit.toLowerCase())
+    : resolveCommit(commit)
+}
+
+export async function loadRun(commit: string, revision?: string, partner?: string) {
+  const resolved = await resolveRunCommit(commit)
+  const run = await cachedRun(`${resolved}:${revision ?? ''}`, () =>
+    fetchRun(resolved, revision, partner),
+  )
   if (!revision && run.revision) await cachedRun(`${resolved}:${run.revision}`, async () => run)
   return run
 }
@@ -162,7 +193,7 @@ export async function loadViewerRuns(
   baseRevision?: string,
   headRevision?: string,
 ) {
-  const commits = await Promise.all([resolveCommit(base), resolveCommit(head)])
+  const commits = await Promise.all([resolveRunCommit(base), resolveRunCommit(head)])
   const params = new URLSearchParams({ commits: commits.join(','), benchmark })
   if (baseRevision || headRevision)
     params.set('revisions', [baseRevision ?? '', headRevision ?? ''].join(','))
@@ -189,14 +220,26 @@ export async function loadArtifact(
   storagePath: string,
   contentHash?: string,
 ): Promise<string | null> {
-  const resolved = await resolveCommit(commit)
-  const parts = [resolved, benchmark, compiler, ...storagePath.split('/')].map(encodeURIComponent)
-  const path = contentHash ? `blobs/${contentHash}.json` : `runs/${parts.join('/')}`
-  return cachedArtifact(path, () =>
-    fetch(`${root}${path}`).then((response) => {
+  const resolved = await resolveRunCommit(commit)
+  const url = artifactUrl(resolved, benchmark, compiler, storagePath, contentHash)
+  return cachedArtifact(url, () =>
+    fetch(url).then((response) => {
       if (response.status === 404) return null
       if (!response.ok) throw new Error(`Could not load artifact (${response.status})`)
-      return response.json() as Promise<string>
+      return response.text()
     }),
   )
+}
+
+export function artifactUrl(
+  commit: string,
+  benchmark: string,
+  compiler: string,
+  storagePath: string,
+  contentHash?: string,
+) {
+  const parts = [commit, benchmark, compiler, ...storagePath.replace(/\.json$/, '').split('/')].map(
+    encodeURIComponent,
+  )
+  return `${root}${contentHash ? `blobs/${contentHash}` : `runs/${parts.join('/')}`}`
 }

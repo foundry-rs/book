@@ -243,8 +243,8 @@ Tempo:
           transactions.
           
           When set, builds a Tempo (type 0x76) transaction that pays gas fees in
-          the specified token. Known symbols are PathUSD, AlphaUSD, BetaUSD, and
-          ThetaUSD.
+          the specified token. Known symbols are PathUSD, AlphaUSD, BetaUSD,
+          ThetaUSD, and OUSD.
           
           If this is not set, the fee token is chosen according to network
           rules. See the Tempo docs for more information.
@@ -256,10 +256,11 @@ Tempo:
           relative `--tempo.valid-before`. Sets nonce_key = U256::MAX, nonce =
           0, and valid_before = now + seconds.
           
-          Maximum value is 30 seconds. The transaction must be mined before the
-          deadline or it becomes permanently invalid, giving safe retry
-          semantics: retries produce a fresh tx hash and the old tx can never
-          land late.
+          Maximum value is 300 seconds; networks that have not activated the T11
+          hardfork reject windows above 30 seconds. The transaction must be
+          mined before the deadline or it becomes permanently invalid, giving
+          safe retry semantics: retries produce a fresh tx hash and the old tx
+          can never land late.
 
       --tempo.nonce-key <NONCE_KEY>
           Nonce key for Tempo parallelizable nonces.
@@ -352,6 +353,9 @@ Tempo:
           
           The transaction is only valid after this unix timestamp. Requires
           `--tempo.expiring-nonce`.
+
+      --force
+          Skip the EIP-7702 authorization disclosure confirmation
 
 Rpc options:
   -r, --rpc-url <URL>

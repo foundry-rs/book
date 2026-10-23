@@ -1,5 +1,5 @@
 ---
-description: "Get the raw value of a contract's storage slot"
+description: "Get the raw value of a contract's storage slot Examples: - cast storage 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2 0 - cast storage $TOKEN --etherscan-api-key $KEY (decode the full storage layout)"
 ---
 
 _Generated from `cast storage --help`; see [CLI reference versions](/reference/versions). Regenerate this page instead of editing it directly._
@@ -7,6 +7,10 @@ _Generated from `cast storage --help`; see [CLI reference versions](/reference/v
 ## cast storage
 
 Get the raw value of a contract's storage slot
+
+Examples:
+- cast storage 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2 0
+- cast storage $TOKEN --etherscan-api-key $KEY (decode the full storage layout)
 
 :::terminal
 
@@ -186,10 +190,11 @@ Compiler options:
           Do not auto-detect the `solc` version
 
       --use <SOLC_VERSION>
-          Specify the solc version, or a path to a local solc, to build with.
+          Specify the solc version, path, or executable name on `PATH` to build
+          with.
           
-          Valid values are in the format `x.y.z`, `solc:x.y.z` or
-          `path/to/solc`.
+          Valid values are in the format `x.y.z`, `solc:x.y.z`, `path/to/solc`,
+          or `solc`.
 
       --offline
           Do not access the network.
@@ -300,7 +305,9 @@ Project options:
           [alias: --hh]
 
       --config-path <FILE>
-          Path to the config file
+          Path to the config file.
+
+          The project root is the config file's parent directory.
 
       --solc-version <SOLC_VERSION>
           Specify the solc version to compile with. Overrides detected version

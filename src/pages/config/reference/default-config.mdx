@@ -83,8 +83,8 @@ skip = []
 cache = true
 
 # Whether to dynamically link tests
-# Default: false
-dynamic_test_linking = false
+# Default: true
+dynamic_test_linking = true
 
 # Whether to forcefully clean all project artifacts before running commands
 # Default: false
@@ -347,6 +347,9 @@ block_number = 1
 # Default: None
 # fork_block_number = 12345678
 
+# Read fork state by number for RPC endpoints that cannot serve it by hash.
+fork_state_by_number = false
+
 # The chain name or EIP-155 chain ID
 # Default: None
 # chain = 1
@@ -454,6 +457,7 @@ endpoints = "remote"
 # Disables storage caching entirely (overrides rpc_storage_caching)
 # Default: false
 no_storage_caching = false
+fork_prefetch = false
 
 # Disables rate limiting entirely (overrides compute_units_per_second)
 # Default: false
@@ -541,6 +545,11 @@ verbosity = 0
 # If disabled, it's possible to access artifacts which were not recompiled/cached
 # Default: false
 unchecked_cheatcode_artifacts = false
+
+# Whether to decode the storage of contracts outside the local project in state diffs,
+# by compiling the verified source a block explorer has for them
+# Default: false
+decode_external_storage = false
 
 # =============================================================================
 # TRANSACTION CONFIGURATION

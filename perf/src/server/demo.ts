@@ -1,5 +1,12 @@
 import type { ArtifactFile, RunDocument, RunIndex } from '../types'
-import { historyMetrics, historySeries } from '../historySeries'
+import {
+  historyCutoff,
+  historyMetrics,
+  historyRanges,
+  historySeries,
+  validHistoryCursor,
+  type HistoryRange,
+} from '../historySeries'
 import { benchmarkMetric } from '../benchmarkMetric'
 
 const commits = [
@@ -182,32 +189,54 @@ export function demoResponse(input: string) {
       runs: runs.map((run) => ({
         ...run,
         artifacts: pathname.endsWith('/viewer.json') ? run!.artifacts : {},
+        ...(pathname.endsWith('/viewer.json')
+          ? {
+              artifactBenchmarks: Object.keys(run!.artifacts).filter(
+                (benchmark) => run!.artifacts[benchmark].length,
+              ),
+            }
+          : {}),
       })),
     })
   }
   if (pathname === '/api/data/history.json') {
     const metric = url.searchParams.get('metric') ?? 'total_gas'
     const benchmark = url.searchParams.get('benchmark')
+    const range = url.searchParams.get('range') ?? '90d'
+    const cursor = url.searchParams.get('cursor')
     if (
+      !historyRanges.includes(range as HistoryRange) ||
+      (cursor !== null && !validHistoryCursor(cursor)) ||
       !historyMetrics.includes(metric) ||
       (benchmark !== null && (!benchmark || benchmark.length > 256))
     )
       return Response.json({ error: 'Invalid history selection' }, { status: 400 })
+    const cutoff = historyCutoff(range as HistoryRange)
+    const [before, beforeCommit] = cursor?.split(',') ?? []
     return Response.json(
       historySeries(
-        [...documents.values()].flatMap(({ commit, timestamp, results }) => {
-          const selected = results.filter(
-            (result) => benchmark === null || result.test_id === benchmark,
+        [...documents.values()]
+          .filter(
+            (run) =>
+              (!cutoff || Date.parse(run.timestamp) >= Date.parse(cutoff)) &&
+              (!before ||
+                Date.parse(run.timestamp) < Date.parse(before) ||
+                (Date.parse(run.timestamp) === Date.parse(before) && run.commit < beforeCommit)),
           )
-          return selected.length
-            ? selected.map((result) => ({
-                commit,
-                timestamp,
-                test_id: result.test_id,
-                value: benchmarkMetric(result, metric),
-              }))
-            : [{ commit, timestamp, test_id: '', value: null }]
-        }),
+          .flatMap(({ commit, timestamp, title, results }) => {
+            const selected = results.filter(
+              (result) => benchmark === null || result.test_id === benchmark,
+            )
+            return selected.length
+              ? selected.map((result) => ({
+                  commit,
+                  timestamp,
+                  title,
+                  test_id: result.test_id,
+                  value: benchmarkMetric(result, metric),
+                }))
+              : [{ commit, timestamp, title, test_id: '', value: null }]
+          }),
       ),
     )
   }
@@ -220,9 +249,8 @@ export function demoResponse(input: string) {
       : Response.json({ error: 'Run not found' }, { status: 404 })
   }
 
-  const artifact = /^\/api\/data\/runs\/([0-9a-f]{40})\/([^/]+)\/([^/]+)\/(\d+\.json)$/.exec(
-    pathname,
-  )
+  const artifact =
+    /^\/api\/data\/runs\/([0-9a-f]{40})\/([^/]+)\/([^/]+)\/(\d+(?:\.(?:txt|json))?)$/.exec(pathname)
   if (artifact) {
     let benchmark: string
     try {
@@ -231,11 +259,16 @@ export function demoResponse(input: string) {
       return Response.json({ error: 'Invalid benchmark' }, { status: 400 })
     }
     const contents = artifactContents.get(
-      `${artifact[1]}/${benchmark}/${artifact[3]}/${artifact[4]}`,
+      `${artifact[1]}/${benchmark}/${artifact[3]}/${artifact[4].replace(/\.(?:txt|json)$/, '')}.json`,
     )
     return contents === undefined
       ? Response.json({ error: 'Artifact not found' }, { status: 404 })
-      : Response.json(contents)
+      : new Response(contents, {
+          headers: {
+            'content-type': 'text/plain; charset=utf-8',
+            'x-content-type-options': 'nosniff',
+          },
+        })
   }
 
   return null

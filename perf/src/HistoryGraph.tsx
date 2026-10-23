@@ -1,11 +1,24 @@
-import { useId, useMemo, useState } from 'react'
+import {
+  useEffect,
+  useId,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+  type MouseEvent,
+} from 'react'
 import { createPortal } from 'react-dom'
 import { changeClass, formatChange } from './change'
+import { percentChange } from './comparison'
 import { formatValue } from './formatValue'
 import type { HistorySeries } from './types'
 import { navigate } from './navigation'
+import { project } from './project'
+import { historyPath, selectPoint, timePositions, unchangedRunCounts } from './historyPlot'
 
 const short = (commit: string) => commit.slice(0, 8)
+// Pixels around the pointer searched for the run that changed the measurement.
+const pointerReach = 6
 
 export function HistoryGraph({
   runs,
@@ -13,6 +26,7 @@ export function HistoryGraph({
   title,
   unit,
   benchmark,
+  id,
   hideMissingLatest = false,
 }: {
   runs: HistorySeries
@@ -20,46 +34,96 @@ export function HistoryGraph({
   title: string
   unit: string
   benchmark: string
+  id?: string
   hideMissingLatest?: boolean
 }) {
   const clipId = useId()
   const [hovered, setHovered] = useState<number | null>(null)
   const [tooltip, setTooltip] = useState<{ x: number; y: number } | null>(null)
-  const { points, values, min, max, position, path } = useMemo(() => {
+  // Touch has no hover: the first tap inspects a run and a second tap on it compares.
+  const tap = useRef<{ touch: boolean; selected: number | null }>({ touch: false, selected: null })
+  const tooltipRef = useRef<HTMLSpanElement>(null)
+  useLayoutEffect(() => {
+    // Keep the floating tooltip inside the viewport, which matters on phones.
+    const element = tooltipRef.current
+    if (!element) return
+    element.style.translate = ''
+    const { left, right } = element.getBoundingClientRect()
+    const shift = Math.min(0, window.innerWidth - 8 - right) || Math.max(0, 8 - left)
+    element.style.translate = `${shift}px`
+  })
+  useEffect(() => {
+    // The floating tooltip is fixed to the viewport, so a scrolled-away tap closes it.
+    if (!tooltip || !tap.current.touch) return
+    const close = () => {
+      setHovered(null)
+      setTooltip(null)
+    }
+    window.addEventListener('scroll', close, { once: true, passive: true })
+    return () => window.removeEventListener('scroll', close)
+  }, [tooltip])
+  const { points, values, min, max, position, positions, path, unchangedCounts } = useMemo(() => {
     const series = runs.values[benchmark] ?? []
     const points = runs.runs
       .map((run, index) => ({ ...run, value: series[index] ?? null }))
       .reverse()
     const values = points.flatMap((run) => (run.value === null ? [] : [run.value]))
-    const min = values.length ? Math.min(...values) : 0
-    const max = values.length ? Math.max(...values) : 0
+    const min = values.reduce((min, value) => Math.min(min, value), values[0] ?? 0)
+    const max = values.reduce((max, value) => Math.max(max, value), values[0] ?? 0)
     const range = max - min
     const padding = range === 0 ? Math.max(Math.abs(max) * 0.04, 1) : range * 0.1
     const chartMin = min - padding
     const chartMax = max + padding
     const position = (value: number) =>
       Math.max(10, Math.min(90, 90 - ((value - chartMin) / (chartMax - chartMin)) * 80))
-    const path = points
-      .map((run, index) => {
-        if (run.value === null) return ''
-        const x = 3 + (index / Math.max(points.length - 1, 1)) * 94
-        return `${index && points[index - 1].value !== null ? 'L' : 'M'} ${x} ${position(run.value)}`
-      })
-      .join(' ')
-    return { points, values, min, max, position, path }
-  }, [runs, benchmark])
+    const positions = timePositions(points)
+    const stepped = !project.metrics.find((definition) => definition.key === metric)?.noisy
+    const path = historyPath(points, positions, position, stepped)
+    const unchangedCounts = unchangedRunCounts(points)
+    return { points, values, min, max, position, positions, path, unchangedCounts }
+  }, [runs, benchmark, metric])
   // Hide cards without a current measurement, while retaining gaps in visible histories.
   if (!values.length || (hideMissingLatest && points.at(-1)?.value == null)) return null
-  const first = values[0]
-  const latest = points.at(-1)?.value
   const active = points[hovered ?? points.length - 1]
   const activeIndex = hovered ?? points.length - 1
-  const activeX = 3 + (activeIndex / Math.max(points.length - 1, 1)) * 94
+  const activeX = positions[activeIndex]
   const activeY = active?.value != null ? position(active.value) : 0
-  const change = first && latest != null ? ((latest - first) / first) * 100 : null
+  const change = percentChange(values[0], active?.value ?? null)
+
+  const unchanged = unchangedCounts[activeIndex]
+  // The change a click opens: this run against the run before it.
+  const previous = points[activeIndex - 1]?.value ?? null
+  const delta = previous !== null && active?.value != null ? active.value - previous : 0
+  const deltaChange = percentChange(previous, active?.value ?? null)
+  const pointedRun = (event: MouseEvent<HTMLElement>) => {
+    const bounds = event.currentTarget.getBoundingClientRect()
+    return selectPoint(
+      points,
+      positions,
+      position,
+      {
+        x: ((event.clientX - bounds.left) / bounds.width) * 100,
+        y: ((event.clientY - bounds.top) / bounds.height) * 100,
+      },
+      { x: (pointerReach / bounds.width) * 100, y: (pointerReach / bounds.height) * 100 },
+    )
+  }
+  const compare = (index: number) => {
+    const base = points[index - 1]
+    const head = points[index]
+    if (!base || head.value === null) return
+    const url = new URL(window.location.href)
+    url.search = new URLSearchParams({
+      base: base.commit,
+      head: head.commit,
+      benchmark,
+      metric,
+    }).toString()
+    navigate(url)
+  }
 
   return (
-    <section className="graph-card">
+    <section className="graph-card" id={id}>
       <div className="graph-heading">
         <h2 title={benchmark}>{benchmark}</h2>
         {active && (
@@ -82,21 +146,60 @@ export function HistoryGraph({
             </div>
             <div
               className="history-plot"
+              role="slider"
+              tabIndex={0}
+              aria-label={`${benchmark}: ${title} history. Arrow keys select a run; Enter compares commits.`}
+              aria-valuemin={0}
+              aria-valuemax={points.length - 1}
+              aria-valuenow={activeIndex}
+              aria-valuetext={
+                active
+                  ? `${active.title ? `${active.title} · ` : ''}${new Date(active.timestamp).toLocaleString()} · ${short(active.commit)} · ${active.value === null ? 'No measurement' : formatValue(active.value, unit)}`
+                  : undefined
+              }
+              onFocus={() => setHovered(points.length - 1)}
+              onBlur={() => {
+                setHovered(null)
+                setTooltip(null)
+              }}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter') {
+                  compare(activeIndex)
+                  return
+                }
+                const index =
+                  event.key === 'ArrowLeft'
+                    ? activeIndex - 1
+                    : event.key === 'ArrowRight'
+                      ? activeIndex + 1
+                      : event.key === 'Home'
+                        ? 0
+                        : event.key === 'End'
+                          ? points.length - 1
+                          : null
+                if (index === null) return
+                event.preventDefault()
+                setHovered(Math.max(0, Math.min(points.length - 1, index)))
+              }}
+              onPointerDown={(event) => {
+                tap.current = { touch: event.pointerType !== 'mouse', selected: hovered }
+              }}
+              onClick={(event) => {
+                const index = pointedRun(event)
+                if (tap.current.touch && tap.current.selected !== index) {
+                  setHovered(index)
+                  setTooltip({ x: event.clientX, y: event.clientY })
+                  return
+                }
+                compare(index)
+              }}
               onPointerMove={(event) => {
-                const bounds = event.currentTarget.getBoundingClientRect()
-                const x = (event.clientX - bounds.left) / bounds.width
-                setHovered(
-                  Math.max(
-                    0,
-                    Math.min(
-                      points.length - 1,
-                      Math.round(((x - 0.03) / 0.94) * (points.length - 1)),
-                    ),
-                  ),
-                )
+                setHovered(pointedRun(event))
                 setTooltip({ x: event.clientX, y: event.clientY })
               }}
-              onPointerLeave={() => {
+              onPointerLeave={(event) => {
+                // Touch pointers leave after every tap; keep the inspected run until blur.
+                if (event.pointerType !== 'mouse') return
                 setHovered(null)
                 setTooltip(null)
               }}
@@ -130,49 +233,36 @@ export function HistoryGraph({
                   />
                 </>
               )}
-              {points.map((run, index) => {
-                if (run.value === null) return null
-                const x = 3 + (index / Math.max(points.length - 1, 1)) * 94
-                const y = position(run.value)
-                const label = `${benchmark}: ${formatValue(run.value, unit)} · ${short(run.commit)} · ${new Date(run.timestamp).toLocaleDateString()}`
-                return (
-                  <button
-                    key={run.commit}
-                    className={`history-point${index === (hovered ?? points.length - 1) ? ' active-point' : ''}`}
-                    style={{ left: `${x}%`, top: `${y}%` }}
-                    onPointerEnter={() => setHovered(index)}
-                    onPointerLeave={() => setHovered(null)}
-                    onFocus={() => setHovered(index)}
-                    onBlur={() => setHovered(null)}
-                    onClick={() => {
-                      const base = points[index - 1]
-                      if (!base) return
-                      const url = new URL(window.location.href)
-                      url.search = new URLSearchParams({
-                        base: base.commit,
-                        head: run.commit,
-                        benchmark,
-                        metric,
-                      }).toString()
-                      navigate(url)
-                    }}
-                    disabled={index === 0}
-                    aria-label={label}
-                    title={label}
-                  />
-                )
-              })}
+              {hovered !== null && active?.value != null && (
+                <span
+                  className="history-point"
+                  style={{ left: `${activeX}%`, top: `${activeY}%` }}
+                />
+              )}
             </div>
             {hovered !== null &&
               active &&
               tooltip &&
               createPortal(
                 <span
+                  ref={tooltipRef}
                   className="chart-tooltip chart-tooltip-floating"
                   style={{ left: tooltip.x, top: tooltip.y }}
                 >
+                  {active.title && <strong className="chart-tooltip-title">{active.title}</strong>}
                   {new Date(active.timestamp).toLocaleString()} · {short(active.commit)} ·{' '}
                   {active.value === null ? 'No measurement' : formatValue(active.value, unit)}
+                  {delta !== 0 && (
+                    <>
+                      {' · '}
+                      <span className={changeClass(deltaChange, false)}>
+                        {delta > 0 && '+'}
+                        {formatValue(delta, unit)}
+                        {deltaChange !== null && ` (${formatChange(deltaChange)})`}
+                      </span>
+                    </>
+                  )}
+                  {unchanged > 1 && ` · Unchanged across ${unchanged} runs`}
                 </span>,
                 document.body,
               )}

@@ -4,6 +4,7 @@ import { createApi } from '../src/server/api'
 import { clickHouseConfig } from '../src/server/clickhouse'
 import vercelDemo from '../src/server/vercel-demo'
 import { artifactMetadata } from '../src/server/artifacts'
+import { projects } from '../src/projects'
 
 const config = {
   database: 'solar_perf',
@@ -37,12 +38,12 @@ describe('website API', () => {
     expect(globalThis.fetch).toHaveBeenCalledOnce()
   })
 
-  it('resolves published prefixes with one bounded query without GitHub', async () => {
+  it.each(['aaaaaaa', 'a'.repeat(40)])('resolves published SHA %s without GitHub', async (ref) => {
     const commit = 'a'.repeat(40)
     globalThis.fetch = vi.fn(async () => Response.json({ commit }))
     const resolveRef = vi.fn(async () => commit)
     const app = createApi({ clickHouse: config, resolveRef })
-    expect(await (await app.request('/api/resolve?ref=aaaaaaa')).json()).toEqual({ commit })
+    expect(await (await app.request(`/api/resolve?ref=${ref}`)).json()).toEqual({ commit })
     expect(resolveRef).not.toHaveBeenCalled()
     expect(globalThis.fetch).toHaveBeenCalledOnce()
     expect(vi.mocked(globalThis.fetch).mock.calls[0][1]?.body).toContain('LIMIT 2')
@@ -51,15 +52,15 @@ describe('website API', () => {
   it('coalesces origin blob reads and retains empty contents without caching missing blobs', async () => {
     globalThis.fetch = vi.fn(async () => Response.json({ content: '' }))
     const app = createApi({ clickHouse: config })
-    const path = `/api/data/blobs/${'a'.repeat(64)}.json`
+    const path = `/api/data/blobs/${'a'.repeat(64)}`
     const responses = await Promise.all([app.request(path), app.request(path)])
-    expect(await responses[0].json()).toBe('')
-    expect(await responses[1].json()).toBe('')
+    expect(await responses[0].text()).toBe('')
+    expect(await responses[1].text()).toBe('')
     expect(globalThis.fetch).toHaveBeenCalledOnce()
     await app.request(path)
     expect(globalThis.fetch).toHaveBeenCalledOnce()
     globalThis.fetch = vi.fn(async () => new Response(''))
-    const absent = `/api/data/blobs/${'b'.repeat(64)}.json`
+    const absent = `/api/data/blobs/${'b'.repeat(64)}`
     expect((await app.request(absent)).status).toBe(404)
     expect((await app.request(absent)).status).toBe(404)
     expect(globalThis.fetch).toHaveBeenCalledTimes(2)
@@ -71,7 +72,10 @@ describe('website API', () => {
     const hash = 'd'.repeat(64)
     globalThis.fetch = vi.fn(async (_input, init) => {
       const sql = init?.body
-      expect(sql).toContain('arrayFilter(f -> f.test_id = {benchmark:String}, artifacts)')
+      expect(sql).toContain(
+        'arrayFilter(f -> f.test_id = {benchmark:String}, artifacts) AS scoped_artifacts',
+      )
+      expect(sql).toContain('arrayDistinct(artifacts.test_id) AS artifact_benchmarks')
       expect(sql).toContain(`revision = '${revision}'`)
       return new Response(
         commits
@@ -80,7 +84,8 @@ describe('website API', () => {
               commit,
               revision,
               measurements: [['counter', '', '', 'solar', 'ok']],
-              artifacts: [['counter', 'output.json', 'solar', 10, hash, '1.json']],
+              scoped_artifacts: [['counter', 'output.json', 'solar', 10, hash, '1.json']],
+              artifact_benchmarks: ['sum-array', 'counter'],
             }),
           )
           .join('\n'),
@@ -94,6 +99,7 @@ describe('website API', () => {
     const { runs } = await response.json()
     expect(runs).toHaveLength(2)
     expect(runs[0].artifacts.counter[0].contentHashes.solar).toBe(hash)
+    expect(runs[0].artifactBenchmarks).toEqual(['sum-array', 'counter'])
     expect(globalThis.fetch).toHaveBeenCalledOnce()
     expect((await app.request(`/api/data/viewer.json?commits=${commits.join(',')}`)).status).toBe(
       400,
@@ -122,13 +128,27 @@ describe('website API', () => {
   it('serves immutable blob contents without querying manifests', async () => {
     globalThis.fetch = vi.fn(async () => Response.json({ content: 'body' }))
     const response = await createApi({ clickHouse: config }).request(
-      `/api/data/blobs/${'a'.repeat(64)}.json`,
+      `/api/data/blobs/${'a'.repeat(64)}`,
     )
-    expect(await response.json()).toBe('body')
+    expect(await response.text()).toBe('body')
     expect(response.headers.get('cache-control')).toContain('immutable')
     expect(globalThis.fetch).toHaveBeenCalledOnce()
     expect(vi.mocked(globalThis.fetch).mock.calls[0][1]?.body).not.toContain('run_snapshots')
   })
+
+  it.each(['', '.txt', '.json'])(
+    'serves blob URLs with suffix "%s" as exact plain text with sniffing disabled',
+    async (suffix) => {
+      const raw = '<script>alert("test")</script>\r\nλ\\literal\n'
+      globalThis.fetch = vi.fn(async () => Response.json({ content: raw }))
+      const response = await createApi({ clickHouse: config }).request(
+        `/api/data/blobs/${'a'.repeat(64)}${suffix}`,
+      )
+      expect(response.headers.get('content-type')).toBe('text/plain; charset=UTF-8')
+      expect(response.headers.get('x-content-type-options')).toBe('nosniff')
+      expect(await response.text()).toBe(raw)
+    },
+  )
 
   it('loads both comparison runs and nullable measurements in one query', async () => {
     const commits = ['a'.repeat(40), 'b'.repeat(40)]
@@ -195,7 +215,8 @@ describe('website API', () => {
       `/api/data/runs.json?commits=${commits.join(',')}`,
     )
     expect(response.status).toBe(200)
-    expect(importRun).toHaveBeenCalledExactlyOnceWith(commits[1])
+    // The other compared commit may carry the missing side's baseline.
+    expect(importRun).toHaveBeenCalledExactlyOnceWith(commits[1], projects.solar, commits[0])
     const sql = vi.mocked(globalThis.fetch).mock.calls[1][1]?.body
     expect(sql).toContain(commits[1])
     expect(sql).not.toContain(commits[0])
@@ -222,11 +243,20 @@ describe('website API', () => {
     const response = await app.request('/api/resolve?ref=Release%2Fv1')
     expect(await response.json()).toEqual({ commit: 'a'.repeat(40) })
     expect(response.headers.get('cache-control')).toBe('no-store')
-    expect(resolveRef).toHaveBeenCalledWith('Release/v1')
+    expect(resolveRef).toHaveBeenCalledWith('Release/v1', projects.solar)
     expect((await app.request('/api/resolve?ref=')).status).toBe(400)
-    expect((await app.request(`/api/resolve?ref=${'b'.repeat(40)}`)).status).toBe(200)
     expect(resolveRef).toHaveBeenCalledOnce()
     expect(globalThis.fetch).not.toHaveBeenCalled()
+  })
+  it('resolves an unpublished full SHA through GitHub for stack merge aliases', async () => {
+    globalThis.fetch = vi.fn(async () => new Response(''))
+    const resolveRef = vi.fn(async () => 'a'.repeat(40))
+    const app = createApi({ clickHouse: config, resolveRef })
+    const ref = 'b'.repeat(40)
+    expect(await (await app.request(`/api/resolve?ref=${ref}`)).json()).toEqual({
+      commit: 'a'.repeat(40),
+    })
+    expect(resolveRef).toHaveBeenCalledWith(ref, projects.solar)
   })
   it('deduplicates and briefly caches mutable ref resolution without caching failures', async () => {
     const resolveRef = vi.fn(async () => 'a'.repeat(40))
@@ -281,7 +311,7 @@ describe('website API', () => {
     expect(values).toEqual({ small: [12, null] })
     expect(queries).toHaveLength(1)
     expect(queries[0]).toContain("branch = 'main'")
-    expect(queries[0]).toContain('LIMIT 60')
+    expect(queries[0]).toContain('LIMIT 1001')
     expect(queries[0]).toContain("compiler = 'solar'")
     expect(queries[0]).toContain('test_id = {benchmark:String}')
     expect(queries[0]).not.toMatch(/compile_time_seconds|peak_rss_bytes/)
@@ -293,6 +323,59 @@ describe('website API', () => {
     expect(response.headers.get('vercel-cdn-cache-control')).toContain('s-maxage=60')
     expect((await app.request('/api/data/history.json?metric=oops')).status).toBe(400)
     expect(queries).toHaveLength(1)
+  })
+
+  it('scopes project routes and reads metrics without snapshot columns', async () => {
+    const queries: string[] = []
+    globalThis.fetch = vi.fn(async (_url, options) => {
+      queries.push(String(options?.body))
+      return new Response(
+        JSON.stringify({
+          commit: 'a'.repeat(40),
+          timestamp: '2026-09-07T00:00:00Z',
+          test_id: 'weth',
+          value: 21851,
+        }),
+      )
+    })
+    const app = createApi({ clickHouse: config })
+    const response = await app.request('/api/evm2/data/history.json?metric=jit_size_bytes')
+    expect(response.status).toBe(200)
+    expect((await response.json()).values).toEqual({ weth: [21851] })
+    expect(queries[0]).toContain("project = 'evm2'")
+    expect(queries[0]).toContain("compiler = 'evm2'")
+    expect(queries[0]).toContain(
+      "mapContains(metric_values[concat(b.test_id, '/', b.compiler)], {metric:String})",
+    )
+    expect(
+      (vi.mocked(globalThis.fetch).mock.calls[0][0] as URL).searchParams.get('param_metric'),
+    ).toBe('jit_size_bytes')
+    // Each project accepts only its own metrics.
+    expect((await app.request('/api/evm2/data/history.json?metric=total_gas')).status).toBe(400)
+    expect((await app.request('/api/data/history.json?metric=jit_size_bytes')).status).toBe(400)
+    await app.request('/api/data/history.json?metric=total_gas')
+    expect(queries[1]).toContain("project = 'solar'")
+    expect(queries[1]).toContain("if(b.status = 'ok', b.total_gas, NULL)")
+  })
+
+  it('merges stored project metrics into run results', async () => {
+    const commit = 'e'.repeat(40)
+    globalThis.fetch = vi.fn(async () =>
+      Response.json({
+        commit,
+        measurements: [['weth', '', 'jit', 'evm2', 'ok', 0.2]],
+        metric_values: { 'weth/evm2': { jit_size_bytes: 21851 } },
+      }),
+    )
+    const response = await createApi({ clickHouse: config }).request(
+      `/api/evm2/data/runs/${commit}/run.json?artifacts=0`,
+    )
+    expect((await response.json()).results[0].compilers.evm2).toMatchObject({
+      status: 'ok',
+      compile_time_seconds: 0.2,
+      jit_size_bytes: 21851,
+    })
+    expect(vi.mocked(globalThis.fetch).mock.calls[0][1]?.body).toContain("project = 'evm2'")
   })
 
   it('serves per-benchmark demo history', async () => {
@@ -317,12 +400,10 @@ describe('website API', () => {
         [commits[0], 'solc'],
       ].map(async ([commit, compiler]) => {
         const response = vercelDemo(
-          new Request(
-            `https://web.test/api/data/runs/${commit}/demo%3A%3Afactorial/${compiler}/0.json`,
-          ),
+          new Request(`https://web.test/api/data/runs/${commit}/demo%3A%3Afactorial/${compiler}/0`),
         )
         expect(response.status).toBe(200)
-        return response.json()
+        return response.text()
       }),
     )
     expect(new Set(contents).size).toBe(3)
@@ -509,7 +590,7 @@ describe('website API', () => {
     )
 
     expect(response.status).toBe(200)
-    expect(importRun).toHaveBeenCalledWith(sha)
+    expect(importRun).toHaveBeenCalledWith(sha, projects.solar, undefined)
     await expect(response.json()).resolves.toMatchObject({ commit: sha, schemaVersion: 1 })
   })
 
@@ -571,11 +652,11 @@ describe('website API', () => {
     })
 
     const response = await createApi({ clickHouse: config }).request(
-      `http://web.test/api/data/runs/${sha}/factorial/solar/2.json`,
+      `http://web.test/api/data/runs/${sha}/factorial/solar/2`,
     )
 
     expect(response.status).toBe(200)
-    await expect(response.json()).resolves.toBe('fn factorial')
+    await expect(response.text()).resolves.toBe('fn factorial')
     expect(queries).toHaveLength(1)
     expect(response.headers.get('cache-control')).toBe(
       'public, max-age=3600, stale-while-revalidate=86400',
@@ -614,7 +695,7 @@ describe('website API', () => {
       `http://web.test/api/data/runs/${'a'.repeat(40)}/test/experimental/${storagePath}`,
     )
     expect(response.status).toBe(200)
-    expect(await response.json()).toBe('new output')
+    expect(await response.text()).toBe('new output')
     expect(queries).toHaveLength(1)
     expect(queries[0]).toContain('lower(hex(SHA256(f.path)))')
     expect(queries[0]).toContain("f.compiler = 'experimental'")

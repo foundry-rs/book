@@ -140,6 +140,10 @@ If a broadcast fails partway through, resume from where it left off:
 $ forge script script/Deploy.s.sol --broadcast --rpc-url $RPC_URL --resume
 ```
 
+:::warning[Recovery compatibility]
+Foundry 1.8.4 and later store authoritative resume state in a versioned `.recovery.json` file. A consistent `broadcast/` and `cache/` pair created by an earlier version is imported automatically. After starting or resuming a deployment with Foundry 1.8.4, continue it with the same version or a newer version that supports its recovery format; older versions do not understand the snapshot and must not resume it. Preserve both directories, including `.recovery.json`, until the deployment is complete.
+:::
+
 ### Multi-chain deployments
 
 Deploy to multiple chains by running the script with different RPC URLs:

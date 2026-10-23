@@ -1,5 +1,5 @@
 ---
-description: "Import a private key into an encrypted keystore"
+description: "Import a private key into an encrypted keystore Examples: - cast wallet import dev --interactive (prompt for the private key) - cast wallet import dev --private-key $PK - cast wallet import dev --mnemonic \"$MNEMONIC\" --mnemonic-index 1"
 ---
 
 _Generated from `cast wallet import --help`; see [CLI reference versions](/reference/versions). Regenerate this page instead of editing it directly._
@@ -7,6 +7,11 @@ _Generated from `cast wallet import --help`; see [CLI reference versions](/refer
 ## cast wallet import
 
 Import a private key into an encrypted keystore
+
+Examples:
+- cast wallet import dev --interactive (prompt for the private key)
+- cast wallet import dev --private-key $PK
+- cast wallet import dev --mnemonic "$MNEMONIC" --mnemonic-index 1
 
 :::terminal
 
@@ -31,6 +36,12 @@ Options:
           recommend using the default hidden password prompt
           
           [env: CAST_UNSAFE_PASSWORD=]
+
+      --touch-id
+          Enroll the keystore for Touch ID-assisted authentication on macOS.
+
+          The macOS login password and explicit keystore passwords remain
+          available.
 
   -h, --help
           Print help (see a summary with '-h')

@@ -10,7 +10,7 @@ export async function backfillSources(config: ClickHouseConfig, limit = 10) {
     config,
     `
     SELECT * FROM run_snapshots FINAL
-    WHERE source_schema > 0 AND arrayExists(m -> empty(source_links[m.test_id]), measurements)
+    WHERE project = 'solar' AND source_schema > 0 AND arrayExists(m -> empty(source_links[m.test_id]), measurements)
     ORDER BY workflow_run_id DESC, revision LIMIT ${limit}`,
   )
   const failed: string[] = []

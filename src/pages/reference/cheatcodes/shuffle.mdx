@@ -1,0 +1,44 @@
+---
+description: Randomly shuffles a uint256 array in Forge tests and scripts
+---
+
+## `shuffle`
+
+### Signature
+
+```solidity
+function shuffle(uint256[] calldata array) external returns (uint256[] memory);
+```
+
+### Description
+
+Returns a copy of `array` with its elements in random order. The input array is not modified.
+
+The RNG is seeded randomly on each run unless a seed is set via [`setSeed`](/reference/cheatcodes/set-seed) or the `[fuzz] seed` setting in `foundry.toml`, in which case the order is deterministic.
+
+### Parameters
+
+| Parameter | Type        | Description           |
+|-----------|-------------|-----------------------|
+| `array`   | `uint256[]` | The array to shuffle  |
+
+### Returns
+
+| Type        | Description                                      |
+|-------------|--------------------------------------------------|
+| `uint256[]` | A new array with the same elements in random order |
+
+### Examples
+
+```solidity [test/Shuffle.t.sol]
+// [!include ~/snippets/projects/array_utilities/test/Shuffle.t.sol]
+```
+
+```bash
+$ forge test --root src/snippets/projects/array_utilities --match-contract ShuffleTest
+```
+
+### Related Cheatcodes
+
+- [`sort`](/reference/cheatcodes/sort) - Sorts an array in ascending order
+- [`setSeed`](/reference/cheatcodes/set-seed) - Seed the RNG for deterministic results

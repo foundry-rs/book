@@ -196,6 +196,21 @@ The contracts to print gas reports for.
 
 If set to `true`, then block data from RPC endpoints in tests will not be cached. Otherwise, the data is cached to `$HOME/.foundry/cache/<chain id>/<block number>`.
 
+##### `fork_prefetch`
+
+- Type: boolean
+- Default: false
+- Environment: `FOUNDRY_FORK_PREFETCH`
+
+If set to `true`, a fork that starts on a block with an empty storage cache warms that cache in the background. Foundry takes the accounts and storage slots from the cache of the newest older block on the same chain and reads them again at the new block. This speeds up forks of `latest`, which start cold on each new head, for example in CI.
+
+Results do not change, because every value comes from the fork block. Keys that the tests do not read cost extra RPC requests. Prefetching needs storage caching, so it has no effect with `no_storage_caching` or for endpoints that `rpc_storage_caching` excludes. Use `--fork-prefetch` to turn it on for one run.
+
+```toml
+[profile.ci]
+fork_prefetch = true
+```
+
 ##### `[rpc_storage_caching]`
 
 The `[rpc_storage_caching]` block determines what RPC endpoints are cached.

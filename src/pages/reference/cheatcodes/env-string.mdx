@@ -70,7 +70,11 @@ Choose a delimiter that doesn't appear in the string values, so that they can be
 :::
 
 :::note
-You can put your environment variables in a `.env` file. Forge will automatically load them when running `forge test`.
+You can put your environment variables in a `.env` file. During normal `forge`, `cast`, and `anvil` startup — not just `forge test` — Foundry reads the `.env` file in the project root discovered from your current working directory and, if the directories differ, the one in your current working directory. The `--root` option does not redirect this loading.
+
+For ordinary text environment variables, values already set in your shell take precedence, followed by the project root's `.env`; the working directory's `.env` only supplies missing values. An existing empty value also takes precedence.
+
+Quote values containing spaces, for example `GREETING="hello world"`. If a line cannot be parsed, variables loaded before that line remain set, but the remaining variables in that file are not loaded. Foundry continues startup and normally prints a warning; `--quiet` suppresses it.
 :::
 
 ### Related Cheatcodes

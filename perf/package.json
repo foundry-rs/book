@@ -17,23 +17,25 @@
     "test": "vp test --run"
   },
   "dependencies": {
-    "@pierre/diffs": "1.4.1",
-    "@vercel/functions": "^3.9.5",
+    "@pierre/diffs": "1.6.1",
+    "@pierre/trees": "1.0.0-beta.6",
+    "@vercel/functions": "^3.9.11",
+    "@viz-js/viz": "3.31.0",
     "fflate": "0.8.3",
-    "hono": "^4.13.5",
-    "lucide-react": "^1.38.0",
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1"
+    "hono": "^4.13.13",
+    "lucide-react": "^1.55.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.3",
-    "@types/node": "^24.3.0",
-    "@types/react": "^19.1.12",
-    "@types/react-dom": "^19.1.9",
-    "@vitejs/plugin-react": "^6.1.1",
+    "@types/node": "^26.6.5",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.2",
     "diff": "^9.0.0",
     "tailwindcss": "^4.3.3",
-    "typescript": "~6.0.3",
+    "typescript": "~7.0.2",
     "vite": "catalog:",
     "vite-plus": "catalog:",
     "vitest": "catalog:"

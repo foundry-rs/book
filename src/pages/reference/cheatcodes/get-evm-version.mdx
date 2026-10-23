@@ -1,0 +1,37 @@
+---
+description: Gets the EVM version used to execute the current Forge test or script
+---
+
+## `getEvmVersion`
+
+### Signature
+
+```solidity
+function getEvmVersion() external pure returns (string memory evm);
+```
+
+### Description
+
+Returns the EVM version used to execute the current test or script, as a lowercase hardfork name (e.g. `"cancun"`, `"prague"`).
+
+This is the execution EVM version, which is not necessarily the one the contracts were compiled for. It follows `evm_version` in `foundry.toml` or `--evm-version`, and changes after [`setEvmVersion`](/reference/cheatcodes/set-evm-version).
+
+### Returns
+
+| Name  | Type     | Description                    |
+|-------|----------|--------------------------------|
+| `evm` | `string` | The execution EVM version name |
+
+### Examples
+
+```solidity [test/GetEvmVersion.t.sol]
+// [!include ~/snippets/projects/evm_version/test/GetEvmVersion.t.sol]
+```
+
+```bash
+$ forge test --root src/snippets/projects/evm_version --match-contract GetEvmVersionTest --evm-version cancun
+```
+
+### Related Cheatcodes
+
+- [`setEvmVersion`](/reference/cheatcodes/set-evm-version) - Sets the execution EVM version

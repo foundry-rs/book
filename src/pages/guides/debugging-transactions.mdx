@@ -16,6 +16,12 @@ $ cast run $TX_HASH --rpc-url https://ethereum.reth.rs/rpc
 
 This executes the transaction against the state at the block where it was mined, showing the full execution trace.
 
+Reproducing that state normally means replaying every earlier transaction in the block. If the node serves an EIP-7928 block access list for the block, `cast run` instead reads the transaction's prestate from the list and executes the transaction directly, which is much faster for transactions late in a busy block. Pass `--no-bal` to force a full replay:
+
+```bash
+$ cast run $TX_HASH --rpc-url https://ethereum.reth.rs/rpc --no-bal
+```
+
 ### Trace verbosity levels
 
 Control trace output with `-v` flags:

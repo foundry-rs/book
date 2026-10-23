@@ -60,6 +60,9 @@ Display options:
           - always: Force color output
           - never:  Force disable color output
 
+      --json-file <PATH>
+          Write test results as JSON to the specified file
+
       --junit
           Output test results as JUnit XML report
 
@@ -129,7 +132,7 @@ Test options:
           - speedscope: Speedscope format, opens in speedscope.app
 
       --no-open
-          Don't open the profile in the browser (for `--evm-profile`).
+          Don't open the generated profile, flamegraph, or flamechart.
           
           The profile is saved to disk without starting the local viewer server.
 
@@ -274,7 +277,7 @@ Test options:
           
           [env: FOUNDRY_FUZZ_MUTATION_WEIGHT_CMP=]
 
-      --fuzz-input-file <FUZZ_INPUT_FILE>
+      --fuzz-input-file <PATH>
           File to rerun fuzz failures from
 
       --invariant-depth <DEPTH>
@@ -323,6 +326,17 @@ Test options:
           Directory for invariant corpus persistence
           
           [env: FOUNDRY_INVARIANT_CORPUS_DIR=]
+
+      --invariant-frontier-dir <PATH>
+          Directory for invariant branch frontier artifacts
+
+          [env: FOUNDRY_INVARIANT_FRONTIER_DIR=]
+
+      --invariant-frontier-limit <COUNT>
+          Maximum number of invariant branch frontier records to write per
+          campaign
+
+          [env: FOUNDRY_INVARIANT_FRONTIER_LIMIT=]
 
       --invariant-payable-value-weight <PERCENT>
           Percent chance that fuzzed payable invariant calls carry non-zero
@@ -411,6 +425,12 @@ Test options:
           artifacts
           
           [env: FOUNDRY_SYMBOLIC_USE_FUZZ_FRONTIERS=]
+
+      --symbolic-check-invariant-frontiers
+          Check invariants from imported stateful fuzz frontier prefixes before
+          flipping comparisons. Also enables invariant frontier seeding
+
+          [env: FOUNDRY_SYMBOLIC_CHECK_INVARIANT_FRONTIERS=]
 
       --symbolic-frontier-limit <COUNT>
           Maximum number of fuzz branch frontiers to try for one symbolic test
@@ -519,11 +539,11 @@ Test options:
           
           [env: FOUNDRY_SYMBOLIC_DUMP_SMT=]
 
-      --symbolic-storage-layout <solidity|generic>
+      --symbolic-storage-layout <solidity|generic|zero_init>
           Symbolic storage modelling mode
           
           [env: FOUNDRY_SYMBOLIC_STORAGE_LAYOUT=]
-          [possible values: solidity, generic]
+          [possible values: solidity, generic, zero_init]
 
       --rerun
           Re-run recorded test failures from last run. If no failure recorded
@@ -536,6 +556,11 @@ Test options:
           Accepts a comma-separated list of opcode names, e.g. `--opcodes
           SLOAD,MLOAD,SSTORE`. Names are in uppercase. Requires `-vvvvv` to
           render.
+
+      --decode-external-storage
+          Decode the storage layouts of contracts outside the local project in
+          state diffs, by compiling the verified source a block explorer has for
+          them
 
   [PATH]
           The contract file you want to test, it's a shortcut for --match-path
@@ -567,8 +592,7 @@ Trace options:
           [alias: --label]
 
       --disable-external-identification
-          Disable external trace identification using Sourcify, Etherscan, or
-          OpenChain
+          Disable external trace identification using Sourcify or Etherscan
 
   -s, --suppress-successful-traces
           Suppress successful test traces and show only traces for failures
@@ -695,6 +719,14 @@ EVM options:
           
           See --rpc-url.
 
+      --fork-state-by-number
+          Fetch fork state by block number instead of hash.
+
+          Use for RPC endpoints that cannot serve state by block hash.
+          Number-based reads cannot guarantee a consistent snapshot if the
+          remote chain reorganizes and do not use the disk state cache.
+          Transaction replay still requires hash-addressed state.
+
       --fork-retries <RETRIES>
           Number of retries.
           
@@ -713,6 +745,12 @@ EVM options:
           This flag overrides the project's configuration file.
           
           See --rpc-url.
+
+      --no-fork-bal
+          Disable parent-block BAL cache prewarming for transaction-hash fork
+          cheatcodes.
+
+          Preceding transactions are still replayed when prewarming is enabled.
 
       --initial-balance <BALANCE>
           The initial balance of deployed test contracts
@@ -801,11 +839,16 @@ Executor environment config:
       --no-isolate
           Whether to disable isolation of calls
 
+      --hardfork <HARDFORK>
+          The runtime EVM hardfork to use.
+
+          Network-specific hardforks must be namespaced, for example `tempo:T5`.
+
 Networks:
   -n, --network <NETWORK>
           Enable a specific network family
           
-          [possible values: ethereum, tempo]
+          [possible values: ethereum, base, optimism, tempo, monad]
 
       --celo
           Enable Celo network features
@@ -855,10 +898,11 @@ Compiler options:
           Do not auto-detect the `solc` version
 
       --use <SOLC_VERSION>
-          Specify the solc version, or a path to a local solc, to build with.
+          Specify the solc version, path, or executable name on `PATH` to build
+          with.
           
-          Valid values are in the format `x.y.z`, `solc:x.y.z` or
-          `path/to/solc`.
+          Valid values are in the format `x.y.z`, `solc:x.y.z`, `path/to/solc`,
+          or `solc`.
 
       --offline
           Do not access the network.
@@ -969,7 +1013,9 @@ Project options:
           [alias: --hh]
 
       --config-path <FILE>
-          Path to the config file
+          Path to the config file.
+
+          The project root is the config file's parent directory.
 
 Watch options:
   -w, --watch [<PATH>...]

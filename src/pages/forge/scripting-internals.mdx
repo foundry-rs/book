@@ -119,6 +119,8 @@ When broadcasting, Forge resolves the required signers and fills transaction det
 
 Forge saves transaction sequences and receipts under the configured `broadcast` directory, normally grouped by script and chain ID. Dry-run sequences use a `dry-run` subdirectory. These files record the prepared calls and deployments, not just the source code that produced them.
 
+Starting with Foundry 1.8.4, the authoritative resume state is a private, versioned `.recovery.json` snapshot stored beside the sensitive sequence under the configured `cache` directory. The public `broadcast` file and sensitive sequence are compatibility exports, so preserve both directories and the recovery snapshot until the deployment is complete. Forge imports a consistent pair of generationless exports from an earlier version automatically. Recovery snapshots are not backward compatible: after Foundry 1.8.4 writes one, an older Forge version must not resume that deployment.
+
 `--resume` loads a saved sequence, checks pending transactions, and continues publishing the remaining transactions. It skips the ordinary transaction-simulation stage. If signing keys are only available through script execution, Forge may execute the script again to collect those keys; the saved transaction sequence remains authoritative.
 
 Editing the script and passing `--resume` does not regenerate its saved transaction arguments or recreate the original `--broadcast` execution state. To produce a new transaction plan, run the script again without `--resume`. To continue a multi-chain saved sequence, use `--multi` with `--resume`.

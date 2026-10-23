@@ -1,0 +1,47 @@
+---
+description: Sets the EVM version used to execute the current Forge test or script
+---
+
+## `setEvmVersion`
+
+### Signature
+
+```solidity
+function setEvmVersion(string calldata evm) external;
+```
+
+### Description
+
+Sets the execution EVM version for subsequent calls and contract creations in the current test or script, e.g. `"berlin"` or `"cancun"`. Hardfork-dependent cheatcodes use the new version on their next call.
+
+The currently executing call frame keeps its original opcode rules. To test an opcode under the new version, make an external call after changing the version.
+
+This changes only the execution EVM version. The contracts are not recompiled, so the compilation EVM version stays the one set by `evm_version` in `foundry.toml` or `--evm-version`.
+
+### Parameters
+
+| Parameter | Type     | Description                                     |
+|-----------|----------|-------------------------------------------------|
+| `evm`     | `string` | The EVM version name, in lowercase (e.g. `"cancun"`) |
+
+### Examples
+
+```solidity [test/SetEvmVersion.t.sol]
+// [!include ~/snippets/projects/evm_version/test/SetEvmVersion.t.sol]
+```
+
+```bash
+$ forge test --root src/snippets/projects/evm_version --match-contract SetEvmVersionTest --evm-version cancun
+```
+
+### Gotchas
+
+Use lowercase Ethereum hardfork names for compatibility across Foundry versions. Some releases reject `"Cancun"`, while newer nightly releases accept it. An unsupported name reverts with `invalid evm version <name>`.
+
+:::warning
+Switching to an older hardfork can make compiled bytecode fail with `NotActivated` if it uses opcodes introduced by a later hardfork. Compile contracts for the oldest hardfork you intend to execute them under.
+:::
+
+### Related Cheatcodes
+
+- [`getEvmVersion`](/reference/cheatcodes/get-evm-version) - Gets the execution EVM version

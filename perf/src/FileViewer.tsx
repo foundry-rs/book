@@ -1,10 +1,18 @@
+import { DiffSkeleton, FilesSkeleton, narrowQuery, TreeSkeleton } from './Skeleton'
+import { FileTree as PierreFileTree, useFileTree } from '@pierre/trees/react'
 import { lazy, Suspense, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
-import { ChevronRight, File, Folder, PanelLeftClose, PanelLeftOpen } from 'lucide-react'
-import { artifactTree, mergeArtifactFiles, type ArtifactNode } from './artifactTree'
+import { PanelLeftClose, PanelLeftOpen } from 'lucide-react'
+import { artifactIcons } from './artifactIcons'
+import { ArtifactActions } from './ArtifactActions'
+import { Combobox } from './Combobox'
+import { mergeArtifactFiles } from './artifactTree'
 import { loadArtifact, loadViewerRuns } from './data'
 import { useImportProgress } from './importProgress'
 import { artifactSides, initialArtifactSides } from './artifactSides'
+import { imageType } from './imageArtifacts'
+import type { ImageMode } from './ImageDiff'
 import { replaceUrl } from './navigation'
+import { project } from './project'
 import type { RunDocument, Theme } from './types'
 
 const loadRenderer = () => import('./ArtifactDiff')
@@ -17,57 +25,68 @@ interface Props {
   theme: Theme
 }
 
-function FileTree({
-  nodes,
+function parentPaths(path: string) {
+  const parts = path.split('/')
+  return parts.slice(0, -1).map((_, index) => parts.slice(0, index + 1).join('/'))
+}
+
+function ArtifactFileTree({
+  paths,
   selected,
   onSelect,
-  expanded,
-  onToggle,
 }: {
-  nodes: ArtifactNode[]
+  paths: string[]
   selected: string
   onSelect: (path: string) => void
-  expanded: Set<string>
-  onToggle: (path: string, open: boolean) => void
 }) {
+  const onSelectRef = useRef(onSelect)
+  const selectedRef = useRef(selected)
+  const pathsRef = useRef(paths)
+  onSelectRef.current = onSelect
+  selectedRef.current = selected
+  pathsRef.current = paths
+
+  const { model } = useFileTree({
+    paths,
+    flattenEmptyDirectories: true,
+    initialExpansion: 'closed',
+    initialExpandedPaths: parentPaths(selected),
+    initialSelectedPaths: selected ? [selected] : [],
+    icons: artifactIcons,
+    density: 'compact',
+    search: true,
+    onSelectionChange: (selection) => {
+      const path = selection.find((item) => pathsRef.current.includes(item))
+      if (path && path !== selectedRef.current) onSelectRef.current(path)
+    },
+  })
+
+  useEffect(() => {
+    const expandedPaths = [...new Set(paths.flatMap(parentPaths))].filter((path) => {
+      const item = model.getItem(path)
+      return !!item && 'isExpanded' in item && item.isExpanded()
+    })
+    model.resetPaths(paths, { initialExpandedPaths: expandedPaths })
+  }, [model, paths])
+
+  useEffect(() => {
+    if (!selected || !model.getItem(selected)) return
+    for (const path of parentPaths(selected)) {
+      const item = model.getItem(path)
+      if (item && 'expand' in item) item.expand()
+    }
+    if (!model.getSelectedPaths().includes(selected)) model.getItem(selected)?.select()
+    model.scrollToPath(selected, { focus: false })
+  }, [model, selected, paths])
+
   return (
     <>
-      {nodes.map((node) => (
-        <div key={node.path}>
-          {node.file && (
-            <button
-              className={`artifact-file${selected === node.path ? ' active' : ''}`}
-              title={node.path}
-              aria-current={selected === node.path ? 'page' : undefined}
-              onClick={() => onSelect(node.path)}
-            >
-              <File size={15} aria-hidden="true" />
-              <span>{node.name}</span>
-            </button>
-          )}
-          {!!node.children.length && (
-            <details
-              open={expanded.has(node.path)}
-              onToggle={(event) => onToggle(node.path, event.currentTarget.open)}
-            >
-              <summary title={`${node.path}/`}>
-                <ChevronRight className="directory-chevron" size={14} aria-hidden="true" />
-                <Folder size={15} aria-hidden="true" />
-                <span>{node.name}/</span>
-              </summary>
-              <div className="artifact-directory">
-                <FileTree
-                  nodes={node.children}
-                  selected={selected}
-                  onSelect={onSelect}
-                  expanded={expanded}
-                  onToggle={onToggle}
-                />
-              </div>
-            </details>
-          )}
-        </div>
-      ))}
+      <div className="artifact-tree-toolbar">
+        <span>
+          Files <small>{paths.length}</small>
+        </span>
+      </div>
+      <PierreFileTree model={model} className="artifact-tree" aria-label="Artifact files" />
     </>
   )
 }
@@ -83,9 +102,12 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
   const [activeBenchmark, setActiveBenchmark] = useState(benchmark)
   const [sides, setSides] = useState(() => initialArtifactSides(params))
   const [selected, setSelected] = useState(params.get('file') || '')
-  const [diffStyle, setDiffStyle] = useState<'split' | 'unified'>('split')
-  const [sidebarOpen, setSidebarOpen] = useState(true)
-  const [expanded, setExpanded] = useState<Set<string>>(() => new Set())
+  // Narrow screens open on a unified diff, as on DiffsHub; the file tree becomes a bottom sheet.
+  const [narrow] = useState(() => matchMedia(narrowQuery).matches)
+  const [diffStyle, setDiffStyle] = useState<'split' | 'unified'>(narrow ? 'unified' : 'split')
+  const [renderedView, setRenderedView] = useState(true)
+  const [imageMode, setImageMode] = useState<ImageMode>('2-up')
+  const [sidebarOpen, setSidebarOpen] = useState(!narrow)
   const [sidebarWidth, setSidebarWidth] = useState(270)
   const drag = useRef<{ x: number; width: number } | null>(null)
   const resizeSidebar = (width: number) => setSidebarWidth(Math.max(200, Math.min(480, width)))
@@ -127,29 +149,42 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
     setActiveBenchmark(benchmark)
   }, [benchmark])
 
+  // Benchmarks without published files in either run would open an empty viewer. Responses
+  // cached before the server listed them fall back to every measured benchmark.
   const benchmarks = useMemo(
     () =>
       runs
         ? [
-            ...new Set([
-              ...runs[0].results.map((result) => result.test_id),
-              ...runs[1].results.map((result) => result.test_id),
-              activeBenchmark,
-            ]),
-          ].sort()
+            ...new Set(
+              runs.flatMap(
+                (run) => run.artifactBenchmarks ?? run.results.map((result) => result.test_id),
+              ),
+            ),
+          ]
+            .sort()
+            .map((name) => ({ value: name }))
         : [],
-    [runs, activeBenchmark],
+    [runs],
   )
   const choices = useMemo(
     () => (runs ? artifactSides(runs, activeBenchmark) : []),
     [runs, activeBenchmark],
   )
+  const sideOptions = useMemo(
+    () =>
+      choices.map((choice) => ({
+        value: choice.id,
+        label: choice.label,
+        group: choice.side === 'base' ? 'Base' : 'Head',
+      })),
+    [choices],
+  )
   const left =
     choices.find((choice) => choice.id === sides.left) ||
-    choices.find((choice) => choice.id === 'base:solar')
+    choices.find((choice) => choice.id === `base:${project.compiler}`)
   const right =
     choices.find((choice) => choice.id === sides.right) ||
-    choices.find((choice) => choice.id === 'head:solar')
+    choices.find((choice) => choice.id === `head:${project.compiler}`)
   const visibleFiles = useMemo(
     () =>
       left && right
@@ -164,27 +199,13 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
         : [],
     [left, right, activeBenchmark],
   )
+  const visiblePaths = useMemo(() => visibleFiles.map((file) => file.path), [visibleFiles])
   const selectedFile = visibleFiles.find((file) => file.path === selected) || visibleFiles[0]
-
-  useEffect(() => {
-    if (!selectedFile) return
-    const parts = selectedFile.path.split('/')
-    setExpanded((previous) => {
-      const next = new Set(previous)
-      for (let i = 1; i < parts.length; i++) next.add(parts.slice(0, i).join('/'))
-      return next
-    })
-  }, [selectedFile?.path])
-
-  const toggleDirectory = (path: string, open: boolean) => {
-    setExpanded((previous) => {
-      if (previous.has(path) === open) return previous
-      const next = new Set(previous)
-      if (open) next.add(path)
-      else next.delete(path)
-      return next
-    })
-  }
+  const isSvg = !!selectedFile?.path.endsWith('.svg')
+  const renderable = isSvg || !!selectedFile?.path.endsWith('.dot')
+  // Raster images are stored base64-encoded, so their source is not worth showing.
+  const isImage = !!selectedFile && !!imageType(selectedFile.path)
+  const rendered = isImage || (renderable && renderedView)
 
   // Start bodies as soon as the descriptor arrives, even while the renderer chunk loads.
   useEffect(() => {
@@ -209,12 +230,12 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
     const url = new URL(window.location.href)
     url.searchParams.set(key, value)
     url.hash = ''
-    if (key === 'benchmark') url.searchParams.delete('file')
     replaceUrl(url)
   }
   const selectFile = (path: string) => {
     setSelected(path)
     updateUrl('file', path)
+    if (matchMedia(narrowQuery).matches) setSidebarOpen(false)
   }
 
   return (
@@ -231,56 +252,85 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
         >
           {sidebarOpen ? <PanelLeftClose size={18} /> : <PanelLeftOpen size={18} />}
         </button>
+        {runs?.[1].title && (
+          <span className="viewer-run" title={runs[1].title}>
+            {runs[1].title}
+          </span>
+        )}
         <span className="viewer-filename" title={selectedFile?.path}>
           {selectedFile?.path || 'Artifacts'}
         </span>
-        <div className="diff-tools" aria-label="Diff layout">
-          {(['split', 'unified'] as const).map((style) => (
-            <button
-              key={style}
-              className={diffStyle === style ? 'active' : ''}
-              aria-pressed={diffStyle === style}
-              onClick={() => setDiffStyle(style)}
-            >
-              {style === 'split' ? 'Split' : 'Unified'}
-            </button>
-          ))}
-        </div>
+        {renderable && (
+          <div className="diff-tools" aria-label="File view">
+            {[true, false].map((rendered) => (
+              <button
+                key={String(rendered)}
+                className={renderedView === rendered ? 'active' : ''}
+                aria-pressed={renderedView === rendered}
+                onClick={() => setRenderedView(rendered)}
+              >
+                {rendered ? (isSvg ? 'Image' : 'Graph') : 'Source'}
+              </button>
+            ))}
+          </div>
+        )}
+        {rendered ? (
+          <div className="diff-tools" aria-label="Image comparison">
+            {(['2-up', 'swipe', 'onion-skin'] as const).map((mode) => (
+              <button
+                key={mode}
+                className={imageMode === mode ? 'active' : ''}
+                aria-pressed={imageMode === mode}
+                onClick={() => setImageMode(mode)}
+              >
+                {mode === '2-up' ? '2-up' : mode === 'swipe' ? 'Swipe' : 'Onion skin'}
+              </button>
+            ))}
+          </div>
+        ) : (
+          <div className="diff-tools" aria-label="Diff layout">
+            {(['split', 'unified'] as const).map((style) => (
+              <button
+                key={style}
+                className={diffStyle === style ? 'active' : ''}
+                aria-pressed={diffStyle === style}
+                onClick={() => setDiffStyle(style)}
+              >
+                {style === 'split' ? 'Split' : 'Unified'}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
       {loadError ? (
         <p className="error">{loadError}</p>
       ) : !runs ? (
-        <p className="empty" role="status">
-          {importProgress || 'Loading files…'}
-        </p>
+        <FilesSkeleton sidebarOpen={sidebarOpen} progress={importProgress} />
       ) : (
         <div className={`file-viewer-body${sidebarOpen ? '' : ' sidebar-collapsed'}`}>
           <aside id="artifact-sidebar" hidden={!sidebarOpen}>
             <div className="file-selector-head">
-              <select
-                aria-label="Benchmark"
+              <Combobox
+                label="Benchmark"
+                className="compact"
                 value={activeBenchmark}
-                onChange={(event) => {
-                  setActiveBenchmark(event.target.value)
-                  setSelected('')
-                  updateUrl('benchmark', event.target.value)
+                options={benchmarks}
+                onChange={(name) => {
+                  setActiveBenchmark(name)
+                  updateUrl('benchmark', name)
                 }}
-              >
-                {benchmarks.map((name) => (
-                  <option key={name} value={name}>
-                    {name}
-                  </option>
-                ))}
-              </select>
+              />
               {(['left', 'right'] as const).map((side) => (
                 <label key={side}>
                   {side === 'left' ? 'Left' : 'Right'}
-                  <select
-                    aria-label={side === 'left' ? 'Left' : 'Right'}
+                  <Combobox
+                    label={side === 'left' ? 'Left' : 'Right'}
+                    className="compact"
                     disabled={loading}
-                    value={(side === 'left' ? left : right)?.id}
-                    onChange={(event) => {
-                      const next = { left: left!.id, right: right!.id, [side]: event.target.value }
+                    value={(side === 'left' ? left : right)?.id ?? ''}
+                    options={sideOptions}
+                    onChange={(id) => {
+                      const next = { left: left!.id, right: right!.id, [side]: id }
                       setSides(next)
                       const url = new URL(window.location.href)
                       url.searchParams.set('left', next.left)
@@ -290,36 +340,27 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
                       url.hash = ''
                       replaceUrl(url)
                     }}
-                  >
-                    {(['base', 'head'] as const).map((runSide) => (
-                      <optgroup key={runSide} label={runSide === 'base' ? 'Base' : 'Head'}>
-                        {choices
-                          .filter((choice) => choice.side === runSide)
-                          .map((choice) => (
-                            <option key={choice.id} value={choice.id}>
-                              {choice.label}
-                            </option>
-                          ))}
-                      </optgroup>
-                    ))}
-                  </select>
+                  />
                 </label>
               ))}
             </div>
             {loading ? (
-              <p className="empty" role="status">
-                Loading files…
-              </p>
+              <TreeSkeleton />
             ) : (
-              <FileTree
-                nodes={artifactTree(visibleFiles)}
+              <ArtifactFileTree
+                paths={visiblePaths}
                 selected={selectedFile?.path || ''}
                 onSelect={selectFile}
-                expanded={expanded}
-                onToggle={toggleDirectory}
               />
             )}
           </aside>
+          {sidebarOpen && (
+            <button
+              className="sidebar-backdrop"
+              aria-label="Close file tree"
+              onClick={() => setSidebarOpen(false)}
+            />
+          )}
           {sidebarOpen && (
             <div
               className="sidebar-resizer"
@@ -362,12 +403,32 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
           )}
           <div className="file-diff">
             {loading ? (
-              <p className="empty" role="status">
-                Loading files…
-              </p>
+              <DiffSkeleton label="Loading diff" />
             ) : selectedFile && left && right ? (
               <>
-                <Suspense fallback={<p className="empty">Loading renderer…</p>}>
+                <div className="artifact-actions-toolbar">
+                  {[left, right].map((side, index) => {
+                    const file = side.run.artifacts[activeBenchmark]?.find(
+                      (file) =>
+                        file.path === selectedFile.path && file.compilers.includes(side.compiler),
+                    )
+                    return (
+                      <ArtifactActions
+                        key={`${index}:${side.id}:${selectedFile.path}`}
+                        path={selectedFile.path}
+                        source={{
+                          label: side.label,
+                          commit: side.run.commit,
+                          benchmark: activeBenchmark,
+                          compiler: side.compiler,
+                          storagePath: file?.storagePath,
+                          contentHash: file?.contentHashes?.[side.compiler],
+                        }}
+                      />
+                    )
+                  })}
+                </div>
+                <Suspense fallback={<DiffSkeleton label="Loading renderer" />}>
                   <ArtifactDiff
                     before={{
                       label: left.label,
@@ -400,6 +461,8 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
                     language={selectedFile.language}
                     theme={theme}
                     style={diffStyle}
+                    rendered={rendered}
+                    imageMode={imageMode}
                   />
                 </Suspense>
               </>
