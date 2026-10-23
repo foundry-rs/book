@@ -22,6 +22,41 @@ export function nearestPoint(positions: number[], x: number) {
   return low > 0 && x - positions[low - 1] < positions[low] - x ? low - 1 : low
 }
 
+// Runs minutes apart share a pixel, so a vertical step may join several runs. Prefer runs
+// whose step passes near the pointer, then the largest change, then the nearest run.
+export function selectPoint(
+  points: HistoryPoint[],
+  positions: number[],
+  y: (value: number) => number,
+  pointer: { x: number; y: number },
+  reach: { x: number; y: number },
+) {
+  const score = (index: number) => {
+    const value = points[index].value
+    if (value === null) return [0, 0]
+    const previous = points[index - 1]?.value ?? value
+    const top = Math.min(y(previous), y(value)) - reach.y
+    const bottom = Math.max(y(previous), y(value)) + reach.y
+    return [pointer.y >= top && pointer.y <= bottom ? 1 : 0, Math.abs(value - previous)]
+  }
+  let selected = nearestPoint(positions, pointer.x)
+  let best = score(selected)
+  let start = selected
+  while (start > 0 && positions[start - 1] >= pointer.x - reach.x) start--
+  for (
+    let index = start;
+    index < points.length && positions[index] <= pointer.x + reach.x;
+    index++
+  ) {
+    const candidate = score(index)
+    if (candidate[0] > best[0] || (candidate[0] === best[0] && candidate[1] > best[1])) {
+      selected = index
+      best = candidate
+    }
+  }
+  return selected
+}
+
 // Keep each time bucket's endpoints and extrema; never bridge missing measurements.
 export function plotIndices(
   points: HistoryPoint[],

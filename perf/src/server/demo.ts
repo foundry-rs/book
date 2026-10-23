@@ -223,7 +223,7 @@ export function demoResponse(input: string) {
                 Date.parse(run.timestamp) < Date.parse(before) ||
                 (Date.parse(run.timestamp) === Date.parse(before) && run.commit < beforeCommit)),
           )
-          .flatMap(({ commit, timestamp, results }) => {
+          .flatMap(({ commit, timestamp, title, results }) => {
             const selected = results.filter(
               (result) => benchmark === null || result.test_id === benchmark,
             )
@@ -231,10 +231,11 @@ export function demoResponse(input: string) {
               ? selected.map((result) => ({
                   commit,
                   timestamp,
+                  title,
                   test_id: result.test_id,
                   value: benchmarkMetric(result, metric),
                 }))
-              : [{ commit, timestamp, test_id: '', value: null }]
+              : [{ commit, timestamp, title, test_id: '', value: null }]
           }),
       ),
     )

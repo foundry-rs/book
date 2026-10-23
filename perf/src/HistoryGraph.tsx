@@ -1,4 +1,12 @@
-import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import {
+  useEffect,
+  useId,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+  type MouseEvent,
+} from 'react'
 import { createPortal } from 'react-dom'
 import { changeClass, formatChange } from './change'
 import { percentChange } from './comparison'
@@ -6,9 +14,11 @@ import { formatValue } from './formatValue'
 import type { HistorySeries } from './types'
 import { navigate } from './navigation'
 import { project } from './project'
-import { historyPath, nearestPoint, timePositions, unchangedRunCounts } from './historyPlot'
+import { historyPath, selectPoint, timePositions, unchangedRunCounts } from './historyPlot'
 
 const short = (commit: string) => commit.slice(0, 8)
+// Pixels around the pointer searched for the run that changed the measurement.
+const pointerReach = 6
 
 export function HistoryGraph({
   runs,
@@ -81,6 +91,23 @@ export function HistoryGraph({
   const change = percentChange(values[0], active?.value ?? null)
 
   const unchanged = unchangedCounts[activeIndex]
+  // The change a click opens: this run against the run before it.
+  const previous = points[activeIndex - 1]?.value ?? null
+  const delta = previous !== null && active?.value != null ? active.value - previous : 0
+  const deltaChange = percentChange(previous, active?.value ?? null)
+  const pointedRun = (event: MouseEvent<HTMLElement>) => {
+    const bounds = event.currentTarget.getBoundingClientRect()
+    return selectPoint(
+      points,
+      positions,
+      position,
+      {
+        x: ((event.clientX - bounds.left) / bounds.width) * 100,
+        y: ((event.clientY - bounds.top) / bounds.height) * 100,
+      },
+      { x: (pointerReach / bounds.width) * 100, y: (pointerReach / bounds.height) * 100 },
+    )
+  }
   const compare = (index: number) => {
     const base = points[index - 1]
     const head = points[index]
@@ -127,7 +154,7 @@ export function HistoryGraph({
               aria-valuenow={activeIndex}
               aria-valuetext={
                 active
-                  ? `${new Date(active.timestamp).toLocaleString()} · ${short(active.commit)} · ${active.value === null ? 'No measurement' : formatValue(active.value, unit)}`
+                  ? `${active.title ? `${active.title} · ` : ''}${new Date(active.timestamp).toLocaleString()} · ${short(active.commit)} · ${active.value === null ? 'No measurement' : formatValue(active.value, unit)}`
                   : undefined
               }
               onFocus={() => setHovered(points.length - 1)}
@@ -158,11 +185,7 @@ export function HistoryGraph({
                 tap.current = { touch: event.pointerType !== 'mouse', selected: hovered }
               }}
               onClick={(event) => {
-                const bounds = event.currentTarget.getBoundingClientRect()
-                const index = nearestPoint(
-                  positions,
-                  ((event.clientX - bounds.left) / bounds.width) * 100,
-                )
+                const index = pointedRun(event)
                 if (tap.current.touch && tap.current.selected !== index) {
                   setHovered(index)
                   setTooltip({ x: event.clientX, y: event.clientY })
@@ -171,9 +194,7 @@ export function HistoryGraph({
                 compare(index)
               }}
               onPointerMove={(event) => {
-                const bounds = event.currentTarget.getBoundingClientRect()
-                const x = (event.clientX - bounds.left) / bounds.width
-                setHovered(nearestPoint(positions, x * 100))
+                setHovered(pointedRun(event))
                 setTooltip({ x: event.clientX, y: event.clientY })
               }}
               onPointerLeave={(event) => {
@@ -228,8 +249,19 @@ export function HistoryGraph({
                   className="chart-tooltip chart-tooltip-floating"
                   style={{ left: tooltip.x, top: tooltip.y }}
                 >
+                  {active.title && <strong className="chart-tooltip-title">{active.title}</strong>}
                   {new Date(active.timestamp).toLocaleString()} · {short(active.commit)} ·{' '}
                   {active.value === null ? 'No measurement' : formatValue(active.value, unit)}
+                  {delta !== 0 && (
+                    <>
+                      {' · '}
+                      <span className={changeClass(deltaChange, false)}>
+                        {delta > 0 && '+'}
+                        {formatValue(delta, unit)}
+                        {deltaChange !== null && ` (${formatChange(deltaChange)})`}
+                      </span>
+                    </>
+                  )}
                   {unchanged > 1 && ` · Unchanged across ${unchanged} runs`}
                 </span>,
                 document.body,

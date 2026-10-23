@@ -846,6 +846,19 @@ header.file-header {
     12px ui-monospace,
     monospace;
 }
+.viewer-run {
+  max-width: 40%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13px;
+  font-weight: 560;
+}
+.viewer-run + .viewer-filename::before {
+  content: '/';
+  margin-right: 12px;
+  color: var(--muted);
+}
 .viewer-toolbar .diff-tools {
   margin: 0 0 0 auto;
   flex-shrink: 0;
@@ -1008,6 +1021,56 @@ header.file-header {
     Consolas,
     monospace;
 }
+.diff-search-anchor {
+  position: sticky;
+  top: calc(var(--viewer-toolbar-height) + 8px);
+  z-index: 6;
+  height: 0;
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 16px;
+  pointer-events: none;
+}
+.diff-search-anchor.below-sides {
+  top: calc(var(--viewer-toolbar-height) + 42px);
+}
+.diff-search {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: fit-content;
+  padding: 4px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface);
+  box-shadow: 0 4px 16px rgb(0 0 0 / 0.25);
+  pointer-events: auto;
+}
+.diff-search input {
+  width: 200px;
+  height: 28px;
+  font-size: 12px;
+}
+.diff-search button {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border-color: transparent;
+  background: transparent;
+  color: var(--muted);
+}
+.diff-search button:hover:not(:disabled) {
+  color: var(--text);
+}
+.diff-search-count {
+  min-width: 56px;
+  color: var(--muted);
+  font-size: 12px;
+  text-align: center;
+  white-space: nowrap;
+}
 .diff-sides span {
   padding: 10px 14px;
 }
@@ -1129,6 +1192,12 @@ header.file-header {
   .run-meta {
     line-height: 1.65;
   }
+  .viewer-run {
+    display: none;
+  }
+  .viewer-run + .viewer-filename::before {
+    content: none;
+  }
   .diff-sides,
   .image-diff.two-up {
     grid-template-columns: 1fr;
@@ -1218,6 +1287,15 @@ header.file-header {
   pointer-events: none;
   transform: translate(10px, -120%);
   white-space: nowrap;
+}
+.chart-tooltip-title {
+  display: block;
+  margin-bottom: 3px;
+  font:
+    600 12px Inter,
+    ui-sans-serif,
+    system-ui,
+    sans-serif;
 }
 .chart-tooltip-floating {
   position: fixed;
