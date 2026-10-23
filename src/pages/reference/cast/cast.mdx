@@ -24,11 +24,11 @@ Usage: cast [OPTIONS] <COMMAND>
 
 Commands:
   4byte                  Get the function signatures for the given selector from
-                         [https://openchain.xyz](https://openchain.xyz) [aliases: 4, 4b]
+                         [https://4byte.sourcify.dev](https://4byte.sourcify.dev) [aliases: 4, 4b]
   4byte-calldata         Decode ABI-encoded calldata using
-                         [https://openchain.xyz](https://openchain.xyz) [aliases: 4c, 4bc]
+                         [https://4byte.sourcify.dev](https://4byte.sourcify.dev) [aliases: 4c, 4bc]
   4byte-event            Get the event signature for a given topic 0 from
-                         [https://openchain.xyz](https://openchain.xyz) [aliases: 4e, 4be,
+                         [https://4byte.sourcify.dev](https://4byte.sourcify.dev) [aliases: 4e, 4be,
                          topic0-event, t0e]
   abi-encode             ABI encode the given function argument, excluding the
                          selector [alias: ae]
@@ -75,6 +75,8 @@ Commands:
                          [alias: c2]
   creation-code          Download a contract creation code from Etherscan and
                          RPC [alias: cc]
+  da-estimate            Estimates the data availability size of a given opstack
+                         block
   decode-abi             Decode ABI-encoded input or output data [aliases:
                          abi-decode, --abi-decode, ad]
   decode-calldata        Decode ABI-encoded input data [aliases:
@@ -92,6 +94,8 @@ Commands:
   erc20-token            ERC20 token operations [alias: erc20]
   erc4626                ERC-4626 tokenized vault operations [alias: vault]
   estimate               Estimate the gas cost of a transaction [alias: e]
+  events                 Fetch and decode events from a transaction receipt or
+                         log filter. [alias: ev]
   find-block             Get the block number closest to the provided timestamp
                          [alias: f]
   format-bytes32-string  Formats a string into bytes32 encoding [alias:
@@ -157,6 +161,7 @@ Commands:
   rpc                    Perform a raw JSON-RPC request [alias: rp]
   run                    Runs a published transaction in a local environment and
                          prints the trace [alias: r]
+  safe                   Create, propose, and sign Safe transactions
   selectors              Extracts function selectors and arguments from bytecode
                          [alias: sel]
   send                   Sign and publish a transaction [alias: s]
@@ -170,7 +175,7 @@ Commands:
                          st]
   storage-credits        T7 storage credits operations (Tempo) [alias: sc]
   storage-root           Get the storage root for an account [alias: sr]
-  tempo                  Tempo wallet integration (login, etc.)
+  tempo                  Tempo wallet and zone operations
   tip20-token            TIP-20 token operations (Tempo) [alias: tip20]
   tip403                 TIP-403 policy registry operations (Tempo)
   to-ascii               Convert hex data to an ASCII string [aliases:
@@ -207,8 +212,8 @@ Commands:
   trace                  CLI arguments for `cast trace`
   tx                     Get information about a transaction [alias: t]
   tx-pool                Inspect the TxPool of a node [alias: tp]
-  upload-signature       Upload the given signatures to [https://openchain.xyz](https://openchain.xyz)
-                         [alias: ups]
+  upload-signature       Upload the given signatures to
+                         [https://4byte.sourcify.dev](https://4byte.sourcify.dev) [alias: ups]
   virtual-address        TIP-1022 virtual address registry operations (Tempo)
                          [alias: vaddr]
   wallet                 Wallet management utilities [alias: w]

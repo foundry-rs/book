@@ -40,8 +40,8 @@ Options:
 
       --sync
           Wait for transaction receipt synchronously instead of polling. Note:
-          uses `eth_sendTransactionSync` which may not be supported by all
-          clients
+          uses `eth_sendTransactionSync` or `eth_sendRawTransactionSync`, which
+          may not be supported by all clients
 
       --confirmations <CONFIRMATIONS>
           The number of confirmations until the receipt is fetched
@@ -276,13 +276,16 @@ Transaction options:
           
           [env: ETH_GAS_LIMIT=]
 
-      --gas-price <GAS_PRICE>
+      --gas-price <PRICE>
           Gas price for legacy transactions, or max fee per gas for EIP1559
-          transactions
+          transactions, either specified in wei, or as a string with a unit
+          type.
+
+          Examples: 1ether, 10gwei, 0.01ether
           
           [env: ETH_GAS_PRICE=]
 
-      --priority-gas-price <PRIORITY_GAS_PRICE>
+      --priority-gas-price <PRICE>
           Max priority fee per gas for EIP1559 transactions
           
           [env: ETH_PRIORITY_GAS_PRICE=]
@@ -294,17 +297,17 @@ Tempo:
       --tempo.session <SESSION_ID>
           Use a live Tempo wallet session for signing.
           
-          When set, Foundry resolves the session from
-          `$TEMPO_HOME/wallet/sessions.toml` and signs Tempo transactions with
-          the session's temporary access key on behalf of its root account.
+          When set, Foundry resolves the authorization witness from
+          `$TEMPO_HOME/wallet/store.json` and signs with that Accounts access
+          key on behalf of its root account.
 
       --tempo.fee-token <FEE_TOKEN>
           Fee token address, numeric TIP-20 token id, or known symbol for Tempo
           transactions.
           
           When set, builds a Tempo (type 0x76) transaction that pays gas fees in
-          the specified token. Known symbols are PathUSD, AlphaUSD, BetaUSD, and
-          ThetaUSD.
+          the specified token. Known symbols are PathUSD, AlphaUSD, BetaUSD,
+          ThetaUSD, and OUSD.
           
           If this is not set, the fee token is chosen according to network
           rules. See the Tempo docs for more information.
@@ -316,10 +319,11 @@ Tempo:
           relative `--tempo.valid-before`. Sets nonce_key = U256::MAX, nonce =
           0, and valid_before = now + seconds.
           
-          Maximum value is 30 seconds. The transaction must be mined before the
-          deadline or it becomes permanently invalid, giving safe retry
-          semantics: retries produce a fresh tx hash and the old tx can never
-          land late.
+          Maximum value is 300 seconds; networks that have not activated the T11
+          hardfork reject windows above 30 seconds. The transaction must be
+          mined before the deadline or it becomes permanently invalid, giving
+          safe retry semantics: retries produce a fresh tx hash and the old tx
+          can never land late.
 
       --tempo.nonce-key <NONCE_KEY>
           Nonce key for Tempo parallelizable nonces.
@@ -366,15 +370,19 @@ Tempo:
           gas fees on behalf of the sender. Provide as a hex-encoded signature.
 
       --sponsor-url <URL>
-          Remote sponsor (fee payer) service URL.
+          Remote sponsor (fee payer) service URL for Cast transaction commands.
           
           When set, the user-signed transaction is forwarded to this URL via
           `eth_signRawTransaction`. The service adds its fee payer signature and
           returns the fully-sponsored transaction, which is then submitted via
           the regular RPC. No local sponsor key is required.
           
+          This option is supported by `cast send` and `cast erc20`. Forge
+          commands currently support local sponsorship through `--tempo.sponsor`
+          and `--tempo.sponsor-signer` instead.
+
           Example: `cast send 0x... --sponsor-url
-          https://sponsor.tempo.xyz/tp_abc123`
+          https://sponsor.moderato.tempo.xyz`
           
           [env: TEMPO_SPONSOR_URL=]
 

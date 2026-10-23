@@ -1,12 +1,12 @@
 ---
-description: "Tempo wallet integration (login, etc.)"
+description: "Tempo wallet and zone operations"
 ---
 
 _Generated from `cast tempo --help`; see [CLI reference versions](/reference/versions). Regenerate this page instead of editing it directly._
 
 ## cast tempo
 
-Tempo wallet integration (login, etc.)
+Tempo wallet and zone operations
 
 :::terminal
 
@@ -18,8 +18,12 @@ $ cast tempo --help
 Usage: cast tempo [OPTIONS] <COMMAND>
 
 Commands:
-  login  Authorize a new access key against your Tempo wallet via wallet.tempo
-  help   Print this message or the help of the given subcommand(s)
+  zone               Deposit into and withdraw from Tempo zones
+  login              Authorize a new access key against your Tempo wallet via
+                     wallet.tempo
+  import-access-key  Import a signed secp256k1 access key into the Tempo
+                     Accounts store
+  help               Print this message or the help of the given subcommand(s)
 
 Options:
   -h, --help

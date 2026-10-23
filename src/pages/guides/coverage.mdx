@@ -1,5 +1,5 @@
 ---
-description: Generate accurate summaries, LCOV files, and per-test coverage attribution.
+description: Generate accurate summaries, LCOV files, per-test coverage attribution, and uncovered-item gap reports.
 ---
 
 ## Code Coverage
@@ -27,7 +27,7 @@ exclude_tests = true
 skip_files = ["script/**", "src/mocks/**"]
 ```
 
-`report` accepts `summary`, `lcov`, `attribution`, `debug`, and `bytecode`. A CLI `--report` overrides the configured list and can be repeated:
+`report` accepts `summary`, `lcov`, `attribution`, `gaps`, `debug`, and `bytecode`. A CLI `--report` overrides the configured list and can be repeated:
 
 ```bash
 $ forge coverage --report summary --report lcov
@@ -66,7 +66,7 @@ $ forge coverage --report lcov --report-file lcov.info
 
 The default path is `lcov.info` in the project root. Use `--lcov-version 1`, `2`, or `2.2` to match the tracefile version supported by your coverage service. Foundry generates the data but does not enforce a minimum percentage; configure thresholds in the service or tool that consumes the LCOV file.
 
-`--report-file` applies when exactly one file report is requested. If you request both `lcov` and `attribution`, Foundry uses their default names, `lcov.info` and `coverage-attribution.json`, instead.
+`--report-file` applies when exactly one file report is requested. If you request more than one file report, Foundry uses their default names instead: `lcov.info`, `coverage-attribution.json`, and `coverage-gaps.json`.
 
 ### Map coverage to individual tests
 
@@ -88,6 +88,59 @@ $ jq --arg source "src/Pricing.sol" \
 ```
 
 Source filters also apply to attribution output, so keep the same filters when comparing it with a summary or LCOV report.
+
+### List uncovered code
+
+The gaps report is JSON that lists every source item the selected tests did not execute. Use it to find untested branches without parsing a terminal table or an LCOV file:
+
+```bash
+$ forge coverage --report gaps
+```
+
+Foundry writes `coverage-gaps.json` in the project root. Use `--report-file` to choose another path. The top-level object has a schema `version` and a `files` map from each source path to its uncovered items. Foundry omits files that have no gaps. For example, a `set` function whose `else` path never ran produces these items, trimmed here:
+
+```json [coverage-gaps.json]
+{
+  "version": 1,
+  "files": {
+    "src/AContract.sol": [
+      {
+        "kind": "branch",
+        "contract": "AContract",
+        "function": "set",
+        "line_start": 9,
+        "line_end": 13,
+        "byte_start": 180,
+        "byte_end": 266,
+        "snippet": "if (x > 10) {",
+        "branch_id": 0,
+        "path_id": 1
+      },
+      {
+        "kind": "line",
+        "contract": "AContract",
+        "function": "set",
+        "line_start": 12,
+        "line_end": 12,
+        "byte_start": 246,
+        "byte_end": 255,
+        "snippet": "value = 0"
+      }
+    ]
+  }
+}
+```
+
+Each item has a `kind` (`line`, `statement`, `branch`, or `function`), the `contract`, and the enclosing `function` when there is one. `line_start` and `line_end` are 1-based and inclusive, so a one-line item has the same start and end line. `byte_start` is a 0-based byte offset and `byte_end` is exclusive, in the source with CRLF line endings normalized to LF. If a statement has the same location as a line item, the report keeps only the line item. `snippet` is the first source line of the item. Branch items also carry `branch_id` and `path_id`, which identify the uncovered path.
+
+A gap means the selected tests never ran that item. The report does not say whether the item reverts. An agent can list the untested branches of one file and read the code at each location:
+
+```bash
+$ jq -r '.files["src/Pricing.sol"][] | select(.kind == "branch")
+    | "\(.function):\(.line_start) \(.snippet)"' coverage-gaps.json
+```
+
+Source filters also apply to the gaps report.
 
 ### Understand compiler differences
 

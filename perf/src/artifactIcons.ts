@@ -35,7 +35,7 @@ const spriteSheet = `<svg xmlns="http://www.w3.org/2000/svg" style="display:none
     'purple',
     '<rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><path d="M9 17c2 0 2.8-1 2.8-2.8V10c0-2 1-3.3 3.2-3"/><path d="M9 11.2h5.7"/>',
   ),
-  // EVM disassembly.
+  // EVM disassembly and native assembly.
   outline(
     'perf-icon-disasm',
     'teal',
@@ -46,6 +46,12 @@ const spriteSheet = `<svg xmlns="http://www.w3.org/2000/svg" style="display:none
     'perf-icon-hex',
     'green',
     '<rect x="14" y="14" width="4" height="6" rx="2"/><rect x="6" y="4" width="4" height="6" rx="2"/><path d="M6 20h4"/><path d="M14 10h4"/><path d="M6 14h2v6"/><path d="M14 4h2v6"/>',
+  ),
+  // Graphviz control-flow graphs.
+  outline(
+    'perf-icon-graph',
+    'cyan',
+    '<rect x="16" y="16" width="6" height="6" rx="1"/><rect x="2" y="16" width="6" height="6" rx="1"/><rect x="9" y="2" width="6" height="6" rx="1"/><path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"/><path d="M12 12V8"/>',
   ),
 ].join('')}</svg>`
 
@@ -61,6 +67,8 @@ export const artifactIcons: FileTreeIconConfig = {
     mir: 'perf-icon-mir',
     evmir: 'perf-icon-evm',
     disasm: 'perf-icon-disasm',
+    s: 'perf-icon-disasm',
     hex: 'perf-icon-hex',
+    dot: 'perf-icon-graph',
   },
 }

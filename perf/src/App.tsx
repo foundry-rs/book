@@ -1,4 +1,5 @@
 import { LoadingText } from './LoadingText'
+import { CompareSkeleton, FilesSkeleton, GraphsSkeleton, RunsSkeleton, Skeleton } from './Skeleton'
 import { useEffect, useMemo, useState } from 'react'
 import { Moon, Sun } from 'lucide-react'
 import { HistoryGraph } from './HistoryGraph'
@@ -6,20 +7,18 @@ import { Compare } from './Compare'
 import { loadHistory, loadIndex, resolveCommit } from './data'
 import { comparisonHref, navigate, replaceUrl, useNavigation } from './navigation'
 import { comparisonBase } from './comparisonBase'
+import { hasHistoryChanges, type HistoryRange } from './historySeries'
+import { HistoryRangeSelect } from './HistoryRangeSelect'
+import { Combobox } from './Combobox'
 import logo from './assets/logo.png'
 import { FileViewer } from './FileViewer'
+import { project } from './project'
 import type { HistorySeries, RunIndex, RunSummary, Theme } from './types'
 
 const short = (commit: string) => commit.slice(0, 8)
 
-const charts = [
-  { metric: 'total_gas', title: 'Runtime gas', unit: 'gas' },
-  { metric: 'deploy_gas', title: 'Deploy gas', unit: 'gas' },
-  { metric: 'runtime_size', title: 'Runtime bytecode', unit: 'bytes' },
-  { metric: 'bytecode_size', title: 'Creation bytecode', unit: 'bytes' },
-  { metric: 'compile_time_seconds', title: 'Compile time', unit: 'seconds' },
-  { metric: 'peak_rss_bytes', title: 'Peak memory (RSS)', unit: 'memory' },
-]
+const charts = project.metrics.map(({ key, title, unit }) => ({ metric: key, title, unit }))
+const metricOptions = charts.map((chart) => ({ value: chart.metric, label: chart.title }))
 
 function runRef(run: RunSummary) {
   return run.branch ?? (run.pr ? `PR #${run.pr}` : 'detached')
@@ -99,7 +98,7 @@ export function App() {
           theme={theme}
         />
       ) : (
-        <Home />
+        <Home benchmark={benchmark} navigationKey={navigation.key} />
       )}
     </>
   )
@@ -140,15 +139,20 @@ function ResolvedComparison({
   }, [base, head])
   if (error)
     return (
-      <p className="error" role="alert">
-        {error}
-      </p>
+      <main className="compare-page">
+        <p className="error" role="alert">
+          {error}
+        </p>
+      </main>
     )
   if (!commits)
-    return (
-      <p>
-        <LoadingText>Resolving commits…</LoadingText>
-      </p>
+    return benchmark ? (
+      <main className="file-viewer">
+        <div className="viewer-toolbar" />
+        <FilesSkeleton />
+      </main>
+    ) : (
+      <CompareSkeleton />
     )
   return benchmark ? (
     <FileViewer base={commits[0]} head={commits[1]} benchmark={benchmark} theme={theme} />
@@ -174,7 +178,7 @@ function SiteHeader({
   return (
     <header className={compact ? 'file-header' : ''}>
       <a className="wordmark" href={import.meta.env.BASE_URL}>
-        <img alt="Solar" src={logo} />
+        {project.id === 'solar' ? <img alt="Solar" src={logo} /> : project.name}
       </a>
       <nav>
         {compact ? (
@@ -184,7 +188,7 @@ function SiteHeader({
             <a className={dashboard ? 'nav-active' : undefined} href={import.meta.env.BASE_URL}>
               Dashboard
             </a>
-            <a href="https://github.com/paradigmxyz/solar">Repository</a>
+            <a href={`https://github.com/${project.repository}`}>Repository</a>
           </>
         )}
         <button
@@ -200,13 +204,21 @@ function SiteHeader({
   )
 }
 
-function Home() {
+function Home({ benchmark, navigationKey }: { benchmark: string | null; navigationKey: number }) {
   const [history, setHistory] = useState<HistorySeries | null>(null)
   const [historyError, setHistoryError] = useState('')
   const [metric, setMetric] = useState(charts[0].metric)
   const [filter, setFilter] = useState('')
+  const [range, setRange] = useState<HistoryRange>('90d')
+  const [changedOnly, setChangedOnly] = useState(false)
   const chart = charts.find((chart) => chart.metric === metric)!
   const benchmarks = useMemo(() => Object.keys(history?.values ?? {}).sort(), [history])
+  const visibleBenchmarks = benchmarks.filter(
+    (benchmark) =>
+      benchmark.toLowerCase().includes(filter.toLowerCase()) &&
+      history?.values[benchmark].at(0) != null &&
+      (!changedOnly || hasHistoryChanges(history.values[benchmark])),
+  )
   const [index, setIndex] = useState<RunIndex | null>(null)
   const [error, setError] = useState('')
   const [base, setBase] = useState('')
@@ -226,7 +238,7 @@ function Home() {
     let cancelled = false
     setHistory(null)
     setHistoryError('')
-    loadHistory(metric).then(
+    loadHistory(metric, undefined, range).then(
       (value) => {
         if (!cancelled) setHistory(value)
       },
@@ -237,7 +249,15 @@ function Home() {
     return () => {
       cancelled = true
     }
-  }, [metric])
+  }, [metric, range])
+
+  useEffect(() => {
+    if (!benchmark || !history) return
+    const frame = requestAnimationFrame(() => {
+      document.getElementById(benchmark)?.scrollIntoView({ block: 'nearest', inline: 'nearest' })
+    })
+    return () => cancelAnimationFrame(frame)
+  }, [benchmark, history, navigationKey])
 
   const compare = async () => {
     if (resolving || !base.trim() || !head.trim()) return
@@ -266,7 +286,9 @@ function Home() {
           <h1>Performance</h1>
           <p>Main branch benchmark history</p>
         </div>
-        <span>{index?.totalMainRuns ?? mainRuns.length} runs</span>
+        <span>
+          {index ? `${index.totalMainRuns ?? mainRuns.length} runs` : <Skeleton width={56} />}
+        </span>
       </section>
       <form
         className="compare-box"
@@ -289,17 +311,12 @@ function Home() {
         </p>
       )}
       <section className="history-controls" aria-label="Graph settings">
+        <HistoryRangeSelect value={range} onChange={setRange} />
         <label>
           Metric
-          <select value={metric} onChange={(event) => setMetric(event.target.value)}>
-            {charts.map((chart) => (
-              <option key={chart.metric} value={chart.metric}>
-                {chart.title}
-              </option>
-            ))}
-          </select>
+          <Combobox label="Metric" value={metric} options={metricOptions} onChange={setMetric} />
         </label>
-        <label>
+        <label className="history-filter">
           Benchmark
           <input
             type="search"
@@ -308,34 +325,43 @@ function Home() {
             onChange={(event) => setFilter(event.target.value)}
           />
         </label>
-        <span>Solar · latest {history?.runs.length ?? 0} main runs · lower is better</span>
+        <label className="history-checkbox">
+          <input
+            type="checkbox"
+            checked={changedOnly}
+            onChange={(event) => setChangedOnly(event.target.checked)}
+          />
+          Changed only
+        </label>
+        <span>
+          {project.name} · {history ? history.runs.length : <Skeleton width={24} />} main runs in
+          range · lower is better
+        </span>
       </section>
       <p className="history-note">
-        Each graph is one benchmark. Gaps indicate failed or missing measurements. Click a point to
-        compare commits.
+        Each graph is one benchmark. Gaps indicate failed or missing measurements. Hover or tap to
+        inspect a run; click it or tap it again to compare it with the preceding commit.
+        {project.metrics.find((definition) => definition.key === metric)?.noisy
+          ? ' Timing and memory can vary between runs. Long histories preserve peaks and lows; hover shows raw measurements.'
+          : ''}
       </p>
       {error || historyError ? (
         <p className="error">{error || historyError}</p>
       ) : history === null ? (
-        <p className="empty">
-          <LoadingText>Loading benchmark history…</LoadingText>
-        </p>
+        <GraphsSkeleton count={6} />
       ) : (
         <section className="chart-grid">
-          {benchmarks
-            .filter((benchmark) => benchmark.toLowerCase().includes(filter.toLowerCase()))
-            .map((benchmark) => (
-              <HistoryGraph
-                hideMissingLatest
-                key={`${benchmark}:${metric}`}
-                runs={history}
-                benchmark={benchmark}
-                {...chart}
-              />
-            ))}
-          {!benchmarks.some((benchmark) =>
-            benchmark.toLowerCase().includes(filter.toLowerCase()),
-          ) && <p className="empty">No matching benchmarks.</p>}
+          {visibleBenchmarks.map((benchmark) => (
+            <HistoryGraph
+              hideMissingLatest
+              id={benchmark}
+              key={`${benchmark}:${metric}:${range}`}
+              runs={history}
+              benchmark={benchmark}
+              {...chart}
+            />
+          ))}
+          {!visibleBenchmarks.length && <p className="empty">No matching benchmarks.</p>}
         </section>
       )}
       <section className="recent">
@@ -349,7 +375,9 @@ function Home() {
           <span>benchmarks</span>
           <span>branch</span>
         </div>
-        {runs.length === 0 ? (
+        {!index && !error ? (
+          <RunsSkeleton />
+        ) : runs.length === 0 ? (
           <p className="empty">No published benchmark runs yet.</p>
         ) : (
           runs.slice(0, 12).map((run) => {

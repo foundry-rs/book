@@ -1,5 +1,5 @@
 ---
-description: "Verify smart contracts on Etherscan and Sourcify"
+description: "Verify smart contracts on Etherscan and Sourcify Examples: - forge verify-contract --chain sepolia $ADDRESS src/Counter.sol:Counter --watch - forge verify-contract $ADDRESS src/Counter.sol:Counter --verifier sourcify"
 ---
 
 _Generated from `forge verify-contract --help`; see [CLI reference versions](/reference/versions). Regenerate this page instead of editing it directly._
@@ -7,6 +7,10 @@ _Generated from `forge verify-contract --help`; see [CLI reference versions](/re
 ## forge verify-contract
 
 Verify smart contracts on Etherscan and Sourcify
+
+Examples:
+- forge verify-contract --chain sepolia $ADDRESS src/Counter.sol:Counter --watch
+- forge verify-contract $ADDRESS src/Counter.sol:Counter --verifier sourcify
 
 :::terminal
 
@@ -148,10 +152,11 @@ Compiler options:
           Do not auto-detect the `solc` version
 
       --use <SOLC_VERSION>
-          Specify the solc version, or a path to a local solc, to build with.
+          Specify the solc version, path, or executable name on `PATH` to build
+          with.
           
-          Valid values are in the format `x.y.z`, `solc:x.y.z` or
-          `path/to/solc`.
+          Valid values are in the format `x.y.z`, `solc:x.y.z`, `path/to/solc`,
+          or `solc`.
 
 Rpc options:
   -r, --rpc-url <URL>

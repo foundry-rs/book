@@ -226,3 +226,31 @@ it('revisiting artifacts and runs does not fetch again in the same instance', as
   await loadHistory('runtime_size', 'test')
   expect(fetch).toHaveBeenCalledTimes(6)
 })
+
+it('loads every history page and keeps range caches and sparse benchmarks separate', async () => {
+  vi.resetModules()
+  const run = (commit: string) => ({ commit, timestamp: '2026-10-01T00:00:00Z' })
+  const fetch = vi
+    .fn()
+    .mockResolvedValueOnce(
+      Response.json({ runs: [run('new')], values: { a: [0] }, nextCursor: 'older' }),
+    )
+    .mockResolvedValueOnce(Response.json({ runs: [run('old')], values: { b: [2] } }))
+    .mockResolvedValueOnce(Response.json({ runs: [], values: {} }))
+  vi.stubGlobal('fetch', fetch)
+  const { loadHistory } = await import('../src/data')
+  expect(await loadHistory('total_gas', undefined, 'all')).toEqual({
+    runs: [run('new'), run('old')],
+    values: { a: [0, null], b: [null, 2] },
+  })
+  expect(fetch.mock.calls.map(([url]) => url)).toEqual([
+    '/api/data/history.json?metric=total_gas&range=all',
+    '/api/data/history.json?metric=total_gas&range=all&cursor=older',
+  ])
+  expect(await loadHistory('total_gas', 'b', 'all')).toEqual({
+    runs: [run('new'), run('old')],
+    values: { b: [null, 2] },
+  })
+  await loadHistory('total_gas', undefined, '30d')
+  expect(fetch).toHaveBeenCalledTimes(3)
+})

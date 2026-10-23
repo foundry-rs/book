@@ -1,15 +1,19 @@
 ---
-description: "Decode ABI-encoded input data. Similar to `abi-decode --input`, but function selector MUST be prefixed in `calldata` string"
+description: "Decode ABI-encoded input data Similar to `abi-decode --input`, but function selector MUST be prefixed in `calldata`. Examples: - cast decode-calldata \"transfer(address,uint256)\" $CALLDATA - cast decode-calldata --json \"transfer(address,uint256)\" $CALLDATA"
 ---
 
 _Generated from `cast decode-calldata --help`; see [CLI reference versions](/reference/versions). Regenerate this page instead of editing it directly._
 
 ## cast decode-calldata
 
-Decode ABI-encoded input data.
+Decode ABI-encoded input data
 
 Similar to `abi-decode --input`, but function selector MUST be prefixed in
-`calldata` string
+`calldata`.
+
+Examples:
+- cast decode-calldata "transfer(address,uint256)" $CALLDATA
+- cast decode-calldata --json "transfer(address,uint256)" $CALLDATA
 
 :::terminal
 
