@@ -89,6 +89,12 @@ it('formats byte units consistently without rounding small values to zero KiB', 
   expect(formatValue(1.5 * 1024 ** 2, 'memory')).toBe('1.5 MiB')
 })
 
+it('formats negative second deltas with the same unit as positive ones', () => {
+  expect(formatValue(2.5, 'seconds')).toBe('2.50 s')
+  expect(formatValue(-2.5, 'seconds')).toBe('-2.50 s')
+  expect(formatValue(-0.25, 'seconds')).toBe('-250.00 ms')
+})
+
 it('sorts names, raw Head values and signed deltas, with missing values last', () => {
   const result = (test_id: string, gas: number, other: number) => ({
     test_id,
