@@ -1,0 +1,37 @@
+---
+description: Gets the current block.blobbasefee in Forge tests
+---
+
+## `getBlobBaseFee`
+
+### Signature
+
+```solidity
+function getBlobBaseFee() external view returns (uint256 blobBaseFee);
+```
+
+### Description
+
+Returns the current `block.blobbasefee`.
+
+Use this instead of `block.blobbasefee` after [`vm.blobBaseFee`](/reference/cheatcodes/blob-base-fee): the compiler assumes `block.blobbasefee` is constant within a transaction and may optimize repeated reads away, so it can return a stale value. See [foundry#6180](https://github.com/foundry-rs/foundry/issues/6180).
+
+### Returns
+
+| Name          | Type      | Description                    |
+|---------------|-----------|--------------------------------|
+| `blobBaseFee` | `uint256` | The current blob base fee      |
+
+### Examples
+
+```solidity [test/GetBlobBaseFee.t.sol]
+// [!include ~/snippets/projects/blob_cheatcodes/test/GetBlobBaseFee.t.sol]
+```
+
+```bash
+$ forge test --root src/snippets/projects/blob_cheatcodes --match-contract GetBlobBaseFeeTest
+```
+
+### Related Cheatcodes
+
+- [`blobBaseFee`](/reference/cheatcodes/blob-base-fee) - Sets `block.blobbasefee`

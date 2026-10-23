@@ -70,6 +70,16 @@ $ anvil --prune-history 10
 $ anvil --prune-history
 ```
 
+By default, Anvil keeps every locally mined block's transactions, receipts, and logs in memory. To prune older transaction data as new blocks are mined, use `--transaction-block-keeper`:
+
+```bash [Keep transaction data for the last 1000 blocks]
+$ anvil --transaction-block-keeper 1000
+```
+
+As new blocks are mined locally, Anvil drops transaction data outside this window while retaining the block headers. The dropped transactions, receipts, and logs are no longer available from local storage. This does not change state retention.
+
+The limit does not retroactively prune history loaded from a state file. When forking, historical data may still be available from the upstream RPC provider.
+
 ### Genesis configuration
 
 Initialize Anvil with a custom genesis file:

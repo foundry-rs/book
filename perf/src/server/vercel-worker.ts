@@ -4,6 +4,7 @@ import { nodeHandler } from './http'
 import { ImportPendingError, RunNotFoundError } from './pending'
 import { backfillSources } from './backfillSources'
 import { clickHouseConfig } from './clickhouse'
+import { projects } from '../projects'
 
 const app = new Hono()
 app.use('*', async (context, next) => {
@@ -24,8 +25,14 @@ app.post('/api/worker/backfill-sources', async (context) => {
 })
 app.post('/api/worker/import', async (context) => {
   const sha = context.req.query('commit') ?? ''
-  if (!/^[a-f0-9]{40}$/.test(sha)) return context.json({ error: 'Invalid commit' }, 400)
-  return context.json({ imported: await ingestCommit(sha) })
+  const partner = context.req.query('partner')
+  const project = context.req.query('project') ?? 'solar'
+  if (!/^[a-f0-9]{40}$/.test(sha) || (partner !== undefined && !/^[a-f0-9]{40}$/.test(partner)))
+    return context.json({ error: 'Invalid commit' }, 400)
+  if (!Object.hasOwn(projects, project)) return context.json({ error: 'Unknown project' }, 400)
+  return context.json({
+    imported: await ingestCommit(sha, process.env, projects[project], partner),
+  })
 })
 app.onError((error, context) => {
   if (error instanceof RunNotFoundError) return context.json({ error: error.message }, 404)

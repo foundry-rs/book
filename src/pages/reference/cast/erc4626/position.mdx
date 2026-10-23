@@ -1,5 +1,5 @@
 ---
-description: "Show an account's shares, asset value, and withdrawal limits"
+description: "Show an account's shares, asset value, and withdrawal limits Example: ```text $ cast erc4626 position 0xBEEF01735c132Ada46AA9aA4c54623cAA92A64CB \\ 0x255c7705E8bb334dfCaE438197f7c4297988085A --human --block 25519075 \\ --rpc-url https://ethereum.reth.rs/rpc ``` Output: ```text Vault 0xBEEF01735c132Ada46AA9aA4c54623cAA92A64CB Owner 0x255c7705e8BB334DfCae438197f7C4297988085a Asset 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48 Share symbol steakUSDC Share decimals 18 Asset symbol USDC Asset decimals 6 Share balance 35733.949295544029939485 steakUSDC Assets equivalent 40473.486378 USDC Max withdraw 40473.486378 USDC Max redeem 35733.949295417417957447 steakUSDC ```"
 ---
 
 _Generated from `cast erc4626 position --help`; see [CLI reference versions](/reference/versions). Regenerate this page instead of editing it directly._
@@ -7,6 +7,30 @@ _Generated from `cast erc4626 position --help`; see [CLI reference versions](/re
 ## cast erc4626 position
 
 Show an account's shares, asset value, and withdrawal limits
+
+Example:
+
+```text
+$ cast erc4626 position 0xBEEF01735c132Ada46AA9aA4c54623cAA92A64CB \
+    0x255c7705E8bb334dfCaE438197f7c4297988085A --human --block 25519075 \
+    --rpc-url https://ethereum.reth.rs/rpc
+```
+
+Output:
+
+```text
+Vault                0xBEEF01735c132Ada46AA9aA4c54623cAA92A64CB
+Owner                0x255c7705e8BB334DfCae438197f7C4297988085a
+Asset                0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48
+Share symbol         steakUSDC
+Share decimals       18
+Asset symbol         USDC
+Asset decimals       6
+Share balance        35733.949295544029939485 steakUSDC
+Assets equivalent    40473.486378 USDC
+Max withdraw         40473.486378 USDC
+Max redeem           35733.949295417417957447 steakUSDC
+```
 
 :::terminal
 

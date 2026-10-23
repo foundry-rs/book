@@ -42,6 +42,8 @@ function testNotSkip() public {
 
 ### Gotchas
 
+In a [table test](/forge/testing#skipping-a-table-row), `vm.skip(true)` skips the entire test, not just the current row, and prevents later rows from running. To omit one row while continuing with the remaining rows, return early from the table test instead. The returned row counts as a successful run, not a skipped test.
+
 :::warning
 `vm.skip` must be called at the very top of the test function. Any code before it will still execute.
 :::

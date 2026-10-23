@@ -17,6 +17,7 @@ describe('artifact icons', () => {
         'solar/runtime.evmir',
         'solar/runtime.disasm',
         'solar/runtime.hex',
+        'evm2/bytecode.dot',
       ].map(icon),
     ).toEqual([
       'perf-icon-solidity',
@@ -26,6 +27,7 @@ describe('artifact icons', () => {
       'perf-icon-evm',
       'perf-icon-disasm',
       'perf-icon-hex',
+      'perf-icon-graph',
     ])
   })
 

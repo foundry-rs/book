@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, expect, test, vi } from 'vitest'
-import { VirtualizedFile } from '@pierre/diffs'
+import { VirtualizedFile, VirtualizedFileDiff, type FileDiffMetadata } from '@pierre/diffs'
 import { useLineSelection } from '../src/lineSelection'
 
 vi.mock('react', () => ({
@@ -100,4 +100,25 @@ test('a disconnected frame does not prevent a later mount from scrolling', () =>
   tick()
   tick()
   expect(scrollTo).toHaveBeenCalledTimes(1)
+})
+
+test('reveals the context after the last hunk through its trailing separator', () => {
+  vi.stubGlobal('location', { hash: '#R50' })
+  const instance = Object.create(VirtualizedFileDiff.prototype) as VirtualizedFileDiff
+  instance.expandHunk = vi.fn()
+  instance.getLinePosition = vi.fn().mockReturnValue({ top: 1000, height: 20 })
+  const diff = {
+    hunks: [{ additionStart: 3, additionCount: 7, collapsedBefore: 2 }],
+  } as FileDiffMetadata
+  const node = {
+    isConnected: true,
+    getBoundingClientRect: vi.fn().mockReturnValue({ top: 100, height: 40000 }),
+  }
+  useLineSelection('a.txt', diff).options.onPostRender(
+    node as unknown as HTMLElement,
+    instance,
+    'mount',
+  )
+  tick()
+  expect(instance.expandHunk).toHaveBeenCalledWith(1, 'up', Infinity)
 })

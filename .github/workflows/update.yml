@@ -31,12 +31,12 @@ jobs:
         with:
           version: nightly
 
-      - uses: dtolnay/rust-toolchain@02cb101ec7c40f2c49e1d9714d64511d8e1b74de # v1
+      - uses: tempoxyz/gh-actions/vendor/dtolnay/rust-toolchain@d5402286a7abdfb7232173b3228d56473feb8a66 # 2026-09-29T02-04-45Z-d5402286
         with:
           toolchain: nightly
 
       - name: Set up Vite+
-        uses: voidzero-dev/setup-vp@3754dd7dbdb32bd8f6d28b6043de13ad3a75f21f # v1.21.1
+        uses: voidzero-dev/setup-vp@68f39c78aaf39be468cabd2afb09c162574c84af # v1.21.2
         with:
           cache: true
           node-version: "24"

@@ -1,7 +1,7 @@
 catalog:
-  vite: npm:@voidzero-dev/vite-plus-core@0.3.3
-  vite-plus: 0.3.3
-  vitest: 5.0.1
+  vite: npm:@voidzero-dev/vite-plus-core@1.1.0
+  vite-plus: 1.1.0
+  vitest: 5.0.3
 packages:
   - perf
 allowBuilds:
@@ -17,3 +17,8 @@ peerDependencyRules:
     vite: "*"
 overrides:
   vite@*: "catalog:"
+# TODO: remove once these are a day old (2026-10-22 18:05 UTC).
+minimumReleaseAgeExclude:
+  - "@pierre/diffs@1.6.1"
+  - "@pierre/highlights@0.2.0"
+  - "@pierre/theming@1.0.2"

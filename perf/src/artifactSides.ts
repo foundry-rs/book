@@ -1,9 +1,10 @@
 import { compilerLabel } from './compilerLabel'
 import { orderedCompilers } from './compilers'
+import { project } from './project'
 import type { RunDocument } from './types'
 
 export function initialArtifactSides(params: URLSearchParams) {
-  const compiler = params.get('compiler') || 'solar'
+  const compiler = params.get('compiler') || project.compiler
   const against = params.get('against') || 'base'
   return {
     left: params.get('left') || (against === 'base' ? `base:${compiler}` : `head:${against}`),

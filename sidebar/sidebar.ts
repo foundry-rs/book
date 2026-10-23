@@ -131,6 +131,10 @@ export const sidebar: Sidebar = {
           link: "/config/reference/advanced-testing#symbolic-testing",
         },
         { text: "Build, Runtime, and RPC", link: "/config/reference/build-and-runtime" },
+        {
+          text: "Fork State by Block Number",
+          link: "/config/reference/build-and-runtime#fork-state-by-block-number",
+        },
         { text: "Tool-specific Configuration", link: "/config/reference/tooling" },
         { text: "In-line Test Config", link: "/config/reference/inline-test-config" },
         { text: "Formatter", link: "/config/reference/formatter" },

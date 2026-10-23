@@ -1,0 +1,118 @@
+---
+description: "Encode an Earn deposit. Withdraw the router's private asset to --router"
+---
+
+_Generated from `cast tempo zone earn encode-deposit --help`; see [CLI reference versions](/reference/versions). Regenerate this page instead of editing it directly._
+
+## cast tempo zone earn encode-deposit
+
+Encode an Earn deposit. Withdraw the router's private asset to --router
+
+:::terminal
+
+```bash
+$ cast tempo zone earn encode-deposit --help
+```
+
+```txt
+Usage: cast tempo zone earn encode-deposit [OPTIONS] --min-vault-assets <MIN_VAULT_ASSETS> --min-earn-shares <MIN_EARN_SHARES> --router <ROUTER> --recipient <RECIPIENT> --refund-recipient <REFUND_RECIPIENT> --zone-id <ZONE_ID> --zone-chain-id <ZONE_CHAIN_ID>
+
+Options:
+      --min-vault-assets <MIN_VAULT_ASSETS>
+          Minimum vault assets after conversion, in smallest units
+
+      --min-earn-shares <MIN_EARN_SHARES>
+          Minimum Earn shares minted, in smallest units
+
+      --router <ROUTER>
+          Scoped SingleZoneEarnRouter address on L1. Also use it as withdrawal
+          --to
+
+      --recipient <RECIPIENT>
+          Recipient of the encrypted return deposit inside the zone
+
+      --refund-recipient <REFUND_RECIPIENT>
+          Public L1 refund address if the return deposit fails. This is not
+          encrypted and should not identify --recipient when recipient privacy
+          matters
+
+      --memo <MEMO>
+          Memo encrypted with the return recipient
+
+          [default:
+          0x0000000000000000000000000000000000000000000000000000000000000000]
+
+      --action-id <ACTION_ID>
+          Operation identifier. Defaults to the hash of the randomized return
+          ciphertext
+
+      --zone-id <ZONE_ID>
+          Zone ID for the return deposit
+
+          [env: ZONE_ID=]
+
+      --zone-chain-id <ZONE_CHAIN_ID>
+          Zone chain ID used to select the parent RPC
+
+          [env: ZONE_CHAIN_ID=]
+
+      --l1-rpc-url <L1_RPC_URL>
+          Override the public mainnet or Moderato RPC inferred from the zone
+          chain ID
+
+          [env: L1_RPC_URL=]
+
+      --portal <PORTAL>
+          Zone portal on Tempo L1. Required for --wait-l1 and Earn callback
+          builders
+
+          [env: L1_PORTAL_ADDRESS=]
+
+  -h, --help
+          Print help (see a summary with '-h')
+
+  -j, --threads <THREADS>
+          Number of threads to use. Specifying 0 defaults to the number of
+          logical cores
+
+          [alias: --jobs]
+
+      --profile <PROFILE>
+          The configuration profile to use
+
+Display options:
+      --color <COLOR>
+          The color of the log messages
+
+          Possible values:
+          - auto:   Intelligently guess whether to use color output (default)
+          - always: Force color output
+          - never:  Force disable color output
+
+      --json
+          Format log messages as JSON
+
+      --md
+          Format log messages as Markdown
+
+  -q, --quiet
+          Do not print log messages
+
+  -v, --verbosity...
+          Verbosity level of the log messages.
+
+          Pass multiple times to increase the verbosity (e.g. -v, -vv, -vvv).
+
+          Depending on the context the verbosity levels have different meanings.
+
+          For example, the verbosity levels of the EVM are:
+          - 2 (-vv): Print logs for all tests.
+          - 3 (-vvv): Print execution traces for failing tests.
+          - 4 (-vvvv): Print execution traces for all tests, and setup traces
+          for failing tests.
+          - 5 (-vvvvv): Print execution and setup traces for all tests,
+          including storage changes and
+            backtraces with line numbers.
+```
+
+:::

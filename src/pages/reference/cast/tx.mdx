@@ -1,5 +1,5 @@
 ---
-description: "Get information about a transaction"
+description: "Get information about a transaction Examples: - cast tx $TX_HASH - cast tx $TX_HASH blockNumber (only print the blockNumber field) - cast tx $TX_HASH --raw"
 ---
 
 _Generated from `cast tx --help`; see [CLI reference versions](/reference/versions). Regenerate this page instead of editing it directly._
@@ -7,6 +7,11 @@ _Generated from `cast tx --help`; see [CLI reference versions](/reference/versio
 ## cast tx
 
 Get information about a transaction
+
+Examples:
+- cast tx $TX_HASH
+- cast tx $TX_HASH blockNumber (only print the blockNumber field)
+- cast tx $TX_HASH --raw
 
 :::terminal
 
@@ -135,7 +140,7 @@ Rpc options:
   -n, --network <NETWORK>
           Specify the Network for correct encoding
           
-          [possible values: ethereum, tempo]
+          [possible values: ethereum, base, optimism, tempo, monad]
 
 Display options:
       --color <COLOR>

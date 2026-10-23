@@ -1,5 +1,5 @@
 ---
-description: "Create a new random keypair"
+description: "Create a new random keypair Examples: - cast wallet new (print a new private key and address) - cast wallet new my-wallet (save to the default keystore directory) - cast wallet new ~/.foundry/keystores dev (save to an encrypted keystore)"
 ---
 
 _Generated from `cast wallet new --help`; see [CLI reference versions](/reference/versions). Regenerate this page instead of editing it directly._
@@ -7,6 +7,11 @@ _Generated from `cast wallet new --help`; see [CLI reference versions](/referenc
 ## cast wallet new
 
 Create a new random keypair
+
+Examples:
+- cast wallet new (print a new private key and address)
+- cast wallet new my-wallet (save to the default keystore directory)
+- cast wallet new ~/.foundry/keystores dev (save to an encrypted keystore)
 
 :::terminal
 
@@ -20,7 +25,11 @@ Usage: cast wallet new [OPTIONS] [PATH] [ACCOUNT_NAME]
 Arguments:
   [PATH]
           If provided, then keypair will be written to an encrypted JSON
-          keystore
+          keystore.
+
+          A single bare argument that is not an existing directory is treated as
+          ACCOUNT_NAME and saved under the default keystore directory
+          (`~/.foundry/keystores`), matching `cast wallet import <name>`.
 
   [ACCOUNT_NAME]
           Account name for the keystore file. If provided, the keystore file
@@ -46,6 +55,12 @@ Options:
 
       --force
           Overwrite existing keystore files without prompting
+
+      --touch-id
+          Enroll the keystore for Touch ID-assisted authentication on macOS.
+
+          The macOS login password and explicit keystore passwords remain
+          available.
 
   -h, --help
           Print help (see a summary with '-h')

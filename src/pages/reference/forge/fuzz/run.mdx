@@ -240,6 +240,14 @@ EVM options:
           
           See --rpc-url.
 
+      --fork-state-by-number
+          Fetch fork state by block number instead of hash.
+
+          Use for RPC endpoints that cannot serve state by block hash.
+          Number-based reads cannot guarantee a consistent snapshot if the
+          remote chain reorganizes and do not use the disk state cache.
+          Transaction replay still requires hash-addressed state.
+
       --fork-retries <RETRIES>
           Number of retries.
           
@@ -258,6 +266,12 @@ EVM options:
           This flag overrides the project's configuration file.
           
           See --rpc-url.
+
+      --no-fork-bal
+          Disable parent-block BAL cache prewarming for transaction-hash fork
+          cheatcodes.
+
+          Preceding transactions are still replayed when prewarming is enabled.
 
       --initial-balance <BALANCE>
           The initial balance of deployed test contracts
@@ -346,11 +360,16 @@ Executor environment config:
       --no-isolate
           Whether to disable isolation of calls
 
+      --hardfork <HARDFORK>
+          The runtime EVM hardfork to use.
+
+          Network-specific hardforks must be namespaced, for example `tempo:T5`.
+
 Networks:
   -n, --network <NETWORK>
           Enable a specific network family
           
-          [possible values: ethereum, tempo]
+          [possible values: ethereum, base, optimism, tempo, monad]
 
       --celo
           Enable Celo network features
@@ -400,10 +419,11 @@ Compiler options:
           Do not auto-detect the `solc` version
 
       --use <SOLC_VERSION>
-          Specify the solc version, or a path to a local solc, to build with.
+          Specify the solc version, path, or executable name on `PATH` to build
+          with.
           
-          Valid values are in the format `x.y.z`, `solc:x.y.z` or
-          `path/to/solc`.
+          Valid values are in the format `x.y.z`, `solc:x.y.z`, `path/to/solc`,
+          or `solc`.
 
       --offline
           Do not access the network.
@@ -514,7 +534,9 @@ Project options:
           [alias: --hh]
 
       --config-path <FILE>
-          Path to the config file
+          Path to the config file.
+
+          The project root is the config file's parent directory.
 
       --allow-failure
           Exit with code 0 even if a test fails
@@ -538,7 +560,7 @@ Project options:
           
           [env: FORGE_GAS_REPORT=]
 
-      --fuzz-input-file <FUZZ_INPUT_FILE>
+      --fuzz-input-file <PATH>
           File to rerun fuzz failures from
 
 Showmap replay:

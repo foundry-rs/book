@@ -187,6 +187,8 @@ $ cast logs "Transfer(address,address,uint256)" --address $TOKEN
 
 :::
 
+If you omit the range, `cast logs` queries the full history: `--from-block` defaults to `earliest` and `--to-block` defaults to `latest`. The "Decode topics" example above relies on those defaults. For an active contract that can mean a very large result set, and many RPC providers cap the range or number of results a single `eth_getLogs` request may return. Pass an explicit range when you know the blocks you need; for a wide range, add `--query-size <BLOCKS>` to split the query into chunks of that many blocks instead of a single request.
+
 ### Chain info
 
 :::code-group

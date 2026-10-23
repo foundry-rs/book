@@ -1,5 +1,6 @@
 import { benchmarkMetric } from './benchmarkMetric'
 import { orderedCompilers } from './compilers'
+import { project } from './project'
 import type { RunDocument } from './types'
 
 export function comparisonCompilers(run: RunDocument) {
@@ -42,7 +43,11 @@ export function comparisonRows(
     const compiler = sort.column.slice('compiler:'.length)
     return percentChange(
       headValue,
-      benchmarkMetric(compiler === 'solar' ? row.before : row.headResult, metric, compiler),
+      benchmarkMetric(
+        compiler === project.compiler ? row.before : row.headResult,
+        metric,
+        compiler,
+      ),
     )
   }
   return rows.sort((a, b) => {
