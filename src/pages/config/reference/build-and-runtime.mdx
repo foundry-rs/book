@@ -169,11 +169,19 @@ mainnet = { endpoints = ["${MAINNET_RPC_URL}", "${FALLBACK_RPC_URL}"], retries =
 ```
 
 `profile` names a profile whose compiler settings, `hardfork`, and
-`create2_library_salt` apply to forks of the endpoint's chain in scripts. Forge
-builds the project once more for each distinct set of these settings, so the
-contracts a multi-chain script deploys on that chain match a single-chain run
-with that profile, including its `libraries`. Libraries without a configured
-address are deployed through the CREATE2 deployer on each chain.
+`create2_library_salt` apply to forks selected through that endpoint URL in scripts and tests.
+Forge compiles each distinct set of compiler settings once, while retaining each profile's
+execution hardfork and library salt. CLI compiler overrides still take precedence. Contracts you
+deploy directly from a script or test use the selected build, including its `libraries`, while the
+script or test harness itself keeps the run profile. `vm.getCode`, `vm.getDeployedCode`, and
+`vm.deployCode` also select the endpoint build. Calls to an on-chain factory execute the initcode
+supplied to that factory.
+
+Libraries without configured addresses are deployed through the CREATE2 deployer on each chain
+before their first broadcast use. Profile artifacts are cached under `cache/profiles/` and are used
+to decode constructor arguments and verify deployments. Endpoint URLs are resolved when used;
+unset environment variables in unused endpoints do not cause network requests. Endpoints sharing
+a URL must select equivalent builds and runtime settings.
 
 ```toml
 [profile.base]
