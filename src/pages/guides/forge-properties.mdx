@@ -1,239 +1,151 @@
 ---
-description: Generate test properties with an external agent and keep only the properties that mutation testing proves useful.
+description: Run independent coding agents to find reproducible bugs and add passing Solidity tests.
 ---
 
 ## Property generation
 
-`forge properties` asks an external generator, usually an AI agent, to write Solidity test properties for a contract. Forge keeps a property only when mutation testing shows that it makes your test suite stronger. If a property fails against the current code on every seed, Forge reports it as a possible bug.
+`forge properties` runs coding agents independently against your contracts. Each agent writes Solidity tests in its own copy of the project. Forge reruns those tests on several seeds, groups reproducible failures by root cause, and keeps passing test files.
 
 :::info
-`forge properties` is experimental. The prompt format, the candidate format, and the acceptance rules can change.
+`forge properties` is experimental and requires a build that includes [foundry-rs/foundry#17259](https://github.com/foundry-rs/foundry/pull/17259). Its agent interface and reporting rules can change.
 :::
-
-In this guide, you write a brief and a generator, run `forge properties`, and review the results.
 
 ### Prerequisites
 
-- A Foundry project whose tests pass, and a target contract with tests. See [Mutation testing](/guides/mutation-testing) for how Forge finds surviving mutants.
-- A generator: any executable that reads a prompt file and writes a candidate file. This guide uses the `claude` CLI, but any agent or script works.
+- A Foundry project with its dependencies and Solidity compiler installed.
+- A coding agent that can read the project, write tests, and run `forge test` without interactive prompts.
+- Reference material that states the intended behavior, such as a specification, README, or threat model.
 
 ### How a run works
 
-1. Forge runs mutation testing on the target files once for each seed. Mutants that survive show where your tests are weak.
-2. Forge writes a prompt file. It contains the surviving mutants with source context, the target sources and their NatSpec, related tests, remappings, test settings such as `isolate`, and feedback from earlier rounds.
-3. Forge runs the generator. The generator returns Solidity test files.
-4. Forge copies the project to a temporary directory, adds the files, and runs every test in them on every seed. Then it runs mutation testing again on your selected tests and the new tests.
-5. Forge keeps, reports, or rejects the candidate. With `--rounds N`, steps 2 to 5 repeat, and each round gets the results of the earlier rounds.
+1. Forge builds the project in a temporary workspace and starts four agent sessions by default. Each session gets its own project copy and derived seed.
+2. Each agent reads the targets and reference material, investigates possible bugs, and writes tests under its assigned output directory.
+3. When a session exits or reaches its timeout, Forge collects its Solidity files and runs them in a fresh project copy on every supplied seed. Edits to production code in the agent's copy are not carried into this validation.
+4. A test that fails on every seed becomes a candidate bug report. Forge groups reports by root cause and highlights groups reported by at least two agents by default.
+5. Forge adds passing test files to your project, preserving their generated imports and removing duplicates where possible. Reports and copies of the generated tests remain in the cache for review.
 
 ### Steps
 
 ::::steps
 
-#### Write a brief
+#### Describe the intended behavior
 
-The brief is a short Markdown file that tells the generator what to focus on:
+Give the agents a short specification that distinguishes intended behavior from implementation details:
 
-```markdown [brief.md]
-Strengthen the tests for Vault. Prefer properties that follow the documented
-accounting rules over properties that copy the implementation.
+```markdown [spec.md]
+Review Vault's deposit and withdrawal accounting. Withdrawals must reduce
+the caller's shares and the vault's total shares consistently. Check rounding
+at small amounts and transitions involving more than one depositor.
 ```
 
-#### Write a generator
+Pass existing documentation with additional `--context` options. Forge gives the agents the original files' absolute paths, so configure your agent to read those paths.
 
-Forge calls the generator with two arguments: the path of the prompt file and the path of the output file. A non-zero exit status makes the command fail.
+#### Write an agent wrapper
 
-This example runs Claude Code with read-only tools and asks for structured output that matches `candidate-schema.json`, stored next to the script:
+Forge starts your executable once per agent in that agent's project copy. It supplies the prompt path and output directory through environment variables; it does not pass positional prompt or candidate-file arguments.
 
-```bash [generator.sh]
+This example uses Claude Code. The wrapper reads Forge's prompt and allows edits in the generated-test directory and `forge test` commands:
+
+```bash [agent.sh]
 #!/bin/sh
 set -eu
-prompt=$1
-output=$2
-claude -p --model sonnet --tools "Read,Grep,Glob" --allowedTools "Read Grep Glob" \
-  --add-dir "$(dirname "$prompt")" --permission-mode dontAsk \
-  --output-format json --json-schema "$(cat "$(dirname "$0")/candidate-schema.json")" \
-  "Read $prompt. It is a request from Forge to propose Solidity test properties for this project. Follow its brief, guidance, and output_contract. Return the candidate object." \
-  < /dev/null | jq -e '.structured_output' > "$output"
+out=$(cd "$FORGE_PROPERTIES_OUT" && pwd -P)
+exec claude -p "$@" \
+  --tools Read Grep Glob Write Edit Bash \
+  --allowedTools Read Grep Glob "Edit(/$out/**)" "Bash(forge test *)" \
+  --permission-mode dontAsk \
+  "$(cat "$FORGE_PROPERTIES_PROMPT")"
 ```
 
-```json [candidate-schema.json]
-{
-  "type": "object",
-  "additionalProperties": false,
-  "required": [
-    "schema",
-    "rationale",
-    "generator",
-    "files"
-  ],
-  "properties": {
-    "schema": {
-      "type": "string",
-      "const": "foundry/properties-candidate-v1"
-    },
-    "rationale": {
-      "type": "string",
-      "minLength": 1
-    },
-    "generator": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "agent",
-        "model"
-      ],
-      "properties": {
-        "agent": {
-          "type": "string",
-          "minLength": 1
-        },
-        "model": {
-          "type": "string",
-          "minLength": 1
-        }
-      }
-    },
-    "files": {
-      "type": "array",
-      "minItems": 1,
-      "maxItems": 8,
-      "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "path",
-          "content"
-        ],
-        "properties": {
-          "path": {
-            "type": "string",
-            "minLength": 1
-          },
-          "content": {
-            "type": "string",
-            "minLength": 1
-          }
-        }
-      }
-    }
-  }
-}
+```bash
+$ chmod +x agent.sh
 ```
 
-The prompt file is in a temporary directory outside the project. Give the agent read access to that directory, as `--add-dir` does above.
+The extra slash in `Edit(/$out/**)` makes an absolute Claude Code permission rule: if `out` is `/tmp/example`, the rule is `Edit(//tmp/example/**)`. Existing deny rules still apply. For a different agent, adapt the wrapper to its noninteractive mode and permissions.
 
-The output file must contain one candidate:
+An agent writes ordinary `*.sol` files under `FORGE_PROPERTIES_OUT`. Forge does not expect a candidate JSON object or parse the agent's stdout as tests. For each suspected bug, put a claim immediately above the failing test:
 
-```json
-{
-  "schema": "foundry/properties-candidate-v1",
-  "rationale": "The NatSpec says that withdraw reduces totalDeposits by amount.",
-  "files": [
-    {
-      "path": "test/generated/VaultWithdraw.t.sol",
-      "content": "pragma solidity ^0.8.20;\n..."
-    }
-  ]
-}
+```solidity
+// @bug Vault.withdraw src/Vault.sol:42 — Withdrawals must reduce total shares.
 ```
 
-Files must be new Solidity files under the `generated` directory of your test directory. The prompt's `output_contract` gives the exact path prefix and the size limits. A file must not set a fuzz or invariant `seed` in inline config, because Forge sets the seeds.
+Use the actual contract, function, and source location. Use `//`, because `/// @bug` is not a supported NatSpec tag.
 
 #### Run the command
 
-Pass the files to mutate, the brief, the generator, and at least two seeds:
+From your project root, pass the target, context, wrapper, and at least two distinct seeds:
 
 ```bash
-$ forge properties --mutate src/Vault.sol --brief brief.md --generator ./generator.sh \
-    --seed 0x5eed --seed 0xc0ffee --rounds 2 --match-contract VaultTest
+$ forge properties --target src/Vault.sol --context spec.md \
+    --agent-command ./agent.sh --seed 0x5eed --seed 0xc0ffee \
+    --agents 4 --quorum 2 --timeout 300
 ```
 
-`--match-contract` limits mutation testing to the tests that cover the target. Use `--mutation-timeout` to limit the time for each mutant.
+Repeat `--target` for additional project-relative source paths. Omitting it targets all source files in the project's source directory. Repeat `--agent-arg` to pass arguments to your wrapper; for an argument that begins with a hyphen, use `--agent-arg=--option`.
+
+`--timeout` limits each agent session in seconds. It does not limit the subsequent Forge build and test runs. Without it, Forge waits for each session to finish.
 
 #### Review the results
 
-Forge prints one line for each possible bug and lists the files that it kept:
+Read `cache/properties/report.json` and inspect the generated files. These paths use the default cache and test directories:
 
-```text
-possible bug: VaultWithdrawTest::testWithdrawOne (seed 1: counterexample: args=[1]; seed 2: ...)
-  the property fails on every seed against the current implementation; candidate: cache/properties/0x9831...
-added 1 generated test file(s) that reproducibly resolve 22 mutation survivor(s):
-  test/generated/VaultGenerated.t.sol
-```
+| Path | Contents |
+| --- | --- |
+| `cache/properties/report.json` | Possible bugs, reports below quorum, blocked tests, rejected files, timeouts, usage, and kept or duplicate paths. |
+| `cache/properties/agent-N/prompt.md` | The task given to one agent. |
+| `cache/properties/agent-N/agent.log` | That agent's stdout and stderr. |
+| `cache/properties/agent-N/tests/` | Copies of the Solidity files collected from that agent, including failing tests. |
+| `test/generated/agent-N/` | Passing files added to your project. |
+
+Each new run replaces the per-agent cache directories and report. Save evidence you want to retain before running again. Existing generated tests remain in your project but are left out of the temporary workspaces.
 
 ::::
 
 ### Verify
 
-- Run `forge test --match-path 'test/generated/*'`. The kept tests pass.
-- Read `cache/properties/rounds.json`. It records the result and the reasons for every round.
-
-### Keep, report, or reject
-
-Forge keeps a candidate only when all of these are true:
-
-- Every test passes on every seed.
-- The candidate kills at least one surviving mutant, and it kills that mutant on every seed.
-- It does not revive a mutant that an earlier round killed.
-- It does not change the set of mutants, and it does not make a surviving mutant fail to compile.
-- It does not cause a mutant to time out.
-
-#### Possible bugs
-
-If a test fails on every seed against the current code, Forge reports it as a possible bug and does not keep it. Review each report: the property can be wrong, or the code can be wrong. The candidate files stay in `cache/properties/<digest>/candidate.json`.
-
-A later round can keep a test that avoids or even asserts the reported behavior. Forge marks such files with `kept after a possible bug was reported`. Review them together with the report before you merge them.
-
-#### Rejected candidates
-
-A candidate that does not compile, does not kill a survivor, or fails a check is rejected. Forge sends the reason to the generator in the next round. Compiler warnings are removed from these reasons, so the generator sees the error.
-
-### Check a candidate quickly
-
-A generator can compile and run a candidate before it returns it:
+Run the kept tests:
 
 ```bash
-$ forge properties --check candidate.json --seed 0x5eed --seed 0xc0ffee
+$ forge test --match-path 'test/generated/**/*.sol'
 ```
 
-This command does not run mutation testing. It prints `passed`, the failure reasons, and the possible bugs as JSON. The prompt gives the generator the exact command in `output_contract.check_command`. To use it, the generator needs permission to write the candidate file and to run `forge properties`. With Claude Code, allow writes only in the prompt's directory and only that command. File writes use `Edit` rules, and an absolute path starts with `//`:
+Inspect each reported failure against the specification. Agreement between agents is evidence to investigate, not proof that the implementation is wrong. A passing generated test can also encode incorrect intended behavior.
 
-```bash
-scratch=$(dirname "$prompt")
-forge=$(jq -r '.output_contract.check_command[0]' "$prompt")
-claude -p "..." --tools Read Grep Glob Write Bash \
-  --allowedTools Read Grep Glob "Edit(/$scratch/**)" "Edit(//private$scratch/**)" "Bash($forge properties:*)" \
-  --add-dir "$scratch" --permission-mode dontAsk
-```
+### Agent interface
 
-Tell the agent to write the candidate JSON with the Write tool and to run the check command without other commands. Without that instruction, agents often try to build the JSON with a script, which these rules block.
+Your executable can use these environment variables:
 
-### Stateful properties
+| Variable | Value |
+| --- | --- |
+| `FORGE_PROPERTIES_PROMPT` | Path to the Markdown task file. |
+| `FORGE_PROPERTIES_TARGETS` | Project-relative target paths, one per line. |
+| `FORGE_PROPERTIES_CONTEXT` | Absolute reference-file paths, one per line. |
+| `FORGE_PROPERTIES_OUT` | Absolute, initially empty directory for this agent's Solidity tests. |
+| `FORGE_PROPERTIES_SEED` | This agent's derived seed in hexadecimal. |
+| `FORGE_PROPERTIES_USAGE` | Optional output path for usage JSON with `input_tokens`, `output_tokens`, and `cost_usd`. |
 
-When documented behavior spans several calls, the prompt asks the generator for an invariant test that follows this convention:
+Forge captures the agent's output in its log and supplies no stdin. A nonzero exit status makes the command report an error, but Forge still validates tests already written by that agent. A timeout also ends the session and validates its collected tests.
 
-- One handler contract wraps each documented state-changing function. The test targets only the handler with `targetContract` and `targetSelector`.
-- `setUp` deploys the contracts and funds two or three fixed actors.
-- Each handler action picks the actor from a fuzzed seed, uses `bound` for every input, and returns early when a documented precondition fails. It does not use `vm.assume`.
-- Ghost variables track expected state from the handler's own inputs, never from the code under test.
-- One `invariant_` function checks each documented claim for every actor.
-- Runs and depth stay at 32 or less with inline config, because mutation testing reruns the campaign for every mutant.
+### How results are classified
 
-If `isolate` is `true`, each external call from a test contract runs as its own transaction. Transient storage does not persist between those calls.
+A possible bug must fail on every supplied seed. Forge groups failures using their `@bug` claims, matching the target function, Solidity file, and nearby source lines. Without matching structured tags, it uses source-file and claim similarity.
 
-### Cost
+The default quorum is two agents, or one with `--agents 1`. Use `--quorum K` to change it; `K` must be between one and the agent count. Groups below quorum remain visible in the output and report.
 
-Mutation testing runs once for each seed for the baseline, and again for each candidate that passes its tests. Seeds run in parallel. For a library with about 1,000 mutants, expect tens of minutes per mutation run. Use `--match-contract` and `--mutation-timeout` to reduce the cost.
+Forge keeps files whose tests pass on every seed, together with their required generated imports. A failing, skipped, or inconsistently passing test prevents its file from being kept. A file that already exists in your project is not overwritten.
 
-### Limitations
+Files that fail compilation or set a seed, `ffi`, or `fs_permissions` through inline configuration are rejected. Failures caused by blocked FFI, network, or environment cheatcodes are recorded separately from possible bugs.
 
-- Results depend on the generator, its model, and its permissions.
-- A kept property describes the current behavior. It can lock in a bug that no round reported.
-- A higher mutation score shows stronger tests. It does not show that the code has no bugs.
-- Some surviving mutants cannot be killed because they are equivalent to the original code. The prompt marks common cases with `likely_equivalent`.
+### Execution boundaries and cost
+
+The temporary project copies are workspaces, not operating-system sandboxes. Agents inherit your environment and run with the permissions of their wrapper. Dependency entries are linked to the original project. Configure your agent's sandbox and permissions for the project you are reviewing, and avoid changing project files during a run. Forge records detected project changes as a tainted run.
+
+Forge's own validation runs use a restricted environment and temporary home directory. Generated tests have FFI and network access disabled by default. `--allow-ffi` permits FFI only if the project also enables it; `--allow-network` permits network cheatcodes and retains configured RPC settings. These flags control Forge's validation, not the external agent's network or host permissions.
+
+Model cost depends on your agent configuration and the number and duration of sessions. Forge sums usage only when agents write the optional usage file. More seeds increase the number of validation runs. Review reports below quorum as well as those that reach it.
 
 ### Next steps
 
-- [Mutation testing](/guides/mutation-testing)
 - [Invariant testing](/guides/invariant-testing)
+- [Mutation testing](/guides/mutation-testing)
 - [Symbolic testing](/guides/symbolic-testing)
