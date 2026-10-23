@@ -161,11 +161,34 @@ fs_permissions = [
 
 Named endpoints under `[rpc_endpoints]` accept either a URL string or an object.
 Objects support `endpoint` (or an `endpoints` array), `auth`, `retries`,
-`retry_backoff`, and `compute_units_per_second`:
+`retry_backoff`, `compute_units_per_second`, and `profile`:
 
 ```toml
 [rpc_endpoints]
 mainnet = { endpoints = ["${MAINNET_RPC_URL}", "${FALLBACK_RPC_URL}"], retries = 5, retry_backoff = 1000, compute_units_per_second = 330 }
+```
+
+`profile` names a profile whose compiler settings, `hardfork`, and
+`create2_library_salt` apply to forks selected through that endpoint URL in scripts and tests.
+Forge compiles each distinct set of compiler settings once, while retaining each profile's
+execution hardfork and library salt. CLI compiler overrides still take precedence. Contracts you
+deploy directly from a script or test use the selected build, including its `libraries`, while the
+script or test harness itself keeps the run profile. `vm.getCode`, `vm.getDeployedCode`, and
+`vm.deployCode` also select the endpoint build. Calls to an on-chain factory execute the initcode
+supplied to that factory.
+
+Libraries without configured addresses are deployed through the CREATE2 deployer on each chain
+before their first broadcast use. Profile artifacts are cached under `cache/profiles/` and are used
+to decode constructor arguments and verify deployments. Endpoint URLs are resolved when used;
+unset environment variables in unused endpoints do not cause network requests. Endpoints sharing
+a URL must select equivalent builds and runtime settings.
+
+```toml
+[profile.base]
+libraries = ["src/Lib.sol:Lib:0x1111111111111111111111111111111111111111"]
+
+[rpc_endpoints]
+base = { endpoint = "${BASE_RPC_URL}", profile = "base" }
 ```
 
 `[rpc_storage_caching]` supports `chains` (`"all"`, `"none"`, or an array of
