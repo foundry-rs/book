@@ -84,8 +84,8 @@ skip = []
 cache = true
 
 # Whether to dynamically link tests
-# Default: false
-dynamic_test_linking = false
+# Default: true
+dynamic_test_linking = true
 
 # Whether to forcefully clean all project artifacts before running commands
 # Default: false
@@ -458,6 +458,7 @@ endpoints = "remote"
 # Disables storage caching entirely (overrides rpc_storage_caching)
 # Default: false
 no_storage_caching = false
+fork_prefetch = false
 
 # Disables rate limiting entirely (overrides compute_units_per_second)
 # Default: false

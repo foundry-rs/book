@@ -1,17 +1,21 @@
 ---
-description: "Decode ABI-encoded input or output data. Defaults to decoding output data. To decode input data pass --input. When passing `--input`, function selector must NOT be prefixed in `calldata` string"
+description: "Decode ABI-encoded input or output data Defaults to decoding output data. To decode input data pass --input. When passing `--input`, function selector must NOT be prefixed in `calldata` string. Examples: - cast decode-abi \"balanceOf(address)(uint256)\" $DATA - cast decode-abi --input \"transfer(address,uint256)\" $CALLDATA"
 ---
 
 _Generated from `cast decode-abi --help`; see [CLI reference versions](/reference/versions). Regenerate this page instead of editing it directly._
 
 ## cast decode-abi
 
-Decode ABI-encoded input or output data.
+Decode ABI-encoded input or output data
 
 Defaults to decoding output data. To decode input data pass --input.
 
 When passing `--input`, function selector must NOT be prefixed in `calldata`
-string
+string.
+
+Examples:
+- cast decode-abi "balanceOf(address)(uint256)" $DATA
+- cast decode-abi --input "transfer(address,uint256)" $CALLDATA
 
 :::terminal
 

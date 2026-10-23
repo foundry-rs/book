@@ -1,10 +1,11 @@
-import { LoadingText } from './LoadingText'
+import { CompareSkeleton } from './Skeleton'
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import { BenchmarkHistory } from './BenchmarkHistory'
 import { changeClass, formatChange } from './change'
 import { formatRawValue, formatValue } from './formatValue'
 import { loadHistory, loadRun } from './data'
 import { BenchmarkSources } from './BenchmarkSources'
+import { Combobox } from './Combobox'
 import type { RunDocument, Theme } from './types'
 import { benchmarkMetric as value } from './benchmarkMetric'
 import { replaceUrl } from './navigation'
@@ -17,18 +18,16 @@ import {
 import { compilerLabel } from './compilerLabel'
 import { compilerColumn } from './compilers'
 import { useImportProgress } from './importProgress'
+import { project } from './project'
 
-const metrics: Record<
-  string,
-  { label: string; key: string; unit: 'bytes' | 'gas' | 'seconds' | 'memory' }
-> = {
-  runtimeGas: { label: 'Runtime gas', key: 'total_gas', unit: 'gas' },
-  deployGas: { label: 'Deploy gas', key: 'deploy_gas', unit: 'gas' },
-  runtimeSize: { label: 'Runtime bytes', key: 'runtime_size', unit: 'bytes' },
-  creationSize: { label: 'Creation bytes', key: 'bytecode_size', unit: 'bytes' },
-  compileTime: { label: 'Compile time', key: 'compile_time_seconds', unit: 'seconds' },
-  peakMemory: { label: 'Peak memory (RSS)', key: 'peak_rss_bytes', unit: 'memory' },
-}
+const metrics = Object.fromEntries(
+  project.metrics.map((metric) => [metric.key, { ...metric, label: metric.label ?? metric.title }]),
+)
+const metricOptions = project.metrics.map((metric) => ({
+  value: metric.key,
+  label: metric.label ?? metric.title,
+}))
+const repository = `https://github.com/${project.repository}`
 
 const short = (commit: string) => commit.slice(0, 8)
 
@@ -63,9 +62,9 @@ export function Compare({ base, head }: Props) {
   const [query, setQuery] = useState('')
   const [sort, setSort] = useState<ComparisonSort>()
   const [metric, setMetric] = useState(
-    Object.entries(metrics).find(
-      ([name, definition]) => name === initialMetric || definition.key === initialMetric,
-    )?.[0] ?? 'runtimeGas',
+    project.metrics.find(
+      (definition) => definition.alias === initialMetric || definition.key === initialMetric,
+    )?.key ?? project.metrics[0].key,
   )
   const [expanded, setExpanded] = useState(initial.get('benchmark') ?? '')
   const selectedRow = useRef<HTMLButtonElement>(null)
@@ -74,7 +73,7 @@ export function Compare({ base, head }: Props) {
     let cancelled = false
     setRuns(null)
     setLoadError(null)
-    Promise.all([loadRun(base, baseRevision), loadRun(head, headRevision)]).then(
+    Promise.all([loadRun(base, baseRevision, head), loadRun(head, headRevision, base)]).then(
       (value) => {
         if (!cancelled) setRuns(value)
       },
@@ -99,7 +98,7 @@ export function Compare({ base, head }: Props) {
   const compilers = useMemo(() => (runs ? comparisonCompilers(runs[1]) : []), [runs])
 
   useEffect(() => {
-    selectedRow.current?.scrollIntoView({ block: 'nearest', inline: 'nearest' })
+    selectedRow.current?.scrollIntoView({ block: 'start', inline: 'nearest' })
   }, [expanded, rows])
 
   const selectBenchmark = (benchmark: string) => {
@@ -117,28 +116,23 @@ export function Compare({ base, head }: Props) {
         <p className="error">{loadError}</p>
       </main>
     )
-  if (!runs)
-    return (
-      <main className="compare-page">
-        <p className="empty" role="status">
-          <LoadingText>{importProgress || 'Loading benchmark runs…'}</LoadingText>
-        </p>
-      </main>
-    )
+  if (!runs) return <CompareSkeleton progress={importProgress} />
   const [beforeRun, afterRun] = runs
 
   return (
     <main className="compare-page">
       <section className="run-overview">
-        <p className="eyebrow">Benchmark run</p>
-        <h1>Benchmark comparison</h1>
+        <p className="eyebrow">Benchmark comparison</p>
+        <h1>{afterRun.title || `Commit ${short(head)}`}</h1>
         <p className="run-meta">
           <time>{formatRunDate(afterRun.timestamp)}</time> ·{' '}
-          <a href={`https://github.com/paradigmxyz/solar/commit/${head}`}>{short(head)}</a> ·{' '}
+          <a href={`${repository}/commit/${head}`}>{short(head)}</a> vs{' '}
+          <a href={`${repository}/commit/${base}`} title={beforeRun.title ?? undefined}>
+            {short(base)}
+          </a>{' '}
+          ·{' '}
           {afterRun.pr ? (
-            <a href={`https://github.com/paradigmxyz/solar/pull/${afterRun.pr}`}>
-              PR #{afterRun.pr}
-            </a>
+            <a href={`${repository}/pull/${afterRun.pr}`}>PR #{afterRun.pr}</a>
           ) : (
             (afterRun.branch ?? 'detached')
           )}{' '}
@@ -146,8 +140,8 @@ export function Compare({ base, head }: Props) {
           <a
             href={
               afterRun.workflow_run_id
-                ? `https://github.com/paradigmxyz/solar/actions/runs/${afterRun.workflow_run_id}`
-                : 'https://github.com/paradigmxyz/solar/actions'
+                ? `${repository}/actions/runs/${afterRun.workflow_run_id}`
+                : `${repository}/actions`
             }
           >
             GitHub workflow
@@ -161,22 +155,17 @@ export function Compare({ base, head }: Props) {
           value={query}
           onChange={(event) => setQuery(event.target.value)}
         />
-        <select
-          aria-label="Metric"
+        <Combobox
+          label="Metric"
           value={metric}
-          onChange={(event) => {
-            setMetric(event.target.value)
+          options={metricOptions}
+          onChange={(key) => {
+            setMetric(key)
             const url = new URL(window.location.href)
-            url.searchParams.set('metric', metrics[event.target.value].key)
+            url.searchParams.set('metric', metrics[key].key)
             replaceUrl(url)
           }}
-        >
-          {Object.entries(metrics).map(([key, config]) => (
-            <option key={key} value={key}>
-              {config.label}
-            </option>
-          ))}
-        </select>
+        />
       </section>
       <section
         className="results"
@@ -228,19 +217,19 @@ export function Compare({ base, head }: Props) {
                   {after.test_id}
                 </code>
                 <span
-                  title={`${compilerLabel(afterRun, after.test_id, 'solar')}: ${formatRawValue(headValue, metrics[metric].unit)}`}
+                  title={`${compilerLabel(afterRun, after.test_id, project.compiler)}: ${formatRawValue(headValue, metrics[metric].unit)}`}
                 >
                   {headValue === null ? '—' : formatValue(headValue, metrics[metric].unit)}
                 </span>
                 {compilers.map((compiler) => {
                   const comparedValue = value(
-                    compiler === 'solar' ? before : headResult,
+                    compiler === project.compiler ? before : headResult,
                     metrics[metric].key,
                     compiler,
                   )
                   const delta = percentChange(headValue, comparedValue)
                   const label = compilerLabel(
-                    compiler === 'solar' ? beforeRun : afterRun,
+                    compiler === project.compiler ? beforeRun : afterRun,
                     after.test_id,
                     compiler,
                   )

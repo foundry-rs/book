@@ -78,6 +78,8 @@ export const forgeCliReference: SidebarItem = {
         { text: "forge fuzz show", link: "/reference/forge/fuzz/show" },
         { text: "forge fuzz tmin", link: "/reference/forge/fuzz/tmin" },
         { text: "forge lint", link: "/reference/forge/lint" },
+        { text: "forge lsp", link: "/reference/forge/lsp" },
+        { text: "forge reinit", link: "/reference/forge/reinit" },
         { text: "forge script", link: "/reference/forge/script" },
         { text: "forge selectors", link: "/reference/forge/selectors" },
         { text: "forge selectors cache", link: "/reference/forge/selectors/cache" },

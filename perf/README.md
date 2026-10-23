@@ -1,7 +1,37 @@
 # Foundry performance site
 
-This Vite app runs at `getfoundry.sh/perf/solar/`. The browser reads only the
-same-origin API. GitHub and ClickHouse credentials stay in Vercel Functions.
+This Vite app runs at `getfoundry.sh/perf/solar/` and `getfoundry.sh/perf/evm2/`.
+The browser reads only the same-origin API. GitHub and ClickHouse credentials stay
+in Vercel Functions.
+
+## Projects
+
+`src/projects.ts` defines each project: repository, workflow file, artifact name,
+primary compiler, metrics, and display name. The same app is built once per project
+with `PERF_PROJECT=<id>` (default `solar`), which sets the base path `/perf/<id>/`.
+Solar keeps its original API paths under `/api/`; other projects use
+`/api/<id>/` (for example `/api/evm2/data/index.json`). One ClickHouse database
+holds every project: `run_snapshots.project` and `ingestion_jobs.project` default to
+`solar`, so existing rows remain Solar's. The cron tick imports `main` runs for every
+project; a failure in one project does not stop the others.
+
+Metrics with a legacy snapshot column (`total_gas`, `compile_time_seconds`, …) keep
+using it. Other metrics declared by the project or by the results document's
+top-level `metrics` map are stored in `run_snapshots.metric_values`, keyed by
+`<test_id>/<compiler>`. Run documents merge them into each compiler's results.
+Solar snapshots store no extra metrics, so their revision hashes are unchanged.
+
+evm2 PR runs whose base commit has no usable run of its own (no run, or no artifact)
+also upload `jit-bench-baseline`, whose `results.json` names the base commit. When a
+comparison's base has no artifact, the importer reads the other compared commit's
+runs for that artifact and publishes it under workflow run 0 with no branch: any
+real run of the base takes precedence, and baselines never enter `main` history.
+Comparison requests carry the other commit (both commits in `runs.json` and
+`viewer.json`, or `partner=<sha>` on a single `run.json`). Baseline imports do not
+write `ingestion_jobs` rows, because they share the PR run's workflow ID.
+
+Completed runs without the project's artifact, such as evm2 runs from before the
+JIT job existed, are recorded as `missing` and not retried.
 
 TODO: Replace the temporary `/perf` and `/perf/` redirects in `vercel.json` with
 a generic performance dashboard when more projects are available. Until then,
@@ -49,9 +79,9 @@ Origin index/history misses coalesce for one second; immutable bodies have a bou
 Vercel logs emit `perf_api` events with route, status, API/database/SQL durations,
 read rows/bytes and ClickHouse query IDs for percentile analysis. SQL reads have a
 five-second execution limit and a ten-second transport timeout.
-Formatted artifacts are retained in a bounded browser cache. Files larger than
-512 Ki characters skip JSON formatting and interactive diffing, with a bounded
-text preview and full-content downloads to keep navigation responsive.
+Formatted artifacts are retained in a bounded browser cache. Files of any size are
+formatted and diffed; the library renders files over 100,000 lines without syntax
+highlighting.
 Interactive diff computation uses patience line matching in a cancellable browser
 worker with a five-second limit. Unlike unbounded Myers diffing, patience anchors
 unique lines and replaces unmatched regions rather than searching for a minimal edit
@@ -61,27 +91,33 @@ and retains both full files for context expansion. On timeout or worker failure,
 both files remain downloadable with bounded previews; the failed content pair stays
 failed for the page session, with no automatic retries on revisits or visibility changes.
 Theme and split/unified changes reuse the computed diff. Syntax highlighting
-uses the library's worker pool (one worker, retained across file/compiler switches);
-intraline word decorations are enabled only when both sides together contain at most
-2,000 lines, 200 changed lines, and 32,768 characters. Lines longer than 256 characters
-skip word matching. Large diffs retain syntax colors and added/deleted line colors
-without intraline decorations, whose Shiki processing becomes quadratic on generated
-files. These are whole-diff limits: Pierre does not expose per-block decoration budgets.
-Changing between decorated and undecorated diffs clears the library's highlighting
-caches through `setRenderOptions`; the worker and our computed-diff cache are retained.
-`@pierre/diffs` 1.4.1 includes the large-hunk stack-overflow fix upstream;
-no dependency patch is needed. Its edit-session APIs are not used by this read-only viewer.
+uses the library's worker pool (one worker, retained across file/compiler switches)
+with [Highlights](https://diffs.com/highlights), Pierre's WebAssembly highlighter, instead
+of Shiki. It highlights both GitHub themes in one pass, so a theme switch only swaps CSS
+variables. Highlights has no lexers for Yul, EVM disassembly, Solar MIR, EVM IR or LLVM IR:
+Yul uses its Solidity lexer, the others its assembly lexer, and hex bytecode stays plain
+text. Every diff gets Pierre's default intraline word decorations, which skip lines
+longer than 1,000 characters.
+Pierre's edit-session APIs are not used by this read-only viewer.
 `FileDiff`/`File` use Pierre's `Virtualizer` with `setup(document)` through
 `VirtualizerContext`: the browser page scrolls normally while only visible lines
 are rendered. The file toolbar and side labels stick during scrolling. The file
 tree can be collapsed or resized with a pointer or the separator's arrow keys;
-its visibility and width reset on reload. Narrow screens stack the tree above the
-diff and omit the resize handle. File icons use Pierre's complete colored set, as on
+its visibility and width reset on reload. As on DiffsHub, narrow screens and
+landscape phones open on a unified diff and show the tree as a bottom sheet that
+closes once you pick a file. File icons use Pierre's complete colored set, as on
 [DiffsHub](https://diffshub.com). `src/artifactIcons.ts` adds icons for formats that set
 lacks: Solidity (`.sol`), EVM IR (`.evmir`) and LLVM IR (`.ll`) use
 [Simple Icons](https://simpleicons.org) marks (CC0-1.0); Solar MIR (`.mir`), Yul
-(`.yul`), disassembly (`.disasm`) and hex bytecode (`.hex`) use
+(`.yul`), disassembly (`.disasm`), hex bytecode (`.hex`) and Graphviz graphs (`.dot`) use
 [Lucide](https://lucide.dev) glyphs (ISC, the license bundled with `lucide-react`).
+SVG files open as images. Graphviz files, such as evm2's `bytecode.dot` control-flow
+graph, open as SVG images rendered by [Viz.js](https://github.com/mdaines/viz-js)
+(Graphviz compiled to WebAssembly) in a worker per side. A Source toggle shows the text
+diff instead. As on GitHub, changed images compare 2-up (side by side, with dimensions
+and file sizes), by swipe (a draggable divider over both images) or by onion skin (the
+head fades in over the base); overlays share a frame sized to the larger image. The
+image element keeps scripts and links in the SVG inert.
 File cache keys
 include a SHA-256 of the actual formatted text, path, and language, preventing
 same-name artifacts from sharing highlighting. Completed diffs reuse the existing
@@ -123,6 +159,19 @@ Repeat until `scanned` is zero; resolve any `failed` commits before repeating.
 This maintenance endpoint does not run automatically on the import cron.
 Roll back by restoring the old deployment; the additive column can remain.
 
+### Multi-project rollout
+
+Before deploying the evm2 project, apply the additive `project` and `metric_values`
+columns from `schema/snapshots.sql` and `schema/ingestion-jobs.sql` with
+`pnpm run db:schema` and a schema-admin account. The current deployment keeps working
+against the migrated tables (new columns have defaults); the new deployment fails
+without them, so migrate first. Table-level grants already cover the new columns. The
+reader's column grant on `ingestion_jobs` needs no change, because only the writer
+reads `ingestion_jobs.project`. Roll back by restoring the old deployment; the columns
+can remain. Old readers do not filter by project, so once evm2 runs exist they would
+appear in Solar's run index and history axis: delete them first with
+`ALTER TABLE run_snapshots DELETE WHERE project != 'solar'`.
+
 Legacy artifact URLs remain supported through snapshot manifests and content hashes.
 Writers now populate only snapshots and blobs. Before retiring `runs`,
 `benchmark_results`, and `artifact_files`, rerun the additive backfill, verify
@@ -133,8 +182,9 @@ dropping them. A pre-snapshot deployment requires restoring those backups first.
 Public object storage is not required for this stage: deduplicated bodies remain
 in ClickHouse until the artifact-store access and environment scope are approved.
 
-The Vercel project root is the Book repository root. It builds the Book, this app,
-and its API into one deployment. The app is served at `/perf/solar/`, and
+The Vercel project root is the Book repository root. It builds the Book, this app
+(once per project), and its API into one deployment. The app is served at
+`/perf/solar/` and `/perf/evm2/`, and
 `scripts/build-vercel-api.mjs` adds the `/api/*` route and function to Vocs' Build
 Output. Reads and imports deploy as separate Node.js 24 functions with five-minute
 execution limits. Missing-run reads dispatch to the authenticated worker using
@@ -167,10 +217,6 @@ streamed download/extraction stage intentionally includes both network and CPU w
 Compare these worker logs with `perf_api` and browser timings: time outside the API
 timer is not automatically evidence of a cold start.
 
-Run the deterministic pending/retry/missing-run browser checks with
-`pnpm exec playwright test --config perf/playwright.config.ts` from the repository
-root. They use a local demo server and intercepted responses, never production data.
-
 Configure these server-only variables in Production and in the Preview environment
 used for testing (prefer branch-scoped preview credentials):
 
@@ -188,8 +234,11 @@ GH_APP_PRIVATE_KEY
 CRON_SECRET
 ```
 
-Install the GitHub App only on `paradigmxyz/solar` with Actions, Contents, and Pull requests
-read permission. `CLICKHOUSE_READ_*` may select the public tables and the status
+Install the GitHub App on `paradigmxyz/solar` and `alloy-rs/evm2` (selected repositories
+only) with Actions, Contents, and Pull requests read permission. `GH_APP_INSTALLATION_ID`
+is Solar's installation; other repositories find theirs through
+`GET /repos/{owner}/{repo}/installation` with the App JWT, so a new project needs no new
+variable. `CLICKHOUSE_READ_*` may select the public tables and the status
 columns below. Before deploying this version, grant status reads (substitute your
 database/user names if different):
 
@@ -237,10 +286,18 @@ node scripts/ingest-run.mjs \
   --artifacts /path/to/solar/target/codegen-bench/artifacts \
   --commit <solar-sha> \
   --workflow-run 1
+node scripts/ingest-run.mjs --project evm2 \
+  --results /path/to/evm2/target/jit-bench/results.json \
+  --artifacts /path/to/evm2/target/jit-bench/artifacts \
+  --workflow-run 2 --branch main
 pnpm dev
+PERF_PROJECT=evm2 pnpm dev --port 5174
 ```
 
-Open `http://127.0.0.1:5173/perf/solar/?base=<base-sha>&head=<head-sha>`.
+Open `http://127.0.0.1:5173/perf/solar/?base=<base-sha>&head=<head-sha>` or
+`http://127.0.0.1:5174/perf/evm2/?base=<base-sha>&head=<head-sha>`. `--commit` defaults
+to the results document's `commit` field. `pnpm db:backfill --project evm2` backfills
+evm2 `main` runs.
 
 To preview the dashboard without ClickHouse or credentials, run the Vite server with
 `PERF_DEMO_DATA=1`. The same explicit flag works in Vercel as a rollback: set it and
@@ -263,11 +320,23 @@ then compare two successful Solar benchmark commits at `/perf/solar/?base=<sha>&
 The old `/perf/` URL redirects to `/perf/solar/`; API endpoints remain at `/api/`.
 The dashboard shows one graph per benchmark, with a metric selector and name filter.
 `/api/data/history.json?metric=total_gas` returns only the selected Solar metric for the
-latest 60 main-branch runs, as a shared run axis and one value array per benchmark.
+selected main-branch date range (90 days by default), as a shared run axis and one
+value array per benchmark. Select 30d, 90d, 1y, or All on the dashboard or in an
+individual benchmark. The API accepts `range=30d|90d|1y|all` and returns up to 1,000
+runs per page; pass its opaque `nextCursor` as `cursor` for older pages. The browser
+loads every page and retains raw measurements for hover and comparisons.
+Charts use elapsed time on the horizontal axis. Gas and bytecode sizes use step
+lines; timing and memory use lines with time-bucket endpoints, minima, and maxima
+for long histories. Missing measurements always break the line. Markers appear
+only while hovering or using the keyboard. Arrow keys select runs, Home/End jump
+to endpoints, and Enter compares the selected run with its preceding commit.
+The Changed only filter compares exact measured values within the selected range;
+missing measurements alone do not count as a value change.
 Opening an individual benchmark requests `&benchmark=<encoded name>`: one bounded database
 query returns only that benchmark and metric, never other benchmarks or artifacts.
 Values are never summed across benchmarks; failed or missing
-measurements leave gaps. Click a graph point to compare it with the preceding commit.
+measurements leave gaps. Hover a graph to inspect a measurement; click to compare it with the preceding commit.
+On touch screens, the first tap inspects a run and a second tap on it compares.
 The individual benchmark History section uses the same graph. Dashboard cards
 without a latest measurement are hidden for the selected metric; individual benchmark
 history still retains older measurements. The index contains metadata and benchmark
@@ -325,12 +394,17 @@ the docs root `/`. A missing run is imported on demand; an already stored run is
 without downloading its GitHub artifact again. Keep secrets out of URLs and screenshots.
 
 `scripts/ingest-github-runs.mjs` is the one-off local backfill tool. It uses the
-authenticated `gh` CLI and the same ClickHouse schema. Do not run it from a pull
+authenticated `gh` CLI and the same ClickHouse schema. With database write
+credentials loaded, run `pnpm --dir perf db:backfill --limit 10000` to recover
+available older runs. Already imported attempts are skipped. Expired GitHub
+artifacts cannot be recovered by this tool; stored snapshots remain available
+regardless of GitHub artifact retention. Do not run it from a pull
 request workflow and do not give repository Actions ClickHouse credentials.
 
 ## Producer contract
 
-The GitHub artifact is named `codegen-runtime-results` and contains `results.json`
+The GitHub artifact is named `codegen-runtime-results` (Solar) or `jit-bench-results`
+(evm2) and contains `results.json`
 at its root (or inside one unambiguous wrapper directory). A separate baseline
 results document must not replace the run's own results. Metrics accept either a
 results array or `{ results: [...] }`, `test_id`/`id`/`name` identifiers, nested
@@ -350,7 +424,9 @@ Already imported runs need a reimport to gain these source files.
 The viewer builds its directory and compiler selectors from the stored manifest,
 shows files present on either side, and loads only the selected file. Unknown
 extensions render as plain text; HTML is displayed as source, never executed.
-Binary files are omitted. Paths, file counts, and compressed/uncompressed sizes
+PNG, JPEG, GIF, WebP and AVIF images (by extension) are stored base64-encoded and
+shown as images, as are SVG files; Copy and Open raw use the decoded image. Other
+binary files are omitted. Paths, file counts, and compressed/uncompressed sizes
 are bounded; the local importer rejects symlinks. No artifact content is executed.
 
 Each selected side has Copy and Open raw controls for the original, unformatted

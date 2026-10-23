@@ -263,6 +263,36 @@ The value is the initial retry delay in milliseconds, so `1000` starts retries w
 
 Or use a dedicated RPC provider with higher limits.
 
+#### Put a caching proxy in front of your RPCs
+
+If one RPC rate-limits or fails, a local JSON-RPC proxy such as [eRPC](https://github.com/erpc/erpc) can fail over between several RPCs. Every process that uses the proxy, such as parallel `forge test` jobs or `anvil`, shares its cache, so repeated fork reads do not reach the RPCs:
+
+```yaml [erpc.yaml]
+database:
+  evmJsonRpcCache:
+    connectors:
+      - id: mem
+        driver: memory
+    policies:
+      - connector: mem
+        network: "*"
+        method: "*"
+        finality: finalized
+        empty: allow
+projects:
+  - id: main
+    upstreams:
+      - endpoint: https://ethereum.reth.rs/rpc
+      - endpoint: https://eth.drpc.org
+```
+
+```bash
+$ docker run -v $(pwd)/erpc.yaml:/erpc.yaml -p 4000:4000 ghcr.io/erpc/erpc:latest
+$ forge test --fork-url http://localhost:4000/main/evm/1 --fork-block-number 18000000
+```
+
+`empty: allow` also caches empty results such as `0x` code, which fork tests read often. Cache only `finalized` data, so pin `--fork-block-number` to a finalized block.
+
 #### Stale cache
 
 If tests behave unexpectedly after protocol upgrades:

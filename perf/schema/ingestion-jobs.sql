@@ -1,4 +1,5 @@
 CREATE TABLE IF NOT EXISTS ingestion_jobs (
+  project LowCardinality(String) DEFAULT 'solar',
   workflow_run_id UInt64,
   commit FixedString(40),
   state LowCardinality(String),
@@ -8,3 +9,5 @@ CREATE TABLE IF NOT EXISTS ingestion_jobs (
   updated_at DateTime64(3, 'UTC') DEFAULT now64(3)
 ) ENGINE = ReplacingMergeTree(updated_at)
 ORDER BY workflow_run_id;
+
+ALTER TABLE ingestion_jobs ADD COLUMN IF NOT EXISTS project LowCardinality(String) DEFAULT 'solar';

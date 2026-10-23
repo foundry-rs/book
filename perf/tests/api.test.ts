@@ -4,6 +4,7 @@ import { createApi } from '../src/server/api'
 import { clickHouseConfig } from '../src/server/clickhouse'
 import vercelDemo from '../src/server/vercel-demo'
 import { artifactMetadata } from '../src/server/artifacts'
+import { projects } from '../src/projects'
 
 const config = {
   database: 'solar_perf',
@@ -71,7 +72,10 @@ describe('website API', () => {
     const hash = 'd'.repeat(64)
     globalThis.fetch = vi.fn(async (_input, init) => {
       const sql = init?.body
-      expect(sql).toContain('arrayFilter(f -> f.test_id = {benchmark:String}, artifacts)')
+      expect(sql).toContain(
+        'arrayFilter(f -> f.test_id = {benchmark:String}, artifacts) AS scoped_artifacts',
+      )
+      expect(sql).toContain('arrayDistinct(artifacts.test_id) AS artifact_benchmarks')
       expect(sql).toContain(`revision = '${revision}'`)
       return new Response(
         commits
@@ -80,7 +84,8 @@ describe('website API', () => {
               commit,
               revision,
               measurements: [['counter', '', '', 'solar', 'ok']],
-              artifacts: [['counter', 'output.json', 'solar', 10, hash, '1.json']],
+              scoped_artifacts: [['counter', 'output.json', 'solar', 10, hash, '1.json']],
+              artifact_benchmarks: ['sum-array', 'counter'],
             }),
           )
           .join('\n'),
@@ -94,6 +99,7 @@ describe('website API', () => {
     const { runs } = await response.json()
     expect(runs).toHaveLength(2)
     expect(runs[0].artifacts.counter[0].contentHashes.solar).toBe(hash)
+    expect(runs[0].artifactBenchmarks).toEqual(['sum-array', 'counter'])
     expect(globalThis.fetch).toHaveBeenCalledOnce()
     expect((await app.request(`/api/data/viewer.json?commits=${commits.join(',')}`)).status).toBe(
       400,
@@ -209,7 +215,8 @@ describe('website API', () => {
       `/api/data/runs.json?commits=${commits.join(',')}`,
     )
     expect(response.status).toBe(200)
-    expect(importRun).toHaveBeenCalledExactlyOnceWith(commits[1])
+    // The other compared commit may carry the missing side's baseline.
+    expect(importRun).toHaveBeenCalledExactlyOnceWith(commits[1], projects.solar, commits[0])
     const sql = vi.mocked(globalThis.fetch).mock.calls[1][1]?.body
     expect(sql).toContain(commits[1])
     expect(sql).not.toContain(commits[0])
@@ -236,7 +243,7 @@ describe('website API', () => {
     const response = await app.request('/api/resolve?ref=Release%2Fv1')
     expect(await response.json()).toEqual({ commit: 'a'.repeat(40) })
     expect(response.headers.get('cache-control')).toBe('no-store')
-    expect(resolveRef).toHaveBeenCalledWith('Release/v1')
+    expect(resolveRef).toHaveBeenCalledWith('Release/v1', projects.solar)
     expect((await app.request('/api/resolve?ref=')).status).toBe(400)
     expect(resolveRef).toHaveBeenCalledOnce()
     expect(globalThis.fetch).not.toHaveBeenCalled()
@@ -249,7 +256,7 @@ describe('website API', () => {
     expect(await (await app.request(`/api/resolve?ref=${ref}`)).json()).toEqual({
       commit: 'a'.repeat(40),
     })
-    expect(resolveRef).toHaveBeenCalledWith(ref)
+    expect(resolveRef).toHaveBeenCalledWith(ref, projects.solar)
   })
   it('deduplicates and briefly caches mutable ref resolution without caching failures', async () => {
     const resolveRef = vi.fn(async () => 'a'.repeat(40))
@@ -304,7 +311,7 @@ describe('website API', () => {
     expect(values).toEqual({ small: [12, null] })
     expect(queries).toHaveLength(1)
     expect(queries[0]).toContain("branch = 'main'")
-    expect(queries[0]).toContain('LIMIT 60')
+    expect(queries[0]).toContain('LIMIT 1001')
     expect(queries[0]).toContain("compiler = 'solar'")
     expect(queries[0]).toContain('test_id = {benchmark:String}')
     expect(queries[0]).not.toMatch(/compile_time_seconds|peak_rss_bytes/)
@@ -316,6 +323,59 @@ describe('website API', () => {
     expect(response.headers.get('vercel-cdn-cache-control')).toContain('s-maxage=60')
     expect((await app.request('/api/data/history.json?metric=oops')).status).toBe(400)
     expect(queries).toHaveLength(1)
+  })
+
+  it('scopes project routes and reads metrics without snapshot columns', async () => {
+    const queries: string[] = []
+    globalThis.fetch = vi.fn(async (_url, options) => {
+      queries.push(String(options?.body))
+      return new Response(
+        JSON.stringify({
+          commit: 'a'.repeat(40),
+          timestamp: '2026-09-07T00:00:00Z',
+          test_id: 'weth',
+          value: 21851,
+        }),
+      )
+    })
+    const app = createApi({ clickHouse: config })
+    const response = await app.request('/api/evm2/data/history.json?metric=jit_size_bytes')
+    expect(response.status).toBe(200)
+    expect((await response.json()).values).toEqual({ weth: [21851] })
+    expect(queries[0]).toContain("project = 'evm2'")
+    expect(queries[0]).toContain("compiler = 'evm2'")
+    expect(queries[0]).toContain(
+      "mapContains(metric_values[concat(b.test_id, '/', b.compiler)], {metric:String})",
+    )
+    expect(
+      (vi.mocked(globalThis.fetch).mock.calls[0][0] as URL).searchParams.get('param_metric'),
+    ).toBe('jit_size_bytes')
+    // Each project accepts only its own metrics.
+    expect((await app.request('/api/evm2/data/history.json?metric=total_gas')).status).toBe(400)
+    expect((await app.request('/api/data/history.json?metric=jit_size_bytes')).status).toBe(400)
+    await app.request('/api/data/history.json?metric=total_gas')
+    expect(queries[1]).toContain("project = 'solar'")
+    expect(queries[1]).toContain("if(b.status = 'ok', b.total_gas, NULL)")
+  })
+
+  it('merges stored project metrics into run results', async () => {
+    const commit = 'e'.repeat(40)
+    globalThis.fetch = vi.fn(async () =>
+      Response.json({
+        commit,
+        measurements: [['weth', '', 'jit', 'evm2', 'ok', 0.2]],
+        metric_values: { 'weth/evm2': { jit_size_bytes: 21851 } },
+      }),
+    )
+    const response = await createApi({ clickHouse: config }).request(
+      `/api/evm2/data/runs/${commit}/run.json?artifacts=0`,
+    )
+    expect((await response.json()).results[0].compilers.evm2).toMatchObject({
+      status: 'ok',
+      compile_time_seconds: 0.2,
+      jit_size_bytes: 21851,
+    })
+    expect(vi.mocked(globalThis.fetch).mock.calls[0][1]?.body).toContain("project = 'evm2'")
   })
 
   it('serves per-benchmark demo history', async () => {
@@ -530,7 +590,7 @@ describe('website API', () => {
     )
 
     expect(response.status).toBe(200)
-    expect(importRun).toHaveBeenCalledWith(sha)
+    expect(importRun).toHaveBeenCalledWith(sha, projects.solar, undefined)
     await expect(response.json()).resolves.toMatchObject({ commit: sha, schemaVersion: 1 })
   })
 

@@ -1,5 +1,5 @@
 ---
-description: "ABI encode the given function argument, excluding the selector"
+description: "ABI encode the given function argument, excluding the selector Examples: - cast abi-encode \"transfer(address,uint256)\" $ADDRESS 100 - cast abi-encode --packed \"f(string,uint64)\" hello 100"
 ---
 
 _Generated from `cast abi-encode --help`; see [CLI reference versions](/reference/versions). Regenerate this page instead of editing it directly._
@@ -7,6 +7,10 @@ _Generated from `cast abi-encode --help`; see [CLI reference versions](/referenc
 ## cast abi-encode
 
 ABI encode the given function argument, excluding the selector
+
+Examples:
+- cast abi-encode "transfer(address,uint256)" $ADDRESS 100
+- cast abi-encode --packed "f(string,uint64)" hello 100
 
 :::terminal
 

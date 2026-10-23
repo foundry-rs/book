@@ -1,5 +1,5 @@
 ---
-description: "Probe synchronous ERC-4626 interface compatibility"
+description: "Probe synchronous ERC-4626 interface compatibility Example: ```text $ cast erc4626 check 0xBEEF01735c132Ada46AA9aA4c54623cAA92A64CB \\ --account 0x255c7705E8bb334dfCaE438197f7c4297988085A --block 25519075 \\ --rpc-url https://ethereum.reth.rs/rpc ``` Output: ```text Vault 0xBEEF01735c132Ada46AA9aA4c54623cAA92A64CB Account 0x255c7705e8BB334DfCae438197f7C4297988085a Note: This probes read-call behavior only; it does not prove state-changing selector coverage or semantic ERC-4626 compliance. PASS contract code contract bytecode is present PASS asset() returned 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48 PASS asset contract underlying asset bytecode is present PASS asset balanceOf(address) call succeeded PASS totalAssets() call succeeded PASS totalSupply() call succeeded PASS balanceOf(address) call succeeded PASS allowance(address,address) call succeeded PASS convertToShares(0) returned zero PASS convertToAssets(0) returned zero PASS maxDeposit(address) call succeeded PASS previewDeposit(0) returned zero PASS maxMint(address) call succeeded PASS previewMint(0) returned zero PASS maxWithdraw(address) call succeeded PASS previewWithdraw(0) returned zero PASS maxRedeem(address) call succeeded PASS previewRedeem(0) returned zero PASS name() call succeeded PASS symbol() call succeeded PASS decimals() call succeeded Summary: 21 passed, 0 warnings, 0 failed ```"
 ---
 
 _Generated from `cast erc4626 check --help`; see [CLI reference versions](/reference/versions). Regenerate this page instead of editing it directly._
@@ -7,6 +7,46 @@ _Generated from `cast erc4626 check --help`; see [CLI reference versions](/refer
 ## cast erc4626 check
 
 Probe synchronous ERC-4626 interface compatibility
+
+Example:
+
+```text
+$ cast erc4626 check 0xBEEF01735c132Ada46AA9aA4c54623cAA92A64CB \
+    --account 0x255c7705E8bb334dfCaE438197f7c4297988085A --block 25519075 \
+    --rpc-url https://ethereum.reth.rs/rpc
+```
+
+Output:
+
+```text
+Vault                0xBEEF01735c132Ada46AA9aA4c54623cAA92A64CB
+Account              0x255c7705e8BB334DfCae438197f7C4297988085a
+Note: This probes read-call behavior only; it does not prove state-changing
+selector coverage or semantic ERC-4626 compliance.
+PASS contract code            contract bytecode is present
+PASS asset()                  returned
+0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48
+PASS asset contract           underlying asset bytecode is present
+PASS asset balanceOf(address) call succeeded
+PASS totalAssets()            call succeeded
+PASS totalSupply()            call succeeded
+PASS balanceOf(address)       call succeeded
+PASS allowance(address,address) call succeeded
+PASS convertToShares(0)       returned zero
+PASS convertToAssets(0)       returned zero
+PASS maxDeposit(address)      call succeeded
+PASS previewDeposit(0)        returned zero
+PASS maxMint(address)         call succeeded
+PASS previewMint(0)           returned zero
+PASS maxWithdraw(address)     call succeeded
+PASS previewWithdraw(0)       returned zero
+PASS maxRedeem(address)       call succeeded
+PASS previewRedeem(0)         returned zero
+PASS name()                   call succeeded
+PASS symbol()                 call succeeded
+PASS decimals()               call succeeded
+Summary: 21 passed, 0 warnings, 0 failed
+```
 
 :::terminal
 

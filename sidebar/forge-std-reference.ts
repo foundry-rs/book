@@ -76,6 +76,18 @@ export const forgeStdReference: SidebarItem = {
       ],
     },
     {
+      text: "Std Json",
+      link: "/reference/forge-std/std-json",
+      collapsed: true,
+      items: [],
+    },
+    {
+      text: "Std Toml",
+      link: "/reference/forge-std/std-toml",
+      collapsed: true,
+      items: [],
+    },
+    {
       text: "Std Storage",
       link: "/reference/forge-std/std-storage",
       collapsed: true,

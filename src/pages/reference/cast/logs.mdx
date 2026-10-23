@@ -1,5 +1,5 @@
 ---
-description: "Get logs by signature or topic"
+description: "Get logs by signature or topic Event declarations decode matching logs in text output. Indexed parameters must be marked `indexed` in the declaration. JSON output remains raw. Examples: - cast logs \"Transfer(address indexed from, address indexed to, uint256 value)\" - cast logs --address $TOKEN --from-block 21000000 --to-block latest $TOPIC_0"
 ---
 
 _Generated from `cast logs --help`; see [CLI reference versions](/reference/versions). Regenerate this page instead of editing it directly._
@@ -7,6 +7,14 @@ _Generated from `cast logs --help`; see [CLI reference versions](/reference/vers
 ## cast logs
 
 Get logs by signature or topic
+
+Event declarations decode matching logs in text output. Indexed parameters must
+be marked
+`indexed` in the declaration. JSON output remains raw.
+
+Examples:
+- cast logs "Transfer(address indexed from, address indexed to, uint256 value)"
+- cast logs --address $TOKEN --from-block 21000000 --to-block latest $TOPIC_0
 
 :::terminal
 
@@ -40,17 +48,17 @@ Options:
       --address <ADDRESS>
           The contract address to filter on
 
-      --subscribe
-          If the RPC type and endpoints supports `eth_subscribe` stream logs
-          instead of printing and exiting. Will continue until interrupted or
-          TO_BLOCK is reached
-
       --query-size <BLOCKS>
           Split the query into chunks of this many blocks to work around
           provider range/result limits.
           
           When omitted, the range is queried in a single request. Pass a value
           (e.g. `10000`) to fetch the logs in `query-size`-block chunks instead.
+
+      --subscribe
+          If the RPC type and endpoints supports `eth_subscribe` stream logs
+          instead of printing and exiting. Will continue until interrupted or
+          TO_BLOCK is reached
 
   -h, --help
           Print help (see a summary with '-h')
