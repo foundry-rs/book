@@ -39,7 +39,7 @@ export function HistoryGraph({
   const [hovered, setHovered] = useState<number | null>(null)
   const [tooltip, setTooltip] = useState<{ x: number; y: number } | null>(null)
   // Touch has no hover: the first tap inspects a run and a second tap on it compares.
-  // Click coordinates are rounded to whole pixels, so clicks use the run under pointerdown.
+  // Click coordinates are rounded to whole pixels, so clicks use the run under pointerup.
   const tap = useRef<{ touch: boolean; selected: number | null; index?: number }>({
     touch: false,
     selected: null,
@@ -201,11 +201,10 @@ export function HistoryGraph({
                 setHovered(Math.max(0, Math.min(points.length - 1, index)))
               }}
               onPointerDown={(event) => {
-                tap.current = {
-                  touch: event.pointerType !== 'mouse',
-                  selected: hovered,
-                  index: pointedRun(event),
-                }
+                tap.current = { touch: event.pointerType !== 'mouse', selected: hovered }
+              }}
+              onPointerUp={(event) => {
+                tap.current.index = pointedRun(event)
               }}
               onClick={(event) => {
                 const index = tap.current.index ?? pointedRun(event)

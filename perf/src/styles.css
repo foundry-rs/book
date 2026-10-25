@@ -1218,6 +1218,7 @@ header.file-header {
   height: 100%;
   overflow: hidden;
   cursor: crosshair;
+  user-select: none;
 }
 .history-plot:focus-visible {
   outline: 2px solid var(--primary);
