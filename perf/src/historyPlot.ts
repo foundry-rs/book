@@ -4,11 +4,39 @@ export interface HistoryPoint {
   value: number | null
 }
 
-export function timePositions(points: HistoryPoint[]) {
+export interface TimeWindow {
+  from: number
+  to: number
+}
+
+// A zoom window maps its own span onto the plot; runs outside it fall outside 0–100.
+export function timePositions(points: HistoryPoint[], window?: TimeWindow) {
   const times = points.map((point) => Date.parse(point.timestamp))
-  const first = times[0]
-  const span = (times.at(-1) ?? first) - first
+  const first = window?.from ?? times[0]
+  const span = (window?.to ?? times.at(-1) ?? first) - first
   return times.map((time) => (span > 0 ? 3 + ((time - first) / span) * 94 : 50))
+}
+
+// The time under a plot position, inverting `timePositions` for the same window.
+export function positionTime(points: HistoryPoint[], x: number, window?: TimeWindow) {
+  const first = window?.from ?? Date.parse(points[0].timestamp)
+  const last = window?.to ?? Date.parse(points.at(-1)!.timestamp)
+  return first + ((x - 3) / 94) * (last - first)
+}
+
+// Indices of the runs inside the plot, plus one neighbour on each side so lines enter
+// and leave the edges. `first` and `last` bound the runs that can be selected.
+export function visibleRange(positions: number[]) {
+  let first = positions.findIndex((x) => x >= 0)
+  if (first < 0) first = positions.length
+  let last = positions.length - 1
+  while (last >= 0 && positions[last] > 100) last--
+  return {
+    first,
+    last,
+    start: Math.max(0, first - 1),
+    end: Math.min(positions.length - 1, last + 1),
+  }
 }
 
 export function nearestPoint(positions: number[], x: number) {

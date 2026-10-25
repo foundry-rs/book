@@ -3,10 +3,12 @@ import {
   historyPath,
   nearestPoint,
   plotIndices,
+  positionTime,
   rollingMedian,
   selectPoint,
   timePositions,
   unchangedRunCounts,
+  visibleRange,
 } from '../src/historyPlot'
 import { hasHistoryChanges, historyCutoff, mergeHistory } from '../src/historySeries'
 import type { HistorySeries } from '../src/types'
@@ -104,4 +106,15 @@ it('plots noisy runs as a rolling median that never bridges missing measurements
     8,
     8,
   ])
+})
+
+it('maps a zoom window onto the plot and keeps edge neighbours for its lines', () => {
+  const day = 86_400_000
+  const window = { from: Date.UTC(2026, 0, 2), to: Date.UTC(2026, 0, 4) }
+  const positions = timePositions(points, window)
+  expect(positions.slice(0, 5)).toEqual([-44, 3, 50, 97, 144])
+  expect(positionTime(points, 50, window)).toBe(window.from + day)
+  expect(positionTime(points, 3)).toBe(Date.parse(points[0].timestamp))
+  expect(visibleRange(positions)).toEqual({ first: 1, last: 3, start: 0, end: 4 })
+  expect(visibleRange(timePositions(points))).toEqual({ first: 0, last: 5, start: 0, end: 5 })
 })

@@ -370,7 +370,8 @@ function Home({ benchmark, navigationKey }: { benchmark: string | null; navigati
       <p className="history-note">
         Each graph is one benchmark. Gaps indicate failed or missing measurements. Hover or tap to
         inspect a run; click it or tap it again to compare it with the preceding commit. Hold Shift
-        to select the nearest run instead of the nearest change.
+        to select the nearest run instead of the nearest change. Drag across a graph to zoom into
+        that span.
         {project.metrics.find((definition) => definition.key === metric)?.noisy
           ? ' Timing and memory vary between runs, so the line, scale, and change use the median of five neighbouring runs. The faint line is each run, and hover shows raw measurements.'
           : ''}

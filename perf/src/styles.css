@@ -1310,6 +1310,26 @@ header.file-header {
   padding: 0;
   transform: translate(-50%, -50%);
 }
+.chart-selection {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  bottom: 0;
+  pointer-events: none;
+  border-inline: 1px solid var(--primary);
+  background: color-mix(in srgb, var(--primary) 12%, transparent);
+}
+.chart-reset {
+  height: auto;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--primary);
+  font-size: inherit;
+}
+.chart-reset:hover {
+  text-decoration: underline;
+}
 .chart-crosshair {
   position: absolute;
   z-index: 2;
