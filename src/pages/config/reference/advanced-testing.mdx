@@ -94,7 +94,7 @@ take precedence.
 
 | Field | Default | Description |
 | --- | --- | --- |
-| `report` | `["summary"]` | Selects `summary`, `lcov`, `debug`, `bytecode`, or `attribution` reports. |
+| `report` | `["summary"]` | Selects `summary`, `lcov`, `debug`, `bytecode`, `attribution`, or `gaps` reports. `gaps` writes uncovered source items to `coverage-gaps.json`; see [Code Coverage](/guides/coverage#list-uncovered-code). |
 | `lcov_version` | `"1"` | Selects the LCOV tracefile version. |
 | `ir_minimum` | `false` | Enables minimum via-IR optimization as a stack-depth workaround. |
 | `report_file` | none | Writes the report to a project-relative path. |

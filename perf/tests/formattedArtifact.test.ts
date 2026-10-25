@@ -31,14 +31,39 @@ it('retains formatted contents across viewer visits and formats large files', as
   expect(large?.cacheKey).toBeTruthy()
 })
 
+async function highlighter() {
+  const { artifactThemes } = await import('../src/highlight')
+  const { getSharedHighlighter } = await import('@pierre/diffs')
+  const instance = await getSharedHighlighter({
+    themes: Object.values(artifactThemes),
+    langs: [],
+    preferredHighlighter: 'highlights',
+  })
+  expect(instance.name).toBe('highlights')
+  return instance
+}
+
+/** Colors of the tokens that cover the first occurrence of `text` in a line. */
+function colorsOf(line: { content: string; color?: string }[], text: string) {
+  const start = line
+    .map((token) => token.content)
+    .join('')
+    .indexOf(text)
+  expect(start, text).toBeGreaterThanOrEqual(0)
+  const colors = new Set<string | undefined>()
+  let offset = 0
+  for (const token of line) {
+    const end = offset + token.content.length
+    if (end > start && offset < start + text.length) colors.add(token.color?.toLowerCase())
+    offset = end
+  }
+  return [...colors]
+}
+
 it('highlights Solidity literals and balanced punctuation without changing source text', async () => {
   const { artifactLanguage, artifactThemes } = await import('../src/highlight')
-  const { getSharedHighlighter } = await import('@pierre/diffs')
   const lang = artifactLanguage('sources/Contract', 'solidity')
-  const highlighter = await getSharedHighlighter({
-    themes: Object.values(artifactThemes),
-    langs: [lang],
-  })
+  const instance = await highlighter()
   const source = String.raw`import {Base} from "./Base.sol";
 contract C is Base("base") {
     constructor() Base("ERC20Mock", 'E20M') {}
@@ -50,54 +75,42 @@ contract C is Base("base") {
     }
 }`
   for (const theme of Object.values(artifactThemes)) {
-    const { tokens, fg } = highlighter.codeToTokens(source, { lang, theme })
+    const { tokens, fg } = instance.codeToTokens(source, { lang, theme })
     expect(tokens.map((line) => line.map((token) => token.content).join('')).join('\n')).toBe(
       source,
     )
-    const stringColor = highlighter.codeToTokens('"literal"', { lang, theme }).tokens[0][0].color
-    for (const literal of [
-      '"./Base.sol"',
-      '"base"',
-      '"ERC20Mock"',
-      "'E20M'",
-      '"allowed"',
-      String.raw`"ends in \\"`,
-      String.raw`"escaped \" quote"`,
-    ]) {
-      expect(tokens.flat().find((token) => token.content === literal)?.color).toBe(stringColor)
+    const [string, comment] = instance
+      .codeToTokens('"literal"\n// comment', { lang, theme })
+      .tokens.map((line) => line[0].color?.toLowerCase())
+    for (const [line, literal] of [
+      [0, '"./Base.sol"'],
+      [1, '"base"'],
+      [2, '"ERC20Mock"'],
+      [2, "'E20M'"],
+      [3, '"allowed"'],
+      [4, String.raw`"ends in \\"`],
+      [5, String.raw`"escaped \" quote"`],
+    ] as const) {
+      expect(colorsOf(tokens[line], literal), literal).toEqual([string])
     }
-    // Exclude strings and comments whose brackets must retain their own scopes.
-    for (const line of [
-      tokens[0],
-      tokens[1],
-      tokens[2],
-      tokens[3],
-      tokens[7],
-      tokens[8],
-      tokens[9],
-    ]) {
-      for (const token of line.filter((token) => /[()[\]{}]/.test(token.content)))
-        expect(token.color?.toLowerCase()).toBe(fg?.toLowerCase())
+    // Strings and comments must close: later brackets and semicolons keep code colors.
+    for (const line of [0, 1, 2, 3, 7, 8, 9]) {
+      for (const token of tokens[line].filter((token) => /[()[\]{}]/.test(token.content)))
+        expect([string, comment]).not.toContain(token.color?.toLowerCase())
     }
-    expect(tokens[4].at(-1)?.color?.toLowerCase()).toBe(fg?.toLowerCase())
-    expect(tokens[5].at(-1)?.color?.toLowerCase()).toBe(fg?.toLowerCase())
-    expect(tokens[7].find((token) => token.content === 'g')?.color?.toLowerCase()).not.toBe(
-      fg?.toLowerCase(),
-    )
+    expect(tokens[4].at(-1)?.color?.toLowerCase()).not.toBe(string)
+    expect(tokens[5].at(-1)?.color?.toLowerCase()).not.toBe(string)
+    expect(colorsOf(tokens[7], 'g')).not.toEqual([fg?.toLowerCase()])
   }
 })
 
-it('uses the upstream Yul grammar for objects, builtins, strings and block comments', async () => {
+it('highlights Yul builtins, strings and block comments with the Solidity lexer', async () => {
   const { artifactLanguage, artifactThemes } = await import('../src/highlight')
-  const { getSharedHighlighter } = await import('@pierre/diffs')
-  const lang = artifactLanguage('optimized-ir.yul', 'text')
-  expect(lang).toBe('yul')
-  expect(artifactLanguage('mir.mir', 'text')).toBe('solar-ir')
-  expect(artifactLanguage('runtime.evmir', 'text')).toBe('solar-ir')
-  const highlighter = await getSharedHighlighter({
-    themes: Object.values(artifactThemes),
-    langs: [lang],
-  })
+  const lang = artifactLanguage('optimized-ir.yul', 'yul')
+  expect(lang).toBe('solidity')
+  expect(artifactLanguage('mir.mir', 'text')).toBe('asm')
+  expect(artifactLanguage('runtime.evmir', 'text')).toBe('asm')
+  const instance = await highlighter()
   const source = String.raw`object "Contract" {
   code {
     /* mstore(0, "not a string")
@@ -109,87 +122,75 @@ it('uses the upstream Yul grammar for objects, builtins, strings and block comme
   data "escaped\"name" hex"abcd"
 }`
   for (const theme of Object.values(artifactThemes)) {
-    const { tokens } = highlighter.codeToTokens(source, { lang, theme, includeExplanation: true })
+    const { tokens, fg } = instance.codeToTokens(source, { lang, theme })
     expect(tokens.map((line) => line.map((token) => token.content).join('')).join('\n')).toBe(
       source,
     )
-    const scoped = tokens.flat().flatMap((token) => token.explanation ?? [])
-    for (const [content, scope] of [
-      ['object', 'keyword'],
-      ['calldataload', 'entity.name.type.class'],
-      ['mstore', 'entity.name.type.class'],
-      ['return', 'entity.name.type.class'],
-      ['"Contract"', 'string'],
-      [String.raw`"escaped\"name"`, 'string'],
-      ['       let hidden := 42 ', 'comment'],
-    ]) {
-      expect(
-        scoped
-          .filter((part) => part.content === content)
-          .map((part) => part.scopes.at(-1)?.scopeName),
-      ).toEqual([scope])
+    const [string, comment] = instance
+      .codeToTokens('"literal"\n// comment', { lang, theme })
+      .tokens.map((line) => line[0].color?.toLowerCase())
+    // The Solidity lexer leaves Yul's `object`, `code` and `data` unstyled.
+    for (const [line, builtin] of [
+      [4, 'calldataload'],
+      [5, 'mstore'],
+      [6, 'return'],
+    ] as const) {
+      expect(colorsOf(tokens[line], builtin), builtin).not.toEqual([fg?.toLowerCase()])
     }
+    expect(colorsOf(tokens[0], '"Contract"')).toEqual([string])
+    expect(colorsOf(tokens[8], String.raw`"escaped\"name"`)).toEqual([string])
+    expect(colorsOf(tokens[3], 'let hidden := 42')).toEqual([comment])
   }
 })
 
-it('keeps expression and comment scopes inside Solidity declaration headers', async () => {
+it('keeps expression and comment colors inside Solidity declaration headers', async () => {
   const { artifactThemes } = await import('../src/highlight')
-  const { getSharedHighlighter } = await import('@pierre/diffs')
-  const lang = 'solar-solidity'
-  const highlighter = await getSharedHighlighter({
-    themes: Object.values(artifactThemes),
-    langs: [lang],
-  })
+  const lang = 'solidity'
+  const instance = await highlighter()
   const source = String.raw`contract C is Base(compute(42, "{;}"), 43 /* "ignored" */) {
     function f() external guard('it\'s') {}
     string constant X = "first\
 second";
 }`
   for (const theme of Object.values(artifactThemes)) {
-    const { tokens } = highlighter.codeToTokens(source, { lang, theme, includeExplanation: true })
+    const { tokens, fg } = instance.codeToTokens(source, { lang, theme })
     expect(tokens.map((line) => line.map((token) => token.content).join('')).join('\n')).toBe(
       source,
     )
-    const scoped = tokens.flat().flatMap((token) => token.explanation ?? [])
-    for (const [content, scope] of [
-      ['compute', 'entity.name.function'],
-      ['42', 'constant.numeric.decimal'],
-      ['43', 'constant.numeric.decimal'],
-      ['{;}', 'string.quoted.double'],
-      [' "ignored" ', 'comment.block'],
-      ['second', 'string.quoted.double'],
-    ]) {
-      expect(
-        scoped
-          .filter((part) => part.content === content)
-          .map((part) => part.scopes.at(-1)?.scopeName),
-      ).toEqual([scope])
-    }
-    const stringColor = highlighter.codeToTokens('"literal"', { lang, theme }).tokens[0][0].color
-    expect(tokens[1].find((token) => token.content === String.raw`'it\'s'`)?.color).toBe(
-      stringColor,
-    )
+    const [string, comment, number] = instance
+      .codeToTokens('"literal"\n// comment\n42', { lang, theme })
+      .tokens.map((line) => line[0].color?.toLowerCase())
+    expect(colorsOf(tokens[0], 'compute')).not.toEqual([fg?.toLowerCase()])
+    expect(colorsOf(tokens[0], '42')).toEqual([number])
+    expect(colorsOf(tokens[0], '43')).toEqual([number])
+    expect(colorsOf(tokens[0], '"{;}"')).toEqual([string])
+    expect(colorsOf(tokens[0], '/* "ignored" */')).toEqual([comment])
+    expect(colorsOf(tokens[1], String.raw`'it\'s'`)).toEqual([string])
+    expect(colorsOf(tokens[3], 'second"')).toEqual([string])
   }
 })
 
-it('highlights native assembly and LLVM IR with bundled grammars', async () => {
+it('highlights native assembly, EVM code and LLVM IR with the assembly lexer', async () => {
   const { artifactLanguage, artifactThemes } = await import('../src/highlight')
-  const { getSharedHighlighter } = await import('@pierre/diffs')
   expect(artifactLanguage('opt.s', 'text')).toBe('asm')
-  expect(artifactLanguage('unopt.ll', 'text')).toBe('llvm')
+  expect(artifactLanguage('unopt.ll', 'text')).toBe('asm')
   expect(artifactLanguage('bytecode.txt', 'text')).toBe('text')
-  const highlighter = await getSharedHighlighter({
-    themes: Object.values(artifactThemes),
-    langs: ['asm', 'llvm'],
-  })
-  for (const [lang, source, keyword] of [
-    ['asm', '  mov rcx, qword ptr [rax + 168]', 'mov'],
-    ['llvm', '  %0 = load i64, ptr %gas, align 8', 'load'],
+  const instance = await highlighter()
+  // The lexer styles an instruction only where a line starts with it, so LLVM assignments such
+  // as `%0 = load ...` keep their opcode unstyled.
+  for (const [path, source, keyword] of [
+    ['opt.s', '  mov rcx, qword ptr [rax + 168]', 'mov'],
+    ['unopt.ll', '  %0 = load i64, ptr %gas, align 8', '8'],
+    ['unopt.ll', '  store i64 %0, ptr %gas, align 8', 'store'],
+    ['runtime.disasm', 'PUSH1 0x80 ; bb0', 'PUSH1'],
+    ['mir.mir', '  jumpi v27, bb7, bb8', 'jumpi'],
+    ['runtime.evmir', '  push 0x3fa4f245', 'push'],
   ]) {
-    const { tokens, fg } = highlighter.codeToTokens(source, { lang, theme: artifactThemes.light })
-    expect(tokens[0].map((token) => token.content).join('')).toBe(source)
-    expect(
-      tokens[0].find((token) => token.content.trim() === keyword)?.color?.toLowerCase(),
-    ).not.toBe(fg?.toLowerCase())
+    const lang = artifactLanguage(path, 'text')
+    for (const theme of Object.values(artifactThemes)) {
+      const { tokens, fg } = instance.codeToTokens(source, { lang, theme })
+      expect(tokens[0].map((token) => token.content).join('')).toBe(source)
+      expect(colorsOf(tokens[0], keyword), path).not.toEqual([fg?.toLowerCase()])
+    }
   }
 })
