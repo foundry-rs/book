@@ -9,6 +9,7 @@ import { project } from './project'
 import {
   historyPath,
   nearestPoint,
+  rollingMedian,
   selectPoint,
   timePositions,
   unchangedRunCounts,
@@ -64,26 +65,41 @@ export function HistoryGraph({
     window.addEventListener('scroll', close, { once: true, passive: true })
     return () => window.removeEventListener('scroll', close)
   }, [tooltip])
-  const { points, values, min, max, position, positions, path, unchangedCounts } = useMemo(() => {
-    const series = runs.values[benchmark] ?? []
-    const points = runs.runs
-      .map((run, index) => ({ ...run, value: series[index] ?? null }))
-      .reverse()
-    const values = points.flatMap((run) => (run.value === null ? [] : [run.value]))
-    const min = values.reduce((min, value) => Math.min(min, value), values[0] ?? 0)
-    const max = values.reduce((max, value) => Math.max(max, value), values[0] ?? 0)
-    const range = max - min
-    const padding = range === 0 ? Math.max(Math.abs(max) * 0.04, 1) : range * 0.1
-    const chartMin = min - padding
-    const chartMax = max + padding
-    const position = (value: number) =>
-      Math.max(10, Math.min(90, 90 - ((value - chartMin) / (chartMax - chartMin)) * 80))
-    const positions = timePositions(points)
-    const stepped = !project.metrics.find((definition) => definition.key === metric)?.noisy
-    const path = historyPath(points, positions, position, stepped)
-    const unchangedCounts = unchangedRunCounts(points)
-    return { points, values, min, max, position, positions, path, unchangedCounts }
-  }, [runs, benchmark, metric])
+  const { points, plotted, values, min, max, position, positions, path, rawPath, unchangedCounts } =
+    useMemo(() => {
+      const series = runs.values[benchmark] ?? []
+      const points = runs.runs
+        .map((run, index) => ({ ...run, value: series[index] ?? null }))
+        .reverse()
+      const noisy = project.metrics.find((definition) => definition.key === metric)?.noisy
+      // The median line sets the scale, so one bad run does not flatten the history.
+      const plotted = noisy ? rollingMedian(points) : points
+      const values = plotted.flatMap((run) => (run.value === null ? [] : [run.value]))
+      const min = values.reduce((min, value) => Math.min(min, value), values[0] ?? 0)
+      const max = values.reduce((max, value) => Math.max(max, value), values[0] ?? 0)
+      const range = max - min
+      const padding = range === 0 ? Math.max(Math.abs(max) * 0.04, 1) : range * 0.1
+      const chartMin = min - padding
+      const chartMax = max + padding
+      const position = (value: number) =>
+        Math.max(10, Math.min(90, 90 - ((value - chartMin) / (chartMax - chartMin)) * 80))
+      const positions = timePositions(points)
+      const path = historyPath(plotted, positions, position, !noisy)
+      const rawPath = noisy ? historyPath(points, positions, position, false) : null
+      const unchangedCounts = unchangedRunCounts(points)
+      return {
+        points,
+        plotted,
+        values,
+        min,
+        max,
+        position,
+        positions,
+        path,
+        rawPath,
+        unchangedCounts,
+      }
+    }, [runs, benchmark, metric])
   const pointedRun = useCallback(
     (event: { currentTarget: Element; clientX: number; clientY: number; shiftKey: boolean }) => {
       const bounds = event.currentTarget.getBoundingClientRect()
@@ -120,7 +136,7 @@ export function HistoryGraph({
   const activeIndex = hovered ?? points.length - 1
   const activeX = positions[activeIndex]
   const activeY = active?.value != null ? position(active.value) : 0
-  const change = percentChange(values[0], active?.value ?? null)
+  const change = percentChange(values[0], plotted[activeIndex]?.value ?? null)
 
   const unchanged = unchangedCounts[activeIndex]
   // The change a click opens: this run against the run before it.
@@ -247,6 +263,7 @@ export function HistoryGraph({
                 </defs>
                 <g clipPath={`url(#${clipId})`}>
                   <path className="grid" d="M0 12H100 M0 50H100 M0 88H100" />
+                  {rawPath && <path className="series-raw" d={rawPath} />}
                   <path className="series" d={path} />
                 </g>
               </svg>

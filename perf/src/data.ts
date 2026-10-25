@@ -1,4 +1,4 @@
-import type { HistorySeries, RunDocument, RunIndex } from './types'
+import type { HistorySeries, PrRun, RunDocument, RunIndex } from './types'
 import { responseCache } from './cache'
 import { reportImport } from './importProgress'
 import { mergeHistory, type HistoryRange } from './historySeries'
@@ -8,6 +8,7 @@ import { apiBase } from './projects'
 const root = `${apiBase(project)}/data/`
 const knownCommits = responseCache<string>(300_000, 64 * 1024)
 const cachedIndex = responseCache<RunIndex>(60_000)
+const cachedPrs = responseCache<PrRun[]>(60_000)
 const cachedHistory = responseCache<HistorySeries>(60_000)
 const cachedArtifact = responseCache<string | null>(3_600_000)
 const cachedRun = responseCache<RunDocument>(300_000)
@@ -136,6 +137,18 @@ async function getJson<T>(path: string): Promise<T> {
 
 export function loadIndex() {
   return cachedIndex('index', () => getJson<RunIndex>('index.json'))
+}
+
+// Listed runs carry full SHAs, so picking one compares without resolving a ref.
+export function loadPrs() {
+  return cachedPrs('prs', async () => {
+    const { prs } = await getJson<{ prs: PrRun[] }>('prs.json')
+    for (const run of prs) {
+      void knownCommits(run.commit, async () => run.commit)
+      if (run.baseCommit) void knownCommits(run.baseCommit, async () => run.baseCommit!)
+    }
+    return prs
+  })
 }
 
 export async function resolveCommit(value: string): Promise<string> {

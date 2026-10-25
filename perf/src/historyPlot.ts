@@ -131,3 +131,28 @@ export function unchangedRunCounts(points: HistoryPoint[]) {
   }
   return counts
 }
+
+// Noisy metrics plot the median of nearby runs, so one slow run does not draw a spike.
+// The window stays inside one measured segment and never bridges missing measurements.
+export function rollingMedian<T extends HistoryPoint>(points: T[], radius = 2): T[] {
+  const smoothed = points.map((point) => ({ ...point }))
+  for (let start = 0; start < points.length;) {
+    if (points[start].value === null) {
+      start++
+      continue
+    }
+    let end = start + 1
+    while (end < points.length && points[end].value !== null) end++
+    for (let index = start; index < end; index++) {
+      const window = points
+        .slice(Math.max(start, index - radius), Math.min(end, index + radius + 1))
+        .map((point) => point.value!)
+        .sort((a, b) => a - b)
+      const middle = window.length >> 1
+      smoothed[index].value =
+        window.length % 2 ? window[middle] : (window[middle - 1] + window[middle]) / 2
+    }
+    start = end
+  }
+  return smoothed
+}

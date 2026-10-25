@@ -559,6 +559,43 @@ describe('website API', () => {
     expect(queries[0]).not.toMatch(/sumIf|maxIf|compile_time_seconds|peak_rss_bytes/)
   })
 
+  it('lists the newest benchmarked run of each pull request', async () => {
+    const queries: string[] = []
+    globalThis.fetch = vi.fn(async (_input: RequestInfo | URL, init?: RequestInit) => {
+      queries.push(typeof init?.body === 'string' ? init.body : '')
+      return new Response(
+        `${JSON.stringify({
+          pr: '42',
+          commit: '0123456789abcdef0123456789abcdef01234567',
+          title: 'Faster codegen',
+          timestamp: '2026-09-03T10:00:00Z',
+          baseCommit: 'fedcba9876543210fedcba9876543210fedcba98',
+        })}\n`,
+      )
+    })
+
+    const response = await createApi({ clickHouse: config }).request(
+      'http://web.test/api/data/prs.json',
+    )
+
+    expect(response.status).toBe(200)
+    expect(response.headers.get('cache-control')).toContain('max-age=60')
+    await expect(response.json()).resolves.toEqual({
+      prs: [
+        {
+          pr: 42,
+          commit: '0123456789abcdef0123456789abcdef01234567',
+          title: 'Faster codegen',
+          timestamp: '2026-09-03T10:00:00Z',
+          baseCommit: 'fedcba9876543210fedcba9876543210fedcba98',
+        },
+      ],
+    })
+    expect(queries[0]).toContain('LIMIT 1 BY pr LIMIT 200')
+    expect(queries[0]).toContain('AS baseCommit')
+    expect(queries[0]).not.toContain('measurements')
+  })
+
   it('imports a missing run before responding to the client', async () => {
     const sha = '0123456789abcdef0123456789abcdef01234567'
     let imported = false

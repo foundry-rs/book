@@ -3,6 +3,7 @@ import {
   historyPath,
   nearestPoint,
   plotIndices,
+  rollingMedian,
   selectPoint,
   timePositions,
   unchangedRunCounts,
@@ -89,4 +90,18 @@ it('merges pages with new and missing benchmarks without losing alignment', () =
   mergeHistory(target, { runs: [points[2]], values: {} })
   expect(target.values.__proto__).toEqual([null, 1, 2, null])
   expect(target.values.a).toEqual([0, null, null, null])
+})
+
+it('plots noisy runs as a rolling median that never bridges missing measurements', () => {
+  const noisy = [10, 30, 11, 12, 50, null, 7, 9].map((value) => ({ ...points[0], value }))
+  expect(rollingMedian(noisy).map((point) => point.value)).toEqual([
+    11,
+    11.5,
+    12,
+    21,
+    12,
+    null,
+    8,
+    8,
+  ])
 })
