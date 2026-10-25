@@ -1491,8 +1491,16 @@ header.file-header {
 .combobox-group {
   padding: 8px 8px 4px;
   color: var(--muted);
-  font-size: 11px;
-  font-weight: 600;
+  font-size: 10px;
+  font-weight: 650;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+/* Later sections start below a rule, so they read apart from the options above. */
+.combobox-group:not(:first-child) {
+  margin-top: 6px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
 }
 .combobox-popover [role='option'] {
   display: flex;
