@@ -81,6 +81,46 @@ Options:
       --agent-arg <ARG>
           Argument passed to the agent command. Can be given more than once
 
+      --verifier-command <PATH>
+          Executable that tries to disprove each possible bug that reaches the
+          quorum, such as a
+          wrapper around any coding agent. Without it, Forge runs no verifier.
+          
+          Forge runs `PATH [ARG...]` once per group, at most --agents at a time,
+          each in a fresh copy
+          of the project that also holds the tests of the group, with these
+          environment variables:
+          
+          FORGE_PROPERTIES_VERIFY_PROMPT  the task: try to disprove the claims
+          of the group
+          FORGE_PROPERTIES_GROUP          JSON file with the agents, the claims,
+          the tests, and the
+                                          failure output of the group
+          FORGE_PROPERTIES_VERDICT        file where the verifier writes its
+          verdict as JSON:
+                                          {"verdict": "confirmed" |
+                                          "needs_validation" | "rejected",
+                                           "reason": "...",
+                                           "evidence": [{"file": "...", "line":
+                                           N, "quote": "..."}],
+                                           "unresolved": "..."}
+          FORGE_PROPERTIES_USAGE          file where the verifier can write its
+          model usage as JSON,
+                                          as for an agent
+          
+          When the verifier exits or reaches --timeout, Forge ends its process
+          group and reads the
+          verdict. Forge lists the confirmed groups first, then the groups that
+          need validation with
+          the open fact, then the rejected groups with the disproof. A missing
+          or invalid verdict,
+          and a rejection without evidence, count as needs_validation. Groups
+          below the quorum are
+          not verified.
+
+      --verifier-arg <ARG>
+          Argument passed to the verifier command. Can be given more than once
+
       --seed <SEED>
           Deterministic seeds used to run the tests of every agent. Supply at
           least two
@@ -104,7 +144,7 @@ Options:
 
       --timeout <SECS>
           Seconds after which Forge ends an agent session and runs the tests
-          that it wrote
+          that it wrote, or ends a verifier and reads its verdict
 
       --allow-ffi
           Let generated tests run host commands with `vm.ffi` if the project
