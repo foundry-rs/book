@@ -1,12 +1,4 @@
-import {
-  useEffect,
-  useId,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-  type MouseEvent,
-} from 'react'
+import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { changeClass, formatChange } from './change'
 import { percentChange } from './comparison'
@@ -14,7 +6,13 @@ import { formatValue } from './formatValue'
 import type { HistorySeries } from './types'
 import { navigate } from './navigation'
 import { project } from './project'
-import { historyPath, selectPoint, timePositions, unchangedRunCounts } from './historyPlot'
+import {
+  historyPath,
+  nearestPoint,
+  selectPoint,
+  timePositions,
+  unchangedRunCounts,
+} from './historyPlot'
 
 const short = (commit: string) => commit.slice(0, 8)
 // Pixels around the pointer searched for the run that changed the measurement.
@@ -41,7 +39,11 @@ export function HistoryGraph({
   const [hovered, setHovered] = useState<number | null>(null)
   const [tooltip, setTooltip] = useState<{ x: number; y: number } | null>(null)
   // Touch has no hover: the first tap inspects a run and a second tap on it compares.
-  const tap = useRef<{ touch: boolean; selected: number | null }>({ touch: false, selected: null })
+  // Click coordinates are rounded to whole pixels, so clicks use the run under pointerup.
+  const tap = useRef<{ touch: boolean; selected: number | null; index?: number }>({
+    touch: false,
+    selected: null,
+  })
   const tooltipRef = useRef<HTMLSpanElement>(null)
   useLayoutEffect(() => {
     // Keep the floating tooltip inside the viewport, which matters on phones.
@@ -82,6 +84,36 @@ export function HistoryGraph({
     const unchangedCounts = unchangedRunCounts(points)
     return { points, values, min, max, position, positions, path, unchangedCounts }
   }, [runs, benchmark, metric])
+  const pointedRun = useCallback(
+    (event: { currentTarget: Element; clientX: number; clientY: number; shiftKey: boolean }) => {
+      const bounds = event.currentTarget.getBoundingClientRect()
+      const x = ((event.clientX - bounds.left) / bounds.width) * 100
+      // Shift skips change-aware selection for runs that share a pixel.
+      if (event.shiftKey) return nearestPoint(positions, x)
+      return selectPoint(
+        points,
+        positions,
+        position,
+        { x, y: ((event.clientY - bounds.top) / bounds.height) * 100 },
+        { x: (pointerReach / bounds.width) * 100, y: (pointerReach / bounds.height) * 100 },
+      )
+    },
+    [points, positions, position],
+  )
+  // Pressing or releasing Shift reselects the run under a resting mouse.
+  const mouse = useRef<{ currentTarget: Element; clientX: number; clientY: number } | null>(null)
+  useEffect(() => {
+    const update = (event: KeyboardEvent) => {
+      if (event.key === 'Shift' && mouse.current)
+        setHovered(pointedRun({ ...mouse.current, shiftKey: event.shiftKey }))
+    }
+    window.addEventListener('keydown', update)
+    window.addEventListener('keyup', update)
+    return () => {
+      window.removeEventListener('keydown', update)
+      window.removeEventListener('keyup', update)
+    }
+  }, [pointedRun])
   // Hide cards without a current measurement, while retaining gaps in visible histories.
   if (!values.length || (hideMissingLatest && points.at(-1)?.value == null)) return null
   const active = points[hovered ?? points.length - 1]
@@ -95,19 +127,6 @@ export function HistoryGraph({
   const previous = points[activeIndex - 1]?.value ?? null
   const delta = previous !== null && active?.value != null ? active.value - previous : 0
   const deltaChange = percentChange(previous, active?.value ?? null)
-  const pointedRun = (event: MouseEvent<HTMLElement>) => {
-    const bounds = event.currentTarget.getBoundingClientRect()
-    return selectPoint(
-      points,
-      positions,
-      position,
-      {
-        x: ((event.clientX - bounds.left) / bounds.width) * 100,
-        y: ((event.clientY - bounds.top) / bounds.height) * 100,
-      },
-      { x: (pointerReach / bounds.width) * 100, y: (pointerReach / bounds.height) * 100 },
-    )
-  }
   const compare = (index: number) => {
     const base = points[index - 1]
     const head = points[index]
@@ -184,8 +203,11 @@ export function HistoryGraph({
               onPointerDown={(event) => {
                 tap.current = { touch: event.pointerType !== 'mouse', selected: hovered }
               }}
+              onPointerUp={(event) => {
+                tap.current.index = pointedRun(event)
+              }}
               onClick={(event) => {
-                const index = pointedRun(event)
+                const index = tap.current.index ?? pointedRun(event)
                 if (tap.current.touch && tap.current.selected !== index) {
                   setHovered(index)
                   setTooltip({ x: event.clientX, y: event.clientY })
@@ -194,12 +216,19 @@ export function HistoryGraph({
                 compare(index)
               }}
               onPointerMove={(event) => {
+                if (event.pointerType === 'mouse')
+                  mouse.current = {
+                    currentTarget: event.currentTarget,
+                    clientX: event.clientX,
+                    clientY: event.clientY,
+                  }
                 setHovered(pointedRun(event))
                 setTooltip({ x: event.clientX, y: event.clientY })
               }}
               onPointerLeave={(event) => {
                 // Touch pointers leave after every tap; keep the inspected run until blur.
                 if (event.pointerType !== 'mouse') return
+                mouse.current = null
                 setHovered(null)
                 setTooltip(null)
               }}
