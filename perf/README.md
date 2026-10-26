@@ -21,8 +21,9 @@ top-level `metrics` map are stored in `run_snapshots.metric_values`, keyed by
 `<test_id>/<compiler>`. Run documents merge them into each compiler's results.
 Solar snapshots store no extra metrics, so their revision hashes are unchanged.
 
-evm2 PR runs whose base commit has no usable run of its own (no run, or no artifact)
-also upload `jit-bench-baseline`, whose `results.json` names the base commit. When a
+PR runs whose base commit has no usable run of its own (no run, or no results) also
+benchmark the base and upload it as a separate artifact whose `results.json` names the
+base commit: `jit-bench-baseline` for evm2 and `codegen-runtime-exact-base` for Solar. When a
 comparison's base has no artifact, the importer reads the other compared commit's
 runs for that artifact and publishes it under workflow run 0 with no branch: any
 real run of the base takes precedence, and baselines never enter `main` history.
@@ -31,7 +32,8 @@ Comparison requests carry the other commit (both commits in `runs.json` and
 write `ingestion_jobs` rows, because they share the PR run's workflow ID.
 
 Completed runs without the project's artifact, such as evm2 runs from before the
-JIT job existed, are recorded as `missing` and not retried.
+JIT job existed, or whose artifact has no `results.json`, are recorded as `missing`
+and not retried.
 
 TODO: Replace the temporary `/perf` and `/perf/` redirects in `vercel.json` with
 a generic performance dashboard when more projects are available. Until then,

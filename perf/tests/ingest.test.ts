@@ -244,35 +244,28 @@ describe('GitHub Actions importer', () => {
       ).rejects.toMatchObject(
         conclusion === null
           ? { state: 'benchmark-running', retryAfter: 5, commit: run.commit }
-          : {
-              message:
-                conclusion === 'missing'
-                  ? 'No benchmark workflow is available for this commit'
-                  : 'Benchmark workflows did not publish an available codegen artifact',
-            },
+          : { message: 'No benchmark results are available for this commit' },
       )
       expect(states).toEqual([])
       expect(JSON.parse(log.mock.calls[0][0])).toMatchObject({
         event: 'perf_import',
-        outcome:
-          conclusion === null
-            ? 'ImportPendingError'
-            : conclusion === 'missing'
-              ? 'RunNotFoundError'
-              : 'Error',
+        outcome: conclusion === null ? 'ImportPendingError' : 'RunNotFoundError',
       })
     },
   )
 
   it.each([
-    ['base', true],
-    ['other', false],
+    ['base', false, true],
+    ['other', false, false],
+    // A failed run can upload a report without results; it is missing, not retried.
+    ['base', true, true],
   ])(
-    "imports a base without its own artifact from the partner's baseline (%s)",
-    async (commit, imported) => {
+    "imports a base without its own results from the partner's baseline (%s, report-only artifact %s)",
+    async (commit, reportOnly, imported) => {
       const base = 'b'.repeat(40)
       const head = 'c'.repeat(40)
       const inserts: Record<string, unknown>[] = []
+      const states: string[] = []
       vi.spyOn(console, 'info').mockImplementation(() => {})
       const archive = zipSync({
         'results.json': strToU8(
@@ -285,6 +278,7 @@ describe('GitHub Actions importer', () => {
         ),
         'artifacts/weth/evm2/opt.s': strToU8('ret\n'),
       })
+      const report = zipSync({ 'report.md': strToU8('No benchmark results were produced.') })
       vi.stubGlobal(
         'fetch',
         vi.fn(async (input, init) => {
@@ -293,6 +287,7 @@ describe('GitHub Actions importer', () => {
             const query = url.searchParams.get('query')
             if (query?.includes('run_snapshots'))
               inserts.push(JSON.parse(String(init.body).trim()) as Record<string, unknown>)
+            if (query?.includes('ingestion_jobs')) states.push(JSON.parse(String(init.body)).state)
             return new Response('')
           }
           if (url.pathname.includes('/actions/workflows/')) {
@@ -322,15 +317,27 @@ describe('GitHub Actions importer', () => {
                 },
               ],
             })
+          if (reportOnly && url.pathname.endsWith('/runs/1/artifacts'))
+            return Response.json({
+              artifacts: [
+                {
+                  archive_download_url: 'https://api.github.com/report',
+                  size_in_bytes: report.length,
+                  expired: false,
+                },
+              ],
+            })
           if (url.pathname.endsWith('/artifacts')) return Response.json({ artifacts: [] })
           if (url.pathname === '/archive') return new Response(archive)
+          if (url.pathname === '/report') return new Response(report)
           return Response.json([])
         }),
       )
       const environment = { CLICKHOUSE_HOST: 'https://clickhouse.example', GITHUB_TOKEN: 'test' }
       const result = ingestCommit(base, environment, projects.evm2, head)
       if (imported) await expect(result).resolves.toBe(true)
-      else await expect(result).rejects.toThrow('did not publish an available codegen artifact')
+      else await expect(result).rejects.toThrow('No benchmark results are available')
+      expect(states).toEqual(reportOnly ? ['importing', 'missing'] : [])
       expect(inserts).toEqual(
         imported
           ? [
@@ -421,7 +428,7 @@ describe('GitHub Actions importer', () => {
       if (stored === 'old')
         // An on-demand import of main's head must not take the backfill run's results.
         await expect(ingestCommit(head, environment, projects.evm2)).rejects.toThrow(
-          'No benchmark workflow is available',
+          'No benchmark results are available',
         )
     },
   )

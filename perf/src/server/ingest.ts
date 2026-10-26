@@ -62,7 +62,8 @@ interface IngestJob {
   workflow_run_id: number
 }
 
-// A completed run without the artifact never gains one; do not schedule retries for it.
+// A completed run without the artifact, or whose artifact has no results, never gains one;
+// do not schedule retries for it.
 class MissingArtifactError extends Error {}
 
 function archivePath(name: string) {
@@ -164,7 +165,7 @@ export async function extractArchive(response: Response): Promise<ArtifactArchiv
     )
     .sort((a, b) => a.split('/').length - b.split('/').length)
   const resultPath = candidates[0]
-  if (!resultPath) throw new Error('Artifact archive has no results.json')
+  if (!resultPath) throw new MissingArtifactError('Artifact archive has no results.json')
   if (candidates[1] && candidates[1].split('/').length === resultPath.split('/').length)
     throw new Error('Artifact archive contains ambiguous results documents')
   const results = files.get(resultPath)
@@ -656,7 +657,12 @@ export async function ingestCommit(
     throwIfPending(previous)
     for (const source of sources) {
       const artifact = await importStage('githubArtifactMs', () => github.artifact(source.id))
-      if (artifact) return ingestTracked(config, github, project, source, artifact)
+      if (!artifact) continue
+      try {
+        return await ingestTracked(config, github, project, source, artifact)
+      } catch (error) {
+        if (!(error instanceof MissingArtifactError)) throw error
+      }
     }
     if (sources.some((source) => source.conclusion === null))
       throw new ImportPendingError(5, 'benchmark-running', sha)
@@ -667,7 +673,7 @@ export async function ingestCommit(
       (await ingestBaseline(config, github, project, sha, partner))
     )
       return true
-    if (!sources.length) throw new RunNotFoundError()
-    throw new Error('Benchmark workflows did not publish an available codegen artifact')
+    // Completed runs never gain results, so report the commit as missing, not retryable.
+    throw new RunNotFoundError()
   })
 }
