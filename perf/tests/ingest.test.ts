@@ -281,6 +281,7 @@ describe('GitHub Actions importer', () => {
         'artifacts/weth/evm2/opt.s': strToU8('ret\n'),
       })
       const report = zipSync({ 'report.md': strToU8('No benchmark results were produced.') })
+      let reportDownloads = 0
       vi.stubGlobal(
         'fetch',
         vi.fn(async (input, init) => {
@@ -290,6 +291,11 @@ describe('GitHub Actions importer', () => {
             if (query?.includes('run_snapshots'))
               inserts.push(JSON.parse(String(init.body).trim()) as Record<string, unknown>)
             if (query?.includes('ingestion_jobs')) states.push(JSON.parse(String(init.body)).state)
+            if (
+              String(init.body).includes('FROM ingestion_jobs FINAL WHERE workflow_run_id = 1') &&
+              states.includes('missing')
+            )
+              return Response.json({ workflow_run_id: 1, state: 'missing', updated_at: Date.now() })
             return new Response('')
           }
           if (url.pathname.includes('/actions/workflows/')) {
@@ -305,6 +311,7 @@ describe('GitHub Actions importer', () => {
                   },
                   conclusion: 'success',
                   created_at: run.startedAt,
+                  updated_at: run.startedAt,
                 },
               ],
             })
@@ -334,7 +341,10 @@ describe('GitHub Actions importer', () => {
             })
           if (url.pathname.endsWith('/artifacts')) return Response.json({ artifacts: [] })
           if (url.pathname === '/archive') return new Response(archive)
-          if (url.pathname === '/report') return new Response(report)
+          if (url.pathname === '/report') {
+            reportDownloads++
+            return new Response(report)
+          }
           return Response.json([])
         }),
       )
@@ -357,6 +367,11 @@ describe('GitHub Actions importer', () => {
             ]
           : [],
       )
+      if (reportOnly) {
+        // Until the run is re-run, its report is not downloaded again.
+        await expect(ingestCommit(base, environment, projects.evm2, head)).resolves.toBe(true)
+        expect(reportDownloads).toBe(1)
+      }
     },
   )
 

@@ -59,6 +59,7 @@ interface IngestJob {
   commit: string
   next_attempt_at: number
   state: string
+  updated_at?: number
   workflow_run_id: number
 }
 
@@ -312,7 +313,8 @@ function errorMessage(error: unknown) {
 async function job(config: ClickHouseConfig, runId: number) {
   const [latest] = await select(
     config,
-    `SELECT workflow_run_id, commit, state, attempts, toUnixTimestamp64Milli(next_attempt_at) AS next_attempt_at
+    `SELECT workflow_run_id, commit, state, attempts, toUnixTimestamp64Milli(next_attempt_at) AS next_attempt_at,
+       toUnixTimestamp64Milli(updated_at) AS updated_at
      FROM ingestion_jobs FINAL WHERE workflow_run_id = ${runId} LIMIT 1`,
   )
   return latest as unknown as IngestJob | undefined
@@ -487,6 +489,13 @@ async function ingestTracked(
 ) {
   const previous = await importStage('jobLookupMs', () => job(config, source.id))
   throwIfPending(previous)
+  // A completed run's artifact stays final until a re-run, which updates the run.
+  if (
+    previous?.state === 'missing' &&
+    source.updated_at &&
+    Number(previous.updated_at) > Date.parse(source.updated_at)
+  )
+    throw new MissingArtifactError('Benchmark artifact has no results')
   if (await importStage('snapshotLookupMs', () => hasRun(config, source))) {
     await recordJob(config, project, source, 'complete', Number(previous?.attempts ?? 0), null)
     return false

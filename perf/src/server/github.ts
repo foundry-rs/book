@@ -36,6 +36,7 @@ export interface GitHubRun {
   head_sha: string
   id: number
   name: string
+  updated_at?: string
 }
 
 interface GitHubPage<T> {
