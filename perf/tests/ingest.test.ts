@@ -259,6 +259,8 @@ describe('GitHub Actions importer', () => {
     ['other', false, false],
     // A failed run can upload a report without results; it is missing, not retried.
     ['base', true, true],
+    // A fork PR's workflow is untrusted, whatever commit its results name.
+    ['fork', false, false],
   ])(
     "imports a base without its own results from the partner's baseline (%s, report-only artifact %s)",
     async (commit, reportOnly, imported) => {
@@ -270,7 +272,7 @@ describe('GitHub Actions importer', () => {
       const archive = zipSync({
         'results.json': strToU8(
           JSON.stringify({
-            commit: commit === 'base' ? base : 'd'.repeat(40),
+            commit: commit === 'other' ? 'd'.repeat(40) : base,
             results: [
               { test_id: 'weth', compilers: { evm2: { status: 'ok', jit_size_bytes: 5 } } },
             ],
@@ -298,6 +300,9 @@ describe('GitHub Actions importer', () => {
                 {
                   id: sha === base ? 1 : 2,
                   head_sha: sha,
+                  head_repository: {
+                    full_name: commit === 'fork' && sha === head ? 'fork/evm2' : 'alloy-rs/evm2',
+                  },
                   conclusion: 'success',
                   created_at: run.startedAt,
                 },

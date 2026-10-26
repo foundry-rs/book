@@ -448,11 +448,17 @@ async function ingestBaseline(
 ) {
   const sources = await importStage('githubRunLookupMs', () => github.runsForCommit(partner))
   for (const source of sources) {
+    // A fork PR runs its own workflow, so it could publish any results under the base commit.
+    if (source.head_repository?.full_name !== github.config.repository) continue
     const artifact = await importStage('githubArtifactMs', () =>
       github.artifact(source.id, project.baselineArtifact),
     )
     if (!artifact) continue
-    const archive = await download(github, artifact)
+    const archive = await download(github, artifact).catch((error: unknown) => {
+      if (error instanceof MissingArtifactError) return null
+      throw error
+    })
+    if (!archive) continue
     const document = JSON.parse(archive.results) as { commit?: unknown } | null
     if (document?.commit !== sha) continue
     const run: ImportedRun = {
@@ -498,7 +504,9 @@ async function ingestTracked(
   } catch (error) {
     if (error instanceof ImportPendingError) throw error
     const attempts = Number(previous?.attempts || 0) + 1
-    const state = error instanceof MissingArtifactError ? 'missing' : 'retry'
+    // As in ingestRun, a run in progress is retried until it completes.
+    const state =
+      error instanceof MissingArtifactError && source.conclusion !== null ? 'missing' : 'retry'
     await recordJob(config, project, source, state, attempts, errorMessage(error)).catch(
       (recordError) => console.error('Could not record benchmark import failure', recordError),
     )
