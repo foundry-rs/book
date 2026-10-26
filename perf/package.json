@@ -19,13 +19,13 @@
   "dependencies": {
     "@pierre/diffs": "1.6.1",
     "@pierre/trees": "1.0.0-beta.6",
-    "@vercel/functions": "^3.9.11",
+    "@vercel/functions": "^3.10.1",
     "@viz-js/viz": "3.31.0",
     "fflate": "0.8.3",
     "hono": "^4.13.13",
-    "lucide-react": "^1.55.0",
-    "react": "^19.3.0",
-    "react-dom": "^19.3.0"
+    "lucide-react": "^1.59.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.3",
