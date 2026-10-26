@@ -119,9 +119,11 @@ main {
 }
 .dashboard-title {
   display: flex;
+  flex-wrap: wrap;
   align-items: end;
   justify-content: space-between;
-  padding-bottom: 24px;
+  gap: 20px 32px;
+  padding-bottom: 28px;
 }
 .dashboard-title h1,
 .load-error h1 {
@@ -130,19 +132,17 @@ main {
   font-weight: 600;
   letter-spacing: -0.035em;
 }
-.dashboard-title p,
-.dashboard-title > span {
+.dashboard-title p {
   margin: 7px 0 0;
   color: var(--muted);
   font-size: 13px;
 }
 .compare-box {
-  margin: -60px 0 27px auto;
-  width: min(100%, 460px);
+  width: min(100%, 560px);
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto;
   align-items: end;
-  gap: 10px;
+  gap: 8px;
 }
 .compare-box label {
   display: grid;
@@ -174,15 +174,65 @@ button:disabled {
 .compare-box input {
   width: 100%;
 }
+.commit-input {
+  position: relative;
+  min-width: 0;
+}
+.commit-suggestions {
+  position: absolute;
+  z-index: 50;
+  top: calc(100% + 4px);
+  right: 0;
+  width: max(100%, 380px);
+  max-width: calc(100vw - 16px);
+  max-height: 320px;
+  margin: 0;
+  padding: 4px;
+  overflow-y: auto;
+  list-style: none;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--raised);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.25);
+  font-size: 13px;
+}
+.commit-suggestions [role='option'] {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 10px;
+  padding: 6px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.commit-suggestions [role='option'][data-active] {
+  background: var(--surface-muted);
+}
+.commit-suggestions strong {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.commit-suggestions span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.commit-suggestions code {
+  color: var(--muted);
+  font-size: 11px;
+}
 .compare-box button {
-  grid-column: 2;
+  padding: 0 18px;
   border-color: var(--primary);
   background: var(--primary);
   color: var(--primary-text);
   font-weight: 600;
 }
 .arrow {
-  display: none;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  color: var(--muted);
 }
 .chart-grid {
   display: grid;
@@ -201,6 +251,9 @@ button:disabled {
   align-items: end;
   gap: 16px;
   margin-top: 28px;
+}
+.history-heading + .history-controls {
+  margin-top: 16px;
 }
 .history-controls label {
   display: grid;
@@ -256,6 +309,9 @@ button:disabled {
   font-variant-numeric: tabular-nums;
 }
 .graph-heading span {
+  /* Runs without a change keep the line, so hovering does not move the plot. */
+  min-height: 15px;
+  line-height: 15px;
   font-size: 12px;
   font-variant-numeric: tabular-nums;
 }
@@ -291,6 +347,11 @@ button:disabled {
 .history .series {
   stroke: var(--primary);
   stroke-width: 2;
+}
+.history .series-raw {
+  stroke: var(--primary);
+  stroke-width: 1;
+  opacity: 0.25;
 }
 .chart-dates {
   padding: 4px 18px 16px 84px;
@@ -642,7 +703,6 @@ button.result.selected {
   }
   .compare-box {
     width: 100%;
-    margin: 0 0 22px;
   }
   .chart-grid {
     grid-template-columns: 1fr;
@@ -1250,6 +1310,26 @@ header.file-header {
   padding: 0;
   transform: translate(-50%, -50%);
 }
+.chart-selection {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  bottom: 0;
+  pointer-events: none;
+  border-inline: 1px solid var(--primary);
+  background: color-mix(in srgb, var(--primary) 12%, transparent);
+}
+.chart-reset {
+  height: auto;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--primary);
+  font-size: inherit;
+}
+.chart-reset:hover {
+  text-decoration: underline;
+}
 .chart-crosshair {
   position: absolute;
   z-index: 2;
@@ -1431,8 +1511,16 @@ header.file-header {
 .combobox-group {
   padding: 8px 8px 4px;
   color: var(--muted);
-  font-size: 11px;
-  font-weight: 600;
+  font-size: 10px;
+  font-weight: 650;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+/* Later sections start below a rule, so they read apart from the options above. */
+.combobox-group:not(:first-child) {
+  margin-top: 6px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
 }
 .combobox-popover [role='option'] {
   display: flex;
@@ -1520,10 +1608,13 @@ header.file-header {
 }
 @media (max-width: 680px) {
   .compare-box {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
+  }
+  .compare-box .arrow {
+    display: none;
   }
   .compare-box button {
-    grid-column: auto;
+    grid-column: 1 / -1;
   }
   .history-controls {
     gap: 12px;

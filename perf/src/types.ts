@@ -19,6 +19,14 @@ export interface RunSummary {
   benchmarkCount: number
 }
 
+export interface PrRun {
+  pr: number
+  commit: string
+  title: string | null
+  timestamp: string
+  baseCommit: string | null
+}
+
 export interface RunIndex {
   totalMainRuns?: number
   schemaVersion: number

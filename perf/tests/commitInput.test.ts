@@ -1,8 +1,8 @@
 import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { afterEach, expect, it, vi } from 'vite-plus/test'
-import { CommitInput } from '../src/App'
-import type { RunSummary } from '../src/types'
+import { CommitInput, filterPrs } from '../src/CommitInput'
+import type { PrRun, RunSummary } from '../src/types'
 
 const run: RunSummary = {
   commit: 'abcdef0123456789abcdef0123456789abcdef01',
@@ -13,13 +13,46 @@ const run: RunSummary = {
   benchmarkCount: 1,
 }
 
-it.each(['base', 'head'])('renders an empty %s input without suggestions', (label) => {
+it.each(['base', 'head'])('renders an empty %s input with closed suggestions', (label) => {
   const html = renderToStaticMarkup(
-    createElement(CommitInput, { label, value: '', onChange: () => {} }),
+    createElement(CommitInput, {
+      label,
+      value: '',
+      onChange: () => {},
+      prs: [],
+      onPick: () => {},
+    }),
   )
   expect(html).toContain('value=""')
   expect(html).toContain('autoComplete="off"')
-  expect(html).not.toMatch(/datalist|list=|disabled/)
+  expect(html).toContain('aria-expanded="false"')
+  expect(html).not.toMatch(/listbox|datalist|list=|disabled/)
+})
+
+it('filters pull requests by number, title words, and commit prefix', () => {
+  const prs: PrRun[] = [
+    {
+      pr: 1400,
+      commit: run.commit,
+      title: 'Faster codegen',
+      timestamp: run.timestamp,
+      baseCommit: null,
+    },
+    {
+      pr: 1401,
+      commit: 'f'.repeat(40),
+      title: 'Fix spills',
+      timestamp: run.timestamp,
+      baseCommit: null,
+    },
+  ]
+  const numbers = (query: string) => filterPrs(prs, query).map((pr) => pr.pr)
+  expect(numbers('')).toEqual([1400, 1401])
+  expect(numbers('#1401')).toEqual([1401])
+  expect(numbers('codegen FASTER')).toEqual([1400])
+  expect(numbers('abcdef01')).toEqual([1400])
+  expect(numbers('cdef01')).toEqual([])
+  expect(numbers('missing')).toEqual([])
 })
 
 afterEach(() => vi.unstubAllGlobals())

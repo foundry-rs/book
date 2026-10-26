@@ -4,21 +4,26 @@ import { useEffect, useMemo, useState } from 'react'
 import { Moon, Sun } from 'lucide-react'
 import { HistoryGraph } from './HistoryGraph'
 import { Compare } from './Compare'
-import { loadHistory, loadIndex, resolveCommit } from './data'
+import { loadHistory, loadIndex, loadPrs, resolveCommit } from './data'
 import { comparisonHref, navigate, replaceUrl, useNavigation } from './navigation'
 import { comparisonBase } from './comparisonBase'
 import { hasHistoryChanges, type HistoryRange } from './historySeries'
 import { HistoryRangeSelect } from './HistoryRangeSelect'
 import { Combobox } from './Combobox'
+import { CommitInput } from './CommitInput'
 import logo from './assets/logo.png'
 import { FileViewer } from './FileViewer'
 import { project } from './project'
-import type { HistorySeries, RunIndex, RunSummary, Theme } from './types'
+import type { HistorySeries, PrRun, RunIndex, RunSummary, Theme } from './types'
 
 const short = (commit: string) => commit.slice(0, 8)
 
 const charts = project.metrics.map(({ key, title, unit }) => ({ metric: key, title, unit }))
-const metricOptions = charts.map((chart) => ({ value: chart.metric, label: chart.title }))
+const metricOptions = project.metrics.map(({ key, title, group }) => ({
+  value: key,
+  label: title,
+  group,
+}))
 
 function runRef(run: RunSummary) {
   return run.branch ?? (run.pr ? `PR #${run.pr}` : 'detached')
@@ -32,30 +37,6 @@ function runTitle(run: RunSummary) {
   const title = run.title || runRef(run)
   const pr = runPr(run)
   return pr && !title.includes(`#${pr}`) ? `${title} (#${pr})` : title
-}
-
-export function CommitInput({
-  label,
-  value,
-  onChange,
-}: {
-  label: string
-  value: string
-  onChange: (value: string) => void
-}) {
-  return (
-    <label>
-      {label}
-      <input
-        value={value}
-        onChange={(event) => onChange(event.target.value)}
-        placeholder="Commit, branch, tag, or PR"
-        autoComplete="off"
-        spellCheck={false}
-        aria-label={`${label} commit`}
-      />
-    </label>
-  )
 }
 
 export function App() {
@@ -223,6 +204,21 @@ function Home({ benchmark, navigationKey }: { benchmark: string | null; navigati
   const [error, setError] = useState('')
   const [base, setBase] = useState('')
   const [head, setHead] = useState('')
+  const [prs, setPrs] = useState<PrRun[] | null>(null)
+  // Fields filled from the PR list show a short label and keep the listed commit.
+  const [picked, setPicked] = useState<Record<string, string>>({})
+  const pick = (label: string, commit: string) =>
+    setPicked((picked) => ({ ...picked, [label]: commit }))
+  const pickedCommit = (value: string) => {
+    const commit = picked[value.trim()]
+    return commit ? Promise.resolve(commit) : resolveCommit(value)
+  }
+  // The PR list is not needed for the first paint; fetch it when idle or on first focus.
+  const showPrs = () => {
+    loadPrs()
+      .then(setPrs)
+      .catch(() => setPrs([]))
+  }
   const runs = useMemo(() => index?.runs ?? [], [index])
   const mainRuns = useMemo(() => runs.filter((run) => run.branch === 'main'), [runs])
   const [resolving, setResolving] = useState(false)
@@ -232,6 +228,12 @@ function Home({ benchmark, navigationKey }: { benchmark: string | null; navigati
     loadIndex()
       .then(setIndex)
       .catch((value: Error) => setError(value.message))
+  }, [])
+  useEffect(() => {
+    const idle = window.requestIdleCallback ?? ((callback: () => void) => setTimeout(callback, 1))
+    const cancel = window.cancelIdleCallback ?? clearTimeout
+    const handle = idle(showPrs)
+    return () => cancel(handle)
   }, [])
 
   useEffect(() => {
@@ -265,8 +267,8 @@ function Home({ benchmark, navigationKey }: { benchmark: string | null; navigati
     setCompareError('')
     try {
       const [selectedBase, selectedHead] = await Promise.all([
-        resolveCommit(base),
-        resolveCommit(head),
+        pickedCommit(base),
+        pickedCommit(head),
       ])
       if (selectedBase === selectedHead) throw new Error('Choose two different commits.')
       const url = new URL(window.location.href)
@@ -284,32 +286,63 @@ function Home({ benchmark, navigationKey }: { benchmark: string | null; navigati
       <section className="dashboard-title">
         <div>
           <h1>Performance</h1>
-          <p>Main branch benchmark history</p>
+          <p>
+            {project.name} main branch benchmark history ·{' '}
+            {index ? `${index.totalMainRuns ?? mainRuns.length} runs` : <Skeleton width={56} />}
+          </p>
         </div>
-        <span>
-          {index ? `${index.totalMainRuns ?? mainRuns.length} runs` : <Skeleton width={56} />}
-        </span>
+        <form
+          className="compare-box"
+          aria-label="Compare commits"
+          onSubmit={(event) => {
+            event.preventDefault()
+            void compare()
+          }}
+        >
+          <CommitInput
+            label="base"
+            value={base}
+            onChange={setBase}
+            prs={prs}
+            onPick={(run) => {
+              pick(`#${run.pr}`, run.commit)
+              setBase(`#${run.pr}`)
+            }}
+            onFocus={showPrs}
+          />
+          <span className="arrow">→</span>
+          <CommitInput
+            label="head"
+            value={head}
+            onChange={setHead}
+            prs={prs}
+            onPick={(run) => {
+              pick(`#${run.pr}`, run.commit)
+              setHead(`#${run.pr}`)
+              if (!base.trim() && run.baseCommit) {
+                pick(short(run.baseCommit), run.baseCommit)
+                setBase(short(run.baseCommit))
+              }
+            }}
+            onFocus={showPrs}
+          />
+          <button type="submit" disabled={resolving || !base.trim() || !head.trim()}>
+            {resolving ? <LoadingText>Resolving…</LoadingText> : 'Compare'}
+          </button>
+        </form>
       </section>
-      <form
-        className="compare-box"
-        aria-label="Compare commits"
-        onSubmit={(event) => {
-          event.preventDefault()
-          void compare()
-        }}
-      >
-        <CommitInput label="base" value={base} onChange={setBase} />
-        <span className="arrow">→</span>
-        <CommitInput label="head" value={head} onChange={setHead} />
-        <button type="submit" disabled={resolving || !base.trim() || !head.trim()}>
-          {resolving ? <LoadingText>Resolving…</LoadingText> : 'Compare'}
-        </button>
-      </form>
       {compareError && (
         <p className="error" role="alert">
           {compareError}
         </p>
       )}
+      <div className="section-heading history-heading">
+        <h2>History</h2>
+        <span>
+          {history ? history.runs.length : <Skeleton width={24} />} main runs in range · lower is
+          better
+        </span>
+      </div>
       <section className="history-controls" aria-label="Graph settings">
         <HistoryRangeSelect value={range} onChange={setRange} />
         <label>
@@ -333,17 +366,14 @@ function Home({ benchmark, navigationKey }: { benchmark: string | null; navigati
           />
           Changed only
         </label>
-        <span>
-          {project.name} · {history ? history.runs.length : <Skeleton width={24} />} main runs in
-          range · lower is better
-        </span>
       </section>
       <p className="history-note">
         Each graph is one benchmark. Gaps indicate failed or missing measurements. Hover or tap to
         inspect a run; click it or tap it again to compare it with the preceding commit. Hold Shift
-        to select the nearest run instead of the nearest change.
+        to select the nearest run instead of the nearest change. Drag across a graph to zoom into
+        that span.
         {project.metrics.find((definition) => definition.key === metric)?.noisy
-          ? ' Timing and memory can vary between runs. Long histories preserve peaks and lows; hover shows raw measurements.'
+          ? ' Timing and memory vary between runs, so the line, scale, and change use the median of five neighbouring runs. The faint line is each run, and hover shows raw measurements.'
           : ''}
       </p>
       {error || historyError ? (

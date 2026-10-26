@@ -8,6 +8,8 @@ export interface MetricDefinition {
   alias?: string
   /** Measurements vary between identical runs, so graphs use lines instead of steps. */
   noisy?: boolean
+  /** Metric picker section. Metrics in one group must be adjacent. */
+  group?: string
 }
 
 export interface Project {
@@ -33,10 +35,11 @@ export const projects: Record<string, Project> = {
     artifact: 'codegen-runtime-results',
     compiler: 'solar',
     metrics: [
-      { key: 'total_gas', title: 'Runtime gas', unit: 'gas', alias: 'runtimeGas' },
-      { key: 'deploy_gas', title: 'Deploy gas', unit: 'gas', alias: 'deployGas' },
+      { key: 'total_gas', group: 'Gas', title: 'Runtime gas', unit: 'gas', alias: 'runtimeGas' },
+      { key: 'deploy_gas', group: 'Gas', title: 'Deploy gas', unit: 'gas', alias: 'deployGas' },
       {
         key: 'runtime_size',
+        group: 'Size',
         title: 'Runtime bytecode',
         label: 'Runtime bytes',
         unit: 'bytes',
@@ -44,6 +47,7 @@ export const projects: Record<string, Project> = {
       },
       {
         key: 'bytecode_size',
+        group: 'Size',
         title: 'Creation bytecode',
         label: 'Creation bytes',
         unit: 'bytes',
@@ -51,6 +55,7 @@ export const projects: Record<string, Project> = {
       },
       {
         key: 'compile_time_seconds',
+        group: 'Compiler',
         title: 'Compile time',
         unit: 'seconds',
         alias: 'compileTime',
@@ -58,6 +63,7 @@ export const projects: Record<string, Project> = {
       },
       {
         key: 'peak_rss_bytes',
+        group: 'Compiler',
         title: 'Peak memory (RSS)',
         unit: 'memory',
         alias: 'peakMemory',
@@ -75,34 +81,78 @@ export const projects: Record<string, Project> = {
     baselineArtifact: 'jit-bench-baseline',
     compiler: 'evm2',
     metrics: [
-      { key: 'jit_size_bytes', title: 'JIT size', unit: 'bytes' },
-      { key: 'opt_s_lines', title: 'Assembly lines', unit: 'lines' },
-      { key: 'opt_ll_lines', title: 'Optimized IR lines', unit: 'lines' },
-      { key: 'unopt_ll_lines', title: 'Unoptimized IR lines', unit: 'lines' },
-      { key: 'spills', title: 'Spills', unit: 'spills' },
-      { key: 'reloads', title: 'Reloads', unit: 'reloads' },
-      { key: 'i256_loads', title: 'i256 loads', unit: 'loads' },
-      { key: 'i256_stores', title: 'i256 stores', unit: 'stores' },
-      { key: 'mresize_calls', title: 'mresize calls', unit: 'calls' },
+      { key: 'jit_size_bytes', group: 'Code size', title: 'JIT size', unit: 'bytes' },
+      { key: 'opt_s_lines', group: 'Code size', title: 'Assembly lines', unit: 'lines' },
+      { key: 'opt_ll_lines', group: 'Code size', title: 'Optimized IR lines', unit: 'lines' },
+      { key: 'unopt_ll_lines', group: 'Code size', title: 'Unoptimized IR lines', unit: 'lines' },
+      { key: 'spills', group: 'Code quality', title: 'Spills', unit: 'spills' },
+      { key: 'reloads', group: 'Code quality', title: 'Reloads', unit: 'reloads' },
+      { key: 'i256_loads', group: 'Code quality', title: 'i256 loads', unit: 'loads' },
+      { key: 'i256_stores', group: 'Code quality', title: 'i256 stores', unit: 'stores' },
+      { key: 'mresize_calls', group: 'Code quality', title: 'mresize calls', unit: 'calls' },
       {
         key: 'compile_instructions',
+        group: 'Compile cost',
         title: 'Compile instructions',
         unit: 'instructions',
         noisy: true,
       },
-      { key: 'compile_cycles', title: 'Compile cycles', unit: 'cycles', noisy: true },
-      { key: 'compile_time_seconds', title: 'Compile time', unit: 'seconds', noisy: true },
-      { key: 'parse_seconds', title: 'Parse time', unit: 'seconds', noisy: true },
-      { key: 'translate_seconds', title: 'Translate time', unit: 'seconds', noisy: true },
-      { key: 'optimize_seconds', title: 'Optimize time', unit: 'seconds', noisy: true },
-      { key: 'codegen_seconds', title: 'Codegen time', unit: 'seconds', noisy: true },
+      {
+        key: 'compile_cycles',
+        group: 'Compile cost',
+        title: 'Compile cycles',
+        unit: 'cycles',
+        noisy: true,
+      },
+      {
+        key: 'compile_time_seconds',
+        group: 'Compile cost',
+        title: 'Compile time',
+        unit: 'seconds',
+        noisy: true,
+      },
+      {
+        key: 'parse_seconds',
+        group: 'Compile phases',
+        title: 'Parse time',
+        unit: 'seconds',
+        noisy: true,
+      },
+      {
+        key: 'translate_seconds',
+        group: 'Compile phases',
+        title: 'Translate time',
+        unit: 'seconds',
+        noisy: true,
+      },
+      {
+        key: 'optimize_seconds',
+        group: 'Compile phases',
+        title: 'Optimize time',
+        unit: 'seconds',
+        noisy: true,
+      },
+      {
+        key: 'codegen_seconds',
+        group: 'Compile phases',
+        title: 'Codegen time',
+        unit: 'seconds',
+        noisy: true,
+      },
       {
         key: 'runtime_instructions',
+        group: 'Runtime',
         title: 'Runtime instructions',
         unit: 'instructions',
         noisy: true,
       },
-      { key: 'runtime_cycles', title: 'Runtime cycles', unit: 'cycles', noisy: true },
+      {
+        key: 'runtime_cycles',
+        group: 'Runtime',
+        title: 'Runtime cycles',
+        unit: 'cycles',
+        noisy: true,
+      },
     ],
   },
 }

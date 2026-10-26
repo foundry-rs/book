@@ -4,11 +4,39 @@ export interface HistoryPoint {
   value: number | null
 }
 
-export function timePositions(points: HistoryPoint[]) {
+export interface TimeWindow {
+  from: number
+  to: number
+}
+
+// A zoom window maps its own span onto the plot; runs outside it fall outside 0–100.
+export function timePositions(points: HistoryPoint[], window?: TimeWindow) {
   const times = points.map((point) => Date.parse(point.timestamp))
-  const first = times[0]
-  const span = (times.at(-1) ?? first) - first
+  const first = window?.from ?? times[0]
+  const span = (window?.to ?? times.at(-1) ?? first) - first
   return times.map((time) => (span > 0 ? 3 + ((time - first) / span) * 94 : 50))
+}
+
+// The time under a plot position, inverting `timePositions` for the same window.
+export function positionTime(points: HistoryPoint[], x: number, window?: TimeWindow) {
+  const first = window?.from ?? Date.parse(points[0].timestamp)
+  const last = window?.to ?? Date.parse(points.at(-1)!.timestamp)
+  return first + ((x - 3) / 94) * (last - first)
+}
+
+// Indices of the runs inside the plot, plus one neighbour on each side so lines enter
+// and leave the edges. `first` and `last` bound the runs that can be selected.
+export function visibleRange(positions: number[]) {
+  let first = positions.findIndex((x) => x >= 0)
+  if (first < 0) first = positions.length
+  let last = positions.length - 1
+  while (last >= 0 && positions[last] > 100) last--
+  return {
+    first,
+    last,
+    start: Math.max(0, first - 1),
+    end: Math.min(positions.length - 1, last + 1),
+  }
 }
 
 export function nearestPoint(positions: number[], x: number) {
@@ -130,4 +158,29 @@ export function unchangedRunCounts(points: HistoryPoint[]) {
     start = end
   }
   return counts
+}
+
+// Noisy metrics plot the median of nearby runs, so one slow run does not draw a spike.
+// The window stays inside one measured segment and never bridges missing measurements.
+export function rollingMedian<T extends HistoryPoint>(points: T[], radius = 2): T[] {
+  const smoothed = points.map((point) => ({ ...point }))
+  for (let start = 0; start < points.length;) {
+    if (points[start].value === null) {
+      start++
+      continue
+    }
+    let end = start + 1
+    while (end < points.length && points[end].value !== null) end++
+    for (let index = start; index < end; index++) {
+      const window = points
+        .slice(Math.max(start, index - radius), Math.min(end, index + radius + 1))
+        .map((point) => point.value!)
+        .sort((a, b) => a - b)
+      const middle = window.length >> 1
+      smoothed[index].value =
+        window.length % 2 ? window[middle] : (window[middle - 1] + window[middle]) / 2
+    }
+    start = end
+  }
+  return smoothed
 }

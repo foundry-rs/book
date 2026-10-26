@@ -9,14 +9,25 @@ import { project } from './project'
 import {
   historyPath,
   nearestPoint,
+  positionTime,
+  rollingMedian,
   selectPoint,
   timePositions,
   unchangedRunCounts,
+  visibleRange,
+  type TimeWindow,
 } from './historyPlot'
 
 const short = (commit: string) => commit.slice(0, 8)
 // Pixels around the pointer searched for the run that changed the measurement.
 const pointerReach = 6
+// Plot percent a mouse must move before a press becomes a zoom selection.
+const dragThreshold = 1.5
+
+const plotX = (event: { currentTarget: Element; clientX: number }) => {
+  const bounds = event.currentTarget.getBoundingClientRect()
+  return Math.max(0, Math.min(100, ((event.clientX - bounds.left) / bounds.width) * 100))
+}
 
 export function HistoryGraph({
   runs,
@@ -45,6 +56,11 @@ export function HistoryGraph({
     selected: null,
   })
   const tooltipRef = useRef<HTMLSpanElement>(null)
+  // Dragging across the plot zooms into that time span; the scale refits to its runs.
+  const [zoom, setZoom] = useState<TimeWindow | null>(null)
+  const [selection, setSelection] = useState<{ from: number; to: number } | null>(null)
+  const drag = useRef<{ x: number; moved: boolean } | null>(null)
+  const dragged = useRef(false)
   useLayoutEffect(() => {
     // Keep the floating tooltip inside the viewport, which matters on phones.
     const element = tooltipRef.current
@@ -64,41 +80,81 @@ export function HistoryGraph({
     window.addEventListener('scroll', close, { once: true, passive: true })
     return () => window.removeEventListener('scroll', close)
   }, [tooltip])
-  const { points, values, min, max, position, positions, path, unchangedCounts } = useMemo(() => {
+  const {
+    points,
+    plotted,
+    values,
+    viewValues,
+    first,
+    last,
+    min,
+    max,
+    position,
+    positions,
+    path,
+    rawPath,
+    unchangedCounts,
+  } = useMemo(() => {
     const series = runs.values[benchmark] ?? []
     const points = runs.runs
       .map((run, index) => ({ ...run, value: series[index] ?? null }))
       .reverse()
-    const values = points.flatMap((run) => (run.value === null ? [] : [run.value]))
-    const min = values.reduce((min, value) => Math.min(min, value), values[0] ?? 0)
-    const max = values.reduce((max, value) => Math.max(max, value), values[0] ?? 0)
+    const noisy = project.metrics.find((definition) => definition.key === metric)?.noisy
+    // The median line sets the scale, so one bad run does not flatten the history.
+    const plotted = noisy ? rollingMedian(points) : points
+    const values = plotted.flatMap((run) => (run.value === null ? [] : [run.value]))
+    const positions = timePositions(points, zoom ?? undefined)
+    const { first, last, start, end } = visibleRange(positions)
+    const viewValues = plotted
+      .slice(first, last + 1)
+      .flatMap((run) => (run.value === null ? [] : [run.value]))
+    const min = viewValues.reduce((min, value) => Math.min(min, value), viewValues[0] ?? 0)
+    const max = viewValues.reduce((max, value) => Math.max(max, value), viewValues[0] ?? 0)
     const range = max - min
     const padding = range === 0 ? Math.max(Math.abs(max) * 0.04, 1) : range * 0.1
     const chartMin = min - padding
     const chartMax = max + padding
     const position = (value: number) =>
       Math.max(10, Math.min(90, 90 - ((value - chartMin) / (chartMax - chartMin)) * 80))
-    const positions = timePositions(points)
-    const stepped = !project.metrics.find((definition) => definition.key === metric)?.noisy
-    const path = historyPath(points, positions, position, stepped)
+    // Only runs in the window and their edge neighbours are drawn.
+    const visible = <T,>(list: T[]) => list.slice(start, end + 1)
+    const path = historyPath(visible(plotted), visible(positions), position, !noisy)
+    const rawPath = noisy ? historyPath(visible(points), visible(positions), position, false) : null
     const unchangedCounts = unchangedRunCounts(points)
-    return { points, values, min, max, position, positions, path, unchangedCounts }
-  }, [runs, benchmark, metric])
+    return {
+      points,
+      plotted,
+      values,
+      viewValues,
+      first,
+      last,
+      min,
+      max,
+      position,
+      positions,
+      path,
+      rawPath,
+      unchangedCounts,
+    }
+  }, [runs, benchmark, metric, zoom])
   const pointedRun = useCallback(
     (event: { currentTarget: Element; clientX: number; clientY: number; shiftKey: boolean }) => {
       const bounds = event.currentTarget.getBoundingClientRect()
       const x = ((event.clientX - bounds.left) / bounds.width) * 100
       // Shift skips change-aware selection for runs that share a pixel.
-      if (event.shiftKey) return nearestPoint(positions, x)
-      return selectPoint(
-        points,
-        positions,
-        position,
-        { x, y: ((event.clientY - bounds.top) / bounds.height) * 100 },
-        { x: (pointerReach / bounds.width) * 100, y: (pointerReach / bounds.height) * 100 },
-      )
+      const index = event.shiftKey
+        ? nearestPoint(positions, x)
+        : selectPoint(
+            points,
+            positions,
+            position,
+            { x, y: ((event.clientY - bounds.top) / bounds.height) * 100 },
+            { x: (pointerReach / bounds.width) * 100, y: (pointerReach / bounds.height) * 100 },
+          )
+      // Runs just outside a zoom window are never selected.
+      return Math.max(first, Math.min(last, index))
     },
-    [points, positions, position],
+    [points, positions, position, first, last],
   )
   // Pressing or releasing Shift reselects the run under a resting mouse.
   const mouse = useRef<{ currentTarget: Element; clientX: number; clientY: number } | null>(null)
@@ -116,17 +172,38 @@ export function HistoryGraph({
   }, [pointedRun])
   // Hide cards without a current measurement, while retaining gaps in visible histories.
   if (!values.length || (hideMissingLatest && points.at(-1)?.value == null)) return null
-  const active = points[hovered ?? points.length - 1]
-  const activeIndex = hovered ?? points.length - 1
+  const activeIndex = hovered ?? last
+  const active = points[activeIndex]
   const activeX = positions[activeIndex]
   const activeY = active?.value != null ? position(active.value) : 0
-  const change = percentChange(values[0], active?.value ?? null)
+  const change = percentChange(viewValues[0] ?? null, plotted[activeIndex]?.value ?? null)
 
   const unchanged = unchangedCounts[activeIndex]
   // The change a click opens: this run against the run before it.
   const previous = points[activeIndex - 1]?.value ?? null
   const delta = previous !== null && active?.value != null ? active.value - previous : 0
   const deltaChange = percentChange(previous, active?.value ?? null)
+  const finishZoom = () => {
+    if (!selection) return
+    // The plot pads its edges; a window never extends past the first or last run.
+    const from = Math.max(
+      Date.parse(points[0].timestamp),
+      positionTime(points, selection.from, zoom ?? undefined),
+    )
+    const to = Math.min(
+      Date.parse(points.at(-1)!.timestamp),
+      positionTime(points, selection.to, zoom ?? undefined),
+    )
+    const inside = points.filter((point) => {
+      const time = Date.parse(point.timestamp)
+      return time >= from && time <= to && point.value !== null
+    })
+    // A window needs two measured runs to draw a line.
+    if (inside.length < 2) return
+    setHovered(null)
+    setTooltip(null)
+    setZoom({ from, to })
+  }
   const compare = (index: number) => {
     const base = points[index - 1]
     const head = points[index]
@@ -167,16 +244,16 @@ export function HistoryGraph({
               className="history-plot"
               role="slider"
               tabIndex={0}
-              aria-label={`${benchmark}: ${title} history. Arrow keys select a run; Enter compares commits.`}
-              aria-valuemin={0}
-              aria-valuemax={points.length - 1}
+              aria-label={`${benchmark}: ${title} history. Arrow keys select a run; Enter compares commits; Escape resets zoom.`}
+              aria-valuemin={first}
+              aria-valuemax={last}
               aria-valuenow={activeIndex}
               aria-valuetext={
                 active
                   ? `${active.title ? `${active.title} · ` : ''}${new Date(active.timestamp).toLocaleString()} · ${short(active.commit)} · ${active.value === null ? 'No measurement' : formatValue(active.value, unit)}`
                   : undefined
               }
-              onFocus={() => setHovered(points.length - 1)}
+              onFocus={() => setHovered(last)}
               onBlur={() => {
                 setHovered(null)
                 setTooltip(null)
@@ -186,27 +263,51 @@ export function HistoryGraph({
                   compare(activeIndex)
                   return
                 }
+                if (event.key === 'Escape' && zoom) {
+                  setZoom(null)
+                  return
+                }
                 const index =
                   event.key === 'ArrowLeft'
                     ? activeIndex - 1
                     : event.key === 'ArrowRight'
                       ? activeIndex + 1
                       : event.key === 'Home'
-                        ? 0
+                        ? first
                         : event.key === 'End'
-                          ? points.length - 1
+                          ? last
                           : null
                 if (index === null) return
                 event.preventDefault()
-                setHovered(Math.max(0, Math.min(points.length - 1, index)))
+                setHovered(Math.max(first, Math.min(last, index)))
               }}
               onPointerDown={(event) => {
                 tap.current = { touch: event.pointerType !== 'mouse', selected: hovered }
+                // Touch drags scroll the page, so only a mouse can select a zoom span.
+                if (event.pointerType === 'mouse' && event.button === 0) {
+                  drag.current = { x: plotX(event), moved: false }
+                  event.currentTarget.setPointerCapture(event.pointerId)
+                }
               }}
               onPointerUp={(event) => {
                 tap.current.index = pointedRun(event)
+                if (drag.current?.moved) {
+                  dragged.current = true
+                  finishZoom()
+                }
+                drag.current = null
+                setSelection(null)
+              }}
+              onLostPointerCapture={() => {
+                drag.current = null
+                setSelection(null)
               }}
               onClick={(event) => {
+                // The click that ends a zoom selection does not open a comparison.
+                if (dragged.current) {
+                  dragged.current = false
+                  return
+                }
                 const index = tap.current.index ?? pointedRun(event)
                 if (tap.current.touch && tap.current.selected !== index) {
                   setHovered(index)
@@ -222,6 +323,19 @@ export function HistoryGraph({
                     clientX: event.clientX,
                     clientY: event.clientY,
                   }
+                // A drag lasts only while the primary button is held.
+                if (drag.current && !(event.buttons & 1)) {
+                  drag.current = null
+                  setSelection(null)
+                }
+                const start = drag.current
+                if (start && (start.moved || Math.abs(plotX(event) - start.x) > dragThreshold)) {
+                  start.moved = true
+                  const x = plotX(event)
+                  setSelection({ from: Math.min(start.x, x), to: Math.max(start.x, x) })
+                  setTooltip(null)
+                  return
+                }
                 setHovered(pointedRun(event))
                 setTooltip({ x: event.clientX, y: event.clientY })
               }}
@@ -247,6 +361,7 @@ export function HistoryGraph({
                 </defs>
                 <g clipPath={`url(#${clipId})`}>
                   <path className="grid" d="M0 12H100 M0 50H100 M0 88H100" />
+                  {rawPath && <path className="series-raw" d={rawPath} />}
                   <path className="series" d={path} />
                 </g>
               </svg>
@@ -261,6 +376,12 @@ export function HistoryGraph({
                     style={{ top: `${activeY}%` }}
                   />
                 </>
+              )}
+              {selection && (
+                <span
+                  className="chart-selection"
+                  style={{ left: `${selection.from}%`, width: `${selection.to - selection.from}%` }}
+                />
               )}
               {hovered !== null && active?.value != null && (
                 <span
@@ -297,8 +418,13 @@ export function HistoryGraph({
               )}
           </div>
           <div className="chart-dates">
-            <span>{new Date(points[0].timestamp).toLocaleDateString()}</span>
-            <span>{new Date(points.at(-1)!.timestamp).toLocaleDateString()}</span>
+            <span>{new Date(zoom?.from ?? points[0].timestamp).toLocaleDateString()}</span>
+            {zoom && (
+              <button type="button" className="chart-reset" onClick={() => setZoom(null)}>
+                Reset zoom
+              </button>
+            )}
+            <span>{new Date(zoom?.to ?? points.at(-1)!.timestamp).toLocaleDateString()}</span>
           </div>
         </>
       )}

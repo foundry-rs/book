@@ -64,6 +64,33 @@ async function indexFromClickHouse(config: ClickHouseConfig, project: Project) {
   }
 }
 
+// The newest benchmarked run of each pull request, with the main run before it as its base.
+async function prsFromClickHouse(config: ClickHouseConfig, project: Project) {
+  const rows = await select(
+    config,
+    `SELECT pr, commit, title, timestamp, baseCommit FROM (
+       SELECT commit, pr, title, branch, started_at,
+         formatDateTime(started_at, '%Y-%m-%dT%H:%i:%SZ', 'UTC') AS timestamp,
+         anyOrNullIf(commit, branch = 'main') OVER (
+           ORDER BY started_at DESC, commit DESC ROWS BETWEEN 1 FOLLOWING AND UNBOUNDED FOLLOWING
+         ) AS baseCommit
+       FROM (SELECT commit, pr, title, branch, started_at FROM run_snapshots FINAL
+         WHERE project = '${project.id}' AND source_schema > 0
+         ORDER BY workflow_run_id DESC, run_attempt DESC, published_at DESC LIMIT 1 BY commit))
+     WHERE pr IS NOT NULL AND ifNull(branch, '') != 'main'
+     ORDER BY started_at DESC, commit DESC LIMIT 1 BY pr LIMIT 200`,
+  )
+  return {
+    prs: rows.map((row) => ({
+      pr: Number(row.pr),
+      commit: String(row.commit),
+      title: row.title ?? null,
+      timestamp: row.timestamp,
+      baseCommit: row.baseCommit ?? null,
+    })),
+  }
+}
+
 const revisionPattern = /^[a-f0-9]{64}$/
 const snapshotOrder = 'workflow_run_id DESC, run_attempt DESC, published_at DESC'
 function snapshotSelection(
@@ -435,6 +462,7 @@ export function createApi(options: ApiOptions = {}) {
     const missingRefs = responseCache<boolean>(15_000, 64 * 1024)
     // Coalesce concurrent origin misses; the CDN remains the cross-instance cache.
     const indexReads = responseCache<Awaited<ReturnType<typeof indexFromClickHouse>>>(1_000)
+    const prReads = responseCache<Awaited<ReturnType<typeof prsFromClickHouse>>>(1_000)
     const historyReads = responseCache<Awaited<ReturnType<typeof historyFromClickHouse>>>(1_000)
     const historyMetrics = project.metrics.map((metric) => metric.key)
     let github: GitHubClient | undefined
@@ -571,6 +599,10 @@ export function createApi(options: ApiOptions = {}) {
           context.header('cache-control', 'public, max-age=60, stale-while-revalidate=120')
           const index = await indexReads('index', () => indexFromClickHouse(config, project))
           return context.json(index)
+        }
+        if (path === 'prs.json') {
+          context.header('cache-control', 'public, max-age=60, stale-while-revalidate=300')
+          return context.json(await prReads('prs', () => prsFromClickHouse(config, project)))
         }
 
         const runMatch = /^runs\/([0-9a-f]{40})\/run\.json$/.exec(path)
