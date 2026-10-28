@@ -82,6 +82,16 @@ See also [solc path resolution](https://docs.soliditylang.org/en/latest/path-res
 
 An array of libraries to link against in the following format: `<file>:<lib>:<address>`, for example: `src/MyLibrary.sol:MyLibrary:0xfD88CeE74f7D78697775aBDAE53f9Da1559728E4`.
 
+To link more than one library, add each entry to the array (or pass `--libraries` once per library on the CLI). A single space-separated `--libraries` value is parsed as extra arguments and will fail:
+
+```toml [foundry.toml]
+[profile.default]
+libraries = [
+  "lib/solmate/src/utils/SafeCastLib.sol:SafeCastLib:0xaBcd0C11d7c8AaABBa176Cb5ab9531BCcF7711f1",
+  "lib/solmate/src/utils/SafeTransferLib.sol:SafeTransferLib:0xabCd5E5C3C6d9fcb3150BF64015186f45C8F4273",
+]
+```
+
 ##### `allow_linked_libraries`
 
 - Type: boolean

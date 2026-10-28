@@ -171,7 +171,11 @@ Build options:
 
 Linker options:
       --libraries <LIBRARIES>
-          Set pre-linked libraries
+          Set pre-linked libraries.
+          
+          Format: `<file>:<lib>:<address>`. Pass the flag once per library, e.g.
+          `--libraries src/Foo.sol:Foo:0x… --libraries src/Bar.sol:Bar:0x…`.
+          Or set `libraries = ["…", "…"]` in `foundry.toml`.
           
           [env: DAPP_LIBRARIES=]
 
