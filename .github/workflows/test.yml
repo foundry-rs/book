@@ -24,11 +24,19 @@ jobs:
           persist-credentials: false
 
       - name: Set up Vite+
+        continue-on-error: true
         uses: voidzero-dev/setup-vp@68f39c78aaf39be468cabd2afb09c162574c84af # v1.21.2
         with:
           cache: true
           node-version: "24"
           run-install: false
+
+      - name: Debug Vite+ install
+        run: |
+          cat ~/.local/share/vite-plus/upgrade.log || true
+          cat ~/.npmrc /etc/npmrc 2>/dev/null || true
+          env | grep -i -E 'npm|pnpm|node' || true
+          exit 1
 
       - name: Install dependencies
         run: vp install --frozen-lockfile
