@@ -143,6 +143,25 @@ $ docker build -t foundry .
 Some systems (including Apple Silicon) may have issues building the Docker image locally.
 :::
 
+#### GitHub Codespaces / Dev Containers
+
+The published `ghcr.io/foundry-rs/foundry` image is a slim runtime for the CLI tools. It does **not** include Git (or a full development userspace), so using it directly as a [devcontainer](https://containers.dev/) / GitHub Codespaces image fails when the environment expects `git`.
+
+Prefer one of these instead:
+
+1. Start from a normal development base image (for example Ubuntu or the [Dev Containers templates](https://github.com/devcontainers/templates)) and install Foundry with `foundryup` in `postCreateCommand` / `onCreateCommand`.
+2. Or build a custom Dockerfile `FROM ghcr.io/foundry-rs/foundry:latest` that installs `git` and any other tools your Codespace needs.
+
+Example `devcontainer.json` sketch using `foundryup` on Ubuntu:
+
+```json
+{
+  "name": "Foundry",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "postCreateCommand": "curl -L https://foundry.paradigm.xyz | bash && foundryup"
+}
+```
+
 ### CI/CD
 
 See the [CI integration guide](/config/ci) for GitHub Actions and other CI platforms.
