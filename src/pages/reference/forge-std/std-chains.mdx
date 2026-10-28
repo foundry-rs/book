@@ -1,0 +1,117 @@
+---
+description: Look up chain metadata and RPC URLs from forge-std StdChains
+---
+
+## Std Chains
+
+`StdChains` (included by `forge-std/Test.sol` and `Script.sol`) gives tests and scripts a small registry of EVM chains: name, chain ID, alias, and an RPC URL.
+
+Use it when a test needs a fork URL or chain ID without hard-coding endpoints. Prefer configuring RPCs in `foundry.toml` and reading them through `getChain` rather than embedding public URLs in Solidity.
+
+For the cheatcode that talks to Foundry's named-chain registry directly, see [`vm.getChain`](/reference/cheatcodes/get-chain).
+
+### Types
+
+```solidity
+struct ChainData {
+    string name;
+    uint256 chainId;
+    string rpcUrl;
+}
+
+struct Chain {
+    string name;
+    uint256 chainId;
+    string chainAlias;
+    string rpcUrl;
+}
+```
+
+### `getChain`
+
+```solidity
+function getChain(string memory chainAlias) internal virtual returns (Chain memory chain);
+function getChain(uint256 chainId) internal virtual returns (Chain memory chain);
+```
+
+Returns chain data for a known alias (for example `"mainnet"`, `"optimism"`, `"base"`) or chain ID.
+
+RPC URL resolution order for a given alias:
+
+1. Value previously set with `setChain`
+2. Matching entry under `[rpc_endpoints]` in `foundry.toml` (including `${ENV}` expansion)
+3. Built-in default public RPC URL (when fallback defaults are enabled)
+
+:::warning
+Default public RPC URLs are for local experimentation only. They are rate-limited. Configure your own endpoints in `foundry.toml` for CI and shared test suites.
+:::
+
+### `setChain`
+
+```solidity
+function setChain(string memory chainAlias, ChainData memory chain) internal virtual;
+function setChain(string memory chainAlias, Chain memory chain) internal virtual;
+```
+
+Registers or overrides chain data under `chainAlias`. Useful for custom networks or for pinning an RPC URL in a test without editing `foundry.toml`.
+
+### Configuration
+
+```toml [foundry.toml]
+[rpc_endpoints]
+mainnet = "${MAINNET_RPC_URL}"
+base = "${BASE_RPC_URL}"
+```
+
+Aliases here should match the aliases `StdChains` knows (the first argument to each default chain registration).
+
+### Examples
+
+#### Read chain ID and create a fork from config
+
+```solidity [test/StdChainsExample.t.sol]
+pragma solidity ^0.8.13;
+
+import {Test} from "forge-std/Test.sol";
+
+contract StdChainsExampleTest is Test {
+    function testForkBaseFromStdChains() public {
+        Chain memory base = getChain("base");
+
+        assertEq(base.chainId, 8453);
+        assertEq(base.chainAlias, "base");
+        assertGt(bytes(base.rpcUrl).length, 0);
+
+        uint256 forkId = vm.createFork(base.rpcUrl);
+        vm.selectFork(forkId);
+        assertEq(block.chainid, base.chainId);
+    }
+}
+```
+
+#### Look up by chain ID
+
+```solidity
+Chain memory optimism = getChain(10);
+assertEq(optimism.chainAlias, "optimism");
+assertEq(optimism.chainId, 10);
+```
+
+#### Register a custom chain for a test
+
+```solidity
+setChain(
+    "mychain",
+    ChainData({name: "My Chain", chainId: 12345, rpcUrl: "http://127.0.0.1:8545"})
+);
+
+Chain memory mine = getChain("mychain");
+assertEq(mine.chainId, 12345);
+assertEq(mine.rpcUrl, "http://127.0.0.1:8545");
+```
+
+### Gotchas
+
+- Do not use the old `stdChains.ChainName.rpcUrl` field style. That API is gone; call `getChain("alias")` (or `getChain(chainId)`) instead.
+- `Test` / `Script` already inherit `StdChains`, so you typically call `getChain` / `setChain` directly on the test contract.
+- An empty alias, unknown alias, or chain ID `0` reverts.

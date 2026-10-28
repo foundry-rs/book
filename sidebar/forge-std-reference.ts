@@ -6,6 +6,7 @@ export const forgeStdReference: SidebarItem = {
   items: [
     { text: "Overview", link: "/reference/forge-std/overview" },
     { text: "Std Logs", link: "/reference/forge-std/std-logs" },
+    { text: "Std Chains", link: "/reference/forge-std/std-chains" },
     {
       text: "Std Assertions",
       link: "/reference/forge-std/std-assertions",
