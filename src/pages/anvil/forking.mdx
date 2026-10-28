@@ -20,11 +20,18 @@ You can also fork from a specific point in the chain's history:
 $ anvil --fork-url https://ethereum.reth.rs/rpc --fork-block-number 18000000
 ```
 
+```bash [Trailing @block (Ganache-compatible)]
+$ anvil --fork-url https://ethereum.reth.rs/rpc@18000000
+```
+
 ```bash [At transaction]
 $ anvil --fork-url https://ethereum.reth.rs/rpc --fork-transaction-hash $TX_HASH
 ```
 
 :::
+
+
+Appending `@<block>` to `--fork-url` (for example `https://ethereum.reth.rs/rpc@18000000`) selects the same historical state as `--fork-block-number`. The trailing form matches Ganache's fork URL syntax; do not combine `@<block>` with `--fork-block-number` on the same invocation.
 
 ### Skipping fork identity probes
 
