@@ -258,6 +258,16 @@ Valid values are:
 - bzzr1
 - none
 
+##### `cbor_metadata`
+
+- Type: boolean
+- Default: true
+- Environment: `FOUNDRY_CBOR_METADATA` or `DAPP_CBOR_METADATA`
+
+Whether to append the CBOR metadata section to contract bytecode.
+
+When `false`, solc omits the trailing CBOR metadata. Combined with `bytecode_hash = "none"`, this yields fully deterministic bytecode for CREATE2-style deployments. If `cbor_metadata` is `false` while `bytecode_hash` is not `"none"`, solc emits a warning.
+
 ##### `sparse_mode`
 
 - Type: boolean
