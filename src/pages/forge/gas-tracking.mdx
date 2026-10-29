@@ -47,7 +47,7 @@ If a test sets context with `TSTORE` in one call and reads it with `TLOAD` in a 
 Practical options:
 
 - Keep the `TSTORE` and the `TLOAD` inside the same top-level call (or the same contract function under test).
-- `--gas-report` always enables isolation, overriding `--no-isolate` and `isolate = false` in `foundry.toml`. To exercise transient storage shared across calls, run that test without `--gas-report`, using `forge test --no-isolate` or inline `/// forge-config: default.isolate = false`. Gas numbers then differ from an isolated report.
+- `--gas-report` enables isolation even when you pass `--no-isolate` or set `isolate = false` in `foundry.toml`. Tests with an inline `/// forge-config: default.isolate = false` annotation are the exception: they run without isolation even under `--gas-report`. To exercise transient storage shared across calls, use that annotation or run `forge test --no-isolate` without `--gas-report`. Gas numbers for non-isolated tests differ from an isolated report.
 
 ### Filter gas reports
 
