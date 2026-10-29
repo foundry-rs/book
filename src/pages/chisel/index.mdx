@@ -52,14 +52,15 @@ Type: uint256
 └ Decimal: 30
 ```
 
-
 ### Integer literal typing
 
-Chisel evaluates Solidity expressions with the same literal-typing rules as `solc`. A bare subtraction such as `1 - 2` is a signed integer (today `int8` for those small literals) and prints as `-1`. Encoding that value with `abi.encode` yields a 32-byte two's-complement word of `0xff…ff` — the same bit pattern as `type(uint256).max` if you read it as unsigned:
+Chisel follows Solidity's literal typing. A bare subtraction such as `1 - 2` is the rational constant -1, which Chisel displays as the smallest fitting type, `int8`. Encoding that value with `abi.encode` yields a 32-byte two's-complement word of `0xff…ff` — the same bit pattern as `type(uint256).max` if you read it as unsigned:
 
 ```solidity
 ➜ 1 - 2
 Type: int8
+├ Hex: 0xff
+├ Hex (full word): 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
 └ Decimal: -1
 
 ➜ abi.encode(1 - 2)
@@ -72,6 +73,8 @@ That bit pattern is correct for signed `-1`. It is easy to mistake for unsigned 
 ```solidity
 ➜ int256(1) - int256(2)
 Type: int256
+├ Hex: 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+├ Hex (full word): 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
 └ Decimal: -1
 ```
 
