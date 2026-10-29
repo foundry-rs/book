@@ -266,7 +266,7 @@ Valid values are:
 
 Whether to append the CBOR metadata section to contract bytecode.
 
-When `false`, solc omits the trailing CBOR metadata. Combined with `bytecode_hash = "none"`, this yields fully deterministic bytecode for CREATE2-style deployments. If `cbor_metadata` is `false` while `bytecode_hash` is not `"none"`, solc emits a warning.
+When `false`, no metadata is appended to the bytecode, which removes metadata as a source of bytecode differences. Set `bytecode_hash = "none"` as well; solc rejects `cbor_metadata = false` with any other `bytecode_hash`. The `--no-metadata` build flag sets both `bytecode_hash = "none"` and `cbor_metadata = false`. For deterministic CREATE2 addresses, also pin the compiler version and settings; see [Deterministic deployments with CREATE2](/guides/deterministic-deployments-using-create2).
 
 ##### `sparse_mode`
 
