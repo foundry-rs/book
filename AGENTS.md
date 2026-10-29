@@ -12,7 +12,7 @@ the installed CLI as the source of truth for current behavior.
 - `src/snippets/projects/`: source files used by documentation examples.
 - `src/snippets/output/`: captured Foundry command output.
 - `src/data/`: generated changelog data rendered on `/changelog`; refresh with
-  `pnpm run fetch-changelog` instead of editing by hand.
+  `vp run fetch-changelog` instead of editing by hand.
 - `sidebar/`: authored navigation plus generated CLI reference navigation.
 - `scripts/gen_output/`: CLI reference and example-output generators.
 - `public/`: static images and other public assets.
@@ -21,21 +21,18 @@ the installed CLI as the source of truth for current behavior.
 
 ## Commands
 
-This repo pins `pnpm` via `packageManager` in `package.json`. Prefer `pnpm`
-(see also `README.md`); `bun run <script>` can invoke the same `package.json`
-scripts after a `pnpm install`, but `bun dev` fails under Bun with a Vite
-`react-server` condition error (see issue #1891). Use `pnpm dev` for the local
-server.
+This repository uses pnpm, pinned via `packageManager` in `package.json`, and
+runs it through Vite+ (`vp`), as CI does. Do not use Bun.
 
 ```bash
-pnpm install             # Install pinned dependencies.
-pnpm dev                 # Start the local Vocs server.
-pnpm exec vocs build     # Validate content without refreshing remote data.
-pnpm run build           # Refresh remote data and run the production build.
-./scripts/gen_output.sh  # Regenerate CLI references and captured output.
+vp install --frozen-lockfile # Install pinned dependencies.
+vp run dev                   # Start the local Vocs server.
+vp exec vocs build           # Validate content without refreshing remote data.
+vp run build                 # Refresh remote data and run the production build.
+./scripts/gen_output.sh      # Regenerate CLI references and captured output.
 ```
 
-`pnpm run build` fetches remote benchmark and changelog data. Use the direct
+`vp run build` fetches remote benchmark and changelog data. Use the direct
 Vocs build for a focused content change, then use the production build when the
 changed path or release workflow requires it.
 
@@ -111,11 +108,12 @@ Match validation to the change:
 
 1. Run `git diff --check` for every change.
 2. Run the exact Foundry command used by a new or changed example.
-3. Run `pnpm exec vocs build` for pages, navigation, snippets, links, or Vocs config.
+3. Run `vp exec vocs build` for pages, navigation, snippets, links, or Vocs
+   config.
 4. Inspect generated `dist/public/llms.txt` or page Markdown under
    `dist/public/assets/md/` when a change affects agent retrieval.
-5. Run `pnpm run build` when changing benchmark integration or the full production
-   build path.
+5. Run `vp run build` when changing benchmark integration or the full
+   production build path.
 
 The Vocs build checks internal links and resolves included snippets into the
 rendered pages. It does not compile Solidity examples for you. Do not commit
