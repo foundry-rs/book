@@ -8,7 +8,7 @@ description: Look up chain metadata and RPC URLs from forge-std StdChains
 
 Use it when a test needs a fork URL or chain ID without hard-coding endpoints. Prefer configuring RPCs in `foundry.toml` and reading them through `getChain` rather than embedding public URLs in Solidity.
 
-For the cheatcode that talks to Foundry's named-chain registry directly, see [`vm.getChain`](/reference/cheatcodes/get-chain).
+Unlike the [`vm.getChain`](/reference/cheatcodes/get-chain) cheatcode, which has no default RPC URL and returns lowercase names (`"base"`), `StdChains` falls back to public default RPC URLs and uses display names (`"Base"`). For per-chain configuration files, see [`StdConfig`](/reference/forge-std/std-config).
 
 ### Types
 
@@ -38,9 +38,12 @@ Returns chain data for a known alias (for example `"mainnet"`, `"optimism"`, `"b
 
 RPC URL resolution order for a given alias:
 
-1. Value previously set with `setChain`
-2. Matching entry under `[rpc_endpoints]` in `foundry.toml` (including `${ENV}` expansion)
-3. Built-in default public RPC URL (when fallback defaults are enabled)
+1. Non-empty `rpcUrl` previously set with `setChain`
+2. Matching entry under `[rpc_endpoints]` in `foundry.toml`, resolved with [`vm.rpcUrl`](/reference/cheatcodes/rpc) (including `${ENV}` expansion)
+3. The `<ALIAS_UPPERCASE>_RPC_URL` environment variable, for example `BASE_RPC_URL` for `base` (checked only when the alias has no `[rpc_endpoints]` entry)
+4. Built-in default public RPC URL, only when fallback to defaults is enabled (the default)
+
+If fallback is disabled with `setFallbackToDefaultRpcUrls(false)` and the environment variable is not set, `getChain` reverts.
 
 :::warning
 Default public RPC URLs are for local experimentation only. They are rate-limited. Configure your own endpoints in `foundry.toml` for CI and shared test suites.
@@ -54,6 +57,14 @@ function setChain(string memory chainAlias, Chain memory chain) internal virtual
 ```
 
 Registers or overrides chain data under `chainAlias`. Useful for custom networks or for pinning an RPC URL in a test without editing `foundry.toml`.
+
+### `setFallbackToDefaultRpcUrls`
+
+```solidity
+function setFallbackToDefaultRpcUrls(bool useDefault) internal;
+```
+
+Controls whether `getChain` falls back to the built-in default RPC URL when no URL is found through `setChain`, `[rpc_endpoints]`, or the environment variable. Enabled by default. Set it to `false` to make tests revert instead of silently using a public endpoint.
 
 ### Configuration
 
@@ -70,6 +81,7 @@ Aliases here should match the aliases `StdChains` knows (the first argument to e
 #### Read chain ID and create a fork from config
 
 ```solidity [test/StdChainsExample.t.sol]
+// SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
 
 import {Test} from "forge-std/Test.sol";
@@ -112,6 +124,6 @@ assertEq(mine.rpcUrl, "http://127.0.0.1:8545");
 
 ### Gotchas
 
-- Do not use the old `stdChains.ChainName.rpcUrl` field style. That API is gone; call `getChain("alias")` (or `getChain(chainId)`) instead.
 - `Test` / `Script` already inherit `StdChains`, so you typically call `getChain` / `setChain` directly on the test contract.
 - An empty alias, unknown alias, or chain ID `0` reverts.
+- An `[rpc_endpoints]` entry that references an unset environment variable (for example `base = "${BASE_RPC_URL}"` without `BASE_RPC_URL` set) makes `vm.rpcUrl` fail with an unresolved environment variable error. `StdChains` rethrows that error, so `getChain("base")` reverts with ``environment variable `BASE_RPC_URL` not found`` instead of falling back to the default RPC URL. Set the variable or remove the entry.
