@@ -8,7 +8,7 @@ description: Look up chain metadata and RPC URLs from forge-std StdChains
 
 Use it when a test needs a fork URL or chain ID without hard-coding endpoints. Prefer configuring RPCs in `foundry.toml` and reading them through `getChain` rather than embedding public URLs in Solidity.
 
-Unlike the [`vm.getChain`](/reference/cheatcodes/get-chain) cheatcode, which has no default RPC URL and returns lowercase names (`"base"`), `StdChains` falls back to public default RPC URLs and uses display names (`"Base"`). For per-chain configuration files, see [`StdConfig`](/reference/forge-std/std-config).
+Unlike the [`vm.getChain`](/reference/cheatcodes/get-chain) cheatcode, which returns an empty RPC URL unless one is configured (except for aliases with a Foundry built-in endpoint, such as `tempo`) and returns lowercase names (`"base"`), `StdChains` falls back to public default RPC URLs and uses display names (`"Base"`). For per-chain configuration files, see [`StdConfig`](/reference/forge-std/std-config).
 
 ### Types
 
@@ -40,7 +40,7 @@ RPC URL resolution order for a given alias:
 
 1. Non-empty `rpcUrl` previously set with `setChain`
 2. Matching entry under `[rpc_endpoints]` in `foundry.toml`, resolved with [`vm.rpcUrl`](/reference/cheatcodes/rpc) (including `${ENV}` expansion)
-3. The `<ALIAS_UPPERCASE>_RPC_URL` environment variable, for example `BASE_RPC_URL` for `base` (checked only when the alias has no `[rpc_endpoints]` entry)
+3. The `<ALIAS_UPPERCASE>_RPC_URL` environment variable, for example `BASE_RPC_URL` for `base` (checked only when `vm.rpcUrl` cannot resolve the alias, that is, it has no `[rpc_endpoints]` entry and no Foundry built-in endpoint; `tempo` has a built-in endpoint, so `TEMPO_RPC_URL` and the StdChains default are never used for it)
 4. Built-in default public RPC URL, only when fallback to defaults is enabled (the default)
 
 If fallback is disabled with `setFallbackToDefaultRpcUrls(false)` and the environment variable is not set, `getChain` reverts.
