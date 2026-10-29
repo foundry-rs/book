@@ -474,14 +474,6 @@ function test_RevertWhen_InsufficientBalance() public {
 }
 ```
 
-:::warning[Low-level calls]
-Do not rely on `vm.expectRevert` alone around a low-level `.call` / `.delegatecall` / `.staticcall`. Those return a `bool` success flag instead of bubbling the revert to the cheatcode. Capture the flag and assert it, as shown in the [`expectRevert` low-level-call gotcha](/reference/cheatcodes/expect-revert#gotchas).
-:::
-
-:::note[Prefer `expectRevert` over `testFail_`]
-`testFail_`-prefixed tests are an anti-pattern and were [removed in Foundry v1](/guides/migrations/foundry-v1#testfail-tests-removed). Always assert the revert explicitly with `vm.expectRevert`.
-:::
-
 :::terminal
 ```bash
 // [!include ~/snippets/output/cheatcodes/forge-test-cheatcodes-expectrevert:command]
@@ -490,6 +482,14 @@ Do not rely on `vm.expectRevert` alone around a low-level `.call` / `.delegateca
 ```ansi
 // [!include ~/snippets/output/cheatcodes/forge-test-cheatcodes-expectrevert:output]
 ```
+:::
+
+:::warning[Low-level calls]
+Do not rely on `vm.expectRevert` alone around a low-level `.call` / `.delegatecall` / `.staticcall`. With a low-level call, a mismatched expectation surfaces as `success == false`, which does not fail the test. Capture the returned flag and assert it; it is `true` when the expectation was met, as shown in the [`expectRevert` low-level-call gotcha](/reference/cheatcodes/expect-revert#gotchas).
+:::
+
+:::note[Prefer `expectRevert` over `testFail*`]
+`testFail*`-prefixed tests are an anti-pattern and were [removed in Foundry v1](/guides/migrations/foundry-v1#testfail-tests-removed); Forge now fails any `testFail*` test. Always assert the revert explicitly with `vm.expectRevert`.
 :::
 
 ### Testing events
