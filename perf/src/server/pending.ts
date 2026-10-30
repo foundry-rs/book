@@ -16,6 +16,6 @@ export class ImportPendingError extends Error {
 
 export class RunNotFoundError extends Error {
   constructor() {
-    super('No benchmark workflow is available for this commit')
+    super('No benchmark results are available for this commit')
   }
 }

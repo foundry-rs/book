@@ -525,23 +525,50 @@ button:disabled {
   font-variant-numeric: tabular-nums;
 }
 .header-row > button:first-child {
-  text-align: left;
+  justify-self: start;
 }
+/* The negative margin keeps labels aligned with the values below despite the padding. */
 .header-row > button {
-  padding: 0;
+  justify-self: end;
+  max-width: calc(100% + 16px);
+  margin: 0 -8px;
+  padding: 5px 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   border: 0;
+  border-radius: 4px;
   background: transparent;
   color: inherit;
+  cursor: pointer;
   font: inherit;
   letter-spacing: inherit;
   text-transform: inherit;
-  text-align: right;
+  white-space: nowrap;
+}
+.header-row > button > span {
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
+}
+.header-row > button > svg {
+  flex: none;
+  width: 12px;
+  height: 12px;
+  opacity: 0.5;
 }
 .header-row > button:hover,
 .header-row > button:focus-visible,
+.header-row > button[aria-pressed='true'] {
+  color: var(--text);
+}
+.header-row > button:hover,
+.header-row > button:focus-visible {
+  background: var(--surface-muted);
+}
+.header-row > button:hover > svg,
+.header-row > button[aria-pressed='true'] > svg {
+  opacity: 1;
+}
 button.result:hover,
 button.result.selected {
   background: var(--raised);
