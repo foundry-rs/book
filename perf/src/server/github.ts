@@ -32,9 +32,11 @@ export interface GitHubRun {
   display_title: string
   event: string
   head_branch: string | null
+  head_repository?: { full_name: string } | null
   head_sha: string
   id: number
   name: string
+  updated_at?: string
 }
 
 interface GitHubPage<T> {
