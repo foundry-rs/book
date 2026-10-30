@@ -59,10 +59,12 @@ interface IngestJob {
   commit: string
   next_attempt_at: number
   state: string
+  updated_at?: number
   workflow_run_id: number
 }
 
-// A completed run without the artifact never gains one; do not schedule retries for it.
+// A completed run without the artifact, or whose artifact has no results, never gains one;
+// do not schedule retries for it.
 class MissingArtifactError extends Error {}
 
 function archivePath(name: string) {
@@ -164,7 +166,7 @@ export async function extractArchive(response: Response): Promise<ArtifactArchiv
     )
     .sort((a, b) => a.split('/').length - b.split('/').length)
   const resultPath = candidates[0]
-  if (!resultPath) throw new Error('Artifact archive has no results.json')
+  if (!resultPath) throw new MissingArtifactError('Artifact archive has no results.json')
   if (candidates[1] && candidates[1].split('/').length === resultPath.split('/').length)
     throw new Error('Artifact archive contains ambiguous results documents')
   const results = files.get(resultPath)
@@ -311,7 +313,8 @@ function errorMessage(error: unknown) {
 async function job(config: ClickHouseConfig, runId: number) {
   const [latest] = await select(
     config,
-    `SELECT workflow_run_id, commit, state, attempts, toUnixTimestamp64Milli(next_attempt_at) AS next_attempt_at
+    `SELECT workflow_run_id, commit, state, attempts, toUnixTimestamp64Milli(next_attempt_at) AS next_attempt_at,
+       toUnixTimestamp64Milli(updated_at) AS updated_at
      FROM ingestion_jobs FINAL WHERE workflow_run_id = ${runId} LIMIT 1`,
   )
   return latest as unknown as IngestJob | undefined
@@ -447,11 +450,17 @@ async function ingestBaseline(
 ) {
   const sources = await importStage('githubRunLookupMs', () => github.runsForCommit(partner))
   for (const source of sources) {
+    // A fork PR runs its own workflow, so it could publish any results under the base commit.
+    if (source.head_repository?.full_name !== github.config.repository) continue
     const artifact = await importStage('githubArtifactMs', () =>
       github.artifact(source.id, project.baselineArtifact),
     )
     if (!artifact) continue
-    const archive = await download(github, artifact)
+    const archive = await download(github, artifact).catch((error: unknown) => {
+      if (error instanceof MissingArtifactError) return null
+      throw error
+    })
+    if (!archive) continue
     const document = JSON.parse(archive.results) as { commit?: unknown } | null
     if (document?.commit !== sha) continue
     const run: ImportedRun = {
@@ -480,6 +489,13 @@ async function ingestTracked(
 ) {
   const previous = await importStage('jobLookupMs', () => job(config, source.id))
   throwIfPending(previous)
+  // A completed run's artifact stays final until a re-run, which updates the run.
+  if (
+    previous?.state === 'missing' &&
+    source.updated_at &&
+    Number(previous.updated_at) > Date.parse(source.updated_at)
+  )
+    throw new MissingArtifactError('Benchmark artifact has no results')
   if (await importStage('snapshotLookupMs', () => hasRun(config, source))) {
     await recordJob(config, project, source, 'complete', Number(previous?.attempts ?? 0), null)
     return false
@@ -497,7 +513,9 @@ async function ingestTracked(
   } catch (error) {
     if (error instanceof ImportPendingError) throw error
     const attempts = Number(previous?.attempts || 0) + 1
-    const state = error instanceof MissingArtifactError ? 'missing' : 'retry'
+    // As in ingestRun, a run in progress is retried until it completes.
+    const state =
+      error instanceof MissingArtifactError && source.conclusion !== null ? 'missing' : 'retry'
     await recordJob(config, project, source, state, attempts, errorMessage(error)).catch(
       (recordError) => console.error('Could not record benchmark import failure', recordError),
     )
@@ -656,7 +674,12 @@ export async function ingestCommit(
     throwIfPending(previous)
     for (const source of sources) {
       const artifact = await importStage('githubArtifactMs', () => github.artifact(source.id))
-      if (artifact) return ingestTracked(config, github, project, source, artifact)
+      if (!artifact) continue
+      try {
+        return await ingestTracked(config, github, project, source, artifact)
+      } catch (error) {
+        if (!(error instanceof MissingArtifactError)) throw error
+      }
     }
     if (sources.some((source) => source.conclusion === null))
       throw new ImportPendingError(5, 'benchmark-running', sha)
@@ -667,7 +690,7 @@ export async function ingestCommit(
       (await ingestBaseline(config, github, project, sha, partner))
     )
       return true
-    if (!sources.length) throw new RunNotFoundError()
-    throw new Error('Benchmark workflows did not publish an available codegen artifact')
+    // Completed runs never gain results, so report the commit as missing, not retryable.
+    throw new RunNotFoundError()
   })
 }
