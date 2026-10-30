@@ -33,6 +33,7 @@ export const projects: Record<string, Project> = {
     repository: 'paradigmxyz/solar',
     workflow: 'bench.yml',
     artifact: 'codegen-runtime-results',
+    baselineArtifact: 'codegen-runtime-exact-base',
     compiler: 'solar',
     metrics: [
       { key: 'total_gas', group: 'Gas', title: 'Runtime gas', unit: 'gas', alias: 'runtimeGas' },
