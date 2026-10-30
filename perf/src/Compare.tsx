@@ -1,3 +1,4 @@
+import { ArrowDown, ArrowUp, ChevronsUpDown } from 'lucide-react'
 import { CompareSkeleton } from './Skeleton'
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import { BenchmarkHistory } from './BenchmarkHistory'
@@ -99,7 +100,7 @@ export function Compare({ base, head }: Props) {
 
   useEffect(() => {
     selectedRow.current?.scrollIntoView({ block: 'start', inline: 'nearest' })
-  }, [expanded, rows])
+  }, [expanded, runs])
 
   const selectBenchmark = (benchmark: string) => {
     const next = expanded === benchmark ? '' : benchmark
@@ -193,10 +194,14 @@ export function Compare({ base, head }: Props) {
                 title={`${column.title}. Sort ${nextDirection}`}
                 onClick={() => setSort({ column: column.key, direction: nextDirection })}
               >
-                {column.label}{' '}
-                <span aria-hidden="true">
-                  {active ? (sort.direction === 'ascending' ? '↑' : '↓') : '↕'}
-                </span>
+                <span>{column.label}</span>
+                {!active ? (
+                  <ChevronsUpDown aria-hidden="true" />
+                ) : sort.direction === 'ascending' ? (
+                  <ArrowUp aria-hidden="true" />
+                ) : (
+                  <ArrowDown aria-hidden="true" />
+                )}
               </button>
             )
           })}

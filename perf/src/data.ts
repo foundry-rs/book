@@ -125,7 +125,7 @@ async function getJson<T>(path: string): Promise<T> {
       if (!response.ok)
         throw new Error(
           response.status === 404
-            ? 'No benchmark workflow is available for this commit.'
+            ? 'No benchmark results are available for this commit.'
             : `Could not load benchmark data (${response.status}). Try again shortly.`,
         )
       return response.json() as Promise<T>
