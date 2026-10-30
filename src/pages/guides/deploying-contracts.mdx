@@ -84,6 +84,12 @@ $ forge verify-contract $CONTRACT_ADDRESS src/Token.sol:Token \
     --constructor-args $(cast abi-encode "constructor(string,string)" "MyToken" "MTK")
 ```
 
+#### Remappings
+
+`forge verify-contract` does **not** accept a `--remappings` / `-R` flag. Remappings come from the project the same way they do for `forge build`: `foundry.toml` (`remappings = [...]`), `remappings.txt`, and installed dependencies. Run the command from the project root (or pass `--root <path>`) so Forge loads that config.
+
+If verification fails because an import cannot be resolved, fix the remappings in the project and re-run `forge verify-contract` — do not try to pass them on the CLI.
+
 #### Verification with constructor arguments
 
 If your contract has constructor arguments, encode them:
