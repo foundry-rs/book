@@ -359,8 +359,8 @@ Head sorts by its measurement, while Base and other compiler columns sort by the
 percentage difference. Missing values remain last in both directions.
 Loading and import messages cycle through one, two, and three dots (static with
 reduced motion enabled). Identical Base and Head import messages appear only once.
-The selected benchmark scrolls into view when opened from a link, expanded, or
-reordered by sorting.
+The selected benchmark scrolls into view when opened from a link or expanded, but
+not when sorting reorders it.
 Hovering Head or a delta reveals the exact raw value. Missing measurements and a nonzero
 value against a zero Head have no defined percentage.
 Byte sizes use `b`, `KiB`, `MiB`, etc. Compiler columns are discovered from the run data.
