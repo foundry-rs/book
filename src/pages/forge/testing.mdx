@@ -484,6 +484,14 @@ function test_RevertWhen_InsufficientBalance() public {
 ```
 :::
 
+:::warning[Low-level calls]
+Do not rely on `vm.expectRevert` alone around a low-level `.call` / `.delegatecall` / `.staticcall`. With a low-level call, a mismatched expectation surfaces as `success == false`, which does not fail the test. Capture the returned flag and assert it; it is `true` when the expectation was met, as shown in the [`expectRevert` low-level-call gotcha](/reference/cheatcodes/expect-revert#gotchas).
+:::
+
+:::note[Prefer `expectRevert` over `testFail*`]
+`testFail*`-prefixed tests are an anti-pattern and were [removed in Foundry v1](/guides/migrations/foundry-v1#testfail-tests-removed); Forge now fails any `testFail*` test. Always assert the revert explicitly with `vm.expectRevert`.
+:::
+
 ### Testing events
 
 Use `vm.expectEmit(){:solidity}` to verify events are emitted:
