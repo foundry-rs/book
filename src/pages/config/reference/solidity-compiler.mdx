@@ -147,12 +147,14 @@ This configuration will cause the compiler to ignore any warnings that originate
 ##### `ignored_error_codes`
 
 - Type: array of integers/strings
-- Default: none for source, SPDX license identifiers and contract size for tests
+- Default: `["license", "code-size", "init-code-size", "transient-storage", "transfer-deprecated", "natspec-memory-safe-assembly-deprecated"]`
 - Environment: `FOUNDRY_IGNORED_ERROR_CODES` or `DAPP_IGNORED_ERROR_CODES`
 
 An array of Solidity compiler error codes to ignore during build, such as warnings.
 
-Valid values are:
+Setting this key replaces the default list. To keep ignoring the defaults, include them in your list.
+
+Valid values are the names below, or any Solidity error code as an unquoted integer:
 
 - `license`: 1878
 - `code-size`: 5574
@@ -171,6 +173,8 @@ Valid values are:
 - `init-code-size`: 3860
 - `transient-storage`: 2394
 - `too-many-warnings`: 4591
+- `transfer-deprecated`: 9207
+- `natspec-memory-safe-assembly-deprecated`: 2424
 
 ##### `deny_warnings`
 
