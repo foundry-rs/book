@@ -10,6 +10,7 @@ import { loadArtifact, loadViewerRuns } from './data'
 import { useImportProgress } from './importProgress'
 import { artifactSides, initialArtifactSides } from './artifactSides'
 import { imageType } from './imageArtifacts'
+import { lineCountDecoration, useLineCounts, type LineCounts } from './lineCounts'
 import type { ImageMode } from './ImageDiff'
 import { replaceUrl } from './navigation'
 import { project } from './project'
@@ -30,21 +31,43 @@ function parentPaths(path: string) {
   return parts.slice(0, -1).map((_, index) => parts.slice(0, index + 1).join('/'))
 }
 
+function artifactSource(
+  side: NonNullable<ReturnType<typeof artifactSides>[number]>,
+  benchmark: string,
+  path: string,
+) {
+  const file = side.run.artifacts[benchmark]?.find(
+    (file) => file.path === path && file.compilers.includes(side.compiler),
+  )
+  return {
+    label: side.label,
+    commit: side.run.commit,
+    benchmark,
+    compiler: side.compiler,
+    storagePath: file?.storagePath,
+    contentHash: file?.contentHashes?.[side.compiler],
+  }
+}
+
 function ArtifactFileTree({
   paths,
+  counts,
   selected,
   onSelect,
 }: {
   paths: string[]
+  counts: Record<string, LineCounts>
   selected: string
   onSelect: (path: string) => void
 }) {
   const onSelectRef = useRef(onSelect)
   const selectedRef = useRef(selected)
   const pathsRef = useRef(paths)
+  const countsRef = useRef(counts)
   onSelectRef.current = onSelect
   selectedRef.current = selected
   pathsRef.current = paths
+  countsRef.current = counts
 
   const { model } = useFileTree({
     paths,
@@ -55,6 +78,7 @@ function ArtifactFileTree({
     icons: artifactIcons,
     density: 'compact',
     search: true,
+    renderRowDecoration: ({ item }) => lineCountDecoration(item, countsRef.current),
     onSelectionChange: (selection) => {
       const path = selection.find((item) => pathsRef.current.includes(item))
       if (path && path !== selectedRef.current) onSelectRef.current(path)
@@ -67,7 +91,7 @@ function ArtifactFileTree({
       return !!item && 'isExpanded' in item && item.isExpanded()
     })
     model.resetPaths(paths, { initialExpandedPaths: expandedPaths })
-  }, [model, paths])
+  }, [model, paths, counts])
 
   useEffect(() => {
     if (!selected || !model.getItem(selected)) return
@@ -200,6 +224,19 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
     [left, right, activeBenchmark],
   )
   const visiblePaths = useMemo(() => visibleFiles.map((file) => file.path), [visibleFiles])
+  const lineCountRequests = useMemo(
+    () =>
+      left && right
+        ? visibleFiles.map((file) => ({
+            path: file.path,
+            language: file.language,
+            before: artifactSource(left, activeBenchmark, file.path),
+            after: artifactSource(right, activeBenchmark, file.path),
+          }))
+        : [],
+    [left, right, activeBenchmark, visibleFiles],
+  )
+  const lineCounts = useLineCounts(lineCountRequests)
   const selectedFile = visibleFiles.find((file) => file.path === selected) || visibleFiles[0]
   const isSvg = !!selectedFile?.path.endsWith('.svg')
   const renderable = isSvg || !!selectedFile?.path.endsWith('.dot')
@@ -349,6 +386,7 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
             ) : (
               <ArtifactFileTree
                 paths={visiblePaths}
+                counts={lineCounts}
                 selected={selectedFile?.path || ''}
                 onSelect={selectFile}
               />
