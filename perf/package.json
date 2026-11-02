@@ -19,11 +19,11 @@
   "dependencies": {
     "@pierre/diffs": "1.6.1",
     "@pierre/trees": "1.0.0-beta.6",
-    "@vercel/functions": "^3.10.1",
+    "@vercel/functions": "^3.10.3",
     "@viz-js/viz": "3.31.0",
     "fflate": "0.8.3",
-    "hono": "^4.13.13",
-    "lucide-react": "^1.59.0",
+    "hono": "^4.13.14",
+    "lucide-react": "^1.61.0",
     "react": "^19.3.1",
     "react-dom": "^19.3.1"
   },
