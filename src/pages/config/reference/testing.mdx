@@ -641,6 +641,14 @@ The flag indicating whether to include values from storage. See also [fuzz.inclu
 
 The flag indicating whether to include push bytes values. See also [fuzz.include_push_bytes](#include_push_bytes)
 
+##### `include_view_values`
+
+- Type: boolean
+- Default: false
+- Environment: `FOUNDRY_INVARIANT_INCLUDE_VIEW_VALUES`
+
+Whether to add the results of targeted contracts' view functions to the dictionary. After each successful call, view functions with no inputs or only address inputs are called on the targeted contracts that the call accessed, with address inputs set to the call's sender, and their results, whole structs included, are added to the dictionary. This lets later calls pass back values that only exist in storage, such as a struct read from a getter. At most 32 views are called after each call; when more are eligible, the selection rotates across calls so every view is reached. Only affects invariant tests; a value set under `[fuzz]` also applies to `[invariant]`.
+
 ##### `shrink_run_limit`
 
 - Type: integer
