@@ -49,8 +49,15 @@ $ anvil --fork-url $RPC_URL
 You do not need `--network` for a recognized network family. Select the network explicitly when the
 endpoint uses an unknown chain ID, does not expose enough metadata, or when you intentionally need
 a specific execution family. Compatibility profiles exposed through separate switches, such as
-Celo, still require their switch. The selected execution profile must be compatible with the fork
-source.
+Celo, still require their switch.
+
+When the network is inferred, the fork source must match it: a fork of another network family is
+an error. When you select the network explicitly with `network` or `--network`, Foundry keeps your
+selection and runs forks of another family with its rules, printing a warning once per chain:
+
+```text
+Warning: fork of chain 1 belongs to `ethereum`, but the selected network is `monad`, so the fork runs with `monad` rules
+```
 
 Optional metadata methods are capability probes. A standard RPC endpoint can reject an Anvil-only
 method and still be a valid fork source; Foundry falls back to standard chain and block methods
