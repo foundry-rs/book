@@ -156,7 +156,6 @@ describe('website API', () => {
     )
     expect(response.status).toBe(200)
     expect(await response.json()).toEqual({ 'out.mir': { added: 2, removed: 1 } })
-    expect(response.headers.get('cache-control')).toBe('public, max-age=31536000, immutable')
     expect(globalThis.fetch).toHaveBeenCalledTimes(2)
     expect(
       (

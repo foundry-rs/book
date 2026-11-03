@@ -1,7 +1,7 @@
 import { formatArtifactContents } from '../artifactFormat'
 import { imageType } from '../imageArtifacts'
 import { patiencePatch } from '../patiencePatch'
-import type { LineCounts } from '../types'
+import type { ArtifactFile, LineCounts } from '../types'
 
 /** One side's artifact; equal keys mean equal contents. */
 export interface ArtifactRef {
@@ -11,6 +11,17 @@ export interface ArtifactRef {
 }
 
 type ChangedArtifact = [path: string, before?: ArtifactRef, after?: ArtifactRef]
+
+/** One compiler's files of a manifest, keyed by `key`. */
+export function artifactRefs<File extends ArtifactFile>(
+  files: File[],
+  compiler: string,
+  key: (file: File) => string,
+): ArtifactRef[] {
+  return files
+    .filter((file) => file.compilers.includes(compiler))
+    .map((file) => ({ path: file.path, language: file.language, key: key(file) }))
+}
 
 /** Text artifacts whose contents differ or that only one side published. */
 export function changedArtifacts(before: ArtifactRef[], after: ArtifactRef[]): ChangedArtifact[] {

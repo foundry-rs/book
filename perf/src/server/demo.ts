@@ -8,7 +8,7 @@ import {
   type HistoryRange,
 } from '../historySeries'
 import { benchmarkMetric } from '../benchmarkMetric'
-import { changedArtifacts, lineCounts } from './lineCounts'
+import { artifactRefs, changedArtifacts, lineCounts } from './lineCounts'
 
 const commits = [
   '9d8c7b6a5e4f32100123456789abcdef01234567',
@@ -250,13 +250,11 @@ export function demoResponse(input: string) {
       const run = documents.get(sha)
       return (
         run &&
-        (run.artifacts[benchmark] ?? [])
-          .filter((file) => file.compilers.includes(compilers[index]))
-          .map((file) => ({
-            path: file.path,
-            language: file.language,
-            key: `${sha}/${benchmark}/${compilers[index]}/${file.storagePath}`,
-          }))
+        artifactRefs(
+          run.artifacts[benchmark] ?? [],
+          compilers[index],
+          (file) => `${sha}/${benchmark}/${compilers[index]}/${file.storagePath}`,
+        )
       )
     })
     if (sides.length !== 2 || !sides[0] || !sides[1])

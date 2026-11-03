@@ -109,7 +109,7 @@ tree can be collapsed or resized with a pointer or the separator's arrow keys;
 its visibility and width reset on reload. Tree rows show each changed file's added and
 removed lines. `line-counts.json` computes them on the server from the stored blobs with
 the viewer's formatting and patience diff, so the browser downloads only the files you
-open; pinned revisions make the response immutable. As on DiffsHub, narrow screens and
+open. As on DiffsHub, narrow screens and
 landscape phones open on a unified diff and show the tree as a bottom sheet that
 closes once you pick a file. File icons use Pierre's complete colored set, as on
 [DiffsHub](https://diffshub.com). `src/artifactIcons.ts` adds icons for formats that set
