@@ -13,7 +13,8 @@ import { measurementColumns } from './publication'
 
 import { clickHouseConfig, select, type ClickHouseConfig } from './clickhouse'
 import { demoResponse } from './demo'
-import { artifactMetadata } from './artifacts'
+import { artifactMetadata, validIdentifier } from './artifacts'
+import { changedArtifacts, lineCounts } from './lineCounts'
 import { ImportPendingError, RunNotFoundError } from './pending'
 import { GitHubClient, GitHubRequestError, gitHubConfig } from './github'
 import { apiBase, projects, type Project } from '../projects'
@@ -246,6 +247,54 @@ async function artifactsFromClickHouse(
   )
   if (!artifactRows.length) return null
   return manifest(artifactRows[0].artifacts as unknown[][])
+}
+
+// Both sides' snapshots are already published, so a missing run is not imported here.
+async function lineCountsFromClickHouse(
+  config: ClickHouseConfig,
+  project: Project,
+  commits: string[],
+  revisions: Record<string, string>,
+  benchmark: string,
+  compilers: string[],
+) {
+  const runs = await select(
+    config,
+    `SELECT commit, arrayFilter(f -> f.test_id = {benchmark:String}, artifacts) AS files
+     FROM run_snapshots FINAL WHERE ${snapshotSelection(project, [...new Set(commits)], revisions)}
+     ORDER BY ${snapshotOrder} LIMIT 1 BY commit`,
+    { benchmark },
+  )
+  const sides = commits.map((sha, index) => {
+    const run = runs.find((run) => run.commit === sha)
+    return (run?.files as unknown[][] | undefined)?.flatMap(([, path, compiler, , hash]) =>
+      compiler === compilers[index]
+        ? [
+            {
+              path: String(path),
+              language: artifactMetadata(String(path)).language,
+              key: String(hash),
+            },
+          ]
+        : [],
+    )
+  })
+  if (!sides[0] || !sides[1]) return null
+  const changed = changedArtifacts(sides[0], sides[1])
+  const hashes = [
+    ...new Set(changed.flatMap(([, ...files]) => files.flatMap((file) => file?.key ?? []))),
+  ].filter((hash) => /^[a-f0-9]{64}$/.test(hash))
+  const blobs = hashes.length
+    ? await select(
+        config,
+        `SELECT content_sha256, content FROM artifact_blobs FINAL
+         WHERE content_sha256 IN (${hashes.map((hash) => `'${hash}'`).join(',')})`,
+      )
+    : []
+  return lineCounts(
+    changed,
+    new Map(blobs.map((blob) => [String(blob.content_sha256), String(blob.content)])),
+  )
 }
 
 async function historyFromClickHouse(
@@ -568,6 +617,44 @@ export function createApi(options: ApiOptions = {}) {
           if (runs.length !== unique.length) return context.json({ error: 'Run not found' }, 404)
           context.header('cache-control', 'public, max-age=300, stale-while-revalidate=3600')
           return context.json({ runs })
+        }
+        if (path === 'line-counts.json') {
+          const commits = context.req.query('commits')?.split(',') ?? []
+          const pins = context.req.query('revisions')?.split(',')
+          const compilers = context.req.query('compilers')?.split(',') ?? []
+          const benchmark = context.req.query('benchmark')
+          if (
+            commits.length !== 2 ||
+            commits.some((sha) => !/^[0-9a-f]{40}$/.test(sha)) ||
+            (commits[0] === commits[1] && pins?.[0] !== pins?.[1]) ||
+            (pins &&
+              (pins.length !== 2 || pins.some((pin) => pin && !revisionPattern.test(pin)))) ||
+            compilers.length !== 2 ||
+            compilers.some((compiler) => !validIdentifier.test(compiler)) ||
+            !benchmark ||
+            benchmark.length > 256
+          )
+            return context.json({ error: 'Expected two commits, compilers and a benchmark' }, 400)
+          const revisions = Object.fromEntries(
+            commits.flatMap((sha, i) => (pins?.[i] ? [[sha, pins[i]]] : [])),
+          )
+          const counts = await lineCountsFromClickHouse(
+            config,
+            project,
+            commits,
+            revisions,
+            benchmark,
+            compilers,
+          )
+          if (!counts) return context.json({ error: 'Run not found' }, 404)
+          // Pinned snapshots and their blobs never change.
+          context.header(
+            'cache-control',
+            pins?.every(Boolean)
+              ? 'public, max-age=31536000, immutable'
+              : 'public, max-age=300, stale-while-revalidate=3600',
+          )
+          return context.json(counts)
         }
         if (path === 'history.json') {
           const metric = context.req.query('metric') ?? historyMetrics[0]

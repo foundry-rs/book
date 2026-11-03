@@ -10,11 +10,11 @@ import { loadArtifact, loadViewerRuns } from './data'
 import { useImportProgress } from './importProgress'
 import { artifactSides, initialArtifactSides } from './artifactSides'
 import { imageType } from './imageArtifacts'
-import { lineCountDecoration, useLineCounts, type LineCounts } from './lineCounts'
+import { lineCountDecoration, useLineCounts } from './lineCounts'
 import type { ImageMode } from './ImageDiff'
 import { replaceUrl } from './navigation'
 import { project } from './project'
-import type { RunDocument, Theme } from './types'
+import type { LineCounts, RunDocument, Theme } from './types'
 
 const loadRenderer = () => import('./ArtifactDiff')
 const ArtifactDiff = lazy(loadRenderer)
@@ -29,24 +29,6 @@ interface Props {
 function parentPaths(path: string) {
   const parts = path.split('/')
   return parts.slice(0, -1).map((_, index) => parts.slice(0, index + 1).join('/'))
-}
-
-function artifactSource(
-  side: NonNullable<ReturnType<typeof artifactSides>[number]>,
-  benchmark: string,
-  path: string,
-) {
-  const file = side.run.artifacts[benchmark]?.find(
-    (file) => file.path === path && file.compilers.includes(side.compiler),
-  )
-  return {
-    label: side.label,
-    commit: side.run.commit,
-    benchmark,
-    compiler: side.compiler,
-    storagePath: file?.storagePath,
-    contentHash: file?.contentHashes?.[side.compiler],
-  }
 }
 
 function ArtifactFileTree({
@@ -224,19 +206,7 @@ export function FileViewer({ base, head, benchmark, theme }: Props) {
     [left, right, activeBenchmark],
   )
   const visiblePaths = useMemo(() => visibleFiles.map((file) => file.path), [visibleFiles])
-  const lineCountRequests = useMemo(
-    () =>
-      left && right
-        ? visibleFiles.map((file) => ({
-            path: file.path,
-            language: file.language,
-            before: artifactSource(left, activeBenchmark, file.path),
-            after: artifactSource(right, activeBenchmark, file.path),
-          }))
-        : [],
-    [left, right, activeBenchmark, visibleFiles],
-  )
-  const lineCounts = useLineCounts(lineCountRequests)
+  const lineCounts = useLineCounts(left, right, activeBenchmark)
   const selectedFile = visibleFiles.find((file) => file.path === selected) || visibleFiles[0]
   const isSvg = !!selectedFile?.path.endsWith('.svg')
   const renderable = isSvg || !!selectedFile?.path.endsWith('.dot')

@@ -106,7 +106,10 @@ Pierre's edit-session APIs are not used by this read-only viewer.
 `VirtualizerContext`: the browser page scrolls normally while only visible lines
 are rendered. The file toolbar and side labels stick during scrolling. The file
 tree can be collapsed or resized with a pointer or the separator's arrow keys;
-its visibility and width reset on reload. As on DiffsHub, narrow screens and
+its visibility and width reset on reload. Tree rows show each changed file's added and
+removed lines. `line-counts.json` computes them on the server from the stored blobs with
+the viewer's formatting and patience diff, so the browser downloads only the files you
+open; pinned revisions make the response immutable. As on DiffsHub, narrow screens and
 landscape phones open on a unified diff and show the tree as a bottom sheet that
 closes once you pick a file. File icons use Pierre's complete colored set, as on
 [DiffsHub](https://diffshub.com). `src/artifactIcons.ts` adds icons for formats that set

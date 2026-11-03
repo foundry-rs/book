@@ -8,6 +8,7 @@ import {
   type HistoryRange,
 } from '../historySeries'
 import { benchmarkMetric } from '../benchmarkMetric'
+import { changedArtifacts, lineCounts } from './lineCounts'
 
 const commits = [
   '9d8c7b6a5e4f32100123456789abcdef01234567',
@@ -239,6 +240,28 @@ export function demoResponse(input: string) {
           }),
       ),
     )
+  }
+
+  if (pathname === '/api/data/line-counts.json') {
+    const commits = url.searchParams.get('commits')?.split(',') ?? []
+    const compilers = url.searchParams.get('compilers')?.split(',') ?? []
+    const benchmark = url.searchParams.get('benchmark') ?? ''
+    const sides = commits.map((sha, index) => {
+      const run = documents.get(sha)
+      return (
+        run &&
+        (run.artifacts[benchmark] ?? [])
+          .filter((file) => file.compilers.includes(compilers[index]))
+          .map((file) => ({
+            path: file.path,
+            language: file.language,
+            key: `${sha}/${benchmark}/${compilers[index]}/${file.storagePath}`,
+          }))
+      )
+    })
+    if (sides.length !== 2 || !sides[0] || !sides[1])
+      return Response.json({ error: 'Run not found' }, { status: 404 })
+    return Response.json(lineCounts(changedArtifacts(sides[0], sides[1]), artifactContents))
   }
 
   const match = /^\/api\/data\/runs\/([0-9a-f]{40})\/(run|artifacts)\.json$/.exec(pathname)
