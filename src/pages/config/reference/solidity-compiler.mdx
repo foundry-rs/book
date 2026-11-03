@@ -94,7 +94,7 @@ See [Linked libraries](/config/reference/linked-libraries) for CLI overrides, ca
 
 ##### `solc`
 
-- Type: string (semver, path, or executable name)
+- Type: string (semver, `solar:<version>`, path, or executable name)
 - Default: none
 - Environment: `FOUNDRY_SOLC_VERSION` or `DAPP_SOLC_VERSION`
 
@@ -105,6 +105,20 @@ The value can be a strict version, a path to a local compiler, or an executable 
 ```toml
 solc = "custom-solc"
 ```
+
+`solar:<version>` pins an exact [Solar](https://github.com/paradigmxyz/solar) release, 0.2.0 or
+later without pre-release or build metadata:
+
+```toml
+solc = "solar:0.3.0"
+```
+
+Forge builds with the release installed in `~/.foundry/solar/<version>`. If it is missing, Forge
+downloads it from the Solar GitHub release, checks it against the release's SHA-256 checksum file
+and the version it reports, and installs it there, unless [`offline`](#offline) is set, in which case the
+build fails. Releases are published for macOS, x86_64 Linux, aarch64 Linux with glibc, and x86_64
+Windows; on other platforms, set `solc` to the path of a `solar` binary instead. `--use solar:<version>`
+accepts the same pin, and `forge config` reports it.
 
 Version requirements are not supported (i.e. `0.8.28` is valid, but `^0.8.0` is not). The legacy
 `solc_version` key is still accepted for backwards compatibility.
@@ -125,7 +139,7 @@ This key is ignored if `solc` is set.
 - Default: false
 - Environment: `FOUNDRY_OFFLINE` or `DAPP_OFFLINE`
 
-If enabled, Foundry will not attempt to download any missing solc versions.
+If enabled, Foundry will not attempt to download any missing solc versions or Solar releases.
 
 If both `offline` and `auto-detect-solc` are set to `true`, the required version(s) of solc will be auto detected but any missing versions will _not_ be installed.
 
