@@ -51,9 +51,9 @@ endpoint uses an unknown chain ID, does not expose enough metadata, or when you 
 a specific execution family. Compatibility profiles exposed through separate switches, such as
 Celo, still require their switch.
 
-When the network is inferred, the fork source must match it: a fork of another network family is
+When the network is inferred, the fork source must match it: an incompatible fork of another network family is
 an error. When you select the network explicitly with `network` or `--network`, Foundry keeps your
-selection and runs forks of another family with its rules, printing a warning once per chain:
+selection and runs incompatible forks of another family with its rules, printing a warning once per chain:
 
 ```text
 Warning: fork of chain 1 belongs to `ethereum`, but the selected network is `monad`, so the fork runs with `monad` rules
