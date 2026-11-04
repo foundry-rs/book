@@ -1,4 +1,4 @@
-import type { HistorySeries, PrRun, RunDocument, RunIndex } from './types'
+import type { HistorySeries, LineCounts, PrRun, RunDocument, RunIndex } from './types'
 import { responseCache } from './cache'
 import { reportImport } from './importProgress'
 import { mergeHistory, type HistoryRange } from './historySeries'
@@ -14,6 +14,7 @@ const cachedArtifact = responseCache<string | null>(3_600_000)
 const cachedRun = responseCache<RunDocument>(300_000)
 const cachedManifest = responseCache<RunDocument['artifacts']>(300_000)
 const cachedViewer = responseCache<[RunDocument, RunDocument]>(300_000)
+const cachedLineCounts = responseCache<Record<string, LineCounts>>(300_000)
 const runQueue: {
   commit: string
   revision?: string
@@ -224,6 +225,24 @@ export async function loadViewerRuns(
     }
     return value
   })
+}
+
+export interface LineCountSide {
+  run: Pick<RunDocument, 'commit' | 'revision'>
+  compiler: string
+}
+
+export function loadLineCounts(left: LineCountSide, right: LineCountSide, benchmark: string) {
+  const params = new URLSearchParams({
+    commits: `${left.run.commit},${right.run.commit}`,
+    compilers: `${left.compiler},${right.compiler}`,
+    benchmark,
+  })
+  if (left.run.revision || right.run.revision)
+    params.set('revisions', `${left.run.revision ?? ''},${right.run.revision ?? ''}`)
+  return cachedLineCounts(params.toString(), () =>
+    getJson<Record<string, LineCounts>>(`line-counts.json?${params}`),
+  )
 }
 
 export async function loadArtifact(

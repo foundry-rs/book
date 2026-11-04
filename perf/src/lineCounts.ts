@@ -1,43 +1,7 @@
 import { useEffect, useState } from 'react'
-import type { FileDiffMetadata } from '@pierre/diffs'
 import type { FileTreeRowDecoration } from '@pierre/trees'
-import { computeDiff } from './computeDiff'
-import { loadDiffFile, type ArtifactSource } from './formattedArtifact'
-import { imageType } from './imageArtifacts'
-
-export interface LineCounts {
-  added: number
-  removed: number
-}
-
-export interface LineCountRequest {
-  path: string
-  language: string
-  before: ArtifactSource
-  after: ArtifactSource
-}
-
-const concurrency = 3
-
-const lines = (text: string) => (text ? text.split('\n').length - (text.endsWith('\n') ? 1 : 0) : 0)
-
-export function sumHunks(diff: FileDiffMetadata): LineCounts {
-  return {
-    added: diff.hunks.reduce((sum, hunk) => sum + hunk.additionLines, 0),
-    removed: diff.hunks.reduce((sum, hunk) => sum + hunk.deletionLines, 0),
-  }
-}
-
-/** A pair needs counting unless it is an image or both sides are known to hold the same bytes. */
-export function mayDiffer({ path, before, after }: LineCountRequest) {
-  if (imageType(path) || (!before.storagePath && !after.storagePath)) return false
-  return (
-    !before.storagePath ||
-    !after.storagePath ||
-    !before.contentHash ||
-    before.contentHash !== after.contentHash
-  )
-}
+import { loadLineCounts, type LineCountSide } from './data'
+import type { LineCounts } from './types'
 
 /** The +N −M label of a file row, or of a directory row for the files beneath it. */
 export function lineCountDecoration(
@@ -64,41 +28,25 @@ export function lineCountDecoration(
   }
 }
 
-export async function loadLineCounts(
-  { path, language, before, after }: LineCountRequest,
-  signal: AbortSignal,
-): Promise<LineCounts | null> {
-  const [oldFile, newFile] = await Promise.all([
-    loadDiffFile(before, path, language),
-    loadDiffFile(after, path, language),
-  ])
-  if (!oldFile || !newFile) {
-    const file = oldFile ?? newFile
-    return file
-      ? { added: newFile ? lines(file.contents) : 0, removed: oldFile ? lines(file.contents) : 0 }
-      : null
-  }
-  if (oldFile.contents === newFile.contents) return { added: 0, removed: 0 }
-  return sumHunks(await computeDiff(oldFile, newFile, signal))
-}
-
-/** Added and removed lines per path, filled in as each file's diff finishes. */
-export function useLineCounts(requests: LineCountRequest[]) {
+/** Added and removed lines per path, which the server computes from the stored artifacts. */
+export function useLineCounts(
+  left: LineCountSide | undefined,
+  right: LineCountSide | undefined,
+  benchmark: string,
+) {
   const [counts, setCounts] = useState<Record<string, LineCounts>>({})
   useEffect(() => {
     setCounts({})
-    const controller = new AbortController()
-    const queue = requests.filter(mayDiffer)
-    const work = async () => {
-      for (let request = queue.shift(); request; request = queue.shift()) {
-        // A file that cannot be loaded or diffed in time shows no counts.
-        const result = await loadLineCounts(request, controller.signal).catch(() => null)
-        if (result && !controller.signal.aborted)
-          setCounts((previous) => ({ ...previous, [request.path]: result }))
-      }
+    if (!left || !right) return
+    let current = true
+    // Counts are decoration; a failed request shows none.
+    loadLineCounts(left, right, benchmark).then(
+      (counts) => current && setCounts(counts),
+      () => {},
+    )
+    return () => {
+      current = false
     }
-    for (let worker = 0; worker < concurrency; worker++) void work()
-    return () => controller.abort()
-  }, [requests])
+  }, [left, right, benchmark])
   return counts
 }
