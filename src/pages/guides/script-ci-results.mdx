@@ -1,0 +1,179 @@
+---
+description: Use a Forge script as a CI check. Pass parameters with --sig or environment variables, return a verdict from run(), and read it with --json and jq.
+---
+
+## Scripts in CI
+
+A Forge script can work as a CI check or an operations tool: it takes parameters, reads chain state, and reports a result. This guide shows how to pass parameters, return a verdict from `run()`, and turn that verdict into an exit code your CI understands.
+
+The outputs below were captured with Foundry 1.8.1 against a local Anvil node.
+
+### Prerequisites
+
+- [`jq`](https://jqlang.org) to read the JSON output.
+- An RPC endpoint. To follow along, start `anvil` and set `RPC_URL=http://127.0.0.1:8545`.
+
+### Return a verdict from `run()`
+
+Return the result instead of only logging it. The script below takes a list of accounts with minimum balances and returns how many are below their minimum:
+
+```solidity [script/CheckBalances.s.sol]
+// [!include ~/snippets/projects/script_ci_results/script/CheckBalances.s.sol]
+```
+
+Forge prints the named return values after the run:
+
+```bash
+$ forge script script/CheckBalances.s.sol --rpc-url $RPC_URL \
+    --sig 'run((address,uint256)[])' \
+    '[(0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266,1000000000000000000),(0x000000000000000000000000000000000000dEaD,1)]'
+```
+
+```
+Script ran successfully.
+
+== Return ==
+low: uint256 1
+
+== Logs ==
+  below minimum: 0x000000000000000000000000000000000000dEaD
+```
+
+### Pass parameters
+
+#### With `--sig`
+
+`--sig` selects the function to run, and the arguments after the script path are its parameters, in order. Pass a full signature, or only the name when the script has a single function with that name. Arrays use `[...]` and structs use tuple syntax `(...)`:
+
+```bash
+$ forge script script/CheckBalances.s.sol --rpc-url $RPC_URL \
+    --sig run '[(0x000000000000000000000000000000000000dEaD,1)]'
+```
+
+Forge parses every argument against the function's ABI types before the script runs, and stops with an error when a value has the wrong type or the wrong number of fields:
+
+```
+Error: parser error:
+[(0x1234,1)]
+  ^
+invalid string length
+```
+
+Arguments are positional: there are no names on the command line and no default values, so every parameter must be given in order.
+
+#### With environment variables
+
+`vm.env*` cheatcodes read named values, and [`vm.envOr`](/reference/cheatcodes/env-or) adds a default:
+
+```solidity
+uint256 minBalance = vm.envOr("MIN_BALANCE", uint256(1 ether));
+address account = vm.envAddress("ACCOUNT");
+```
+
+A missing required value stops the run with the variable's name:
+
+```
+Error: script failed: vm.envAddress: environment variable "ACCOUNT" not found
+```
+
+`vm.envOr` cannot tell a mistake from an absent value in some cases:
+
+- A misspelled name, such as `MIN_BALANSE=5`, is a different variable, so `envOr` returns the default.
+- Before Foundry 1.8.5, a value that does not parse as the requested type also returns the default. On 1.8.1, `MIN_BALANCE=5eth` and `MIN_BALANCE=` both give `1000000000000000000`. From 1.8.5, a malformed value reverts ([foundry#16924](https://github.com/foundry-rs/foundry/pull/16924)).
+
+Log the values a script actually uses, and use `vm.envUint`, `vm.envAddress` and the other required variants for values that have no safe default.
+
+#### Which to use
+
+| | `--sig` arguments | Environment variables |
+| --- | --- | --- |
+| Named | No, positional | Yes |
+| Defaults | No | With `vm.envOr` |
+| Structs and arrays | Yes, checked against the ABI | Arrays of one type, with a delimiter |
+| Checked before the run | Yes | Only when the cheatcode runs |
+
+### Read the result with `--json`
+
+`--json` prints the run as one JSON object. Each named return value is under `.returns.<name>.value`, as a string:
+
+```bash
+$ forge script script/CheckBalances.s.sol --rpc-url $RPC_URL \
+    --sig run '[(0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266,1000000000000000000),(0x000000000000000000000000000000000000dEaD,1)]' \
+    --json > result.json
+$ jq '{success, returns, logs}' result.json
+```
+
+```json
+{
+  "success": true,
+  "returns": {
+    "low": {
+      "internal_type": "uint256",
+      "value": "1"
+    }
+  },
+  "logs": [
+    "below minimum: 0x000000000000000000000000000000000000dEaD"
+  ]
+}
+```
+
+With `--broadcast`, Forge prints one JSON object per line: the first is the simulation above, and the following lines describe gas estimates, receipts and the paths of the broadcast files. Read the first line with `head -n 1`.
+
+### Exit codes and revert reasons
+
+`forge script` exits with:
+
+- `0` when `run()` returns, whatever it returns.
+- `1` for every failure: a revert, an argument that does not parse, an unreachable RPC endpoint.
+- `2` for a command-line usage error, such as an unknown flag.
+
+Because every failure exits with `1`, put the result your CI branches on in the return value. To tell revert reasons apart, read `.returned`: when `run()` reverts, `--json` still prints an object with `"success": false` and the raw revert data. The decoded reason goes to stderr:
+
+```bash
+$ forge script script/CheckBalances.s.sol --rpc-url $RPC_URL --sig run '[]' --json > result.json
+Error: Failed to decode return value: 0xd2bd20cc
+Error: script failed: NoChecks()
+$ jq -c '{success, returned}' result.json
+{"success":false,"returned":"0xd2bd20cc"}
+$ cast sig 'NoChecks()'
+0xd2bd20cc
+```
+
+For errors with arguments, compare the first four bytes with the selector, and decode the rest with [`cast decode-error`](/reference/cast/decode-error) and `--sig`. Failures before the script runs, such as a bad argument or an unreachable RPC endpoint, print nothing on stdout.
+
+### Wrap it for CI
+
+This wrapper maps the outcomes to its own exit codes: `0` all good, `1` an account is below its minimum, `2` the check could not run:
+
+```bash [check.sh]
+// [!include ~/snippets/projects/script_ci_results/check.sh]
+```
+
+```bash
+$ CHECKS='[(0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266,1000000000000000000)]' ./check.sh
+all balances above minimum
+$ CHECKS='[(0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266,1000000000000000000),(0x000000000000000000000000000000000000dEaD,1)]' ./check.sh
+::error::1 account(s) below minimum balance
+below minimum: 0x000000000000000000000000000000000000dEaD
+$ CHECKS='[]' ./check.sh
+::error::no accounts to check
+```
+
+The wrapper writes the JSON to a file before reading it. In a pipeline such as `forge script ... --json | jq ...`, the shell reports `jq`'s exit code, not Forge's, unless you `set -o pipefail`.
+
+In GitHub Actions, run the wrapper as a step:
+
+```yaml [.github/workflows/check.yml]
+- name: Check balances
+  env:
+    RPC_URL: ${{ secrets.RPC_URL }}
+    CHECKS: "[(0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266,1000000000000000000)]"
+  run: ./check.sh
+```
+
+### Related
+
+- [Scripting](/forge/scripting)
+- [CI Integration](/config/ci)
+- [`forge script`](/reference/forge/script) reference
