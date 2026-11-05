@@ -43,7 +43,8 @@ Define symbolic settings under `[profile.<name>.symbolic]`.
 | `corpus_seed_limit` | `32` | Limits imported corpus seeds. |
 | `use_fuzz_frontiers` | `false` | Uses fuzz branch frontiers for targeted exploration. |
 | `check_invariant_frontiers` | `false` | Checks imported invariant frontiers for property failures before branch-target seeding. |
-| `frontier_limit` | `256` | Limits imported branch frontiers. |
+| `live` | `false` | Assists a concrete invariant campaign with one bounded solver worker. |
+| `frontier_limit` | `256` | Limits imported branch frontiers or submitted live frontiers per campaign. |
 | `frontier_ids` | `[]` | Filters imported frontier artifact IDs. |
 | `frontier_pcs` | `[]` | Filters frontier program counters. |
 | `frontier_selectors` | `[]` | Filters frontier calldata selectors. |
@@ -69,6 +70,46 @@ Define symbolic settings under `[profile.<name>.symbolic]`.
 | `symbolic_call_targets` | `false` | Expands symbolic targets over known deployed contracts. |
 | `dump_smt` | `false` | Writes SMT-LIB queries before solving. |
 | `storage_layout` | `solidity` | Selects `solidity`, `generic`, or `zero_init` storage modelling. |
+
+#### Live invariant assistance
+
+`live` is a boolean that defaults to `false`. Set `FOUNDRY_SYMBOLIC_LIVE=true`
+or pass `forge test --symbolic-live` to enable it from the command line. You do
+not need `--symbolic` for live assistance.
+
+```toml
+[profile.default.symbolic]
+live = true
+timeout = 30
+max_solver_queries = 10000
+frontier_limit = 256
+```
+
+One solver thread consumes comparisons from the first concrete fuzz worker and
+tries to flip branches from their replayed sequence prefixes. The concrete
+campaign executes returned sequences from setup, using its normal predicate
+intervals, failure reporting, shrinking, and corpus persistence. These sequences
+can expose new frontiers for the same worker during the campaign.
+
+`timeout`, `max_solver_queries`, and `frontier_limit` bound the worker's total
+time, queries, and submitted frontiers per campaign. An unset timeout uses 30
+seconds; zero disables worker execution. Each search has a one-second timeout.
+The worker retains up to 32 frontiers when a sequence reaches new comparison
+outcomes, preferring shorter prefixes. There is one slot in each channel, and each request
+is limited to 1024 calls and 64 KiB of aggregate calldata within
+`invariant.depth`. Shutdown cancels concrete prefix replay and waits for any
+active solver query to finish within its timeout.
+
+This adds a solver thread to your configured fuzz workers. Short campaigns can
+finish before candidates arrive. The initial version excludes optimization
+campaigns and `call_override`, and only solves setup-known targets with zero
+transaction value and no warp/roll delay on the target call. It keeps the
+concrete sender fixed. Unsupported operations and exhausted budgets leave the
+concrete campaign running. Offline frontier filters do not select live jobs.
+
+Live assistance does not prove safety. JSON output puts worker counters in
+`symbolic_live`, separately from symbolic verification results. `scheduled`
+counts sequences handed to the concrete campaign, not coverage gains.
 
 #### Invariant frontier property checks
 

@@ -131,6 +131,10 @@ export const sidebar: Sidebar = {
           text: "Symbolic Testing",
           link: "/config/reference/advanced-testing#symbolic-testing",
         },
+        {
+          text: "Live Symbolic Assistance",
+          link: "/config/reference/advanced-testing#live-invariant-assistance",
+        },
         { text: "Build, Runtime, and RPC", link: "/config/reference/build-and-runtime" },
         {
           text: "Fork State by Block Number",
