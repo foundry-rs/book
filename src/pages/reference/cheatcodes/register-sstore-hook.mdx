@@ -1,0 +1,59 @@
+---
+description: Calls back into the test after each storage write of an account
+---
+
+## `registerSstoreHook`
+
+### Signature
+
+```solidity
+function registerSstoreHook(address target, bytes4 callback) external;
+```
+
+### Description
+
+Registers a callback that runs after each `SSTORE` against the storage of `target`, including when another contract's code writes it through `delegatecall`. Use it to keep ghost state for invariant or symbolic tests.
+
+The contract that calls `registerSstoreHook` receives the callback, which must have the signature:
+
+```solidity
+function onStore(address account, bytes32 slot, bytes32 oldValue, bytes32 newValue) external;
+```
+
+### Parameters
+
+| Parameter  | Type      | Description                                        |
+|------------|-----------|----------------------------------------------------|
+| `target`   | `address` | The account whose storage writes are observed      |
+| `callback` | `bytes4`  | The selector of the callback on the calling contract |
+
+### Examples
+
+```solidity [test/SstoreHook.t.sol]
+// [!include ~/snippets/projects/storage_hooks/test/SstoreHook.t.sol]
+```
+
+```solidity [src/Vault.sol]
+// [!include ~/snippets/projects/storage_hooks/src/Vault.sol]
+```
+
+```bash
+$ forge test --root src/snippets/projects/storage_hooks --match-contract SstoreHookTest
+```
+
+### Gotchas
+
+:::warning
+Anyone can call the callback, so check `msg.sender == address(vm)` in it.
+:::
+
+- Registering another callback for the same target replaces the previous one. A target cannot have both an `SSTORE` hook and a [mapping `SSTORE` hook](/reference/cheatcodes/register-mapping-sstore-hook): the second registration reverts.
+- Registration survives reverts. State the callback writes rolls back with the call that triggered it, and a revert in the callback propagates as a failure of the write.
+- Hooks do not fire inside the callback or anything it calls. Callback calls are hidden from mocks, `expectCall`, log recording and storage-access recording.
+- The callback is an ordinary call frame and uses one level of the 1024 call-depth limit.
+
+### Related Cheatcodes
+
+- [`registerSloadHook`](/reference/cheatcodes/register-sload-hook) - Calls back after each storage read
+- [`registerMappingSstoreHook`](/reference/cheatcodes/register-mapping-sstore-hook) - Calls back after writes to a mapping
+- [`record`](/reference/cheatcodes/record) - Records storage reads and writes

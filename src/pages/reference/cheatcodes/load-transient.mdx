@@ -1,0 +1,47 @@
+---
+description: Reads a value from an account's transient storage
+---
+
+## `loadTransient`
+
+:::note
+Available in nightly builds since 2026-10-11 ([foundry#17484](https://github.com/foundry-rs/foundry/pull/17484)); not in v1.8.7. forge-std (1.17.0) does not declare it yet, so the example uses its own interface.
+:::
+
+### Signature
+
+```solidity
+function loadTransient(address target, bytes32 slot) external view returns (bytes32 data);
+```
+
+### Description
+
+Returns the value in transient storage slot `slot` of `target` in the test's current transaction ([EIP-1153](https://eips.ethereum.org/EIPS/eip-1153)), as `TLOAD` would.
+
+### Parameters
+
+| Parameter | Type      | Description                                 |
+|-----------|-----------|---------------------------------------------|
+| `target`  | `address` | The account whose transient storage is read |
+| `slot`    | `bytes32` | The transient storage slot                  |
+
+### Returns
+
+| Parameter | Type      | Description                    |
+|-----------|-----------|--------------------------------|
+| `data`    | `bytes32` | The value stored at the slot   |
+
+### Examples
+
+```solidity [test/TransientStorage.t.sol]
+// [!include ~/snippets/projects/transient_storage/test/TransientStorage.t.sol]
+```
+
+### Gotchas
+
+With [`isolate`](/config/reference/build-and-runtime) enabled (the default), each top-level call runs as its own transaction, so a value that call wrote with `TSTORE` is gone when it returns and `loadTransient` returns `0`. See [`storeTransient`](/reference/cheatcodes/store-transient) for how isolation affects values the test stores.
+
+### Related Cheatcodes
+
+- [`storeTransient`](/reference/cheatcodes/store-transient) - Writes a transient storage slot
+- [`load`](/reference/cheatcodes/load) - Reads a persistent storage slot

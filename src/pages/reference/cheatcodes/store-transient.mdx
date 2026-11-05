@@ -1,0 +1,54 @@
+---
+description: Writes a value to an account's transient storage
+---
+
+## `storeTransient`
+
+:::note
+Available in nightly builds since 2026-10-11 ([foundry#17484](https://github.com/foundry-rs/foundry/pull/17484)); not in v1.8.7. forge-std (1.17.0) does not declare it yet, so the example uses its own interface.
+:::
+
+### Signature
+
+```solidity
+function storeTransient(address target, bytes32 slot, bytes32 value) external;
+```
+
+### Description
+
+Stores `value` in transient storage slot `slot` of `target` ([EIP-1153](https://eips.ethereum.org/EIPS/eip-1153)). Like a value written with `TSTORE`, it lasts until the end of the current transaction. Persistent storage is not changed.
+
+### Parameters
+
+| Parameter | Type      | Description                                |
+|-----------|-----------|--------------------------------------------|
+| `target`  | `address` | The account whose transient storage is set |
+| `slot`    | `bytes32` | The transient storage slot                 |
+| `value`   | `bytes32` | The value to store                         |
+
+### Examples
+
+```solidity [test/TransientStorage.t.sol]
+// [!include ~/snippets/projects/transient_storage/test/TransientStorage.t.sol]
+```
+
+```solidity [src/Lock.sol]
+// [!include ~/snippets/projects/transient_storage/src/Lock.sol]
+```
+
+```bash
+$ forge test --root src/snippets/projects/transient_storage
+```
+
+### Gotchas
+
+:::warning[Isolation]
+With [`isolate`](/config/reference/build-and-runtime) enabled (the default), each top-level call from a test runs as its own transaction with empty transient storage. A value the test stored is not visible to that call, although `loadTransient` in the test still returns it. To let the target see it, store it and call the target from inside one call, as `Helper` does above. A `staticcall` (a `view` function) stays in the test's transaction and sees the value.
+:::
+
+Values written by a top-level call are gone when that call returns, so `loadTransient` cannot read them from the test.
+
+### Related Cheatcodes
+
+- [`loadTransient`](/reference/cheatcodes/load-transient) - Reads a transient storage slot
+- [`store`](/reference/cheatcodes/store) - Writes a persistent storage slot
