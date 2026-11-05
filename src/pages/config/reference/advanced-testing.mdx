@@ -91,14 +91,24 @@ campaign executes returned sequences from setup, using its normal predicate
 intervals, failure reporting, shrinking, and corpus persistence. These sequences
 can expose new frontiers for the same worker during the campaign.
 
-`timeout`, `max_solver_queries`, and `frontier_limit` bound the worker's total
-time, queries, and submitted frontiers per campaign. An unset timeout uses 30
-seconds; zero disables worker execution. Each search has a one-second timeout.
-The worker retains up to 32 frontiers when a sequence reaches new comparison
-outcomes, preferring shorter prefixes. There is one slot in each channel, and each request
-is limited to 1024 calls and 64 KiB of aggregate calldata within
-`invariant.depth`. Shutdown cancels concrete prefix replay and waits for any
-active solver query to finish within its timeout.
+`timeout` limits admission of new searches; `max_solver_queries` and
+`frontier_limit` bound solver queries and submitted frontiers per campaign. An
+unset timeout uses 30 seconds. Zero timeout, query budget, or frontier limit
+disables admission. Each search and its solver availability probe have separate
+one-second timeouts. An in-flight search can finish after the admission deadline.
+Shutdown cancels concrete prefix replay and waits for the active bounded solver
+operation; it does not detach the worker. Only the direct solver child is
+terminated; wrapper commands must manage any subprocesses they spawn.
+
+The worker keeps a backlog of up to 32 frontiers from sequences with new
+comparison outcomes, preferring shorter prefixes. Admission is lossy: outcomes
+dropped when the backlog is full are not reconsidered unless a later sequence
+reaches a new comparison outcome. There is also one slot in each request and response channel, plus
+in-flight work. At most 1024 calls and 64 KiB of aggregate calldata are retained
+for live assistance per sequence, within `invariant.depth`; sequences exceeding
+these limits are discarded. Live-only sequence and comparison collection stops
+when the worker cannot accept useful work. Independently enabled corpus guidance
+and offline frontier capture keep their own instrumentation.
 
 This adds a solver thread to your configured fuzz workers. Short campaigns can
 finish before candidates arrive. The initial version excludes optimization
