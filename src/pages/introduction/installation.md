@@ -32,9 +32,20 @@ This installs the latest stable versions of `forge`, `cast`, `anvil`, and `chise
 By default, if neither `FOUNDRY_DIR` nor `XDG_CONFIG_HOME` is set, Foundry is installed to `~/.foundry`. If `XDG_CONFIG_HOME` is set, it defaults to `$XDG_CONFIG_HOME/.foundry`. You can override both defaults by setting the `FOUNDRY_DIR` environment variable before running `foundryup`. For details on the directory layout and environment variables, see the [Config Reference Overview](/config/reference/overview#directory-layout).
 :::
 
-:::warning[Windows]
-Foundryup requires [Git Bash](https://gitforwindows.org/) or [WSL](https://learn.microsoft.com/en-us/windows/wsl/install). PowerShell and Command Prompt are not supported.
-:::
+### Windows
+
+The steps above also work in [Git Bash](https://gitforwindows.org/) and [WSL](https://learn.microsoft.com/en-us/windows/wsl/install). In PowerShell, download foundryup, add it to your `Path` and run it:
+
+```powershell
+$bin = "$env:USERPROFILE\.foundry\bin"
+New-Item -ItemType Directory -Force -Path $bin | Out-Null
+Invoke-WebRequest https://github.com/foundry-rs/foundryup/releases/latest/download/foundryup_win32_amd64.exe -OutFile "$bin\foundryup.exe"
+[Environment]::SetEnvironmentVariable('Path', "$bin;" + [Environment]::GetEnvironmentVariable('Path', 'User'), 'User')
+$env:Path = "$bin;$env:Path"
+foundryup
+```
+
+New terminals find `foundryup`, `forge`, `cast`, `anvil` and `chisel`, in PowerShell and in Command Prompt. `forge init` and `forge install` also need [Git](https://git-scm.com/downloads/win) on your `Path`.
 
 :::note
 If installation fails, see [Troubleshooting](/help/troubleshooting) for common fixes.
