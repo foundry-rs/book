@@ -113,8 +113,8 @@ and offline frontier capture keep their own instrumentation.
 This adds a solver thread to your configured fuzz workers. Short campaigns can
 finish before candidates arrive. The initial version excludes optimization
 campaigns and `call_override`, and only solves setup-known targets with zero
-transaction value and no warp/roll delay on the target call. It keeps the
-concrete sender fixed. Unsupported operations and exhausted budgets leave the
+transaction value. The worker applies the target call's warp and roll delays
+concretely before the search. It keeps the concrete sender fixed. Unsupported operations and exhausted budgets leave the
 concrete campaign running. Offline frontier filters do not select live jobs.
 
 Live assistance does not prove safety. JSON output puts worker counters in
