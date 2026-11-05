@@ -13,7 +13,7 @@ function breakpoint(string calldata char, bool enabled) external;
 
 ### Description
 
-Places a breakpoint to jump to in the debugger view.
+Places a breakpoint for the [debugger](/forge/debugging#breakpoints). When you open the test or script with `--debug`, `continue` stops at the `vm.breakpoint` call.
 
 Calling `vm.breakpoint("<char>", true)` is equivalent to `vm.breakpoint("<char>")`. Calling `vm.breakpoint("<char>", false)` will erase the breakpoint at `<char>`.
 
@@ -31,11 +31,9 @@ If the same char is used multiple times, only the last one visited in execution 
 ```solidity [test/Breakpoint.t.sol]
 function testBreakpoint() public {
     vm.breakpoint("a");
-    // Opening the debugger and pressing 'a will jump here
+    // `continue` in the debugger stops here
 }
 ```
-
-![breakpoint a](/breakpoint.png)
 
 ### See Also
 
