@@ -17,7 +17,7 @@ Writes a serialized JSON object to a file.
 
 If no `valueKey` is provided, the JSON object will be written to a new file (overwriting if it exists).
 
-If a `valueKey` is provided, the file must already exist and be valid JSON. The value at the JSONPath `valueKey` will be replaced with the new JSON object.
+If a `valueKey` is provided, the value at the JSONPath `valueKey` is replaced with the new JSON object. If the file does not exist, it is created. If it exists, it must be valid JSON.
 
 ### Parameters
 
@@ -79,6 +79,12 @@ Result:
 // Update a deeply nested value using descendant search
 vm.writeJson("13371337", "./output/example.json", "..veryDeep");
 ```
+
+### Output format
+
+The file is written with a 2-space indent and no trailing newline. Writing the same value twice gives the same bytes.
+
+Keys are written in the order they have in `json`. When `valueKey` is used, the existing keys keep their order, a replaced key keeps its place, and a new key goes last. An object built with [`serializeJson`](/reference/cheatcodes/serialize-json) has its keys sorted, so it is written sorted.
 
 ### Gotchas
 
