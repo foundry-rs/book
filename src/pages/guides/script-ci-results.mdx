@@ -80,6 +80,7 @@ Error: script failed: vm.envAddress: environment variable "ACCOUNT" not found
 
 - A misspelled name, such as `MIN_BALANSE=5`, is a different variable, so `envOr` returns the default.
 - Before Foundry 1.8.5, a value that does not parse as the requested type also returns the default. On 1.8.1, `MIN_BALANCE=5eth` and `MIN_BALANCE=` both give `1000000000000000000`. From 1.8.5, a malformed value reverts ([foundry#16924](https://github.com/foundry-rs/foundry/pull/16924)).
+- An empty value, such as `MIN_BALANCE=`, counts as not set and returns the default, also on 1.8.5 and later.
 
 Log the values a script actually uses, and use `vm.envUint`, `vm.envAddress` and the other required variants for values that have no safe default.
 
