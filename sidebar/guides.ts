@@ -52,7 +52,10 @@ export const guidesSidebar: Sidebar = {
     },
     {
       text: "Environment",
-      items: [{ text: "Docker & Containers", link: "/guides/docker" }],
+      items: [
+        { text: "Docker & Containers", link: "/guides/docker" },
+        { text: "Keeping Secrets Out of Plaintext", link: "/guides/encrypted-env" },
+      ],
     },
     {
       text: "Migrations",
