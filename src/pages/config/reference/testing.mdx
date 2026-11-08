@@ -764,3 +764,16 @@ Number of calls to execute between invariant assertions.
 - `0`: Only assert on the last call of each run (fastest, but may miss exact breaking call)
 - `1` (default): Assert after every call (most precise)
 - `N`: Assert every N calls AND always on the last call
+
+##### `revert_weighting`
+
+- Type: boolean
+- Default: false
+- Environment: `FOUNDRY_INVARIANT_REVERT_WEIGHTING`
+
+Pick the next handler function in proportion to its observed success rate instead of uniformly. Once a function has been called 16 times in a worker, its weight is its share of calls that did not revert, with a floor of 5 % of the uniform weight, so a function whose preconditions are met later in a run is still tried. This spends fewer calls on handlers that revert for most inputs.
+
+```toml
+[invariant]
+revert_weighting = true
+```
