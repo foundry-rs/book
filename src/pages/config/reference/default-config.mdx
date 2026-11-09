@@ -734,6 +734,10 @@ show_solidity = false
 # Default: 1
 check_interval = 1
 
+# Also fuzz the test contract's invariant functions as handlers, so state they write persists like any other call
+# Default: false
+invariants_as_handlers = false
+
 # --- Invariant Dictionary Configuration ---
 
 # The weight of the dictionary (percentage 0-100)

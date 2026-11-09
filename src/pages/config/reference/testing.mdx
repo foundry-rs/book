@@ -764,3 +764,18 @@ Number of calls to execute between invariant assertions.
 - `0`: Only assert on the last call of each run (fastest, but may miss exact breaking call)
 - `1` (default): Assert after every call (most precise)
 - `N`: Assert every N calls AND always on the last call
+
+##### `invariants_as_handlers`
+
+- Type: boolean
+- Default: false
+- Environment: `FOUNDRY_INVARIANT_INVARIANTS_AS_HANDLERS`
+
+Also fuzzes the test contract's invariant functions as handlers, so state they write persists like any other call. Invariants are still checked after calls as usual. Applies when the test contract is a fuzz target (e.g. `targetContract(address(this))`) without explicit `targetSelector`s.
+
+Use it for harnesses whose invariants update ghost variables. An invariant that fails while called as a handler can also be reported as a handler assertion failure.
+
+```toml
+[invariant]
+invariants_as_handlers = true
+```
