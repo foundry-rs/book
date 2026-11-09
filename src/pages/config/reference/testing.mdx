@@ -764,3 +764,18 @@ Number of calls to execute between invariant assertions.
 - `0`: Only assert on the last call of each run (fastest, but may miss exact breaking call)
 - `1` (default): Assert after every call (most precise)
 - `N`: Assert every N calls AND always on the last call
+
+##### `call_gas_limit`
+
+- Type: integer
+- Default: none
+- Environment: `FOUNDRY_INVARIANT_CALL_GAS_LIMIT`
+
+Gas limit for every call the invariant campaign makes: handler calls, invariant checks and `afterInvariant`. If not set, the campaign uses [`gas_limit`](#gas_limit). The setting never raises the limit above `gas_limit`; `setUp` always runs under `gas_limit`.
+
+Set it when a handler loops over a fuzzed bound. Under a very large `gas_limit`, one such call can run until the campaign timeout and the whole budget is lost. Echidna and Medusa cap every transaction at 12,500,000 gas.
+
+```toml
+[invariant]
+call_gas_limit = 30_000_000
+```
