@@ -50,6 +50,7 @@ Key conventions:
 - Test files end with `.t.sol`
 - Test contracts inherit from `forge-std/Test.sol`
 - Test functions start with `test_` or `test`
+- A name that starts with `testFail` is rejected; see [Testing reverts](#testing-reverts)
 - `setUp()` runs before each test
 
 ### Call isolation
@@ -456,7 +457,17 @@ For a counterexample-to-fix workflow, including durable JSON artifacts, concrete
 
 ### Testing reverts
 
-Use `vm.expectRevert(){:solidity}` to test that a call reverts:
+Assert the revert with `vm.expectRevert(){:solidity}`. Name the test for the condition, using `test_RevertWhen_` or `test_RevertIf_`.
+
+:::warning[Removed `testFail` prefix]
+Forge fails any test whose name starts with `testFail` before that test runs. This includes `testFail`, `testFail_`, and accidental names such as `testFails` or `testFailedSwap`:
+
+```text
+`testFail*` has been removed. Consider changing to test_Revert[If|When]_Condition and expecting a revert
+```
+
+The prefix comes from dapptools, before `vm.expectRevert` existed. Any revert or failed assertion counted as a pass, so the test could succeed for the wrong reason, and `forge coverage` skipped those calls. Foundry v1 [removed `testFail*`](/guides/migrations/foundry-v1#testfail-tests-removed).
+:::
 
 ```solidity
 function test_RevertWhen_Unauthorized() public {
