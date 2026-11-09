@@ -771,7 +771,7 @@ Number of calls to execute between invariant assertions.
 - Default: none
 - Environment: `FOUNDRY_INVARIANT_CALL_GAS_LIMIT`
 
-Gas limit for every call the invariant campaign makes: handler calls, invariant checks and `afterInvariant`. If not set, the campaign uses [`gas_limit`](#gas_limit). The setting never raises the limit above `gas_limit`; `setUp` always runs under `gas_limit`.
+Gas limit for every call the invariant campaign makes: handler calls, invariant checks and `afterInvariant`. If not set, the campaign uses [`gas_limit`](#gas_limit). The setting never raises the limit above `gas_limit`; `setUp` always runs under `gas_limit`. A handler call whose EIP-7623 calldata floor is above the limit runs with the floor as its limit, so large fuzzed arrays do not stop the campaign.
 
 Set it when a handler loops over a fuzzed bound. Under a very large `gas_limit`, one such call can run until the campaign timeout and the whole budget is lost. Echidna and Medusa default to 12,500,000 gas per transaction.
 
