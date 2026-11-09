@@ -773,7 +773,7 @@ Number of calls to execute between invariant assertions.
 
 Gas limit for every call the invariant campaign makes: handler calls, invariant checks and `afterInvariant`. If not set, the campaign uses [`gas_limit`](#gas_limit). The setting never raises the limit above `gas_limit`; `setUp` always runs under `gas_limit`.
 
-Set it when a handler loops over a fuzzed bound. Under a very large `gas_limit`, one such call can run until the campaign timeout and the whole budget is lost. Echidna and Medusa cap every transaction at 12,500,000 gas.
+Set it when a handler loops over a fuzzed bound. Under a very large `gas_limit`, one such call can run until the campaign timeout and the whole budget is lost. Echidna and Medusa default to 12,500,000 gas per transaction.
 
 ```toml
 [invariant]
