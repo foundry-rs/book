@@ -21,6 +21,7 @@ the [testing reference](/config/reference/testing).
 | `evm_edge_coverage_include_call_depth` | both | `false` | Includes call depth in EVM edge IDs. |
 | `sancov_edges` | both | `false` | Collects native Rust SanitizerCoverage edges. |
 | `sancov_trace_cmp` | both | `false` | Adds native comparison operands to the fuzz dictionary. |
+| `instrumented_edges` | both | `false` | Uses compiler-inserted `EDGECOV` (`0xC0`) and `CMPLOG` (`0xC1`) probes for EVM edges and comparisons. Requires instrumented artifacts. |
 | `corpus_random_sequence_weight` | both | `10` | Sets the percent chance of generating a fresh sequence. |
 | `payable_value_weight` | both | fuzz: `0`, invariant: `15` | Sets the percent chance that payable calls carry value. |
 | `mutation_weight_splice` | both | `1` | Weights corpus sequence splicing. |
