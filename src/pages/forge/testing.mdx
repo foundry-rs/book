@@ -466,6 +466,8 @@ Forge fails any test whose name starts with `testFail` before that test runs. Th
 `testFail*` has been removed. Consider changing to test_Revert[If|When]_Condition and expecting a revert
 ```
 
+One `testFail*` test also keeps the other tests in that contract from running: `forge test --list` still lists them, but the suite omits them instead of marking them skipped.
+
 The prefix comes from dapptools, before `vm.expectRevert` existed. Any revert or failed assertion counted as a pass, so the test could succeed for the wrong reason, and `forge coverage` skipped those calls. Foundry v1 [removed `testFail*`](/guides/migrations/foundry-v1#testfail-tests-removed).
 :::
 
