@@ -3,6 +3,8 @@ import { resolve } from 'node:path'
 
 import { build } from 'vite'
 
+import { apiRoute, workerRoute } from './vercel-routes.mjs'
+
 const output = resolve(import.meta.dirname, '../../.vercel/output')
 for (const [name, entry] of [
   ['perf-api', 'vercel.ts'],
@@ -33,13 +35,12 @@ for (const [name, entry] of [
 }
 const configPath = resolve(output, 'config.json')
 const config = JSON.parse(await readFile(configPath, 'utf8'))
-const apiRoute = { src: '^/api(?:/(.*))?$', dest: '/perf-api?__perf_path=$1' }
-const workerRoute = { src: '^/api/worker/(.*)$', dest: '/perf-worker?__perf_path=worker/$1' }
 const routes = (config.routes || []).filter(
   (route) => route.src !== apiRoute.src && route.src !== workerRoute.src,
 )
 // Claim API requests before Vocs' Markdown and bot user-agent routes, which
 // otherwise send extensionless endpoints (including health) to the docs server.
+// Vocs' own API routes are left to the docs server.
 routes.unshift(workerRoute, apiRoute)
 config.routes = routes
 config.crons = [{ path: '/api/worker/tick', schedule: '*/15 * * * *' }]
