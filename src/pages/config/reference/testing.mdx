@@ -601,6 +601,16 @@ The number of calls executed to attempt to break invariants in one run.
 
 Optional timeout (in seconds) for invariant time based campaigns.
 
+The timeout also bounds shrinking: once the campaign ends, shrinking the failures it found stops at most
+`timeout` seconds after the campaign deadline, so a timed invariant test finishes within about twice its
+timeout. A failure whose shrinking runs out of time is reported with the shortest call sequence confirmed
+so far.
+
+```toml
+[invariant]
+timeout = 300
+```
+
 ##### `fail_on_revert`
 
 - Type: boolean
