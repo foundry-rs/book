@@ -665,7 +665,7 @@ Whether to add the results of targeted contracts' view functions to the dictiona
 - Default: 5000
 - Environment: `FOUNDRY_INVARIANT_SHRINK_RUN_LIMIT`
 
-The maximum number of attempts to shrink a failed the sequence. Shrink process is disabled if set to 0.
+The maximum number of attempts to shrink a failed sequence. The same limit bounds the minimization of a failing stateless fuzz test's arguments, so its counterexample reports the smallest values that still fail the same way; set it under `[invariant]` for fuzz tests too. Shrinking and minimization are disabled if set to 0.
 
 ##### `max_assume_rejects`
 
