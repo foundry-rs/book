@@ -753,7 +753,7 @@ Flag indicating whether to display counterexamples as solidity calls.
 - Default: none
 - Environment: `FOUNDRY_INVARIANT_MAX_TIME_DELAY`
 
-Maximum time (in seconds) between generated transactions. If not set, there is no limit.
+Maximum time (in seconds) that `block.timestamp` advances before each generated call. Delays are random, from 0 up to this value, and add up over a run. If unset or `0`, generated calls do not advance `block.timestamp`.
 
 ##### `max_block_delay`
 
@@ -761,7 +761,7 @@ Maximum time (in seconds) between generated transactions. If not set, there is n
 - Default: none
 - Environment: `FOUNDRY_INVARIANT_MAX_BLOCK_DELAY`
 
-Maximum number of blocks elapsed between generated transactions. If not set, there is no limit.
+Maximum number of blocks that `block.number` advances before each generated call. Delays are random, from 0 up to this value, and add up over a run. If unset or `0`, generated calls do not advance `block.number`.
 
 ##### `check_interval`
 
