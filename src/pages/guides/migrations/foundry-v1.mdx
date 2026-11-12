@@ -22,7 +22,13 @@ optimizer_runs = 200
 
 ### `testFail` tests removed
 
-`testFail`-prefixed tests are no longer supported. Replace them with explicit revert tests:
+Forge fails any test whose name starts with `testFail`, including `testFail_`, before the test runs:
+
+```text
+`testFail*` has been removed. Consider changing to test_Revert[If|When]_Condition and expecting a revert
+```
+
+The old prefix counted any failure as a success. Replace it with an explicit revert test. [Testing reverts](/forge/testing#testing-reverts) shows the same pattern:
 
 ```solidity
 function test_RevertWhen_Unauthorized() public {
