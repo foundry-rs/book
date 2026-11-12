@@ -76,6 +76,20 @@ vm.writeJson(finalJson, "./output/example.json");
 `serializeString` first tries to interpret `output` as a stringified JSON object. If parsing fails, it treats it as a normal string. For instance, `'{ "ok": "asd" }'` produces an object, but `'"ok": "asd" }'` produces a string.
 :::
 
+### Output format
+
+- Keys are sorted by byte order, not kept in the order they were added: `"10"` comes before `"2"`, and `"Beta"` before `"alpha"`. Nested objects are sorted too.
+- An integer that fits in 64 bits (`uint64` or `int64` range) is a JSON number. A larger one is a decimal string, e.g. `"18446744073709551616"` for `2**64`. JavaScript's `JSON.parse` loses precision for numbers above `2**53`.
+- An `address` is a checksummed hex string, and `bytes` and `bytes32` are `0x`-prefixed hex strings.
+
+```solidity
+string memory obj = "obj";
+vm.serializeUint(obj, "zeta", 1);
+vm.serializeUint(obj, "alpha", 2);
+string memory json = vm.serializeUint(obj, "big", 2**64);
+// {"alpha":2,"big":"18446744073709551616","zeta":1}
+```
+
 ### Gotchas
 
 :::warning[File Permissions]
