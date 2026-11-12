@@ -14,6 +14,15 @@ function expectCall(address callee, uint256 msgValue, bytes calldata data, uint6
 function expectCallMinGas(address callee, uint256 msgValue, uint64 minGas, bytes calldata data) external;
 function expectCallMinGas(address callee, uint256 msgValue, uint64 minGas, bytes calldata data, uint64 count) external;
 function expectDelegateCall(address callee, bytes calldata data) external;
+function expectCall(CallKind kind, address callee, bytes calldata data) external;
+```
+
+```solidity
+enum CallKind {
+    Call,
+    DelegateCall,
+    StaticCall
+}
 ```
 
 ### Description
@@ -21,6 +30,8 @@ function expectDelegateCall(address callee, bytes calldata data) external;
 Expects a call to a specified address `callee`, where the call data either strictly or loosely matches `data`.
 
 Use `expectDelegateCall` when only a delegate call should satisfy the expectation. It uses the same calldata matching behavior as `expectCall`, but an ordinary call does not match it.
+
+Use the `CallKind` overload when the expectation should only be satisfied by one opcode. `CallKind.Call` matches `CALL` only, `CallKind.DelegateCall` matches `DELEGATECALL` (the same as `expectDelegateCall`), and `CallKind.StaticCall` matches `STATICCALL` only. A plain `expectCall` without a kind still matches any of them, so both can be set for the same calldata.
 
 Use `expectCallMinGas` to additionally require that the call is supplied with at least `minGas` gas. The minimum applies to the gas supplied to the call, not the gas consumed during execution.
 
@@ -30,6 +41,7 @@ Use `expectCallMinGas` to additionally require that the call is supplied with at
 | With `count` | Call must be made exactly `count` times |
 | With `msgValue` | Also checks that the call was made with the specified `msg.value` |
 | With `minGas` | Uses `expectCallMinGas` to require at least the specified gas for the matching call |
+| With `kind` | Only a call made with the specified opcode matches |
 
 Set `count` to 0 to assert that a call is **not** made.
 
@@ -44,6 +56,7 @@ If the test terminates without the expected call being made, the test fails.
 | `msgValue` | `uint256` | The expected `msg.value` for the call                |
 | `minGas`  | `uint64`  | The minimum gas that must be supplied to the call     |
 | `count`   | `uint64`  | Exact number of times the call should be made         |
+| `kind`    | `CallKind` | The opcode the call must use (`Call`, `DelegateCall` or `StaticCall`) |
 
 ### Examples
 
@@ -67,6 +80,20 @@ function testExpectDelegateCall() public {
     bytes memory data = abi.encodeWithSignature("call()");
     vm.expectDelegateCall(address(implementation), data);
     proxy.delegateCall(implementation);
+}
+```
+
+#### Expect a static call is made
+
+```solidity [test/ExpectStaticCall.t.sol]
+function testExpectStaticCall() public {
+    // `vault.totalAssets()` reads `token.balanceOf(vault)` through a view call
+    vm.expectCall(
+        Vm.CallKind.StaticCall,
+        address(token),
+        abi.encodeCall(token.balanceOf, (address(vault)))
+    );
+    vault.totalAssets();
 }
 ```
 
