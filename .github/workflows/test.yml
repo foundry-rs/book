@@ -45,6 +45,9 @@ jobs:
       - name: Check imported lint references
         run: vp run import:lints -- --check
 
+      - name: Check imported config reference
+        run: vp run import:config -- --check
+
       - name: Check
         run: vp run check
 

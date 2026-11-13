@@ -6,6 +6,42 @@ The `[etherscan]` section is a mapping of keys to Etherscan configuration tables
 
 With Etherscan API V2, only Etherscan keys are valid, which can be used to access all similar explorers (e.g. BscScan / BaseScan / Polygonscan).
 
+{/* config-reference:begin keys="etherscan" level=3 */}
+
+### `[etherscan]`
+
+- Type: table
+- Default: none
+
+Named Etherscan (or compatible block explorer) configurations.
+
+Each key is an alias and each value is a table with:
+
+- `key` (required): the API key. May contain `${VAR}` placeholders, resolved from the
+  environment when the entry is used.
+- `chain`: the chain name or EIP-155 chain ID. When omitted, the alias itself is parsed as
+  a chain name, so `mainnet` or `optimism` need no `chain`.
+- `url`: the explorer API URL. May contain `${VAR}` placeholders. When omitted, the chain's
+  known Etherscan URL is used.
+
+Every entry needs a `url` or a chain (explicit or derived from the alias). Foundry picks
+the entry named by `etherscan_api_key` or by an `eth_rpc_url` alias, otherwise the first
+entry whose chain matches the current chain. An entry that cannot be resolved, such as one
+with an unset variable or an unknown chain, can make chain lookups fail, so keep every
+entry valid.
+
+The table can be written at the top level as `[etherscan]` or inside a profile.
+
+```toml
+[etherscan]
+mainnet = { key = "${ETHERSCAN_API_KEY}" }
+mainnet2 = { key = "ABCDEFG", chain = "mainnet" }
+optimism = { key = "1234567" }
+unknown_chain = { key = "ABCDEFG", url = "https://api.example.com/api" }
+```
+
+{/* config-reference:end */}
+
 ```toml
 [etherscan]
 mainnet = { key = "${ETHERSCAN_API_KEY}" }

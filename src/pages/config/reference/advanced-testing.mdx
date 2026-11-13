@@ -8,68 +8,916 @@ mutation testing.
 The following fields extend the `[fuzz]` and `[invariant]` sections documented in
 the [testing reference](/config/reference/testing).
 
-| Field | Sections | Default | Description |
-| --- | --- | --- | --- |
-| `run` | fuzz | none | Runs one 1-based fuzz case. |
-| `worker` | fuzz | none | Selects the worker paired with `run`. |
-| `min_depth` | invariant | `1` | Minimum depth when `depth_mode = "random"`. |
-| `depth_mode` | invariant | `fixed` | Uses a fixed depth or samples a random depth. |
-| `workers` | invariant | `auto` | Uses automatic sharding or a positive worker count. |
-| `frontier_dir` | both | none | Stores branch-frontier artifacts for symbolic follow-up. |
-| `frontier_limit` | both | `256` | Limits frontier records per test. |
-| `evm_edge_coverage_collision_free` | both | `true` | Uses collision-free dense EVM edge IDs. |
-| `evm_edge_coverage_include_call_depth` | both | `false` | Includes call depth in EVM edge IDs. |
-| `sancov_edges` | both | `false` | Collects native Rust SanitizerCoverage edges. |
-| `sancov_trace_cmp` | both | `false` | Adds native comparison operands to the fuzz dictionary. |
-| `corpus_random_sequence_weight` | both | `10` | Sets the percent chance of generating a fresh sequence. |
-| `payable_value_weight` | both | fuzz: `0`, invariant: `15` | Sets the percent chance that payable calls carry value. |
-| `mutation_weight_splice` | both | `1` | Weights corpus sequence splicing. |
-| `mutation_weight_repeat` | both | `1` | Weights repeating part of a sequence. |
-| `mutation_weight_interleave` | both | `1` | Weights interleaving sequences. |
-| `mutation_weight_prefix` | both | `1` | Weights replacing a prefix with generated calls. |
-| `mutation_weight_suffix` | both | `1` | Weights replacing a suffix with generated calls. |
-| `mutation_weight_abi` | both | `1` | Weights ABI-aware argument mutation. |
-| `mutation_weight_cmp` | both | `1` | Weights comparison-guided argument mutation. |
+#### Fuzz
+
+{/* config-reference:begin keys="fuzz.run fuzz.worker fuzz.frontier_dir fuzz.frontier_limit fuzz.evm_edge_coverage_collision_free fuzz.evm_edge_coverage_include_call_depth fuzz.sancov_edges fuzz.sancov_trace_cmp fuzz.corpus_random_sequence_weight fuzz.payable_value_weight fuzz.mutation_weight_splice fuzz.mutation_weight_repeat fuzz.mutation_weight_interleave fuzz.mutation_weight_prefix fuzz.mutation_weight_suffix fuzz.mutation_weight_abi fuzz.mutation_weight_cmp" level=5 */}
+
+##### `run`
+
+- Type: integer
+- Default: none
+- Environment: `FOUNDRY_FUZZ_RUN`
+
+Execute only the fuzz case at this 1-based run index instead of the whole campaign.
+
+The case is regenerated from the worker's random stream, so it reproduces a case from an
+earlier campaign only with the same `seed` and `worker`, such as the ones a branch frontier
+record lists. When set, the test runs that single case on a single worker.
+
+##### `worker`
+
+- Type: integer
+- Default: none
+- Environment: `FOUNDRY_FUZZ_WORKER`
+
+Worker whose fuzz case `run` executes.
+
+A campaign splits its runs across workers, and each worker derives its own random stream
+from `seed` (worker `0` uses `seed` unchanged). Only takes effect together with `run`; when
+unset, worker `0` is used.
+
+##### `frontier_dir`
+
+- Type: string (path)
+- Default: none
+- Environment: `FOUNDRY_FUZZ_FRONTIER_DIR`
+
+Directory for branch frontier artifacts, which symbolic execution can follow up on.
+
+When set, and `frontier_limit` is above 0, each test records the comparisons its inputs
+reached without flipping, each with the concrete call sequence that reached it and how
+close its operands came, in this directory per contract and test. The `[symbolic]` settings
+`use_fuzz_frontiers` and `check_invariant_frontiers` read these records to try to take the
+missed branches. Frontier capture is not supported together with `invariant.call_override`.
+
+##### `frontier_limit`
+
+- Type: integer
+- Default: `256`
+- Environment: `FOUNDRY_FUZZ_FRONTIER_LIMIT`
+
+Maximum number of branch frontier records written for one test.
+
+Records are deduplicated per comparison site across workers, keeping the closest one. `0`
+disables frontier capture even when `frontier_dir` is set.
+
+##### `evm_edge_coverage_collision_free`
+
+- Type: boolean
+- Default: `true`
+- Environment: `FOUNDRY_FUZZ_EVM_EDGE_COVERAGE_COLLISION_FREE`
+
+Whether EVM edge coverage gives every edge its own ID instead of hashing edges into a fixed
+map.
+
+When `true`, distinct edges never share a coverage entry. When `false`, edges are hashed
+into a fixed 64 KiB map, where unrelated edges can collide and hide new coverage.
+
+##### `evm_edge_coverage_include_call_depth`
+
+- Type: boolean
+- Default: `false`
+- Environment: `FOUNDRY_FUZZ_EVM_EDGE_COVERAGE_INCLUDE_CALL_DEPTH`
+
+Whether EVM edge coverage IDs include the call-frame depth.
+
+When `true`, the same edge reached at different call depths counts as different coverage,
+which rewards inputs that reach code through new call paths but enlarges the coverage map.
+
+##### `sancov_edges`
+
+- Type: boolean
+- Default: `false`
+- Environment: `FOUNDRY_FUZZ_SANCOV_EDGES`
+
+Whether to collect edge coverage from native Rust crates compiled with SanitizerCoverage
+instrumentation, such as precompile implementations.
+
+Requires building forge with a `RUSTC_WRAPPER` that injects sancov flags. When enabled,
+sancov edges replace EVM edges as the coverage signal, and EVM comparison operands are no
+longer captured for mutation.
+
+##### `sancov_trace_cmp`
+
+- Type: boolean
+- Default: `false`
+- Environment: `FOUNDRY_FUZZ_SANCOV_TRACE_CMP`
+
+Whether to capture comparison operands from sancov-instrumented native crates and add them
+to the fuzz dictionary.
+
+Independent of `sancov_edges`: when only this is enabled, EVM edge coverage stays on, since
+comparison operands only add dictionary entries. Requires the same sancov-instrumented
+forge build.
+
+##### `corpus_random_sequence_weight`
+
+- Type: integer
+- Default: `10`
+- Environment: `FOUNDRY_FUZZ_CORPUS_RANDOM_SEQUENCE_WEIGHT`
+
+Percent chance (0 to 100) of generating a fresh input instead of mutating a corpus entry in
+coverage-guided campaigns.
+
+In invariant campaigns with more than two workers, the last worker uses 50 instead, to
+explore more broadly, unless `[invariant]` sets this key or it differs from its default.
+
+##### `payable_value_weight`
+
+- Type: integer
+- Default: `0`
+- Environment: `FOUNDRY_FUZZ_PAYABLE_VALUE_WEIGHT`
+
+Percent chance (0 to 100) that a generated call to a payable function carries a non-zero
+`msg.value`.
+
+`0` never sends value. Values are biased towards edge cases and dictionary values, and
+amounts above the sender's balance are clamped to it.
+
+##### `mutation_weight_splice`
+
+- Type: integer
+- Default: `1`
+- Environment: `FOUNDRY_FUZZ_MUTATION_WEIGHT_SPLICE`
+
+Relative weight of the coverage-guided mutation that splices two corpus sequences together.
+
+Mutation strategies are picked in proportion to their weights, and `0` disables a strategy.
+If every `mutation_weight_*` key is 0, all of them fall back to their defaults.
+
+##### `mutation_weight_repeat`
+
+- Type: integer
+- Default: `1`
+- Environment: `FOUNDRY_FUZZ_MUTATION_WEIGHT_REPEAT`
+
+Relative weight of the coverage-guided mutation that repeats part of a corpus sequence.
+
+Mutation strategies are picked in proportion to their weights, and `0` disables a strategy.
+If every `mutation_weight_*` key is 0, all of them fall back to their defaults.
+
+##### `mutation_weight_interleave`
+
+- Type: integer
+- Default: `1`
+- Environment: `FOUNDRY_FUZZ_MUTATION_WEIGHT_INTERLEAVE`
+
+Relative weight of the coverage-guided mutation that interleaves the calls of two corpus
+sequences.
+
+Mutation strategies are picked in proportion to their weights, and `0` disables a strategy.
+If every `mutation_weight_*` key is 0, all of them fall back to their defaults.
+
+##### `mutation_weight_prefix`
+
+- Type: integer
+- Default: `1`
+- Environment: `FOUNDRY_FUZZ_MUTATION_WEIGHT_PREFIX`
+
+Relative weight of the coverage-guided mutation that replaces the start of a corpus
+sequence with generated calls.
+
+Mutation strategies are picked in proportion to their weights, and `0` disables a strategy.
+If every `mutation_weight_*` key is 0, all of them fall back to their defaults.
+
+##### `mutation_weight_suffix`
+
+- Type: integer
+- Default: `1`
+- Environment: `FOUNDRY_FUZZ_MUTATION_WEIGHT_SUFFIX`
+
+Relative weight of the coverage-guided mutation that replaces the end of a corpus sequence
+with generated calls.
+
+Mutation strategies are picked in proportion to their weights, and `0` disables a strategy.
+If every `mutation_weight_*` key is 0, all of them fall back to their defaults.
+
+##### `mutation_weight_abi`
+
+- Type: integer
+- Default: `1`
+- Environment: `FOUNDRY_FUZZ_MUTATION_WEIGHT_ABI`
+
+Relative weight of the coverage-guided mutation that mutates call arguments based on their
+ABI types.
+
+Mutation strategies are picked in proportion to their weights, and `0` disables a strategy.
+If every `mutation_weight_*` key is 0, all of them fall back to their defaults.
+
+##### `mutation_weight_cmp`
+
+- Type: integer
+- Default: `1`
+- Environment: `FOUNDRY_FUZZ_MUTATION_WEIGHT_CMP`
+
+Relative weight of the coverage-guided mutation that replaces call arguments with operands
+of comparisons seen during execution.
+
+Mutation strategies are picked in proportion to their weights, and `0` disables a strategy.
+If every `mutation_weight_*` key is 0, all of them fall back to their defaults. At 0, EVM
+comparison operands are not captured unless branch frontiers are.
+
+{/* config-reference:end */}
+
+#### Invariant
+
+{/* config-reference:begin keys="invariant.min_depth invariant.depth_mode invariant.workers invariant.frontier_dir invariant.frontier_limit invariant.evm_edge_coverage_collision_free invariant.evm_edge_coverage_include_call_depth invariant.sancov_edges invariant.sancov_trace_cmp invariant.corpus_random_sequence_weight invariant.payable_value_weight invariant.mutation_weight_splice invariant.mutation_weight_repeat invariant.mutation_weight_interleave invariant.mutation_weight_prefix invariant.mutation_weight_suffix invariant.mutation_weight_abi invariant.mutation_weight_cmp" level=5 */}
+
+##### `min_depth`
+
+- Type: integer
+- Default: `1`
+- Environment: `FOUNDRY_INVARIANT_MIN_DEPTH`
+
+Minimum run depth when `depth_mode = "random"`.
+
+Values below 1 are treated as 1, and when it is not below `depth`, every run uses `depth`.
+Ignored with `depth_mode = "fixed"`.
+
+##### `depth_mode`
+
+- Type: string
+- Default: `"fixed"`
+- Environment: `FOUNDRY_INVARIANT_DEPTH_MODE`
+- Values: `fixed`, `random`
+
+How each invariant run chooses how many calls to execute.
+
+- `"fixed"`: every run executes `depth` calls.
+- `"random"` (alias `"uniform"`): each run samples its depth uniformly between `min_depth`
+  and `depth`, so a campaign mixes short and long sequences.
+
+##### `workers`
+
+- Type: string
+- Default: `"auto"`
+- Environment: `FOUNDRY_INVARIANT_WORKERS`
+
+Number of workers an invariant campaign is sharded across, or `"auto"`.
+
+`"auto"` divides the available test threads (see `--jobs`) among the invariant campaigns
+that run at the same time and, unless `timeout` is set, caps the count so each worker gets
+enough runs. A positive integer sets the worker count explicitly; `0` is rejected. Each
+worker executes its share of `runs` with its own random stream derived from `fuzz.seed`.
+
+##### `frontier_dir`
+
+- Type: string (path)
+- Default: none
+- Environment: `FOUNDRY_INVARIANT_FRONTIER_DIR`
+
+Directory for branch frontier artifacts, which symbolic execution can follow up on.
+
+When set, and `frontier_limit` is above 0, each test records the comparisons its inputs
+reached without flipping, each with the concrete call sequence that reached it and how
+close its operands came, in this directory per contract and test. The `[symbolic]` settings
+`use_fuzz_frontiers` and `check_invariant_frontiers` read these records to try to take the
+missed branches. Frontier capture is not supported together with `invariant.call_override`.
+
+##### `frontier_limit`
+
+- Type: integer
+- Default: `256`
+- Environment: `FOUNDRY_INVARIANT_FRONTIER_LIMIT`
+
+Maximum number of branch frontier records written for one test.
+
+Records are deduplicated per comparison site across workers, keeping the closest one. `0`
+disables frontier capture even when `frontier_dir` is set.
+
+##### `evm_edge_coverage_collision_free`
+
+- Type: boolean
+- Default: `true`
+- Environment: `FOUNDRY_INVARIANT_EVM_EDGE_COVERAGE_COLLISION_FREE`
+
+Whether EVM edge coverage gives every edge its own ID instead of hashing edges into a fixed
+map.
+
+When `true`, distinct edges never share a coverage entry. When `false`, edges are hashed
+into a fixed 64 KiB map, where unrelated edges can collide and hide new coverage.
+
+##### `evm_edge_coverage_include_call_depth`
+
+- Type: boolean
+- Default: `false`
+- Environment: `FOUNDRY_INVARIANT_EVM_EDGE_COVERAGE_INCLUDE_CALL_DEPTH`
+
+Whether EVM edge coverage IDs include the call-frame depth.
+
+When `true`, the same edge reached at different call depths counts as different coverage,
+which rewards inputs that reach code through new call paths but enlarges the coverage map.
+
+##### `sancov_edges`
+
+- Type: boolean
+- Default: `false`
+- Environment: `FOUNDRY_INVARIANT_SANCOV_EDGES`
+
+Whether to collect edge coverage from native Rust crates compiled with SanitizerCoverage
+instrumentation, such as precompile implementations.
+
+Requires building forge with a `RUSTC_WRAPPER` that injects sancov flags. When enabled,
+sancov edges replace EVM edges as the coverage signal, and EVM comparison operands are no
+longer captured for mutation.
+
+##### `sancov_trace_cmp`
+
+- Type: boolean
+- Default: `false`
+- Environment: `FOUNDRY_INVARIANT_SANCOV_TRACE_CMP`
+
+Whether to capture comparison operands from sancov-instrumented native crates and add them
+to the fuzz dictionary.
+
+Independent of `sancov_edges`: when only this is enabled, EVM edge coverage stays on, since
+comparison operands only add dictionary entries. Requires the same sancov-instrumented
+forge build.
+
+##### `corpus_random_sequence_weight`
+
+- Type: integer
+- Default: `10`
+- Environment: `FOUNDRY_INVARIANT_CORPUS_RANDOM_SEQUENCE_WEIGHT`
+
+Percent chance (0 to 100) of generating a fresh input instead of mutating a corpus entry in
+coverage-guided campaigns.
+
+In invariant campaigns with more than two workers, the last worker uses 50 instead, to
+explore more broadly, unless `[invariant]` sets this key or it differs from its default.
+
+##### `payable_value_weight`
+
+- Type: integer
+- Default: `15`
+- Environment: `FOUNDRY_INVARIANT_PAYABLE_VALUE_WEIGHT`
+
+Percent chance (0 to 100) that a generated call to a payable function carries a non-zero
+`msg.value`.
+
+`0` never sends value. Values are biased towards edge cases and dictionary values, and
+amounts above the sender's balance are clamped to it.
+
+##### `mutation_weight_splice`
+
+- Type: integer
+- Default: `1`
+- Environment: `FOUNDRY_INVARIANT_MUTATION_WEIGHT_SPLICE`
+
+Relative weight of the coverage-guided mutation that splices two corpus sequences together.
+
+Mutation strategies are picked in proportion to their weights, and `0` disables a strategy.
+If every `mutation_weight_*` key is 0, all of them fall back to their defaults.
+
+##### `mutation_weight_repeat`
+
+- Type: integer
+- Default: `1`
+- Environment: `FOUNDRY_INVARIANT_MUTATION_WEIGHT_REPEAT`
+
+Relative weight of the coverage-guided mutation that repeats part of a corpus sequence.
+
+Mutation strategies are picked in proportion to their weights, and `0` disables a strategy.
+If every `mutation_weight_*` key is 0, all of them fall back to their defaults.
+
+##### `mutation_weight_interleave`
+
+- Type: integer
+- Default: `1`
+- Environment: `FOUNDRY_INVARIANT_MUTATION_WEIGHT_INTERLEAVE`
+
+Relative weight of the coverage-guided mutation that interleaves the calls of two corpus
+sequences.
+
+Mutation strategies are picked in proportion to their weights, and `0` disables a strategy.
+If every `mutation_weight_*` key is 0, all of them fall back to their defaults.
+
+##### `mutation_weight_prefix`
+
+- Type: integer
+- Default: `1`
+- Environment: `FOUNDRY_INVARIANT_MUTATION_WEIGHT_PREFIX`
+
+Relative weight of the coverage-guided mutation that replaces the start of a corpus
+sequence with generated calls.
+
+Mutation strategies are picked in proportion to their weights, and `0` disables a strategy.
+If every `mutation_weight_*` key is 0, all of them fall back to their defaults.
+
+##### `mutation_weight_suffix`
+
+- Type: integer
+- Default: `1`
+- Environment: `FOUNDRY_INVARIANT_MUTATION_WEIGHT_SUFFIX`
+
+Relative weight of the coverage-guided mutation that replaces the end of a corpus sequence
+with generated calls.
+
+Mutation strategies are picked in proportion to their weights, and `0` disables a strategy.
+If every `mutation_weight_*` key is 0, all of them fall back to their defaults.
+
+##### `mutation_weight_abi`
+
+- Type: integer
+- Default: `1`
+- Environment: `FOUNDRY_INVARIANT_MUTATION_WEIGHT_ABI`
+
+Relative weight of the coverage-guided mutation that mutates call arguments based on their
+ABI types.
+
+Mutation strategies are picked in proportion to their weights, and `0` disables a strategy.
+If every `mutation_weight_*` key is 0, all of them fall back to their defaults.
+
+##### `mutation_weight_cmp`
+
+- Type: integer
+- Default: `1`
+- Environment: `FOUNDRY_INVARIANT_MUTATION_WEIGHT_CMP`
+
+Relative weight of the coverage-guided mutation that replaces call arguments with operands
+of comparisons seen during execution.
+
+Mutation strategies are picked in proportion to their weights, and `0` disables a strategy.
+If every `mutation_weight_*` key is 0, all of them fall back to their defaults. At 0, EVM
+comparison operands are not captured unless branch frontiers are.
+
+{/* config-reference:end */}
 
 ### Symbolic testing
 
 Define symbolic settings under `[profile.<name>.symbolic]`.
 
-| Field | Default | Description |
-| --- | --- | --- |
-| `enabled` | `false` | Enables symbolic tests. |
-| `seed_corpus` | `false` | Adds symbolically derived inputs to the fuzz corpus. |
-| `use_fuzz_corpus` | `false` | Imports fuzz corpus seeds for symbolic exploration. |
-| `corpus_seed_limit` | `32` | Limits imported corpus seeds. |
-| `use_fuzz_frontiers` | `false` | Uses fuzz branch frontiers for targeted exploration. |
-| `check_invariant_frontiers` | `false` | Checks imported invariant frontiers for property failures before branch-target seeding. |
-| `live` | `false` | Assists a concrete invariant campaign with one bounded solver worker. |
-| `frontier_limit` | `256` | Limits imported branch frontiers or submitted live frontiers per campaign. |
-| `frontier_ids` | `[]` | Filters imported frontier artifact IDs. |
-| `frontier_pcs` | `[]` | Filters frontier program counters. |
-| `frontier_selectors` | `[]` | Filters frontier calldata selectors. |
-| `solver` | `z3` | Selects the solver executable. |
-| `solver_command` | none | Overrides `solver` with an exact command. |
-| `solver_portfolio` | `[]` | Races multiple solvers or commands. |
-| `timeout` | `30` | Sets the solver and invariant-exploration timeout in seconds. |
-| `loop` | none | Sets the Halmos-compatible loop bound. |
-| `depth` | none | Overrides `max_depth`. |
-| `width` | none | Overrides `max_paths`. |
-| `max_depth` | `10000` | Limits opcodes executed along a path. |
-| `max_paths` | `1024` | Limits symbolic paths. |
-| `invariant_depth` | `10` | Limits calls in a symbolic invariant sequence. |
-| `exploration_order` | `bfs` | Selects `bfs` or `dfs` path order. |
-| `max_solver_queries` | `10000` | Limits solver queries. |
-| `default_dynamic_length` | `2` | Sets the default dynamic ABI-input length. |
-| `max_dynamic_length` | `256` | Caps dynamic ABI-input lengths. |
-| `array_lengths` | `[]` | Supplies dynamic lengths in ABI traversal order. |
-| `dynamic_lengths` | `{}` | Supplies lengths keyed by ABI argument or symbolic name. |
-| `default_array_lengths` | `[]` | Supplies default dynamic-array lengths. |
-| `default_bytes_lengths` | `[]` | Supplies default `bytes` and `string` lengths. |
-| `max_calldata_bytes` | `4096` | Caps symbolic calldata size. |
-| `symbolic_call_targets` | `false` | Expands symbolic targets over known deployed contracts. |
-| `dump_smt` | `false` | Writes SMT-LIB queries before solving. |
-| `storage_layout` | `solidity` | Selects `solidity`, `generic`, or `zero_init` storage modelling. |
+{/* config-reference:begin keys="symbolic symbolic.*" level=4 */}
+
+#### `[symbolic]`
+
+Settings for symbolic testing, which explores test inputs with an SMT solver.
+
+Declare them in a `[profile.<name>.symbolic]` table, or in a standalone `[symbolic]` table
+that applies to every profile; a profile's own table takes precedence.
+
+#### `enabled`
+
+- Type: boolean
+- Default: `false`
+- Environment: `FOUNDRY_SYMBOLIC_ENABLED`
+
+Whether to run symbolic tests.
+
+When enabled, `forge test` runs `check*` and `prove*` functions symbolically, and
+`invariant*` and `statefulFuzz*` functions explore a bounded symbolic call sequence.
+A `PASS` holds only for the modeled EVM surface and the configured bounds, and a
+counterexample is reported only after it replays concretely. Symbolic tests need the
+configured `solver` installed. The `--symbolic` flag also enables this.
+
+#### `seed_corpus`
+
+- Type: boolean
+- Default: `false`
+- Environment: `FOUNDRY_SYMBOLIC_SEED_CORPUS`
+
+Whether to run fuzz tests symbolically and persist the concrete inputs found to the fuzz
+corpus.
+
+Non-failing concrete inputs from the symbolic run seed later fuzz campaigns. This requires
+`fuzz.corpus_dir`; without it, seeding is skipped with a warning.
+
+#### `use_fuzz_corpus`
+
+- Type: boolean
+- Default: `false`
+- Environment: `FOUNDRY_SYMBOLIC_USE_FUZZ_CORPUS`
+
+Whether to run fuzz tests symbolically, using existing fuzz corpus entries as
+path-priority hints.
+
+Fuzz tests run as symbolic tests instead of being fuzzed. Up to `corpus_seed_limit`
+entries are imported from `fuzz.corpus_dir`; without a corpus directory, the test runs
+without imported seeds and a warning is shown.
+
+#### `corpus_seed_limit`
+
+- Type: integer
+- Default: `32`
+- Environment: `FOUNDRY_SYMBOLIC_CORPUS_SEED_LIMIT`
+
+Maximum number of fuzz corpus entries to import for one symbolic test.
+
+Applies when `use_fuzz_corpus` is enabled. `0` imports none.
+
+#### `use_fuzz_frontiers`
+
+- Type: boolean
+- Default: `false`
+- Environment: `FOUNDRY_SYMBOLIC_USE_FUZZ_FRONTIERS`
+
+Whether to solve for branches recorded in fuzz branch frontier artifacts and add the
+results to the corpus.
+
+For a fuzz test, Forge imports frontiers from `fuzz.frontier_dir`, replays each recorded
+one-call seed as a path-priority hint, constrains symbolic execution to flip the captured
+comparison, and writes to `fuzz.corpus_dir` only candidates that replay with the expected
+concrete outcome. For an invariant test, it imports frontiers from
+`invariant.frontier_dir`, replays each recorded call prefix, symbolically solves only the
+call that reached the comparison, and writes candidates to `invariant.corpus_dir`. Missing
+directories skip the seeding with a warning.
+
+This is an explicit follow-up to a concrete campaign that captured frontiers, not symbolic
+work in every fuzz run. Keep `timeout` short to bound iteration, and use `frontier_ids`,
+`frontier_pcs`, `frontier_selectors` or a lower `frontier_limit` to spend solver time only
+on selected sites.
+
+#### `check_invariant_frontiers`
+
+- Type: boolean
+- Default: `false`
+- Environment: `FOUNDRY_SYMBOLIC_CHECK_INVARIANT_FRONTIERS`
+
+Whether invariant frontier seeding first checks if a selected call can break an invariant.
+
+Enabling this also enables invariant frontier seeding, as `use_fuzz_frontiers` does for
+invariant tests. For each selected frontier, Forge replays the concrete call prefix,
+symbolically executes the target call, and checks the configured invariant functions from
+the resulting state, before separately trying to flip the recorded branch. Without
+`afterInvariant`, each invariant function is checked independently; with it, the check
+uses the campaign's anchor invariant and hook. Only candidates that reproduce the failure
+during concrete replay are persisted. Like invariant frontier seeding, it needs
+`invariant.frontier_dir` and `invariant.corpus_dir`.
+
+An incomplete symbolic search is not a proof that the invariant holds.
+
+```toml
+[profile.default.symbolic]
+use_fuzz_frontiers = true
+check_invariant_frontiers = true
+```
+
+#### `live`
+
+- Type: boolean
+- Default: `false`
+- Environment: `FOUNDRY_SYMBOLIC_LIVE`
+
+Whether one bounded symbolic solver worker assists a running invariant campaign.
+
+The worker takes comparisons observed by the first concrete fuzz worker and tries to flip
+their branches from the replayed call prefix. The concrete campaign executes the sequences
+it returns from setup, with its normal predicate checks, failure reporting, shrinking and
+corpus persistence, and they can expose new frontiers during the same campaign. This does
+not require `enabled` (the `--symbolic-live` flag also enables it).
+
+Budgets apply per campaign: `timeout` (30 seconds when unset) limits when new searches
+start, while `max_solver_queries` and `frontier_limit` bound solver queries and submitted
+frontiers. A zero timeout, query budget or frontier limit disables it. Each search has its
+own one-second solver timeout, and an in-flight search can finish after the deadline.
+
+The worker keeps a backlog of up to 32 frontiers, preferring shorter prefixes; admission
+is lossy. At most 1024 calls and 64 KiB of calldata are retained per sequence; longer
+sequences are not used. It adds one solver thread to the configured fuzz workers, and
+short campaigns can finish before candidates arrive.
+
+It does not support optimization campaigns or `invariant.call_override`, and solves only
+setup-known targets with zero transaction value, keeping the concrete sender. Unsupported
+operations and exhausted budgets leave the concrete campaign running. Frontier filters do
+not apply. Only the direct solver process is terminated on shutdown, so wrapper commands
+must stop any subprocesses they start.
+
+Live assistance does not prove safety. JSON output reports worker counters under
+`symbolic_live`, where `scheduled` counts sequences handed to the campaign, not coverage
+gains.
+
+```toml
+[profile.default.symbolic]
+live = true
+timeout = 30
+max_solver_queries = 10000
+frontier_limit = 256
+```
+
+#### `frontier_limit`
+
+- Type: integer
+- Default: `256`
+- Environment: `FOUNDRY_SYMBOLIC_FRONTIER_LIMIT`
+
+Maximum number of branch frontiers to import per symbolic run, or to submit per live
+campaign.
+
+Applies to `use_fuzz_frontiers`, `check_invariant_frontiers` and `live`. `0` imports none.
+
+#### `frontier_ids`
+
+- Type: array of integer
+- Default: none
+- Environment: `FOUNDRY_SYMBOLIC_FRONTIER_IDS`
+
+Fuzz branch frontier artifact IDs to import.
+
+Empty means any ID. Non-empty frontier filters combine, so a frontier is imported only if
+it matches every non-empty filter (`frontier_ids`, `frontier_pcs`, `frontier_selectors`).
+
+#### `frontier_pcs`
+
+- Type: array of integer
+- Default: none
+- Environment: `FOUNDRY_SYMBOLIC_FRONTIER_PCS`
+
+Program counters of fuzz branch frontier comparisons to import.
+
+Empty means any program counter. Combines with the other frontier filters.
+
+#### `frontier_selectors`
+
+- Type: array of string
+- Default: none
+- Environment: `FOUNDRY_SYMBOLIC_FRONTIER_SELECTORS`
+
+Calldata selectors of fuzz branch frontiers to import.
+
+Each entry is a 4-byte hex selector, with or without `0x`, such as `"0x12345678"`; invalid
+entries are ignored with a warning. Empty means any selector. Combines with the other
+frontier filters.
+
+#### `solver`
+
+- Type: string
+- Default: `"z3"`
+- Environment: `FOUNDRY_SYMBOLIC_SOLVER`
+
+SMT solver to invoke for symbolic tests.
+
+Known names are `z3`, `yices`, `cvc5`, `cvc5-int`, `bitwuzla` and `bitwuzla-abs`. Any other
+value is treated as the path or name of a z3-compatible executable and invoked with
+`-in -smt2`. Use `solver_command` for other command lines or wrapper tools. A nonempty
+`solver_command` or `solver_portfolio` takes precedence.
+
+Custom solver values run local programs when symbolic tests run, including values from
+inline `forge-config` or `@custom:halmos` annotations: review solver settings before
+running symbolic tests from an untrusted project.
+
+#### `solver_command`
+
+- Type: string
+- Default: none
+- Environment: `FOUNDRY_SYMBOLIC_SOLVER_COMMAND`
+
+Exact solver command line to invoke, overriding `solver` and `solver_portfolio`.
+
+The command, such as `"z3 -in -smt2"`, is split into arguments and run directly, not
+through a shell. Timeouts terminate only the direct solver process, so wrapper commands
+must stop any subprocesses they start. Like `solver`, it runs a local program.
+
+#### `solver_portfolio`
+
+- Type: array of string
+- Default: none
+- Environment: `FOUNDRY_SYMBOLIC_SOLVER_PORTFOLIO`
+
+Solver names or commands to race in parallel.
+
+Solvers start in the listed order with staged starts: the first immediately, the second
+shortly after if the query is still unresolved, and later ones as rescue solvers. The first
+validated `sat` result wins; `unsat` is used only once every solver needed to rule out
+`sat` has finished. A nonempty portfolio overrides `solver` and is ignored when
+`solver_command` is set. Entries without whitespace, quotes or backslashes are resolved
+like `solver`; others are split into arguments like `solver_command`, never run through a
+shell.
+
+Start with a small portfolio such as `["yices", "z3"]`: broader ones can use more CPU and
+be slower when one solver already handles most queries. `dump_smt` prints each solver's
+order, launch delay and per-query outcome for comparison.
+
+#### `timeout`
+
+- Type: integer
+- Default: `30`
+- Environment: `FOUNDRY_SYMBOLIC_TIMEOUT`
+
+Solver timeout in seconds.
+
+It bounds each SMT query, and also the deferred hard-arithmetic solver phase of stateless
+tests, frontier solving, and the whole wall-clock exploration of a symbolic invariant test
+before it falls back to fuzzing. A timeout makes the result incomplete. `0` removes these
+limits, except for `live`, where it disables assistance.
+
+#### `loop`
+
+- Type: integer
+- Default: none
+- Environment: `FOUNDRY_SYMBOLIC_LOOP`
+
+Halmos-compatible bound on loop iterations per path.
+
+Each backward jump, counted per loop and calling context, is taken at most this many times
+on a path; paths that would iterate further are dropped. A `PASS` then covers only the
+explored iterations, and skipped iterations are not necessarily reported as incomplete.
+When unset, loops are bounded only by `max_depth`.
+
+#### `depth`
+
+- Type: integer
+- Default: none
+- Environment: `FOUNDRY_SYMBOLIC_DEPTH`
+
+Halmos-compatible alias for `max_depth`, which it overrides when set.
+
+#### `width`
+
+- Type: integer
+- Default: none
+- Environment: `FOUNDRY_SYMBOLIC_WIDTH`
+
+Halmos-compatible alias for `max_paths`, which it overrides when set.
+
+#### `max_depth`
+
+- Type: integer
+- Default: `10000`
+- Environment: `FOUNDRY_SYMBOLIC_MAX_DEPTH`
+
+Maximum number of opcodes to execute along one symbolic path.
+
+Reaching it makes the result incomplete. `depth` overrides it when set.
+
+#### `max_paths`
+
+- Type: integer
+- Default: `1024`
+- Environment: `FOUNDRY_SYMBOLIC_MAX_PATHS`
+
+Maximum number of symbolic paths to explore per test.
+
+It also caps how many calldata shapes dynamic length sets expand into. Reaching it makes
+the result incomplete. `width` overrides it when set.
+
+#### `invariant_depth`
+
+- Type: integer
+- Default: `10`
+- Environment: `FOUNDRY_SYMBOLIC_INVARIANT_DEPTH`
+
+Maximum number of calls in a bounded symbolic invariant sequence.
+
+A `PASS` covers only sequences up to this length; deeper sequences are not explored and
+not reported as incomplete.
+
+#### `exploration_order`
+
+- Type: string
+- Default: `"bfs"`
+- Environment: `FOUNDRY_SYMBOLIC_EXPLORATION_ORDER`
+- Values: `bfs`, `dfs`
+
+Order in which pending symbolic paths are explored.
+
+It only changes which queued path runs next, not path or solver limits or portfolio
+scheduling.
+
+- `bfs`: breadth-first, oldest pending path first.
+- `dfs`: depth-first, newest pending path first.
+
+#### `max_solver_queries`
+
+- Type: integer
+- Default: `10000`
+- Environment: `FOUNDRY_SYMBOLIC_MAX_SOLVER_QUERIES`
+
+Maximum number of solver queries per symbolic test.
+
+Reaching it makes the result incomplete. For `live`, it is the budget for the whole
+campaign.
+
+#### `default_dynamic_length`
+
+- Type: integer
+- Default: `2`
+- Environment: `FOUNDRY_SYMBOLIC_DEFAULT_DYNAMIC_LENGTH`
+
+Length used for a dynamic ABI input when no other length setting applies.
+
+Dynamic inputs (`bytes`, `string` and dynamic arrays) take one of a bounded set of lengths.
+Lengths resolve in this order: `dynamic_lengths`, then `default_array_lengths` or
+`default_bytes_lengths`, then `array_lengths`, then this value.
+
+#### `max_dynamic_length`
+
+- Type: integer
+- Default: `256`
+- Environment: `FOUNDRY_SYMBOLIC_MAX_DYNAMIC_LENGTH`
+
+Maximum length allowed for a symbolic dynamic ABI input.
+
+A configured length above it is a configuration error.
+
+#### `array_lengths`
+
+- Type: array of integer
+- Default: `[]`
+- Environment: `FOUNDRY_SYMBOLIC_ARRAY_LENGTHS`
+
+Positional lengths for dynamic ABI inputs, applied in ABI traversal order.
+
+Each entry is the length of the next dynamic leaf, in deterministic ABI pre-order, that
+`dynamic_lengths`, `default_array_lengths` and `default_bytes_lengths` did not set. Extra
+entries that no dynamic leaf uses are a configuration error.
+
+```solidity
+/// forge-config: default.symbolic.array_lengths = [3]
+function check_bytes(bytes memory data) external pure {}
+```
+
+#### `dynamic_lengths`
+
+- Type: table
+- Default: none
+- Environment: `FOUNDRY_SYMBOLIC_DYNAMIC_LENGTHS`
+
+Sets of lengths for dynamic ABI inputs, keyed by ABI argument name or generated symbolic
+name.
+
+Keys are argument names or generated names such as `calldata_0`. Each value is a set of
+lengths, such as `{ data = [3] }`; every length becomes a separate calldata shape, and
+nested dynamic values explore the cross product. These lengths take precedence over every
+other length setting.
+
+#### `default_array_lengths`
+
+- Type: array of integer
+- Default: none
+- Environment: `FOUNDRY_SYMBOLIC_DEFAULT_ARRAY_LENGTHS`
+
+Set of lengths for dynamic ABI arrays without a `dynamic_lengths` entry.
+
+Each length becomes a separate calldata shape. When empty, `array_lengths` and then
+`default_dynamic_length` apply.
+
+#### `default_bytes_lengths`
+
+- Type: array of integer
+- Default: none
+- Environment: `FOUNDRY_SYMBOLIC_DEFAULT_BYTES_LENGTHS`
+
+Set of lengths for ABI `bytes` and `string` values without a `dynamic_lengths` entry.
+
+Each length becomes a separate calldata shape. When empty, `array_lengths` and then
+`default_dynamic_length` apply.
+
+#### `max_calldata_bytes`
+
+- Type: integer
+- Default: `4096`
+- Environment: `FOUNDRY_SYMBOLIC_MAX_CALLDATA_BYTES`
+
+Maximum size of symbolic calldata, in bytes.
+
+Generated calldata larger than this, and symbolic-size data copies above it during
+execution, are unsupported and make the result incomplete.
+
+#### `symbolic_call_targets`
+
+- Type: boolean
+- Default: `false`
+- Environment: `FOUNDRY_SYMBOLIC_SYMBOLIC_CALL_TARGETS`
+
+Whether a symbolic call target may be an address other than a known contract.
+
+Concrete call targets, and symbolic targets constrained to known deployed contracts or
+active precompiles, are always supported. By default, a symbolic target that may be any
+other address makes the result incomplete. When enabled, that case is modeled as a
+successful call to an empty account with no code, including the value transfer for `CALL`;
+arbitrary unknown code is still not modeled.
+
+#### `dump_smt`
+
+- Type: boolean
+- Default: `false`
+- Environment: `FOUNDRY_SYMBOLIC_DUMP_SMT`
+
+Whether to print each SMT-LIB query to standard error before invoking the solver.
+
+With a `solver_portfolio`, it also prints each solver's order, launch delay and per-query
+outcome.
+
+#### `storage_layout`
+
+- Type: string
+- Default: `"solidity"`
+- Environment: `FOUNDRY_SYMBOLIC_STORAGE_LAYOUT`
+- Values: `solidity`, `generic`, `zero_init`
+
+How symbolic tests model storage they have not written.
+
+- `solidity`: reads at concrete slots use the existing state; a read of an unwritten slot
+  at a symbolic key returns any slot the account already has, such as those `setUp` wrote,
+  or else an unknown value.
+- `generic`: every storage read may return an arbitrary value, as if
+  `vm.setArbitraryStorage` applied to every account.
+- `zero_init`: like `solidity`, but a read of an unwritten slot at a symbolic key returns
+  zero. Use it for aggregate ghost variables that start from zero.
+
+Proofs that involve unknown existing storage hold only under the selected layout.
+
+{/* config-reference:end */}
 
 #### Live invariant assistance
 
@@ -143,29 +991,221 @@ check_invariant_frontiers = true
 Define coverage settings under `[profile.<name>.coverage]`. Command-line flags
 take precedence.
 
-| Field | Default | Description |
-| --- | --- | --- |
-| `report` | `["summary"]` | Selects `summary`, `lcov`, `debug`, `bytecode`, `attribution`, or `gaps` reports. `gaps` writes uncovered source items to `coverage-gaps.json`; see [Code Coverage](/guides/coverage#list-uncovered-code). |
-| `lcov_version` | `"1"` | Selects the LCOV tracefile version. |
-| `ir_minimum` | `false` | Enables minimum via-IR optimization as a stack-depth workaround. |
-| `report_file` | none | Writes the report to a project-relative path. |
-| `include_libs` | `false` | Includes dependencies in coverage. |
-| `exclude_tests` | `false` | Excludes test source from coverage. |
-| `skip_files` | `[]` | Excludes project-relative source globs. |
+{/* config-reference:begin keys="coverage coverage.*" level=4 */}
+
+#### `[coverage]`
+
+Settings for `forge coverage`.
+
+Declare them in a `[profile.<name>.coverage]` table, or in a standalone `[coverage]` table
+that applies to every profile; a profile's own table takes precedence. Command-line flags
+take precedence over these values.
+
+#### `report`
+
+- Type: array of string
+- Default: `["summary"]`
+- Environment: `FOUNDRY_COVERAGE_REPORT`
+
+Report kinds that `forge coverage` generates.
+
+The `--report` flag, which can be repeated, replaces this list. Valid values:
+
+- `summary`: prints a coverage summary table.
+- `lcov`: writes an LCOV tracefile to `lcov.info`; see `lcov_version`.
+- `debug`: prints a verbose report of every coverage item, for debugging coverage itself.
+- `bytecode`: writes annotated per-contract bytecode coverage to `bytecode-coverage/`.
+- `attribution`: writes `coverage-attribution.json`, mapping each test to the source items
+  it covers.
+- `gaps`: writes `coverage-gaps.json`, listing uncovered source items with their location
+  and context.
+
+#### `lcov_version`
+
+- Type: string (version)
+- Default: `"1.0.0"`
+- Environment: `FOUNDRY_COVERAGE_LCOV_VERSION`
+
+Version of the LCOV tracefile format used by the `lcov` report.
+
+The value is a string in the format `MAJOR[.MINOR]`, such as `"1"` or `"2.2"`; pre-release
+versions are rejected. The `--lcov-version` flag overrides it. Main differences:
+
+- `1.x`: the original v1 format.
+- `2.0`: adds "line end" numbers for functions.
+- `2.2`: changes the format of functions.
+
+#### `ir_minimum`
+
+- Type: boolean
+- Default: `false`
+- Environment: `FOUNDRY_COVERAGE_IR_MINIMUM`
+
+Whether to compile with `viaIR` and minimum optimization, as a workaround for "stack too
+deep" errors.
+
+By default `forge coverage` disables the optimizer and `viaIR` for accurate source maps.
+This setting enables `viaIR` with minimum optimization instead, which fixes most "stack too
+deep" errors at the cost of less accurate source mappings, so use it only when you need
+it. The `--ir-minimum` flag also enables it; it cannot turn off a `true` value.
+
+#### `report_file`
+
+- Type: string (path)
+- Default: none
+- Environment: `FOUNDRY_COVERAGE_REPORT_FILE`
+
+Path to write the file report to, relative to the project root.
+
+It applies only when exactly one file report (`lcov`, `attribution` or `gaps`) is
+requested; with several, it is ignored with a warning and each report uses its default
+file name. When unset, the report is written to the project root under its default name.
+The `--report-file` flag overrides it.
+
+#### `include_libs`
+
+- Type: boolean
+- Default: `false`
+- Environment: `FOUNDRY_COVERAGE_INCLUDE_LIBS`
+
+Whether to include dependency sources in the coverage report.
+
+Sources under library directories (`libs`) are excluded by default. The `--include-libs`
+flag also enables this; it cannot turn off a `true` value.
+
+#### `exclude_tests`
+
+- Type: boolean
+- Default: `false`
+- Environment: `FOUNDRY_COVERAGE_EXCLUDE_TESTS`
+
+Whether to exclude test sources from the coverage report.
+
+The `--exclude-tests` flag also enables this; it cannot turn off a `true` value.
+
+#### `skip_files`
+
+- Type: array of string
+- Default: `[]`
+- Environment: `FOUNDRY_COVERAGE_SKIP_FILES`
+
+Glob patterns of source files to exclude from the coverage report.
+
+Patterns are matched against paths relative to the project root, with `**`, `*`, `?` and
+character classes, and a file is skipped if any pattern matches. There is no flag for this
+setting; it applies in addition to `no_match_coverage` and `--no-match-coverage`.
+
+```toml
+[profile.default.coverage]
+skip_files = ["test/**", "script/**", "src/mocks/**"]
+```
+
+{/* config-reference:end */}
 
 ### Mutation testing
 
 Define mutation settings under `[profile.<name>.mutation]`.
 
-| Field | Default | Description |
-| --- | --- | --- |
-| `include_operators` | `[]` | Re-enables selected mutation operators. |
-| `exclude_operators` | `[]` | Disables selected mutation operators. |
-| `timeout` | none | Sets a per-mutant timeout in seconds. |
-| `optimizer_runs` | none | Overrides optimizer runs for mutation campaigns. |
-| `via_ir` | none | Overrides via-IR for mutation campaigns. |
+{/* config-reference:begin keys="mutation mutation.* mutation_dir" level=4 */}
+
+#### `[mutation]`
+
+Settings for mutation testing with `forge test --mutate`.
+
+Declare them in a `[profile.<name>.mutation]` table, or in a standalone `[mutation]` table
+that applies to every profile; a profile's own table takes precedence. Mutation results are
+cached in `mutation_dir`.
+
+#### `include_operators`
+
+- Type: array of string
+- Default: `[]`
+- Environment: `FOUNDRY_MUTATION_INCLUDE_OPERATORS`
+
+Mutation operators to enable even when they are excluded.
+
+An operator listed here is enabled even if `exclude_operators` also lists it. No operator
+is excluded by default, so this only matters together with `exclude_operators`.
+
+Valid operators:
+
+- `assembly`: replaces opcodes in inline assembly with related opcodes.
+- `assignment`: replaces assigned values, such as flipping a boolean literal or replacing a
+  number with zero or its negation.
+- `binary-op`: replaces binary operators with other operators.
+- `delete-expression`: removes `delete` expressions.
+- `elim-delegate`: replaces `delegatecall` with `call`.
+- `function-body`: replaces a function body with an empty body or a constant return value.
+- `require`: replaces `require` and `assert` conditions with `true`, `false` or their
+  negation.
+- `unary-op`: replaces or removes unary operators.
+
+#### `exclude_operators`
+
+- Type: array of string
+- Default: `[]`
+- Environment: `FOUNDRY_MUTATION_EXCLUDE_OPERATORS`
+
+Mutation operators to disable.
+
+The enabled set is every operator, minus those listed here, plus those listed in
+`include_operators`. Changing either list invalidates cached mutation results. Valid
+operators are listed under `include_operators`.
+
+#### `timeout`
+
+- Type: integer
+- Default: none
+- Environment: `FOUNDRY_MUTATION_TIMEOUT`
+
+Wall-clock timeout for each mutant's compile-and-test run, in seconds.
+
+Mutants that exceed it are recorded as timed out, like `invariant.timeout` for invariant
+campaigns. Enforcement is best-effort: background work for a timed-out mutant may continue
+briefly until its compile or test loop reaches a checkpoint, but its worker slot is freed
+at once so other mutants can proceed, and the cleanup backlog is bounded by the number of
+mutation workers. When unset, mutants run without a timeout. The `--mutation-timeout` flag
+overrides it.
+
+#### `optimizer_runs`
+
+- Type: integer
+- Default: none
+- Environment: `FOUNDRY_MUTATION_OPTIMIZER_RUNS`
+
+Optimizer runs to compile with during mutation testing, in place of `optimizer_runs`.
+
+This lets mutation campaigns use a faster compiler profile without changing the project's
+normal build settings. If the project uses the default optimizer settings (optimizer off,
+200 runs), a value above zero also enables the optimizer for mutation runs. The
+`--mutation-optimizer-runs` flag overrides it.
+
+#### `via_ir`
+
+- Type: boolean
+- Default: none
+- Environment: `FOUNDRY_MUTATION_VIA_IR`
+
+Whether to compile with `via_ir` during mutation testing, in place of the project's value.
+
+This lets mutation campaigns disable the IR pipeline without changing the project's normal
+build settings. When unset, the project's `via_ir` is used. The `--mutation-via-ir` flag
+overrides it.
+
+#### `mutation_dir`
+
+- Type: string (path)
+- Default: `"cache/mutation"`
+- Environment: `FOUNDRY_MUTATION_DIR` or `DAPP_MUTATION_DIR`
+
+Directory where mutation testing caches mutants and results, so interrupted runs can
+resume.
+
+`forge test --mutate` stores generated mutants and their results here, keyed by build and
+mutation settings. The path is relative to the project root and does not follow
+`cache_path`. `forge clean` and `force` delete it.
+
+{/* config-reference:end */}
 
 Supported operators are `assembly`, `assignment`, `binary-op`,
-`delete-expression`, `elim-delegate`, `require`, and `unary-op`. The
-top-level `mutation_dir` field sets the resume cache directory.
-Its default is `cache/mutation`.
+`delete-expression`, `elim-delegate`, `require`, and `unary-op`.

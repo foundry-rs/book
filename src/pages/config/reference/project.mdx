@@ -2,87 +2,160 @@
 
 Configuration related to the project in general.
 
-##### `extends`
+{/* config-reference:begin keys="extends src test script out libs cache cache_path broadcast force" level=3 */}
 
-- Type: string or object
+### `extends`
+
+- Type: string or table
 - Default: none
-- Environment: N/A
 
-Configuration for inheriting from a base TOML file. Can be specified as either:
-- A string path: `extends = "./base-config.toml"`
-- An object with path and strategy: `extends = { path = "./base-config.toml", strategy = "replace-arrays" }`
+Base config file that the active profile inherits settings from.
 
-The path must be relative to the location of the `foundry.toml` file. 
+The value is either a path or a table with a `path` and a merge `strategy`:
 
-See the configuration inheritance documentation for detailed information about merge strategies, precedence rules, and examples.
+```toml
+[profile.default]
+extends = "../shared/base.toml"
 
-##### `src`
+[profile.ci]
+extends = { path = "../shared/base.toml", strategy = "replace-arrays" }
+```
 
-- Type: string
-- Default: src
+The path is relative to the directory of the `foundry.toml` that declares it. Only the
+active profile's `extends` is used: the whole base file, including standalone sections such
+as `[fuzz]`, is loaded first and this file is merged on top of it. A profile without its
+own `extends` does not inherit from the base file. Strategies:
+
+- `extend-arrays` (the default): arrays from both files are concatenated, base entries
+  first; other values in this file replace those in the base file.
+- `replace-arrays`: arrays and all other values in this file replace those in the base
+  file.
+- `no-collision`: loading fails if the active profile sets a key that the same profile in
+  the base file also sets.
+
+The base file cannot use `extends` in the same profile, and a file cannot extend itself.
+`extends` takes a file path, not a profile name: every profile already inherits from
+`[profile.default]`.
+
+### `src`
+
+- Type: string (path)
+- Default: `"src"`
 - Environment: `FOUNDRY_SRC` or `DAPP_SRC`
 
-The path to the contract sources relative to the root of the project.
+Directory containing the project's contract sources, relative to the project root.
 
-##### `test`
+When `src` is not set and the `src` directory does not exist but `contracts` does, Foundry
+uses `contracts` (the Hardhat layout). Foundry also adds a `src/=src/` style remapping for
+this directory, so imports such as `import "src/Counter.sol";` resolve. The `--contracts`
+(`-C`) flag overrides this setting, and `--hardhat` sets it to `contracts`.
 
-- Type: string
-- Default: test
+### `test`
+
+- Type: string (path)
+- Default: `"test"`
 - Environment: `FOUNDRY_TEST` or `DAPP_TEST`
 
-The path to the test contract sources relative to the root of the project.
+Directory containing the project's test contracts, relative to the project root.
 
-##### `script`
+Test files are compiled together with the sources. When the directory exists, Foundry adds
+a `test/=test/` style remapping for it, so imports such as `import "test/Utils.sol";`
+resolve.
 
-- Type: string
-- Default: script
+### `script`
+
+- Type: string (path)
+- Default: `"script"`
 - Environment: `FOUNDRY_SCRIPT` or `DAPP_SCRIPT`
 
-The path to the script contract sources relative to the root of the project.
+Directory containing the project's Solidity scripts, relative to the project root.
 
-##### `out`
+Script files are compiled together with the sources. When the directory exists, Foundry
+adds a `script/=script/` style remapping for it, so imports such as
+`import "script/Base.s.sol";` resolve.
 
-- Type: string
-- Default: out
+### `out`
+
+- Type: string (path)
+- Default: `"out"`
 - Environment: `FOUNDRY_OUT` or `DAPP_OUT`
 
-The path to put contract artifacts in, relative to the root of the project.
+Directory where compiled contract artifacts are written, relative to the project root.
 
-##### `libs`
+Each contract gets a JSON artifact such as `out/Counter.sol/Counter.json`, and build info
+files go to `<out>/build-info` unless `build_info_path` is set. When `out` is not set and
+the `out` directory does not exist but `artifacts` does, Foundry uses `artifacts`. The
+`--out` (`-o`) flag overrides this setting.
 
-- Type: array of strings (paths)
-- Default: lib
+### `libs`
+
+- Type: array of string (path)
+- Default: `["lib"]`
 - Environment: `FOUNDRY_LIBS` or `DAPP_LIBS`
 
-An array of paths that contain libraries, relative to the root of the project.
+Directories containing dependency libraries, relative to the project root.
 
-##### `cache`
+When `auto_detect_remappings` is enabled, these directories are scanned for remappings, and
+solc is always allowed to read files from them. `forge install` installs into the first
+entry that is not `node_modules` (or `lib` when there is none). When `libs` is not set,
+Foundry uses `lib`, `node_modules`, or both, depending on which of them exist. The
+`--lib-paths` flag overrides this setting, and `--hardhat` uses `node_modules`.
+
+### `cache`
 
 - Type: boolean
-- Default: true
+- Default: `true`
 - Environment: `FOUNDRY_CACHE` or `DAPP_CACHE`
 
-Whether or not to enable caching. If enabled, the result of compiling sources, tests, and dependencies, are cached in `cache`.
+Whether to cache compiler output so that unchanged sources are not recompiled.
 
-##### `cache_path`
+The cache is stored in `cache_path`. When disabled, every build compiles all sources. The
+`--no-cache` flag disables the cache for one run, and `force` (or `--force`) clears it
+before building. The cache is also bypassed while `deny` is `warnings` or `notes`, so that
+warnings are reported on every build.
 
-- Type: string
-- Default: cache
+### `cache_path`
+
+- Type: string (path)
+- Default: `"cache"`
 - Environment: `FOUNDRY_CACHE_PATH` or `DAPP_CACHE_PATH`
 
-The path to the cache, relative to the root of the project.
+Directory for the compiler cache and other project caches, relative to the project root.
 
-##### `broadcast`
+It holds the compiler cache file (`solidity-files-cache.json`), the `forge coverage` and
+external compiler caches, and the sensitive parts of `forge script` broadcast logs, such as
+RPC URLs, which are kept out of `broadcast`. `test_failures_file` and `mutation_dir`
+default to paths under `cache` but are set separately, so changing `cache_path` does not
+move them. The `--cache-path` flag overrides this setting.
 
-- Type: string
-- Default: broadcast
+### `broadcast`
 
-The path to the broadcast transaction logs, relative to the root of the project.
+- Type: string (path)
+- Default: `"broadcast"`
+- Environment: `FOUNDRY_BROADCAST` or `DAPP_BROADCAST`
 
-##### `force`
+Directory where `forge script` writes broadcast transaction logs, relative to the project
+root.
+
+Each run is written to `<broadcast>/<script file>/<chain id>/<function>-latest.json`, with
+a timestamped `run-<timestamp>.json` copy, under an extra `dry-run` directory when the
+script is only simulated. Sensitive values such as RPC URLs are written to the same
+relative path under `cache_path` instead. Cheatcodes such as `vm.getBroadcast` and
+`vm.getDeployment` read the logs from this directory.
+
+### `force`
 
 - Type: boolean
-- Default: false
+- Default: `false`
 - Environment: `FOUNDRY_FORCE` or `DAPP_FORCE`
 
-Whether or not to perform a clean build, discarding the cache.
+Whether to delete all build artifacts and caches before compiling.
+
+This has the same effect as passing `--force` to every command. Before building, Forge
+removes the artifacts in `out`, the compiler cache, the coverage and external compiler
+caches, `test_failures_file`, `mutation_dir`, and the fuzz and invariant failure and corpus
+directories, then compiles everything from scratch.
+
+**Warning:** this also discards persisted fuzz failures and corpora on every run.
+
+{/* config-reference:end */}

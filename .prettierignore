@@ -4,3 +4,4 @@ src/pages/
 src/pages.gen.ts
 src/snippets/
 vocs/
+scripts/config-reference.json

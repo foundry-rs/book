@@ -182,6 +182,25 @@ Foundry. The weekly update imports the revision matching its installed Forge bin
 against that source checkout. Run `vp exec vocs build` and inspect the rendered Markdown
 under `dist/public/assets/md/forge/linting/`. Verify changed Solidity examples in Foundry.
 
+#### Config reference documentation
+
+The per-key documentation under `src/pages/config/reference/` is generated from Foundry. Edit a
+key's description in the doc comment of its field in Foundry's
+[`crates/config`](https://github.com/foundry-rs/foundry/tree/master/crates/config), run
+`cargo config-reference` there to update `crates/config/assets/config-reference.json`, commit
+it, then import it:
+
+```bash
+$ vp run import:config -- --foundry /path/to/foundry
+$ vp run import:config -- --check
+```
+
+The importer fills each region between `{/* config-reference:begin ... */}` and
+`{/* config-reference:end */}` and rewrites `default-config.mdx`. Do not hand-edit those; edit
+the authored prose around them instead. To move a key to another page, change the `keys` of the
+regions (see `AGENTS.md`). Commit the generated pages together with
+`scripts/config-reference.json`, the snapshot that pins the Foundry revision.
+
 #### Auto-Generated CLI Output
 
 Most CLI output is auto-generated to stay in sync with Foundry changes.

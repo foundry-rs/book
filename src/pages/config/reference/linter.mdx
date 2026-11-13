@@ -2,21 +2,24 @@
 
 Configuration related to the behavior of the linter. These keys are set in the `[lint]` section.
 
-##### `lint_on_build`
+{/* config-reference:begin keys="lint lint.*" level=3 */}
 
-- Type: boolean
-- Default: `true`
-- Environment: `FOUNDRY_LINT_ON_BUILD`
+### `[lint]`
 
-Whether to run linting during `forge build`. Set to `false` to disable automatic linting during builds.
+Settings for the Solidity linter, `forge lint`, which also runs during `forge build`.
 
-##### `severity`
+Declare them in a `[profile.<name>.lint]` table, or in a standalone `[lint]` table that
+applies to every profile; a profile's own table takes precedence.
 
-- Type: array of strings
+### `severity`
+
+- Type: array of string
 - Default: `["high", "medium", "low"]`
 - Environment: `FOUNDRY_LINT_SEVERITY`
 
-Specifies which lints to run based on severity. Valid values are:
+Severities of the lints to run.
+
+Valid values (case-insensitive):
 
 - `high`
 - `medium` (or `med`)
@@ -25,32 +28,72 @@ Specifies which lints to run based on severity. Valid values are:
 - `gas`
 - `code-size` (or `codesize`, `size`)
 
-By default, Forge runs high, medium, and low severity lints. An empty list means no severity filter
-is applied, enabling all severity buckets, including informational, gas, and code-size lints.
+An empty list applies no severity filter, which runs lints of every severity, including
+informational, gas and code-size lints. `forge lint --severity` overrides this setting.
 
-##### `exclude_lints`
+### `exclude_lints`
 
-- Type: array of strings
+- Type: array of string
 - Default: `[]`
 - Environment: `FOUNDRY_LINT_EXCLUDE_LINTS`
 
-List of lint IDs to exclude from checking (e.g., `"mixed-case-function"`).
+IDs of lints to skip, such as `"mixed-case-function"`.
 
-##### `ignore`
+`forge lint` fails on an unknown lint ID.
 
-- Type: array of strings (patterns)
+### `ignore`
+
+- Type: array of string
 - Default: `[]`
 - Environment: `FOUNDRY_LINT_IGNORE`
 
-List of files or patterns to ignore when running the linter. This is a comma-separated list of glob patterns.
+Glob patterns of files to skip when linting.
 
-##### `mixed_case_exceptions`
+Patterns are resolved relative to the project root.
 
-- Type: array of strings
+### `lint_on_build`
+
+- Type: boolean
+- Default: `true`
+- Environment: `FOUNDRY_LINT_LINT_ON_BUILD`
+
+Whether to run the linter during `forge build`.
+
+Set to `false` to stop linting on every build; `forge build --no-lint` skips it for a
+single run. Keeping it enabled and narrowing what runs with `severity`, `exclude_lints` or
+`ignore` catches issues earlier. Linting on build only runs when the build has no compiler
+errors.
+
+### `[lint_specific]`
+
+Settings for individual lints.
+
+#### `lint_specific.mixed_case_exceptions`
+
+- Type: array of string
 - Default: `["ERC", "URI", "ID", "URL", "API", "JSON", "XML", "HTML", "HTTP", "HTTPS"]`
-- Environment: `FOUNDRY_LINT_MIXED_CASE_EXCEPTIONS`
 
-Configurable patterns that should be excluded when performing `mixedCase` and `PascalCase` lint checks. The defaults allow common names like `rescueERC20`, `ERC721TokenReceiver`, `tokenURI`, or `ERC20Data`.
+Name fragments, usually acronyms, that the `mixedCase` and `PascalCase` lints accept.
+
+Applies to the `mixed-case-function`, `mixed-case-variable` and `pascal-case-struct` lints.
+The defaults allow common names like `rescueERC20`, `ERC721TokenReceiver`, `tokenURI` or
+`ERC20Data`.
+
+#### `lint_specific.multi_contract_file_exceptions`
+
+- Type: array of string
+- Default: `[]`
+
+Contract kinds that the `multi-contract-file` lint ignores when a file declares more than
+one.
+
+- `interface`: interfaces.
+- `library`: libraries.
+- `abstract_contract`: abstract contracts.
+
+Regular contracts can't be exempted: a file with more than one is always flagged.
+
+{/* config-reference:end */}
 
 ## Inline Configuration
 

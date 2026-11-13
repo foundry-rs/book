@@ -6,28 +6,220 @@ Configuration for Vyper, JSON bindings, Soldeer, and network-specific behavior.
 
 Define Vyper settings under `[profile.<name>.vyper]`.
 
-| Field | Default | Description |
-| --- | --- | --- |
-| `path` | none | Selects the Vyper executable. |
-| `optimize` | none | Selects the Vyper optimization mode. |
-| `opt_level` | none | Selects the numeric optimization level; `optLevel` is an alias. |
-| `experimental_codegen` | none | Enables experimental code generation. |
-| `venom_experimental` | none | Enables the experimental Venom pipeline. |
-| `debug` | none | Compiles in debug mode. |
-| `enable_decimals` | none | Re-enables the Vyper decimal type. |
-| `venom` | none | Supplies fine-grained Venom optimizer settings. |
+{/* config-reference:begin keys="vyper vyper.*" level=4 */}
+
+#### `[vyper]`
+
+Settings for compiling Vyper sources.
+
+Declare them in a `[profile.<name>.vyper]` table, or in a standalone `[vyper]` table that
+applies to every profile; a profile's own table takes precedence.
+
+#### `optimize`
+
+- Type: string
+- Default: none
+- Environment: `FOUNDRY_VYPER_OPTIMIZE`
+
+Vyper optimization mode, passed to the compiler as `optimize`.
+
+- `gas`: optimize for gas.
+- `codesize`: optimize for code size.
+- `none`: disable optimizations.
+- `O1`, `O2`, `O3`, `Os`: numeric optimization levels (`1`, `2`, `3` and `s`, or lowercase
+  forms, are accepted too).
+
+Ignored when `opt_level` is set. When unset, the compiler's default applies.
+
+#### `opt_level`
+
+- Type: string
+- Default: none
+- Environment: `FOUNDRY_VYPER_OPT_LEVEL`
+- Aliases: `optLevel`
+
+Vyper optimization level, passed to the compiler as `optLevel`.
+
+Accepts the same values as `optimize` and takes precedence over it, so a profile can
+override an inherited `optimize`. `optLevel` is accepted as an alias.
+
+#### `path`
+
+- Type: string (path)
+- Default: none
+- Environment: `FOUNDRY_VYPER_PATH`
+
+Path to the Vyper compiler executable.
+
+When unset, Forge uses `vyper` from `PATH` if it is installed. Vyper is only needed when
+the project has Vyper sources.
+
+#### `experimental_codegen`
+
+- Type: boolean
+- Default: none
+- Environment: `FOUNDRY_VYPER_EXPERIMENTAL_CODEGEN`
+
+Whether to enable Vyper's experimental code generation pipeline.
+
+#### `venom_experimental`
+
+- Type: boolean
+- Default: none
+- Environment: `FOUNDRY_VYPER_VENOM_EXPERIMENTAL`
+
+Whether to enable Vyper's experimental Venom pipeline.
+
+Passed to the compiler as the `venomExperimental` standard JSON setting.
+
+#### `debug`
+
+- Type: boolean
+- Default: none
+- Environment: `FOUNDRY_VYPER_DEBUG`
+
+Whether to compile in debug mode.
+
+#### `enable_decimals`
+
+- Type: boolean
+- Default: none
+- Environment: `FOUNDRY_VYPER_ENABLE_DECIMALS`
+
+Whether to re-enable the Vyper `decimal` type.
+
+#### `venom`
+
+- Type: table
+- Default: none
+- Environment: `FOUNDRY_VYPER_VENOM`
+
+Fine-grained settings for the Venom optimizer, passed to the compiler as `venom`.
+
+Supported keys (snake_case or the compiler's camelCase): `disable_inlining`,
+`disable_cse`, `disable_sccp`, `disable_load_elimination`,
+`disable_dead_store_elimination`, `disable_algebraic_optimization`,
+`disable_branch_optimization`, `disable_assert_elimination`, `disable_mem2var`,
+`disable_simplify_cfg`, `disable_remove_unused_variables` (booleans) and `inline_threshold`
+(integer).
+
+```toml
+[profile.default.vyper.venom]
+disable_inlining = true
+inline_threshold = 15
+```
+
+{/* config-reference:end */}
 
 ### JSON bindings
 
 Define `forge bind-json` settings under `[profile.<name>.bind_json]`.
 
-| Field | Default | Description |
-| --- | --- | --- |
-| `out` | `utils/JsonBindings.sol` | Sets the generated Solidity file. |
-| `include` | `[]` | Includes only matching project-file globs. |
-| `exclude` | `[]` | Excludes matching project-file globs. |
+{/* config-reference:begin keys="bind_json bind_json.*" level=4 */}
+
+#### `[bind_json]`
+
+Settings for `forge bind-json`, which generates Solidity JSON bindings for project structs.
+
+Declare them in a `[profile.<name>.bind_json]` table, or in a standalone `[bind_json]`
+table that applies to every profile; a profile's own table takes precedence.
+
+#### `out`
+
+- Type: string (path)
+- Default: `"utils/JsonBindings.sol"`
+- Environment: `FOUNDRY_BIND_JSON_OUT`
+
+Solidity file that `forge bind-json` writes the generated bindings to.
+
+A relative path is resolved from the project root; a path passed to `forge bind-json`
+overrides it. The EIP-712 cheatcodes (`vm.eip712HashType`, `vm.eip712HashStruct`) look up
+type names in this file when no bindings path is given.
+
+#### `include`
+
+- Type: array of string (glob)
+- Default: `[]`
+- Environment: `FOUNDRY_BIND_JSON_INCLUDE`
+
+Glob patterns of the source files whose structs get bindings.
+
+When set, only matching files are included. When empty, all project source files are
+included except those in library directories.
+
+#### `exclude`
+
+- Type: array of string (glob)
+- Default: `[]`
+- Environment: `FOUNDRY_BIND_JSON_EXCLUDE`
+
+Glob patterns of source files whose structs get no bindings.
+
+Applied after `include`.
+
+{/* config-reference:end */}
 
 ### Soldeer
+
+{/* config-reference:begin keys="dependencies soldeer" level=4 */}
+
+#### `[dependencies]`
+
+- Type: table
+- Default: none
+
+Soldeer dependencies, declared in a top-level `[dependencies]` table.
+
+Each key is a dependency name and each value is either a version requirement string or a
+table with these fields:
+
+- `version` (required): the version requirement. Without an operator, an HTTP dependency's
+  version is pinned exactly.
+- `url`: the zip archive to download. Without `url` or `git`, the download URL is looked up
+  in the Soldeer registry by name and version.
+- `git`: a Git repository to clone instead; conflicts with `url`, and `version` may not
+  contain `=`.
+- `rev`, `branch` or `tag`: at most one, selecting the Git revision; ignored without `git`.
+  Without any of them, the default branch is used.
+- `project_root`: the path inside the archive or repository to the directory containing its
+  `foundry.toml` or `soldeer.toml`.
+
+```toml
+[dependencies]
+forge-std = "1.9.7"
+my-lib = { version = "1.0.0", git = "https://github.com/example/lib.git", tag = "v1.0.0" }
+```
+
+`forge soldeer install` installs them into the `dependencies` directory, and other
+`forge soldeer` commands update this table. See also the `soldeer` table.
+
+#### `[soldeer]`
+
+- Type: table
+- Default: none
+
+Settings for the Soldeer package manager, declared in a top-level `[soldeer]` table.
+
+- `remappings_generate`: whether Soldeer generates remappings for dependencies (on by
+  default); when off, remappings are left untouched.
+- `remappings_regenerate`: whether to regenerate all remappings each time, discarding
+  existing ones (off by default).
+- `remappings_version`: whether to append the version requirement to each remapping name,
+  as in `forge-std-1.9.7/` (on by default).
+- `remappings_prefix`: a prefix added to each remapping name, such as `@`.
+- `remappings_location`: `txt` (the default) writes `remappings.txt`; `config` writes the
+  `remappings` key of `foundry.toml`. Ignored when the Soldeer config is `soldeer.toml`.
+- `recursive_deps`: whether to also install the dependencies of dependencies, running
+  `soldeer install` for Soldeer projects and cloning submodules of Git dependencies (off by
+  default).
+
+```toml
+[soldeer]
+remappings_prefix = "@"
+remappings_location = "config"
+```
+
+{/* config-reference:end */}
 
 `[dependencies]` maps dependency names to version strings or objects. Dependency
 objects support `version`, `url`, `git`, `rev`, `branch`, `tag`, and
@@ -47,11 +239,25 @@ the [Soldeer guide](/projects/soldeer) for its fields and workflows.
 Network keys enable chain-specific execution behavior. They live at the top
 level of `[profile.<name>]`.
 
-| Field | Default | Description |
-| --- | --- | --- |
-| `network` | none | Selects an available network family: `ethereum`, `optimism`, `tempo`, or `monad`. |
-| `celo` | `false` | Enables Celo network features such as the Celo transfer precompile. |
-| `bypass_prevrandao` | `false` | Uses a random `prevrandao` when the forked block does not provide one. |
+{/* config-reference:begin keys="celo bypass_prevrandao" level=4 */}
+
+#### `celo`
+
+- Type: boolean
+- Default: `false`
+- Environment: `FOUNDRY_CELO` or `DAPP_CELO`
+
+Enable Celo network features.
+
+#### `bypass_prevrandao`
+
+- Type: boolean
+- Default: `false`
+- Environment: `FOUNDRY_BYPASS_PREVRANDAO` or `DAPP_BYPASS_PREVRANDAO`
+
+Whether to bypass prevrandao.
+
+{/* config-reference:end */}
 
 Selecting a network family enables its execution rules and precompiles — for
 example the Tempo system precompiles, which are also labeled in traces. When
@@ -73,6 +279,5 @@ network = "tempo"
 
 ### Linter-specific fields
 
-Under `[profile.<name>.lint.lint_specific]`, `mixed_case_exceptions` lists
-allowed mixed-case name fragments and `multi_contract_file_exceptions` accepts
-`interface`, `library`, and `abstract_contract`.
+Lint-specific settings under `[profile.<name>.lint.lint_specific]` are documented in the
+[linter reference](/config/reference/linter#lint_specific).
