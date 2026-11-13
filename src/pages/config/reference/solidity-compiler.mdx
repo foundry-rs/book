@@ -41,22 +41,25 @@ import {Context} from "node_modules/@openzeppelin/openzeppelin-contracts/contrac
 ```
 
 When auto-detection is enabled, dependencies whose configured `src` resolves inside their package
-directory have owner-scoped remappings. Their `foundry.toml` and `remappings.txt` declarations,
-including file-specific aliases and declared contexts, cannot change imports made by your root
-project or sibling dependencies. Auto-detected package entry points remain available globally.
+keep nonconflicting aliases global. Unique aliases remain available to your root project, and aliases
+that resolve to the same target can be shared. Declarations that conflict with a root-project path
+or a different dependency target apply only within their owner. This includes file-specific aliases
+and conflicts with auto-detected packages. Dependency-declared contexts cannot extend beyond their
+owner.
+
+Foundry warns you when a previously global declaration becomes scoped, naming its old mapping and
+owner. A successful build can still select a different auto-detected package for root imports. To
+select the previous target explicitly, add a root remapping or pass it with `--remappings`:
+
+```toml [foundry.toml]
+[profile.default]
+remappings = ["shared/=lib/a/src/pinned/"]
+```
 
 If a dependency's `src` resolves outside its package directory, its declarations keep their previous
 behavior: declared contexts are preserved, and declarations without a context remain global. Both
 absolute source paths and relative paths such as `src = "../../external"` use this behavior, as do
 source-directory symlinks that resolve outside the package.
-
-To use an owner-scoped dependency's custom alias from your root project, declare it explicitly in
-your root project's `foundry.toml` or `remappings.txt`, or pass it with `--remappings`:
-
-```toml [foundry.toml]
-[profile.default]
-remappings = ["@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/"]
-```
 
 Explicit root-project and CLI remappings take precedence over generated dependency contexts. See
 [Nested dependency remappings](/projects/dependencies#nested-dependency-remappings) for details.

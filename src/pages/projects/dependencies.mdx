@@ -99,10 +99,15 @@ $ forge remappings > remappings.txt
 
 #### Nested dependency remappings
 
-For dependencies whose configured `src` resolves inside their package directory, remappings declared in
-`foundry.toml` or `remappings.txt` apply only within that dependency. This includes file-specific
-aliases and remappings with declared contexts. Auto-detected package entry points remain available
-globally. For example, `forge remappings` can output:
+For dependencies whose configured `src` resolves inside their package directory, declarations without
+a context in `foundry.toml` and `remappings.txt` remain global when their import aliases do not conflict
+with your project paths or a different dependency target. Unique aliases, such as OpenZeppelin Contracts'
+`@openzeppelin/contracts/`, remain available to your root project. Declarations that resolve to the
+same target can also share an alias.
+
+When an alias conflicts, Foundry restricts the dependency's declaration to its owner. This includes
+file-specific aliases and conflicts with auto-detected package entry points. For example,
+`forge remappings` can output:
 
 ```txt
 lib/outer/:inner/=lib/outer/lib/inner/contracts/
@@ -114,15 +119,27 @@ begin with `<context>`. Here, the trailing slash in `lib/outer/` creates a direc
 sources inside `lib/outer/` use the dependency's `contracts/` directory while root sources and
 sibling dependencies use the auto-detected package-root mapping.
 
+When a previously global declaration becomes scoped, Foundry warns you with its old mapping and
+its owner. Review this warning even if your build succeeds: a root import may now select a different
+auto-detected package. To select a scoped alias explicitly from your root project, add a remapping to
+your root `foundry.toml` or `remappings.txt`, or pass it with `--remappings`. For example, to use a
+particular dependency's pinned `shared/` target:
+
+```toml [foundry.toml]
+[profile.default]
+remappings = ["shared/=lib/a/src/pinned/"]
+```
+
 Foundry preserves explicit root-project and CLI remappings when constructing generated dependency
 contexts. An equal or broader global alias suppresses the generated context. A narrower global
 alias is overlaid into that context, so it overrides only its matching import subtree while the
 dependency mapping handles the remaining imports. Explicit root-project contextual remappings are
 unchanged.
 
-For these dependencies, a declared context can narrow its scope, but cannot extend it to your root
-project or sibling dependencies. Generated contexts use the dependency's installation path, including
-when the dependency is symlinked.
+A dependency's declared context can narrow its scope, but cannot extend it to your root project or
+sibling dependencies. Generated contexts use the dependency's installation path, including when the
+dependency is symlinked. When discovering nested dependencies, Foundry only follows relative `libs`
+entries that stay inside the declaring package, including when resolving symlinks.
 
 Dependencies whose configured `src` resolves outside their package directory keep the previous
 remapping behavior. This applies to both absolute paths and relative paths such as
@@ -130,21 +147,10 @@ remapping behavior. This applies to both absolute paths and relative paths such 
 global. A `src` symlink that resolves outside the package also uses this behavior. These dependencies
 do not have the same owner isolation.
 
-When multiple discovered packages provide the same import prefix, Foundry prefers the shallower
-installation. At equal installation depth, it compares target paths by their number of components,
-then prefers a target ending in `src`, then uses lexical target-path order. A custom source directory
-can therefore still affect which installation wins a tie. Declare an explicit root remapping when
-you need to select a particular installation.
-
-If your root project previously inherited a dependency's custom alias, declare that alias explicitly
-in your root project's `foundry.toml` or `remappings.txt`, or pass it with `--remappings`. For example,
-after installing OpenZeppelin Contracts, add this root configuration to use imports beginning with
-`@openzeppelin/contracts/`:
-
-```toml [foundry.toml]
-[profile.default]
-remappings = ["@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/"]
-```
+When multiple discovered packages provide the same import prefix, Foundry prefers the target path
+with fewer components, then a target ending in `src`, then lexical target-path order. A custom source
+directory can therefore affect which installation wins. Declare an explicit root remapping when you
+need to select a particular installation.
 
 ### Updating dependencies
 
