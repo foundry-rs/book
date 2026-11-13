@@ -82,6 +82,25 @@ See also [solc path resolution](https://docs.soliditylang.org/en/latest/path-res
 
 An array of libraries to link against in the following format: `<file>:<lib>:<address>`, for example: `src/MyLibrary.sol:MyLibrary:0xfD88CeE74f7D78697775aBDAE53f9Da1559728E4`.
 
+To link more than one library, add one entry per library:
+
+```toml
+libraries = [
+    "src/MathLib.sol:MathLib:0xfD88CeE74f7D78697775aBDAE53f9Da1559728E4",
+    "src/StringLib.sol:StringLib:0x4e59b44847b379578588920cA78FbF26c0B4956C",
+]
+```
+
+On the command line, repeat `--libraries` once per library. A comma-separated list in a single `--libraries` flag is not supported.
+
+```bash
+$ forge build \
+  --libraries src/MathLib.sol:MathLib:0xfD88CeE74f7D78697775aBDAE53f9Da1559728E4 \
+  --libraries src/StringLib.sol:StringLib:0x4e59b44847b379578588920cA78FbF26c0B4956C
+```
+
+In the `FOUNDRY_LIBRARIES` environment variable, separate the entries with commas.
+
 ##### `allow_linked_libraries`
 
 - Type: boolean
