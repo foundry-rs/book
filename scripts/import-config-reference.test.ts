@@ -237,6 +237,12 @@ describe("rendering", () => {
       '### `src`\n\n- Type: string (path)\n- Default: `"src"`\n- Environment: `FOUNDRY_SRC` or `DAPP_SRC`\n\nPath of the sources directory.\n\nRelative to the project root.',
     );
     expect(renderSetting(settings[1], 4)).toContain("- Values: `never`, `warnings`");
+    expect(
+      renderSetting(
+        { ...settings[1], values: ["ethereum", "base"], valueFeatures: { base: "base" } },
+        4,
+      ),
+    ).toContain("- Values: `ethereum`, `base` (requires the `base` build feature)");
     expect(renderSetting(settings[2], 4)).toContain(
       "- Default: none\n- Deprecated: use `deny = warnings` instead",
     );

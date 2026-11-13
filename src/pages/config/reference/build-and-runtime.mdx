@@ -11,7 +11,7 @@ Configuration shared by build commands and EVM execution. All fields belong unde
 
 - Type: boolean
 - Default: `true`
-- Environment: `FOUNDRY_DYNAMIC_TEST_LINKING` or `DAPP_DYNAMIC_TEST_LINKING`
+- Environment: `FOUNDRY_DYNAMIC_TEST_LINKING`, `DAPP_DYNAMIC_TEST_LINKING`, or `DAPP_TEST_DYNAMIC_TEST_LINKING`
 
 Whether to compile tests and scripts with dynamic test linking.
 
@@ -35,7 +35,7 @@ enables it. It does not create Solidity library link references, so it works wit
 
 - Type: string (path)
 - Default: `"snapshots"`
-- Environment: `FOUNDRY_SNAPSHOTS` or `DAPP_SNAPSHOTS`
+- Environment: `FOUNDRY_SNAPSHOTS`, `DAPP_SNAPSHOTS`, or `DAPP_TEST_SNAPSHOTS`
 
 Directory where gas snapshots recorded by the snapshot cheatcodes are stored.
 
@@ -48,7 +48,7 @@ This is separate from the `.gas-snapshot` file written by `forge snapshot`.
 
 - Type: boolean
 - Default: `false`
-- Environment: `FOUNDRY_GAS_SNAPSHOT_CHECK` or `DAPP_GAS_SNAPSHOT_CHECK`
+- Environment: `FOUNDRY_GAS_SNAPSHOT_CHECK`, `DAPP_GAS_SNAPSHOT_CHECK`, or `DAPP_TEST_GAS_SNAPSHOT_CHECK`
 
 Whether `forge test` fails when recorded gas snapshots differ from those stored in
 `snapshots`.
@@ -63,7 +63,7 @@ here.
 
 - Type: boolean
 - Default: `true`
-- Environment: `FOUNDRY_GAS_SNAPSHOT_EMIT` or `DAPP_GAS_SNAPSHOT_EMIT`
+- Environment: `FOUNDRY_GAS_SNAPSHOT_EMIT`, `DAPP_GAS_SNAPSHOT_EMIT`, or `DAPP_TEST_GAS_SNAPSHOT_EMIT`
 
 Whether `forge test` writes the gas snapshots recorded by cheatcodes to `snapshots`.
 
@@ -75,7 +75,7 @@ the `FORGE_SNAPSHOT_EMIT` environment variable overrides this setting.
 
 - Type: array of string (glob)
 - Default: `[]`
-- Environment: `FOUNDRY_SKIP` or `DAPP_SKIP`
+- Environment: `FOUNDRY_SKIP`, `DAPP_SKIP`, or `DAPP_TEST_SKIP`
 
 Glob patterns of source files to leave out of the build.
 
@@ -94,7 +94,7 @@ skip = ["test/invariant/**/*", "script/**/*"]
 
 - Type: string (path)
 - Default: `"cache/test-failures"`
-- Environment: `FOUNDRY_TEST_FAILURES_FILE` or `DAPP_TEST_FAILURES_FILE`
+- Environment: `FOUNDRY_TEST_FAILURES_FILE`, `DAPP_TEST_FAILURES_FILE`, or `DAPP_TEST_TEST_FAILURES_FILE`
 
 File where `forge test` records the tests that failed in the last run.
 
@@ -106,7 +106,7 @@ to the project root and does not follow `cache_path`.
 
 - Type: string (regular expression)
 - Default: none
-- Environment: `FOUNDRY_NO_MATCH_COVERAGE` or `DAPP_NO_MATCH_COVERAGE`
+- Environment: `FOUNDRY_NO_MATCH_COVERAGE`, `DAPP_NO_MATCH_COVERAGE`, or `DAPP_TEST_NO_MATCH_COVERAGE`
 
 Leave source files whose path matches this regular expression out of `forge coverage`
 reports.
@@ -124,7 +124,7 @@ no_match_coverage = "^(test|script)/"
 
 - Type: array of string
 - Default: `[]`
-- Environment: `FOUNDRY_GAS_REPORTS_IGNORE` or `DAPP_GAS_REPORTS_IGNORE`
+- Environment: `FOUNDRY_GAS_REPORTS_IGNORE`, `DAPP_GAS_REPORTS_IGNORE`, or `DAPP_TEST_GAS_REPORTS_IGNORE`
 
 The contracts to leave out of gas reports.
 
@@ -140,7 +140,7 @@ gas_reports_ignore = ["CounterTest", "Deploy"]
 
 - Type: boolean
 - Default: `false`
-- Environment: `FOUNDRY_GAS_REPORTS_INCLUDE_TESTS` or `DAPP_GAS_REPORTS_INCLUDE_TESTS`
+- Environment: `FOUNDRY_GAS_REPORTS_INCLUDE_TESTS`, `DAPP_GAS_REPORTS_INCLUDE_TESTS`, or `DAPP_TEST_GAS_REPORTS_INCLUDE_TESTS`
 
 Whether gas reports include calls to test functions, such as `setUp` and `test*`.
 
@@ -153,7 +153,7 @@ selected by `gas_reports` and `gas_reports_ignore`.
 
 - Type: boolean
 - Default: `false`
-- Environment: `FOUNDRY_BUILD_INFO` or `DAPP_BUILD_INFO`
+- Environment: `FOUNDRY_BUILD_INFO`, `DAPP_BUILD_INFO`, or `DAPP_TEST_BUILD_INFO`
 
 Whether to write build info files containing the complete compiler input and output.
 
@@ -166,7 +166,7 @@ one run.
 
 - Type: string (path)
 - Default: none
-- Environment: `FOUNDRY_BUILD_INFO_PATH` or `DAPP_BUILD_INFO_PATH`
+- Environment: `FOUNDRY_BUILD_INFO_PATH`, `DAPP_BUILD_INFO_PATH`, or `DAPP_TEST_BUILD_INFO_PATH`
 
 Directory where build info files are written when `build_info` is enabled.
 
@@ -192,7 +192,7 @@ contracts they deploy. Tools that link libraries from artifacts should read
 
 - Type: boolean
 - Default: `false`
-- Environment: `FOUNDRY_AST` or `DAPP_AST`
+- Environment: `FOUNDRY_AST`, `DAPP_AST`, or `DAPP_TEST_AST`
 
 Whether to include each source's AST as JSON in the compiler output and artifacts.
 
@@ -203,7 +203,7 @@ invocation.
 
 - Type: boolean
 - Default: `true`
-- Environment: `FOUNDRY_CBOR_METADATA` or `DAPP_CBOR_METADATA`
+- Environment: `FOUNDRY_CBOR_METADATA`, `DAPP_CBOR_METADATA`, or `DAPP_TEST_CBOR_METADATA`
 
 Whether to append the CBOR-encoded metadata trailer to the bytecode.
 
@@ -216,7 +216,7 @@ versions.
 
 - Type: boolean
 - Default: `false`
-- Environment: `FOUNDRY_VIA_SSA_CFG` or `DAPP_VIA_SSA_CFG`
+- Environment: `FOUNDRY_VIA_SSA_CFG`, `DAPP_VIA_SSA_CFG`, or `DAPP_TEST_VIA_SSA_CFG`
 
 Whether to generate code with solc's experimental SSA control-flow-graph backend.
 
@@ -236,7 +236,7 @@ via_ssa_cfg = true
 
 - Type: boolean
 - Default: `false`
-- Environment: `FOUNDRY_EXPERIMENTAL` or `DAPP_EXPERIMENTAL`
+- Environment: `FOUNDRY_EXPERIMENTAL`, `DAPP_EXPERIMENTAL`, or `DAPP_TEST_EXPERIMENTAL`
 
 Whether to enable solc's experimental mode, required for experimental compiler features.
 
@@ -248,7 +248,7 @@ ignored. `--experimental` enables it for one invocation.
 
 - Type: array of string
 - Default: none
-- Environment: `FOUNDRY_EXTRA_ARGS` or `DAPP_EXTRA_ARGS`
+- Environment: `FOUNDRY_EXTRA_ARGS`, `DAPP_EXTRA_ARGS`, or `DAPP_TEST_EXTRA_ARGS`
 
 Extra command-line arguments to pass to the solc binary.
 
@@ -266,7 +266,7 @@ extra_args = ["--some-solc-flag"]
 
 - Type: array of [string (path), array of string or integer]
 - Default: `[]`
-- Environment: `FOUNDRY_IGNORED_ERROR_CODES_FROM` or `DAPP_IGNORED_ERROR_CODES_FROM`
+- Environment: `FOUNDRY_IGNORED_ERROR_CODES_FROM`, `DAPP_IGNORED_ERROR_CODES_FROM`, or `DAPP_TEST_IGNORED_ERROR_CODES_FROM`
 
 Solidity compiler warning codes to silence only in files under given paths.
 
@@ -287,9 +287,9 @@ is set.
 
 #### `deny`
 
-- Type: string
+- Type: string or boolean
 - Default: `"never"`
-- Environment: `FOUNDRY_DENY` or `DAPP_DENY`
+- Environment: `FOUNDRY_DENY`, `DAPP_DENY`, or `DAPP_TEST_DENY`
 - Values: `never`, `warnings`, `notes`
 
 The lowest diagnostic level that makes a command fail.
@@ -327,7 +327,7 @@ ignored_error_codes_from = [
 
 - Type: integer
 - Default: none
-- Environment: `FOUNDRY_FORK_BLOCK_NUMBER` or `DAPP_FORK_BLOCK_NUMBER`
+- Environment: `FOUNDRY_FORK_BLOCK_NUMBER`, `DAPP_FORK_BLOCK_NUMBER`, `DAPP_TEST_FORK_BLOCK_NUMBER`, `DAPP_FORK_BLOCK`, or `DAPP_TEST_NUMBER`
 
 Block number to pin the fork created from `eth_rpc_url` to.
 
@@ -340,7 +340,7 @@ instead. A pinned block reuses its disk cache across runs and is never warmed by
 
 - Type: boolean
 - Default: `false`
-- Environment: `FOUNDRY_FORK_STATE_BY_NUMBER` or `DAPP_FORK_STATE_BY_NUMBER`
+- Environment: `FOUNDRY_FORK_STATE_BY_NUMBER`, `DAPP_FORK_STATE_BY_NUMBER`, or `DAPP_TEST_FORK_STATE_BY_NUMBER`
 
 Whether to read fork state by block number instead of block hash.
 
@@ -366,7 +366,7 @@ fork_state_by_number = true
 
 - Type: integer
 - Default: none
-- Environment: `FOUNDRY_CODE_SIZE_LIMIT` or `DAPP_CODE_SIZE_LIMIT`
+- Environment: `FOUNDRY_CODE_SIZE_LIMIT`, `DAPP_CODE_SIZE_LIMIT`, or `DAPP_TEST_CODE_SIZE_LIMIT`
 
 The maximum deployed contract size, in bytes, enforced during local execution (EIP-170).
 
@@ -385,7 +385,7 @@ code_size_limit = 49152
 
 - Type: string (32-byte hex)
 - Default: `"0x0000000000000000000000000000000000000000000000000000000000000000"`
-- Environment: `FOUNDRY_BLOCK_PREVRANDAO` or `DAPP_BLOCK_PREVRANDAO`
+- Environment: `FOUNDRY_BLOCK_PREVRANDAO`, `DAPP_BLOCK_PREVRANDAO`, or `DAPP_TEST_BLOCK_PREVRANDAO`
 
 The `block.prevrandao` value during local EVM execution, as a 32-byte hex string.
 
@@ -396,7 +396,7 @@ value is used instead. The `--block-prevrandao` flag overrides it.
 
 - Type: boolean
 - Default: `true`
-- Environment: `FOUNDRY_ISOLATE` or `DAPP_ISOLATE`
+- Environment: `FOUNDRY_ISOLATE`, `DAPP_ISOLATE`, or `DAPP_TEST_ISOLATE`
 
 Whether to execute each top-level call made by a test or script as its own transaction.
 
@@ -418,7 +418,7 @@ isolate = false
 
 - Type: boolean
 - Default: `false`
-- Environment: `FOUNDRY_DISABLE_BLOCK_GAS_LIMIT` or `DAPP_DISABLE_BLOCK_GAS_LIMIT`
+- Environment: `FOUNDRY_DISABLE_BLOCK_GAS_LIMIT`, `DAPP_DISABLE_BLOCK_GAS_LIMIT`, or `DAPP_TEST_DISABLE_BLOCK_GAS_LIMIT`
 
 Whether to skip the check that a transaction's gas limit fits within the block gas limit.
 
@@ -429,7 +429,7 @@ The `--disable-block-gas-limit` flag, also spelled `--no-block-gas-limit` or
 
 - Type: boolean
 - Default: `false`
-- Environment: `FOUNDRY_ENABLE_TX_GAS_LIMIT` or `DAPP_ENABLE_TX_GAS_LIMIT`
+- Environment: `FOUNDRY_ENABLE_TX_GAS_LIMIT`, `DAPP_ENABLE_TX_GAS_LIMIT`, or `DAPP_TEST_ENABLE_TX_GAS_LIMIT`
 
 Whether to enforce the per-transaction gas limit cap introduced in Osaka (EIP-7825).
 
@@ -441,7 +441,7 @@ to catch transactions that a chain enforcing the cap would reject. The
 
 - Type: boolean
 - Default: `false`
-- Environment: `FOUNDRY_LIVE_LOGS` or `DAPP_LIVE_LOGS`
+- Environment: `FOUNDRY_LIVE_LOGS`, `DAPP_LIVE_LOGS`, or `DAPP_TEST_LIVE_LOGS`
 
 Whether to print `console.log` output while tests and scripts run instead of after they
 finish.
@@ -455,7 +455,7 @@ run.
 
 - Type: boolean
 - Default: `false`
-- Environment: `FOUNDRY_ALLOW_INTERNAL_EXPECT_REVERT` or `DAPP_ALLOW_INTERNAL_EXPECT_REVERT`
+- Environment: `FOUNDRY_ALLOW_INTERNAL_EXPECT_REVERT`, `DAPP_ALLOW_INTERNAL_EXPECT_REVERT`, or `DAPP_TEST_ALLOW_INTERNAL_EXPECT_REVERT`
 
 Whether `vm.expectRevert` can be satisfied by a revert at the cheatcode's own call depth,
 such as one from an internal function.
@@ -470,7 +470,7 @@ with inline config: `/// forge-config: default.allow_internal_expect_revert = tr
 
 - Type: boolean
 - Default: `false`
-- Environment: `FOUNDRY_ALWAYS_USE_CREATE_2_FACTORY` or `DAPP_ALWAYS_USE_CREATE_2_FACTORY`
+- Environment: `FOUNDRY_ALWAYS_USE_CREATE_2_FACTORY`, `DAPP_ALWAYS_USE_CREATE_2_FACTORY`, or `DAPP_TEST_ALWAYS_USE_CREATE_2_FACTORY`
 
 Whether to route salted `CREATE2` deployments through the CREATE2 deployer in tests and
 non-broadcasting scripts too.
@@ -485,7 +485,7 @@ are routed. The `--always-use-create-2-factory` flag enables it for one run.
 
 - Type: string
 - Default: `"market"`
-- Environment: `FOUNDRY_EIP1559_FEE_ESTIMATE` or `DAPP_EIP1559_FEE_ESTIMATE`
+- Environment: `FOUNDRY_EIP1559_FEE_ESTIMATE`, `DAPP_EIP1559_FEE_ESTIMATE`, or `DAPP_TEST_EIP1559_FEE_ESTIMATE`
 - Values: `low`, `market`, `aggressive`
 
 How to estimate EIP-1559 fees for the transactions Foundry sends.
@@ -509,7 +509,7 @@ override `maxFeePerGas` and `maxPriorityFeePerGas` respectively, and
 
 - Type: boolean
 - Default: `true`
-- Environment: `FOUNDRY_ASSERTIONS_REVERT` or `DAPP_ASSERTIONS_REVERT`
+- Environment: `FOUNDRY_ASSERTIONS_REVERT`, `DAPP_ASSERTIONS_REVERT`, or `DAPP_TEST_ASSERTIONS_REVERT`
 
 Whether a failed `vm.assert*` cheatcode assertion reverts.
 
@@ -522,7 +522,7 @@ forge-std `assert*` helpers call these.
 
 - Type: boolean
 - Default: `false`
-- Environment: `FOUNDRY_LEGACY_ASSERTIONS` or `DAPP_LEGACY_ASSERTIONS`
+- Environment: `FOUNDRY_LEGACY_ASSERTIONS`, `DAPP_LEGACY_ASSERTIONS`, or `DAPP_TEST_LEGACY_ASSERTIONS`
 
 Whether to also call the test contract's `failed()` function to decide whether a test
 failed.
@@ -536,7 +536,7 @@ assertion.
 
 - Type: boolean
 - Default: `false`
-- Environment: `FOUNDRY_UNCHECKED_CHEATCODE_ARTIFACTS` or `DAPP_UNCHECKED_CHEATCODE_ARTIFACTS`
+- Environment: `FOUNDRY_UNCHECKED_CHEATCODE_ARTIFACTS`, `DAPP_UNCHECKED_CHEATCODE_ARTIFACTS`, or `DAPP_TEST_UNCHECKED_CHEATCODE_ARTIFACTS`
 
 Whether to let `vm.getCode` and `vm.getDeployedCode` read artifacts the current build did
 not produce.
@@ -549,7 +549,7 @@ recompiled or are only present in the cache or output directory.
 
 - Type: boolean
 - Default: `false`
-- Environment: `FOUNDRY_DECODE_EXTERNAL_STORAGE` or `DAPP_DECODE_EXTERNAL_STORAGE`
+- Environment: `FOUNDRY_DECODE_EXTERNAL_STORAGE`, `DAPP_DECODE_EXTERNAL_STORAGE`, or `DAPP_TEST_DECODE_EXTERNAL_STORAGE`
 
 Whether to decode the storage of contracts outside the local project in state diffs, using
 the verified source a block explorer has for them.
@@ -571,7 +571,7 @@ run.
 
 - Type: string (32-byte hex)
 - Default: `"0x0000000000000000000000000000000000000000000000000000000000000000"`
-- Environment: `FOUNDRY_CREATE2_LIBRARY_SALT` or `DAPP_CREATE2_LIBRARY_SALT`
+- Environment: `FOUNDRY_CREATE2_LIBRARY_SALT`, `DAPP_CREATE2_LIBRARY_SALT`, or `DAPP_TEST_CREATE2_LIBRARY_SALT`
 
 The salt used to deploy linked libraries with CREATE2.
 
@@ -589,7 +589,7 @@ every contract that links to those libraries.
 
 - Type: string (address)
 - Default: `"0x4e59b44847b379578588920ca78fbf26c0b4956c"`
-- Environment: `FOUNDRY_CREATE2_DEPLOYER` or `DAPP_CREATE2_DEPLOYER`
+- Environment: `FOUNDRY_CREATE2_DEPLOYER`, `DAPP_CREATE2_DEPLOYER`, or `DAPP_TEST_CREATE2_DEPLOYER`
 
 The address of the CREATE2 deployer contract used for salted deployments and library
 linking.
@@ -608,7 +608,7 @@ overrides it.
 
 - Type: integer
 - Default: `120`
-- Environment: `FOUNDRY_TRANSACTION_TIMEOUT` or `DAPP_TRANSACTION_TIMEOUT`
+- Environment: `FOUNDRY_TRANSACTION_TIMEOUT`, `DAPP_TRANSACTION_TIMEOUT`, or `DAPP_TEST_TRANSACTION_TIMEOUT`
 
 How many seconds to wait for a sent transaction's receipt before giving up.
 
@@ -619,7 +619,7 @@ Used by `forge script` broadcasts, `forge create`, `cast send` and `cast safe`. 
 
 - Type: boolean
 - Default: `true`
-- Environment: `FOUNDRY_SCRIPT_EXECUTION_PROTECTION` or `DAPP_SCRIPT_EXECUTION_PROTECTION`
+- Environment: `FOUNDRY_SCRIPT_EXECUTION_PROTECTION`, `DAPP_SCRIPT_EXECUTION_PROTECTION`, or `DAPP_TEST_SCRIPT_EXECUTION_PROTECTION`
 
 Whether `forge script` guards against relying on the script contract's address and caller.
 
@@ -739,7 +739,7 @@ fs_permissions = [
 
 - Type: boolean
 - Default: `false`
-- Environment: `FOUNDRY_ETH_RPC_ACCEPT_INVALID_CERTS` or `DAPP_ETH_RPC_ACCEPT_INVALID_CERTS`
+- Environment: `FOUNDRY_ETH_RPC_ACCEPT_INVALID_CERTS`, `DAPP_ETH_RPC_ACCEPT_INVALID_CERTS`, or `DAPP_TEST_ETH_RPC_ACCEPT_INVALID_CERTS`
 
 Whether to accept invalid TLS certificates from the RPC endpoint.
 
@@ -751,7 +751,7 @@ certificate. The `-k`/`--insecure` flag enables it for a single run.
 
 - Type: boolean
 - Default: `false`
-- Environment: `FOUNDRY_ETH_RPC_NO_PROXY` or `DAPP_ETH_RPC_NO_PROXY`
+- Environment: `FOUNDRY_ETH_RPC_NO_PROXY`, `DAPP_ETH_RPC_NO_PROXY`, or `DAPP_TEST_ETH_RPC_NO_PROXY`
 
 Whether to disable automatic proxy detection for the RPC endpoint.
 
@@ -764,7 +764,7 @@ or the macOS App Sandbox) where system proxy detection through SCDynamicStore cr
 
 - Type: string
 - Default: none
-- Environment: `FOUNDRY_ETH_RPC_JWT` or `DAPP_ETH_RPC_JWT`
+- Environment: `FOUNDRY_ETH_RPC_JWT`, `DAPP_ETH_RPC_JWT`, or `DAPP_TEST_ETH_RPC_JWT`
 
 Hex-encoded JWT secret used to authenticate RPC calls.
 
@@ -780,7 +780,7 @@ Avoid committing the secret; prefer setting it from the environment.
 
 - Type: integer
 - Default: none
-- Environment: `FOUNDRY_ETH_RPC_TIMEOUT` or `DAPP_ETH_RPC_TIMEOUT`
+- Environment: `FOUNDRY_ETH_RPC_TIMEOUT`, `DAPP_ETH_RPC_TIMEOUT`, or `DAPP_TEST_ETH_RPC_TIMEOUT`
 
 Timeout in seconds for each RPC request.
 
@@ -792,7 +792,7 @@ The `--rpc-timeout` flag or the `ETH_RPC_TIMEOUT` environment variable overrides
 
 - Type: array of string
 - Default: none
-- Environment: `FOUNDRY_ETH_RPC_HEADERS` or `DAPP_ETH_RPC_HEADERS`
+- Environment: `FOUNDRY_ETH_RPC_HEADERS`, `DAPP_ETH_RPC_HEADERS`, or `DAPP_TEST_ETH_RPC_HEADERS`
 
 Extra HTTP headers sent with every RPC request, each written as `name:value`.
 
@@ -811,7 +811,7 @@ eth_rpc_headers = ["x-custom-header:value", "x-another-header:another-value"]
 
 - Type: boolean
 - Default: `false`
-- Environment: `FOUNDRY_ETH_RPC_CURL` or `DAPP_ETH_RPC_CURL`
+- Environment: `FOUNDRY_ETH_RPC_CURL`, `DAPP_ETH_RPC_CURL`, or `DAPP_TEST_ETH_RPC_CURL`
 
 Whether to print the equivalent `curl` command for each RPC request instead of sending it.
 
@@ -824,7 +824,7 @@ it for a single run.
 
 - Type: boolean
 - Default: `false`
-- Environment: `FOUNDRY_NO_RPC_RATE_LIMIT` or `DAPP_NO_RPC_RATE_LIMIT`
+- Environment: `FOUNDRY_NO_RPC_RATE_LIMIT`, `DAPP_NO_RPC_RATE_LIMIT`, or `DAPP_TEST_NO_RPC_RATE_LIMIT`
 
 Whether to disable client-side rate limiting of fork RPC requests.
 
@@ -838,7 +838,7 @@ a single run.
 
 - Type: boolean
 - Default: `false`
-- Environment: `FOUNDRY_NO_FORK_BAL` or `DAPP_NO_FORK_BAL`
+- Environment: `FOUNDRY_NO_FORK_BAL`, `DAPP_NO_FORK_BAL`, or `DAPP_TEST_NO_FORK_BAL`
 
 Whether to disable prewarming the fork cache from the parent block's access list (BAL) for
 forks created at a transaction hash.

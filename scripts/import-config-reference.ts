@@ -12,6 +12,8 @@ export type Setting = {
   table?: boolean;
   default?: string | null;
   values?: string[];
+  /** Values that need a Cargo feature, mapped to that feature. */
+  valueFeatures?: Record<string, string>;
   aliases?: string[];
   env?: string[];
   deprecated?: string;
@@ -101,6 +103,17 @@ export function validateSettings(value: unknown, origin: string): Setting[] {
       fail(`${key}: deprecated must be a string`);
     if (![setting.values, setting.aliases, setting.env].every(strings))
       fail(`${key}: values, aliases and env must be string arrays`);
+    const features = setting.valueFeatures;
+    if (
+      features !== undefined &&
+      (typeof features !== "object" ||
+        features === null ||
+        Array.isArray(features) ||
+        !Object.entries(features).every(
+          ([value, feature]) => typeof feature === "string" && setting.values?.includes(value),
+        ))
+    )
+      fail(`${key}: valueFeatures must map listed values to feature names`);
   }
   return reference.settings as Setting[];
 }
@@ -325,7 +338,13 @@ export function renderSetting(setting: Setting, level: number): string {
     `- Default: ${setting.default == null ? "none" : code(setting.default)}`,
   ];
   if (setting.env?.length) bullets.push(`- Environment: ${either(setting.env.map(code))}`);
-  if (setting.values?.length) bullets.push(`- Values: ${setting.values.map(code).join(", ")}`);
+  if (setting.values?.length) {
+    const value = (v: string) => {
+      const feature = setting.valueFeatures?.[v];
+      return feature ? `${code(v)} (requires the ${code(feature)} build feature)` : code(v);
+    };
+    bullets.push(`- Values: ${setting.values.map(value).join(", ")}`);
+  }
   if (setting.aliases?.length) bullets.push(`- Aliases: ${setting.aliases.map(code).join(", ")}`);
   if (setting.deprecated) bullets.push(`- Deprecated: use ${code(setting.deprecated)} instead`);
   return [heading, bullets.join("\n"), description].filter(Boolean).join("\n\n");

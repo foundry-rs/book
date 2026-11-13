@@ -128,7 +128,6 @@ table that applies to every profile; a profile's own table takes precedence.
 
 - Type: string (path)
 - Default: `"utils/JsonBindings.sol"`
-- Environment: `FOUNDRY_BIND_JSON_OUT`
 
 Solidity file that `forge bind-json` writes the generated bindings to.
 
@@ -140,7 +139,6 @@ type names in this file when no bindings path is given.
 
 - Type: array of string (glob)
 - Default: `[]`
-- Environment: `FOUNDRY_BIND_JSON_INCLUDE`
 
 Glob patterns of the source files whose structs get bindings.
 
@@ -151,7 +149,6 @@ included except those in library directories.
 
 - Type: array of string (glob)
 - Default: `[]`
-- Environment: `FOUNDRY_BIND_JSON_EXCLUDE`
 
 Glob patterns of source files whose structs get no bindings.
 
@@ -245,7 +242,7 @@ level of `[profile.<name>]`.
 
 - Type: boolean
 - Default: `false`
-- Environment: `FOUNDRY_CELO` or `DAPP_CELO`
+- Environment: `FOUNDRY_CELO`, `DAPP_CELO`, or `DAPP_TEST_CELO`
 
 Enable Celo network features.
 
@@ -253,7 +250,7 @@ Enable Celo network features.
 
 - Type: boolean
 - Default: `false`
-- Environment: `FOUNDRY_BYPASS_PREVRANDAO` or `DAPP_BYPASS_PREVRANDAO`
+- Environment: `FOUNDRY_BYPASS_PREVRANDAO`, `DAPP_BYPASS_PREVRANDAO`, or `DAPP_TEST_BYPASS_PREVRANDAO`
 
 Whether to bypass prevrandao.
 

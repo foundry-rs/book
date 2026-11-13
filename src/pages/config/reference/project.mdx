@@ -41,7 +41,7 @@ The base file cannot use `extends` in the same profile, and a file cannot extend
 
 - Type: string (path)
 - Default: `"src"`
-- Environment: `FOUNDRY_SRC` or `DAPP_SRC`
+- Environment: `FOUNDRY_SRC`, `DAPP_SRC`, or `DAPP_TEST_SRC`
 
 Directory containing the project's contract sources, relative to the project root.
 
@@ -54,7 +54,7 @@ this directory, so imports such as `import "src/Counter.sol";` resolve. The `--c
 
 - Type: string (path)
 - Default: `"test"`
-- Environment: `FOUNDRY_TEST` or `DAPP_TEST`
+- Environment: `FOUNDRY_TEST`, `DAPP_TEST`, or `DAPP_TEST_TEST`
 
 Directory containing the project's test contracts, relative to the project root.
 
@@ -66,7 +66,7 @@ resolve.
 
 - Type: string (path)
 - Default: `"script"`
-- Environment: `FOUNDRY_SCRIPT` or `DAPP_SCRIPT`
+- Environment: `FOUNDRY_SCRIPT`, `DAPP_SCRIPT`, or `DAPP_TEST_SCRIPT`
 
 Directory containing the project's Solidity scripts, relative to the project root.
 
@@ -78,7 +78,7 @@ adds a `script/=script/` style remapping for it, so imports such as
 
 - Type: string (path)
 - Default: `"out"`
-- Environment: `FOUNDRY_OUT` or `DAPP_OUT`
+- Environment: `FOUNDRY_OUT`, `DAPP_OUT`, or `DAPP_TEST_OUT`
 
 Directory where compiled contract artifacts are written, relative to the project root.
 
@@ -91,7 +91,7 @@ the `out` directory does not exist but `artifacts` does, Foundry uses `artifacts
 
 - Type: array of string (path)
 - Default: `["lib"]`
-- Environment: `FOUNDRY_LIBS` or `DAPP_LIBS`
+- Environment: `FOUNDRY_LIBS`, `DAPP_LIBS`, or `DAPP_TEST_LIBS`
 
 Directories containing dependency libraries, relative to the project root.
 
@@ -118,7 +118,7 @@ warnings are reported on every build.
 
 - Type: string (path)
 - Default: `"cache"`
-- Environment: `FOUNDRY_CACHE_PATH` or `DAPP_CACHE_PATH`
+- Environment: `FOUNDRY_CACHE_PATH`, `DAPP_CACHE_PATH`, or `DAPP_TEST_CACHE_PATH`
 
 Directory for the compiler cache and other project caches, relative to the project root.
 
@@ -132,7 +132,7 @@ move them. The `--cache-path` flag overrides this setting.
 
 - Type: string (path)
 - Default: `"broadcast"`
-- Environment: `FOUNDRY_BROADCAST` or `DAPP_BROADCAST`
+- Environment: `FOUNDRY_BROADCAST`, `DAPP_BROADCAST`, or `DAPP_TEST_BROADCAST`
 
 Directory where `forge script` writes broadcast transaction logs, relative to the project
 root.
@@ -147,7 +147,7 @@ relative path under `cache_path` instead. Cheatcodes such as `vm.getBroadcast` a
 
 - Type: boolean
 - Default: `false`
-- Environment: `FOUNDRY_FORCE` or `DAPP_FORCE`
+- Environment: `FOUNDRY_FORCE`, `DAPP_FORCE`, or `DAPP_TEST_FORCE`
 
 Whether to delete all build artifacts and caches before compiling.
 

@@ -16,7 +16,7 @@ Configuration related to the behavior of `forge test`.
 
 - Type: integer
 - Default: `0`
-- Environment: `FOUNDRY_VERBOSITY` or `DAPP_VERBOSITY`
+- Environment: `FOUNDRY_VERBOSITY`, `DAPP_VERBOSITY`, or `DAPP_TEST_VERBOSITY`
 
 Default verbosity for test and script output, as if passed with `-v` flags.
 
@@ -50,7 +50,7 @@ run while it is enabled.
 
 - Type: string (address)
 - Default: `"0x1804c8ab1f12e6bbf3894d4083f33e07309d1f38"`
-- Environment: `FOUNDRY_SENDER` or `DAPP_SENDER`
+- Environment: `FOUNDRY_SENDER`, `DAPP_SENDER`, `DAPP_TEST_SENDER`, or `DAPP_TEST_ADDRESS`
 
 The address that deploys test contracts and calls test functions, and the default script
 sender.
@@ -64,7 +64,7 @@ configured wallet determines another. The `--sender` flag overrides it.
 
 - Type: string (address)
 - Default: `"0x1804c8ab1f12e6bbf3894d4083f33e07309d1f38"`
-- Environment: `FOUNDRY_TX_ORIGIN` or `DAPP_TX_ORIGIN`
+- Environment: `FOUNDRY_TX_ORIGIN`, `DAPP_TX_ORIGIN`, or `DAPP_TEST_TX_ORIGIN`
 
 The `tx.origin` value for EVM execution.
 
@@ -77,7 +77,7 @@ changes it. Use `vm.prank(sender, origin)` or `vm.startPrank(sender, origin)` to
 
 - Type: integer
 - Default: `"0xffffffffffffffffffffffff"`
-- Environment: `FOUNDRY_INITIAL_BALANCE` or `DAPP_INITIAL_BALANCE`
+- Environment: `FOUNDRY_INITIAL_BALANCE`, `DAPP_INITIAL_BALANCE`, or `DAPP_TEST_INITIAL_BALANCE`
 
 The balance, in wei, given to each test contract and to the accounts that deploy and call
 it.
@@ -91,7 +91,7 @@ string, such as `"0xffffffffffffffffffffffff"`. The `--initial-balance` flag ove
 
 - Type: integer
 - Default: `1`
-- Environment: `FOUNDRY_BLOCK_NUMBER` or `DAPP_BLOCK_NUMBER`
+- Environment: `FOUNDRY_BLOCK_NUMBER`, `DAPP_BLOCK_NUMBER`, `DAPP_TEST_BLOCK_NUMBER`, or `DAPP_TEST_NUMBER`
 
 The `block.number` value during local EVM execution.
 
@@ -102,7 +102,7 @@ it.
 
 - Type: string or integer (chain name or ID)
 - Default: none
-- Environment: `FOUNDRY_CHAIN_ID` or `DAPP_CHAIN_ID`
+- Environment: `FOUNDRY_CHAIN_ID`, `DAPP_CHAIN_ID`, or `DAPP_TEST_CHAIN_ID`
 - Aliases: `chain`
 
 The chain Foundry targets, as a chain name or EIP-155 chain ID.
@@ -127,8 +127,8 @@ chain_id = "sepolia"
 
 - Type: string
 - Default: none
-- Environment: `FOUNDRY_NETWORK` or `DAPP_NETWORK`
-- Values: `ethereum`, `base`, `optimism`, `tempo`, `monad`
+- Environment: `FOUNDRY_NETWORK`, `DAPP_NETWORK`, or `DAPP_TEST_NETWORK`
+- Values: `ethereum`, `base` (requires the `base` build feature), `optimism` (requires the `optimism` build feature), `tempo`, `monad` (requires the `monad` build feature)
 
 Enable a specific network family.
 
@@ -152,7 +152,7 @@ network = "tempo"
 
 - Type: string
 - Default: none
-- Environment: `FOUNDRY_HARDFORK` or `DAPP_HARDFORK`
+- Environment: `FOUNDRY_HARDFORK`, `DAPP_HARDFORK`, or `DAPP_TEST_HARDFORK`
 
 The EVM hardfork used to execute tests, scripts and other local EVM runs.
 
@@ -183,7 +183,7 @@ point.
 
 - Type: integer
 - Default: `1073741824`
-- Environment: `FOUNDRY_GAS_LIMIT` or `DAPP_GAS_LIMIT`
+- Environment: `FOUNDRY_GAS_LIMIT`, `DAPP_GAS_LIMIT`, or `DAPP_TEST_GAS_LIMIT`
 
 The gas limit for each top-level call in tests and scripts, also used as `block.gaslimit`.
 
@@ -204,7 +204,7 @@ not this key.
 
 - Type: integer
 - Default: none
-- Environment: `FOUNDRY_GAS_PRICE` or `DAPP_GAS_PRICE`
+- Environment: `FOUNDRY_GAS_PRICE`, `DAPP_GAS_PRICE`, or `DAPP_TEST_GAS_PRICE`
 
 The `tx.gasprice` value, in wei, during EVM execution.
 
@@ -216,7 +216,7 @@ and flags such as `--with-gas-price`. The `--gas-price` flag overrides it.
 
 - Type: integer
 - Default: `0`
-- Environment: `FOUNDRY_BLOCK_BASE_FEE_PER_GAS` or `DAPP_BLOCK_BASE_FEE_PER_GAS`
+- Environment: `FOUNDRY_BLOCK_BASE_FEE_PER_GAS`, `DAPP_BLOCK_BASE_FEE_PER_GAS`, or `DAPP_TEST_BLOCK_BASE_FEE_PER_GAS`
 
 The `block.basefee` value, in wei, during local EVM execution.
 
@@ -227,7 +227,7 @@ When forking, the fork block's base fee is used instead. The `--block-base-fee-p
 
 - Type: string (address)
 - Default: `"0x0000000000000000000000000000000000000000"`
-- Environment: `FOUNDRY_BLOCK_COINBASE` or `DAPP_BLOCK_COINBASE`
+- Environment: `FOUNDRY_BLOCK_COINBASE`, `DAPP_BLOCK_COINBASE`, or `DAPP_TEST_BLOCK_COINBASE`
 
 The `block.coinbase` value during local EVM execution.
 
@@ -238,7 +238,7 @@ overrides it.
 
 - Type: integer
 - Default: `1`
-- Environment: `FOUNDRY_BLOCK_TIMESTAMP` or `DAPP_BLOCK_TIMESTAMP`
+- Environment: `FOUNDRY_BLOCK_TIMESTAMP`, `DAPP_BLOCK_TIMESTAMP`, `DAPP_TEST_BLOCK_TIMESTAMP`, or `DAPP_TEST_TIMESTAMP`
 
 The `block.timestamp` value, in seconds, during local EVM execution.
 
@@ -249,7 +249,7 @@ overrides it.
 
 - Type: integer
 - Default: `0`
-- Environment: `FOUNDRY_BLOCK_DIFFICULTY` or `DAPP_BLOCK_DIFFICULTY`
+- Environment: `FOUNDRY_BLOCK_DIFFICULTY`, `DAPP_BLOCK_DIFFICULTY`, or `DAPP_TEST_BLOCK_DIFFICULTY`
 
 The `block.difficulty` value during local EVM execution.
 
@@ -262,7 +262,7 @@ overrides it.
 
 - Type: array of string
 - Default: `["*"]`
-- Environment: `FOUNDRY_GAS_REPORTS` or `DAPP_GAS_REPORTS`
+- Environment: `FOUNDRY_GAS_REPORTS`, `DAPP_GAS_REPORTS`, or `DAPP_TEST_GAS_REPORTS`
 
 The contracts to include in gas reports generated by `forge test --gas-report`.
 
@@ -279,7 +279,7 @@ gas_reports = ["Counter", "Token"]
 
 - Type: boolean
 - Default: `false`
-- Environment: `FOUNDRY_NO_STORAGE_CACHING` or `DAPP_NO_STORAGE_CACHING`
+- Environment: `FOUNDRY_NO_STORAGE_CACHING`, `DAPP_NO_STORAGE_CACHING`, or `DAPP_TEST_NO_STORAGE_CACHING`
 
 Whether to disable on-disk caching of fork state entirely.
 
@@ -292,7 +292,7 @@ block from an older cache. The `--no-storage-caching` flag enables it for a sing
 
 - Type: boolean
 - Default: `false`
-- Environment: `FOUNDRY_FORK_PREFETCH` or `DAPP_FORK_PREFETCH`
+- Environment: `FOUNDRY_FORK_PREFETCH`, `DAPP_FORK_PREFETCH`, or `DAPP_TEST_FORK_PREFETCH`
 
 Whether to prefetch remote fork state before the EVM reads it.
 
@@ -335,7 +335,7 @@ endpoints = "remote"
 
 ##### `rpc_storage_caching.chains`
 
-- Type: string
+- Type: "all", "none", or array of chain names or IDs
 - Default: `"all"`
 
 Chains whose fork state is cached.
@@ -350,7 +350,7 @@ Local development chains (chain IDs 99, 1337 and 31337) are never cached.
 
 ##### `rpc_storage_caching.endpoints`
 
-- Type: string
+- Type: "all", "remote", or string (regular expression)
 - Default: `"all"`
 
 RPC endpoints whose fork state is cached.
@@ -365,7 +365,7 @@ Valid values:
 
 - Type: string
 - Default: none
-- Environment: `FOUNDRY_ETH_RPC_URL` or `DAPP_ETH_RPC_URL`
+- Environment: `FOUNDRY_ETH_RPC_URL`, `DAPP_ETH_RPC_URL`, or `DAPP_TEST_ETH_RPC_URL`
 
 URL or alias of the RPC endpoint used for RPC calls and for the main fork in tests and
 scripts.
@@ -396,7 +396,7 @@ mainnet = "https://eth-mainnet.g.alchemy.com/v2/${ALCHEMY_KEY}"
 
 - Type: string
 - Default: none
-- Environment: `FOUNDRY_ETHERSCAN_API_KEY` or `DAPP_ETHERSCAN_API_KEY`
+- Environment: `DAPP_ETHERSCAN_API_KEY`, `DAPP_TEST_ETHERSCAN_API_KEY`, or `ETHERSCAN_API_KEY`
 
 Etherscan API key, or the name of an entry in the `etherscan` table.
 
@@ -415,7 +415,7 @@ or an `etherscan` entry with a `${VAR}` placeholder.
 
 - Type: string (regular expression)
 - Default: none
-- Environment: `FOUNDRY_MATCH_TEST` or `DAPP_MATCH_TEST`
+- Environment: `FOUNDRY_MATCH_TEST`, `DAPP_MATCH_TEST`, or `DAPP_TEST_MATCH_TEST`
 
 Only run test functions whose signature matches this regular expression.
 
@@ -433,7 +433,7 @@ match_test = "^test_transfer"
 
 - Type: string (regular expression)
 - Default: none
-- Environment: `FOUNDRY_NO_MATCH_TEST` or `DAPP_NO_MATCH_TEST`
+- Environment: `FOUNDRY_NO_MATCH_TEST`, `DAPP_NO_MATCH_TEST`, or `DAPP_TEST_NO_MATCH_TEST`
 
 Skip test functions whose signature matches this regular expression.
 
@@ -446,7 +446,7 @@ this value.
 
 - Type: string (regular expression)
 - Default: none
-- Environment: `FOUNDRY_MATCH_CONTRACT` or `DAPP_MATCH_CONTRACT`
+- Environment: `FOUNDRY_MATCH_CONTRACT`, `DAPP_MATCH_CONTRACT`, or `DAPP_TEST_MATCH_CONTRACT`
 
 Only run tests in contracts whose name matches this regular expression.
 
@@ -459,7 +459,7 @@ value.
 
 - Type: string (regular expression)
 - Default: none
-- Environment: `FOUNDRY_NO_MATCH_CONTRACT` or `DAPP_NO_MATCH_CONTRACT`
+- Environment: `FOUNDRY_NO_MATCH_CONTRACT`, `DAPP_NO_MATCH_CONTRACT`, or `DAPP_TEST_NO_MATCH_CONTRACT`
 
 Skip tests in contracts whose name matches this regular expression.
 
@@ -471,7 +471,7 @@ to the commands built on it, such as `forge coverage` and `forge snapshot`. The
 
 - Type: string (glob)
 - Default: none
-- Environment: `FOUNDRY_MATCH_PATH` or `DAPP_MATCH_PATH`
+- Environment: `FOUNDRY_MATCH_PATH`, `DAPP_MATCH_PATH`, or `DAPP_TEST_MATCH_PATH`
 
 Only run tests in source files whose path matches this glob pattern.
 
@@ -489,7 +489,7 @@ match_path = "test/unit/*"
 
 - Type: string (glob)
 - Default: none
-- Environment: `FOUNDRY_NO_MATCH_PATH` or `DAPP_NO_MATCH_PATH`
+- Environment: `FOUNDRY_NO_MATCH_PATH`, `DAPP_NO_MATCH_PATH`, or `DAPP_TEST_NO_MATCH_PATH`
 
 Skip tests in source files whose path matches this glob pattern.
 
@@ -502,7 +502,7 @@ to the commands built on it, such as `forge coverage` and `forge snapshot`. The
 
 - Type: integer
 - Default: none
-- Environment: `FOUNDRY_THREADS` or `DAPP_THREADS`
+- Environment: `FOUNDRY_THREADS`, `DAPP_THREADS`, or `DAPP_TEST_THREADS`
 
 Number of threads for parallel work such as running tests; `0` uses all logical cores.
 
@@ -513,7 +513,7 @@ Number of threads for parallel work such as running tests; `0` uses all logical 
 
 - Type: boolean
 - Default: `false`
-- Environment: `FOUNDRY_SHOW_PROGRESS` or `DAPP_SHOW_PROGRESS`
+- Environment: `FOUNDRY_SHOW_PROGRESS`, `DAPP_SHOW_PROGRESS`, or `DAPP_TEST_SHOW_PROGRESS`
 
 Whether `forge test` shows live progress for the run and each test suite while tests
 execute.
@@ -524,7 +524,7 @@ The `--show-progress` flag enables it for one run.
 
 - Type: integer
 - Default: none
-- Environment: `FOUNDRY_BLOCK_GAS_LIMIT` or `DAPP_BLOCK_GAS_LIMIT`
+- Environment: `FOUNDRY_BLOCK_GAS_LIMIT`, `DAPP_BLOCK_GAS_LIMIT`, or `DAPP_TEST_BLOCK_GAS_LIMIT`
 
 The `block.gaslimit` value and per-call gas limit, overriding `gas_limit` when set.
 
@@ -535,7 +535,7 @@ The `--block-gas-limit` flag, also spelled `--gas-limit`, overrides it.
 
 - Type: integer
 - Default: `134217728`
-- Environment: `FOUNDRY_MEMORY_LIMIT` or `DAPP_MEMORY_LIMIT`
+- Environment: `FOUNDRY_MEMORY_LIMIT`, `DAPP_MEMORY_LIMIT`, or `DAPP_TEST_MEMORY_LIMIT`
 
 The maximum memory, in bytes, that a single EVM execution may use.
 
@@ -546,7 +546,7 @@ overrides it.
 
 - Type: boolean
 - Default: `false`
-- Environment: `FOUNDRY_NAMES` or `DAPP_NAMES`
+- Environment: `FOUNDRY_NAMES`, `DAPP_NAMES`, or `DAPP_TEST_NAMES`
 
 Whether `forge build` prints the names of the compiled contracts, grouped by compiler
 version.
@@ -558,7 +558,7 @@ effect.
 
 - Type: boolean
 - Default: `false`
-- Environment: `FOUNDRY_SIZES` or `DAPP_SIZES`
+- Environment: `FOUNDRY_SIZES`, `DAPP_SIZES`, or `DAPP_TEST_SIZES`
 
 Whether `forge build` prints the runtime and initcode sizes of the compiled contracts.
 
@@ -610,7 +610,7 @@ private = { endpoint = "https://rpc.example.com", auth = "Bearer ${RPC_TOKEN}" }
 
 - Type: integer
 - Default: `120`
-- Environment: `FOUNDRY_PROMPT_TIMEOUT` or `DAPP_PROMPT_TIMEOUT`
+- Environment: `FOUNDRY_PROMPT_TIMEOUT`, `DAPP_PROMPT_TIMEOUT`, or `DAPP_TEST_PROMPT_TIMEOUT`
 
 How many seconds `vm.prompt` and the related prompt cheatcodes wait for input before
 reverting.
@@ -640,7 +640,7 @@ these values for the settings both sections share.
 
 - Type: integer
 - Default: `256`
-- Environment: `FOUNDRY_FUZZ_RUNS`
+- Environment: `FOUNDRY_FUZZ_RUNS` or `DAPP_TEST_FUZZ_RUNS`
 
 Number of fuzz runs (generated inputs) to execute for each fuzz test.
 
@@ -952,7 +952,7 @@ timeout instead. See also `fuzz.runs`.
 
 - Type: integer
 - Default: `500`
-- Environment: `FOUNDRY_INVARIANT_DEPTH`
+- Environment: `FOUNDRY_INVARIANT_DEPTH` or `DAPP_TEST_DEPTH`
 
 Number of calls executed in one run to try to break the invariants.
 

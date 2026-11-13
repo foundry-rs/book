@@ -249,7 +249,7 @@ How each invariant run chooses how many calls to execute.
 
 ##### `workers`
 
-- Type: string
+- Type: "auto" or integer
 - Default: `"auto"`
 - Environment: `FOUNDRY_INVARIANT_WORKERS`
 
@@ -1006,6 +1006,7 @@ take precedence over these values.
 - Type: array of string
 - Default: `["summary"]`
 - Environment: `FOUNDRY_COVERAGE_REPORT`
+- Values: `summary`, `lcov`, `debug`, `bytecode`, `attribution`, `gaps`
 
 Report kinds that `forge coverage` generates.
 
@@ -1121,6 +1122,7 @@ cached in `mutation_dir`.
 - Type: array of string
 - Default: `[]`
 - Environment: `FOUNDRY_MUTATION_INCLUDE_OPERATORS`
+- Values: `assembly`, `assignment`, `binary-op`, `delete-expression`, `elim-delegate`, `function-body`, `require`, `unary-op`
 
 Mutation operators to enable even when they are excluded.
 
@@ -1145,6 +1147,7 @@ Valid operators:
 - Type: array of string
 - Default: `[]`
 - Environment: `FOUNDRY_MUTATION_EXCLUDE_OPERATORS`
+- Values: `assembly`, `assignment`, `binary-op`, `delete-expression`, `elim-delegate`, `function-body`, `require`, `unary-op`
 
 Mutation operators to disable.
 
@@ -1196,7 +1199,7 @@ overrides it.
 
 - Type: string (path)
 - Default: `"cache/mutation"`
-- Environment: `FOUNDRY_MUTATION_DIR` or `DAPP_MUTATION_DIR`
+- Environment: `DAPP_MUTATION_DIR` or `DAPP_TEST_MUTATION_DIR`
 
 Directory where mutation testing caches mutants and results, so interrupted runs can
 resume.

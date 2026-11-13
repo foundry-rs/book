@@ -50,7 +50,7 @@ remappings win over the environment, the environment over `remappings.txt`,
 
 - Type: boolean
 - Default: `true`
-- Environment: `FOUNDRY_AUTO_DETECT_REMAPPINGS` or `DAPP_AUTO_DETECT_REMAPPINGS`
+- Environment: `FOUNDRY_AUTO_DETECT_REMAPPINGS`, `DAPP_AUTO_DETECT_REMAPPINGS`, or `DAPP_TEST_AUTO_DETECT_REMAPPINGS`
 
 Whether to detect remappings automatically by scanning the `libs` directories.
 
@@ -66,7 +66,7 @@ When disabled, only the remappings from `remappings`, `remappings.txt`, the
 
 - Type: array of string (path)
 - Default: `[]`
-- Environment: `FOUNDRY_ALLOW_PATHS` or `DAPP_ALLOW_PATHS`
+- Environment: `FOUNDRY_ALLOW_PATHS`, `DAPP_ALLOW_PATHS`, or `DAPP_TEST_ALLOW_PATHS`
 
 Additional directories that solc may read sources from, passed to `solc --allow-paths`.
 
@@ -79,7 +79,7 @@ by pnpm or similar tools. See
 
 - Type: array of string (path)
 - Default: `[]`
-- Environment: `FOUNDRY_INCLUDE_PATHS` or `DAPP_INCLUDE_PATHS`
+- Environment: `FOUNDRY_INCLUDE_PATHS`, `DAPP_INCLUDE_PATHS`, or `DAPP_TEST_INCLUDE_PATHS`
 
 Additional source directories for import resolution, passed to `solc --include-path`.
 
@@ -93,7 +93,7 @@ resolution](https://docs.soliditylang.org/en/latest/path-resolution.html).
 
 - Type: array of string
 - Default: `[]`
-- Environment: `FOUNDRY_LIBRARIES` or `DAPP_LIBRARIES`
+- Environment: `DAPP_LIBRARIES` or `FOUNDRY_LIBRARIES`
 
 Addresses of already deployed Solidity libraries to link against.
 
@@ -117,7 +117,7 @@ single comma-separated string) set the same value. While `allow_linked_libraries
 
 - Type: boolean
 - Default: `true`
-- Environment: `FOUNDRY_ALLOW_LINKED_LIBRARIES` or `DAPP_ALLOW_LINKED_LIBRARIES`
+- Environment: `FOUNDRY_ALLOW_LINKED_LIBRARIES`, `DAPP_ALLOW_LINKED_LIBRARIES`, or `DAPP_TEST_ALLOW_LINKED_LIBRARIES`
 
 Whether compiled contracts may depend on externally linked Solidity libraries.
 
@@ -143,7 +143,7 @@ and `FOUNDRY_ALLOW_LINKED_LIBRARIES`.
 
 - Type: string (version or path)
 - Default: none
-- Environment: `FOUNDRY_SOLC` or `DAPP_SOLC`
+- Environment: `FOUNDRY_SOLC`, `DAPP_SOLC`, or `DAPP_TEST_SOLC`
 
 The Solidity compiler to use for the whole project, instead of detecting versions per file.
 
@@ -179,7 +179,7 @@ for one invocation (accepting the same values, plus a `solc:` prefix).
 
 - Type: boolean
 - Default: `true`
-- Environment: `FOUNDRY_AUTO_DETECT_SOLC` or `DAPP_AUTO_DETECT_SOLC`
+- Environment: `FOUNDRY_AUTO_DETECT_SOLC`, `DAPP_AUTO_DETECT_SOLC`, or `DAPP_TEST_AUTO_DETECT_SOLC`
 
 Whether to detect the Solidity compiler versions to use from each file's `pragma solidity`.
 
@@ -195,7 +195,7 @@ set `solc` to use a single version.
 
 - Type: boolean
 - Default: `false`
-- Environment: `FOUNDRY_OFFLINE` or `DAPP_OFFLINE`
+- Environment: `FOUNDRY_OFFLINE`, `DAPP_OFFLINE`, or `DAPP_TEST_OFFLINE`
 
 Whether to disallow network access for downloads and external lookups.
 
@@ -213,7 +213,7 @@ only installed ones are used. `--offline` enables it for one invocation.
 
 - Type: array of string (path)
 - Default: `[]`
-- Environment: `FOUNDRY_IGNORED_WARNINGS_FROM` or `DAPP_IGNORED_WARNINGS_FROM`
+- Environment: `FOUNDRY_IGNORED_WARNINGS_FROM`, `DAPP_IGNORED_WARNINGS_FROM`, or `DAPP_TEST_IGNORED_WARNINGS_FROM`
 
 Paths whose compiler warnings are silenced.
 
@@ -233,7 +233,7 @@ build when `deny` is set. To silence only some codes, use `ignored_error_codes_f
 
 - Type: array of string or integer
 - Default: `["license", "code-size", "init-code-size", "transient-storage", "transfer-deprecated", "natspec-memory-safe-assembly-deprecated"]`
-- Environment: `FOUNDRY_IGNORED_ERROR_CODES` or `DAPP_IGNORED_ERROR_CODES`
+- Environment: `FOUNDRY_IGNORED_ERROR_CODES`, `DAPP_IGNORED_ERROR_CODES`, or `DAPP_TEST_IGNORED_ERROR_CODES`
 
 Solidity compiler warning codes to silence.
 
@@ -263,7 +263,7 @@ some paths, use `ignored_error_codes_from`.
 
 - Type: boolean
 - Default: none
-- Environment: `FOUNDRY_DENY_WARNINGS` or `DAPP_DENY_WARNINGS`
+- Environment: `FOUNDRY_DENY_WARNINGS`, `DAPP_DENY_WARNINGS`, or `DAPP_TEST_DENY_WARNINGS`
 - Deprecated: use `deny = warnings` instead
 
 Deprecated: use `deny = "warnings"` instead.
@@ -276,7 +276,7 @@ unless `deny` is also set in the same profile, in which case `deny` wins. The
 
 - Type: string
 - Default: `"osaka"`
-- Environment: `FOUNDRY_EVM_VERSION` or `DAPP_EVM_VERSION`
+- Environment: `FOUNDRY_EVM_VERSION`, `DAPP_EVM_VERSION`, or `DAPP_TEST_EVM_VERSION`
 
 The EVM version to compile contracts for and, unless `hardfork` is set, to execute them
 with.
@@ -302,7 +302,7 @@ evm_version = "paris"
 
 - Type: string
 - Default: none
-- Environment: `FOUNDRY_REVERT_STRINGS` or `DAPP_REVERT_STRINGS`
+- Environment: `FOUNDRY_REVERT_STRINGS`, `DAPP_REVERT_STRINGS`, or `DAPP_TEST_REVERT_STRINGS`
 
 How solc handles revert and require reason strings.
 
@@ -323,7 +323,7 @@ it for one invocation.
 
 - Type: array of string
 - Default: `[]`
-- Environment: `FOUNDRY_EXTRA_OUTPUT_FILES` or `DAPP_EXTRA_OUTPUT_FILES`
+- Environment: `FOUNDRY_EXTRA_OUTPUT_FILES`, `DAPP_EXTRA_OUTPUT_FILES`, or `DAPP_TEST_EXTRA_OUTPUT_FILES`
 
 Compiler output to write as separate files next to each contract's artifact.
 
@@ -355,7 +355,7 @@ replaces it for one invocation.
 
 - Type: array of string
 - Default: `[]`
-- Environment: `FOUNDRY_EXTRA_OUTPUT` or `DAPP_EXTRA_OUTPUT`
+- Environment: `FOUNDRY_EXTRA_OUTPUT`, `DAPP_EXTRA_OUTPUT`, or `DAPP_TEST_EXTRA_OUTPUT`
 
 Additional compiler output to include in each contract's artifact.
 
@@ -381,7 +381,7 @@ use `extra_output_files`.
 
 - Type: string
 - Default: `"ipfs"`
-- Environment: `FOUNDRY_BYTECODE_HASH` or `DAPP_BYTECODE_HASH`
+- Environment: `FOUNDRY_BYTECODE_HASH`, `DAPP_BYTECODE_HASH`, or `DAPP_TEST_BYTECODE_HASH`
 
 The hash of the contract metadata that solc appends to the bytecode.
 
@@ -401,7 +401,7 @@ metadata trailer; to omit it entirely, also set `cbor_metadata = false`, or pass
 
 - Type: boolean
 - Default: `false`
-- Environment: `FOUNDRY_SPARSE_MODE` or `DAPP_SPARSE_MODE`
+- Environment: `FOUNDRY_SPARSE_MODE`, `DAPP_SPARSE_MODE`, or `DAPP_TEST_SPARSE_MODE`
 
 Has no effect; kept so that existing configuration files still load.
 
@@ -412,7 +412,7 @@ needs, is applied automatically when `skip` patterns are set.
 
 - Type: array of table
 - Default: none
-- Environment: `FOUNDRY_EXTERNAL_COMPILERS` or `DAPP_EXTERNAL_COMPILERS`
+- Environment: `FOUNDRY_EXTERNAL_COMPILERS`, `DAPP_EXTERNAL_COMPILERS`, or `DAPP_TEST_EXTERNAL_COMPILERS`
 
 External compiler adapters that build compiler-native EVM projects as part of the build.
 
@@ -456,7 +456,7 @@ Configuration related to the Solidity optimizer.
 
 - Type: boolean
 - Default: none
-- Environment: `FOUNDRY_OPTIMIZER` or `DAPP_OPTIMIZER`
+- Environment: `FOUNDRY_OPTIMIZER`, `DAPP_OPTIMIZER`, `DAPP_TEST_OPTIMIZER`, or `DAPP_BUILD_OPTIMIZE`
 
 Whether to enable the Solidity optimizer.
 
@@ -472,7 +472,7 @@ disables the optimizer unless `--ir-minimum` is used.
 
 - Type: integer
 - Default: none
-- Environment: `FOUNDRY_OPTIMIZER_RUNS` or `DAPP_OPTIMIZER_RUNS`
+- Environment: `FOUNDRY_OPTIMIZER_RUNS`, `DAPP_OPTIMIZER_RUNS`, `DAPP_TEST_OPTIMIZER_RUNS`, or `DAPP_BUILD_OPTIMIZE_RUNS`
 
 How many times each opcode of the deployed code is expected to run over the contract's
 lifetime.
@@ -491,7 +491,7 @@ neither is set, 200 is used. `--optimizer-runs` overrides it for one invocation.
 
 - Type: boolean
 - Default: `false`
-- Environment: `FOUNDRY_VIA_IR` or `DAPP_VIA_IR`
+- Environment: `FOUNDRY_VIA_IR`, `DAPP_VIA_IR`, or `DAPP_TEST_VIA_IR`
 
 Whether to compile through the Yul intermediate representation (IR) pipeline.
 
@@ -507,7 +507,7 @@ and `compilation_restrictions`.
 
 - Type: boolean
 - Default: `false`
-- Environment: `FOUNDRY_USE_LITERAL_CONTENT` or `DAPP_USE_LITERAL_CONTENT`
+- Environment: `FOUNDRY_USE_LITERAL_CONTENT`, `DAPP_USE_LITERAL_CONTENT`, or `DAPP_TEST_USE_LITERAL_CONTENT`
 
 Whether to store the source code itself in the contract metadata instead of only
 references.
@@ -520,7 +520,7 @@ invocation.
 
 - Type: table
 - Default: none
-- Environment: `FOUNDRY_OPTIMIZER_DETAILS` or `DAPP_OPTIMIZER_DETAILS`
+- Environment: `FOUNDRY_OPTIMIZER_DETAILS`, `DAPP_OPTIMIZER_DETAILS`, or `DAPP_TEST_OPTIMIZER_DETAILS`
 
 Switches individual Solidity optimizer components on or off.
 
@@ -619,7 +619,7 @@ If no verification targets are given, only assertions will be checked.
 
 - Type: table
 - Default: none
-- Environment: `FOUNDRY_MODEL_CHECKER` or `DAPP_MODEL_CHECKER`
+- Environment: `FOUNDRY_MODEL_CHECKER`, `DAPP_MODEL_CHECKER`, or `DAPP_TEST_MODEL_CHECKER`
 
 Settings for the Solidity SMTChecker, a formal verification module built into solc.
 
@@ -798,7 +798,7 @@ When choosing compiler profile, first profile (starting with default one) satisf
 
 - Type: array of table
 - Default: `[]`
-- Environment: `FOUNDRY_ADDITIONAL_COMPILER_PROFILES` or `DAPP_ADDITIONAL_COMPILER_PROFILES`
+- Environment: `FOUNDRY_ADDITIONAL_COMPILER_PROFILES`, `DAPP_ADDITIONAL_COMPILER_PROFILES`, or `DAPP_TEST_ADDITIONAL_COMPILER_PROFILES`
 
 Extra compiler settings profiles that sources can be compiled with besides the main
 settings.
@@ -891,7 +891,7 @@ Additional compiler profile [bytecode_hash](#bytecode_hash) setting.
 
 - Type: array of table
 - Default: `[]`
-- Environment: `FOUNDRY_COMPILATION_RESTRICTIONS` or `DAPP_COMPILATION_RESTRICTIONS`
+- Environment: `FOUNDRY_COMPILATION_RESTRICTIONS`, `DAPP_COMPILATION_RESTRICTIONS`, or `DAPP_TEST_COMPILATION_RESTRICTIONS`
 
 Restrictions on the compiler settings that matching source files may be compiled with.
 

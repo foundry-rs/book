@@ -16,6 +16,7 @@ applies to every profile; a profile's own table takes precedence.
 - Type: array of string
 - Default: `["high", "medium", "low"]`
 - Environment: `FOUNDRY_LINT_SEVERITY`
+- Values: `high`, `medium`, `low`, `info`, `gas`, `code-size`
 
 Severities of the lints to run.
 
@@ -83,6 +84,7 @@ The defaults allow common names like `rescueERC20`, `ERC721TokenReceiver`, `toke
 
 - Type: array of string
 - Default: `[]`
+- Values: `interface`, `library`, `abstract_contract`
 
 Contract kinds that the `multi-contract-file` lint ignores when a file declares more than
 one.
