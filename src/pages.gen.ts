@@ -18,6 +18,8 @@ type Page =
   | { path: '/cast'; render: 'static' }
   | { path: '/cast/reading-chain-data'; render: 'static' }
   | { path: '/cast/sending-transactions'; render: 'static' }
+  | { path: '/cast/token-approvals'; render: 'static' }
+  | { path: '/cast/tokenized-vaults'; render: 'static' }
   | { path: '/cast/wallet-operations'; render: 'static' }
   | { path: '/changelog'; render: 'static' }
   | { path: '/chisel/commands'; render: 'static' }
@@ -40,6 +42,7 @@ type Page =
   | { path: '/config/reference/etherscan'; render: 'static' }
   | { path: '/config/reference/formatter'; render: 'static' }
   | { path: '/config/reference/inline-test-config'; render: 'static' }
+  | { path: '/config/reference/linked-libraries'; render: 'static' }
   | { path: '/config/reference/linter'; render: 'static' }
   | { path: '/config/reference/overview'; render: 'static' }
   | { path: '/config/reference/project'; render: 'static' }
@@ -48,19 +51,24 @@ type Page =
   | { path: '/config/reference/tooling'; render: 'static' }
   | { path: '/config/reference/tracing'; render: 'static' }
   | { path: '/config/testing'; render: 'static' }
+  | { path: '/forge/broadcast-files'; render: 'static' }
   | { path: '/forge/build'; render: 'static' }
   | { path: '/forge/cloning'; render: 'static' }
   | { path: '/forge/contract-bindings'; render: 'static' }
   | { path: '/forge/debugging'; render: 'static' }
   | { path: '/forge/documentation'; render: 'static' }
   | { path: '/forge/formatting'; render: 'static' }
+  | { path: '/forge/gas-accounting'; render: 'static' }
   | { path: '/forge/gas-tracking'; render: 'static' }
   | { path: '/forge'; render: 'static' }
+  | { path: '/forge/linting'; render: 'static' }
   | { path: '/forge/linting/arbitrary-send-erc20-permit'; render: 'static' }
   | { path: '/forge/linting/arbitrary-send-erc20'; render: 'static' }
   | { path: '/forge/linting/arbitrary-send-eth'; render: 'static' }
   | { path: '/forge/linting/asm-keccak256'; render: 'static' }
   | { path: '/forge/linting/assert-state-change'; render: 'static' }
+  | { path: '/forge/linting/block-number-across-roll'; render: 'static' }
+  | { path: '/forge/linting/block-timestamp-across-warp'; render: 'static' }
   | { path: '/forge/linting/block-timestamp'; render: 'static' }
   | { path: '/forge/linting/boolean-cst'; render: 'static' }
   | { path: '/forge/linting/boolean-equal'; render: 'static' }
@@ -148,7 +156,7 @@ type Page =
   | { path: '/forge/linting/var-read-using-this'; render: 'static' }
   | { path: '/forge/linting/weak-prng'; render: 'static' }
   | { path: '/forge/linting/write-after-write'; render: 'static' }
-  | { path: '/forge/linting'; render: 'static' }
+  | { path: '/forge/scripting-internals'; render: 'static' }
   | { path: '/forge/scripting'; render: 'static' }
   | { path: '/forge/testing'; render: 'static' }
   | { path: '/guides/branching-tree-technique'; render: 'static' }
@@ -158,6 +166,7 @@ type Page =
   | { path: '/guides/deploying-contracts'; render: 'static' }
   | { path: '/guides/deterministic-deployments-using-create2'; render: 'static' }
   | { path: '/guides/docker'; render: 'static' }
+  | { path: '/guides/forge-properties'; render: 'static' }
   | { path: '/guides/fork-testing'; render: 'static' }
   | { path: '/guides/fuzz-corpus'; render: 'static' }
   | { path: '/guides/gas-optimization'; render: 'static' }
@@ -178,6 +187,7 @@ type Page =
   | { path: '/introduction/getting-started'; render: 'static' }
   | { path: '/introduction/installation'; render: 'static' }
   | { path: '/introduction/prompting'; render: 'static' }
+  | { path: '/introduction/verifying-releases'; render: 'static' }
   | { path: '/projects/dependencies'; render: 'static' }
   | { path: '/projects'; render: 'static' }
   | { path: '/projects/layout'; render: 'static' }
@@ -195,6 +205,7 @@ type Page =
   | { path: '/reference/cast/age'; render: 'static' }
   | { path: '/reference/cast/artifact'; render: 'static' }
   | { path: '/reference/cast/b2e-payload'; render: 'static' }
+  | { path: '/reference/cast/bal'; render: 'static' }
   | { path: '/reference/cast/balance'; render: 'static' }
   | { path: '/reference/cast/base-fee'; render: 'static' }
   | { path: '/reference/cast/batch-mktx'; render: 'static' }
@@ -202,8 +213,8 @@ type Page =
   | { path: '/reference/cast/bind'; render: 'static' }
   | { path: '/reference/cast/block-number'; render: 'static' }
   | { path: '/reference/cast/block'; render: 'static' }
-  | { path: '/reference/cast/call/--create'; render: 'static' }
   | { path: '/reference/cast/call'; render: 'static' }
+  | { path: '/reference/cast/call/--create'; render: 'static' }
   | { path: '/reference/cast/calldata'; render: 'static' }
   | { path: '/reference/cast/cast'; render: 'static' }
   | { path: '/reference/cast/chain-id'; render: 'static' }
@@ -219,6 +230,7 @@ type Page =
   | { path: '/reference/cast/concat-hex'; render: 'static' }
   | { path: '/reference/cast/constructor-args'; render: 'static' }
   | { path: '/reference/cast/create2'; render: 'static' }
+  | { path: '/reference/cast/create2/init-code-hash'; render: 'static' }
   | { path: '/reference/cast/creation-code'; render: 'static' }
   | { path: '/reference/cast/da-estimate'; render: 'static' }
   | { path: '/reference/cast/decode-abi'; render: 'static' }
@@ -228,6 +240,7 @@ type Page =
   | { path: '/reference/cast/decode-string'; render: 'static' }
   | { path: '/reference/cast/decode-transaction'; render: 'static' }
   | { path: '/reference/cast/disassemble'; render: 'static' }
+  | { path: '/reference/cast/erc20-token'; render: 'static' }
   | { path: '/reference/cast/erc20-token/allowance'; render: 'static' }
   | { path: '/reference/cast/erc20-token/approve'; render: 'static' }
   | { path: '/reference/cast/erc20-token/balance'; render: 'static' }
@@ -235,12 +248,33 @@ type Page =
   | { path: '/reference/cast/erc20-token/decimals'; render: 'static' }
   | { path: '/reference/cast/erc20-token/mint'; render: 'static' }
   | { path: '/reference/cast/erc20-token/name'; render: 'static' }
+  | { path: '/reference/cast/erc20-token/permit'; render: 'static' }
   | { path: '/reference/cast/erc20-token/symbol'; render: 'static' }
   | { path: '/reference/cast/erc20-token/total-supply'; render: 'static' }
   | { path: '/reference/cast/erc20-token/transfer'; render: 'static' }
-  | { path: '/reference/cast/erc20-token'; render: 'static' }
-  | { path: '/reference/cast/estimate/--create'; render: 'static' }
+  | { path: '/reference/cast/erc4626'; render: 'static' }
+  | { path: '/reference/cast/erc4626/asset'; render: 'static' }
+  | { path: '/reference/cast/erc4626/check'; render: 'static' }
+  | { path: '/reference/cast/erc4626/convert-to-assets'; render: 'static' }
+  | { path: '/reference/cast/erc4626/convert-to-shares'; render: 'static' }
+  | { path: '/reference/cast/erc4626/deposit'; render: 'static' }
+  | { path: '/reference/cast/erc4626/info'; render: 'static' }
+  | { path: '/reference/cast/erc4626/max-deposit'; render: 'static' }
+  | { path: '/reference/cast/erc4626/max-mint'; render: 'static' }
+  | { path: '/reference/cast/erc4626/max-redeem'; render: 'static' }
+  | { path: '/reference/cast/erc4626/max-withdraw'; render: 'static' }
+  | { path: '/reference/cast/erc4626/mint'; render: 'static' }
+  | { path: '/reference/cast/erc4626/position'; render: 'static' }
+  | { path: '/reference/cast/erc4626/preview-deposit'; render: 'static' }
+  | { path: '/reference/cast/erc4626/preview-mint'; render: 'static' }
+  | { path: '/reference/cast/erc4626/preview-redeem'; render: 'static' }
+  | { path: '/reference/cast/erc4626/preview-withdraw'; render: 'static' }
+  | { path: '/reference/cast/erc4626/redeem'; render: 'static' }
+  | { path: '/reference/cast/erc4626/total-assets'; render: 'static' }
+  | { path: '/reference/cast/erc4626/withdraw'; render: 'static' }
   | { path: '/reference/cast/estimate'; render: 'static' }
+  | { path: '/reference/cast/estimate/--create'; render: 'static' }
+  | { path: '/reference/cast/events'; render: 'static' }
   | { path: '/reference/cast/find-block'; render: 'static' }
   | { path: '/reference/cast/format-bytes32-string'; render: 'static' }
   | { path: '/reference/cast/format-units'; render: 'static' }
@@ -258,10 +292,11 @@ type Page =
   | { path: '/reference/cast'; render: 'static' }
   | { path: '/reference/cast/interface'; render: 'static' }
   | { path: '/reference/cast/keccak'; render: 'static' }
+  | { path: '/reference/cast/key-authorization'; render: 'static' }
   | { path: '/reference/cast/key-authorization/encode'; render: 'static' }
   | { path: '/reference/cast/key-authorization/inspect'; render: 'static' }
   | { path: '/reference/cast/key-authorization/sign'; render: 'static' }
-  | { path: '/reference/cast/key-authorization'; render: 'static' }
+  | { path: '/reference/cast/keychain'; render: 'static' }
   | { path: '/reference/cast/keychain/authorize'; render: 'static' }
   | { path: '/reference/cast/keychain/burn-witness'; render: 'static' }
   | { path: '/reference/cast/keychain/check'; render: 'static' }
@@ -270,10 +305,10 @@ type Page =
   | { path: '/reference/cast/keychain/is-admin'; render: 'static' }
   | { path: '/reference/cast/keychain/is-witness-burned'; render: 'static' }
   | { path: '/reference/cast/keychain/list'; render: 'static' }
+  | { path: '/reference/cast/keychain/policy'; render: 'static' }
   | { path: '/reference/cast/keychain/policy/add-call'; render: 'static' }
   | { path: '/reference/cast/keychain/policy/remove-target'; render: 'static' }
   | { path: '/reference/cast/keychain/policy/set-limit'; render: 'static' }
-  | { path: '/reference/cast/keychain/policy'; render: 'static' }
   | { path: '/reference/cast/keychain/revoke'; render: 'static' }
   | { path: '/reference/cast/keychain/rl'; render: 'static' }
   | { path: '/reference/cast/keychain/rs'; render: 'static' }
@@ -282,14 +317,13 @@ type Page =
   | { path: '/reference/cast/keychain/ul'; render: 'static' }
   | { path: '/reference/cast/keychain/verify-admin'; render: 'static' }
   | { path: '/reference/cast/keychain/verify'; render: 'static' }
-  | { path: '/reference/cast/keychain'; render: 'static' }
   | { path: '/reference/cast/logs'; render: 'static' }
   | { path: '/reference/cast/lookup-address'; render: 'static' }
   | { path: '/reference/cast/max-int'; render: 'static' }
   | { path: '/reference/cast/max-uint'; render: 'static' }
   | { path: '/reference/cast/min-int'; render: 'static' }
-  | { path: '/reference/cast/mktx/--create'; render: 'static' }
   | { path: '/reference/cast/mktx'; render: 'static' }
+  | { path: '/reference/cast/mktx/--create'; render: 'static' }
   | { path: '/reference/cast/namehash'; render: 'static' }
   | { path: '/reference/cast/nonce'; render: 'static' }
   | { path: '/reference/cast/pad'; render: 'static' }
@@ -300,48 +334,67 @@ type Page =
   | { path: '/reference/cast/proof'; render: 'static' }
   | { path: '/reference/cast/publish'; render: 'static' }
   | { path: '/reference/cast/receipt'; render: 'static' }
+  | { path: '/reference/cast/receive-policy'; render: 'static' }
   | { path: '/reference/cast/receive-policy/claim'; render: 'static' }
   | { path: '/reference/cast/receive-policy/get'; render: 'static' }
+  | { path: '/reference/cast/receive-policy/receipt'; render: 'static' }
   | { path: '/reference/cast/receive-policy/receipt/balance'; render: 'static' }
   | { path: '/reference/cast/receive-policy/receipt/burn'; render: 'static' }
   | { path: '/reference/cast/receive-policy/receipt/decode'; render: 'static' }
-  | { path: '/reference/cast/receive-policy/receipt'; render: 'static' }
   | { path: '/reference/cast/receive-policy/set'; render: 'static' }
   | { path: '/reference/cast/receive-policy/validate'; render: 'static' }
-  | { path: '/reference/cast/receive-policy'; render: 'static' }
   | { path: '/reference/cast/recover-authority'; render: 'static' }
   | { path: '/reference/cast/resolve-name'; render: 'static' }
   | { path: '/reference/cast/rpc'; render: 'static' }
   | { path: '/reference/cast/run'; render: 'static' }
+  | { path: '/reference/cast/safe'; render: 'static' }
+  | { path: '/reference/cast/safe/add-delegate'; render: 'static' }
+  | { path: '/reference/cast/safe/create'; render: 'static' }
+  | { path: '/reference/cast/safe/execute'; render: 'static' }
+  | { path: '/reference/cast/safe/list-delegates'; render: 'static' }
+  | { path: '/reference/cast/safe/propose'; render: 'static' }
+  | { path: '/reference/cast/safe/remove-delegate'; render: 'static' }
+  | { path: '/reference/cast/safe/sign'; render: 'static' }
+  | { path: '/reference/cast/safe/simulate'; render: 'static' }
   | { path: '/reference/cast/selectors'; render: 'static' }
-  | { path: '/reference/cast/send/--create'; render: 'static' }
   | { path: '/reference/cast/send'; render: 'static' }
+  | { path: '/reference/cast/send/--create'; render: 'static' }
   | { path: '/reference/cast/shl'; render: 'static' }
   | { path: '/reference/cast/shr'; render: 'static' }
   | { path: '/reference/cast/sig-event'; render: 'static' }
   | { path: '/reference/cast/sig'; render: 'static' }
   | { path: '/reference/cast/source'; render: 'static' }
+  | { path: '/reference/cast/storage-credits'; render: 'static' }
   | { path: '/reference/cast/storage-credits/balance'; render: 'static' }
   | { path: '/reference/cast/storage-credits/budget'; render: 'static' }
   | { path: '/reference/cast/storage-credits/mode'; render: 'static' }
   | { path: '/reference/cast/storage-credits/set-budget'; render: 'static' }
   | { path: '/reference/cast/storage-credits/set-mode'; render: 'static' }
-  | { path: '/reference/cast/storage-credits'; render: 'static' }
   | { path: '/reference/cast/storage-root'; render: 'static' }
   | { path: '/reference/cast/storage'; render: 'static' }
-  | { path: '/reference/cast/tempo/login'; render: 'static' }
   | { path: '/reference/cast/tempo'; render: 'static' }
+  | { path: '/reference/cast/tempo/import-access-key'; render: 'static' }
+  | { path: '/reference/cast/tempo/login'; render: 'static' }
+  | { path: '/reference/cast/tempo/zone'; render: 'static' }
+  | { path: '/reference/cast/tempo/zone/deposit'; render: 'static' }
+  | { path: '/reference/cast/tempo/zone/earn'; render: 'static' }
+  | { path: '/reference/cast/tempo/zone/earn/encode-deposit'; render: 'static' }
+  | { path: '/reference/cast/tempo/zone/earn/encode-redeem'; render: 'static' }
+  | { path: '/reference/cast/tempo/zone/withdraw'; render: 'static' }
+  | { path: '/reference/cast/tip20-token'; render: 'static' }
   | { path: '/reference/cast/tip20-token/create'; render: 'static' }
+  | { path: '/reference/cast/tip20-token/grant-role'; render: 'static' }
+  | { path: '/reference/cast/tip20-token/has-role'; render: 'static' }
   | { path: '/reference/cast/tip20-token/logo-check'; render: 'static' }
   | { path: '/reference/cast/tip20-token/logo-set'; render: 'static' }
   | { path: '/reference/cast/tip20-token/mine'; render: 'static' }
-  | { path: '/reference/cast/tip20-token'; render: 'static' }
+  | { path: '/reference/cast/tip20-token/revoke-role'; render: 'static' }
+  | { path: '/reference/cast/tip403'; render: 'static' }
   | { path: '/reference/cast/tip403/blacklist'; render: 'static' }
   | { path: '/reference/cast/tip403/check'; render: 'static' }
   | { path: '/reference/cast/tip403/create'; render: 'static' }
   | { path: '/reference/cast/tip403/info'; render: 'static' }
   | { path: '/reference/cast/tip403/whitelist'; render: 'static' }
-  | { path: '/reference/cast/tip403'; render: 'static' }
   | { path: '/reference/cast/to-ascii'; render: 'static' }
   | { path: '/reference/cast/to-base'; render: 'static' }
   | { path: '/reference/cast/to-bytes-memory'; render: 'static' }
@@ -358,17 +411,18 @@ type Page =
   | { path: '/reference/cast/to-utf8'; render: 'static' }
   | { path: '/reference/cast/to-wei'; render: 'static' }
   | { path: '/reference/cast/trace'; render: 'static' }
+  | { path: '/reference/cast/tx-pool'; render: 'static' }
   | { path: '/reference/cast/tx-pool/content-from'; render: 'static' }
   | { path: '/reference/cast/tx-pool/content'; render: 'static' }
   | { path: '/reference/cast/tx-pool/inspect'; render: 'static' }
   | { path: '/reference/cast/tx-pool/status'; render: 'static' }
-  | { path: '/reference/cast/tx-pool'; render: 'static' }
   | { path: '/reference/cast/tx'; render: 'static' }
   | { path: '/reference/cast/upload-signature'; render: 'static' }
+  | { path: '/reference/cast/virtual-address'; render: 'static' }
   | { path: '/reference/cast/virtual-address/create'; render: 'static' }
   | { path: '/reference/cast/virtual-address/resolve'; render: 'static' }
   | { path: '/reference/cast/virtual-address/watch'; render: 'static' }
-  | { path: '/reference/cast/virtual-address'; render: 'static' }
+  | { path: '/reference/cast/wallet'; render: 'static' }
   | { path: '/reference/cast/wallet/address'; render: 'static' }
   | { path: '/reference/cast/wallet/change-password'; render: 'static' }
   | { path: '/reference/cast/wallet/decrypt-keystore'; render: 'static' }
@@ -380,14 +434,17 @@ type Page =
   | { path: '/reference/cast/wallet/private-key'; render: 'static' }
   | { path: '/reference/cast/wallet/public-key'; render: 'static' }
   | { path: '/reference/cast/wallet/remove'; render: 'static' }
+  | { path: '/reference/cast/wallet/session'; render: 'static' }
   | { path: '/reference/cast/wallet/session/create'; render: 'static' }
   | { path: '/reference/cast/wallet/session/revoke'; render: 'static' }
-  | { path: '/reference/cast/wallet/session'; render: 'static' }
   | { path: '/reference/cast/wallet/sign-auth'; render: 'static' }
   | { path: '/reference/cast/wallet/sign'; render: 'static' }
+  | { path: '/reference/cast/wallet/touch-id'; render: 'static' }
+  | { path: '/reference/cast/wallet/touch-id/enroll'; render: 'static' }
+  | { path: '/reference/cast/wallet/touch-id/remove'; render: 'static' }
+  | { path: '/reference/cast/wallet/touch-id/status'; render: 'static' }
   | { path: '/reference/cast/wallet/vanity'; render: 'static' }
   | { path: '/reference/cast/wallet/verify'; render: 'static' }
-  | { path: '/reference/cast/wallet'; render: 'static' }
   | { path: '/reference/cheatcodes/accesses'; render: 'static' }
   | { path: '/reference/cheatcodes/active-fork'; render: 'static' }
   | { path: '/reference/cheatcodes/addr'; render: 'static' }
@@ -395,6 +452,8 @@ type Page =
   | { path: '/reference/cheatcodes/assume-implicit-approval'; render: 'static' }
   | { path: '/reference/cheatcodes/assume-no-revert'; render: 'static' }
   | { path: '/reference/cheatcodes/assume'; render: 'static' }
+  | { path: '/reference/cheatcodes/blob-base-fee'; render: 'static' }
+  | { path: '/reference/cheatcodes/blobhashes'; render: 'static' }
   | { path: '/reference/cheatcodes/bound'; render: 'static' }
   | { path: '/reference/cheatcodes/breakpoint'; render: 'static' }
   | { path: '/reference/cheatcodes/broadcast-raw-transaction'; render: 'static' }
@@ -444,16 +503,20 @@ type Page =
   | { path: '/reference/cheatcodes/foundry-version'; render: 'static' }
   | { path: '/reference/cheatcodes/fs'; render: 'static' }
   | { path: '/reference/cheatcodes/gas-snapshots'; render: 'static' }
+  | { path: '/reference/cheatcodes/get-blob-base-fee'; render: 'static' }
+  | { path: '/reference/cheatcodes/get-blobhashes'; render: 'static' }
   | { path: '/reference/cheatcodes/get-block-number'; render: 'static' }
   | { path: '/reference/cheatcodes/get-block-timestamp'; render: 'static' }
   | { path: '/reference/cheatcodes/get-chain-id'; render: 'static' }
   | { path: '/reference/cheatcodes/get-chain'; render: 'static' }
   | { path: '/reference/cheatcodes/get-code'; render: 'static' }
   | { path: '/reference/cheatcodes/get-deployed-code'; render: 'static' }
+  | { path: '/reference/cheatcodes/get-evm-version'; render: 'static' }
   | { path: '/reference/cheatcodes/get-label'; render: 'static' }
   | { path: '/reference/cheatcodes/get-nonce'; render: 'static' }
   | { path: '/reference/cheatcodes/get-recorded-logs'; render: 'static' }
   | { path: '/reference/cheatcodes/get-selectors'; render: 'static' }
+  | { path: '/reference/cheatcodes/get-slot-number'; render: 'static' }
   | { path: '/reference/cheatcodes/get-state-diff'; render: 'static' }
   | { path: '/reference/cheatcodes/get-storage-slots'; render: 'static' }
   | { path: '/reference/cheatcodes/get-wallets'; render: 'static' }
@@ -507,6 +570,7 @@ type Page =
   | { path: '/reference/cheatcodes/resume-gas-metering'; render: 'static' }
   | { path: '/reference/cheatcodes/revoke-persistent'; render: 'static' }
   | { path: '/reference/cheatcodes/roll-fork'; render: 'static' }
+  | { path: '/reference/cheatcodes/roll-slot'; render: 'static' }
   | { path: '/reference/cheatcodes/roll'; render: 'static' }
   | { path: '/reference/cheatcodes/rpc'; render: 'static' }
   | { path: '/reference/cheatcodes/select-fork'; render: 'static' }
@@ -515,9 +579,11 @@ type Page =
   | { path: '/reference/cheatcodes/set-arbitrary-storage'; render: 'static' }
   | { path: '/reference/cheatcodes/set-blockhash'; render: 'static' }
   | { path: '/reference/cheatcodes/set-env'; render: 'static' }
+  | { path: '/reference/cheatcodes/set-evm-version'; render: 'static' }
   | { path: '/reference/cheatcodes/set-nonce'; render: 'static' }
   | { path: '/reference/cheatcodes/set-seed'; render: 'static' }
   | { path: '/reference/cheatcodes/set-tip20-logo-uri'; render: 'static' }
+  | { path: '/reference/cheatcodes/shuffle'; render: 'static' }
   | { path: '/reference/cheatcodes/sign-compact'; render: 'static' }
   | { path: '/reference/cheatcodes/sign-delegation'; render: 'static' }
   | { path: '/reference/cheatcodes/sign-keychain-admin'; render: 'static' }
@@ -525,6 +591,7 @@ type Page =
   | { path: '/reference/cheatcodes/sign'; render: 'static' }
   | { path: '/reference/cheatcodes/skip'; render: 'static' }
   | { path: '/reference/cheatcodes/sleep'; render: 'static' }
+  | { path: '/reference/cheatcodes/sort'; render: 'static' }
   | { path: '/reference/cheatcodes/start-broadcast'; render: 'static' }
   | { path: '/reference/cheatcodes/start-prank'; render: 'static' }
   | { path: '/reference/cheatcodes/start-state-diff-recording'; render: 'static' }
@@ -568,63 +635,6 @@ type Page =
   | { path: '/reference/common/wallet-options-raw'; render: 'static' }
   | { path: '/reference/common/wallet-options-remote'; render: 'static' }
   | { path: '/reference/common/wallet-options'; render: 'static' }
-  | { path: '/reference/forge/bind-json'; render: 'static' }
-  | { path: '/reference/forge/bind'; render: 'static' }
-  | { path: '/reference/forge/build'; render: 'static' }
-  | { path: '/reference/forge/cache/clean'; render: 'static' }
-  | { path: '/reference/forge/cache/ls'; render: 'static' }
-  | { path: '/reference/forge/cache'; render: 'static' }
-  | { path: '/reference/forge/clean'; render: 'static' }
-  | { path: '/reference/forge/clone'; render: 'static' }
-  | { path: '/reference/forge/compiler/resolve'; render: 'static' }
-  | { path: '/reference/forge/compiler'; render: 'static' }
-  | { path: '/reference/forge/completions'; render: 'static' }
-  | { path: '/reference/forge/config'; render: 'static' }
-  | { path: '/reference/forge/coverage'; render: 'static' }
-  | { path: '/reference/forge/create'; render: 'static' }
-  | { path: '/reference/forge/doc'; render: 'static' }
-  | { path: '/reference/forge/eip712'; render: 'static' }
-  | { path: '/reference/forge/flatten'; render: 'static' }
-  | { path: '/reference/forge/fmt'; render: 'static' }
-  | { path: '/reference/forge/forge'; render: 'static' }
-  | { path: '/reference/forge/fuzz/cmin'; render: 'static' }
-  | { path: '/reference/forge/fuzz/replay'; render: 'static' }
-  | { path: '/reference/forge/fuzz/run'; render: 'static' }
-  | { path: '/reference/forge/fuzz/show'; render: 'static' }
-  | { path: '/reference/forge/fuzz/tmin'; render: 'static' }
-  | { path: '/reference/forge/fuzz'; render: 'static' }
-  | { path: '/reference/forge/geiger'; render: 'static' }
-  | { path: '/reference/forge/generate/test'; render: 'static' }
-  | { path: '/reference/forge/generate'; render: 'static' }
-  | { path: '/reference/forge/init'; render: 'static' }
-  | { path: '/reference/forge/inspect'; render: 'static' }
-  | { path: '/reference/forge/install'; render: 'static' }
-  | { path: '/reference/forge/lint'; render: 'static' }
-  | { path: '/reference/forge/remappings'; render: 'static' }
-  | { path: '/reference/forge/remove'; render: 'static' }
-  | { path: '/reference/forge/script'; render: 'static' }
-  | { path: '/reference/forge/selectors/cache'; render: 'static' }
-  | { path: '/reference/forge/selectors/collision'; render: 'static' }
-  | { path: '/reference/forge/selectors/find'; render: 'static' }
-  | { path: '/reference/forge/selectors/list'; render: 'static' }
-  | { path: '/reference/forge/selectors/upload'; render: 'static' }
-  | { path: '/reference/forge/selectors'; render: 'static' }
-  | { path: '/reference/forge/snapshot'; render: 'static' }
-  | { path: '/reference/forge/soldeer/clean'; render: 'static' }
-  | { path: '/reference/forge/soldeer/init'; render: 'static' }
-  | { path: '/reference/forge/soldeer/install'; render: 'static' }
-  | { path: '/reference/forge/soldeer/login'; render: 'static' }
-  | { path: '/reference/forge/soldeer/push'; render: 'static' }
-  | { path: '/reference/forge/soldeer/uninstall'; render: 'static' }
-  | { path: '/reference/forge/soldeer/update'; render: 'static' }
-  | { path: '/reference/forge/soldeer/version'; render: 'static' }
-  | { path: '/reference/forge/soldeer'; render: 'static' }
-  | { path: '/reference/forge/test'; render: 'static' }
-  | { path: '/reference/forge/tree'; render: 'static' }
-  | { path: '/reference/forge/update'; render: 'static' }
-  | { path: '/reference/forge/verify-bytecode'; render: 'static' }
-  | { path: '/reference/forge/verify-check'; render: 'static' }
-  | { path: '/reference/forge/verify-contract'; render: 'static' }
   | { path: '/reference/forge-std/abs'; render: 'static' }
   | { path: '/reference/forge-std/arithmeticError'; render: 'static' }
   | { path: '/reference/forge-std/assertApproxEqAbs'; render: 'static' }
@@ -685,12 +695,74 @@ type Page =
   | { path: '/reference/forge-std/std-cheats'; render: 'static' }
   | { path: '/reference/forge-std/std-config'; render: 'static' }
   | { path: '/reference/forge-std/std-errors'; render: 'static' }
+  | { path: '/reference/forge-std/std-json'; render: 'static' }
   | { path: '/reference/forge-std/std-logs'; render: 'static' }
   | { path: '/reference/forge-std/std-math'; render: 'static' }
   | { path: '/reference/forge-std/std-storage'; render: 'static' }
+  | { path: '/reference/forge-std/std-toml'; render: 'static' }
   | { path: '/reference/forge-std/target'; render: 'static' }
   | { path: '/reference/forge-std/with_key'; render: 'static' }
   | { path: '/reference/forge-std/zeroVarError'; render: 'static' }
+  | { path: '/reference/forge/bind-json'; render: 'static' }
+  | { path: '/reference/forge/bind'; render: 'static' }
+  | { path: '/reference/forge/build'; render: 'static' }
+  | { path: '/reference/forge/cache'; render: 'static' }
+  | { path: '/reference/forge/cache/clean'; render: 'static' }
+  | { path: '/reference/forge/cache/ls'; render: 'static' }
+  | { path: '/reference/forge/clean'; render: 'static' }
+  | { path: '/reference/forge/clone'; render: 'static' }
+  | { path: '/reference/forge/compiler'; render: 'static' }
+  | { path: '/reference/forge/compiler/resolve'; render: 'static' }
+  | { path: '/reference/forge/completions'; render: 'static' }
+  | { path: '/reference/forge/config'; render: 'static' }
+  | { path: '/reference/forge/coverage'; render: 'static' }
+  | { path: '/reference/forge/create'; render: 'static' }
+  | { path: '/reference/forge/doc'; render: 'static' }
+  | { path: '/reference/forge/eip712'; render: 'static' }
+  | { path: '/reference/forge/flatten'; render: 'static' }
+  | { path: '/reference/forge/fmt'; render: 'static' }
+  | { path: '/reference/forge/forge'; render: 'static' }
+  | { path: '/reference/forge/fuzz'; render: 'static' }
+  | { path: '/reference/forge/fuzz/cmin'; render: 'static' }
+  | { path: '/reference/forge/fuzz/replay'; render: 'static' }
+  | { path: '/reference/forge/fuzz/run'; render: 'static' }
+  | { path: '/reference/forge/fuzz/show'; render: 'static' }
+  | { path: '/reference/forge/fuzz/tmin'; render: 'static' }
+  | { path: '/reference/forge/geiger'; render: 'static' }
+  | { path: '/reference/forge/generate'; render: 'static' }
+  | { path: '/reference/forge/generate/test'; render: 'static' }
+  | { path: '/reference/forge/init'; render: 'static' }
+  | { path: '/reference/forge/inspect'; render: 'static' }
+  | { path: '/reference/forge/install'; render: 'static' }
+  | { path: '/reference/forge/lint'; render: 'static' }
+  | { path: '/reference/forge/lsp'; render: 'static' }
+  | { path: '/reference/forge/properties'; render: 'static' }
+  | { path: '/reference/forge/reinit'; render: 'static' }
+  | { path: '/reference/forge/remappings'; render: 'static' }
+  | { path: '/reference/forge/remove'; render: 'static' }
+  | { path: '/reference/forge/script'; render: 'static' }
+  | { path: '/reference/forge/selectors'; render: 'static' }
+  | { path: '/reference/forge/selectors/cache'; render: 'static' }
+  | { path: '/reference/forge/selectors/collision'; render: 'static' }
+  | { path: '/reference/forge/selectors/find'; render: 'static' }
+  | { path: '/reference/forge/selectors/list'; render: 'static' }
+  | { path: '/reference/forge/selectors/upload'; render: 'static' }
+  | { path: '/reference/forge/snapshot'; render: 'static' }
+  | { path: '/reference/forge/soldeer'; render: 'static' }
+  | { path: '/reference/forge/soldeer/clean'; render: 'static' }
+  | { path: '/reference/forge/soldeer/init'; render: 'static' }
+  | { path: '/reference/forge/soldeer/install'; render: 'static' }
+  | { path: '/reference/forge/soldeer/login'; render: 'static' }
+  | { path: '/reference/forge/soldeer/push'; render: 'static' }
+  | { path: '/reference/forge/soldeer/uninstall'; render: 'static' }
+  | { path: '/reference/forge/soldeer/update'; render: 'static' }
+  | { path: '/reference/forge/soldeer/version'; render: 'static' }
+  | { path: '/reference/forge/test'; render: 'static' }
+  | { path: '/reference/forge/tree'; render: 'static' }
+  | { path: '/reference/forge/update'; render: 'static' }
+  | { path: '/reference/forge/verify-bytecode'; render: 'static' }
+  | { path: '/reference/forge/verify-check'; render: 'static' }
+  | { path: '/reference/forge/verify-contract'; render: 'static' }
   | { path: '/reference'; render: 'static' }
   | { path: '/reference/versions'; render: 'static' }
 

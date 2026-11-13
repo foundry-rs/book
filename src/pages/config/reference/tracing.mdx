@@ -23,62 +23,133 @@ to `[profile.<name>.tracing.labels]`.
 
 ### Fields
 
+{/* config-reference:begin keys="tracing tracing.* labels" level=4 */}
+
+#### `[tracing]`
+
+Settings for decoding and rendering execution traces in Forge and Cast.
+
+Declare them in a `[profile.<name>.tracing]` table, or in a standalone `[tracing]` table
+that applies to every profile; a profile's own table takes precedence. Command-line trace
+options override or extend them for one command.
+
 #### `verbosity`
 
 - Type: integer
-- Default: 0
+- Default: `0`
+- Environment: `FOUNDRY_TRACING_VERBOSITY`
 
-The minimum verbosity used when rendering traces. A command's `-v` flags can
-increase, but not decrease, this value.
+Minimum verbosity used when rendering traces.
+
+Rendering uses the greater of this value and the command's own verbosity (its `-v` flags,
+or the top-level `verbosity` setting), so command-line flags can raise but not lower it.
+This value only controls traces: console logs still follow the command's verbosity.
+
+In `forge test`:
+
+- `0`-`2`: no traces are displayed.
+- `3`: traces are displayed for failing tests.
+- `4`: traces are displayed for all tests, and setup traces for failing tests.
+- `5`: traces and setup traces are always displayed, including storage changes.
+
+`forge script`, `cast run` and `cast call` also render storage changes from level `5`.
 
 #### `labels`
 
-- Type: table mapping addresses to strings
-- Default: empty
+- Type: table
+- Default: none
+- Environment: `FOUNDRY_TRACING_LABELS`
 
-Labels addresses in decoded traces. Labels passed with `--label` or `--labels`
-extend this table and take precedence for duplicate addresses.
+Labels to display for addresses in decoded traces.
+
+Each key is an address and each value is its label. Labels passed with `--label` or
+`--labels` extend this table and take precedence for duplicate addresses. These labels are
+also known to the `vm.getLabel` cheatcode.
+
+The legacy `[labels]` table and profile-level `labels` setting are deprecated; move them
+here.
+
+```toml
+[profile.default.tracing.labels]
+"0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045" = "vitalik.eth"
+```
 
 #### `disable_labels`
 
 - Type: boolean
-- Default: false
+- Default: `false`
+- Environment: `FOUNDRY_TRACING_DISABLE_LABELS`
 
-Disables address labels in rendered traces.
+Whether to disable address labels in rendered traces.
+
+The `--disable-labels` flag also enables this; it cannot turn off a `true` value.
 
 #### `compact_labels`
 
 - Type: boolean
-- Default: false
+- Default: `false`
+- Environment: `FOUNDRY_TRACING_COMPACT_LABELS`
 
-Hides an address in trace parameters when a label is available, displaying only
-the label.
+Whether to hide an address in trace parameters when a label is available.
+
+When enabled, a labeled address is displayed as its label alone instead of
+`label: [address]`. The `--compact-labels` flag also enables this.
 
 #### `trace_depth`
 
 - Type: integer
 - Default: none
+- Environment: `FOUNDRY_TRACING_TRACE_DEPTH`
 
-Limits the maximum depth of rendered traces.
+Maximum depth of rendered traces.
+
+Calls nested deeper than this are left out of rendered traces and of trace JSON output.
+When unset, traces are rendered at every depth. The `--trace-depth` flag overrides it.
 
 #### `decode_internal`
 
 - Type: boolean
-- Default: false
+- Default: `false`
+- Environment: `FOUNDRY_TRACING_DECODE_INTERNAL`
 
-Identifies internal functions and decodes their stack parameters. Dynamic values
-stored in memory are decoded only when Foundry can match a single function.
+Whether to identify internal functions in traces and decode their stack parameters.
+
+Dynamic values stored in memory, such as `bytes` or arrays, are decoded only when Foundry
+can match a single function, for performance reasons. In `forge test` that means exactly
+one matching test. The `--decode-internal` flag also enables this. It has no effect on
+traces fetched with an RPC call tracer.
 
 #### `external_identification_timeout`
 
 - Type: integer
-- Default: 5
+- Default: `5`
+- Environment: `FOUNDRY_TRACING_EXTERNAL_IDENTIFICATION_TIMEOUT`
 
-Sets the cumulative time budget, in seconds, for identifying contracts in traces
-through Sourcify and Etherscan. Once the budget is exhausted, Foundry renders
-the trace with any identification results it has already received.
+Cumulative time budget, in seconds, for identifying trace contracts through Sourcify and
+Etherscan.
 
-Set this value to `0` to disable all external trace identification, including
-OpenChain signature lookups. You can also pass
-`--disable-external-identification` to disable it for a single command. Neither
-setting prevents Foundry from downloading compiler versions.
+Once the budget is spent, Foundry renders the trace with the identification results it
+has already received. The same value also bounds fetching verified sources for
+`decode_external_storage`.
+
+Set it to `0` to disable all external trace identification, including OpenChain
+signature lookups. The `--disable-external-identification` flag does the same for a
+single command. Neither prevents Foundry from downloading compiler versions.
+
+#### `[labels]`
+
+- Type: table
+- Default: none
+
+Deprecated: use `tracing.labels` instead.
+
+Address labels shown in traces. Foundry still reads a top-level `[labels]` table and a
+profile-level `labels` table, merges them into `tracing.labels`, where existing
+`tracing.labels` entries win for duplicate addresses, and prints a deprecation warning.
+
+```toml
+[profile.default.tracing.labels]
+"0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045" = "vitalik.eth"
+```
+
+{/* config-reference:end */}

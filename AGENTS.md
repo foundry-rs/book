@@ -85,6 +85,40 @@ The importer validates required sections and examples. Verify the rendered Vocs 
 The weekly update workflow refreshes lint references and the
 cheatcode manifest from the exact same commit as its installed Forge binary.
 
+### Config reference
+
+Per-key documentation in `src/pages/config/reference/` is generated from Foundry's
+`crates/config/assets/config-reference.json`, which `cargo config-reference` builds from the doc
+comments of the config fields in `crates/config`. Edit a key's description, type, or default in
+Foundry, then run `vp run import:config -- --foundry /path/to/foundry`. The importer owns:
+
+- The content of every region between `{/* config-reference:begin ... */}` and
+  `{/* config-reference:end */}` markers.
+- All of `default-config.mdx`.
+- `scripts/config-reference.json`, the snapshot of the source file and its Foundry commit.
+
+Authored prose outside regions (page intros, workflow sections, examples, and documentation of
+nested tables the source does not list, such as `model_checker` fields) is yours to edit.
+
+A begin marker takes these attributes:
+
+- `keys="a b.* c"`: keys or globs (`*` matches any characters, including dots) the region
+  renders, ordered by the first pattern each key matches, then by source order.
+- `exclude="b.d"`: keys or globs to leave out.
+- `level=4`: heading level of each key (default 4). Keys nest one level below a table key in the
+  same region, except below a section's own table, such as `[fuzz]`.
+- `fallback title="Other settings"`: the one region that receives keys no other region claims.
+
+Each key belongs to exactly one region. An exact key name claims a key over a glob, so a page can
+take `fuzz.run` while another takes `fuzz.*`; two regions claiming a key equally fail the import.
+New Foundry keys that no region matches land in the fallback region on
+`build-and-runtime.mdx` with a warning; move them to a fitting region.
+
+Run `vp run import:config -- --check` to re-render the snapshot offline and fail on stale pages
+or duplicate claims; it warns about fallback keys. Add `--foundry /path/to/foundry` to also
+compare the snapshot with that checkout. The weekly update workflow imports the revision matching
+its installed Forge binary.
+
 ### Source snippets
 
 Put runnable Solidity examples under `src/snippets/projects/` and include them

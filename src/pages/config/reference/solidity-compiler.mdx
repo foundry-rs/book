@@ -13,316 +13,553 @@ Configuration related to the behavior of the Solidity compiler.
 
 Configuration related to the behavior of the Solidity compiler.
 
-##### `remappings`
+{/* config-reference:begin keys="remappings auto_detect_remappings allow_paths include_paths libraries allow_linked_libraries solc auto_detect_solc offline ignored_warnings_from ignored_error_codes deny_warnings evm_version revert_strings extra_output_files extra_output bytecode_hash sparse_mode external_compilers" level=4 */}
 
-- Type: array of strings (remappings)
-- Default: none
+#### `remappings`
+
+- Type: array of value
+- Default: `[]`
 - Environment: `FOUNDRY_REMAPPINGS` or `DAPP_REMAPPINGS`
 
-An array of remappings in the following format: `[<context>:]<name>=<target>`. The optional
-`<context>` restricts the remapping to imports made by source units whose names begin with it.
+Import remappings used to resolve Solidity imports.
 
-A remapping _remaps_ Solidity imports to different directories. For example, the following remapping
-
-```
-@openzeppelin/=node_modules/@openzeppelin/openzeppelin-contracts/
-```
-
-with an import like
-
-```solidity
-import {Context} from "@openzeppelin/contracts/utils/Context.sol";
-```
-
-becomes
-
-```solidity
-import {Context} from "node_modules/@openzeppelin/openzeppelin-contracts/contracts/utils/Context.sol";
-```
-
-Foundry can generate contextual remappings for dependencies while retaining a broader package
-fallback. See [Nested dependency remappings](/projects/dependencies#nested-dependency-remappings)
-for details.
-
-##### `auto_detect_remappings`
-
-- Type: boolean
-- Default: true
-- Environment: `FOUNDRY_AUTO_DETECT_REMAPPINGS` or `DAPP_AUTO_DETECT_REMAPPINGS`
-
-If enabled, Foundry will automatically try auto-detect remappings by scanning the `libs` folder(s).
-
-If set to `false`, only the remappings in `foundry.toml` and `remappings.txt` are used.
-
-##### `allow_paths`
-
-- Type: array of strings (paths)
-- Default: none
-- Environment: `FOUNDRY_ALLOW_PATHS` or `DAPP_ALLOW_PATHS`
-
-Tells solc to allow reading source files from additional directories. This is mainly relevant for complex workspaces managed by `pnpm` or similar.
-
-See also [solc allowed-paths](https://docs.soliditylang.org/en/latest/path-resolution.html#allowed-paths)
-
-##### `include_paths`
-
-- Type: array of strings (paths)
-- Default: none
-- Environment: `FOUNDRY_INCLUDE_PATHS` or `DAPP_INCLUDE_PATHS`
-
-Make an additional source directory available to the default import callback. Use this option if you want to import contracts whose location is not fixed in relation to your main source tree, e.g. third-party libraries installed using a package manager. Can be used multiple times. Can only be used if base path has a non-empty value.
-
-See also [solc path resolution](https://docs.soliditylang.org/en/latest/path-resolution.html)
-
-##### `libraries`
-
-- Type: array of strings (libraries)
-- Default: none
-- Environment: `FOUNDRY_LIBRARIES` or `DAPP_LIBRARIES`
-
-An array of libraries to link against in the following format: `<file>:<lib>:<address>`, for example: `src/MyLibrary.sol:MyLibrary:0xfD88CeE74f7D78697775aBDAE53f9Da1559728E4`.
-
-##### `allow_linked_libraries`
-
-- Type: boolean
-- Default: true
-- Environment: `FOUNDRY_ALLOW_LINKED_LIBRARIES`
-
-Set to `false` to reject external Solidity library dependencies during builds, tests, scripts,
-contract creation, and coverage. Internal libraries and dynamic test linking remain available.
-See [Linked libraries](/config/reference/linked-libraries) for CLI overrides, cache behavior, and scope.
-
-##### `solc`
-
-- Type: string (semver, `solar:<version>`, path, or executable name)
-- Default: none
-- Environment: `FOUNDRY_SOLC_VERSION` or `DAPP_SOLC_VERSION`
-
-If specified, overrides the auto-detection system (more below) and uses a single Solidity compiler for the project.
-
-The value can be a strict version, a path to a local compiler, or an executable name available on `PATH`:
+Each entry has the form `[<context>:]<name>=<target>`. An import path that starts with
+`<name>` has that prefix replaced with `<target>`, a path relative to the project root. The
+optional `<context>` limits the remapping to imports made by source units whose paths start
+with it.
 
 ```toml
-solc = "custom-solc"
-```
-
-`solar:<version>` pins an exact [Solar](https://github.com/paradigmxyz/solar) release, 0.2.0 or
-later without pre-release or build metadata:
-
-```toml
-solc = "solar:0.3.0"
-```
-
-Forge builds with the release installed in `~/.foundry/solar/<version>`. If it is missing, Forge
-downloads it from the Solar GitHub release, checks it against the release's SHA-256 checksum file
-and the version it reports, and installs it there, unless [`offline`](#offline) is set, in which case the
-build fails. Releases are published for macOS, x86_64 Linux, aarch64 Linux with glibc, and x86_64
-Windows; on other platforms, set `solc` to the path of a `solar` binary instead. `--use solar:<version>`
-accepts the same pin, and `forge config` reports it.
-
-Version requirements are not supported (i.e. `0.8.28` is valid, but `^0.8.0` is not). The legacy
-`solc_version` key is still accepted for backwards compatibility.
-
-##### `auto_detect_solc`
-
-- Type: boolean
-- Default: true
-- Environment: `FOUNDRY_AUTO_DETECT_SOLC` or `DAPP_AUTO_DETECT_SOLC`
-
-If enabled, Foundry will automatically try to resolve appropriate Solidity compiler versions to compile your project.
-
-This key is ignored if `solc` is set.
-
-##### `offline`
-
-- Type: boolean
-- Default: false
-- Environment: `FOUNDRY_OFFLINE` or `DAPP_OFFLINE`
-
-If enabled, Foundry will not attempt to download any missing solc versions or Solar releases.
-
-If both `offline` and `auto-detect-solc` are set to `true`, the required version(s) of solc will be auto detected but any missing versions will _not_ be installed.
-
-##### `ignored_warnings_from`
-
-- Type: array of strings (file paths)
-- Default: none
-- Environment: `FOUNDRY_IGNORED_WARNINGS_FROM` OR `DAPP_IGNORED_WARNINGS_FROM`
-
-An array of file paths from which warnings should be ignored during the compulation process. This is useful when you have a specific
-directories of files that produce known warnings and you wish to suppress these warnings without affecting others.
-
-Each entry in the array should be a path to a directory or a specific file. For Example:
-
-`ignored_warnings_from = ["path/to/warnings/file1.sol", "path/to/warnings/file2.sol"]`
-
-This configuration will cause the compiler to ignore any warnings that originate from the specified paths.
-
-##### `ignored_error_codes`
-
-- Type: array of integers/strings
-- Default: none for source, SPDX license identifiers and contract size for tests
-- Environment: `FOUNDRY_IGNORED_ERROR_CODES` or `DAPP_IGNORED_ERROR_CODES`
-
-An array of Solidity compiler error codes to ignore during build, such as warnings.
-
-Valid values are:
-
-- `license`: 1878
-- `code-size`: 5574
-- `func-mutability`: 2018
-- `unused-var`: 2072
-- `unused-param`: 5667
-- `unused-return`: 9302
-- `virtual-interfaces`: 5815
-- `missing-receive-ether`: 3628
-- `shadowing`: 2519
-- `same-varname`: 8760
-- `unnamed-return`: 6321
-- `unreachable`: 5740
-- `pragma-solidity`: 3420
-- `constructor-visibility`: 2462
-- `init-code-size`: 3860
-- `transient-storage`: 2394
-- `too-many-warnings`: 4591
-
-##### `deny_warnings`
-
-- Type: boolean
-- Default: false
-- Environment: `FOUNDRY_DENY_WARNINGS` or `DAPP_DENY_WARNINGS`
-
-If enabled, Foundry will treat Solidity compiler warnings as errors, stopping artifacts from being written to disk.
-
-##### `evm_version`
-
-- Type: string
-- Default: prague
-- Environment: `FOUNDRY_EVM_VERSION` or `DAPP_EVM_VERSION`
-
-The EVM version to use during tests. The value **must** be an EVM hardfork name, such as `london`, `paris`, `shanghai`, `cancun`, `prague`, etc.
-
-If you are relying on a specific EVM version for compatibility reasons you are recommended to pin to it in `foundry.toml`:
-
-```toml
-evm_version = "paris"
-```
-
-##### `revert_strings`
-
-- Type: string
-- Default: default
-- Environment: `FOUNDRY_REVERT_STRINGS` or `DAPP_REVERT_STRINGS`
-
-Possible values are:
-
-- `default` does not inject compiler-generated revert strings and keeps user-supplied ones.
-- `strip` removes all revert strings (if possible, i.e. if literals are used) keeping side-effects.
-- `debug` injects strings for compiler-generated internal reverts, implemented for ABI encoders V1 and V2 for now.
-- `verboseDebug` even appends further information to user-supplied revert strings (not yet implemented).
-
-##### `extra_output_files`
-
-- Type: array of strings
-- Default: none
-- Environment: N/A
-
-Extra output from the Solidity compiler that should be written to files in the artifacts directory.
-
-Valid values are:
-
-- `metadata`: Written as a `metadata.json` file in the artifacts directory
-- `ir`: Written as a `.ir` file in the artifacts directory
-- `irOptimized`: Written as a `.iropt` file in the artifacts directory
-- `ewasm`: Written as a `.ewasm` file in the artifacts directory
-- `evm.assembly`: Written as a `.asm` file in the artifacts directory
-
-##### `extra_output`
-
-- Type: array of strings
-- Default: see below
-- Environment: N/A
-
-Extra output to include in the contract's artifact.
-
-The following values are always set, since they're required by Forge:
-
-```toml
-extra_output = [
-  "abi",
-  "evm.bytecode",
-  "evm.deployedBytecode",
-  "evm.methodIdentifiers",
+[profile.default]
+remappings = [
+    "@openzeppelin/=lib/openzeppelin-contracts/",
+    "lib/dep/:forge-std/=lib/dep/lib/forge-std/src/",
 ]
 ```
 
-For a list of valid values, see the [Solidity docs](https://docs.soliditylang.org/en/latest/using-the-compiler.html#input-description) (search for: _The available output types are as follows_).
+With the first entry, `import "@openzeppelin/contracts/utils/Context.sol";` resolves to
+`lib/openzeppelin-contracts/contracts/utils/Context.sol`.
 
-##### `bytecode_hash`
+These entries are merged with remappings from `remappings.txt` in the project root, the
+`FOUNDRY_REMAPPINGS` environment variable, `--remappings` on the command line, and those
+detected automatically (see `auto_detect_remappings`). For the same name, command-line
+remappings win over the environment, the environment over `remappings.txt`,
+`remappings.txt` over this key, and all of them over auto-detected ones. Run
+`forge remappings` to print the final list.
 
-- Type: string
-- Default: ipfs
-- Environment: `FOUNDRY_BYTECODE_HASH` or `DAPP_BYTECODE_HASH`
-
-Determines the hash method for the metadata hash that is appended to the bytecode.
-
-Valid values are:
-
-- ipfs (default)
-- bzzr1
-- none
-
-##### `sparse_mode`
+#### `auto_detect_remappings`
 
 - Type: boolean
-- Default: false
-- Environment: `FOUNDRY_SPARSE_MODE` or `DAPP_SPARSE_MODE`
+- Default: `true`
+- Environment: `FOUNDRY_AUTO_DETECT_REMAPPINGS`, `DAPP_AUTO_DETECT_REMAPPINGS`, or `DAPP_TEST_AUTO_DETECT_REMAPPINGS`
 
-Enables [sparse mode](/reference/forge/build#sparse-mode-experimental) for builds.
+Whether to detect remappings automatically by scanning the `libs` directories.
+
+When enabled, Forge looks through each library directory for dependencies (including their
+own `foundry.toml` and `remappings.txt` files) and generates remappings for them, including
+contextual remappings for nested dependencies. Remappings you configure explicitly always
+take precedence over detected ones.
+
+When disabled, only the remappings from `remappings`, `remappings.txt`, the
+`FOUNDRY_REMAPPINGS` environment variable and `--remappings` are used.
+
+#### `allow_paths`
+
+- Type: array of string (path)
+- Default: `[]`
+- Environment: `FOUNDRY_ALLOW_PATHS`, `DAPP_ALLOW_PATHS`, or `DAPP_TEST_ALLOW_PATHS`
+
+Additional directories that solc may read sources from, passed to `solc --allow-paths`.
+
+Paths are relative to the project root. The project root and `libs` are always allowed, so
+this is only needed for imports from outside the project, for example in workspaces managed
+by pnpm or similar tools. See
+[https://docs.soliditylang.org/en/latest/path-resolution.html#allowed-paths](https://docs.soliditylang.org/en/latest/path-resolution.html#allowed-paths).
+
+#### `include_paths`
+
+- Type: array of string (path)
+- Default: `[]`
+- Environment: `FOUNDRY_INCLUDE_PATHS`, `DAPP_INCLUDE_PATHS`, or `DAPP_TEST_INCLUDE_PATHS`
+
+Additional source directories for import resolution, passed to `solc --include-path`.
+
+Solc resolves imports against these directories in addition to its base path, which Foundry
+sets to the project root. Use them to import contracts whose location is not fixed relative
+to the project, such as packages installed by a package manager. Paths are relative to the
+project root. See [solc path
+resolution](https://docs.soliditylang.org/en/latest/path-resolution.html).
+
+#### `libraries`
+
+- Type: array of string
+- Default: `[]`
+- Environment: `DAPP_LIBRARIES` or `FOUNDRY_LIBRARIES`
+
+Addresses of already deployed Solidity libraries to link against.
+
+Each entry has the form `<file>:<library>:<address>`:
+
+```toml
+[profile.default]
+libraries = ["src/MyLibrary.sol:MyLibrary:0xfD88CeE74f7D78697775aBDAE53f9Da1559728E4"]
+```
+
+Remappings apply to `<file>`. Contracts that call external functions of a listed library
+are linked to the given address instead of having Forge deploy the library. These addresses
+are also granted cheatcode access in tests and scripts (useful on forks), even when no
+contract references them.
+
+The `--libraries` flag and the `FOUNDRY_LIBRARIES` environment variable (a list, or a
+single comma-separated string) set the same value. While `allow_linked_libraries` is
+`false`, these addresses are withheld from solc; see that setting.
+
+#### `allow_linked_libraries`
+
+- Type: boolean
+- Default: `true`
+- Environment: `FOUNDRY_ALLOW_LINKED_LIBRARIES`, `DAPP_ALLOW_LINKED_LIBRARIES`, or `DAPP_TEST_ALLOW_LINKED_LIBRARIES`
+
+Whether compiled contracts may depend on externally linked Solidity libraries.
+
+Library functions declared `public` or `external` are called on a separately deployed
+library, while `internal` ones are compiled into their callers. When set to `false`,
+`forge build`, `forge test`, `forge script`, `forge create` and `forge coverage` fail if
+the creation or runtime bytecode of any compiled contract requires an external library. The
+check covers cached artifacts and the compilation used by mutation testing, and lists each
+contract with the library it links. To fix a violation, make the called library functions
+`internal`.
+
+Internal libraries, unused public library functions and dynamic test linking remain
+available. While disallowed, addresses configured in `libraries` are withheld from solc so
+that actual dependencies stay visible in its link references; an unused address alone does
+not fail the build.
+
+The policy applies only to the artifacts selected for compilation, not to arbitrary
+existing artifacts or code loaded at runtime through cheatcodes.
+`--disallow-linked-libraries` enforces it for one invocation and overrides both the profile
+and `FOUNDRY_ALLOW_LINKED_LIBRARIES`.
+
+#### `solc`
+
+- Type: string (version or path)
+- Default: none
+- Environment: `FOUNDRY_SOLC`, `DAPP_SOLC`, or `DAPP_TEST_SOLC`
+
+The Solidity compiler to use for the whole project, instead of detecting versions per file.
+
+The value can be:
+
+- an exact version, such as `"0.8.28"`, which is installed if it's missing (unless
+  `offline` is set, in which case the build fails);
+- `"solar:<version>"`, which pins an exact [Solar](https://github.com/paradigmxyz/solar)
+  release, 0.2.0 or later without pre-release or build metadata;
+- a path to a local compiler binary, or the name of an executable on `PATH`.
+
+```toml
+[profile.default]
+solc = "0.8.28"
+# solc = "solar:0.3.0"
+# solc = "custom-solc"
+```
+
+Version requirements such as `"^0.8.0"` are not supported. When set, version auto-detection
+is off and `auto_detect_solc` is ignored.
+
+A Solar release is used from `~/.foundry/solar/<version>`. If it's missing, Forge downloads
+it from the Solar GitHub release, checks it against the release's SHA-256 checksum file and
+the version it reports, and installs it there. Releases are published for macOS, x86_64
+Linux, aarch64 Linux with glibc, and x86_64 Windows; on other platforms, set `solc` to the
+path of a `solar` binary instead.
+
+The legacy key `solc_version` is still accepted and is used only when `solc` is not set.
+The `FOUNDRY_SOLC_VERSION` environment variable overrides both, and `--use` overrides it
+for one invocation (accepting the same values, plus a `solc:` prefix).
+
+#### `auto_detect_solc`
+
+- Type: boolean
+- Default: `true`
+- Environment: `FOUNDRY_AUTO_DETECT_SOLC`, `DAPP_AUTO_DETECT_SOLC`, or `DAPP_TEST_AUTO_DETECT_SOLC`
+
+Whether to detect the Solidity compiler versions to use from each file's `pragma solidity`.
+
+With detection, Forge picks a compatible compiler version for each set of sources,
+installing it if needed (unless `offline` is set). Setting `solc` turns detection off and
+this key is then ignored.
+
+`--no-auto-detect` sets this key to `false` for one invocation. Setting it to `false`
+doesn't pin a compiler by itself: compilation still auto-detects when `solc` is unset, so
+set `solc` to use a single version.
+
+#### `offline`
+
+- Type: boolean
+- Default: `false`
+- Environment: `FOUNDRY_OFFLINE`, `DAPP_OFFLINE`, or `DAPP_TEST_OFFLINE`
+
+Whether to disallow network access for downloads and external lookups.
+
+When enabled:
+
+- missing solc versions and Solar releases are not installed; a build that needs one fails;
+- traces don't look up contract names on Etherscan or function signatures in online
+  signature databases;
+- `forge script` skips verifying external contracts, and `--verify-external` fails.
+
+With `auto_detect_solc` enabled, the required compiler versions are still detected, but
+only installed ones are used. `--offline` enables it for one invocation.
+
+#### `ignored_warnings_from`
+
+- Type: array of string (path)
+- Default: `[]`
+- Environment: `FOUNDRY_IGNORED_WARNINGS_FROM`, `DAPP_IGNORED_WARNINGS_FROM`, or `DAPP_TEST_IGNORED_WARNINGS_FROM`
+
+Paths whose compiler warnings are silenced.
+
+Each entry is a file or directory path relative to the project root; a warning is silenced
+when the file it points to starts with one of them. This hides known warnings from vendored
+or generated code without affecting others:
+
+```toml
+[profile.default]
+ignored_warnings_from = ["lib/legacy", "src/Generated.sol"]
+```
+
+Only warnings are silenced; errors are always reported. Silenced warnings don't fail the
+build when `deny` is set. To silence only some codes, use `ignored_error_codes_from`.
+
+#### `ignored_error_codes`
+
+- Type: array of string or integer
+- Default: `["license", "code-size", "init-code-size", "transient-storage", "transfer-deprecated", "natspec-memory-safe-assembly-deprecated"]`
+- Environment: `FOUNDRY_IGNORED_ERROR_CODES`, `DAPP_IGNORED_ERROR_CODES`, or `DAPP_TEST_IGNORED_ERROR_CODES`
+
+Solidity compiler warning codes to silence.
+
+Each entry is a numeric code or one of these names:
+
+- `license` (1878), `code-size` (5574), `init-code-size` (3860)
+- `func-mutability` (2018), `unused-var` (2072), `unused-param` (5667), `unused-return`
+  (9302)
+- `virtual-interfaces` (5815), `missing-receive-ether` (3628), `shadowing` (2519)
+- `same-varname` (8760), `unnamed-return` (6321), `unreachable` (5740)
+- `pragma-solidity` (3420), `constructor-visibility` (2462), `transient-storage` (2394)
+- `too-many-warnings` (4591), `transfer-deprecated` (9207)
+- `natspec-memory-safe-assembly-deprecated` (2424)
+
+```toml
+[profile.default]
+ignored_error_codes = ["license", "code-size", 2394]
+```
+
+Only warnings are silenced; errors are always reported. Silenced warnings don't fail the
+build when `deny` is set. Setting this key replaces the default list. The SPDX license
+(1878) and contract size (5574) warnings are always silenced in test files.
+`--ignored-error-codes` replaces the list for one invocation. To silence codes only for
+some paths, use `ignored_error_codes_from`.
+
+#### `deny_warnings`
+
+- Type: boolean
+- Default: none
+- Environment: `FOUNDRY_DENY_WARNINGS`, `DAPP_DENY_WARNINGS`, or `DAPP_TEST_DENY_WARNINGS`
+- Deprecated: use `deny = warnings` instead
+
+Deprecated: use `deny = "warnings"` instead.
+
+`deny_warnings = true` is read as `deny = "warnings"` and `false` as `deny = "never"`,
+unless `deny` is also set in the same profile, in which case `deny` wins. The
+`--deny-warnings` flag is deprecated in the same way in favor of `--deny warnings`.
+
+#### `evm_version`
+
+- Type: string
+- Default: `"osaka"`
+- Environment: `FOUNDRY_EVM_VERSION`, `DAPP_EVM_VERSION`, or `DAPP_TEST_EVM_VERSION`
+
+The EVM version to compile contracts for and, unless `hardfork` is set, to execute them
+with.
+
+The value is an Ethereum hardfork name: `homestead`, `tangerineWhistle`, `spuriousDragon`,
+`byzantium`, `constantinople`, `petersburg`, `istanbul`, `berlin`, `london`, `paris`,
+`shanghai`, `cancun`, `prague`, `osaka` or `amsterdam` (case-insensitive). It is passed to
+the compiler and, when `hardfork` is unset and a fork doesn't determine the hardfork,
+selects the EVM rules used by `forge test` and `forge script`.
+
+If the selected compiler version doesn't support the configured EVM version, the newest one
+it supports is used for compilation. Pin the version if you rely on it for compatibility,
+since the default follows new hardforks:
+
+```toml
+[profile.default]
+evm_version = "paris"
+```
+
+`--evm-version` overrides it for one invocation.
+
+#### `revert_strings`
+
+- Type: string
+- Default: none
+- Environment: `FOUNDRY_REVERT_STRINGS`, `DAPP_REVERT_STRINGS`, or `DAPP_TEST_REVERT_STRINGS`
+
+How solc handles revert and require reason strings.
+
+Valid values:
+
+- `default`: keeps reason strings you write and doesn't add any generated by the compiler.
+- `strip`: removes all reason strings where possible (when they are literals), keeping side
+  effects.
+- `debug`: adds strings for compiler-generated internal reverts (implemented for ABI
+  encoders V1 and V2).
+- `verboseDebug`: also appends further information to reason strings you write (not yet
+  implemented by solc).
+
+When unset, nothing is passed to solc and its default applies. `--revert-strings` overrides
+it for one invocation.
+
+#### `extra_output_files`
+
+- Type: array of string
+- Default: `[]`
+- Environment: `FOUNDRY_EXTRA_OUTPUT_FILES`, `DAPP_EXTRA_OUTPUT_FILES`, or `DAPP_TEST_EXTRA_OUTPUT_FILES`
+
+Compiler output to write as separate files next to each contract's artifact.
+
+Supported values and the files they produce:
+
+- `abi`: `<Contract>.abi.json`
+- `metadata`: `<Contract>.metadata.json`
+- `ir`: `<Contract>.ir`
+- `irOptimized`: `<Contract>.iropt`
+- `ewasm`: `<Contract>.ewasm`
+- `evm.assembly`: `<Contract>.asm`
+- `evm.legacyAssembly`: `<Contract>.legacyAssembly.json`
+- `evm.bytecode.object`: `<Contract>.bin`
+- `evm.deployedBytecode.object`: `<Contract>.deployed-bin`
+- `evm.bytecode.sourceMap`: `<Contract>.sourcemap`
+- `evm.bytecode.generatedSources`: `<Contract>.gensources`
+
+```toml
+[profile.default]
+extra_output_files = ["metadata"]
+```
+
+`extra_output = ["metadata"]` puts the metadata in the contract's JSON artifact, while
+`extra_output_files = ["metadata"]` writes it to its own file. See [Contract
+Metadata](https://docs.soliditylang.org/en/latest/metadata.html). `--extra-output-files`
+replaces it for one invocation.
+
+#### `extra_output`
+
+- Type: array of string
+- Default: `[]`
+- Environment: `FOUNDRY_EXTRA_OUTPUT`, `DAPP_EXTRA_OUTPUT`, or `DAPP_TEST_EXTRA_OUTPUT`
+
+Additional compiler output to include in each contract's artifact.
+
+Values are solc output selectors, such as `devdoc`, `userdoc`, `storageLayout`,
+`transientStorageLayout`, `ir`, `irOptimized`, `irOptimizedAst`, `evm.assembly`,
+`evm.legacyAssembly`, `evm.gasEstimates` or `ewasm.wasm`. See the [Solidity compiler
+API](https://docs.soliditylang.org/en/latest/using-the-compiler.html#compiler-api) for the
+full list.
+
+Forge always requests what it needs, whatever this is set to: `abi`, the bytecode and
+deployed bytecode objects, source maps and link references, immutable references, method
+identifiers and `metadata`.
+
+```toml
+[profile.default]
+extra_output = ["storageLayout", "devdoc"]
+```
+
+`--extra-output` replaces it for one invocation. To write output to separate files instead,
+use `extra_output_files`.
+
+#### `bytecode_hash`
+
+- Type: string
+- Default: `"ipfs"`
+- Environment: `FOUNDRY_BYTECODE_HASH`, `DAPP_BYTECODE_HASH`, or `DAPP_TEST_BYTECODE_HASH`
+
+The hash of the contract metadata that solc appends to the bytecode.
+
+Valid values:
+
+- `ipfs`: an IPFS hash of the metadata, as solc does by default.
+- `bzzr1`: a Swarm hash of the metadata.
+- `none`: no hash.
+
+The hash depends on source contents, source paths and compiler settings, so the same
+contract can produce different bytecode on different machines. Set `none` for bytecode that
+doesn't depend on these, for example for deterministic deployments. This keeps the CBOR
+metadata trailer; to omit it entirely, also set `cbor_metadata = false`, or pass
+`--no-metadata` to do both. See [https://docs.soliditylang.org/en/latest/metadata.html](https://docs.soliditylang.org/en/latest/metadata.html).
+
+#### `sparse_mode`
+
+- Type: boolean
+- Default: `false`
+- Environment: `FOUNDRY_SPARSE_MODE`, `DAPP_SPARSE_MODE`, or `DAPP_TEST_SPARSE_MODE`
+
+Has no effect; kept so that existing configuration files still load.
+
+Sparse output selection, which asks solc only for the output of the contracts a command
+needs, is applied automatically when `skip` patterns are set.
+
+#### `external_compilers`
+
+- Type: array of table
+- Default: none
+- Environment: `FOUNDRY_EXTERNAL_COMPILERS`, `DAPP_EXTERNAL_COMPILERS`, or `DAPP_TEST_EXTERNAL_COMPILERS`
+
+External compiler adapters that build compiler-native EVM projects as part of the build.
+
+Adapters let Forge compile languages other than Solidity and Vyper through an executable
+that speaks Foundry's adapter protocol. Each entry configures one adapter:
+
+- `id` (required): a unique identifier that namespaces the adapter's artifacts and cache
+  entries; ASCII letters, digits, `.`, `-` and `_`, but not `.` or `..`.
+- `command` (required): the adapter executable, absolute or relative to the project root.
+  It is run directly, without a shell or `PATH` lookup.
+- `args`: arguments passed to the executable.
+- `roots` (required): the compiler-native project roots, relative to the project root.
+- `settings`: a table passed to the adapter as JSON, without interpretation.
+
+```toml
+[[profile.default.external_compilers]]
+id = "contracts"
+command = "/opt/toolchains/fe-foundry-adapter"
+roots = ["contracts"]
+
+[profile.default.external_compilers.settings]
+compiler = "/opt/toolchains/fe"
+```
+
+Artifacts are written under `<out>/.external/<id>/` and compile results are cached under
+`<cache_path>/external-compilers/`, so the contracts are available to `forge build`,
+`forge test`, `forge script`, `forge inspect` and other commands.
+
+**Warning:** a configured adapter runs with your privileges whenever Forge compiles. Forge
+clears its environment and starts it in the project root, but this is not a sandbox.
+
+{/* config-reference:end */}
 
 ### Optimizer
 
 Configuration related to the Solidity optimizer.
 
-##### `optimizer`
+{/* config-reference:begin keys="optimizer optimizer_runs via_ir use_literal_content optimizer_details" level=4 */}
+
+#### `optimizer`
 
 - Type: boolean
-- Default: false
-- Environment: `FOUNDRY_OPTIMIZER` or `DAPP_OPTIMIZER`
+- Default: none
+- Environment: `FOUNDRY_OPTIMIZER`, `DAPP_OPTIMIZER`, `DAPP_TEST_OPTIMIZER`, or `DAPP_BUILD_OPTIMIZE`
 
-Whether or not to enable the Solidity optimizer.
+Whether to enable the Solidity optimizer.
 
-> ℹ️ **Note**
-> Solidity optimizer is automatically enabled if `optimizer_runs` is set to a value greater than 0.
+When unset, the optimizer is enabled if `optimizer_runs` is set to a value greater than 0,
+and disabled otherwise. Setting it explicitly always wins over that inference.
+`optimizer_details` can switch individual optimizer components on or off independently of
+this setting.
 
-##### `optimizer_runs`
+`--optimize` (or `--optimize=false`) overrides it for one invocation. `forge coverage`
+disables the optimizer unless `--ir-minimum` is used.
+
+#### `optimizer_runs`
 
 - Type: integer
-- Default: 200
-- Environment: `FOUNDRY_OPTIMIZER_RUNS` or `DAPP_OPTIMIZER_RUNS`
+- Default: none
+- Environment: `FOUNDRY_OPTIMIZER_RUNS`, `DAPP_OPTIMIZER_RUNS`, `DAPP_TEST_OPTIMIZER_RUNS`, or `DAPP_BUILD_OPTIMIZE_RUNS`
 
-The number of runs specifies roughly how often each opcode of the deployed code will be executed across the life-time of the contract. This means it is a trade-off parameter between code size (deploy cost) and code execution cost (cost after deployment). A `optimizer_runs` parameter of `1` will produce short but expensive code. In contrast, a larger `optimizer_runs` parameter will produce longer but more gas efficient code. The maximum value of the parameter is `2**32-1`.
+How many times each opcode of the deployed code is expected to run over the contract's
+lifetime.
 
-A common misconception is that this parameter specifies the number of iterations of the optimizer. This is not true: The optimizer will always run as many times as it can still improve the code.
+This is a trade-off between code size (deployment cost) and execution cost after
+deployment. A value of `1` produces short but expensive code; larger values produce longer
+but more gas-efficient code. The maximum is `2**32-1`; larger values are rejected.
 
-##### `via_ir`
+It does not set how many times the optimizer runs: the optimizer always runs as many times
+as it can still improve the code.
+
+If `optimizer` is not set explicitly, a value greater than 0 enables the optimizer. When
+neither is set, 200 is used. `--optimizer-runs` overrides it for one invocation.
+
+#### `via_ir`
 
 - Type: boolean
-- Default: false
-- Environment: `FOUNDRY_VIA_IR` or `DAPP_VIA_IR`
+- Default: `false`
+- Environment: `FOUNDRY_VIA_IR`, `DAPP_VIA_IR`, or `DAPP_TEST_VIA_IR`
 
-If set to true, changes compilation pipeline to go through the new IR optimizer.
+Whether to compile through the Yul intermediate representation (IR) pipeline.
 
-##### `use_literal_content`
+The IR pipeline can optimize across functions and avoid some "stack too deep" errors, but
+compiles more slowly. It requires solc 0.7.5 or later and is ignored for older versions. It
+is also enabled when `via_ssa_cfg` is set.
+
+`--via-ir` enables it for one invocation. `forge coverage` disables it unless
+`--ir-minimum` is used. Per-file overrides are possible with `additional_compiler_profiles`
+and `compilation_restrictions`.
+
+#### `use_literal_content`
 
 - Type: boolean
-- Default: false
+- Default: `false`
+- Environment: `FOUNDRY_USE_LITERAL_CONTENT`, `DAPP_USE_LITERAL_CONTENT`, or `DAPP_TEST_USE_LITERAL_CONTENT`
 
-If set to true, changes compilation to only use literal content and not URLs.
+Whether to store the source code itself in the contract metadata instead of only
+references.
 
-##### `[optimizer_details]`
+When enabled, solc embeds the literal content of each source in the metadata instead of
+URLs to it, so the metadata is self-contained. `--use-literal-content` enables it for one
+invocation.
 
-The optimizer details section is used to tweak how the Solidity optimizer behaves. There are several configurable values in this section (each of them are booleans):
+#### `optimizer_details`
+
+- Type: table
+- Default: none
+- Environment: `FOUNDRY_OPTIMIZER_DETAILS`, `DAPP_OPTIMIZER_DETAILS`, or `DAPP_TEST_OPTIMIZER_DETAILS`
+
+Switches individual Solidity optimizer components on or off.
+
+The table is passed to solc as `settings.optimizer.details` and uses solc's camelCase key
+names. Each key is a boolean; omitted keys keep solc's default:
+
+- `peephole`: the peephole optimizer.
+- `inliner`: the inliner (solc 0.8.5 or later).
+- `jumpdestRemover`: removes unused jump destinations.
+- `orderLiterals`: sometimes reorders literals in commutative operations.
+- `deduplicate`: removes duplicate code blocks.
+- `cse`: common subexpression elimination.
+- `constantOptimizer`: optimizes the representation of literal numbers and strings.
+- `yul`: the Yul optimizer, which mostly operates on ABI coder v2 code and inline assembly.
+- `simpleCounterForLoopUncheckedIncrement`: unchecked increments of simple loop counters.
+
+The `yulDetails` subtable tunes the Yul optimizer:
+
+- `stackAllocation`: improves the allocation of stack slots by freeing them up earlier.
+- `optimizerSteps`: the sequence of optimizer steps to apply.
+
+```toml
+[profile.default.optimizer_details]
+constantOptimizer = true
+yul = true
+
+[profile.default.optimizer_details.yulDetails]
+stackAllocation = true
+optimizerSteps = "dhfoDgvulfnTUtnIf"
+```
+
+The details apply even when `optimizer` is unset. If compiling with `via_ir` fails, try
+enabling `optimizer` and setting `optimizerSteps` to an empty string. See
+[https://docs.soliditylang.org/en/latest/using-the-compiler.html#input-description](https://docs.soliditylang.org/en/latest/using-the-compiler.html#input-description) for the
+defaults.
+
+{/* config-reference:end */}
+
+The `optimizer_details` table is used to tweak how the Solidity optimizer behaves. There are several configurable values in this section (each of them are booleans):
 
 - `peephole`
 - `inliner`
@@ -376,11 +613,54 @@ It is also important to set a proper timeout (given in milliseconds), since the 
 
 If no verification targets are given, only assertions will be checked.
 
-##### `[model_checker]`
+{/* config-reference:begin keys="model_checker" level=4 */}
+
+#### `model_checker`
+
+- Type: table
+- Default: none
+- Environment: `FOUNDRY_MODEL_CHECKER`, `DAPP_MODEL_CHECKER`, or `DAPP_TEST_MODEL_CHECKER`
+
+Settings for the Solidity SMTChecker, a formal verification module built into solc.
+
+When set, the model checker runs during `forge build` and its findings are reported as
+compiler warnings. It is available in solc 0.8.7 or later on macOS and Linux, and needs the
+SMT solvers it uses (such as z3) to be installed.
+
+The table uses solc's keys:
+
+- `contracts`: the contracts to check, as a table from source path to contract names.
+  Without it every contract is checked, which can take a long time.
+- `engine`: `chc` (constrained Horn clauses, recommended), `bmc` (bounded model checker),
+  `all` (both) or `none`. solc runs no engine unless one is set.
+- `timeout`: the solver timeout per query, in milliseconds.
+- `targets`: what to check: `assert`, `underflow`, `overflow`, `divByZero`,
+  `constantCondition`, `popEmptyArray`, `outOfBounds` and `balance`. When omitted, Forge
+  checks only `assert`, unlike solc, which checks all targets.
+- `invariants`: invariants to report: `contract` and `reentrancy` (solc 0.8.10 or later).
+- `solvers`: `cvc4`, `eld` (solc 0.8.18 or later), `smtlib2` and `z3`.
+- `showUnproved`, `showUnsupported` and `showProvedSafe`: whether to report unproved
+  targets, unsupported language features and targets proved safe (the last two need solc
+  0.8.20).
+- `divModWithSlacks`: whether to encode division and modulo with slack variables.
+
+The `show*` and `divModWithSlacks` keys also accept snake_case names.
+
+```toml
+[profile.default.model_checker]
+contracts = { "src/Contract.sol" = ["Contract"] }
+engine = "chc"
+timeout = 10000
+targets = ["assert"]
+```
+
+See the [SMTChecker documentation](https://docs.soliditylang.org/en/latest/smtchecker.html).
+
+{/* config-reference:end */}
 
 The following keys are available in the model checker section.
 
-###### `model_checker.contracts`
+##### `model_checker.contracts`
 
 - Type: table
 - Default: all
@@ -397,7 +677,7 @@ For example:
 contracts = { "src/MyContracts.sol" = ["ContractA", "ContractB"] }
 ```
 
-###### `model_checker.div_mod_with_slacks`
+##### `model_checker.div_mod_with_slacks`
 
 - Type: boolean
 - Default: false
@@ -407,7 +687,7 @@ Sets how division and modulo operations should be encoded.
 
 Refer to the [Solidity documentation](https://docs.soliditylang.org/en/latest/smtchecker.html#division-and-modulo-with-slack-variables) for more information.
 
-###### `model_checker.engine`
+##### `model_checker.engine`
 
 - Type: string (see below)
 - Default: all
@@ -421,7 +701,7 @@ Specifies the model checker engine to run. Valid values are:
 
 Refer to the [Solidity documentation](https://docs.soliditylang.org/en/latest/smtchecker.html#model-checking-engines) for more information on the engines.
 
-###### `model_checker.invariants`
+##### `model_checker.invariants`
 
 - Type: array of strings
 - Default: N/A
@@ -434,7 +714,7 @@ Sets the model checker invariants. Valid values are:
 
 Refer to the [Solidity documentation](https://docs.soliditylang.org/en/latest/smtchecker.html#reported-inferred-inductive-invariants) for more information on the invariants.
 
-###### `model_checker.show_unproved`
+##### `model_checker.show_unproved`
 
 - Type: boolean
 - Default: false
@@ -444,7 +724,7 @@ Whether or not to output all unproved targets.
 
 Refer to the [Solidity documentation](https://docs.soliditylang.org/en/latest/smtchecker.html#unproved-targets) for more information.
 
-###### `model_checker.solvers`
+##### `model_checker.solvers`
 
 - Type: array of strings
 - Default: N/A
@@ -459,7 +739,7 @@ Sets the model checker solvers. Valid values are:
 
 Refer to the [Solidity documentation](https://docs.soliditylang.org/en/latest/smtchecker.html#smt-and-horn-solvers) for more information.
 
-###### `model_checker.timeout`
+##### `model_checker.timeout`
 
 - Type: number (milliseconds)
 - Default: N/A
@@ -467,7 +747,7 @@ Refer to the [Solidity documentation](https://docs.soliditylang.org/en/latest/sm
 
 Sets the timeout for the underlying model checker engines (in milliseconds).
 
-###### `model_checker.targets`
+##### `model_checker.targets`
 
 - Type: array of strings
 - Default: assert
@@ -512,11 +792,40 @@ When choosing compiler profile, first profile (starting with default one) satisf
 
 > If the same source file is compiled with several profiles, then an artifact is generated for each profile - if `Counter` is compiled with default and `v1` profile, `Counter.json` and `Counter.v1.json` artifacts are created.
 
-#### Additional compiler settings:
+{/* config-reference:begin keys="additional_compiler_profiles" level=4 */}
 
-`[additional_compiler_profiles]`
+#### `additional_compiler_profiles`
 
-- Type: array of additional compiler profiles
+- Type: array of table
+- Default: `[]`
+- Environment: `FOUNDRY_ADDITIONAL_COMPILER_PROFILES`, `DAPP_ADDITIONAL_COMPILER_PROFILES`, or `DAPP_TEST_ADDITIONAL_COMPILER_PROFILES`
+
+Extra compiler settings profiles that sources can be compiled with besides the main
+settings.
+
+Each entry starts from the active profile's compiler settings and overrides only the fields
+it sets:
+
+- `name` (required): the profile's name, used in artifact names.
+- `via_ir`: whether to compile through the IR pipeline.
+- `evm_version`: the target EVM version, also applied to Vyper sources.
+- `optimizer`: whether to enable the optimizer.
+- `optimizer_runs`: the optimizer runs; a value above `0` also enables the optimizer unless
+  `optimizer` is set.
+- `bytecode_hash`: the metadata hash method: `ipfs`, `bzzr1` or `none`.
+
+For each source file Forge uses the first profile, starting with the main settings, that
+satisfies the `compilation_restrictions` of the file and of all its imports. A file
+compiled with several profiles gets one artifact per profile, such as `Counter.json` for
+the main settings and `Counter.via-ir.json` for a profile named `via-ir`.
+
+```toml
+[profile.default]
+additional_compiler_profiles = [{ name = "via-ir", via_ir = true }]
+compilation_restrictions = [{ paths = "src/Heavy.sol", via_ir = true }]
+```
+
+{/* config-reference:end */}
 
 Configures a mapping from profile name to settings overrides.
 
@@ -576,11 +885,48 @@ Additional compiler profile [optimizer_runs](#optimizer_runs) setting.
 
 Additional compiler profile [bytecode_hash](#bytecode_hash) setting.
 
-#### Compilation restrictions settings:
+{/* config-reference:begin keys="compilation_restrictions" level=4 */}
 
-#### `[compilation_restrictions]`
+#### `compilation_restrictions`
 
-- Type: array of compilation restrictions settings
+- Type: array of table
+- Default: `[]`
+- Environment: `FOUNDRY_COMPILATION_RESTRICTIONS`, `DAPP_COMPILATION_RESTRICTIONS`, or `DAPP_TEST_COMPILATION_RESTRICTIONS`
+
+Restrictions on the compiler settings that matching source files may be compiled with.
+
+A restriction applies to the files matched by `paths` and to every file that imports them.
+Forge compiles each file with the first settings profile (the main settings, then
+`additional_compiler_profiles` in order) that satisfies all restrictions that apply to it.
+Fields:
+
+- `paths` (required): a glob matched against source paths, absolute or relative to the
+  project root, such as `src/Counter.sol`, `src/{Counter,Factory}.sol` or `src/v1/**`.
+- `version`: a solc version requirement with an explicit operator, such as `=0.8.11`,
+  `>=0.8.11` or `>=0.8.11 <0.9.0`; bare versions such as `0.8.11` are rejected.
+- `via_ir`: the required `via_ir` setting.
+- `bytecode_hash`: the required metadata hash method.
+- `optimizer_runs`, or a range with `min_optimizer_runs` and/or `max_optimizer_runs`.
+- `evm_version`, or a range with `min_evm_version` and/or `max_evm_version`.
+
+An exact value cannot be combined with a minimum or maximum for the same setting. When
+several entries match a file, their restrictions are merged; if they conflict, Forge warns
+and keeps the first.
+
+```toml
+[profile.default]
+additional_compiler_profiles = [{ name = "via-ir", via_ir = true }]
+compilation_restrictions = [
+    { paths = "test/**", via_ir = false },
+    { paths = "src/Counter.sol", via_ir = true },
+]
+```
+
+Because restrictions extend to importing files, a test that imports a restricted contract
+must satisfy the same restrictions unless it deploys the contract without importing it, for
+example with `vm.deployCode`.
+
+{/* config-reference:end */}
 
 ##### `compilation_restriction.paths`
 

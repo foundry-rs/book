@@ -10,11 +10,8 @@ deployed library. Internal library functions are compiled into their callers. Us
 
 ### `allow_linked_libraries`
 
-- Type: boolean
-- Default: `true`
-- Environment: `FOUNDRY_ALLOW_LINKED_LIBRARIES`
-
-When set to `false`, `forge build`, `forge test`, `forge script`, `forge create`, and `forge coverage`
+See [`allow_linked_libraries`](/config/reference/solidity-compiler#allow_linked_libraries) for its type, default, and
+environment variable. When set to `false`, `forge build`, `forge test`, `forge script`, `forge create`, and `forge coverage`
 fail if a compiled contract's creation or runtime bytecode requires an external Solidity library.
 The check includes cached artifacts and the compilation used by mutation tests.
 
