@@ -1,5 +1,5 @@
 ---
-description: Configure VS Code, Vim, and other editors for Foundry projects.
+description: Configure VS Code, Zed, Vim, and other editors for Foundry projects.
 ---
 
 ## Editor Setup
@@ -72,6 +72,31 @@ Create `.vscode/settings.json` in your project:
   "solidity.packageDefaultDependenciesDirectory": "lib"
 }
 ```
+
+
+### Zed
+
+[Zed](https://zed.dev/) uses a different settings shape than VS Code. To format Solidity with `forge fmt` on save, add the following to your user or project settings (`.zed/settings.json`):
+
+```json [.zed/settings.json]
+{
+  "format_on_save": "on",
+  "languages": {
+    "Solidity": {
+      "formatter": {
+        "external": {
+          "command": "forge",
+          "arguments": ["fmt", "--raw", "-"]
+        }
+      }
+    }
+  }
+}
+```
+
+`forge fmt --raw -` reads the buffer from stdin and writes formatted Solidity to stdout, which is what Zed's external formatter expects.
+
+For the language server, point Zed at `forge lsp` (stdio). Exact LSP client keys depend on your Zed version; the server command is the same as in other editors: `forge lsp`.
 
 ### Vim / Neovim
 
