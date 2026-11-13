@@ -40,9 +40,26 @@ becomes
 import {Context} from "node_modules/@openzeppelin/openzeppelin-contracts/contracts/utils/Context.sol";
 ```
 
-Foundry can generate contextual remappings for dependencies while retaining a broader package
-fallback. See [Nested dependency remappings](/projects/dependencies#nested-dependency-remappings)
-for details.
+When auto-detection is enabled, dependencies whose configured `src` resolves inside their package
+directory have owner-scoped remappings. Their `foundry.toml` and `remappings.txt` declarations,
+including file-specific aliases and declared contexts, cannot change imports made by your root
+project or sibling dependencies. Auto-detected package entry points remain available globally.
+
+If a dependency's `src` resolves outside its package directory, its declarations keep their previous
+behavior: declared contexts are preserved, and declarations without a context remain global. Both
+absolute source paths and relative paths such as `src = "../../external"` use this behavior, as do
+source-directory symlinks that resolve outside the package.
+
+To use an owner-scoped dependency's custom alias from your root project, declare it explicitly in
+your root project's `foundry.toml` or `remappings.txt`, or pass it with `--remappings`:
+
+```toml [foundry.toml]
+[profile.default]
+remappings = ["@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/"]
+```
+
+Explicit root-project and CLI remappings take precedence over generated dependency contexts. See
+[Nested dependency remappings](/projects/dependencies#nested-dependency-remappings) for details.
 
 ##### `auto_detect_remappings`
 
@@ -50,9 +67,12 @@ for details.
 - Default: true
 - Environment: `FOUNDRY_AUTO_DETECT_REMAPPINGS` or `DAPP_AUTO_DETECT_REMAPPINGS`
 
-If enabled, Foundry will automatically try auto-detect remappings by scanning the `libs` folder(s).
+If enabled, Foundry scans the `libs` folder(s) for package entry points and dependency remapping
+declarations. Dependency declarations follow the scope and external-source exception described
+[above](#remappings).
 
-If set to `false`, only the remappings in `foundry.toml` and `remappings.txt` are used.
+If set to `false`, dependency discovery is disabled. Explicit root-project, environment, and CLI
+remappings still apply.
 
 ##### `allow_paths`
 
