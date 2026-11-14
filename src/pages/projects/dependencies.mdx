@@ -99,11 +99,11 @@ $ forge remappings > remappings.txt
 
 #### Nested dependency remappings
 
-For dependencies whose configured `src` resolves inside their package directory, declarations without
-a context in `foundry.toml` and `remappings.txt` remain global when their import aliases do not conflict
-with your project paths or a different dependency target. Unique aliases, such as OpenZeppelin Contracts'
-`@openzeppelin/contracts/`, remain available to your root project. Declarations that resolve to the
-same target can also share an alias.
+For dependencies installed within your project root whose configured `src` resolves inside their
+package directory, declarations without a context in `foundry.toml` and `remappings.txt` remain global
+when their import aliases do not conflict with your project paths or a different dependency target.
+Unique aliases, such as OpenZeppelin Contracts' `@openzeppelin/contracts/`, remain available to your
+root project. Declarations that resolve to the same target can also share an alias.
 
 When an alias conflicts, Foundry restricts the dependency's declaration to its owner. This includes
 file-specific aliases and conflicts with auto-detected package entry points. For example,
@@ -136,16 +136,21 @@ alias is overlaid into that context, so it overrides only its matching import su
 dependency mapping handles the remaining imports. Explicit root-project contextual remappings are
 unchanged.
 
-A dependency's declared context can narrow its scope, but cannot extend it to your root project or
-sibling dependencies. Generated contexts use the dependency's installation path, including when the
-dependency is symlinked. When discovering nested dependencies, Foundry only follows relative `libs`
-entries that stay inside the declaring package, including when resolving symlinks.
+For these dependencies, declared contexts can narrow their scope, but cannot extend it to your root
+project or sibling dependencies. Generated contexts use the dependency's installation path, including
+when the dependency is symlinked.
 
-Dependencies whose configured `src` resolves outside their package directory keep the previous
-remapping behavior. This applies to both absolute paths and relative paths such as
-`src = "../../external"`: declared contexts are preserved, and declarations without a context remain
-global. A `src` symlink that resolves outside the package also uses this behavior. These dependencies
+Dependencies installed outside your project root, such as through `libs = ["../shared"]` or an
+absolute library path outside the root, keep their previous declaration scope. The same applies when
+a dependency's configured `src` resolves outside its package directory, whether through an absolute
+path, a relative path such as `src = "../../external"`, or a source-directory symlink. In these cases,
+declared contexts are preserved, and declarations without a context remain global. These dependencies
 do not have the same owner isolation.
+
+#### Dependency discovery and package selection
+
+When discovering nested dependencies, Foundry only follows relative `libs` entries that stay inside
+the declaring package, including when resolving symlinks.
 
 When multiple discovered packages provide the same import prefix, Foundry prefers the target path
 with fewer components, then a target ending in `src`, then lexical target-path order. A custom source
