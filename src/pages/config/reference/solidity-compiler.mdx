@@ -45,8 +45,10 @@ When auto-detection is enabled, dependencies installed within your project root 
 declarations to their owner. Dependencies installed outside your project root, or whose `src`
 resolves outside their package, retain their previous declaration scope.
 
-Foundry warns when a previously global declaration becomes scoped. Root imports can select a
-different package even if your build succeeds.
+Foundry warns when scoping changes or removes a dependency declaration's previously selected global
+target. No migration warning is emitted when the same target remains globally available or an explicit
+global root-project or CLI remapping overrides the alias. Root imports can select a different package
+even if your build succeeds.
 
 Explicit root-project and CLI remappings take precedence over generated dependency contexts. See
 [Nested dependency remappings](/projects/dependencies#nested-dependency-remappings) for scope rules,

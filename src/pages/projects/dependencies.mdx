@@ -119,7 +119,9 @@ begin with `<context>`. Here, the trailing slash in `lib/outer/` creates a direc
 sources inside `lib/outer/` use the dependency's `contracts/` directory while root sources and
 sibling dependencies use the auto-detected package-root mapping.
 
-When a previously global declaration becomes scoped, Foundry warns you with its old mapping and
+Foundry warns when scoping changes or removes a dependency declaration's previously selected global
+target. No migration warning is emitted when the same target remains globally available or an explicit
+global root-project or CLI remapping overrides the alias. The warning identifies the old mapping and
 its owner. Review this warning even if your build succeeds: a root import may now select a different
 auto-detected package. To select a scoped alias explicitly from your root project, add a remapping to
 your root `foundry.toml` or `remappings.txt`, or pass it with `--remappings`. For example, to use a
