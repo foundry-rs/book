@@ -40,9 +40,17 @@ becomes
 import {Context} from "node_modules/@openzeppelin/openzeppelin-contracts/contracts/utils/Context.sol";
 ```
 
-Foundry can generate contextual remappings for dependencies while retaining a broader package
-fallback. See [Nested dependency remappings](/projects/dependencies#nested-dependency-remappings)
-for details.
+When auto-detection is enabled, dependencies installed within your project root whose configured
+`src` resolves inside their package keep nonconflicting aliases global and restrict conflicting
+declarations to their owner. Dependencies installed outside your project root, or whose `src`
+resolves outside their package, retain their previous declaration scope.
+
+Foundry warns when a previously global declaration becomes scoped. Root imports can select a
+different package even if your build succeeds.
+
+Explicit root-project and CLI remappings take precedence over generated dependency contexts. See
+[Nested dependency remappings](/projects/dependencies#nested-dependency-remappings) for scope rules,
+compatibility exceptions, and migration examples.
 
 ##### `auto_detect_remappings`
 
@@ -50,9 +58,12 @@ for details.
 - Default: true
 - Environment: `FOUNDRY_AUTO_DETECT_REMAPPINGS` or `DAPP_AUTO_DETECT_REMAPPINGS`
 
-If enabled, Foundry will automatically try auto-detect remappings by scanning the `libs` folder(s).
+If enabled, Foundry scans the `libs` folder(s) for package entry points and dependency remapping
+declarations. Dependency declarations follow the scope rules and compatibility exceptions described
+[above](#remappings).
 
-If set to `false`, only the remappings in `foundry.toml` and `remappings.txt` are used.
+If set to `false`, dependency discovery is disabled. Explicit root-project, environment, and CLI
+remappings still apply.
 
 ##### `allow_paths`
 

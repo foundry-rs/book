@@ -25,6 +25,9 @@ jobs:
 
       - name: Set up Vite+
         uses: voidzero-dev/setup-vp@68f39c78aaf39be468cabd2afb09c162574c84af # v1.21.2
+        env:
+          # Match pnpm 11's one-day release age during the pnpm 10 bootstrap.
+          npm_config_minimum_release_age: "1440"
         with:
           cache: true
           node-version: "24"
@@ -68,6 +71,9 @@ jobs:
 
       - name: Set up Vite+
         uses: voidzero-dev/setup-vp@68f39c78aaf39be468cabd2afb09c162574c84af # v1.21.2
+        env:
+          # Match pnpm 11's one-day release age during the pnpm 10 bootstrap.
+          npm_config_minimum_release_age: "1440"
         with:
           cache: true
           node-version: "24"

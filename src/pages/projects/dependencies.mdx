@@ -99,9 +99,15 @@ $ forge remappings > remappings.txt
 
 #### Nested dependency remappings
 
-When a dependency remapping points below an auto-detected package root, Foundry preserves both by
-scoping the dependency remapping to the directory that declares it. For example, `forge remappings`
-can output:
+For dependencies installed within your project root whose configured `src` resolves inside their
+package directory, declarations without a context in `foundry.toml` and `remappings.txt` remain global
+when their import aliases do not conflict with your project paths or a different dependency target.
+Unique aliases, such as OpenZeppelin Contracts' `@openzeppelin/contracts/`, remain available to your
+root project. Declarations that resolve to the same target can also share an alias.
+
+When an alias conflicts, Foundry restricts the dependency's declaration to its owner. This includes
+file-specific aliases and conflicts with auto-detected package entry points. For example,
+`forge remappings` can output:
 
 ```txt
 lib/outer/:inner/=lib/outer/lib/inner/contracts/
@@ -113,10 +119,43 @@ begin with `<context>`. Here, the trailing slash in `lib/outer/` creates a direc
 sources inside `lib/outer/` use the dependency's `contracts/` directory while root sources and
 sibling dependencies use the auto-detected package-root mapping.
 
+When a previously global declaration becomes scoped, Foundry warns you with its old mapping and
+its owner. Review this warning even if your build succeeds: a root import may now select a different
+auto-detected package. To select a scoped alias explicitly from your root project, add a remapping to
+your root `foundry.toml` or `remappings.txt`, or pass it with `--remappings`. For example, to use a
+particular dependency's pinned `shared/` target:
+
+```toml [foundry.toml]
+[profile.default]
+remappings = ["shared/=lib/a/src/pinned/"]
+```
+
 Foundry preserves explicit root-project and CLI remappings when constructing generated dependency
 contexts. An equal or broader global alias suppresses the generated context. A narrower global
 alias is overlaid into that context, so it overrides only its matching import subtree while the
-dependency mapping handles the remaining imports. Explicit contextual remappings are unchanged.
+dependency mapping handles the remaining imports. Explicit root-project contextual remappings are
+unchanged.
+
+For these dependencies, declared contexts can narrow their scope, but cannot extend it to your root
+project or sibling dependencies. Generated contexts use the dependency's installation path, including
+when the dependency is symlinked.
+
+Dependencies installed outside your project root, such as through `libs = ["../shared"]` or an
+absolute library path outside the root, keep their previous declaration scope. The same applies when
+a dependency's configured `src` resolves outside its package directory, whether through an absolute
+path, a relative path such as `src = "../../external"`, or a source-directory symlink. In these cases,
+declared contexts are preserved, and declarations without a context remain global. These dependencies
+do not have the same owner isolation.
+
+#### Dependency discovery and package selection
+
+When discovering nested dependencies, Foundry only follows relative `libs` entries that stay inside
+the declaring package, including when resolving symlinks.
+
+When multiple discovered packages provide the same import prefix, Foundry prefers the target path
+with fewer components, then a target ending in `src`, then lexical target-path order. A custom source
+directory can therefore affect which installation wins. Declare an explicit root remapping when you
+need to select a particular installation.
 
 ### Updating dependencies
 
