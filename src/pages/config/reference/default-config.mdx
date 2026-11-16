@@ -933,6 +933,43 @@ dump_smt = false
 storage_layout = "solidity"
 
 # =============================================================================
+# COVERAGE CONFIGURATION
+# =============================================================================
+
+[coverage]
+# Report kinds that `forge coverage` generates
+# Options: "summary", "lcov", "debug", "bytecode", "attribution", "gaps"
+# Default: ["summary"]
+report = ["summary"]
+
+# Version of the LCOV tracefile format
+# Default: "1.0.0"
+lcov_version = "1.0.0"
+
+# Compile with `viaIR` and minimum optimization, as a workaround for "stack too deep" errors
+# Cannot be combined with `keep_optimizer`
+# Default: false
+ir_minimum = false
+
+# Keep the project's optimizer and `viaIR` settings instead of disabling them
+# Optimized builds can miss or merge coverage items
+# Cannot be combined with `ir_minimum`
+# Default: false
+keep_optimizer = false
+
+# Include dependency sources in the coverage report
+# Default: false
+include_libs = false
+
+# Exclude test sources from the coverage report
+# Default: false
+exclude_tests = false
+
+# Glob patterns of source files to exclude from the coverage report
+# Default: []
+skip_files = []
+
+# =============================================================================
 # FORMATTER CONFIGURATION
 # =============================================================================
 

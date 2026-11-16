@@ -154,6 +154,14 @@ $ forge coverage --ir-minimum
 
 `--ir-minimum` enables `viaIR` with minimal optimization. It is a workaround, not the preferred baseline: inlining and IR source maps can make internal functions or library code appear uncovered. See [Stack Too Deep](/guides/stack-too-deep) for alternatives.
 
+To measure the build you ship, keep the optimizer instead:
+
+```bash
+$ forge coverage --keep-optimizer --optimize --optimizer-runs 200
+```
+
+`--keep-optimizer` skips the step that disables the optimizer and `viaIR`, so `--optimize`, `--optimizer-runs`, `--via-ir`, and the optimizer settings in `foundry.toml` or `FOUNDRY_*` environment variables apply to the coverage build. The optimizer can remove or merge code, so optimized coverage can miss or merge items that the default build reports. You can set it as `keep_optimizer = true` under `[profile.<name>.coverage]`. It cannot be combined with `--ir-minimum`.
+
 Coverage compilation is ephemeral and does not leave normal build artifacts behind. Run `forge build` after coverage if a later step needs artifacts from the selected production profile.
 
 ### Keep CI results stable

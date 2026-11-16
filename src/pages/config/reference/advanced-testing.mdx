@@ -147,7 +147,8 @@ take precedence.
 | --- | --- | --- |
 | `report` | `["summary"]` | Selects `summary`, `lcov`, `debug`, `bytecode`, `attribution`, or `gaps` reports. `gaps` writes uncovered source items to `coverage-gaps.json`; see [Code Coverage](/guides/coverage#list-uncovered-code). |
 | `lcov_version` | `"1"` | Selects the LCOV tracefile version. |
-| `ir_minimum` | `false` | Enables minimum via-IR optimization as a stack-depth workaround. |
+| `ir_minimum` | `false` | Enables minimum via-IR optimization as a stack-depth workaround. Cannot be combined with `keep_optimizer`. |
+| `keep_optimizer` | `false` | Keeps the project's optimizer and `viaIR` settings instead of disabling them, so coverage measures the optimized build. Cannot be combined with `ir_minimum`. |
 | `report_file` | none | Writes the report to a project-relative path. |
 | `include_libs` | `false` | Includes dependencies in coverage. |
 | `exclude_tests` | `false` | Excludes test source from coverage. |
