@@ -75,7 +75,7 @@ changes it. Use `vm.prank(sender, origin)` or `vm.startPrank(sender, origin)` to
 
 #### `initial_balance`
 
-- Type: integer
+- Type: integer or string
 - Default: `"0xffffffffffffffffffffffff"`
 - Environment: `FOUNDRY_INITIAL_BALANCE`, `DAPP_INITIAL_BALANCE`, or `DAPP_TEST_INITIAL_BALANCE`
 
@@ -89,7 +89,7 @@ string, such as `"0xffffffffffffffffffffffff"`. The `--initial-balance` flag ove
 
 #### `block_number`
 
-- Type: integer
+- Type: integer or string
 - Default: `1`
 - Environment: `FOUNDRY_BLOCK_NUMBER`, `DAPP_BLOCK_NUMBER`, `DAPP_TEST_BLOCK_NUMBER`, or `DAPP_TEST_NUMBER`
 
@@ -102,7 +102,7 @@ it.
 
 - Type: string or integer (chain name or ID)
 - Default: none
-- Environment: `FOUNDRY_CHAIN_ID`, `DAPP_CHAIN_ID`, or `DAPP_TEST_CHAIN_ID`
+- Environment: `FOUNDRY_CHAIN_ID`, `DAPP_CHAIN_ID`, `DAPP_TEST_CHAIN_ID`, `FOUNDRY_CHAIN`, `DAPP_CHAIN`, or `DAPP_TEST_CHAIN`
 - Aliases: `chain`
 
 The chain Foundry targets, as a chain name or EIP-155 chain ID.
@@ -181,7 +181,7 @@ point.
 
 #### `gas_limit`
 
-- Type: integer
+- Type: integer, numeric string, or "max"
 - Default: `1073741824`
 - Environment: `FOUNDRY_GAS_LIMIT`, `DAPP_GAS_LIMIT`, or `DAPP_TEST_GAS_LIMIT`
 
@@ -236,7 +236,7 @@ overrides it.
 
 #### `block_timestamp`
 
-- Type: integer
+- Type: integer or string
 - Default: `1`
 - Environment: `FOUNDRY_BLOCK_TIMESTAMP`, `DAPP_BLOCK_TIMESTAMP`, `DAPP_TEST_BLOCK_TIMESTAMP`, or `DAPP_TEST_TIMESTAMP`
 
@@ -530,7 +530,7 @@ The `--show-progress` flag enables it for one run.
 
 #### `block_gas_limit`
 
-- Type: integer
+- Type: integer, numeric string, or "max"
 - Default: none
 - Environment: `FOUNDRY_BLOCK_GAS_LIMIT`, `DAPP_BLOCK_GAS_LIMIT`, or `DAPP_TEST_BLOCK_GAS_LIMIT`
 
@@ -580,7 +580,7 @@ effect.
 #### `[rpc_endpoints]`
 
 - Type: table
-- Default: none
+- Default: `{}`
 
 Named RPC endpoints that can be referenced by alias.
 
@@ -681,7 +681,7 @@ rejecting them, or raise the limit.
 
 #### `seed`
 
-- Type: integer
+- Type: integer or string
 - Default: none
 - Environment: `FOUNDRY_FUZZ_SEED`
 
@@ -696,7 +696,7 @@ random seed.
 
 #### `dictionary_weight`
 
-- Type: integer
+- Type: integer or numeric string
 - Default: `40`
 - Environment: `FOUNDRY_FUZZ_DICTIONARY_WEIGHT`
 
@@ -748,7 +748,7 @@ applies to `[invariant]` unless `[invariant]` sets its own.
 
 #### `max_fuzz_dictionary_addresses`
 
-- Type: integer
+- Type: integer, numeric string, or "max"
 - Default: `15728640`
 - Environment: `FOUNDRY_FUZZ_MAX_FUZZ_DICTIONARY_ADDRESSES`
 
@@ -759,7 +759,7 @@ memory blowup. Set it to `"max"` for no limit.
 
 #### `max_fuzz_dictionary_values`
 
-- Type: integer
+- Type: integer, numeric string, or "max"
 - Default: `9830400`
 - Environment: `FOUNDRY_FUZZ_MAX_FUZZ_DICTIONARY_VALUES`
 
@@ -770,7 +770,7 @@ always keeps a zero value, so the effective minimum is one. Set it to `"max"` fo
 
 #### `max_fuzz_dictionary_literals`
 
-- Type: integer
+- Type: integer, numeric string, or "max"
 - Default: `6553600`
 - Environment: `FOUNDRY_FUZZ_MAX_FUZZ_DICTIONARY_LITERALS`
 
@@ -995,7 +995,7 @@ artifacts, with a warning.
 
 #### `dictionary_weight`
 
-- Type: integer
+- Type: integer or numeric string
 - Default: `80`
 - Environment: `FOUNDRY_INVARIANT_DICTIONARY_WEIGHT`
 
@@ -1047,7 +1047,7 @@ applies to `[invariant]` unless `[invariant]` sets its own.
 
 #### `max_fuzz_dictionary_addresses`
 
-- Type: integer
+- Type: integer, numeric string, or "max"
 - Default: `15728640`
 - Environment: `FOUNDRY_INVARIANT_MAX_FUZZ_DICTIONARY_ADDRESSES`
 
@@ -1058,7 +1058,7 @@ memory blowup. Set it to `"max"` for no limit.
 
 #### `max_fuzz_dictionary_values`
 
-- Type: integer
+- Type: integer, numeric string, or "max"
 - Default: `9830400`
 - Environment: `FOUNDRY_INVARIANT_MAX_FUZZ_DICTIONARY_VALUES`
 
@@ -1069,7 +1069,7 @@ always keeps a zero value, so the effective minimum is one. Set it to `"max"` fo
 
 #### `max_fuzz_dictionary_literals`
 
-- Type: integer
+- Type: integer, numeric string, or "max"
 - Default: `6553600`
 - Environment: `FOUNDRY_INVARIANT_MAX_FUZZ_DICTIONARY_LITERALS`
 

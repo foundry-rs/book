@@ -112,7 +112,7 @@ forge build.
 
 ##### `corpus_random_sequence_weight`
 
-- Type: integer
+- Type: integer or numeric string
 - Default: `10`
 - Environment: `FOUNDRY_FUZZ_CORPUS_RANDOM_SEQUENCE_WEIGHT`
 
@@ -124,7 +124,7 @@ explore more broadly, unless `[invariant]` sets this key or it differs from its 
 
 ##### `payable_value_weight`
 
-- Type: integer
+- Type: integer or numeric string
 - Default: `0`
 - Environment: `FOUNDRY_FUZZ_PAYABLE_VALUE_WEIGHT`
 
@@ -239,7 +239,7 @@ Ignored with `depth_mode = "fixed"`.
 - Type: string
 - Default: `"fixed"`
 - Environment: `FOUNDRY_INVARIANT_DEPTH_MODE`
-- Values: `fixed`, `random`
+- Values: `fixed`, `random`, `uniform`
 
 How each invariant run chooses how many calls to execute.
 
@@ -336,7 +336,7 @@ forge build.
 
 ##### `corpus_random_sequence_weight`
 
-- Type: integer
+- Type: integer or numeric string
 - Default: `10`
 - Environment: `FOUNDRY_INVARIANT_CORPUS_RANDOM_SEQUENCE_WEIGHT`
 
@@ -348,7 +348,7 @@ explore more broadly, unless `[invariant]` sets this key or it differs from its 
 
 ##### `payable_value_weight`
 
-- Type: integer
+- Type: integer or numeric string
 - Default: `15`
 - Environment: `FOUNDRY_INVARIANT_PAYABLE_VALUE_WEIGHT`
 
@@ -608,7 +608,7 @@ Applies to `use_fuzz_frontiers`, `check_invariant_frontiers` and `live`. `0` imp
 #### `frontier_ids`
 
 - Type: array of integer
-- Default: none
+- Default: `[]`
 - Environment: `FOUNDRY_SYMBOLIC_FRONTIER_IDS`
 
 Fuzz branch frontier artifact IDs to import.
@@ -619,7 +619,7 @@ it matches every non-empty filter (`frontier_ids`, `frontier_pcs`, `frontier_sel
 #### `frontier_pcs`
 
 - Type: array of integer
-- Default: none
+- Default: `[]`
 - Environment: `FOUNDRY_SYMBOLIC_FRONTIER_PCS`
 
 Program counters of fuzz branch frontier comparisons to import.
@@ -629,7 +629,7 @@ Empty means any program counter. Combines with the other frontier filters.
 #### `frontier_selectors`
 
 - Type: array of string
-- Default: none
+- Default: `[]`
 - Environment: `FOUNDRY_SYMBOLIC_FRONTIER_SELECTORS`
 
 Calldata selectors of fuzz branch frontiers to import.
@@ -670,7 +670,7 @@ must stop any subprocesses they start. Like `solver`, it runs a local program.
 #### `solver_portfolio`
 
 - Type: array of string
-- Default: none
+- Default: `[]`
 - Environment: `FOUNDRY_SYMBOLIC_SOLVER_PORTFOLIO`
 
 Solver names or commands to race in parallel.
@@ -829,7 +829,7 @@ function check_bytes(bytes memory data) external pure {}
 #### `dynamic_lengths`
 
 - Type: table
-- Default: none
+- Default: `{}`
 - Environment: `FOUNDRY_SYMBOLIC_DYNAMIC_LENGTHS`
 
 Sets of lengths for dynamic ABI inputs, keyed by ABI argument name or generated symbolic
@@ -843,7 +843,7 @@ other length setting.
 #### `default_array_lengths`
 
 - Type: array of integer
-- Default: none
+- Default: `[]`
 - Environment: `FOUNDRY_SYMBOLIC_DEFAULT_ARRAY_LENGTHS`
 
 Set of lengths for dynamic ABI arrays without a `dynamic_lengths` entry.
@@ -854,7 +854,7 @@ Each length becomes a separate calldata shape. When empty, `array_lengths` and t
 #### `default_bytes_lengths`
 
 - Type: array of integer
-- Default: none
+- Default: `[]`
 - Environment: `FOUNDRY_SYMBOLIC_DEFAULT_BYTES_LENGTHS`
 
 Set of lengths for ABI `bytes` and `string` values without a `dynamic_lengths` entry.

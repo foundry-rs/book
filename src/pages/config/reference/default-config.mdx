@@ -113,6 +113,10 @@ bytecode_hash = "ipfs"
 # Default: false
 sparse_mode = false
 
+# External compiler adapters that build compiler-native EVM projects as part of the build.
+# Default: []
+external_compilers = []
+
 # =============================================================================
 # SOLIDITY COMPILER - OPTIMIZER
 # =============================================================================
@@ -292,6 +296,10 @@ via_ssa_cfg = false
 # Whether to enable solc's experimental mode, required for experimental compiler features.
 # Default: false
 experimental = false
+
+# Extra command-line arguments to pass to the solc binary.
+# Default: []
+extra_args = []
 
 # Solidity compiler warning codes to silence only in files under given paths.
 # Default: []
@@ -735,6 +743,10 @@ mutation_weight_cmp = 1
 # Default: 0
 verbosity = 0
 
+# Labels to display for addresses in decoded traces.
+# Default: {}
+labels = {}
+
 # Whether to disable address labels in rendered traces.
 # Default: false
 disable_labels = false
@@ -789,9 +801,25 @@ live = false
 # Default: 256
 frontier_limit = 256
 
+# Fuzz branch frontier artifact IDs to import.
+# Default: []
+frontier_ids = []
+
+# Program counters of fuzz branch frontier comparisons to import.
+# Default: []
+frontier_pcs = []
+
+# Calldata selectors of fuzz branch frontiers to import.
+# Default: []
+frontier_selectors = []
+
 # SMT solver to invoke for symbolic tests.
 # Default: "z3"
 solver = "z3"
+
+# Solver names or commands to race in parallel.
+# Default: []
+solver_portfolio = []
 
 # Solver timeout in seconds.
 # Default: 30
@@ -828,6 +856,18 @@ max_dynamic_length = 256
 # Positional lengths for dynamic ABI inputs, applied in ABI traversal order.
 # Default: []
 array_lengths = []
+
+# Sets of lengths for dynamic ABI inputs, keyed by ABI argument name or generated symbolic name.
+# Default: {}
+dynamic_lengths = {}
+
+# Set of lengths for dynamic ABI arrays without a `dynamic_lengths` entry.
+# Default: []
+default_array_lengths = []
+
+# Set of lengths for ABI `bytes` and `string` values without a `dynamic_lengths` entry.
+# Default: []
+default_bytes_lengths = []
 
 # Maximum size of symbolic calldata, in bytes.
 # Default: 4096

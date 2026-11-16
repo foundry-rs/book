@@ -31,7 +31,6 @@ export type Region = {
   /** Index of the end marker. */
   end: number;
   keys: string[];
-  exclude: string[];
   level: number;
   fallback: boolean;
   title?: string;
@@ -40,7 +39,6 @@ export type Region = {
 };
 export type Assignment = {
   regions: { region: Region; settings: Setting[] }[];
-  fallback: Setting[];
   warnings: string[];
 };
 
@@ -163,7 +161,7 @@ export function parseRegions(text: string, file: string): Region[] {
       throw new Error(`${where}: unmatched config-reference end marker before region`);
     const attributes = parseAttributes(match[1], where);
     for (const name of Object.keys(attributes))
-      if (!["keys", "exclude", "level", "fallback", "title"].includes(name))
+      if (!["keys", "level", "fallback", "title"].includes(name))
         throw new Error(`${where}: unknown attribute ${name}`);
     const list = (name: string) => {
       const value = attributes[name];
@@ -172,6 +170,9 @@ export function parseRegions(text: string, file: string): Region[] {
     };
     const fallback = attributes.fallback === true;
     const keys = list("keys");
+    for (const pattern of keys)
+      if (pattern.slice(0, -2).includes("*") || (pattern.includes("*") && !pattern.endsWith(".*")))
+        throw new Error(`${where}: ${pattern} must be a key or end with .*`);
     if (attributes.fallback !== undefined && !fallback)
       throw new Error(`${where}: fallback takes no value`);
     if (fallback === Boolean(keys.length))
@@ -186,7 +187,6 @@ export function parseRegions(text: string, file: string): Region[] {
       start,
       end,
       keys,
-      exclude: list("exclude"),
       level,
       fallback,
       title: typeof attributes.title === "string" ? attributes.title : undefined,
@@ -199,28 +199,20 @@ export function parseRegions(text: string, file: string): Region[] {
   return regions;
 }
 
-const globCache = new Map<string, RegExp>();
-export function matchesGlob(pattern: string, key: string): boolean {
-  let regex = globCache.get(pattern);
-  if (!regex) {
-    const escape = (part: string) => part.replace(/[.+?^$()|[\]\\{}]/g, "\\$&");
-    regex = new RegExp(`^${pattern.split("*").map(escape).join(".*")}$`);
-    globCache.set(pattern, regex);
-  }
-  return regex.test(key);
-}
+// `section.*` matches every key below `section`; any other pattern matches only itself.
+export const matchesKey = (pattern: string, key: string) =>
+  pattern.endsWith(".*") ? key.startsWith(pattern.slice(0, -1)) : key === pattern;
 
-// Assign every setting to exactly one region. An exact key name claims a setting over a glob; two
-// regions claiming the same setting with equal specificity is an error. Settings no region claims
-// go to the single fallback region.
+// Assign every setting to exactly one region. An exact key name claims a setting over a `.*`
+// pattern; two regions claiming the same setting with equal specificity is an error. Settings no
+// region claims go to the single fallback region.
 export function assignSettings(settings: Setting[], regions: Region[]): Assignment {
   const warnings: string[] = [];
   const claims = new Map<string, { region: Region; exact: boolean; rank: number }[]>();
   const used = new Set<string>();
   for (const region of regions.filter(({ fallback }) => !fallback))
     for (const setting of settings) {
-      if (region.exclude.some((pattern) => matchesGlob(pattern, setting.key))) continue;
-      const rank = region.keys.findIndex((pattern) => matchesGlob(pattern, setting.key));
+      const rank = region.keys.findIndex((pattern) => matchesKey(pattern, setting.key));
       if (rank < 0) continue;
       const exact = region.keys.includes(setting.key);
       used.add(`${region.file}\0${region.keys[rank]}`);
@@ -272,7 +264,7 @@ export function assignSettings(settings: Setting[], regions: Region[]): Assignme
     );
   }
   if (fallbacks.length) result.push({ region: fallbacks[0], settings: fallback });
-  return { regions: result, fallback, warnings };
+  return { regions: result, warnings };
 }
 
 export function displayName(setting: Setting): string {
@@ -301,8 +293,13 @@ export function mdxSafe(markdown: string): string {
   return markdown
     .trim()
     .split("\n")
-    .map((line) => {
+    .map((line, index, lines) => {
       const marker = line.match(/^ {0,3}(`{3,}|~{3,})/);
+      // MDX parses a paragraph that starts with `import` or `export` as an ES module statement.
+      if (!fence && (index === 0 || !lines[index - 1].trim()))
+        line = line.replace(/^( {0,3})([ie])(mport|xport)\b/, (_, indent, first, rest) => {
+          return `${indent}&#${first.charCodeAt(0)};${rest}`;
+        });
       if (fence) {
         if (marker && marker[1][0] === fence[0] && marker[1].length >= fence.length)
           fence = undefined;
@@ -378,7 +375,11 @@ const summary = (setting: Setting) =>
 export function renderDefaultConfig(assignment: Assignment): string {
   const entries = assignment.regions.flatMap(({ region, settings }) =>
     settings
-      .filter((setting) => setting.default != null && !setting.deprecated)
+      // A section's own key is the TOML table header, so it has no line of its own.
+      .filter(
+        (setting) =>
+          setting.default != null && !setting.deprecated && setting.key !== setting.section,
+      )
       .map((setting) => ({ setting, context: region.context })),
   );
   const blocks: string[] = [];
@@ -471,39 +472,19 @@ export function readSnapshot(root: string): Snapshot {
   return snapshot;
 }
 
-export function readFoundry(
-  foundry: string,
-  commit?: string,
-): { snapshot: Snapshot; warnings: string[] } {
-  const warnings: string[] = [];
+export function readFoundry(foundry: string): Snapshot {
   const settings = validateSettings(
     JSON.parse(read(foundry, sourcePath)),
     join(foundry, sourcePath),
   );
-  if (!commit) {
-    try {
-      commit = git(foundry, "rev-parse", "HEAD");
-    } catch {
-      throw new Error("cannot read the Foundry commit with git; pass --commit <sha>");
-    }
-    let dirty = "";
-    try {
-      dirty = git(foundry, "status", "--porcelain", "--", sourcePath);
-    } catch {}
-    if (dirty)
-      warnings.push(
-        `${sourcePath} has uncommitted changes; the snapshot records ${commit} but may not match it`,
-      );
-  }
-  if (!/^[a-f0-9]{40}$/.test(commit))
-    throw new Error("expected a full 40-character Foundry commit SHA");
+  const commit = git(foundry, "rev-parse", "HEAD");
+  if (!/^[a-f0-9]{40}$/.test(commit)) throw new Error("expected a full Foundry commit SHA");
+  if (git(foundry, "status", "--porcelain", "--", sourcePath))
+    throw new Error(`commit ${sourcePath} in the Foundry checkout before importing`);
   return {
-    snapshot: {
-      schemaVersion: 1,
-      source: { repository: "foundry-rs/foundry", commit, path: sourcePath },
-      settings,
-    },
-    warnings,
+    schemaVersion: 1,
+    source: { repository: "foundry-rs/foundry", commit, path: sourcePath },
+    settings,
   };
 }
 
@@ -517,40 +498,24 @@ const changedFiles = (root: string, files: Map<string, string>) =>
     }
   });
 
-export type Options = { foundry?: string; commit?: string; check?: boolean };
-export type Result = { changed: string[]; warnings: string[]; fallback: string[] };
+export type Options = { foundry?: string; check?: boolean };
 
-// Import (or with check, verify) the config reference. Throws when the book is stale or invalid.
-export function run(root: string, options: Options): Result {
-  if (!options.foundry && !options.check)
-    throw new Error("--foundry <checkout> is required when importing");
-  if (options.commit && !options.foundry) throw new Error("--commit needs --foundry");
-  const warnings: string[] = [];
-  let snapshot: Snapshot;
-  if (options.foundry) {
-    const source = readFoundry(resolve(options.foundry), options.commit);
-    warnings.push(...source.warnings);
-    snapshot = source.snapshot;
-  } else snapshot = readSnapshot(root);
+// Import (or with check, verify) the config reference from a Foundry checkout, or re-render the
+// committed snapshot without one. Returns the changed files; throws when the book is stale or
+// invalid.
+export function run(root: string, options: Options): string[] {
+  const snapshot = options.foundry ? readFoundry(resolve(options.foundry)) : readSnapshot(root);
   const { files, assignment } = render(root, snapshot.settings);
-  warnings.push(...assignment.warnings);
+  for (const warning of assignment.warnings) console.warn(`warning: ${warning}`);
   files.set(snapshotPath, serialize(snapshot));
   const changed = changedFiles(root, files);
-  const result = {
-    changed: changed.map(([path]) => path),
-    warnings,
-    fallback: assignment.fallback.map(({ key }) => key),
-  };
   if (options.check) {
     if (changed.length)
-      throw Object.assign(
-        new Error(
-          `generated config reference is stale; run import:config -- --foundry <checkout>:\n${result.changed.join("\n")}`,
-        ),
-        { warnings },
+      throw new Error(
+        `generated config reference is stale; run import:config:\n${changed.map(([path]) => path).join("\n")}`,
       );
   } else for (const [path, text] of changed) writeFileSync(join(root, path), text);
-  return result;
+  return changed.map(([path]) => path);
 }
 
 export function main(
@@ -561,28 +526,19 @@ export function main(
     args: args.filter((arg) => arg !== "--"),
     options: {
       foundry: { type: "string" },
-      commit: { type: "string" },
       check: { type: "boolean" },
       help: { type: "boolean" },
     },
   });
   if (values.help) {
     console.log(
-      "Usage: vp run import:config -- --foundry <checkout> [--commit <sha>] [--check]\n       vp run import:config -- --check\n\nImport Foundry's crates/config/assets/config-reference.json into the generated regions of\nsrc/pages/config/reference/ and default-config.mdx. --check never writes files; without\n--foundry it re-renders the committed scripts/config-reference.json snapshot offline.",
+      "Usage: vp run import:config -- [--foundry <checkout>] [--check]\n\nImport Foundry's crates/config/assets/config-reference.json into the generated regions of\nsrc/pages/config/reference/ and default-config.mdx. Without --foundry, re-render the committed\nscripts/config-reference.json snapshot offline. --check never writes files.",
     );
     return;
   }
-  let result: Result;
-  try {
-    result = run(root, values);
-  } catch (error) {
-    for (const warning of (error as { warnings?: string[] }).warnings ?? [])
-      console.warn(`warning: ${warning}`);
-    throw error;
-  }
-  for (const warning of result.warnings) console.warn(`warning: ${warning}`);
+  const changed = run(root, values);
   console.log(
-    `${values.check ? "Checked" : "Imported"} config reference; ${result.changed.length} changed files.`,
+    `${values.check ? "Checked" : "Imported"} config reference; ${changed.length} changed files.`,
   );
 }
 

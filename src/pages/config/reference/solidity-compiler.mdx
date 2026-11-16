@@ -17,7 +17,7 @@ Configuration related to the behavior of the Solidity compiler.
 
 #### `remappings`
 
-- Type: array of value
+- Type: array of string
 - Default: `[]`
 - Environment: `FOUNDRY_REMAPPINGS` or `DAPP_REMAPPINGS`
 
@@ -146,7 +146,8 @@ and `FOUNDRY_ALLOW_LINKED_LIBRARIES`.
 
 - Type: string (version or path)
 - Default: none
-- Environment: `FOUNDRY_SOLC`, `DAPP_SOLC`, or `DAPP_TEST_SOLC`
+- Environment: `FOUNDRY_SOLC`, `DAPP_SOLC`, `DAPP_TEST_SOLC`, `FOUNDRY_SOLC_VERSION`, or `DAPP_SOLC_VERSION`
+- Aliases: `solc_version`
 
 The Solidity compiler to use for the whole project, instead of detecting versions per file.
 
@@ -267,9 +268,9 @@ some paths, use `ignored_error_codes_from`.
 - Type: boolean
 - Default: none
 - Environment: `FOUNDRY_DENY_WARNINGS`, `DAPP_DENY_WARNINGS`, or `DAPP_TEST_DENY_WARNINGS`
-- Deprecated: use `deny = warnings` instead
+- Deprecated: use `deny = "warnings"` instead
 
-Deprecated: use `deny = "warnings"` instead.
+Whether to fail on warnings.
 
 `deny_warnings = true` is read as `deny = "warnings"` and `false` as `deny = "never"`,
 unless `deny` is also set in the same profile, in which case `deny` wins. The
@@ -414,7 +415,7 @@ needs, is applied automatically when `skip` patterns are set.
 #### `external_compilers`
 
 - Type: array of table
-- Default: none
+- Default: `[]`
 - Environment: `FOUNDRY_EXTERNAL_COMPILERS`, `DAPP_EXTERNAL_COMPILERS`, or `DAPP_TEST_EXTERNAL_COMPILERS`
 
 External compiler adapters that build compiler-native EVM projects as part of the build.

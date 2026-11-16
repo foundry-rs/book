@@ -57,7 +57,7 @@ In `forge test`:
 #### `labels`
 
 - Type: table
-- Default: none
+- Default: `{}`
 - Environment: `FOUNDRY_TRACING_LABELS`
 
 Labels to display for addresses in decoded traces.
@@ -139,9 +139,10 @@ single command. Neither prevents Foundry from downloading compiler versions.
 #### `[labels]`
 
 - Type: table
-- Default: none
+- Default: `{}`
+- Deprecated: use `tracing.labels` instead
 
-Deprecated: use `tracing.labels` instead.
+Legacy location of `tracing.labels`.
 
 Address labels shown in traces. Foundry still reads a top-level `[labels]` table and a
 profile-level `labels` table, merges them into `tracing.labels`, where existing

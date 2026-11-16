@@ -198,7 +198,7 @@ $ vp run import:config -- --check
 The importer fills each region between `{/* config-reference:begin ... */}` and
 `{/* config-reference:end */}` and rewrites `default-config.mdx`. Do not hand-edit those; edit
 the authored prose around them instead. To move a key to another page, change the `keys` of the
-regions (see `AGENTS.md`). Commit the generated pages together with
+regions (see `AGENTS.md`) and run `vp run import:config` without `--foundry`. Commit the generated pages together with
 `scripts/config-reference.json`, the snapshot that pins the Foundry revision.
 
 #### Auto-Generated CLI Output

@@ -102,17 +102,17 @@ nested tables the source does not list, such as `model_checker` fields) is yours
 
 A begin marker takes these attributes:
 
-- `keys="a b.* c"`: keys or globs (`*` matches any characters, including dots) the region
-  renders, ordered by the first pattern each key matches, then by source order.
-- `exclude="b.d"`: keys or globs to leave out.
+- `keys="a b.* c"`: keys the region renders, where `b.*` stands for every key below `b`,
+  ordered by the first pattern each key matches, then by source order.
 - `level=4`: heading level of each key (default 4). Keys nest one level below a table key in the
   same region, except below a section's own table, such as `[fuzz]`.
 - `fallback title="Other settings"`: the one region that receives keys no other region claims.
 
-Each key belongs to exactly one region. An exact key name claims a key over a glob, so a page can
+Each key belongs to exactly one region. An exact key name claims a key over `.*`, so a page can
 take `fuzz.run` while another takes `fuzz.*`; two regions claiming a key equally fail the import.
 New Foundry keys that no region matches land in the fallback region on
-`build-and-runtime.mdx` with a warning; move them to a fitting region.
+`build-and-runtime.mdx` with a warning; move them to a fitting region, then run
+`vp run import:config` without `--foundry` to re-render the snapshot.
 
 Run `vp run import:config -- --check` to re-render the snapshot offline and fail on stale pages
 or duplicate claims; it warns about fallback keys. Add `--foundry /path/to/foundry` to also
