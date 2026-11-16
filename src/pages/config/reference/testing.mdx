@@ -75,7 +75,7 @@ changes it. Use `vm.prank(sender, origin)` or `vm.startPrank(sender, origin)` to
 
 #### `initial_balance`
 
-- Type: integer or string
+- Type: string (decimal or hex integer)
 - Default: `"0xffffffffffffffffffffffff"`
 - Environment: `FOUNDRY_INITIAL_BALANCE`, `DAPP_INITIAL_BALANCE`, or `DAPP_TEST_INITIAL_BALANCE`
 
@@ -84,8 +84,9 @@ it.
 
 Forge sets it on the test contract before deployment, so it is available in the
 constructor, and then resets the test `sender` and Forge's internal caller and library
-deployer accounts to it. Accepts an integer or a string; write values above 64 bits as a
-string, such as `"0xffffffffffffffffffffffff"`. The `--initial-balance` flag overrides it.
+deployer accounts to it. Write it as a decimal or hexadecimal string, such as
+`"0xffffffffffffffffffffffff"`; TOML integers are rejected. The `--initial-balance` flag
+overrides it.
 
 #### `block_number`
 
@@ -102,8 +103,7 @@ it.
 
 - Type: string or integer (chain name or ID)
 - Default: none
-- Environment: `FOUNDRY_CHAIN_ID`, `DAPP_CHAIN_ID`, `DAPP_TEST_CHAIN_ID`, `FOUNDRY_CHAIN`, `DAPP_CHAIN`, or `DAPP_TEST_CHAIN`
-- Aliases: `chain`
+- Environment: `FOUNDRY_CHAIN_ID`, `DAPP_CHAIN_ID`, or `DAPP_TEST_CHAIN_ID`
 
 The chain Foundry targets, as a chain name or EIP-155 chain ID.
 
@@ -111,8 +111,8 @@ Accepts a name such as `"mainnet"` or `"sepolia"`, or a number such as `1`. It s
 `chainid` value during EVM execution: when unset, local execution uses 31337 and forks use
 the chain ID reported by the RPC, and when set it overrides the fork's chain ID. Commands
 also use it to choose the block explorer settings and API key from `[etherscan]`, and
-`cast` commands use it as the transaction chain. The key can also be written as `chain`.
-The `--chain` (`--chain-id`) flag overrides it.
+`cast` commands use it as the transaction chain. The `--chain` (`--chain-id`) flag
+overrides it.
 
 ```toml
 [profile.default]
@@ -681,18 +681,18 @@ rejecting them, or raise the limit.
 
 #### `seed`
 
-- Type: integer or string
+- Type: string (decimal or hex integer)
 - Default: none
 - Environment: `FOUNDRY_FUZZ_SEED`
 
 Seed for the fuzzer's random number generator, which makes fuzz and invariant campaigns
 reproducible.
 
-Accepts an integer, or a decimal or hexadecimal string such as `"0x1234"`. Each worker
-derives its own random stream from the seed; worker `0` uses it unchanged. In fuzz tests
-the seed also drives cheatcode randomness, such as `vm.randomUint`. Invariant tests read
-this value too: there is no `invariant.seed`. When unset, every campaign uses a fresh
-random seed.
+Write it as a decimal or hexadecimal string, such as `"0x1234"`; TOML integers are
+rejected. Each worker derives its own random stream from the seed; worker `0` uses it
+unchanged. In fuzz tests the seed also drives cheatcode randomness, such as
+`vm.randomUint`. Invariant tests read this value too: there is no `invariant.seed`. When
+unset, every campaign uses a fresh random seed.
 
 #### `dictionary_weight`
 

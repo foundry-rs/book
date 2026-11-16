@@ -146,7 +146,7 @@ and `FOUNDRY_ALLOW_LINKED_LIBRARIES`.
 
 - Type: string (version or path)
 - Default: none
-- Environment: `FOUNDRY_SOLC`, `DAPP_SOLC`, `DAPP_TEST_SOLC`, `FOUNDRY_SOLC_VERSION`, or `DAPP_SOLC_VERSION`
+- Environment: `FOUNDRY_SOLC`, `DAPP_SOLC`, or `DAPP_TEST_SOLC`
 - Aliases: `solc_version`
 
 The Solidity compiler to use for the whole project, instead of detecting versions per file.
@@ -176,8 +176,9 @@ Linux, aarch64 Linux with glibc, and x86_64 Windows; on other platforms, set `so
 path of a `solar` binary instead.
 
 The legacy key `solc_version` is still accepted and is used only when `solc` is not set.
-The `FOUNDRY_SOLC_VERSION` environment variable overrides both, and `--use` overrides it
-for one invocation (accepting the same values, plus a `solc:` prefix).
+For profiles that `foundry.toml` defines, the `FOUNDRY_SOLC_VERSION` (or
+`DAPP_SOLC_VERSION`) environment variable overrides both. `--use` overrides it for one
+invocation (accepting the same values, plus a `solc:` prefix).
 
 #### `auto_detect_solc`
 
