@@ -1,17 +1,12 @@
----
-description: Configure Forge tests, fuzzing, invariants, and coverage compilation.
----
-
 ## Testing
 
-Configuration related to the behavior of `forge test` and `forge coverage`.
+Configuration related to the behavior of `forge test`.
 
 **Sections**
 
 - [General](#general)
 - [Fuzz](#fuzz)
 - [Invariant](#invariant)
-- [Coverage](#coverage)
 
 ### General
 
@@ -798,40 +793,3 @@ Set it when a handler loops over a fuzzed bound. Under a very large `gas_limit`,
 [invariant]
 call_gas_limit = 30_000_000
 ```
-
-### Coverage
-
-Define coverage settings under `[profile.<name>.coverage]`. See the
-[coverage guide](/guides/coverage) for report formats and filtering.
-
-#### `keep_optimizer`
-
-- Type: boolean
-- Default: `false`
-- Environment: `FOUNDRY_COVERAGE_KEEP_OPTIMIZER`
-
-Whether `forge coverage` keeps your project's optimizer and `viaIR` settings
-instead of disabling them for accurate source maps. This does not enable the
-optimizer by itself: configure `optimizer`, `optimizer_runs`, and `via_ir` in
-the profile, or pass the corresponding compiler flags.
-
-Optimized builds can miss or merge coverage items that the optimizer removes
-or combines, so coverage results can be less accurate.
-
-```toml [foundry.toml]
-[profile.default]
-optimizer = true
-optimizer_runs = 200
-
-[profile.default.coverage]
-keep_optimizer = true
-```
-
-The `--keep-optimizer` flag also enables this setting. The resolved value is
-true when either the flag or configuration is true; there is no CLI flag to
-disable a configured true value.
-
-`keep_optimizer` cannot be combined with `ir_minimum` or `--ir-minimum`.
-This conflict is checked after CLI and configuration values are combined,
-including when one mode is enabled in TOML and the other on the command line.
-Disable the conflicting setting in configuration before selecting the other mode.

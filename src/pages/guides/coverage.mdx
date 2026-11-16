@@ -147,7 +147,7 @@ Source filters also apply to the gaps report.
 For accurate source maps, `forge coverage` disables optimizer settings and `viaIR` by default. The coverage build can therefore differ from the production build in bytecode shape, gas use, and inlining.
 
 To preserve your project's optimizer and `viaIR` settings, enable
-[`keep_optimizer`](/config/reference/testing#keep_optimizer) under
+[`keep_optimizer`](/config/reference/advanced-testing#keep_optimizer) under
 `[profile.<name>.coverage]`, or pass `--keep-optimizer`. This preserves settings
 rather than enabling optimization by itself. Optimized builds can miss or merge
 coverage items that the optimizer removes or combines, so results can be less
