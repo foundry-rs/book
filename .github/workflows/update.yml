@@ -61,6 +61,7 @@ jobs:
           persist-credentials: false
           sparse-checkout: |
             crates/cheatcodes/assets
+            crates/config/assets
             crates/lint
 
       - name: Refresh cheatcode manifest
@@ -73,6 +74,15 @@ jobs:
 
       - name: Refresh lint references
         run: vp run import:lints -- --foundry .foundry-reference
+
+      - name: Refresh config reference
+        run: |
+          # Foundry revisions before the config reference generator have no snapshot to import.
+          if [[ -f .foundry-reference/crates/config/assets/config-reference.json ]]; then
+            vp run import:config -- --foundry .foundry-reference
+          else
+            echo "::warning::Foundry source has no crates/config/assets/config-reference.json"
+          fi
 
       - name: Remove temporary Foundry checkout
         run: rm -rf -- .foundry-reference
