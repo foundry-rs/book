@@ -734,6 +734,11 @@ show_solidity = false
 # Default: 1
 check_interval = 1
 
+# Gas limit for every call the invariant campaign makes (handler calls, invariant checks, afterInvariant)
+# Capped by gas_limit; setUp always runs under gas_limit
+# Default: None (use gas_limit)
+# call_gas_limit = 30000000
+
 # --- Invariant Dictionary Configuration ---
 
 # The weight of the dictionary (percentage 0-100)

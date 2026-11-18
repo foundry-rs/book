@@ -202,9 +202,13 @@ If set to `true`, then block data from RPC endpoints in tests will not be cached
 - Default: false
 - Environment: `FOUNDRY_FORK_PREFETCH`
 
-If set to `true`, a fork that starts on a block with an empty storage cache warms that cache in the background. Foundry takes the accounts and storage slots from the cache of the newest older block on the same chain and reads them again at the new block. This speeds up forks of `latest`, which start cold on each new head, for example in CI.
+If set to `true`, Foundry fetches the remote state a fork is about to read before the EVM asks for it, in two ways.
 
-Results do not change, because every value comes from the fork block. Keys that the tests do not read cost extra RPC requests. Prefetching needs storage caching, so it has no effect with `no_storage_caching` or for endpoints that `rpc_storage_caching` excludes. Use `--fork-prefetch` to turn it on for one run.
+Each call into a contract on the fork is simulated on the endpoint with `eth_createAccessList` while the EVM runs it. Foundry then fetches the storage slots in the result in parallel batch requests, and the accounts in parallel separate requests. A top-level call, such as a test function, sends the state that exists only locally, such as the test contract and balances set with cheatcodes, as state overrides. A cold call then costs a few round trips instead of one per slot. A call is simulated again on each run until its access list holds at most two new keys or reads mostly hit the cache. An endpoint without `eth_createAccessList` turns the simulations off, and one that rejects state overrides turns them off for top-level calls. The first failed or slow (over 3 seconds) batch request, for example from a rate limit, stops prefetching on that fork.
+
+A fork of `latest` that starts on a block with an empty storage cache also warms that cache in the background; forks of pinned blocks do not. Foundry takes the accounts and storage slots from the cache of the newest older block on the same chain and reads them again at the new block. Such forks start cold on each new head, for example in CI, so this saves the first reads. This part needs storage caching, so it has no effect with `no_storage_caching` or for endpoints that `rpc_storage_caching` excludes.
+
+Results do not change, because every value comes from the fork block. Keys that the tests do not read cost extra RPC requests, and the simulations and batch requests count against the endpoint's rate limit. Use `--fork-prefetch` to turn it on for one run.
 
 ```toml
 [profile.ci]
@@ -601,6 +605,16 @@ The number of calls executed to attempt to break invariants in one run.
 
 Optional timeout (in seconds) for invariant time based campaigns.
 
+The timeout also bounds shrinking: once the campaign ends, shrinking the failures it found stops at most
+`timeout` seconds after the campaign deadline, so a timed invariant test finishes within about twice its
+timeout. A failure whose shrinking runs out of time is reported with the shortest call sequence confirmed
+so far.
+
+```toml
+[invariant]
+timeout = 300
+```
+
 ##### `fail_on_revert`
 
 - Type: boolean
@@ -743,7 +757,7 @@ Flag indicating whether to display counterexamples as solidity calls.
 - Default: none
 - Environment: `FOUNDRY_INVARIANT_MAX_TIME_DELAY`
 
-Maximum time (in seconds) between generated transactions. If not set, there is no limit.
+Maximum time (in seconds) that `block.timestamp` advances before each generated call. Delays are random, from 0 up to this value, and add up over a run. If unset or `0`, generated calls do not advance `block.timestamp`.
 
 ##### `max_block_delay`
 
@@ -751,7 +765,7 @@ Maximum time (in seconds) between generated transactions. If not set, there is n
 - Default: none
 - Environment: `FOUNDRY_INVARIANT_MAX_BLOCK_DELAY`
 
-Maximum number of blocks elapsed between generated transactions. If not set, there is no limit.
+Maximum number of blocks that `block.number` advances before each generated call. Delays are random, from 0 up to this value, and add up over a run. If unset or `0`, generated calls do not advance `block.number`.
 
 ##### `check_interval`
 
@@ -764,3 +778,18 @@ Number of calls to execute between invariant assertions.
 - `0`: Only assert on the last call of each run (fastest, but may miss exact breaking call)
 - `1` (default): Assert after every call (most precise)
 - `N`: Assert every N calls AND always on the last call
+
+##### `call_gas_limit`
+
+- Type: integer
+- Default: none
+- Environment: `FOUNDRY_INVARIANT_CALL_GAS_LIMIT`
+
+Gas limit for every call the invariant campaign makes: handler calls, invariant checks and `afterInvariant`. If not set, the campaign uses [`gas_limit`](#gas_limit). The setting never raises the limit above `gas_limit`; `setUp` always runs under `gas_limit`. A handler call whose EIP-7623 calldata floor is above the limit runs with the floor as its limit, so large fuzzed arrays do not stop the campaign.
+
+Set it when a handler loops over a fuzzed bound. Under a very large `gas_limit`, one such call can run until the campaign timeout and the whole budget is lost. Echidna and Medusa default to 12,500,000 gas per transaction.
+
+```toml
+[invariant]
+call_gas_limit = 30_000_000
+```
