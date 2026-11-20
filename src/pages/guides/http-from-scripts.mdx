@@ -1,0 +1,152 @@
+---
+description: Call an HTTP API from a Forge script or test with vm.tryFfi and curl, read the status code, and parse the JSON response.
+---
+
+## HTTP Requests from Scripts and Tests
+
+Forge has no HTTP cheatcode. To call an HTTP API from a script or a test, run an HTTP client such as `curl` with [`vm.ffi`](/reference/cheatcodes/ffi) or `vm.tryFfi`, then read the response with the [JSON cheatcodes](/reference/cheatcodes/parse-json).
+
+This guide shows a pattern that passes arguments without a shell, bounds each request with a timeout, separates the status code from the body, and keeps tokens out of traces.
+
+:::warning
+`ffi` lets Solidity code run any command with your user's permissions. Anyone who can change a script or test in the project can then run commands on every machine that runs it with `ffi` enabled, including CI. Enable it only for the runs that need it.
+:::
+
+### Prerequisites
+
+- `curl` 7.76.0 or later on your `PATH` (for `--fail-with-body`). The examples were checked with curl 8.7.1 and Foundry 1.8.1.
+- `python3`, only to serve the example response locally.
+
+### Enable ffi for one run
+
+Pass `--ffi` on the command line instead of setting `ffi = true` in the default profile:
+
+```bash
+$ forge script script/FetchChain.s.sol --ffi
+```
+
+If you prefer a config file, put `ffi = true` in a [separate profile](/config/profiles) and select it with `FOUNDRY_PROFILE` for the runs that need it. Without either, the call reverts:
+
+```
+Error: script failed: vm.tryFfi: FFI is disabled; add the `--ffi` flag to allow tests to call external commands
+```
+
+### Pass the command as an array
+
+`vm.ffi` and `vm.tryFfi` take the program and each argument as separate array elements and start the program directly, without a shell. Quotes, spaces, `$` and `;` in a URL, header or body reach `curl` unchanged.
+
+Avoid building one string for `bash -c`. A value that contains a quote ends the quoted section, and the rest of the value runs as shell code.
+
+### Make a GET request
+
+The script below fetches a JSON document, checks the status code and reads three fields:
+
+```solidity [script/FetchChain.s.sol]
+// [!include ~/snippets/projects/http_from_scripts/script/FetchChain.s.sol]
+```
+
+What each `curl` option does:
+
+- `--silent`: no progress meter.
+- `--fail-with-body`: exit with code 22 when the status is 400 or higher, and still print the body.
+- `--max-time 10`: stop an attempt after 10 seconds (exit code 28).
+- `--retry 2`: retry up to twice on transient errors, such as a timeout or a 429, 500, 502, 503 or 504 response.
+- `--write-out '%{stderr}%{http_code}'`: print the status code to stderr, so stdout holds only the body.
+
+`vm.tryFfi` returns the exit code, stdout and stderr instead of reverting when the command fails. The helper treats exit codes 0 and 22 as "a response arrived" and reverts on any other code. See the [curl exit codes](https://curl.se/libcurl/c/libcurl-errors.html) for the full list.
+
+Forge trims whitespace around stdout. If the trimmed stdout is valid hex, such as `0x1234` or `abcd`, Forge returns the decoded bytes instead of the text. JSON objects and arrays are not affected; check plain-text responses before you rely on them.
+
+#### Try it locally
+
+Save the response as `api/chains/1.json`:
+
+```json [api/chains/1.json]
+// [!include ~/snippets/projects/http_from_scripts/api/chains/1.json]
+```
+
+Serve the `api` directory in one terminal:
+
+```bash
+$ python3 -m http.server 8000 --bind 127.0.0.1 --directory api
+```
+
+Run the script in another:
+
+```bash
+$ forge script script/FetchChain.s.sol --ffi
+```
+
+```
+Script ran successfully.
+Gas used: 45339
+
+== Logs ==
+  Ethereum 0x80226fc0Ee2b096224EeAc085Bb9a8cba1146f7D true
+```
+
+A missing document and a stopped server fail differently:
+
+```bash
+$ API_URL=http://127.0.0.1:8000/v0 forge script script/FetchChain.s.sol --ffi
+Error: script failed: unexpected HTTP status 404
+
+$ API_URL=http://127.0.0.1:8001 forge script script/FetchChain.s.sol --ffi
+Error: script failed: curl failed with exit code 7
+```
+
+The same helper works in a test run with `forge test --ffi`.
+
+### Send a JSON body
+
+`curl --json` (curl 7.82.0 or later) sends the next argument as the request body and sets the `Content-Type` and `Accept` headers to `application/json`. Because no shell is involved, the body needs no extra escaping:
+
+```solidity
+string[] memory cmd = new string[](8);
+cmd[0] = "curl";
+cmd[1] = "--silent";
+cmd[2] = "--fail-with-body";
+cmd[3] = "--max-time";
+cmd[4] = "10";
+cmd[5] = "--json";
+cmd[6] = '{"name": "O\'Brien"}';
+cmd[7] = url;
+Vm.FfiResult memory res = vm.tryFfi(cmd);
+```
+
+Add `--retry` only to requests that are safe to send twice.
+
+### Keep tokens out of traces
+
+With `-vvvv`, Forge prints every cheatcode call with its arguments. A header built in Solidity appears in the trace, and in your CI logs:
+
+```
+├─ [0] VM::tryFfi(["curl", "--silent", "--fail-with-body", "-H", "Authorization: Bearer s3cret-token", "http://127.0.0.1:8002/"])
+```
+
+With curl 8.3.0 or later, let `curl` read the token from its own environment instead. `--variable %API_TOKEN` imports the `API_TOKEN` environment variable, and `--expand-header` fills it into the header:
+
+```solidity
+cmd[3] = "--variable";
+cmd[4] = "%API_TOKEN";
+cmd[5] = "--expand-header";
+cmd[6] = "Authorization: Bearer {{API_TOKEN}}";
+```
+
+The trace then shows only the placeholder:
+
+```
+├─ [0] VM::tryFfi(["curl", "--silent", "--fail-with-body", "--variable", "%API_TOKEN", "--expand-header", "Authorization: Bearer {{API_TOKEN}}", "http://127.0.0.1:8002/"])
+```
+
+The command inherits Forge's environment, including variables loaded from `.env`, so `API_TOKEN` can come from either. The response body is still part of the trace, so avoid `-vvvv` in CI when a response contains secrets.
+
+### Libraries
+
+[surl](https://github.com/memester-xyz/surl) wraps HTTP requests in a Solidity library with `get`, `post`, `put`, `patch` and `delete` helpers that return the status code and body. It also uses `vm.ffi`, so it needs `ffi` enabled. As of commit [`5f92a52`](https://github.com/memester-xyz/surl/blob/5f92a5260c8e0198ca3ee6a16255d6cda4e0887a/src/Surl.sol#L86-L114), it builds one `bash -c` command string, so it also needs `bash`, `curl` and `cast` on your `PATH`. It wraps the request body in single quotes without escaping them, sets no timeout, removes newlines from the response body, and reports status `0` when no response arrives. Check that these fit your requests before you use it.
+
+### Related
+
+- [`ffi`](/reference/cheatcodes/ffi) cheatcode reference
+- [`parseJson`](/reference/cheatcodes/parse-json) and the typed `parseJson*` cheatcodes
+- [`ffi` configuration](/config/reference/testing#ffi)
