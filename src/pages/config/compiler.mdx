@@ -32,7 +32,7 @@ Set the target EVM version for compilation. This affects which opcodes are avail
 evm_version = "cancun"
 ```
 
-Common values: `paris`, `shanghai`, `cancun`, `prague` (default).
+Common values: `paris`, `shanghai`, `cancun`, `prague`, `osaka` (default).
 
 ### Optimizer settings
 
@@ -98,7 +98,7 @@ Or treat all warnings as errors:
 
 ```toml [foundry.toml]
 [profile.default]
-deny_warnings = true
+deny = "warnings"
 ```
 
 ### Bytecode metadata
