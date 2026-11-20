@@ -90,6 +90,8 @@ Use descriptive names that explain behavior:
 | `test_RevertWhen_Condition` | Revert tests | `test_RevertWhen_InsufficientBalance` |
 | `test_RevertIf_Condition` | Alternative revert naming | `test_RevertIf_NotOwner` |
 
+Forge rejects a test whose name starts with `testFail` or `testFail_`. Use one of the revert names above and assert the revert with `vm.expectRevert`. See [Testing reverts](/forge/testing#testing-reverts).
+
 ```solidity
 function test_TransferUpdatesBalances() public {
     token.transfer(bob, 100);
