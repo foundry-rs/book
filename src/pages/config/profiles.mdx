@@ -99,6 +99,46 @@ optimizer_runs = 200
 optimizer_runs = 1000000
 ```
 
+### Inheriting from a base file
+
+A profile can take its settings from another TOML file with `extends`, for example to share one base configuration across several projects. Put `extends` inside the profile table, with a path relative to `foundry.toml`:
+
+```toml [foundry.toml]
+[profile.default]
+extends = "shared/base.toml"
+optimizer_runs = 300
+```
+
+The base file uses the same profile tables:
+
+```toml [shared/base.toml]
+[profile.default]
+solc = "0.8.30"
+optimizer_runs = 777
+```
+
+Here the project uses `solc = "0.8.30"` from the base file and its own `optimizer_runs = 300`. Values are resolved in this order, highest first: environment variables, `foundry.toml`, the base file.
+
+To choose how the files merge, use the object form:
+
+```toml [foundry.toml]
+[profile.default]
+extends = { path = "shared/base.toml", strategy = "replace-arrays" }
+```
+
+| Strategy | Arrays (such as `libs`) | Other values |
+|----------|-------------------------|--------------|
+| `extend-arrays` (default) | Base elements, then local elements | Local value replaces the base value |
+| `replace-arrays` | Local array replaces the base array | Local value replaces the base value |
+| `no-collision` | Error if a key is set in both files | Error if a key is set in both files |
+
+Things to know:
+
+- `extends` applies only to the profile that declares it. A profile selected with `FOUNDRY_PROFILE` does not get the base file's values through `default`; give it its own `extends`. It then reads that profile's table in the base file, or the base file's `default` table if there is none.
+- `extends` at the top level of `foundry.toml`, outside a profile table, is an error, and so are top-level keys in the base file.
+- A base file cannot itself use `extends`.
+- `extends` takes a file path, not a profile name. Profiles already inherit from `default`.
+
 ### Environment variable overrides
 
 Override any configuration value with environment variables prefixed with `FOUNDRY_` or `DAPP_`:
