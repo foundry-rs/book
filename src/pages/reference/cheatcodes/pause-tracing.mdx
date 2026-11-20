@@ -1,0 +1,34 @@
+---
+description: Pauses the collection of call traces in Forge tests
+---
+
+## `pauseTracing`
+
+### Signature
+
+```solidity
+function pauseTracing() external view;
+```
+
+### Description
+
+Pauses the collection of call traces. Calls made while tracing is paused still execute normally, but they are left out of the trace output shown at `-vvvv` and above. Use it to skip setup or other noisy calls that are not useful for debugging, then call [`resumeTracing`](/reference/cheatcodes/resume-tracing) to start recording again.
+
+Calling `pauseTracing` while tracing is already paused has no effect. When traces are not being collected, for example below `-vvvv`, the cheatcode does nothing.
+
+### Examples
+
+```solidity [test/PauseTracing.t.sol]
+// [!include ~/snippets/projects/tracing/test/PauseTracing.t.sol]
+```
+
+```bash
+$ forge test --root src/snippets/projects/tracing --match-contract PauseTracingTest -vvvv
+```
+
+The ten `increment` calls made while tracing is paused do not appear in the trace. The final `increment` and `number` calls do.
+
+### Related Cheatcodes
+
+- [`resumeTracing`](/reference/cheatcodes/resume-tracing) - Resumes the collection of call traces
+- [`pauseGasMetering`](/reference/cheatcodes/pause-gas-metering) - Pauses gas metering

@@ -189,6 +189,8 @@ export const cmdReference: SidebarItem[] = [
       { text: "rememberKey", link: "/reference/cheatcodes/remember-key" },
       { text: "toString", link: "/reference/cheatcodes/to-string" },
       { text: "breakpoint", link: "/reference/cheatcodes/breakpoint" },
+      { text: "pauseTracing", link: "/reference/cheatcodes/pause-tracing" },
+      { text: "resumeTracing", link: "/reference/cheatcodes/resume-tracing" },
       { text: "createWallet", link: "/reference/cheatcodes/create-wallet" },
       { text: "getWallets", link: "/reference/cheatcodes/get-wallets" },
       { text: "copyStorage", link: "/reference/cheatcodes/copy-storage" },

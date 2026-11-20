@@ -1,0 +1,32 @@
+---
+description: Resumes the collection of call traces after pauseTracing
+---
+
+## `resumeTracing`
+
+### Signature
+
+```solidity
+function resumeTracing() external view;
+```
+
+### Description
+
+Resumes the collection of call traces after [`pauseTracing`](/reference/cheatcodes/pause-tracing). Calls made after `resumeTracing` appear in the trace output again.
+
+Calling `resumeTracing` when tracing is not paused has no effect. When traces are not being collected, for example below `-vvvv`, the cheatcode does nothing.
+
+### Examples
+
+```solidity [test/PauseTracing.t.sol]
+// [!include ~/snippets/projects/tracing/test/PauseTracing.t.sol]
+```
+
+```bash
+$ forge test --root src/snippets/projects/tracing --match-contract PauseTracingTest -vvvv
+```
+
+### Related Cheatcodes
+
+- [`pauseTracing`](/reference/cheatcodes/pause-tracing) - Pauses the collection of call traces
+- [`resumeGasMetering`](/reference/cheatcodes/resume-gas-metering) - Resumes gas metering
