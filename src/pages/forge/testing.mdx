@@ -56,7 +56,27 @@ Key conventions:
 
 Forge runs tests with call isolation enabled by default. In isolation mode, each top-level external call made by a test is executed as a separate transaction in a separate EVM context. This gives more precise gas accounting and transaction state changes for each call.
 
+Configure it with:
+
+- CLI: `forge test --isolate` (default) or `forge test --no-isolate`
+- `foundry.toml`: `isolate = true` (default) or `isolate = false` under `[profile.default]`
+- Cheatcode: `vm.isIsolateMode()` reports whether isolation is active
+
 Because those calls use separate transaction contexts, a test function is not always equivalent to one normal transaction with warmed accounts or storage slots shared across every external call in the function body. For example, repeated calls to the same contract can be charged as cold again under isolation. If a test intentionally asserts behavior that depends on warm accounts or slots carrying across repeated calls in one transaction, run it with `--no-isolate` or set `isolate = false` in `foundry.toml`.
+
+#### When to keep isolation on
+
+Keep the default for ordinary unit tests, gas snapshots, and any case where you want each top-level call's gas and state changes measured as a standalone transaction. Gas snapshots are not accurate unless isolation is enabled.
+
+#### When to turn isolation off
+
+Disable isolation (`--no-isolate` / `isolate = false`) when:
+
+- A test asserts warm-account or warm-storage behavior that must span multiple external calls in one transaction
+- Suite runtime matters more than per-call gas fidelity (isolation adds overhead on large suites)
+- You are debugging a failure that only reproduces without isolation
+
+Prefer leaving isolation on in CI for gas snapshots, and disable it only for the specific tests that need shared transaction context.
 
 ### Traces
 
