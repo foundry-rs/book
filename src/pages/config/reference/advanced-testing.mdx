@@ -148,11 +148,40 @@ take precedence.
 | --- | --- | --- |
 | `report` | `["summary"]` | Selects `summary`, `lcov`, `debug`, `bytecode`, `attribution`, or `gaps` reports. `gaps` writes uncovered source items to `coverage-gaps.json`; see [Code Coverage](/guides/coverage#list-uncovered-code). |
 | `lcov_version` | `"1"` | Selects the LCOV tracefile version. |
-| `ir_minimum` | `false` | Enables minimum via-IR optimization as a stack-depth workaround. |
+| `ir_minimum` | `false` | Enables minimum via-IR optimization as a stack-depth workaround. Cannot be combined with `keep_optimizer`. |
+| `keep_optimizer` | `false` | Keeps the project's optimizer and `viaIR` settings. Optimized builds can miss or merge coverage items. Cannot be combined with `ir_minimum`. |
 | `report_file` | none | Writes the report to a project-relative path. |
 | `include_libs` | `false` | Includes dependencies in coverage. |
 | `exclude_tests` | `false` | Excludes test source from coverage. |
 | `skip_files` | `[]` | Excludes project-relative source globs. |
+
+#### `keep_optimizer`
+
+`keep_optimizer` is a boolean that defaults to `false`. You can also enable it
+with `FOUNDRY_COVERAGE_KEEP_OPTIMIZER=true` or `--keep-optimizer`.
+
+This preserves your project's optimizer and `viaIR` settings rather than
+enabling optimization by itself: configure `optimizer`, `optimizer_runs`, and
+`via_ir` in the profile, or pass the corresponding compiler flags. Optimized
+builds can miss or merge coverage items that the optimizer removes or combines,
+so coverage results can be less accurate.
+
+```toml [foundry.toml]
+[profile.default]
+optimizer = true
+optimizer_runs = 200
+
+[profile.default.coverage]
+keep_optimizer = true
+```
+
+The resolved value is true when either the CLI flag or configuration is true;
+there is no CLI flag to disable a configured true value.
+
+`keep_optimizer` cannot be combined with `ir_minimum` or `--ir-minimum`.
+This conflict is checked after CLI and configuration values are combined,
+including when one mode is enabled in TOML and the other on the command line.
+Disable the conflicting setting in configuration before selecting the other mode.
 
 ### Mutation testing
 

@@ -575,6 +575,18 @@ script_execution_protection = true
 path = "vyper"  # Path to vyper binary
 
 # =============================================================================
+# COVERAGE CONFIGURATION
+# =============================================================================
+
+[profile.default.coverage]
+# Keep the project's optimizer and viaIR settings during forge coverage.
+# Optimized builds can miss or merge coverage items.
+# Cannot be combined with ir_minimum or --ir-minimum.
+# Environment: FOUNDRY_COVERAGE_KEEP_OPTIMIZER
+# Default: false
+keep_optimizer = false
+
+# =============================================================================
 # FUZZ TESTING CONFIGURATION
 # =============================================================================
 
