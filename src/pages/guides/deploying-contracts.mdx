@@ -1,10 +1,10 @@
 ---
-description: Deploy contracts from local development to testnet and mainnet with verification and deterministic addresses.
+description: Deploy contracts from local development to testnet and mainnet, including forge create constructor arguments, verification, and deterministic addresses.
 ---
 
 ## Deploying Contracts
 
-This guide covers the full deployment workflow: local testing, testnet deployment, mainnet deployment, contract verification, and deterministic addresses with CREATE2.
+This guide covers the full deployment workflow: local testing, testnet deployment, mainnet deployment, contract verification, deterministic addresses with CREATE2, and constructor arguments for `forge create`.
 
 ### Local deployment with Anvil
 
@@ -65,6 +65,83 @@ Or with an encrypted keystore:
 ```bash
 $ forge script script/Deploy.s.sol --account deployer --broadcast --rpc-url https://ethereum.reth.rs/rpc
 ```
+
+### Constructor arguments with `forge create`
+
+[`forge create`](/reference/forge/create) deploys one contract from the command line. You pass one shell argument per constructor parameter after `--constructor-args`. Forge reads the constructor from the compiled artifact and ABI-encodes the values.
+
+Arrays use square brackets. Structs and tuples use parentheses, with fields in declaration order. Quote each value so the shell keeps the brackets, parentheses, and spaces together. Spaces after commas are optional.
+
+```solidity
+struct Point {
+    uint256 x;
+    uint256 y;
+}
+
+contract Markers {
+    constructor(uint256[] memory ids, Point memory origin, Point[] memory points) {}
+}
+```
+
+```bash
+$ forge create src/Markers.sol:Markers \
+    --rpc-url $RPC_URL \
+    --private-key $PRIVATE_KEY \
+    --broadcast \
+    --constructor-args "[1, 2, 3]" "(0, 1)" "[(1, 2), (3, 4)]"
+```
+
+`[1, 2, 3]` is the `uint256[]`, `(0, 1)` is `origin`, and `[(1, 2), (3, 4)]` is the `Point[]`.
+
+A struct that contains an array is one parenthesized argument:
+
+```solidity
+struct Bundle {
+    uint256[] ids;
+    uint256 nonce;
+}
+
+contract Bundled {
+    constructor(Bundle memory bundle) {}
+}
+```
+
+```bash
+$ forge create src/Bundle.sol:Bundled \
+    --rpc-url $RPC_URL \
+    --private-key $PRIVATE_KEY \
+    --broadcast \
+    --constructor-args "([1, 2, 3], 7)"
+```
+
+Quote strings that sit inside an array or struct:
+
+```solidity
+struct TokenConfig {
+    string name;
+    uint256 supply;
+}
+
+contract NamedToken {
+    constructor(TokenConfig memory config) {}
+}
+```
+
+```bash
+$ forge create src/NamedToken.sol:NamedToken \
+    --rpc-url $RPC_URL \
+    --private-key $PRIVATE_KEY \
+    --broadcast \
+    --constructor-args '("MyToken", 1000000)'
+```
+
+Addresses, booleans, and integers use the same literals as [`cast calldata`](/cast/abi-encoding). An empty array is `"[]"`. A struct with an `address` and a `bool` is `"(0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266, true)"`.
+
+:::note
+Put `--constructor-args` last. It consumes every following value, including a later flag such as `--broadcast`.
+:::
+
+`forge create` encodes these values for you. [`forge verify-contract`](/reference/forge/verify-contract) takes the constructor arguments already ABI-encoded, usually from `cast abi-encode`. See [Verification with constructor arguments](#verification-with-constructor-arguments).
 
 ### Contract verification
 
