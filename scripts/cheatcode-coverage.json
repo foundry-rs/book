@@ -350,8 +350,6 @@
     "deleteSnapshots",
     "envExists",
     "eth_getLogs",
-    "expectCreate",
-    "expectCreate2",
     "fromRlp",
     "fsMetadata",
     "getArtifactPathByCode",
