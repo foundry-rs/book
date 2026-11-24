@@ -1,0 +1,89 @@
+---
+description: Signs EIP-712 typed data given as JSON, returning (v, r, s)
+---
+
+## `signTypedData`
+
+### Signature
+
+```solidity
+function signTypedData(uint256 privateKey, string calldata jsonData) external pure returns (uint8 v, bytes32 r, bytes32 s);
+function signTypedData(string calldata jsonData) external pure returns (uint8 v, bytes32 r, bytes32 s);
+function signTypedData(address signer, string calldata jsonData) external pure returns (uint8 v, bytes32 r, bytes32 s);
+```
+
+### Description
+
+Signs [EIP-712](https://eips.ethereum.org/EIPS/eip-712) typed data using the secp256k1 curve, returning `(v, r, s)`. `jsonData` is a JSON document in the standard `eth_signTypedData_v4` format with `types`, `primaryType`, `domain`, and `message` fields, the same input that [`eip712HashTypedData`](/reference/cheatcodes/eip712-hash-typed-data) accepts.
+
+The overloads differ in who signs:
+
+- With `privateKey`, the provided key signs the typed data. The result equals `vm.sign(privateKey, vm.eip712HashTypedData(jsonData))`.
+- With only `jsonData`, the signer provided to the script is used. If `--sender` is set, the matching unlocked signer is used; otherwise exactly one signer must be available. Reverts if this is ambiguous.
+- With `signer`, the unlocked script wallet with that address is used. Reverts if no unlocked signer matches.
+
+The script wallet overloads hand the typed data itself to the wallet instead of its digest. A hardware wallet such as a Ledger or Trezor can therefore display what you sign, instead of blind signing a digest as with [`sign`](/reference/cheatcodes/sign).
+
+### Parameters
+
+| Parameter    | Type      | Description                                         |
+|--------------|-----------|-----------------------------------------------------|
+| `privateKey` | `uint256` | The private key to sign with                        |
+| `signer`     | `address` | Address of an unlocked script wallet                |
+| `jsonData`   | `string`  | The typed data as `eth_signTypedData_v4` style JSON |
+
+### Returns
+
+| Parameter | Type      | Description                      |
+|-----------|-----------|----------------------------------|
+| `v`       | `uint8`   | The recovery id                  |
+| `r`       | `bytes32` | First 32 bytes of the signature  |
+| `s`       | `bytes32` | Second 32 bytes of the signature |
+
+### Examples
+
+#### Sign with a private key
+
+```solidity [test/SignTypedData.t.sol]
+// [!include ~/snippets/projects/cheatcodes/test/SignTypedData.t.sol:private-key]
+```
+
+#### Sign with a script wallet
+
+This script signs the typed data it receives with the wallet you pass to `forge script`, and returns the signature as bytes:
+
+```solidity [script/SignTypedData.s.sol]
+// [!include ~/snippets/projects/cheatcodes/script/SignTypedData.s.sol:script-wallet]
+```
+
+```bash [Sign with a Ledger]
+$ forge script script/SignTypedData.s.sol --sig "run(string)" "$(cat typed-data.json)" --ledger
+```
+
+The device asks you to confirm the EIP-712 message before it signs.
+
+#### Choose one of several script wallets
+
+When you pass more than one wallet and no `--sender`, name the signer:
+
+```solidity [script/SignTypedData.s.sol]
+// [!include ~/snippets/projects/cheatcodes/script/SignTypedData.s.sol:script-wallet-signer]
+```
+
+### Gotchas
+
+:::warning[Signature Byte Order]
+When encoding the signature as bytes, for example for OpenZeppelin's ECDSA library or a Safe, the order is `(r, s, v)`, not `(v, r, s)`:
+```solidity
+bytes memory signature = abi.encodePacked(r, s, v);
+```
+:::
+
+- The cheatcode reverts if `jsonData` is not valid EIP-712 typed data, for example when a type used by `primaryType` is missing from `types`.
+- The script wallet overloads revert with `no wallets available` in `forge test`, because tests have no script wallets. Use the `privateKey` overload there.
+
+### Related Cheatcodes
+
+- [`eip712HashTypedData`](/reference/cheatcodes/eip712-hash-typed-data) - Compute the digest that is signed
+- [`sign`](/reference/cheatcodes/sign) - Sign a digest, returning `(v, r, s)`
+- [`signCompact`](/reference/cheatcodes/sign-compact) - Sign a digest, returning a compact signature
