@@ -202,9 +202,13 @@ If set to `true`, then block data from RPC endpoints in tests will not be cached
 - Default: false
 - Environment: `FOUNDRY_FORK_PREFETCH`
 
-If set to `true`, a fork that starts on a block with an empty storage cache warms that cache in the background. Foundry takes the accounts and storage slots from the cache of the newest older block on the same chain and reads them again at the new block. This speeds up forks of `latest`, which start cold on each new head, for example in CI.
+If set to `true`, Foundry fetches the remote state a fork is about to read before the EVM asks for it, in two ways.
 
-Results do not change, because every value comes from the fork block. Keys that the tests do not read cost extra RPC requests. Prefetching needs storage caching, so it has no effect with `no_storage_caching` or for endpoints that `rpc_storage_caching` excludes. Use `--fork-prefetch` to turn it on for one run.
+Each call into a contract on the fork is simulated on the endpoint with `eth_createAccessList` while the EVM runs it. Foundry then fetches the storage slots in the result in parallel batch requests, and the accounts in parallel separate requests. A top-level call, such as a test function, sends the state that exists only locally, such as the test contract and balances set with cheatcodes, as state overrides. A cold call then costs a few round trips instead of one per slot. A call is simulated again on each run until its access list holds at most two new keys or reads mostly hit the cache. An endpoint without `eth_createAccessList` turns the simulations off, and one that rejects state overrides turns them off for top-level calls. The first failed or slow (over 3 seconds) batch request, for example from a rate limit, stops prefetching on that fork.
+
+A fork of `latest` that starts on a block with an empty storage cache also warms that cache in the background; forks of pinned blocks do not. Foundry takes the accounts and storage slots from the cache of the newest older block on the same chain and reads them again at the new block. Such forks start cold on each new head, for example in CI, so this saves the first reads. This part needs storage caching, so it has no effect with `no_storage_caching` or for endpoints that `rpc_storage_caching` excludes.
+
+Results do not change, because every value comes from the fork block. Keys that the tests do not read cost extra RPC requests, and the simulations and batch requests count against the endpoint's rate limit. Use `--fork-prefetch` to turn it on for one run.
 
 ```toml
 [profile.ci]
@@ -601,6 +605,16 @@ The number of calls executed to attempt to break invariants in one run.
 
 Optional timeout (in seconds) for invariant time based campaigns.
 
+The timeout also bounds shrinking: once the campaign ends, shrinking the failures it found stops at most
+`timeout` seconds after the campaign deadline, so a timed invariant test finishes within about twice its
+timeout. A failure whose shrinking runs out of time is reported with the shortest call sequence confirmed
+so far.
+
+```toml
+[invariant]
+timeout = 300
+```
+
 ##### `fail_on_revert`
 
 - Type: boolean
@@ -655,7 +669,7 @@ Whether to add the results of targeted contracts' view functions to the dictiona
 - Default: 5000
 - Environment: `FOUNDRY_INVARIANT_SHRINK_RUN_LIMIT`
 
-The maximum number of attempts to shrink a failed the sequence. Shrink process is disabled if set to 0.
+The maximum number of attempts to shrink a failed sequence. The same limit bounds the minimization of a failing stateless fuzz test's arguments, so its counterexample reports the smallest values that still fail the same way; set it under `[invariant]` for fuzz tests too. Shrinking and minimization are disabled if set to 0.
 
 ##### `max_assume_rejects`
 
@@ -743,7 +757,7 @@ Flag indicating whether to display counterexamples as solidity calls.
 - Default: none
 - Environment: `FOUNDRY_INVARIANT_MAX_TIME_DELAY`
 
-Maximum time (in seconds) between generated transactions. If not set, there is no limit.
+Maximum time (in seconds) that `block.timestamp` advances before each generated call. Delays are random, from 0 up to this value, and add up over a run. If unset or `0`, generated calls do not advance `block.timestamp`.
 
 ##### `max_block_delay`
 
@@ -751,7 +765,7 @@ Maximum time (in seconds) between generated transactions. If not set, there is n
 - Default: none
 - Environment: `FOUNDRY_INVARIANT_MAX_BLOCK_DELAY`
 
-Maximum number of blocks elapsed between generated transactions. If not set, there is no limit.
+Maximum number of blocks that `block.number` advances before each generated call. Delays are random, from 0 up to this value, and add up over a run. If unset or `0`, generated calls do not advance `block.number`.
 
 ##### `check_interval`
 

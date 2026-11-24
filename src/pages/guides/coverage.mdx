@@ -146,6 +146,14 @@ Source filters also apply to the gaps report.
 
 For accurate source maps, `forge coverage` disables optimizer settings and `viaIR` by default. The coverage build can therefore differ from the production build in bytecode shape, gas use, and inlining.
 
+To preserve your project's optimizer and `viaIR` settings, enable
+[`keep_optimizer`](/config/reference/advanced-testing#keep_optimizer) under
+`[profile.<name>.coverage]`, or pass `--keep-optimizer`. This preserves settings
+rather than enabling optimization by itself. Optimized builds can miss or merge
+coverage items that the optimizer removes or combines, so results can be less
+accurate. The default is `false`; you can also set
+`FOUNDRY_COVERAGE_KEEP_OPTIMIZER=true`.
+
 If coverage compilation fails with a stack-too-deep error, retry with:
 
 ```bash
@@ -153,6 +161,10 @@ $ forge coverage --ir-minimum
 ```
 
 `--ir-minimum` enables `viaIR` with minimal optimization. It is a workaround, not the preferred baseline: inlining and IR source maps can make internal functions or library code appear uncovered. See [Stack Too Deep](/guides/stack-too-deep) for alternatives.
+
+`keep_optimizer` and `ir_minimum` are mutually exclusive, including when one is
+enabled in configuration and the other through a CLI flag. Disable the
+conflicting configuration setting before switching modes.
 
 Coverage compilation is ephemeral and does not leave normal build artifacts behind. Run `forge build` after coverage if a later step needs artifacts from the selected production profile.
 

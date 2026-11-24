@@ -41,8 +41,11 @@ import {Context} from "node_modules/@openzeppelin/openzeppelin-contracts/contrac
 ```
 
 Foundry can generate contextual remappings for dependencies while retaining a broader package
-fallback. See [Nested dependency remappings](/projects/dependencies#nested-dependency-remappings)
-for details.
+fallback. When two dependencies declare the same alias with different targets, each declaration
+applies only within its own dependency. Root-project, environment, and CLI remappings override
+dependency declarations everywhere, including inside dependencies. See
+[Dependency remapping scope](/projects/dependencies#dependency-remapping-scope) for details and
+migration examples.
 
 ##### `auto_detect_remappings`
 
@@ -50,9 +53,11 @@ for details.
 - Default: true
 - Environment: `FOUNDRY_AUTO_DETECT_REMAPPINGS` or `DAPP_AUTO_DETECT_REMAPPINGS`
 
-If enabled, Foundry will automatically try auto-detect remappings by scanning the `libs` folder(s).
+If enabled, Foundry scans the `libs` folder(s) for package entry points and dependency remapping
+declarations. Dependency declarations follow the scope rules described [above](#remappings).
 
-If set to `false`, only the remappings in `foundry.toml` and `remappings.txt` are used.
+If set to `false`, dependency discovery is disabled. Explicit root-project, environment, and CLI
+remappings still apply.
 
 ##### `allow_paths`
 
