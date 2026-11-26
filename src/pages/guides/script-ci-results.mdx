@@ -95,7 +95,7 @@ Log the values a script actually uses, and use `vm.envUint`, `vm.envAddress` and
 
 ### Read the result with `--json`
 
-`--json` prints the run as one JSON object. Each named return value is under `.returns.<name>.value`, as a string:
+For a successful local run, `--json` prints one JSON object. Each named return value is under `.returns.<name>.value`, as a string:
 
 ```bash
 $ forge script script/CheckBalances.s.sol --rpc-url $RPC_URL \
@@ -129,7 +129,7 @@ With `--broadcast`, Forge prints one JSON object per line: the first is the simu
 - `1` for every failure: a revert, an argument that does not parse, an unreachable RPC endpoint.
 - `2` for a command-line usage error, such as an unknown flag.
 
-Because every failure exits with `1`, put the result your CI branches on in the return value. To tell revert reasons apart, read `.returned`: when `run()` reverts, `--json` still prints an object with `"success": false` and the raw revert data. The decoded reason goes to stderr:
+Because every failure exits with `1`, put the result your CI branches on in the return value. To tell revert reasons apart, read `.returned`: when `run()` reverts, `--json` still prints an object with `"success": false` and the raw revert data. On Foundry 1.8.1 the decoded reason goes to stderr:
 
 ```bash
 $ forge script script/CheckBalances.s.sol --rpc-url $RPC_URL --sig run '[]' --json > result.json
@@ -141,7 +141,7 @@ $ cast sig 'NoChecks()'
 0xd2bd20cc
 ```
 
-For errors with arguments, compare the first four bytes with the selector, and decode the rest with [`cast decode-error`](/reference/cast/decode-error) and `--sig`. Failures before the script runs, such as a bad argument or an unreachable RPC endpoint, print nothing on stdout.
+For errors with arguments, compare the first four bytes with the selector, and decode the rest with [`cast decode-error`](/reference/cast/decode-error) and `--sig`. On versions with [structured script errors](https://github.com/foundry-rs/foundry/pull/18696), Forge writes a JSON error record to stdout, including when an RPC request fails before the script runs. Read `.errors[].message` for the diagnostic. Older versions report these failures on stderr.
 
 ### Wrap it for CI
 

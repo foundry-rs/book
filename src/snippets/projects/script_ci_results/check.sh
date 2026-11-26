@@ -9,13 +9,16 @@ if [ "$status" -ne 0 ]; then
   returned=$(jq -r '.returned // empty' result.json 2>/dev/null)
   if [ "$returned" = "$(cast sig 'NoChecks()')" ]; then
     echo "::error::no accounts to check"
-  else
-    cat error.txt
+  elif ! jq -er '.errors[]?.message' result.json >&2; then
+    cat error.txt >&2
   fi
   exit 2
 fi
 
-low=$(head -n 1 result.json | jq -r '.returns.low.value')
+if ! low=$(jq -er '.returns.low.value | strings | select(test("^[0-9]+$"))' result.json); then
+  echo "::error::missing balance count in Forge output" >&2
+  exit 2
+fi
 if [ "$low" != "0" ]; then
   echo "::error::$low account(s) below minimum balance"
   jq -r '.logs[]' result.json
