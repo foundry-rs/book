@@ -134,8 +134,8 @@ extends = { path = "shared/base.toml", strategy = "replace-arrays" }
 
 Things to know:
 
-- `extends` applies only to the profile that declares it. A profile selected with `FOUNDRY_PROFILE` does not get the base file's values through `default`; give it its own `extends`. It then reads that profile's table in the base file, or the base file's `default` table if there is none.
-- `extends` at the top level of `foundry.toml`, outside a profile table, is an error, and so are top-level keys in the base file.
+- `extends` applies only to the profile that declares it. A profile selected with `FOUNDRY_PROFILE` does not get the base file's values through `default`; give it its own `extends`. In the base file, the selected profile inherits from `default`. For example, a `ci` profile can take `optimizer_runs` from `[profile.default]` and `via_ir` from `[profile.ci]`.
+- Put profile settings inside a profile table in both files. The base file also accepts standalone tables such as `[fmt]` and `[rpc_endpoints]`.
 - A base file cannot itself use `extends`.
 - `extends` takes a file path, not a profile name. Profiles already inherit from `default`.
 
