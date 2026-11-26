@@ -12,9 +12,9 @@ function pauseTracing() external view;
 
 ### Description
 
-Pauses the collection of call traces. Calls made while tracing is paused still execute normally, but they are left out of the trace output shown at `-vvvv` and above. Use it to skip setup or other noisy calls that are not useful for debugging, then call [`resumeTracing`](/reference/cheatcodes/resume-tracing) to start recording again.
+Pauses the collection of call traces. Calls made while tracing is paused still execute normally, but they are omitted from the trace output. Use it to skip setup or other noisy calls that are not useful for debugging, then call [`resumeTracing`](/reference/cheatcodes/resume-tracing) to start recording again.
 
-Calling `pauseTracing` while tracing is already paused has no effect. When traces are not being collected, for example below `-vvvv`, the cheatcode does nothing.
+Calling `pauseTracing` while tracing is already paused has no effect. The cheatcode takes effect whenever Forge collects traces, including for failing tests at `-vvv`.
 
 ### Examples
 

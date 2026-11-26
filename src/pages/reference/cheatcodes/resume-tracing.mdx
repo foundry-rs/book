@@ -14,7 +14,7 @@ function resumeTracing() external view;
 
 Resumes the collection of call traces after [`pauseTracing`](/reference/cheatcodes/pause-tracing). Calls made after `resumeTracing` appear in the trace output again.
 
-Calling `resumeTracing` when tracing is not paused has no effect. When traces are not being collected, for example below `-vvvv`, the cheatcode does nothing.
+Calling `resumeTracing` when tracing is not paused has no effect. The cheatcode takes effect whenever Forge collects traces, including for failing tests at `-vvv`.
 
 ### Examples
 
