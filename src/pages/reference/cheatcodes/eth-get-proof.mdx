@@ -1,0 +1,79 @@
+---
+description: Gets an EIP-1186 account and storage proof from the active fork
+---
+
+## `eth_getProof`
+
+### Signature
+
+```solidity
+struct EthStorageProof {
+    bytes32 key;
+    uint256 value;
+    bytes[] proof;
+}
+
+struct EthGetProof {
+    address account;
+    uint256 balance;
+    bytes32 codeHash;
+    uint64 nonce;
+    bytes32 storageHash;
+    bytes[] accountProof;
+    EthStorageProof[] storageProof;
+}
+
+function eth_getProof(address target, bytes32[] calldata slots, uint256 blockNumber)
+    external
+    view
+    returns (EthGetProof memory proof);
+```
+
+### Description
+
+Calls `eth_getProof` ([EIP-1186](https://eips.ethereum.org/EIPS/eip-1186)) on the RPC endpoint of the active fork and returns the decoded account proof and one storage proof per requested slot, in the order requested. Proof nodes are RLP-encoded, from the root down.
+
+### Parameters
+
+| Parameter     | Type        | Description                              |
+|---------------|-------------|------------------------------------------|
+| `target`      | `address`   | The account to prove                     |
+| `slots`       | `bytes32[]` | The storage slots to prove               |
+| `blockNumber` | `uint256`   | The block to prove against               |
+
+### Returns
+
+| Parameter | Type          | Description                            |
+|-----------|---------------|----------------------------------------|
+| `proof`   | `EthGetProof` | The account and storage proofs         |
+
+### Examples
+
+```solidity [test/Proof.t.sol]
+function testProof() public {
+    vm.createSelectFork(vm.envString("MAINNET_RPC_URL"));
+    address target = 0x6B175474E89094C44Da98b954EedeAC495271d0F; // DAI
+
+    bytes32[] memory slots = new bytes32[](1);
+    slots[0] = bytes32(uint256(1)); // totalSupply
+
+    Vm.EthGetProof memory proof = vm.eth_getProof(target, slots, block.number);
+
+    assertEq(proof.account, target);
+    assertEq(proof.codeHash, target.codehash);
+    assertEq(proof.storageProof[0].value, uint256(vm.load(target, slots[0])));
+}
+```
+
+### Gotchas
+
+:::warning
+The proof comes from the fork's RPC endpoint, so it does not include changes made in the test, such as `vm.store` or `vm.deal`. Without an active fork the cheatcode reverts with `no active fork URL found`.
+:::
+
+The endpoint must serve `eth_getProof` at `blockNumber`. Nodes that prune old state serve proofs only for recent blocks.
+
+### Related Cheatcodes
+
+- [`createSelectFork`](/reference/cheatcodes/create-select-fork) - Creates and selects a fork
+- [`rpc`](/reference/cheatcodes/rpc) - Makes any JSON-RPC call to an endpoint

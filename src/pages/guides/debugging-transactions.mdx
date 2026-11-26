@@ -130,23 +130,26 @@ function test_Debug() public {
 
 ### Using the debugger
 
-Forge includes an interactive debugger:
+Forge includes an interactive debugger, [SolDB](https://github.com/walnuthq/soldb):
 
 ```bash
 $ forge test --match-test test_Failing --debug
 ```
 
-Basic controls:
+Basic commands at the `soldb>` prompt:
 
-| Key | Action |
-|-----|--------|
-| `j` / `k` | Step forward / backward |
-| `s` / `a` | Move to the next / previous jump |
-| `C` / `c` | Move to the next / previous call |
-| `g` / `G` | Jump to start / end |
-| `q` | Quit |
+| Command | Action |
+|---------|--------|
+| `next` / `step` | Run to the next source line, stepping over / into calls |
+| `reverse-next` / `reverse-step` | The same, backward |
+| `break <file>:<line>` | Set a breakpoint on a source line |
+| `continue` | Run to the next breakpoint |
+| `vars` | Show the variables in scope and the state variables |
+| `quit` | Leave the debugger |
 
-See [Debugging](/forge/debugging#interactive-debugger) for the full list of key bindings and debugger commands.
+To debug the transaction itself rather than a test, add `--debug` to `cast run`, and `--with-local-artifacts` when you run it from the project that holds the contracts' sources.
+
+See [Debugging](/forge/debugging#interactive-debugger) for the full list of commands, breakpoints and the full-screen view.
 
 ### Common failure patterns
 
