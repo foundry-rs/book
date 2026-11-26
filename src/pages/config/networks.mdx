@@ -27,9 +27,9 @@ $ anvil --network monad
 ```
 
 The available values depend on how the binary was built. `ethereum` and `tempo` are always
-available. `optimism` and `monad` require their matching Cargo features; official Foundry release
-builds currently include both. Run the command with `--help` to see the values supported by your
-installed binary.
+available. `optimism`, `base`, and `monad` require their matching Cargo features; official Foundry
+release builds currently include all three. Run the command with `--help` to see the values
+supported by your installed binary.
 
 :::note
 Compiling support for a network makes it available to the binary; it does not activate that network.
@@ -46,11 +46,20 @@ $ forge test --fork-url $RPC_URL
 $ anvil --fork-url $RPC_URL
 ```
 
-You do not need `--network` for a recognized network family. Select the network explicitly when the
+You do not need `--network` for a recognized network family. For example, forks of Base mainnet
+(chain ID `8453`) and Base Sepolia (`84532`) run with `base` rules when the binary includes the
+`base` family. Select the network explicitly when the
 endpoint uses an unknown chain ID, does not expose enough metadata, or when you intentionally need
 a specific execution family. Compatibility profiles exposed through separate switches, such as
-Celo, still require their switch. The selected execution profile must be compatible with the fork
-source.
+Celo, still require their switch.
+
+When the network is inferred, the fork source must match it: an incompatible fork of another network family is
+an error. When you select the network explicitly with `network` or `--network`, Foundry keeps your
+selection and runs incompatible forks of another family with its rules, printing a warning once per chain:
+
+```text
+Warning: fork of chain 1 belongs to `ethereum`, but the selected network is `monad`, so the fork runs with `monad` rules
+```
 
 Optional metadata methods are capability probes. A standard RPC endpoint can reject an Anvil-only
 method and still be a valid fork source; Foundry falls back to standard chain and block methods
@@ -71,6 +80,11 @@ hardfork = "optimism:holocene"
 ```toml [foundry.toml]
 [profile.default]
 hardfork = "tempo:T6"
+```
+
+```toml [foundry.toml]
+[profile.default]
+hardfork = "base:Azul"
 ```
 
 For normal current behavior, prefer `network` or live fork inference. Pin a hardfork for historical

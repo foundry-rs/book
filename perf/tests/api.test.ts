@@ -113,6 +113,59 @@ describe('website API', () => {
     ).toBe(400)
   })
 
+  it('counts changed lines between two compilers from stored blobs', async () => {
+    const commits = ['a'.repeat(40), 'b'.repeat(40)]
+    const revisions = ['c'.repeat(64), 'd'.repeat(64)]
+    const [same, old, current, other] = ['1', '2', '3', '4'].map((digit) => digit.repeat(64))
+    globalThis.fetch = vi.fn(async (_input, init) => {
+      const sql = String(init?.body)
+      if (sql.includes('artifact_blobs')) {
+        expect(sql).toContain(`'${old}'`)
+        expect(sql).toContain(`'${current}'`)
+        expect(sql).not.toContain(same)
+        return new Response(
+          [
+            { content_sha256: old, content: 'a\nb\n' },
+            { content_sha256: current, content: 'a\nc\nd\n' },
+          ]
+            .map((row) => JSON.stringify(row))
+            .join('\n'),
+        )
+      }
+      expect(sql).toContain(`revision = '${revisions[1]}'`)
+      return new Response(
+        [
+          [
+            ['counter', 'out.mir', 'solar', 4, old, ''],
+            ['counter', 'same.mir', 'solar', 4, same, ''],
+            ['counter', 'out.mir', 'solc', 4, other, ''],
+          ],
+          [
+            ['counter', 'out.mir', 'solc', 6, current, ''],
+            ['counter', 'same.mir', 'solc', 4, same, ''],
+            ['counter', 'out.mir', 'solar', 4, other, ''],
+          ],
+        ]
+          .map((files, index) => JSON.stringify({ commit: commits[index], files }))
+          .join('\n'),
+      )
+    })
+    const app = createApi({ clickHouse: config })
+    const response = await app.request(
+      `/api/data/line-counts.json?commits=${commits.join(',')}&revisions=${revisions.join(',')}&compilers=solar,solc&benchmark=counter`,
+    )
+    expect(response.status).toBe(200)
+    expect(await response.json()).toEqual({ 'out.mir': { added: 2, removed: 1 } })
+    expect(globalThis.fetch).toHaveBeenCalledTimes(2)
+    expect(
+      (
+        await app.request(
+          `/api/data/line-counts.json?commits=${commits.join(',')}&compilers=solar&benchmark=counter`,
+        )
+      ).status,
+    ).toBe(400)
+  })
+
   it('does not import or fall back when a pinned revision is missing', async () => {
     globalThis.fetch = vi.fn(async () => new Response(''))
     const importRun = vi.fn(async () => undefined)

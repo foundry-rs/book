@@ -69,6 +69,11 @@ export interface ArtifactFile {
   contentHashes?: Record<string, string>
 }
 
+export interface LineCounts {
+  added: number
+  removed: number
+}
+
 export interface RunDocument {
   revision?: string
   workflow_run_id?: number

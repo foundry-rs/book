@@ -122,9 +122,11 @@ gas_snapshot_emit = true
 # =============================================================================
 
 # The Solc instance to use. Takes precedence over auto_detect_solc
-# Can be a version string, a path to a local binary, or an executable name on PATH
+# Can be a version string, a Solar release pin, a path to a local binary, or an
+# executable name on PATH
 # Default: None
 # solc = "0.8.20"
+# solc = "solar:0.3.0"
 # solc = "custom-solc"
 
 # Whether to autodetect the solc compiler version to use
@@ -408,7 +410,7 @@ isolate = true
 # Default: false
 disable_block_gas_limit = false
 
-# Whether to enable the tx gas limit checks as imposed by Osaka (EIP-7825)
+# Whether to enable the tx gas limit checks as imposed by Osaka (EIP-7825) and Amsterdam (EIP-8037)
 # Default: false
 enable_tx_gas_limit = false
 
@@ -573,6 +575,18 @@ script_execution_protection = true
 path = "vyper"  # Path to vyper binary
 
 # =============================================================================
+# COVERAGE CONFIGURATION
+# =============================================================================
+
+[profile.default.coverage]
+# Keep the project's optimizer and viaIR settings during forge coverage.
+# Optimized builds can miss or merge coverage items.
+# Cannot be combined with ir_minimum or --ir-minimum.
+# Environment: FOUNDRY_COVERAGE_KEEP_OPTIMIZER
+# Default: false
+keep_optimizer = false
+
+# =============================================================================
 # FUZZ TESTING CONFIGURATION
 # =============================================================================
 
@@ -623,6 +637,10 @@ include_storage = true
 # Whether to include push bytes values
 # Default: true
 include_push_bytes = true
+
+# Whether to add view function results of accessed targets to the dictionary (invariant only)
+# Default: false
+include_view_values = false
 
 # Maximum addresses to record in dictionary
 # Once exceeded, starts evicting random entries to prevent memory blowup
@@ -728,6 +746,11 @@ show_solidity = false
 # Default: 1
 check_interval = 1
 
+# Gas limit for every call the invariant campaign makes (handler calls, invariant checks, afterInvariant)
+# Capped by gas_limit; setUp always runs under gas_limit
+# Default: None (use gas_limit)
+# call_gas_limit = 30000000
+
 # --- Invariant Dictionary Configuration ---
 
 # The weight of the dictionary (percentage 0-100)
@@ -741,6 +764,10 @@ include_storage = true
 # Whether to include push bytes values
 # Default: true
 include_push_bytes = true
+
+# Whether to add view function results of accessed targets to the dictionary (invariant only)
+# Default: false
+include_view_values = false
 
 # Maximum addresses to record in dictionary
 # Default: 15728640
@@ -806,7 +833,12 @@ use_fuzz_frontiers = false
 # Default: false
 check_invariant_frontiers = false
 
-# Maximum number of fuzz branch frontiers to try for one symbolic run
+# Whether a bounded solver worker assists a concrete invariant campaign
+# Type: boolean
+# Default: false
+live = false
+
+# Maximum imported frontiers per symbolic run or live frontiers per campaign
 # Default: 256
 frontier_limit = 256
 
