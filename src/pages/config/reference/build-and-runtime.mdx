@@ -60,7 +60,7 @@ ignored_error_codes_from = [
 | `block_gas_limit` | integer or none | none | Sets `block.gaslimit`; distinct from the per-call `gas_limit`. |
 | `isolate` | boolean | `true` | Executes each top-level call in a separate EVM transaction context. |
 | `disable_block_gas_limit` | boolean | `false` | Disables block gas-limit checks. |
-| `enable_tx_gas_limit` | boolean | `false` | Enables the Osaka transaction gas-limit check from EIP-7825. |
+| `enable_tx_gas_limit` | boolean | `false` | Enables the transaction gas-limit caps in tests and scripts: the Osaka cap from EIP-7825 and the Amsterdam total cap from EIP-8037. Does not affect Anvil, which has its own flag, or `vm.executeTransaction`, which always applies the spec's caps. |
 | `live_logs` | boolean | `false` | Displays `console.log` output while tests or scripts execute. |
 | `allow_internal_expect_revert` | boolean | `false` | Allows `expectRevert` to match internal calls. |
 | `always_use_create_2_factory` | boolean | `false` | Uses the CREATE2 factory in tests and non-broadcast scripts. |
