@@ -431,10 +431,11 @@ The `--disable-block-gas-limit` flag, also spelled `--no-block-gas-limit` or
 - Default: `false`
 - Environment: `FOUNDRY_ENABLE_TX_GAS_LIMIT`, `DAPP_ENABLE_TX_GAS_LIMIT`, or `DAPP_TEST_ENABLE_TX_GAS_LIMIT`
 
-Whether to enforce the per-transaction gas limit cap introduced in Osaka (EIP-7825).
+Whether to enforce the per-transaction gas limit caps introduced in Osaka (EIP-7825) and
+Amsterdam (EIP-8037).
 
-The cap is off by default, so tests and scripts can run calls that need more gas. Enable it
-to catch transactions that a chain enforcing the cap would reject. The
+The caps are off by default, so tests and scripts can run calls that need more gas. Enable
+them to catch transactions that a chain enforcing the caps would reject. The
 `--enable-tx-gas-limit` (`--tx-gas-limit`) flag enables it for one run.
 
 #### `live_logs`

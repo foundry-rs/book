@@ -75,7 +75,7 @@ two workers uses a weight of 50. Keys of a section, such as `[fuzz]`, can also b
 # ignored_warnings_from = []
 
 # Solidity compiler warning codes to silence.
-# ignored_error_codes = ["license", "code-size", "init-code-size", "transient-storage", "transfer-deprecated", "natspec-memory-safe-assembly-deprecated"]
+# ignored_error_codes = ["license", "code-size", "init-code-size", "transient-storage", "transfer-deprecated", "natspec-memory-safe-assembly-deprecated", "code-size-amsterdam", "init-code-size-amsterdam"]
 
 # The EVM version to compile contracts for and, unless `hardfork` is set, to execute them with.
 # evm_version = "osaka"
@@ -261,7 +261,7 @@ two workers uses a weight of 50. Keys of a section, such as `[fuzz]`, can also b
 # Whether to skip the check that a transaction's gas limit fits within the block gas limit.
 # disable_block_gas_limit = false
 
-# Whether to enforce the per-transaction gas limit cap introduced in Osaka (EIP-7825).
+# Whether to enforce the per-transaction gas limit caps introduced in Osaka (EIP-7825) and Amsterdam (EIP-8037).
 # enable_tx_gas_limit = false
 
 # Whether to print `console.log` output while tests and scripts run instead of after they finish.

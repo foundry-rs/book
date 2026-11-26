@@ -103,7 +103,8 @@ it.
 
 - Type: string or integer (chain name or ID)
 - Default: none
-- Environment: `FOUNDRY_CHAIN_ID`, `DAPP_CHAIN_ID`, or `DAPP_TEST_CHAIN_ID`
+- Environment: `FOUNDRY_CHAIN_ID`, `DAPP_CHAIN_ID`, `DAPP_TEST_CHAIN_ID`, or `FOUNDRY_CHAIN`
+- Aliases: `chain`
 
 The chain Foundry targets, as a chain name or EIP-155 chain ID.
 
@@ -1089,7 +1090,7 @@ Maximum number of attempts to shrink a failing call sequence.
 
 Shrinking removes and simplifies calls to find the shortest sequence that still fails. `0`
 disables shrinking. The same limit bounds minimizing the argument values of stateless fuzz
-test counterexamples.
+test counterexamples, so set it under `[invariant]` for fuzz tests too.
 
 #### `max_assume_rejects`
 
@@ -1246,8 +1247,9 @@ Whether to display counterexamples as Solidity calls.
 
 Maximum time, in seconds, that may elapse between generated calls.
 
-When set above 0, each generated call can advance the block timestamp by a random amount up
-to this value. When unset or 0, calls do not advance time.
+When set above 0, `block.timestamp` advances by a random amount, from 0 up to this value,
+before each generated call, and the delays add up over a run. When unset or 0, calls do
+not advance time.
 
 #### `max_block_delay`
 
@@ -1257,8 +1259,9 @@ to this value. When unset or 0, calls do not advance time.
 
 Maximum number of blocks that may elapse between generated calls.
 
-When set above 0, each generated call can advance the block number by a random amount up to
-this value. When unset or 0, calls do not advance the block number.
+When set above 0, `block.number` advances by a random amount, from 0 up to this value,
+before each generated call, and the delays add up over a run. When unset or 0, calls do
+not advance the block number.
 
 #### `check_interval`
 
