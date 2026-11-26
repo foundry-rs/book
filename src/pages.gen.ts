@@ -178,6 +178,7 @@ type Page =
   | { path: '/guides/mpp'; render: 'static' }
   | { path: '/guides/multi-chain-deployments'; render: 'static' }
   | { path: '/guides/mutation-testing'; render: 'static' }
+  | { path: '/guides/script-ci-results'; render: 'static' }
   | { path: '/guides/stack-too-deep'; render: 'static' }
   | { path: '/guides/symbolic-testing'; render: 'static' }
   | { path: '/guides/tempo'; render: 'static' }
