@@ -37,7 +37,10 @@ export const guidesSidebar: Sidebar = {
     },
     {
       text: "Scripting",
-      items: [{ text: "HTTP Requests", link: "/guides/http-from-scripts" }],
+      items: [
+        { text: "HTTP Requests", link: "/guides/http-from-scripts" },
+        { text: "Scripts in CI", link: "/guides/script-ci-results" },
+      ],
     },
     {
       text: "Networks & Payments",
