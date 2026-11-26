@@ -1,0 +1,71 @@
+---
+description: Calls back into the test after each write to a mapping element, with its keys
+---
+
+## `registerMappingSstoreHook`
+
+### Signature
+
+```solidity
+function registerMappingSstoreHook(address target, bytes32 rootSlot, bytes4 callback) external;
+```
+
+### Description
+
+Registers a callback that runs after each `SSTORE` to an element of the mapping declared at `rootSlot` in the storage of `target`. The callback receives the mapping keys, so a test can track values per key, for example a ghost copy of `balanceOf`.
+
+The contract that calls `registerMappingSstoreHook` receives the callback, which must have the signature:
+
+```solidity
+function onWrite(
+    address account,
+    bytes32 computedSlot,
+    bytes32 rootSlot,
+    bytes32[] calldata keys,
+    bytes32 oldValue,
+    bytes32 newValue
+) external;
+```
+
+`keys` are the raw 32-byte keys from the outer mapping to the inner one. For `mapping(address => uint256)`, `keys[0]` is the address.
+
+### Parameters
+
+| Parameter  | Type      | Description                                          |
+|------------|-----------|------------------------------------------------------|
+| `target`   | `address` | The account whose mapping writes are observed        |
+| `rootSlot` | `bytes32` | The storage slot where the mapping is declared       |
+| `callback` | `bytes4`  | The selector of the callback on the calling contract |
+
+### Examples
+
+```solidity [test/MappingSstoreHook.t.sol]
+// [!include ~/snippets/projects/storage_hooks/test/MappingSstoreHook.t.sol]
+```
+
+```solidity [src/Vault.sol]
+// [!include ~/snippets/projects/storage_hooks/src/Vault.sol]
+```
+
+```bash
+$ forge test --root src/snippets/projects/storage_hooks --match-contract MappingSstoreHookTest
+```
+
+Use `forge inspect <Contract> storageLayout` to find the slot of a mapping.
+
+### Gotchas
+
+:::warning
+Anyone can call the callback, so check `msg.sender == address(vm)` in it.
+:::
+
+- A write matches only when Forge observed the full chain of `keccak256` computations that produced its slot, after the hook was registered and in the same top-level call. Slots computed earlier, written at an offset (for example a struct member other than the first), or produced without hashing in the EVM do not match.
+- Several mappings of one target can be registered; registering the same target and root slot again replaces the callback. A target cannot have both a mapping hook and a [raw `SSTORE` hook](/reference/cheatcodes/register-sstore-hook): the second registration reverts.
+- Registration survives reverts. State the callback writes rolls back with the call that triggered it, and a revert in the callback propagates.
+- Hooks do not fire inside the callback or anything it calls.
+
+### Related Cheatcodes
+
+- [`registerSstoreHook`](/reference/cheatcodes/register-sstore-hook) - Calls back after each storage write
+- [`registerSloadHook`](/reference/cheatcodes/register-sload-hook) - Calls back after each storage read
+- [`mappingRecording`](/reference/cheatcodes/mapping-recording) - Records mapping slots and their keys
