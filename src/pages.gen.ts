@@ -166,10 +166,12 @@ type Page =
   | { path: '/guides/deploying-contracts'; render: 'static' }
   | { path: '/guides/deterministic-deployments-using-create2'; render: 'static' }
   | { path: '/guides/docker'; render: 'static' }
+  | { path: '/guides/encrypted-env'; render: 'static' }
   | { path: '/guides/forge-properties'; render: 'static' }
   | { path: '/guides/fork-testing'; render: 'static' }
   | { path: '/guides/fuzz-corpus'; render: 'static' }
   | { path: '/guides/gas-optimization'; render: 'static' }
+  | { path: '/guides/http-from-scripts'; render: 'static' }
   | { path: '/guides'; render: 'static' }
   | { path: '/guides/invariant-testing'; render: 'static' }
   | { path: '/guides/migrations/foundry-v1'; render: 'static' }
@@ -489,8 +491,10 @@ type Page =
   | { path: '/reference/cheatcodes/env-string'; render: 'static' }
   | { path: '/reference/cheatcodes/env-uint'; render: 'static' }
   | { path: '/reference/cheatcodes/etch'; render: 'static' }
+  | { path: '/reference/cheatcodes/eth-get-proof'; render: 'static' }
   | { path: '/reference/cheatcodes/execute-transaction'; render: 'static' }
   | { path: '/reference/cheatcodes/expect-call'; render: 'static' }
+  | { path: '/reference/cheatcodes/expect-create'; render: 'static' }
   | { path: '/reference/cheatcodes/expect-emit-anonymous'; render: 'static' }
   | { path: '/reference/cheatcodes/expect-emit'; render: 'static' }
   | { path: '/reference/cheatcodes/expect-keychain-admin-verified'; render: 'static' }
@@ -530,6 +534,7 @@ type Page =
   | { path: '/reference/cheatcodes/label'; render: 'static' }
   | { path: '/reference/cheatcodes/last-frame-gas'; render: 'static' }
   | { path: '/reference/cheatcodes/load-allocs'; render: 'static' }
+  | { path: '/reference/cheatcodes/load-transient'; render: 'static' }
   | { path: '/reference/cheatcodes/load'; render: 'static' }
   | { path: '/reference/cheatcodes/make-persistent'; render: 'static' }
   | { path: '/reference/cheatcodes/mapping-recording'; render: 'static' }
@@ -553,6 +558,7 @@ type Page =
   | { path: '/reference/cheatcodes/parse-toml'; render: 'static' }
   | { path: '/reference/cheatcodes/parse-uint'; render: 'static' }
   | { path: '/reference/cheatcodes/pause-gas-metering'; render: 'static' }
+  | { path: '/reference/cheatcodes/pause-tracing'; render: 'static' }
   | { path: '/reference/cheatcodes/prank'; render: 'static' }
   | { path: '/reference/cheatcodes/prevrandao'; render: 'static' }
   | { path: '/reference/cheatcodes/project-root'; render: 'static' }
@@ -565,9 +571,13 @@ type Page =
   | { path: '/reference/cheatcodes/read-callers'; render: 'static' }
   | { path: '/reference/cheatcodes/record-logs'; render: 'static' }
   | { path: '/reference/cheatcodes/record'; render: 'static' }
+  | { path: '/reference/cheatcodes/register-mapping-sstore-hook'; render: 'static' }
+  | { path: '/reference/cheatcodes/register-sload-hook'; render: 'static' }
+  | { path: '/reference/cheatcodes/register-sstore-hook'; render: 'static' }
   | { path: '/reference/cheatcodes/remember-key'; render: 'static' }
   | { path: '/reference/cheatcodes/reset-gas-metering'; render: 'static' }
   | { path: '/reference/cheatcodes/resume-gas-metering'; render: 'static' }
+  | { path: '/reference/cheatcodes/resume-tracing'; render: 'static' }
   | { path: '/reference/cheatcodes/revoke-persistent'; render: 'static' }
   | { path: '/reference/cheatcodes/roll-fork'; render: 'static' }
   | { path: '/reference/cheatcodes/roll-slot'; render: 'static' }
@@ -599,6 +609,7 @@ type Page =
   | { path: '/reference/cheatcodes/stop-and-return-state-diff'; render: 'static' }
   | { path: '/reference/cheatcodes/stop-broadcast'; render: 'static' }
   | { path: '/reference/cheatcodes/stop-prank'; render: 'static' }
+  | { path: '/reference/cheatcodes/store-transient'; render: 'static' }
   | { path: '/reference/cheatcodes/store'; render: 'static' }
   | { path: '/reference/cheatcodes/strings'; render: 'static' }
   | { path: '/reference/cheatcodes/to-base64'; render: 'static' }
@@ -692,6 +703,7 @@ type Page =
   | { path: '/reference/forge-std/skip'; render: 'static' }
   | { path: '/reference/forge-std/startHoax'; render: 'static' }
   | { path: '/reference/forge-std/std-assertions'; render: 'static' }
+  | { path: '/reference/forge-std/std-chains'; render: 'static' }
   | { path: '/reference/forge-std/std-cheats'; render: 'static' }
   | { path: '/reference/forge-std/std-config'; render: 'static' }
   | { path: '/reference/forge-std/std-errors'; render: 'static' }
