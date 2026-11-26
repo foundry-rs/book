@@ -41,8 +41,11 @@ import {Context} from "node_modules/@openzeppelin/openzeppelin-contracts/contrac
 ```
 
 Foundry can generate contextual remappings for dependencies while retaining a broader package
-fallback. See [Nested dependency remappings](/projects/dependencies#nested-dependency-remappings)
-for details.
+fallback. When two dependencies declare the same alias with different targets, each declaration
+applies only within its own dependency. Root-project, environment, and CLI remappings override
+dependency declarations everywhere, including inside dependencies. See
+[Dependency remapping scope](/projects/dependencies#dependency-remapping-scope) for details and
+migration examples.
 
 ##### `auto_detect_remappings`
 
@@ -50,9 +53,11 @@ for details.
 - Default: true
 - Environment: `FOUNDRY_AUTO_DETECT_REMAPPINGS` or `DAPP_AUTO_DETECT_REMAPPINGS`
 
-If enabled, Foundry will automatically try auto-detect remappings by scanning the `libs` folder(s).
+If enabled, Foundry scans the `libs` folder(s) for package entry points and dependency remapping
+declarations. Dependency declarations follow the scope rules described [above](#remappings).
 
-If set to `false`, only the remappings in `foundry.toml` and `remappings.txt` are used.
+If set to `false`, dependency discovery is disabled. Explicit root-project, environment, and CLI
+remappings still apply.
 
 ##### `allow_paths`
 
@@ -81,6 +86,25 @@ See also [solc path resolution](https://docs.soliditylang.org/en/latest/path-res
 - Environment: `FOUNDRY_LIBRARIES` or `DAPP_LIBRARIES`
 
 An array of libraries to link against in the following format: `<file>:<lib>:<address>`, for example: `src/MyLibrary.sol:MyLibrary:0xfD88CeE74f7D78697775aBDAE53f9Da1559728E4`.
+
+To link more than one library, add one entry per library:
+
+```toml
+libraries = [
+    "src/MathLib.sol:MathLib:0xfD88CeE74f7D78697775aBDAE53f9Da1559728E4",
+    "src/StringLib.sol:StringLib:0x4e59b44847b379578588920cA78FbF26c0B4956C",
+]
+```
+
+On the command line, repeat `--libraries` once per library. A comma-separated list in a single `--libraries` flag is not supported.
+
+```bash
+$ forge build \
+  --libraries src/MathLib.sol:MathLib:0xfD88CeE74f7D78697775aBDAE53f9Da1559728E4 \
+  --libraries src/StringLib.sol:StringLib:0x4e59b44847b379578588920cA78FbF26c0B4956C
+```
+
+In the `FOUNDRY_LIBRARIES` environment variable, separate the entries with commas.
 
 ##### `allow_linked_libraries`
 
@@ -271,6 +295,16 @@ Valid values are:
 - ipfs (default)
 - bzzr1
 - none
+
+##### `cbor_metadata`
+
+- Type: boolean
+- Default: true
+- Environment: `FOUNDRY_CBOR_METADATA` or `DAPP_CBOR_METADATA`
+
+Whether to append the CBOR metadata section to contract bytecode.
+
+When `false`, no metadata is appended to the bytecode, which removes metadata as a source of bytecode differences. Set `bytecode_hash = "none"` as well; solc rejects `cbor_metadata = false` with any other `bytecode_hash`. The `--no-metadata` build flag sets both `bytecode_hash = "none"` and `cbor_metadata = false`. For deterministic CREATE2 addresses, also pin the compiler version and settings; see [Deterministic deployments with CREATE2](/guides/deterministic-deployments-using-create2).
 
 ##### `sparse_mode`
 

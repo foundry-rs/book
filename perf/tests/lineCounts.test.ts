@@ -1,87 +1,42 @@
-import { beforeEach, expect, it, vi } from 'vite-plus/test'
-import type { FileContents } from '@pierre/diffs'
-import { lineCountDecoration, loadLineCounts, mayDiffer } from '../src/lineCounts'
+import { expect, it } from 'vite-plus/test'
+import { lineCountDecoration } from '../src/lineCounts'
+import { changedArtifacts, lineCounts, type ArtifactRef } from '../src/server/lineCounts'
 
-const files = new Map<string, FileContents | null>()
-const computeDiff = vi.fn()
-vi.mock('../src/formattedArtifact', () => ({
-  loadDiffFile: async (source: { storagePath?: string }) =>
-    files.get(source.storagePath ?? '') ?? null,
-}))
-vi.mock('../src/computeDiff', () => ({ computeDiff: (...args: unknown[]) => computeDiff(...args) }))
-
-const side = (storagePath?: string, contentHash?: string) => ({
-  label: 'Solar',
-  commit: 'a'.repeat(40),
-  benchmark: 'test',
-  compiler: 'solar',
-  storagePath,
-  contentHash,
-})
-const request = (
-  before: ReturnType<typeof side>,
-  after: ReturnType<typeof side>,
-  path = 'a.mir',
-) => ({
+const file = (key: string, path = 'a.mir', language = 'text'): ArtifactRef => ({
   path,
-  language: 'text',
-  before,
-  after,
+  language,
+  key,
 })
-const contents = (text: string) => ({ name: 'a.mir', contents: text })
-const signal = new AbortController().signal
+const count = (before: ArtifactRef[], after: ArtifactRef[], contents: Record<string, string>) =>
+  lineCounts(changedArtifacts(before, after), new Map(Object.entries(contents)))
 
-beforeEach(() => {
-  files.clear()
-  computeDiff.mockReset()
-})
-
-it('counts added and removed lines from the diff hunks', async () => {
-  files.set('old', contents('a\nb\n'))
-  files.set('new', contents('a\nc\nd\n'))
-  computeDiff.mockResolvedValue({
-    hunks: [
-      { additionLines: 2, deletionLines: 1 },
-      { additionLines: 1, deletionLines: 0 },
-    ],
-  })
-  expect(await loadLineCounts(request(side('old'), side('new')), signal)).toEqual({
-    added: 3,
-    removed: 1,
+it('counts the lines the patience diff adds and removes', () => {
+  expect(count([file('old')], [file('new')], { old: 'a\nb\nc\n', new: 'a\nB\nc\nd\n' })).toEqual({
+    'a.mir': { added: 2, removed: 1 },
   })
 })
 
-it('counts every line of a file only one side published', async () => {
-  files.set('new', contents('a\nb\nc\n'))
-  expect(await loadLineCounts(request(side(), side('new')), signal)).toEqual({
-    added: 3,
-    removed: 0,
+it('counts the formatted contents the viewer shows', () => {
+  const json = (key: string) => file(key, 'abi.json', 'json')
+  expect(count([json('old')], [json('new')], { old: '{"a":1}', new: '{"a":1,"b":2}' })).toEqual({
+    'abi.json': { added: 2, removed: 1 },
   })
-  expect(await loadLineCounts(request(side('new'), side()), signal)).toEqual({
-    added: 0,
-    removed: 3,
-  })
-  expect(await loadLineCounts(request(side(), side()), signal)).toBeNull()
-  expect(computeDiff).not.toHaveBeenCalled()
+  expect(count([json('old')], [json('new')], { old: '{"a":1}', new: '{ "a": 1 }' })).toEqual({})
 })
 
-it('skips the diff when the contents match', async () => {
-  files.set('one', contents('a\n'))
-  files.set('two', contents('a\n'))
-  expect(await loadLineCounts(request(side('one'), side('two')), signal)).toEqual({
-    added: 0,
-    removed: 0,
+it('counts every line of a file only one side published', () => {
+  expect(count([], [file('new')], { new: 'a\nb\nc\n' })).toEqual({
+    'a.mir': { added: 3, removed: 0 },
   })
-  expect(computeDiff).not.toHaveBeenCalled()
+  expect(count([file('old')], [], { old: 'a\nb' })).toEqual({ 'a.mir': { added: 0, removed: 2 } })
 })
 
-it('only diffs pairs whose content hashes differ or are unknown', () => {
-  expect(mayDiffer(request(side('x', 'h1'), side('x', 'h1')))).toBe(false)
-  expect(mayDiffer(request(side('x', 'h1'), side('y', 'h2')))).toBe(true)
-  expect(mayDiffer(request(side('x'), side('y')))).toBe(true)
-  expect(mayDiffer(request(side(), side('y', 'h2')))).toBe(true)
-  expect(mayDiffer(request(side(), side()))).toBe(false)
-  expect(mayDiffer(request(side('x', 'h1'), side('y', 'h2'), 'graph.png'))).toBe(false)
+it('skips images and files with equal contents', () => {
+  const changed = changedArtifacts(
+    [file('same'), file('old', 'graph.png')],
+    [file('same'), file('new', 'graph.png')],
+  )
+  expect(changed).toEqual([])
 })
 
 it('labels files and sums the files beneath a directory', () => {

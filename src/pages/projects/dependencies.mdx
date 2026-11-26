@@ -113,10 +113,94 @@ begin with `<context>`. Here, the trailing slash in `lib/outer/` creates a direc
 sources inside `lib/outer/` use the dependency's `contracts/` directory while root sources and
 sibling dependencies use the auto-detected package-root mapping.
 
-Foundry preserves explicit root-project and CLI remappings when constructing generated dependency
-contexts. An equal or broader global alias suppresses the generated context. A narrower global
-alias is overlaid into that context, so it overrides only its matching import subtree while the
-dependency mapping handles the remaining imports. Explicit contextual remappings are unchanged.
+#### Dependency remapping scope
+
+Dependencies can declare remappings in their own `foundry.toml` or `remappings.txt`. A declaration
+without a context stays global, so your root project and other dependencies can use it, as long as
+its alias is unique. Declarations that resolve to the same target can also share an alias.
+
+Foundry scopes a dependency's declaration to that dependency when the alias is ambiguous:
+
+- Another dependency declares the same alias with a different target.
+- The alias conflicts with an auto-detected package or one of your project paths.
+
+Each dependency then compiles against its own target. Foundry 1.9 and earlier instead picked one of
+the conflicting declarations and applied it to the whole project, including inside the other
+dependencies. For example, `permit2`, `v4-core`, and `v4-periphery` each declare `solmate/` at a
+different commit, and Foundry 1.9 silently compiled all three against `permit2`'s copy.
+
+When scoping removes the target an alias used to resolve to, Foundry prints a warning such as:
+
+```txt
+Warning: Dependency remapping `@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/` now applies only within `lib/openzeppelin-contracts/`. Imports of `@openzeppelin/contracts/` from the root or other dependencies may resolve differently. ...
+```
+
+Review this warning even if your build succeeds: your root sources, or another dependency that
+declares the same alias, may now compile against a different version. Foundry does not warn when
+the same target remains globally available or when a root remapping already sets the alias.
+
+Dependencies installed outside your project root, such as through `libs = ["../shared"]`, and
+dependencies whose configured `src` resolves outside their package directory keep their previous
+declaration scope.
+
+#### Root remappings take precedence
+
+Remappings from your root `foundry.toml`, `remappings.txt`, `FOUNDRY_REMAPPINGS`, and `--remappings`
+override dependency declarations everywhere, including in source files inside dependencies:
+
+- A root remapping without a context, for an equal or broader alias, replaces every dependency's own
+  declaration of that alias.
+- A narrower root alias overrides only its matching import subtree, and the dependency's declaration
+  handles the remaining imports.
+- A root remapping with a context applies as written. The longest matching context wins, so a
+  `<dependency>/:` remapping takes precedence over a root remapping without a context inside that
+  dependency.
+
+You can therefore choose how an ambiguous alias resolves:
+
+- **Restore the Foundry 1.9 resolution:** add the remapping that the warning suggests to your root
+  remappings. Every source in the project, including other dependencies, uses that target, and the
+  warning goes away.
+- **Keep a dependency's own copy:** also add a context remapping for that dependency,
+  `<dependency>/:<alias>=<target>`, using the target from the dependency's own remappings,
+  relative to your project root.
+
+#### Example: two copies of OpenZeppelin Contracts
+
+Consider a project that installs OpenZeppelin Contracts 5.x and a testing library, `properties`,
+that ships its own OpenZeppelin Contracts 4.8.0:
+
+```txt
+lib/
+├── openzeppelin-contracts/          # 5.x, declares @openzeppelin/contracts/
+└── properties/
+    ├── contracts/
+    └── lib/
+        └── openzeppelin-contracts/  # 4.8.0, also declared as @openzeppelin/contracts/
+```
+
+Both dependencies declare `@openzeppelin/contracts/` with different targets, so Foundry scopes each
+declaration to its owner and warns that
+`@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/` now applies only within
+`lib/openzeppelin-contracts/`. Even if your root sources never import `@openzeppelin/contracts/`,
+`properties` now compiles against its own 4.8.0 copy instead of 5.x, which changes its artifacts.
+
+To compile everything against 5.x, as Foundry 1.9 did, add the suggested remapping to your root
+`remappings.txt`:
+
+```txt [remappings.txt]
+@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/
+```
+
+To use 5.x everywhere except in `properties`, which keeps 4.8.0, add a context remapping for it as
+well:
+
+```txt [remappings.txt]
+@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/
+lib/properties/:@openzeppelin/contracts/=lib/properties/lib/openzeppelin-contracts/contracts/
+```
+
+Both options silence the warning. Run `forge remappings` to check the resulting remappings.
 
 ### Updating dependencies
 

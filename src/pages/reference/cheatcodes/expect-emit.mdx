@@ -106,7 +106,7 @@ Use an `internal` library helper to register the expectation and emit the templa
 The expected event must be emitted by the **next call**. If you make an unrelated call first, the expectation will fail:
 
 ```solidity [test/ExpectEmitFail.t.sol]
-function testFails() public {
+function test_UnrelatedCallFailsTheExpectation() public {
     vm.expectEmit(address(myToken));
     emit Transfer(address(this), address(1), 10);
 

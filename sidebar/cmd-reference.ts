@@ -27,6 +27,8 @@ export const cmdReference: SidebarItem[] = [
       { text: "store", link: "/reference/cheatcodes/store" },
       { text: "setTip20LogoURI", link: "/reference/cheatcodes/set-tip20-logo-uri" },
       { text: "load", link: "/reference/cheatcodes/load" },
+      { text: "storeTransient", link: "/reference/cheatcodes/store-transient" },
+      { text: "loadTransient", link: "/reference/cheatcodes/load-transient" },
       { text: "etch", link: "/reference/cheatcodes/etch" },
       { text: "cloneAccount", link: "/reference/cheatcodes/clone-account" },
       { text: "dumpState", link: "/reference/cheatcodes/dump-state" },
@@ -39,6 +41,12 @@ export const cmdReference: SidebarItem[] = [
       { text: "record", link: "/reference/cheatcodes/record" },
       { text: "accesses", link: "/reference/cheatcodes/accesses" },
       { text: "mappingRecording", link: "/reference/cheatcodes/mapping-recording" },
+      { text: "registerSloadHook", link: "/reference/cheatcodes/register-sload-hook" },
+      { text: "registerSstoreHook", link: "/reference/cheatcodes/register-sstore-hook" },
+      {
+        text: "registerMappingSstoreHook",
+        link: "/reference/cheatcodes/register-mapping-sstore-hook",
+      },
       { text: "recordLogs", link: "/reference/cheatcodes/record-logs" },
       { text: "getRecordedLogs", link: "/reference/cheatcodes/get-recorded-logs" },
       { text: "debugTraceRecording", link: "/reference/cheatcodes/debug-trace-recording" },
@@ -79,6 +87,7 @@ export const cmdReference: SidebarItem[] = [
       { text: "expectEmit", link: "/reference/cheatcodes/expect-emit" },
       { text: "expectEmitAnonymous", link: "/reference/cheatcodes/expect-emit-anonymous" },
       { text: "expectCall", link: "/reference/cheatcodes/expect-call" },
+      { text: "expectCreate", link: "/reference/cheatcodes/expect-create" },
       { text: "expectSafeMemory", link: "/reference/cheatcodes/expect-safe-memory" },
       { text: "expectKeychainVerified", link: "/reference/cheatcodes/expect-keychain-verified" },
       {
@@ -115,6 +124,7 @@ export const cmdReference: SidebarItem[] = [
       { text: "isPersistent", link: "/reference/cheatcodes/is-persistent" },
       { text: "allowCheatcodes", link: "/reference/cheatcodes/allow-cheatcodes" },
       { text: "transact", link: "/reference/cheatcodes/transact" },
+      { text: "eth_getProof", link: "/reference/cheatcodes/eth-get-proof" },
     ],
   },
   {

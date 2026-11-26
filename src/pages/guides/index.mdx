@@ -82,6 +82,11 @@ Practical guides for common workflows and advanced Foundry patterns.
 
 <Cards>
   <Card
+    title="HTTP Requests"
+    description="Call an HTTP API from a script or test with vm.tryFfi and curl, and parse the JSON response."
+    to="/guides/http-from-scripts"
+  />
+  <Card
     title="Scripts in CI"
     description="Pass parameters to a script, return a verdict from run(), and read it with --json and jq."
     to="/guides/script-ci-results"
@@ -130,6 +135,11 @@ Practical guides for common workflows and advanced Foundry patterns.
     title="Docker & Containers"
     description="Run Foundry in Docker for reproducible builds and CI environments."
     to="/guides/docker"
+  />
+  <Card
+    title="Keeping Secrets Out of Plaintext"
+    description="Use ${VAR} references, a secrets manager and encrypted keystores instead of a plaintext .env file."
+    to="/guides/encrypted-env"
   />
 </Cards>
 
