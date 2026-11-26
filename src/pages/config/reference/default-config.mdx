@@ -89,6 +89,9 @@ two workers uses a weight of 50. Keys of a section, such as `[fuzz]`, can also b
 # The hash of the contract metadata that solc appends to the bytecode.
 # bytecode_hash = "ipfs"
 
+# Whether to append the CBOR-encoded metadata trailer to the bytecode.
+# cbor_metadata = true
+
 # Has no effect; kept so that existing configuration files still load.
 # sparse_mode = false
 
@@ -226,9 +229,6 @@ two workers uses a weight of 50. Keys of a section, such as `[fuzz]`, can also b
 
 # Whether to include each source's AST as JSON in the compiler output and artifacts.
 # ast = false
-
-# Whether to append the CBOR-encoded metadata trailer to the bytecode.
-# cbor_metadata = true
 
 # Whether to generate code with solc's experimental SSA control-flow-graph backend.
 # via_ssa_cfg = false

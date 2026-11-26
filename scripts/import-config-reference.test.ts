@@ -277,6 +277,21 @@ describe("rendering", () => {
     );
   });
 
+  test("preserves the previous test filter anchors", () => {
+    for (const key of [
+      "match_test",
+      "no_match_test",
+      "match_contract",
+      "no_match_contract",
+      "match_path",
+      "no_match_path",
+    ]) {
+      expect(renderSetting({ ...settings[0], key }, 4)).toContain(
+        `<span id="${key.replaceAll("_", "-")}" />\n\n#### \`${key}\``,
+      );
+    }
+  });
+
   test("names keys relative to their section", () => {
     expect(settings.map(displayName)).toEqual([
       "src",

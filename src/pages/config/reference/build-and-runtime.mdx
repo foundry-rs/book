@@ -186,7 +186,7 @@ contracts they deploy. Tools that link libraries from artifacts should read
 
 ### Compiler and diagnostic fields
 
-{/* config-reference:begin keys="ast cbor_metadata via_ssa_cfg experimental extra_args ignored_error_codes_from deny" level=4 */}
+{/* config-reference:begin keys="ast via_ssa_cfg experimental extra_args ignored_error_codes_from deny" level=4 */}
 
 #### `ast`
 
@@ -198,19 +198,6 @@ Whether to include each source's AST as JSON in the compiler output and artifact
 
 The AST is also included when `build_info` is enabled. `--ast` enables it for one
 invocation.
-
-#### `cbor_metadata`
-
-- Type: boolean
-- Default: `true`
-- Environment: `FOUNDRY_CBOR_METADATA`, `DAPP_CBOR_METADATA`, or `DAPP_TEST_CBOR_METADATA`
-
-Whether to append the CBOR-encoded metadata trailer to the bytecode.
-
-The trailer holds the compiler version and the metadata hash chosen by `bytecode_hash`.
-Because the hash is part of the trailer, also set `bytecode_hash = "none"` when disabling
-it; `--no-metadata` does both. It requires solc 0.8.18 or later and is ignored for older
-versions.
 
 #### `via_ssa_cfg`
 
@@ -321,7 +308,7 @@ ignored_error_codes_from = [
 
 ### EVM execution fields
 
-{/* config-reference:begin keys="fork_block_number fork_state_by_number code_size_limit block_prevrandao isolate disable_block_gas_limit enable_tx_gas_limit live_logs allow_internal_expect_revert always_use_create_2_factory eip1559_fee_estimate assertions_revert legacy_assertions unchecked_cheatcode_artifacts decode_external_storage create2_library_salt create2_deployer transaction_timeout script_execution_protection" level=4 */}
+{/* config-reference:begin keys="fork_block_number fork_state_by_number code_size_limit block_prevrandao isolate disable_block_gas_limit enable_tx_gas_limit" level=4 */}
 
 #### `fork_block_number`
 
@@ -437,6 +424,12 @@ Amsterdam (EIP-8037).
 The caps are off by default, so tests and scripts can run calls that need more gas. Enable
 them to catch transactions that a chain enforcing the caps would reject. The
 `--enable-tx-gas-limit` (`--tx-gas-limit`) flag enables it for one run.
+
+{/* config-reference:end */}
+
+Anvil controls its transaction gas cap with its own flag. `vm.executeTransaction` always applies the caps for the active hardfork.
+
+{/* config-reference:begin keys="live_logs allow_internal_expect_revert always_use_create_2_factory eip1559_fee_estimate assertions_revert legacy_assertions unchecked_cheatcode_artifacts decode_external_storage create2_library_salt create2_deployer transaction_timeout script_execution_protection" level=4 */}
 
 #### `live_logs`
 

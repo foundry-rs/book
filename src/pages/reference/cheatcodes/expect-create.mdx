@@ -1,0 +1,97 @@
+---
+description: Asserts that a specific contract is deployed during test execution
+---
+
+## `expectCreate`
+
+### Signature
+
+```solidity
+function expectCreate(bytes calldata bytecode, address deployer) external;
+function expectCreate2(bytes calldata bytecode, address deployer) external;
+```
+
+### Description
+
+Expects `deployer` to deploy a contract whose runtime bytecode is `bytecode`.
+
+Use `expectCreate` when the deployment should use the `CREATE` opcode, as `new Contract()` does. Use `expectCreate2` when it should use `CREATE2`, as `new Contract{salt: salt}()` does. A deployment with the other opcode does not satisfy the expectation.
+
+The expectation is checked when the test finishes. If no matching deployment happened, the test fails with:
+
+```txt
+expected CREATE call by address <deployer> for bytecode <bytecode> but not found
+```
+
+Each deployment satisfies at most one expectation. Call `expectCreate` twice to expect two deployments.
+
+### Parameters
+
+| Parameter  | Type      | Description                                                        |
+|------------|-----------|--------------------------------------------------------------------|
+| `bytecode` | `bytes`   | The expected runtime bytecode of the deployed contract             |
+| `deployer` | `address` | The address expected to deploy it: the contract that runs `new`     |
+
+### Examples
+
+#### Expect a deployment
+
+```solidity [test/ExpectCreate.t.sol]
+contract Counter {
+    uint256 public number;
+}
+
+contract ExpectCreateTest is Test {
+    function testExpectCreate() public {
+        vm.expectCreate(type(Counter).runtimeCode, address(this));
+        new Counter();
+    }
+
+    function testExpectCreate2() public {
+        vm.expectCreate2(type(Counter).runtimeCode, address(this));
+        new Counter{salt: bytes32(uint256(1))}();
+    }
+}
+```
+
+#### Expect a factory to deploy a contract
+
+When a factory deploys the contract, the factory is the deployer, not the test contract.
+
+```solidity [test/ExpectCreateFactory.t.sol]
+contract CounterFactory {
+    function deploy() external returns (Counter) {
+        return new Counter();
+    }
+}
+
+contract ExpectCreateFactoryTest is Test {
+    function testFactoryDeploysCounter() public {
+        CounterFactory factory = new CounterFactory();
+
+        vm.expectCreate(type(Counter).runtimeCode, address(factory));
+        factory.deploy();
+    }
+}
+```
+
+### Gotchas
+
+:::warning
+`bytecode` is the runtime bytecode that ends up at the new address, not the creation bytecode. Use `type(Contract).runtimeCode` or [`getDeployedCode`](/reference/cheatcodes/get-deployed-code), not `type(Contract).creationCode` or [`getCode`](/reference/cheatcodes/get-code).
+:::
+
+:::note
+The bytecode must match exactly. If the contract has `immutable` variables, its runtime bytecode includes their values, so `bytecode` must include them too.
+:::
+
+:::note
+A deployment that reverts or halts deploys nothing, so it does not satisfy the expectation, even if the revert is caught with `try`/`catch`.
+:::
+
+### Related Cheatcodes
+
+- [`expectCall`](/reference/cheatcodes/expect-call) - Assert that a call is made
+- [`getDeployedCode`](/reference/cheatcodes/get-deployed-code) - Get a contract's runtime bytecode from its artifact
+- [`computeCreateAddress`](/reference/cheatcodes/compute-create-address) - Compute the address of a `CREATE` deployment
+- [`computeCreate2Address`](/reference/cheatcodes/compute-create2-address) - Compute the address of a `CREATE2` deployment

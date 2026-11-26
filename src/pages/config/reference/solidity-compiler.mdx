@@ -13,7 +13,7 @@ Configuration related to the behavior of the Solidity compiler.
 
 Configuration related to the behavior of the Solidity compiler.
 
-{/* config-reference:begin keys="remappings auto_detect_remappings allow_paths include_paths libraries allow_linked_libraries solc auto_detect_solc offline ignored_warnings_from ignored_error_codes deny_warnings evm_version revert_strings extra_output_files extra_output bytecode_hash sparse_mode external_compilers" level=4 */}
+{/* config-reference:begin keys="remappings auto_detect_remappings allow_paths include_paths libraries" level=4 */}
 
 #### `remappings`
 
@@ -118,6 +118,29 @@ contract references them.
 The `--libraries` flag and the `FOUNDRY_LIBRARIES` environment variable (a list, or a
 single comma-separated string) set the same value. While `allow_linked_libraries` is
 `false`, these addresses are withheld from solc; see that setting.
+
+{/* config-reference:end */}
+
+To link more than one library, add one entry per library:
+
+```toml
+libraries = [
+    "src/MathLib.sol:MathLib:0xfD88CeE74f7D78697775aBDAE53f9Da1559728E4",
+    "src/StringLib.sol:StringLib:0x4e59b44847b379578588920cA78FbF26c0B4956C",
+]
+```
+
+On the command line, repeat `--libraries` once per library. A comma-separated list in a single `--libraries` flag is not supported.
+
+```bash
+$ forge build \
+  --libraries src/MathLib.sol:MathLib:0xfD88CeE74f7D78697775aBDAE53f9Da1559728E4 \
+  --libraries src/StringLib.sol:StringLib:0x4e59b44847b379578588920cA78FbF26c0B4956C
+```
+
+In the `FOUNDRY_LIBRARIES` environment variable, separate the entries with commas.
+
+{/* config-reference:begin keys="allow_linked_libraries solc auto_detect_solc offline ignored_warnings_from ignored_error_codes" level=4 */}
 
 #### `allow_linked_libraries`
 
@@ -267,6 +290,12 @@ build when `deny` is set. Setting this key replaces the default list. The SPDX l
 `--ignored-error-codes` replaces the list for one invocation. To silence codes only for
 some paths, use `ignored_error_codes_from`.
 
+{/* config-reference:end */}
+
+The Amsterdam size warnings, `code-size-amsterdam` (5776) and `init-code-size-amsterdam` (7868), are included in nightlies with solc 0.8.39 support. Foundry v1.10.0 uses the first six defaults.
+
+{/* config-reference:begin keys="deny_warnings evm_version revert_strings extra_output_files extra_output bytecode_hash cbor_metadata" level=4 */}
+
 #### `deny_warnings`
 
 - Type: boolean
@@ -404,6 +433,25 @@ contract can produce different bytecode on different machines. Set `none` for by
 doesn't depend on these, for example for deterministic deployments. This keeps the CBOR
 metadata trailer; to omit it entirely, also set `cbor_metadata = false`, or pass
 `--no-metadata` to do both. See [https://docs.soliditylang.org/en/latest/metadata.html](https://docs.soliditylang.org/en/latest/metadata.html).
+
+#### `cbor_metadata`
+
+- Type: boolean
+- Default: `true`
+- Environment: `FOUNDRY_CBOR_METADATA`, `DAPP_CBOR_METADATA`, or `DAPP_TEST_CBOR_METADATA`
+
+Whether to append the CBOR-encoded metadata trailer to the bytecode.
+
+The trailer holds the compiler version and the metadata hash chosen by `bytecode_hash`.
+Because the hash is part of the trailer, also set `bytecode_hash = "none"` when disabling
+it; `--no-metadata` does both. It requires solc 0.8.18 or later and is ignored for older
+versions.
+
+{/* config-reference:end */}
+
+For reproducible CREATE2 addresses, pin the compiler version and settings as described in [Deterministic deployments with CREATE2](/guides/deterministic-deployments-using-create2).
+
+{/* config-reference:begin keys="sparse_mode external_compilers" level=4 */}
 
 #### `sparse_mode`
 
@@ -861,35 +909,35 @@ Additional compiler profile name.
 ##### `additional_compiler_profile.via_ir`
 
 - Type: boolean
-- Default: false
+- Default: inherits `via_ir` from the active profile
 
 Additional compiler profile [via_ir](#via_ir) setting.
 
 ##### `additional_compiler_profile.evm_version`
 
 - Type: string
-- Default: prague
+- Default: inherits `evm_version` from the active profile
 
 Additional compiler profile [evm_version](#evm_version) setting.
 
 ##### `additional_compiler_profile.optimizer`
 
 - Type: boolean
-- Default: false
+- Default: inherits `optimizer` from the active profile
 
-Additional compiler profile [optimizer](#optimizer) setting.
+Additional compiler profile [optimizer](#optimizer) setting. Setting a positive `optimizer_runs` enables the optimizer unless this profile explicitly sets `optimizer`.
 
 ##### `additional_compiler_profile.optimizer_runs`
 
 - Type: integer
-- Default: 200
+- Default: inherits `optimizer_runs` from the active profile
 
 Additional compiler profile [optimizer_runs](#optimizer_runs) setting.
 
 ##### `additional_compiler_profile.bytecode_hash`
 
 - Type: string
-- Default: ipfs
+- Default: inherits `bytecode_hash` from the active profile
 
 Additional compiler profile [bytecode_hash](#bytecode_hash) setting.
 

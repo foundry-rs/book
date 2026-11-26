@@ -1,5 +1,5 @@
 ---
-description: Debug Solidity contracts with Forge traces and the interactive debugger.
+description: Debug Solidity contracts with Forge traces and the SolDB interactive debugger.
 ---
 
 ## Debugging
@@ -40,78 +40,172 @@ Debug a transaction that failed on-chain:
 $ cast run 0x<txhash> --rpc-url $RPC_URL
 ```
 
-This replays the transaction and shows the execution trace. Add `--debug` to open the transaction in the interactive debugger instead; `cast call --trace --debug` does the same for a call without sending it.
+This replays the transaction and shows the execution trace. Add `--debug` to open the transaction in the [interactive debugger](#interactive-debugger) instead; `cast call --trace --debug` does the same for a call without sending it.
 
 ### Interactive debugger
+
+The interactive debugger is [SolDB](https://github.com/walnuthq/soldb), a source-level Solidity debugger. It is built into `forge` and `cast`, so there is nothing else to install. Four commands open it:
+
+| Command | What it debugs |
+|---------|----------------|
+| `forge test --debug` | One test, including its deployment and `setUp` |
+| `forge script --debug` | A script, without broadcasting |
+| `cast run <TX> --debug` | A published transaction, replayed locally |
+| `cast call --trace --debug` | A call, executed locally without sending it |
+
+The debugger works on a recording of the whole execution, so every command, including the reverse ones, moves through that recording. Nothing is executed again.
+
+:::note
+Before v1.9.0, `--debug` opened a different terminal UI with its own key bindings, a `:` command prompt and a `--debug-layout` option. That debugger and `--debug-layout` were removed in v1.9.0, and `--dump` now writes a SolDB bundle directory instead of a JSON file.
+:::
+
+#### Debugging a test
 
 Launch the debugger for a single test:
 
 ```bash
-$ forge test --debug --match-test test_Increment
+$ forge test --debug --match-test test_withdrawTooMuch
 ```
 
-In an interactive terminal, a filter that matches more than one test opens a prompt asking which test to debug, so you can also run `forge test --debug` without a filter and pick from the list. In a non-interactive terminal the filter must match exactly one test.
+In an interactive terminal, a filter that matches more than one test opens a prompt asking which test to debug, so you can also run `forge test --debug` without a filter and pick from the list. In a non-interactive terminal the filter must match exactly one test. For a fuzz test, the debugger opens the first failing case, or the last case if none fails.
 
-The debugger is a terminal UI with five panes:
+The examples below use this contract and test:
 
-- **Source** – Source code with the currently executing line highlighted.
-- **Opcodes** – The opcode list for the current call, with the program counter, address, and gas information in the title.
-- **Variables** – Parameters, return values, and locals in the current scope, with decoded values where available. When you step through a constructor during contract creation, the constructor arguments are decoded and shown here. Storage reads and writes performed by the current step also appear in this pane.
-- **Stack** – The current EVM stack.
-- **Data** – A shared pane showing either a buffer (memory, calldata, or returndata) or the [storage explorer](#storage-explorer).
+```solidity [src/Bank.sol]
+contract Bank {
+    error InsufficientBalance(uint256 have, uint256 want);
 
-The debugger picks a two-column or single-column layout based on the terminal size. Press `l` to switch layouts, or force one with `--debug-layout <horizontal|vertical>`.
+    Oracle public oracle;
+    mapping(address => uint256) public balanceOf;
 
-#### Key bindings
+    // ...
 
-| Key | Action |
-|-----|--------|
-| `j` / `k` (or arrow keys, mouse scroll) | Step forward / backward one instruction |
-| `s` / `a` | Move to the next / previous jump |
-| `C` / `c` | Move to the next / previous call |
-| `g` / `G` | Go to the beginning / end |
-| `'<char>` | Jump to the breakpoint set with [`vm.breakpoint`](/reference/cheatcodes/breakpoint) |
-| `0-9` | Repeat prefix for movement keys, e.g. `10k` steps back 10 instructions |
-| `b` | Cycle the data pane between memory, calldata, and returndata |
-| `J` / `K` | Scroll the stack pane |
-| `Ctrl+j` / `Ctrl+k` | Scroll the data pane |
-| `t` | Toggle stack labels |
-| `m` | Toggle UTF-8 decoding of the active buffer |
-| `p` | Go to a program counter |
-| `o` | Go to a byte offset in the active buffer, or to a slot when the storage explorer is active |
-| `/`, then `n` / `N` | Search opcodes in the current call, then repeat the search forward / backward |
-| `:` | Open the command prompt |
-| `h` | Toggle the shortcut footer |
-| `q` | Quit |
+    function withdraw(uint256 amount) external {
+        uint256 have = balanceOf[msg.sender];
+        if (have < amount) revert InsufficientBalance(have, amount);
+        balanceOf[msg.sender] = have - amount;
+    }
+}
+```
 
-#### Command prompt
+```solidity [test/Bank.t.sol]
+function test_withdrawTooMuch() public {
+    bank.deposit(1);
+    vm.breakpoint("a");
+    bank.withdraw(3000);
+}
+```
 
-Press `:` to run a debugger command. `:help` lists all commands and their aliases.
+After the test runs, the debugger loads the recording and stops at its first step:
+
+```ansi
+Loaded trace with 2244 steps.
+Sources loaded for: BankTest (0x7fa9385be102ac3eac297483dd6233d62b3e1496), Oracle (0x5615deb798bb3e4dfa0139dfa1b3d433cc23b72f), Bank (0x2e234dae75c793f67a35089c9d99245e1c58470b)
+test/Bank.t.sol:6  (step 0/2243, pc 0, PUSH1, gas 1073546790)
+    6 | contract BankTest is Test {
+```
+
+Each stop shows the source location, the step number, the program counter, the opcode and the remaining gas, followed by the source line.
+
+In an interactive terminal the [full-screen view](#full-screen-view) opens first. Press `q` to leave it for the `soldb>` prompt, where you type commands. Type `tui` to go back to the full-screen view and `quit` to leave the debugger.
+
+#### Commands
+
+Type `help` for the full list, or `help <command>` for one command's details.
 
 | Command | Action |
 |---------|--------|
-| `:pc <pc>` (alias `:continue <pc>`) | Jump to a program counter in the current contract |
-| `:line <line>` | Jump to the nearest instruction mapped to a source line in the current contract |
-| `:mem [<offset>]`, `:calldata [<offset>]`, `:ret [<offset>]` | Select a buffer in the data pane, optionally jumping to a byte offset |
-| `:storage [<slot>]` | Open the storage explorer, optionally jumping to the nearest access of a slot |
-| `:transient [<slot>]` | Open the transient storage explorer, optionally jumping to a slot |
-| `:source`, `:opcodes`, `:variables`, `:stack`, `:data` | Show or hide a pane; the remaining panes reclaim the space |
+| `next` / `step` | Run to the next source line, stepping over / into calls |
+| `nexti` | Execute one EVM instruction |
+| `finish` | Run until the current frame returns |
+| `continue` | Run to the next breakpoint, or to the end of the trace |
+| `goto <step>` | Jump to a step of the recording |
+| `reverse-next`, `reverse-step`, `reverse-nexti`, `reverse-finish`, `reverse-continue` | The same, backward |
+| `break <target> [if <condition>]` | Set a breakpoint, optionally with a condition |
+| `clear <target>` / `delete <n>` | Remove a breakpoint by target / by number |
+| `info breakpoints` | List breakpoints |
+| `backtrace` | Show the call frames at the current step, innermost first |
+| `list` | Show the source around the current step |
+| `vars` | Show the variables in scope and every state variable |
+| `print <variable>` | Show one variable, or a path into one such as `balanceOf[0xabc…]` |
+| `stack [<n>]`, `memory [<offset> [<length>]]`, `calldata`, `returndata` | Show EVM buffers at the current step |
+| `storage`, `transient` | Show every storage or transient storage slot known at the current step |
+| `mode [source\|asm]` | Show the source line or the EVM stack at each stop |
+| `tui` | Open the full-screen view |
+| `quit` | Leave the debugger |
 
-#### Storage explorer
+Short aliases are available: `n`, `s`, `ni`, `fin`, `c`, `rn`, `rs`, `rni`, `rfin`, `rc`, `b`, `d`, `i`, `bt`, `l`, `mem`, `p`, `h` and `q`.
 
-`:storage` switches the data pane to a storage view that lists every slot the current call has accessed up to the current step, showing each slot's most recent operation (`SLOAD` or `SSTORE`) and value. The slot touched by the current step is highlighted. `:storage <slot>` jumps to the nearest access of a specific slot: the access at or after the current step, or the most recent earlier one.
-
-`:transient` and `:transient <slot>` provide the same view for transient storage (`TLOAD` and `TSTORE`). Press `b` to switch the data pane back to the buffer view.
+See the [SolDB command reference](https://github.com/walnuthq/soldb/blob/main/docs/commands.md) for every breakpoint target (lines, functions, state variables, storage slots, reverts, calls and opcodes) and the condition syntax.
 
 #### Breakpoints
 
-Place breakpoints in code with the [`vm.breakpoint`](/reference/cheatcodes/breakpoint) cheatcode:
+Set a breakpoint on a source line, optionally with a condition on variables in scope, and run to it:
 
-```solidity
-vm.breakpoint("a");
+```ansi
+soldb> break src/Bank.sol:23 if have < amount
+Breakpoint #2 set at src/Bank.sol:23 if have < amount
+soldb> continue
+Breakpoint #2 hit at step 2134, src/Bank.sol:23 if have < amount
+src/Bank.sol:23 in withdraw  (step 2134/2243, pc 278, DUP2, gas 1056881070)
+   23 |         if (have < amount) revert InsufficientBalance(have, amount);
 ```
 
-Pressing `'a` in the debugger jumps to the step where the breakpoint was recorded.
+You can also place breakpoints in code with the [`vm.breakpoint`](/reference/cheatcodes/breakpoint) cheatcode. The debugger loads them as numbered breakpoints, and `continue` stops at the `vm.breakpoint` call:
+
+```ansi
+soldb> continue
+Breakpoint #1 hit at step 1862, PC 4403 if step >= 1038 && step < 2244 && depth == 1
+test/Bank.t.sol:17 in test_withdrawTooMuch  (step 1862/2243, pc 4403, STATICCALL, gas 1073660457)
+   17 |         vm.breakpoint("a");
+```
+
+#### Inspecting variables
+
+`vars` decodes the local variables in scope and the contract's state variables. `print` reads one of them, including a mapping entry:
+
+```ansi
+soldb> vars
+warning: local variables are inferred from the legacy source map and the stack layout of solc's legacy code generator, not from compiler-reported variable locations
+uint256 amount = 3000 [stack+2]
+uint256 have = 2000 [stack+3]
+State:
+contract Oracle oracle = 0x5615deb798bb3e4dfa0139dfa1b3d433cc23b72f [slot 0x0]
+mapping(address => uint256) balanceOf = <mapping; index it with [key]> [slot 0x1]
+soldb> print balanceOf[0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496]
+uint256 balanceOf[0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496] = 2000 [slot 0xb38645331535d8a24250bd866c230d0d85c11b90105fdba49ccc7bb4d9c6bc96]
+```
+
+Local variables are available for the legacy code generator, inferred from its stack layout as the warning says. For contracts compiled with `via_ir = true`, `vars` reports that locals are unavailable and shows state variables only.
+
+:::note
+With [dynamic test linking](/config/reference/build-and-runtime) (the default), Forge rewrites `new` expressions in test files before compiling them, and the debugger shows the rewritten line, for example a `deployCode(...)` call where the file has `new Bank(oracle)`. Pass `--no-dynamic-test-linking` to see the test file as written.
+:::
+
+#### Full-screen view
+
+The full-screen view shows the source with the current line and breakpoints marked, the variables, the stack, memory, the backtrace and the opcodes around the program counter.
+
+| Key | Action |
+|-----|--------|
+| `n` / `s` / `c` / `f` / `i` | `next` / `step` / `continue` / `finish` / `nexti` |
+| `N` / `S` / `C` / `F` / `I` | The same, backward |
+| `b` | Set a breakpoint on the current line |
+| `m` | Switch between source and assembly |
+| `:` | Type any debugger command; `Enter` runs it, `Esc` cancels |
+| `Tab` / `Shift+Tab` | Move focus between panes |
+| `j` / `k`, arrows, `PgUp` / `PgDn` | Scroll the focused pane |
+| `?` | Show the keys |
+| `q` | Return to the `soldb>` prompt |
+| `Q` | Leave the debugger |
+
+#### Scripting the debugger
+
+When standard input is not a terminal, the debugger skips the full-screen view and the prompt and reads commands from standard input, one per line, until `quit` or the end of the input. This lets you run a debugging session in CI or from another tool:
+
+```bash
+$ printf 'break src/Bank.sol:23\ncontinue\nvars\nquit\n' | forge test --debug --match-test test_withdrawTooMuch
+```
 
 ### Debugging scripts
 
@@ -119,6 +213,30 @@ Debug a script:
 
 ```bash
 $ forge script script/Deploy.s.sol --debug
+```
+
+`--debug` takes precedence over `--broadcast`, so nothing is sent.
+
+### Debugging transactions with Cast
+
+`cast run --debug` and `cast call --trace --debug` open the same debugger. Without sources, the debugger steps by instruction. Run the command from your project and add `--with-local-artifacts` to map the executed code to your sources:
+
+```bash
+$ cast run 0x<txhash> --rpc-url $RPC_URL --debug --with-local-artifacts
+```
+
+### Exporting a debug session
+
+`--dump <PATH>` on `forge test --debug` or `forge script --debug` writes the session to a directory instead of opening the debugger:
+
+```bash
+$ forge test --debug --match-test test_withdrawTooMuch --dump debug-session
+```
+
+The directory holds `trace.json`, `contracts.json`, one folder of debug information per executed contract, and the sources. SolDB's own command-line tools read it; install them separately (see the [SolDB README](https://github.com/walnuthq/soldb#install)). For example, to profile gas use by source line and function:
+
+```bash
+$ soldb profile --trace-file debug-session/trace.json --contracts debug-session/contracts.json
 ```
 
 ### Console logging

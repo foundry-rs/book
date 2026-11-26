@@ -420,6 +420,8 @@ contracts in traces. The `--etherscan-api-key` flag and the `ETHERSCAN_API_KEY` 
 variable (ignored when empty) override it. Avoid committing the key; prefer the environment
 or an `etherscan` entry with a `${VAR}` placeholder.
 
+<span id="match-test" />
+
 #### `match_test`
 
 - Type: string (regular expression)
@@ -438,6 +440,8 @@ The pattern is searched for anywhere in the full function signature, such as
 match_test = "^test_transfer"
 ```
 
+<span id="no-match-test" />
+
 #### `no_match_test`
 
 - Type: string (regular expression)
@@ -450,6 +454,8 @@ The pattern is searched for anywhere in the full function signature, such as
 `test_transfer(uint256)`. It applies to `forge test` and to the commands built on it, such
 as `forge coverage` and `forge snapshot`. The `--no-match-test` (`--nmt`) flag replaces
 this value.
+
+<span id="match-contract" />
 
 #### `match_contract`
 
@@ -464,6 +470,8 @@ match exactly. It applies to `forge test` and to the commands built on it, such 
 `forge coverage` and `forge snapshot`. The `--match-contract` (`--mc`) flag replaces this
 value.
 
+<span id="no-match-contract" />
+
 #### `no_match_contract`
 
 - Type: string (regular expression)
@@ -475,6 +483,8 @@ Skip tests in contracts whose name matches this regular expression.
 The pattern is searched for anywhere in the contract name. It applies to `forge test` and
 to the commands built on it, such as `forge coverage` and `forge snapshot`. The
 `--no-match-contract` (`--nmc`) flag replaces this value.
+
+<span id="match-path" />
 
 #### `match_path`
 
@@ -493,6 +503,8 @@ to the commands built on it, such as `forge coverage` and `forge snapshot`. The
 [profile.default]
 match_path = "test/unit/*"
 ```
+
+<span id="no-match-path" />
 
 #### `no_match_path`
 

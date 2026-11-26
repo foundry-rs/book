@@ -38,6 +38,17 @@ Output shows gas usage per function:
 ╰----------------------------------+-----------------+-------+--------+-------+---------╯
 ```
 
+### Gas reports and transient storage
+
+`forge test --gas-report` runs with [call isolation](/forge/testing#call-isolation) enabled. Each top-level `CALL` from the test runs as its own transaction, so [EIP-1153 transient storage](https://eips.ethereum.org/EIPS/eip-1153) written by one call does not carry to the next. `STATICCALL` and `DELEGATECALL` from the test are not isolated, and the test contract's own transient storage is not reset.
+
+If a test sets context with `TSTORE` in one call and reads it with `TLOAD` in a later call, the read sees empty storage under `--gas-report` (and under default isolated `forge test`). That is expected transaction semantics, not a metering bug.
+
+Practical options:
+
+- Keep the `TSTORE` and the `TLOAD` inside the same top-level call (or the same contract function under test).
+- `--gas-report` enables isolation even when you pass `--no-isolate` or set `isolate = false` in `foundry.toml`. Tests with an inline `/// forge-config: default.isolate = false` annotation are the exception: they run without isolation even under `--gas-report`. To exercise transient storage shared across calls, use that annotation or run `forge test --no-isolate` without `--gas-report`. Gas numbers for non-isolated tests differ from an isolated report.
+
 ### Filter gas reports
 
 Report only specific contracts:

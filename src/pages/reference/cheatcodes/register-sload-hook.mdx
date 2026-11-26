@@ -1,0 +1,55 @@
+---
+description: Calls back into the test after each storage read of an account
+---
+
+## `registerSloadHook`
+
+### Signature
+
+```solidity
+function registerSloadHook(address target, bytes4 callback) external;
+```
+
+### Description
+
+Registers a callback that runs after each `SLOAD` against the storage of `target`, including when another contract's code reads it through `delegatecall`. Use it to keep ghost state for invariant or symbolic tests.
+
+The contract that calls `registerSloadHook` receives the callback, which must have the signature:
+
+```solidity
+function onLoad(address account, bytes32 slot, bytes32 value) external;
+```
+
+### Parameters
+
+| Parameter  | Type      | Description                                        |
+|------------|-----------|----------------------------------------------------|
+| `target`   | `address` | The account whose storage reads are observed       |
+| `callback` | `bytes4`  | The selector of the callback on the calling contract |
+
+### Examples
+
+```solidity [test/SloadHook.t.sol]
+// [!include ~/snippets/projects/storage_hooks/test/SloadHook.t.sol]
+```
+
+```bash
+$ forge test --root src/snippets/projects/storage_hooks --match-contract SloadHookTest
+```
+
+### Gotchas
+
+:::warning
+Anyone can call the callback, so check `msg.sender == address(vm)` in it.
+:::
+
+- Registering another callback for the same target replaces the previous one.
+- Registration survives reverts. State the callback writes rolls back with the call that triggered it, and a revert in the callback propagates as a failure of the read.
+- Hooks do not fire inside the callback or anything it calls. Callback calls are hidden from mocks, `expectCall`, log recording and storage-access recording.
+- The callback is an ordinary call frame and uses one level of the 1024 call-depth limit.
+
+### Related Cheatcodes
+
+- [`registerSstoreHook`](/reference/cheatcodes/register-sstore-hook) - Calls back after each storage write
+- [`registerMappingSstoreHook`](/reference/cheatcodes/register-mapping-sstore-hook) - Calls back after writes to a mapping
+- [`record`](/reference/cheatcodes/record) - Records storage reads and writes

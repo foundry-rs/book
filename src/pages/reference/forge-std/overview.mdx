@@ -12,16 +12,16 @@ What's included:
   import {Vm} from "forge-std/Vm.sol";
   ```
 
-- [`console.sol`](/reference/forge-std/console-log.mdx) and `console2.sol`: Hardhat-style logging functionality
+- [`console.sol`](/reference/forge-std/console-log.mdx) (and deprecated `console2.sol` alias): Hardhat-style logging functionality
 
   ```solidity
   import {console} from "forge-std/console.sol";
   ```
 
-  **Note:** `console2.sol` contains patches to `console.sol` that allow Forge to decode traces for calls to the console, but it is not compatible with Hardhat.
+  **Note:** Prefer `console.sol`. `console2.sol` is a deprecated compatibility alias that only re-exports `console` as `console2` (`import {console as console2} from "./console.sol";`). It no longer ships separate Hardhat-incompatible patches (see forge-std#573).
 
   ```solidity
-  import {console2} from "forge-std/console2.sol";
+  import {console2} from "forge-std/console2.sol"; // deprecated alias
   ```
 
 - `Script.sol`: Basic utilities for Solidity scripting

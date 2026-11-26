@@ -2,7 +2,7 @@
 
 Configuration related to the project in general.
 
-{/* config-reference:begin keys="extends src test script out libs cache cache_path broadcast force" level=3 */}
+{/* config-reference:begin keys="extends" level=3 */}
 
 ### `extends`
 
@@ -36,6 +36,12 @@ own `extends` does not inherit from the base file. Strategies:
 The base file cannot use `extends` in the same profile, and a file cannot extend itself.
 `extends` takes a file path, not a profile name: every profile already inherits from
 `[profile.default]`.
+
+{/* config-reference:end */}
+
+See [Inheriting from a base file](/config/profiles#inheriting-from-a-base-file) for merge strategies, precedence rules, and examples.
+
+{/* config-reference:begin keys="src test script out libs cache cache_path broadcast force" level=3 */}
 
 ### `src`
 

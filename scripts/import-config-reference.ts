@@ -327,7 +327,11 @@ export function mdxSafe(markdown: string): string {
 }
 
 export function renderSetting(setting: Setting, level: number): string {
-  const heading = `${"#".repeat(level)} ${code(displayName(setting))}`;
+  // Preserve links to the hyphenated headings from the hand-written testing reference.
+  const legacyAnchor = /^(?:no_)?match_(?:test|contract|path)$/.test(setting.key)
+    ? `<span id="${setting.key.replaceAll("_", "-")}" />\n\n`
+    : "";
+  const heading = `${legacyAnchor}${"#".repeat(level)} ${code(displayName(setting))}`;
   const description = mdxSafe(setting.description);
   if (setting.table) return [heading, description].filter(Boolean).join("\n\n");
   const bullets = [

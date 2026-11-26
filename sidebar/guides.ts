@@ -36,6 +36,10 @@ export const guidesSidebar: Sidebar = {
       ],
     },
     {
+      text: "Scripting",
+      items: [{ text: "HTTP Requests", link: "/guides/http-from-scripts" }],
+    },
+    {
       text: "Networks & Payments",
       items: [
         { text: "Tempo", link: "/guides/tempo" },
@@ -52,7 +56,10 @@ export const guidesSidebar: Sidebar = {
     },
     {
       text: "Environment",
-      items: [{ text: "Docker & Containers", link: "/guides/docker" }],
+      items: [
+        { text: "Docker & Containers", link: "/guides/docker" },
+        { text: "Keeping Secrets Out of Plaintext", link: "/guides/encrypted-env" },
+      ],
     },
     {
       text: "Migrations",
