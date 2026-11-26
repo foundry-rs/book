@@ -50,7 +50,6 @@ What each `curl` option does:
 - `--silent`: no progress meter.
 - `--fail-with-body`: exit with code 22 when the status is 400 or higher, and still print the body.
 - `--max-time 10`: stop an attempt after 10 seconds (exit code 28).
-- `--retry 2`: retry up to twice on transient errors, such as a timeout or a 429, 500, 502, 503 or 504 response.
 - `--write-out '%{stderr}%{http_code}'`: print the status code to stderr, so stdout holds only the body.
 
 `vm.tryFfi` returns the exit code, stdout and stderr instead of reverting when the command fails. The helper treats exit codes 0 and 22 as "a response arrived" and reverts on any other code. See the [curl exit codes](https://curl.se/libcurl/c/libcurl-errors.html) for the full list.
@@ -79,7 +78,6 @@ $ forge script script/FetchChain.s.sol --ffi
 
 ```
 Script ran successfully.
-Gas used: 45339
 
 == Logs ==
   Ethereum 0x80226fc0Ee2b096224EeAc085Bb9a8cba1146f7D true
@@ -114,7 +112,7 @@ cmd[7] = url;
 Vm.FfiResult memory res = vm.tryFfi(cmd);
 ```
 
-Add `--retry` only to requests that are safe to send twice.
+If a request is safe to repeat, make a fresh `vm.tryFfi` call for each attempt. With `curl --retry`, response bodies from multiple attempts can share the same stdout buffer.
 
 ### Keep tokens out of traces
 

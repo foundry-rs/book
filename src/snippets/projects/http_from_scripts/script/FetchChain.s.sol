@@ -17,17 +17,15 @@ contract FetchChain is Script {
     }
 
     function httpGet(string memory url) internal returns (uint256 status, string memory body) {
-        string[] memory cmd = new string[](10);
+        string[] memory cmd = new string[](8);
         cmd[0] = "curl";
         cmd[1] = "--silent";
         cmd[2] = "--fail-with-body"; // exit code 22 on HTTP >= 400, body still printed
         cmd[3] = "--max-time";
         cmd[4] = "10";
-        cmd[5] = "--retry";
-        cmd[6] = "2";
-        cmd[7] = "--write-out";
-        cmd[8] = "%{stderr}%{http_code}"; // status code on stderr, body on stdout
-        cmd[9] = url;
+        cmd[5] = "--write-out";
+        cmd[6] = "%{stderr}%{http_code}"; // status code on stderr, body on stdout
+        cmd[7] = url;
 
         Vm.FfiResult memory res = vm.tryFfi(cmd);
         // 0: success, 22: HTTP error status; anything else: no usable response
