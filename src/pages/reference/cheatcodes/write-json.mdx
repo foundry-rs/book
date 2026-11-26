@@ -84,7 +84,7 @@ vm.writeJson("13371337", "./output/example.json", "..veryDeep");
 
 The file is written with a 2-space indent and no trailing newline. Writing the same value twice gives the same bytes.
 
-Keys are written in the order they have in `json`. When `valueKey` is used, the existing keys keep their order, a replaced key keeps its place, and a new key goes last. An object built with [`serializeJson`](/reference/cheatcodes/serialize-json) has its keys sorted, so it is written sorted.
+Keys are written in the order they have in `json`. When `valueKey` is used, the existing keys keep their order, a replaced key keeps its place, and a new key goes last. For the key order returned by the different serializers, see [`serializeJson`](/reference/cheatcodes/serialize-json).
 
 ### Gotchas
 
