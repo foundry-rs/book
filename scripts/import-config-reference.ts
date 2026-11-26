@@ -394,8 +394,8 @@ export function renderDefaultConfig(assignment: Assignment): string {
       }
       const name = setting.section ? setting.key.slice(setting.section.length + 1) : setting.key;
       const about = summary(setting);
-      lines.push("", ...(about ? [`# ${about}`] : []), `# Default: ${setting.default}`);
-      lines.push(`${name} = ${setting.default}`);
+      // Commented out: writing a default is not always the same as leaving the key unset.
+      lines.push("", ...(about ? [`# ${about}`] : []), `# ${name} = ${setting.default}`);
     }
     blocks.push(lines.join("\n"));
   };
@@ -413,9 +413,12 @@ export function renderDefaultConfig(assignment: Assignment): string {
 
 ## Default foundry configuration
 
-The configuration Foundry uses when \`foundry.toml\` sets nothing. Keys of a section, such as
-\`[fuzz]\`, can also be written under \`[profile.<name>.<section>]\`. Keys without a default are omitted;
-see the [reference](/config/reference/overview) for every key.
+The defaults Foundry uses when \`foundry.toml\` sets nothing. Every key is commented out, because
+setting a key to its default is not always the same as leaving it unset: for example, while
+\`invariant.corpus_random_sequence_weight\` is unset, the last worker of a campaign with more than
+two workers uses a weight of 50. Keys of a section, such as \`[fuzz]\`, can also be written under
+\`[profile.<name>.<section>]\`. Keys without a default are omitted; see the
+[reference](/config/reference/overview) for every key.
 
 \`\`\`toml
 ${blocks.join("\n\n")}

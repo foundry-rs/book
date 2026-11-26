@@ -319,15 +319,17 @@ describe("rendering", () => {
     );
     expect(text).toContain("```toml\n[profile.default]\n\n# ===");
     expect(text).toContain("# PROJECT\n");
-    expect(text).toContain('# Path of the sources directory.\n# Default: "src"\nsrc = "src"');
+    expect(text).toContain('# Path of the sources directory.\n# src = "src"');
+    // Keys stay commented out, so copying the file does not mark them as configured.
+    expect(text).not.toMatch(/^[a-z_][\w.]* = /m);
     expect(text).not.toContain("deny_warnings");
     expect(text).not.toContain("seed =");
     expect(text).toContain("[fuzz]\n\n# ===");
     expect(text).not.toContain("\n = ");
     expect(text).toContain("# TESTING - FUZZ\n");
-    expect(text).toContain("runs = 256");
+    expect(text).toContain("# runs = 256");
     expect(text).toContain("[lint]");
-    expect(text).toContain('lint_specific.mixed_case_exceptions = ["ERC"]');
+    expect(text).toContain('# lint_specific.mixed_case_exceptions = ["ERC"]');
     expect(text.indexOf("[profile.default]")).toBeLessThan(text.indexOf("\n[fuzz]\n"));
   });
 });
@@ -349,7 +351,7 @@ describe("import and check", () => {
     expect(read("src/pages/config/reference/linter.mdx")).toContain(
       "### `[lint_specific]`\n\nPer-lint settings.\n\n#### `lint_specific.mixed_case_exceptions`",
     );
-    expect(read(defaultConfigPath)).toContain('src = "src"');
+    expect(read(defaultConfigPath)).toContain('# src = "src"');
     const snapshot = JSON.parse(read(snapshotPath));
     expect(snapshot.source).toEqual({
       repository: "foundry-rs/foundry",

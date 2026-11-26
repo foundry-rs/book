@@ -268,14 +268,14 @@ some paths, use `ignored_error_codes_from`.
 
 - Type: boolean
 - Default: none
-- Environment: `FOUNDRY_DENY_WARNINGS`, `DAPP_DENY_WARNINGS`, or `DAPP_TEST_DENY_WARNINGS`
 - Deprecated: use `deny = "warnings"` instead
 
 Whether to fail on warnings.
 
 `deny_warnings = true` is read as `deny = "warnings"` and `false` as `deny = "never"`,
 unless `deny` is also set in the same profile, in which case `deny` wins. The
-`--deny-warnings` flag is deprecated in the same way in favor of `--deny warnings`.
+`--deny-warnings` flag is deprecated in the same way in favor of `--deny warnings`. In the
+environment, use `FOUNDRY_DENY=warnings`.
 
 #### `evm_version`
 
