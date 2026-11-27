@@ -116,6 +116,26 @@ Use `--browser` instead of a private-key option to sign the typed data with an i
 $ cast wallet verify --address $SIGNER "Hello, Ethereum!" $SIGNATURE
 ```
 
+#### Sign and verify as a Tempo configurable account
+
+Use the configurable account's address as `ACCOUNT` and point `RPC_URL` at a Tempo T14 node. Cast collects enough owner weight to reach the current threshold and emits one account signature. For a fresh multisig, supply the version-zero owner configuration in `config.json`. For a registered account, you can omit `--tempo.config` and let Cast read the current configuration.
+
+For example, save the EIP-712 object above as `mail.json`. In this 2-of-3 example, `OWNER_KEYSTORE` points to one owner's keystore and `SECOND_SIGNER` identifies another signer, such as `account://bob`.
+
+```bash
+SIGNATURE=$(cast wallet sign --data --from-file mail.json \
+  --tempo.configurable-account "$ACCOUNT" --tempo.config config.json \
+  --keystore "$OWNER_KEYSTORE" --tempo.owner "$SECOND_SIGNER" --rpc-url "$RPC_URL")
+cast wallet verify --data --from-file mail.json "$SIGNATURE" \
+  --address "$ACCOUNT" --rpc-url "$RPC_URL"
+```
+
+For a personal message, pass the message as the argument to both commands. For a precomputed 32-byte digest, pass `--no-hash "$HASH"` to both. In each case, verify against the configurable account's address. Cast recognizes its `0x05` signature envelope and calls Tempo's signature verifier with the original payload hash.
+
+Signing and verification do not register the account. A valid initial signature still verifies after the first transaction registers the same configuration. Once the owners rotate, verification of that signature fails. Collect a new signature under the current configuration.
+
+See the [wallet sign](/reference/cast/wallet/sign) and [wallet verify](/reference/cast/wallet/verify) references.
+
 ### EIP-7702 account delegation
 
 Use `cast wallet sign-auth` to create a signed authorization that delegates an EOA's execution to a contract implementation. The authorization can be submitted by the authority or a separate broadcaster.
