@@ -104,6 +104,14 @@ function testLogsConsumed() public {
 }
 ```
 
+:::note
+Since v1.9.0, logs from calls and creations that revert or halt are left out, as on chain, including reverts expected with [`expectRevert`](/reference/cheatcodes/expect-revert) ([foundry#17866](https://github.com/foundry-rs/foundry/pull/17866)). Tests that counted those logs get a shorter array:
+
+```solidity [test/unit/RecordedLogs.t.sol]
+// [!include ~/snippets/projects/behavior_changes/test/unit/RecordedLogs.t.sol:logs]
+```
+:::
+
 ### Related Cheatcodes
 
 - [`recordLogs`](/reference/cheatcodes/record-logs) - Starts recording emitted events

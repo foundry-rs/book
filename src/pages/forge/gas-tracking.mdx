@@ -94,6 +94,17 @@ $ forge snapshot --check
 
 This exits with an error if any test uses more gas than recorded.
 
+#### After upgrading Foundry
+
+A Foundry release can change the gas a test reports without any change to your contracts, so `forge snapshot --check` fails after the upgrade. For example, v1.9.0 charges the creation gas of `new` in tests, v1.10.0 replaces revm with evm2, and v1.10.1 reverses a v1.10.0 change to the gas used by calls under `expectRevert`. The [changelog](/changelog) lists these under "Action required". A test that deploys a contract with `new`, with a snapshot written on 1.8.7 and compared on 1.9.0:
+
+```bash
+$ forge snapshot --diff
+↑ DepositTest::test_deposit() (gas: 53128 → 293570 | 240442 452.571%)
+```
+
+Check that only the tests you expect have moved, then write the new snapshot with `forge snapshot`.
+
 ### Inline gas tracking
 
 Use `gasleft()` to measure specific operations:

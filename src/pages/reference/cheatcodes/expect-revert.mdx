@@ -140,6 +140,24 @@ For a call like `stable.donate(sUSD.balanceOf(user))`, the next call expected to
 After calling `expectRevert`, calls to other cheatcodes before the reverting call are ignored. You can safely call [`prank`](/reference/cheatcodes/prank) immediately before the reverting call.
 :::
 
+:::warning[Constructor reverts]
+Since v1.10.1, a test that expects a constructor to revert keeps running after `new`. Before, the test ended at `new` and passed, so the lines after it never ran ([foundry#18717](https://github.com/foundry-rs/foundry/pull/18717)). A test like this passed on 1.10.0 and fails on 1.10.1:
+
+```solidity [test/unit/ExpectRevertNew.t.sol]
+// [!include ~/snippets/projects/behavior_changes/test/unit/ExpectRevertNew.t.sol:before]
+```
+
+```text
+[FAIL: too much] test_RevertWhen_ZeroCap_thenDeposit()
+```
+
+Give each expected revert its own test:
+
+```solidity [test/unit/ExpectRevertNew.t.sol]
+// [!include ~/snippets/projects/behavior_changes/test/unit/ExpectRevertNew.t.sol:after]
+```
+:::
+
 ### Related Cheatcodes
 
 - [`expectEmit`](/reference/cheatcodes/expect-emit) - Assert that events are emitted
