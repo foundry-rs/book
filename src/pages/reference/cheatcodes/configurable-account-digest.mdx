@@ -1,0 +1,61 @@
+---
+description: Returns the digest that the owners of a Tempo configurable account approve
+---
+
+## `configurableAccountDigest`
+
+:::note
+Available since v1.10.0 ([foundry#18408](https://github.com/foundry-rs/foundry/pull/18408)). forge-std 1.17.0 does not declare it yet, so the example uses its own interface. The examples verify signatures with the Tempo T14 precompiles, so the project sets `network = "tempo"` and `hardfork = "tempo:T14"` in `foundry.toml`.
+:::
+
+### Signature
+
+```solidity
+function configurableAccountDigest(address account, uint64 configVersion, bytes32 digest) external pure returns (bytes32 ownerDigest);
+```
+
+### Description
+
+Returns the digest that the owners of the configurable account `account` sign to approve `digest` (for example a transaction signature hash) under configuration version `configVersion`:
+
+```
+keccak256("tempo:configurable-account:signature" || digest || account || uint64(configVersion))
+```
+
+Use it when owners sign outside `signConfigurableAccount`, then combine their approvals with [`encodeConfigurableAccountSignature`](/reference/cheatcodes/encode-configurable-account-signature).
+
+### Parameters
+
+| Parameter       | Type      | Description                                   |
+|-----------------|-----------|-----------------------------------------------|
+| `account`       | `address` | The configurable account                      |
+| `configVersion` | `uint64`  | The account's current configuration version   |
+| `digest`        | `bytes32` | The digest the account approves               |
+
+### Returns
+
+| Type      | Description                      |
+|-----------|----------------------------------|
+| `bytes32` | The digest each owner signs      |
+
+### Examples
+
+```solidity [test/ConfigurableAccount.t.sol]
+// [!include ~/snippets/projects/configurable_accounts/test/ConfigurableAccount.t.sol:manual]
+```
+
+```bash
+$ forge test --root src/snippets/projects/configurable_accounts --match-contract ConfigurableAccountTest
+```
+
+### Gotchas
+
+- Owners sign `ownerDigest`, not `digest`. A signature over `digest` itself does not verify.
+- The version is part of the digest, so approvals made for one configuration version do not verify after an update.
+
+### Related Cheatcodes
+
+- [`deriveConfigurableAccount`](/reference/cheatcodes/derive-configurable-account) - Address of a configurable account
+- [`encodeConfigurableAccountSignature`](/reference/cheatcodes/encode-configurable-account-signature) - Encodes approvals into a signature
+- [`signConfigurableAccount`](/reference/cheatcodes/sign-configurable-account) - Signs as a configurable account
+- [`signKeychainConfigurableAccount`](/reference/cheatcodes/sign-keychain-configurable-account) - Signs with a configurable account as an access key

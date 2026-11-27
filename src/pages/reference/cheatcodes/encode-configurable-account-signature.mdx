@@ -1,0 +1,72 @@
+---
+description: Encodes owner approvals into a Tempo configurable account signature
+---
+
+## `encodeConfigurableAccountSignature`
+
+:::note
+Available since v1.10.0 ([foundry#18408](https://github.com/foundry-rs/foundry/pull/18408)). forge-std 1.17.0 does not declare it yet, so the example uses its own interface. The examples verify signatures with the Tempo T14 precompiles, so the project sets `network = "tempo"` and `hardfork = "tempo:T14"` in `foundry.toml`.
+:::
+
+### Signature
+
+```solidity
+function encodeConfigurableAccountSignature(
+    address account,
+    ConfigurableAccountConfig calldata config,
+    bytes[] calldata ownerSignatures
+) external pure returns (bytes memory signature);
+```
+
+### Description
+
+Encodes a `0x05` configurable account signature for `account` from its current configuration `config` and the owners' approvals of the owner digest from [`configurableAccountDigest`](/reference/cheatcodes/configurable-account-digest).
+
+Each approval is one of:
+
+- a 65-byte secp256k1 signature, `r || s || v`
+- a `0x01`-prefixed P-256 signature
+- a `0x02`-prefixed WebAuthn signature
+
+Approvals are encoded in the order given.
+
+### Parameters
+
+| Parameter         | Type                        | Description                                  |
+|-------------------|-----------------------------|----------------------------------------------|
+| `account`         | `address`                   | The configurable account                     |
+| `config`          | `ConfigurableAccountConfig` | The account's current configuration          |
+| `ownerSignatures` | `bytes[]`                   | Encoded owner approvals of the owner digest  |
+
+### Returns
+
+| Type    | Description                                  |
+|---------|----------------------------------------------|
+| `bytes` | The `0x05` configurable account signature    |
+
+### Examples
+
+The approvals below give the same signature as `signConfigurableAccount` with the same two keys:
+
+```solidity [test/ConfigurableAccount.t.sol]
+// [!include ~/snippets/projects/configurable_accounts/test/ConfigurableAccount.t.sol:manual]
+```
+
+```bash
+$ forge test --root src/snippets/projects/configurable_accounts --match-contract ConfigurableAccountTest
+```
+
+### Gotchas
+
+:::warning
+Only the shape is checked. The cheatcode can build signatures the node rejects, such as approvals that are not sorted by owner address, or more approvals than the threshold needs.
+:::
+
+- Sort approvals by owner address, and stop once their weight reaches the threshold. [`signConfigurableAccount`](/reference/cheatcodes/sign-configurable-account) does both for you.
+
+### Related Cheatcodes
+
+- [`deriveConfigurableAccount`](/reference/cheatcodes/derive-configurable-account) - Address of a configurable account
+- [`configurableAccountDigest`](/reference/cheatcodes/configurable-account-digest) - Digest the owners approve
+- [`signConfigurableAccount`](/reference/cheatcodes/sign-configurable-account) - Signs as a configurable account
+- [`signKeychainConfigurableAccount`](/reference/cheatcodes/sign-keychain-configurable-account) - Signs with a configurable account as an access key

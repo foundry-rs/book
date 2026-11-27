@@ -71,6 +71,7 @@ export const cmdReference: SidebarItem[] = [
       { text: "startStateDiffRecording", link: "/reference/cheatcodes/start-state-diff-recording" },
       { text: "stopAndReturnStateDiff", link: "/reference/cheatcodes/stop-and-return-state-diff" },
       { text: "getStateDiff", link: "/reference/cheatcodes/get-state-diff" },
+      { text: "getStorageSlot", link: "/reference/cheatcodes/get-storage-slot" },
       { text: "getStorageSlots", link: "/reference/cheatcodes/get-storage-slots" },
       { text: "snapshotState", link: "/reference/cheatcodes/state-snapshots" },
       { text: "snapshotGas", link: "/reference/cheatcodes/gas-snapshots" },
@@ -177,6 +178,23 @@ export const cmdReference: SidebarItem[] = [
       { text: "signDelegation", link: "/reference/cheatcodes/sign-delegation" },
       { text: "signKeychain", link: "/reference/cheatcodes/sign-keychain" },
       { text: "signKeychainAdmin", link: "/reference/cheatcodes/sign-keychain-admin" },
+      {
+        text: "deriveConfigurableAccount",
+        link: "/reference/cheatcodes/derive-configurable-account",
+      },
+      {
+        text: "configurableAccountDigest",
+        link: "/reference/cheatcodes/configurable-account-digest",
+      },
+      {
+        text: "encodeConfigurableAccountSignature",
+        link: "/reference/cheatcodes/encode-configurable-account-signature",
+      },
+      { text: "signConfigurableAccount", link: "/reference/cheatcodes/sign-configurable-account" },
+      {
+        text: "signKeychainConfigurableAccount",
+        link: "/reference/cheatcodes/sign-keychain-configurable-account",
+      },
     ],
   },
   {

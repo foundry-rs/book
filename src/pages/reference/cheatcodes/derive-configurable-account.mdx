@@ -1,0 +1,73 @@
+---
+description: Derives the address of a Tempo configurable account from its initial configuration
+---
+
+## `deriveConfigurableAccount`
+
+:::note
+Available since v1.10.0 ([foundry#18408](https://github.com/foundry-rs/foundry/pull/18408)). forge-std 1.17.0 does not declare it yet, so the example uses its own interface. The examples verify signatures with the Tempo T14 precompiles, so the project sets `network = "tempo"` and `hardfork = "tempo:T14"` in `foundry.toml`.
+:::
+
+### Signature
+
+```solidity
+function deriveConfigurableAccount(ConfigurableAccountConfig calldata config) external pure returns (address account);
+```
+
+```solidity
+struct ConfigurableAccountOwner {
+    address owner; // a secp256k1 address, or keccak256(x || y)[12:] of a P-256 key
+    uint8 weight;  // nonzero weight of this owner's approval
+}
+
+struct ConfigurableAccountConfig {
+    bytes32 salt;      // with the initial owners and threshold, fixes the account address
+    uint64 version;    // 0 for the initial configuration, +1 for each update
+    uint8 threshold;   // total owner weight that approvals must reach
+    ConfigurableAccountOwner[] owners; // sorted by ascending address
+}
+```
+
+### Description
+
+Returns the address of the Tempo configurable account ([TIP-1107](https://tips.sh/1107)) whose initial configuration is `config`: its salt, threshold and owners. The result is the same as `IConfigurableAccount.deriveAccount` on the precompile, without the chain's reserved-address checks. `config.version` is ignored.
+
+Use the address with the other configurable account cheatcodes, which take the account and its configuration.
+
+### Parameters
+
+| Parameter | Type                        | Description                                   |
+|-----------|-----------------------------|-----------------------------------------------|
+| `config`  | `ConfigurableAccountConfig` | The initial configuration, owners sorted by address |
+
+### Returns
+
+| Type      | Description                      |
+|-----------|----------------------------------|
+| `address` | The configurable account address |
+
+### Examples
+
+```solidity [test/ConfigurableAccount.t.sol]
+// [!include ~/snippets/projects/configurable_accounts/test/ConfigurableAccount.t.sol:setup]
+```
+
+```solidity [test/ConfigurableAccount.t.sol]
+// [!include ~/snippets/projects/configurable_accounts/test/ConfigurableAccount.t.sol:derive]
+```
+
+```bash
+$ forge test --root src/snippets/projects/configurable_accounts --match-contract ConfigurableAccountTest
+```
+
+### Gotchas
+
+- List the owners in ascending address order. For a P-256 owner, the address is `keccak256(x || y)[12:]` of its public key, as in `p256Owner` above.
+- A configuration update changes the owners and version but not the address, so derive the address from the initial configuration.
+
+### Related Cheatcodes
+
+- [`configurableAccountDigest`](/reference/cheatcodes/configurable-account-digest) - Digest the owners approve
+- [`encodeConfigurableAccountSignature`](/reference/cheatcodes/encode-configurable-account-signature) - Encodes approvals into a signature
+- [`signConfigurableAccount`](/reference/cheatcodes/sign-configurable-account) - Signs as a configurable account
+- [`signKeychainConfigurableAccount`](/reference/cheatcodes/sign-keychain-configurable-account) - Signs with a configurable account as an access key
