@@ -28,6 +28,28 @@ $ cast wallet private-key "abandon abandon ... about" 2
 
 :::
 
+### Rotating Tempo account owners
+
+Use `cast wallet owners set` to replace all owners, weights, and the approval threshold of a Tempo configurable account in one transaction. Every address you want to retain must appear in the replacement list. The account keeps its address.
+
+First, inspect the registered account on the T14 RPC where you intend to rotate it.
+
+```bash
+cast wallet owners "$ACCOUNT" --rpc-url "$RPC_URL"
+```
+
+Suppose two current owners can meet the existing threshold. Set `OWNER_KEYSTORE` to the first owner's keystore path and `SECOND_SIGNER` to the second signing source, such as `account://bob`. Set `RETAINED` and `NEW_OWNER` to the public addresses that should control the account afterward, and `FEE_TOKEN` to its funded fee token.
+
+```bash
+cast wallet owners set "$ACCOUNT" \
+  --owner "${RETAINED}:2" --owner "$NEW_OWNER" --threshold 3 \
+  --keystore "$OWNER_KEYSTORE" --tempo.owner "$SECOND_SIGNER" \
+  --tempo.fee-token "$FEE_TOKEN" --rpc-url "$RPC_URL"
+cast wallet owners "$ACCOUNT" --rpc-url "$RPC_URL"
+```
+
+The current owners approve the transaction. After it is mined, the configuration version increases by one. The retained owner now has weight two and the new owner takes the default weight of one. Both must approve to reach the new threshold of three. Omitted owners lose signing authority when the transaction executes.
+
 ### Keystore management
 
 ::::steps
