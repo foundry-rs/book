@@ -1,0 +1,78 @@
+---
+description: "Approve ERC-20 spending with an on-chain transaction or an ERC-2612 permit signature."
+---
+
+## Token Approvals
+
+An ERC-20 allowance authorizes a spender to use tokens owned by your account. You can set it with `cast erc20 approve`, or sign an [ERC-2612 permit](https://eips.ethereum.org/EIPS/eip-2612) with [`cast erc20 permit`](/reference/cast/erc20-token/permit) when the token supports that extension. `erc20` is an alias for `erc20-token`.
+
+A permit signature authorizes an allowance change. It does not transfer tokens, deposit into a vault, or change the allowance until someone submits it to the token contract.
+
+### Before you start
+
+Set `TOKEN`, `SPENDER`, and `RPC_URL` for the token, the contract that will spend it, and its chain. Set `AMOUNT` in the token's smallest unit. Set `DEADLINE` to an absolute Unix timestamp in seconds; it is the last time the permit may be submitted, not an expiry for the resulting allowance. The examples use `PRIVATE_KEY` for the token owner and `RELAYER_PRIVATE_KEY` for a relayer. You can instead select a keystore with `--account` or use the wallet options in [Sending transactions](/cast/sending-transactions).
+
+### Approve with a transaction
+
+You can use ordinary approval even when a token supports permits:
+
+```bash
+$ cast erc20 approve "$TOKEN" "$SPENDER" "$AMOUNT" --private-key "$PRIVATE_KEY" --rpc-url "$RPC_URL"
+```
+
+This sends a transaction and sets the allowance directly.
+
+### Sign a permit for an integration
+
+Generate a signature and calldata without broadcasting:
+
+```bash
+$ cast erc20 permit "$TOKEN" "$SPENDER" "$AMOUNT" --deadline "$DEADLINE" \
+    --private-key "$PRIVATE_KEY" --rpc-url "$RPC_URL" --json > permit.json
+```
+
+The signing wallet is the owner. Cast reads `nonces(owner)` from the token and constructs the standard ERC-2612 `Permit` message. You do not supply the transaction nonce as the permit nonce.
+
+Without `--json`, stdout contains a 65-byte signature encoded as hex in `r || s || v` order. JSON output uses the Foundry envelope: `.data` contains `token`, `owner`, `spender`, decimal strings for `value`, `nonce`, and `deadline`, plus `signature`, `calldata`, and `typed_data`.
+
+An integration can use the signature in its permit-and-action transaction. Alternatively, a relayer can submit the calldata directly to the token:
+
+```bash
+$ cast send "$TOKEN" --data "$(jq -r '.data.calldata' permit.json)" \
+    --private-key "$RELAYER_PRIVATE_KEY" --rpc-url "$RPC_URL"
+```
+
+The relayer pays the transaction fee. The permit still authorizes only the spender and amount you signed. After the permit is accepted, its nonce is consumed and the same signature cannot be used again. Another permit submitted for that owner before yours may make your signature stale.
+
+### Broadcast from the signing wallet
+
+To sign and submit the permit in one command, add `--broadcast`:
+
+```bash
+$ cast erc20 permit "$TOKEN" "$SPENDER" "$AMOUNT" --deadline "$DEADLINE" \
+    --private-key "$PRIVATE_KEY" --rpc-url "$RPC_URL" --broadcast
+```
+
+This prints the transaction receipt. Add `--async` to print the transaction hash without waiting for the receipt. Broadcasting a permit and then sending a separate deposit still takes two transactions.
+
+### Verify the allowance
+
+After the permit transaction is confirmed, query the resulting allowance:
+
+```bash
+$ cast erc20 allowance "$TOKEN" "$OWNER" "$SPENDER" --rpc-url "$RPC_URL"
+```
+
+### Domain discovery and compatibility
+
+Cast uses [EIP-5267](https://eips.ethereum.org/EIPS/eip-5267) `eip712Domain()` when the token exposes it, including optional domain fields and salt. It rejects unsupported domain extensions. Otherwise it constructs the common domain using `name()`, version `"1"`, the RPC chain ID, and the token address.
+
+If the token uses a different domain name or version, supply `--domain-name` or `--domain-version`. Cast checks the constructed domain against the token's `DOMAIN_SEPARATOR()` before asking the wallet to sign. A mismatch is an error; an override does not bypass verification. A discovered chain ID or verifying contract must also match the RPC chain or token address when present.
+
+This command supports standard ERC-2612 permits. DAI-style permits and Uniswap Permit2 use different signing formats and are not supported by this helper.
+
+### Permits and vault deposits
+
+For an [ERC-4626 deposit](/cast/tokenized-vaults), the vault spends your **underlying asset**. A direct deposit therefore needs an allowance on that asset with the vault as spender. The vault's own permit, if implemented, approves spending **vault shares** and does not approve the underlying asset.
+
+Router or bundler integrations may require a different spender and can combine permit submission with a deposit in one transaction. Use the integration's specified spender and transaction format. This command produces a standard permit; it does not build a Morpho or other protocol's bundled deposit transaction.

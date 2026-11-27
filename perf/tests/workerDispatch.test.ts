@@ -1,0 +1,81 @@
+import { afterEach, expect, it, vi } from 'vite-plus/test'
+
+const lifecycle = vi.hoisted(() => ({ waitUntil: vi.fn() }))
+vi.mock('@vercel/functions', () => lifecycle)
+afterEach(() => {
+  vi.unstubAllGlobals()
+  vi.unstubAllEnvs()
+  vi.clearAllMocks()
+})
+
+it('dispatches to the trusted deployment and responds pending without waiting for import', async () => {
+  vi.resetModules()
+  vi.stubEnv('VERCEL_URL', 'perf-test.vercel.app')
+  vi.stubEnv('CRON_SECRET', 'test-secret')
+  let finish!: (response: Response) => void
+  const fetch = vi.fn(
+    () =>
+      new Promise<Response>((resolve) => {
+        finish = resolve
+      }),
+  )
+  vi.stubGlobal('fetch', fetch)
+  const { dispatchImport } = await import('../src/server/workerDispatch')
+  const sha = 'a'.repeat(40)
+  await expect(dispatchImport(sha)).rejects.toMatchObject({
+    retryAfter: 1,
+    state: 'queued',
+    commit: sha,
+  })
+  const now = vi.spyOn(Date, 'now').mockReturnValue(Date.now() + 31_000)
+  await expect(dispatchImport(sha)).rejects.toMatchObject({ retryAfter: 1, state: 'importing' })
+  now.mockRestore()
+  expect(fetch).toHaveBeenCalledExactlyOnceWith(
+    `https://perf-test.vercel.app/api/worker/import?commit=${sha}`,
+    expect.objectContaining({
+      method: 'POST',
+      headers: expect.objectContaining({ authorization: 'Bearer test-secret' }),
+    }),
+  )
+  expect(lifecycle.waitUntil).toHaveBeenCalledOnce()
+  finish(Response.json({ imported: true }))
+  await lifecycle.waitUntil.mock.calls[0][0]
+})
+
+it('rejects invalid dispatch configuration without leaking credentials', async () => {
+  vi.resetModules()
+  vi.stubEnv('VERCEL_URL', 'attacker.example/path')
+  vi.stubEnv('CRON_SECRET', 'test-secret')
+  const fetch = vi.fn()
+  vi.stubGlobal('fetch', fetch)
+  const { dispatchImport } = await import('../src/server/workerDispatch')
+  await expect(dispatchImport('a'.repeat(40))).rejects.toThrow('not configured')
+  expect(fetch).not.toHaveBeenCalled()
+})
+
+it('retries running benchmarks without caching them as missing', async () => {
+  vi.resetModules()
+  vi.stubEnv('VERCEL_URL', 'perf-test.vercel.app')
+  vi.stubEnv('CRON_SECRET', 'test-secret')
+  const fetch = vi
+    .fn()
+    .mockResolvedValueOnce(Response.json({ status: 'benchmark-running' }, { status: 202 }))
+    .mockResolvedValueOnce(Response.json({ imported: true }))
+  vi.stubGlobal('fetch', fetch)
+  const { dispatchImport } = await import('../src/server/workerDispatch')
+  const sha = 'a'.repeat(40)
+  await expect(dispatchImport(sha)).rejects.toMatchObject({ state: 'queued' })
+  await lifecycle.waitUntil.mock.calls[0][0]
+  await expect(dispatchImport(sha)).rejects.toMatchObject({
+    state: 'benchmark-running',
+    retryAfter: 5,
+  })
+  const now = vi.spyOn(Date, 'now').mockReturnValue(Date.now() + 31_000)
+  try {
+    await expect(dispatchImport(sha)).rejects.toMatchObject({ state: 'queued' })
+    await lifecycle.waitUntil.mock.calls[1][0]
+    expect(fetch).toHaveBeenCalledTimes(2)
+  } finally {
+    now.mockRestore()
+  }
+})

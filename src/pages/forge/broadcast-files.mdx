@@ -1,0 +1,191 @@
+---
+description: Reference for the broadcast files that forge script writes, including their paths and the keys in each file.
+---
+
+## Broadcast files
+
+`forge script` saves each transaction sequence it prepares or sends as a JSON file under the `broadcast/` directory. Tools such as deployment registries, frontends, and indexers read these files to find deployed addresses. This page lists where Forge writes the files and which keys each file contains.
+
+This page describes Foundry 1.8.6. Keys added in recent versions are marked with the first version that writes them.
+
+### File locations
+
+The `broadcast` and `cache_path` keys in `foundry.toml` set the two root directories. The defaults are `broadcast/` and `cache/`.
+
+| Run | Broadcast file |
+|-----|----------------|
+| Single chain | `broadcast/<script file>/<chain id>/<sig>-latest.json` |
+| Single chain, without `--broadcast` | `broadcast/<script file>/<chain id>/dry-run/<sig>-latest.json` |
+| Multi-chain (`--multi`) | `broadcast/multi/<script file>-latest/<sig>.json` |
+| Multi-chain, without `--broadcast` | `broadcast/multi/dry-run/<script file>-latest/<sig>.json` |
+
+- `<script file>` is the file name of the script without its directory, for example `Deploy.s.sol`. Two scripts with the same file name in different directories write to the same location.
+- `<chain id>` is the decimal chain ID, for example `1` or `11155111`.
+- `<sig>` is the function name from `--sig`, which is `run` by default. When `--sig` is calldata, `<sig>` is its 4-byte selector in hex without `0x`, for example `522bb704`.
+
+Forge rewrites the `-latest` file while it broadcasts, for example when a transaction is sent or a receipt arrives. When the run finishes, Forge also saves a copy that it never changes again:
+
+- Single chain: `run-<timestamp>.json` next to `run-latest.json`, where `<timestamp>` is Unix time in milliseconds and `run` is replaced by `<sig>`.
+- Multi-chain: `<sig>.json` in a `<script file>-<timestamp>` directory next to the `-latest` directory.
+
+For each broadcast file, Forge writes a file with the same relative path under `cache/`. That file stores the RPC URL of each transaction, which can contain an API key. The `cache/` directory also holds the `.recovery.json` snapshot that [`--resume` uses](/forge/scripting-internals#saved-sequences-and-resume), and both directories hold `.recovery.lock` files. The files under `cache/` and the lock files are internal to Forge; read only the broadcast files.
+
+### Top-level keys
+
+Top-level keys use snake_case. The example below was written by Foundry 1.8.6 for a script that deploys a `Factory`, whose constructor deploys a `Child`, and then calls `Factory.deploy(21)`, which deploys another `Child`. Long hex values are shortened, and only the first of the two receipts is shown.
+
+```json
+{
+  "transactions": [
+    {
+      "hash": "0xfb4e9f16696ce688b76ff0833ef81d50ca66b8f654947f4e9654ed2fad2ae905",
+      "transactionType": "CREATE",
+      "contractName": "Factory",
+      "contractAddress": "0x5fbdb2315678afecb367f032d93f642f64180aa3",
+      "function": null,
+      "functionAbi": null,
+      "arguments": null,
+      "transaction": {
+        "from": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+        "to": null,
+        "gas": "0x75611",
+        "value": "0x0",
+        "input": "0x608060405234...",
+        "nonce": "0x0",
+        "chainId": "0x7a69"
+      },
+      "additionalContracts": [
+        {
+          "transactionType": "CREATE",
+          "contractName": "Child",
+          "address": "0xa16e02e87b7454126e5e10d957a927a7f5b5d2be",
+          "initCode": "0x608060405234..."
+        }
+      ],
+      "isFixedGasLimit": false
+    },
+    {
+      "hash": "0x812f2ce4194e21ed71f02d825ce9839bd65053bc8df293edfc0522fa77ee21f3",
+      "transactionType": "CALL",
+      "contractName": "Factory",
+      "contractAddress": "0x5fbdb2315678afecb367f032d93f642f64180aa3",
+      "function": "deploy(uint256)",
+      "functionAbi": "function deploy(uint256 v) returns (address)",
+      "arguments": ["21"],
+      "transaction": {
+        "from": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+        "to": "0x5fbdb2315678afecb367f032d93f642f64180aa3",
+        "gas": "0x27b9a",
+        "value": "0x0",
+        "input": "0xa5e387510000...",
+        "nonce": "0x1",
+        "chainId": "0x7a69"
+      },
+      "additionalContracts": [
+        {
+          "transactionType": "CREATE",
+          "contractName": "Child",
+          "address": "0xb7a5bd0345ef1cc5e66bf61bdec17d2461fbd968",
+          "initCode": "0x608060405234...",
+          "creatorCodeAddresses": ["0x5fbdb2315678afecb367f032d93f642f64180aa3"]
+        }
+      ],
+      "isFixedGasLimit": false
+    }
+  ],
+  "receipts": [
+    {
+      "type": "0x2",
+      "status": "0x1",
+      "cumulativeGasUsed": "0x5a4ab",
+      "logs": [],
+      "logsBloom": "0x00000000...",
+      "transactionHash": "0xfb4e9f16696ce688b76ff0833ef81d50ca66b8f654947f4e9654ed2fad2ae905",
+      "transactionIndex": "0x0",
+      "blockHash": "0x23a0df583906f02bceec95d1c9ac06e38b2c451b5b087bd963fb1bc09981288b",
+      "blockNumber": "0x1",
+      "gasUsed": "0x5a4ab",
+      "effectiveGasPrice": "0x3b9aca01",
+      "from": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+      "to": null,
+      "contractAddress": "0x5fbdb2315678afecb367f032d93f642f64180aa3"
+    }
+  ],
+  "libraries": [],
+  "pending": [],
+  "returns": {
+    "factory": {
+      "internal_type": "contract Factory",
+      "value": "0x5FbDB2315678afecb367f032d93F642f64180aa3"
+    }
+  },
+  "timestamp": 1793012253608,
+  "chain": 31337,
+  "commit": "7132e5f",
+  "recovery_generation": "0x6578d53af873b4760e277c179697c653e69116f924439d37b54eb1ccf4f90222"
+}
+```
+
+| Key | Type | Description |
+|-----|------|-------------|
+| `transactions` | array | The transactions of the sequence in the order they are sent. See [Transaction keys](#transaction-keys). |
+| `receipts` | array | Receipts of mined transactions that succeeded, sorted by block number and transaction index. Each receipt is the JSON-RPC receipt of the network. Empty in a dry run. |
+| `libraries` | array of strings | Libraries the sequence links against, as `<source path>:<library name>:<address>`, for example `src/Lib.sol:MathLib:0x1670b759668f8bb1EE9133CFAa4a8b831D0caA8C`. |
+| `pending` | array of strings | Hashes of transactions that were sent but have no receipt yet. Empty after a broadcast finishes. |
+| `returns` | object | The return values of the script function. Each key is the name of a return value, or its position (`"0"`, `"1"`, ...) when it has no name. Each value is an object with `internal_type`, the Solidity type, and `value`, the value as a string. |
+| `timestamp` | number | Unix time in milliseconds when Forge last saved the file. |
+| `chain` | number | The chain ID. |
+| `commit` | string or `null` | The short Git commit hash of the project's `HEAD`, or `null` when the project is not in a Git repository with commits. |
+| `recovery_generation` | string | Since 1.8.4. An identifier that links the file to its recovery snapshot. Forge uses it only to resume a broadcast. |
+| `reverted` | array of strings | Not in 1.8.6; written by nightly builds since October 23, 2026. Hashes of mined transactions that reverted. These transactions have no entry in `receipts`. The key is left out when no transaction reverted. |
+
+A multi-chain broadcast file has two top-level keys. `deployments` is an array with one sequence per chain, and each sequence has the keys in the table above. `timestamp` is the time when Forge last saved the file.
+
+### Transaction keys
+
+Transaction keys use camelCase.
+
+| Key | Type | Description |
+|-----|------|-------------|
+| `hash` | string or `null` | The transaction hash, or `null` before the transaction is sent and in a dry run. |
+| `transactionType` | string | How the transaction runs: `CALL`, `CREATE`, or `CREATE2`. This is not the [EIP-2718](https://eips.ethereum.org/EIPS/eip-2718) transaction type. |
+| `contractName` | string or `null` | The name of the contract that is deployed or called, when Forge can match it to an artifact of the project. |
+| `contractAddress` | string or `null` | For `CREATE` and `CREATE2`, the address of the deployed contract. For `CALL`, the address that is called. |
+| `function` | string or `null` | For `CALL`, the signature of the function that is called, for example `deploy(uint256)`. `null` for deployments. |
+| `functionAbi` | string or `null` | Since 1.8.0. For `CALL`, the human-readable ABI of the function, including parameter names. `null` for deployments. |
+| `arguments` | array of strings or `null` | The decoded function arguments for `CALL`, or the decoded constructor arguments for a deployment. `null` when Forge cannot match the contract to an artifact, and for a deployment without constructor arguments. |
+| `transaction` | object | The transaction itself. See [The transaction object](#the-transaction-object). |
+| `additionalContracts` | array | Contracts that the transaction deploys with the `CREATE` or `CREATE2` opcode, for example from a constructor or a factory. See [Additional contract keys](#additional-contract-keys). |
+| `isFixedGasLimit` | boolean | `true` when the script set the gas limit of the transaction, for example with `{gas: ...}`, so Forge does not estimate it. |
+
+For a `CREATE2` deployment, Forge sends the transaction to the CREATE2 deployer, so `transaction.to` is the deployer address and the receipt's `contractAddress` is `null`. Read the deployed address from `contractAddress` in the transaction entry instead of from the receipt.
+
+#### The transaction object
+
+The shape of `transaction` depends on whether Forge signed the transaction when it saved the file:
+
+- **Unsigned** (most transactions): a JSON-RPC transaction request. The calldata or init code is under `input`, not `data`. The gas limit is under `gas`. Keys such as `value`, fee fields, `accessList`, and `authorizationList` appear only when they are set. Forge does not add a `type` key.
+- **Signed** (for example, transactions from [`vm.broadcastRawTransaction`](/reference/cheatcodes/broadcast-raw-transaction)): the JSON-RPC form of the signed transaction, with `type`, `hash`, and the signature fields `r`, `s`, `yParity`, and `v`, plus a `from` key with the sender.
+
+On networks other than Ethereum, such as [Tempo](/guides/tempo), `transaction` and the receipts use the JSON-RPC format of that network.
+
+#### Additional contract keys
+
+| Key | Type | Description |
+|-----|------|-------------|
+| `transactionType` | string | `CREATE` or `CREATE2`. |
+| `contractName` | string or `null` | The name of the deployed contract, when Forge can match its init code to an artifact of the project. |
+| `address` | string | The address of the deployed contract. The key is `address`, not `contractAddress`. |
+| `initCode` | string | The init code that deployed the contract, including encoded constructor arguments. |
+| `creatorCodeAddresses` | array of strings | Since 1.8.0. The addresses of the called contracts whose code led to the deployment, nearest first. The key is left out when the list is empty, for example when a constructor deploys the contract. |
+
+### Reading broadcast files
+
+When you write a tool that reads broadcast files:
+
+- Ignore keys that you do not know, and treat a missing optional key as empty. Foundry adds keys over time; for example, `functionAbi`, `creatorCodeAddresses`, `recovery_generation`, and `reverted` were added in 2026.
+- Find a deployment by `contractName` instead of by position. Library deployments come before the script's own transactions, so `transactions[0]` is not always the first contract the script deploys.
+- Skip `dry-run` directories unless you want transactions that were not sent.
+- Read `-latest` files only after `forge script` exits, because Forge rewrites them during a broadcast.
+
+Inside a Solidity script or test, the `vm.getDeployment`, `vm.getDeployments`, `vm.getBroadcast`, and `vm.getBroadcasts` cheatcodes read the timestamped broadcast files for you. They return only transactions that have a receipt.

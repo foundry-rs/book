@@ -1,0 +1,110 @@
+---
+description: Gets emitted events recorded by recordLogs as Solidity structs or JSON
+---
+
+## `getRecordedLogs`
+
+### Signature
+
+```solidity
+struct Log {
+    bytes32[] topics;
+    bytes data;
+    address emitter;
+}
+
+function getRecordedLogs() external view returns (Log[] memory logs);
+function getRecordedLogsJson() external view returns (string memory logsJson);
+```
+
+### Description
+
+Gets all emitted events recorded by [`recordLogs`](/reference/cheatcodes/record-logs).
+
+`getRecordedLogs` returns Solidity `Log` structs. `getRecordedLogsJson` returns the same fields as a JSON array, with topics, data, and emitter addresses encoded as `0x`-prefixed strings:
+
+```json
+[
+  {
+    "topics": ["0xddf252ad...", "0x00000000..."],
+    "data": "0x00000000...",
+    "emitter": "0x1234..."
+  }
+]
+```
+
+An empty recording is returned as `[]`.
+
+### Returns
+
+| Field     | Type        | Description                              |
+|-----------|-------------|------------------------------------------|
+| `topics`  | `bytes32[]` | The indexed topics (topics[0] is the event signature) |
+| `data`    | `bytes`     | The non-indexed event data               |
+| `emitter` | `address`   | The address that emitted the event       |
+
+The JSON representation uses the same field names. Each topic and the data field are hex encoded, while `emitter` is formatted as an address string.
+
+### Examples
+
+```solidity [test/GetRecordedLogs.t.sol]
+event LogTopic1(uint256 indexed topic1, bytes data);
+event LogTopic12(uint256 indexed topic1, uint256 indexed topic2, bytes data);
+
+function testGetRecordedLogs() public {
+    bytes memory testData0 = "Some data";
+    bytes memory testData1 = "Other data";
+
+    vm.recordLogs();
+    
+    emit LogTopic1(10, testData0);
+    emit LogTopic12(20, 30, testData1);
+    
+    Vm.Log[] memory entries = vm.getRecordedLogs();
+    
+    assertEq(entries.length, 2);
+    
+    // First event: LogTopic1
+    assertEq(entries[0].topics.length, 2);
+    assertEq(entries[0].topics[0], keccak256("LogTopic1(uint256,bytes)"));
+    assertEq(entries[0].topics[1], bytes32(uint256(10)));
+    assertEq(abi.decode(entries[0].data, (string)), string(testData0));
+    
+    // Second event: LogTopic12
+    assertEq(entries[1].topics.length, 3);
+    assertEq(entries[1].topics[0], keccak256("LogTopic12(uint256,uint256,bytes)"));
+    assertEq(entries[1].topics[1], bytes32(uint256(20)));
+    assertEq(entries[1].topics[2], bytes32(uint256(30)));
+}
+```
+
+#### Get logs as JSON
+
+```solidity [test/GetRecordedLogsJson.t.sol]
+// [!include ~/snippets/projects/cheatcodes/test/GetRecordedLogsJson.t.sol:json]
+```
+
+### Gotchas
+
+:::warning
+Calling either `getRecordedLogs` or `getRecordedLogsJson` **consumes** the recorded logs. Subsequent calls to either function only return logs emitted after the previous call.
+:::
+
+```solidity [test/LogsConsumed.t.sol]
+function testLogsConsumed() public {
+    vm.recordLogs();
+    
+    emit LogTopic1(10, "first");
+    Vm.Log[] memory entries = vm.getRecordedLogs();
+    assertEq(entries.length, 1);
+    
+    emit LogTopic1(20, "second");
+    entries = vm.getRecordedLogs();
+    assertEq(entries.length, 1); // Only the second event
+}
+```
+
+### Related Cheatcodes
+
+- [`recordLogs`](/reference/cheatcodes/record-logs) - Starts recording emitted events
+- [`parseJson`](/reference/cheatcodes/parse-json) - Parses values from a JSON string

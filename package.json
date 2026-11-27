@@ -1,0 +1,48 @@
+{
+  "name": "foundry-docs",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "vp run fetch-benchmarks && vp run fetch-changelog && vp exec vocs build",
+    "build:vercel": "vp run build && vp run --filter foundry-perf build -- --outDir ../.vercel/output/static/perf/solar && PERF_PROJECT=evm2 vp run --filter foundry-perf build -- --outDir ../.vercel/output/static/perf/evm2 && vp run --filter foundry-perf build:vercel-api",
+    "check": "vp check .github e2e package.json playwright.config.ts pnpm-workspace.yaml scripts sidebar src/components tsconfig.json vite.config.ts vocs.config.ts && vp run --filter foundry-perf check",
+    "check:anvil-rpc": "vp exec tsx scripts/check-anvil-rpc-coverage.ts",
+    "check:cheatcodes": "vp exec tsx scripts/check-cheatcode-coverage.ts",
+    "check:commands": "vp exec tsx scripts/check-narrative-commands.ts",
+    "import:config": "vp exec tsx scripts/import-config-reference.ts",
+    "import:lints": "vp exec tsx scripts/import-lint-docs.ts",
+    "dev": "vp exec vocs dev",
+    "fetch-benchmarks": "vp exec tsx scripts/fetch-benchmarks.ts",
+    "fetch-changelog": "vp exec tsx scripts/fetch-changelog.ts",
+    "preview": "vp exec vocs preview",
+    "test": "vp test --run scripts/fetch-benchmarks.test.ts scripts/import-config-reference.test.ts scripts/import-lint-docs.test.ts && vp run --filter foundry-perf test -- --run",
+    "test:e2e": "vp exec playwright test"
+  },
+  "dependencies": {
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "tailwindcss": "^4.3.5",
+    "vocs": "2.13.0",
+    "waku": "1.0.0-rc.5"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.65.1",
+    "@types/node": "^26.6.6",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.3.0",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  },
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": "24.22.1",
+      "onFail": "download"
+    }
+  },
+  "packageManager": "pnpm@11.25.0"
+}

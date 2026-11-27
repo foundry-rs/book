@@ -1,4 +1,7 @@
 name: build
+
+permissions: {}
+
 on:
   push:
     branches: [master]
@@ -6,16 +9,94 @@ on:
     branches: [master]
 
 jobs:
-  test:
+  checks:
+    name: checks
     runs-on: ubuntu-latest
-    name: vocs build
-
+    permissions:
+      id-token: write
+      contents: read
     steps:
+      - name: Secure runner
+        uses: tempoxyz/gh-actions/actions/secure-runner@d5402286a7abdfb7232173b3228d56473feb8a66 # 2026-09-29T02-04-45Z-d5402286
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
-      - name: Install bun
-        uses: oven-sh/setup-bun@v2
+      - name: Set up Vite+
+        uses: voidzero-dev/setup-vp@cab1ab9eaff52d4857875f4f2c016e36af8f2c76 # v1.22.0
+        with:
+          cache: true
+          node-version: "24"
+          run-install: false
 
-      - name: Build Vocs
-        run: cd vocs && bun install && bun run build
+      - name: Install dependencies
+        run: vp install --frozen-lockfile
+
+      - name: Check cheatcode coverage
+        run: vp run check:cheatcodes
+
+      - name: Check anvil RPC coverage
+        run: vp run check:anvil-rpc
+
+      - name: Check narrative commands
+        run: vp run check:commands
+
+      - name: Check imported lint references
+        run: vp run import:lints -- --check
+
+      - name: Check imported config reference
+        run: vp run import:config -- --check
+
+      - name: Check
+        run: vp run check
+
+      - name: Test
+        run: vp run test
+
+  build:
+    name: vocs build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Secure runner
+        uses: tempoxyz/gh-actions/actions/secure-runner@d5402286a7abdfb7232173b3228d56473feb8a66 # 2026-09-29T02-04-45Z-d5402286
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Vite+
+        uses: voidzero-dev/setup-vp@cab1ab9eaff52d4857875f4f2c016e36af8f2c76 # v1.22.0
+        with:
+          cache: true
+          node-version: "24"
+          run-install: false
+
+      - name: Install dependencies
+        run: vp install --frozen-lockfile
+
+      - name: Build Vocs and install Chromium
+        run: |
+          vp exec playwright install --with-deps chromium &
+          chromium_pid=$!
+          trap 'kill "$chromium_pid" 2>/dev/null || true' EXIT
+          vp exec vocs build
+          wait "$chromium_pid"
+          trap - EXIT
+
+      - name: Browser smoke tests
+        run: vp run test:e2e
+
+      - name: Upload browser test results
+        if: failure()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: browser-test-results
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7

@@ -1,0 +1,106 @@
+---
+description: Sets msg.sender for all subsequent calls until stopPrank is called
+---
+
+## `startPrank`
+
+### Signature
+
+```solidity
+function startPrank(address msgSender) external;
+function startPrank(address msgSender, bool delegateCall) external;
+function startPrank(address msgSender, address txOrigin) external;
+function startPrank(address msgSender, address txOrigin, bool delegateCall) external;
+```
+
+### Description
+
+Sets `msg.sender` **for all subsequent calls** until [`stopPrank`](/reference/cheatcodes/stop-prank) is called.
+
+Optionally, you can also set `tx.origin` and enable delegate call pranking.
+
+### Parameters
+
+| Parameter      | Type      | Description                                                              |
+|----------------|-----------|--------------------------------------------------------------------------|
+| `msgSender`    | `address` | The address to set as `msg.sender`                                       |
+| `txOrigin`     | `address` | The address to set as `tx.origin` (optional)                             |
+| `delegateCall` | `bool`    | If `true`, applies the prank to all subsequent delegate calls (optional) |
+
+### Examples
+
+```solidity [test/StartPrank.t.sol]
+function testStartPrank() public {
+    vm.startPrank(alice);
+    
+    // All these calls have msg.sender == alice
+    myContract.deposit();
+    myContract.transfer(bob, 100);
+    myContract.withdraw();
+    
+    vm.stopPrank();
+}
+```
+
+#### Pranking Delegate Calls with State Diff Recording
+
+:::code-group
+
+```solidity [test/PrankDelegateCall.t.sol]
+function testPrankDelegateCall() public {
+    Proxy proxy = new Proxy();
+    Implementation impl = new Implementation();
+    
+    vm.startPrank(address(proxy), true);
+    vm.startStateDiffRecording();
+    
+    (bool success,) = address(impl).delegatecall(
+        abi.encodeWithSignature("setNum(uint256)", 42)
+    );
+    
+    VmSafe.AccountAccess[] memory accesses = vm.stopAndReturnStateDiff();
+    // accesses[0].accessor == proxy
+    // accesses[0].account == impl
+    
+    vm.stopPrank();
+}
+```
+
+```solidity [src/Implementation.sol]
+contract Implementation {
+    uint public num;
+    
+    function setNum(uint _num) public {
+        num = _num;
+    }
+}
+```
+
+```solidity [src/Proxy.sol]
+contract Proxy {
+    uint public num;
+}
+```
+
+:::
+
+### Gotchas
+
+:::note
+Delegate calls cannot be pranked from an EOA. Use a contract as the prank source when pranking delegate calls.
+:::
+
+:::warning
+Always call [`stopPrank`](/reference/cheatcodes/stop-prank) when done to avoid affecting subsequent tests.
+:::
+
+### Related Cheatcodes
+
+- [`prank`](/reference/cheatcodes/prank) - Sets `msg.sender` for a single call
+- [`stopPrank`](/reference/cheatcodes/stop-prank) - Stops an active prank
+- [`readCallers`](/reference/cheatcodes/read-callers) - Reads the current caller mode
+
+### See Also
+
+- [`startHoax`](/reference/forge-std/startHoax) - Combines startPrank and deal
+- [`changePrank`](/reference/forge-std/change-prank) - Changes the active prank address

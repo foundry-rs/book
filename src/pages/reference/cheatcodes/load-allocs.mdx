@@ -1,0 +1,42 @@
+---
+description: Loads a genesis alloc JSON file into the in-memory EVM state
+---
+
+## `loadAllocs`
+
+### Signature
+
+```solidity
+function loadAllocs(string calldata pathToAllocsJson) external;
+```
+
+### Description
+
+Loads the allocs from a genesis JSON file into the in-memory EVM state, setting balance, nonce, code, and storage for each listed account.
+
+The file can either contain only the allocs (a map from address to account, as produced by [`dumpState`](/reference/cheatcodes/dump-state)) or be a full genesis file, in which case the `alloc` field is extracted.
+
+The cheatcode reverts if the file does not exist or cannot be parsed.
+
+### Parameters
+
+| Parameter          | Type     | Description                            |
+|--------------------|----------|----------------------------------------|
+| `pathToAllocsJson` | `string` | Path to the allocs or genesis JSON file |
+
+### Examples
+
+```solidity [test/LoadAllocs.t.sol]
+function testLoadAllocs() public {
+    vm.loadAllocs("./fixtures/allocs.json");
+
+    // Accounts from the file are now part of the EVM state.
+    assertEq(address(0xBEEF).balance, 10 ether);
+}
+```
+
+### Related Cheatcodes
+
+- [`dumpState`](/reference/cheatcodes/dump-state) - Write the current EVM state to an allocs JSON file
+- [`cloneAccount`](/reference/cheatcodes/clone-account) - Copy a single account to another address
+- [`etch`](/reference/cheatcodes/etch) - Set bytecode at an address directly

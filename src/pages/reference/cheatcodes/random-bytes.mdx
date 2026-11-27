@@ -1,0 +1,54 @@
+---
+description: Returns random byte arrays of dynamic or fixed length
+---
+
+## `randomBytes`
+
+### Signature
+
+```solidity
+function randomBytes(uint256 len) external view returns (bytes memory);
+function randomBytes4() external view returns (bytes4);
+function randomBytes8() external view returns (bytes8);
+```
+
+### Description
+
+Returns random bytes from Foundry's internal RNG.
+
+- `randomBytes` returns a dynamic byte array of exactly `len` bytes.
+- `randomBytes4` and `randomBytes8` return fixed-size values, for example for random function selectors or identifiers.
+
+The RNG is seeded randomly on each run unless a seed is set via [`setSeed`](/reference/cheatcodes/set-seed) or the `[fuzz] seed` setting in `foundry.toml`.
+
+### Parameters
+
+| Parameter | Type      | Description                        |
+|-----------|-----------|------------------------------------|
+| `len`     | `uint256` | Length of the returned byte array  |
+
+### Returns
+
+| Function       | Return value                          |
+|----------------|---------------------------------------|
+| `randomBytes`  | A `bytes` value of the given length   |
+| `randomBytes4` | A random `bytes4` value               |
+| `randomBytes8` | A random `bytes8` value               |
+
+### Examples
+
+```solidity [test/RandomBytes.t.sol]
+function testRandomBytes() public view {
+    bytes memory payload = vm.randomBytes(64);
+    assertEq(payload.length, 64);
+
+    bytes4 selector = vm.randomBytes4();
+    bytes8 id = vm.randomBytes8();
+}
+```
+
+### Related Cheatcodes
+
+- [`randomUint`](/reference/cheatcodes/random-uint) - Random `uint256`
+- [`randomBool`](/reference/cheatcodes/random-bool) - Random `bool`
+- [`setSeed`](/reference/cheatcodes/set-seed) - Seed the RNG for deterministic results

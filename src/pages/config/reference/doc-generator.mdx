@@ -1,0 +1,99 @@
+## Documentation Generator
+
+Configuration related to the behavior of the Forge documentation generator. These keys are set in `[doc]` section.
+
+{/* config-reference:begin keys="doc doc.*" level=3 */}
+
+### `[doc]`
+
+Settings for the documentation generator, `forge doc`.
+
+Declare them in a `[profile.<name>.doc]` table, or in a standalone `[doc]` table that
+applies to every profile; a profile's own table takes precedence.
+
+### `out`
+
+- Type: string (path)
+- Default: `"docs"`
+- Environment: `FOUNDRY_DOC_OUT`
+
+Directory where `forge doc` writes the generated documentation site.
+
+A relative path is resolved from the project root. `forge doc --out` overrides it.
+
+### `title`
+
+- Type: string
+- Default: `""`
+- Environment: `FOUNDRY_DOC_TITLE`
+
+Title of the generated documentation.
+
+When empty, the site is titled `Documentation`.
+
+### `book`
+
+- Type: string (path)
+- Default: `"book.toml"`
+- Environment: `FOUNDRY_DOC_BOOK`
+
+Legacy setting kept for compatibility; `forge doc` no longer reads it.
+
+`forge doc` now generates a Vocs site and does not use a `book.toml`.
+
+### `homepage`
+
+- Type: string (path)
+- Default: `"README.md"`
+- Environment: `FOUNDRY_DOC_HOMEPAGE`
+
+Markdown file used as the documentation homepage.
+
+A relative path is resolved from the project root. If the file can't be read,
+`forge doc` falls back to `README.md` in the sources directory, then `README.md` in the
+project root, and otherwise leaves the homepage empty. Relative links in the homepage to
+`.sol` files point to their generated pages; other relative links point to the file in
+`repository` at `commit`.
+
+### `repository`
+
+- Type: string
+- Default: none
+- Environment: `FOUNDRY_DOC_REPOSITORY`
+
+URL of the project's Git repository, used to link to source files.
+
+Also adds "edit this page" links to the site. If unset, `forge doc` derives it from the
+`origin` remote of the project's Git repository.
+
+### `commit`
+
+- Type: string
+- Default: none
+- Environment: `FOUNDRY_DOC_COMMIT`
+
+Git commit hash, tag or branch used in source and homepage links.
+
+If unset, `forge doc` uses the commit currently checked out (`HEAD`).
+
+### `path`
+
+- Type: string
+- Default: none
+- Environment: `FOUNDRY_DOC_PATH`
+
+Legacy setting kept for compatibility; `forge doc` no longer reads it.
+
+Source links are now derived from the project root and each source file's path.
+
+### `ignore`
+
+- Type: array of string
+- Default: `[]`
+- Environment: `FOUNDRY_DOC_IGNORE`
+
+Glob patterns of files to leave out of the generated documentation.
+
+Patterns are resolved relative to the project root.
+
+{/* config-reference:end */}

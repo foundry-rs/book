@@ -1,0 +1,50 @@
+---
+description: Returns a random int256 value, optionally of a given bit width
+---
+
+## `randomInt`
+
+### Signature
+
+```solidity
+function randomInt() external view returns (int256);
+function randomInt(uint256 bits) external view returns (int256);
+```
+
+### Description
+
+Returns a random `int256` value from Foundry's internal RNG.
+
+With `bits`, the returned value fits into a signed integer of the given bit width. Reverts if `bits > 256`.
+
+The RNG is seeded randomly on each run unless a seed is set via [`setSeed`](/reference/cheatcodes/set-seed) or the `[fuzz] seed` setting in `foundry.toml`.
+
+### Parameters
+
+| Parameter | Type      | Description                             |
+|-----------|-----------|-----------------------------------------|
+| `bits`    | `uint256` | Maximum bit width of the result (≤ 256) |
+
+### Returns
+
+| Type     | Description      |
+|----------|------------------|
+| `int256` | The random value |
+
+### Examples
+
+```solidity [test/RandomInt.t.sol]
+function testRandomInt() public view {
+    int256 any = vm.randomInt();
+
+    int256 small = vm.randomInt(8);
+    assertGe(small, type(int8).min);
+    assertLe(small, type(int8).max);
+}
+```
+
+### Related Cheatcodes
+
+- [`randomUint`](/reference/cheatcodes/random-uint) - Random `uint256`
+- [`randomAddress`](/reference/cheatcodes/random-address) - Random `address`
+- [`setSeed`](/reference/cheatcodes/set-seed) - Seed the RNG for deterministic results

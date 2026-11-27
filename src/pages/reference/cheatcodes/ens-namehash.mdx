@@ -1,0 +1,46 @@
+---
+description: Returns the ENS namehash of a name
+---
+
+## `ensNamehash`
+
+### Signature
+
+```solidity
+function ensNamehash(string calldata name) external pure returns (bytes32);
+```
+
+### Description
+
+Returns the [ENS namehash](https://docs.ens.domains/resolution/names#namehash) of the provided name, following the recursive algorithm from [EIP-137](https://eips.ethereum.org/EIPS/eip-137): `namehash("") = 0x0` and `namehash(label.rest) = keccak256(namehash(rest), keccak256(label))`.
+
+Use it to compute ENS node identifiers in tests that interact with ENS registries and resolvers.
+
+### Parameters
+
+| Parameter | Type     | Description               |
+|-----------|----------|---------------------------|
+| `name`    | `string` | The ENS name to hash      |
+
+### Returns
+
+| Type      | Description                |
+|-----------|----------------------------|
+| `bytes32` | The namehash of the name   |
+
+### Examples
+
+```solidity [test/EnsNamehash.t.sol]
+function testEnsNamehash() public view {
+    assertEq(vm.ensNamehash(""), bytes32(0));
+    assertEq(
+        vm.ensNamehash("eth"),
+        0x93cdeb708b7545dc668eb9280176169d1c33cfd8ed6f04690a0bcc88a93fc4ae
+    );
+}
+```
+
+### Related Cheatcodes
+
+- [`toString`](/reference/cheatcodes/to-string) - Convert values to strings
+- [`parseAddress`](/reference/cheatcodes/parse-address) - Parse a string into an address

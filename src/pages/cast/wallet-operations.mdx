@@ -1,0 +1,179 @@
+---
+description: Manage wallets, sign messages, and verify signatures with Cast.
+---
+
+## Wallet operations
+
+Cast provides wallet utilities for key generation, signing, and verification.
+
+### Creating wallets
+
+:::code-group
+
+```bash [Random]
+$ cast wallet new
+```
+
+```bash [Multiple]
+$ cast wallet new --number 5
+```
+
+```bash [From mnemonic]
+$ cast wallet derive "abandon abandon ... about"
+```
+
+```bash [Specific mnemonic index]
+$ cast wallet private-key "abandon abandon ... about" 2
+```
+
+:::
+
+### Keystore management
+
+::::steps
+
+#### Create a keystore
+
+```bash
+$ cast wallet import my-key --interactive
+```
+
+Enter your private key when prompted, then set a password.
+
+#### List keystores
+
+```bash
+$ cast wallet list
+```
+
+#### Get address from keystore
+
+```bash
+$ cast wallet address --keystore ~/.foundry/keystores/my-key
+```
+
+::::
+
+### Signing messages
+
+:::code-group
+
+```bash [With private key]
+$ cast wallet sign "Hello, Ethereum!" --private-key $KEY
+```
+
+```bash [With keystore]
+$ cast wallet sign "Hello, Ethereum!" --keystore ~/.foundry/keystores/my-key
+```
+
+```bash [With browser wallet]
+$ cast wallet sign "Hello, Ethereum!" --browser
+```
+
+```bash [Sign a 32-byte hash]
+$ cast wallet sign --no-hash $HASH --private-key $KEY
+```
+
+:::
+
+### EIP-712 typed data
+
+Sign structured data according to EIP-712:
+
+```bash
+$ cast wallet sign --data '{
+    "types": {
+      "EIP712Domain": [
+        {"name": "name", "type": "string"},
+        {"name": "version", "type": "string"},
+        {"name": "chainId", "type": "uint256"}
+      ],
+      "Mail": [
+        {"name": "from", "type": "address"},
+        {"name": "to", "type": "address"},
+        {"name": "contents", "type": "string"}
+      ]
+    },
+    "primaryType": "Mail",
+    "domain": {
+      "name": "Ether Mail",
+      "version": "1",
+      "chainId": 1
+    },
+    "message": {
+      "from": "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826",
+      "to": "0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB",
+      "contents": "Hello, Bob!"
+    }
+  }' --private-key $KEY
+```
+
+Use `--browser` instead of a private-key option to sign the typed data with an injected browser wallet. Browser wallets support personal-message and EIP-712 signing, but not raw-hash signing with `--no-hash`.
+
+### Verifying signatures
+
+```bash
+$ cast wallet verify --address $SIGNER "Hello, Ethereum!" $SIGNATURE
+```
+
+### EIP-7702 account delegation
+
+Use `cast wallet sign-auth` to create a signed authorization that delegates an EOA's execution to a contract implementation. The authorization can be submitted by the authority or a separate broadcaster.
+
+See [EIP-7702 account delegation](/cast/eip-7702-delegation) for signing, nonce selection, broadcasting, verification, and clearing instructions.
+
+### Vanity addresses
+
+Generate addresses matching a pattern:
+
+:::code-group
+
+```bash [Starts with]
+$ cast wallet vanity --starts-with dead
+```
+
+```bash [Ends with]
+$ cast wallet vanity --ends-with beef
+```
+
+```bash [Prefix and suffix]
+$ cast wallet vanity --starts-with 00 --ends-with 00
+```
+
+:::
+
+### Address utilities
+
+:::code-group
+
+```bash [Checksum]
+$ cast to-check-sum-address 0xd8da6bf26964af9d7eed9e03e53415d37aa96045
+```
+
+```bash [CREATE address]
+$ cast compute-address $DEPLOYER --nonce 5
+```
+
+```bash [CREATE2 address]
+$ cast create2 --starts-with 00 --init-code $BYTECODE --deployer $FACTORY
+```
+
+:::
+
+### Hardware wallets
+
+:::code-group
+
+```bash [List Ledger]
+$ cast wallet list --ledger
+```
+
+```bash [List Trezor]
+$ cast wallet list --trezor
+```
+
+```bash [Sign with Ledger]
+$ cast wallet sign "Hello" --ledger
+```
+
+:::

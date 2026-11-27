@@ -1,0 +1,211 @@
+---
+description: "Run agents that prove bugs with failing tests and report the bugs that they agree on Examples: - forge properties --target src/A.sol --agent-command ./agent.sh --seed 1 --seed 2 - forge properties --context docs/spec.md --agent-command ./agent.sh --seed 1 --seed 2"
+---
+
+_Generated from `forge properties --help`; see [CLI reference versions](/reference/versions). Regenerate this page instead of editing it directly._
+
+## forge properties
+
+Run agents that prove bugs with failing tests and report the bugs that they
+agree on
+
+Examples:
+- forge properties --target src/A.sol --agent-command ./agent.sh --seed 1 --seed
+2
+- forge properties --context docs/spec.md --agent-command ./agent.sh --seed 1
+--seed 2
+
+:::terminal
+
+```bash
+$ forge properties --help
+```
+
+```txt
+Usage: forge properties [OPTIONS] --agent-command <PATH> --seed <SEED>
+
+Options:
+      --root <PATH>
+          Root of the Foundry project
+          
+          [default: .]
+
+      --target <PATH>
+          Source file to look for bugs in. Can be given more than once.
+          
+          Defaults to every source file in the project's source directory.
+
+      --context <PATH>
+          Reference material for the agents, such as docs, a specification, or a
+          threat model.
+          
+          Forge gives every agent the absolute path of each file. Can be given
+          more than once.
+
+      --agent-command <PATH>
+          Executable that runs one agent session, such as a wrapper around any
+          coding agent.
+          
+          Forge runs `PATH [ARG...]` once per agent, in parallel, each in its
+          own copy of the
+          project, with these environment variables:
+          
+          FORGE_PROPERTIES_PROMPT   the task: targets, context files, and output
+          directory
+          FORGE_PROPERTIES_TARGETS  target files, relative to the copy, one per
+          line
+          FORGE_PROPERTIES_CONTEXT  absolute paths of the --context files, one
+          per line
+          FORGE_PROPERTIES_OUT      absolute, empty directory for the agent's
+          tests
+          FORGE_PROPERTIES_SEED     the agent's own seed, in hex
+          FORGE_PROPERTIES_USAGE    file where the agent can write its model
+          usage as JSON:
+                                    {"input_tokens": N, "output_tokens": N,
+                                    "cost_usd": X}
+          
+          The agent writes Solidity tests under FORGE_PROPERTIES_OUT and can run
+          `forge test` in the
+          copy. When it exits or reaches --timeout, Forge ends its process group
+          and runs every
+          `*.sol` file under FORGE_PROPERTIES_OUT in a fresh copy of the project
+          on every seed. A
+          test that fails on every seed is a possible bug. Its claim is the
+          comment right above the
+          test function, `// @bug <Contract>.<function> <file>:<line> —
+          <claim>`, else the test name.
+          Forge keeps the files whose tests all pass. A nonzero exit status is
+          an error, but
+          Forge still runs the agent's tests.
+
+      --agent-arg <ARG>
+          Argument passed to the agent command. Can be given more than once
+
+      --verifier-command <PATH>
+          Executable that tries to disprove each possible bug that reaches the
+          quorum, such as a
+          wrapper around any coding agent. Without it, Forge runs no verifier.
+          
+          Forge runs `PATH [ARG...]` once per group, at most --agents at a time,
+          each in a fresh copy
+          of the project that also holds the tests of the group, with these
+          environment variables:
+          
+          FORGE_PROPERTIES_VERIFY_PROMPT  the task: try to disprove the claims
+          of the group
+          FORGE_PROPERTIES_GROUP          JSON file with the agents, the claims,
+          the tests, and the
+                                          failure output of the group
+          FORGE_PROPERTIES_VERDICT        file where the verifier writes its
+          verdict as JSON:
+                                          {"verdict": "confirmed" |
+                                          "needs_validation" | "rejected",
+                                           "reason": "...",
+                                           "evidence": [{"file": "...", "line":
+                                           N, "quote": "..."}],
+                                           "unresolved": "..."}
+          FORGE_PROPERTIES_USAGE          file where the verifier can write its
+          model usage as JSON,
+                                          as for an agent
+          
+          When the verifier exits or reaches --timeout, Forge ends its process
+          group and reads the
+          verdict. Forge lists the confirmed groups first, then the groups that
+          need validation with
+          the open fact, then the rejected groups with the disproof. A missing
+          or invalid verdict,
+          and a rejection without evidence, count as needs_validation. Groups
+          below the quorum are
+          not verified.
+
+      --verifier-arg <ARG>
+          Argument passed to the verifier command. Can be given more than once
+
+      --seed <SEED>
+          Deterministic seeds used to run the tests of every agent. Supply at
+          least two
+
+      --agents <N>
+          Number of agents. Each agent runs one session independently and in
+          parallel in its own copy of the project, with its own seed
+          
+          [default: 4]
+
+      --quorum <K>
+          Number of agents that must report the same root cause before Forge
+          reports it as a possible bug.
+          
+          Two failing tests have the same root cause when their `@bug` tags name
+          the same function in the same Solidity file at near lines. Without
+          both tags, their claims must name the same Solidity file and share a
+          function name or at least 30% of their words. Forge lists the groups
+          below the quorum after the possible bugs. Defaults to 2, or 1 with a
+          single agent.
+
+      --timeout <SECS>
+          Seconds after which Forge ends an agent session and runs the tests
+          that it wrote, or ends a verifier and reads its verdict
+
+      --allow-ffi
+          Let generated tests run host commands with `vm.ffi` if the project
+          enables `ffi`.
+          
+          Generated tests run under Forge, outside the sandbox of the agent that
+          wrote them, so Forge turns `ffi` off in its copies of the project by
+          default.
+
+      --allow-network
+          Let generated tests open network connections, for example with
+          `vm.createFork`.
+          
+          By default, cheatcodes that open a connection fail in Forge's copies
+          of the project, and the copies have no RPC or Etherscan settings.
+
+  -h, --help
+          Print help (see a summary with '-h')
+
+  -j, --threads <THREADS>
+          Number of threads to use. Specifying 0 defaults to the number of
+          logical cores
+          
+          [alias: --jobs]
+
+      --profile <PROFILE>
+          The configuration profile to use
+
+Display options:
+      --color <COLOR>
+          The color of the log messages
+
+          Possible values:
+          - auto:   Intelligently guess whether to use color output (default)
+          - always: Force color output
+          - never:  Force disable color output
+
+      --json
+          Format log messages as JSON
+
+      --md
+          Format log messages as Markdown
+
+  -q, --quiet
+          Do not print log messages
+
+  -v, --verbosity...
+          Verbosity level of the log messages.
+          
+          Pass multiple times to increase the verbosity (e.g. -v, -vv, -vvv).
+          
+          Depending on the context the verbosity levels have different meanings.
+          
+          For example, the verbosity levels of the EVM are:
+          - 2 (-vv): Print logs for all tests.
+          - 3 (-vvv): Print execution traces for failing tests.
+          - 4 (-vvvv): Print execution traces for all tests, and setup traces
+          for failing tests.
+          - 5 (-vvvvv): Print execution and setup traces for all tests,
+          including storage changes and
+            backtraces with line numbers.
+```
+
+:::

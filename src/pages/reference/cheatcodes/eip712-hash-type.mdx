@@ -1,0 +1,57 @@
+---
+description: Generates the EIP-712 type hash for a struct type
+---
+
+## `eip712HashType`
+
+### Signature
+
+```solidity
+function eip712HashType(string calldata typeNameOrDefinition) external pure returns (bytes32 typeHash);
+function eip712HashType(string calldata bindingsPath, string calldata typeName) external pure returns (bytes32 typeHash);
+```
+
+### Description
+
+Generates the hash of the canonical [EIP-712](https://eips.ethereum.org/EIPS/eip-712) type representation, i.e. `keccak256(encodeType(...))`.
+
+The input can be either:
+
+1. A type definition string, such as `Foo(Bar bar)Bar(uint256 baz)`. The cheatcode canonicalizes the input, so extra whitespace or a wrong order of nested definitions is corrected automatically.
+2. A type name, such as `Transaction`. This requires bindings previously generated with `forge bind-json`; they are read from the path configured under `[bind_json]` in `foundry.toml` (default `utils/JsonBindings.sol`), or from an explicit `bindingsPath` with the second overload.
+
+Use it to keep on-chain `TYPEHASH` constants honest instead of hand-writing the encoded type string.
+
+### Parameters
+
+| Parameter              | Type     | Description                                                |
+|------------------------|----------|------------------------------------------------------------|
+| `typeNameOrDefinition` | `string` | A type name (requires bindings) or a full type definition  |
+| `bindingsPath`         | `string` | Path to the `forge bind-json` output file                  |
+| `typeName`             | `string` | The name of the type in the bindings                       |
+
+### Returns
+
+| Type      | Description                                  |
+|-----------|----------------------------------------------|
+| `bytes32` | `keccak256` of the canonical type definition |
+
+### Examples
+
+```solidity [test/Eip712HashType.t.sol]
+bytes32 constant PERMIT_TYPEHASH = keccak256(
+    "Permit(address owner,address spender,uint256 value,uint256 nonce,uint256 deadline)"
+);
+
+function testEip712HashType() public view {
+    bytes32 typeHash = vm.eip712HashType(
+        "Permit(address owner, address spender, uint256 value, uint256 nonce, uint256 deadline)"
+    );
+    assertEq(typeHash, PERMIT_TYPEHASH);
+}
+```
+
+### Related Cheatcodes
+
+- [`eip712HashStruct`](/reference/cheatcodes/eip712-hash-struct) - Hash a struct value per EIP-712
+- [`eip712HashTypedData`](/reference/cheatcodes/eip712-hash-typed-data) - Compute a full EIP-712 digest from JSON

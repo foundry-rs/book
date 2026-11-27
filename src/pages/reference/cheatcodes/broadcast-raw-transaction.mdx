@@ -1,0 +1,50 @@
+---
+description: Executes a signed raw transaction and broadcasts it to the network during scripts
+---
+
+## `broadcastRawTransaction`
+
+### Signature
+
+```solidity
+function broadcastRawTransaction(bytes calldata data) external;
+```
+
+### Description
+
+Takes an RLP-encoded signed transaction, executes it against the current EVM state, and, when a broadcast is active, queues the exact signed payload for on-chain submission.
+
+The signer is recovered from the transaction signature and used as the sender for execution. This makes it possible to replay transactions that were signed elsewhere, for example pre-signed permits, transactions signed by hardware wallets, or presigned emergency transactions.
+
+The cheatcode reverts if the bytes cannot be decoded into a valid signed transaction or the signer cannot be recovered.
+
+### Parameters
+
+| Parameter | Type    | Description                          |
+|-----------|---------|--------------------------------------|
+| `data`    | `bytes` | The RLP-encoded signed transaction   |
+
+### Examples
+
+```solidity [script/BroadcastRaw.s.sol]
+function run() external {
+    // A transaction signed offline, e.g. exported from another tool.
+    bytes memory signedTx = vm.envBytes("SIGNED_TX");
+
+    vm.startBroadcast();
+    vm.broadcastRawTransaction(signedTx);
+    vm.stopBroadcast();
+}
+```
+
+### Gotchas
+
+:::note
+The transaction is executed against the current state, so the recovered sender must have a matching nonce and a sufficient balance, exactly as if the transaction were submitted to a node.
+:::
+
+### Related Cheatcodes
+
+- [`broadcast`](/reference/cheatcodes/broadcast) - Sign and broadcast the next call
+- [`startBroadcast`](/reference/cheatcodes/start-broadcast) - Sign and broadcast all subsequent calls
+- [`stopBroadcast`](/reference/cheatcodes/stop-broadcast) - Stop broadcasting

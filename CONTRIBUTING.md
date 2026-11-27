@@ -22,6 +22,26 @@ For this particular book, it is OK to assume some familiarity with Solidity and 
 
 The book follows the [Rust Code of Conduct](https://www.rust-lang.org/policies/code-of-conduct).
 
+### Browser smoke tests
+
+CI runs Chromium against the production Vocs build on pull requests and pushes
+to `master`. The smoke tests check rendered content, search hydration, navigation,
+direct page loads, and reloads, and fail on console errors or uncaught exceptions.
+Only externally hosted sponsor SVGs are stubbed; application code and local assets
+are served from the real build.
+
+To run them locally after installing dependencies:
+
+```bash
+vp exec playwright install chromium
+vp exec vocs build
+vp run test:e2e
+```
+
+Failed runs retain screenshots, traces, and an HTML report in `test-results/` and
+`playwright-report/`; CI uploads these as the `browser-test-results` artifact.
+Open the report with `vp exec playwright show-report`.
+
 ### Ways to contribute
 
 #### Issues
@@ -42,60 +62,332 @@ When your pull request is open, other contributors will take a look and may requ
 
 If your pull request is merged, or your issue was addressed, feel free to ping @all-contributors to be added to the README. More information here: https://allcontributors.org/docs/en/bot/overview
 
-### Writing style
+### Writing Style Guide
 
-This section documents a few standards for writing used throughout the book.
+This section documents the standards for writing used throughout the book.
 
-#### Chapters start with a second level heading
+---
 
-We use:
+#### Voice and Tone
+
+- **Use second person ("you")** – Address the reader directly
+  - ✅ "You can run this command..."
+  - ❌ "We can run this command..." / "Let's run this command..."
+- Write in a clear, direct, and professional tone
+- Assume familiarity with Solidity and smart contract concepts
+
+---
+
+#### Page Types
+
+The book uses three primary page structures:
+
+##### Hub Pages
+
+Introductory pages that orient readers and link to related content.
+
+Structure:
+
+1. Brief introduction (≤3 paragraphs)
+2. Card grid or link list to child pages
+3. Optional "Next steps" section
+
+##### Guide Pages
+
+Step-by-step tutorials that walk readers through a task.
+
+Structure:
+
+1. **Introduction** – What you'll accomplish
+2. **Prerequisites** – Required tools, knowledge, or setup
+3. **Steps** – Numbered instructions (use H4 for each step)
+4. **Verify** – How to confirm success
+5. **Next steps** – Related guides or reference material
+
+##### Reference Pages
+
+Technical documentation for commands, APIs, or configuration.
+
+Structure:
+
+1. **Summary** – One-sentence description
+2. **Usage** – Command syntax or API signature
+3. **Options/Parameters** – Table or definition list
+4. **Examples** – Practical usage examples
+
+---
+
+#### Heading Hierarchy
+
+- **H2 (`##`)** – Page title (every page starts with H2, not H1)
+- **H3 (`###`)** – Major sections
+- **H4 (`####`)** – Subsections
 
 ```md
-## Some Page
+## Page Title
+
+### Section
+
+#### Subsection
 ```
 
-We do not use:
+---
 
-```md
-# Some Page
+#### Content Guidelines
+
+- **Introductions** – Keep to ≤3 paragraphs; get to the point quickly
+- **Prefer bullet points** – Use lists over long paragraphs when presenting multiple items
+- **Be concise** – Avoid unnecessary words and filler phrases
+
+---
+
+#### Code Blocks
+
+Always specify the language for syntax highlighting:
+
+````md
+```solidity
+contract Example {}
+```
+````
+
+For terminal commands, prefix each command with `$ `:
+
+````md
+```bash
+$ forge build
+```
+````
+
+---
+
+#### Lint reference documentation
+
+Edit lint explanations in Foundry's
+[`crates/lint/docs`](https://github.com/foundry-rs/foundry/tree/master/crates/lint/docs),
+following its [documentation guide](https://github.com/foundry-rs/foundry/blob/master/crates/lint/docs/README.md).
+Commit the source changes, then import them:
+
+```bash
+$ vp run import:lints -- --foundry /path/to/foundry
+$ vp run import:lints -- --check
 ```
 
-This is largely a stylistic choice.
+The importer validates required sections and examples and generates the pages, index, and
+sidebar. Commit the generated output and `scripts/lint-docs-manifest.json` together; do not
+hand-edit them. The manifest pins the Foundry revision so the Book builds without fetching
+Foundry. The weekly update imports the revision matching its installed Forge binary.
 
-#### Always use "we" and not "I"
+`--check` validates the committed output offline. Add `--foundry /path/to/foundry` to check
+against that source checkout. Run `vp exec vocs build` and inspect the rendered Markdown
+under `dist/public/assets/md/forge/linting/`. Verify changed Solidity examples in Foundry.
 
-Pretend like you are explaining Foundry to a friend!
+#### Config reference documentation
 
-#### Where possible, use auto-generated CLI output
+The per-key documentation under `src/pages/config/reference/` is generated from Foundry. Edit a
+key's description in the doc comment of its field in Foundry's
+[`crates/config`](https://github.com/foundry-rs/foundry/tree/master/crates/config), run
+`cargo config-reference` there to update `crates/config/assets/config-reference.json`, commit
+it, then import it:
 
-As a small change in the Foundry CLIs can have a large impact on the book, most of the CLI output is auto-generated.
+```bash
+$ vp run import:config -- --foundry /path/to/foundry
+$ vp run import:config -- --check
+```
 
-Each output file has three anchors you can use:
+The importer fills each region between `{/* config-reference:begin ... */}` and
+`{/* config-reference:end */}` and rewrites `default-config.mdx`. Do not hand-edit those; edit
+the authored prose around them instead. To move a key to another page, change the `keys` of the
+regions (see `AGENTS.md`) and run `vp run import:config` without `--foundry`. Commit the generated pages together with
+`scripts/config-reference.json`, the snapshot that pins the Foundry revision.
 
-**Display the command _and_ the output**
+#### Auto-Generated CLI Output
+
+Most CLI output is auto-generated to stay in sync with Foundry changes.
+
+Each output file has three anchors:
+
+**Display the command _and_ the output:**
 
 ```handlebars
 // [!include ~/snippets/output/abc/xyz:all]
 ```
 
-**Display just the command**
+**Display just the command:**
 
 ```handlebars
 // [!include ~/snippets/output/abc/xyz:command]
 ```
 
-**Display just the output**
+**Display just the output:**
 
 ```handlebars
 // [!include ~/snippets/output/abc/xyz:output]
 ```
 
-You can learn more about auto-generated CLI output in the [output folder](./vocs/docs/snippets/output).
+Learn more in the [output folder](./src/snippets/output).
 
-#### Where possible, do NOT in-line Solidity code
+---
 
-In the same vein as the previous style guideline, opt to include source files, or parts of source files, from the [projects folder](./vocs/docs/snippets/projects).
+#### Source Code Snippets
 
-This allows us to quickly iterate and improve on our examples without having to change multiple pages.
+Do **not** inline Solidity code. Instead, include source files from the [projects folder](./src/snippets/projects):
 
-Learn more about including snippets and files in the [vocs documentation](https://vocs.dev/docs/guides/code-snippets#physical-file-snippets).
+```md
+// [!include ~/snippets/projects/hello_foundry/src/Counter.sol]
+```
+
+This allows examples to be updated in one place and stay consistent across pages.
+
+Learn more about including snippets in the [Vocs documentation](https://vocs.dev/docs/guides/code-snippets#physical-file-snippets).
+
+---
+
+#### Vocs Markdown Features
+
+The documentation uses [Vocs](https://vocs.dev), which provides several useful markdown extensions.
+
+##### Code Block Titles
+
+Use titles instead of comments for single-action commands:
+
+````md
+```bash [Check an address balance]
+$ cast balance vitalik.eth --ether
+```
+````
+
+##### Inline Terminal Output
+
+Use `// @log:` to show command output inline:
+
+````md
+```bash
+$ forge test -vv
+// @log: Ran 2 tests for test/Counter.t.sol:CounterTest
+// @log: [PASS] test_Increment() (gas: 31293)
+// @log: Suite result: ok. 2 passed; 0 failed; 0 skipped
+```
+````
+
+##### Steps
+
+Use `::::steps` for sequential instructions:
+
+````md
+::::steps
+
+### Install foundryup
+
+```bash
+$ curl -L https://foundry.paradigm.xyz | bash
+```
+
+### Install Foundry
+
+```bash
+$ foundryup
+```
+
+::::
+````
+
+##### Callouts
+
+Use callouts for warnings, tips, and notes:
+
+```md
+:::tip
+Run any command with `--help` for detailed usage.
+:::
+
+:::warning
+This will overwrite existing files.
+:::
+
+:::note
+This feature requires Foundry v1.0 or later.
+:::
+```
+
+##### Cards
+
+Use `Cards` and `Card` components for navigation grids:
+
+```mdx
+import { Cards, Card } from "vocs";
+
+<Cards>
+  <Card
+    title="Forge"
+    description="Build and test smart contracts."
+    to="/forge/overview"
+    icon="lucide:hammer"
+  />
+</Cards>
+```
+
+##### Code Groups
+
+Use `:::code-group` for tabbed code examples. Code groups are ideal for:
+
+- **Related commands** – Multiple ways to do the same thing (e.g., install options)
+- **Good vs. bad examples** – Show preferred and discouraged patterns
+- **Multi-file examples** – Related files that work together (e.g., test + harness)
+
+````md
+:::code-group
+
+```bash [npm]
+$ npm install
+```
+
+```bash [pnpm]
+$ pnpm install
+```
+
+:::
+````
+
+For good/bad examples, use clear tab names:
+
+````md
+:::code-group
+
+```solidity [Good]
+import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+```
+
+```solidity [Avoid]
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+```
+
+:::
+````
+
+For multi-file examples, use file paths as tab names:
+
+````md
+:::code-group
+
+```solidity [test/harnesses/TokenHarness.sol]
+contract TokenHarness is Token {
+    function exposed_mint(address to, uint256 amount) external {
+        _mint(to, amount);
+    }
+}
+```
+
+```solidity [test/Token.t.sol]
+contract TokenInternalTest is Test {
+    function test_MintIncreasesSupply() public {
+        token.exposed_mint(alice, 1000);
+        assertEq(token.totalSupply(), 1000);
+    }
+}
+```
+
+:::
+````
+
+Learn more in the [Vocs Markdown Reference](https://vocs.dev/docs/markdown).

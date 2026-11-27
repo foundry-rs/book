@@ -1,0 +1,154 @@
+---
+description: Use profiles to switch between configurations for development, CI, and production.
+---
+
+## Profiles
+
+Profiles let you maintain different configurations for different scenarios. The `default` profile is always active, and other profiles inherit from it.
+
+### Creating profiles
+
+Define profiles in `foundry.toml`:
+
+```toml [foundry.toml]
+[profile.default]
+src = "src"
+out = "out"
+libs = ["lib"]
+optimizer = true
+optimizer_runs = 200
+
+[profile.ci]
+verbosity = 3
+fuzz = { runs = 10000 }
+
+[profile.lite]
+optimizer = false
+fuzz = { runs = 32 }
+```
+
+### Selecting a profile
+
+Set the `FOUNDRY_PROFILE` environment variable:
+
+:::code-group
+
+```bash [Single command]
+$ FOUNDRY_PROFILE=ci forge test
+```
+
+```bash [Shell session]
+$ export FOUNDRY_PROFILE=ci
+$ forge test
+$ forge build
+```
+
+:::
+
+### Common profile patterns
+
+#### CI profile
+
+Increase fuzz runs and verbosity for thorough testing in CI:
+
+```toml [foundry.toml]
+[profile.ci]
+verbosity = 3
+fuzz = { runs = 10000, seed = "0x1" }
+invariant = { runs = 1000 }
+```
+
+#### Development profile
+
+Fast iteration with minimal optimization:
+
+```toml [foundry.toml]
+[profile.lite]
+optimizer = false
+fuzz = { runs = 32 }
+via_ir = false
+```
+
+#### Production profile
+
+Maximum optimization for deployment:
+
+```toml [foundry.toml]
+[profile.production]
+optimizer = true
+optimizer_runs = 1000000
+via_ir = true
+bytecode_hash = "none"
+```
+
+### Profile inheritance
+
+All profiles inherit from `default`. You only need to specify values that differ:
+
+```toml [foundry.toml]
+[profile.default]
+src = "src"
+out = "out"
+libs = ["lib"]
+solc_version = "0.8.28"
+optimizer = true
+optimizer_runs = 200
+
+# Inherits everything from default, overrides optimizer_runs
+[profile.production]
+optimizer_runs = 1000000
+```
+
+### Inheriting from a base file
+
+A profile can take its settings from another TOML file with `extends`, for example to share one base configuration across several projects. Put `extends` inside the profile table, with a path relative to `foundry.toml`:
+
+```toml [foundry.toml]
+[profile.default]
+extends = "shared/base.toml"
+optimizer_runs = 300
+```
+
+The base file uses the same profile tables:
+
+```toml [shared/base.toml]
+[profile.default]
+solc = "0.8.30"
+optimizer_runs = 777
+```
+
+Here the project uses `solc = "0.8.30"` from the base file and its own `optimizer_runs = 300`. Values are resolved in this order, highest first: environment variables, `foundry.toml`, the base file.
+
+To choose how the files merge, use the object form:
+
+```toml [foundry.toml]
+[profile.default]
+extends = { path = "shared/base.toml", strategy = "replace-arrays" }
+```
+
+| Strategy | Arrays (such as `libs`) | Other values |
+|----------|-------------------------|--------------|
+| `extend-arrays` (default) | Base elements, then local elements | Local value replaces the base value |
+| `replace-arrays` | Local array replaces the base array | Local value replaces the base value |
+| `no-collision` | Error if a key is set in both files | Error if a key is set in both files |
+
+Things to know:
+
+- `extends` applies only to the profile that declares it. A profile selected with `FOUNDRY_PROFILE` does not get the base file's values through `default`; give it its own `extends`. In the base file, the selected profile inherits from `default`. For example, a `ci` profile can take `optimizer_runs` from `[profile.default]` and `via_ir` from `[profile.ci]`.
+- Put profile settings inside a profile table in both files. The base file also accepts standalone tables such as `[fmt]` and `[rpc_endpoints]`.
+- A base file cannot itself use `extends`.
+- `extends` takes a file path, not a profile name. Profiles already inherit from `default`.
+
+### Environment variable overrides
+
+Override any configuration value with environment variables prefixed with `FOUNDRY_` or `DAPP_`:
+
+```bash
+# Override optimizer runs
+$ FOUNDRY_OPTIMIZER_RUNS=500 forge build
+
+# Override solc version
+$ FOUNDRY_SOLC_VERSION=0.8.25 forge build
+```
+
+This is useful for CI or quick one-off builds without modifying `foundry.toml`.

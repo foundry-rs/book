@@ -1,0 +1,104 @@
+---
+description: Keep RPC URLs, explorer API keys and private keys out of plaintext files with ${VAR} references, an external secrets manager and encrypted keystores.
+---
+
+## Keeping Secrets Out of Plaintext
+
+Foundry reads secrets such as RPC URLs with API keys and explorer API keys from environment variables. It does not encrypt or decrypt them. To avoid a plaintext `.env` file, store the values encrypted with a secrets manager and let it set the environment variables when you run `forge` or `cast`. Keep private keys in [encrypted keystores](#keep-private-keys-in-keystores) instead of environment variables.
+
+The Foundry behavior below was checked with Foundry 1.8.1.
+
+### Reference variables from `foundry.toml`
+
+Use `${VAR}` placeholders in `foundry.toml` instead of the values:
+
+```toml [foundry.toml]
+[rpc_endpoints]
+sepolia = "https://eth-sepolia.g.alchemy.com/v2/${ALCHEMY_API_KEY}"
+
+[etherscan]
+sepolia = { key = "${ETHERSCAN_API_KEY}" }
+```
+
+Foundry replaces each placeholder when a command uses that entry, such as `--rpc-url sepolia` or a verification on that chain. The file keeps the placeholders, and `forge config` prints them unresolved. When the variable is not set, the command stops and names it:
+
+```bash
+$ cast block-number --rpc-url sepolia
+Error: environment variable `ALCHEMY_API_KEY` not found
+```
+
+### Where the values come from
+
+At startup, `forge`, `cast` and `anvil` load the `.env` file in the project root. A variable already set in the environment takes precedence over the same name in `.env`. See the [`.env` loading rules](/reference/cheatcodes/env-string#gotchas) for the details.
+
+This means a secrets manager can set the variables when it starts Foundry, and its values win over any `.env` file. Keep encrypted files under another name, such as `.env.production` or `secrets.enc.env`. If Foundry loads an encrypted value from `.env` because the secrets manager did not run, the command fails with an error such as:
+
+```
+Error: URL scheme is not supported: encrypted
+```
+
+### Run Foundry under a secrets manager
+
+Each tool below decrypts the secrets, sets them as environment variables, and starts the command you pass. The commands follow each tool's documentation; install and configure the tool first.
+
+:::code-group
+
+```bash [dotenvx]
+# Encrypt the values in place; the decryption key goes to .env.keys.
+$ dotenvx encrypt -f .env.production
+# Decrypt and run. In CI, set DOTENV_PRIVATE_KEY_PRODUCTION instead of .env.keys.
+$ dotenvx run -f .env.production -- forge script script/Deploy.s.sol --rpc-url sepolia
+```
+
+```bash [sops]
+# Encrypt a dotenv file for an age recipient.
+$ sops encrypt --age <AGE_PUBLIC_KEY> secrets.env > secrets.enc.env
+# Decrypt and run.
+$ sops exec-env secrets.enc.env 'forge script script/Deploy.s.sol --rpc-url sepolia'
+```
+
+```bash [1Password CLI]
+# .env.op holds references such as ALCHEMY_API_KEY=op://Engineering/Alchemy/credential.
+$ op run --env-file=.env.op -- forge script script/Deploy.s.sol --rpc-url sepolia
+```
+
+:::
+
+Commit the encrypted file or the reference file if your team shares it; if your `.gitignore` excludes `.env.*`, add an exception such as `!.env.production`. Keep `.env.keys`, age private keys and other decryption keys out of version control. See the [dotenvx](https://dotenvx.com/docs), [sops](https://getsops.io/docs/) and [1Password CLI](https://developer.1password.com/docs/cli/secrets-environment-variables/) documentation for setup and CI use.
+
+### What a secrets manager does not cover
+
+Once a secret is in the environment, Foundry and the code it runs can read it:
+
+- Any script or test can read it with `vm.envString` and the other `vm.env*` cheatcodes. Traces show `<env var value>` for these calls, but a value passed on to another call, such as an argument to `vm.ffi`, appears in `-vvvv` traces.
+- Commands started with `vm.ffi` inherit the environment.
+- `forge script` writes the resolved RPC URL of each transaction to a file under `cache/`. See [Broadcast files](/forge/broadcast-files). Keep `cache/` out of version control.
+
+### Keep private keys in keystores
+
+Do not put private keys in `.env`. Import them into an encrypted keystore with `cast wallet import`, which asks for the key and a password:
+
+```bash
+$ cast wallet import deployer --interactive
+```
+
+Then pass the account name:
+
+```bash
+$ forge script script/Deploy.s.sol --rpc-url sepolia --broadcast --account deployer
+```
+
+Forge asks for the password when it needs to sign. For a non-interactive run, pass the keystore file and a file that holds the password:
+
+```bash
+$ forge script script/Deploy.s.sol --rpc-url sepolia --broadcast \
+    --keystore ~/.foundry/keystores/deployer --password-file deployer.password
+```
+
+The password file is a plaintext secret. Create it from your secrets manager at run time and delete it afterwards. For mainnet deployments, prefer a [hardware wallet](/best-practices#use-hardware-wallets-for-production).
+
+### Related
+
+- [Best practices: key management](/best-practices#key-management)
+- [`[rpc_endpoints]`](/config/reference/build-and-runtime) and [`[etherscan]`](/config/reference/etherscan) configuration
+- [`cast wallet import`](/reference/cast/wallet/import)

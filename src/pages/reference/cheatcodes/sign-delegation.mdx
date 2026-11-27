@@ -1,0 +1,219 @@
+---
+description: Signs and attaches EIP-7702 authorization for account delegation
+---
+
+## `signDelegation`
+
+### Signature
+
+```solidity
+struct SignedDelegation {
+    uint8 v;              // Recovery id (0 or 1)
+    bytes32 r;            // First 32 bytes of the signature
+    bytes32 s;            // Second 32 bytes of the signature
+    uint64 nonce;         // Authority account's nonce at signing time
+    address implementation; // Contract to delegate to
+}
+
+function signDelegation(address implementation, uint256 privateKey) external returns (SignedDelegation memory signedDelegation);
+function attachDelegation(SignedDelegation calldata signedDelegation) external;
+function signAndAttachDelegation(address implementation, uint256 privateKey) external returns (SignedDelegation memory signedDelegation);
+```
+
+### Description
+
+Signs an [EIP-7702](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-7702.md) authorization for delegation, enabling EOAs to behave like smart contracts.
+
+- `signDelegation` - Generates a signed authorization for an implementation contract
+- `attachDelegation` - Attaches a signed delegation to the next transaction
+- `signAndAttachDelegation` - Combines signing and attaching in one step
+
+The signature includes the authority account's nonce to prevent replay attacks.
+
+### Parameters
+
+#### `signDelegation` / `signAndAttachDelegation`
+
+| Parameter        | Type      | Description                              |
+|------------------|-----------|------------------------------------------|
+| `implementation` | `address` | Contract address to delegate execution to |
+| `privateKey`     | `uint256` | Private key of the delegating EOA        |
+
+#### `attachDelegation`
+
+| Parameter          | Type               | Description                    |
+|--------------------|--------------------|--------------------------------|
+| `signedDelegation` | `SignedDelegation` | The signed delegation to attach |
+
+### Returns
+
+| Type               | Description                              |
+|--------------------|------------------------------------------|
+| `SignedDelegation` | Struct containing signature and delegation details |
+
+### Configuration
+
+To use these cheatcodes, set your `evm_version` to at least the `prague` hardfork:
+
+```toml [foundry.toml]
+evm_version = "prague"
+```
+
+### Examples
+
+#### Using `signDelegation` and `attachDelegation`
+
+:::code-group
+
+```solidity [test/SignDelegation.t.sol]
+contract SignDelegationTest is Test {
+    address payable ALICE_ADDRESS = payable(0x70997970C51812dc3A010C7d01b50e0d17dc79C8);
+    uint256 constant ALICE_PK = 0x59c6995e998f97a5a0044966f0945389dc9e86dae88c7a8412f4603b6b78690d;
+    address constant BOB_ADDRESS = 0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC;
+    uint256 constant BOB_PK = 0x5de4111afa1a4b94908f83103eb1f1706367c2e68ca870fc3fb9a804cdab365a;
+
+    SimpleDelegateContract public implementation;
+    ERC20 public token;
+
+    function setUp() public {
+        implementation = new SimpleDelegateContract();
+        token = new ERC20(ALICE_ADDRESS);
+    }
+
+    function testSignDelegationAndThenAttachDelegation() public {
+        // Construct a call to mint 100 tokens to Bob
+        SimpleDelegateContract.Call[] memory calls = new SimpleDelegateContract.Call[](1);
+        calls[0] = SimpleDelegateContract.Call({
+            to: address(token),
+            data: abi.encodeCall(ERC20.mint, (100, BOB_ADDRESS)),
+            value: 0
+        });
+
+        // Alice signs a delegation allowing `implementation` to execute on her behalf
+        Vm.SignedDelegation memory signedDelegation = vm.signDelegation(address(implementation), ALICE_PK);
+
+        // Bob attaches the signed delegation and broadcasts
+        vm.broadcast(BOB_PK);
+        vm.attachDelegation(signedDelegation);
+
+        // Verify Alice's account now has contract code
+        require(address(ALICE_ADDRESS).code.length > 0, "no code written to Alice");
+
+        // Execute via Alice's delegated contract
+        SimpleDelegateContract(ALICE_ADDRESS).execute(calls);
+
+        assertEq(token.balanceOf(BOB_ADDRESS), 100);
+    }
+}
+```
+
+```solidity [src/SimpleDelegateContract.sol]
+contract SimpleDelegateContract {
+    event Executed(address indexed to, uint256 value, bytes data);
+
+    struct Call {
+        bytes data;
+        address to;
+        uint256 value;
+    }
+
+    function execute(Call[] memory calls) external payable {
+        for (uint256 i = 0; i < calls.length; i++) {
+            Call memory call = calls[i];
+            (bool success, bytes memory result) = call.to.call{value: call.value}(call.data);
+            require(success, string(result));
+            emit Executed(call.to, call.value, call.data);
+        }
+    }
+
+    receive() external payable {}
+}
+```
+
+:::
+
+#### Using `signAndAttachDelegation`
+
+```solidity [test/SignDelegation.t.sol]
+function testSignAndAttachDelegation() public {
+    SimpleDelegateContract.Call[] memory calls = new SimpleDelegateContract.Call[](1);
+    calls[0] = SimpleDelegateContract.Call({
+        to: address(token),
+        data: abi.encodeCall(ERC20.mint, (100, BOB_ADDRESS)),
+        value: 0
+    });
+
+    // Sign and attach in one step
+    vm.signAndAttachDelegation(address(implementation), ALICE_PK);
+
+    require(address(ALICE_ADDRESS).code.length > 0, "no code written to Alice");
+
+    vm.broadcast(BOB_PK);
+    SimpleDelegateContract(ALICE_ADDRESS).execute(calls);
+
+    assertEq(token.balanceOf(BOB_ADDRESS), 100);
+}
+```
+
+#### Using with Forge Script
+
+Start an EIP-7702 compatible Anvil instance:
+
+```bash
+$ anvil --hardfork prague
+```
+
+Run the script:
+
+```bash
+$ forge script script/SignDelegation.s.sol --rpc-url http://localhost:8545 --broadcast
+```
+
+```solidity [script/SignDelegation.s.sol]
+contract SignDelegationScript is Script {
+    address payable ALICE_ADDRESS = payable(0x70997970C51812dc3A010C7d01b50e0d17dc79C8);
+    uint256 constant ALICE_PK = 0x59c6995e998f97a5a0044966f0945389dc9e86dae88c7a8412f4603b6b78690d;
+    address constant BOB_ADDRESS = 0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC;
+    uint256 constant BOB_PK = 0x5de4111afa1a4b94908f83103eb1f1706367c2e68ca870fc3fb9a804cdab365a;
+    uint256 private constant DEPLOYER_PK = 0x2a871d0798f97d79848a013d4936a73bf4cc922c825d33c1cf7073dff6d409c6;
+
+    SimpleDelegateContract public implementation;
+    ERC20 public token;
+
+    function run() external {
+        vm.broadcast(DEPLOYER_PK);
+        implementation = new SimpleDelegateContract();
+        token = new ERC20(ALICE_ADDRESS);
+
+        SimpleDelegateContract.Call[] memory calls = new SimpleDelegateContract.Call[](1);
+        calls[0] = SimpleDelegateContract.Call({
+            to: address(token),
+            data: abi.encodeCall(ERC20.mint, (100, BOB_ADDRESS)),
+            value: 0
+        });
+
+        Vm.SignedDelegation memory signedDelegation = vm.signDelegation(address(implementation), ALICE_PK);
+
+        vm.broadcast(BOB_PK);
+        vm.attachDelegation(signedDelegation);
+        SimpleDelegateContract(ALICE_ADDRESS).execute(calls);
+
+        vm.assertEq(token.balanceOf(BOB_ADDRESS), 100);
+    }
+}
+```
+
+### Gotchas
+
+:::warning[EVM Version]
+These cheatcodes require `evm_version = "prague"` or later in your `foundry.toml`. They will not work with earlier EVM versions.
+:::
+
+:::note
+The delegation signature includes the authority account's nonce to prevent replay attacks. If the nonce changes before the delegation is used, the signature becomes invalid.
+:::
+
+### Related Cheatcodes
+
+- [`sign`](/reference/cheatcodes/sign) - Signs a digest with a private key
+- [`broadcast`](/reference/cheatcodes/broadcast) - Sets the next call's `msg.sender`

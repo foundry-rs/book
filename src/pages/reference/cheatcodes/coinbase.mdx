@@ -1,0 +1,37 @@
+---
+description: Sets block.coinbase to a specified address
+---
+
+## `coinbase`
+
+### Signature
+
+```solidity
+function coinbase(address newCoinbase) external;
+```
+
+### Description
+
+Sets `block.coinbase` to the specified address.
+
+### Parameters
+
+| Parameter     | Type      | Description                           |
+|---------------|-----------|---------------------------------------|
+| `newCoinbase` | `address` | The new coinbase address to set       |
+
+### Examples
+
+```solidity [test/Coinbase.t.sol]
+function testCoinbase() public {
+    address miner = 0xEA674fdDe714fd979de3EdF0F56AA9716B898ec8;
+    vm.coinbase(miner);
+    assertEq(block.coinbase, miner);
+}
+```
+
+### Related Cheatcodes
+
+- [`fee`](/reference/cheatcodes/fee) - Sets `block.basefee`
+- [`roll`](/reference/cheatcodes/roll) - Sets `block.number`
+- [`warp`](/reference/cheatcodes/warp) - Sets `block.timestamp`

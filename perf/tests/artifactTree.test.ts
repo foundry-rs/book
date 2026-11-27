@@ -1,0 +1,74 @@
+import { describe, expect, it } from 'vite-plus/test'
+import { artifactTree, mergeArtifactFiles } from '../src/artifactTree'
+
+const file = (path: string, compiler = 'solar') => ({
+  path,
+  storagePath: path,
+  compilers: [compiler],
+  bytes: 1,
+  label: path,
+  language: 'text',
+})
+
+describe('dynamic artifact directory', () => {
+  it('sorts directories before files at every level regardless of input order', () => {
+    const tree = artifactTree([
+      file('a.json'),
+      file('sources/z.sol'),
+      file('sources/lib/Z.sol'),
+      file('sources/a.sol'),
+      file('sources/lib/A.sol'),
+      file('b.json'),
+    ])
+    expect(tree.map((node) => node.name)).toEqual(['sources', 'a.json', 'b.json'])
+    expect(tree[0].children.map((node) => node.name)).toEqual(['lib', 'a.sol', 'z.sol'])
+    expect(tree[0].children[0].children.map((node) => node.name)).toEqual(['A.sol', 'Z.sol'])
+  })
+
+  it('keeps extensionless sources distinct from .sol files and directory prefixes', () => {
+    expect(
+      artifactTree([file('sources/A'), file('sources/A.sol'), file('sources/A/Child.sol')]),
+    ).toMatchObject([
+      {
+        name: 'sources',
+        children: [
+          {
+            name: 'A',
+            file: { path: 'sources/A' },
+            children: [{ name: 'Child.sol', file: { path: 'sources/A/Child.sol' } }],
+          },
+          { name: 'A.sol', file: { path: 'sources/A.sol' } },
+        ],
+      },
+    ])
+  })
+
+  it('shows nested Solidity sources from both compiler inputs', () => {
+    const files = mergeArtifactFiles(
+      [file('sources/src/Main.sol'), file('sources/lib/Lib.sol')],
+      [file('sources/src/Main.sol', 'solc')],
+    )
+    expect(artifactTree(files)).toMatchObject([
+      {
+        name: 'sources',
+        children: [
+          { name: 'lib', children: [{ name: 'Lib.sol', file: { path: 'sources/lib/Lib.sol' } }] },
+          { name: 'src', children: [{ name: 'Main.sol', file: { compilers: ['solar', 'solc'] } }] },
+        ],
+      },
+    ])
+  })
+
+  it('retains added, removed, and shared files from both sides', () => {
+    const files = mergeArtifactFiles(
+      [file('removed.txt'), file('same.txt', 'new-compiler')],
+      [file('passes/new.log'), file('same.txt')],
+    )
+    expect(files.map((f) => f.path)).toEqual(['passes/new.log', 'removed.txt', 'same.txt'])
+    expect(files[2].compilers).toEqual(['new-compiler', 'solar'])
+    expect(artifactTree(files)[0]).toMatchObject({
+      name: 'passes',
+      children: [{ name: 'new.log', file: { path: 'passes/new.log' } }],
+    })
+  })
+})

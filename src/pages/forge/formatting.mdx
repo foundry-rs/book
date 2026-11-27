@@ -1,0 +1,81 @@
+---
+description: Format Solidity code with Forge.
+---
+
+## Formatting
+
+Forge includes a built-in formatter to enforce consistent code style.
+
+### Format files
+
+Format all Solidity files:
+
+```bash
+$ forge fmt
+```
+
+Check formatting without making changes:
+
+```bash
+$ forge fmt --check
+```
+
+This exits with an error if any file needs formatting—useful for CI.
+
+### Configuration
+
+Configure the formatter in `foundry.toml`:
+
+```toml [foundry.toml]
+[fmt]
+line_length = 120
+tab_width = 4
+bracket_spacing = true
+int_types = "long"
+multiline_func_header = "params_first"
+quote_style = "double"
+number_underscore = "thousands"
+single_line_statement_blocks = "preserve"
+```
+
+Common options:
+
+| Option | Default | Description |
+|--------|---------|-------------|
+| `line_length` | 120 | Maximum line length |
+| `tab_width` | 4 | Spaces per indentation level |
+| `bracket_spacing` | false | Space inside brackets: `{ x }` vs `{x}` |
+| `int_types` | "long" | `uint256` vs `uint` |
+| `quote_style` | "double" | `"string"` vs `'string'` |
+| `number_underscore` | "preserve" | `1_000_000` vs `1000000` |
+
+See the [formatter reference](/config/reference/formatter) for all options.
+
+### Ignoring files
+
+Exclude files from formatting:
+
+```toml [foundry.toml]
+[fmt]
+ignore = ["src/legacy/**"]
+```
+
+### Pre-commit integration
+
+Add formatting checks to git pre-commit hooks:
+
+```bash [.git/hooks/pre-commit]
+#!/bin/sh
+forge fmt --check
+```
+
+Or use a tool like `lefthook` or `husky` for more complex workflows.
+
+### CI integration
+
+Check formatting in CI:
+
+```yaml
+- name: Check formatting
+  run: forge fmt --check
+```

@@ -1,0 +1,87 @@
+---
+description: Snapshot and restore EVM state
+---
+
+## `snapshotState` cheatcodes
+
+### Signature
+
+```solidity
+function snapshotState() external returns (uint256 snapshotId);
+function revertToState(uint256 snapshotId) external returns (bool success);
+function revertToStateAndDelete(uint256 snapshotId) external returns (bool success);
+function deleteStateSnapshot(uint256 snapshotId) external returns (bool success);
+function deleteStateSnapshots() external;
+```
+
+### Description
+
+These cheatcodes allow you to snapshot and restore the entire EVM state.
+
+| Function                 | Description                                                    |
+|--------------------------|----------------------------------------------------------------|
+| `snapshotState`          | Takes a snapshot and returns its ID                            |
+| `revertToState`          | Reverts to a snapshot (keeps the snapshot)                     |
+| `revertToStateAndDelete` | Reverts to a snapshot and deletes it                           |
+| `deleteStateSnapshot`    | Deletes a specific snapshot                                    |
+| `deleteStateSnapshots`   | Deletes all snapshots                                          |
+
+Deprecated aliases: `snapshot`, `revertTo`, `revertToAndDelete`, `deleteSnapshot`, and `deleteSnapshots` are replaced by these cheatcodes.
+
+### Parameters
+
+| Parameter    | Type      | Description                       |
+|--------------|-----------|-----------------------------------|
+| `snapshotId` | `uint256` | The ID of the snapshot to operate on |
+
+### Returns
+
+| Parameter    | Type      | Description                                      |
+|--------------|-----------|--------------------------------------------------|
+| `snapshotId` | `uint256` | The ID of the created snapshot (for `snapshotState`) |
+| `success`    | `bool`    | Whether the operation succeeded                  |
+
+### Examples
+
+```solidity [test/StateSnapshot.t.sol]
+contract StateSnapshotTest is Test {
+    uint256 public slot0;
+    uint256 public slot1;
+
+    function setUp() public {
+        slot0 = 10;
+        slot1 = 20;
+        vm.deal(address(this), 5 ether);
+    }
+
+    function testStateSnapshot() public {
+        uint256 snapshot = vm.snapshotState();
+
+        // Modify state
+        slot0 = 300;
+        slot1 = 400;
+        vm.deal(address(this), 500 ether);
+        vm.warp(12345);
+
+        assertEq(slot0, 300);
+        assertEq(address(this).balance, 500 ether);
+
+        // Restore state
+        vm.revertToState(snapshot);
+
+        assertEq(slot0, 10);
+        assertEq(slot1, 20);
+        assertEq(address(this).balance, 5 ether);
+    }
+}
+```
+
+### Gotchas
+
+:::note
+Reverting to a snapshot also deletes any snapshots taken after it. For example, reverting to snapshot ID 2 will delete snapshots 2, 3, 4, etc.
+:::
+
+### Related Cheatcodes
+
+- [`snapshotGas`](/reference/cheatcodes/gas-snapshots) - Snapshot gas usage

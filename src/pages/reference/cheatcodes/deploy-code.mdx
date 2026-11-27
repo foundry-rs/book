@@ -1,0 +1,98 @@
+---
+description: Deploys a contract from a compiled artifact, optionally with constructor args, value, and CREATE2 salt
+---
+
+## `deployCode`
+
+### Signature
+
+```solidity
+function deployCode(string calldata artifactPath) external returns (address deployedAddress);
+function deployCode(string calldata artifactPath, bytes calldata constructorArgs) external returns (address deployedAddress);
+function deployCode(string calldata artifactPath, uint256 value) external returns (address deployedAddress);
+function deployCode(string calldata artifactPath, bytes calldata constructorArgs, uint256 value) external returns (address deployedAddress);
+function deployCode(string calldata artifactPath, bytes32 salt) external returns (address deployedAddress);
+function deployCode(string calldata artifactPath, bytes calldata constructorArgs, bytes32 salt) external returns (address deployedAddress);
+function deployCode(string calldata artifactPath, uint256 value, bytes32 salt) external returns (address deployedAddress);
+function deployCode(string calldata artifactPath, bytes calldata constructorArgs, uint256 value, bytes32 salt) external returns (address deployedAddress);
+```
+
+### Description
+
+Deploys a contract from a compiled artifact and returns the address of the deployed contract.
+
+The artifact can be referenced in several forms:
+
+- `path/to/artifact.json` - a compiled artifact file
+- `path/to/contract.sol` - a source file containing a single contract
+- `path/to/contract.sol:ContractName` - a specific contract in a source file
+- `path/to/contract.sol:ContractName:0.8.23` - additionally selecting a compiler version
+- `path/to/contract.sol:ContractName:profile` - additionally selecting a compilation profile
+- `ContractName` - a contract name, if it is unambiguous in the project
+
+The overloads let you additionally pass ABI-encoded constructor arguments, send `value` wei with the deployment, or use a CREATE2 `salt`. Without a salt the contract is deployed with a regular `CREATE`; with a salt it is deployed via `CREATE2`, making the resulting address deterministic.
+
+The deployment is performed by the calling contract, so the deployed contract sees the test contract as `msg.sender` in its constructor. If a prank is active, the pranked caller is used instead. During an active broadcast, the deployment is broadcast as a regular contract creation transaction.
+
+The cheatcode reverts if the target artifact contains unlinked library placeholders.
+
+### Parameters
+
+| Parameter         | Type      | Description                                                    |
+|-------------------|-----------|----------------------------------------------------------------|
+| `artifactPath`    | `string`  | Path or identifier of the artifact to deploy                   |
+| `constructorArgs` | `bytes`   | ABI-encoded constructor arguments                              |
+| `value`           | `uint256` | Wei to send with the deployment                                |
+| `salt`            | `bytes32` | CREATE2 salt; switches the deployment to `CREATE2`             |
+
+### Returns
+
+| Type      | Description                          |
+|-----------|--------------------------------------|
+| `address` | The address of the deployed contract |
+
+### Examples
+
+#### Deploying an artifact
+
+```solidity [test/DeployCode.t.sol]
+function testDeployCode() public {
+    address counter = vm.deployCode("Counter.sol:Counter");
+    assertGt(counter.code.length, 0);
+}
+```
+
+#### Deploying with constructor arguments and value
+
+```solidity [test/DeployCodeArgs.t.sol]
+function testDeployCodeWithArgs() public {
+    address token = vm.deployCode(
+        "MyToken.sol:MyToken",
+        abi.encode("My Token", "MTK"),
+        1 ether
+    );
+    assertEq(MyToken(token).symbol(), "MTK");
+}
+```
+
+#### Deterministic deployment with CREATE2
+
+```solidity [test/DeployCodeCreate2.t.sol]
+function testDeployCodeCreate2() public {
+    address deployed = vm.deployCode("Counter.sol:Counter", bytes32(uint256(1)));
+    assertGt(deployed.code.length, 0);
+}
+```
+
+### Gotchas
+
+:::note
+`deployCode` is useful for deploying contracts that cannot be imported directly into the test, for example contracts written for a different compiler version or artifacts produced outside the current compilation unit.
+:::
+
+### Related Cheatcodes
+
+- [`getCode`](/reference/cheatcodes/get-code) - Get the creation bytecode of an artifact
+- [`getDeployedCode`](/reference/cheatcodes/get-deployed-code) - Get the runtime bytecode of an artifact
+- [`computeCreate2Address`](/reference/cheatcodes/compute-create2-address) - Predict a CREATE2 deployment address
+- [`etch`](/reference/cheatcodes/etch) - Set bytecode at an address directly

@@ -1,0 +1,123 @@
+---
+description: Capture and compare gas usage across test runs
+---
+
+## `snapshotGas` cheatcodes
+
+### Signature
+
+```solidity
+function startSnapshotGas(string calldata name) external;
+function startSnapshotGas(string calldata group, string calldata name) external;
+function stopSnapshotGas() external returns (uint256 gasUsed);
+function stopSnapshotGas(string calldata name) external returns (uint256 gasUsed);
+function stopSnapshotGas(string calldata group, string calldata name) external returns (uint256 gasUsed);
+function snapshotValue(string calldata name, uint256 value) external;
+function snapshotValue(string calldata group, string calldata name, uint256 value) external;
+function snapshotGasLastCall(string calldata name) external returns (uint256 gasUsed);
+function snapshotGasLastCall(string calldata group, string calldata name) external returns (uint256 gasUsed);
+function snapshotGasLastFrame(string calldata name) external returns (uint256 gasUsed);
+function snapshotGasLastFrame(string calldata group, string calldata name) external returns (uint256 gasUsed);
+```
+
+### Description
+
+These cheatcodes allow you to capture gas usage in your tests. Snapshots are written to the `snapshots/` directory and can be compared across test runs.
+
+| Function             | Description                                          |
+|----------------------|------------------------------------------------------|
+| `startSnapshotGas`   | Start capturing gas usage                            |
+| `stopSnapshotGas`    | Stop capturing and record the gas used               |
+| `snapshotValue`      | Record an arbitrary numerical value                  |
+| `snapshotGasLastFrame` | Record gas usage of the last external call or contract creation |
+| `snapshotGasLastCall` | Deprecated call-only variant; use `snapshotGasLastFrame` |
+
+### EIP-8037 gas accounting
+
+`snapshotGasLastFrame` and the deprecated `snapshotGasLastCall` record one gas number. Without isolation, they measure consumption of the regular gas counter, including state charges spilled into that counter and excluding charges paid from the reservoir.
+
+For an **isolated transaction**, the current snapshot value depends on its net state gas:
+
+| Net state gas in the isolated frame | Snapshot value |
+| --- | --- |
+| Positive (state created and retained) | Regular counter consumption before the ordinary refund, including any state spillover but excluding reservoir-funded state gas. |
+| Zero (no net state creation) | Receipt gas after ordinary refund and calldata-floor processing. |
+
+These are different accounting bases; keep the same workload and isolation mode when comparing snapshots. Use [`lastFrameGas`](/reference/cheatcodes/last-frame-gas) for the separate components.
+
+Section snapshots (`startSnapshotGas` / `stopSnapshotGas`) also measure regular gas-counter consumption and do not capture state gas paid from the reservoir. Use [`lastFrameGas`](/reference/cheatcodes/last-frame-gas) to inspect regular and signed net state gas separately. Use receipt `gasUsed` for a mined transaction's total charged gas, and `eth_estimateGas` to estimate a sufficient transaction limit.
+
+Without EIP-8037, state creation costs use the ordinary gas schedule and there is no separate state reservoir to exclude. See [gas accounting](/forge/gas-accounting) and [EIP-8037](https://eips.ethereum.org/EIPS/eip-8037) for refunds, state refills, isolation, and network support.
+
+### Configuration
+
+To enforce gas snapshot comparisons:
+- Set `FORGE_SNAPSHOT_CHECK=true` environment variable
+- Set `gas_snapshot_check = true` in `foundry.toml`
+- Pass `--gas-snapshot-check=true`
+
+To disable writing snapshots:
+- Set `FORGE_SNAPSHOT_EMIT=false` environment variable
+- Set `gas_snapshot_emit = false` in `foundry.toml`
+- Pass `--gas-snapshot-emit=false`
+
+### Examples
+
+#### Capturing gas for a section of code
+
+```solidity [test/GasSnapshot.t.sol]
+function testSnapshotGas() public {
+    vm.startSnapshotGas("myOperation");
+    myContract.doSomething();
+    uint256 gasUsed = vm.stopSnapshotGas();
+    // Writes to snapshots/GasSnapshotTest.json
+}
+```
+
+#### Capturing gas for the last frame
+
+```solidity [test/GasSnapshotLastCall.t.sol]
+function testSnapshotGasLastFrame() public {
+    myContract.run(256);
+    vm.snapshotGasLastFrame("run256");
+    // Captures gas used by myContract.run(256)
+}
+```
+
+#### Using custom groups
+
+```solidity [test/GasSnapshotGroup.t.sol]
+function testSnapshotGasGroups() public {
+    vm.startSnapshotGas("Transfers", "smallTransfer");
+    token.transfer(alice, 100);
+    vm.stopSnapshotGas();
+
+    vm.startSnapshotGas("Transfers", "largeTransfer");
+    token.transfer(bob, 1000000);
+    vm.stopSnapshotGas();
+    // Writes to snapshots/Transfers.json
+}
+```
+
+#### Capturing arbitrary values
+
+```solidity [test/SnapshotValue.t.sol]
+function testSnapshotBytecodeSize() public {
+    vm.snapshotValue("bytecodeSize", address(myContract).code.length);
+}
+```
+
+### Gotchas
+
+:::warning
+Gas snapshots are not accurate unless using isolated test mode. Isolation is enabled by default; do not disable it when collecting or checking gas snapshots.
+:::
+
+:::note
+The `snapshots/` directory should be committed to version control to track gas changes over time.
+:::
+
+### Related Cheatcodes
+
+- [`lastFrameGas`](/reference/cheatcodes/last-frame-gas) - Inspect all gas fields for the last call or creation without writing a snapshot
+- [`snapshotState`](/reference/cheatcodes/state-snapshots) - Snapshot EVM state

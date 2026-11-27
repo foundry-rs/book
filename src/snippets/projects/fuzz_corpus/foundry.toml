@@ -1,0 +1,7 @@
+[profile.default]
+test = "test"
+
+[fuzz]
+runs = 512
+corpus_dir = "cache/fuzz-corpus"
+show_edge_coverage = true

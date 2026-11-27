@@ -1,0 +1,195 @@
+---
+description: Generate accurate summaries, LCOV files, per-test coverage attribution, and uncovered-item gap reports.
+---
+
+## Code Coverage
+
+`forge coverage` compiles your project for source mapping, runs the selected tests, and reports which lines, statements, branches, and functions they execute.
+
+Run it without options for a summary table:
+
+```bash
+$ forge coverage
+```
+
+Line and statement coverage show whether executable source locations ran. Branch coverage tracks the alternative paths through conditionals, so 100% line coverage does not necessarily mean every outcome was tested. Function coverage shows whether each function was entered.
+
+### Configure a repeatable report
+
+Coverage settings can live with the profile that uses them:
+
+```toml [foundry.toml]
+[profile.default.coverage]
+report = ["summary", "lcov"]
+lcov_version = "1"
+report_file = "lcov.info"
+exclude_tests = true
+skip_files = ["script/**", "src/mocks/**"]
+```
+
+`report` accepts `summary`, `lcov`, `attribution`, `gaps`, `debug`, and `bytecode`. A CLI `--report` overrides the configured list and can be repeated:
+
+```bash
+$ forge coverage --report summary --report lcov
+```
+
+The following contract and tests cover all three fee paths:
+
+```solidity [src/Pricing.sol]
+// [!include ~/snippets/projects/coverage/src/Pricing.sol:all]
+```
+
+```solidity [test/Pricing.t.sol]
+// [!include ~/snippets/projects/coverage/test/Pricing.t.sol:all]
+```
+
+### Choose what to run and report
+
+Test filters such as `--match-test`, `--match-contract`, and `--match-path` decide which tests execute. Coverage filters decide which source files appear in the result:
+
+| Setting | Syntax | Effect |
+| --- | --- | --- |
+| `--no-match-coverage <REGEX>` | CLI regular expression | Removes matching source paths from the report |
+| `skip_files` | Configuration glob list | Removes project-relative paths such as `src/mocks/**` |
+| `--exclude-tests` | CLI flag or configuration | Excludes test sources from analysis |
+| `--include-libs` | CLI flag or configuration | Includes dependency sources under library directories |
+
+Filtering a source from the report does not prevent its code from executing. Likewise, filtering tests changes the executed workload and can lower coverage elsewhere.
+
+### Generate LCOV for CI
+
+Generate only an LCOV tracefile at a chosen path:
+
+```bash
+$ forge coverage --report lcov --report-file lcov.info
+```
+
+The default path is `lcov.info` in the project root. Use `--lcov-version 1`, `2`, or `2.2` to match the tracefile version supported by your coverage service. Foundry generates the data but does not enforce a minimum percentage; configure thresholds in the service or tool that consumes the LCOV file.
+
+`--report-file` applies when exactly one file report is requested. If you request more than one file report, Foundry uses their default names instead: `lcov.info`, `coverage-attribution.json`, and `coverage-gaps.json`.
+
+### Map coverage to individual tests
+
+The attribution report is structured JSON that maps every executed test to the source items it covered:
+
+```bash
+$ forge coverage --report attribution \
+    --report-file coverage-attribution.json
+```
+
+The top-level object has a schema `version` and a `tests` array. Each test contains its suite, name, status, kind, and `covered` items. Covered items identify the source, contract, item kind, line and byte ranges, hit count, and function or branch identifiers when applicable.
+
+This report is useful for test selection and repository tooling. An agent can find tests that exercise a changed file without parsing a terminal table:
+
+```bash
+$ jq --arg source "src/Pricing.sol" \
+    '.tests[] | select(any(.covered[]; .source == $source)) | .test' \
+    coverage-attribution.json
+```
+
+Source filters also apply to attribution output, so keep the same filters when comparing it with a summary or LCOV report.
+
+### List uncovered code
+
+The gaps report is JSON that lists every source item the selected tests did not execute. Use it to find untested branches without parsing a terminal table or an LCOV file:
+
+```bash
+$ forge coverage --report gaps
+```
+
+Foundry writes `coverage-gaps.json` in the project root. Use `--report-file` to choose another path. The top-level object has a schema `version` and a `files` map from each source path to its uncovered items. Foundry omits files that have no gaps. For example, a `set` function whose `else` path never ran produces these items, trimmed here:
+
+```json [coverage-gaps.json]
+{
+  "version": 1,
+  "files": {
+    "src/AContract.sol": [
+      {
+        "kind": "branch",
+        "contract": "AContract",
+        "function": "set",
+        "line_start": 9,
+        "line_end": 13,
+        "byte_start": 180,
+        "byte_end": 266,
+        "snippet": "if (x > 10) {",
+        "branch_id": 0,
+        "path_id": 1
+      },
+      {
+        "kind": "line",
+        "contract": "AContract",
+        "function": "set",
+        "line_start": 12,
+        "line_end": 12,
+        "byte_start": 246,
+        "byte_end": 255,
+        "snippet": "value = 0"
+      }
+    ]
+  }
+}
+```
+
+Each item has a `kind` (`line`, `statement`, `branch`, or `function`), the `contract`, and the enclosing `function` when there is one. `line_start` and `line_end` are 1-based and inclusive, so a one-line item has the same start and end line. `byte_start` is a 0-based byte offset and `byte_end` is exclusive, in the source with CRLF line endings normalized to LF. If a statement has the same location as a line item, the report keeps only the line item. `snippet` is the first source line of the item. Branch items also carry `branch_id` and `path_id`, which identify the uncovered path.
+
+A gap means the selected tests never ran that item. The report does not say whether the item reverts. An agent can list the untested branches of one file and read the code at each location:
+
+```bash
+$ jq -r '.files["src/Pricing.sol"][] | select(.kind == "branch")
+    | "\(.function):\(.line_start) \(.snippet)"' coverage-gaps.json
+```
+
+Source filters also apply to the gaps report.
+
+### Understand compiler differences
+
+For accurate source maps, `forge coverage` disables optimizer settings and `viaIR` by default. The coverage build can therefore differ from the production build in bytecode shape, gas use, and inlining.
+
+To preserve your project's optimizer and `viaIR` settings, enable
+[`keep_optimizer`](/config/reference/advanced-testing#keep_optimizer) under
+`[profile.<name>.coverage]`, or pass `--keep-optimizer`. This preserves settings
+rather than enabling optimization by itself. Optimized builds can miss or merge
+coverage items that the optimizer removes or combines, so results can be less
+accurate. The default is `false`; you can also set
+`FOUNDRY_COVERAGE_KEEP_OPTIMIZER=true`.
+
+If coverage compilation fails with a stack-too-deep error, retry with:
+
+```bash
+$ forge coverage --ir-minimum
+```
+
+`--ir-minimum` enables `viaIR` with minimal optimization. It is a workaround, not the preferred baseline: inlining and IR source maps can make internal functions or library code appear uncovered. See [Stack Too Deep](/guides/stack-too-deep) for alternatives.
+
+`keep_optimizer` and `ir_minimum` are mutually exclusive, including when one is
+enabled in configuration and the other through a CLI flag. Disable the
+conflicting configuration setting before switching modes.
+
+Coverage compilation is ephemeral and does not leave normal build artifacts behind. Run `forge build` after coverage if a later step needs artifacts from the selected production profile.
+
+### Keep CI results stable
+
+Use a dedicated profile when CI needs different exclusions or fuzz settings:
+
+```toml [foundry.toml]
+[profile.ci.fuzz]
+runs = 512
+
+[profile.ci.coverage]
+report = ["lcov", "attribution"]
+exclude_tests = true
+skip_files = ["script/**", "src/mocks/**"]
+```
+
+Run that profile explicitly:
+
+```bash
+$ FOUNDRY_PROFILE=ci forge coverage
+```
+
+Coverage uses a static fuzz seed by default, which keeps fuzz-derived reports repeatable. An explicit `--fuzz-seed` or `[fuzz] seed` overrides it. Pin the Foundry version, compiler version, active profile, test filters, and report filters before treating a percentage change as a regression.
+
+Foundry writes requested file reports before returning a failing exit status for failed tests. CI should therefore check the command status even if an LCOV or attribution file exists.
+
+See the [`forge coverage` command reference](/reference/forge/coverage) for all test, compiler, and report options.

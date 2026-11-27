@@ -1,0 +1,60 @@
+---
+description: Read and write TOML files with the forge-std stdToml library.
+---
+
+## Std Toml
+
+`stdToml` is a helper library for parsing and writing TOML in tests and scripts. It wraps the [TOML cheatcodes](/reference/cheatcodes/parse-toml) (`vm.parseToml*`, the `vm.serialize*` JSON helpers, and `vm.writeToml`) in typed functions that attach to a `string` holding TOML data.
+
+Keys use the same selector syntax as the `vm.parseToml*` cheatcodes: `.a` selects a nested field, `$` selects the root object, and `.a[0]` selects an array element.
+
+Import `stdToml` from `forge-std/StdToml.sol` and declare `using stdToml for string;`, as shown in the runnable example below.
+
+### Reading values
+
+Each read function takes the TOML string and a key, and reverts if the key does not exist or the value cannot be read as the requested type.
+
+| Type      | Single value  | Array              | With default (single) | With default (array) |
+| --------- | ------------- | ------------------ | --------------------- | -------------------- |
+| `uint256` | `readUint`    | `readUintArray`    | `readUintOr`          | `readUintArrayOr`    |
+| `int256`  | `readInt`     | `readIntArray`     | `readIntOr`           | `readIntArrayOr`     |
+| `bool`    | `readBool`    | `readBoolArray`    | `readBoolOr`          | `readBoolArrayOr`    |
+| `address` | `readAddress` | `readAddressArray` | `readAddressOr`       | `readAddressArrayOr` |
+| `string`  | `readString`  | `readStringArray`  | `readStringOr`        | `readStringArrayOr`  |
+| `bytes`   | `readBytes`   | `readBytesArray`   | `readBytesOr`         | `readBytesArrayOr`   |
+| `bytes32` | `readBytes32` | `readBytes32Array` | `readBytes32Or`       | `readBytes32ArrayOr` |
+
+The `Or` variants return the given default value when the key does not exist, instead of reverting. `keyExists(toml, key)` returns whether a key is present.
+
+#### Parsing raw values
+
+`parseRaw(toml, key)` returns the value at `key` ABI-encoded, ready to be decoded with `abi.decode`. Use it for values that do not map to a single read function, such as a whole table decoded into a struct.
+
+### Writing values
+
+`serialize` builds a JSON object in memory one key at a time. `write` converts that JSON to TOML when saving the file. Do not pass the serialized JSON directly to the TOML read functions; read the written file first. Start from a string that names the object, and pass that same string as the first argument of every call: each call adds one key, and the string returned by the final call contains the whole object. Reassigning the name string between calls starts a new object instead.
+
+
+String values are written as `string("...")` so the compiler selects the `string` overload of `serialize`. There are `serialize` overloads for `bool`, `uint256`, `int256`, `address`, `bytes32`, `bytes`, and `string`, each in single-value and array form, plus `serialize(objectName, rootObject)`, which initializes the named object from a JSON object string. To nest an object, pass its serialized JSON to the string-valued overload with a key.
+
+`write(path)` writes the serialized object to a file as TOML. With extension syntax, `value.write(path, valueKey)` writes `value` at `valueKey` in the destination TOML file, preserving its other fields. The key selects a location in the destination file, not a value to extract from the input. Reading and writing files is governed by [`fs_permissions`](/reference/cheatcodes/fs).
+
+### Runnable example
+
+This example reads a fixture, checks a missing key's default, writes an object, and updates a key in the destination file.
+
+```solidity [test/StdToml.t.sol]
+// [!include ~/snippets/projects/std_toml/test/StdToml.t.sol]
+```
+
+From `src/snippets/projects/std_toml`, install the pinned library and run the tests:
+
+```bash
+$ forge install --no-git foundry-rs/forge-std@b013eff2ac4fce26f34d789e6f5c49021c5ee817
+$ forge test -vv
+```
+
+### See Also
+
+- [stdToml.sol](https://github.com/foundry-rs/forge-std/blob/master/src/StdToml.sol)
+- [parseToml cheatcodes](/reference/cheatcodes/parse-toml)

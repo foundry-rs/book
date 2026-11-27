@@ -1,0 +1,60 @@
+---
+description: Computes the address where a contract will be deployed via CREATE2 for a salt and init code hash
+---
+
+## `computeCreate2Address`
+
+### Signature
+
+```solidity
+function computeCreate2Address(bytes32 salt, bytes32 initCodeHash) external pure returns (address);
+function computeCreate2Address(bytes32 salt, bytes32 initCodeHash, address deployer) external pure returns (address);
+```
+
+### Description
+
+Computes the address a contract will be deployed at when deployed with the `CREATE2` opcode, following `keccak256(0xff ++ deployer ++ salt ++ initCodeHash)[12:]`.
+
+The two-argument overload uses the default CREATE2 deployer (the deterministic deployment proxy at `0x4e59b44847b379578588920cA78FbF26c0B4956C`), which Foundry uses for CREATE2 deployments in scripts. Pass an explicit `deployer` when the deployment is performed by a different contract, for example a factory executing the `CREATE2` opcode itself.
+
+### Parameters
+
+| Parameter      | Type      | Description                                                     |
+|----------------|-----------|-----------------------------------------------------------------|
+| `salt`         | `bytes32` | The CREATE2 salt                                                |
+| `initCodeHash` | `bytes32` | `keccak256` of the init code (creation code plus ABI-encoded constructor arguments) |
+| `deployer`     | `address` | The address executing the `CREATE2` opcode (defaults to the default CREATE2 deployer) |
+
+### Returns
+
+| Type      | Description                                 |
+|-----------|---------------------------------------------|
+| `address` | The address the contract will be deployed at |
+
+### Examples
+
+```solidity [test/ComputeCreate2Address.t.sol]
+function testComputeCreate2Address() public {
+    bytes32 salt = keccak256("my salt");
+    bytes32 initCodeHash = keccak256(type(Counter).creationCode);
+
+    // The test contract performs the CREATE2 deployment itself,
+    // so it is the deployer.
+    address expected = vm.computeCreate2Address(salt, initCodeHash, address(this));
+
+    Counter counter = new Counter{salt: salt}();
+
+    assertEq(address(counter), expected);
+}
+```
+
+### Gotchas
+
+:::note
+When the contract has constructor arguments, the `initCodeHash` must include them: `keccak256(abi.encodePacked(type(MyContract).creationCode, abi.encode(arg1, arg2)))`.
+:::
+
+### Related Cheatcodes
+
+- [`computeCreateAddress`](/reference/cheatcodes/compute-create-address) - Compute a CREATE deployment address
+- [`deployCode`](/reference/cheatcodes/deploy-code) - Deploy an artifact, optionally with a CREATE2 salt

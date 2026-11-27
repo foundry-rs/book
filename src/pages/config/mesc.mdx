@@ -1,0 +1,115 @@
+---
+description: Use MESC to manage RPC endpoints across all your crypto tools from a single configuration file.
+---
+
+## MESC
+
+[MESC](https://github.com/paradigmxyz/mesc) (Multiple Endpoint Shared Configuration) is an open standard for managing RPC endpoint configuration across multiple tools and languages from a single file.
+
+Instead of configuring RPC endpoints separately in every tool (`foundry.toml`, Hardhat config, custom scripts, etc.), MESC lets you define them once and have any MESC-aware tool pick them up automatically.
+
+Foundry has supported MESC since [foundry-rs/foundry#8760](https://github.com/foundry-rs/foundry/pull/8760).
+
+### How Foundry uses MESC
+
+When Foundry resolves an RPC endpoint (e.g. from `--fork-url`, `vm.createFork`, or `cast`), it checks sources in this order:
+
+1. **MESC** — queried first if `MESC_PATH` is set
+2. **`[rpc_endpoints]`** in `foundry.toml` — checked as a fallback
+
+This means MESC endpoint names, chain IDs, and network names all work transparently wherever Foundry accepts an RPC URL.
+
+For example, if your MESC config defines an endpoint named `mainnet`, you can reference it directly:
+
+```bash
+forge test --fork-url mainnet
+cast block-number --rpc-url mainnet
+```
+
+### Setup
+
+#### 1. Install the MESC CLI
+
+```bash
+cargo install mesc_cli
+```
+
+> On some Linux distributions you may need SSL libraries first:
+>
+> ```bash
+> sudo apt-get install pkg-config libssl-dev
+> ```
+
+#### 2. Run interactive setup
+
+```bash
+mesc setup
+```
+
+This creates a `mesc.json` config file and offers to automatically add `MESC_PATH` to your shell config (`~/.bashrc`, `~/.zshrc`, etc.).
+
+#### 3. Set the environment variable (if not done by setup)
+
+```bash
+export MESC_PATH=/path/to/your/mesc.json
+```
+
+Add this to your shell config to make it permanent.
+
+### Configuration file
+
+A minimal `mesc.json` with a local and mainnet endpoint:
+
+```json [mesc.json]
+{
+  "mesc_version": "MESC 1.0",
+  "default_endpoint": "local",
+  "network_defaults": {
+    "1": "mainnet_alchemy",
+    "31337": "local"
+  },
+  "network_names": {},
+  "endpoints": {
+    "local": {
+      "name": "local",
+      "url": "http://localhost:8545",
+      "chain_id": "31337",
+      "endpoint_metadata": {}
+    },
+    "mainnet_alchemy": {
+      "name": "mainnet_alchemy",
+      "url": "https://eth-mainnet.g.alchemy.com/v2/YOUR_API_KEY",
+      "chain_id": "1",
+      "endpoint_metadata": {}
+    }
+  },
+  "profiles": {},
+  "global_metadata": {}
+}
+```
+
+MESC resolves endpoint references in three ways (tried in order):
+
+1. **Endpoint name** — e.g. `mainnet_alchemy`
+2. **Chain ID** — e.g. `1`
+3. **Network name** — e.g. `mainnet`
+
+### Relationship to `[rpc_endpoints]`
+
+MESC and `[rpc_endpoints]` are complementary. MESC is checked first; if no match is found, Foundry falls back to `[rpc_endpoints]` in `foundry.toml`.
+
+You can continue using `[rpc_endpoints]` as before — MESC simply adds a higher-priority, cross-tool source for endpoint resolution.
+
+```toml [foundry.toml]
+# These are still used as a fallback if MESC is not configured
+# or if an endpoint isn't found in MESC
+[rpc_endpoints]
+local = "http://localhost:8545"
+```
+
+### Further reading
+
+- [MESC Specification](https://github.com/paradigmxyz/mesc/blob/main/SPECIFICATION.md)
+- [MESC Documentation](https://paradigmxyz.github.io/mesc/)
+- [MESC CLI](https://github.com/paradigmxyz/mesc/tree/main/cli)
+- [Foundry PR #8760](https://github.com/foundry-rs/foundry/pull/8760)

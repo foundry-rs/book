@@ -1,0 +1,47 @@
+---
+description: Generates a ready-to-sign EIP-712 digest from JSON typed data
+---
+
+## `eip712HashTypedData`
+
+### Signature
+
+```solidity
+function eip712HashTypedData(string calldata jsonData) external pure returns (bytes32 digest);
+```
+
+### Description
+
+Generates the final, ready-to-sign [EIP-712](https://eips.ethereum.org/EIPS/eip-712) digest (`keccak256("\x19\x01" ‖ domainSeparator ‖ hashStruct(message))`) from a JSON document in the standard `eth_signTypedData_v4` format with `types`, `primaryType`, `domain`, and `message` fields.
+
+This matches what wallets sign, so it is useful for verifying a contract's full typed-data flow, including the domain separator, against a single fixture.
+
+### Parameters
+
+| Parameter  | Type     | Description                                        |
+|------------|----------|----------------------------------------------------|
+| `jsonData` | `string` | The typed data as `eth_signTypedData_v4` style JSON |
+
+### Returns
+
+| Type      | Description                  |
+|-----------|------------------------------|
+| `bytes32` | The EIP-712 signing digest   |
+
+### Examples
+
+```solidity [test/Eip712HashTypedData.t.sol]
+function testHashTypedData() public view {
+    string memory jsonData =
+        '{"types":{"EIP712Domain":[{"name":"name","type":"string"},{"name":"version","type":"string"},{"name":"chainId","type":"uint256"},{"name":"verifyingContract","type":"address"},{"name":"salt","type":"bytes32"}]},"primaryType":"EIP712Domain","domain":{"name":"example.metamask.io","version":"1","chainId":1,"verifyingContract":"0x0000000000000000000000000000000000000000"},"message":{}}';
+
+    bytes32 expected = hex"122d1c8ef94b76dad44dcb03fa772361e20855c63311a15d5afe02d1b38f6077";
+    assertEq(vm.eip712HashTypedData(jsonData), expected);
+}
+```
+
+### Related Cheatcodes
+
+- [`eip712HashStruct`](/reference/cheatcodes/eip712-hash-struct) - Hash a single struct value
+- [`eip712HashType`](/reference/cheatcodes/eip712-hash-type) - Hash a type definition
+- [`sign`](/reference/cheatcodes/sign) - Sign the resulting digest

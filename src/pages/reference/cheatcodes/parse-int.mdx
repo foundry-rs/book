@@ -1,0 +1,40 @@
+---
+description: Parses a string into an int256
+---
+
+## `parseInt`
+
+### Signature
+
+```solidity
+function parseInt(string calldata stringifiedValue) external pure returns (int256 parsedValue);
+```
+
+### Description
+
+Parses a string into an `int256`.
+
+### Parameters
+
+| Parameter          | Type     | Description              |
+|--------------------|----------|--------------------------|
+| `stringifiedValue` | `string` | The string to parse      |
+
+### Returns
+
+| Type     | Description        |
+|----------|-------------------|
+| `int256` | The parsed int    |
+
+### Examples
+
+```solidity [test/ParseInt.t.sol]
+string memory intAsString = "-12345";
+int256 result = vm.parseInt(intAsString);
+assertEq(result, -12345);
+```
+
+### Related Cheatcodes
+
+- [`toString`](/reference/cheatcodes/to-string) - Converts int to string
+- [`parseUint`](/reference/cheatcodes/parse-uint) - Parses string to uint256

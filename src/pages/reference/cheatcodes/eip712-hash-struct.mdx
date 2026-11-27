@@ -1,0 +1,72 @@
+---
+description: Generates the EIP-712 struct hash for a type and its ABI-encoded data
+---
+
+## `eip712HashStruct`
+
+### Signature
+
+```solidity
+function eip712HashStruct(string calldata typeNameOrDefinition, bytes calldata abiEncodedData) external pure returns (bytes32 typeHash);
+function eip712HashStruct(string calldata bindingsPath, string calldata typeName, bytes calldata abiEncodedData) external pure returns (bytes32 typeHash);
+```
+
+### Description
+
+Generates the [EIP-712](https://eips.ethereum.org/EIPS/eip-712) `hashStruct` of a struct value: `keccak256(typeHash ‖ encodeData(value))`. Pass the struct value as `abi.encode(value)`.
+
+The type can be given either as:
+
+1. A type definition string, such as `Permit(address owner,address spender,uint256 value)`. Nested structs append their definitions, and the cheatcode canonicalizes malformed input (extra whitespace, wrong order of definitions).
+2. A type name, such as `PermitSingle`. This requires bindings previously generated with `forge bind-json`; they are read from the path configured under `[bind_json]` in `foundry.toml` (default `utils/JsonBindings.sol`), or from an explicit `bindingsPath` with the second overload.
+
+This replaces manually implementing the recursive `hashStruct` for nested types, and is useful for asserting that a contract's typed-data hashing is correct.
+
+### Parameters
+
+| Parameter              | Type     | Description                                               |
+|------------------------|----------|-----------------------------------------------------------|
+| `typeNameOrDefinition` | `string` | A type name (requires bindings) or a full type definition |
+| `bindingsPath`         | `string` | Path to the `forge bind-json` output file                 |
+| `typeName`             | `string` | The name of the type in the bindings                      |
+| `abiEncodedData`       | `bytes`  | The struct value, encoded with `abi.encode`               |
+
+### Returns
+
+| Type      | Description                    |
+|-----------|--------------------------------|
+| `bytes32` | The EIP-712 struct hash        |
+
+### Examples
+
+```solidity [test/Eip712HashStruct.t.sol]
+struct Permit {
+    address owner;
+    address spender;
+    uint256 value;
+}
+
+bytes32 constant PERMIT_TYPEHASH =
+    keccak256("Permit(address owner,address spender,uint256 value)");
+
+function testEip712HashStruct() public view {
+    Permit memory permit = Permit({owner: address(1), spender: address(2), value: 10 ether});
+
+    bytes32 expected = keccak256(
+        abi.encode(PERMIT_TYPEHASH, permit.owner, permit.spender, permit.value)
+    );
+
+    bytes32 structHash = vm.eip712HashStruct(
+        "Permit(address owner,address spender,uint256 value)",
+        abi.encode(permit)
+    );
+
+    assertEq(structHash, expected);
+}
+```
+
+### Related Cheatcodes
+
+- [`eip712HashType`](/reference/cheatcodes/eip712-hash-type) - Hash a type definition
+- [`eip712HashTypedData`](/reference/cheatcodes/eip712-hash-typed-data) - Compute a full EIP-712 digest from JSON
+- [`sign`](/reference/cheatcodes/sign) - Sign the resulting digest

@@ -1,0 +1,184 @@
+---
+description: Generate typed Rust contract bindings and Solidity JSON helpers from a Foundry project.
+---
+
+## Contract bindings
+
+Foundry provides two generators with different outputs. Choose the workflow based on what consumes the generated code.
+
+| Goal | Command | Output |
+| --- | --- | --- |
+| Call contracts from Rust | [`forge bind`](/reference/forge/bind) | An Alloy crate or Rust module generated from compiled contract artifacts |
+| Start from a verified deployed contract | [`cast source`](/reference/cast/source), then `forge bind` | Explorer source followed by local Alloy bindings |
+| Serialize Solidity structs to and from JSON | [`forge bind-json`](/reference/forge/bind-json) | A Solidity helper library for JSON cheatcodes |
+
+`forge bind-json` does not generate Rust code. The former `cast bind` workflow has also been removed; fetch verified source with `cast source` and generate bindings from a Forge project with `forge bind` instead.
+
+### Generate Alloy bindings from a project
+
+`forge bind` compiles the project and reads the resulting ABIs. Calls, return values, errors, and events all become typed Alloy definitions.
+
+For example, start with this contract:
+
+```solidity
+// [!include ~/snippets/projects/contract_bindings/src/Counter.sol]
+```
+
+Generate a standalone Rust crate for only `Counter`:
+
+```bash
+forge bind \
+  --bindings-path bindings \
+  --select '^Counter$' \
+  --crate-name counter-bindings \
+  --crate-version 0.1.0 \
+  --crate-license MIT \
+  --alloy-version 1.0
+```
+
+The result has this shape:
+
+```text
+bindings/
+├── Cargo.toml
+└── src/
+    ├── counter.rs
+    └── lib.rs
+```
+
+Add it to another Rust crate as a path dependency:
+
+```toml
+[dependencies]
+counter-bindings = { path = "../contracts/bindings" }
+```
+
+Then import the generated contract module:
+
+```rust
+use alloy::primitives::U256;
+use counter_bindings::counter::Counter;
+
+let counter = Counter::new(address, provider);
+let pending = counter.increment(U256::from(1)).send().await?;
+```
+
+The exact provider and transaction setup depends on your Alloy application. The generated module also contains `Incremented`, `ZeroAmount`, the ABI, call types, and return types.
+
+#### Select the intended contracts
+
+Use `--select <REGEX>` more than once to generate a narrow public surface:
+
+```bash
+forge bind \
+  --bindings-path bindings \
+  --select '^Counter$' \
+  --select '^Treasury$'
+```
+
+By default, contracts whose names end in `Test` or `Script` are excluded. `--select-all` explicitly includes every contract and cannot be combined with `--select`.
+
+The default output is `out/bindings`. Pass `--bindings-path` to keep generated Rust code somewhere else. Use `--module` when the output should be a module rather than a crate, and `--single-file` when one generated source file is preferable.
+
+#### Keep generated bindings reproducible
+
+Treat Solidity source and compiled ABIs as the source of truth. Do not edit generated Rust files by hand.
+
+During development, regenerate intentionally:
+
+```bash
+forge bind \
+  --bindings-path bindings \
+  --select '^Counter$' \
+  --alloy-version 1.0 \
+  --overwrite
+```
+
+In CI, omit `--overwrite`. If the directory already exists, `forge bind` compares it with freshly generated output and exits unsuccessfully when it is stale:
+
+```bash
+forge bind \
+  --bindings-path bindings \
+  --select '^Counter$' \
+  --alloy-version 1.0
+cargo check --manifest-path bindings/Cargo.toml --locked
+```
+
+Commit the generated crate's `Cargo.lock` when your repository policy permits it, or pin the dependency with `--alloy-rev`. Keep every generation option in a script or CI job so local and automated output cannot drift.
+
+Only use `--skip-build` when the artifact directory is known to be current. Otherwise, stale artifacts can produce bindings that do not match the Solidity source under review.
+
+### Generate bindings for a verified contract
+
+When you only have a deployed address, retrieve the explorer-verified sources into an existing Forge project, then run the same local generator:
+
+```bash
+cast source "$ADDRESS" \
+  --chain mainnet \
+  --etherscan-api-key "$ETHERSCAN_API_KEY" \
+  -d src/vendor/verified-contract
+
+forge bind \
+  --bindings-path bindings \
+  --select '^VerifiedContract$' \
+  --alloy-version 1.0
+```
+
+Check the chain ID, address, explorer, and downloaded source before compiling it. Prefer existing local source or artifacts when available; this workflow introduces explorer availability and verified-source trust into generation.
+
+### Generate Solidity JSON helpers
+
+`forge bind-json` discovers Solidity structs and generates typed wrappers around Foundry's JSON cheatcodes. This is useful when tests or scripts read structured configuration files.
+
+Define the struct that represents the JSON schema:
+
+```solidity
+// [!include ~/snippets/projects/contract_bindings/src/ConfigTypes.sol]
+```
+
+Configure the generated file and narrow the source set in `foundry.toml`:
+
+```toml
+// [!include ~/snippets/projects/contract_bindings/foundry.toml]
+```
+
+The include and exclude values are globs matched against compiler source paths. A leading `**/` makes the example work for absolute and project-relative paths. If `include` is omitted, Foundry considers all non-library project files by default.
+
+Generate the helper:
+
+```bash
+forge bind-json
+```
+
+By default, the command writes `utils/JsonBindings.sol`. A positional path overrides the configured output:
+
+```bash
+forge bind-json generated/ProjectJsonBindings.sol
+```
+
+The generated library includes `serialize`, `deserializeDeploymentConfig`, path-based overloads, and array deserializers. Import it after generation:
+
+```solidity
+// [!include ~/snippets/projects/contract_bindings/test/JsonBindings.t.sol]
+```
+
+Run `forge bind-json` whenever a struct is added, removed, renamed, or changed. Foundry preprocesses an existing generated file so stale imports usually do not prevent regeneration, but the generated file must exist before source that imports it can compile for the first time.
+
+### Agent workflow
+
+When an agent encounters generated bindings:
+
+1. Read `foundry.toml`, generation scripts, and CI before changing output paths or flags.
+2. Inspect the Solidity declaration or ABI instead of searching large generated files first.
+3. Run `forge bind` without `--overwrite` to detect Rust binding drift.
+4. Regenerate with the repository's exact selectors and version options, then review ABI-level changes in calls, events, errors, and return types.
+5. Run `forge bind-json` before compiling code that imports a missing or stale JSON helper.
+
+This order keeps generated code attributable to a small input change and avoids unnecessary explorer or RPC requests.
+
+### See also
+
+- [`forge bind` reference](/reference/forge/bind)
+- [`forge bind-json` reference](/reference/forge/bind-json)
+- [`cast source` reference](/reference/cast/source)
+- [Building contracts](/forge/build)

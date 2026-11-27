@@ -1,0 +1,139 @@
+---
+description: Sign, submit, verify, and clear EIP-7702 account delegations with Cast.
+---
+
+## EIP-7702 account delegation
+
+[EIP-7702](https://eips.ethereum.org/EIPS/eip-7702) lets an externally owned account (EOA) delegate code execution to a deployed contract. Cast can sign the authorization separately with [`cast wallet sign-auth`](/reference/cast/wallet/sign-auth), or sign and include it directly with [`cast send --auth`](/reference/cast/send).
+
+The positional `ADDRESS` passed to `cast wallet sign-auth` is the implementation contract. The authority is derived from the wallet that signs the authorization.
+
+:::warning
+An EIP-7702 delegation persists until it is replaced or cleared. The implementation executes in the authority's context and can access its storage and assets. Only delegate to code you trust and have audited.
+:::
+
+### Prerequisites
+
+The target chain must support EIP-7702. For local development, start Anvil with the Prague hardfork:
+
+```bash
+$ anvil --hardfork prague
+```
+
+The examples use these values:
+
+| Variable | Meaning |
+|----------|---------|
+| `$AUTHORITY` | EOA whose code will point to the implementation |
+| `$IMPLEMENTATION` | Deployed contract whose code will execute for the authority |
+| `$BROADCASTER` | Account that submits and pays for the EIP-7702 transaction |
+| `$RPC_URL` | RPC endpoint for an EIP-7702-compatible chain |
+
+The `authority` and `broadcaster` names in the examples refer to encrypted Cast keystores. See [wallet operations](/cast/wallet-operations) for keystore setup.
+
+### Sign and broadcast in one step
+
+When the authority broadcasts the transaction, pass the implementation address directly to `--auth`. Cast signs the authorization with the transaction signer and selects the authorization nonce automatically:
+
+```bash
+$ cast send $AUTHORITY "initialize(address)" $OWNER \
+    --auth $IMPLEMENTATION \
+    --account authority \
+    --rpc-url $RPC_URL
+```
+
+The authorization is processed before the call, so the call to `$AUTHORITY` executes `initialize(address)` from `$IMPLEMENTATION` in the authority's context. Replace that function with calldata supported by your implementation.
+
+### Use a separate broadcaster
+
+An authority can sign an authorization without broadcasting the transaction. `cast wallet sign-auth` prints the RLP-encoded signed authorization:
+
+```bash
+$ AUTH=$(cast wallet sign-auth $IMPLEMENTATION \
+    --account authority \
+    --rpc-url $RPC_URL)
+```
+
+A different account can include that authorization in a transaction and pay its gas:
+
+```bash
+$ cast send $AUTHORITY "initialize(address)" $OWNER \
+    --auth $AUTH \
+    --account broadcaster \
+    --rpc-url $RPC_URL
+```
+
+`--auth` accepts either an implementation address or a signed authorization. The address form is signed by the transaction signer. Use the signed form when the authority and broadcaster are different accounts.
+
+### Choose the authorization nonce
+
+An authorization is valid only when its nonce equals the authority's nonce during authorization processing.
+
+| Flow | Nonce behavior |
+|------|----------------|
+| `cast send --auth $IMPLEMENTATION` | Cast signs for the transaction sender using the carrier transaction nonce plus one. |
+| `cast wallet sign-auth` with a different broadcaster | Cast queries and uses the authority's current nonce. |
+| `cast wallet sign-auth --self-broadcast` | Cast queries the current nonce and adds one because the authority's carrier transaction increments it first. |
+| `cast wallet sign-auth --nonce $NONCE` | Cast uses the exact nonce provided. |
+
+Use `--self-broadcast` only when the same authority will submit the pre-signed authorization:
+
+```bash
+$ AUTH=$(cast wallet sign-auth $IMPLEMENTATION \
+    --self-broadcast \
+    --account authority \
+    --rpc-url $RPC_URL)
+
+$ cast send $AUTHORITY "initialize(address)" $OWNER \
+    --auth $AUTH \
+    --account authority \
+    --rpc-url $RPC_URL
+```
+
+You can also set the chain and nonce explicitly:
+
+```bash
+$ AUTH=$(cast wallet sign-auth $IMPLEMENTATION \
+    --chain $CHAIN_ID \
+    --nonce $AUTHORITY_NONCE \
+    --account authority)
+```
+
+:::note
+If the authority's nonce changes before the authorization is included, the authorization becomes invalid. The authorization is also bound to the selected chain ID.
+:::
+
+### Verify the delegation
+
+Read the authority's code after the transaction is mined:
+
+```bash
+$ cast code $AUTHORITY --rpc-url $RPC_URL
+```
+
+For an active delegation, the result is the 23-byte delegation indicator `0xef0100` followed by the implementation address. You can also inspect the transaction's authorization list:
+
+```bash
+$ cast tx $TX_HASH authorizationList --json --rpc-url $RPC_URL
+```
+
+### Replace or clear a delegation
+
+Authorize a different implementation to replace the existing delegation. To restore the account to empty EOA code, authorize the zero address:
+
+```bash
+$ cast send $AUTHORITY \
+    --auth 0x0000000000000000000000000000000000000000 \
+    --account authority \
+    --rpc-url $RPC_URL
+```
+
+:::warning
+Authorization processing is not rolled back when the transaction's execution later reverts. Always verify the authority's code after submitting a delegation transaction.
+:::
+
+### Related references
+
+- [`cast wallet sign-auth`](/reference/cast/wallet/sign-auth) — Sign and RLP-encode an authorization.
+- [`cast send`](/reference/cast/send) — Include address-based or pre-signed authorizations with `--auth`.
+- [`signDelegation`](/reference/cheatcodes/sign-delegation) — Create and attach delegations from Solidity tests and scripts.

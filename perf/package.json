@@ -1,0 +1,46 @@
+{
+  "name": "foundry-perf",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "vp build",
+    "build:vercel-api": "node scripts/build-vercel-api.mjs",
+    "check": "vp check",
+    "dev": "vp dev",
+    "db:backfill": "node scripts/ingest-github-runs.mjs",
+    "db:backfill-sources": "node scripts/backfill-sources.mjs",
+    "db:schema": "node scripts/apply-schema.mjs",
+    "db:verify": "node scripts/verify-clickhouse.mjs",
+    "format": "vp fmt",
+    "lint": "vp lint",
+    "test": "vp test --run"
+  },
+  "dependencies": {
+    "@pierre/diffs": "1.6.4",
+    "@pierre/trees": "1.0.0",
+    "@vercel/functions": "^3.11.3",
+    "@viz-js/viz": "3.31.0",
+    "fflate": "0.8.3",
+    "hono": "^4.13.18",
+    "lucide-react": "^1.73.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.5",
+    "@types/node": "^26.6.6",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.3.0",
+    "diff": "^9.0.0",
+    "tailwindcss": "^4.3.5",
+    "typescript": "~7.0.2",
+    "vite": "catalog:",
+    "vite-plus": "catalog:",
+    "vitest": "catalog:"
+  },
+  "engines": {
+    "node": "24.x"
+  }
+}

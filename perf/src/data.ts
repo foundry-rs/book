@@ -1,0 +1,277 @@
+import type { HistorySeries, LineCounts, PrRun, RunDocument, RunIndex } from './types'
+import { responseCache } from './cache'
+import { reportImport } from './importProgress'
+import { mergeHistory, type HistoryRange } from './historySeries'
+import { project } from './project'
+import { apiBase } from './projects'
+
+const root = `${apiBase(project)}/data/`
+const knownCommits = responseCache<string>(300_000, 64 * 1024)
+const cachedIndex = responseCache<RunIndex>(60_000)
+const cachedPrs = responseCache<PrRun[]>(60_000)
+const cachedHistory = responseCache<HistorySeries>(60_000)
+const cachedArtifact = responseCache<string | null>(3_600_000)
+const cachedRun = responseCache<RunDocument>(300_000)
+const cachedManifest = responseCache<RunDocument['artifacts']>(300_000)
+const cachedViewer = responseCache<[RunDocument, RunDocument]>(300_000)
+const cachedLineCounts = responseCache<Record<string, LineCounts>>(300_000)
+const runQueue: {
+  commit: string
+  revision?: string
+  partner?: string
+  resolve: (run: RunDocument) => void
+  reject: (error: unknown) => void
+}[] = []
+
+// Coalesce the comparison's concurrent cache misses without refetching a cached side.
+// Individual cache entries also remain shared with the artifact viewer. A lone side names
+// its compared `partner`, whose run may carry the missing base's baseline results.
+function fetchRun(commit: string, revision?: string, partner?: string): Promise<RunDocument> {
+  return new Promise((resolve, reject) => {
+    runQueue.push({ commit, revision, partner, resolve, reject })
+    if (runQueue.length !== 1) return
+    queueMicrotask(() => {
+      const pending = runQueue.splice(0)
+      for (let i = 0; i < pending.length; i += 2) {
+        const batch = pending
+          .slice(i, i + 2)
+          .sort(
+            (a, b) =>
+              a.commit.localeCompare(b.commit) ||
+              (a.revision ?? '').localeCompare(b.revision ?? ''),
+          )
+        const commits = batch.map((entry) => entry.commit)
+        const revisions = batch.map((entry) => entry.revision ?? '').join(',')
+        const request =
+          commits.length === 1
+            ? getJson<RunDocument>(
+                `runs/${commits[0]}/run.json?artifacts=0${batch[0].revision ? `&revision=${batch[0].revision}` : ''}${batch[0].partner ? `&partner=${batch[0].partner}` : ''}`,
+              ).then((run) => [run])
+            : getJson<{ runs: RunDocument[] }>(
+                `runs.json?${new URLSearchParams({ commits: commits.join(','), ...(batch.some((entry) => entry.revision) ? { revisions } : {}) })}`,
+              ).then(({ runs }) => runs)
+        void request
+          .then((runs) => {
+            for (const entry of batch) {
+              const run = runs.find((run) => run.commit === entry.commit)
+              if (run) entry.resolve(run)
+              else entry.reject(new Error('Run not found in response'))
+            }
+          })
+          .catch((error: unknown) => batch.forEach((entry) => entry.reject(error)))
+      }
+    })
+  })
+}
+
+export function loadHistory(metric: string, benchmark?: string, range: HistoryRange = '90d') {
+  const params = new URLSearchParams({ metric })
+  if (range !== '90d') params.set('range', range)
+  const dashboard = cachedHistory.peek(params.toString())
+  if (benchmark !== undefined && dashboard) {
+    return dashboard.then(({ runs, values }) => ({
+      runs,
+      values: Object.hasOwn(values, benchmark) ? { [benchmark]: values[benchmark] } : {},
+    }))
+  }
+  if (benchmark !== undefined) params.set('benchmark', benchmark)
+  return cachedHistory(params.toString(), async () => {
+    const result: HistorySeries = { runs: [], values: Object.create(null) }
+    const cursors = new Set<string>()
+    for (;;) {
+      const page = await getJson<HistorySeries>(`history.json?${params}`)
+      mergeHistory(result, page)
+      if (!page.nextCursor) return result
+      if (cursors.has(page.nextCursor)) throw new Error('History pagination did not advance.')
+      cursors.add(page.nextCursor)
+      params.set('cursor', page.nextCursor)
+    }
+  })
+}
+
+async function getJson<T>(path: string): Promise<T> {
+  const deadline = Date.now() + 90_000
+  const pendingCommits = new Set<string>()
+  try {
+    for (;;) {
+      const response = await fetch(`${root}${path}`, {
+        signal: AbortSignal.timeout(Math.max(1, deadline - Date.now())),
+      })
+      const retry = Number(response.headers.get('retry-after'))
+      // Retain old-preview compatibility while 202 replaces the pending-only 503.
+      if (response.status === 202 || (response.status === 503 && retry > 0)) {
+        const status = await response.json().catch(() => ({}))
+        const message =
+          status.status === 'retry'
+            ? `Benchmark import failed. Retry scheduled in ${Math.ceil(retry)} seconds.`
+            : status.status === 'benchmark-running'
+              ? 'Benchmarks still running…'
+              : 'Importing benchmark runs…'
+        if (typeof status.commit === 'string') {
+          pendingCommits.add(status.commit)
+          reportImport(status.commit, message)
+        }
+        if (!Number.isFinite(retry) || retry <= 0) throw new Error('Invalid import retry response.')
+        if (Date.now() + retry * 1000 >= deadline)
+          throw new Error(
+            status.status === 'retry'
+              ? message
+              : status.status === 'benchmark-running'
+                ? 'Benchmarks are still running. Try again shortly.'
+                : 'Benchmark import is still running. Try again shortly.',
+          )
+        await new Promise((resolve) => setTimeout(resolve, retry * 1000))
+        continue
+      }
+      if (!response.ok)
+        throw new Error(
+          response.status === 404
+            ? 'No benchmark results are available for this commit.'
+            : `Could not load benchmark data (${response.status}). Try again shortly.`,
+        )
+      return response.json() as Promise<T>
+    }
+  } finally {
+    for (const commit of pendingCommits) reportImport(commit, null)
+  }
+}
+
+export function loadIndex() {
+  return cachedIndex('index', () => getJson<RunIndex>('index.json'))
+}
+
+// Listed runs carry full SHAs, so picking one compares without resolving a ref.
+export function loadPrs() {
+  return cachedPrs('prs', async () => {
+    const { prs } = await getJson<{ prs: PrRun[] }>('prs.json')
+    for (const run of prs) {
+      void knownCommits(run.commit, async () => run.commit)
+      if (run.baseCommit) void knownCommits(run.baseCommit, async () => run.baseCommit!)
+    }
+    return prs
+  })
+}
+
+export async function resolveCommit(value: string): Promise<string> {
+  const ref = value.trim()
+  if (!ref) throw new Error('Enter a commit, branch, tag, or PR.')
+  if (/^[0-9a-f]{40}$/i.test(ref)) {
+    const known = knownCommits.peek(ref.toLowerCase())
+    if (known) return known
+  }
+  // Mutable refs are resolved only on submission, never against a stale published index.
+  const response = await fetch(`${apiBase(project)}/resolve?${new URLSearchParams({ ref })}`, {
+    cache: 'no-store',
+  })
+  if (!response.ok) {
+    if (response.status === 422) throw new Error('Ambiguous commit prefix; use a longer SHA.')
+    throw new Error(`Could not resolve “${ref}” (${response.status}).`)
+  }
+  const result = (await response.json()) as { commit: string }
+  if (!/^[0-9a-f]{40}$/.test(result.commit)) throw new Error('Invalid resolved commit.')
+  return knownCommits(result.commit, async () => result.commit)
+}
+
+// Runs and artifacts already carry canonical full SHAs; resolve only user refs here.
+function resolveRunCommit(commit: string) {
+  return /^[0-9a-f]{40}$/i.test(commit)
+    ? Promise.resolve(commit.toLowerCase())
+    : resolveCommit(commit)
+}
+
+export async function loadRun(commit: string, revision?: string, partner?: string) {
+  const resolved = await resolveRunCommit(commit)
+  const run = await cachedRun(`${resolved}:${revision ?? ''}`, () =>
+    fetchRun(resolved, revision, partner),
+  )
+  if (!revision && run.revision) await cachedRun(`${resolved}:${run.revision}`, async () => run)
+  return run
+}
+
+export async function loadRunWithArtifacts(commit: string): Promise<RunDocument> {
+  // Ensure on-demand imports finish before requesting the manifest. Metrics remain shared
+  // with the comparison page, which never needs to read artifact_files.
+  const run = await loadRun(commit)
+  const artifacts = await cachedManifest(`${run.commit}:${run.revision ?? ''}`, () =>
+    getJson<RunDocument['artifacts']>(
+      `runs/${run.commit}/artifacts.json${run.revision ? `?revision=${run.revision}` : ''}`,
+    ),
+  )
+  return { ...run, artifacts }
+}
+
+export async function loadViewerRuns(
+  base: string,
+  head: string,
+  benchmark: string,
+  baseRevision?: string,
+  headRevision?: string,
+) {
+  const commits = await Promise.all([resolveRunCommit(base), resolveRunCommit(head)])
+  const params = new URLSearchParams({ commits: commits.join(','), benchmark })
+  if (baseRevision || headRevision)
+    params.set('revisions', [baseRevision ?? '', headRevision ?? ''].join(','))
+  return cachedViewer(params.toString(), async () => {
+    const { runs } = await getJson<{ runs: RunDocument[] }>(`viewer.json?${params}`)
+    const before = runs.find((run) => run.commit === commits[0])
+    const after = runs.find((run) => run.commit === commits[1])
+    if (!before || !after) throw new Error('Run not found in response')
+    const value: [RunDocument, RunDocument] = [before, after]
+    if (before.revision || after.revision) {
+      const pinned = new URLSearchParams(params)
+      pinned.set('revisions', [before.revision ?? '', after.revision ?? ''].join(','))
+      if (pinned.toString() !== params.toString())
+        await cachedViewer(pinned.toString(), async () => value)
+    }
+    return value
+  })
+}
+
+export interface LineCountSide {
+  run: Pick<RunDocument, 'commit' | 'revision'>
+  compiler: string
+}
+
+export function loadLineCounts(left: LineCountSide, right: LineCountSide, benchmark: string) {
+  const params = new URLSearchParams({
+    commits: `${left.run.commit},${right.run.commit}`,
+    compilers: `${left.compiler},${right.compiler}`,
+    benchmark,
+  })
+  if (left.run.revision || right.run.revision)
+    params.set('revisions', `${left.run.revision ?? ''},${right.run.revision ?? ''}`)
+  return cachedLineCounts(params.toString(), () =>
+    getJson<Record<string, LineCounts>>(`line-counts.json?${params}`),
+  )
+}
+
+export async function loadArtifact(
+  commit: string,
+  benchmark: string,
+  compiler: string,
+  storagePath: string,
+  contentHash?: string,
+): Promise<string | null> {
+  const resolved = await resolveRunCommit(commit)
+  const url = artifactUrl(resolved, benchmark, compiler, storagePath, contentHash)
+  return cachedArtifact(url, () =>
+    fetch(url).then((response) => {
+      if (response.status === 404) return null
+      if (!response.ok) throw new Error(`Could not load artifact (${response.status})`)
+      return response.text()
+    }),
+  )
+}
+
+export function artifactUrl(
+  commit: string,
+  benchmark: string,
+  compiler: string,
+  storagePath: string,
+  contentHash?: string,
+) {
+  const parts = [commit, benchmark, compiler, ...storagePath.replace(/\.json$/, '').split('/')].map(
+    encodeURIComponent,
+  )
+  return `${root}${contentHash ? `blobs/${contentHash}` : `runs/${parts.join('/')}`}`
+}

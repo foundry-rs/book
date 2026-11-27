@@ -1,0 +1,63 @@
+---
+description: Signs a digest, returning an EIP-2098 compact signature (r, vs)
+---
+
+## `signCompact`
+
+### Signature
+
+```solidity
+function signCompact(uint256 privateKey, bytes32 digest) external pure returns (bytes32 r, bytes32 vs);
+function signCompact(Wallet calldata wallet, bytes32 digest) external pure returns (bytes32 r, bytes32 vs);
+function signCompact(bytes32 digest) external pure returns (bytes32 r, bytes32 vs);
+function signCompact(address signer, bytes32 digest) external pure returns (bytes32 r, bytes32 vs);
+```
+
+### Description
+
+Signs `digest` using the secp256k1 curve, like [`sign`](/reference/cheatcodes/sign), but returns an [EIP-2098](https://eips.ethereum.org/EIPS/eip-2098) compact signature `(r, vs)`, where `vs` packs the signature's `s` value and the recovery id `v` into a single word. This reduces the signature from 65 to 64 bytes.
+
+The overloads mirror `sign`:
+
+- With `privateKey` or a `Wallet`, the provided key signs the digest.
+- With only `digest`, the signer provided to the script is used. If `--sender` is set, the matching unlocked signer is used; otherwise exactly one signer must be available. Reverts if this is ambiguous.
+- With `signer`, the unlocked script wallet with that address is used. Reverts if no unlocked signer matches.
+
+### Parameters
+
+| Parameter    | Type      | Description                                    |
+|--------------|-----------|------------------------------------------------|
+| `privateKey` | `uint256` | The private key to sign with                   |
+| `wallet`     | `Wallet`  | The wallet to sign with                        |
+| `signer`     | `address` | Address of an unlocked script wallet           |
+| `digest`     | `bytes32` | The digest to sign                             |
+
+### Returns
+
+| Parameter | Type      | Description                                          |
+|-----------|-----------|------------------------------------------------------|
+| `r`       | `bytes32` | The signature's `r` value                            |
+| `vs`      | `bytes32` | The `s` value with the recovery bit in the top bit   |
+
+### Examples
+
+```solidity [test/SignCompact.t.sol]
+function testSignCompact() public {
+    (address alice, uint256 alicePk) = makeAddrAndKey("alice");
+    bytes32 digest = keccak256("message");
+
+    (bytes32 r, bytes32 vs) = vm.signCompact(alicePk, digest);
+
+    // Recover using OpenZeppelin's ECDSA.recover(hash, r, vs), or unpack manually:
+    bytes32 s = vs & bytes32(uint256((1 << 255) - 1));
+    uint8 v = uint8(uint256(vs >> 255)) + 27;
+
+    assertEq(ecrecover(digest, v, r, s), alice);
+}
+```
+
+### Related Cheatcodes
+
+- [`sign`](/reference/cheatcodes/sign) - Sign a digest, returning `(v, r, s)`
+- [`createWallet`](/reference/cheatcodes/create-wallet) - Create a wallet for tests
+- [`addr`](/reference/cheatcodes/addr) - Compute the address of a private key

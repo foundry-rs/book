@@ -1,0 +1,67 @@
+---
+description: Discards fuzz inputs that don't satisfy a condition
+---
+
+## `assume`
+
+### Signature
+
+```solidity
+function assume(bool condition) external;
+```
+
+### Description
+
+If the boolean expression evaluates to false, the fuzzer will discard the current fuzz inputs and start a new fuzz run.
+
+Use `assume` for **narrow checks** where only specific values should be excluded. For broad range constraints, use [`bound`](/reference/forge-std/bound) instead.
+
+### Parameters
+
+| Parameter   | Type   | Description                                      |
+|-------------|--------|--------------------------------------------------|
+| `condition` | `bool` | If false, the current fuzz run is discarded      |
+
+### Examples
+
+#### Excluding specific values
+
+```solidity [test/Assume.t.sol]
+function testWithAssume(uint256 a) public {
+    vm.assume(a != 1);
+    require(a != 1);
+    // [PASS]
+}
+```
+
+#### Use bound for ranges instead
+
+```solidity [test/UseBound.t.sol]
+function testWithBound(uint256 a) public {
+    // Don't use assume for ranges - use bound instead
+    a = bound(a, 100, 1e36);
+    require(a >= 100 && a <= 1e36);
+    // [PASS]
+}
+```
+
+### Gotchas
+
+:::warning
+Broad checks will slow down tests significantly as the fuzzer struggles to find valid values. The test may fail if you hit the max number of rejects.
+
+Configure the rejection threshold with [`fuzz.max_test_rejects`](/config/reference/testing#max_test_rejects) in `foundry.toml`.
+:::
+
+:::note
+For range constraints, prefer [`bound`](/reference/forge-std/bound) or the modulo operator over `assume`. These approaches are much more efficient.
+:::
+
+### Related Cheatcodes
+
+- [`assumeNoRevert`](/reference/cheatcodes/assume-no-revert) - Discard fuzz inputs if the next call reverts
+
+### See Also
+
+- [`bound`](/reference/forge-std/bound) - Bound a value to a range
+- [Filtering Guide](https://altsysrq.github.io/proptest-book/proptest/tutorial/filtering.html#filtering) - More on filtering in property testing

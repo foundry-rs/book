@@ -1,0 +1,176 @@
+---
+description: Track and compare gas usage with Forge snapshots and reports.
+---
+
+## Gas tracking
+
+Forge tracks gas usage to help optimize contracts and catch regressions.
+
+Under EIP-8037 (Amsterdam), gas has two dimensions: regular gas and state gas. See [gas accounting](/forge/gas-accounting) for how reports, snapshots, and [`lastFrameGas`](/reference/cheatcodes/last-frame-gas) relate to them.
+
+### Gas reports
+
+Generate a gas report for all tests:
+
+```bash
+$ forge test --gas-report
+```
+
+Output shows gas usage per function:
+
+```ansi
+╭----------------------------------+-----------------+-------+--------+-------+---------╮
+|[38;5;13m src/Counter.sol:Counter Contract [39m|                 |       |        |       |         |
++=======================================================================================+
+|[38;5;14m Deployment Cost                  [39m|[38;5;14m Deployment Size [39m|       |        |       |         |
+|----------------------------------+-----------------+-------+--------+-------+---------|
+|                           156813 |             509 |       |        |       |         |
+|----------------------------------+-----------------+-------+--------+-------+---------|
+|                                  |                 |       |        |       |         |
+|----------------------------------+-----------------+-------+--------+-------+---------|
+| Function Name                    |[38;5;10m Min             [39m|[38;5;11m Avg   [39m|[38;5;11m Median [39m|[38;5;9m Max   [39m|[38;5;14m # Calls [39m|
+|----------------------------------+-----------------+-------+--------+-------+---------|
+| increment                        |[38;5;10m           43482 [39m|[38;5;11m 43482 [39m|[38;5;11m  43482 [39m|[38;5;9m 43482 [39m|       1 |
+|----------------------------------+-----------------+-------+--------+-------+---------|
+| number                           |[38;5;10m            2424 [39m|[38;5;11m  2424 [39m|[38;5;11m   2424 [39m|[38;5;9m  2424 [39m|       2 |
+|----------------------------------+-----------------+-------+--------+-------+---------|
+| setNumber                        |[38;5;10m           23784 [39m|[38;5;11m 23784 [39m|[38;5;11m  23784 [39m|[38;5;9m 23784 [39m|       1 |
+╰----------------------------------+-----------------+-------+--------+-------+---------╯
+```
+
+### Gas reports and transient storage
+
+`forge test --gas-report` runs with [call isolation](/forge/testing#call-isolation) enabled. Each top-level `CALL` from the test runs as its own transaction, so [EIP-1153 transient storage](https://eips.ethereum.org/EIPS/eip-1153) written by one call does not carry to the next. `STATICCALL` and `DELEGATECALL` from the test are not isolated, and the test contract's own transient storage is not reset.
+
+If a test sets context with `TSTORE` in one call and reads it with `TLOAD` in a later call, the read sees empty storage under `--gas-report` (and under default isolated `forge test`). That is expected transaction semantics, not a metering bug.
+
+Practical options:
+
+- Keep the `TSTORE` and the `TLOAD` inside the same top-level call (or the same contract function under test).
+- `--gas-report` enables isolation even when you pass `--no-isolate` or set `isolate = false` in `foundry.toml`. Tests with an inline `/// forge-config: default.isolate = false` annotation are the exception: they run without isolation even under `--gas-report`. To exercise transient storage shared across calls, use that annotation or run `forge test --no-isolate` without `--gas-report`. Gas numbers for non-isolated tests differ from an isolated report.
+
+### Filter gas reports
+
+Report only specific contracts:
+
+```toml [foundry.toml]
+[profile.default]
+gas_reports = ["Counter", "Token"]
+```
+
+Exclude contracts:
+
+```toml [foundry.toml]
+[profile.default]
+gas_reports_ignore = ["Test", "Script"]
+```
+
+### Gas snapshots
+
+Create a snapshot file to track gas over time:
+
+```bash
+$ forge snapshot
+```
+
+This creates `.gas-snapshot` with gas usage for each test:
+
+```txt
+CounterTest:test_Increment() (gas: 31293)
+CounterTest:testFuzz_SetNumber(uint256) (runs: 256, μ: 31121, ~: 31277)
+```
+
+Compare against a previous snapshot:
+
+```bash
+$ forge snapshot --diff
+```
+
+Check that gas hasn't increased:
+
+```bash
+$ forge snapshot --check
+```
+
+This exits with an error if any test uses more gas than recorded.
+
+### Inline gas tracking
+
+Use `gasleft()` to measure specific operations:
+
+```solidity
+function test_MeasureGas() public {
+    uint256 gasBefore = gasleft();
+    
+    counter.increment();
+    
+    uint256 gasUsed = gasBefore - gasleft();
+    console.log("Gas used:", gasUsed);
+}
+```
+
+### Snapshot cheatcodes
+
+Take named snapshots for comparison in tests:
+
+```solidity
+function test_GasComparison() public {
+    vm.startSnapshotGas("increment");
+    counter.increment();
+    uint256 gasIncrement = vm.stopSnapshotGas();
+
+    vm.startSnapshotGas("setNumber");
+    counter.setNumber(1);
+    uint256 gasSetNumber = vm.stopSnapshotGas();
+
+    assertLt(gasSetNumber, gasIncrement);
+}
+```
+
+### Gas in CI
+
+Add snapshot checking to your CI pipeline:
+
+```yaml
+- name: Check gas
+  run: forge snapshot --check
+```
+
+Update snapshots when gas changes are intentional:
+
+```bash
+$ forge snapshot
+$ git add .gas-snapshot
+$ git commit -m "Update gas snapshot"
+```
+
+### Pause gas metering
+
+Exclude setup code from gas measurements:
+
+```solidity
+function test_OnlyMeasureTarget() public {
+    // Setup not metered
+    vm.pauseGasMetering();
+    _complexSetup();
+    vm.resumeGasMetering();
+    
+    // Only this is measured
+    target.execute();
+}
+```
+
+### Reset gas metering
+
+Reset the gas counter mid-test:
+
+```solidity
+function test_ResetMidway() public {
+    target.setup();
+    
+    vm.resetGasMetering();
+    
+    // Gas measurement starts fresh here
+    target.execute();
+}
+```

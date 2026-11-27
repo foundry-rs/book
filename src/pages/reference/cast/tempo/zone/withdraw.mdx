@@ -1,0 +1,322 @@
+---
+description: "Request a withdrawal using the authenticated zone RPC. --rpc-url selects the zone RPC. The receipt confirms the request, not L1 settlement."
+---
+
+_Generated from `cast tempo zone withdraw --help`; see [CLI reference versions](/reference/versions). Regenerate this page instead of editing it directly._
+
+## cast tempo zone withdraw
+
+Request a withdrawal using the authenticated zone RPC.
+
+--rpc-url selects the zone RPC. The receipt confirms the request, not L1
+settlement.
+
+:::terminal
+
+```bash
+$ cast tempo zone withdraw --help
+```
+
+```txt
+Usage: cast tempo zone withdraw [OPTIONS] --zone-id <ZONE_ID> --zone-chain-id <ZONE_CHAIN_ID> --amount <AMOUNT>
+
+Options:
+      --zone-id <ZONE_ID>
+          Zone ID used to scope the RPC authorization token
+
+          [env: ZONE_ID=]
+
+      --zone-chain-id <ZONE_CHAIN_ID>
+          Zone chain ID used to sign the RPC authorization token before
+          connecting
+
+          [env: ZONE_CHAIN_ID=]
+
+      --callback-gas-limit <CALLBACK_GAS_LIMIT>
+          L1 callback gas limit. Zero disables the callback
+
+          [default: 0]
+
+      --fallback-recipient <FALLBACK_RECIPIENT>
+          Zone recipient for bounced withdrawals if L1 execution fails. Defaults
+          to the signing wallet
+
+      --callback-data <CALLBACK_DATA>
+          Data passed to the L1 receiver's withdrawal callback, without a
+          function selector
+
+          [default: 0x]
+
+      --reveal-to <REVEAL_TO>
+          Compressed secp256k1 key for revealing the withdrawal sender
+
+          [default: 0x]
+
+      --wait-l1
+          Wait for successful L1 delivery, including callback execution. Does
+          not wait for a return deposit
+
+      --wait-timeout <WAIT_TIMEOUT>
+          Maximum seconds to wait for L1 settlement after zone inclusion
+
+          [default: 180]
+
+      --l1-rpc-url <L1_RPC_URL>
+          Override the public mainnet or Moderato RPC inferred from the zone
+          chain ID
+
+          [env: L1_RPC_URL=]
+
+      --portal <PORTAL>
+          Zone portal on Tempo L1. Required for --wait-l1 and Earn callback
+          builders
+
+          [env: L1_PORTAL_ADDRESS=]
+
+      --token <TOKEN>
+          TIP-20 token address on the source chain
+
+          [default: 0x20C0000000000000000000000000000000000000]
+
+      --amount <AMOUNT>
+          Amount in the token's smallest units
+
+      --to <TO>
+          Destination address. Defaults to the signing wallet
+
+      --memo <MEMO>
+          Transfer memo
+
+          [default:
+          0x0000000000000000000000000000000000000000000000000000000000000000]
+
+      --approve
+          Approve the required amount (including withdrawal fees) if allowance
+          is insufficient
+
+  -h, --help
+          Print help (see a summary with '-h')
+
+  -j, --threads <THREADS>
+          Number of threads to use. Specifying 0 defaults to the number of
+          logical cores
+
+          [alias: --jobs]
+
+      --profile <PROFILE>
+          The configuration profile to use
+
+Rpc options:
+  -r, --rpc-url <URL>
+          The RPC endpoint
+
+          [alias: --fork-url]
+
+  -k, --insecure
+          Allow insecure RPC connections (accept invalid HTTPS certificates).
+
+          When the provider's inner runtime transport variant is HTTP, this
+          configures the reqwest client to accept invalid certificates.
+
+      --rpc-timeout <RPC_TIMEOUT>
+          Timeout for the RPC request in seconds.
+
+          The specified timeout will be used to override the default timeout for
+          RPC requests.
+
+          Default value: 45
+
+          [env: ETH_RPC_TIMEOUT=]
+
+      --no-proxy
+          Disable automatic proxy detection.
+
+          Use this in sandboxed environments (e.g., Cursor IDE sandbox, macOS
+          App Sandbox) where system proxy detection causes crashes. When
+          enabled, HTTP_PROXY/HTTPS_PROXY environment variables and system proxy
+          settings will be ignored.
+
+      --compute-units-per-second <CUPS>
+          Sets the number of assumed available compute units per second for this
+          provider.
+
+          default value: 330
+
+          See also
+          [https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second](https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second)
+
+      --no-rpc-rate-limit
+          Disables rate limiting for this node's provider.
+
+          See also
+          [https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second](https://docs.alchemy.com/reference/compute-units#what-are-cups-compute-units-per-second)
+
+          [alias: --no-rate-limit]
+
+      --flashbots
+          Use the Flashbots RPC URL with fast mode
+          ([https://rpc.flashbots.net/fast](https://rpc.flashbots.net/fast)).
+
+          This shares the transaction privately with all registered builders.
+
+          See:
+          [https://docs.flashbots.net/flashbots-protect/quick-start#faster-transactions](https://docs.flashbots.net/flashbots-protect/quick-start#faster-transactions)
+
+      --jwt-secret <JWT_SECRET>
+          JWT Secret for the RPC endpoint.
+
+          The JWT secret will be used to create a JWT for an RPC. For example,
+          the following can be used to simulate a CL `engine_forkchoiceUpdated`
+          call:
+
+          cast rpc --jwt-secret <JWT_SECRET> engine_forkchoiceUpdatedV2
+          '["0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc",
+          "0x6bb38c26db65749ab6e472080a3d20a2f35776494e72016d1e339593f21c59bc"]'
+
+          [env: ETH_RPC_JWT_SECRET=]
+
+      --rpc-headers <RPC_HEADERS>
+          Specify custom headers for RPC requests
+
+          [env: ETH_RPC_HEADERS=]
+
+      --curl
+          Print the equivalent curl command instead of making the RPC request
+
+Wallet options - raw:
+  -f, --from <ADDRESS>
+          The sender account
+
+          [env: ETH_FROM=]
+
+  -i, --interactive
+          Open an interactive prompt to enter your private key
+
+      --private-key <RAW_PRIVATE_KEY>
+          Use the provided private key
+
+      --mnemonic <MNEMONIC>
+          Use the mnemonic phrase of mnemonic file at the specified path
+
+      --mnemonic-passphrase <PASSPHRASE>
+          Use a BIP39 passphrase for the mnemonic
+
+      --mnemonic-derivation-path <PATH>
+          The wallet derivation path.
+
+          Works with both --mnemonic-path and hardware wallets.
+
+      --mnemonic-index <INDEX>
+          Use the private key from the given mnemonic index.
+
+          Used with --mnemonic-path.
+
+          [default: 0]
+
+Wallet options - keystore:
+      --keystore <PATH>
+          Use the keystore in the given folder or file
+
+          [env: ETH_KEYSTORE=]
+
+      --account <ACCOUNT_NAME>
+          Use a keystore from the default keystores folder
+          (~/.foundry/keystores) by its filename
+
+          [env: ETH_KEYSTORE_ACCOUNT=]
+
+      --password <PASSWORD>
+          The keystore password.
+
+          Used with --keystore.
+
+      --password-file <PASSWORD_FILE>
+          The keystore password file path.
+
+          Used with --keystore.
+
+          [env: ETH_PASSWORD=]
+
+Wallet options - hardware wallet:
+  -l, --ledger
+          Use a Ledger hardware wallet
+
+  -t, --trezor
+          Use a Trezor hardware wallet
+
+Wallet options - remote:
+      --aws
+          Use AWS Key Management Service.
+
+          Ensure the AWS_KMS_KEY_ID environment variable is set.
+
+      --gcp
+          Use Google Cloud Key Management Service.
+
+          Ensure the following environment variables are set: GCP_PROJECT_ID,
+          GCP_LOCATION, GCP_KEY_RING, GCP_KEY_NAME, GCP_KEY_VERSION.
+
+          See: [https://cloud.google.com/kms/docs](https://cloud.google.com/kms/docs)
+
+      --turnkey
+          Use Turnkey.
+
+          Ensure the following environment variables are set:
+          TURNKEY_API_PRIVATE_KEY, TURNKEY_ORGANIZATION_ID, TURNKEY_ADDRESS.
+
+          See: [https://docs.turnkey.com/getting-started/quickstart](https://docs.turnkey.com/getting-started/quickstart)
+
+Wallet options - Tempo:
+      --tempo.access-key <PRIVATE_KEY>
+          Tempo access key private key.
+
+          When set, the transaction is signed with this access key on behalf of
+          `--tempo.root-account`.
+
+          [env: TEMPO_ACCESS_KEY=]
+
+      --tempo.root-account <ADDRESS>
+          Tempo root account address (the `from` address for keychain
+          transactions).
+
+          Required when `--tempo.access-key` is set.
+
+          [env: TEMPO_ROOT_ACCOUNT=]
+
+Display options:
+      --color <COLOR>
+          The color of the log messages
+
+          Possible values:
+          - auto:   Intelligently guess whether to use color output (default)
+          - always: Force color output
+          - never:  Force disable color output
+
+      --json
+          Format log messages as JSON
+
+      --md
+          Format log messages as Markdown
+
+  -q, --quiet
+          Do not print log messages
+
+  -v, --verbosity...
+          Verbosity level of the log messages.
+
+          Pass multiple times to increase the verbosity (e.g. -v, -vv, -vvv).
+
+          Depending on the context the verbosity levels have different meanings.
+
+          For example, the verbosity levels of the EVM are:
+          - 2 (-vv): Print logs for all tests.
+          - 3 (-vvv): Print execution traces for failing tests.
+          - 4 (-vvvv): Print execution traces for all tests, and setup traces
+          for failing tests.
+          - 5 (-vvvvv): Print execution and setup traces for all tests,
+          including storage changes and
+            backtraces with line numbers.
+```
+
+:::

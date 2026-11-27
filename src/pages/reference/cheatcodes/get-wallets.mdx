@@ -1,0 +1,49 @@
+---
+description: Returns the addresses of available unlocked wallets in the script environment
+---
+
+## `getWallets`
+
+### Signature
+
+```solidity
+function getWallets() external view returns (address[] memory wallets);
+```
+
+### Description
+
+Returns the addresses of all unlocked wallets available in the script environment.
+
+This includes wallets passed to `forge script` via flags such as `--private-key`, `--private-keys`, `--mnemonics`, `--ledger`, or `--trezor`, as well as wallets added from within the script with [`rememberKey`](/reference/cheatcodes/remember-key).
+
+Use it to write scripts that iterate over all provided signers without hardcoding their addresses.
+
+### Returns
+
+| Type        | Description                                    |
+|-------------|------------------------------------------------|
+| `address[]` | Addresses of the available unlocked wallets    |
+
+### Examples
+
+```solidity [script/GetWallets.s.sol]
+function run() external {
+    address[] memory wallets = vm.getWallets();
+
+    for (uint256 i = 0; i < wallets.length; i++) {
+        vm.startBroadcast(wallets[i]);
+        // Perform actions with each unlocked wallet.
+        vm.stopBroadcast();
+    }
+}
+```
+
+```bash
+$ forge script script/GetWallets.s.sol --mnemonics "test test test test test test test test test test test junk"
+```
+
+### Related Cheatcodes
+
+- [`rememberKey`](/reference/cheatcodes/remember-key) - Add a private key to the script wallets
+- [`createWallet`](/reference/cheatcodes/create-wallet) - Create a labeled wallet for tests
+- [`startBroadcast`](/reference/cheatcodes/start-broadcast) - Broadcast calls with a specific signer

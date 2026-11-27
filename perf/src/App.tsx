@@ -1,0 +1,439 @@
+import { LoadingText } from './LoadingText'
+import { CompareSkeleton, FilesSkeleton, GraphsSkeleton, RunsSkeleton, Skeleton } from './Skeleton'
+import { useEffect, useMemo, useState } from 'react'
+import { Moon, Sun } from 'lucide-react'
+import { HistoryGraph } from './HistoryGraph'
+import { Compare } from './Compare'
+import { loadHistory, loadIndex, loadPrs, resolveCommit } from './data'
+import { comparisonHref, navigate, replaceUrl, useNavigation } from './navigation'
+import { comparisonBase } from './comparisonBase'
+import { hasHistoryChanges, type HistoryRange } from './historySeries'
+import { HistoryRangeSelect } from './HistoryRangeSelect'
+import { Combobox } from './Combobox'
+import { CommitInput } from './CommitInput'
+import logo from './assets/logo.png'
+import { FileViewer } from './FileViewer'
+import { project } from './project'
+import type { HistorySeries, PrRun, RunIndex, RunSummary, Theme } from './types'
+
+const short = (commit: string) => commit.slice(0, 8)
+
+const charts = project.metrics.map(({ key, title, unit }) => ({ metric: key, title, unit }))
+const metricOptions = project.metrics.map(({ key, title, group }) => ({
+  value: key,
+  label: title,
+  group,
+}))
+
+function runRef(run: RunSummary) {
+  return run.branch ?? (run.pr ? `PR #${run.pr}` : 'detached')
+}
+
+function runPr(run: RunSummary) {
+  return run.pr ?? (Number(run.title?.match(/\(#(\d+)\)/)?.[1]) || null)
+}
+
+function runTitle(run: RunSummary) {
+  const title = run.title || runRef(run)
+  const pr = runPr(run)
+  return pr && !title.includes(`#${pr}`) ? `${title} (#${pr})` : title
+}
+
+export function App() {
+  const [theme, setTheme] = useState<Theme>(() =>
+    document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light',
+  )
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme
+  }, [theme])
+
+  const navigation = useNavigation()
+  const route = new URLSearchParams(navigation.search)
+  const base = route.get('base')
+  const head = route.get('head')
+  const benchmark = route.get('benchmark')
+  const fileViewer = route.get('view') === 'files' && benchmark
+  const comparison = Boolean(base && head)
+  const toggleTheme = () =>
+    setTheme((value) => {
+      const next = value === 'light' ? 'dark' : 'light'
+      localStorage.setItem('solar-web-theme', next)
+      return next
+    })
+
+  return (
+    <>
+      <SiteHeader
+        compact={Boolean(fileViewer)}
+        dashboard={!comparison}
+        comparisonHref={comparisonHref(navigation.search)}
+        theme={theme}
+        onToggleTheme={toggleTheme}
+      />
+      {comparison ? (
+        <ResolvedComparison
+          key={navigation.key}
+          base={base!}
+          head={head!}
+          benchmark={fileViewer ? benchmark! : null}
+          theme={theme}
+        />
+      ) : (
+        <Home benchmark={benchmark} navigationKey={navigation.key} />
+      )}
+    </>
+  )
+}
+
+function ResolvedComparison({
+  base,
+  head,
+  benchmark,
+  theme,
+}: {
+  base: string
+  head: string
+  benchmark: string | null
+  theme: Theme
+}) {
+  const [commits, setCommits] = useState<string[] | null>(null)
+  const [error, setError] = useState('')
+  useEffect(() => {
+    let cancelled = false
+    Promise.all([resolveCommit(base), resolveCommit(head)]).then(
+      (value) => {
+        if (!cancelled) {
+          const url = new URL(window.location.href)
+          url.searchParams.set('base', value[0])
+          url.searchParams.set('head', value[1])
+          if (url.search !== window.location.search) replaceUrl(url)
+          setCommits(value)
+        }
+      },
+      (error: Error) => {
+        if (!cancelled) setError(error.message)
+      },
+    )
+    return () => {
+      cancelled = true
+    }
+  }, [base, head])
+  if (error)
+    return (
+      <main className="compare-page">
+        <p className="error" role="alert">
+          {error}
+        </p>
+      </main>
+    )
+  if (!commits)
+    return benchmark ? (
+      <main className="file-viewer">
+        <div className="viewer-toolbar" />
+        <FilesSkeleton />
+      </main>
+    ) : (
+      <CompareSkeleton />
+    )
+  return benchmark ? (
+    <FileViewer base={commits[0]} head={commits[1]} benchmark={benchmark} theme={theme} />
+  ) : (
+    <Compare base={commits[0]} head={commits[1]} theme={theme} />
+  )
+}
+
+function SiteHeader({
+  compact,
+  dashboard,
+  comparisonHref,
+  theme,
+  onToggleTheme,
+}: {
+  compact: boolean
+  dashboard: boolean
+  comparisonHref?: string
+  theme: Theme
+  onToggleTheme: () => void
+}) {
+  const nextTheme = theme === 'light' ? 'dark' : 'light'
+  return (
+    <header className={compact ? 'file-header' : ''}>
+      <a className="wordmark" href={import.meta.env.BASE_URL}>
+        {project.id === 'solar' ? <img alt="Solar" src={logo} /> : project.name}
+      </a>
+      <nav>
+        {compact ? (
+          <a href={comparisonHref}>Comparison</a>
+        ) : (
+          <>
+            <a className={dashboard ? 'nav-active' : undefined} href={import.meta.env.BASE_URL}>
+              Dashboard
+            </a>
+            <a href={`https://github.com/${project.repository}`}>Repository</a>
+          </>
+        )}
+        <button
+          className="theme-toggle"
+          onClick={onToggleTheme}
+          aria-label={`Switch to ${nextTheme} theme`}
+          title={`Switch to ${nextTheme} theme`}
+        >
+          {theme === 'light' ? <Moon aria-hidden="true" /> : <Sun aria-hidden="true" />}
+        </button>
+      </nav>
+    </header>
+  )
+}
+
+function Home({ benchmark, navigationKey }: { benchmark: string | null; navigationKey: number }) {
+  const [history, setHistory] = useState<HistorySeries | null>(null)
+  const [historyError, setHistoryError] = useState('')
+  const [metric, setMetric] = useState(charts[0].metric)
+  const [filter, setFilter] = useState('')
+  const [range, setRange] = useState<HistoryRange>('90d')
+  const [changedOnly, setChangedOnly] = useState(false)
+  const chart = charts.find((chart) => chart.metric === metric)!
+  const benchmarks = useMemo(() => Object.keys(history?.values ?? {}).sort(), [history])
+  const visibleBenchmarks = benchmarks.filter(
+    (benchmark) =>
+      benchmark.toLowerCase().includes(filter.toLowerCase()) &&
+      history?.values[benchmark].at(0) != null &&
+      (!changedOnly || hasHistoryChanges(history.values[benchmark])),
+  )
+  const [index, setIndex] = useState<RunIndex | null>(null)
+  const [error, setError] = useState('')
+  const [base, setBase] = useState('')
+  const [head, setHead] = useState('')
+  const [prs, setPrs] = useState<PrRun[] | null>(null)
+  // Fields filled from the PR list show a short label and keep the listed commit.
+  const [picked, setPicked] = useState<Record<string, string>>({})
+  const pick = (label: string, commit: string) =>
+    setPicked((picked) => ({ ...picked, [label]: commit }))
+  const pickedCommit = (value: string) => {
+    const commit = picked[value.trim()]
+    return commit ? Promise.resolve(commit) : resolveCommit(value)
+  }
+  // The PR list is not needed for the first paint; fetch it when idle or on first focus.
+  const showPrs = () => {
+    loadPrs()
+      .then(setPrs)
+      .catch(() => setPrs([]))
+  }
+  const runs = useMemo(() => index?.runs ?? [], [index])
+  const mainRuns = useMemo(() => runs.filter((run) => run.branch === 'main'), [runs])
+  const [resolving, setResolving] = useState(false)
+  const [compareError, setCompareError] = useState('')
+
+  useEffect(() => {
+    loadIndex()
+      .then(setIndex)
+      .catch((value: Error) => setError(value.message))
+  }, [])
+  useEffect(() => {
+    const idle = window.requestIdleCallback ?? ((callback: () => void) => setTimeout(callback, 1))
+    const cancel = window.cancelIdleCallback ?? clearTimeout
+    const handle = idle(showPrs)
+    return () => cancel(handle)
+  }, [])
+
+  useEffect(() => {
+    let cancelled = false
+    setHistory(null)
+    setHistoryError('')
+    loadHistory(metric, undefined, range).then(
+      (value) => {
+        if (!cancelled) setHistory(value)
+      },
+      (value: Error) => {
+        if (!cancelled) setHistoryError(value.message)
+      },
+    )
+    return () => {
+      cancelled = true
+    }
+  }, [metric, range])
+
+  useEffect(() => {
+    if (!benchmark || !history) return
+    const frame = requestAnimationFrame(() => {
+      document.getElementById(benchmark)?.scrollIntoView({ block: 'nearest', inline: 'nearest' })
+    })
+    return () => cancelAnimationFrame(frame)
+  }, [benchmark, history, navigationKey])
+
+  const compare = async () => {
+    if (resolving || !base.trim() || !head.trim()) return
+    setResolving(true)
+    setCompareError('')
+    try {
+      const [selectedBase, selectedHead] = await Promise.all([
+        pickedCommit(base),
+        pickedCommit(head),
+      ])
+      if (selectedBase === selectedHead) throw new Error('Choose two different commits.')
+      const url = new URL(window.location.href)
+      url.search = new URLSearchParams({ base: selectedBase, head: selectedHead }).toString()
+      navigate(url)
+    } catch (error) {
+      setCompareError(error instanceof Error ? error.message : 'Could not resolve commits.')
+    } finally {
+      setResolving(false)
+    }
+  }
+
+  return (
+    <main className="dashboard">
+      <section className="dashboard-title">
+        <div>
+          <h1>Performance</h1>
+          <p>
+            {project.name} main branch benchmark history ·{' '}
+            {index ? `${index.totalMainRuns ?? mainRuns.length} runs` : <Skeleton width={56} />}
+          </p>
+        </div>
+        <form
+          className="compare-box"
+          aria-label="Compare commits"
+          onSubmit={(event) => {
+            event.preventDefault()
+            void compare()
+          }}
+        >
+          <CommitInput
+            label="base"
+            value={base}
+            onChange={setBase}
+            prs={prs}
+            onPick={(run) => {
+              pick(`#${run.pr}`, run.commit)
+              setBase(`#${run.pr}`)
+            }}
+            onFocus={showPrs}
+          />
+          <span className="arrow">→</span>
+          <CommitInput
+            label="head"
+            value={head}
+            onChange={setHead}
+            prs={prs}
+            onPick={(run) => {
+              pick(`#${run.pr}`, run.commit)
+              setHead(`#${run.pr}`)
+              if (!base.trim() && run.baseCommit) {
+                pick(short(run.baseCommit), run.baseCommit)
+                setBase(short(run.baseCommit))
+              }
+            }}
+            onFocus={showPrs}
+          />
+          <button type="submit" disabled={resolving || !base.trim() || !head.trim()}>
+            {resolving ? <LoadingText>Resolving…</LoadingText> : 'Compare'}
+          </button>
+        </form>
+      </section>
+      {compareError && (
+        <p className="error" role="alert">
+          {compareError}
+        </p>
+      )}
+      <div className="section-heading history-heading">
+        <h2>History</h2>
+        <span>
+          {history ? history.runs.length : <Skeleton width={24} />} main runs in range · lower is
+          better
+        </span>
+      </div>
+      <section className="history-controls" aria-label="Graph settings">
+        <HistoryRangeSelect value={range} onChange={setRange} />
+        <label>
+          Metric
+          <Combobox label="Metric" value={metric} options={metricOptions} onChange={setMetric} />
+        </label>
+        <label className="history-filter">
+          Benchmark
+          <input
+            type="search"
+            placeholder="Filter benchmarks"
+            value={filter}
+            onChange={(event) => setFilter(event.target.value)}
+          />
+        </label>
+        <label className="history-checkbox">
+          <input
+            type="checkbox"
+            checked={changedOnly}
+            onChange={(event) => setChangedOnly(event.target.checked)}
+          />
+          Changed only
+        </label>
+      </section>
+      <p className="history-note">
+        Each graph is one benchmark. Gaps indicate failed or missing measurements. Hover or tap to
+        inspect a run; click it or tap it again to compare it with the preceding commit. Hold Shift
+        to select the nearest run instead of the nearest change. Drag across a graph to zoom into
+        that span.
+        {project.metrics.find((definition) => definition.key === metric)?.noisy
+          ? ' Timing and memory vary between runs, so the line, scale, and change use the median of five neighbouring runs. The faint line is each run, and hover shows raw measurements.'
+          : ''}
+      </p>
+      {error || historyError ? (
+        <p className="error">{error || historyError}</p>
+      ) : history === null ? (
+        <GraphsSkeleton count={6} />
+      ) : (
+        <section className="chart-grid">
+          {visibleBenchmarks.map((benchmark) => (
+            <HistoryGraph
+              hideMissingLatest
+              id={benchmark}
+              key={`${benchmark}:${metric}:${range}`}
+              runs={history}
+              benchmark={benchmark}
+              {...chart}
+            />
+          ))}
+          {!visibleBenchmarks.length && <p className="empty">No matching benchmarks.</p>}
+        </section>
+      )}
+      <section className="recent">
+        <div className="section-heading">
+          <h2>Recent runs</h2>
+        </div>
+        <div className="run run-head">
+          <span>commit</span>
+          <span>change</span>
+          <span>date</span>
+          <span>benchmarks</span>
+          <span>branch</span>
+        </div>
+        {!index && !error ? (
+          <RunsSkeleton />
+        ) : runs.length === 0 ? (
+          <p className="empty">No published benchmark runs yet.</p>
+        ) : (
+          runs.slice(0, 12).map((run) => {
+            const comparison = comparisonBase(runs, run)
+            const contents = (
+              <>
+                <code>{short(run.commit)}</code>
+                <span title={runTitle(run)}>{runTitle(run)}</span>
+                <time>{new Date(run.timestamp).toLocaleDateString()}</time>
+                <strong>{run.benchmarkCount}</strong>
+                <span title={runRef(run)}>{runRef(run)}</span>
+              </>
+            )
+            return comparison ? (
+              <a className="run" key={run.commit} href={`?base=${comparison}&head=${run.commit}`}>
+                {contents}
+              </a>
+            ) : (
+              <div className="run" key={run.commit}>
+                {contents}
+              </div>
+            )
+          })
+        )}
+      </section>
+    </main>
+  )
+}

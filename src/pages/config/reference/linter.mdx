@@ -1,0 +1,152 @@
+## Linter Configuration
+
+Configuration related to the behavior of the linter. These keys are set in the `[lint]` section.
+
+{/* config-reference:begin keys="lint lint.*" level=3 */}
+
+### `[lint]`
+
+Settings for the Solidity linter, `forge lint`, which also runs during `forge build`.
+
+Declare them in a `[profile.<name>.lint]` table, or in a standalone `[lint]` table that
+applies to every profile; a profile's own table takes precedence.
+
+### `severity`
+
+- Type: array of string
+- Default: `["high", "medium", "low"]`
+- Environment: `FOUNDRY_LINT_SEVERITY`
+- Values: `high`, `medium`, `low`, `info`, `gas`, `code-size`
+
+Severities of the lints to run.
+
+Valid values (case-insensitive):
+
+- `high`
+- `medium` (or `med`)
+- `low`
+- `info`
+- `gas`
+- `code-size` (or `codesize`, `size`)
+
+An empty list applies no severity filter, which runs lints of every severity, including
+informational, gas and code-size lints. `forge lint --severity` overrides this setting.
+
+### `exclude_lints`
+
+- Type: array of string
+- Default: `[]`
+- Environment: `FOUNDRY_LINT_EXCLUDE_LINTS`
+
+IDs of lints to skip, such as `"mixed-case-function"`.
+
+`forge lint` fails on an unknown lint ID.
+
+### `ignore`
+
+- Type: array of string
+- Default: `[]`
+- Environment: `FOUNDRY_LINT_IGNORE`
+
+Glob patterns of files to skip when linting.
+
+Patterns are resolved relative to the project root.
+
+### `lint_on_build`
+
+- Type: boolean
+- Default: `true`
+- Environment: `FOUNDRY_LINT_LINT_ON_BUILD`
+
+Whether to run the linter during `forge build`.
+
+Set to `false` to stop linting on every build; `forge build --no-lint` skips it for a
+single run. Keeping it enabled and narrowing what runs with `severity`, `exclude_lints` or
+`ignore` catches issues earlier. Linting on build only runs when the build has no compiler
+errors.
+
+### `[lint_specific]`
+
+Settings for individual lints.
+
+#### `lint_specific.mixed_case_exceptions`
+
+- Type: array of string
+- Default: `["ERC", "URI", "ID", "URL", "API", "JSON", "XML", "HTML", "HTTP", "HTTPS"]`
+
+Name fragments, usually acronyms, that the `mixedCase` and `PascalCase` lints accept.
+
+Applies to the `mixed-case-function`, `mixed-case-variable` and `pascal-case-struct` lints.
+The defaults allow common names like `rescueERC20`, `ERC721TokenReceiver`, `tokenURI` or
+`ERC20Data`.
+
+#### `lint_specific.multi_contract_file_exceptions`
+
+- Type: array of string
+- Default: `[]`
+- Values: `interface`, `library`, `abstract_contract`
+
+Contract kinds that the `multi-contract-file` lint ignores when a file declares more than
+one.
+
+- `interface`: interfaces.
+- `library`: libraries.
+- `abstract_contract`: abstract contracts.
+
+Regular contracts can't be exempted: a file with more than one is always flagged.
+
+{/* config-reference:end */}
+
+## Inline Configuration
+
+The linter also offers the ability to disable lints for specific sections of code using inline comment directives.
+This is useful when you need to suppress false positives or have valid reasons for code that would otherwise trigger a lint warning.
+
+To disable lints using inline config, your comment must follow this format:
+
+```
+/// forge-lint: <directive>(<lint-ids>)
+```
+
+Where:
+
+- `<directive>` is one of the directives from the table below
+- `<lint-ids>` is a comma-separated list of lint identifiers, or `all` to disable all lints
+
+### Supported Inline Directives
+
+| Directive                       | Description                                                                        | Scope                              |
+| ------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------- |
+| `disable-next-item`             | Disables lints for the next code item (contract, function, variable, struct, etc.) | Next item regardless of line count |
+| `disable-line`                  | Disables lints for the current line                                                | Current line only                  |
+| `disable-next-line`             | Disables lints for the next line                                                   | Next line only                     |
+| `disable-start` / `disable-end` | Disables lints for all code between the start and end comments                     | Block of code between directives   |
+
+### Best Practices
+
+1. **Be Specific**: Always specify which lint(s) you're disabling rather than using `all`.
+2. **Add Comments**: Explain why you're disabling the lint to help future maintainers.
+3. **Minimize Scope**: Use the most targeted directive possible (e.g., `disable-line` instead of `disable-start/end`).
+
+### Disabling Linter On Build
+
+By default, the linter runs automatically when you build your project with `forge build`.
+
+To skip linting for a single invocation, pass `--no-lint` (alias `--skip-lint`):
+
+```bash
+forge build --no-lint
+```
+
+To disable persistently, in your `foundry.toml` set:
+
+```toml
+[lint]
+lint_on_build = false
+```
+
+It is however recommended to keep linting enabled during development to catch issues early.
+We are continuously improving the linter and you may be missing out on valuable feedback by disabling it.
+
+It is better to configure your `foundry.toml` to only run specific severities by setting the [`severity`](#severity) key, exclude
+certain lints with [`exclude_lints`](#exclude_lints), or ignore certain files with [`ignore`](#ignore).

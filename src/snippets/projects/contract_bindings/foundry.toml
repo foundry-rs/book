@@ -1,0 +1,7 @@
+[profile.default]
+src = "src"
+
+[bind_json]
+out = "utils/JsonBindings.sol"
+include = ["**/ConfigTypes.sol"]
+exclude = ["**/mocks/**"]

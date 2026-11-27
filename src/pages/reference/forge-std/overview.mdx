@@ -1,0 +1,97 @@
+## Forge Standard Library Reference
+
+Forge Standard Library (Forge Std for short) is a collection of helpful contracts that make writing tests easier, faster, and more user-friendly.
+
+Using Forge Std is the preferred way of writing tests with Foundry.
+
+What's included:
+
+- `Vm.sol`: Up-to-date [cheatcodes interface](/reference/cheatcodes/overview#cheatcodes-interface)
+
+  ```solidity
+  import {Vm} from "forge-std/Vm.sol";
+  ```
+
+- [`console.sol`](/reference/forge-std/console-log.mdx) (and deprecated `console2.sol` alias): Hardhat-style logging functionality
+
+  ```solidity
+  import {console} from "forge-std/console.sol";
+  ```
+
+  **Note:** Prefer `console.sol`. `console2.sol` is a deprecated compatibility alias that only re-exports `console` as `console2` (`import {console as console2} from "./console.sol";`). It no longer ships separate Hardhat-incompatible patches (see forge-std#573).
+
+  ```solidity
+  import {console2} from "forge-std/console2.sol"; // deprecated alias
+  ```
+
+- `Script.sol`: Basic utilities for Solidity scripting
+
+  ```solidity
+  import {Script} from "forge-std/Script.sol";
+  ```
+
+- `Test.sol`: The complete Forge Std experience (more details [below](#the-test-contract))
+
+  ```solidity
+  import {Test} from "forge-std/Test.sol";
+  ```
+
+- `Config.sol`: Configuration management for multi-chain environments
+
+  ```solidity
+  import {Config} from "forge-std/Config.sol";
+  ```
+
+### The `Test` Contract
+
+The `Test` contract in `Test.sol` provides all the essential functionality you need to get started writing tests.
+
+Simply import `Test.sol` and inherit from `Test` in your test contract:
+
+```solidity
+import {Test} from "forge-std/Test.sol";
+
+contract ContractTest is Test { ...
+```
+
+What's included:
+
+- Std Libraries
+
+  - [Std Logs](/reference/forge-std/std-logs.mdx): Additional logging events for arrays.
+  - [Std Assertions](/reference/forge-std/std-assertions.mdx): Assertion helpers for common comparisons and approximate equality.
+  - [Std Cheats](/reference/forge-std/std-cheats.mdx): Wrappers around Forge cheatcodes for improved safety and DX.
+  - [Std Errors](/reference/forge-std/std-errors.mdx): Wrappers around common internal Solidity errors and reverts.
+  - [Std Json](/reference/forge-std/std-json.mdx): Helpers for parsing and writing JSON.
+  - [Std Toml](/reference/forge-std/std-toml.mdx): Helpers for parsing and writing TOML.
+  - [Std Storage](/reference/forge-std/std-storage.mdx): Utilities for storage manipulation.
+  - [Std Math](/reference/forge-std/std-math.mdx): Useful mathematical functions.
+  - [Script Utils](/reference/forge-std/script-utils.mdx): Utility functions which can be accessed in tests and scripts.
+  - [Console Logging](/reference/forge-std/console-log.mdx): Console logging functions.
+  - [Config](/reference/forge-std/config.mdx): Configuration management for multi-chain environments.
+  - [StdConfig](/reference/forge-std/std-config.mdx): Low-level configuration contract with read/write capabilities.
+
+- A cheatcodes instance `vm`, from which you invoke Forge cheatcodes (see [Cheatcodes Reference](/reference/cheatcodes/overview))
+
+  ```solidity
+  vm.startPrank(alice);
+  ```
+
+- All Hardhat `console` functions for logging (see [Console Logging](/reference/forge-std/console-log.mdx))
+
+  ```solidity
+  console.log(alice.balance); // or `console2`
+  ```
+
+- Forge Std assertion and logging helpers
+
+  ```solidity
+  assertEq(dai.balanceOf(alice), 10000e18);
+  ```
+
+- Utility functions also included in `Script.sol` (see [Script Utils](/reference/forge-std/script-utils.mdx))
+
+  ```solidity
+  // Compute the address a contract will be deployed at for a given deployer address and nonce
+  address futureContract = computeCreateAddress(alice, 1);
+  ```

@@ -1,0 +1,41 @@
+---
+description: Returns a random boolean
+---
+
+## `randomBool`
+
+### Signature
+
+```solidity
+function randomBool() external view returns (bool);
+```
+
+### Description
+
+Returns a random `bool` from Foundry's internal RNG.
+
+The RNG is seeded randomly on each run unless a seed is set via [`setSeed`](/reference/cheatcodes/set-seed) or the `[fuzz] seed` setting in `foundry.toml`.
+
+### Returns
+
+| Type   | Description        |
+|--------|--------------------|
+| `bool` | The random boolean |
+
+### Examples
+
+```solidity [test/RandomBool.t.sol]
+function testRandomBool() public view {
+    bool flip = vm.randomBool();
+
+    // Branch on the random value, e.g. to vary a scenario.
+    uint256 amount = flip ? 1 ether : 2 ether;
+    assertGe(amount, 1 ether);
+}
+```
+
+### Related Cheatcodes
+
+- [`randomUint`](/reference/cheatcodes/random-uint) - Random `uint256`
+- [`randomBytes`](/reference/cheatcodes/random-bytes) - Random byte array
+- [`setSeed`](/reference/cheatcodes/set-seed) - Seed the RNG for deterministic results

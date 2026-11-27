@@ -1,0 +1,59 @@
+---
+description: Returns a random uint256 value, optionally within a range or bit width
+---
+
+## `randomUint`
+
+### Signature
+
+```solidity
+function randomUint() external view returns (uint256);
+function randomUint(uint256 min, uint256 max) external view returns (uint256);
+function randomUint(uint256 bits) external view returns (uint256);
+```
+
+### Description
+
+Returns a random `uint256` value from Foundry's internal RNG.
+
+- With no arguments, returns an arbitrary `uint256`.
+- With `min` and `max`, returns a value in the inclusive range `[min, max]`. Reverts if `min > max`.
+- With `bits`, returns a value that fits into the given number of bits. Reverts if `bits > 256`.
+
+The RNG is seeded randomly on each run unless a seed is set via [`setSeed`](/reference/cheatcodes/set-seed) or the `[fuzz] seed` setting in `foundry.toml`, in which case the sequence of values is deterministic.
+
+### Parameters
+
+| Parameter | Type      | Description                             |
+|-----------|-----------|-----------------------------------------|
+| `min`     | `uint256` | Lower bound of the range (inclusive)    |
+| `max`     | `uint256` | Upper bound of the range (inclusive)    |
+| `bits`    | `uint256` | Maximum bit width of the result (≤ 256) |
+
+### Returns
+
+| Type      | Description               |
+|-----------|---------------------------|
+| `uint256` | The random value          |
+
+### Examples
+
+```solidity [test/RandomUint.t.sol]
+function testRandomUint() public view {
+    uint256 any = vm.randomUint();
+
+    uint256 inRange = vm.randomUint(1, 100);
+    assertGe(inRange, 1);
+    assertLe(inRange, 100);
+
+    uint256 small = vm.randomUint(8);
+    assertLe(small, type(uint8).max);
+}
+```
+
+### Related Cheatcodes
+
+- [`randomInt`](/reference/cheatcodes/random-int) - Random `int256`
+- [`randomAddress`](/reference/cheatcodes/random-address) - Random `address`
+- [`randomBytes`](/reference/cheatcodes/random-bytes) - Random byte array
+- [`setSeed`](/reference/cheatcodes/set-seed) - Seed the RNG for deterministic results

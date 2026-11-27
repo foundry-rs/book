@@ -1,0 +1,176 @@
+---
+description: Configure testing behavior including fuzz testing and invariant testing.
+---
+
+## Testing
+
+Configure how `forge test` runs your tests, including verbosity, gas limits, fuzz testing, and invariant testing.
+
+### Verbosity
+
+Control how much output tests produce:
+
+```toml [foundry.toml]
+[profile.default]
+verbosity = 2
+```
+
+| Level | Description |
+|-------|-------------|
+| 0 | Only show test results |
+| 2 (`-vv`) | Show logs emitted during tests |
+| 3 (`-vvv`) | Show stack traces for failing tests |
+| 4 (`-vvvv`) | Show stack traces for all tests |
+| 5 (`-vvvvv`) | Show all traces including setup |
+
+### FFI
+
+Enable the `ffi` cheatcode to run external programs from tests:
+
+```toml [foundry.toml]
+[profile.default]
+ffi = true
+```
+
+> ⚠️ **Warning:** Enabling FFI allows tests to execute arbitrary programs. Only enable in trusted environments.
+
+### Gas settings
+
+Configure gas limits and pricing for tests:
+
+```toml [foundry.toml]
+[profile.default]
+gas_limit = 1073741824
+gas_price = 0
+block_base_fee_per_gas = 0
+```
+
+For gas limits above the default, use a string:
+
+```toml [foundry.toml]
+[profile.default]
+gas_limit = "9223372036854775807"
+```
+
+### Fuzz testing
+
+Configure fuzz test behavior:
+
+```toml [foundry.toml]
+[profile.default]
+[fuzz]
+runs = 256
+seed = "0x1"
+max_test_rejects = 65536
+```
+
+For CI, increase fuzz runs for thorough testing:
+
+```toml [foundry.toml]
+[profile.ci]
+[fuzz]
+runs = 10000
+seed = "0x1"  # Deterministic for reproducibility
+```
+
+#### Fuzz dictionary
+
+Control how the fuzzer generates inputs:
+
+```toml [foundry.toml]
+[profile.default]
+[fuzz]
+dictionary_weight = 40
+include_storage = true
+include_push_bytes = true
+```
+
+The dictionary weight (0-100) controls how often the fuzzer uses values from the dictionary vs random values.
+
+### Invariant testing
+
+Configure invariant test behavior:
+
+```toml [foundry.toml]
+[profile.default]
+[invariant]
+runs = 256
+depth = 500
+fail_on_revert = false
+```
+
+- **runs**: Number of test sequences to execute
+- **depth**: Number of calls per sequence
+- **fail_on_revert**: Whether to fail if any call reverts
+
+For thorough invariant testing:
+
+```toml [foundry.toml]
+[profile.ci]
+[invariant]
+runs = 1000
+depth = 1000
+shrink_run_limit = 5000
+```
+
+### Test filtering
+
+Run specific tests by pattern:
+
+```toml [foundry.toml]
+[profile.default]
+match_test = "test_Transfer"
+match_contract = "TokenTest"
+match_path = "test/unit/*"
+```
+
+Or exclude tests:
+
+```toml [foundry.toml]
+[profile.default]
+no_match_test = "testFuzz_"
+no_match_contract = "Integration"
+```
+
+### RPC caching
+
+Cache RPC responses for faster fork tests:
+
+```toml [foundry.toml]
+[profile.default]
+no_storage_caching = false
+
+[rpc_storage_caching]
+chains = "all"
+endpoints = "remote"
+```
+
+### Example configuration
+
+A complete test configuration:
+
+```toml [foundry.toml]
+[profile.default]
+verbosity = 2
+ffi = false
+
+[fuzz]
+runs = 256
+seed = "0x1"
+
+[invariant]
+runs = 256
+depth = 500
+
+[profile.ci]
+verbosity = 3
+
+[profile.ci.fuzz]
+runs = 10000
+
+[profile.ci.invariant]
+runs = 1000
+depth = 1000
+```
+
+For the complete list of testing options, see the [Testing Reference](/config/reference/testing).

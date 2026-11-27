@@ -1,0 +1,93 @@
+---
+description: "ERC-4626 tokenized vault operations"
+---
+
+_Generated from `cast erc4626 --help`; see [CLI reference versions](/reference/versions). Regenerate this page instead of editing it directly._
+
+## cast erc4626
+
+ERC-4626 tokenized vault operations
+
+:::terminal
+
+```bash
+$ cast erc4626 --help
+```
+
+```txt
+Usage: cast erc4626 [OPTIONS] <COMMAND>
+
+Commands:
+  info               Show vault, asset, and exchange-rate information
+  position           Show an account's shares, asset value, and withdrawal
+                     limits
+  check              Probe synchronous ERC-4626 interface compatibility
+  asset              Query the vault's underlying asset token
+  total-assets       Query the total amount of underlying assets managed by the
+                     vault
+  convert-to-shares  Convert an asset amount to the corresponding share amount
+  convert-to-assets  Convert a share amount to the corresponding asset amount
+  max-deposit        Query the maximum assets that may be deposited for a
+                     receiver
+  preview-deposit    Preview the shares received by depositing an asset amount
+  deposit            Deposit assets into the vault
+  max-mint           Query the maximum shares that may be minted for a receiver
+  preview-mint       Preview the assets required to mint a share amount
+  mint               Mint vault shares
+  max-withdraw       Query the maximum assets that an owner may withdraw
+  preview-withdraw   Preview the shares burned to withdraw an asset amount
+  withdraw           Withdraw assets from the vault
+  max-redeem         Query the maximum shares that an owner may redeem
+  preview-redeem     Preview the assets received by redeeming a share amount
+  redeem             Redeem vault shares for assets
+  help               Print this message or the help of the given subcommand(s)
+
+Options:
+  -h, --help
+          Print help (see a summary with '-h')
+
+  -j, --threads <THREADS>
+          Number of threads to use. Specifying 0 defaults to the number of
+          logical cores
+
+          [alias: --jobs]
+
+      --profile <PROFILE>
+          The configuration profile to use
+
+Display options:
+      --color <COLOR>
+          The color of the log messages
+
+          Possible values:
+          - auto:   Intelligently guess whether to use color output (default)
+          - always: Force color output
+          - never:  Force disable color output
+
+      --json
+          Format log messages as JSON
+
+      --md
+          Format log messages as Markdown
+
+  -q, --quiet
+          Do not print log messages
+
+  -v, --verbosity...
+          Verbosity level of the log messages.
+
+          Pass multiple times to increase the verbosity (e.g. -v, -vv, -vvv).
+
+          Depending on the context the verbosity levels have different meanings.
+
+          For example, the verbosity levels of the EVM are:
+          - 2 (-vv): Print logs for all tests.
+          - 3 (-vvv): Print execution traces for failing tests.
+          - 4 (-vvvv): Print execution traces for all tests, and setup traces
+          for failing tests.
+          - 5 (-vvvvv): Print execution and setup traces for all tests,
+          including storage changes and
+            backtraces with line numbers.
+```
+
+:::

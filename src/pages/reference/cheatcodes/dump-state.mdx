@@ -1,0 +1,58 @@
+---
+description: Writes the current EVM state to a JSON file in genesis alloc format
+---
+
+## `dumpState`
+
+### Signature
+
+```solidity
+function dumpState(string calldata pathToStateJson) external;
+```
+
+### Description
+
+Writes the current EVM state to a JSON file in the genesis `alloc` format: a map from account address to its balance, nonce, code, and storage.
+
+Internal bookkeeping accounts are excluded from the dump, such as the cheatcode address, the console address, the default test caller and sender, and empty accounts.
+
+The resulting file can be loaded back with [`loadAllocs`](/reference/cheatcodes/load-allocs), used with `anvil --init`, or embedded in a genesis file. This is useful for capturing an expensive setup once and restoring it cheaply, or for exporting test state to a local node.
+
+### Parameters
+
+| Parameter         | Type     | Description                              |
+|-------------------|----------|------------------------------------------|
+| `pathToStateJson` | `string` | The file path the state JSON is written to |
+
+### Examples
+
+```solidity [test/DumpState.t.sol]
+function testDumpState() public {
+    vm.deal(address(0xBEEF), 10 ether);
+
+    Counter counter = new Counter();
+    counter.setNumber(42);
+
+    vm.dumpState("./dump.json");
+}
+```
+
+The dump contains entries of the form:
+
+```json [dump.json]
+{
+  "0x2e234dae75c793f67a35089c9d99245e1c58470b": {
+    "nonce": "0x1",
+    "balance": "0x0",
+    "code": "0x6080604052...",
+    "storage": {
+      "0x0000000000000000000000000000000000000000000000000000000000000000": "0x000000000000000000000000000000000000000000000000000000000000002a"
+    }
+  }
+}
+```
+
+### Related Cheatcodes
+
+- [`loadAllocs`](/reference/cheatcodes/load-allocs) - Load a genesis alloc JSON into the EVM state
+- [`snapshotState`](/reference/cheatcodes/state-snapshots) - Snapshot and restore state in memory

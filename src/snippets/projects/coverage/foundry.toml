@@ -1,0 +1,10 @@
+[profile.default]
+src = "src"
+test = "test"
+
+[profile.default.coverage]
+report = ["summary", "lcov"]
+lcov_version = "1"
+report_file = "lcov.info"
+exclude_tests = true
+skip_files = ["script/**", "src/mocks/**"]

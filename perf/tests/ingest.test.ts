@@ -1,0 +1,644 @@
+import { strToU8, zipSync } from 'fflate'
+import { afterEach, describe, expect, it, vi } from 'vite-plus/test'
+
+import {
+  extractArchive,
+  ingestCommit,
+  ingestRecent,
+  normalizeArchive,
+  selectRuns,
+} from '../src/server/ingest'
+import {
+  artifactMetadata,
+  inputSources,
+  textArtifact,
+  validArtifactPath,
+} from '../src/server/artifacts'
+import { projects } from '../src/projects'
+
+const run = {
+  branch: 'main',
+  commit: '0123456789abcdef0123456789abcdef01234567',
+  pr: null,
+  startedAt: '2026-09-03T10:00:00.000Z',
+  title: 'Benchmark run',
+  workflow: 'Benchmark',
+  workflowRunId: 1,
+}
+
+afterEach(() => {
+  vi.unstubAllGlobals()
+  vi.unstubAllEnvs()
+  vi.restoreAllMocks()
+})
+
+describe('GitHub Actions importer', () => {
+  it('preserves source names, empty contents, Unicode and line endings without extension collisions', () => {
+    const sources = {
+      '@scope/package/Source': { content: '// π\r\ncontract Source {}\r\n' },
+      '@scope/package/Source.sol': { content: '' },
+      'folder with spaces/你好.sol': { content: 'contract Other {}' },
+      '__proto__/constructor.sol': { content: 'contract Names {}' },
+    }
+    const extracted = inputSources(JSON.stringify({ sources }))
+    expect(extracted).toEqual(
+      Object.entries(sources).map(([name, source]) => [`sources/${name}`, source.content]),
+    )
+    expect(artifactMetadata('sources/@scope/package/Source').language).toBe('solidity')
+    expect(artifactMetadata('other/Source').language).toBe('text')
+  })
+
+  it.each([
+    '',
+    '.',
+    '..',
+    '../A.sol',
+    '/A.sol',
+    './A.sol',
+    'a/../A.sol',
+    'a//A.sol',
+    'a/./A.sol',
+    'a\\A.sol',
+    'C:/A.sol',
+    'C:A.sol',
+    '//server/A.sol',
+    'a\0.sol',
+    'a\x7f.sol',
+    'a'.repeat(256) + '.sol',
+    'a/'.repeat(520) + 'A.sol',
+  ])('omits unsafe source path %j', (name) => {
+    expect(inputSources(JSON.stringify({ sources: { [name]: { content: 'unsafe' } } }))).toEqual([])
+  })
+
+  it.each([
+    '{',
+    'null',
+    '[]',
+    '{}',
+    '{"sources":null}',
+    '{"sources":[]}',
+    '{"sources":{"A.sol":null,"B.sol":5,"C.sol":{"content":3},"D.sol":{"urls":["https://example.com"]}}}',
+  ])('ignores malformed or unavailable embedded sources: %s', (input) => {
+    expect(inputSources(input)).toEqual([])
+  })
+
+  it('counts extracted source files toward the import limit', () => {
+    const sources = Object.fromEntries(
+      Array.from({ length: 10_000 }, (_, index) => [`${index}.sol`, { content: '' }]),
+    )
+    expect(() =>
+      normalizeArchive(
+        {
+          artifacts: new Map([['artifacts/test/solar/input.json', JSON.stringify({ sources })]]),
+          results: JSON.stringify([{ test_id: 'test', solar: { status: 'ok' } }]),
+        },
+        run,
+      ),
+    ).toThrow('Source artifacts exceed the configured size limit')
+  })
+
+  it('imports the full source tree from input JSON without replacing physical sources', () => {
+    const artifacts = new Map([
+      [
+        'artifacts/test/solar/input.json',
+        JSON.stringify({
+          sources: {
+            'src/Main.sol': { content: 'contract Main {}\n' },
+            'lib/Lib.sol': { content: 'library Lib {}\n' },
+            '../escape.sol': { content: 'unsafe' },
+            '/absolute.sol': { content: 'unsafe' },
+            'remote.sol': { urls: ['https://example.com/remote.sol'] },
+          },
+        }),
+      ],
+      ['artifacts/test/solar/sources/src/Main.sol', 'physical'],
+      ['artifacts/test/solc/input.json', '{malformed'],
+    ])
+    const normalized = normalizeArchive(
+      {
+        artifacts,
+        results: JSON.stringify([{ test_id: 'test', solar: { status: 'ok', runtimeGas: 1 } }]),
+      },
+      run,
+    )
+    expect(
+      normalized.artifacts.filter((file) => String(file.path).startsWith('sources/')),
+    ).toMatchObject([
+      {
+        path: 'sources/src/Main.sol',
+        content: 'physical',
+        language: 'solidity',
+        compiler: 'solar',
+      },
+      {
+        path: 'sources/lib/Lib.sol',
+        content: 'library Lib {}\n',
+        language: 'solidity',
+        compiler: 'solar',
+      },
+    ])
+    expect(artifacts.size).toBe(3)
+  })
+
+  it.each(['success', null, 'failure', 'cancelled'])(
+    'imports available artifacts with workflow conclusion %s',
+    async (conclusion) => {
+      const writes: { table: string; state?: string }[] = []
+      const log = vi.spyOn(console, 'info').mockImplementation(() => {})
+      const source = {
+        id: 99,
+        head_sha: run.commit,
+        conclusion,
+        event: 'push',
+        head_branch: 'main',
+        name: 'Benchmark',
+        display_title: 'Test',
+        created_at: run.startedAt,
+      }
+      const archive = zipSync({
+        'results.json': strToU8(
+          JSON.stringify([{ test_id: 'test', solar: { status: 'ok', runtimeGas: 1 } }]),
+        ),
+        'artifacts/test/solar/output.txt': strToU8('output'),
+      })
+      vi.stubGlobal(
+        'fetch',
+        vi.fn(async (input, init) => {
+          const url = new URL(String(input))
+          if (url.hostname === 'clickhouse.example') {
+            if (url.searchParams.has('query'))
+              writes.push({
+                table: url.searchParams.get('query')!.split(' ')[2],
+                state: JSON.parse(String(init.body).trim().split('\n')[0]).state,
+              })
+            return new Response('')
+          }
+          if (url.pathname.includes('/actions/workflows/'))
+            return Response.json({
+              workflow_runs: [{ ...source, id: 100, conclusion: null }, source],
+            })
+          if (url.pathname.endsWith('/runs/100/artifacts')) return Response.json({ artifacts: [] })
+          if (url.pathname.endsWith('/artifacts'))
+            return Response.json({
+              artifacts: [
+                {
+                  archive_download_url: 'https://api.github.com/archive',
+                  size_in_bytes: archive.length,
+                  expired: false,
+                },
+              ],
+            })
+          if (url.pathname === '/archive') return new Response(archive)
+          return Response.json([])
+        }),
+      )
+      await expect(
+        ingestCommit(run.commit, {
+          CLICKHOUSE_HOST: 'https://clickhouse.example',
+          GITHUB_TOKEN: 'test',
+        }),
+      ).resolves.toBe(true)
+      expect(writes).toEqual([
+        { table: 'ingestion_jobs', state: 'importing' },
+        { table: 'artifact_blobs', state: undefined },
+        { table: 'run_snapshots', state: undefined },
+        { table: 'ingestion_jobs', state: 'complete' },
+      ])
+      expect(JSON.parse(log.mock.calls[0][0])).toMatchObject({
+        event: 'perf_import',
+        outcome: 'complete',
+        stages: { downloadExtractMs: expect.any(Number), writeBlobsMs: expect.any(Number) },
+      })
+    },
+  )
+
+  it.each([null, 'success', 'failure', 'missing'])(
+    'does not start an import without an artifact (conclusion %s)',
+    async (conclusion) => {
+      const states: string[] = []
+      const log = vi.spyOn(console, 'info').mockImplementation(() => {})
+      vi.stubGlobal(
+        'fetch',
+        vi.fn(async (input, init) => {
+          const url = new URL(String(input))
+          if (url.hostname === 'clickhouse.example') {
+            if (url.searchParams.has('query')) states.push(JSON.parse(String(init.body)).state)
+            return new Response('')
+          }
+          if (url.pathname.includes('/actions/workflows/'))
+            return Response.json({
+              workflow_runs:
+                conclusion === 'missing'
+                  ? []
+                  : [{ id: 99, head_sha: run.commit, conclusion, created_at: run.startedAt }],
+            })
+          if (url.pathname.endsWith('/artifacts')) return Response.json({ artifacts: [] })
+          return Response.json([])
+        }),
+      )
+      await expect(
+        ingestCommit(run.commit, {
+          CLICKHOUSE_HOST: 'https://clickhouse.example',
+          GITHUB_TOKEN: 'test',
+        }),
+      ).rejects.toMatchObject(
+        conclusion === null
+          ? { state: 'benchmark-running', retryAfter: 5, commit: run.commit }
+          : { message: 'No benchmark results are available for this commit' },
+      )
+      expect(states).toEqual([])
+      expect(JSON.parse(log.mock.calls[0][0])).toMatchObject({
+        event: 'perf_import',
+        outcome: conclusion === null ? 'ImportPendingError' : 'RunNotFoundError',
+      })
+    },
+  )
+
+  it.each([
+    ['base', false, true],
+    ['other', false, false],
+    // A failed run can upload a report without results; it is missing, not retried.
+    ['base', true, true],
+    // A fork PR's workflow is untrusted, whatever commit its results name.
+    ['fork', false, false],
+  ])(
+    "imports a base without its own results from the partner's baseline (%s, report-only artifact %s)",
+    async (commit, reportOnly, imported) => {
+      const base = 'b'.repeat(40)
+      const head = 'c'.repeat(40)
+      const inserts: Record<string, unknown>[] = []
+      const states: string[] = []
+      vi.spyOn(console, 'info').mockImplementation(() => {})
+      const archive = zipSync({
+        'results.json': strToU8(
+          JSON.stringify({
+            commit: commit === 'other' ? 'd'.repeat(40) : base,
+            results: [
+              { test_id: 'weth', compilers: { evm2: { status: 'ok', jit_size_bytes: 5 } } },
+            ],
+          }),
+        ),
+        'artifacts/weth/evm2/opt.s': strToU8('ret\n'),
+      })
+      const report = zipSync({ 'report.md': strToU8('No benchmark results were produced.') })
+      let reportDownloads = 0
+      vi.stubGlobal(
+        'fetch',
+        vi.fn(async (input, init) => {
+          const url = new URL(String(input))
+          if (url.hostname === 'clickhouse.example') {
+            const query = url.searchParams.get('query')
+            if (query?.includes('run_snapshots'))
+              inserts.push(JSON.parse(String(init.body).trim()) as Record<string, unknown>)
+            if (query?.includes('ingestion_jobs')) states.push(JSON.parse(String(init.body)).state)
+            if (
+              String(init.body).includes('FROM ingestion_jobs FINAL WHERE workflow_run_id = 1') &&
+              states.includes('missing')
+            )
+              return Response.json({ workflow_run_id: 1, state: 'missing', updated_at: Date.now() })
+            return new Response('')
+          }
+          if (url.pathname.includes('/actions/workflows/')) {
+            const sha = url.searchParams.get('head_sha')
+            // The base's own run predates the benchmark job and has no artifact.
+            return Response.json({
+              workflow_runs: [
+                {
+                  id: sha === base ? 1 : 2,
+                  head_sha: sha,
+                  head_repository: {
+                    full_name: commit === 'fork' && sha === head ? 'fork/evm2' : 'alloy-rs/evm2',
+                  },
+                  conclusion: 'success',
+                  created_at: run.startedAt,
+                  updated_at: run.startedAt,
+                },
+              ],
+            })
+          }
+          if (
+            url.pathname.endsWith('/runs/2/artifacts') &&
+            url.searchParams.get('name') === 'jit-bench-baseline'
+          )
+            return Response.json({
+              artifacts: [
+                {
+                  archive_download_url: 'https://api.github.com/archive',
+                  size_in_bytes: archive.length,
+                  expired: false,
+                },
+              ],
+            })
+          if (reportOnly && url.pathname.endsWith('/runs/1/artifacts'))
+            return Response.json({
+              artifacts: [
+                {
+                  archive_download_url: 'https://api.github.com/report',
+                  size_in_bytes: report.length,
+                  expired: false,
+                },
+              ],
+            })
+          if (url.pathname.endsWith('/artifacts')) return Response.json({ artifacts: [] })
+          if (url.pathname === '/archive') return new Response(archive)
+          if (url.pathname === '/report') {
+            reportDownloads++
+            return new Response(report)
+          }
+          return Response.json([])
+        }),
+      )
+      const environment = { CLICKHOUSE_HOST: 'https://clickhouse.example', GITHUB_TOKEN: 'test' }
+      const result = ingestCommit(base, environment, projects.evm2, head)
+      if (imported) await expect(result).resolves.toBe(true)
+      else await expect(result).rejects.toThrow('No benchmark results are available')
+      expect(states).toEqual(reportOnly ? ['importing', 'missing'] : [])
+      expect(inserts).toEqual(
+        imported
+          ? [
+              expect.objectContaining({
+                project: 'evm2',
+                commit: base,
+                // Run 0 ranks below any real run of the base; no branch keeps it out of history.
+                workflow_run_id: 0,
+                branch: null,
+                metric_values: { 'weth/evm2': { jit_size_bytes: 5 } },
+              }),
+            ]
+          : [],
+      )
+      if (reportOnly) {
+        // Until the run is re-run, its report is not downloaded again.
+        await expect(ingestCommit(base, environment, projects.evm2, head)).resolves.toBe(true)
+        expect(reportDownloads).toBe(1)
+      }
+    },
+  )
+
+  it.each([
+    ['main', 'workflow_dispatch', 'old'],
+    ['main', 'push', 'head'],
+    ['feature', 'workflow_dispatch', 'none'],
+  ])(
+    'imports a backfill-named run on %s (%s) under the %s commit',
+    async (branch, event, stored) => {
+      const head = 'a'.repeat(40)
+      const old = 'b'.repeat(40)
+      const inserts: Record<string, unknown>[] = []
+      vi.spyOn(console, 'info').mockImplementation(() => {})
+      const archive = zipSync({
+        'results.json': strToU8(
+          JSON.stringify({
+            results: [
+              { test_id: 'weth', compilers: { evm2: { status: 'ok', jit_size_bytes: 5 } } },
+            ],
+          }),
+        ),
+      })
+      const source = {
+        id: 7,
+        head_sha: head,
+        head_branch: branch,
+        event,
+        conclusion: 'success',
+        name: 'Benchmark',
+        display_title: `Benchmark backfill ${old}`,
+        created_at: '2026-10-15T06:00:00Z',
+      }
+      vi.stubGlobal(
+        'fetch',
+        vi.fn(async (input, init) => {
+          const url = new URL(String(input))
+          if (url.hostname === 'clickhouse.example') {
+            if (url.searchParams.get('query')?.includes('run_snapshots'))
+              inserts.push(JSON.parse(String(init.body).trim()) as Record<string, unknown>)
+            return new Response('')
+          }
+          if (url.pathname.includes('/actions/workflows/'))
+            return Response.json({ workflow_runs: [source] })
+          if (url.pathname.endsWith(`/commits/${old}`))
+            return Response.json({ commit: { committer: { date: '2026-10-06T12:00:00Z' } } })
+          if (url.pathname.endsWith('/artifacts'))
+            return Response.json({
+              artifacts: [
+                {
+                  archive_download_url: 'https://api.github.com/archive',
+                  size_in_bytes: archive.length,
+                  expired: false,
+                },
+              ],
+            })
+          if (url.pathname === '/archive') return new Response(archive)
+          return Response.json([])
+        }),
+      )
+      const environment = { CLICKHOUSE_HOST: 'https://clickhouse.example', GITHUB_TOKEN: 'test' }
+      await ingestRecent(environment, [projects.evm2])
+      expect(inserts).toEqual(
+        stored === 'none'
+          ? []
+          : [
+              expect.objectContaining(
+                stored === 'old'
+                  ? { commit: old, started_at: '2026-10-06T12:00:00Z', title: null }
+                  : { commit: head, started_at: '2026-10-15T06:00:00Z' },
+              ),
+            ],
+      )
+      if (stored === 'old')
+        // An on-demand import of main's head must not take the backfill run's results.
+        await expect(ingestCommit(head, environment, projects.evm2)).rejects.toThrow(
+          'No benchmark results are available',
+        )
+    },
+  )
+
+  it('excludes cooling-down runs before allocating the worker batch', async () => {
+    const queries: string[] = []
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async (input, init) => {
+        const url = String(input)
+        if (url.startsWith('https://clickhouse.example')) {
+          const sql = String(init?.body)
+          queries.push(sql)
+          return new Response(
+            sql.includes('UNION DISTINCT')
+              ? [1, 2, 3, 4]
+                  .map((workflow_run_id) => JSON.stringify({ workflow_run_id }))
+                  .join('\n')
+              : '',
+          )
+        }
+        if (url.includes('/actions/workflows/'))
+          return Response.json({
+            workflow_runs: [1, 2, 3, 4, 5, 6].map((id) => ({
+              id,
+              conclusion: 'success',
+              event: 'push',
+              head_branch: 'main',
+              head_sha: id.toString(16).padStart(40, '0'),
+              created_at: run.startedAt,
+            })),
+          })
+        if (url.includes('/artifacts?')) return Response.json({ artifacts: [] })
+        return Response.json([])
+      }),
+    )
+    const result = await ingestRecent(
+      { CLICKHOUSE_HOST: 'https://clickhouse.example', GITHUB_TOKEN: 'test' },
+      [projects.solar],
+    )
+    expect(result).toEqual({ scanned: 2, imported: 0, failed: [5, 6] })
+    // Completed runs without the artifact (e.g. before the job existed) are not retried.
+    expect(queries.filter((sql) => sql.includes('"state":"missing"'))).toHaveLength(2)
+    expect(queries.find((sql) => sql.includes('UNION DISTINCT'))).toContain(
+      "state IN ('retry', 'importing') AND next_attempt_at > now64(3)",
+    )
+  })
+  it('does not publish an empty or unsupported results document', () => {
+    expect(() =>
+      normalizeArchive({ artifacts: new Map(), results: '{"results":[]}' }, run),
+    ).toThrow('no supported results')
+  })
+  it('reserves each worker tick for fresh main runs', () => {
+    const makeRun = (id: number) => ({
+      conclusion: 'success',
+      created_at: '2026-09-03T10:00:00.000Z',
+      display_title: 'Benchmark run',
+      event: 'push',
+      head_branch: 'main',
+      head_sha: id.toString(16).padStart(40, '0'),
+      id,
+      name: 'Benchmark',
+    })
+
+    expect(
+      selectRuns([1, 2, 3, 4].map(makeRun), [5, 6].map(makeRun), 4).map((run) => run.id),
+    ).toEqual([5, 6, 1, 2])
+  })
+
+  it('discovers arbitrary nested text files and compiler directories', async () => {
+    const results = JSON.stringify({
+      results: [
+        {
+          compilers: {
+            solar: { runtimeGas: 42, status: 'ok' },
+            solc: { runtimeGas: 43, status: 'ok' },
+            solx: { total_gas: 44, status: 'ok', label: 'solx 0.1.8' },
+          },
+          description: 'Factorial',
+          suite: 'micro',
+          test_id: 'factorial',
+        },
+      ],
+    })
+    const archive = zipSync({
+      'artifacts/factorial/solar/mir.mir': strToU8('fn factorial'),
+      'artifacts/factorial/new-compiler/passes/new phase.log': strToU8('new output'),
+      'artifacts/factorial/solar/image.bin': new Uint8Array([0, 255, 1]),
+      'artifacts/factorial/solar/../escape.txt': strToU8('ignored'),
+      'results.json': strToU8(results),
+      'baseline/results.json': strToU8('{"results":[]}'),
+    })
+
+    const extracted = await extractArchive(new Response(archive))
+    const normalized = normalizeArchive(extracted, run)
+
+    expect(extracted.artifacts).toEqual(
+      new Map([
+        ['artifacts/factorial/solar/mir.mir', 'fn factorial'],
+        ['artifacts/factorial/new-compiler/passes/new phase.log', 'new output'],
+      ]),
+    )
+    expect(normalized.artifacts).toMatchObject([
+      { bytes: 12, compiler: 'solar', path: 'mir.mir', test_id: 'factorial' },
+      {
+        compiler: 'new-compiler',
+        path: 'passes/new phase.log',
+        storage_path: artifactMetadata('passes/new phase.log').storagePath,
+        language: 'text',
+      },
+    ])
+    expect(normalized.results).toMatchObject([
+      { compiler: 'solar', status: 'ok', total_gas: 42 },
+      { compiler: 'solc', status: 'ok', total_gas: 43 },
+      { compiler: 'solx', status: 'ok', total_gas: 44, label: 'solx 0.1.8' },
+    ])
+  })
+
+  it('selects results and artifacts from the same wrapped directory', async () => {
+    const archive = zipSync({
+      'report/results.json': strToU8('[]'),
+      'report/artifacts/test/solar/nested/a.json': strToU8('{}'),
+      'report/baseline/results.json': strToU8('[1]'),
+      'report/baseline/artifacts/test/solar/nested/a.json': strToU8('wrong'),
+    })
+    const extracted = await extractArchive(new Response(archive))
+    expect(extracted.results).toBe('[]')
+    expect([...extracted.artifacts.values()]).toEqual(['{}'])
+  })
+
+  it('rejects ambiguous result roots and unsafe paths', async () => {
+    await expect(
+      extractArchive(
+        new Response(
+          zipSync({
+            'a/results.json': strToU8('[]'),
+            'b/results.json': strToU8('[]'),
+          }),
+        ),
+      ),
+    ).rejects.toThrow('ambiguous')
+    for (const path of ['../x', '/x', 'a//b', 'a/./b', 'a\\b'])
+      expect(validArtifactPath(path)).toBe(false)
+    expect(validArtifactPath("passes/phase #2 (α)'s output.log")).toBe(true)
+    expect(textArtifact(new Uint8Array([0xff]), 'a.bin')).toBeNull()
+    expect(artifactMetadata('constructor').language).toBe('text')
+    expect(() =>
+      normalizeArchive(
+        {
+          artifacts: new Map(),
+          results: JSON.stringify([{ test_id: '..', solar: { status: 'ok' } }]),
+        },
+        run,
+      ),
+    ).toThrow('no supported results')
+    expect(artifactMetadata('a/file.json').storagePath).not.toBe(
+      artifactMetadata('b/file.json').storagePath,
+    )
+  })
+
+  it('normalizes legacy arrays, nested results, metric aliases and new compiler names', () => {
+    for (const document of [
+      [{ id: 'test', solar: { compileTime: 1, runtimeGas: 2, status: 'ok' } }],
+      {
+        results: [
+          {
+            name: 'test',
+            compilers: { experimental: { compile_time_seconds: 1, total_gas: 2, status: 'ok' } },
+          },
+        ],
+      },
+    ]) {
+      const normalized = normalizeArchive(
+        { artifacts: new Map(), results: JSON.stringify(document) },
+        run,
+      )
+      expect(normalized.results[0]).toMatchObject({
+        test_id: 'test',
+        compile_time_seconds: 1,
+        total_gas: 2,
+      })
+    }
+  })
+
+  it('rejects archives without benchmark results', async () => {
+    const archive = zipSync({ 'artifacts/factorial/solar/mir.mir': strToU8('fn factorial') })
+
+    await expect(extractArchive(new Response(archive))).rejects.toThrow('no results.json')
+    await expect(
+      extractArchive(new Response(zipSync({ 'baseline/results.json': strToU8('[]') }))),
+    ).rejects.toThrow('no results.json')
+  })
+})

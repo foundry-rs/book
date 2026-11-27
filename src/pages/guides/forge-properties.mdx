@@ -1,0 +1,210 @@
+---
+description: Run independent coding agents to find reproducible bugs and add passing Solidity tests.
+---
+
+## Property generation
+
+`forge properties` runs coding agents independently against your contracts. Each agent writes failing Solidity tests that prove suspected bugs, in its own copy of the project. Forge reruns those tests on several seeds, groups the reproducible failures by root cause, and reports the bugs that enough agents found. An optional verifier agent then tries to disprove each reported bug.
+
+:::info
+`forge properties` is experimental and requires a build that includes [foundry-rs/foundry#17259](https://github.com/foundry-rs/foundry/pull/17259). Its agent interface and reporting rules can change.
+:::
+
+### Prerequisites
+
+- A Foundry project with its dependencies and Solidity compiler installed.
+- A coding agent that can read the project, write tests, and run `forge test` without interactive prompts. Forge does not bundle one: you pass any executable with `--agent-command`.
+- Reference material that states the intended behavior, such as a specification, README, or threat model.
+
+### How a run works
+
+1. Forge builds the project once in a temporary workspace. Every agent copy starts from that build output, so the agents share one build cache.
+2. Forge starts four agent sessions in parallel by default (`--agents`). Each session runs your agent command once, in its own project copy, with its own derived seed.
+3. Each agent reads the targets and the reference material, looks for bugs, and writes a failing test for each suspected bug under its output directory. Each test carries a `// @bug` tag.
+4. When a session exits or reaches `--timeout`, Forge ends its process group and collects its Solidity files. It runs them in a fresh project copy on every supplied seed. Edits to production code in the agent's copy are not carried into this run.
+5. A test that fails on every seed is a possible bug. Forge groups the possible bugs by root cause. It lists the groups that at least two agents found first (`--quorum`), then the groups below the quorum.
+6. If you pass `--verifier-command`, a verifier agent tries to disprove each group that reached the quorum.
+7. Forge adds the files whose tests all pass to your project, under `test/generated/agent-<id>/`, and writes `cache/properties/report.json`.
+
+### Steps
+
+::::steps
+
+#### Describe the intended behavior
+
+Give the agents a short specification that distinguishes intended behavior from implementation details:
+
+```markdown [spec.md]
+Review Vault's deposit and withdrawal accounting. Withdrawals must reduce
+the caller's shares and the vault's total shares consistently. Check rounding
+at small amounts and transitions involving more than one depositor.
+```
+
+Pass existing documentation with additional `--context` options. Forge gives the agents the original files' absolute paths, so configure your agent to read those paths.
+
+#### Write an agent wrapper
+
+Forge starts your executable once per agent in that agent's project copy, with no stdin. It supplies the prompt path and the output directory through environment variables; it does not pass positional arguments. See [Agent interface](#agent-interface) for the full list.
+
+This example uses `claude -p`. Any noninteractive agent CLI works the same way: read the prompt file, write tests under the output directory, and run `forge test`. The wrapper allows edits only in the output directory and allows `forge test` commands:
+
+```bash [agent.sh]
+#!/bin/sh
+set -eu
+out=$(cd "$FORGE_PROPERTIES_OUT" && pwd -P)
+exec claude -p "$@" \
+  --tools Read Grep Glob Write Edit Bash \
+  --allowedTools Read Grep Glob "Edit(/$out/**)" "Bash(forge test *)" \
+  --permission-mode dontAsk \
+  "$(cat "$FORGE_PROPERTIES_PROMPT")"
+```
+
+```bash
+$ chmod +x agent.sh
+```
+
+The extra slash in `Edit(/$out/**)` makes an absolute Claude Code permission rule: if `out` is `/tmp/example`, the rule is `Edit(//tmp/example/**)`. Existing deny rules still apply. Let the agent read the files you pass with `--context`, because they live outside its project copy. For a different agent, adapt the wrapper to its noninteractive mode and permissions.
+
+An agent writes ordinary `*.sol` files under `FORGE_PROPERTIES_OUT`. Forge does not parse the agent's stdout. The agent must write a test that fails when the bug is present. For each suspected bug, put a claim immediately above the failing test:
+
+```solidity
+// @bug Vault.withdraw src/Vault.sol:42 — Withdrawals must reduce total shares.
+```
+
+Use the actual contract, function, and source location. Use `//`, because `/// @bug` is not a supported NatSpec tag. The tag is how Forge decides that two agents found the same bug.
+
+#### Write a verifier (optional)
+
+A verifier reduces false positives. Forge runs it once per group that reached the quorum, in a fresh project copy that also holds the group's tests. It must try to disprove the bug first, and it writes its verdict as JSON to `FORGE_PROPERTIES_VERDICT`. Forge supplies a ready prompt in `FORGE_PROPERTIES_VERIFY_PROMPT`.
+
+```bash [verifier.sh]
+#!/bin/sh
+set -eu
+exec claude -p "$@" \
+  --tools Read Grep Glob Write Bash \
+  --allowedTools Read Grep Glob "Edit(/$FORGE_PROPERTIES_VERDICT)" \
+    "Bash(forge test *)" "Bash(forge build*)" \
+  --add-dir "$(dirname "$FORGE_PROPERTIES_GROUP")" \
+  --permission-mode dontAsk \
+  "$(cat "$FORGE_PROPERTIES_VERIFY_PROMPT")"
+```
+
+```bash
+$ chmod +x verifier.sh
+```
+
+The verdict has this shape:
+
+```json
+{
+  "verdict": "confirmed",
+  "reason": "The NatSpec requires that withdraw reduces total shares. The test shows that it does not.",
+  "evidence": [
+    { "file": "src/Vault.sol", "line": 42, "quote": "totalShares -= shares;" }
+  ],
+  "unresolved": ""
+}
+```
+
+`verdict` is `confirmed`, `needs_validation`, or `rejected`. Use `needs_validation` when one fact stays open, and name it in `unresolved`. A rejection needs at least one `evidence` entry with an exact quote. Forge treats a missing or invalid verdict, and a rejection without evidence, as `needs_validation`.
+
+#### Run the command
+
+From your project root, pass the target, context, wrapper, and at least two distinct seeds:
+
+```bash
+$ forge properties --target src/Vault.sol --context spec.md \
+    --agent-command ./agent.sh --seed 0x5eed --seed 0xc0ffee \
+    --agents 4 --quorum 2 --timeout 300
+```
+
+To add the verifier, pass `--verifier-command ./verifier.sh`. Repeat `--verifier-arg` to pass it arguments.
+
+Repeat `--target` for additional project-relative source paths. Omitting it targets all source files in the project's source directory. Repeat `--context` for more reference files. Repeat `--agent-arg` to pass arguments to your wrapper; for an argument that begins with a hyphen, use `--agent-arg=--option`.
+
+`--timeout` limits each agent and verifier session in seconds. It does not limit the subsequent Forge build and test runs. Without it, Forge waits for each session to finish.
+
+#### Review the results
+
+Forge prints the possible bugs first, then the groups below the quorum, then the paths of the files it added. With a verifier, each reported group is labeled `confirmed`, `needs validation`, or `rejected`, in that order, and carries the verifier's reason. Read `cache/properties/report.json` and inspect the generated files. These paths use the default cache and test directories:
+
+| Path | Contents |
+| --- | --- |
+| `cache/properties/report.json` | Possible bugs with verdicts, reports below quorum, blocked tests, rejected files, timeouts, usage, and kept or duplicate paths. |
+| `cache/properties/agent-N/prompt.md` | The task given to one agent. |
+| `cache/properties/agent-N/agent.log` | That agent's stdout and stderr. |
+| `cache/properties/agent-N/tests/` | Copies of the Solidity files collected from that agent, including failing tests. |
+| `cache/properties/verify-N/` | The verifier's `prompt.md`, `group.json`, `verdict.json`, and `verifier.log` for group N. |
+| `test/generated/agent-N/` | Passing files added to your project. |
+
+Each new run replaces the per-agent and per-verifier cache directories and the report. Save evidence you want to retain before running again. Existing generated tests remain in your project but are left out of the temporary workspaces.
+
+::::
+
+### Verify
+
+Run the kept tests:
+
+```bash
+$ forge test --match-path 'test/generated/**/*.sol'
+```
+
+Inspect each reported failure against the specification. Agreement between agents is evidence to investigate, not proof that the implementation is wrong: independent agents can make the same mistake. A verifier verdict is also evidence, not a proof. Review the groups below the quorum too, because they often hold real bugs that only one agent found. A passing generated test can also encode incorrect intended behavior.
+
+### Agent interface
+
+Your executable can use these environment variables:
+
+| Variable | Value |
+| --- | --- |
+| `FORGE_PROPERTIES_PROMPT` | Path to the Markdown task file. |
+| `FORGE_PROPERTIES_TARGETS` | Project-relative target paths, one per line. |
+| `FORGE_PROPERTIES_CONTEXT` | Absolute reference-file paths, one per line. |
+| `FORGE_PROPERTIES_OUT` | Absolute, initially empty directory for this agent's Solidity tests. |
+| `FORGE_PROPERTIES_SEED` | This agent's derived seed in hexadecimal. |
+| `FORGE_PROPERTIES_USAGE` | Optional output path for usage JSON with `input_tokens`, `output_tokens`, and `cost_usd`. |
+
+Forge captures the agent's output in its log and supplies no stdin. A nonzero exit status makes the command report an error, but Forge still validates tests already written by that agent. A timeout also ends the session and validates its collected tests.
+
+The verifier gets these variables instead. It also gets `FORGE_PROPERTIES_USAGE`.
+
+| Variable | Value |
+| --- | --- |
+| `FORGE_PROPERTIES_VERIFY_PROMPT` | Path to the task file. It tells the verifier to try to disprove the claims. |
+| `FORGE_PROPERTIES_GROUP` | JSON file with the agents, claims, tests, and failure output of the group. |
+| `FORGE_PROPERTIES_VERDICT` | Path where the verifier writes its verdict JSON. |
+
+The verifier tries four disproofs: the behavior is intended or allowed, the test reaches an impossible state or cheats, the claim misreads the code, or the finding is only hardening. It reports `confirmed` only when all four fail. Forge runs at most `--agents` verifiers at a time and does not verify groups below the quorum.
+
+### How results are classified
+
+A possible bug must fail on every supplied seed. Forge groups failures using their `@bug` claims, matching the target function, Solidity file, and nearby source lines. Without matching structured tags, it uses source-file and claim similarity.
+
+The default quorum is two agents, or one with `--agents 1`. Use `--quorum K` to change it; `K` must be between one and the agent count. Forge lists the groups that reach the quorum first, then the groups below it. Both appear in the output and in `report.json`.
+
+Forge keeps files whose tests pass on every seed, together with their required generated imports, in `test/generated/agent-<id>/`. A failing, skipped, or inconsistently passing test prevents its file from being kept. A file that already exists in your project is not overwritten.
+
+Files that fail compilation or set a seed, `ffi`, or `fs_permissions` through inline configuration are rejected. Failures caused by blocked FFI, network, or environment cheatcodes are recorded separately from possible bugs.
+
+### Execution boundaries and cost
+
+The temporary project copies are workspaces, not operating-system sandboxes. Agents and verifiers inherit your environment and run with the permissions of their wrapper. Dependency entries are linked to the original project. Configure your agent's sandbox and permissions for the project you are reviewing, and avoid changing project files during a run. Forge records detected project changes as a tainted run.
+
+Forge protects its own validation runs of generated tests. They run outside the sandbox of the agent that wrote them, so:
+
+- `ffi` is off in every copy. `--allow-ffi` lets tests call `vm.ffi` only if the project also enables `ffi`.
+- Cheatcodes that open network connections fail, and the copies have no RPC or Etherscan settings. `--allow-network` lifts both limits.
+- Test runs see a scrubbed environment: a few variables such as `PATH`, plus a temporary `HOME`. Env cheatcodes cannot read your secrets.
+- Agent config and instruction files, such as `.claude`, `.codex`, `.cursor`, `CLAUDE.md`, and `AGENTS.md`, are left out of the copies. Settings files can hold hooks that run host commands. To give the agents project instructions, pass the file with `--context`.
+
+These flags control Forge's test runs, not the external agent's network or host permissions. A test that fails only because Forge blocked a cheatcode is recorded as blocked, not as a possible bug.
+
+Model cost depends on your agent configuration and the number and duration of sessions. Forge sums usage only when agents and verifiers write the optional usage file. More seeds increase the number of validation runs.
+
+### Next steps
+
+- [Invariant testing](/guides/invariant-testing)
+- [Mutation testing](/guides/mutation-testing)
+- [Symbolic testing](/guides/symbolic-testing)
+
+See the [forge properties reference](/reference/forge/properties) for every option.

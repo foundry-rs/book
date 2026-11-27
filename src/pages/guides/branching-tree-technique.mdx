@@ -1,0 +1,86 @@
+---
+description: Organize Solidity tests as decision trees with the Branching Tree Technique and Bulloak.
+---
+
+## Branching Tree Technique
+
+The [Branching Tree Technique (BTT)](https://github.com/PaulRBerg/btt-examples) is a methodology for organizing Solidity tests by modeling all conditions and outcomes as a decision tree. Branches represent conditions and leaves represent concrete test cases.
+
+BTT fits Foundry tests because each leaf can become a `test` or `test_RevertWhen` function, while each condition can become setup code or a modifier. For example, a `TransferTest` tree can describe the paused and balance states for a transfer:
+
+```txt
+TransferTest
+├── When paused
+│   └── It should revert.
+└── When not paused
+    ├── When balance is insufficient
+    │   └── It should revert.
+    └── When balance is sufficient
+        └── It should transfer the tokens.
+```
+
+That tree can be implemented manually in a Foundry test file:
+
+```solidity
+contract TransferTest is Test {
+    modifier whenNotPaused() {
+        _;
+    }
+
+    modifier whenBalanceIsSufficient() {
+        _;
+    }
+
+    function test_ShouldTransferTheTokens()
+        public
+        whenNotPaused
+        whenBalanceIsSufficient
+    {
+        // arrange, act, assert
+    }
+
+    function test_RevertWhen_Paused() public {
+        // arrange, act, assert
+    }
+}
+```
+
+### Bulloak
+
+[Bulloak](https://bulloak.dev/) is a CLI tool that automates BTT workflows with Foundry. It takes a `.tree` spec file as input and can:
+
+- **Scaffold** a Solidity test file from the tree
+- **Check** that an existing test file matches the tree spec
+
+**Install:**
+
+```bash
+cargo install bulloak
+```
+
+**Create a spec file (`TransferTest.tree`):**
+
+```txt
+TransferTest
+└── When not paused
+    ├── When balance is insufficient
+    │   └── It should revert.
+    └── When balance is sufficient
+        └── It should transfer the tokens.
+```
+
+**Scaffold a test file:**
+
+```bash
+bulloak scaffold TransferTest.tree
+```
+
+**Check an existing test file matches the spec:**
+
+```bash
+bulloak check TransferTest.tree
+```
+
+Bulloak generates standard Solidity test skeletons that you fill in with setup and assertions, then run with `forge test`.
+
+For more information see the [Bulloak GitHub](https://github.com/alexfertel/bulloak) and the [BTT presentation at Solidity Summit 2023](https://prberg.com/presentations/solidity-summit-2023/).

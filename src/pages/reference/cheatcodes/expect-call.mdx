@@ -1,0 +1,161 @@
+---
+description: Asserts that a specific call is made during test execution
+---
+
+## `expectCall`
+
+### Signature
+
+```solidity
+function expectCall(address callee, bytes calldata data) external;
+function expectCall(address callee, bytes calldata data, uint64 count) external;
+function expectCall(address callee, uint256 msgValue, bytes calldata data) external;
+function expectCall(address callee, uint256 msgValue, bytes calldata data, uint64 count) external;
+function expectCallMinGas(address callee, uint256 msgValue, uint64 minGas, bytes calldata data) external;
+function expectCallMinGas(address callee, uint256 msgValue, uint64 minGas, bytes calldata data, uint64 count) external;
+function expectDelegateCall(address callee, bytes calldata data) external;
+```
+
+### Description
+
+Expects a call to a specified address `callee`, where the call data either strictly or loosely matches `data`.
+
+Use `expectDelegateCall` when only a delegate call should satisfy the expectation. It uses the same calldata matching behavior as `expectCall`, but an ordinary call does not match it.
+
+Use `expectCallMinGas` to additionally require that the call is supplied with at least `minGas` gas. The minimum applies to the gas supplied to the call, not the gas consumed during execution.
+
+| Signature Variant | Description |
+|-------------------|-------------|
+| Without `count` | Call must be made at least once (can be called multiple times to expect multiple calls) |
+| With `count` | Call must be made exactly `count` times |
+| With `msgValue` | Also checks that the call was made with the specified `msg.value` |
+| With `minGas` | Uses `expectCallMinGas` to require at least the specified gas for the matching call |
+
+Set `count` to 0 to assert that a call is **not** made.
+
+If the test terminates without the expected call being made, the test fails.
+
+### Parameters
+
+| Parameter | Type      | Description                                           |
+|-----------|-----------|-------------------------------------------------------|
+| `callee`  | `address` | The address expected to be called                     |
+| `data`    | `bytes`   | The expected calldata (can be partial, matching from first byte) |
+| `msgValue` | `uint256` | The expected `msg.value` for the call                |
+| `minGas`  | `uint64`  | The minimum gas that must be supplied to the call     |
+| `count`   | `uint64`  | Exact number of times the call should be made         |
+
+### Examples
+
+#### Expect a call is made
+
+```solidity [test/ExpectCall.t.sol]
+function testExpectCall() public {
+    address alice = makeAddr("alice");
+    vm.expectCall(
+        address(token),
+        abi.encodeCall(token.transfer, (alice, 10))
+    );
+    token.transfer(alice, 10);
+}
+```
+
+#### Expect a delegate call is made
+
+```solidity [test/ExpectDelegateCall.t.sol]
+function testExpectDelegateCall() public {
+    bytes memory data = abi.encodeWithSignature("call()");
+    vm.expectDelegateCall(address(implementation), data);
+    proxy.delegateCall(implementation);
+}
+```
+
+#### Expect at least two calls
+
+```solidity [test/ExpectCallMultiple.t.sol]
+function testExpectMultipleCalls() public {
+    address alice = makeAddr("alice");
+    
+    // Call expectCall twice to expect at least 2 calls
+    vm.expectCall(address(token), abi.encodeCall(token.transfer, (alice, 10)));
+    vm.expectCall(address(token), abi.encodeCall(token.transfer, (alice, 10)));
+    
+    token.transfer(alice, 10);
+    token.transfer(alice, 10);
+    token.transfer(alice, 10); // Extra calls are fine
+}
+```
+
+#### Assert a call is NOT made
+
+```solidity [test/ExpectNoCall.t.sol]
+function testExpectNoCall() public {
+    address alice = makeAddr("alice");
+    
+    // count = 0 means the call should NOT happen
+    vm.expectCall(
+        address(token),
+        abi.encodeCall(token.transfer, (alice, 10)),
+        0
+    );
+    
+    // This different call is fine
+    token.transferFrom(alice, address(0), 10);
+}
+```
+
+#### Match any calldata with a selector
+
+```solidity [test/ExpectCallSelector.t.sol]
+function testExpectCallWithSelector() public {
+    address alice = makeAddr("alice");
+    
+    // Only match the selector, not the full calldata
+    vm.expectCall(
+        address(token),
+        abi.encodeWithSelector(token.transfer.selector),
+        2
+    );
+    
+    token.transfer(alice, 10);
+    token.transfer(alice, 20);
+}
+```
+
+#### Expect a call with specific msg.value
+
+```solidity [test/ExpectCallValue.t.sol]
+function testExpectCallWithValue() public {
+    Contract target = new Contract();
+    
+    vm.expectCall(
+        address(target),
+        1 ether,
+        abi.encodeWithSelector(target.pay.selector, 2)
+    );
+    
+    target.pay{value: 1 ether}(2);
+}
+```
+
+#### Expect a call with minimum gas
+
+```solidity [test/ExpectCallMinGas.t.sol]
+// [!include ~/snippets/projects/cheatcodes/test/ExpectCallMinGas.t.sol:minimum-gas]
+```
+
+### Gotchas
+
+:::note
+This cheatcode does not work on internal calls. See [issue #432](https://github.com/foundry-rs/foundry/issues/432).
+:::
+
+:::warning
+When using `count`, you cannot later change the expected count for the same calldata. The first `count` value is final.
+:::
+
+### Related Cheatcodes
+
+- [`expectRevert`](/reference/cheatcodes/expect-revert) - Assert that calls revert
+- [`expectEmit`](/reference/cheatcodes/expect-emit) - Assert that events are emitted
+- [`mockCall`](/reference/cheatcodes/mock-call) - Mock call return values

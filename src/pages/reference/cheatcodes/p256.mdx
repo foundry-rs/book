@@ -1,0 +1,63 @@
+---
+description: Signs digests and derives public keys on the secp256r1 (P-256) curve
+---
+
+## P256
+
+### Signatures
+
+```solidity
+function signP256(uint256 privateKey, bytes32 digest) external pure returns (bytes32 r, bytes32 s);
+function publicKeyP256(uint256 privateKey) external pure returns (uint256 publicKeyX, uint256 publicKeyY);
+```
+
+### Description
+
+These cheatcodes provide signing and public-key derivation on the secp256r1 (P-256, "NIST" curve) used by WebAuthn/passkey signers and the [RIP-7212](https://github.com/ethereum/RIPs/blob/master/RIPS/rip-7212.md) `P256VERIFY` precompile.
+
+- `signP256` signs `digest` with `privateKey` and returns the signature components `(r, s)`. The `s` value is normalized to the lower half of the curve order.
+- `publicKeyP256` derives the uncompressed public key coordinates `(x, y)` for `privateKey`.
+
+Both revert if the private key is zero or not less than the secp256r1 curve order.
+
+### Parameters
+
+| Parameter    | Type      | Description                          |
+|--------------|-----------|--------------------------------------|
+| `privateKey` | `uint256` | The secp256r1 private key            |
+| `digest`     | `bytes32` | The digest to sign                   |
+
+### Returns
+
+| Function       | Return value                                            |
+|----------------|---------------------------------------------------------|
+| `signP256`     | The signature components `(r, s)`                       |
+| `publicKeyP256`| The public key coordinates `(x, y)`                     |
+
+### Examples
+
+```solidity [test/P256.t.sol]
+function testSignP256() public view {
+    uint256 privateKey = 0xA11CE;
+    bytes32 digest = keccak256("hello p256");
+
+    (uint256 x, uint256 y) = vm.publicKeyP256(privateKey);
+    (bytes32 r, bytes32 s) = vm.signP256(privateKey, digest);
+
+    // Verify with your P-256 verifier of choice, e.g. a RIP-7212
+    // precompile wrapper or a Solidity P-256 library.
+    assertTrue(verifier.verify(digest, r, s, x, y));
+}
+```
+
+### Gotchas
+
+:::note
+There is no secp256r1 equivalent of `ecrecover` in the EVM. Verification requires a precompile (RIP-7212 on supported chains) or a Solidity implementation, with the public key passed explicitly.
+:::
+
+### Related Cheatcodes
+
+- [`sign`](/reference/cheatcodes/sign) - Sign with a secp256k1 key
+- [`signCompact`](/reference/cheatcodes/sign-compact) - Compact secp256k1 signatures
+- [`Ed25519`](/reference/cheatcodes/ed25519) - Ed25519 key generation and signing

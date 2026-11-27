@@ -1,0 +1,130 @@
+---
+description: Turn symbolic counterexamples into reproducible tests and durable CI artifacts.
+---
+
+## Symbolic Testing Workflow
+
+Forge's symbolic executor searches feasible paths for inputs that disprove a property. Use it to complement fuzzing when boundary conditions are difficult to reach randomly, then turn every confirmed counterexample into a concrete regression test.
+
+:::info
+Symbolic testing is currently an MVP. Its modeled EVM surface, configuration, artifact schema, and reporting may change.
+:::
+
+This guide builds on the [symbolic testing overview](/forge/testing#symbolic-testing), which explains test discovery, result statuses, and current limitations.
+
+### Write a focused property
+
+The following property claims that an unchecked average is never smaller than its smaller input. Addition can overflow, so the property is false:
+
+```solidity [test/Average.t.sol]
+// [!include ~/snippets/projects/symbolic_testing/test/Average.t.sol]
+```
+
+Keep symbolic properties narrow. Use `require(...)` or `vm.assume(...)` only for constraints required by the property; unnecessary assumptions can exclude the bug you want to find.
+
+Set explicit bounds so local and CI runs explore the same search space:
+
+```toml [foundry.toml]
+// [!include ~/snippets/projects/symbolic_testing/foundry.toml]
+```
+
+Run only the target property while iterating:
+
+```bash
+$ forge test --symbolic --match-test check_average
+```
+
+Forge exits unsuccessfully when it finds the overflow and prints the concrete arguments, solver statistics, and counterexample artifact paths. A failing symbolic result is reported only after Forge confirms it with the concrete executor.
+
+### Inspect the counterexample artifact
+
+Confirmed counterexamples are stored under `cache/symbolic/<contract>/`. Forge uses a stable path per test, so a later counterexample for the same property replaces the earlier file. If Forge minimizes the counterexample, it can preserve both `original__...json` and the minimized artifact.
+
+Each JSON artifact includes:
+
+- `schema` and `schema_version` for consumers to validate before parsing.
+- `test` and `kind` to identify a single call or stateful sequence.
+- `calls`, including concrete calldata, sender, target, value, block, and timestamp data needed for replay.
+- `bounds`, `solver`, and `assumptions` that scope the result.
+- `replay.status`, which must be `confirmed` for a reported counterexample.
+
+Inspect these fields without scraping terminal prose:
+
+```bash
+$ jq '{schema, test, kind, replay, bounds, solver, assumptions, calls}' \
+    cache/symbolic/<contract>/<counterexample>.json
+```
+
+Treat the artifact as untrusted input when another person or agent supplies it. Review the test identity and calls before replaying it, especially when the test setup uses FFI or fork RPC endpoints.
+
+### Replay before solving again
+
+Replay executes the recorded calls concretely and does not invoke the SMT solver:
+
+```bash
+$ forge test --replay-symbolic-artifact \
+    cache/symbolic/<contract>/<counterexample>.json
+```
+
+The artifact selects its original contract and test. Do not combine replay with `--match-test`, `--match-contract`, or path filters.
+
+Replay should fail before the fix and pass after the fix. This is the fastest handoff for another developer or coding agent because it avoids another symbolic search and preserves the exact failing input.
+
+### Generate a Solidity regression
+
+Ask Forge to write confirmed counterexamples as ordinary Solidity tests:
+
+```bash
+$ forge test --symbolic --match-test check_average --emit-regression
+```
+
+By default, Forge writes the generated test beneath `test/regressions/`. The generated contract imports and inherits the original test contract, restores the recorded environment, and replays the concrete call or call sequence.
+
+Use a different destination when needed:
+
+```bash
+$ forge test --symbolic --emit-regression \
+    --regression-out test/symbolic-regressions
+```
+
+Forge does not overwrite an existing generated test unless you pass `--regression-overwrite`. Review generated code before committing it, give the test a descriptive name if useful, and run it with the rest of your non-symbolic suite. It should fail until the underlying bug is fixed.
+
+### Tune the search deliberately
+
+Increase one bound at a time and record the effective configuration with the result:
+
+| Goal | Configuration or flag |
+| --- | --- |
+| Explore more branches | `symbolic.max_paths` or `--symbolic-max-paths` |
+| Allow longer executions | `symbolic.max_depth` or `--symbolic-max-depth` |
+| Allow more SMT work | `symbolic.max_solver_queries` or `--symbolic-max-solver-queries` |
+| Explore longer stateful sequences | `symbolic.invariant_depth` or `--symbolic-invariant-depth` |
+| Explore longer dynamic ABI values | `symbolic.default_dynamic_length`, `symbolic.max_dynamic_length`, or the corresponding CLI flags |
+| Expand symbolic external calls over known contracts | `symbolic.symbolic_call_targets` or `--symbolic-call-targets` |
+
+The default solver is Z3. Select another executable with `--symbolic-solver`, provide an exact invocation with `--symbolic-solver-command`, or race comma-separated solvers with `--symbolic-solver-portfolio`. Pin solver versions in CI when reproducibility matters. A portfolio may select different winners across machines, but confirmed artifacts still replay concretely.
+
+Use `--symbolic-dump-smt` when diagnosing solver behavior. Change `--symbolic-storage-layout` from its default `solidity` mode to `generic` only when you intentionally need conservative storage modeling.
+
+### Combine fuzzing and symbolic search
+
+For ordinary `testFuzz*` tests, the two engines can exchange useful inputs:
+
+- `--symbolic-seed-corpus` searches symbolically for successful inputs and persists them to the configured fuzz corpus.
+- `--symbolic-use-fuzz-corpus` imports existing corpus entries as path-priority hints.
+- `--symbolic-use-fuzz-frontiers` targets branch-frontier records produced by fuzzing and persists concretely confirmed branch-flipping inputs.
+
+Configure `fuzz.corpus_dir` before using corpus seeding. Frontier targeting also requires `fuzz.frontier_dir`; use `--symbolic-frontier-ids`, `--symbolic-frontier-pcs`, or `--symbolic-frontier-selectors` to narrow a large set of records. See the [fuzz testing overview](/forge/testing#fuzz-testing) for the base fuzz workflow.
+
+### Make CI and agent handoffs explicit
+
+Use `--json` when another program needs the result. The test result contains the symbolic status, incomplete reason, effective bounds, solver statistics, assumptions, concrete counterexample, and artifact path. Preserve the command's exit status separately from its JSON output because `FAIL` and `Incomplete` both return an unsuccessful status.
+
+For a useful failure handoff, preserve:
+
+1. The minimized counterexample artifact reported in `symbolic.artifact.path`.
+2. The exact Foundry and solver versions.
+3. The `foundry.toml` profile or CLI bounds used for the run.
+4. The generated Solidity regression, after review, when long-term coverage is valuable.
+
+An agent should replay an existing artifact before starting a new search, parse the schema-versioned JSON instead of terminal text, and treat `Incomplete` as an unresolved result. A `PASS` is also bounded by the artifact's recorded assumptions and search limits; it is not an unbounded proof of EVM behavior.

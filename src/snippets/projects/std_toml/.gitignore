@@ -1,0 +1,5 @@
+/lib/
+/out/
+/cache/
+/output.*
+/foundry.lock

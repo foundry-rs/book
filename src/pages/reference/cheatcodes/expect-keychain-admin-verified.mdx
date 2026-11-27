@@ -1,0 +1,47 @@
+---
+description: Asserts that a SignatureVerifier.verifyKeychainAdmin call is made
+---
+
+## `expectKeychainAdminVerified`
+
+### Signature
+
+```solidity
+function expectKeychainAdminVerified(address account, bytes32 digest, bytes calldata signature) external;
+```
+
+### Description
+
+Expects a call to `SignatureVerifier.verifyKeychainAdmin(account, digest, signature)` during test execution.
+
+Use this to assert that the code under test calls the `SignatureVerifier` precompile with the expected `account`, `digest`, and `signature` (a root/admin verification). This only asserts the **call is made** — it does not assert that the verifier returned `true`. If the test terminates without the expected call being made, the test fails.
+
+### Parameters
+
+| Parameter   | Type      | Description                                                  |
+|-------------|-----------|-------------------------------------------------------------|
+| `account`   | `address` | The account whose root/admin key is expected to be verified |
+| `digest`    | `bytes32` | The expected digest passed to `verifyKeychainAdmin`         |
+| `signature` | `bytes`   | The expected encoded keychain signature                     |
+
+### Examples
+
+```solidity [test/ExpectKeychainAdminVerified.t.sol]
+bytes32 digest = keccak256(abi.encode(block.chainid, address(target), account, action));
+bytes memory signature = vm.signKeychainAdmin(adminPk, account, digest);
+
+vm.expectKeychainAdminVerified(account, digest, signature);
+target.doPrivilegedAction(account, digest, signature);
+```
+
+### Gotchas
+
+:::warning[Domain-separate the digest]
+`verifyKeychainAdmin` does **not** bind the `account` argument into the signed `digest`. Ensure the `digest` you expect is domain-separated with a replay domain such as chain ID, contract address, and account address.
+:::
+
+### Related Cheatcodes
+
+- [`expectKeychainVerified`](/reference/cheatcodes/expect-keychain-verified) - Assert a `verifyKeychain` call is made
+- [`signKeychainAdmin`](/reference/cheatcodes/sign-keychain-admin) - Signs a keychain digest with a root or admin key
+- [`expectCall`](/reference/cheatcodes/expect-call) - Assert that a specific call is made

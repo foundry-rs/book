@@ -1,0 +1,77 @@
+---
+description: Restricts memory access to explicitly allowed ranges in the current or next call context
+---
+
+## `expectSafeMemory`
+
+### Signatures
+
+```solidity
+function expectSafeMemory(uint64 min, uint64 max) external;
+function expectSafeMemoryCall(uint64 min, uint64 max) external;
+function stopExpectSafeMemory() external;
+```
+
+### Description
+
+Restricts EVM memory access to the scratch-space range `[0x00, 0x60)` and one or more explicitly allowed ranges. Each range is half-open: `min` is included and `max` is excluded.
+
+The expectation checks opcodes that write to memory and reads that expand active memory. The test fails when an operation touches memory outside a single allowed range.
+
+Use the variants according to where the memory access occurs:
+
+| Cheatcode | Scope |
+|-----------|-------|
+| `expectSafeMemory` | The current call context |
+| `expectSafeMemoryCall` | The next created call context |
+| `stopExpectSafeMemory` | Removes the expectation from the current call context |
+
+Call `expectSafeMemory` or `expectSafeMemoryCall` multiple times to add disjoint allowed ranges at the same call depth. The ranges are not merged, so one memory operation must fit entirely inside one allowed range.
+
+:::note
+The automatically allowed scratch space ends at `0x60`. The Solidity zero slot at `[0x60, 0x80)` is not automatically included.
+:::
+
+### Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `min` | `uint64` | Inclusive start of the allowed memory range |
+| `max` | `uint64` | Exclusive end of the allowed memory range; must be greater than `min` |
+
+### Examples
+
+#### Restrict the current context
+
+```solidity [test/ExpectSafeMemory.t.sol]
+// [!include ~/snippets/projects/cheatcodes/test/ExpectSafeMemory.t.sol:current]
+```
+
+This expectation permits the 32-byte `mstore` at `[0x80, 0xa0)`. A write at `0xa0` would fail because it falls outside the allowed range.
+
+#### Restrict the next call context
+
+```solidity [test/ExpectSafeMemory.t.sol]
+// [!include ~/snippets/projects/cheatcodes/test/ExpectSafeMemory.t.sol:next-call]
+```
+
+`expectSafeMemoryCall` applies at the next call depth. Memory operations in the calling test remain unaffected.
+
+#### Add ranges and stop checking
+
+```solidity [test/ExpectSafeMemory.t.sol]
+// [!include ~/snippets/projects/cheatcodes/test/ExpectSafeMemory.t.sol:stop]
+```
+
+### Gotchas
+
+- Memory ranges are scoped by call depth. `expectSafeMemory` does not restrict a deeper external call; use `expectSafeMemoryCall` for that context.
+- Reads such as `mload`, hashing, logging, contract creation, returning, or reverting are checked when they expand memory.
+- Passing an empty or reversed range reverts immediately.
+- `stopExpectSafeMemory` only removes the expectation at the current call depth.
+
+### Related Cheatcodes
+
+- [`record`](/reference/cheatcodes/record) - Record storage reads and writes
+- [`accesses`](/reference/cheatcodes/accesses) - Retrieve recorded storage accesses
+- [`pauseGasMetering`](/reference/cheatcodes/pause-gas-metering) - Exclude code from gas metering

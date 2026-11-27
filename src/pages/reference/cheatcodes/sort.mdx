@@ -1,0 +1,41 @@
+---
+description: Sorts a uint256 array in ascending order in Forge tests and scripts
+---
+
+## `sort`
+
+### Signature
+
+```solidity
+function sort(uint256[] calldata array) external returns (uint256[] memory);
+```
+
+### Description
+
+Returns a copy of `array` sorted in ascending order. The input array is not modified.
+
+### Parameters
+
+| Parameter | Type        | Description           |
+|-----------|-------------|-----------------------|
+| `array`   | `uint256[]` | The array to sort     |
+
+### Returns
+
+| Type        | Description                                  |
+|-------------|----------------------------------------------|
+| `uint256[]` | A new array with the elements in ascending order |
+
+### Examples
+
+```solidity [test/Sort.t.sol]
+// [!include ~/snippets/projects/array_utilities/test/Sort.t.sol]
+```
+
+```bash
+$ forge test --root src/snippets/projects/array_utilities --match-contract SortTest
+```
+
+### Related Cheatcodes
+
+- [`shuffle`](/reference/cheatcodes/shuffle) - Randomly shuffles an array

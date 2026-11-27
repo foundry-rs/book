@@ -1,0 +1,65 @@
+---
+description: Returns a new random value inside a range, different from the current value
+---
+
+## `bound`
+
+### Signature
+
+```solidity
+function bound(uint256 current, uint256 min, uint256 max) external view returns (uint256);
+function bound(int256 current, int256 min, int256 max) external view returns (int256);
+```
+
+### Description
+
+Returns a value bounded by the inclusive range `[min, max]` that is guaranteed to be different from `current`.
+
+The result is drawn from Foundry's internal RNG, so repeated calls draw fresh random values. Seed the RNG with [`setSeed`](/reference/cheatcodes/set-seed) or the `[fuzz] seed` configuration to make the sequence deterministic.
+
+The cheatcode reverts with `cannot bound ... range` when:
+
+- `min` is greater than `max`
+- `current` is outside `[min, max]`
+- `min` equals `max` (no value different from `current` exists in the range)
+
+:::warning[Not the same as forge-std `bound`]
+This cheatcode is different from the [`bound` helper in forge-std](/reference/forge-std/bound), which deterministically wraps an arbitrary input into a range and is the usual tool for restricting fuzz test inputs. `vm.bound` instead mutates a value that is already inside the range into another random in-range value.
+:::
+
+### Parameters
+
+| Parameter | Type                  | Description                                        |
+|-----------|-----------------------|----------------------------------------------------|
+| `current` | `uint256` or `int256` | The current value; must already be inside the range |
+| `min`     | `uint256` or `int256` | Lower bound of the range (inclusive)               |
+| `max`     | `uint256` or `int256` | Upper bound of the range (inclusive)               |
+
+### Returns
+
+| Type                  | Description                                                |
+|-----------------------|------------------------------------------------------------|
+| `uint256` or `int256` | A random value in `[min, max]` that differs from `current` |
+
+### Examples
+
+```solidity [test/Bound.t.sol]
+function testBound() public view {
+    uint256 current = 50;
+    uint256 mutated = vm.bound(current, 1, 100);
+
+    assertGe(mutated, 1);
+    assertLe(mutated, 100);
+    assertNotEq(mutated, current);
+}
+```
+
+### Related Cheatcodes
+
+- [`randomUint`](/reference/cheatcodes/random-uint) - Random `uint256`, optionally in a range
+- [`setSeed`](/reference/cheatcodes/set-seed) - Seed the RNG for deterministic results
+- [`assume`](/reference/cheatcodes/assume) - Discard fuzz inputs that do not match a condition
+
+### See Also
+
+- [forge-std `bound`](/reference/forge-std/bound) - Deterministically wrap a fuzz input into a range

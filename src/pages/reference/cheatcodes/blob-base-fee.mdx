@@ -1,0 +1,43 @@
+---
+description: Sets block.blobbasefee in Forge tests
+---
+
+## `blobBaseFee`
+
+### Signature
+
+```solidity
+function blobBaseFee(uint256 newBlobBaseFee) external;
+```
+
+### Description
+
+Sets `block.blobbasefee` ([EIP-7516](https://eips.ethereum.org/EIPS/eip-7516)) to `newBlobBaseFee`.
+
+### Parameters
+
+| Parameter        | Type      | Description                   |
+|------------------|-----------|-------------------------------|
+| `newBlobBaseFee` | `uint256` | The new blob base fee to set  |
+
+### Examples
+
+```solidity [test/BlobBaseFee.t.sol]
+// [!include ~/snippets/projects/blob_cheatcodes/test/BlobBaseFee.t.sol]
+```
+
+```bash
+$ forge test --root src/snippets/projects/blob_cheatcodes --match-contract BlobBaseFeeTest
+```
+
+### Gotchas
+
+:::warning
+Reading `block.blobbasefee` in the same test function after `vm.blobBaseFee` may still return the old value: the compiler assumes it is constant within a transaction and can reuse an earlier read. Use [`vm.getBlobBaseFee`](/reference/cheatcodes/get-blob-base-fee) instead. See [foundry#6180](https://github.com/foundry-rs/foundry/issues/6180).
+:::
+
+### Related Cheatcodes
+
+- [`getBlobBaseFee`](/reference/cheatcodes/get-blob-base-fee) - Gets the current `block.blobbasefee`
+- [`fee`](/reference/cheatcodes/fee) - Sets `block.basefee`
+- [`blobhashes`](/reference/cheatcodes/blobhashes) - Sets the blob versioned hashes of the current transaction

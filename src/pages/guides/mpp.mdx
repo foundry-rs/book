@@ -1,0 +1,88 @@
+---
+description: Use Foundry with HTTP 402 payment-gated RPC endpoints through the Machine Payments Protocol (MPP).
+---
+
+## MPP-backed RPC endpoints
+
+Foundry v1.7.0 can handle HTTP `402 Payment Required` responses from RPC providers that use the Machine Payments Protocol (MPP).
+
+When an RPC endpoint returns `402`, Foundry discovers your Tempo wallet, pays the challenge, and retries the request automatically. Normal RPC URLs keep working as usual; MPP only activates when the endpoint asks for payment.
+
+## Install and configure a wallet
+
+The simplest setup is to install the Tempo CLI and log in once:
+
+```bash
+$ curl -fsSL https://tempo.xyz/install | bash
+$ tempo wallet login
+```
+
+This creates `~/.tempo/wallet/keys.toml`, which Foundry can discover automatically.
+
+If you prefer to provide a single key directly, set `TEMPO_PRIVATE_KEY` instead:
+
+```bash
+$ export TEMPO_PRIVATE_KEY=0xabc123...
+```
+
+## Make requests against an MPP endpoint
+
+Point any Foundry tool at an MPP-backed RPC URL:
+
+```bash
+$ cast block-number --rpc-url https://rpc.mpp.tempo.xyz
+```
+
+### Built-in `tempo` and `moderato` fallbacks
+
+Foundry ships with two built-in MPP aliases that work without any `foundry.toml` configuration:
+
+| Alias | Resolves to |
+|---|---|
+| `tempo` | `https://rpc.mpp.tempo.xyz` |
+| `moderato` | `https://rpc.mpp.moderato.tempo.xyz` |
+
+So in a fresh shell you can just do:
+
+```bash
+$ cast block-number --rpc-url tempo
+$ forge test --fork-url moderato
+```
+
+These fallbacks only apply when the alias is not already defined in `[rpc_endpoints]`.
+
+## Configure deposits and local state
+
+Foundry opens and reuses payment channels automatically.
+
+To override the fallback deposit amount for new channels, set `MPP_DEPOSIT`:
+
+```bash
+$ MPP_DEPOSIT=500000 cast block-number --rpc-url tempo
+```
+
+Open channels are stored in `$TEMPO_HOME/channels.db`.
+
+- If `TEMPO_HOME` is unset, Foundry uses `~/.tempo/channels.db`
+- If you are upgrading from older local state, `~/.tempo/foundry/channels.json` is no longer used and channels will be reopened automatically
+
+## Key discovery order
+
+Foundry discovers MPP signing keys in this order:
+
+1. `TEMPO_PRIVATE_KEY`
+2. `$TEMPO_HOME/wallet/keys.toml`
+
+When reading `keys.toml`, Foundry prefers:
+
+1. Passkey entries that include an inline signing key
+2. Other entries with an inline private key
+3. The first matching entry as a fallback
+
+When the server challenge specifies a chain ID or currency, Foundry filters keys to match that challenge before applying the priority rules above.
+
+## Related guides
+
+- [Tempo](/guides/tempo) for project setup and Tempo-specific config
+- [MESC](/config/mesc) if you want to manage RPC aliases in a shared config file
+- [cast block](/reference/cast/block) and [cast call](/reference/cast/call) for RPC-based workflows

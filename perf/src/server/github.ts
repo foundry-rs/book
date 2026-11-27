@@ -1,0 +1,323 @@
+import { createSign } from 'node:crypto'
+
+import { projects, type Project } from '../projects.ts'
+
+interface GitHubAppToken {
+  expires_at: string
+  token: string
+}
+
+interface GitHubError {
+  message?: string
+}
+
+export interface GitHubArtifact {
+  archive_download_url: string
+  expired: boolean
+  id: number
+  name: string
+  size_in_bytes: number
+}
+
+export interface GitHubPullRequest {
+  merged_at: string | null
+  number: number
+  title: string
+}
+
+export interface GitHubRun {
+  run_attempt?: number
+  conclusion: string | null
+  created_at: string
+  display_title: string
+  event: string
+  head_branch: string | null
+  head_repository?: { full_name: string } | null
+  head_sha: string
+  id: number
+  name: string
+  updated_at?: string
+}
+
+interface GitHubPage<T> {
+  workflow_runs?: T[]
+}
+
+export class GitHubRequestError extends Error {
+  constructor(
+    readonly retryAfter: number | null,
+    readonly status: number,
+    message: string,
+  ) {
+    super(message)
+  }
+}
+
+export interface GitHubConfig {
+  appId?: string
+  artifact: string
+  installationId?: string
+  privateKey?: string
+  repository: string
+  token?: string
+  workflow: string
+}
+
+const api = 'https://api.github.com/'
+const tokenLifetime = 9 * 60 * 1000
+const retryAttempts = 4
+
+function wait(milliseconds: number) {
+  return new Promise<void>((resolve) => setTimeout(resolve, milliseconds))
+}
+
+function retryable(error: unknown) {
+  return (
+    error instanceof TypeError ||
+    (error instanceof Error && error.name === 'TimeoutError') ||
+    (error instanceof GitHubRequestError &&
+      (error.status === 408 || error.status === 429 || error.status >= 500))
+  )
+}
+
+export async function retryGitHub<T>(
+  request: () => Promise<T>,
+  sleep: (milliseconds: number) => Promise<void> = wait,
+) {
+  let error: unknown
+  for (let attempt = 0; attempt < retryAttempts; attempt += 1) {
+    try {
+      return await request()
+    } catch (caught) {
+      error = caught
+      if (!retryable(caught) || attempt + 1 === retryAttempts) throw caught
+      const retryAfter = caught instanceof GitHubRequestError ? caught.retryAfter : null
+      await sleep(retryAfter ?? Math.min(4_000, 250 * 2 ** attempt))
+    }
+  }
+  throw error
+}
+
+export function gitHubConfig(
+  environment: NodeJS.ProcessEnv = process.env,
+  project: Project = projects.solar,
+): GitHubConfig | null {
+  const token = environment.GITHUB_TOKEN
+  const appId = environment.GH_APP_ID
+  // The configured installation belongs to Solar; other repositories resolve their own.
+  const installationId = project.id === 'solar' ? environment.GH_APP_INSTALLATION_ID : undefined
+  const privateKey = environment.GH_APP_PRIVATE_KEY?.replace(/\\n/g, '\n')
+  if (!token && !(appId && privateKey)) return null
+
+  return {
+    appId,
+    artifact: project.artifact,
+    installationId,
+    privateKey,
+    repository: project.repository,
+    token,
+    workflow: project.workflow,
+  }
+}
+
+function appJwt(config: GitHubConfig) {
+  if (!config.appId || !config.privateKey)
+    throw new Error('GitHub App credentials are not configured')
+
+  const issuedAt = Math.floor(Date.now() / 1000) - 30
+  const header = Buffer.from(JSON.stringify({ alg: 'RS256', typ: 'JWT' })).toString('base64url')
+  const claims = Buffer.from(
+    JSON.stringify({ exp: issuedAt + 9 * 60, iat: issuedAt, iss: config.appId }),
+  ).toString('base64url')
+  const input = `${header}.${claims}`
+  const signer = createSign('RSA-SHA256')
+  signer.update(input)
+  signer.end()
+  return `${input}.${signer.sign(config.privateKey).toString('base64url')}`
+}
+
+export class GitHubClient {
+  #installationId: string | undefined
+  #installationToken: { expiresAt: number; value: string } | null = null
+  #tokenRequest: Promise<string> | null = null
+
+  constructor(readonly config: GitHubConfig) {}
+
+  async #token() {
+    if (this.config.token) return this.config.token
+    if (this.#installationToken && this.#installationToken.expiresAt > Date.now())
+      return this.#installationToken.value
+    if (!this.#tokenRequest) {
+      this.#tokenRequest = this.#requestToken().finally(() => {
+        this.#tokenRequest = null
+      })
+    }
+    return this.#tokenRequest
+  }
+
+  async #installation() {
+    if (this.config.installationId) return this.config.installationId
+    if (this.#installationId) return this.#installationId
+    // Apps are installed per organization; find the installation that covers this repository.
+    const installation = await retryGitHub(async () => {
+      const response = await fetch(`${api}repos/${this.config.repository}/installation`, {
+        signal: AbortSignal.timeout(15_000),
+        headers: {
+          accept: 'application/vnd.github+json',
+          authorization: `Bearer ${appJwt(this.config)}`,
+          'x-github-api-version': '2026-03-10',
+        },
+      })
+      if (!response.ok) throw await githubError(response)
+      return (await response.json()) as { id: number }
+    })
+    this.#installationId = String(installation.id)
+    return this.#installationId
+  }
+
+  async #requestToken() {
+    const installationId = await this.#installation()
+    return retryGitHub(async () => {
+      const response = await fetch(`${api}app/installations/${installationId}/access_tokens`, {
+        method: 'POST',
+        signal: AbortSignal.timeout(15_000),
+        headers: {
+          accept: 'application/vnd.github+json',
+          authorization: `Bearer ${appJwt(this.config)}`,
+          'x-github-api-version': '2026-03-10',
+        },
+      })
+      if (!response.ok) throw await githubError(response)
+
+      const token = (await response.json()) as GitHubAppToken
+      const expiresAt = Math.min(Date.parse(token.expires_at) - 60_000, Date.now() + tokenLifetime)
+      this.#installationToken = { expiresAt, value: token.token }
+      return token.token
+    })
+  }
+
+  async #headers(headers?: HeadersInit) {
+    const result = new Headers(headers)
+    result.set('accept', 'application/vnd.github+json')
+    result.set('authorization', `Bearer ${await this.#token()}`)
+    if (!result.has('x-github-api-version')) result.set('x-github-api-version', '2026-03-10')
+    return result
+  }
+
+  async request<T>(path: string, init?: RequestInit): Promise<T> {
+    return retryGitHub(async () => {
+      const response = await fetch(new URL(path, api), {
+        ...init,
+        headers: await this.#headers(init?.headers),
+        signal: AbortSignal.timeout(15_000),
+      })
+      if (!response.ok) throw await githubError(response)
+      return (await response.json()) as T
+    })
+  }
+
+  /** Completed runs on main; PR runs would crowd unimported main runs out of the window. */
+  async runs(limit: number) {
+    const query = new URLSearchParams({
+      branch: 'main',
+      per_page: String(limit),
+      status: 'completed',
+    })
+    const result = await this.request<GitHubPage<GitHubRun>>(
+      `repos/${this.config.repository}/actions/workflows/${this.config.workflow}/runs?${query}`,
+    )
+    return result.workflow_runs || []
+  }
+
+  async run(runId: number) {
+    return this.request<GitHubRun>(`repos/${this.config.repository}/actions/runs/${runId}`)
+  }
+
+  async resolveRef(ref: string) {
+    const pr = /^#?(\d+)$/.exec(ref)
+    if (pr) {
+      const pull = await this.request<{
+        merged_at: string | null
+        merge_commit_sha: string | null
+        head: { sha: string }
+      }>(`repos/${this.config.repository}/pulls/${pr[1]}`, {
+        // The 2026 response omits merge_commit_sha; use the version exposing the
+        // actual merged revision instead of silently comparing the unmerged head.
+        headers: { 'x-github-api-version': '2022-11-28' },
+      })
+      ref = pull.merged_at && pull.merge_commit_sha ? pull.merge_commit_sha : pull.head.sha
+    }
+    const commit = await this.request<{
+      sha: string
+      commit?: { tree: { sha: string } }
+      parents?: { sha: string }[]
+    }>(`repos/${this.config.repository}/commits/${encodeURIComponent(ref)}`)
+    if (commit.parents?.length === 2 && !(await this.runsForCommit(commit.sha)).length) {
+      const parent = await this.request<{ sha: string; commit: { tree: { sha: string } } }>(
+        `repos/${this.config.repository}/commits/${commit.parents[1].sha}`,
+      )
+      // An unbenchmarked merge can reuse a benchmarked head with the same source.
+      if (
+        parent.commit.tree.sha === commit.commit?.tree.sha &&
+        (await this.runsForCommit(parent.sha)).length
+      )
+        return parent.sha
+    }
+    return commit.sha
+  }
+
+  async runsForCommit(sha: string) {
+    const query = new URLSearchParams({ head_sha: sha, per_page: '100' })
+    const result = await this.request<GitHubPage<GitHubRun>>(
+      `repos/${this.config.repository}/actions/workflows/${this.config.workflow}/runs?${query}`,
+    )
+    return result.workflow_runs?.filter((run) => run.head_sha === sha) || []
+  }
+
+  async artifact(runId: number, name = this.config.artifact) {
+    const query = new URLSearchParams({ name, per_page: '100' })
+    const result = await this.request<{ artifacts: GitHubArtifact[] }>(
+      `repos/${this.config.repository}/actions/runs/${runId}/artifacts?${query}`,
+    )
+    return result.artifacts.find((artifact) => !artifact.expired) || null
+  }
+
+  async pullRequest(sha: string) {
+    const pulls = await this.request<GitHubPullRequest[]>(
+      `repos/${this.config.repository}/commits/${sha}/pulls`,
+    )
+    return pulls.find((pull) => pull.merged_at) || pulls[0] || null
+  }
+
+  async download(url: string) {
+    return retryGitHub(async () => {
+      const response = await fetch(url, {
+        headers: await this.#headers(),
+        redirect: 'follow',
+        signal: AbortSignal.timeout(60_000),
+      })
+      if (!response.ok) throw await githubError(response)
+      return response
+    })
+  }
+}
+
+const sharedClients = new Map<string, GitHubClient>()
+// Reuse installation-token refresh and its in-flight request across worker jobs.
+export function sharedGitHubClient(config: GitHubConfig) {
+  const key = JSON.stringify(config)
+  let client = sharedClients.get(key)
+  if (!client) sharedClients.set(key, (client = new GitHubClient(config)))
+  return client
+}
+
+async function githubError(response: Response) {
+  const body = (await response.json().catch(() => ({}))) as GitHubError
+  const header = response.headers.get('retry-after')
+  const retryAfter = header === null ? NaN : Number(header)
+  return new GitHubRequestError(
+    Number.isFinite(retryAfter) ? Math.min(retryAfter * 1_000, 10_000) : null,
+    response.status,
+    `GitHub request failed (${response.status}): ${body.message || 'Unknown error'}`,
+  )
+}

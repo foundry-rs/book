@@ -1,0 +1,42 @@
+---
+description: Sets the seed of Foundry's internal RNG for deterministic random values
+---
+
+## `setSeed`
+
+### Signature
+
+```solidity
+function setSeed(uint256 seed) external;
+```
+
+### Description
+
+Sets the seed of Foundry's internal RNG. All subsequent calls to the `vm.random*` cheatcodes and [`vm.bound`](/reference/cheatcodes/bound) produce a deterministic sequence derived from this seed.
+
+This is equivalent to setting `seed` in the `[fuzz]` section of `foundry.toml`, but scoped to the current test from the point of the call onward.
+
+### Parameters
+
+| Parameter | Type      | Description  |
+|-----------|-----------|--------------|
+| `seed`    | `uint256` | The RNG seed |
+
+### Examples
+
+```solidity [test/SetSeed.t.sol]
+function testSetSeed() public {
+    vm.setSeed(1337);
+    uint256 first = vm.randomUint();
+
+    // Re-seeding restarts the deterministic sequence.
+    vm.setSeed(1337);
+    assertEq(vm.randomUint(), first);
+}
+```
+
+### Related Cheatcodes
+
+- [`randomUint`](/reference/cheatcodes/random-uint) - Random `uint256`
+- [`randomAddress`](/reference/cheatcodes/random-address) - Random `address`
+- [`bound`](/reference/cheatcodes/bound) - Random in-range mutation of a value

@@ -2,8 +2,7 @@
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 
-[![All Contributors](https://img.shields.io/badge/all_contributors-114-orange.svg?style=flat-square)](#contributors-)
-
+[![All Contributors](https://img.shields.io/badge/all_contributors-115-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 Documentation on all things Foundry. [Read now](https://getfoundry.sh).
@@ -12,15 +11,15 @@ Documentation on all things Foundry. [Read now](https://getfoundry.sh).
 
 Check our [contributing guidelines](./CONTRIBUTING.md). Feel free to contribute wording, sentences, chapters, and guides!
 
-The book is built with [vocs](https://vocs.dev), which you can get by running `bun i vocs`.
+The book is built with [vocs](https://vocs.dev). Install dependencies with `pnpm install`.
 
 To see the book change live run:
 
 ```sh
-cd vocs && bun dev
+pnpm dev
 ```
 
-To add a new section (file) to the book, add it to [`sidebar.ts`](./vocs/sidebar/sidebar.ts).
+To add a new section (file) to the book, add it to [`sidebar.ts`](./sidebar/sidebar.ts).
 
 For a more structured overview of the current issues, see [the GitHub project](https://github.com/orgs/foundry-rs/projects/1).
 
@@ -56,7 +55,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/devtooligan"><img src="https://avatars.githubusercontent.com/u/71567643?v=4?s=100" width="100px;" alt="devtooligan"/><br /><sub><b>devtooligan</b></sub></a><br /><a href="#maintenance-devtooligan" title="Maintenance">🚧</a> <a href="https://github.com/foundry-rs/book/commits?author=devtooligan" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/0xfoobar"><img src="https://avatars.githubusercontent.com/u/83792390?v=4?s=100" width="100px;" alt="0xfoobar"/><br /><sub><b>0xfoobar</b></sub></a><br /><a href="https://github.com/foundry-rs/book/commits?author=0xfoobar" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://odyslam.com"><img src="https://avatars.githubusercontent.com/u/13405632?v=4?s=100" width="100px;" alt="odyslam.eth"/><br /><sub><b>odyslam.eth</b></sub></a><br /><a href="#maintenance-odyslam" title="Maintenance">🚧</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="http://git.live"><img src="https://avatars.githubusercontent.com/u/43670554?v=4?s=100" width="100px;" alt="FredCoen"/><br /><sub><b>FredCoen</b></sub></a><br /><a href="#tutorial-FredCoen" title="Guides">✅</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="http://git.live"><img src="https://avatars.githubusercontent.com/u/43670554?v=4?s=100" width="100px;" alt="FredCoen"/><br /><sub><b>FredCoen</b></sub></a><br /><a href="#tutorial-FredCoen" title="Tutorials">✅</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/bblanc42"><img src="https://avatars.githubusercontent.com/u/100454995?v=4?s=100" width="100px;" alt="bblanc42"/><br /><sub><b>bblanc42</b></sub></a><br /><a href="https://github.com/foundry-rs/book/commits?author=bblanc42" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/0xMySt1c"><img src="https://avatars.githubusercontent.com/u/101825630?v=4?s=100" width="100px;" alt="0xMySt1c"/><br /><sub><b>0xMySt1c</b></sub></a><br /><a href="#maintenance-0xMySt1c" title="Maintenance">🚧</a></td>
     </tr>
@@ -180,6 +179,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="http://juanmgutierrez.com"><img src="https://avatars.githubusercontent.com/u/7672379?v=4?s=100" width="100px;" alt="Juan Gutierrez"/><br /><sub><b>Juan Gutierrez</b></sub></a><br /><a href="https://github.com/foundry-rs/book/commits?author=juannyG" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/TomasCImach"><img src="https://avatars.githubusercontent.com/u/43709975?v=4?s=100" width="100px;" alt="Tomas C Imach"/><br /><sub><b>Tomas C Imach</b></sub></a><br /><a href="https://github.com/foundry-rs/book/commits?author=TomasCImach" title="Documentation">📖</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://signor.vercel.app/"><img src="https://avatars.githubusercontent.com/u/94352660?v=4?s=100" width="100px;" alt="Signor Dev"/><br /><sub><b>Signor Dev</b></sub></a><br /><a href="#maintenance-Signor1" title="Maintenance">🚧</a></td>
     </tr>
   </tbody>
 </table>

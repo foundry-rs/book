@@ -1,0 +1,69 @@
+---
+description: Serializes an ABI-encoded value to JSON using a type description
+---
+
+## `serializeJsonType`
+
+### Signature
+
+```solidity
+function serializeJsonType(string calldata typeDescription, bytes calldata value) external pure returns (string memory json);
+function serializeJsonType(string calldata objectKey, string calldata valueKey, string calldata typeDescription, bytes calldata value) external returns (string memory json);
+```
+
+### Description
+
+Serializes an ABI-encoded value to a JSON string according to `typeDescription`. This is the inverse of [`parseJsonType`](/reference/cheatcodes/parse-json-type): struct field names from the type description become the JSON keys, in the described order.
+
+`typeDescription` is either a plain Solidity type (for example `uint256[]`) or an EIP-712 style `encodeType` string such as `Item(uint256 amount,string name)`. You can generate these strings for the structs in your project with `forge eip712`.
+
+The two-argument overload directly returns the value serialized as a standalone JSON string. The four-argument overload works like the other [`serializeJson`](/reference/cheatcodes/serialize-json) cheatcodes: it adds the value under `valueKey` to the in-memory JSON object identified by `objectKey` and returns the object serialized so far.
+
+### Parameters
+
+| Parameter         | Type     | Description                                       |
+|-------------------|----------|---------------------------------------------------|
+| `objectKey`       | `string` | Key identifying the JSON object being built       |
+| `valueKey`        | `string` | Key for the value in the JSON object              |
+| `typeDescription` | `string` | Solidity type or EIP-712 `encodeType` description |
+| `value`           | `bytes`  | The ABI-encoded value to serialize                |
+
+### Returns
+
+| Type     | Description                                                     |
+|----------|-----------------------------------------------------------------|
+| `string` | The serialized JSON value, or the JSON object built so far      |
+
+### Examples
+
+```solidity [test/SerializeJsonType.t.sol]
+struct Item {
+    uint256 amount;
+    string name;
+}
+
+string constant ITEM_SCHEMA = "Item(uint256 amount,string name)";
+
+function test_serializeJsonType() public view {
+    Item memory item = Item({amount: 42, name: "widget"});
+
+    string memory json = vm.serializeJsonType(ITEM_SCHEMA, abi.encode(item));
+    assertEq(json, '{"amount":42,"name":"widget"}');
+}
+
+function test_roundtrip() public view {
+    Item memory item = Item({amount: 1, name: "gadget"});
+
+    string memory json = vm.serializeJsonType(ITEM_SCHEMA, abi.encode(item));
+    Item memory decoded = abi.decode(vm.parseJsonType(json, ITEM_SCHEMA), (Item));
+
+    assertEq(decoded.amount, item.amount);
+    assertEq(decoded.name, item.name);
+}
+```
+
+### Related Cheatcodes
+
+- [`serializeJson`](/reference/cheatcodes/serialize-json) - Serialize values with per-type cheatcodes
+- [`parseJsonType`](/reference/cheatcodes/parse-json-type) - Parse JSON using a type description
+- [`writeJson`](/reference/cheatcodes/write-json) - Write JSON to a file
