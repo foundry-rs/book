@@ -47,7 +47,9 @@ severity = ["high", "med"]  # Only high and medium severity
 
 Valid severity levels: `high`, `med`, `low`, `info`, `gas`, `code-size`
 
-Gas and code-size lints skip test and script files.
+Files under the configured `test` and `script` directories are checked only by
+[`unsafe-cheatcode`](/forge/linting/unsafe-cheatcode) and `environment-read-across-mutation`.
+This also applies when you pass those files to `forge lint` or select lints with `--only-lint`.
 
 #### Exclude specific lints
 
