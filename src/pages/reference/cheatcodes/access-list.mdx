@@ -1,0 +1,77 @@
+---
+description: Sets or removes an EIP-2930 access list for later transactions
+---
+
+## `accessList`
+
+### Signature
+
+```solidity
+function accessList(AccessListItem[] calldata access) external;
+function noAccessList() external;
+```
+
+```solidity
+struct AccessListItem {
+    address target;
+    bytes32[] storageKeys;
+}
+```
+
+### Description
+
+`accessList` sets an [EIP-2930](https://eips.ethereum.org/EIPS/eip-2930) access list for all subsequent transactions. `noAccessList` removes it.
+
+With [call isolation](/forge/testing#call-isolation), the default, each top-level call from the test runs as its own transaction that carries the list. That transaction pays the EIP-2930 intrinsic cost of 2400 gas per listed account and 1900 gas per storage key, and starts with the listed accounts and slots warm. The list applies to every later call until you replace it with another `accessList` call or remove it with `noAccessList`.
+
+### Parameters
+
+| Parameter | Type               | Description                                              |
+|-----------|--------------------|----------------------------------------------------------|
+| `access`  | `AccessListItem[]` | The accounts, and the storage keys of each, to list      |
+
+`AccessListItem` fields:
+
+| Field         | Type        | Description                                 |
+|---------------|-------------|---------------------------------------------|
+| `target`      | `address`   | The address to add to the access list       |
+| `storageKeys` | `bytes32[]` | The storage keys of `target` to add         |
+
+### Examples
+
+#### Set and remove an access list
+
+```solidity [test/AccessList.t.sol]
+// [!include ~/snippets/projects/storage_warmth/test/AccessList.t.sol:access-list]
+```
+
+`callGas` measures one call with `gasleft()`:
+
+```solidity [test/AccessList.t.sol]
+// [!include ~/snippets/projects/storage_warmth/test/AccessList.t.sol:call-gas]
+```
+
+#### Warm the slots a call reads
+
+Listing a slot that the call writes saves its 2100 gas cold surcharge, but the list still costs 2400 gas for the account and 1900 gas for the key. The call's recipient is warm in any transaction, so listing it saves nothing:
+
+```solidity [test/AccessList.t.sol]
+// [!include ~/snippets/projects/storage_warmth/test/AccessList.t.sol:warm-entries]
+```
+
+```bash
+$ forge test --root src/snippets/projects/storage_warmth --match-contract AccessListTest
+```
+
+### Gotchas
+
+- The list applies to transactions that start after `accessList`. It does not warm anything in the transaction already running, such as the test function itself.
+- Without call isolation, the test's calls run inside the test's own transaction, so the list does not apply to them. Pin isolation for tests that depend on it, for example with `/// forge-config: default.isolate = true`.
+- `noAccessList` has no effect if no access list is set.
+- Access lists do not exist before the Berlin hard fork. With an earlier `evm_version`, the list is ignored.
+
+### Related Cheatcodes
+
+- [`warmSlot`](/reference/cheatcodes/warm-slot) - Marks a storage slot as warm in the current transaction
+- [`cool`](/reference/cheatcodes/cool) - Marks an account and its loaded slots as cold
+- [`isIsolateMode`](/reference/cheatcodes/is-isolate-mode) - Reports whether call isolation is active
