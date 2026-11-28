@@ -52,6 +52,29 @@ Key conventions:
 - Test functions start with `test_` or `test`
 - A name that starts with `testFail` is rejected; see [Testing reverts](#testing-reverts)
 - `setUp()` runs before each test
+- Only test contracts under the `src`, `test` and `script` directories run; see [Which suites run](#which-suites-run)
+
+#### Which suites run
+
+Since v1.10.0, Forge runs only test contracts under the configured `src`, `test` and `script` directories ([foundry#18424](https://github.com/foundry-rs/foundry/pull/18424)). A test contract elsewhere in the project still compiles when a test imports it, but does not run as a suite. With `test = "test/unit"`:
+
+```solidity [test/shared/SharedVaultChecks.t.sol]
+// [!include ~/snippets/projects/behavior_changes/test/shared/SharedVaultChecks.t.sol:shared]
+```
+
+`forge test` names the suites it skips:
+
+```text
+Warning: Skipping test contracts outside the configured `src`, `test` and `script` directories:
+	test/shared/SharedVaultChecks.t.sol:SharedVaultChecks
+They are compiled because other files import them, but do not run as test suites. To run them, set `test` (currently `test/unit`) to a directory that contains them.
+```
+
+To run them, set `test` to a directory that contains them, or inherit them from a suite inside it. An inheriting suite runs the inherited tests:
+
+```solidity [test/unit/VaultChecks.t.sol]
+// [!include ~/snippets/projects/behavior_changes/test/unit/VaultChecks.t.sol:inherit]
+```
 
 ### Call isolation
 
