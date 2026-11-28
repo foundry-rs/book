@@ -1,0 +1,86 @@
+---
+description: RLP encodes a list of byte strings, and decodes an RLP list back into byte strings
+---
+
+## `toRlp`
+
+### Signature
+
+```solidity
+function toRlp(bytes[] calldata data) external pure returns (bytes memory);
+function fromRlp(bytes calldata rlp) external pure returns (bytes[] memory data);
+```
+
+### Description
+
+`toRlp` encodes a list of byte strings as an RLP list, the encoding Ethereum uses for transactions and block headers. `fromRlp` does the reverse: it decodes an RLP list into its byte strings.
+
+Both work on a flat list of byte strings. `fromRlp` fails on a payload that is a single item rather than a list (`Failed to decode RLP: unexpected string`), or on a list that contains another list (`Failed to decode RLP: unexpected list`).
+
+Useful for building raw transactions to sign or execute, and for reading fields out of a raw block header or transaction, for example one from `cast block <number> --raw`.
+
+### Parameters
+
+| Parameter | Type      | Description                         |
+|-----------|-----------|-------------------------------------|
+| `data`    | `bytes[]` | The byte strings to encode, in order |
+| `rlp`     | `bytes`   | An RLP-encoded list to decode        |
+
+### Returns
+
+| Cheatcode | Type      | Description                    |
+|-----------|-----------|--------------------------------|
+| `toRlp`   | `bytes`   | The RLP-encoded list           |
+| `fromRlp` | `bytes[]` | The decoded byte strings       |
+
+### Examples
+
+#### Encode a list
+
+```solidity [test/Rlp.t.sol]
+function testToRlp() public pure {
+    bytes[] memory data = new bytes[](2);
+    data[0] = hex"01";
+    data[1] = hex"02";
+
+    // 0xc2: a list whose items take 2 bytes, followed by 0x01 and 0x02
+    assertEq(vm.toRlp(data), hex"c20102");
+}
+```
+
+#### Decode a list
+
+```solidity [test/Rlp.t.sol]
+function testFromRlp() public pure {
+    bytes[] memory decoded = vm.fromRlp(hex"c20102");
+
+    assertEq(decoded.length, 2);
+    assertEq(decoded[0], hex"01");
+    assertEq(decoded[1], hex"02");
+}
+```
+
+#### Encode numbers
+
+RLP encodes a number as its big-endian bytes with no leading zeros, and zero as an empty byte string.
+
+```solidity [test/Rlp.t.sol]
+function testRlpNumbers() public pure {
+    bytes[] memory data = new bytes[](2);
+    data[0] = hex"";     // 0
+    data[1] = hex"0400"; // 1024
+
+    assertEq(vm.toRlp(data), hex"c480820400");
+}
+```
+
+### Gotchas
+
+:::warning
+Each item is encoded exactly as given. To encode the number zero, pass `hex""` (it encodes as `0x80`), not `hex"00"`, which encodes as the single byte `0x00`. Strip leading zero bytes from other numbers too, or the encoding will not match what Ethereum clients produce.
+:::
+
+### Related Cheatcodes
+
+- [`sign`](/reference/cheatcodes/sign) - Sign the hash of an RLP-encoded transaction
+- [`broadcastRawTransaction`](/reference/cheatcodes/broadcast-raw-transaction) - Send an RLP-encoded signed transaction
