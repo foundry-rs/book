@@ -220,6 +220,7 @@ export const cmdReference: SidebarItem[] = [
       { text: "eip712HashTypedData", link: "/reference/cheatcodes/eip712-hash-typed-data" },
       { text: "Strings", link: "/reference/cheatcodes/strings" },
       { text: "toBase64", link: "/reference/cheatcodes/to-base64" },
+      { text: "toRlp", link: "/reference/cheatcodes/to-rlp" },
     ],
   },
   { text: "RPC", link: "/reference/cheatcodes/rpc" },

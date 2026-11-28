@@ -368,7 +368,6 @@
     "deleteSnapshots",
     "envExists",
     "eth_getLogs",
-    "fromRlp",
     "fsMetadata",
     "getArtifactPathByCode",
     "getArtifactPathByDeployedCode",
@@ -406,7 +405,6 @@
     "signWithNonceUnsafe",
     "snapshot",
     "stopRecord",
-    "toRlp",
     "tryFfi",
     "warmSlot",
     "writeFileBinary"
