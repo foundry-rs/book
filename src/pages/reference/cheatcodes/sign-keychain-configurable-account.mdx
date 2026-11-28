@@ -1,0 +1,65 @@
+---
+description: Signs a Tempo keychain signature whose access key is a configurable account
+---
+
+## `signKeychainConfigurableAccount`
+
+:::note
+Available since v1.10.0 ([foundry#18408](https://github.com/foundry-rs/foundry/pull/18408)). forge-std 1.17.0 does not declare it yet, so the example uses its own interface. The examples verify signatures with the Tempo T14 precompiles, so the project sets `network = "tempo"` and `hardfork = "tempo:T14"` in `foundry.toml`.
+:::
+
+### Signature
+
+```solidity
+function signKeychainConfigurableAccount(
+    OwnerKey[] calldata ownerKeys,
+    address configurableAccount,
+    ConfigurableAccountConfig calldata config,
+    address account,
+    bytes32 digest
+) external pure returns (bytes memory signature);
+```
+
+### Description
+
+Signs `digest` as a Tempo V2 keychain signature for `account`, where the access key is the configurable account `configurableAccount` with its current configuration `config` ([TIP-1111](https://tips.sh/1111)). The owners approve the keychain V2 hash `keccak256(0x04 || digest || account)`, and approvals are chosen as in [`signConfigurableAccount`](/reference/cheatcodes/sign-configurable-account).
+
+Returns the signature that `SignatureVerifier.verifyKeychain` accepts once `account` has authorized `configurableAccount` as an access key.
+
+### Parameters
+
+| Parameter             | Type                        | Description                                         |
+|-----------------------|-----------------------------|-----------------------------------------------------|
+| `ownerKeys`           | `OwnerKey[]`                | Owner keys of the configurable account, any order   |
+| `configurableAccount` | `address`                   | The configurable account used as the access key     |
+| `config`              | `ConfigurableAccountConfig` | Its current configuration                           |
+| `account`             | `address`                   | The root account the access key acts for            |
+| `digest`              | `bytes32`                   | The digest to sign                                  |
+
+### Returns
+
+| Type    | Description                                         |
+|---------|-----------------------------------------------------|
+| `bytes` | The keychain signature accepted by `verifyKeychain` |
+
+### Examples
+
+```solidity [test/ConfigurableAccount.t.sol]
+// [!include ~/snippets/projects/configurable_accounts/test/ConfigurableAccount.t.sol:keychain]
+```
+
+```bash
+$ forge test --root src/snippets/projects/configurable_accounts --match-contract ConfigurableAccountTest
+```
+
+### Gotchas
+
+- Like [`signKeychain`](/reference/cheatcodes/sign-keychain), this only encodes the signature. `verifyKeychain` returns `false` until `account` authorizes the configurable account in `AccountKeychain`.
+
+### Related Cheatcodes
+
+- [`deriveConfigurableAccount`](/reference/cheatcodes/derive-configurable-account) - Address of a configurable account
+- [`configurableAccountDigest`](/reference/cheatcodes/configurable-account-digest) - Digest the owners approve
+- [`encodeConfigurableAccountSignature`](/reference/cheatcodes/encode-configurable-account-signature) - Encodes approvals into a signature
+- [`signConfigurableAccount`](/reference/cheatcodes/sign-configurable-account) - Signs as a configurable account
+- [`signKeychain`](/reference/cheatcodes/sign-keychain) - Signs a keychain digest with a secp256k1 access key

@@ -1,0 +1,82 @@
+---
+description: Signs a digest as a Tempo configurable account with its owners' keys
+---
+
+## `signConfigurableAccount`
+
+:::note
+Available since v1.10.0 ([foundry#18408](https://github.com/foundry-rs/foundry/pull/18408)). forge-std 1.17.0 does not declare it yet, so the example uses its own interface. The examples verify signatures with the Tempo T14 precompiles, so the project sets `network = "tempo"` and `hardfork = "tempo:T14"` in `foundry.toml`.
+:::
+
+### Signature
+
+```solidity
+function signConfigurableAccount(uint256[] calldata privateKeys, address account, ConfigurableAccountConfig calldata config, bytes32 digest) external pure returns (bytes memory signature);
+function signConfigurableAccount(OwnerKey[] calldata ownerKeys, address account, ConfigurableAccountConfig calldata config, bytes32 digest) external pure returns (bytes memory signature);
+```
+
+```solidity
+enum OwnerKeyType { Secp256k1, P256, WebAuthn }
+
+struct OwnerKey {
+    OwnerKeyType keyType;
+    uint256 privateKey; // on secp256k1 or P-256, depending on keyType
+}
+```
+
+### Description
+
+Signs `digest` as the configurable account `account` with its current configuration `config`. The first form takes secp256k1 owner keys; the second takes secp256k1, P-256 or WebAuthn owner keys.
+
+From the keys given, the cheatcode signs with the fewest that form a quorum the node accepts: at most 8 approvals, sorted by owner address, the last of which reaches the threshold. It returns the `0x05` signature that `SignatureVerifier.verifyConfigurableAccount` accepts.
+
+### Parameters
+
+| Parameter                  | Type                        | Description                          |
+|----------------------------|-----------------------------|--------------------------------------|
+| `privateKeys` / `ownerKeys` | `uint256[]` / `OwnerKey[]`  | Owner keys, in any order             |
+| `account`                  | `address`                   | The configurable account             |
+| `config`                   | `ConfigurableAccountConfig` | The account's current configuration  |
+| `digest`                   | `bytes32`                   | The digest to sign                   |
+
+### Returns
+
+| Type    | Description                                                     |
+|---------|-----------------------------------------------------------------|
+| `bytes` | The `0x05` signature accepted by `verifyConfigurableAccount`   |
+
+### Examples
+
+#### secp256k1 owners
+
+```solidity [test/ConfigurableAccount.t.sol]
+// [!include ~/snippets/projects/configurable_accounts/test/ConfigurableAccount.t.sol:sign]
+```
+
+#### A P-256 owner
+
+```solidity [test/ConfigurableAccount.t.sol]
+// [!include ~/snippets/projects/configurable_accounts/test/ConfigurableAccount.t.sol:mixed]
+```
+
+```bash
+$ forge test --root src/snippets/projects/configurable_accounts --match-contract ConfigurableAccountTest
+```
+
+### Gotchas
+
+The cheatcode reverts if:
+
+- `config` is invalid
+- `config` has version 0 but does not derive `account`
+- a key is not an owner
+- no quorum can be formed from the keys
+
+Extra owner keys are fine: the cheatcode leaves out the ones the quorum does not need.
+
+### Related Cheatcodes
+
+- [`deriveConfigurableAccount`](/reference/cheatcodes/derive-configurable-account) - Address of a configurable account
+- [`configurableAccountDigest`](/reference/cheatcodes/configurable-account-digest) - Digest the owners approve
+- [`encodeConfigurableAccountSignature`](/reference/cheatcodes/encode-configurable-account-signature) - Encodes approvals into a signature
+- [`signKeychainConfigurableAccount`](/reference/cheatcodes/sign-keychain-configurable-account) - Signs with a configurable account as an access key

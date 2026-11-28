@@ -1,0 +1,88 @@
+---
+description: Returns the slot, byte offset and size of a named state variable
+---
+
+## `getStorageSlot`
+
+:::note
+Available since v1.10.1 ([foundry#18382](https://github.com/foundry-rs/foundry/pull/18382)). forge-std 1.17.0 does not declare it yet, so the example uses its own interface.
+:::
+
+### Signature
+
+```solidity
+function getStorageSlot(address target, string calldata variableName)
+    external
+    view
+    returns (uint256 slot, uint256 offset, uint256 numberOfBytes);
+```
+
+### Description
+
+Returns where a state variable of `target` is stored, as given by the compiled storage layout: its base slot, the byte offset of the value within that slot, and its size in bytes. It works for every storage encoding. For mappings and dynamic arrays, `slot` is the base slot that their entries are derived from.
+
+`variableName` is the variable's name, or `<namespace>.<field>` for a field of an [ERC-7201](https://eips.ethereum.org/EIPS/eip-7201) namespace.
+
+To list every slot a variable occupies, use [`getStorageSlots`](/reference/cheatcodes/get-storage-slots).
+
+### Configuration
+
+Compile with storage layout output:
+
+```toml [foundry.toml]
+[profile.default]
+extra_output = ["storageLayout"]
+```
+
+Without it, the call fails with `Storage layout not available for contract at <address>`.
+
+### Parameters
+
+| Parameter      | Type      | Description                                                  |
+|----------------|-----------|--------------------------------------------------------------|
+| `target`       | `address` | Deployed contract whose bytecode is matched to an artifact   |
+| `variableName` | `string`  | Variable name, or `<namespace>.<field>` for ERC-7201 storage |
+
+### Returns
+
+| Name            | Type      | Description                                 |
+|-----------------|-----------|---------------------------------------------|
+| `slot`          | `uint256` | Base slot of the variable                   |
+| `offset`        | `uint256` | Byte offset of the value within `slot`      |
+| `numberOfBytes` | `uint256` | Size of the value in bytes                  |
+
+### Examples
+
+The contract under test:
+
+```solidity [src/Vault.sol]
+// [!include ~/snippets/projects/storage_slot/src/Vault.sol]
+```
+
+#### Overwrite one packed variable
+
+```solidity [test/GetStorageSlot.t.sol]
+// [!include ~/snippets/projects/storage_slot/test/GetStorageSlot.t.sol:packed]
+```
+
+#### A mapping entry
+
+```solidity [test/GetStorageSlot.t.sol]
+// [!include ~/snippets/projects/storage_slot/test/GetStorageSlot.t.sol:mapping]
+```
+
+#### An ERC-7201 namespace field
+
+```solidity [test/GetStorageSlot.t.sol]
+// [!include ~/snippets/projects/storage_slot/test/GetStorageSlot.t.sol:namespace]
+```
+
+```bash
+$ forge test --root src/snippets/projects/storage_slot --match-contract GetStorageSlotTest
+```
+
+### Related Cheatcodes
+
+- [`getStorageSlots`](/reference/cheatcodes/get-storage-slots) - Every slot a variable occupies
+- [`load`](/reference/cheatcodes/load) - Reads a storage slot
+- [`store`](/reference/cheatcodes/store) - Writes a storage slot

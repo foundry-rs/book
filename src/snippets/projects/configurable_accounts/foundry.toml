@@ -1,0 +1,4 @@
+[profile.default]
+solc = "0.8.30"
+network = "tempo"
+hardfork = "tempo:T14"
