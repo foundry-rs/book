@@ -155,6 +155,47 @@ $ cast mktx $CONTRACT "mint()" --private-key $KEY
 $ cast publish $SIGNED_TX
 ```
 
+#### Send a Tempo multisig's first transaction
+
+A fresh Tempo configurable account has an address before it has an onchain owner list. On a T14 RPC, Cast can use the initial configuration to estimate registration gas and assemble the first transaction. The owners can sign on separate machines.
+
+For a 2-of-3 account, set `ALICE`, `BOB`, and `CAROL` to the three public owner addresses. This example uses a zero salt and gives each owner weight one. Keep the resulting file so each owner can reproduce the address.
+
+```bash
+jq -n --arg a "$ALICE" --arg b "$BOB" --arg c "$CAROL" '{
+  salt: ("0x" + ("0" * 64)), version: 0, threshold: 2,
+  owners: ([$a, $b, $c] | sort_by(ascii_downcase) | map({owner: ., weight: 1}))
+}' > config.json
+ACCOUNT=$(cast wallet address --tempo.config config.json)
+```
+
+Fund `ACCOUNT` with the fee token before estimating. Set `RPC_URL` to the Tempo endpoint, `FEE_TOKEN` to that token's address, and `TO` to the recipient. Prepare the transaction once and save both outputs.
+
+```bash
+cast mktx "$TO" --from "$ACCOUNT" --raw-unsigned --tempo.digest \
+  --tempo.config config.json --tempo.fee-token "$FEE_TOKEN" --rpc-url "$RPC_URL" \
+  --json > prepared.json
+UNSIGNED=$(jq -r '.data.unsigned_tx' prepared.json)
+DIGEST=$(jq -r '.data.digest' prepared.json)
+```
+
+Two owners each review the prepared transaction and sign the same digest with their own keystore. Each returns only the printed approval to the submitter.
+
+```bash
+cast wallet sign --no-hash "$DIGEST" --keystore "$OWNER_KEYSTORE"
+```
+
+Set `SIG_A` and `SIG_B` to the two approvals. Assemble them with the original unsigned bytes, then publish the signed transaction. Once it is mined, `wallet owners` shows the registered configuration.
+
+```bash
+SIGNED=$(cast wallet assemble "$UNSIGNED" "$SIG_A" "$SIG_B" \
+  --from "$ACCOUNT" --tempo.config config.json --rpc-url "$RPC_URL")
+cast publish "$SIGNED" --rpc-url "$RPC_URL"
+cast wallet owners "$ACCOUNT" --rpc-url "$RPC_URL"
+```
+
+See the [transaction builder](/reference/cast/mktx) and [transaction publisher](/reference/cast/publish) references for their other options.
+
 ### Blob transactions (EIP-4844)
 
 Send transactions with blob data:
