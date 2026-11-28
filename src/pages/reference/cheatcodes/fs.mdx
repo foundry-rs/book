@@ -13,13 +13,30 @@ function readLine(string calldata path) external returns (string memory line);
 function readDir(string calldata path) external view returns (DirEntry[] memory entries);
 function readLink(string calldata linkPath) external view returns (string memory targetPath);
 function writeFile(string calldata path, string calldata data) external;
+function writeFileBinary(string calldata path, bytes calldata data) external;
 function writeLine(string calldata path, string calldata data) external;
 function closeFile(string calldata path) external;
 function removeFile(string calldata path) external;
+function copyFile(string calldata from, string calldata to) external returns (uint64 copied);
+function createDir(string calldata path, bool recursive) external;
+function removeDir(string calldata path, bool recursive) external;
+function fsMetadata(string calldata path) external view returns (FsMetadata memory metadata);
 function exists(string calldata path) external returns (bool);
 function isFile(string calldata path) external returns (bool);
 function isDir(string calldata path) external returns (bool);
 function currentFilePath() external view returns (string memory path);
+```
+
+```solidity
+struct FsMetadata {
+    bool isDir;
+    bool isSymlink;
+    uint256 length;
+    bool readOnly;
+    uint256 modified;
+    uint256 accessed;
+    uint256 created;
+}
 ```
 
 ### Description
@@ -61,6 +78,7 @@ fs_permissions = [{ access = "read-write", path = "./" }]
 | Function    | Description                                         |
 |-------------|-----------------------------------------------------|
 | `writeFile` | Writes data to file, creating or overwriting        |
+| `writeFileBinary` | Writes bytes to file, creating or overwriting |
 | `writeLine` | Appends a line to file, creating if needed          |
 
 #### File Management
@@ -69,6 +87,10 @@ fs_permissions = [{ access = "read-write", path = "./" }]
 |--------------|--------------------------------------------|
 | `closeFile`  | Closes file, resetting read offset         |
 | `removeFile` | Deletes a file                             |
+| `copyFile`   | Copies a file, overwriting the destination, and returns the number of bytes copied |
+| `createDir`  | Creates a directory, and its missing parents if `recursive` is true |
+| `removeDir`  | Deletes a directory, and its contents if `recursive` is true |
+| `fsMetadata` | Returns the `FsMetadata` of a file or directory |
 | `exists`     | Returns true if path exists                |
 | `isFile`     | Returns true if path is a regular file     |
 | `isDir`      | Returns true if path is a directory        |
@@ -129,6 +151,50 @@ fs_permissions = [{ access = "write", path = "./" }]
 
 :::
 
+#### Write bytes to a file
+
+`writeFileBinary` writes `data` as raw bytes, while `writeFile` writes a string:
+
+```solidity [test/FileSystem.t.sol]
+// [!include ~/snippets/projects/file_system/test/FileSystem.t.sol:binary]
+```
+
+#### Copy a file
+
+`copyFile` needs read access to `from` and write access to `to`:
+
+:::code-group
+
+```solidity [test/FileSystem.t.sol]
+// [!include ~/snippets/projects/file_system/test/FileSystem.t.sol:copy]
+```
+
+```toml [foundry.toml]
+// [!include ~/snippets/projects/file_system/foundry.toml]
+```
+
+:::
+
+#### Create and remove directories
+
+```solidity [test/FileSystem.t.sol]
+// [!include ~/snippets/projects/file_system/test/FileSystem.t.sol:directories]
+```
+
+#### Read file metadata
+
+`fsMetadata` requires read access. `length` is the size in bytes, and `modified`, `accessed` and `created` are Unix timestamps in seconds:
+
+```solidity [test/FileSystem.t.sol]
+// [!include ~/snippets/projects/file_system/test/FileSystem.t.sol:metadata]
+```
+
+Run these examples with:
+
+```bash
+$ forge test --root src/snippets/projects/file_system
+```
+
 #### Check if paths exist
 
 ```solidity [test/FileSystem.t.sol]
@@ -163,6 +229,12 @@ If you receive "The path is not allowed to be accessed for read operations", ens
 - The user lacks permissions to remove the file
 :::
 
+- `copyFile`, `writeFile` and `writeFileBinary` revert if the parent directory of the destination does not exist. Create it first with `createDir(path, true)`.
+- `createDir` with `recursive` set to false reverts if the directory already exists or a parent is missing. With `recursive` set to true, an existing directory is not an error.
+- `removeDir` reverts if the path is not a directory, or if the directory is not empty and `recursive` is false. It also reverts for any directory that contains the project's `foundry.toml`, such as the project root.
+- `fsMetadata` reverts if the path does not exist. It resolves symbolic links before reading the metadata, so `isSymlink` is false even for a link.
+- `readOnly` reflects the file's permissions on disk, not `fs_permissions`. A file in a `read` entry still reports `readOnly` as false if the file is writable.
+- `modified`, `accessed` and `created` are 0 on platforms that do not report them.
 - `currentFilePath` identifies the test or script contract being executed. It does not change when the call originates from an imported library or inherited helper.
 - Path separators follow the host platform. Normalize `\\` to `/` before exact string comparisons when tests must also run on Windows.
 

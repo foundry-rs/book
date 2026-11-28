@@ -1,0 +1,6 @@
+[profile.default]
+solc = "0.8.30"
+fs_permissions = [
+    { access = "read", path = "./fixtures" },
+    { access = "read-write", path = "./scratch" },
+]
