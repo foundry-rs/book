@@ -362,14 +362,11 @@
     "attachBlob",
     "cool",
     "coolSlot",
-    "copyFile",
-    "createDir",
     "deleteSnapshot",
     "deleteSnapshots",
     "envExists",
     "eth_getLogs",
     "fromRlp",
-    "fsMetadata",
     "getArtifactPathByCode",
     "getArtifactPathByDeployedCode",
     "getBroadcast",
@@ -396,7 +393,6 @@
     "promptAddress",
     "promptUint",
     "rememberKeys",
-    "removeDir",
     "resetNonce",
     "resolveEnv",
     "revertTo",
@@ -408,7 +404,6 @@
     "stopRecord",
     "toRlp",
     "tryFfi",
-    "warmSlot",
-    "writeFileBinary"
+    "warmSlot"
   ]
 }
