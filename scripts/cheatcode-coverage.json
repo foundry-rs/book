@@ -341,7 +341,6 @@
     "writeToml"
   ],
   "knownMissing": [
-    "accessList",
     "assertApproxEqAbs",
     "assertApproxEqAbsDecimal",
     "assertApproxEqRel",
@@ -360,8 +359,6 @@
     "assertNotEqDecimal",
     "assertTrue",
     "attachBlob",
-    "cool",
-    "coolSlot",
     "copyFile",
     "createDir",
     "deleteSnapshot",
@@ -378,7 +375,6 @@
     "getDeployments",
     "getRawBlockHeader",
     "interceptInitcode",
-    "noAccessList",
     "parseJsonAddressArray",
     "parseJsonBoolArray",
     "parseJsonBytes32Array",
@@ -408,7 +404,6 @@
     "stopRecord",
     "toRlp",
     "tryFfi",
-    "warmSlot",
     "writeFileBinary"
   ]
 }

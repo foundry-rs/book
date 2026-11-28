@@ -1,0 +1,52 @@
+---
+description: Marks a storage slot as warm, as if it had already been accessed
+---
+
+## `warmSlot`
+
+### Signature
+
+```solidity
+function warmSlot(address target, bytes32 slot) external;
+```
+
+### Description
+
+Marks storage slot `slot` of `target` as warm in the current transaction, simulating a prior read. Under [EIP-2929](https://eips.ethereum.org/EIPS/eip-2929), the next `SLOAD` of a warm slot costs 100 gas instead of 2100, and an `SSTORE` skips the 2100 gas cold surcharge.
+
+Use it with [`coolSlot`](/reference/cheatcodes/cool-slot) and [`cool`](/reference/cheatcodes/cool) to measure or assert the gas a function uses with a given set of warm slots.
+
+### Parameters
+
+| Parameter | Type      | Description                          |
+|-----------|-----------|--------------------------------------|
+| `target`  | `address` | The account that owns the slot       |
+| `slot`    | `bytes32` | The storage slot to mark as warm     |
+
+### Examples
+
+```solidity [test/Warmth.t.sol]
+// [!include ~/snippets/projects/storage_warmth/test/Warmth.t.sol:warm-slot]
+```
+
+`sloadGas` measures one `SLOAD` with `gas()`:
+
+```solidity [test/Warmth.t.sol]
+// [!include ~/snippets/projects/storage_warmth/test/Warmth.t.sol:sload-gas]
+```
+
+```bash
+$ forge test --root src/snippets/projects/storage_warmth --match-contract WarmthTest
+```
+
+### Gotchas
+
+- `warmSlot` only changes a slot the current transaction has already read or written. On a slot that has not been accessed yet, it has no effect and the first read is still cold.
+- Warmth belongs to one transaction. With [call isolation](/forge/testing#call-isolation), the default, each top-level call from the test runs as its own transaction that starts cold, so warming a slot of another contract from the test does not change the gas of the next call to it. Measure inside a single call, or disable isolation for the test.
+- `warmSlot` does not change the slot's value.
+
+### Related Cheatcodes
+
+- [`coolSlot`](/reference/cheatcodes/cool-slot) - Marks a storage slot as cold
+- [`cool`](/reference/cheatcodes/cool) - Marks an account and its loaded slots as cold
+- [`accessList`](/reference/cheatcodes/access-list) - Sets an EIP-2930 access list for later transactions

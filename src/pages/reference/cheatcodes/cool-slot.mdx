@@ -1,0 +1,45 @@
+---
+description: Marks a storage slot as cold, as if it had not been accessed
+---
+
+## `coolSlot`
+
+### Signature
+
+```solidity
+function coolSlot(address target, bytes32 slot) external;
+```
+
+### Description
+
+Marks storage slot `slot` of `target` as cold in the current transaction, simulating no prior read. Under [EIP-2929](https://eips.ethereum.org/EIPS/eip-2929), the next `SLOAD` of the slot costs 2100 gas instead of 100, and the next `SSTORE` pays the 2100 gas cold surcharge again.
+
+Use it to measure the gas of code that reads a slot for the first time in a transaction, after the test has already read that slot.
+
+### Parameters
+
+| Parameter | Type      | Description                          |
+|-----------|-----------|--------------------------------------|
+| `target`  | `address` | The account that owns the slot       |
+| `slot`    | `bytes32` | The storage slot to mark as cold     |
+
+### Examples
+
+```solidity [test/Warmth.t.sol]
+// [!include ~/snippets/projects/storage_warmth/test/Warmth.t.sol:cool-slot]
+```
+
+```bash
+$ forge test --root src/snippets/projects/storage_warmth --match-contract WarmthTest
+```
+
+### Gotchas
+
+- `coolSlot` changes only the slot. The account stays warm; use [`cool`](/reference/cheatcodes/cool) to also cool the account and all its loaded slots.
+- With [call isolation](/forge/testing#call-isolation), the default, each top-level call from the test runs as its own transaction that starts cold anyway, so `coolSlot` on another contract does not change the gas of the next call to it.
+- `coolSlot` does not change the slot's value.
+
+### Related Cheatcodes
+
+- [`warmSlot`](/reference/cheatcodes/warm-slot) - Marks a storage slot as warm
+- [`cool`](/reference/cheatcodes/cool) - Marks an account and its loaded slots as cold
