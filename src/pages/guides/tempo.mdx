@@ -273,6 +273,40 @@ T6 `KeyAuthorization` adds `is_admin` and `account` fields. Admin access keys ar
 
 For protocol context, see Tempo's [AccountKeychain docs](https://docs.tempo.xyz/docs/protocol/transactions/AccountKeychain), [TIP-1011](https://docs.tempo.xyz/docs/protocol/tips/tip-1011), and [TIP-1049](https://tips.sh/1049).
 
+#### Authorize an access key before the first transaction
+
+On Tempo T14, two owners of a fresh 2-of-3 account can authorize an access key without sending a transaction themselves. Give each owner the same `config.json` containing the initial salt, version `0`, threshold `2`, and three owners of weight `1`. Cast checks that this configuration derives `$ACCOUNT`. For a registered account, you can omit the file. If you supply it, Cast checks it against the current onchain commitment.
+
+Both owners run the following Bash commands with the same access-key address, chain ID, fee-token address, and expiry (Unix seconds). This grant caps spending at 1,000,000 base units of the fee token. With no approvals yet, the signing command exits with an error that includes the owner digest. Each owner can read that digest from their own command output.
+
+```bash
+grant=("$ACCESS_KEY_ADDRESS" --chain-id "$CHAIN_ID" --expiry "$EXPIRY"
+       --limit "$FEE_TOKEN:1000000" --tempo.configurable-account "$ACCOUNT"
+       --tempo.config config.json --rpc-url "$RPC_URL")
+cast key-authorization sign "${grant[@]}"
+```
+
+Bob sets `DIGEST` to the hash printed beside `cast wallet sign --no-hash`, signs it, and sends Alice only his signature. Alice adds it to her own approval and gives the resulting authorization to the access-key holder.
+
+```bash
+# Bob
+SIG_B=$(cast wallet sign --no-hash "$DIGEST" --keystore "$OWNER_B_KEYSTORE")
+
+# Alice, after receiving SIG_B
+SIGNED=$(cast key-authorization sign "${grant[@]}" --keystore "$OWNER_A_KEYSTORE" \
+  --tempo.owner-signature "$SIG_B")
+```
+
+Fund `$ACCOUNT` with the fee token before sending. On the access-key holder's machine, import the authorization with the matching private key. The first send carries the grant and transfers one base unit to `$TO`. After it mines, `cast keychain check` shows the key as provisioned.
+
+```bash
+TEMPO_ACCESS_KEY="$ACCESS_KEY_PRIVATE_KEY" cast tempo import-access-key \
+  --account "$ACCOUNT" --authorization "$SIGNED"
+cast send "$FEE_TOKEN" 'transfer(address,uint256)' "$TO" 1 --from "$ACCOUNT" \
+  --tempo.fee-token "$FEE_TOKEN" --rpc-url "$RPC_URL"
+cast keychain check "$ACCOUNT" "$ACCESS_KEY_ADDRESS" --rpc-url "$RPC_URL"
+```
+
 ## Local development, testing, and debugging
 
 ### Forge tests and scripts
